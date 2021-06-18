@@ -1713,10 +1713,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("сейчас"),
         "timeago_minutes": m67,
         "timeago_months": m68,
-        "timeago_prefixAgo": MessageLookupByLibrary.simpleMessage(""),
-        "timeago_prefixFromNow": MessageLookupByLibrary.simpleMessage(""),
-        "timeago_suffixAgo": MessageLookupByLibrary.simpleMessage(""),
-        "timeago_suffixFromNow": MessageLookupByLibrary.simpleMessage(""),
         "timeago_wordSeparator": MessageLookupByLibrary.simpleMessage(" "),
         "timeago_years": m69
       };

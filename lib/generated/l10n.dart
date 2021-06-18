@@ -3783,46 +3783,6 @@ class S {
     );
   }
 
-  /// ``
-  String get timeago_prefixAgo {
-    return Intl.message(
-      '',
-      name: 'timeago_prefixAgo',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// ``
-  String get timeago_prefixFromNow {
-    return Intl.message(
-      '',
-      name: 'timeago_prefixFromNow',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// ``
-  String get timeago_suffixAgo {
-    return Intl.message(
-      '',
-      name: 'timeago_suffixAgo',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// ``
-  String get timeago_suffixFromNow {
-    return Intl.message(
-      '',
-      name: 'timeago_suffixFromNow',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `now`
   String get timeago_lessThanOneMinute {
     return Intl.message(
