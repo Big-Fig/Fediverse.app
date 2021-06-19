@@ -80,7 +80,7 @@ import 'package:fedi/app/pagination/settings/local_preferences/instance/instance
 import 'package:fedi/app/pagination/settings/local_preferences/instance/instance_pagination_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc_impl.dart';
-import 'package:fedi/app/push/handler/push_handler_bloc.dart';
+import 'package:fedi/app/push/notification/simple/handler/simple_notifications_push_handler_bloc.dart';
 import 'package:fedi/app/push/permission/ask/local_preferences/ask_push_permission_local_preference_bloc.dart';
 import 'package:fedi/app/push/permission/ask/local_preferences/ask_push_permission_local_preference_bloc_impl.dart';
 import 'package:fedi/app/push/permission/checker/push_permission_checker_bloc.dart';
@@ -357,7 +357,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     await globalProviderService
         .asyncInitAndRegister<IPleromaApiRestService>(pleromaRestService);
 
-    var pleromaAuthRestService = PleromaAuthRestService(
+    var pleromaAuthRestService = PleromaApiAuthRestService(
       restService: restService,
       connectionService: connectionService,
       accessToken: currentInstance.token!.accessToken,
@@ -632,7 +632,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     if (configService.pushFcmEnabled) {
       var pushRelayService = appContextBloc.get<IPushRelayService>();
       var fcmPushService = appContextBloc.get<IFcmPushService>();
-      var pushHandlerBloc = appContextBloc.get<IPushHandlerBloc>();
+      var simpleNotificationsPushHandlerBloc = appContextBloc.get<ISimpleNotificationsPushHandlerBloc>();
 
       var pleromaPushService = PleromaApiPushService(
         keys: PleromaApiPushSubscriptionKeys(
@@ -670,7 +670,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
 
       var notificationPushLoaderBloc = NotificationPushLoaderBloc(
         currentInstance: currentInstance,
-        pushHandlerBloc: pushHandlerBloc,
+        simpleNotificationsPushHandlerBloc: simpleNotificationsPushHandlerBloc,
         notificationRepository: notificationRepository,
         pleromaNotificationService: pleromaNotificationService,
         chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,

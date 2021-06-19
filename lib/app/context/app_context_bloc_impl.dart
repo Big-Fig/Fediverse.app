@@ -50,10 +50,12 @@ import 'package:fedi/app/media/settings/local_preferences/global/global_media_se
 import 'package:fedi/app/media/settings/local_preferences/global/global_media_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/pagination/settings/local_preferences/global/global_pagination_settings_local_preference_bloc.dart';
 import 'package:fedi/app/pagination/settings/local_preferences/global/global_pagination_settings_local_preference_bloc_impl.dart';
-import 'package:fedi/app/push/handler/push_handler_bloc.dart';
-import 'package:fedi/app/push/handler/push_handler_bloc_impl.dart';
-import 'package:fedi/app/push/handler/unhandled/local_preferences/push_handler_unhandled_local_preference_bloc.dart';
-import 'package:fedi/app/push/handler/unhandled/local_preferences/push_handler_unhandled_local_preference_bloc_impl.dart';
+import 'package:fedi/app/push/notification/rich/rich_notifications_service.dart';
+import 'package:fedi/app/push/notification/rich/rich_notifications_service_background_message_impl.dart';
+import 'package:fedi/app/push/notification/simple/handler/simple_notifications_push_handler_bloc.dart';
+import 'package:fedi/app/push/notification/simple/handler/simple_notifications_push_handler_bloc_impl.dart';
+import 'package:fedi/app/push/notification/simple/handler/unhandled/local_preferences/simple_notifications_push_handler_unhandled_local_preference_bloc.dart';
+import 'package:fedi/app/push/notification/simple/handler/unhandled/local_preferences/simple_notifications_push_handler_unhandled_local_preference_bloc_impl.dart';
 import 'package:fedi/app/share/external/external_share_service.dart';
 import 'package:fedi/app/share/external/external_share_service_impl.dart';
 import 'package:fedi/app/share/income/handler/last_chosen_instance/last_chosen_instance_income_share_handler_local_preference_bloc.dart';
@@ -77,6 +79,7 @@ import 'package:fedi/app/web_sockets/settings/local_preferences/global/global_we
 import 'package:fedi/app/web_sockets/settings/local_preferences/global/global_web_sockets_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/connection/connection_service_impl.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/in_app_review/ask/local_preferences/ask_in_app_review_local_preference_bloc.dart';
 import 'package:fedi/in_app_review/ask/local_preferences/ask_in_app_review_local_preference_bloc_impl.dart';
 import 'package:fedi/in_app_review/checker/in_app_review_checker_bloc.dart';
@@ -86,6 +89,7 @@ import 'package:fedi/in_app_review/in_app_review_bloc_impl.dart';
 import 'package:fedi/local_preferences/hive_local_preferences_service_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/local_preferences/shared_preferences_local_preferences_service_impl.dart';
+import 'package:fedi/localization/localization_model.dart';
 import 'package:fedi/permission/camera_permission_bloc.dart';
 import 'package:fedi/permission/camera_permission_bloc_impl.dart';
 import 'package:fedi/permission/mic_permission_bloc.dart';
@@ -154,7 +158,7 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         .asyncInitAndRegister<IPermissionsService>(PermissionsService());
 
     var hiveLocalPreferencesService =
-        HiveLocalPreferencesService(boxName: 'local_preferences_v2');
+        HiveLocalPreferencesService.withLastVersionBoxName();
     await hiveLocalPreferencesService.performAsyncInit();
     var hiveLocalPreferencesServiceExist =
         await hiveLocalPreferencesService.isStorageExist();
@@ -312,27 +316,76 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
       await globalProviderService
           .asyncInitAndRegister<IPushRelayService>(pushRelayService);
 
+      var globalLocalizationSettingsLocalPreferencesBloc =
+          GlobalLocalizationSettingsLocalPreferenceBloc(
+        hiveLocalPreferencesService,
+      );
+
+      await globalProviderService
+          .asyncInitAndRegister<ILocalizationSettingsLocalPreferenceBloc>(
+        globalLocalizationSettingsLocalPreferencesBloc,
+      );
+      await globalProviderService
+          .asyncInitAndRegister<IGlobalLocalizationSettingsLocalPreferenceBloc>(
+        globalLocalizationSettingsLocalPreferencesBloc,
+      );
+      addDisposable(disposable: globalLocalizationSettingsLocalPreferencesBloc);
+
+      var localizationSettingsBloc = LocalizationSettingsBloc(
+        localizationSettingsLocalPreferencesBloc:
+            globalLocalizationSettingsLocalPreferencesBloc,
+      );
+
+      await globalProviderService
+          .asyncInitAndRegister<ILocalizationSettingsBloc>(
+        localizationSettingsBloc,
+      );
+      addDisposable(disposable: localizationSettingsBloc);
+
+      var localizationLocale = localizationSettingsBloc.localizationLocale;
+
+      var locale = LocalizationLocale
+          .calculateLocaleBaseOnLocalizationLocaleOrPlatformLocale(
+        localizationLocale: localizationLocale,
+      );
+      var richNotificationsServiceBackgroundMessage =
+          RichNotificationsServiceBackgroundMessage(
+        localizationContext: await S.load(
+          locale,
+        ),
+      );
+      await globalProviderService.asyncInitAndRegister<
+          IRichNotificationsService>(richNotificationsServiceBackgroundMessage);
+
       var fcmPushService = FcmPushService();
       await globalProviderService
           .asyncInitAndRegister<IFcmPushService>(fcmPushService);
 
-      var pushHandlerUnhandledLocalPreferencesBloc =
-          PushHandlerUnhandledLocalPreferenceBloc(hiveLocalPreferencesService);
-
-      await globalProviderService
-          .asyncInitAndRegister<IPushHandlerUnhandledLocalPreferenceBloc>(
-        pushHandlerUnhandledLocalPreferencesBloc,
+      var simpleNotificationsPushHandlerUnhandledLocalPreferencesBloc =
+          SimpleNotificationsPushHandlerUnhandledLocalPreferenceBloc(
+        hiveLocalPreferencesService,
       );
-      addDisposable(disposable: pushHandlerUnhandledLocalPreferencesBloc);
-      var pushHandlerBloc = PushHandlerBloc(
+
+      await globalProviderService.asyncInitAndRegister<
+          ISimpleNotificationsPushHandlerUnhandledLocalPreferenceBloc>(
+        simpleNotificationsPushHandlerUnhandledLocalPreferencesBloc,
+      );
+      addDisposable(
+        disposable: simpleNotificationsPushHandlerUnhandledLocalPreferencesBloc,
+      );
+      var simpleNotificationsPushHandlerBloc =
+          SimpleNotificationsPushHandlerBloc(
         currentInstanceBloc: currentInstanceBloc,
         instanceListBloc: instanceListBloc,
-        unhandledLocalPreferencesBloc: pushHandlerUnhandledLocalPreferencesBloc,
+        unhandledLocalPreferencesBloc:
+            simpleNotificationsPushHandlerUnhandledLocalPreferencesBloc,
         fcmPushService: fcmPushService,
       );
       await globalProviderService
-          .asyncInitAndRegister<IPushHandlerBloc>(pushHandlerBloc);
-      addDisposable(disposable: pushHandlerBloc);
+          .asyncInitAndRegister<ISimpleNotificationsPushHandlerBloc>(
+        simpleNotificationsPushHandlerBloc,
+      );
+      addDisposable(disposable: simpleNotificationsPushHandlerBloc);
     }
 
     var globalUiSettingsLocalPreferencesBloc =
@@ -457,31 +510,6 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         .asyncInitAndRegister<ICurrentFediUiThemeBloc>(currentFediUiThemeBloc);
 
     addDisposable(disposable: currentFediUiThemeBloc);
-
-    var globalLocalizationSettingsLocalPreferencesBloc =
-        GlobalLocalizationSettingsLocalPreferenceBloc(
-      hiveLocalPreferencesService,
-    );
-
-    await globalProviderService
-        .asyncInitAndRegister<ILocalizationSettingsLocalPreferenceBloc>(
-      globalLocalizationSettingsLocalPreferencesBloc,
-    );
-    await globalProviderService
-        .asyncInitAndRegister<IGlobalLocalizationSettingsLocalPreferenceBloc>(
-      globalLocalizationSettingsLocalPreferencesBloc,
-    );
-    addDisposable(disposable: globalLocalizationSettingsLocalPreferencesBloc);
-
-    var localizationSettingsBloc = LocalizationSettingsBloc(
-      localizationSettingsLocalPreferencesBloc:
-          globalLocalizationSettingsLocalPreferencesBloc,
-    );
-
-    await globalProviderService.asyncInitAndRegister<ILocalizationSettingsBloc>(
-      localizationSettingsBloc,
-    );
-    addDisposable(disposable: localizationSettingsBloc);
 
     var globalChatSettingsLocalPreferencesBloc =
         GlobalChatSettingsLocalPreferenceBloc(

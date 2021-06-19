@@ -1,19 +1,19 @@
 import 'package:fedi/app/notification/notification_model.dart';
-import 'package:fedi/app/push/handler/push_handler_model.dart';
+import 'package:fedi/app/push/notification/simple/handler/simple_notifications_push_handler_model.dart';
 
 class NotificationPushLoaderNotification {
   final INotification notification;
-  final PushHandlerMessage pushHandlerMessage;
+  final SimpleNotificationsPushHandlerMessage simpleNotificationsPushHandlerMessage;
   NotificationPushLoaderNotification({
     required this.notification,
-    required this.pushHandlerMessage,
+    required this.simpleNotificationsPushHandlerMessage,
   });
 
   @override
   String toString() {
     return 'NotificationPushLoaderNotification{'
         'pleromaNotification: $notification, '
-        'pushHandlerMessage: $pushHandlerMessage'
+        'pushHandlerMessage: $simpleNotificationsPushHandlerMessage'
         '}';
   }
 
@@ -23,7 +23,7 @@ class NotificationPushLoaderNotification {
       other is NotificationPushLoaderNotification &&
           runtimeType == other.runtimeType &&
           notification == other.notification &&
-          pushHandlerMessage == other.pushHandlerMessage;
+          simpleNotificationsPushHandlerMessage == other.simpleNotificationsPushHandlerMessage;
   @override
-  int get hashCode => notification.hashCode ^ pushHandlerMessage.hashCode;
+  int get hashCode => notification.hashCode ^ simpleNotificationsPushHandlerMessage.hashCode;
 }

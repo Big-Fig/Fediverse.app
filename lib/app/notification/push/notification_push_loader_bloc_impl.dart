@@ -6,8 +6,8 @@ import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dar
 import 'package:fedi/app/notification/push/notification_push_loader_bloc.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_model.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
-import 'package:fedi/app/push/handler/push_handler_bloc.dart';
-import 'package:fedi/app/push/handler/push_handler_model.dart';
+import 'package:fedi/app/push/notification/simple/handler/simple_notifications_push_handler_bloc.dart';
+import 'package:fedi/app/push/notification/simple/handler/simple_notifications_push_handler_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/pleroma/api/notification/pleroma_api_notification_model.dart';
@@ -21,7 +21,7 @@ var _logger = Logger('notification_push_loader_bloc_impl.dart');
 class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
     implements INotificationPushLoaderBloc {
   final AuthInstance currentInstance;
-  final IPushHandlerBloc pushHandlerBloc;
+  final ISimpleNotificationsPushHandlerBloc simpleNotificationsPushHandlerBloc;
   final IPleromaApiNotificationService pleromaNotificationService;
 
   final INotificationRepository notificationRepository;
@@ -49,18 +49,18 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
 
   NotificationPushLoaderBloc({
     required this.currentInstance,
-    required this.pushHandlerBloc,
+    required this.simpleNotificationsPushHandlerBloc,
     required this.pleromaNotificationService,
     required this.notificationRepository,
     required this.chatNewMessagesHandlerBloc,
     required this.myAccountBloc,
   }) {
-    pushHandlerBloc.addRealTimeHandler(handlePush);
+    simpleNotificationsPushHandlerBloc.addRealTimeHandler(handlePush);
     addDisposable(subject: launchPushLoaderNotificationSubject);
     addDisposable(
       disposable: CustomDisposable(
         () async {
-          pushHandlerBloc.removeRealTimeHandler(handlePush);
+          simpleNotificationsPushHandlerBloc.removeRealTimeHandler(handlePush);
         },
       ),
     );
@@ -69,8 +69,10 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
 
   // todo: refactor
   // ignore: long-method
-  Future<bool> handlePush(PushHandlerMessage pushHandlerMessage) async {
-    var pleromaPushMessage = pushHandlerMessage.body;
+  Future<bool> handlePush(
+    SimpleNotificationsPushHandlerMessage simpleNotificationsPushHandlerMessage,
+  ) async {
+    var pleromaPushMessage = simpleNotificationsPushHandlerMessage.body;
 
     var isForCurrentInstance = currentInstance.isInstanceWithHostAndAcct(
       host: pleromaPushMessage.server,
@@ -112,12 +114,13 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
       var notification = await notificationRepository.findByRemoteIdInAppType(
         remoteNotification.id,
       );
-      if (pushHandlerMessage.pushMessage.isLaunch) {
+      if (simpleNotificationsPushHandlerMessage.pushMessage.isLaunch) {
         if (notification != null) {
           launchPushLoaderNotificationSubject.add(
             NotificationPushLoaderNotification(
               notification: notification,
-              pushHandlerMessage: pushHandlerMessage,
+              simpleNotificationsPushHandlerMessage:
+                  simpleNotificationsPushHandlerMessage,
             ),
           );
         }
@@ -143,7 +146,8 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
         _handledNotificationsStreamController.add(
           NotificationPushLoaderNotification(
             notification: notification,
-            pushHandlerMessage: pushHandlerMessage,
+            simpleNotificationsPushHandlerMessage:
+                simpleNotificationsPushHandlerMessage,
           ),
         );
       }
@@ -156,10 +160,10 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
 
   @override
   Future internalAsyncInit() async {
-    var unhandledMessages =
-        pushHandlerBloc.loadUnhandledMessagesForInstance(currentInstance);
+    var unhandledMessages = simpleNotificationsPushHandlerBloc
+        .loadUnhandledMessagesForInstance(currentInstance);
 
-    var handledMessages = <PushHandlerMessage>[];
+    var handledMessages = <SimpleNotificationsPushHandlerMessage>[];
 
     for (var message in unhandledMessages) {
       var success = await handlePush(message);
@@ -168,8 +172,8 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
       }
     }
 
-    await pushHandlerBloc.markAsHandled(handledMessages);
+    await simpleNotificationsPushHandlerBloc.markAsHandled(handledMessages);
 
-    await pushHandlerBloc.handleInitialMessage();
+    await simpleNotificationsPushHandlerBloc.handleInitialMessage();
   }
 }

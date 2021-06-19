@@ -15,8 +15,8 @@ import 'package:fedi/app/instance/announcement/settings/instance_announcement_se
 import 'package:fedi/app/localization/settings/localization_settings_model.dart';
 import 'package:fedi/app/media/settings/media_settings_model.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_model.dart';
-import 'package:fedi/app/push/handler/push_handler_model.dart';
-import 'package:fedi/app/push/handler/unhandled/push_handler_unhandled_model.dart';
+import 'package:fedi/app/push/notification/simple/handler/simple_notifications_push_handler_model.dart';
+import 'package:fedi/app/push/notification/simple/handler/unhandled/simple_notifications_push_handler_unhandled_model.dart';
 import 'package:fedi/app/push/settings/push_settings_model.dart';
 import 'package:fedi/app/search/recent/recent_search_model.dart';
 import 'package:fedi/app/status/post/settings/post_status_settings_model.dart';
@@ -57,6 +57,11 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
 
   // ignore: long-method
   static void registerAdapters() {
+      //  PleromaApiFieldAdapter
+    var adaptersRegistered = Hive.isAdapterRegistered(5);
+    if(adaptersRegistered) {
+      return;
+    }
     Hive.registerAdapter(PleromaApiFieldAdapter());
     Hive.registerAdapter(PleromaApiEmojiAdapter());
     Hive.registerAdapter(PleromaApiMyAccountPleromaPartAdapter());
@@ -73,7 +78,7 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
     Hive.registerAdapter(PleromaApiClientApplicationAdapter());
     Hive.registerAdapter(PleromaMyAccountWrapperAdapter());
     Hive.registerAdapter(PleromaApiMyAccountAdapter());
-    Hive.registerAdapter(PushHandlerUnhandledListAdapter());
+    Hive.registerAdapter(SimpleNotificationsPushHandlerUnhandledListAdapter());
     Hive.registerAdapter(PleromaApiPushMessageBodyAdapter());
     Hive.registerAdapter(PleromaApiInstancePleromaPartAdapter());
     Hive.registerAdapter(PleromaApiInstanceAdapter());
@@ -83,7 +88,7 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
     Hive.registerAdapter(PleromaApiInstancePollLimitsAdapter());
     Hive.registerAdapter(PleromaApiAccountAdapter());
     Hive.registerAdapter(RecentSearchListAdapter());
-    Hive.registerAdapter(PushHandlerMessageAdapter());
+    Hive.registerAdapter(SimpleNotificationsPushHandlerMessageAdapter());
     Hive.registerAdapter(PushMessageAdapter());
     Hive.registerAdapter(EmojiPickerCustomImageUrlCategoryItemsAdapter());
     Hive.registerAdapter(CustomEmojiPickerImageUrlItemAdapter());

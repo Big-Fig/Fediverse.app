@@ -7798,6 +7798,477 @@ class S {
       args: [],
     );
   }
+
+  /// `Follow`
+  String get app_push_channel_follow_name {
+    return Intl.message(
+      'Follow',
+      name: 'app_push_channel_follow_name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `When people follow you`
+  String get app_push_channel_follow_description {
+    return Intl.message(
+      'When people follow you',
+      name: 'app_push_channel_follow_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{acct} followed you`
+  String app_push_richNotification_follow_title(Object acct) {
+    return Intl.message(
+      '$acct followed you',
+      name: 'app_push_richNotification_follow_title',
+      desc: '',
+      args: [acct],
+    );
+  }
+
+  /// `Someone followed you`
+  String get app_push_richNotification_follow_summary {
+    return Intl.message(
+      'Someone followed you',
+      name: 'app_push_richNotification_follow_summary',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Favourite`
+  String get app_push_channel_favourite_name {
+    return Intl.message(
+      'Favourite',
+      name: 'app_push_channel_favourite_name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `When people favourite your statuses`
+  String get app_push_channel_favourite_description {
+    return Intl.message(
+      'When people favourite your statuses',
+      name: 'app_push_channel_favourite_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{acct} favourited your status`
+  String app_push_richNotification_favourite_title(Object acct) {
+    return Intl.message(
+      '$acct favourited your status',
+      name: 'app_push_richNotification_favourite_title',
+      desc: '',
+      args: [acct],
+    );
+  }
+
+  /// `Someone favourited your status`
+  String get app_push_richNotification_favourite_summary {
+    return Intl.message(
+      'Someone favourited your status',
+      name: 'app_push_richNotification_favourite_summary',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Share(reblog)`
+  String get app_push_channel_reblog_name {
+    return Intl.message(
+      'Share(reblog)',
+      name: 'app_push_channel_reblog_name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `When people share your statuses`
+  String get app_push_channel_reblog_description {
+    return Intl.message(
+      'When people share your statuses',
+      name: 'app_push_channel_reblog_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{acct} shared your status`
+  String app_push_richNotification_reblog_title(Object acct) {
+    return Intl.message(
+      '$acct shared your status',
+      name: 'app_push_richNotification_reblog_title',
+      desc: '',
+      args: [acct],
+    );
+  }
+
+  /// `Someone shared your status`
+  String get app_push_richNotification_reblog_summary {
+    return Intl.message(
+      'Someone shared your status',
+      name: 'app_push_richNotification_reblog_summary',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mention`
+  String get app_push_channel_mention_name {
+    return Intl.message(
+      'Mention',
+      name: 'app_push_channel_mention_name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `When people mention you in status or conversation`
+  String get app_push_channel_mention_description {
+    return Intl.message(
+      'When people mention you in status or conversation',
+      name: 'app_push_channel_mention_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{acct} mentioned you`
+  String app_push_richNotification_mention_title(Object acct) {
+    return Intl.message(
+      '$acct mentioned you',
+      name: 'app_push_richNotification_mention_title',
+      desc: '',
+      args: [acct],
+    );
+  }
+
+  /// `Someone mentioned you`
+  String get app_push_richNotification_mention_summary {
+    return Intl.message(
+      'Someone mentioned you',
+      name: 'app_push_richNotification_mention_summary',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Poll`
+  String get app_push_channel_poll_name {
+    return Intl.message(
+      'Poll',
+      name: 'app_push_channel_poll_name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Poll-related notifications`
+  String get app_push_channel_poll_description {
+    return Intl.message(
+      'Poll-related notifications',
+      name: 'app_push_channel_poll_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Poll changed`
+  String get app_push_richNotification_poll_title {
+    return Intl.message(
+      'Poll changed',
+      name: 'app_push_richNotification_poll_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Poll changed`
+  String get app_push_richNotification_poll_summary {
+    return Intl.message(
+      'Poll changed',
+      name: 'app_push_richNotification_poll_summary',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Move`
+  String get app_push_channel_move_name {
+    return Intl.message(
+      'Move',
+      name: 'app_push_channel_move_name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `When someone moved`
+  String get app_push_channel_move_description {
+    return Intl.message(
+      'When someone moved',
+      name: 'app_push_channel_move_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{acct} moved`
+  String app_push_richNotification_move_title(Object acct) {
+    return Intl.message(
+      '$acct moved',
+      name: 'app_push_richNotification_move_title',
+      desc: '',
+      args: [acct],
+    );
+  }
+
+  /// `Someone moved`
+  String get app_push_richNotification_move_summary {
+    return Intl.message(
+      'Someone moved',
+      name: 'app_push_richNotification_move_summary',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Follow request`
+  String get app_push_channel_followRequest_name {
+    return Intl.message(
+      'Follow request',
+      name: 'app_push_channel_followRequest_name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `When people want to follow you`
+  String get app_push_channel_followRequest_description {
+    return Intl.message(
+      'When people want to follow you',
+      name: 'app_push_channel_followRequest_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{acct} want to follow you`
+  String app_push_richNotification_followRequest_title(Object acct) {
+    return Intl.message(
+      '$acct want to follow you',
+      name: 'app_push_richNotification_followRequest_title',
+      desc: '',
+      args: [acct],
+    );
+  }
+
+  /// `Someone want to follow you`
+  String get app_push_richNotification_followRequest_summary {
+    return Intl.message(
+      'Someone want to follow you',
+      name: 'app_push_richNotification_followRequest_summary',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Emoji reactions`
+  String get app_push_channel_pleromaEmojiReaction_name {
+    return Intl.message(
+      'Emoji reactions',
+      name: 'app_push_channel_pleromaEmojiReaction_name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pleroma-only emoji reactions for statuses`
+  String get app_push_channel_pleromaEmojiReaction_description {
+    return Intl.message(
+      'Pleroma-only emoji reactions for statuses',
+      name: 'app_push_channel_pleromaEmojiReaction_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{acct} reacted {emoji}`
+  String app_push_richNotification_pleromaEmojiReaction_title(
+      Object acct, Object emoji) {
+    return Intl.message(
+      '$acct reacted $emoji',
+      name: 'app_push_richNotification_pleromaEmojiReaction_title',
+      desc: '',
+      args: [acct, emoji],
+    );
+  }
+
+  /// `Someone reacted`
+  String get app_push_richNotification_pleromaEmojiReaction_summary {
+    return Intl.message(
+      'Someone reacted',
+      name: 'app_push_richNotification_pleromaEmojiReaction_summary',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Chat`
+  String get app_push_channel_pleromaChatMention_name {
+    return Intl.message(
+      'Chat',
+      name: 'app_push_channel_pleromaChatMention_name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pleroma-only chat messages`
+  String get app_push_channel_pleromaChatMention_description {
+    return Intl.message(
+      'Pleroma-only chat messages',
+      name: 'app_push_channel_pleromaChatMention_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Chat with {acct}`
+  String app_push_richNotification_pleromaChatMention_title(Object acct) {
+    return Intl.message(
+      'Chat with $acct',
+      name: 'app_push_richNotification_pleromaChatMention_title',
+      desc: '',
+      args: [acct],
+    );
+  }
+
+  /// `You have new message in chat`
+  String get app_push_richNotification_pleromaChatMention_summary {
+    return Intl.message(
+      'You have new message in chat',
+      name: 'app_push_richNotification_pleromaChatMention_summary',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reports`
+  String get app_push_channel_pleromaReport_name {
+    return Intl.message(
+      'Reports',
+      name: 'app_push_channel_pleromaReport_name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `When people report your statues`
+  String get app_push_channel_pleromaReport_description {
+    return Intl.message(
+      'When people report your statues',
+      name: 'app_push_channel_pleromaReport_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{acct} reported your status`
+  String app_push_richNotification_pleromaReport_title(Object acct) {
+    return Intl.message(
+      '$acct reported your status',
+      name: 'app_push_richNotification_pleromaReport_title',
+      desc: '',
+      args: [acct],
+    );
+  }
+
+  /// `Someone reported your status`
+  String get app_push_richNotification_pleromaReport_summary {
+    return Intl.message(
+      'Someone reported your status',
+      name: 'app_push_richNotification_pleromaReport_summary',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unknown`
+  String get app_push_channel_unknown_name {
+    return Intl.message(
+      'Unknown',
+      name: 'app_push_channel_unknown_name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unknown notification type, not handled by Fedi yet`
+  String get app_push_channel_unknown_description {
+    return Intl.message(
+      'Unknown notification type, not handled by Fedi yet',
+      name: 'app_push_channel_unknown_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Something happened`
+  String get app_push_richNotification_unknown_title {
+    return Intl.message(
+      'Something happened',
+      name: 'app_push_richNotification_unknown_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Something happened`
+  String get app_push_richNotification_unknown_summary {
+    return Intl.message(
+      'Something happened',
+      name: 'app_push_richNotification_unknown_summary',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Accept`
+  String get app_push_richNotification_action_acceptFollowRequest {
+    return Intl.message(
+      'Accept',
+      name: 'app_push_richNotification_action_acceptFollowRequest',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reject`
+  String get app_push_richNotification_action_rejectFollowRequest {
+    return Intl.message(
+      'Reject',
+      name: 'app_push_richNotification_action_rejectFollowRequest',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reply`
+  String get app_push_richNotification_action_reply {
+    return Intl.message(
+      'Reply',
+      name: 'app_push_richNotification_action_reply',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

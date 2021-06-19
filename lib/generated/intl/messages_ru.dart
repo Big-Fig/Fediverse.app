@@ -109,76 +109,94 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m40(count) =>
       "${Intl.plural(count, zero: 'Нет голосов', one: '1 голос', other: '${count} голосов')}";
 
-  static String m41(userAtHost) => "Настройки: ${userAtHost}";
+  static String m41(acct) => "${acct} лайкнул вашу запись";
 
-  static String m42(remoteInstanceDomain) =>
+  static String m42(acct) => "${acct} хочет подписаться на вас";
+
+  static String m43(acct) => "${acct} подписался на вас";
+
+  static String m44(acct) => "${acct} упомянул вас";
+
+  static String m45(acct) => "${acct} переместился";
+
+  static String m46(acct) => "Чат с ${acct}";
+
+  static String m47(acct, emoji) => "${acct} реакция ${emoji}";
+
+  static String m48(acct) => "${acct} пожаловался на вашу запись";
+
+  static String m49(acct) => "${acct} поделился вашим статусом";
+
+  static String m50(userAtHost) => "Настройки: ${userAtHost}";
+
+  static String m51(remoteInstanceDomain) =>
       "Открыть на ${remoteInstanceDomain}";
 
-  static String m43(errorMessage) => "Ошибка: ${errorMessage}";
-
-  static String m44(count) =>
-      "${Intl.plural(count, one: '1 новая запись. Нажмите для загрузки.', other: '${count} новых записей. Нажмите для загрузки.')}";
-
-  static String m45(errorMessage) => "Ошибка: ${errorMessage}";
-
-  static String m46(optionNumber) => "Ответ ${optionNumber}";
-
-  static String m47(accountAcct) => "Ответ: ${accountAcct}";
-
-  static String m48(accountAcct) => "Ответ: @${accountAcct}";
-
-  static String m49(timeline) => "Лента ${timeline}";
-
-  static String m50(timeline) =>
-      "Вы действительно хотите удалить ленту: ${timeline}?";
-
-  static String m51(errorMessage) => "Ошибка инициализации: ${errorMessage}";
-
-  static String m52(errorMessage) => "Ошибка: \n${errorMessage}";
+  static String m52(errorMessage) => "Ошибка: ${errorMessage}";
 
   static String m53(count) =>
+      "${Intl.plural(count, one: '1 новая запись. Нажмите для загрузки.', other: '${count} новых записей. Нажмите для загрузки.')}";
+
+  static String m54(errorMessage) => "Ошибка: ${errorMessage}";
+
+  static String m55(optionNumber) => "Ответ ${optionNumber}";
+
+  static String m56(accountAcct) => "Ответ: ${accountAcct}";
+
+  static String m57(accountAcct) => "Ответ: @${accountAcct}";
+
+  static String m58(timeline) => "Лента ${timeline}";
+
+  static String m59(timeline) =>
+      "Вы действительно хотите удалить ленту: ${timeline}?";
+
+  static String m60(errorMessage) => "Ошибка инициализации: ${errorMessage}";
+
+  static String m61(errorMessage) => "Ошибка: \n${errorMessage}";
+
+  static String m62(count) =>
       "${Intl.plural(count, one: '1 день', other: '${count} дни')}";
 
-  static String m54(count) =>
+  static String m63(count) =>
       "${Intl.plural(count, one: '1 час', other: '${count} часы')}";
 
-  static String m55(count) =>
+  static String m64(count) =>
       "${Intl.plural(count, one: '1 минута', other: '${count} минуты')}";
 
-  static String m56(selectionCountLimit) => "Максимум ${selectionCountLimit}";
+  static String m65(selectionCountLimit) => "Максимум ${selectionCountLimit}";
 
-  static String m57(selectionCount) => "${selectionCount} выбрано";
+  static String m66(selectionCount) => "${selectionCount} выбрано";
 
-  static String m58(max) => "Не больше ${max}";
+  static String m67(max) => "Не больше ${max}";
 
-  static String m59(min, max) => "Должны быть между ${min} и ${max}";
+  static String m68(min, max) => "Должны быть между ${min} и ${max}";
 
-  static String m60(min) => "Не меньше ${min}";
+  static String m69(min) => "Не меньше ${min}";
 
-  static String m61(maxCharactersCount) =>
+  static String m70(maxCharactersCount) =>
       "Максимальная длина: ${maxCharactersCount}";
 
-  static String m62(minCharactersCount, maxCharactersCount) =>
+  static String m71(minCharactersCount, maxCharactersCount) =>
       "Длина должна быть между ${minCharactersCount} и ${maxCharactersCount}";
 
-  static String m63(minCharactersCount) =>
+  static String m72(minCharactersCount) =>
       "Минимальная длина: ${minCharactersCount}";
 
-  static String m64(url) => "URL ${url} имеет неправильный формат";
+  static String m73(url) => "URL ${url} имеет неправильный формат";
 
-  static String m65(days) =>
+  static String m74(days) =>
       "${Intl.plural(days, one: '1 д', other: '${days} д')}";
 
-  static String m66(hours) =>
+  static String m75(hours) =>
       "${Intl.plural(hours, one: '1 ч', other: '${hours} ч')}";
 
-  static String m67(minutes) =>
+  static String m76(minutes) =>
       "${Intl.plural(minutes, one: '1 мин', other: '${minutes} мин')}";
 
-  static String m68(months) =>
+  static String m77(months) =>
       "${Intl.plural(months, one: '1 мес', other: '${months} мес')}";
 
-  static String m69(years) =>
+  static String m78(years) =>
       "${Intl.plural(years, one: '1 г', other: '${years} г')}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -1207,6 +1225,59 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Показать результаты"),
         "app_poll_metadata_totalVotes": m40,
         "app_poll_vote": MessageLookupByLibrary.simpleMessage("Выбрать"),
+        "app_push_channel_favourite_description":
+            MessageLookupByLibrary.simpleMessage(
+                "Когда люди лайкают ваши записи"),
+        "app_push_channel_favourite_name":
+            MessageLookupByLibrary.simpleMessage("Лайки"),
+        "app_push_channel_followRequest_description":
+            MessageLookupByLibrary.simpleMessage(
+                "Когда кто-то хочет подписаться на вас"),
+        "app_push_channel_followRequest_name":
+            MessageLookupByLibrary.simpleMessage("Запросы на подписку"),
+        "app_push_channel_follow_description":
+            MessageLookupByLibrary.simpleMessage(
+                "Когда люди подписываются на вас"),
+        "app_push_channel_follow_name":
+            MessageLookupByLibrary.simpleMessage("Подписки"),
+        "app_push_channel_mention_description":
+            MessageLookupByLibrary.simpleMessage(
+                "Когжа люди упоминают вас в записях или беседах"),
+        "app_push_channel_mention_name":
+            MessageLookupByLibrary.simpleMessage("Упоминания"),
+        "app_push_channel_move_description":
+            MessageLookupByLibrary.simpleMessage("Когда кто-то переместился"),
+        "app_push_channel_move_name":
+            MessageLookupByLibrary.simpleMessage("Пермещения"),
+        "app_push_channel_pleromaChatMention_description":
+            MessageLookupByLibrary.simpleMessage(
+                "Сообщения в чате(только Pleroma)"),
+        "app_push_channel_pleromaChatMention_name":
+            MessageLookupByLibrary.simpleMessage("Чат"),
+        "app_push_channel_pleromaEmojiReaction_description":
+            MessageLookupByLibrary.simpleMessage(
+                "Эмодди реакции для записей(только Pleroma)"),
+        "app_push_channel_pleromaEmojiReaction_name":
+            MessageLookupByLibrary.simpleMessage("Эмоджи реакции"),
+        "app_push_channel_pleromaReport_description":
+            MessageLookupByLibrary.simpleMessage(
+                "Когда кто-то жалуется на ваши записи"),
+        "app_push_channel_pleromaReport_name":
+            MessageLookupByLibrary.simpleMessage("Жалолбы"),
+        "app_push_channel_poll_description":
+            MessageLookupByLibrary.simpleMessage("Оповещения об обрасах"),
+        "app_push_channel_poll_name":
+            MessageLookupByLibrary.simpleMessage("Опросы"),
+        "app_push_channel_reblog_description":
+            MessageLookupByLibrary.simpleMessage(
+                "Когда люди делятся вашими статусами"),
+        "app_push_channel_reblog_name":
+            MessageLookupByLibrary.simpleMessage("Репосты"),
+        "app_push_channel_unknown_description":
+            MessageLookupByLibrary.simpleMessage(
+                "Неизвестный тип оповещений, которые Fedi еще не умеет обрабатывать"),
+        "app_push_channel_unknown_name":
+            MessageLookupByLibrary.simpleMessage("Неизвестно"),
         "app_push_disabled_notification_content":
             MessageLookupByLibrary.simpleMessage(
                 "Установите версию из магазина или включите поддержку оповещений при сборке приложения"),
@@ -1222,6 +1293,51 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Включите push оповещения в настройках для получения обновлений"),
         "app_push_permission_declined_dialog_title":
             MessageLookupByLibrary.simpleMessage("Необходимо разрешение"),
+        "app_push_richNotification_action_acceptFollowRequest":
+            MessageLookupByLibrary.simpleMessage("Принять"),
+        "app_push_richNotification_action_rejectFollowRequest":
+            MessageLookupByLibrary.simpleMessage("Отклонить"),
+        "app_push_richNotification_action_reply":
+            MessageLookupByLibrary.simpleMessage("Ответить"),
+        "app_push_richNotification_favourite_summary":
+            MessageLookupByLibrary.simpleMessage("Кто-то лайкнул вашу запись"),
+        "app_push_richNotification_favourite_title": m41,
+        "app_push_richNotification_followRequest_summary":
+            MessageLookupByLibrary.simpleMessage(
+                "Кто-то хочет подписатся на вас"),
+        "app_push_richNotification_followRequest_title": m42,
+        "app_push_richNotification_follow_summary":
+            MessageLookupByLibrary.simpleMessage("Кто-то подписался на вас"),
+        "app_push_richNotification_follow_title": m43,
+        "app_push_richNotification_mention_summary":
+            MessageLookupByLibrary.simpleMessage("Кто-то упомянул вас"),
+        "app_push_richNotification_mention_title": m44,
+        "app_push_richNotification_move_summary":
+            MessageLookupByLibrary.simpleMessage("Кто-то переместился"),
+        "app_push_richNotification_move_title": m45,
+        "app_push_richNotification_pleromaChatMention_summary":
+            MessageLookupByLibrary.simpleMessage(
+                "Вам кто-то написал через чат"),
+        "app_push_richNotification_pleromaChatMention_title": m46,
+        "app_push_richNotification_pleromaEmojiReaction_summary":
+            MessageLookupByLibrary.simpleMessage("Кто-то оценил вашу запись"),
+        "app_push_richNotification_pleromaEmojiReaction_title": m47,
+        "app_push_richNotification_pleromaReport_summary":
+            MessageLookupByLibrary.simpleMessage(
+                "Кто-то пожаловася на вашу запись"),
+        "app_push_richNotification_pleromaReport_title": m48,
+        "app_push_richNotification_poll_summary":
+            MessageLookupByLibrary.simpleMessage("Опрос изменился"),
+        "app_push_richNotification_poll_title":
+            MessageLookupByLibrary.simpleMessage("Опрос изменился"),
+        "app_push_richNotification_reblog_summary":
+            MessageLookupByLibrary.simpleMessage(
+                "Кто-то поделился вашим статусом"),
+        "app_push_richNotification_reblog_title": m49,
+        "app_push_richNotification_unknown_summary":
+            MessageLookupByLibrary.simpleMessage("Что-то случилось"),
+        "app_push_richNotification_unknown_title":
+            MessageLookupByLibrary.simpleMessage("Что-то случилось"),
         "app_push_settings_desc": MessageLookupByLibrary.simpleMessage(
             "Все сообщения буду пересланы через Fedi Push Relay сервер"),
         "app_push_settings_field_favourites_label":
@@ -1261,7 +1377,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Глобальные настройки"),
         "app_settings_global_title":
             MessageLookupByLibrary.simpleMessage("Настройки: глобальные"),
-        "app_settings_instance_title": m41,
+        "app_settings_instance_title": m50,
         "app_settings_warning_notSupportedOnThisInstance_desc":
             MessageLookupByLibrary.simpleMessage(
                 "Не поддерживается на этом сервере"),
@@ -1332,7 +1448,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Скрыть записи из беседы"),
         "app_status_action_openInBrowser":
             MessageLookupByLibrary.simpleMessage("Открыть в браузере"),
-        "app_status_action_openOnRemoteInstance": m42,
+        "app_status_action_openOnRemoteInstance": m51,
         "app_status_action_pin":
             MessageLookupByLibrary.simpleMessage("Прикрепить"),
         "app_status_action_popup_title":
@@ -1368,7 +1484,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Уже опубликовано"),
         "app_status_draft_state_canceled":
             MessageLookupByLibrary.simpleMessage("Отменен"),
-        "app_status_emoji_error_cantAdd_dialog_content": m43,
+        "app_status_emoji_error_cantAdd_dialog_content": m52,
         "app_status_emoji_error_cantAdd_dialog_title":
             MessageLookupByLibrary.simpleMessage(
                 "Не получилось добавить эмоджи"),
@@ -1376,7 +1492,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Запланировать удаление"),
         "app_status_favouritedBy_title":
             MessageLookupByLibrary.simpleMessage("Понравилось:"),
-        "app_status_list_newItems_action_tapToLoadNew": m44,
+        "app_status_list_newItems_action_tapToLoadNew": m53,
         "app_status_mute_dialog_action_clearDate":
             MessageLookupByLibrary.simpleMessage("Clear date"),
         "app_status_mute_dialog_action_mute":
@@ -1392,7 +1508,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Запись"),
         "app_status_post_dialog_async_content":
             MessageLookupByLibrary.simpleMessage("Публикация..."),
-        "app_status_post_dialog_error_content": m45,
+        "app_status_post_dialog_error_content": m54,
         "app_status_post_dialog_error_title_post":
             MessageLookupByLibrary.simpleMessage(
                 "Невозможно опубликовать запись"),
@@ -1430,7 +1546,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Истекает"),
         "app_status_post_poll_field_multiply_label":
             MessageLookupByLibrary.simpleMessage("Мульти-выбор"),
-        "app_status_post_poll_field_option_hint": m46,
+        "app_status_post_poll_field_option_hint": m55,
         "app_status_post_schedule_error_notInFuture_dialog_content":
             MessageLookupByLibrary.simpleMessage(
                 "Запланированная запись должна быть хотя бы через 5 минут в будущем"),
@@ -1470,7 +1586,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Ошибка при загрузке стартовой записи"),
         "app_status_reply_loading_progress":
             MessageLookupByLibrary.simpleMessage("Загрузка стартовой записи"),
-        "app_status_reply_replyingTo": m47,
+        "app_status_reply_replyingTo": m56,
         "app_status_scheduled_datetime_picker_title":
             MessageLookupByLibrary.simpleMessage("Опубликовать позже"),
         "app_status_scheduled_edit_title":
@@ -1491,7 +1607,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Нажмите для загрузки"),
         "app_status_spoiler_chip":
             MessageLookupByLibrary.simpleMessage("Спойлеры!"),
-        "app_status_thread_post_hint": m48,
+        "app_status_thread_post_hint": m57,
         "app_status_thread_start_loading":
             MessageLookupByLibrary.simpleMessage("Загрузка начальной записи"),
         "app_theme_chooser_label": MessageLookupByLibrary.simpleMessage("Тема"),
@@ -1508,7 +1624,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Создать новую ленту новостей"),
         "app_timeline_loading":
             MessageLookupByLibrary.simpleMessage("Загрузка лент новостей"),
-        "app_timeline_settings_content": m49,
+        "app_timeline_settings_content": m58,
         "app_timeline_settings_field_enableWebSockets_description":
             MessageLookupByLibrary.simpleMessage(
                 "Disable to reduce battery usage"),
@@ -1571,7 +1687,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Изменить"),
         "app_timeline_storage_delete_dialog_action_delete":
             MessageLookupByLibrary.simpleMessage("Удалить"),
-        "app_timeline_storage_delete_dialog_content": m50,
+        "app_timeline_storage_delete_dialog_content": m59,
         "app_timeline_storage_delete_dialog_title":
             MessageLookupByLibrary.simpleMessage("Удалить"),
         "app_timeline_storage_empty":
@@ -1639,7 +1755,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Для текущего окна и в фоне"),
         "app_web_sockets_settings_type_onlyForeground":
             MessageLookupByLibrary.simpleMessage("Только для текущего окна"),
-        "async_init_state_failed": m51,
+        "async_init_state_failed": m60,
         "async_init_state_notStarted": MessageLookupByLibrary.simpleMessage(
             "Асинхронная инициализация не началась"),
         "dialog_action_cancel": MessageLookupByLibrary.simpleMessage("Отмена"),
@@ -1648,23 +1764,23 @@ class MessageLookup extends MessageLookupByLibrary {
         "dialog_action_no": MessageLookupByLibrary.simpleMessage("Нет"),
         "dialog_action_ok": MessageLookupByLibrary.simpleMessage("Хорошо"),
         "dialog_action_yes": MessageLookupByLibrary.simpleMessage("Да"),
-        "dialog_error_content": m52,
+        "dialog_error_content": m61,
         "dialog_error_title":
             MessageLookupByLibrary.simpleMessage("Что-то пошло не так"),
         "dialog_progress_action_cancel":
             MessageLookupByLibrary.simpleMessage("Отмена"),
         "dialog_progress_content":
             MessageLookupByLibrary.simpleMessage("Загрузка..."),
-        "duration_day": m53,
-        "duration_hour": m54,
-        "duration_minute": m55,
+        "duration_day": m62,
+        "duration_hour": m63,
+        "duration_minute": m64,
         "file_picker_empty":
             MessageLookupByLibrary.simpleMessage("Ничего не найдено"),
         "file_picker_multi_selectionCountLimitReached_notification_content":
-            m56,
+            m65,
         "file_picker_multi_selectionCountLimitReached_notification_title":
             MessageLookupByLibrary.simpleMessage("Достигнут лимит"),
-        "file_picker_multi_selectionCount_selected": m57,
+        "file_picker_multi_selectionCount_selected": m66,
         "file_picker_multi_title":
             MessageLookupByLibrary.simpleMessage("Выберите файлы"),
         "file_picker_selectionFolder_title":
@@ -1673,23 +1789,23 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Выберите файл"),
         "form_field_bool_onlyTrue_error_desc":
             MessageLookupByLibrary.simpleMessage("Должно быть включено"),
-        "form_field_int_error_length_maxOnlyValue_desc": m58,
-        "form_field_int_error_length_minAndMax_desc": m59,
-        "form_field_int_error_length_minOnlyValue_desc": m60,
+        "form_field_int_error_length_maxOnlyValue_desc": m67,
+        "form_field_int_error_length_minAndMax_desc": m68,
+        "form_field_int_error_length_minOnlyValue_desc": m69,
         "form_field_text_email_error_invalid_desc":
             MessageLookupByLibrary.simpleMessage("Неправильный email"),
         "form_field_text_error_empty_desc":
             MessageLookupByLibrary.simpleMessage("Пустое"),
-        "form_field_text_error_length_maxOnly_desc": m61,
-        "form_field_text_error_length_minAndMax_desc": m62,
-        "form_field_text_error_length_minOnly_desc": m63,
+        "form_field_text_error_length_maxOnly_desc": m70,
+        "form_field_text_error_length_minAndMax_desc": m71,
+        "form_field_text_error_length_minOnly_desc": m72,
         "form_field_text_password_error_notMatch_desc":
             MessageLookupByLibrary.simpleMessage("Пароли должны совпадать"),
         "form_field_text_url_error_invalid_desc":
             MessageLookupByLibrary.simpleMessage("Неправильный URL"),
         "form_field_value_error_null_desc":
             MessageLookupByLibrary.simpleMessage("Необходимо"),
-        "link_error_dialog_content": m64,
+        "link_error_dialog_content": m73,
         "link_error_dialog_title":
             MessageLookupByLibrary.simpleMessage("Не возможно открыть URL"),
         "localization_locale_default":
@@ -1707,13 +1823,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "timeago_aboutAMonth": MessageLookupByLibrary.simpleMessage("~1 мес"),
         "timeago_aboutAYear": MessageLookupByLibrary.simpleMessage("~1 г"),
         "timeago_aboutAnHour": MessageLookupByLibrary.simpleMessage("~1 ч"),
-        "timeago_days": m65,
-        "timeago_hours": m66,
+        "timeago_days": m74,
+        "timeago_hours": m75,
         "timeago_lessThanOneMinute":
             MessageLookupByLibrary.simpleMessage("сейчас"),
-        "timeago_minutes": m67,
-        "timeago_months": m68,
+        "timeago_minutes": m76,
+        "timeago_months": m77,
         "timeago_wordSeparator": MessageLookupByLibrary.simpleMessage(" "),
-        "timeago_years": m69
+        "timeago_years": m78
       };
 }

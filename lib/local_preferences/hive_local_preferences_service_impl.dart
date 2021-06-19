@@ -18,6 +18,13 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
     this.path,
   });
 
+  HiveLocalPreferencesService.withLastVersionBoxName({
+    String? path,
+  }) : this(
+          boxName: 'local_preferences_v2',
+          path: path,
+        );
+
   // ignore: avoid-late-keyword
   late Box _box;
 

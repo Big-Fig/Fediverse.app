@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/list/auth_instance_list_bloc.dart';
-import 'package:fedi/app/push/handler/push_handler_bloc.dart';
-import 'package:fedi/app/push/handler/push_handler_model.dart';
-import 'package:fedi/app/push/handler/unhandled/local_preferences/push_handler_unhandled_local_preference_bloc.dart';
-import 'package:fedi/app/push/handler/unhandled/push_handler_unhandled_model.dart';
+import 'package:fedi/app/push/notification/simple/handler/simple_notifications_push_handler_bloc.dart';
+import 'package:fedi/app/push/notification/simple/handler/simple_notifications_push_handler_model.dart';
+import 'package:fedi/app/push/notification/simple/handler/unhandled/local_preferences/simple_notifications_push_handler_unhandled_local_preference_bloc.dart';
+import 'package:fedi/app/push/notification/simple/handler/unhandled/simple_notifications_push_handler_unhandled_model.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/api/push/pleroma_api_push_model.dart';
 import 'package:fedi/push/fcm/fcm_push_service.dart';
@@ -15,15 +15,15 @@ import 'package:logging/logging.dart';
 
 var _logger = Logger('push_handler_bloc_impl.dart');
 
-class PushHandlerBloc extends DisposableOwner implements IPushHandlerBloc {
-  final IPushHandlerUnhandledLocalPreferenceBloc unhandledLocalPreferencesBloc;
+class SimpleNotificationsPushHandlerBloc extends DisposableOwner implements ISimpleNotificationsPushHandlerBloc {
+  final ISimpleNotificationsPushHandlerUnhandledLocalPreferenceBloc unhandledLocalPreferencesBloc;
   final IFcmPushService fcmPushService;
   final IAuthInstanceListBloc instanceListBloc;
   final ICurrentAuthInstanceBloc currentInstanceBloc;
 
   final List<IPushRealTimeHandler> realTimeHandlers = [];
 
-  PushHandlerBloc({
+  SimpleNotificationsPushHandlerBloc({
     required this.unhandledLocalPreferencesBloc,
     required this.currentInstanceBloc,
     required this.instanceListBloc,
@@ -51,7 +51,7 @@ class PushHandlerBloc extends DisposableOwner implements IPushHandlerBloc {
   Future handlePushMessage(PushMessage pushMessage) async {
     var body = PleromaApiPushMessageBody.fromJson(pushMessage.data!);
 
-    var pushMessageHandler = PushHandlerMessage(
+    var pushMessageHandler = SimpleNotificationsPushHandlerMessage(
       pushMessage: pushMessage,
       body: body,
     );
@@ -97,27 +97,27 @@ class PushHandlerBloc extends DisposableOwner implements IPushHandlerBloc {
   }
 
   @override
-  void addRealTimeHandler(IPushRealTimeHandler pushHandler) {
-    realTimeHandlers.add(pushHandler);
+  void addRealTimeHandler(IPushRealTimeHandler simpleNotificationsPushHandler) {
+    realTimeHandlers.add(simpleNotificationsPushHandler);
   }
 
   @override
-  void removeRealTimeHandler(IPushRealTimeHandler pushHandler) {
-    realTimeHandlers.remove(pushHandler);
+  void removeRealTimeHandler(IPushRealTimeHandler simpleNotificationsPushHandler) {
+    realTimeHandlers.remove(simpleNotificationsPushHandler);
   }
 
   @override
-  List<PushHandlerMessage> loadUnhandledMessagesForInstance(
+  List<SimpleNotificationsPushHandlerMessage> loadUnhandledMessagesForInstance(
     AuthInstance instance,
   ) =>
       unhandledLocalPreferencesBloc.loadUnhandledMessagesForInstance(instance);
 
   @override
-  Future<bool> markAsHandled(List<PushHandlerMessage> messages) =>
+  Future<bool> markAsHandled(List<SimpleNotificationsPushHandlerMessage> messages) =>
       unhandledLocalPreferencesBloc.markAsHandled(messages);
 
   @override
-  Future markAsLaunchMessage(PushHandlerMessage message) async {
+  Future markAsLaunchMessage(SimpleNotificationsPushHandlerMessage message) async {
     var unhandledList = unhandledLocalPreferencesBloc.value;
 
     unhandledList.messages.remove(message);
@@ -131,7 +131,7 @@ class PushHandlerBloc extends DisposableOwner implements IPushHandlerBloc {
     );
 
     await unhandledLocalPreferencesBloc.setValue(
-      PushHandlerUnhandledList(
+      SimpleNotificationsPushHandlerUnhandledList(
         messages: unhandledList.messages,
       ),
     );

@@ -1,7 +1,8 @@
+import 'package:fedi/json/json_model.dart';
 import 'package:fedi/mastodon/api/account/mastodon_api_account_model.dart';
 import 'package:fedi/mastodon/api/status/mastodon_api_status_model.dart';
 
-abstract class IMastodonApiNotification {
+abstract class IMastodonApiNotification implements IJsonObject {
   IMastodonApiAccount? get account;
 
   DateTime get createdAt;
