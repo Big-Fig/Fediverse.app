@@ -1,4 +1,5 @@
 import 'package:fedi/json/json_model.dart';
+import 'package:fedi/pleroma/api/notification/pleroma_api_notification_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -292,7 +293,7 @@ class PleromaApiPushSubscriptionKeys {
 // which not exist in Hive 0.x
 //@HiveType()
 @HiveType(typeId: -32 + 56)
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class PleromaApiPushMessageBody implements IJsonObject {
   @HiveField(0)
   @JsonKey(name: 'notification_id')
@@ -304,12 +305,25 @@ class PleromaApiPushMessageBody implements IJsonObject {
   @JsonKey(name: 'notification_type')
   @HiveField(3)
   final String notificationType;
+  @JsonKey(name: 'notification')
+  @HiveField(4)
+  final PleromaApiNotification? pleromaApiNotification;
+
+  // action when user clicked on action from reach notification
+  @HiveField(5)
+  final String? notificationAction;
+  // entered string when reply action used
+  @HiveField(6)
+  final String? notificationActionInput;
 
   PleromaApiPushMessageBody({
     required this.notificationId,
     required this.server,
     required this.account,
     required this.notificationType,
+    required this.pleromaApiNotification,
+    required this.notificationAction,
+    required this.notificationActionInput,
   });
 
   static PleromaApiPushMessageBody fromJson(Map<String, dynamic> json) =>
@@ -325,6 +339,8 @@ class PleromaApiPushMessageBody implements IJsonObject {
         'server: $server, '
         'account: $account, '
         'notificationType: $notificationType'
+        'notificationAction: $notificationAction'
+        'notificationActionInput: $notificationActionInput'
         '}';
   }
 

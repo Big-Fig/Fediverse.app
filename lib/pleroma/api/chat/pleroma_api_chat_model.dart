@@ -9,6 +9,25 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_api_chat_model.g.dart';
 
+extension IPleromaApiChatMessageExtension on IPleromaApiChatMessage {
+  PleromaApiChatMessage toPleromaApiChatMessage() {
+    if (this is PleromaApiChatMessage) {
+      return this as PleromaApiChatMessage;
+    } else {
+      return PleromaApiChatMessage(
+        id: id,
+        createdAt: createdAt,
+        content: content,
+        emojis: emojis?.toPleromaApiEmojis(),
+        mediaAttachment: mediaAttachment?.toPleromaApiMediaAttachment(),
+        accountId: accountId,
+        chatId: chatId,
+        card: card?.toPleromaApiCard(),
+      );
+    }
+  }
+}
+
 abstract class IPleromaApiChat {
   String get id;
 

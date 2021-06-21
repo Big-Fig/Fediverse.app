@@ -50,12 +50,12 @@ import 'package:fedi/app/media/settings/local_preferences/global/global_media_se
 import 'package:fedi/app/media/settings/local_preferences/global/global_media_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/pagination/settings/local_preferences/global/global_pagination_settings_local_preference_bloc.dart';
 import 'package:fedi/app/pagination/settings/local_preferences/global/global_pagination_settings_local_preference_bloc_impl.dart';
+import 'package:fedi/app/push/notification/handler/notifications_push_handler_bloc.dart';
+import 'package:fedi/app/push/notification/handler/notifications_push_handler_bloc_impl.dart';
+import 'package:fedi/app/push/notification/handler/unhandled/local_preferences/notifications_push_handler_unhandled_local_preference_bloc.dart';
+import 'package:fedi/app/push/notification/handler/unhandled/local_preferences/notifications_push_handler_unhandled_local_preference_bloc_impl.dart';
 import 'package:fedi/app/push/notification/rich/rich_notifications_service.dart';
 import 'package:fedi/app/push/notification/rich/rich_notifications_service_background_message_impl.dart';
-import 'package:fedi/app/push/notification/simple/handler/simple_notifications_push_handler_bloc.dart';
-import 'package:fedi/app/push/notification/simple/handler/simple_notifications_push_handler_bloc_impl.dart';
-import 'package:fedi/app/push/notification/simple/handler/unhandled/local_preferences/simple_notifications_push_handler_unhandled_local_preference_bloc.dart';
-import 'package:fedi/app/push/notification/simple/handler/unhandled/local_preferences/simple_notifications_push_handler_unhandled_local_preference_bloc_impl.dart';
 import 'package:fedi/app/share/external/external_share_service.dart';
 import 'package:fedi/app/share/external/external_share_service_impl.dart';
 import 'package:fedi/app/share/income/handler/last_chosen_instance/last_chosen_instance_income_share_handler_local_preference_bloc.dart';
@@ -361,31 +361,31 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
       await globalProviderService
           .asyncInitAndRegister<IFcmPushService>(fcmPushService);
 
-      var simpleNotificationsPushHandlerUnhandledLocalPreferencesBloc =
-          SimpleNotificationsPushHandlerUnhandledLocalPreferenceBloc(
+      var notificationsPushHandlerUnhandledLocalPreferencesBloc =
+          NotificationsPushHandlerUnhandledLocalPreferenceBloc(
         hiveLocalPreferencesService,
       );
 
       await globalProviderService.asyncInitAndRegister<
-          ISimpleNotificationsPushHandlerUnhandledLocalPreferenceBloc>(
-        simpleNotificationsPushHandlerUnhandledLocalPreferencesBloc,
+          INotificationsPushHandlerUnhandledLocalPreferenceBloc>(
+        notificationsPushHandlerUnhandledLocalPreferencesBloc,
       );
       addDisposable(
-        disposable: simpleNotificationsPushHandlerUnhandledLocalPreferencesBloc,
+        disposable: notificationsPushHandlerUnhandledLocalPreferencesBloc,
       );
-      var simpleNotificationsPushHandlerBloc =
-          SimpleNotificationsPushHandlerBloc(
+      var notificationsPushHandlerBloc = NotificationsPushHandlerBloc(
+        richNotificationsService: richNotificationsServiceBackgroundMessage,
         currentInstanceBloc: currentInstanceBloc,
         instanceListBloc: instanceListBloc,
         unhandledLocalPreferencesBloc:
-            simpleNotificationsPushHandlerUnhandledLocalPreferencesBloc,
+            notificationsPushHandlerUnhandledLocalPreferencesBloc,
         fcmPushService: fcmPushService,
       );
       await globalProviderService
-          .asyncInitAndRegister<ISimpleNotificationsPushHandlerBloc>(
-        simpleNotificationsPushHandlerBloc,
+          .asyncInitAndRegister<INotificationsPushHandlerBloc>(
+        notificationsPushHandlerBloc,
       );
-      addDisposable(disposable: simpleNotificationsPushHandlerBloc);
+      addDisposable(disposable: notificationsPushHandlerBloc);
     }
 
     var globalUiSettingsLocalPreferencesBloc =

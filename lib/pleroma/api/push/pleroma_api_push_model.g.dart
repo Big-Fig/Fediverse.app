@@ -22,13 +22,16 @@ class PleromaApiPushMessageBodyAdapter
       server: fields[1] as String,
       account: fields[2] as String,
       notificationType: fields[3] as String,
+      pleromaApiNotification: fields[4] as PleromaApiNotification?,
+      notificationAction: fields[5] as String?,
+      notificationActionInput: fields[6] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, PleromaApiPushMessageBody obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.notificationId)
       ..writeByte(1)
@@ -36,7 +39,13 @@ class PleromaApiPushMessageBodyAdapter
       ..writeByte(2)
       ..write(obj.account)
       ..writeByte(3)
-      ..write(obj.notificationType);
+      ..write(obj.notificationType)
+      ..writeByte(4)
+      ..write(obj.pleromaApiNotification)
+      ..writeByte(5)
+      ..write(obj.notificationAction)
+      ..writeByte(6)
+      ..write(obj.notificationActionInput);
   }
 
   @override
@@ -193,6 +202,12 @@ PleromaApiPushMessageBody _$PleromaApiPushMessageBodyFromJson(
     server: json['server'] as String,
     account: json['account'] as String,
     notificationType: json['notification_type'] as String,
+    pleromaApiNotification: json['notification'] == null
+        ? null
+        : PleromaApiNotification.fromJson(
+            json['notification'] as Map<String, dynamic>),
+    notificationAction: json['notificationAction'] as String?,
+    notificationActionInput: json['notificationActionInput'] as String?,
   );
 }
 
@@ -203,4 +218,7 @@ Map<String, dynamic> _$PleromaApiPushMessageBodyToJson(
       'server': instance.server,
       'account': instance.account,
       'notification_type': instance.notificationType,
+      'notification': instance.pleromaApiNotification?.toJson(),
+      'notificationAction': instance.notificationAction,
+      'notificationActionInput': instance.notificationActionInput,
     };

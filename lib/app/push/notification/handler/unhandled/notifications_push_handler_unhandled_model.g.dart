@@ -1,31 +1,29 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'simple_notifications_push_handler_unhandled_model.dart';
+part of 'notifications_push_handler_unhandled_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class SimpleNotificationsPushHandlerUnhandledListAdapter
-    extends TypeAdapter<SimpleNotificationsPushHandlerUnhandledList> {
+class NotificationsPushHandlerUnhandledListAdapter
+    extends TypeAdapter<NotificationsPushHandlerUnhandledList> {
   @override
   final int typeId = 23;
 
   @override
-  SimpleNotificationsPushHandlerUnhandledList read(BinaryReader reader) {
+  NotificationsPushHandlerUnhandledList read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return SimpleNotificationsPushHandlerUnhandledList(
-      messages:
-          (fields[0] as List).cast<SimpleNotificationsPushHandlerMessage>(),
+    return NotificationsPushHandlerUnhandledList(
+      messages: (fields[0] as List).cast<NotificationsPushHandlerMessage>(),
     );
   }
 
   @override
-  void write(
-      BinaryWriter writer, SimpleNotificationsPushHandlerUnhandledList obj) {
+  void write(BinaryWriter writer, NotificationsPushHandlerUnhandledList obj) {
     writer
       ..writeByte(1)
       ..writeByte(0)
@@ -38,7 +36,7 @@ class SimpleNotificationsPushHandlerUnhandledListAdapter
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is SimpleNotificationsPushHandlerUnhandledListAdapter &&
+      other is NotificationsPushHandlerUnhandledListAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
@@ -47,19 +45,18 @@ class SimpleNotificationsPushHandlerUnhandledListAdapter
 // JsonSerializableGenerator
 // **************************************************************************
 
-SimpleNotificationsPushHandlerUnhandledList
-    _$SimpleNotificationsPushHandlerUnhandledListFromJson(
-        Map<String, dynamic> json) {
-  return SimpleNotificationsPushHandlerUnhandledList(
+NotificationsPushHandlerUnhandledList
+    _$NotificationsPushHandlerUnhandledListFromJson(Map<String, dynamic> json) {
+  return NotificationsPushHandlerUnhandledList(
     messages: (json['messages'] as List<dynamic>)
-        .map((e) => SimpleNotificationsPushHandlerMessage.fromJson(
-            e as Map<String, dynamic>))
+        .map((e) =>
+            NotificationsPushHandlerMessage.fromJson(e as Map<String, dynamic>))
         .toList(),
   );
 }
 
-Map<String, dynamic> _$SimpleNotificationsPushHandlerUnhandledListToJson(
-        SimpleNotificationsPushHandlerUnhandledList instance) =>
+Map<String, dynamic> _$NotificationsPushHandlerUnhandledListToJson(
+        NotificationsPushHandlerUnhandledList instance) =>
     <String, dynamic>{
       'messages': instance.messages.map((e) => e.toJson()).toList(),
     };

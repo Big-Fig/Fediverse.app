@@ -109,7 +109,7 @@ extension IStatusPleromaExtension on IStatus {
         emojiReactions: pleromaEmojiReactions,
       );
 
-  PleromaApiStatus toPleromaStatus() {
+  PleromaApiStatus toPleromaApiStatus() {
     return PleromaApiStatus(
       id: remoteId!,
       createdAt: createdAt,
@@ -129,7 +129,7 @@ extension IStatusPleromaExtension on IStatus {
       bookmarked: bookmarked,
       pinned: pinned,
       content: content,
-      reblog: reblog?.toPleromaStatus(),
+      reblog: reblog?.toPleromaApiStatus(),
       language: language,
       application: application,
       mediaAttachments: mediaAttachments,

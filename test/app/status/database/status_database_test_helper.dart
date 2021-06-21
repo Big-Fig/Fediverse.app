@@ -108,7 +108,7 @@ class StatusDatabaseTestHelper {
     );
 
     return DbStatusPopulatedWrapper(dbStatusPopulated: dbStatusPopulated)
-        .toPleromaStatus();
+        .toPleromaApiStatus();
   }
 
   static void expectDbStatusPopulated(

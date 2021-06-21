@@ -14,7 +14,7 @@ import 'package:fedi/app/media/settings/local_preferences/global/global_media_se
 import 'package:fedi/app/media/settings/local_preferences/instance/instance_media_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/pagination/settings/local_preferences/global/global_pagination_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/pagination/settings/local_preferences/instance/instance_pagination_settings_local_preference_bloc_impl.dart';
-import 'package:fedi/app/push/notification/simple/handler/unhandled/local_preferences/simple_notifications_push_handler_unhandled_local_preference_bloc_impl.dart';
+import 'package:fedi/app/push/notification/handler/unhandled/local_preferences/notifications_push_handler_unhandled_local_preference_bloc_impl.dart';
 import 'package:fedi/app/push/permission/ask/local_preferences/ask_push_permission_local_preference_bloc_impl.dart';
 import 'package:fedi/app/push/settings/local_preferences/instance/instance_push_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/search/recent/local_preferences/recent_search_local_preference_bloc_impl.dart';
@@ -90,7 +90,7 @@ class FediLocalPreferencesServiceMigrationBloc
     return [
       (lps) => AuthInstanceListLocalPreferenceBloc(lps),
       (lps) => CurrentAuthInstanceLocalPreferenceBloc(lps),
-      (lps) => SimpleNotificationsPushHandlerUnhandledLocalPreferenceBloc(lps),
+      (lps) => NotificationsPushHandlerUnhandledLocalPreferenceBloc(lps),
       (lps) => AuthOAuthLastLaunchedHostToLoginLocalPreferenceBloc(lps),
       (lps) => GlobalChatSettingsLocalPreferenceBloc(lps),
       (lps) => GlobalMediaSettingsLocalPreferenceBloc(lps),

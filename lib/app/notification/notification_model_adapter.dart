@@ -1,11 +1,11 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
-import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model_adapter.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/notification/notification_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
+import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart';
 import 'package:fedi/pleroma/api/notification/pleroma_api_notification_model.dart';
 
 extension IPleromaNotificationExtension on IPleromaApiNotification {
@@ -124,7 +124,7 @@ extension INotificationExtension on INotification {
     }
   }
 
-  PleromaApiNotification toPleromaNotification() {
+  PleromaApiNotification toPleromaApiNotification() {
     var localNotification = this;
 
     var pleroma = localNotification.pleroma;
@@ -152,7 +152,7 @@ extension INotificationExtension on INotification {
       chatMessage: localNotification.chatMessage?.toPleromaApiChatMessage(),
       target: localNotification.target?.toPleromaApiAccount(),
       report: localNotification.report?.toPleromaApiAccountReport(),
-      status: localNotification.status?.toPleromaStatus(),
+      status: localNotification.status?.toPleromaApiStatus(),
     );
   }
 }

@@ -80,7 +80,7 @@ import 'package:fedi/app/pagination/settings/local_preferences/instance/instance
 import 'package:fedi/app/pagination/settings/local_preferences/instance/instance_pagination_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc_impl.dart';
-import 'package:fedi/app/push/notification/simple/handler/simple_notifications_push_handler_bloc.dart';
+import 'package:fedi/app/push/notification/handler/notifications_push_handler_bloc.dart';
 import 'package:fedi/app/push/permission/ask/local_preferences/ask_push_permission_local_preference_bloc.dart';
 import 'package:fedi/app/push/permission/ask/local_preferences/ask_push_permission_local_preference_bloc_impl.dart';
 import 'package:fedi/app/push/permission/checker/push_permission_checker_bloc.dart';
@@ -251,8 +251,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     await globalProviderService.asyncInitAndRegister<
         IRecentSearchLocalPreferenceBloc>(recentSearchLocalPreferenceBloc);
 
-    var moorDatabaseService = AppDatabaseService(
-      dbName: userAtHost,
+    var moorDatabaseService = AppDatabaseService.forUserAtHost(
+      userAtHost: userAtHost,
       configService: configService,
     );
     addDisposable(disposable: moorDatabaseService);
@@ -632,7 +632,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     if (configService.pushFcmEnabled) {
       var pushRelayService = appContextBloc.get<IPushRelayService>();
       var fcmPushService = appContextBloc.get<IFcmPushService>();
-      var simpleNotificationsPushHandlerBloc = appContextBloc.get<ISimpleNotificationsPushHandlerBloc>();
+      var notificationsPushHandlerBloc = appContextBloc.get<INotificationsPushHandlerBloc>();
 
       var pleromaPushService = PleromaApiPushService(
         keys: PleromaApiPushSubscriptionKeys(
@@ -670,7 +670,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
 
       var notificationPushLoaderBloc = NotificationPushLoaderBloc(
         currentInstance: currentInstance,
-        simpleNotificationsPushHandlerBloc: simpleNotificationsPushHandlerBloc,
+        notificationsPushHandlerBloc: notificationsPushHandlerBloc,
         notificationRepository: notificationRepository,
         pleromaNotificationService: pleromaNotificationService,
         chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,

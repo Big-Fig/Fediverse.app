@@ -4,8 +4,10 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:collection/collection.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/list/local_preferences/auth_instance_list_local_preference_bloc_impl.dart';
+import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/config/config_service_impl.dart';
 import 'package:fedi/app/hive/hive_service_impl.dart';
+import 'package:fedi/app/html/html_text_helper.dart';
 import 'package:fedi/app/localization/settings/local_preferences/global/global_localization_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/logging/logging_service_impl.dart';
 import 'package:fedi/app/push/notification/rich/rich_notifications_service.dart';
@@ -23,10 +25,13 @@ import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_m
 import 'package:fedi/pleroma/api/notification/pleroma_api_notification_model.dart';
 import 'package:fedi/pleroma/api/notification/pleroma_api_notification_service_impl.dart';
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
+import 'package:fedi/pleroma/api/push/pleroma_api_push_model.dart';
 import 'package:fedi/pleroma/api/rest/auth/pleroma_api_auth_rest_service_impl.dart';
+import 'package:fedi/push/push_model.dart';
 import 'package:fedi/rest/rest_service_impl.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:logging/logging.dart';
+import 'package:rxdart/rxdart.dart';
 
 var _logger = Logger('rich_notifications_service_background_message_impl.dart');
 
@@ -39,12 +44,14 @@ const _favouriteChannelGroupKey = 'push.favourite.group';
 const _reblogChannelKey = 'push.reblog';
 const _reblogChannelGroupKey = 'push.reblog.group';
 const _mentionChannelKey = 'push.mention';
+const _mentionGroupKey = 'push.mention.group';
 const _pollChannelKey = 'push.poll';
 const _moveChannelKey = 'push.move';
 const _followRequestChannelKey = 'push.followRequest';
 const _pleromaEmojiReactionChannelKey = 'push.pleromaEmojiReaction';
 const _pleromaEmojiReactionGroupKey = 'push.pleromaEmojiReaction.group';
 const _pleromaChatMentionChannelKey = 'push.pleromaChatMention';
+const _pleromaChatMentionGroupKey = 'push.pleromaChatMention.group';
 const _pleromaReportChannelKey = 'push.pleromaReport';
 const _unknownChannelKey = 'push.unknown';
 
@@ -52,9 +59,17 @@ class RichNotificationsServiceBackgroundMessage extends AsyncInitLoadingBloc
     implements IRichNotificationsService {
   final S localizationContext;
 
+  // ignore: close_sinks
+  final BehaviorSubject<PushMessage> _messageSubject = BehaviorSubject();
+
+  @override
+  Stream<PushMessage> get messageStream => _messageSubject.stream;
+
   RichNotificationsServiceBackgroundMessage({
     required this.localizationContext,
-  });
+  }) {
+    addDisposable(subject: _messageSubject);
+  }
 
   @override
   Future internalAsyncInit() async {
@@ -77,11 +92,75 @@ class RichNotificationsServiceBackgroundMessage extends AsyncInitLoadingBloc
       ],
     );
 
-    awesomeNotifications.actionStream.listen((ReceivedAction receivedAction) {
+    addDisposable(
+      streamSubscription: awesomeNotifications.createdStream.listen(
+        (ReceivedNotification receivedNotification) {
+          _handlePushMessage(
+            receivedNotification: receivedNotification,
+            notificationAction: null,
+            notificationActionInput: null,
+            pushMessageType: PushMessageType.background,
+          );
+        },
+      ),
+    );
 
-      _logger.finest(() => 'receivedAction ${receivedAction.toMap()}');
-    });
+    addDisposable(
+      streamSubscription: awesomeNotifications.actionStream.listen(
+        (ReceivedAction receivedAction) {
+          var buttonKeyPressed = receivedAction.buttonKeyPressed;
 
+          if (buttonKeyPressed.isEmpty) {
+            // user simple click on notification (not on action)
+            _handlePushMessage(
+              receivedNotification: receivedAction,
+              notificationAction: null,
+              notificationActionInput: null,
+              pushMessageType: PushMessageType.launch,
+            );
+          } else {
+            _handlePushMessage(
+              receivedNotification: receivedAction,
+              notificationAction: buttonKeyPressed,
+              notificationActionInput: receivedAction.buttonKeyInput,
+              pushMessageType: PushMessageType.action,
+            );
+          }
+        },
+      ),
+    );
+  }
+
+  void _handlePushMessage({
+    required ReceivedNotification receivedNotification,
+    required String? notificationAction,
+    required String? notificationActionInput,
+    required PushMessageType pushMessageType,
+  }) {
+    var payload = receivedNotification.payload!;
+
+    var _notificationPayloadData = _NotificationPayloadData.fromPayload(
+      payload,
+    );
+
+    var notification = _notificationPayloadData.pleromaApiNotification;
+    var pleromaApiPushMessageBody = PleromaApiPushMessageBody(
+      notificationId: notification.id,
+      server: _notificationPayloadData.serverHost,
+      account: _notificationPayloadData.acct,
+      notificationType: notification.type,
+      pleromaApiNotification: notification.toPleromaApiNotification(),
+      notificationAction: notificationAction,
+      notificationActionInput: notificationActionInput,
+    );
+
+    _messageSubject.add(
+      PushMessage(
+        typeString: pushMessageType.toJsonValue(),
+        notification: null,
+        data: pleromaApiPushMessageBody.toJson(),
+      ),
+    );
   }
 
   NotificationChannel _createFollowChannel() => NotificationChannel(
@@ -155,9 +234,9 @@ class RichNotificationsServiceBackgroundMessage extends AsyncInitLoadingBloc
         enableVibration: true,
         enableLights: true,
         ledColor: lightFediUiTheme.colorTheme.primary,
-        groupKey: null,
-        groupSort: null,
-        groupAlertBehavior: null,
+        groupKey: _mentionGroupKey,
+        groupSort: GroupSort.Desc,
+        groupAlertBehavior: GroupAlertBehavior.All,
         defaultPrivacy: NotificationPrivacy.Public,
         defaultColor: lightFediUiTheme.colorTheme.darkGrey,
         locked: false,
@@ -239,7 +318,7 @@ class RichNotificationsServiceBackgroundMessage extends AsyncInitLoadingBloc
         ledColor: lightFediUiTheme.colorTheme.primary,
         groupKey: _pleromaEmojiReactionGroupKey,
         groupSort: GroupSort.Desc,
-        groupAlertBehavior: GroupAlertBehavior.Children,
+        groupAlertBehavior: GroupAlertBehavior.All,
         defaultPrivacy: NotificationPrivacy.Public,
         defaultColor: lightFediUiTheme.colorTheme.darkGrey,
         locked: false,
@@ -258,9 +337,9 @@ class RichNotificationsServiceBackgroundMessage extends AsyncInitLoadingBloc
         enableVibration: true,
         enableLights: true,
         ledColor: lightFediUiTheme.colorTheme.primary,
-        groupKey: null,
+        groupKey: _pleromaChatMentionGroupKey,
         groupSort: GroupSort.Desc,
-        groupAlertBehavior: GroupAlertBehavior.All,
+        groupAlertBehavior: GroupAlertBehavior.Summary,
         defaultPrivacy: NotificationPrivacy.Private,
         defaultColor: lightFediUiTheme.colorTheme.darkGrey,
         locked: false,
@@ -313,92 +392,125 @@ Future richNotificationsFirebaseMessagingBackgroundHandler(
 ) async {
   print('richNotificationsFirebaseMessagingBackgroundHandler');
 
-  var disposableOwner = DisposableOwner();
-
-  var configService = ConfigService();
-  await configService.performAsyncInit();
-  disposableOwner.addDisposable(disposable: configService);
-  var loggingService = LoggingService(enabled: configService.logEnabled);
-  await loggingService.performAsyncInit();
-  disposableOwner.addDisposable(disposable: loggingService);
-  _logger.finest(() => 'Handling a background message: $message');
-
   var notification = message.notification;
   var data = message.data;
   _logger.finest(
     () => 'Background message notification $notification data: $data',
   );
+  var isNotDisplaydViaFcmPLugin = notification == null;
+  if (isNotDisplaydViaFcmPLugin) {
+    await loadNotificationForPushMessageData(
+      data: data,
+      createPushNotification: true,
+    );
+  }
+}
+
+Future<IPleromaApiNotification?> loadNotificationForPushMessageData({
+  required Map<String, dynamic> data,
+  required bool createPushNotification,
+}) async {
+  _logger.finest(() => 'Handling message data: $data');
 
   if (data.containsKey(_pushDataAccountKey) &&
       data.containsKey(_pushDataServerKey)) {
     var account = data[_pushDataAccountKey];
     var server = data[_pushDataServerKey];
 
-    await _handleRichNotification(
+    _logger.finest(() => 'Background message for $account@$server');
+
+    return await loadLastNotificationForAcctOnHost(
       acct: account,
       host: server,
+      createPushNotification: createPushNotification,
     );
-  }
+  } else {
+    _logger.finest(
+      () => 'failed to load notification data $data. '
+          'It dont have account or server',
+    );
 
-  await disposableOwner.dispose();
+    return null;
+  }
 }
 
-Future _handleRichNotification({
+Future<IPleromaApiNotification?> loadLastNotificationForAcctOnHost({
   required String acct,
   required String host,
+  required bool createPushNotification,
 }) async {
   var disposableOwner = DisposableOwner();
 
-  _logger.finest(() => 'Background message for $acct@$host');
+  IPleromaApiNotification? notification;
 
-  var hiveService = HiveService();
-  await hiveService.performAsyncInit();
-  disposableOwner.addDisposable(disposable: hiveService);
+  try {
+    var configService = ConfigService();
+    await configService.performAsyncInit();
+    disposableOwner.addDisposable(disposable: configService);
+    var loggingService = LoggingService(enabled: configService.logEnabled);
+    await loggingService.performAsyncInit();
+    disposableOwner.addDisposable(disposable: loggingService);
 
-  var hiveLocalPreferencesService =
-      HiveLocalPreferencesService.withLastVersionBoxName();
-  await hiveLocalPreferencesService.performAsyncInit();
-  disposableOwner.addDisposable(disposable: hiveLocalPreferencesService);
+    var hiveService = HiveService();
+    await hiveService.performAsyncInit();
+    disposableOwner.addDisposable(disposable: hiveService);
 
-  var foundInstance = await _findInstanceByUserAtHost(
-    localPreferencesService: hiveLocalPreferencesService,
-    acct: acct,
-    host: host,
-  );
+    var hiveLocalPreferencesService =
+        HiveLocalPreferencesService.withLastVersionBoxName();
+    await hiveLocalPreferencesService.performAsyncInit();
+    disposableOwner.addDisposable(disposable: hiveLocalPreferencesService);
 
-  if (foundInstance == null) {
-    _logger.warning(() => 'instance for $acct@$host not found');
-    await disposableOwner.dispose();
-  } else {
-    await _proceedNotificationForInstance(
+    var foundInstance = await _findInstanceByUserAtHost(
       localPreferencesService: hiveLocalPreferencesService,
-      authInstance: foundInstance,
+      acct: acct,
+      host: host,
     );
 
+    if (foundInstance != null) {
+      notification = await _loadNotificationForInstance(
+        localPreferencesService: hiveLocalPreferencesService,
+        authInstance: foundInstance,
+        configService: configService,
+        createPushNotification: createPushNotification,
+      );
+    } else {
+      _logger.warning(() => 'instance for $acct@$host not found');
+    }
+  } catch (e, stackTrace) {
+    _logger.severe(() => 'loadLastNotificationForAcctOnHost', e, stackTrace);
+  } finally {
     await disposableOwner.dispose();
   }
+
+  return notification;
 }
 
-Future _proceedNotificationForInstance({
+Future<IPleromaApiNotification?> _loadNotificationForInstance({
   required ILocalPreferencesService localPreferencesService,
   required AuthInstance authInstance,
+  required IConfigService configService,
+  required bool createPushNotification,
 }) async {
   var pleromaApiNotification = await _loadLastNotificationForInstance(
     localPreferencesService: localPreferencesService,
     authInstance: authInstance,
   );
 
-  if (pleromaApiNotification == null) {
-    _logger.warning(
-      () => 'failed to load not notification for push. It is empty',
-    );
-  } else {
-    await _createPushForNotification(
-      localPreferencesService: localPreferencesService,
-      authInstance: authInstance,
-      pleromaApiNotification: pleromaApiNotification,
-    );
+  if (createPushNotification) {
+    if (pleromaApiNotification != null) {
+      await _createPushNotification(
+        localPreferencesService: localPreferencesService,
+        authInstance: authInstance,
+        pleromaApiNotification: pleromaApiNotification,
+      );
+    } else {
+      _logger.warning(
+        () => 'failed to load not notification for push. It is empty',
+      );
+    }
   }
+
+  return pleromaApiNotification;
 }
 
 Future<IPleromaApiNotification?> _loadLastNotificationForInstance({
@@ -503,14 +615,8 @@ List<PleromaApiNotificationType>
   ];
 }
 
-const _notificationContentPayloadUserAtHostKey = 'userAtHost';
-const _notificationContentPayloadNotificationJsonKey = 'notificationJson';
-const _acceptFollowRequestActionKey = 'acceptFollowRequestActionKey';
-const _rejectFollowRequestActionKey = 'rejectFollowRequestActionKey';
-const _replyActionKey = 'replyActionKey';
-
 // ignore: long-method
-Future<void> _createPushForNotification({
+Future<void> _createPushNotification({
   required ILocalPreferencesService localPreferencesService,
   required AuthInstance authInstance,
   required IPleromaApiNotification pleromaApiNotification,
@@ -540,34 +646,24 @@ Future<void> _createPushForNotification({
     locale,
   );
 
-  var status = pleromaApiNotification.status;
-  var chatMessage = pleromaApiNotification.chatMessage;
+  var mediaAttachment = calculatePleromaApiNotificationPushMediaAttachment(
+    localizationContext: localizationContext,
+    pleromaApiNotification: pleromaApiNotification,
+  );
+  var body = calculatePleromaApiNotificationPushBody(
+    localizationContext: localizationContext,
+    pleromaApiNotification: pleromaApiNotification,
+  );
 
-  IPleromaApiMediaAttachment? mediaAttachment;
-  String? body;
+  // var pleromaApiNotificationType = pleromaApiNotification.typeAsPleromaApi;
+  //
+  // var isMentionType =
+  //     pleromaApiNotificationType == PleromaApiNotificationType.mention;
+  // var isPleromaChatMentionType = pleromaApiNotificationType ==
+  //     PleromaApiNotificationType.pleromaChatMention;
+  // var isFollowRequestType =
+  //     pleromaApiNotificationType == PleromaApiNotificationType.followRequest;
 
-  var pleromaApiNotificationType = pleromaApiNotification.typeAsPleromaApi;
-
-  var isMentionType =
-      pleromaApiNotificationType == PleromaApiNotificationType.mention;
-  var isFollowRequestType =
-      pleromaApiNotificationType == PleromaApiNotificationType.followRequest;
-  var isPleromaChatMentionType = pleromaApiNotificationType ==
-      PleromaApiNotificationType.pleromaChatMention;
-  if (isMentionType && status != null) {
-    if (!status.sensitive) {
-      mediaAttachment = status.mediaAttachments?.firstOrNull;
-    }
-    var spoilerText = status.spoilerText;
-    if (spoilerText?.isNotEmpty == true) {
-      body = spoilerText;
-    } else {
-      body = status.content;
-    }
-  } else if (isPleromaChatMentionType && chatMessage != null) {
-    mediaAttachment = chatMessage.mediaAttachment;
-    body = chatMessage.content;
-  }
   NotificationLayout layout;
   if (body?.isNotEmpty == true) {
     layout = NotificationLayout.BigText;
@@ -577,12 +673,16 @@ Future<void> _createPushForNotification({
     layout = NotificationLayout.Default;
   }
 
-
+  var notificationPayloadData = _NotificationPayloadData(
+    acct: authInstance.acct,
+    serverHost: authInstance.urlHost,
+    pleromaApiNotification: pleromaApiNotification,
+  );
   await AwesomeNotifications().createNotification(
     content: NotificationContent(
       id: _extractNotificationId(pleromaApiNotification),
       channelKey: _calculateChannelKey(pleromaApiNotification),
-      title: calculateTitle(
+      title: calculatePleromaApiNotificationPushTitle(
         localizationContext: localizationContext,
         pleromaApiNotification: pleromaApiNotification,
       ),
@@ -591,7 +691,7 @@ Future<void> _createPushForNotification({
         localizationContext: localizationContext,
         pleromaApiNotification: pleromaApiNotification,
       ),
-      showWhen: true,
+      showWhen: false,
       icon: null,
       largeIcon: pleromaApiNotification.account?.avatar,
       bigPicture: mediaAttachment?.url,
@@ -599,44 +699,39 @@ Future<void> _createPushForNotification({
       autoCancel: true,
       color: lightFediUiTheme.colorTheme.darkGrey,
       backgroundColor: lightFediUiTheme.colorTheme.white,
-      payload: {
-        _notificationContentPayloadUserAtHostKey: authInstance.userAtHost,
-        _notificationContentPayloadNotificationJsonKey: json.encode(
-          pleromaApiNotification.toJson(),
-        ),
-      },
+      payload: notificationPayloadData.toPayload(),
       notificationLayout: layout,
       hideLargeIconOnExpand: false,
       ticker: null,
       createdDate: pleromaApiNotification.createdAt.toIso8601String(),
     ),
     actionButtons: [
-      if (isFollowRequestType)
-        NotificationActionButton(
-          key: _acceptFollowRequestActionKey,
-          label: localizationContext
-              .app_push_richNotification_action_acceptFollowRequest,
-          enabled: true,
-          autoCancel: true,
-          buttonType: ActionButtonType.Default,
-        ),
-      if (isFollowRequestType)
-        NotificationActionButton(
-          key: _rejectFollowRequestActionKey,
-          label: localizationContext
-              .app_push_richNotification_action_rejectFollowRequest,
-          enabled: true,
-          autoCancel: true,
-          buttonType: ActionButtonType.Default,
-        ),
-      if (isPleromaChatMentionType || isMentionType)
-        NotificationActionButton(
-          key: _replyActionKey,
-          label: localizationContext.app_push_richNotification_action_reply,
-          enabled: true,
-          autoCancel: true,
-          buttonType: ActionButtonType.InputField,
-        ),
+      // if (isFollowRequestType)
+      //   NotificationActionButton(
+      //     key: NotificationActionType.acceptFollowRequest.toJsonValue(),
+      //     label: localizationContext
+      //         .app_push_richNotification_action_acceptFollowRequest,
+      //     enabled: true,
+      //     autoCancel: true,
+      //     buttonType: ActionButtonType.Default,
+      //   ),
+      // if (isFollowRequestType)
+      //   NotificationActionButton(
+      //     key: NotificationActionType.rejectFollowRequest.toJsonValue(),
+      //     label: localizationContext
+      //         .app_push_richNotification_action_rejectFollowRequest,
+      //     enabled: true,
+      //     autoCancel: true,
+      //     buttonType: ActionButtonType.Default,
+      //   ),
+      // if (isPleromaChatMentionType || isMentionType)
+      //   NotificationActionButton(
+      //     key: NotificationActionType.reply.toJsonValue(),
+      //     label: localizationContext.app_push_richNotification_action_reply,
+      //     enabled: true,
+      //     autoCancel: true,
+      //     buttonType: ActionButtonType.InputField,
+      //   ),
     ],
   );
 
@@ -692,7 +787,65 @@ String? calculateSummary({
   return summary;
 }
 
-String? calculateTitle({
+String? calculatePleromaApiNotificationPushBody({
+  required S localizationContext,
+  required IPleromaApiNotification pleromaApiNotification,
+}) {
+  var status = pleromaApiNotification.status;
+  var chatMessage = pleromaApiNotification.chatMessage;
+
+  String? body;
+
+  var pleromaApiNotificationType = pleromaApiNotification.typeAsPleromaApi;
+
+  var isMentionType =
+      pleromaApiNotificationType == PleromaApiNotificationType.mention;
+
+  var isPleromaChatMentionType = pleromaApiNotificationType ==
+      PleromaApiNotificationType.pleromaChatMention;
+  if (isMentionType && status != null) {
+    var spoilerText = status.spoilerText;
+    if (spoilerText?.isNotEmpty == true) {
+      body = spoilerText;
+    } else {
+      body = status.content;
+    }
+  } else if (isPleromaChatMentionType && chatMessage != null) {
+    body = chatMessage.content;
+  }
+
+  body = body?.extractRawStringFromHtmlString();
+
+  return body;
+}
+
+IPleromaApiMediaAttachment? calculatePleromaApiNotificationPushMediaAttachment({
+  required S localizationContext,
+  required IPleromaApiNotification pleromaApiNotification,
+}) {
+  var status = pleromaApiNotification.status;
+  var chatMessage = pleromaApiNotification.chatMessage;
+
+  IPleromaApiMediaAttachment? mediaAttachment;
+
+  var pleromaApiNotificationType = pleromaApiNotification.typeAsPleromaApi;
+
+  var isMentionType =
+      pleromaApiNotificationType == PleromaApiNotificationType.mention;
+  var isPleromaChatMentionType = pleromaApiNotificationType ==
+      PleromaApiNotificationType.pleromaChatMention;
+  if (isMentionType && status != null) {
+    if (!status.sensitive) {
+      mediaAttachment = status.mediaAttachments?.firstOrNull;
+    }
+  } else if (isPleromaChatMentionType && chatMessage != null) {
+    mediaAttachment = chatMessage.mediaAttachment;
+  }
+
+  return mediaAttachment;
+}
+
+String calculatePleromaApiNotificationPushTitle({
   required S localizationContext,
   required IPleromaApiNotification pleromaApiNotification,
 }) {
@@ -830,4 +983,67 @@ Future<AuthInstance?> _findInstanceByUserAtHost({
   await disposableOwner.dispose();
 
   return foundInstance;
+}
+
+class _NotificationPayloadData {
+  static const _notificationContentPayloadAcctKey = 'acct';
+  static const _notificationContentPayloadServerHostKey = 'host';
+  static const _notificationContentPayloadNotificationJsonKey =
+      'notificationJson';
+
+  final String acct;
+  final String serverHost;
+  final IPleromaApiNotification pleromaApiNotification;
+
+  _NotificationPayloadData({
+    required this.acct,
+    required this.serverHost,
+    required this.pleromaApiNotification,
+  });
+
+  // Payload is Map<String, String> not Map<String, dynamic>
+  // so here custom serialization instead of json_annotations
+  Map<String, String> toPayload() => {
+        _notificationContentPayloadAcctKey: acct,
+        _notificationContentPayloadServerHostKey: serverHost,
+        _notificationContentPayloadNotificationJsonKey: jsonEncode(
+          pleromaApiNotification.toJson(),
+        ),
+      };
+
+  static _NotificationPayloadData fromPayload(Map<String, String> payload) {
+    var acct = payload[_notificationContentPayloadAcctKey]!;
+    var serverHost = payload[_notificationContentPayloadServerHostKey]!;
+    var notificationJsonString =
+        payload[_notificationContentPayloadNotificationJsonKey]!;
+    var notificationJson = jsonDecode(notificationJsonString);
+    var pleromaApiNotification =
+        PleromaApiNotification.fromJson(notificationJson);
+
+    return _NotificationPayloadData(
+      acct: acct,
+      serverHost: serverHost,
+      pleromaApiNotification: pleromaApiNotification,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _NotificationPayloadData &&
+          runtimeType == other.runtimeType &&
+          acct == other.acct &&
+          serverHost == other.serverHost &&
+          pleromaApiNotification == other.pleromaApiNotification;
+
+  @override
+  int get hashCode =>
+      acct.hashCode ^ serverHost.hashCode ^ pleromaApiNotification.hashCode;
+
+  @override
+  String toString() => '_NotificationPayloadData{'
+      'acct: $acct, '
+      'serverHost: $serverHost, '
+      'pleromaApiNotification: $pleromaApiNotification'
+      '}';
 }

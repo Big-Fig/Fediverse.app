@@ -1,6 +1,8 @@
 // ignore_for_file: no-magic-number
 import 'package:fedi/pleroma/api/push/pleroma_api_push_model.dart';
 
+import '../notification/pleroma_api_notification_test_helper.dart';
+
 // ignore_for_file: no-equal-arguments
 
 class PleromaApiPushTestHelper {
@@ -12,6 +14,12 @@ class PleromaApiPushTestHelper {
         server: seed + 'server',
         account: seed + 'account',
         notificationType: seed + 'notificationType',
+        pleromaApiNotification:
+            PleromaApiNotificationTestHelper.createTestPleromaApiNotification(
+          seed: seed,
+        ),
+        notificationAction: seed + 'notificationAction',
+        notificationActionInput: seed + 'notificationActionInput',
       );
 
   static PleromaApiPushSubscribeRequestDataAlerts

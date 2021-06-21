@@ -139,7 +139,7 @@ void main() {
 
     await statusRepository.upsertRemoteStatusWithAllArguments(
       DbStatusPopulatedWrapper(dbStatusPopulated: dbStatusPopulated)
-          .toPleromaStatus(),
+          .toPleromaApiStatus(),
       conversationRemoteId: null,
       listRemoteId: null,
       batchTransaction: null,
@@ -160,7 +160,7 @@ void main() {
     // item with same id updated
     await statusRepository.upsertRemoteStatusWithAllArguments(
       DbStatusPopulatedWrapper(dbStatusPopulated: dbStatusPopulated)
-          .toPleromaStatus(),
+          .toPleromaApiStatus(),
       conversationRemoteId: null,
       listRemoteId: null,
       batchTransaction: null,
@@ -183,7 +183,7 @@ void main() {
     await statusRepository.upsertRemoteStatusesWithAllArguments(
       [
         DbStatusPopulatedWrapper(dbStatusPopulated: dbStatusPopulated)
-            .toPleromaStatus(),
+            .toPleromaApiStatus(),
       ],
       conversationRemoteId: null,
       listRemoteId: null,
@@ -205,7 +205,7 @@ void main() {
     await statusRepository.upsertRemoteStatusesWithAllArguments(
       [
         DbStatusPopulatedWrapper(dbStatusPopulated: dbStatusPopulated)
-            .toPleromaStatus(),
+            .toPleromaApiStatus(),
       ],
       conversationRemoteId: null,
       listRemoteId: null,
@@ -317,7 +317,7 @@ void main() {
         replyReblogDbStatusAccount: null,
         replyDbStatus: null,
       ),
-    ).toPleromaStatus();
+    ).toPleromaApiStatus();
     await statusRepository.updateAppTypeByRemoteType(
       appItem: oldLocalStatus,
       remoteItem: newRemoteStatus,
@@ -1450,7 +1450,7 @@ void main() {
           dbStatus.copyWith(remoteId: 'status1'),
           accountRepository,
         ),
-      ).toPleromaStatus(),
+      ).toPleromaApiStatus(),
       listRemoteId: null,
       conversationRemoteId: null,
       isFromHomeTimeline: null,
@@ -1475,7 +1475,7 @@ void main() {
           ),
           accountRepository,
         ),
-      ).toPleromaStatus(),
+      ).toPleromaApiStatus(),
       listRemoteId: null,
       conversationRemoteId: conversationRemoteId,
       isFromHomeTimeline: null,
@@ -1501,7 +1501,7 @@ void main() {
           ),
           accountRepository,
         ),
-      ).toPleromaStatus(),
+      ).toPleromaApiStatus(),
       listRemoteId: null,
       conversationRemoteId: conversationRemoteId,
       isFromHomeTimeline: null,
@@ -1526,7 +1526,7 @@ void main() {
           ),
           accountRepository,
         ),
-      ).toPleromaStatus(),
+      ).toPleromaApiStatus(),
       listRemoteId: null,
       conversationRemoteId: conversationRemoteId,
       batchTransaction: null,
@@ -1579,7 +1579,7 @@ void main() {
     await statusRepository.upsertRemoteStatusesWithAllArguments(
       [
         DbStatusPopulatedWrapper(dbStatusPopulated: dbStatusPopulated)
-            .toPleromaStatus(),
+            .toPleromaApiStatus(),
       ],
       conversationRemoteId: conversationRemoteId,
       listRemoteId: null,
@@ -1596,7 +1596,7 @@ void main() {
     await statusRepository.upsertRemoteStatusesWithAllArguments(
       [
         DbStatusPopulatedWrapper(dbStatusPopulated: dbStatusPopulated)
-            .toPleromaStatus(),
+            .toPleromaApiStatus(),
       ],
       conversationRemoteId: conversationRemoteId,
       listRemoteId: null,
@@ -1613,7 +1613,7 @@ void main() {
 
     var future1 = statusRepository.upsertRemoteStatusWithAllArguments(
       DbStatusPopulatedWrapper(dbStatusPopulated: dbStatusPopulated)
-          .toPleromaStatus(),
+          .toPleromaApiStatus(),
       conversationRemoteId: conversationRemoteId,
       listRemoteId: null,
       isFromHomeTimeline: null,
@@ -1621,7 +1621,7 @@ void main() {
     );
     var future2 = statusRepository.upsertRemoteStatusWithAllArguments(
       DbStatusPopulatedWrapper(dbStatusPopulated: dbStatusPopulated)
-          .toPleromaStatus(),
+          .toPleromaApiStatus(),
       conversationRemoteId: conversationRemoteId,
       listRemoteId: null,
       isFromHomeTimeline: null,
@@ -1631,7 +1631,7 @@ void main() {
     var future3 = statusRepository.upsertRemoteStatusesWithAllArguments(
       [
         DbStatusPopulatedWrapper(dbStatusPopulated: dbStatusPopulated)
-            .toPleromaStatus(),
+            .toPleromaApiStatus(),
       ],
       conversationRemoteId: conversationRemoteId,
       listRemoteId: null,
@@ -1641,7 +1641,7 @@ void main() {
     var future4 = statusRepository.upsertRemoteStatusesWithAllArguments(
       [
         DbStatusPopulatedWrapper(dbStatusPopulated: dbStatusPopulated)
-            .toPleromaStatus(),
+            .toPleromaApiStatus(),
       ],
       conversationRemoteId: conversationRemoteId,
       listRemoteId: null,
@@ -1703,7 +1703,7 @@ void main() {
     await statusRepository.upsertRemoteStatusWithAllArguments(
       DbStatusPopulatedWrapper(
         dbStatusPopulated: status1Populated,
-      ).toPleromaStatus(),
+      ).toPleromaApiStatus(),
       listRemoteId: listRemoteId,
       conversationRemoteId: null,
       batchTransaction: null,
@@ -1747,7 +1747,7 @@ void main() {
 
     await statusRepository.upsertRemoteStatusWithAllArguments(
       DbStatusPopulatedWrapper(dbStatusPopulated: status2Populated)
-          .toPleromaStatus(),
+          .toPleromaApiStatus(),
       listRemoteId: listRemoteId,
       conversationRemoteId: null,
       batchTransaction: null,
@@ -1772,7 +1772,7 @@ void main() {
 
     await statusRepository.upsertRemoteStatusWithAllArguments(
       DbStatusPopulatedWrapper(dbStatusPopulated: status0Populated)
-          .toPleromaStatus(),
+          .toPleromaApiStatus(),
       listRemoteId: listRemoteId,
       conversationRemoteId: null,
       batchTransaction: null,
@@ -2620,8 +2620,8 @@ void main() {
     var status1 = await StatusTestHelper.createTestStatus(seed: 'seed1');
     var status1Copy = await StatusTestHelper.createTestStatus(seed: 'seed1');
 
-    var remoteStatus1 = status1.toPleromaStatus();
-    var remoteStatus1Copy = status1Copy.toPleromaStatus();
+    var remoteStatus1 = status1.toPleromaApiStatus();
+    var remoteStatus1Copy = status1Copy.toPleromaApiStatus();
 
     await statusRepository.batch((batch) {
       statusRepository.insertInRemoteTypeBatch(
@@ -2644,8 +2644,8 @@ void main() {
     var status1 = await StatusTestHelper.createTestStatus(seed: 'seed1');
     var status1Copy = await StatusTestHelper.createTestStatus(seed: 'seed1');
 
-    var remoteStatus1 = status1.toPleromaStatus();
-    var remoteStatus1Copy = status1Copy.toPleromaStatus();
+    var remoteStatus1 = status1.toPleromaApiStatus();
+    var remoteStatus1Copy = status1Copy.toPleromaApiStatus();
 
     await statusRepository.insertAllInRemoteType(
       [remoteStatus1, remoteStatus1Copy],
