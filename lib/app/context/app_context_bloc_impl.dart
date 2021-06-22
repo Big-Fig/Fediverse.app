@@ -380,6 +380,8 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         unhandledLocalPreferencesBloc:
             notificationsPushHandlerUnhandledLocalPreferencesBloc,
         fcmPushService: fcmPushService,
+        configService: configService,
+        connectionService: connectionService,
       );
       await globalProviderService
           .asyncInitAndRegister<INotificationsPushHandlerBloc>(

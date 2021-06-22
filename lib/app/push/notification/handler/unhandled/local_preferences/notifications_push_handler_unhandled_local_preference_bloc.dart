@@ -16,7 +16,9 @@ abstract class INotificationsPushHandlerUnhandledLocalPreferenceBloc
         listen: listen,
       );
 
-  Future addUnhandledMessage(NotificationsPushHandlerMessage notificationsPushHandlerMessage);
+  Future addUnhandledMessage(
+    NotificationsPushHandlerMessage notificationsPushHandlerMessage,
+  );
 
   Future<bool> markAsHandled(List<NotificationsPushHandlerMessage> messages);
 

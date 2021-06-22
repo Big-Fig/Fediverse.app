@@ -10,6 +10,7 @@ import 'package:fedi/app/hive/hive_service_impl.dart';
 import 'package:fedi/app/html/html_text_helper.dart';
 import 'package:fedi/app/localization/settings/local_preferences/global/global_localization_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/logging/logging_service_impl.dart';
+import 'package:fedi/app/push/notification/notification_model.dart';
 import 'package:fedi/app/push/notification/rich/rich_notifications_service.dart';
 import 'package:fedi/app/push/settings/local_preferences/instance/instance_push_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/push/settings/push_settings_model.dart';
@@ -55,6 +56,7 @@ const _pleromaChatMentionGroupKey = 'push.pleromaChatMention.group';
 const _pleromaReportChannelKey = 'push.pleromaReport';
 const _unknownChannelKey = 'push.unknown';
 
+// todo: refactor all push notifications code
 class RichNotificationsServiceBackgroundMessage extends AsyncInitLoadingBloc
     implements IRichNotificationsService {
   final S localizationContext;
@@ -612,6 +614,7 @@ List<PleromaApiNotificationType>
     if (pushSettings.pleromaEmojiReaction == true && isPleroma)
       PleromaApiNotificationType.pleromaEmojiReaction,
     if (isPleroma) PleromaApiNotificationType.pleromaReport,
+    PleromaApiNotificationType.followRequest,
   ];
 }
 
@@ -655,14 +658,14 @@ Future<void> _createPushNotification({
     pleromaApiNotification: pleromaApiNotification,
   );
 
-  // var pleromaApiNotificationType = pleromaApiNotification.typeAsPleromaApi;
-  //
-  // var isMentionType =
-  //     pleromaApiNotificationType == PleromaApiNotificationType.mention;
-  // var isPleromaChatMentionType = pleromaApiNotificationType ==
-  //     PleromaApiNotificationType.pleromaChatMention;
-  // var isFollowRequestType =
-  //     pleromaApiNotificationType == PleromaApiNotificationType.followRequest;
+  var pleromaApiNotificationType = pleromaApiNotification.typeAsPleromaApi;
+
+  var isMentionType =
+      pleromaApiNotificationType == PleromaApiNotificationType.mention;
+  var isPleromaChatMentionType = pleromaApiNotificationType ==
+      PleromaApiNotificationType.pleromaChatMention;
+  var isFollowRequestType =
+      pleromaApiNotificationType == PleromaApiNotificationType.followRequest;
 
   NotificationLayout layout;
   if (body?.isNotEmpty == true) {
@@ -706,32 +709,32 @@ Future<void> _createPushNotification({
       createdDate: pleromaApiNotification.createdAt.toIso8601String(),
     ),
     actionButtons: [
-      // if (isFollowRequestType)
-      //   NotificationActionButton(
-      //     key: NotificationActionType.acceptFollowRequest.toJsonValue(),
-      //     label: localizationContext
-      //         .app_push_richNotification_action_acceptFollowRequest,
-      //     enabled: true,
-      //     autoCancel: true,
-      //     buttonType: ActionButtonType.Default,
-      //   ),
-      // if (isFollowRequestType)
-      //   NotificationActionButton(
-      //     key: NotificationActionType.rejectFollowRequest.toJsonValue(),
-      //     label: localizationContext
-      //         .app_push_richNotification_action_rejectFollowRequest,
-      //     enabled: true,
-      //     autoCancel: true,
-      //     buttonType: ActionButtonType.Default,
-      //   ),
-      // if (isPleromaChatMentionType || isMentionType)
-      //   NotificationActionButton(
-      //     key: NotificationActionType.reply.toJsonValue(),
-      //     label: localizationContext.app_push_richNotification_action_reply,
-      //     enabled: true,
-      //     autoCancel: true,
-      //     buttonType: ActionButtonType.InputField,
-      //   ),
+      if (isFollowRequestType)
+        NotificationActionButton(
+          key: NotificationActionType.acceptFollowRequest.toJsonValue(),
+          label: localizationContext
+              .app_push_richNotification_action_acceptFollowRequest,
+          enabled: true,
+          autoCancel: true,
+          buttonType: ActionButtonType.Default,
+        ),
+      if (isFollowRequestType)
+        NotificationActionButton(
+          key: NotificationActionType.rejectFollowRequest.toJsonValue(),
+          label: localizationContext
+              .app_push_richNotification_action_rejectFollowRequest,
+          enabled: true,
+          autoCancel: true,
+          buttonType: ActionButtonType.Default,
+        ),
+      if (isPleromaChatMentionType || isMentionType)
+        NotificationActionButton(
+          key: NotificationActionType.reply.toJsonValue(),
+          label: localizationContext.app_push_richNotification_action_reply,
+          enabled: true,
+          autoCancel: true,
+          buttonType: ActionButtonType.InputField,
+        ),
     ],
   );
 

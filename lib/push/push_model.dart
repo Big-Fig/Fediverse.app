@@ -27,6 +27,7 @@ class PushMessage implements IJsonObject {
   final String typeString;
 
   bool get isLaunch => type == PushMessageType.launch;
+  bool get isAction => type == PushMessageType.action;
 
   PushMessage({
     required this.typeString,

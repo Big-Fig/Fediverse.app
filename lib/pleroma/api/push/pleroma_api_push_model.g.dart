@@ -22,7 +22,6 @@ class PleromaApiPushMessageBodyAdapter
       server: fields[1] as String,
       account: fields[2] as String,
       notificationType: fields[3] as String,
-      pleromaApiNotification: fields[4] as PleromaApiNotification?,
       notificationAction: fields[5] as String?,
       notificationActionInput: fields[6] as String?,
     );
@@ -31,7 +30,7 @@ class PleromaApiPushMessageBodyAdapter
   @override
   void write(BinaryWriter writer, PleromaApiPushMessageBody obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.notificationId)
       ..writeByte(1)
@@ -40,8 +39,6 @@ class PleromaApiPushMessageBodyAdapter
       ..write(obj.account)
       ..writeByte(3)
       ..write(obj.notificationType)
-      ..writeByte(4)
-      ..write(obj.pleromaApiNotification)
       ..writeByte(5)
       ..write(obj.notificationAction)
       ..writeByte(6)

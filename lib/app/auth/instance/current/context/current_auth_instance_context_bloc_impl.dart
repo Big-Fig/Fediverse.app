@@ -632,7 +632,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     if (configService.pushFcmEnabled) {
       var pushRelayService = appContextBloc.get<IPushRelayService>();
       var fcmPushService = appContextBloc.get<IFcmPushService>();
-      var notificationsPushHandlerBloc = appContextBloc.get<INotificationsPushHandlerBloc>();
+      var notificationsPushHandlerBloc =
+          appContextBloc.get<INotificationsPushHandlerBloc>();
 
       var pleromaPushService = PleromaApiPushService(
         keys: PleromaApiPushSubscriptionKeys(
@@ -675,6 +676,12 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         pleromaNotificationService: pleromaNotificationService,
         chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
         myAccountBloc: myAccountBloc,
+        pleromaApiMyAccountService: pleromaMyAccountService,
+        accountRepository: accountRepository,
+        statusRepository: statusRepository,
+        chatMessageRepository: chatMessageRepository,
+        pleromaApiAuthStatusService: pleromaStatusService,
+        pleromaApiChatService: pleromaChatService,
       );
 
       addDisposable(disposable: notificationPushLoaderBloc);
