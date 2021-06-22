@@ -7,6 +7,27 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'pleroma_api_notification_model.g.dart';
 
+extension IPleromaApiNotificationExtension on IPleromaApiNotification {
+  PleromaApiNotification toPleromaApiNotification() {
+    if (this is PleromaApiNotification) {
+      return this as PleromaApiNotification;
+    } else {
+      return PleromaApiNotification(
+        account: account?.toPleromaApiAccount(),
+        createdAt: createdAt,
+        id: id,
+        type: type,
+        status: status?.toPleromaApiStatus(),
+        chatMessage: chatMessage?.toPleromaApiChatMessage(),
+        emoji: emoji,
+        pleroma: pleroma,
+        report: report?.toPleromaApiAccountReport(),
+        target: target?.toPleromaApiAccount(),
+      );
+    }
+  }
+}
+
 abstract class IPleromaApiNotification extends IMastodonApiNotification {
   @override
   IPleromaApiAccount? get account;

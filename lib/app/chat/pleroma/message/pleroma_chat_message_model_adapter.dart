@@ -44,24 +44,6 @@ extension IPleromaApiChatMessageExtension on IPleromaApiChatMessage {
       oldPendingRemoteId: null,
     );
   }
-
-  PleromaApiChatMessage toPleromaApiChatMessage() {
-    if (this is PleromaApiChatMessage) {
-      return this as PleromaApiChatMessage;
-    } else {
-      return PleromaApiChatMessage(
-        id: id,
-        createdAt: createdAt,
-        content: content,
-        emojis: emojis?.toPleromaApiEmojis(),
-        mediaAttachment:
-            mediaAttachment?.toPleromaApiMediaAttachment(),
-        accountId: accountId,
-        chatId: chatId,
-        card: card?.toPleromaApiCard(),
-      );
-    }
-  }
 }
 
 extension IPleromaChatMessagePleromaExtension on IPleromaChatMessage {

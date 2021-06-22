@@ -108,75 +108,93 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m40(count) =>
       "${Intl.plural(count, zero: 'No votes', one: '1 vote', other: '${count} votes')}";
 
-  static String m41(userAtHost) => "Настройки: ${userAtHost}";
+  static String m41(acct) => "${acct} favourited your status";
 
-  static String m42(remoteInstanceDomain) => "Open on ${remoteInstanceDomain}";
+  static String m42(acct) => "${acct} want to follow you";
 
-  static String m43(errorMessage) => "Error: ${errorMessage}";
+  static String m43(acct) => "${acct} followed you";
 
-  static String m44(count) =>
-      "${Intl.plural(count, one: '1 new post. Tap to load.', other: '${count} new posts. Tap to load.')}";
+  static String m44(acct) => "${acct} mentioned you";
 
-  static String m45(errorMessage) => "Error: ${errorMessage}";
+  static String m45(acct) => "${acct} moved";
 
-  static String m46(optionNumber) => "Option ${optionNumber}";
+  static String m46(acct) => "Chat with ${acct}";
 
-  static String m47(accountAcct) => "Replying to ${accountAcct}";
+  static String m47(acct, emoji) => "${acct} reacted ${emoji}";
 
-  static String m48(accountAcct) => "Reply to @${accountAcct}";
+  static String m48(acct) => "${acct} reported your status";
 
-  static String m49(timeline) => "${timeline} Timeline";
+  static String m49(acct) => "${acct} shared your status";
 
-  static String m50(timeline) =>
-      "Are you sure you want to delete ${timeline} Timeline?";
+  static String m50(userAtHost) => "Настройки: ${userAtHost}";
 
-  static String m51(errorMessage) => "Failed to init ${errorMessage}";
+  static String m51(remoteInstanceDomain) => "Open on ${remoteInstanceDomain}";
 
-  static String m52(errorMessage) => "An error has occurred. \n${errorMessage}";
+  static String m52(errorMessage) => "Error: ${errorMessage}";
 
   static String m53(count) =>
+      "${Intl.plural(count, one: '1 new post. Tap to load.', other: '${count} new posts. Tap to load.')}";
+
+  static String m54(errorMessage) => "Error: ${errorMessage}";
+
+  static String m55(optionNumber) => "Option ${optionNumber}";
+
+  static String m56(accountAcct) => "Replying to ${accountAcct}";
+
+  static String m57(accountAcct) => "Reply to @${accountAcct}";
+
+  static String m58(timeline) => "${timeline} Timeline";
+
+  static String m59(timeline) =>
+      "Are you sure you want to delete ${timeline} Timeline?";
+
+  static String m60(errorMessage) => "Failed to init ${errorMessage}";
+
+  static String m61(errorMessage) => "An error has occurred. \n${errorMessage}";
+
+  static String m62(count) =>
       "${Intl.plural(count, one: '1 day', other: '${count} days')}";
 
-  static String m54(count) =>
+  static String m63(count) =>
       "${Intl.plural(count, one: '1 hour', other: '${count} hours')}";
 
-  static String m55(count) =>
+  static String m64(count) =>
       "${Intl.plural(count, one: '1 minute', other: '${count} minutes')}";
 
-  static String m56(selectionCountLimit) => "Maximum ${selectionCountLimit}";
+  static String m65(selectionCountLimit) => "Maximum ${selectionCountLimit}";
 
-  static String m57(selectionCount) => "${selectionCount} media selected";
+  static String m66(selectionCount) => "${selectionCount} media selected";
 
-  static String m58(max) => "Should be not more than ${max}";
+  static String m67(max) => "Should be not more than ${max}";
 
-  static String m59(min, max) => "Should be between ${min} and ${max}";
+  static String m68(min, max) => "Should be between ${min} and ${max}";
 
-  static String m60(min) => "Should be at least ${min}";
+  static String m69(min) => "Should be at least ${min}";
 
-  static String m61(maxCharactersCount) =>
+  static String m70(maxCharactersCount) =>
       "Must be less than ${maxCharactersCount} characters";
 
-  static String m62(minCharactersCount, maxCharactersCount) =>
+  static String m71(minCharactersCount, maxCharactersCount) =>
       "Must be between ${minCharactersCount} and ${maxCharactersCount} characters";
 
-  static String m63(minCharactersCount) =>
+  static String m72(minCharactersCount) =>
       "Must be at least ${minCharactersCount} characters";
 
-  static String m64(url) => "URL ${url} have invalid format";
+  static String m73(url) => "URL ${url} have invalid format";
 
-  static String m65(days) =>
+  static String m74(days) =>
       "${Intl.plural(days, one: '1 d', other: '${days} d')}";
 
-  static String m66(hours) =>
+  static String m75(hours) =>
       "${Intl.plural(hours, one: '1 h', other: '${hours} h')}";
 
-  static String m67(minutes) =>
+  static String m76(minutes) =>
       "${Intl.plural(minutes, one: '1 min', other: '${minutes} min')}";
 
-  static String m68(months) =>
+  static String m77(months) =>
       "${Intl.plural(months, one: '1 mo', other: '${months} mo')}";
 
-  static String m69(years) =>
+  static String m78(years) =>
       "${Intl.plural(years, one: '1 y', other: '${years} y')}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -1195,6 +1213,57 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("View results"),
         "app_poll_metadata_totalVotes": m40,
         "app_poll_vote": MessageLookupByLibrary.simpleMessage("Vote"),
+        "app_push_channel_favourite_description":
+            MessageLookupByLibrary.simpleMessage(
+                "When people favourite your statuses"),
+        "app_push_channel_favourite_name":
+            MessageLookupByLibrary.simpleMessage("Favourite"),
+        "app_push_channel_followRequest_description":
+            MessageLookupByLibrary.simpleMessage(
+                "When people want to follow you"),
+        "app_push_channel_followRequest_name":
+            MessageLookupByLibrary.simpleMessage("Follow request"),
+        "app_push_channel_follow_description":
+            MessageLookupByLibrary.simpleMessage("When people follow you"),
+        "app_push_channel_follow_name":
+            MessageLookupByLibrary.simpleMessage("Follow"),
+        "app_push_channel_mention_description":
+            MessageLookupByLibrary.simpleMessage(
+                "When people mention you in status or conversation"),
+        "app_push_channel_mention_name":
+            MessageLookupByLibrary.simpleMessage("Mention"),
+        "app_push_channel_move_description":
+            MessageLookupByLibrary.simpleMessage("When someone moved"),
+        "app_push_channel_move_name":
+            MessageLookupByLibrary.simpleMessage("Move"),
+        "app_push_channel_pleromaChatMention_description":
+            MessageLookupByLibrary.simpleMessage("Pleroma-only chat messages"),
+        "app_push_channel_pleromaChatMention_name":
+            MessageLookupByLibrary.simpleMessage("Chat"),
+        "app_push_channel_pleromaEmojiReaction_description":
+            MessageLookupByLibrary.simpleMessage(
+                "Pleroma-only emoji reactions for statuses"),
+        "app_push_channel_pleromaEmojiReaction_name":
+            MessageLookupByLibrary.simpleMessage("Emoji reactions"),
+        "app_push_channel_pleromaReport_description":
+            MessageLookupByLibrary.simpleMessage(
+                "When people report your statues"),
+        "app_push_channel_pleromaReport_name":
+            MessageLookupByLibrary.simpleMessage("Reports"),
+        "app_push_channel_poll_description":
+            MessageLookupByLibrary.simpleMessage("Poll-related notifications"),
+        "app_push_channel_poll_name":
+            MessageLookupByLibrary.simpleMessage("Poll"),
+        "app_push_channel_reblog_description":
+            MessageLookupByLibrary.simpleMessage(
+                "When people share your statuses"),
+        "app_push_channel_reblog_name":
+            MessageLookupByLibrary.simpleMessage("Share(reblog)"),
+        "app_push_channel_unknown_description":
+            MessageLookupByLibrary.simpleMessage(
+                "Unknown notification type, not handled by Fedi yet"),
+        "app_push_channel_unknown_name":
+            MessageLookupByLibrary.simpleMessage("Unknown"),
         "app_push_disabled_notification_content":
             MessageLookupByLibrary.simpleMessage(
                 "Install app version from store or enable support in config if app was built from source"),
@@ -1211,6 +1280,50 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Please enable push notification in app settings to receive updates"),
         "app_push_permission_declined_dialog_title":
             MessageLookupByLibrary.simpleMessage("Permission required"),
+        "app_push_richNotification_action_acceptFollowRequest":
+            MessageLookupByLibrary.simpleMessage("Accept"),
+        "app_push_richNotification_action_rejectFollowRequest":
+            MessageLookupByLibrary.simpleMessage("Reject"),
+        "app_push_richNotification_action_reply":
+            MessageLookupByLibrary.simpleMessage("Reply"),
+        "app_push_richNotification_favourite_summary":
+            MessageLookupByLibrary.simpleMessage(
+                "Someone favourited your status"),
+        "app_push_richNotification_favourite_title": m41,
+        "app_push_richNotification_followRequest_summary":
+            MessageLookupByLibrary.simpleMessage("Someone want to follow you"),
+        "app_push_richNotification_followRequest_title": m42,
+        "app_push_richNotification_follow_summary":
+            MessageLookupByLibrary.simpleMessage("Someone followed you"),
+        "app_push_richNotification_follow_title": m43,
+        "app_push_richNotification_mention_summary":
+            MessageLookupByLibrary.simpleMessage("Someone mentioned you"),
+        "app_push_richNotification_mention_title": m44,
+        "app_push_richNotification_move_summary":
+            MessageLookupByLibrary.simpleMessage("Someone moved"),
+        "app_push_richNotification_move_title": m45,
+        "app_push_richNotification_pleromaChatMention_summary":
+            MessageLookupByLibrary.simpleMessage(
+                "You have new message in chat"),
+        "app_push_richNotification_pleromaChatMention_title": m46,
+        "app_push_richNotification_pleromaEmojiReaction_summary":
+            MessageLookupByLibrary.simpleMessage("Someone reacted"),
+        "app_push_richNotification_pleromaEmojiReaction_title": m47,
+        "app_push_richNotification_pleromaReport_summary":
+            MessageLookupByLibrary.simpleMessage(
+                "Someone reported your status"),
+        "app_push_richNotification_pleromaReport_title": m48,
+        "app_push_richNotification_poll_summary":
+            MessageLookupByLibrary.simpleMessage("Poll changed"),
+        "app_push_richNotification_poll_title":
+            MessageLookupByLibrary.simpleMessage("Poll changed"),
+        "app_push_richNotification_reblog_summary":
+            MessageLookupByLibrary.simpleMessage("Someone shared your status"),
+        "app_push_richNotification_reblog_title": m49,
+        "app_push_richNotification_unknown_summary":
+            MessageLookupByLibrary.simpleMessage("Something happened"),
+        "app_push_richNotification_unknown_title":
+            MessageLookupByLibrary.simpleMessage("Something happened"),
         "app_push_settings_desc": MessageLookupByLibrary.simpleMessage(
             "All messages will be forwarded through Fedi Relay Server"),
         "app_push_settings_field_favourites_label":
@@ -1250,7 +1363,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Global settings"),
         "app_settings_global_title":
             MessageLookupByLibrary.simpleMessage("Settings: global"),
-        "app_settings_instance_title": m41,
+        "app_settings_instance_title": m50,
         "app_settings_warning_notSupportedOnThisInstance_desc":
             MessageLookupByLibrary.simpleMessage(
                 "Not supported on this instance"),
@@ -1315,7 +1428,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Mute conversation"),
         "app_status_action_openInBrowser":
             MessageLookupByLibrary.simpleMessage("Open in browser"),
-        "app_status_action_openOnRemoteInstance": m42,
+        "app_status_action_openOnRemoteInstance": m51,
         "app_status_action_pin": MessageLookupByLibrary.simpleMessage("Pin"),
         "app_status_action_popup_title":
             MessageLookupByLibrary.simpleMessage("Status Actions"),
@@ -1349,14 +1462,14 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Already posted"),
         "app_status_draft_state_canceled":
             MessageLookupByLibrary.simpleMessage("Canceled"),
-        "app_status_emoji_error_cantAdd_dialog_content": m43,
+        "app_status_emoji_error_cantAdd_dialog_content": m52,
         "app_status_emoji_error_cantAdd_dialog_title":
             MessageLookupByLibrary.simpleMessage("Can\'t add emoji"),
         "app_status_expire_datetime_picker_title":
             MessageLookupByLibrary.simpleMessage("Expire at"),
         "app_status_favouritedBy_title":
             MessageLookupByLibrary.simpleMessage("Favourited by"),
-        "app_status_list_newItems_action_tapToLoadNew": m44,
+        "app_status_list_newItems_action_tapToLoadNew": m53,
         "app_status_mute_dialog_action_clearDate":
             MessageLookupByLibrary.simpleMessage("Clear date"),
         "app_status_mute_dialog_action_mute":
@@ -1372,7 +1485,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Post"),
         "app_status_post_dialog_async_content":
             MessageLookupByLibrary.simpleMessage("Posting..."),
-        "app_status_post_dialog_error_content": m45,
+        "app_status_post_dialog_error_content": m54,
         "app_status_post_dialog_error_title_post":
             MessageLookupByLibrary.simpleMessage("Failed to post status"),
         "app_status_post_dialog_error_title_schedule":
@@ -1408,7 +1521,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Poll length"),
         "app_status_post_poll_field_multiply_label":
             MessageLookupByLibrary.simpleMessage("Multiple selection"),
-        "app_status_post_poll_field_option_hint": m46,
+        "app_status_post_poll_field_option_hint": m55,
         "app_status_post_schedule_error_notInFuture_dialog_content":
             MessageLookupByLibrary.simpleMessage(
                 "Schedule time must be at least 5 minutes in the future"),
@@ -1448,7 +1561,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Failed to load first status"),
         "app_status_reply_loading_progress":
             MessageLookupByLibrary.simpleMessage("Loading first status"),
-        "app_status_reply_replyingTo": m47,
+        "app_status_reply_replyingTo": m56,
         "app_status_scheduled_datetime_picker_title":
             MessageLookupByLibrary.simpleMessage("Schedule at"),
         "app_status_scheduled_edit_title":
@@ -1469,7 +1582,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Tap to view"),
         "app_status_spoiler_chip":
             MessageLookupByLibrary.simpleMessage("Spoilers!"),
-        "app_status_thread_post_hint": m48,
+        "app_status_thread_post_hint": m57,
         "app_status_thread_start_loading":
             MessageLookupByLibrary.simpleMessage("Loading start status"),
         "app_theme_chooser_label":
@@ -1487,7 +1600,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Create new timeline"),
         "app_timeline_loading":
             MessageLookupByLibrary.simpleMessage("Loading timelines"),
-        "app_timeline_settings_content": m49,
+        "app_timeline_settings_content": m58,
         "app_timeline_settings_field_enableWebSockets_description":
             MessageLookupByLibrary.simpleMessage(
                 "Disable to reduce battery usage"),
@@ -1550,7 +1663,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Edit"),
         "app_timeline_storage_delete_dialog_action_delete":
             MessageLookupByLibrary.simpleMessage("Delete"),
-        "app_timeline_storage_delete_dialog_content": m50,
+        "app_timeline_storage_delete_dialog_content": m59,
         "app_timeline_storage_delete_dialog_title":
             MessageLookupByLibrary.simpleMessage("Delete"),
         "app_timeline_storage_empty":
@@ -1619,7 +1732,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Current screen & in background"),
         "app_web_sockets_settings_type_onlyForeground":
             MessageLookupByLibrary.simpleMessage("Only for current screen"),
-        "async_init_state_failed": m51,
+        "async_init_state_failed": m60,
         "async_init_state_notStarted":
             MessageLookupByLibrary.simpleMessage("Async init not started"),
         "dialog_action_cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
@@ -1628,24 +1741,24 @@ class MessageLookup extends MessageLookupByLibrary {
         "dialog_action_no": MessageLookupByLibrary.simpleMessage("No"),
         "dialog_action_ok": MessageLookupByLibrary.simpleMessage("OK"),
         "dialog_action_yes": MessageLookupByLibrary.simpleMessage("Yes"),
-        "dialog_error_content": m52,
+        "dialog_error_content": m61,
         "dialog_error_title":
             MessageLookupByLibrary.simpleMessage("Something wrong"),
         "dialog_progress_action_cancel":
             MessageLookupByLibrary.simpleMessage("Cancel"),
         "dialog_progress_content":
             MessageLookupByLibrary.simpleMessage("Loading..."),
-        "duration_day": m53,
-        "duration_hour": m54,
-        "duration_minute": m55,
+        "duration_day": m62,
+        "duration_hour": m63,
+        "duration_minute": m64,
         "file_picker_empty":
             MessageLookupByLibrary.simpleMessage("You don\'t have any media"),
         "file_picker_multi_selectionCountLimitReached_notification_content":
-            m56,
+            m65,
         "file_picker_multi_selectionCountLimitReached_notification_title":
             MessageLookupByLibrary.simpleMessage(
                 "Selection count limit reached"),
-        "file_picker_multi_selectionCount_selected": m57,
+        "file_picker_multi_selectionCount_selected": m66,
         "file_picker_multi_title":
             MessageLookupByLibrary.simpleMessage("Choose media files"),
         "file_picker_selectionFolder_title":
@@ -1654,16 +1767,16 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Choose media"),
         "form_field_bool_onlyTrue_error_desc":
             MessageLookupByLibrary.simpleMessage("Should be enabled"),
-        "form_field_int_error_length_maxOnlyValue_desc": m58,
-        "form_field_int_error_length_minAndMax_desc": m59,
-        "form_field_int_error_length_minOnlyValue_desc": m60,
+        "form_field_int_error_length_maxOnlyValue_desc": m67,
+        "form_field_int_error_length_minAndMax_desc": m68,
+        "form_field_int_error_length_minOnlyValue_desc": m69,
         "form_field_text_email_error_invalid_desc":
             MessageLookupByLibrary.simpleMessage("Invalid email"),
         "form_field_text_error_empty_desc":
             MessageLookupByLibrary.simpleMessage("Empty"),
-        "form_field_text_error_length_maxOnly_desc": m61,
-        "form_field_text_error_length_minAndMax_desc": m62,
-        "form_field_text_error_length_minOnly_desc": m63,
+        "form_field_text_error_length_maxOnly_desc": m70,
+        "form_field_text_error_length_minAndMax_desc": m71,
+        "form_field_text_error_length_minOnly_desc": m72,
         "form_field_text_password_error_notMatch_desc":
             MessageLookupByLibrary.simpleMessage(
                 "Password and confirm password must match"),
@@ -1671,7 +1784,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Invalid URL"),
         "form_field_value_error_null_desc":
             MessageLookupByLibrary.simpleMessage("Required"),
-        "link_error_dialog_content": m64,
+        "link_error_dialog_content": m73,
         "link_error_dialog_title":
             MessageLookupByLibrary.simpleMessage("Can\'t launch URL"),
         "localization_locale_default":
@@ -1689,17 +1802,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "timeago_aboutAMonth": MessageLookupByLibrary.simpleMessage("~1 mo"),
         "timeago_aboutAYear": MessageLookupByLibrary.simpleMessage("~1 y"),
         "timeago_aboutAnHour": MessageLookupByLibrary.simpleMessage("~1 h"),
-        "timeago_days": m65,
-        "timeago_hours": m66,
+        "timeago_days": m74,
+        "timeago_hours": m75,
         "timeago_lessThanOneMinute":
             MessageLookupByLibrary.simpleMessage("now"),
-        "timeago_minutes": m67,
-        "timeago_months": m68,
-        "timeago_prefixAgo": MessageLookupByLibrary.simpleMessage(""),
-        "timeago_prefixFromNow": MessageLookupByLibrary.simpleMessage(""),
-        "timeago_suffixAgo": MessageLookupByLibrary.simpleMessage(""),
-        "timeago_suffixFromNow": MessageLookupByLibrary.simpleMessage(""),
+        "timeago_minutes": m76,
+        "timeago_months": m77,
         "timeago_wordSeparator": MessageLookupByLibrary.simpleMessage(" "),
-        "timeago_years": m69
+        "timeago_years": m78
       };
 }

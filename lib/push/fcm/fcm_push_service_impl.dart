@@ -1,3 +1,4 @@
+import 'package:fedi/app/push/notification/rich/rich_notifications_service_background_message_impl.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/push/fcm/fcm_push_service.dart';
 import 'package:fedi/push/push_model.dart';
@@ -6,14 +7,6 @@ import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
 var _logger = Logger('fcm_push_service_impl.dart');
-
-Future _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  // If you're going to use other Firebase services in the background, such as Firestore,
-  // make sure you call `initializeApp` before using other Firebase services.
-  // await Firebase.initializeApp();
-
-  print('Handling a background message: ${message.messageId}');
-}
 
 class FcmPushService extends AsyncInitLoadingBloc implements IFcmPushService {
   final FirebaseMessaging _fcm = FirebaseMessaging.instance;
@@ -91,7 +84,9 @@ class FcmPushService extends AsyncInitLoadingBloc implements IFcmPushService {
     _logger.finest(() => 'init');
 
     _logger.finest(() => 'configure');
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    FirebaseMessaging.onBackgroundMessage(
+      richNotificationsFirebaseMessagingBackgroundHandler,
+    );
 
     addDisposable(
       streamSubscription: _fcm.onTokenRefresh.listen(

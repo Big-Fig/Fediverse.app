@@ -27,6 +27,14 @@ class AppDatabaseService extends AsyncInitLoadingBloc
     required this.configService,
   });
 
+  AppDatabaseService.forUserAtHost({
+    required String userAtHost,
+    required IConfigService configService,
+  }) : this(
+          dbName: userAtHost,
+          configService: configService,
+        );
+
   // ignore: avoid-late-keyword
   late AppDatabase appDatabase;
 
@@ -35,6 +43,7 @@ class AppDatabaseService extends AsyncInitLoadingBloc
 
   // ignore: avoid-late-keyword
   late String filePath;
+
   // ignore: avoid-late-keyword
   late File file;
 
@@ -90,7 +99,7 @@ class AppDatabaseService extends AsyncInitLoadingBloc
       dbFolder.path,
       path,
     );
-    
+
     return filePath;
   }
 
@@ -106,10 +115,8 @@ class AppDatabaseService extends AsyncInitLoadingBloc
   @override
   Future<int> calculateMaxCountByType() async {
     var statusesCount = await appDatabase.statusDao.countAll();
-    var notificationsCount =
-        await appDatabase.notificationDao.countAll();
-    var chatMessagesCount =
-        await appDatabase.chatMessageDao.countAll();
+    var notificationsCount = await appDatabase.notificationDao.countAll();
+    var chatMessagesCount = await appDatabase.chatMessageDao.countAll();
 
     var accountsCount = await appDatabase.accountDao.countAll();
 
@@ -132,7 +139,8 @@ class AppDatabaseService extends AsyncInitLoadingBloc
 
   @override
   Future<DateTime?> calculateOldestEntryAge() async {
-    var oldestStatus = await appDatabase.statusDao.getOldestOrderById(offset: null);
+    var oldestStatus =
+        await appDatabase.statusDao.getOldestOrderById(offset: null);
     var oldestNotification =
         await appDatabase.notificationDao.getOldestOrderById(offset: null);
     var oldestChatMessage =

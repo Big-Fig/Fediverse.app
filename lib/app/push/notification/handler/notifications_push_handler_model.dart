@@ -4,7 +4,7 @@ import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 // ignore_for_file: no-magic-number
-part 'push_handler_model.g.dart';
+part 'notifications_push_handler_model.g.dart';
 
 // -32 is hack for hive 0.x backward ids compatibility
 // see reservedIds in Hive,
@@ -12,21 +12,21 @@ part 'push_handler_model.g.dart';
 //@HiveType()
 @HiveType(typeId: -32 + 66)
 @JsonSerializable(explicitToJson: true)
-class PushHandlerMessage {
+class NotificationsPushHandlerMessage {
   @HiveField(0)
   final PleromaApiPushMessageBody body;
   @HiveField(1)
   @JsonKey(name: 'push_message')
   final PushMessage pushMessage;
 
-  PushHandlerMessage({
+  NotificationsPushHandlerMessage({
     required this.body,
     required this.pushMessage,
   });
 
   @override
   String toString() {
-    return 'PushHandlerMessage{'
+    return 'NotificationsPushHandlerMessage{'
         'body: $body, '
         'pushMessage: $pushMessage'
         '}';
@@ -35,16 +35,16 @@ class PushHandlerMessage {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PushHandlerMessage &&
+      other is NotificationsPushHandlerMessage &&
           runtimeType == other.runtimeType &&
           body == other.body &&
           pushMessage == other.pushMessage;
 
-  PushHandlerMessage copyWith({
+  NotificationsPushHandlerMessage copyWith({
     PleromaApiPushMessageBody? body,
     PushMessage? pushMessage,
   }) =>
-      PushHandlerMessage(
+      NotificationsPushHandlerMessage(
         body: body ?? this.body,
         pushMessage: pushMessage ?? this.pushMessage,
       );
@@ -52,8 +52,8 @@ class PushHandlerMessage {
   @override
   int get hashCode => body.hashCode ^ pushMessage.hashCode;
 
-  static PushHandlerMessage fromJson(Map<String, dynamic> json) =>
-      _$PushHandlerMessageFromJson(json);
+  static NotificationsPushHandlerMessage fromJson(Map<String, dynamic> json) =>
+      _$NotificationsPushHandlerMessageFromJson(json);
 
-  Map<String, dynamic> toJson() => _$PushHandlerMessageToJson(this);
+  Map<String, dynamic> toJson() => _$NotificationsPushHandlerMessageToJson(this);
 }

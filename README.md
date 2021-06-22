@@ -16,7 +16,7 @@ A client for Pleroma and Mastodon instances written using Flutter
 ### iOS
 
 * [AppStore](https://apps.apple.com/us/app/fedi-for-pleroma-and-mastodon/id1478806281) 
-* AppStore TestFlight Beta **(coming soon)**
+* [AppStore TestFlight Beta](https://testflight.apple.com/join/8z75BbeW)
 
 ### Releases
 
@@ -100,21 +100,68 @@ Web Push Relay is Ruby on Rails server which handle Web pushes and proxy them to
 
 * LINK TO PUSH RELAY REPO **(coming soon)**
 
+Push Relay Server and Fedi can work in two modes:
+
+* **Without server-side decryption (`2.5.0` and newver)** - Push Relay Server proxy simple proxy encr
+* **With server-side decryption (before `2.5.0`)** - Decrypt messages and have access to notification content and user `access_token`. Not used from `2.5.0` version, but still supported in Fedi(see below why you still may want to use it).
+
+### Without server-side decryption way
+**(Used in AppStore/GooglePlay versions from `2.5.0`)**
+
 1. Fedi subscribe to `/api/v1/push/subscription` with `subscription[endpoint]` set to relay server URL
 2. Instances send Web push notifications to relay server
-3. Relay server proxy decrypt notifications (will be removed in the future, Fedi will decrypt notifications on client side)
+3. Relay server proxy **don't decrypt** message
 4. Relay server proxy notifications to Fedi app via FCM
-5. Fedi display notifications
+5. Relay server proxy **don't decrypt** message and use FCM message with encrypted data as simple trigger to load latest notification via REST API (this will be improved in future releases)
+6. Fedi display notification
 
-* Notifications are not enabled by default and Fedi ask you about notification after login. 
-* You can also disable notifications later in any time.
-* You can completely remove FCM and Push Relay Usage(or use your own FCM credentials and Push Relay server instance)
-
-### Which data Push Relay server have access after decryption?
+##### Which data Push Relay server have without decryption?
 
 
 ```
- {
+{
+	:mutable_content=>true, 
+	:content_available=>true, 
+	:priority=>"high", 
+	:data=>{
+		:crypto_key=>"dh=BF7CAl3J1o7jNf8i0dHxTwvY5QNx0v5LUN5CgjO6BUIUxa8q5RP9ML8HDWON9JplrMhwxWdM5EQZ0kfw3IXy_7Q;p256ecdsa=BMwPQzjwXKDqt5xZz6rGAa9iSWiEsO73UmNRoZwkaGOOQeW7_EEFcTVpzP-AqoZKcjiV_h88zSBAtaAYpBBwp5Y", 
+		:salt=>"salt=PC48KPkE4izfdQilBfOF_w", 
+		:payload=>"9crGlId2xj5RVjxig1MS-g3B3CX2jVOnTY8gxsFo_yUVWLN_y_oAU0wrh-YG6PWC_W0t8Ub9tQEoySHJSeOJ7l3euiTKUeccxowV6lcF-V9Vhi9yx4bX52eKxKjII9n9WNCByU1J6oHcGo3CwHMyr0Tyn3HVwqzm9hJ2-TjP3Y2Iir-aor96mskTehbes7SY-QCYVT1FoI6xvgGFE0NmduKwYCe6BwqHqsuNSwIXiaWANwa07aLAtv3zlqFkBkSD-NwAVxJ2MTmsRGnEPoNb05k4Wbl6Kkct6ZqWoFd6C_FVDwtVG6Odo_RPWXsIEw3qh4koUMZwGve_MK3mGYejNbxWqjFxXcooZd6KedMrZ8200fcDWhToPyB52rgRARLp0JamBi4Q99nrIKPIHI0c4numKk7zJE9-6mwxN1T84NliWTMVKRUORwtnpjnodIumhg==", 
+		:account=>"jffdev", 
+		:server=>"fedi.app"
+	}
+}
+```
+
+Since PushRelayServer don't know private decryption keys, it is can't access any privacy data.
+
+##### Pros
+* **Don't have access to user private data**
+* Use rich notifications layouts and actions provided by [`awesome_notifications`](https://pub.dev/packages/awesome_notifications)
+
+
+##### Cons
+* Delivery may be delayed. Because server send FCM push message without `notification` (FCM calls it data message). Read [`awesome_notifications`](https://pub.dev/packages/awesome_notifications) and [`firebase_messaging`](https://pub.dev/packages/firebase_messaging) documentation for details. Fedi use `:mutable_content=>true,` `:content_available=>true,` `:priority=>"high",` to increase priority
+
+##### Whe Fedi don't decrypt message on client-side?
+
+Because it is hard to implement with Flutter. There are no 3rd Flutter libraries to decrypt `ECDH` `p256v1` by now. 
+It is possible to decrypt in Kotlin/Swift and it will be done in the future.
+
+### With server-side decryption way
+**(Not used in AppStore/GooglePlay versions from `2.5.0`)**
+
+1. Fedi subscribe to `/api/v1/push/subscription` with `subscription[endpoint]` set to relay server URL
+2. Instances send Web push notifications to relay server
+3. Relay server proxy **decrypt** notifications
+4. Relay server proxy notifications to Fedi app via FCM
+5. Fedi display notification
+
+##### Which data Push Relay server have access after decryption?
+
+
+```
+{
    "access_token""=>""QiQGKu6wAsF6M3bWJ3FMTvfK_rW...",
    "body""=>"@jffdev2: @jffdev hello world",
    "icon""=>""https://fedi.app/images/avi.png",
@@ -132,12 +179,14 @@ Web Push Relay is Ruby on Rails server which handle Web pushes and proxy them to
 * As you can see server sent `body` which may have private data(like private Status body) and `access_token`
 * `access_token` is sensitive data. It is possible to login to your account if someone know `access_token`
 
-Currently Wep Push Relay server known about Private and Public keys used for decryption notification messages.
-It was not possible to decrypt message on Flutter side and display notification. Main issue was with FCM library.
-However latest FCM library release and another 3rd party libraries like [`awesome_notifications](https://pub.dev/packages/awesome_notifications) 
-provides API to move all decryption logic on Flutter side and Fedi will implement this logic ASAP.
+##### Pros
+* Faster push delivery. Because FCM push message are actial FCM message type with `notification.title` and `notification.body`. Which have higher priority than message without `notification.title` & `notification.body` fields. Actually it is more affects iOS, than Android. Read [`awesome_notifications`](https://pub.dev/packages/awesome_notifications) and [`firebase_messaging`](https://pub.dev/packages/firebase_messaging) documentation for details. Anyway both ways usually deliver notification in ~1min
 
-Push Relay will know nothing(everything will be encrypted) once decryption logic will be moved to Flutter side. 
+##### Cons
+* **Private data access is main reason why Fedi moved to `Without server-side decryption way`**
+* Don't use rich notifications layouts and actions provided by [`awesome_notifications`](https://pub.dev/packages/awesome_notifications)
+
+
 
 ## Localization
 
@@ -219,6 +268,7 @@ More info you can found in FVM documentation
 - `flutter_intl` for localization via `.arb` files
 - A lot of UI-related(like [`pull_to_refresh`](https://pub.dev/packages/pull_to_refresh)) and Platform-dependent(like [`permission_handler`](https://pub.dev/packages/permission_handler)) libraries
 - [`flutter_config`](https://pub.dev/packages/flutter_config) to config via .env files
+- [`firebase_messaging`](https://pub.dev/packages/firebase_messaging) and [`awesome_notifications`](https://pub.dev/packages/awesome_notifications) for push notifications
 
 You can find full list in [`pubspec.yaml`](./pubspec.yaml) where each library have comment why it's used 
 
@@ -378,6 +428,14 @@ If you still have errors please explore App ID things in the next docs:
 * [`firebase_messaging`](https://pub.dev/packages/firebase_messaging)
 * [`receive_sharing_intent`](https://pub.dev/packages/receive_sharing_intent)
 
+###### iOS group ids
+
+* `receive_sharing_intent` lib require to add group.<app_id> to XCode project. 
+Unfortunately it is not possible, due our internal issues (we moved app to new iTunes account and can't use old group id).
+So we use [`fork of receive_sharing_intent`](https://github.com/xal/receive_sharing_intent/tree/xal/custom_group_id) with custom group ids support.
+
+Fedi uses group `fediverse.app` for `prod` and `com.fediverse.app2` for `dev`  
+
 #### Signing
 
 ###### Android
@@ -479,6 +537,19 @@ CRASHLYTICS_ENABLED=false
 Used to catch errors on client side with error description and stackTrace
 
 You should enable [Firebase support](#Firebase) and change config variable in .env file to enable crash reporting
+
+#### Versioning
+
+###### Android
+
+Uses version from `pubspec.yaml`
+
+###### iOS
+
+By default Flutter project config it should use version from `pubspec.yaml`,
+However, sometimes it causes strange iOS build errors(version not changed but should).
+
+So, Fedi requires manual increase version code & name in `Runner` and `Share Extension` targets. 
 
 #### Receiving share intents & ShareExtension
 

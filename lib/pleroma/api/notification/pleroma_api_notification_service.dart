@@ -28,10 +28,7 @@ abstract class IPleromaApiNotificationService extends IPleromaApiAuth {
     PleromaApiNotificationType.mention,
     PleromaApiNotificationType.poll,
     PleromaApiNotificationType.move,
-    // 'Not supported on Pleroma. '
-    //     'MastodonNotificationType.followRequest added only in Mastodon 3.1.0 '
-    //     'but Pleroma targets Mastodon 2.7.2 API',
-    // PleromaNotificationType.followRequest,
+    PleromaApiNotificationType.followRequest,
     PleromaApiNotificationType.pleromaEmojiReaction,
     PleromaApiNotificationType.pleromaChatMention,
     PleromaApiNotificationType.pleromaReport,
@@ -52,6 +49,7 @@ abstract class IPleromaApiNotificationService extends IPleromaApiAuth {
     PleromaApiNotificationType.pleromaEmojiReaction,
     PleromaApiNotificationType.pleromaChatMention,
     PleromaApiNotificationType.pleromaReport,
+    PleromaApiNotificationType.followRequest,
   ];
 
   Future<List<IPleromaApiNotification>> getNotifications({

@@ -319,7 +319,7 @@ extension PostStatusDataStatusExtension on IStatus {
         poll: poll?.toPostStatusPoll(
           limits: limits,
         ),
-        inReplyToPleromaStatus: inReplyToStatus?.toPleromaStatus(),
+        inReplyToPleromaStatus: inReplyToStatus?.toPleromaApiStatus(),
         inReplyToConversationId: pleromaDirectConversationId?.toString(),
         isNsfwSensitiveEnabled: nsfwSensitive,
         language: language,

@@ -762,7 +762,7 @@ abstract class PostStatusBloc extends PostMessageBloc
             .toList(),
         poll: _calculatePostStatusPoll()?.toPostStatusPoll(),
         inReplyToPleromaStatus:
-            calculateInReplyToStatusField()?.toPleromaStatus(),
+            calculateInReplyToStatusField()?.toPleromaApiStatus(),
         inReplyToConversationId: initialData.inReplyToConversationId,
         isNsfwSensitiveEnabled: isNsfwSensitiveEnabled,
         language: initialData.language,

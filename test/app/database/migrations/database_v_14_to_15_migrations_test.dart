@@ -93,9 +93,9 @@ void main() {
         account: account1.toPleromaApiAccount(),
         statuses: [
           (await StatusTestHelper.createTestStatus(seed: 'status1'))
-              .toPleromaStatus(),
+              .toPleromaApiStatus(),
           (await StatusTestHelper.createTestStatus(seed: 'status2'))
-              .toPleromaStatus(),
+              .toPleromaApiStatus(),
         ],
         user: (await AccountTestHelper.createTestAccount(seed: 'reportUser'))
             .toPleromaApiAccount(),

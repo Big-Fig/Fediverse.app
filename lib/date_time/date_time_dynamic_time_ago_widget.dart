@@ -125,16 +125,16 @@ class _TimeagoLocalizationAdapter implements LookupMessages {
   String years(int years) => s.timeago_years(years);
 
   @override
-  String prefixAgo() => s.timeago_prefixAgo;
+  String prefixAgo() => '';
 
   @override
-  String prefixFromNow() => s.timeago_prefixFromNow;
+  String prefixFromNow() => '';
 
   @override
-  String suffixAgo() => s.timeago_suffixAgo;
+  String suffixAgo() => '';
 
   @override
-  String suffixFromNow() => s.timeago_suffixFromNow;
+  String suffixFromNow() => '';
 
   @override
   String wordSeparator() => s.timeago_wordSeparator;

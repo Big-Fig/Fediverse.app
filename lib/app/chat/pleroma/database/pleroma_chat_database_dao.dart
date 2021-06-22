@@ -5,6 +5,7 @@ import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository_model.d
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/database/dao/remote/populated_app_remote_database_dao.dart';
 import 'package:fedi/repository/repository_model.dart';
+import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 
 part 'pleroma_chat_database_dao.g.dart';
@@ -13,6 +14,8 @@ var _accountAliasId = 'account';
 var _chatAccountsAliasId = 'chatAccounts';
 var _chatMessageAliasId = 'chatMessage';
 var _chatMessageAccountAliasId = 'chatMessageAccount';
+
+final _logger = Logger('pleroma_chat_database_dao.dart');
 
 @UseDao(
   tables: [
@@ -73,13 +76,15 @@ class ChatDao extends PopulatedAppRemoteDatabaseDao<
   }
 
   Future<int> incrementUnreadCount({
-    required String? chatRemoteId,
+    required String chatRemoteId,
     required DateTime updatedAt,
   }) {
     var update = 'UPDATE db_chats '
         'SET unread = unread + 1,'
-        ' updated_at = ${updatedAt.millisecondsSinceEpoch ~/ Duration.millisecondsPerSecond} '
-        'WHERE remote_id = "$chatRemoteId"';
+        " updated_at = '${updatedAt.millisecondsSinceEpoch ~/ Duration.millisecondsPerSecond}' "
+        "WHERE remote_id = '$chatRemoteId'";
+
+    _logger.finest(() => 'incrementUnreadCount $update');
     var query = db.customUpdate(update, updates: {
       dbChats,
     });

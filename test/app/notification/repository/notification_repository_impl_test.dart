@@ -230,7 +230,7 @@ void main() {
           replyDbStatus: null,
         ),
       ),
-    ).toPleromaNotification();
+    ).toPleromaApiNotification();
     await notificationRepository.updateNotificationByRemoteType(
       appItem: oldLocalNotification,
       remoteItem: newRemoteNotification,
@@ -269,7 +269,7 @@ void main() {
 
     var remoteNotification = DbNotificationPopulatedWrapper(
       dbNotificationPopulated: dbNotificationPopulated,
-    ).toPleromaNotification();
+    ).toPleromaApiNotification();
     await notificationRepository.upsertRemoteNotification(
       remoteNotification,
       unread: false,
@@ -298,7 +298,7 @@ void main() {
     await notificationRepository.upsertRemoteNotification(
       DbNotificationPopulatedWrapper(
         dbNotificationPopulated: dbNotificationPopulated,
-      ).toPleromaNotification(),
+      ).toPleromaApiNotification(),
       unread: false,
       batchTransaction: null,
     );
@@ -328,7 +328,7 @@ void main() {
       [
         DbNotificationPopulatedWrapper(
           dbNotificationPopulated: dbNotificationPopulated,
-        ).toPleromaNotification(),
+        ).toPleromaApiNotification(),
       ],
       unread: false,
       batchTransaction: null,
@@ -356,7 +356,7 @@ void main() {
       [
         DbNotificationPopulatedWrapper(
           dbNotificationPopulated: dbNotificationPopulated,
-        ).toPleromaNotification(),
+        ).toPleromaApiNotification(),
       ],
       unread: false,
       batchTransaction: null,
