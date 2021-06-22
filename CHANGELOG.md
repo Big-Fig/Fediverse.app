@@ -3,11 +3,20 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## Unreleased
+## [2.5.0] [internal] 2021 June 22
+
+### Added
+* Push notifications rich layouts: big text, big image, default
+* Push notifications actions: reply to chat/mention, accept/reject follow request.
 
 ### Changed
-* update Readme: describe receive_sharing_intent and iOS group ids
-* remove empty time ago prefixes from localization
+* **BREAKING. Push notifications rework**. Add support for new **version of PushRelayServer which don't decrypts message on server side**.
+Fedi don't decrypt pushes too(it is not easy too implement and will be added later). Fedi use encrypted push message as trigger to load latest notification and display it to user. See more in Readme
+* You should **re-subscribe for push notifications inside app to use new push relay server**. Otherwise you will see old behaviour.
+* Update Readme: describe receive_sharing_intent and iOS group ids
+* Update Readme: push notifications
+* Remove empty time ago prefixes from localization
+  
 
 ## [2.4.2] [internal] 2021 June 18
 
