@@ -16,7 +16,7 @@ A client for Pleroma and Mastodon instances written using Flutter
 ### iOS
 
 * [AppStore](https://apps.apple.com/us/app/fedi-for-pleroma-and-mastodon/id1478806281) 
-* AppStore TestFlight Beta **(coming soon)**
+* [AppStore TestFlight Beta](https://testflight.apple.com/join/8z75BbeW)
 
 ### Releases
 
