@@ -64,7 +64,7 @@ class ThreadPostStatusBloc extends PostStatusBloc
           initialData: PostStatusBloc.defaultInitData.copyWith(
             visibilityString: PleromaApiVisibility.public.toJsonValue(),
             language: language,
-            inReplyToPleromaStatus: inReplyToStatus.toPleromaStatus(),
+            inReplyToPleromaStatus: inReplyToStatus.toPleromaApiStatus(),
           ),
           maximumMessageLength: maximumMessageLength,
           pleromaInstancePollLimits: pleromaInstancePollLimits,

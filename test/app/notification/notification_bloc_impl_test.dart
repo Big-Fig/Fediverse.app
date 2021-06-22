@@ -89,7 +89,7 @@ void main() {
     bool unread = false,
   }) async {
     await notificationRepository.upsertRemoteNotification(
-      notification.toPleromaNotification(),
+      notification.toPleromaApiNotification(),
       unread: unread,
       batchTransaction: null,
     );

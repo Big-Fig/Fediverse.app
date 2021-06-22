@@ -27,6 +27,7 @@ class PushMessage implements IJsonObject {
   final String typeString;
 
   bool get isLaunch => type == PushMessageType.launch;
+  bool get isAction => type == PushMessageType.action;
 
   PushMessage({
     required this.typeString,
@@ -116,22 +117,32 @@ class PushNotification implements IJsonObject {
 
 enum PushMessageType {
   foreground,
+  background,
+  action,
   launch,
 }
 
+const _backgroundPushMessageTypeJsonValue = 'background';
 const _foregroundPushMessageTypeJsonValue = 'foreground';
 const _launchPushMessageTypeJsonValue = 'launch';
+const _actionPushMessageTypeJsonValue = 'action';
 
 extension PushMessageTypeExtension on PushMessageType {
   String toJsonValue() {
     String result;
 
     switch (this) {
+      case PushMessageType.background:
+        result = _backgroundPushMessageTypeJsonValue;
+        break;
       case PushMessageType.foreground:
         result = _foregroundPushMessageTypeJsonValue;
         break;
       case PushMessageType.launch:
         result = _launchPushMessageTypeJsonValue;
+        break;
+      case PushMessageType.action:
+        result = _actionPushMessageTypeJsonValue;
         break;
     }
 
@@ -144,14 +155,20 @@ extension PushMessageTypeStringExtension on String {
     PushMessageType result;
 
     switch (this) {
+      case _backgroundPushMessageTypeJsonValue:
+        result = PushMessageType.background;
+        break;
       case _foregroundPushMessageTypeJsonValue:
         result = PushMessageType.foreground;
         break;
       case _launchPushMessageTypeJsonValue:
         result = PushMessageType.launch;
         break;
+      case _actionPushMessageTypeJsonValue:
+        result = PushMessageType.action;
+        break;
       default:
-        throw 'Invalid PushMessageTypeStringExtension $this';
+        throw 'Invalid PushMessageType $this';
     }
 
     return result;

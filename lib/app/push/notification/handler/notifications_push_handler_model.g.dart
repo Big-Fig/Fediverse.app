@@ -1,29 +1,30 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'push_handler_model.dart';
+part of 'notifications_push_handler_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class PushHandlerMessageAdapter extends TypeAdapter<PushHandlerMessage> {
+class NotificationsPushHandlerMessageAdapter
+    extends TypeAdapter<NotificationsPushHandlerMessage> {
   @override
   final int typeId = 34;
 
   @override
-  PushHandlerMessage read(BinaryReader reader) {
+  NotificationsPushHandlerMessage read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return PushHandlerMessage(
+    return NotificationsPushHandlerMessage(
       body: fields[0] as PleromaApiPushMessageBody,
       pushMessage: fields[1] as PushMessage,
     );
   }
 
   @override
-  void write(BinaryWriter writer, PushHandlerMessage obj) {
+  void write(BinaryWriter writer, NotificationsPushHandlerMessage obj) {
     writer
       ..writeByte(2)
       ..writeByte(0)
@@ -38,7 +39,7 @@ class PushHandlerMessageAdapter extends TypeAdapter<PushHandlerMessage> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PushHandlerMessageAdapter &&
+      other is NotificationsPushHandlerMessageAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
@@ -47,8 +48,9 @@ class PushHandlerMessageAdapter extends TypeAdapter<PushHandlerMessage> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-PushHandlerMessage _$PushHandlerMessageFromJson(Map<String, dynamic> json) {
-  return PushHandlerMessage(
+NotificationsPushHandlerMessage _$NotificationsPushHandlerMessageFromJson(
+    Map<String, dynamic> json) {
+  return NotificationsPushHandlerMessage(
     body: PleromaApiPushMessageBody.fromJson(
         json['body'] as Map<String, dynamic>),
     pushMessage:
@@ -56,7 +58,8 @@ PushHandlerMessage _$PushHandlerMessageFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$PushHandlerMessageToJson(PushHandlerMessage instance) =>
+Map<String, dynamic> _$NotificationsPushHandlerMessageToJson(
+        NotificationsPushHandlerMessage instance) =>
     <String, dynamic>{
       'body': instance.body.toJson(),
       'push_message': instance.pushMessage.toJson(),

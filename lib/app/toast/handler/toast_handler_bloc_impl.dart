@@ -6,8 +6,9 @@ import 'package:fedi/app/chat/pleroma/current/pleroma_chat_current_bloc.dart';
 import 'package:fedi/app/notification/go_to_notification_extension.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_bloc.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_model.dart';
-import 'package:fedi/app/push/handler/push_handler_bloc.dart';
-import 'package:fedi/app/push/handler/push_handler_model.dart';
+import 'package:fedi/app/push/notification/handler/notifications_push_handler_bloc.dart';
+import 'package:fedi/app/push/notification/handler/notifications_push_handler_model.dart';
+import 'package:fedi/app/push/notification/rich/rich_notifications_service_background_message_impl.dart';
 import 'package:fedi/app/toast/handler/toast_handler_bloc.dart';
 import 'package:fedi/app/toast/handling_type/toast_handling_type_model.dart';
 import 'package:fedi/app/toast/settings/local_preferences/global/global_toast_settings_local_preference_bloc.dart';
@@ -17,6 +18,7 @@ import 'package:fedi/app/toast/settings/toast_settings_bloc_impl.dart';
 import 'package:fedi/app/toast/toast_service.dart';
 import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/pleroma/api/notification/pleroma_api_notification_model.dart';
 import 'package:flutter/widgets.dart';
@@ -35,7 +37,8 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
         authInstanceListBloc: IAuthInstanceListBloc.of(context, listen: false),
         currentAuthInstanceBloc:
             ICurrentAuthInstanceBloc.of(context, listen: false),
-        pushHandlerBloc: IPushHandlerBloc.of(context, listen: false),
+        notificationsPushHandlerBloc:
+            INotificationsPushHandlerBloc.of(context, listen: false),
         localPreferencesService:
             ILocalPreferencesService.of(context, listen: false),
         currentInstanceToastSettingsBloc:
@@ -48,42 +51,45 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
             INotificationPushLoaderBloc.of(context, listen: false),
         globalToastSettingsLocalPreferencesBloc:
             IGlobalToastSettingsLocalPreferenceBloc.of(context, listen: false),
+        localizationContext: S.of(context),
       );
 
   AuthInstance? get currentInstance => currentAuthInstanceBloc.currentInstance;
 
-  // TODO: remote context field?
+  // TODO: remove context field?
   final BuildContext context;
   final IToastService toastService;
   final IAuthInstanceListBloc authInstanceListBloc;
   final ICurrentAuthInstanceBloc currentAuthInstanceBloc;
   final ILocalPreferencesService localPreferencesService;
   final IToastSettingsBloc currentInstanceToastSettingsBloc;
-  final IPushHandlerBloc pushHandlerBloc;
+  final INotificationsPushHandlerBloc notificationsPushHandlerBloc;
   final IConversationChatCurrentBloc currentInstanceConversationChatCurrentBloc;
   final IPleromaChatCurrentBloc currentInstancePleromaChatCurrentBloc;
   final INotificationPushLoaderBloc currentInstanceNotificationPushLoaderBloc;
   final IGlobalToastSettingsLocalPreferenceBloc
       globalToastSettingsLocalPreferencesBloc;
+  final S localizationContext;
 
   ToastHandlerBloc({
     required this.context,
     required this.toastService,
     required this.currentAuthInstanceBloc,
     required this.authInstanceListBloc,
-    required this.pushHandlerBloc,
+    required this.notificationsPushHandlerBloc,
     required this.localPreferencesService,
     required this.currentInstanceToastSettingsBloc,
     required this.currentInstanceConversationChatCurrentBloc,
     required this.currentInstancePleromaChatCurrentBloc,
     required this.currentInstanceNotificationPushLoaderBloc,
     required this.globalToastSettingsLocalPreferencesBloc,
+    required this.localizationContext,
   }) {
-    pushHandlerBloc.addRealTimeHandler(handlePush);
+    notificationsPushHandlerBloc.addRealTimeHandler(handlePush);
     addDisposable(
       disposable: CustomDisposable(
         () async {
-          pushHandlerBloc.removeRealTimeHandler(handlePush);
+          notificationsPushHandlerBloc.removeRealTimeHandler(handlePush);
         },
       ),
     );
@@ -99,15 +105,19 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
     );
   }
 
-  Future<bool> handlePush(PushHandlerMessage pushHandlerMessage) async {
-    var pleromaPushMessage = pushHandlerMessage.body;
+  Future<bool> handlePush(
+    NotificationsPushHandlerMessage notificationsPushHandlerMessage,
+  ) async {
+    var pleromaPushMessage = notificationsPushHandlerMessage.body;
     var isForCurrentInstance = currentInstance!.isInstanceWithHostAndAcct(
       host: pleromaPushMessage.server,
       acct: pleromaPushMessage.account,
     );
 
     if (!isForCurrentInstance) {
-      await _handleNonCurrentInstancePushMessage(pushHandlerMessage);
+      await _handleNonCurrentInstancePushMessage(
+        notificationsPushHandlerMessage,
+      );
     }
     // else {
     // current instance push messages handled
@@ -121,7 +131,8 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
   void _handleCurrentInstanceNotification(
     NotificationPushLoaderNotification handledNotification,
   ) {
-    var pushHandlerMessage = handledNotification.pushHandlerMessage;
+    var pushHandlerMessage =
+        handledNotification.notificationsPushHandlerMessage;
     var pleromaPushMessage = pushHandlerMessage.body;
 
     var notificationType = pleromaPushMessage.notificationType;
@@ -176,29 +187,52 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
   }
 
   void _showToast({
-    required PushHandlerMessage pushHandlerMessage,
+    required NotificationsPushHandlerMessage pushHandlerMessage,
     required VoidCallback onClick,
   }) {
+    if (pushHandlerMessage.pushMessage.isLaunch) {
+      return;
+    }
+
     var pleromaPushMessage = pushHandlerMessage.body;
 
+    var acctAtHost =
+        '${pleromaPushMessage.account}@${pleromaPushMessage.server}';
     var notification = pushHandlerMessage.pushMessage.notification;
     if (notification != null) {
-      var title = '${pleromaPushMessage.account}@${pleromaPushMessage.server}'
-          ' '
-          '${notification.title}';
+      var title = '$acctAtHost ${notification.title}';
+      var body = notification.body;
       toastService.showInfoToast(
         context: context,
         title: title,
-        content: notification.body,
+        content: body,
+        onClick: onClick,
+      );
+    } else {
+      var pleromaApiNotification =
+          pushHandlerMessage.body.pleromaApiNotification!;
+      var calculatedTitle = calculatePleromaApiNotificationPushTitle(
+        localizationContext: localizationContext,
+        pleromaApiNotification: pleromaApiNotification,
+      );
+      var calculatedBody = calculatePleromaApiNotificationPushBody(
+        localizationContext: localizationContext,
+        pleromaApiNotification: pleromaApiNotification,
+      );
+      var title = '$acctAtHost $calculatedTitle';
+      toastService.showInfoToast(
+        context: context,
+        title: title,
+        content: calculatedBody,
         onClick: onClick,
       );
     }
   }
 
   Future _handleNonCurrentInstancePushMessage(
-    PushHandlerMessage pushHandlerMessage,
+    NotificationsPushHandlerMessage notificationsPushHandlerMessage,
   ) async {
-    var pleromaPushMessage = pushHandlerMessage.body;
+    var pleromaPushMessage = notificationsPushHandlerMessage.body;
 
     var notificationType = pleromaPushMessage.notificationType;
 
@@ -230,7 +264,7 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
 
     if (isEnabled && isEnabledWhenInstanceNotSelected) {
       _showToast(
-        pushHandlerMessage: pushHandlerMessage,
+        pushHandlerMessage: notificationsPushHandlerMessage,
         onClick: () async {
           var instanceByCredentials =
               authInstanceListBloc.findInstanceByCredentials(
@@ -242,7 +276,8 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
               'instanceByCredentials $instanceByCredentials');
 
           if (instanceByCredentials != null) {
-            await pushHandlerBloc.markAsLaunchMessage(pushHandlerMessage);
+            await notificationsPushHandlerBloc
+                .markAsLaunchMessage(notificationsPushHandlerMessage);
             await currentAuthInstanceBloc
                 .changeCurrentInstance(instanceByCredentials);
           }

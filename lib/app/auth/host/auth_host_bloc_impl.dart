@@ -252,7 +252,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     required String authCode,
   }) async {
     var restService = RestService(baseUri: instanceBaseUri);
-    var pleromaAuthRestService = PleromaAuthRestService(
+    var pleromaAuthRestService = PleromaApiAuthRestService(
       accessToken: token.accessToken,
       connectionService: connectionService,
       restService: restService,
@@ -278,7 +278,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
   }
 
   Future<AuthInstance> _createAuthInstance({
-    required PleromaAuthRestService pleromaAuthRestService,
+    required PleromaApiAuthRestService pleromaAuthRestService,
     required String? authCode,
     required PleromaApiOAuthToken token,
     required IPleromaApiInstance hostInstance,
@@ -318,7 +318,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     );
 
     var restService = RestService(baseUri: instanceBaseUri);
-    var pleromaAuthRestService = PleromaAuthRestService(
+    var pleromaAuthRestService = PleromaApiAuthRestService(
       accessToken: token.accessToken,
       connectionService: connectionService,
       restService: restService,

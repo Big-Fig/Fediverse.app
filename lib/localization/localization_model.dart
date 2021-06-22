@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:ui';
+
 import 'package:fedi/json/json_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -25,6 +28,30 @@ class LocalizationLocale implements IJsonObject {
     }
 
     return result;
+  }
+
+  static Locale calculateLocaleBaseOnLocalizationLocaleOrPlatformLocale({
+    LocalizationLocale? localizationLocale,
+  }) {
+    Locale locale;
+    if (localizationLocale != null) {
+      locale = Locale(
+        localizationLocale.languageCode,
+        localizationLocale.countryCode,
+      );
+    } else {
+      var localeName = Platform.localeName;
+      if (localeName.contains('_')) {
+        var split = localeName.split('_');
+        var languageCode = split[0];
+        var countryCode = split[1];
+        locale = Locale(languageCode, countryCode);
+      } else {
+        locale = Locale(localeName);
+      }
+    }
+
+    return locale;
   }
 
   LocalizationLocale({

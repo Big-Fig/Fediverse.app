@@ -90,7 +90,7 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   IPleromaApiNotification mapAppItemToRemoteItem(INotification appItem) =>
-      appItem.toPleromaNotification();
+      appItem.toPleromaApiNotification();
 
   @override
   DbNotificationPopulated mapAppItemToDbPopulatedItem(INotification appItem) {
@@ -109,7 +109,7 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   ) =>
       dbPopulatedItem
           .toDbNotificationPopulatedWrapper()
-          .toPleromaNotification();
+          .toPleromaApiNotification();
 
   @override
   INotification mapRemoteItemToAppItem(IPleromaApiNotification remoteItem) =>

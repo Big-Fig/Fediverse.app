@@ -101,7 +101,7 @@ Future<void> main() async {
 
   Future _update(IStatus status) async {
     await statusRepository.upsertInRemoteType(
-      status.toPleromaStatus(),
+      status.toPleromaApiStatus(),
     );
     // hack to execute notify callbacks
     await Future.delayed(Duration(milliseconds: 1));
@@ -1419,7 +1419,7 @@ Future<void> main() async {
     );
 
     var id = await statusRepository.upsertInRemoteType(
-      status.toPleromaStatus(),
+      status.toPleromaApiStatus(),
     );
     status = status.copyWith(id: id);
 
@@ -1443,7 +1443,7 @@ Future<void> main() async {
     when(
       pleromaAuthStatusServiceMock.getStatus(statusRemoteId: status.remoteId),
     ).thenAnswer(
-      (_) async => newValue.toPleromaStatus(),
+      (_) async => newValue.toPleromaApiStatus(),
     );
 
     await statusBloc.refreshFromNetwork();
@@ -1529,7 +1529,7 @@ Future<void> main() async {
 
   test('requestToggleReblog', () async {
     var id = await statusRepository.upsertInRemoteType(
-      status.toPleromaStatus(),
+      status.toPleromaApiStatus(),
     );
     status = status.copyWith(id: id);
 
@@ -1553,13 +1553,13 @@ Future<void> main() async {
     when(pleromaAuthStatusServiceMock.reblogStatus(
       statusRemoteId: status.remoteId,
     )).thenAnswer(
-      (_) async => status.copyWith(reblogged: true).toPleromaStatus(),
+      (_) async => status.copyWith(reblogged: true).toPleromaApiStatus(),
     );
 
     when(pleromaAuthStatusServiceMock.unReblogStatus(
       statusRemoteId: status.remoteId,
     )).thenAnswer(
-      (_) async => status.copyWith(reblogged: false).toPleromaStatus(),
+      (_) async => status.copyWith(reblogged: false).toPleromaApiStatus(),
     );
 
     var initialValue = status.reblogged;
@@ -1595,7 +1595,7 @@ Future<void> main() async {
 
   test('requestToggleFavourite', () async {
     var id = await statusRepository.upsertInRemoteType(
-      status.toPleromaStatus(),
+      status.toPleromaApiStatus(),
     );
     status = status.copyWith(id: id);
 
@@ -1619,13 +1619,13 @@ Future<void> main() async {
     when(pleromaAuthStatusServiceMock.favouriteStatus(
       statusRemoteId: status.remoteId,
     )).thenAnswer(
-      (_) async => status.copyWith(favourited: true).toPleromaStatus(),
+      (_) async => status.copyWith(favourited: true).toPleromaApiStatus(),
     );
 
     when(pleromaAuthStatusServiceMock.unFavouriteStatus(
       statusRemoteId: status.remoteId,
     )).thenAnswer(
-      (_) async => status.copyWith(favourited: false).toPleromaStatus(),
+      (_) async => status.copyWith(favourited: false).toPleromaApiStatus(),
     );
 
     var initialValue = status.favourited;
@@ -1658,7 +1658,7 @@ Future<void> main() async {
 
   test('requestToggleMute', () async {
     var id = await statusRepository.upsertInRemoteType(
-      status.toPleromaStatus(),
+      status.toPleromaApiStatus(),
     );
     status = status.copyWith(id: id);
 
@@ -1683,13 +1683,13 @@ Future<void> main() async {
       statusRemoteId: status.remoteId,
       expireDurationInSeconds: null,
     )).thenAnswer(
-      (_) async => status.copyWith(muted: true).toPleromaStatus(),
+      (_) async => status.copyWith(muted: true).toPleromaApiStatus(),
     );
 
     when(pleromaAuthStatusServiceMock.unMuteStatus(
       statusRemoteId: status.remoteId,
     )).thenAnswer(
-      (_) async => status.copyWith(muted: false).toPleromaStatus(),
+      (_) async => status.copyWith(muted: false).toPleromaApiStatus(),
     );
 
     var initialValue = status.muted;
@@ -1725,7 +1725,7 @@ Future<void> main() async {
 
   test('requestToggleBookmark', () async {
     var id = await statusRepository.upsertInRemoteType(
-      status.toPleromaStatus(),
+      status.toPleromaApiStatus(),
     );
     status = status.copyWith(id: id);
 
@@ -1749,13 +1749,13 @@ Future<void> main() async {
     when(pleromaAuthStatusServiceMock.bookmarkStatus(
       statusRemoteId: status.remoteId,
     )).thenAnswer(
-      (_) async => status.copyWith(bookmarked: true).toPleromaStatus(),
+      (_) async => status.copyWith(bookmarked: true).toPleromaApiStatus(),
     );
 
     when(pleromaAuthStatusServiceMock.unBookmarkStatus(
       statusRemoteId: status.remoteId,
     )).thenAnswer(
-      (_) async => status.copyWith(bookmarked: false).toPleromaStatus(),
+      (_) async => status.copyWith(bookmarked: false).toPleromaApiStatus(),
     );
 
     var initialValue = status.bookmarked;
@@ -1791,7 +1791,7 @@ Future<void> main() async {
 
   test('requestTogglePin', () async {
     var id = await statusRepository.upsertInRemoteType(
-      status.toPleromaStatus(),
+      status.toPleromaApiStatus(),
     );
     status = status.copyWith(id: id);
 
@@ -1815,13 +1815,13 @@ Future<void> main() async {
     when(pleromaAuthStatusServiceMock.pinStatus(
       statusRemoteId: status.remoteId,
     )).thenAnswer(
-      (_) async => status.copyWith(pinned: true).toPleromaStatus(),
+      (_) async => status.copyWith(pinned: true).toPleromaApiStatus(),
     );
 
     when(pleromaAuthStatusServiceMock.unPinStatus(
       statusRemoteId: status.remoteId,
     )).thenAnswer(
-      (_) async => status.copyWith(pinned: false).toPleromaStatus(),
+      (_) async => status.copyWith(pinned: false).toPleromaApiStatus(),
     );
 
     var initialValue = status.pinned;
@@ -1930,7 +1930,7 @@ Future<void> main() async {
 
       return status
           .copyWith(pleromaEmojiReactions: reactions)
-          .toPleromaStatus();
+          .toPleromaApiStatus();
     });
 
     when(PleromaApiStatusEmojiReactionServiceMock.removeReaction(
@@ -1965,7 +1965,7 @@ Future<void> main() async {
 
       return status
           .copyWith(pleromaEmojiReactions: reactions)
-          .toPleromaStatus();
+          .toPleromaApiStatus();
     });
 
     var listenedValue;

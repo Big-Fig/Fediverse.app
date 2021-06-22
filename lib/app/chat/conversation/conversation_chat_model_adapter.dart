@@ -26,7 +26,7 @@ extension IConversationChatExtension on IConversationChat {
 
     return PleromaApiConversation(
       unread: (unread > 0) ? true : false,
-      lastStatus: lastStatus?.toPleromaStatus(),
+      lastStatus: lastStatus?.toPleromaApiStatus(),
       id: remoteId,
       accounts: accounts.toPleromaApiAccounts(),
       pleroma: pleroma?.toPleromaApiConversationPleromaPart(),

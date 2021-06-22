@@ -320,7 +320,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   IPleromaApiStatus mapAppItemToRemoteItem(IStatus appItem) =>
-      appItem.toPleromaStatus();
+      appItem.toPleromaApiStatus();
 
   @override
   DbStatusPopulated mapAppItemToDbPopulatedItem(IStatus appItem) =>
@@ -334,7 +334,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   IPleromaApiStatus mapDbPopulatedItemToRemoteItem(
     DbStatusPopulated dbPopulatedItem,
   ) =>
-      dbPopulatedItem.toDbStatusPopulatedWrapper().toPleromaStatus();
+      dbPopulatedItem.toDbStatusPopulatedWrapper().toPleromaApiStatus();
 
   @override
   IStatus mapRemoteItemToAppItem(IPleromaApiStatus appItem) =>
