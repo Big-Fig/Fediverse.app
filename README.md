@@ -3,8 +3,8 @@
 
 A client for Pleroma and Mastodon instances written using Flutter
 <p float="left">
-	<img src="./images/screenshot_1.webp" alt="drawing" width="200"/>
-	<img src="./images/screenshot_2.webp" alt="drawing" width="200"/>
+	<img src="./images/screenshot_1.webp" alt="Fedi screenshot" width="200"/>
+	<img src="./images/screenshot_2.webp" alt="Fedi screenshot" width="200"/>
 </p>
 
 
@@ -48,7 +48,7 @@ A client for Pleroma and Mastodon instances written using Flutter
 - Custom emojis. With emoji reactions support on Pleroma
 - Customizable home timelines
 - Multi-account support
-- [Push notifications via Push Relay Server and FCM](#push-notifications)
+- [Push notifications via PushRelayFCM and FCM](#push-notifications)
 - Income and external share support
 - Scheduled and Draft Statuses
 - Filters
@@ -94,44 +94,24 @@ Feel free to open issues if you have suggestions
 
 ## Push notifications
 
-Push notifications implemented via Web Push Relay(Proxy) server
+Push notifications implemented via [PushRelayFCM](https://github.com/Big-Fig/toot-relay-fcm) server
 
-Web Push Relay is Ruby on Rails server which handle Web pushes and proxy them to FCM
+[PushRelayFCM](https://github.com/Big-Fig/toot-relay-fcm) is Ruby on Rails server which handle web pushes and relay them to FCM
 
-* LINK TO PUSH RELAY REPO **(coming soon)**
+PushRelayFCM and Fedi can work in two modes:
 
-Push Relay Server and Fedi can work in two modes:
-
-* **Without server-side decryption (`2.5.0` and newver)** - Push Relay Server proxy simple proxy encr
-* **With server-side decryption (before `2.5.0`)** - Decrypt messages and have access to notification content and user `access_token`. Not used from `2.5.0` version, but still supported in Fedi(see below why you still may want to use it).
+* **Without server-side decryption (`2.5.0` and newer)** - relay simple proxy encrypted messages
+* **With server-side decryption (before `2.5.0`)** -decrypt messages and have access to notification content and user `access_token`. Not used from `2.5.0` version, but still supported in Fedi(see below why you still may want to use it).
 
 ### Without server-side decryption way
 **(Used in AppStore/GooglePlay versions from `2.5.0`)**
 
 1. Fedi subscribe to `/api/v1/push/subscription` with `subscription[endpoint]` set to relay server URL
-2. Instances send Web push notifications to relay server
-3. Relay server proxy **don't decrypt** message
-4. Relay server proxy notifications to Fedi app via FCM
-5. Relay server proxy **don't decrypt** message and use FCM message with encrypted data as simple trigger to load latest notification via REST API (this will be improved in future releases)
+2. Instances send web push notifications to relay server
+3. PushRelayFCM **don't decrypt** message
+4. PushRelayFCM proxy notifications to Fedi app via FCM
+5. Fedi **don't decrypt** message and use FCM message with encrypted data as simple trigger to load latest notification via REST API (this will be improved in future releases)
 6. Fedi display notification
-
-##### Which data Push Relay server have without decryption?
-
-
-```
-{
-	:mutable_content=>true, 
-	:content_available=>true, 
-	:priority=>"high", 
-	:data=>{
-		:crypto_key=>"dh=BF7CAl3J1o7jNf8i0dHxTwvY5QNx0v5LUN5CgjO6BUIUxa8q5RP9ML8HDWON9JplrMhwxWdM5EQZ0kfw3IXy_7Q;p256ecdsa=BMwPQzjwXKDqt5xZz6rGAa9iSWiEsO73UmNRoZwkaGOOQeW7_EEFcTVpzP-AqoZKcjiV_h88zSBAtaAYpBBwp5Y", 
-		:salt=>"salt=PC48KPkE4izfdQilBfOF_w", 
-		:payload=>"9crGlId2xj5RVjxig1MS-g3B3CX2jVOnTY8gxsFo_yUVWLN_y_oAU0wrh-YG6PWC_W0t8Ub9tQEoySHJSeOJ7l3euiTKUeccxowV6lcF-V9Vhi9yx4bX52eKxKjII9n9WNCByU1J6oHcGo3CwHMyr0Tyn3HVwqzm9hJ2-TjP3Y2Iir-aor96mskTehbes7SY-QCYVT1FoI6xvgGFE0NmduKwYCe6BwqHqsuNSwIXiaWANwa07aLAtv3zlqFkBkSD-NwAVxJ2MTmsRGnEPoNb05k4Wbl6Kkct6ZqWoFd6C_FVDwtVG6Odo_RPWXsIEw3qh4koUMZwGve_MK3mGYejNbxWqjFxXcooZd6KedMrZ8200fcDWhToPyB52rgRARLp0JamBi4Q99nrIKPIHI0c4numKk7zJE9-6mwxN1T84NliWTMVKRUORwtnpjnodIumhg==", 
-		:account=>"jffdev", 
-		:server=>"fedi.app"
-	}
-}
-```
 
 Since PushRelayServer don't know private decryption keys, it is can't access any privacy data.
 
@@ -139,9 +119,8 @@ Since PushRelayServer don't know private decryption keys, it is can't access any
 * **Don't have access to user private data**
 * Use rich notifications layouts and actions provided by [`awesome_notifications`](https://pub.dev/packages/awesome_notifications)
 
-
 ##### Cons
-* Delivery may be delayed. Because server send FCM push message without `notification` (FCM calls it data message). Read [`awesome_notifications`](https://pub.dev/packages/awesome_notifications) and [`firebase_messaging`](https://pub.dev/packages/firebase_messaging) documentation for details. Fedi use `:mutable_content=>true,` `:content_available=>true,` `:priority=>"high",` to increase priority
+* Delivery may be delayed. Because PushRelayFCM send FCM push message without `notification` (FCM calls it data message). Read [`awesome_notifications`](https://pub.dev/packages/awesome_notifications) and [`firebase_messaging`](https://pub.dev/packages/firebase_messaging) documentation for details. Fedi use `:mutable_content=>true,` `:content_available=>true,` `:priority=>"high",` to increase delivery priority
 
 ##### Whe Fedi don't decrypt message on client-side?
 
@@ -153,40 +132,19 @@ It is possible to decrypt in Kotlin/Swift and it will be done in the future.
 
 1. Fedi subscribe to `/api/v1/push/subscription` with `subscription[endpoint]` set to relay server URL
 2. Instances send Web push notifications to relay server
-3. Relay server proxy **decrypt** notifications
-4. Relay server proxy notifications to Fedi app via FCM
+3. PushRelayFCM **decrypt** notifications
+4. PushRelayFCM relay notifications to Fedi app via FCM
 5. Fedi display notification
 
-##### Which data Push Relay server have access after decryption?
-
-
-```
-{
-   "access_token""=>""QiQGKu6wAsF6M3bWJ3FMTvfK_rW...",
-   "body""=>"@jffdev2: @jffdev hello world",
-   "icon""=>""https://fedi.app/images/avi.png",
-   "notification_id"=>1114,
-   "notification_type""=>""mention",
-   "pleroma""=>"{
-      "activity_id""=>""A82wvAgZu7n7B...",
-      "direct_conversation_id"=>42..
-   },
-   "preferred_locale""=>""en",
-   "title""=>""New Direct Message"
-}
-```
-
-* As you can see server sent `body` which may have private data(like private Status body) and `access_token`
+* PushRelayFCM have access to `title`, `body` and `access_token`
 * `access_token` is sensitive data. It is possible to login to your account if someone know `access_token`
 
 ##### Pros
-* Faster push delivery. Because FCM push message are actial FCM message type with `notification.title` and `notification.body`. Which have higher priority than message without `notification.title` & `notification.body` fields. Actually it is more affects iOS, than Android. Read [`awesome_notifications`](https://pub.dev/packages/awesome_notifications) and [`firebase_messaging`](https://pub.dev/packages/firebase_messaging) documentation for details. Anyway both ways usually deliver notification in ~1min
+* Faster push delivery. FCM message(notification type) with `notification.title` and `notification.body`. Which have higher priority than message without `notification.title` & `notification.body` fields. Actually it is more affects iOS, than Android. Read [`awesome_notifications`](https://pub.dev/packages/awesome_notifications) and [`firebase_messaging`](https://pub.dev/packages/firebase_messaging) documentation for details.
 
 ##### Cons
 * **Private data access is main reason why Fedi moved to `Without server-side decryption way`**
 * Don't use rich notifications layouts and actions provided by [`awesome_notifications`](https://pub.dev/packages/awesome_notifications)
-
-
 
 ## Localization
 
@@ -407,7 +365,7 @@ pod install
 
 #### App ID
 
-Changing App ID is required if you want to setup own Push Relay server and pushes via your Firebase project for FCM. 
+Changing App ID is required if you want to setup own PushRelayFCM server and pushes via your Firebase project for FCM. 
 
 It also useful if you want to have several app versions installed on one device
 
@@ -495,10 +453,10 @@ To enable Push notifications you should
 * create Firebase Project for your App ID,
 * generate [Firebase config and integrate in app](#Firebase)
 * generate FCM server key
-* setup own Push Relay Server(link to repo **coming soon**) instance and put your FCM server key
+* setup own [PushRelayFCM](https://github.com/Big-Fig/toot-relay-fcm) server instance and put your FCM server key
 
-App ID and FCM server key(so and Push Relay Server instance) are connected. 
-It is not possible to use one Push Relay Server instance with several App IDs and vice versa
+App ID and FCM server key(so and PushRelayFCM instance) are connected. 
+It is not possible to use one PushRelayFCM instance with several App IDs and vice versa
 
 On/Off via .env. [Firebase Core integration](#Firebase) required
 
@@ -506,7 +464,7 @@ On/Off via .env. [Firebase Core integration](#Firebase) required
 PUSH_FCM_ENABLED=false
 ```
 
-##### Proxy Push Relay Server
+##### Proxy PushRelayFCM
 
 Required if `PUSH_FCM_ENABLED=true`
 
@@ -518,7 +476,7 @@ User agent public key. Base64 encoded string of public key of ECDH key using pri
 
 Auth secret. Base64 encoded string of 16 bytes of random data.
 
-More info in [Mastodon docs](https://docs.joinmastodon.org/methods/notifications/push/)
+More info in [Mastodon docs](https://docs.joinmastodon.org/methods/notifications/push/) and PushRelayFCM server docs(link to repo **coming soon**)
 
 ```
 PUSH_FCM_RELAY_URL=https://pushrelay.example.com/push/
