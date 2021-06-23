@@ -67,7 +67,6 @@ A client for Pleroma and Mastodon instances written using Flutter
 
 ## Coming soon
 
-* Rich notifications(actions, layouts, grouping, channels)
 * Admin API
 * Support other Fediverse instances: Pixelfed, Misskey, Peertube, GNU Social, Friendica and others
 * Pleroma: scrobbles, mascot and recently added new features
@@ -89,8 +88,8 @@ Feel free to open issues if you have suggestions
 
 ### Crash reports via Firebase Crashlytics
 
-* You can build app from source and remove Crashlytics via .env config(details below)
-* Option to disable Crashlytics gathering inside App **(coming soon)**
+* You can build app from source and remove Crashlytics library via .env config(details below)
+* You can disable gathering via settings inside app
 
 ## Push notifications
 
@@ -476,7 +475,7 @@ User agent public key. Base64 encoded string of public key of ECDH key using pri
 
 Auth secret. Base64 encoded string of 16 bytes of random data.
 
-More info in [Mastodon docs](https://docs.joinmastodon.org/methods/notifications/push/) and PushRelayFCM server docs(link to repo **coming soon**)
+More info in [Mastodon docs](https://docs.joinmastodon.org/methods/notifications/push/) and [PushRelayFCM](https://github.com/Big-Fig/toot-relay-fcm) server docs
 
 ```
 PUSH_FCM_RELAY_URL=https://pushrelay.example.com/push/
