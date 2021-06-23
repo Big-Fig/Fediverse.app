@@ -307,6 +307,34 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     await globalProviderService
         .asyncInitAndRegister<ICurrentAuthInstanceBloc>(currentInstanceBloc);
 
+
+    var globalLocalizationSettingsLocalPreferencesBloc =
+    GlobalLocalizationSettingsLocalPreferenceBloc(
+      hiveLocalPreferencesService,
+    );
+
+    await globalProviderService
+        .asyncInitAndRegister<ILocalizationSettingsLocalPreferenceBloc>(
+      globalLocalizationSettingsLocalPreferencesBloc,
+    );
+    await globalProviderService
+        .asyncInitAndRegister<IGlobalLocalizationSettingsLocalPreferenceBloc>(
+      globalLocalizationSettingsLocalPreferencesBloc,
+    );
+    addDisposable(disposable: globalLocalizationSettingsLocalPreferencesBloc);
+
+    var localizationSettingsBloc = LocalizationSettingsBloc(
+      localizationSettingsLocalPreferencesBloc:
+      globalLocalizationSettingsLocalPreferencesBloc,
+    );
+
+    await globalProviderService
+        .asyncInitAndRegister<ILocalizationSettingsBloc>(
+      localizationSettingsBloc,
+    );
+    addDisposable(disposable: localizationSettingsBloc);
+
+
     if (configService.pushFcmEnabled) {
       var pushRelayBaseUrl = configService.pushFcmRelayUrl!;
 
@@ -315,32 +343,6 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
       addDisposable(disposable: pushRelayService);
       await globalProviderService
           .asyncInitAndRegister<IPushRelayService>(pushRelayService);
-
-      var globalLocalizationSettingsLocalPreferencesBloc =
-          GlobalLocalizationSettingsLocalPreferenceBloc(
-        hiveLocalPreferencesService,
-      );
-
-      await globalProviderService
-          .asyncInitAndRegister<ILocalizationSettingsLocalPreferenceBloc>(
-        globalLocalizationSettingsLocalPreferencesBloc,
-      );
-      await globalProviderService
-          .asyncInitAndRegister<IGlobalLocalizationSettingsLocalPreferenceBloc>(
-        globalLocalizationSettingsLocalPreferencesBloc,
-      );
-      addDisposable(disposable: globalLocalizationSettingsLocalPreferencesBloc);
-
-      var localizationSettingsBloc = LocalizationSettingsBloc(
-        localizationSettingsLocalPreferencesBloc:
-            globalLocalizationSettingsLocalPreferencesBloc,
-      );
-
-      await globalProviderService
-          .asyncInitAndRegister<ILocalizationSettingsBloc>(
-        localizationSettingsBloc,
-      );
-      addDisposable(disposable: localizationSettingsBloc);
 
       var localizationLocale = localizationSettingsBloc.localizationLocale;
 
