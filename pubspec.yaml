@@ -207,6 +207,9 @@ dependencies:
   # get build details for config
   package_info: ^2.0.2
 
+  # rich notification with possible integration with FCM
+  awesome_notifications: ^0.0.6+9
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -227,9 +230,6 @@ dev_dependencies:
 
   # additional linter
   dart_code_metrics: ^3.0.0
-
-  # rich notification with possible integration with FCM
-  awesome_notifications: ^0.0.6+9
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
