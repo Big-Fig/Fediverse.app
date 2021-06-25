@@ -25,8 +25,9 @@ abstract class IPleromaApiRestService implements IRestService, IPleromaApi {
 
   Future<T> processJsonSingleResponse<T>(
     Response response,
-    ResponseJsonParser<T> responseJsonParser,
-  );
+    ResponseJsonParser<T> responseJsonParser, {
+    bool parseInIsolate = true,
+  });
 
   String processStringResponse(
     Response response,

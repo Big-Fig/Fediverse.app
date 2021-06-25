@@ -138,8 +138,9 @@ class PleromaApiRestService extends DisposableOwner
   @override
   Future<T> processJsonSingleResponse<T>(
     Response response,
-    ResponseJsonParser<T> responseJsonParser,
-  ) async {
+    ResponseJsonParser<T> responseJsonParser, {
+    bool parseInIsolate = true,
+  }) async {
     var statusCode = response.statusCode;
 
     if (statusCode == RestResponse.successResponseStatusCode) {
@@ -147,8 +148,11 @@ class PleromaApiRestService extends DisposableOwner
         jsonString: response.body,
         responseJsonParser: responseJsonParser,
       );
-
-      return await compute(_parseJsonRequestAsSingle, request);
+      if (parseInIsolate) {
+        return await compute(_parseJsonRequestAsSingle, request);
+      } else {
+        return await _parseJsonRequestAsSingle(request);
+      }
     } else {
       throw createException(response);
     }
@@ -174,7 +178,7 @@ class PleromaApiRestService extends DisposableOwner
         var body = response.body;
         // todo: refactor parsing custom errors
         var isInvalidCredentials = false;
-        var isRecordNotFound  = false;
+        var isRecordNotFound = false;
         try {
           Map<String, dynamic> jsonBody = jsonDecode(body);
 

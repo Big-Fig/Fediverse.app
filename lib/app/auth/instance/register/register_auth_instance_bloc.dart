@@ -22,7 +22,7 @@ abstract class IRegisterAuthInstanceBloc
 
   IRegisterAuthInstanceFormBloc get registerAuthInstanceFormBloc;
 
-  Stream<AuthHostRegistrationResult> get successRegistrationStream;
+  Stream<AuthHostRegistrationResult> get registrationResultStream;
 
   Future<AuthHostRegistrationResult> submit();
 }

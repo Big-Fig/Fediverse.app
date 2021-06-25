@@ -318,15 +318,14 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     );
 
     var restService = RestService(baseUri: instanceBaseUri);
-    var pleromaAuthRestService = PleromaApiAuthRestService(
-      accessToken: token.accessToken,
+
+    var pleromaRestService = PleromaApiRestService(
       connectionService: connectionService,
       restService: restService,
-      isPleroma: isPleroma,
     );
 
     var pleromaInstanceService =
-        PleromaApiInstanceService(restService: pleromaAuthRestService);
+        PleromaApiInstanceService(restService: pleromaRestService);
 
     var hostInstance = await pleromaInstanceService.getInstance();
 
@@ -338,49 +337,73 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
         pleromaInstance: hostInstance,
       );
     } else {
-      EmailConfirmationRequiredAuthHostException?
-          emailConfirmationRequiredAuthHostException;
-      dynamic unknownHostException;
-
-      AuthInstance? instance;
-      try {
-        instance = await _createAuthInstance(
-          pleromaAuthRestService: pleromaAuthRestService,
-          authCode: null,
+      if (token == null) {
+        result = AuthHostRegistrationResult(
+          authInstance: null,
           token: token,
-          hostInstance: hostInstance,
+          pleromaInstance: hostInstance,
+          emailConfirmationRequiredAuthHostException:
+              const EmailConfirmationRequiredAuthHostException(),
+          unknownHostException: null,
+          cantRegisterAppAuthHostException: null,
+          cantRetrieveAppTokenAuthHostException: null,
+          invitesOnlyRegistrationAuthHostException: null,
+          disabledRegistrationAuthHostException: null,
         );
-      } catch (e, stackTrace) {
-        _logger.warning(() => 'error during registerAccount', e, stackTrace);
-        if (e is PleromaApiRestException) {
-          if (e.decodedErrorDescriptionOrBody ==
-              emailConfirmationRequiredDescription) {
-            emailConfirmationRequiredAuthHostException =
-                const EmailConfirmationRequiredAuthHostException();
+      } else {
+        var pleromaAuthRestService = PleromaApiAuthRestService(
+          accessToken: token.accessToken,
+          connectionService: connectionService,
+          restService: restService,
+          isPleroma: isPleroma,
+        );
+
+        EmailConfirmationRequiredAuthHostException?
+            emailConfirmationRequiredAuthHostException;
+        dynamic unknownHostException;
+
+        AuthInstance? instance;
+        try {
+          instance = await _createAuthInstance(
+            pleromaAuthRestService: pleromaAuthRestService,
+            authCode: null,
+            token: token,
+            hostInstance: hostInstance,
+          );
+        } catch (e, stackTrace) {
+          _logger.warning(() => 'error during registerAccount', e, stackTrace);
+          if (e is PleromaApiRestException) {
+            if (e.decodedErrorDescriptionOrBody ==
+                emailConfirmationRequiredDescription) {
+              emailConfirmationRequiredAuthHostException =
+                  const EmailConfirmationRequiredAuthHostException();
+            } else {
+              unknownHostException = e;
+            }
           } else {
             unknownHostException = e;
           }
-        } else {
-          unknownHostException = e;
+        } finally {
+          await pleromaAuthRestService.dispose();
         }
-      }
 
-      result = AuthHostRegistrationResult(
-        authInstance: instance,
-        token: token,
-        pleromaInstance: hostInstance,
-        emailConfirmationRequiredAuthHostException:
-            emailConfirmationRequiredAuthHostException,
-        unknownHostException: unknownHostException,
-        cantRegisterAppAuthHostException: null,
-        cantRetrieveAppTokenAuthHostException: null,
-        invitesOnlyRegistrationAuthHostException: null,
-        disabledRegistrationAuthHostException: null,
-      );
+        result = AuthHostRegistrationResult(
+          authInstance: instance,
+          token: token,
+          pleromaInstance: hostInstance,
+          emailConfirmationRequiredAuthHostException:
+              emailConfirmationRequiredAuthHostException,
+          unknownHostException: unknownHostException,
+          cantRegisterAppAuthHostException: null,
+          cantRetrieveAppTokenAuthHostException: null,
+          invitesOnlyRegistrationAuthHostException: null,
+          disabledRegistrationAuthHostException: null,
+        );
+      }
     }
 
     await pleromaInstanceService.dispose();
-    await pleromaAuthRestService.dispose();
+    await pleromaRestService.dispose();
 
     return result;
   }

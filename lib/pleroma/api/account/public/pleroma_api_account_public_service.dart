@@ -14,7 +14,7 @@ abstract class IPleromaApiAccountPublicService implements IPleromaApi {
         listen: listen,
       );
 
-  Future<PleromaApiOAuthToken> registerAccount({
+  Future<PleromaApiOAuthToken?> registerAccount({
     required IPleromaApiAccountPublicRegisterRequest request,
     required String appAccessToken,
   });

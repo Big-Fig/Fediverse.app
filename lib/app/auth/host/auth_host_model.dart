@@ -33,7 +33,7 @@ class AuthHostRegistrationResult {
       cantRetrieveAppTokenAuthHostException;
   final CantRegisterAppAuthHostException? cantRegisterAppAuthHostException;
   final dynamic unknownHostException;
-  final PleromaApiOAuthToken token;
+  final PleromaApiOAuthToken? token;
   final IPleromaApiInstance pleromaInstance;
   final AuthInstance? authInstance;
 
@@ -50,7 +50,7 @@ class AuthHostRegistrationResult {
   });
 
   AuthHostRegistrationResult.noErrors({
-    required PleromaApiOAuthToken token,
+    required PleromaApiOAuthToken? token,
     required IPleromaApiInstance pleromaInstance,
     required AuthInstance? authInstance,
   }) : this(

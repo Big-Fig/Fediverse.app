@@ -72,7 +72,7 @@ Future<AuthHostRegistrationResult?> goToRegisterAuthInstancePage(
 
             registerAuthInstanceBloc.addDisposable(
               streamSubscription:
-                  registerAuthInstanceBloc.successRegistrationStream.listen(
+                  registerAuthInstanceBloc.registrationResultStream.listen(
                 (AuthHostRegistrationResult registrationResult) async {
                   if (registrationResult.isPossibleToLogin) {
                     await ICurrentAuthInstanceBloc.of(context, listen: false)
