@@ -210,6 +210,12 @@ dependencies:
   # rich notification with possible integration with FCM
   awesome_notifications: ^0.0.6+9
 
+  # Disposable logic
+  easy_dispose: ^1.0.1
+  easy_dispose_flutter: ^1.0.1
+  easy_dispose_rxdart: ^1.0.1
+  easy_dispose_provider: ^1.0.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -230,11 +236,6 @@ dev_dependencies:
 
   # additional linter
   dart_code_metrics: ^3.0.0
-
-  easy_dispose: ^1.0.0
-  easy_dispose_flutter: ^1.0.0
-  easy_dispose_rxdart: ^1.0.0
-  easy_dispose_provider: ^1.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
