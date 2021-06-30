@@ -723,7 +723,9 @@ void main() {
     ))
             .copyWith();
     await ChatMessageRepositoryTestHelper.insertDbChatMessage(
-        chatMessageRepository, dbChatMessage3,);
+      chatMessageRepository,
+      dbChatMessage3,
+    );
 
     expect((await query.get()).length, 1);
 

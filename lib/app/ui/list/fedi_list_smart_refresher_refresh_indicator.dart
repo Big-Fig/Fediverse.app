@@ -36,11 +36,11 @@ class FediListSmartRefresherRefreshIndicator extends RefreshIndicator {
     this.distance = 50.0,
     this.backgroundColor,
   }) : super(
-    key: key,
-    refreshStyle: RefreshStyle.Front,
-    offset: offset,
-    height: height,
-  );
+          key: key,
+          refreshStyle: RefreshStyle.Front,
+          offset: offset,
+          height: height,
+        );
 
   @override
   State<StatefulWidget> createState() =>
@@ -73,15 +73,12 @@ class _FediListSmartRefresherRefreshIndicatorState
     _valueAni.addListener(() {
       try {
         // frequently setState will decline the performance
-        var pixels = Scrollable
-            .of(context)
-            ?.position
-            .pixels;
+        var pixels = Scrollable.of(context)?.position.pixels;
         if (mounted && pixels != null && pixels <= 0) {
           // ignore: no-empty-block
           setState(() {});
         }
-      } catch(e, stackTrace) {
+      } catch (e, stackTrace) {
         _logger.warning(() => '_valueAni.addListener', e, stackTrace);
       }
     });
@@ -114,7 +111,7 @@ class _FediListSmartRefresherRefreshIndicatorState
         child: Align(
           alignment: Alignment.topCenter,
           child:
-          FediCircularProgressIndicator.buildForRefreshIndicator(context),
+              FediCircularProgressIndicator.buildForRefreshIndicator(context),
         ),
       ),
     );

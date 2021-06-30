@@ -29,7 +29,7 @@ class _UiThemeSystemBrightnessHandlerWidgetState
     oldOnPlatformBrightnessChanged = window.onPlatformBrightnessChanged;
 
     var uiThemeSystemHandlerBloc =
-    IUiThemeSystemBrightnessBloc.of(context, listen: false);
+        IUiThemeSystemBrightnessBloc.of(context, listen: false);
     window.onPlatformBrightnessChanged = () {
       uiThemeSystemHandlerBloc
           .onSystemBrightnessChanged(window.platformBrightness);

@@ -13,5 +13,4 @@ class FediFormRow extends StatelessWidget {
       child: child,
     );
   }
-
 }

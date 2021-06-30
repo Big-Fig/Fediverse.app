@@ -1,9 +1,9 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/ui/settings/ui_settings_bloc.dart';
 import 'package:fedi/app/ui/theme/current/current_fedi_ui_theme_bloc.dart';
 import 'package:fedi/app/ui/theme/dark/dark_fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/theme/light/light_fedi_ui_theme_model.dart';
-import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:rxdart/rxdart.dart';
@@ -35,18 +35,16 @@ class CurrentFediUiThemeBloc extends DisposableOwner
     return Rx.combineLatest2(
       currentThemeStream,
       systemBrightnessHandlerBloc.systemBrightnessStream,
-      (dynamic currentTheme, dynamic systemBrightness) =>
+          (dynamic currentTheme, dynamic systemBrightness) =>
           _calculateAdaptiveBrightnessCurrentThemeStream(
-        currentTheme,
-        systemBrightness,
-      ),
+            currentTheme,
+            systemBrightness,
+          ),
     ).distinct();
   }
 
-  IFediUiTheme? _calculateAdaptiveBrightnessCurrentThemeStream(
-    IFediUiTheme? currentTheme,
-    Brightness? systemBrightness,
-  ) {
+  IFediUiTheme? _calculateAdaptiveBrightnessCurrentThemeStream(IFediUiTheme? currentTheme,
+      Brightness? systemBrightness,) {
     if (currentTheme != null) {
       return currentTheme;
     } else {
@@ -67,7 +65,7 @@ class CurrentFediUiThemeBloc extends DisposableOwner
   @override
   Stream<IFediUiTheme?> get currentThemeStream =>
       uiSettingsBloc.themeIdStream.map(
-        (currentUiThemeId) => mapIdToTheme(currentUiThemeId),
+            (currentUiThemeId) => mapIdToTheme(currentUiThemeId),
       );
 
   IFediUiTheme? mapIdToTheme(String? id) {
@@ -76,7 +74,7 @@ class CurrentFediUiThemeBloc extends DisposableOwner
     }
 
     return availableThemes.firstWhere(
-      (theme) => theme.id == id,
+          (theme) => theme.id == id,
     );
   }
 

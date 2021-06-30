@@ -106,7 +106,7 @@ class _BubblePainter extends BoxPainter {
     assert(configuration.size != null);
     final rect = Offset(
           offset.dx,
-      // ignore: no-magic-number
+          // ignore: no-magic-number
           (configuration.size!.height / 2) - indicatorHeight / 2,
         ) &
         Size(configuration.size!.width, indicatorHeight);

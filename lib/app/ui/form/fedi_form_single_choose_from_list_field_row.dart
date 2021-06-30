@@ -2,14 +2,13 @@ import 'package:fedi/app/ui/dialog/chooser/selection/single/fedi_single_selectio
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/form/fedi_form_column_desc.dart';
+import 'package:fedi/app/ui/form/fedi_form_column_error.dart';
 import 'package:fedi/app/ui/form/fedi_form_row.dart';
 import 'package:fedi/app/ui/form/fedi_form_row_label.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/dialog/dialog_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import 'package:fedi/app/ui/form/fedi_form_column_error.dart';
 
 typedef ValueToTextMapper<T> = String Function(T value);
 typedef ValueToIconMapper<T> = IconData Function(T value);

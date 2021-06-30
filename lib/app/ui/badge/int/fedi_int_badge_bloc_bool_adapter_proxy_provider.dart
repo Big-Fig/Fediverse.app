@@ -1,7 +1,7 @@
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/ui/badge/bool/fedi_bool_badge_bloc.dart';
 import 'package:fedi/app/ui/badge/int/fedi_int_badge_bloc.dart';
 import 'package:fedi/app/ui/badge/int/fedi_int_badge_bloc_bool_adapter.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:flutter/cupertino.dart';
 
 class FediIntBadgeBlocBoolAdapterProxyProvider extends StatelessWidget {
@@ -14,8 +14,8 @@ class FediIntBadgeBlocBoolAdapterProxyProvider extends StatelessWidget {
     return DisposableProxyProvider<IFediIntBadgeBloc, IFediBoolBadgeBloc>(
       update: (context, fediIntBadgeBloc, previous) =>
           FediIntBadgeBlocBoolAdapter(
-        fediIntBadgeBloc: fediIntBadgeBloc,
-      ),
+            fediIntBadgeBloc: fediIntBadgeBloc,
+          ),
       child: child,
     );
   }

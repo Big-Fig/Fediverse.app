@@ -24,7 +24,6 @@ class FediTabIndicatorBloc<T> extends DisposableOwner
     addCustomDisposable(
       () => tabController.removeListener(listener),
     );
-
   }
 
   BehaviorSubject<int> selectedIndexSubject;

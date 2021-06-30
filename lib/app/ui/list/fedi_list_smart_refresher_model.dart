@@ -1,1 +1,7 @@
-enum FediListSmartRefresherLoadingState { initialized, loading, failed, loaded, noData }
+enum FediListSmartRefresherLoadingState {
+  initialized,
+  loading,
+  failed,
+  loaded,
+  noData,
+}

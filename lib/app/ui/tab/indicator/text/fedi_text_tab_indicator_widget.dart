@@ -1,3 +1,4 @@
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/tab/indicator/fedi_tab_indicator_bloc.dart';
@@ -8,7 +9,6 @@ import 'package:fedi/app/ui/tab/indicator/style/bubble/fedi_tab_bubble_style_ind
 import 'package:fedi/app/ui/tab/indicator/style/underline/fedi_tab_underline_style_indicator.dart';
 import 'package:fedi/app/ui/tab/indicator/text/fedi_text_tab_indicator_item_widget.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -49,15 +49,14 @@ class FediTextTabIndicatorWidget<T> extends StatelessWidget {
       indicator: buildFediTabIndicator(context),
       tabs: [
         ...fediTabIndicatorBloc.items.asMap().entries.map(
-          (entry) {
+              (entry) {
             var index = entry.key;
             var tab = entry.value;
 
-            Widget tabWidget = DisposableProxyProvider<
-                IFediTabIndicatorBloc<T>, IFediTabIndicatorItemBloc<T>>(
+            Widget tabWidget = DisposableProxyProvider<IFediTabIndicatorBloc<T>,
+                IFediTabIndicatorItemBloc<T>>(
               // create: (BuildContext context) =>
-              update: (context, value, previous) =>
-                  FediTabIndicatorItemBloc<T>(
+              update: (context, value, previous) => FediTabIndicatorItemBloc<T>(
                 fediTabIndicatorBloc: value,
                 index: index,
                 item: tab,

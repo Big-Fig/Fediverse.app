@@ -1,5 +1,5 @@
-import 'package:fedi/app/ui/badge/int/fedi_int_badge_bloc.dart';
 import 'package:easy_dispose/easy_dispose.dart';
+import 'package:fedi/app/ui/badge/int/fedi_int_badge_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
 class FediIntBadgeBlocSumAdapter extends DisposableOwner
@@ -17,7 +17,8 @@ class FediIntBadgeBlocSumAdapter extends DisposableOwner
       (values) => values.fold(
         0,
         // todo improve code style
-        (int previousValue, Object? element) => previousValue + (element as int? ?? 0),
+        (int previousValue, Object? element) =>
+            previousValue + (element as int? ?? 0),
       ),
     );
   }

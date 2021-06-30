@@ -10,10 +10,10 @@ class FediGreyChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Chip(
-      label: Text(
-        label,
-        style: IFediUiTextTheme.of(context).smallShortWhite,
-      ),
-      backgroundColor: IFediUiColorTheme.of(context).grey,
-    );
+        label: Text(
+          label,
+          style: IFediUiTextTheme.of(context).smallShortWhite,
+        ),
+        backgroundColor: IFediUiColorTheme.of(context).grey,
+      );
 }

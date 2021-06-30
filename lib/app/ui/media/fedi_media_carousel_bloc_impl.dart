@@ -1,5 +1,5 @@
-import 'package:fedi/app/ui/media/fedi_media_carousel_bloc.dart';
 import 'package:easy_dispose/easy_dispose.dart';
+import 'package:fedi/app/ui/media/fedi_media_carousel_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
 class FediMediaCarouselBloc<T> extends DisposableOwner
@@ -16,7 +16,6 @@ class FediMediaCarouselBloc<T> extends DisposableOwner
   }
 
   @override
-
   int? get currentIndex => currentIndexSubject.valueOrNull;
 
   @override

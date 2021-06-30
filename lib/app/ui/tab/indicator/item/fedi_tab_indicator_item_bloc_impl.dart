@@ -1,6 +1,6 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/ui/tab/indicator/fedi_tab_indicator_bloc.dart';
 import 'package:fedi/app/ui/tab/indicator/item/fedi_tab_indicator_item_bloc.dart';
-import 'package:easy_dispose/easy_dispose.dart';
 
 class FediTabIndicatorItemBloc<T> extends DisposableOwner
     implements IFediTabIndicatorItemBloc<T> {
@@ -26,11 +26,11 @@ class FediTabIndicatorItemBloc<T> extends DisposableOwner
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is FediTabIndicatorItemBloc &&
-          runtimeType == other.runtimeType &&
-          fediTabIndicatorBloc == other.fediTabIndicatorBloc &&
-          item == other.item &&
-          index == other.index;
+          other is FediTabIndicatorItemBloc &&
+              runtimeType == other.runtimeType &&
+              fediTabIndicatorBloc == other.fediTabIndicatorBloc &&
+              item == other.item &&
+              index == other.index;
 
   @override
   int get hashCode =>

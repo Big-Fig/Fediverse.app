@@ -1,8 +1,8 @@
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/media/player/video/fedi_video_player_widget.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/media/player/video/video_media_player_bloc.dart';
 import 'package:fedi/media/player/video/video_media_player_bloc_impl.dart';
 import 'package:fedi/media/player/video/video_media_player_bloc_provider.dart';
@@ -10,14 +10,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logging/logging.dart';
-
 import 'package:wakelock/wakelock.dart';
 
 final _logger =
-    Logger('fedi_video_player_control_toggle_fullscreen_button_widget.dart');
+Logger('fedi_video_player_control_toggle_fullscreen_button_widget.dart');
 
-class FediVideoPlayerToggleControlFullscreenButtonWidget
-    extends StatelessWidget {
+class FediVideoPlayerToggleControlFullscreenButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var videoMediaPlayerBloc = IVideoMediaPlayerBloc.of(context);
@@ -33,8 +31,7 @@ class FediVideoPlayerToggleControlFullscreenButtonWidget
   const FediVideoPlayerToggleControlFullscreenButtonWidget();
 }
 
-class _FediVideoPlayerToggleControlFullscreenButtonEnabledWidget
-    extends StatelessWidget {
+class _FediVideoPlayerToggleControlFullscreenButtonEnabledWidget extends StatelessWidget {
   const _FediVideoPlayerToggleControlFullscreenButtonEnabledWidget({
     Key? key,
   }) : super(key: key);
@@ -61,17 +58,14 @@ class _FediVideoPlayerToggleControlFullscreenButtonEnabledWidget
   }
 }
 
-Future<dynamic> pushFullScreenPage(
-  BuildContext context,
-  IVideoMediaPlayerBloc videoMediaPlayerBloc,
+Future<dynamic> pushFullScreenPage(BuildContext context,
+    IVideoMediaPlayerBloc videoMediaPlayerBloc,
 ) async {
   final isAndroid = Theme.of(context).platform == TargetPlatform.android;
   final TransitionRoute route = PageRouteBuilder(
-    pageBuilder: (
-      BuildContext context,
-      Animation<double> animation,
-      Animation<double> secondaryAnimation,
-    ) {
+    pageBuilder: (BuildContext context,
+        Animation<double> animation,
+        Animation<double> secondaryAnimation,) {
       return AnimatedBuilder(
         animation: animation,
         builder: (BuildContext context, Widget? child) {
@@ -80,7 +74,7 @@ Future<dynamic> pushFullScreenPage(
               mediaPlayerSource: videoMediaPlayerBloc.mediaPlayerSource,
               desiredAspectRatio: videoMediaPlayerBloc.desiredAspectRatio,
               isFullScreenSupportEnabled:
-                  videoMediaPlayerBloc.isFullScreenSupportEnabled,
+              videoMediaPlayerBloc.isFullScreenSupportEnabled,
               autoInit: videoMediaPlayerBloc.autoInit,
               autoPlay: videoMediaPlayerBloc.autoPlay,
               isFullscreen: true,
@@ -120,8 +114,7 @@ Future<dynamic> pushFullScreenPage(
   );
 }
 
-class _FediVideoPlayerToggleControlFullscreenButtonDisabledWidget
-    extends StatelessWidget {
+class _FediVideoPlayerToggleControlFullscreenButtonDisabledWidget extends StatelessWidget {
   const _FediVideoPlayerToggleControlFullscreenButtonDisabledWidget({
     Key? key,
   }) : super(key: key);

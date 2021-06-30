@@ -24,7 +24,7 @@ class FediIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       onPressed: onPressed,
-      padding:  padding,
+      padding: padding,
       icon: icon,
       color: color,
       iconSize: iconSize,

@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 // ignore_for_file: no-magic-number
 // ignore_for_file: no-equal-arguments
 // ignore_for_file: long-method
@@ -23,7 +24,6 @@ class LightFediUiTheme implements IFediUiTheme {
   const LightFediUiTheme();
 
   @override
-
   ThemeData get themeData =>
       createBaseFediThemeData(_lightFediUiColorTheme.primary).copyWith(
         brightness: Brightness.light,
@@ -52,7 +52,6 @@ class LightFediUiTheme implements IFediUiTheme {
           selectionHandleColor: Color(0xff64b5f6),
         ),
         backgroundColor: Color(0xff90caf9),
-
         dialogBackgroundColor: Color(0xffffffff),
         indicatorColor: Color(0xff2196f3),
         hintColor: Color(0x8a000000),
