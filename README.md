@@ -422,7 +422,7 @@ Don't forget to enable in `.env` file
 
 `FIREBASE_ENABLED=false`
 
-####### Android
+###### Android
 
 * Generate `google-services.json`
 
