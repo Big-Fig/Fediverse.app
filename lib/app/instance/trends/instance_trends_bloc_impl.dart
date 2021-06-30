@@ -9,7 +9,7 @@ import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
 import 'package:fedi/pleroma/api/trends/pleroma_api_trends_service.dart';
-import 'package:pedantic/pedantic.dart';
+
 import 'package:rxdart/rxdart.dart';
 
 abstract class InstanceTrendsBloc extends DisposableOwner
@@ -49,7 +49,8 @@ abstract class InstanceTrendsBloc extends DisposableOwner
     );
     addDisposable(hashtagPaginationListBloc);
 
-    unawaited(hashtagPaginationListBloc.refreshWithoutController());
+    // ignore: unawaited_futures
+    hashtagPaginationListBloc.refreshWithoutController();
   }
 
   IPleromaApiTrendsService get pleromaApiTrendsService;

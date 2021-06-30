@@ -88,7 +88,7 @@ abstract class EditSettingsBloc<T extends ISettings?> extends FormBloc
     updateInProgress = false;
   }
 
-  void saveSettingsFromSettingsBlocToForm(T newSettings) async {
+  Future saveSettingsFromSettingsBlocToForm(T newSettings) async {
     if (updateInProgress) {
       return;
     }

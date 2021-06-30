@@ -17,15 +17,13 @@ class PleromaApiConversationService extends BasePleromaApiService
   final conversationRelativeUrlPath = '/api/v1/conversations/';
   final pleromaConversationRelativeUrlPath = '/api/v1/pleroma/conversations/';
   final conversationStatusesRelativeUrlPath = 'statuses';
-  @override
-  final IPleromaApiAuthRestService restService;
 
   @override
-  IPleromaApiAuthRestService get restApiAuthService => restService;
+  final IPleromaApiAuthRestService restApiAuthService;
 
   PleromaApiConversationService({
-    required this.restService,
-  }) : super(restService: restService);
+    required this.restApiAuthService,
+  }) : super(restService: restApiAuthService);
 
   @override
   Future<List<IPleromaApiStatus>> getConversationStatuses({

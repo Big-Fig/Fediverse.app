@@ -145,7 +145,7 @@ abstract class IMastodonApiScheduleStatusRequest
 
 abstract class IMastodonApiPostStatusRequestPoll {
   /// Array of possible answers. If provided, media_ids cannot be used, and
-  /// poll[expires_in] must be provided.
+  /// poll.expires_in must be provided.
   List<String> get options;
 
   /// Duration the poll should be open, in seconds. If provided, media_ids

@@ -20,7 +20,7 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'action/post_status_expire_action_widget.dart';
+import 'package:fedi/app/status/post/action/post_status_expire_action_widget.dart';
 
 class PostStatusComposeWidget extends StatelessWidget {
   final bool expanded;
@@ -54,14 +54,12 @@ class PostStatusComposeWidget extends StatelessWidget {
             const _PostStatusComposeSubjectFieldWidget(),
             const FediUltraLightGreyDivider(),
           ],
-          displayAccountAvatar
-              ? _PostStatusComposeInputWithAvatarWidget(
+          if (displayAccountAvatar) _PostStatusComposeInputWithAvatarWidget(
                   autofocus: autofocus,
                   expanded: expanded,
                   hintText: hintText,
                   maxLines: maxLines,
-                )
-              : Expanded(
+                ) else Expanded(
                   child: PostStatusComposeInputWidget(
                     autofocus: autofocus,
                     expanded: false,

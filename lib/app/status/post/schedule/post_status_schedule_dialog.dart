@@ -8,7 +8,7 @@ import 'package:intl/intl.dart';
 
 final dateFormat = DateFormat('yyyy-MM-dd HH:mm');
 
-void showPostStatusScheduleDialog({
+Future showPostStatusScheduleDialog({
   required BuildContext context,
   required IPostStatusBloc postStatusBloc,
 }) async {

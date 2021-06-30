@@ -13,7 +13,7 @@ import 'package:fedi/web_sockets/channel/web_sockets_channel.dart';
 import 'package:fedi/web_sockets/channel/web_sockets_channel_model.dart';
 import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
 import 'package:logging/logging.dart';
-import 'package:pedantic/pedantic.dart';
+
 
 abstract class WebSocketsChannelHandler extends DisposableOwner
     implements IWebSocketsHandler {
@@ -94,11 +94,10 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
         // refresh to update followRequestCount
         if (pleromaNotificationType ==
             PleromaApiNotificationType.followRequest) {
-          unawaited(
+          // ignore: unawaited_futures
             myAccountBloc.refreshFromNetwork(
               isNeedPreFetchRelationship: false,
-            ),
-          );
+            );
         }
 
         await notificationRepository.upsertRemoteNotification(

@@ -12,15 +12,14 @@ class PleromaApiNotificationService extends BasePleromaApiService
     implements IPleromaApiNotificationService {
   final notificationRelativeUrlPath = 'api/v1/notifications';
   final pleromaNotificationRelativeUrlPath = 'api/v1/pleroma/notifications';
-  @override
-  final IPleromaApiAuthRestService restService;
 
   @override
-  IPleromaApiAuthRestService get restApiAuthService => restService;
+  final IPleromaApiAuthRestService restApiAuthService;
 
-  PleromaApiNotificationService({required this.restService})
-      : super(
-          restService: restService,
+  PleromaApiNotificationService({
+    required this.restApiAuthService,
+  }) : super(
+          restService: restApiAuthService,
         );
 
   @override
@@ -47,7 +46,7 @@ class PleromaApiNotificationService extends BasePleromaApiService
     required String? notificationRemoteId,
   }) async {
     assert(
-      restService.isPleroma,
+    restApiAuthService.isPleroma,
       'markAsRead notification works only on pleroma',
     );
 
@@ -74,7 +73,7 @@ class PleromaApiNotificationService extends BasePleromaApiService
     required String? maxNotificationRemoteId,
   }) async {
     assert(
-      restService.isPleroma,
+    restApiAuthService.isPleroma,
       'markAsRead notification works only on pleroma',
     );
 
@@ -157,7 +156,7 @@ class PleromaApiNotificationService extends BasePleromaApiService
     if (onlyFromAccountRemoteId != null) {
       // todo: remove when pleroma will support
       assert(
-        restService.isMastodon,
+      restApiAuthService.isMastodon,
         'Not supported on Pleroma. '
         'onlyFromAccountRemoteId added only in Mastodon 2.9.0 '
         'but Pleroma targets Mastodon 2.7.2 API',
@@ -169,7 +168,7 @@ class PleromaApiNotificationService extends BasePleromaApiService
     List<PleromaApiNotificationType>? excludeTypes,
   ) {
     if (excludeTypes?.isNotEmpty == true) {
-      if (restService.isMastodon) {
+      if (restApiAuthService.isMastodon) {
         excludeTypes = excludeTypes!
             .where(
               (excludeType) => IPleromaApiNotificationService
@@ -177,7 +176,7 @@ class PleromaApiNotificationService extends BasePleromaApiService
                   .contains(excludeType),
             )
             .toList();
-      } else if (restService.isPleroma) {
+      } else if (restApiAuthService.isPleroma) {
         excludeTypes = excludeTypes!
             .where(
               (excludeType) => IPleromaApiNotificationService
@@ -195,7 +194,7 @@ class PleromaApiNotificationService extends BasePleromaApiService
     List<PleromaApiVisibility>? excludeVisibilities,
   ) {
     if (excludeVisibilities?.isNotEmpty == true) {
-      assert(restService.isPleroma);
+      assert(restApiAuthService.isPleroma);
       for (var excludeVisibility in excludeVisibilities!) {
         assert(
           IPleromaApiNotificationService.validPleromaVisibilityToExclude
@@ -210,7 +209,7 @@ class PleromaApiNotificationService extends BasePleromaApiService
     List<PleromaApiNotificationType>? includeTypes,
   ) {
     if (includeTypes?.isNotEmpty == true) {
-      assert(restService.isPleroma);
+      assert(restApiAuthService.isPleroma);
       for (var includeType in includeTypes!) {
         assert(
           IPleromaApiNotificationService.validPleromaTypesToInclude

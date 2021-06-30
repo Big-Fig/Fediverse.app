@@ -50,9 +50,9 @@ abstract class JsonListDatabaseConverter<T>
   }
 
   @override
-  String? mapToSql(List<T>? list) {
-    if (list?.isNotEmpty == true) {
-      return json.encode(list!.map((item) => toJson(item)).toList());
+  String? mapToSql(List<T>? value) {
+    if (value?.isNotEmpty == true) {
+      return json.encode(value!.map((item) => toJson(item)).toList());
     } else {
       return null;
     }
@@ -74,11 +74,11 @@ class StringListDatabaseConverter extends TypeConverter<List<String>, String> {
   }
 
   @override
-  String? mapToSql(List<String>? list) {
-    if (list == null) {
+  String? mapToSql(List<String>? value) {
+    if (value == null) {
       return null;
     }
 
-    return json.encode(list);
+    return json.encode(value);
   }
 }

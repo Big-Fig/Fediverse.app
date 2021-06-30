@@ -13,7 +13,7 @@ import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_s
 import 'package:fedi/pleroma/api/status/auth/pleroma_api_auth_status_service.dart';
 import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
 import 'package:flutter/widgets.dart';
-import 'package:pedantic/pedantic.dart';
+
 
 class ConversationChatPostMessageBloc extends PostStatusBloc {
   final IConversationChatBloc conversationChatBloc;
@@ -114,11 +114,10 @@ class ConversationChatPostMessageBloc extends PostStatusBloc {
   Future actualPostStatus() async {
     var currentPostStatusData = calculateCurrentPostStatusData();
 
-    unawaited(
+    // ignore: unawaited_futures
       conversationChatBloc.postMessage(
         postStatusData: currentPostStatusData,
         oldPendingFailedConversationChatMessage: null,
-      ),
-    );
+      );
   }
 }

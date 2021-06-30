@@ -71,9 +71,9 @@ class InstanceAnnouncementRepository
 
   @override
   IInstanceAnnouncement mapRemoteItemToAppItem(
-    IPleromaApiAnnouncement appItem,
+    IPleromaApiAnnouncement remoteItem,
   ) =>
-      appItem.toDbInstanceAnnouncementPopulatedWrapper();
+      remoteItem.toDbInstanceAnnouncementPopulatedWrapper();
 
   @override
   InstanceAnnouncementRepositoryFilters get emptyFilters =>

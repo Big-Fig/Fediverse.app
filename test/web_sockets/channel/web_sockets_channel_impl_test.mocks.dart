@@ -6,15 +6,12 @@ import 'dart:async' as _i4;
 
 import 'package:connectivity/connectivity.dart' as _i2;
 import 'package:connectivity_platform_interface/src/enums.dart' as _i5;
-import 'package:fedi/async/loading/async_loading_service_impl.dart' as _i12;
-import 'package:fedi/async/loading/init/async_init_loading_model.dart' as _i6;
+import 'package:easy_dispose/src/composite_disposable.dart' as _i6;
+import 'package:easy_dispose/src/disposable.dart' as _i7;
+import 'package:fedi/async/loading/async_loading_service_impl.dart' as _i9;
+import 'package:fedi/async/loading/init/async_init_loading_model.dart' as _i8;
 import 'package:fedi/connection/connection_service_impl.dart' as _i3;
-import 'package:fedi/disposable/disposable.dart' as _i7;
-import 'package:flutter/src/widgets/editable_text.dart' as _i8;
-import 'package:flutter/src/widgets/focus_manager.dart' as _i10;
-import 'package:flutter/src/widgets/scroll_controller.dart' as _i9;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:rxdart/src/subjects/subject.dart' as _i11;
 
 // ignore_for_file: avoid_redundant_argument_values
 // ignore_for_file: comment_references
@@ -50,6 +47,18 @@ class MockConnectionService extends _i1.Mock implements _i3.ConnectionService {
       (super.noSuchMethod(Invocation.getter(#isConnected), returnValue: false)
           as bool);
   @override
+  _i6.DisposeOrder get disposeOrder =>
+      (super.noSuchMethod(Invocation.getter(#disposeOrder),
+          returnValue: _i6.DisposeOrder.lifo) as _i6.DisposeOrder);
+  @override
+  bool get catchExceptions => (super
+          .noSuchMethod(Invocation.getter(#catchExceptions), returnValue: false)
+      as bool);
+  @override
+  List<_i7.IDisposable> get disposables =>
+      (super.noSuchMethod(Invocation.getter(#disposables),
+          returnValue: <_i7.IDisposable>[]) as List<_i7.IDisposable>);
+  @override
   bool get isDisposed =>
       (super.noSuchMethod(Invocation.getter(#isDisposed), returnValue: false)
           as bool);
@@ -58,10 +67,10 @@ class MockConnectionService extends _i1.Mock implements _i3.ConnectionService {
       super.noSuchMethod(Invocation.setter(#isDisposed, _isDisposed),
           returnValueForMissingStub: null);
   @override
-  _i4.Stream<_i6.AsyncInitLoadingState> get initLoadingStateStream =>
+  _i4.Stream<_i8.AsyncInitLoadingState> get initLoadingStateStream =>
       (super.noSuchMethod(Invocation.getter(#initLoadingStateStream),
-              returnValue: Stream<_i6.AsyncInitLoadingState>.empty())
-          as _i4.Stream<_i6.AsyncInitLoadingState>);
+              returnValue: Stream<_i8.AsyncInitLoadingState>.empty())
+          as _i4.Stream<_i8.AsyncInitLoadingState>);
   @override
   _i4.Stream<bool> get isLoadingStream =>
       (super.noSuchMethod(Invocation.getter(#isLoadingStream),
@@ -79,29 +88,17 @@ class MockConnectionService extends _i1.Mock implements _i3.ConnectionService {
       (super.noSuchMethod(Invocation.method(#internalAsyncInit, []),
           returnValue: Future<dynamic>.value()) as _i4.Future<dynamic>);
   @override
-  void addDisposable(
-          {_i7.IDisposable? disposable,
-          _i4.StreamSubscription<dynamic>? streamSubscription,
-          _i8.TextEditingController? textEditingController,
-          _i9.ScrollController? scrollController,
-          _i10.FocusNode? focusNode,
-          _i11.Subject<dynamic>? subject,
-          _i4.StreamController<dynamic>? streamController,
-          _i4.Timer? timer,
-          _i4.FutureOr<dynamic>? Function()? custom}) =>
-      super.noSuchMethod(
-          Invocation.method(#addDisposable, [], {
-            #disposable: disposable,
-            #streamSubscription: streamSubscription,
-            #textEditingController: textEditingController,
-            #scrollController: scrollController,
-            #focusNode: focusNode,
-            #subject: subject,
-            #streamController: streamController,
-            #timer: timer,
-            #custom: custom
-          }),
+  void addDisposable(_i7.IDisposable? disposable) =>
+      super.noSuchMethod(Invocation.method(#addDisposable, [disposable]),
           returnValueForMissingStub: null);
+  @override
+  void addDisposables(Iterable<_i7.IDisposable>? disposables) =>
+      super.noSuchMethod(Invocation.method(#addDisposables, [disposables]),
+          returnValueForMissingStub: null);
+  @override
+  _i4.Future<dynamic> performDispose() =>
+      (super.noSuchMethod(Invocation.method(#performDispose, []),
+          returnValue: Future<dynamic>.value()) as _i4.Future<dynamic>);
   @override
   _i4.Future<dynamic> dispose() =>
       (super.noSuchMethod(Invocation.method(#dispose, []),
@@ -115,7 +112,7 @@ class MockConnectionService extends _i1.Mock implements _i3.ConnectionService {
       super.noSuchMethod(Invocation.method(#markAsAlreadyInitialized, []),
           returnValueForMissingStub: null);
   @override
-  _i4.Future<dynamic> performLoading(_i12.LoadingFunction? loadingFunction) =>
+  _i4.Future<dynamic> performLoading(_i9.LoadingFunction? loadingFunction) =>
       (super.noSuchMethod(Invocation.method(#performLoading, [loadingFunction]),
           returnValue: Future<dynamic>.value()) as _i4.Future<dynamic>);
 }

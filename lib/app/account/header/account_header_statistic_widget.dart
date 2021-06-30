@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import 'account_header_bloc.dart';
+import 'package:fedi/app/account/header/account_header_bloc.dart';
 
 final _numberFormat = NumberFormat('#,###');
 

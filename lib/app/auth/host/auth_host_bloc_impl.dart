@@ -36,7 +36,7 @@ import 'package:fedi/rest/rest_service_impl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:logging/logging.dart';
 
-final scopes = 'read write follow push';
+const scopes = 'read write follow push';
 
 var _logger = Logger('auth_host_bloc_impl.dart');
 
@@ -285,7 +285,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     required IPleromaApiInstance hostInstance,
   }) async {
     var pleromaMyAccountService =
-        PleromaApiMyAccountService(restService: pleromaAuthRestService);
+        PleromaApiMyAccountService(restApiAuthService: pleromaAuthRestService);
     var myAccount = await pleromaMyAccountService.verifyCredentials();
 
     var instance = AuthInstance(

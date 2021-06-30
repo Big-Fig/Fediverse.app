@@ -9,11 +9,10 @@ import 'package:path/path.dart';
 class PleromaApiStatusService extends BasePleromaApiService
     implements IPleromaApiStatusService {
   final statusRelativeUrlPath = '/api/v1/statuses/';
-  @override
-  final IPleromaApiRestService restService;
 
-  PleromaApiStatusService({required this.restService})
-      : super(
+  PleromaApiStatusService({
+    required IPleromaApiRestService restService,
+  }) : super(
           restService: restService,
         );
 

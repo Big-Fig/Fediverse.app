@@ -60,7 +60,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:logging/logging.dart';
-import 'package:pedantic/pedantic.dart';
+
 import 'package:provider/provider.dart';
 
 var _logger = Logger('main.dart');
@@ -70,14 +70,15 @@ CurrentAuthInstanceContextBloc? currentInstanceContextBloc;
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 // ignore: long-method
-void main() async {
+Future main() async {
   // debugRepaintRainbowEnabled = true;
   WidgetsFlutterBinding.ensureInitialized();
 
   runNotInitializedSplashApp();
 
   IInitBloc initBloc = InitBloc();
-  unawaited(initBloc.performAsyncInit());
+  // ignore: unawaited_futures
+  initBloc.performAsyncInit();
 
   initBloc.initLoadingStateStream.listen(
     (newState) async {

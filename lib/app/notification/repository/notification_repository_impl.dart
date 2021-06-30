@@ -12,7 +12,7 @@ import 'package:fedi/app/notification/repository/notification_repository_model.d
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/pleroma/api/notification/pleroma_api_notification_model.dart';
 import 'package:moor/moor.dart';
-import 'package:pedantic/pedantic.dart';
+
 
 class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     DbNotification,
@@ -167,44 +167,40 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     if (batchTransaction != null) {
       var remoteStatus = remoteItem.status;
       if (remoteStatus != null) {
-        unawaited(
+        // ignore: unawaited_futures
           statusRepository.upsertInRemoteTypeBatch(
             remoteStatus,
             batchTransaction: batchTransaction,
-          ),
-        );
+          );
       }
 
       var remoteAccount = remoteItem.account;
 
       // account may be already added during status update
       if (remoteAccount != null) {
-        unawaited(
+        // ignore: unawaited_futures
           accountRepository.upsertInRemoteTypeBatch(
             remoteAccount,
             batchTransaction: batchTransaction,
-          ),
-        );
+          );
       }
       var targetRemoteAccount = remoteItem.target;
 
       if (targetRemoteAccount != null) {
-        unawaited(
+        // ignore: unawaited_futures
           accountRepository.upsertInRemoteTypeBatch(
             targetRemoteAccount,
             batchTransaction: batchTransaction,
-          ),
-        );
+          );
       }
 
       var remoteChatMessage = remoteItem.chatMessage;
       if (remoteChatMessage != null) {
-        unawaited(
+        // ignore: unawaited_futures
           chatMessageRepository.upsertInRemoteTypeBatch(
             remoteChatMessage,
             batchTransaction: batchTransaction,
-          ),
-        );
+          );
       }
     } else {
       await batch(
@@ -226,19 +222,17 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }) async {
     if (batchTransaction != null) {
       // todo: support mode
-      unawaited(
+      // ignore: unawaited_futures
         _upsertNotificationMetadata(
           remoteItem,
           batchTransaction: batchTransaction,
-        ),
-      );
+        );
 
-      unawaited(
+      // ignore: unawaited_futures
         dao.upsertBatch(
           entity: remoteItem.toDbNotification(unread: null),
           batchTransaction: batchTransaction,
-        ),
-      );
+        );
     } else {
       await batch((batch) {
         insertInRemoteTypeBatch(
@@ -257,28 +251,25 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
-      unawaited(
+      // ignore: unawaited_futures
         _upsertNotificationMetadata(
           remoteItem,
           batchTransaction: batchTransaction,
-        ),
-      );
+        );
 
       if (appItem.localId != null) {
-        unawaited(
+        // ignore: unawaited_futures
           updateByDbIdInDbType(
             dbId: appItem.localId!,
             dbItem: remoteItem.toDbNotification(unread: null),
             batchTransaction: batchTransaction,
-          ),
-        );
+          );
       } else {
-        unawaited(
+        // ignore: unawaited_futures
           upsertInRemoteTypeBatch(
             remoteItem,
             batchTransaction: batchTransaction,
-          ),
-        );
+          );
       }
     } else {
       await batch((batch) {
@@ -310,28 +301,25 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
-      unawaited(
+      // ignore: unawaited_futures
         _upsertNotificationMetadata(
           remoteItem,
           batchTransaction: batchTransaction,
-        ),
-      );
+        );
 
       if (appItem.localId != null) {
-        unawaited(
+        // ignore: unawaited_futures
           updateByDbIdInDbType(
             dbId: appItem.localId!,
             dbItem: remoteItem.toDbNotification(unread: unread),
             batchTransaction: batchTransaction,
-          ),
-        );
+          );
       } else {
-        unawaited(
+        // ignore: unawaited_futures
           upsertInRemoteTypeBatch(
             remoteItem,
             batchTransaction: batchTransaction,
-          ),
-        );
+          );
       }
     } else {
       await batch((batch) {
@@ -352,20 +340,18 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }) async {
     if (batchTransaction != null) {
       // todo: support mode
-      unawaited(
+      // ignore: unawaited_futures
         _upsertNotificationMetadata(
           remoteItem,
           batchTransaction: batchTransaction,
-        ),
-      );
+        );
 
       var dbNotification = remoteItem.toDbNotification(unread: unread);
-      unawaited(
+      // ignore: unawaited_futures
         dao.upsertBatch(
           entity: dbNotification,
           batchTransaction: batchTransaction,
-        ),
-      );
+        );
     } else {
       await batch(
         (batch) {
@@ -387,13 +373,12 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }) async {
     if (batchTransaction != null) {
       for (var remoteNotification in pleromaNotifications) {
-        unawaited(
+        // ignore: unawaited_futures
           upsertRemoteNotification(
             remoteNotification,
             unread: unread,
             batchTransaction: batchTransaction,
-          ),
-        );
+          );
       }
     } else {
       await batch(

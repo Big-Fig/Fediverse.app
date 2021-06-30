@@ -14,14 +14,11 @@ class PleromaApiEndorsementsService extends BasePleromaApiService
   final endorsementsRelativeUrlPath = '/api/v1/endorsements';
 
   @override
-  final IPleromaApiAuthRestService restService;
-
-  @override
-  IPleromaApiAuthRestService get restApiAuthService => restService;
+  final IPleromaApiAuthRestService restApiAuthService;
 
   PleromaApiEndorsementsService({
-    required this.restService,
-  }) : super(restService: restService);
+    required this.restApiAuthService,
+  }) : super(restService: restApiAuthService);
 
   @override
   Future<List<IPleromaApiAccount>> getEndorsements({

@@ -59,8 +59,8 @@ class FilterRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       dbPopulatedItem.toDbFilterPopulatedWrapper().toPleromaFilter();
 
   @override
-  IFilter mapRemoteItemToAppItem(IPleromaApiFilter appItem) =>
-      appItem.toDbFilterPopulatedWrapper();
+  IFilter mapRemoteItemToAppItem(IPleromaApiFilter remoteItem) =>
+      remoteItem.toDbFilterPopulatedWrapper();
 
   @override
   FilterRepositoryFilters get emptyFilters => FilterRepositoryFilters.empty;

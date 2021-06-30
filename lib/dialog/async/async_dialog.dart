@@ -6,7 +6,7 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
-import 'package:pedantic/pedantic.dart';
+
 
 Logger _logger = Logger('async_dialog.dart');
 
@@ -45,7 +45,8 @@ Future<AsyncDialogResult<T?>> doAsyncOperationWithDialog<T>({
       contentMessage: contentMessage,
       cancelableOperation: cancelableOperation,
     );
-    unawaited(progressDialog.show(context));
+    // ignore: unawaited_futures
+    progressDialog.show(context);
   }
 
   var error;
@@ -92,7 +93,8 @@ Future<AsyncDialogResult<T?>> doAsyncOperationWithDialog<T>({
       );
     }
   } finally {
-    unawaited(progressDialog.hide(context));
+    // ignore: unawaited_futures
+    progressDialog.hide(context);
   }
 
   // wait until progress dialog actually hides

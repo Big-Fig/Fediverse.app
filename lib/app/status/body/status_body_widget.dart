@@ -329,7 +329,7 @@ class _StatusBodyNsfwChipWidget extends StatelessWidget {
   }
 }
 
-void _onLinkTap(
+Future _onLinkTap(
   BuildContext context,
   String url,
 ) async {

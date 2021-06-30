@@ -10,7 +10,6 @@ import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_m
 import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_service.dart';
 import 'package:flutter/widgets.dart';
-import 'package:pedantic/pedantic.dart';
 
 class LocalStatusThreadBloc extends StatusThreadBloc {
   final IStatusRepository statusRepository;
@@ -79,13 +78,12 @@ class LocalStatusThreadBloc extends StatusThreadBloc {
 
   @override
   void onInitialStatusUpdated(IPleromaApiStatus updatedStartRemoteStatus) {
-    unawaited(
+    // ignore: unawaited_futures
       statusRepository.updateAppTypeByRemoteType(
         appItem: initialStatusToFetchThread,
         remoteItem: updatedStartRemoteStatus,
         batchTransaction: null,
-      ),
-    );
+      );
   }
 
   @override

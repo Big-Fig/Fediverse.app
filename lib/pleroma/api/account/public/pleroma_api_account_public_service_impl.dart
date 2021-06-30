@@ -15,11 +15,9 @@ final _logger = Logger('pleroma_api_account_public_service_impl.dart');
 class PleromaApiAccountPublicService extends BasePleromaApiService
     implements IPleromaApiAccountPublicService {
   final accountRelativeUrlPath = '/api/v1/accounts/';
-  @override
-  final IPleromaApiRestService restService;
 
   PleromaApiAccountPublicService({
-    required this.restService,
+    required IPleromaApiRestService restService,
   }) : super(restService: restService);
 
   @override

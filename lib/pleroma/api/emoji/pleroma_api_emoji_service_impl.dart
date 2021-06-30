@@ -8,16 +8,14 @@ class PleromaApiEmojiService extends BasePleromaApiService
     with PleromaApiAuthMixinService
     implements IPleromaApiEmojiService {
   final emojiRelativeUrlPath = '/api/pleroma/emoji';
-  @override
-  final IPleromaApiAuthRestService restService;
 
   @override
-  IPleromaApiAuthRestService get restApiAuthService => restService;
+  final IPleromaApiAuthRestService restApiAuthService;
 
   PleromaApiEmojiService({
-    required this.restService,
+    required this.restApiAuthService,
   }) : super(
-          restService: restService,
+          restService: restApiAuthService,
         );
 
   @override

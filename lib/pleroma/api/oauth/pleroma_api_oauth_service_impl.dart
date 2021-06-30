@@ -16,11 +16,10 @@ var _logger = Logger('pleroma_api_oauth_service_impl.dart');
 class PleromaApiOAuthService extends BasePleromaApiService
     implements IPleromaApiOAuthService {
   final oauthRelativeUrlPath = '/oauth/';
-  @override
-  final IPleromaApiRestService restService;
 
-  PleromaApiOAuthService({required this.restService})
-      : super(
+  PleromaApiOAuthService({
+    required IPleromaApiRestService restService,
+  }) : super(
           restService: restService,
         );
 

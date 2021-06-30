@@ -19,10 +19,10 @@ import 'package:fedi/app/status/repository/status_repository_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
-import 'package:fedi/pleroma/api/account/my/pleroma_api_my_account_service_impl.dart';
-import 'package:fedi/pleroma/api/conversation/pleroma_api_conversation_service_impl.dart';
+import 'package:fedi/pleroma/api/account/my/pleroma_api_my_account_service.dart';
+import 'package:fedi/pleroma/api/conversation/pleroma_api_conversation_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
-import 'package:fedi/pleroma/api/status/auth/pleroma_api_auth_status_service_impl.dart';
+import 'package:fedi/pleroma/api/status/auth/pleroma_api_auth_status_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -36,16 +36,16 @@ import 'conversation_test_helper.dart';
 
 // ignore_for_file: no-magic-number, avoid-late-keyword
 @GenerateMocks([
-  PleromaApiConversationService,
-  PleromaApiAuthStatusService,
-  PleromaApiMyAccountService,
+  IPleromaApiConversationService,
+  IPleromaApiAuthStatusService,
+  IPleromaApiMyAccountService,
 ])
 void main() {
   late IConversationChat conversation;
   late IConversationChatBloc conversationBloc;
-  late MockPleromaApiConversationService pleromaConversationServiceMock;
-  late MockPleromaApiAuthStatusService pleromaAuthStatusServiceMock;
-  late MockPleromaApiMyAccountService pleromaMyAccountServiceMock;
+  late MockIPleromaApiConversationService pleromaConversationServiceMock;
+  late MockIPleromaApiAuthStatusService pleromaAuthStatusServiceMock;
+  late MockIPleromaApiMyAccountService pleromaMyAccountServiceMock;
   late AppDatabase database;
   late IAccountRepository accountRepository;
   late IStatusRepository statusRepository;
@@ -71,9 +71,9 @@ void main() {
         statusRepository: statusRepository,
       );
 
-      pleromaConversationServiceMock = MockPleromaApiConversationService();
-      pleromaMyAccountServiceMock = MockPleromaApiMyAccountService();
-      pleromaAuthStatusServiceMock = MockPleromaApiAuthStatusService();
+      pleromaConversationServiceMock = MockIPleromaApiConversationService();
+      pleromaMyAccountServiceMock = MockIPleromaApiMyAccountService();
+      pleromaAuthStatusServiceMock = MockIPleromaApiAuthStatusService();
       preferencesService = MemoryLocalPreferencesService();
 
       myAccount =

@@ -4,18 +4,13 @@
 
 import 'dart:async' as _i4;
 
-import 'package:fedi/disposable/disposable.dart' as _i7;
 import 'package:fedi/pleroma/api/announcement/pleroma_api_announcement_model.dart'
     as _i6;
-import 'package:fedi/pleroma/api/announcement/pleroma_api_announcement_service_impl.dart'
+import 'package:fedi/pleroma/api/announcement/pleroma_api_announcement_service.dart'
     as _i3;
 import 'package:fedi/pleroma/api/pleroma_api_service.dart' as _i5;
-import 'package:fedi/pleroma/api/rest/pleroma_api_rest_service.dart' as _i2;
-import 'package:flutter/src/widgets/editable_text.dart' as _i8;
-import 'package:flutter/src/widgets/focus_manager.dart' as _i10;
-import 'package:flutter/src/widgets/scroll_controller.dart' as _i9;
+import 'package:fedi/rest/rest_service.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:rxdart/src/subjects/subject.dart' as _i11;
 
 // ignore_for_file: avoid_redundant_argument_values
 // ignore_for_file: comment_references
@@ -23,27 +18,21 @@ import 'package:rxdart/src/subjects/subject.dart' as _i11;
 // ignore_for_file: prefer_const_constructors
 // ignore_for_file: unnecessary_parenthesis
 
-class _FakeIPleromaApiRestService extends _i1.Fake
-    implements _i2.IPleromaApiRestService {}
+class _FakeIRestService extends _i1.Fake implements _i2.IRestService {}
 
-/// A class which mocks [PleromaApiAnnouncementService].
+/// A class which mocks [IPleromaApiAnnouncementService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockPleromaApiAnnouncementService extends _i1.Mock
-    implements _i3.PleromaApiAnnouncementService {
-  MockPleromaApiAnnouncementService() {
+class MockIPleromaApiAnnouncementService extends _i1.Mock
+    implements _i3.IPleromaApiAnnouncementService {
+  MockIPleromaApiAnnouncementService() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  String get announcementRelativeUrlPath =>
-      (super.noSuchMethod(Invocation.getter(#announcementRelativeUrlPath),
-          returnValue: '') as String);
-  @override
-  _i2.IPleromaApiRestService get restService =>
+  _i2.IRestService get restService =>
       (super.noSuchMethod(Invocation.getter(#restService),
-              returnValue: _FakeIPleromaApiRestService())
-          as _i2.IPleromaApiRestService);
+          returnValue: _FakeIRestService()) as _i2.IRestService);
   @override
   _i4.Stream<_i5.PleromaApiState> get pleromaApiStateStream =>
       (super.noSuchMethod(Invocation.getter(#pleromaApiStateStream),
@@ -65,10 +54,6 @@ class MockPleromaApiAnnouncementService extends _i1.Mock
   bool get isDisposed =>
       (super.noSuchMethod(Invocation.getter(#isDisposed), returnValue: false)
           as bool);
-  @override
-  set isDisposed(bool? _isDisposed) =>
-      super.noSuchMethod(Invocation.setter(#isDisposed, _isDisposed),
-          returnValueForMissingStub: null);
   @override
   _i4.Future<List<_i6.IPleromaApiAnnouncement>> getAnnouncements(
           {bool? withDismissed = false}) =>
@@ -102,28 +87,4 @@ class MockPleromaApiAnnouncementService extends _i1.Mock
   _i4.Future<dynamic> dispose() =>
       (super.noSuchMethod(Invocation.method(#dispose, []),
           returnValue: Future<dynamic>.value()) as _i4.Future<dynamic>);
-  @override
-  void addDisposable(
-          {_i7.IDisposable? disposable,
-          _i4.StreamSubscription<dynamic>? streamSubscription,
-          _i8.TextEditingController? textEditingController,
-          _i9.ScrollController? scrollController,
-          _i10.FocusNode? focusNode,
-          _i11.Subject<dynamic>? subject,
-          _i4.StreamController<dynamic>? streamController,
-          _i4.Timer? timer,
-          _i4.FutureOr<dynamic>? Function()? custom}) =>
-      super.noSuchMethod(
-          Invocation.method(#addDisposable, [], {
-            #disposable: disposable,
-            #streamSubscription: streamSubscription,
-            #textEditingController: textEditingController,
-            #scrollController: scrollController,
-            #focusNode: focusNode,
-            #subject: subject,
-            #streamController: streamController,
-            #timer: timer,
-            #custom: custom
-          }),
-          returnValueForMissingStub: null);
 }

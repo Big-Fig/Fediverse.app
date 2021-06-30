@@ -11,7 +11,7 @@ import 'package:fedi/app/emoji/text/emoji_text_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
-import 'package:fedi/pleroma/api/account/my/pleroma_api_my_account_service_impl.dart';
+import 'package:fedi/pleroma/api/account/my/pleroma_api_my_account_service.dart';
 import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_model.dart';
 import 'package:fedi/pleroma/api/field/pleroma_api_field_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
@@ -23,16 +23,18 @@ import 'package:moor/ffi.dart';
 import '../../status/database/status_database_test_helper.dart';
 import '../account_test_helper.dart';
 import '../database/account_database_test_helper.dart';
-import 'my_account_test_helper.dart';
 import 'my_account_bloc_impl_test.mocks.dart';
+import 'my_account_test_helper.dart';
 
 // ignore_for_file: no-magic-number, avoid-late-keyword
 
-@GenerateMocks([PleromaApiMyAccountService])
+@GenerateMocks([
+  IPleromaApiMyAccountService,
+])
 void main() {
   late IMyAccount myAccount;
   late IMyAccountBloc myAccountBloc;
-  late MockPleromaApiMyAccountService pleromaMyAccountServiceMock;
+  late MockIPleromaApiMyAccountService pleromaMyAccountServiceMock;
   late AppDatabase database;
   late IAccountRepository accountRepository;
   late MyAccountLocalPreferenceBloc myAccountLocalPreferenceBloc;
@@ -44,7 +46,7 @@ void main() {
     database = AppDatabase(VmDatabase.memory());
     accountRepository = AccountRepository(appDatabase: database);
 
-    pleromaMyAccountServiceMock = MockPleromaApiMyAccountService();
+    pleromaMyAccountServiceMock = MockIPleromaApiMyAccountService();
 
     when(pleromaMyAccountServiceMock.isConnected).thenReturn(true);
     when(pleromaMyAccountServiceMock.pleromaApiState).thenReturn(

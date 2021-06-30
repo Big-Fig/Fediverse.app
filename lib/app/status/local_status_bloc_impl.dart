@@ -35,7 +35,7 @@ class LocalStatusBloc extends StatusBloc {
     required this.pleromaAuthStatusService,
     required IPleromaApiAccountService pleromaAccountService,
     required IPleromaApiStatusEmojiReactionService
-        PleromaApiStatusEmojiReactionService,
+        pleromaApiStatusEmojiReactionService,
     required IPleromaApiPollService pleromaPollService,
     required IStatus status,
     required bool isNeedRefreshFromNetworkOnInit,
@@ -43,8 +43,8 @@ class LocalStatusBloc extends StatusBloc {
   }) : super(
           pleromaStatusService: pleromaAuthStatusService,
           pleromaAccountService: pleromaAccountService,
-          PleromaApiStatusEmojiReactionService:
-              PleromaApiStatusEmojiReactionService,
+          pleromaApiStatusEmojiReactionService:
+              pleromaApiStatusEmojiReactionService,
           pleromaPollService: pleromaPollService,
           status: status,
           isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
@@ -75,7 +75,7 @@ class LocalStatusBloc extends StatusBloc {
           context,
           listen: false,
         ),
-        PleromaApiStatusEmojiReactionService:
+        pleromaApiStatusEmojiReactionService:
             IPleromaApiStatusEmojiReactionService.of(
           context,
           listen: false,
@@ -433,12 +433,12 @@ class LocalStatusBloc extends StatusBloc {
 
     IPleromaApiStatus? remoteStatus;
     if (alreadyAdded) {
-      remoteStatus = await PleromaApiStatusEmojiReactionService!.removeReaction(
+      remoteStatus = await pleromaApiStatusEmojiReactionService!.removeReaction(
         statusRemoteId: status.remoteId!,
         emoji: emoji,
       );
     } else {
-      remoteStatus = await PleromaApiStatusEmojiReactionService!.addReaction(
+      remoteStatus = await pleromaApiStatusEmojiReactionService!.addReaction(
         statusRemoteId: status.remoteId!,
         emoji: emoji,
       );

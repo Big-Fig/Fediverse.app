@@ -1,3 +1,4 @@
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/action/account_action_more_dialog.dart';
@@ -27,7 +28,6 @@ import 'package:fedi/app/ui/modal_bottom_sheet/fedi_modal_bottom_sheet.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_vertical_spacer.dart';
 import 'package:fedi/app/url/url_helper.dart';
 import 'package:fedi/dialog/dialog_model.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
 import 'package:flutter/material.dart';
@@ -351,15 +351,14 @@ ShareEntity _mapStatusToShareEntity(IStatus status) {
   String? text;
   var spoilerExist = spoiler?.isNotEmpty == true;
   var contentExist = content?.isNotEmpty == true;
-  if (spoilerExist || contentExist) {
-    if (spoilerExist && contentExist) {
-      text = '$spoiler\n$content';
-    } else if (contentExist) {
-      text = content;
-    } else {
-      text = spoiler;
-    }
+  if (spoilerExist && contentExist) {
+    text = '$spoiler\n$content';
+  } else if (contentExist) {
+    text = content;
+  } else if (spoilerExist) {
+    text = spoiler;
   }
+
   // todo: think about replies and reblogs
   var shareEntityItem = ShareEntityItem(
     createdAt: status.createdAt,

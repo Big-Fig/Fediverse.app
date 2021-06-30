@@ -71,17 +71,19 @@ class _DurationPickerBody extends StatefulWidget {
   });
 
   @override
-  __DurationPickerBodyState createState() => __DurationPickerBodyState(
-        currentSelectedDuration: initialDuration,
-      );
+  _DurationPickerBodyState createState() => _DurationPickerBodyState();
 }
 
-class __DurationPickerBodyState extends State<_DurationPickerBody> {
+class _DurationPickerBodyState extends State<_DurationPickerBody> {
   Duration? currentSelectedDuration;
 
-  __DurationPickerBodyState({
-    required this.currentSelectedDuration,
-  });
+  _DurationPickerBodyState();
+
+  @override
+  void initState() {
+    super.initState();
+    currentSelectedDuration = widget.initialDuration;
+  }
 
   @override
   Widget build(BuildContext context) {

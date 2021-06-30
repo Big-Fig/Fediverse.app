@@ -9,7 +9,7 @@ import 'package:fedi/mastodon/api/emoji/mastodon_api_custom_emoji_service.dart';
 import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_service.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart' as path;
-import 'package:pedantic/pedantic.dart';
+
 
 var _urlPath = path.Context(style: path.Style.url);
 
@@ -36,9 +36,11 @@ class EmojiPickerCustomImageUrlCategoryBloc extends AsyncInitLoadingBloc
     var currentInstance = currentAuthInstanceBloc.currentInstance!;
     if (currentInstance.isPleroma) {
       // old instances may not have this API
-      unawaited(_loadPleroma(currentInstance));
+      // ignore: unawaited_futures
+      _loadPleroma(currentInstance);
     } else if (currentInstance.isMastodon) {
-      unawaited(_loadMastodon());
+      // ignore: unawaited_futures
+      _loadMastodon();
     }
   }
 

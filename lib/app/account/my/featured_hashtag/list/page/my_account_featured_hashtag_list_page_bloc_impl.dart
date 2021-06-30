@@ -12,7 +12,7 @@ import 'package:easy_dispose/easy_dispose.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pleroma/api/featured_tags/pleroma_api_featured_tags_service.dart';
 import 'package:flutter/widgets.dart';
-import 'package:pedantic/pedantic.dart';
+
 
 class AccountFeaturedHashtagListPageBloc extends DisposableOwner
     implements IAccountFeaturedHashtagListPageBloc {
@@ -43,7 +43,8 @@ class AccountFeaturedHashtagListPageBloc extends DisposableOwner
     accountFeaturedHashtagListNetworkOnlyPaginationBloc.disposeWith(this);
     hashtagPaginationListBloc.disposeWith(this);
 
-    unawaited(hashtagPaginationListBloc.refreshWithoutController());
+    // ignore: unawaited_futures
+    hashtagPaginationListBloc.refreshWithoutController();
   }
 
   @override

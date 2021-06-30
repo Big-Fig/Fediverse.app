@@ -28,8 +28,8 @@ class LocalStatusReplyLoaderBloc extends AsyncInitLoadingBloc
     required this.pleromaStatusService,
     required this.statusRepository,
     required this.originalStatus,
-  }) {
-    assert(originalStatus.inReplyToRemoteId != null);
+  }):assert(originalStatus.inReplyToRemoteId != null) {
+
     if (originalStatus.inReplyToStatus != null) {
       inReplyToStatus = originalStatus.inReplyToStatus;
       markAsAlreadyInitialized();

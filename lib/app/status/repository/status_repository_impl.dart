@@ -18,7 +18,7 @@ import 'package:fedi/pleroma/api/tag/pleroma_api_tag_model.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
-import 'package:pedantic/pedantic.dart';
+
 
 var _logger = Logger('status_repository_impl.dart');
 
@@ -113,14 +113,13 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
-      unawaited(
+      // ignore: unawaited_futures
         hashtagsDao.deleteByStatusRemoteIdBatch(
           statusRemoteId,
           batchTransaction: batchTransaction,
-        ),
-      );
+        );
       tags ??= [];
-      unawaited(
+      // ignore: unawaited_futures
         hashtagsDao.insertAll(
           entities: tags
               .map(
@@ -133,8 +132,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
               .toList(),
           mode: InsertMode.insertOrReplace,
           batchTransaction: batchTransaction,
-        ),
-      );
+        );
     } else {
       await batch((batch) {
         updateStatusTags(
@@ -337,8 +335,8 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       dbPopulatedItem.toDbStatusPopulatedWrapper().toPleromaApiStatus();
 
   @override
-  IStatus mapRemoteItemToAppItem(IPleromaApiStatus appItem) =>
-      appItem.toDbStatusPopulatedWrapper();
+  IStatus mapRemoteItemToAppItem(IPleromaApiStatus remoteItem) =>
+      remoteItem.toDbStatusPopulatedWrapper();
 
   @override
   StatusRepositoryFilters get emptyFilters => StatusRepositoryFilters.empty;
@@ -385,22 +383,20 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }) async {
     if (batchTransaction != null) {
       // todo: support mode
-      unawaited(
+      // ignore: unawaited_futures
         _upsertStatusMetadata(
           remoteItem,
           batchTransaction: batchTransaction,
           listRemoteId: null,
           conversationRemoteId: null,
           isFromHomeTimeline: null,
-        ),
-      );
+        );
 
-      unawaited(
+      // ignore: unawaited_futures
         dao.upsertBatch(
           entity: remoteItem.toDbStatus(),
           batchTransaction: batchTransaction,
-        ),
-      );
+        );
     } else {
       await batch(
         (batch) {
@@ -421,31 +417,28 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
-      unawaited(
+      // ignore: unawaited_futures
         _upsertStatusMetadata(
           remoteItem,
           batchTransaction: batchTransaction,
           isFromHomeTimeline: null,
           listRemoteId: null,
           conversationRemoteId: null,
-        ),
-      );
+        );
 
       if (appItem.localId != null) {
-        unawaited(
+        // ignore: unawaited_futures
           updateByDbIdInDbType(
             dbId: appItem.localId!,
             dbItem: remoteItem.toDbStatus(),
             batchTransaction: batchTransaction,
-          ),
-        );
+          );
       } else {
-        unawaited(
+        // ignore: unawaited_futures
           upsertInRemoteTypeBatch(
             remoteItem,
             batchTransaction: batchTransaction,
-          ),
-        );
+          );
       }
     } else {
       await batch((batch) {
@@ -479,22 +472,20 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }) async {
     if (batchTransaction != null) {
       // todo: support mode
-      unawaited(
+      // ignore: unawaited_futures
         _upsertStatusMetadata(
           remoteStatus,
           listRemoteId: listRemoteId,
           conversationRemoteId: conversationRemoteId,
           isFromHomeTimeline: isFromHomeTimeline,
           batchTransaction: batchTransaction,
-        ),
-      );
+        );
 
-      unawaited(
+      // ignore: unawaited_futures
         dao.upsertBatch(
           entity: remoteStatus.toDbStatus(),
           batchTransaction: batchTransaction,
-        ),
-      );
+        );
     } else {
       await batch(
         (batch) {
@@ -602,13 +593,12 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }) async {
     if (batchTransaction != null) {
       for (var remoteItem in remoteItems) {
-        unawaited(
+        // ignore: unawaited_futures
           insertInRemoteTypeBatch(
             remoteItem,
             mode: mode,
             batchTransaction: batchTransaction,
-          ),
-        );
+          );
       }
     } else {
       await batch((batch) {
@@ -631,15 +621,14 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }) async {
     if (batchTransaction != null) {
       for (var remoteStatus in remoteStatuses) {
-        unawaited(
+        // ignore: unawaited_futures
           upsertRemoteStatusWithAllArguments(
             remoteStatus,
             isFromHomeTimeline: isFromHomeTimeline,
             conversationRemoteId: conversationRemoteId,
             listRemoteId: listRemoteId,
             batchTransaction: batchTransaction,
-          ),
-        );
+          );
       }
     } else {
       await batch((batch) {
@@ -675,24 +664,22 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       var remoteAccount = remoteStatus.account;
 
       if (conversationRemoteId != null) {
-        unawaited(
+        // ignore: unawaited_futures
           accountRepository.upsertConversationRemoteAccount(
             remoteAccount,
             conversationRemoteId: conversationRemoteId,
             batchTransaction: batchTransaction,
-          ),
-        );
+          );
       } else {
-        unawaited(
+        // ignore: unawaited_futures
           accountRepository.upsertInRemoteTypeBatch(
             remoteAccount,
             batchTransaction: batchTransaction,
-          ),
-        );
+          );
       }
 
       if (isFromHomeTimeline == true) {
-        unawaited(
+        // ignore: unawaited_futures
           homeTimelineStatusesDao.insertBatch(
             entity: DbHomeTimelineStatus(
               statusRemoteId: remoteStatus.id,
@@ -701,56 +688,51 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
             ),
             mode: InsertMode.insertOrReplace,
             batchTransaction: batchTransaction,
-          ),
-        );
+          );
       }
 
       var statusRemoteId = remoteStatus.id;
       if (listRemoteId != null) {
-        unawaited(
+        // ignore: unawaited_futures
           addStatusesToList(
             statusRemoteIds: [
               remoteStatus.id,
             ],
             listRemoteId: listRemoteId,
             batchTransaction: batchTransaction,
-          ),
-        );
+          );
       }
       if (conversationRemoteId != null) {
-        unawaited(
+        // ignore: unawaited_futures
           addStatusesToConversation(
             statusRemoteIds: [
               remoteStatus.id,
             ],
             conversationRemoteId: conversationRemoteId,
             batchTransaction: batchTransaction,
-          ),
-        );
+          );
       }
 
       var tags = remoteStatus.tags;
 
       if (tags?.isNotEmpty == true) {
-        unawaited(
+        // ignore: unawaited_futures
           updateStatusTags(
             statusRemoteId: statusRemoteId,
             tags: tags!,
             batchTransaction: batchTransaction,
-          ),
-        );
+          );
       }
 
       var reblog = remoteStatus.reblog;
       if (reblog != null) {
         // list & conversation should be null. We dont need reblogs in
         // conversations & lists
-        unawaited(
+        // ignore: unawaited_futures
           upsertInRemoteTypeBatch(
             reblog,
             batchTransaction: batchTransaction,
-          ),
-        );
+          );
       }
     } else {
       await batch(

@@ -9,7 +9,7 @@ import 'package:path/path.dart' as path;
 var urlPath = path.posix;
 
 class PleromaApiWebSocketsService extends IPleromaApiWebSocketsService {
-  static final _relativePath = '/api/v1/streaming';
+  static const _relativePath = '/api/v1/streaming';
   final IWebSocketsService? webSocketsService;
 
   final Uri baseUri;

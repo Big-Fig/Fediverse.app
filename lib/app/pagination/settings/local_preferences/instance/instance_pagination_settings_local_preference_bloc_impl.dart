@@ -14,7 +14,7 @@ class InstancePaginationSettingsLocalPreferenceBloc
           'pagination.settings.instance.$userAtHost',
         );
 
-  static final PaginationSettings? defaultValue = null;
+  static const PaginationSettings? defaultValue = null;
 
 
   @override

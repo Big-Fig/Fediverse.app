@@ -1,7 +1,7 @@
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:easy_dispose/easy_dispose.dart';
 
-import 'auth_instance_chooser_instance_list_item_bloc.dart';
+import 'package:fedi/app/auth/instance/chooser/instance_list/auth_instance_chooser_instance_list_item_bloc.dart';
 
 class AuthInstanceChooserInstanceListItemBloc extends DisposableOwner
     implements IAuthInstanceChooserInstanceListItemBloc {

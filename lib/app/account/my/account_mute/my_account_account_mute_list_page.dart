@@ -22,7 +22,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'action/my_account_account_mute_action_list_widget.dart';
+import 'package:fedi/app/account/my/account_mute/action/my_account_account_mute_action_list_widget.dart';
 
 class MyAccountAccountMuteListPage extends StatelessWidget {
   @override

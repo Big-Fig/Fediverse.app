@@ -63,9 +63,7 @@ class ShareEntity {
 
   ShareEntity({
     required this.items,
-  }) {
-    assert(items.isNotEmpty);
-  }
+  }) : assert(items.isNotEmpty);
 
   @override
   bool operator ==(Object other) =>

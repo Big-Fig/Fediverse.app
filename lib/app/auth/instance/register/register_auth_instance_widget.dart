@@ -10,7 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'form/register_auth_instance_form_bloc.dart';
+import 'package:fedi/app/auth/instance/register/form/register_auth_instance_form_bloc.dart';
 
 class RegisterAuthInstanceWidget extends StatelessWidget {
   const RegisterAuthInstanceWidget();

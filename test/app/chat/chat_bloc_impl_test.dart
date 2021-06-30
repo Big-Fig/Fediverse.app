@@ -21,8 +21,8 @@ import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository_impl.da
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
-import 'package:fedi/pleroma/api/account/my/pleroma_api_my_account_service_impl.dart';
-import 'package:fedi/pleroma/api/chat/pleroma_api_chat_service_impl.dart';
+import 'package:fedi/pleroma/api/account/my/pleroma_api_my_account_service.dart';
+import 'package:fedi/pleroma/api/chat/pleroma_api_chat_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -37,14 +37,14 @@ import 'message/chat_message_test_helper.dart';
 
 // ignore_for_file: no-magic-number, avoid-late-keyword
 @GenerateMocks([
-  PleromaApiChatService,
-  PleromaApiMyAccountService,
+  IPleromaApiChatService,
+  IPleromaApiMyAccountService,
 ])
 void main() {
   late IPleromaChat chat;
   late IPleromaChatBloc chatBloc;
-  late MockPleromaApiChatService pleromaChatServiceMock;
-  late MockPleromaApiMyAccountService pleromaMyAccountServiceMock;
+  late MockIPleromaApiChatService pleromaChatServiceMock;
+  late MockIPleromaApiMyAccountService pleromaMyAccountServiceMock;
   late AppDatabase database;
   late IAccountRepository accountRepository;
   late IPleromaChatMessageRepository chatMessageRepository;
@@ -69,8 +69,8 @@ void main() {
       chatMessageRepository: chatMessageRepository,
     );
 
-    pleromaChatServiceMock = MockPleromaApiChatService();
-    pleromaMyAccountServiceMock = MockPleromaApiMyAccountService();
+    pleromaChatServiceMock = MockIPleromaApiChatService();
+    pleromaMyAccountServiceMock = MockIPleromaApiMyAccountService();
 
     preferencesService = MemoryLocalPreferencesService();
 

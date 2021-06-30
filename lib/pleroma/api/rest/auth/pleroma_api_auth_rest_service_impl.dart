@@ -9,8 +9,8 @@ import 'package:http/http.dart';
 
 class PleromaApiAuthRestService extends PleromaApiRestService
     implements IPleromaApiAuthRestService {
-  static final authHeaderKey = 'authorization';
-  static final authHeaderValuePrefix = 'Bearer';
+  static const authHeaderKey = 'authorization';
+  static const authHeaderValuePrefix = 'Bearer';
 
   @override
   final bool isPleroma;

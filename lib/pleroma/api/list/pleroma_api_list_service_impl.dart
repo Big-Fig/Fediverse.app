@@ -13,15 +13,13 @@ class PleromaApiListService extends BasePleromaApiService
     with PleromaApiAuthMixinService
     implements IPleromaApiListService {
   final listRelativeUrlPath = '/api/v1/lists';
-  @override
-  final IPleromaApiAuthRestService restService;
 
   @override
-  IPleromaApiAuthRestService get restApiAuthService => restService;
+  final IPleromaApiAuthRestService restApiAuthService;
 
   PleromaApiListService({
-    required this.restService,
-  }) : super(restService: restService);
+    required this.restApiAuthService,
+  }) : super(restService: restApiAuthService);
 
   @override
   Future<List<IPleromaApiList>> getLists() async {

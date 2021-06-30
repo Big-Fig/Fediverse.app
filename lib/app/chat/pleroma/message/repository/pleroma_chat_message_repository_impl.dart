@@ -207,9 +207,9 @@ class PleromaChatMessageRepository
 
   @override
   IPleromaChatMessage mapRemoteItemToAppItem(
-    IPleromaApiChatMessage appItem,
+    IPleromaApiChatMessage remoteItem,
   ) {
-    return appItem.toDbChatMessagePopulatedWrapper(
+    return remoteItem.toDbChatMessagePopulatedWrapper(
       dbAccount: null,
     );
   }

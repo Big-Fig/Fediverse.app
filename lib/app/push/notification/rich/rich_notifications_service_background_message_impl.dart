@@ -546,7 +546,7 @@ Future<IPleromaApiNotification?> _loadLastNotificationForInstance({
   disposableOwner.addDisposable(pleromaApiAuthRestService);
 
   var pleromaApiNotificationService =
-      PleromaApiNotificationService(restService: pleromaApiAuthRestService);
+      PleromaApiNotificationService(restApiAuthService: pleromaApiAuthRestService);
   disposableOwner.addDisposable(pleromaApiNotificationService);
 
   try {

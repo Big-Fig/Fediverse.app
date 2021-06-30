@@ -8,16 +8,14 @@ class MastodonApiEmojiService extends BasePleromaApiService
     with PleromaApiAuthMixinService
     implements IMastodonApiEmojiService {
   final emojiRelativeUrlPath = '/api/v1/custom_emojis';
-  @override
-  final IPleromaApiAuthRestService restService;
 
   @override
-  IPleromaApiAuthRestService get restApiAuthService => restService;
+  final IPleromaApiAuthRestService restApiAuthService;
 
   MastodonApiEmojiService({
-    required this.restService,
+    required this.restApiAuthService,
   }) : super(
-          restService: restService,
+          restService: restApiAuthService,
         );
 
   @override

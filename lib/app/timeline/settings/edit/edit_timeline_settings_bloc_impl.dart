@@ -78,8 +78,7 @@ class EditTimelineSettingsBloc
   @override
   final IBoolValueFormFieldBloc webSocketsUpdatesFieldBloc;
 
-  @override
-  final ITimelineSettingsBloc settingsBloc;
+
   final IWebSocketsSettingsBloc webSocketsSettingsBloc;
 
   @override
@@ -89,7 +88,7 @@ class EditTimelineSettingsBloc
   final InstanceLocation instanceLocation;
 
   EditTimelineSettingsBloc({
-    required this.settingsBloc,
+    required ITimelineSettingsBloc settingsBloc,
     required this.timelineType,
     required this.pleromaApiInstance,
     required this.isNullableValuesPossible,

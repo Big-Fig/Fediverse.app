@@ -5,7 +5,7 @@ import 'package:fedi/app/filter/filter_model.dart';
 import 'package:fedi/app/filter/filter_model_adapter.dart';
 import 'package:fedi/app/filter/repository/filter_repository.dart';
 import 'package:fedi/app/filter/repository/filter_repository_impl.dart';
-import 'package:fedi/pleroma/api/filter/pleroma_api_filter_service_impl.dart';
+import 'package:fedi/pleroma/api/filter/pleroma_api_filter_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -15,15 +15,14 @@ import 'package:moor/ffi.dart';
 import 'filter_bloc_impl_test.mocks.dart';
 import 'filter_test_helper.dart';
 
-
 // ignore_for_file: no-magic-number, avoid-late-keyword
 @GenerateMocks([
-  PleromaApiFilterService,
+  IPleromaApiFilterService,
 ])
 void main() {
   late IFilter filter;
   late IFilterBloc filterBloc;
-  late MockPleromaApiFilterService pleromaFilterServiceMock;
+  late MockIPleromaApiFilterService pleromaFilterServiceMock;
   late AppDatabase database;
   late IFilterRepository filterRepository;
 
@@ -33,7 +32,7 @@ void main() {
       appDatabase: database,
     );
 
-    pleromaFilterServiceMock = MockPleromaApiFilterService();
+    pleromaFilterServiceMock = MockIPleromaApiFilterService();
 
     when(pleromaFilterServiceMock.isConnected).thenReturn(true);
     when(pleromaFilterServiceMock.pleromaApiState)

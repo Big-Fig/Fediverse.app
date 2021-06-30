@@ -179,7 +179,7 @@ class Timeline implements IJsonObject {
 
   String? get withRemoteHashtag => settings.withRemoteHashtag;
 
-  String? get PleromaReplyVisibilityFilterString =>
+  String? get pleromaReplyVisibilityFilterString =>
       settings.replyVisibilityFilterString;
 
   PleromaApiReplyVisibilityFilter? get replyVisibilityFilter =>

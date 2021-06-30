@@ -9,7 +9,7 @@ import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/pleroma/api/directory/pleroma_api_directory_service.dart';
 import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
-import 'package:pedantic/pedantic.dart';
+
 import 'package:rxdart/rxdart.dart';
 
 abstract class InstanceDirectoryBloc extends DisposableOwner
@@ -49,7 +49,8 @@ abstract class InstanceDirectoryBloc extends DisposableOwner
     );
     addDisposable(accountPaginationListBloc);
 
-    unawaited(accountPaginationListBloc.refreshWithoutController());
+    // ignore: unawaited_futures
+    accountPaginationListBloc.refreshWithoutController();
   }
 
   IPleromaApiDirectoryService get pleromaApiDirectoryService;

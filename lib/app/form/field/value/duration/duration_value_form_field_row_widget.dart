@@ -180,7 +180,7 @@ class DurationValueFormFieldRowIconButtonWidget extends StatelessWidget {
   }
 }
 
-void _showDurationPicker({
+Future _showDurationPicker({
   required BuildContext context,
   required String popupTitle,
 }) async {

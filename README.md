@@ -349,9 +349,10 @@ You can find all possible config variables(with comments) at [env_example.env](e
 
 #### If you have strange errors in any case or how to clean project
 
-* `fvm flutter clean`
+* `fvm flutter clean` or `flutter clean` if you don't use FVM
 * `./gradlew clean` in android folder
 * `Product->Clean` in XCode
+* `File(or Android Studio on Mac)->Invalidate caches & Restart` in Android Studio
 
 Sometimes it also need to clear iOS pods
 

@@ -106,16 +106,14 @@ class _FediVideoPlayerPlayPauseControlsWidget extends StatelessWidget {
               return AsyncOperationButtonBuilderWidget(
                 showProgressDialog: false,
                 builder: (BuildContext context, void Function()? onPressed) {
-                  return Container(
-                    child: FediIconButton(
-                      padding: EdgeInsets.zero,
-                      icon: Icon(
-                        isPlaying ? FediIcons.pause : FediIcons.play,
-                        size: iconSize,
-                        color: IFediUiColorTheme.of(context).white,
-                      ),
-                      onPressed: onPressed,
+                  return FediIconButton(
+                    padding: EdgeInsets.zero,
+                    icon: Icon(
+                      isPlaying ? FediIcons.pause : FediIcons.play,
+                      size: iconSize,
+                      color: IFediUiColorTheme.of(context).white,
                     ),
+                    onPressed: onPressed,
                   );
                 },
                 asyncButtonAction: () async {

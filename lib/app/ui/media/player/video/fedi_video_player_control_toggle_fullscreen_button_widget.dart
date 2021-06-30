@@ -10,7 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logging/logging.dart';
-import 'package:pedantic/pedantic.dart';
+
 import 'package:wakelock/wakelock.dart';
 
 final _logger =
@@ -53,7 +53,8 @@ class _FediVideoPlayerToggleControlFullscreenButtonEnabledWidget
         if (isFullscreen) {
           Navigator.of(context, rootNavigator: true).pop();
         } else {
-          unawaited(pushFullScreenPage(context, videoMediaPlayerBloc));
+          // ignore: unawaited_futures
+          pushFullScreenPage(context, videoMediaPlayerBloc);
         }
       },
     );
@@ -65,7 +66,7 @@ Future<dynamic> pushFullScreenPage(
   IVideoMediaPlayerBloc videoMediaPlayerBloc,
 ) async {
   final isAndroid = Theme.of(context).platform == TargetPlatform.android;
-  final TransitionRoute<Null> route = PageRouteBuilder<Null>(
+  final TransitionRoute route = PageRouteBuilder(
     pageBuilder: (
       BuildContext context,
       Animation<double> animation,

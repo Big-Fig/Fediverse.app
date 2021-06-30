@@ -58,20 +58,21 @@ class MediaAttachmentDetailsPage extends StatefulWidget {
 
   @override
   _MediaAttachmentDetailsPageState createState() =>
-      _MediaAttachmentDetailsPageState(
-        initialMediaAttachment,
-        initialIndex,
-      );
+      _MediaAttachmentDetailsPageState();
 }
 
 class _MediaAttachmentDetailsPageState
     extends State<MediaAttachmentDetailsPage> {
   IPleromaApiMediaAttachment get mediaAttachment =>
-      selectedMediaAttachmentSubject.valueOrNull ?? widget.mediaAttachments.first;
+      selectedMediaAttachmentSubject.valueOrNull ??
+      widget.mediaAttachments.first;
 
-  final PageController _controller;
+  // ignore: avoid-late-keyword
+  late PageController _controller;
 
-  BehaviorSubject<IPleromaApiMediaAttachment?> selectedMediaAttachmentSubject;
+  // ignore: avoid-late-keyword
+  late BehaviorSubject<IPleromaApiMediaAttachment?>
+      selectedMediaAttachmentSubject;
 
   Stream<IPleromaApiMediaAttachment?> get selectedMediaAttachmentStream =>
       selectedMediaAttachmentSubject.stream;
@@ -82,14 +83,16 @@ class _MediaAttachmentDetailsPageState
   // ignore: avoid-late-keyword
   late VoidCallback listener;
 
-  _MediaAttachmentDetailsPageState(
-    IPleromaApiMediaAttachment? initialMediaAttachment,
-    int initialIndex,
-  )   : _controller = PageController(
-          initialPage: initialIndex,
-        ),
-        selectedMediaAttachmentSubject =
-            BehaviorSubject.seeded(initialMediaAttachment) {
+  _MediaAttachmentDetailsPageState();
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = PageController(
+      initialPage: widget.initialIndex,
+    );
+    selectedMediaAttachmentSubject =
+        BehaviorSubject.seeded(widget.initialMediaAttachment);
     listener = () {
       selectedMediaAttachmentSubject.add(
         widget.mediaAttachments[_controller.page!.toInt()],
@@ -134,13 +137,11 @@ class _MediaAttachmentDetailsPageState
       case MastodonApiMediaAttachmentType.gifv:
         return IFilesCacheService.of(context).createCachedNetworkImageWidget(
           imageBuilder: (context, imageProvider) {
-            return Container(
-              child: PhotoView(
-                backgroundDecoration: BoxDecoration(
-                  color: IFediUiColorTheme.of(context).ultraLightGrey,
-                ),
-                imageProvider: imageProvider,
+            return PhotoView(
+              backgroundDecoration: BoxDecoration(
+                color: IFediUiColorTheme.of(context).ultraLightGrey,
               ),
+              imageProvider: imageProvider,
             );
           },
           placeholder: (context, url) => buildDetails(),
@@ -233,13 +234,11 @@ class _MediaAttachmentDetailsPageState
       IFilesCacheService.of(context).createCachedNetworkImageWidget(
         imageUrl: mediaAttachment.url,
         imageBuilder: (context, imageProvider) {
-          return Container(
-            child: PhotoView(
-              backgroundDecoration: BoxDecoration(
-                color: IFediUiColorTheme.of(context).ultraLightGrey,
-              ),
-              imageProvider: imageProvider,
+          return PhotoView(
+            backgroundDecoration: BoxDecoration(
+              color: IFediUiColorTheme.of(context).ultraLightGrey,
             ),
+            imageProvider: imageProvider,
           );
         },
         placeholder: (context, url) =>

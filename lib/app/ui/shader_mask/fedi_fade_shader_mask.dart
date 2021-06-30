@@ -27,7 +27,7 @@ class FediFadeShaderMask extends StatelessWidget {
           begin: begin,
           end: end,
           colors: [
-            onlyEnd ? Colors.white : fadingColor.withOpacity(0.0),
+            if (onlyEnd) Colors.white else fadingColor.withOpacity(0.0),
             Colors.white,
             Colors.white,
             fadingColor.withOpacity(0.0),

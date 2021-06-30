@@ -6,7 +6,7 @@ import 'package:fedi/app/localization/locale/form/localization_locale_single_fro
 import 'package:fedi/app/localization/locale/supported_localization_locale_list.dart';
 import 'package:fedi/app/localization/settings/localization_settings_bloc.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc_impl.dart';
-import 'package:fedi/form/field/value/bool/validation/bool_value_form_field_onlyTrue_validation.dart';
+import 'package:fedi/form/field/value/bool/validation/bool_value_form_field_only_true_validation.dart';
 import 'package:fedi/form/field/value/string/email/email_string_value_form_field_validation.dart';
 import 'package:fedi/form/field/value/string/password_match/password_match_string_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc_impl.dart';

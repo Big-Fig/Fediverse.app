@@ -5,7 +5,7 @@ import 'package:fedi/app/instance/announcement/instance_announcement_model.dart'
 import 'package:fedi/app/instance/announcement/instance_announcement_model_adapter.dart';
 import 'package:fedi/app/instance/announcement/repository/instance_announcement_repository.dart';
 import 'package:fedi/app/instance/announcement/repository/instance_announcement_repository_impl.dart';
-import 'package:fedi/pleroma/api/announcement/pleroma_api_announcement_service_impl.dart';
+import 'package:fedi/pleroma/api/announcement/pleroma_api_announcement_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -17,12 +17,12 @@ import 'instance_announcement_test_helper.dart';
 
 // ignore_for_file: no-magic-number, avoid-late-keyword
 @GenerateMocks([
-  PleromaApiAnnouncementService,
+  IPleromaApiAnnouncementService,
 ])
 void main() {
   late IInstanceAnnouncement instanceAnnouncement;
   late IInstanceAnnouncementBloc instanceAnnouncementBloc;
-  late MockPleromaApiAnnouncementService pleromaAnnouncementServiceMock;
+  late MockIPleromaApiAnnouncementService pleromaAnnouncementServiceMock;
   late AppDatabase database;
   late IInstanceAnnouncementRepository instanceAnnouncementRepository;
 
@@ -32,7 +32,7 @@ void main() {
       appDatabase: database,
     );
 
-    pleromaAnnouncementServiceMock = MockPleromaApiAnnouncementService();
+    pleromaAnnouncementServiceMock = MockIPleromaApiAnnouncementService();
 
     when(pleromaAnnouncementServiceMock.isConnected).thenReturn(true);
     when(pleromaAnnouncementServiceMock.pleromaApiState)

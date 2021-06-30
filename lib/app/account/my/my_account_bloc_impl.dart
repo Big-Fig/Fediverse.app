@@ -16,7 +16,7 @@ import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
 import 'package:easy_dispose/easy_dispose.dart';
 
 class MyAccountBloc extends IMyAccountBloc {
-  static final selfActionError = const SelfActionNotPossibleException();
+  static const selfActionError = SelfActionNotPossibleException();
 
   final IMyAccountLocalPreferenceBloc myAccountLocalPreferenceBloc;
   final IPleromaApiMyAccountService pleromaMyAccountService;

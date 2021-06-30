@@ -13,14 +13,11 @@ class PleromaApiSuggestionsService extends BasePleromaApiService
   final suggestionsRelativeUrlPath = '/api/v1/suggestions';
 
   @override
-  final IPleromaApiAuthRestService restService;
-
-  @override
-  IPleromaApiAuthRestService get restApiAuthService => restService;
+  final IPleromaApiAuthRestService restApiAuthService;
 
   PleromaApiSuggestionsService({
-    required this.restService,
-  }) : super(restService: restService);
+    required this.restApiAuthService,
+  }) : super(restService: restApiAuthService);
 
   @override
   Future<List<IPleromaApiAccount>> getSuggestions({

@@ -12,7 +12,7 @@ import 'package:easy_dispose/easy_dispose.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pleroma/api/endorsements/pleroma_api_endorsements_service.dart';
 import 'package:flutter/widgets.dart';
-import 'package:pedantic/pedantic.dart';
+
 
 class MyAccountEndorsementBloc extends DisposableOwner
     implements IMyAccountEndorsementBloc {
@@ -42,7 +42,8 @@ class MyAccountEndorsementBloc extends DisposableOwner
     myAccountEndorsementAccountListNetworkOnlyPaginationBloc.disposeWith(this);
     accountPaginationListBloc.disposeWith(this);
 
-    unawaited(accountPaginationListBloc.refreshWithoutController());
+    // ignore: unawaited_futures
+    accountPaginationListBloc.refreshWithoutController();
   }
 
   final IPleromaApiEndorsementsService pleromaApiEndorsementsService;

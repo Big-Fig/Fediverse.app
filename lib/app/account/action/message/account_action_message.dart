@@ -16,12 +16,12 @@ Future goToMessagesPageAccountAction(BuildContext context) async {
   var isPossibleToStartPleromaChat =
       isInstanceSupportChats && isAccountAcceptsChatMessages;
   if (isPossibleToStartPleromaChat) {
-    goToPleromaChatWithAccount(
+    await goToPleromaChatWithAccount(
       context: context,
       account: account,
     );
   } else {
-    goToPostStatusStartConversationPage(
+    await goToPostStatusStartConversationPage(
       context,
       conversationAccountsWithoutMe: <IAccount>[
         account,

@@ -16,16 +16,14 @@ class PleromaApiChatService extends BasePleromaApiService
     implements IPleromaApiChatService {
   final v1ChatRelativeUrlPath = '/api/v1/pleroma/chats';
   final v2ChatRelativeUrlPath = '/api/v2/pleroma/chats';
-  @override
-  final IPleromaApiAuthRestService restService;
 
   @override
-  IPleromaApiAuthRestService get restApiAuthService => restService;
+  final IPleromaApiAuthRestService restApiAuthService;
 
   PleromaApiChatService({
-    required this.restService,
+    required this.restApiAuthService,
   }) : super(
-          restService: restService,
+          restService: restApiAuthService,
         );
 
   @override

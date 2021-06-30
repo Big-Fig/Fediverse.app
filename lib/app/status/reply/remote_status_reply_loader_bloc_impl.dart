@@ -37,8 +37,8 @@ class RemoteStatusReplyLoaderBloc extends AsyncInitLoadingBloc
   RemoteStatusReplyLoaderBloc({
     required this.pleromaStatusService,
     required this.originalStatus,
-  }) {
-    assert(originalStatus.inReplyToRemoteId != null);
+  }): assert(originalStatus.inReplyToRemoteId != null) {
+
     if (originalStatus.inReplyToStatus != null) {
       inReplyToStatus = originalStatus.inReplyToStatus;
       markAsAlreadyInitialized();

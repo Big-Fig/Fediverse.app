@@ -91,7 +91,7 @@ enum RefreshIndicatorTriggerMode {
 ///  * [RefreshIndicatorState], can be used to programmatically show the refresh indicator.
 ///  * [RefreshProgressIndicator], widget used by [RefreshIndicator] to show
 ///    the inner circular progress spinner during refreshes.
-///  * [CupertinoSliverRefreshControl], an iOS equivalent of the pull-to-refresh pattern.
+///  * CupertinoSliverRefreshControl, an iOS equivalent of the pull-to-refresh pattern.
 ///    Must be used as a sliver inside a [CustomScrollView] instead of wrapping
 ///    around a [ScrollView] because it's a part of the scrollable instead of
 ///    being overlaid on top of it.
@@ -274,7 +274,9 @@ class FediListRefreshIndicatorState extends State<FediListRefreshIndicator>
 
   // ignore: code-metrics
   bool _handleScrollNotification(ScrollNotification notification) {
-    if (!widget.notificationPredicate(notification)) return false;
+    if (!widget.notificationPredicate(notification)) {
+      return false;
+    }
     if (_shouldStart(notification)) {
       setState(() {
         _mode = _RefreshIndicatorMode.drag;
@@ -341,7 +343,9 @@ class FediListRefreshIndicatorState extends State<FediListRefreshIndicator>
   }
 
   bool _handleGlowNotification(OverscrollIndicatorNotification notification) {
-    if (notification.depth != 0 || !notification.leading) return false;
+    if (notification.depth != 0 || !notification.leading) {
+      return false;
+    }
     if (_mode == _RefreshIndicatorMode.drag) {
       notification.disallowGlow();
 
@@ -480,7 +484,9 @@ class FediListRefreshIndicatorState extends State<FediListRefreshIndicator>
   Future<void> show({bool atTop = true}) {
     if (_mode != _RefreshIndicatorMode.refresh &&
         _mode != _RefreshIndicatorMode.snap) {
-      if (_mode == null) _start(atTop ? AxisDirection.down : AxisDirection.up);
+      if (_mode == null) {
+        _start(atTop ? AxisDirection.down : AxisDirection.up);
+      }
       _show();
     }
 

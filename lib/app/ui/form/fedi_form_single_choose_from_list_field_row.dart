@@ -9,7 +9,7 @@ import 'package:fedi/dialog/dialog_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'fedi_form_column_error.dart';
+import 'package:fedi/app/ui/form/fedi_form_column_error.dart';
 
 typedef ValueToTextMapper<T> = String Function(T value);
 typedef ValueToIconMapper<T> = IconData Function(T value);

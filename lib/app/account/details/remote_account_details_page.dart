@@ -21,7 +21,7 @@ import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_service_impl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:pedantic/pedantic.dart';
+
 
 void goToRemoteAccountDetailsPageBasedOnRemoteInstanceAccount(
   BuildContext context, {
@@ -94,9 +94,12 @@ Future goToRemoteAccountDetailsPageBasedOnLocalInstanceRemoteAccount(
           result = pleromaAccount.toDbAccountWrapper();
         }
       } finally {
-        unawaited(pleromaStatusService?.dispose());
-        unawaited(pleromaAccountService?.dispose());
-        unawaited(remoteInstanceBloc?.dispose());
+        // ignore: unawaited_futures
+        pleromaStatusService?.dispose();
+        // ignore: unawaited_futures
+        pleromaAccountService?.dispose();
+        // ignore: unawaited_futures
+        remoteInstanceBloc?.dispose();
       }
 
       return result;

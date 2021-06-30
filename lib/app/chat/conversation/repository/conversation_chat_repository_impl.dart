@@ -11,7 +11,7 @@ import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/pleroma/api/conversation/pleroma_api_conversation_model.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
-import 'package:pedantic/pedantic.dart';
+
 
 var _singleConversationChatRepositoryPagination =
     RepositoryPagination<IConversationChat>(
@@ -269,22 +269,20 @@ class ConversationChatRepository
       var lastMessage = remoteItem.lastStatus;
       var accounts = remoteItem.accounts;
 
-      unawaited(
+      // ignore: unawaited_futures
         accountRepository.upsertConversationRemoteAccounts(
           accounts,
           conversationRemoteId: remoteItem.id,
           batchTransaction: batchTransaction,
-        ),
-      );
+        );
 
       if (lastMessage != null) {
-        unawaited(
+        // ignore: unawaited_futures
           statusRepository.upsertRemoteStatusForConversation(
             lastMessage,
             conversationRemoteId: remoteItem.id,
             batchTransaction: batchTransaction,
-          ),
-        );
+          );
       }
     } else {
       await batch((batch) {
@@ -304,19 +302,17 @@ class ConversationChatRepository
   }) async {
     if (batchTransaction != null) {
       // todo: support mode
-      unawaited(
+      // ignore: unawaited_futures
         _upsertConversationMetadata(
           remoteItem,
           batchTransaction: batchTransaction,
-        ),
-      );
+        );
 
-      unawaited(
+      // ignore: unawaited_futures
         dao.upsertBatch(
           entity: remoteItem.toDbConversation(),
           batchTransaction: batchTransaction,
-        ),
-      );
+        );
     } else {
       await batch(
         (batch) {
@@ -338,13 +334,12 @@ class ConversationChatRepository
   }) async {
     if (batchTransaction != null) {
       for (var remoteItem in remoteItems) {
-        unawaited(
+        // ignore: unawaited_futures
           insertInRemoteTypeBatch(
             remoteItem,
             mode: mode,
             batchTransaction: batchTransaction,
-          ),
-        );
+          );
       }
     } else {
       await batch((batch) {
@@ -364,28 +359,25 @@ class ConversationChatRepository
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
-      unawaited(
+      // ignore: unawaited_futures
         _upsertConversationMetadata(
           remoteItem,
           batchTransaction: batchTransaction,
-        ),
-      );
+        );
 
       if (appItem.localId != null) {
-        unawaited(
+        // ignore: unawaited_futures
           updateByDbIdInDbType(
             dbId: appItem.localId!,
             dbItem: remoteItem.toDbConversation(),
             batchTransaction: batchTransaction,
-          ),
-        );
+          );
       } else {
-        unawaited(
+        // ignore: unawaited_futures
           upsertInRemoteTypeBatch(
             remoteItem,
             batchTransaction: batchTransaction,
-          ),
-        );
+          );
       }
     } else {
       await batch((batch) {

@@ -1,8 +1,7 @@
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-
-import 'app_analytics_model.dart';
+import 'package:fedi/analytics/app/app_analytics_model.dart';
 
 abstract class IAppAnalyticsBloc implements IDisposable {
   static IAppAnalyticsBloc of(

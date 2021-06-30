@@ -18,15 +18,13 @@ class PleromaApiMyAccountService extends BasePleromaApiService
     implements IPleromaApiMyAccountService {
   final verifyProfileRelativeUrlPath = '/api/v1/accounts/verify_credentials';
   final editProfileRelativeUrlPath = '/api/v1/accounts/update_credentials';
-  @override
-  final IPleromaApiAuthRestService restService;
 
   @override
-  IPleromaApiAuthRestService get restApiAuthService => restService;
+  final IPleromaApiAuthRestService restApiAuthService;
 
-  PleromaApiMyAccountService({required this.restService})
+  PleromaApiMyAccountService({required this.restApiAuthService,})
       : super(
-          restService: restService,
+          restService: restApiAuthService,
         );
 
   @override
@@ -215,7 +213,7 @@ class PleromaApiMyAccountService extends BasePleromaApiService
         relativePath: _urlPath.join('api/v1/mutes'),
         queryArgs: [
           ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]),
-          if (withRelationship && restService.isPleroma)
+          if (withRelationship && restApiAuthService.isPleroma)
             RestRequestQueryArg(
               key: 'with_relationship',
               value: 'true',

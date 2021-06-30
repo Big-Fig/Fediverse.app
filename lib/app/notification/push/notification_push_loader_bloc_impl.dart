@@ -24,7 +24,7 @@ import 'package:fedi/pleroma/api/notification/pleroma_api_notification_service.d
 import 'package:fedi/pleroma/api/status/auth/pleroma_api_auth_status_service.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
 import 'package:logging/logging.dart';
-import 'package:pedantic/pedantic.dart';
+
 import 'package:rxdart/rxdart.dart';
 
 var _logger = Logger('notification_push_loader_bloc_impl.dart');
@@ -333,11 +333,10 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
 
     // refresh to update followRequestCount
     if (pleromaNotificationType == PleromaApiNotificationType.followRequest) {
-      unawaited(
+      // ignore: unawaited_futures
         myAccountBloc.refreshFromNetwork(
           isNeedPreFetchRelationship: false,
-        ),
-      );
+        );
     }
 
     if (notification != null) {

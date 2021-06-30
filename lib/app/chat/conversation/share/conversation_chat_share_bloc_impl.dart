@@ -41,7 +41,7 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
 
   @override
   Future<bool> actuallyShareToAccount(IAccount account) async {
-    final pleromaVisibility = PleromaApiVisibility.direct;
+    const pleromaVisibility = PleromaApiVisibility.direct;
 
     var targetAccounts = [account];
     var sendDataList = await createSendData(

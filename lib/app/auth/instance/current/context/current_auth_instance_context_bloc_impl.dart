@@ -383,19 +383,19 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         IPleromaApiAnnouncementService>(pleromaAnnouncementsService);
 
     var pleromaMediaAttachmentService =
-        PleromaApiMediaAttachmentService(restService: pleromaAuthRestService)
+        PleromaApiMediaAttachmentService(restApiAuthService: pleromaAuthRestService)
           ..disposeWith(this);
     await globalProviderService.asyncInitAndRegister<
         IPleromaApiMediaAttachmentService>(pleromaMediaAttachmentService);
 
     var pleromaListService =
-        PleromaApiListService(restService: pleromaAuthRestService)
+        PleromaApiListService(restApiAuthService: pleromaAuthRestService)
           ..disposeWith(this);
     await globalProviderService
         .asyncInitAndRegister<IPleromaApiListService>(pleromaListService);
 
     var pleromaMyAccountService =
-        PleromaApiMyAccountService(restService: pleromaAuthRestService)
+        PleromaApiMyAccountService(restApiAuthService: pleromaAuthRestService)
           ..disposeWith(this);
     await globalProviderService
         .asyncInitAndRegister<IPleromaApiMyAccountService>(
@@ -448,13 +448,13 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     );
 
     var pleromaConversationService =
-        PleromaApiConversationService(restService: pleromaAuthRestService)
+        PleromaApiConversationService(restApiAuthService: pleromaAuthRestService)
           ..disposeWith(this);
     await globalProviderService.asyncInitAndRegister<
         IPleromaApiConversationService>(pleromaConversationService);
 
     var pleromaChatService =
-        PleromaApiChatService(restService: pleromaAuthRestService)
+        PleromaApiChatService(restApiAuthService: pleromaAuthRestService)
           ..disposeWith(this);
     await globalProviderService
         .asyncInitAndRegister<IPleromaApiChatService>(pleromaChatService);
@@ -466,13 +466,13 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         IPleromaApiInstanceService>(pleromaInstanceService);
 
     var pleromaSearchService =
-        PleromaApiSearchService(restService: pleromaAuthRestService)
+        PleromaApiSearchService(restApiAuthService: pleromaAuthRestService)
           ..disposeWith(this);
     await globalProviderService
         .asyncInitAndRegister<IPleromaApiSearchService>(pleromaSearchService);
 
     var pleromaNotificationService =
-        PleromaApiNotificationService(restService: pleromaAuthRestService)
+        PleromaApiNotificationService(restApiAuthService: pleromaAuthRestService)
           ..disposeWith(this);
     await globalProviderService.asyncInitAndRegister<
         IPleromaApiNotificationService>(pleromaNotificationService);
@@ -484,25 +484,25 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         IPleromaApiDirectoryService>(pleromaDirectoryService);
 
     var pleromaEndorsementsService =
-        PleromaApiEndorsementsService(restService: pleromaAuthRestService)
+        PleromaApiEndorsementsService(restApiAuthService: pleromaAuthRestService)
           ..disposeWith(this);
     await globalProviderService.asyncInitAndRegister<
         IPleromaApiEndorsementsService>(pleromaEndorsementsService);
 
     var pleromaFeaturedTagsService =
-        PleromaApiFeaturedTagsService(restService: pleromaAuthRestService)
+        PleromaApiFeaturedTagsService(restApiAuthService: pleromaAuthRestService)
           ..disposeWith(this);
     await globalProviderService.asyncInitAndRegister<
         IPleromaApiFeaturedTagsService>(pleromaFeaturedTagsService);
 
     var pleromaMarkersService =
-        PleromaApiMarkersService(restService: pleromaAuthRestService)
+        PleromaApiMarkersService(restApiAuthService: pleromaAuthRestService)
           ..disposeWith(this);
     await globalProviderService
         .asyncInitAndRegister<IPleromaApiMarkersService>(pleromaMarkersService);
 
     var pleromaSuggestionsService =
-        PleromaApiSuggestionsService(restService: pleromaAuthRestService)
+        PleromaApiSuggestionsService(restApiAuthService: pleromaAuthRestService)
           ..disposeWith(this);
     await globalProviderService.asyncInitAndRegister<
         IPleromaApiSuggestionsService>(pleromaSuggestionsService);
@@ -520,13 +520,13 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         .asyncInitAndRegister<IPleromaApiPollService>(pleromaPollService);
 
     var pleromaEmojiService =
-        PleromaApiEmojiService(restService: pleromaAuthRestService)
+        PleromaApiEmojiService(restApiAuthService: pleromaAuthRestService)
           ..disposeWith(this);
     await globalProviderService
         .asyncInitAndRegister<IPleromaApiEmojiService>(pleromaEmojiService);
 
     var mastodonApiEmojiService =
-        MastodonApiEmojiService(restService: pleromaAuthRestService)
+        MastodonApiEmojiService(restApiAuthService: pleromaAuthRestService)
           ..disposeWith(this);
     await globalProviderService.asyncInitAndRegister<IMastodonApiEmojiService>(
       mastodonApiEmojiService,
@@ -992,7 +992,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     );
 
     var pleromaFilterService = PleromaApiFilterService(
-      restService: pleromaAuthRestService,
+      restApiAuthService: pleromaAuthRestService,
     )..disposeWith(this);
 
     await globalProviderService

@@ -36,7 +36,7 @@ class RemoteStatusBloc extends StatusBloc {
           pleromaStatusService: pleromaStatusService,
           pleromaAccountService: pleromaAccountService,
           // todo: rework passing null to separate classes without these fields
-          PleromaApiStatusEmojiReactionService: null,
+          pleromaApiStatusEmojiReactionService: null,
           pleromaPollService: null,
           status: status,
           isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,

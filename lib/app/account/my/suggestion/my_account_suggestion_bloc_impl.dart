@@ -12,7 +12,7 @@ import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/pleroma/api/suggestions/pleroma_api_suggestions_service.dart';
 import 'package:flutter/widgets.dart';
-import 'package:pedantic/pedantic.dart';
+
 
 class MyAccountSuggestionBloc extends DisposableOwner
     implements IMyAccountSuggestionBloc {
@@ -43,7 +43,8 @@ class MyAccountSuggestionBloc extends DisposableOwner
     myAccountSuggestionAccountListNetworkOnlyPaginationBloc.disposeWith(this);
     accountPaginationListBloc.disposeWith(this);
 
-    unawaited(accountPaginationListBloc.refreshWithoutController());
+    // ignore: unawaited_futures
+    accountPaginationListBloc.refreshWithoutController();
   }
 
   final IPleromaApiSuggestionsService pleromaApiSuggestionsService;

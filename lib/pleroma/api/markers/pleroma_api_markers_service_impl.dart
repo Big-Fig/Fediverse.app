@@ -13,14 +13,11 @@ class PleromaApiMarkersService extends BasePleromaApiService
   final markersRelativeUrlPath = '/api/v1/markers';
 
   @override
-  final IPleromaApiAuthRestService restService;
-
-  @override
-  IPleromaApiAuthRestService get restApiAuthService => restService;
+  final IPleromaApiAuthRestService restApiAuthService;
 
   PleromaApiMarkersService({
-    required this.restService,
-  }) : super(restService: restService);
+    required this.restApiAuthService,
+  }) : super(restService: restApiAuthService);
 
   @override
   Future<Map<String, IPleromaApiMarker>> getMarkers({

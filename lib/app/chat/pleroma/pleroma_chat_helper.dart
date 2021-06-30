@@ -8,7 +8,7 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pleroma/api/chat/pleroma_api_chat_service.dart';
 import 'package:flutter/widgets.dart';
 
-void goToPleromaChatWithAccount({
+Future goToPleromaChatWithAccount({
   required BuildContext context,
   required IAccount account,
 }) async {

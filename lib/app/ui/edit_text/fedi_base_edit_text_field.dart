@@ -185,7 +185,9 @@ class _MentionSpecialText extends SpecialText {
       style: textStyle,
       recognizer: (TapGestureRecognizer()
         ..onTap = () {
-          if (onTap != null) onTap!(mentionText);
+          if (onTap != null) {
+            onTap!(mentionText);
+          }
         }),
     );
   }

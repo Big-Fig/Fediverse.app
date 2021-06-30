@@ -266,7 +266,7 @@ class NotificationsPushHandlerBloc extends DisposableOwner
     addDisposable(pleromaApiAuthRestService);
 
     var pleromaApiChatService = PleromaApiChatService(
-      restService: pleromaApiAuthRestService,
+      restApiAuthService: pleromaApiAuthRestService,
     );
     addDisposable(pleromaApiChatService);
 
@@ -386,7 +386,7 @@ class NotificationsPushHandlerBloc extends DisposableOwner
     addDisposable(pleromaApiAuthRestService);
 
     var pleromaApiMyAccountService = PleromaApiMyAccountService(
-      restService: pleromaApiAuthRestService,
+      restApiAuthService: pleromaApiAuthRestService,
     );
     addDisposable(pleromaApiMyAccountService);
 

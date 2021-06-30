@@ -11,9 +11,7 @@ class StringValueFormFieldLengthValidationError
   StringValueFormFieldLengthValidationError({
     required this.minLength,
     required this.maxLength,
-  }) {
-    assert(minLength != null || maxLength != null);
-  }
+  }): assert(minLength != null || maxLength != null);
 
   @override
   String createErrorDescription(BuildContext context) {

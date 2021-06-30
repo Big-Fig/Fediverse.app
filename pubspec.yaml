@@ -85,9 +85,6 @@ dependencies:
   # default media picker
   image_picker: ^0.7.4
 
-  # better lint, should be in main dependencies to ignore async/await unnecessary warnings
-  pedantic: ^1.11.0
-
   # customizable datetime picker
   # flutter_datetime_picker: ^1.5.1
   # it is 1.5.1 with fixes for null-safty compile warnings
@@ -224,7 +221,7 @@ dev_dependencies:
   mockito: ^5.0.7
   # build tools runner
   # usage example
-  # flutter pub run build_runner build --delete-conflicting-outputs
+  # fvm flutter pub run build_runner build --delete-conflicting-outputs
   build_runner: ^2.0.4
   # build tool to generate json from & to methods
   json_serializable: ^4.1.1
@@ -234,8 +231,10 @@ dev_dependencies:
   # object serialization generator
   hive_generator: ^1.1.0
 
-  # additional linter
-  dart_code_metrics: ^3.0.0
+  # additional linters
+  dart_code_metrics: ^4.0.1
+  lints: ^1.0.1
+  flutter_lints: ^1.0.3
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

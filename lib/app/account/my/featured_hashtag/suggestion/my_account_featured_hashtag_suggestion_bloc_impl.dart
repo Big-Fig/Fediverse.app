@@ -12,7 +12,7 @@ import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/pleroma/api/featured_tags/pleroma_api_featured_tags_service.dart';
 import 'package:flutter/widgets.dart';
-import 'package:pedantic/pedantic.dart';
+
 
 class MyAccountFeaturedHashtagSuggestionBloc extends DisposableOwner
     implements IMyAccountFeaturedHashtagSuggestionBloc {
@@ -47,7 +47,8 @@ class MyAccountFeaturedHashtagSuggestionBloc extends DisposableOwner
         .disposeWith(this);
     hashtagPaginationListBloc.disposeWith(this);
 
-    unawaited(hashtagPaginationListBloc.refreshWithoutController());
+    // ignore: unawaited_futures
+    hashtagPaginationListBloc.refreshWithoutController();
   }
 
   @override

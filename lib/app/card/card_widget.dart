@@ -138,12 +138,10 @@ class _CardProviderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var card = Provider.of<IPleromaApiCard>(context);
 
-    return Container(
-      child: Text(
-        card.providerName!,
-        style: IFediUiTextTheme.of(context).smallTallGrey,
-        overflow: TextOverflow.ellipsis,
-      ),
+    return Text(
+      card.providerName!,
+      style: IFediUiTextTheme.of(context).smallTallGrey,
+      overflow: TextOverflow.ellipsis,
     );
   }
 }

@@ -380,7 +380,7 @@ class DurationDateTimeValueFormFieldRowIconButtonWidget
   }
 }
 
-void _showDurationPicker({
+Future _showDurationPicker({
   required BuildContext context,
   required String popupTitle,
 }) async {

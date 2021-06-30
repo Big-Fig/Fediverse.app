@@ -50,12 +50,10 @@ class _SplashLogoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Image(
-        image: AssetImage('assets/images/theme/logo.png'),
-        // ignore: no-magic-number
-        width: 200,
-      ),
+    return Image(
+      image: AssetImage('assets/images/theme/logo.png'),
+      // ignore: no-magic-number
+      width: 200,
     );
   }
 }

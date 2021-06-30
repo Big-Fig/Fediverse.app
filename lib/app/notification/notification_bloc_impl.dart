@@ -11,7 +11,7 @@ import 'package:fedi/pleroma/api/notification/pleroma_api_notification_service.d
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
-import 'package:pedantic/pedantic.dart';
+
 import 'package:rxdart/rxdart.dart';
 
 var _logger = Logger('notification_bloc_impl.dart');
@@ -220,11 +220,10 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
       notification: notification,
     );
     if (pleromaNotificationService.isPleroma) {
-      unawaited(
+      // ignore: unawaited_futures
         pleromaNotificationService.markAsReadSingle(
           notificationRemoteId: notification.remoteId,
-        ),
-      );
+        );
     }
   }
 

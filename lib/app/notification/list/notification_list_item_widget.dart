@@ -246,7 +246,7 @@ class _NotificationListItemBodyMainAreaWidget extends StatelessWidget {
     );
   }
 
-  void _onNotificationClick(BuildContext context) async {
+  Future _onNotificationClick(BuildContext context) async {
     var notificationBloc = INotificationBloc.of(context, listen: false);
 
     await notificationBloc.notification.goToRelatedPage(context);

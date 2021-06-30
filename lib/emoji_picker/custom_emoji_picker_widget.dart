@@ -135,7 +135,7 @@ class _CustomEmojiPickerSelectedCategoryWidget extends StatelessWidget {
 
                     if (!useImageEmoji) {
                       items = items.where((item) {
-                        if (!(item is CustomEmojiPickerImageUrlItem)) {
+                        if (item is! CustomEmojiPickerImageUrlItem) {
                           return true;
                         } else {
                           return false;

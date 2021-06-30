@@ -1,18 +1,16 @@
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/poll/pleroma_api_poll_model.dart';
 import 'package:fedi/pleroma/api/poll/pleroma_api_poll_service.dart';
-import 'package:fedi/pleroma/api/rest/auth/pleroma_api_auth_rest_service.dart';
+import 'package:fedi/pleroma/api/rest/pleroma_api_rest_service.dart';
 import 'package:fedi/rest/rest_request_model.dart';
 import 'package:path/path.dart';
 
 class PleromaApiPollService extends BasePleromaApiService
     implements IPleromaApiPollService {
   final pollRelativeUrlPath = '/api/v1/polls/';
-  @override
-  final IPleromaApiAuthRestService restService;
 
   PleromaApiPollService({
-    required this.restService,
+    required IPleromaApiRestService restService,
   }) : super(
           restService: restService,
         );

@@ -436,7 +436,7 @@ class LocalAccountBloc extends AccountBloc {
           account.remoteId,
         ],
       );
-      ;
+
       var relationship = relationships.firstOrNull;
 
       if (relationship != null) {

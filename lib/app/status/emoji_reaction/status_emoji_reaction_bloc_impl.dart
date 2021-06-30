@@ -22,13 +22,13 @@ class StatusEmojiReactionBloc extends DisposableOwner
   IPleromaApiStatusEmojiReaction get emojiReaction =>
       emojiReactionSubject.value;
   final IPleromaApiStatusEmojiReactionService
-      PleromaApiStatusEmojiReactionService;
+      pleromaApiStatusEmojiReactionService;
 
   StatusEmojiReactionBloc({
     required this.status,
     required this.statusRepository,
     required IPleromaApiStatusEmojiReaction emojiReaction,
-    required this.PleromaApiStatusEmojiReactionService,
+    required this.pleromaApiStatusEmojiReactionService,
   }) : emojiReactionSubject = BehaviorSubject.seeded(emojiReaction) {
     emojiReactionSubject.disposeWith(this);
   }
@@ -37,12 +37,12 @@ class StatusEmojiReactionBloc extends DisposableOwner
   Future<IPleromaApiStatus> toggleEmojiReaction() async {
     IPleromaApiStatus remoteStatus;
     if (emojiReaction.me) {
-      remoteStatus = await PleromaApiStatusEmojiReactionService.removeReaction(
+      remoteStatus = await pleromaApiStatusEmojiReactionService.removeReaction(
         statusRemoteId: status.remoteId!,
         emoji: emojiReaction.name,
       );
     } else {
-      remoteStatus = await PleromaApiStatusEmojiReactionService.addReaction(
+      remoteStatus = await pleromaApiStatusEmojiReactionService.addReaction(
         statusRemoteId: status.remoteId!,
         emoji: emojiReaction.name,
       );

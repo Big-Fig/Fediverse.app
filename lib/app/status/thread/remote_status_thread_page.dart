@@ -17,7 +17,7 @@ import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_m
 import 'package:fedi/pleroma/api/status/pleroma_api_status_service_impl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:pedantic/pedantic.dart';
+
 
 Future goToRemoteStatusThreadPageBasedOnRemoteInstanceStatus(
   BuildContext context, {
@@ -72,8 +72,10 @@ Future goToRemoteStatusThreadPageBasedOnLocalInstanceRemoteStatus(
 
         result = remoteInstanceRemoteStatus.toDbStatusPopulatedWrapper();
       } finally {
-        unawaited(pleromaStatusService?.dispose());
-        unawaited(remoteInstanceBloc?.dispose());
+        // ignore: unawaited_futures
+        pleromaStatusService?.dispose();
+        // ignore: unawaited_futures
+        remoteInstanceBloc?.dispose();
       }
 
       return result;

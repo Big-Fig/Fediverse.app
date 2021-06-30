@@ -34,14 +34,14 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
   final IPleromaApiStatusService pleromaStatusService;
   final IPleromaApiAccountService pleromaAccountService;
   final IPleromaApiStatusEmojiReactionService?
-      PleromaApiStatusEmojiReactionService;
+      pleromaApiStatusEmojiReactionService;
   final IPleromaApiPollService? pleromaPollService;
 
   // todo: remove hack. Dont init when bloc quickly disposed. Help
   StatusBloc({
     required this.pleromaStatusService,
     required this.pleromaAccountService,
-    required this.PleromaApiStatusEmojiReactionService,
+    required this.pleromaApiStatusEmojiReactionService,
     required this.pleromaPollService,
     required IStatus status,
     required bool isNeedRefreshFromNetworkOnInit,

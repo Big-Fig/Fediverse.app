@@ -57,30 +57,28 @@ class _EditMyAccountTopHeaderAndAvatarWidget extends StatelessWidget {
           _editAccountAvatarSize +
           // ignore: no-magic-number
           _editAccountAvatarCircleBorderWidth * 2,
-      child: Container(
-        child: Stack(
-          children: [
-            Container(
-              height: _editAccountHeaderHeight,
-              child: const EditMyAccountHeaderFieldWidget(),
+      child: Stack(
+        children: [
+          Container(
+            height: _editAccountHeaderHeight,
+            child: const EditMyAccountHeaderFieldWidget(),
+          ),
+          Positioned(
+            left: 0,
+            right: 0,
+            top: _editAccountAvatarTopPadding,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const EditMyAccountAvatarFieldWidget(
+                  avatarSize: _editAccountAvatarSize,
+                  avatarCircleBorderWidth:
+                      _editAccountAvatarCircleBorderWidth,
+                ),
+              ],
             ),
-            Positioned(
-              left: 0,
-              right: 0,
-              top: _editAccountAvatarTopPadding,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const EditMyAccountAvatarFieldWidget(
-                    avatarSize: _editAccountAvatarSize,
-                    avatarCircleBorderWidth:
-                        _editAccountAvatarCircleBorderWidth,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

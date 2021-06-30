@@ -99,7 +99,7 @@ abstract class FediProgressDialog extends BaseDialog {
               initialData: isCanceled,
               builder: (context, snapshot) {
                 var canceled = snapshot.data!;
-                Future<Null> Function()? onPressed;
+                Future Function()? onPressed;
 
                 if (!canceled) {
                   onPressed = () async {

@@ -10,11 +10,9 @@ var _urlPath = path.Context(style: path.Style.url);
 class PleromaApiInstanceService extends BasePleromaApiService
     implements IPleromaApiInstanceService {
   final instanceRelativeUrlPath = '/api/v1/instance';
-  @override
-  final IPleromaApiRestService restService;
 
   PleromaApiInstanceService({
-    required this.restService,
+    required IPleromaApiRestService restService,
   }) : super(
           restService: restService,
         );

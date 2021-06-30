@@ -6,7 +6,7 @@ class LifecycleEventHandler extends WidgetsBindingObserver {
   LifecycleEventHandler(this.callback);
 
   @override
-  Future<Null> didChangeAppLifecycleState(AppLifecycleState state) async {
+  Future didChangeAppLifecycleState(AppLifecycleState state) async {
     callback(state);
   }
 }

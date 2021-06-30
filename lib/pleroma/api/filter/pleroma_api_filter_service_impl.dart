@@ -12,16 +12,14 @@ class PleromaApiFilterService extends BasePleromaApiService
     with PleromaApiAuthMixinService
     implements IPleromaApiFilterService {
   final filterRelativeUrlPath = '/api/v1/filters';
-  @override
-  final IPleromaApiAuthRestService restService;
 
   @override
-  IPleromaApiAuthRestService get restApiAuthService => restService;
+  final IPleromaApiAuthRestService restApiAuthService;
 
   PleromaApiFilterService({
-    required this.restService,
+    required this.restApiAuthService,
   }) : super(
-          restService: restService,
+          restService: restApiAuthService,
         );
 
   @override

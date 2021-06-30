@@ -4,20 +4,13 @@
 
 import 'dart:async' as _i5;
 
-import 'package:fedi/disposable/disposable.dart' as _i8;
 import 'package:fedi/pleroma/api/filter/pleroma_api_filter_model.dart' as _i3;
-import 'package:fedi/pleroma/api/filter/pleroma_api_filter_service_impl.dart'
-    as _i4;
+import 'package:fedi/pleroma/api/filter/pleroma_api_filter_service.dart' as _i4;
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart'
     as _i7;
 import 'package:fedi/pleroma/api/pleroma_api_service.dart' as _i6;
-import 'package:fedi/pleroma/api/rest/auth/pleroma_api_auth_rest_service.dart'
-    as _i2;
-import 'package:flutter/src/widgets/editable_text.dart' as _i9;
-import 'package:flutter/src/widgets/focus_manager.dart' as _i11;
-import 'package:flutter/src/widgets/scroll_controller.dart' as _i10;
+import 'package:fedi/rest/rest_service.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:rxdart/src/subjects/subject.dart' as _i12;
 
 // ignore_for_file: avoid_redundant_argument_values
 // ignore_for_file: comment_references
@@ -25,43 +18,24 @@ import 'package:rxdart/src/subjects/subject.dart' as _i12;
 // ignore_for_file: prefer_const_constructors
 // ignore_for_file: unnecessary_parenthesis
 
-class _FakeIPleromaApiAuthRestService extends _i1.Fake
-    implements _i2.IPleromaApiAuthRestService {}
+class _FakeIRestService extends _i1.Fake implements _i2.IRestService {}
 
 class _FakeIPleromaApiFilter extends _i1.Fake implements _i3.IPleromaApiFilter {
 }
 
-/// A class which mocks [PleromaApiFilterService].
+/// A class which mocks [IPleromaApiFilterService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockPleromaApiFilterService extends _i1.Mock
-    implements _i4.PleromaApiFilterService {
-  MockPleromaApiFilterService() {
+class MockIPleromaApiFilterService extends _i1.Mock
+    implements _i4.IPleromaApiFilterService {
+  MockIPleromaApiFilterService() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  String get filterRelativeUrlPath =>
-      (super.noSuchMethod(Invocation.getter(#filterRelativeUrlPath),
-          returnValue: '') as String);
-  @override
-  _i2.IPleromaApiAuthRestService get restService =>
+  _i2.IRestService get restService =>
       (super.noSuchMethod(Invocation.getter(#restService),
-              returnValue: _FakeIPleromaApiAuthRestService())
-          as _i2.IPleromaApiAuthRestService);
-  @override
-  _i2.IPleromaApiAuthRestService get restApiAuthService =>
-      (super.noSuchMethod(Invocation.getter(#restApiAuthService),
-              returnValue: _FakeIPleromaApiAuthRestService())
-          as _i2.IPleromaApiAuthRestService);
-  @override
-  bool get isPleroma =>
-      (super.noSuchMethod(Invocation.getter(#isPleroma), returnValue: false)
-          as bool);
-  @override
-  bool get isMastodon =>
-      (super.noSuchMethod(Invocation.getter(#isMastodon), returnValue: false)
-          as bool);
+          returnValue: _FakeIRestService()) as _i2.IRestService);
   @override
   _i5.Stream<_i6.PleromaApiState> get pleromaApiStateStream =>
       (super.noSuchMethod(Invocation.getter(#pleromaApiStateStream),
@@ -83,10 +57,6 @@ class MockPleromaApiFilterService extends _i1.Mock
   bool get isDisposed =>
       (super.noSuchMethod(Invocation.getter(#isDisposed), returnValue: false)
           as bool);
-  @override
-  set isDisposed(bool? _isDisposed) =>
-      super.noSuchMethod(Invocation.setter(#isDisposed, _isDisposed),
-          returnValueForMissingStub: null);
   @override
   _i5.Future<List<_i3.IPleromaApiFilter>> getFilters(
           {_i7.IPleromaApiPaginationRequest? pagination}) =>
@@ -132,28 +102,4 @@ class MockPleromaApiFilterService extends _i1.Mock
   _i5.Future<dynamic> dispose() =>
       (super.noSuchMethod(Invocation.method(#dispose, []),
           returnValue: Future<dynamic>.value()) as _i5.Future<dynamic>);
-  @override
-  void addDisposable(
-          {_i8.IDisposable? disposable,
-          _i5.StreamSubscription<dynamic>? streamSubscription,
-          _i9.TextEditingController? textEditingController,
-          _i10.ScrollController? scrollController,
-          _i11.FocusNode? focusNode,
-          _i12.Subject<dynamic>? subject,
-          _i5.StreamController<dynamic>? streamController,
-          _i5.Timer? timer,
-          _i5.FutureOr<dynamic>? Function()? custom}) =>
-      super.noSuchMethod(
-          Invocation.method(#addDisposable, [], {
-            #disposable: disposable,
-            #streamSubscription: streamSubscription,
-            #textEditingController: textEditingController,
-            #scrollController: scrollController,
-            #focusNode: focusNode,
-            #subject: subject,
-            #streamController: streamController,
-            #timer: timer,
-            #custom: custom
-          }),
-          returnValueForMissingStub: null);
 }

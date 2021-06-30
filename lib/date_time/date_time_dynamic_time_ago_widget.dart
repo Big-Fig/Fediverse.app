@@ -35,7 +35,7 @@ class _DateTimeDynamicTimeAgoWidgetState
     super.didChangeDependencies();
 
     // ignore: no-magic-number
-    final secondsInMinute = 60;
+    const secondsInMinute = 60;
     var timeToFirstUpdate = secondsInMinute - widget.dateTime!.second;
     // synchronize redraw at 00 seconds for each minute
     Future.delayed(

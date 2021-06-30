@@ -20,7 +20,7 @@ import 'package:fedi/ui/scroll/scroll_controller_bloc_impl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import './local_instance_public_timeline_page_bloc.dart';
+import 'package:fedi/app/instance/public_timeline/local/local_instance_public_timeline_page_bloc.dart';
 import 'package:fedi/app/instance/public_timeline/local/local_instance_public_timeline_page_bloc_impl.dart';
 
 class LocalInstancePublicTimelinePage extends StatelessWidget {

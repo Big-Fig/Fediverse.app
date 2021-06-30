@@ -1,3 +1,4 @@
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/details/local_account_details_page.dart';
@@ -18,7 +19,6 @@ import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/list/fedi_list_tile.dart';
 import 'package:fedi/app/ui/pagination/fedi_pagination_list_widget.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_widget.dart';
@@ -213,10 +213,8 @@ class _ItemOrSeparator<T> {
   _ItemOrSeparator({
     required this.item,
     required this.separator,
-  }) {
-    assert(item != null || separator != null);
-    assert(!(item != null && separator != null));
-  }
+  })  : assert(item != null || separator != null),
+        assert(!(item != null && separator != null));
 }
 
 void _onStatusClick(BuildContext context, IStatus status) {

@@ -10,11 +10,9 @@ var _urlPath = path.Context(style: path.Style.url);
 class PleromaApiAnnouncementService extends BasePleromaApiService
     implements IPleromaApiAnnouncementService {
   final announcementRelativeUrlPath = '/api/v1/announcements';
-  @override
-  final IPleromaApiRestService restService;
 
   PleromaApiAnnouncementService({
-    required this.restService,
+    required IPleromaApiRestService restService,
   }) : super(
           restService: restService,
         );

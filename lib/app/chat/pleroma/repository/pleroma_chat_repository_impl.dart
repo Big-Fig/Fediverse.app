@@ -14,7 +14,7 @@ import 'package:fedi/app/database/dao/repository/remote/populated_app_remote_dat
 import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
-import 'package:pedantic/pedantic.dart';
+
 
 var _singlePleromaChatRepositoryPagination = RepositoryPagination<IPleromaChat>(
   limit: 1,
@@ -296,22 +296,20 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
-      unawaited(
+      // ignore: unawaited_futures
         accountRepository.upsertChatRemoteAccount(
           remoteItem.account,
           chatRemoteId: remoteItem.id,
           batchTransaction: batchTransaction,
-        ),
-      );
+        );
 
       var lastMessage = remoteItem.lastMessage;
       if (lastMessage != null) {
-        unawaited(
+        // ignore: unawaited_futures
           chatMessageRepository.upsertInRemoteTypeBatch(
             lastMessage,
             batchTransaction: batchTransaction,
-          ),
-        );
+          );
       }
     } else {
       await batch((batch) {
@@ -331,19 +329,17 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }) async {
     if (batchTransaction != null) {
       // todo: support mode
-      unawaited(
+      // ignore: unawaited_futures
         _upsertChatMessageMetadata(
           remoteItem,
           batchTransaction: batchTransaction,
-        ),
-      );
+        );
 
-      unawaited(
+      // ignore: unawaited_futures
         dao.upsertBatch(
           entity: remoteItem.toDbChat(),
           batchTransaction: batchTransaction,
-        ),
-      );
+        );
     } else {
       await batch((batch) {
         insertInRemoteTypeBatch(
@@ -362,28 +358,25 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
-      unawaited(
+      // ignore: unawaited_futures
         _upsertChatMessageMetadata(
           remoteItem,
           batchTransaction: batchTransaction,
-        ),
-      );
+        );
 
       if (appItem.localId != null) {
-        unawaited(
+        // ignore: unawaited_futures
           updateByDbIdInDbType(
             dbId: appItem.localId!,
             dbItem: remoteItem.toDbChat(),
             batchTransaction: batchTransaction,
-          ),
-        );
+          );
       } else {
-        unawaited(
+        // ignore: unawaited_futures
           upsertInRemoteTypeBatch(
             remoteItem,
             batchTransaction: batchTransaction,
-          ),
-        );
+          );
       }
     } else {
       await batch((batch) {

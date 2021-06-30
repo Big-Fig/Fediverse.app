@@ -20,6 +20,8 @@ class DraftEditPostStatusPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
+        // todo: refactor
+        // ignore: unawaited_futures
         handleBackPressed(context);
 
         return true;
@@ -43,7 +45,7 @@ class DraftEditPostStatusPage extends StatelessWidget {
     );
   }
 
-  void handleBackPressed(BuildContext context) async {
+  Future handleBackPressed(BuildContext context) async {
     var postStatusBloc = IPostStatusBloc.of(context, listen: false);
     await onBackPressed(
       postStatusBloc.calculateCurrentPostStatusData(),

@@ -10,14 +10,14 @@ import 'package:fedi/app/status/repository/status_repository_impl.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
-import 'package:fedi/pleroma/api/account/auth/pleroma_api_auth_account_service_impl.dart';
+import 'package:fedi/pleroma/api/account/auth/pleroma_api_auth_account_service.dart';
 import 'package:fedi/pleroma/api/card/pleroma_api_card_model.dart';
 import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_model.dart';
 import 'package:fedi/pleroma/api/mention/pleroma_api_mention_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
-import 'package:fedi/pleroma/api/poll/pleroma_api_poll_service_impl.dart';
-import 'package:fedi/pleroma/api/status/auth/pleroma_api_auth_status_service_impl.dart';
-import 'package:fedi/pleroma/api/status/emoji_reaction/pleroma_api_status_emoji_reaction_service_impl.dart';
+import 'package:fedi/pleroma/api/poll/pleroma_api_poll_service.dart';
+import 'package:fedi/pleroma/api/status/auth/pleroma_api_auth_status_service.dart';
+import 'package:fedi/pleroma/api/status/emoji_reaction/pleroma_api_status_emoji_reaction_service.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -32,19 +32,19 @@ import 'status_test_helper.dart';
 
 // ignore_for_file: no-magic-number, avoid-late-keyword
 @GenerateMocks([
-  PleromaApiAuthStatusService,
-  PleromaApiAuthAccountService,
-  PleromaApiStatusEmojiReactionService,
-  PleromaApiPollService,
+  IPleromaApiAuthStatusService,
+  IPleromaApiAuthAccountService,
+  IPleromaApiStatusEmojiReactionService,
+  IPleromaApiPollService,
 ])
 Future<void> main() async {
   late IStatus status;
   late IStatusBloc statusBloc;
-  late MockPleromaApiAuthStatusService pleromaAuthStatusServiceMock;
-  late MockPleromaApiAuthAccountService pleromaAccountServiceMock;
-  late MockPleromaApiStatusEmojiReactionService
-      PleromaApiStatusEmojiReactionServiceMock;
-  late MockPleromaApiPollService pleromaPollServiceMock;
+  late MockIPleromaApiAuthStatusService pleromaAuthStatusServiceMock;
+  late MockIPleromaApiAuthAccountService pleromaAccountServiceMock;
+  late MockIPleromaApiStatusEmojiReactionService
+      pleromaApiStatusEmojiReactionServiceMock;
+  late MockIPleromaApiPollService pleromaPollServiceMock;
   late AppDatabase database;
   late IAccountRepository accountRepository;
   late IStatusRepository statusRepository;
@@ -57,11 +57,11 @@ Future<void> main() async {
       accountRepository: accountRepository,
     );
 
-    pleromaAuthStatusServiceMock = MockPleromaApiAuthStatusService();
-    pleromaAccountServiceMock = MockPleromaApiAuthAccountService();
-    pleromaPollServiceMock = MockPleromaApiPollService();
-    PleromaApiStatusEmojiReactionServiceMock =
-        MockPleromaApiStatusEmojiReactionService();
+    pleromaAuthStatusServiceMock = MockIPleromaApiAuthStatusService();
+    pleromaAccountServiceMock = MockIPleromaApiAuthAccountService();
+    pleromaPollServiceMock = MockIPleromaApiPollService();
+    pleromaApiStatusEmojiReactionServiceMock =
+        MockIPleromaApiStatusEmojiReactionService();
 
     when(pleromaAuthStatusServiceMock.isConnected).thenReturn(true);
     when(pleromaAuthStatusServiceMock.pleromaApiState)
@@ -71,8 +71,8 @@ Future<void> main() async {
     when(pleromaAccountServiceMock.pleromaApiState)
         .thenReturn(PleromaApiState.validAuth);
 
-    when(PleromaApiStatusEmojiReactionServiceMock.isConnected).thenReturn(true);
-    when(PleromaApiStatusEmojiReactionServiceMock.pleromaApiState)
+    when(pleromaApiStatusEmojiReactionServiceMock.isConnected).thenReturn(true);
+    when(pleromaApiStatusEmojiReactionServiceMock.pleromaApiState)
         .thenReturn(PleromaApiState.validAuth);
 
     status = await StatusTestHelper.createTestStatus(seed: 'seed1');
@@ -84,8 +84,8 @@ Future<void> main() async {
       delayInit: false,
       accountRepository: accountRepository,
       pleromaAccountService: pleromaAccountServiceMock,
-      PleromaApiStatusEmojiReactionService:
-          PleromaApiStatusEmojiReactionServiceMock,
+      pleromaApiStatusEmojiReactionService:
+          pleromaApiStatusEmojiReactionServiceMock,
       pleromaPollService: pleromaPollServiceMock,
       isNeedWatchLocalRepositoryForUpdates: true,
       isNeedRefreshFromNetworkOnInit: false,
@@ -1893,7 +1893,7 @@ Future<void> main() async {
       true,
     );
 
-    when(PleromaApiStatusEmojiReactionServiceMock.addReaction(
+    when(pleromaApiStatusEmojiReactionServiceMock.addReaction(
       emoji: emoji1,
       statusRemoteId: status.remoteId,
     )).thenAnswer((_) async {
@@ -1933,7 +1933,7 @@ Future<void> main() async {
           .toPleromaApiStatus();
     });
 
-    when(PleromaApiStatusEmojiReactionServiceMock.removeReaction(
+    when(pleromaApiStatusEmojiReactionServiceMock.removeReaction(
       emoji: emoji1,
       statusRemoteId: status.remoteId,
     )).thenAnswer((_) async {

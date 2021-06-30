@@ -10,7 +10,7 @@ import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_wit
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc_proxy_provider.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
-import 'package:pedantic/pedantic.dart';
+
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:easy_dispose/easy_dispose.dart';
@@ -70,7 +70,7 @@ class PleromaChatMessageCachedPaginationListWithNewItemsBloc<
       // refresh chat from network when local cache have only 1 message
       // usually chat have 1 message when user navigating from chats list where
       // last message already fetched
-      unawaited(
+      // ignore: unawaited_futures
         Future.delayed(
           Duration(
             // todo: refactor
@@ -80,8 +80,7 @@ class PleromaChatMessageCachedPaginationListWithNewItemsBloc<
           () {
             refreshWithController();
           },
-        ),
-      );
+        );
     }
 
     return page;

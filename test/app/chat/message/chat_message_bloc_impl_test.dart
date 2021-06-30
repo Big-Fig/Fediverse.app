@@ -1,5 +1,5 @@
 import 'package:fedi/app/account/account_model_adapter.dart';
-import 'package:fedi/app/account/my/my_account_bloc_impl.dart';
+import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_bloc.dart';
@@ -14,8 +14,8 @@ import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository_impl.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/emoji/text/emoji_text_model.dart';
-import 'package:fedi/pleroma/api/account/auth/pleroma_api_auth_account_service_impl.dart';
-import 'package:fedi/pleroma/api/chat/pleroma_api_chat_service_impl.dart';
+import 'package:fedi/pleroma/api/account/auth/pleroma_api_auth_account_service.dart';
+import 'package:fedi/pleroma/api/chat/pleroma_api_chat_service.dart';
 import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -29,21 +29,21 @@ import 'chat_message_test_helper.dart';
 
 // ignore_for_file: no-magic-number, avoid-late-keyword
 @GenerateMocks([
-  PleromaApiChatService,
-  PleromaApiAuthAccountService,
-  MyAccountBloc,
+  IPleromaApiChatService,
+  IPleromaApiAuthAccountService,
+  IMyAccountBloc,
 ])
 void main() {
   late IPleromaChat chat;
   late IPleromaChatMessage chatMessage;
   late IPleromaChatMessageBloc chatMessageBloc;
-  late MockPleromaApiChatService pleromaChatServiceMock;
-  late MockPleromaApiAuthAccountService pleromaAccountServiceMock;
+  late MockIPleromaApiChatService pleromaChatServiceMock;
+  late MockIPleromaApiAuthAccountService pleromaAccountServiceMock;
   late AppDatabase database;
   late IAccountRepository accountRepository;
   late IPleromaChatRepository chatRepository;
   late IPleromaChatMessageRepository chatMessageRepository;
-  late MockMyAccountBloc myAccountBloc;
+  late MockIMyAccountBloc myAccountBloc;
 
   setUp(
     () async {
@@ -60,9 +60,9 @@ void main() {
         chatMessageRepository: chatMessageRepository,
       );
 
-      myAccountBloc = MockMyAccountBloc();
-      pleromaChatServiceMock = MockPleromaApiChatService();
-      pleromaAccountServiceMock = MockPleromaApiAuthAccountService();
+      myAccountBloc = MockIMyAccountBloc();
+      pleromaChatServiceMock = MockIPleromaApiChatService();
+      pleromaAccountServiceMock = MockIPleromaApiAuthAccountService();
 
       when(pleromaChatServiceMock.isConnected).thenReturn(true);
       when(pleromaChatServiceMock.pleromaApiState).thenReturn(

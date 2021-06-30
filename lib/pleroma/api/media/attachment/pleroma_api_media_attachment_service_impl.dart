@@ -9,15 +9,13 @@ import 'package:fedi/rest/rest_request_model.dart';
 class PleromaApiMediaAttachmentService extends BasePleromaApiService
     with PleromaApiAuthMixinService
     implements IPleromaApiMediaAttachmentService {
-  @override
-  final IPleromaApiAuthRestService restService;
 
   @override
-  IPleromaApiAuthRestService get restApiAuthService => restService;
+  final IPleromaApiAuthRestService restApiAuthService;
 
   PleromaApiMediaAttachmentService({
-    required this.restService,
-  }) : super(restService: restService);
+    required this.restApiAuthService,
+  }) : super(restService: restApiAuthService);
 
   @override
   Future<PleromaApiMediaAttachment> uploadMedia({

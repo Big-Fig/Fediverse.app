@@ -8,7 +8,7 @@ import 'package:fedi/app/status/thread/local_status_thread_page.dart';
 import 'package:fedi/pleroma/api/notification/pleroma_api_notification_model.dart';
 import 'package:fedi/pleroma/api/notification/pleroma_api_notification_service.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:pedantic/pedantic.dart';
+
 
 extension GoToNotificationExtension on INotification {
   Future goToRelatedPage(BuildContext context) async {
@@ -18,17 +18,15 @@ extension GoToNotificationExtension on INotification {
     var pleromaNotificationService =
         IPleromaApiNotificationService.of(context, listen: false);
 
-    unawaited(
+    // ignore: unawaited_futures
       notificationRepository.markAsRead(
         notification: this,
-      ),
-    );
+      );
     if (pleromaNotificationService.isPleroma) {
-      unawaited(
+      // ignore: unawaited_futures
         pleromaNotificationService.markAsReadSingle(
           notificationRemoteId: remoteId,
-        ),
-      );
+        );
     }
 
     var status = this.status;

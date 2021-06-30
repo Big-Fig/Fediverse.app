@@ -15,14 +15,11 @@ class PleromaApiFeaturedTagsService extends BasePleromaApiService
   final featuredTagsRelativeUrlPath = '/api/v1/featured_tags';
 
   @override
-  final IPleromaApiAuthRestService restService;
-
-  @override
-  IPleromaApiAuthRestService get restApiAuthService => restService;
+  final IPleromaApiAuthRestService restApiAuthService;
 
   PleromaApiFeaturedTagsService({
-    required this.restService,
-  }) : super(restService: restService);
+    required this.restApiAuthService,
+  }) : super(restService: restApiAuthService);
 
   @override
   Future<List<IPleromaApiFeaturedTag>> getFeaturedTags({
