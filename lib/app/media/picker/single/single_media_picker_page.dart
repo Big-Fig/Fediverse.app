@@ -1,3 +1,5 @@
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/media/picker/media_picker_page_app_bar_title_widget.dart';
 import 'package:fedi/app/media/picker/media_picker_widget.dart';
 import 'package:fedi/app/media/picker/single/single_media_picker_bloc.dart';
@@ -8,7 +10,6 @@ import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
 import 'package:fedi/app/ui/header/fedi_sub_header_text.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_custom_app_bar.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
 import 'package:fedi/media/device/gallery/media_device_gallery_bloc.dart';
@@ -89,14 +90,12 @@ Future<IMediaDeviceFile?> goToSingleMediaPickerPage(
           child: DisposableProvider<ISingleMediaPickerBloc>(
             create: (context) {
               var singleMediaPickerBloc = SingleMediaPickerBloc();
-              singleMediaPickerBloc.addDisposable(
-                streamSubscription:
-                    singleMediaPickerBloc.fileSelectionStream.listen(
-                  (IMediaDeviceFile file) {
-                    Navigator.pop(context, file);
-                  },
-                ),
-              );
+
+              singleMediaPickerBloc.fileSelectionStream.listen(
+                (IMediaDeviceFile file) {
+                  Navigator.pop(context, file);
+                },
+              ).disposeWith(singleMediaPickerBloc);
 
               return singleMediaPickerBloc;
             },

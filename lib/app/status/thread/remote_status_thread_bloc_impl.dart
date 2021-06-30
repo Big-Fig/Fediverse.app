@@ -41,7 +41,7 @@ class RemoteStatusThreadBloc extends StatusThreadBloc {
       instanceUri: remoteInstanceBloc.instanceUri,
     );
 
-    remoteStatusThreadBloc.addDisposable(disposable: pleromaStatusService);
+    remoteStatusThreadBloc.addDisposable(pleromaStatusService);
 
     return remoteStatusThreadBloc;
   }

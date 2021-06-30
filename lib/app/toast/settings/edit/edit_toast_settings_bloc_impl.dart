@@ -118,15 +118,14 @@ class EditToastSettingsBloc
 
     onFormItemsChanged();
 
-    addDisposable(disposable: favouriteFieldBloc);
-    addDisposable(disposable: followFieldBloc);
-    addDisposable(disposable: mentionFieldBloc);
-    addDisposable(disposable: reblogFieldBloc);
-    addDisposable(disposable: pollFieldBloc);
-    addDisposable(disposable: pleromaChatMentionFieldBloc);
-    addDisposable(disposable: pleromaEmojiReactionFieldBloc);
-    addDisposable(
-      disposable: toastHandlingTypeSingleFromListValueFormFieldBloc,
+    addDisposable(favouriteFieldBloc);
+    addDisposable(followFieldBloc);
+    addDisposable(mentionFieldBloc);
+    addDisposable(reblogFieldBloc);
+    addDisposable(pollFieldBloc);
+    addDisposable(pleromaChatMentionFieldBloc);
+    addDisposable(pleromaEmojiReactionFieldBloc);
+    addDisposable(toastHandlingTypeSingleFromListValueFormFieldBloc,
     );
   }
 

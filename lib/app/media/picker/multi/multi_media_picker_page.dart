@@ -15,7 +15,7 @@ import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/header/fedi_sub_header_text.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_custom_app_bar.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
 import 'package:fedi/media/device/gallery/media_device_gallery_bloc.dart';
@@ -23,6 +23,7 @@ import 'package:fedi/media/device/gallery/photo_manager/photo_manager_device_gal
 import 'package:fedi/permission/storage_permission_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 
 class MultiMediaPickerPage extends StatelessWidget {
   const MultiMediaPickerPage();
@@ -187,35 +188,30 @@ MultiMediaPickerBloc _createMultiMediaPickerBloc(
   var multiMediaPickerBloc =
       MultiMediaPickerBloc(selectionCountLimit: selectionCountLimit);
 
-  multiMediaPickerBloc.addDisposable(
-    streamSubscription:
-        multiMediaPickerBloc.acceptedFilesSelectionStream.listen(
-      (List<IMediaDeviceFile> acceptedFiles) {
-        Navigator.pop(context, acceptedFiles);
-      },
-    ),
-  );
 
-  multiMediaPickerBloc.addDisposable(
-    streamSubscription:
-        multiMediaPickerBloc.selectionCountLimitReachedStream.listen(
-      (_) {
-        var toastService = IToastService.of(context, listen: false);
+  multiMediaPickerBloc.acceptedFilesSelectionStream.listen(
+        (List<IMediaDeviceFile> acceptedFiles) {
+      Navigator.pop(context, acceptedFiles);
+    },
+  ).disposeWith(multiMediaPickerBloc);
 
-        toastService.showInfoToast(
-          context: context,
-          title: S
-              .of(context)
-              .file_picker_multi_selectionCountLimitReached_notification_title,
-          content: S
-              .of(context)
-              .file_picker_multi_selectionCountLimitReached_notification_content(
-                selectionCountLimit!,
-              ),
-        );
-      },
-    ),
-  );
+  multiMediaPickerBloc.selectionCountLimitReachedStream.listen(
+        (_) {
+      var toastService = IToastService.of(context, listen: false);
+
+      toastService.showInfoToast(
+        context: context,
+        title: S
+            .of(context)
+            .file_picker_multi_selectionCountLimitReached_notification_title,
+        content: S
+            .of(context)
+            .file_picker_multi_selectionCountLimitReached_notification_content(
+          selectionCountLimit!,
+        ),
+      );
+    },
+  ).disposeWith(multiMediaPickerBloc);
 
   return multiMediaPickerBloc;
 }

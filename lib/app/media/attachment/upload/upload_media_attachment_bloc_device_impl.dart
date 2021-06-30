@@ -1,8 +1,7 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_model.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_exception.dart';
-import 'package:fedi/disposable/disposable.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
 import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
 import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_service.dart';
@@ -35,19 +34,21 @@ class UploadMediaAttachmentBlocDevice extends DisposableOwner
       uploadStateSubject.stream;
 
   @override
-  UploadMediaAttachmentState? get uploadState => uploadStateSubject.value;
+  UploadMediaAttachmentState? get uploadState => uploadStateSubject.valueOrNull;
 
   UploadMediaAttachmentBlocDevice({
     required this.pleromaMediaAttachmentService,
     required this.mediaDeviceFile,
     required this.maximumFileSizeInBytes,
   }) {
-    addDisposable(subject: uploadStateSubject);
-    addDisposable(disposable: CustomDisposable(() async {
-      if (mediaDeviceFile.isNeedDeleteAfterUsage) {
-        await mediaDeviceFile.delete();
-      }
-    }));
+    uploadStateSubject.disposeWith(this);
+    addCustomDisposable(
+      () async {
+        if (mediaDeviceFile.isNeedDeleteAfterUsage) {
+          await mediaDeviceFile.delete();
+        }
+      },
+    );
   }
 
   @override

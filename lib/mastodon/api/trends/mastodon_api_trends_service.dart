@@ -1,4 +1,4 @@
-import 'package:fedi/disposable/disposable.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/mastodon/api/tag/mastodon_api_tag_model.dart';
 
 abstract class IMastodonApiTrendsService implements IDisposable {

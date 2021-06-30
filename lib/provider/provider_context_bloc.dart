@@ -1,5 +1,5 @@
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
-import 'package:fedi/disposable/disposable.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:flutter/cupertino.dart';
 
 abstract class IProviderContextBloc extends AsyncInitLoadingBloc {

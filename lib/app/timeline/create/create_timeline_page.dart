@@ -11,7 +11,7 @@ import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:flutter/cupertino.dart';

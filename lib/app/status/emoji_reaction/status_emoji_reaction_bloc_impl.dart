@@ -1,7 +1,7 @@
 import 'package:fedi/app/status/emoji_reaction/status_emoji_reaction_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/pleroma/api/status/emoji_reaction/pleroma_api_status_emoji_reaction_service.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
 import 'package:rxdart/rxdart.dart';
@@ -20,7 +20,7 @@ class StatusEmojiReactionBloc extends DisposableOwner
 
   @override
   IPleromaApiStatusEmojiReaction get emojiReaction =>
-      emojiReactionSubject.value!;
+      emojiReactionSubject.value;
   final IPleromaApiStatusEmojiReactionService
       PleromaApiStatusEmojiReactionService;
 
@@ -30,7 +30,7 @@ class StatusEmojiReactionBloc extends DisposableOwner
     required IPleromaApiStatusEmojiReaction emojiReaction,
     required this.PleromaApiStatusEmojiReactionService,
   }) : emojiReactionSubject = BehaviorSubject.seeded(emojiReaction) {
-    addDisposable(subject: emojiReactionSubject);
+    emojiReactionSubject.disposeWith(this);
   }
 
   @override

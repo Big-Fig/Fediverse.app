@@ -1,4 +1,5 @@
 import 'package:async/async.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
@@ -18,7 +19,7 @@ abstract class FediProgressDialog extends BaseDialog {
   final BehaviorSubject<bool> _isCanceledSubject =
       BehaviorSubject.seeded(false);
 
-  bool? get isCanceled => _isCanceledSubject.value;
+  bool? get isCanceled => _isCanceledSubject.valueOrNull;
 
   Stream<bool> get isCanceledStream => _isCanceledSubject.stream;
 
@@ -28,7 +29,7 @@ abstract class FediProgressDialog extends BaseDialog {
     required this.cancelableOperation,
     required bool cancelable,
   }) : super(cancelable: cancelable) {
-    addDisposable(subject: _isCanceledSubject);
+    _isCanceledSubject.disposeWith(this);
   }
 
   Widget buildDialogTitle(BuildContext context);

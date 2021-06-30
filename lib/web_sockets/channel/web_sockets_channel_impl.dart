@@ -1,7 +1,6 @@
 import 'dart:async';
 
-import 'package:fedi/disposable/disposable.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/web_sockets/channel/web_sockets_channel.dart';
 import 'package:fedi/web_sockets/channel/web_sockets_channel_model.dart';
 import 'package:fedi/web_sockets/channel/web_sockets_channel_source.dart';
@@ -33,21 +32,18 @@ class WebSocketsChannel<T extends WebSocketsEvent> extends DisposableOwner
 
     handlingType = serviceConfigBloc.handlingType;
 
-    addDisposable(
-      streamSubscription: serviceConfigBloc.handlingTypeStream.listen(
-        (handlingType) {
-          this.handlingType = handlingType;
-          _recheckSubscription();
-        },
-      ),
-    );
-    addDisposable(
-      disposable: CustomDisposable(
-        () async {
-          await _source?.dispose();
-          await _sourceSubscription?.cancel();
-        },
-      ),
+    serviceConfigBloc.handlingTypeStream.listen(
+      (handlingType) {
+        this.handlingType = handlingType;
+        _recheckSubscription();
+      },
+    ).disposeWith(this);
+
+    addCustomDisposable(
+      () async {
+        await _source?.dispose();
+        await _sourceSubscription?.cancel();
+      },
     );
   }
 
@@ -67,8 +63,7 @@ class WebSocketsChannel<T extends WebSocketsEvent> extends DisposableOwner
     _logger.finest(() => '_onListen called');
     _source = config.createChannelSource();
     var eventsStream = _source!.eventsStream;
-    _sourceSubscription =
-        eventsStream.listen(
+    _sourceSubscription = eventsStream.listen(
       (event) {
         _logger.finest(() => 'newEvent event');
         listeners.forEach(

@@ -18,6 +18,7 @@ import 'package:fedi/pleroma/api/account/my/pleroma_api_my_account_service.dart'
 import 'package:fedi/pleroma/api/field/pleroma_api_field_model.dart';
 import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
 import 'package:flutter/widgets.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 
 class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
   final ICurrentAuthInstanceBloc currentAuthInstanceBloc;
@@ -197,51 +198,50 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
           originValue: myAccountBloc.myAccount?.bot ?? false,
         ),
         super(isAllItemsInitialized: true) {
-    addDisposable(disposable: displayNameField);
-    addDisposable(disposable: noteField);
-    addDisposable(disposable: lockedField);
-    addDisposable(disposable: avatarField);
-    addDisposable(disposable: headerField);
-    addDisposable(disposable: lockedField);
-    addDisposable(disposable: customFieldsGroupBloc);
 
-    addDisposable(disposable: discoverableField);
-    addDisposable(disposable: hideFollowersField);
-    addDisposable(disposable: hideFollowersCountField);
-    addDisposable(disposable: hideFollowsField);
-    addDisposable(disposable: hideFollowsCountField);
-    addDisposable(disposable: noRichTextField);
-    addDisposable(disposable: showRoleField);
-    addDisposable(disposable: allowFollowingMoveField);
-    addDisposable(disposable: skipThreadContainmentField);
-    addDisposable(disposable: acceptsChatMessagesField);
-    addDisposable(disposable: botField);
+    displayNameField.disposeWith(this);
+    noteField.disposeWith(this);
+    lockedField.disposeWith(this);
+    avatarField.disposeWith(this);
+    headerField.disposeWith(this);
+    lockedField.disposeWith(this);
+    customFieldsGroupBloc.disposeWith(this);
 
-    addDisposable(
-      streamSubscription: hideFollowersField.currentValueStream.listen(
-        (hideFollowers) {
-          if (hideFollowers == true) {
-            hideFollowersCountField.changeIsEnabled(true);
-          } else {
-            hideFollowersCountField.changeIsEnabled(false);
-            hideFollowersCountField.changeCurrentValue(false);
-          }
-        },
-      ),
-    );
+    discoverableField.disposeWith(this);
+    hideFollowersField.disposeWith(this);
+    hideFollowersCountField.disposeWith(this);
+    hideFollowsField.disposeWith(this);
+    hideFollowsCountField.disposeWith(this);
 
-    addDisposable(
-      streamSubscription: hideFollowsField.currentValueStream.listen(
-        (hideFollows) {
-          if (hideFollows == true) {
-            hideFollowsCountField.changeIsEnabled(true);
-          } else {
-            hideFollowsCountField.changeIsEnabled(false);
-            hideFollowsCountField.changeCurrentValue(false);
-          }
-        },
-      ),
-    );
+    noRichTextField.disposeWith(this);
+    showRoleField.disposeWith(this);
+    allowFollowingMoveField.disposeWith(this);
+    skipThreadContainmentField.disposeWith(this);
+    acceptsChatMessagesField.disposeWith(this);
+    botField.disposeWith(this);
+
+    hideFollowersField.currentValueStream.listen(
+          (hideFollowers) {
+        if (hideFollowers == true) {
+          hideFollowersCountField.changeIsEnabled(true);
+        } else {
+          hideFollowersCountField.changeIsEnabled(false);
+          hideFollowersCountField.changeCurrentValue(false);
+        }
+      },
+    ).disposeWith(this);
+
+    hideFollowsField.currentValueStream.listen(
+          (hideFollows) {
+        if (hideFollows == true) {
+          hideFollowsCountField.changeIsEnabled(true);
+        } else {
+          hideFollowsCountField.changeIsEnabled(false);
+          hideFollowsCountField.changeCurrentValue(false);
+        }
+      },
+    ).disposeWith(this);
+
   }
 
   @override

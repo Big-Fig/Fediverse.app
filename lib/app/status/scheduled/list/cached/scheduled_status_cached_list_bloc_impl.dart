@@ -4,7 +4,7 @@ import 'package:fedi/app/status/scheduled/list/cached/scheduled_status_cached_li
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository.dart';
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository_model.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_model.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
 import 'package:fedi/pleroma/api/status/scheduled/pleroma_api_scheduled_status_service.dart';

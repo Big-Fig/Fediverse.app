@@ -11,11 +11,12 @@ import 'package:fedi/app/media/attachment/list/media_attachment_list_carousel_wi
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/url/url_helper.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 
 const _borderRadius = Radius.circular(16.0);
 
@@ -224,17 +225,15 @@ class ConversationChatStatusListItemWidget extends StatelessWidget {
                       textScaleFactor: textScaleFactor,
                     ),
                   );
-                  htmlTextBloc.addDisposable(
-                    streamSubscription: htmlTextBloc.linkClickedStream.listen(
-                      (url) {
-                        UrlHelper.handleUrlClickWithInstanceLocation(
-                          context: context,
-                          url: url,
-                          instanceLocationBloc: statusBloc,
-                        );
-                      },
-                    ),
-                  );
+                  htmlTextBloc.linkClickedStream.listen(
+                        (url) {
+                      UrlHelper.handleUrlClickWithInstanceLocation(
+                        context: context,
+                        url: url,
+                        instanceLocationBloc: statusBloc,
+                      );
+                    },
+                  ).disposeWith(htmlTextBloc);
 
                   return htmlTextBloc;
                 },

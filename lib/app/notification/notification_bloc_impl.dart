@@ -3,7 +3,7 @@ import 'package:fedi/app/notification/notification_bloc.dart';
 import 'package:fedi/app/notification/notification_model.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/mastodon/api/notification/mastodon_api_notification_model.dart';
 import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart';
 import 'package:fedi/pleroma/api/notification/pleroma_api_notification_model.dart';
@@ -18,7 +18,7 @@ var _logger = Logger('notification_bloc_impl.dart');
 
 class NotificationBloc extends DisposableOwner implements INotificationBloc {
   @override
-  INotification get notification => _notificationSubject.value!;
+  INotification get notification => _notificationSubject.value;
 
   @override
   Stream<INotification> get notificationStream =>
@@ -60,7 +60,7 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
     //  improve performance in timeline unnecessary recreations
     bool delayInit = true,
   }) : _notificationSubject = BehaviorSubject.seeded(notification) {
-    addDisposable(subject: _notificationSubject);
+    _notificationSubject.disposeWith(this);
 
     if (delayInit) {
       Future.delayed(Duration(seconds: 1), () {
@@ -83,19 +83,17 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
   ) {
     if (!isDisposed) {
       if (isNeedWatchLocalRepositoryForUpdates) {
-        addDisposable(
-          streamSubscription: notificationRepository
-              .watchByRemoteIdInAppType(
-            notification.remoteId,
-          )
-              .listen(
-            (updatedNotification) {
-              if (updatedNotification != null) {
-                _notificationSubject.add(updatedNotification);
-              }
-            },
-          ),
-        );
+        notificationRepository
+            .watchByRemoteIdInAppType(
+          notification.remoteId,
+        )
+            .listen(
+              (updatedNotification) {
+            if (updatedNotification != null) {
+              _notificationSubject.add(updatedNotification);
+            }
+          },
+        ).disposeWith(this);
       }
       if (needRefreshFromNetworkOnInit) {
         refreshFromNetwork();

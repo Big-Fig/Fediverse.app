@@ -20,7 +20,7 @@ import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bl
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc_impl.dart';
 import 'package:fedi/app/timeline/status/timeline_status_cached_list_bloc_impl.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
@@ -30,6 +30,7 @@ import 'package:fedi/pleroma/api/timeline/pleroma_api_timeline_service.dart';
 import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 
 class LocalHashtagPageBloc extends HashtagPageBloc
     implements ILocalHashtagPageBloc {
@@ -179,10 +180,8 @@ class LocalHashtagPageBloc extends HashtagPageBloc
       localPreferencesService,
       userAtHost: userAtHost,
       hashtag: hashtag,
-    );
+    )..disposeWith(this);
     await timelineLocalPreferenceBloc.performAsyncInit();
-
-    addDisposable(disposable: timelineLocalPreferenceBloc);
 
     statusCachedListBloc = TimelineStatusCachedListBloc(
       pleromaApiAccountService: pleromaApiAccountService,
@@ -194,16 +193,14 @@ class LocalHashtagPageBloc extends HashtagPageBloc
       webSocketsHandlerManagerBloc: webSocketsHandlerManagerBloc,
       myAccountBloc: myAccountBloc,
       webSocketsListenType: WebSocketsListenType.foreground,
-    );
+    )..disposeWith(this);
     await statusCachedListBloc.performAsyncInit();
-    addDisposable(disposable: statusCachedListBloc);
 
     statusCachedPaginationBloc = StatusCachedPaginationBloc(
       statusListService: statusCachedListBloc,
       paginationSettingsBloc: paginationSettingsBloc,
       maximumCachedPagesCount: null,
-    );
-    addDisposable(disposable: statusCachedPaginationBloc);
+    )..disposeWith(this);
 
     statusCachedPaginationListWithNewItemsBloc =
         StatusCachedPaginationListWithNewItemsBloc(
@@ -212,17 +209,14 @@ class LocalHashtagPageBloc extends HashtagPageBloc
       myAccountBloc: myAccountBloc,
       mergeOwnStatusesImmediately: false,
       paginationBloc: statusCachedPaginationBloc,
-    );
-    addDisposable(disposable: statusCachedPaginationListWithNewItemsBloc);
+    )..disposeWith(this);
 
 
-    addDisposable(
-      streamSubscription: timelineLocalPreferenceBloc.stream.listen(
-            (_) {
-              statusCachedPaginationListWithNewItemsBloc.refreshWithController();
-        },
-      ),
-    );
+    timelineLocalPreferenceBloc.stream.listen(
+          (_) {
+        statusCachedPaginationListWithNewItemsBloc.refreshWithController();
+      },
+    ).disposeWith(this);
   }
 
   @override

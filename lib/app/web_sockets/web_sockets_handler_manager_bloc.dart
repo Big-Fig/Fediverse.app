@@ -1,4 +1,4 @@
-import 'package:fedi/disposable/disposable.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';

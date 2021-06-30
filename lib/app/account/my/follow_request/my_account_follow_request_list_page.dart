@@ -6,7 +6,7 @@ import 'package:fedi/app/account/pagination/network_only/account_network_only_pa
 import 'package:fedi/app/account/pagination/network_only/account_network_only_pagination_bloc_impl.dart';
 import 'package:fedi/app/ui/empty/fedi_empty_widget.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pagination/network_only/network_only_pagination_bloc.dart';
 import 'package:fedi/pagination/network_only/network_only_pagination_bloc_proxy_provider.dart';

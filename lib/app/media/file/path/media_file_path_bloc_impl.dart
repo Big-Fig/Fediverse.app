@@ -1,5 +1,5 @@
 import 'package:fedi/app/media/file/path/media_file_path_bloc.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:path/path.dart' as path_lib;
 
 class MediaFilePathBloc extends DisposableOwner implements IMediaFilePathBloc {

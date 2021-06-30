@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:fedi/async/loading/init/async_init_loading_bloc.dart';
-import 'package:fedi/disposable/disposable.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';

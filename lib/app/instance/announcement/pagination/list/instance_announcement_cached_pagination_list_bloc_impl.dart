@@ -1,5 +1,5 @@
 import 'package:fedi/app/instance/announcement/list/cached/instance_announcement_cached_list_bloc.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pagination/cached/cached_pagination_bloc.dart';
 import 'package:fedi/pagination/cached/cached_pagination_list_bloc.dart';
 import 'package:fedi/pagination/cached/cached_pagination_list_bloc_impl.dart';

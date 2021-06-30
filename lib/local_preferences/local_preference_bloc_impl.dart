@@ -1,11 +1,12 @@
 import 'package:fedi/async/loading/init/async_init_loading_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
-import 'package:fedi/disposable/disposable.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/json/json_model.dart';
 import 'package:fedi/local_preferences/local_preference_bloc.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
+
 
 abstract class LocalPreferenceBloc<T> extends AsyncInitLoadingBloc
     implements IAsyncInitLoadingBloc, ILocalPreferenceBloc<T> {
@@ -16,7 +17,7 @@ abstract class LocalPreferenceBloc<T> extends AsyncInitLoadingBloc
   final BehaviorSubject<T> _subject = BehaviorSubject();
 
   @override
-  T get value => _subject.value ?? defaultPreferenceValue;
+  T get value => _subject.valueOrNull ?? defaultPreferenceValue;
 
   @override
   Stream<T> get stream => _subject.stream;
@@ -25,7 +26,7 @@ abstract class LocalPreferenceBloc<T> extends AsyncInitLoadingBloc
     required this.preferencesService,
     required this.key,
   }) {
-    addDisposable(subject: _subject);
+    _subject.disposeWith(this);
   }
 
   T get defaultPreferenceValue;
@@ -36,7 +37,7 @@ abstract class LocalPreferenceBloc<T> extends AsyncInitLoadingBloc
   Future internalAsyncInit() async {
     _subject.add((await getValueInternal()) ?? defaultPreferenceValue);
 
-    addDisposable(subject: _subject);
+    _subject.disposeWith(this);
     keyPreferenceChangedDisposable =
         preferencesService.listenKeyPreferenceChanged(
       key,
@@ -52,9 +53,7 @@ abstract class LocalPreferenceBloc<T> extends AsyncInitLoadingBloc
         }
       },
     );
-    addDisposable(
-      disposable: keyPreferenceChangedDisposable,
-    );
+    keyPreferenceChangedDisposable!.disposeWith(this);
   }
 
   @override

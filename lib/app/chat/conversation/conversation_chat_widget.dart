@@ -10,7 +10,7 @@ import 'package:fedi/app/chat/message/chat_message_bloc.dart';
 import 'package:fedi/app/chat/message/list/chat_message_list_item_widget.dart';
 import 'package:fedi/app/chat/message/list/chat_message_list_widget.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';

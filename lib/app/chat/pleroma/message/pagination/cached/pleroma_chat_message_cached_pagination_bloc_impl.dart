@@ -4,7 +4,7 @@ import 'package:fedi/app/chat/pleroma/message/pagination/cached/pleroma_chat_mes
 import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
 import 'package:fedi/app/pagination/cached/cached_pleroma_pagination_bloc_impl.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pagination/cached/cached_pagination_bloc.dart';
 import 'package:fedi/pagination/cached/cached_pagination_bloc_proxy_provider.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';

@@ -1,4 +1,4 @@
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/form/field/value/duration/date_time/duration_date_time_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/duration/date_time/duration_date_time_value_form_field_model.dart';
 import 'package:fedi/form/field/value/duration/duration_value_form_field_bloc.dart';

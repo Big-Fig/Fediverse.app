@@ -6,7 +6,7 @@ import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_bloc.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_model.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
 import 'package:fedi/pleroma/api/status/auth/pleroma_api_auth_status_service.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
@@ -54,28 +54,25 @@ class ScheduledStatusBloc extends DisposableOwner
     bool delayInit = true,
     this.isNeedWatchLocalRepositoryForUpdates = true,
   }) : _scheduledStatusSubject = BehaviorSubject.seeded(scheduledStatus) {
-    addDisposable(subject: _scheduledStatusSubject);
-    addDisposable(subject: _stateSubject);
+    _scheduledStatusSubject.disposeWith(this);
+    _stateSubject.disposeWith(this);
+
 
     _updateState();
     // _checkCanceled
-    addDisposable(
-      streamSubscription: scheduledStatusStream.listen(
-        (_) {
-          _updateState();
-        },
-      ),
-    );
+    scheduledStatusStream.listen(
+          (_) {
+        _updateState();
+      },
+    ).disposeWith(this);
 
     // check expired
-    addDisposable(
-      timer: Timer.periodic(
-        Duration(minutes: 1),
-        (_) {
-          _updateState();
-        },
-      ),
-    );
+    Timer.periodic(
+      Duration(minutes: 1),
+          (_) {
+        _updateState();
+      },
+    ).disposeWith(this);
 
     if (delayInit) {
       Future.delayed(Duration(seconds: 1), () {
@@ -92,17 +89,15 @@ class ScheduledStatusBloc extends DisposableOwner
   ) {
     if (!isDisposed) {
       if (isNeedWatchLocalRepositoryForUpdates) {
-        addDisposable(
-          streamSubscription: scheduledStatusRepository
-              .watchByDbIdInAppType(scheduledStatus.localId!)
-              .listen(
-            (updatedStatus) {
-              if (updatedStatus != null) {
-                _scheduledStatusSubject.add(updatedStatus);
-              }
-            },
-          ),
-        );
+        scheduledStatusRepository
+            .watchByDbIdInAppType(scheduledStatus.localId!)
+            .listen(
+              (updatedStatus) {
+            if (updatedStatus != null) {
+              _scheduledStatusSubject.add(updatedStatus);
+            }
+          },
+        ).disposeWith(this);
       }
       if (needRefreshFromNetworkOnInit) {
         refreshFromNetwork();
@@ -111,7 +106,7 @@ class ScheduledStatusBloc extends DisposableOwner
   }
 
   @override
-  IScheduledStatus get scheduledStatus => _scheduledStatusSubject.value!;
+  IScheduledStatus get scheduledStatus => _scheduledStatusSubject.value;
 
   @override
   Stream<IScheduledStatus> get scheduledStatusStream =>

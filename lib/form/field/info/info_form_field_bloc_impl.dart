@@ -1,3 +1,4 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/form/field/info/info_form_field_bloc.dart';
 import 'package:fedi/form/form_item_validation.dart';
@@ -8,13 +9,13 @@ abstract class InfoFormFieldBloc<T> extends AsyncInitLoadingBloc
   BehaviorSubject<T?> currentValueSubject = BehaviorSubject();
 
   @override
-  T? get currentValue => currentValueSubject.value;
+  T? get currentValue => currentValueSubject.valueOrNull;
 
   @override
   Stream<T?> get currentValueStream => currentValueSubject.stream;
 
   InfoFormFieldBloc() {
-    addDisposable(subject: currentValueSubject);
+    currentValueSubject.disposeWith(this);
   }
 
   @override

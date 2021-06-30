@@ -21,7 +21,7 @@ import 'package:fedi/app/ui/tab/indicator/fedi_tab_indicator_bloc.dart';
 import 'package:fedi/app/ui/tab/indicator/fedi_tab_indicator_bloc_impl.dart';
 import 'package:fedi/app/ui/tab/indicator/fedi_tab_indicator_model.dart';
 import 'package:fedi/app/ui/tab/indicator/text/fedi_text_tab_indicator_widget.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';

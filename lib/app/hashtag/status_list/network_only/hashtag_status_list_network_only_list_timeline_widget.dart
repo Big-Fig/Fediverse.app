@@ -8,7 +8,7 @@ import 'package:fedi/app/status/thread/local_status_thread_page.dart';
 import 'package:fedi/app/status/thread/remote_status_thread_page.dart';
 import 'package:fedi/app/ui/list/fedi_list_tile.dart';
 import 'package:fedi/app/ui/pagination/fedi_pagination_list_widget.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_widget.dart';
 import 'package:fedi/pagination/pagination_model.dart';

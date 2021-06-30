@@ -1,4 +1,4 @@
-import 'package:fedi/disposable/disposable.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/ui/scroll/nested_scroll_controller_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:nested_scroll_controller/nested_scroll_controller.dart';

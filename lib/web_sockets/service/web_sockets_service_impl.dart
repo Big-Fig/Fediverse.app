@@ -1,5 +1,4 @@
-import 'package:fedi/disposable/disposable.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/web_sockets/channel/web_sockets_channel.dart';
 import 'package:fedi/web_sockets/channel/web_sockets_channel_impl.dart';
 import 'package:fedi/web_sockets/channel/web_sockets_channel_model.dart';
@@ -20,8 +19,7 @@ class WebSocketsService extends DisposableOwner implements IWebSocketsService {
   WebSocketsService({
     required this.configBloc,
   }) {
-    addDisposable(
-      disposable: CustomDisposable(
+    addDisposable(CustomDisposable(
         () async {
           urlToChannel.values.forEach((channel) => channel.dispose());
           urlToChannel.clear();

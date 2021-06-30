@@ -67,7 +67,7 @@ class MediaAttachmentDetailsPage extends StatefulWidget {
 class _MediaAttachmentDetailsPageState
     extends State<MediaAttachmentDetailsPage> {
   IPleromaApiMediaAttachment get mediaAttachment =>
-      selectedMediaAttachmentSubject.value ?? widget.mediaAttachments.first;
+      selectedMediaAttachmentSubject.valueOrNull ?? widget.mediaAttachments.first;
 
   final PageController _controller;
 
@@ -77,7 +77,7 @@ class _MediaAttachmentDetailsPageState
       selectedMediaAttachmentSubject.stream;
 
   IPleromaApiMediaAttachment? get selectedMediaAttachment =>
-      selectedMediaAttachmentSubject.value;
+      selectedMediaAttachmentSubject.valueOrNull;
 
   // ignore: avoid-late-keyword
   late VoidCallback listener;

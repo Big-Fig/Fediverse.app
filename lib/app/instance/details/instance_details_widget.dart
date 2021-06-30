@@ -27,7 +27,7 @@ import 'package:fedi/app/ui/list/fedi_list_smart_refresher_widget.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/url/url_helper.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/file/file_size_helper.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/mastodon/api/instance/mastodon_api_instance_model.dart';
@@ -40,6 +40,7 @@ import 'package:flutter_html/style.dart';
 import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 
 final _logger = Logger('instance_details_widget.dart');
 
@@ -380,17 +381,16 @@ class _InstanceDetailsDescriptionWidget extends StatelessWidget {
                     textOverflow: null,
                   ),
                 );
-                htmlTextBloc.addDisposable(
-                  streamSubscription: htmlTextBloc.linkClickedStream.listen(
-                    (url) {
-                      UrlHelper.handleUrlClickWithInstanceLocation(
-                        context: context,
-                        url: url,
-                        instanceLocationBloc: instanceDetailsBloc,
-                      );
-                    },
-                  ),
-                );
+
+                htmlTextBloc.linkClickedStream.listen(
+                      (url) {
+                    UrlHelper.handleUrlClickWithInstanceLocation(
+                      context: context,
+                      url: url,
+                      instanceLocationBloc: instanceDetailsBloc,
+                    );
+                  },
+                ).disposeWith(htmlTextBloc);
 
                 return htmlTextBloc;
               },

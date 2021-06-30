@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/pagination/list/account_pagination_list_bloc.dart';
@@ -23,8 +25,6 @@ import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_b
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/api/account/auth/pleroma_api_auth_account_service.dart';
 import 'package:fedi/pleroma/api/list/pleroma_api_list_service.dart';
 import 'package:flutter/widgets.dart';
@@ -72,16 +72,16 @@ class EditCustomListBloc extends DisposableOwner
     );
 
     if (onSubmit != null) {
-      editCustomListBloc.addDisposable(
-        streamSubscription: editCustomListBloc.submittedStream.listen(onSubmit),
-      );
+      editCustomListBloc.submittedStream
+          .listen(onSubmit)
+          .disposeWith(editCustomListBloc);
     }
     if (onDelete != null) {
-      editCustomListBloc.addDisposable(
-        streamSubscription: editCustomListBloc.deletedStream.listen(
-          (_) => onDelete(),
-        ),
-      );
+      editCustomListBloc.deletedStream
+          .listen(
+            (_) => onDelete(),
+          )
+          .disposeWith(editCustomListBloc);
     }
 
     return editCustomListBloc;
@@ -150,7 +150,7 @@ class EditCustomListBloc extends DisposableOwner
     required IMyAccountBloc myAccountBloc,
     required IAccountRepository accountRepository,
     required IPleromaApiAuthAccountService pleromaAuthAccountService,
-  })   : selectAccountListBloc = SelectAccountListBloc(
+  })  : selectAccountListBloc = SelectAccountListBloc(
           pleromaAuthAccountService: pleromaAuthAccountService,
           accountRepository: accountRepository,
           myAccountBloc: myAccountBloc,
@@ -185,15 +185,19 @@ class EditCustomListBloc extends DisposableOwner
       paginationListBloc: accountPaginationListBloc,
     );
 
-    addDisposable(disposable: selectAccountListBloc);
-    addDisposable(disposable: customListFormBloc);
-    addDisposable(disposable: customListAccountListNetworkOnlyListBloc);
-    addDisposable(disposable: customListAccountListNetworkOnlyPaginationBloc);
-    addDisposable(disposable: accountPaginationListBloc);
-    addDisposable(disposable: editCustomListAccountListPaginationListBloc);
+    addDisposables(
+      [
+        selectAccountListBloc,
+        customListFormBloc,
+        customListAccountListNetworkOnlyListBloc,
+        customListAccountListNetworkOnlyPaginationBloc,
+        accountPaginationListBloc,
+        editCustomListAccountListPaginationListBloc,
+      ],
+    );
 
-    addDisposable(streamController: submittedStreamController);
-    addDisposable(streamController: deletedStreamController);
+    submittedStreamController.disposeWith(this);
+    deletedStreamController.disposeWith(this);
   }
 
   @override

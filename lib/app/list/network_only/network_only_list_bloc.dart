@@ -1,4 +1,4 @@
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 
 abstract class INetworkOnlyListBloc<T> extends DisposableOwner {

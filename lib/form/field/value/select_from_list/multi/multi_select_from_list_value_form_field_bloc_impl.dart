@@ -4,6 +4,8 @@ import 'package:fedi/form/field/value/select_from_list/multi/multi_select_from_l
 import 'package:fedi/form/field/value/value_form_field_bloc_impl.dart';
 import 'package:fedi/form/field/value/value_form_field_validation.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
 
 abstract class MultiSelectFromListValueFormFieldBloc<T>
     extends ValueFormFieldBloc<List<T>>
@@ -26,15 +28,13 @@ abstract class MultiSelectFromListValueFormFieldBloc<T>
           validators: validators,
           isNullValuePossible: isNullValuePossible,
         ) {
-    addDisposable(
-      streamSubscription: currentValueStream.listen((_) {
-        isNeedRebuildActionsSubject.add(true);
-      }),
-    );
+    currentValueStream.listen((_) {
+      isNeedRebuildActionsSubject.add(true);
+    }).disposeWith(this);
 
     isNeedRebuildActionsSubject.add(true);
 
-    addDisposable(subject: isNeedRebuildActionsSubject);
+    isNeedRebuildActionsSubject.disposeWith(this);
   }
 
   @override

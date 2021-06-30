@@ -10,7 +10,7 @@ import 'package:fedi/app/ui/list/fedi_list_smart_refresher_refresh_indicator.dar
 import 'package:fedi/app/ui/list/fedi_list_smart_refresher_widget.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/date/date_utils.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/material.dart';

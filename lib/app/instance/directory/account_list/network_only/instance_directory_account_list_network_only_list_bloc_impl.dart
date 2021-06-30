@@ -2,7 +2,7 @@ import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/instance/directory/account_list/network_only/instance_directory_account_list_network_only_list_bloc.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/pleroma/api/directory/pleroma_api_directory_service.dart';
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';

@@ -4,7 +4,7 @@ import 'package:fedi/app/custom_list/account_list/network_only/custom_list_accou
 import 'package:fedi/app/custom_list/custom_list_model.dart';
 import 'package:fedi/app/custom_list/edit/account_list/edit_custom_list_account_list_pagination_list_bloc.dart';
 import 'package:fedi/app/custom_list/form/custom_list_form_bloc.dart';
-import 'package:fedi/disposable/disposable.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 

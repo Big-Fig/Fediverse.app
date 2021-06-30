@@ -9,7 +9,7 @@ import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';

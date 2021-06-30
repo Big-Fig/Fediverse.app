@@ -37,7 +37,7 @@ class EditPaginationSettingsBloc
       originValue: currentSettings.pageSize,
     );
 
-    addDisposable(disposable: pageSizeFieldBloc);
+    addDisposable(pageSizeFieldBloc);
 
     onFormItemsChanged();
   }

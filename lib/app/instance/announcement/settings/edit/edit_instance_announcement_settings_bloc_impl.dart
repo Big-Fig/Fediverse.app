@@ -31,7 +31,7 @@ class EditInstanceAnnouncementSettingsBloc
           settingsBloc: instanceAnnouncementSettingsBloc,
           isAllItemsInitialized: true,
         ) {
-    addDisposable(disposable: withDismissedFieldBloc);
+    addDisposable(withDismissedFieldBloc);
   }
 
   @override

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:fedi/app/html/html_text_bloc.dart';
 import 'package:fedi/app/html/html_text_model.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_html/style.dart';
 import 'package:html_unescape/html_unescape.dart';
@@ -33,7 +33,7 @@ class HtmlTextBloc extends DisposableOwner implements IHtmlTextBloc {
           inputData: inputData,
           settings: settings,
         ) {
-    addDisposable(streamController: linkClickedStreamController);
+    linkClickedStreamController.disposeWith(this);
   }
 
   @override

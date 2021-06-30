@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:collection/collection.dart' show IterableExtension;
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
 import 'package:fedi/app/ui/list/fedi_list_smart_refresher_model.dart';
 import 'package:fedi/collection/collection_hash_utils.dart';
 import 'package:fedi/obj/equal_comparable_obj.dart';
@@ -25,12 +27,12 @@ abstract class CachedPaginationListWithNewItemsBloc<
   // ignore: avoid-late-keyword
   late BehaviorSubject<_CombinedItemsResult<TItem>> combinedItemsResultSubject;
 
-  List<TItem> get updatedItems => updatedItemsSubject.value!;
+  List<TItem> get updatedItems => updatedItemsSubject.value;
 
   Stream<List<TItem>> get updatedItemsStream => updatedItemsSubject.stream;
 
   @override
-  List<TItem> get items => combinedItemsResultSubject.value!.resultItems;
+  List<TItem> get items => combinedItemsResultSubject.value.resultItems;
 
   @override
   Stream<List<TItem>> get itemsStream => combinedItemsResultSubject.stream.map(
@@ -89,76 +91,66 @@ abstract class CachedPaginationListWithNewItemsBloc<
       ),
     );
 
-    addDisposable(subject: mergedNewItemsSubject);
-    addDisposable(subject: unmergedNewItemsSubject);
-    addDisposable(subject: updatedItemsSubject);
-    addDisposable(subject: combinedItemsResultSubject);
+    mergedNewItemsSubject.disposeWith(this);
+    unmergedNewItemsSubject.disposeWith(this);
+    updatedItemsSubject.disposeWith(this);
+    combinedItemsResultSubject.disposeWith(this);
 
-    addDisposable(
-      streamSubscription: newerItemStream.listen(
-        (TItem? newerItem) {
-          checkWatchNewItemsSubscription(newerItem);
-        },
-      ),
-    );
+    newerItemStream.listen(
+      (TItem? newerItem) {
+        checkWatchNewItemsSubscription(newerItem);
+      },
+    ).disposeWith(this);
 
     if (mergeNewItemsImmediately) {
-      addDisposable(
-        streamSubscription: unmergedNewItemsStream.listen(
-          (unmergedNewItems) {
-            if (unmergedNewItems.isNotEmpty) {
-              mergeNewItems();
-            }
-          },
-        ),
-      );
+      unmergedNewItemsStream.listen(
+            (unmergedNewItems) {
+          if (unmergedNewItems.isNotEmpty) {
+            mergeNewItems();
+          }
+        },
+      ).disposeWith(this);
     }
 
-    addDisposable(
-      streamSubscription: super.itemsStream.listen(
-        (superItems) async {
-          var calculateNewItemsRequest = _CalculateNewItemsInputData<TItem>(
-            superItems: superItems,
-            mergedNewItems: mergedNewItems,
-            updatedItems: updatedItems,
-          );
+    super.itemsStream.listen(
+          (superItems) async {
+        var calculateNewItemsRequest = _CalculateNewItemsInputData<TItem>(
+          superItems: superItems,
+          mergedNewItems: mergedNewItems,
+          updatedItems: updatedItems,
+        );
 
-          await _updateCombinedItemsResult(calculateNewItemsRequest);
-        },
-      ),
-    );
-    addDisposable(
-      streamSubscription: mergedNewItemsStream.listen(
-        (mergedNewItems) async {
-          var calculateNewItemsRequest = _CalculateNewItemsInputData<TItem>(
-            superItems: super.items,
-            mergedNewItems: mergedNewItems,
-            updatedItems: updatedItems,
-          );
+        await _updateCombinedItemsResult(calculateNewItemsRequest);
+      },
+    ).disposeWith(this);
+    mergedNewItemsStream.listen(
+          (mergedNewItems) async {
+        var calculateNewItemsRequest = _CalculateNewItemsInputData<TItem>(
+          superItems: super.items,
+          mergedNewItems: mergedNewItems,
+          updatedItems: updatedItems,
+        );
 
-          await _updateCombinedItemsResult(calculateNewItemsRequest);
-        },
-      ),
-    );
-    addDisposable(
-      streamSubscription: updatedItemsStream.listen(
-        (updatedItems) async {
-          var calculateNewItemsRequest = _CalculateNewItemsInputData<TItem>(
-            superItems: super.items,
-            mergedNewItems: mergedNewItems,
-            updatedItems: updatedItems,
-          );
+        await _updateCombinedItemsResult(calculateNewItemsRequest);
+      },
+    ).disposeWith(this);
+    updatedItemsStream.listen(
+          (updatedItems) async {
+        var calculateNewItemsRequest = _CalculateNewItemsInputData<TItem>(
+          superItems: super.items,
+          mergedNewItems: mergedNewItems,
+          updatedItems: updatedItems,
+        );
 
-          await _updateCombinedItemsResult(calculateNewItemsRequest);
-        },
-      ),
-    );
+        await _updateCombinedItemsResult(calculateNewItemsRequest);
+      },
+    ).disposeWith(this);
   }
 
   Future _updateCombinedItemsResult(
     _CalculateNewItemsInputData<TItem> calculateNewItemsInputData,
   ) async {
-    var oldResult = combinedItemsResultSubject.value!;
+    var oldResult = combinedItemsResultSubject.value;
     var request = _CalculateNewItemsRequest<TItem>(
       inputData: calculateNewItemsInputData,
       result: oldResult,
@@ -187,7 +179,7 @@ abstract class CachedPaginationListWithNewItemsBloc<
       .map((isHaveUnmergedNewItems) => unmergedNewItemsCount > 0);
 
   @override
-  List<TItem> get unmergedNewItems => unmergedNewItemsSubject.value!;
+  List<TItem> get unmergedNewItems => unmergedNewItemsSubject.value;
 
   @override
   Stream<List<TItem>> get unmergedNewItemsStream =>
@@ -206,7 +198,7 @@ abstract class CachedPaginationListWithNewItemsBloc<
       .map((isHaveMergedNewItems) => mergedNewItemsCount > 0);
 
   @override
-  List<TItem> get mergedNewItems => mergedNewItemsSubject.value!;
+  List<TItem> get mergedNewItems => mergedNewItemsSubject.value;
 
   @override
   Stream<List<TItem>> get mergedNewItemsStream => mergedNewItemsSubject.stream;
@@ -288,7 +280,7 @@ abstract class CachedPaginationListWithNewItemsBloc<
 
     newItemsSubscription = createWatchNewItemsSubscription(newerItem);
 
-    addDisposable(streamSubscription: newItemsSubscription);
+    newItemsSubscription!.disposeWith(this);
   }
 
   StreamSubscription<List<TItem>> createWatchNewItemsSubscription(newerItem) {
@@ -319,7 +311,7 @@ abstract class CachedPaginationListWithNewItemsBloc<
           );
         }
 
-        // if newerItem already changed we shouldnt apply calculated changes
+        // if newerItem already changed we shouldn't apply calculated changes
         // because new changes coming
         if (this.newerItem != newerItem) {
           return;

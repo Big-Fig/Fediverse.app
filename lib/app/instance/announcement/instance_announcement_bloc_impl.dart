@@ -2,7 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:fedi/app/instance/announcement/instance_announcement_bloc.dart';
 import 'package:fedi/app/instance/announcement/instance_announcement_model.dart';
 import 'package:fedi/app/instance/announcement/repository/instance_announcement_repository.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/pleroma/api/announcement/pleroma_api_announcement_model.dart';
 import 'package:fedi/pleroma/api/announcement/pleroma_api_announcement_service.dart';
 import 'package:fedi/pleroma/api/mention/pleroma_api_mention_model.dart';
@@ -15,7 +15,7 @@ class InstanceAnnouncementBloc extends DisposableOwner
     implements IInstanceAnnouncementBloc {
   @override
   IInstanceAnnouncement get instanceAnnouncement =>
-      _instanceAnnouncementSubject.value!;
+      _instanceAnnouncementSubject.value;
 
   @override
   Stream<IInstanceAnnouncement> get instanceAnnouncementStream =>
@@ -51,7 +51,7 @@ class InstanceAnnouncementBloc extends DisposableOwner
     bool delayInit = true,
   }) : _instanceAnnouncementSubject =
             BehaviorSubject.seeded(instanceAnnouncement) {
-    addDisposable(subject: _instanceAnnouncementSubject);
+    _instanceAnnouncementSubject.disposeWith(this);
     if (delayInit) {
       Future.delayed(Duration(seconds: 1), () {
         _init(instanceAnnouncement);
@@ -64,17 +64,15 @@ class InstanceAnnouncementBloc extends DisposableOwner
   void _init(IInstanceAnnouncement instanceAnnouncement) {
     if (!isDisposed) {
       if (isNeedWatchLocalRepositoryForUpdates) {
-        addDisposable(
-          streamSubscription: instanceAnnouncementRepository
-              .watchByRemoteIdInAppType(instanceAnnouncement.remoteId)
-              .listen(
-            (updatedInstanceAnnouncement) {
-              if (updatedInstanceAnnouncement != null) {
-                _instanceAnnouncementSubject.add(updatedInstanceAnnouncement);
-              }
-            },
-          ),
-        );
+        instanceAnnouncementRepository
+            .watchByRemoteIdInAppType(instanceAnnouncement.remoteId)
+            .listen(
+              (updatedInstanceAnnouncement) {
+            if (updatedInstanceAnnouncement != null) {
+              _instanceAnnouncementSubject.add(updatedInstanceAnnouncement);
+            }
+          },
+        ).disposeWith(this);
       }
     }
   }

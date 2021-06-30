@@ -1,11 +1,11 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/database/database_service.dart';
-import 'package:fedi/disposable/disposable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -62,13 +62,7 @@ class AppDatabaseService extends AsyncInitLoadingBloc
       ),
     );
 
-    addDisposable(
-      disposable: CustomDisposable(
-        () async {
-          await appDatabase.close();
-        },
-      ),
-    );
+    addCustomDisposable(() => appDatabase.close());
 
     if (!kReleaseMode) {
       await _addMoorInspectorSupport();
@@ -87,9 +81,9 @@ class AppDatabaseService extends AsyncInitLoadingBloc
     //Start server and announcement server
     await inspector.start();
 
-    addDisposable(custom: () async {
-      await inspector.stop();
-    });
+    addCustomDisposable(
+      () => inspector.stop(),
+    );
   }
 
   static Future<String> calculateDatabaseFilePath(String dbName) async {

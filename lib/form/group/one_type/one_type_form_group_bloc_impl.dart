@@ -1,3 +1,5 @@
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:fedi/form/group/form_group_bloc_impl.dart';
 import 'package:fedi/form/group/one_type/one_type_form_group_bloc.dart';
@@ -25,15 +27,18 @@ class OneTypeFormGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
   }) : _itemsSubject = BehaviorSubject.seeded([
           ...originalItems,
         ]) {
-    addDisposable(subject: _itemsSubject);
-    addDisposable(subject: _isChangedSubject);
-    originalItems.forEach((field) {
-      addDisposable(
-        streamSubscription: field.isSomethingChangedStream.listen((_) {
-          checkIsSomethingChanged();
-        }),
-      );
-    });
+    _itemsSubject.disposeWith(this);
+    _isChangedSubject.disposeWith(this);
+
+    originalItems.forEach(
+      (field) {
+        field.isSomethingChangedStream.listen(
+          (_) {
+            checkIsSomethingChanged();
+          },
+        ).disposeWith(this);
+      },
+    );
   }
 
   final BehaviorSubject<bool> _isChangedSubject = BehaviorSubject.seeded(false);
@@ -76,13 +81,13 @@ class OneTypeFormGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
   bool get isPossibleToAddFields => !isMaximumFieldsCountReached;
 
   @override
-  List<T> get items => _itemsSubject.value!;
+  List<T> get items => _itemsSubject.value;
 
   @override
   Stream<List<T>> get itemsStream => _itemsSubject.stream;
 
   @override
-  bool get isSomethingChanged => _isChangedSubject.value!;
+  bool get isSomethingChanged => _isChangedSubject.value;
 
   @override
   Stream<bool> get isSomethingChangedStream => _isChangedSubject.stream;

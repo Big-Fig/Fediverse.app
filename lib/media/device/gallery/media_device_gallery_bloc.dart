@@ -1,6 +1,5 @@
 import 'package:fedi/async/loading/init/async_init_loading_bloc.dart';
-import 'package:fedi/disposable/disposable.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/media/device/file/pagination/media_device_file_local_only_list_bloc.dart';
 import 'package:fedi/media/device/file/pagination/media_device_file_pagination_bloc.dart';
 import 'package:fedi/media/device/file/pagination/media_device_file_pagination_list_bloc.dart';

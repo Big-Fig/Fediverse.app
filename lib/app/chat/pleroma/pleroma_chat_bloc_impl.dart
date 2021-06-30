@@ -21,6 +21,7 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 
 final _logger = Logger('pleroma_chat_bloc_impl.dart');
 
@@ -36,13 +37,13 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
       BehaviorSubject();
 
   @override
-  IPleromaChat get chat => _chatSubject.value!;
+  IPleromaChat get chat => _chatSubject.value;
 
   @override
   Stream<IPleromaChat> get chatStream => _chatSubject.stream.distinct();
 
   @override
-  IPleromaChatMessage? get lastChatMessage => _lastMessageSubject.value;
+  IPleromaChatMessage? get lastChatMessage => _lastMessageSubject.valueOrNull;
 
   @override
   Stream<IPleromaChatMessage?> get lastChatMessageStream =>
@@ -86,43 +87,36 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
         ' chat ${chat.remoteId} \n'
         ' lastMessage $lastChatMessage');
 
-    addDisposable(subject: _chatSubject);
-    addDisposable(subject: _lastMessageSubject);
-    addDisposable(subject: _lastPublishedMessageSubject);
-
-    addDisposable(streamController: onMessageLocallyHiddenStreamController);
+    _chatSubject.disposeWith(this);
+    _lastMessageSubject.disposeWith(this);
+    _lastPublishedMessageSubject.disposeWith(this);
+    onMessageLocallyHiddenStreamController.disposeWith(this);
   }
 
   @override
   void watchLocalRepositoryForUpdates() {
-    addDisposable(
-      streamSubscription:
-          chatRepository.watchByRemoteIdInAppType(chat.remoteId).listen(
-        (updatedChat) {
-          if (updatedChat != null) {
-            _chatSubject.add(updatedChat);
-          }
-        },
-      ),
-    );
+    chatRepository.watchByRemoteIdInAppType(chat.remoteId).listen(
+          (updatedChat) {
+        if (updatedChat != null) {
+          _chatSubject.add(updatedChat);
+        }
+      },
+    ).disposeWith(this);
 
-    addDisposable(
-      streamSubscription:
-          chatMessageRepository.watchChatLastChatMessage(chat: chat).listen(
-        (lastMessage) {
-          _logger.finest(() => 'watchChatLastChatMessage \n'
-              ' chat ${chat.remoteId} \n'
-              ' lastMessage $lastMessage');
-          if (lastMessage != null) {
-            _lastMessageSubject.add(lastMessage);
+    chatMessageRepository.watchChatLastChatMessage(chat: chat).listen(
+          (lastMessage) {
+        _logger.finest(() => 'watchChatLastChatMessage \n'
+            ' chat ${chat.remoteId} \n'
+            ' lastMessage $lastMessage');
+        if (lastMessage != null) {
+          _lastMessageSubject.add(lastMessage);
 
-            if (lastMessage.isPendingStatePublishedOrNull) {
-              _lastPublishedMessageSubject.add(lastMessage);
-            }
+          if (lastMessage.isPendingStatePublishedOrNull) {
+            _lastPublishedMessageSubject.add(lastMessage);
           }
-        },
-      ),
-    );
+        }
+      },
+    ).disposeWith(this);
   }
 
   @override
@@ -390,7 +384,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
 
   @override
   IPleromaChatMessage? get lastPublishedChatMessage =>
-      _lastPublishedMessageSubject.value;
+      _lastPublishedMessageSubject.valueOrNull;
 
   @override
   bool get isDeletePossible => false;

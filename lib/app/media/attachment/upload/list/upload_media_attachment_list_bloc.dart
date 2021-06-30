@@ -1,5 +1,5 @@
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.dart';
-import 'package:fedi/disposable/disposable.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
 import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
 import 'package:flutter/widgets.dart';

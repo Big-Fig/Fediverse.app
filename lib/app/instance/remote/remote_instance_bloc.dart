@@ -1,5 +1,5 @@
 import 'package:fedi/async/loading/init/async_init_loading_bloc.dart';
-import 'package:fedi/disposable/disposable.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
 import 'package:fedi/pleroma/api/rest/pleroma_api_rest_service.dart';
 import 'package:flutter/widgets.dart';

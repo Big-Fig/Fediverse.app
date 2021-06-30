@@ -1,4 +1,4 @@
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/pleroma/api/web_sockets/pleroma_api_web_sockets_model.dart';
 import 'package:fedi/web_sockets/channel/web_sockets_channel.dart';
 import 'package:flutter/widgets.dart';

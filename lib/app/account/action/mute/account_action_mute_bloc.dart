@@ -1,5 +1,5 @@
 import 'package:fedi/app/account/account_model.dart';
-import 'package:fedi/disposable/disposable.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/duration/date_time/duration_date_time_value_form_field_bloc.dart';
 import 'package:flutter/widgets.dart';

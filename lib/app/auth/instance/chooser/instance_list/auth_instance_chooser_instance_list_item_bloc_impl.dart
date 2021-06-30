@@ -1,5 +1,5 @@
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 
 import 'auth_instance_chooser_instance_list_item_bloc.dart';
 

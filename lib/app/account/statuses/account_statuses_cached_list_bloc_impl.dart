@@ -13,6 +13,7 @@ import 'package:fedi/pleroma/api/account/pleroma_api_account_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
 import 'package:flutter/foundation.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 
 abstract class AccountStatusesCachedListBloc extends AsyncInitLoadingBloc
     implements IStatusCachedListBloc {
@@ -39,13 +40,11 @@ abstract class AccountStatusesCachedListBloc extends AsyncInitLoadingBloc
     required this.myAccountBloc,
     required IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc,
   }) : super() {
-    addDisposable(
-      disposable: webSocketsHandlerManagerBloc.listenAccountChannel(
-        listenType: WebSocketsListenType.foreground,
-        accountId: account.remoteId,
-        notification: false,
-      ),
-    );
+    webSocketsHandlerManagerBloc.listenAccountChannel(
+      listenType: WebSocketsListenType.foreground,
+      accountId: account.remoteId,
+      notification: false,
+    ).disposeWith(this);
   }
 
   @override
@@ -77,22 +76,20 @@ abstract class AccountStatusesCachedListBloc extends AsyncInitLoadingBloc
         orderingTerms: null,
       );
 
-      addDisposable(
-        streamSubscription: filterRepository
-            .watchFindAllInAppType(
-          filters: filterRepositoryFilters,
-          pagination: null,
-          orderingTerms: null,
-        )
-            .listen(
-              (newFilters) {
-            if (!listEquals(filters, newFilters)) {
-              // perhaps we should refresh UI list after this?
-              filters = newFilters;
-            }
-          },
-        ),
-      );
+      filterRepository
+          .watchFindAllInAppType(
+        filters: filterRepositoryFilters,
+        pagination: null,
+        orderingTerms: null,
+      )
+          .listen(
+            (newFilters) {
+          if (!listEquals(filters, newFilters)) {
+            // perhaps we should refresh UI list after this?
+            filters = newFilters;
+          }
+        },
+      ).disposeWith(this);
 
     }
   }

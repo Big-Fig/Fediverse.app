@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
@@ -13,8 +15,6 @@ import 'package:fedi/app/filter/form/filter_form_bloc_impl.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_service.dart';
 import 'package:fedi/pleroma/api/filter/pleroma_api_filter_model.dart';
 import 'package:fedi/pleroma/api/filter/pleroma_api_filter_service.dart';
@@ -58,15 +58,16 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
     );
 
     if (onSubmit != null) {
-      editFilterBloc.addDisposable(
-        streamSubscription: editFilterBloc.submittedStream.listen(onSubmit),
-      );
+      editFilterBloc.submittedStream
+          .listen(onSubmit)
+          .disposeWith(editFilterBloc);
     }
     if (onDelete != null) {
-      editFilterBloc.addDisposable(
-        streamSubscription:
-            editFilterBloc.deletedStream.listen((_) => onDelete()),
-      );
+      editFilterBloc.deletedStream
+          .listen(
+            (_) => onDelete(),
+          )
+          .disposeWith(editFilterBloc);
     }
 
     return editFilterBloc;
@@ -119,10 +120,9 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
           initialValue: filter,
           currentInstance: currentInstance,
         ) {
-    addDisposable(disposable: filterFormBloc);
-
-    addDisposable(streamController: submittedStreamController);
-    addDisposable(streamController: deletedStreamController);
+    filterFormBloc.disposeWith(this);
+    submittedStreamController.disposeWith(this);
+    deletedStreamController.disposeWith(this);
   }
 
   @override

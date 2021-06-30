@@ -1,3 +1,4 @@
+import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
 import 'package:fedi/app/push/notification/rich/rich_notifications_service_background_message_impl.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/push/fcm/fcm_push_service.dart';
@@ -5,6 +6,7 @@ import 'package:fedi/push/push_model.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 
 var _logger = Logger('fcm_push_service_impl.dart');
 
@@ -18,7 +20,7 @@ class FcmPushService extends AsyncInitLoadingBloc implements IFcmPushService {
   Stream<String> get deviceTokenStream => _deviceTokenSubject.stream;
 
   @override
-  String? get deviceToken => _deviceTokenSubject.value;
+  String? get deviceToken => _deviceTokenSubject.valueOrNull;
 
   // ignore: close_sinks
   final BehaviorSubject<PushMessage> _messageSubject = BehaviorSubject();
@@ -27,8 +29,8 @@ class FcmPushService extends AsyncInitLoadingBloc implements IFcmPushService {
   Stream<PushMessage> get messageStream => _messageSubject.stream;
 
   FcmPushService() {
-    addDisposable(subject: _deviceTokenSubject);
-    addDisposable(subject: _messageSubject);
+    _deviceTokenSubject.disposeWith(this);
+    _messageSubject.disposeWith(this);
   }
 
   @override
@@ -88,13 +90,11 @@ class FcmPushService extends AsyncInitLoadingBloc implements IFcmPushService {
       richNotificationsFirebaseMessagingBackgroundHandler,
     );
 
-    addDisposable(
-      streamSubscription: _fcm.onTokenRefresh.listen(
-        (newToken) {
-          _onNewToken(newToken);
-        },
-      ),
-    );
+    _fcm.onTokenRefresh.listen(
+          (newToken) {
+        _onNewToken(newToken);
+      },
+    ).disposeWith(this);
 
     FirebaseMessaging.onMessageOpenedApp.listen(
       (RemoteMessage message) {

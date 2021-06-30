@@ -1,3 +1,4 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/search/input/search_input_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc_impl.dart';
@@ -14,13 +15,11 @@ class SearchStatusesPaginationListBloc
     required this.searchInputBloc,
     required IPaginationBloc<PaginationPage<IStatus>, IStatus> paginationBloc,
   }) : super(paginationBloc: paginationBloc) {
-    addDisposable(
-      streamSubscription: searchInputBloc.confirmedSearchTermStream.listen(
-        (newText) {
-          refreshWithController();
-        },
-      ),
-    );
+    searchInputBloc.confirmedSearchTermStream.listen(
+      (newText) {
+        refreshWithController();
+      },
+    ).disposeWith(this);
   }
 
   static SearchStatusesPaginationListBloc createFromContext(

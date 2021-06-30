@@ -1,3 +1,5 @@
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/account/my/featured_hashtag/suggestion/hashtag_list/network_only/my_account_featured_hashtag_suggestion_hashtag_list_network_only_list_bloc.dart';
 import 'package:fedi/app/account/my/featured_hashtag/suggestion/hashtag_list/network_only/my_account_featured_hashtag_suggestion_hashtag_list_network_only_list_bloc_impl.dart';
 import 'package:fedi/app/account/my/featured_hashtag/suggestion/my_account_featured_hashtag_suggestion_bloc.dart';
@@ -8,8 +10,6 @@ import 'package:fedi/app/hashtag/pagination/network_only/hashtag_network_only_pa
 import 'package:fedi/app/hashtag/pagination/network_only/hashtag_network_only_pagination_bloc_impl.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/api/featured_tags/pleroma_api_featured_tags_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pedantic/pedantic.dart';
@@ -41,15 +41,11 @@ class MyAccountFeaturedHashtagSuggestionBloc extends DisposableOwner
           myAccountFeaturedHashtagSuggestionHashtagListNetworkOnlyPaginationBloc,
     );
 
-    addDisposable(
-      disposable:
-          myAccountFeaturedHashtagSuggestionHashtagListNetworkOnlyListBloc,
-    );
-    addDisposable(
-      disposable:
-          myAccountFeaturedHashtagSuggestionHashtagListNetworkOnlyPaginationBloc,
-    );
-    addDisposable(disposable: hashtagPaginationListBloc);
+    myAccountFeaturedHashtagSuggestionHashtagListNetworkOnlyListBloc
+        .disposeWith(this);
+    myAccountFeaturedHashtagSuggestionHashtagListNetworkOnlyPaginationBloc
+        .disposeWith(this);
+    hashtagPaginationListBloc.disposeWith(this);
 
     unawaited(hashtagPaginationListBloc.refreshWithoutController());
   }

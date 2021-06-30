@@ -8,7 +8,7 @@ import 'package:fedi/app/search/result/list/search_result_item_network_only_list
 import 'package:fedi/app/search/result/search_result_model.dart';
 import 'package:fedi/app/status/list/status_list_bloc.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/search/pleroma_api_search_service.dart';

@@ -6,7 +6,7 @@ import 'package:fedi/app/instance/announcement/repository/instance_announcement_
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/pleroma/api/notification/pleroma_api_notification_model.dart';
 import 'package:fedi/pleroma/api/web_sockets/pleroma_api_web_sockets_model.dart';
 import 'package:fedi/web_sockets/channel/web_sockets_channel.dart';
@@ -56,8 +56,7 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
     _logger.finest(() =>
         'Start listen to ${webSocketsChannel.config.calculateWebSocketsUrl()}');
 
-    addDisposable(
-      disposable: webSocketsChannel.listenForEvents(
+    addDisposable(webSocketsChannel.listenForEvents(
         listener: WebSocketChannelListener<PleromaApiWebSocketsEvent>(
           listenType: listenType,
           onEvent: (PleromaApiWebSocketsEvent event) {

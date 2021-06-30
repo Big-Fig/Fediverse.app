@@ -5,7 +5,7 @@ import 'package:fedi/app/list/network_only/network_only_list_bloc.dart';
 import 'package:fedi/app/pagination/network_only/network_only_pleroma_pagination_bloc.dart';
 import 'package:fedi/app/pagination/network_only/network_only_pleroma_pagination_bloc_impl.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';

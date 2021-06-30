@@ -1,10 +1,10 @@
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_flutter/easy_dispose_flutter.dart';
 import 'package:fedi/app/media/attachment/upload/list/upload_media_attachment_list_bloc.dart';
 import 'package:fedi/app/media/attachment/upload/list/upload_media_attachment_list_bloc_impl.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.dart';
 import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:fedi/app/message/post_message_model.dart';
-import 'package:fedi/disposable/disposable.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/form/form_item_validation.dart';
 import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_service.dart';
 import 'package:flutter/widgets.dart';
@@ -21,7 +21,7 @@ abstract class PostMessageBloc extends DisposableOwner
 
   @override
   List<FormItemValidationError>? get inputTextErrors =>
-      inputTextErrorsSubject.value;
+      inputTextErrorsSubject.valueOrNull;
 
   @override
   Stream<List<FormItemValidationError>> get inputTextErrorsStream =>
@@ -33,7 +33,7 @@ abstract class PostMessageBloc extends DisposableOwner
       BehaviorSubject.seeded(false);
 
   @override
-  bool get isInputFocused => isInputFocusedSubject.value!;
+  bool get isInputFocused => isInputFocusedSubject.value;
 
   @override
   Stream<bool> get isInputFocusedStream => isInputFocusedSubject.stream;
@@ -55,52 +55,38 @@ abstract class PostMessageBloc extends DisposableOwner
           pleromaMediaAttachmentService: pleromaMediaAttachmentService,
           maximumFileSizeInBytes: maximumFileSizeInBytes,
         ) {
-    addDisposable(subject: inputTextErrorsSubject);
-    addDisposable(disposable: mediaAttachmentsBloc);
-
-    addDisposable(subject: inputTextSubject);
-    addDisposable(subject: isInputFocusedSubject);
+    inputTextErrorsSubject.disposeWith(this);
+    mediaAttachmentsBloc.disposeWith(this);
+    inputTextSubject.disposeWith(this);
+    isInputFocusedSubject.disposeWith(this);
+    inputFocusNode.disposeWith(this);
 
     isInputFocusedSubject.add(inputFocusNode.hasFocus);
-    addDisposable(focusNode: inputFocusNode);
-
-    var listener = () {
-      var hasFocus = inputFocusNode.hasFocus;
-      isInputFocusedSubject.add(hasFocus);
-    };
-    inputFocusNode.addListener(
-      listener,
-    );
-    addDisposable(
-      custom: () {
-        inputFocusNode.removeListener(
-          listener,
-        );
-      },
-    );
-
-
-    addDisposable(subject: selectedActionSubject);
-    addDisposable(textEditingController: inputTextController);
 
     addDisposable(
-      streamSubscription:
-          mediaAttachmentsBloc.mediaAttachmentBlocsStream.listen(
-        (_) {
-          regenerateIdempotencyKey();
+      ChangeNotifierListenerDisposable(
+        inputFocusNode,
+        () {
+          var hasFocus = inputFocusNode.hasFocus;
+          isInputFocusedSubject.add(hasFocus);
         },
       ),
     );
 
-    var editTextListener = () {
-      onInputTextChanged();
-    };
-    inputTextController.addListener(editTextListener);
+    selectedActionSubject.disposeWith(this);
+    inputTextController.disposeWith(this);
+
+    mediaAttachmentsBloc.mediaAttachmentBlocsStream.listen(
+      (_) {
+        regenerateIdempotencyKey();
+      },
+    ).disposeWith(this);
 
     addDisposable(
-      disposable: CustomDisposable(
+      ChangeNotifierListenerDisposable(
+        inputTextController,
         () async {
-          inputTextController.removeListener(editTextListener);
+          onInputTextChanged();
         },
       ),
     );
@@ -137,7 +123,7 @@ abstract class PostMessageBloc extends DisposableOwner
   BehaviorSubject<String?> inputTextSubject = BehaviorSubject.seeded('');
 
   @override
-  String? get inputText => inputTextSubject.value;
+  String? get inputText => inputTextSubject.valueOrNull;
 
   @override
   Stream<String?> get inputTextStream => inputTextSubject.stream;
@@ -190,7 +176,7 @@ abstract class PostMessageBloc extends DisposableOwner
   }
 
   @override
-  PostMessageSelectedAction? get selectedAction => selectedActionSubject.value;
+  PostMessageSelectedAction? get selectedAction => selectedActionSubject.valueOrNull;
 
   @override
   Stream<PostMessageSelectedAction?> get selectedActionStream =>
@@ -266,7 +252,7 @@ abstract class PostMessageBloc extends DisposableOwner
   Stream<bool> get isExpandedStream => isExpandedSubject.stream;
 
   @override
-  bool get isExpanded => isExpandedSubject.value!;
+  bool get isExpanded => isExpandedSubject.value;
 
   @override
   void toggleExpanded() {

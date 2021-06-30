@@ -6,7 +6,7 @@ import 'package:fedi/app/status/list/network_only/status_network_only_list_bloc_
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/timeline/pleroma_api_timeline_service.dart';
@@ -41,7 +41,7 @@ class InstancePublicTimelineStatusListNetworkOnlyListBloc extends IStatusNetwork
       pleromaApiTimelineService: pleromaApiTimelineService,
     );
 
-    bloc.addDisposable(disposable: pleromaApiTimelineService);
+    bloc.addDisposable(pleromaApiTimelineService);
 
     return bloc;
   }

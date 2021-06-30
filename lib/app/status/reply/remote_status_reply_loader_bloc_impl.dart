@@ -29,7 +29,7 @@ class RemoteStatusReplyLoaderBloc extends AsyncInitLoadingBloc
       originalStatus: originalStatus,
     );
 
-    bloc.addDisposable(disposable: pleromaStatusService);
+    bloc.addDisposable(pleromaStatusService);
 
     return bloc;
   }

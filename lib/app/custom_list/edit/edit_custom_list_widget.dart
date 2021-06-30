@@ -26,7 +26,7 @@ import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/form/fedi_form_header_widget.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_vertical_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

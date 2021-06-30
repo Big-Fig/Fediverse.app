@@ -2,7 +2,7 @@ import 'package:fedi/app/search/input/search_input_bloc.dart';
 import 'package:fedi/app/search/recent/recent_search_bloc.dart';
 import 'package:fedi/app/search/recent/local_preferences/recent_search_local_preference_bloc.dart';
 import 'package:fedi/app/search/recent/recent_search_model.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 
 class RecentSearchBloc extends DisposableOwner implements IRecentSearchBloc {
   final ISearchInputBloc searchInputBloc;
@@ -28,35 +28,33 @@ class RecentSearchBloc extends DisposableOwner implements IRecentSearchBloc {
     required this.searchInputBloc,
     required this.recentSearchLocalPreferenceBloc,
   }) {
-    addDisposable(
-      streamSubscription: searchInputBloc.confirmedSearchTermStream.listen(
-        (confirmedSearchTerm) {
-          var oldValue = recentSearchList ?? RecentSearchList(recentItems: []);
+    searchInputBloc.confirmedSearchTermStream.listen(
+          (confirmedSearchTerm) {
+        var oldValue = recentSearchList ?? RecentSearchList(recentItems: []);
 
-          var recentItems = oldValue.recentItems;
-          if (recentItems.length > recentCountLimit) {
-            recentItems = recentItems
-                .sublist(
-                  0,
-                  recentCountLimit,
-                )
-                .toList();
+        var recentItems = oldValue.recentItems;
+        if (recentItems.length > recentCountLimit) {
+          recentItems = recentItems
+              .sublist(
+            0,
+            recentCountLimit,
+          )
+              .toList();
+        }
+
+        if (confirmedSearchTerm.isNotEmpty) {
+          if (!recentItems.contains(confirmedSearchTerm)) {
+            recentItems.add(confirmedSearchTerm);
           }
+        }
 
-          if (confirmedSearchTerm.isNotEmpty) {
-            if (!recentItems.contains(confirmedSearchTerm)) {
-              recentItems.add(confirmedSearchTerm);
-            }
-          }
-
-          recentSearchLocalPreferenceBloc.setValue(
-            RecentSearchList(
-              recentItems: recentItems,
-            ),
-          );
-        },
-      ),
-    );
+        recentSearchLocalPreferenceBloc.setValue(
+          RecentSearchList(
+            recentItems: recentItems,
+          ),
+        );
+      },
+    ).disposeWith(this);
   }
 
   @override

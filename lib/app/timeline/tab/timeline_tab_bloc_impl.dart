@@ -80,7 +80,7 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
       defaultPreferenceValue: null,
     );
 
-    addDisposable(disposable: timelineLocalPreferencesBloc);
+    addDisposable(timelineLocalPreferencesBloc);
   }
 
   TimelineStatusCachedListBloc createListService({
@@ -109,7 +109,7 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
 
     statusCachedListBloc =
         createListService(webSocketsListenType: webSocketsListenType);
-    addDisposable(disposable: statusCachedListBloc);
+    addDisposable(statusCachedListBloc);
 
     await statusCachedListBloc.performAsyncInit();
 
@@ -118,7 +118,7 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
       statusListService: statusCachedListBloc,
       paginationSettingsBloc: paginationSettingsBloc,
     );
-    addDisposable(disposable: statusCachedPaginationBloc);
+    addDisposable(statusCachedPaginationBloc);
 
     paginationListWithNewItemsBloc = StatusCachedPaginationListWithNewItemsBloc<
         CachedPaginationPage<IStatus>>(
@@ -128,7 +128,7 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
       statusCachedListBloc: statusCachedListBloc,
       myAccountBloc: myAccountBloc,
     );
-    addDisposable(disposable: paginationListWithNewItemsBloc);
+    addDisposable(paginationListWithNewItemsBloc);
   }
 
   @override

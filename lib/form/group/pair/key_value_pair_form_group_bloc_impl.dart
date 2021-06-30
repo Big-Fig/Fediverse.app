@@ -15,8 +15,8 @@ class KeyValuePairFormGroupBloc<K extends IValueFormFieldBloc,
     required this.keyField,
     required this.valueField,
   }) {
-    addDisposable(disposable: keyField);
-    addDisposable(disposable: valueField);
+    addDisposable(keyField);
+    addDisposable(valueField);
   }
 
   @override

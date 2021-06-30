@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/rest/error/rest_error_model.dart';
 import 'package:fedi/rest/rest_model.dart';
 import 'package:fedi/rest/rest_request_model.dart';

@@ -27,6 +27,7 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 
 final _logger = Logger('conversation_chat_bloc_impl.dart');
 
@@ -44,20 +45,20 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
   final BehaviorSubject<List<IAccount>> _accountsSubject;
 
   @override
-  List<IAccount> get accounts => _accountsSubject.value!;
+  List<IAccount> get accounts => _accountsSubject.value;
 
   @override
   Stream<List<IAccount>> get accountsStream =>
       _accountsSubject.stream.distinct((a, b) => listEquals(a, b));
 
   @override
-  IConversationChat get chat => _chatSubject.value!;
+  IConversationChat get chat => _chatSubject.value;
 
   @override
   Stream<IConversationChat> get chatStream => _chatSubject.stream;
 
   @override
-  IConversationChatMessage? get lastChatMessage => _lastMessageSubject.value;
+  IConversationChatMessage? get lastChatMessage => _lastMessageSubject.valueOrNull;
 
   @override
   Stream<IConversationChatMessage?> get lastChatMessageStream =>
@@ -84,28 +85,26 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
   Stream<List<IAccount>> get accountsWithoutMeStream => accountsStream;
 
   void listenForAccounts(IConversationChat conversation) {
-    addDisposable(
-      streamSubscription: accountRepository
-          .watchFindAllInAppType(
-        filters: AccountRepositoryFilters.createForOnlyInConversation(
-          conversation: conversation,
-        ),
-        pagination: null,
-        orderingTerms: null,
-      )
-          .listen(
-        (accounts) {
-          var accountsWithoutMe = IAccount.excludeAccountFromList(
-            accounts,
-            (account) => !myAccountBloc.checkAccountIsMe(account),
-          );
-          accountsWithoutMe.sort(
-            (a, b) => a.remoteId.compareTo(b.remoteId),
-          );
-          _accountsSubject.add(accountsWithoutMe);
-        },
+    accountRepository
+        .watchFindAllInAppType(
+      filters: AccountRepositoryFilters.createForOnlyInConversation(
+        conversation: conversation,
       ),
-    );
+      pagination: null,
+      orderingTerms: null,
+    )
+        .listen(
+          (accounts) {
+        var accountsWithoutMe = IAccount.excludeAccountFromList(
+          accounts,
+              (account) => !myAccountBloc.checkAccountIsMe(account),
+        );
+        accountsWithoutMe.sort(
+              (a, b) => a.remoteId.compareTo(b.remoteId),
+        );
+        _accountsSubject.add(accountsWithoutMe);
+      },
+    ).disposeWith(this);
   }
 
   ConversationChatBloc({
@@ -133,55 +132,49 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
         ) {
     _logger.finest(() => 'conversation chat bloc');
 
-    addDisposable(subject: _chatSubject);
-    addDisposable(subject: _lastMessageSubject);
-    addDisposable(subject: _lastPublishedMessageSubject);
-    addDisposable(subject: _accountsSubject);
-
-    addDisposable(streamController: onMessageLocallyHiddenStreamController);
+    _chatSubject.disposeWith(this);
+    _lastMessageSubject.disposeWith(this);
+    _lastPublishedMessageSubject.disposeWith(this);
+    _accountsSubject.disposeWith(this);
+    onMessageLocallyHiddenStreamController.disposeWith(this);
 
     listenForAccounts(conversation);
   }
 
   @override
   void watchLocalRepositoryForUpdates() {
-    addDisposable(
-      streamSubscription:
-          conversationRepository.watchByRemoteIdInAppType(chat.remoteId).listen(
-        (updatedChat) {
-          if (updatedChat != null) {
-            _chatSubject.add(updatedChat);
-          }
-        },
-      ),
-    );
+    conversationRepository.watchByRemoteIdInAppType(chat.remoteId).listen(
+          (updatedChat) {
+        if (updatedChat != null) {
+          _chatSubject.add(updatedChat);
+        }
+      },
+    ).disposeWith(this);
 
-    addDisposable(
-      streamSubscription: statusRepository
-          .watchConversationLastStatus(
-        conversation: chat,
-      )
-          .listen(
-        (lastStatus) {
-          if (lastStatus != null) {
-            var conversationChatMessageStatusAdapter =
-                ConversationChatMessageStatusAdapter(
-              status: lastStatus,
-            );
-            _lastMessageSubject.add(
+    statusRepository
+        .watchConversationLastStatus(
+      conversation: chat,
+    )
+        .listen(
+          (lastStatus) {
+        if (lastStatus != null) {
+          var conversationChatMessageStatusAdapter =
+          ConversationChatMessageStatusAdapter(
+            status: lastStatus,
+          );
+          _lastMessageSubject.add(
+            conversationChatMessageStatusAdapter,
+          );
+
+          if (conversationChatMessageStatusAdapter
+              .isPendingStatePublishedOrNull) {
+            _lastPublishedMessageSubject.add(
               conversationChatMessageStatusAdapter,
             );
-
-            if (conversationChatMessageStatusAdapter
-                .isPendingStatePublishedOrNull) {
-              _lastPublishedMessageSubject.add(
-                conversationChatMessageStatusAdapter,
-              );
-            }
           }
-        },
-      ),
-    );
+        }
+      },
+    ).disposeWith(this);
   }
 
   @override
@@ -477,7 +470,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
 
   @override
   IConversationChatMessage? get lastPublishedChatMessage =>
-      _lastPublishedMessageSubject.value;
+      _lastPublishedMessageSubject.valueOrNull;
 
   @override
   bool get isDeletePossible => true;

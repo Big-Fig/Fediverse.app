@@ -2,7 +2,7 @@ import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/chooser/auth_instance_chooser_bloc.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/list/auth_instance_list_bloc.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 

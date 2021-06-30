@@ -3,6 +3,7 @@ import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_service.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
 
 abstract class AccountBloc extends IAccountBloc {
   final BehaviorSubject<IAccount> accountSubject;
@@ -17,7 +18,8 @@ abstract class AccountBloc extends IAccountBloc {
     required bool delayInit,
   }) : accountSubject = BehaviorSubject.seeded(account) {
     // _logger.finest(() => 'AccountBloc constructor ${account.remoteId}');
-    addDisposable(subject: accountSubject);
+    accountSubject.disposeWith(this);
+
 
     if (delayInit) {
       Future.delayed(Duration(seconds: 1), () {
@@ -52,7 +54,7 @@ abstract class AccountBloc extends IAccountBloc {
   });
 
   @override
-  IAccount get account => accountSubject.value!;
+  IAccount get account => accountSubject.value;
 
   @override
   Stream<IAccount> get accountStream => accountSubject.stream.distinct();

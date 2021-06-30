@@ -20,7 +20,7 @@ import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/icon/fedi_transparent_icon.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pleroma/api/notification/pleroma_api_notification_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

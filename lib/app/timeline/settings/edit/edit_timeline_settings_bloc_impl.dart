@@ -215,20 +215,20 @@ class EditTimelineSettingsBloc
           settingsBloc: settingsBloc,
           isAllItemsInitialized: true,
         ) {
-    addDisposable(disposable: excludeRepliesFieldBloc);
-    addDisposable(disposable: onlyWithMediaFieldBloc);
-    addDisposable(disposable: excludeNsfwSensitiveFieldBloc);
-    addDisposable(disposable: onlyRemoteFieldBloc);
-    addDisposable(disposable: onlyLocalFieldBloc);
-    addDisposable(disposable: excludeReblogsFieldBloc);
-    addDisposable(disposable: withMutedFieldBloc);
+    addDisposable(excludeRepliesFieldBloc);
+    addDisposable(onlyWithMediaFieldBloc);
+    addDisposable(excludeNsfwSensitiveFieldBloc);
+    addDisposable(onlyRemoteFieldBloc);
+    addDisposable(onlyLocalFieldBloc);
+    addDisposable(excludeReblogsFieldBloc);
+    addDisposable(withMutedFieldBloc);
 
-    addDisposable(disposable: onlyFromAccountFieldBloc);
-    addDisposable(disposable: withRemoteHashtagFieldBloc);
-    addDisposable(disposable: onlyInCustomListFieldBloc);
-    addDisposable(disposable: replyVisibilityFilterFieldBloc);
-    addDisposable(disposable: excludeVisibilitiesFieldBloc);
-    addDisposable(disposable: onlyFromInstanceFieldBloc);
+    addDisposable(onlyFromAccountFieldBloc);
+    addDisposable(withRemoteHashtagFieldBloc);
+    addDisposable(onlyInCustomListFieldBloc);
+    addDisposable(replyVisibilityFilterFieldBloc);
+    addDisposable(excludeVisibilitiesFieldBloc);
+    addDisposable(onlyFromInstanceFieldBloc);
   }
 
   @override

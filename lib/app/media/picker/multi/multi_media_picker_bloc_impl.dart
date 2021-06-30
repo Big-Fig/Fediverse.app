@@ -6,6 +6,7 @@ import 'package:fedi/app/media/picker/multi/multi_media_picker_bloc.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 
 final _logger = Logger('multi_media_picker_bloc_impl.dart');
 
@@ -38,9 +39,9 @@ class MultiMediaPickerBloc extends MediaPickerBloc
   MultiMediaPickerBloc({
     required this.selectionCountLimit,
   }) {
-    addDisposable(subject: currentFilesMetadataSelectionSubject);
-    addDisposable(streamController: acceptedFilesSelectionStreamController);
-    addDisposable(streamController: selectionCountLimitReachedStreamController);
+    currentFilesMetadataSelectionSubject.disposeWith(this);
+    acceptedFilesSelectionStreamController.disposeWith(this);
+    selectionCountLimitReachedStreamController.disposeWith(this);
   }
 
   @override
@@ -49,7 +50,7 @@ class MultiMediaPickerBloc extends MediaPickerBloc
 
   @override
   List<IMediaDeviceFileMetadata>? get currentFilesMetadataSelection =>
-      currentFilesMetadataSelectionSubject.value;
+      currentFilesMetadataSelectionSubject.valueOrNull;
 
   @override
   Stream<List<IMediaDeviceFileMetadata>>

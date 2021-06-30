@@ -8,7 +8,7 @@ import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_service.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_service_impl.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
@@ -17,6 +17,7 @@ import 'package:fedi/pleroma/api/status/pleroma_api_status_service.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_service_impl.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
 
 class RemoteStatusBloc extends StatusBloc {
   final Uri instanceUri;
@@ -41,8 +42,8 @@ class RemoteStatusBloc extends StatusBloc {
           isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
           delayInit: delayInit,
         ) {
-    addDisposable(subject: inReplyToAccountSubject);
-    addDisposable(subject: inReplyToStatusSubject);
+    inReplyToAccountSubject.disposeWith(this);
+    inReplyToStatusSubject.disposeWith(this);
   }
 
   static RemoteStatusBloc createFromContext(
@@ -69,8 +70,8 @@ class RemoteStatusBloc extends StatusBloc {
       instanceUri: remoteInstanceBloc.instanceUri,
     );
 
-    remoteStatusBloc.addDisposable(disposable: pleromaAccountService);
-    remoteStatusBloc.addDisposable(disposable: pleromaStatusService);
+    remoteStatusBloc.addDisposable(pleromaAccountService);
+    remoteStatusBloc.addDisposable(pleromaStatusService);
 
     return remoteStatusBloc;
   }
@@ -149,7 +150,7 @@ class RemoteStatusBloc extends StatusBloc {
   Future<IAccount> getInReplyToAccount() async {
     await _checkIsInReplyToAccountLoaded();
 
-    return inReplyToAccountSubject.value!;
+    return inReplyToAccountSubject.value;
   }
 
   @override

@@ -14,7 +14,7 @@ import 'package:fedi/app/instance/remote/remote_instance_error_data.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/connection/connection_service.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_service.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_service_impl.dart';
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';

@@ -35,7 +35,7 @@ class EditLocalizationSettingsBloc
           settingsBloc:localizationSettingsBloc,
         isAllItemsInitialized:true,
         ) {
-    addDisposable(disposable: localizationLocaleFieldBloc);
+    addDisposable(localizationLocaleFieldBloc);
   }
 
   @override

@@ -1,10 +1,11 @@
 import 'dart:async';
 
 import 'package:collection/collection.dart';
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_bloc.dart';
 import 'package:fedi/app/chat/conversation/message/conversation_chat_message_model.dart';
 import 'package:fedi/app/chat/conversation/message/list/cached/conversation_chat_message_cached_list_bloc.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/cached/cached_pagination_bloc.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
@@ -40,22 +41,18 @@ class ConversationChatMessageCachedPaginationListWithNewItemsBloc<
           asyncCalculateNewItems: false,
           asyncCalculateActuallyNew: false,
         ) {
-    addDisposable(
-      streamSubscription:
-          conversationChatBloc.onMessageLocallyHiddenStream.listen(
-        (hiddenMessage) {
-          hideItem(hiddenMessage);
-        },
-      ),
-    );
-
-    addDisposable(subject: hiddenItemsSubject);
+    conversationChatBloc.onMessageLocallyHiddenStream.listen(
+      (hiddenMessage) {
+        hideItem(hiddenMessage);
+      },
+    ).disposeWith(this);
+    hiddenItemsSubject.disposeWith(this);
   }
 
   final BehaviorSubject<List<IConversationChatMessage>> hiddenItemsSubject =
       BehaviorSubject.seeded([]);
 
-  List<IConversationChatMessage> get hiddenItems => hiddenItemsSubject.value!;
+  List<IConversationChatMessage> get hiddenItems => hiddenItemsSubject.value;
 
   Stream<List<IConversationChatMessage>> get hiddenItemsStream =>
       hiddenItemsSubject.stream;

@@ -1,5 +1,5 @@
 import 'package:fedi/app/ui/status_bar/fedi_light_status_bar_style_area.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/overlay_notification/overlay_notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';

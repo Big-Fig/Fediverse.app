@@ -10,6 +10,7 @@ import 'package:fedi/pleroma/api/captcha/pleroma_api_captcha_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 
 // ignore: no-magic-number
 const checkCaptchaExpiredDuration = Duration(seconds: 5);
@@ -83,17 +84,15 @@ class PleromaFormCaptchaStringFieldBloc extends StringValueFormFieldBloc
           validators: validators,
           maxLength: null,
         ) {
-    addDisposable(subject: errorSubject);
-    addDisposable(subject: captchaSubject);
-    addDisposable(subject: captchaLoadedDateTimeSubject);
-    addDisposable(
-      timer: Timer.periodic(
-        checkCaptchaExpiredDuration,
-        (timer) {
-          _checkForReload();
-        },
-      ),
-    );
+    errorSubject.disposeWith(this);
+    captchaSubject.disposeWith(this);
+    captchaLoadedDateTimeSubject.disposeWith(this);
+    Timer.periodic(
+      checkCaptchaExpiredDuration,
+          (timer) {
+        _checkForReload();
+      },
+    ).disposeWith(this);
 
     // init load
     reloadCaptcha();

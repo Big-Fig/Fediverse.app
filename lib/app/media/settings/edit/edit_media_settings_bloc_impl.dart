@@ -50,8 +50,8 @@ class EditMediaSettingsBloc
 
     onFormItemsChanged();
 
-    addDisposable(disposable: autoPlayFieldBloc);
-    addDisposable(disposable: autoInitFieldBloc);
+    addDisposable(autoPlayFieldBloc);
+    addDisposable(autoInitFieldBloc);
   }
 
   @override

@@ -8,8 +8,8 @@ import 'package:fedi/app/account/my/featured_hashtag/pagination/network_only/my_
 import 'package:fedi/app/account/my/featured_hashtag/pagination/network_only/my_account_featured_hashtag_network_only_pagination_bloc_impl.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pleroma/api/featured_tags/pleroma_api_featured_tags_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pedantic/pedantic.dart';
@@ -39,11 +39,9 @@ class AccountFeaturedHashtagListPageBloc extends DisposableOwner
       paginationBloc: accountFeaturedHashtagListNetworkOnlyPaginationBloc,
     );
 
-    addDisposable(disposable: accountFeaturedHashtagListNetworkOnlyListBloc);
-    addDisposable(
-      disposable: accountFeaturedHashtagListNetworkOnlyPaginationBloc,
-    );
-    addDisposable(disposable: hashtagPaginationListBloc);
+    accountFeaturedHashtagListNetworkOnlyListBloc.disposeWith(this);
+    accountFeaturedHashtagListNetworkOnlyPaginationBloc.disposeWith(this);
+    hashtagPaginationListBloc.disposeWith(this);
 
     unawaited(hashtagPaginationListBloc.refreshWithoutController());
   }

@@ -1,9 +1,9 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/html/html_text_helper.dart';
 import 'package:fedi/app/status/collapsible_item/status_collapsible_item_bloc.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/collapsible/owner/collapsible_owner_bloc.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:rxdart/rxdart.dart';
 
 class StatusCollapsibleItemBloc extends DisposableOwner
@@ -28,12 +28,13 @@ class StatusCollapsibleItemBloc extends DisposableOwner
     // ignore: no-magic-number
     this.minimumCharactersLimitToCollapse = 400,
   }) : _isCollapsedSubject = BehaviorSubject.seeded(initialCollapsed) {
-    addDisposable(subject: _isCollapsedSubject);
+    _isCollapsedSubject.disposeWith(this);
+
     if (collapsingEnabled) {
       collapsibleBloc!.addVisibleItem(this);
-      addDisposable(custom: () {
-        collapsibleBloc!.removeVisibleItem(this);
-      });
+      addCustomDisposable(
+        () => collapsibleBloc!.removeVisibleItem(this),
+      );
     }
   }
 

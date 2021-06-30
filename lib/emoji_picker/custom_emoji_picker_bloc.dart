@@ -1,4 +1,4 @@
-import 'package:fedi/disposable/disposable.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/emoji_picker/category/custom_emoji_picker_category_bloc.dart';
 import 'package:fedi/emoji_picker/item/custom_emoji_picker_item_model.dart';
 import 'package:flutter/widgets.dart';

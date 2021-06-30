@@ -1,5 +1,5 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
-import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/media/player/media_player_bloc.dart';
 import 'package:fedi/media/player/media_player_model.dart';
 import 'package:logging/logging.dart';
@@ -23,7 +23,7 @@ class MediaPlayerBloc extends AsyncInitLoadingBloc implements IMediaPlayerBloc {
   final BehaviorSubject<VideoPlayerValue> videoPlayerValueSubject =
       BehaviorSubject();
 
-  VideoPlayerValue? get videoPlayerValue => videoPlayerValueSubject.value;
+  VideoPlayerValue? get videoPlayerValue => videoPlayerValueSubject.valueOrNull;
 
   Stream<VideoPlayerValue> get videoPlayerValueStream =>
       videoPlayerValueSubject.stream;
@@ -31,13 +31,13 @@ class MediaPlayerBloc extends AsyncInitLoadingBloc implements IMediaPlayerBloc {
   BehaviorSubject<bool> isBufferingSubject = BehaviorSubject.seeded(false);
 
   @override
-  bool? get isBuffering => isBufferingSubject.value;
+  bool? get isBuffering => isBufferingSubject.valueOrNull;
 
   @override
   Stream<bool> get isBufferingStream => isBufferingSubject.stream;
 
   @override
-  MediaPlayerState? get playerState => playerStateSubject.value;
+  MediaPlayerState? get playerState => playerStateSubject.valueOrNull;
 
   @override
   Stream<MediaPlayerState> get playerStateStream => playerStateSubject.stream;
@@ -45,7 +45,7 @@ class MediaPlayerBloc extends AsyncInitLoadingBloc implements IMediaPlayerBloc {
   BehaviorSubject<MediaPlayerState> playerStateSubject =
       BehaviorSubject.seeded(MediaPlayerState.notInitialized);
 
-  IDisposable? videoPlayerDisposable;
+  ICompositeDisposable? videoPlayerDisposable;
   @override
   dynamic error;
 
@@ -57,9 +57,10 @@ class MediaPlayerBloc extends AsyncInitLoadingBloc implements IMediaPlayerBloc {
     required this.autoInit,
     required this.autoPlay,
   }) {
-    addDisposable(subject: playerStateSubject);
-    addDisposable(subject: videoPlayerValueSubject);
-    addDisposable(subject: isBufferingSubject);
+    playerStateSubject.disposeWith(this);
+    videoPlayerValueSubject.disposeWith(this);
+    isBufferingSubject.disposeWith(this);
+
     if (autoInit == true) {
       performAsyncInit();
     }
@@ -93,15 +94,12 @@ class MediaPlayerBloc extends AsyncInitLoadingBloc implements IMediaPlayerBloc {
     // dispose old init if it is exist
     await videoPlayerDisposable?.dispose();
 
-    videoPlayerDisposable = CompositeDisposable(
-      [
-        CustomDisposable(
-          () async {
-            videoPlayerController.removeListener(listener);
-            await videoPlayerController.dispose();
-          },
-        ),
-      ],
+    videoPlayerDisposable = CompositeDisposable();
+    videoPlayerDisposable!.addCustomDisposable(
+      () async {
+        videoPlayerController.removeListener(listener);
+        await videoPlayerController.dispose();
+      },
     );
 
     try {

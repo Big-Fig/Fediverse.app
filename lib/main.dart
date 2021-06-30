@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/account/details/local_account_details_page.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
@@ -47,7 +49,6 @@ import 'package:fedi/app/ui/theme/fedi_ui_theme_proxy_provider.dart';
 import 'package:fedi/app/ui/theme/light/light_fedi_ui_theme_model.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_model.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/in_app_review/checker/in_app_review_checker_widget.dart';
 import 'package:fedi/localization/localization_model.dart';
@@ -234,41 +235,35 @@ CurrentAuthInstanceContextInitBloc createCurrentInstanceContextBloc({
       CurrentAuthInstanceContextInitBloc.createFromContext(context);
   currentAuthInstanceContextLoadingBloc.performAsyncInit();
 
-  currentAuthInstanceContextLoadingBloc.addDisposable(
-    streamSubscription:
-        currentAuthInstanceContextLoadingBloc.stateStream.distinct().listen(
-      (state) {
-        var isLocalCacheExist = state ==
-                CurrentAuthInstanceContextInitState
-                    .cantFetchAndLocalCacheNotExist ||
-            state == CurrentAuthInstanceContextInitState.localCacheExist;
-        if (isLocalCacheExist) {
-          if (pushLoaderBloc != null) {
-            currentInstanceContextBloc!.addDisposable(
-              streamSubscription:
-                  pushLoaderBloc.launchPushLoaderNotificationStream.listen(
-                (launchOrResumePushLoaderNotification) {
-                  if (launchOrResumePushLoaderNotification != null) {
-                    // ignore: no-magic-number
-                    const durationToWaitUntilHandleLaunchNotification =
-                        Duration(milliseconds: 100);
-                    Future.delayed(
-                      durationToWaitUntilHandleLaunchNotification,
-                      () async {
-                        await handleLaunchPushLoaderNotification(
-                          launchOrResumePushLoaderNotification,
-                        );
-                      },
+  currentAuthInstanceContextLoadingBloc.stateStream.distinct().listen(
+    (state) {
+      var isLocalCacheExist = state ==
+              CurrentAuthInstanceContextInitState
+                  .cantFetchAndLocalCacheNotExist ||
+          state == CurrentAuthInstanceContextInitState.localCacheExist;
+      if (isLocalCacheExist) {
+        if (pushLoaderBloc != null) {
+          pushLoaderBloc.launchPushLoaderNotificationStream.listen(
+            (launchOrResumePushLoaderNotification) {
+              if (launchOrResumePushLoaderNotification != null) {
+                // ignore: no-magic-number
+                const durationToWaitUntilHandleLaunchNotification =
+                    Duration(milliseconds: 100);
+                Future.delayed(
+                  durationToWaitUntilHandleLaunchNotification,
+                  () async {
+                    await handleLaunchPushLoaderNotification(
+                      launchOrResumePushLoaderNotification,
                     );
-                  }
-                },
-              ),
-            );
-          }
+                  },
+                );
+              }
+            },
+          ).disposeWith(currentInstanceContextBloc!);
         }
-      },
-    ),
-  );
+      }
+    },
+  ).disposeWith(currentAuthInstanceContextLoadingBloc);
 
   return currentAuthInstanceContextLoadingBloc;
 }
@@ -341,18 +336,15 @@ Widget buildAuthInstanceContextInitWidget({
           );
 
           if (pushLoaderBloc != null) {
-            homeBloc.addDisposable(
-              streamSubscription:
-                  pushLoaderBloc.launchPushLoaderNotificationStream.listen(
-                (launchOrResumePushLoaderNotification) {
-                  homeBloc.selectTab(
-                    calculateHomeTabForNotification(
-                      launchOrResumePushLoaderNotification,
-                    ),
-                  );
-                },
-              ),
-            );
+            pushLoaderBloc.launchPushLoaderNotificationStream.listen(
+              (launchOrResumePushLoaderNotification) {
+                homeBloc.selectTab(
+                  calculateHomeTabForNotification(
+                    launchOrResumePushLoaderNotification,
+                  ),
+                );
+              },
+            ).disposeWith(homeBloc);
           }
 
           return homeBloc;
@@ -565,44 +557,37 @@ void _initIncomeShareHandler({
   required BuildContext context,
 }) {
   _logger.finest(() => '_initIncomeShareHandler');
-  bloc.addDisposable(
-    streamSubscription: bloc.incomeShareHandlerErrorStream.listen(
-      (error) {
-        switch (error) {
-          case IncomeShareHandlerError.authInstanceListIsEmpty:
-            IToastService.of(context).showErrorToast(
-              context: context,
-              title:
-                  S.of(context).app_share_income_error_authInstanceListIsEmpty,
-            );
-            break;
-        }
-      },
-    ),
-  );
-
-  bloc.addDisposable(
-    streamSubscription: bloc.needChooseInstanceFromListStream.listen(
-      (authInstanceList) {
-        showIncomeShareInstanceChooserDialog(
-          context,
-          authInstanceList: authInstanceList,
-          incomeShareHandlerBloc: bloc,
-        );
-      },
-    ),
-  );
-  bloc.addDisposable(
-    streamSubscription: bloc.needChooseActionForEventStream.listen(
-      (incomeShareEvent) {
-        showIncomeShareActionChooserDialog(
-          context,
-          incomeShareEvent: incomeShareEvent,
-          incomeShareHandlerBloc: bloc,
-        );
-      },
-    ),
-  );
+  bloc.incomeShareHandlerErrorStream.listen(
+        (error) {
+      switch (error) {
+        case IncomeShareHandlerError.authInstanceListIsEmpty:
+          IToastService.of(context).showErrorToast(
+            context: context,
+            title:
+            S.of(context).app_share_income_error_authInstanceListIsEmpty,
+          );
+          break;
+      }
+    },
+  ).disposeWith(bloc);
+  bloc.needChooseInstanceFromListStream.listen(
+        (authInstanceList) {
+      showIncomeShareInstanceChooserDialog(
+        context,
+        authInstanceList: authInstanceList,
+        incomeShareHandlerBloc: bloc,
+      );
+    },
+  ).disposeWith(bloc);
+  bloc.needChooseActionForEventStream.listen(
+        (incomeShareEvent) {
+      showIncomeShareActionChooserDialog(
+        context,
+        incomeShareEvent: incomeShareEvent,
+        incomeShareHandlerBloc: bloc,
+      );
+    },
+  ).disposeWith(bloc);
 
   bloc.checkForInitialEvent();
 }

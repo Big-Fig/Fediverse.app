@@ -5,6 +5,7 @@ import 'package:fedi/share/income/income_share_model.dart';
 import 'package:fedi/share/income/income_share_service.dart';
 import 'package:logging/logging.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 
 final _logger = Logger('income_share_service_impl.dart');
 
@@ -21,7 +22,7 @@ class IncomeShareService extends AsyncInitLoadingBloc
       StreamController.broadcast();
 
   IncomeShareService() {
-    addDisposable(streamController: incomeShareEventStreamController);
+    incomeShareEventStreamController.disposeWith(this);
   }
 
   @override
@@ -57,49 +58,45 @@ class IncomeShareService extends AsyncInitLoadingBloc
   }
 
   void _listenShareTextEvents() {
-    addDisposable(
-      streamSubscription: ReceiveSharingIntent.getTextStream().listen(
-        (String value) {
-          _logger.finest(() => 'getTextStream $value');
-          lastReceivedShareEvent = IncomeShareEvent(
-            medias: null,
-            text: value,
-          );
-          incomeShareEventStreamController.add(
-            lastReceivedShareEvent!,
-          );
-        },
-        onError: (err) {
-          _logger.shout(() => 'getTextStream error $err');
-        },
-      ),
-    );
+    ReceiveSharingIntent.getTextStream().listen(
+          (String value) {
+        _logger.finest(() => 'getTextStream $value');
+        lastReceivedShareEvent = IncomeShareEvent(
+          medias: null,
+          text: value,
+        );
+        incomeShareEventStreamController.add(
+          lastReceivedShareEvent!,
+        );
+      },
+      onError: (err) {
+        _logger.shout(() => 'getTextStream error $err');
+      },
+    ).disposeWith(this);
   }
 
   void _listenShareMediaEvents() {
-    addDisposable(
-      streamSubscription: ReceiveSharingIntent.getMediaStream().listen(
-        (List<SharedMediaFile> value) {
-          var medias = value.map(_mapMedia).toList();
+    ReceiveSharingIntent.getMediaStream().listen(
+          (List<SharedMediaFile> value) {
+        var medias = value.map(_mapMedia).toList();
 
-          _logger.finest(
-            () => 'getMediaStream ${medias.map((item) => item).join(', ')}',
+        _logger.finest(
+              () => 'getMediaStream ${medias.map((item) => item).join(', ')}',
+        );
+
+        if (medias.isNotEmpty) {
+          incomeShareEventStreamController.add(
+            IncomeShareEvent(
+              medias: medias,
+              text: null,
+            ),
           );
-
-          if (medias.isNotEmpty) {
-            incomeShareEventStreamController.add(
-              IncomeShareEvent(
-                medias: medias,
-                text: null,
-              ),
-            );
-          }
-        },
-        onError: (err) {
-          _logger.shout(() => 'getMediaStream error $err');
-        },
-      ),
-    );
+        }
+      },
+      onError: (err) {
+        _logger.shout(() => 'getMediaStream error $err');
+      },
+    ).disposeWith(this);
   }
 
   @override

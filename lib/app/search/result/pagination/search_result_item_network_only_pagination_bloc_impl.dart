@@ -3,7 +3,7 @@ import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/search/result/list/search_result_item_network_only_list_bloc.dart';
 import 'package:fedi/app/search/result/pagination/search_result_item_network_only_pagination_bloc.dart';
 import 'package:fedi/app/search/result/search_result_model.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';

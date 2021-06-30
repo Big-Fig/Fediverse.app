@@ -4,12 +4,13 @@ import 'package:fedi/app/instance/announcement/repository/instance_announcement_
 import 'package:fedi/app/instance/announcement/repository/instance_announcement_repository_model.dart';
 import 'package:fedi/app/instance/announcement/settings/instance_announcement_settings_model.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pleroma/api/announcement/pleroma_api_announcement_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 
 class InstanceAnnouncementCachedListBloc
     extends IInstanceAnnouncementCachedListBloc {
@@ -20,7 +21,7 @@ class InstanceAnnouncementCachedListBloc
 
   @override
   InstanceAnnouncementSettings get instanceAnnouncementSettings =>
-      instanceAnnouncementSettingsSubject.value!;
+      instanceAnnouncementSettingsSubject.value;
 
   @override
   Stream<InstanceAnnouncementSettings> get instanceAnnouncementSettingsStream =>
@@ -35,7 +36,7 @@ class InstanceAnnouncementCachedListBloc
     required InstanceAnnouncementSettings instanceAnnouncementSettings,
   }) : instanceAnnouncementSettingsSubject =
             BehaviorSubject.seeded(instanceAnnouncementSettings) {
-    addDisposable(subject: instanceAnnouncementSettingsSubject);
+    instanceAnnouncementSettingsSubject.disposeWith(this);
   }
 
   @override

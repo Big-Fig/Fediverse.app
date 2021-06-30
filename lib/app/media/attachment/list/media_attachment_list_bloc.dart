@@ -1,5 +1,5 @@
 import 'package:fedi/app/instance/location/instance_location_bloc.dart';
-import 'package:fedi/disposable/disposable.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';

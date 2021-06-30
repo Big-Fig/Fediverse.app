@@ -4,7 +4,7 @@ import 'package:fedi/app/instance/trends/instance_trends_bloc_proxy_provider.dar
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/instance/remote/remote_instance_bloc.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pleroma/api/trends/pleroma_api_trends_service.dart';
 import 'package:fedi/pleroma/api/trends/pleroma_api_trends_service_impl.dart';
 import 'package:flutter/widgets.dart';
@@ -27,7 +27,7 @@ class RemoteInstanceTrendsBloc extends InstanceTrendsBloc
           instanceUri: remoteInstanceBloc.instanceUri,
           paginationSettingsBloc: paginationSettingsBloc,
         ) {
-    addDisposable(disposable: pleromaApiTrendsService);
+    addDisposable(pleromaApiTrendsService);
   }
 
   static RemoteInstanceTrendsBloc createFromContext(BuildContext context) {

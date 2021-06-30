@@ -1,3 +1,5 @@
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/cache/database/settings/database_cache_settings_bloc.dart';
 import 'package:fedi/app/cache/database/settings/edit/edit_database_cache_settings_bloc.dart';
 import 'package:fedi/app/cache/database/settings/edit/edit_database_cache_settings_bloc_impl.dart';
@@ -8,7 +10,6 @@ import 'package:fedi/app/settings/global_or_instance/edit/edit_global_or_instanc
 import 'package:fedi/app/settings/global_or_instance/edit/switch/switch_edit_global_or_instance_settings_bool_value_form_field_bloc.dart';
 import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_model.dart';
 import 'package:fedi/database/database_service.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -52,14 +53,11 @@ void showEditGlobalOrInstanceDatabaseCacheSettingsDialog({
           ),
         );
 
-        editCacheSettingsBloc.addDisposable(
-          streamSubscription:
-              isUseGlobalSettingsFormBoolFieldBloc.currentValueStream.listen(
-            (isUseGlobalSettings) {
-              editCacheSettingsBloc.changeEnabled(!isUseGlobalSettings!);
-            },
-          ),
-        );
+        isUseGlobalSettingsFormBoolFieldBloc.currentValueStream.listen(
+          (isUseGlobalSettings) {
+            editCacheSettingsBloc.changeEnabled(!isUseGlobalSettings!);
+          },
+        ).disposeWith(editCacheSettingsBloc);
 
         return editCacheSettingsBloc;
       },

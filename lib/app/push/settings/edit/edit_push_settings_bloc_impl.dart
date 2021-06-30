@@ -76,13 +76,13 @@ class EditPushSettingsBloc extends EditInstanceSettingsBloc<PushSettings?>
           settingsBloc: pushSettingsBloc,
           isAllItemsInitialized: true,
         ) {
-    addDisposable(disposable: favouriteFieldBloc);
-    addDisposable(disposable: followFieldBloc);
-    addDisposable(disposable: mentionFieldBloc);
-    addDisposable(disposable: reblogFieldBloc);
-    addDisposable(disposable: pollFieldBloc);
-    addDisposable(disposable: pleromaChatMentionFieldBloc);
-    addDisposable(disposable: pleromaEmojiReactionFieldBloc);
+    addDisposable(favouriteFieldBloc);
+    addDisposable(followFieldBloc);
+    addDisposable(mentionFieldBloc);
+    addDisposable(reblogFieldBloc);
+    addDisposable(pollFieldBloc);
+    addDisposable(pleromaChatMentionFieldBloc);
+    addDisposable(pleromaEmojiReactionFieldBloc);
   }
 
   @override

@@ -7,7 +7,7 @@ import 'package:fedi/app/status/draft/repository/draft_status_repository.dart';
 import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/pleroma/api/status/auth/pleroma_api_auth_status_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:moor/moor.dart';
@@ -44,8 +44,9 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
     bool delayInit = true,
     this.isNeedWatchLocalRepositoryForUpdates = true,
   }) : _draftStatusSubject = BehaviorSubject.seeded(draftStatus) {
-    addDisposable(subject: _draftStatusSubject);
-    addDisposable(subject: _stateSubject);
+    _draftStatusSubject.disposeWith(this);
+    _stateSubject.disposeWith(this);
+
 
     if (delayInit) {
       Future.delayed(Duration(seconds: 1), () {
@@ -59,23 +60,21 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
   void _init(IDraftStatus draftStatus) {
     if (!isDisposed) {
       if (isNeedWatchLocalRepositoryForUpdates) {
-        addDisposable(
-          streamSubscription: draftStatusRepository
-              .watchByDbIdInAppType(draftStatus.localId!)
-              .listen(
-            (updatedStatus) {
-              if (updatedStatus != null) {
-                _draftStatusSubject.add(updatedStatus);
-              }
-            },
-          ),
-        );
+        draftStatusRepository
+            .watchByDbIdInAppType(draftStatus.localId!)
+            .listen(
+              (updatedStatus) {
+            if (updatedStatus != null) {
+              _draftStatusSubject.add(updatedStatus);
+            }
+          },
+        ).disposeWith(this);
       }
     }
   }
 
   @override
-  IDraftStatus get draftStatus => _draftStatusSubject.value!;
+  IDraftStatus get draftStatus => _draftStatusSubject.value;
 
   @override
   Stream<IDraftStatus> get draftStatusStream => _draftStatusSubject.stream;

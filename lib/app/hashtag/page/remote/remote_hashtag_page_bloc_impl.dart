@@ -1,3 +1,4 @@
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
 import 'package:fedi/app/hashtag/page/hashtag_page_bloc.dart';
 import 'package:fedi/app/hashtag/page/hashtag_page_bloc_impl.dart';
@@ -13,7 +14,6 @@ import 'package:fedi/app/status/pagination/network_only/status_network_only_pagi
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc.dart';
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc_impl.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc_impl.dart';
@@ -22,6 +22,7 @@ import 'package:fedi/pleroma/api/timeline/pleroma_api_timeline_service.dart';
 import 'package:fedi/pleroma/api/timeline/pleroma_api_timeline_service_impl.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 
 class RemoteHashtagPageBloc extends HashtagPageBloc
     implements IRemoteHashtagPageBloc {
@@ -46,7 +47,7 @@ class RemoteHashtagPageBloc extends HashtagPageBloc
           hashtag: hashtag,
           instanceUri: remoteInstanceBloc.instanceUri,
         ) {
-    addDisposable(disposable: pleromaApiTimelineService);
+    addDisposable(pleromaApiTimelineService);
   }
 
   static RemoteHashtagPageBloc createFromContext(
@@ -98,7 +99,7 @@ class RemoteHashtagPageBloc extends HashtagPageBloc
   Future internalAsyncInit() async {
     memoryLocalPreferencesService = MemoryLocalPreferencesService();
 
-    addDisposable(disposable: memoryLocalPreferencesService);
+    addDisposable(memoryLocalPreferencesService);
 
     timelineLocalPreferenceBloc = TimelineLocalPreferenceBloc.hashtag(
       memoryLocalPreferencesService,
@@ -107,39 +108,37 @@ class RemoteHashtagPageBloc extends HashtagPageBloc
     );
     await timelineLocalPreferenceBloc.performAsyncInit();
 
-    addDisposable(disposable: timelineLocalPreferenceBloc);
+    addDisposable(timelineLocalPreferenceBloc);
 
     var pleromaApiTimelineService = PleromaApiTimelineService(
       restService: remoteInstanceBloc.pleromaRestService,
     );
-    addDisposable(disposable: pleromaApiTimelineService);
+    addDisposable(pleromaApiTimelineService);
 
     statusNetworkOnlyListBloc = HashtagStatusListNetworkOnlyListBloc(
       pleromaApiTimelineService: pleromaApiTimelineService,
       instanceUri: instanceUri,
       timelineLocalPreferenceBloc: timelineLocalPreferenceBloc,
     );
-    addDisposable(disposable: statusNetworkOnlyListBloc);
+    addDisposable(statusNetworkOnlyListBloc);
 
     statusNetworkOnlyPaginationBloc = StatusNetworkOnlyPaginationBloc(
       paginationSettingsBloc: paginationSettingsBloc,
       maximumCachedPagesCount: null,
       listService: statusNetworkOnlyListBloc,
     );
-    addDisposable(disposable: statusNetworkOnlyPaginationBloc);
+    addDisposable(statusNetworkOnlyPaginationBloc);
 
     statusPaginationListBloc = PaginationListBloc(
       paginationBloc: statusNetworkOnlyPaginationBloc,
     );
-    addDisposable(disposable: statusPaginationListBloc);
+    addDisposable(statusPaginationListBloc);
 
-    addDisposable(
-      streamSubscription: timelineLocalPreferenceBloc.stream.listen(
-        (_) {
-          statusPaginationListBloc.refreshWithController();
-        },
-      ),
-    );
+    timelineLocalPreferenceBloc.stream.listen(
+          (_) {
+        statusPaginationListBloc.refreshWithController();
+      },
+    ).disposeWith(this);
   }
 
   @override

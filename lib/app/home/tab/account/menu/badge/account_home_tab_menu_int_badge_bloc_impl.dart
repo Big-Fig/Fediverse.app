@@ -4,8 +4,8 @@ import 'package:fedi/app/instance/announcement/badge/instance_announcement_count
 import 'package:fedi/app/instance/announcement/repository/instance_announcement_repository.dart';
 import 'package:fedi/app/ui/badge/int/fedi_int_badge_bloc.dart';
 import 'package:fedi/app/ui/badge/int/fedi_int_badge_bloc_sum_adapter.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:flutter/widgets.dart';
 
 class AccountHomeTabMenuIntBadgeBloc extends DisposableOwner
@@ -37,9 +37,9 @@ class AccountHomeTabMenuIntBadgeBloc extends DisposableOwner
         instanceAnnouncementCountIntBadgeBloc,
       ],
     );
-    addDisposable(disposable: instanceAnnouncementCountIntBadgeBloc);
-    addDisposable(disposable: accountHomeTabMenuActionsIntBadgeBloc);
-    addDisposable(disposable: fediIntBadgeBlocSumAdapter);
+    addDisposable(instanceAnnouncementCountIntBadgeBloc);
+    addDisposable(accountHomeTabMenuActionsIntBadgeBloc);
+    addDisposable(fediIntBadgeBlocSumAdapter!);
   }
 
   @override

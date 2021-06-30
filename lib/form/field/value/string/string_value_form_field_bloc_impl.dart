@@ -1,4 +1,5 @@
-import 'package:fedi/disposable/disposable.dart';
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_flutter/easy_dispose_flutter.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/value_form_field_bloc_impl.dart';
 import 'package:fedi/form/field/value/value_form_field_validation.dart';
@@ -32,15 +33,14 @@ class StringValueFormFieldBloc extends ValueFormFieldBloc<String>
       changeCurrentValue(currentValue);
     };
 
-    addDisposable(focusNode: focusNode);
+    focusNode.disposeWith(this);
+    textEditingController.disposeWith(this);
 
-    addDisposable(textEditingController: textEditingController);
     textEditingController.addListener(listener);
-    addDisposable(
-      disposable: CustomDisposable(
-        () async {
-          textEditingController.removeListener(listener);
-        },
+
+    addCustomDisposable(
+      () => textEditingController.removeListener(
+        listener,
       ),
     );
   }

@@ -12,7 +12,7 @@ import 'package:fedi/app/timeline/timeline_label_extension.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';

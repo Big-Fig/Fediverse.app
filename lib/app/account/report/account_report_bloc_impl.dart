@@ -1,3 +1,4 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/report/account_report_bloc.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
@@ -45,8 +46,8 @@ class AccountReportBloc extends FormBloc implements IAccountReportBloc {
   }) : super(
           isAllItemsInitialized: true,
         ) {
-    addDisposable(disposable: forwardBoolValueFormFieldBloc);
-    addDisposable(disposable: messageStringValueFormFieldBloc);
+    forwardBoolValueFormFieldBloc.disposeWith(this);
+    messageStringValueFormFieldBloc.disposeWith(this);
   }
 
   @override

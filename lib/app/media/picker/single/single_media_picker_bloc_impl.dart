@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/media/picker/media_picker_bloc_impl.dart';
 import 'package:fedi/app/media/picker/single/single_media_picker_bloc.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
@@ -14,7 +15,7 @@ class SingleMediaPickerBloc extends MediaPickerBloc
       fileSelectionStreamController.stream;
 
   SingleMediaPickerBloc() {
-    addDisposable(streamController: fileSelectionStreamController);
+    fileSelectionStreamController.disposeWith(this);
   }
 
   @override

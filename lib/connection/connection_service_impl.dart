@@ -1,7 +1,8 @@
 import 'package:connectivity/connectivity.dart';
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_flutter/easy_dispose_flutter.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/connection/connection_service.dart';
-import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/lifecycle/lifecycle_handler.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -21,7 +22,7 @@ class ConnectionService extends AsyncInitLoadingBloc
       _connectionStateSubject.stream.distinct();
 
   @override
-  ConnectivityResult? get connectionState => _connectionStateSubject.value;
+  ConnectivityResult? get connectionState => _connectionStateSubject.valueOrNull;
 
   @override
   Stream<bool> get isConnectedStream =>
@@ -35,21 +36,22 @@ class ConnectionService extends AsyncInitLoadingBloc
   bool get isConnected => _mapConnectivityResult(connectionState);
 
   ConnectionService() {
-
     var observer = LifecycleEventHandler((state) {
       if (state == AppLifecycleState.resumed) {
         _checkConnectivity();
       }
     });
-    WidgetsBinding.instance!.addObserver(observer);
-    addDisposable(disposable: CustomDisposable(() async {
-      WidgetsBinding.instance!.removeObserver(observer);
-    }));
 
-    addDisposable(streamSubscription:
-        connectivity.onConnectivityChanged.listen((connectivityResult) {
-      _updateConnectivity(connectivityResult);
-    }));
+    WidgetsBindingObserverDisposable(
+      WidgetsBinding.instance!,
+      observer,
+    );
+
+    connectivity.onConnectivityChanged.listen(
+      (connectivityResult) {
+        _updateConnectivity(connectivityResult);
+      },
+    ).disposeWith(this);
   }
 
   @override

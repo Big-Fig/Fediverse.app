@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart' show IterableExtension;
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/emoji/text/emoji_text_model.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
@@ -8,7 +9,6 @@ import 'package:fedi/app/poll/poll_bloc.dart';
 import 'package:fedi/app/poll/poll_bloc_impl.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_service.dart';
 import 'package:fedi/pleroma/api/card/pleroma_api_card_model.dart';
 import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
@@ -33,7 +33,8 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
 
   final IPleromaApiStatusService pleromaStatusService;
   final IPleromaApiAccountService pleromaAccountService;
-  final IPleromaApiStatusEmojiReactionService? PleromaApiStatusEmojiReactionService;
+  final IPleromaApiStatusEmojiReactionService?
+      PleromaApiStatusEmojiReactionService;
   final IPleromaApiPollService? pleromaPollService;
 
   // todo: remove hack. Dont init when bloc quickly disposed. Help
@@ -46,47 +47,42 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
     required bool isNeedRefreshFromNetworkOnInit,
     required bool delayInit,
   }) : statusSubject = BehaviorSubject.seeded(status) {
-
     if (status.poll != null) {
       pollBloc = PollBloc(
         pleromaPollService: pleromaPollService,
         poll: status.poll!,
         instanceLocation: instanceLocation,
       );
-      addDisposable(disposable: pollBloc);
-      addDisposable(
-        streamSubscription: pollBloc.pollStream.listen(
-          (IPleromaApiPoll? poll) {
-            // update status poll data if something changed in pollBloc
-            var isChanged = this.poll == poll;
-            if (!isChanged) {
-              _logger.finest(
-                () => 'update status poll data isChanged $isChanged \n'
-                    'old ${this.poll} \n'
-                    'new $poll',
-              );
-              onPollUpdated(poll);
-            }
-          },
-        ),
-      );
-      addDisposable(
-        streamSubscription: pollStream.listen(
-          (poll) {
-            // update pollBloc after status poll data changed
-            var isSame = pollBloc.poll == poll;
-            if (!isSame) {
-              _logger.finest(() => 'update pollBloc poll data isSame $isSame \n'
-                  'old ${pollBloc.poll} \n'
-                  'new $poll');
-              pollBloc.onPollUpdated(poll);
-            }
-          },
-        ),
-      );
+      addDisposable(pollBloc);
+      pollBloc.pollStream.listen(
+        (IPleromaApiPoll? poll) {
+          // update status poll data if something changed in pollBloc
+          var isChanged = this.poll == poll;
+          if (!isChanged) {
+            _logger.finest(
+              () => 'update status poll data isChanged $isChanged \n'
+                  'old ${this.poll} \n'
+                  'new $poll',
+            );
+            onPollUpdated(poll);
+          }
+        },
+      ).disposeWith(this);
+      pollStream.listen(
+        (poll) {
+          // update pollBloc after status poll data changed
+          var isSame = pollBloc.poll == poll;
+          if (!isSame) {
+            _logger.finest(() => 'update pollBloc poll data isSame $isSame \n'
+                'old ${pollBloc.poll} \n'
+                'new $poll');
+            pollBloc.onPollUpdated(poll);
+          }
+        },
+      ).disposeWith(this);
     }
 
-    addDisposable(subject: statusSubject);
+    statusSubject.disposeWith(this);
 
     if (delayInit) {
       Future.delayed(Duration(seconds: 1), () {
@@ -116,7 +112,7 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
   }
 
   @override
-  IStatus get status => statusSubject.value!;
+  IStatus get status => statusSubject.value;
 
   @override
   Stream<IStatus> get statusStream => statusSubject.stream;
@@ -374,8 +370,9 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
       status.pleromaEmojiReactions;
 
   @override
-  Stream<List<IPleromaApiStatusEmojiReaction>?> get pleromaEmojiReactionsStream =>
-      statusStream.map((status) => status.pleromaEmojiReactions);
+  Stream<List<IPleromaApiStatusEmojiReaction>?>
+      get pleromaEmojiReactionsStream =>
+          statusStream.map((status) => status.pleromaEmojiReactions);
 
   @override
   int? get pleromaEmojiReactionsCount =>

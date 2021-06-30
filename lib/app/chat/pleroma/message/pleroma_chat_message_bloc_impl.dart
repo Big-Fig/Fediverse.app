@@ -11,6 +11,7 @@ import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart';
 import 'package:fedi/pleroma/api/chat/pleroma_api_chat_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 
 class PleromaChatMessageBloc extends ChatMessageBloc
     implements IPleromaChatMessageBloc {
@@ -67,41 +68,37 @@ class PleromaChatMessageBloc extends ChatMessageBloc
           needRefreshFromNetworkOnInit: needRefreshFromNetworkOnInit,
           delayInit: delayInit,
         ) {
-    addDisposable(subject: _chatMessageSubject);
+    _chatMessageSubject.disposeWith(this);
   }
 
   @override
   void watchLocalRepositoryChanges() {
-    addDisposable(
-      streamSubscription: chatMessageRepository
-          .watchByRemoteIdInAppType(chatMessage.remoteId)
+    chatMessageRepository
+        .watchByRemoteIdInAppType(chatMessage.remoteId)
+        .listen(
+          (updatedChatMessage) {
+        if (updatedChatMessage != null) {
+          _chatMessageSubject.add(updatedChatMessage);
+        }
+      },
+    ).disposeWith(this);
+
+    var oldPendingRemoteId = chatMessage.oldPendingRemoteId;
+    if (oldPendingRemoteId != null) {
+      chatMessageRepository
+          .watchByOldPendingRemoteId(oldPendingRemoteId)
           .listen(
-        (updatedChatMessage) {
+            (updatedChatMessage) {
           if (updatedChatMessage != null) {
             _chatMessageSubject.add(updatedChatMessage);
           }
         },
-      ),
-    );
-
-    var oldPendingRemoteId = chatMessage.oldPendingRemoteId;
-    if (oldPendingRemoteId != null) {
-      addDisposable(
-        streamSubscription: chatMessageRepository
-            .watchByOldPendingRemoteId(oldPendingRemoteId)
-            .listen(
-          (updatedChatMessage) {
-            if (updatedChatMessage != null) {
-              _chatMessageSubject.add(updatedChatMessage);
-            }
-          },
-        ),
-      );
+      ).disposeWith(this);
     }
   }
 
   @override
-  IPleromaChatMessage get chatMessage => _chatMessageSubject.value!;
+  IPleromaChatMessage get chatMessage => _chatMessageSubject.value;
 
   @override
   Stream<IPleromaChatMessage> get chatMessageStream =>

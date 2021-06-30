@@ -8,7 +8,9 @@ import 'package:fedi/app/account/my/my_account_model.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
+import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
 import 'package:fedi/duration/duration_extension.dart';
 import 'package:fedi/pleroma/api/account/auth/pleroma_api_auth_account_service.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
@@ -69,18 +71,18 @@ class LocalAccountBloc extends AccountBloc {
           isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
           delayInit: delayInit,
         ) {
-    addDisposable(subject: accountRelationshipSubject);
-    addDisposable(
-      streamSubscription: accountSubject.stream.listen(
-        (account) {
-          var pleromaRelationship = account.pleromaRelationship;
-          // _logger.finest(() => 'pleromaRelationship $pleromaRelationship');
-          if (pleromaRelationship?.following != null) {
-            accountRelationshipSubject.add(pleromaRelationship);
-          }
-        },
-      ),
-    );
+
+    accountRelationshipSubject.disposeWith(this);
+    accountSubject.stream.listen(
+          (account) {
+        var pleromaRelationship = account.pleromaRelationship;
+        // _logger.finest(() => 'pleromaRelationship $pleromaRelationship');
+        if (pleromaRelationship?.following != null) {
+          accountRelationshipSubject.add(pleromaRelationship);
+        }
+      },
+    ).disposeWith(this);
+
   }
 
   static LocalAccountBloc createFromContext(
@@ -140,16 +142,14 @@ class LocalAccountBloc extends AccountBloc {
     required bool isNeedRefreshFromNetworkOnInit,
   }) async {
     if (isNeedWatchLocalRepositoryForUpdates) {
-      addDisposable(
-        streamSubscription:
-            accountRepository.watchByRemoteIdInAppType(account.remoteId).listen(
-          (updatedAccount) {
-            if (updatedAccount != null) {
-              accountSubject.add(updatedAccount);
-            }
-          },
-        ),
-      );
+      accountRepository.watchByRemoteIdInAppType(account.remoteId).listen(
+            (updatedAccount) {
+          if (updatedAccount != null) {
+            accountSubject.add(updatedAccount);
+          }
+        },
+      ).disposeWith(this);
+
     }
 
     if (isNeedRefreshFromNetworkOnInit) {

@@ -1,4 +1,4 @@
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 
 abstract class FormItemBloc extends DisposableOwner implements IFormItemBloc {

@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fedi/app/cache/files/files_cache_service.dart';
 import 'package:fedi/connection/connection_service.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
@@ -27,9 +27,8 @@ class FilesCacheService extends DisposableOwner implements IFilesCacheService {
             maxNrOfCacheObjects: maxNrOfCacheObjects ?? 100,
           ),
         ) {
-    addDisposable(custom: () {
-      cacheManager.dispose();
-    });
+
+    addCustomDisposable(() => cacheManager.dispose());
   }
 
   @override

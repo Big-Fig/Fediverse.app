@@ -1,7 +1,7 @@
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/ui/badge/int/fedi_int_badge_bloc.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:flutter/widgets.dart';
 
 class MyAccountFollowRequestCountIntBadgeBloc extends DisposableOwner

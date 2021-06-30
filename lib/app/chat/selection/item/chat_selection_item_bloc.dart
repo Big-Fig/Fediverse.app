@@ -1,6 +1,6 @@
 import 'package:fedi/app/chat/message/chat_message_model.dart';
 import 'package:fedi/app/chat/selection/chat_selection_bloc.dart';
-import 'package:fedi/disposable/disposable.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 

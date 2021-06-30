@@ -13,7 +13,7 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/list/fedi_list_tile.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc_proxy_provider.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';

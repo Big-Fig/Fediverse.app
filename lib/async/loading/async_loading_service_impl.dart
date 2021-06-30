@@ -1,5 +1,5 @@
 import 'package:fedi/async/loading/async_loading_service.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:rxdart/rxdart.dart';
 
 typedef LoadingFunction = Future Function();
@@ -17,7 +17,7 @@ abstract class AsyncLoadingService extends DisposableOwner
   bool? get isLoading => _isLoadingSubject.value;
 
   AsyncLoadingService() {
-    addDisposable(subject: _isLoadingSubject);
+    _isLoadingSubject.disposeWith(this);
   }
 
   Future performLoading(LoadingFunction loadingFunction) async {

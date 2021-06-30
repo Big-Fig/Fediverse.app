@@ -2,7 +2,7 @@ import 'package:fedi/app/search/input/search_input_bloc.dart';
 import 'package:fedi/app/search/input/search_input_bloc_impl.dart';
 import 'package:fedi/app/search/search_bloc.dart';
 import 'package:fedi/app/search/search_model.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/pleroma/api/search/pleroma_api_search_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -24,9 +24,9 @@ class SearchBloc extends DisposableOwner implements ISearchBloc {
           initialQuery: initialQuery,
         ),
         _selectedTabSubject = BehaviorSubject.seeded(startTab) {
-    addDisposable(disposable: searchInputBloc);
+    addDisposable(searchInputBloc);
     _logger.finest(() => 'constructor');
-    addDisposable(subject: _selectedTabSubject);
+    _selectedTabSubject.disposeWith(this);
   }
 
   // ignore: close_sinks
@@ -36,7 +36,7 @@ class SearchBloc extends DisposableOwner implements ISearchBloc {
   Stream<SearchTab> get selectedTabStream => _selectedTabSubject.stream;
 
   @override
-  SearchTab get selectedTab => _selectedTabSubject.value!;
+  SearchTab get selectedTab => _selectedTabSubject.value;
 
   @override
   void selectTab(SearchTab tab) {

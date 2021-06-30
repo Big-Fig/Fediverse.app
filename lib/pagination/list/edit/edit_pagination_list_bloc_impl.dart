@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:fedi/app/ui/list/fedi_list_smart_refresher_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_model.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/pagination/list/edit/edit_pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_model.dart';
@@ -69,7 +69,7 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       BehaviorSubject.seeded([]);
 
   @override
-  List<TItem> get addedItems => List.unmodifiable(addedItemsSubject.value!);
+  List<TItem> get addedItems => List.unmodifiable(addedItemsSubject.value);
 
   Stream<List<TItem>> get addedItemsStream => addedItemsSubject.stream.map(
         (value) => List.unmodifiable(
@@ -78,7 +78,7 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       );
 
   @override
-  List<TItem> get removedItems => List.unmodifiable(removedItemsSubject.value!);
+  List<TItem> get removedItems => List.unmodifiable(removedItemsSubject.value);
 
   Stream<List<TItem>> get removedItemsStream => removedItemsSubject.stream.map(
         (value) => List.unmodifiable(
@@ -156,7 +156,7 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       itemEquality: itemEquality,
     );
     if (foundInRemoved != null) {
-      var items = removedItemsSubject.value!;
+      var items = removedItemsSubject.value;
       items.remove(foundInRemoved);
 
       removedItemsSubject.add(items);
@@ -196,7 +196,7 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
     );
 
     if (foundInAdded != null) {
-      var items = addedItemsSubject.value!;
+      var items = addedItemsSubject.value;
       items.remove(foundInAdded);
 
       addedItemsSubject.add(items);

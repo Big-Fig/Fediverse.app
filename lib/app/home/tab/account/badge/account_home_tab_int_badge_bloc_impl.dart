@@ -3,8 +3,8 @@ import 'package:fedi/app/home/tab/account/menu/badge/account_home_tab_menu_int_b
 import 'package:fedi/app/instance/announcement/repository/instance_announcement_repository.dart';
 import 'package:fedi/app/ui/badge/int/fedi_int_badge_bloc.dart';
 import 'package:fedi/app/ui/badge/int/fedi_int_badge_bloc_sum_adapter.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:flutter/widgets.dart';
 
 class AccountHomeTabIntBadgeBloc extends DisposableOwner
@@ -28,8 +28,8 @@ class AccountHomeTabIntBadgeBloc extends DisposableOwner
         accountHomeTabMenuIntBadgeBloc,
       ],
     );
-    addDisposable(disposable: accountHomeTabMenuIntBadgeBloc);
-    addDisposable(disposable: fediIntBadgeBlocSumAdapter);
+    addDisposable(accountHomeTabMenuIntBadgeBloc);
+    addDisposable(fediIntBadgeBlocSumAdapter!);
   }
 
   @override

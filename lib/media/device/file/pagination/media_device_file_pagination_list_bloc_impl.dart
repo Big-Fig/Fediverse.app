@@ -1,4 +1,4 @@
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
 import 'package:fedi/media/device/file/pagination/media_device_file_pagination_bloc.dart';
 import 'package:fedi/media/device/file/pagination/media_device_file_pagination_list_bloc.dart';

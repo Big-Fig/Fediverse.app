@@ -43,7 +43,7 @@ import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/collapsible/owner/collapsible_owner_widget.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc_impl.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';

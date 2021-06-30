@@ -1,5 +1,5 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/ui/tab/indicator/fedi_tab_indicator_bloc.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -14,20 +14,17 @@ class FediTabIndicatorBloc<T> extends DisposableOwner
     required this.tabController,
     required this.items,
   }) : selectedIndexSubject = BehaviorSubject.seeded(tabController.index) {
-    addDisposable(subject: selectedIndexSubject);
+    selectedIndexSubject.disposeWith(this);
 
     var listener = () {
       selectedIndexSubject.add(tabController.index);
     };
     tabController.addListener(listener);
 
-    addDisposable(custom: () {
-      // try {
-        tabController.removeListener(listener);
-    //   } catch (e, stackTrace) {
-    //     _logger.warning(() => 'Failed to remove tab listener', e, stackTrace);
-    //   }
-    });
+    addCustomDisposable(
+      () => tabController.removeListener(listener),
+    );
+
   }
 
   BehaviorSubject<int> selectedIndexSubject;

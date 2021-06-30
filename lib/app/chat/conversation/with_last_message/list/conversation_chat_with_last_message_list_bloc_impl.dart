@@ -10,7 +10,7 @@ import 'package:fedi/app/chat/conversation/with_last_message/pagination/list/con
 import 'package:fedi/app/chat/conversation/with_last_message/pagination/list/conversation_chat_with_last_message_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
@@ -71,14 +71,12 @@ class ConversationChatWithLastMessageListBloc extends DisposableOwner
       mergeNewItemsImmediately: true,
     );
 
-    addDisposable(disposable: cachedListBloc);
-    addDisposable(disposable: paginationBloc);
-    addDisposable(disposable: paginationListWithNewItemsBloc);
-    addDisposable(
-      disposable: webSocketsHandlerManagerBloc.listenConversationChannel(
-        listenType: WebSocketsListenType.foreground,
-      ),
-    );
+    cachedListBloc.disposeWith(this);
+    paginationBloc.disposeWith(this);
+    paginationListWithNewItemsBloc.disposeWith(this);
+    webSocketsHandlerManagerBloc.listenConversationChannel(
+      listenType: WebSocketsListenType.foreground,
+    ).disposeWith(this);
   }
 
   static ConversationChatWithLastMessageListBloc createFromContext(

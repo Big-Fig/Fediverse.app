@@ -6,6 +6,7 @@ import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 
 class EditChatSettingsBloc
     extends EditGlobalOrInstanceSettingsBloc<ChatSettings>
@@ -41,15 +42,11 @@ class EditChatSettingsBloc
     countConversationsInChatsUnreadBadgesFieldBloc = BoolValueFormFieldBloc(
       originValue: currentSettings.countConversationsInChatsUnreadBadges,
       isEnabled: isEnabled,
-    );
+    )..disposeWith(this);
     replaceConversationsWithPleromaChatsFieldBloc = BoolValueFormFieldBloc(
       originValue: currentSettings.replaceConversationsWithPleromaChats,
       isEnabled: isEnabled,
-    );
-
-    addDisposable(disposable: countConversationsInChatsUnreadBadgesFieldBloc);
-    addDisposable(disposable: replaceConversationsWithPleromaChatsFieldBloc);
-
+    )..disposeWith(this);
     onFormItemsChanged();
   }
 

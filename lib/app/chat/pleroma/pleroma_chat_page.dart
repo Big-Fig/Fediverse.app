@@ -1,3 +1,5 @@
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/chat/chat_bloc.dart';
 import 'package:fedi/app/chat/chat_page_app_bar_body_widget.dart';
 import 'package:fedi/app/chat/pleroma/accounts/pleroma_chat_accounts_page.dart';
@@ -12,8 +14,6 @@ import 'package:fedi/app/chat/selection/chat_selection_bloc_impl.dart';
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_custom_app_bar.dart';
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
-import 'package:fedi/disposable/disposable.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -94,13 +94,7 @@ MaterialPageRoute createPleromaChatPageRoute(IPleromaChat chat) {
 
         currentChatBloc.onChatOpened(chat);
 
-        chatBloc.addDisposable(
-          disposable: CustomDisposable(
-            () async {
-              currentChatBloc.onChatClosed(chat);
-            },
-          ),
-        );
+        chatBloc.addCustomDisposable(() => currentChatBloc.onChatClosed(chat));
 
         return chatBloc;
       },

@@ -40,8 +40,8 @@ class EditUiSettingsBloc extends EditGlobalSettingsBloc<UiSettings?>
           settingsBloc: uiSettingBloc,
           isAllItemsInitialized: true,
         ) {
-    addDisposable(disposable: fediThemeFieldBloc);
-    addDisposable(disposable: statusFontSizeBloc);
+    addDisposable(fediThemeFieldBloc);
+    addDisposable(statusFontSizeBloc);
   }
 
   @override

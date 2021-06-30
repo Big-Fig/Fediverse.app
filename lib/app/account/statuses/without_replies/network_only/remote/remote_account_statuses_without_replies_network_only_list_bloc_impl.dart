@@ -6,11 +6,12 @@ import 'package:fedi/app/list/network_only/network_only_list_bloc.dart';
 import 'package:fedi/app/status/list/network_only/status_network_only_list_bloc.dart';
 import 'package:fedi/app/status/list/network_only/status_network_only_list_bloc_proxy_provider.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_service.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_service_impl.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 
 class RemoteAccountStatusesWithoutRepliesNetworkOnlyListBloc
     extends AccountStatusesWithoutRepliesNetworkOnlyListBloc {
@@ -42,7 +43,7 @@ class RemoteAccountStatusesWithoutRepliesNetworkOnlyListBloc
       pleromaAccountService: pleromaAccountService,
     );
 
-    bloc.addDisposable(disposable: pleromaAccountService);
+    pleromaAccountService.disposeWith(bloc);
 
     return bloc;
   }

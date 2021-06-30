@@ -1,6 +1,6 @@
 import 'package:fedi/app/share/external/external_share_model.dart';
 import 'package:fedi/app/share/external/external_share_service.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/file/temp/temp_file_helper.dart';
 import 'package:fedi/file/temp/temp_file_model.dart';
 import 'package:mime_type/mime_type.dart';

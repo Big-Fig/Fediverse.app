@@ -6,7 +6,7 @@ import 'package:fedi/app/instance/trends/hashtag_list/network_only/instance_tren
 import 'package:fedi/app/instance/trends/hashtag_list/network_only/instance_trends_hashtag_list_network_only_list_bloc_impl.dart';
 import 'package:fedi/app/instance/trends/instance_trends_bloc.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
 import 'package:fedi/pleroma/api/trends/pleroma_api_trends_service.dart';
 import 'package:pedantic/pedantic.dart';
@@ -25,7 +25,7 @@ abstract class InstanceTrendsBloc extends DisposableOwner
     required this.instanceUri,
     required this.paginationSettingsBloc,
   }) : instanceSubject = BehaviorSubject.seeded(initialInstance) {
-    addDisposable(subject: instanceSubject);
+    instanceSubject.disposeWith(this);
 
     instanceTrendsHashtagListNetworkOnlyListBloc =
         InstanceTrendsHashtagListNetworkOnlyListBloc(
@@ -44,11 +44,10 @@ abstract class InstanceTrendsBloc extends DisposableOwner
       paginationBloc: instanceTrendsHashtagListNetworkOnlyPaginationBloc,
     );
 
-    addDisposable(disposable: instanceTrendsHashtagListNetworkOnlyListBloc);
-    addDisposable(
-      disposable: instanceTrendsHashtagListNetworkOnlyPaginationBloc,
+    addDisposable(instanceTrendsHashtagListNetworkOnlyListBloc);
+    addDisposable(instanceTrendsHashtagListNetworkOnlyPaginationBloc,
     );
-    addDisposable(disposable: hashtagPaginationListBloc);
+    addDisposable(hashtagPaginationListBloc);
 
     unawaited(hashtagPaginationListBloc.refreshWithoutController());
   }

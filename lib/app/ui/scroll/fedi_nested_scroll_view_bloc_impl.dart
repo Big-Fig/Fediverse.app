@@ -1,5 +1,5 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_bloc.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/ui/scroll/nested_scroll_controller_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -22,7 +22,7 @@ class FediNestedScrollViewBloc extends DisposableOwner
 
   @override
   bool get isNestedScrollViewBodyStartedScroll =>
-      isNestedScrollViewBodyStartedScrollSubject.value!;
+      isNestedScrollViewBodyStartedScrollSubject.value;
 
   @override
   Stream<bool> get isNestedScrollViewBodyStartedScrollStream =>
@@ -40,14 +40,16 @@ class FediNestedScrollViewBloc extends DisposableOwner
       );
 
   @override
-  int? get scrollOffset => scrollOffsetSubject.value;
+  int? get scrollOffset => scrollOffsetSubject.valueOrNull;
 
   @override
   Stream<int> get scrollOffsetStream => scrollOffsetSubject.stream.distinct();
 
-  FediNestedScrollViewBloc({required this.nestedScrollControllerBloc}) {
-    addDisposable(subject: isNestedScrollViewBodyStartedScrollSubject);
-    addDisposable(subject: scrollOffsetSubject);
+  FediNestedScrollViewBloc({
+    required this.nestedScrollControllerBloc,
+  }) {
+    isNestedScrollViewBodyStartedScrollSubject.disposeWith(this);
+    scrollOffsetSubject.disposeWith(this);
 
     var listener = () {
       try {
@@ -58,16 +60,18 @@ class FediNestedScrollViewBloc extends DisposableOwner
     };
     scrollController!.addListener(listener);
 
-    addDisposable(custom: () {
-      try {
-        scrollController!.removeListener(listener);
-      } catch (e) {
-        _logger.warning(
-          () => 'failed to unsubscribe scrollController'
-              '.removeListener(listener);',
-        );
-      }
-    });
+    addCustomDisposable(
+      () {
+        try {
+          scrollController!.removeListener(listener);
+        } catch (e) {
+          _logger.warning(
+            () => 'failed to unsubscribe scrollController'
+                '.removeListener(listener);',
+          );
+        }
+      },
+    );
   }
 
   void onScroll() {

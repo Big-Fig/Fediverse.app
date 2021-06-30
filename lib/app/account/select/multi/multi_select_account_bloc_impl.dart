@@ -1,8 +1,8 @@
 import 'package:collection/collection.dart' show IterableExtension;
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/select/multi/multi_select_account_bloc.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -15,7 +15,7 @@ class MultiSelectAccountBloc extends DisposableOwner
       BehaviorSubject.seeded([]);
 
   MultiSelectAccountBloc() {
-    addDisposable(subject: selectedAccountsSubject);
+    selectedAccountsSubject.disposeWith(this);
   }
 
   @override
@@ -41,7 +41,7 @@ class MultiSelectAccountBloc extends DisposableOwner
       .map((selectedAccounts) => selectedAccounts.isNotEmpty);
 
   @override
-  List<IAccount> get selectedAccounts => selectedAccountsSubject.value!;
+  List<IAccount> get selectedAccounts => selectedAccountsSubject.value;
 
   @override
   Stream<List<IAccount>> get selectedAccountsStream =>
@@ -54,11 +54,11 @@ class MultiSelectAccountBloc extends DisposableOwner
     var multiSelectAccountBloc = MultiSelectAccountBloc();
 
     if (accountsListSelectedCallback != null) {
-      multiSelectAccountBloc.addDisposable(streamSubscription:
-          multiSelectAccountBloc.selectedAccountsStream
-              .listen((selectedAccounts) {
-        accountsListSelectedCallback(context, selectedAccounts);
-      }));
+      multiSelectAccountBloc.selectedAccountsStream.listen(
+        (selectedAccounts) {
+          accountsListSelectedCallback(context, selectedAccounts);
+        },
+      ).disposeWith(multiSelectAccountBloc);
     }
 
     return multiSelectAccountBloc;

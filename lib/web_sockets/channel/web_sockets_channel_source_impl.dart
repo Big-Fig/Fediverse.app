@@ -2,8 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:fedi/connection/connection_service.dart';
-import 'package:fedi/disposable/disposable.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/web_sockets/channel/web_sockets_channel_source.dart';
 import 'package:fedi/web_sockets/web_sockets_model.dart';
 import 'package:logging/logging.dart';
@@ -29,24 +28,22 @@ class WebSocketsChannelSource<T extends WebSocketsEvent> extends DisposableOwner
     required this.url,
     required this.eventParser,
   }) {
-    addDisposable(disposable: CustomDisposable(() async {
+    addDisposable(CustomDisposable(() async {
       await _disconnect();
     }));
     if (connectionService.isConnected) {
       _connect();
     }
 
-    addDisposable(
-      streamSubscription: connectionService.isConnectedStream.distinct().listen(
-        (isConnected) {
-          if (isConnected) {
-            _connect();
-          } else {
-            _disconnect();
-          }
-        },
-      ),
-    );
+    connectionService.isConnectedStream.distinct().listen(
+          (isConnected) {
+        if (isConnected) {
+          _connect();
+        } else {
+          _disconnect();
+        }
+      },
+    ).disposeWith(this);
   }
 
   void _connect() {

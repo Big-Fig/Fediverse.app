@@ -7,12 +7,13 @@ import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/share/income/handler/income_share_handler_bloc.dart';
 import 'package:fedi/app/share/income/handler/income_share_handler_model.dart';
 import 'package:fedi/app/share/income/handler/last_chosen_instance/last_chosen_instance_income_share_handler_local_preference_bloc.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/share/income/income_share_model.dart';
 import 'package:fedi/share/income/income_share_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
+
 
 final _logger = Logger('income_share_handler_bloc_impl.dart');
 
@@ -51,17 +52,15 @@ class IncomeShareHandlerBloc extends DisposableOwner
     required this.incomeShareService,
     required this.lastChosenInstanceIncomeIncomeShareHandlerLocalPreferenceBloc,
   }) {
-    addDisposable(streamController: needChooseActionForEventStreamController);
-    addDisposable(streamController: needChooseInstanceFromListStreamController);
-    addDisposable(streamController: incomeShareHandlerErrorStreamController);
+    needChooseActionForEventStreamController.disposeWith(this);
+    needChooseInstanceFromListStreamController.disposeWith(this);
+    incomeShareHandlerErrorStreamController.disposeWith(this);
 
-    addDisposable(
-      streamSubscription: incomeShareService.incomeShareEventStream.listen(
-        (event) {
-          _handleEvent(event);
-        },
-      ),
-    );
+    incomeShareService.incomeShareEventStream.listen(
+          (event) {
+        _handleEvent(event);
+      },
+    ).disposeWith(this);
   }
 
   static IncomeShareHandlerBloc createFromContext(

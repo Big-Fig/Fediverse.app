@@ -12,6 +12,7 @@ import 'package:fedi/mastodon/api/filter/mastodon_api_filter_model.dart';
 import 'package:fedi/pleroma/api/notification/pleroma_api_notification_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 
 class NotificationUnreadExcludeTypesBoolBadgeBloc extends AsyncInitLoadingBloc
     implements IFediBoolBadgeBloc {
@@ -29,7 +30,7 @@ class NotificationUnreadExcludeTypesBoolBadgeBloc extends AsyncInitLoadingBloc
     required this.notificationRepository,
     required this.filterRepository,
   }) {
-    addDisposable(subject: badgeSubject);
+    badgeSubject.disposeWith(this);
     performAsyncInit();
   }
 
@@ -54,27 +55,23 @@ class NotificationUnreadExcludeTypesBoolBadgeBloc extends AsyncInitLoadingBloc
       orderingTerms: null,
     );
 
-    addDisposable(
-      streamSubscription: filterRepository
-          .watchFindAllInAppType(
-        filters: filterRepositoryFilters,
-        pagination: null,
-        orderingTerms: null,
-      )
-          .listen(
-            (newFilters) {
-          if(!listEquals(filters, newFilters)) {
-            filters = newFilters;
-            reSubscribeForCount();
-          }
-        },
-      ),
-    );
+    filterRepository
+        .watchFindAllInAppType(
+      filters: filterRepositoryFilters,
+      pagination: null,
+      orderingTerms: null,
+    )
+        .listen(
+          (newFilters) {
+        if(!listEquals(filters, newFilters)) {
+          filters = newFilters;
+          reSubscribeForCount();
+        }
+      },
+    ).disposeWith(this);
 
     reSubscribeForCount();
-    addDisposable(custom: () {
-      countSubscription?.cancel();
-    });
+    addCustomDisposable(() => countSubscription?.cancel());
   }
 
   void reSubscribeForCount() {

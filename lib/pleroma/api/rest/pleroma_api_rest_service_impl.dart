@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:fedi/connection/connection_service.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/rest/pleroma_api_rest_model.dart';
 import 'package:fedi/pleroma/api/rest/pleroma_api_rest_service.dart';
@@ -25,7 +25,7 @@ class PleromaApiRestService extends DisposableOwner
       BehaviorSubject.seeded(PleromaApiState.validAuth);
 
   @override
-  PleromaApiState get pleromaApiState => _pleromaApiStateSubject.value!;
+  PleromaApiState get pleromaApiState => _pleromaApiStateSubject.value;
 
   @override
   Stream<PleromaApiState> get pleromaApiStateStream =>
@@ -47,7 +47,7 @@ class PleromaApiRestService extends DisposableOwner
     required this.restService,
     required this.connectionService,
   }) {
-    addDisposable(subject: _pleromaApiStateSubject);
+    _pleromaApiStateSubject.disposeWith(this);
   }
 
   @override

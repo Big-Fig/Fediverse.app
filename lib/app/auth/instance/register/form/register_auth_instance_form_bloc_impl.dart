@@ -1,3 +1,4 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/auth/instance/register/form/register_auth_instance_form_bloc.dart';
 import 'package:fedi/app/captcha/pleroma/pleroma_form_captcha_string_field_bloc.dart';
 import 'package:fedi/app/captcha/pleroma/pleroma_form_captcha_string_field_bloc_impl.dart';
@@ -50,22 +51,21 @@ class RegisterAuthInstanceFormBloc extends FormBloc
       ],
     );
 
-    addDisposable(disposable: usernameFieldBloc);
-    addDisposable(disposable: emailFieldBloc);
-    addDisposable(disposable: passwordFieldBloc);
-    addDisposable(disposable: captchaFieldBloc);
-    addDisposable(disposable: confirmPasswordFieldBloc);
-    addDisposable(disposable: localeFieldBloc);
-    addDisposable(disposable: agreeTermsOfServiceFieldBloc);
-    addDisposable(disposable: reasonFieldBloc);
+    usernameFieldBloc.disposeWith(this);
+    emailFieldBloc.disposeWith(this);
+    passwordFieldBloc.disposeWith(this);
+    captchaFieldBloc.disposeWith(this);
+    confirmPasswordFieldBloc.disposeWith(this);
+    localeFieldBloc.disposeWith(this);
+    agreeTermsOfServiceFieldBloc.disposeWith(this);
+    reasonFieldBloc.disposeWith(this);
 
-    addDisposable(
-      streamSubscription: passwordFieldBloc.currentValueStream.listen(
-        (currentValue) {
-          confirmPasswordFieldBloc.changePasswordValue(currentValue);
-        },
-      ),
-    );
+    passwordFieldBloc.currentValueStream.listen(
+      (currentValue) {
+        confirmPasswordFieldBloc.changePasswordValue(currentValue);
+      },
+    ).disposeWith(this);
+
     onFormItemsChanged();
   }
 

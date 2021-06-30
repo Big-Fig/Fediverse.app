@@ -1,7 +1,7 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/home/tab/home_tab_bloc.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_bloc.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_bloc_impl.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/ui/scroll/nested_scroll_controller_bloc.dart';
 import 'package:fedi/ui/scroll/nested_scroll_controller_bloc_impl.dart';
 import 'package:logging/logging.dart';
@@ -11,7 +11,8 @@ var _logger = Logger('home_tab_bloc_impl.dart');
 
 abstract class HomeTabBloc extends DisposableOwner implements IHomeTabBloc {
   @override
-  final NestedScrollController nestedScrollController = NestedScrollController(centerScroll: false);
+  final NestedScrollController nestedScrollController =
+      NestedScrollController(centerScroll: false);
 
   @override
   // ignore: avoid-late-keyword
@@ -22,7 +23,6 @@ abstract class HomeTabBloc extends DisposableOwner implements IHomeTabBloc {
   late IFediNestedScrollViewBloc fediNestedScrollViewBloc;
 
   HomeTabBloc() {
-
     nestedScrollControllerBloc = NestedScrollControllerBloc(
       nestedScrollController: nestedScrollController,
     );
@@ -30,8 +30,8 @@ abstract class HomeTabBloc extends DisposableOwner implements IHomeTabBloc {
       nestedScrollControllerBloc: nestedScrollControllerBloc,
     );
 
-    addDisposable(
-      custom: () {
+    addCustomDisposable(
+      () {
         try {
           nestedScrollController.dispose();
         } catch (e) {
@@ -40,8 +40,8 @@ abstract class HomeTabBloc extends DisposableOwner implements IHomeTabBloc {
         }
       },
     );
-    addDisposable(disposable: nestedScrollControllerBloc);
-    addDisposable(disposable: fediNestedScrollViewBloc);
+    addDisposable(nestedScrollControllerBloc);
+    addDisposable(fediNestedScrollViewBloc);
   }
 
   @override

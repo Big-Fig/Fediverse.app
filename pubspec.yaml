@@ -78,7 +78,7 @@ dependencies:
   # cache manager for cached_network_image. Use to set up cache settings
   flutter_cache_manager: ^3.0.1
   # reactive programming
-  rxdart: ^0.26.0
+  rxdart: ^0.27.1
   # text size to fit constraints
   auto_size_text: ^3.0.0-nullsafety.0
 
@@ -230,6 +230,11 @@ dev_dependencies:
 
   # additional linter
   dart_code_metrics: ^3.0.0
+
+  easy_dispose: ^1.0.0
+  easy_dispose_flutter: ^1.0.0
+  easy_dispose_rxdart: ^1.0.0
+  easy_dispose_provider: ^1.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

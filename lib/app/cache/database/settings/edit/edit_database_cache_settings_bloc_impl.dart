@@ -1,3 +1,4 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/cache/database/form/info/instance/current_max_age/current_max_age_instance_database_cache_info_form_field_bloc_impl.dart';
 import 'package:fedi/app/cache/database/form/info/instance/current_max_entries_count_by_type/current_max_entries_count_by_type_instance_database_cache_info_form_field_bloc_impl.dart';
 import 'package:fedi/app/cache/database/form/limit/age/age_limit_database_cache_single_select_from_list_value_form_field_bloc_impl.dart';
@@ -64,38 +65,25 @@ class EditDatabaseCacheSettingsBloc
         AgeLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc(
       isEnabled: isEnabled,
       originValue: currentSettings.ageLimitType,
-    );
+    )..disposeWith(this);
 
     entriesCountByTypeLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc =
         EntriesCountByTypeLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc(
       isEnabled: isEnabled,
       originValue: currentSettings.entriesCountByTypeLimitType,
-    );
+    )..disposeWith(this);
 
     currentMaxEntriesCountByTypeDatabaseCacheInfoFormFieldBloc =
         CurrentMaxEntriesCountByTypeInstanceDatabaseCacheInfoFormFieldBloc(
       databaseService: databaseService,
-    );
+    )..disposeWith(this);
     currentMaxEntriesCountByTypeDatabaseCacheInfoFormFieldBloc
         .performAsyncInit();
     currentMaxAgeDatabaseCacheInfoFormFieldBloc =
         CurrentMaxAgeInstanceDatabaseCacheInfoFormFieldBloc(
       databaseService: databaseService,
-    );
+    )..disposeWith(this);
     currentMaxAgeDatabaseCacheInfoFormFieldBloc.performAsyncInit();
-
-    addDisposable(
-      disposable: ageLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc,
-    );
-    addDisposable(
-      disposable:
-          entriesCountByTypeLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc,
-    );
-
-    addDisposable(
-      disposable: currentMaxEntriesCountByTypeDatabaseCacheInfoFormFieldBloc,
-    );
-    addDisposable(disposable: currentMaxAgeDatabaseCacheInfoFormFieldBloc);
 
     onFormItemsChanged();
   }

@@ -1,3 +1,5 @@
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/settings/global_or_instance/edit/edit_global_or_instance_settings_bloc.dart';
 import 'package:fedi/app/settings/global_or_instance/edit/edit_global_or_instance_settings_dialog.dart';
 import 'package:fedi/app/settings/global_or_instance/edit/switch/switch_edit_global_or_instance_settings_bool_value_form_field_bloc.dart';
@@ -7,7 +9,6 @@ import 'package:fedi/app/web_sockets/settings/edit/edit_web_sockets_settings_blo
 import 'package:fedi/app/web_sockets/settings/edit/edit_web_sockets_settings_widget.dart';
 import 'package:fedi/app/web_sockets/settings/edit/global/edit_global_web_sockets_settings_dialog.dart';
 import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -47,14 +48,11 @@ void showEditGlobalOrInstanceWebSocketsSettingsDialog({
           isGlobalForced: false,
         );
 
-        editWebSocketsSettingsBloc.addDisposable(
-          streamSubscription:
-              isUseGlobalSettingsFormBoolFieldBloc.currentValueStream.listen(
-            (isUseGlobalSettings) {
-              editWebSocketsSettingsBloc.changeEnabled(!isUseGlobalSettings!);
-            },
-          ),
-        );
+        isUseGlobalSettingsFormBoolFieldBloc.currentValueStream.listen(
+          (isUseGlobalSettings) {
+            editWebSocketsSettingsBloc.changeEnabled(!isUseGlobalSettings!);
+          },
+        ).disposeWith(editWebSocketsSettingsBloc);
 
         return editWebSocketsSettingsBloc;
       },

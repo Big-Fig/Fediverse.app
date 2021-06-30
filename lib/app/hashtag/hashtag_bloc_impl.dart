@@ -5,8 +5,8 @@ import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/hashtag/hashtag_bloc.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pleroma/api/featured_tags/pleroma_api_featured_tags_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
@@ -29,8 +29,8 @@ class HashtagBloc extends DisposableOwner implements IHashtagBloc {
     required this.authInstance,
     required IMyAccountFeaturedHashtag? featuredHashtag,
   }) : featuredHashtagSubject = BehaviorSubject.seeded(featuredHashtag) {
-    addDisposable(subject: featuredHashtagSubject);
-    addDisposable(subject: isLoadingFeaturedHashtagStateSubject);
+    featuredHashtagSubject.disposeWith(this);
+    isLoadingFeaturedHashtagStateSubject.disposeWith(this);
 
     if (needLoadFeaturedState && featuredHashtag == null) {
       loadFeaturedState();
@@ -46,7 +46,7 @@ class HashtagBloc extends DisposableOwner implements IHashtagBloc {
 
   @override
   bool get isLoadingFeaturedHashtagState =>
-      isLoadingFeaturedHashtagStateSubject.value!;
+      isLoadingFeaturedHashtagStateSubject.value;
 
   final BehaviorSubject<IMyAccountFeaturedHashtag?> featuredHashtagSubject;
 

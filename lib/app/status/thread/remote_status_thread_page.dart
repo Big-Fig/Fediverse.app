@@ -11,7 +11,7 @@ import 'package:fedi/app/status/thread/status_thread_bloc.dart';
 import 'package:fedi/app/status/thread/status_thread_bloc_proxy_provider.dart';
 import 'package:fedi/app/status/thread/status_thread_page.dart';
 import 'package:fedi/connection/connection_service.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/mastodon/api/media/attachment/mastodon_api_media_attachment_model.dart';
 import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_service_impl.dart';

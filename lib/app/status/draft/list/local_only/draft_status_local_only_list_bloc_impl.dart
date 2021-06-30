@@ -4,7 +4,7 @@ import 'package:fedi/app/status/draft/list/local_only/draft_status_local_only_li
 import 'package:fedi/app/status/draft/repository/draft_status_repository.dart';
 import 'package:fedi/app/status/draft/repository/draft_status_repository_model.dart';
 import 'package:fedi/app/status/list/status_list_bloc.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';

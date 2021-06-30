@@ -1,4 +1,5 @@
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
+import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
 import 'package:fedi/media/player/media_player_bloc.dart';
 import 'package:fedi/media/player/media_player_bloc_impl.dart';
 import 'package:fedi/media/player/media_player_model.dart';
@@ -34,7 +35,7 @@ class VideoMediaPlayerBloc extends MediaPlayerBloc
   Stream<DateTime> get lastIterationDateTimeStream =>
       lastIterationDateTimeSubject.stream;
 
-  DateTime? get lastIterationDateTime => lastIterationDateTimeSubject.value;
+  DateTime? get lastIterationDateTime => lastIterationDateTimeSubject.valueOrNull;
 
   VideoMediaPlayerBloc({
     required MediaPlayerSource mediaPlayerSource,
@@ -56,9 +57,8 @@ class VideoMediaPlayerBloc extends MediaPlayerBloc
           autoInit: autoInit,
           autoPlay: autoPlay,
         ) {
-    addDisposable(subject: lastIterationDateTimeSubject);
+    lastIterationDateTimeSubject.disposeWith(this);
   }
-
 
   // todo: refactor long-parameter-list
   // ignore: long-parameter-list
@@ -80,7 +80,6 @@ class VideoMediaPlayerBloc extends MediaPlayerBloc
       isFullscreen: isFullscreen,
     );
   }
-
 
   // todo: refactor long-parameter-list
   // ignore: long-parameter-list

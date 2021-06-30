@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/obj/equal_comparable_obj.dart';
 import 'package:fedi/pagination/cached/cached_pagination_bloc.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
@@ -34,7 +35,7 @@ class MemoryCachedPaginationListWithNewItemsBloc<
           watchNewerItemsWhenLoadedPagesIsEmpty:
               watchNewerItemsWhenLoadedPagesIsEmpty,
         ) {
-    addDisposable(streamController: newItemsStreamController);
+    newItemsStreamController.disposeWith(this);
   }
 
   @override

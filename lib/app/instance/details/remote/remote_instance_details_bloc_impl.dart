@@ -3,7 +3,7 @@ import 'package:fedi/app/instance/details/instance_details_bloc_impl.dart';
 import 'package:fedi/app/instance/details/instance_details_bloc_proxy_provider.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/instance/remote/remote_instance_bloc.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pleroma/api/instance/pleroma_api_instance_service.dart';
 import 'package:fedi/pleroma/api/instance/pleroma_api_instance_service_impl.dart';
 import 'package:flutter/widgets.dart';
@@ -25,7 +25,7 @@ class RemoteInstanceDetailsBloc extends InstanceDetailsBloc
           initialInstance: null,
           instanceUri: remoteInstanceBloc.instanceUri,
         ) {
-    addDisposable(disposable: pleromaInstanceService);
+    addDisposable(pleromaInstanceService);
   }
 
   static RemoteInstanceDetailsBloc createFromContext(BuildContext context) {

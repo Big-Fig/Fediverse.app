@@ -6,7 +6,7 @@ import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings
 import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_model.dart';
 import 'package:fedi/app/settings/settings_dialog.dart';
 import 'package:fedi/app/ui/divider/fedi_light_grey_divider.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

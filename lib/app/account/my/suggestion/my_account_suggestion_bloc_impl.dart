@@ -1,3 +1,5 @@
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/account/my/suggestion/account_list/network_only/my_account_suggestion_account_list_network_only_list_bloc.dart';
 import 'package:fedi/app/account/my/suggestion/account_list/network_only/my_account_suggestion_account_list_network_only_list_bloc_impl.dart';
 import 'package:fedi/app/account/my/suggestion/my_account_suggestion_bloc.dart';
@@ -8,8 +10,6 @@ import 'package:fedi/app/account/pagination/network_only/account_network_only_pa
 import 'package:fedi/app/account/pagination/network_only/account_network_only_pagination_bloc_impl.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/api/suggestions/pleroma_api_suggestions_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pedantic/pedantic.dart';
@@ -39,13 +39,9 @@ class MyAccountSuggestionBloc extends DisposableOwner
       paginationBloc: myAccountSuggestionAccountListNetworkOnlyPaginationBloc,
     );
 
-    addDisposable(
-      disposable: myAccountSuggestionAccountListNetworkOnlyListBloc,
-    );
-    addDisposable(
-      disposable: myAccountSuggestionAccountListNetworkOnlyPaginationBloc,
-    );
-    addDisposable(disposable: accountPaginationListBloc);
+    myAccountSuggestionAccountListNetworkOnlyListBloc.disposeWith(this);
+    myAccountSuggestionAccountListNetworkOnlyPaginationBloc.disposeWith(this);
+    accountPaginationListBloc.disposeWith(this);
 
     unawaited(accountPaginationListBloc.refreshWithoutController());
   }

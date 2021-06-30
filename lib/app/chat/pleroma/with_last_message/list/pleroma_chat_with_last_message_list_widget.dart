@@ -1,3 +1,5 @@
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/chat/chat_bloc.dart';
 import 'package:fedi/app/chat/list/chat_list_item_widget.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_bloc.dart';
@@ -7,7 +9,6 @@ import 'package:fedi/app/chat/pleroma/with_last_message/pagination/list/pleroma_
 import 'package:fedi/app/chat/pleroma/with_last_message/pleroma_chat_with_last_message_model.dart';
 import 'package:fedi/app/ui/list/fedi_list_tile.dart';
 import 'package:fedi/app/ui/pagination/fedi_pagination_list_widget.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_widget.dart';
 import 'package:fedi/pagination/pagination_model.dart';
@@ -69,19 +70,17 @@ class PleromaChatWithLastMessageListWidget
                 var pleromaChatWithLastMessagePaginationListWithNewItemsBloc =
                     IPleromaChatWithLastMessagePaginationListWithNewItemsBloc
                         .of(context, listen: false);
-                pleromaChatBloc.addDisposable(
-                  streamSubscription: pleromaChatBloc.chatStream.listen(
-                    (chat) {
-                      pleromaChatWithLastMessagePaginationListWithNewItemsBloc
-                          .onItemUpdated(
-                        SimplePleromaChatWithLastMessage(
-                          chat: pleromaChatBloc.chat,
-                          lastChatMessage: pleromaChatBloc.lastChatMessage,
-                        ),
-                      );
-                    },
-                  ),
-                );
+                pleromaChatBloc.chatStream.listen(
+                  (chat) {
+                    pleromaChatWithLastMessagePaginationListWithNewItemsBloc
+                        .onItemUpdated(
+                      SimplePleromaChatWithLastMessage(
+                        chat: pleromaChatBloc.chat,
+                        lastChatMessage: pleromaChatBloc.lastChatMessage,
+                      ),
+                    );
+                  },
+                ).disposeWith(pleromaChatBloc);
 
                 return pleromaChatBloc;
               }

@@ -17,7 +17,7 @@ import 'package:fedi/app/push/settings/push_settings_model.dart';
 import 'package:fedi/app/ui/theme/light/light_fedi_ui_theme_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/connection/connection_service_impl.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/local_preferences/hive_local_preferences_service_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
@@ -70,7 +70,7 @@ class RichNotificationsServiceBackgroundMessage extends AsyncInitLoadingBloc
   RichNotificationsServiceBackgroundMessage({
     required this.localizationContext,
   }) {
-    addDisposable(subject: _messageSubject);
+    _messageSubject.disposeWith(this);
   }
 
   @override
@@ -94,43 +94,39 @@ class RichNotificationsServiceBackgroundMessage extends AsyncInitLoadingBloc
       ],
     );
 
-    addDisposable(
-      streamSubscription: awesomeNotifications.createdStream.listen(
-        (ReceivedNotification receivedNotification) {
+    awesomeNotifications.createdStream.listen(
+          (ReceivedNotification receivedNotification) {
+        _handlePushMessage(
+          receivedNotification: receivedNotification,
+          notificationAction: null,
+          notificationActionInput: null,
+          pushMessageType: PushMessageType.background,
+        );
+      },
+    ).disposeWith(this);
+
+    awesomeNotifications.actionStream.listen(
+          (ReceivedAction receivedAction) {
+        var buttonKeyPressed = receivedAction.buttonKeyPressed;
+
+        if (buttonKeyPressed.isEmpty) {
+          // user simple click on notification (not on action)
           _handlePushMessage(
-            receivedNotification: receivedNotification,
+            receivedNotification: receivedAction,
             notificationAction: null,
             notificationActionInput: null,
-            pushMessageType: PushMessageType.background,
+            pushMessageType: PushMessageType.launch,
           );
-        },
-      ),
-    );
-
-    addDisposable(
-      streamSubscription: awesomeNotifications.actionStream.listen(
-        (ReceivedAction receivedAction) {
-          var buttonKeyPressed = receivedAction.buttonKeyPressed;
-
-          if (buttonKeyPressed.isEmpty) {
-            // user simple click on notification (not on action)
-            _handlePushMessage(
-              receivedNotification: receivedAction,
-              notificationAction: null,
-              notificationActionInput: null,
-              pushMessageType: PushMessageType.launch,
-            );
-          } else {
-            _handlePushMessage(
-              receivedNotification: receivedAction,
-              notificationAction: buttonKeyPressed,
-              notificationActionInput: receivedAction.buttonKeyInput,
-              pushMessageType: PushMessageType.action,
-            );
-          }
-        },
-      ),
-    );
+        } else {
+          _handlePushMessage(
+            receivedNotification: receivedAction,
+            notificationAction: buttonKeyPressed,
+            notificationActionInput: receivedAction.buttonKeyInput,
+            pushMessageType: PushMessageType.action,
+          );
+        }
+      },
+    ).disposeWith(this);
   }
 
   void _handlePushMessage({
@@ -448,19 +444,19 @@ Future<IPleromaApiNotification?> loadLastNotificationForAcctOnHost({
   try {
     var configService = ConfigService();
     await configService.performAsyncInit();
-    disposableOwner.addDisposable(disposable: configService);
+    disposableOwner.addDisposable(configService);
     var loggingService = LoggingService(enabled: configService.logEnabled);
     await loggingService.performAsyncInit();
-    disposableOwner.addDisposable(disposable: loggingService);
+    disposableOwner.addDisposable(loggingService);
 
     var hiveService = HiveService();
     await hiveService.performAsyncInit();
-    disposableOwner.addDisposable(disposable: hiveService);
+    disposableOwner.addDisposable(hiveService);
 
     var hiveLocalPreferencesService =
         HiveLocalPreferencesService.withLastVersionBoxName();
     await hiveLocalPreferencesService.performAsyncInit();
-    disposableOwner.addDisposable(disposable: hiveLocalPreferencesService);
+    disposableOwner.addDisposable(hiveLocalPreferencesService);
 
     var foundInstance = await _findInstanceByUserAtHost(
       localPreferencesService: hiveLocalPreferencesService,
@@ -529,18 +525,17 @@ Future<IPleromaApiNotification?> _loadLastNotificationForInstance({
     userAtHost: userAtHost,
   );
   await instancePushSettingsLocalPreferenceBloc.performAsyncInit();
-  disposableOwner.addDisposable(
-    disposable: instancePushSettingsLocalPreferenceBloc,
+  disposableOwner.addDisposable(instancePushSettingsLocalPreferenceBloc,
   );
 
   var pushSettings = instancePushSettingsLocalPreferenceBloc.value;
 
   var connectionService = ConnectionService();
   await connectionService.performAsyncInit();
-  disposableOwner.addDisposable(disposable: connectionService);
+  disposableOwner.addDisposable(connectionService);
 
   var restService = RestService(baseUri: authInstance.uri);
-  disposableOwner.addDisposable(disposable: restService);
+  disposableOwner.addDisposable(restService);
 
   var pleromaApiAuthRestService = PleromaApiAuthRestService(
     restService: restService,
@@ -548,11 +543,11 @@ Future<IPleromaApiNotification?> _loadLastNotificationForInstance({
     isPleroma: authInstance.isPleroma,
     accessToken: authInstance.token!.accessToken,
   );
-  disposableOwner.addDisposable(disposable: pleromaApiAuthRestService);
+  disposableOwner.addDisposable(pleromaApiAuthRestService);
 
   var pleromaApiNotificationService =
       PleromaApiNotificationService(restService: pleromaApiAuthRestService);
-  disposableOwner.addDisposable(disposable: pleromaApiNotificationService);
+  disposableOwner.addDisposable(pleromaApiNotificationService);
 
   try {
     var pleromaApiNotifications =
@@ -633,8 +628,7 @@ Future<void> _createPushNotification({
     localPreferencesService,
   );
   await globalLocalizationSettingsLocalPreferenceBloc.performAsyncInit();
-  disposableOwner.addDisposable(
-    disposable: globalLocalizationSettingsLocalPreferenceBloc,
+  disposableOwner.addDisposable(globalLocalizationSettingsLocalPreferenceBloc,
   );
 
   var localizationSettings =
@@ -964,8 +958,7 @@ Future<AuthInstance?> _findInstanceByUserAtHost({
   var authInstanceListLocalPreferenceBloc =
       AuthInstanceListLocalPreferenceBloc(localPreferencesService);
   await authInstanceListLocalPreferenceBloc.performAsyncInit();
-  disposableOwner.addDisposable(
-    disposable: authInstanceListLocalPreferenceBloc,
+  disposableOwner.addDisposable(authInstanceListLocalPreferenceBloc,
   );
 
   var authInstanceList = authInstanceListLocalPreferenceBloc.value!;

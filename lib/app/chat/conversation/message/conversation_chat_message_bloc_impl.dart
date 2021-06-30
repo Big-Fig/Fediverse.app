@@ -13,6 +13,7 @@ import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
 import 'package:fedi/pleroma/api/status/auth/pleroma_api_auth_status_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 
 class ConversationChatMessageBloc extends ChatMessageBloc
     implements IConversationChatMessageBloc {
@@ -81,45 +82,41 @@ class ConversationChatMessageBloc extends ChatMessageBloc
           needRefreshFromNetworkOnInit: needRefreshFromNetworkOnInit,
           delayInit: delayInit,
         ) {
-    addDisposable(subject: _chatMessageSubject);
+    _chatMessageSubject.disposeWith(this);
   }
 
   @override
   void watchLocalRepositoryChanges() {
-    addDisposable(
-      streamSubscription: statusRepository
-          .watchByRemoteIdInAppType(chatMessage.remoteId)
+    statusRepository
+        .watchByRemoteIdInAppType(chatMessage.remoteId)
+        .listen(
+          (updatedChatMessage) {
+        if (updatedChatMessage != null) {
+          _chatMessageSubject.add(
+            updatedChatMessage.toConversationChatMessageStatusAdapter(),
+          );
+        }
+      },
+    ).disposeWith(this);
+
+    var oldPendingRemoteId = chatMessage.oldPendingRemoteId;
+    if (oldPendingRemoteId != null) {
+      statusRepository
+          .watchByOldPendingRemoteId(oldPendingRemoteId)
           .listen(
-        (updatedChatMessage) {
+            (updatedChatMessage) {
           if (updatedChatMessage != null) {
             _chatMessageSubject.add(
               updatedChatMessage.toConversationChatMessageStatusAdapter(),
             );
           }
         },
-      ),
-    );
-
-    var oldPendingRemoteId = chatMessage.oldPendingRemoteId;
-    if (oldPendingRemoteId != null) {
-      addDisposable(
-        streamSubscription: statusRepository
-            .watchByOldPendingRemoteId(oldPendingRemoteId)
-            .listen(
-          (updatedChatMessage) {
-            if (updatedChatMessage != null) {
-              _chatMessageSubject.add(
-                updatedChatMessage.toConversationChatMessageStatusAdapter(),
-              );
-            }
-          },
-        ),
-      );
+      ).disposeWith(this);
     }
   }
 
   @override
-  IConversationChatMessage get chatMessage => _chatMessageSubject.value!;
+  IConversationChatMessage get chatMessage => _chatMessageSubject.value;
 
   @override
   Stream<IConversationChatMessage> get chatMessageStream =>

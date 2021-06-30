@@ -1,4 +1,4 @@
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/media/player/audio/audio_media_player_bloc.dart';
 import 'package:fedi/media/player/audio/audio_media_player_bloc_provider.dart';
 import 'package:fedi/media/player/media_player_bloc_impl.dart';

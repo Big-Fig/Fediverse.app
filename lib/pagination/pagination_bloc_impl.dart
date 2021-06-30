@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:fedi/app/pagination/page_size/pagination_page_size_model.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:logging/logging.dart';
@@ -59,7 +59,7 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
       );
 
   @override
-  int get loadedPagesCount => pagesSubject.value?.length ?? 0;
+  int get loadedPagesCount => pagesSubject.value.length;
 
   @override
   int? get loadedPagesMinimumIndex =>
@@ -75,7 +75,7 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
 
   @override
   List<int> get loadedPageIndexesSortedByIndex =>
-      pagesSubject.value!.map((page) => page.pageIndex).toList();
+      pagesSubject.value.map((page) => page.pageIndex).toList();
 
   @override
   Stream<List<int>> get loadedPageIndexesSortedByIndexStream =>
@@ -83,7 +83,7 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
           .map((list) => list.map(((page) => page.pageIndex)).toList());
 
   @override
-  List<TPage> get loadedPagesSortedByIndex => pagesSubject.value!;
+  List<TPage> get loadedPagesSortedByIndex => pagesSubject.value;
 
   @override
   Stream<List<TPage>> get loadedPagesSortedByIndexStream => pagesSubject.stream;
@@ -93,7 +93,7 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
     required this.paginationSettingsBloc,
   }) {
     assert(itemsCountPerPage != null && itemsCountPerPage! > 0);
-    addDisposable(subject: pagesSubject);
+    pagesSubject.disposeWith(this);
     _logger.finest(() => 'constructor');
   }
 
@@ -181,7 +181,7 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
   @override
   Future<TPage> refreshWithoutController() async {
     indexToCachedPageMap.clear();
-    pagesSubject.value!.clear();
+    pagesSubject.value.clear();
 //    onPagesChanged([newFirstPage]);
 
     var newFirstPage = await requestPage(

@@ -16,7 +16,7 @@ import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_vertical_spacer.dart';
 import 'package:fedi/app/ui/spacer/fedi_medium_vertical_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/network_only/network_only_pagination_bloc.dart';

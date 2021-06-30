@@ -5,6 +5,7 @@ import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 
 class SearchAccountsPaginationListBloc extends AccountPaginationListBloc {
   final ISearchInputBloc searchInputBloc;
@@ -13,10 +14,11 @@ class SearchAccountsPaginationListBloc extends AccountPaginationListBloc {
     required this.searchInputBloc,
     required IPaginationBloc<PaginationPage<IAccount>, IAccount> paginationBloc,
   }) : super(paginationBloc: paginationBloc) {
-    addDisposable(streamSubscription:
-        searchInputBloc.confirmedSearchTermStream.listen((newText) {
-      refreshWithController();
-    }));
+    searchInputBloc.confirmedSearchTermStream.listen(
+      (newText) {
+        refreshWithController();
+      },
+    ).disposeWith(this);
   }
 
   static SearchAccountsPaginationListBloc createFromContext(

@@ -1,3 +1,5 @@
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/emoji/picker/category/custom_image_url/emoji_picker_custom_image_url_category_bloc_impl.dart';
 import 'package:fedi/app/emoji/picker/category/custom_image_url/local_preferences/emoji_picker_custom_image_url_category_local_preference_bloc.dart';
@@ -6,7 +8,6 @@ import 'package:fedi/app/emoji/picker/category/recent/local_preferences/emoji_pi
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/emoji_picker/category/code/custom_emoji_picker_code_category_bloc_impl.dart';
 import 'package:fedi/emoji_picker/category/custom_emoji_picker_category_bloc.dart';
 import 'package:fedi/emoji_picker/custom_emoji_picker_bloc.dart';
@@ -81,14 +82,15 @@ class EmojiPickerWidget extends StatelessWidget {
           availableCategories: allCategoriesBlocs,
         );
 
-        customEmojiPickerBloc.addDisposable(streamSubscription:
-            customEmojiPickerBloc.selectedEmojiStream.listen((emojiItem) {
+        customEmojiPickerBloc.selectedEmojiStream.listen((emojiItem) {
           emojiPickerRecentCategoryBloc.onEmojiSelected(emojiItem);
-        }));
+        }).disposeWith(customEmojiPickerBloc);
 
-        customEmojiPickerBloc.addDisposable(custom: () {
-          allCategoriesBlocs.forEach((categoryBloc) => categoryBloc.dispose());
-        });
+        customEmojiPickerBloc.addCustomDisposable(
+          () => allCategoriesBlocs.forEach(
+            (categoryBloc) => categoryBloc.dispose(),
+          ),
+        );
 
         return customEmojiPickerBloc;
       },

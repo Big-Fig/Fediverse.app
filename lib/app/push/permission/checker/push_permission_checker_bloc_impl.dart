@@ -1,8 +1,8 @@
 import 'package:fedi/app/push/permission/ask/local_preferences/ask_push_permission_local_preference_bloc.dart';
 import 'package:fedi/app/push/permission/checker/push_permission_checker_bloc.dart';
 import 'package:fedi/app/push/settings/push_settings_bloc.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/push/fcm/fcm_push_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';

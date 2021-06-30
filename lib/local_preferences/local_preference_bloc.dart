@@ -1,5 +1,5 @@
 import 'package:fedi/async/loading/init/async_init_loading_bloc.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 
 abstract class ILocalPreferenceBloc<T> extends DisposableOwner
     implements IAsyncInitLoadingBloc {

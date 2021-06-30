@@ -3,11 +3,13 @@ import 'package:fedi/app/settings/settings_bloc.dart';
 import 'package:fedi/app/settings/settings_model.dart';
 import 'package:fedi/form/form_bloc_impl.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
 
 abstract class EditSettingsBloc<T extends ISettings?> extends FormBloc
     implements IEditSettingsBloc<T> {
   @override
-  bool get isEnabled => isEnabledSubject.value!;
+  bool get isEnabled => isEnabledSubject.value;
 
   @override
   Stream<bool> get isEnabledStream => isEnabledSubject.stream;
@@ -21,32 +23,28 @@ abstract class EditSettingsBloc<T extends ISettings?> extends FormBloc
     required bool isEnabled,
     required this.settingsBloc,
     required bool isAllItemsInitialized,
-  })   : isEnabledSubject = BehaviorSubject.seeded(isEnabled),
+  })  : isEnabledSubject = BehaviorSubject.seeded(isEnabled),
         super(
           isAllItemsInitialized: isAllItemsInitialized,
         ) {
-    addDisposable(subject: isEnabledSubject);
+    isEnabledSubject.disposeWith(this);
 
-    addDisposable(
-      streamSubscription: isSomethingChangedStream.listen(
-        (_) {
-          if (isEnabled) {
-            saveSettingsFromFormToSettingsBloc();
-          }
-        },
-      ),
-    );
+    isSomethingChangedStream.listen(
+          (_) {
+        if (isEnabled) {
+          saveSettingsFromFormToSettingsBloc();
+        }
+      },
+    ).disposeWith(this);
 
-    addDisposable(
-      streamSubscription: currentSettingsStream.listen(
-        (newSettings) {
-          if (newSettings == null) {
-            return;
-          }
-          saveSettingsFromSettingsBlocToForm(newSettings);
-        },
-      ),
-    );
+    currentSettingsStream.listen(
+          (newSettings) {
+        if (newSettings == null) {
+          return;
+        }
+        saveSettingsFromSettingsBlocToForm(newSettings);
+      },
+    ).disposeWith(this);
   }
 
   @override

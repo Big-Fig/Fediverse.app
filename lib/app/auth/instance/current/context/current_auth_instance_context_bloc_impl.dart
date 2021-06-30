@@ -1,3 +1,4 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/account/my/local_preferences/my_account_local_preference_bloc.dart';
 import 'package:fedi/app/account/my/local_preferences/my_account_local_preference_bloc_impl.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
@@ -234,9 +235,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         AskPushPermissionLocalPreferenceBloc(
       preferencesService,
       userAtHost: userAtHost,
-    );
+    )..disposeWith(this);
 
-    addDisposable(disposable: askPushPermissionLocalPreferenceBloc);
     await globalProviderService
         .asyncInitAndRegister<IAskPushPermissionLocalPreferenceBloc>(
       askPushPermissionLocalPreferenceBloc,
@@ -245,45 +245,47 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     var recentSearchLocalPreferenceBloc = RecentSearchLocalPreferenceBloc(
       preferencesService,
       userAtHost: currentInstance.userAtHost,
-    );
+    )..disposeWith(this);
 
-    addDisposable(disposable: recentSearchLocalPreferenceBloc);
     await globalProviderService.asyncInitAndRegister<
         IRecentSearchLocalPreferenceBloc>(recentSearchLocalPreferenceBloc);
 
     var moorDatabaseService = AppDatabaseService.forUserAtHost(
       userAtHost: userAtHost,
       configService: configService,
-    );
-    addDisposable(disposable: moorDatabaseService);
+    )..disposeWith(this);
+
     await globalProviderService
         .asyncInitAndRegister<AppDatabaseService>(moorDatabaseService);
     await globalProviderService
         .asyncInitAndRegister<IDatabaseService>(moorDatabaseService);
 
     var accountRepository =
-        AccountRepository(appDatabase: moorDatabaseService.appDatabase);
-    addDisposable(disposable: accountRepository);
+        AccountRepository(appDatabase: moorDatabaseService.appDatabase)
+          ..disposeWith(this);
+
     await globalProviderService
         .asyncInitAndRegister<IAccountRepository>(accountRepository);
 
     var statusRepository = StatusRepository(
       appDatabase: moorDatabaseService.appDatabase,
       accountRepository: accountRepository,
-    );
-    addDisposable(disposable: statusRepository);
+    )..disposeWith(this);
+
     await globalProviderService
         .asyncInitAndRegister<IStatusRepository>(statusRepository);
 
     var scheduledStatusRepository =
-        ScheduledStatusRepository(appDatabase: moorDatabaseService.appDatabase);
-    addDisposable(disposable: scheduledStatusRepository);
+        ScheduledStatusRepository(appDatabase: moorDatabaseService.appDatabase)
+          ..disposeWith(this);
+
     await globalProviderService.asyncInitAndRegister<
         IScheduledStatusRepository>(scheduledStatusRepository);
 
     var draftStatusRepository =
-        DraftStatusRepository(appDatabase: moorDatabaseService.appDatabase);
-    addDisposable(disposable: draftStatusRepository);
+        DraftStatusRepository(appDatabase: moorDatabaseService.appDatabase)
+          ..disposeWith(this);
+
     await globalProviderService
         .asyncInitAndRegister<IDraftStatusRepository>(draftStatusRepository);
 
@@ -291,16 +293,16 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
       appDatabase: moorDatabaseService.appDatabase,
       accountRepository: accountRepository,
       statusRepository: statusRepository,
-    );
-    addDisposable(disposable: conversationRepository);
+    )..disposeWith(this);
+
     await globalProviderService.asyncInitAndRegister<
         IConversationChatRepository>(conversationRepository);
 
     var chatMessageRepository = PleromaChatMessageRepository(
       appDatabase: moorDatabaseService.appDatabase,
       accountRepository: accountRepository,
-    );
-    addDisposable(disposable: chatMessageRepository);
+    )..disposeWith(this);
+
     await globalProviderService.asyncInitAndRegister<
         IPleromaChatMessageRepository>(chatMessageRepository);
 
@@ -308,8 +310,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
       appDatabase: moorDatabaseService.appDatabase,
       accountRepository: accountRepository,
       chatMessageRepository: chatMessageRepository,
-    );
-    addDisposable(disposable: chatRepository);
+    )..disposeWith(this);
+
     await globalProviderService
         .asyncInitAndRegister<IPleromaChatRepository>(chatRepository);
 
@@ -318,8 +320,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
       accountRepository: accountRepository,
       statusRepository: statusRepository,
       chatMessageRepository: chatMessageRepository,
-    );
-    addDisposable(disposable: notificationRepository);
+    )..disposeWith(this);
+
     await globalProviderService
         .asyncInitAndRegister<INotificationRepository>(notificationRepository);
 
@@ -327,8 +329,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         PleromaChatWithLastMessageRepository(
       chatRepository: chatRepository,
       chatMessageRepository: chatMessageRepository,
-    );
-    addDisposable(disposable: pleromaChatWithLastMessageRepository);
+    )..disposeWith(this);
+
     await globalProviderService
         .asyncInitAndRegister<IPleromaChatWithLastMessageRepository>(
       pleromaChatWithLastMessageRepository,
@@ -338,22 +340,23 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         ConversationChatWithLastMessageRepository(
       conversationChatRepository: conversationRepository,
       statusRepository: statusRepository,
-    );
-    addDisposable(disposable: conversationChatWithLastMessageRepository);
+    )..disposeWith(this);
+
     await globalProviderService
         .asyncInitAndRegister<IConversationChatWithLastMessageRepository>(
       conversationChatWithLastMessageRepository,
     );
 
-    var restService = RestService(baseUri: currentInstance.uri);
-    addDisposable(disposable: restService);
+    var restService = RestService(baseUri: currentInstance.uri)
+      ..disposeWith(this);
+
     await globalProviderService.asyncInitAndRegister<IRestService>(restService);
 
     var pleromaRestService = PleromaApiRestService(
       restService: restService,
       connectionService: connectionService,
-    );
-    addDisposable(disposable: pleromaRestService);
+    )..disposeWith(this);
+
     await globalProviderService
         .asyncInitAndRegister<IPleromaApiRestService>(pleromaRestService);
 
@@ -362,176 +365,178 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
       connectionService: connectionService,
       accessToken: currentInstance.token!.accessToken,
       isPleroma: isPleromaInstance,
-    );
-    addDisposable(disposable: pleromaAuthRestService);
+    )..disposeWith(this);
+
     await globalProviderService.asyncInitAndRegister<
         IPleromaApiAuthRestService>(pleromaAuthRestService);
 
     var pleromaCaptchaService =
-        PleromaApiCaptchaService(restService: pleromaAuthRestService);
+        PleromaApiCaptchaService(restService: pleromaAuthRestService)
+          ..disposeWith(this);
     await globalProviderService
         .asyncInitAndRegister<IPleromaApiCaptchaService>(pleromaCaptchaService);
-    addDisposable(disposable: pleromaCaptchaService);
 
     var pleromaAnnouncementsService =
-        PleromaApiAnnouncementService(restService: pleromaAuthRestService);
+        PleromaApiAnnouncementService(restService: pleromaAuthRestService)
+          ..disposeWith(this);
     await globalProviderService.asyncInitAndRegister<
         IPleromaApiAnnouncementService>(pleromaAnnouncementsService);
-    addDisposable(disposable: pleromaAnnouncementsService);
 
     var pleromaMediaAttachmentService =
-        PleromaApiMediaAttachmentService(restService: pleromaAuthRestService);
+        PleromaApiMediaAttachmentService(restService: pleromaAuthRestService)
+          ..disposeWith(this);
     await globalProviderService.asyncInitAndRegister<
         IPleromaApiMediaAttachmentService>(pleromaMediaAttachmentService);
-    addDisposable(disposable: pleromaMediaAttachmentService);
 
     var pleromaListService =
-        PleromaApiListService(restService: pleromaAuthRestService);
+        PleromaApiListService(restService: pleromaAuthRestService)
+          ..disposeWith(this);
     await globalProviderService
         .asyncInitAndRegister<IPleromaApiListService>(pleromaListService);
-    addDisposable(disposable: pleromaListService);
 
     var pleromaMyAccountService =
-        PleromaApiMyAccountService(restService: pleromaAuthRestService);
+        PleromaApiMyAccountService(restService: pleromaAuthRestService)
+          ..disposeWith(this);
     await globalProviderService
         .asyncInitAndRegister<IPleromaApiMyAccountService>(
       pleromaMyAccountService,
     );
-    addDisposable(disposable: pleromaMyAccountService);
+
     var pleromaAccountPublicService =
-        PleromaApiAccountPublicService(restService: pleromaAuthRestService);
+        PleromaApiAccountPublicService(restService: pleromaAuthRestService)
+          ..disposeWith(this);
     await globalProviderService.asyncInitAndRegister<
         IPleromaApiAccountPublicService>(pleromaAccountPublicService);
-    addDisposable(disposable: pleromaAccountPublicService);
+
     var pleromaAccountService =
-        PleromaApiAuthAccountService(authRestService: pleromaAuthRestService);
+        PleromaApiAuthAccountService(authRestService: pleromaAuthRestService)
+          ..disposeWith(this);
     await globalProviderService
         .asyncInitAndRegister<IPleromaApiAccountService>(pleromaAccountService);
     await globalProviderService.asyncInitAndRegister<
         IPleromaApiAuthAccountService>(pleromaAccountService);
-    addDisposable(disposable: pleromaAccountService);
 
     var pleromaApiAuthTimelineService =
-        PleromaApiAuthTimelineService(authRestService: pleromaAuthRestService);
+        PleromaApiAuthTimelineService(authRestService: pleromaAuthRestService)
+          ..disposeWith(this);
     await globalProviderService.asyncInitAndRegister<
         IPleromaApiAuthTimelineService>(pleromaApiAuthTimelineService);
     await globalProviderService.asyncInitAndRegister<
         IPleromaApiTimelineService>(pleromaApiAuthTimelineService);
-    addDisposable(disposable: pleromaApiAuthTimelineService);
 
     var pleromaStatusService =
-        PleromaApiAuthStatusService(authRestService: pleromaAuthRestService);
+        PleromaApiAuthStatusService(authRestService: pleromaAuthRestService)
+          ..disposeWith(this);
     await globalProviderService
         .asyncInitAndRegister<IPleromaApiStatusService>(pleromaStatusService);
     await globalProviderService.asyncInitAndRegister<
         IPleromaApiAuthStatusService>(pleromaStatusService);
 
-    addDisposable(disposable: pleromaStatusService);
     var pleromaScheduledStatusService = PleromaApiScheduledStatusService(
       authRestService: pleromaAuthRestService,
-    );
+    )..disposeWith(this);
     await globalProviderService.asyncInitAndRegister<
         IPleromaApiScheduledStatusService>(pleromaScheduledStatusService);
-    addDisposable(disposable: pleromaScheduledStatusService);
+
     var pleromaApiStatusEmojiReactionService =
         PleromaApiStatusEmojiReactionService(
       authRestService: pleromaAuthRestService,
-    );
+    )..disposeWith(this);
     await globalProviderService
         .asyncInitAndRegister<IPleromaApiStatusEmojiReactionService>(
       pleromaApiStatusEmojiReactionService,
     );
-    addDisposable(disposable: pleromaApiStatusEmojiReactionService);
+
     var pleromaConversationService =
-        PleromaApiConversationService(restService: pleromaAuthRestService);
+        PleromaApiConversationService(restService: pleromaAuthRestService)
+          ..disposeWith(this);
     await globalProviderService.asyncInitAndRegister<
         IPleromaApiConversationService>(pleromaConversationService);
-    addDisposable(disposable: pleromaConversationService);
 
     var pleromaChatService =
-        PleromaApiChatService(restService: pleromaAuthRestService);
+        PleromaApiChatService(restService: pleromaAuthRestService)
+          ..disposeWith(this);
     await globalProviderService
         .asyncInitAndRegister<IPleromaApiChatService>(pleromaChatService);
-    addDisposable(disposable: pleromaChatService);
 
     var pleromaInstanceService =
-        PleromaApiInstanceService(restService: pleromaAuthRestService);
+        PleromaApiInstanceService(restService: pleromaAuthRestService)
+          ..disposeWith(this);
     await globalProviderService.asyncInitAndRegister<
         IPleromaApiInstanceService>(pleromaInstanceService);
-    addDisposable(disposable: pleromaInstanceService);
 
     var pleromaSearchService =
-        PleromaApiSearchService(restService: pleromaAuthRestService);
+        PleromaApiSearchService(restService: pleromaAuthRestService)
+          ..disposeWith(this);
     await globalProviderService
         .asyncInitAndRegister<IPleromaApiSearchService>(pleromaSearchService);
-    addDisposable(disposable: pleromaSearchService);
 
     var pleromaNotificationService =
-        PleromaApiNotificationService(restService: pleromaAuthRestService);
+        PleromaApiNotificationService(restService: pleromaAuthRestService)
+          ..disposeWith(this);
     await globalProviderService.asyncInitAndRegister<
         IPleromaApiNotificationService>(pleromaNotificationService);
-    addDisposable(disposable: pleromaNotificationService);
 
     var pleromaDirectoryService =
-        PleromaApiDirectoryService(restService: pleromaAuthRestService);
+        PleromaApiDirectoryService(restService: pleromaAuthRestService)
+          ..disposeWith(this);
     await globalProviderService.asyncInitAndRegister<
         IPleromaApiDirectoryService>(pleromaDirectoryService);
-    addDisposable(disposable: pleromaDirectoryService);
 
     var pleromaEndorsementsService =
-        PleromaApiEndorsementsService(restService: pleromaAuthRestService);
+        PleromaApiEndorsementsService(restService: pleromaAuthRestService)
+          ..disposeWith(this);
     await globalProviderService.asyncInitAndRegister<
         IPleromaApiEndorsementsService>(pleromaEndorsementsService);
-    addDisposable(disposable: pleromaEndorsementsService);
 
     var pleromaFeaturedTagsService =
-        PleromaApiFeaturedTagsService(restService: pleromaAuthRestService);
+        PleromaApiFeaturedTagsService(restService: pleromaAuthRestService)
+          ..disposeWith(this);
     await globalProviderService.asyncInitAndRegister<
         IPleromaApiFeaturedTagsService>(pleromaFeaturedTagsService);
-    addDisposable(disposable: pleromaFeaturedTagsService);
 
     var pleromaMarkersService =
-        PleromaApiMarkersService(restService: pleromaAuthRestService);
+        PleromaApiMarkersService(restService: pleromaAuthRestService)
+          ..disposeWith(this);
     await globalProviderService
         .asyncInitAndRegister<IPleromaApiMarkersService>(pleromaMarkersService);
-    addDisposable(disposable: pleromaMarkersService);
 
     var pleromaSuggestionsService =
-        PleromaApiSuggestionsService(restService: pleromaAuthRestService);
+        PleromaApiSuggestionsService(restService: pleromaAuthRestService)
+          ..disposeWith(this);
     await globalProviderService.asyncInitAndRegister<
         IPleromaApiSuggestionsService>(pleromaSuggestionsService);
-    addDisposable(disposable: pleromaSuggestionsService);
 
     var pleromaTrendsService =
-        PleromaApiTrendsService(restService: pleromaAuthRestService);
+        PleromaApiTrendsService(restService: pleromaAuthRestService)
+          ..disposeWith(this);
     await globalProviderService
         .asyncInitAndRegister<IPleromaApiTrendsService>(pleromaTrendsService);
-    addDisposable(disposable: pleromaTrendsService);
 
     var pleromaPollService =
-        PleromaApiPollService(restService: pleromaAuthRestService);
+        PleromaApiPollService(restService: pleromaAuthRestService)
+          ..disposeWith(this);
     await globalProviderService
         .asyncInitAndRegister<IPleromaApiPollService>(pleromaPollService);
-    addDisposable(disposable: pleromaPollService);
 
     var pleromaEmojiService =
-        PleromaApiEmojiService(restService: pleromaAuthRestService);
+        PleromaApiEmojiService(restService: pleromaAuthRestService)
+          ..disposeWith(this);
     await globalProviderService
         .asyncInitAndRegister<IPleromaApiEmojiService>(pleromaEmojiService);
-    addDisposable(disposable: pleromaEmojiService);
 
     var mastodonApiEmojiService =
-        MastodonApiEmojiService(restService: pleromaAuthRestService);
+        MastodonApiEmojiService(restService: pleromaAuthRestService)
+          ..disposeWith(this);
     await globalProviderService.asyncInitAndRegister<IMastodonApiEmojiService>(
       mastodonApiEmojiService,
     );
-    addDisposable(disposable: mastodonApiEmojiService);
 
     var myAccountLocalPreferenceBloc = MyAccountLocalPreferenceBloc(
       preferencesService,
       userAtHost: userAtHost,
-    );
-    addDisposable(disposable: myAccountLocalPreferenceBloc);
+    )..disposeWith(this);
+
     await globalProviderService.asyncInitAndRegister<
         IMyAccountLocalPreferenceBloc>(myAccountLocalPreferenceBloc);
 
@@ -539,10 +544,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         EmojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc(
       preferencesService,
       userAtHost: userAtHost,
-    );
-    addDisposable(
-      disposable: emojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc,
-    );
+    )..disposeWith(this);
+
     await globalProviderService.asyncInitAndRegister<
         IEmojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc>(
       emojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc,
@@ -552,10 +555,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         EmojiPickerRecentCategoryLocalPreferenceBloc(
       preferencesService,
       userAtHost: userAtHost,
-    );
-    addDisposable(
-      disposable: customEmojiPickerRecentCategoryLocalPreferenceBloc,
-    );
+    )..disposeWith(this);
+
     await globalProviderService
         .asyncInitAndRegister<IEmojiPickerRecentCategoryLocalPreferenceBloc>(
       customEmojiPickerRecentCategoryLocalPreferenceBloc,
@@ -565,8 +566,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         TimelinesHomeTabStorageLocalPreferenceBloc(
       preferencesService,
       userAtHost: userAtHost,
-    );
-    addDisposable(disposable: timelinesHomeTabStorageLocalPreferencesBloc);
+    )..disposeWith(this);
+
     await globalProviderService
         .asyncInitAndRegister<ITimelinesHomeTabStorageLocalPreferenceBloc>(
       timelinesHomeTabStorageLocalPreferencesBloc,
@@ -576,8 +577,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         InstancePushSettingsLocalPreferenceBloc(
       preferencesService,
       userAtHost: userAtHost,
-    );
-    addDisposable(disposable: instancePushSettingsLocalPreferenceBloc);
+    )..disposeWith(this);
+
     await globalProviderService
         .asyncInitAndRegister<IPushSettingsLocalPreferenceBloc>(
       instancePushSettingsLocalPreferenceBloc,
@@ -588,46 +589,42 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
       myAccountLocalPreferenceBloc: myAccountLocalPreferenceBloc,
       accountRepository: accountRepository,
       instance: currentInstance,
-    );
+    )..disposeWith(this);
 
-    addDisposable(disposable: myAccountBloc);
     await globalProviderService
         .asyncInitAndRegister<IMyAccountBloc>(myAccountBloc);
 
-    var currentPleromaChatBloc = PleromaChatCurrentBloc();
+    var currentPleromaChatBloc = PleromaChatCurrentBloc()..disposeWith(this);
 
     await globalProviderService
         .asyncInitAndRegister<IPleromaChatCurrentBloc>(currentPleromaChatBloc);
 
-    addDisposable(disposable: currentPleromaChatBloc);
-    var currentConversationChatBloc = ConversationChatCurrentBloc();
+    var currentConversationChatBloc = ConversationChatCurrentBloc()
+      ..disposeWith(this);
 
     await globalProviderService.asyncInitAndRegister<
         IConversationChatCurrentBloc>(currentConversationChatBloc);
-
-    addDisposable(disposable: currentConversationChatBloc);
 
     var chatNewMessagesHandlerBloc = PleromaChatNewMessagesHandlerBloc(
       chatRepository: chatRepository,
       currentChatBloc: currentPleromaChatBloc,
       pleromaChatService: pleromaChatService,
-    );
+    )..disposeWith(this);
 
     await globalProviderService.asyncInitAndRegister<
         IPleromaChatNewMessagesHandlerBloc>(chatNewMessagesHandlerBloc);
-    addDisposable(disposable: chatNewMessagesHandlerBloc);
+
     var conversationChatNewMessagesHandlerBloc =
         ConversationChatNewMessagesHandlerBloc(
       conversationRepository: conversationRepository,
       currentChatBloc: currentConversationChatBloc,
       conversationChatService: pleromaConversationService,
-    );
+    )..disposeWith(this);
 
     await globalProviderService
         .asyncInitAndRegister<IConversationChatNewMessagesHandlerBloc>(
       conversationChatNewMessagesHandlerBloc,
     );
-    addDisposable(disposable: conversationChatNewMessagesHandlerBloc);
 
     if (configService.pushFcmEnabled) {
       var pushRelayService = appContextBloc.get<IPushRelayService>();
@@ -641,10 +638,9 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
           auth: configService.pushSubscriptionKeysAuth!,
         ),
         restService: pleromaAuthRestService,
-      );
+      )..disposeWith(this);
       await globalProviderService
           .asyncInitAndRegister<IPleromaApiPushService>(pleromaPushService);
-      addDisposable(disposable: pleromaPushService);
 
       var pushSettingsBloc = PushSettingsBloc(
         pushRelayService: pushRelayService,
@@ -652,9 +648,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         pleromaPushService: pleromaPushService,
         currentInstance: currentInstance,
         fcmPushService: fcmPushService,
-      );
+      )..disposeWith(this);
 
-      addDisposable(disposable: pushSettingsBloc);
       await globalProviderService
           .asyncInitAndRegister<IPushSettingsBloc>(pushSettingsBloc);
 
@@ -663,9 +658,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         askPushPermissionLocalPreferenceBloc:
             askPushPermissionLocalPreferenceBloc,
         pushSettingsBloc: pushSettingsBloc,
-      );
+      )..disposeWith(this);
 
-      addDisposable(disposable: pushPermissionCheckerBloc);
       await globalProviderService.asyncInitAndRegister<
           IPushPermissionCheckerBloc>(pushPermissionCheckerBloc);
 
@@ -682,9 +676,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         chatMessageRepository: chatMessageRepository,
         pleromaApiAuthStatusService: pleromaStatusService,
         pleromaApiChatService: pleromaChatService,
-      );
+      )..disposeWith(this);
 
-      addDisposable(disposable: notificationPushLoaderBloc);
       await globalProviderService.asyncInitAndRegister<
           INotificationPushLoaderBloc>(notificationPushLoaderBloc);
     }
@@ -750,231 +743,207 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         InstanceChatSettingsLocalPreferenceBloc(
       preferencesService,
       userAtHost: userAtHost,
-    );
+    )..disposeWith(this);
 
     await globalProviderService
         .asyncInitAndRegister<IInstanceChatSettingsLocalPreferenceBloc>(
       instanceChatSettingsLocalPreferencesBloc,
     );
-    addDisposable(disposable: instanceChatSettingsLocalPreferencesBloc);
 
     var instanceMediaSettingsLocalPreferencesBloc =
         InstanceMediaSettingsLocalPreferenceBloc(
       preferencesService,
       userAtHost: userAtHost,
-    );
+    )..disposeWith(this);
     await globalProviderService
         .asyncInitAndRegister<IInstanceMediaSettingsLocalPreferenceBloc>(
       instanceMediaSettingsLocalPreferencesBloc,
     );
-    addDisposable(disposable: instanceMediaSettingsLocalPreferencesBloc);
 
     var instanceToastSettingsLocalPreferencesBloc =
         InstanceToastSettingsLocalPreferenceBloc(
       preferencesService,
       userAtHost: userAtHost,
-    );
+    )..disposeWith(this);
 
     await globalProviderService
         .asyncInitAndRegister<IInstanceToastSettingsLocalPreferenceBloc>(
       instanceToastSettingsLocalPreferencesBloc,
     );
-    addDisposable(disposable: instanceToastSettingsLocalPreferencesBloc);
 
     var instancePostStatusSettingsLocalPreferencesBloc =
         InstancePostStatusSettingsLocalPreferenceBloc(
       preferencesService,
       userAtHost: userAtHost,
-    );
+    )..disposeWith(this);
 
     await globalProviderService
         .asyncInitAndRegister<IInstancePostStatusSettingsLocalPreferenceBloc>(
       instancePostStatusSettingsLocalPreferencesBloc,
     );
-    addDisposable(disposable: instancePostStatusSettingsLocalPreferencesBloc);
 
     var instanceStatusSensitiveSettingsLocalPreferencesBloc =
         InstanceStatusSensitiveSettingsLocalPreferenceBloc(
       preferencesService,
       userAtHost: userAtHost,
-    );
+    )..disposeWith(this);
 
     await globalProviderService.asyncInitAndRegister<
         IInstanceStatusSensitiveSettingsLocalPreferenceBloc>(
       instanceStatusSensitiveSettingsLocalPreferencesBloc,
-    );
-    addDisposable(
-      disposable: instanceStatusSensitiveSettingsLocalPreferencesBloc,
     );
 
     var instanceWebSocketsSettingsLocalPreferencesBloc =
         InstanceWebSocketsSettingsLocalPreferenceBloc(
       preferencesService,
       userAtHost: userAtHost,
-    );
+    )..disposeWith(this);
 
     await globalProviderService
         .asyncInitAndRegister<IInstanceWebSocketsSettingsLocalPreferenceBloc>(
       instanceWebSocketsSettingsLocalPreferencesBloc,
     );
-    addDisposable(disposable: instanceWebSocketsSettingsLocalPreferencesBloc);
 
     var instancePaginationSettingsLocalPreferencesBloc =
         InstancePaginationSettingsLocalPreferenceBloc(
       preferencesService,
       userAtHost: userAtHost,
-    );
+    )..disposeWith(this);
 
     await globalProviderService
         .asyncInitAndRegister<IInstancePaginationSettingsLocalPreferenceBloc>(
       instancePaginationSettingsLocalPreferencesBloc,
     );
-    addDisposable(disposable: instancePaginationSettingsLocalPreferencesBloc);
 
     var instanceFilesCacheSettingsLocalPreferencesBloc =
         InstanceFilesCacheSettingsLocalPreferenceBloc(
       preferencesService,
       userAtHost: userAtHost,
-    );
+    )..disposeWith(this);
 
     await globalProviderService
         .asyncInitAndRegister<IInstanceFilesCacheSettingsLocalPreferenceBloc>(
       instanceFilesCacheSettingsLocalPreferencesBloc,
     );
-    addDisposable(disposable: instanceFilesCacheSettingsLocalPreferencesBloc);
 
     var instanceDatabaseCacheSettingsLocalPreferencesBloc =
         InstanceDatabaseCacheSettingsLocalPreferenceBloc(
       preferencesService,
       userAtHost: userAtHost,
-    );
+    )..disposeWith(this);
 
     await globalProviderService.asyncInitAndRegister<
         IInstanceDatabaseCacheSettingsLocalPreferenceBloc>(
       instanceDatabaseCacheSettingsLocalPreferencesBloc,
-    );
-    addDisposable(
-      disposable: instanceDatabaseCacheSettingsLocalPreferencesBloc,
     );
 
     var chatSettingsBloc = ChatSettingsBloc(
       instanceLocalPreferencesBloc: instanceChatSettingsLocalPreferencesBloc,
       globalLocalPreferencesBloc:
           appContextBloc.get<IGlobalChatSettingsLocalPreferenceBloc>(),
-    );
+    )..disposeWith(this);
 
     await globalProviderService
         .asyncInitAndRegister<IChatSettingsBloc>(chatSettingsBloc);
-    addDisposable(disposable: chatSettingsBloc);
 
     var mediaSettingsBloc = MediaSettingsBloc(
       instanceLocalPreferencesBloc: instanceMediaSettingsLocalPreferencesBloc,
       globalLocalPreferencesBloc:
           appContextBloc.get<IGlobalMediaSettingsLocalPreferenceBloc>(),
-    );
+    )..disposeWith(this);
     await globalProviderService
         .asyncInitAndRegister<IMediaSettingsBloc>(mediaSettingsBloc);
-    addDisposable(disposable: mediaSettingsBloc);
 
     var toastSettingsBloc = ToastSettingsBloc(
       instanceLocalPreferencesBloc: instanceToastSettingsLocalPreferencesBloc,
       globalLocalPreferencesBloc:
           appContextBloc.get<IGlobalToastSettingsLocalPreferenceBloc>(),
-    );
+    )..disposeWith(this);
 
     await globalProviderService
         .asyncInitAndRegister<IToastSettingsBloc>(toastSettingsBloc);
-    addDisposable(disposable: toastSettingsBloc);
 
     var postStatusSettingsBloc = PostStatusSettingsBloc(
       instanceLocalPreferencesBloc:
           instancePostStatusSettingsLocalPreferencesBloc,
       globalLocalPreferencesBloc:
           appContextBloc.get<IGlobalPostStatusSettingsLocalPreferenceBloc>(),
-    );
+    )..disposeWith(this);
 
     await globalProviderService
         .asyncInitAndRegister<IPostStatusSettingsBloc>(postStatusSettingsBloc);
-    addDisposable(disposable: postStatusSettingsBloc);
 
     var statusSensitiveSettingsBloc = StatusSensitiveSettingsBloc(
       instanceLocalPreferencesBloc:
           instanceStatusSensitiveSettingsLocalPreferencesBloc,
       globalLocalPreferencesBloc: appContextBloc
           .get<IGlobalStatusSensitiveSettingsLocalPreferenceBloc>(),
-    );
+    )..disposeWith(this);
 
     await globalProviderService.asyncInitAndRegister<
         IStatusSensitiveSettingsBloc>(statusSensitiveSettingsBloc);
-    addDisposable(disposable: statusSensitiveSettingsBloc);
 
     var webSocketsSettingsBloc = WebSocketsSettingsBloc(
       instanceLocalPreferencesBloc:
           instanceWebSocketsSettingsLocalPreferencesBloc,
       globalLocalPreferencesBloc:
           appContextBloc.get<IGlobalWebSocketsSettingsLocalPreferenceBloc>(),
-    );
+    )..disposeWith(this);
 
     await globalProviderService
         .asyncInitAndRegister<IWebSocketsSettingsBloc>(webSocketsSettingsBloc);
-    addDisposable(disposable: webSocketsSettingsBloc);
 
     var paginationSettingsBloc = PaginationSettingsBloc(
       instanceLocalPreferencesBloc:
           instancePaginationSettingsLocalPreferencesBloc,
       globalLocalPreferencesBloc:
           appContextBloc.get<IGlobalPaginationSettingsLocalPreferenceBloc>(),
-    );
+    )..disposeWith(this);
 
     await globalProviderService
         .asyncInitAndRegister<IPaginationSettingsBloc>(paginationSettingsBloc);
-    addDisposable(disposable: paginationSettingsBloc);
 
     var databaseCacheSettingsBloc = DatabaseCacheSettingsBloc(
       instanceLocalPreferencesBloc:
           instanceDatabaseCacheSettingsLocalPreferencesBloc,
       globalLocalPreferencesBloc:
           appContextBloc.get<IGlobalDatabaseCacheSettingsLocalPreferenceBloc>(),
-    );
+    )..disposeWith(this);
 
     await globalProviderService.asyncInitAndRegister<
         IDatabaseCacheSettingsBloc>(databaseCacheSettingsBloc);
-    addDisposable(disposable: databaseCacheSettingsBloc);
 
     var filesCacheSettingsBloc = FilesCacheSettingsBloc(
       instanceLocalPreferencesBloc:
           instanceFilesCacheSettingsLocalPreferencesBloc,
       globalLocalPreferencesBloc:
           appContextBloc.get<IGlobalFilesCacheSettingsLocalPreferencesBloc>(),
-    );
+    )..disposeWith(this);
 
     await globalProviderService
         .asyncInitAndRegister<IFilesCacheSettingsBloc>(filesCacheSettingsBloc);
-    addDisposable(disposable: filesCacheSettingsBloc);
 
     var statusSensitiveDisplayTimeStorageBloc =
-        StatusSensitiveDisplayTimeStorageBloc();
+        StatusSensitiveDisplayTimeStorageBloc()..disposeWith(this);
 
     await globalProviderService
         .asyncInitAndRegister<IStatusSensitiveDisplayTimeStorageBloc>(
       statusSensitiveDisplayTimeStorageBloc,
     );
-    addDisposable(disposable: statusSensitiveDisplayTimeStorageBloc);
 
     var webSocketsService =
-        WebSocketsService(configBloc: webSocketsSettingsBloc);
+        WebSocketsService(configBloc: webSocketsSettingsBloc)
+          ..disposeWith(this);
     await globalProviderService
         .asyncInitAndRegister<IWebSocketsService>(webSocketsService);
-    addDisposable(disposable: webSocketsService);
 
     var pleromaWebSocketsService = PleromaApiWebSocketsService(
       webSocketsService: webSocketsService,
       accessToken: currentInstance.token!.accessToken,
       baseUri: currentInstance.uri,
       connectionService: connectionService,
-    );
+    )..disposeWith(this);
 
-    addDisposable(disposable: pleromaWebSocketsService);
     await globalProviderService
         .asyncInitAndRegister<IPleromaApiWebSocketsService>(
       pleromaWebSocketsService,
@@ -982,9 +951,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
 
     var instanceAnnouncementRepository = InstanceAnnouncementRepository(
       appDatabase: moorDatabaseService.appDatabase,
-    );
+    )..disposeWith(this);
 
-    addDisposable(disposable: instanceAnnouncementRepository);
     await globalProviderService.asyncInitAndRegister<
         IInstanceAnnouncementRepository>(instanceAnnouncementRepository);
 
@@ -998,9 +966,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
       conversationChatNewMessagesHandlerBloc:
           conversationChatNewMessagesHandlerBloc,
       myAccountBloc: myAccountBloc,
-    );
+    )..disposeWith(this);
 
-    addDisposable(disposable: webSocketsHandlerManagerBloc);
     await globalProviderService.asyncInitAndRegister<
         IWebSocketsHandlerManagerBloc>(webSocketsHandlerManagerBloc);
 
@@ -1008,9 +975,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
       preferences: timelinesHomeTabStorageLocalPreferencesBloc,
       authInstance: currentInstance,
       preferencesService: preferencesService,
-    );
+    )..disposeWith(this);
 
-    addDisposable(disposable: timelinesHomeTabStorageBloc);
     await globalProviderService.asyncInitAndRegister<
         ITimelinesHomeTabStorageBloc>(timelinesHomeTabStorageBloc);
 
@@ -1018,9 +984,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         RecentShareSelectAccountLocalPreferenceBloc(
       preferencesService,
       userAtHost: userAtHost,
-    );
+    )..disposeWith(this);
 
-    addDisposable(disposable: recentShareSelectAccountLocalPreferenceBloc);
     await globalProviderService
         .asyncInitAndRegister<IRecentShareSelectAccountLocalPreferenceBloc>(
       recentShareSelectAccountLocalPreferenceBloc,
@@ -1028,17 +993,15 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
 
     var pleromaFilterService = PleromaApiFilterService(
       restService: pleromaAuthRestService,
-    );
+    )..disposeWith(this);
 
-    addDisposable(disposable: pleromaFilterService);
     await globalProviderService
         .asyncInitAndRegister<IPleromaApiFilterService>(pleromaFilterService);
 
     var filterRepository = FilterRepository(
       appDatabase: moorDatabaseService.appDatabase,
-    );
+    )..disposeWith(this);
 
-    addDisposable(disposable: filterRepository);
     await globalProviderService
         .asyncInitAndRegister<IFilterRepository>(filterRepository);
 
@@ -1048,19 +1011,18 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
       stalePeriod: filesCacheSettingsBloc.ageLimitType.toDurationOrNull(),
       maxNrOfCacheObjects:
           filesCacheSettingsBloc.sizeLimitCountType.toCountOrNull(),
-    );
-    addDisposable(disposable: filesCacheService);
+    )..disposeWith(this);
+
     await globalProviderService
         .asyncInitAndRegister<IFilesCacheService>(filesCacheService);
 
     var mediaAttachmentReuploadService = MediaAttachmentReuploadService(
       pleromaMediaAttachmentService: pleromaMediaAttachmentService,
       filesCacheService: filesCacheService,
-    );
+    )..disposeWith(this);
 
     await globalProviderService.asyncInitAndRegister<
         IMediaAttachmentReuploadService>(mediaAttachmentReuploadService);
-    addDisposable(disposable: mediaAttachmentReuploadService);
 
     await moorDatabaseService.clearByLimits(
       ageLimit: databaseCacheSettingsBloc.ageLimitType.toDurationOrNull(),
@@ -1072,11 +1034,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         InstanceInstanceAnnouncementSettingsLocalPreferenceBloc(
       preferencesService,
       userAtHost: userAtHost,
-    );
+    )..disposeWith(this);
 
-    addDisposable(
-      disposable: instanceInstanceAnnouncementSettingsLocalPreferenceBloc,
-    );
     await globalProviderService
         .asyncInitAndRegister<IInstanceAnnouncementSettingsLocalPreferenceBloc>(
       instanceInstanceAnnouncementSettingsLocalPreferenceBloc,

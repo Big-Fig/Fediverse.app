@@ -1,10 +1,10 @@
 import 'dart:async';
 
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/home/home_bloc.dart';
 import 'package:fedi/app/home/home_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -33,13 +33,13 @@ class HomeBloc extends DisposableOwner implements IHomeBloc {
   Stream<HomeTab?> get selectedTabStream => _selectedTabSubject.stream;
 
   @override
-  HomeTab? get selectedTab => _selectedTabSubject.value;
+  HomeTab? get selectedTab => _selectedTabSubject.valueOrNull;
 
   final BehaviorSubject<bool> _isTimelinesUnreadSubject =
       BehaviorSubject.seeded(false);
 
   @override
-  bool? get isTimelinesUnread => _isTimelinesUnreadSubject.value;
+  bool? get isTimelinesUnread => _isTimelinesUnreadSubject.valueOrNull;
 
   @override
   Stream<bool> get isTimelinesUnreadStream => _isTimelinesUnreadSubject.stream;
@@ -51,32 +51,29 @@ class HomeBloc extends DisposableOwner implements IHomeBloc {
   }) : _selectedTabSubject = BehaviorSubject.seeded(startTab) {
     _logger.finest(() => 'constructor');
 
-    addDisposable(subject: _selectedTabSubject);
-    addDisposable(subject: _isTimelinesUnreadSubject);
-    addDisposable(streamController: _reselectedTabStreamController);
+    _selectedTabSubject.disposeWith(this);
+    _isTimelinesUnreadSubject.disposeWith(this);
+    _reselectedTabStreamController.disposeWith(this);
 
-    addDisposable(custom: () {
-      homeTimelinesInactiveUnreadBadgeSubscription?.cancel();
-    });
+    addCustomDisposable(
+      () => homeTimelinesInactiveUnreadBadgeSubscription?.cancel(),
+    );
 
     // WebSocketsListenType.background because it is listening for any home tab
     // timelines, notifications, chats overrides websockets listening with
     // WebSocketsListenType.foreground
-    addDisposable(
-      disposable: webSocketsHandlerManagerBloc.listenMyAccountChannel(
+    addDisposable(webSocketsHandlerManagerBloc.listenMyAccountChannel(
         listenType: WebSocketsListenType.background,
         notification: false,
         chat: false,
       ),
     );
 
-    addDisposable(
-      streamSubscription: _selectedTabSubject.listen(
-        (_) {
-          checkHomeTimelinesInactiveUnreadBadgeSubscription();
-        },
-      ),
-    );
+    _selectedTabSubject.listen(
+          (_) {
+        checkHomeTimelinesInactiveUnreadBadgeSubscription();
+      },
+    ).disposeWith(this);
   }
 
   @override

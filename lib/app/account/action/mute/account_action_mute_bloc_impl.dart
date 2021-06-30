@@ -1,8 +1,8 @@
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/action/mute/account_action_mute_bloc.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/field/value/duration/date_time/duration_date_time_value_form_field_bloc.dart';
@@ -37,8 +37,8 @@ class AccountActionMuteBloc extends DisposableOwner
   AccountActionMuteBloc({
     required this.accountBloc,
   }) {
-    addDisposable(disposable: expireDurationFieldBloc);
-    addDisposable(disposable: notificationsBoolFieldBloc);
+    expireDurationFieldBloc.disposeWith(this);
+    notificationsBoolFieldBloc.disposeWith(this);
   }
 
   static AccountActionMuteBloc createFromContext(

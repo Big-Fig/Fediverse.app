@@ -1,4 +1,4 @@
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/ui/switch/custom_switch_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -7,11 +7,11 @@ class CustomSwitchBloc extends DisposableOwner implements ICustomSwitchBloc {
 
   CustomSwitchBloc({required startValue})
       : currentValueSubject = BehaviorSubject.seeded(startValue) {
-    addDisposable(subject: currentValueSubject);
+    currentValueSubject.disposeWith(this);
   }
 
   @override
-  bool? get currentValue => currentValueSubject.value;
+  bool? get currentValue => currentValueSubject.valueOrNull;
 
   @override
   Stream<bool> get currentValueStream => currentValueSubject.stream;

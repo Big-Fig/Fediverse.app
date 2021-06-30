@@ -20,6 +20,7 @@ import 'package:fedi/pleroma/api/rest/pleroma_api_rest_service.dart';
 import 'package:fedi/pleroma/api/rest/pleroma_api_rest_service_impl.dart';
 import 'package:fedi/rest/rest_service.dart';
 import 'package:fedi/rest/rest_service_impl.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 
 class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
     implements IRegisterAuthInstanceBloc {
@@ -73,12 +74,11 @@ class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
     pleromaInstanceService =
         PleromaApiInstanceService(restService: pleromaRestService);
 
-    addDisposable(streamController: registrationResultStreamController);
-    addDisposable(disposable: restService);
-    addDisposable(disposable: pleromaRestService);
-    addDisposable(disposable: pleromaCaptchaService);
+    registrationResultStreamController.disposeWith(this);
+    restService.disposeWith(this);
+    pleromaRestService.disposeWith(this);
+    pleromaInstanceService.disposeWith(this);
 
-    addDisposable(disposable: pleromaInstanceService);
   }
 
   @override
@@ -140,7 +140,7 @@ class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
       instanceBaseUri: instanceBaseUri,
       localizationSettingsBloc: localizationSettingsBloc,
       approvalRequired: pleromaInstance.approvalRequired,
-    );
-    addDisposable(disposable: registerAuthInstanceFormBloc);
+    )..disposeWith(this);
+
   }
 }

@@ -1,3 +1,4 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_bloc.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_list_bloc.dart';
 import 'package:fedi/app/timeline/type/timeline_type_model.dart';
@@ -29,7 +30,7 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
 
   @override
   ITimelineTabBloc get selectedTimelineTabBloc =>
-      selectedTimelineTabBlocSubject.value!;
+      selectedTimelineTabBlocSubject.value;
 
   @override
   Stream<ITimelineTabBloc> get selectedTimelineTabBlocStream =>
@@ -69,11 +70,13 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
       timelineTabBlocs[initialIndex],
     );
 
-    addDisposable(custom: () async {
-      for (var bloc in timelineTabBlocs) {
-        await bloc.dispose();
-      }
-    });
+    addCustomDisposable(
+      () async {
+        for (var bloc in timelineTabBlocs) {
+          await bloc.dispose();
+        }
+      },
+    );
   }
 
   @override

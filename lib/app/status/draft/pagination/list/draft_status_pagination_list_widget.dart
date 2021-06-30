@@ -4,7 +4,7 @@ import 'package:fedi/app/status/draft/draft_status_model.dart';
 import 'package:fedi/app/status/draft/list/draft_status_list_item_widget.dart';
 import 'package:fedi/app/status/draft/pagination/list/draft_status_pagination_list_base_widget.dart';
 import 'package:fedi/app/ui/list/fedi_list_tile.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

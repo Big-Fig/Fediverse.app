@@ -1,3 +1,5 @@
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/card/card_widget.dart';
 import 'package:fedi/app/emoji/text/emoji_text_model.dart';
 import 'package:fedi/app/html/html_text_bloc.dart';
@@ -27,7 +29,6 @@ import 'package:fedi/app/ui/settings/ui_settings_bloc.dart';
 import 'package:fedi/app/ui/shader_mask/fedi_fade_shader_mask.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pleroma/api/card/pleroma_api_card_model.dart';
 import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
@@ -484,13 +485,12 @@ class _StatusBodyContentWithEmojisHtmlTextWidget extends StatelessWidget {
                 drawNewLines: false,
               ),
             );
-            htmlTextBloc.addDisposable(
-              streamSubscription: htmlTextBloc.linkClickedStream.listen(
-                (url) {
-                  _onLinkTap(context, url);
-                },
-              ),
-            );
+
+            htmlTextBloc.linkClickedStream.listen(
+              (url) {
+                _onLinkTap(context, url);
+              },
+            ).disposeWith(htmlTextBloc);
 
             return htmlTextBloc;
           },

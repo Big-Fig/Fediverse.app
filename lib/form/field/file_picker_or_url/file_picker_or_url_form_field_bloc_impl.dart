@@ -1,3 +1,5 @@
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_exception.dart';
 import 'package:fedi/form/field/file_picker_or_url/file_picker_or_url_form_field_bloc.dart';
 import 'package:fedi/form/field/form_field_bloc_impl.dart';
@@ -21,7 +23,7 @@ class FilePickerOrUrlFormFieldBloc extends FormFieldBloc
       BehaviorSubject.seeded(false);
 
   @override
-  bool? get isOriginalDeleted => isOriginalDeletedSubject.value;
+  bool? get isOriginalDeleted => isOriginalDeletedSubject.valueOrNull;
 
   @override
   Stream<bool> get isOriginalDeletedStream => isOriginalDeletedSubject.stream;
@@ -40,7 +42,7 @@ class FilePickerOrUrlFormFieldBloc extends FormFieldBloc
 
   @override
   IMediaDeviceFile? get currentMediaDeviceFile =>
-      _currentMediaDeviceFileSubject.value;
+      _currentMediaDeviceFileSubject.valueOrNull;
 
   @override
   Stream<IMediaDeviceFile?> get currentFilePickerFileStream =>
@@ -54,22 +56,18 @@ class FilePickerOrUrlFormFieldBloc extends FormFieldBloc
   }) : super(
           isEnabled: isEnabled,
         ) {
-    addDisposable(
-      streamSubscription: currentFilePickerFileStream.listen(
-        (_) {
-          _recalculateIsSomethingChanged();
-        },
-      ),
-    );
-    addDisposable(
-      streamSubscription: isOriginalDeletedStream.listen(
-        (_) {
-          _recalculateIsSomethingChanged();
-        },
-      ),
-    );
+    currentFilePickerFileStream.listen(
+      (_) {
+        _recalculateIsSomethingChanged();
+      },
+    ).disposeWith(this);
+    isOriginalDeletedStream.listen(
+      (_) {
+        _recalculateIsSomethingChanged();
+      },
+    ).disposeWith(this);
 
-    addDisposable(subject: isOriginalDeletedSubject);
+    isOriginalDeletedSubject.disposeWith(this);
   }
 
   void _recalculateIsSomethingChanged() {

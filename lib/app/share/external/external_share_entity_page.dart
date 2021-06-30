@@ -9,7 +9,7 @@ import 'package:fedi/app/share/external/external_share_bloc_proxy_provider.dart'
 import 'package:fedi/app/share/external/external_share_entity_bloc_impl.dart';
 import 'package:fedi/app/share/page/share_page_app_bar_send_text_action_widget.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

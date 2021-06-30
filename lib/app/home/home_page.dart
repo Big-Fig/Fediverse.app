@@ -1,3 +1,5 @@
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/chat/settings/chat_settings_bloc.dart';
 import 'package:fedi/app/home/home_bloc.dart';
@@ -29,7 +31,6 @@ import 'package:fedi/app/status/post/new/new_post_status_bloc_impl.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/status_bar/fedi_light_status_bar_style_area.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/api/notification/pleroma_api_notification_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -126,15 +127,13 @@ class _HomePageAccountTabWidget extends StatelessWidget {
           ),
         );
 
-        accountHomeTabBloc.addDisposable(
-          streamSubscription: homeBloc.reselectedTabStream.listen(
-            (reselectedTab) {
-              if (reselectedTab == HomeTab.account) {
-                accountHomeTabBloc.scrollToTop();
-              }
-            },
-          ),
-        );
+        homeBloc.reselectedTabStream.listen(
+          (reselectedTab) {
+            if (reselectedTab == HomeTab.account) {
+              accountHomeTabBloc.scrollToTop();
+            }
+          },
+        ).disposeWith(accountHomeTabBloc);
 
         return accountHomeTabBloc;
       },
@@ -162,12 +161,13 @@ class _HomePageMessagesTabConversationWidget extends StatelessWidget {
             //              deviceHeight: MediaQuery.of(context).size.height,
             );
 
-        conversationMessagesHomeTabBloc.addDisposable(streamSubscription:
-            homeBloc.reselectedTabStream.listen((reselectedTab) {
-          if (reselectedTab == HomeTab.chat) {
-            conversationMessagesHomeTabBloc.scrollToTop();
-          }
-        }));
+        homeBloc.reselectedTabStream.listen(
+          (reselectedTab) {
+            if (reselectedTab == HomeTab.chat) {
+              conversationMessagesHomeTabBloc.scrollToTop();
+            }
+          },
+        ).disposeWith(conversationMessagesHomeTabBloc);
 
         return conversationMessagesHomeTabBloc;
       },
@@ -191,12 +191,11 @@ class _HomePageMessagesTabChatWidget extends StatelessWidget {
 
         var chatMessagesHomeTabBloc = PleromaChatHomeTabBloc();
 
-        chatMessagesHomeTabBloc.addDisposable(streamSubscription:
-            homeBloc.reselectedTabStream.listen((reselectedTab) {
+        homeBloc.reselectedTabStream.listen((reselectedTab) {
           if (reselectedTab == HomeTab.chat) {
             chatMessagesHomeTabBloc.scrollToTop();
           }
-        }));
+        }).disposeWith(chatMessagesHomeTabBloc);
 
         return chatMessagesHomeTabBloc;
       },
@@ -231,15 +230,13 @@ class _HomePageNotificationTabWidget extends StatelessWidget {
           ),
         );
 
-        notificationsHomeTabBloc.addDisposable(
-          streamSubscription: homeBloc.reselectedTabStream.listen(
-            (reselectedTab) {
-              if (reselectedTab == HomeTab.notifications) {
-                notificationsHomeTabBloc.scrollToTop();
-              }
-            },
-          ),
-        );
+        homeBloc.reselectedTabStream.listen(
+          (reselectedTab) {
+            if (reselectedTab == HomeTab.notifications) {
+              notificationsHomeTabBloc.scrollToTop();
+            }
+          },
+        ).disposeWith(notificationsHomeTabBloc);
 
         return notificationsHomeTabBloc;
       },
@@ -289,15 +286,13 @@ class _HomePageTimelineTabWidget extends StatelessWidget {
 
         _logger.finest(() => 'create timelinesHomeTabBloc');
 
-        timelinesHomeTabBloc.addDisposable(
-          streamSubscription: homeBloc.reselectedTabStream.listen(
-            (reselectedTab) {
-              if (reselectedTab == HomeTab.timelines) {
-                timelinesHomeTabBloc.scrollToTop();
-              }
-            },
-          ),
-        );
+        homeBloc.reselectedTabStream.listen(
+              (reselectedTab) {
+            if (reselectedTab == HomeTab.timelines) {
+              timelinesHomeTabBloc.scrollToTop();
+            }
+          },
+        ).disposeWith(timelinesHomeTabBloc);
 
         return timelinesHomeTabBloc;
       },

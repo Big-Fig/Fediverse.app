@@ -5,6 +5,7 @@ import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 
 class SearchHashtagsPaginationListBloc
     extends PaginationListBloc<PaginationPage<IHashtag>, IHashtag> {
@@ -14,13 +15,11 @@ class SearchHashtagsPaginationListBloc
     required this.searchInputBloc,
     required IPaginationBloc<PaginationPage<IHashtag>, IHashtag> paginationBloc,
   }) : super(paginationBloc: paginationBloc) {
-    addDisposable(
-      streamSubscription: searchInputBloc.confirmedSearchTermStream.listen(
-        (newText) {
-          refreshWithController();
-        },
-      ),
-    );
+    searchInputBloc.confirmedSearchTermStream.listen(
+          (newText) {
+        refreshWithController();
+      },
+    ).disposeWith(this);
   }
 
   static SearchHashtagsPaginationListBloc createFromContext(

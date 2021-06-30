@@ -1,11 +1,12 @@
+import 'dart:async';
+
 import 'package:collection/collection.dart' show IterableExtension;
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/media/attachment/upload/list/upload_media_attachment_list_bloc.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc_device_impl.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_model.dart';
 import 'package:fedi/app/media/attachment/upload/uploaded_upload_media_attachment_bloc_impl.dart';
-import 'package:fedi/disposable/disposable.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
 import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
 import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_service.dart';
@@ -20,49 +21,38 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
 
   final IPleromaApiMediaAttachmentService pleromaMediaAttachmentService;
 
-  DisposableOwner? uploadedSubscription;
+  DisposableOwner? uploadedSubscriptionDisposable;
 
   UploadMediaAttachmentsCollectionBloc({
     required this.maximumMediaAttachmentCount,
     required this.pleromaMediaAttachmentService,
     required this.maximumFileSizeInBytes,
   }) {
-    addDisposable(subject: mediaAttachmentBlocsSubject);
-    addDisposable(subject: isAllAttachedMediaUploadedSubject);
-    addDisposable(
-      disposable: CustomDisposable(
-        () async {
-          await clear();
-        },
-      ),
-    );
-    addDisposable(
-      disposable: CustomDisposable(
-        () async {
-          await uploadedSubscription?.dispose();
-        },
-      ),
-    );
+    mediaAttachmentBlocsSubject.disposeWith(this);
+    isAllAttachedMediaUploadedSubject.disposeWith(this);
 
-    addDisposable(
-      streamSubscription: mediaAttachmentBlocsStream.listen(
-        (mediaAttachmentBlocs) {
-          uploadedSubscription?.dispose();
-          uploadedSubscription = DisposableOwner();
-          mediaAttachmentBlocs.forEach(
-            (bloc) {
-              uploadedSubscription!.addDisposable(
-                streamSubscription: bloc.uploadStateStream.listen(
+    addCustomDisposable(() => clear());
+    addCustomDisposable(() => uploadedSubscriptionDisposable?.dispose());
+
+    mediaAttachmentBlocsStream.listen(
+      (mediaAttachmentBlocs) {
+        uploadedSubscriptionDisposable?.dispose();
+        uploadedSubscriptionDisposable = DisposableOwner();
+        mediaAttachmentBlocs.forEach(
+          (bloc) {
+            uploadedSubscriptionDisposable!.addDisposable(
+              StreamSubscriptionDisposable(
+                bloc.uploadStateStream.listen(
                   (_) {
                     _recalculateIsAllAttachedMediaUploaded();
                   },
                 ),
-              );
-            },
-          );
-        },
-      ),
-    );
+              ),
+            );
+          },
+        );
+      },
+    ).disposeWith(this);
   }
 
   // ignore: close_sinks
@@ -77,7 +67,7 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
 
   @override
   bool get isAllAttachedMediaUploaded =>
-      isAllAttachedMediaUploadedSubject.value!;
+      isAllAttachedMediaUploadedSubject.value;
 
   @override
   Stream<bool> get isAllAttachedMediaUploadedStream =>
@@ -159,7 +149,7 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
 
   @override
   List<IUploadMediaAttachmentBloc> get mediaAttachmentBlocs =>
-      mediaAttachmentBlocsSubject.value!;
+      mediaAttachmentBlocsSubject.value;
 
   @override
   Stream<List<IUploadMediaAttachmentBloc>> get mediaAttachmentBlocsStream =>

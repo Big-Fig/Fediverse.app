@@ -1,3 +1,6 @@
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_flutter/easy_dispose_flutter.dart';
+import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_model.dart';
@@ -12,7 +15,6 @@ import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
-import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/duration/duration_extension.dart';
 import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
 import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
@@ -53,7 +55,8 @@ abstract class PostStatusBloc extends PostMessageBloc
     required this.scheduledStatusRepository,
     required IPleromaApiMediaAttachmentService pleromaMediaAttachmentService,
     // ignore: no-magic-number
-    int maximumMediaAttachmentCount = IPleromaApiAuthStatusService.maximumMediaAttachmentCount,
+    int maximumMediaAttachmentCount =
+        IPleromaApiAuthStatusService.maximumMediaAttachmentCount,
     required int? maximumMessageLength,
     required IPostStatusData? initialData,
     List<IAccount>? initialAccountsToMention = const [],
@@ -83,13 +86,13 @@ abstract class PostStatusBloc extends PostMessageBloc
           PleromaApiInstancePollLimits.defaultLimits,
     );
 
-    addDisposable(subject: selectedActionSubject);
-    addDisposable(subject: mentionedAcctsSubject);
-    addDisposable(subject: visibilitySubject);
-    addDisposable(subject: scheduledAtSubject);
-    addDisposable(subject: expireAtSubject);
+    selectedActionSubject.disposeWith(this);
+    mentionedAcctsSubject.disposeWith(this);
+    visibilitySubject.disposeWith(this);
+    scheduledAtSubject.disposeWith(this);
+    expireAtSubject.disposeWith(this);
 
-    addDisposable(disposable: pollBloc);
+    addDisposable(pollBloc);
 
     var focusListener = () {
       onFocusChange(inputFocusNode.hasFocus);
@@ -97,17 +100,15 @@ abstract class PostStatusBloc extends PostMessageBloc
 
     inputFocusNode.addListener(focusListener);
 
-    addDisposable(
-      disposable: CustomDisposable(
-        () async {
-          inputFocusNode.removeListener(focusListener);
-        },
+    addCustomDisposable(
+      () => inputFocusNode.removeListener(
+        focusListener,
       ),
     );
 
-    addDisposable(focusNode: subjectFocusNode);
-    addDisposable(textEditingController: subjectTextController);
-    addDisposable(subject: subjectTextSubject);
+    subjectFocusNode.disposeWith(this);
+    subjectTextController.disposeWith(this);
+    subjectTextSubject.disposeWith(this);
 
     var editTextListener = () {
       onSubjectTextChanged();
@@ -115,7 +116,7 @@ abstract class PostStatusBloc extends PostMessageBloc
     subjectTextController.addListener(editTextListener);
 
     addDisposable(
-      disposable: CustomDisposable(
+      CustomDisposable(
         () async {
           subjectTextController.removeListener(editTextListener);
         },
@@ -163,34 +164,27 @@ abstract class PostStatusBloc extends PostMessageBloc
       );
     }
     if (markMediaAsNsfwOnAttach) {
-      addDisposable(
-        streamSubscription:
-            mediaAttachmentsBloc.mediaAttachmentBlocsStream.listen(
-          (blocs) {
-            if (!alreadyMarkMediaNsfwByDefault && blocs.isNotEmpty) {
-              alreadyMarkMediaNsfwByDefault = true;
-              nsfwSensitiveSubject.add(true);
-            }
-          },
-        ),
-      );
+      mediaAttachmentsBloc.mediaAttachmentBlocsStream.listen(
+            (blocs) {
+          if (!alreadyMarkMediaNsfwByDefault && blocs.isNotEmpty) {
+            alreadyMarkMediaNsfwByDefault = true;
+            nsfwSensitiveSubject.add(true);
+          }
+        },
+      ).disposeWith(this);
     }
 
-    addDisposable(
-      streamSubscription: pollBloc.isSomethingChangedStream.listen(
-        (_) {
-          _checkPollEmptyInputError();
-        },
-      ),
-    );
+    pollBloc.isSomethingChangedStream.listen(
+          (_) {
+        _checkPollEmptyInputError();
+      },
+    ).disposeWith(this);
 
-    addDisposable(
-      streamSubscription: inputTextStream.listen(
-        (_) {
-          _checkPollEmptyInputError();
-        },
-      ),
-    );
+    inputTextStream.listen(
+          (_) {
+        _checkPollEmptyInputError();
+      },
+    ).disposeWith(this);
   }
 
   static const postMessagePollEmptyInputTextError =
@@ -265,15 +259,15 @@ abstract class PostStatusBloc extends PostMessageBloc
   bool get isHaveMentionedAccts => mentionedAccts.isNotEmpty;
 
   @override
-  Stream<bool> get isHaveMentionedAcctsStream => mentionedAcctsStream
-      .map((mentionedAccts) => mentionedAccts.isNotEmpty);
+  Stream<bool> get isHaveMentionedAcctsStream =>
+      mentionedAcctsStream.map((mentionedAccts) => mentionedAccts.isNotEmpty);
 
   // ignore: close_sinks
   BehaviorSubject<List<String>> mentionedAcctsSubject =
       BehaviorSubject.seeded([]);
 
   @override
-  List<String> get mentionedAccts => mentionedAcctsSubject.value!;
+  List<String> get mentionedAccts => mentionedAcctsSubject.value;
 
   @override
   Stream<List<String>> get mentionedAcctsStream => mentionedAcctsSubject.stream;
@@ -289,7 +283,7 @@ abstract class PostStatusBloc extends PostMessageBloc
       scheduledAtStream.map((scheduledAt) => scheduledAt != null);
 
   @override
-  DateTime? get scheduledAt => scheduledAtSubject.value;
+  DateTime? get scheduledAt => scheduledAtSubject.valueOrNull;
 
   @override
   Stream<DateTime?> get scheduledAtStream => scheduledAtSubject.stream;
@@ -298,7 +292,7 @@ abstract class PostStatusBloc extends PostMessageBloc
   late BehaviorSubject<PleromaApiVisibility> visibilitySubject;
 
   @override
-  PleromaApiVisibility get visibility => visibilitySubject.value!;
+  PleromaApiVisibility get visibility => visibilitySubject.value;
 
   @override
   Stream<PleromaApiVisibility> get visibilityStream => visibilitySubject.stream;
@@ -307,7 +301,7 @@ abstract class PostStatusBloc extends PostMessageBloc
   late BehaviorSubject<bool> nsfwSensitiveSubject;
 
   @override
-  bool get isNsfwSensitiveEnabled => nsfwSensitiveSubject.value!;
+  bool get isNsfwSensitiveEnabled => nsfwSensitiveSubject.value;
 
   @override
   Stream<bool> get isNsfwSensitiveEnabledStream => nsfwSensitiveSubject.stream;
@@ -634,7 +628,7 @@ abstract class PostStatusBloc extends PostMessageBloc
         hideTotals: pollBloc.hideTotalsFieldBloc.currentValue,
       );
     }
-    
+
     return poll;
   }
 
@@ -652,7 +646,7 @@ abstract class PostStatusBloc extends PostMessageBloc
   final FocusNode subjectFocusNode = FocusNode();
 
   @override
-  String? get subjectText => subjectTextSubject.value;
+  String? get subjectText => subjectTextSubject.valueOrNull;
 
   @override
   Stream<String> get subjectTextStream => subjectTextSubject.stream;
@@ -689,7 +683,7 @@ abstract class PostStatusBloc extends PostMessageBloc
       expireDurationStream.map((expireAt) => expireAt != null);
 
   @override
-  Duration? get expireDuration => expireAtSubject.value;
+  Duration? get expireDuration => expireAtSubject.valueOrNull;
 
   @override
   Stream<Duration?> get expireDurationStream => expireAtSubject.stream;
@@ -767,7 +761,7 @@ abstract class PostStatusBloc extends PostMessageBloc
         isNsfwSensitiveEnabled: isNsfwSensitiveEnabled,
         language: initialData.language,
         to: calculateToField(),
-        expiresInSeconds: expireAtSubject.value?.totalSeconds,
+        expiresInSeconds: expireAtSubject.valueOrNull?.totalSeconds,
       );
 
   PleromaApiScheduleStatus calculateScheduleStatus() {
@@ -783,7 +777,7 @@ abstract class PostStatusBloc extends PostMessageBloc
       to: calculateToField(),
       poll: _calculatePleromaPostStatusPollField(),
       spoilerText: _calculateSpoilerTextField(),
-      expiresInSeconds: expireAtSubject.value?.totalSeconds,
+      expiresInSeconds: expireAtSubject.valueOrNull?.totalSeconds,
       language: initialData.language,
       preview: null,
       contentType: null,
@@ -803,7 +797,7 @@ abstract class PostStatusBloc extends PostMessageBloc
       poll: _calculatePleromaPostStatusPollField(),
       spoilerText: _calculateSpoilerTextField(),
       language: initialData.language,
-      expiresInSeconds: expireAtSubject.value?.totalSeconds,
+      expiresInSeconds: expireAtSubject.valueOrNull?.totalSeconds,
       contentType: null,
       preview: null,
     );

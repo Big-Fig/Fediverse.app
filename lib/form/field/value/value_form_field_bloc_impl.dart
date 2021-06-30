@@ -1,4 +1,6 @@
 import 'package:collection/collection.dart';
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
 import 'package:fedi/form/field/form_field_bloc_impl.dart';
 import 'package:fedi/form/field/value/value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/value_form_field_validation.dart';
@@ -14,7 +16,7 @@ class ValueFormFieldBloc<T> extends FormFieldBloc
       _currentErrorSubject;
 
   @override
-  List<ValueFormFieldValidationError> get errors => _currentErrorSubject.value!;
+  List<ValueFormFieldValidationError> get errors => _currentErrorSubject.value;
 
   @override
   Stream<List<ValueFormFieldValidationError>> get errorsStream =>
@@ -26,7 +28,7 @@ class ValueFormFieldBloc<T> extends FormFieldBloc
   final BehaviorSubject<T> _currentValueSubject;
 
   @override
-  T get currentValue => _currentValueSubject.value as T;
+  T get currentValue => _currentValueSubject.value;
 
   // distinct is important, we dont need new value in stream on each widget
   // build
@@ -47,20 +49,18 @@ class ValueFormFieldBloc<T> extends FormFieldBloc
         super(
           isEnabled: isEnabled,
         ) {
-    addDisposable(subject: _currentValueSubject);
-    addDisposable(subject: _currentErrorSubject);
+    _currentValueSubject.disposeWith(this);
+    _currentErrorSubject.disposeWith(this);
 
     revalidate();
 
-    addDisposable(
-      streamSubscription: _currentValueSubject.listen(
-        (newValue) {
-          var changed = isValueChanged(newValue, originValue);
-          isChangedSubject.add(changed);
-          revalidate();
-        },
-      ),
-    );
+    _currentValueSubject.listen(
+      (newValue) {
+        var changed = isValueChanged(newValue, originValue);
+        isChangedSubject.add(changed);
+        revalidate();
+      },
+    ).disposeWith(this);
   }
 
   bool isValueChanged(T newValue, T originValue) => newValue != originValue;

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
@@ -14,7 +15,6 @@ import 'package:fedi/app/push/notification/handler/notifications_push_handler_mo
 import 'package:fedi/app/push/notification/notification_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
-import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/pleroma/api/account/my/pleroma_api_my_account_service.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
 import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart';
@@ -45,12 +45,12 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
   final IPleromaApiChatService pleromaApiChatService;
   final IPleromaApiAuthStatusService pleromaApiAuthStatusService;
 
-  BehaviorSubject<NotificationPushLoaderNotification>
+  BehaviorSubject<NotificationPushLoaderNotification?>
       launchPushLoaderNotificationSubject = BehaviorSubject();
 
   @override
   NotificationPushLoaderNotification? get launchPushLoaderNotification =>
-      launchPushLoaderNotificationSubject.value;
+      launchPushLoaderNotificationSubject.valueOrNull;
 
   @override
   Stream<NotificationPushLoaderNotification?>
@@ -79,15 +79,15 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
     required this.chatMessageRepository,
   }) {
     notificationsPushHandlerBloc.addRealTimeHandler(handlePush);
-    addDisposable(subject: launchPushLoaderNotificationSubject);
-    addDisposable(
-      disposable: CustomDisposable(
-        () async {
-          notificationsPushHandlerBloc.removeRealTimeHandler(handlePush);
-        },
+    launchPushLoaderNotificationSubject.disposeWith(this);
+
+    addCustomDisposable(
+      () => notificationsPushHandlerBloc.removeRealTimeHandler(
+        handlePush,
       ),
     );
-    addDisposable(streamController: _handledNotificationsStreamController);
+
+    _handledNotificationsStreamController.disposeWith(this);
   }
 
   // todo: refactor

@@ -1,4 +1,4 @@
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/permission/permission_bloc.dart';
 import 'package:fedi/permission/permissions_service.dart';
 import 'package:permission_handler/permission_handler.dart';

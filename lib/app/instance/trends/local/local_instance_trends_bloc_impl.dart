@@ -4,7 +4,7 @@ import 'package:fedi/app/instance/trends/instance_trends_bloc_impl.dart';
 import 'package:fedi/app/instance/trends/instance_trends_bloc_proxy_provider.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pleroma/api/trends/pleroma_api_trends_service.dart';
 import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
 import 'package:flutter/widgets.dart';

@@ -39,12 +39,16 @@ class PleromaApiAccountPublicService extends BasePleromaApiService
     try {
       return restService.processJsonSingleResponse<PleromaApiOAuthToken?>(
         httpResponse,
-            (json) {
+        (json) {
           try {
             return PleromaApiOAuthToken.fromJson(json);
           } catch (e, stackTrace) {
-            _logger.warning(() => 'registerAccount parsing error', e,
-                stackTrace);
+            _logger.warning(
+              () => 'registerAccount parsing error',
+              e,
+              stackTrace,
+            );
+
             return null;
           }
         },
@@ -52,9 +56,9 @@ class PleromaApiAccountPublicService extends BasePleromaApiService
         // can't properly process exceptions inside isolate
         parseInIsolate: false,
       );
-    } catch(e, stackTrace) {
-      _logger.warning(() => 'registerAccount parsing error', e,
-          stackTrace);
+    } catch (e, stackTrace) {
+      _logger.warning(() => 'registerAccount parsing error', e, stackTrace);
+
       return null;
     }
   }

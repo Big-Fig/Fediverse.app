@@ -1,3 +1,5 @@
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_bloc_impl.dart';
 import 'package:fedi/app/account/account_model.dart';
@@ -5,7 +7,6 @@ import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/instance/location/instance_location_exception.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/instance/remote/remote_instance_bloc.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_service.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_service_impl.dart';
@@ -49,7 +50,7 @@ class RemoteAccountBloc extends AccountBloc {
       instanceUri: remoteInstanceBloc.instanceUri,
     );
 
-    remoteAccountBloc.addDisposable(disposable: pleromaAccountService);
+    pleromaAccountService.disposeWith(remoteAccountBloc);
 
     return remoteAccountBloc;
   }

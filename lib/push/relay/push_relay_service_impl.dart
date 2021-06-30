@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/push/relay/push_relay_service.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart' as path;

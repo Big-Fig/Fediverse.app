@@ -1,4 +1,4 @@
-import 'package:fedi/disposable/disposable.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/mastodon/api/account/mastodon_api_account_model.dart';
 
 abstract class IMastodonApiSuggestionsService implements IDisposable {

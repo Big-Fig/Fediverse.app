@@ -5,7 +5,7 @@ import 'package:fedi/app/auth/instance/chooser/auth_instance_chooser_bloc_impl.d
 import 'package:fedi/app/auth/instance/chooser/auth_instance_chooser_widget.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/modal_bottom_sheet/fedi_modal_bottom_sheet.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:flutter/material.dart';
 
 void showMyAccountActionListBottomSheetDialog(BuildContext context) {

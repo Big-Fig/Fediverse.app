@@ -1,7 +1,7 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_bloc.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_list_bloc.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_list_tab_controller_bloc.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:flutter/material.dart';
 
 class TimelineListTabControllerBloc extends DisposableOwner
@@ -41,11 +41,13 @@ class TimelineListTabControllerBloc extends DisposableOwner
 
     tabController.addListener(tabControllerListener!);
 
-    addDisposable(custom: () {
-      if (tabControllerListener != null) {
-        tabController.removeListener(tabControllerListener!);
-      }
-    });
+    addCustomDisposable(
+      () {
+        if (tabControllerListener != null) {
+          tabController.removeListener(tabControllerListener!);
+        }
+      },
+    );
   }
 
   @override
@@ -69,5 +71,4 @@ class TimelineListTabControllerBloc extends DisposableOwner
       'timelineTabListBloc: $timelineTabListBloc, '
       'tabControllerListener: $tabControllerListener'
       '}';
-
 }

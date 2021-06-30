@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
@@ -16,7 +17,6 @@ import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/timeline/type/timeline_type_model.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
-import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/mastodon/api/filter/mastodon_api_filter_model.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_service.dart';
 import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
@@ -120,28 +120,26 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
     required this.myAccountBloc,
     required WebSocketsListenType webSocketsListenType,
   }) {
-    addDisposable(streamController: settingsChangedStreamController);
+    settingsChangedStreamController.disposeWith(this);
 
-    addDisposable(
-      streamSubscription: timelineLocalPreferenceBloc.stream.listen(
-        (Timeline? timeline) {
-          _logger.finest(
-            () => 'timelineLocalPreferencesBloc timeline $timeline',
-          );
-          if (currentTimelineData != timeline) {
-            currentTimelineData = timeline;
+    timelineLocalPreferenceBloc.stream.listen(
+      (Timeline? timeline) {
+        _logger.finest(
+          () => 'timelineLocalPreferencesBloc timeline $timeline',
+        );
+        if (currentTimelineData != timeline) {
+          currentTimelineData = timeline;
 
-            settingsChangedStreamController.add(timeline?.settings);
-          }
-        },
-      ),
-    );
+          settingsChangedStreamController.add(timeline?.settings);
+        }
+      },
+    ).disposeWith(this);
 
     resubscribeWebSocketsUpdates(webSocketsListenType);
 
-    addDisposable(custom: () {
-      webSocketsListenerDisposable?.dispose();
-    });
+    addCustomDisposable(
+      () => webSocketsListenerDisposable?.dispose(),
+    );
   }
 
   IDisposable? webSocketsListenerDisposable;
@@ -447,22 +445,20 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
       orderingTerms: null,
     );
 
-    addDisposable(
-      streamSubscription: filterRepository
-          .watchFindAllInAppType(
-        filters: filterRepositoryFilters,
-        pagination: null,
-        orderingTerms: null,
-      )
-          .listen(
-        (newFilters) {
-          if (!listEquals(filters, newFilters)) {
-            // perhaps we should refresh UI list after this?
-            filters = newFilters;
-          }
-        },
-      ),
-    );
+    filterRepository
+        .watchFindAllInAppType(
+      filters: filterRepositoryFilters,
+      pagination: null,
+      orderingTerms: null,
+    )
+        .listen(
+          (newFilters) {
+        if (!listEquals(filters, newFilters)) {
+          // perhaps we should refresh UI list after this?
+          filters = newFilters;
+        }
+      },
+    ).disposeWith(this);
 
     _logger.finest(
       () => 'timelineType $timelineType,  filters $filters',

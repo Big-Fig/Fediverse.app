@@ -1,4 +1,4 @@
-import 'package:fedi/disposable/disposable.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/mastodon/api/markers/mastodon_api_markers_model.dart';
 
 abstract class IMastodonApiMarkersService implements IDisposable {

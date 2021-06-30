@@ -12,7 +12,7 @@ class InitBloc extends AsyncInitLoadingBloc implements IInitBloc {
 
   @override
   Future internalAsyncInit() async {
-    addDisposable(disposable: appContextBloc);
+    addDisposable(appContextBloc);
 
     await appContextBloc.performAsyncInit();
 

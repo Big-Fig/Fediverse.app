@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/filter/filter_model.dart';
 import 'package:fedi/app/status/status_model.dart';
@@ -14,6 +15,7 @@ import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 
 var _logger = Logger('status_thread_bloc_impl.dart');
 
@@ -28,7 +30,7 @@ abstract class StatusThreadBloc extends AsyncInitLoadingBloc
 
   final BehaviorSubject<bool> firstStatusInThreadSubject;
   final StreamController<IStatus> onNewStatusAddedStreamController =
-  StreamController.broadcast();
+      StreamController.broadcast();
 
   @override
   Stream<IStatus> get onNewStatusAddedStream =>
@@ -41,7 +43,7 @@ abstract class StatusThreadBloc extends AsyncInitLoadingBloc
   final ItemScrollController itemScrollController = ItemScrollController();
   @override
   final ItemPositionsListener itemPositionListener =
-  ItemPositionsListener.create();
+      ItemPositionsListener.create();
 
   // ignore: avoid-late-keyword
   late List<IFilter> filters;
@@ -53,21 +55,22 @@ abstract class StatusThreadBloc extends AsyncInitLoadingBloc
     required this.pleromaStatusService,
     required this.initialStatusToFetchThread,
     required this.initialMediaAttachment,
-  })   : statusesSubject = BehaviorSubject.seeded(
-    [
-      initialStatusToFetchThread,
-    ],
-  ),
+  })  : statusesSubject = BehaviorSubject.seeded(
+          [
+            initialStatusToFetchThread,
+          ],
+        ),
         firstStatusInThreadSubject =
-        BehaviorSubject.seeded(!initialStatusToFetchThread.isReply) {
-    addDisposable(subject: statusesSubject);
-    addDisposable(subject: firstStatusInThreadSubject);
-    addDisposable(streamController: onNewStatusAddedStreamController);
+            BehaviorSubject.seeded(!initialStatusToFetchThread.isReply) {
+    statusesSubject.disposeWith(this);
+    firstStatusInThreadSubject.disposeWith(this);
+    onNewStatusAddedStreamController.disposeWith(this);
+
     refresh();
   }
 
   @override
-  List<IStatus> get statuses => statusesSubject.value!;
+  List<IStatus> get statuses => statusesSubject.value;
 
   @override
   Stream<List<IStatus>> get statusesStream => statusesSubject.stream;
@@ -75,7 +78,7 @@ abstract class StatusThreadBloc extends AsyncInitLoadingBloc
   @override
   Stream<List<IStatus>> get statusesDistinctStream => statusesStream.distinct(
         (a, b) => listEquals(a, b),
-  );
+      );
 
   @override
   List<IPleromaApiMention> get mentions => statuses.findAllMentions();
@@ -90,7 +93,7 @@ abstract class StatusThreadBloc extends AsyncInitLoadingBloc
   @override
   Stream<List<String?>> get mentionAcctsStream => mentionsStream.map(
         (mentions) => mentions.toAccts(),
-  );
+      );
 
   @override
   String get mentionAcctsListString =>
@@ -111,7 +114,7 @@ abstract class StatusThreadBloc extends AsyncInitLoadingBloc
           updatedStartRemoteStatus.toDbStatusPopulatedWrapper();
 
       _logger.finest(
-            () => 'refresh getStatus startStatus $initialStatusToFetchThread ',
+        () => 'refresh getStatus startStatus $initialStatusToFetchThread ',
       );
 
       // update context
@@ -119,13 +122,13 @@ abstract class StatusThreadBloc extends AsyncInitLoadingBloc
         statusRemoteId: initialStatusToFetchThread.remoteId!,
       );
       var ancestors = remoteStatusContext.ancestors.where(
-            (remoteStatus) => isNotFiltered(
+        (remoteStatus) => isNotFiltered(
           remoteStatus: remoteStatus,
           filters: filters,
         ),
       );
       var descendants = remoteStatusContext.descendants.where(
-            (remoteStatus) => isNotFiltered(
+        (remoteStatus) => isNotFiltered(
           remoteStatus: remoteStatus,
           filters: filters,
         ),
@@ -134,17 +137,17 @@ abstract class StatusThreadBloc extends AsyncInitLoadingBloc
       var newStatuses = <IStatus>[];
       newStatuses.addAll(
         ancestors.map(
-              (remoteStatus) => remoteStatus.toDbStatusPopulatedWrapper(),
+          (remoteStatus) => remoteStatus.toDbStatusPopulatedWrapper(),
         ),
       );
       newStatuses.add(initialStatusToFetchThread);
       newStatuses.addAll(
         descendants.map(
-              (remoteStatus) => remoteStatus.toDbStatusPopulatedWrapper(),
+          (remoteStatus) => remoteStatus.toDbStatusPopulatedWrapper(),
         ),
       );
       _logger.finest(
-            () => 'refresh getStatusContext newStatuses ${newStatuses.length} ',
+        () => 'refresh getStatusContext newStatuses ${newStatuses.length} ',
       );
       statusesSubject.add(newStatuses);
       firstStatusInThreadSubject.add(true);
@@ -173,7 +176,7 @@ abstract class StatusThreadBloc extends AsyncInitLoadingBloc
   @override
   Stream<IAccount?> get firstStatusAccountInThreadStream =>
       firstStatusInThreadStream.map(
-            (firstStatusInThread) => firstStatusInThread?.account,
+        (firstStatusInThread) => firstStatusInThread?.account,
       );
 
   @override
@@ -182,26 +185,26 @@ abstract class StatusThreadBloc extends AsyncInitLoadingBloc
 
   @override
   Stream<IStatus?> get firstStatusInThreadStream => Rx.combineLatest2(
-    statusesStream,
-    firstStatusInThreadLoadedStream,
+        statusesStream,
+        firstStatusInThreadLoadedStream,
         (List<IStatus> statuses, bool threadContextLoaded) =>
-        _calculateFirstStatus(
+            _calculateFirstStatus(
           statuses,
           threadContextLoaded,
         ),
-  );
+      );
 
   @override
-  bool get firstStatusInThreadLoaded => firstStatusInThreadSubject.value!;
+  bool get firstStatusInThreadLoaded => firstStatusInThreadSubject.value;
 
   @override
   Stream<bool> get firstStatusInThreadLoadedStream =>
       firstStatusInThreadSubject.stream;
 
   IStatus? _calculateFirstStatus(
-      List<IStatus> statuses,
-      bool threadContextLoaded,
-      ) {
+    List<IStatus> statuses,
+    bool threadContextLoaded,
+  ) {
     if (threadContextLoaded) {
       return statuses.first;
     } else {
@@ -282,15 +285,13 @@ abstract class StatusThreadBloc extends AsyncInitLoadingBloc
   Future internalAsyncInit() async {
     filters = await loadFilters();
 
-    addDisposable(
-      streamSubscription: watchFilters().listen(
-            (newFilters) {
-          if (!listEquals(filters, newFilters)) {
-            filters = newFilters;
-            refresh();
-          }
-        },
-      ),
-    );
+    watchFilters().listen(
+          (newFilters) {
+        if (!listEquals(filters, newFilters)) {
+          filters = newFilters;
+          refresh();
+        }
+      },
+    ).disposeWith(this);
   }
 }

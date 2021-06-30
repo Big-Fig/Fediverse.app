@@ -8,7 +8,7 @@ import 'package:fedi/app/ui/tab/indicator/style/bubble/fedi_tab_bubble_style_ind
 import 'package:fedi/app/ui/tab/indicator/style/underline/fedi_tab_underline_style_indicator.dart';
 import 'package:fedi/app/ui/tab/indicator/text/fedi_text_tab_indicator_item_widget.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

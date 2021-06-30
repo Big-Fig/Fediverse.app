@@ -1,6 +1,6 @@
 import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
 import 'package:fedi/app/chat/conversation/current/conversation_chat_current_bloc.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:rxdart/rxdart.dart';
 
 // todo: refactor with similar pleroma chat class
@@ -11,11 +11,11 @@ class ConversationChatCurrentBloc extends DisposableOwner
   BehaviorSubject<IConversationChat?> currentChatSubject = BehaviorSubject();
 
   ConversationChatCurrentBloc() {
-    addDisposable(subject: currentChatSubject);
+    currentChatSubject.disposeWith(this);
   }
 
   @override
-  IConversationChat? get currentChat => currentChatSubject.value;
+  IConversationChat? get currentChat => currentChatSubject.valueOrNull;
 
   @override
   Stream<IConversationChat?> get currentChatStream => currentChatSubject.stream;

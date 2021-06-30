@@ -4,7 +4,7 @@ import 'package:fedi/app/media/attachment/media_attachment_widget.dart';
 import 'package:fedi/app/ui/media/fedi_media_carousel_bloc.dart';
 import 'package:fedi/app/ui/media/fedi_media_carousel_bloc_impl.dart';
 import 'package:fedi/app/ui/media/fedi_media_carousel_widget.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/mastodon/api/media/attachment/mastodon_api_media_attachment_model.dart';
 import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
 import 'package:flutter/cupertino.dart';

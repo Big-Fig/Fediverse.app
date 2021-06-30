@@ -1,3 +1,4 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/filter/context/filter_context_multi_select_from_list_value_form_field_bloc_impl.dart';
 import 'package:fedi/app/filter/filter_model.dart';
@@ -36,7 +37,7 @@ class FilterFormBloc extends FormBloc implements IFilterFormBloc {
   FilterFormBloc({
     required IFilter? initialValue,
     required this.currentInstance,
-  })   : phraseField = StringValueFormFieldBloc(
+  })  : phraseField = StringValueFormFieldBloc(
           originValue: initialValue?.phrase ?? '',
           validators: [
             StringValueFormFieldNonEmptyValidationError.createValidator(),
@@ -50,7 +51,8 @@ class FilterFormBloc extends FormBloc implements IFilterFormBloc {
           originValue: initialValue?.wholeWord ?? false,
         ),
         contextField = FilterContextMultiSelectFromListValueFormFieldBloc(
-          originValue: initialValue?.contextAsMastodonApiFilterContextType ?? [],
+          originValue:
+              initialValue?.contextAsMastodonApiFilterContextType ?? [],
           validators: [
             MultiSelectFromListValueFormFieldNonNullAndNonEmptyValidationError
                 .createValidator(),
@@ -76,24 +78,23 @@ class FilterFormBloc extends FormBloc implements IFilterFormBloc {
       validators: [],
     );
 
-    addDisposable(disposable: phraseField);
-    addDisposable(disposable: irreversibleField);
-    addDisposable(disposable: wholeWordField);
-    addDisposable(disposable: expiresInField);
-    addDisposable(disposable: contextField);
+    phraseField.disposeWith(this);
+    irreversibleField.disposeWith(this);
+    wholeWordField.disposeWith(this);
+    expiresInField.disposeWith(this);
+    contextField.disposeWith(this);
 
-    addDisposable(
-      streamSubscription: phraseField.currentValueStream.listen(
-        (phrase) {
-          if (phrase.isNotEmpty) {
-            var hasMatch = _wholeWordRegex.hasMatch(phrase);
-            wholeWordField.changeIsEnabled(hasMatch);
-          } else {
-            wholeWordField.changeIsEnabled(false);
-          }
-        },
-      ),
-    );
+    phraseField.currentValueStream.listen(
+      (phrase) {
+        if (phrase.isNotEmpty) {
+          var hasMatch = _wholeWordRegex.hasMatch(phrase);
+          wholeWordField.changeIsEnabled(hasMatch);
+        } else {
+          wholeWordField.changeIsEnabled(false);
+        }
+      },
+    ).disposeWith(this);
+
     onFormItemsChanged();
   }
 
@@ -115,7 +116,8 @@ class FilterFormBloc extends FormBloc implements IFilterFormBloc {
       expiresInSeconds: expiresInField.currentValueDuration?.totalSeconds,
       context: contextField.currentValue
           .where(
-            (contextType) => contextType != MastodonApiFilterContextType.unknown,
+            (contextType) =>
+                contextType != MastodonApiFilterContextType.unknown,
           )
           .map(
             (contextType) => contextType.toJsonValue(),

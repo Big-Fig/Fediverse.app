@@ -1,4 +1,4 @@
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/ui/scroll/scroll_controller_bloc.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
@@ -14,7 +14,7 @@ class ScrollControllerBloc extends DisposableOwner
   final ScrollController? scrollController;
 
   @override
-  bool? get scrolledToTop => scrolledToTopSubject.value;
+  bool? get scrolledToTop => scrolledToTopSubject.valueOrNull;
 
   @override
   Stream<bool> get scrolledToTopStream => scrolledToTopSubject.stream;
@@ -28,7 +28,7 @@ class ScrollControllerBloc extends DisposableOwner
       scrollDirectionSubject.stream;
 
   @override
-  ScrollDirection? get scrollDirection => scrollDirectionSubject.value;
+  ScrollDirection? get scrollDirection => scrollDirectionSubject.valueOrNull;
   BehaviorSubject<ScrollDirection?> longScrollDirectionSubject =
       BehaviorSubject.seeded(null);
 
@@ -37,26 +37,30 @@ class ScrollControllerBloc extends DisposableOwner
       longScrollDirectionSubject.stream;
 
   @override
-  ScrollDirection? get longScrollDirection => longScrollDirectionSubject.value;
+  ScrollDirection? get longScrollDirection => longScrollDirectionSubject.valueOrNull;
 
   // ignore: avoid-late-keyword
   late DateTime lastDirectionSwitchDateTime;
 
-  ScrollControllerBloc({required this.scrollController})
-      : scrollDirectionSubject = BehaviorSubject.seeded(null) {
-    addDisposable(subject: scrollDirectionSubject);
-    addDisposable(subject: longScrollDirectionSubject);
+  ScrollControllerBloc({
+    required this.scrollController,
+  }) : scrollDirectionSubject = BehaviorSubject.seeded(null) {
+    scrollDirectionSubject.disposeWith(this);
+    longScrollDirectionSubject.disposeWith(this);
     var listener = () {
       _onScroll();
     };
+
     scrollController!.addListener(listener);
-    addDisposable(custom: () {
-      try {
-        scrollController!.removeListener(listener);
-      } catch (e) {
-        _logger.warning(() => 'cant dispose scroll controller listener');
-      }
-    });
+    addCustomDisposable(
+      () {
+        try {
+          scrollController!.removeListener(listener);
+        } catch (e) {
+          _logger.warning(() => 'cant dispose scroll controller listener');
+        }
+      },
+    );
   }
 
   void _onScroll() {

@@ -1,4 +1,6 @@
 import 'package:collection/collection.dart' show IterableExtension;
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
@@ -6,7 +8,6 @@ import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/duration/duration_extension.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
@@ -225,16 +226,13 @@ class LocalStatusBloc extends StatusBloc {
     if (isNeedWatchLocalRepositoryForUpdates) {
       var remoteId = status.remoteId;
       if (remoteId != null) {
-        addDisposable(
-          streamSubscription:
-              statusRepository.watchByRemoteIdInAppType(remoteId).listen(
-            (updatedStatus) {
-              if (updatedStatus != null) {
-                statusSubject.add(updatedStatus);
-              }
-            },
-          ),
-        );
+        statusRepository.watchByRemoteIdInAppType(remoteId).listen(
+          (updatedStatus) {
+            if (updatedStatus != null) {
+              statusSubject.add(updatedStatus);
+            }
+          },
+        ).disposeWith(this);
       }
     }
     if (isNeedRefreshFromNetworkOnInit) {

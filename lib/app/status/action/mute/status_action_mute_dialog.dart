@@ -94,7 +94,7 @@ class StatusActionMuteDialog extends FediDialog {
           cancelable: cancelable,
           actionsBorderVisible: actionsBorderVisible,
         ) {
-    addDisposable(disposable: statusActionMuteBloc);
+    addDisposable(statusActionMuteBloc);
   }
 
   @override

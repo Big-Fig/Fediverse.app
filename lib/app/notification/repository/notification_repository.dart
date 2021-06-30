@@ -2,7 +2,7 @@ import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/notification/notification_model.dart';
 import 'package:fedi/app/notification/repository/notification_repository_model.dart';
-import 'package:fedi/disposable/disposable.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/pleroma/api/notification/pleroma_api_notification_model.dart';
 import 'package:fedi/repository/repository.dart';
 import 'package:flutter/widgets.dart';

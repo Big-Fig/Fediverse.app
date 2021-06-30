@@ -3,7 +3,7 @@ import 'package:fedi/app/account/repository/account_repository_model.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
 import 'package:fedi/app/database/app_database.dart';
-import 'package:fedi/disposable/disposable.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
 import 'package:fedi/repository/repository.dart';
 import 'package:flutter/widgets.dart';

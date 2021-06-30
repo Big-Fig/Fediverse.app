@@ -2,7 +2,7 @@ import 'package:fedi/app/account/my/featured_hashtag/my_account_featured_hashtag
 import 'package:fedi/app/account/my/featured_hashtag/my_account_featured_hashtag_model_adapter.dart';
 import 'package:fedi/app/account/my/featured_hashtag/list/network_only/my_account_featured_hashtag_list_network_only_list_bloc.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/pleroma/api/featured_tags/pleroma_api_featured_tags_service.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:logging/logging.dart';

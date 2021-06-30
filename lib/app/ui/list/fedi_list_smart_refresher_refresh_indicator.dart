@@ -3,7 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart'
     hide RefreshIndicator, RefreshIndicatorState;
 import 'package:flutter/widgets.dart';
+import 'package:logging/logging.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+
+final _logger = Logger('fedi_list_smart_refresher_refresh_indicator.dart');
 
 // ignore_for_file: no-magic-number
 /// mostly use flutter inner's RefreshIndicator
@@ -33,11 +36,11 @@ class FediListSmartRefresherRefreshIndicator extends RefreshIndicator {
     this.distance = 50.0,
     this.backgroundColor,
   }) : super(
-          key: key,
-          refreshStyle: RefreshStyle.Front,
-          offset: offset,
-          height: height,
-        );
+    key: key,
+    refreshStyle: RefreshStyle.Front,
+    offset: offset,
+    height: height,
+  );
 
   @override
   State<StatefulWidget> createState() =>
@@ -48,10 +51,13 @@ class _FediListSmartRefresherRefreshIndicatorState
     extends RefreshIndicatorState<FediListSmartRefresherRefreshIndicator>
     with TickerProviderStateMixin {
   Animation<Offset>? _positionFactor;
+
   // ignore: avoid-late-keyword
   late AnimationController _scaleFactor;
+
   // ignore: avoid-late-keyword
   late AnimationController _positionController;
+
   // ignore: avoid-late-keyword
   late AnimationController _valueAni;
 
@@ -65,11 +71,18 @@ class _FediListSmartRefresherRefreshIndicatorState
       duration: Duration(milliseconds: 500),
     );
     _valueAni.addListener(() {
-      // frequently setState will decline the performance
-      var pixels = Scrollable.of(context)?.position.pixels;
-      if (mounted && pixels != null && pixels <= 0) {
-        // ignore: no-empty-block
-        setState(() {});
+      try {
+        // frequently setState will decline the performance
+        var pixels = Scrollable
+            .of(context)
+            ?.position
+            .pixels;
+        if (mounted && pixels != null && pixels <= 0) {
+          // ignore: no-empty-block
+          setState(() {});
+        }
+      } catch(e, stackTrace) {
+        _logger.warning(() => '_valueAni.addListener', e, stackTrace);
       }
     });
     _positionController =
@@ -101,7 +114,7 @@ class _FediListSmartRefresherRefreshIndicatorState
         child: Align(
           alignment: Alignment.topCenter,
           child:
-              FediCircularProgressIndicator.buildForRefreshIndicator(context),
+          FediCircularProgressIndicator.buildForRefreshIndicator(context),
         ),
       ),
     );

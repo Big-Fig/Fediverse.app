@@ -1,7 +1,7 @@
 import 'package:fedi/app/chat/pleroma/current/pleroma_chat_current_bloc.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart';
 import 'package:fedi/pleroma/api/chat/pleroma_api_chat_service.dart';
 

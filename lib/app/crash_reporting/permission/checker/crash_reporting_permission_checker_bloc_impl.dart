@@ -4,8 +4,8 @@ import 'package:fedi/app/crash_reporting/permission/ask/local_preferences/ask_cr
 import 'package:fedi/app/crash_reporting/permission/checker/crash_reporting_permission_checker_bloc.dart';
 import 'package:fedi/app/crash_reporting/settings/crash_reporting_settings_model.dart';
 import 'package:fedi/app/crash_reporting/settings/local_preference/crash_reporting_settings_local_preference_bloc.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 

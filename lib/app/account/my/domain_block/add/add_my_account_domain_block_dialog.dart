@@ -11,6 +11,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 
 class AddMyAccountDomainBlockDialog extends FediDialog {
   // ignore: avoid-late-keyword
@@ -54,8 +55,7 @@ class AddMyAccountDomainBlockDialog extends FediDialog {
         listen: false,
       ),
     );
-
-    addDisposable(disposable: addMyAccountDomainBlockBloc);
+    addMyAccountDomainBlockBloc.disposeWith(this);
   }
 
   @override

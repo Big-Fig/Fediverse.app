@@ -1,5 +1,5 @@
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
-import 'package:fedi/disposable/disposable.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
 import 'package:fedi/media/device/folder/media_device_folder_model.dart';
 import 'package:fedi/media/device/folder/photo_manager/photo_manager_media_device_folder_model.dart';
@@ -17,7 +17,7 @@ class PhotoManagerMediaDeviceGalleryBloc extends MediaDeviceGalleryBloc {
           typesToPick: typesToPick,
           paginationSettingsBloc: paginationSettingsBloc,
         ) {
-    addDisposable(disposable: CustomDisposable(() async {
+    addDisposable(CustomDisposable(() async {
       await PhotoManager.releaseCache();
     }));
   }

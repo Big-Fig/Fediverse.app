@@ -59,10 +59,10 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
         durationDateTimeLengthFieldBloc =
             createDurationDateTimeLengthBloc(pollLimits),
         super(isAllItemsInitialized: true) {
-    addDisposable(disposable: durationDateTimeLengthFieldBloc);
-    addDisposable(disposable: multiplyFieldBloc);
-    addDisposable(disposable: hideTotalsFieldBloc);
-    addDisposable(disposable: pollOptionsGroupBloc);
+    addDisposable(durationDateTimeLengthFieldBloc);
+    addDisposable(multiplyFieldBloc);
+    addDisposable(hideTotalsFieldBloc);
+    addDisposable(pollOptionsGroupBloc);
   }
 
   @override

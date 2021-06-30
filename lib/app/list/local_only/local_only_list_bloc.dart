@@ -1,4 +1,4 @@
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 
 abstract class ILocalOnlyListBloc<T> extends DisposableOwner {
   Future<List<T>> loadItemsFromLocalForPage({

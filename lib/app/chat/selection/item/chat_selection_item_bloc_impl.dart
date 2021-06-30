@@ -1,7 +1,7 @@
 import 'package:fedi/app/chat/message/chat_message_model.dart';
 import 'package:fedi/app/chat/selection/chat_selection_bloc.dart';
 import 'package:fedi/app/chat/selection/item/chat_selection_item_bloc.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:rxdart/rxdart.dart';
 
 class ChatSelectionItemBloc extends DisposableOwner
@@ -31,7 +31,7 @@ class ChatSelectionItemBloc extends DisposableOwner
     required bool isSelectionPossible,
   }) : isSelectionPossibleSubject =
             BehaviorSubject.seeded(isSelectionPossible) {
-    addDisposable(subject: isSelectionPossibleSubject);
+    isSelectionPossibleSubject.disposeWith(this);
   }
 
   @override

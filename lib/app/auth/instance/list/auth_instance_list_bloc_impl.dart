@@ -5,7 +5,7 @@ import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/list/auth_instance_list_bloc.dart';
 import 'package:fedi/app/auth/instance/list/auth_instance_list_model.dart';
 import 'package:fedi/app/auth/instance/list/local_preferences/auth_instance_list_local_preference_bloc.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:logging/logging.dart';
 
 var _logger = Logger('auth_instance_list_bloc_impl.dart');

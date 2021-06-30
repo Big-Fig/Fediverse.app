@@ -4,6 +4,7 @@ import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
 import 'package:fedi/pleroma/api/instance/pleroma_api_instance_service.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 
 abstract class InstanceActivityBloc extends AsyncInitLoadingBloc
     implements IInstanceActivityBloc {
@@ -32,12 +33,9 @@ abstract class InstanceActivityBloc extends AsyncInitLoadingBloc
     required this.instanceUri,
   })  : refreshController = RefreshController(),
         activitySubject = BehaviorSubject.seeded(null) {
-    addDisposable(subject: activitySubject);
-    addDisposable(
-      custom: () {
-        refreshController.dispose();
-      },
-    );
+    activitySubject.disposeWith(this);
+    addCustomDisposable(() => refreshController.dispose());
+
   }
 
   IPleromaApiInstanceService get pleromaInstanceService;
@@ -51,7 +49,7 @@ abstract class InstanceActivityBloc extends AsyncInitLoadingBloc
   }
 
   @override
-  List<IPleromaApiInstanceActivityItem>? get activity => activitySubject.value;
+  List<IPleromaApiInstanceActivityItem>? get activity => activitySubject.valueOrNull;
 
   @override
   Stream<List<IPleromaApiInstanceActivityItem>?> get activityStream =>

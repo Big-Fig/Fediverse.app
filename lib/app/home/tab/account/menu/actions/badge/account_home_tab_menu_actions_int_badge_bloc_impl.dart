@@ -2,8 +2,8 @@ import 'package:fedi/app/account/my/follow_request/badge/my_account_follow_reque
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/ui/badge/int/fedi_int_badge_bloc.dart';
 import 'package:fedi/app/ui/badge/int/fedi_int_badge_bloc_sum_adapter.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:flutter/widgets.dart';
 
 class AccountHomeTabMenuActionsIntBadgeBloc extends DisposableOwner
@@ -25,8 +25,8 @@ class AccountHomeTabMenuActionsIntBadgeBloc extends DisposableOwner
         followRequestCountIntBadgeBloc,
       ],
     );
-    addDisposable(disposable: followRequestCountIntBadgeBloc);
-    addDisposable(disposable: fediIntBadgeBlocSumAdapter);
+    addDisposable(followRequestCountIntBadgeBloc);
+    addDisposable(fediIntBadgeBlocSumAdapter!);
   }
 
   @override

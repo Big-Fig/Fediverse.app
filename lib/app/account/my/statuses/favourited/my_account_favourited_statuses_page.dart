@@ -13,7 +13,7 @@ import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
 import 'package:fedi/collapsible/owner/collapsible_owner_widget.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pleroma/api/account/my/pleroma_api_my_account_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

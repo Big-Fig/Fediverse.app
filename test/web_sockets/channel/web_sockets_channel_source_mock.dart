@@ -1,7 +1,6 @@
 import 'dart:async';
 
-import 'package:fedi/disposable/disposable.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/web_sockets/channel/web_sockets_channel_source.dart';
 import 'package:fedi/web_sockets/web_sockets_model.dart';
 
@@ -22,12 +21,8 @@ class WebSocketsChannelSourceMock<T extends WebSocketsEvent>
   WebSocketsChannelSourceMock({
     required this.url,
   }) {
-    addDisposable(
-      disposable: CustomDisposable(
-        () async {
-          await _eventsStreamController.close();
-        },
-      ),
+    addCustomDisposable(
+      () => _eventsStreamController.close(),
     );
   }
 }

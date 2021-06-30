@@ -18,7 +18,7 @@ import 'package:fedi/app/push/notification/rich/rich_notifications_service.dart'
 import 'package:fedi/app/push/notification/rich/rich_notifications_service_background_message_impl.dart';
 import 'package:fedi/app/status/repository/status_repository_impl.dart';
 import 'package:fedi/connection/connection_service.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/pleroma/api/account/my/pleroma_api_my_account_service_impl.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
 import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart';
@@ -58,20 +58,16 @@ class NotificationsPushHandlerBloc extends DisposableOwner
     required this.configService,
     required this.connectionService,
   }) {
-    addDisposable(
-      streamSubscription: fcmPushService.messageStream.listen(
-        (pushMessage) async {
-          await handlePushMessage(pushMessage);
-        },
-      ),
-    );
-    addDisposable(
-      streamSubscription: richNotificationsService.messageStream.listen(
-        (pushMessage) async {
-          await handlePushMessage(pushMessage);
-        },
-      ),
-    );
+    fcmPushService.messageStream.listen(
+          (pushMessage) async {
+        await handlePushMessage(pushMessage);
+      },
+    ).disposeWith(this);
+    richNotificationsService.messageStream.listen(
+          (pushMessage) async {
+        await handlePushMessage(pushMessage);
+      },
+    ).disposeWith(this);
   }
 
   @override
@@ -234,24 +230,24 @@ class NotificationsPushHandlerBloc extends DisposableOwner
       configService: configService,
     );
     await appDatabaseService.performAsyncInit();
-    disposableOwner.addDisposable(disposable: appDatabaseService);
+    disposableOwner.addDisposable(appDatabaseService);
 
     var accountRepository = AccountRepository(
       appDatabase: appDatabaseService.appDatabase,
     );
-    disposableOwner.addDisposable(disposable: accountRepository);
+    disposableOwner.addDisposable(accountRepository);
 
     var statusRepository = StatusRepository(
       appDatabase: appDatabaseService.appDatabase,
       accountRepository: accountRepository,
     );
-    disposableOwner.addDisposable(disposable: statusRepository);
+    disposableOwner.addDisposable(statusRepository);
 
     var chatMessageRepository = PleromaChatMessageRepository(
       appDatabase: appDatabaseService.appDatabase,
       accountRepository: accountRepository,
     );
-    disposableOwner.addDisposable(disposable: chatMessageRepository);
+    disposableOwner.addDisposable(chatMessageRepository);
 
     var authInstance = instanceListBloc.findInstanceByCredentials(
       host: body.server,
@@ -259,7 +255,7 @@ class NotificationsPushHandlerBloc extends DisposableOwner
     )!;
 
     var restService = RestService(baseUri: authInstance.uri);
-    addDisposable(disposable: restService);
+    addDisposable(restService);
 
     var pleromaApiAuthRestService = PleromaApiAuthRestService(
       restService: restService,
@@ -267,17 +263,17 @@ class NotificationsPushHandlerBloc extends DisposableOwner
       accessToken: authInstance.token!.accessToken,
       isPleroma: authInstance.isPleroma,
     );
-    addDisposable(disposable: pleromaApiAuthRestService);
+    addDisposable(pleromaApiAuthRestService);
 
     var pleromaApiChatService = PleromaApiChatService(
       restService: pleromaApiAuthRestService,
     );
-    addDisposable(disposable: pleromaApiChatService);
+    addDisposable(pleromaApiChatService);
 
     var pleromaApiAuthStatusService = PleromaApiAuthStatusService(
       authRestService: pleromaApiAuthRestService,
     );
-    addDisposable(disposable: pleromaApiChatService);
+    addDisposable(pleromaApiChatService);
 
     var pleromaApiNotificationType = remoteNotification.typeAsPleromaApi;
     switch (pleromaApiNotificationType) {
@@ -346,24 +342,24 @@ class NotificationsPushHandlerBloc extends DisposableOwner
       configService: configService,
     );
     await appDatabaseService.performAsyncInit();
-    disposableOwner.addDisposable(disposable: appDatabaseService);
+    disposableOwner.addDisposable(appDatabaseService);
 
     var accountRepository = AccountRepository(
       appDatabase: appDatabaseService.appDatabase,
     );
-    disposableOwner.addDisposable(disposable: accountRepository);
+    disposableOwner.addDisposable(accountRepository);
 
     var statusRepository = StatusRepository(
       appDatabase: appDatabaseService.appDatabase,
       accountRepository: accountRepository,
     );
-    disposableOwner.addDisposable(disposable: statusRepository);
+    disposableOwner.addDisposable(statusRepository);
 
     var pleromaChatMessageRepository = PleromaChatMessageRepository(
       appDatabase: appDatabaseService.appDatabase,
       accountRepository: accountRepository,
     );
-    disposableOwner.addDisposable(disposable: pleromaChatMessageRepository);
+    disposableOwner.addDisposable(pleromaChatMessageRepository);
 
     var notificationRepository = NotificationRepository(
       appDatabase: appDatabaseService.appDatabase,
@@ -371,7 +367,7 @@ class NotificationsPushHandlerBloc extends DisposableOwner
       statusRepository: statusRepository,
       chatMessageRepository: pleromaChatMessageRepository,
     );
-    disposableOwner.addDisposable(disposable: notificationRepository);
+    disposableOwner.addDisposable(notificationRepository);
 
     var authInstance = instanceListBloc.findInstanceByCredentials(
       host: body.server,
@@ -379,7 +375,7 @@ class NotificationsPushHandlerBloc extends DisposableOwner
     )!;
 
     var restService = RestService(baseUri: authInstance.uri);
-    addDisposable(disposable: restService);
+    addDisposable(restService);
 
     var pleromaApiAuthRestService = PleromaApiAuthRestService(
       restService: restService,
@@ -387,12 +383,12 @@ class NotificationsPushHandlerBloc extends DisposableOwner
       accessToken: authInstance.token!.accessToken,
       isPleroma: authInstance.isPleroma,
     );
-    addDisposable(disposable: pleromaApiAuthRestService);
+    addDisposable(pleromaApiAuthRestService);
 
     var pleromaApiMyAccountService = PleromaApiMyAccountService(
       restService: pleromaApiAuthRestService,
     );
-    addDisposable(disposable: pleromaApiMyAccountService);
+    addDisposable(pleromaApiMyAccountService);
 
     IPleromaApiAccountRelationship pleromaApiAccountRelationship;
     if (accept) {

@@ -2,7 +2,7 @@ import 'package:fedi/app/account/my/featured_hashtag/suggestion/hashtag_list/net
 import 'package:fedi/app/hashtag/pagination/list/hashtag_pagination_list_bloc.dart';
 import 'package:fedi/app/hashtag/pagination/network_only/hashtag_network_only_pagination_bloc.dart';
 import 'package:fedi/app/instance/location/instance_location_bloc.dart';
-import 'package:fedi/disposable/disposable.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 

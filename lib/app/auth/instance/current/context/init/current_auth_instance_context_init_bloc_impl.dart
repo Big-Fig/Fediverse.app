@@ -19,6 +19,8 @@ import 'package:fedi/pleroma/api/rest/pleroma_api_rest_model.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
 
 var _logger = Logger('current_auth_instance_context_init_bloc_impl.dart');
 
@@ -51,21 +53,19 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
     required this.conversationChatRepository,
     required this.pleromaChatRepository,
   }) {
-    addDisposable(subject: stateSubject);
+    stateSubject.disposeWith(this);
 
-    addDisposable(
-      streamSubscription: pleromaAuthRestService.pleromaApiStateStream.listen(
-        (pleromaApiState) {
-          _logger.finest(() => 'pleromaApiState $pleromaApiState');
-          if (pleromaApiState == PleromaApiState.brokenAuth) {
-            _logger.finest(() =>
-                ' stateSubject.add(CurrentAuthInstanceContextInitState.invalidCredentials)');
-            stateSubject
-                .add(CurrentAuthInstanceContextInitState.invalidCredentials);
-          }
-        },
-      ),
-    );
+    pleromaAuthRestService.pleromaApiStateStream.listen(
+          (pleromaApiState) {
+        _logger.finest(() => 'pleromaApiState $pleromaApiState');
+        if (pleromaApiState == PleromaApiState.brokenAuth) {
+          _logger.finest(() =>
+          ' stateSubject.add(CurrentAuthInstanceContextInitState.invalidCredentials)');
+          stateSubject
+              .add(CurrentAuthInstanceContextInitState.invalidCredentials);
+        }
+      },
+    ).disposeWith(this);
   }
 
   bool instanceInfoUpdatedDuringRequiredDataUpdate = false;
@@ -213,7 +213,7 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
       BehaviorSubject.seeded(CurrentAuthInstanceContextInitState.loading);
 
   @override
-  CurrentAuthInstanceContextInitState? get state => stateSubject.value;
+  CurrentAuthInstanceContextInitState? get state => stateSubject.valueOrNull;
 
   @override
   Stream<CurrentAuthInstanceContextInitState> get stateStream =>

@@ -13,6 +13,7 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/pleroma/api/account/my/pleroma_api_my_account_model.dart';
 import 'package:fedi/pleroma/api/account/my/pleroma_api_my_account_service.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 
 class MyAccountBloc extends IMyAccountBloc {
   static final selfActionError = const SelfActionNotPossibleException();
@@ -33,17 +34,15 @@ class MyAccountBloc extends IMyAccountBloc {
     required this.accountRepository,
     required this.instance,
   }) {
-    addDisposable(
-      streamSubscription: myAccountStream.listen(
-        (myAccount) {
-          if (myAccount != null) {
-            accountRepository.upsertInRemoteType(
-              myAccount.toPleromaApiAccount(),
-            );
-          }
-        },
-      ),
-    );
+    myAccountStream.listen(
+          (myAccount) {
+        if (myAccount != null) {
+          accountRepository.upsertInRemoteType(
+            myAccount.toPleromaApiAccount(),
+          );
+        }
+      },
+    ).disposeWith(this);
   }
 
   @override

@@ -1,5 +1,6 @@
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_flutter/easy_dispose_flutter.dart';
 import 'package:fedi/app/search/input/search_input_bloc.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -16,7 +17,7 @@ class SearchInputBloc extends DisposableOwner implements ISearchInputBloc {
       BehaviorSubject.seeded('');
 
   @override
-  String? get currentInput => currentInputSubject.value;
+  String? get currentInput => currentInputSubject.valueOrNull;
 
   @override
   Stream<String> get currentInputStream => currentInputSubject.stream;
@@ -58,24 +59,25 @@ class SearchInputBloc extends DisposableOwner implements ISearchInputBloc {
   }) : searchTextEditingController = TextEditingController(
           text: initialQuery,
         ) {
-    addDisposable(subject: currentInputSubject);
-    addDisposable(subject: confirmedSearchTermSubject);
-    addDisposable(textEditingController: searchTextEditingController);
+    currentInputSubject.disposeWith(this);
+    confirmedSearchTermSubject.disposeWith(this);
+    searchTextEditingController.disposeWith(this);
+
     var listener = () {
       currentInputSubject.add(searchTextEditingController.text);
     };
     searchTextEditingController.addListener(listener);
-    addDisposable(custom: () {
+    addCustomDisposable(() {
       searchTextEditingController.removeListener(listener);
     });
 
-    if(initialQuery?.isNotEmpty == true) {
+    if (initialQuery?.isNotEmpty == true) {
       confirmSearch();
     }
   }
 
   @override
-  String? get confirmedSearchTerm => confirmedSearchTermSubject.value;
+  String? get confirmedSearchTerm => confirmedSearchTermSubject.valueOrNull;
 
   @override
   Stream<String> get confirmedSearchTermStream =>

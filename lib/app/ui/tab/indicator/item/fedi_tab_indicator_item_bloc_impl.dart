@@ -1,6 +1,6 @@
 import 'package:fedi/app/ui/tab/indicator/fedi_tab_indicator_bloc.dart';
 import 'package:fedi/app/ui/tab/indicator/item/fedi_tab_indicator_item_bloc.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 
 class FediTabIndicatorItemBloc<T> extends DisposableOwner
     implements IFediTabIndicatorItemBloc<T> {

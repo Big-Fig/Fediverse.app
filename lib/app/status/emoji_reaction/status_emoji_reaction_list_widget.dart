@@ -5,7 +5,7 @@ import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pleroma/api/status/emoji_reaction/pleroma_api_status_emoji_reaction_service.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
 import 'package:flutter/cupertino.dart';

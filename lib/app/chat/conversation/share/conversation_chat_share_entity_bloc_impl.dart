@@ -12,7 +12,7 @@ import 'package:fedi/app/share/entity/share_entity_bloc.dart';
 import 'package:fedi/app/share/entity/share_entity_model.dart';
 import 'package:fedi/app/share/to_account/share_to_account_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_service.dart';
 import 'package:fedi/pleroma/api/conversation/pleroma_api_conversation_service.dart';
 import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';

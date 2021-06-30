@@ -69,10 +69,9 @@ class NotificationTabBloc extends AsyncInitLoadingBloc
       cachedListBloc: notificationCachedListBloc,
     );
 
-    addDisposable(disposable: notificationCachedListBloc);
-    addDisposable(disposable: notificationCachedPaginationBloc);
-    addDisposable(
-      disposable: paginationListWithNewItemsBloc,
+    addDisposable(notificationCachedListBloc);
+    addDisposable(notificationCachedPaginationBloc);
+    addDisposable(paginationListWithNewItemsBloc,
     );
   }
 }

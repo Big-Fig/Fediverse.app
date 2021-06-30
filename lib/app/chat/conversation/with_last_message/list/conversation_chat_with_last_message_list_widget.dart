@@ -7,12 +7,13 @@ import 'package:fedi/app/chat/conversation/with_last_message/pagination/list/con
 import 'package:fedi/app/chat/list/chat_list_item_widget.dart';
 import 'package:fedi/app/ui/list/fedi_list_tile.dart';
 import 'package:fedi/app/ui/pagination/fedi_pagination_list_widget.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_widget.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 
 class ConversationChatWithLastMessageListWidget
     extends FediPaginationListWidget<IConversationChatWithLastMessage> {
@@ -69,19 +70,17 @@ class ConversationChatWithLastMessageListWidget
                 var conversationChatWithLastMessagePaginationListWithNewItemsBloc =
                 IConversationChatWithLastMessagePaginationListWithNewItemsBloc
                     .of(context, listen: false);
-                conversationChatBloc.addDisposable(
-                  streamSubscription: conversationChatBloc.chatStream.listen(
-                        (chat) {
-                      conversationChatWithLastMessagePaginationListWithNewItemsBloc
-                          .onItemUpdated(
-                        SimpleConversationChatWithLastMessage(
-                          chat: conversationChatBloc.chat,
-                          lastChatMessage: conversationChatBloc.lastChatMessage,
-                        ),
-                      );
-                    },
-                  ),
-                );
+                conversationChatBloc.chatStream.listen(
+                      (chat) {
+                    conversationChatWithLastMessagePaginationListWithNewItemsBloc
+                        .onItemUpdated(
+                      SimpleConversationChatWithLastMessage(
+                        chat: conversationChatBloc.chat,
+                        lastChatMessage: conversationChatBloc.lastChatMessage,
+                      ),
+                    );
+                  },
+                ).disposeWith(conversationChatBloc);
                 
                 return conversationChatBloc;
               }

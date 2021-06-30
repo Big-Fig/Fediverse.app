@@ -5,6 +5,8 @@ import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
 import 'package:fedi/pleroma/api/timeline/pleroma_api_timeline_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_flutter/easy_dispose_flutter.dart';
 
 abstract class InstancePublicTimelinePageBloc extends AsyncInitLoadingBloc
     implements IInstancePublicTimelinePageBloc {
@@ -30,12 +32,8 @@ abstract class InstancePublicTimelinePageBloc extends AsyncInitLoadingBloc
     required this.instanceUri,
     required this.pleromaApiInstance,
   }) : refreshController = RefreshController() {
-    addDisposable(scrollController: scrollController);
-    addDisposable(
-      custom: () {
-        refreshController.dispose();
-      },
-    );
+    scrollController.disposeWith(this);
+    addCustomDisposable(() => refreshController.dispose());
   }
 
   @override

@@ -3,7 +3,7 @@ import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/account/my/suggestion/account_list/network_only/my_account_suggestion_account_list_network_only_list_bloc.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/suggestions/pleroma_api_suggestions_service.dart';
 import 'package:logging/logging.dart';
@@ -21,7 +21,7 @@ class MyAccountSuggestionAccountListNetworkOnlyListBloc extends DisposableOwner
       BehaviorSubject.seeded([]);
 
   List<IAccount> get removedAccountSuggestions =>
-      removedAccountSuggestionsSubject.value!;
+      removedAccountSuggestionsSubject.value;
 
   Stream<List<IAccount>> get removedAccountSuggestionsStream =>
       removedAccountSuggestionsSubject.stream;
@@ -40,7 +40,7 @@ class MyAccountSuggestionAccountListNetworkOnlyListBloc extends DisposableOwner
     required this.instanceLocation,
     required this.remoteInstanceUriOrNull,
   }) {
-    addDisposable(subject: removedAccountSuggestionsSubject);
+    removedAccountSuggestionsSubject.disposeWith(this);
   }
 
   @override

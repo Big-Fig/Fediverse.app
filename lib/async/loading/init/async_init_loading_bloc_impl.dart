@@ -6,6 +6,7 @@ import 'package:fedi/async/loading/init/async_init_loading_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
 
 var _logger = Logger('async_init_loading_bloc_impl.dart');
 
@@ -20,7 +21,7 @@ abstract class AsyncInitLoadingBloc extends AsyncLoadingService
       _isInitLoadingSubject.stream.distinct();
 
   @override
-  AsyncInitLoadingState get initLoadingState => _isInitLoadingSubject.value!;
+  AsyncInitLoadingState get initLoadingState => _isInitLoadingSubject.value;
 
   bool get isInitLoadingStateFinished =>
       initLoadingState == AsyncInitLoadingState.finished;
@@ -29,7 +30,7 @@ abstract class AsyncInitLoadingBloc extends AsyncLoadingService
   dynamic initLoadingException;
 
   AsyncInitLoadingBloc() {
-    addDisposable(subject: _isInitLoadingSubject);
+    _isInitLoadingSubject.disposeWith(this);
   }
 
   @override

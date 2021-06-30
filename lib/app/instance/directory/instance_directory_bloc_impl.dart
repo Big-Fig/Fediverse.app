@@ -6,7 +6,7 @@ import 'package:fedi/app/instance/directory/account_list/network_only/instance_d
 import 'package:fedi/app/instance/directory/account_list/network_only/instance_directory_account_list_network_only_list_bloc_impl.dart';
 import 'package:fedi/app/instance/directory/instance_directory_bloc.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/pleroma/api/directory/pleroma_api_directory_service.dart';
 import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
 import 'package:pedantic/pedantic.dart';
@@ -25,7 +25,7 @@ abstract class InstanceDirectoryBloc extends DisposableOwner
     required this.instanceUri,
     required this.paginationSettingsBloc,
   }) : instanceSubject = BehaviorSubject.seeded(initialInstance) {
-    addDisposable(subject: instanceSubject);
+    instanceSubject.disposeWith(this);
 
     instanceDirectoryAccountListNetworkOnlyListBloc =
         InstanceDirectoryAccountListNetworkOnlyListBloc(
@@ -44,11 +44,10 @@ abstract class InstanceDirectoryBloc extends DisposableOwner
       paginationBloc: instanceDirectoryAccountListNetworkOnlyPaginationBloc,
     );
 
-    addDisposable(disposable: instanceDirectoryAccountListNetworkOnlyListBloc);
-    addDisposable(
-      disposable: instanceDirectoryAccountListNetworkOnlyPaginationBloc,
+    addDisposable(instanceDirectoryAccountListNetworkOnlyListBloc);
+    addDisposable(instanceDirectoryAccountListNetworkOnlyPaginationBloc,
     );
-    addDisposable(disposable: accountPaginationListBloc);
+    addDisposable(accountPaginationListBloc);
 
     unawaited(accountPaginationListBloc.refreshWithoutController());
   }

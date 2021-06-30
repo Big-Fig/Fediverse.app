@@ -2,7 +2,7 @@ import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository_model.dart';
 import 'package:fedi/app/chat/conversation/with_last_message/conversation_chat_with_last_message_model.dart';
 import 'package:fedi/app/database/app_database.dart';
-import 'package:fedi/disposable/disposable.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/pleroma/api/conversation/pleroma_api_conversation_model.dart';
 import 'package:fedi/repository/repository.dart';
 import 'package:fedi/repository/repository_model.dart';

@@ -4,7 +4,7 @@ import 'package:fedi/app/hashtag/hashtag_model.dart';
 import 'package:fedi/app/instance/location/instance_location_bloc.dart';
 import 'package:fedi/app/poll/poll_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/disposable/disposable.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/pleroma/api/card/pleroma_api_card_model.dart';
 import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
 import 'package:fedi/pleroma/api/mention/pleroma_api_mention_model.dart';

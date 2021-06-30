@@ -70,9 +70,9 @@ class EditPostStatusSettingsBloc
       possibleValues: supportedLocalizationLocaleList,
     );
 
-    addDisposable(disposable: defaultVisibilityFormFieldBloc);
-    addDisposable(disposable: markMediaAsNsfwOnAttachFormFieldBloc);
-    addDisposable(disposable: defaultStatusLocaleFormFieldBloc);
+    addDisposable(defaultVisibilityFormFieldBloc);
+    addDisposable(markMediaAsNsfwOnAttachFormFieldBloc);
+    addDisposable(defaultStatusLocaleFormFieldBloc);
 
     onFormItemsChanged();
   }

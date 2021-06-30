@@ -1,7 +1,8 @@
 import 'package:collection/collection.dart' show IterableExtension;
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
-import 'package:fedi/disposable/disposable.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
 import 'package:fedi/media/device/file/pagination/media_device_file_local_only_list_bloc_impl.dart';
 import 'package:fedi/media/device/file/pagination/media_device_file_local_only_pagination_bloc_impl.dart';
@@ -27,12 +28,13 @@ abstract class MediaDeviceGalleryBloc extends AsyncInitLoadingBloc
     required this.typesToPick,
     required this.paginationSettingsBloc,
   }) {
-    addDisposable(subject: foldersSubject);
-    addDisposable(subject: selectedFolderSubject);
-    addDisposable(subject: galleryStateSubject);
-    addDisposable(custom: () async {
-      await disposeSelectedFolderBlocs();
-    });
+    foldersSubject.disposeWith(this);
+    selectedFolderSubject.disposeWith(this);
+    galleryStateSubject.disposeWith(this);
+
+    addCustomDisposable(
+      () => disposeSelectedFolderBlocs(),
+    );
   }
 
   // ignore: close_sinks
@@ -42,7 +44,7 @@ abstract class MediaDeviceGalleryBloc extends AsyncInitLoadingBloc
   Stream<List<IMediaDeviceFolder>> get foldersStream => foldersSubject.stream;
 
   @override
-  List<IMediaDeviceFolder>? get folders => foldersSubject.value;
+  List<IMediaDeviceFolder>? get folders => foldersSubject.valueOrNull;
 
   // ignore: close_sinks
   BehaviorSubject<MediaDeviceGallerySelectedFolderData?> selectedFolderSubject =
@@ -91,7 +93,7 @@ abstract class MediaDeviceGalleryBloc extends AsyncInitLoadingBloc
 
   @override
   MediaDeviceGallerySelectedFolderData? get selectedFolderData =>
-      selectedFolderSubject.value;
+      selectedFolderSubject.valueOrNull;
 
   @override
   Stream<MediaDeviceGallerySelectedFolderData?> get selectedFolderDataStream =>
@@ -106,7 +108,7 @@ abstract class MediaDeviceGalleryBloc extends AsyncInitLoadingBloc
       galleryStateSubject.stream;
 
   @override
-  MediaDeviceGalleryState? get galleryState => galleryStateSubject.value;
+  MediaDeviceGalleryState? get galleryState => galleryStateSubject.valueOrNull;
 
   @override
   Future internalAsyncInit() async {
@@ -115,15 +117,13 @@ abstract class MediaDeviceGalleryBloc extends AsyncInitLoadingBloc
     if (storagePermissionBloc.permissionGranted!) {
       await _initAfterPermissionGranted();
     } else {
-      addDisposable(
-        streamSubscription: storagePermissionBloc.permissionGrantedStream
-            .distinct()
-            .listen((granted) {
+      storagePermissionBloc.permissionGrantedStream.distinct().listen(
+        (granted) {
           if (granted! && folders?.isNotEmpty != true) {
             _initAfterPermissionGranted();
           }
-        }),
-      );
+        },
+      ).disposeWith(this);
     }
   }
 

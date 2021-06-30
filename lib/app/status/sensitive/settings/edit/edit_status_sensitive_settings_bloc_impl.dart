@@ -61,9 +61,9 @@ class EditStatusSensitiveSettingsBloc
       isEnabled: isEnabled,
     );
 
-    addDisposable(disposable: nsfwDisplayDelayDurationFieldBloc);
-    addDisposable(disposable: isAlwaysShowSpoilerFieldBloc);
-    addDisposable(disposable: isAlwaysShowNsfwFieldBloc);
+    addDisposable(nsfwDisplayDelayDurationFieldBloc);
+    addDisposable(isAlwaysShowSpoilerFieldBloc);
+    addDisposable(isAlwaysShowNsfwFieldBloc);
 
     onFormItemsChanged();
   }

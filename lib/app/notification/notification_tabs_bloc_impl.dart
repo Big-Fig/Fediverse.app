@@ -1,3 +1,5 @@
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
 import 'package:fedi/app/filter/repository/filter_repository.dart';
 import 'package:fedi/app/notification/notification_model.dart';
 import 'package:fedi/app/notification/notification_tabs_bloc.dart';
@@ -65,12 +67,10 @@ class NotificationsTabsBloc extends AsyncInitLoadingBloc
     required this.paginationSettingsBloc,
     required IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc,
   }) {
-    selectedTabSubject = BehaviorSubject.seeded(startTab);
-
-    addDisposable(subject: selectedTabSubject);
+    selectedTabSubject = BehaviorSubject.seeded(startTab)..disposeWith(this);
 
     addDisposable(
-      disposable: webSocketsHandlerManagerBloc.listenMyAccountChannel(
+      webSocketsHandlerManagerBloc.listenMyAccountChannel(
         listenType: WebSocketsListenType.foreground,
         notification: true,
         chat: false,
@@ -117,10 +117,12 @@ class NotificationsTabsBloc extends AsyncInitLoadingBloc
       tabsMap[tab] = notificationTabBloc;
     }
 
-    addDisposable(
-      custom: () {
-        tabsMap.values.forEach(
-          (bloc) => bloc.dispose(),
+    addCustomDisposable(
+      () async {
+        await Future.wait(
+          tabsMap.values.map(
+            (bloc) => bloc.dispose(),
+          ),
         );
       },
     );

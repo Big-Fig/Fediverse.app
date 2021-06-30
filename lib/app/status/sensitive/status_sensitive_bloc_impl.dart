@@ -4,7 +4,7 @@ import 'package:fedi/app/status/sensitive/status_sensitive_bloc.dart';
 import 'package:fedi/app/status/sensitive/status_sensitive_model.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -17,7 +17,7 @@ class StatusSensitiveBloc extends DisposableOwner
 
   IStatus get status => statusBloc.status;
 
-  bool get displayEnabled => _displayEnabledSubject.value!;
+  bool get displayEnabled => _displayEnabledSubject.value;
 
   Stream<bool> get displayEnabledStream => _displayEnabledSubject.stream;
 
@@ -58,7 +58,7 @@ class StatusSensitiveBloc extends DisposableOwner
     }
 
     _displayEnabledSubject = BehaviorSubject.seeded(initialDisplayEnabled);
-    addDisposable(subject: _displayEnabledSubject);
+    _displayEnabledSubject.disposeWith(this);
   }
 
   @override

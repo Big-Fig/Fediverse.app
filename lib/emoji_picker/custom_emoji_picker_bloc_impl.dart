@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/emoji_picker/category/custom_emoji_picker_category_bloc.dart';
 import 'package:fedi/emoji_picker/custom_emoji_picker_bloc.dart';
 import 'package:fedi/emoji_picker/item/custom_emoji_picker_item_model.dart';
@@ -10,7 +10,7 @@ class CustomEmojiPickerBloc extends DisposableOwner
     implements ICustomEmojiPickerBloc {
   @override
   List<ICustomEmojiPickerCategoryBloc> get availableCategories =>
-      availableCategoriesSubject.value!;
+      availableCategoriesSubject.value;
 
   @override
   Stream<List<ICustomEmojiPickerCategoryBloc>> get availableCategoriesStream =>
@@ -21,7 +21,7 @@ class CustomEmojiPickerBloc extends DisposableOwner
 
   @override
   ICustomEmojiPickerCategoryBloc? get selectedCategoryBloc =>
-      selectedCategorySubject.value;
+      selectedCategorySubject.valueOrNull;
 
   @override
   Stream<ICustomEmojiPickerCategoryBloc?> get selectedCategoryBlocStream =>
@@ -43,9 +43,9 @@ class CustomEmojiPickerBloc extends DisposableOwner
         selectedCategorySubject = BehaviorSubject.seeded(
           selectedCategory ?? availableCategories.first,
         ) {
-    addDisposable(subject: availableCategoriesSubject);
-    addDisposable(subject: selectedCategorySubject);
-    addDisposable(streamController: selectedEmojiStreamController);
+    availableCategoriesSubject.disposeWith(this);
+    selectedCategorySubject.disposeWith(this);
+    selectedEmojiStreamController.disposeWith(this);
   }
 
   StreamController<CustomEmojiPickerItem> selectedEmojiStreamController =

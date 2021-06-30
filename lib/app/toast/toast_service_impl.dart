@@ -1,7 +1,7 @@
 import 'package:fedi/app/toast/toast_model.dart';
 import 'package:fedi/app/toast/toast_service.dart';
 import 'package:fedi/app/toast/toast_widget.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/overlay_notification/overlay_notification_service.dart';
 import 'package:flutter/widgets.dart';
 

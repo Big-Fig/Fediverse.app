@@ -1,5 +1,5 @@
 import 'package:fedi/app/settings/settings_model.dart';
-import 'package:fedi/disposable/disposable.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 
 abstract class ISettingsBloc<T extends ISettings?> implements IDisposable {
   T get settingsData;

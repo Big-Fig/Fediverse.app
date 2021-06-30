@@ -1,7 +1,8 @@
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_flutter/easy_dispose_flutter.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/auth/instance/join/join_auth_instance_bloc.dart';
 import 'package:fedi/app/config/config_service.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:flutter/cupertino.dart';
 
 class JoinAuthInstanceBloc extends DisposableOwner
@@ -17,7 +18,7 @@ class JoinAuthInstanceBloc extends DisposableOwner
     required this.isFromScratch,
     required this.configService,
   }) {
-    addDisposable(textEditingController: hostTextController);
+    hostTextController.disposeWith(this);
   }
 
   @override

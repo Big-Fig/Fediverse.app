@@ -3,7 +3,7 @@ import 'package:fedi/app/account/select/recent/local_preferences/recent_select_a
 import 'package:fedi/app/account/select/recent/recent_select_account_bloc.dart';
 import 'package:fedi/app/account/select/recent/recent_select_account_model.dart';
 import 'package:fedi/app/account/select/select_account_list_bloc.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 
 class RecentSelectAccountBloc extends DisposableOwner
     implements IRecentSelectAccountBloc {
@@ -26,33 +26,31 @@ class RecentSelectAccountBloc extends DisposableOwner
     required this.selectAccountListBloc,
     required this.recentSelectAccountLocalPreferenceBloc,
   }) {
-    addDisposable(
-      streamSubscription: selectAccountListBloc.accountSelectedStream.listen(
-        (selectedAccount) {
-          var oldValue = recentSelectAccountList ??
-              RecentSelectAccountList(recentItems: []);
+    selectAccountListBloc.accountSelectedStream.listen(
+          (selectedAccount) {
+        var oldValue = recentSelectAccountList ??
+            RecentSelectAccountList(recentItems: []);
 
-          var recentItems = oldValue.recentItems!;
-          if (recentItems.length > recentCountLimit) {
-            recentItems = recentItems.sublist(0, recentCountLimit);
-          }
+        var recentItems = oldValue.recentItems!;
+        if (recentItems.length > recentCountLimit) {
+          recentItems = recentItems.sublist(0, recentCountLimit);
+        }
 
-          if (selectedAccount != null) {
-            recentItems.removeWhere(
-              (account) => account.id == selectedAccount.remoteId,
-            );
-
-            recentItems.add(selectedAccount.toPleromaApiAccount());
-          }
-
-          recentSelectAccountLocalPreferenceBloc.setValue(
-            RecentSelectAccountList(
-              recentItems: recentItems,
-            ),
+        if (selectedAccount != null) {
+          recentItems.removeWhere(
+                (account) => account.id == selectedAccount.remoteId,
           );
-        },
-      ),
-    );
+
+          recentItems.add(selectedAccount.toPleromaApiAccount());
+        }
+
+        recentSelectAccountLocalPreferenceBloc.setValue(
+          RecentSelectAccountList(
+            recentItems: recentItems,
+          ),
+        );
+      },
+    ).disposeWith(this);
   }
 
   @override

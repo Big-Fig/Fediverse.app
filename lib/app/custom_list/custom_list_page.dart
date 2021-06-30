@@ -26,7 +26,7 @@ import 'package:fedi/app/ui/page/app_bar/fedi_page_app_bar_text_action_widget.da
 import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/collapsible/owner/collapsible_owner_widget.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
@@ -37,6 +37,7 @@ import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart'
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 
 class CustomListPage extends StatefulWidget {
   const CustomListPage();
@@ -343,22 +344,18 @@ class _CustomListPageWrapper extends StatelessWidget {
     );
 
     if (onChanged != null) {
-      customListBloc.addDisposable(
-        streamSubscription: customListBloc.customListStream.listen(
-          (customList) {
-            onChanged!(customList);
-          },
-        ),
-      );
+      customListBloc.customListStream.listen(
+            (customList) {
+          onChanged!(customList);
+        },
+      ).disposeWith(customListBloc);
     }
     if (onDeleted != null) {
-      customListBloc.addDisposable(
-        streamSubscription: customListBloc.deletedStream.listen(
-          (_) {
-            onDeleted!();
-          },
-        ),
-      );
+      customListBloc.deletedStream.listen(
+            (_) {
+          onDeleted!();
+        },
+      ).disposeWith(customListBloc);
     }
 
     return customListBloc;

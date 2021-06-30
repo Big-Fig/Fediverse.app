@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/auth/host/access_token/auth_host_access_token_local_preference_bloc.dart';
 import 'package:fedi/app/auth/host/access_token/auth_host_access_token_local_preference_bloc_impl.dart';
 import 'package:fedi/app/auth/host/application/auth_host_application_local_preference_bloc.dart';
@@ -98,30 +99,30 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     hostApplicationLocalPreferenceBloc = AuthHostApplicationLocalPreferenceBloc(
       preferencesService,
       host: instanceBaseUriHost,
-    );
-    addDisposable(disposable: hostApplicationLocalPreferenceBloc);
+    )..disposeWith(this);
+
     hostAccessTokenLocalPreferenceBloc = AuthHostAccessTokenLocalPreferenceBloc(
       preferencesService,
       host: instanceBaseUriHost,
-    );
-    addDisposable(disposable: hostAccessTokenLocalPreferenceBloc);
-    restService = RestService(baseUri: instanceBaseUri);
-    addDisposable(disposable: restService);
+    )..disposeWith(this);
+
+    restService = RestService(baseUri: instanceBaseUri)..disposeWith(this);
     pleromaRestService = PleromaApiRestService(
       restService: restService,
       connectionService: connectionService,
-    );
-    addDisposable(disposable: pleromaRestService);
+    )..disposeWith(this);
 
     pleromaApplicationService =
-        PleromaApiApplicationService(restService: pleromaRestService);
-    addDisposable(disposable: pleromaApplicationService);
+        PleromaApiApplicationService(restService: pleromaRestService)
+          ..disposeWith(this);
+
     pleromaOAuthService =
-        PleromaApiOAuthService(restService: pleromaRestService);
-    addDisposable(disposable: pleromaOAuthService);
+        PleromaApiOAuthService(restService: pleromaRestService)
+          ..disposeWith(this);
+
     pleromaAccountPublicService =
-        PleromaApiAccountPublicService(restService: pleromaRestService);
-    addDisposable(disposable: pleromaAccountPublicService);
+        PleromaApiAccountPublicService(restService: pleromaRestService)
+          ..disposeWith(this);
   }
 
   @override

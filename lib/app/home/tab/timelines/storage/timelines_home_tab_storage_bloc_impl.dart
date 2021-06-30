@@ -10,6 +10,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 
 var _logger = Logger('timelines_home_tab_storage_bloc_impl.dart');
 
@@ -25,7 +26,7 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
   );
 
   @override
-  TimelinesHomeTabStorageUiState? get uiState => uiStateSubject.value;
+  TimelinesHomeTabStorageUiState? get uiState => uiStateSubject.valueOrNull;
 
   @override
   Stream<TimelinesHomeTabStorageUiState> get uiStateStream =>
@@ -36,16 +37,14 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
     required this.preferences,
     required this.authInstance,
   }) {
-    addDisposable(
-      streamSubscription: timelineIdsStream.listen(
-            (_) {
-          updateTimelines();
-        },
-      ),
-    );
+    timelineIdsStream.listen(
+          (_) {
+        updateTimelines();
+      },
+    ).disposeWith(this);
 
-    addDisposable(subject: timelinesSubject);
-    addDisposable(subject: uiStateSubject);
+    timelinesSubject.disposeWith(this);
+    uiStateSubject.disposeWith(this);
   }
 
   Future updateTimelines() async {
@@ -78,7 +77,7 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
   BehaviorSubject<List<Timeline>> timelinesSubject = BehaviorSubject.seeded([]);
 
   @override
-  List<Timeline> get timelines => timelinesSubject.value ?? [];
+  List<Timeline> get timelines => timelinesSubject.value;
 
   @override
   Stream<List<Timeline>> get timelinesStream => timelinesSubject.stream;

@@ -1,4 +1,4 @@
-import 'package:fedi/disposable/disposable.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 abstract class IPermissionBloc implements IDisposable {

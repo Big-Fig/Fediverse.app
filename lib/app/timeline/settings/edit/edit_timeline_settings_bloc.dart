@@ -1,3 +1,4 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/settings/instance/edit/edit_instance_settings_bloc.dart';
 import 'package:fedi/app/status/visibility/form/multi_from_list/status_visibility_multi_select_from_list_form_field_bloc.dart';
@@ -12,7 +13,8 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IEditTimelineSettingsBloc
-    extends IEditInstanceSettingsBloc<TimelineSettings?> {
+    extends IEditInstanceSettingsBloc<TimelineSettings?>
+    implements IDisposable {
   static IEditTimelineSettingsBloc of(
     BuildContext context, {
     bool listen = true,

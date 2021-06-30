@@ -1,5 +1,5 @@
 import 'package:fedi/app/ui/media/fedi_media_carousel_bloc.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:rxdart/rxdart.dart';
 
 class FediMediaCarouselBloc<T> extends DisposableOwner
@@ -12,12 +12,12 @@ class FediMediaCarouselBloc<T> extends DisposableOwner
     required this.items,
     int currentIndex = 0,
   }) : currentIndexSubject = BehaviorSubject.seeded(currentIndex) {
-    addDisposable(subject: currentIndexSubject);
+    currentIndexSubject.disposeWith(this);
   }
 
   @override
 
-  int? get currentIndex => currentIndexSubject.value;
+  int? get currentIndex => currentIndexSubject.valueOrNull;
 
   @override
   Stream<int> get currentIndexStream => currentIndexSubject.stream;

@@ -1,8 +1,7 @@
 import 'dart:async';
 
 import 'package:fedi/async/loading/init/async_init_loading_bloc.dart';
-import 'package:fedi/disposable/disposable.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/json/json_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';

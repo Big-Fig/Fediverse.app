@@ -1,6 +1,6 @@
 import 'package:fedi/app/media/attachment/upload/list/upload_media_attachment_list_bloc.dart';
 import 'package:fedi/app/message/post_message_model.dart';
-import 'package:fedi/disposable/disposable.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/form/form_item_validation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';

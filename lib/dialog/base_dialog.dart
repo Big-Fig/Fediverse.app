@@ -1,5 +1,5 @@
 import 'package:fedi/dialog/dialog_model.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/ui/callback/on_click_ui_callback.dart';
 import 'package:flutter/material.dart';

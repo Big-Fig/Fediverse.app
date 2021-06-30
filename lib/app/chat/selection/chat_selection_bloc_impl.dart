@@ -2,8 +2,8 @@ import 'package:collection/collection.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/chat/message/chat_message_model.dart';
 import 'package:fedi/app/chat/selection/chat_selection_bloc.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
@@ -20,7 +20,7 @@ class ChatSelectionBloc extends DisposableOwner implements IChatSelectionBloc {
   ChatSelectionBloc({
     required this.myAccountBloc,
   }) {
-    addDisposable(subject: currentChatMessagesSelectionSubject);
+    currentChatMessagesSelectionSubject.disposeWith(this);
   }
 
   @override
@@ -50,7 +50,7 @@ class ChatSelectionBloc extends DisposableOwner implements IChatSelectionBloc {
 
   @override
   List<IChatMessage> get currentSelection =>
-      currentChatMessagesSelectionSubject.value!;
+      currentChatMessagesSelectionSubject.value;
 
   @override
   Stream<List<IChatMessage>> get currentSelectionStream =>

@@ -17,7 +17,7 @@ import 'package:fedi/app/ui/media/player/audio/fedi_audio_player_widget.dart';
 import 'package:fedi/app/ui/media/player/video/fedi_video_player_widget.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_vertical_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/mastodon/api/media/attachment/mastodon_api_media_attachment_model.dart';
 import 'package:fedi/media/player/audio/audio_media_player_bloc.dart';
 import 'package:fedi/media/player/audio/audio_media_player_bloc_impl.dart';

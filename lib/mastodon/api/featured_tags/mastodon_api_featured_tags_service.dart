@@ -1,4 +1,4 @@
-import 'package:fedi/disposable/disposable.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/mastodon/api/featured_tags/mastodon_api_featured_tags_model.dart';
 import 'package:fedi/mastodon/api/pagination/mastodon_api_pagination_model.dart';
 import 'package:fedi/mastodon/api/tag/mastodon_api_tag_model.dart';

@@ -6,6 +6,7 @@ import 'package:fedi/form/field/value/value_form_field_validation.dart';
 import 'package:fedi/form/form_item_validation.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
 
 final _logger = Logger(
   'switch_edit_global_or_instance_settings_form_bool_field_bloc_impl.dart',
@@ -41,8 +42,8 @@ class SwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc
               : GlobalOrInstanceSettingsType.instance,
         ),
         super(isEnabled: isEnabled) {
-    addDisposable(subject: currentValueSubject);
-    addDisposable(subject: globalOrInstanceSettingsTypeSubject);
+    currentValueSubject.disposeWith(this);
+    globalOrInstanceSettingsTypeSubject.disposeWith(this);
   }
 
   @override

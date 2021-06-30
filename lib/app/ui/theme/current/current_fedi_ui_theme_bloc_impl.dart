@@ -3,7 +3,7 @@ import 'package:fedi/app/ui/theme/current/current_fedi_ui_theme_bloc.dart';
 import 'package:fedi/app/ui/theme/dark/dark_fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/theme/light/light_fedi_ui_theme_model.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:rxdart/rxdart.dart';

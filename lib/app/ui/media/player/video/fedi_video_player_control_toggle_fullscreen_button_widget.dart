@@ -2,7 +2,7 @@ import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/media/player/video/fedi_video_player_widget.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/media/player/video/video_media_player_bloc.dart';
 import 'package:fedi/media/player/video/video_media_player_bloc_impl.dart';
 import 'package:fedi/media/player/video/video_media_player_bloc_provider.dart';

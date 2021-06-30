@@ -3,7 +3,7 @@ import 'dart:core';
 
 import 'package:fedi/app/status/sensitive/display_time_storage/status_sensitive_display_time_storage_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 
 class StatusSensitiveDisplayTimeStorageBloc extends DisposableOwner
     implements IStatusSensitiveDisplayTimeStorageBloc {

@@ -1,7 +1,7 @@
 import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_bloc.dart';
 import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_model.dart';
 import 'package:fedi/app/settings/settings_model.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/local_preferences/local_preference_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 

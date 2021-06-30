@@ -1,9 +1,8 @@
 import 'dart:async';
 
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/collapsible/item/collapsible_item_bloc.dart';
 import 'package:fedi/collapsible/owner/collapsible_owner_bloc.dart';
-import 'package:fedi/disposable/disposable.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -17,7 +16,7 @@ class CollapsibleOwnerBloc extends DisposableOwner
       BehaviorSubject.seeded([]);
 
   @override
-  List<ICollapsibleItemBloc>? get visibleItems => visibleItemsSubject.value;
+  List<ICollapsibleItemBloc>? get visibleItems => visibleItemsSubject.valueOrNull;
 
   @override
   Stream<List<ICollapsibleItemBloc>?> get visibleItemsStream =>
@@ -32,19 +31,20 @@ class CollapsibleOwnerBloc extends DisposableOwner
 
   @override
   bool? get isAtLeastOneVisibleItemExpanded =>
-      isAtLeastOneVisibleItemExpandedSubject.value;
+      isAtLeastOneVisibleItemExpandedSubject.valueOrNull;
 
   @override
   Stream<bool> get isAtLeastOneVisibleItemExpandedStream =>
       isAtLeastOneVisibleItemExpandedSubject.stream;
 
   CollapsibleOwnerBloc() {
-    addDisposable(subject: visibleItemsSubject);
-    addDisposable(subject: isAtLeastOneVisibleItemExpandedSubject);
-    addDisposable(disposable: CustomDisposable(() async {
-      itemCollapsibleSubscriptionMap.values
-          .forEach((subscription) => subscription.cancel());
-    }));
+    visibleItemsSubject.disposeWith(this);
+    isAtLeastOneVisibleItemExpandedSubject.disposeWith(this);
+    addCustomDisposable(
+      () => itemCollapsibleSubscriptionMap.values.forEach(
+        (subscription) => subscription.cancel(),
+      ),
+    );
   }
 
   @override

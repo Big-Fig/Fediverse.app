@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
 import 'package:fedi/app/ui/list/fedi_list_smart_refresher_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
@@ -40,7 +42,7 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
 
   @override
   FediListSmartRefresherLoadingState? get refreshState =>
-      refreshStateSubject.value;
+      refreshStateSubject.valueOrNull;
 
   BehaviorSubject<FediListSmartRefresherLoadingState> loadMoreStateSubject =
       BehaviorSubject.seeded(FediListSmartRefresherLoadingState.initialized);
@@ -51,7 +53,7 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
 
   @override
   FediListSmartRefresherLoadingState? get loadMoreState =>
-      loadMoreStateSubject.value;
+      loadMoreStateSubject.valueOrNull;
 
   @override
   final RefreshController refreshController =
@@ -64,31 +66,31 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
     this.loadFromCacheDuringInit = true,
   }) {
     _logger.finest(() => 'PaginationListBloc constructor');
-    addDisposable(
-      streamSubscription: paginationBloc.isLoadedPagesInSequenceStream.listen(
-        (isLoadedInSequence) {
-          if (!isLoadedInSequence) {
-            throw 'PaginationListBloc dont work with direct access '
-                'pagination blocs';
-          }
-        },
+    paginationBloc.isLoadedPagesInSequenceStream.listen(
+      (isLoadedInSequence) {
+        if (!isLoadedInSequence) {
+          throw 'PaginationListBloc dont work with direct access '
+              'pagination blocs';
+        }
+      },
+    ).disposeWith(this);
+    refreshStateSubject.disposeWith(this);
+    loadMoreStateSubject.disposeWith(this);
+    refreshErrorStreamController.disposeWith(this);
+    loadMoreErrorStreamController.disposeWith(this);
+
+    itemsSubject = BehaviorSubject.seeded(
+      mapToItemsList(
+        sortedPages,
       ),
     );
-    addDisposable(subject: refreshStateSubject);
-    addDisposable(subject: loadMoreStateSubject);
-    addDisposable(streamController: refreshErrorStreamController);
-    addDisposable(streamController: loadMoreErrorStreamController);
 
-    itemsSubject = BehaviorSubject.seeded(mapToItemsList(sortedPages));
-
-    addDisposable(
-      streamSubscription: sortedPagesStream.listen(
-        (sortedPages) {
-          itemsSubject.add(mapToItemsList(sortedPages));
-        },
-      ),
-    );
-    addDisposable(subject: itemsSubject);
+    sortedPagesStream.listen(
+          (sortedPages) {
+        itemsSubject.add(mapToItemsList(sortedPages));
+      },
+    ).disposeWith(this);
+    itemsSubject.disposeWith(this);
   }
 
   // ignore: avoid-late-keyword
@@ -98,7 +100,7 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
   Stream<List<TItem>> get itemsStream => itemsSubject.stream;
 
   @override
-  List<TItem> get items => itemsSubject.value!;
+  List<TItem> get items => itemsSubject.value;
 
   @override
   Stream<List<TItem>> get itemsDistinctStream =>

@@ -16,8 +16,7 @@ import 'package:fedi/app/toast/settings/local_preferences/instance/instance_toas
 import 'package:fedi/app/toast/settings/toast_settings_bloc.dart';
 import 'package:fedi/app/toast/settings/toast_settings_bloc_impl.dart';
 import 'package:fedi/app/toast/toast_service.dart';
-import 'package:fedi/disposable/disposable.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/pleroma/api/notification/pleroma_api_notification_model.dart';
@@ -86,23 +85,20 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
     required this.localizationContext,
   }) {
     notificationsPushHandlerBloc.addRealTimeHandler(handlePush);
-    addDisposable(
-      disposable: CustomDisposable(
+    addDisposable(CustomDisposable(
         () async {
           notificationsPushHandlerBloc.removeRealTimeHandler(handlePush);
         },
       ),
     );
 
-    addDisposable(
-      streamSubscription: currentInstanceNotificationPushLoaderBloc
-          .handledNotificationsStream
-          .listen(
-        (handledNotification) {
-          _handleCurrentInstanceNotification(handledNotification);
-        },
-      ),
-    );
+    currentInstanceNotificationPushLoaderBloc
+        .handledNotificationsStream
+        .listen(
+          (handledNotification) {
+        _handleCurrentInstanceNotification(handledNotification);
+      },
+    ).disposeWith(this);
   }
 
   Future<bool> handlePush(

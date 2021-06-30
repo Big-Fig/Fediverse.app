@@ -6,6 +6,7 @@ import 'package:fedi/app/cache/files/settings/files_cache_settings_model.dart';
 import 'package:fedi/app/settings/global_or_instance/edit/edit_global_or_instance_settings_bloc_impl.dart';
 import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_model.dart';
 import 'package:fedi/form/form_item_bloc.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 
 class EditFilesCacheSettingsBloc
     extends EditGlobalOrInstanceSettingsBloc<FilesCacheSettings>
@@ -44,20 +45,12 @@ class EditFilesCacheSettingsBloc
         AgeLimitFilesSelectCacheSingleSelectValueFormFieldBloc(
       isEnabled: isEnabled,
       originValue: currentSettings.ageLimitType,
-    );
+    )..disposeWith(this);
     sizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBloc =
         SizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBloc(
       isEnabled: isEnabled,
       originValue: currentSettings.sizeLimitCountType,
-    );
-
-    addDisposable(
-      disposable: ageLimitFilesSelectCacheSingleSelectValueFormFieldBloc,
-    );
-    addDisposable(
-      disposable:
-          sizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBloc,
-    );
+    )..disposeWith(this);
 
     onFormItemsChanged();
   }

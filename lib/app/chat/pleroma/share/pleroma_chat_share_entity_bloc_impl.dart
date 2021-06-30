@@ -11,7 +11,7 @@ import 'package:fedi/app/share/entity/settings/share_entity_settings_bloc.dart';
 import 'package:fedi/app/share/entity/share_entity_bloc.dart';
 import 'package:fedi/app/share/entity/share_entity_model.dart';
 import 'package:fedi/app/share/to_account/share_to_account_bloc.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pleroma/api/account/pleroma_api_account_service.dart';
 import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart';
 import 'package:fedi/pleroma/api/chat/pleroma_api_chat_service.dart';

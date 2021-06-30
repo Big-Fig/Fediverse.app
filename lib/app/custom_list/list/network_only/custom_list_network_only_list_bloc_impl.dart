@@ -1,7 +1,7 @@
 import 'package:fedi/app/custom_list/custom_list_model.dart';
 import 'package:fedi/app/custom_list/custom_list_model_adapter.dart';
 import 'package:fedi/app/list/network_only/network_only_list_bloc.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:fedi/pleroma/api/list/pleroma_api_list_service.dart';
 import 'package:flutter/widgets.dart';

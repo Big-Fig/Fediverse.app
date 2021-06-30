@@ -14,7 +14,7 @@ import 'package:fedi/app/status/pagination/network_only/status_network_only_pagi
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/collapsible/owner/collapsible_owner_widget.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';

@@ -1,3 +1,4 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/instance/details/instance_details_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
@@ -19,16 +20,14 @@ abstract class InstanceDetailsBloc extends AsyncInitLoadingBloc
     required this.instanceUri,
   })  : refreshController = RefreshController(),
         instanceSubject = BehaviorSubject.seeded(initialInstance) {
-    addDisposable(subject: instanceSubject);
-    addDisposable(custom: () {
-      refreshController.dispose();
-    });
+    instanceSubject.disposeWith(this);
+    addCustomDisposable(() => refreshController.dispose());
   }
 
   IPleromaApiInstanceService get pleromaInstanceService;
 
   @override
-  IPleromaApiInstance? get instance => instanceSubject.value;
+  IPleromaApiInstance? get instance => instanceSubject.valueOrNull;
 
   @override
   Stream<IPleromaApiInstance?> get instanceStream => instanceSubject.stream;

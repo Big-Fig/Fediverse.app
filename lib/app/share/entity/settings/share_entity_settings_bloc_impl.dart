@@ -1,7 +1,7 @@
 import 'package:fedi/app/share/entity/settings/share_entity_settings_bloc.dart';
 import 'package:fedi/app/share/entity/settings/share_entity_settings_model.dart';
 import 'package:fedi/app/share/entity/share_entity_model.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
@@ -10,6 +10,7 @@ import 'package:fedi/form/form_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 
 class ShareEntitySettingsBloc extends FormBloc
     implements IShareEntitySettingsBloc {
@@ -49,7 +50,7 @@ class ShareEntitySettingsBloc extends FormBloc
 
   @override
   ShareEntitySettings get shareEntitySettings =>
-      shareEntitySettingsBehaviourSubject.value!;
+      shareEntitySettingsBehaviourSubject.value;
 
   @override
   List<IFormItemBloc> get currentItems => [
@@ -74,50 +75,48 @@ class ShareEntitySettingsBloc extends FormBloc
   })  : shareEntitySettingsBehaviourSubject =
             BehaviorSubject.seeded(_calculateInitialSettings(shareEntity)),
         super(isAllItemsInitialized: false) {
-    addDisposable(
-      subject: shareEntitySettingsBehaviourSubject,
-    );
+    shareEntitySettingsBehaviourSubject.disposeWith(this);
 
     wholeAsLinkBoolField = BoolValueFormFieldBloc(
       originValue: shareEntitySettings.wholeAsLink,
     );
-    addDisposable(disposable: wholeAsLinkBoolField);
+    addDisposable(wholeAsLinkBoolField);
 
     appendFromAccountBoolField = BoolValueFormFieldBloc(
       originValue: shareEntitySettings.appendFromAccount,
     );
-    addDisposable(disposable: appendFromAccountBoolField);
+    addDisposable(appendFromAccountBoolField);
 
     mediaAsLinkBoolField = BoolValueFormFieldBloc(
       originValue: shareEntitySettings.mediaAsLink,
     );
-    addDisposable(disposable: mediaAsLinkBoolField);
+    addDisposable(mediaAsLinkBoolField);
 
     withCreatedAtBoolField = BoolValueFormFieldBloc(
       originValue: shareEntitySettings.withCreatedAt,
     );
-    addDisposable(disposable: withCreatedAtBoolField);
+    addDisposable(withCreatedAtBoolField);
 
     withLinkBoolField = BoolValueFormFieldBloc(
       originValue: shareEntitySettings.withLink,
     );
-    addDisposable(disposable: withLinkBoolField);
+    addDisposable(withLinkBoolField);
 
     withMediaBoolField = BoolValueFormFieldBloc(
       originValue: shareEntitySettings.withMedia,
     );
-    addDisposable(disposable: withMediaBoolField);
+    addDisposable(withMediaBoolField);
 
     withMessageStringField = StringValueFormFieldBloc(
       originValue: shareEntitySettings.withMessage ?? '',
       maxLength: null,
       validators: [],
     );
-    addDisposable(disposable: withMessageStringField);
+    addDisposable(withMessageStringField);
 
     withTextBoolField =
         BoolValueFormFieldBloc(originValue: shareEntitySettings.withText);
-    addDisposable(disposable: withTextBoolField);
+    addDisposable(withTextBoolField);
 
     onFormItemsChanged();
 

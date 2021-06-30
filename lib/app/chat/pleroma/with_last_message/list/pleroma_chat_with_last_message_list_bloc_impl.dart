@@ -11,7 +11,7 @@ import 'package:fedi/app/chat/pleroma/with_last_message/pleroma_chat_with_last_m
 import 'package:fedi/app/chat/pleroma/with_last_message/repository/pleroma_chat_with_last_message_repository.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
@@ -62,32 +62,24 @@ class PleromaChatWithLastMessageListBloc extends DisposableOwner
       pleromaChatService: pleromaChatService,
       chatWithLastMessageRepository: chatWithLastMessageRepository,
       chatRepository: chatRepository,
-    );
+    )..disposeWith(this);
     chatPaginationBloc = PleromaChatWithLastMessagePaginationBloc(
       cachedListBloc: chatListBloc,
       paginationSettingsBloc: paginationSettingsBloc,
       maximumCachedPagesCount: null,
-    );
+    )..disposeWith(this);
 
     chatPaginationListWithNewItemsBloc =
         PleromaChatWithLastMessagePaginationListWithNewItemsBloc(
       paginationBloc: chatPaginationBloc,
       cachedListBloc: chatListBloc,
       mergeNewItemsImmediately: true,
-    );
-
-    addDisposable(disposable: chatListBloc);
-    addDisposable(
-      disposable: chatPaginationBloc,
-    );
-    addDisposable(disposable: chatPaginationListWithNewItemsBloc);
+    )..disposeWith(this);
 
     if (pleromaChatService.isPleroma) {
-      addDisposable(
-        disposable: webSocketsHandlerManagerBloc.listenPleromaChatChannel(
-          listenType: webSocketsListenType,
-        ),
-      );
+      webSocketsHandlerManagerBloc.listenPleromaChatChannel(
+        listenType: webSocketsListenType,
+      ).disposeWith(this);
     }
   }
 

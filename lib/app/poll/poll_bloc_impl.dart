@@ -2,11 +2,12 @@ import 'dart:async';
 
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/poll/poll_bloc.dart';
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/mastodon/api/poll/mastodon_api_poll_model.dart';
 import 'package:fedi/pleroma/api/poll/pleroma_api_poll_model.dart';
 import 'package:fedi/pleroma/api/poll/pleroma_api_poll_service.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
 
 class PollBloc extends DisposableOwner implements IPollBloc {
   final BehaviorSubject<IPleromaApiPoll> pollSubject;
@@ -16,7 +17,7 @@ class PollBloc extends DisposableOwner implements IPollBloc {
 
   @override
   bool get isNeedShowResultsWithoutVote =>
-      isNeedShowResultsWithoutVoteSubject.value!;
+      isNeedShowResultsWithoutVoteSubject.value;
 
   @override
   Stream<bool> get isNeedShowResultsWithoutVoteStream =>
@@ -34,9 +35,9 @@ class PollBloc extends DisposableOwner implements IPollBloc {
     required this.pleromaPollService,
     required this.instanceLocation,
   }) : pollSubject = BehaviorSubject.seeded(poll) {
-    addDisposable(subject: pollSubject);
-    addDisposable(subject: selectedVotesSubject);
-    addDisposable(subject: isNeedShowResultsWithoutVoteSubject);
+    pollSubject.disposeWith(this);
+    selectedVotesSubject.disposeWith(this);
+    isNeedShowResultsWithoutVoteSubject.disposeWith(this);
 
     if (!poll.expired && poll.expiresAt != null) {
       var diff = DateTime.now()
@@ -45,14 +46,12 @@ class PollBloc extends DisposableOwner implements IPollBloc {
           )
           .abs();
 
-      addDisposable(
-        timer: Timer(
-          diff,
-          () {
-            refreshFromNetwork();
-          },
-        ),
-      );
+      Timer(
+        diff,
+            () {
+          refreshFromNetwork();
+        },
+      ).disposeWith(this);
     }
   }
 
@@ -60,7 +59,7 @@ class PollBloc extends DisposableOwner implements IPollBloc {
       instanceLocation == InstanceLocation.local;
 
   @override
-  IPleromaApiPoll get poll => pollSubject.value!;
+  IPleromaApiPoll get poll => pollSubject.value;
 
   @override
   Stream<IPleromaApiPoll> get pollStream => pollSubject.stream;
@@ -133,7 +132,7 @@ class PollBloc extends DisposableOwner implements IPollBloc {
   }
 
   @override
-  List<IPleromaApiPollOption> get selectedVotes => selectedVotesSubject.value!;
+  List<IPleromaApiPollOption> get selectedVotes => selectedVotesSubject.value;
 
   @override
   Stream<List<IPleromaApiPollOption>> get selectedVotesStream =>

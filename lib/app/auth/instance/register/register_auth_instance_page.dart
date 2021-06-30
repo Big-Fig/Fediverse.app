@@ -10,11 +10,12 @@ import 'package:fedi/app/toast/toast_service.dart';
 import 'package:fedi/app/ui/button/icon/fedi_dismiss_icon_button.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
 import 'package:fedi/connection/connection_service.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 
 class RegisterAuthInstancePage extends StatelessWidget {
   const RegisterAuthInstancePage();
@@ -70,33 +71,31 @@ Future<AuthHostRegistrationResult?> goToRegisterAuthInstancePage(
               ),
             );
 
-            registerAuthInstanceBloc.addDisposable(
-              streamSubscription:
-                  registerAuthInstanceBloc.registrationResultStream.listen(
-                (AuthHostRegistrationResult registrationResult) async {
-                  if (registrationResult.isPossibleToLogin) {
-                    await ICurrentAuthInstanceBloc.of(context, listen: false)
-                        .changeCurrentInstance(
-                      registrationResult.authInstance!,
-                    );
+            registerAuthInstanceBloc.registrationResultStream.listen(
+                  (AuthHostRegistrationResult registrationResult) async {
+                if (registrationResult.isPossibleToLogin) {
+                  await ICurrentAuthInstanceBloc.of(context, listen: false)
+                      .changeCurrentInstance(
+                    registrationResult.authInstance!,
+                  );
+                } else {
+                  if (registrationResult.approvalRequired) {
+                    _showApprovalRequiredToast(context);
+                  } else if (registrationResult.emailConfirmationRequired) {
+                    _showEmailConfirmationRequiredToast(context);
                   } else {
-                    if (registrationResult.approvalRequired) {
-                      _showApprovalRequiredToast(context);
-                    } else if (registrationResult.emailConfirmationRequired) {
-                      _showEmailConfirmationRequiredToast(context);
-                    } else {
-                      _showCantLoginToast(
-                        context,
-                        errorDescription:
-                            registrationResult.anyError?.toString(),
-                      );
-                    }
+                    _showCantLoginToast(
+                      context,
+                      errorDescription:
+                      registrationResult.anyError?.toString(),
+                    );
                   }
+                }
 
-                  Navigator.pop(context, registrationResult);
-                },
-              ),
-            );
+                Navigator.pop(context, registrationResult);
+              },
+            ).disposeWith(registerAuthInstanceBloc);
+
 
             return registerAuthInstanceBloc;
           },

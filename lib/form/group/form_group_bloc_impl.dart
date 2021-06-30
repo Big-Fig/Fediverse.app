@@ -1,4 +1,4 @@
-import 'package:fedi/disposable/disposable_owner.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:fedi/form/form_item_bloc_impl.dart';
 import 'package:fedi/form/form_item_validation.dart';
@@ -13,28 +13,27 @@ abstract class FormGroupBloc<T extends IFormItemBloc> extends FormItemBloc
       BehaviorSubject.seeded(false);
 
   FormGroupBloc() {
-    addDisposable(subject: errorsSubject);
-    addDisposable(subject: isSomethingChangedSubject);
+    errorsSubject.disposeWith(this);
+    isSomethingChangedSubject.disposeWith(this);
 
-    addDisposable(custom: () {
-      itemsErrorSubscription?.dispose();
-    });
-    addDisposable(custom: () {
-      isSomethingChangedSubscription?.dispose();
-    });
-
-    addDisposable(
-      streamSubscription: itemsStream.listen(
-        (newItems) {
-          _subscribeForErrors(newItems);
-          _subscribeForIsSomethingChanged(newItems);
-        },
-      ),
+    addCustomDisposable(
+      () => itemsErrorSubscription?.dispose(),
     );
+
+    addCustomDisposable(
+      () => isSomethingChangedSubscription?.dispose(),
+    );
+
+    itemsStream.listen(
+      (newItems) {
+        _subscribeForErrors(newItems);
+        _subscribeForIsSomethingChanged(newItems);
+      },
+    ).disposeWith(this);
   }
 
   @override
-  bool get isSomethingChanged => isSomethingChangedSubject.value!;
+  bool get isSomethingChanged => isSomethingChangedSubject.value;
 
   @override
   Stream<bool> get isSomethingChangedStream => isSomethingChangedSubject.stream;
@@ -43,7 +42,7 @@ abstract class FormGroupBloc<T extends IFormItemBloc> extends FormItemBloc
       BehaviorSubject.seeded([]);
 
   @override
-  List<FormItemValidationError> get errors => errorsSubject.value!;
+  List<FormItemValidationError> get errors => errorsSubject.value;
 
   @override
   Stream<List<FormItemValidationError>> get errorsStream =>
@@ -70,13 +69,11 @@ abstract class FormGroupBloc<T extends IFormItemBloc> extends FormItemBloc
     if (newItems?.isNotEmpty == true) {
       newItems!.forEach(
         (IFormItemBloc item) {
-          itemsErrorSubscription!.addDisposable(
-            streamSubscription: item.errorsStream.listen(
-              (_) {
-                recalculateErrors();
-              },
-            ),
-          );
+          item.errorsStream.listen(
+                (_) {
+              recalculateErrors();
+            },
+          ).disposeWith(itemsErrorSubscription!);
         },
       );
     }
@@ -92,13 +89,11 @@ abstract class FormGroupBloc<T extends IFormItemBloc> extends FormItemBloc
     if (newItems?.isNotEmpty == true) {
       newItems!.forEach(
         (IFormItemBloc item) {
-          isSomethingChangedSubscription!.addDisposable(
-            streamSubscription: item.isSomethingChangedStream.listen(
-              (_) {
-                recalculateIsSomethingChanged();
-              },
-            ),
-          );
+          item.isSomethingChangedStream.listen(
+                (_) {
+              recalculateIsSomethingChanged();
+            },
+          ).disposeWith(isSomethingChangedSubscription!);
         },
       );
     }

@@ -1,3 +1,4 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/timeline/create/create_timeline_bloc.dart';
@@ -28,7 +29,7 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
 
   @override
   IEditTimelineSettingsBloc? get editTimelineSettingsBloc =>
-      editTimelineSettingsBlocSubject.value;
+      editTimelineSettingsBlocSubject.valueOrNull;
 
   @override
   Stream<IEditTimelineSettingsBloc?> get editTimelineSettingsBlocStream =>
@@ -81,20 +82,18 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
 
     _onFieldsChanged();
 
-    addDisposable(
-      streamSubscription: typeFieldBloc.currentValueStream.listen(
-        (timelineType) {
-          _onTypeChanged(timelineType);
-        },
-      ),
-    );
+    typeFieldBloc.currentValueStream.listen(
+      (timelineType) {
+        _onTypeChanged(timelineType);
+      },
+    ).disposeWith(this);
 
-    addDisposable(disposable: idFieldBloc);
-    addDisposable(disposable: nameFieldBloc);
-    addDisposable(disposable: typeFieldBloc);
-    addDisposable(disposable: timelineLocalPreferencesBloc);
-    addDisposable(disposable: timelineSettingsBloc);
-    addDisposable(disposable: editTimelineSettingsBloc);
+    addDisposable(idFieldBloc);
+    addDisposable(nameFieldBloc);
+    addDisposable(typeFieldBloc);
+    addDisposable(timelineLocalPreferencesBloc);
+    addDisposable(timelineSettingsBloc);
+    addDisposable(editTimelineSettingsBloc!);
   }
 
   EditTimelineSettingsBloc _createEditTimelineSettingsBloc(
@@ -178,7 +177,7 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
     );
 
     editTimelineSettingsBlocSubject.add(newEditTimelineSettingsBloc);
-    addDisposable(disposable: editTimelineSettingsBloc);
+    addDisposable(editTimelineSettingsBloc!);
 
     _onFieldsChanged();
 

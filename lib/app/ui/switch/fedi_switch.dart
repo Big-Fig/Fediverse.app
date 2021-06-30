@@ -1,5 +1,6 @@
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
-import 'package:fedi/disposable/disposable_provider.dart';
 import 'package:fedi/ui/switch/custom_switch.dart';
 import 'package:fedi/ui/switch/custom_switch_bloc.dart';
 import 'package:fedi/ui/switch/custom_switch_bloc_impl.dart';
@@ -25,36 +26,34 @@ class FediSwitch extends StatelessWidget {
     var fediUiColorTheme = IFediUiColorTheme.of(context);
 
     return Provider<bool>.value(
-        value: value,
-        child: DisposableProxyProvider<bool, ICustomSwitchBloc>(
-          update: (context, value, previous) {
-            var switchBloc = CustomSwitchBloc(startValue: value);
-            switchBloc.addDisposable(
-              streamSubscription: switchBloc.currentValueStream.listen(
-                (newValue) {
-                  onChanged(newValue);
-                },
-              ),
-            );
+      value: value,
+      child: DisposableProxyProvider<bool, ICustomSwitchBloc>(
+        update: (context, value, previous) {
+          var switchBloc = CustomSwitchBloc(startValue: value);
+          switchBloc.currentValueStream.listen(
+            (newValue) {
+              onChanged(newValue);
+            },
+          ).disposeWith(switchBloc);
 
-            return switchBloc;
-          },
-          child: CustomSwitch(
-            width: 43.0,
-            height: 19.0,
-            indicatorSize: 11.0,
-            backgroundBorderRadius: 19.0,
-            indicatorActiveColor: fediUiColorTheme.primary,
-            indicatorInactiveColor: fediUiColorTheme.lightGrey,
-            indicatorDisabledColor: fediUiColorTheme.ultraLightGrey,
-            backgroundActiveColor: fediUiColorTheme.transparent,
-            backgroundInactiveColor: fediUiColorTheme.transparent,
-            // ignore: no-equal-arguments
-            backgroundDisabledColor: fediUiColorTheme.transparent,
-            borderColor: fediUiColorTheme.black,
-            enabled: enabled,
-          ),
+          return switchBloc;
+        },
+        child: CustomSwitch(
+          width: 43.0,
+          height: 19.0,
+          indicatorSize: 11.0,
+          backgroundBorderRadius: 19.0,
+          indicatorActiveColor: fediUiColorTheme.primary,
+          indicatorInactiveColor: fediUiColorTheme.lightGrey,
+          indicatorDisabledColor: fediUiColorTheme.ultraLightGrey,
+          backgroundActiveColor: fediUiColorTheme.transparent,
+          backgroundInactiveColor: fediUiColorTheme.transparent,
+          // ignore: no-equal-arguments
+          backgroundDisabledColor: fediUiColorTheme.transparent,
+          borderColor: fediUiColorTheme.black,
+          enabled: enabled,
         ),
-      );
+      ),
+    );
   }
 }
