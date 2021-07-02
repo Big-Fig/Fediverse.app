@@ -2,7 +2,7 @@ import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:logging/logging.dart';
-import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 final _logger = Logger('config_service_impl.dart');
 

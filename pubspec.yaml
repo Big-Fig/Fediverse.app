@@ -202,7 +202,7 @@ dependencies:
   flutter_config: ^2.0.0
 
   # get build details for config
-  package_info: ^2.0.2
+  package_info_plus: ^1.0.3
 
   # rich notification with possible integration with FCM
   awesome_notifications: ^0.0.6+9
