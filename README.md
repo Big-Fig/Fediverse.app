@@ -368,6 +368,21 @@ rm Podfile.lock
 pod install
 ```
 
+Sometimes you change package version in `pubspec.yaml` run `pub get` but version not changes
+
+```
+rm pubspec.lock
+rm .flutter-plugins
+rm .flutter-plugins-dependencies
+rm .packages
+rm -rf .dart_tool
+pub get
+```
+
+Sometimes even this don't work
+Additionally you can change version to bounds `^1.0.0` to `>=1.0.0` 
+run `pub get` check `pubspec.lock` that version changed and revert changes in `pubspec.yaml`  
+
 #### App ID
 
 Changing App ID is required if you want to setup own PushRelayFCM server and pushes via your Firebase project for FCM. 
