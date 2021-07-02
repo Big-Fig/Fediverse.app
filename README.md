@@ -1,7 +1,12 @@
 # Fedi for Pleroma and Mastodon
 [![Translate - with Weblate](https://img.shields.io/badge/translate%20with-Weblate-green.svg?style=flat)](https://translate.pleroma.social/engage/fedi-app/) 
 
-A client for Pleroma and Mastodon instances written using Flutter
+Fedi is open-source client for [Pleroma](https://pleroma.social/) and [Mastodon](https://joinmastodon.org/) social networks written using Flutter.
+
+Pleroma and Mastodon are parts of [Fediverse](https://en.wikipedia.org/wiki/Fediverse) (decentralized social network). Main idea of Fediverse - nobody owns Fediverse. Anybody can run their own server instance and use it to communicate with other people.
+
+So Fedi is an open-source mobile client for social networks and has features similar to Twitter.
+
 <p float="left">
 	<img src="./images/screenshot_1.webp" alt="Fedi screenshot" width="200"/>
 	<img src="./images/screenshot_2.webp" alt="Fedi screenshot" width="200"/>
