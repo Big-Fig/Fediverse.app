@@ -126,7 +126,7 @@ dependencies:
   web_socket_channel: ^2.1.0
 
   # save photo and video to gallery
-  gallery_saver: ^2.1.0
+  gallery_saver: ^2.1.2
 
   # share actions via native API
   share_plus: ^2.1.4
