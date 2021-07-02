@@ -1,6 +1,6 @@
-import 'package:connectivity/connectivity.dart';
-import 'package:fedi/async/loading/init/async_init_loading_bloc.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:easy_dispose/easy_dispose.dart';
+import 'package:fedi/async/loading/init/async_init_loading_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
