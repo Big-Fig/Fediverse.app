@@ -1,10 +1,10 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/share/external/external_share_model.dart';
 import 'package:fedi/app/share/external/external_share_service.dart';
-import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/file/temp/temp_file_helper.dart';
 import 'package:fedi/file/temp/temp_file_model.dart';
 import 'package:mime_type/mime_type.dart';
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ExternalShareService extends DisposableOwner
     implements IExternalShareService {
@@ -42,13 +42,11 @@ class ExternalShareService extends DisposableOwner
     }
   }
 
-  Future<String?> shareSeveralUrlFilesAsBytesWithoutText(
-    List<ShareUrlFile> urlFiles,
-    String? text,
-    String popupTitle,
-  ) async {
+  Future<String?> shareSeveralUrlFilesAsBytesWithoutText(List<ShareUrlFile> urlFiles,
+      String? text,
+      String popupTitle,) async {
     var urlFilesPossibleToShareAsBytes =
-        urlFiles.where((urlFile) => isPossibleToShareAsBytes(urlFile.url));
+    urlFiles.where((urlFile) => isPossibleToShareAsBytes(urlFile.url));
 
     text = text ?? '';
 
@@ -61,14 +59,14 @@ class ExternalShareService extends DisposableOwner
       if (nonFirstUrlFileToShareAsBytes.isNotEmpty) {
         text += '[${nonFirstUrlFileToShareAsBytes.map(
               (attachment) => attachment.url,
-            ).join(', ')}]';
+        ).join(', ')}]';
       }
 
       var file = await TempFileHelper.downloadFileToTempFolder(
         request: DownloadTempFileRequest(
           url: url,
           filenameWithExtension:
-              firstUrlFileToShareAsFiles.filenameWithExtension,
+          firstUrlFileToShareAsFiles.filenameWithExtension,
         ),
       );
 
@@ -84,7 +82,7 @@ class ExternalShareService extends DisposableOwner
     } else {
       // share everything as text
       text +=
-          '[${urlFilesPossibleToShareAsBytes.map((urlFile) => urlFile.url).join(', ')}]';
+      '[${urlFilesPossibleToShareAsBytes.map((urlFile) => urlFile.url).join(', ')}]';
     }
 
     return text;

@@ -129,7 +129,7 @@ dependencies:
   gallery_saver: ^2.1.0
 
   # share actions via native API
-  share: ^2.0.1
+  share_plus: ^2.1.4
 
   # detect mime type be extension
   mime: ^1.0.0
