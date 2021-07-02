@@ -72,7 +72,7 @@ dependencies:
   # positioned list view
   scrollable_positioned_list: ^0.2.0-nullsafety.0
   # edit images during account editing
-  image_cropper: ^1.4.0
+  image_cropper: ^1.4.1
   # cache images locally
   cached_network_image: ^3.0.0
   # cache manager for cached_network_image. Use to set up cache settings
