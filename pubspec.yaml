@@ -156,7 +156,7 @@ dependencies:
   overlay_support: ^1.2.1
 
   # file picker for media attachment
-  file_picker: ^3.0.1
+  file_picker: ^3.0.3
 
   # unenscape account not field
   html_unescape: ^2.0.0
