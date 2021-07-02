@@ -175,7 +175,7 @@ dependencies:
   flutter_slidable: ^0.6.0
 
   # disable wakelock for video player
-  wakelock: ^0.4.0
+  wakelock: ^0.5.2
 
   # ask for review inside app
   in_app_review: ^2.0.2
