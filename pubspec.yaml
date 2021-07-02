@@ -123,7 +123,7 @@ dependencies:
   connectivity_plus: ^1.0.4
 
   # WebSockets API mobile implementation
-  web_socket_channel: ^2.0.0
+  web_socket_channel: ^2.1.0
 
   # save photo and video to gallery
   gallery_saver: ^2.1.0
