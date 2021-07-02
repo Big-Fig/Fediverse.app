@@ -62,7 +62,7 @@ dependencies:
   # retrieve storage path to save files
   path_provider: ^2.0.2
   # fetch gallery albums and items
-  photo_manager: ^1.1.4
+  photo_manager: ^1.2.4
   # detect file mime type for share
   mime_type: ^1.0.0
   # datetime formatter for statuses & chat messages
