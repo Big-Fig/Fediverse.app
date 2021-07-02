@@ -120,13 +120,13 @@ dependencies:
   moor_inspector: ^0.2.0
 
   # check internet connection state
-  connectivity_plus: ^1.0.4
+  connectivity: ^3.0.6
 
   # WebSockets API mobile implementation
   web_socket_channel: ^2.1.0
 
   # save photo and video to gallery
-  gallery_saver: ^2.1.2
+  gallery_saver: ^2.1.0
 
   # share actions via native API
   share_plus: ^2.1.4

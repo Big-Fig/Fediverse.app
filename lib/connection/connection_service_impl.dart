@@ -1,4 +1,4 @@
-import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:easy_dispose_flutter/easy_dispose_flutter.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
