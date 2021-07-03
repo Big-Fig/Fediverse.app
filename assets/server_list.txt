@@ -3633,6 +3633,7 @@ incognitum.bghost.xyz
 indie.chat
 indie.computer
 indiefedi.party
+indieweb.social
 indigedon.com
 indigo.zone
 inditoot.com
