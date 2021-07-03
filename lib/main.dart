@@ -14,6 +14,7 @@ import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/join/from_scratch/from_scratch_join_auth_instance_page.dart';
 import 'package:fedi/app/auth/instance/join/join_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/join/join_auth_instance_bloc_impl.dart';
+import 'package:fedi/app/auth/instance/join/join_auth_instance_bloc_proxy_provider.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_page.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/app/config/config_service.dart';
@@ -60,7 +61,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:logging/logging.dart';
-
 import 'package:provider/provider.dart';
 
 var _logger = Logger('main.dart');
@@ -370,7 +370,9 @@ void runInitializedLoginApp(IAppContextBloc appContextBloc) {
         ),
         child: FediApp(
           instanceInitialized: false,
-          child: const FromScratchJoinAuthInstancePage(),
+          child: JoinAuthInstanceBlocProxyProvider(
+            child: const FromScratchJoinAuthInstancePage(),
+          ),
         ),
       ),
     ),
@@ -564,8 +566,7 @@ void _initIncomeShareHandler({
         case IncomeShareHandlerError.authInstanceListIsEmpty:
           IToastService.of(context).showErrorToast(
             context: context,
-            title:
-            S.of(context).app_share_income_error_authInstanceListIsEmpty,
+            title: S.of(context).app_share_income_error_authInstanceListIsEmpty,
           );
           break;
       }

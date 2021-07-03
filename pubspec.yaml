@@ -264,6 +264,7 @@ flutter:
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
   assets:
+    - assets/server_list.txt
     - assets/terms/terms.rtf
     - assets/images/theme/logo.png
     - assets/images/default_timeline_header.png

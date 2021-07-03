@@ -7,6 +7,7 @@ import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/join/join_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/register/register_auth_instance_page.dart';
 import 'package:fedi/app/config/config_service.dart';
+import 'package:fedi/app/server_list/server_list_auto_complete_widget.dart';
 import 'package:fedi/app/tos/tos_page.dart';
 import 'package:fedi/app/ui/button/text/with_border/fedi_transparent_text_button_with_border.dart';
 import 'package:fedi/app/ui/edit_text/fedi_transparent_edit_text_field.dart';
@@ -160,28 +161,38 @@ class _JoinAuthInstanceHostTextFieldWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        FediTransparentEditTextField(
-          autocorrect: false,
-          expanded: false,
-          hintText: IConfigService.of(context).appDefaultInstanceUrl,
-          onSubmitted: (String value) {
-            logInToInstance(context);
-          },
-          textInputAction: TextInputAction.go,
-          autofocus: false,
-          maxLines: 1,
+        ServerListAutoCompleteWidget(
           textEditingController: joinInstanceBloc.hostTextController,
-          keyboardType: TextInputType.url,
-          errorText: null,
-          focusNode: null,
-          displayUnderlineBorder: true,
-          customBorderColor:
-              // todo: refactor
-              // ignore: no-magic-number
-              IFediUiColorTheme.of(context).white.withOpacity(0.8),
-          textStyle: IFediUiTextTheme.of(context).subHeaderTallWhite,
-          highlightMentions: false,
-          maxLength: null,
+          focusNode: joinInstanceBloc.hostFocusNode,
+          fieldViewBuilder: (
+            BuildContext context,
+            TextEditingController textEditingController,
+            FocusNode focusNode,
+            VoidCallback onFieldSubmitted,
+          ) =>
+              FediTransparentEditTextField(
+            autocorrect: false,
+            expanded: false,
+            hintText: IConfigService.of(context).appDefaultInstanceUrl,
+            onSubmitted: (String value) {
+              logInToInstance(context);
+            },
+            textInputAction: TextInputAction.go,
+            autofocus: false,
+            maxLines: 1,
+            textEditingController: textEditingController,
+            keyboardType: TextInputType.url,
+            errorText: null,
+            focusNode: focusNode,
+            displayUnderlineBorder: true,
+            customBorderColor:
+                // todo: refactor
+                // ignore: no-magic-number
+                IFediUiColorTheme.of(context).white.withOpacity(0.8),
+            textStyle: IFediUiTextTheme.of(context).subHeaderTallWhite,
+            highlightMentions: false,
+            maxLength: null,
+          ),
         ),
         Text(
           S.of(context).app_auth_instance_join_field_host_helper,

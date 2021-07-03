@@ -533,3 +533,8 @@ So, Fedi requires manual increase version code & name in `Runner` and `Share Ext
 
 XCode project have additional ShareExtension module required by [`receive_sharing_intent`](https://pub.dev/packages/receive_sharing_intent) to handle income share events.
 It also important to add `Target` and `ShareExtension` to same group ID.
+
+
+## 3rd Party
+
+* `assets/server_list.txt` taken from [tateisu/SubwayTooter](https://github.com/tateisu/SubwayTooter)
