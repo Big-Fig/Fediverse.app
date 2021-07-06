@@ -122,3 +122,11 @@ app.*.symbols
 # config which excluded from source control
 /env_dev.env
 /env_prod.env
+/android/app/src/dev/google-services.json
+/android/app/src/prod/
+/android/app/src/prod/google-services.json
+/ios/config/
+/ios/config/dev/
+/ios/config/dev/GoogleService-Info.plist
+/ios/config/prod/
+/ios/config/prod/GoogleService-Info.plist
