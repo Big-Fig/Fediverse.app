@@ -10,9 +10,12 @@ var urlPath = path.posix;
 var _logger = Logger('push_relay_service_impl.dart');
 
 class PushRelayService extends DisposableOwner implements IPushRelayService {
+  @override
   final String pushRelayBaseUrl;
 
-  PushRelayService({required this.pushRelayBaseUrl});
+  PushRelayService({
+    required this.pushRelayBaseUrl,
+  });
 
   @override
   String createPushRelayEndPointUrl({
@@ -36,7 +39,7 @@ class PushRelayService extends DisposableOwner implements IPushRelayService {
 
     if (Platform.isIOS) {
       endpoint += '&device=iOS';
-    // ignore: no-empty-block
+      // ignore: no-empty-block
     } else if (Platform.isAndroid) {
 //      endpoint += '&device=android';
       // nothing

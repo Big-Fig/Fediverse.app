@@ -86,6 +86,10 @@ class MockIPushRelayService extends _i1.Mock implements _i7.IPushRelayService {
   }
 
   @override
+  String get pushRelayBaseUrl =>
+      (super.noSuchMethod(Invocation.getter(#pushRelayBaseUrl), returnValue: '')
+          as String);
+  @override
   bool get isDisposed =>
       (super.noSuchMethod(Invocation.getter(#isDisposed), returnValue: false)
           as bool);

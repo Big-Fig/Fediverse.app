@@ -90,6 +90,8 @@ import 'package:fedi/app/push/settings/local_preferences/instance/instance_push_
 import 'package:fedi/app/push/settings/local_preferences/push_settings_local_preference_bloc.dart';
 import 'package:fedi/app/push/settings/push_settings_bloc.dart';
 import 'package:fedi/app/push/settings/push_settings_bloc_impl.dart';
+import 'package:fedi/app/push/settings/relay/local_preferences/instance/instance_push_relay_settings_local_preference_bloc.dart';
+import 'package:fedi/app/push/settings/relay/local_preferences/instance/instance_push_relay_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/search/recent/local_preferences/recent_search_local_preference_bloc.dart';
 import 'package:fedi/app/search/recent/local_preferences/recent_search_local_preference_bloc_impl.dart';
 import 'package:fedi/app/share/select_account/recent/local_preferences/recent_share_select_account_local_preference_bloc.dart';
@@ -376,21 +378,21 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     await globalProviderService
         .asyncInitAndRegister<IPleromaApiCaptchaService>(pleromaCaptchaService);
 
-    var pleromaAnnouncementsService =
-        PleromaApiAnnouncementService(restService: pleromaAuthRestService)
-          ..disposeWith(this);
+    var pleromaAnnouncementsService = PleromaApiAnnouncementService(
+      restService: pleromaAuthRestService,
+    )..disposeWith(this);
     await globalProviderService.asyncInitAndRegister<
         IPleromaApiAnnouncementService>(pleromaAnnouncementsService);
 
-    var pleromaMediaAttachmentService =
-        PleromaApiMediaAttachmentService(restApiAuthService: pleromaAuthRestService)
-          ..disposeWith(this);
+    var pleromaMediaAttachmentService = PleromaApiMediaAttachmentService(
+      restApiAuthService: pleromaAuthRestService,
+    )..disposeWith(this);
     await globalProviderService.asyncInitAndRegister<
         IPleromaApiMediaAttachmentService>(pleromaMediaAttachmentService);
 
-    var pleromaListService =
-        PleromaApiListService(restApiAuthService: pleromaAuthRestService)
-          ..disposeWith(this);
+    var pleromaListService = PleromaApiListService(
+      restApiAuthService: pleromaAuthRestService,
+    )..disposeWith(this);
     await globalProviderService
         .asyncInitAndRegister<IPleromaApiListService>(pleromaListService);
 
@@ -447,9 +449,9 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
       pleromaApiStatusEmojiReactionService,
     );
 
-    var pleromaConversationService =
-        PleromaApiConversationService(restApiAuthService: pleromaAuthRestService)
-          ..disposeWith(this);
+    var pleromaConversationService = PleromaApiConversationService(
+      restApiAuthService: pleromaAuthRestService,
+    )..disposeWith(this);
     await globalProviderService.asyncInitAndRegister<
         IPleromaApiConversationService>(pleromaConversationService);
 
@@ -471,9 +473,9 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     await globalProviderService
         .asyncInitAndRegister<IPleromaApiSearchService>(pleromaSearchService);
 
-    var pleromaNotificationService =
-        PleromaApiNotificationService(restApiAuthService: pleromaAuthRestService)
-          ..disposeWith(this);
+    var pleromaNotificationService = PleromaApiNotificationService(
+      restApiAuthService: pleromaAuthRestService,
+    )..disposeWith(this);
     await globalProviderService.asyncInitAndRegister<
         IPleromaApiNotificationService>(pleromaNotificationService);
 
@@ -483,15 +485,15 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     await globalProviderService.asyncInitAndRegister<
         IPleromaApiDirectoryService>(pleromaDirectoryService);
 
-    var pleromaEndorsementsService =
-        PleromaApiEndorsementsService(restApiAuthService: pleromaAuthRestService)
-          ..disposeWith(this);
+    var pleromaEndorsementsService = PleromaApiEndorsementsService(
+      restApiAuthService: pleromaAuthRestService,
+    )..disposeWith(this);
     await globalProviderService.asyncInitAndRegister<
         IPleromaApiEndorsementsService>(pleromaEndorsementsService);
 
-    var pleromaFeaturedTagsService =
-        PleromaApiFeaturedTagsService(restApiAuthService: pleromaAuthRestService)
-          ..disposeWith(this);
+    var pleromaFeaturedTagsService = PleromaApiFeaturedTagsService(
+      restApiAuthService: pleromaAuthRestService,
+    )..disposeWith(this);
     await globalProviderService.asyncInitAndRegister<
         IPleromaApiFeaturedTagsService>(pleromaFeaturedTagsService);
 
@@ -584,6 +586,17 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
       instancePushSettingsLocalPreferenceBloc,
     );
 
+    var instancePushRelaySettingsLocalPreferenceBloc =
+        InstancePushRelaySettingsLocalPreferenceBloc(
+      preferencesService,
+      userAtHost: userAtHost,
+    )..disposeWith(this);
+
+    await globalProviderService
+        .asyncInitAndRegister<IInstancePushRelaySettingsLocalPreferenceBloc>(
+      instancePushRelaySettingsLocalPreferenceBloc,
+    );
+
     var myAccountBloc = MyAccountBloc(
       pleromaMyAccountService: pleromaMyAccountService,
       myAccountLocalPreferenceBloc: myAccountLocalPreferenceBloc,
@@ -644,11 +657,18 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
 
       var pushSettingsBloc = PushSettingsBloc(
         pushRelayService: pushRelayService,
-        instanceLocalPreferencesBloc: instancePushSettingsLocalPreferenceBloc,
+        instancePushSettingsLocalPreferenceBloc:
+            instancePushSettingsLocalPreferenceBloc,
+        instancePushRelaySettingsLocalPreferenceBloc:
+            instancePushRelaySettingsLocalPreferenceBloc,
         pleromaPushService: pleromaPushService,
         currentInstance: currentInstance,
         fcmPushService: fcmPushService,
       )..disposeWith(this);
+
+      // check is push config changed after app update and resubscribes in the background
+      // ignore: unawaited_futures
+      pushSettingsBloc.reSubscribeIfNeeded();
 
       await globalProviderService
           .asyncInitAndRegister<IPushSettingsBloc>(pushSettingsBloc);

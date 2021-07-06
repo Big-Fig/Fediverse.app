@@ -18,6 +18,7 @@ import 'package:fedi/app/pagination/settings/pagination_settings_model.dart';
 import 'package:fedi/app/push/notification/handler/notifications_push_handler_model.dart';
 import 'package:fedi/app/push/notification/handler/unhandled/notifications_push_handler_unhandled_model.dart';
 import 'package:fedi/app/push/settings/push_settings_model.dart';
+import 'package:fedi/app/push/settings/relay/push_relay_settings_model.dart';
 import 'package:fedi/app/search/recent/recent_search_model.dart';
 import 'package:fedi/app/status/post/settings/post_status_settings_model.dart';
 import 'package:fedi/app/status/sensitive/settings/status_sensitive_settings_model.dart';
@@ -129,5 +130,6 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
     Hive.registerAdapter(PleromaApiFilterAdapter());
     Hive.registerAdapter(InstanceAnnouncementSettingsAdapter());
     Hive.registerAdapter(CrashReportingSettingsAdapter());
+    Hive.registerAdapter(PushRelaySettingsAdapter());
   }
 }

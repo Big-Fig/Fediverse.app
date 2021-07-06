@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:fedi/app/push/settings/local_preferences/instance/instance_push_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/push/settings/push_settings_bloc_impl.dart';
 import 'package:fedi/app/push/settings/push_settings_model.dart';
+import 'package:fedi/app/push/settings/relay/local_preferences/instance/instance_push_relay_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
 import 'package:fedi/pleroma/api/push/pleroma_api_push_model.dart';
 import 'package:fedi/pleroma/api/push/pleroma_api_push_service.dart';
@@ -24,7 +25,9 @@ import './push_settings_bloc_impl_test.mocks.dart';
 void main() {
   late MemoryLocalPreferencesService memoryLocalPreferencesService;
   late InstancePushSettingsLocalPreferenceBloc
-      instancePushSettingsLocalPreferencesBloc;
+      instancePushSettingsLocalPreferenceBloc;
+  late InstancePushRelaySettingsLocalPreferenceBloc
+      instancePushRelaySettingsLocalPreferenceBloc;
   late PushSettingsBloc pushSettingsBloc;
 
   late StreamSubscription subscriptionListenedSettingsData;
@@ -33,13 +36,19 @@ void main() {
 
   setUp(() async {
     memoryLocalPreferencesService = MemoryLocalPreferencesService();
-    instancePushSettingsLocalPreferencesBloc =
+
+    instancePushSettingsLocalPreferenceBloc =
         InstancePushSettingsLocalPreferenceBloc(
       memoryLocalPreferencesService,
       userAtHost: 'user@host',
     );
-
-    await instancePushSettingsLocalPreferencesBloc.performAsyncInit();
+    await instancePushSettingsLocalPreferenceBloc.performAsyncInit();
+    instancePushRelaySettingsLocalPreferenceBloc =
+        InstancePushRelaySettingsLocalPreferenceBloc(
+      memoryLocalPreferencesService,
+      userAtHost: 'user@host',
+    );
+    await instancePushRelaySettingsLocalPreferenceBloc.performAsyncInit();
 
     var fcmPushService = MockIFcmPushService();
     var pleromaPushService = MockIPleromaApiPushService();
@@ -68,7 +77,10 @@ void main() {
     });
 
     pushSettingsBloc = PushSettingsBloc(
-      instanceLocalPreferencesBloc: instancePushSettingsLocalPreferencesBloc,
+      instancePushRelaySettingsLocalPreferenceBloc:
+          instancePushRelaySettingsLocalPreferenceBloc,
+      instancePushSettingsLocalPreferenceBloc:
+          instancePushSettingsLocalPreferenceBloc,
       pleromaPushService: pleromaPushService,
       pushRelayService: pushRelayService,
       fcmPushService: fcmPushService,
@@ -86,7 +98,7 @@ void main() {
   tearDown(() async {
     await subscriptionListenedSettingsData.cancel();
     await pushSettingsBloc.dispose();
-    await instancePushSettingsLocalPreferencesBloc.dispose();
+    await instancePushSettingsLocalPreferenceBloc.dispose();
     await memoryLocalPreferencesService.dispose();
   });
 

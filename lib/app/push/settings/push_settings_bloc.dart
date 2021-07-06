@@ -8,6 +8,8 @@ abstract class IPushSettingsBloc
   static IPushSettingsBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IPushSettingsBloc>(context, listen: listen);
 
+  Future reSubscribeIfNeeded();
+
   Future subscribeAllEnabled();
 
   bool get isHaveSubscription;

@@ -17,6 +17,7 @@ import 'package:fedi/app/pagination/settings/local_preferences/instance/instance
 import 'package:fedi/app/push/notification/handler/unhandled/local_preferences/notifications_push_handler_unhandled_local_preference_bloc_impl.dart';
 import 'package:fedi/app/push/permission/ask/local_preferences/ask_push_permission_local_preference_bloc_impl.dart';
 import 'package:fedi/app/push/settings/local_preferences/instance/instance_push_settings_local_preference_bloc_impl.dart';
+import 'package:fedi/app/push/settings/relay/local_preferences/instance/instance_push_relay_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/search/recent/local_preferences/recent_search_local_preference_bloc_impl.dart';
 import 'package:fedi/app/status/post/settings/local_preferences/global/global_post_status_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/status/post/settings/local_preferences/instance/instance_post_status_settings_local_preference_bloc_impl.dart';
@@ -128,6 +129,10 @@ class FediLocalPreferencesServiceMigrationBloc
                   userAtHost: userAtHost,
                 ),
             (lps) => InstancePushSettingsLocalPreferenceBloc(
+                  lps,
+                  userAtHost: userAtHost,
+                ),
+            (lps) => InstancePushRelaySettingsLocalPreferenceBloc(
                   lps,
                   userAtHost: userAtHost,
                 ),
