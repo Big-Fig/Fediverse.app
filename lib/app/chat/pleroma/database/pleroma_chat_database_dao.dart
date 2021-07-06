@@ -214,7 +214,7 @@ class ChatDao extends PopulatedAppRemoteDatabaseDao<
     if (filters?.withLastMessage == true) {
       // todo: rework with moor-like code
       var fieldName = chatMessageAlias.createdAt.$name;
-      var aliasName = chatMessageAlias.$tableName;
+      var aliasName = chatMessageAlias.aliasedName;
       var having = CustomExpression<bool>('MAX($aliasName.$fieldName)');
       join.groupBy(
         [

@@ -240,7 +240,7 @@ class ConversationDao extends PopulatedAppRemoteDatabaseDao<
     if (withLastMessage) {
       // todo: rework with moor-like code
       var fieldName = statusAlias.createdAt.$name;
-      var aliasName = statusAlias.$tableName;
+      var aliasName = statusAlias.aliasedName;
       var having = CustomExpression<bool>('MAX($aliasName.$fieldName)');
       joinQuery.groupBy(
         [

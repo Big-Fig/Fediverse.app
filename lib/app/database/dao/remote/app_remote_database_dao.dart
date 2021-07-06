@@ -106,7 +106,7 @@ OrderingTerm extends RepositoryOrderingTerm>
 
   SimpleSelectStatement<TableDsl, DbItem> addDateTimeBoundsWhere(
       SimpleSelectStatement<TableDsl, DbItem> query, {
-        required GeneratedDateTimeColumn column,
+        required GeneratedColumn<DateTime?> column,
         required DateTime? minimumDateTimeExcluding,
         required DateTime? maximumDateTimeExcluding,
       }) {

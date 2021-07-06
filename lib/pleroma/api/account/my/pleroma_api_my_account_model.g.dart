@@ -533,7 +533,7 @@ PleromaApiMyAccount _$PleromaApiMyAccountFromJson(Map<String, dynamic> json) {
     avatar: json['avatar'] as String,
     acct: json['acct'] as String,
     pleroma: PleromaApiMyAccountPleromaPart.fromJsonOrNullOnError(
-        json['pleroma'] as Map<String, dynamic>?),
+        json['pleroma'] as Map<String, dynamic>),
     lastStatusAt: json['last_status_at'] == null
         ? null
         : DateTime.parse(json['last_status_at'] as String),

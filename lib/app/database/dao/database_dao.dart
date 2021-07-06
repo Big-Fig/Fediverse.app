@@ -9,7 +9,7 @@ TableInfoDsl extends TableInfo<TableDsl, DbItem>>
     extends DatabaseAccessor<AppDatabase> {
   TableInfoDsl get table;
 
-  String get tableName => table.$tableName;
+  String get tableName => table.aliasedName;
 
   String get idFieldName => 'id';
 

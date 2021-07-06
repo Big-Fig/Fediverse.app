@@ -1441,7 +1441,7 @@ Future<void> main() async {
     );
 
     when(
-      pleromaAuthStatusServiceMock.getStatus(statusRemoteId: status.remoteId),
+      pleromaAuthStatusServiceMock.getStatus(statusRemoteId: status.remoteId!),
     ).thenAnswer(
       (_) async => newValue.toPleromaApiStatus(),
     );
