@@ -379,9 +379,22 @@ rm -rf .dart_tool
 pub get
 ```
 
-Sometimes even this don't work
-Additionally you can change version to bounds `^1.0.0` to `>=1.0.0` 
-run `pub get` check `pubspec.lock` that version changed and revert changes in `pubspec.yaml`  
+Sometimes when you change package version in `pubspec.yaml` and after pub get version not changes. 
+You can check `pubspec.lock` to see if version actually changed.
+That may happens when you specify version bounds like `>=1.0.0 <2.0.0` or `^1.0.0` which actually same. 
+See [Version constraints](https://dart.dev/tools/pub/dependencies#version-constraints) in official docs.
+
+```
+rm pubspec.lock
+rm .flutter-plugins
+rm .flutter-plugins-dependencies
+rm .packages
+rm -rf .dart_tool
+pub get
+```
+
+Fedi specify explicitly version like `1.0.0` to avoid such issues. 
+However, that may cause dependencies version conflict  
 
 #### App ID
 

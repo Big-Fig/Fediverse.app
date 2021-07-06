@@ -7,6 +7,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 * Server-list autocomplete
+
+### Changed
+* Specify package versions explicitly in pubspec.yaml
   
 
 ## [2.5.0] [internal] 2021 June 22
