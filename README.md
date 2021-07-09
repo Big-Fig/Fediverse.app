@@ -92,19 +92,27 @@ Feel free to open issues if you have suggestions
 
 ## Data gathering
 
+Fedi don't use any special analytics service to track users. 
+However Fedi uses Firebase services for PushNotifications(optional) and CrashReporting(optional).
+
+You can completely remove Firebase via manual building from source. 
+
 ### Crash reports via Firebase Crashlytics
 
+Fedi gathers crashes and non-fatal errors to make app more stable.
+
 * You can build app from source and remove Crashlytics library via .env config(details below)
-* You can disable gathering via settings inside app
+* You can disable gathering via settings inside app(option disabled by default)
 
 ## Push notifications
 
 Push notifications implemented via [PushRelayFCM](https://github.com/Big-Fig/toot-relay-fcm) server
 
-[PushRelayFCM](https://github.com/Big-Fig/toot-relay-fcm) is Ruby on Rails server which handle web pushes and relay them to FCM
+[PushRelayFCM](https://github.com/Big-Fig/toot-relay-fcm) is Ruby on Rails server which handle web pushes and relay them to FCM.
+
+**From `2.5.0` version Fedi uses PushRelayFCM mode without decryption on server-side. So all private data is safe.**
 
 PushRelayFCM and Fedi can work in two modes:
-
 * **Without server-side decryption (`2.5.0` and newer)** - relay simple proxy encrypted messages
 * **With server-side decryption (before `2.5.0`)** -decrypt messages and have access to notification content and user `access_token`. Not used from `2.5.0` version, but still supported in Fedi(see below why you still may want to use it).
 
