@@ -3,13 +3,13 @@
 
 Fedi is open-source client for [Pleroma](https://pleroma.social/) and [Mastodon](https://joinmastodon.org/) social networks written using Flutter.
 
-Pleroma and Mastodon are parts of [Fediverse](https://en.wikipedia.org/wiki/Fediverse) (decentralized social network). Main idea of Fediverse - nobody owns Fediverse. Anybody can run their own server instance and use it to communicate with other people.
+Pleroma and Mastodon are parts of [Fediverse](https://en.wikipedia.org/wiki/Fediverse) (decentralized social network). The main idea of Fediverse - nobody owns Fediverse. Anybody can run their server instance and use it to communicate with other people.
 
 So Fedi is an open-source mobile client for social networks and has features similar to Twitter.
 
 <p float="left">
-	<img src="./images/screenshot_1.webp" alt="Fedi screenshot" width="200"/>
-	<img src="./images/screenshot_2.webp" alt="Fedi screenshot" width="200"/>
+   <img src="./images/screenshot_1.webp" alt="Fedi screenshot" width="200"/>
+   <img src="./images/screenshot_2.webp" alt="Fedi screenshot" width="200"/>
 </p>
 
 [How to find Pleroma/Mastodon instance to join?](https://github.com/Big-Fig/Fediverse.app/blob/master/helpChooseInstance.md)
@@ -63,7 +63,7 @@ So Fedi is an open-source mobile client for social networks and has features sim
 - Bookmarks, Hashtags, Lists, Featured tags, Suggestions
 - Messenger-like UI for Conversations(DM) and Pleroma chats
 - Customizable real-time notifications & timeline updates via WebSockets and Push Notifications
-- Fetch data from Remote instances via Public API. So you can access full date on remote instance if currently logged instance didn't synchronized all data yet
+- Fetch data from Remote instances via Public API. So you can access full data on remote instance if the currently logged instance didn't synchronized all data yet
 - A lot of settings options(global or per-instance). For example: `Always show NSFW` or `Auto-load media content`
 - Threads & Polls
 - Special UI for media-only timelines
@@ -73,15 +73,15 @@ So Fedi is an open-source mobile client for social networks and has features sim
 
 ## Coming soon
 
-* Admin API
-* Support other Fediverse instances: Pixelfed, Misskey, Peertube, GNU Social, Friendica and others
-* Pleroma: scrobbles, mascot and recently added new features
+* Admin API;
+* Support other Fediverse instances: Pixelfed, Misskey, Peertube, GNU Social, Friendica, and others;
+* Pleroma: scrobbles, mascot and recently added new features;
 * Mastodon: recently added new features. 
-* Adopt UI for large screens
-* Display timelines from different instances on single Home page(currently you should switch instances to see related data)
-* Remember timeline position via Markers API
-* OnBoarding & Tutorial. Popular instances suggestions
-* A lot of minor UX improvements in backlog
+* Adopt UI for large screens;
+* Display timelines from different instances on single Home page(currently you should switch instances to see related data);
+* Remember timeline position via Markers API;
+* OnBoarding & Tutorial. Popular instances suggestions;
+* A lot of minor UX improvements in backlog.
 
 Feel free to open issues if you have suggestions
 
@@ -92,7 +92,7 @@ Feel free to open issues if you have suggestions
 
 ## Data gathering
 
-Fedi don't use any special analytics service to track users. 
+Fedi doesn't use any special analytics service to track users. 
 However Fedi uses Firebase services for PushNotifications(optional) and CrashReporting(optional).
 
 You can completely remove Firebase via manual building from source. 
@@ -108,7 +108,7 @@ Fedi gathers crashes and non-fatal errors to make app more stable.
 
 Push notifications implemented via [PushRelayFCM](https://github.com/Big-Fig/toot-relay-fcm) server
 
-[PushRelayFCM](https://github.com/Big-Fig/toot-relay-fcm) is Ruby on Rails server which handle web pushes and relay them to FCM.
+[PushRelayFCM](https://github.com/Big-Fig/toot-relay-fcm) is Ruby on Rails server which handles web pushes and relays them to FCM.
 
 **From `2.5.0` version Fedi uses PushRelayFCM mode without decryption on server-side. So all private data is safe.**
 
@@ -126,7 +126,7 @@ PushRelayFCM and Fedi can work in two modes:
 5. Fedi **don't decrypt** message and use FCM message with encrypted data as simple trigger to load latest notification via REST API (this will be improved in future releases)
 6. Fedi display notification
 
-Since PushRelayServer don't know private decryption keys, it is can't access any privacy data.
+Since PushRelayServer doesn't know private decryption keys, it is can't access any private data.
 
 ##### Pros
 * **Don't have access to user private data**
@@ -150,7 +150,7 @@ It is possible to decrypt in Kotlin/Swift and it will be done in the future.
 5. Fedi display notification
 
 * PushRelayFCM have access to `title`, `body` and `access_token`
-* `access_token` is sensitive data. It is possible to login to your account if someone know `access_token`
+* `access_token` is sensitive data. It is possible to login into your account if someone knows `access_token`
 
 ##### Pros
 * Faster push delivery. FCM message(notification type) with `notification.title` and `notification.body`. Which have higher priority than message without `notification.title` & `notification.body` fields. Actually it is more affects iOS, than Android. Read [`awesome_notifications`](https://pub.dev/packages/awesome_notifications) and [`firebase_messaging`](https://pub.dev/packages/firebase_messaging) documentation for details.
@@ -195,10 +195,10 @@ After you make changes in `.arb` files you make additional actions to regenerate
 * Prefer `StatelessWidget` and async UI update via `StreamBuidler` and `BehaviourSubject` & `StreamController` in controller classes
 * Prefer divide `Widgets` in small sub `Widgets` with `const` constructor(for better performance) if possible
 * Provide data to nested elements via `provider`
-* Prefer `Repository` pattern. Almost all network data cached in local SQLite database. UI always display data from single source. It may be network-only or from database(if data cached). Don't cache and merge data in memory to achieve data consistency
+* Prefer `Repository` pattern. Almost all network data cached in local SQLite database. UI always displays data from single source. It may be network-only or from database(if data cached). Don't cache and merge data in memory to achieve data consistency
 * Prefer [Effective Dart](https://dart.dev/guides/language/effective-dart/style) name and style code conventions
 * Prefer long file & classes names like `account_follower_account_cached_list_bloc_impl.dart` and `AccountFollowerAccountCachedListBloc`
- * It easy to understand what class do
+ * It easy to understand what classes do
  * It easy to navigate in IDE by typing start letters of name
 * One class = one file
 * Prefer `interfaces` for `Bussines Logic` and `Services` 
@@ -217,11 +217,11 @@ You can achieve this by specifing your system Flutter version by using `flutter 
 
 #### Flutter Version Management(FVM)
 
-Fedi uses [Flutter Version Management](https://github.com/leoafarias/fvm) to clearly specify Flutter version to build app.
+Fedi uses [Flutter Version Management](https://github.com/leoafarias/fvm) to specify Flutter version to build app.
 
 FVM also helps manage several SDKs version on local machine
 
-Config already done, so you just run `fvm install` in repo folder and configure IDE to use `.fvm/flutter_sdk` folder instead of system Flutter SDK. 
+Config is already done, so you just run `fvm install` in repo folder and configure IDE to use `.fvm/flutter_sdk` folder instead of system Flutter SDK. 
 
 To use flutter version specified in `.fvm/fvm_config.json` you should prepend `fvm` like `fvm flutter install`
 
@@ -284,7 +284,7 @@ cp env_example.env env_dev.env
 
 Example config disable some features like **Push notifications**. 
 
-To enable **all features** you should change app id, create [Firebase](#Firebase) project and edit config file.
+To enable **all features** you should change app id, create [Firebase](#Firebase) project, and edit config file.
 
 ##### Run
 
@@ -368,7 +368,7 @@ You can find all possible config variables(with comments) at [env_example.env](h
 * `Product->Clean` in XCode
 * `File(or Android Studio on Mac)->Invalidate caches & Restart` in Android Studio
 
-Sometimes it also need to clear iOS pods
+Sometimes it also needs to clear iOS pods
 
 ```
 cd ios
@@ -388,9 +388,9 @@ rm -rf .dart_tool
 pub get
 ```
 
-Sometimes when you change package version in `pubspec.yaml` and after pub get version not changes. 
-You can check `pubspec.lock` to see if version actually changed.
-That may happens when you specify version bounds like `>=1.0.0 <2.0.0` or `^1.0.0` which actually same. 
+Sometimes when you change package version in `pubspec.yaml` and after `pub get` version not changes. 
+You can check `pubspec.lock` to see if version changed.
+That may happen when you specify version bounds like `>=1.0.0 <2.0.0` or `^1.0.0` which same. 
 See [Version constraints](https://dart.dev/tools/pub/dependencies#version-constraints) in official docs.
 
 ```
@@ -415,7 +415,7 @@ Unfortunately, it is not possible to use APP_ID from config in all places in Gra
 
 So, If you want to change app id from `com.fediverse.app` for `prod` and from `com.fediverse.app2` for `dev` you should manual changes (in additional to changes id in `.env` files)
 
-Actually you should run Find and Replace `com.fediverse.app` with your package name on `ios` and `android` folders. And rename folders at `android/app/src/main/kotlin`
+Actually, you should run Find and Replace `com.fediverse.app` with your package name on `ios` and `android` folders. And rename folders at `android/app/src/main/kotlin`
 
 However, it may cause strange build errors. So you may need full clean
 
@@ -431,7 +431,7 @@ If you still have errors please explore App ID things in the next docs:
 ###### iOS group ids
 
 * `receive_sharing_intent` lib require to add group.<app_id> to XCode project. 
-Unfortunately it is not possible, due our internal issues (we moved app to new iTunes account and can't use old group id).
+Unfortunately, it is not possible, due to our internal issues (we moved app to new iTunes account and can't use old group id).
 So we use [`fork of receive_sharing_intent`](https://github.com/xal/receive_sharing_intent/tree/xal/custom_group_id) with custom group ids support.
 
 Fedi uses group `fediverse.app` for `prod` and `com.fediverse.app2` for `dev`  
@@ -459,9 +459,9 @@ Follow [official tutorial](https://flutter.dev/docs/deployment/ios)
 
 #### Firebase
 
-To use Firebase service you should generate files from your Firebase project page and put in project.
+To use Firebase service you should generate files from your Firebase project page and put it the project.
 
-Don't forget to enable in `.env` file
+Don't forget to enable it in `.env` file
 
 `FIREBASE_ENABLED=false`
 
@@ -493,7 +493,7 @@ For more details see
 To enable Push notifications you should
 * change [App ID](#App-ID)
 * create Firebase Project for your App ID,
-* generate [Firebase config and integrate in app](#Firebase)
+* generate [Firebase config and integrate it in app](#Firebase)
 * generate FCM server key
 * setup own [PushRelayFCM](https://github.com/Big-Fig/toot-relay-fcm) server instance and put your FCM server key
 
@@ -534,7 +534,7 @@ On/Off via .env. [Firebase Core integration](#Firebase) required
 CRASHLYTICS_ENABLED=false
 ```
 
-Used to catch errors on client side with error description and stackTrace
+Used to catch errors on client-side with error description and stackTrace
 
 You should enable [Firebase support](#Firebase) and change config variable in .env file to enable crash reporting
 
@@ -549,14 +549,14 @@ Uses version from `pubspec.yaml`
 By default Flutter project config it should use version from `pubspec.yaml`,
 However, sometimes it causes strange iOS build errors(version not changed but should).
 
-So, Fedi requires manual increase version code & name in `Runner` and `Share Extension` targets. 
+So, Fedi requires a manual increase version code & name in `Runner` and `Share Extension` targets. 
 
 #### Receiving share intents & ShareExtension
 
-XCode project have additional ShareExtension module required by [`receive_sharing_intent`](https://pub.dev/packages/receive_sharing_intent) to handle income share events.
-It also important to add `Target` and `ShareExtension` to same group ID.
+XCode project has additional ShareExtension module required by [`receive_sharing_intent`](https://pub.dev/packages/receive_sharing_intent) to handle income share events.
+It also important to add `Target` and `ShareExtension` to the same group ID.
 
 
 ## 3rd Party
 
-* `assets/server_list.txt` taken from [tateisu/SubwayTooter](https://github.com/tateisu/SubwayTooter)
+* Original `assets/server_list.txt` taken from [tateisu/SubwayTooter](https://github.com/tateisu/SubwayTooter)
