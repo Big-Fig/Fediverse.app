@@ -78,6 +78,24 @@ class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
   late String appDefaultInstanceUrl;
 
   @override
+  late String? gitHubUrl;
+  @override
+  late String? webSiteUrl;
+  @override
+  late String? fediverseAccountAcct;
+  @override
+  late String? fediverseAccountUrl;
+
+  @override
+  late String? license;
+  @override
+  late String? helpTranslateUrl;
+  @override
+  late String? joinBetaIosUrl;
+  @override
+  late String? joinBetaAndroidUrl;
+
+  @override
   // ignore: long-method
   Future internalAsyncInit() async {
     await FlutterConfig.loadEnvVariables();
@@ -201,7 +219,6 @@ class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
       );
     }
 
-
     helpChooseInstanceUrl = _getString(
       'HELP_CHOOSE_INSTANCE_URL',
       isRequired: false,
@@ -227,6 +244,41 @@ class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
     }
 
     appAddNewInstanceCallbackUrl = '$appId://addNewInstance';
+
+    gitHubUrl = _getString(
+      'GITHUB_URL',
+      isRequired: false,
+    );
+    webSiteUrl = _getString(
+      'WEBSITE_URL',
+      isRequired: false,
+    );
+    fediverseAccountAcct = _getString(
+      'FEDIVERSE_ACCOUNT_ACCT',
+      isRequired: false,
+    );
+    fediverseAccountUrl = _getString(
+      'FEDIVERSE_ACCOUNT_URL',
+      isRequired: false,
+    );
+    license = _getString(
+      'LICENSE',
+      isRequired: false,
+    );
+
+    helpTranslateUrl = _getString(
+      'HELP_TRANSLATE_URL',
+      isRequired: false,
+    );
+
+    joinBetaIosUrl = _getString(
+      'JOIN_BETA_IOS_URL',
+      isRequired: false,
+    );
+    joinBetaAndroidUrl = _getString(
+      'JOIN_BETA_ANDROID_URL',
+      isRequired: false,
+    );
   }
 
   @override

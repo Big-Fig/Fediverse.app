@@ -12,7 +12,8 @@ So Fedi is an open-source mobile client for social networks and has features sim
    <img src="./images/screenshot_2.webp" alt="Fedi screenshot" width="200"/>
 </p>
 
-[How to find Pleroma/Mastodon instance to join?](https://github.com/Big-Fig/Fediverse.app/blob/master/helpChooseInstance.md)
+- [How to find Pleroma/Mastodon instance to join?](https://github.com/Big-Fig/Fediverse.app/blob/master/helpChooseInstance.md)
+- [Follow Fedi on Fediverse](https://fedi.app/fediapp)
 
 ### Android
 

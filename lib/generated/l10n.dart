@@ -833,6 +833,16 @@ class S {
     );
   }
 
+  /// `About Fedi`
+  String get app_account_home_tab_menu_action_instance_aboutApp {
+    return Intl.message(
+      'About Fedi',
+      name: 'app_account_home_tab_menu_action_instance_aboutApp',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Account`
   String get app_account_my_menu_account_subpage_title {
     return Intl.message(
@@ -1403,6 +1413,16 @@ class S {
     return Intl.message(
       'Sign up',
       name: 'app_auth_instance_join_action_signUp',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `About`
+  String get app_auth_instance_join_action_about {
+    return Intl.message(
+      'About',
+      name: 'app_auth_instance_join_action_about',
       desc: '',
       args: [],
     );
@@ -8389,6 +8409,156 @@ class S {
     return Intl.message(
       'Reply',
       name: 'app_push_richNotification_action_reply',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `About`
+  String get app_about_title {
+    return Intl.message(
+      'About',
+      name: 'app_about_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Learn more`
+  String get app_about_learnMore {
+    return Intl.message(
+      'Learn more',
+      name: 'app_about_learnMore',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Website`
+  String get app_about_field_website_label {
+    return Intl.message(
+      'Website',
+      name: 'app_about_field_website_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Follow on Fediverse`
+  String get app_about_field_followOnFediverse_label {
+    return Intl.message(
+      'Follow on Fediverse',
+      name: 'app_about_field_followOnFediverse_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Version`
+  String get app_about_field_version_label {
+    return Intl.message(
+      'Version',
+      name: 'app_about_field_version_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Changelog`
+  String get app_about_field_changelog_label {
+    return Intl.message(
+      'Changelog',
+      name: 'app_about_field_changelog_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Help translate`
+  String get app_about_field_helpTranslate_label {
+    return Intl.message(
+      'Help translate',
+      name: 'app_about_field_helpTranslate_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Weblate`
+  String get app_about_field_helpTranslate_value {
+    return Intl.message(
+      'Weblate',
+      name: 'app_about_field_helpTranslate_value',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Source code`
+  String get app_about_field_sourceCode_label {
+    return Intl.message(
+      'Source code',
+      name: 'app_about_field_sourceCode_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `License`
+  String get app_about_field_license_label {
+    return Intl.message(
+      'License',
+      name: 'app_about_field_license_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Data gathering`
+  String get app_about_field_dataGathering_label {
+    return Intl.message(
+      'Data gathering',
+      name: 'app_about_field_dataGathering_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Push notifications`
+  String get app_about_field_pushNotifications_label {
+    return Intl.message(
+      'Push notifications',
+      name: 'app_about_field_pushNotifications_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Report bug & Suggest idea`
+  String get app_about_field_reportBugSuggestIdea_label {
+    return Intl.message(
+      'Report bug & Suggest idea',
+      name: 'app_about_field_reportBugSuggestIdea_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create issue`
+  String get app_about_field_reportBugSuggestIdea_value {
+    return Intl.message(
+      'Create issue',
+      name: 'app_about_field_reportBugSuggestIdea_value',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Become Beta tester`
+  String get app_about_field_joinBeta_label {
+    return Intl.message(
+      'Become Beta tester',
+      name: 'app_about_field_joinBeta_label',
       desc: '',
       args: [],
     );

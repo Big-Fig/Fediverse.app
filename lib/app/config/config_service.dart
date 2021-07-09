@@ -1,5 +1,5 @@
-import 'package:fedi/async/loading/init/async_init_loading_bloc.dart';
 import 'package:easy_dispose/easy_dispose.dart';
+import 'package:fedi/async/loading/init/async_init_loading_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -55,6 +55,22 @@ abstract class IConfigService implements IAsyncInitLoadingBloc, IDisposable {
   String get appAddNewInstanceCallbackUrl;
 
   String get appDefaultInstanceUrl;
+
+  String? get gitHubUrl;
+
+  String? get webSiteUrl;
+
+  String? get fediverseAccountAcct;
+
+  String? get fediverseAccountUrl;
+
+  String? get license;
+
+  String? get helpTranslateUrl;
+
+  String? get joinBetaIosUrl;
+
+  String? get joinBetaAndroidUrl;
 
   void printConfigToLog();
 }

@@ -1,3 +1,4 @@
+import 'package:fedi/app/about/about_page.dart';
 import 'package:fedi/app/account/my/statuses/bookmarked/my_account_bookmarked_statuses_page.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/config/config_service.dart';
@@ -48,6 +49,7 @@ class AccountHomeTabMenuDialogBodyWidget extends StatelessWidget {
         const _AnnouncementsHomeTabMenuDialogBodyListsItemWidget(),
         if (configService.askReviewEnabled)
           const _RateAppHomeTabMenuDialogBodyListsItemWidget(),
+        const _AboutHomeTabMenuDialogBodyListsItemWidget(),
       ],
     );
   }
@@ -216,6 +218,38 @@ class _AnnouncementsHomeTabMenuDialogBodyListsItemWidget
             text: S
                 .of(context)
                 .app_account_home_tab_menu_action_instance_announcements,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _AboutHomeTabMenuDialogBodyListsItemWidget
+    extends StatelessWidget {
+  const _AboutHomeTabMenuDialogBodyListsItemWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        goToAboutPage(context:context);
+      },
+      child: InstanceAnnouncementCountIntBadgeBloc.provideToContext(
+        context,
+        child: _AccountHomeTabMenuDialogBodyItem(
+          iconWidget: FediIntBadgeWidget(
+            offset: 0.0,
+            child: _AccountHomeTabMenuDialogBodyItemIcon(
+              iconData: FediIcons.info,
+            ),
+          ),
+          textWidget: _AccountHomeTabMenuDialogBodyItemText(
+            text: S
+                .of(context)
+                .app_account_home_tab_menu_action_instance_aboutApp,
           ),
         ),
       ),

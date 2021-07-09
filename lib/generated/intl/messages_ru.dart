@@ -203,6 +203,34 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "app_about_field_changelog_label":
+            MessageLookupByLibrary.simpleMessage("Список изменений"),
+        "app_about_field_dataGathering_label":
+            MessageLookupByLibrary.simpleMessage("Собираемые данные"),
+        "app_about_field_followOnFediverse_label":
+            MessageLookupByLibrary.simpleMessage("Аккаунт в Fediverse"),
+        "app_about_field_helpTranslate_label":
+            MessageLookupByLibrary.simpleMessage("Помочь перевести"),
+        "app_about_field_helpTranslate_value":
+            MessageLookupByLibrary.simpleMessage("Weblate"),
+        "app_about_field_joinBeta_label":
+            MessageLookupByLibrary.simpleMessage("Стать Beta тестером"),
+        "app_about_field_license_label":
+            MessageLookupByLibrary.simpleMessage("Лицензия"),
+        "app_about_field_pushNotifications_label":
+            MessageLookupByLibrary.simpleMessage("Пуш оповещения"),
+        "app_about_field_reportBugSuggestIdea_label":
+            MessageLookupByLibrary.simpleMessage("Баг или Идея?"),
+        "app_about_field_reportBugSuggestIdea_value":
+            MessageLookupByLibrary.simpleMessage("Написать"),
+        "app_about_field_sourceCode_label":
+            MessageLookupByLibrary.simpleMessage("Исходный код"),
+        "app_about_field_version_label":
+            MessageLookupByLibrary.simpleMessage("Версия"),
+        "app_about_field_website_label":
+            MessageLookupByLibrary.simpleMessage("Веб-сайт"),
+        "app_about_learnMore": MessageLookupByLibrary.simpleMessage("Детали"),
+        "app_about_title": MessageLookupByLibrary.simpleMessage("О Fedi"),
         "app_acccount_my_customList_edit_account_action_add":
             MessageLookupByLibrary.simpleMessage("Добавить"),
         "app_acccount_my_customList_edit_account_action_remove":
@@ -277,6 +305,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Закладки"),
         "app_account_home_tab_menu_action_global_settings":
             MessageLookupByLibrary.simpleMessage("Настройки: глобальные"),
+        "app_account_home_tab_menu_action_instance_aboutApp":
+            MessageLookupByLibrary.simpleMessage("О Fedi"),
         "app_account_home_tab_menu_action_instance_announcements":
             MessageLookupByLibrary.simpleMessage("Объявления"),
         "app_account_home_tab_menu_action_instance_settings": m6,
@@ -623,6 +653,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_auth_instance_current_context_loading_loading_content": m13,
         "app_auth_instance_current_context_loading_loading_title":
             MessageLookupByLibrary.simpleMessage("Загрузка аккаунта..."),
+        "app_auth_instance_join_action_about":
+            MessageLookupByLibrary.simpleMessage("О Fedi"),
         "app_auth_instance_join_action_helpMeChooseInstance":
             MessageLookupByLibrary.simpleMessage("Как выбрать сервер?"),
         "app_auth_instance_join_action_login":

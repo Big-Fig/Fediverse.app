@@ -1,3 +1,4 @@
+import 'package:fedi/app/about/about_page.dart';
 import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi/app/auth/host/auth_host_model.dart';
@@ -67,7 +68,13 @@ class JoinAuthInstanceWidget extends StatelessWidget {
                 padding: EdgeInsets.only(
                   top: FediSizes.bigPadding,
                 ),
-                child: const _JoinAuthInstanceTermsOfServiceButtonWidget(),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const _JoinAuthInstanceTermsOfServiceButtonWidget(),
+                    const _JoinAuthInstanceAboutButtonWidget(),
+                  ],
+                ),
               ),
             ],
           ),
@@ -248,23 +255,25 @@ class _JoinAuthInstanceLogoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return KeyboardVisibilityBuilder(builder: (context, isKeyboardVisible) {
-      double width;
-      if (isKeyboardVisible) {
-        // todo: refactor
-        // ignore: no-magic-number
-        width = 75.0;
-      } else {
-        // todo: refactor
-        // ignore: no-magic-number
-        width = 175.0;
-      }
+    return KeyboardVisibilityBuilder(
+      builder: (context, isKeyboardVisible) {
+        double width;
+        if (isKeyboardVisible) {
+          // todo: refactor
+          // ignore: no-magic-number
+          width = 75.0;
+        } else {
+          // todo: refactor
+          // ignore: no-magic-number
+          width = 175.0;
+        }
 
-      return Image(
-        image: AssetImage('assets/images/theme/logo.png'),
-        width: width,
-      );
-    });
+        return Image(
+          image: AssetImage('assets/images/theme/logo.png'),
+          width: width,
+        );
+      },
+    );
   }
 }
 
@@ -309,6 +318,27 @@ class _JoinAuthInstanceTermsOfServiceButtonWidget extends StatelessWidget {
       ),
     );
   }
+}
+
+class _JoinAuthInstanceAboutButtonWidget extends StatelessWidget {
+  const _JoinAuthInstanceAboutButtonWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => InkWell(
+        onTap: () {
+          goToAboutPage(
+            context: context,
+          );
+        },
+        child: Text(
+          S.of(context).app_auth_instance_join_action_about,
+          style: IFediUiTextTheme.of(context).mediumShortWhite.copyWith(
+                decoration: TextDecoration.underline,
+              ),
+        ),
+      );
 }
 
 Future signUpToInstance(BuildContext context) async {

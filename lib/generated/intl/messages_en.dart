@@ -201,6 +201,35 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "app_about_field_changelog_label":
+            MessageLookupByLibrary.simpleMessage("Changelog"),
+        "app_about_field_dataGathering_label":
+            MessageLookupByLibrary.simpleMessage("Data gathering"),
+        "app_about_field_followOnFediverse_label":
+            MessageLookupByLibrary.simpleMessage("Follow on Fediverse"),
+        "app_about_field_helpTranslate_label":
+            MessageLookupByLibrary.simpleMessage("Help translate"),
+        "app_about_field_helpTranslate_value":
+            MessageLookupByLibrary.simpleMessage("Weblate"),
+        "app_about_field_joinBeta_label":
+            MessageLookupByLibrary.simpleMessage("Become Beta tester"),
+        "app_about_field_license_label":
+            MessageLookupByLibrary.simpleMessage("License"),
+        "app_about_field_pushNotifications_label":
+            MessageLookupByLibrary.simpleMessage("Push notifications"),
+        "app_about_field_reportBugSuggestIdea_label":
+            MessageLookupByLibrary.simpleMessage("Report bug & Suggest idea"),
+        "app_about_field_reportBugSuggestIdea_value":
+            MessageLookupByLibrary.simpleMessage("Create issue"),
+        "app_about_field_sourceCode_label":
+            MessageLookupByLibrary.simpleMessage("Source code"),
+        "app_about_field_version_label":
+            MessageLookupByLibrary.simpleMessage("Version"),
+        "app_about_field_website_label":
+            MessageLookupByLibrary.simpleMessage("Website"),
+        "app_about_learnMore":
+            MessageLookupByLibrary.simpleMessage("Learn more"),
+        "app_about_title": MessageLookupByLibrary.simpleMessage("About"),
         "app_acccount_my_customList_edit_account_action_add":
             MessageLookupByLibrary.simpleMessage("Add"),
         "app_acccount_my_customList_edit_account_action_remove":
@@ -274,6 +303,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Bookmarks"),
         "app_account_home_tab_menu_action_global_settings":
             MessageLookupByLibrary.simpleMessage("Settings: global"),
+        "app_account_home_tab_menu_action_instance_aboutApp":
+            MessageLookupByLibrary.simpleMessage("About Fedi"),
         "app_account_home_tab_menu_action_instance_announcements":
             MessageLookupByLibrary.simpleMessage("Announcements"),
         "app_account_home_tab_menu_action_instance_settings": m6,
@@ -619,6 +650,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_auth_instance_current_context_loading_loading_content": m13,
         "app_auth_instance_current_context_loading_loading_title":
             MessageLookupByLibrary.simpleMessage("Loading Instance"),
+        "app_auth_instance_join_action_about":
+            MessageLookupByLibrary.simpleMessage("About"),
         "app_auth_instance_join_action_helpMeChooseInstance":
             MessageLookupByLibrary.simpleMessage("Help me choose instance"),
         "app_auth_instance_join_action_login":
