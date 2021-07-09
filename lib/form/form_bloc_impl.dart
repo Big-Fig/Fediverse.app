@@ -5,18 +5,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
 
 abstract class FormBloc extends FormGroupBloc implements IFormBloc {
-  @override
-  bool get isHaveChangesAndNoErrors =>
-      !isHaveAtLeastOneError && isSomethingChanged;
 
-  @override
-//  Stream<bool> get isReadyToSubmitStream => isSomethingChangedStream;
-  Stream<bool> get isHaveChangesAndNoErrorsStream => Rx.combineLatest2(
-        isHaveAtLeastOneErrorStream,
-        isSomethingChangedStream,
-        (bool isHaveAtLeastOneError, bool isSomethingChanged) =>
-            !isHaveAtLeastOneError && isSomethingChanged,
-      ).asBroadcastStream();
 
   BehaviorSubject<List<IFormItemBloc>> itemsSubject = BehaviorSubject();
 

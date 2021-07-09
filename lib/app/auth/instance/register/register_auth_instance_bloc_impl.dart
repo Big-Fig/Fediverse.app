@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi/app/auth/host/auth_host_model.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
@@ -10,6 +11,7 @@ import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/localization/settings/localization_settings_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/connection/connection_service.dart';
+import 'package:fedi/form/form_item_bloc.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/pleroma/api/captcha/pleroma_api_captcha_service.dart';
 import 'package:fedi/pleroma/api/captcha/pleroma_api_captcha_service_impl.dart';
@@ -20,21 +22,25 @@ import 'package:fedi/pleroma/api/rest/pleroma_api_rest_service.dart';
 import 'package:fedi/pleroma/api/rest/pleroma_api_rest_service_impl.dart';
 import 'package:fedi/rest/rest_service.dart';
 import 'package:fedi/rest/rest_service_impl.dart';
-import 'package:easy_dispose/easy_dispose.dart';
+import 'package:logging/logging.dart';
+
+final _logger = Logger('register_auth_instance_bloc_impl.dart');
 
 class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
     implements IRegisterAuthInstanceBloc {
+  @override
   final Uri instanceBaseUri;
+
   final ILocalPreferencesService localPreferencesService;
   final IConnectionService connectionService;
   final ICurrentAuthInstanceBloc currentInstanceBloc;
   final IAuthApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc
-      pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc;
+  pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc;
   final ILocalizationSettingsBloc localizationSettingsBloc;
   final IConfigService configService;
 
   // ignore: avoid-late-keyword
-  late IPleromaApiInstance pleromaInstance;
+  late IPleromaApiInstance pleromaApiInstance;
 
   // ignore: avoid-late-keyword
   late IRestService restService;
@@ -43,7 +49,7 @@ class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
   late IPleromaApiRestService pleromaRestService;
 
   // ignore: avoid-late-keyword
-  late IPleromaApiCaptchaService pleromaCaptchaService;
+  late IPleromaApiCaptchaService pleromaApiCaptchaService;
 
   // ignore: avoid-late-keyword
   late IPleromaApiInstanceService pleromaInstanceService;
@@ -67,7 +73,7 @@ class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
       restService: restService,
     );
 
-    pleromaCaptchaService = PleromaApiCaptchaService(
+    pleromaApiCaptchaService = PleromaApiCaptchaService(
       restService: pleromaRestService,
     );
 
@@ -78,13 +84,12 @@ class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
     restService.disposeWith(this);
     pleromaRestService.disposeWith(this);
     pleromaInstanceService.disposeWith(this);
-
   }
 
   @override
   Future<AuthHostRegistrationResult> submit() async {
     var pleromaAccountRegisterRequest =
-        registerAuthInstanceFormBloc.calculateRegisterFormData();
+    registerAuthInstanceFormBloc.calculateRegisterFormData();
 
     AuthHostRegistrationResult registrationResult;
     AuthHostBloc? authApplicationBloc;
@@ -97,17 +102,25 @@ class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
         currentInstanceBloc: currentInstanceBloc,
         configService: configService,
         pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc:
-            pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc,
+        pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc,
       );
       await authApplicationBloc.performAsyncInit();
 
       registrationResult = await authApplicationBloc.registerAccount(
         request: pleromaAccountRegisterRequest,
       );
-
-
+    } catch (e, stackTrace) {
+      // todo: refactor
+      _logger.warning(() => 'submit', e, stackTrace);
+      registerAuthInstanceFormBloc.onRegisterFailed();
+      rethrow;
     } finally {
       await authApplicationBloc?.dispose();
+    }
+
+
+    if (!registrationResult.isHaveNoErrors) {
+      registerAuthInstanceFormBloc.onRegisterFailed();
     }
 
     // todo: rework when fail
@@ -117,7 +130,7 @@ class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
   }
 
   StreamController<AuthHostRegistrationResult>
-      registrationResultStreamController = StreamController.broadcast();
+  registrationResultStreamController = StreamController.broadcast();
 
   @override
   Stream<AuthHostRegistrationResult> get registrationResultStream =>
@@ -133,14 +146,15 @@ class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
 
   @override
   Future internalAsyncInit() async {
-    pleromaInstance = await pleromaInstanceService.getInstance();
+    pleromaApiInstance = await pleromaInstanceService.getInstance();
 
     registerAuthInstanceFormBloc = RegisterAuthInstanceFormBloc(
-      pleromaCaptchaService: pleromaCaptchaService,
+      pleromaApiInstance: pleromaApiInstance,
+      pleromaApiCaptchaService: pleromaApiCaptchaService,
       instanceBaseUri: instanceBaseUri,
-      localizationSettingsBloc: localizationSettingsBloc,
-      approvalRequired: pleromaInstance.approvalRequired,
-    )..disposeWith(this);
-
+      // localizationSettingsBloc: localizationSettingsBloc,
+      manualApprovalRequired: pleromaApiInstance.approvalRequired == true,
+    )
+      ..disposeWith(this);
   }
 }

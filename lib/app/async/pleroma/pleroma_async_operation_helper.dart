@@ -97,7 +97,7 @@ class PleromaAsyncOperationHelper {
             S.of(context).app_async_pleroma_error_common_dialog_title,
         contentCreator: (context) =>
             S.of(context).app_async_pleroma_error_common_dialog_content(
-                  error.toString(),
+                  error.decodedErrorDescriptionOrBody,
                 ),
       );
     } else {

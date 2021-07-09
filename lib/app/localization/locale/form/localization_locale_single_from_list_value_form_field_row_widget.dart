@@ -7,15 +7,26 @@ import 'package:flutter/cupertino.dart';
 
 class LocalizationLocaleSingleFromListValueFormFieldRowWidget
     extends StatelessWidget {
+  final String? customLabel;
+  final String? customNullLocalizationValue;
+
+  const LocalizationLocaleSingleFromListValueFormFieldRowWidget({
+    this.customLabel,
+    this.customNullLocalizationValue,
+  });
+
   @override
   Widget build(BuildContext context) =>
       LocalizationLocaleSingleFromListValueFormFieldBlocProxyProvider(
         child: SingleSelectFromListValueFormFieldRowWidget<LocalizationLocale?>(
-          label: S
-              .of(context)
-              .app_localization_settings_field_localizationLocale_label,
+          label: customLabel ??
+              S
+                  .of(context)
+                  .app_localization_settings_field_localizationLocale_label,
           valueTitleMapper: (context, LocalizationLocale? value) =>
-              value?.toLabel(context) ?? S.of(context).localization_locale_default,
+              value?.toLabel(context) ??
+              customNullLocalizationValue ??
+              S.of(context).localization_locale_default,
           description: null,
           descriptionOnDisabled: null,
           displayIconInRow: false,
@@ -23,6 +34,4 @@ class LocalizationLocaleSingleFromListValueFormFieldRowWidget
           valueIconMapper: null,
         ),
       );
-
-  const LocalizationLocaleSingleFromListValueFormFieldRowWidget();
 }

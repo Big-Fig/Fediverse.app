@@ -315,7 +315,7 @@ PleromaApiAccount _$PleromaApiAccountFromJson(Map<String, dynamic> json) {
     avatar: json['avatar'] as String,
     acct: json['acct'] as String,
     pleroma: PleromaApiAccountPleromaPart.fromJsonOrNullOnError(
-        json['pleroma'] as Map<String, dynamic>),
+        json['pleroma'] as Map<String, dynamic>?),
     lastStatusAt: json['last_status_at'] == null
         ? null
         : DateTime.parse(json['last_status_at'] as String),
@@ -354,7 +354,7 @@ PleromaApiAccountPleromaPart _$PleromaApiAccountPleromaPartFromJson(
     backgroundImage: json['background_image'] as String?,
     tags: PleromaApiTag.fromJsonListOrNullOnError(json['tags']),
     relationship: PleromaApiAccountRelationship.fromJsonOrNullOnError(
-        json['relationship'] as Map<String, dynamic>),
+        json['relationship'] as Map<String, dynamic>?),
     isAdmin: json['is_admin'] as bool?,
     isModerator: json['is_moderator'] as bool?,
     confirmationPending: json['confirmation_pending'] as bool?,

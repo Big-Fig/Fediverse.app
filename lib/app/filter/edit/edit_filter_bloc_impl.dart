@@ -19,6 +19,7 @@ import 'package:fedi/pleroma/api/account/pleroma_api_account_service.dart';
 import 'package:fedi/pleroma/api/filter/pleroma_api_filter_model.dart';
 import 'package:fedi/pleroma/api/filter/pleroma_api_filter_service.dart';
 import 'package:flutter/widgets.dart';
+import 'package:fedi/form/form_item_bloc.dart';
 
 class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
   static EditFilterBloc createFromContext(

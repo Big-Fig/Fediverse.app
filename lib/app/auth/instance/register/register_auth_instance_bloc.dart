@@ -1,7 +1,7 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/auth/host/auth_host_model.dart';
 import 'package:fedi/app/auth/instance/register/form/register_auth_instance_form_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc.dart';
-import 'package:easy_dispose/easy_dispose.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -15,6 +15,8 @@ abstract class IRegisterAuthInstanceBloc
         context,
         listen: listen,
       );
+
+  Uri get instanceBaseUri;
 
   bool get isReadyToSubmit;
 

@@ -80,6 +80,16 @@ class S {
     );
   }
 
+  /// `Not specified`
+  String get localization_locale_notSpecified {
+    return Intl.message(
+      'Not specified',
+      name: 'localization_locale_notSpecified',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Language`
   String get app_localization_dialog_title {
     return Intl.message(
@@ -1398,6 +1408,16 @@ class S {
     );
   }
 
+  /// `Help me choose instance`
+  String get app_auth_instance_join_action_helpMeChooseInstance {
+    return Intl.message(
+      'Help me choose instance',
+      name: 'app_auth_instance_join_action_helpMeChooseInstance',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Pleroma or Mastodon Instance`
   String get app_auth_instance_join_field_host_helper {
     return Intl.message(
@@ -1468,13 +1488,13 @@ class S {
     );
   }
 
-  /// `Create account`
-  String get app_auth_instance_register_title {
+  /// `Create account on {host}`
+  String app_auth_instance_register_title(Object host) {
     return Intl.message(
-      'Create account',
+      'Create account on $host',
       name: 'app_auth_instance_register_title',
       desc: '',
-      args: [],
+      args: [host],
     );
   }
 
@@ -1493,6 +1513,108 @@ class S {
     return Intl.message(
       'You can login once moderators will approve your account',
       name: 'app_auth_instance_register_approvalRequired_notification_content',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Accounts manual approve`
+  String get app_auth_instance_register_step_manualApprove_title {
+    return Intl.message(
+      'Accounts manual approve',
+      name: 'app_auth_instance_register_step_manualApprove_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Instance owners enabled manual approve by moderators to prevent spam.\nYou will need to wait moderation approve until you will can use your account`
+  String get app_auth_instance_register_step_manualApprove_description {
+    return Intl.message(
+      'Instance owners enabled manual approve by moderators to prevent spam.\nYou will need to wait moderation approve until you will can use your account',
+      name: 'app_auth_instance_register_step_manualApprove_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Captcha`
+  String get app_auth_instance_register_step_captcha_title {
+    return Intl.message(
+      'Captcha',
+      name: 'app_auth_instance_register_step_captcha_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Instance owners enabled captcha to prevent spam`
+  String get app_auth_instance_register_step_captcha_description {
+    return Intl.message(
+      'Instance owners enabled captcha to prevent spam',
+      name: 'app_auth_instance_register_step_captcha_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Instance owners disabled captcha`
+  String
+      get app_auth_instance_register_step_captcha_description_disabledOnServer {
+    return Intl.message(
+      'Instance owners disabled captcha',
+      name:
+          'app_auth_instance_register_step_captcha_description_disabledOnServer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Account`
+  String get app_auth_instance_register_step_account_title {
+    return Intl.message(
+      'Account',
+      name: 'app_auth_instance_register_step_account_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Submit`
+  String get app_auth_instance_register_step_submit_title {
+    return Intl.message(
+      'Submit',
+      name: 'app_auth_instance_register_step_submit_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Next`
+  String get app_auth_instance_register_action_nextStep {
+    return Intl.message(
+      'Next',
+      name: 'app_auth_instance_register_action_nextStep',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Back`
+  String get app_auth_instance_register_action_previousStep {
+    return Intl.message(
+      'Back',
+      name: 'app_auth_instance_register_action_previousStep',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Submit`
+  String get app_auth_instance_register_action_submit {
+    return Intl.message(
+      'Submit',
+      name: 'app_auth_instance_register_action_submit',
       desc: '',
       args: [],
     );
@@ -1528,6 +1650,16 @@ class S {
     );
   }
 
+  /// `Tap to reload`
+  String get app_auth_instance_register_field_captcha_description {
+    return Intl.message(
+      'Tap to reload',
+      name: 'app_auth_instance_register_field_captcha_description',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Characters from picture`
   String get app_auth_instance_register_field_captcha_hint {
     return Intl.message(
@@ -1543,6 +1675,16 @@ class S {
     return Intl.message(
       'Email Address*',
       name: 'app_auth_instance_register_field_email_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You will need to confirm it`
+  String get app_auth_instance_register_field_email_description {
+    return Intl.message(
+      'You will need to confirm it',
+      name: 'app_auth_instance_register_field_email_description',
       desc: '',
       args: [],
     );
@@ -1573,26 +1715,6 @@ class S {
     return Intl.message(
       'Password',
       name: 'app_auth_instance_register_field_password_hint',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Password confirmation*`
-  String get app_auth_instance_register_field_confirmPassword_label {
-    return Intl.message(
-      'Password confirmation*',
-      name: 'app_auth_instance_register_field_confirmPassword_label',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Password`
-  String get app_auth_instance_register_field_confirmPassword_hint {
-    return Intl.message(
-      'Password',
-      name: 'app_auth_instance_register_field_confirmPassword_hint',
       desc: '',
       args: [],
     );
@@ -3676,16 +3798,6 @@ class S {
     );
   }
 
-  /// `Password and confirm password must match`
-  String get form_field_text_password_error_notMatch_desc {
-    return Intl.message(
-      'Password and confirm password must match',
-      name: 'form_field_text_password_error_notMatch_desc',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Empty`
   String get form_field_text_error_empty_desc {
     return Intl.message(
@@ -4078,6 +4190,18 @@ class S {
     return Intl.message(
       'Global settings',
       name: 'app_settings_global_or_instance_use_global_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Language of your statuses`
+  String
+      get app_localization_settings_field_localizationLocale_yourStatuses_label {
+    return Intl.message(
+      'Language of your statuses',
+      name:
+          'app_localization_settings_field_localizationLocale_yourStatuses_label',
       desc: '',
       args: [],
     );

@@ -1,161 +1,110 @@
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/auth/instance/register/form/register_auth_instance_form_bloc.dart';
-import 'package:fedi/app/captcha/pleroma/pleroma_form_captcha_string_field_bloc.dart';
-import 'package:fedi/app/captcha/pleroma/pleroma_form_captcha_string_field_bloc_impl.dart';
-import 'package:fedi/app/localization/locale/form/localization_locale_single_from_list_value_form_field_bloc_impl.dart';
-import 'package:fedi/app/localization/locale/supported_localization_locale_list.dart';
-import 'package:fedi/app/localization/settings/localization_settings_bloc.dart';
-import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc_impl.dart';
-import 'package:fedi/form/field/value/bool/validation/bool_value_form_field_only_true_validation.dart';
-import 'package:fedi/form/field/value/string/email/email_string_value_form_field_validation.dart';
-import 'package:fedi/form/field/value/string/password_match/password_match_string_value_form_field_bloc_impl.dart';
-import 'package:fedi/form/field/value/string/string_value_form_field_bloc_impl.dart';
-import 'package:fedi/form/field/value/string/validation/string_value_form_field_length_validation.dart';
-import 'package:fedi/form/field/value/string/validation/string_value_form_field_non_empty_validation.dart';
+import 'package:fedi/app/auth/instance/register/form/stepper/item/account/register_auth_instance_form_account_stepper_item_bloc.dart';
+import 'package:fedi/app/auth/instance/register/form/stepper/item/account/register_auth_instance_form_account_stepper_item_bloc_impl.dart';
+import 'package:fedi/app/auth/instance/register/form/stepper/item/captcha/register_auth_instance_form_captcha_stepper_item_bloc.dart';
+import 'package:fedi/app/auth/instance/register/form/stepper/item/captcha/register_auth_instance_form_captcha_stepper_item_bloc_impl.dart';
+import 'package:fedi/app/auth/instance/register/form/stepper/item/manual_approve/register_auth_instance_form_manual_approve_stepper_item_bloc.dart';
+import 'package:fedi/app/auth/instance/register/form/stepper/item/manual_approve/register_auth_instance_form_manual_approve_stepper_item_bloc_impl.dart';
+import 'package:fedi/app/auth/instance/register/form/stepper/item/submit/register_auth_instance_form_submit_stepper_item_bloc.dart';
+import 'package:fedi/app/auth/instance/register/form/stepper/item/submit/register_auth_instance_form_submit_stepper_item_bloc_impl.dart';
 import 'package:fedi/form/form_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:fedi/pleroma/api/account/public/pleroma_api_account_public_model.dart';
 import 'package:fedi/pleroma/api/captcha/pleroma_api_captcha_service.dart';
+import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
 
 class RegisterAuthInstanceFormBloc extends FormBloc
     implements IRegisterAuthInstanceFormBloc {
   @override
   // ignore: avoid-late-keyword
-  late IPleromaFormCaptchaStringFieldBloc captchaFieldBloc;
-
-  final ILocalizationSettingsBloc localizationSettingsBloc;
+  late IRegisterAuthInstanceFormStepperAccountItemBloc accountStepperItemBloc;
 
   @override
+  // ignore: avoid-late-keyword
+  IRegisterAuthInstanceFormStepperCaptchaItemBloc? captchaStepperItemBloc;
+
+  @override
+  // ignore: avoid-late-keyword
+  IRegisterAuthInstanceFormStepperManualApproveItemBloc?
+      manualApproveStepperItemBloc;
+
+  @override
+  // ignore: avoid-late-keyword
+  late IRegisterAuthInstanceFormStepperSubmitItemBloc submitStepperItemBloc;
+
+  final bool manualApprovalRequired;
   final Uri instanceBaseUri;
 
-  @override
-  final bool? approvalRequired;
-
   RegisterAuthInstanceFormBloc({
-    required IPleromaApiCaptchaService pleromaCaptchaService,
+    required IPleromaApiInstance pleromaApiInstance,
+    required IPleromaApiCaptchaService? pleromaApiCaptchaService,
     required this.instanceBaseUri,
-    required this.approvalRequired,
-    required this.localizationSettingsBloc,
+    required this.manualApprovalRequired,
   }) : super(isAllItemsInitialized: false) {
-    localeFieldBloc = LocalizationLocaleSingleFromListValueFormFieldBloc(
-      originValue: localizationSettingsBloc.localizationLocale,
-      isEnabled: true,
-      possibleValues: supportedLocalizationLocaleList,
-    );
+    if (manualApprovalRequired) {
+      manualApproveStepperItemBloc =
+          RegisterAuthInstanceFormStepperManualApproveItemBloc()
+            ..disposeWith(this);
+    }
 
-    captchaFieldBloc = PleromaFormCaptchaStringFieldBloc(
-      pleromaCaptchaService: pleromaCaptchaService,
-      originValue: '',
-      validators: [
-        StringValueFormFieldNonEmptyValidationError.createValidator(),
-      ],
-    );
+    if (pleromaApiCaptchaService != null && pleromaApiInstance.isPleroma) {
+      captchaStepperItemBloc = RegisterAuthInstanceFormStepperCaptchaItemBloc(
+        pleromaApiCaptchaService: pleromaApiCaptchaService,
+      )..disposeWith(this);
+    }
 
-    usernameFieldBloc.disposeWith(this);
-    emailFieldBloc.disposeWith(this);
-    passwordFieldBloc.disposeWith(this);
-    captchaFieldBloc.disposeWith(this);
-    confirmPasswordFieldBloc.disposeWith(this);
-    localeFieldBloc.disposeWith(this);
-    agreeTermsOfServiceFieldBloc.disposeWith(this);
-    reasonFieldBloc.disposeWith(this);
-
-    passwordFieldBloc.currentValueStream.listen(
-      (currentValue) {
-        confirmPasswordFieldBloc.changePasswordValue(currentValue);
-      },
-    ).disposeWith(this);
+    accountStepperItemBloc = RegisterAuthInstanceFormStepperAccountItemBloc()
+      ..disposeWith(this);
+    submitStepperItemBloc = RegisterAuthInstanceFormStepperSubmitItemBloc(
+      instanceBaseUri: instanceBaseUri,
+    )..disposeWith(this);
 
     onFormItemsChanged();
   }
 
   @override
-  final StringValueFormFieldBloc usernameFieldBloc = StringValueFormFieldBloc(
-    originValue: '',
-    validators: [StringValueFormFieldNonEmptyValidationError.createValidator()],
-    maxLength: null,
-  );
-  @override
-  final BoolValueFormFieldBloc agreeTermsOfServiceFieldBloc =
-      BoolValueFormFieldBloc(originValue: false, validators: [
-    BoolValueFormFieldOnlyTrueValidationError.createValidator(),
-  ]);
-
-  @override
-  // ignore: avoid-late-keyword
-  late LocalizationLocaleSingleFromListValueFormFieldBloc localeFieldBloc;
-
-  @override
-  final StringValueFormFieldBloc emailFieldBloc = StringValueFormFieldBloc(
-    originValue: '',
-    validators: [EmailStringValueFormFieldValidationError.createValidator()],
-    maxLength: null,
-  );
-
-  @override
-  final StringValueFormFieldBloc reasonFieldBloc = StringValueFormFieldBloc(
-    originValue: '',
-    validators: [],
-    maxLength: null,
-  );
-
-  @override
-  final StringValueFormFieldBloc passwordFieldBloc = StringValueFormFieldBloc(
-    originValue: '',
-    validators: [
-      StringValueFormFieldLengthValidationError.createValidator(
-        // todo: refactor
-        // ignore: no-magic-number
-        minLength: 4,
-        maxLength: null,
-      ),
-    ],
-    maxLength: null,
-  );
-
-  @override
-  final PasswordMatchStringValueFormFieldBloc confirmPasswordFieldBloc =
-      PasswordMatchStringValueFormFieldBloc(
-    maxLength: null,
-  );
-
-  @override
   List<IFormItemBloc> get currentItems => [
-        usernameFieldBloc,
-        emailFieldBloc,
-        passwordFieldBloc,
-        confirmPasswordFieldBloc,
-        agreeTermsOfServiceFieldBloc,
-        localeFieldBloc,
-        captchaFieldBloc,
-        reasonFieldBloc,
+        if (manualApproveStepperItemBloc != null) manualApproveStepperItemBloc!,
+        accountStepperItemBloc,
+        if (captchaStepperItemBloc != null) captchaStepperItemBloc!,
+        submitStepperItemBloc,
       ];
 
   @override
   PleromaApiAccountPublicRegisterRequest calculateRegisterFormData() {
-    final validUsername = usernameFieldBloc.currentValue;
-    final validEmail = emailFieldBloc.currentValue;
-    final validPassword = passwordFieldBloc.currentValue;
+    final validUsername = accountStepperItemBloc.usernameFieldBloc.currentValue;
+    final validEmail = accountStepperItemBloc.emailFieldBloc.currentValue;
+    final validPassword = accountStepperItemBloc.passwordFieldBloc.currentValue;
 
-    final captcha = captchaFieldBloc.captcha;
-    final captchaSolution = captchaFieldBloc.currentValue;
-    final agreeTermsOfService = agreeTermsOfServiceFieldBloc.currentValue;
-    var locale = localeFieldBloc.currentValue;
+    final captcha = captchaStepperItemBloc?.captchaFieldBloc.captcha;
+    final captchaSolution =
+        captchaStepperItemBloc?.captchaFieldBloc.currentValue;
+    final agreeTermsOfService =
+        submitStepperItemBloc.agreeTermsOfServiceFieldBloc.currentValue;
 
-    final reason = reasonFieldBloc.currentValue;
+    // var locale = localeFieldBloc.currentValue;
+
+    final reason = manualApproveStepperItemBloc?.reasonFieldBloc.currentValue;
 
     var request = PleromaApiAccountPublicRegisterRequest(
       agreement: agreeTermsOfService,
       email: validEmail,
-      locale: locale?.localeString,
+      locale: null,
+      // locale: locale?.localeString,
       password: validPassword,
       username: validUsername,
       captchaSolution: captchaSolution,
       captchaAnswerData: captcha?.answerData,
       captchaToken: captcha?.token,
-      reason: approvalRequired! ? reason : null,
+      reason: reason,
     );
 
     return request;
+  }
+
+  @override
+  void onRegisterFailed() {
+    captchaStepperItemBloc?.reloadCaptcha();
   }
 }

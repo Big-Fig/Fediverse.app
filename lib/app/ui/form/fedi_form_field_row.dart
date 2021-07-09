@@ -1,6 +1,7 @@
 import 'package:fedi/app/ui/form/fedi_form_column_desc.dart';
 import 'package:fedi/app/ui/form/fedi_form_row.dart';
 import 'package:fedi/app/ui/form/fedi_form_row_label.dart';
+import 'package:fedi/app/ui/spacer/fedi_big_vertical_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/form/field/form_field_bloc.dart';
 import 'package:fedi/form/form_item_validation.dart';
@@ -12,12 +13,14 @@ class FediFormFieldRow extends StatelessWidget {
   final Widget? description;
   final Widget? descriptionOnDisabled;
   final Widget valueChild;
+  final bool displayErrors;
 
   FediFormFieldRow({
     required this.label,
     required this.description,
     required this.descriptionOnDisabled,
     required this.valueChild,
+    this.displayErrors = true,
   });
 
   @override
@@ -39,7 +42,8 @@ class FediFormFieldRow extends StatelessWidget {
             description: description,
             descriptionOnDisabled: descriptionOnDisabled,
           ),
-          const _FediFormFieldRowErrorWidget(),
+          if (displayErrors) const _FediFormFieldRowErrorWidget(),
+          const FediBigVerticalSpacer(),
         ],
       );
 }

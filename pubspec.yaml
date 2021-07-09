@@ -224,7 +224,7 @@ dev_dependencies:
   # fvm flutter pub run build_runner build --delete-conflicting-outputs
   build_runner: 2.0.4
   # build tool to generate json from & to methods
-  json_serializable: 4.1.1
+  json_serializable: 4.1.3
   # sql orm generator
   moor_generator: 4.4.0
 

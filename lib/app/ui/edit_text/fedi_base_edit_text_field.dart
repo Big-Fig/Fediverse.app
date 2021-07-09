@@ -72,7 +72,10 @@ class FediBaseEditTextField extends StatelessWidget {
     return child;
   }
 
-  TextField buildTextField(TextInputAction actualTextInputAction, BuildContext context) {
+  TextField buildTextField(
+    TextInputAction actualTextInputAction,
+    BuildContext context,
+  ) {
     return TextField(
       enabled: enabled,
       maxLength: maxLength,
@@ -81,7 +84,9 @@ class FediBaseEditTextField extends StatelessWidget {
       focusNode: focusNode,
       textInputAction: actualTextInputAction,
       onSubmitted: (value) {
-        onSubmitted!(value);
+        if (onSubmitted != null) {
+          onSubmitted!(value);
+        }
       },
       decoration: InputDecoration(
         border: displayBorder ? border : InputBorder.none,
@@ -116,7 +121,10 @@ class FediBaseEditTextField extends StatelessWidget {
     );
   }
 
-  ExtendedTextField buildExtendedTextField(BuildContext context, TextInputAction actualTextInputAction) {
+  ExtendedTextField buildExtendedTextField(
+    BuildContext context,
+    TextInputAction actualTextInputAction,
+  ) {
     return ExtendedTextField(
       enabled: enabled,
       specialTextSpanBuilder: _SpecialTextSpanBuilder(

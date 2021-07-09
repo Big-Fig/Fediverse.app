@@ -1,7 +1,7 @@
-import 'package:fedi/app/captcha/pleroma/pleroma_form_captcha_string_field_bloc.dart';
-import 'package:fedi/app/localization/locale/form/localization_locale_single_from_list_value_form_field_bloc.dart';
-import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
-import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
+import 'package:fedi/app/auth/instance/register/form/stepper/item/account/register_auth_instance_form_account_stepper_item_bloc.dart';
+import 'package:fedi/app/auth/instance/register/form/stepper/item/captcha/register_auth_instance_form_captcha_stepper_item_bloc.dart';
+import 'package:fedi/app/auth/instance/register/form/stepper/item/manual_approve/register_auth_instance_form_manual_approve_stepper_item_bloc.dart';
+import 'package:fedi/app/auth/instance/register/form/stepper/item/submit/register_auth_instance_form_submit_stepper_item_bloc.dart';
 import 'package:fedi/form/form_bloc.dart';
 import 'package:fedi/pleroma/api/account/public/pleroma_api_account_public_model.dart';
 import 'package:flutter/widgets.dart';
@@ -14,25 +14,16 @@ abstract class IRegisterAuthInstanceFormBloc implements IFormBloc {
   }) =>
       Provider.of<IRegisterAuthInstanceFormBloc>(context, listen: listen);
 
-  Uri get instanceBaseUri;
+  IRegisterAuthInstanceFormStepperManualApproveItemBloc?
+      get manualApproveStepperItemBloc;
 
-  bool? get approvalRequired;
+  IRegisterAuthInstanceFormStepperAccountItemBloc get accountStepperItemBloc;
 
-  ILocalizationLocaleSingleFromListValueFormFieldBloc get localeFieldBloc;
+  IRegisterAuthInstanceFormStepperCaptchaItemBloc? get captchaStepperItemBloc;
 
-  IBoolValueFormFieldBloc get agreeTermsOfServiceFieldBloc;
-
-  IStringValueFormFieldBloc get usernameFieldBloc;
-
-  IStringValueFormFieldBloc get emailFieldBloc;
-
-  IStringValueFormFieldBloc get passwordFieldBloc;
-
-  IStringValueFormFieldBloc get confirmPasswordFieldBloc;
-
-  IStringValueFormFieldBloc get reasonFieldBloc;
-
-  IPleromaFormCaptchaStringFieldBloc get captchaFieldBloc;
+  IRegisterAuthInstanceFormStepperSubmitItemBloc get submitStepperItemBloc;
 
   PleromaApiAccountPublicRegisterRequest calculateRegisterFormData();
+
+  void onRegisterFailed();
 }

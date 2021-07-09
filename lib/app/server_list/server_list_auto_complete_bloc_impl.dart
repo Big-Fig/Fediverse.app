@@ -1,6 +1,7 @@
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/server_list/server_list_auto_complete_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -53,7 +54,18 @@ class ServerListAutoCompleteBloc extends AsyncInitLoadingBloc
 Future<List<String>> _loadServersList() async {
   var fileAsString = await _loadAsset();
 
-  return fileAsString.split('\n');
+  var servers = fileAsString.split('\n');
+
+  if(!kReleaseMode) {
+    // debug instances
+    servers = [
+      'mastodon.jff.name',
+      'pleroma.jff.name',
+      ...servers,
+    ];
+  }
+
+  return servers;
 }
 
 Future<String> _loadAsset() => rootBundle.loadString('assets/server_list.txt');
