@@ -40,6 +40,8 @@ abstract class IConfigService implements IAsyncInitLoadingBloc, IDisposable {
 
   String? get crashlyticsDetailsUrl;
 
+  String? get helpChooseInstanceUrl;
+
   int? get crashlyticsAskHandlingCountAppOpenedToShow;
 
   bool get askReviewEnabled;

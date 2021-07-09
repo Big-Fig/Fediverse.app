@@ -12,6 +12,7 @@ So Fedi is an open-source mobile client for social networks and has features sim
 	<img src="./images/screenshot_2.webp" alt="Fedi screenshot" width="200"/>
 </p>
 
+[How to find Pleroma/Mastodon instance to join?](https://github.com/Big-Fig/Fediverse.app/blob/master/helpChooseInstance.md)
 
 ### Android
 
@@ -350,7 +351,7 @@ env_dev.env
 
 Those files excluded from source control.
 
-You can find all possible config variables(with comments) at [env_example.env](env_example.env)
+You can find all possible config variables(with comments) at [env_example.env](https://github.com/Big-Fig/Fediverse.app/blob/master/env_example.env)
 
 #### If you have strange errors in any case or how to clean project
 

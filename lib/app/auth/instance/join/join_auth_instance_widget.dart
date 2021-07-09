@@ -14,6 +14,7 @@ import 'package:fedi/app/ui/edit_text/fedi_transparent_edit_text_field.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fedi/app/url/url_helper.dart';
 import 'package:fedi/dialog/async/async_dialog.dart';
 import 'package:fedi/error/error_data_model.dart';
 import 'package:fedi/generated/l10n.dart';
@@ -58,6 +59,7 @@ class JoinAuthInstanceWidget extends StatelessWidget {
                 padding: FediPadding.verticalBigPadding,
                 child: const _JoinAuthInstanceActionsWidget(),
               ),
+              const _JoinAuthInstanceHelpMeChooseWidget(),
               Spacer(
                 flex: 1,
               ),
@@ -71,6 +73,38 @@ class JoinAuthInstanceWidget extends StatelessWidget {
           ),
         ),
       );
+}
+
+class _JoinAuthInstanceHelpMeChooseWidget extends StatelessWidget {
+  const _JoinAuthInstanceHelpMeChooseWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var configService = IConfigService.of(context);
+
+    var helpChooseInstanceUrl = configService.helpChooseInstanceUrl;
+    if (helpChooseInstanceUrl != null) {
+      return InkWell(
+        onTap: () => UrlHelper.handleUrlClick(
+          context: context,
+          url: helpChooseInstanceUrl,
+        ),
+        child: Padding(
+          padding: FediPadding.allMediumPadding,
+          child: Text(
+            S.of(context).app_auth_instance_join_action_helpMeChooseInstance,
+            style: IFediUiTextTheme.of(context).mediumLightGrey.copyWith(
+                  decoration: TextDecoration.underline,
+                ),
+          ),
+        ),
+      );
+    } else {
+      return const SizedBox.shrink();
+    }
+  }
 }
 
 class _JoinAuthInstanceActionsWidget extends StatelessWidget {

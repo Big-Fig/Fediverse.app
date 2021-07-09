@@ -54,6 +54,9 @@ class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
   late String? crashlyticsDetailsUrl;
 
   @override
+  late String? helpChooseInstanceUrl;
+
+  @override
   late int? crashlyticsAskHandlingCountAppOpenedToShow;
 
   @override
@@ -197,6 +200,13 @@ class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
         'if CRASHLYTICS_ENABLED is true',
       );
     }
+
+
+    helpChooseInstanceUrl = _getString(
+      'HELP_CHOOSE_INSTANCE_URL',
+      isRequired: false,
+    );
+
     askReviewCountAppOpenedToShow = _getInt(
       'ASK_REVIEW_COUNT_APP_OPENED_TO_SHOW',
       isRequired: false,
