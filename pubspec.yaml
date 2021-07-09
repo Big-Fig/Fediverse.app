@@ -218,7 +218,7 @@ dev_dependencies:
     sdk: flutter
 
   # easy mock for tests
-  mockito: 5.0.7
+  mockito: 5.0.10
   # build tools runner
   # usage example
   # fvm flutter pub run build_runner build --delete-conflicting-outputs
