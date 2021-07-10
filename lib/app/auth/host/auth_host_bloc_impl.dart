@@ -435,14 +435,14 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
       var isRegistrationEnabled = pleromaInstance.registrations;
 
       if (isRegistrationEnabled != false) {
+        result = true;
+      } else {
         var invitesEnabled = pleromaInstance.invitesEnabled;
         if (invitesEnabled == true) {
           throw const InvitesOnlyRegistrationAuthHostException();
         } else {
-          result = true;
+          throw const DisabledRegistrationAuthHostException();
         }
-      } else {
-        throw const DisabledRegistrationAuthHostException();
       }
     } finally {
       await pleromaInstanceService?.dispose();
