@@ -5,6 +5,7 @@ import 'package:fedi/analytics/app/app_analytics_bloc.dart';
 import 'package:fedi/analytics/app/app_analytics_bloc_impl.dart';
 import 'package:fedi/analytics/app/local_preferences/app_analytics_local_preference_bloc.dart';
 import 'package:fedi/analytics/app/local_preferences/app_analytics_local_preference_bloc_impl.dart';
+import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc_impl.dart';
 import 'package:fedi/app/auth/instance/current/local_preferences/current_auth_instance_local_preference_bloc.dart';
@@ -17,6 +18,10 @@ import 'package:fedi/app/auth/oauth_last_launched/local_preferences/auth_oauth_l
 import 'package:fedi/app/auth/oauth_last_launched/local_preferences/auth_oauth_last_launched_host_to_login_local_preference_bloc_impl.dart';
 import 'package:fedi/app/cache/database/settings/local_preferences/global/global_database_cache_settings_local_preference_bloc.dart';
 import 'package:fedi/app/cache/database/settings/local_preferences/global/global_database_cache_settings_local_preference_bloc_impl.dart';
+import 'package:fedi/app/cache/files/files_cache_service.dart';
+import 'package:fedi/app/cache/files/files_cache_service_impl.dart';
+import 'package:fedi/app/cache/files/limit/age/files_cache_age_limit_model.dart';
+import 'package:fedi/app/cache/files/limit/size_count/files_cache_size_count_limit_model.dart';
 import 'package:fedi/app/cache/files/settings/local_preferences/global/global_files_cache_settings_local_preference_bloc.dart';
 import 'package:fedi/app/cache/files/settings/local_preferences/global/global_files_cache_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/chat/settings/local_preferences/global/global_chat_settings_local_preference_bloc.dart';
@@ -35,6 +40,7 @@ import 'package:fedi/app/crash_reporting/settings/local_preference/crash_reporti
 import 'package:fedi/app/crash_reporting/settings/local_preference/global/global_crash_reporting_settings_local_preference_bloc.dart';
 import 'package:fedi/app/crash_reporting/settings/local_preference/global/global_crash_reporting_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/database/app_database_service_impl.dart';
+import 'package:fedi/app/guest/guest_my_account_bloc_impl.dart';
 import 'package:fedi/app/hive/hive_service.dart';
 import 'package:fedi/app/hive/hive_service_impl.dart';
 import 'package:fedi/app/local_preferences/fedi_local_preferences_service_migration_bloc_impl.dart';
@@ -51,6 +57,8 @@ import 'package:fedi/app/media/settings/local_preferences/global/global_media_se
 import 'package:fedi/app/media/settings/local_preferences/global/global_media_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/pagination/settings/local_preferences/global/global_pagination_settings_local_preference_bloc.dart';
 import 'package:fedi/app/pagination/settings/local_preferences/global/global_pagination_settings_local_preference_bloc_impl.dart';
+import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
+import 'package:fedi/app/pagination/settings/pagination_settings_bloc_impl.dart';
 import 'package:fedi/app/push/notification/handler/notifications_push_handler_bloc.dart';
 import 'package:fedi/app/push/notification/handler/notifications_push_handler_bloc_impl.dart';
 import 'package:fedi/app/push/notification/handler/unhandled/local_preferences/notifications_push_handler_unhandled_local_preference_bloc.dart';
@@ -63,8 +71,12 @@ import 'package:fedi/app/share/income/handler/last_chosen_instance/last_chosen_i
 import 'package:fedi/app/share/income/handler/last_chosen_instance/last_chosen_instance_income_share_handler_local_preference_bloc_impl.dart';
 import 'package:fedi/app/status/post/settings/local_preferences/global/global_post_status_settings_local_preference_bloc.dart';
 import 'package:fedi/app/status/post/settings/local_preferences/global/global_post_status_settings_local_preference_bloc_impl.dart';
+import 'package:fedi/app/status/sensitive/display_time_storage/status_sensitive_display_time_storage_bloc.dart';
+import 'package:fedi/app/status/sensitive/display_time_storage/status_sensitive_display_time_storage_bloc_impl.dart';
 import 'package:fedi/app/status/sensitive/settings/local_preferences/global/global_status_sensitive_settings_local_preference_bloc.dart';
 import 'package:fedi/app/status/sensitive/settings/local_preferences/global/global_status_sensitive_settings_local_preference_bloc_impl.dart';
+import 'package:fedi/app/status/sensitive/settings/status_sensitive_settings_bloc.dart';
+import 'package:fedi/app/status/sensitive/settings/status_sensitive_settings_bloc_impl.dart';
 import 'package:fedi/app/toast/settings/local_preferences/global/global_toast_settings_local_preference_bloc.dart';
 import 'package:fedi/app/toast/settings/local_preferences/global/global_toast_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/ui/settings/local_preference/global/global_ui_settings_local_preference_bloc.dart';
@@ -78,6 +90,8 @@ import 'package:fedi/app/ui/theme/dark/dark_fedi_ui_theme_model.dart';
 import 'package:fedi/app/ui/theme/light/light_fedi_ui_theme_model.dart';
 import 'package:fedi/app/web_sockets/settings/local_preferences/global/global_web_sockets_settings_local_preference_bloc.dart';
 import 'package:fedi/app/web_sockets/settings/local_preferences/global/global_web_sockets_settings_local_preference_bloc_impl.dart';
+import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc.dart';
+import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc_impl.dart';
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/connection/connection_service_impl.dart';
 import 'package:fedi/generated/l10n.dart';
@@ -619,5 +633,68 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         inAppReviewCheckerBloc,
       );
     }
+
+    // same in auth instance context
+    var statusSensitiveDisplayTimeStorageBloc =
+        StatusSensitiveDisplayTimeStorageBloc()..disposeWith(this);
+
+    await globalProviderService
+        .asyncInitAndRegister<IStatusSensitiveDisplayTimeStorageBloc>(
+      statusSensitiveDisplayTimeStorageBloc,
+    );
+
+    const guestUserAtHost = 'guest';
+
+    var guestFilesCacheService = FilesCacheService(
+      connectionService: connectionService,
+      key: guestUserAtHost,
+      stalePeriod: globalFilesCacheSettingsLocalPreferencesBloc
+          .value.ageLimitType
+          .toDurationOrNull(),
+      maxNrOfCacheObjects: globalFilesCacheSettingsLocalPreferencesBloc
+          .value.sizeLimitCountType
+          .toCountOrNull(),
+    )..disposeWith(this);
+
+    await globalProviderService
+        .asyncInitAndRegister<IFilesCacheService>(guestFilesCacheService);
+
+    var guestStatusSensitiveSettingsBloc = StatusSensitiveSettingsBloc(
+      instanceLocalPreferencesBloc:
+          globalStatusSensitiveSettingsLocalPreferencesBloc,
+      // ignore: no-equal-arguments
+      globalLocalPreferencesBloc:
+          globalStatusSensitiveSettingsLocalPreferencesBloc,
+    )..disposeWith(this);
+
+    await globalProviderService.asyncInitAndRegister<
+        IStatusSensitiveSettingsBloc>(guestStatusSensitiveSettingsBloc);
+
+    var guestPaginationSettingsBloc = PaginationSettingsBloc(
+      instanceLocalPreferencesBloc:
+          globalPaginationSettingsLocalPreferencesBloc,
+      // ignore: no-equal-arguments
+      globalLocalPreferencesBloc: globalPaginationSettingsLocalPreferencesBloc,
+    )..disposeWith(this);
+
+    await globalProviderService.asyncInitAndRegister<IPaginationSettingsBloc>(
+      guestPaginationSettingsBloc,
+    );
+
+    var guestWebSocketsSettingsBloc = WebSocketsSettingsBloc(
+      instanceLocalPreferencesBloc:
+          globalWebSocketsSettingsLocalPreferencesBloc,
+      // ignore: no-equal-arguments
+      globalLocalPreferencesBloc: globalWebSocketsSettingsLocalPreferencesBloc,
+    )..disposeWith(this);
+
+    await globalProviderService.asyncInitAndRegister<IWebSocketsSettingsBloc>(
+      guestWebSocketsSettingsBloc,
+    );
+
+    var guestMyAccountBloc = GuestMyAccountBloc()..disposeWith(this);
+
+    await globalProviderService
+        .asyncInitAndRegister<IMyAccountBloc>(guestMyAccountBloc);
   }
 }

@@ -4,6 +4,9 @@ import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/url/url_helper.dart';
 import 'package:flutter/widgets.dart';
+import 'package:logging/logging.dart';
+
+final _logger = Logger('status_body_link_helper.dart');
 
 Future handleStatusBodyLinkClick({
   required IStatusBloc statusBloc,
@@ -14,6 +17,10 @@ Future handleStatusBodyLinkClick({
   var isLocal = instanceLocation == InstanceLocation.local;
 
   var mentionedAccount = await statusBloc.loadAccountByMentionUrl(url: url);
+
+  _logger.finest(() => 'handleStatusBodyLinkClick '
+      'isLocal $isLocal '
+      'mentionedAccount $mentionedAccount');
 
   if (mentionedAccount != null) {
     if (isLocal) {

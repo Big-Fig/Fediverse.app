@@ -6,6 +6,7 @@ import 'package:fedi/app/account/local_account_bloc_impl.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/remote_account_bloc_impl.dart';
 import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
+import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/chat/conversation/share/conversation_chat_share_entity_page.dart';
 import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_entity_page.dart';
 import 'package:fedi/app/html/html_text_helper.dart';
@@ -388,6 +389,9 @@ class _StatusActionMoreDialogBodyStatusActionsWidget extends StatelessWidget {
     var isStatusFromMe = myAccountBloc.checkIsStatusFromMe(status);
     var isLocal = statusBloc.instanceLocation == InstanceLocation.local;
 
+    var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
+    var currentInstance = currentAuthInstanceBloc.currentInstance;
+
     return FediChooserDialogBody(
       title: S.of(context).app_status_action_popup_title,
       actions: [
@@ -404,7 +408,8 @@ class _StatusActionMoreDialogBodyStatusActionsWidget extends StatelessWidget {
           StatusActionMoreDialogBody.buildAccountOpenOnRemoteInstance(
             context,
           ),
-        StatusActionMoreDialogBody.buildShareAction(context),
+        if (currentInstance != null)
+          StatusActionMoreDialogBody.buildShareAction(context),
       ],
       cancelable: false,
     );

@@ -1,5 +1,5 @@
-import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:easy_dispose/easy_dispose.dart';
+import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -26,4 +26,15 @@ abstract class ICurrentAuthInstanceBloc implements IDisposable {
   String createHashtagUrl({
     required String hashtag,
   });
+}
+
+extension ICurrentAuthInstanceBlocExtension on ICurrentAuthInstanceBloc {
+  bool get isAccountFavouritesFeatureSupported =>
+      currentInstance?.isAccountFavouritesFeatureSupported == true;
+
+  bool get isEndorsementSupported =>
+      currentInstance?.isEndorsementSupported == true;
+
+  bool get isSubscribeToAccountFeatureSupported =>
+      currentInstance?.isSubscribeToAccountFeatureSupported == true;
 }

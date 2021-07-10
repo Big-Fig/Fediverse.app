@@ -1,3 +1,5 @@
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
+import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/status/emoji_reaction/status_emoji_reaction_bloc.dart';
 import 'package:fedi/app/status/emoji_reaction/status_emoji_reaction_bloc_impl.dart';
 import 'package:fedi/app/status/emoji_reaction/status_emoji_reaction_list_item_widget.dart';
@@ -5,7 +7,6 @@ import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pleroma/api/status/emoji_reaction/pleroma_api_status_emoji_reaction_service.dart';
 import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -33,27 +34,40 @@ class StatusEmojiReactionListWidget extends StatelessWidget {
                 alignment: WrapAlignment.start,
                 crossAxisAlignment: WrapCrossAlignment.start,
                 children: emojiReactions!
-                    .map((emojiReaction) =>
-                        Provider<IPleromaApiStatusEmojiReaction>.value(
-                          value: emojiReaction,
-                          child: DisposableProxyProvider<
-                              IPleromaApiStatusEmojiReaction,
-                              IStatusEmojiReactionBloc>(
-                            update: (context, value, previous) =>
-                                StatusEmojiReactionBloc(
-                              status: statusBloc.status,
-                              statusRepository:
-                                  IStatusRepository.of(context, listen: false),
-                              emojiReaction: value,
-                              pleromaApiStatusEmojiReactionService:
-                                  IPleromaApiStatusEmojiReactionService.of(
-                                context,
-                                listen: false,
-                              ),
-                            ),
-                            child: const StatusEmojiReactionListItemWidget(),
-                          ),
-                        ))
+                    .map(
+                      (emojiReaction) =>
+                          Provider<IPleromaApiStatusEmojiReaction>.value(
+                        value: emojiReaction,
+                        child: DisposableProxyProvider<
+                            IPleromaApiStatusEmojiReaction,
+                            IStatusEmojiReactionBloc>(
+                          update: (context, value, previous) {
+                            if (statusBloc.instanceLocation ==
+                                InstanceLocation.local) {
+                              return AuthStatusEmojiReactionBloc(
+                                status: statusBloc.status,
+                                emojiReaction: value,
+                                statusRepository: IStatusRepository.of(
+                                  context,
+                                  listen: false,
+                                ),
+                                pleromaApiStatusEmojiReactionService:
+                                    IPleromaApiStatusEmojiReactionService.of(
+                                  context,
+                                  listen: false,
+                                ),
+                              );
+                            } else {
+                              return StatusEmojiReactionBloc(
+                                status: statusBloc.status,
+                                emojiReaction: value,
+                              );
+                            }
+                          },
+                          child: const StatusEmojiReactionListItemWidget(),
+                        ),
+                      ),
+                    )
                     .toList(),
               ),
             ),

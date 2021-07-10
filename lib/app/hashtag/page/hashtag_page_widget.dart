@@ -1,4 +1,5 @@
 import 'package:fedi/app/async/async_operation_button_builder_widget.dart';
+import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/hashtag/hashtag_bloc.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
 import 'package:fedi/app/hashtag/page/hashtag_page_bloc.dart';
@@ -28,6 +29,9 @@ class HashtagPageAppBarWidget extends StatelessWidget
 
     String title;
 
+    var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
+    var currentInstance = currentAuthInstanceBloc.currentInstance;
+
     var hashtagPageBloc = IHashtagPageBloc.of(context);
     var isLocal = hashtagPageBloc.instanceLocation == InstanceLocation.local;
 
@@ -43,7 +47,8 @@ class HashtagPageAppBarWidget extends StatelessWidget
       centerTitle: false,
       title: title,
       actions: <Widget>[
-        if (!isLocal) const _HashtagPageAppBarSearchOnLocalInstanceAction(),
+        if (!isLocal && currentInstance != null)
+          const _HashtagPageAppBarSearchOnLocalInstanceAction(),
         if (isLocal) const _HashtagPageAppBarFeaturedAction(),
         const _HashtagPageAppBarSettingsActionWidget(),
         const _HashtagPageAppBarOpenInBrowserAction(),

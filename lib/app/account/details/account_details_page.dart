@@ -20,6 +20,7 @@ import 'package:fedi/app/account/statuses/with_replies/cached/account_statuses_w
 import 'package:fedi/app/account/statuses/with_replies/network_only/remote/remote_account_statuses_with_replies_network_only_list_bloc_impl.dart';
 import 'package:fedi/app/account/statuses/without_replies/cached/account_statuses_without_replies_cached_list_bloc_impl.dart';
 import 'package:fedi/app/account/statuses/without_replies/network_only/remote/remote_account_statuses_without_replies_network_only_list_bloc_impl.dart';
+import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/instance/remote/remote_instance_bloc.dart';
 import 'package:fedi/app/search/search_model.dart';
@@ -82,6 +83,9 @@ class AccountDetailsPageBody extends StatelessWidget {
 
     var isRemote = accountBloc.instanceLocation == InstanceLocation.remote;
 
+    var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
+    var currentInstance = currentAuthInstanceBloc.currentInstance;
+
     return Scaffold(
       backgroundColor: IFediUiColorTheme.of(context).white,
       appBar: FediPageCustomAppBar(
@@ -96,7 +100,7 @@ class AccountDetailsPageBody extends StatelessWidget {
                 const AccountAcctWidget(),
               ],
             ),
-            if (isRemote)
+            if (isRemote && currentInstance != null)
               const _AccountDetailsPageAppBarOpenOnLocalInstanceAction(),
           ],
         ),

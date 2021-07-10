@@ -1,3 +1,5 @@
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/instance/public_timeline/instance_public_timeline_page_bloc.dart';
 import 'package:fedi/app/instance/public_timeline/instance_public_timeline_page_bloc_impl.dart';
@@ -12,7 +14,6 @@ import 'package:fedi/app/status/pagination/network_only/status_network_only_pagi
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc.dart';
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc_impl.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc_impl.dart';
@@ -22,7 +23,6 @@ import 'package:fedi/pleroma/api/timeline/pleroma_api_timeline_service.dart';
 import 'package:fedi/pleroma/api/timeline/pleroma_api_timeline_service_impl.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:easy_dispose/easy_dispose.dart';
 
 class RemoteInstancePublicTimelinePageBloc
     extends InstancePublicTimelinePageBloc
@@ -41,7 +41,7 @@ class RemoteInstancePublicTimelinePageBloc
     required this.remoteInstanceBloc,
     required this.paginationSettingsBloc,
     required IPleromaApiInstance pleromaApiInstance,
-  })   : pleromaApiTimelineService = PleromaApiTimelineService(
+  })  : pleromaApiTimelineService = PleromaApiTimelineService(
           restService: remoteInstanceBloc.pleromaRestService,
         ),
         super(
@@ -111,6 +111,16 @@ class RemoteInstancePublicTimelinePageBloc
     );
     await timelineLocalPreferenceBloc.performAsyncInit();
 
+    // display local statuses by default
+    var timeline = timelineLocalPreferenceBloc.value;
+    await timelineLocalPreferenceBloc.setValue(
+      timeline!.copyWith(
+        settings: timeline.settings.copyWith(
+          onlyLocal: true,
+        ),
+      ),
+    );
+
     addDisposable(timelineLocalPreferenceBloc);
 
     var pleromaApiTimelineService = PleromaApiTimelineService(
@@ -139,7 +149,7 @@ class RemoteInstancePublicTimelinePageBloc
     addDisposable(statusPaginationListBloc);
 
     timelineLocalPreferenceBloc.stream.listen(
-          (_) {
+      (_) {
         statusPaginationListBloc.refreshWithController();
       },
     ).disposeWith(this);

@@ -1,5 +1,6 @@
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
+import 'package:fedi/app/instance/remote/remote_instance_bloc.dart';
 import 'package:fedi/app/status/action/status_comment_action_widget.dart';
 import 'package:fedi/app/status/action/status_emoji_action_widget.dart';
 import 'package:fedi/app/status/action/status_favourite_action_widget.dart';
@@ -16,10 +17,18 @@ class StatusActionsListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
 
-    var isPleromaInstance = currentAuthInstanceBloc.currentInstance!.isPleroma;
 
     var statusBloc = IStatusBloc.of(context);
     var isLocal = statusBloc.instanceLocation == InstanceLocation.local;
+
+    bool isPleromaInstance;
+    if(isLocal) {
+      isPleromaInstance = currentAuthInstanceBloc.currentInstance!.isPleroma;
+    } else {
+      var remoteInstanceBloc = IRemoteInstanceBloc.of(context);
+      // todo: refactor
+      isPleromaInstance = remoteInstanceBloc.pleromaApiInstance?.pleroma != null;
+    }
 
     return Padding(
       padding: const EdgeInsets.symmetric(

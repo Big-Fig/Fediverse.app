@@ -1408,6 +1408,16 @@ class S {
     );
   }
 
+  /// `Explore as guest`
+  String get app_auth_instance_join_action_exploreAsGuest {
+    return Intl.message(
+      'Explore as guest',
+      name: 'app_auth_instance_join_action_exploreAsGuest',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Sign up`
   String get app_auth_instance_join_action_signUp {
     return Intl.message(

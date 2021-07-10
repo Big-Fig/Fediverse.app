@@ -1,9 +1,9 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/account/details/account_details_bloc.dart';
 import 'package:fedi/app/account/statuses/account_statuses_tab_model.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_bloc.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_bloc_impl.dart';
-import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/ui/scroll/nested_scroll_controller_bloc.dart';
 import 'package:fedi/ui/scroll/nested_scroll_controller_bloc_impl.dart';
 import 'package:logging/logging.dart';
@@ -31,14 +31,13 @@ class AccountDetailsBloc extends DisposableOwner
 
   AccountDetailsBloc({
     required this.currentAuthInstanceBloc,
-  })   : nestedScrollController = NestedScrollController(centerScroll: false),
+  })  : nestedScrollController = NestedScrollController(centerScroll: false),
         tabs = <AccountStatusesTab>[
           AccountStatusesTab.withoutReplies,
           AccountStatusesTab.pinned,
           AccountStatusesTab.media,
           AccountStatusesTab.withReplies,
-          if (currentAuthInstanceBloc
-              .currentInstance!.isAccountFavouritesFeatureSupported!)
+          if (currentAuthInstanceBloc.isAccountFavouritesFeatureSupported)
             AccountStatusesTab.favourites,
         ] {
     nestedScrollControllerBloc = NestedScrollControllerBloc(

@@ -1,8 +1,8 @@
-import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_bloc.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_bloc_impl.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_widget.dart';
+import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/thread/local_status_thread_page.dart';
 import 'package:fedi/app/status/thread/remote_status_thread_page.dart';
@@ -84,9 +84,9 @@ class InstancePublicTimelineStatusListNetworkOnlyListTimelineWidget
 }
 
 Future _onStatusClick(BuildContext context, IStatus status) async {
-  var accountBloc = IAccountBloc.of(context, listen: false);
+  var statusBloc = IStatusBloc.of(context, listen: false);
 
-  var isLocal = accountBloc.instanceLocation == InstanceLocation.local;
+  var isLocal = statusBloc.instanceLocation == InstanceLocation.local;
 
   if (isLocal) {
     await goToLocalStatusThreadPage(

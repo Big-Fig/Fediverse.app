@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/message/post_message_bloc.dart';
@@ -22,7 +23,6 @@ import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/list/fedi_list_refresh_indicator.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/ui/scroll/unfocus_on_scroll_area_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -33,15 +33,15 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 class StatusThreadWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var postMessageBloc = IPostMessageBloc.of(context);
-
     var fediUiColorTheme = IFediUiColorTheme.of(context);
 
     var statusThreadBloc = IStatusThreadBloc.of(context);
     var isLocal = statusThreadBloc.instanceLocation == InstanceLocation.local;
 
     return StreamBuilder<bool>(
-      stream: postMessageBloc.isExpandedStream,
+      stream: isLocal
+          ? IPostMessageBloc.of(context).isExpandedStream
+          : Stream.value(false),
       builder: (context, snapshot) {
         var isPostMessageExpanded = snapshot.data ?? false;
 
@@ -60,8 +60,8 @@ class StatusThreadWidget extends StatelessWidget {
               ),
               if (isLocal) ...[
                 StreamBuilder<bool>(
-                  stream: postMessageBloc.isInputFocusedStream,
-                  initialData: postMessageBloc.isInputFocused,
+                  stream: IPostMessageBloc.of(context).isInputFocusedStream,
+                  initialData: IPostMessageBloc.of(context).isInputFocused,
                   builder: (context, snapshot) {
                     var isInputFocused = snapshot.data!;
                     if (isInputFocused) {

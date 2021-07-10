@@ -1,5 +1,6 @@
 import 'package:fedi/app/async/pleroma/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
+import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/cache/files/files_cache_service.dart';
 import 'package:fedi/app/chat/conversation/share/conversation_chat_share_entity_page.dart';
 import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_entity_page.dart';
@@ -111,6 +112,9 @@ class _MediaAttachmentDetailsPageState
 
   @override
   Widget build(BuildContext context) {
+    var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
+    var currentInstance = currentAuthInstanceBloc.currentInstance;
+
     return Scaffold(
       appBar: FediPageTitleAppBar(
         title: S.of(context).app_media_attachment_details_title,
@@ -118,10 +122,11 @@ class _MediaAttachmentDetailsPageState
           _MediaAttachmentDetailsPageAddToGalleryAction(
             mediaAttachment: mediaAttachment,
           ),
-          _MediaAttachmentDetailsPageShareAction(
-            mediaAttachment: mediaAttachment,
-            instanceLocation: widget.instanceLocation,
-          ),
+          if (currentInstance != null)
+            _MediaAttachmentDetailsPageShareAction(
+              mediaAttachment: mediaAttachment,
+              instanceLocation: widget.instanceLocation,
+            ),
         ],
       ),
       body: buildBody(context),

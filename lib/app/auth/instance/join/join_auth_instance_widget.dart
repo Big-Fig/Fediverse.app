@@ -8,12 +8,14 @@ import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/join/join_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/register/register_auth_instance_page.dart';
 import 'package:fedi/app/config/config_service.dart';
+import 'package:fedi/app/instance/details/remote/remote_instance_details_page.dart';
 import 'package:fedi/app/server_list/server_list_auto_complete_widget.dart';
 import 'package:fedi/app/tos/tos_page.dart';
 import 'package:fedi/app/ui/button/text/with_border/fedi_transparent_text_button_with_border.dart';
 import 'package:fedi/app/ui/edit_text/fedi_transparent_edit_text_field.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/app/ui/spacer/fedi_big_vertical_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/url/url_helper.dart';
 import 'package:fedi/dialog/async/async_dialog.dart';
@@ -123,17 +125,23 @@ class _JoinAuthInstanceActionsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: FediPadding.horizontalSmallPadding,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          Expanded(
-            flex: 1,
-            child: const _JoinAuthInstanceSignUpButtonWidget(),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Expanded(
+                flex: 1,
+                child: const _JoinAuthInstanceSignUpButtonWidget(),
+              ),
+              Expanded(
+                flex: 1,
+                child: const _JoinAuthInstanceLoginButtonWidget(),
+              ),
+            ],
           ),
-          Expanded(
-            flex: 1,
-            child: const _JoinAuthInstanceLoginButtonWidget(),
-          ),
+          const FediBigVerticalSpacer(),
+          const _JoinAuthInstanceExploreAsGuestButtonWidget(),
         ],
       ),
     );
@@ -157,6 +165,37 @@ class _JoinAuthInstanceLoginButtonWidget extends StatelessWidget {
         S.of(context).app_auth_instance_join_action_login,
         onPressed: () {
           logInToInstance(context);
+        },
+        color: IFediUiColorTheme.of(context).white,
+        expanded: true,
+      ),
+    );
+  }
+}
+
+class _JoinAuthInstanceExploreAsGuestButtonWidget extends StatelessWidget {
+  const _JoinAuthInstanceExploreAsGuestButtonWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var joinInstanceBloc = IJoinAuthInstanceBloc.of(context);
+
+    return Padding(
+      padding: EdgeInsets.only(
+        left: FediSizes.smallPadding,
+        // ignore: no-equal-arguments
+        right: FediSizes.smallPadding,
+      ),
+      child: FediTransparentTextButtonWithBorder(
+        S.of(context).app_auth_instance_join_action_exploreAsGuest,
+        onPressed: () {
+          var hostUri = joinInstanceBloc.extractCurrentUri();
+          goToRemoteInstanceDetailsPage(
+            context,
+            remoteInstanceUri: hostUri,
+          );
         },
         color: IFediUiColorTheme.of(context).white,
         expanded: true,

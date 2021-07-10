@@ -14,6 +14,8 @@ void showShareChooserDialog(
 }) {
   var currentAuthInstanceBloc =
       ICurrentAuthInstanceBloc.of(context, listen: false);
+
+  var currentInstance = currentAuthInstanceBloc.currentInstance;
   showFediChooserDialog(
     context: context,
     title: S.of(context).app_share_title,
@@ -25,14 +27,15 @@ void showShareChooserDialog(
           externalShareAction(context);
         },
       ),
-      DialogAction(
-        icon: FediIcons.envelope,
-        label: S.of(context).app_share_action_shareToConversations,
-        onAction: (context) {
-          conversationsShareAction(context);
-        },
-      ),
-      if (currentAuthInstanceBloc.currentInstance!.isSupportChats)
+      if (currentInstance != null)
+        DialogAction(
+          icon: FediIcons.envelope,
+          label: S.of(context).app_share_action_shareToConversations,
+          onAction: (context) {
+            conversationsShareAction(context);
+          },
+        ),
+      if (currentInstance != null && currentInstance.isSupportChats)
         DialogAction(
           icon: FediIcons.chat,
           label: S.of(context).app_share_action_shareToChats,
@@ -40,13 +43,14 @@ void showShareChooserDialog(
             chatsShareAction(context);
           },
         ),
-      DialogAction(
-        icon: FediIcons.send,
-        label: S.of(context).app_share_action_shareToNewStatus,
-        onAction: (context) {
-          newStatusShareAction(context);
-        },
-      ),
+      if (currentInstance != null)
+        DialogAction(
+          icon: FediIcons.send,
+          label: S.of(context).app_share_action_shareToNewStatus,
+          onAction: (context) {
+            newStatusShareAction(context);
+          },
+        ),
     ],
   );
 }

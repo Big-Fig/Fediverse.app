@@ -652,6 +652,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Loading Instance"),
         "app_auth_instance_join_action_about":
             MessageLookupByLibrary.simpleMessage("About"),
+        "app_auth_instance_join_action_exploreAsGuest":
+            MessageLookupByLibrary.simpleMessage("Explore as guest"),
         "app_auth_instance_join_action_helpMeChooseInstance":
             MessageLookupByLibrary.simpleMessage("Help me choose instance"),
         "app_auth_instance_join_action_login":

@@ -55,7 +55,9 @@ class AccountActionMoreDialog extends StatelessWidget {
     var accountBloc = IAccountBloc.of(context);
     var isAcctRemoteDomainExist = accountBloc.isAcctRemoteDomainExist;
     var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
-    var currentInstance = currentAuthInstanceBloc.currentInstance!;
+    var isEndorsementSupported = currentAuthInstanceBloc.isEndorsementSupported;
+    var isSubscribeToAccountFeatureSupported =
+        currentAuthInstanceBloc.isSubscribeToAccountFeatureSupported;
 
     var isLocal = accountBloc.instanceLocation == InstanceLocation.local;
 
@@ -76,16 +78,14 @@ class AccountActionMoreDialog extends StatelessWidget {
               AccountActionMoreDialog.buildAccountMuteAction(context),
             if (isLocal && isRelationshipLoaded)
               AccountActionMoreDialog.buildAccountBlockAction(context),
-            if (isLocal &&
-                isRelationshipLoaded &&
-                currentInstance.isEndorsementSupported)
+            if (isLocal && isRelationshipLoaded && isEndorsementSupported)
               AccountActionMoreDialog.buildAccountPinAction(context),
             if (isLocal && isAcctRemoteDomainExist && isRelationshipLoaded)
               AccountActionMoreDialog.buildAccountBlockDomainAction(context),
             if (isLocal && showReportAction)
               AccountActionMoreDialog.buildAccountReportAction(context),
             if (isLocal &&
-                currentInstance.isSubscribeToAccountFeatureSupported! &&
+                isSubscribeToAccountFeatureSupported &&
                 isRelationshipLoaded)
               AccountActionMoreDialog.buildAccountSubscribeAction(context),
             buildAccountInstanceInfoAction(context),
@@ -183,23 +183,33 @@ class AccountActionMoreDialog extends StatelessWidget {
 
     var remoteDomainOrNull = accountBloc.acctRemoteDomainOrNull;
 
+    var isLocal = accountBloc.instanceLocation == InstanceLocation.local;
+    var isRemote = accountBloc.instanceLocation == InstanceLocation.remote;
+
     // todo: remove hack
-    if (accountBloc is RemoteAccountBloc) {
-      remoteDomainOrNull ??= accountBloc.instanceUri!.host;
+    if (isRemote) {
+      var remoteAccountBloc = accountBloc as RemoteAccountBloc;
+      remoteDomainOrNull ??= remoteAccountBloc.instanceUri!.host;
     }
 
-    var currentInstanceUrlHost =
-        ICurrentAuthInstanceBloc.of(context, listen: false)
-            .currentInstance!
-            .urlHost;
-
-    var isLocal = remoteDomainOrNull == null;
+    String label;
+    if (isLocal) {
+      var currentInstanceUrlHost =
+          ICurrentAuthInstanceBloc.of(context, listen: false)
+              .currentInstance!
+              .urlHost;
+      label = S
+          .of(context)
+          .app_account_action_instanceDetails(currentInstanceUrlHost);
+    } else {
+      label = S.of(context).app_account_action_instanceDetails(
+            remoteDomainOrNull!,
+          );
+    }
 
     return DialogAction(
       icon: FediIcons.instance,
-      label: S.of(context).app_account_action_instanceDetails(
-            isLocal ? currentInstanceUrlHost : remoteDomainOrNull!,
-          ),
+      label: label,
       onAction: (context) async {
         if (isLocal) {
           goToLocalInstanceDetailsPage(context);

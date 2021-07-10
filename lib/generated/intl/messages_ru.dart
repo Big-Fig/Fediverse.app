@@ -655,6 +655,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Загрузка аккаунта..."),
         "app_auth_instance_join_action_about":
             MessageLookupByLibrary.simpleMessage("О Fedi"),
+        "app_auth_instance_join_action_exploreAsGuest":
+            MessageLookupByLibrary.simpleMessage("Посмотреть как гость"),
         "app_auth_instance_join_action_helpMeChooseInstance":
             MessageLookupByLibrary.simpleMessage("Как выбрать сервер?"),
         "app_auth_instance_join_action_login":

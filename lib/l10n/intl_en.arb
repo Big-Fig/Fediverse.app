@@ -136,6 +136,7 @@
   "app_auth_instance_join_action_tos_terms": "Terms",
   "app_auth_instance_join_action_tos_postfix": ".",
   "app_auth_instance_join_action_login": "Login",
+  "app_auth_instance_join_action_exploreAsGuest": "Explore as guest",
   "app_auth_instance_join_action_signUp": "Sign up",
   "app_auth_instance_join_action_about": "About",
   "app_auth_instance_join_action_helpMeChooseInstance": "Help me choose instance",
