@@ -1,8 +1,12 @@
 import 'dart:io';
 
 import 'package:fedi/app/config/config_service.dart';
+import 'package:fedi/app/settings/global/list/global_settings_list_page.dart';
+import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
+import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
+import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/url/url_helper.dart';
 import 'package:fedi/generated/l10n.dart';
@@ -25,6 +29,18 @@ class AboutPage extends StatelessWidget {
       backgroundColor: IFediUiColorTheme.of(context).white,
       appBar: FediPageTitleAppBar(
         title: S.of(context).app_about_title,
+        actions: [
+          FediIconButton(
+            icon: Icon(
+              FediIcons.settings,
+              color: IFediUiColorTheme.of(context).darkGrey,
+            ),
+            onPressed: () {
+              goToGlobalSettingsPage(context);
+            },
+          ),
+          const FediSmallHorizontalSpacer(),
+        ],
       ),
       body: SafeArea(
         child: Padding(
