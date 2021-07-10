@@ -3,13 +3,24 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## Unreleased
+## [2.6.0] [stable] 2021 July 10
 
 ### Added
 * Server-list autocomplete
+* `Explore as guest` feature to view instances data via Public API
+* About page
+* More lint rules
 
 ### Changed
+* Much better registration UI, UX & logic
 * Specify package versions explicitly in pubspec.yaml
+* update libraries and Flutter
+* update Readme
+* resubscribe to PushRelay if PushRelay server URL is changed
+* move Disposable logic to `easy_dispose_*` packages
+
+### Fixes
+* Fix mocks for some unit tests
   
 
 ## [2.5.0] [internal] 2021 June 22
