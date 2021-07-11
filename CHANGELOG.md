@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * remove settings from about_page.dart to avoid errors when user not logged in yet
 * display only local accounts on instance directory page
 * better context for guest mode
+* improve notification_list_item_widget.dart: perform notification actions as pleroma async operation without blocking dialog
 
 ### Fixes
 * fix version url in about_page.dart

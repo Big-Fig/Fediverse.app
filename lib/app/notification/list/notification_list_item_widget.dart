@@ -1,8 +1,10 @@
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/avatar/account_avatar_widget.dart';
 import 'package:fedi/app/account/details/local_account_details_page.dart';
 import 'package:fedi/app/account/display_name/account_display_name_widget.dart';
 import 'package:fedi/app/account/local_account_bloc_impl.dart';
+import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/emoji/text/emoji_text_model.dart';
 import 'package:fedi/app/html/html_text_bloc.dart';
 import 'package:fedi/app/html/html_text_bloc_impl.dart';
@@ -21,7 +23,6 @@ import 'package:fedi/app/ui/overlay/fedi_blurred_overlay_warning_widget.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/dialog/dialog_model.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pleroma/api/notification/pleroma_api_notification_model.dart';
 import 'package:flutter/material.dart';
@@ -132,7 +133,11 @@ class _NotificationListItemBodyDismissActionWidget extends StatelessWidget {
       caption: S.of(context).app_notification_action_dismiss,
       color: IFediUiColorTheme.of(context).white,
       onTap: () {
-        notificationBloc.dismiss();
+        PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+          context: context,
+          showProgressDialog: false,
+          asyncCode: () => notificationBloc.dismiss(),
+        );
       },
     );
   }
@@ -152,7 +157,11 @@ class _NotificationListItemBodyMarkAsReadActionWidget extends StatelessWidget {
       caption: S.of(context).app_notification_action_markAsRead,
       color: IFediUiColorTheme.of(context).white,
       onTap: () {
-        notificationBloc.markAsRead();
+        PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+          context: context,
+          showProgressDialog: false,
+          asyncCode: () => notificationBloc.markAsRead(),
+        );
       },
     );
   }
