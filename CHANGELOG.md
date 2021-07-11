@@ -3,7 +3,17 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [2.6.0] [stable] 2021 July 10
+## Unreleased
+
+### Changed
+* update cover image in README.md
+* remove settings from about_page.dart to avoid errors when user not logged in yet
+
+### Fixes
+* fix version url in about_page.dart
+  
+
+## [2.6.0] [internal] 2021 July 10
 
 ### Added
 * Server-list autocomplete

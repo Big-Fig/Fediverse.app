@@ -30,18 +30,6 @@ class AboutPage extends StatelessWidget {
       backgroundColor: IFediUiColorTheme.of(context).white,
       appBar: FediPageTitleAppBar(
         title: S.of(context).app_about_title,
-        actions: [
-          FediIconButton(
-            icon: Icon(
-              FediIcons.settings,
-              color: IFediUiColorTheme.of(context).darkGrey,
-            ),
-            onPressed: () {
-              goToGlobalSettingsPage(context);
-            },
-          ),
-          const FediSmallHorizontalSpacer(),
-        ],
       ),
       body: SafeArea(
         child: Padding(
