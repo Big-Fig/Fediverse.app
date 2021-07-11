@@ -22,8 +22,9 @@ class AboutPage extends StatelessWidget {
 
     var gitHubUrl = configService.gitHubUrl;
 
-    var version =
-        '${configService.appVersionName}(${configService.appVersionCode})';
+    var appVersionName = configService.appVersionName;
+    var versionString =
+        '$appVersionName(${configService.appVersionCode})';
 
     return Scaffold(
       backgroundColor: IFediUiColorTheme.of(context).white,
@@ -61,9 +62,9 @@ class AboutPage extends StatelessWidget {
                 ),
               _AboutPageRowWidget(
                 label: S.of(context).app_about_field_version_label,
-                value: version,
+                value: versionString,
                 valueUrl: gitHubUrl != null
-                    ? '$gitHubUrl/releases/tag/$version'
+                    ? '$gitHubUrl/releases/tag/$appVersionName'
                     : null,
               ),
               _AboutPageRowWidget(
