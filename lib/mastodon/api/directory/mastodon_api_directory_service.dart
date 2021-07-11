@@ -6,5 +6,6 @@ abstract class IMastodonApiDirectoryService implements IDisposable {
   // /api/v1/directory
   Future<List<IMastodonApiAccount>> getDirectoryAccounts({
     IMastodonApiPaginationRequest? pagination,
+    bool? onlyLocal,
   });
 }

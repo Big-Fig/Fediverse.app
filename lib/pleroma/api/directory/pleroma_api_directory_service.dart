@@ -7,11 +7,10 @@ import 'package:provider/provider.dart';
 
 abstract class IPleromaApiDirectoryService
     implements IMastodonApiDirectoryService, IPleromaApi {
-
   static IPleromaApiDirectoryService of(
-      BuildContext context, {
-        bool listen = true,
-      }) =>
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IPleromaApiDirectoryService>(
         context,
         listen: listen,
@@ -21,5 +20,6 @@ abstract class IPleromaApiDirectoryService
   @override
   Future<List<IPleromaApiAccount>> getDirectoryAccounts({
     IMastodonApiPaginationRequest? pagination,
+    bool? onlyLocal,
   });
 }

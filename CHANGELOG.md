@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Changed
 * update cover image in README.md
 * remove settings from about_page.dart to avoid errors when user not logged in yet
+* display only local accounts on instance directory page
 
 ### Fixes
 * fix version url in about_page.dart

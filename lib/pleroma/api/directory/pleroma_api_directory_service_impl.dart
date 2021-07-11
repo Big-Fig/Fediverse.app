@@ -19,13 +19,21 @@ class PleromaApiDirectoryService extends BasePleromaApiService
   @override
   Future<List<IPleromaApiAccount>> getDirectoryAccounts({
     IMastodonApiPaginationRequest? pagination,
+    bool? onlyLocal,
   }) async {
     var httpResponse = await restService.sendHttpRequest(
       RestRequest.get(
         relativePath: _urlPath.join(
           directoryRelativeUrlPath,
         ),
-        queryArgs: pagination?.toQueryArgs(),
+        queryArgs: [
+          if (onlyLocal != null)
+            RestRequestQueryArg(
+              key: 'local',
+              value: onlyLocal.toString(),
+            ),
+          ...(pagination?.toQueryArgs() ?? []),
+        ],
       ),
     );
 
