@@ -3,7 +3,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## Unreleased
+## [2.6.1] [stable] 2021 July 11
 
 ### Changed
 * update cover image in README.md
@@ -18,6 +18,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * fix push notifications on mastodon
 * fix async_dialog.dart: don't crash when performing async operation without actual dialog
 * edit_timeline_settings_dialog.dart: don't listen provider in button callback
+* handling sharing intents: better check for oauth callback
   
 
 ## [2.6.0] [internal] 2021 July 10

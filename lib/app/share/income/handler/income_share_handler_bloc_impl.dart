@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/list/auth_instance_list_bloc.dart';
@@ -7,13 +9,10 @@ import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/share/income/handler/income_share_handler_bloc.dart';
 import 'package:fedi/app/share/income/handler/income_share_handler_model.dart';
 import 'package:fedi/app/share/income/handler/last_chosen_instance/last_chosen_instance_income_share_handler_local_preference_bloc.dart';
-import 'package:easy_dispose/easy_dispose.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/share/income/income_share_model.dart';
 import 'package:fedi/share/income/income_share_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
-
 
 final _logger = Logger('income_share_handler_bloc_impl.dart');
 
@@ -57,7 +56,7 @@ class IncomeShareHandlerBloc extends DisposableOwner
     incomeShareHandlerErrorStreamController.disposeWith(this);
 
     incomeShareService.incomeShareEventStream.listen(
-          (event) {
+      (event) {
         _handleEvent(event);
       },
     ).disposeWith(this);
@@ -122,12 +121,18 @@ class IncomeShareHandlerBloc extends DisposableOwner
     var appAddNewInstanceCallbackUrl =
         configService.appAddNewInstanceCallbackUrl;
 
-    if (event.text?.contains(appAddNewInstanceCallbackUrl) == true) {
+    var text = event.text;
+    if (text != null) {
+      var startsWithAppAddNewInstanceCallbackUrl =
+          text.startsWith(appAddNewInstanceCallbackUrl);
       _logger.finest(
-        () => '_handleEvent $event with appAddNewInstanceCallbackUrl',
+        () => '_handleEvent $event '
+            'appAddNewInstanceCallbackUrl $appAddNewInstanceCallbackUrl '
+            'startsWithAppAddNewInstanceCallbackUrl $startsWithAppAddNewInstanceCallbackUrl',
       );
-
-      return;
+      if (startsWithAppAddNewInstanceCallbackUrl) {
+        return;
+      }
     }
 
     lastHandledEvent = event;
