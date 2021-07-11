@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Fixes
 * fix version url in about_page.dart
 * guest mode fixes for media
+* fix push notifications on mastodon
   
 
 ## [2.6.0] [internal] 2021 July 10

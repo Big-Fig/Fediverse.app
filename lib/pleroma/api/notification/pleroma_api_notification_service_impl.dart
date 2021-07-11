@@ -104,7 +104,9 @@ class PleromaApiNotificationService extends BasePleromaApiService
     List<PleromaApiNotificationType>? includeTypes,
     List<PleromaApiVisibility>? excludeVisibilities,
   }) async {
-    _checkGetNotificationsIncludeTypes(includeTypes);
+    if(restApiAuthService.isPleroma) {
+      _checkGetNotificationsIncludeTypes(includeTypes);
+    }
 
     _checkGetNotificationsExcludeVisibilities(excludeVisibilities);
     excludeTypes = _checkGetNotificationsExcludeTypes(excludeTypes);
