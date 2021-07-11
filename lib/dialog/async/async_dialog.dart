@@ -38,7 +38,7 @@ Future<AsyncDialogResult<T?>> doAsyncOperationWithDialog<T>({
       CancelableOperation<T>.fromFuture(asyncCode());
 
   // ignore: avoid-late-keyword
-  late FediIndeterminateProgressDialog progressDialog;
+  FediIndeterminateProgressDialog? progressDialog;
   if (showProgressDialog) {
     progressDialog = FediIndeterminateProgressDialog(
       cancelable: cancelable,
@@ -94,7 +94,7 @@ Future<AsyncDialogResult<T?>> doAsyncOperationWithDialog<T>({
     }
   } finally {
     // ignore: unawaited_futures
-    progressDialog.hide(context);
+    progressDialog?.hide(context);
   }
 
   // wait until progress dialog actually hides
@@ -106,7 +106,7 @@ Future<AsyncDialogResult<T?>> doAsyncOperationWithDialog<T>({
   );
 
   AsyncDialogResult<T> dialogResult;
-  if (progressDialog.isCanceled == true) {
+  if (progressDialog?.isCanceled == true) {
     dialogResult = AsyncDialogResult<T>.canceled();
     _logger.fine(() => 'canceled doAsyncOperationWithFediDialog');
   } else if (error != null) {
