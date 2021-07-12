@@ -7,6 +7,8 @@ Pleroma and Mastodon are parts of [Fediverse](https://en.wikipedia.org/wiki/Fedi
 
 So Fedi is an open-source mobile client for social networks and has features similar to Twitter.
 
+Follow us on Fediverse [fediapp@fedi.app](https://fedi.app/fediapp) 
+
 <img src="./images/fedi.png" alt="Fedi" width="600"/>
 
 - [How to find Pleroma/Mastodon instance to join?](https://github.com/Big-Fig/Fediverse.app/blob/master/helpChooseInstance.md)
