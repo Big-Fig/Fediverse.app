@@ -24,12 +24,14 @@ jobs:
           java-version: '12.x'
 
       # Set up Flutter.
-      - name: Clone Flutter repository with master channel
+      - name: Clone Flutter repository
         uses: subosito/flutter-action@v1.5.3
         with:
           flutter-version: '2.2.3'
           channel: 'any'
-      - run: flutter doctor -v
+
+#      - run: flutter doctor -v
+      - run: flutter --version
 
       # Checkout code and get packages.
       - name: Checkout repository
@@ -69,7 +71,5 @@ jobs:
         uses: codecov/codecov-action@v1
         with:
           #          token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
-          #          flags: unittests # optional
-          #          name: codecov-umbrella # optional
+          flags: unittests # optional
           fail_ci_if_error: true # optional (default = false)
-#          verbose: true # optional (default = false)
