@@ -34,19 +34,20 @@ jobs:
       # Checkout code and get packages.
       - name: Checkout repository
         uses: actions/checkout@v2
+
       - run: flutter pub get
 
 #       Flutter don't include files in coverage which not touched with tests
 #       so we need to add all files manually
       - name: Add missed classes to coverage report
-      - uses: stelynx/dart-full-coverage@v1.0.5
+        uses: stelynx/dart-full-coverage@v1.0.5
         with:
           package: fedi
           ignore: "*.g.dart, generated/*"
 
       # flutter analyze will fail even if project have `info` messages
       - name: Analyze, check formatting, and run unit tests
-      - run: flutter analyze
+        run: flutter analyze
 #      - name: Ensure the Dart code is formatted correctly
 #        run: flutter format --set-exit-if-changed --dry-run .
       - name: Run Flutter unit tests
@@ -65,7 +66,7 @@ jobs:
 #        if: startsWith(matrix.os, 'macOS')
 
       - name: Upload to codecov
-      - uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v1
         with:
           #          token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
           #          flags: unittests # optional
