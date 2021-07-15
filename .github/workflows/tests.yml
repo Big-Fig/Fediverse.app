@@ -15,8 +15,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest]
-#        os: [ubuntu-18.04, windows-2019, macos-10.15]
+        os: [ ubuntu-latest ]
     steps:
       # needed by flutter-action
       - uses: actions/setup-java@v1
@@ -30,7 +29,6 @@ jobs:
           flutter-version: '2.2.3'
           channel: 'any'
 
-#      - run: flutter doctor -v
       - run: flutter --version
 
       # Checkout code and get packages.
@@ -39,37 +37,25 @@ jobs:
 
       - run: flutter pub get
 
-#       Flutter don't include files in coverage which not touched with tests
-#       so we need to add all files manually
+      # Flutter don't include files in coverage which not touched with tests
+      # so we need to add all files manually
       - name: Add missed classes to coverage report
         uses: stelynx/dart-full-coverage@v1.0.5
         with:
           package: fedi
-          ignore: "*.g.dart, generated/*"
+          # ignore generated files & UI files until UI tests will be implemented
+          ignore: "*.g.dart, generated/*, *_widget.dart, *_page.dart, *_view_controller.dart, *_view_controller_impl.dart"
 
       # flutter analyze will fail even if project have `info` messages
       - name: Analyze, check formatting, and run unit tests
         run: flutter analyze
-#      - name: Ensure the Dart code is formatted correctly
-#        run: flutter format --set-exit-if-changed --dry-run .
+      - name: Ensure the Dart code is formatted correctly
+        run: flutter format --set-exit-if-changed --dry-run .
       - name: Run Flutter unit tests
         run: flutter test --coverage
-
-      # Run custom scripts defined in `tool/grind.dart`.
-#      - name: Verify that localizations are up to date
-#        run: flutter pub run grinder verify-l10n
-#        # TODO: Enable verify-l10n for Windows when it behaves the same as on macOS/Ubuntu:
-#        # https://github.com/material-components/material-components-flutter-gallery/issues/565
-#        if: startsWith(matrix.os, 'macOS') || startsWith(matrix.os, 'ubuntu')
-#      - name: Verify that code segments are up to date
-#        run: flutter pub run grinder verify-code-segments
-#        # TODO: Enable verify-code-segments for Unix and Windows when it behaves the same as on macOS:
-#        # https://github.com/material-components/material-components-flutter-gallery/issues/565
-#        if: startsWith(matrix.os, 'macOS')
 
       - name: Upload to codecov
         uses: codecov/codecov-action@v1
         with:
-          #          token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
-          flags: unittests # optional
-          fail_ci_if_error: true # optional (default = false)
+          flags: unittests
+          fail_ci_if_error: true
