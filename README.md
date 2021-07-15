@@ -50,12 +50,12 @@ Follow us on Fediverse [fediapp@fedi.app](https://fedi.app/fediapp)
 ## Features
 
 - Pleroma and Mastodon support
-- Offline mode. Access to cached data event without network
+- Offline mode. Access to cached data even without network
 - Custom emojis. With emoji reactions support on Pleroma
 - Customizable home timelines
 - Multi-account support
 - [Push notifications via PushRelayFCM and FCM](#push-notifications)
-- Income and external share support
+- Supports receive and send share intends
 - Scheduled and Draft Statuses
 - Filters
 - Instance details, announcements, trends, activity history, limits
@@ -63,7 +63,7 @@ Follow us on Fediverse [fediapp@fedi.app](https://fedi.app/fediapp)
 - Bookmarks, Hashtags, Lists, Featured tags, Suggestions
 - Messenger-like UI for Conversations(DM) and Pleroma chats
 - Customizable real-time notifications & timeline updates via WebSockets and Push Notifications
-- Fetch data from Remote instances via Public API. So you can access full data on remote instance if the currently logged instance didn't synchronized all data yet
+- Fetch data from Remote instances via Public API. So you can access full data on remote instance if currently logged instance hasn't synchronized all data yet
 - A lot of settings options(global or per-instance). For example: `Always show NSFW` or `Auto-load media content`
 - Threads & Polls
 - Special UI for media-only timelines
@@ -74,7 +74,7 @@ Follow us on Fediverse [fediapp@fedi.app](https://fedi.app/fediapp)
 ## Coming soon
 
 * Admin API;
-* Support other Fediverse instances: Pixelfed, Misskey, Peertube, GNU Social, Friendica, and others;
+* Support other Fediverse instances: Pixelfed, Misskey, Peertube, GNU Social, Friendica and others;
 * Pleroma: scrobbles, mascot and recently added new features;
 * Mastodon: recently added new features. 
 * Adopt UI for large screens;
@@ -87,8 +87,8 @@ Feel free to open issues if you have suggestions
 
 ## Known issues
 
-* Text not selectable, but you can copy or share whole statuses
-* Instances with special chars like `ü` not supported
+* Text is not selectable, but you can copy or share whole statuses
+* Instances with special chars like `ü` are not supported
 
 ## Data gathering
 
@@ -102,11 +102,11 @@ You can completely remove Firebase via manual building from source.
 Fedi gathers crashes and non-fatal errors to make app more stable.
 
 * You can build app from source and remove Crashlytics library via .env config(details below)
-* You can disable gathering via settings inside app(option disabled by default)
+* You can disable gathering via settings inside app(option is disabled by default)
 
 ## Push notifications
 
-Push notifications implemented via [PushRelayFCM](https://github.com/Big-Fig/toot-relay-fcm) server
+Push notifications are implemented via [PushRelayFCM](https://github.com/Big-Fig/toot-relay-fcm) server
 
 [PushRelayFCM](https://github.com/Big-Fig/toot-relay-fcm) is Ruby on Rails server which handles web pushes and relays them to FCM.
 
@@ -114,50 +114,50 @@ Push notifications implemented via [PushRelayFCM](https://github.com/Big-Fig/too
 
 PushRelayFCM and Fedi can work in two modes:
 * **Without server-side decryption (`2.5.0` and newer)** - relay simple proxy encrypted messages
-* **With server-side decryption (before `2.5.0`)** -decrypt messages and have access to notification content and user `access_token`. Not used from `2.5.0` version, but still supported in Fedi(see below why you still may want to use it).
+* **With server-side decryption (before `2.5.0`)** -decrypt messages and have access to notification content and user `access_token`. It is not used from `2.5.0` version, but is still supported in Fedi(see below why you still may want to use it).
 
 ### Without server-side decryption way
 **(Used in AppStore/GooglePlay versions from `2.5.0`)**
 
-1. Fedi subscribe to `/api/v1/push/subscription` with `subscription[endpoint]` set to relay server URL
+1. Fedi subscribes to `/api/v1/push/subscription` with `subscription[endpoint]` set to relay server URL
 2. Instances send web push notifications to relay server
-3. PushRelayFCM **don't decrypt** message
-4. PushRelayFCM proxy notifications to Fedi app via FCM
-5. Fedi **don't decrypt** message and use FCM message with encrypted data as simple trigger to load latest notification via REST API (this will be improved in future releases)
-6. Fedi display notification
+3. PushRelayFCM **doesn't decrypt** message
+4. PushRelayFCM proxies notifications to Fedi app via FCM
+5. Fedi **doesn't decrypt** message and use FCM message with encrypted data as simple trigger to load latest notification via REST API (this will be improved in future releases)
+6. Fedi displays notification
 
-Since PushRelayServer doesn't know private decryption keys, it is can't access any private data.
+Since PushRelayServer doesn't know private decryption keys, it can't access any private data.
 
 ##### Pros
-* **Don't have access to user private data**
-* Use rich notifications layouts and actions provided by [`awesome_notifications`](https://pub.dev/packages/awesome_notifications)
+* **Doesn't have access to user private data**
+* Uses rich notifications layouts and actions provided by [`awesome_notifications`](https://pub.dev/packages/awesome_notifications)
 
 ##### Cons
-* Delivery may be delayed. Because PushRelayFCM send FCM push message without `notification` (FCM calls it data message). Read [`awesome_notifications`](https://pub.dev/packages/awesome_notifications) and [`firebase_messaging`](https://pub.dev/packages/firebase_messaging) documentation for details. Fedi use `:mutable_content=>true,` `:content_available=>true,` `:priority=>"high",` to increase delivery priority
+* Delivery may be delayed. Because PushRelayFCM sends FCM push message without `notification` (FCM calls it data message). Read [`awesome_notifications`](https://pub.dev/packages/awesome_notifications) and [`firebase_messaging`](https://pub.dev/packages/firebase_messaging) documentation for details. Fedi uses `:mutable_content=>true,` `:content_available=>true,` `:priority=>"high",` to increase delivery priority
 
-##### Whe Fedi don't decrypt message on client-side?
+##### Why Fedi doesn't decrypt message on client-side?
 
-Because it is hard to implement with Flutter. There are no 3rd Flutter libraries to decrypt `ECDH` `p256v1` by now. 
-It is possible to decrypt in Kotlin/Swift and it will be done in the future.
+Because it is hard to implement with Flutter. There are no 3rd party Flutter libraries to decrypt `ECDH` `p256v1` by now. 
+It is possible to decrypt it in Kotlin/Swift and it will be done in the future.
 
 ### With server-side decryption way
-**(Not used in AppStore/GooglePlay versions from `2.5.0`)**
+**(It is not used in AppStore/GooglePlay versions from `2.5.0`)**
 
-1. Fedi subscribe to `/api/v1/push/subscription` with `subscription[endpoint]` set to relay server URL
+1. Fedi subscribes to `/api/v1/push/subscription` with `subscription[endpoint]` set to relay server URL
 2. Instances send Web push notifications to relay server
-3. PushRelayFCM **decrypt** notifications
-4. PushRelayFCM relay notifications to Fedi app via FCM
-5. Fedi display notification
+3. PushRelayFCM **decrypts** notifications
+4. PushRelayFCM relays notifications to Fedi app via FCM
+5. Fedi displays notification
 
-* PushRelayFCM have access to `title`, `body` and `access_token`
+* PushRelayFCM has access to `title`, `body` and `access_token`
 * `access_token` is sensitive data. It is possible to login into your account if someone knows `access_token`
 
 ##### Pros
-* Faster push delivery. FCM message(notification type) with `notification.title` and `notification.body`. Which have higher priority than message without `notification.title` & `notification.body` fields. Actually it is more affects iOS, than Android. Read [`awesome_notifications`](https://pub.dev/packages/awesome_notifications) and [`firebase_messaging`](https://pub.dev/packages/firebase_messaging) documentation for details.
+* Faster push delivery. FCM message(notification type) with `notification.title` and `notification.body`, which has higher priority than message without `notification.title` & `notification.body` fields. Actually it is more affects iOS, than Android. Read [`awesome_notifications`](https://pub.dev/packages/awesome_notifications) and [`firebase_messaging`](https://pub.dev/packages/firebase_messaging) documentation for details.
 
 ##### Cons
 * **Private data access is main reason why Fedi moved to `Without server-side decryption way`**
-* Don't use rich notifications layouts and actions provided by [`awesome_notifications`](https://pub.dev/packages/awesome_notifications)
+* Doesn't use rich notifications layouts and actions provided by [`awesome_notifications`](https://pub.dev/packages/awesome_notifications)
 
 ## Localization
 
@@ -165,7 +165,7 @@ App uses `flutter_localization` API bundle with Flutter SDK.
 
 It uses `.arb` files located in `lib/l10n` and generates `.dart` classes in `/lib/generated/` folder.
 
-After you make changes in `.arb` files you make additional actions to regenerate Dart classes
+After you make changes in `.arb` files you should do additional actions to regenerate Dart classes
 * automatically via [`flutter intl`](https://plugins.jetbrains.com/plugin/13666-flutter-intl) plugin
 * manually via [`flutter intl`](https://pub.dev/packages/intl_utils) package
 
@@ -190,28 +190,28 @@ After you make changes in `.arb` files you make additional actions to regenerate
 
 * Null-safety support
 * Feature-based folder structure
-* Prefer composition over inheritance
-* Dependency Injection implemented via `provider`
-* Prefer `StatelessWidget` and async UI update via `StreamBuidler` and `BehaviourSubject` & `StreamController` in controller classes
-* Prefer divide `Widgets` in small sub `Widgets` with `const` constructor(for better performance) if possible
-* Provide data to nested elements via `provider`
-* Prefer `Repository` pattern. Almost all network data cached in local SQLite database. UI always displays data from single source. It may be network-only or from database(if data cached). Don't cache and merge data in memory to achieve data consistency
-* Prefer [Effective Dart](https://dart.dev/guides/language/effective-dart/style) name and style code conventions
-* Prefer long file & classes names like `account_follower_account_cached_list_bloc_impl.dart` and `AccountFollowerAccountCachedListBloc`
- * It easy to understand what classes do
- * It easy to navigate in IDE by typing start letters of name
+* Prefers composition over inheritance
+* Dependency Injection is implemented via `provider`
+* Prefers `StatelessWidget` and async UI update via `StreamBuidler` and `BehaviourSubject` & `StreamController` in controller classes
+* Prefers divide `Widgets` in small sub `Widgets` with `const` constructor(for better performance) if possible
+* Provides data to nested elements via `provider`
+* Prefers `Repository` pattern. Almost all network data is cached in local SQLite database. UI always displays data from single source. It may be network-only or from database(if data is cached). Doesn't cache and merge data in memory to achieve data consistency
+* Prefers [Effective Dart](https://dart.dev/guides/language/effective-dart/style) name and style code conventions
+* Prefers long file & classes names like `account_follower_account_cached_list_bloc_impl.dart` and `AccountFollowerAccountCachedListBloc`
+ * It is easy to understand what classes do
+ * It is easy to navigate in IDE by typing start letters of name
 * One class = one file
-* Prefer `interfaces` for `Bussines Logic` and `Services` 
- * Simple append `I` to implementation class name. `AccountFollowerAccountCachedListBloc` implementation and `IAccountFollowerAccountCachedListBloc` interface
+* Prefers `interfaces` for `Bussines Logic` and `Services` 
+ * Simple append `I` to implementation class name. `AccountFollowerAccountCachedListBloc` is implementation and `IAccountFollowerAccountCachedListBloc` is interface
  * Code readability: you can see small list of public methods/fields in interface file instead of exploring long file with implementations
- * It useful to implement extensions for interfaces not for implementations
- * It useful to extends several interfaces in one child to separate logic
- * It useful to create tests and mocks
+ * It is useful to implement extensions for interfaces not for implementations
+ * It is useful to extend several interfaces in one child to separate logic
+ * It is useful to create tests and mocks
 
 
 ### Flutter version & FVM 
 
-To build Fedi you need Flutter version specified in [`.fvm/fvm_config.json`](.fvm/fvm_config.json) field `flutterSdkVersion`. 
+To build Fedi you need to specify Flutter version in [`.fvm/fvm_config.json`](.fvm/fvm_config.json) field `flutterSdkVersion`. 
 
 You can achieve this by specifing your system Flutter version by using `flutter version $version` or using FVM
 
@@ -219,7 +219,7 @@ You can achieve this by specifing your system Flutter version by using `flutter 
 
 Fedi uses [Flutter Version Management](https://github.com/leoafarias/fvm) to specify Flutter version to build app.
 
-FVM also helps manage several SDKs version on local machine
+FVM also helps manage several SDK's versions on local machine
 
 Config is already done, so you just run `fvm install` in repo folder and configure IDE to use `.fvm/flutter_sdk` folder instead of system Flutter SDK. 
 
@@ -241,7 +241,7 @@ More info you can found in FVM documentation
 - [`flutter_config`](https://pub.dev/packages/flutter_config) to config via .env files
 - [`firebase_messaging`](https://pub.dev/packages/firebase_messaging) and [`awesome_notifications`](https://pub.dev/packages/awesome_notifications) for push notifications
 
-You can find full list in [`pubspec.yaml`](./pubspec.yaml) where each library have comment why it's used 
+You can find full list in [`pubspec.yaml`](./pubspec.yaml) where each library has comment why it's used 
 
 ### Icons
 
@@ -251,7 +251,7 @@ You can find full list in [`pubspec.yaml`](./pubspec.yaml) where each library ha
 ### Tests
 
 * Fedi have unit-tests for Business Logic and Services classes
-* Integration & UI tests not implemented yet
+* Integration & UI tests are not implemented yet
 
 ### Backlog
 
@@ -282,7 +282,7 @@ cp env_example.env env_prod.env
 cp env_example.env env_dev.env
 ```
 
-Example config disable some features like **Push notifications**. 
+In Example config you can find out how to disable some features like **Push notifications**. 
 
 To enable **all features** you should change app id, create [Firebase](#Firebase) project, and edit config file.
 
@@ -315,7 +315,7 @@ fvm flutter run --flavor prod
 
 ![Config Flutter SDK](./images/config_flutter_sdk.png)
 
-* Dart SDK should be configured automatically. But you can check **Dart SDK path** at (`File->Preferences->Languages & Frameworks->Dart`). Should be `<Project_Root>/.fvm/flutter_sdk/bin/cache/dart-sdk`
+* Dart SDK should be configured automatically. But you can check **Dart SDK path** at (`File->Preferences->Languages & Frameworks->Dart`).It should be `<Project_Root>/.fvm/flutter_sdk/bin/cache/dart-sdk`
 
 ![Config Dart SDK](./images/config_dart_sdk.png)
 
@@ -340,15 +340,15 @@ There are two flavors.
 
 ###### prod
 
-Used for production builds
+Is used for production builds
 
 ###### dev
 
-Used for development builds. You can use only prod flavor if you don't need special config for development
+Is used for development builds. You can use only prod flavor if you don't need special config for development
 
 #### Config
 
-Main purpose of config files is to exclude sensitive data from source control and quickly enabled/disable and config some features like Push Notifications
+Main purpose of config files is to exclude sensitive data from source control and quickly enable/disable and config some features like Push Notifications
 
 Build script uses config from project root folder depends on flavor, so to build app you should have next files in root folder
 
@@ -357,18 +357,18 @@ env_prod.env
 env_dev.env
 ```
 
-Those files excluded from source control.
+Those files are excluded from source control.
 
 You can find all possible config variables(with comments) at [env_example.env](https://github.com/Big-Fig/Fediverse.app/blob/master/env_example.env)
 
-#### If you have strange errors in any case or how to clean project
+#### If you have strange errors or how to clean project
 
 * `fvm flutter clean` or `flutter clean` if you don't use FVM
 * `./gradlew clean` in android folder
 * `Product->Clean` in XCode
 * `File(or Android Studio on Mac)->Invalidate caches & Restart` in Android Studio
 
-Sometimes it also needs to clear iOS pods
+Sometimes it is also needed to clear iOS pods
 
 ```
 cd ios
@@ -377,7 +377,7 @@ rm Podfile.lock
 pod install
 ```
 
-Sometimes you change package version in `pubspec.yaml` run `pub get` but version not changes
+Sometimes you change package version in `pubspec.yaml` run `pub get` but version is not changed
 
 ```
 rm pubspec.lock
@@ -388,9 +388,9 @@ rm -rf .dart_tool
 pub get
 ```
 
-Sometimes when you change package version in `pubspec.yaml` and after `pub get` version not changes. 
-You can check `pubspec.lock` to see if version changed.
-That may happen when you specify version bounds like `>=1.0.0 <2.0.0` or `^1.0.0` which same. 
+Sometimes when you change package version in `pubspec.yaml` and after `pub get` version is not changed. 
+You can check `pubspec.lock` to see if version is changed.
+That may happen when you specify version bounds like `>=1.0.0 <2.0.0` or `^1.0.0` which are the same. 
 See [Version constraints](https://dart.dev/tools/pub/dependencies#version-constraints) in official docs.
 
 ```
@@ -402,18 +402,18 @@ rm -rf .dart_tool
 pub get
 ```
 
-Fedi specify explicitly version like `1.0.0` to avoid such issues. 
+Fedi specifies explicitly version like `1.0.0` to avoid such issues. 
 However, that may cause dependencies version conflict  
 
 #### App ID
 
 Changing App ID is required if you want to setup own PushRelayFCM server and pushes via your Firebase project for FCM. 
 
-It also useful if you want to have several app versions installed on one device
+It is also useful if you want to have several app versions installed on one device
 
 Unfortunately, it is not possible to use APP_ID from config in all places in Gradle and XCode project files. So in some places ID is hardcoded
 
-So, If you want to change app id from `com.fediverse.app` for `prod` and from `com.fediverse.app2` for `dev` you should manual changes (in additional to changes id in `.env` files)
+So, If you want to change app id from `com.fediverse.app` for `prod` and from `com.fediverse.app2` for `dev` you should manually change them (in addition to changing id in `.env` files)
 
 Actually, you should run Find and Replace `com.fediverse.app` with your package name on `ios` and `android` folders. And rename folders at `android/app/src/main/kotlin`
 
@@ -430,8 +430,8 @@ If you still have errors please explore App ID things in the next docs:
 
 ###### iOS group ids
 
-* `receive_sharing_intent` lib require to add group.<app_id> to XCode project. 
-Unfortunately, it is not possible, due to our internal issues (we moved app to new iTunes account and can't use old group id).
+* `receive_sharing_intent` lib requires to add group.<app_id> to XCode project. 
+Unfortunately, it is not possible due to our internal issues (we've moved app to new iTunes account and can't use old group id).
 So we use [`fork of receive_sharing_intent`](https://github.com/xal/receive_sharing_intent/tree/xal/custom_group_id) with custom group ids support.
 
 Fedi uses group `fediverse.app` for `prod` and `com.fediverse.app2` for `dev`  
@@ -440,7 +440,7 @@ Fedi uses group `fediverse.app` for `prod` and `com.fediverse.app2` for `dev`
 
 ###### Android
 
-Signing config required to make `release` builds 
+Signing config is required to make `release` builds 
 
 Generate key via [Tutorial](https://developer.android.com/studio/publish/app-signing#generate-key) and put it in `android/key/key.jks`(exclude from source control)
 
@@ -459,7 +459,7 @@ Follow [official tutorial](https://flutter.dev/docs/deployment/ios)
 
 #### Firebase
 
-To use Firebase service you should generate files from your Firebase project page and put it the project.
+To use Firebase service you should generate files from your Firebase project page and put them in the project.
 
 Don't forget to enable it in `.env` file
 
@@ -500,7 +500,7 @@ To enable Push notifications you should
 App ID and FCM server key(so and PushRelayFCM instance) are connected. 
 It is not possible to use one PushRelayFCM instance with several App IDs and vice versa
 
-On/Off via .env. [Firebase Core integration](#Firebase) required
+On/Off via .env. [Firebase Core integration](#Firebase) is required
 
 ```
 PUSH_FCM_ENABLED=false
@@ -508,7 +508,7 @@ PUSH_FCM_ENABLED=false
 
 ##### Proxy PushRelayFCM
 
-Required if `PUSH_FCM_ENABLED=true`
+Is required if `PUSH_FCM_ENABLED=true`
 
 `PUSH_SUBSCRIPTION_KEYS_P256DH `
 
@@ -528,7 +528,7 @@ PUSH_SUBSCRIPTION_KEYS_AUTH=T5bhIIyre5TDC
 
 #### Firebase Crashlytics
 
-On/Off via .env. [Firebase Core integration](#Firebase) required
+On/Off via .env. [Firebase Core integration](#Firebase) is required
 
 ```
 CRASHLYTICS_ENABLED=false
@@ -547,16 +547,16 @@ Uses version from `pubspec.yaml`
 ###### iOS
 
 By default Flutter project config it should use version from `pubspec.yaml`,
-However, sometimes it causes strange iOS build errors(version not changed but should).
+However, sometimes it causes strange iOS build errors(version is not changed but should be).
 
-So, Fedi requires a manual increase version code & name in `Runner` and `Share Extension` targets. 
+So, Fedi requires a manual increasing version code & name in `Runner` and `Share Extension` targets. 
 
 #### Receiving share intents & ShareExtension
 
 XCode project has additional ShareExtension module required by [`receive_sharing_intent`](https://pub.dev/packages/receive_sharing_intent) to handle income share events.
-It also important to add `Target` and `ShareExtension` to the same group ID.
+It is also important to add `Target` and `ShareExtension` to the same group ID.
 
 
 ## 3rd Party
 
-* Original `assets/server_list.txt` taken from [tateisu/SubwayTooter](https://github.com/tateisu/SubwayTooter)
+* Original `assets/server_list.txt` is taken from [tateisu/SubwayTooter](https://github.com/tateisu/SubwayTooter)
