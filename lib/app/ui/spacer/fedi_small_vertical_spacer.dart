@@ -8,5 +8,6 @@ class FediSmallVerticalSpacer extends StatelessWidget {
       height: FediSizes.smallPadding,
     );
   }
+
   const FediSmallVerticalSpacer();
 }

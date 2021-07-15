@@ -100,7 +100,7 @@ class FediStepperBloc<T extends IFediStepperItem> extends DisposableOwner
   Future submit() async {
     steps.forEach((step) => step.onStepComplete());
 
-    if(!isHaveAtLeastOneError) {
+    if (!isHaveAtLeastOneError) {
       submitCallback();
     }
   }

@@ -3,7 +3,10 @@ import 'package:flutter/cupertino.dart';
 
 class FediLightGreyDivider extends StatelessWidget {
   @override
-  Widget build(BuildContext context) =>
-      Container(height: 1, width: double.infinity, color: IFediUiColorTheme.of(context).lightGrey);
+  Widget build(BuildContext context) => Container(
+      height: 1,
+      width: double.infinity,
+      color: IFediUiColorTheme.of(context).lightGrey);
+
   const FediLightGreyDivider();
 }

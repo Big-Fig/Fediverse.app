@@ -30,7 +30,7 @@ class FediIconTabIndicatorWidget<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var fediTabIndicatorBloc =
-    IFediTabIndicatorBloc.of<T>(context, listen: false);
+        IFediTabIndicatorBloc.of<T>(context, listen: false);
 
     return TabBar(
       isScrollable: true,
@@ -40,7 +40,7 @@ class FediIconTabIndicatorWidget<T> extends StatelessWidget {
         context,
       ),
       tabs: fediTabIndicatorBloc.items.asMap().entries.map(
-            (entry) {
+        (entry) {
           var index = entry.key;
           var tab = entry.value;
 
@@ -71,7 +71,7 @@ class FediIconTabIndicatorWidget<T> extends StatelessWidget {
   Decoration buildFediTabIndicator(BuildContext context) {
     switch (style) {
       case FediTabStyle.bubble:
-      // ignore: no-magic-number
+        // ignore: no-magic-number
         const borderHeight = 2.0;
         return FediTabBubbleStyleIndicator(
           indicatorHeight: FediSizes.tabIndicatorIconHeight - borderHeight,

@@ -13,9 +13,10 @@ import 'package:logging/logging.dart';
 import 'package:wakelock/wakelock.dart';
 
 final _logger =
-Logger('fedi_video_player_control_toggle_fullscreen_button_widget.dart');
+    Logger('fedi_video_player_control_toggle_fullscreen_button_widget.dart');
 
-class FediVideoPlayerToggleControlFullscreenButtonWidget extends StatelessWidget {
+class FediVideoPlayerToggleControlFullscreenButtonWidget
+    extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var videoMediaPlayerBloc = IVideoMediaPlayerBloc.of(context);
@@ -31,7 +32,8 @@ class FediVideoPlayerToggleControlFullscreenButtonWidget extends StatelessWidget
   const FediVideoPlayerToggleControlFullscreenButtonWidget();
 }
 
-class _FediVideoPlayerToggleControlFullscreenButtonEnabledWidget extends StatelessWidget {
+class _FediVideoPlayerToggleControlFullscreenButtonEnabledWidget
+    extends StatelessWidget {
   const _FediVideoPlayerToggleControlFullscreenButtonEnabledWidget({
     Key? key,
   }) : super(key: key);
@@ -58,14 +60,17 @@ class _FediVideoPlayerToggleControlFullscreenButtonEnabledWidget extends Statele
   }
 }
 
-Future<dynamic> pushFullScreenPage(BuildContext context,
-    IVideoMediaPlayerBloc videoMediaPlayerBloc,
+Future<dynamic> pushFullScreenPage(
+  BuildContext context,
+  IVideoMediaPlayerBloc videoMediaPlayerBloc,
 ) async {
   final isAndroid = Theme.of(context).platform == TargetPlatform.android;
   final TransitionRoute route = PageRouteBuilder(
-    pageBuilder: (BuildContext context,
-        Animation<double> animation,
-        Animation<double> secondaryAnimation,) {
+    pageBuilder: (
+      BuildContext context,
+      Animation<double> animation,
+      Animation<double> secondaryAnimation,
+    ) {
       return AnimatedBuilder(
         animation: animation,
         builder: (BuildContext context, Widget? child) {
@@ -74,7 +79,7 @@ Future<dynamic> pushFullScreenPage(BuildContext context,
               mediaPlayerSource: videoMediaPlayerBloc.mediaPlayerSource,
               desiredAspectRatio: videoMediaPlayerBloc.desiredAspectRatio,
               isFullScreenSupportEnabled:
-              videoMediaPlayerBloc.isFullScreenSupportEnabled,
+                  videoMediaPlayerBloc.isFullScreenSupportEnabled,
               autoInit: videoMediaPlayerBloc.autoInit,
               autoPlay: videoMediaPlayerBloc.autoPlay,
               isFullscreen: true,
@@ -114,7 +119,8 @@ Future<dynamic> pushFullScreenPage(BuildContext context,
   );
 }
 
-class _FediVideoPlayerToggleControlFullscreenButtonDisabledWidget extends StatelessWidget {
+class _FediVideoPlayerToggleControlFullscreenButtonDisabledWidget
+    extends StatelessWidget {
   const _FediVideoPlayerToggleControlFullscreenButtonDisabledWidget({
     Key? key,
   }) : super(key: key);

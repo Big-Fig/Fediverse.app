@@ -14,8 +14,8 @@ class FediIntBadgeBlocBoolAdapterProxyProvider extends StatelessWidget {
     return DisposableProxyProvider<IFediIntBadgeBloc, IFediBoolBadgeBloc>(
       update: (context, fediIntBadgeBloc, previous) =>
           FediIntBadgeBlocBoolAdapter(
-            fediIntBadgeBloc: fediIntBadgeBloc,
-          ),
+        fediIntBadgeBloc: fediIntBadgeBloc,
+      ),
       child: child,
     );
   }

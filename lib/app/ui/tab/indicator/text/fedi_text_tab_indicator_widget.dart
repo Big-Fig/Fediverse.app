@@ -49,7 +49,7 @@ class FediTextTabIndicatorWidget<T> extends StatelessWidget {
       indicator: buildFediTabIndicator(context),
       tabs: [
         ...fediTabIndicatorBloc.items.asMap().entries.map(
-              (entry) {
+          (entry) {
             var index = entry.key;
             var tab = entry.value;
 

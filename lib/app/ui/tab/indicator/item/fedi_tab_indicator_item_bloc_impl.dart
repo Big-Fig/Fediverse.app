@@ -26,11 +26,11 @@ class FediTabIndicatorItemBloc<T> extends DisposableOwner
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is FediTabIndicatorItemBloc &&
-              runtimeType == other.runtimeType &&
-              fediTabIndicatorBloc == other.fediTabIndicatorBloc &&
-              item == other.item &&
-              index == other.index;
+      other is FediTabIndicatorItemBloc &&
+          runtimeType == other.runtimeType &&
+          fediTabIndicatorBloc == other.fediTabIndicatorBloc &&
+          item == other.item &&
+          index == other.index;
 
   @override
   int get hashCode =>

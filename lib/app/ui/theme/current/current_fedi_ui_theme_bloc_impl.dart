@@ -35,16 +35,18 @@ class CurrentFediUiThemeBloc extends DisposableOwner
     return Rx.combineLatest2(
       currentThemeStream,
       systemBrightnessHandlerBloc.systemBrightnessStream,
-          (dynamic currentTheme, dynamic systemBrightness) =>
+      (dynamic currentTheme, dynamic systemBrightness) =>
           _calculateAdaptiveBrightnessCurrentThemeStream(
-            currentTheme,
-            systemBrightness,
-          ),
+        currentTheme,
+        systemBrightness,
+      ),
     ).distinct();
   }
 
-  IFediUiTheme? _calculateAdaptiveBrightnessCurrentThemeStream(IFediUiTheme? currentTheme,
-      Brightness? systemBrightness,) {
+  IFediUiTheme? _calculateAdaptiveBrightnessCurrentThemeStream(
+    IFediUiTheme? currentTheme,
+    Brightness? systemBrightness,
+  ) {
     if (currentTheme != null) {
       return currentTheme;
     } else {
@@ -65,7 +67,7 @@ class CurrentFediUiThemeBloc extends DisposableOwner
   @override
   Stream<IFediUiTheme?> get currentThemeStream =>
       uiSettingsBloc.themeIdStream.map(
-            (currentUiThemeId) => mapIdToTheme(currentUiThemeId),
+        (currentUiThemeId) => mapIdToTheme(currentUiThemeId),
       );
 
   IFediUiTheme? mapIdToTheme(String? id) {
@@ -74,7 +76,7 @@ class CurrentFediUiThemeBloc extends DisposableOwner
     }
 
     return availableThemes.firstWhere(
-          (theme) => theme.id == id,
+      (theme) => theme.id == id,
     );
   }
 
