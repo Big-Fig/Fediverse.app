@@ -5,7 +5,7 @@ class MediaSettingsModelTestHelper {
   static MediaSettings createTestMediaSettings({
     required String seed,
   }) =>
-  // hack to be sure that seed1 and seed2 wil produce different objects
+      // hack to be sure that seed1 and seed2 wil produce different objects
       MediaSettings(
         autoInit: seed == 'seed1'
             ? true

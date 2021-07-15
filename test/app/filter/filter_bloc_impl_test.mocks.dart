@@ -36,27 +36,33 @@ class MockIPleromaApiFilterService extends _i1.Mock
   _i2.IRestService get restService =>
       (super.noSuchMethod(Invocation.getter(#restService),
           returnValue: _FakeIRestService()) as _i2.IRestService);
+
   @override
   _i5.Stream<_i6.PleromaApiState> get pleromaApiStateStream =>
       (super.noSuchMethod(Invocation.getter(#pleromaApiStateStream),
               returnValue: Stream<_i6.PleromaApiState>.empty())
           as _i5.Stream<_i6.PleromaApiState>);
+
   @override
   _i6.PleromaApiState get pleromaApiState =>
       (super.noSuchMethod(Invocation.getter(#pleromaApiState),
           returnValue: _i6.PleromaApiState.validAuth) as _i6.PleromaApiState);
+
   @override
   _i5.Stream<bool> get isConnectedStream =>
       (super.noSuchMethod(Invocation.getter(#isConnectedStream),
           returnValue: Stream<bool>.empty()) as _i5.Stream<bool>);
+
   @override
   bool get isConnected =>
       (super.noSuchMethod(Invocation.getter(#isConnected), returnValue: false)
           as bool);
+
   @override
   bool get isDisposed =>
       (super.noSuchMethod(Invocation.getter(#isDisposed), returnValue: false)
           as bool);
+
   @override
   _i5.Future<List<_i3.IPleromaApiFilter>> getFilters(
           {_i7.IPleromaApiPaginationRequest? pagination}) =>
@@ -65,18 +71,21 @@ class MockIPleromaApiFilterService extends _i1.Mock
               returnValue: Future<List<_i3.IPleromaApiFilter>>.value(
                   <_i3.IPleromaApiFilter>[]))
           as _i5.Future<List<_i3.IPleromaApiFilter>>);
+
   @override
   _i5.Future<_i3.IPleromaApiFilter> getFilter({String? filterRemoteId}) =>
       (super.noSuchMethod(
           Invocation.method(#getFilter, [], {#filterRemoteId: filterRemoteId}),
           returnValue: Future<_i3.IPleromaApiFilter>.value(
               _FakeIPleromaApiFilter())) as _i5.Future<_i3.IPleromaApiFilter>);
+
   @override
   _i5.Future<dynamic> deleteFilter({String? filterRemoteId}) =>
       (super.noSuchMethod(
           Invocation.method(
               #deleteFilter, [], {#filterRemoteId: filterRemoteId}),
           returnValue: Future<dynamic>.value()) as _i5.Future<dynamic>);
+
   @override
   _i5.Future<_i3.IPleromaApiFilter> createFilter(
           {_i3.IPostPleromaApiFilter? postPleromaFilter}) =>
@@ -86,6 +95,7 @@ class MockIPleromaApiFilterService extends _i1.Mock
               returnValue:
                   Future<_i3.IPleromaApiFilter>.value(_FakeIPleromaApiFilter()))
           as _i5.Future<_i3.IPleromaApiFilter>);
+
   @override
   _i5.Future<_i3.IPleromaApiFilter> updateFilter(
           {String? filterRemoteId,
@@ -98,6 +108,7 @@ class MockIPleromaApiFilterService extends _i1.Mock
               returnValue:
                   Future<_i3.IPleromaApiFilter>.value(_FakeIPleromaApiFilter()))
           as _i5.Future<_i3.IPleromaApiFilter>);
+
   @override
   _i5.Future<dynamic> dispose() =>
       (super.noSuchMethod(Invocation.method(#dispose, []),

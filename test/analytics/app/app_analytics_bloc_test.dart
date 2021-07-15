@@ -6,6 +6,8 @@ import 'package:fedi/analytics/app/local_preferences/app_analytics_local_prefere
 import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../rxdart/rxdart_test_helper.dart';
+
 // ignore_for_file: no-magic-number
 
 void main() {
@@ -16,7 +18,7 @@ void main() {
   // ignore: avoid-late-keyword
   late IAppAnalyticsBloc appAnalyticsBloc;
 
-  int? listenAppOpenedCount;
+  int? listened;
   // ignore: avoid-late-keyword
   late StreamSubscription streamSubscription;
   setUp(() async {
@@ -32,10 +34,13 @@ void main() {
     );
 
     streamSubscription = appAnalyticsBloc.appOpenedCountStream.listen((data) {
-      listenAppOpenedCount = data;
+      listened = data;
     });
 
-    await Future.delayed(Duration(milliseconds: 100));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
+
   });
 
   tearDown(() {
@@ -51,25 +56,31 @@ void main() {
       0,
     );
     expect(
-      listenAppOpenedCount,
+      listened,
       0,
     );
 
     await appAnalyticsBloc.onAppOpened();
-    await Future.delayed(Duration(milliseconds: 100));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
+
 
     expect(
       appAnalyticsBloc.appOpenedCount,
       1,
     );
     expect(
-      listenAppOpenedCount,
+      listened,
       1,
     );
 
     await appAnalyticsBloc.onAppOpened();
 
-    await Future.delayed(Duration(milliseconds: 100));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
+
 
     expect(
       appAnalyticsBloc.appOpenedCount,
@@ -77,7 +88,7 @@ void main() {
     );
 
     expect(
-      listenAppOpenedCount,
+      listened,
       2,
     );
   });

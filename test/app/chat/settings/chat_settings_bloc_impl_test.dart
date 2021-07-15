@@ -7,6 +7,7 @@ import 'package:fedi/app/chat/settings/local_preferences/instance/instance_chat_
 import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../../rxdart/rxdart_test_helper.dart';
 import 'chat_settings_model_test_helper.dart';
 
 // ignore_for_file: no-magic-number, avoid-late-keyword
@@ -58,16 +59,17 @@ void main() {
   });
 
   test('countConversationsInChatsUnreadBadges', () async {
-    bool? listenedCountConversationsInChatsUnreadBadges;
+    bool? listened;
 
     StreamSubscription subscriptionListenedChatAgeLimitType =
         chatSettingsBloc.countConversationsInChatsUnreadBadgesStream.listen(
       (data) {
-        listenedCountConversationsInChatsUnreadBadges = data;
+        listened = data;
       },
     );
 
-    await Future.delayed(Duration(milliseconds: 100));
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     var defaultValue = GlobalChatSettingsLocalPreferenceBloc.defaultValue;
 
@@ -81,7 +83,7 @@ void main() {
     );
 
     expect(
-      listenedCountConversationsInChatsUnreadBadges,
+      listened,
       defaultValue.countConversationsInChatsUnreadBadges,
     );
     expect(
@@ -96,7 +98,6 @@ void main() {
     await chatSettingsBloc.changeCountConversationsInChatsUnreadBadges(
       testCountConversationsInChatsUnreadBadges,
     );
-    await Future.delayed(Duration(milliseconds: 100));
 
     expect(
       listenedSettingsData?.countConversationsInChatsUnreadBadges,
@@ -108,7 +109,7 @@ void main() {
     );
 
     expect(
-      listenedCountConversationsInChatsUnreadBadges,
+      listened,
       testCountConversationsInChatsUnreadBadges,
     );
     expect(
@@ -119,16 +120,17 @@ void main() {
     await subscriptionListenedChatAgeLimitType.cancel();
   });
   test('replaceConversationsWithPleromaChats', () async {
-    bool? listenedCountConversationsInChatsUnreadBadges;
+    bool? listened;
 
     StreamSubscription subscriptionListenedChatAgeLimitType =
         chatSettingsBloc.replaceConversationsWithPleromaChatsStream.listen(
       (data) {
-        listenedCountConversationsInChatsUnreadBadges = data;
+        listened = data;
       },
     );
 
-    await Future.delayed(Duration(milliseconds: 100));
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     var defaultValue = GlobalChatSettingsLocalPreferenceBloc.defaultValue;
 
@@ -142,7 +144,7 @@ void main() {
     );
 
     expect(
-      listenedCountConversationsInChatsUnreadBadges,
+      listened,
       defaultValue.replaceConversationsWithPleromaChats,
     );
     expect(
@@ -157,7 +159,9 @@ void main() {
     await chatSettingsBloc.changeReplaceConversationsWithPleromaChats(
       testCountConversationsInChatsUnreadBadges,
     );
-    await Future.delayed(Duration(milliseconds: 100));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     expect(
       listenedSettingsData?.replaceConversationsWithPleromaChats,
@@ -169,7 +173,7 @@ void main() {
     );
 
     expect(
-      listenedCountConversationsInChatsUnreadBadges,
+      listened,
       testCountConversationsInChatsUnreadBadges,
     );
     expect(

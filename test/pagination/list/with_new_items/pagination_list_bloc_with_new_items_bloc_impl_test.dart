@@ -5,6 +5,7 @@ import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_wit
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../../rxdart/rxdart_test_helper.dart';
 import '../../cached/memory_cached_pagination_bloc_impl.dart';
 import '../../pagination_model_test_impl.dart';
 import 'pagination_list_bloc_with_new_items_memory_impl.dart';
@@ -72,12 +73,12 @@ void main() {
     var subscription = paginationListBloc.itemsStream.listen((newValue) {
       listened = newValue;
     });
-    await Future.delayed(Duration(milliseconds: 10));
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(listened, []);
 
     await paginationListBloc.refreshWithoutController();
 
-    await Future.delayed(Duration(milliseconds: 10));
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
 
     expect(
       paginationListBloc.items.length,
@@ -91,7 +92,7 @@ void main() {
       paginationListBloc.items.last.index,
       itemsCountPerPage - 1,
     );
-    await Future.delayed(Duration(milliseconds: 10));
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(
       listened.length,
       itemsCountPerPage,
@@ -107,7 +108,7 @@ void main() {
 
     await paginationListBloc.loadMoreWithoutController();
 
-    await Future.delayed(Duration(milliseconds: 10));
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
 
     expect(
       paginationListBloc.items.length,
@@ -121,7 +122,7 @@ void main() {
       paginationListBloc.items.last.index,
       itemsCountPerPage * 2 - 1,
     );
-    await Future.delayed(Duration(milliseconds: 10));
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(
       listened.length,
       itemsCountPerPage * 2,
@@ -137,7 +138,7 @@ void main() {
 
     await paginationListBloc.loadMoreWithoutController();
 
-    await Future.delayed(Duration(milliseconds: 10));
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
 
     expect(
       paginationListBloc.items.length,
@@ -151,7 +152,7 @@ void main() {
       paginationListBloc.items.last.index,
       itemsCountPerPage * 3 - 1,
     );
-    await Future.delayed(Duration(milliseconds: 10));
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(
       listened.length,
       itemsCountPerPage * 3,
@@ -167,7 +168,7 @@ void main() {
 
     await paginationListBloc.refreshWithoutController();
 
-    await Future.delayed(Duration(milliseconds: 10));
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
 
     expect(
       paginationListBloc.items.length,
@@ -181,7 +182,7 @@ void main() {
       paginationListBloc.items.last.index,
       itemsCountPerPage - 1,
     );
-    await Future.delayed(Duration(milliseconds: 10));
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(
       listened.length,
       itemsCountPerPage,
@@ -201,7 +202,7 @@ void main() {
       await paginationListBloc.loadMoreWithoutController();
     }
 
-    await Future.delayed(Duration(milliseconds: 10));
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
 
     expect(
       paginationListBloc.items.length,
@@ -215,7 +216,7 @@ void main() {
       paginationListBloc.items.last.index,
       storageSize - 1,
     );
-    await Future.delayed(Duration(milliseconds: 10));
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(
       listened.length,
       storageSize,
@@ -231,7 +232,7 @@ void main() {
 
     await paginationListBloc.loadMoreWithoutController();
 
-    await Future.delayed(Duration(milliseconds: 10));
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
 
     expect(
       paginationListBloc.items.length,
@@ -245,7 +246,7 @@ void main() {
       paginationListBloc.items.last.index,
       storageSize - 1,
     );
-    await Future.delayed(Duration(milliseconds: 10));
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(
       listened.length,
       storageSize,
@@ -273,17 +274,17 @@ void main() {
         paginationListWithNewItemsBloc.newerItemStream.listen((newValue) {
       listened = newValue;
     });
-    await Future.delayed(Duration(milliseconds: 10));
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(listened, null);
 
     await paginationListWithNewItemsBloc.refreshWithoutController();
-    await Future.delayed(Duration(milliseconds: 10));
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
 
     expect(
       paginationListWithNewItemsBloc.newerItem!.index,
       0,
     );
-    await Future.delayed(Duration(milliseconds: 10));
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(
       listened.index,
       0,
@@ -291,13 +292,13 @@ void main() {
 
     await paginationListWithNewItemsBloc.loadMoreWithoutController();
 
-    await Future.delayed(Duration(milliseconds: 10));
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
 
     expect(
       paginationListWithNewItemsBloc.newerItem!.index,
       0,
     );
-    await Future.delayed(Duration(milliseconds: 10));
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(
       listened.index,
       0,
@@ -325,7 +326,7 @@ void main() {
         .listen((newValue) {
       listened = newValue;
     });
-    await Future.delayed(Duration(milliseconds: 10));
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(listened.length, 0);
 
     memoryPaginationListWithNewItemsBloc.addNewItems([testPaginationItem1]);
@@ -343,7 +344,7 @@ void main() {
       paginationListWithNewItemsBloc.unmergedNewItems[0],
       testPaginationItem1,
     );
-    await Future.delayed(Duration(milliseconds: 10));
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(
       listened.length,
       1,
@@ -377,7 +378,7 @@ void main() {
       paginationListWithNewItemsBloc.unmergedNewItems[1],
       testPaginationItem3,
     );
-    await Future.delayed(Duration(milliseconds: 10));
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(listened.length, 2);
     expect(
       paginationListWithNewItemsBloc.unmergedNewItems[0],
@@ -411,7 +412,7 @@ void main() {
         .listen((newValue) {
       listened = newValue;
     });
-    await Future.delayed(Duration(milliseconds: 10));
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(
       listened,
       0,
@@ -428,7 +429,7 @@ void main() {
       paginationListWithNewItemsBloc.unmergedNewItemsCount,
       1,
     );
-    await Future.delayed(Duration(milliseconds: 10));
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(
       listened,
       1,
@@ -446,7 +447,7 @@ void main() {
       paginationListWithNewItemsBloc.unmergedNewItemsCount,
       2,
     );
-    await Future.delayed(Duration(milliseconds: 10));
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(listened, 2);
 
     await subscription.cancel();
@@ -471,7 +472,7 @@ void main() {
         .listen((newValue) {
       listened = newValue;
     });
-    await Future.delayed(Duration(milliseconds: 10));
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(listened.length, 0);
 
     memoryPaginationListWithNewItemsBloc.addNewItems([testPaginationItem1]);
@@ -489,7 +490,7 @@ void main() {
       paginationListWithNewItemsBloc.unmergedNewItems[0],
       testPaginationItem1,
     );
-    await Future.delayed(Duration(milliseconds: 10));
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(listened.length, 1);
     expect(
       paginationListWithNewItemsBloc.unmergedNewItems[0],
@@ -516,7 +517,7 @@ void main() {
       paginationListWithNewItemsBloc.unmergedNewItems[1],
       testPaginationItem3,
     );
-    await Future.delayed(Duration(milliseconds: 10));
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(listened.length, 2);
     expect(
       paginationListWithNewItemsBloc.unmergedNewItems[0],
@@ -528,13 +529,13 @@ void main() {
     );
 
     memoryPaginationListWithNewItemsBloc.mergeNewItems();
-    await Future.delayed(Duration(milliseconds: 10));
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
 
     expect(
       paginationListWithNewItemsBloc.unmergedNewItems.length,
       0,
     );
-    await Future.delayed(Duration(milliseconds: 10));
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(
       listened.length,
       0,
@@ -562,7 +563,7 @@ void main() {
         paginationListWithNewItemsBloc.mergedNewItemsStream.listen((newValue) {
       listened = newValue;
     });
-    await Future.delayed(Duration(milliseconds: 10));
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(listened.length, 0);
 
     memoryPaginationListWithNewItemsBloc.addNewItems([testPaginationItem1]);
@@ -582,7 +583,7 @@ void main() {
       paginationListWithNewItemsBloc.mergedNewItems[0],
       testPaginationItem1,
     );
-    await Future.delayed(Duration(milliseconds: 10));
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(listened.length, 1);
     expect(
       paginationListWithNewItemsBloc.mergedNewItems[0],
@@ -616,7 +617,7 @@ void main() {
       paginationListWithNewItemsBloc.mergedNewItems[2],
       testPaginationItem1,
     );
-    await Future.delayed(Duration(milliseconds: 10));
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(listened.length, 3);
     expect(
       paginationListWithNewItemsBloc.mergedNewItems[0],
@@ -653,7 +654,7 @@ void main() {
         .listen((newValue) {
       listened = newValue;
     });
-    await Future.delayed(Duration(milliseconds: 10));
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(listened, 0);
 
     memoryPaginationListWithNewItemsBloc.addNewItems([testPaginationItem1]);
@@ -672,7 +673,7 @@ void main() {
       paginationListWithNewItemsBloc.mergedNewItemsCount,
       1,
     );
-    await Future.delayed(Duration(milliseconds: 10));
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(listened, 1);
 
     memoryPaginationListWithNewItemsBloc
@@ -690,7 +691,7 @@ void main() {
       paginationListWithNewItemsBloc.mergedNewItemsCount,
       3,
     );
-    await Future.delayed(Duration(milliseconds: 10));
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(
       listened,
       3,
@@ -730,7 +731,7 @@ void main() {
         .listen((newValue) {
       listened = newValue;
     });
-    await Future.delayed(Duration(milliseconds: 10));
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(listened, 0);
 
     memoryPaginationListWithNewItemsBloc.addNewItems([testPaginationItem1]);
@@ -746,7 +747,7 @@ void main() {
       paginationListWithNewItemsBloc.mergedNewItemsCount,
       1,
     );
-    await Future.delayed(Duration(milliseconds: 10));
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(listened, 1);
 
     memoryPaginationListWithNewItemsBloc
@@ -761,7 +762,7 @@ void main() {
       paginationListWithNewItemsBloc.mergedNewItemsCount,
       3,
     );
-    await Future.delayed(Duration(milliseconds: 10));
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(
       listened,
       3,

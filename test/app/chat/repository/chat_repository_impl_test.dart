@@ -11,6 +11,7 @@ import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:moor/ffi.dart';
 
+import '../../../rxdart/rxdart_test_helper.dart';
 import '../../account/database/account_database_test_helper.dart';
 import '../chat_test_helper.dart';
 import '../database/chat_database_test_helper.dart';
@@ -830,7 +831,10 @@ void main() {
     var subscription = chatRepository.watchTotalUnreadCount().listen((event) {
       listened = event;
     });
-    await Future.delayed(Duration(milliseconds: 1));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
+
     expect(await chatRepository.getTotalUnreadCount(), 0);
     expect(listened, 0);
 
@@ -851,7 +855,9 @@ void main() {
           .copyWith(remoteId: 'remoteId3', unread: 1),
     );
 
-    await Future.delayed(Duration(milliseconds: 1));
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
+
     expect(await chatRepository.getTotalUnreadCount(), 2);
     expect(listened, 2);
 
@@ -864,21 +870,30 @@ void main() {
       ),
       batchTransaction: null,
     );
-    await Future.delayed(Duration(milliseconds: 1));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
+
     expect(await chatRepository.getTotalUnreadCount(), 1);
     expect(listened, 1);
     await chatRepository.incrementUnreadCount(
       chatRemoteId: chat2.remoteId,
       updatedAt: DateTime.now(),
     );
-    await Future.delayed(Duration(milliseconds: 1));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
+
     expect(await chatRepository.getTotalUnreadCount(), 2);
     expect(listened, 2);
     await chatRepository.incrementUnreadCount(
       chatRemoteId: chat3.remoteId,
       updatedAt: DateTime.now(),
     );
-    await Future.delayed(Duration(milliseconds: 1));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
+
     expect(await chatRepository.getTotalUnreadCount(), 3);
     expect(listened, 3);
 

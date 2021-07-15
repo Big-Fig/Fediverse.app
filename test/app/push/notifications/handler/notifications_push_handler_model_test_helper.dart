@@ -3,7 +3,6 @@ import 'package:fedi/app/push/notification/handler/notifications_push_handler_mo
 import '../../../../pleroma/api/push/pleroma_api_push_test_helper.dart';
 import '../../../../push/push_model_test_helper.dart';
 
-
 // ignore_for_file: no-magic-number
 class PushHandlerModelTestHelper {
   static NotificationsPushHandlerMessage createTestPushHandlerMessage({

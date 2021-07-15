@@ -28,6 +28,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:moor/ffi.dart';
 
+import '../../rxdart/rxdart_test_helper.dart';
 import '../account/account_test_helper.dart';
 import '../account/my/my_account_test_helper.dart';
 import '../status/status_test_helper.dart';
@@ -97,8 +98,7 @@ void main() {
       await myAccountLocalPreferenceBloc.setValue(
         myAccount.toPleromaApiMyAccountWrapper(),
       );
-      // hack to execute notify callbacks
-      await Future.delayed(Duration(milliseconds: 1));
+      
 
       myAccountBloc = MyAccountBloc(
         pleromaMyAccountService: pleromaMyAccountServiceMock,
@@ -150,8 +150,9 @@ void main() {
         accounts: accounts,
       ),
     );
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
+
   }
 
   test('conversation', () async {
@@ -165,15 +166,16 @@ void main() {
       remoteId: conversation.remoteId,
     );
 
-    var listenedValue;
+    var listened;
 
     var subscription = conversationBloc.conversationStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
     ConversationTestHelper.expectConversation(
-      listenedValue,
+      listened,
       conversation,
     );
 
@@ -184,7 +186,7 @@ void main() {
       newValue,
     );
     ConversationTestHelper.expectConversation(
-      listenedValue,
+      listened,
       newValue,
     );
     await subscription.cancel();
@@ -205,13 +207,12 @@ void main() {
       remoteId: conversation.remoteId,
     );
 
-    var listenedValue;
+    var listened;
 
     var subscription = conversationBloc.lastStatusStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
 
     await _update(
       newValue,
@@ -224,7 +225,7 @@ void main() {
       status1,
     );
     StatusTestHelper.expectStatus(
-      listenedValue,
+      listened,
       status1,
     );
 
@@ -239,7 +240,7 @@ void main() {
       status2,
     );
     StatusTestHelper.expectStatus(
-      listenedValue,
+      listened,
       status2,
     );
 
@@ -256,13 +257,14 @@ void main() {
       remoteId: conversation.remoteId,
     );
 
-    late var listenedValue;
+    late var listened;
 
     var subscription = conversationBloc.accountsStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     await _update(
       newValue,
@@ -274,7 +276,7 @@ void main() {
       account1,
     );
     AccountTestHelper.expectAccount(
-      listenedValue[0],
+      listened[0],
       account1,
     );
 
@@ -296,15 +298,15 @@ void main() {
       account3,
     );
     AccountTestHelper.expectAccount(
-      listenedValue[0],
+      listened[0],
       account1,
     );
     AccountTestHelper.expectAccount(
-      listenedValue[1],
+      listened[1],
       account2,
     );
     AccountTestHelper.expectAccount(
-      listenedValue[2],
+      listened[2],
       account3,
     );
 
@@ -324,14 +326,15 @@ void main() {
       remoteId: conversation.remoteId,
     );
 
-    late var listenedValue;
+    late var listened;
 
     var subscription =
         conversationBloc.accountsWithoutMeStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     await _update(
       newValue,
@@ -343,7 +346,7 @@ void main() {
       account1,
     );
     AccountTestHelper.expectAccount(
-      listenedValue[0],
+      listened[0],
       account1,
     );
 
@@ -361,11 +364,11 @@ void main() {
       account3,
     );
     AccountTestHelper.expectAccount(
-      listenedValue[0],
+      listened[0],
       account1,
     );
     AccountTestHelper.expectAccount(
-      listenedValue[1],
+      listened[1],
       account3,
     );
 
@@ -383,15 +386,16 @@ void main() {
       remoteId: conversation.remoteId,
     );
 
-    var listenedValue;
+    var listened;
 
     var subscription = conversationBloc.conversationStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
     ConversationTestHelper.expectConversation(
-      listenedValue,
+      listened,
       conversation,
     );
 
@@ -405,14 +409,15 @@ void main() {
     );
 
     await conversationBloc.refreshFromNetwork();
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     ConversationTestHelper.expectConversation(
       conversationBloc.conversation,
       newValue,
     );
-    ConversationTestHelper.expectConversation(listenedValue, newValue);
+    ConversationTestHelper.expectConversation(listened, newValue);
     await subscription.cancel();
   });
 }

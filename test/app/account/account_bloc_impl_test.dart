@@ -19,6 +19,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:moor/ffi.dart';
 
+import '../../rxdart/rxdart_test_helper.dart';
 import 'account_bloc_impl_test.mocks.dart';
 import 'account_test_helper.dart';
 // ignore_for_file: avoid-late-keyword
@@ -82,12 +83,9 @@ void main() {
     await accountRepository.upsertInRemoteType(
       account.toPleromaApiAccount(),
     );
-    // hack to execute notify callbacks
-    await Future.delayed(
-      Duration(
-        milliseconds: 1,
-      ),
-    );
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
+
   }
 
   test('account', () async {
@@ -98,19 +96,22 @@ void main() {
       remoteId: account.remoteId,
     );
 
-    var listenedValue;
+    var listened;
 
     var subscription = accountBloc.accountStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
-    AccountTestHelper.expectAccount(listenedValue, account);
+
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
+
+    AccountTestHelper.expectAccount(listened, account);
 
     await _update(newValue);
 
     AccountTestHelper.expectAccount(accountBloc.account, newValue);
-    AccountTestHelper.expectAccount(listenedValue, newValue);
+    AccountTestHelper.expectAccount(listened, newValue);
     await subscription.cancel();
   });
 
@@ -119,14 +120,17 @@ void main() {
 
     var newValue = 'newAcct';
 
-    var listenedValue;
+    var listened;
 
     var subscription = accountBloc.acctStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
-    expect(listenedValue, account.acct);
+
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
+
+    expect(listened, account.acct);
 
     await _update(
       account.copyWith(
@@ -135,7 +139,7 @@ void main() {
     );
 
     expect(accountBloc.acct, newValue);
-    expect(listenedValue, newValue);
+    expect(listened, newValue);
     await subscription.cancel();
   });
   test('note', () async {
@@ -143,19 +147,22 @@ void main() {
 
     var newValue = 'newNote';
 
-    var listenedValue;
+    var listened;
 
     var subscription = accountBloc.noteStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
-    expect(listenedValue, account.note);
+
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
+
+    expect(listened, account.note);
 
     await _update(account.copyWith(note: newValue));
 
     expect(accountBloc.note, newValue);
-    expect(listenedValue, newValue);
+    expect(listened, newValue);
     await subscription.cancel();
   });
   test('header', () async {
@@ -163,19 +170,22 @@ void main() {
 
     var newValue = 'newHeader';
 
-    var listenedValue;
+    var listened;
 
     var subscription = accountBloc.headerStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
-    expect(listenedValue, account.header);
+
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
+
+    expect(listened, account.header);
 
     await _update(account.copyWith(header: newValue));
 
     expect(accountBloc.header, newValue);
-    expect(listenedValue, newValue);
+    expect(listened, newValue);
     await subscription.cancel();
   });
   test('avatar', () async {
@@ -183,19 +193,22 @@ void main() {
 
     var newValue = 'newAvatar';
 
-    var listenedValue;
+    var listened;
 
     var subscription = accountBloc.avatarStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
-    expect(listenedValue, account.avatar);
+
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
+
+    expect(listened, account.avatar);
 
     await _update(account.copyWith(avatar: newValue));
 
     expect(accountBloc.avatar, newValue);
-    expect(listenedValue, newValue);
+    expect(listened, newValue);
     await subscription.cancel();
   });
   test('displayName', () async {
@@ -203,19 +216,22 @@ void main() {
 
     var newValue = 'newDisplayName';
 
-    var listenedValue;
+    var listened;
 
     var subscription = accountBloc.displayNameStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
-    expect(listenedValue, account.displayName);
+
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
+
+    expect(listened, account.displayName);
 
     await _update(account.copyWith(displayName: newValue));
 
     expect(accountBloc.displayName, newValue);
-    expect(listenedValue, newValue);
+    expect(listened, newValue);
     await subscription.cancel();
   });
   test('fields', () async {
@@ -229,19 +245,22 @@ void main() {
       ),
     ];
 
-    var listenedValue;
+    var listened;
 
     var subscription = accountBloc.fieldsStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
-    expect(listenedValue, account.fields ?? []);
+
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
+
+    expect(listened, account.fields ?? []);
 
     await _update(account.copyWith(fields: newValue));
 
     expect(accountBloc.fields, newValue);
-    expect(listenedValue, newValue);
+    expect(listened, newValue);
     await subscription.cancel();
   });
 
@@ -250,19 +269,22 @@ void main() {
 
     var newValue = account.statusesCount + 1;
 
-    var listenedValue;
+    var listened;
 
     var subscription = accountBloc.statusesCountStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
-    expect(listenedValue, account.statusesCount);
+
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
+
+    expect(listened, account.statusesCount);
 
     await _update(account.copyWith(statusesCount: newValue));
 
     expect(accountBloc.statusesCount, newValue);
-    expect(listenedValue, newValue);
+    expect(listened, newValue);
     await subscription.cancel();
   });
   test('statusesCount', () async {
@@ -270,19 +292,22 @@ void main() {
 
     var newValue = account.statusesCount + 1;
 
-    var listenedValue;
+    var listened;
 
     var subscription = accountBloc.statusesCountStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
-    expect(listenedValue, account.statusesCount);
+
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
+
+    expect(listened, account.statusesCount);
 
     await _update(account.copyWith(statusesCount: newValue));
 
     expect(accountBloc.statusesCount, newValue);
-    expect(listenedValue, newValue);
+    expect(listened, newValue);
     await subscription.cancel();
   });
   test('followingCount', () async {
@@ -290,19 +315,22 @@ void main() {
 
     var newValue = account.followingCount + 1;
 
-    var listenedValue;
+    var listened;
 
     var subscription = accountBloc.followingCountStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
-    expect(listenedValue, account.followingCount);
+
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
+
+    expect(listened, account.followingCount);
 
     await _update(account.copyWith(followingCount: newValue));
 
     expect(accountBloc.followingCount, newValue);
-    expect(listenedValue, newValue);
+    expect(listened, newValue);
     await subscription.cancel();
   });
   test('followersCount', () async {
@@ -310,19 +338,22 @@ void main() {
 
     var newValue = account.followersCount + 1;
 
-    var listenedValue;
+    var listened;
 
     var subscription = accountBloc.followersCountStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
-    expect(listenedValue, account.followersCount);
+
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
+
+    expect(listened, account.followersCount);
 
     await _update(account.copyWith(followersCount: newValue));
 
     expect(accountBloc.followersCount, newValue);
-    expect(listenedValue, newValue);
+    expect(listened, newValue);
     await subscription.cancel();
   });
 
@@ -337,16 +368,19 @@ void main() {
 
     var newDisplayNameValue = 'newDisplayName';
 
-    var listenedValue;
+    var listened;
 
     var subscription =
         accountBloc.displayNameEmojiTextStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
+
     expect(
-      listenedValue,
+      listened,
       EmojiText(
         text: account.displayName!,
         emojis: account.emojis,
@@ -367,7 +401,7 @@ void main() {
       ),
     );
     expect(
-      listenedValue,
+      listened,
       EmojiText(
         text: newDisplayNameValue,
         emojis: account.emojis,
@@ -386,12 +420,15 @@ void main() {
     ];
 
     subscription = accountBloc.displayNameEmojiTextStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
+
     expect(
-      listenedValue,
+      listened,
       EmojiText(text: newDisplayNameValue, emojis: account.emojis),
     );
 
@@ -412,7 +449,7 @@ void main() {
       ),
     );
     expect(
-      listenedValue,
+      listened,
       equals(
         EmojiText(text: newDisplayNameValue, emojis: newEmojis),
       ),
@@ -426,19 +463,22 @@ void main() {
     var newValue =
         AccountTestHelper.createTestAccountRelationship(seed: 'seed0');
 
-    var listenedValue;
+    var listened;
 
     var subscription = accountBloc.relationshipStream!.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
+
     expect(accountBloc.relationship, account.pleromaRelationship);
 
     await _update(account.copyWith(pleromaRelationship: newValue));
 
     expect(accountBloc.relationship, newValue);
-    expect(listenedValue, newValue);
+    expect(listened, newValue);
     await subscription.cancel();
   });
 
@@ -450,14 +490,17 @@ void main() {
       remoteId: account.remoteId,
     );
 
-    var listenedValue;
+    var listened;
 
     var subscription = accountBloc.accountStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
-    AccountTestHelper.expectAccount(listenedValue, account);
+
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
+
+    AccountTestHelper.expectAccount(listened, account);
 
     var newRelationship =
         AccountTestHelper.createTestAccountRelationship(seed: 'seed11');
@@ -475,15 +518,18 @@ void main() {
     ).thenAnswer((_) async => [newRelationship]);
 
     await accountBloc.refreshFromNetwork(isNeedPreFetchRelationship: true);
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
+
 
     AccountTestHelper.expectAccount(
       accountBloc.account,
       newValue.copyWith(pleromaRelationship: newRelationship),
     );
     AccountTestHelper.expectAccount(
-      listenedValue,
+      listened,
       newValue.copyWith(pleromaRelationship: newRelationship),
     );
     await subscription.cancel();
@@ -492,13 +538,16 @@ void main() {
   test('toggleBlock', () async {
     expect(accountBloc.relationship, account.pleromaRelationship);
 
-    IPleromaApiAccountRelationship? listenedValue;
+    IPleromaApiAccountRelationship? listened;
 
     var subscription = accountBloc.relationshipStream!.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
+
     expect(accountBloc.relationship, account.pleromaRelationship);
 
     when(
@@ -524,31 +573,40 @@ void main() {
     var initialValue = account.pleromaRelationship!.blocking!;
 
     await accountBloc.toggleBlock();
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
+
 
     expect(accountBloc.relationship!.blocking, !initialValue);
-    expect(listenedValue!.blocking, !initialValue);
+    expect(listened!.blocking, !initialValue);
 
     await accountBloc.toggleBlock();
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
+
 
     expect(accountBloc.relationship!.blocking, initialValue);
-    expect(listenedValue!.blocking, initialValue);
+    expect(listened!.blocking, initialValue);
 
     await subscription.cancel();
   });
   test('toggleFollow', () async {
     expect(accountBloc.relationship, account.pleromaRelationship);
 
-    IPleromaApiAccountRelationship? listenedValue;
+    IPleromaApiAccountRelationship? listened;
 
     var subscription = accountBloc.relationshipStream!.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
+
     expect(accountBloc.relationship, account.pleromaRelationship);
 
     when(pleromaAuthAccountServiceMock.followAccount(
@@ -567,31 +625,40 @@ void main() {
     var initialValue = account.pleromaRelationship!.following!;
 
     await accountBloc.toggleFollow();
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
+
 
     expect(accountBloc.relationship!.following, !initialValue);
-    expect(listenedValue!.following, !initialValue);
+    expect(listened!.following, !initialValue);
 
     await accountBloc.toggleFollow();
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
+
 
     expect(accountBloc.relationship!.following, initialValue);
-    expect(listenedValue!.following, initialValue);
+    expect(listened!.following, initialValue);
 
     await subscription.cancel();
   });
   test('mute & unmute', () async {
     expect(accountBloc.relationship, account.pleromaRelationship);
 
-    IPleromaApiAccountRelationship? listenedValue;
+    IPleromaApiAccountRelationship? listened;
 
     var subscription = accountBloc.relationshipStream!.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
+
     expect(accountBloc.relationship, account.pleromaRelationship);
 
     when(pleromaAuthAccountServiceMock.muteAccount(
@@ -628,31 +695,40 @@ void main() {
       notifications: false,
       duration: null,
     );
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
+
 
     expect(accountBloc.relationship!.muting, !initialValue);
-    expect(listenedValue!.muting, !initialValue);
+    expect(listened!.muting, !initialValue);
 
     await accountBloc.unMute();
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
+
 
     expect(accountBloc.relationship!.muting, initialValue);
-    expect(listenedValue!.muting, initialValue);
+    expect(listened!.muting, initialValue);
 
     await subscription.cancel();
   });
   test('togglePin', () async {
     expect(accountBloc.relationship, account.pleromaRelationship);
 
-    IPleromaApiAccountRelationship? listenedValue;
+    IPleromaApiAccountRelationship? listened;
 
     var subscription = accountBloc.relationshipStream!.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
+
     expect(accountBloc.relationship, account.pleromaRelationship);
 
     when(pleromaAuthAccountServiceMock.pinAccount(
@@ -670,18 +746,24 @@ void main() {
     var initialValue = account.pleromaRelationship!.muting!;
 
     await accountBloc.togglePin();
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
+
 
     expect(accountBloc.relationship!.muting, !initialValue);
-    expect(listenedValue!.muting, !initialValue);
+    expect(listened!.muting, !initialValue);
 
     await accountBloc.togglePin();
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
+
 
     expect(accountBloc.relationship!.muting, initialValue);
-    expect(listenedValue!.muting, initialValue);
+    expect(listened!.muting, initialValue);
 
     await subscription.cancel();
   });

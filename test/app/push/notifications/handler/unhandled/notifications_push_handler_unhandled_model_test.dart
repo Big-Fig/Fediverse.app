@@ -1,6 +1,6 @@
-
 import 'package:fedi/app/push/notification/handler/unhandled/notifications_push_handler_unhandled_model.dart';
 import 'package:flutter_test/flutter_test.dart';
+
 import '../../../../../hive/hive_test_helper.dart';
 import '../../../../../json/json_test_helper.dart';
 import '../../../../../obj/obj_test_helper.dart';

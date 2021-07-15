@@ -11,8 +11,7 @@ void main() {
   test('save & load', () async {
     await LocalPreferencesTestHelper.testSaveAndLoad<DatabaseCacheSettings,
         GlobalDatabaseCacheSettingsLocalPreferenceBloc>(
-      defaultValue:
-          GlobalDatabaseCacheSettingsLocalPreferenceBloc.defaultValue,
+      defaultValue: GlobalDatabaseCacheSettingsLocalPreferenceBloc.defaultValue,
       blocCreator: (localPreferencesService) =>
           GlobalDatabaseCacheSettingsLocalPreferenceBloc(
         localPreferencesService,

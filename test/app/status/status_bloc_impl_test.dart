@@ -26,6 +26,7 @@ import 'package:mockito/mockito.dart';
 import 'package:moor/ffi.dart';
 
 import '../../pleroma/api/media/pleroma_api_media_test_helper.dart';
+import '../../rxdart/rxdart_test_helper.dart';
 import '../account/account_test_helper.dart';
 import 'status_bloc_impl_test.mocks.dart';
 import 'status_test_helper.dart';
@@ -103,8 +104,8 @@ Future<void> main() async {
     await statusRepository.upsertInRemoteType(
       status.toPleromaApiStatus(),
     );
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
   }
 
   test('status', () async {
@@ -115,15 +116,15 @@ Future<void> main() async {
       remoteId: status.remoteId,
     );
 
-    var listenedValue;
+    var listened;
 
     var subscription = statusBloc.statusStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     StatusTestHelper.expectStatus(
-      listenedValue,
+      listened,
       status,
     );
 
@@ -134,7 +135,7 @@ Future<void> main() async {
       newValue,
     );
     StatusTestHelper.expectStatus(
-      listenedValue,
+      listened,
       newValue,
     );
     await subscription.cancel();
@@ -154,14 +155,14 @@ Future<void> main() async {
       reblog: reblog,
     );
 
-    var listenedValue;
+    var listened;
 
     var subscription = statusBloc.reblogStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    await Future.delayed(Duration(milliseconds: 1));
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(
-      listenedValue,
+      listened,
       status.reblog,
     );
 
@@ -172,7 +173,7 @@ Future<void> main() async {
       reblog,
     );
     StatusTestHelper.expectStatus(
-      listenedValue,
+      listened,
       reblog,
     );
     await subscription.cancel();
@@ -192,14 +193,14 @@ Future<void> main() async {
       reblog: reblog,
     );
 
-    var listenedValue;
+    var listened;
 
     var subscription = statusBloc.reblogOrOriginalStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    await Future.delayed(Duration(milliseconds: 1));
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(
-      listenedValue,
+      listened,
       status,
     );
 
@@ -210,7 +211,7 @@ Future<void> main() async {
       reblog,
     );
     StatusTestHelper.expectStatus(
-      listenedValue,
+      listened,
       reblog,
     );
     await subscription.cancel();
@@ -224,15 +225,15 @@ Future<void> main() async {
 
     var newValue = 'newContent';
 
-    var listenedValue;
+    var listened;
 
     var subscription = statusBloc.contentStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(
-      listenedValue,
+      listened,
       status.content,
     );
 
@@ -243,7 +244,7 @@ Future<void> main() async {
       newValue,
     );
     expect(
-      listenedValue,
+      listened,
       newValue,
     );
     await subscription.cancel();
@@ -252,13 +253,13 @@ Future<void> main() async {
   test('contentHtmlWithEmojis', () async {
     var newValue = 'newContent :emoji: :emoji1: :emoji2:';
 
-    var listenedValue;
+    var listened;
 
     var subscription = statusBloc.contentWithEmojisStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
 
     // same if emojis is empty or null
     await _update(status.copyWith(
@@ -274,7 +275,7 @@ Future<void> main() async {
       ),
     );
     expect(
-      listenedValue,
+      listened,
       EmojiText(
         text: newValue,
         emojis: null,
@@ -324,7 +325,7 @@ Future<void> main() async {
       ),
     );
     expect(
-      listenedValue,
+      listened,
       EmojiText(
         text: 'newContent :emoji: :emoji1: :emoji2:',
         emojis: [
@@ -356,15 +357,15 @@ Future<void> main() async {
 
     var newValue = PleromaApiCard.only(url: 'fedi.app');
 
-    var listenedValue;
+    var listened;
 
     var subscription = statusBloc.cardStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(
-      listenedValue,
+      listened,
       status.card,
     );
 
@@ -375,7 +376,7 @@ Future<void> main() async {
       newValue,
     );
     expect(
-      listenedValue,
+      listened,
       newValue,
     );
     await subscription.cancel();
@@ -393,15 +394,15 @@ Future<void> main() async {
     var reblog =
         await StatusTestHelper.createTestStatus(seed: 'reblogOrOriginalCard');
 
-    var listenedValue;
+    var listened;
 
     var subscription = statusBloc.reblogOrOriginalCardStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(
-      listenedValue,
+      listened,
       status.card,
     );
 
@@ -411,7 +412,7 @@ Future<void> main() async {
       statusBloc.reblogOrOriginalCard,
       newValue,
     );
-    expect(listenedValue, newValue);
+    expect(listened, newValue);
 
     await _update(status.copyWith(
       card: newValue,
@@ -421,7 +422,7 @@ Future<void> main() async {
     ));
 
     expect(statusBloc.reblogOrOriginalCard, reblogValue);
-    expect(listenedValue, reblogValue);
+    expect(listened, reblogValue);
 
     await subscription.cancel();
   });
@@ -434,8 +435,7 @@ Future<void> main() async {
 
     var reblog = await StatusTestHelper.createTestStatus(seed: 'isHaveReblog');
 
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
 
     await _update(status.copyWith(reblog: reblog));
 
@@ -454,15 +454,15 @@ Future<void> main() async {
 
     var newValue = await AccountTestHelper.createTestAccount(seed: 'seed3');
 
-    var listenedValue;
+    var listened;
 
     var subscription = statusBloc.accountStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     AccountTestHelper.expectAccount(
-      listenedValue,
+      listened,
       status.account,
     );
 
@@ -473,7 +473,7 @@ Future<void> main() async {
       newValue,
     );
     AccountTestHelper.expectAccount(
-      listenedValue,
+      listened,
       newValue,
     );
     await subscription.cancel();
@@ -492,15 +492,15 @@ Future<void> main() async {
     var reblogValue = await AccountTestHelper.createTestAccount(seed: 'reblog');
     var newValue = await AccountTestHelper.createTestAccount(seed: 'test');
 
-    var listenedValue;
+    var listened;
 
     var subscription =
         statusBloc.reblogOrOriginalAccountStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
-    AccountTestHelper.expectAccount(listenedValue, status.account);
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    AccountTestHelper.expectAccount(listened, status.account);
 
     await _update(
       status.copyWith(reblog: reblog.copyWith(account: reblogValue)),
@@ -511,7 +511,7 @@ Future<void> main() async {
       reblogValue,
     );
     AccountTestHelper.expectAccount(
-      listenedValue,
+      listened,
       reblogValue,
     );
 
@@ -525,7 +525,7 @@ Future<void> main() async {
       reblogValue,
     );
     AccountTestHelper.expectAccount(
-      listenedValue,
+      listened,
       reblogValue,
     );
     await subscription.cancel();
@@ -539,15 +539,15 @@ Future<void> main() async {
 
     var newValue = !status.reblogged;
 
-    var listenedValue;
+    var listened;
 
     var subscription = statusBloc.rebloggedStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(
-      listenedValue,
+      listened,
       status.reblogged,
     );
 
@@ -558,7 +558,7 @@ Future<void> main() async {
       newValue,
     );
     expect(
-      listenedValue,
+      listened,
       newValue,
     );
     await subscription.cancel();
@@ -571,15 +571,15 @@ Future<void> main() async {
 
     var newValue = !status.bookmarked;
 
-    var listenedValue;
+    var listened;
 
     var subscription = statusBloc.bookmarkedStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(
-      listenedValue,
+      listened,
       status.bookmarked,
     );
 
@@ -590,7 +590,7 @@ Future<void> main() async {
       newValue,
     );
     expect(
-      listenedValue,
+      listened,
       newValue,
     );
     await subscription.cancel();
@@ -603,14 +603,14 @@ Future<void> main() async {
 
     var newValue = !status.pinned;
 
-    var listenedValue;
+    var listened;
 
     var subscription = statusBloc.pinnedStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
-    expect(listenedValue, status.pinned);
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    expect(listened, status.pinned);
 
     await _update(status.copyWith(pinned: newValue));
 
@@ -619,7 +619,7 @@ Future<void> main() async {
       newValue,
     );
     expect(
-      listenedValue,
+      listened,
       newValue,
     );
     await subscription.cancel();
@@ -632,14 +632,14 @@ Future<void> main() async {
 
     var newValue = !status.muted;
 
-    var listenedValue;
+    var listened;
 
     var subscription = statusBloc.mutedStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
-    expect(listenedValue, status.muted);
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    expect(listened, status.muted);
 
     await _update(status.copyWith(muted: newValue));
 
@@ -648,7 +648,7 @@ Future<void> main() async {
       newValue,
     );
     expect(
-      listenedValue,
+      listened,
       newValue,
     );
     await subscription.cancel();
@@ -659,15 +659,15 @@ Future<void> main() async {
 
     var newValue = !status.favourited;
 
-    var listenedValue;
+    var listened;
 
     var subscription = statusBloc.favouritedStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(
-      listenedValue,
+      listened,
       status.favourited,
     );
 
@@ -678,7 +678,7 @@ Future<void> main() async {
       newValue,
     );
     expect(
-      listenedValue,
+      listened,
       newValue,
     );
     await subscription.cancel();
@@ -692,8 +692,7 @@ Future<void> main() async {
 
     var newValue = 'inReplyToRemoteId';
 
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
 
     await _update(status.copyWith(inReplyToRemoteId: newValue));
 
@@ -708,8 +707,7 @@ Future<void> main() async {
 
     var reblog = await StatusTestHelper.createTestStatus(seed: 'isHaveReblog');
 
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
 
     await _update(status.copyWith(reblog: reblog));
 
@@ -728,15 +726,15 @@ Future<void> main() async {
       ),
     ];
 
-    var listenedValue;
+    var listened;
 
     var subscription = statusBloc.mediaAttachmentsStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(
-      listenedValue,
+      listened,
       status.mediaAttachments,
     );
 
@@ -747,7 +745,7 @@ Future<void> main() async {
       newValue,
     );
     expect(
-      listenedValue,
+      listened,
       newValue,
     );
     await subscription.cancel();
@@ -767,16 +765,16 @@ Future<void> main() async {
       ),
     ];
 
-    var listenedValue;
+    var listened;
 
     var subscription =
         statusBloc.pleromaEmojiReactionsStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(
-      listenedValue,
+      listened,
       status.pleromaEmojiReactions,
     );
 
@@ -787,7 +785,7 @@ Future<void> main() async {
       newValue,
     );
     expect(
-      listenedValue,
+      listened,
       newValue,
     );
     await subscription.cancel();
@@ -841,16 +839,16 @@ Future<void> main() async {
       ),
     ];
 
-    var listenedValue;
+    var listened;
 
     var subscription =
         statusBloc.reblogPlusOriginalEmojiReactionsStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(
-      listenedValue,
+      listened,
       status.pleromaEmojiReactions,
     );
 
@@ -869,7 +867,7 @@ Future<void> main() async {
       newValue,
     );
     expect(
-      listenedValue,
+      listened,
       newValue,
     );
 
@@ -920,19 +918,19 @@ Future<void> main() async {
     );
 
     expect(
-      listenedValue[0],
+      listened[0],
       expected[0],
     );
     expect(
-      listenedValue[1],
+      listened[1],
       expected[1],
     );
     expect(
-      listenedValue[2],
+      listened[2],
       expected[2],
     );
     expect(
-      listenedValue,
+      listened,
       expected,
     );
 
@@ -947,15 +945,15 @@ Future<void> main() async {
 
     var newValue = await AccountTestHelper.createTestAccount(seed: 'seed3');
 
-    var listenedValue;
+    var listened;
 
     var subscription = statusBloc.accountAvatarStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(
-      listenedValue,
+      listened,
       status.account.avatar,
     );
 
@@ -966,7 +964,7 @@ Future<void> main() async {
       newValue.avatar,
     );
     expect(
-      listenedValue,
+      listened,
       newValue.avatar,
     );
     await subscription.cancel();
@@ -987,15 +985,15 @@ Future<void> main() async {
       ),
     ];
 
-    var listenedValue;
+    var listened;
 
     var subscription = statusBloc.mentionsStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(
-      listenedValue,
+      listened,
       status.mentions,
     );
 
@@ -1006,7 +1004,7 @@ Future<void> main() async {
       newValue,
     );
     expect(
-      listenedValue,
+      listened,
       newValue,
     );
     await subscription.cancel();
@@ -1020,16 +1018,16 @@ Future<void> main() async {
 
     var newValue = 'newSpoilerText';
 
-    var listenedValue;
+    var listened;
 
     var subscription =
         statusBloc.reblogOrOriginalSpoilerTextStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(
-      listenedValue,
+      listened,
       status.spoilerText,
     );
 
@@ -1040,7 +1038,7 @@ Future<void> main() async {
       newValue,
     );
     expect(
-      listenedValue,
+      listened,
       newValue,
     );
     await subscription.cancel();
@@ -1054,15 +1052,15 @@ Future<void> main() async {
 
     var newValue = !statusBloc.nsfwSensitive;
 
-    var listenedValue;
+    var listened;
 
     var subscription = statusBloc.nsfwSensitiveStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(
-      listenedValue,
+      listened,
       status.nsfwSensitive,
     );
 
@@ -1073,40 +1071,40 @@ Future<void> main() async {
       newValue,
     );
     expect(
-      listenedValue,
+      listened,
       newValue,
     );
     await subscription.cancel();
   });
   //
   // test('nsfwSensitiveAndDisplayEnabled', () async {
-  //   var listenedValue;
+  //   var listened;
   //
   //   var subscription =
   //       statusBloc.nsfwSensitiveAndDisplayNsfwContentEnabledStream.listen((newValue) {
-  //     listenedValue = newValue;
+  //     listened = newValue;
   //   });
-  //   // hack to execute notify callbacks
-  //   await Future.delayed(Duration(milliseconds: 1));
+  //
+  //   await RxDartTestHelper.waitToExecuteRxCallbacks();
   //
   //   await _update(status.copyWith(nsfwSensitive: true));
   //
   //   expect(statusBloc.nsfwSensitiveAndDisplayNsfwContentEnabled, false);
-  //   expect(listenedValue, false);
+  //   expect(listened, false);
   //
   //   statusBloc.changeDisplayNsfwSensitive(true);
-  //   // hack to execute notify callbacks
-  //   await Future.delayed(Duration(milliseconds: 1));
+  //
+  //   await RxDartTestHelper.waitToExecuteRxCallbacks();
   //
   //   expect(statusBloc.nsfwSensitiveAndDisplayNsfwContentEnabled, true);
-  //   expect(listenedValue, true);
+  //   expect(listened, true);
   //
   //   statusBloc.changeDisplayNsfwSensitive(false);
-  //   // hack to execute notify callbacks
-  //   await Future.delayed(Duration(milliseconds: 1));
+  //
+  //   await RxDartTestHelper.waitToExecuteRxCallbacks();
   //
   //   expect(statusBloc.nsfwSensitiveAndDisplayNsfwContentEnabled, false);
-  //   expect(listenedValue, false);
+  //   expect(listened, false);
   //
   //   await subscription.cancel();
   // });
@@ -1119,58 +1117,58 @@ Future<void> main() async {
 
     var newValue = 'newSpoilerText';
 
-    var listenedValue;
+    var listened;
 
     var subscription = statusBloc.containsSpoilerStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(
-      listenedValue,
+      listened,
       status.spoilerText?.isNotEmpty == true,
     );
 
     await _update(status.copyWith(spoilerText: newValue));
 
     expect(statusBloc.containsSpoiler, true);
-    expect(listenedValue, true);
+    expect(listened, true);
 
     await _update(status.copyWith(spoilerText: ''));
 
     expect(statusBloc.containsSpoiler, false);
-    expect(listenedValue, false);
+    expect(listened, false);
     await subscription.cancel();
   });
   //
   // test('containsSpoilerAndDisplayEnabled', () async {
-  //   var listenedValue;
+  //   var listened;
   //
   //   var subscription =
   //       statusBloc.containsSpoilerAndDisplaySpoilerContentEnabledStream.listen((newValue) {
-  //     listenedValue = newValue;
+  //     listened = newValue;
   //   });
-  //   // hack to execute notify callbacks
-  //   await Future.delayed(Duration(milliseconds: 1));
+  //
+  //   await RxDartTestHelper.waitToExecuteRxCallbacks();
   //
   //   await _update(status.copyWith(spoilerText: 'newSpoilerText'));
   //
   //   expect(statusBloc.containsSpoilerAndDisplaySpoilerContentEnabled, false);
-  //   expect(listenedValue, false);
+  //   expect(listened, false);
   //
   //   statusBloc.changeDisplaySpoiler(true);
-  //   // hack to execute notify callbacks
-  //   await Future.delayed(Duration(milliseconds: 1));
+  //
+  //   await RxDartTestHelper.waitToExecuteRxCallbacks();
   //
   //   expect(statusBloc.containsSpoilerAndDisplaySpoilerContentEnabled, true);
-  //   expect(listenedValue, true);
+  //   expect(listened, true);
   //
   //   statusBloc.changeDisplaySpoiler(false);
-  //   // hack to execute notify callbacks
-  //   await Future.delayed(Duration(milliseconds: 1));
+  //
+  //   await RxDartTestHelper.waitToExecuteRxCallbacks();
   //
   //   expect(statusBloc.containsSpoilerAndDisplaySpoilerContentEnabled, false);
-  //   expect(listenedValue, false);
+  //   expect(listened, false);
   //
   //   await subscription.cancel();
   // });
@@ -1183,15 +1181,15 @@ Future<void> main() async {
 
     var newValue = DateTime(1990);
 
-    var listenedValue;
+    var listened;
 
     var subscription = statusBloc.createdAtStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(
-      listenedValue,
+      listened,
       status.createdAt,
     );
 
@@ -1202,7 +1200,7 @@ Future<void> main() async {
       newValue,
     );
     expect(
-      listenedValue,
+      listened,
       newValue,
     );
     await subscription.cancel();
@@ -1216,15 +1214,15 @@ Future<void> main() async {
 
     var newValue = 3;
 
-    var listenedValue;
+    var listened;
 
     var subscription = statusBloc.favouritesCountStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(
-      listenedValue,
+      listened,
       status.favouritesCount,
     );
 
@@ -1235,7 +1233,7 @@ Future<void> main() async {
       newValue,
     );
     expect(
-      listenedValue,
+      listened,
       newValue,
     );
     await subscription.cancel();
@@ -1253,16 +1251,16 @@ Future<void> main() async {
     var reblog =
         await StatusTestHelper.createTestStatus(seed: 'favouritesCount');
 
-    var listenedValue;
+    var listened;
 
     var subscription =
         statusBloc.reblogPlusOriginalFavouritesCountStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(
-      listenedValue,
+      listened,
       status.favouritesCount,
     );
 
@@ -1273,7 +1271,7 @@ Future<void> main() async {
       newValue,
     );
     expect(
-      listenedValue,
+      listened,
       newValue,
     );
 
@@ -1287,7 +1285,7 @@ Future<void> main() async {
       newValue + reblogValue,
     );
     expect(
-      listenedValue,
+      listened,
       newValue + reblogValue,
     );
 
@@ -1302,15 +1300,15 @@ Future<void> main() async {
 
     var newValue = 3;
 
-    var listenedValue;
+    var listened;
 
     var subscription = statusBloc.reblogsCountStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(
-      listenedValue,
+      listened,
       status.reblogsCount,
     );
 
@@ -1321,7 +1319,7 @@ Future<void> main() async {
       newValue,
     );
     expect(
-      listenedValue,
+      listened,
       newValue,
     );
     await subscription.cancel();
@@ -1338,16 +1336,16 @@ Future<void> main() async {
 
     var reblog = await StatusTestHelper.createTestStatus(seed: 'reblogsCount');
 
-    var listenedValue;
+    var listened;
 
     var subscription =
         statusBloc.reblogPlusOriginalReblogsCountStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(
-      listenedValue,
+      listened,
       status.reblogsCount,
     );
 
@@ -1358,7 +1356,7 @@ Future<void> main() async {
       newValue,
     );
     expect(
-      listenedValue,
+      listened,
       newValue,
     );
 
@@ -1372,7 +1370,7 @@ Future<void> main() async {
       newValue + reblogValue,
     );
     expect(
-      listenedValue,
+      listened,
       newValue + reblogValue,
     );
 
@@ -1387,15 +1385,15 @@ Future<void> main() async {
 
     var newValue = 3;
 
-    var listenedValue;
+    var listened;
 
     var subscription = statusBloc.repliesCountStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(
-      listenedValue,
+      listened,
       status.repliesCount,
     );
 
@@ -1406,7 +1404,7 @@ Future<void> main() async {
       newValue,
     );
     expect(
-      listenedValue,
+      listened,
       newValue,
     );
     await subscription.cancel();
@@ -1428,15 +1426,15 @@ Future<void> main() async {
       remoteId: status.remoteId,
     );
 
-    var listenedValue;
+    var listened;
 
     var subscription = statusBloc.statusStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     StatusTestHelper.expectStatus(
-      listenedValue,
+      listened,
       status,
     );
 
@@ -1447,11 +1445,11 @@ Future<void> main() async {
     );
 
     await statusBloc.refreshFromNetwork();
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
 
     StatusTestHelper.expectStatus(
-      listenedValue,
+      listened,
       newValue,
     );
     await subscription.cancel();
@@ -1509,13 +1507,13 @@ Future<void> main() async {
       null,
     );
 
-    var listenedValue;
+    var listened;
     var subscription = statusBloc.watchInReplyToAccount().listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
-    expect(listenedValue, null);
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    expect(listened, null);
 
     await _update(status.copyWith(inReplyToAccountRemoteId: account1.remoteId));
 
@@ -1538,13 +1536,13 @@ Future<void> main() async {
       status.reblogged,
     );
 
-    bool? listenedValue;
+    bool? listened;
 
     var subscription = statusBloc.rebloggedStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(
       statusBloc.reblogged,
       status.reblogged,
@@ -1565,28 +1563,28 @@ Future<void> main() async {
     var initialValue = status.reblogged;
 
     await statusBloc.toggleReblog();
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
 
     expect(
       statusBloc.reblogged,
       !initialValue,
     );
     expect(
-      listenedValue,
+      listened,
       !initialValue,
     );
 
     await statusBloc.toggleReblog();
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
 
     expect(
       statusBloc.reblogged,
       initialValue,
     );
     expect(
-      listenedValue,
+      listened,
       initialValue,
     );
 
@@ -1604,13 +1602,13 @@ Future<void> main() async {
       status.favourited,
     );
 
-    bool? listenedValue;
+    bool? listened;
 
     var subscription = statusBloc.favouritedStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(
       statusBloc.favourited,
       status.favourited,
@@ -1631,25 +1629,25 @@ Future<void> main() async {
     var initialValue = status.favourited;
 
     await statusBloc.toggleFavourite();
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
 
     expect(
       statusBloc.favourited,
       !initialValue,
     );
     expect(
-      listenedValue,
+      listened,
       !initialValue,
     );
 
     await statusBloc.toggleFavourite();
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
 
     expect(statusBloc.favourited, initialValue);
     expect(
-      listenedValue,
+      listened,
       initialValue,
     );
 
@@ -1667,13 +1665,13 @@ Future<void> main() async {
       status.muted,
     );
 
-    bool? listenedValue;
+    bool? listened;
 
     var subscription = statusBloc.mutedStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(
       statusBloc.muted,
       status.muted,
@@ -1695,28 +1693,28 @@ Future<void> main() async {
     var initialValue = status.muted;
 
     await statusBloc.toggleMute(duration: null);
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
 
     expect(
       statusBloc.muted,
       !initialValue,
     );
     expect(
-      listenedValue,
+      listened,
       !initialValue,
     );
 
     await statusBloc.toggleMute(duration: null);
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
 
     expect(
       statusBloc.muted,
       initialValue,
     );
     expect(
-      listenedValue,
+      listened,
       initialValue,
     );
 
@@ -1734,13 +1732,13 @@ Future<void> main() async {
       status.bookmarked,
     );
 
-    bool? listenedValue;
+    bool? listened;
 
     var subscription = statusBloc.bookmarkedStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(
       statusBloc.bookmarked,
       status.bookmarked,
@@ -1761,28 +1759,28 @@ Future<void> main() async {
     var initialValue = status.bookmarked;
 
     await statusBloc.toggleBookmark();
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
 
     expect(
       statusBloc.bookmarked,
       !initialValue,
     );
     expect(
-      listenedValue,
+      listened,
       !initialValue,
     );
 
     await statusBloc.toggleBookmark();
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
 
     expect(
       statusBloc.bookmarked,
       initialValue,
     );
     expect(
-      listenedValue,
+      listened,
       initialValue,
     );
 
@@ -1800,13 +1798,13 @@ Future<void> main() async {
       status.pinned,
     );
 
-    bool? listenedValue;
+    bool? listened;
 
     var subscription = statusBloc.pinnedStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(
       statusBloc.pinned,
       status.pinned,
@@ -1827,28 +1825,28 @@ Future<void> main() async {
     var initialValue = status.pinned;
 
     await statusBloc.togglePin();
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
 
     expect(
       statusBloc.pinned,
       !initialValue,
     );
     expect(
-      listenedValue,
+      listened,
       !initialValue,
     );
 
     await statusBloc.togglePin();
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
 
     expect(
       statusBloc.pinned,
       initialValue,
     );
     expect(
-      listenedValue,
+      listened,
       initialValue,
     );
 
@@ -1878,8 +1876,8 @@ Future<void> main() async {
     );
 
     await _update(status);
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
 
     expect(
       statusBloc.pleromaEmojiReactions,
@@ -1968,22 +1966,22 @@ Future<void> main() async {
           .toPleromaApiStatus();
     });
 
-    var listenedValue;
+    var listened;
 
     var subscription =
         statusBloc.pleromaEmojiReactionsStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     expect(
-      listenedValue,
+      listened,
       status.pleromaEmojiReactions,
     );
 
     await statusBloc.toggleEmojiReaction(emoji: emoji1);
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
 
     var newReactions = [
       reaction2,
@@ -2001,13 +1999,13 @@ Future<void> main() async {
       newReactions,
     );
     expect(
-      listenedValue,
+      listened,
       newReactions,
     );
 
     await statusBloc.toggleEmojiReaction(emoji: emoji1);
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
 
     newReactions = [
       reaction2,
@@ -2017,7 +2015,7 @@ Future<void> main() async {
       newReactions,
     );
     expect(
-      listenedValue,
+      listened,
       newReactions,
     );
 

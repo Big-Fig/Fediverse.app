@@ -7,6 +7,7 @@ import 'package:fedi/app/status/sensitive/settings/status_sensitive_settings_mod
 import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../../../rxdart/rxdart_test_helper.dart';
 import 'status_sensitive_settings_model_test_helper.dart';
 
 // ignore_for_file: no-magic-number, avoid-late-keyword
@@ -20,7 +21,7 @@ void main() {
 
   late StreamSubscription subscriptionListenedSettingsData;
 
-  StatusSensitiveSettings? listenedSettingsData;
+  StatusSensitiveSettings? listened;
 
   setUp(() async {
     memoryLocalPreferencesService = MemoryLocalPreferencesService();
@@ -48,7 +49,7 @@ void main() {
 
     subscriptionListenedSettingsData =
         statusSensitiveSettingsBloc.settingsDataStream.listen((data) {
-      listenedSettingsData = data;
+      listened = data;
     });
   });
 
@@ -70,13 +71,14 @@ void main() {
       },
     );
 
-    await Future.delayed(Duration(milliseconds: 100));
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     var defaultValue =
         GlobalStatusSensitiveSettingsLocalPreferenceBloc.defaultValue;
 
     expect(
-      listenedSettingsData?.isAlwaysShowNsfw,
+      listened?.isAlwaysShowNsfw,
       defaultValue.isAlwaysShowNsfw,
     );
     expect(
@@ -99,10 +101,12 @@ void main() {
 
     await statusSensitiveSettingsBloc
         .changeIsAlwaysShowNsfw(testIsAlwaysShowNsfw);
-    await Future.delayed(Duration(milliseconds: 100));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     expect(
-      listenedSettingsData?.isAlwaysShowNsfw,
+      listened?.isAlwaysShowNsfw,
       testIsAlwaysShowNsfw,
     );
     expect(
@@ -132,13 +136,14 @@ void main() {
       },
     );
 
-    await Future.delayed(Duration(milliseconds: 100));
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     var defaultValue =
         GlobalStatusSensitiveSettingsLocalPreferenceBloc.defaultValue;
 
     expect(
-      listenedSettingsData?.isAlwaysShowSpoiler,
+      listened?.isAlwaysShowSpoiler,
       defaultValue.isAlwaysShowSpoiler,
     );
     expect(
@@ -161,10 +166,12 @@ void main() {
 
     await statusSensitiveSettingsBloc
         .changeIsAlwaysShowSpoiler(testIsAlwaysShowSpoiler);
-    await Future.delayed(Duration(milliseconds: 100));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     expect(
-      listenedSettingsData?.isAlwaysShowSpoiler,
+      listened?.isAlwaysShowSpoiler,
       testIsAlwaysShowSpoiler,
     );
     expect(
@@ -194,13 +201,14 @@ void main() {
       },
     );
 
-    await Future.delayed(Duration(milliseconds: 100));
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     var defaultValue =
         GlobalStatusSensitiveSettingsLocalPreferenceBloc.defaultValue;
 
     expect(
-      listenedSettingsData?.nsfwDisplayDelayDuration,
+      listened?.nsfwDisplayDelayDuration,
       defaultValue.nsfwDisplayDelayDuration,
     );
     expect(
@@ -223,10 +231,12 @@ void main() {
 
     await statusSensitiveSettingsBloc
         .changeNsfwDisplayDelayDuration(testNsfwDisplayDelayDuration);
-    await Future.delayed(Duration(milliseconds: 100));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     expect(
-      listenedSettingsData?.nsfwDisplayDelayDuration,
+      listened?.nsfwDisplayDelayDuration,
       testNsfwDisplayDelayDuration,
     );
     expect(
@@ -247,10 +257,12 @@ void main() {
 
     await statusSensitiveSettingsBloc
         .changeNsfwDisplayDelayDuration(testNsfwDisplayDelayDuration);
-    await Future.delayed(Duration(milliseconds: 100));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     expect(
-      listenedSettingsData?.nsfwDisplayDelayDuration,
+      listened?.nsfwDisplayDelayDuration,
       testNsfwDisplayDelayDuration,
     );
     expect(

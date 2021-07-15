@@ -20,6 +20,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:moor/ffi.dart';
 
+import '../../../rxdart/rxdart_test_helper.dart';
 import '../../status/database/status_database_test_helper.dart';
 import '../account_test_helper.dart';
 import '../database/account_database_test_helper.dart';
@@ -90,7 +91,7 @@ void main() {
     await myAccountLocalPreferenceBloc.dispose();
     await preferencesService.dispose();
 
-    await Future.delayed(Duration(microseconds: 100));
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
     await database.close();
   });
 
@@ -98,8 +99,8 @@ void main() {
     await myAccountLocalPreferenceBloc.setValue(
       account.toPleromaApiMyAccountWrapper(),
     );
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
   }
 
   test('account', () async {
@@ -110,19 +111,19 @@ void main() {
       remoteId: myAccount.remoteId,
     );
 
-    var listenedValue;
+    var listened;
 
     var subscription = myAccountBloc.accountStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
-    AccountTestHelper.expectAccount(listenedValue, myAccount);
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    AccountTestHelper.expectAccount(listened, myAccount);
 
     await _update(newValue);
 
     AccountTestHelper.expectAccount(myAccountBloc.account, newValue);
-    AccountTestHelper.expectAccount(listenedValue, newValue);
+    AccountTestHelper.expectAccount(listened, newValue);
     await subscription.cancel();
   });
 
@@ -131,19 +132,19 @@ void main() {
 
     var newValue = 'newAcct';
 
-    var listenedValue;
+    var listened;
 
     var subscription = myAccountBloc.acctStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
-    expect(listenedValue, myAccount.acct);
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    expect(listened, myAccount.acct);
 
     await _update(myAccount.copyWith(acct: newValue));
 
     expect(myAccountBloc.acct, newValue);
-    expect(listenedValue, newValue);
+    expect(listened, newValue);
     await subscription.cancel();
   });
   test('note', () async {
@@ -151,19 +152,19 @@ void main() {
 
     var newValue = 'newNote';
 
-    var listenedValue;
+    var listened;
 
     var subscription = myAccountBloc.noteStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
-    expect(listenedValue, myAccount.note);
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    expect(listened, myAccount.note);
 
     await _update(myAccount.copyWith(note: newValue));
 
     expect(myAccountBloc.note, newValue);
-    expect(listenedValue, newValue);
+    expect(listened, newValue);
     await subscription.cancel();
   });
   test('header', () async {
@@ -171,19 +172,19 @@ void main() {
 
     var newValue = 'newHeader';
 
-    var listenedValue;
+    var listened;
 
     var subscription = myAccountBloc.headerStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
-    expect(listenedValue, myAccount.header);
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    expect(listened, myAccount.header);
 
     await _update(myAccount.copyWith(header: newValue));
 
     expect(myAccountBloc.header, newValue);
-    expect(listenedValue, newValue);
+    expect(listened, newValue);
     await subscription.cancel();
   });
   test('avatar', () async {
@@ -191,19 +192,19 @@ void main() {
 
     var newValue = 'newAvatar';
 
-    var listenedValue;
+    var listened;
 
     var subscription = myAccountBloc.avatarStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
-    expect(listenedValue, myAccount.avatar);
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    expect(listened, myAccount.avatar);
 
     await _update(myAccount.copyWith(avatar: newValue));
 
     expect(myAccountBloc.avatar, newValue);
-    expect(listenedValue, newValue);
+    expect(listened, newValue);
     await subscription.cancel();
   });
   test('displayName', () async {
@@ -211,19 +212,19 @@ void main() {
 
     var newValue = 'newDisplayName';
 
-    var listenedValue;
+    var listened;
 
     var subscription = myAccountBloc.displayNameStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
+
     await Future.delayed(Duration(milliseconds: 1));
-    expect(listenedValue, myAccount.displayName);
+    expect(listened, myAccount.displayName);
 
     await _update(myAccount.copyWith(displayName: newValue));
 
     expect(myAccountBloc.displayName, newValue);
-    expect(listenedValue, newValue);
+    expect(listened, newValue);
     await subscription.cancel();
   });
   test('fields', () async {
@@ -237,19 +238,19 @@ void main() {
       ),
     ];
 
-    var listenedValue;
+    var listened;
 
     var subscription = myAccountBloc.fieldsStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
+
     await Future.delayed(Duration(milliseconds: 1));
-    expect(listenedValue, myAccount.fields ?? []);
+    expect(listened, myAccount.fields ?? []);
 
     await _update(myAccount.copyWith(fields: newValue));
 
     expect(myAccountBloc.fields, newValue);
-    expect(listenedValue, newValue);
+    expect(listened, newValue);
     await subscription.cancel();
   });
 
@@ -258,19 +259,19 @@ void main() {
 
     var newValue = myAccount.statusesCount + 1;
 
-    var listenedValue;
+    var listened;
 
     var subscription = myAccountBloc.statusesCountStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
+
     await Future.delayed(Duration(milliseconds: 1));
-    expect(listenedValue, myAccount.statusesCount);
+    expect(listened, myAccount.statusesCount);
 
     await _update(myAccount.copyWith(statusesCount: newValue));
 
     expect(myAccountBloc.statusesCount, newValue);
-    expect(listenedValue, newValue);
+    expect(listened, newValue);
     await subscription.cancel();
   });
   test('statusesCount', () async {
@@ -278,19 +279,19 @@ void main() {
 
     var newValue = myAccount.statusesCount + 1;
 
-    var listenedValue;
+    var listened;
 
     var subscription = myAccountBloc.statusesCountStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
+
     await Future.delayed(Duration(milliseconds: 1));
-    expect(listenedValue, myAccount.statusesCount);
+    expect(listened, myAccount.statusesCount);
 
     await _update(myAccount.copyWith(statusesCount: newValue));
 
     expect(myAccountBloc.statusesCount, newValue);
-    expect(listenedValue, newValue);
+    expect(listened, newValue);
     await subscription.cancel();
   });
   test('followingCount', () async {
@@ -298,19 +299,19 @@ void main() {
 
     var newValue = myAccount.followingCount + 1;
 
-    var listenedValue;
+    var listened;
 
     var subscription = myAccountBloc.followingCountStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
+
     await Future.delayed(Duration(milliseconds: 1));
-    expect(listenedValue, myAccount.followingCount);
+    expect(listened, myAccount.followingCount);
 
     await _update(myAccount.copyWith(followingCount: newValue));
 
     expect(myAccountBloc.followingCount, newValue);
-    expect(listenedValue, newValue);
+    expect(listened, newValue);
     await subscription.cancel();
   });
   test('followersCount', () async {
@@ -318,19 +319,19 @@ void main() {
 
     var newValue = myAccount.followersCount + 1;
 
-    var listenedValue;
+    var listened;
 
     var subscription = myAccountBloc.followersCountStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
+
     await Future.delayed(Duration(milliseconds: 1));
-    expect(listenedValue, myAccount.followersCount);
+    expect(listened, myAccount.followersCount);
 
     await _update(myAccount.copyWith(followersCount: newValue));
 
     expect(myAccountBloc.followersCount, newValue);
-    expect(listenedValue, newValue);
+    expect(listened, newValue);
     await subscription.cancel();
   });
 
@@ -345,16 +346,16 @@ void main() {
 
     var newDisplayNameValue = 'newDisplayName';
 
-    var listenedValue;
+    var listened;
 
     var subscription =
         myAccountBloc.displayNameEmojiTextStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
+
     await Future.delayed(Duration(milliseconds: 1));
     expect(
-      listenedValue,
+      listened,
       EmojiText(
         text: myAccount.displayName!,
         emojis: myAccount.emojis,
@@ -375,7 +376,7 @@ void main() {
       ),
     );
     expect(
-      listenedValue,
+      listened,
       EmojiText(
         text: newDisplayNameValue,
         emojis: myAccount.emojis,
@@ -394,12 +395,12 @@ void main() {
     ];
 
     subscription = myAccountBloc.displayNameEmojiTextStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
+
     await Future.delayed(Duration(milliseconds: 1));
     expect(
-      listenedValue,
+      listened,
       EmojiText(text: newDisplayNameValue, emojis: myAccount.emojis),
     );
 
@@ -413,7 +414,7 @@ void main() {
       equals(EmojiText(text: newDisplayNameValue, emojis: newEmojis)),
     );
     expect(
-      listenedValue,
+      listened,
       equals(EmojiText(text: newDisplayNameValue, emojis: newEmojis)),
     );
     await subscription.cancel();
@@ -438,21 +439,21 @@ void main() {
       remoteId: myAccount.remoteId,
     );
 
-    var listenedValue;
+    var listened;
 
     var subscription = myAccountBloc.accountStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
+
     await Future.delayed(Duration(milliseconds: 1));
-    AccountTestHelper.expectAccount(listenedValue, myAccount);
+    AccountTestHelper.expectAccount(listened, myAccount);
 
     when(pleromaMyAccountServiceMock.verifyCredentials()).thenAnswer(
       (_) async => newValue.pleromaAccount,
     );
 
     await myAccountBloc.refreshFromNetwork(isNeedPreFetchRelationship: false);
-    // hack to execute notify callbacks
+
     await Future.delayed(Duration(milliseconds: 1));
 
     AccountTestHelper.expectAccount(myAccountBloc.account, newValue);
@@ -496,7 +497,7 @@ void main() {
   test('isLocalCacheExist', () async {
     expect(myAccountBloc.isLocalCacheExist, true);
     await myAccountLocalPreferenceBloc.setValue(null);
-    // hack to execute notify callbacks
+
     await Future.delayed(Duration(milliseconds: 1));
     expect(myAccountBloc.isLocalCacheExist, false);
   });
@@ -510,7 +511,7 @@ void main() {
     );
     await myAccountBloc
         .updateMyAccountByMyPleromaAccount(newValue.pleromaAccount);
-    // hack to execute notify callbacks
+
     await Future.delayed(Duration(milliseconds: 1));
     AccountTestHelper.expectAccount(myAccountBloc.account, newValue);
   });

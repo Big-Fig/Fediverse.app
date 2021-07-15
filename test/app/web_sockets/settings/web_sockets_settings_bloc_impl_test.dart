@@ -8,6 +8,7 @@ import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dar
 import 'package:fedi/web_sockets/handling_type/web_sockets_handling_type_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../../rxdart/rxdart_test_helper.dart';
 import 'web_sockets_settings_model_test_helper.dart';
 
 // ignore_for_file: no-magic-number, avoid-late-keyword
@@ -60,16 +61,17 @@ void main() {
   });
 
   test('handlingType', () async {
-    WebSocketsHandlingType? listenedHandlingType;
+    WebSocketsHandlingType? listened;
 
     StreamSubscription subscriptionListenedWebSocketsAgeLimitType =
         webSocketsSettingsBloc.handlingTypeStream.listen(
       (data) {
-        listenedHandlingType = data;
+        listened = data;
       },
     );
 
-    await Future.delayed(Duration(milliseconds: 100));
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     var defaultValue = GlobalWebSocketsSettingsLocalPreferenceBloc.defaultValue;
 
@@ -83,7 +85,7 @@ void main() {
     );
 
     expect(
-      listenedHandlingType,
+      listened,
       defaultValue.handlingType,
     );
     expect(
@@ -97,7 +99,10 @@ void main() {
     ).handlingType;
 
     await webSocketsSettingsBloc.changeHandlingType(testHandlingType);
-    await Future.delayed(Duration(milliseconds: 100));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
+
 
     expect(
       listenedSettingsData?.handlingType,
@@ -109,7 +114,7 @@ void main() {
     );
 
     expect(
-      listenedHandlingType,
+      listened,
       testHandlingType,
     );
     expect(

@@ -5,7 +5,7 @@ class ChatSettingsModelTestHelper {
   static ChatSettings createTestChatSettings({
     required String seed,
   }) =>
-  // hack to be sure that seed1 and seed2 wil produce different objects
+      // hack to be sure that seed1 and seed2 wil produce different objects
       ChatSettings(
         replaceConversationsWithPleromaChats: seed == 'seed1'
             ? true

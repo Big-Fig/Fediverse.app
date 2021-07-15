@@ -9,6 +9,7 @@ import 'package:fedi/localization/localization_model.dart';
 import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../../../rxdart/rxdart_test_helper.dart';
 import 'post_status_settings_model_test_helper.dart';
 
 // ignore_for_file: no-magic-number, avoid-late-keyword
@@ -22,7 +23,7 @@ void main() {
 
   late StreamSubscription subscriptionListenedSettingsData;
 
-  PostStatusSettings? listenedSettingsData;
+  PostStatusSettings? listened;
 
   setUp(() async {
     memoryLocalPreferencesService = MemoryLocalPreferencesService();
@@ -48,7 +49,7 @@ void main() {
 
     subscriptionListenedSettingsData =
         postStatusSettingsBloc.settingsDataStream.listen((data) {
-      listenedSettingsData = data;
+      listened = data;
     });
   });
 
@@ -70,12 +71,13 @@ void main() {
       },
     );
 
-    await Future.delayed(Duration(milliseconds: 100));
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     var defaultValue = GlobalPostStatusSettingsLocalPreferenceBloc.defaultValue;
 
     expect(
-      listenedSettingsData?.markMediaAsNsfwOnAttach,
+      listened?.markMediaAsNsfwOnAttach,
       defaultValue.markMediaAsNsfwOnAttach,
     );
     expect(
@@ -99,10 +101,12 @@ void main() {
 
     await postStatusSettingsBloc
         .changeMarkMediaAsNsfwOnAttach(testMarkMediaAsNsfwOnAttach);
-    await Future.delayed(Duration(milliseconds: 100));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     expect(
-      listenedSettingsData?.markMediaAsNsfwOnAttach,
+      listened?.markMediaAsNsfwOnAttach,
       testMarkMediaAsNsfwOnAttach,
     );
     expect(
@@ -131,12 +135,13 @@ void main() {
       },
     );
 
-    await Future.delayed(Duration(milliseconds: 100));
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     var defaultValue = GlobalPostStatusSettingsLocalPreferenceBloc.defaultValue;
 
     expect(
-      listenedSettingsData?.defaultVisibilityAsPleromaApi,
+      listened?.defaultVisibilityAsPleromaApi,
       defaultValue.defaultVisibilityAsPleromaApi,
     );
     expect(
@@ -160,10 +165,12 @@ void main() {
 
     await postStatusSettingsBloc
         .changeDefaultVisibilityAsPleromaApi(testDefaultVisibilityPleroma);
-    await Future.delayed(Duration(milliseconds: 100));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     expect(
-      listenedSettingsData?.defaultVisibilityAsPleromaApi,
+      listened?.defaultVisibilityAsPleromaApi,
       testDefaultVisibilityPleroma,
     );
     expect(
@@ -193,12 +200,13 @@ void main() {
       },
     );
 
-    await Future.delayed(Duration(milliseconds: 100));
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     var defaultValue = GlobalPostStatusSettingsLocalPreferenceBloc.defaultValue;
 
     expect(
-      listenedSettingsData?.defaultStatusLocale,
+      listened?.defaultStatusLocale,
       defaultValue.defaultStatusLocale,
     );
     expect(
@@ -222,10 +230,12 @@ void main() {
 
     await postStatusSettingsBloc
         .changeDefaultStatusLocale(testDefaultStatusLocale);
-    await Future.delayed(Duration(milliseconds: 100));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     expect(
-      listenedSettingsData?.defaultStatusLocale,
+      listened?.defaultStatusLocale,
       testDefaultStatusLocale,
     );
     expect(
@@ -246,10 +256,12 @@ void main() {
 
     await postStatusSettingsBloc
         .changeDefaultStatusLocale(testDefaultStatusLocale);
-    await Future.delayed(Duration(milliseconds: 100));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     expect(
-      listenedSettingsData?.defaultStatusLocale,
+      listened?.defaultStatusLocale,
       testDefaultStatusLocale,
     );
     expect(

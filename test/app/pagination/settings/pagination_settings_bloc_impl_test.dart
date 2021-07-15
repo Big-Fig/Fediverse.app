@@ -8,6 +8,7 @@ import 'package:fedi/app/pagination/settings/pagination_settings_model.dart';
 import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../../rxdart/rxdart_test_helper.dart';
 import 'pagination_settings_model_test_helper.dart';
 
 // ignore_for_file: no-magic-number, avoid-late-keyword
@@ -60,16 +61,19 @@ void main() {
   });
 
   test('pageSize', () async {
-    PaginationPageSize? listenedPageSize;
+    PaginationPageSize? listened;
 
     StreamSubscription subscriptionListenedPaginationAgeLimitType =
         paginationSettingsBloc.pageSizeStream.listen(
       (data) {
-        listenedPageSize = data;
+        listened = data;
       },
     );
 
-    await Future.delayed(Duration(milliseconds: 100));
+    
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
+    
 
     var defaultValue = GlobalPaginationSettingsLocalPreferenceBloc.defaultValue;
 
@@ -83,7 +87,7 @@ void main() {
     );
 
     expect(
-      listenedPageSize,
+      listened,
       defaultValue.pageSize,
     );
     expect(
@@ -97,7 +101,10 @@ void main() {
     ).pageSize;
 
     await paginationSettingsBloc.changePageSize(testPageSize);
-    await Future.delayed(Duration(milliseconds: 100));
+    
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
+    
 
     expect(
       listenedSettingsData?.pageSize,
@@ -109,7 +116,7 @@ void main() {
     );
 
     expect(
-      listenedPageSize,
+      listened,
       testPageSize,
     );
     expect(

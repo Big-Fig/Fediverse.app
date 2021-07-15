@@ -1,5 +1,6 @@
 import 'package:fedi/app/cache/database/limit/entries_count/database_cache_entries_count_limit_model.dart';
 import 'package:flutter_test/flutter_test.dart';
+
 // ignore_for_file: no-magic-number
 void main() {
   test('toJsonValue & fromJsonValue', () async {

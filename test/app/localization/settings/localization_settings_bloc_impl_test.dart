@@ -8,6 +8,7 @@ import 'package:fedi/localization/localization_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../localization/localization_model_test_helper.dart';
+import '../../../rxdart/rxdart_test_helper.dart';
 
 
 // ignore_for_file: no-magic-number, avoid-late-keyword
@@ -19,7 +20,7 @@ void main() {
 
   late StreamSubscription subscriptionListenedSettingsData;
 
-  LocalizationSettings? listenedSettingsData;
+  LocalizationSettings? listened;
 
   setUp(() async {
     memoryLocalPreferencesService = MemoryLocalPreferencesService();
@@ -37,7 +38,7 @@ void main() {
 
     subscriptionListenedSettingsData =
         localizationSettingsBloc.settingsDataStream.listen((data) {
-      listenedSettingsData = data;
+      listened = data;
     });
   });
 
@@ -58,13 +59,16 @@ void main() {
       },
     );
 
-    await Future.delayed(Duration(milliseconds: 100));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
+
 
     var defaultValue =
         GlobalLocalizationSettingsLocalPreferenceBloc.defaultValue;
 
     expect(
-      listenedSettingsData?.localizationLocale,
+      listened?.localizationLocale,
       defaultValue.localizationLocale,
     );
     expect(
@@ -86,10 +90,13 @@ void main() {
 
     await localizationSettingsBloc
         .changeLocalizationLocale(testLocalizationLocale);
-    await Future.delayed(Duration(milliseconds: 100));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
+
 
     expect(
-      listenedSettingsData?.localizationLocale,
+      listened?.localizationLocale,
       testLocalizationLocale,
     );
     expect(
@@ -110,10 +117,13 @@ void main() {
 
     await localizationSettingsBloc
         .changeLocalizationLocale(nullLocalizationLocale);
-    await Future.delayed(Duration(milliseconds: 100));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
+
 
     expect(
-      listenedSettingsData?.localizationLocale,
+      listened?.localizationLocale,
       nullLocalizationLocale,
     );
     expect(

@@ -7,6 +7,7 @@ import 'package:fedi/app/media/settings/media_settings_model.dart';
 import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../../rxdart/rxdart_test_helper.dart';
 import 'media_settings_model_test_helper.dart';
 
 // ignore_for_file: no-magic-number, avoid-late-keyword
@@ -20,7 +21,7 @@ void main() {
 
   late StreamSubscription subscriptionListenedSettingsData;
 
-  MediaSettings? listenedSettingsData;
+  MediaSettings? listened;
 
   setUp(() async {
     memoryLocalPreferencesService = MemoryLocalPreferencesService();
@@ -45,7 +46,7 @@ void main() {
 
     subscriptionListenedSettingsData =
         mediaSettingsBloc.settingsDataStream.listen((data) {
-      listenedSettingsData = data;
+      listened = data;
     });
   });
 
@@ -67,12 +68,13 @@ void main() {
       },
     );
 
-    await Future.delayed(Duration(milliseconds: 100));
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     var defaultValue = GlobalMediaSettingsLocalPreferenceBloc.defaultValue;
 
     expect(
-      listenedSettingsData?.autoPlay,
+      listened?.autoPlay,
       defaultValue.autoPlay,
     );
     expect(
@@ -94,10 +96,12 @@ void main() {
             .autoPlay;
 
     await mediaSettingsBloc.changeAutoPlay(testAutoPlay);
-    await Future.delayed(Duration(milliseconds: 100));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     expect(
-      listenedSettingsData?.autoPlay,
+      listened?.autoPlay,
       testAutoPlay,
     );
     expect(
@@ -126,12 +130,13 @@ void main() {
       },
     );
 
-    await Future.delayed(Duration(milliseconds: 100));
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     var defaultValue = GlobalMediaSettingsLocalPreferenceBloc.defaultValue;
 
     expect(
-      listenedSettingsData?.autoInit,
+      listened?.autoInit,
       defaultValue.autoInit,
     );
     expect(
@@ -153,10 +158,12 @@ void main() {
             .autoInit;
 
     await mediaSettingsBloc.changeAutoInit(testAutoPlay);
-    await Future.delayed(Duration(milliseconds: 100));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     expect(
-      listenedSettingsData?.autoInit,
+      listened?.autoInit,
       testAutoPlay,
     );
     expect(

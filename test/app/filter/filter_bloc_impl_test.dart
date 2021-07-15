@@ -12,6 +12,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:moor/ffi.dart';
 
+import '../../rxdart/rxdart_test_helper.dart';
 import 'filter_bloc_impl_test.mocks.dart';
 import 'filter_test_helper.dart';
 
@@ -60,8 +61,8 @@ void main() {
     await filterRepository.upsertInRemoteType(
       filter.toPleromaFilter(),
     );
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
   }
 
   test('filter', () async {
@@ -72,15 +73,17 @@ void main() {
       remoteId: filter.remoteId,
     );
 
-    var listenedValue;
+    var listened;
 
     var subscription = filterBloc.filterStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
+
     FilterTestHelper.expectFilter(
-      listenedValue,
+      listened,
       filter,
     );
 
@@ -91,7 +94,7 @@ void main() {
       newValue,
     );
     FilterTestHelper.expectFilter(
-      listenedValue,
+      listened,
       newValue,
     );
     await subscription.cancel();
@@ -107,15 +110,16 @@ void main() {
       filter.isExpired,
     );
 
-    var listenedValue;
+    var listened;
 
     var subscription = filterBloc.isExpiredStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
     expect(
-      listenedValue,
+      listened,
       filter.isExpired,
     );
 
@@ -126,18 +130,19 @@ void main() {
       false,
     );
     expect(
-      listenedValue,
+      listened,
       false,
     );
 
     await subscription.cancel();
 
     subscription = filterBloc.isExpiredStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
-    expect(listenedValue, filter.isExpired);
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
+    expect(listened, filter.isExpired);
 
     await _update(filter.copyWith(expiresAt: DateTime(1990)));
 
@@ -146,7 +151,7 @@ void main() {
       true,
     );
     expect(
-      listenedValue,
+      listened,
       true,
     );
     await subscription.cancel();
