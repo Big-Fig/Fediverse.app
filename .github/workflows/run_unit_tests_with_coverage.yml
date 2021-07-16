@@ -24,8 +24,9 @@ jobs:
 
       # Set up Flutter.
       - name: Clone Flutter repository
+#        uses: subosito/flutter-action@v1
         # specific version with fvm parsing
-        uses: kuhnroyal/flutter-action@feature/read-version-from-file
+        uses: xal/flutter-action@feature/read-version-from-file
         with:
           parse: 'fvm'
 
