@@ -24,11 +24,13 @@ jobs:
 
       # Set up Flutter.
       - name: Clone Flutter repository
-        # uses: subosito/flutter-action@v1
+        uses: subosito/flutter-action@v1
+        flutter-version: '2.2.3'
+          channel: 'any'
         # fork version with fvm parsing
-        uses: xal/flutter-action@feature/read-version-from-file-fixes
-        with:
-          parse: 'fvm'
+        # uses: xal/flutter-action@feature/read-version-from-file-fixes
+        # with:
+        # parse: 'fvm'
 
       - run: flutter --version
 
