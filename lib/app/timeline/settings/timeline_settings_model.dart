@@ -291,7 +291,9 @@ class TimelineSettings extends ISettings<TimelineSettings> {
           onlyLocal == other.onlyLocal &&
           withMuted == other.withMuted &&
           listEquals(
-              excludeVisibilitiesStrings, other.excludeVisibilitiesStrings) &&
+            excludeVisibilitiesStrings,
+            other.excludeVisibilitiesStrings,
+          ) &&
           onlyInRemoteList == other.onlyInRemoteList &&
           withRemoteHashtag == other.withRemoteHashtag &&
           replyVisibilityFilterString == other.replyVisibilityFilterString &&

@@ -7,8 +7,10 @@ abstract class ICrashReportingPermissionCheckerBloc extends IDisposable {
     BuildContext context, {
     bool listen = true,
   }) =>
-      Provider.of<ICrashReportingPermissionCheckerBloc>(context,
-          listen: listen);
+      Provider.of<ICrashReportingPermissionCheckerBloc>(
+        context,
+        listen: listen,
+      );
 
   bool get isNeedAskPermission;
 

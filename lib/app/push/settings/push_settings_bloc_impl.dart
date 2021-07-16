@@ -60,7 +60,8 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
     required bool listenChangedIsNotReady,
   }) async {
     _logger.finest(
-        () => '_checkResubscribe isHaveSubscription $isHaveSubscription');
+      () => '_checkResubscribe isHaveSubscription $isHaveSubscription',
+    );
     if (isHaveSubscription) {
       var pushRelayBaseUrl = pushRelayService.pushRelayBaseUrl;
 

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:collection/collection.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/list/local_preferences/auth_instance_list_local_preference_bloc_impl.dart';
 import 'package:fedi/app/config/config_service.dart';
@@ -17,7 +18,6 @@ import 'package:fedi/app/push/settings/push_settings_model.dart';
 import 'package:fedi/app/ui/theme/light/light_fedi_ui_theme_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/connection/connection_service_impl.dart';
-import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/local_preferences/hive_local_preferences_service_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
@@ -547,7 +547,8 @@ Future<IPleromaApiNotification?> _loadLastNotificationForInstance({
   disposableOwner.addDisposable(pleromaApiAuthRestService);
 
   var pleromaApiNotificationService = PleromaApiNotificationService(
-      restApiAuthService: pleromaApiAuthRestService);
+    restApiAuthService: pleromaApiAuthRestService,
+  );
   disposableOwner.addDisposable(pleromaApiNotificationService);
 
   try {

@@ -43,7 +43,8 @@ abstract class IMyAccountBloc extends IAccountBloc {
   bool checkIsStatusFromMe(IStatus status);
 
   Future updateMyAccountByMyPleromaAccount(
-      IPleromaApiMyAccount pleromaMyAccount);
+    IPleromaApiMyAccount pleromaMyAccount,
+  );
 
   Future updateMyAccountByMyAccount(IMyAccount myAccount);
 

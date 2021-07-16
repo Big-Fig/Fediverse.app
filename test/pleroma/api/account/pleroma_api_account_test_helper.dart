@@ -34,9 +34,11 @@ class PleromaApiAccountTestHelper {
         account: createTestPleromaApiAccount(seed: seed + 'account'),
         statuses: [
           PleromaApiStatusTestHelper.createTestPleromaApiStatus(
-              seed: seed + '1'),
+            seed: seed + '1',
+          ),
           PleromaApiStatusTestHelper.createTestPleromaApiStatus(
-              seed: seed + '2'),
+            seed: seed + '2',
+          ),
         ],
         user: createTestPleromaApiAccount(seed: seed + 'user'),
       );
