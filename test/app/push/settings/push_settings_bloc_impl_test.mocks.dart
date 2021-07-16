@@ -41,33 +41,27 @@ class MockIPleromaApiPushService extends _i1.Mock
   _i2.IRestService get restService =>
       (super.noSuchMethod(Invocation.getter(#restService),
           returnValue: _FakeIRestService()) as _i2.IRestService);
-
   @override
   _i5.Stream<_i6.PleromaApiState> get pleromaApiStateStream =>
       (super.noSuchMethod(Invocation.getter(#pleromaApiStateStream),
               returnValue: Stream<_i6.PleromaApiState>.empty())
           as _i5.Stream<_i6.PleromaApiState>);
-
   @override
   _i6.PleromaApiState get pleromaApiState =>
       (super.noSuchMethod(Invocation.getter(#pleromaApiState),
           returnValue: _i6.PleromaApiState.validAuth) as _i6.PleromaApiState);
-
   @override
   _i5.Stream<bool> get isConnectedStream =>
       (super.noSuchMethod(Invocation.getter(#isConnectedStream),
           returnValue: Stream<bool>.empty()) as _i5.Stream<bool>);
-
   @override
   bool get isConnected =>
       (super.noSuchMethod(Invocation.getter(#isConnected), returnValue: false)
           as bool);
-
   @override
   bool get isDisposed =>
       (super.noSuchMethod(Invocation.getter(#isDisposed), returnValue: false)
           as bool);
-
   @override
   _i5.Future<_i3.PleromaApiPushSubscription> subscribe(
           {String? endpointCallbackUrl,
@@ -78,19 +72,16 @@ class MockIPleromaApiPushService extends _i1.Mock
               returnValue: Future<_i3.PleromaApiPushSubscription>.value(
                   _FakePleromaApiPushSubscription()))
           as _i5.Future<_i3.PleromaApiPushSubscription>);
-
   @override
   _i5.Future<_i3.PleromaApiPushSubscription> retrieveCurrentSubscription() =>
       (super.noSuchMethod(Invocation.method(#retrieveCurrentSubscription, []),
               returnValue: Future<_i3.PleromaApiPushSubscription>.value(
                   _FakePleromaApiPushSubscription()))
           as _i5.Future<_i3.PleromaApiPushSubscription>);
-
   @override
   _i5.Future<dynamic> unsubscribe() =>
       (super.noSuchMethod(Invocation.method(#unsubscribe, []),
           returnValue: Future<dynamic>.value()) as _i5.Future<dynamic>);
-
   @override
   _i5.Future<dynamic> dispose() =>
       (super.noSuchMethod(Invocation.method(#dispose, []),
@@ -109,12 +100,10 @@ class MockIPushRelayService extends _i1.Mock implements _i7.IPushRelayService {
   String get pushRelayBaseUrl =>
       (super.noSuchMethod(Invocation.getter(#pushRelayBaseUrl), returnValue: '')
           as String);
-
   @override
   bool get isDisposed =>
       (super.noSuchMethod(Invocation.getter(#isDisposed), returnValue: false)
           as bool);
-
   @override
   String createPushRelayEndPointUrl(
           {String? account, Uri? baseServerUrl, String? fcmDeviceToken}) =>
@@ -125,7 +114,6 @@ class MockIPushRelayService extends _i1.Mock implements _i7.IPushRelayService {
             #fcmDeviceToken: fcmDeviceToken
           }),
           returnValue: '') as String);
-
   @override
   _i5.Future<dynamic> dispose() =>
       (super.noSuchMethod(Invocation.method(#dispose, []),
@@ -144,44 +132,36 @@ class MockIFcmPushService extends _i1.Mock implements _i8.IFcmPushService {
   _i5.Stream<String> get deviceTokenStream =>
       (super.noSuchMethod(Invocation.getter(#deviceTokenStream),
           returnValue: Stream<String>.empty()) as _i5.Stream<String>);
-
   @override
   _i5.Stream<_i9.PushMessage> get messageStream =>
       (super.noSuchMethod(Invocation.getter(#messageStream),
               returnValue: Stream<_i9.PushMessage>.empty())
           as _i5.Stream<_i9.PushMessage>);
-
   @override
   _i5.Stream<_i10.AsyncInitLoadingState> get initLoadingStateStream =>
       (super.noSuchMethod(Invocation.getter(#initLoadingStateStream),
               returnValue: Stream<_i10.AsyncInitLoadingState>.empty())
           as _i5.Stream<_i10.AsyncInitLoadingState>);
-
   @override
   _i5.Stream<bool> get isLoadingStream =>
       (super.noSuchMethod(Invocation.getter(#isLoadingStream),
           returnValue: Stream<bool>.empty()) as _i5.Stream<bool>);
-
   @override
   bool get isDisposed =>
       (super.noSuchMethod(Invocation.getter(#isDisposed), returnValue: false)
           as bool);
-
   @override
   _i5.Future<bool> askPermissions() =>
       (super.noSuchMethod(Invocation.method(#askPermissions, []),
           returnValue: Future<bool>.value(false)) as _i5.Future<bool>);
-
   @override
   void clearInitialMessage() =>
       super.noSuchMethod(Invocation.method(#clearInitialMessage, []),
           returnValueForMissingStub: null);
-
   @override
   _i5.Future<dynamic> performAsyncInit() =>
       (super.noSuchMethod(Invocation.method(#performAsyncInit, []),
           returnValue: Future<dynamic>.value()) as _i5.Future<dynamic>);
-
   @override
   _i5.Future<dynamic> dispose() =>
       (super.noSuchMethod(Invocation.method(#dispose, []),
