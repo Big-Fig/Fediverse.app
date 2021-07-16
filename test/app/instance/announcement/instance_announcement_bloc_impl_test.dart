@@ -12,8 +12,8 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:moor/ffi.dart';
 
-import './instance_announcement_bloc_impl_test.mocks.dart';
 import '../../../rxdart/rxdart_test_helper.dart';
+import './instance_announcement_bloc_impl_test.mocks.dart';
 import 'instance_announcement_test_helper.dart';
 
 // ignore_for_file: no-magic-number, avoid-late-keyword

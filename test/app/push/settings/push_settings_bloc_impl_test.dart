@@ -13,9 +13,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import './push_settings_bloc_impl_test.mocks.dart';
 import '../../../rxdart/rxdart_test_helper.dart';
 import '../../auth/instance/auth_instance_model_test_helper.dart';
+import './push_settings_bloc_impl_test.mocks.dart';
 
 // ignore_for_file: no-magic-number, avoid-late-keyword
 @GenerateMocks([
