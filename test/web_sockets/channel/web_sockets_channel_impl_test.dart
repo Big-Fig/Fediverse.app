@@ -13,6 +13,7 @@ import '../websockets_model_test_impl.dart';
 import 'web_sockets_channel_impl_test.mocks.dart';
 import 'web_sockets_channel_model_test_impl.dart';
 import 'web_sockets_channel_source_mock.dart';
+
 // ignore_for_file: no-magic-number, avoid-late-keyword
 @GenerateMocks([ConnectionService])
 void main() {
@@ -111,7 +112,6 @@ void main() {
 
     await RxDartTestHelper.waitForData(() => listenedValue1);
     await RxDartTestHelper.waitForData(() => listenedValue2);
-
 
     expect(
       listenedValue1,
