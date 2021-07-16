@@ -95,7 +95,7 @@ class RichNotificationsServiceBackgroundMessage extends AsyncInitLoadingBloc
     );
 
     awesomeNotifications.createdStream.listen(
-          (ReceivedNotification receivedNotification) {
+      (ReceivedNotification receivedNotification) {
         _handlePushMessage(
           receivedNotification: receivedNotification,
           notificationAction: null,
@@ -106,7 +106,7 @@ class RichNotificationsServiceBackgroundMessage extends AsyncInitLoadingBloc
     ).disposeWith(this);
 
     awesomeNotifications.actionStream.listen(
-          (ReceivedAction receivedAction) {
+      (ReceivedAction receivedAction) {
         var buttonKeyPressed = receivedAction.buttonKeyPressed;
 
         if (buttonKeyPressed.isEmpty) {
@@ -525,7 +525,8 @@ Future<IPleromaApiNotification?> _loadLastNotificationForInstance({
     userAtHost: userAtHost,
   );
   await instancePushSettingsLocalPreferenceBloc.performAsyncInit();
-  disposableOwner.addDisposable(instancePushSettingsLocalPreferenceBloc,
+  disposableOwner.addDisposable(
+    instancePushSettingsLocalPreferenceBloc,
   );
 
   var pushSettings = instancePushSettingsLocalPreferenceBloc.value;
@@ -545,8 +546,8 @@ Future<IPleromaApiNotification?> _loadLastNotificationForInstance({
   );
   disposableOwner.addDisposable(pleromaApiAuthRestService);
 
-  var pleromaApiNotificationService =
-      PleromaApiNotificationService(restApiAuthService: pleromaApiAuthRestService);
+  var pleromaApiNotificationService = PleromaApiNotificationService(
+      restApiAuthService: pleromaApiAuthRestService);
   disposableOwner.addDisposable(pleromaApiNotificationService);
 
   try {
@@ -628,7 +629,8 @@ Future<void> _createPushNotification({
     localPreferencesService,
   );
   await globalLocalizationSettingsLocalPreferenceBloc.performAsyncInit();
-  disposableOwner.addDisposable(globalLocalizationSettingsLocalPreferenceBloc,
+  disposableOwner.addDisposable(
+    globalLocalizationSettingsLocalPreferenceBloc,
   );
 
   var localizationSettings =
@@ -958,7 +960,8 @@ Future<AuthInstance?> _findInstanceByUserAtHost({
   var authInstanceListLocalPreferenceBloc =
       AuthInstanceListLocalPreferenceBloc(localPreferencesService);
   await authInstanceListLocalPreferenceBloc.performAsyncInit();
-  disposableOwner.addDisposable(authInstanceListLocalPreferenceBloc,
+  disposableOwner.addDisposable(
+    authInstanceListLocalPreferenceBloc,
   );
 
   var authInstanceList = authInstanceListLocalPreferenceBloc.value!;

@@ -7,7 +7,6 @@ import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
 
-
 abstract class LocalPreferenceBloc<T> extends AsyncInitLoadingBloc
     implements IAsyncInitLoadingBloc, ILocalPreferenceBloc<T> {
   final ILocalPreferencesService preferencesService;

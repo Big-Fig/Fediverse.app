@@ -11,14 +11,12 @@ class RegisterAuthInstanceLocaleSingleFromListValueFormFieldRowWidget
   Widget build(BuildContext context) =>
       LocalizationLocaleSingleFromListValueFormFieldBlocProxyProvider(
         child: SingleSelectFromListValueFormFieldRowWidget<LocalizationLocale?>(
-          label: S
-              .of(context)
-              .app_auth_instance_register_field_locale_label,
+          label: S.of(context).app_auth_instance_register_field_locale_label,
           valueTitleMapper: (context, LocalizationLocale? value) =>
-              value?.toLabel(context) ?? S.of(context).localization_locale_default,
-          description: S
-              .of(context)
-              .app_auth_instance_register_field_locale_description,
+              value?.toLabel(context) ??
+              S.of(context).localization_locale_default,
+          description:
+              S.of(context).app_auth_instance_register_field_locale_description,
           descriptionOnDisabled: null,
           displayIconInRow: false,
           displayIconInDialog: false,

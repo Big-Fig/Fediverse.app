@@ -61,17 +61,18 @@ class ConversationChatWithLastMessageListWidget
                   oldBloc.chat.remoteId == chatWithLastMessage.chat.remoteId) {
                 return oldBloc;
               } else {
-                var conversationChatBloc = ConversationChatBloc.createFromContext(
+                var conversationChatBloc =
+                    ConversationChatBloc.createFromContext(
                   context,
                   chat: chatWithLastMessage.chat,
                   lastChatMessage: chatWithLastMessage.lastChatMessage,
                 );
 
                 var conversationChatWithLastMessagePaginationListWithNewItemsBloc =
-                IConversationChatWithLastMessagePaginationListWithNewItemsBloc
-                    .of(context, listen: false);
+                    IConversationChatWithLastMessagePaginationListWithNewItemsBloc
+                        .of(context, listen: false);
                 conversationChatBloc.chatStream.listen(
-                      (chat) {
+                  (chat) {
                     conversationChatWithLastMessagePaginationListWithNewItemsBloc
                         .onItemUpdated(
                       SimpleConversationChatWithLastMessage(
@@ -81,7 +82,7 @@ class ConversationChatWithLastMessageListWidget
                     );
                   },
                 ).disposeWith(conversationChatBloc);
-                
+
                 return conversationChatBloc;
               }
             },

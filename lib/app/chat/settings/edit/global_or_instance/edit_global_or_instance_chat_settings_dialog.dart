@@ -31,7 +31,9 @@ void showEditGlobalOrInstanceChatSettingsDialog({
             IEditChatSettingsBloc>(
       update: (context, globalOrInstanceType, previous) {
         var isUseGlobalSettingsFormBoolFieldBloc =
-            ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc.of(context, listen: false);
+            ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc.of(
+                context,
+                listen: false);
 
         var enabled =
             globalOrInstanceType == GlobalOrInstanceSettingsType.instance;
@@ -46,7 +48,7 @@ void showEditGlobalOrInstanceChatSettingsDialog({
         );
 
         isUseGlobalSettingsFormBoolFieldBloc.currentValueStream.listen(
-              (isUseGlobalSettings) {
+          (isUseGlobalSettings) {
             editChatSettingsBloc.changeEnabled(!isUseGlobalSettings!);
           },
         ).disposeWith(editChatSettingsBloc);

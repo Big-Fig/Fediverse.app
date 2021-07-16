@@ -287,7 +287,7 @@ class _HomePageTimelineTabWidget extends StatelessWidget {
         _logger.finest(() => 'create timelinesHomeTabBloc');
 
         homeBloc.reselectedTabStream.listen(
-              (reselectedTab) {
+          (reselectedTab) {
             if (reselectedTab == HomeTab.timelines) {
               timelinesHomeTabBloc.scrollToTop();
             }

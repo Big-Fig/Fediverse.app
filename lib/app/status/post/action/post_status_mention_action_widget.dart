@@ -32,6 +32,4 @@ class PostStatusMentionActionWidget extends StatelessWidget {
       },
     );
   }
-
-
 }

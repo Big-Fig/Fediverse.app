@@ -29,7 +29,7 @@ abstract class AccountStatusesCachedListBloc extends AsyncInitLoadingBloc
   List<StatusTextCondition> get excludeTextConditions => filters
       .map(
         (filter) => filter.toStatusTextCondition(),
-  )
+      )
       .toList();
 
   AccountStatusesCachedListBloc({
@@ -40,11 +40,13 @@ abstract class AccountStatusesCachedListBloc extends AsyncInitLoadingBloc
     required this.myAccountBloc,
     required IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc,
   }) : super() {
-    webSocketsHandlerManagerBloc.listenAccountChannel(
-      listenType: WebSocketsListenType.foreground,
-      accountId: account.remoteId,
-      notification: false,
-    ).disposeWith(this);
+    webSocketsHandlerManagerBloc
+        .listenAccountChannel(
+          listenType: WebSocketsListenType.foreground,
+          accountId: account.remoteId,
+          notification: false,
+        )
+        .disposeWith(this);
   }
 
   @override
@@ -52,7 +54,6 @@ abstract class AccountStatusesCachedListBloc extends AsyncInitLoadingBloc
 
   @override
   Stream<bool> get settingsChangedStream => Stream.empty();
-
 
   FilterRepositoryFilters get filterRepositoryFilters =>
       FilterRepositoryFilters(
@@ -62,14 +63,12 @@ abstract class AccountStatusesCachedListBloc extends AsyncInitLoadingBloc
         ],
       );
 
-
   @override
   Future internalAsyncInit() async {
     var isAccountIsMe = myAccountBloc.checkAccountIsMe(account);
     if (isAccountIsMe) {
       filters = [];
     } else {
-
       filters = await filterRepository.findAllInAppType(
         filters: filterRepositoryFilters,
         pagination: null,
@@ -83,14 +82,13 @@ abstract class AccountStatusesCachedListBloc extends AsyncInitLoadingBloc
         orderingTerms: null,
       )
           .listen(
-            (newFilters) {
+        (newFilters) {
           if (!listEquals(filters, newFilters)) {
             // perhaps we should refresh UI list after this?
             filters = newFilters;
           }
         },
       ).disposeWith(this);
-
     }
   }
 }

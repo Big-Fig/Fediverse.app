@@ -3,8 +3,8 @@ import 'package:fedi/app/cache/files/settings/local_preferences/files_cache_sett
 import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 
-abstract class FilesCacheSettingsLocalPreferenceBloc<T extends FilesCacheSettings?>
-    extends ObjectLocalPreferenceBloc<T>
+abstract class FilesCacheSettingsLocalPreferenceBloc<
+        T extends FilesCacheSettings?> extends ObjectLocalPreferenceBloc<T>
     implements IFilesCacheSettingsLocalPreferenceBloc<T> {
   FilesCacheSettingsLocalPreferenceBloc(
     ILocalPreferencesService preferencesService,
@@ -15,5 +15,4 @@ abstract class FilesCacheSettingsLocalPreferenceBloc<T extends FilesCacheSetting
           schemaVersion: 1,
           jsonConverter: (json) => FilesCacheSettings.fromJson(json) as T,
         );
-
 }

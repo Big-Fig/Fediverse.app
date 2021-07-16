@@ -77,9 +77,11 @@ class PleromaChatWithLastMessageListBloc extends DisposableOwner
     )..disposeWith(this);
 
     if (pleromaChatService.isPleroma) {
-      webSocketsHandlerManagerBloc.listenPleromaChatChannel(
-        listenType: webSocketsListenType,
-      ).disposeWith(this);
+      webSocketsHandlerManagerBloc
+          .listenPleromaChatChannel(
+            listenType: webSocketsListenType,
+          )
+          .disposeWith(this);
     }
   }
 

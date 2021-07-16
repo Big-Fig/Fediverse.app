@@ -91,7 +91,7 @@ class FcmPushService extends AsyncInitLoadingBloc implements IFcmPushService {
     );
 
     _fcm.onTokenRefresh.listen(
-          (newToken) {
+      (newToken) {
         _onNewToken(newToken);
       },
     ).disposeWith(this);

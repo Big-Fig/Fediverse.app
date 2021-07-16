@@ -225,8 +225,7 @@ class _AnnouncementsHomeTabMenuDialogBodyListsItemWidget
   }
 }
 
-class _AboutHomeTabMenuDialogBodyListsItemWidget
-    extends StatelessWidget {
+class _AboutHomeTabMenuDialogBodyListsItemWidget extends StatelessWidget {
   const _AboutHomeTabMenuDialogBodyListsItemWidget({
     Key? key,
   }) : super(key: key);
@@ -235,7 +234,7 @@ class _AboutHomeTabMenuDialogBodyListsItemWidget
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        goToAboutPage(context:context);
+        goToAboutPage(context: context);
       },
       child: InstanceAnnouncementCountIntBadgeBloc.provideToContext(
         context,

@@ -17,7 +17,7 @@ class RestRequest<T> {
     required List<RestRequestQueryArg>? queryArgs,
     required Map<String, dynamic>? bodyJson,
     required Map<String, String>? headers,
-  })   : queryArgs = queryArgs ?? [],
+  })  : queryArgs = queryArgs ?? [],
         bodyJson = bodyJson ?? {},
         headers = headers ?? {};
 

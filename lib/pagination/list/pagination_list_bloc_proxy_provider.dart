@@ -14,8 +14,8 @@ class PaginationListBlocProxyProvider<TPage extends PaginationPage<TItem>,
     return ProxyProvider<IPaginationListBloc<TPage, TItem>,
         IPaginationListBloc<PaginationPage<TItem>, TItem>>(
       update: (context, value, previous) => value,
-      child: ProxyProvider<IPaginationListBloc<TPage, TItem>,
-          IPaginationListBloc>(
+      child:
+          ProxyProvider<IPaginationListBloc<TPage, TItem>, IPaginationListBloc>(
         update: (context, value, previous) => value,
         child: child,
       ),

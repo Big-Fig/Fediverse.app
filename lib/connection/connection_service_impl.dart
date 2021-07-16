@@ -22,7 +22,8 @@ class ConnectionService extends AsyncInitLoadingBloc
       _connectionStateSubject.stream.distinct();
 
   @override
-  ConnectivityResult? get connectionState => _connectionStateSubject.valueOrNull;
+  ConnectivityResult? get connectionState =>
+      _connectionStateSubject.valueOrNull;
 
   @override
   Stream<bool> get isConnectedStream =>

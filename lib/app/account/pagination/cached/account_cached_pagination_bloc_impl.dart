@@ -35,12 +35,11 @@ class AccountCachedPaginationBloc extends CachedPleromaPaginationBloc<IAccount>
     required CachedPaginationPage<IAccount>? olderPage,
     required CachedPaginationPage<IAccount>? newerPage,
   }) {
-
     return listService.loadLocalItems(
-        limit: itemsCountPerPage,
-        newerThan: olderPage?.items.firstOrNull,
-        olderThan: newerPage?.items.lastOrNull,
-      );
+      limit: itemsCountPerPage,
+      newerThan: olderPage?.items.firstOrNull,
+      olderThan: newerPage?.items.lastOrNull,
+    );
   }
 
   @override

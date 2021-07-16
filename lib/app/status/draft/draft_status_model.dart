@@ -188,7 +188,8 @@ extension DraftStatusStateStringExtension on String {
   }
 }
 
-class DraftStatusStateTypeConverter implements JsonConverter<DraftStatusState, String> {
+class DraftStatusStateTypeConverter
+    implements JsonConverter<DraftStatusState, String> {
   const DraftStatusStateTypeConverter();
 
   @override

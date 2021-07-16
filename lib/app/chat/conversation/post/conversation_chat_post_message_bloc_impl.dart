@@ -14,7 +14,6 @@ import 'package:fedi/pleroma/api/status/auth/pleroma_api_auth_status_service.dar
 import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 
-
 class ConversationChatPostMessageBloc extends PostStatusBloc {
   final IConversationChatBloc conversationChatBloc;
 
@@ -38,8 +37,7 @@ class ConversationChatPostMessageBloc extends PostStatusBloc {
           initialData: PostStatusBloc.defaultInitData.copyWith(
             visibilityString: PleromaApiVisibility.private.toJsonValue(),
             language: language,
-            inReplyToConversationId:
-                conversationChatBloc.conversation.remoteId,
+            inReplyToConversationId: conversationChatBloc.conversation.remoteId,
           ),
           // we dont need mentions if we have inReplyToConversationId
           initialAccountsToMention: null,
@@ -115,9 +113,9 @@ class ConversationChatPostMessageBloc extends PostStatusBloc {
     var currentPostStatusData = calculateCurrentPostStatusData();
 
     // ignore: unawaited_futures
-      conversationChatBloc.postMessage(
-        postStatusData: currentPostStatusData,
-        oldPendingFailedConversationChatMessage: null,
-      );
+    conversationChatBloc.postMessage(
+      postStatusData: currentPostStatusData,
+      oldPendingFailedConversationChatMessage: null,
+    );
   }
 }

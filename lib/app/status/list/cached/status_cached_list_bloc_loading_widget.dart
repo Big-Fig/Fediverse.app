@@ -11,7 +11,7 @@ class StatusCachedListBlocLoadingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => FediAsyncInitLoadingWidget(
-      asyncInitLoadingBloc: IStatusCachedListBloc.of(context),
-      loadingFinishedBuilder: (_) => child,
-    );
+        asyncInitLoadingBloc: IStatusCachedListBloc.of(context),
+        loadingFinishedBuilder: (_) => child,
+      );
 }

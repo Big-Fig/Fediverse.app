@@ -712,9 +712,10 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     );
 
     var guestToastSettingsLocalPreferencesBloc =
-        InstanceToastSettingsLocalPreferenceBloc(hiveLocalPreferencesService,
-            userAtHost: guestUserAtHost,)
-          ..disposeWith(this);
+        InstanceToastSettingsLocalPreferenceBloc(
+      hiveLocalPreferencesService,
+      userAtHost: guestUserAtHost,
+    )..disposeWith(this);
 
     await globalProviderService
         .asyncInitAndRegister<IInstanceToastSettingsLocalPreferenceBloc>(
@@ -723,9 +724,9 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
 
     var guestPostStatusSettingsLocalPreferencesBloc =
         InstancePostStatusSettingsLocalPreferenceBloc(
-            hiveLocalPreferencesService,
-            userAtHost: guestUserAtHost,)
-          ..disposeWith(this);
+      hiveLocalPreferencesService,
+      userAtHost: guestUserAtHost,
+    )..disposeWith(this);
 
     await globalProviderService
         .asyncInitAndRegister<IInstancePostStatusSettingsLocalPreferenceBloc>(
@@ -734,9 +735,9 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
 
     var guestStatusSensitiveSettingsLocalPreferencesBloc =
         InstanceStatusSensitiveSettingsLocalPreferenceBloc(
-            hiveLocalPreferencesService,
-            userAtHost: guestUserAtHost,)
-          ..disposeWith(this);
+      hiveLocalPreferencesService,
+      userAtHost: guestUserAtHost,
+    )..disposeWith(this);
 
     await globalProviderService.asyncInitAndRegister<
         IInstanceStatusSensitiveSettingsLocalPreferenceBloc>(
@@ -745,9 +746,9 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
 
     var guestWebSocketsSettingsLocalPreferencesBloc =
         InstanceWebSocketsSettingsLocalPreferenceBloc(
-            hiveLocalPreferencesService,
-            userAtHost: guestUserAtHost,)
-          ..disposeWith(this);
+      hiveLocalPreferencesService,
+      userAtHost: guestUserAtHost,
+    )..disposeWith(this);
 
     await globalProviderService
         .asyncInitAndRegister<IInstanceWebSocketsSettingsLocalPreferenceBloc>(
@@ -756,9 +757,9 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
 
     var guestPaginationSettingsLocalPreferencesBloc =
         InstancePaginationSettingsLocalPreferenceBloc(
-            hiveLocalPreferencesService,
-            userAtHost: guestUserAtHost,)
-          ..disposeWith(this);
+      hiveLocalPreferencesService,
+      userAtHost: guestUserAtHost,
+    )..disposeWith(this);
 
     await globalProviderService
         .asyncInitAndRegister<IInstancePaginationSettingsLocalPreferenceBloc>(
@@ -767,9 +768,9 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
 
     var guestFilesCacheSettingsLocalPreferencesBloc =
         InstanceFilesCacheSettingsLocalPreferenceBloc(
-            hiveLocalPreferencesService,
-            userAtHost: guestUserAtHost,)
-          ..disposeWith(this);
+      hiveLocalPreferencesService,
+      userAtHost: guestUserAtHost,
+    )..disposeWith(this);
 
     await globalProviderService
         .asyncInitAndRegister<IInstanceFilesCacheSettingsLocalPreferenceBloc>(
@@ -778,9 +779,9 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
 
     var guestDatabaseCacheSettingsLocalPreferencesBloc =
         InstanceDatabaseCacheSettingsLocalPreferenceBloc(
-            hiveLocalPreferencesService,
-            userAtHost: guestUserAtHost,)
-          ..disposeWith(this);
+      hiveLocalPreferencesService,
+      userAtHost: guestUserAtHost,
+    )..disposeWith(this);
 
     await globalProviderService.asyncInitAndRegister<
         IInstanceDatabaseCacheSettingsLocalPreferenceBloc>(

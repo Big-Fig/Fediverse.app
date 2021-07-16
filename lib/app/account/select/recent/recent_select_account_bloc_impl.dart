@@ -27,9 +27,9 @@ class RecentSelectAccountBloc extends DisposableOwner
     required this.recentSelectAccountLocalPreferenceBloc,
   }) {
     selectAccountListBloc.accountSelectedStream.listen(
-          (selectedAccount) {
-        var oldValue = recentSelectAccountList ??
-            RecentSelectAccountList(recentItems: []);
+      (selectedAccount) {
+        var oldValue =
+            recentSelectAccountList ?? RecentSelectAccountList(recentItems: []);
 
         var recentItems = oldValue.recentItems!;
         if (recentItems.length > recentCountLimit) {
@@ -38,7 +38,7 @@ class RecentSelectAccountBloc extends DisposableOwner
 
         if (selectedAccount != null) {
           recentItems.removeWhere(
-                (account) => account.id == selectedAccount.remoteId,
+            (account) => account.id == selectedAccount.remoteId,
           );
 
           recentItems.add(selectedAccount.toPleromaApiAccount());

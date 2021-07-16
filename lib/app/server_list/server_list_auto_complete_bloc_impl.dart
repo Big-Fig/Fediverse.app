@@ -56,7 +56,7 @@ Future<List<String>> _loadServersList() async {
 
   var servers = fileAsString.split('\n');
 
-  if(!kReleaseMode) {
+  if (!kReleaseMode) {
     // debug instances
     servers = [
       'mastodon.jff.name',

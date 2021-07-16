@@ -32,7 +32,7 @@ class StatusCachedPaginationListWithNewItemsBloc<
           paginationBloc: paginationBloc,
         ) {
     statusCachedListBloc.settingsChangedStream.listen(
-          (_) async {
+      (_) async {
         _logger.finest(() => 'settingsChangedStream ');
         await refreshWithController();
       },
@@ -40,12 +40,12 @@ class StatusCachedPaginationListWithNewItemsBloc<
 
     if (mergeOwnStatusesImmediately) {
       unmergedNewItemsStream.distinct().listen(
-            (unmergedNewItems) {
+        (unmergedNewItems) {
           if (unmergedNewItems.isNotEmpty) {
             var firstUnmergedItem = unmergedNewItems.first;
 
             var isOwnFirstUnmergedItem =
-            myAccountBloc.checkIsStatusFromMe(firstUnmergedItem);
+                myAccountBloc.checkIsStatusFromMe(firstUnmergedItem);
 
             if (isOwnFirstUnmergedItem) {
               mergeNewItems();

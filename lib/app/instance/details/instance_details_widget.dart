@@ -345,8 +345,10 @@ class _InstanceDetailsDescriptionWidget extends StatelessWidget {
     var instanceDetailsBloc = IInstanceDetailsBloc.of(context);
 
     return StreamBuilder<String?>(
-      stream: instanceDetailsBloc.descriptionOrShortDescriptionWithParsedHashtagsStream,
-      initialData: instanceDetailsBloc.descriptionOrShortDescriptionWithParsedHashtags,
+      stream: instanceDetailsBloc
+          .descriptionOrShortDescriptionWithParsedHashtagsStream,
+      initialData:
+          instanceDetailsBloc.descriptionOrShortDescriptionWithParsedHashtags,
       builder: (context, snapshot) {
         var descriptionOrShortDescription = snapshot.data;
         var textStyle = IFediUiTextTheme.of(context).bigTallMediumGrey;
@@ -383,7 +385,7 @@ class _InstanceDetailsDescriptionWidget extends StatelessWidget {
                 );
 
                 htmlTextBloc.linkClickedStream.listen(
-                      (url) {
+                  (url) {
                     UrlHelper.handleUrlClickWithInstanceLocation(
                       context: context,
                       url: url,
@@ -1097,12 +1099,12 @@ class _InstanceDetailsPublicTimelineWidget extends StatelessWidget {
   }) {
     if (isLocal) {
       goToLocalInstancePublicTimelinePage(
-        context:context,
+        context: context,
         pleromaApiInstance: instanceDetailsBloc.instance!,
       );
     } else {
       goToRemoteInstancePublicTimelinePage(
-        context:context,
+        context: context,
         remoteInstanceUri: instanceDetailsBloc.instanceUri,
         pleromaApiInstance: instanceDetailsBloc.instance!,
       );

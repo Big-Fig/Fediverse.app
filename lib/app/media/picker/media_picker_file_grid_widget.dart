@@ -96,7 +96,8 @@ class _MediaPickerFileGridItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DisposableProxyProvider<IMediaDeviceFileMetadata, IMediaDeviceFileBloc>(
+    return DisposableProxyProvider<IMediaDeviceFileMetadata,
+        IMediaDeviceFileBloc>(
       update: (BuildContext context, fileMetadata, previous) {
         if (fileMetadata is PhotoManagerMediaDeviceFileMetadata) {
           var mediaDeviceFileBloc = PhotoManagerMediaDeviceFileBloc(

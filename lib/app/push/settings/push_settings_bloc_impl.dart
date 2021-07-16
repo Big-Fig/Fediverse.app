@@ -59,16 +59,19 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
   Future _checkResubscribe({
     required bool listenChangedIsNotReady,
   }) async {
-    _logger.finest(() => '_checkResubscribe isHaveSubscription $isHaveSubscription');
+    _logger.finest(
+        () => '_checkResubscribe isHaveSubscription $isHaveSubscription');
     if (isHaveSubscription) {
       var pushRelayBaseUrl = pushRelayService.pushRelayBaseUrl;
 
       var currentUsedPushRelayBaseUrl = pushRelaySettings?.pushRelayBaseUrl;
 
       // pushRelayBaseUrl may changed after app update
-      var pushRelayBaseUrlChanged = pushRelayBaseUrl != currentUsedPushRelayBaseUrl;
+      var pushRelayBaseUrlChanged =
+          pushRelayBaseUrl != currentUsedPushRelayBaseUrl;
 
-      _logger.finest(() => '_checkResubscribe pushRelayBaseUrlChanged $pushRelayBaseUrlChanged');
+      _logger.finest(() =>
+          '_checkResubscribe pushRelayBaseUrlChanged $pushRelayBaseUrlChanged');
       if (pushRelayBaseUrlChanged) {
         var deviceToken = fcmPushService.deviceToken;
         var isApiReadyToUse = pleromaPushService.isApiReadyToUse;

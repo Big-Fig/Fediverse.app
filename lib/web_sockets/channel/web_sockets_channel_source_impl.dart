@@ -36,7 +36,7 @@ class WebSocketsChannelSource<T extends WebSocketsEvent> extends DisposableOwner
     }
 
     connectionService.isConnectedStream.distinct().listen(
-          (isConnected) {
+      (isConnected) {
         if (isConnected) {
           _connect();
         } else {
@@ -54,7 +54,7 @@ class WebSocketsChannelSource<T extends WebSocketsEvent> extends DisposableOwner
         (dynamic message) {
           _logger.finest(() => '$url message $message');
           var event = _mapChannelData(message);
-          if(event != null) {
+          if (event != null) {
             eventsStreamController.add(event);
           }
         },

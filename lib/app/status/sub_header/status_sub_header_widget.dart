@@ -31,7 +31,8 @@ class StatusSubHeaderWidget extends StatelessWidget {
               accountCallback!(context, account);
             } else {
               var statusBloc = IStatusBloc.of(context, listen: false);
-              var isLocal = statusBloc.instanceLocation == InstanceLocation.local;
+              var isLocal =
+                  statusBloc.instanceLocation == InstanceLocation.local;
               if (isLocal) {
                 goToLocalAccountDetailsPage(
                   context,

@@ -74,17 +74,25 @@ class ConversationChatHomeTabPage extends StatelessWidget {
 
         return MultiProvider(
           providers: [
-            Provider<IConversationChatWithLastMessageCachedListBloc>.value(value: chatsListBloc.cachedListBloc),
-            Provider<IConversationChatWithLastMessagePaginationBloc>.value(value: chatsListBloc.paginationBloc),
-            Provider<IPaginationListBloc<PaginationPage<IConversationChatWithLastMessage>,
-                IConversationChatWithLastMessage>>.value(value: chatsListBloc.chatPaginationListBloc),
-            Provider<IConversationChatWithLastMessagePaginationListWithNewItemsBloc<
-                CachedPaginationPage<IConversationChatWithLastMessage>>>.value(
+            Provider<IConversationChatWithLastMessageCachedListBloc>.value(
+                value: chatsListBloc.cachedListBloc),
+            Provider<IConversationChatWithLastMessagePaginationBloc>.value(
+                value: chatsListBloc.paginationBloc),
+            Provider<
+                    IPaginationListBloc<
+                        PaginationPage<IConversationChatWithLastMessage>,
+                        IConversationChatWithLastMessage>>.value(
+                value: chatsListBloc.chatPaginationListBloc),
+            Provider<
+                IConversationChatWithLastMessagePaginationListWithNewItemsBloc<
+                    CachedPaginationPage<
+                        IConversationChatWithLastMessage>>>.value(
               value: chatsListBloc.paginationListWithNewItemsBloc,
             ),
-            Provider<ICachedPaginationListWithNewItemsBloc<
-                CachedPaginationPage<IConversationChatWithLastMessage>,
-                IConversationChatWithLastMessage>>.value(
+            Provider<
+                ICachedPaginationListWithNewItemsBloc<
+                    CachedPaginationPage<IConversationChatWithLastMessage>,
+                    IConversationChatWithLastMessage>>.value(
               value: chatsListBloc.paginationListWithNewItemsBloc,
             ),
             Provider<ICachedPaginationListWithNewItemsBloc>.value(

@@ -5,7 +5,8 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IPleromaApiChatService extends IPleromaApiAuth {
-  static IPleromaApiChatService of(BuildContext context, {bool listen = true}) =>
+  static IPleromaApiChatService of(BuildContext context,
+          {bool listen = true}) =>
       Provider.of<IPleromaApiChatService>(context, listen: listen);
 
   Future<List<IPleromaApiChat>> getChats({

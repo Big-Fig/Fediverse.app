@@ -48,7 +48,7 @@ class PollBloc extends DisposableOwner implements IPollBloc {
 
       Timer(
         diff,
-            () {
+        () {
           refreshFromNetwork();
         },
       ).disposeWith(this);
@@ -85,7 +85,8 @@ class PollBloc extends DisposableOwner implements IPollBloc {
   int? get votesCount => poll.votesCount;
 
   @override
-  Stream<int?> get votesCountStream => pollStream.map((poll) => poll.votesCount);
+  Stream<int?> get votesCountStream =>
+      pollStream.map((poll) => poll.votesCount);
 
   @override
   int? get votersCount => poll.votersCount;

@@ -9,7 +9,6 @@ import 'package:fedi/pleroma/api/notification/pleroma_api_notification_model.dar
 import 'package:fedi/pleroma/api/notification/pleroma_api_notification_service.dart';
 import 'package:flutter/cupertino.dart';
 
-
 extension GoToNotificationExtension on INotification {
   Future goToRelatedPage(BuildContext context) async {
     var notificationRepository =
@@ -19,14 +18,14 @@ extension GoToNotificationExtension on INotification {
         IPleromaApiNotificationService.of(context, listen: false);
 
     // ignore: unawaited_futures
-      notificationRepository.markAsRead(
-        notification: this,
-      );
+    notificationRepository.markAsRead(
+      notification: this,
+    );
     if (pleromaNotificationService.isPleroma) {
       // ignore: unawaited_futures
-        pleromaNotificationService.markAsReadSingle(
-          notificationRemoteId: remoteId,
-        );
+      pleromaNotificationService.markAsReadSingle(
+        notificationRemoteId: remoteId,
+      );
     }
 
     var status = this.status;

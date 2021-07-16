@@ -4,7 +4,6 @@ import 'package:fedi/repository/repository.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
 
-
 abstract class AppRemoteDatabaseDaoRepository<
         DbItem extends DataClass,
         AppItem,
@@ -33,11 +32,11 @@ abstract class AppRemoteDatabaseDaoRepository<
     if (batchTransaction != null) {
       for (var remoteItem in remoteItems) {
         // ignore: unawaited_futures
-          insertInRemoteTypeBatch(
-            remoteItem,
-            mode: mode,
-            batchTransaction: batchTransaction,
-          );
+        insertInRemoteTypeBatch(
+          remoteItem,
+          mode: mode,
+          batchTransaction: batchTransaction,
+        );
       }
     } else {
       await batch((batch) {
@@ -251,5 +250,4 @@ abstract class AppRemoteDatabaseDaoRepository<
         remoteItem,
         mode: InsertMode.insertOrReplace,
       );
-
 }

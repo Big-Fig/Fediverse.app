@@ -86,7 +86,7 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
     );
 
     sortedPagesStream.listen(
-          (sortedPages) {
+      (sortedPages) {
         itemsSubject.add(mapToItemsList(sortedPages));
       },
     ).disposeWith(this);

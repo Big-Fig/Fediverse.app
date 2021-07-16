@@ -16,8 +16,7 @@ class AccountHomeTabMenuActionsIntBadgeBloc extends DisposableOwner
 
   AccountHomeTabMenuActionsIntBadgeBloc({
     required this.myAccountBloc,
-  })   : followRequestCountIntBadgeBloc =
-            MyAccountFollowRequestCountIntBadgeBloc(
+  }) : followRequestCountIntBadgeBloc = MyAccountFollowRequestCountIntBadgeBloc(
           myAccountBloc: myAccountBloc,
         ) {
     fediIntBadgeBlocSumAdapter = FediIntBadgeBlocSumAdapter(

@@ -5,9 +5,9 @@ import 'package:provider/provider.dart';
 
 abstract class IMediaAttachmentReuploadService implements IDisposable {
   static IMediaAttachmentReuploadService of(
-      BuildContext context, {
-        bool listen = true,
-      }) =>
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IMediaAttachmentReuploadService>(
         context,
         listen: listen,

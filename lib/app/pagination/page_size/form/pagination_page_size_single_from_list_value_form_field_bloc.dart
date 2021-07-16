@@ -3,8 +3,7 @@ import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/form/field/value/select_from_list/single/single_select_from_list_value_form_field_bloc.dart';
 
 abstract class IPaginationPageSizeSingleFromListValueFormFieldBloc
-    implements
-        ISingleSelectFromListValueFormFieldBloc<PaginationPageSize> {
+    implements ISingleSelectFromListValueFormFieldBloc<PaginationPageSize> {
   static const PaginationPageSize defaultValue =
       IPaginationSettingsBloc.defaultPageSizeValue;
 }

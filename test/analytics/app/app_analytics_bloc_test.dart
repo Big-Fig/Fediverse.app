@@ -37,10 +37,8 @@ void main() {
       listened = data;
     });
 
-
     listened = null;
     await RxDartTestHelper.waitForData(() => listened);
-
   });
 
   tearDown(() {
@@ -65,7 +63,6 @@ void main() {
     listened = null;
     await RxDartTestHelper.waitForData(() => listened);
 
-
     expect(
       appAnalyticsBloc.appOpenedCount,
       1,
@@ -77,10 +74,8 @@ void main() {
 
     await appAnalyticsBloc.onAppOpened();
 
-
     listened = null;
     await RxDartTestHelper.waitForData(() => listened);
-
 
     expect(
       appAnalyticsBloc.appOpenedCount,

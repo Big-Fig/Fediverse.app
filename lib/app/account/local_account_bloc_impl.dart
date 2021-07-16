@@ -71,10 +71,9 @@ class LocalAccountBloc extends AccountBloc {
           isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
           delayInit: delayInit,
         ) {
-
     accountRelationshipSubject.disposeWith(this);
     accountSubject.stream.listen(
-          (account) {
+      (account) {
         var pleromaRelationship = account.pleromaRelationship;
         // _logger.finest(() => 'pleromaRelationship $pleromaRelationship');
         if (pleromaRelationship?.following != null) {
@@ -82,7 +81,6 @@ class LocalAccountBloc extends AccountBloc {
         }
       },
     ).disposeWith(this);
-
   }
 
   static LocalAccountBloc createFromContext(
@@ -143,13 +141,12 @@ class LocalAccountBloc extends AccountBloc {
   }) async {
     if (isNeedWatchLocalRepositoryForUpdates) {
       accountRepository.watchByRemoteIdInAppType(account.remoteId).listen(
-            (updatedAccount) {
+        (updatedAccount) {
           if (updatedAccount != null) {
             accountSubject.add(updatedAccount);
           }
         },
       ).disposeWith(this);
-
     }
 
     if (isNeedRefreshFromNetworkOnInit) {

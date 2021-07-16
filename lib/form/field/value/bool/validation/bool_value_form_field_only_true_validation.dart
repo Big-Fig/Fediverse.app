@@ -5,7 +5,6 @@ import 'package:flutter/widgets.dart';
 
 class BoolValueFormFieldOnlyTrueValidationError
     extends BoolValueFormFieldValidationError {
-  
   @override
   String createErrorDescription(BuildContext context) =>
       S.of(context).form_field_bool_onlyTrue_error_desc;

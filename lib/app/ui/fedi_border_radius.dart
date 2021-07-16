@@ -9,7 +9,8 @@ class FediBorderRadius {
   );
   static const BorderRadius allBigBorderRadius = BorderRadius.all(
     Radius.circular(FediSizes.borderRadiusBigSize),
-  );  static const BorderRadius allSmallBorderRadius = BorderRadius.all(
+  );
+  static const BorderRadius allSmallBorderRadius = BorderRadius.all(
     Radius.circular(FediSizes.borderRadiusSmallSize),
   );
   static const BorderRadius editTextBorderRadius = BorderRadius.all(

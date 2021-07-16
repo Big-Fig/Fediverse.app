@@ -6,7 +6,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
 abstract class IPleromaApiSearchService implements IPleromaApi {
-  static IPleromaApiSearchService of(BuildContext context, {bool listen = true}) =>
+  static IPleromaApiSearchService of(BuildContext context,
+          {bool listen = true}) =>
       Provider.of<IPleromaApiSearchService>(context, listen: listen);
 
   Future<IPleromaApiSearchResult> search({

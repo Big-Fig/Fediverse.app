@@ -23,7 +23,9 @@ class LinkPairFormGroupBloc extends KeyValuePairFormGroupBloc<
           ),
           valueField: StringValueFormFieldBloc(
             originValue: value,
-            validators: [UrlStringValueFormFieldValidationError.createValidator()],
+            validators: [
+              UrlStringValueFormFieldValidationError.createValidator()
+            ],
             maxLength: valueMaxLength,
           ),
         );

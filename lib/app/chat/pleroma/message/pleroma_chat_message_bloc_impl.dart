@@ -73,10 +73,8 @@ class PleromaChatMessageBloc extends ChatMessageBloc
 
   @override
   void watchLocalRepositoryChanges() {
-    chatMessageRepository
-        .watchByRemoteIdInAppType(chatMessage.remoteId)
-        .listen(
-          (updatedChatMessage) {
+    chatMessageRepository.watchByRemoteIdInAppType(chatMessage.remoteId).listen(
+      (updatedChatMessage) {
         if (updatedChatMessage != null) {
           _chatMessageSubject.add(updatedChatMessage);
         }
@@ -88,7 +86,7 @@ class PleromaChatMessageBloc extends ChatMessageBloc
       chatMessageRepository
           .watchByOldPendingRemoteId(oldPendingRemoteId)
           .listen(
-            (updatedChatMessage) {
+        (updatedChatMessage) {
           if (updatedChatMessage != null) {
             _chatMessageSubject.add(updatedChatMessage);
           }

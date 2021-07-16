@@ -20,7 +20,7 @@ class AccountTabTextTabIndicatorItemWidget extends StatelessWidget {
   Widget build(BuildContext context) => LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
           return Container(
-            color:  IFediUiColorTheme.of(context).white,
+            color: IFediUiColorTheme.of(context).white,
             child: DisposableProxyProvider<TabController,
                 IFediTabIndicatorBloc<AccountStatusesTab>>(
               update: (context, tabController, _) =>

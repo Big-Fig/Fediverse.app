@@ -135,7 +135,7 @@ class RemoteHashtagPageBloc extends HashtagPageBloc
     addDisposable(statusPaginationListBloc);
 
     timelineLocalPreferenceBloc.stream.listen(
-          (_) {
+      (_) {
         statusPaginationListBloc.refreshWithController();
       },
     ).disposeWith(this);

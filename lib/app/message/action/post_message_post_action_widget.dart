@@ -28,8 +28,7 @@ class PostMessagePostActionWidget extends StatelessWidget {
             await postChatMessageBloc.post();
           },
           builder: (BuildContext context, onPressed) {
-
-            if(isReadyToPost) {
+            if (isReadyToPost) {
               return FediIconInCircleFilledButton(
                 FediIcons.send,
                 onPressed: isReadyToPost ? onPressed : null,
@@ -41,7 +40,6 @@ class PostMessagePostActionWidget extends StatelessWidget {
                 color: IFediUiColorTheme.of(context).lightGrey,
               );
             }
-
           },
         );
       },

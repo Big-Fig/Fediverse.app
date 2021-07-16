@@ -56,7 +56,8 @@ class AccountStatusesMediaOnlyCachedListBloc
   }) {
     return AccountStatusesMediaOnlyCachedListBloc(
       account: account,
-      pleromaAccountService: IPleromaApiAccountService.of(context, listen: false),
+      pleromaAccountService:
+          IPleromaApiAccountService.of(context, listen: false),
       webSocketsHandlerManagerBloc: IWebSocketsHandlerManagerBloc.of(
         context,
         listen: false,

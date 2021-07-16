@@ -29,16 +29,16 @@ class RecentSearchBloc extends DisposableOwner implements IRecentSearchBloc {
     required this.recentSearchLocalPreferenceBloc,
   }) {
     searchInputBloc.confirmedSearchTermStream.listen(
-          (confirmedSearchTerm) {
+      (confirmedSearchTerm) {
         var oldValue = recentSearchList ?? RecentSearchList(recentItems: []);
 
         var recentItems = oldValue.recentItems;
         if (recentItems.length > recentCountLimit) {
           recentItems = recentItems
               .sublist(
-            0,
-            recentCountLimit,
-          )
+                0,
+                recentCountLimit,
+              )
               .toList();
         }
 

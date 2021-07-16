@@ -9,7 +9,8 @@ typedef IPushRealTimeHandler = Future<bool> Function(
 );
 
 abstract class INotificationsPushHandlerBloc extends IDisposable {
-  static INotificationsPushHandlerBloc of(BuildContext context, {bool listen = true}) =>
+  static INotificationsPushHandlerBloc of(BuildContext context,
+          {bool listen = true}) =>
       Provider.of<INotificationsPushHandlerBloc>(context, listen: listen);
 
   List<NotificationsPushHandlerMessage> loadUnhandledMessagesForInstance(

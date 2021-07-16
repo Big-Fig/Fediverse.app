@@ -25,10 +25,11 @@ abstract class CachedPleromaPaginationBloc<TItem>
     required int pageIndex,
     required List<TItem> loadedItems,
     required bool isActuallyRefreshed,
-  }) => CachedPaginationPage(
-      requestedLimitPerPage: itemsCountPerPage,
-      pageIndex: pageIndex,
-      values: loadedItems,
-      isActuallyRefreshedFromRemote: isActuallyRefreshed,
-    );
+  }) =>
+      CachedPaginationPage(
+        requestedLimitPerPage: itemsCountPerPage,
+        pageIndex: pageIndex,
+        values: loadedItems,
+        isActuallyRefreshedFromRemote: isActuallyRefreshed,
+      );
 }

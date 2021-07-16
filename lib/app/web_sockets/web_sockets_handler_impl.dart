@@ -14,7 +14,6 @@ import 'package:fedi/web_sockets/channel/web_sockets_channel_model.dart';
 import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
 import 'package:logging/logging.dart';
 
-
 abstract class WebSocketsChannelHandler extends DisposableOwner
     implements IWebSocketsHandler {
   // ignore: avoid-late-keyword
@@ -56,7 +55,8 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
     _logger.finest(() =>
         'Start listen to ${webSocketsChannel.config.calculateWebSocketsUrl()}');
 
-    addDisposable(webSocketsChannel.listenForEvents(
+    addDisposable(
+      webSocketsChannel.listenForEvents(
         listener: WebSocketChannelListener<PleromaApiWebSocketsEvent>(
           listenType: listenType,
           onEvent: (PleromaApiWebSocketsEvent event) {
@@ -95,9 +95,9 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
         if (pleromaNotificationType ==
             PleromaApiNotificationType.followRequest) {
           // ignore: unawaited_futures
-            myAccountBloc.refreshFromNetwork(
-              isNeedPreFetchRelationship: false,
-            );
+          myAccountBloc.refreshFromNetwork(
+            isNeedPreFetchRelationship: false,
+          );
         }
 
         await notificationRepository.upsertRemoteNotification(

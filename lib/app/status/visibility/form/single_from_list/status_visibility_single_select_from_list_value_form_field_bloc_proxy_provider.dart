@@ -18,7 +18,8 @@ class StatusVisibilitySelectSingleFromListValueFormFieldBlocProxyProvider
           IStatusVisibilitySelectSingleFromListValueFormFieldBloc,
           ISingleSelectFromListValueFormFieldBloc<PleromaApiVisibility>>(
         update: (context, value, previous) => value,
-        child: SingleSelectFromListValueFormFieldBlocProxyProvider<PleromaApiVisibility>(
+        child: SingleSelectFromListValueFormFieldBlocProxyProvider<
+            PleromaApiVisibility>(
           child: child,
         ),
       );

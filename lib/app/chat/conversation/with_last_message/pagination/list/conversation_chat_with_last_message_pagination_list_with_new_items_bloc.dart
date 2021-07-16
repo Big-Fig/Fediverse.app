@@ -12,7 +12,8 @@ abstract class IConversationChatWithLastMessagePaginationListWithNewItemsBloc<
     BuildContext context, {
     bool listen = true,
   }) =>
-      Provider.of<IConversationChatWithLastMessagePaginationListWithNewItemsBloc>(
+      Provider.of<
+          IConversationChatWithLastMessagePaginationListWithNewItemsBloc>(
         context,
         listen: listen,
       );

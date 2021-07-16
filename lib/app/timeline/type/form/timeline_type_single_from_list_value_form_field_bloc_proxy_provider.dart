@@ -18,7 +18,8 @@ class TimelineTypeSingleFromListValueFormFieldBlocProxyProvider
           ITimelineTypeSingleFromListValueFormFieldBloc,
           ISingleSelectFromListValueFormFieldBloc<TimelineType>>(
         update: (context, value, previous) => value,
-        child: SingleSelectFromListValueFormFieldBlocProxyProvider<TimelineType>(
+        child:
+            SingleSelectFromListValueFormFieldBlocProxyProvider<TimelineType>(
           child: child,
         ),
       );

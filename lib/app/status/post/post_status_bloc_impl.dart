@@ -165,7 +165,7 @@ abstract class PostStatusBloc extends PostMessageBloc
     }
     if (markMediaAsNsfwOnAttach) {
       mediaAttachmentsBloc.mediaAttachmentBlocsStream.listen(
-            (blocs) {
+        (blocs) {
           if (!alreadyMarkMediaNsfwByDefault && blocs.isNotEmpty) {
             alreadyMarkMediaNsfwByDefault = true;
             nsfwSensitiveSubject.add(true);
@@ -175,13 +175,13 @@ abstract class PostStatusBloc extends PostMessageBloc
     }
 
     pollBloc.isSomethingChangedStream.listen(
-          (_) {
+      (_) {
         _checkPollEmptyInputError();
       },
     ).disposeWith(this);
 
     inputTextStream.listen(
-          (_) {
+      (_) {
         _checkPollEmptyInputError();
       },
     ).disposeWith(this);

@@ -58,9 +58,9 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
 
   // ignore: long-method
   static void registerAdapters() {
-      //  PleromaApiFieldAdapter
+    //  PleromaApiFieldAdapter
     var adaptersRegistered = Hive.isAdapterRegistered(5);
-    if(adaptersRegistered) {
+    if (adaptersRegistered) {
       return;
     }
     Hive.registerAdapter(PleromaApiFieldAdapter());

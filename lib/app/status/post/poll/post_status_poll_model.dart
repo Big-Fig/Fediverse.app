@@ -105,7 +105,8 @@ extension IPostStatusPollExtension on IPostStatusPoll {
       ownVotes: [],
       votersCount: 0,
       votesCount: 0,
-      expiresAt: durationLength != null ? DateTime.now().add(durationLength!) : null,
+      expiresAt:
+          durationLength != null ? DateTime.now().add(durationLength!) : null,
     );
   }
 }

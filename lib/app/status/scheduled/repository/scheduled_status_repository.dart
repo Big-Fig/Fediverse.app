@@ -17,7 +17,8 @@ abstract class IScheduledStatusRepository
             IPleromaApiScheduledStatus,
             int,
             String,
-            ScheduledStatusRepositoryFilters, ScheduledStatusRepositoryOrderingTermData> {
+            ScheduledStatusRepositoryFilters,
+            ScheduledStatusRepositoryOrderingTermData> {
   static IScheduledStatusRepository of(
     BuildContext context, {
     bool listen = true,
@@ -44,5 +45,4 @@ abstract class IScheduledStatusRepository
     required IScheduledStatus scheduledStatus,
     required Batch? batchTransaction,
   });
-
 }

@@ -49,7 +49,7 @@ void showEditGlobalOrInstanceFilesCacheSettingsDialog({
         );
 
         isUseGlobalSettingsFormBoolFieldBloc.currentValueStream.listen(
-              (isUseGlobalSettings) {
+          (isUseGlobalSettings) {
             editCacheSettingsBloc.changeEnabled(!isUseGlobalSettings!);
           },
         ).disposeWith(editCacheSettingsBloc);

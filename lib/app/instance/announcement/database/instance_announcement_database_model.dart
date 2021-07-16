@@ -18,13 +18,15 @@ class DbInstanceAnnouncements extends Table {
 
   TextColumn get content => text()();
 
-  TextColumn? get reactions =>
-      text().map(PleromaApiAnnouncementReactionListDatabaseConverter()).nullable()();
+  TextColumn? get reactions => text()
+      .map(PleromaApiAnnouncementReactionListDatabaseConverter())
+      .nullable()();
 
   TextColumn? get mentions =>
       text().map(PleromaApiMentionListDatabaseConverter()).nullable()();
 
-  TextColumn? get tags => text().map(PleromaApiTagListDatabaseConverter()).nullable()();
+  TextColumn? get tags =>
+      text().map(PleromaApiTagListDatabaseConverter()).nullable()();
 
   TextColumn? get statuses =>
       text().map(PleromaApiStatusListDatabaseConverter()).nullable()();

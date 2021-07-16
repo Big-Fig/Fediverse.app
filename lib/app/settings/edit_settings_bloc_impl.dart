@@ -30,7 +30,7 @@ abstract class EditSettingsBloc<T extends ISettings?> extends FormBloc
     isEnabledSubject.disposeWith(this);
 
     isSomethingChangedStream.listen(
-          (_) {
+      (_) {
         if (isEnabled) {
           saveSettingsFromFormToSettingsBloc();
         }
@@ -38,7 +38,7 @@ abstract class EditSettingsBloc<T extends ISettings?> extends FormBloc
     ).disposeWith(this);
 
     currentSettingsStream.listen(
-          (newSettings) {
+      (newSettings) {
         if (newSettings == null) {
           return;
         }

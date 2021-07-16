@@ -57,7 +57,6 @@ class ConversationChatWithLastMessageListBloc extends DisposableOwner
               conversationChatWithLastMessageRepository,
           conversationRepository: conversationRepository,
         ) {
-
     paginationBloc = ConversationChatWithLastMessagePaginationBloc(
       paginationSettingsBloc: paginationSettingsBloc,
       listService: cachedListBloc,
@@ -74,9 +73,11 @@ class ConversationChatWithLastMessageListBloc extends DisposableOwner
     cachedListBloc.disposeWith(this);
     paginationBloc.disposeWith(this);
     paginationListWithNewItemsBloc.disposeWith(this);
-    webSocketsHandlerManagerBloc.listenConversationChannel(
-      listenType: WebSocketsListenType.foreground,
-    ).disposeWith(this);
+    webSocketsHandlerManagerBloc
+        .listenConversationChannel(
+          listenType: WebSocketsListenType.foreground,
+        )
+        .disposeWith(this);
   }
 
   static ConversationChatWithLastMessageListBloc createFromContext(

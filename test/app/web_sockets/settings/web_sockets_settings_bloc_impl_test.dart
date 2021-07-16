@@ -103,7 +103,6 @@ void main() {
     listened = null;
     await RxDartTestHelper.waitForData(() => listened);
 
-
     expect(
       listenedSettingsData?.handlingType,
       testHandlingType,

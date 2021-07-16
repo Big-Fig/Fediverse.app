@@ -85,17 +85,16 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
     required this.localizationContext,
   }) {
     notificationsPushHandlerBloc.addRealTimeHandler(handlePush);
-    addDisposable(CustomDisposable(
+    addDisposable(
+      CustomDisposable(
         () async {
           notificationsPushHandlerBloc.removeRealTimeHandler(handlePush);
         },
       ),
     );
 
-    currentInstanceNotificationPushLoaderBloc
-        .handledNotificationsStream
-        .listen(
-          (handledNotification) {
+    currentInstanceNotificationPushLoaderBloc.handledNotificationsStream.listen(
+      (handledNotification) {
         _handleCurrentInstanceNotification(handledNotification);
       },
     ).disposeWith(this);

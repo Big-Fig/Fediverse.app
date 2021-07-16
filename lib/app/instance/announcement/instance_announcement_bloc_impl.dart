@@ -67,7 +67,7 @@ class InstanceAnnouncementBloc extends DisposableOwner
         instanceAnnouncementRepository
             .watchByRemoteIdInAppType(instanceAnnouncement.remoteId)
             .listen(
-              (updatedInstanceAnnouncement) {
+          (updatedInstanceAnnouncement) {
             if (updatedInstanceAnnouncement != null) {
               _instanceAnnouncementSubject.add(updatedInstanceAnnouncement);
             }

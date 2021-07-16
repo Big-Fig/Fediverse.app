@@ -561,7 +561,7 @@ void _initIncomeShareHandler({
 }) {
   _logger.finest(() => '_initIncomeShareHandler');
   bloc.incomeShareHandlerErrorStream.listen(
-        (error) {
+    (error) {
       switch (error) {
         case IncomeShareHandlerError.authInstanceListIsEmpty:
           IToastService.of(context).showErrorToast(
@@ -573,7 +573,7 @@ void _initIncomeShareHandler({
     },
   ).disposeWith(bloc);
   bloc.needChooseInstanceFromListStream.listen(
-        (authInstanceList) {
+    (authInstanceList) {
       showIncomeShareInstanceChooserDialog(
         context,
         authInstanceList: authInstanceList,
@@ -582,7 +582,7 @@ void _initIncomeShareHandler({
     },
   ).disposeWith(bloc);
   bloc.needChooseActionForEventStream.listen(
-        (incomeShareEvent) {
+    (incomeShareEvent) {
       showIncomeShareActionChooserDialog(
         context,
         incomeShareEvent: incomeShareEvent,

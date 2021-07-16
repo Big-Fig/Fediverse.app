@@ -9,7 +9,8 @@ abstract class ILastChosenInstanceIncomeIncomeShareHandlerLocalPreferenceBloc
     BuildContext context, {
     bool listen = true,
   }) =>
-      Provider.of<ILastChosenInstanceIncomeIncomeShareHandlerLocalPreferenceBloc>(
+      Provider.of<
+          ILastChosenInstanceIncomeIncomeShareHandlerLocalPreferenceBloc>(
         context,
         listen: listen,
       );

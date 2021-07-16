@@ -42,10 +42,11 @@ class _MyAccountFollowRequestListPageEmptyWidget extends StatelessWidget {
   const _MyAccountFollowRequestListPageEmptyWidget();
 }
 
-Future goToMyAccountFollowRequestListPage(BuildContext context) => Navigator.push(
-    context,
-    createMyAccountFollowRequestListPage(),
-  );
+Future goToMyAccountFollowRequestListPage(BuildContext context) =>
+    Navigator.push(
+      context,
+      createMyAccountFollowRequestListPage(),
+    );
 
 MaterialPageRoute createMyAccountFollowRequestListPage() {
   return MaterialPageRoute(

@@ -70,12 +70,11 @@ class CurrentAuthInstanceBloc extends DisposableOwner
     var urlSchema = currentInstance!.urlSchema!;
 
     return HashtagUrlHelper.calculateHashtagUrl(
-      urlSchema:urlSchema,
-      isMastodon:isMastodon,
-      isPleroma:isPleroma,
-      urlHost:urlHost,
-      hashtag:hashtag,
+      urlSchema: urlSchema,
+      isMastodon: isMastodon,
+      isPleroma: isPleroma,
+      urlHost: urlHost,
+      hashtag: hashtag,
     );
   }
-
 }

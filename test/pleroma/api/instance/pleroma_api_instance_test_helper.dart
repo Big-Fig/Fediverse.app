@@ -5,15 +5,16 @@ import '../../../mastodon/api/instance/mastodon_api_instance_test_helper.dart';
 import '../account/pleroma_api_account_test_helper.dart';
 
 class PleromaApiInstanceTestHelper {
-  static PleromaApiInstanceActivityItem createTestPleromaApiInstanceActivityItem({
+  static PleromaApiInstanceActivityItem
+      createTestPleromaApiInstanceActivityItem({
     required String seed,
   }) =>
-      PleromaApiInstanceActivityItem(
-        logins: seed.hashCode + 'logins'.hashCode,
-        registrations: seed.hashCode + 'registrations'.hashCode,
-        statuses: seed.hashCode + 'statuses'.hashCode,
-        week: seed.hashCode + 'week'.hashCode,
-      );
+          PleromaApiInstanceActivityItem(
+            logins: seed.hashCode + 'logins'.hashCode,
+            registrations: seed.hashCode + 'registrations'.hashCode,
+            statuses: seed.hashCode + 'statuses'.hashCode,
+            week: seed.hashCode + 'week'.hashCode,
+          );
 
   static PleromaApiInstancePleromaPart createTestPleromaApiInstancePleromaPart({
     required String seed,

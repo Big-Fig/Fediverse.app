@@ -32,7 +32,7 @@ extension IPleromaApiFieldListExtension on List<IPleromaApiField> {
       return this as List<PleromaApiField>;
     } else {
       return map(
-        (field) => field.toPleromaApiField(forceNewObject:forceNewObject),
+        (field) => field.toPleromaApiField(forceNewObject: forceNewObject),
       ).toList();
     }
   }
@@ -72,7 +72,6 @@ class PleromaApiField implements IPleromaApiField, IJsonObject {
 
   @override
   Map<String, dynamic> toJson() => _$PleromaApiFieldToJson(this);
-
 
   @override
   String toString() {
@@ -119,7 +118,7 @@ class PleromaApiField implements IPleromaApiField, IJsonObject {
   @override
   String? get valueAsRawUrlWithoutSchema {
     var rawUrl = valueAsRawUrl;
-    if(rawUrl == null) {
+    if (rawUrl == null) {
       return rawUrl;
     }
     try {

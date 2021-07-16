@@ -8,8 +8,8 @@ import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
 import 'package:fedi/pleroma/api/pleroma_api_service.dart';
 import 'package:logging/logging.dart';
 
-final _logger =
-    Logger('my_account_endorsement_account_list_network_only_list_bloc_impl.dart');
+final _logger = Logger(
+    'my_account_endorsement_account_list_network_only_list_bloc_impl.dart');
 
 class MyAccountEndorsementAccountListNetworkOnlyListBloc extends DisposableOwner
     implements IMyAccountEndorsementAccountListNetworkOnlyListBloc {

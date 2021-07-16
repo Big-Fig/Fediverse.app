@@ -59,12 +59,12 @@ class NotificationsPushHandlerBloc extends DisposableOwner
     required this.connectionService,
   }) {
     fcmPushService.messageStream.listen(
-          (pushMessage) async {
+      (pushMessage) async {
         await handlePushMessage(pushMessage);
       },
     ).disposeWith(this);
     richNotificationsService.messageStream.listen(
-          (pushMessage) async {
+      (pushMessage) async {
         await handlePushMessage(pushMessage);
       },
     ).disposeWith(this);
@@ -220,7 +220,6 @@ class NotificationsPushHandlerBloc extends DisposableOwner
 
       return;
     }
-
 
     var disposableOwner = DisposableOwner();
 

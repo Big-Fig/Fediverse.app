@@ -22,8 +22,9 @@ class PleromaApiMyAccountService extends BasePleromaApiService
   @override
   final IPleromaApiAuthRestService restApiAuthService;
 
-  PleromaApiMyAccountService({required this.restApiAuthService,})
-      : super(
+  PleromaApiMyAccountService({
+    required this.restApiAuthService,
+  }) : super(
           restService: restApiAuthService,
         );
 

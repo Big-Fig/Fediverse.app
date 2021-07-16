@@ -29,36 +29,38 @@ void showEditGlobalOrInstanceMediaSettingsDialog({
     }) =>
         DisposableProxyProvider<GlobalOrInstanceSettingsType,
             IEditMediaSettingsBloc>(
-          update: (context, globalOrInstanceType, previous) {
-            var isUseGlobalSettingsFormBoolFieldBloc =
-            ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc.of(context, listen: false);
-
-            var enabled =
-                globalOrInstanceType == GlobalOrInstanceSettingsType.instance;
-            var editMediaSettingsBloc = EditMediaSettingsBloc(
-              isGlobalForced: false,
-              mediaSettingsBloc: IMediaSettingsBloc.of(
+      update: (context, globalOrInstanceType, previous) {
+        var isUseGlobalSettingsFormBoolFieldBloc =
+            ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc.of(
                 context,
-                listen: false,
-              ),
-              globalOrInstanceSettingsType: globalOrInstanceType,
-              isEnabled: enabled,
-            );
+                listen: false);
 
-            isUseGlobalSettingsFormBoolFieldBloc.currentValueStream.listen(
-                  (isUseGlobalSettings) {
-                editMediaSettingsBloc.changeEnabled(!isUseGlobalSettings!);
-              },
-            ).disposeWith(editMediaSettingsBloc);
-
-            return editMediaSettingsBloc;
-          },
-          child: ProxyProvider<IEditMediaSettingsBloc,
-              IEditGlobalOrInstanceSettingsBloc>(
-            update: (context, value, update) => value,
-            child: child,
+        var enabled =
+            globalOrInstanceType == GlobalOrInstanceSettingsType.instance;
+        var editMediaSettingsBloc = EditMediaSettingsBloc(
+          isGlobalForced: false,
+          mediaSettingsBloc: IMediaSettingsBloc.of(
+            context,
+            listen: false,
           ),
-        ),
+          globalOrInstanceSettingsType: globalOrInstanceType,
+          isEnabled: enabled,
+        );
+
+        isUseGlobalSettingsFormBoolFieldBloc.currentValueStream.listen(
+          (isUseGlobalSettings) {
+            editMediaSettingsBloc.changeEnabled(!isUseGlobalSettings!);
+          },
+        ).disposeWith(editMediaSettingsBloc);
+
+        return editMediaSettingsBloc;
+      },
+      child: ProxyProvider<IEditMediaSettingsBloc,
+          IEditGlobalOrInstanceSettingsBloc>(
+        update: (context, value, update) => value,
+        child: child,
+      ),
+    ),
     globalOrInstanceSettingsBloc: IMediaSettingsBloc.of(
       context,
       listen: false,

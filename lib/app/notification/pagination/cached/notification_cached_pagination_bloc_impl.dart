@@ -36,12 +36,11 @@ class NotificationCachedPaginationBloc
     required CachedPaginationPage<INotification>? olderPage,
     required CachedPaginationPage<INotification>? newerPage,
   }) {
-
     return notificationListService.loadLocalItems(
-        limit: itemsCountPerPage,
-        newerThan: olderPage?.items.firstOrNull,
-        olderThan: newerPage?.items.lastOrNull,
-      );
+      limit: itemsCountPerPage,
+      newerThan: olderPage?.items.firstOrNull,
+      olderThan: newerPage?.items.lastOrNull,
+    );
   }
 
   @override

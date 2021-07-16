@@ -10,7 +10,6 @@ import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_service.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart' as path;
 
-
 var _urlPath = path.Context(style: path.Style.url);
 
 var _logger = Logger('emoji_picker_custom_image_url_category_bloc_impl.dart');

@@ -5,5 +5,4 @@ import 'package:provider/provider.dart';
 abstract class ITimelinesHomeTabBloc extends IHomeTabBloc {
   static ITimelinesHomeTabBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<ITimelinesHomeTabBloc>(context, listen: listen);
-
 }

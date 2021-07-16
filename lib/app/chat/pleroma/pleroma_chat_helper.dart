@@ -34,7 +34,8 @@ Future goToPleromaChatWithAccount({
 
           await chatRepository.upsertInRemoteType(pleromaApiChat);
 
-          return await chatRepository.findByRemoteIdInAppType(pleromaApiChat.id);
+          return await chatRepository
+              .findByRemoteIdInAppType(pleromaApiChat.id);
         },
       );
       chat = dialogResult.result;

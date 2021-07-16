@@ -45,8 +45,7 @@ class StatusSpoilerWidget extends StatelessWidget {
                 return const SizedBox.shrink();
               }
 
-              var textStyle =
-                  _mapToTextStyle(fediUiTextTheme, statusFontSize);
+              var textStyle = _mapToTextStyle(fediUiTextTheme, statusFontSize);
 
               return DisposableProxyProvider<EmojiText?, IHtmlTextBloc>(
                 update: (context, spoilerWithEmojis, previous) {
@@ -76,7 +75,7 @@ class StatusSpoilerWidget extends StatelessWidget {
                     ),
                   );
                   htmlTextBloc.linkClickedStream.listen(
-                        (url) {
+                    (url) {
                       _handleLinkTap(context, url);
                     },
                   ).disposeWith(htmlTextBloc);

@@ -35,7 +35,6 @@ void main() {
 
     listened = null;
     await RxDartTestHelper.waitForData(() => listened);
-
   });
 
   tearDown(() {
@@ -60,7 +59,6 @@ void main() {
     listened = null;
     await RxDartTestHelper.waitForData(() => listened);
 
-
     expect(
       appAnalyticsBloc.data.appOpenedCount,
       1,
@@ -72,10 +70,8 @@ void main() {
 
     await appAnalyticsBloc.onAppOpened();
 
-
     listened = null;
     await RxDartTestHelper.waitForData(() => listened);
-
 
     expect(
       appAnalyticsBloc.data.appOpenedCount,
@@ -91,10 +87,8 @@ void main() {
   test('onAppRated', () async {
     await appAnalyticsBloc.onAppOpened();
 
-
     listened = null;
     await RxDartTestHelper.waitForData(() => listened);
-
 
     expect(
       appAnalyticsBloc.data.appOpenedCount,
@@ -108,10 +102,8 @@ void main() {
 
     await appAnalyticsBloc.onAppRated();
 
-
     listened = null;
     await RxDartTestHelper.waitForData(() => listened);
-
 
     expect(
       appAnalyticsBloc.data.appOpenedCount,
@@ -125,10 +117,8 @@ void main() {
 
     await appAnalyticsBloc.onAppRated();
 
-
     listened = null;
     await RxDartTestHelper.waitForData(() => listened);
-
 
     expect(
       appAnalyticsBloc.data.appOpenedCount,

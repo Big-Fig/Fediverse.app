@@ -11,7 +11,6 @@ import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_s
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
-
 var _logger = Logger('chat_post_message_bloc_impl.dart');
 
 class PleromaChatPostMessageBloc extends PostMessageBloc
@@ -35,12 +34,11 @@ class PleromaChatPostMessageBloc extends PostMessageBloc
   Future post() async {
     // todo: refactor
     // ignore: unawaited_futures
-      pleromaChatBloc.postMessage(
-        pleromaApiChatMessageSendData: calculateSendData(),
-        pleromaApiChatMessageSendDataMediaAttachment:
-            calculateMediaAttachment(),
-        oldPendingFailedPleromaChatMessage: null,
-      );
+    pleromaChatBloc.postMessage(
+      pleromaApiChatMessageSendData: calculateSendData(),
+      pleromaApiChatMessageSendDataMediaAttachment: calculateMediaAttachment(),
+      oldPendingFailedPleromaChatMessage: null,
+    );
 
     clear();
   }

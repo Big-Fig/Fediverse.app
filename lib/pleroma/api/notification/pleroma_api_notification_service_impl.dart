@@ -46,7 +46,7 @@ class PleromaApiNotificationService extends BasePleromaApiService
     required String? notificationRemoteId,
   }) async {
     assert(
-    restApiAuthService.isPleroma,
+      restApiAuthService.isPleroma,
       'markAsRead notification works only on pleroma',
     );
 
@@ -73,7 +73,7 @@ class PleromaApiNotificationService extends BasePleromaApiService
     required String? maxNotificationRemoteId,
   }) async {
     assert(
-    restApiAuthService.isPleroma,
+      restApiAuthService.isPleroma,
       'markAsRead notification works only on pleroma',
     );
 
@@ -104,7 +104,7 @@ class PleromaApiNotificationService extends BasePleromaApiService
     List<PleromaApiNotificationType>? includeTypes,
     List<PleromaApiVisibility>? excludeVisibilities,
   }) async {
-    if(restApiAuthService.isPleroma) {
+    if (restApiAuthService.isPleroma) {
       _checkGetNotificationsIncludeTypes(includeTypes);
     }
 
@@ -158,7 +158,7 @@ class PleromaApiNotificationService extends BasePleromaApiService
     if (onlyFromAccountRemoteId != null) {
       // todo: remove when pleroma will support
       assert(
-      restApiAuthService.isMastodon,
+        restApiAuthService.isMastodon,
         'Not supported on Pleroma. '
         'onlyFromAccountRemoteId added only in Mastodon 2.9.0 '
         'but Pleroma targets Mastodon 2.7.2 API',

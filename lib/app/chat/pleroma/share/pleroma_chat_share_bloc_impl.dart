@@ -60,7 +60,6 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
         )
         .toList();
 
-
     // todo: think about throttling & sorting
     // perhaps send in sequence instead of parallel
     Iterable<Future<List<IPleromaApiChatMessage>>>

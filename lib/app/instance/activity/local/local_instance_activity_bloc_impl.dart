@@ -43,7 +43,6 @@ class LocalInstanceActivityBloc extends InstanceActivityBloc
     );
   }
 
-
   @override
   InstanceLocation get instanceLocation => InstanceLocation.local;
 

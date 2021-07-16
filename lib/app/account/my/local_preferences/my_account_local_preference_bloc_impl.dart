@@ -6,7 +6,6 @@ import 'package:fedi/local_preferences/local_preferences_service.dart';
 class MyAccountLocalPreferenceBloc
     extends ObjectLocalPreferenceBloc<PleromaMyAccountWrapper?>
     implements IMyAccountLocalPreferenceBloc {
-
   static const PleromaMyAccountWrapper? defaultValue = null;
 
   MyAccountLocalPreferenceBloc(

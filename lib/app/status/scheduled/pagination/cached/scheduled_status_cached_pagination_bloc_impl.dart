@@ -74,8 +74,8 @@ class ScheduledStatusCachedPaginationBloc
 
   static Widget provideToContext(
     BuildContext context, {
-        // todo: refactor
-        // ignore: no-magic-number
+    // todo: refactor
+    // ignore: no-magic-number
     int itemsCountPerPage = 20,
     int? maximumCachedPagesCount,
     required Widget child,

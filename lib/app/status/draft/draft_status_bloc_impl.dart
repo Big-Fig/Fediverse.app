@@ -47,7 +47,6 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
     _draftStatusSubject.disposeWith(this);
     _stateSubject.disposeWith(this);
 
-
     if (delayInit) {
       Future.delayed(Duration(seconds: 1), () {
         _init(draftStatus);
@@ -60,10 +59,8 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
   void _init(IDraftStatus draftStatus) {
     if (!isDisposed) {
       if (isNeedWatchLocalRepositoryForUpdates) {
-        draftStatusRepository
-            .watchByDbIdInAppType(draftStatus.localId!)
-            .listen(
-              (updatedStatus) {
+        draftStatusRepository.watchByDbIdInAppType(draftStatus.localId!).listen(
+          (updatedStatus) {
             if (updatedStatus != null) {
               _draftStatusSubject.add(updatedStatus);
             }

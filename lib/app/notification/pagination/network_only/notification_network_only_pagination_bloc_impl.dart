@@ -49,12 +49,11 @@ class NotificationNetworkOnlyPaginationBloc
     required PaginationPage<INotification>? olderPage,
     required PaginationPage<INotification>? newerPage,
   }) {
-
     return listService.loadItemsFromRemoteForPage(
-        itemsCountPerPage: itemsCountPerPage,
-        pageIndex: pageIndex,
-        minId: newerPage?.items.lastOrNull?.remoteId,
-        maxId: olderPage?.items.firstOrNull?.remoteId,
-      );
+      itemsCountPerPage: itemsCountPerPage,
+      pageIndex: pageIndex,
+      minId: newerPage?.items.lastOrNull?.remoteId,
+      maxId: olderPage?.items.firstOrNull?.remoteId,
+    );
   }
 }

@@ -56,7 +56,8 @@ enum PleromaChatMessageOrderType {
   createdAt,
 }
 
-class PleromaChatMessageRepositoryOrderingTermData extends RepositoryOrderingTerm {
+class PleromaChatMessageRepositoryOrderingTermData
+    extends RepositoryOrderingTerm {
   final PleromaChatMessageOrderType orderType;
   @override
   final OrderingMode orderingMode;
@@ -88,7 +89,8 @@ class PleromaChatMessageRepositoryOrderingTermData extends RepositoryOrderingTer
     orderType: PleromaChatMessageOrderType.createdAt,
   );
 
-  static const List<PleromaChatMessageRepositoryOrderingTermData> defaultTerms = [
+  static const List<PleromaChatMessageRepositoryOrderingTermData> defaultTerms =
+      [
     createdAtDesc,
   ];
 

@@ -334,9 +334,9 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
     // refresh to update followRequestCount
     if (pleromaNotificationType == PleromaApiNotificationType.followRequest) {
       // ignore: unawaited_futures
-        myAccountBloc.refreshFromNetwork(
-          isNeedPreFetchRelationship: false,
-        );
+      myAccountBloc.refreshFromNetwork(
+        isNeedPreFetchRelationship: false,
+      );
     }
 
     if (notification != null) {

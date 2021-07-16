@@ -95,9 +95,9 @@ class _StatusThreadAppBarStarterAccountWidget extends StatelessWidget {
               child: DisposableProxyProvider<IStatusBloc, IStatusSensitiveBloc>(
                 update: (context, statusBloc, _) =>
                     StatusSensitiveBloc.createFromContext(
-                      context: context,
-                      statusBloc: statusBloc,
-                    ),
+                  context: context,
+                  statusBloc: statusBloc,
+                ),
                 child: Provider<IAccount>.value(
                   value: account,
                   child: DisposableProxyProvider<IAccount, IAccountBloc>(
@@ -112,20 +112,20 @@ class _StatusThreadAppBarStarterAccountWidget extends StatelessWidget {
                           context,
                           account: account,
                           isNeedWatchWebSocketsEvents:
-                          isNeedWatchWebSocketsEvents,
+                              isNeedWatchWebSocketsEvents,
                           isNeedRefreshFromNetworkOnInit:
-                          isNeedRefreshFromNetworkOnInit,
+                              isNeedRefreshFromNetworkOnInit,
                           isNeedWatchLocalRepositoryForUpdates:
-                          isNeedWatchLocalRepositoryForUpdates,
+                              isNeedWatchLocalRepositoryForUpdates,
                           isNeedPreFetchRelationship:
-                          isNeedPreFetchRelationship,
+                              isNeedPreFetchRelationship,
                         );
                       } else {
                         return RemoteAccountBloc.createFromContext(
                           context,
                           account: account,
                           isNeedRefreshFromNetworkOnInit:
-                          isNeedRefreshFromNetworkOnInit,
+                              isNeedRefreshFromNetworkOnInit,
                         );
                       }
                     },

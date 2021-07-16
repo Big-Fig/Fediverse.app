@@ -14,8 +14,7 @@ class PaginationSettings implements IJsonObject, ISettings<PaginationSettings> {
   @JsonKey(name: 'page_size')
   final String pageSizeString;
 
-  PaginationPageSize get pageSize =>
-      pageSizeString.toPaginationPageSize();
+  PaginationPageSize get pageSize => pageSizeString.toPaginationPageSize();
 
   PaginationSettings({
     required this.pageSizeString,

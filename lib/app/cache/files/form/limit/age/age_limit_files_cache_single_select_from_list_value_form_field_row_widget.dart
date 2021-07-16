@@ -18,7 +18,8 @@ class AgeLimitFilesCacheSingleSelectFromListValueFormFieldRowWidget
         valueIconMapper: null,
         displayIconInDialog: false,
         displayIconInRow: false,
-        valueTitleMapper: (BuildContext context, FilesCacheAgeLimitType? value) {
+        valueTitleMapper:
+            (BuildContext context, FilesCacheAgeLimitType? value) {
           switch (value!) {
             case FilesCacheAgeLimitType.notSet:
               return S

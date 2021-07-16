@@ -98,7 +98,6 @@ void main() {
       await myAccountLocalPreferenceBloc.setValue(
         myAccount.toPleromaApiMyAccountWrapper(),
       );
-      
 
       myAccountBloc = MyAccountBloc(
         pleromaMyAccountService: pleromaMyAccountServiceMock,
@@ -152,7 +151,6 @@ void main() {
     );
 
     await RxDartTestHelper.waitToExecuteRxCallbacks();
-
   }
 
   test('conversation', () async {
@@ -212,7 +210,6 @@ void main() {
     var subscription = conversationBloc.lastStatusStream.listen((newValue) {
       listened = newValue;
     });
-
 
     await _update(
       newValue,

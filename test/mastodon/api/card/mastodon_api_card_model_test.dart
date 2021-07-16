@@ -23,8 +23,7 @@ void main() {
     );
 
     expect(
-      PleromaApiCard.only(
-      ).isHaveImage,
+      PleromaApiCard.only().isHaveImage,
       false,
     );
   });
@@ -34,19 +33,18 @@ void main() {
         type: null,
       ).typeAsMastodonApi,
       null,
-    );    expect(
+    );
+    expect(
       PleromaApiCard.only(
         type: 'video',
       ).typeAsMastodonApi,
       MastodonApiCardType.video,
     );
-
   });
 
   test('isHaveContent', () async {
     expect(
-      PleromaApiCard.only(
-      ).isHaveContent,
+      PleromaApiCard.only().isHaveContent,
       false,
     );
     expect(

@@ -202,8 +202,7 @@ class ChatDao extends PopulatedAppRemoteDatabaseDao<
   }
 
   @override
-  JoinedSelectStatement
-      convertSimpleSelectStatementToJoinedSelectStatement({
+  JoinedSelectStatement convertSimpleSelectStatementToJoinedSelectStatement({
     required SimpleSelectStatement<$DbChatsTable, DbChat> query,
     required PleromaChatRepositoryFilters? filters,
   }) {

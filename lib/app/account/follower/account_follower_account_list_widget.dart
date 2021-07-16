@@ -70,7 +70,8 @@ class _AccountFollowerAccountListBodyWidget extends StatelessWidget {
   }
 }
 
-void _goToAccountFollowerAccountListPage(BuildContext context, IAccount account) {
+void _goToAccountFollowerAccountListPage(
+    BuildContext context, IAccount account) {
   var accountListBloc = IAccountListBloc.of(context, listen: false);
   var instanceLocation = accountListBloc.instanceLocation;
   var isLocal = instanceLocation == InstanceLocation.local;

@@ -105,5 +105,4 @@ abstract class IAccountRepository
     required String followerAccountId,
     required Batch? batchTransaction,
   });
-
 }

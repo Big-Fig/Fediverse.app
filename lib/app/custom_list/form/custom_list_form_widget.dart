@@ -11,14 +11,14 @@ class CustomListFormWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ProxyProvider<ICustomListFormBloc, IStringValueFormFieldBloc>(
-        update: (context, value, previous) => value.titleField,
-        child: StringValueFormFieldRowWidget(
-          autocorrect: true,
-          label: S.of(context).app_customList_form_field_title_label,
-          hint: S.of(context).app_customList_form_field_title_hint,
-          onSubmitted: null,
-          textInputAction: TextInputAction.done,
-        ),
-      );
+      update: (context, value, previous) => value.titleField,
+      child: StringValueFormFieldRowWidget(
+        autocorrect: true,
+        label: S.of(context).app_customList_form_field_title_label,
+        hint: S.of(context).app_customList_form_field_title_hint,
+        onSubmitted: null,
+        textInputAction: TextInputAction.done,
+      ),
+    );
   }
 }

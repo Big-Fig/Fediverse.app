@@ -8,6 +8,6 @@ class StatusDeletedOverlayWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => FediBlurredOverlayWarningWidget(
-    descriptionText: S.of(context).app_status_deleted_desc,
-  );
+        descriptionText: S.of(context).app_status_deleted_desc,
+      );
 }

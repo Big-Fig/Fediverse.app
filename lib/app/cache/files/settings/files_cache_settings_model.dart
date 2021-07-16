@@ -34,8 +34,7 @@ class FilesCacheSettings implements IJsonObject, ISettings<FilesCacheSettings> {
     required FilesCacheSizeLimitCountType sizeLimitCountType,
     required FilesCacheAgeLimitType ageLimitType,
   }) : this(
-          sizeLimitCountTypeString:
-          sizeLimitCountType.toJsonValue(),
+          sizeLimitCountTypeString: sizeLimitCountType.toJsonValue(),
           ageLimitTypeString: ageLimitType.toJsonValue(),
         );
 
@@ -53,10 +52,8 @@ class FilesCacheSettings implements IJsonObject, ISettings<FilesCacheSettings> {
     FilesCacheAgeLimitType? ageLimitType,
   }) =>
       FilesCacheSettings.fromEnum(
-        sizeLimitCountType:
-            sizeLimitCountType ?? this.sizeLimitCountType,
-        ageLimitType:
-            ageLimitType ?? this.ageLimitType,
+        sizeLimitCountType: sizeLimitCountType ?? this.sizeLimitCountType,
+        ageLimitType: ageLimitType ?? this.ageLimitType,
       );
 
   @override
@@ -71,12 +68,10 @@ class FilesCacheSettings implements IJsonObject, ISettings<FilesCacheSettings> {
       identical(this, other) ||
       other is FilesCacheSettings &&
           runtimeType == other.runtimeType &&
-          sizeLimitCountTypeString ==
-              other.sizeLimitCountTypeString &&
+          sizeLimitCountTypeString == other.sizeLimitCountTypeString &&
           ageLimitTypeString == other.ageLimitTypeString;
 
   @override
   int get hashCode =>
-      sizeLimitCountTypeString.hashCode ^
-      ageLimitTypeString.hashCode;
+      sizeLimitCountTypeString.hashCode ^ ageLimitTypeString.hashCode;
 }

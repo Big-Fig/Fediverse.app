@@ -30,7 +30,8 @@ class NotificationTabBloc extends AsyncInitLoadingBloc
 
   @override
   // ignore: avoid-late-keyword
-  late ICachedPaginationListWithNewItemsBloc<CachedPaginationPage<INotification>,
+  late ICachedPaginationListWithNewItemsBloc<
+      CachedPaginationPage<INotification>,
       INotification> paginationListWithNewItemsBloc;
 
   NotificationTabBloc({
@@ -71,7 +72,8 @@ class NotificationTabBloc extends AsyncInitLoadingBloc
 
     addDisposable(notificationCachedListBloc);
     addDisposable(notificationCachedPaginationBloc);
-    addDisposable(paginationListWithNewItemsBloc,
+    addDisposable(
+      paginationListWithNewItemsBloc,
     );
   }
 }

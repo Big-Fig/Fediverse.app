@@ -34,7 +34,7 @@ class _FediPaginationListLoadingErrorNotificationOverlayBuilderWidgetState
     var paginationListBloc = IPaginationListBloc.of(context, listen: false);
 
     paginationListBloc.refreshErrorStream.listen(
-          (paginationListLoadingError) {
+      (paginationListLoadingError) {
         var now = DateTime.now();
         var difference = now.difference(_lastRefreshErrorShowedDateTime);
         if (difference > _throttleDuration) {
@@ -48,7 +48,7 @@ class _FediPaginationListLoadingErrorNotificationOverlayBuilderWidgetState
       },
     ).disposeWith(disposable);
     paginationListBloc.loadMoreErrorStream.listen(
-          (paginationListLoadingError) {
+      (paginationListLoadingError) {
         var now = DateTime.now();
         var difference = now.difference(_lastLoadMoreErrorShowedDateTime);
         if (difference > _throttleDuration) {

@@ -7,10 +7,12 @@ import 'pleroma_api_conversation_test_helper.dart';
 
 void main() {
   test('PleromaApiConversationPleromaPart toPleromaApiAccount', () async {
-    var original = PleromaApiConversationTestHelper.createTestPleromaApiConversationPleromaPart(
+    var original = PleromaApiConversationTestHelper
+        .createTestPleromaApiConversationPleromaPart(
       seed: 'seed',
     );
-    var obj = original.toPleromaApiConversationPleromaPart(forceNewObject: true);
+    var obj =
+        original.toPleromaApiConversationPleromaPart(forceNewObject: true);
 
     expect(original, obj);
   });
@@ -33,5 +35,4 @@ void main() {
       PleromaApiConversation.fromJson,
     );
   });
-
 }

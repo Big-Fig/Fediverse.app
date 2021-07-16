@@ -18,7 +18,7 @@ class SelectAccountPaginationListBloc extends AccountPaginationListBloc {
     required IPaginationBloc<PaginationPage<IAccount>, IAccount> paginationBloc,
   }) : super(paginationBloc: paginationBloc) {
     searchInputBloc.confirmedSearchTermStream.listen(
-          (newText) {
+      (newText) {
         // refresh controller if it attached
         refreshWithController();
       },

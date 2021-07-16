@@ -85,7 +85,6 @@ void main() {
     );
 
     await RxDartTestHelper.waitToExecuteRxCallbacks();
-
   }
 
   test('account', () async {
@@ -101,7 +100,6 @@ void main() {
     var subscription = accountBloc.accountStream.listen((newValue) {
       listened = newValue;
     });
-
 
     listened = null;
     await RxDartTestHelper.waitForData(() => listened);
@@ -125,7 +123,6 @@ void main() {
     var subscription = accountBloc.acctStream.listen((newValue) {
       listened = newValue;
     });
-
 
     listened = null;
     await RxDartTestHelper.waitForData(() => listened);
@@ -153,7 +150,6 @@ void main() {
       listened = newValue;
     });
 
-
     listened = null;
     await RxDartTestHelper.waitForData(() => listened);
 
@@ -175,7 +171,6 @@ void main() {
     var subscription = accountBloc.headerStream.listen((newValue) {
       listened = newValue;
     });
-
 
     listened = null;
     await RxDartTestHelper.waitForData(() => listened);
@@ -199,7 +194,6 @@ void main() {
       listened = newValue;
     });
 
-
     listened = null;
     await RxDartTestHelper.waitForData(() => listened);
 
@@ -221,7 +215,6 @@ void main() {
     var subscription = accountBloc.displayNameStream.listen((newValue) {
       listened = newValue;
     });
-
 
     listened = null;
     await RxDartTestHelper.waitForData(() => listened);
@@ -251,7 +244,6 @@ void main() {
       listened = newValue;
     });
 
-
     listened = null;
     await RxDartTestHelper.waitForData(() => listened);
 
@@ -275,7 +267,6 @@ void main() {
       listened = newValue;
     });
 
-
     listened = null;
     await RxDartTestHelper.waitForData(() => listened);
 
@@ -297,7 +288,6 @@ void main() {
     var subscription = accountBloc.statusesCountStream.listen((newValue) {
       listened = newValue;
     });
-
 
     listened = null;
     await RxDartTestHelper.waitForData(() => listened);
@@ -321,7 +311,6 @@ void main() {
       listened = newValue;
     });
 
-
     listened = null;
     await RxDartTestHelper.waitForData(() => listened);
 
@@ -343,7 +332,6 @@ void main() {
     var subscription = accountBloc.followersCountStream.listen((newValue) {
       listened = newValue;
     });
-
 
     listened = null;
     await RxDartTestHelper.waitForData(() => listened);
@@ -374,7 +362,6 @@ void main() {
         accountBloc.displayNameEmojiTextStream.listen((newValue) {
       listened = newValue;
     });
-
 
     listened = null;
     await RxDartTestHelper.waitForData(() => listened);
@@ -423,7 +410,6 @@ void main() {
       listened = newValue;
     });
 
-
     listened = null;
     await RxDartTestHelper.waitForData(() => listened);
 
@@ -469,7 +455,6 @@ void main() {
       listened = newValue;
     });
 
-
     listened = null;
     await RxDartTestHelper.waitForData(() => listened);
 
@@ -496,7 +481,6 @@ void main() {
       listened = newValue;
     });
 
-
     listened = null;
     await RxDartTestHelper.waitForData(() => listened);
 
@@ -519,10 +503,8 @@ void main() {
 
     await accountBloc.refreshFromNetwork(isNeedPreFetchRelationship: true);
 
-
     listened = null;
     await RxDartTestHelper.waitForData(() => listened);
-
 
     AccountTestHelper.expectAccount(
       accountBloc.account,
@@ -543,7 +525,6 @@ void main() {
     var subscription = accountBloc.relationshipStream!.listen((newValue) {
       listened = newValue;
     });
-
 
     listened = null;
     await RxDartTestHelper.waitForData(() => listened);
@@ -574,20 +555,16 @@ void main() {
 
     await accountBloc.toggleBlock();
 
-
     listened = null;
     await RxDartTestHelper.waitForData(() => listened);
-
 
     expect(accountBloc.relationship!.blocking, !initialValue);
     expect(listened!.blocking, !initialValue);
 
     await accountBloc.toggleBlock();
 
-
     listened = null;
     await RxDartTestHelper.waitForData(() => listened);
-
 
     expect(accountBloc.relationship!.blocking, initialValue);
     expect(listened!.blocking, initialValue);
@@ -602,7 +579,6 @@ void main() {
     var subscription = accountBloc.relationshipStream!.listen((newValue) {
       listened = newValue;
     });
-
 
     listened = null;
     await RxDartTestHelper.waitForData(() => listened);
@@ -626,20 +602,16 @@ void main() {
 
     await accountBloc.toggleFollow();
 
-
     listened = null;
     await RxDartTestHelper.waitForData(() => listened);
-
 
     expect(accountBloc.relationship!.following, !initialValue);
     expect(listened!.following, !initialValue);
 
     await accountBloc.toggleFollow();
 
-
     listened = null;
     await RxDartTestHelper.waitForData(() => listened);
-
 
     expect(accountBloc.relationship!.following, initialValue);
     expect(listened!.following, initialValue);
@@ -654,7 +626,6 @@ void main() {
     var subscription = accountBloc.relationshipStream!.listen((newValue) {
       listened = newValue;
     });
-
 
     listened = null;
     await RxDartTestHelper.waitForData(() => listened);
@@ -696,20 +667,16 @@ void main() {
       duration: null,
     );
 
-
     listened = null;
     await RxDartTestHelper.waitForData(() => listened);
-
 
     expect(accountBloc.relationship!.muting, !initialValue);
     expect(listened!.muting, !initialValue);
 
     await accountBloc.unMute();
 
-
     listened = null;
     await RxDartTestHelper.waitForData(() => listened);
-
 
     expect(accountBloc.relationship!.muting, initialValue);
     expect(listened!.muting, initialValue);
@@ -724,7 +691,6 @@ void main() {
     var subscription = accountBloc.relationshipStream!.listen((newValue) {
       listened = newValue;
     });
-
 
     listened = null;
     await RxDartTestHelper.waitForData(() => listened);
@@ -747,20 +713,16 @@ void main() {
 
     await accountBloc.togglePin();
 
-
     listened = null;
     await RxDartTestHelper.waitForData(() => listened);
-
 
     expect(accountBloc.relationship!.muting, !initialValue);
     expect(listened!.muting, !initialValue);
 
     await accountBloc.togglePin();
 
-
     listened = null;
     await RxDartTestHelper.waitForData(() => listened);
-
 
     expect(accountBloc.relationship!.muting, initialValue);
     expect(listened!.muting, initialValue);

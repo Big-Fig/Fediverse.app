@@ -176,7 +176,8 @@ abstract class PostMessageBloc extends DisposableOwner
   }
 
   @override
-  PostMessageSelectedAction? get selectedAction => selectedActionSubject.valueOrNull;
+  PostMessageSelectedAction? get selectedAction =>
+      selectedActionSubject.valueOrNull;
 
   @override
   Stream<PostMessageSelectedAction?> get selectedActionStream =>

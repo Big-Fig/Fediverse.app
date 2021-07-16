@@ -210,11 +210,9 @@ class PleromaApiAnnouncement implements IPleromaApiAnnouncement, IJsonObject {
         read: read ?? this.read,
         reactions:
             reactions?.toPleromaApiAnnouncementReactions() ?? this.reactions,
-        mentions:
-            mentions?.toPleromaApiMentions() ?? this.mentions,
+        mentions: mentions?.toPleromaApiMentions() ?? this.mentions,
         tags: tags?.toPleromaApiTags() ?? this.tags,
-        statuses:
-            statuses?.toPleromaApiStatuses() ?? this.statuses,
+        statuses: statuses?.toPleromaApiStatuses() ?? this.statuses,
         scheduledAt: scheduledAt ?? this.scheduledAt,
         startsAt: startsAt ?? this.startsAt,
         endsAt: endsAt ?? this.endsAt,

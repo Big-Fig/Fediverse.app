@@ -629,7 +629,7 @@ class PleromaApiAccountPleromaPart
   });
 
   static List<String>? fromJsonAlsoKnownAsListOrNullOnError(dynamic json) {
-    if(json == null) {
+    if (json == null) {
       return null;
     }
     // hack because backend sometimes returns pleroma object in invalid format
@@ -658,7 +658,7 @@ class PleromaApiAccountPleromaPart
   static PleromaApiAccountPleromaPart? fromJsonOrNullOnError(
     Map<String, dynamic>? json,
   ) {
-    if(json == null) {
+    if (json == null) {
       return null;
     }
     // hack because backend sometimes returns pleroma object in invalid format
@@ -1019,7 +1019,7 @@ class PleromaApiAccountRelationship
   static PleromaApiAccountRelationship? fromJsonOrNullOnError(
     Map<String, dynamic>? json,
   ) {
-    if(json == null) {
+    if (json == null) {
       return null;
     }
     // hack because backend sometimes returns pleroma object in invalid format

@@ -19,7 +19,7 @@ class RemoteInstanceDirectoryBloc extends InstanceDirectoryBloc
   RemoteInstanceDirectoryBloc({
     required this.remoteInstanceBloc,
     required IPaginationSettingsBloc paginationSettingsBloc,
-  })   : pleromaApiDirectoryService = PleromaApiDirectoryService(
+  })  : pleromaApiDirectoryService = PleromaApiDirectoryService(
           restService: remoteInstanceBloc.pleromaRestService,
         ),
         super(

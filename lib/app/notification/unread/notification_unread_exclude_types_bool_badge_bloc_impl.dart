@@ -62,8 +62,8 @@ class NotificationUnreadExcludeTypesBoolBadgeBloc extends AsyncInitLoadingBloc
       orderingTerms: null,
     )
         .listen(
-          (newFilters) {
-        if(!listEquals(filters, newFilters)) {
+      (newFilters) {
+        if (!listEquals(filters, newFilters)) {
           filters = newFilters;
           reSubscribeForCount();
         }
@@ -79,19 +79,19 @@ class NotificationUnreadExcludeTypesBoolBadgeBloc extends AsyncInitLoadingBloc
     if (!isDisposed) {
       countSubscription = notificationRepository
           .watchCalculateCount(
-        filters: NotificationRepositoryFilters(
-          onlyUnread: true,
-          excludeTypes: excludeTypes,
-          excludeStatusTextConditions: filters
-              .map(
-                (filter) => filter.toStatusTextCondition(),
+            filters: NotificationRepositoryFilters(
+              onlyUnread: true,
+              excludeTypes: excludeTypes,
+              excludeStatusTextConditions: filters
+                  .map(
+                    (filter) => filter.toStatusTextCondition(),
+                  )
+                  .toList(),
+            ),
           )
-              .toList(),
-        ),
-      )
           .map((count) => count > 0)
           .listen(
-            (unread) {
+        (unread) {
           badgeSubject.add(unread);
         },
       );

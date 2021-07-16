@@ -944,7 +944,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         .asyncInitAndRegister<IFilesCacheSettingsBloc>(filesCacheSettingsBloc);
 
     var statusSensitiveDisplayTimeStorageBloc =
-    StatusSensitiveDisplayTimeStorageBloc()..disposeWith(this);
+        StatusSensitiveDisplayTimeStorageBloc()..disposeWith(this);
 
     await globalProviderService
         .asyncInitAndRegister<IStatusSensitiveDisplayTimeStorageBloc>(

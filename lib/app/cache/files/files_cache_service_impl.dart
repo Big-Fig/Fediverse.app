@@ -27,7 +27,6 @@ class FilesCacheService extends DisposableOwner implements IFilesCacheService {
             maxNrOfCacheObjects: maxNrOfCacheObjects ?? 100,
           ),
         ) {
-
     addCustomDisposable(() => cacheManager.dispose());
   }
 
@@ -112,5 +111,6 @@ class FilesCacheService extends DisposableOwner implements IFilesCacheService {
   @override
   Future<File> getImageByUrl({
     required String imageUrl,
-  }) => cacheManager.getSingleFile(imageUrl);
+  }) =>
+      cacheManager.getSingleFile(imageUrl);
 }

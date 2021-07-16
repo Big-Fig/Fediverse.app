@@ -59,7 +59,6 @@ class ScheduledStatusRepositoryOrderingTermData extends RepositoryOrderingTerm {
     orderType: ScheduledStatusRepositoryOrderType.remoteId,
   );
 
-
   static const List<ScheduledStatusRepositoryOrderingTermData> defaultTerms = [
     remoteIdDesc,
   ];

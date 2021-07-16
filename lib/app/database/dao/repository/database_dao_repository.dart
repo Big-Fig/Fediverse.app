@@ -115,5 +115,4 @@ abstract class DatabaseDaoRepository<
       batchTransaction: batchTransaction,
     );
   }
-
 }

@@ -55,8 +55,7 @@ class ConversationChatNewMessagesHandlerBloc extends DisposableOwner
   }
 
   Future _updateConversationById(String conversationRemoteId) async {
-    var conversation =
-        await conversationChatService.getConversation(
+    var conversation = await conversationChatService.getConversation(
       conversationRemoteId: conversationRemoteId,
     );
 

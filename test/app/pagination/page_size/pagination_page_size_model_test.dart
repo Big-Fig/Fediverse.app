@@ -1,6 +1,6 @@
-
 import 'package:fedi/app/pagination/page_size/pagination_page_size_model.dart';
 import 'package:flutter_test/flutter_test.dart';
+
 // ignore_for_file: no-magic-number
 void main() {
   test('toJsonValue & fromJsonValue', () async {

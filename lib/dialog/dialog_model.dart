@@ -75,8 +75,6 @@ class DialogAction {
       isActionEnabledStreamFetcher.hashCode ^
       isActionVisibleFetcher.hashCode ^
       isActionVisibleStreamFetcher.hashCode;
-
-
 }
 
 class SelectionDialogAction extends DialogAction {

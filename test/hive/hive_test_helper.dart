@@ -5,6 +5,7 @@ import 'package:fedi/json/json_model.dart';
 import 'package:fedi/local_preferences/hive_local_preferences_service_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/hive.dart';
+
 // ignore_for_file: no-magic-number, avoid-late-keyword
 class HiveTestHelper {
   static void testAdapter<T>(T Function() adapterCreator) {

@@ -11,8 +11,7 @@ class ConversationChatUnreadBadgeBloc extends DisposableOwner
   });
 
   @override
-  Stream<bool> get badgeStream =>
-      conversationChatRepository
-          .watchTotalUnreadCount()
-          .map((count) => count > 0);
+  Stream<bool> get badgeStream => conversationChatRepository
+      .watchTotalUnreadCount()
+      .map((count) => count > 0);
 }

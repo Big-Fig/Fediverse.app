@@ -36,12 +36,11 @@ class ConversationChatMessageCachedPaginationBloc
     required CachedPaginationPage<IConversationChatMessage>? olderPage,
     required CachedPaginationPage<IConversationChatMessage>? newerPage,
   }) {
-
     return chatMessageListService.loadLocalItems(
-        limit: itemsCountPerPage,
-        newerThan: olderPage?.items.firstOrNull,
-        olderThan: newerPage?.items.lastOrNull,
-      );
+      limit: itemsCountPerPage,
+      newerThan: olderPage?.items.firstOrNull,
+      olderThan: newerPage?.items.lastOrNull,
+    );
   }
 
   @override

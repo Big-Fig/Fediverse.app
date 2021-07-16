@@ -237,8 +237,7 @@ Future<T?> _showDialog<T>({
 }) async {
   var isNeedRebuildActionsStream = fieldBloc.isNeedRebuildActionsStream;
 
-  var actionsSubject =
-      BehaviorSubject<List<SelectionDialogAction>>.seeded(
+  var actionsSubject = BehaviorSubject<List<SelectionDialogAction>>.seeded(
     _calculateActions(
       fieldBloc: fieldBloc,
       context: context,
@@ -298,7 +297,6 @@ List<SelectionDialogAction> _calculateActions<T>({
 
   return result;
 }
-
 
 // todo: refactor long-parameter-list
 // ignore: long-parameter-list, code-metrics

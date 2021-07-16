@@ -22,7 +22,7 @@ class EditInstanceAnnouncementSettingsBloc
   EditInstanceAnnouncementSettingsBloc({
     required this.instanceAnnouncementSettingsBloc,
     required bool isEnabled,
-  })   : withDismissedFieldBloc = BoolValueFormFieldBloc(
+  })  : withDismissedFieldBloc = BoolValueFormFieldBloc(
           originValue: instanceAnnouncementSettingsBloc.withDismissed,
           isEnabled: isEnabled,
         ),

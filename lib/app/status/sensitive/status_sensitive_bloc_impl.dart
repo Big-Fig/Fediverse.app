@@ -143,8 +143,7 @@ class StatusSensitiveBloc extends DisposableOwner
       );
 
   @override
-  bool get isAlwaysShowNsfw =>
-      statusSensitiveSettingsBloc.isAlwaysShowNsfw;
+  bool get isAlwaysShowNsfw => statusSensitiveSettingsBloc.isAlwaysShowNsfw;
 
   @override
   bool get isAlwaysShowSpoiler =>

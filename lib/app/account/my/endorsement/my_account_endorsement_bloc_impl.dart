@@ -13,7 +13,6 @@ import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pleroma/api/endorsements/pleroma_api_endorsements_service.dart';
 import 'package:flutter/widgets.dart';
 
-
 class MyAccountEndorsementBloc extends DisposableOwner
     implements IMyAccountEndorsementBloc {
   final IPaginationSettingsBloc paginationSettingsBloc;
@@ -24,17 +23,17 @@ class MyAccountEndorsementBloc extends DisposableOwner
   }) {
     myAccountEndorsementAccountListNetworkOnlyListBloc =
         MyAccountEndorsementAccountListNetworkOnlyListBloc(
-          pleromaApiEndorsementsService: pleromaApiEndorsementsService,
-          remoteInstanceUriOrNull: remoteInstanceUriOrNull,
-          instanceLocation: instanceLocation,
-        );
+      pleromaApiEndorsementsService: pleromaApiEndorsementsService,
+      remoteInstanceUriOrNull: remoteInstanceUriOrNull,
+      instanceLocation: instanceLocation,
+    );
 
     myAccountEndorsementAccountListNetworkOnlyPaginationBloc =
         AccountNetworkOnlyPaginationBloc(
-          listBloc: myAccountEndorsementAccountListNetworkOnlyListBloc,
-          maximumCachedPagesCount: null,
-          paginationSettingsBloc: paginationSettingsBloc,
-        );
+      listBloc: myAccountEndorsementAccountListNetworkOnlyListBloc,
+      maximumCachedPagesCount: null,
+      paginationSettingsBloc: paginationSettingsBloc,
+    );
     accountPaginationListBloc = AccountPaginationListBloc(
       paginationBloc: myAccountEndorsementAccountListNetworkOnlyPaginationBloc,
     );
@@ -51,12 +50,12 @@ class MyAccountEndorsementBloc extends DisposableOwner
   @override
   // ignore: avoid-late-keyword
   late IMyAccountEndorsementAccountListNetworkOnlyListBloc
-  myAccountEndorsementAccountListNetworkOnlyListBloc;
+      myAccountEndorsementAccountListNetworkOnlyListBloc;
 
   @override
   // ignore: avoid-late-keyword
   late IAccountNetworkOnlyPaginationBloc
-  myAccountEndorsementAccountListNetworkOnlyPaginationBloc;
+      myAccountEndorsementAccountListNetworkOnlyPaginationBloc;
 
   @override
   // ignore: avoid-late-keyword
@@ -70,7 +69,7 @@ class MyAccountEndorsementBloc extends DisposableOwner
 
   static MyAccountEndorsementBloc createFromContext(BuildContext context) {
     var pleromaApiEndorsementsService =
-    IPleromaApiEndorsementsService.of(context, listen: false);
+        IPleromaApiEndorsementsService.of(context, listen: false);
 
     return MyAccountEndorsementBloc(
       pleromaApiEndorsementsService: pleromaApiEndorsementsService,
@@ -81,7 +80,8 @@ class MyAccountEndorsementBloc extends DisposableOwner
     );
   }
 
-  static Widget provideToContext(BuildContext context, {
+  static Widget provideToContext(
+    BuildContext context, {
     required Widget child,
   }) {
     return DisposableProvider<IMyAccountEndorsementBloc>(

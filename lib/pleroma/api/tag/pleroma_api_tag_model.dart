@@ -76,7 +76,7 @@ class PleromaApiTag implements IPleromaApiTag, IJsonObject {
       _$PleromaApiTagFromJson(json);
 
   static List<PleromaApiTag>? fromJsonListOrNullOnError(dynamic json) {
-    if(json == null) {
+    if (json == null) {
       return null;
     }
 

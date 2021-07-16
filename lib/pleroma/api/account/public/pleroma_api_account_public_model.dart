@@ -102,7 +102,8 @@ class PleromaApiAccountPublicRegisterRequest
       captchaAnswerData.hashCode ^
       captchaSolution.hashCode;
 
-  static PleromaApiAccountPublicRegisterRequest fromJson(Map<String, dynamic> json) =>
+  static PleromaApiAccountPublicRegisterRequest fromJson(
+          Map<String, dynamic> json) =>
       _$PleromaApiAccountPublicRegisterRequestFromJson(json);
 
   @override

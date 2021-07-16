@@ -19,7 +19,7 @@ class RemoteInstanceTrendsBloc extends InstanceTrendsBloc
   RemoteInstanceTrendsBloc({
     required this.remoteInstanceBloc,
     required IPaginationSettingsBloc paginationSettingsBloc,
-  })   : pleromaApiTrendsService = PleromaApiTrendsService(
+  })  : pleromaApiTrendsService = PleromaApiTrendsService(
           restService: remoteInstanceBloc.pleromaRestService,
         ),
         super(

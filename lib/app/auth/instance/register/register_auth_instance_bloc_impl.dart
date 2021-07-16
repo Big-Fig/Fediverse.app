@@ -35,7 +35,7 @@ class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
   final IConnectionService connectionService;
   final ICurrentAuthInstanceBloc currentInstanceBloc;
   final IAuthApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc
-  pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc;
+      pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc;
   final ILocalizationSettingsBloc localizationSettingsBloc;
   final IConfigService configService;
 
@@ -89,7 +89,7 @@ class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
   @override
   Future<AuthHostRegistrationResult> submit() async {
     var pleromaAccountRegisterRequest =
-    registerAuthInstanceFormBloc.calculateRegisterFormData();
+        registerAuthInstanceFormBloc.calculateRegisterFormData();
 
     AuthHostRegistrationResult registrationResult;
     AuthHostBloc? authApplicationBloc;
@@ -102,7 +102,7 @@ class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
         currentInstanceBloc: currentInstanceBloc,
         configService: configService,
         pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc:
-        pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc,
+            pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc,
       );
       await authApplicationBloc.performAsyncInit();
 
@@ -118,7 +118,6 @@ class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
       await authApplicationBloc?.dispose();
     }
 
-
     if (!registrationResult.isHaveNoErrors) {
       registerAuthInstanceFormBloc.onRegisterFailed();
     }
@@ -130,7 +129,7 @@ class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
   }
 
   StreamController<AuthHostRegistrationResult>
-  registrationResultStreamController = StreamController.broadcast();
+      registrationResultStreamController = StreamController.broadcast();
 
   @override
   Stream<AuthHostRegistrationResult> get registrationResultStream =>
@@ -154,7 +153,6 @@ class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
       instanceBaseUri: instanceBaseUri,
       // localizationSettingsBloc: localizationSettingsBloc,
       manualApprovalRequired: pleromaApiInstance.approvalRequired == true,
-    )
-      ..disposeWith(this);
+    )..disposeWith(this);
   }
 }

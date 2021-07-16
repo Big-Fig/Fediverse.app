@@ -81,7 +81,7 @@ class GlobalOrInstanceSettingsLocalPreferenceBloc<T extends ISettings>
         settings: instanceSettings,
         type: GlobalOrInstanceSettingsType.instance,
       );
-    } else if(globalSettings != null) {
+    } else if (globalSettings != null) {
       result = GlobalOrInstanceSettings(
         settings: globalSettings,
         type: GlobalOrInstanceSettingsType.global,

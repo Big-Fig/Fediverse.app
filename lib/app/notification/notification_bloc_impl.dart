@@ -88,7 +88,7 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
           notification.remoteId,
         )
             .listen(
-              (updatedNotification) {
+          (updatedNotification) {
             if (updatedNotification != null) {
               _notificationSubject.add(updatedNotification);
             }
@@ -198,7 +198,8 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
   String get type => notification.type;
 
   @override
-  MastodonApiNotificationType get typeMastodon => notification.typeAsMastodonApi;
+  MastodonApiNotificationType get typeMastodon =>
+      notification.typeAsMastodonApi;
 
   @override
   PleromaApiNotificationType get typePleroma => notification.typePleroma;
@@ -221,9 +222,9 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
     );
     if (pleromaNotificationService.isPleroma) {
       // ignore: unawaited_futures
-        pleromaNotificationService.markAsReadSingle(
-          notificationRemoteId: notification.remoteId,
-        );
+      pleromaNotificationService.markAsReadSingle(
+        notificationRemoteId: notification.remoteId,
+      );
     }
   }
 

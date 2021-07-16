@@ -11,11 +11,12 @@ Future<IMediaDeviceFile?> showEditMyAccountImageConfirmDialog({
   required String title,
   required List<DialogAction> actions,
   required IMediaDeviceFile mediaDeviceFile,
-}) => EditMyAccountImageConfirmDialog(
-    title: title,
-    actions: actions,
-    mediaDeviceFile: mediaDeviceFile,
-  ).show<IMediaDeviceFile>(context);
+}) =>
+    EditMyAccountImageConfirmDialog(
+      title: title,
+      actions: actions,
+      mediaDeviceFile: mediaDeviceFile,
+    ).show<IMediaDeviceFile>(context);
 
 class EditMyAccountImageConfirmDialog extends FediDialog {
   final IMediaDeviceFile mediaDeviceFile;

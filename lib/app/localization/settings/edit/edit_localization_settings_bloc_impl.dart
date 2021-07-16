@@ -31,15 +31,16 @@ class EditLocalizationSettingsBloc
           possibleValues: supportedLocalizationLocaleList,
         ),
         super(
-          isEnabled:isEnabled,
-          settingsBloc:localizationSettingsBloc,
-        isAllItemsInitialized:true,
+          isEnabled: isEnabled,
+          settingsBloc: localizationSettingsBloc,
+          isAllItemsInitialized: true,
         ) {
     addDisposable(localizationLocaleFieldBloc);
   }
 
   @override
-  LocalizationSettings? get settingsData => localizationSettingsBloc.settingsData;
+  LocalizationSettings? get settingsData =>
+      localizationSettingsBloc.settingsData;
 
   @override
   Stream<LocalizationSettings?> get settingsDataStream =>

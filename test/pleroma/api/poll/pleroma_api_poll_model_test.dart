@@ -7,7 +7,6 @@ import 'pleroma_api_poll_test_helper.dart';
 
 // ignore_for_file: no-magic-number
 void main() {
-
   test('PleromaApiPoll equal & hashcode & toString', () async {
     ObjTestHelper.testEqualsHashcodeToString(
       ({required String seed}) =>

@@ -16,7 +16,8 @@ class EditMyAccountLockedFieldWidget extends StatelessWidget {
         update: (context, value, previous) => value.lockedField,
         child: BoolValueFormFieldRowWidget(
           label: S.of(context).app_account_my_edit_field_locked_label,
-          description: S.of(context).app_account_my_edit_field_locked_description,
+          description:
+              S.of(context).app_account_my_edit_field_locked_description,
         ),
       );
 }

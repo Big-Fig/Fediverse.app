@@ -7,6 +7,7 @@ import 'package:moor/ffi.dart';
 import '../../account/database/account_database_test_helper.dart';
 import '../../chat/message/database/chat_message_database_test_helper.dart';
 import '../../status/database/status_database_test_helper.dart';
+
 // ignore_for_file: no-magic-number, avoid-late-keyword
 void main() {
   late AppDatabase database;

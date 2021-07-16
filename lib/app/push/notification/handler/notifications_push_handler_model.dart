@@ -55,5 +55,6 @@ class NotificationsPushHandlerMessage {
   static NotificationsPushHandlerMessage fromJson(Map<String, dynamic> json) =>
       _$NotificationsPushHandlerMessageFromJson(json);
 
-  Map<String, dynamic> toJson() => _$NotificationsPushHandlerMessageToJson(this);
+  Map<String, dynamic> toJson() =>
+      _$NotificationsPushHandlerMessageToJson(this);
 }

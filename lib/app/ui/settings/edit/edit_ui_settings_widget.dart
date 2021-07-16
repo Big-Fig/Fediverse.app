@@ -35,8 +35,7 @@ class _EditUiSettingsStatusFontSizeFieldWidget extends StatelessWidget {
     return ProxyProvider<IEditUiSettingsBloc,
         IUiSettingsFontSizeSingleFromListValueFormFieldBloc>(
       update: (context, value, previous) => value.statusFontSizeBloc,
-      child:
-          const UiSettingsFontSizeSingleFromListValueFormFieldRowWidget(),
+      child: const UiSettingsFontSizeSingleFromListValueFormFieldRowWidget(),
     );
   }
 }

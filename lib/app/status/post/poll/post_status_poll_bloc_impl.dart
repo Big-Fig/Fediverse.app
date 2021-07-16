@@ -47,7 +47,7 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
 
   PostStatusPollBloc({
     required this.pollLimits,
-  })   : pollOptionsGroupBloc = OneTypeFormGroupBloc<IStringValueFormFieldBloc>(
+  })  : pollOptionsGroupBloc = OneTypeFormGroupBloc<IStringValueFormFieldBloc>(
           originalItems:
               createDefaultPollOptions(pollLimits.maxOptionCharsOrDefault),
           // ignore: no-magic-number

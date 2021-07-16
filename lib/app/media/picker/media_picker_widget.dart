@@ -70,8 +70,8 @@ class _MediaPickerPageFolderLoadingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => const Center(
-      child: FediCircularProgressIndicator(),
-    );
+        child: FediCircularProgressIndicator(),
+      );
 }
 
 class _MediaPickerPageFoldersWidget extends StatelessWidget {

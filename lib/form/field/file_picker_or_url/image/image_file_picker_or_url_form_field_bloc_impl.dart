@@ -28,13 +28,14 @@ class ImageFilePickerOrUrlFormFieldBloc extends FilePickerOrUrlFormFieldBloc
     Rx.combineLatest2(
       currentFilePickerFileStream,
       isOriginalDeletedStream,
-          (dynamic currentFilePickerFile, dynamic isOriginalDeleted) => createMediaSource(
+      (dynamic currentFilePickerFile, dynamic isOriginalDeleted) =>
+          createMediaSource(
         filePickerFile: currentFilePickerFile,
         url: originalUrl,
         isOriginalDeleted: isOriginalDeleted,
       ),
     ).listen(
-          (mediaSourceFuture) {
+      (mediaSourceFuture) {
         mediaSourceFuture.then((mediaSource) {
           imageSourceSubject.add(mediaSource);
         });

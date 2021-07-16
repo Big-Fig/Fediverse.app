@@ -5,8 +5,6 @@ import 'package:rxdart/rxdart.dart';
 import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
 
 abstract class FormBloc extends FormGroupBloc implements IFormBloc {
-
-
   BehaviorSubject<List<IFormItemBloc>> itemsSubject = BehaviorSubject();
 
   FormBloc({

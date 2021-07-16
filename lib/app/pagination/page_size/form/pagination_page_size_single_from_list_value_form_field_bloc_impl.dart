@@ -14,13 +14,11 @@ class PaginationPageSizeSingleFromListValueFormFieldBloc
     this.possibleValues = PaginationPageSize.values,
     required PaginationPageSize originValue,
     bool isEnabled = true,
-    List<FormValueFieldValidation<PaginationPageSize>> validators =
-        const [],
+    List<FormValueFieldValidation<PaginationPageSize>> validators = const [],
   }) : super(
           originValue: originValue,
           isEnabled: isEnabled,
           validators: validators,
           isNullValuePossible: isNullValuePossible,
         );
-
 }

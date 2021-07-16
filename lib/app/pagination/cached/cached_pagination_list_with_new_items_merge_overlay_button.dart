@@ -68,9 +68,9 @@ class CachedPaginationListWithNewItemsMergeOverlayButton
               // ignore: no-magic-number
               duration: Duration(milliseconds: 500),
               transitionBuilder: (child, animation) => ScaleTransition(
-                  scale: animation,
-                  child: child,
-                ),
+                scale: animation,
+                child: child,
+              ),
               child: child,
             );
           },

@@ -13,7 +13,6 @@ import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pleroma/api/featured_tags/pleroma_api_featured_tags_service.dart';
 import 'package:flutter/widgets.dart';
 
-
 class AccountFeaturedHashtagListPageBloc extends DisposableOwner
     implements IAccountFeaturedHashtagListPageBloc {
   final IPaginationSettingsBloc paginationSettingsBloc;

@@ -59,9 +59,7 @@ extension IChatMessageExtension on IChatMessage {
       pendingState == null || pendingState == PendingState.published;
 
   bool get isPublishedAndNotDeletedAndNotLocallyHidden =>
-      !deleted &&
-      !hiddenLocallyOnDevice &&
-      isPendingStatePublishedOrNull;
+      !deleted && !hiddenLocallyOnDevice && isPendingStatePublishedOrNull;
 
   bool get isPendingStateNotPublishedOrNull => !isPendingStatePublishedOrNull;
 

@@ -13,7 +13,6 @@ import 'package:provider/provider.dart';
 
 class CustomListPaginationListWidget
     extends FediPaginationListWidget<ICustomList> {
-
   final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
 
   const CustomListPaginationListWidget({

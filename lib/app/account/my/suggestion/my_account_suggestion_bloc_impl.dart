@@ -13,7 +13,6 @@ import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/pleroma/api/suggestions/pleroma_api_suggestions_service.dart';
 import 'package:flutter/widgets.dart';
 
-
 class MyAccountSuggestionBloc extends DisposableOwner
     implements IMyAccountSuggestionBloc {
   final IPaginationSettingsBloc paginationSettingsBloc;

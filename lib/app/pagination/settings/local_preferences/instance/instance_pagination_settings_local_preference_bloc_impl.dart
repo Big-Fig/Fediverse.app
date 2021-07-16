@@ -16,7 +16,6 @@ class InstancePaginationSettingsLocalPreferenceBloc
 
   static const PaginationSettings? defaultValue = null;
 
-
   @override
   PaginationSettings? get defaultPreferenceValue => defaultValue;
 }

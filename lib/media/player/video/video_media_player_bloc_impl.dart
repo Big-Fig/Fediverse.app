@@ -35,7 +35,8 @@ class VideoMediaPlayerBloc extends MediaPlayerBloc
   Stream<DateTime> get lastIterationDateTimeStream =>
       lastIterationDateTimeSubject.stream;
 
-  DateTime? get lastIterationDateTime => lastIterationDateTimeSubject.valueOrNull;
+  DateTime? get lastIterationDateTime =>
+      lastIterationDateTimeSubject.valueOrNull;
 
   VideoMediaPlayerBloc({
     required MediaPlayerSource mediaPlayerSource,

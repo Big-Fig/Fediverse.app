@@ -7,7 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
 typedef AsyncButtonAction<T> = Future<T> Function();
-typedef ButtonBuilder = Widget Function(BuildContext context, VoidCallback? onPressed);
+typedef ButtonBuilder = Widget Function(
+    BuildContext context, VoidCallback? onPressed);
 
 var _logger = Logger('async_button_widget.dart');
 

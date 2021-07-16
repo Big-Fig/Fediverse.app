@@ -103,7 +103,7 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
     required int? backgroundUploadSizeInBytes,
     required PleromaApiInstancePleromaPartMetadataFieldLimits?
         customFieldLimits,
-  })   : displayNameField = StringValueFormFieldBloc(
+  })  : displayNameField = StringValueFormFieldBloc(
           originValue: myAccountBloc.displayNameEmojiText?.text ?? '',
           validators: [
             StringValueFormFieldNonEmptyValidationError.createValidator(),
@@ -198,7 +198,6 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
           originValue: myAccountBloc.myAccount?.bot ?? false,
         ),
         super(isAllItemsInitialized: true) {
-
     displayNameField.disposeWith(this);
     noteField.disposeWith(this);
     lockedField.disposeWith(this);
@@ -221,7 +220,7 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
     botField.disposeWith(this);
 
     hideFollowersField.currentValueStream.listen(
-          (hideFollowers) {
+      (hideFollowers) {
         if (hideFollowers == true) {
           hideFollowersCountField.changeIsEnabled(true);
         } else {
@@ -232,7 +231,7 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
     ).disposeWith(this);
 
     hideFollowsField.currentValueStream.listen(
-          (hideFollows) {
+      (hideFollows) {
         if (hideFollows == true) {
           hideFollowsCountField.changeIsEnabled(true);
         } else {
@@ -241,7 +240,6 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
         }
       },
     ).disposeWith(this);
-
   }
 
   @override
@@ -365,7 +363,7 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
     var info = ICurrentAuthInstanceBloc.of(context, listen: false)
         .currentInstance!
         .info;
-    
+
     return EditMyAccountBloc(
       currentAuthInstanceBloc: ICurrentAuthInstanceBloc.of(
         context,

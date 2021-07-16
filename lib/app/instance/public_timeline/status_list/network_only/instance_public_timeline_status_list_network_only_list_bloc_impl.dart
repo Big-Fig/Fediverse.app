@@ -14,7 +14,8 @@ import 'package:fedi/pleroma/api/timeline/pleroma_api_timeline_service_impl.dart
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-class InstancePublicTimelineStatusListNetworkOnlyListBloc extends IStatusNetworkOnlyListBloc {
+class InstancePublicTimelineStatusListNetworkOnlyListBloc
+    extends IStatusNetworkOnlyListBloc {
   final Uri instanceUri;
   final IPleromaApiTimelineService pleromaApiTimelineService;
   final ITimelineLocalPreferenceBloc timelineLocalPreferenceBloc;

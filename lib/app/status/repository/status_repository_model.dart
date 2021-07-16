@@ -8,7 +8,6 @@ import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:moor/moor.dart';
 
-
 class PleromaReplyVisibilityFilterCondition {
   final String? myAccountRemoteId;
   final PleromaApiReplyVisibilityFilter? replyVisibilityFilter;
@@ -27,10 +26,10 @@ class PleromaReplyVisibilityFilterCondition {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is PleromaReplyVisibilityFilterCondition &&
-              runtimeType == other.runtimeType &&
-              myAccountRemoteId == other.myAccountRemoteId &&
-              replyVisibilityFilter == other.replyVisibilityFilter;
+      other is PleromaReplyVisibilityFilterCondition &&
+          runtimeType == other.runtimeType &&
+          myAccountRemoteId == other.myAccountRemoteId &&
+          replyVisibilityFilter == other.replyVisibilityFilter;
 
   @override
   int get hashCode =>
@@ -109,32 +108,31 @@ class StatusRepositoryFilters {
   // ignore: code-metrics
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is StatusRepositoryFilters &&
-              runtimeType == other.runtimeType &&
-              onlyInListWithRemoteId == other.onlyInListWithRemoteId &&
-              onlyWithHashtag == other.onlyWithHashtag &&
-              onlyFromAccountsFollowingByAccount ==
-                  other.onlyFromAccountsFollowingByAccount &&
-              onlyFromAccount == other.onlyFromAccount &&
-              onlyInConversation == other.onlyInConversation &&
-              onlyLocalCondition == other.onlyLocalCondition &&
-              onlyWithMedia == other.onlyWithMedia &&
-              withMuted == other.withMuted &&
-              listEquals(excludeVisibilities, other.excludeVisibilities) &&
-              onlyNoNsfwSensitive == other.onlyNoNsfwSensitive &&
-              onlyNoReplies == other.onlyNoReplies &&
-              isFromHomeTimeline == other.isFromHomeTimeline &&
-              onlyFavourited == other.onlyFavourited &&
-              onlyBookmarked == other.onlyBookmarked &&
-              listEquals(excludeTextConditions, other.excludeTextConditions) &&
-              mustBeConversationItem == other.mustBeConversationItem &&
-              onlyFromInstance == other.onlyFromInstance &&
-              replyVisibilityFilterCondition ==
-                  other.replyVisibilityFilterCondition &&
-              onlyRemoteCondition == other.onlyRemoteCondition &&
-              onlyNotHiddenLocallyOnDevice ==
-                  other.onlyNotHiddenLocallyOnDevice &&
-              onlyNotDeleted == other.onlyNotDeleted;
+      other is StatusRepositoryFilters &&
+          runtimeType == other.runtimeType &&
+          onlyInListWithRemoteId == other.onlyInListWithRemoteId &&
+          onlyWithHashtag == other.onlyWithHashtag &&
+          onlyFromAccountsFollowingByAccount ==
+              other.onlyFromAccountsFollowingByAccount &&
+          onlyFromAccount == other.onlyFromAccount &&
+          onlyInConversation == other.onlyInConversation &&
+          onlyLocalCondition == other.onlyLocalCondition &&
+          onlyWithMedia == other.onlyWithMedia &&
+          withMuted == other.withMuted &&
+          listEquals(excludeVisibilities, other.excludeVisibilities) &&
+          onlyNoNsfwSensitive == other.onlyNoNsfwSensitive &&
+          onlyNoReplies == other.onlyNoReplies &&
+          isFromHomeTimeline == other.isFromHomeTimeline &&
+          onlyFavourited == other.onlyFavourited &&
+          onlyBookmarked == other.onlyBookmarked &&
+          listEquals(excludeTextConditions, other.excludeTextConditions) &&
+          mustBeConversationItem == other.mustBeConversationItem &&
+          onlyFromInstance == other.onlyFromInstance &&
+          replyVisibilityFilterCondition ==
+              other.replyVisibilityFilterCondition &&
+          onlyRemoteCondition == other.onlyRemoteCondition &&
+          onlyNotHiddenLocallyOnDevice == other.onlyNotHiddenLocallyOnDevice &&
+          onlyNotDeleted == other.onlyNotDeleted;
 
   @override
   int get hashCode =>
@@ -200,23 +198,23 @@ class StatusRepositoryOrderingTermData extends RepositoryOrderingTerm {
   final OrderingMode orderingMode;
 
   static const StatusRepositoryOrderingTermData remoteIdDesc =
-  StatusRepositoryOrderingTermData(
+      StatusRepositoryOrderingTermData(
     orderingMode: OrderingMode.desc,
     orderByType: StatusRepositoryOrderType.remoteId,
   );
   static const StatusRepositoryOrderingTermData remoteIdAsc =
-  StatusRepositoryOrderingTermData(
+      StatusRepositoryOrderingTermData(
     orderingMode: OrderingMode.asc,
     orderByType: StatusRepositoryOrderType.remoteId,
   );
 
   static const StatusRepositoryOrderingTermData createdAtDesc =
-  StatusRepositoryOrderingTermData(
+      StatusRepositoryOrderingTermData(
     orderingMode: OrderingMode.desc,
     orderByType: StatusRepositoryOrderType.createdAt,
   );
   static const StatusRepositoryOrderingTermData createdAtAsc =
-  StatusRepositoryOrderingTermData(
+      StatusRepositoryOrderingTermData(
     orderingMode: OrderingMode.asc,
     orderByType: StatusRepositoryOrderType.createdAt,
   );
@@ -252,9 +250,9 @@ class StatusOnlyLocalCondition {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is StatusOnlyLocalCondition &&
-              runtimeType == other.runtimeType &&
-              localUrlHost == other.localUrlHost;
+      other is StatusOnlyLocalCondition &&
+          runtimeType == other.runtimeType &&
+          localUrlHost == other.localUrlHost;
 
   @override
   int get hashCode => localUrlHost.hashCode;
@@ -273,9 +271,9 @@ class StatusOnlyRemoteCondition {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is StatusOnlyRemoteCondition &&
-              runtimeType == other.runtimeType &&
-              localUrlHost == other.localUrlHost;
+      other is StatusOnlyRemoteCondition &&
+          runtimeType == other.runtimeType &&
+          localUrlHost == other.localUrlHost;
 
   @override
   int get hashCode => localUrlHost.hashCode;
@@ -293,10 +291,10 @@ class StatusTextCondition {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is StatusTextCondition &&
-              runtimeType == other.runtimeType &&
-              phrase == other.phrase &&
-              wholeWord == other.wholeWord;
+      other is StatusTextCondition &&
+          runtimeType == other.runtimeType &&
+          phrase == other.phrase &&
+          wholeWord == other.wholeWord;
 
   @override
   int get hashCode => phrase.hashCode ^ wholeWord.hashCode;
@@ -309,8 +307,7 @@ class StatusTextCondition {
 }
 
 extension FilterStatusTextConditionAdapterExtension on IFilter {
-  StatusTextCondition toStatusTextCondition() =>
-      StatusTextCondition(
+  StatusTextCondition toStatusTextCondition() => StatusTextCondition(
         phrase: phrase,
         wholeWord: wholeWord,
       );

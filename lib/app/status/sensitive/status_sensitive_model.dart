@@ -1,5 +1,3 @@
-
-
 class StatusSensitiveWarningState {
   bool nsfwSensitive;
   bool containsSpoiler;
@@ -8,8 +6,7 @@ class StatusSensitiveWarningState {
   bool get containsSpoilerAndDisplayEnabled =>
       !containsSpoiler || displayEnabled;
 
-  bool get nsfwSensitiveAndDisplayEnabled =>
-      !nsfwSensitive || displayEnabled;
+  bool get nsfwSensitiveAndDisplayEnabled => !nsfwSensitive || displayEnabled;
 
   StatusSensitiveWarningState({
     required this.nsfwSensitive,

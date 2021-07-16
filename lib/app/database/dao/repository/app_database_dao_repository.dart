@@ -216,9 +216,11 @@ abstract class AppDatabaseDaoRepository<
     return createFindInAppTypeSelectable(
       pagination: pagination,
       filters: filters,
-      orderingTerms: orderingTermData != null ? [
-        orderingTermData,
-      ] : null,
+      orderingTerms: orderingTermData != null
+          ? [
+              orderingTermData,
+            ]
+          : null,
     );
   }
 }

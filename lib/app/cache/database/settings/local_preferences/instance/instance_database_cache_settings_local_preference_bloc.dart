@@ -4,7 +4,8 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IInstanceDatabaseCacheSettingsLocalPreferenceBloc
-    implements IDatabaseCacheSettingsLocalPreferenceBloc<DatabaseCacheSettings?> {
+    implements
+        IDatabaseCacheSettingsLocalPreferenceBloc<DatabaseCacheSettings?> {
   static IInstanceDatabaseCacheSettingsLocalPreferenceBloc of(
     BuildContext context, {
     bool listen = true,

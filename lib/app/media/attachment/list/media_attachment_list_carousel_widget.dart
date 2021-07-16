@@ -64,8 +64,10 @@ class MediaAttachmentListItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var mediaAttachment = Provider.of<IPleromaApiMediaAttachment>(context);
     Widget child = const MediaAttachmentWidget();
-    if (mediaAttachment.typeAsMastodonApi == MastodonApiMediaAttachmentType.image ||
-        mediaAttachment.typeAsMastodonApi == MastodonApiMediaAttachmentType.gifv) {
+    if (mediaAttachment.typeAsMastodonApi ==
+            MastodonApiMediaAttachmentType.image ||
+        mediaAttachment.typeAsMastodonApi ==
+            MastodonApiMediaAttachmentType.gifv) {
       child = InkWell(
         onTap: () {
           var mediaAttachmentListBloc =

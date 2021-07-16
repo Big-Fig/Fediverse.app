@@ -239,6 +239,7 @@ class _PostStatusPollMultiplyFieldWidget extends StatelessWidget {
     );
   }
 }
+
 class _PostStatusPollHideTotalsFieldWidget extends StatelessWidget {
   const _PostStatusPollHideTotalsFieldWidget({
     Key? key,

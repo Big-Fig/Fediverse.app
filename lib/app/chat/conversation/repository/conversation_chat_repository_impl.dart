@@ -12,7 +12,6 @@ import 'package:fedi/pleroma/api/conversation/pleroma_api_conversation_model.dar
 import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
 
-
 var _singleConversationChatRepositoryPagination =
     RepositoryPagination<IConversationChat>(
   limit: 1,
@@ -270,19 +269,19 @@ class ConversationChatRepository
       var accounts = remoteItem.accounts;
 
       // ignore: unawaited_futures
-        accountRepository.upsertConversationRemoteAccounts(
-          accounts,
-          conversationRemoteId: remoteItem.id,
-          batchTransaction: batchTransaction,
-        );
+      accountRepository.upsertConversationRemoteAccounts(
+        accounts,
+        conversationRemoteId: remoteItem.id,
+        batchTransaction: batchTransaction,
+      );
 
       if (lastMessage != null) {
         // ignore: unawaited_futures
-          statusRepository.upsertRemoteStatusForConversation(
-            lastMessage,
-            conversationRemoteId: remoteItem.id,
-            batchTransaction: batchTransaction,
-          );
+        statusRepository.upsertRemoteStatusForConversation(
+          lastMessage,
+          conversationRemoteId: remoteItem.id,
+          batchTransaction: batchTransaction,
+        );
       }
     } else {
       await batch((batch) {
@@ -303,16 +302,16 @@ class ConversationChatRepository
     if (batchTransaction != null) {
       // todo: support mode
       // ignore: unawaited_futures
-        _upsertConversationMetadata(
-          remoteItem,
-          batchTransaction: batchTransaction,
-        );
+      _upsertConversationMetadata(
+        remoteItem,
+        batchTransaction: batchTransaction,
+      );
 
       // ignore: unawaited_futures
-        dao.upsertBatch(
-          entity: remoteItem.toDbConversation(),
-          batchTransaction: batchTransaction,
-        );
+      dao.upsertBatch(
+        entity: remoteItem.toDbConversation(),
+        batchTransaction: batchTransaction,
+      );
     } else {
       await batch(
         (batch) {
@@ -335,11 +334,11 @@ class ConversationChatRepository
     if (batchTransaction != null) {
       for (var remoteItem in remoteItems) {
         // ignore: unawaited_futures
-          insertInRemoteTypeBatch(
-            remoteItem,
-            mode: mode,
-            batchTransaction: batchTransaction,
-          );
+        insertInRemoteTypeBatch(
+          remoteItem,
+          mode: mode,
+          batchTransaction: batchTransaction,
+        );
       }
     } else {
       await batch((batch) {
@@ -360,24 +359,24 @@ class ConversationChatRepository
   }) async {
     if (batchTransaction != null) {
       // ignore: unawaited_futures
-        _upsertConversationMetadata(
-          remoteItem,
-          batchTransaction: batchTransaction,
-        );
+      _upsertConversationMetadata(
+        remoteItem,
+        batchTransaction: batchTransaction,
+      );
 
       if (appItem.localId != null) {
         // ignore: unawaited_futures
-          updateByDbIdInDbType(
-            dbId: appItem.localId!,
-            dbItem: remoteItem.toDbConversation(),
-            batchTransaction: batchTransaction,
-          );
+        updateByDbIdInDbType(
+          dbId: appItem.localId!,
+          dbItem: remoteItem.toDbConversation(),
+          batchTransaction: batchTransaction,
+        );
       } else {
         // ignore: unawaited_futures
-          upsertInRemoteTypeBatch(
-            remoteItem,
-            batchTransaction: batchTransaction,
-          );
+        upsertInRemoteTypeBatch(
+          remoteItem,
+          batchTransaction: batchTransaction,
+        );
       }
     } else {
       await batch((batch) {
