@@ -41,19 +41,16 @@ jobs:
         run: echo "${{ secrets.PROD_ENV_CONFIG_FILE_AS_BASE64 }}" | base64 --decode > env_prod.env
 
       - name: Decoding PROD ANDROID google-services.json from secrets
-          run: echo "${{ secrets.PROD_GOOGLE_SERVICES_FILE_AS_BASE64 }}" | base64 --decode > android/app/src/prod/google-services.json
+          run: echo "${{ secrets.PROD_ANDROID_GOOGLE_SERVICES_FILE_AS_BASE64 }}" | base64 --decode > android/app/src/prod/google-services.json
 
       - name: Decoding DEV ANDROID google-services.json from secrets
-          run: echo "${{ secrets.DEV_GOOGLE_SERVICES_FILE_AS_BASE64 }}" | base64 --decode > android/app/src/dev/google-services.json
+          run: echo "${{ secrets.DEV_ANDROID_GOOGLE_SERVICES_FILE_AS_BASE64 }}" | base64 --decode > android/app/src/dev/google-services.json
 
       - name: Decoding PROD IOS GoogleService-Info.plist from secrets
-          run: echo "${{ secrets.PROD_GOOGLE_SERVICES_FILE_AS_BASE64 }}" | base64 --decode > ios/config/prod/GoogleService-Info.plist
+          run: echo "${{ secrets.PROD_IOS_GOOGLE_SERVICES_FILE_AS_BASE64 }}" | base64 --decode > ios/config/prod/GoogleService-Info.plist
 
       - name: Decoding DEV IOS GoogleService-Info.plist from secrets
-          run: echo "${{ secrets.DEV_GOOGLE_SERVICES_FILE_AS_BASE64 }}" | base64 --decode > ios/config/dev/GoogleService-Info.plist
-
-      - name: Decode PROD ANDROID upload-keystore.jks from secrets
-          run: echo "${{ secrets.PLAY_STORE_UPLOAD_KEY }}" | base64 --decode > android/app/upload-keystore.jks
+          run: echo "${{ secrets.DEV_IOS_GOOGLE_SERVICES_FILE_AS_BASE64 }}" | base64 --decode > ios/config/dev/GoogleService-Info.plist
 
       - name: Decode PROD ANDROID upload-keystore.jks from secrets
           run: echo "${{ secrets.PLAY_STORE_UPLOAD_KEY }}" | base64 --decode > android/app/upload-keystore.jks
