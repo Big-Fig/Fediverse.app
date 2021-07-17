@@ -1,0 +1,8 @@
+- a lot of design improvements for better UX;
+- better performance & fix junks;
+- support more filters options;
+- fix bouncing keyboard when moving cursor in text field;
+- better images caching;
+- fix downloading images;
+- fix "Access gallery" permission description;
+- remove NFC URL handling for better privacy & security.

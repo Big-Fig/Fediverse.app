@@ -134,4 +134,5 @@ app.*.symbols
 # CD fastlane
 /android/app/upload-keystore.jks
 /ios/fastlane/screenshots/
+/ios/fastlane/metadata/review_information/
 /android/fastlane/screenshots/
