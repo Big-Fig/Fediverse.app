@@ -130,3 +130,8 @@ app.*.symbols
 /ios/config/dev/GoogleService-Info.plist
 /ios/config/prod/
 /ios/config/prod/GoogleService-Info.plist
+
+# CD fastlane
+/android/app/upload-keystore.jks
+/ios/fastlane/screenshots/
+/android/fastlane/screenshots/
