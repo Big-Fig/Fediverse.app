@@ -1,0 +1,13 @@
+First public open-source release.
+Added:
+- Servers list autocomplete
+- Better Instance Details page. Explore instances as guest via Public API
+- About page
+- Handle incoming share intents
+- Settings to enabled/disable crash gathering
+Changed:
+- New Push Notifications logic without decryption on Relay Server
+- Better share UI/UX
+Fixes:
+- Unable to log in to some instances due to JSON parsing errors(Mastodon)
+- A lot of minor fixes

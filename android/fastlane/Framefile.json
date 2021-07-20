@@ -1,0 +1,32 @@
+{
+  "device_frame_version": "latest",
+  "default": {
+    "keyword": {
+      "fonts": [
+        {
+          "font": "../../../../assets/fonts/Rubik-Medium.ttf",
+          "supported": ["ru-RU", "en-US"]
+        }
+      ]
+    },
+    "title": {
+      "fonts": [
+        {
+          "font": "../../../../assets/fonts/Rubik-Regular.ttf",
+          "supported": ["ru-RU", "en-US"]
+        }
+      ],
+      "color": "#545454"
+    },
+    "background": "./background.jpg",
+    "padding": 50
+  },
+  "data": [
+    {
+      "filter": "0",
+      "keyword": {
+        "color": "#d21559"
+      }
+    }
+  ]
+}

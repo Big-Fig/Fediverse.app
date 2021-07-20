@@ -131,8 +131,8 @@ app.*.symbols
 /ios/config/prod/
 /ios/config/prod/GoogleService-Info.plist
 
-# CD fastlane
-/android/app/upload-keystore.jks
-/ios/fastlane/screenshots/
-/ios/fastlane/metadata/review_information/
+# CD fastlane android
+/android/fastlane/play-store-credentials.json
 /android/fastlane/screenshots/
+/android/fastlane/metadata/android/**/images/
+/android/fastlane/metadata/android/**/unframed_images/
