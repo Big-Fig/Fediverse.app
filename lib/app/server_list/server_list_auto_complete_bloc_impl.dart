@@ -35,14 +35,18 @@ class ServerListAutoCompleteBloc extends AsyncInitLoadingBloc
 
     var filtered = serversToAutoComplete
         .where(
-          (server) => server.startsWith(preparedTextInput),
+          (server) =>
+              server.startsWith(preparedTextInput) &&
+              server.compareTo(preparedTextInput) != 0,
         )
         .toList();
 
     if (filtered.isEmpty) {
       filtered = serversToAutoComplete
           .where(
-            (server) => server.contains(preparedTextInput),
+            (server) =>
+                server.contains(preparedTextInput) &&
+                server.compareTo(preparedTextInput) != 0,
           )
           .toList();
     }
@@ -54,7 +58,12 @@ class ServerListAutoCompleteBloc extends AsyncInitLoadingBloc
 Future<List<String>> _loadServersList() async {
   var fileAsString = await _loadAsset();
 
-  var servers = fileAsString.split('\n');
+  Iterable<String> servers = fileAsString.split('\n');
+
+  // todo: make better file format
+  servers = servers.map(
+    (server) => server.replaceAll('\r', ''),
+  );
 
   if (!kReleaseMode) {
     // debug instances
@@ -65,7 +74,7 @@ Future<List<String>> _loadServersList() async {
     ];
   }
 
-  return servers;
+  return servers.toList();
 }
 
 Future<String> _loadAsset() => rootBundle.loadString('assets/server_list.txt');
