@@ -136,3 +136,7 @@ app.*.symbols
 /android/fastlane/screenshots/
 /android/fastlane/metadata/android/**/images/
 /android/fastlane/metadata/android/**/unframed_images/
+# CD fastlane ios
+/ios/fastlane/metadata/review_information/
+/ios/fastlane/screenshots/**/*.png
+/ios/fastlane/unframed_screenshots/
