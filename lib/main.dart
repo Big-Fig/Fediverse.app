@@ -56,6 +56,7 @@ import 'package:fedi/localization/localization_model.dart';
 import 'package:fedi/overlay_notification/overlay_notification_service_provider.dart';
 import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_handler_widget.dart';
 import 'package:fedi/ui/theme/ui_theme_proxy_provider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -467,6 +468,7 @@ class FediApp extends StatelessWidget {
                           S.delegate,
                           GlobalMaterialLocalizations.delegate,
                           GlobalWidgetsLocalizations.delegate,
+                          GlobalCupertinoLocalizations.delegate,
                         ],
                         supportedLocales: S.delegate.supportedLocales,
                         locale: locale,
