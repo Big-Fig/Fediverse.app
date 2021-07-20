@@ -142,3 +142,4 @@ app.*.symbols
 /ios/fastlane/unframed_screenshots/
 # Generated screenshots
 /tmp/screenshots/
+/screenshots_dev.yaml
