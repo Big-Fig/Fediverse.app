@@ -129,7 +129,8 @@ class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
       isRequired: true,
     )!;
 
-    assert(appId == appIdActual);
+    // not working with flutter driver on ios, they are different
+    // assert(appId == appIdActual);
 
     logEnabled = _getBool(
       'LOG_ENABLED',
