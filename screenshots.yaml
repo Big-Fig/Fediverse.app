@@ -1,0 +1,71 @@
+# A list of screen capture tests
+tests:
+  # Note: flutter driver expects a pair of files eg, main1.dart and main1_test.dart
+  - test_driver/main.dart
+
+# A list of locales supported by the app
+locales:
+  - en-US
+  - ru-RU
+
+# A map of devices to emulate
+devices:
+  ios:
+    # 5.5inch
+    iPhone 8 Plus:
+      orientation:
+        - Portrait
+      frame: false # should be disabled to fit size
+    # 5.8inch
+    iPhone X:
+      orientation:
+        - Portrait
+      frame: false # should be disabled to fit size
+    # 6.5inch
+    iPhone 11 Pro Max:
+      orientation:
+        - Portrait
+      frame: false
+    # iPad Pro (12.9-inch)  1 & 2 generation
+    iPad Pro (12.9-inch) (2nd generation):
+      frame: false # should be disabled to fit size
+      orientation:
+        - LandscapeRight # should be Landscape to fit size
+    # iPad Pro (12.9-inch) 3 generation and newer
+    iPad Pro (12.9-inch) (3rd generation):
+      frame: false # should be disabled to fit size
+      orientation:
+        - LandscapeRight # should be Landscape to fit size
+  android:
+    # phone
+    Nexus 5X:
+      navbar: true # should be enabled to fit size
+      frame: false # should be disabled to fit size
+      orientation:
+        - Portrait
+    # sevenInch
+    Nexus 6P:
+      navbar: true # should be enabled to fit size
+      frame: false # should be disabled to fit size
+      orientation:
+        - Portrait
+    # tenInches
+    Nexus 9:
+      navbar: false # should be disabled to fit size
+      frame: false # should be disabled to fit size
+      orientation:
+        - LandscapeRight  # should be Landscape to fit size
+
+# Frame screenshots
+frame: false
+
+# Interim location of screenshots from tests
+staging: ./tmp/screenshots/staging
+
+# If run mode is 'recording' or 'comparison', a directory is required for recorded images.
+recording: ./tmp/screenshots/recording
+
+# If not intending to upload screenshots, images can be stored in an archive dir.
+# This over-rides output to fastlane dirs.
+# If run mode is 'archive', a directory is required for archived images.
+archive: ./tmp/screenshots/archive

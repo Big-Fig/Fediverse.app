@@ -216,6 +216,10 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_driver:
+    sdk: flutter
+  # fvm flutter driver --target=test_driver/main.dart --flavor dev
+  test: any
 
   # easy mock for tests
   mockito: 5.0.10
@@ -235,6 +239,14 @@ dev_dependencies:
   dart_code_metrics: 4.0.1
   lints: 1.0.1
   flutter_lints: 1.0.3
+
+  # generate screenshots for stores during UI tests
+  # also usefull for golden tests
+  screenshots:
+    git:
+      url: https://github.com/xal/screenshots.git
+  # fvm flutter pub global activate -sgit https://github.com/xal/screenshots.git
+  # fvm flutter pub global activate --source path ../screenshots
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

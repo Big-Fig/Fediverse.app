@@ -140,3 +140,5 @@ app.*.symbols
 /ios/fastlane/metadata/review_information/
 /ios/fastlane/screenshots/**/*.png
 /ios/fastlane/unframed_screenshots/
+# Generated screenshots
+/tmp/screenshots/

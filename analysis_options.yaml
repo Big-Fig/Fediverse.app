@@ -204,6 +204,7 @@ dart_code_metrics:
     number-of-methods: 4
   metrics-exclude:
     - test/**
+    - test_driver/**
   rules:
     - binary-expression-operand-order
     - double-literal-format
