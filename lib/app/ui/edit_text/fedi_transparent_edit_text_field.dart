@@ -31,6 +31,7 @@ class FediTransparentEditTextField extends StatelessWidget {
   final Color? customBorderColor;
 
   FediTransparentEditTextField({
+    Key? key,
     required this.expanded,
     required this.autofocus,
     required this.hintText,
@@ -53,7 +54,7 @@ class FediTransparentEditTextField extends StatelessWidget {
     required this.highlightMentions,
     required this.maxLength,
     this.enabled = true,
-  });
+  }): super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -5,6 +5,12 @@
 // this is simply Flutter's version of that.
 import 'dart:convert' as c;
 
+import 'package:fedi/app/auth/instance/join/from_scratch/from_scratch_join_auth_instance_page_keys.dart';
+import 'package:fedi/app/auth/instance/join/join_auth_instance_widget_keys.dart';
+import 'package:fedi/app/auth/instance/register/register_auth_instance_page_keys.dart';
+import 'package:fedi/app/instance/details/remote/remote_instance_details_page_keys.dart';
+import 'package:fedi/app/ui/button/icon/fedi_back_icon_button_keys.dart';
+import 'package:fedi/app/ui/button/icon/fedi_dismiss_icon_button_keys.dart';
 import 'package:flutter_driver/flutter_driver.dart';
 import 'package:screenshots/screenshots.dart';
 import 'package:test/test.dart';
@@ -29,32 +35,75 @@ void main() {
       await driver.close();
     });
 
+    test('check flutter driver health', () async {
+      final health = await driver.checkHealth();
+      expect(health.status, HealthStatus.ok);
+    });
+
     test(
-      'tap on the floating action button; verify counter',
+      'Screenshots: Login, SignUp, InstanceDetails',
       () async {
-        // Finds the floating action button (fab) to tap on
-        // var fab = find.byTooltip(
-        //   localizations['counterIncrementButtonTooltip'],
-        // );
-        //
-        // // Wait for the floating action button to appear
-        // await driver.waitFor(fab);
+        await driver.waitFor(
+          find.byValueKey(
+            FromScratchJoinAuthInstancePageKeys.joinAuthInstanceWidgetKey,
+          ),
+        );
 
-        // take screenshot before number is incremented
-        await screenshot(driver, config, '0');
-        // await screenshot_my(driver, config, '0');
-        //
-        // // Tap on the fab
-        // await driver.tap(fab);
-        //
-        // // Wait for text to change to the desired value
-        // await driver.waitFor(find.text('1'));
-        //
-        // // take screenshot after number is incremented
-        // await screenshot(driver, config, '1');
+        await screenshot(driver, config, 'Login');
 
-        // increase timeout from 30 seconds for testing
-        // on slow running emulators in cloud
+        var hostTextField = find.byValueKey(
+          JoinAuthInstanceWidgetKeys.hostTextFieldKey,
+        );
+        await driver.tap(hostTextField);
+
+        await driver.enterText('mastodon.social');
+
+        var exploreAsGuestButton = find.byValueKey(
+          JoinAuthInstanceWidgetKeys.exploreAsGuestButtonKey,
+        );
+
+        await driver.waitFor(exploreAsGuestButton);
+        await driver.tap(exploreAsGuestButton);
+
+        await driver.waitFor(
+          find.byValueKey(
+            RemoteInstanceDetailsPageKeys.instanceDetailsWidgetKey,
+          ),
+        );
+
+        await screenshot(driver, config, 'InstanceDetails');
+
+        await driver.tap(
+          find.byValueKey(
+            FediBackIconButtonKeys.button,
+          ),
+        );
+
+        await driver.waitFor(
+          find.byValueKey(
+            FromScratchJoinAuthInstancePageKeys.joinAuthInstanceWidgetKey,
+          ),
+        );
+
+        await driver.tap(
+          find.byValueKey(
+            JoinAuthInstanceWidgetKeys.signUpButtonKey,
+          ),
+        );
+
+        await driver.waitFor(
+          find.byValueKey(
+            RegisterAuthInstancePageKeys.registerAuthInstanceWidgetKey,
+          ),
+        );
+
+        await screenshot(driver, config, 'SignUp');
+
+        await driver.tap(
+          find.byValueKey(
+            FediDismissIconButtonKeys.button,
+          ),
+        );
       },
       timeout: Timeout(
         Duration(

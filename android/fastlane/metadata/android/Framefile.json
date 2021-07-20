@@ -1,14 +1,7 @@
 {
   "device_frame_version": "latest",
   "default": {
-    "keyword": {
-      "fonts": [
-        {
-          "font": "../../../../assets/fonts/Rubik-Medium.ttf",
-          "supported": ["ru-RU", "en-US"]
-        }
-      ]
-    },
+    "stack_title": true,
     "title": {
       "fonts": [
         {
@@ -16,17 +9,21 @@
           "supported": ["ru-RU", "en-US"]
         }
       ],
-      "color": "#545454"
+      "color": "#fafafa",
+      "font_weight": 700
     },
     "background": "./background.jpg",
     "padding": 50
   },
   "data": [
     {
-      "filter": "0",
-      "keyword": {
-        "color": "#d21559"
-      }
+      "filter": "Login"
+    },
+    {
+      "filter": "InstanceDetails"
+    },
+    {
+      "filter": "Signup"
     }
   ]
 }

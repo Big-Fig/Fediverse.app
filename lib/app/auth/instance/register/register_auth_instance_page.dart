@@ -4,6 +4,7 @@ import 'package:fedi/app/auth/host/auth_host_model.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/register/register_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/register/register_auth_instance_bloc_impl.dart';
+import 'package:fedi/app/auth/instance/register/register_auth_instance_page_keys.dart';
 import 'package:fedi/app/auth/instance/register/register_auth_instance_widget.dart';
 import 'package:fedi/app/auth/oauth_last_launched/local_preferences/auth_oauth_last_launched_host_to_login_local_preference_bloc.dart';
 import 'package:fedi/app/config/config_service.dart';
@@ -33,7 +34,11 @@ class RegisterAuthInstancePage extends StatelessWidget {
         leading: const FediDismissIconButton(),
       ),
       body: const SafeArea(
-        child: RegisterAuthInstanceWidget(),
+        child: RegisterAuthInstanceWidget(
+          key: Key(
+            RegisterAuthInstancePageKeys.registerAuthInstanceWidgetKey,
+          ),
+        ),
       ),
     );
   }

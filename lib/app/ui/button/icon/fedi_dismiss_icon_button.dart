@@ -1,3 +1,4 @@
+import 'package:fedi/app/ui/button/icon/fedi_dismiss_icon_button_keys.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
@@ -14,6 +15,7 @@ class FediDismissIconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FediIconButton(
+      key: Key(FediDismissIconButtonKeys.button),
       onPressed: () {
         if (customOnPressed != null) {
           customOnPressed!();
