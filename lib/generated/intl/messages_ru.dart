@@ -669,7 +669,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Используя Fedi вы соглашаетесь с "),
         "app_auth_instance_join_action_tos_terms":
-            MessageLookupByLibrary.simpleMessage("нашими условиями"),
+            MessageLookupByLibrary.simpleMessage("условиями"),
         "app_auth_instance_join_fail_dialog_content": m14,
         "app_auth_instance_join_fail_dialog_title":
             MessageLookupByLibrary.simpleMessage(
