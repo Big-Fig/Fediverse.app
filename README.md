@@ -29,6 +29,14 @@ Follow us on Fediverse [fediapp@fedi.app](https://fedi.app/fediapp)
 * [GitHub Releases](https://github.com/Big-Fig/Fediverse.app/releases)
 * [CHANGELOG](https://github.com/xal/Fediverse.app/blob/master/CHANGELOG.md) 
 
+### Articles about how Fedi works inside
+
+* Part 1. [Architecture](https://medium.com/@xal_dev/fedi-flutter-open-source-social-network-client-part-1-architecture-529c45aa9f08)
+* Part 2. [Code](https://medium.com/@xal_dev/fedi-flutter-open-source-social-network-client-part-2-code-8436ff2c273d)
+* Part 3. [Build & Config](https://medium.com/@xal_dev/fedi-flutter-open-source-social-network-client-part-3-build-config-ebd85f26868e)
+* Part 4. [Used packages](https://medium.com/@xal_dev/fedi-flutter-open-source-social-network-client-part-4-used-packages-38eebb076547)
+* Part 5. [Android Studio Plugins & Feature Plans](https://medium.com/@xal_dev/fedi-flutter-open-source-social-network-client-part-5-android-studio-plugins-feature-plans-43a3d961a5bc)
+
 ### Table of Contents
 
 * [Features](#features)
