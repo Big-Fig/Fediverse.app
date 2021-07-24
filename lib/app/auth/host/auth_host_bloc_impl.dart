@@ -296,7 +296,8 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
       acct: myAccount.acct,
       application: hostApplication,
       info: hostInstance.toPleromaApiInstance(),
-      isPleroma: myAccount.pleroma != null,
+      // todo: replace with isPleroma getter with same logic
+      isPleroma: hostInstance.isPleroma,
     );
     await pleromaMyAccountService.dispose();
 
