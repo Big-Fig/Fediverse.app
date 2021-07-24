@@ -569,10 +569,6 @@
   "@app_status_post_visibility_state_private": {},
   "app_status_post_error_empty_dialog_title": "Nie można wysłać pustej wiadomości",
   "@app_status_post_error_empty_dialog_title": {},
-  "app_appStore_promotionalText": "Klient serwerów sieci społecznościowych Pleroma i Mastodon",
-  "@app_appStore_promotionalText": {
-    "description": "AppStore short description"
-  },
   "localization_locale_default": "Domyślny",
   "@localization_locale_default": {},
   "app_localization_form_field_label": "Język",
@@ -603,10 +599,6 @@
   "@app_account_my_action_domainBlocks": {},
   "app_media_upload_failed_notification_title": "Nie udało się wysłać",
   "@app_media_upload_failed_notification_title": {},
-  "app_googlePlay_shortDescription": "Klient serwerów sieci społecznościowych Pleroma i Mastodon",
-  "@app_googlePlay_shortDescription": {
-    "description": "GooglePlay short description"
-  },
   "app_account_my_domainBlock_add_dialog_field_domain_hint": "mastodon.social",
   "@app_account_my_domainBlock_add_dialog_field_domain_hint": {},
   "app_media_upload_failed_notification_exceedSize_content": "Rozmiar pliku to {formattedFileSize} MB, ale maksymalny dozwolony wynosi {formattedMaxFileSize} MB",
@@ -791,18 +783,6 @@
   "@timeago_aboutAYear": {},
   "timeago_wordSeparator": " ",
   "@timeago_wordSeparator": {},
-  "app_googlePlay_appName": "Fedi dla Pleromy i Mastodona",
-  "@app_googlePlay_appName": {
-    "description": "GooglePlay title"
-  },
-  "app_appStore_title": "Fedi dla Pleromy i Mastodona",
-  "@app_appStore_title": {
-    "description": "AppStore title"
-  },
-  "app_appStore_subtitle": "Klient serwerów sieci społecznościowych Pleroma i Mastodon",
-  "@app_appStore_subtitle": {
-    "description": "AppStore subtitle"
-  },
   "app_account_home_tab_menu_action_instance_settings": "Ustawienia: {userAtHost}",
   "@app_account_home_tab_menu_action_instance_settings": {},
   "app_settings_instance_title": "Ustawienia: {userAtHost}",
@@ -1555,14 +1535,6 @@
   "@form_field_text_error_length_maxOnly_desc": {},
   "duration_minute": "{count,plural, =1{1 minuta} few{{count} minuty} other{{count} minut}}",
   "@duration_minute": {},
-  "app_googlePlay_fullDescription": "Klient dla instancji sieci społecznościowych Pleroma i Mastodon",
-  "@app_googlePlay_fullDescription": {
-    "description": "GooglePlay full description"
-  },
-  "app_appStore_description": "Piękny i lekki klient Pleromy i Mastodona: - obsługa powiadomień push; - reakcje emoji na instancjach Pleromy; - obsługa wiadomości bezpośrednich na Mastodonie i czatów na instancjach Pleromy; - wysyłanie dowolnych plików multimedialnych; - dostęp offline do cacheowanych danych i obrazów; - obsługa wielu kont i wielu instancji.",
-  "@app_appStore_description": {
-    "description": "AppStore full description"
-  },
   "app_chat_settings_title": "Czat",
   "@app_chat_settings_title": {},
   "app_localization_settings_field_localizationLocale_yourStatuses_label": "Język Twoich wpisów",

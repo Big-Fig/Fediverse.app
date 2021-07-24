@@ -607,14 +607,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Including replies"),
         "app_account_statuses_tab_withoutReplies":
             MessageLookupByLibrary.simpleMessage("Posts"),
-        "app_appStore_description": MessageLookupByLibrary.simpleMessage(
-            "A beautiful and lightweight Pleroma and Mastodon client: - push notifications support; - emoji reactions on Pleroma instances; - Direct Messages support on Mastodon and Chats on Pleroma instances; - uploading any media files; - offline access to cached data and images; - multi-accounts and multi instances support."),
-        "app_appStore_promotionalText": MessageLookupByLibrary.simpleMessage(
-            "A client for Pleroma and Mastodon social network instances"),
-        "app_appStore_subtitle": MessageLookupByLibrary.simpleMessage(
-            "A client for Pleroma and Mastodon social network instances"),
-        "app_appStore_title": MessageLookupByLibrary.simpleMessage(
-            "Fedi for Pleroma and Mastodon"),
         "app_async_pleroma_error_common_dialog_content": m10,
         "app_async_pleroma_error_common_dialog_title":
             MessageLookupByLibrary.simpleMessage("Pleroma API error"),
@@ -996,12 +988,6 @@ class MessageLookup extends MessageLookupByLibrary {
             "You haven’t created any Filters yet."),
         "app_filter_list_title":
             MessageLookupByLibrary.simpleMessage("Filters"),
-        "app_googlePlay_appName": MessageLookupByLibrary.simpleMessage(
-            "Fedi for Pleroma and Mastodon"),
-        "app_googlePlay_fullDescription": MessageLookupByLibrary.simpleMessage(
-            "A client for Pleroma and Mastodon social network instances"),
-        "app_googlePlay_shortDescription": MessageLookupByLibrary.simpleMessage(
-            "A client for Pleroma and Mastodon social network instances"),
         "app_hashtag_history_accounts":
             MessageLookupByLibrary.simpleMessage("Accounts"),
         "app_hashtag_history_statuses":

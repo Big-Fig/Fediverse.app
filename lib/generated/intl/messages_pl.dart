@@ -597,14 +597,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Z odpowiedziami"),
         "app_account_statuses_tab_withoutReplies":
             MessageLookupByLibrary.simpleMessage("Wpisy"),
-        "app_appStore_description": MessageLookupByLibrary.simpleMessage(
-            "Piękny i lekki klient Pleromy i Mastodona: - obsługa powiadomień push; - reakcje emoji na instancjach Pleromy; - obsługa wiadomości bezpośrednich na Mastodonie i czatów na instancjach Pleromy; - wysyłanie dowolnych plików multimedialnych; - dostęp offline do cacheowanych danych i obrazów; - obsługa wielu kont i wielu instancji."),
-        "app_appStore_promotionalText": MessageLookupByLibrary.simpleMessage(
-            "Klient serwerów sieci społecznościowych Pleroma i Mastodon"),
-        "app_appStore_subtitle": MessageLookupByLibrary.simpleMessage(
-            "Klient serwerów sieci społecznościowych Pleroma i Mastodon"),
-        "app_appStore_title": MessageLookupByLibrary.simpleMessage(
-            "Fedi dla Pleromy i Mastodona"),
         "app_async_pleroma_error_common_dialog_content": m10,
         "app_async_pleroma_error_common_dialog_title":
             MessageLookupByLibrary.simpleMessage("Błąd API Pleromy"),
@@ -983,12 +975,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_filter_list_empty": MessageLookupByLibrary.simpleMessage(
             "Nie utworzyłeś(-aś) jeszcze żadnych filtrów."),
         "app_filter_list_title": MessageLookupByLibrary.simpleMessage("Filtry"),
-        "app_googlePlay_appName": MessageLookupByLibrary.simpleMessage(
-            "Fedi dla Pleromy i Mastodona"),
-        "app_googlePlay_fullDescription": MessageLookupByLibrary.simpleMessage(
-            "Klient dla instancji sieci społecznościowych Pleroma i Mastodon"),
-        "app_googlePlay_shortDescription": MessageLookupByLibrary.simpleMessage(
-            "Klient serwerów sieci społecznościowych Pleroma i Mastodon"),
         "app_hashtag_history_accounts":
             MessageLookupByLibrary.simpleMessage("Konta"),
         "app_hashtag_history_statuses":

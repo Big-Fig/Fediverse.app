@@ -399,34 +399,6 @@
   "timeago_aboutAYear": "~1 y",
   "timeago_years": "{years,plural, =1{1 y} other{{years} y}}",
   "timeago_wordSeparator": " ",
-  "app_googlePlay_appName": "Fedi for Pleroma and Mastodon",
-  "@app_googlePlay_appName": {
-    "description": "GooglePlay title"
-  },
-  "app_googlePlay_shortDescription": "A client for Pleroma and Mastodon social network instances",
-  "@app_googlePlay_shortDescription": {
-    "description": "GooglePlay short description"
-  },
-  "app_googlePlay_fullDescription": "A client for Pleroma and Mastodon social network instances",
-  "@app_googlePlay_fullDescription": {
-    "description": "GooglePlay full description"
-  },
-  "app_appStore_promotionalText": "A client for Pleroma and Mastodon social network instances",
-  "@app_appStore_promotionalText": {
-    "description": "AppStore short description"
-  },
-  "app_appStore_description": "A beautiful and lightweight Pleroma and Mastodon client: - push notifications support; - emoji reactions on Pleroma instances; - Direct Messages support on Mastodon and Chats on Pleroma instances; - uploading any media files; - offline access to cached data and images; - multi-accounts and multi instances support.",
-  "@app_appStore_description": {
-    "description": "AppStore full description"
-  },
-  "app_appStore_title": "Fedi for Pleroma and Mastodon",
-  "@app_appStore_title": {
-    "description": "AppStore title"
-  },
-  "app_appStore_subtitle": "A client for Pleroma and Mastodon social network instances",
-  "@app_appStore_subtitle": {
-    "description": "AppStore subtitle"
-  },
   "app_account_home_tab_menu_action_instance_settings": "Settings: {userAtHost}",
   "app_settings_instance_title": "Настройки: {userAtHost}",
   "app_localization_settings_title": "Localization",

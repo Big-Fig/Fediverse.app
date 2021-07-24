@@ -400,34 +400,6 @@
   "timeago_aboutAYear": "~1 г",
   "timeago_years": "{years,plural, =1{1 г} other{{years} г}}",
   "timeago_wordSeparator": " ",
-  "app_googlePlay_appName": "Fedi для Pleroma и Mastodon",
-  "@app_googlePlay_appName": {
-    "description": "GooglePlay title"
-  },
-  "app_googlePlay_shortDescription": "Клиент для серверов социальных сетей Pleroma и Mastodon.",
-  "@app_googlePlay_shortDescription": {
-    "description": "GooglePlay short description"
-  },
-  "app_googlePlay_fullDescription": "Красивый и легкий клиент Pleroma и Mastodon: - поддержка push-уведомлений; - эмоджи реакции к записям; - Поддержка личных сообщений Mastodon и чатов Pleroma; - загрузка медиафайлов; - оффлайн кешированние данных; - поддержка нескольких учетных записей.",
-  "@app_googlePlay_fullDescription": {
-    "description": "GooglePlay full description"
-  },
-  "app_appStore_promotionalText": "Клиент для серверов социальных сетей Pleroma и Mastodon.",
-  "@app_appStore_promotionalText": {
-    "description": "AppStore short description"
-  },
-  "app_appStore_description": "Красивый и легкий клиент Pleroma и Mastodon: - поддержка push-уведомлений; - эмоджи реакции к записям; - Поддержка личных сообщений Mastodon и чатов Pleroma; - загрузка медиафайлов; - оффлайн кешированние данных; - поддержка нескольких учетных записей.",
-  "@app_appStore_description": {
-    "description": "AppStore full description"
-  },
-  "app_appStore_title": "Fedi для Pleroma и Mastodon",
-  "@app_appStore_title": {
-    "description": "AppStore title"
-  },
-  "app_appStore_subtitle": "Клиент для серверов социальных сетей Pleroma и Mastodon.",
-  "@app_appStore_subtitle": {
-    "description": "AppStore subtitle"
-  },
   "app_account_home_tab_menu_action_instance_settings": "Настройки: {userAtHost}",
   "app_settings_instance_title": "Настройки: {userAtHost}",
   "app_localization_settings_title": "Язык",
