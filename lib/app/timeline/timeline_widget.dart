@@ -40,8 +40,6 @@ class TimelineWidget extends StatelessWidget {
 
           Widget bodyWidget;
 
-
-
           if (onlyWithMedia) {
             bodyWidget = const StatusCachedPaginationListMediaWidget();
           } else {

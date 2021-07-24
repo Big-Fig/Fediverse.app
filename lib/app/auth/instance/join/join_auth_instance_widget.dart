@@ -511,8 +511,6 @@ Future logInToInstance(BuildContext context) async {
         S.of(context).app_auth_instance_join_progress_dialog_content,
     cancelable: true,
     asyncCode: () async {
-
-
       switch (appLaunchType) {
         case AppLaunchType.normal:
           var hostUri = joinInstanceBloc.extractCurrentUri();

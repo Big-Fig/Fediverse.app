@@ -54,7 +54,7 @@ class FediTransparentEditTextField extends StatelessWidget {
     required this.highlightMentions,
     required this.maxLength,
     this.enabled = true,
-  }): super(key: key);
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

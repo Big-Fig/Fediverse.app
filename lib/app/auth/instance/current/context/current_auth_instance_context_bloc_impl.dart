@@ -260,8 +260,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
 
     await moorDatabaseService.performAsyncInit();
 
-    if(configService.appLaunchType == AppLaunchType.mock) {
-     await moorDatabaseService.clearAll();
+    if (configService.appLaunchType == AppLaunchType.mock) {
+      await moorDatabaseService.clearAll();
     }
 
     await globalProviderService

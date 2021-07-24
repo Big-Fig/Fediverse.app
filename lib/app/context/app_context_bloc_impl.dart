@@ -219,7 +219,7 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         HiveLocalPreferencesService.withLastVersionBoxName()..disposeWith(this);
     await hiveLocalPreferencesService.performAsyncInit();
 
-    if(configService.appLaunchType == AppLaunchType.mock) {
+    if (configService.appLaunchType == AppLaunchType.mock) {
       await hiveLocalPreferencesService.clearAllValues();
     }
 

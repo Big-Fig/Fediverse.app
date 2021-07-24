@@ -19,7 +19,7 @@ class FediIconButton extends StatelessWidget {
     // ignore: no-magic-number
     this.iconSize = 24.0,
     this.tooltip,
-  }): super(key: key);
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

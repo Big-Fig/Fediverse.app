@@ -64,9 +64,9 @@ class FediListSmartRefresherWidget extends StatelessWidget {
         return Container(
           //
           transform: isNeedToAddPaddingForUiTests
-          // it is top margin remove for some pages,
-          // because SmartRefresher have similar negative padding
-          // ignore: no-magic-number
+              // it is top margin remove for some pages,
+              // because SmartRefresher have similar negative padding
+              // ignore: no-magic-number
               ? Matrix4.translationValues(0.0, -25.0, 0.0)
               : null,
           child: child,

@@ -73,14 +73,13 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 // ignore: long-method
 Future main() async {
-
   await launchApp(appLaunchType: AppLaunchType.normal);
 }
 
 Future launchApp({
   required AppLaunchType appLaunchType,
 }) async {
-   // debugRepaintRainbowEnabled = true;
+  // debugRepaintRainbowEnabled = true;
   WidgetsFlutterBinding.ensureInitialized();
 
   runNotInitializedSplashApp();

@@ -222,7 +222,7 @@ class _MultiSelectFromListValueFormFieldRowValueIconWidget<T>
                               label: label,
                               valueIconMapper: valueIconMapper,
                               valueTitleMapper: valueTitleMapper,
-                              valueKeyMapper:valueKeyMapper,
+                              valueKeyMapper: valueKeyMapper,
                               displayIconInDialog: displayIconInDialog,
                             );
                           },
