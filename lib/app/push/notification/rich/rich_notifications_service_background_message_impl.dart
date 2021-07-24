@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:collection/collection.dart';
 import 'package:easy_dispose/easy_dispose.dart';
+import 'package:fedi/app/app_model.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/list/local_preferences/auth_instance_list_local_preference_bloc_impl.dart';
 import 'package:fedi/app/config/config_service.dart';
@@ -442,7 +443,7 @@ Future<IPleromaApiNotification?> loadLastNotificationForAcctOnHost({
   IPleromaApiNotification? notification;
 
   try {
-    var configService = ConfigService();
+    var configService = ConfigService(appLaunchType: AppLaunchType.normal);
     await configService.performAsyncInit();
     disposableOwner.addDisposable(configService);
     var loggingService = LoggingService(enabled: configService.logEnabled);

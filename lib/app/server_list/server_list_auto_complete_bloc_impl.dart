@@ -26,7 +26,9 @@ class ServerListAutoCompleteBloc extends AsyncInitLoadingBloc
   @override
   Future internalAsyncInit() async {
     var list = await _loadServersList();
-    serversToAutoCompleteSubject.add(list);
+    if(!serversToAutoCompleteSubject.isClosed) {
+      serversToAutoCompleteSubject.add(list);
+    }
   }
 
   @override

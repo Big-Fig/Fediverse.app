@@ -34,6 +34,7 @@ class PleromaChatWithLastMessageListWidget
           alwaysShowHeader: alwaysShowHeader,
           alwaysShowFooter: alwaysShowFooter,
           refreshOnFirstLoad: refreshOnFirstLoad,
+          isNeedToAddPaddingForUiTests: true,
         );
 
   @override
@@ -49,53 +50,55 @@ class PleromaChatWithLastMessageListWidget
         items: items,
         header: header,
         footer: footer,
-        itemBuilder: (context, index) =>
-            Provider<IPleromaChatWithLastMessage>.value(
-          value: items[index],
-          child: DisposableProxyProvider<IPleromaChatWithLastMessage,
-              IPleromaChatBloc>(
-            update: (context, chatWithLastMessage, oldBloc) {
-              // dont recreate bloc if it is already crated for this chat
-              // all data updates handled inside bloc
-              if (oldBloc != null &&
-                  oldBloc.chat.remoteId == chatWithLastMessage.chat.remoteId) {
-                return oldBloc;
-              } else {
-                var pleromaChatBloc = PleromaChatBloc.createFromContext(
-                  context,
-                  chat: chatWithLastMessage.chat,
-                  lastChatMessage: chatWithLastMessage.lastChatMessage,
-                );
+        itemBuilder: (context, index) {
+          return Provider<IPleromaChatWithLastMessage>.value(
+            value: items[index],
+            child: DisposableProxyProvider<IPleromaChatWithLastMessage,
+                IPleromaChatBloc>(
+              update: (context, chatWithLastMessage, oldBloc) {
+                // dont recreate bloc if it is already crated for this chat
+                // all data updates handled inside bloc
+                if (oldBloc != null &&
+                    oldBloc.chat.remoteId ==
+                        chatWithLastMessage.chat.remoteId) {
+                  return oldBloc;
+                } else {
+                  var pleromaChatBloc = PleromaChatBloc.createFromContext(
+                    context,
+                    chat: chatWithLastMessage.chat,
+                    lastChatMessage: chatWithLastMessage.lastChatMessage,
+                  );
 
-                var pleromaChatWithLastMessagePaginationListWithNewItemsBloc =
-                    IPleromaChatWithLastMessagePaginationListWithNewItemsBloc
-                        .of(context, listen: false);
-                pleromaChatBloc.chatStream.listen(
-                  (chat) {
-                    pleromaChatWithLastMessagePaginationListWithNewItemsBloc
-                        .onItemUpdated(
-                      SimplePleromaChatWithLastMessage(
-                        chat: pleromaChatBloc.chat,
-                        lastChatMessage: pleromaChatBloc.lastChatMessage,
-                      ),
-                    );
-                  },
-                ).disposeWith(pleromaChatBloc);
+                  var pleromaChatWithLastMessagePaginationListWithNewItemsBloc =
+                      IPleromaChatWithLastMessagePaginationListWithNewItemsBloc
+                          .of(context, listen: false);
+                  pleromaChatBloc.chatStream.listen(
+                    (chat) {
+                      pleromaChatWithLastMessagePaginationListWithNewItemsBloc
+                          .onItemUpdated(
+                        SimplePleromaChatWithLastMessage(
+                          chat: pleromaChatBloc.chat,
+                          lastChatMessage: pleromaChatBloc.lastChatMessage,
+                        ),
+                      );
+                    },
+                  ).disposeWith(pleromaChatBloc);
 
-                return pleromaChatBloc;
-              }
-            },
-            child: ProxyProvider<IPleromaChatBloc, IChatBloc>(
-              update: (context, value, _) => value,
-              child: FediListTile(
-                isFirstInList: index == 0 && header == null,
-                child: const ChatListItemWidget(
-                  onClick: _goToChatPage,
+                  return pleromaChatBloc;
+                }
+              },
+              child: ProxyProvider<IPleromaChatBloc, IChatBloc>(
+                update: (context, value, _) => value,
+                child: FediListTile(
+                  isFirstInList: index == 0 && header == null,
+                  child: const ChatListItemWidget(
+                    onClick: _goToChatPage,
+                  ),
                 ),
               ),
             ),
-          ),
-        ),
+          );
+        },
       );
 
   @override

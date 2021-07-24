@@ -4,6 +4,7 @@ import 'package:easy_dispose/easy_dispose.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/account/details/local_account_details_page.dart';
+import 'package:fedi/app/app_model.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/current/context/current_auth_instance_context_bloc_impl.dart';
 import 'package:fedi/app/auth/instance/current/context/init/current_auth_instance_context_init_bloc.dart';
@@ -72,12 +73,20 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 // ignore: long-method
 Future main() async {
-  // debugRepaintRainbowEnabled = true;
+
+  await launchApp(appLaunchType: AppLaunchType.mock);
+  // await launchApp(appLaunchType: AppLaunchType.normal);
+}
+
+Future launchApp({
+  required AppLaunchType appLaunchType,
+}) async {
+   // debugRepaintRainbowEnabled = true;
   WidgetsFlutterBinding.ensureInitialized();
 
   runNotInitializedSplashApp();
 
-  IInitBloc initBloc = InitBloc();
+  IInitBloc initBloc = InitBloc(appLaunchType: appLaunchType);
   // ignore: unawaited_futures
   initBloc.performAsyncInit();
 

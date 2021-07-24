@@ -24,5 +24,6 @@ abstract class StatusCachedPaginationListBaseWidget
           alwaysShowHeader: alwaysShowHeader,
           alwaysShowFooter: alwaysShowFooter,
           refreshOnFirstLoad: refreshOnFirstLoad,
+          isNeedToAddPaddingForUiTests: true,
         );
 }

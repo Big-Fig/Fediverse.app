@@ -42,6 +42,7 @@ class ChatMessageListWidget<T extends IChatMessage>
   }) : super(
           key: key,
           refreshOnFirstLoad: refreshOnFirstLoad,
+          isNeedToAddPaddingForUiTests: false,
         );
 
   @override
@@ -67,47 +68,49 @@ class ChatMessageListWidget<T extends IChatMessage>
     RefreshController refreshController,
     ScrollController? scrollController,
     Widget Function(BuildContext context) smartRefresherBodyBuilder,
-  ) =>
-      FediListSmartRefresherWidget(
-        key: key,
-        enablePullDown: true,
-        enablePullUp: true,
+  ) {
+    return FediListSmartRefresherWidget(
+      key: key,
+      isNeedToAddPaddingForUiTests: false,
+      enablePullDown: true,
+      enablePullUp: true,
 // water drop header bugged (inverted with reverse)
-        header: const FediListSmartRefresherRefreshIndicator(),
-        footer: const ListLoadingFooterWidget(),
-        controller: refreshController,
-        reverse: true,
-        scrollController: scrollController,
-        primary: scrollController == null,
-        onRefresh: () {
-          return AsyncSmartRefresherHelper.doAsyncRefresh(
-            controller: refreshController,
-            action: () async {
-              var success;
-              try {
-                success = await additionalPreRefreshAction(context);
-              } catch (e, stackTrace) {
-                success = false;
-                _logger.severe(
-                  () => 'additionalPreRefreshAction()',
-                  e,
-                  stackTrace,
-                );
-              }
-              _logger.finest(() => 'additionalRefreshAction $success');
-              var state = await paginationListBloc.refreshWithoutController();
-              _logger.finest(() => 'paginationListBloc.refresh() $state');
-
-              return state;
-            },
-          );
-        },
-        onLoading: () => AsyncSmartRefresherHelper.doAsyncLoading(
+      header: const FediListSmartRefresherRefreshIndicator(),
+      footer: const ListLoadingFooterWidget(),
+      controller: refreshController,
+      reverse: true,
+      scrollController: scrollController,
+      primary: scrollController == null,
+      onRefresh: () {
+        return AsyncSmartRefresherHelper.doAsyncRefresh(
           controller: refreshController,
-          action: paginationListBloc.loadMoreWithoutController,
-        ),
-        child: smartRefresherBodyBuilder(context),
-      );
+          action: () async {
+            var success;
+            try {
+              success = await additionalPreRefreshAction(context);
+            } catch (e, stackTrace) {
+              success = false;
+              _logger.severe(
+                () => 'additionalPreRefreshAction()',
+                e,
+                stackTrace,
+              );
+            }
+            _logger.finest(() => 'additionalRefreshAction $success');
+            var state = await paginationListBloc.refreshWithoutController();
+            _logger.finest(() => 'paginationListBloc.refresh() $state');
+
+            return state;
+          },
+        );
+      },
+      onLoading: () => AsyncSmartRefresherHelper.doAsyncLoading(
+        controller: refreshController,
+        action: paginationListBloc.loadMoreWithoutController,
+      ),
+      child: smartRefresherBodyBuilder(context),
+    );
+  }
 
   @override
   ScrollView buildItemsCollectionView({

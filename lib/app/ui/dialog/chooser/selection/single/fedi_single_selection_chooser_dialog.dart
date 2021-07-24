@@ -196,6 +196,7 @@ class _FediSingleSelectionChooserDialogBodyContentActionBody
     var fediUiTextTheme = IFediUiTextTheme.of(context);
 
     return InkWell(
+      key: action.key,
       onTap: enabled
           ? () {
               if (actionExist && enabled) {

@@ -60,6 +60,7 @@ class InstanceDetailsWidget extends StatelessWidget {
       asyncInitLoadingBloc: instanceDetailsBloc,
       loadingFinishedBuilder: (context) {
         return FediListSmartRefresherWidget(
+          isNeedToAddPaddingForUiTests: false,
           controller: instanceDetailsBloc.refreshController,
           onRefresh: () async {
             try {

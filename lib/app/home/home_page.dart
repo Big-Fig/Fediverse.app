@@ -5,6 +5,7 @@ import 'package:fedi/app/chat/settings/chat_settings_bloc.dart';
 import 'package:fedi/app/home/home_bloc.dart';
 import 'package:fedi/app/home/home_model.dart';
 import 'package:fedi/app/home/home_page_bottom_navigation_bar_widget.dart';
+import 'package:fedi/app/home/home_page_keys.dart';
 import 'package:fedi/app/home/tab/account/account_home_tab_bloc.dart';
 import 'package:fedi/app/home/tab/account/account_home_tab_bloc_impl.dart';
 import 'package:fedi/app/home/tab/account/account_home_tab_bloc_proxy_provider.dart';
@@ -73,7 +74,9 @@ class HomePage extends StatelessWidget {
               buildBody(context, selectedTab),
             ],
           ),
-          bottomNavigationBar: const _HomePageBottomNavBar(),
+          bottomNavigationBar: const _HomePageBottomNavBar(
+            key: Key(HomePageKeys.bottomNavBarWidget),
+          ),
         );
       },
     );

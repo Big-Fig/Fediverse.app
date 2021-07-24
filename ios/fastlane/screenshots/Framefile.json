@@ -17,13 +17,34 @@
   },
   "data": [
     {
-      "filter": "Login"
+      "filter": "1_Login"
     },
     {
-      "filter": "InstanceDetails"
+      "filter": "2_InstanceDetails"
     },
     {
-      "filter": "SignUp"
+      "filter": "3_SignUp"
+    },
+    {
+      "filter": "4_Timelines"
+    },
+    {
+      "filter": "5_Notifications"
+    },
+    {
+      "filter": "6_Messages"
+    },
+    {
+      "filter": "7_Chat"
+    },
+    {
+      "filter": "8_ChooseAccount"
+    },
+    {
+      "filter": "9_Settings"
+    },
+    {
+      "filter": "10_AccountActions"
     }
   ]
 }

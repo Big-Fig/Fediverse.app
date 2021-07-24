@@ -1,3 +1,4 @@
+import 'package:fedi/app/app_model.dart';
 import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:flutter_config/flutter_config.dart';
@@ -94,6 +95,15 @@ class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
   late String? joinBetaIosUrl;
   @override
   late String? joinBetaAndroidUrl;
+  @override
+  late String? testAuthInstanceJson;
+
+  @override
+  final AppLaunchType appLaunchType;
+
+  ConfigService({
+    required this.appLaunchType,
+  });
 
   @override
   // ignore: long-method
@@ -278,6 +288,11 @@ class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
     );
     joinBetaAndroidUrl = _getString(
       'JOIN_BETA_ANDROID_URL',
+      isRequired: false,
+    );
+
+    testAuthInstanceJson = _getString(
+      'TEST_AUTH_ISNTANCE_JSON',
       isRequired: false,
     );
   }

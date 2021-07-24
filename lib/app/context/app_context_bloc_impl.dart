@@ -6,6 +6,7 @@ import 'package:fedi/analytics/app/app_analytics_bloc_impl.dart';
 import 'package:fedi/analytics/app/local_preferences/app_analytics_local_preference_bloc.dart';
 import 'package:fedi/analytics/app/local_preferences/app_analytics_local_preference_bloc_impl.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
+import 'package:fedi/app/app_model.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc_impl.dart';
 import 'package:fedi/app/auth/instance/current/local_preferences/current_auth_instance_local_preference_bloc.dart';
@@ -160,6 +161,12 @@ import 'package:logging/logging.dart';
 var _logger = Logger('app_context_bloc_impl.dart');
 
 class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
+  final AppLaunchType appLaunchType;
+
+  AppContextBloc({
+    required this.appLaunchType,
+  });
+
   @override
   // todo:divide into small methods
   // ignore: long-method
@@ -168,7 +175,9 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
 
     var globalProviderService = this;
 
-    var configService = ConfigService()..disposeWith(this);
+    var configService = ConfigService(
+      appLaunchType: appLaunchType,
+    )..disposeWith(this);
     await globalProviderService
         .asyncInitAndRegister<IConfigService>(configService);
 
@@ -209,6 +218,11 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     var hiveLocalPreferencesService =
         HiveLocalPreferencesService.withLastVersionBoxName()..disposeWith(this);
     await hiveLocalPreferencesService.performAsyncInit();
+
+    if(configService.appLaunchType == AppLaunchType.mock) {
+      await hiveLocalPreferencesService.clearAllValues();
+    }
+
     var hiveLocalPreferencesServiceExist =
         await hiveLocalPreferencesService.isStorageExist();
     if (!hiveLocalPreferencesServiceExist) {

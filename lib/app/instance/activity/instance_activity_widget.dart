@@ -27,6 +27,7 @@ class InstanceActivityWidget extends StatelessWidget {
     return FediAsyncInitLoadingWidget(
       asyncInitLoadingBloc: instanceActivityBloc,
       loadingFinishedBuilder: (context) => FediListSmartRefresherWidget(
+        isNeedToAddPaddingForUiTests: false,
         controller: instanceActivityBloc.refreshController,
         onRefresh: () async {
           try {

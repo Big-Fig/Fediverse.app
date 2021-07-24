@@ -98,6 +98,7 @@ class PostStatusVisibilityActionWidget extends StatelessWidget {
     }
 
     return SelectionDialogAction(
+      key: null,
       icon: StatusVisibilityIconWidget.mapVisibilityToIconData(visibility),
       label:
           StatusVisibilityTitleWidget.mapVisibilityToTitle(context, visibility),

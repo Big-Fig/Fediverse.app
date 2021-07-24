@@ -62,6 +62,7 @@ class TimelineSettingsOnlyInCustomListFormFieldRowWidget
                 actions: remoteLists
                     .map(
                       (remoteList) => SelectionDialogAction(
+                        key: null,
                         isSelected: remoteList.id == fieldBloc.currentValue?.id,
                         label: remoteList.title,
                         onAction: (context) {

@@ -32,6 +32,7 @@ class StatusVisibilityMultiSelectFromListFormFieldWidget
             descriptionOnDisabled: descriptionOnDisabled,
             valueTitleMapper: mapValueToTitle,
             valueIconMapper: null,
+            valueKeyMapper: null,
             displayIconInDialog: false,
             displayIconInRow: false,
           ),

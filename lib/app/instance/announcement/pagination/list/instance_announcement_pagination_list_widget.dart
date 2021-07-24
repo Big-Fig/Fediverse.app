@@ -1,10 +1,10 @@
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/instance/announcement/instance_announcement_bloc.dart';
 import 'package:fedi/app/instance/announcement/instance_announcement_bloc_impl.dart';
 import 'package:fedi/app/instance/announcement/instance_announcement_model.dart';
 import 'package:fedi/app/instance/announcement/pagination/list/instance_announcement_list_item_widget.dart';
 import 'package:fedi/app/ui/list/fedi_list_tile.dart';
 import 'package:fedi/app/ui/pagination/fedi_pagination_list_widget.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pagination/cached/cached_pagination_list_bloc.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
@@ -38,6 +38,7 @@ class InstanceAnnouncementPaginationListWidget
           customEmptyWidget: customEmptyWidget,
           customLoadingWidget: customLoadingWidget,
           refreshOnFirstLoad: refreshOnFirstLoad,
+          isNeedToAddPaddingForUiTests: false,
         );
 
   @override

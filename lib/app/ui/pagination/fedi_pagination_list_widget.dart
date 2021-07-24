@@ -21,6 +21,7 @@ var _logger = Logger('fedi_pagination_list_widget.dart');
 abstract class FediPaginationListWidget<T> extends PaginationListWidget<T> {
   final Widget? customLoadingWidget;
   final Widget? customEmptyWidget;
+  final bool isNeedToAddPaddingForUiTests;
 
   const FediPaginationListWidget({
     Key? key,
@@ -31,6 +32,7 @@ abstract class FediPaginationListWidget<T> extends PaginationListWidget<T> {
     bool? alwaysShowFooter,
     this.customLoadingWidget,
     this.customEmptyWidget,
+    required this.isNeedToAddPaddingForUiTests,
     bool refreshOnFirstLoad = true,
   }) : super(
           key: key,
@@ -69,6 +71,7 @@ abstract class FediPaginationListWidget<T> extends PaginationListWidget<T> {
       //      key: key,
       enablePullDown: true,
       enablePullUp: true,
+      isNeedToAddPaddingForUiTests: isNeedToAddPaddingForUiTests,
       header: const FediListSmartRefresherRefreshIndicator(),
       footer: const ListLoadingFooterWidget(),
       controller: refreshController,

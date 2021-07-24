@@ -43,6 +43,7 @@ class ChatListItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var chatBloc = IChatBloc.of(context);
 
+
     return Slidable(
       actionPane: const SlidableDrawerActionPane(),
       // ignore: no-magic-number

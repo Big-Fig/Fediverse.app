@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert' as c;
 
+import 'package:fedi/app/app_model.dart';
 import 'package:fedi/main.dart' as main_app;
 import 'package:flutter/material.dart';
 import 'package:flutter_driver/driver_extension.dart';
@@ -29,5 +30,5 @@ Future main() async {
 
   enableFlutterDriverExtension(handler: handler);
   WidgetsApp.debugAllowBannerOverride = false; // remove debug banner
-  await main_app.main();
+  await main_app.launchApp(appLaunchType: AppLaunchType.mock);
 }

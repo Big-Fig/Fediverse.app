@@ -6,6 +6,7 @@ import 'package:fedi/app/crash_reporting/settings/edit/global/edit_global_crash_
 import 'package:fedi/app/localization/settings/edit/global/edit_global_localization_settings_dialog.dart';
 import 'package:fedi/app/media/settings/edit/global/edit_global_media_settings_dialog.dart';
 import 'package:fedi/app/pagination/settings/edit/global/edit_global_pagination_settings_dialog.dart';
+import 'package:fedi/app/settings/global/list/global_settings_list_widget_keys.dart';
 import 'package:fedi/app/status/post/settings/edit/global/edit_global_post_status_settings_dialog.dart';
 import 'package:fedi/app/status/sensitive/settings/edit/global/edit_global_status_sensitive_settings_dialog.dart';
 import 'package:fedi/app/toast/settings/edit/global/edit_global_toast_settings_dialog.dart';
@@ -24,7 +25,9 @@ class GlobalSettingsListWidget extends StatelessWidget {
   Widget build(BuildContext context) => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const _GlobalSettingsUiRowWidget(),
+          const _GlobalSettingsUiRowWidget(
+            key: Key(GlobalSettingsListWidgetKeys.globalSettingsUiRowWidget),
+          ),
           const _GlobalSettingsLocalizationRowWidget(),
           const _GlobalSettingsPaginationRowWidget(),
           const _GlobalSettingsMediaRowWidget(),

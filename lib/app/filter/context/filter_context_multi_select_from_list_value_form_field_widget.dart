@@ -33,7 +33,7 @@ class FilterContextMultiSelectFromListValueFormFieldWidget
           valueTitleMapper: mapValueToTitle,
           valueIconMapper: null,
           displayIconInDialog: false,
-          displayIconInRow: false,
+          displayIconInRow: false, valueKeyMapper: null,
         ),
       ),
     );

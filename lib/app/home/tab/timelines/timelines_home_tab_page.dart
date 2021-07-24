@@ -205,13 +205,11 @@ class _TimelinesHomeTabPageBodyState extends State<_TimelinesHomeTabPageBody>
     );
   }
 
-  Widget buildTabBodyContent() {
-    return FediDarkStatusBarStyleArea(
-      child: const TimelineWidget(),
-    );
-  }
+  Widget buildTabBodyContent() => FediDarkStatusBarStyleArea(
+        child: const TimelineWidget(),
+      );
 
-  Provider<ITimelineTabBloc> _provideTabBodyContext(
+  Widget _provideTabBodyContext(
     BuildContext context,
     int index,
     Widget child,

@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:fedi/app/about/about_page.dart';
+import 'package:fedi/app/app_model.dart';
 import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi/app/auth/host/auth_host_model.dart';
@@ -492,8 +495,15 @@ ErrorData createRegistrationInvitesOnlyErrorData(
           S.of(context).app_auth_instance_join_invitesOnly_dialog_content,
     );
 
+// ignore: long-method
 Future logInToInstance(BuildContext context) async {
   var joinInstanceBloc = IJoinAuthInstanceBloc.of(context, listen: false);
+
+  var configService = IConfigService.of(context, listen: false);
+
+  var appLaunchType = configService.appLaunchType;
+  _logger.finest(() => 'logInToInstance $appLaunchType');
+
   var dialogResult = await PleromaAsyncOperationHelper
       .performPleromaAsyncOperation<AuthInstance?>(
     context: context,
@@ -501,18 +511,29 @@ Future logInToInstance(BuildContext context) async {
         S.of(context).app_auth_instance_join_progress_dialog_content,
     cancelable: true,
     asyncCode: () async {
-      var hostUri = joinInstanceBloc.extractCurrentUri();
-      AuthHostBloc? bloc;
-      try {
-        bloc = AuthHostBloc.createFromContext(
-          context,
-          instanceBaseUri: hostUri,
-        );
-        var instance = await bloc.launchLoginToAccount();
 
-        return instance;
-      } finally {
-        await bloc?.dispose();
+
+      switch (appLaunchType) {
+        case AppLaunchType.normal:
+          var hostUri = joinInstanceBloc.extractCurrentUri();
+          AuthHostBloc? bloc;
+          try {
+            bloc = AuthHostBloc.createFromContext(
+              context,
+              instanceBaseUri: hostUri,
+            );
+            var instance = await bloc.launchLoginToAccount();
+
+            return instance;
+          } finally {
+            await bloc?.dispose();
+          }
+
+        case AppLaunchType.mock:
+          var testAuthInstanceJsonString = configService.testAuthInstanceJson!;
+          var testAuthInstanceJson = jsonDecode(testAuthInstanceJsonString);
+
+          return AuthInstance.fromJson(testAuthInstanceJson);
       }
     },
     errorDataBuilders: [

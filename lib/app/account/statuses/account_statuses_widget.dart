@@ -23,6 +23,7 @@ abstract class AccountStatusesWidget extends FediPaginationListWidget<IStatus> {
           alwaysShowFooter: alwaysShowFooter,
           scrollController: scrollController,
           refreshOnFirstLoad: refreshOnFirstLoad,
+          isNeedToAddPaddingForUiTests: false,
         );
 
   @override

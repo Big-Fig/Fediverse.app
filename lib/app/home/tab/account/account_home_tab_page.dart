@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/header/account_header_background_widget.dart';
 import 'package:fedi/app/account/my/action/my_account_action_list_bottom_sheet_dialog.dart';
@@ -16,6 +17,7 @@ import 'package:fedi/app/account/statuses/with_replies/cached/account_statuses_w
 import 'package:fedi/app/account/statuses/without_replies/cached/account_statuses_without_replies_cached_list_bloc_impl.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/home/tab/account/account_home_tab_bloc.dart';
+import 'package:fedi/app/home/tab/account/account_home_tab_page_keys.dart';
 import 'package:fedi/app/home/tab/account/menu/account_home_tab_menu_dialog.dart';
 import 'package:fedi/app/home/tab/account/menu/badge/account_home_tab_menu_int_badge_bloc_impl.dart';
 import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
@@ -43,7 +45,6 @@ import 'package:fedi/app/ui/spacer/fedi_small_horizontal_spacer.dart';
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/collapsible/owner/collapsible_owner_widget.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc_impl.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
@@ -482,43 +483,21 @@ class _AccountHomeTabFediTabMainHeaderBarWidget extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  child: InkWell(
-                    onTap: () {
-                      showMyAccountActionListBottomSheetDialog(context);
-                    },
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Flexible(
-                          child:
-                              const _AccountHomeTabCurrentInstanceNameWidget(),
-                        ),
-                        const FediSmallHorizontalSpacer(),
-                        Icon(
-                          FediIcons.chevron_down,
-                          // todo: refactor
-                          // ignore: no-magic-number
-                          size: 18.0,
-                          color: IFediUiColorTheme.of(context).white,
-                        ),
-                      ],
+                  child: _AccountHomeTabFediTabMainHeaderBarChooserButtonWidget(
+                    key: Key(
+                      AccountHomeTabPageKeys
+                          .accountHomeTabFediTabMainHeaderBarChooserButtonWidget,
                     ),
                   ),
                 ),
                 const FediBigHorizontalSpacer(),
                 AccountHomeTabMenuIntBadgeBloc.provideToContext(
                   context,
-                  child: FediIntBadgeWidget(
-                    offset: 0.0,
-                    child: FediIconInCircleBlurredButton(
-                      FediIcons.settings,
-                      // todo: refactor
-                      // ignore: no-magic-number
-                      iconSize: 15.0,
-                      onPressed: () {
-                        showAccountHomeTabMenuDialog(context);
-                      },
+                  child:
+                      _AccountHomeTabFediTabMainHeaderBarAccountMenuButtonWidget(
+                    key: Key(
+                      AccountHomeTabPageKeys
+                          .accountHomeTabFediTabMainHeaderBarAccountMenuButtonWidget,
                     ),
                   ),
                 ),
@@ -528,4 +507,60 @@ class _AccountHomeTabFediTabMainHeaderBarWidget extends StatelessWidget {
         ),
         endingWidgets: null,
       );
+}
+
+class _AccountHomeTabFediTabMainHeaderBarAccountMenuButtonWidget
+    extends StatelessWidget {
+  const _AccountHomeTabFediTabMainHeaderBarAccountMenuButtonWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FediIntBadgeWidget(
+      offset: 0.0,
+      child: FediIconInCircleBlurredButton(
+        FediIcons.settings,
+        // todo: refactor
+        // ignore: no-magic-number
+        iconSize: 15.0,
+        onPressed: () {
+          showAccountHomeTabMenuDialog(context);
+        },
+      ),
+    );
+  }
+}
+
+class _AccountHomeTabFediTabMainHeaderBarChooserButtonWidget
+    extends StatelessWidget {
+  const _AccountHomeTabFediTabMainHeaderBarChooserButtonWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        showMyAccountActionListBottomSheetDialog(context);
+      },
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          Flexible(
+            child: const _AccountHomeTabCurrentInstanceNameWidget(),
+          ),
+          const FediSmallHorizontalSpacer(),
+          Icon(
+            FediIcons.chevron_down,
+            // todo: refactor
+            // ignore: no-magic-number
+            size: 18.0,
+            color: IFediUiColorTheme.of(context).white,
+          ),
+        ],
+      ),
+    );
+  }
 }

@@ -2,6 +2,7 @@ import 'dart:core';
 
 import 'package:fedi/app/ui/fedi_border_radius.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
+import 'package:fedi/app/ui/modal_bottom_sheet/fedi_modal_bottom_sheet_keys.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/material.dart';
 
@@ -49,7 +50,11 @@ class _FediModalBottomSheetDialogBodyWidget extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const _FediModalBottomSheetHandlerBar(),
+        const _FediModalBottomSheetHandlerBar(
+          key: Key(
+            FediModalBottomSheetKeys.fediModalBottomSheetHandlerBar,
+          ),
+        ),
         ClipRRect(
           borderRadius: FediBorderRadius.topOnlyBigBorderRadius,
           child: Container(
@@ -70,23 +75,30 @@ class _FediModalBottomSheetDialogBodyWidget extends StatelessWidget {
 }
 
 class _FediModalBottomSheetHandlerBar extends StatelessWidget {
-  const _FediModalBottomSheetHandlerBar();
+  const _FediModalBottomSheetHandlerBar({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(11.0),
-      child: Container(
-        // ignore: no-magic-number
-        width: 42.0,
-        // ignore: no-magic-number
-        height: 6.0,
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(
-            // ignore: no-magic-number
-            Radius.circular(6.0),
+    return InkWell(
+      onTap: () {
+        Navigator.of(context).pop();
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(11.0),
+        child: Container(
+          // ignore: no-magic-number
+          width: 42.0,
+          // ignore: no-magic-number
+          height: 6.0,
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.all(
+              // ignore: no-magic-number
+              Radius.circular(6.0),
+            ),
+            color: IFediUiColorTheme.of(context).lightGrey,
           ),
-          color: IFediUiColorTheme.of(context).lightGrey,
         ),
       ),
     );
