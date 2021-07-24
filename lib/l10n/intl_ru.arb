@@ -3,6 +3,7 @@
   "@@last_modified": "2021-04-02T19:07:22+00:00",
   "localization_locale_en": "English",
   "localization_locale_ru": "Русский",
+  "localization_locale_pl": "Polskie",
   "localization_locale_default": "По умолчанию",
   "localization_locale_notSpecified": "Не определен",
   "app_localization_dialog_title": "Язык",

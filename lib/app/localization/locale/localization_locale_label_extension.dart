@@ -16,6 +16,9 @@ extension LocalizaionLocaleLabelExtension on LocalizationLocale {
       case 'ru':
         return s.localization_locale_ru;
 
+      case 'pl':
+        return s.localization_locale_pl;
+
       default:
         _logger.severe(() => 'not supported locale $localeString');
         return localeString;

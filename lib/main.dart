@@ -74,8 +74,7 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 // ignore: long-method
 Future main() async {
 
-  await launchApp(appLaunchType: AppLaunchType.mock);
-  // await launchApp(appLaunchType: AppLaunchType.normal);
+  await launchApp(appLaunchType: AppLaunchType.normal);
 }
 
 Future launchApp({

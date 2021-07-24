@@ -70,6 +70,16 @@ class S {
     );
   }
 
+  /// `Polskie`
+  String get localization_locale_pl {
+    return Intl.message(
+      'Polskie',
+      name: 'localization_locale_pl',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Default`
   String get localization_locale_default {
     return Intl.message(
@@ -8581,6 +8591,7 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
   List<Locale> get supportedLocales {
     return const <Locale>[
       Locale.fromSubtags(languageCode: 'en'),
+      Locale.fromSubtags(languageCode: 'pl'),
       Locale.fromSubtags(languageCode: 'ru'),
     ];
   }

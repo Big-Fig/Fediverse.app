@@ -7,6 +7,11 @@ final supportedLocalizationLocaleList = <LocalizationLocale>[
     scriptCode: null,
     countryCode: null,
   ),
+  LocalizationLocale(
+    languageCode: 'pl',
+    scriptCode: null,
+    countryCode: null,
+  ),
 ];
 
 final defaultLocale = LocalizationLocale(

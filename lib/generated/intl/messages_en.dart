@@ -1853,6 +1853,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("English"),
         "localization_locale_notSpecified":
             MessageLookupByLibrary.simpleMessage("Not specified"),
+        "localization_locale_pl":
+            MessageLookupByLibrary.simpleMessage("Polskie"),
         "localization_locale_ru":
             MessageLookupByLibrary.simpleMessage("Русский"),
         "pagination_list_empty":
