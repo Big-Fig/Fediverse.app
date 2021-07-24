@@ -1,4 +1,4 @@
-name: Check lints warnings
+name: lints
 on:
   push:
     branches:

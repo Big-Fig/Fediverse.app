@@ -1,8 +1,8 @@
 # Fedi for Pleroma and Mastodon
 [![Translate - with Weblate](https://img.shields.io/badge/translate%20with-Weblate-green.svg?style=flat)](https://translate.pleroma.social/engage/fedi-app/)
-![Unit tests](https://github.com/Big-Fig/Fediverse.app/actions/workflows/unit_tests.yml/badge.svg)
-![Lints](https://github.com/Big-Fig/Fediverse.app/actions/workflows/lints_check.yml/badge.svg)
-![dartfmt](https://github.com/Big-Fig/Fediverse.app/actions/workflows/code_formatting.yml/badge.svg) 
+[![Unit tests](https://github.com/Big-Fig/Fediverse.app/actions/workflows/unit_tests.yml/badge.svg)](https://github.com/Big-Fig/Fediverse.app/actions/workflows/unit_tests.yml/)
+[![Lints](https://github.com/Big-Fig/Fediverse.app/actions/workflows/lints_check.yml/badge.svg)](https://github.com/Big-Fig/Fediverse.app/actions/workflows/lints_check.yml/)
+[![dartfmt](https://github.com/Big-Fig/Fediverse.app/actions/workflows/code_formatting.yml/badge.svg)](https://github.com/Big-Fig/Fediverse.app/actions/workflows/code_formatting.yml/)
 
 Fedi is open-source client for [Pleroma](https://pleroma.social/) and [Mastodon](https://joinmastodon.org/) social networks written using Flutter.
 

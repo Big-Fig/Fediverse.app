@@ -1,4 +1,4 @@
-name: Run unit tests with coverage
+name: unit_tests
 on:
   push:
     branches:
