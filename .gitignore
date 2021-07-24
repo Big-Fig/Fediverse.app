@@ -136,10 +136,14 @@ app.*.symbols
 /android/fastlane/screenshots/
 /android/fastlane/metadata/android/**/images/
 /android/fastlane/metadata/android/**/unframed_images/
+/android/fastlane/README.md
+/android/fastlane/report.xml
 # CD fastlane ios
 /ios/fastlane/metadata/review_information/
 /ios/fastlane/screenshots/**/*.png
 /ios/fastlane/unframed_screenshots/
+/ios/fastlane/README.md
+/ios/fastlane/report.xml
 # Generated screenshots
 /tmp/screenshots/
 /screenshots_dev.yaml
