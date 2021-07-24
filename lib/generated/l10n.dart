@@ -2426,10 +2426,10 @@ class S {
     );
   }
 
-  /// `Add Timelines..`
+  /// `Add Timelines…`
   String get app_timeline_storage_action_add {
     return Intl.message(
-      'Add Timelines..',
+      'Add Timelines…',
       name: 'app_timeline_storage_action_add',
       desc: '',
       args: [],
@@ -2826,10 +2826,10 @@ class S {
     );
   }
 
-  /// `Saving...`
+  /// `Saving…`
   String get app_media_attachment_addToGallery_progress_content {
     return Intl.message(
-      'Saving...',
+      'Saving…',
       name: 'app_media_attachment_addToGallery_progress_content',
       desc: '',
       args: [],
@@ -3388,10 +3388,10 @@ class S {
     );
   }
 
-  /// `Posting...`
+  /// `Posting…`
   String get app_status_post_dialog_async_content {
     return Intl.message(
-      'Posting...',
+      'Posting…',
       name: 'app_status_post_dialog_async_content',
       desc: '',
       args: [],
@@ -3718,10 +3718,10 @@ class S {
     );
   }
 
-  /// `Loading...`
+  /// `Loading…`
   String get dialog_progress_content {
     return Intl.message(
-      'Loading...',
+      'Loading…',
       name: 'dialog_progress_content',
       desc: '',
       args: [],
@@ -4075,10 +4075,10 @@ class S {
     );
   }
 
-  /// `Настройки: {userAtHost}`
+  /// `Settings: {userAtHost}`
   String app_settings_instance_title(Object userAtHost) {
     return Intl.message(
-      'Настройки: $userAtHost',
+      'Settings: $userAtHost',
       name: 'app_settings_instance_title',
       desc: '',
       args: [userAtHost],
@@ -7823,10 +7823,10 @@ class S {
     );
   }
 
-  /// `With created at`
+  /// `With created date`
   String get app_share_entity_settings_field_withCreatedAt_label {
     return Intl.message(
-      'With created at',
+      'With created date',
       name: 'app_share_entity_settings_field_withCreatedAt_label',
       desc: '',
       args: [],

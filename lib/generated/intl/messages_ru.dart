@@ -256,7 +256,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_acccount_my_customList_list_empty_subtitle":
             MessageLookupByLibrary.simpleMessage("Создайте новый сейчас."),
         "app_acccount_my_customList_list_empty_title":
-            MessageLookupByLibrary.simpleMessage("У вас нет списков"),
+            MessageLookupByLibrary.simpleMessage("У вас нет списков."),
         "app_acccount_select_suggestion_header":
             MessageLookupByLibrary.simpleMessage("Быстрый доступ"),
         "app_account_action_block":
@@ -265,7 +265,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_account_action_follow":
             MessageLookupByLibrary.simpleMessage("Подписаться"),
         "app_account_action_followRequested":
-            MessageLookupByLibrary.simpleMessage("Подверждение..."),
+            MessageLookupByLibrary.simpleMessage("Запрошено"),
         "app_account_action_instanceDetails": m1,
         "app_account_action_message":
             MessageLookupByLibrary.simpleMessage("Сообщение"),
@@ -294,7 +294,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_account_action_unsubscribe":
             MessageLookupByLibrary.simpleMessage("Не получать уведомления"),
         "app_account_block_description": MessageLookupByLibrary.simpleMessage(
-            "Заблокированные пользователи не будут показаны в домашней и публичных лентах, оповещениях, а также когда кто-то поделился или упоминул их. \n Заблокированные не смогут подписаться на вас, видеть ваши записи в лентах и если записями кто-то поделился. Если вы и заблокированный пользователь с одного сервера, то он не сможет видеть записи на странице вашего аккаунта."),
+            "Заблокированные пользователи не будут показаны в домашней и публичных лентах, оповещениях, а также когда кто-то поделился или упомянул их.\nЗаблокированные не смогут подписаться на вас, видеть ваши записи в лентах и если записями кто-то поделился.\nЕсли вы и заблокированный пользователь с одного сервера, то он не сможет видеть записи на странице вашего аккаунта."),
         "app_account_domainBlock_description": MessageLookupByLibrary.simpleMessage(
             "Вы не будите видеть оповещения, записи с этого сервера в публичных и домашней лентах.\n Вы потеряете всех подписчиков с этого сервера.\n Обычно, удобнее сделать несколько блокировать или скрытий конкретных аккаунтов место блокирования всего сервера."),
         "app_account_follower_title": m4,
@@ -464,7 +464,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_account_my_edit_field_pleroma_background_dialog_action_select":
             MessageLookupByLibrary.simpleMessage("Выбрать"),
         "app_account_my_edit_field_pleroma_background_dialog_title":
-            MessageLookupByLibrary.simpleMessage("Фон Pleroma "),
+            MessageLookupByLibrary.simpleMessage("Фон Pleroma"),
         "app_account_my_edit_field_pleroma_hideFavourites_description":
             MessageLookupByLibrary.simpleMessage("Только приватный доступ"),
         "app_account_my_edit_field_pleroma_hideFavourites_label":
@@ -530,7 +530,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_account_my_followRequest_action_ignore":
             MessageLookupByLibrary.simpleMessage("Отказать"),
         "app_account_my_followRequest_empty_title":
-            MessageLookupByLibrary.simpleMessage("У вас нет текущих запросов"),
+            MessageLookupByLibrary.simpleMessage("У вас нет текущих запросов."),
         "app_account_my_followRequest_title":
             MessageLookupByLibrary.simpleMessage("Запросы подписки"),
         "app_account_my_menu_account_subpage_title":
@@ -619,10 +619,10 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Запрещено. Неправильная операция или ваша сессия устарелаа"),
         "app_async_pleroma_error_throttled_dialog_content":
             MessageLookupByLibrary.simpleMessage(
-                "Слишком много операций за минуту. Пожалуйста подождите"),
+                "Слишком много операций за минуту. Пожалуйста подождите."),
         "app_async_pleroma_error_throttled_dialog_title":
             MessageLookupByLibrary.simpleMessage(
-                "Сервер заблокировал операцию"),
+                "Сервер заблокировал операцию."),
         "app_async_socket_error_dialog_content":
             MessageLookupByLibrary.simpleMessage(
                 "Нет соединения или сервер недоступен"),
@@ -644,7 +644,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_auth_instance_current_context_loading_cantLoad_content": m12,
         "app_auth_instance_current_context_loading_loading_content": m13,
         "app_auth_instance_current_context_loading_loading_title":
-            MessageLookupByLibrary.simpleMessage("Загрузка аккаунта..."),
+            MessageLookupByLibrary.simpleMessage("Загрузка аккаунта"),
         "app_auth_instance_join_action_about":
             MessageLookupByLibrary.simpleMessage("О Fedi"),
         "app_auth_instance_join_action_exploreAsGuest":
@@ -659,7 +659,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("."),
         "app_auth_instance_join_action_tos_prefix":
             MessageLookupByLibrary.simpleMessage(
-                "Используя Fedi вы соглашаетесь с "),
+                "Используя Fedi вы соглашаетесь с"),
         "app_auth_instance_join_action_tos_terms":
             MessageLookupByLibrary.simpleMessage("условиями"),
         "app_auth_instance_join_fail_dialog_content": m14,
@@ -770,7 +770,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_cache_database_settings_currentMaxAge_value": m20,
         "app_cache_database_settings_description":
             MessageLookupByLibrary.simpleMessage(
-                "Аккаунты, записи, беседы, чаты и оповещения. Высокие лимиты могут ухудшить производительность из-за сложных вычислений для больших объемов данных.\n Данные не соотвествующие лимитам будут удалено при каждом старте приложения"),
+                "Аккаунты, записи, беседы, чаты и оповещения. Высокие лимиты могут ухудшить производительность из-за сложных вычислений для больших объемов данных.\nДанные не соотвествующие лимитам будут удалено при каждом старте приложения."),
         "app_cache_database_settings_limitAge_label":
             MessageLookupByLibrary.simpleMessage("Лимит давности"),
         "app_cache_database_settings_limitAge_value_days180":
@@ -801,7 +801,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Кэш базы данных"),
         "app_cache_files_settings_description":
             MessageLookupByLibrary.simpleMessage(
-                "Данные не соотвествующие лимитам будут удалено при каждом старте приложения"),
+                "Данные не соотвествующие лимитам будут удалены при каждом старте приложения."),
         "app_cache_files_settings_limitAge_label":
             MessageLookupByLibrary.simpleMessage("Лимит давности"),
         "app_cache_files_settings_limitAge_value_days180":
@@ -996,7 +996,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_filter_list_action_add":
             MessageLookupByLibrary.simpleMessage("Добавить фильтр"),
         "app_filter_list_empty": MessageLookupByLibrary.simpleMessage(
-            "У вас нет еще не одного Фильтра"),
+            "У вас нет еще не одного Фильтра."),
         "app_filter_list_title":
             MessageLookupByLibrary.simpleMessage("Фильтры"),
         "app_hashtag_history_accounts":
@@ -1021,7 +1021,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_home_tab_chat_pleroma_title":
             MessageLookupByLibrary.simpleMessage("Чаты"),
         "app_init_fail": MessageLookupByLibrary.simpleMessage(
-            "Ошибка при инициализации.\nПерезапустите или переустановите приложение"),
+            "Ошибка при инициализации.\nПерезапустите или переустановите приложение."),
         "app_instance_activity_logins":
             MessageLookupByLibrary.simpleMessage("Пользователи"),
         "app_instance_activity_registrations":
@@ -1065,7 +1065,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_instance_details_field_federation_mrfObjectAge_threshold_label":
             MessageLookupByLibrary.simpleMessage("MFR Object Age Threshold"),
         "app_instance_details_field_federation_mrfPolicies_label":
-            MessageLookupByLibrary.simpleMessage("MFR Policies"),
+            MessageLookupByLibrary.simpleMessage("Правила MFR"),
         "app_instance_details_field_federation_quarantinedInstances_label":
             MessageLookupByLibrary.simpleMessage("Серверы на карантине"),
         "app_instance_details_field_federation_title":
@@ -1143,9 +1143,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_instance_details_field_uploadLimits_title":
             MessageLookupByLibrary.simpleMessage("Загрузка"),
         "app_instance_details_field_uploadMedia_label":
-            MessageLookupByLibrary.simpleMessage("Лимит: загрузка файлов "),
+            MessageLookupByLibrary.simpleMessage("Лимит: загрузка файлов"),
         "app_instance_details_field_vapidPublicKey_label":
-            MessageLookupByLibrary.simpleMessage("Vapid public key"),
+            MessageLookupByLibrary.simpleMessage("Открый ключ Vapid"),
         "app_instance_details_field_version_label":
             MessageLookupByLibrary.simpleMessage("Версия"),
         "app_instance_details_title": m30,
@@ -1187,7 +1187,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_media_attachment_addToGallery_error_dialog_title":
             MessageLookupByLibrary.simpleMessage("Не получилось сохранить"),
         "app_media_attachment_addToGallery_progress_content":
-            MessageLookupByLibrary.simpleMessage("Сохранение..."),
+            MessageLookupByLibrary.simpleMessage("Сохранение…"),
         "app_media_attachment_details_notSupported_type": m32,
         "app_media_attachment_details_title":
             MessageLookupByLibrary.simpleMessage("Прикрепленные файлы"),
@@ -1205,7 +1205,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Убрать"),
         "app_media_attachment_upload_remove_dialog_content":
             MessageLookupByLibrary.simpleMessage(
-                "Вы действительно хотите убрать прикрепленный файл"),
+                "Вы действительно хотите убрать прикрепленный файл?"),
         "app_media_player_error_action_moreDetails":
             MessageLookupByLibrary.simpleMessage("Больше информации"),
         "app_media_player_error_action_reload":
@@ -1541,10 +1541,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_status_expire_datetime_picker_title":
             MessageLookupByLibrary.simpleMessage("Запланировать удаление"),
         "app_status_favouritedBy_title":
-            MessageLookupByLibrary.simpleMessage("Понравилось:"),
+            MessageLookupByLibrary.simpleMessage("Понравилось"),
         "app_status_list_newItems_action_tapToLoadNew": m54,
         "app_status_mute_dialog_action_clearDate":
-            MessageLookupByLibrary.simpleMessage("Clear date"),
+            MessageLookupByLibrary.simpleMessage("Очистить"),
         "app_status_mute_dialog_action_mute":
             MessageLookupByLibrary.simpleMessage("Не уведомлять"),
         "app_status_mute_dialog_field_expire_label":
@@ -1557,7 +1557,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_status_post_action_post":
             MessageLookupByLibrary.simpleMessage("Запись"),
         "app_status_post_dialog_async_content":
-            MessageLookupByLibrary.simpleMessage("Публикация..."),
+            MessageLookupByLibrary.simpleMessage("Публикация…"),
         "app_status_post_dialog_error_content": m55,
         "app_status_post_dialog_error_title_post":
             MessageLookupByLibrary.simpleMessage(
@@ -1587,7 +1587,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Сохранить как черновик"),
         "app_status_post_new_unsaved_dialog_content":
             MessageLookupByLibrary.simpleMessage(
-                "Вы потеряете данные если откажетесь"),
+                "Вы потеряете данные если откажетесь."),
         "app_status_post_new_unsaved_dialog_title":
             MessageLookupByLibrary.simpleMessage("Сохранить как черновик?"),
         "app_status_post_poll_field_hideTotals_label":
@@ -1629,7 +1629,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_status_reblog_header":
             MessageLookupByLibrary.simpleMessage("поделился"),
         "app_status_rebloggedBy_title":
-            MessageLookupByLibrary.simpleMessage("Поделились:"),
+            MessageLookupByLibrary.simpleMessage("Поделились"),
         "app_status_reply_header":
             MessageLookupByLibrary.simpleMessage("в ответ к"),
         "app_status_reply_loading_failed": MessageLookupByLibrary.simpleMessage(
@@ -1650,7 +1650,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_status_sensitive_settings_field_isAlwaysShowSpoiler_label":
             MessageLookupByLibrary.simpleMessage("Всегда показывать спойлеры"),
         "app_status_sensitive_settings_field_nsfwDisplayDelayDuration_label":
-            MessageLookupByLibrary.simpleMessage("Запомнить просмотр  "),
+            MessageLookupByLibrary.simpleMessage("Запомнить просмотр"),
         "app_status_sensitive_settings_title":
             MessageLookupByLibrary.simpleMessage("NSFW и спойлеры"),
         "app_status_spoiler_action_view":
@@ -1677,7 +1677,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_timeline_settings_content": m59,
         "app_timeline_settings_field_enableWebSockets_description":
             MessageLookupByLibrary.simpleMessage(
-                "Disable to reduce battery usage"),
+                "Большое использование батареи"),
         "app_timeline_settings_field_enableWebSockets_description_instance_disabled":
             MessageLookupByLibrary.simpleMessage(
                 "Не поддерживается или отключено в настройках"),
@@ -1730,7 +1730,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_timeline_settings_withRemoteHashtag_field_label":
             MessageLookupByLibrary.simpleMessage("С хэштэгом"),
         "app_timeline_storage_action_add":
-            MessageLookupByLibrary.simpleMessage("Добавить ленту.."),
+            MessageLookupByLibrary.simpleMessage("Добавить ленту…"),
         "app_timeline_storage_appBar_action_done":
             MessageLookupByLibrary.simpleMessage("Сохранить"),
         "app_timeline_storage_appBar_action_edit":
@@ -1820,7 +1820,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "dialog_progress_action_cancel":
             MessageLookupByLibrary.simpleMessage("Отмена"),
         "dialog_progress_content":
-            MessageLookupByLibrary.simpleMessage("Загрузка..."),
+            MessageLookupByLibrary.simpleMessage("Загрузка…"),
         "duration_day": m63,
         "duration_hour": m64,
         "duration_minute": m65,

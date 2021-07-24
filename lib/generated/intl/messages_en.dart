@@ -128,7 +128,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m50(acct) => "${acct} shared your status";
 
-  static String m51(userAtHost) => "Настройки: ${userAtHost}";
+  static String m51(userAtHost) => "Settings: ${userAtHost}";
 
   static String m52(remoteInstanceDomain) => "Open on ${remoteInstanceDomain}";
 
@@ -1175,7 +1175,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_media_attachment_addToGallery_error_dialog_title":
             MessageLookupByLibrary.simpleMessage("Can\'t save media"),
         "app_media_attachment_addToGallery_progress_content":
-            MessageLookupByLibrary.simpleMessage("Saving..."),
+            MessageLookupByLibrary.simpleMessage("Saving…"),
         "app_media_attachment_details_notSupported_type": m32,
         "app_media_attachment_details_title":
             MessageLookupByLibrary.simpleMessage("Media attachment"),
@@ -1434,7 +1434,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_share_entity_settings_field_wholeAsLink_label":
             MessageLookupByLibrary.simpleMessage("Whole as link"),
         "app_share_entity_settings_field_withCreatedAt_label":
-            MessageLookupByLibrary.simpleMessage("With created at"),
+            MessageLookupByLibrary.simpleMessage("With created date"),
         "app_share_entity_settings_field_withLink_label":
             MessageLookupByLibrary.simpleMessage("With link to original"),
         "app_share_entity_settings_field_withMedia_label":
@@ -1533,7 +1533,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_status_post_action_post":
             MessageLookupByLibrary.simpleMessage("Post"),
         "app_status_post_dialog_async_content":
-            MessageLookupByLibrary.simpleMessage("Posting..."),
+            MessageLookupByLibrary.simpleMessage("Posting…"),
         "app_status_post_dialog_error_content": m55,
         "app_status_post_dialog_error_title_post":
             MessageLookupByLibrary.simpleMessage("Failed to post status"),
@@ -1705,7 +1705,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_timeline_settings_withRemoteHashtag_field_label":
             MessageLookupByLibrary.simpleMessage("With hashtag"),
         "app_timeline_storage_action_add":
-            MessageLookupByLibrary.simpleMessage("Add Timelines.."),
+            MessageLookupByLibrary.simpleMessage("Add Timelines…"),
         "app_timeline_storage_appBar_action_done":
             MessageLookupByLibrary.simpleMessage("Done"),
         "app_timeline_storage_appBar_action_edit":
@@ -1796,7 +1796,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "dialog_progress_action_cancel":
             MessageLookupByLibrary.simpleMessage("Cancel"),
         "dialog_progress_content":
-            MessageLookupByLibrary.simpleMessage("Loading..."),
+            MessageLookupByLibrary.simpleMessage("Loading…"),
         "duration_day": m63,
         "duration_hour": m64,
         "duration_minute": m65,

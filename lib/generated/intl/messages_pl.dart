@@ -66,6 +66,9 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m21(userAtHost) =>
       "Wyczyść całą pamięć podręczną (${userAtHost})";
 
+  static String m22(userAtHost) =>
+      "Wyczyść pamięć podręczną według limitów (${userAtHost})";
+
   static String m23(count) =>
       "${Intl.plural(count, one: '1 nowa konwersacja. Naciśnij, aby załadować.', few: '${count} nowe konwersacje. Naciśnij, aby załadować', other: '${count} nowych konwersacji. Naciśnij, aby załadować')}";
 
@@ -195,6 +198,12 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m77(minutes) =>
       "${Intl.plural(minutes, one: '1 min', other: '${minutes} min')}";
 
+  static String m78(months) =>
+      "${Intl.plural(months, one: '1 miesiące', other: '${months} miesięcy')}";
+
+  static String m79(years) =>
+      "${Intl.plural(years, one: 'około roku', other: '${years} lata')}";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "app_about_field_changelog_label":
@@ -236,6 +245,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Zapisz"),
         "app_acccount_my_customList_edit_added_header":
             MessageLookupByLibrary.simpleMessage("Dodane konta"),
+        "app_acccount_my_customList_edit_description":
+            MessageLookupByLibrary.simpleMessage(
+                "Statusy na liście są buforowane na serwerze.\nDodawanie lub usuwanie kont wpłynie tylko na nowe posty.\nWszystkie stare posty pozostaną na liście na zawsze. Możliwe jest tylko dodanie konta, które obserwujesz."),
         "app_acccount_my_customList_edit_search_header":
             MessageLookupByLibrary.simpleMessage("Dodaj do swojej listy"),
         "app_acccount_my_customList_edit_search_hint":
@@ -286,6 +298,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Odepnij"),
         "app_account_action_unsubscribe":
             MessageLookupByLibrary.simpleMessage("Przestań subskrybować"),
+        "app_account_block_description": MessageLookupByLibrary.simpleMessage(
+            "Blokowanie ukrywa użytkownika przed twoim widokiem: powiadomienia, kanały domowe i publiczne, wzmacnianie lub wzmianki o użytkowniku.\nUżytkownik nie może Cię śledzić, użytkownik nie zobaczy Twoich postów w publicznych osiach czasu i doładowaniach.\nJeśli ty i zablokowany użytkownik znajdujecie się na tym samym serwerze, zablokowany użytkownik nie będzie mógł przeglądać twoich postów w twoim profilu po zalogowaniu."),
+        "app_account_domainBlock_description": MessageLookupByLibrary.simpleMessage(
+            "Nie zobaczysz powiadomień, doładowań, postów z tego serwera na kanałach publicznych i domowych.\nStracisz wszystkich obserwujących, których mogłeś mieć na tym serwerze.\nZwykle lepiej jest ustawić kilka blokad kont lub wyciszenia zamiast globalnego blokowania instancji."),
         "app_account_follower_title": m4,
         "app_account_following_title": m5,
         "app_account_home_tab_menu_action_account":
@@ -313,6 +329,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Ukryte"),
         "app_account_list_privacy": MessageLookupByLibrary.simpleMessage(
             "Niektóre informacje mogą nie być dostępne z powodu ustawień prywatności"),
+        "app_account_mute_description": MessageLookupByLibrary.simpleMessage(
+            "Wyciszanie ukrywa użytkownika przed twoim widokiem: kanały publiczne i domowe, wzmacnianie i wzmianki o użytkowniku.\nUżytkownik nie ma możliwości dowiedzenia się, że został wyciszony."),
         "app_account_mute_dialog_action_clearDate":
             MessageLookupByLibrary.simpleMessage("Wyczyść datę"),
         "app_account_mute_dialog_action_mute":
@@ -324,6 +342,8 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Dodatowo wycisz powiadomienia"),
         "app_account_mute_dialog_field_notifications_label":
             MessageLookupByLibrary.simpleMessage("Powiadomienia"),
+        "app_account_mute_dialog_title":
+            MessageLookupByLibrary.simpleMessage("Odłóż użytkownika"),
         "app_account_mute_toast_mute_with_notifications":
             MessageLookupByLibrary.simpleMessage("Wyciszono powiadomienia"),
         "app_account_mute_toast_mute_without_notifications":
@@ -490,6 +510,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Pokazuj rolę"),
         "app_account_my_edit_field_pleroma_skipThreadContainment_description":
             MessageLookupByLibrary.simpleMessage("Pomiń uszkodzone wątki"),
+        "app_account_my_edit_field_pleroma_skipThreadContainment_label":
+            MessageLookupByLibrary.simpleMessage("Pomiń blokowanie wątku"),
         "app_account_my_edit_title":
             MessageLookupByLibrary.simpleMessage("Edytuj konto"),
         "app_account_my_edit_unsaved_dialog_action_discard":
@@ -582,6 +604,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Nie udało się zgłosić"),
         "app_account_report_toast_success":
             MessageLookupByLibrary.simpleMessage("Pomyślnie zgłoszono"),
+        "app_account_select_recent_empty": MessageLookupByLibrary.simpleMessage(
+            "Nie masz wyboru ostatnich kont"),
         "app_account_select_recent_header":
             MessageLookupByLibrary.simpleMessage("Ostatnie"),
         "app_account_statuses_tab_favourites":
@@ -607,6 +631,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_async_pleroma_error_throttled_dialog_content":
             MessageLookupByLibrary.simpleMessage(
                 "Zbyt wiele działań na minutę. Poczekaj, zanim zrobisz coś ponownie."),
+        "app_async_pleroma_error_throttled_dialog_title":
+            MessageLookupByLibrary.simpleMessage(
+                "Zdławiony. Działanie zablokowane przez serwer."),
         "app_async_socket_error_dialog_content":
             MessageLookupByLibrary.simpleMessage(
                 "Brak sieci, lub zdalny serwer jest niedostępny"),
@@ -743,10 +770,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_auth_instance_register_step_submit_title":
             MessageLookupByLibrary.simpleMessage("Wyślij"),
         "app_auth_instance_register_title": m18,
+        "app_cache_database_settings_currentEntriesCountByType_label":
+            MessageLookupByLibrary.simpleMessage(
+                "Bieżąca maksymalna liczba wpisów jest liczona według typu"),
         "app_cache_database_settings_currentEntriesCountByType_value": m19,
         "app_cache_database_settings_currentMaxAge_label":
             MessageLookupByLibrary.simpleMessage("Obecny maksymalny wiek"),
         "app_cache_database_settings_currentMaxAge_value": m20,
+        "app_cache_database_settings_description":
+            MessageLookupByLibrary.simpleMessage(
+                "Konta, statusy, konwersacje, powiadomienia i czaty. Ogromne limity mogą powodować słabą wydajność z powodu skomplikowanych obliczeń dla dużej ilości danych.\nDane o przekroczeniu limitów zostaną usunięte przy każdym uruchomieniu aplikacji."),
         "app_cache_database_settings_limitAge_label":
             MessageLookupByLibrary.simpleMessage("Ograniczenie wieku"),
         "app_cache_database_settings_limitAge_value_days180":
@@ -814,6 +847,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_cache_files_settings_title":
             MessageLookupByLibrary.simpleMessage("Pamięć podręczna plików"),
         "app_cache_settings_action_clear_all_now": m21,
+        "app_cache_settings_action_clear_by_limits_now": m22,
         "app_chat_action_delete": MessageLookupByLibrary.simpleMessage("Usuń"),
         "app_chat_action_delete_dialog_content":
             MessageLookupByLibrary.simpleMessage("Czy na pewno?"),
@@ -1036,6 +1070,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Włączona"),
         "app_instance_details_field_federation_exclusions_label":
             MessageLookupByLibrary.simpleMessage("Wyjątki"),
+        "app_instance_details_field_federation_mrfObjectAge_actions_label":
+            MessageLookupByLibrary.simpleMessage("MFR Object Age Actions"),
+        "app_instance_details_field_federation_mrfObjectAge_threshold_label":
+            MessageLookupByLibrary.simpleMessage("MFR Object Age Threshold"),
         "app_instance_details_field_federation_mrfPolicies_label":
             MessageLookupByLibrary.simpleMessage("Zasady MFR"),
         "app_instance_details_field_federation_quarantinedInstances_label":
@@ -1350,6 +1388,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_push_richNotification_pleromaReport_summary":
             MessageLookupByLibrary.simpleMessage("Ktoś zgłosił twój wpis"),
         "app_push_richNotification_pleromaReport_title": m49,
+        "app_push_richNotification_poll_summary":
+            MessageLookupByLibrary.simpleMessage("Sonda zmieniona"),
+        "app_push_richNotification_poll_title":
+            MessageLookupByLibrary.simpleMessage("Sonda zmieniona"),
         "app_push_richNotification_reblog_summary":
             MessageLookupByLibrary.simpleMessage("Ktoś udostępnił twój wpis"),
         "app_push_richNotification_reblog_title": m50,
@@ -1414,16 +1456,28 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Udostępnij do zewnętrznej aplikacji"),
         "app_share_action_shareToNewStatus":
             MessageLookupByLibrary.simpleMessage("Udostępnij jako nowy wpis"),
+        "app_share_entity_settings_field_appendFromAccount_label":
+            MessageLookupByLibrary.simpleMessage("Dołącz z konta"),
         "app_share_entity_settings_field_mediaAsLink_label":
             MessageLookupByLibrary.simpleMessage("Media jako odnośnik"),
         "app_share_entity_settings_field_wholeAsLink_label":
             MessageLookupByLibrary.simpleMessage("Całość jako odnośnik"),
+        "app_share_entity_settings_field_withCreatedAt_label":
+            MessageLookupByLibrary.simpleMessage("Z datą utworzenia"),
+        "app_share_entity_settings_field_withLink_label":
+            MessageLookupByLibrary.simpleMessage("Z linkiem do oryginału"),
+        "app_share_entity_settings_field_withMedia_label":
+            MessageLookupByLibrary.simpleMessage("Z mediami"),
         "app_share_entity_settings_field_withMessage_hint":
             MessageLookupByLibrary.simpleMessage("Z wiadomością"),
+        "app_share_entity_settings_field_withText_label":
+            MessageLookupByLibrary.simpleMessage("Z tekstem"),
         "app_share_external_field_shareAsLink":
             MessageLookupByLibrary.simpleMessage("Udostępnij jako odnośnik"),
         "app_share_external_title": MessageLookupByLibrary.simpleMessage(
             "Udostępnij do zewnętrznej aplikacji"),
+        "app_share_income_action_choose_title":
+            MessageLookupByLibrary.simpleMessage("Wybierz akcję udostępniania"),
         "app_share_income_action_type_chat":
             MessageLookupByLibrary.simpleMessage("Do czatu"),
         "app_share_income_action_type_conversation":
@@ -1729,6 +1783,12 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Zawsze"),
         "app_toast_handling_type_never":
             MessageLookupByLibrary.simpleMessage("Nigdy"),
+        "app_toast_handling_type_onlyWhenInstanceNotSelected":
+            MessageLookupByLibrary.simpleMessage(
+                "Gdy aplikacja z kontem na pierwszym planie"),
+        "app_toast_handling_type_onlyWhenInstanceSelected":
+            MessageLookupByLibrary.simpleMessage(
+                "Gdy aplikacja lub konto działają w tle"),
         "app_toast_settings_field_handling_type_label":
             MessageLookupByLibrary.simpleMessage("Kiedy"),
         "app_toast_settings_title":
@@ -1831,6 +1891,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Udziel pozwolenia"),
         "timeago_aDay": MessageLookupByLibrary.simpleMessage("~1 d"),
         "timeago_aboutAMinute": MessageLookupByLibrary.simpleMessage("1 min"),
+        "timeago_aboutAMonth":
+            MessageLookupByLibrary.simpleMessage("~1 miesiące"),
         "timeago_aboutAYear": MessageLookupByLibrary.simpleMessage("~1 r"),
         "timeago_aboutAnHour": MessageLookupByLibrary.simpleMessage("~1 godz."),
         "timeago_days": m75,
@@ -1838,6 +1900,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "timeago_lessThanOneMinute":
             MessageLookupByLibrary.simpleMessage("teraz"),
         "timeago_minutes": m77,
-        "timeago_wordSeparator": MessageLookupByLibrary.simpleMessage(" ")
+        "timeago_months": m78,
+        "timeago_wordSeparator": MessageLookupByLibrary.simpleMessage(" "),
+        "timeago_years": m79
       };
 }
