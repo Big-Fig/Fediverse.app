@@ -184,13 +184,15 @@ class _NestedBodyWidgetState extends State<_NestedBodyWidget>
       controller: tabController,
       children: List<Widget>.generate(
         tabController.length,
-        (int index) => _NestedBodyTabItemWidget(
-          tabKey: _calculateTabKey(widget.tabKeyPrefix, index),
-          tabBodyProviderBuilder: widget.tabBodyProviderBuilder,
-          tabBodyContentBuilder: widget.tabBodyContentBuilder,
-          tabBodyOverlayBuilder: widget.tabBodyOverlayBuilder,
-          index: index,
-        ),
+        (int index) {
+          return _NestedBodyTabItemWidget(
+            tabKey: _calculateTabKey(widget.tabKeyPrefix, index),
+            tabBodyProviderBuilder: widget.tabBodyProviderBuilder,
+            tabBodyContentBuilder: widget.tabBodyContentBuilder,
+            tabBodyOverlayBuilder: widget.tabBodyOverlayBuilder,
+            index: index,
+          );
+        },
       ),
     );
 

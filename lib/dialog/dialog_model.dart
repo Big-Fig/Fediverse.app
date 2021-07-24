@@ -11,6 +11,7 @@ typedef DialogActionVisibleStreamFetcher = Stream<bool> Function(
 );
 
 class DialogAction {
+  final Key? key;
   final String? label;
   final IconData? icon;
 
@@ -25,6 +26,7 @@ class DialogAction {
   final DialogActionVisibleStreamFetcher? isActionVisibleStreamFetcher;
 
   DialogAction({
+    this.key,
     required this.label,
     this.icon,
     required this.onAction,
@@ -39,7 +41,9 @@ class DialogAction {
   @override
   String toString() {
     return 'DialogAction{'
-        'label: $label, icon: $icon, '
+        'key: $key, '
+        'label: $label, '
+        'icon: $icon, '
         'customTextStyle: $customTextStyle, '
         'onAction: $onAction, '
         'isActionEnabledFetcher: $isActionEnabledFetcher, '
@@ -75,14 +79,13 @@ class DialogAction {
       isActionEnabledStreamFetcher.hashCode ^
       isActionVisibleFetcher.hashCode ^
       isActionVisibleStreamFetcher.hashCode;
-
-
 }
 
 class SelectionDialogAction extends DialogAction {
   final bool isSelected;
 
   SelectionDialogAction({
+    required Key? key,
     required this.isSelected,
     required String? label,
     IconData? icon,
@@ -91,6 +94,7 @@ class SelectionDialogAction extends DialogAction {
     DialogActionEnabledFetcher? isActionEnabledFetcher,
     DialogActionEnabledStreamFetcher? isActionEnabledStreamFetcher,
   }) : super(
+          key: key,
           label: label,
           icon: icon,
           customTextStyle: customTextStyle,

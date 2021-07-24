@@ -45,8 +45,7 @@ class PushRelaySettings extends ISettings<PushRelaySettings> {
     String? pushRelayBaseUrl,
   }) =>
       PushRelaySettings(
-        pushRelayBaseUrl:
-            pushRelayBaseUrl ?? this.pushRelayBaseUrl,
+        pushRelayBaseUrl: pushRelayBaseUrl ?? this.pushRelayBaseUrl,
       );
 
   @override

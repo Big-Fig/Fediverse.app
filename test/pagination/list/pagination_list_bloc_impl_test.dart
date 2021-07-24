@@ -109,7 +109,6 @@ void main() {
 
     await Future.delayed(Duration(milliseconds: 1));
 
-
     expect(paginationListBloc.items.length, storageSize);
     expect(paginationListBloc.items.first.index, 0);
     expect(paginationListBloc.items.last.index, storageSize - 1);

@@ -14,14 +14,12 @@ class StatusVisibilityMultiSelectFromListFormFieldBloc
     bool isEnabled = true,
     bool isNullValuePossible = false,
     this.possibleValues = PleromaApiVisibility.values,
-    required
-        List<FormValueFieldValidation<List<PleromaApiVisibility>>> validators,
+    required List<FormValueFieldValidation<List<PleromaApiVisibility>>>
+        validators,
   }) : super(
           originValue: originValue,
           isEnabled: isEnabled,
           isNullValuePossible: isNullValuePossible,
           validators: validators,
         );
-
-
 }

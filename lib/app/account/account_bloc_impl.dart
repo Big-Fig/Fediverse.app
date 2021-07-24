@@ -20,7 +20,6 @@ abstract class AccountBloc extends IAccountBloc {
     // _logger.finest(() => 'AccountBloc constructor ${account.remoteId}');
     accountSubject.disposeWith(this);
 
-
     if (delayInit) {
       Future.delayed(Duration(seconds: 1), () {
         _init(

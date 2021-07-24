@@ -37,15 +37,14 @@ class PleromaApiAuthStatusService extends PleromaApiStatusService
 
     try {
       restService.processEmptyResponse(httpResponse);
-    } catch(e) {
-      if(e is PleromaApiRecordNotFoundRestException) {
+    } catch (e) {
+      if (e is PleromaApiRecordNotFoundRestException) {
         // nothing because already deleted on backend
         _logger.finest(() => 'already deleted');
       } else {
         rethrow;
       }
     }
-
   }
 
   @override

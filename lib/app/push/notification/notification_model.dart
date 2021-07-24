@@ -1,11 +1,12 @@
 enum NotificationActionType {
-  acceptFollowRequest, rejectFollowRequest, reply,
+  acceptFollowRequest,
+  rejectFollowRequest,
+  reply,
 }
 
 const _acceptFollowRequestActionKey = 'acceptFollowRequestActionKey';
 const _rejectFollowRequestActionKey = 'rejectFollowRequestActionKey';
 const _replyActionKey = 'replyActionKey';
-
 
 extension NotificationActionTypeExtension on NotificationActionType {
   String toJsonValue() {
@@ -41,9 +42,9 @@ extension NotificationActionTypeStringExtension on String {
       case _replyActionKey:
         result = NotificationActionType.reply;
         break;
-    // cant parse
+      // cant parse
       default:
-        throw('Unknown NotificationActionType $this');
+        throw ('Unknown NotificationActionType $this');
     }
 
     return result;

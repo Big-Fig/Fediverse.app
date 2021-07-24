@@ -28,7 +28,6 @@ class MastodonApiMarker implements IMastodonApiMarker, IJsonObject {
     required this.updatedAt,
   });
 
-
   static MastodonApiMarker fromJson(Map<String, dynamic> json) =>
       _$MastodonApiMarkerFromJson(json);
 

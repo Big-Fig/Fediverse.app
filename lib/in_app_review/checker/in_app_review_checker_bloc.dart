@@ -4,9 +4,9 @@ import 'package:provider/provider.dart';
 
 abstract class IInAppReviewCheckerBloc extends IDisposable {
   static IInAppReviewCheckerBloc of(
-      BuildContext context, {
-        bool listen = true,
-      }) =>
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IInAppReviewCheckerBloc>(context, listen: listen);
 
   bool get isNeedAskPermission;

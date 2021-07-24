@@ -82,8 +82,8 @@ extension PleromaStatusDbExtension on IPleromaApiStatus {
       pleromaSpoilerText: remoteStatus.pleroma?.spoilerText,
       pleromaExpiresAt: remoteStatus.pleroma?.expiresAt,
       pleromaThreadMuted: remoteStatus.pleroma?.threadMuted,
-      pleromaEmojiReactions:
-          remoteStatus.pleroma?.emojiReactions?.toPleromaApiStatusEmojiReactions(),
+      pleromaEmojiReactions: remoteStatus.pleroma?.emojiReactions
+          ?.toPleromaApiStatusEmojiReactions(),
       accountRemoteId: remoteStatus.account.id,
       // remote statuses always published
       pendingState: PendingState.published,

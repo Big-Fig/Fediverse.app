@@ -1,0 +1,50 @@
+{
+  "device_frame_version": "1607001240",
+  "default": {
+    "stack_title": true,
+    "title": {
+      "fonts": [
+        {
+          "font": "../../../assets/fonts/Rubik-Regular.ttf",
+          "supported": ["ru-RU", "en-US"]
+        }
+      ],
+      "color": "#fafafa",
+      "font_weight": 700
+    },
+    "background": "./background.jpg",
+    "padding": 50
+  },
+  "data": [
+    {
+      "filter": "1_Login"
+    },
+    {
+      "filter": "2_InstanceDetails"
+    },
+    {
+      "filter": "3_SignUp"
+    },
+    {
+      "filter": "4_Timelines"
+    },
+    {
+      "filter": "5_Notifications"
+    },
+    {
+      "filter": "6_Messages"
+    },
+    {
+      "filter": "7_Chat"
+    },
+    {
+      "filter": "8_ChooseAccount"
+    },
+    {
+      "filter": "9_Settings"
+    },
+    {
+      "filter": "10_AccountActions"
+    }
+  ]
+}

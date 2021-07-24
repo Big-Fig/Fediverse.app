@@ -46,7 +46,6 @@ void main() {
     expect(obj1, obj1.copyWith());
   });
 
-
   test('PushNotification toJson & fromJson', () async {
     JsonTestHelper.testFromJsonToJson(
       ({required String seed}) =>

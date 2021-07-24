@@ -32,7 +32,8 @@ class FilterBloc extends DisposableOwner implements IFilterBloc {
     bool isNeedWatchLocalRepositoryForUpdates = true,
   }) =>
       FilterBloc(
-        pleromaFilterService: IPleromaApiFilterService.of(context, listen: false),
+        pleromaFilterService:
+            IPleromaApiFilterService.of(context, listen: false),
         filterRepository: IFilterRepository.of(context, listen: false),
         filter: filter,
         needRefreshFromNetworkOnInit: false,
@@ -71,7 +72,7 @@ class FilterBloc extends DisposableOwner implements IFilterBloc {
     if (!isDisposed) {
       if (isNeedWatchLocalRepositoryForUpdates) {
         filterRepository.watchByRemoteIdInAppType(filter.remoteId).listen(
-              (updatedFilter) {
+          (updatedFilter) {
             if (updatedFilter != null) {
               _filterSubject.add(updatedFilter);
             }

@@ -11,7 +11,7 @@ class RegisterAuthInstanceFormStepperItemDescriptionWidget
 
   @override
   Widget build(BuildContext context) => Text(
-      text,
-      style: IFediUiTextTheme.of(context).bigTallDarkGrey,
-    );
+        text,
+        style: IFediUiTextTheme.of(context).bigTallDarkGrey,
+      );
 }

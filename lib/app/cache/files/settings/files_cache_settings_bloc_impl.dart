@@ -40,8 +40,7 @@ class FilesCacheSettingsBloc
       );
 
   @override
-  FilesCacheAgeLimitType get ageLimitType =>
-      settingsData.ageLimitType;
+  FilesCacheAgeLimitType get ageLimitType => settingsData.ageLimitType;
 
   @override
   Stream<FilesCacheAgeLimitType> get ageLimitTypeStream =>
@@ -50,11 +49,9 @@ class FilesCacheSettingsBloc
       );
 
   @override
-  Future changeAgeLimitType(FilesCacheAgeLimitType value) =>
-      updateSettings(
+  Future changeAgeLimitType(FilesCacheAgeLimitType value) => updateSettings(
         FilesCacheSettings.fromEnum(
-          sizeLimitCountType:
-              sizeLimitCountType,
+          sizeLimitCountType: sizeLimitCountType,
           ageLimitType: value,
         ),
       );

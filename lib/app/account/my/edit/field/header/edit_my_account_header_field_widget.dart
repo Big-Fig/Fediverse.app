@@ -60,7 +60,7 @@ class EditMyAccountHeaderFieldImageWidget extends StatelessWidget {
         if (source == null) {
           return const FediCircularProgressIndicator();
         }
-          var url = source.url;
+        var url = source.url;
         if (url != null) {
           return IFilesCacheService.of(context).createCachedNetworkImageWidget(
             imageUrl: url,

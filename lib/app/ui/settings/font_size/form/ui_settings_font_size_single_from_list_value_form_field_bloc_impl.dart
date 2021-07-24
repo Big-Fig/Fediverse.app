@@ -21,5 +21,4 @@ class UiSettingsFontSizeSingleFromListValueFormFieldBloc
           validators: validators,
           isNullValuePossible: isNullValuePossible,
         );
-
 }

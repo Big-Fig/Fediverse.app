@@ -16,7 +16,7 @@ class SearchHashtagsPaginationListBloc
     required IPaginationBloc<PaginationPage<IHashtag>, IHashtag> paginationBloc,
   }) : super(paginationBloc: paginationBloc) {
     searchInputBloc.confirmedSearchTermStream.listen(
-          (newText) {
+      (newText) {
         refreshWithController();
       },
     ).disposeWith(this);

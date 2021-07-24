@@ -139,7 +139,6 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
         ),
       );
 
-
   // TODO: separate media in own table & use join
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyMediaWhere(
     SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
@@ -707,8 +706,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
 
   @override
   // ignore: code-metrics, long-method
-  JoinedSelectStatement
-      convertSimpleSelectStatementToJoinedSelectStatement({
+  JoinedSelectStatement convertSimpleSelectStatementToJoinedSelectStatement({
     required SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
     required StatusRepositoryFilters? filters,
   }) {

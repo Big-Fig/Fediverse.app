@@ -1,6 +1,6 @@
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/media/picker/media_picker_file_grid_item_widget.dart';
 import 'package:fedi/app/ui/pagination/fedi_pagination_list_widget.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/media/device/file/media_device_file_bloc.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
 import 'package:fedi/media/device/file/pagination/media_device_file_pagination_list_bloc.dart';
@@ -30,6 +30,7 @@ class MediaPickerFileGridWidget
           key: key,
           scrollController: scrollController,
           refreshOnFirstLoad: refreshOnFirstLoad,
+          isNeedToAddPaddingForUiTests: false,
         );
 
   @override
@@ -96,7 +97,8 @@ class _MediaPickerFileGridItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DisposableProxyProvider<IMediaDeviceFileMetadata, IMediaDeviceFileBloc>(
+    return DisposableProxyProvider<IMediaDeviceFileMetadata,
+        IMediaDeviceFileBloc>(
       update: (BuildContext context, fileMetadata, previous) {
         if (fileMetadata is PhotoManagerMediaDeviceFileMetadata) {
           var mediaDeviceFileBloc = PhotoManagerMediaDeviceFileBloc(

@@ -38,7 +38,7 @@ class CustomEmojiPickerBloc extends DisposableOwner
   CustomEmojiPickerBloc({
     required ICustomEmojiPickerCategoryBloc? selectedCategory,
     required List<ICustomEmojiPickerCategoryBloc> availableCategories,
-  })   : availableCategoriesSubject =
+  })  : availableCategoriesSubject =
             BehaviorSubject.seeded(availableCategories),
         selectedCategorySubject = BehaviorSubject.seeded(
           selectedCategory ?? availableCategories.first,

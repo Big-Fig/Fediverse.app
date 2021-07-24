@@ -1,3 +1,4 @@
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/async/smart_refresher/async_smart_refresher_helper.dart';
 import 'package:fedi/app/chat/conversation/status/conversation_chat_status_list_item_widget.dart';
 import 'package:fedi/app/list/list_loading_footer_widget.dart';
@@ -10,7 +11,6 @@ import 'package:fedi/app/ui/list/fedi_list_smart_refresher_refresh_indicator.dar
 import 'package:fedi/app/ui/list/fedi_list_smart_refresher_widget.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/date/date_utils.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/material.dart';
@@ -50,49 +50,51 @@ class ConversationChatStatusListWidget
     RefreshController refreshController,
     ScrollController? scrollController,
     Widget Function(BuildContext context) smartRefresherBodyBuilder,
-  ) =>
-      FediListSmartRefresherWidget(
-        key: key,
-        enablePullDown: true,
-        enablePullUp: true,
+  ) {
+    return FediListSmartRefresherWidget(
+      key: key,
+      isNeedToAddPaddingForUiTests: false,
+      enablePullDown: true,
+      enablePullUp: true,
 // water drop header bugged (inverted with reverse)
-        header: const FediListSmartRefresherRefreshIndicator(),
-        footer: const ListLoadingFooterWidget(),
-        controller: refreshController,
-        reverse: true,
-        scrollController: scrollController,
-        primary: scrollController == null,
-        onRefresh: () {
-          return AsyncSmartRefresherHelper.doAsyncRefresh(
-            controller: refreshController,
-            action: () async {
-              var success;
-              try {
-                success = await additionalPreRefreshAction(context);
-              } catch (e, stackTrace) {
-                success = false;
-                _logger.severe(
-                  () => 'additionalPreRefreshAction()',
-                  e,
-                  stackTrace,
-                );
-              }
-              _logger.finest(() => 'additionalPreRefreshAction() $success');
-              var state = await paginationListBloc.refreshWithoutController();
-              _logger.finest(
-                () => 'paginationListBloc.refreshWithoutController() $state',
-              );
-
-              return state;
-            },
-          );
-        },
-        onLoading: () => AsyncSmartRefresherHelper.doAsyncLoading(
+      header: const FediListSmartRefresherRefreshIndicator(),
+      footer: const ListLoadingFooterWidget(),
+      controller: refreshController,
+      reverse: true,
+      scrollController: scrollController,
+      primary: scrollController == null,
+      onRefresh: () {
+        return AsyncSmartRefresherHelper.doAsyncRefresh(
           controller: refreshController,
-          action: paginationListBloc.loadMoreWithoutController,
-        ),
-        child: smartRefresherBodyBuilder(context),
-      );
+          action: () async {
+            var success;
+            try {
+              success = await additionalPreRefreshAction(context);
+            } catch (e, stackTrace) {
+              success = false;
+              _logger.severe(
+                () => 'additionalPreRefreshAction()',
+                e,
+                stackTrace,
+              );
+            }
+            _logger.finest(() => 'additionalPreRefreshAction() $success');
+            var state = await paginationListBloc.refreshWithoutController();
+            _logger.finest(
+              () => 'paginationListBloc.refreshWithoutController() $state',
+            );
+
+            return state;
+          },
+        );
+      },
+      onLoading: () => AsyncSmartRefresherHelper.doAsyncLoading(
+        controller: refreshController,
+        action: paginationListBloc.loadMoreWithoutController,
+      ),
+      child: smartRefresherBodyBuilder(context),
+    );
+  }
 
   @override
   // todo: unify with pleroma chat message list widget

@@ -1,6 +1,5 @@
 import 'dart:io';
 
-
 enum MediaDeviceFileType {
   image,
   video,

@@ -37,9 +37,8 @@ class IncomeShareService extends AsyncInitLoadingBloc
 
     var initialText = await ReceiveSharingIntent.getInitialText();
 
-    var mappedMedias = initialMedias.isNotEmpty
-        ? initialMedias.map(_mapMedia).toList()
-        : null;
+    var mappedMedias =
+        initialMedias.isNotEmpty ? initialMedias.map(_mapMedia).toList() : null;
 
     if (mappedMedias?.isNotEmpty == true || initialText?.isNotEmpty == true) {
       lastReceivedShareEvent = IncomeShareEvent(
@@ -59,7 +58,7 @@ class IncomeShareService extends AsyncInitLoadingBloc
 
   void _listenShareTextEvents() {
     ReceiveSharingIntent.getTextStream().listen(
-          (String value) {
+      (String value) {
         _logger.finest(() => 'getTextStream $value');
         lastReceivedShareEvent = IncomeShareEvent(
           medias: null,
@@ -77,11 +76,11 @@ class IncomeShareService extends AsyncInitLoadingBloc
 
   void _listenShareMediaEvents() {
     ReceiveSharingIntent.getMediaStream().listen(
-          (List<SharedMediaFile> value) {
+      (List<SharedMediaFile> value) {
         var medias = value.map(_mapMedia).toList();
 
         _logger.finest(
-              () => 'getMediaStream ${medias.map((item) => item).join(', ')}',
+          () => 'getMediaStream ${medias.map((item) => item).join(', ')}',
         );
 
         if (medias.isNotEmpty) {

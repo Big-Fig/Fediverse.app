@@ -50,7 +50,7 @@ Future showPostStatusScheduleDialog({
 
   if (deleted) {
     postStatusBloc.setScheduledAt(null);
-  // ignore: no-empty-block
+    // ignore: no-empty-block
   } else if (canceled) {
     // nothing
   } else {

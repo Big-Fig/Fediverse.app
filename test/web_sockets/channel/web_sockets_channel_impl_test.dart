@@ -8,10 +8,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../rxdart/rxdart_test_helper.dart';
 import '../websockets_model_test_impl.dart';
 import 'web_sockets_channel_impl_test.mocks.dart';
 import 'web_sockets_channel_model_test_impl.dart';
 import 'web_sockets_channel_source_mock.dart';
+
 // ignore_for_file: no-magic-number, avoid-late-keyword
 @GenerateMocks([ConnectionService])
 void main() {
@@ -79,9 +81,6 @@ void main() {
       ),
     );
 
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
-
     expect(
       listenedValue1,
       null,
@@ -89,8 +88,7 @@ void main() {
 
     source.addEvent(event1);
 
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+    await RxDartTestHelper.waitForData(() => listenedValue1);
     expect(
       listenedValue1,
       event1,
@@ -107,10 +105,14 @@ void main() {
       listenedValue2,
       null,
     );
+    listenedValue1 = null;
+    listenedValue2 = null;
 
     source.addEvent(event2);
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitForData(() => listenedValue1);
+    await RxDartTestHelper.waitForData(() => listenedValue2);
+
     expect(
       listenedValue1,
       event2,
@@ -122,16 +124,18 @@ void main() {
 
     await subscriptionDisposable1.dispose();
 
+    listenedValue1 = null;
+    listenedValue2 = null;
+
     source.addEvent(event1);
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
     expect(
       listenedValue1,
-      event2,
+      null,
     );
     expect(
       listenedValue2,
-      event1,
+      null,
     );
 
     await subscriptionDisposable2.dispose();

@@ -31,12 +31,11 @@ class PleromaChatWithLastMessagePaginationBloc
     required CachedPaginationPage<IPleromaChatWithLastMessage>? olderPage,
     required CachedPaginationPage<IPleromaChatWithLastMessage>? newerPage,
   }) {
-
     return cachedListBloc.loadLocalItems(
-        limit: itemsCountPerPage,
-        newerThan: olderPage?.items.firstOrNull,
-        olderThan: newerPage?.items.lastOrNull,
-      );
+      limit: itemsCountPerPage,
+      newerThan: olderPage?.items.firstOrNull,
+      olderThan: newerPage?.items.lastOrNull,
+    );
   }
 
   @override

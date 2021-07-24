@@ -22,16 +22,16 @@ class LocalStatusThreadBloc extends StatusThreadBloc {
     required IPleromaApiMediaAttachment? initialMediaAttachment,
     required IPleromaApiStatusService pleromaStatusService,
   }) : super(
-    pleromaStatusService: pleromaStatusService,
-    initialStatusToFetchThread: initialStatusToFetchThread,
-    initialMediaAttachment: initialMediaAttachment,
-  );
+          pleromaStatusService: pleromaStatusService,
+          initialStatusToFetchThread: initialStatusToFetchThread,
+          initialMediaAttachment: initialMediaAttachment,
+        );
 
   static LocalStatusThreadBloc createFromContext(
-      BuildContext context, {
-        required IStatus initialStatusToFetchThread,
-        required IPleromaApiMediaAttachment? initialMediaAttachment,
-      }) =>
+    BuildContext context, {
+    required IStatus initialStatusToFetchThread,
+    required IPleromaApiMediaAttachment? initialMediaAttachment,
+  }) =>
       LocalStatusThreadBloc(
         initialStatusToFetchThread: initialStatusToFetchThread,
         initialMediaAttachment: initialMediaAttachment,
@@ -79,11 +79,11 @@ class LocalStatusThreadBloc extends StatusThreadBloc {
   @override
   void onInitialStatusUpdated(IPleromaApiStatus updatedStartRemoteStatus) {
     // ignore: unawaited_futures
-      statusRepository.updateAppTypeByRemoteType(
-        appItem: initialStatusToFetchThread,
-        remoteItem: updatedStartRemoteStatus,
-        batchTransaction: null,
-      );
+    statusRepository.updateAppTypeByRemoteType(
+      appItem: initialStatusToFetchThread,
+      remoteItem: updatedStartRemoteStatus,
+      batchTransaction: null,
+    );
   }
 
   @override

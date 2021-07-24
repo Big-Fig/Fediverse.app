@@ -1,4 +1,5 @@
 import 'package:fedi/app/ui/settings/edit/edit_ui_settings_bloc.dart';
+import 'package:fedi/app/ui/settings/edit/edit_ui_settings_widget_keys.dart';
 import 'package:fedi/app/ui/settings/font_size/form/ui_settings_font_size_single_from_list_value_form_field_bloc.dart';
 import 'package:fedi/app/ui/settings/font_size/form/ui_settings_font_size_single_from_list_value_form_field_row_widget.dart';
 import 'package:fedi/app/ui/theme/form/fedi_ui_theme_single_from_list_value_form_field_bloc.dart';
@@ -35,8 +36,7 @@ class _EditUiSettingsStatusFontSizeFieldWidget extends StatelessWidget {
     return ProxyProvider<IEditUiSettingsBloc,
         IUiSettingsFontSizeSingleFromListValueFormFieldBloc>(
       update: (context, value, previous) => value.statusFontSizeBloc,
-      child:
-          const UiSettingsFontSizeSingleFromListValueFormFieldRowWidget(),
+      child: const UiSettingsFontSizeSingleFromListValueFormFieldRowWidget(),
     );
   }
 }
@@ -51,7 +51,12 @@ class _EditUiSettingsThemeFieldWidget extends StatelessWidget {
     return ProxyProvider<IEditUiSettingsBloc,
         IFediUiThemeSingleFromListValueFormFieldBloc>(
       update: (context, value, previous) => value.fediThemeFieldBloc,
-      child: const FediUiThemeSingleFromListValueFormFieldRowWidget(),
+      child: const FediUiThemeSingleFromListValueFormFieldRowWidget(
+        key: Key(
+          EditUiSettingsWidgetKeys
+              .fediUiThemeSingleFromListValueFormFieldRowWidget,
+        ),
+      ),
     );
   }
 }

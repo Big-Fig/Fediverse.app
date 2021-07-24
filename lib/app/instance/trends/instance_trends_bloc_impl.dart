@@ -45,7 +45,8 @@ abstract class InstanceTrendsBloc extends DisposableOwner
     );
 
     addDisposable(instanceTrendsHashtagListNetworkOnlyListBloc);
-    addDisposable(instanceTrendsHashtagListNetworkOnlyPaginationBloc,
+    addDisposable(
+      instanceTrendsHashtagListNetworkOnlyPaginationBloc,
     );
     addDisposable(hashtagPaginationListBloc);
 

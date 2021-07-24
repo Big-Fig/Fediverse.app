@@ -8,9 +8,7 @@ enum DatabaseCacheAgeLimitType {
   days365,
 }
 
-
-const defaultDatabaseCacheAgeLimitType =
-    DatabaseCacheAgeLimitType.notSet;
+const defaultDatabaseCacheAgeLimitType = DatabaseCacheAgeLimitType.notSet;
 
 const _notSetDatabaseCacheAgeLimitTypeJsonValue = 'notSet';
 const _days7DatabaseCacheAgeLimitTypeJsonValue = 'days7';

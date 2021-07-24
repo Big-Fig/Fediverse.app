@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 
-typedef DomainBlockCallback = Function(BuildContext context, DomainBlock domain);
+typedef DomainBlockCallback = Function(
+  BuildContext context,
+  DomainBlock domain,
+);
 
 class DomainBlock {
   final String domain;

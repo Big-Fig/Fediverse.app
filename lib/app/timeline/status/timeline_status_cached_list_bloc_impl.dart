@@ -452,7 +452,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
       orderingTerms: null,
     )
         .listen(
-          (newFilters) {
+      (newFilters) {
         if (!listEquals(filters, newFilters)) {
           // perhaps we should refresh UI list after this?
           filters = newFilters;

@@ -23,6 +23,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:moor/ffi.dart';
 
+import '../../../rxdart/rxdart_test_helper.dart';
 import '../chat_test_helper.dart';
 import 'chat_message_bloc_impl_test.mocks.dart';
 import 'chat_message_test_helper.dart';
@@ -118,8 +119,7 @@ void main() {
     await chatMessageRepository.upsertInRemoteType(
       chatMessage.toPleromaApiChatMessage(),
     );
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
   }
 
   test('chatMessage', () async {
@@ -138,14 +138,15 @@ void main() {
       batchTransaction: null,
     );
 
-    var listenedValue;
+    var listened;
 
     var subscription = chatMessageBloc.chatMessageStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
-    ChatMessageTestHelper.expectChatMessage(listenedValue, chatMessage);
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
+    ChatMessageTestHelper.expectChatMessage(listened, chatMessage);
 
     await _update(newValue);
 
@@ -153,7 +154,7 @@ void main() {
       chatMessageBloc.chatMessage,
       newValue,
     );
-    ChatMessageTestHelper.expectChatMessage(listenedValue, newValue);
+    ChatMessageTestHelper.expectChatMessage(listened, newValue);
     await subscription.cancel();
   });
 
@@ -162,33 +163,35 @@ void main() {
 
     var newValue = 'newContent';
 
-    var listenedValue;
+    var listened;
 
     var subscription = chatMessageBloc.contentStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
-    expect(listenedValue, chatMessage.content);
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
+    expect(listened, chatMessage.content);
 
     await _update(chatMessage.copyWith(content: newValue));
 
     expect(chatMessageBloc.content, newValue);
-    expect(listenedValue, newValue);
+    expect(listened, newValue);
     await subscription.cancel();
   });
 
   test('contentHtmlWithEmojis', () async {
     var newValue = 'newContent :emoji: :emoji1: :emoji2:';
 
-    var listenedValue;
+    var listened;
 
     var subscription =
         chatMessageBloc.contentWithEmojisStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     // same if emojis is empty or null
     await _update(
@@ -203,7 +206,7 @@ void main() {
       ),
     );
     expect(
-      listenedValue,
+      listened,
       EmojiText(
         text: newValue,
         emojis: null,
@@ -256,7 +259,7 @@ void main() {
       ),
     );
     expect(
-      listenedValue,
+      listened,
       EmojiText(
         text: 'newContent :emoji: :emoji1: :emoji2:',
         emojis: [
@@ -286,19 +289,20 @@ void main() {
 
     var newValue = DateTime(1990);
 
-    var listenedValue;
+    var listened;
 
     var subscription = chatMessageBloc.createdAtStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
-    expect(listenedValue, chatMessage.createdAt);
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
+    expect(listened, chatMessage.createdAt);
 
     await _update(chatMessage.copyWith(createdAt: newValue));
 
     expect(chatMessageBloc.createdAt, newValue);
-    expect(listenedValue, newValue);
+    expect(listened, newValue);
     await subscription.cancel();
   });
 
@@ -314,14 +318,15 @@ void main() {
 //    var newValue = await ChatMessageTestHelper.createTestChatMessage(
 //        seed: 'seed2', remoteId: chatMessage.remoteId);
 //
-//    var listenedValue;
+//    var listened;
 //
 //    var subscription = chatMessageBloc.chatMessageStream.listen((newValue) {
-//      listenedValue = newValue;
+//      listened = newValue;
 //    });
-//    // hack to execute notify callbacks
-//    await Future.delayed(Duration(milliseconds: 1));
-//    ChatMessageTestHelper.expectChatMessage(listenedValue, chatMessage);
+//
+//    listened = null;
+//     await RxDartTestHelper.waitForData(() => listened);
+//    ChatMessageTestHelper.expectChatMessage(listened, chatMessage);
 //
 //    when(pleromaChatServiceMock.getChatMessage(
 //            chatMessageRemoteId: chatMessage.remoteId))
@@ -329,10 +334,11 @@ void main() {
 //            (_) async => mapLocalChatMessageToRemoteChatMessage(newValue));
 //
 //    await chatMessageBloc.refreshFromNetwork();
-//    // hack to execute notify callbacks
-//    await Future.delayed(Duration(milliseconds: 1));
 //
-//    ChatMessageTestHelper.expectChatMessage(listenedValue, newValue);
+//    listened = null;
+//     await RxDartTestHelper.waitForData(() => listened);
+//
+//    ChatMessageTestHelper.expectChatMessage(listened, newValue);
 //    await subscription.cancel();
 //  });
 }

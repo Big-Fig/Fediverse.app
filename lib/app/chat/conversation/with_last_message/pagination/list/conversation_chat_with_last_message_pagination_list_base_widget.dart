@@ -21,6 +21,7 @@ abstract class ConversationChatPaginationListBaseWidget
           alwaysShowHeader: alwaysShowHeader,
           alwaysShowFooter: alwaysShowFooter,
           refreshOnFirstLoad: refreshOnFirstLoad,
+          isNeedToAddPaddingForUiTests: true,
         );
 
   @override

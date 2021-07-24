@@ -95,8 +95,8 @@ class DbFilterPopulatedWrapper implements IFilter {
   }
 
   @override
-  List<MastodonApiFilterContextType> get contextAsMastodonApiFilterContextType =>
-      context
+  List<MastodonApiFilterContextType>
+      get contextAsMastodonApiFilterContextType => context
           .map(
             (contextString) => contextString.toMastodonApiFilterContextType(),
           )

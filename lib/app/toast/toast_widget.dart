@@ -64,10 +64,12 @@ class ToastWidget extends StatelessWidget {
                         title,
                         style: fediUiTextTheme.bigShortBoldWhite,
                       ),
-                subtitle: content != null ? Text(
-                  content!,
-                  style: fediUiTextTheme.smallWhite,
-                ) : null,
+                subtitle: content != null
+                    ? Text(
+                        content!,
+                        style: fediUiTextTheme.smallWhite,
+                      )
+                    : null,
               ),
             ),
           ),

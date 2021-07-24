@@ -42,6 +42,7 @@ class MyAccountDomainBlockPaginationListWidget
           customEmptyWidget: customEmptyWidget,
           customLoadingWidget: customLoadingWidget,
           refreshOnFirstLoad: refreshOnFirstLoad,
+          isNeedToAddPaddingForUiTests: false,
         );
 
   @override

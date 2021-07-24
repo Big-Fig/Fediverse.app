@@ -41,11 +41,15 @@ class DbAccounts extends Table {
 
   DateTimeColumn get lastStatusAt => dateTime().nullable()();
 
-  TextColumn get fields =>
-      text().nullable().map(PleromaApiFieldListDatabaseConverter()).nullable()();
+  TextColumn get fields => text()
+      .nullable()
+      .map(PleromaApiFieldListDatabaseConverter())
+      .nullable()();
 
-  TextColumn get emojis =>
-      text().nullable().map(PleromaApiEmojiListDatabaseConverter()).nullable()();
+  TextColumn get emojis => text()
+      .nullable()
+      .map(PleromaApiEmojiListDatabaseConverter())
+      .nullable()();
 
   TextColumn get pleromaBackgroundImage => text().nullable()();
 

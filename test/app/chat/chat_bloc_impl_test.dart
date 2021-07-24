@@ -29,6 +29,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:moor/ffi.dart';
 
+import '../../rxdart/rxdart_test_helper.dart';
 import '../account/account_test_helper.dart';
 import '../account/my/my_account_test_helper.dart';
 import 'chat_bloc_impl_test.mocks.dart';
@@ -95,8 +96,6 @@ void main() {
     await myAccountLocalPreferenceBloc.setValue(
       myAccount.toPleromaApiMyAccountWrapper(),
     );
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
 
     myAccountBloc = MyAccountBloc(
       pleromaMyAccountService: pleromaMyAccountServiceMock,
@@ -152,8 +151,8 @@ void main() {
       lastChatMessage: lastChatMessage,
       accounts: accounts,
     ));
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
   }
 
   test('chat', () async {
@@ -164,21 +163,23 @@ void main() {
       remoteId: chat.remoteId,
     );
 
-    var listenedValue;
+    var listened;
 
     var subscription = chatBloc.chatStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
-    ChatTestHelper.expectChat(listenedValue, chat);
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
+
+    ChatTestHelper.expectChat(listened, chat);
 
     var account1 = await AccountTestHelper.createTestAccount(seed: 'account1');
 
     await _update(newValue, accounts: [account1]);
 
     ChatTestHelper.expectChat(chatBloc.chat, newValue);
-    ChatTestHelper.expectChat(listenedValue, newValue);
+    ChatTestHelper.expectChat(listened, newValue);
     await subscription.cancel();
   });
 
@@ -187,19 +188,21 @@ void main() {
 
     var newValue = DateTime(1990);
 
-    var listenedValue;
+    var listened;
 
     var subscription = chatBloc.updatedAtStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
-    expect(listenedValue, chat.updatedAt);
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
+
+    expect(listened, chat.updatedAt);
 
     await _update(chat.copyWith(updatedAt: newValue), accounts: chat.accounts);
 
     expect(chatBloc.updatedAt, newValue);
-    expect(listenedValue, newValue);
+    expect(listened, newValue);
     await subscription.cancel();
   });
 
@@ -230,13 +233,11 @@ void main() {
       account: account2,
     );
 
-    var listenedValue;
+    var listened;
 
     var subscription = chatBloc.lastChatMessageStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
 
     await _update(
       newValue,
@@ -244,14 +245,13 @@ void main() {
       lastChatMessage: chatMessage1,
     );
 
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
 
     ChatMessageTestHelper.expectChatMessage(
       chatBloc.lastChatMessage,
       chatMessage1,
     );
-    ChatMessageTestHelper.expectChatMessage(listenedValue, chatMessage1);
+    ChatMessageTestHelper.expectChatMessage(listened, chatMessage1);
 
     await chatMessageRepository.upsertInRemoteType(
       chatMessage2.toPleromaApiChatMessage(),
@@ -263,14 +263,13 @@ void main() {
       lastChatMessage: chatMessage1,
     );
 
-// hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
 
     ChatMessageTestHelper.expectChatMessage(
       chatBloc.lastChatMessage,
       chatMessage2,
     );
-    ChatMessageTestHelper.expectChatMessage(listenedValue, chatMessage2);
+    ChatMessageTestHelper.expectChatMessage(listened, chatMessage2);
 
     await subscription.cancel();
   });
@@ -285,30 +284,29 @@ void main() {
       remoteId: chat.remoteId,
     );
 
-    late var listenedValue;
+    late var listened;
 
     var subscription = chatBloc.accountsStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
 
     await _update(newValue, accounts: [account1]);
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
 
     AccountTestHelper.expectAccount(chatBloc.accounts[0], account1);
-    AccountTestHelper.expectAccount(listenedValue[0], account1);
+    AccountTestHelper.expectAccount(listened[0], account1);
 
     await _update(newValue, accounts: [
       account2, //      account3
     ]);
 
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
 
     AccountTestHelper.expectAccount(chatBloc.accounts[0], account2);
 //    AccountTestHelper.expectAccount(chatBloc.accounts[2], account3);
-    AccountTestHelper.expectAccount(listenedValue[0], account2);
-//    AccountTestHelper.expectAccount(listenedValue[2], account3);
+    AccountTestHelper.expectAccount(listened[0], account2);
+//    AccountTestHelper.expectAccount(listened[2], account3);
 
     await subscription.cancel();
   });
@@ -321,32 +319,38 @@ void main() {
 //
 //    var newValue = await ChatTestHelper.createTestChat(seed: 'seed2', remoteId: chat.remoteId);
 //
-//    var listenedValue;
+//    var listened;
 //
 //    var subscription = chatBloc.accountsStream.listen((newValue) {
-//      listenedValue = newValue;
+//      listened = newValue;
 //    });
 //
 //    await _update(newValue, accounts: [account1]);
-//    // hack to execute notify callbacks
-//    await Future.delayed(Duration(milliseconds: 1));
+//
+//
+//     listened = null;
+//     await RxDartTestHelper.waitForData(() => listened);
+
 //
 //    AccountTestHelper.expectAccount(chatBloc.accounts[0], account1);
-//    AccountTestHelper.expectAccount(listenedValue[0], account1);
+//    AccountTestHelper.expectAccount(listened[0], account1);
 //
 //    await _update(newValue, accounts: [
 //      account2, //      account3
 //    ]);
 //
-//    // hack to execute notify callbacks
-//    await Future.delayed(Duration(milliseconds: 1));
+//
+//
+//     listened = null;
+//     await RxDartTestHelper.waitForData(() => listened);
+
 //
 //    AccountTestHelper.expectAccount(chatBloc.accounts[0], account1);
 //    AccountTestHelper.expectAccount(chatBloc.accounts[1], account2);
 ////    AccountTestHelper.expectAccount(chatBloc.accounts[2], account3);
-//    AccountTestHelper.expectAccount(listenedValue[0], account1);
-//    AccountTestHelper.expectAccount(listenedValue[1], account2);
-////    AccountTestHelper.expectAccount(listenedValue[2], account3);
+//    AccountTestHelper.expectAccount(listened[0], account1);
+//    AccountTestHelper.expectAccount(listened[1], account2);
+////    AccountTestHelper.expectAccount(listened[2], account3);
 //
 //    await subscription.cancel();
 //  });
@@ -357,14 +361,17 @@ void main() {
 //    var newValue = await ChatTestHelper.createTestChat(
 //        seed: 'seed2', remoteId: chat.remoteId);
 //
-//    var listenedValue;
+//    var listened;
 //
 //    var subscription = chatBloc.chatStream.listen((newValue) {
-//      listenedValue = newValue;
+//      listened = newValue;
 //    });
-//    // hack to execute notify callbacks
-//    await Future.delayed(Duration(milliseconds: 1));
-//    ChatTestHelper.expectChat(listenedValue, chat);
+//
+//
+//     listened = null;
+//     await RxDartTestHelper.waitForData(() => listened);
+
+//    ChatTestHelper.expectChat(listened, chat);
 //
 //    when(pleromaChatServiceMock.getChat(
 //            chatRemoteId: chat.remoteId))
@@ -374,11 +381,14 @@ void main() {
 //            lastChatMessage: null));
 //
 //    await chatBloc.refreshFromNetwork();
-//    // hack to execute notify callbacks
-//    await Future.delayed(Duration(milliseconds: 1));
+//
+//
+//     listened = null;
+//     await RxDartTestHelper.waitForData(() => listened);
+
 //
 //    ChatTestHelper.expectChat(chatBloc.chat, newValue);
-//    ChatTestHelper.expectChat(listenedValue, newValue);
+//    ChatTestHelper.expectChat(listened, newValue);
 //    await subscription.cancel();
 //  });
 }

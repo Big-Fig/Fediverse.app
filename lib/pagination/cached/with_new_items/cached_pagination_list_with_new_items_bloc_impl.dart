@@ -104,7 +104,7 @@ abstract class CachedPaginationListWithNewItemsBloc<
 
     if (mergeNewItemsImmediately) {
       unmergedNewItemsStream.listen(
-            (unmergedNewItems) {
+        (unmergedNewItems) {
           if (unmergedNewItems.isNotEmpty) {
             mergeNewItems();
           }
@@ -113,7 +113,7 @@ abstract class CachedPaginationListWithNewItemsBloc<
     }
 
     super.itemsStream.listen(
-          (superItems) async {
+      (superItems) async {
         var calculateNewItemsRequest = _CalculateNewItemsInputData<TItem>(
           superItems: superItems,
           mergedNewItems: mergedNewItems,
@@ -124,7 +124,7 @@ abstract class CachedPaginationListWithNewItemsBloc<
       },
     ).disposeWith(this);
     mergedNewItemsStream.listen(
-          (mergedNewItems) async {
+      (mergedNewItems) async {
         var calculateNewItemsRequest = _CalculateNewItemsInputData<TItem>(
           superItems: super.items,
           mergedNewItems: mergedNewItems,
@@ -135,7 +135,7 @@ abstract class CachedPaginationListWithNewItemsBloc<
       },
     ).disposeWith(this);
     updatedItemsStream.listen(
-          (updatedItems) async {
+      (updatedItems) async {
         var calculateNewItemsRequest = _CalculateNewItemsInputData<TItem>(
           superItems: super.items,
           mergedNewItems: mergedNewItems,

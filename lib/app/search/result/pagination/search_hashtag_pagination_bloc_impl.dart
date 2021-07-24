@@ -18,7 +18,6 @@ class SearchHashtagPaginationBloc
 
   @override
   PaginationPage<IHashtag> mapPage(PaginationPage<ISearchResultItem> page) {
-
     var items = page.items
         .where((searchResultItem) =>
             searchResultItem.type == SearchResultItemType.hashtag)

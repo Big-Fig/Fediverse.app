@@ -6,8 +6,8 @@ import 'package:fedi/pleroma/api/status/pleroma_api_status_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IPleromaApiAuthStatusService
-    extends IPleromaApiAuth implements IPleromaApiStatusService {
+abstract class IPleromaApiAuthStatusService extends IPleromaApiAuth
+    implements IPleromaApiStatusService {
   static const maximumMediaAttachmentCount = 8;
 
   static IPleromaApiAuthStatusService of(

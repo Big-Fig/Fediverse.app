@@ -73,7 +73,8 @@ class ConversationChatStatusListContextApiBloc
   }) =>
       ConversationChatStatusListContextApiBloc(
         conversation: conversation,
-        pleromaStatusService: IPleromaApiStatusService.of(context, listen: false),
+        pleromaStatusService:
+            IPleromaApiStatusService.of(context, listen: false),
         statusRepository: IStatusRepository.of(context, listen: false),
         statusToFetchContext: statusToFetchContext,
       );

@@ -226,7 +226,7 @@ class ConversationChatStatusListItemWidget extends StatelessWidget {
                     ),
                   );
                   htmlTextBloc.linkClickedStream.listen(
-                        (url) {
+                    (url) {
                       UrlHelper.handleUrlClickWithInstanceLocation(
                         context: context,
                         url: url,

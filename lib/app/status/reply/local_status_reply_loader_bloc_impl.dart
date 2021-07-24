@@ -19,7 +19,8 @@ class LocalStatusReplyLoaderBloc extends AsyncInitLoadingBloc
     IStatus originalStatus,
   ) =>
       LocalStatusReplyLoaderBloc(
-        pleromaStatusService: IPleromaApiStatusService.of(context, listen: false),
+        pleromaStatusService:
+            IPleromaApiStatusService.of(context, listen: false),
         statusRepository: IStatusRepository.of(context, listen: false),
         originalStatus: originalStatus,
       );
@@ -28,8 +29,7 @@ class LocalStatusReplyLoaderBloc extends AsyncInitLoadingBloc
     required this.pleromaStatusService,
     required this.statusRepository,
     required this.originalStatus,
-  }):assert(originalStatus.inReplyToRemoteId != null) {
-
+  }) : assert(originalStatus.inReplyToRemoteId != null) {
     if (originalStatus.inReplyToStatus != null) {
       inReplyToStatus = originalStatus.inReplyToStatus;
       markAsAlreadyInitialized();
@@ -44,7 +44,8 @@ class LocalStatusReplyLoaderBloc extends AsyncInitLoadingBloc
     }
     var inReplyToRemoteId = originalStatus.inReplyToRemoteId!;
 
-    inReplyToStatus = await statusRepository.findByRemoteIdInAppType(inReplyToRemoteId);
+    inReplyToStatus =
+        await statusRepository.findByRemoteIdInAppType(inReplyToRemoteId);
 
     if (inReplyToStatus == null) {
       var replyToRemoteStatus = await pleromaStatusService.getStatus(

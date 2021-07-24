@@ -7,6 +7,7 @@ import 'package:fedi/app/ui/settings/ui_settings_model.dart';
 import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../../rxdart/rxdart_test_helper.dart';
 import 'ui_settings_model_test_helper.dart';
 
 // ignore_for_file: no-magic-number, avoid-late-keyword
@@ -18,7 +19,7 @@ void main() {
 
   late StreamSubscription subscriptionListenedSettingsData;
 
-  UiSettings? listenedSettingsData;
+  UiSettings? listened;
 
   setUp(() async {
     memoryLocalPreferencesService = MemoryLocalPreferencesService();
@@ -34,7 +35,7 @@ void main() {
 
     subscriptionListenedSettingsData =
         uiSettingsBloc.settingsDataStream.listen((data) {
-      listenedSettingsData = data;
+      listened = data;
     });
   });
 
@@ -55,12 +56,13 @@ void main() {
       },
     );
 
-    await Future.delayed(Duration(milliseconds: 100));
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     var defaultValue = GlobalUiSettingsLocalPreferenceBloc.defaultValue;
 
     expect(
-      listenedSettingsData?.statusFontSize,
+      listened?.statusFontSize,
       defaultValue.statusFontSize,
     );
     expect(
@@ -82,10 +84,12 @@ void main() {
             .statusFontSize;
 
     await uiSettingsBloc.changeStatusFontSize(testStatusFontSize);
-    await Future.delayed(Duration(milliseconds: 100));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     expect(
-      listenedSettingsData?.statusFontSize,
+      listened?.statusFontSize,
       testStatusFontSize,
     );
     expect(
@@ -106,21 +110,19 @@ void main() {
   });
 
   test('changeThemeId', () async {
-    String? listenedThemeId;
+    String? listened;
 
     StreamSubscription subscriptionListenedThemeId =
         uiSettingsBloc.themeIdStream.listen(
       (data) {
-        listenedThemeId = data;
+        listened = data;
       },
     );
-
-    await Future.delayed(Duration(milliseconds: 100));
 
     var defaultValue = GlobalUiSettingsLocalPreferenceBloc.defaultValue;
 
     expect(
-      listenedSettingsData?.themeId,
+      listened,
       defaultValue.themeId,
     );
     expect(
@@ -129,7 +131,7 @@ void main() {
     );
 
     expect(
-      listenedThemeId,
+      listened,
       defaultValue.themeId,
     );
     expect(
@@ -141,10 +143,12 @@ void main() {
         UiSettingsModelTestHelper.createTestUiSettings(seed: 'seed').themeId;
 
     await uiSettingsBloc.changeThemeId(testThemeId);
-    await Future.delayed(Duration(milliseconds: 100));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     expect(
-      listenedSettingsData?.themeId,
+      listened,
       testThemeId,
     );
     expect(
@@ -153,7 +157,7 @@ void main() {
     );
 
     expect(
-      listenedThemeId,
+      listened,
       testThemeId,
     );
     expect(
@@ -164,10 +168,9 @@ void main() {
     testThemeId = null;
 
     await uiSettingsBloc.changeThemeId(testThemeId);
-    await Future.delayed(Duration(milliseconds: 100));
 
     expect(
-      listenedSettingsData?.themeId,
+      listened,
       testThemeId,
     );
     expect(
@@ -176,7 +179,7 @@ void main() {
     );
 
     expect(
-      listenedThemeId,
+      listened,
       testThemeId,
     );
     expect(

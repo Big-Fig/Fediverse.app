@@ -8,6 +8,11 @@ import 'package:fedi/form/field/value/select_from_list/single/single_select_from
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+typedef SingleSelectFromListValueKeyMapper<T> = Key? Function(
+  BuildContext context,
+  T value,
+);
+
 typedef SingleSelectFromListValueIconMapper<T> = IconData Function(
   BuildContext context,
   T value,
@@ -24,12 +29,14 @@ class SingleSelectFromListValueFormFieldRowWidget<T> extends StatelessWidget {
 
   final SingleSelectFromListValueIconMapper<T?>? valueIconMapper;
   final SingleSelectFromListValueTitleMapper<T?> valueTitleMapper;
+  final SingleSelectFromListValueKeyMapper<T?>? valueKeyMapper;
   final bool displayIconInRow;
   final bool displayIconInDialog;
 
   SingleSelectFromListValueFormFieldRowWidget({
     required this.label,
     required this.valueTitleMapper,
+    this.valueKeyMapper,
     required this.description,
     required this.descriptionOnDisabled,
     required this.displayIconInRow,
@@ -53,6 +60,7 @@ class SingleSelectFromListValueFormFieldRowWidget<T> extends StatelessWidget {
         label: label,
         valueIconMapper: valueIconMapper,
         valueTitleMapper: valueTitleMapper,
+        valueKeyMapper: valueKeyMapper,
       ),
     );
   }
@@ -64,6 +72,7 @@ class _SingleSelectFromListValueFormFieldRowValueWidget<T>
   final bool displayIconInRow;
   final SingleSelectFromListValueIconMapper<T?>? valueIconMapper;
   final SingleSelectFromListValueTitleMapper<T?> valueTitleMapper;
+  final SingleSelectFromListValueKeyMapper<T?>? valueKeyMapper;
   final bool displayIconInDialog;
 
   _SingleSelectFromListValueFormFieldRowValueWidget({
@@ -72,6 +81,7 @@ class _SingleSelectFromListValueFormFieldRowValueWidget<T>
     required this.displayIconInRow,
     required this.displayIconInDialog,
     required this.valueIconMapper,
+    required this.valueKeyMapper,
   });
 
   @override
@@ -89,6 +99,7 @@ class _SingleSelectFromListValueFormFieldRowValueWidget<T>
             label: label,
             valueIconMapper: valueIconMapper,
             valueTitleMapper: valueTitleMapper,
+            valueKeyMapper: valueKeyMapper,
             displayIconInDialog: displayIconInDialog,
           );
         }
@@ -107,6 +118,7 @@ class _SingleSelectFromListValueFormFieldRowValueWidget<T>
                 label: label,
                 valueIconMapper: valueIconMapper,
                 valueTitleMapper: valueTitleMapper,
+                valueKeyMapper: valueKeyMapper,
                 displayIconInDialog: displayIconInDialog,
               ),
             _SingleSelectFromListValueFormFieldRowValueTitleWidget<T>(
@@ -166,12 +178,14 @@ class _SingleSelectFromListValueFormFieldRowValueIconWidget<T>
     required this.label,
     required this.valueIconMapper,
     required this.valueTitleMapper,
+    required this.valueKeyMapper,
     required this.displayIconInDialog,
   }) : super(key: key);
 
   final String label;
   final SingleSelectFromListValueIconMapper<T?>? valueIconMapper;
   final SingleSelectFromListValueTitleMapper<T?> valueTitleMapper;
+  final SingleSelectFromListValueKeyMapper<T?>? valueKeyMapper;
   final bool displayIconInDialog;
 
   @override
@@ -203,6 +217,7 @@ class _SingleSelectFromListValueFormFieldRowValueIconWidget<T>
                   label: label,
                   valueIconMapper: valueIconMapper,
                   valueTitleMapper: valueTitleMapper,
+                  valueKeyMapper: valueKeyMapper,
                   displayIconInDialog: displayIconInDialog,
                 );
               },
@@ -217,17 +232,19 @@ class _SingleSelectFromListValueFormFieldRowValueIconWidget<T>
   }
 }
 
+// ignore: long-parameter-list
 void _showDialog<T>({
   required BuildContext context,
   required String label,
   required ISingleSelectFromListValueFormFieldBloc<T> fieldBloc,
   required SingleSelectFromListValueIconMapper<T?>? valueIconMapper,
   required SingleSelectFromListValueTitleMapper<T?> valueTitleMapper,
+  required SingleSelectFromListValueKeyMapper<T?>? valueKeyMapper,
   required bool displayIconInDialog,
 }) {
   var actions = <SelectionDialogAction>[
     if (fieldBloc.isNullValuePossible)
-      _buildDialogAction(
+      _buildDialogAction<T>(
         context: context,
         fieldBloc: fieldBloc,
         value: null,
@@ -235,6 +252,7 @@ void _showDialog<T>({
         valueIconMapper: valueIconMapper,
         valueTitleMapper: valueTitleMapper,
         displayIconInDialog: displayIconInDialog,
+        valueKeyMapper: valueKeyMapper,
       ),
     ...fieldBloc.possibleValues.map(
       (value) => _buildDialogAction(
@@ -244,6 +262,7 @@ void _showDialog<T>({
         selectedValue: fieldBloc.currentValue,
         valueIconMapper: valueIconMapper,
         valueTitleMapper: valueTitleMapper,
+        valueKeyMapper: valueKeyMapper,
         displayIconInDialog: displayIconInDialog,
       ),
     ),
@@ -261,17 +280,19 @@ void _showDialog<T>({
 SelectionDialogAction _buildDialogAction<T>({
   required BuildContext context,
   required ISingleSelectFromListValueFormFieldBloc<T> fieldBloc,
-  required T value,
-  required T selectedValue,
-  required SingleSelectFromListValueIconMapper<T>? valueIconMapper,
-  required SingleSelectFromListValueTitleMapper<T> valueTitleMapper,
+  required T? value,
+  required T? selectedValue,
+  required SingleSelectFromListValueIconMapper<T?>? valueIconMapper,
+  required SingleSelectFromListValueTitleMapper<T?> valueTitleMapper,
+  required SingleSelectFromListValueKeyMapper<T?>? valueKeyMapper,
   required bool displayIconInDialog,
 }) {
   return SelectionDialogAction(
+    key: valueKeyMapper != null ? valueKeyMapper(context, value) : null,
     icon: displayIconInDialog ? valueIconMapper!(context, value) : null,
     label: valueTitleMapper(context, value),
     onAction: (context) {
-      fieldBloc.changeCurrentValue(value);
+      fieldBloc.changeCurrentValue(value!);
       Navigator.of(context).pop();
     },
     isSelected: value == selectedValue,

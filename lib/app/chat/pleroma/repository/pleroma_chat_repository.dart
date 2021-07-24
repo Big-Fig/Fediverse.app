@@ -57,7 +57,6 @@ abstract class IPleromaChatRepository
         PleromaChatRepositoryOrderingTermData.updatedAtDesc,
   });
 
-
   Future<int> getTotalUnreadCount();
 
   Stream<int> watchTotalUnreadCount();
@@ -75,6 +74,4 @@ abstract class IPleromaChatRepository
     required String chatRemoteId,
     required DateTime updatedAt,
   });
-
-
 }

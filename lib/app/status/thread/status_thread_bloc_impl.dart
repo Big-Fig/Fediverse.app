@@ -286,7 +286,7 @@ abstract class StatusThreadBloc extends AsyncInitLoadingBloc
     filters = await loadFilters();
 
     watchFilters().listen(
-          (newFilters) {
+      (newFilters) {
         if (!listEquals(filters, newFilters)) {
           filters = newFilters;
           refresh();

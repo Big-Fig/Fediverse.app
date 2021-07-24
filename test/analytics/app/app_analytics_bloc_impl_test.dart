@@ -6,6 +6,8 @@ import 'package:fedi/analytics/app/local_preferences/app_analytics_local_prefere
 import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../rxdart/rxdart_test_helper.dart';
+
 // ignore_for_file: no-magic-number, avoid-late-keyword
 
 void main() {
@@ -13,7 +15,7 @@ void main() {
   late AppAnalyticsLocalPreferenceBloc appAnalyticsLocalPreferenceBloc;
   late AppAnalyticsBloc appAnalyticsBloc;
 
-  AppAnalyticsData? listenValue;
+  AppAnalyticsData? listened;
   late StreamSubscription streamSubscription;
   setUp(() async {
     memoryLocalPreferencesService = MemoryLocalPreferencesService();
@@ -28,9 +30,11 @@ void main() {
     );
 
     streamSubscription = appAnalyticsBloc.dataStream.listen((data) {
-      listenValue = data;
+      listened = data;
     });
-    await Future.delayed(Duration(milliseconds: 100));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
   });
 
   tearDown(() {
@@ -46,25 +50,28 @@ void main() {
       0,
     );
     expect(
-      listenValue!.appOpenedCount,
+      listened!.appOpenedCount,
       0,
     );
 
     await appAnalyticsBloc.onAppOpened();
-    await Future.delayed(Duration(milliseconds: 100));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     expect(
       appAnalyticsBloc.data.appOpenedCount,
       1,
     );
     expect(
-      listenValue!.appOpenedCount,
+      listened!.appOpenedCount,
       1,
     );
 
     await appAnalyticsBloc.onAppOpened();
 
-    await Future.delayed(Duration(milliseconds: 100));
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     expect(
       appAnalyticsBloc.data.appOpenedCount,
@@ -72,7 +79,7 @@ void main() {
     );
 
     expect(
-      listenValue!.appOpenedCount,
+      listened!.appOpenedCount,
       2,
     );
   });
@@ -80,7 +87,8 @@ void main() {
   test('onAppRated', () async {
     await appAnalyticsBloc.onAppOpened();
 
-    await Future.delayed(Duration(milliseconds: 100));
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     expect(
       appAnalyticsBloc.data.appOpenedCount,
@@ -88,13 +96,14 @@ void main() {
     );
 
     expect(
-      listenValue!.appOpenedCount,
+      listened!.appOpenedCount,
       1,
     );
 
     await appAnalyticsBloc.onAppRated();
 
-    await Future.delayed(Duration(milliseconds: 100));
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     expect(
       appAnalyticsBloc.data.appOpenedCount,
@@ -102,13 +111,14 @@ void main() {
     );
 
     expect(
-      listenValue!.appOpenedCount,
+      listened!.appOpenedCount,
       1,
     );
 
     await appAnalyticsBloc.onAppRated();
 
-    await Future.delayed(Duration(milliseconds: 100));
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     expect(
       appAnalyticsBloc.data.appOpenedCount,
@@ -116,7 +126,7 @@ void main() {
     );
 
     expect(
-      listenValue!.appOpenedCount,
+      listened!.appOpenedCount,
       1,
     );
   });

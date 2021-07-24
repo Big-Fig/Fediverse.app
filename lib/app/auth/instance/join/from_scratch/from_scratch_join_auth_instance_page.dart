@@ -1,3 +1,4 @@
+import 'package:fedi/app/auth/instance/join/from_scratch/from_scratch_join_auth_instance_page_keys.dart';
 import 'package:fedi/app/auth/instance/join/join_auth_instance_bloc_impl.dart';
 import 'package:fedi/app/auth/instance/join/join_auth_instance_widget.dart';
 import 'package:fedi/app/ui/status_bar/fedi_light_status_bar_style_area.dart';
@@ -12,7 +13,11 @@ class FromScratchJoinAuthInstancePage extends StatelessWidget {
       child: Scaffold(
         backgroundColor: IFediUiColorTheme.of(context).primaryDark,
         body: const SafeArea(
-          child: JoinAuthInstanceWidget(),
+          child: JoinAuthInstanceWidget(
+            key: Key(
+              FromScratchJoinAuthInstancePageKeys.joinAuthInstanceWidgetKey,
+            ),
+          ),
         ),
       ),
     );

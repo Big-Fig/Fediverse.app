@@ -5,9 +5,9 @@ import 'package:flutter/cupertino.dart';
 class PleromaChatListTapToLoadOverlayWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => FediListTapToLoadOverlayWidget(
-    textBuilder: (context, updateItemsCount) => S
-        .of(context)
-        .app_chat_list_newItems_action_tapToLoadNew(updateItemsCount),
-  );
+        textBuilder: (context, updateItemsCount) => S
+            .of(context)
+            .app_chat_list_newItems_action_tapToLoadNew(updateItemsCount),
+      );
   const PleromaChatListTapToLoadOverlayWidget();
 }

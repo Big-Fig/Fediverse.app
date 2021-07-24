@@ -5,6 +5,7 @@ import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/my/my_account_bloc_impl.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
+import 'package:fedi/app/app_model.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/current/context/current_auth_instance_context_bloc.dart';
 import 'package:fedi/app/cache/database/limit/age/database_cache_age_limit_model.dart';
@@ -256,6 +257,12 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
       userAtHost: userAtHost,
       configService: configService,
     )..disposeWith(this);
+
+    await moorDatabaseService.performAsyncInit();
+
+    if(configService.appLaunchType == AppLaunchType.mock) {
+     await moorDatabaseService.clearAll();
+    }
 
     await globalProviderService
         .asyncInitAndRegister<AppDatabaseService>(moorDatabaseService);
@@ -944,7 +951,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         .asyncInitAndRegister<IFilesCacheSettingsBloc>(filesCacheSettingsBloc);
 
     var statusSensitiveDisplayTimeStorageBloc =
-    StatusSensitiveDisplayTimeStorageBloc()..disposeWith(this);
+        StatusSensitiveDisplayTimeStorageBloc()..disposeWith(this);
 
     await globalProviderService
         .asyncInitAndRegister<IStatusSensitiveDisplayTimeStorageBloc>(

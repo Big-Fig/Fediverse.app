@@ -43,7 +43,8 @@ class EditPaginationSettingsBloc
   }
 
   @override
-  PaginationSettings calculateCurrentFormFieldsSettings() => PaginationSettings.fromEnum(
+  PaginationSettings calculateCurrentFormFieldsSettings() =>
+      PaginationSettings.fromEnum(
         pageSize: pageSizeFieldBloc.currentValue,
       );
 

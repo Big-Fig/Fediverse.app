@@ -14,7 +14,8 @@ abstract class IPostStatusBloc implements IPostMessageBloc {
       Provider.of<IPostStatusBloc>(context, listen: listen);
 
   // ignore: no-magic-number
-  static final Duration requiredDurationToScheduleDateTime = Duration(minutes: 5);
+  static final Duration requiredDurationToScheduleDateTime =
+      Duration(minutes: 5);
   static final Duration minimumExpireDuration = Duration(hours: 1);
 
   bool get isExpirePossible;
@@ -62,7 +63,7 @@ abstract class IPostStatusBloc implements IPostMessageBloc {
   DateTime? get scheduledAt;
 
   Stream<DateTime?> get scheduledAtStream;
-  
+
   void setExpireDuration(Duration? duration);
 
   void clearExpireDuration();

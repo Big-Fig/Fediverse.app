@@ -54,19 +54,22 @@ class PostStatusComposeWidget extends StatelessWidget {
             const _PostStatusComposeSubjectFieldWidget(),
             const FediUltraLightGreyDivider(),
           ],
-          if (displayAccountAvatar) _PostStatusComposeInputWithAvatarWidget(
-                  autofocus: autofocus,
-                  expanded: expanded,
-                  hintText: hintText,
-                  maxLines: maxLines,
-                ) else Expanded(
-                  child: PostStatusComposeInputWidget(
-                    autofocus: autofocus,
-                    expanded: false,
-                    hintText: hintText,
-                    maxLines: maxLines,
-                  ),
-                ),
+          if (displayAccountAvatar)
+            _PostStatusComposeInputWithAvatarWidget(
+              autofocus: autofocus,
+              expanded: expanded,
+              hintText: hintText,
+              maxLines: maxLines,
+            )
+          else
+            Expanded(
+              child: PostStatusComposeInputWidget(
+                autofocus: autofocus,
+                expanded: false,
+                hintText: hintText,
+                maxLines: maxLines,
+              ),
+            ),
 //          const FediBigVerticalSpacer(),
 
           const UploadMediaAttachmentListAllWidget(

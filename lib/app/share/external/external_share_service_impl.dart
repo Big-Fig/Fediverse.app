@@ -42,11 +42,13 @@ class ExternalShareService extends DisposableOwner
     }
   }
 
-  Future<String?> shareSeveralUrlFilesAsBytesWithoutText(List<ShareUrlFile> urlFiles,
-      String? text,
-      String popupTitle,) async {
+  Future<String?> shareSeveralUrlFilesAsBytesWithoutText(
+    List<ShareUrlFile> urlFiles,
+    String? text,
+    String popupTitle,
+  ) async {
     var urlFilesPossibleToShareAsBytes =
-    urlFiles.where((urlFile) => isPossibleToShareAsBytes(urlFile.url));
+        urlFiles.where((urlFile) => isPossibleToShareAsBytes(urlFile.url));
 
     text = text ?? '';
 
@@ -59,14 +61,14 @@ class ExternalShareService extends DisposableOwner
       if (nonFirstUrlFileToShareAsBytes.isNotEmpty) {
         text += '[${nonFirstUrlFileToShareAsBytes.map(
               (attachment) => attachment.url,
-        ).join(', ')}]';
+            ).join(', ')}]';
       }
 
       var file = await TempFileHelper.downloadFileToTempFolder(
         request: DownloadTempFileRequest(
           url: url,
           filenameWithExtension:
-          firstUrlFileToShareAsFiles.filenameWithExtension,
+              firstUrlFileToShareAsFiles.filenameWithExtension,
         ),
       );
 
@@ -82,7 +84,7 @@ class ExternalShareService extends DisposableOwner
     } else {
       // share everything as text
       text +=
-      '[${urlFilesPossibleToShareAsBytes.map((urlFile) => urlFile.url).join(', ')}]';
+          '[${urlFilesPossibleToShareAsBytes.map((urlFile) => urlFile.url).join(', ')}]';
     }
 
     return text;

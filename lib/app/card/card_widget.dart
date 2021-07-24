@@ -18,7 +18,6 @@ import 'package:provider/provider.dart';
 const _cardWithContentImageSize = 114.0;
 const _cardWithoutContentImageSize = _cardWithContentImageSize * 3;
 
-
 class CardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

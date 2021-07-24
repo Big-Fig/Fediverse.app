@@ -7,7 +7,8 @@ import 'package:provider/provider.dart' as provider_lib;
 
 var _logger = Logger('provider_context_bloc_impl.dart');
 
-typedef ProviderBuilder<T extends IDisposable> = provider_lib.Provider<T> Function();
+typedef ProviderBuilder<T extends IDisposable> = provider_lib.Provider<T>
+    Function();
 
 class DisposableEntry<T extends IDisposable> {
   T disposable;

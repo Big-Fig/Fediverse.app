@@ -23,17 +23,14 @@ class DbNotifications extends Table {
       .nullable()
       .map(PleromaNotificationPleromaPartDatabaseConverter())();
 
-  TextColumn get report => text()
-      .nullable()
-      .map(PleromaAccountReportDatabaseConverter())();
+  TextColumn get report =>
+      text().nullable().map(PleromaAccountReportDatabaseConverter())();
 
-  TextColumn get chatMessage => text()
-      .nullable()
-      .map(PleromaChatMessageDatabaseConverter())();
+  TextColumn get chatMessage =>
+      text().nullable().map(PleromaChatMessageDatabaseConverter())();
 
-  TextColumn get target => text()
-      .nullable()
-      .map(PleromaAccountDatabaseConverter())();
+  TextColumn get target =>
+      text().nullable().map(PleromaAccountDatabaseConverter())();
 
   BoolColumn get unread => boolean().nullable()();
 

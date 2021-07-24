@@ -9,6 +9,7 @@ import 'package:fedi/app/cache/database/settings/local_preferences/instance/inst
 import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../../../rxdart/rxdart_test_helper.dart';
 import 'database_cache_settings_model_test_helper.dart';
 
 // ignore_for_file: no-magic-number, avoid-late-keyword
@@ -62,16 +63,17 @@ void main() {
   });
 
   test('changeDatabaseCacheAgeLimitType', () async {
-    DatabaseCacheAgeLimitType? listenedDatabaseCacheAgeLimitType;
+    DatabaseCacheAgeLimitType? listened;
 
     StreamSubscription subscriptionListenedDatabaseCacheAgeLimitType =
         databaseCacheSettingsBloc.ageLimitTypeStream.listen(
       (data) {
-        listenedDatabaseCacheAgeLimitType = data;
+        listened = data;
       },
     );
 
-    await Future.delayed(Duration(milliseconds: 100));
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     var defaultValue =
         GlobalDatabaseCacheSettingsLocalPreferenceBloc.defaultValue;
@@ -86,7 +88,7 @@ void main() {
     );
 
     expect(
-      listenedDatabaseCacheAgeLimitType,
+      listened,
       defaultValue.ageLimitType,
     );
     expect(
@@ -101,7 +103,9 @@ void main() {
 
     await databaseCacheSettingsBloc
         .changeAgeLimitType(testDatabaseCacheAgeLimitType);
-    await Future.delayed(Duration(milliseconds: 100));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     expect(
       listenedSettingsData?.ageLimitType,
@@ -113,7 +117,7 @@ void main() {
     );
 
     expect(
-      listenedDatabaseCacheAgeLimitType,
+      listened,
       testDatabaseCacheAgeLimitType,
     );
     expect(
@@ -125,18 +129,18 @@ void main() {
   });
 
   test('changeDatabaseCacheEntriesCountByTypeLimitType', () async {
-    DatabaseCacheEntriesCountByTypeLimitType?
-        listenedDatabaseCacheEntriesCountByTypeLimitType;
+    DatabaseCacheEntriesCountByTypeLimitType? listened;
 
     StreamSubscription
         subscriptionListenedDatabaseCacheEntriesCountByTypeLimitType =
         databaseCacheSettingsBloc.entriesCountByTypeLimitTypeStream.listen(
       (data) {
-        listenedDatabaseCacheEntriesCountByTypeLimitType = data;
+        listened = data;
       },
     );
 
-    await Future.delayed(Duration(milliseconds: 100));
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     var defaultValue =
         GlobalDatabaseCacheSettingsLocalPreferenceBloc.defaultValue;
@@ -151,7 +155,7 @@ void main() {
     );
 
     expect(
-      listenedDatabaseCacheEntriesCountByTypeLimitType,
+      listened,
       defaultValue.entriesCountByTypeLimitType,
     );
     expect(
@@ -167,7 +171,9 @@ void main() {
     await databaseCacheSettingsBloc.changeEntriesCountByTypeLimit(
       testDatabaseCacheEntriesCountByTypeLimitType,
     );
-    await Future.delayed(Duration(milliseconds: 100));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     expect(
       listenedSettingsData?.entriesCountByTypeLimitType,
@@ -179,7 +185,7 @@ void main() {
     );
 
     expect(
-      listenedDatabaseCacheEntriesCountByTypeLimitType,
+      listened,
       testDatabaseCacheEntriesCountByTypeLimitType,
     );
     expect(

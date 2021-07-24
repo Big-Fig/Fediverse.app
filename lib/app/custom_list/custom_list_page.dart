@@ -345,14 +345,14 @@ class _CustomListPageWrapper extends StatelessWidget {
 
     if (onChanged != null) {
       customListBloc.customListStream.listen(
-            (customList) {
+        (customList) {
           onChanged!(customList);
         },
       ).disposeWith(customListBloc);
     }
     if (onDeleted != null) {
       customListBloc.deletedStream.listen(
-            (_) {
+        (_) {
           onDeleted!();
         },
       ).disposeWith(customListBloc);

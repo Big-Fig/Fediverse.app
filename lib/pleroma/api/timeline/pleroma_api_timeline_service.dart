@@ -35,5 +35,4 @@ abstract class IPleromaApiTimelineService implements IPleromaApi {
       PleromaApiVisibility.direct,
     ],
   });
-
 }

@@ -7,6 +7,7 @@ import 'package:fedi/app/chat/unread/chat_unread_badge_bloc_impl.dart';
 import 'package:fedi/app/filter/repository/filter_repository.dart';
 import 'package:fedi/app/home/home_bloc.dart';
 import 'package:fedi/app/home/home_model.dart';
+import 'package:fedi/app/home/home_page_bottom_navigation_bar_widget_keys.dart';
 import 'package:fedi/app/home/home_timelines_unread_badge_bloc_impl.dart';
 import 'package:fedi/app/home/tab/account/badge/account_home_tab_int_badge_bloc_impl.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
@@ -76,10 +77,29 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
         builder: (context, snapshot) {
           var selectedTab = snapshot.data;
 
+          String keyStr;
+
+          switch(tab) {
+
+            case HomeTab.timelines:
+              keyStr = HomePageBottomNavigationBarWidgetKeys.timelinesTabButton;
+              break;
+            case HomeTab.notifications:
+              keyStr = HomePageBottomNavigationBarWidgetKeys.notificationsTabButton;
+              break;
+            case HomeTab.chat:
+              keyStr = HomePageBottomNavigationBarWidgetKeys.chatTabButton;
+              break;
+            case HomeTab.account:
+              keyStr = HomePageBottomNavigationBarWidgetKeys.accountTabButton;
+              break;
+          }
+
           return InkWell(
             onTap: () {
               IHomeBloc.of(context, listen: false).selectTab(tab);
             },
+            key: Key(keyStr),
             child: mapTabToIcon(context, tab, selectedTab == tab),
           );
         },

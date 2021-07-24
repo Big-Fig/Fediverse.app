@@ -60,8 +60,7 @@ class EditPushSettingsBloc extends EditInstanceSettingsBloc<PushSettings?>
         ),
         pollFieldBloc = BoolValueFormFieldBloc(
           originValue: pushSettingsBloc.poll,
-          isEnabled:
-              isEnabled && currentInstance!.isMastodon, // only mastodon
+          isEnabled: isEnabled && currentInstance!.isMastodon, // only mastodon
         ),
         pleromaChatMentionFieldBloc = BoolValueFormFieldBloc(
           originValue: pushSettingsBloc.pleromaChatMention,

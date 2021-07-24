@@ -70,7 +70,7 @@ abstract class FormGroupBloc<T extends IFormItemBloc> extends FormItemBloc
       newItems!.forEach(
         (IFormItemBloc item) {
           item.errorsStream.listen(
-                (_) {
+            (_) {
               recalculateErrors();
             },
           ).disposeWith(itemsErrorSubscription!);
@@ -90,7 +90,7 @@ abstract class FormGroupBloc<T extends IFormItemBloc> extends FormItemBloc
       newItems!.forEach(
         (IFormItemBloc item) {
           item.isSomethingChangedStream.listen(
-                (_) {
+            (_) {
               recalculateIsSomethingChanged();
             },
           ).disposeWith(isSomethingChangedSubscription!);

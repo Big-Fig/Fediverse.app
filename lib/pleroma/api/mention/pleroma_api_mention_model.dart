@@ -46,7 +46,6 @@ class PleromaApiMention implements IPleromaApiMention, IJsonObject {
   @override
   final String acct;
   @override
-
   @JsonKey(fromJson: fromIdJson)
   final String id;
   @override
@@ -73,8 +72,7 @@ class PleromaApiMention implements IPleromaApiMention, IJsonObject {
 
   // hack for internal flutter issues cause
   // exception: type '_Smi' is not a subtype of type 'String'
-  static String fromIdJson(dynamic json) =>
-      json.toString();
+  static String fromIdJson(dynamic json) => json.toString();
 
   @override
   Map<String, dynamic> toJson() => _$PleromaApiMentionToJson(this);

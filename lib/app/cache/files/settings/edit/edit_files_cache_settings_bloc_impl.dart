@@ -56,7 +56,8 @@ class EditFilesCacheSettingsBloc
   }
 
   @override
-  FilesCacheSettings calculateCurrentFormFieldsSettings() => FilesCacheSettings.fromEnum(
+  FilesCacheSettings calculateCurrentFormFieldsSettings() =>
+      FilesCacheSettings.fromEnum(
         sizeLimitCountType:
             sizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBloc
                 .currentValue,
@@ -70,8 +71,7 @@ class EditFilesCacheSettingsBloc
         .changeCurrentValue(
       settings.sizeLimitCountType,
     );
-    ageLimitFilesSelectCacheSingleSelectValueFormFieldBloc
-        .changeCurrentValue(
+    ageLimitFilesSelectCacheSingleSelectValueFormFieldBloc.changeCurrentValue(
       settings.ageLimitType,
     );
   }

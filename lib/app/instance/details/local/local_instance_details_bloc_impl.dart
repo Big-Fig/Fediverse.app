@@ -54,6 +54,4 @@ class LocalInstanceDetailsBloc extends InstanceDetailsBloc
 
   @override
   Uri? get remoteInstanceUriOrNull => null;
-
-
 }

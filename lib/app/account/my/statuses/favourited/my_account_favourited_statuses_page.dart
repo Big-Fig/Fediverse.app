@@ -85,7 +85,8 @@ MaterialPageRoute createMyAccountFavouritedStatusesPage() {
             child: StatusCachedListBlocLoadingWidget(
               child: StatusCachedPaginationBloc.provideToContext(
                 context,
-                child: StatusCachedPaginationListWithNewItemsBloc.provideToContext(
+                child:
+                    StatusCachedPaginationListWithNewItemsBloc.provideToContext(
                   context,
                   child: const MyAccountFavouritedStatusesPage(),
                   mergeNewItemsImmediately: false,

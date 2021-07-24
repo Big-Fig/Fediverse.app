@@ -173,6 +173,7 @@ class _MyAccountSettingsEndorsementsButton extends StatelessWidget {
     }
   }
 }
+
 class _MyAccountSettingsSuggestionsButton extends StatelessWidget {
   const _MyAccountSettingsSuggestionsButton({
     Key? key,

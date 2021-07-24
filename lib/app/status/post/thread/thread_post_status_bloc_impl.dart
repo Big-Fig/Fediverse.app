@@ -134,7 +134,8 @@ class ThreadPostStatusBloc extends PostStatusBloc
   @override
   Future onStatusPosted(IPleromaApiStatus remoteStatus) async {
     _logger.finest(() => 'onStatusPosted $onStatusPosted');
-    var status = await statusRepository.findByRemoteIdInAppType(remoteStatus.id);
+    var status =
+        await statusRepository.findByRemoteIdInAppType(remoteStatus.id);
     if (status != null) {
       statusThreadBloc.addStatusInThread(status);
     }
@@ -164,7 +165,6 @@ class ThreadPostStatusBloc extends PostStatusBloc
       if (mentionedAccts.isNotEmpty) {
         IStatus? statusToReply;
         for (var acct in mentionedAccts) {
-
           statusToReply = statuses.reversed.firstWhereOrNull(
             (status) => status.account.acct == acct,
           );

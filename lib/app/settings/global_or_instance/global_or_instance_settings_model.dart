@@ -1,5 +1,3 @@
-
-
 enum GlobalOrInstanceSettingsType { instance, global }
 
 class GlobalOrInstanceSettings<T> {

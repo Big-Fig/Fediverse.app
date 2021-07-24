@@ -16,6 +16,7 @@ import 'package:moor/moor.dart';
 
 import '../../../pleroma/api/media/pleroma_api_media_test_helper.dart';
 import '../../../pleroma/api/tag/pleroma_api_tag_test_helper.dart';
+import '../../../rxdart/rxdart_test_helper.dart';
 import '../../account/database/account_database_test_helper.dart';
 import '../../conversation/conversation_test_helper.dart';
 import '../database/status_database_test_helper.dart';
@@ -1710,7 +1711,7 @@ void main() {
       isFromHomeTimeline: null,
     );
 
-    late List<IStatus> watchedStatuses;
+    List<IStatus>? listened;
     var subscription = statusRepository.watchFindAllInAppType(
       filters: StatusRepositoryFilters(
         onlyInListWithRemoteId: listRemoteId,
@@ -1726,12 +1727,13 @@ void main() {
         ),
       ],
     ).listen((statuses) {
-      watchedStatuses = statuses;
+      listened = statuses;
     });
 
-    await Future.delayed(Duration(milliseconds: 100));
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
-    expect(watchedStatuses.length, 0);
+    expect(listened?.length, 0);
 
     var dbStatus2 = (await StatusDatabaseTestHelper.createTestDbStatus(
       seed: 'seed2',
@@ -1754,9 +1756,10 @@ void main() {
       isFromHomeTimeline: null,
     );
 
-    await Future.delayed(Duration(milliseconds: 100));
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
-    expect(watchedStatuses.length, 1);
+    expect(listened?.length, 1);
 
     var dbStatus0 = (await StatusDatabaseTestHelper.createTestDbStatus(
       seed: 'seed0',
@@ -1779,9 +1782,10 @@ void main() {
       isFromHomeTimeline: null,
     );
 
-    await Future.delayed(Duration(milliseconds: 100));
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
-    expect(watchedStatuses.length, 1);
+    expect(listened?.length, 1);
 
     await subscription.cancel();
   });

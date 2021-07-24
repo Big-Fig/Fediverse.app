@@ -33,6 +33,4 @@ class CameraMediaService extends DisposableOwner
 
     return file;
   }
-
-
 }

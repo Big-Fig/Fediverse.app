@@ -19,7 +19,9 @@ class RemoteInstanceDirectoryPage extends StatelessWidget {
   }
 }
 
-MaterialPageRoute createRemoteInstanceDirectoryPageRoute(Uri remoteInstanceUri) =>
+MaterialPageRoute createRemoteInstanceDirectoryPageRoute(
+  Uri remoteInstanceUri,
+) =>
     MaterialPageRoute(
       builder: (context) => RemoteInstanceBloc.provideToContext(
         context,

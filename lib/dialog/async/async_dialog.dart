@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
-
 Logger _logger = Logger('async_dialog.dart');
 
 typedef ErrorDataBuilder = ErrorData? Function(
@@ -34,8 +33,7 @@ Future<AsyncDialogResult<T?>> doAsyncOperationWithDialog<T>({
   bool cancelable = false,
 }) async {
   T? result;
-  var cancelableOperation =
-      CancelableOperation<T>.fromFuture(asyncCode());
+  var cancelableOperation = CancelableOperation<T>.fromFuture(asyncCode());
 
   // ignore: avoid-late-keyword
   FediIndeterminateProgressDialog? progressDialog;

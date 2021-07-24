@@ -188,15 +188,14 @@ MultiMediaPickerBloc _createMultiMediaPickerBloc(
   var multiMediaPickerBloc =
       MultiMediaPickerBloc(selectionCountLimit: selectionCountLimit);
 
-
   multiMediaPickerBloc.acceptedFilesSelectionStream.listen(
-        (List<IMediaDeviceFile> acceptedFiles) {
+    (List<IMediaDeviceFile> acceptedFiles) {
       Navigator.pop(context, acceptedFiles);
     },
   ).disposeWith(multiMediaPickerBloc);
 
   multiMediaPickerBloc.selectionCountLimitReachedStream.listen(
-        (_) {
+    (_) {
       var toastService = IToastService.of(context, listen: false);
 
       toastService.showInfoToast(
@@ -207,8 +206,8 @@ MultiMediaPickerBloc _createMultiMediaPickerBloc(
         content: S
             .of(context)
             .file_picker_multi_selectionCountLimitReached_notification_content(
-          selectionCountLimit!,
-        ),
+              selectionCountLimit!,
+            ),
       );
     },
   ).disposeWith(multiMediaPickerBloc);

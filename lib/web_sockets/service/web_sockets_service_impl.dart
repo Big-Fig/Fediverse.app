@@ -19,7 +19,8 @@ class WebSocketsService extends DisposableOwner implements IWebSocketsService {
   WebSocketsService({
     required this.configBloc,
   }) {
-    addDisposable(CustomDisposable(
+    addDisposable(
+      CustomDisposable(
         () async {
           urlToChannel.values.forEach((channel) => channel.dispose());
           urlToChannel.clear();

@@ -13,7 +13,7 @@ class FediIntBadgeBlocBoolAdapter extends DisposableOwner
   @override
   Stream<bool> get badgeStream => fediIntBadgeBloc.badgeStream.map(
         (intValue) {
-      return intValue > 0;
+          return intValue > 0;
         },
-  );
+      );
 }

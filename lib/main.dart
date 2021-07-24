@@ -4,6 +4,7 @@ import 'package:easy_dispose/easy_dispose.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/account/details/local_account_details_page.dart';
+import 'package:fedi/app/app_model.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/current/context/current_auth_instance_context_bloc_impl.dart';
 import 'package:fedi/app/auth/instance/current/context/init/current_auth_instance_context_init_bloc.dart';
@@ -56,6 +57,7 @@ import 'package:fedi/localization/localization_model.dart';
 import 'package:fedi/overlay_notification/overlay_notification_service_provider.dart';
 import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_handler_widget.dart';
 import 'package:fedi/ui/theme/ui_theme_proxy_provider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -71,12 +73,20 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 // ignore: long-method
 Future main() async {
-  // debugRepaintRainbowEnabled = true;
+
+  await launchApp(appLaunchType: AppLaunchType.mock);
+  // await launchApp(appLaunchType: AppLaunchType.normal);
+}
+
+Future launchApp({
+  required AppLaunchType appLaunchType,
+}) async {
+   // debugRepaintRainbowEnabled = true;
   WidgetsFlutterBinding.ensureInitialized();
 
   runNotInitializedSplashApp();
 
-  IInitBloc initBloc = InitBloc();
+  IInitBloc initBloc = InitBloc(appLaunchType: appLaunchType);
   // ignore: unawaited_futures
   initBloc.performAsyncInit();
 
@@ -467,6 +477,7 @@ class FediApp extends StatelessWidget {
                           S.delegate,
                           GlobalMaterialLocalizations.delegate,
                           GlobalWidgetsLocalizations.delegate,
+                          GlobalCupertinoLocalizations.delegate,
                         ],
                         supportedLocales: S.delegate.supportedLocales,
                         locale: locale,
@@ -561,7 +572,7 @@ void _initIncomeShareHandler({
 }) {
   _logger.finest(() => '_initIncomeShareHandler');
   bloc.incomeShareHandlerErrorStream.listen(
-        (error) {
+    (error) {
       switch (error) {
         case IncomeShareHandlerError.authInstanceListIsEmpty:
           IToastService.of(context).showErrorToast(
@@ -573,7 +584,7 @@ void _initIncomeShareHandler({
     },
   ).disposeWith(bloc);
   bloc.needChooseInstanceFromListStream.listen(
-        (authInstanceList) {
+    (authInstanceList) {
       showIncomeShareInstanceChooserDialog(
         context,
         authInstanceList: authInstanceList,
@@ -582,7 +593,7 @@ void _initIncomeShareHandler({
     },
   ).disposeWith(bloc);
   bloc.needChooseActionForEventStream.listen(
-        (incomeShareEvent) {
+    (incomeShareEvent) {
       showIncomeShareActionChooserDialog(
         context,
         incomeShareEvent: incomeShareEvent,

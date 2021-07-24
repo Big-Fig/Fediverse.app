@@ -396,8 +396,7 @@ class _DatePickerState extends State<FediDatePickerComponent> {
                 selectedChangedWhenScrollEnd != null &&
                 notification is ScrollEndNotification &&
                 notification.metrics is FixedExtentMetrics) {
-              final metrics =
-                  notification.metrics as FixedExtentMetrics;
+              final metrics = notification.metrics as FixedExtentMetrics;
               final currentItemIndex = metrics.itemIndex;
               selectedChangedWhenScrollEnd(currentItemIndex);
             }

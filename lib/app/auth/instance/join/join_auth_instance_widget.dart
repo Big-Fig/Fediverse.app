@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:fedi/app/about/about_page.dart';
+import 'package:fedi/app/app_model.dart';
 import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi/app/auth/host/auth_host_model.dart';
@@ -6,6 +9,7 @@ import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/auth_instance_pleroma_rest_error_data.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/join/join_auth_instance_bloc.dart';
+import 'package:fedi/app/auth/instance/join/join_auth_instance_widget_keys.dart';
 import 'package:fedi/app/auth/instance/register/register_auth_instance_page.dart';
 import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/instance/details/remote/remote_instance_details_page.dart';
@@ -30,7 +34,9 @@ import 'package:logging/logging.dart';
 final _logger = Logger('join_auth_instance_widget.dart');
 
 class JoinAuthInstanceWidget extends StatelessWidget {
-  const JoinAuthInstanceWidget();
+  const JoinAuthInstanceWidget({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => GestureDetector(
@@ -132,11 +138,15 @@ class _JoinAuthInstanceActionsWidget extends StatelessWidget {
             children: <Widget>[
               Expanded(
                 flex: 1,
-                child: const _JoinAuthInstanceSignUpButtonWidget(),
+                child: const _JoinAuthInstanceSignUpButtonWidget(
+                  key: Key(JoinAuthInstanceWidgetKeys.signUpButtonKey),
+                ),
               ),
               Expanded(
                 flex: 1,
-                child: const _JoinAuthInstanceLoginButtonWidget(),
+                child: const _JoinAuthInstanceLoginButtonWidget(
+                  key: Key(JoinAuthInstanceWidgetKeys.loginButtonKey),
+                ),
               ),
             ],
           ),
@@ -190,6 +200,7 @@ class _JoinAuthInstanceExploreAsGuestButtonWidget extends StatelessWidget {
       ),
       child: FediTransparentTextButtonWithBorder(
         S.of(context).app_auth_instance_join_action_exploreAsGuest,
+        key: Key(JoinAuthInstanceWidgetKeys.exploreAsGuestButtonKey),
         onPressed: () {
           var hostUri = joinInstanceBloc.extractCurrentUri();
           goToRemoteInstanceDetailsPage(
@@ -251,6 +262,7 @@ class _JoinAuthInstanceHostTextFieldWidget extends StatelessWidget {
             VoidCallback onFieldSubmitted,
           ) =>
               FediTransparentEditTextField(
+            key: Key(JoinAuthInstanceWidgetKeys.hostTextFieldKey),
             autocorrect: false,
             expanded: false,
             hintText: IConfigService.of(context).appDefaultInstanceUrl,
@@ -483,8 +495,15 @@ ErrorData createRegistrationInvitesOnlyErrorData(
           S.of(context).app_auth_instance_join_invitesOnly_dialog_content,
     );
 
+// ignore: long-method
 Future logInToInstance(BuildContext context) async {
   var joinInstanceBloc = IJoinAuthInstanceBloc.of(context, listen: false);
+
+  var configService = IConfigService.of(context, listen: false);
+
+  var appLaunchType = configService.appLaunchType;
+  _logger.finest(() => 'logInToInstance $appLaunchType');
+
   var dialogResult = await PleromaAsyncOperationHelper
       .performPleromaAsyncOperation<AuthInstance?>(
     context: context,
@@ -492,18 +511,29 @@ Future logInToInstance(BuildContext context) async {
         S.of(context).app_auth_instance_join_progress_dialog_content,
     cancelable: true,
     asyncCode: () async {
-      var hostUri = joinInstanceBloc.extractCurrentUri();
-      AuthHostBloc? bloc;
-      try {
-        bloc = AuthHostBloc.createFromContext(
-          context,
-          instanceBaseUri: hostUri,
-        );
-        var instance = await bloc.launchLoginToAccount();
 
-        return instance;
-      } finally {
-        await bloc?.dispose();
+
+      switch (appLaunchType) {
+        case AppLaunchType.normal:
+          var hostUri = joinInstanceBloc.extractCurrentUri();
+          AuthHostBloc? bloc;
+          try {
+            bloc = AuthHostBloc.createFromContext(
+              context,
+              instanceBaseUri: hostUri,
+            );
+            var instance = await bloc.launchLoginToAccount();
+
+            return instance;
+          } finally {
+            await bloc?.dispose();
+          }
+
+        case AppLaunchType.mock:
+          var testAuthInstanceJsonString = configService.testAuthInstanceJson!;
+          var testAuthInstanceJson = jsonDecode(testAuthInstanceJsonString);
+
+          return AuthInstance.fromJson(testAuthInstanceJson);
       }
     },
     errorDataBuilders: [

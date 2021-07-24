@@ -66,7 +66,4 @@ abstract class IConversationChatRepository
     ConversationRepositoryChatOrderingTermData? orderingTermData =
         ConversationRepositoryChatOrderingTermData.updatedAtDesc,
   });
-
-
-
 }

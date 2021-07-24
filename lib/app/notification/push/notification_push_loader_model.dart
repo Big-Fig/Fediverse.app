@@ -23,7 +23,9 @@ class NotificationPushLoaderNotification {
       other is NotificationPushLoaderNotification &&
           runtimeType == other.runtimeType &&
           notification == other.notification &&
-          notificationsPushHandlerMessage == other.notificationsPushHandlerMessage;
+          notificationsPushHandlerMessage ==
+              other.notificationsPushHandlerMessage;
   @override
-  int get hashCode => notification.hashCode ^ notificationsPushHandlerMessage.hashCode;
+  int get hashCode =>
+      notification.hashCode ^ notificationsPushHandlerMessage.hashCode;
 }

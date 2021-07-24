@@ -31,12 +31,11 @@ class ConversationChatWithLastMessagePaginationBloc
     required CachedPaginationPage<IConversationChatWithLastMessage?>? olderPage,
     required CachedPaginationPage<IConversationChatWithLastMessage?>? newerPage,
   }) {
-
     return listService.loadLocalItems(
-        limit: itemsCountPerPage,
-        newerThan: olderPage?.items.firstOrNull,
-        olderThan: newerPage?.items.lastOrNull,
-      );
+      limit: itemsCountPerPage,
+      newerThan: olderPage?.items.firstOrNull,
+      olderThan: newerPage?.items.lastOrNull,
+    );
   }
 
   @override

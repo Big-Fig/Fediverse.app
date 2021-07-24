@@ -38,7 +38,7 @@ class PleromaChatMessageCachedPaginationListWithNewItemsBloc<
           asyncCalculateActuallyNew: false,
         ) {
     pleromaChatBloc.onMessageLocallyHiddenStream.listen(
-          (hiddenMessage) {
+      (hiddenMessage) {
         hideItem(hiddenMessage);
       },
     ).disposeWith(this);
@@ -71,16 +71,16 @@ class PleromaChatMessageCachedPaginationListWithNewItemsBloc<
       // usually chat have 1 message when user navigating from chats list where
       // last message already fetched
       // ignore: unawaited_futures
-        Future.delayed(
-          Duration(
-            // todo: refactor
-            // ignore: no-magic-number
-            milliseconds: 100,
-          ),
-          () {
-            refreshWithController();
-          },
-        );
+      Future.delayed(
+        Duration(
+          // todo: refactor
+          // ignore: no-magic-number
+          milliseconds: 100,
+        ),
+        () {
+          refreshWithController();
+        },
+      );
     }
 
     return page;

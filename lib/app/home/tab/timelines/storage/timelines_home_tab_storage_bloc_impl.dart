@@ -21,7 +21,7 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
   final ITimelinesHomeTabStorageLocalPreferenceBloc preferences;
 
   final BehaviorSubject<TimelinesHomeTabStorageUiState> uiStateSubject =
-  BehaviorSubject.seeded(
+      BehaviorSubject.seeded(
     TimelinesHomeTabStorageUiState.view,
   );
 
@@ -38,7 +38,7 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
     required this.authInstance,
   }) {
     timelineIdsStream.listen(
-          (_) {
+      (_) {
         updateTimelines();
       },
     ).disposeWith(this);
@@ -85,35 +85,32 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
   @override
   Stream<List<Timeline>> get timelinesDistinctStream =>
       timelinesStream.distinct(
-            (a, b) => listEquals(a, b),
+        (a, b) => listEquals(a, b),
       );
 
   @override
-  List<TimelinesHomeTabStorageListItem> get timelineStorageItems =>
-      timelines
-          .map(
-            (timeline) => TimelinesHomeTabStorageListItem(timeline),
+  List<TimelinesHomeTabStorageListItem> get timelineStorageItems => timelines
+      .map(
+        (timeline) => TimelinesHomeTabStorageListItem(timeline),
       )
-          .toList();
+      .toList();
 
   @override
   Stream<List<TimelinesHomeTabStorageListItem>>
-  get timelineStorageItemsStream =>
-      timelinesStream.map(
-            (timelines) =>
-            timelines
+      get timelineStorageItemsStream => timelinesStream.map(
+            (timelines) => timelines
                 .map(
                   (timeline) => TimelinesHomeTabStorageListItem(timeline),
-            )
+                )
                 .toList(),
-      );
+          );
 
   @override
   Stream<List<TimelinesHomeTabStorageListItem>>
-  get timelineStorageItemsDistinctStream =>
-      timelineStorageItemsStream.distinct(
+      get timelineStorageItemsDistinctStream =>
+          timelineStorageItemsStream.distinct(
             (a, b) => listEquals(a, b),
-      );
+          );
 
   @override
   TimelinesHomeTabStorage? get storage => preferences.value;

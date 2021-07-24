@@ -25,6 +25,7 @@ abstract class ScheduledStatusPaginationListBaseWidget
           customEmptyWidget: customEmptyWidget,
           customLoadingWidget: customLoadingWidget,
           refreshOnFirstLoad: refreshOnFirstLoad,
+          isNeedToAddPaddingForUiTests: false,
         );
 
   @override

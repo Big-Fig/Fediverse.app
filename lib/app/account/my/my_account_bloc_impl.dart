@@ -35,7 +35,7 @@ class MyAccountBloc extends IMyAccountBloc {
     required this.instance,
   }) {
     myAccountStream.listen(
-          (myAccount) {
+      (myAccount) {
         if (myAccount != null) {
           accountRepository.upsertInRemoteType(
             myAccount.toPleromaApiAccount(),

@@ -76,13 +76,13 @@ class FediLocalPreferencesServiceMigrationBloc
 
       authInstancesBlocCreators.addAll(
         timelinesHomeTabStorageLocalPreferencesBloc.value.timelineIds.map(
-              (timelineId) => (lps) => TimelineLocalPreferenceBloc.byId(
-                    lps,
-                    userAtHost: userAtHost,
-                    timelineId: timelineId,
-                    defaultPreferenceValue: null,
-                  ),
-            ),
+          (timelineId) => (lps) => TimelineLocalPreferenceBloc.byId(
+                lps,
+                userAtHost: userAtHost,
+                timelineId: timelineId,
+                defaultPreferenceValue: null,
+              ),
+        ),
       );
 
       await timelinesHomeTabStorageLocalPreferencesBloc.dispose();

@@ -13,7 +13,6 @@ import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/pleroma/api/featured_tags/pleroma_api_featured_tags_service.dart';
 import 'package:flutter/widgets.dart';
 
-
 class MyAccountFeaturedHashtagSuggestionBloc extends DisposableOwner
     implements IMyAccountFeaturedHashtagSuggestionBloc {
   final IPaginationSettingsBloc paginationSettingsBloc;

@@ -6,8 +6,8 @@ import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IPleromaApiAuthAccountService
-    extends IPleromaApiAuth implements IPleromaApiAccountService {
+abstract class IPleromaApiAuthAccountService extends IPleromaApiAuth
+    implements IPleromaApiAccountService {
   static IPleromaApiAuthAccountService of(
     BuildContext context, {
     bool listen = true,

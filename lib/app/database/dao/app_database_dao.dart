@@ -13,20 +13,19 @@ abstract class AppDatabaseDao<
     extends DatabaseDao<DbItem, DbId, TableDsl, TableInfoDsl> {
   AppDatabaseDao(AppDatabase db) : super(db);
 
-
   void addNewerOlderDbItemPagination({
-          required SimpleSelectStatement<TableDsl, DbItem> query,
-          required RepositoryPagination<DbItem>? pagination,
-          required List<OrderingTerm>? orderingTerms,
+    required SimpleSelectStatement<TableDsl, DbItem> query,
+    required RepositoryPagination<DbItem>? pagination,
+    required List<OrderingTerm>? orderingTerms,
   });
 
   void addFiltersToQuery({
-          required SimpleSelectStatement<TableDsl, DbItem> query,
-          required Filters? filters,
+    required SimpleSelectStatement<TableDsl, DbItem> query,
+    required Filters? filters,
   });
 
   void addOrderingToQuery({
-          required SimpleSelectStatement<TableDsl, DbItem> query,
-          required List<OrderingTerm>? orderingTerms,
+    required SimpleSelectStatement<TableDsl, DbItem> query,
+    required List<OrderingTerm>? orderingTerms,
   });
 }

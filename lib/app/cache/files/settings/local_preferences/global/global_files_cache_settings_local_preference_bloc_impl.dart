@@ -13,8 +13,7 @@ class GlobalFilesCacheSettingsLocalPreferenceBloc
   ) : super(preferencesService, 'cache.files.settings.global');
 
   static final FilesCacheSettings defaultValue = FilesCacheSettings.fromEnum(
-    sizeLimitCountType:
-        FilesCacheSizeLimitCountType.size50,
+    sizeLimitCountType: FilesCacheSizeLimitCountType.size50,
     ageLimitType: FilesCacheAgeLimitType.days7,
   );
 

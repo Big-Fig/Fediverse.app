@@ -1,10 +1,10 @@
-## Changelog
+# Changelog
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.6.1] [stable] 2021 July 11
-
+## [2.6.1] - 2021-07-30
 ### Changed
 * update cover image in README.md
 * remove settings from about_page.dart to avoid errors when user not logged in yet
@@ -19,10 +19,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * fix async_dialog.dart: don't crash when performing async operation without actual dialog
 * edit_timeline_settings_dialog.dart: don't listen provider in button callback
 * handling sharing intents: better check for oauth callback
-  
 
-## [2.6.0] [internal] 2021 July 10
-
+## [2.6.0] - 2021-07-10
 ### Added
 * Server-list autocomplete
 * `Explore as guest` feature to view instances data via Public API
@@ -40,9 +38,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Fixes
 * Fix mocks for some unit tests
   
-
-## [2.5.0] [internal] 2021 June 22
-
+## [2.5.0] - 2021-06-22
 ### Added
 * Push notifications rich layouts: big text, big image, default
 * Push notifications actions: reply to chat/mention, accept/reject follow request.
@@ -56,18 +52,17 @@ Fedi don't decrypt pushes too(it is not easy too implement and will be added lat
 * Remove empty time ago prefixes from localization
   
 
-## [2.4.2] [internal] 2021 June 18
+## [2.4.2] - 2021-06-18
 
 ### Changed
 * Update receive_sharing_intent to own fork which support custom Apple Group ID & Flavors
 * Update XCode project related to receive_sharing_intent changes & moving app to different iTunes account
 
-## [2.4.1] [internal] 2021 June 16
+## [2.4.1] - 2021-06-16
 
 First open-source release
 
 ### Added
-
 * README
 * CHANGELOG
 * LICENSE
@@ -86,28 +81,26 @@ First open-source release
 * Fix clear database cache option
 * Fix count limit option for files cache
 
-## [2.3.0] [internal] 2021 June 6
+## [2.3.0] - 2021-06-06
 ### Added
 * handle incoming share events
 * hashtag timeline page for remote instances
 * public timeline for remote instances
 * settings support for remote instance timelines
 
-## [2.2.0] [internal] 2021 May 30
+## [2.2.0] - 2021-05-30
 ### Added
-
 * featured tags
 * endorsements
 * instance activity
 * trends
 * instance directory
 
-## [2.1.2] [stable]
+## [2.1.2] - 2021-05-16
 ### Fixes
-
 * hotfixes to make stable release from 2.0.54
 
-## [2.0.54] [internal] 2021 May 15
+## [2.0.54] - 2021-05-15
 ### Added
 * add pagination to chats (use v2 API)
 
@@ -125,7 +118,7 @@ First open-source release
 * fix too long ru & en localizations
 * minor bugfixes and performance improvements
  
-## [2.0.53] [internal] 2021 May 10
+ ## [2.0.53] - 2021-05-10
 ### Added
 * add media attachment reupload service: improve share media and status with single media
 * add show/hide animation to merge new items button overlay for lists
@@ -161,40 +154,37 @@ First open-source release
 * rework smart refresher: Refresh indicator
 * libraries update
 
-## [2.0.52] [internal] 2021 May 2
-
+## [2.0.52] - 2021-05-02
 ### Added
 * a lot of new unit-tests
 
 ### Fixes
 * minor bugfixes for issues found by new test
 
-## [2.0.51] [internal] 2021 April 18
+## [2.0.51] - 2021-04-18
 ### Changed
 * improved websockets logic. Better performance + less battery usage
 
 ### Fixes
 * bug fixes
 
-## [2.0.49] [internal] 2021 April 13
+## [2.0.49] - 2021-04-13
 ### Changed
 * local database logic refactoring and optimization
 
-## [2.0.47] [internal] 2021 April 3
+## [2.0.47] - 2021-04-03
 ### Changed
 * design update for chats, muting, media selection, dialogs and much more
 * updated to Flutter 2.0. All libraries was updated to never versions. 
 * source code was refactored to support null-safety
 
-
-## [2.0.46] [internal] 2021 March 13
+## [2.0.46] - 2021-03-13
 ### Changed
 * faster app starting
 * handling pleroma notifications unread field
 * conversations/chats and notifications unread logic improvements
 
-## [2.0.45] [internal] 2021 March 7
-
+## [2.0.45] - 2021-03-07
 ### Fixes
 * fix chats fetching. Chats don’t support pagination yet but Fedi sent it by default. In latest update fedi.app start return error for chats endpoint if it has pagination arguments. So I removed pagination args until pagination will be implemented
 * fix slow scroll in Thread Page to initial status
@@ -207,8 +197,7 @@ First open-source release
 * better click on hashtag UX: ask user if hashtag on remote instance. Open in browser on remote instance or open in app on local instance.
 * support chat message selection for failed messages
 
-
-## [2.0.44] [internal] 2021 February 27
+## [2.0.44] - 2021-02-27
 ### Added
 * add confirm dialog for delete chat/conversation
 * enabled expire_in support for filters on Pleroma
@@ -220,7 +209,7 @@ First open-source release
 ### Fixes
 * fix text overflow bug in chat previews
 
-## [2.0.43] [internal] 2021 February 14
+## [2.0.43] - 2021-02-14
 ### Added
 * add media picker current selection UI
 
@@ -231,15 +220,14 @@ First open-source release
 * fix appName during register app on instance
 * a lot of minor UX fixes
 
-
-## [2.0.42] [stable] 2021 February 8
+## [2.0.42] - 2021-02-08
 ### Added
 * expire_in support for publish statuses
 * timed account mute + mute UI rework
 * badge when user have active follow request
 * delete & re-post/re-draft actions
 * more options to timeline filters: replyVisibility, excludeVisibilities, onlyFromInstance
-*more unit tests
+* more unit tests
  
 ### Changes
 * rework delete UI
@@ -248,7 +236,7 @@ First open-source release
 * minor bugfix
 * localization fixes 
 
-## [2.0.40] [internal] 2021 January 31
+## [2.0.40] - 2021-01-31
 ### Added
 * chat & conversations long tap to select messages and actions: share, copy, delete
 * delete conversation
@@ -262,11 +250,11 @@ First open-source release
 ### Changes
 * create poll UX
 
-## [2.0.39] [internal] 2021 January 27
+## [2.0.39] - 2021-01-27
 ### Fixes
 * hotfixes & UI/UX improvements for 2.0.38 related to remote instance data fetching
 
-## [2.0.38] [stable] 2021 January 26
+## [2.0.38] - 2021-01-26
 ### Added
 * Instance information Page with full instance details from /api/v1/instance endpoint
 * Load account and statuses(and threads) via public API from remote (origin) instances
@@ -274,7 +262,7 @@ First open-source release
 ### Fixes
 * fixed several minor bugs
 
-## [2.0.36] [internal] 2021 January 18
+## [2.0.36] - 2021-01-18
 ### Added
 * subscribe on specific account statuses (pleroma only)
 * add favourites tab in account details page (pleroma only for non-own accounts).
@@ -290,11 +278,11 @@ First open-source release
 * fixed account Note edit on Mastodon
 * fixed Only Fun integration: chat issues
 
-## [2.0.35] [internal] 2021 January 4
+## [2.0.35] - 2021-01-04
 ### Added
 * database & files cache limits options
 
-## [2.0.34] [internal] 2020 December 22
+## [2.0.34] - 2020-12-22
 ### Added
 * more settings options
 
@@ -305,7 +293,7 @@ First open-source release
 ### Fixes
 * a lot of minor bugfixes
 
-## [2.0.33] [internal] 2020 December 14
+## [2.0.33] - 2020-12-14
 ### Added
 * ask for review popup (will work only in Fedi1 release builds loaded from AppStore/GooglePlay)
 * account muting options
@@ -315,7 +303,7 @@ First open-source release
 * better auth token revoked handling
 * filters support. API wrapper implemented, but local filtering for already cached statuses not ready yet
 
-## [2.0.32] [internal] 2020 December 8
+## [2.0.32] - 2020-12-08
 ### Changes
 * custom list edit/create UI rework
 * notifications list UI improvements
@@ -324,8 +312,7 @@ First open-source release
 * account blocks/mutes, domain blocks UI rework
 * follow request UI rework
 
-## [2.0.31] [internal] 2020 December 1
-
+## [2.0.31] - 2020-12-01
 ### Added
 * in-app notifications feature
 * more settings options
@@ -336,12 +323,12 @@ First open-source release
 ### Fixes
 * fix ios 14 non-safari default browser bug
 
-## [2.0.30] [internal] 2020 November 23
+## [2.0.30] - 2020-11-23
 ### Changes
 * forms refactoring & improvements: disabled state support
 * settings rework: support custom per-instance settings and global settings storage
 
-## [2.0.29] [internal] 2020 November 17
+## [2.0.29] - 2020-11-17
 ### Added 
 * pleroma EmojiReaction notification settings
 * RU localization
@@ -351,7 +338,7 @@ First open-source release
 * timelines managing improvements
 * minor UI improvements
 
-## [2.0.28] [stable] 2020 November 8
+## [2.0.28] - 2020-11-08
 ### Fixes
 * fix android push notifications
 
@@ -363,7 +350,7 @@ First open-source release
 * a lot of UI/UX minor improvements
 * better mastodon support
 
-## [2.0.27] [internal] 2020 October 26
+## [2.0.27] - 2020-10-26
 ### Added
 * adaptive dark theme colors (use system brightness)
 
@@ -379,7 +366,7 @@ First open-source release
 * fix emoji picker async init loading
 * fix emoji picker recent category
 
-## [2.0.26] [internal] 2020 October 19
+## [2.0.26] - 2020-10-19
 ### Added
 * dark theme support (design update not ready yet, so I just modified architecture to support themes and inverted colors)
 
@@ -389,7 +376,7 @@ First open-source release
 * better notification messages
 * better error handling
 
-## [2.0.25] [internal] 2020 October 12
+## [2.0.25] - 2020-10-12
 ### Changes
 * share rework (design & refactoring)
 * video/audio player rework (design & refactoring)
@@ -400,7 +387,7 @@ First open-source release
 ### Fixes
 * fix minor bugs
 
-## [2.0.24] [internal] 2020 October 5
+## [2.0.24] - 2020-10-05
 ### Changes
 * automatically append own posts to timeline
 * add more details to login process to handle what going wrong
@@ -413,12 +400,11 @@ First open-source release
 * fix timeline rebuild after settings changes
 * possible fixes for blue screen stuck & always instance dead error
 
-## [2.0.23] [internal] 2020 September 28
+## [2.0.23] - 2020-09-28
 ### Added
 * custom timelines managing (add, remove, sort)
 
-## [2.0.22] [stable] 2020 September 22
-
+## [2.0.22] - 2020-09-22
 ### Added
 * special 'request_follow' button for locked accounts
 * a lot of new unit tests for better stability
@@ -431,7 +417,7 @@ First open-source release
 ### Fixes
 * fix notifications for mastodon.instances (related to https support on push relay server)
 
-## [2.0.21] [internal] 2020 September 13
+## [2.0.21] - 2020-09-13
 ### Added
 * account mutes, blocks, domain blocks feature
 * status conversation mute action
@@ -449,7 +435,7 @@ First open-source release
 * fix invalid font size for statuses when OS accessibility font size changed
 * fix broken chat input field UI
 
-## [2.0.20] [internal] 2020 September 7
+## [2.0.20] - 2020-09-07
 ### Added
 * implemented flavors. Flavor will save time on creating feature builds. From now Fedi2(dev) and Fedi1(prod) will have different icons and title.
 * add light grey background for focused status in thread. Display status actions only for focused status and first status in thread.
@@ -469,7 +455,7 @@ First open-source release
 * dynamically increase timeago UI (without manual statuses refresh)
 * dynamically expire poll (without manual refresh)
 
-## [2.0.19] [internal] 2020 August 31
+## [2.0.19] - 2020-08-31
 ### Added
 * bookmark/unBookmark statuses
 * lists create/edit/add account/remove account/ and fetch statuses support.
@@ -487,7 +473,7 @@ First open-source release
 * fix non-media attachments type & filename handling when description is empty
 * fix search results ALL tab: group separators are valid now
 
-## [2.0.18] [internal] 2020 August 24
+## [2.0.18] - 2020-08-24
 ### Added
 * pin/unpin statuses support
 * add statuses tabs (only media, with replies, without replies, pinned) to account page
@@ -501,8 +487,7 @@ First open-source release
 ### Changes
 * minor performance changes
 
-## [2.0.17] [stable] 2020 August 16
-
+## [2.0.17] - 2020-08-16
 ### Added
 * add captcha support
 * add captcha to registration if it is supported by server.
@@ -517,14 +502,14 @@ First open-source release
 * fix video player crash for mp4 files without actual video track (audio only)
 * fix a lot of minor issues from non-fatal issues reports gathered via Firebase.
 
-## [2.0.16] [stable] 2020 August 6
+## [2.0.16] - 2020-08-06
 ### Added
 * add x86_64 and arm64 architecture support. Previously app not worked on it
 
 ### Fixes
 * fix several minor bugs from Firebase crash reports.
 
-## [2.0.15] [internal] 2020 August 5
+## [2.0.15] - 2020-08-05
 ### Added
 * poll view and vote support
 * custom emoji picker support
@@ -538,14 +523,14 @@ First open-source release
 * rework drawers UI. Turn them in subpages
 * remove grey divider just before status actions
 
-## [2.0.13] [stable] 2020 July 28
+## [2.0.13] - 2020-07-28
 ### Added
 * add safe area wrappers for all pages to fix layout issues on iphone X
 
 ### Fixes
 * fix form links bug
 
-## [2.0.12] [internal] 2020 July 26
+## [2.0.12] - 2020-07-26
 ### Added
 * highlight mentions in edit text field
 
@@ -562,7 +547,7 @@ First open-source release
 * fix notification and timeline tabs unread badges
 * fix image caching in Media Details Page
 
-## [2.0.10] [internal] 2020 July 21
+## [2.0.10] - 2020-07-21
 ### Added
 * html support in account note field
 * splash UI
@@ -582,11 +567,11 @@ First open-source release
 ### Fixes
 * fix tabs border radius
 
-## [2.0.9] [internal] 2020 July 12
+## [2.0.9] - 2020-07-12
 ### Changes
 * performance improvements
 
-## [2.0.8] [internal] 2020 July 3
+## [2.0.8] - 2020-07-03
 ### Added
 * add video picking support
 * tap to load support on account page
@@ -606,7 +591,7 @@ First open-source release
 * fix status bar color switching
 * fix post status/chat message with not-uploaded media
 
-## [2.0.7] [internal] 2020 June 28
+## [2.0.7] - 2020-06-28
 ### Changes
 * account details new UI
 * account edit new UI
@@ -619,11 +604,11 @@ First open-source release
 * modal bottom sheet new UI
 * bug fixes
 
-## [2.0.6] [internal] 2020 June 16
+## [2.0.6] - 2020-06-16
 ### Fixes
 * fix “This instance don’t support chats yet” checking
 
-## [2.0.5] [internal] 2020 June 15
+## [2.0.5] - 2020-06-15
 ### Added
 * unknown attached file type support
 
@@ -637,8 +622,7 @@ First open-source release
 * fix scrolling issues on some iOS devices
 * fix firefox login on android.
 
-## [2.0.4] [internal] 2020 June 14
-
+## [2.0.4] - 2020-06-14
 ### Added
 * account followers/following page
 * better media preview UI (audio, video carousel)
@@ -656,14 +640,14 @@ First open-source release
 * improve splash UI
 * better “Tap to load” and unread badges
 
-## [2.0.3] [internal] 2020 June 5
+## [2.0.3] - 2020-06-05
 ### Fixes
 * fix login on android with non-chrome browser
 * new Chat API fixes
 * registration fixes
 * fix timelines scrolling issue on iOS
 
-## [2.0.2] [internal] 2020 June 2
+## [2.0.2] - 2020-06-02
 ### Added
 * timelines scrolling handling (floating & pinned UI elements).
 
@@ -673,7 +657,7 @@ First open-source release
 * reply/reblog improvements
 * unread badges improvements
 
-## [2.0.1] [internal] 2020 May 28
+## [2.0.1] - 2020-05-28
 ### Added
 * header background fetching from backend
 * fully existing chats API support (with realtime updates via push API and background updates via push notifications)
@@ -691,3 +675,61 @@ First open-source release
 * fix: ui rebuild caching issues (statuses list, notifications list, etc)
 * fix: don’t crash on display notification with unknown by Fedi2 type
 * fix: home timeline works as expected
+
+[Unreleased]: https://github.com/Big-Fig/Fediverse.app/compare/v2.6.1...HEAD
+[2.6.1]: https://github.com/Big-Fig/Fediverse.app/compare/2.6.0...2.6.1
+[2.6.0]: https://github.com/Big-Fig/Fediverse.app/compare/2.5.0...2.6.0
+[2.5.0]: https://github.com/Big-Fig/Fediverse.app/compare/2.4.2...2.5.0
+[2.4.2]: https://github.com/Big-Fig/Fediverse.app/compare/2.4.1...2.4.2
+[2.4.1]: https://github.com/Big-Fig/Fediverse.app/compare/2.3.0...2.4.1
+[2.3.0]: https://github.com/Big-Fig/Fediverse.app/compare/2.2.0...2.3.0
+[2.2.0]: https://github.com/Big-Fig/Fediverse.app/compare/2.1.2...2.2.0
+[2.1.2]: https://github.com/Big-Fig/Fediverse.app/compare/2.0.54...2.1.2
+[2.0.54]: https://github.com/Big-Fig/Fediverse.app/compare/2.0.53...2.0.54
+[2.0.53]: https://github.com/Big-Fig/Fediverse.app/compare/2.0.52...2.0.53
+[2.0.52]: https://github.com/Big-Fig/Fediverse.app/compare/2.0.51...2.0.52
+[2.0.51]: https://github.com/Big-Fig/Fediverse.app/compare/2.0.49...2.0.51
+[2.0.49]: https://github.com/Big-Fig/Fediverse.app/compare/2.0.47...2.0.49
+[2.0.47]: https://github.com/Big-Fig/Fediverse.app/compare/2.0.46...2.0.47
+[2.0.46]: https://github.com/Big-Fig/Fediverse.app/compare/2.0.45...2.0.46
+[2.0.45]: https://github.com/Big-Fig/Fediverse.app/compare/2.0.44...2.0.45
+[2.0.44]: https://github.com/Big-Fig/Fediverse.app/compare/2.0.43...2.0.44
+[2.0.43]: https://github.com/Big-Fig/Fediverse.app/compare/2.0.42...2.0.43
+[2.0.42]: https://github.com/Big-Fig/Fediverse.app/compare/2.0.40...2.0.42
+[2.0.40]: https://github.com/Big-Fig/Fediverse.app/compare/2.0.39...2.0.40
+[2.0.39]: https://github.com/Big-Fig/Fediverse.app/compare/2.0.38...2.0.39
+[2.0.38]: https://github.com/Big-Fig/Fediverse.app/compare/2.0.36...2.0.38
+[2.0.36]: https://github.com/Big-Fig/Fediverse.app/compare/2.0.35...2.0.36
+[2.0.35]: https://github.com/Big-Fig/Fediverse.app/compare/2.0.34...2.0.35
+[2.0.34]: https://github.com/Big-Fig/Fediverse.app/compare/2.0.33...2.0.34
+[2.0.33]: https://github.com/Big-Fig/Fediverse.app/compare/2.0.32...2.0.33
+[2.0.32]: https://github.com/Big-Fig/Fediverse.app/compare/2.0.31...2.0.32
+[2.0.31]: https://github.com/Big-Fig/Fediverse.app/compare/2.0.30...2.0.31
+[2.0.30]: https://github.com/Big-Fig/Fediverse.app/compare/2.0.29...2.0.30
+[2.0.29]: https://github.com/Big-Fig/Fediverse.app/compare/2.0.28...2.0.29
+[2.0.28]: https://github.com/Big-Fig/Fediverse.app/compare/2.0.27...2.0.28
+[2.0.27]: https://github.com/Big-Fig/Fediverse.app/compare/2.0.26...2.0.27
+[2.0.26]: https://github.com/Big-Fig/Fediverse.app/compare/2.0.25...2.0.26
+[2.0.25]: https://github.com/Big-Fig/Fediverse.app/compare/2.0.24...2.0.25
+[2.0.24]: https://github.com/Big-Fig/Fediverse.app/compare/2.0.23...2.0.24
+[2.0.23]: https://github.com/Big-Fig/Fediverse.app/compare/2.0.22...2.0.23
+[2.0.22]: https://github.com/Big-Fig/Fediverse.app/compare/2.0.21...2.0.22
+[2.0.21]: https://github.com/Big-Fig/Fediverse.app/compare/2.0.20...2.0.21
+[2.0.20]: https://github.com/Big-Fig/Fediverse.app/compare/2.0.19...2.0.20
+[2.0.19]: https://github.com/Big-Fig/Fediverse.app/compare/2.0.18...2.0.19
+[2.0.18]: https://github.com/Big-Fig/Fediverse.app/compare/2.0.17...2.0.18
+[2.0.17]: https://github.com/Big-Fig/Fediverse.app/compare/2.0.16...2.0.17
+[2.0.16]: https://github.com/Big-Fig/Fediverse.app/compare/2.0.15...2.0.16
+[2.0.15]: https://github.com/Big-Fig/Fediverse.app/compare/2.0.13...2.0.15
+[2.0.13]: https://github.com/Big-Fig/Fediverse.app/compare/2.0.12...2.0.13
+[2.0.12]: https://github.com/Big-Fig/Fediverse.app/compare/2.0.10...2.0.12
+[2.0.10]: https://github.com/Big-Fig/Fediverse.app/compare/2.0.9...2.0.10
+[2.0.9]: https://github.com/Big-Fig/Fediverse.app/compare/2.0.8...2.0.9
+[2.0.8]: https://github.com/Big-Fig/Fediverse.app/compare/2.0.7...2.0.8
+[2.0.7]: https://github.com/Big-Fig/Fediverse.app/compare/2.0.6...2.0.7
+[2.0.6]: https://github.com/Big-Fig/Fediverse.app/compare/2.0.5...2.0.6
+[2.0.5]: https://github.com/Big-Fig/Fediverse.app/compare/2.0.4...2.0.5
+[2.0.4]: https://github.com/Big-Fig/Fediverse.app/compare/2.0.3...2.0.4
+[2.0.3]: https://github.com/Big-Fig/Fediverse.app/compare/2.0.2...2.0.3
+[2.0.2]: https://github.com/Big-Fig/Fediverse.app/compare/2.0.1...2.0.2
+[2.0.1]: https://github.com/Big-Fig/Fediverse.app/releases/tag/2.0.1

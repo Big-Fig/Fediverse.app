@@ -8,6 +8,10 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 
 class FediUiThemeSingleFromListValueFormFieldRowWidget extends StatelessWidget {
+  const FediUiThemeSingleFromListValueFormFieldRowWidget({
+    Key? key,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) =>
       FediUiThemeSingleFromListValueFormFieldBlocProxyProvider(
@@ -20,10 +24,10 @@ class FediUiThemeSingleFromListValueFormFieldRowWidget extends StatelessWidget {
           displayIconInRow: false,
           displayIconInDialog: false,
           valueIconMapper: (context, value) => _mapThemeToIcon(context, value),
+          valueKeyMapper: (context, IFediUiTheme? value) =>
+              value != null ? Key(value.id) : null,
         ),
       );
-
-  const FediUiThemeSingleFromListValueFormFieldRowWidget();
 }
 
 String _mapThemeToTitle(BuildContext context, IFediUiTheme? theme) {

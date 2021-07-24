@@ -29,20 +29,20 @@ Future<T?> showAccountActionMuteDialog<T>({
           label: S.of(context).app_account_mute_dialog_action_clearDate,
           isActionVisibleFetcher: (context) {
             var accountActionMuteBloc =
-            IAccountActionMuteBloc.of(context, listen: false);
+                IAccountActionMuteBloc.of(context, listen: false);
 
             return accountActionMuteBloc
-                .expireDurationFieldBloc.currentValueDuration !=
+                    .expireDurationFieldBloc.currentValueDuration !=
                 null;
           },
           isActionVisibleStreamFetcher: (context) {
             var accountActionMuteBloc =
-            IAccountActionMuteBloc.of(context, listen: false);
+                IAccountActionMuteBloc.of(context, listen: false);
 
             return accountActionMuteBloc
                 .expireDurationFieldBloc.currentValueDurationStream
                 .map(
-                  (duration) => duration != null,
+              (duration) => duration != null,
             );
           },
           customTextStyle: IFediUiTextTheme.of(
@@ -51,7 +51,7 @@ Future<T?> showAccountActionMuteDialog<T>({
           ).bigTallPrimaryDark,
           onAction: (context) async {
             var accountActionMuteBloc =
-            IAccountActionMuteBloc.of(context, listen: false);
+                IAccountActionMuteBloc.of(context, listen: false);
 
             accountActionMuteBloc.expireDurationFieldBloc.clear();
           },

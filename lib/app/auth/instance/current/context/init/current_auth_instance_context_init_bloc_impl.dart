@@ -56,11 +56,11 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
     stateSubject.disposeWith(this);
 
     pleromaAuthRestService.pleromaApiStateStream.listen(
-          (pleromaApiState) {
+      (pleromaApiState) {
         _logger.finest(() => 'pleromaApiState $pleromaApiState');
         if (pleromaApiState == PleromaApiState.brokenAuth) {
           _logger.finest(() =>
-          ' stateSubject.add(CurrentAuthInstanceContextInitState.invalidCredentials)');
+              ' stateSubject.add(CurrentAuthInstanceContextInitState.invalidCredentials)');
           stateSubject
               .add(CurrentAuthInstanceContextInitState.invalidCredentials);
         }

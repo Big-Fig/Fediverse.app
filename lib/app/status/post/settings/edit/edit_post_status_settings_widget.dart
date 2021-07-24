@@ -49,7 +49,6 @@ class _EditPostStatusSettingsMarkMediaAsNsfwOnAttachWidget
   }
 }
 
-
 class _EditPostStatusSettingsDefaultStatusLocaleFieldWidget
     extends StatelessWidget {
   const _EditPostStatusSettingsDefaultStatusLocaleFieldWidget({
@@ -61,12 +60,11 @@ class _EditPostStatusSettingsDefaultStatusLocaleFieldWidget
     return ProxyProvider<IEditPostStatusSettingsBloc,
         ILocalizationLocaleSingleFromListValueFormFieldBloc>(
       update: (context, value, previous) =>
-      value.defaultStatusLocaleFormFieldBloc,
+          value.defaultStatusLocaleFormFieldBloc,
       child: const LocalizationLocaleSingleFromListValueFormFieldRowWidget(),
     );
   }
 }
-
 
 class _EditPostStatusSettingsDefaultVisibilityFieldWidget
     extends StatelessWidget {
@@ -80,7 +78,8 @@ class _EditPostStatusSettingsDefaultVisibilityFieldWidget
         IStatusVisibilitySelectSingleFromListValueFormFieldBloc>(
       update: (context, value, previous) =>
           value.defaultVisibilityFormFieldBloc,
-      child: const StatusVisibilitySelectSingleFromListValueFormFieldRowWidget(),
+      child:
+          const StatusVisibilitySelectSingleFromListValueFormFieldRowWidget(),
     );
   }
 }

@@ -45,6 +45,7 @@ class SearchResultItemPaginationListWidget
           alwaysShowFooter: alwaysShowFooter,
           alwaysShowHeader: alwaysShowHeader,
           refreshOnFirstLoad: refreshOnFirstLoad,
+          isNeedToAddPaddingForUiTests: false,
         );
 
   @override

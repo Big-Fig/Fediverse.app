@@ -25,6 +25,7 @@ abstract class DraftStatusPaginationListBaseWidget
           customEmptyWidget: customEmptyWidget,
           customLoadingWidget: customLoadingWidget,
           refreshOnFirstLoad: refreshOnFirstLoad,
+          isNeedToAddPaddingForUiTests: false,
         );
 
   @override

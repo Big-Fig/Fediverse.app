@@ -11,8 +11,7 @@ void main() {
   test('save & load', () async {
     await LocalPreferencesTestHelper.testSaveAndLoad<FilesCacheSettings,
         InstanceFilesCacheSettingsLocalPreferenceBloc>(
-      defaultValue:
-          InstanceFilesCacheSettingsLocalPreferenceBloc.defaultValue,
+      defaultValue: InstanceFilesCacheSettingsLocalPreferenceBloc.defaultValue,
       blocCreator: (localPreferencesService) =>
           InstanceFilesCacheSettingsLocalPreferenceBloc(
         localPreferencesService,

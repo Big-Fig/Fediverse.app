@@ -1,3 +1,4 @@
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
 import 'package:fedi/app/chat/conversation/unread/conversation_chat_unread_badge_bloc_impl.dart';
@@ -11,6 +12,7 @@ import 'package:fedi/app/chat/pleroma/with_last_message/pagination/list/pleroma_
 import 'package:fedi/app/chat/pleroma/with_last_message/pagination/pleroma_chat_with_last_message_pagination_bloc.dart';
 import 'package:fedi/app/chat/pleroma/with_last_message/pleroma_chat_with_last_message_model.dart';
 import 'package:fedi/app/chat/settings/chat_settings_bloc.dart';
+import 'package:fedi/app/home/tab/chat/pleroma_chat_home_tab_page_keys.dart';
 import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
 import 'package:fedi/app/ui/badge/bool/fedi_bool_badge_bloc.dart';
 import 'package:fedi/app/ui/badge/bool/fedi_bool_badge_widget.dart';
@@ -24,7 +26,6 @@ import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_without_scrollable_ta
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
@@ -160,8 +161,10 @@ class _ChatMessagesHomeTabPageContentWidget extends StatelessWidget {
           : buildMastodonBody(context);
 
   Widget buildPleromaBody() => const PleromaChatWithLastMessageListWidget(
-        key: PageStorageKey('PleromaChatWithLastMessageListWidget'),
-      );
+      key: Key(
+        PleromaChatHomeTabPageKeys.pleromaChatWithLastMessageListWidget,
+      ),
+    );
 
   Widget buildMastodonBody(BuildContext context) => Center(
         child: FediEmptyWidget(

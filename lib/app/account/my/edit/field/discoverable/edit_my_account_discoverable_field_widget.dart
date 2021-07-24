@@ -16,7 +16,8 @@ class EditMyAccountDiscoverableFieldWidget extends StatelessWidget {
         update: (context, value, previous) => value.discoverableField,
         child: BoolValueFormFieldRowWidget(
           label: S.of(context).app_account_my_edit_field_discoverable_label,
-          description: S.of(context).app_account_my_edit_field_discoverable_description,
+          description:
+              S.of(context).app_account_my_edit_field_discoverable_description,
         ),
       );
 }

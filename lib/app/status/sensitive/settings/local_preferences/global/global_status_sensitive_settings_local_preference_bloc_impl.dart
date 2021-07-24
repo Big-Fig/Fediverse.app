@@ -14,10 +14,9 @@ class GlobalStatusSensitiveSettingsLocalPreferenceBloc
     isAlwaysShowNsfw: false,
     isAlwaysShowSpoiler: false,
     nsfwDisplayDelayDurationMicrosecondsTotal:
-    // ignore: no-magic-number
-    Duration(minutes: 5).inMicroseconds,
+        // ignore: no-magic-number
+        Duration(minutes: 5).inMicroseconds,
   );
-
 
   @override
   StatusSensitiveSettings get defaultPreferenceValue => defaultValue;

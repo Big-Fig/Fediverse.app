@@ -531,7 +531,7 @@ class _ChatMessageListItemTextContentWidget extends StatelessWidget {
                   ),
                 );
                 htmlTextBloc.linkClickedStream.listen(
-                      (url) {
+                  (url) {
                     UrlHelper.handleUrlClickOnLocalInstanceLocation(
                       context: context,
                       url: url,

@@ -1,3 +1,4 @@
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/chat/conversation/start/conversation_chat_start_page.dart';
 import 'package:fedi/app/chat/conversation/with_last_message/conversation_chat_with_last_message_model.dart';
 import 'package:fedi/app/chat/conversation/with_last_message/list/cached/conversation_chat_with_last_message_cached_list_bloc.dart';
@@ -22,7 +23,6 @@ import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_without_scrollable_ta
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
@@ -74,17 +74,28 @@ class ConversationChatHomeTabPage extends StatelessWidget {
 
         return MultiProvider(
           providers: [
-            Provider<IConversationChatWithLastMessageCachedListBloc>.value(value: chatsListBloc.cachedListBloc),
-            Provider<IConversationChatWithLastMessagePaginationBloc>.value(value: chatsListBloc.paginationBloc),
-            Provider<IPaginationListBloc<PaginationPage<IConversationChatWithLastMessage>,
-                IConversationChatWithLastMessage>>.value(value: chatsListBloc.chatPaginationListBloc),
-            Provider<IConversationChatWithLastMessagePaginationListWithNewItemsBloc<
-                CachedPaginationPage<IConversationChatWithLastMessage>>>.value(
+            Provider<IConversationChatWithLastMessageCachedListBloc>.value(
+              value: chatsListBloc.cachedListBloc,
+            ),
+            Provider<IConversationChatWithLastMessagePaginationBloc>.value(
+              value: chatsListBloc.paginationBloc,
+            ),
+            Provider<
+                IPaginationListBloc<
+                    PaginationPage<IConversationChatWithLastMessage>,
+                    IConversationChatWithLastMessage>>.value(
+              value: chatsListBloc.chatPaginationListBloc,
+            ),
+            Provider<
+                IConversationChatWithLastMessagePaginationListWithNewItemsBloc<
+                    CachedPaginationPage<
+                        IConversationChatWithLastMessage>>>.value(
               value: chatsListBloc.paginationListWithNewItemsBloc,
             ),
-            Provider<ICachedPaginationListWithNewItemsBloc<
-                CachedPaginationPage<IConversationChatWithLastMessage>,
-                IConversationChatWithLastMessage>>.value(
+            Provider<
+                ICachedPaginationListWithNewItemsBloc<
+                    CachedPaginationPage<IConversationChatWithLastMessage>,
+                    IConversationChatWithLastMessage>>.value(
               value: chatsListBloc.paginationListWithNewItemsBloc,
             ),
             Provider<ICachedPaginationListWithNewItemsBloc>.value(

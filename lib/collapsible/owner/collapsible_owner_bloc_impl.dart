@@ -16,7 +16,8 @@ class CollapsibleOwnerBloc extends DisposableOwner
       BehaviorSubject.seeded([]);
 
   @override
-  List<ICollapsibleItemBloc>? get visibleItems => visibleItemsSubject.valueOrNull;
+  List<ICollapsibleItemBloc>? get visibleItems =>
+      visibleItemsSubject.valueOrNull;
 
   @override
   Stream<List<ICollapsibleItemBloc>?> get visibleItemsStream =>

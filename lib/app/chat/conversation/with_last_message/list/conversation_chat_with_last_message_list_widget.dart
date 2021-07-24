@@ -1,3 +1,5 @@
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/chat/chat_bloc.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_bloc.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_bloc_impl.dart';
@@ -7,13 +9,11 @@ import 'package:fedi/app/chat/conversation/with_last_message/pagination/list/con
 import 'package:fedi/app/chat/list/chat_list_item_widget.dart';
 import 'package:fedi/app/ui/list/fedi_list_tile.dart';
 import 'package:fedi/app/ui/pagination/fedi_pagination_list_widget.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_widget.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
-import 'package:easy_dispose/easy_dispose.dart';
 
 class ConversationChatWithLastMessageListWidget
     extends FediPaginationListWidget<IConversationChatWithLastMessage> {
@@ -34,6 +34,7 @@ class ConversationChatWithLastMessageListWidget
           alwaysShowHeader: alwaysShowHeader,
           alwaysShowFooter: alwaysShowFooter,
           refreshOnFirstLoad: refreshOnFirstLoad,
+          isNeedToAddPaddingForUiTests: true,
         );
 
   @override
@@ -61,17 +62,18 @@ class ConversationChatWithLastMessageListWidget
                   oldBloc.chat.remoteId == chatWithLastMessage.chat.remoteId) {
                 return oldBloc;
               } else {
-                var conversationChatBloc = ConversationChatBloc.createFromContext(
+                var conversationChatBloc =
+                    ConversationChatBloc.createFromContext(
                   context,
                   chat: chatWithLastMessage.chat,
                   lastChatMessage: chatWithLastMessage.lastChatMessage,
                 );
 
                 var conversationChatWithLastMessagePaginationListWithNewItemsBloc =
-                IConversationChatWithLastMessagePaginationListWithNewItemsBloc
-                    .of(context, listen: false);
+                    IConversationChatWithLastMessagePaginationListWithNewItemsBloc
+                        .of(context, listen: false);
                 conversationChatBloc.chatStream.listen(
-                      (chat) {
+                  (chat) {
                     conversationChatWithLastMessagePaginationListWithNewItemsBloc
                         .onItemUpdated(
                       SimpleConversationChatWithLastMessage(
@@ -81,7 +83,7 @@ class ConversationChatWithLastMessageListWidget
                     );
                   },
                 ).disposeWith(conversationChatBloc);
-                
+
                 return conversationChatBloc;
               }
             },

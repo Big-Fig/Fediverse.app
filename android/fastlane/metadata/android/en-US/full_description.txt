@@ -1,0 +1,11 @@
+A beautiful and lightweight Pleroma and Mastodon client:
+- push notifications support;
+- emoji reactions on Pleroma instances;
+- Direct Messages support on Mastodon and Chats on Pleroma instances;
+- uploading any media files;
+- offline access to cached data and images;
+- multi-accounts and multi instances support.
+
+You can connect any Pleroma or Mastodon instance or create account on fedi.app.
+
+Fedi is open-source. You can explore source code at https://github.com/Big-Fig/Fediverse.app.

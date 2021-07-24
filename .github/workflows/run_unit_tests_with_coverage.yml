@@ -1,0 +1,66 @@
+name: Run unit tests with coverage
+on:
+  push:
+    branches:
+      - master
+      - develop
+  pull_request:
+    branches:
+      - master
+      - develop
+
+jobs:
+  unit-test:
+    name: Unit tests on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest ]
+    steps:
+      # needed by flutter-action
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '12.x'
+
+      # Set up Flutter.
+      - name: Clone Flutter repository
+        uses: subosito/flutter-action@v1
+        with:
+          flutter-version: '2.2.3'
+          channel: 'any'
+        # fork version with fvm parsing
+        # uses: xal/flutter-action@feature/read-version-from-file-fixes
+        # with:
+        # parse: 'fvm'
+
+      - run: flutter --version
+
+      # Checkout code and get packages.
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - run: flutter pub get
+
+      # flutter analyze will fail even if project have `info` messages
+      - name: Analyze, check formatting, and run unit tests
+        run: flutter analyze
+      - name: Ensure the Dart code is formatted correctly
+        run: flutter format --set-exit-if-changed --dry-run .
+
+      # Flutter don't include files in coverage which not touched with tests
+      # so we need to add all files manually
+      - name: Add missed classes to coverage report
+        uses: stelynx/dart-full-coverage@v1.0.5
+        with:
+          package: fedi
+          # ignore generated files & UI files until UI tests will be implemented
+          ignore: "*.g.dart, generated/*, *_widget.dart, *_page.dart, *_view_controller.dart, *_view_controller_impl.dart"
+
+      - name: Run Flutter unit tests
+        run: flutter test --coverage
+
+      - name: Upload to codecov
+        uses: codecov/codecov-action@v1
+        with:
+          flags: unit_tests
+          fail_ci_if_error: true

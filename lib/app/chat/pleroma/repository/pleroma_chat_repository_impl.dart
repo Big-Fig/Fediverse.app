@@ -15,7 +15,6 @@ import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
 
-
 var _singlePleromaChatRepositoryPagination = RepositoryPagination<IPleromaChat>(
   limit: 1,
   newerThanItem: null,
@@ -55,7 +54,7 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     required AppDatabase appDatabase,
     required this.accountRepository,
     required this.chatMessageRepository,
-  })   : dao = appDatabase.chatDao,
+  })  : dao = appDatabase.chatDao,
         chatAccountsDao = appDatabase.chatAccountsDao;
 
   @override
@@ -297,19 +296,19 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }) async {
     if (batchTransaction != null) {
       // ignore: unawaited_futures
-        accountRepository.upsertChatRemoteAccount(
-          remoteItem.account,
-          chatRemoteId: remoteItem.id,
-          batchTransaction: batchTransaction,
-        );
+      accountRepository.upsertChatRemoteAccount(
+        remoteItem.account,
+        chatRemoteId: remoteItem.id,
+        batchTransaction: batchTransaction,
+      );
 
       var lastMessage = remoteItem.lastMessage;
       if (lastMessage != null) {
         // ignore: unawaited_futures
-          chatMessageRepository.upsertInRemoteTypeBatch(
-            lastMessage,
-            batchTransaction: batchTransaction,
-          );
+        chatMessageRepository.upsertInRemoteTypeBatch(
+          lastMessage,
+          batchTransaction: batchTransaction,
+        );
       }
     } else {
       await batch((batch) {
@@ -330,16 +329,16 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     if (batchTransaction != null) {
       // todo: support mode
       // ignore: unawaited_futures
-        _upsertChatMessageMetadata(
-          remoteItem,
-          batchTransaction: batchTransaction,
-        );
+      _upsertChatMessageMetadata(
+        remoteItem,
+        batchTransaction: batchTransaction,
+      );
 
       // ignore: unawaited_futures
-        dao.upsertBatch(
-          entity: remoteItem.toDbChat(),
-          batchTransaction: batchTransaction,
-        );
+      dao.upsertBatch(
+        entity: remoteItem.toDbChat(),
+        batchTransaction: batchTransaction,
+      );
     } else {
       await batch((batch) {
         insertInRemoteTypeBatch(
@@ -359,24 +358,24 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }) async {
     if (batchTransaction != null) {
       // ignore: unawaited_futures
-        _upsertChatMessageMetadata(
-          remoteItem,
-          batchTransaction: batchTransaction,
-        );
+      _upsertChatMessageMetadata(
+        remoteItem,
+        batchTransaction: batchTransaction,
+      );
 
       if (appItem.localId != null) {
         // ignore: unawaited_futures
-          updateByDbIdInDbType(
-            dbId: appItem.localId!,
-            dbItem: remoteItem.toDbChat(),
-            batchTransaction: batchTransaction,
-          );
+        updateByDbIdInDbType(
+          dbId: appItem.localId!,
+          dbItem: remoteItem.toDbChat(),
+          batchTransaction: batchTransaction,
+        );
       } else {
         // ignore: unawaited_futures
-          upsertInRemoteTypeBatch(
-            remoteItem,
-            batchTransaction: batchTransaction,
-          );
+        upsertInRemoteTypeBatch(
+          remoteItem,
+          batchTransaction: batchTransaction,
+        );
       }
     } else {
       await batch((batch) {

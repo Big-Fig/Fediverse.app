@@ -60,7 +60,8 @@ class AddMyAccountDomainBlockDialog extends FediDialog {
   }
 
   @override
-  Widget buildDialogBody(BuildContext context) => Provider<IAddMyAccountDomainBlockBloc>.value(
+  Widget buildDialogBody(BuildContext context) =>
+      Provider<IAddMyAccountDomainBlockBloc>.value(
         value: addMyAccountDomainBlockBloc,
         child: Builder(
           builder: (context) => super.buildDialogBody(context),

@@ -3,7 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class RegisterAuthInstanceFormWidget extends StatelessWidget {
-  const RegisterAuthInstanceFormWidget();
+  const RegisterAuthInstanceFormWidget({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) =>

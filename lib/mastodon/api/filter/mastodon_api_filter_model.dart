@@ -55,7 +55,8 @@ enum MastodonApiFilterContextType {
   unknown,
 }
 
-const unknownMastodonApiFilterContextType = MastodonApiFilterContextType.unknown;
+const unknownMastodonApiFilterContextType =
+    MastodonApiFilterContextType.unknown;
 
 const _homeSetMastodonApiFilterContextTypeValue = 'home';
 const _notificationsSetMastodonApiFilterContextTypeValue = 'notifications';

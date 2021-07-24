@@ -120,13 +120,12 @@ class ScheduledStatusDao extends PopulatedAppRemoteDatabaseDao<
   }
 
   @override
-  JoinedSelectStatement
-      convertSimpleSelectStatementToJoinedSelectStatement({
+  JoinedSelectStatement convertSimpleSelectStatementToJoinedSelectStatement({
     required SimpleSelectStatement<$DbScheduledStatusesTable, DbScheduledStatus>
         query,
     required ScheduledStatusRepositoryFilters? filters,
   }) =>
-          query.join(populateJoin());
+      query.join(populateJoin());
 
   @override
   DbScheduledStatusPopulated mapTypedResultToDbPopulatedItem(

@@ -211,9 +211,8 @@ class LocalHashtagPageBloc extends HashtagPageBloc
       paginationBloc: statusCachedPaginationBloc,
     )..disposeWith(this);
 
-
     timelineLocalPreferenceBloc.stream.listen(
-          (_) {
+      (_) {
         statusCachedPaginationListWithNewItemsBloc.refreshWithController();
       },
     ).disposeWith(this);

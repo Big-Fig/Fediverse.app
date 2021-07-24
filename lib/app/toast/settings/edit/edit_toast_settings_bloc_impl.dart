@@ -125,7 +125,8 @@ class EditToastSettingsBloc
     addDisposable(pollFieldBloc);
     addDisposable(pleromaChatMentionFieldBloc);
     addDisposable(pleromaEmojiReactionFieldBloc);
-    addDisposable(toastHandlingTypeSingleFromListValueFormFieldBloc,
+    addDisposable(
+      toastHandlingTypeSingleFromListValueFormFieldBloc,
     );
   }
 
@@ -141,8 +142,8 @@ class EditToastSettingsBloc
         pleromaChatMention: pleromaChatMentionFieldBloc.currentValue,
         pleromaEmojiReaction: pleromaEmojiReactionFieldBloc.currentValue,
       ),
-      handlingType: toastHandlingTypeSingleFromListValueFormFieldBloc
-          .currentValue,
+      handlingType:
+          toastHandlingTypeSingleFromListValueFormFieldBloc.currentValue,
     );
   }
 

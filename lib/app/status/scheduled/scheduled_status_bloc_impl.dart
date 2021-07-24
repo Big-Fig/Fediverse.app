@@ -44,8 +44,7 @@ class ScheduledStatusBloc extends DisposableOwner
     required this.pleromaScheduledStatusService,
     required this.statusRepository,
     required this.scheduledStatusRepository,
-    required IScheduledStatus
-        scheduledStatus, // for better performance we dont
+    required IScheduledStatus scheduledStatus, // for better performance we dont
     // update
     // account too often
     bool needRefreshFromNetworkOnInit =
@@ -57,11 +56,10 @@ class ScheduledStatusBloc extends DisposableOwner
     _scheduledStatusSubject.disposeWith(this);
     _stateSubject.disposeWith(this);
 
-
     _updateState();
     // _checkCanceled
     scheduledStatusStream.listen(
-          (_) {
+      (_) {
         _updateState();
       },
     ).disposeWith(this);
@@ -69,7 +67,7 @@ class ScheduledStatusBloc extends DisposableOwner
     // check expired
     Timer.periodic(
       Duration(minutes: 1),
-          (_) {
+      (_) {
         _updateState();
       },
     ).disposeWith(this);
@@ -92,7 +90,7 @@ class ScheduledStatusBloc extends DisposableOwner
         scheduledStatusRepository
             .watchByDbIdInAppType(scheduledStatus.localId!)
             .listen(
-              (updatedStatus) {
+          (updatedStatus) {
             if (updatedStatus != null) {
               _scheduledStatusSubject.add(updatedStatus);
             }

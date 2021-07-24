@@ -83,38 +83,38 @@ class ConversationDao extends PopulatedAppRemoteDatabaseDao<
   }
 
   SimpleSelectStatement<$DbConversationsTable, DbConversation> orderBy(
-      SimpleSelectStatement<$DbConversationsTable, DbConversation> query,
-      List<ConversationRepositoryChatOrderingTermData> orderTerms,
-      ) =>
+    SimpleSelectStatement<$DbConversationsTable, DbConversation> query,
+    List<ConversationRepositoryChatOrderingTermData> orderTerms,
+  ) =>
       query
         ..orderBy(
           orderTerms
               .map((orderTerm) => (item) {
-            var expression;
-            switch (orderTerm.orderType) {
-              case ConversationChatOrderType.remoteId:
-                expression = item.remoteId;
-                break;
-              case ConversationChatOrderType.updatedAt:
-                expression = item.updatedAt;
-                break;
-            }
+                    var expression;
+                    switch (orderTerm.orderType) {
+                      case ConversationChatOrderType.remoteId:
+                        expression = item.remoteId;
+                        break;
+                      case ConversationChatOrderType.updatedAt:
+                        expression = item.updatedAt;
+                        break;
+                    }
 
-            return OrderingTerm(
-              expression: expression,
-              mode: orderTerm.orderingMode,
-            );
-          })
+                    return OrderingTerm(
+                      expression: expression,
+                      mode: orderTerm.orderingMode,
+                    );
+                  })
               .toList(),
         );
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyMediaWhere(
-      SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
-      ) =>
+    SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+  ) =>
       query
         ..where((status) =>
-        status.mediaAttachments.isNotNull() |
-        status.mediaAttachments.equals(''));
+            status.mediaAttachments.isNotNull() |
+            status.mediaAttachments.equals(''));
 
   Future<int> getTotalAmountUnread() => totalAmountUnreadQuery().getSingle();
 
@@ -226,8 +226,7 @@ class ConversationDao extends PopulatedAppRemoteDatabaseDao<
   }
 
   @override
-  JoinedSelectStatement
-  convertSimpleSelectStatementToJoinedSelectStatement({
+  JoinedSelectStatement convertSimpleSelectStatementToJoinedSelectStatement({
     required SimpleSelectStatement<$DbConversationsTable, DbConversation> query,
     required ConversationChatRepositoryFilters? filters,
   }) {
@@ -255,18 +254,18 @@ class ConversationDao extends PopulatedAppRemoteDatabaseDao<
 
   @override
   DbConversationPopulated mapTypedResultToDbPopulatedItem(
-      TypedResult typedResult,
-      ) =>
+    TypedResult typedResult,
+  ) =>
       typedResult.toDbConversationPopulated(dao: this);
 }
 
 extension DbConversationChatPopulatedTypedResultListExtension
-on List<TypedResult> {
+    on List<TypedResult> {
   List<DbConversationPopulated> toDbConversationChatPopulatedList({
     required ConversationDao dao,
   }) {
     return map(
-          (item) => item.toDbConversationPopulated(
+      (item) => item.toDbConversationPopulated(
         dao: dao,
       ),
     ).toList();
@@ -284,13 +283,13 @@ extension DbConversationChatPopulatedTypedResultExtension on TypedResult {
 }
 
 extension DbConversationChatWithLastMessagePopulatedTypedResultListExtension
-on List<TypedResult> {
+    on List<TypedResult> {
   List<DbConversationChatWithLastMessagePopulated>
-  toDbConversationChatWithLastMessagePopulatedList({
+      toDbConversationChatWithLastMessagePopulatedList({
     required ConversationDao dao,
   }) {
     return map(
-          (item) => item.toDbConversationChatWithLastMessagePopulated(
+      (item) => item.toDbConversationChatWithLastMessagePopulated(
         dao: dao,
       ),
     ).toList();
@@ -298,9 +297,9 @@ on List<TypedResult> {
 }
 
 extension DbConversationChatWithLastMessagePopulatedTypedResultExtension
-on TypedResult {
+    on TypedResult {
   DbConversationChatWithLastMessagePopulated
-  toDbConversationChatWithLastMessagePopulated({
+      toDbConversationChatWithLastMessagePopulated({
     required ConversationDao dao,
   }) {
     var typedResult = this;
@@ -314,14 +313,14 @@ on TypedResult {
         dbAccount: dbStatusAccount,
         reblogDbStatus: typedResult.readTableOrNull(dao.statusReblogAlias),
         reblogDbStatusAccount:
-        typedResult.readTableOrNull(dao.statusReblogAccountAlias),
+            typedResult.readTableOrNull(dao.statusReblogAccountAlias),
         replyDbStatus: typedResult.readTableOrNull(dao.statusReplyAlias),
         replyDbStatusAccount:
-        typedResult.readTableOrNull(dao.statusReplyAccountAlias),
+            typedResult.readTableOrNull(dao.statusReplyAccountAlias),
         replyReblogDbStatus:
-        typedResult.readTableOrNull(dao.statusReplyReblogAlias),
+            typedResult.readTableOrNull(dao.statusReplyReblogAlias),
         replyReblogDbStatusAccount:
-        typedResult.readTableOrNull(dao.statusReplyReblogAccountAlias),
+            typedResult.readTableOrNull(dao.statusReplyReblogAccountAlias),
       );
     }
 

@@ -7,8 +7,7 @@ class InstanceDirectoryWidget extends StatelessWidget {
   const InstanceDirectoryWidget();
 
   @override
-  Widget build(BuildContext context) =>
-      Padding(
+  Widget build(BuildContext context) => Padding(
         padding: FediPadding.horizontalBigPadding,
         child: const InstanceDirectoryAccountListWidget(),
       );

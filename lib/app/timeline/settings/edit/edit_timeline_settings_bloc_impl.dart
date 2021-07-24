@@ -78,7 +78,6 @@ class EditTimelineSettingsBloc
   @override
   final IBoolValueFormFieldBloc webSocketsUpdatesFieldBloc;
 
-
   final IWebSocketsSettingsBloc webSocketsSettingsBloc;
 
   @override

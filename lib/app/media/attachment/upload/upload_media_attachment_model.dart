@@ -1,5 +1,3 @@
-
-
 class UploadMediaAttachmentState {
   final UploadMediaAttachmentStateType type;
   final dynamic error;

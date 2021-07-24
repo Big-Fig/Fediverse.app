@@ -29,20 +29,20 @@ class FilterDao extends PopulatedAppRemoteDatabaseDao<
   FilterDao(this.db) : super(db);
 
   SimpleSelectStatement<$DbFiltersTable, DbFilter> addContextTypesWhere(
-      SimpleSelectStatement<$DbFiltersTable, DbFilter> query,
-      List<MastodonApiFilterContextType> contextTypes,
-      ) {
+    SimpleSelectStatement<$DbFiltersTable, DbFilter> query,
+    List<MastodonApiFilterContextType> contextTypes,
+  ) {
     assert(contextTypes.isNotEmpty);
 
     var contextTypesStrings = contextTypes
         .map(
           (visibility) => '${visibility.toJsonValue()}',
-    )
+        )
         .toList();
 
     return query
       ..where(
-            (filter) => CustomExpression<bool>(
+        (filter) => CustomExpression<bool>(
           contextTypesStrings
               .map((type) => "db_filters.context LIKE '%$type%'")
               .join(' OR '),
@@ -51,36 +51,36 @@ class FilterDao extends PopulatedAppRemoteDatabaseDao<
   }
 
   SimpleSelectStatement<$DbFiltersTable, DbFilter> addNotExpiredWhere(
-      SimpleSelectStatement<$DbFiltersTable, DbFilter> query,
-      ) =>
+    SimpleSelectStatement<$DbFiltersTable, DbFilter> query,
+  ) =>
       query
         ..where(
-              (filter) =>
-          filter.expiresAt.isNull() |
-          filter.expiresAt.isBiggerThanValue(
-            DateTime.now(),
-          ),
+          (filter) =>
+              filter.expiresAt.isNull() |
+              filter.expiresAt.isBiggerThanValue(
+                DateTime.now(),
+              ),
         );
 
   SimpleSelectStatement<$DbFiltersTable, DbFilter> orderBy(
-      SimpleSelectStatement<$DbFiltersTable, DbFilter> query,
-      List<FilterOrderingTermData> orderTerms,
-      ) =>
+    SimpleSelectStatement<$DbFiltersTable, DbFilter> query,
+    List<FilterOrderingTermData> orderTerms,
+  ) =>
       query
         ..orderBy(orderTerms
             .map((orderTerm) => (item) {
-          var expression;
-          switch (orderTerm.orderType) {
-            case FilterOrderType.remoteId:
-              expression = item.remoteId;
-              break;
-          }
+                  var expression;
+                  switch (orderTerm.orderType) {
+                    case FilterOrderType.remoteId:
+                      expression = item.remoteId;
+                      break;
+                  }
 
-          return OrderingTerm(
-            expression: expression,
-            mode: orderTerm.orderingMode,
-          );
-        })
+                  return OrderingTerm(
+                    expression: expression,
+                    mode: orderTerm.orderingMode,
+                  );
+                })
             .toList());
 
   List<Join<Table, DataClass>> populateFilterJoin() {
@@ -118,7 +118,7 @@ class FilterDao extends PopulatedAppRemoteDatabaseDao<
       assert(orderingTerms?.length == 1);
       var orderingTermData = orderingTerms!.first;
       assert(
-      orderingTermData.orderType == FilterOrderType.remoteId,
+        orderingTermData.orderType == FilterOrderType.remoteId,
       );
       addRemoteIdBoundsWhere(
         query,
@@ -142,8 +142,7 @@ class FilterDao extends PopulatedAppRemoteDatabaseDao<
   }
 
   @override
-  JoinedSelectStatement
-  convertSimpleSelectStatementToJoinedSelectStatement({
+  JoinedSelectStatement convertSimpleSelectStatementToJoinedSelectStatement({
     required SimpleSelectStatement<$DbFiltersTable, DbFilter> query,
     required FilterRepositoryFilters? filters,
   }) =>
@@ -159,7 +158,7 @@ extension DbFilterPopulatedTypedResultListExtension on List<TypedResult> {
     required FilterDao dao,
   }) {
     return map(
-          (item) => item.toDbFilterPopulated(dao: dao),
+      (item) => item.toDbFilterPopulated(dao: dao),
     ).toList();
   }
 }

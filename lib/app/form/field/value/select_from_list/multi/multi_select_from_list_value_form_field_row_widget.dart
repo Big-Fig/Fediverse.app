@@ -10,6 +10,10 @@ import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
 // todo: refactor with single selection
+typedef MultiSelectFromListValueKeyMapper<T> = Key? Function(
+  BuildContext context,
+  T value,
+);
 typedef MultiSelectFromListValueIconMapper<T> = IconData Function(
   BuildContext context,
   T value,
@@ -26,6 +30,7 @@ class MultiSelectFromListValueFormFieldRowWidget<T> extends StatelessWidget {
 
   final MultiSelectFromListValueIconMapper<T>? valueIconMapper;
   final MultiSelectFromListValueTitleMapper<T> valueTitleMapper;
+  final MultiSelectFromListValueKeyMapper<T>? valueKeyMapper;
   final bool displayIconInRow;
   final bool displayIconInDialog;
 
@@ -37,6 +42,7 @@ class MultiSelectFromListValueFormFieldRowWidget<T> extends StatelessWidget {
     required this.displayIconInRow,
     required this.displayIconInDialog,
     required this.valueIconMapper,
+    required this.valueKeyMapper,
   }) {
     if (displayIconInRow || displayIconInDialog) {
       assert(valueIconMapper != null);
@@ -55,6 +61,7 @@ class MultiSelectFromListValueFormFieldRowWidget<T> extends StatelessWidget {
         label: label,
         valueIconMapper: valueIconMapper,
         valueTitleMapper: valueTitleMapper,
+        valueKeyMapper: valueKeyMapper,
       ),
     );
   }
@@ -65,6 +72,7 @@ class _MultiSelectFromListValueFormFieldRowValueWidget<T>
   final String label;
   final bool displayIconInRow;
   final MultiSelectFromListValueIconMapper<T>? valueIconMapper;
+  final MultiSelectFromListValueKeyMapper<T>? valueKeyMapper;
   final MultiSelectFromListValueTitleMapper<T> valueTitleMapper;
   final bool displayIconInDialog;
 
@@ -74,6 +82,7 @@ class _MultiSelectFromListValueFormFieldRowValueWidget<T>
     required this.displayIconInRow,
     required this.displayIconInDialog,
     required this.valueIconMapper,
+    required this.valueKeyMapper,
   });
 
   @override
@@ -91,6 +100,7 @@ class _MultiSelectFromListValueFormFieldRowValueWidget<T>
             label: label,
             valueIconMapper: valueIconMapper,
             valueTitleMapper: valueTitleMapper,
+            valueKeyMapper: valueKeyMapper,
             displayIconInDialog: displayIconInDialog,
           );
         }
@@ -103,6 +113,7 @@ class _MultiSelectFromListValueFormFieldRowValueWidget<T>
               label: label,
               valueIconMapper: valueIconMapper,
               valueTitleMapper: valueTitleMapper,
+              valueKeyMapper: valueKeyMapper,
               displayIconInDialog: displayIconInDialog,
             ),
           _MultiSelectFromListValueFormFieldRowValueTitleWidget<T>(
@@ -169,12 +180,14 @@ class _MultiSelectFromListValueFormFieldRowValueIconWidget<T>
     required this.label,
     required this.valueIconMapper,
     required this.valueTitleMapper,
+    required this.valueKeyMapper,
     required this.displayIconInDialog,
   }) : super(key: key);
 
   final String label;
   final MultiSelectFromListValueIconMapper<T>? valueIconMapper;
   final MultiSelectFromListValueTitleMapper<T> valueTitleMapper;
+  final MultiSelectFromListValueKeyMapper<T>? valueKeyMapper;
   final bool displayIconInDialog;
 
   @override
@@ -209,6 +222,7 @@ class _MultiSelectFromListValueFormFieldRowValueIconWidget<T>
                               label: label,
                               valueIconMapper: valueIconMapper,
                               valueTitleMapper: valueTitleMapper,
+                              valueKeyMapper:valueKeyMapper,
                               displayIconInDialog: displayIconInDialog,
                             );
                           },
@@ -227,23 +241,25 @@ class _MultiSelectFromListValueFormFieldRowValueIconWidget<T>
   }
 }
 
+// ignore: long-parameter-list
 Future<T?> _showDialog<T>({
   required BuildContext context,
   required String label,
   required IMultiSelectFromListValueFormFieldBloc<T> fieldBloc,
   required MultiSelectFromListValueIconMapper<T>? valueIconMapper,
   required MultiSelectFromListValueTitleMapper<T> valueTitleMapper,
+  required MultiSelectFromListValueKeyMapper<T>? valueKeyMapper,
   required bool displayIconInDialog,
 }) async {
   var isNeedRebuildActionsStream = fieldBloc.isNeedRebuildActionsStream;
 
-  var actionsSubject =
-      BehaviorSubject<List<SelectionDialogAction>>.seeded(
+  var actionsSubject = BehaviorSubject<List<SelectionDialogAction>>.seeded(
     _calculateActions(
       fieldBloc: fieldBloc,
       context: context,
       valueIconMapper: valueIconMapper,
       valueTitleMapper: valueTitleMapper,
+      valueKeyMapper: valueKeyMapper,
       displayIconInDialog: displayIconInDialog,
     ),
   );
@@ -256,6 +272,7 @@ Future<T?> _showDialog<T>({
           context: context,
           valueIconMapper: valueIconMapper,
           valueTitleMapper: valueTitleMapper,
+          valueKeyMapper: valueKeyMapper,
           displayIconInDialog: displayIconInDialog,
         ),
       );
@@ -280,6 +297,7 @@ List<SelectionDialogAction> _calculateActions<T>({
   required IMultiSelectFromListValueFormFieldBloc<T> fieldBloc,
   required MultiSelectFromListValueIconMapper<T>? valueIconMapper,
   required MultiSelectFromListValueTitleMapper<T> valueTitleMapper,
+  required MultiSelectFromListValueKeyMapper<T>? valueKeyMapper,
   required bool displayIconInDialog,
 }) {
   var result = <SelectionDialogAction>[
@@ -291,6 +309,7 @@ List<SelectionDialogAction> _calculateActions<T>({
         selectedValues: fieldBloc.currentValue,
         valueIconMapper: valueIconMapper,
         valueTitleMapper: valueTitleMapper,
+        valueKeyMapper: valueKeyMapper,
         displayIconInDialog: displayIconInDialog,
       ),
     ),
@@ -298,7 +317,6 @@ List<SelectionDialogAction> _calculateActions<T>({
 
   return result;
 }
-
 
 // todo: refactor long-parameter-list
 // ignore: long-parameter-list, code-metrics
@@ -309,9 +327,11 @@ SelectionDialogAction _buildDialogAction<T>({
   required List<T>? selectedValues,
   required MultiSelectFromListValueIconMapper<T>? valueIconMapper,
   required MultiSelectFromListValueTitleMapper<T> valueTitleMapper,
+  required MultiSelectFromListValueKeyMapper<T>? valueKeyMapper,
   required bool displayIconInDialog,
 }) {
   return SelectionDialogAction(
+    key: valueKeyMapper != null ? valueKeyMapper(context, value) : null,
     icon: displayIconInDialog ? valueIconMapper!(context, value) : null,
     label: valueTitleMapper(context, value),
     onAction: (context) {

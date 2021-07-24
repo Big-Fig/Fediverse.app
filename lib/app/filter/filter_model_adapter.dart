@@ -10,14 +10,14 @@ extension IPleromaFilterExtension on IPleromaApiFilter {
       );
 
   DbFilter toDbFilter() => DbFilter(
-      id: null,
-      remoteId: id,
-      phrase: phrase,
-      context: context,
-      irreversible: irreversible,
-      wholeWord: wholeWord,
-      expiresAt: expiresAt,
-    );
+        id: null,
+        remoteId: id,
+        phrase: phrase,
+        context: context,
+        irreversible: irreversible,
+        wholeWord: wholeWord,
+        expiresAt: expiresAt,
+      );
 }
 
 extension IFilterExtension on IFilter {

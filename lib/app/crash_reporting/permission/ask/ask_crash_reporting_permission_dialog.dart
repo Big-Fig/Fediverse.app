@@ -8,7 +8,8 @@ import 'package:flutter/cupertino.dart';
 
 Future showAskCrashReportingPermissionDialog({
   required BuildContext context,
-  required ICrashReportingPermissionCheckerBloc crashReportingPermissionCheckerBloc,
+  required ICrashReportingPermissionCheckerBloc
+      crashReportingPermissionCheckerBloc,
 }) {
   return showFediChooserDialog(
     context: context,

@@ -45,7 +45,8 @@ abstract class InstanceDirectoryBloc extends DisposableOwner
     );
 
     addDisposable(instanceDirectoryAccountListNetworkOnlyListBloc);
-    addDisposable(instanceDirectoryAccountListNetworkOnlyPaginationBloc,
+    addDisposable(
+      instanceDirectoryAccountListNetworkOnlyPaginationBloc,
     );
     addDisposable(accountPaginationListBloc);
 

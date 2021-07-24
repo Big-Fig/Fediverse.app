@@ -20,22 +20,24 @@ class StatusVisibilityMultiSelectFromListFormFieldWidget
   });
 
   @override
-  Widget build(BuildContext context) => ProxyProvider<IStatusVisibilityMultiSelectFromListFormFieldBloc,
-        IMultiSelectFromListValueFormFieldBloc<PleromaApiVisibility>>(
-      update: (context, value, _) => value,
-      child:
-          MultiSelectFromListValueFormFieldBlocProxyProvider<PleromaApiVisibility>(
-        child: MultiSelectFromListValueFormFieldRowWidget(
-          label: label,
-          description: description,
-          descriptionOnDisabled: descriptionOnDisabled,
-          valueTitleMapper: mapValueToTitle,
-          valueIconMapper: null,
-          displayIconInDialog: false,
-          displayIconInRow: false,
+  Widget build(BuildContext context) => ProxyProvider<
+          IStatusVisibilityMultiSelectFromListFormFieldBloc,
+          IMultiSelectFromListValueFormFieldBloc<PleromaApiVisibility>>(
+        update: (context, value, _) => value,
+        child: MultiSelectFromListValueFormFieldBlocProxyProvider<
+            PleromaApiVisibility>(
+          child: MultiSelectFromListValueFormFieldRowWidget(
+            label: label,
+            description: description,
+            descriptionOnDisabled: descriptionOnDisabled,
+            valueTitleMapper: mapValueToTitle,
+            valueIconMapper: null,
+            valueKeyMapper: null,
+            displayIconInDialog: false,
+            displayIconInRow: false,
+          ),
         ),
-      ),
-    );
+      );
 
   String mapValueToTitle(
     BuildContext context,

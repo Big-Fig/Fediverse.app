@@ -26,7 +26,8 @@ class LocalAccountStatusesFavouritesNetworkOnlyListBloc
   }) {
     return LocalAccountStatusesFavouritesNetworkOnlyListBloc(
       account: account,
-      pleromaAccountService: IPleromaApiAccountService.of(context, listen: false),
+      pleromaAccountService:
+          IPleromaApiAccountService.of(context, listen: false),
     );
   }
 

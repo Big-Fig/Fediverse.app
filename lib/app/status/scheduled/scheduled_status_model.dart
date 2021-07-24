@@ -259,7 +259,6 @@ class ScheduledStatusAdapterToStatus extends PostStatusDataStatusStatusAdapter {
 
   @override
   bool get hiddenLocallyOnDevice => false;
-
 }
 
 enum ScheduledStatusState {

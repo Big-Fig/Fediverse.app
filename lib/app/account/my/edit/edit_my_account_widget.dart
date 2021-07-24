@@ -72,8 +72,7 @@ class _EditMyAccountTopHeaderAndAvatarWidget extends StatelessWidget {
               children: [
                 const EditMyAccountAvatarFieldWidget(
                   avatarSize: _editAccountAvatarSize,
-                  avatarCircleBorderWidth:
-                      _editAccountAvatarCircleBorderWidth,
+                  avatarCircleBorderWidth: _editAccountAvatarCircleBorderWidth,
                 ),
               ],
             ),

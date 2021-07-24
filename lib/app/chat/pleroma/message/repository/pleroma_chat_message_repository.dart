@@ -25,7 +25,6 @@ abstract class IPleromaChatMessageRepository
   }) =>
       Provider.of<IPleromaChatMessageRepository>(context, listen: listen);
 
-
   Future<IPleromaChatMessage?> findByOldPendingRemoteId(
     String oldPendingRemoteId,
   );
@@ -33,7 +32,6 @@ abstract class IPleromaChatMessageRepository
   Stream<IPleromaChatMessage?> watchByOldPendingRemoteId(
     String oldPendingRemoteId,
   );
-
 
   Stream<IPleromaChatMessage?> watchChatLastChatMessage({
     required IPleromaChat chat,

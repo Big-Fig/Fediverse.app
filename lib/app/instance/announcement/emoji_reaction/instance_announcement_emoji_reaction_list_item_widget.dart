@@ -17,7 +17,8 @@ class InstanceAnnouncementEmojiReactionListItemWidget extends StatelessWidget {
   const InstanceAnnouncementEmojiReactionListItemWidget();
 }
 
-class InstanceAnnouncementEmojiReactionListItemBodyWidget extends StatelessWidget {
+class InstanceAnnouncementEmojiReactionListItemBodyWidget
+    extends StatelessWidget {
   const InstanceAnnouncementEmojiReactionListItemBodyWidget({
     Key? key,
   }) : super(key: key);
@@ -30,8 +31,8 @@ class InstanceAnnouncementEmojiReactionListItemBodyWidget extends StatelessWidge
 
     return PleromaAsyncOperationButtonBuilderWidget(
       asyncButtonAction: () => instanceAnnouncementBloc.toggleEmojiReaction(
-          emojiName: pleromaApiAnnouncementReaction.name,
-        ),
+        emojiName: pleromaApiAnnouncementReaction.name,
+      ),
       builder: (BuildContext context, void Function()? onPressed) {
         return InkWell(
           onTap: onPressed,

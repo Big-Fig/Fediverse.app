@@ -96,7 +96,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
   @override
   void watchLocalRepositoryForUpdates() {
     chatRepository.watchByRemoteIdInAppType(chat.remoteId).listen(
-          (updatedChat) {
+      (updatedChat) {
         if (updatedChat != null) {
           _chatSubject.add(updatedChat);
         }
@@ -104,7 +104,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
     ).disposeWith(this);
 
     chatMessageRepository.watchChatLastChatMessage(chat: chat).listen(
-          (lastMessage) {
+      (lastMessage) {
         _logger.finest(() => 'watchChatLastChatMessage \n'
             ' chat ${chat.remoteId} \n'
             ' lastMessage $lastMessage');

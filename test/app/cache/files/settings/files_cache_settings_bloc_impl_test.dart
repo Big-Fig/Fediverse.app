@@ -9,6 +9,7 @@ import 'package:fedi/app/cache/files/settings/local_preferences/instance/instanc
 import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../../../rxdart/rxdart_test_helper.dart';
 import 'files_cache_settings_model_test_helper.dart';
 
 // ignore_for_file: no-magic-number, avoid-late-keyword
@@ -61,16 +62,17 @@ void main() {
   });
 
   test('changeFilesCacheAgeLimitType', () async {
-    FilesCacheAgeLimitType? listenedFilesCacheAgeLimitType;
+    FilesCacheAgeLimitType? listened;
 
     StreamSubscription subscriptionListenedFilesCacheAgeLimitType =
         filesCacheSettingsBloc.ageLimitTypeStream.listen(
       (data) {
-        listenedFilesCacheAgeLimitType = data;
+        listened = data;
       },
     );
 
-    await Future.delayed(Duration(milliseconds: 100));
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     var defaultValue = GlobalFilesCacheSettingsLocalPreferenceBloc.defaultValue;
 
@@ -84,7 +86,7 @@ void main() {
     );
 
     expect(
-      listenedFilesCacheAgeLimitType,
+      listened,
       defaultValue.ageLimitType,
     );
     expect(
@@ -98,7 +100,6 @@ void main() {
     ).ageLimitType;
 
     await filesCacheSettingsBloc.changeAgeLimitType(testFilesCacheAgeLimitType);
-    await Future.delayed(Duration(milliseconds: 100));
 
     expect(
       listenedSettingsData?.ageLimitType,
@@ -110,7 +111,7 @@ void main() {
     );
 
     expect(
-      listenedFilesCacheAgeLimitType,
+      listened,
       testFilesCacheAgeLimitType,
     );
     expect(
@@ -122,16 +123,17 @@ void main() {
   });
 
   test('changeFilesCacheSizeLimitCountType', () async {
-    FilesCacheSizeLimitCountType? listenedFilesCacheSizeLimitCountType;
+    FilesCacheSizeLimitCountType? listened;
 
     StreamSubscription subscriptionListenedFilesCacheSizeLimitCountType =
         filesCacheSettingsBloc.sizeLimitCountTypeStream.listen(
       (data) {
-        listenedFilesCacheSizeLimitCountType = data;
+        listened = data;
       },
     );
 
-    await Future.delayed(Duration(milliseconds: 100));
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     var defaultValue = GlobalFilesCacheSettingsLocalPreferenceBloc.defaultValue;
 
@@ -145,7 +147,7 @@ void main() {
     );
 
     expect(
-      listenedFilesCacheSizeLimitCountType,
+      listened,
       defaultValue.sizeLimitCountType,
     );
     expect(
@@ -160,7 +162,9 @@ void main() {
 
     await filesCacheSettingsBloc
         .changeSizeLimitCountType(testFilesCacheSizeLimitCountType);
-    await Future.delayed(Duration(milliseconds: 100));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     expect(
       listenedSettingsData?.sizeLimitCountType,
@@ -172,7 +176,7 @@ void main() {
     );
 
     expect(
-      listenedFilesCacheSizeLimitCountType,
+      listened,
       testFilesCacheSizeLimitCountType,
     );
     expect(

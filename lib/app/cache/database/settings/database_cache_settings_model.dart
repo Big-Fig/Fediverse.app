@@ -56,8 +56,8 @@ class DatabaseCacheSettings
     DatabaseCacheAgeLimitType? ageLimitType,
   }) =>
       DatabaseCacheSettings.fromEnum(
-        entriesCountByTypeLimitType: entriesCountByTypeLimitType ??
-            this.entriesCountByTypeLimitType,
+        entriesCountByTypeLimitType:
+            entriesCountByTypeLimitType ?? this.entriesCountByTypeLimitType,
         ageLimitType: ageLimitType ?? this.ageLimitType,
       );
 

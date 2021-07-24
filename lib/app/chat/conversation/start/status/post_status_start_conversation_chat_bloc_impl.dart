@@ -84,7 +84,7 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
       maximumFileSizeInBytes: info.uploadLimit,
       markMediaAsNsfwOnAttach:
           IPostStatusSettingsBloc.of(context, listen: false)
-                  .markMediaAsNsfwOnAttach,
+              .markMediaAsNsfwOnAttach,
       language: IPostStatusSettingsBloc.of(context, listen: false)
           .defaultStatusLocale
           ?.localeString,
@@ -116,8 +116,7 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
   bool get isPossibleToChangeVisibility => false;
 
   @override
-  bool get isReadyToPost =>
-      super.isReadyToPost && mentionedAccts.isNotEmpty;
+  bool get isReadyToPost => super.isReadyToPost && mentionedAccts.isNotEmpty;
 
   @override
   Stream<bool> get isReadyToPostStream => Rx.combineLatest6(

@@ -35,7 +35,6 @@ abstract class InstanceActivityBloc extends AsyncInitLoadingBloc
         activitySubject = BehaviorSubject.seeded(null) {
     activitySubject.disposeWith(this);
     addCustomDisposable(() => refreshController.dispose());
-
   }
 
   IPleromaApiInstanceService get pleromaInstanceService;
@@ -49,7 +48,8 @@ abstract class InstanceActivityBloc extends AsyncInitLoadingBloc
   }
 
   @override
-  List<IPleromaApiInstanceActivityItem>? get activity => activitySubject.valueOrNull;
+  List<IPleromaApiInstanceActivityItem>? get activity =>
+      activitySubject.valueOrNull;
 
   @override
   Stream<List<IPleromaApiInstanceActivityItem>?> get activityStream =>

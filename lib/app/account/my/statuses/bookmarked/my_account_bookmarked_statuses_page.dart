@@ -85,7 +85,8 @@ MaterialPageRoute createMyAccountBookmarkedStatusesPage() {
             child: StatusCachedListBlocLoadingWidget(
               child: StatusCachedPaginationBloc.provideToContext(
                 context,
-                child: StatusCachedPaginationListWithNewItemsBloc.provideToContext(
+                child:
+                    StatusCachedPaginationListWithNewItemsBloc.provideToContext(
                   context,
                   child: const MyAccountBookmarkedStatusesPage(),
                   mergeNewItemsImmediately: false,

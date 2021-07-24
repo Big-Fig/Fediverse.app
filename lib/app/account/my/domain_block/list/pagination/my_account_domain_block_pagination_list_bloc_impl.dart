@@ -12,9 +12,8 @@ class MyAccountDomainBlockPaginationListBloc
     extends PaginationListBloc<PaginationPage<DomainBlock>, DomainBlock>
     implements IMyAccountDomainBlockPaginationListBloc {
   MyAccountDomainBlockPaginationListBloc({
-    required
-        IPaginationBloc<PaginationPage<DomainBlock>, DomainBlock>
-            paginationBloc,
+    required IPaginationBloc<PaginationPage<DomainBlock>, DomainBlock>
+        paginationBloc,
     bool loadFromCacheDuringInit = true,
   }) : super(
           paginationBloc: paginationBloc,

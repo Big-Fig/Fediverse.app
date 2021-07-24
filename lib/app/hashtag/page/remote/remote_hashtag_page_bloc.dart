@@ -1,4 +1,3 @@
-
 import 'package:fedi/app/hashtag/page/hashtag_page_bloc.dart';
 import 'package:fedi/app/instance/remote/remote_instance_bloc.dart';
 import 'package:fedi/app/status/list/network_only/status_network_only_list_bloc.dart';

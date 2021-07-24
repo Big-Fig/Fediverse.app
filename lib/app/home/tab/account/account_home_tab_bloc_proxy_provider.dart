@@ -10,8 +10,9 @@ class AccountHomeTabBlocProxyProvider extends StatelessWidget {
   AccountHomeTabBlocProxyProvider({required this.child});
 
   @override
-  Widget build(BuildContext context) => ProxyProvider<IAccountHomeTabBloc, IHomeTabBloc>(
-      update: (context, value, previous) => value,
-      child: HomeTabBlocProxyProvider(child: child),
-    );
+  Widget build(BuildContext context) =>
+      ProxyProvider<IAccountHomeTabBloc, IHomeTabBloc>(
+        update: (context, value, previous) => value,
+        child: HomeTabBlocProxyProvider(child: child),
+      );
 }

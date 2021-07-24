@@ -217,26 +217,26 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }) async {
     if (batchTransaction != null) {
       // ignore: unawaited_futures
-        upsertAllInRemoteType(
-          favouritedByAccounts,
-          batchTransaction: batchTransaction,
-        );
+      upsertAllInRemoteType(
+        favouritedByAccounts,
+        batchTransaction: batchTransaction,
+      );
       // ignore: unawaited_futures
-        statusFavouritedAccountsDao.deleteByStatusRemoteId(statusRemoteId);
+      statusFavouritedAccountsDao.deleteByStatusRemoteId(statusRemoteId);
       // ignore: unawaited_futures
-        statusFavouritedAccountsDao.insertAll(
-          entities: favouritedByAccounts
-              .map(
-                (favouritedByAccount) => DbStatusFavouritedAccount(
-                  id: null,
-                  accountRemoteId: favouritedByAccount.id,
-                  statusRemoteId: statusRemoteId,
-                ),
-              )
-              .toList(),
-          mode: InsertMode.insertOrReplace,
-          batchTransaction: batchTransaction,
-        );
+      statusFavouritedAccountsDao.insertAll(
+        entities: favouritedByAccounts
+            .map(
+              (favouritedByAccount) => DbStatusFavouritedAccount(
+                id: null,
+                accountRemoteId: favouritedByAccount.id,
+                statusRemoteId: statusRemoteId,
+              ),
+            )
+            .toList(),
+        mode: InsertMode.insertOrReplace,
+        batchTransaction: batchTransaction,
+      );
     } else {
       await dao.batch(
         (batch) => updateStatusFavouritedBy(
@@ -256,29 +256,29 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }) async {
     if (batchTransaction != null) {
       // ignore: unawaited_futures
-        upsertAllInRemoteType(
-          rebloggedByAccounts,
-          batchTransaction: batchTransaction,
-        );
+      upsertAllInRemoteType(
+        rebloggedByAccounts,
+        batchTransaction: batchTransaction,
+      );
       // ignore: unawaited_futures
-        statusRebloggedAccountsDao.deleteByStatusRemoteIdBatch(
-          statusRemoteId,
-          batchTransaction: batchTransaction,
-        );
+      statusRebloggedAccountsDao.deleteByStatusRemoteIdBatch(
+        statusRemoteId,
+        batchTransaction: batchTransaction,
+      );
       // ignore: unawaited_futures
-        statusRebloggedAccountsDao.insertAll(
-          entities: rebloggedByAccounts
-              .map(
-                (favouritedByAccount) => DbStatusRebloggedAccount(
-                  id: null,
-                  accountRemoteId: favouritedByAccount.id,
-                  statusRemoteId: statusRemoteId,
-                ),
-              )
-              .toList(),
-          mode: InsertMode.insertOrReplace,
-          batchTransaction: batchTransaction,
-        );
+      statusRebloggedAccountsDao.insertAll(
+        entities: rebloggedByAccounts
+            .map(
+              (favouritedByAccount) => DbStatusRebloggedAccount(
+                id: null,
+                accountRemoteId: favouritedByAccount.id,
+                statusRemoteId: statusRemoteId,
+              ),
+            )
+            .toList(),
+        mode: InsertMode.insertOrReplace,
+        batchTransaction: batchTransaction,
+      );
     } else {
       return batch(
         (batch) => updateStatusRebloggedBy(
@@ -452,17 +452,17 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     if (batchTransaction != null) {
       if (appItem.localId != null) {
         // ignore: unawaited_futures
-          updateByDbIdInDbType(
-            dbId: appItem.localId!,
-            dbItem: remoteItem.toDbAccount(),
-            batchTransaction: batchTransaction,
-          );
+        updateByDbIdInDbType(
+          dbId: appItem.localId!,
+          dbItem: remoteItem.toDbAccount(),
+          batchTransaction: batchTransaction,
+        );
       } else {
         // ignore: unawaited_futures
-          upsertInRemoteTypeBatch(
-            remoteItem,
-            batchTransaction: batchTransaction,
-          );
+        upsertInRemoteTypeBatch(
+          remoteItem,
+          batchTransaction: batchTransaction,
+        );
       }
     } else {
       await batch((batch) {
@@ -509,11 +509,11 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     if (batchTransaction != null) {
       for (var remoteAccount in remoteAccounts) {
         // ignore: unawaited_futures
-          upsertChatRemoteAccount(
-            remoteAccount,
-            chatRemoteId: chatRemoteId,
-            batchTransaction: batchTransaction,
-          );
+        upsertChatRemoteAccount(
+          remoteAccount,
+          chatRemoteId: chatRemoteId,
+          batchTransaction: batchTransaction,
+        );
       }
     } else {
       await batch((batch) {
@@ -548,11 +548,11 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     if (batchTransaction != null) {
       for (var remoteAccount in remoteAccounts) {
         // ignore: unawaited_futures
-          upsertConversationRemoteAccount(
-            remoteAccount,
-            conversationRemoteId: conversationRemoteId,
-            batchTransaction: batchTransaction,
-          );
+        upsertConversationRemoteAccount(
+          remoteAccount,
+          conversationRemoteId: conversationRemoteId,
+          batchTransaction: batchTransaction,
+        );
       }
     } else {
       await batch(

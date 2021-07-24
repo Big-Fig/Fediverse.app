@@ -62,7 +62,8 @@ class HomeBloc extends DisposableOwner implements IHomeBloc {
     // WebSocketsListenType.background because it is listening for any home tab
     // timelines, notifications, chats overrides websockets listening with
     // WebSocketsListenType.foreground
-    addDisposable(webSocketsHandlerManagerBloc.listenMyAccountChannel(
+    addDisposable(
+      webSocketsHandlerManagerBloc.listenMyAccountChannel(
         listenType: WebSocketsListenType.background,
         notification: false,
         chat: false,
@@ -70,7 +71,7 @@ class HomeBloc extends DisposableOwner implements IHomeBloc {
     );
 
     _selectedTabSubject.listen(
-          (_) {
+      (_) {
         checkHomeTimelinesInactiveUnreadBadgeSubscription();
       },
     ).disposeWith(this);

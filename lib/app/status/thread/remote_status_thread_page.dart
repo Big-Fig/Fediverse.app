@@ -18,7 +18,6 @@ import 'package:fedi/pleroma/api/status/pleroma_api_status_service_impl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-
 Future goToRemoteStatusThreadPageBasedOnRemoteInstanceStatus(
   BuildContext context, {
   required IStatus remoteInstanceStatus,
@@ -36,7 +35,8 @@ Future goToRemoteStatusThreadPageBasedOnRemoteInstanceStatus(
 Future goToRemoteStatusThreadPageBasedOnLocalInstanceRemoteStatus(
   BuildContext context, {
   required IStatus? localInstanceRemoteStatus,
-  required IMastodonApiMediaAttachment? localInstanceRemoteInitialMediaAttachment,
+  required IMastodonApiMediaAttachment?
+      localInstanceRemoteInitialMediaAttachment,
 }) async {
   var remoteInstanceStatusDialogResult =
       await PleromaAsyncOperationHelper.performPleromaAsyncOperation<IStatus?>(
@@ -59,7 +59,8 @@ Future goToRemoteStatusThreadPageBasedOnLocalInstanceRemoteStatus(
           connectionService: IConnectionService.of(
             context,
             listen: false,
-          ), pleromaApiInstance: null,
+          ),
+          pleromaApiInstance: null,
         );
 
         pleromaStatusService = PleromaApiStatusService(
@@ -121,7 +122,8 @@ MaterialPageRoute createRemoteStatusThreadPageRouteBasedOnRemoteInstanceStatus({
           connectionService: IConnectionService.of(
             context,
             listen: false,
-          ), pleromaApiInstance: null,
+          ),
+          pleromaApiInstance: null,
         );
       },
       child: DisposableProvider<IStatusThreadBloc>(

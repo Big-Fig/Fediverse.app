@@ -87,8 +87,7 @@ class DbConversationChatPopulatedWrapper implements IConversationChat {
   String get remoteId => dbConversationPopulated.dbConversation.remoteId;
 
   @override
-  int get unread =>
-      dbConversationPopulated.dbConversation.unread  ? 1 : 0;
+  int get unread => dbConversationPopulated.dbConversation.unread ? 1 : 0;
 
   @override
   String toString() {

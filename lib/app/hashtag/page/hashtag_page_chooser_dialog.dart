@@ -18,19 +18,20 @@ Future showHashtagPageChooserDialog({
   );
   var currentInstance = currentAuthInstanceBloc.currentInstance;
 
-
-  if(currentInstance != null) {
+  if (currentInstance != null) {
     var localInstanceDomain = currentInstance.urlHost;
 
     return FediActionsDialog(
       context: context,
-      title: S.of(context).app_hashtag_remoteInstance_dialog_title(hashtag.name),
+      title:
+          S.of(context).app_hashtag_remoteInstance_dialog_title(hashtag.name),
       actions: [
         DialogAction(
-          label:
-          S.of(context).app_hashtag_remoteInstance_dialog_action_openOnLocal(
-            localInstanceDomain,
-          ),
+          label: S
+              .of(context)
+              .app_hashtag_remoteInstance_dialog_action_openOnLocal(
+                localInstanceDomain,
+              ),
           onAction: (context) {
             Navigator.of(context).pop();
             goToLocalHashtagPage(
@@ -41,10 +42,11 @@ Future showHashtagPageChooserDialog({
           },
         ),
         DialogAction(
-          label:
-          S.of(context).app_hashtag_remoteInstance_dialog_action_openOnRemote(
-            remoteInstanceUri.host,
-          ),
+          label: S
+              .of(context)
+              .app_hashtag_remoteInstance_dialog_action_openOnRemote(
+                remoteInstanceUri.host,
+              ),
           onAction: (_) {
             // don't use context from this action we need parent context
             Navigator.of(context).pop();
@@ -64,5 +66,4 @@ Future showHashtagPageChooserDialog({
       remoteInstanceUri: remoteInstanceUri,
     );
   }
-
 }

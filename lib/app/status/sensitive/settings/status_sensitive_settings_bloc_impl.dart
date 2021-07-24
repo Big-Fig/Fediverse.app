@@ -4,8 +4,8 @@ import 'package:fedi/app/status/sensitive/settings/status_sensitive_settings_blo
 import 'package:fedi/app/status/sensitive/settings/status_sensitive_settings_model.dart';
 
 class StatusSensitiveSettingsBloc
-    extends GlobalOrInstanceSettingsLocalPreferenceBloc<
-        StatusSensitiveSettings> implements IStatusSensitiveSettingsBloc {
+    extends GlobalOrInstanceSettingsLocalPreferenceBloc<StatusSensitiveSettings>
+    implements IStatusSensitiveSettingsBloc {
   StatusSensitiveSettingsBloc({
     required IStatusSensitiveSettingsLocalPreferenceBloc<
             StatusSensitiveSettings>

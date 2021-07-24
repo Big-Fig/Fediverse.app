@@ -37,7 +37,7 @@ void main() {
 
   test('clone', () async {
     var obj1 =
-    DatabaseCacheSettingsModelTestHelper.createTestDatabaseCacheSettings(
+        DatabaseCacheSettingsModelTestHelper.createTestDatabaseCacheSettings(
       seed: 'seed1',
     );
 

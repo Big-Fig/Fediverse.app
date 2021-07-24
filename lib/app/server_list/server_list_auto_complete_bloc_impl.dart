@@ -26,7 +26,9 @@ class ServerListAutoCompleteBloc extends AsyncInitLoadingBloc
   @override
   Future internalAsyncInit() async {
     var list = await _loadServersList();
-    serversToAutoCompleteSubject.add(list);
+    if(!serversToAutoCompleteSubject.isClosed) {
+      serversToAutoCompleteSubject.add(list);
+    }
   }
 
   @override
@@ -35,14 +37,18 @@ class ServerListAutoCompleteBloc extends AsyncInitLoadingBloc
 
     var filtered = serversToAutoComplete
         .where(
-          (server) => server.startsWith(preparedTextInput),
+          (server) =>
+              server.startsWith(preparedTextInput) &&
+              server.compareTo(preparedTextInput) != 0,
         )
         .toList();
 
     if (filtered.isEmpty) {
       filtered = serversToAutoComplete
           .where(
-            (server) => server.contains(preparedTextInput),
+            (server) =>
+                server.contains(preparedTextInput) &&
+                server.compareTo(preparedTextInput) != 0,
           )
           .toList();
     }
@@ -54,9 +60,14 @@ class ServerListAutoCompleteBloc extends AsyncInitLoadingBloc
 Future<List<String>> _loadServersList() async {
   var fileAsString = await _loadAsset();
 
-  var servers = fileAsString.split('\n');
+  Iterable<String> servers = fileAsString.split('\n');
 
-  if(!kReleaseMode) {
+  // todo: make better file format
+  servers = servers.map(
+    (server) => server.replaceAll('\r', ''),
+  );
+
+  if (!kReleaseMode) {
     // debug instances
     servers = [
       'mastodon.jff.name',
@@ -65,7 +76,7 @@ Future<List<String>> _loadServersList() async {
     ];
   }
 
-  return servers;
+  return servers.toList();
 }
 
 Future<String> _loadAsset() => rootBundle.loadString('assets/server_list.txt');

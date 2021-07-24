@@ -1,3 +1,4 @@
+import 'package:fedi/app/ui/button/icon/fedi_back_icon_button_keys.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
@@ -14,6 +15,7 @@ class FediBackIconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FediIconButton(
+      key: Key(FediBackIconButtonKeys.button),
       icon: Icon(
         FediIcons.chevron_left,
         color: IFediUiColorTheme.of(context, listen: true).darkGrey,

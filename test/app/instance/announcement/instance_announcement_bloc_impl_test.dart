@@ -12,6 +12,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:moor/ffi.dart';
 
+import '../../../rxdart/rxdart_test_helper.dart';
 import './instance_announcement_bloc_impl_test.mocks.dart';
 import 'instance_announcement_test_helper.dart';
 
@@ -61,8 +62,8 @@ void main() {
     await instanceAnnouncementRepository.upsertInRemoteType(
       instanceAnnouncement.toPleromaInstanceAnnouncement(),
     );
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    await RxDartTestHelper.waitToExecuteRxCallbacks();
   }
 
   test('instanceAnnouncement', () async {
@@ -77,16 +78,17 @@ void main() {
       remoteId: instanceAnnouncement.remoteId,
     );
 
-    var listenedValue;
+    var listened;
 
     var subscription =
         instanceAnnouncementBloc.instanceAnnouncementStream.listen((newValue) {
-      listenedValue = newValue;
+      listened = newValue;
     });
-    // hack to execute notify callbacks
-    await Future.delayed(Duration(milliseconds: 1));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
     InstanceAnnouncementTestHelper.expectInstanceAnnouncement(
-      listenedValue,
+      listened,
       instanceAnnouncement,
     );
 
@@ -97,7 +99,7 @@ void main() {
       newValue,
     );
     InstanceAnnouncementTestHelper.expectInstanceAnnouncement(
-      listenedValue,
+      listened,
       newValue,
     );
     await subscription.cancel();
@@ -113,16 +115,17 @@ void main() {
   //     instanceAnnouncement.isExpired,
   //   );
   //
-  //   var listenedValue;
+  //   var listened;
   //
   //   var subscription =
   //       instanceAnnouncementBloc.isExpiredStream.listen((newValue) {
-  //     listenedValue = newValue;
+  //     listened = newValue;
   //   });
-  //   // hack to execute notify callbacks
-  //   await Future.delayed(Duration(milliseconds: 1));
+  //
+  //   listened = null;
+  //   await RxDartTestHelper.waitForData(() => listened);
   //   expect(
-  //     listenedValue,
+  //     listened,
   //     instanceAnnouncement.isExpired,
   //   );
   //
@@ -133,18 +136,19 @@ void main() {
   //     false,
   //   );
   //   expect(
-  //     listenedValue,
+  //     listened,
   //     false,
   //   );
   //
   //   await subscription.cancel();
   //
   //   subscription = instanceAnnouncementBloc.isExpiredStream.listen((newValue) {
-  //     listenedValue = newValue;
+  //     listened = newValue;
   //   });
-  //   // hack to execute notify callbacks
-  //   await Future.delayed(Duration(milliseconds: 1));
-  //   expect(listenedValue, instanceAnnouncement.isExpired);
+  //
+  //   listened = null;
+  //   await RxDartTestHelper.waitForData(() => listened);
+  //   expect(listened, instanceAnnouncement.isExpired);
   //
   //   await _update(instanceAnnouncement.copyWith(expiresAt: DateTime(1990)));
   //
@@ -153,7 +157,7 @@ void main() {
   //     true,
   //   );
   //   expect(
-  //     listenedValue,
+  //     listened,
   //     true,
   //   );
   //   await subscription.cancel();

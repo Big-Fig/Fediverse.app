@@ -25,19 +25,22 @@ void main() {
       PleromaApiOAuthToken.fromJson,
     );
   });
-  test('PleromaApiOAuthAppTokenRevokeRequest equal & hashcode & toString', () async {
-    ObjTestHelper.testEqualsHashcodeToString(
-      ({required String seed}) =>
-          PleromaApiOAuthTestHelper.createTestPleromaApiOAuthAppTokenRevokeRequest(
-        seed: seed,
-      ),
-    );
-  });
+  test(
+    'PleromaApiOAuthAppTokenRevokeRequest equal & hashcode & toString',
+    () async {
+      ObjTestHelper.testEqualsHashcodeToString(
+        ({required String seed}) => PleromaApiOAuthTestHelper
+            .createTestPleromaApiOAuthAppTokenRevokeRequest(
+          seed: seed,
+        ),
+      );
+    },
+  );
 
   test('PleromaApiOAuthAppTokenRevokeRequest toJson & fromJson', () async {
     JsonTestHelper.testFromJsonToJson(
-      ({required String seed}) =>
-          PleromaApiOAuthTestHelper.createTestPleromaApiOAuthAppTokenRevokeRequest(
+      ({required String seed}) => PleromaApiOAuthTestHelper
+          .createTestPleromaApiOAuthAppTokenRevokeRequest(
         seed: seed,
       ),
       PleromaApiOAuthAppTokenRevokeRequest.fromJson,
@@ -61,25 +64,28 @@ void main() {
       PleromaApiOAuthAppTokenRequest.fromJson,
     );
   });
-  test('PleromaApiOAuthAccountTokenRequest equal & hashcode & toString', () async {
-    ObjTestHelper.testEqualsHashcodeToString(
-      ({required String seed}) =>
-          PleromaApiOAuthTestHelper.createTestPleromaApiOAuthAccountTokenRequest(
-        seed: seed,
-      ),
-    );
-  });
+  test(
+    'PleromaApiOAuthAccountTokenRequest equal & hashcode & toString',
+    () async {
+      ObjTestHelper.testEqualsHashcodeToString(
+        ({required String seed}) => PleromaApiOAuthTestHelper
+            .createTestPleromaApiOAuthAccountTokenRequest(
+          seed: seed,
+        ),
+      );
+    },
+  );
 
   test('PleromaApiOAuthAccountTokenRequest toJson & fromJson', () async {
     JsonTestHelper.testFromJsonToJson(
-      ({required String seed}) =>
-          PleromaApiOAuthTestHelper.createTestPleromaApiOAuthAccountTokenRequest(
+      ({required String seed}) => PleromaApiOAuthTestHelper
+          .createTestPleromaApiOAuthAccountTokenRequest(
         seed: seed,
       ),
       PleromaApiOAuthAccountTokenRequest.fromJson,
     );
   });
-  
+
   test('PleromaApiOAuthAuthorizeRequest equal & hashcode & toString', () async {
     ObjTestHelper.testEqualsHashcodeToString(
       ({required String seed}) =>

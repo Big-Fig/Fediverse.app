@@ -33,16 +33,17 @@ class FilterContextMultiSelectFromListValueFormFieldWidget
           valueTitleMapper: mapValueToTitle,
           valueIconMapper: null,
           displayIconInDialog: false,
-          displayIconInRow: false,
+          displayIconInRow: false, valueKeyMapper: null,
         ),
       ),
     );
   }
 
-  String mapValueToTitle(BuildContext context, MastodonApiFilterContextType contextType) {
-
-    switch(contextType) {
-
+  String mapValueToTitle(
+    BuildContext context,
+    MastodonApiFilterContextType contextType,
+  ) {
+    switch (contextType) {
       case MastodonApiFilterContextType.homeAndCustomLists:
         return S.of(context).app_filter_context_type_home_and_lists;
       case MastodonApiFilterContextType.notifications:
@@ -58,5 +59,3 @@ class FilterContextMultiSelectFromListValueFormFieldWidget
     }
   }
 }
-
-

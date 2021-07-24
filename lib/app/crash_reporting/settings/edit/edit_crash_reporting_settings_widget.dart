@@ -34,8 +34,9 @@ class _EditCrashReportingSettingsThemeFieldWidget extends StatelessWidget {
         IBoolValueFormFieldBloc>(
       update: (context, value, previous) => value.reportingEnabledFieldBloc,
       child: BoolValueFormFieldRowWidget(
-        label:
-        S.of(context).app_crashReporting_settings_field_reportingEnabled_name,
+        label: S
+            .of(context)
+            .app_crashReporting_settings_field_reportingEnabled_name,
       ),
     );
   }

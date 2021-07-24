@@ -10,7 +10,6 @@ import 'package:flutter/widgets.dart';
 
 class RemoteInstanceDetailsBloc extends InstanceDetailsBloc
     implements IInstanceDetailsBloc {
-
   final IRemoteInstanceBloc remoteInstanceBloc;
 
   @override

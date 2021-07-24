@@ -3,6 +3,7 @@ import 'package:fedi/app/account/my/statuses/bookmarked/my_account_bookmarked_st
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/custom_list/list/custom_list_list_page.dart';
+import 'package:fedi/app/home/tab/account/menu/account_home_tab_menu_dialog_keys.dart';
 import 'package:fedi/app/home/tab/account/menu/actions/account_home_tab_menu_actions_page.dart';
 import 'package:fedi/app/home/tab/account/menu/actions/badge/account_home_tab_menu_actions_int_badge_bloc_impl.dart';
 import 'package:fedi/app/instance/announcement/badge/instance_announcement_count_int_badge_bloc_impl.dart';
@@ -40,10 +41,20 @@ class AccountHomeTabMenuDialogBodyWidget extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const _GlobalSettingsHomeTabMenuDialogBodySettingsItemWidget(),
+        const _GlobalSettingsHomeTabMenuDialogBodySettingsItemWidget(
+          key: Key(
+            AccountHomeTabMenuDialogKeys
+                .globalSettingsHomeTabMenuDialogBodySettingsItemWidget,
+          ),
+        ),
         const _InstanceSettingsHomeTabMenuDialogBodySettingsItemWidget(),
         const _AccountHomeTabMenuDialogBodyInstanceItemWidget(),
-        const _AccountHomeTabMenuDialogBodyAccountItemWidget(),
+        const _AccountHomeTabMenuDialogBodyAccountItemWidget(
+          key: Key(
+            AccountHomeTabMenuDialogKeys
+                .accountHomeTabMenuDialogBodyAccountItemWidget,
+          ),
+        ),
         const _BookmarksHomeTabMenuDialogBodyBookmarksItemWidget(),
         const _ListsHomeTabMenuDialogBodyListsItemWidget(),
         const _AnnouncementsHomeTabMenuDialogBodyListsItemWidget(),
@@ -225,8 +236,7 @@ class _AnnouncementsHomeTabMenuDialogBodyListsItemWidget
   }
 }
 
-class _AboutHomeTabMenuDialogBodyListsItemWidget
-    extends StatelessWidget {
+class _AboutHomeTabMenuDialogBodyListsItemWidget extends StatelessWidget {
   const _AboutHomeTabMenuDialogBodyListsItemWidget({
     Key? key,
   }) : super(key: key);
@@ -235,7 +245,7 @@ class _AboutHomeTabMenuDialogBodyListsItemWidget
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        goToAboutPage(context:context);
+        goToAboutPage(context: context);
       },
       child: InstanceAnnouncementCountIntBadgeBloc.provideToContext(
         context,

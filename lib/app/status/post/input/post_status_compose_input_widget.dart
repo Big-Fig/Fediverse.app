@@ -35,7 +35,7 @@ class PostStatusComposeInputWidget extends StatelessWidget {
         if (inputTextErrors?.isNotEmpty == true) {
           errorText = inputTextErrors!.first.createErrorDescription(context);
         }
-        
+
         return FediTransparentEditTextField(
           textEditingController: postStatusBloc.inputTextController,
           focusNode: postStatusBloc.inputFocusNode,

@@ -6,7 +6,7 @@ import 'package:fedi/overlay_notification/overlay_notification_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
-final _logger  = Logger('toast_service_impl.dart');
+final _logger = Logger('toast_service_impl.dart');
 
 class ToastService extends DisposableOwner implements IToastService {
   final IOverlayNotificationService overlayNotificationService;

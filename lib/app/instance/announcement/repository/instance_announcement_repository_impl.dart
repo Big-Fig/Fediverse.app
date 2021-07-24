@@ -144,8 +144,6 @@ class InstanceAnnouncementRepository
         batchTransaction: batchTransaction,
       );
 
-
-
   @override
   Future<int> calculateCount({
     required InstanceAnnouncementRepositoryFilters? filters,
@@ -156,7 +154,7 @@ class InstanceAnnouncementRepository
 
     // required because some filters added during join
     var joinedQuery =
-    populatedDao.convertSimpleSelectStatementToJoinedSelectStatement(
+        populatedDao.convertSimpleSelectStatementToJoinedSelectStatement(
       query: query,
       filters: filters,
     );
@@ -176,7 +174,7 @@ class InstanceAnnouncementRepository
 
     // required because some filters added during join
     var joinedQuery =
-    populatedDao.convertSimpleSelectStatementToJoinedSelectStatement(
+        populatedDao.convertSimpleSelectStatementToJoinedSelectStatement(
       query: query,
       filters: filters,
     );

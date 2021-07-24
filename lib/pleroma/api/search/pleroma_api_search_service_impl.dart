@@ -9,7 +9,6 @@ import 'package:fedi/rest/rest_request_model.dart';
 class PleromaApiSearchService extends BasePleromaApiService
     with PleromaApiAuthMixinService
     implements IPleromaApiSearchService {
-
   @override
   final IPleromaApiAuthRestService restApiAuthService;
 

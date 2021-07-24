@@ -33,7 +33,8 @@ class ConversationChatMessageBloc extends ChatMessageBloc
             PleromaApiInstancePollLimits.defaultLimits,
         conversationChatService:
             IPleromaApiConversationService.of(context, listen: false),
-        authStatusService: IPleromaApiAuthStatusService.of(context, listen: false),
+        authStatusService:
+            IPleromaApiAuthStatusService.of(context, listen: false),
         pleromaAccountService:
             IPleromaApiAccountService.of(context, listen: false),
         statusRepository: IStatusRepository.of(context, listen: false),
@@ -87,10 +88,8 @@ class ConversationChatMessageBloc extends ChatMessageBloc
 
   @override
   void watchLocalRepositoryChanges() {
-    statusRepository
-        .watchByRemoteIdInAppType(chatMessage.remoteId)
-        .listen(
-          (updatedChatMessage) {
+    statusRepository.watchByRemoteIdInAppType(chatMessage.remoteId).listen(
+      (updatedChatMessage) {
         if (updatedChatMessage != null) {
           _chatMessageSubject.add(
             updatedChatMessage.toConversationChatMessageStatusAdapter(),
@@ -101,10 +100,8 @@ class ConversationChatMessageBloc extends ChatMessageBloc
 
     var oldPendingRemoteId = chatMessage.oldPendingRemoteId;
     if (oldPendingRemoteId != null) {
-      statusRepository
-          .watchByOldPendingRemoteId(oldPendingRemoteId)
-          .listen(
-            (updatedChatMessage) {
+      statusRepository.watchByOldPendingRemoteId(oldPendingRemoteId).listen(
+        (updatedChatMessage) {
           if (updatedChatMessage != null) {
             _chatMessageSubject.add(
               updatedChatMessage.toConversationChatMessageStatusAdapter(),

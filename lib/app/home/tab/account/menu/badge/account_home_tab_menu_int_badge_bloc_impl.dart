@@ -23,7 +23,7 @@ class AccountHomeTabMenuIntBadgeBloc extends DisposableOwner
   AccountHomeTabMenuIntBadgeBloc({
     required this.myAccountBloc,
     required this.instanceAnnouncementRepository,
-  })   : accountHomeTabMenuActionsIntBadgeBloc =
+  })  : accountHomeTabMenuActionsIntBadgeBloc =
             AccountHomeTabMenuActionsIntBadgeBloc(
           myAccountBloc: myAccountBloc,
         ),

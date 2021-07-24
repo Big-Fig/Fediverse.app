@@ -4,15 +4,15 @@ import 'package:moor/moor.dart';
 import 'package:moor/moor.dart' as moor;
 
 mixin PopulatedDatabaseDaoMixin<
-DbItem extends DataClass,
-DbPopulatedItem,
-DbId,
-TableDsl extends Table,
-TableInfoDsl extends TableInfo<TableDsl, DbItem>,
-Filters,
-OrderingTerm extends RepositoryOrderingTerm>
-on AppDatabaseDao<DbItem, DbId, TableDsl, TableInfoDsl, Filters,
-    OrderingTerm> {
+        DbItem extends DataClass,
+        DbPopulatedItem,
+        DbId,
+        TableDsl extends Table,
+        TableInfoDsl extends TableInfo<TableDsl, DbItem>,
+        Filters,
+        OrderingTerm extends RepositoryOrderingTerm>
+    on AppDatabaseDao<DbItem, DbId, TableDsl, TableInfoDsl, Filters,
+        OrderingTerm> {
   JoinedSelectStatement convertSimpleSelectStatementToJoinedSelectStatement({
     required SimpleSelectStatement<TableDsl, DbItem> query,
     required Filters? filters,
@@ -21,8 +21,8 @@ on AppDatabaseDao<DbItem, DbId, TableDsl, TableInfoDsl, Filters,
   DbPopulatedItem mapTypedResultToDbPopulatedItem(TypedResult typedResult);
 
   List<DbPopulatedItem> mapTypedResultListToDbPopulatedItemList(
-      List<TypedResult> typedResults,
-      ) =>
+    List<TypedResult> typedResults,
+  ) =>
       typedResults.map(mapTypedResultToDbPopulatedItem).toList();
 
   Future<List<DbPopulatedItem>> getAllPopulated() =>
@@ -57,9 +57,9 @@ on AppDatabaseDao<DbItem, DbId, TableDsl, TableInfoDsl, Filters,
     var query = startSelectQuery();
     query.orderBy(
       [
-            (tbl) => moor.OrderingTerm.desc(
-          CustomExpression('$tableName.$idFieldName'),
-        ),
+        (tbl) => moor.OrderingTerm.desc(
+              CustomExpression('$tableName.$idFieldName'),
+            ),
       ],
     );
     var joinedQuery = convertSimpleSelectStatementToJoinedSelectStatement(
@@ -89,9 +89,9 @@ on AppDatabaseDao<DbItem, DbId, TableDsl, TableInfoDsl, Filters,
     var query = startSelectQuery();
     query.orderBy(
       [
-            (tbl) => moor.OrderingTerm.asc(
-          CustomExpression('$tableName.$idFieldName'),
-        ),
+        (tbl) => moor.OrderingTerm.asc(
+              CustomExpression('$tableName.$idFieldName'),
+            ),
       ],
     );
     var joinedQuery = convertSimpleSelectStatementToJoinedSelectStatement(
@@ -121,9 +121,9 @@ on AppDatabaseDao<DbItem, DbId, TableDsl, TableInfoDsl, Filters,
     var query = startSelectQuery();
     query.orderBy(
       [
-            (tbl) => moor.OrderingTerm.desc(
-          CustomExpression('$tableName.$idFieldName'),
-        ),
+        (tbl) => moor.OrderingTerm.desc(
+              CustomExpression('$tableName.$idFieldName'),
+            ),
       ],
     );
     var joinedQuery = convertSimpleSelectStatementToJoinedSelectStatement(
@@ -154,9 +154,9 @@ on AppDatabaseDao<DbItem, DbId, TableDsl, TableInfoDsl, Filters,
     var query = startSelectQuery();
     query.orderBy(
       [
-            (tbl) => moor.OrderingTerm.asc(
-          CustomExpression('$tableName.$idFieldName'),
-        ),
+        (tbl) => moor.OrderingTerm.asc(
+              CustomExpression('$tableName.$idFieldName'),
+            ),
       ],
     );
     var joinedQuery = convertSimpleSelectStatementToJoinedSelectStatement(

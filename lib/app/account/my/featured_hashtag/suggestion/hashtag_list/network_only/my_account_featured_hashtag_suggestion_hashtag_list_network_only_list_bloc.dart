@@ -10,7 +10,8 @@ abstract class IMyAccountFeaturedHashtagSuggestionHashtagListNetworkOnlyListBloc
     BuildContext context, {
     bool listen = true,
   }) =>
-      Provider.of<IMyAccountFeaturedHashtagSuggestionHashtagListNetworkOnlyListBloc>(
+      Provider.of<
+          IMyAccountFeaturedHashtagSuggestionHashtagListNetworkOnlyListBloc>(
         context,
         listen: listen,
       );

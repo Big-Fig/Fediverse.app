@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:fedi/app/ui/theme/dark/dark_fedi_ui_theme_model_id.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,7 @@ const _darkFediUiTextTheme = FediUiTextTheme(colorTheme: _darkFediUiColorTheme);
 
 class DarkFediUiTheme implements IFediUiTheme {
   @override
-  String get id => 'dark';
+  String get id => darkFediUiThemeId;
   @override
   final IFediUiColorTheme colorTheme = _darkFediUiColorTheme;
 

@@ -7,13 +7,11 @@ import 'package:fedi/mastodon/api/filter/mastodon_api_filter_model.dart';
 class FilterContextMultiSelectFromListValueFormFieldBloc
     extends MultiSelectFromListValueFormFieldBloc<MastodonApiFilterContextType>
     implements IFilterContextMultiSelectFromListValueFormFieldBloc {
-
   final AuthInstance? currentInstance;
 
   @override
   List<MastodonApiFilterContextType> get possibleValues {
-
-    if(currentInstance!.isMastodon) {
+    if (currentInstance!.isMastodon) {
       return [
         MastodonApiFilterContextType.homeAndCustomLists,
         MastodonApiFilterContextType.notifications,
@@ -29,7 +27,6 @@ class FilterContextMultiSelectFromListValueFormFieldBloc
         MastodonApiFilterContextType.thread,
       ];
     }
-
   }
 
   FilterContextMultiSelectFromListValueFormFieldBloc({
@@ -37,9 +34,8 @@ class FilterContextMultiSelectFromListValueFormFieldBloc
     required List<MastodonApiFilterContextType> originValue,
     bool isEnabled = true,
     bool isNullValuePossible = false,
-    required
-        List<FormValueFieldValidation<List<MastodonApiFilterContextType>>>
-            validators,
+    required List<FormValueFieldValidation<List<MastodonApiFilterContextType>>>
+        validators,
   }) : super(
           originValue: originValue,
           isEnabled: isEnabled,

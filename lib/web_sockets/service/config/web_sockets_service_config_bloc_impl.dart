@@ -8,5 +8,6 @@ class WebSocketsServiceConfigBloc implements IWebSocketsServiceConfigBloc {
   WebSocketsServiceConfigBloc(this.handlingType);
 
   @override
-  Stream<WebSocketsHandlingType> get handlingTypeStream => Stream.value(handlingType);
+  Stream<WebSocketsHandlingType> get handlingTypeStream =>
+      Stream.value(handlingType);
 }

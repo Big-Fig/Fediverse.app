@@ -4,7 +4,8 @@ import 'package:fedi/form/field/value/value_form_field_validation.dart';
 import 'package:fedi/pleroma/api/timeline/pleroma_api_timeline_model.dart';
 
 class TimelineReplyVisibilityFilterSelectSingleFromListValueFormFieldBloc
-    extends SingleSelectFromListValueFormFieldBloc<PleromaApiReplyVisibilityFilter?>
+    extends SingleSelectFromListValueFormFieldBloc<
+        PleromaApiReplyVisibilityFilter?>
     implements
         ITimelineReplyVisibilityFilterSelectSingleFromListValueFormFieldBloc {
   @override

@@ -4,7 +4,6 @@ import 'package:flutter/widgets.dart';
 
 class MultiSelectFromListValueFormFieldNonNullAndNonEmptyValidationError
     extends ValueFormFieldValidationError {
-
   @override
   String createErrorDescription(BuildContext context) =>
       S.of(context).form_field_value_error_null_desc;

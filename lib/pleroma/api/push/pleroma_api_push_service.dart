@@ -4,8 +4,14 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IPleromaApiPushService extends IPleromaApi {
-  static IPleromaApiPushService of(BuildContext context, {bool listen = true}) =>
-      Provider.of<IPleromaApiPushService>(context, listen: listen);
+  static IPleromaApiPushService of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
+      Provider.of<IPleromaApiPushService>(
+        context,
+        listen: listen,
+      );
 
   /// Add a Web Push API subscription to receive notifications.
   /// Each access token can have one push subscription.

@@ -3,9 +3,7 @@ import 'package:fedi/rest/rest_request_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 abstract class IPleromaApiPaginationRequest
-    implements IMastodonApiPaginationRequest {
-
-}
+    implements IMastodonApiPaginationRequest {}
 
 class PleromaApiPaginationRequest implements IPleromaApiPaginationRequest {
   @override

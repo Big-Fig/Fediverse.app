@@ -15,7 +15,6 @@ abstract class IRegisterAuthInstanceFormStepperCaptchaItemBloc
         listen: listen,
       );
 
-
   IPleromaFormCaptchaStringFieldBloc get captchaFieldBloc;
 
   Future reloadCaptcha();

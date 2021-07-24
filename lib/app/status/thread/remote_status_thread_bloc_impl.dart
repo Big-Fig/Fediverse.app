@@ -18,16 +18,16 @@ class RemoteStatusThreadBloc extends StatusThreadBloc {
     required IPleromaApiStatusService pleromaStatusService,
     required this.instanceUri,
   }) : super(
-    pleromaStatusService: pleromaStatusService,
-    initialStatusToFetchThread: initialStatusToFetchThread,
-    initialMediaAttachment: initialMediaAttachment,
-  );
+          pleromaStatusService: pleromaStatusService,
+          initialStatusToFetchThread: initialStatusToFetchThread,
+          initialMediaAttachment: initialMediaAttachment,
+        );
 
   static RemoteStatusThreadBloc createFromContext(
-      BuildContext context, {
-        required IStatus initialStatusToFetchThread,
-        required IPleromaApiMediaAttachment? initialMediaAttachment,
-      }) {
+    BuildContext context, {
+    required IStatus initialStatusToFetchThread,
+    required IPleromaApiMediaAttachment? initialMediaAttachment,
+  }) {
     var remoteInstanceBloc = IRemoteInstanceBloc.of(context, listen: false);
 
     var pleromaStatusService = PleromaApiStatusService(
@@ -55,9 +55,9 @@ class RemoteStatusThreadBloc extends StatusThreadBloc {
   @override
   // ignore: no-empty-block
   Future<void> onInitialStatusUpdated(
-      IPleromaApiStatus updatedStartRemoteStatus,
-      // ignore: no-empty-block
-      ) async {
+    IPleromaApiStatus updatedStartRemoteStatus,
+    // ignore: no-empty-block
+  ) async {
     // nothing
   }
 

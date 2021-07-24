@@ -29,12 +29,10 @@ class AccountFollowerAccountListPage extends StatelessWidget {
   }
 }
 
-void goToAccountFollowerAccountListPage(
-{
+void goToAccountFollowerAccountListPage({
   required BuildContext context,
   required IAccount account,
-}
-) {
+}) {
   Navigator.push(
     context,
     MaterialPageRoute(builder: (context) {

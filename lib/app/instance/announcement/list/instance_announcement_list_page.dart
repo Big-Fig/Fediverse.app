@@ -108,7 +108,7 @@ MaterialPageRoute createInstanceAnnouncementListPageRoute({
           );
 
           instanceAnnouncementSettingsLocalPreferenceBloc.stream.listen(
-                (settings) {
+            (settings) {
               bloc.changeInstanceAnnouncementSettings(settings!);
             },
           ).disposeWith(bloc);
@@ -134,7 +134,7 @@ MaterialPageRoute createInstanceAnnouncementListPageRoute({
               instanceAnnouncementCachedListBloc
                   .instanceAnnouncementSettingsStream
                   .listen(
-                    (_) {
+                (_) {
                   bloc.refreshWithController();
                 },
               ).disposeWith(bloc);

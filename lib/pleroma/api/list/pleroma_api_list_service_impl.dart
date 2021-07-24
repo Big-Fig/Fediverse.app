@@ -154,7 +154,7 @@ class PleromaApiListService extends BasePleromaApiService
         },
       ),
     );
-    
+
     return restService.processEmptyResponse(httpResponse);
   }
 

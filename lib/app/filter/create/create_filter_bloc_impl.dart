@@ -18,7 +18,8 @@ import 'package:provider/provider.dart';
 import 'package:easy_dispose/easy_dispose.dart';
 
 class CreateFilterBloc extends EditFilterBloc implements ICreateFilterBloc {
-  static CreateFilterBloc createFromContext(BuildContext context, {
+  static CreateFilterBloc createFromContext(
+    BuildContext context, {
     required Function(IFilter)? onSubmit,
   }) {
     var createFilterBloc = CreateFilterBloc(
@@ -43,12 +44,10 @@ class CreateFilterBloc extends EditFilterBloc implements ICreateFilterBloc {
         context,
         listen: false,
       ),
-      currentInstance: ICurrentAuthInstanceBloc
-          .of(
+      currentInstance: ICurrentAuthInstanceBloc.of(
         context,
         listen: false,
-      )
-          .currentInstance!,
+      ).currentInstance!,
     );
 
     if (onSubmit != null) {
@@ -60,16 +59,16 @@ class CreateFilterBloc extends EditFilterBloc implements ICreateFilterBloc {
     return createFilterBloc;
   }
 
-  static Widget provideToContext(BuildContext context, {
+  static Widget provideToContext(
+    BuildContext context, {
     required Widget child,
     required Function(IFilter) onSubmit,
   }) {
     return DisposableProvider<ICreateFilterBloc>(
-      create: (context) =>
-          CreateFilterBloc.createFromContext(
-            context,
-            onSubmit: onSubmit,
-          ),
+      create: (context) => CreateFilterBloc.createFromContext(
+        context,
+        onSubmit: onSubmit,
+      ),
       child: ProxyProvider<ICreateFilterBloc, IEditFilterBloc>(
         update: (context, value, previous) => value,
         child: EditFilterBlocProxyProvider(
@@ -80,8 +79,10 @@ class CreateFilterBloc extends EditFilterBloc implements ICreateFilterBloc {
   }
 
   @override
-  Future<IPleromaApiFilter> actuallySubmitFilter(String? filterRemoteId,
-      IPostPleromaApiFilter postPleromaFilter,) async {
+  Future<IPleromaApiFilter> actuallySubmitFilter(
+    String? filterRemoteId,
+    IPostPleromaApiFilter postPleromaFilter,
+  ) async {
     var remoteFilter = await pleromaFilterService.createFilter(
       postPleromaFilter: postPleromaFilter,
     );
@@ -98,14 +99,14 @@ class CreateFilterBloc extends EditFilterBloc implements ICreateFilterBloc {
     required ITimelinesHomeTabStorageBloc timelinesHomeTabStorageBloc,
     required AuthInstance currentInstance,
   }) : super(
-    isPossibleToDelete: false,
-    pleromaFilterService: pleromaFilterService,
-    statusRepository: statusRepository,
-    filter: null,
-    myAccountBloc: myAccountBloc,
-    accountRepository: accountRepository,
-    pleromaAccountService: pleromaAccountService,
-    timelinesHomeTabStorageBloc: timelinesHomeTabStorageBloc,
-    currentInstance: currentInstance,
-  );
+          isPossibleToDelete: false,
+          pleromaFilterService: pleromaFilterService,
+          statusRepository: statusRepository,
+          filter: null,
+          myAccountBloc: myAccountBloc,
+          accountRepository: accountRepository,
+          pleromaAccountService: pleromaAccountService,
+          timelinesHomeTabStorageBloc: timelinesHomeTabStorageBloc,
+          currentInstance: currentInstance,
+        );
 }

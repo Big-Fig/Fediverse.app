@@ -1,3 +1,5 @@
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/account/details/local_account_details_page.dart';
@@ -11,6 +13,7 @@ import 'package:fedi/app/html/html_text_widget.dart';
 import 'package:fedi/app/instance/activity/local/local_instance_activity_page.dart';
 import 'package:fedi/app/instance/activity/remote/remote_instance_activity_page.dart';
 import 'package:fedi/app/instance/details/instance_details_bloc.dart';
+import 'package:fedi/app/instance/details/instance_details_widget_keys.dart';
 import 'package:fedi/app/instance/directory/local/local_instance_directory_page.dart';
 import 'package:fedi/app/instance/directory/remote/remote_instance_directory_page.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
@@ -27,7 +30,6 @@ import 'package:fedi/app/ui/list/fedi_list_smart_refresher_widget.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/url/url_helper.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/file/file_size_helper.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/mastodon/api/instance/mastodon_api_instance_model.dart';
@@ -40,14 +42,15 @@ import 'package:flutter_html/style.dart';
 import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
-import 'package:easy_dispose/easy_dispose.dart';
 
 final _logger = Logger('instance_details_widget.dart');
 
 final _mbSizeNumberFormat = NumberFormat('#.#');
 
 class InstanceDetailsWidget extends StatelessWidget {
-  const InstanceDetailsWidget();
+  const InstanceDetailsWidget({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +60,7 @@ class InstanceDetailsWidget extends StatelessWidget {
       asyncInitLoadingBloc: instanceDetailsBloc,
       loadingFinishedBuilder: (context) {
         return FediListSmartRefresherWidget(
+          isNeedToAddPaddingForUiTests: false,
           controller: instanceDetailsBloc.refreshController,
           onRefresh: () async {
             try {
@@ -118,7 +122,9 @@ class _InstanceDetailsBodyWidget extends StatelessWidget {
           const _InstanceDetailsPublicTimelineWidget(),
           const _InstanceDetailsBodyDetailsWidget(),
           const _InstanceDetailsBodyRegistrationsWidget(),
-          const _InstanceDetailsStatsWidget(),
+          const _InstanceDetailsStatsWidget(
+            key: Key(InstanceDetailsWidgetKeys.statsKey),
+          ),
           const _InstanceDetailsBodyMessagesLimitsWidget(),
           const _InstanceDetailsPleromaPollLimitsWidget(),
           const _InstanceDetailsPleromaUploadLimitsWidget(),
@@ -345,8 +351,10 @@ class _InstanceDetailsDescriptionWidget extends StatelessWidget {
     var instanceDetailsBloc = IInstanceDetailsBloc.of(context);
 
     return StreamBuilder<String?>(
-      stream: instanceDetailsBloc.descriptionOrShortDescriptionWithParsedHashtagsStream,
-      initialData: instanceDetailsBloc.descriptionOrShortDescriptionWithParsedHashtags,
+      stream: instanceDetailsBloc
+          .descriptionOrShortDescriptionWithParsedHashtagsStream,
+      initialData:
+          instanceDetailsBloc.descriptionOrShortDescriptionWithParsedHashtags,
       builder: (context, snapshot) {
         var descriptionOrShortDescription = snapshot.data;
         var textStyle = IFediUiTextTheme.of(context).bigTallMediumGrey;
@@ -383,7 +391,7 @@ class _InstanceDetailsDescriptionWidget extends StatelessWidget {
                 );
 
                 htmlTextBloc.linkClickedStream.listen(
-                      (url) {
+                  (url) {
                     UrlHelper.handleUrlClickWithInstanceLocation(
                       context: context,
                       url: url,
@@ -1097,12 +1105,12 @@ class _InstanceDetailsPublicTimelineWidget extends StatelessWidget {
   }) {
     if (isLocal) {
       goToLocalInstancePublicTimelinePage(
-        context:context,
+        context: context,
         pleromaApiInstance: instanceDetailsBloc.instance!,
       );
     } else {
       goToRemoteInstancePublicTimelinePage(
-        context:context,
+        context: context,
         remoteInstanceUri: instanceDetailsBloc.instanceUri,
         pleromaApiInstance: instanceDetailsBloc.instance!,
       );

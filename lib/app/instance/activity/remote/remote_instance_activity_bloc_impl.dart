@@ -10,7 +10,6 @@ import 'package:flutter/widgets.dart';
 
 class RemoteInstanceActivityBloc extends InstanceActivityBloc
     implements IInstanceActivityBloc {
-
   final IRemoteInstanceBloc remoteInstanceBloc;
 
   @override
@@ -51,8 +50,6 @@ class RemoteInstanceActivityBloc extends InstanceActivityBloc
           child: child,
         ),
       );
-
-
 
   @override
   InstanceLocation get instanceLocation => InstanceLocation.remote;

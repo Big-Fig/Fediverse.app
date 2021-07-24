@@ -29,9 +29,9 @@ abstract class IPleromaChatBloc implements IChatBloc, IAsyncInitLoadingBloc {
   Stream<IPleromaChatMessage> get onMessageLocallyHiddenStream;
 
   Future postMessage({
-    required
-        IPleromaApiChatMessageSendData pleromaApiChatMessageSendData,
-    required IPleromaApiMediaAttachment? pleromaApiChatMessageSendDataMediaAttachment,
+    required IPleromaApiChatMessageSendData pleromaApiChatMessageSendData,
+    required IPleromaApiMediaAttachment?
+        pleromaApiChatMessageSendDataMediaAttachment,
     required IPleromaChatMessage? oldPendingFailedPleromaChatMessage,
   });
 

@@ -18,8 +18,8 @@ class LocalizationLocaleSingleFromListValueFormFieldBlocProxyProvider
           ILocalizationLocaleSingleFromListValueFormFieldBloc,
           ISingleSelectFromListValueFormFieldBloc<LocalizationLocale?>>(
         update: (context, value, previous) => value,
-        child:
-            SingleSelectFromListValueFormFieldBlocProxyProvider<LocalizationLocale?>(
+        child: SingleSelectFromListValueFormFieldBlocProxyProvider<
+            LocalizationLocale?>(
           child: child,
         ),
       );

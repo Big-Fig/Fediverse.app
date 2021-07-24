@@ -10,6 +10,7 @@ import 'package:fedi/dialog/dialog_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+typedef ValueToKeyMapper<T> = Key? Function(T value);
 typedef ValueToTextMapper<T> = String Function(T value);
 typedef ValueToIconMapper<T> = IconData Function(T value);
 typedef ValueChangedCallback<T> = Function(T oldValue, T newValue);
@@ -26,6 +27,7 @@ class FediFormSingleChooseFromListFieldRow<T> extends StatelessWidget {
   final List<T> possibleValues;
   final ValueToTextMapper<T>? valueToTextMapper;
   final ValueToIconMapper<T>? valueToIconMapper;
+  final ValueToKeyMapper<T>? valueToKeyMapper;
   final ValueChangedCallback<T?> onChanged;
 
   FediFormSingleChooseFromListFieldRow({
@@ -40,6 +42,7 @@ class FediFormSingleChooseFromListFieldRow<T> extends StatelessWidget {
     required this.possibleValues,
     required this.valueToTextMapper,
     required this.valueToIconMapper,
+    required this.valueToKeyMapper,
     required this.onChanged,
   });
 
@@ -61,6 +64,7 @@ class FediFormSingleChooseFromListFieldRow<T> extends StatelessWidget {
                 value: value,
                 valueToTextMapper: valueToTextMapper,
                 valueToIconMapper: valueToIconMapper,
+                valueToKeyMapper: valueToKeyMapper,
                 onChanged: onChanged,
                 nullable: nullable,
               ),
@@ -105,6 +109,7 @@ class _FediFormSingleChooseFromListFieldRowBodyWidget<T>
     required this.value,
     required this.valueToTextMapper,
     required this.valueToIconMapper,
+    required this.valueToKeyMapper,
     required this.onChanged,
     required this.nullable,
   }) : super(key: key);
@@ -114,6 +119,7 @@ class _FediFormSingleChooseFromListFieldRowBodyWidget<T>
   final List possibleValues;
 
   final T value;
+  final ValueToKeyMapper<T>? valueToKeyMapper;
   final ValueToTextMapper<T>? valueToTextMapper;
   final ValueToIconMapper<T>? valueToIconMapper;
   final ValueChangedCallback<T?> onChanged;
@@ -133,6 +139,9 @@ class _FediFormSingleChooseFromListFieldRowBodyWidget<T>
                     actions: possibleValues
                         .map(
                           (possibleValue) => SelectionDialogAction(
+                            key: valueToKeyMapper != null
+                                ? valueToKeyMapper!(possibleValue)
+                                : null,
                             isSelected: value == possibleValue,
                             label: valueToTextMapper != null
                                 ? valueToTextMapper!(possibleValue)

@@ -27,6 +27,7 @@ class FediTransparentTextButtonWithBorder extends StatelessWidget {
 
   FediTransparentTextButtonWithBorder(
     this.text, {
+    Key? key,
     required this.onPressed,
     this.width,
     this.height = FediSizes.textButtonHeight,
@@ -36,7 +37,7 @@ class FediTransparentTextButtonWithBorder extends StatelessWidget {
     required this.expanded,
     this.borderVisible = true,
     this.limitMinWidth = false,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

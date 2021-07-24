@@ -11,7 +11,8 @@ class StatusVisibilitySelectSingleFromListValueFormFieldRowWidget
   @override
   Widget build(BuildContext context) =>
       StatusVisibilitySelectSingleFromListValueFormFieldBlocProxyProvider(
-        child: SingleSelectFromListValueFormFieldRowWidget<PleromaApiVisibility>(
+        child:
+            SingleSelectFromListValueFormFieldRowWidget<PleromaApiVisibility>(
           label: S
               .of(context)
               .app_status_post_settings_field_defaultVisibility_label,

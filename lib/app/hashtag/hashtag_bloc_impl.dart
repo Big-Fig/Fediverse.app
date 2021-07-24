@@ -20,7 +20,8 @@ class HashtagBloc extends DisposableOwner implements IHashtagBloc {
   final AuthInstance authInstance;
 
   @override
-  bool get isInstanceSupportFeaturedTags => authInstance.isFeaturedTagsSupported;
+  bool get isInstanceSupportFeaturedTags =>
+      authInstance.isFeaturedTagsSupported;
 
   HashtagBloc({
     required this.hashtag,

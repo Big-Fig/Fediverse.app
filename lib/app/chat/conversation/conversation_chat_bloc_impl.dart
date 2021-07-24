@@ -58,7 +58,8 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
   Stream<IConversationChat> get chatStream => _chatSubject.stream;
 
   @override
-  IConversationChatMessage? get lastChatMessage => _lastMessageSubject.valueOrNull;
+  IConversationChatMessage? get lastChatMessage =>
+      _lastMessageSubject.valueOrNull;
 
   @override
   Stream<IConversationChatMessage?> get lastChatMessageStream =>
@@ -94,13 +95,13 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
       orderingTerms: null,
     )
         .listen(
-          (accounts) {
+      (accounts) {
         var accountsWithoutMe = IAccount.excludeAccountFromList(
           accounts,
-              (account) => !myAccountBloc.checkAccountIsMe(account),
+          (account) => !myAccountBloc.checkAccountIsMe(account),
         );
         accountsWithoutMe.sort(
-              (a, b) => a.remoteId.compareTo(b.remoteId),
+          (a, b) => a.remoteId.compareTo(b.remoteId),
         );
         _accountsSubject.add(accountsWithoutMe);
       },
@@ -144,7 +145,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
   @override
   void watchLocalRepositoryForUpdates() {
     conversationRepository.watchByRemoteIdInAppType(chat.remoteId).listen(
-          (updatedChat) {
+      (updatedChat) {
         if (updatedChat != null) {
           _chatSubject.add(updatedChat);
         }
@@ -156,10 +157,10 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
       conversation: chat,
     )
         .listen(
-          (lastStatus) {
+      (lastStatus) {
         if (lastStatus != null) {
           var conversationChatMessageStatusAdapter =
-          ConversationChatMessageStatusAdapter(
+              ConversationChatMessageStatusAdapter(
             status: lastStatus,
           );
           _lastMessageSubject.add(

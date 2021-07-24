@@ -13,6 +13,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../../rxdart/rxdart_test_helper.dart';
 import '../../auth/instance/auth_instance_model_test_helper.dart';
 import './push_settings_bloc_impl_test.mocks.dart';
 
@@ -32,7 +33,7 @@ void main() {
 
   late StreamSubscription subscriptionListenedSettingsData;
 
-  PushSettings? listenedSettingsData;
+  PushSettings? listened;
 
   setUp(() async {
     memoryLocalPreferencesService = MemoryLocalPreferencesService();
@@ -91,7 +92,7 @@ void main() {
 
     subscriptionListenedSettingsData =
         pushSettingsBloc.settingsDataStream.listen((data) {
-      listenedSettingsData = data;
+      listened = data;
     });
   });
 
@@ -112,12 +113,13 @@ void main() {
       },
     );
 
-    await Future.delayed(Duration(milliseconds: 100));
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     var defaultValue = InstancePushSettingsLocalPreferenceBloc.defaultValue;
 
     expect(
-      listenedSettingsData?.follow,
+      listened?.follow,
       defaultValue.follow,
     );
     expect(
@@ -137,10 +139,12 @@ void main() {
     var testFollow = true;
 
     await pushSettingsBloc.changeFollow(testFollow);
-    await Future.delayed(Duration(milliseconds: 100));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     expect(
-      listenedSettingsData?.follow,
+      listened?.follow,
       testFollow,
     );
     expect(
@@ -160,10 +164,12 @@ void main() {
     testFollow = false;
 
     await pushSettingsBloc.changeFollow(testFollow);
-    await Future.delayed(Duration(milliseconds: 100));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     expect(
-      listenedSettingsData?.follow,
+      listened?.follow,
       testFollow,
     );
     expect(
@@ -192,12 +198,13 @@ void main() {
       },
     );
 
-    await Future.delayed(Duration(milliseconds: 100));
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     var defaultValue = InstancePushSettingsLocalPreferenceBloc.defaultValue;
 
     expect(
-      listenedSettingsData?.pleromaEmojiReaction,
+      listened?.pleromaEmojiReaction,
       defaultValue.pleromaEmojiReaction,
     );
     expect(
@@ -217,10 +224,12 @@ void main() {
     var testPleromaEmojiReaction = true;
 
     await pushSettingsBloc.changePleromaEmojiReaction(testPleromaEmojiReaction);
-    await Future.delayed(Duration(milliseconds: 100));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     expect(
-      listenedSettingsData?.pleromaEmojiReaction,
+      listened?.pleromaEmojiReaction,
       testPleromaEmojiReaction,
     );
     expect(
@@ -240,10 +249,12 @@ void main() {
     testPleromaEmojiReaction = false;
 
     await pushSettingsBloc.changePleromaEmojiReaction(testPleromaEmojiReaction);
-    await Future.delayed(Duration(milliseconds: 100));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     expect(
-      listenedSettingsData?.pleromaEmojiReaction,
+      listened?.pleromaEmojiReaction,
       testPleromaEmojiReaction,
     );
     expect(
@@ -272,12 +283,13 @@ void main() {
       },
     );
 
-    await Future.delayed(Duration(milliseconds: 100));
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     var defaultValue = InstancePushSettingsLocalPreferenceBloc.defaultValue;
 
     expect(
-      listenedSettingsData?.pleromaChatMention,
+      listened?.pleromaChatMention,
       defaultValue.pleromaChatMention,
     );
     expect(
@@ -297,10 +309,12 @@ void main() {
     var testPleromaChatMention = true;
 
     await pushSettingsBloc.changePleromaChatMention(testPleromaChatMention);
-    await Future.delayed(Duration(milliseconds: 100));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     expect(
-      listenedSettingsData?.pleromaChatMention,
+      listened?.pleromaChatMention,
       testPleromaChatMention,
     );
     expect(
@@ -320,10 +334,12 @@ void main() {
     testPleromaChatMention = false;
 
     await pushSettingsBloc.changePleromaChatMention(testPleromaChatMention);
-    await Future.delayed(Duration(milliseconds: 100));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     expect(
-      listenedSettingsData?.pleromaChatMention,
+      listened?.pleromaChatMention,
       testPleromaChatMention,
     );
     expect(
@@ -352,12 +368,13 @@ void main() {
       },
     );
 
-    await Future.delayed(Duration(milliseconds: 100));
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     var defaultValue = InstancePushSettingsLocalPreferenceBloc.defaultValue;
 
     expect(
-      listenedSettingsData?.poll,
+      listened?.poll,
       defaultValue.poll,
     );
     expect(
@@ -377,10 +394,12 @@ void main() {
     var testPoll = true;
 
     await pushSettingsBloc.changePoll(testPoll);
-    await Future.delayed(Duration(milliseconds: 100));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     expect(
-      listenedSettingsData?.poll,
+      listened?.poll,
       testPoll,
     );
     expect(
@@ -400,10 +419,12 @@ void main() {
     testPoll = false;
 
     await pushSettingsBloc.changePoll(testPoll);
-    await Future.delayed(Duration(milliseconds: 100));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     expect(
-      listenedSettingsData?.poll,
+      listened?.poll,
       testPoll,
     );
     expect(
@@ -432,12 +453,13 @@ void main() {
       },
     );
 
-    await Future.delayed(Duration(milliseconds: 100));
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     var defaultValue = InstancePushSettingsLocalPreferenceBloc.defaultValue;
 
     expect(
-      listenedSettingsData?.mention,
+      listened?.mention,
       defaultValue.mention,
     );
     expect(
@@ -457,10 +479,12 @@ void main() {
     var testMention = true;
 
     await pushSettingsBloc.changeMention(testMention);
-    await Future.delayed(Duration(milliseconds: 100));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     expect(
-      listenedSettingsData?.mention,
+      listened?.mention,
       testMention,
     );
     expect(
@@ -480,10 +504,12 @@ void main() {
     testMention = false;
 
     await pushSettingsBloc.changeMention(testMention);
-    await Future.delayed(Duration(milliseconds: 100));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     expect(
-      listenedSettingsData?.mention,
+      listened?.mention,
       testMention,
     );
     expect(
@@ -513,12 +539,13 @@ void main() {
       },
     );
 
-    await Future.delayed(Duration(milliseconds: 100));
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     var defaultValue = InstancePushSettingsLocalPreferenceBloc.defaultValue;
 
     expect(
-      listenedSettingsData?.favourite,
+      listened?.favourite,
       defaultValue.favourite,
     );
     expect(
@@ -538,10 +565,12 @@ void main() {
     var testFavourite = true;
 
     await pushSettingsBloc.changeFavourite(testFavourite);
-    await Future.delayed(Duration(milliseconds: 100));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     expect(
-      listenedSettingsData?.favourite,
+      listened?.favourite,
       testFavourite,
     );
     expect(
@@ -561,10 +590,12 @@ void main() {
     testFavourite = false;
 
     await pushSettingsBloc.changeFavourite(testFavourite);
-    await Future.delayed(Duration(milliseconds: 100));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     expect(
-      listenedSettingsData?.favourite,
+      listened?.favourite,
       testFavourite,
     );
     expect(
@@ -594,12 +625,13 @@ void main() {
       },
     );
 
-    await Future.delayed(Duration(milliseconds: 100));
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     var defaultValue = InstancePushSettingsLocalPreferenceBloc.defaultValue;
 
     expect(
-      listenedSettingsData?.reblog,
+      listened?.reblog,
       defaultValue.reblog,
     );
     expect(
@@ -619,10 +651,12 @@ void main() {
     var testReblog = true;
 
     await pushSettingsBloc.changeReblog(testReblog);
-    await Future.delayed(Duration(milliseconds: 100));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     expect(
-      listenedSettingsData?.reblog,
+      listened?.reblog,
       testReblog,
     );
     expect(
@@ -642,10 +676,12 @@ void main() {
     testReblog = false;
 
     await pushSettingsBloc.changeReblog(testReblog);
-    await Future.delayed(Duration(milliseconds: 100));
+
+    listened = null;
+    await RxDartTestHelper.waitForData(() => listened);
 
     expect(
-      listenedSettingsData?.reblog,
+      listened?.reblog,
       testReblog,
     );
     expect(

@@ -1,0 +1,4 @@
+enum AppLaunchType {
+  normal,
+  mock,
+}

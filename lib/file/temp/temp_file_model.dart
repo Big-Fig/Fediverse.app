@@ -7,7 +7,6 @@ class DownloadTempFileRequest {
     required this.filenameWithExtension,
   });
 
-
   @override
   String toString() {
     return 'DownloadTempFileRequest{'
