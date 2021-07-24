@@ -268,7 +268,7 @@ void main() {
       timeout: Timeout(
         Duration(
           // ignore: no-magic-number
-          seconds: 120,
+          seconds: 240,
         ),
       ),
     );
