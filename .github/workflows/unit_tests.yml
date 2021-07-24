@@ -41,12 +41,6 @@ jobs:
 
       - run: flutter pub get
 
-      # flutter analyze will fail even if project have `info` messages
-      - name: Analyze, check formatting, and run unit tests
-        run: flutter analyze
-      - name: Ensure the Dart code is formatted correctly
-        run: flutter format --set-exit-if-changed --dry-run .
-
       # Flutter don't include files in coverage which not touched with tests
       # so we need to add all files manually
       - name: Add missed classes to coverage report
