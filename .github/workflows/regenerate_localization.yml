@@ -1,8 +1,6 @@
 name: regenerate_localization
 on:
   push:
-    branches:
-      - develop
     paths:
       - '**.arb'
 
