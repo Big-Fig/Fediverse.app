@@ -229,7 +229,7 @@
   "@app_async_pleroma_error_common_dialog_title": {},
   "app_async_pleroma_error_common_dialog_content": "Сообщение: {message}",
   "@app_async_pleroma_error_common_dialog_content": {},
-  "app_async_pleroma_error_throttled_dialog_title": "Сервер заблокировал операцию.",
+  "app_async_pleroma_error_throttled_dialog_title": "Заблокировано. Слишком много операций.",
   "@app_async_pleroma_error_throttled_dialog_title": {},
   "app_async_pleroma_error_throttled_dialog_content": "Слишком много операций за минуту. Пожалуйста подождите.",
   "@app_async_pleroma_error_throttled_dialog_content": {},
