@@ -39,5 +39,5 @@ jobs:
       - run: flutter pub get
 
       # flutter analyze will fail even if project have `info` messages
-      - name: Analyze, check formatting, and run unit tests
+      - name: Analyze
         run: flutter analyze
