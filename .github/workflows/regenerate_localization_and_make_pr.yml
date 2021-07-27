@@ -43,10 +43,6 @@ jobs:
       - name: Generate dart localization code
         run: fvm flutter pub global run intl_utils:generate
 
-      # flutter analyze will fail even if project have `info` messages
-      - name: Analyze
-        run: flutter analyze
-
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v3
