@@ -285,7 +285,7 @@
   "@app_auth_instance_join_field_host_helper": {},
   "app_auth_instance_join_progress_dialog_content": "Проверка сервера",
   "@app_auth_instance_join_progress_dialog_content": {},
-  "app_auth_instance_join_fail_dialog_title": "Невозможно поддключится к серверу",
+  "app_auth_instance_join_fail_dialog_title": "Невозможно подключится к серверу",
   "@app_auth_instance_join_fail_dialog_title": {},
   "app_auth_instance_join_fail_dialog_content": "Детали: {error}",
   "@app_auth_instance_join_fail_dialog_content": {},
