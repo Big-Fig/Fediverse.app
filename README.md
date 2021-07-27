@@ -1,6 +1,6 @@
 # Fedi for Pleroma and Mastodon
 [![Translate - with Weblate](https://img.shields.io/badge/translate%20with-Weblate-green.svg?style=flat)](https://translate.pleroma.social/engage/fedi-app/)
-[![Unit tests](https://github.com/Big-Fig/Fediverse.app/actions/workflows/unit_tests.yml/badge.svg)](https://github.com/Big-Fig/Fediverse.app/actions/workflows/unit_tests.yml/)
+[![Unit tests](https://github.com/Big-Fig/Fediverse.app/actions/workflows/unit_tests_with_coverage.yml/badge.svg)](https://github.com/Big-Fig/Fediverse.app/actions/workflows/unit_tests_with_coverage.yml/)
 [![Lints](https://github.com/Big-Fig/Fediverse.app/actions/workflows/lints_check.yml/badge.svg)](https://github.com/Big-Fig/Fediverse.app/actions/workflows/lints_check.yml/)
 [![dartfmt](https://github.com/Big-Fig/Fediverse.app/actions/workflows/code_formatting.yml/badge.svg)](https://github.com/Big-Fig/Fediverse.app/actions/workflows/code_formatting.yml/)
 
