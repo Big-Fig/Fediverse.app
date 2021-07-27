@@ -49,10 +49,9 @@ jobs:
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v3
-        # we need custom tokes to trigger other workflows on PR
-        env:
-          GITHUB_TOKEN: ${{ secrets.REPO_SCOPED_TOKEN }}
         with:
+          # we need custom tokes to trigger other workflows on PR
+          token: ${{ secrets.REPO_SCOPED_TOKEN }}
           branch: weblate-promotion
           commit-message: Update report
           signoff: true
