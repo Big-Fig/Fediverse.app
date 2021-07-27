@@ -212,9 +212,6 @@ abstract class CachedPaginationListWithNewItemsBloc<
 
   @override
   void mergeNewItems() {
-    _logger.finest(() => 'mergeNewItems \n'
-        '\t unmergedNewItems = ${unmergedNewItems.length}\n'
-        '\t mergedNewItems = ${mergedNewItems.length}\n');
     mergedNewItemsSubject.add(
       [
         ...unmergedNewItems,
@@ -223,9 +220,6 @@ abstract class CachedPaginationListWithNewItemsBloc<
     );
     unmergedNewItemsSubject.add([]);
 
-    _logger.finest(() => 'mergeNewItems after '
-        '\t unmergedNewItems = ${unmergedNewItems.length}\n'
-        '\t mergedNewItems = ${mergedNewItems.length}\n');
   }
 
   @override
@@ -288,11 +282,10 @@ abstract class CachedPaginationListWithNewItemsBloc<
   Future waitForNewerItemsAsyncCheck({
     Duration pollInterval = Duration.zero,
   }) async {
-
     if (isNewItemsAsyncCheckInProgress) {
       final completer = Completer();
       final timer = Timer.periodic(pollInterval, (timer) {
-        if(!isNewItemsAsyncCheckInProgress) {
+        if (!isNewItemsAsyncCheckInProgress) {
           completer.complete();
         }
       });
