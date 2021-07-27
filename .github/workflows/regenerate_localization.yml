@@ -1,6 +1,9 @@
 name: regenerate_localization
 on:
   push:
+    branches-ignore:
+      - 'master'
+      - 'develop'
     paths:
       - '**.arb'
 
