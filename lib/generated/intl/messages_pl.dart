@@ -199,10 +199,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "${Intl.plural(minutes, one: '1 min', other: '${minutes} min')}";
 
   static String m78(months) =>
-      "${Intl.plural(months, one: '1 miesiące', other: '${months} miesięcy')}";
+      "${Intl.plural(months, one: '1 mies.', other: '${months} mies.')}";
 
   static String m79(years) =>
-      "${Intl.plural(years, one: 'około roku', other: '${years} lata')}";
+      "${Intl.plural(years, one: '1 r.', other: '${years} l.')}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -301,7 +301,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_account_block_description": MessageLookupByLibrary.simpleMessage(
             "Blokowanie ukrywa użytkownika przed twoim widokiem: powiadomienia, kanały domowe i publiczne, wzmacnianie lub wzmianki o użytkowniku.\nUżytkownik nie może Cię śledzić, użytkownik nie zobaczy Twoich postów w publicznych osiach czasu i doładowaniach.\nJeśli ty i zablokowany użytkownik znajdujecie się na tym samym serwerze, zablokowany użytkownik nie będzie mógł przeglądać twoich postów w twoim profilu po zalogowaniu."),
         "app_account_domainBlock_description": MessageLookupByLibrary.simpleMessage(
-            "Nie zobaczysz powiadomień, doładowań, postów z tego serwera na kanałach publicznych i domowych.\nStracisz wszystkich obserwujących, których mogłeś mieć na tym serwerze.\nZwykle lepiej jest ustawić kilka blokad kont lub wyciszenia zamiast globalnego blokowania instancji."),
+            "Nie zobaczysz powiadomień, podbić i wpisów z tego serwera na publicznej i domowej osi.\nStracisz wszystkich obserwujących, których masz na tym serwerze.\nZwykle lepiej jest zablokować lub wyciszyć kilka kont, zamiast użyć globalnej blokady instancji."),
         "app_account_follower_title": m4,
         "app_account_following_title": m5,
         "app_account_home_tab_menu_action_account":
@@ -330,7 +330,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_account_list_privacy": MessageLookupByLibrary.simpleMessage(
             "Niektóre informacje mogą nie być dostępne z powodu ustawień prywatności"),
         "app_account_mute_description": MessageLookupByLibrary.simpleMessage(
-            "Wyciszanie ukrywa użytkownika przed twoim widokiem: kanały publiczne i domowe, wzmacnianie i wzmianki o użytkowniku.\nUżytkownik nie ma możliwości dowiedzenia się, że został wyciszony."),
+            "Wyciszanie ukrywa użytkownika przed twoim widokiem: kanały publiczne i domowe, podbijanie i wzmianki o użytkowniku.\nUżytkownik nie ma może dowiedzieć się, że został wyciszony."),
         "app_account_mute_dialog_action_clearDate":
             MessageLookupByLibrary.simpleMessage("Wyczyść datę"),
         "app_account_mute_dialog_action_mute":
@@ -633,7 +633,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Zbyt wiele działań na minutę. Poczekaj, zanim zrobisz coś ponownie."),
         "app_async_pleroma_error_throttled_dialog_title":
             MessageLookupByLibrary.simpleMessage(
-                "Zdławiony. Działanie zablokowane przez serwer."),
+                "Serwer zablokował działanie."),
         "app_async_socket_error_dialog_content":
             MessageLookupByLibrary.simpleMessage(
                 "Brak sieci, lub zdalny serwer jest niedostępny"),
@@ -1389,9 +1389,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Ktoś zgłosił twój wpis"),
         "app_push_richNotification_pleromaReport_title": m49,
         "app_push_richNotification_poll_summary":
-            MessageLookupByLibrary.simpleMessage("Sonda zmieniona"),
+            MessageLookupByLibrary.simpleMessage("Zmieniono ankietę"),
         "app_push_richNotification_poll_title":
-            MessageLookupByLibrary.simpleMessage("Sonda zmieniona"),
+            MessageLookupByLibrary.simpleMessage("Zmieniono ankietę"),
         "app_push_richNotification_reblog_summary":
             MessageLookupByLibrary.simpleMessage("Ktoś udostępnił twój wpis"),
         "app_push_richNotification_reblog_title": m50,
@@ -1785,10 +1785,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Nigdy"),
         "app_toast_handling_type_onlyWhenInstanceNotSelected":
             MessageLookupByLibrary.simpleMessage(
-                "Gdy aplikacja z kontem na pierwszym planie"),
+                "Gdy konto na pierwszym planie"),
         "app_toast_handling_type_onlyWhenInstanceSelected":
-            MessageLookupByLibrary.simpleMessage(
-                "Gdy aplikacja lub konto działają w tle"),
+            MessageLookupByLibrary.simpleMessage("Gdy konto w tle"),
         "app_toast_settings_field_handling_type_label":
             MessageLookupByLibrary.simpleMessage("Kiedy"),
         "app_toast_settings_title":
@@ -1891,8 +1890,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Udziel pozwolenia"),
         "timeago_aDay": MessageLookupByLibrary.simpleMessage("~1 d"),
         "timeago_aboutAMinute": MessageLookupByLibrary.simpleMessage("1 min"),
-        "timeago_aboutAMonth":
-            MessageLookupByLibrary.simpleMessage("~1 miesiące"),
+        "timeago_aboutAMonth": MessageLookupByLibrary.simpleMessage("~1 mies."),
         "timeago_aboutAYear": MessageLookupByLibrary.simpleMessage("~1 r"),
         "timeago_aboutAnHour": MessageLookupByLibrary.simpleMessage("~1 godz."),
         "timeago_days": m75,
