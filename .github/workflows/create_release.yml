@@ -94,10 +94,10 @@ jobs:
           working-directory: android
 
       - name: Deploy Android
-      - run: bundle exec fastlane beta
-        env:
-          PLAY_STORE_UPLOAD_KEY: ${{ secrets.PLAY_STORE_UPLOAD_KEY }}
-        working-directory: android
+       run: bundle exec fastlane beta
+         env:
+           PLAY_STORE_UPLOAD_KEY: ${{ secrets.PLAY_STORE_UPLOAD_KEY }}
+         working-directory: android
 
       - name: Setup Fastlane iOS
         uses: ruby/setup-ruby@v1
@@ -107,7 +107,7 @@ jobs:
           working-directory: ios
 
       - name: Deploy iOS
-      - run: bundle exec fastlane beta
+        run: bundle exec fastlane beta
         env:
           APPLE_ID: ${{ secrets.APPLE_ID }}
           APPLE_ITC_TEAM_ID: ${{ secrets.APPLE_ITC_TEAM_ID }}
