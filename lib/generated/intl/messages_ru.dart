@@ -711,7 +711,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_auth_instance_register_field_captcha_description":
             MessageLookupByLibrary.simpleMessage("Нажмите для перезагрузки"),
         "app_auth_instance_register_field_captcha_hint":
-            MessageLookupByLibrary.simpleMessage("Символы с картинк"),
+            MessageLookupByLibrary.simpleMessage("Символы с картинки"),
         "app_auth_instance_register_field_captcha_label":
             MessageLookupByLibrary.simpleMessage("Captcha*"),
         "app_auth_instance_register_field_email_description":
@@ -867,7 +867,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Пользователь отключил прием сообщений"),
         "app_chat_pleroma_accounts_title":
-            MessageLookupByLibrary.simpleMessage("Аккаунты чата"),
+            MessageLookupByLibrary.simpleMessage("Аккаунты в чате"),
         "app_chat_pleroma_share_title":
             MessageLookupByLibrary.simpleMessage("Поделится в чаты"),
         "app_chat_post_error_empty_dialog_title":
@@ -1424,7 +1424,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_settings_global_or_instance_use_global_label":
             MessageLookupByLibrary.simpleMessage("Глобальные настройки"),
         "app_settings_global_title":
-            MessageLookupByLibrary.simpleMessage("Настройки: глобальные"),
+            MessageLookupByLibrary.simpleMessage("Настройки: общие"),
         "app_settings_instance_title": m51,
         "app_settings_warning_notSupportedOnThisInstance_desc":
             MessageLookupByLibrary.simpleMessage(
