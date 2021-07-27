@@ -1,4 +1,4 @@
-name: unit_tests
+name: unit_tests_with_coverage
 on:
   push:
     branches:
