@@ -44,3 +44,9 @@ abstract class IPaginationListBloc<TPage extends PaginationPage<TItem?>?, TItem>
 
   Stream<PaginationListLoadingError> get loadMoreErrorStream;
 }
+
+extension IPaginationListBlocExtension on IPaginationListBloc {
+  int get itemsCount => items.length;
+
+  Stream<int> get itemsCountStream => itemsStream.map((items) => items.length);
+}

@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:fedi/analytics/app/app_analytics_bloc.dart';
 import 'package:fedi/analytics/app/app_analytics_bloc_impl.dart';
 import 'package:fedi/analytics/app/local_preferences/app_analytics_local_preference_bloc_impl.dart';

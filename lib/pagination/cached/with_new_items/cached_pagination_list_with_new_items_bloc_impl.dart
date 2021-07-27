@@ -283,57 +283,81 @@ abstract class CachedPaginationListWithNewItemsBloc<
     newItemsSubscription!.disposeWith(this);
   }
 
+  bool isNewItemsAsyncCheckInProgress = false;
+
+  Future waitForNewerItemsAsyncCheck({
+    Duration pollInterval = Duration.zero,
+  }) async {
+
+    if (isNewItemsAsyncCheckInProgress) {
+      final completer = Completer();
+      final timer = Timer.periodic(pollInterval, (timer) {
+        if(!isNewItemsAsyncCheckInProgress) {
+          completer.complete();
+        }
+      });
+
+      await completer.future;
+
+      timer.cancel();
+    }
+  }
+
   StreamSubscription<List<TItem>> createWatchNewItemsSubscription(newerItem) {
     return watchItemsNewerThanItem(newerItem)
         .skipWhile((newItems) => !newItems.isNotEmpty)
         .listen(
       (newItems) async {
-        var currentItems = items;
+        isNewItemsAsyncCheckInProgress = true;
 
-        // changed during sql request execute time
-        // we need to filter again to be sure that newerItem is no
+        try {
+          var currentItems = items;
 
-        var actuallyNewRequest = _CalculateActuallyNewRequest<TItem>(
-          newItems: newItems,
-          newerItem: newerItem,
-          currentItems: currentItems,
-        );
+          // changed during sql request execute time
+          // we need to filter again to be sure that newerItem is no
 
-        List<TItem> actuallyNew;
-        if (asyncCalculateActuallyNew) {
-          actuallyNew = await compute(
-            _calculateActuallyNew,
-            actuallyNewRequest,
+          var actuallyNewRequest = _CalculateActuallyNewRequest<TItem>(
+            newItems: newItems,
+            newerItem: newerItem,
+            currentItems: currentItems,
           );
-        } else {
-          actuallyNew = _calculateActuallyNew(
-            actuallyNewRequest,
-          );
-        }
 
-        // if newerItem already changed we shouldn't apply calculated changes
-        // because new changes coming
-        if (this.newerItem != newerItem) {
-          return;
-        }
-
-        _logger.finest(() => 'watchItemsNewerThanItem '
-            '\n'
-            '\t newItems ${newItems.length} \n'
-            '\t actuallyNew = ${actuallyNew.length}');
-
-        if (actuallyNew.isNotEmpty) {
-          if (!currentItems.isNotEmpty &&
-              mergeNewItemsImmediatelyWhenItemsIsEmpty) {
-            // merge immediately
-            if (!mergedNewItemsSubject.isClosed) {
-              mergedNewItemsSubject.add(actuallyNew);
-            }
+          List<TItem> actuallyNew;
+          if (asyncCalculateActuallyNew) {
+            actuallyNew = await compute(
+              _calculateActuallyNew,
+              actuallyNewRequest,
+            );
           } else {
-            if (!unmergedNewItemsSubject.isClosed) {
-              unmergedNewItemsSubject.add(actuallyNew);
+            actuallyNew = _calculateActuallyNew(
+              actuallyNewRequest,
+            );
+          }
+
+          // if newerItem already changed we shouldn't apply calculated changes
+          // because new changes coming
+          if (this.newerItem == newerItem) {
+            _logger.finest(() => 'watchItemsNewerThanItem '
+                '\n'
+                '\t newItems ${newItems.length} \n'
+                '\t actuallyNew = ${actuallyNew.length}');
+
+            if (actuallyNew.isNotEmpty) {
+              if (!currentItems.isNotEmpty &&
+                  mergeNewItemsImmediatelyWhenItemsIsEmpty) {
+                // merge immediately
+                if (!mergedNewItemsSubject.isClosed) {
+                  mergedNewItemsSubject.add(actuallyNew);
+                }
+              } else {
+                if (!unmergedNewItemsSubject.isClosed) {
+                  unmergedNewItemsSubject.add(actuallyNew);
+                }
+              }
             }
           }
+        } finally {
+          isNewItemsAsyncCheckInProgress = false;
         }
       },
     );
