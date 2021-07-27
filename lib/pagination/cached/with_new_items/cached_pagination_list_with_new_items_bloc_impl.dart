@@ -219,7 +219,6 @@ abstract class CachedPaginationListWithNewItemsBloc<
       ],
     );
     unmergedNewItemsSubject.add([]);
-
   }
 
   @override
