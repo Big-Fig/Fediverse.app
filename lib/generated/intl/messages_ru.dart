@@ -175,14 +175,12 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m70(min) => "Не меньше ${min}";
 
-  static String m71(maxCharactersCount) =>
-      "Максимальная длина: ${maxCharactersCount}";
+  static String m71(maxCharactersCount) => "Макс. длина: ${maxCharactersCount}";
 
   static String m72(minCharactersCount, maxCharactersCount) =>
       "Длина должна быть между ${minCharactersCount} и ${maxCharactersCount}";
 
-  static String m73(minCharactersCount) =>
-      "Минимальная длина: ${minCharactersCount}";
+  static String m73(minCharactersCount) => "Мин. длина: ${minCharactersCount}";
 
   static String m74(url) => "URL ${url} имеет неправильный формат";
 
@@ -302,7 +300,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_account_home_tab_menu_action_account":
             MessageLookupByLibrary.simpleMessage("Аккаунт"),
         "app_account_home_tab_menu_action_bookmarks":
-            MessageLookupByLibrary.simpleMessage("Закладки"),
+            MessageLookupByLibrary.simpleMessage("Избранное"),
         "app_account_home_tab_menu_action_global_settings":
             MessageLookupByLibrary.simpleMessage("Настройки: глобальные"),
         "app_account_home_tab_menu_action_instance_aboutApp":
@@ -937,7 +935,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_emoji_custom_empty": MessageLookupByLibrary.simpleMessage(
             "Данный сервер не имеет своих эмоджи"),
         "app_emoji_recent_empty":
-            MessageLookupByLibrary.simpleMessage("У вас нет последних эмоджи"),
+            MessageLookupByLibrary.simpleMessage("Вы еще не выбирали эмоджи"),
         "app_file_image_crop_title":
             MessageLookupByLibrary.simpleMessage("Обрезать как"),
         "app_filter_context_empty":
@@ -1272,7 +1270,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_poll_metadata_hideResults":
             MessageLookupByLibrary.simpleMessage("Скрыть результаты"),
         "app_poll_metadata_showResults":
-            MessageLookupByLibrary.simpleMessage("Показать результаты"),
+            MessageLookupByLibrary.simpleMessage("Результаты"),
         "app_poll_metadata_totalVotes": m41,
         "app_poll_vote": MessageLookupByLibrary.simpleMessage("Выбрать"),
         "app_push_channel_favourite_description":
@@ -1663,7 +1661,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_theme_chooser_label": MessageLookupByLibrary.simpleMessage("Тема"),
         "app_theme_type_dark": MessageLookupByLibrary.simpleMessage("Темная"),
         "app_theme_type_light": MessageLookupByLibrary.simpleMessage("Светлая"),
-        "app_theme_type_system": MessageLookupByLibrary.simpleMessage("Авто"),
+        "app_theme_type_system":
+            MessageLookupByLibrary.simpleMessage("Автоматически"),
         "app_timeline_create_field_id_label":
             MessageLookupByLibrary.simpleMessage("Уникальный идентификатор"),
         "app_timeline_create_field_title_hint":
