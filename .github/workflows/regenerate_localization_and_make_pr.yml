@@ -29,7 +29,8 @@ jobs:
       # Checkout code and get packages.
       - name: Checkout repository
         uses: actions/checkout@v2
-        ref: develop
+        with:
+          ref: develop
 
       - name: Pub Get Packages
         run: flutter pub get
