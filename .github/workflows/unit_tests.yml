@@ -6,6 +6,7 @@ on:
   pull_request:
     branches:
       - develop
+      - master
 
 jobs:
   unit-test:
@@ -40,7 +41,7 @@ jobs:
       - run: flutter pub get
 
       - name: Run Flutter unit tests
-        run: flutter test
+        run: flutter test --no-pub --no-null-assertions --no-track-widget-creation
 
       - name: Upload to codecov
         uses: codecov/codecov-action@v1
