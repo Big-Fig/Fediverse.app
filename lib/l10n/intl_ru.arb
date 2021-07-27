@@ -63,7 +63,7 @@
   "@app_share_action_shareToConversations": {},
   "app_poll_metadata_hideResults": "Скрыть результаты",
   "@app_poll_metadata_hideResults": {},
-  "app_poll_metadata_showResults": "Показать результаты",
+  "app_poll_metadata_showResults": "Результаты",
   "@app_poll_metadata_showResults": {},
   "app_poll_metadata_expires_expired": "Опрос окончен",
   "@app_poll_metadata_expires_expired": {},
