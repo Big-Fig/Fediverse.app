@@ -381,7 +381,7 @@
   "@app_notification_action_popup_title": {},
   "app_notification_action_markAsRead": "Пометить как прочитанное",
   "@app_notification_action_markAsRead": {},
-  "app_notification_action_dismiss": "Скрыть",
+  "app_notification_action_dismiss": "Удалить",
   "@app_notification_action_dismiss": {},
   "app_notification_list_newItems_action_tapToLoadNew": "{count,plural, =1{1 новое оповещение. Нажмите для загрузки.} other{{count} новых оповещений. Нажмите для загрузки.}}",
   "@app_notification_list_newItems_action_tapToLoadNew": {},
