@@ -49,11 +49,13 @@ jobs:
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v3
-
+        # we need custom tokes to trigger other workflows on PR
+        env:
+          GITHUB_TOKEN: ${{ secrets.REPO_SCOPED_TOKEN }}
         with:
           branch: weblate-promotion
           commit-message: Update report
-          signoff: false
+          signoff: true
           delete-branch: false
           title: '[Weblate] Update localization'
           body: |
