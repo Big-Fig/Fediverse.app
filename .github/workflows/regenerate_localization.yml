@@ -26,6 +26,9 @@ jobs:
 
       - run: flutter --version
 
+      - name: Pub Get Packages
+        run: flutter pub get
+
       # Checkout code and get packages.
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -36,7 +39,12 @@ jobs:
       - name: Generate dart localization code
         run: flutter pub run intl_utils:generate
 
-      - uses: EndBug/add-and-commit@v7 # You can change this to use a specific version
+      # flutter analyze will fail even if project have `info` messages
+      - name: Analyze
+        run: flutter analyze
+
+      - name: Add files and commit
+      - uses: EndBug/add-and-commit@v7
         with:
           add: '.'
           # The message for the commit

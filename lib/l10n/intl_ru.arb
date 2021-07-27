@@ -791,7 +791,7 @@
   "@timeago_days": {},
   "timeago_aboutAMonth": "~1 мес",
   "@timeago_aboutAMonth": {},
-  "timeago_months": "{months,plural, =1{1 мес} other{{months} мес}}",
+  "timeago_months": "{months,plural, =1{1 mies.} other{{months} mies.}}",
   "@timeago_months": {},
   "timeago_aboutAYear": "~1 г",
   "@timeago_aboutAYear": {},

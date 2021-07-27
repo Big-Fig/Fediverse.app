@@ -196,7 +196,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "${Intl.plural(minutes, one: '1 мин', other: '${minutes} мин')}";
 
   static String m78(months) =>
-      "${Intl.plural(months, one: '1 мес', other: '${months} мес')}";
+      "${Intl.plural(months, one: '1 mies.', other: '${months} mies.')}";
 
   static String m79(years) =>
       "${Intl.plural(years, one: '1 г', other: '${years} г')}";

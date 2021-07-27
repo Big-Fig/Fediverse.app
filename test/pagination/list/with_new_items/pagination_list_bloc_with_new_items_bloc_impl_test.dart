@@ -558,24 +558,52 @@ void main() {
       [],
     );
 
-    late var listened;
-    var subscription =
-        paginationListWithNewItemsBloc.mergedNewItemsStream.listen((newValue) {
-      listened = newValue;
-    });
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
-    expect(listened.length, 0);
+    expect(paginationListWithNewItemsBloc.itemsCount, 0);
+    await expectLater(
+      paginationListWithNewItemsBloc.itemsCountStream,
+      emits(0),
+    );
+
+    expect(paginationListWithNewItemsBloc.mergedNewItemsCount, 0);
+    await expectLater(
+      paginationListWithNewItemsBloc.mergedNewItemsCountStream,
+      emits(0),
+    );
 
     memoryPaginationListWithNewItemsBloc.addNewItems([testPaginationItem1]);
-    await Future.delayed(Duration(milliseconds: 500));
-    expect(listened.length, 0);
+
+    await memoryPaginationListWithNewItemsBloc.waitForNewerItemsAsyncCheck();
+
+    expect(paginationListWithNewItemsBloc.unmergedNewItemsCount, 1);
+    await expectLater(
+      paginationListWithNewItemsBloc.unmergedNewItemsCountStream,
+      emits(1),
+    );
+
+    expect(paginationListWithNewItemsBloc.itemsCount, 0);
+    await expectLater(
+      paginationListWithNewItemsBloc.itemsCountStream,
+      emits(0),
+    );
+
+    expect(paginationListWithNewItemsBloc.mergedNewItemsCount, 0);
+    await expectLater(
+      paginationListWithNewItemsBloc.mergedNewItemsCountStream,
+      emits(0),
+    );
 
     memoryPaginationListWithNewItemsBloc.mergeNewItems();
-    await Future.delayed(Duration(milliseconds: 1000));
 
-    expect(
-      paginationListWithNewItemsBloc.items.length,
-      1,
+    expect(paginationListWithNewItemsBloc.mergedNewItemsCount, 1);
+    await expectLater(
+      paginationListWithNewItemsBloc.mergedNewItemsCountStream,
+      emits(1),
+    );
+
+    expect(paginationListWithNewItemsBloc.itemsCount, 1);
+    await expectLater(
+      paginationListWithNewItemsBloc.itemsCountStream,
+      emits(1),
     );
 
     expect(paginationListWithNewItemsBloc.mergedNewItems.length, 1);
@@ -583,28 +611,39 @@ void main() {
       paginationListWithNewItemsBloc.mergedNewItems[0],
       testPaginationItem1,
     );
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
-    expect(listened.length, 1);
-    expect(
-      paginationListWithNewItemsBloc.mergedNewItems[0],
-      testPaginationItem1,
+
+    memoryPaginationListWithNewItemsBloc.addNewItems(
+      [testPaginationItem2, testPaginationItem3],
     );
 
-    memoryPaginationListWithNewItemsBloc
-        .addNewItems([testPaginationItem2, testPaginationItem3]);
-    await Future.delayed(Duration(milliseconds: 500));
+    await memoryPaginationListWithNewItemsBloc.waitForNewerItemsAsyncCheck();
+
+    expect(paginationListWithNewItemsBloc.itemsCount, 1);
+    await expectLater(
+      paginationListWithNewItemsBloc.itemsCountStream,
+      emits(1),
+    );
+
+    expect(paginationListWithNewItemsBloc.mergedNewItemsCount, 1);
+    await expectLater(
+      paginationListWithNewItemsBloc.mergedNewItemsCountStream,
+      emits(1),
+    );
 
     memoryPaginationListWithNewItemsBloc.mergeNewItems();
-    await Future.delayed(Duration(milliseconds: 500));
 
-    expect(
-      paginationListWithNewItemsBloc.items.length,
-      3,
+    expect(paginationListWithNewItemsBloc.mergedNewItemsCount, 3);
+    await expectLater(
+      paginationListWithNewItemsBloc.mergedNewItemsCountStream,
+      emits(3),
     );
-    expect(
-      paginationListWithNewItemsBloc.mergedNewItems.length,
-      3,
+
+    expect(paginationListWithNewItemsBloc.itemsCount, 3);
+    await expectLater(
+      paginationListWithNewItemsBloc.itemsCountStream,
+      emits(3),
     );
+
     expect(
       paginationListWithNewItemsBloc.mergedNewItems[0],
       testPaginationItem2,
@@ -617,22 +656,6 @@ void main() {
       paginationListWithNewItemsBloc.mergedNewItems[2],
       testPaginationItem1,
     );
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
-    expect(listened.length, 3);
-    expect(
-      paginationListWithNewItemsBloc.mergedNewItems[0],
-      testPaginationItem2,
-    );
-    expect(
-      paginationListWithNewItemsBloc.mergedNewItems[1],
-      testPaginationItem3,
-    );
-    expect(
-      paginationListWithNewItemsBloc.mergedNewItems[2],
-      testPaginationItem1,
-    );
-
-    await subscription.cancel();
   });
 
   test('mergedNewItems', () async {

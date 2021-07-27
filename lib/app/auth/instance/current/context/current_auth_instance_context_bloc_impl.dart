@@ -685,6 +685,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         askPushPermissionLocalPreferenceBloc:
             askPushPermissionLocalPreferenceBloc,
         pushSettingsBloc: pushSettingsBloc,
+        configService: configService,
       )..disposeWith(this);
 
       await globalProviderService.asyncInitAndRegister<

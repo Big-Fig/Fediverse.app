@@ -1,8 +1,10 @@
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
+import 'package:fedi/app/app_model.dart';
+import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/push/permission/ask/local_preferences/ask_push_permission_local_preference_bloc.dart';
 import 'package:fedi/app/push/permission/checker/push_permission_checker_bloc.dart';
 import 'package:fedi/app/push/settings/push_settings_bloc.dart';
-import 'package:easy_dispose/easy_dispose.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/push/fcm/fcm_push_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -12,6 +14,7 @@ final _logger = Logger('push_permission_checker_bloc_impl.dart');
 class PushPermissionCheckerBloc extends DisposableOwner
     implements IPushPermissionCheckerBloc {
   final IFcmPushService fcmPushService;
+  final IConfigService configService;
   final IAskPushPermissionLocalPreferenceBloc
       askPushPermissionLocalPreferenceBloc;
   final IPushSettingsBloc pushSettingsBloc;
@@ -20,6 +23,7 @@ class PushPermissionCheckerBloc extends DisposableOwner
     @required required this.fcmPushService,
     required this.askPushPermissionLocalPreferenceBloc,
     required this.pushSettingsBloc,
+    required this.configService,
   });
 
   @override
@@ -54,6 +58,7 @@ class PushPermissionCheckerBloc extends DisposableOwner
 
   @override
   bool get isNeedCheckPermission =>
+      configService.appLaunchType == AppLaunchType.normal &&
       !askPushPermissionLocalPreferenceBloc.value &&
       !pushSettingsBloc.isHaveSubscription;
 
@@ -66,6 +71,10 @@ class PushPermissionCheckerBloc extends DisposableOwner
   ) =>
       PushPermissionCheckerBloc(
         fcmPushService: IFcmPushService.of(
+          context,
+          listen: false,
+        ),
+        configService: IConfigService.of(
           context,
           listen: false,
         ),

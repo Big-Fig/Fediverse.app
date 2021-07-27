@@ -14,8 +14,10 @@ class MemoryCachedPaginationListWithNewItemsBloc<
   final StreamController<List<TItem>> newItemsStreamController =
       StreamController.broadcast();
 
-  void addNewItems(List<TItem> newItems) =>
-      newItemsStreamController.add(newItems);
+  void addNewItems(List<TItem> newItems) {
+    isNewItemsAsyncCheckInProgress = true;
+    newItemsStreamController.add(newItems);
+  }
 
   final int Function(TItem a, TItem b) comparator;
   final bool Function(TItem a, TItem b) equalTo;

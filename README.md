@@ -172,6 +172,10 @@ It is possible to decrypt it in Kotlin/Swift and it will be done in the future.
 
 ## Localization
 
+<a href="https://translate.pleroma.social/engage/fedi-app/">
+<img src="https://translate.pleroma.social/widgets/fedi-app/-/287x66-grey.png" alt="Translation status" />
+</a>
+
 App uses `flutter_localization` API bundle with Flutter SDK. 
 
 It uses `.arb` files located in `lib/l10n` and generates `.dart` classes in `/lib/generated/` folder.
@@ -180,9 +184,11 @@ After you make changes in `.arb` files you should do additional actions to regen
 * automatically via [`flutter intl`](https://plugins.jetbrains.com/plugin/13666-flutter-intl) plugin
 * manually via [`flutter intl`](https://pub.dev/packages/intl_utils) package
 
-### Completed
+### Progress
 
-* English, Russian
+<a href="https://translate.pleroma.social/engage/fedi-app/">
+<img src="https://translate.pleroma.social/widgets/fedi-app/-/multi-blue.svg" alt="Translation status" />
+</a>
 
 ### Help translate Fedi
 

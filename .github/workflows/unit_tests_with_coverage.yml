@@ -2,10 +2,10 @@ name: unit_tests
 on:
   push:
     branches:
-      - develop
+      - master
   pull_request:
     branches:
-      - develop
+      - master
 
 jobs:
   unit-test:
@@ -39,8 +39,17 @@ jobs:
 
       - run: flutter pub get
 
+      # Flutter don't include files in coverage which not touched with tests
+      # so we need to add all files manually
+      - name: Add missed classes to coverage report
+        uses: stelynx/dart-full-coverage@v1.0.5
+        with:
+          package: fedi
+          # ignore generated files & UI files until UI tests will be implemented
+          ignore: "*.g.dart, generated/*, *_widget.dart, *_page.dart, *_view_controller.dart, *_view_controller_impl.dart"
+
       - name: Run Flutter unit tests
-        run: flutter test
+        run: flutter test --coverage
 
       - name: Upload to codecov
         uses: codecov/codecov-action@v1
