@@ -329,7 +329,7 @@
   "@app_auth_instance_register_field_captcha_label": {},
   "app_auth_instance_register_field_captcha_description": "Нажмите для перезагрузки",
   "@app_auth_instance_register_field_captcha_description": {},
-  "app_auth_instance_register_field_captcha_hint": "Символы с картинк",
+  "app_auth_instance_register_field_captcha_hint": "Символы с картинки",
   "@app_auth_instance_register_field_captcha_hint": {},
   "app_auth_instance_register_field_email_label": "Email*",
   "@app_auth_instance_register_field_email_label": {},
