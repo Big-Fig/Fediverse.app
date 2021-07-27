@@ -241,7 +241,7 @@
   "@app_async_socket_error_dialog_title": {},
   "app_async_socket_error_dialog_content": "Нет соединения или сервер недоступен",
   "@app_async_socket_error_dialog_content": {},
-  "app_async_timeout_error_dialog_title": "Тайм-аут",
+  "app_async_timeout_error_dialog_title": "Нет ответа",
   "@app_async_timeout_error_dialog_title": {},
   "app_async_timeout_error_dialog_content": "Нет соединения или сервер недоступен",
   "@app_async_timeout_error_dialog_content": {},
