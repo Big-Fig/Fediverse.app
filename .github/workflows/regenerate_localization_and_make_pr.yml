@@ -41,7 +41,7 @@ jobs:
         run: flutter pub global activate intl_utils
 
       - name: Generate dart localization code
-        run: fvm flutter pub global run intl_utils:generate
+        run: flutter pub global run intl_utils:generate
 
       - name: Create Pull Request
         id: cpr
