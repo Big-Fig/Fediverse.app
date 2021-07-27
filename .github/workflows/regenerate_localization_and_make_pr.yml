@@ -26,6 +26,10 @@ jobs:
 
       - run: flutter --version
 
+      # Checkout code and get packages.
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
       - name: Pub Get Packages
         run: flutter pub get
 
