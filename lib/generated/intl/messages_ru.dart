@@ -506,7 +506,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_account_my_edit_unsaved_dialog_action_discard":
             MessageLookupByLibrary.simpleMessage("Удалить изменения"),
         "app_account_my_edit_unsaved_dialog_title":
-            MessageLookupByLibrary.simpleMessage("Не сохраненные данные"),
+            MessageLookupByLibrary.simpleMessage("Изменения не сохранены"),
         "app_account_my_endorsement_title":
             MessageLookupByLibrary.simpleMessage("Рекомендации"),
         "app_account_my_featuredTags_action_feature":
@@ -620,7 +620,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Слишком много операций за минуту. Пожалуйста подождите."),
         "app_async_pleroma_error_throttled_dialog_title":
             MessageLookupByLibrary.simpleMessage(
-                "Сервер заблокировал операцию."),
+                "Заблокировано. Слишком много операций."),
         "app_async_socket_error_dialog_content":
             MessageLookupByLibrary.simpleMessage(
                 "Нет соединения или сервер недоступен"),
@@ -630,7 +630,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Нет соединения или сервер недоступен"),
         "app_async_timeout_error_dialog_title":
-            MessageLookupByLibrary.simpleMessage("Тайм-аут"),
+            MessageLookupByLibrary.simpleMessage("Нет ответа"),
         "app_auth_instance_chooser_action_addInstance":
             MessageLookupByLibrary.simpleMessage("Добавить аккаунт"),
         "app_auth_instance_current_context_loading_cantLoad_action_chooseDifferentAccount":
@@ -663,7 +663,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_auth_instance_join_fail_dialog_content": m14,
         "app_auth_instance_join_fail_dialog_title":
             MessageLookupByLibrary.simpleMessage(
-                "Невозможно поддключится к серверу"),
+                "Невозможно подключится к серверу"),
         "app_auth_instance_join_field_host_helper":
             MessageLookupByLibrary.simpleMessage("Pleroma или Mastodon сервер"),
         "app_auth_instance_join_invitesOnly_dialog_content":
