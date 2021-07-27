@@ -29,6 +29,7 @@ jobs:
       # Checkout code and get packages.
       - name: Checkout repository
         uses: actions/checkout@v2
+        ref: develop
 
       - name: Pub Get Packages
         run: flutter pub get
@@ -43,13 +44,19 @@ jobs:
       - name: Generate dart localization code
         run: flutter pub global run intl_utils:generate
 
+      - name: Reset promotion branch
+        run: |
+          git fetch origin weblate:weblate
+          git reset --hard weblate
+
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v3
+
         with:
+          branch: weblate-promotion
           commit-message: Update report
           signoff: false
-          branch: develop
           delete-branch: false
           title: '[Weblate] Update localization'
           body: |
