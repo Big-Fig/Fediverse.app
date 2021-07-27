@@ -347,7 +347,7 @@
   "@app_chat_pleroma_share_title": {},
   "app_chat_list_newItems_action_tapToLoadNew": "{count,plural, =1{1 новый чат. Нажмите для загрузки.} other{{count} новых чатов. Нажмите для загрузки.}}",
   "@app_chat_list_newItems_action_tapToLoadNew": {},
-  "app_chat_pleroma_accounts_title": "Аккаунты чата",
+  "app_chat_pleroma_accounts_title": "Аккаунты в чате",
   "@app_chat_pleroma_accounts_title": {},
   "app_chat_preview_you": "Вы: {message}",
   "@app_chat_preview_you": {},
