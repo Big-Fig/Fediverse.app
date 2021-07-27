@@ -41,7 +41,7 @@ jobs:
       - run: flutter pub get
 
       - name: Run Flutter unit tests
-        run: flutter test --no-pub --no-null-assertions --no-track-widget-creation
+        run: flutter test --no-pub --no-null-assertions --no-track-widget-creation --no-test-assets -j 10
 
       - name: Upload to codecov
         uses: codecov/codecov-action@v1
