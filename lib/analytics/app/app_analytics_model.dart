@@ -34,8 +34,6 @@ class AppAnalyticsData implements IJsonObject {
 
   AppAnalyticsData copyWith({
     int? appOpenedCount,
-    bool? isAppRated,
-    bool? isHandlingCrashlyticsAsked,
   }) =>
       AppAnalyticsData(
         appOpenedCount: appOpenedCount ?? this.appOpenedCount,
