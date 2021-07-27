@@ -193,7 +193,7 @@
   "@app_media_upload_failed_notification_exceedSize_content": {},
   "app_account_my_edit_action_save": "Сохранить",
   "@app_account_my_edit_action_save": {},
-  "app_account_my_edit_unsaved_dialog_title": "Не сохраненные данные",
+  "app_account_my_edit_unsaved_dialog_title": "Изменения не сохраненны",
   "@app_account_my_edit_unsaved_dialog_title": {},
   "app_account_my_edit_unsaved_dialog_action_discard": "Удалить изменения",
   "@app_account_my_edit_unsaved_dialog_action_discard": {},
