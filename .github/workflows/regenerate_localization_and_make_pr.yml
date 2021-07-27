@@ -39,16 +39,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Reset weblate branch
+        run: |
+          git fetch origin weblate:weblate
+          git reset --hard weblate
+
       - name: Install intl_utils
         run: flutter pub global activate intl_utils
 
       - name: Generate dart localization code
         run: flutter pub global run intl_utils:generate
-
-      - name: Reset promotion branch
-        run: |
-          git fetch origin weblate:weblate
-          git reset --hard weblate
 
       - name: Create Pull Request
         id: cpr
