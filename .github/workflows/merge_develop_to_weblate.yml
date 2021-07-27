@@ -4,15 +4,13 @@ on:
     branches:
       - 'develop'
 jobs:
-  sync-branch:
+  merge-branch:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-
-      - name: Merge develop -> weblate
-        uses: devmasx/merge-branch@v1.3.1
+      - uses: actions/checkout@v2
+      - uses: everlytic/branch-merge@1.1.2
         with:
-          type: now
-          from_branch: development
-          target_branch: weblate
           github_token: ${{ github.token }}
+          source_ref: 'develop'
+          target_branch: 'weblate'
+          commit_message_template: '[Automated] Merged {source_ref} into target {target_branch}'
