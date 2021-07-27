@@ -68,43 +68,35 @@ class MockIPleromaApiChatService extends _i1.Mock
   bool get isPleroma =>
       (super.noSuchMethod(Invocation.getter(#isPleroma), returnValue: false)
           as bool);
-
   @override
   bool get isMastodon =>
       (super.noSuchMethod(Invocation.getter(#isMastodon), returnValue: false)
           as bool);
-
   @override
   _i2.IRestService get restService =>
       (super.noSuchMethod(Invocation.getter(#restService),
           returnValue: _FakeIRestService()) as _i2.IRestService);
-
   @override
   _i8.Stream<_i9.PleromaApiState> get pleromaApiStateStream =>
       (super.noSuchMethod(Invocation.getter(#pleromaApiStateStream),
               returnValue: Stream<_i9.PleromaApiState>.empty())
           as _i8.Stream<_i9.PleromaApiState>);
-
   @override
   _i9.PleromaApiState get pleromaApiState =>
       (super.noSuchMethod(Invocation.getter(#pleromaApiState),
           returnValue: _i9.PleromaApiState.validAuth) as _i9.PleromaApiState);
-
   @override
   _i8.Stream<bool> get isConnectedStream =>
       (super.noSuchMethod(Invocation.getter(#isConnectedStream),
           returnValue: Stream<bool>.empty()) as _i8.Stream<bool>);
-
   @override
   bool get isConnected =>
       (super.noSuchMethod(Invocation.getter(#isConnected), returnValue: false)
           as bool);
-
   @override
   bool get isDisposed =>
       (super.noSuchMethod(Invocation.getter(#isDisposed), returnValue: false)
           as bool);
-
   @override
   _i8.Future<List<_i3.IPleromaApiChat>> getChats(
           {_i10.IPleromaApiPaginationRequest? pagination}) =>
@@ -113,7 +105,6 @@ class MockIPleromaApiChatService extends _i1.Mock
               returnValue: Future<List<_i3.IPleromaApiChat>>.value(
                   <_i3.IPleromaApiChat>[]))
           as _i8.Future<List<_i3.IPleromaApiChat>>);
-
   @override
   _i8.Future<List<_i3.IPleromaApiChatMessage>> getChatMessages(
           {String? chatId, _i10.IPleromaApiPaginationRequest? pagination}) =>
@@ -123,7 +114,6 @@ class MockIPleromaApiChatService extends _i1.Mock
           returnValue: Future<List<_i3.IPleromaApiChatMessage>>.value(
               <_i3.IPleromaApiChatMessage>[])) as _i8
           .Future<List<_i3.IPleromaApiChatMessage>>);
-
   @override
   _i8.Future<_i3.IPleromaApiChat> markChatAsRead(
           {String? chatId, String? lastReadChatMessageId}) =>
@@ -135,14 +125,12 @@ class MockIPleromaApiChatService extends _i1.Mock
               returnValue:
                   Future<_i3.IPleromaApiChat>.value(_FakeIPleromaApiChat()))
           as _i8.Future<_i3.IPleromaApiChat>);
-
   @override
   _i8.Future<_i3.IPleromaApiChat> getChat({String? id}) =>
       (super.noSuchMethod(Invocation.method(#getChat, [], {#id: id}),
               returnValue:
                   Future<_i3.IPleromaApiChat>.value(_FakeIPleromaApiChat()))
           as _i8.Future<_i3.IPleromaApiChat>);
-
   @override
   _i8.Future<_i3.IPleromaApiChat> getOrCreateChatByAccountId(
           {String? accountId}) =>
@@ -152,7 +140,6 @@ class MockIPleromaApiChatService extends _i1.Mock
               returnValue:
                   Future<_i3.IPleromaApiChat>.value(_FakeIPleromaApiChat()))
           as _i8.Future<_i3.IPleromaApiChat>);
-
   @override
   _i8.Future<_i3.IPleromaApiChatMessage> sendMessage(
           {String? chatId, _i3.IPleromaApiChatMessageSendData? data}) =>
@@ -161,7 +148,6 @@ class MockIPleromaApiChatService extends _i1.Mock
           returnValue: Future<_i3.IPleromaApiChatMessage>.value(
               _FakeIPleromaApiChatMessage())) as _i8
           .Future<_i3.IPleromaApiChatMessage>);
-
   @override
   _i8.Future<dynamic> deleteChatMessage(
           {String? chatMessageRemoteId, String? chatId}) =>
@@ -169,7 +155,6 @@ class MockIPleromaApiChatService extends _i1.Mock
           Invocation.method(#deleteChatMessage, [],
               {#chatMessageRemoteId: chatMessageRemoteId, #chatId: chatId}),
           returnValue: Future<dynamic>.value()) as _i8.Future<dynamic>);
-
   @override
   _i8.Future<dynamic> dispose() =>
       (super.noSuchMethod(Invocation.method(#dispose, []),
@@ -189,43 +174,35 @@ class MockIPleromaApiAuthAccountService extends _i1.Mock
   _i2.IRestService get restService =>
       (super.noSuchMethod(Invocation.getter(#restService),
           returnValue: _FakeIRestService()) as _i2.IRestService);
-
   @override
   _i8.Stream<_i9.PleromaApiState> get pleromaApiStateStream =>
       (super.noSuchMethod(Invocation.getter(#pleromaApiStateStream),
               returnValue: Stream<_i9.PleromaApiState>.empty())
           as _i8.Stream<_i9.PleromaApiState>);
-
   @override
   _i9.PleromaApiState get pleromaApiState =>
       (super.noSuchMethod(Invocation.getter(#pleromaApiState),
           returnValue: _i9.PleromaApiState.validAuth) as _i9.PleromaApiState);
-
   @override
   _i8.Stream<bool> get isConnectedStream =>
       (super.noSuchMethod(Invocation.getter(#isConnectedStream),
           returnValue: Stream<bool>.empty()) as _i8.Stream<bool>);
-
   @override
   bool get isConnected =>
       (super.noSuchMethod(Invocation.getter(#isConnected), returnValue: false)
           as bool);
-
   @override
   bool get isDisposed =>
       (super.noSuchMethod(Invocation.getter(#isDisposed), returnValue: false)
           as bool);
-
   @override
   bool get isPleroma =>
       (super.noSuchMethod(Invocation.getter(#isPleroma), returnValue: false)
           as bool);
-
   @override
   bool get isMastodon =>
       (super.noSuchMethod(Invocation.getter(#isMastodon), returnValue: false)
           as bool);
-
   @override
   _i8.Future<List<_i4.IPleromaApiAccountRelationship>>
       getRelationshipWithAccounts({List<String>? remoteAccountIds}) =>
@@ -236,7 +213,6 @@ class MockIPleromaApiAuthAccountService extends _i1.Mock
                       Future<List<_i4.IPleromaApiAccountRelationship>>.value(
                           <_i4.IPleromaApiAccountRelationship>[]))
               as _i8.Future<List<_i4.IPleromaApiAccountRelationship>>);
-
   @override
   _i8.Future<List<_i4.IPleromaApiAccount>> search(
           {String? query,
@@ -253,7 +229,6 @@ class MockIPleromaApiAuthAccountService extends _i1.Mock
               returnValue: Future<List<_i4.IPleromaApiAccount>>.value(
                   <_i4.IPleromaApiAccount>[]))
           as _i8.Future<List<_i4.IPleromaApiAccount>>);
-
   @override
   _i8.Future<List<_i12.IPleromaApiList>> getListsWithAccount(
           {String? accountRemoteId}) =>
@@ -263,7 +238,6 @@ class MockIPleromaApiAuthAccountService extends _i1.Mock
           returnValue: Future<List<_i12.IPleromaApiList>>.value(
               <_i12.IPleromaApiList>[])) as _i8
           .Future<List<_i12.IPleromaApiList>>);
-
   @override
   _i8.Future<List<_i4.IPleromaApiAccountIdentityProof>>
       getAccountIdentifyProofs({String? accountRemoteId}) => (super
@@ -275,7 +249,6 @@ class MockIPleromaApiAuthAccountService extends _i1.Mock
                       Future<List<_i4.IPleromaApiAccountIdentityProof>>.value(
                           <_i4.IPleromaApiAccountIdentityProof>[]))
           as _i8.Future<List<_i4.IPleromaApiAccountIdentityProof>>);
-
   @override
   _i8.Future<_i4.IPleromaApiAccountRelationship> followAccount(
           {String? accountRemoteId}) =>
@@ -285,7 +258,6 @@ class MockIPleromaApiAuthAccountService extends _i1.Mock
               returnValue: Future<_i4.IPleromaApiAccountRelationship>.value(
                   _FakeIPleromaApiAccountRelationship()))
           as _i8.Future<_i4.IPleromaApiAccountRelationship>);
-
   @override
   _i8.Future<_i4.IPleromaApiAccountRelationship> unFollowAccount(
           {String? accountRemoteId}) =>
@@ -295,7 +267,6 @@ class MockIPleromaApiAuthAccountService extends _i1.Mock
               returnValue: Future<_i4.IPleromaApiAccountRelationship>.value(
                   _FakeIPleromaApiAccountRelationship()))
           as _i8.Future<_i4.IPleromaApiAccountRelationship>);
-
   @override
   _i8.Future<_i4.IPleromaApiAccountRelationship> subscribeAccount(
           {String? accountRemoteId}) =>
@@ -305,7 +276,6 @@ class MockIPleromaApiAuthAccountService extends _i1.Mock
               returnValue: Future<_i4.IPleromaApiAccountRelationship>.value(
                   _FakeIPleromaApiAccountRelationship()))
           as _i8.Future<_i4.IPleromaApiAccountRelationship>);
-
   @override
   _i8.Future<_i4.IPleromaApiAccountRelationship> unSubscribeAccount(
           {String? accountRemoteId}) =>
@@ -315,7 +285,6 @@ class MockIPleromaApiAuthAccountService extends _i1.Mock
               returnValue: Future<_i4.IPleromaApiAccountRelationship>.value(
                   _FakeIPleromaApiAccountRelationship()))
           as _i8.Future<_i4.IPleromaApiAccountRelationship>);
-
   @override
   _i8.Future<_i4.IPleromaApiAccountRelationship> pinAccount(
           {String? accountRemoteId}) =>
@@ -325,7 +294,6 @@ class MockIPleromaApiAuthAccountService extends _i1.Mock
               returnValue: Future<_i4.IPleromaApiAccountRelationship>.value(
                   _FakeIPleromaApiAccountRelationship()))
           as _i8.Future<_i4.IPleromaApiAccountRelationship>);
-
   @override
   _i8.Future<_i4.IPleromaApiAccountRelationship> unPinAccount(
           {String? accountRemoteId}) =>
@@ -335,7 +303,6 @@ class MockIPleromaApiAuthAccountService extends _i1.Mock
               returnValue: Future<_i4.IPleromaApiAccountRelationship>.value(
                   _FakeIPleromaApiAccountRelationship()))
           as _i8.Future<_i4.IPleromaApiAccountRelationship>);
-
   @override
   _i8.Future<_i4.IPleromaApiAccountRelationship> muteAccount(
           {String? accountRemoteId,
@@ -350,7 +317,6 @@ class MockIPleromaApiAuthAccountService extends _i1.Mock
               returnValue: Future<_i4.IPleromaApiAccountRelationship>.value(
                   _FakeIPleromaApiAccountRelationship()))
           as _i8.Future<_i4.IPleromaApiAccountRelationship>);
-
   @override
   _i8.Future<_i4.IPleromaApiAccountRelationship> unMuteAccount(
           {String? accountRemoteId}) =>
@@ -360,7 +326,6 @@ class MockIPleromaApiAuthAccountService extends _i1.Mock
               returnValue: Future<_i4.IPleromaApiAccountRelationship>.value(
                   _FakeIPleromaApiAccountRelationship()))
           as _i8.Future<_i4.IPleromaApiAccountRelationship>);
-
   @override
   _i8.Future<_i4.IPleromaApiAccountRelationship> blockAccount(
           {String? accountRemoteId}) =>
@@ -370,7 +335,6 @@ class MockIPleromaApiAuthAccountService extends _i1.Mock
               returnValue: Future<_i4.IPleromaApiAccountRelationship>.value(
                   _FakeIPleromaApiAccountRelationship()))
           as _i8.Future<_i4.IPleromaApiAccountRelationship>);
-
   @override
   _i8.Future<_i4.IPleromaApiAccountRelationship> unBlockAccount(
           {String? accountRemoteId}) =>
@@ -380,17 +344,14 @@ class MockIPleromaApiAuthAccountService extends _i1.Mock
               returnValue: Future<_i4.IPleromaApiAccountRelationship>.value(
                   _FakeIPleromaApiAccountRelationship()))
           as _i8.Future<_i4.IPleromaApiAccountRelationship>);
-
   @override
   _i8.Future<dynamic> blockDomain({String? domain}) => (super.noSuchMethod(
       Invocation.method(#blockDomain, [], {#domain: domain}),
       returnValue: Future<dynamic>.value()) as _i8.Future<dynamic>);
-
   @override
   _i8.Future<dynamic> unBlockDomain({String? domain}) => (super.noSuchMethod(
       Invocation.method(#unBlockDomain, [], {#domain: domain}),
       returnValue: Future<dynamic>.value()) as _i8.Future<dynamic>);
-
   @override
   _i8.Future<dynamic> reportAccount(
           {_i4.IPleromaApiAccountReportRequest? reportRequest}) =>
@@ -398,7 +359,6 @@ class MockIPleromaApiAuthAccountService extends _i1.Mock
           Invocation.method(
               #reportAccount, [], {#reportRequest: reportRequest}),
           returnValue: Future<dynamic>.value()) as _i8.Future<dynamic>);
-
   @override
   _i8.Future<List<_i4.IPleromaApiAccount>> getAccountFollowings(
           {String? accountRemoteId,
@@ -413,7 +373,6 @@ class MockIPleromaApiAuthAccountService extends _i1.Mock
               returnValue: Future<List<_i4.IPleromaApiAccount>>.value(
                   <_i4.IPleromaApiAccount>[]))
           as _i8.Future<List<_i4.IPleromaApiAccount>>);
-
   @override
   _i8.Future<List<_i4.IPleromaApiAccount>> getAccountFollowers(
           {String? accountRemoteId,
@@ -428,7 +387,6 @@ class MockIPleromaApiAuthAccountService extends _i1.Mock
               returnValue: Future<List<_i4.IPleromaApiAccount>>.value(
                   <_i4.IPleromaApiAccount>[]))
           as _i8.Future<List<_i4.IPleromaApiAccount>>);
-
   @override
   _i8.Future<List<_i13.IPleromaApiStatus>> getAccountStatuses(
           {String? accountRemoteId,
@@ -455,7 +413,6 @@ class MockIPleromaApiAuthAccountService extends _i1.Mock
               returnValue: Future<List<_i13.IPleromaApiStatus>>.value(
                   <_i13.IPleromaApiStatus>[]))
           as _i8.Future<List<_i13.IPleromaApiStatus>>);
-
   @override
   _i8.Future<List<_i13.IPleromaApiStatus>> getAccountFavouritedStatuses(
           {String? accountRemoteId,
@@ -466,7 +423,6 @@ class MockIPleromaApiAuthAccountService extends _i1.Mock
               returnValue: Future<List<_i13.IPleromaApiStatus>>.value(
                   <_i13.IPleromaApiStatus>[]))
           as _i8.Future<List<_i13.IPleromaApiStatus>>);
-
   @override
   _i8.Future<_i4.IPleromaApiAccount> getAccount(
           {String? accountRemoteId, bool? withRelationship}) =>
@@ -478,7 +434,6 @@ class MockIPleromaApiAuthAccountService extends _i1.Mock
               returnValue: Future<_i4.IPleromaApiAccount>.value(
                   _FakeIPleromaApiAccount()))
           as _i8.Future<_i4.IPleromaApiAccount>);
-
   @override
   _i8.Future<dynamic> dispose() =>
       (super.noSuchMethod(Invocation.method(#dispose, []),
@@ -498,66 +453,53 @@ class MockIMyAccountBloc extends _i1.Mock implements _i14.IMyAccountBloc {
       (super.noSuchMethod(Invocation.getter(#myAccountStream),
               returnValue: Stream<_i15.IMyAccount?>.empty())
           as _i8.Stream<_i15.IMyAccount?>);
-
   @override
   _i5.AuthInstance get instance =>
       (super.noSuchMethod(Invocation.getter(#instance),
           returnValue: _FakeAuthInstance()) as _i5.AuthInstance);
-
   @override
   bool get isLocalCacheExist =>
       (super.noSuchMethod(Invocation.getter(#isLocalCacheExist),
           returnValue: false) as bool);
-
   @override
   _i6.IAccount get account => (super.noSuchMethod(Invocation.getter(#account),
       returnValue: _FakeIAccount()) as _i6.IAccount);
-
   @override
   _i8.Stream<_i6.IAccount> get accountStream => (super.noSuchMethod(
       Invocation.getter(#accountStream),
       returnValue: Stream<_i6.IAccount>.empty()) as _i8.Stream<_i6.IAccount>);
-
   @override
   _i16.InstanceLocation get instanceLocation =>
       (super.noSuchMethod(Invocation.getter(#instanceLocation),
           returnValue: _i16.InstanceLocation.local) as _i16.InstanceLocation);
-
   @override
   _i17.DisposeOrder get disposeOrder =>
       (super.noSuchMethod(Invocation.getter(#disposeOrder),
           returnValue: _i17.DisposeOrder.lifo) as _i17.DisposeOrder);
-
   @override
   bool get catchExceptions => (super
           .noSuchMethod(Invocation.getter(#catchExceptions), returnValue: false)
       as bool);
-
   @override
   List<_i18.IDisposable> get disposables =>
       (super.noSuchMethod(Invocation.getter(#disposables),
           returnValue: <_i18.IDisposable>[]) as List<_i18.IDisposable>);
-
   @override
   bool get isDisposed =>
       (super.noSuchMethod(Invocation.getter(#isDisposed), returnValue: false)
           as bool);
-
   @override
   set isDisposed(bool? _isDisposed) =>
       super.noSuchMethod(Invocation.setter(#isDisposed, _isDisposed),
           returnValueForMissingStub: null);
-
   @override
   bool checkAccountIsMe(_i6.IAccount? account) =>
       (super.noSuchMethod(Invocation.method(#checkAccountIsMe, [account]),
           returnValue: false) as bool);
-
   @override
   bool checkIsStatusFromMe(_i19.IStatus? status) =>
       (super.noSuchMethod(Invocation.method(#checkIsStatusFromMe, [status]),
           returnValue: false) as bool);
-
   @override
   _i8.Future<dynamic> updateMyAccountByMyPleromaAccount(
           _i20.IPleromaApiMyAccount? pleromaMyAccount) =>
@@ -565,37 +507,31 @@ class MockIMyAccountBloc extends _i1.Mock implements _i14.IMyAccountBloc {
           Invocation.method(
               #updateMyAccountByMyPleromaAccount, [pleromaMyAccount]),
           returnValue: Future<dynamic>.value()) as _i8.Future<dynamic>);
-
   @override
   _i8.Future<dynamic> updateMyAccountByMyAccount(_i15.IMyAccount? myAccount) =>
       (super.noSuchMethod(
           Invocation.method(#updateMyAccountByMyAccount, [myAccount]),
           returnValue: Future<dynamic>.value()) as _i8.Future<dynamic>);
-
   @override
   _i8.Future<dynamic> decreaseFollowingRequestCount() =>
       (super.noSuchMethod(Invocation.method(#decreaseFollowingRequestCount, []),
           returnValue: Future<dynamic>.value()) as _i8.Future<dynamic>);
-
   @override
   bool checkIsChatMessageFromMe(_i21.IChatMessage? chatMessage) => (super
       .noSuchMethod(Invocation.method(#checkIsChatMessageFromMe, [chatMessage]),
           returnValue: false) as bool);
-
   @override
   _i8.Future<_i4.IPleromaApiAccountRelationship> toggleFollow() =>
       (super.noSuchMethod(Invocation.method(#toggleFollow, []),
               returnValue: Future<_i4.IPleromaApiAccountRelationship>.value(
                   _FakeIPleromaApiAccountRelationship()))
           as _i8.Future<_i4.IPleromaApiAccountRelationship>);
-
   @override
   _i8.Future<_i4.IPleromaApiAccountRelationship> toggleMute() =>
       (super.noSuchMethod(Invocation.method(#toggleMute, []),
               returnValue: Future<_i4.IPleromaApiAccountRelationship>.value(
                   _FakeIPleromaApiAccountRelationship()))
           as _i8.Future<_i4.IPleromaApiAccountRelationship>);
-
   @override
   _i8.Future<_i4.IPleromaApiAccountRelationship> mute(
           {bool? notifications, Duration? duration}) =>
@@ -605,78 +541,66 @@ class MockIMyAccountBloc extends _i1.Mock implements _i14.IMyAccountBloc {
           returnValue: Future<_i4.IPleromaApiAccountRelationship>.value(
               _FakeIPleromaApiAccountRelationship())) as _i8
           .Future<_i4.IPleromaApiAccountRelationship>);
-
   @override
   _i8.Future<_i4.IPleromaApiAccountRelationship> unMute() =>
       (super.noSuchMethod(Invocation.method(#unMute, []),
               returnValue: Future<_i4.IPleromaApiAccountRelationship>.value(
                   _FakeIPleromaApiAccountRelationship()))
           as _i8.Future<_i4.IPleromaApiAccountRelationship>);
-
   @override
   _i8.Future<_i4.IPleromaApiAccountRelationship> subscribe() =>
       (super.noSuchMethod(Invocation.method(#subscribe, []),
               returnValue: Future<_i4.IPleromaApiAccountRelationship>.value(
                   _FakeIPleromaApiAccountRelationship()))
           as _i8.Future<_i4.IPleromaApiAccountRelationship>);
-
   @override
   _i8.Future<_i4.IPleromaApiAccountRelationship> unSubscribe() =>
       (super.noSuchMethod(Invocation.method(#unSubscribe, []),
               returnValue: Future<_i4.IPleromaApiAccountRelationship>.value(
                   _FakeIPleromaApiAccountRelationship()))
           as _i8.Future<_i4.IPleromaApiAccountRelationship>);
-
   @override
   _i8.Future<_i4.IPleromaApiAccountRelationship> togglePin() =>
       (super.noSuchMethod(Invocation.method(#togglePin, []),
               returnValue: Future<_i4.IPleromaApiAccountRelationship>.value(
                   _FakeIPleromaApiAccountRelationship()))
           as _i8.Future<_i4.IPleromaApiAccountRelationship>);
-
   @override
   _i8.Future<_i4.IPleromaApiAccountRelationship> toggleBlock() =>
       (super.noSuchMethod(Invocation.method(#toggleBlock, []),
               returnValue: Future<_i4.IPleromaApiAccountRelationship>.value(
                   _FakeIPleromaApiAccountRelationship()))
           as _i8.Future<_i4.IPleromaApiAccountRelationship>);
-
   @override
   _i8.Future<_i4.IPleromaApiAccountRelationship> toggleSubscribe() =>
       (super.noSuchMethod(Invocation.method(#toggleSubscribe, []),
               returnValue: Future<_i4.IPleromaApiAccountRelationship>.value(
                   _FakeIPleromaApiAccountRelationship()))
           as _i8.Future<_i4.IPleromaApiAccountRelationship>);
-
   @override
   _i8.Future<_i4.IPleromaApiAccountRelationship> toggleBlockDomain() =>
       (super.noSuchMethod(Invocation.method(#toggleBlockDomain, []),
               returnValue: Future<_i4.IPleromaApiAccountRelationship>.value(
                   _FakeIPleromaApiAccountRelationship()))
           as _i8.Future<_i4.IPleromaApiAccountRelationship>);
-
   @override
   _i8.Future<dynamic> refreshFromNetwork({bool? isNeedPreFetchRelationship}) =>
       (super.noSuchMethod(
           Invocation.method(#refreshFromNetwork, [],
               {#isNeedPreFetchRelationship: isNeedPreFetchRelationship}),
           returnValue: Future<dynamic>.value()) as _i8.Future<dynamic>);
-
   @override
   void addDisposable(_i18.IDisposable? disposable) =>
       super.noSuchMethod(Invocation.method(#addDisposable, [disposable]),
           returnValueForMissingStub: null);
-
   @override
   void addDisposables(Iterable<_i18.IDisposable>? disposables) =>
       super.noSuchMethod(Invocation.method(#addDisposables, [disposables]),
           returnValueForMissingStub: null);
-
   @override
   _i8.Future<dynamic> performDispose() =>
       (super.noSuchMethod(Invocation.method(#performDispose, []),
           returnValue: Future<dynamic>.value()) as _i8.Future<dynamic>);
-
   @override
   _i8.Future<dynamic> dispose() =>
       (super.noSuchMethod(Invocation.method(#dispose, []),
