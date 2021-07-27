@@ -44,22 +44,22 @@ jobs:
         run: flutter analyze
 
       - name: Create Pull Request
-          id: cpr
-          uses: peter-evans/create-pull-request@v3
-          with:
-            commit-message: Update report
-            signoff: false
-            branch: develop
-            delete-branch: false
-            title: '[Weblate] Update localization'
-            body: |
-              Update localization after weblate push
-            labels: |
-              localization
-            team-reviewers: |
-              owners
-              maintainers
-            draft: false
+        id: cpr
+        uses: peter-evans/create-pull-request@v3
+        with:
+          commit-message: Update report
+          signoff: false
+          branch: develop
+          delete-branch: false
+          title: '[Weblate] Update localization'
+          body: |
+            Update localization after weblate push
+          labels: |
+            localization
+          team-reviewers: |
+            owners
+            maintainers
+          draft: false
 
       - name: Check outputs
           run: |
