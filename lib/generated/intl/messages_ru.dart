@@ -937,7 +937,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_emoji_recent_empty":
             MessageLookupByLibrary.simpleMessage("Вы еще не выбирали эмоджи"),
         "app_file_image_crop_title":
-            MessageLookupByLibrary.simpleMessage("Обрезать как"),
+            MessageLookupByLibrary.simpleMessage("Обрезать"),
         "app_filter_context_empty":
             MessageLookupByLibrary.simpleMessage("Ничего не выбрано"),
         "app_filter_context_type_account":
