@@ -35,10 +35,6 @@ jobs:
       - name: Pub Get Packages
         run: flutter pub get
 
-      # Checkout code and get packages.
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
       - name: Reset weblate branch
         run: |
           git fetch origin weblate:weblate
