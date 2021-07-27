@@ -41,7 +41,7 @@ jobs:
         run: flutter pub global activate intl_utils
 
       - name: Generate dart localization code
-        run: flutter pub run intl_utils:generate
+        run: fvm flutter pub global run intl_utils:generate
 
       # flutter analyze will fail even if project have `info` messages
       - name: Analyze
