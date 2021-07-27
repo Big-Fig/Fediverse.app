@@ -1222,7 +1222,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_media_upload_progress":
             MessageLookupByLibrary.simpleMessage("Загрузка файлов на сервер"),
         "app_notification_action_dismiss":
-            MessageLookupByLibrary.simpleMessage("Скрыть"),
+            MessageLookupByLibrary.simpleMessage("Удалить"),
         "app_notification_action_markAsRead":
             MessageLookupByLibrary.simpleMessage("Пометить как прочитанное"),
         "app_notification_action_popup_title":
