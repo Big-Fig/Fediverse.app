@@ -1,12 +1,38 @@
-import 'dart:io';
-
 import 'package:fedi/app/hive/hive_service_impl.dart';
 import 'package:fedi/json/json_model.dart';
-import 'package:fedi/local_preferences/hive_local_preferences_service_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/hive.dart';
+import 'package:hive/src/backend/storage_backend.dart';
+import 'package:hive/src/box/box_impl.dart';
+import 'package:hive/src/box/change_notifier.dart';
+import 'package:hive/src/box/keystore.dart';
+import 'package:hive/src/hive_impl.dart';
+import 'package:mockito/annotations.dart';
+
+import 'hive_test_helper.mocks.dart';
+
+BoxImpl _getBox({
+  String? name,
+  HiveImpl? hive,
+  Keystore? keystore,
+  CompactionStrategy? cStrategy,
+  StorageBackend? backend,
+}) {
+  var box = BoxImpl(
+    hive ?? HiveImpl(),
+    name ?? 'testBox',
+    null,
+    cStrategy ?? (total, deleted) => false,
+    backend ?? MockStorageBackend(),
+  );
+  box.keystore = keystore ?? Keystore(box, ChangeNotifier(), null);
+  return box;
+}
 
 // ignore_for_file: no-magic-number, avoid-late-keyword
+@GenerateMocks([], customMocks: [
+  MockSpec<StorageBackend>(returnNullOnMissingStub: true),
+])
 class HiveTestHelper {
   static void testAdapter<T>(T Function() adapterCreator) {
     var adapter1 = adapterCreator();
@@ -23,13 +49,8 @@ class HiveTestHelper {
         testHiveObjectCreator, {
     bool skipHiveInit = false,
   }) async {
-    late HiveLocalPreferencesService hiveLocalPreferencesService;
-
-    var systemTemp = Directory.systemTemp;
-
     if (!skipHiveInit) {
       HiveService.registerAdapters();
-      Hive.init(systemTemp.path);
     }
 
     var obj = testHiveObjectCreator(seed: 'seed1');
@@ -37,30 +58,12 @@ class HiveTestHelper {
     var uniquePrefix = obj.toString().substring(0, 3) + obj.hashCode.toString();
     var boxName = 'testHiveSaveAndLoad' + uniquePrefix;
 
-    hiveLocalPreferencesService = HiveLocalPreferencesService(
-      boxName: boxName,
-    );
-    await hiveLocalPreferencesService.performAsyncInit();
-
     var key = 'key';
-    await hiveLocalPreferencesService.setObjectPreference(key, obj);
+    var box = _getBox(name: boxName);
+    await box.put(key, obj);
 
-    await hiveLocalPreferencesService.dispose();
-    await Hive.close();
-
-    hiveLocalPreferencesService = HiveLocalPreferencesService(
-      boxName: boxName,
-    );
-    await hiveLocalPreferencesService.performAsyncInit();
-
-    var objFromHive = hiveLocalPreferencesService.getObjectPreference<T>(
-      key,
-      // hack, code is unused inside
-      (jsonData) => obj,
-    );
+    var objFromHive = box.get(key);
 
     expect(obj, objFromHive);
-
-    await hiveLocalPreferencesService.clearAllValuesAndDeleteStorage();
   }
 }
