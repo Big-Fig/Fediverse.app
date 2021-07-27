@@ -1,0 +1,16 @@
+name: merge_develop_to_weblate
+on:
+  push:
+    branches:
+      - 'develop'
+jobs:
+  merge-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: everlytic/branch-merge@1.1.2
+        with:
+          github_token: ${{ github.token }}
+          source_ref: 'develop'
+          target_branch: 'weblate'
+          commit_message_template: '[Automated] Merged {source_ref} into target {target_branch}'

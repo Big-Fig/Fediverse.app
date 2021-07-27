@@ -1,10 +1,8 @@
-name: regenerate_localization
+name: regenerate_localization_and_make_pr
 on:
   push:
     branches:
       - 'weblate'
-    paths:
-      - '**.arb'
 
 jobs:
   unit-test:
@@ -45,14 +43,25 @@ jobs:
       - name: Analyze
         run: flutter analyze
 
-      - name: Add files and commit
-        uses: EndBug/add-and-commit@v7
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v3
         with:
-          add: '.'
-          # The message for the commit
-          # Default: 'Commit from GitHub Actions (name of the workflow)'
-          message: 'Regenerate localization after *.arb file changes'
+          commit-message: Update report
+          signoff: false
+          branch: develop
+          delete-branch: false
+          title: '[Weblate] Update localization'
+          body: |
+            Update localization after weblate push
+          labels: |
+            localization
+          team-reviewers: |
+            owners
+            maintainers
+          draft: false
 
-          # Whether to push the commit and, if any, its tags to the repo. It can also be used to set the git push arguments (see the paragraph below for more info)
-          # Default: true
-          push: true
+      - name: Check outputs
+          run: |
+            echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
+            echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
