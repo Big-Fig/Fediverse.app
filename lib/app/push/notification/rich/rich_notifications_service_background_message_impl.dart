@@ -644,7 +644,7 @@ Future<void> _createPushNotification({
     localizationLocale: localizationLocale,
   );
   var localizationContext = await S.load(
-      locale.toLocale(),
+    locale.toLocale(),
   );
 
   var mediaAttachment = calculatePleromaApiNotificationPushMediaAttachment(
