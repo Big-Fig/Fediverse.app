@@ -7,7 +7,7 @@ import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
-import 'package:fedi/date_time/date_time_dynamic_time_ago_widget.dart';
+import 'package:fedi/date_time/timeago/date_time_dynamic_timeago_widget.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/mastodon/api/poll/mastodon_api_poll_model.dart';
 import 'package:fedi/pleroma/api/poll/pleroma_api_poll_model.dart';
@@ -258,12 +258,17 @@ class _PollMetadataExpiresAtNotExpiredWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var poll = Provider.of<IPleromaApiPoll>(context);
 
-    return DateTimeDynamicTimeAgoWidget(
-      dateTime: poll.expiresAt,
-      textStyle: IFediUiTextTheme.of(context).mediumShortGrey,
-      customTextBuilder: (String timeAgoString) =>
-          S.of(context).app_poll_metadata_expires_notExpired(timeAgoString),
-    );
+    var expiresAt = poll.expiresAt;
+    if (expiresAt != null) {
+      return DateTimeDynamicTimeagoWidget(
+        dateTime: expiresAt,
+        textStyle: IFediUiTextTheme.of(context).mediumShortGrey,
+        customTextBuilder: (String timeAgoString) =>
+            S.of(context).app_poll_metadata_expires_notExpired(timeAgoString),
+      );
+    } else {
+      return const SizedBox.shrink();
+    }
   }
 }
 

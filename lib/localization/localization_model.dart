@@ -30,14 +30,18 @@ class LocalizationLocale implements IJsonObject {
     return result;
   }
 
-  static Locale calculateLocaleBaseOnLocalizationLocaleOrPlatformLocale({
+  Locale toLocale() => Locale(languageCode, countryCode);
+
+  static LocalizationLocale
+      calculateLocaleBaseOnLocalizationLocaleOrPlatformLocale({
     LocalizationLocale? localizationLocale,
   }) {
-    Locale locale;
+    LocalizationLocale locale;
     if (localizationLocale != null) {
-      locale = Locale(
-        localizationLocale.languageCode,
-        localizationLocale.countryCode,
+      locale = LocalizationLocale(
+        languageCode: localizationLocale.languageCode,
+        countryCode: localizationLocale.countryCode,
+        scriptCode: localizationLocale.scriptCode,
       );
     } else {
       var localeName = Platform.localeName;
@@ -45,9 +49,17 @@ class LocalizationLocale implements IJsonObject {
         var split = localeName.split('_');
         var languageCode = split[0];
         var countryCode = split[1];
-        locale = Locale(languageCode, countryCode);
+        locale = LocalizationLocale(
+          languageCode: languageCode,
+          countryCode: countryCode,
+          scriptCode: null,
+        );
       } else {
-        locale = Locale(localeName);
+        locale = LocalizationLocale(
+          languageCode: localeName,
+          countryCode: null,
+          scriptCode: null,
+        );
       }
     }
 

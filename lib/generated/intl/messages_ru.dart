@@ -184,21 +184,6 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m74(url) => "URL ${url} имеет неправильный формат";
 
-  static String m75(days) =>
-      "${Intl.plural(days, one: '1 д', other: '${days} д')}";
-
-  static String m76(hours) =>
-      "${Intl.plural(hours, one: '1 ч', other: '${hours} ч')}";
-
-  static String m77(minutes) =>
-      "${Intl.plural(minutes, one: '1 мин', other: '${minutes} мин')}";
-
-  static String m78(months) =>
-      "${Intl.plural(months, one: '1 mies.', other: '${months} mies.')}";
-
-  static String m79(years) =>
-      "${Intl.plural(years, one: '1 г', other: '${years} г')}";
-
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "app_about_field_changelog_label":
@@ -1868,19 +1853,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "pagination_list_empty":
             MessageLookupByLibrary.simpleMessage("Ничего не найдено"),
         "permission_grant_action_grant":
-            MessageLookupByLibrary.simpleMessage("Разрешить"),
-        "timeago_aDay": MessageLookupByLibrary.simpleMessage("~1 д"),
-        "timeago_aboutAMinute": MessageLookupByLibrary.simpleMessage("1 мин"),
-        "timeago_aboutAMonth": MessageLookupByLibrary.simpleMessage("~1 мес"),
-        "timeago_aboutAYear": MessageLookupByLibrary.simpleMessage("~1 г"),
-        "timeago_aboutAnHour": MessageLookupByLibrary.simpleMessage("~1 ч"),
-        "timeago_days": m75,
-        "timeago_hours": m76,
-        "timeago_lessThanOneMinute":
-            MessageLookupByLibrary.simpleMessage("сейчас"),
-        "timeago_minutes": m77,
-        "timeago_months": m78,
-        "timeago_wordSeparator": MessageLookupByLibrary.simpleMessage(" "),
-        "timeago_years": m79
+            MessageLookupByLibrary.simpleMessage("Разрешить")
       };
 }

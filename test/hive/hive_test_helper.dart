@@ -26,6 +26,7 @@ BoxImpl _getBox({
     backend ?? MockStorageBackend(),
   );
   box.keystore = keystore ?? Keystore(box, ChangeNotifier(), null);
+
   return box;
 }
 

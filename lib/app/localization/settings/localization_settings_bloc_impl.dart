@@ -1,13 +1,13 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/localization/settings/local_preferences/localization_settings_local_preference_bloc.dart';
 import 'package:fedi/app/localization/settings/localization_settings_bloc.dart';
 import 'package:fedi/app/localization/settings/localization_settings_model.dart';
-import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/localization/localization_model.dart';
 
 class LocalizationSettingsBloc extends DisposableOwner
     implements ILocalizationSettingsBloc {
   final ILocalizationSettingsLocalPreferenceBloc<LocalizationSettings>
-      localizationSettingsLocalPreferencesBloc;
+  localizationSettingsLocalPreferencesBloc;
 
   LocalizationSettingsBloc({
     required this.localizationSettingsLocalPreferencesBloc,
@@ -27,15 +27,15 @@ class LocalizationSettingsBloc extends DisposableOwner
   @override
   Stream<LocalizationLocale?> get localizationLocaleStream =>
       settingsDataStream.map(
-        (settings) => settings.localizationLocale,
+            (settings) => settings.localizationLocale,
       );
 
   @override
   Future changeLocalizationLocale(LocalizationLocale? value) => updateSettings(
-        LocalizationSettings(localizationLocale: value),
-        // copyWith dont set null values
-        // settingsData.copyWith(localizationLocale: value),
-      );
+    LocalizationSettings(localizationLocale: value),
+    // copyWith dont set null values
+    // settingsData.copyWith(localizationLocale: value),
+  );
 
   @override
   Future updateSettings(LocalizationSettings newSettings) async {
