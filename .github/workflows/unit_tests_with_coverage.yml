@@ -46,7 +46,7 @@ jobs:
           ignore: "*.g.dart, generated/*, *_widget.dart, *_page.dart, *_view_controller.dart, *_view_controller_impl.dart"
 
       - name: Run Flutter unit tests
-        run: flutter test --coverage --no-pub --no-null-assertions --no-track-widget-creation
+        run: flutter test --coverage --no-pub --no-null-assertions --no-track-widget-creation -j 10
 
       - name: Upload to codecov
         uses: codecov/codecov-action@v1
