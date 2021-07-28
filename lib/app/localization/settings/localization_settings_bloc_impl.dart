@@ -27,7 +27,7 @@ class LocalizationSettingsBloc extends DisposableOwner
   @override
   Stream<LocalizationLocale?> get localizationLocaleStream =>
       settingsDataStream.map(
-            (settings) => settings.localizationLocale,
+        (settings) => settings.localizationLocale,
       );
 
   @override
