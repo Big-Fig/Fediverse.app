@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - develop
-      - weblate-promotion
   pull_request:
     branches:
       - develop
