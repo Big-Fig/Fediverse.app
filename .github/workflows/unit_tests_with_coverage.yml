@@ -11,7 +11,6 @@ jobs:
     strategy:
       matrix:
         os: [ ubuntu-latest ]
-        shard: [ 0, 1 ]
     steps:
       # needed by flutter-action
       - uses: actions/setup-java@v1
@@ -37,20 +36,33 @@ jobs:
 
       - run: flutter pub get
 
-      # Flutter don't include files in coverage which not touched with tests
-      # so we need to add all files manually
-      #      - name: Add missed classes to coverage report
-      #        uses: stelynx/dart-full-coverage@v1.0.5
-      #        with:
-      #          package: fedi
-      #          # ignore generated files & UI files until UI tests will be implemented
-      #          ignore: "*.g.dart, generated/*, *_widget.dart, *_page.dart, *_view_controller.dart, *_view_controller_impl.dart"
 
       - name: Run Flutter unit tests
-        run: flutter test --coverage --no-pub --no-null-assertions --no-track-widget-creation -j 10 --total-shards 2 --shard-index ${{ matrix.shard }}
+        run: flutter test --coverage --no-pub --no-null-assertions --no-track-widget-creation -j 10 --coverage-path=coverage/lcov_test.info
+
 
       - name: Upload to codecov
         uses: codecov/codecov-action@v1
         with:
+          files:
+            coverage/lcov_test.info
           flags: unit_tests
+          fail_ci_if_error: true
+
+      #       Flutter don't include files in coverage which not touched with tests
+      #       so we need to add all files manually
+      - name: Add missed classes to coverage report
+        uses: stelynx/dart-full-coverage@v1.0.5
+        with:
+          package: fedi
+
+      - name: Run Flutter unit tests
+        run: flutter test/coverage_helper_test --coverage --no-pub --no-null-assertions --no-track-widget-creation -j 10 --coverage-path=coverage/lcov_all.info
+
+      - name: Upload to codecov
+        uses: codecov/codecov-action@v1
+        with:
+          files:
+            coverage/lcov_all.info
+          flags: all_tests
           fail_ci_if_error: true
