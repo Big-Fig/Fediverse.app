@@ -49,7 +49,8 @@ class AuthInstance extends IJsonObject {
 
   String get userAtHost => '$acct@$urlHost';
 
-  Uri get uri => Uri(scheme: urlSchema, host: urlHost);
+  // Uri get uri => Uri(scheme: urlSchema, host: urlHost);
+  Uri get uri => Uri.parse('$urlSchema://$urlHost');
 
   AuthInstance({
     required this.urlSchema,
