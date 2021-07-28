@@ -49,13 +49,17 @@ class RestService extends DisposableOwner implements IRestService {
   Future<http.Response> sendHttpRequest<T extends RestRequest, K>(
     T request,
   ) async {
-    var url = createUrl(
+    var uri = createUri(
       baseUri: baseUri,
       relativeUrlPath: request.relativeUrlPath,
       queryArgs: request.queryArgs,
     );
 
-    _logger.fine(() => 'start send $url request $request');
+    _logger.fine(
+      () => 'start send $uri '
+          'port ${uri.port} '
+          'request $request',
+    );
 
     String? body;
 
@@ -81,7 +85,7 @@ class RestService extends DisposableOwner implements IRestService {
     }
 
     _logger.fine(() => 'start sendHttpRequest \n'
-        '\t url($requestType): $url \n'
+        '\t url($requestType): $uri \n'
         '\t headers: ${request.headers} \n'
         '\t requestBodyJson: $requestBodyJson \n'
         '\t encoding: $encoding \n');
@@ -89,13 +93,13 @@ class RestService extends DisposableOwner implements IRestService {
       case RestRequestType.get:
         assert(body?.isNotEmpty != true);
         responseFuture = http.get(
-          url,
+          uri,
           headers: requestHeaders,
         );
         break;
       case RestRequestType.post:
         responseFuture = http.post(
-          url,
+          uri,
           headers: requestHeaders,
           body: requestBodyJson,
           encoding: encoding,
@@ -103,14 +107,14 @@ class RestService extends DisposableOwner implements IRestService {
         break;
       case RestRequestType.patch:
         responseFuture = http.patch(
-          url,
+          uri,
           headers: requestHeaders,
           body: requestBodyJson,
           encoding: encoding,
         );
         break;
       case RestRequestType.delete:
-        var rq = http.Request('DELETE', url);
+        var rq = http.Request('DELETE', uri);
         if (requestBodyJson?.isNotEmpty == true) {
           rq.body = requestBodyJson!;
           rq.encoding = encoding!;
@@ -126,7 +130,7 @@ class RestService extends DisposableOwner implements IRestService {
         break;
       case RestRequestType.put:
         responseFuture = http.put(
-          url,
+          uri,
           headers: requestHeaders,
           body: requestBodyJson,
           encoding: encoding,
@@ -135,7 +139,7 @@ class RestService extends DisposableOwner implements IRestService {
       case RestRequestType.head:
         assert(body?.isNotEmpty != true);
         responseFuture = http.head(
-          url,
+          uri,
           headers: requestHeaders,
         );
         break;
@@ -152,7 +156,7 @@ class RestService extends DisposableOwner implements IRestService {
     var response = await responseFuture;
 
     var log = () => 'response sendHttpRequest \n'
-        '\t url($requestType): $url \n'
+        '\t url($requestType): $uri \n'
         '\t response(${response.statusCode}): ${response.body}';
 
     if (response.statusCode == RestResponse.successResponseStatusCode) {
@@ -166,7 +170,7 @@ class RestService extends DisposableOwner implements IRestService {
     return response;
   }
 
-  static Uri createUrl({
+  static Uri createUri({
     required Uri baseUri,
     required String relativeUrlPath,
     List<RestRequestQueryArg>? queryArgs,
@@ -218,7 +222,7 @@ class RestService extends DisposableOwner implements IRestService {
       uploadFileMultipartRequest<T extends UploadMultipartRestRequest, K>(
     T request,
   ) async {
-    var url = createUrl(
+    var url = createUri(
       baseUri: baseUri,
       relativeUrlPath: request.relativeUrlPath,
       queryArgs: request.queryArgs,

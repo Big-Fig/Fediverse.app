@@ -5,14 +5,14 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   test('createUrl simple', () {
     expect(
-      RestService.createUrl(
+      RestService.createUri(
         baseUri: Uri.parse('https://pleroma.com'),
         relativeUrlPath: 'one',
       ),
       Uri.parse('https://pleroma.com/one'),
     );
     expect(
-      RestService.createUrl(
+      RestService.createUri(
         baseUri: Uri.parse('https://pleroma.com/'),
         relativeUrlPath: 'one',
       ),
@@ -22,7 +22,7 @@ void main() {
 
   test('createUrl queryArgs single', () {
     expect(
-      RestService.createUrl(
+      RestService.createUri(
         baseUri: Uri.parse('https://pleroma.com'),
         relativeUrlPath: 'one',
         queryArgs: [RestRequestQueryArg(key: 'arg1', value: 'value1')],
@@ -32,7 +32,7 @@ void main() {
   });
   test('createUrl queryArgs single and null', () {
     expect(
-      RestService.createUrl(
+      RestService.createUri(
         baseUri: Uri.parse('https://pleroma.com'),
         relativeUrlPath: 'one',
         queryArgs: [
@@ -45,7 +45,7 @@ void main() {
   });
   test('createUrl queryArgs two', () {
     expect(
-      RestService.createUrl(
+      RestService.createUri(
         baseUri: Uri.parse('https://pleroma.com'),
         relativeUrlPath: 'one',
         queryArgs: [
@@ -58,7 +58,7 @@ void main() {
   });
   test('createUrl query args array', () {
     expect(
-      RestService.createUrl(
+      RestService.createUri(
         baseUri: Uri.parse('https://pleroma.com'),
         relativeUrlPath: 'one',
         queryArgs: [
