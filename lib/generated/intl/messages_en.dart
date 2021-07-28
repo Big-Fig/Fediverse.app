@@ -184,21 +184,6 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m74(url) => "URL ${url} have invalid format";
 
-  static String m75(days) =>
-      "${Intl.plural(days, one: '1 d', other: '${days} d')}";
-
-  static String m76(hours) =>
-      "${Intl.plural(hours, one: '1 h', other: '${hours} h')}";
-
-  static String m77(minutes) =>
-      "${Intl.plural(minutes, one: '1 min', other: '${minutes} min')}";
-
-  static String m78(months) =>
-      "${Intl.plural(months, one: '1 mo', other: '${months} mo')}";
-
-  static String m79(years) =>
-      "${Intl.plural(years, one: '1 y', other: '${years} y')}";
-
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "app_about_field_changelog_label":
@@ -1846,19 +1831,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "pagination_list_empty":
             MessageLookupByLibrary.simpleMessage("Nothing found"),
         "permission_grant_action_grant":
-            MessageLookupByLibrary.simpleMessage("Grant permission"),
-        "timeago_aDay": MessageLookupByLibrary.simpleMessage("~1 d"),
-        "timeago_aboutAMinute": MessageLookupByLibrary.simpleMessage("1 min"),
-        "timeago_aboutAMonth": MessageLookupByLibrary.simpleMessage("~1 mo"),
-        "timeago_aboutAYear": MessageLookupByLibrary.simpleMessage("~1 y"),
-        "timeago_aboutAnHour": MessageLookupByLibrary.simpleMessage("~1 h"),
-        "timeago_days": m75,
-        "timeago_hours": m76,
-        "timeago_lessThanOneMinute":
-            MessageLookupByLibrary.simpleMessage("now"),
-        "timeago_minutes": m77,
-        "timeago_months": m78,
-        "timeago_wordSeparator": MessageLookupByLibrary.simpleMessage(" "),
-        "timeago_years": m79
+            MessageLookupByLibrary.simpleMessage("Grant permission")
       };
 }

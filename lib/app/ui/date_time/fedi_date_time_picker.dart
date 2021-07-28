@@ -2,7 +2,6 @@ library flutter_datetime_picker;
 
 import 'dart:async';
 
-import 'package:fedi/app/localization/locale/supported_localization_locale_list.dart';
 import 'package:fedi/app/localization/settings/localization_settings_bloc.dart';
 import 'package:fedi/app/ui/button/text/with_border/fedi_primary_filled_text_button_with_border.dart';
 import 'package:fedi/app/ui/button/text/with_border/fedi_transparent_text_button_with_border.dart';
@@ -10,6 +9,7 @@ import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/modal_bottom_sheet/fedi_modal_bottom_sheet.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/generated/l10n.dart';
+import 'package:fedi/localization/localization_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -163,8 +163,12 @@ class FediDatePicker {
         listen: false,
       );
 
-      var localizationLocale =
-          localizationSettingsBloc.localizationLocale ?? defaultLocale;
+      var localizationLocale = localizationSettingsBloc.localizationLocale;
+
+      localizationLocale ??= LocalizationLocale
+          .calculateLocaleBaseOnLocalizationLocaleOrPlatformLocale(
+        localizationLocale: localizationLocale,
+      );
 
       switch (localizationLocale.languageCode.toLowerCase()) {
         // todo: improve
@@ -173,6 +177,9 @@ class FediDatePicker {
           break;
         case 'en':
           locale = LocaleType.en;
+          break;
+        case 'pl':
+          locale = LocaleType.pl;
           break;
         default:
           throw 'Invalid locale $locale';
