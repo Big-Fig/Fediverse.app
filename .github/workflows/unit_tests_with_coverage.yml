@@ -36,12 +36,10 @@ jobs:
 
       - run: flutter pub get
 
-
-      - name: Run Flutter unit tests
+      - name: Run Flutter unit tests with coverage
         run: flutter test --coverage --no-pub --no-null-assertions --no-track-widget-creation -j 10 --coverage-path=coverage/lcov_test.info
 
-
-      - name: Upload to codecov
+      - name: Upload to unit tests coverage codecov
         uses: codecov/codecov-action@v1
         with:
           files:
@@ -49,17 +47,21 @@ jobs:
           flags: unit_tests
           fail_ci_if_error: true
 
+
       #       Flutter don't include files in coverage which not touched with tests
       #       so we need to add all files manually
-      - name: Add missed classes to coverage report
+      - name: Generate coverage_helper_test.dart to get totoal coverage
         uses: stelynx/dart-full-coverage@v1.0.5
         with:
+          test_file: 'test/coverage_helper_test.dart'
+          ignore: '*.g.dart, *_keys.dart'
           package: fedi
 
-      - name: Run Flutter unit tests
-        run: flutter test/coverage_helper_test --coverage --no-pub --no-null-assertions --no-track-widget-creation -j 10 --coverage-path=coverage/lcov_all.info
+      # it is not possible to run all tests with coverage_helper_test due to bad performance
+      - name: Run Flutter test for coverage_helper_test.dart
+        run: flutter test --coverage --no-pub --no-null-assertions --no-track-widget-creation -j 10 --coverage-path=coverage/lcov_all.info test/coverage_helper_test.dart
 
-      - name: Upload to codecov
+      - name: Upload coverage_helper_test.dart coverage to codecov
         uses: codecov/codecov-action@v1
         with:
           files:

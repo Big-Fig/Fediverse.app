@@ -147,3 +147,6 @@ app.*.symbols
 # Generated screenshots
 /tmp/screenshots/
 /screenshots_dev.yaml
+
+# special test to get full coverage
+/test/coverage_helper_test.dart
