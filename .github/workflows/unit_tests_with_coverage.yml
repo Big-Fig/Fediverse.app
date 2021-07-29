@@ -59,6 +59,8 @@ jobs:
 
       # it is not possible to run all tests with coverage_helper_test due to bad performance
       - name: Run Flutter test for coverage_helper_test.dart
+        # step will fail because coverage_helper_test.dart dont have tests
+        continue-on-error: true
         run: flutter test --coverage --no-pub --no-null-assertions --no-track-widget-creation -j 10 --coverage-path=coverage/lcov_all.info test/coverage_helper_test.dart
 
       - name: Upload coverage_helper_test.dart coverage to codecov
