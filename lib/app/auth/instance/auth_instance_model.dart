@@ -47,7 +47,15 @@ class AuthInstance extends IJsonObject {
       info?.pleroma?.metadata?.features?.contains('pleroma_chat_messages') ==
       true;
 
-  String get userAtHost => '$acct@$urlHost';
+  String get userAtHost {
+    var result = '$acct@$urlHost';
+
+    // todo: apply only for mock launch type
+    result = result.replaceAll('10.0.2.2:4000', 'fedi.app');
+    result = result.replaceAll('localhost:4000', 'fedi.app');
+
+    return result;
+  }
 
   // Uri get uri => Uri(scheme: urlSchema, host: urlHost);
   Uri get uri => Uri.parse('$urlSchema://$urlHost');

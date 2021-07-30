@@ -72,6 +72,9 @@ Future<List<String>> _loadServersList() async {
     servers = [
       'mastodon.jff.name',
       'pleroma.jff.name',
+      // todo: apply only for mock launch type
+      'https://10.0.2.2:4000',
+      'https://localhost:4000',
       ...servers,
     ];
   }

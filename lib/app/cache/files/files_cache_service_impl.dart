@@ -64,6 +64,18 @@ class FilesCacheService extends DisposableOwner implements IFilesCacheService {
     ImageRenderMethodForWeb? imageRenderMethodForWeb,
   }) {
     assert(imageUrl?.isNotEmpty == true);
+
+    // todo: apply only for mock launch type
+    if (Platform.isAndroid) {
+      imageUrl = imageUrl!.replaceAll('localhost', '10.0.2.2');
+      imageUrl = imageUrl.replaceAll(
+          'https://ops.pleroma.social', 'http://10.0.2.2:4000');
+    } else if (Platform.isIOS) {
+      imageUrl = imageUrl!.replaceAll('10.0.2.2', 'localhost');
+      imageUrl = imageUrl.replaceAll(
+          'https://ops.pleroma.social', 'http://localhost:4000');
+    }
+
     stringKey ??= imageUrl;
 
     return StreamBuilder<bool>(

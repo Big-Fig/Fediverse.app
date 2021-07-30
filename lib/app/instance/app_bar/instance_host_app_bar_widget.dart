@@ -13,9 +13,15 @@ class InstanceHostAppBarWidget extends StatelessWidget
   Widget build(BuildContext context) {
     var instanceBloc = IInstanceBloc.of(context);
 
+    var instanceUriDomain = instanceBloc.instanceUriDomain;
+
+    // todo: apply only for mock launch type
+    instanceUriDomain = instanceUriDomain.replaceAll('10.0.2.2', 'fedi.app');
+    instanceUriDomain = instanceUriDomain.replaceAll('localhost', 'fedi.app');
+
     return FediPageTitleAppBar(
       title: S.of(context).app_instance_details_title(
-            instanceBloc.instanceUriDomain,
+            instanceUriDomain,
           ),
     );
   }
