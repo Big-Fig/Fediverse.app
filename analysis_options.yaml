@@ -8,6 +8,7 @@ analyzer:
     - lib/generated/**
     - lib/**.g.dart
     - test/**.mocks.dart
+    - test/coverage_helper_test.dart
   plugins:
     - dart_code_metrics
 
