@@ -56,22 +56,19 @@ class FediListSmartRefresherWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var configService = IConfigService.of(context);
     if (configService.appLaunchType == AppLaunchType.mock) {
-      var configService = IConfigService.of(context);
-      if (configService.appLaunchType == AppLaunchType.mock) {
-        // todo: remove hack
-        // SmartRefresher broke UI tests
-        // https://github.com/peng8350/flutter_pulltorefresh/issues/504
-        return Container(
-          //
-          transform: isNeedToAddPaddingForUiTests
-              // it is top margin remove for some pages,
-              // because SmartRefresher have similar negative padding
-              // ignore: no-magic-number
-              ? Matrix4.translationValues(0.0, -25.0, 0.0)
-              : null,
-          child: child,
-        );
-      }
+      // todo: remove hack
+      // SmartRefresher broke UI tests
+      // https://github.com/peng8350/flutter_pulltorefresh/issues/504
+      return Container(
+        //
+        transform: isNeedToAddPaddingForUiTests
+        // it is top margin remove for some pages,
+        // because SmartRefresher have similar negative padding
+        // ignore: no-magic-number
+            ? Matrix4.translationValues(0.0, -25.0, 0.0)
+            : null,
+        child: child,
+      );
     }
 
     return SmartRefresher(
