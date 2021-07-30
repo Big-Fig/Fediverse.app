@@ -1,5 +1,6 @@
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
+import 'package:fedi/app/app_model.dart';
 import 'package:fedi/app/async/smart_refresher/async_smart_refresher_helper.dart';
 import 'package:fedi/app/chat/message/chat_message_bloc.dart';
 import 'package:fedi/app/chat/message/chat_message_model.dart';
@@ -8,6 +9,7 @@ import 'package:fedi/app/chat/selection/chat_selection_bloc.dart';
 import 'package:fedi/app/chat/selection/item/chat_selection_item_bloc.dart';
 import 'package:fedi/app/chat/selection/item/chat_selection_item_bloc_impl.dart';
 import 'package:fedi/app/chat/selection/item/chat_selection_item_widget.dart';
+import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/list/list_loading_footer_widget.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/list/fedi_list_smart_refresher_refresh_indicator.dart';
@@ -113,6 +115,7 @@ class ChatMessageListWidget<T extends IChatMessage>
   }
 
   @override
+  // ignore: long-method
   ScrollView buildItemsCollectionView({
     required BuildContext context,
     required List<T> items,
@@ -122,9 +125,20 @@ class ChatMessageListWidget<T extends IChatMessage>
     assert(header == null, 'header not supported');
     assert(footer == null, 'footer not supported');
 
+    bool reverse;
+
+    var configService = IConfigService.of(context);
+    if (configService.appLaunchType == AppLaunchType.mock) {
+      // todo: remove hack
+      reverse = true;
+    } else {
+      reverse = false;
+    }
+
     return ListView.builder(
       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
       itemCount: items.length,
+      reverse: reverse,
       itemBuilder: (BuildContext context, int index) {
         var item = _calculateChatMessageListItem(
           index: index,
