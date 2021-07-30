@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:fedi/app/about/about_page.dart';
 import 'package:fedi/app/app_model.dart';
@@ -528,7 +529,14 @@ Future logInToInstance(BuildContext context) async {
           }
 
         case AppLaunchType.mock:
-          var testAuthInstanceJsonString = configService.testAuthInstanceJson!;
+          var testAuthInstanceJsonString;
+          if (Platform.isAndroid) {
+            testAuthInstanceJsonString =
+            configService.androidTestAuthInstanceJson!;
+          } else {
+            testAuthInstanceJsonString = configService.iosTestAuthInstanceJson!;
+          }
+
           var testAuthInstanceJson = jsonDecode(testAuthInstanceJsonString);
 
           return AuthInstance.fromJson(testAuthInstanceJson);
