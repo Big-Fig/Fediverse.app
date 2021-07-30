@@ -73,7 +73,9 @@ abstract class IConfigService implements IAsyncInitLoadingBloc, IDisposable {
 
   String? get joinBetaAndroidUrl;
 
-  String? get testAuthInstanceJson;
+  String? get iosTestAuthInstanceJson;
+
+  String? get androidTestAuthInstanceJson;
 
   AppLaunchType get appLaunchType;
 

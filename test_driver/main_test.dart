@@ -4,6 +4,7 @@
 // Selenium/WebDriver for web, Espresso for Android or UI Automation for iOS,
 // this is simply Flutter's version of that.
 import 'dart:convert' as c;
+import 'dart:io';
 
 import 'package:fedi/app/auth/instance/join/from_scratch/from_scratch_join_auth_instance_page_keys.dart';
 import 'package:fedi/app/auth/instance/join/join_auth_instance_widget_keys.dart';
@@ -25,19 +26,23 @@ import 'package:screenshots/screenshots.dart';
 import 'package:test/test.dart';
 
 void main() {
+  // var instanceHost =
+  //     Platform.environment['FLUTTER_DRIVER_INSTANCE_HOST']!;
+
+
   group('end-to-end test', () {
     // ignore: avoid-late-keyword
     late FlutterDriver driver;
     // ignore: avoid-late-keyword
-    late Map localizations;
+    late String instanceHost;
     final config = Config();
 
     setUpAll(() async {
       // Connect to a running Flutter application instance.
       driver = await FlutterDriver.connect();
       // get the localizations for the current locale
-      localizations = c.jsonDecode(await driver.requestData(null));
-      print('localizations=$localizations');
+      instanceHost = await driver.requestData(null);
+      print('instanceHost=$instanceHost');
     });
 
     tearDownAll(() async {
@@ -61,7 +66,13 @@ void main() {
         );
         await driver.tap(hostTextField);
 
-        await driver.enterText('mastodon.social');
+        // await driver.enterText('mastodon.social');
+        await driver.enterText(instanceHost);
+        // if(Platform.isAndroid) {
+        //   await driver.enterText('http://10.0.2.2:4000');
+        // } else if(Platform.isIOS) {
+        //   await driver.enterText('http://localhost:4000');
+        // }
 
         var exploreAsGuestButton = find.byValueKey(
           JoinAuthInstanceWidgetKeys.exploreAsGuestButtonKey,

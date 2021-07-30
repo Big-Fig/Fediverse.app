@@ -96,7 +96,9 @@ class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
   @override
   late String? joinBetaAndroidUrl;
   @override
-  late String? testAuthInstanceJson;
+  late String? iosTestAuthInstanceJson;
+  @override
+  late String? androidTestAuthInstanceJson;
 
   @override
   final AppLaunchType appLaunchType;
@@ -291,8 +293,12 @@ class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
       isRequired: false,
     );
 
-    testAuthInstanceJson = _getString(
-      'TEST_AUTH_ISNTANCE_JSON',
+    androidTestAuthInstanceJson = _getString(
+      'ANDROID_TEST_AUTH_ISNTANCE_JSON',
+      isRequired: false,
+    );
+    iosTestAuthInstanceJson = _getString(
+      'IOS_TEST_AUTH_ISNTANCE_JSON',
       isRequired: false,
     );
   }

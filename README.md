@@ -4,6 +4,8 @@
 [![Lints](https://github.com/Big-Fig/Fediverse.app/actions/workflows/lints_check.yml/badge.svg)](https://github.com/Big-Fig/Fediverse.app/actions/workflows/lints_check.yml/)
 [![dartfmt](https://github.com/Big-Fig/Fediverse.app/actions/workflows/code_formatting.yml/badge.svg)](https://github.com/Big-Fig/Fediverse.app/actions/workflows/code_formatting.yml/)
 
+[![codecov](https://codecov.io/gh/Big-Fig/Fediverse.app/branch/master/graph/badge.svg?token=VVRSJ8M38G)](https://codecov.io/gh/Big-Fig/Fediverse.app)
+
 Fedi is open-source client for [Pleroma](https://pleroma.social/) and [Mastodon](https://joinmastodon.org/) social networks written using Flutter.
 
 Pleroma and Mastodon are parts of [Fediverse](https://en.wikipedia.org/wiki/Fediverse) (decentralized social network). The main idea of Fediverse - nobody owns Fediverse. Anybody can run their server instance and use it to communicate with other people.

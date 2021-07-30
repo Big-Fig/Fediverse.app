@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert' as c;
+import 'dart:io';
 
 import 'package:fedi/app/app_model.dart';
 import 'package:fedi/main.dart' as main_app;
@@ -12,6 +13,11 @@ Future main() async {
     // var locale = Locale(ui.window.locale.languageCode);
     // final localizations =
     //     await ExampleLocalizations.load(locale);
+    var instanceHost =
+    Platform.isAndroid ? 'http://10.0.2.2:4000' : 'http://localhost:4000';
+
+    return Future.value(instanceHost);
+
     final response = {
       // 'counterIncrementButtonTooltip':
       //     localizations.counterIncrementButtonTooltip,
