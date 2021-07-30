@@ -243,10 +243,11 @@ dev_dependencies:
   flutter_lints: 1.0.3
 
   # generate screenshots for stores during UI tests
-  # also usefull for golden tests
+  # also useful for golden tests
   screenshots:
     git:
       url: https://github.com/xal/screenshots.git
+      ref: b855c90dd78a4e5db447d003dddb84021db9411c
   # fvm flutter pub global activate -sgit https://github.com/xal/screenshots.git
   # fvm flutter pub global activate --source path ../screenshots
 
