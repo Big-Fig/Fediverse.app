@@ -3,7 +3,7 @@ import 'package:fedi/app/database/dao/remote/populated_app_remote_database_dao.d
 import 'package:fedi/app/filter/database/filter_database_model.dart';
 import 'package:fedi/app/filter/filter_model.dart';
 import 'package:fedi/app/filter/repository/filter_repository_model.dart';
-import 'package:fedi/mastodon/api/filter/mastodon_api_filter_model.dart';
+import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
 

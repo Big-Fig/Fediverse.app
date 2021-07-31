@@ -2,11 +2,11 @@ import 'package:fedi/app/filter/filter_bloc.dart';
 import 'package:fedi/app/filter/filter_model.dart';
 import 'package:fedi/app/filter/repository/filter_repository.dart';
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:fedi/pleroma/api/filter/pleroma_api_filter_model.dart';
-import 'package:fedi/pleroma/api/filter/pleroma_api_filter_service.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
+import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 
 var _logger = Logger('filter_bloc_impl.dart');
@@ -33,7 +33,7 @@ class FilterBloc extends DisposableOwner implements IFilterBloc {
   }) =>
       FilterBloc(
         pleromaFilterService:
-            IPleromaApiFilterService.of(context, listen: false),
+            Provider.of<IPleromaApiFilterService>(context, listen: false),
         filterRepository: IFilterRepository.of(context, listen: false),
         filter: filter,
         needRefreshFromNetworkOnInit: false,

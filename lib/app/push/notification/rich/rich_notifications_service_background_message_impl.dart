@@ -18,19 +18,13 @@ import 'package:fedi/app/push/settings/local_preferences/instance/instance_push_
 import 'package:fedi/app/push/settings/push_settings_model.dart';
 import 'package:fedi/app/ui/theme/light/light_fedi_ui_theme_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
-import 'package:fedi/connection/connection_service_impl.dart';
+import 'package:base_fediverse_api/base_fediverse_api.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/local_preferences/hive_local_preferences_service_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/localization/localization_model.dart';
-import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
-import 'package:fedi/pleroma/api/notification/pleroma_api_notification_model.dart';
-import 'package:fedi/pleroma/api/notification/pleroma_api_notification_service_impl.dart';
-import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
-import 'package:fedi/pleroma/api/push/pleroma_api_push_model.dart';
-import 'package:fedi/pleroma/api/rest/auth/pleroma_api_auth_rest_service_impl.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:fedi/push/push_model.dart';
-import 'package:fedi/rest/rest_service_impl.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -533,7 +527,7 @@ Future<IPleromaApiNotification?> _loadLastNotificationForInstance({
   var pushSettings = instancePushSettingsLocalPreferenceBloc.value;
 
   var connectionService = ConnectionService();
-  await connectionService.performAsyncInit();
+  await connectionService.internalAsyncInit();
   disposableOwner.addDisposable(connectionService);
 
   var restService = RestService(baseUri: authInstance.uri);

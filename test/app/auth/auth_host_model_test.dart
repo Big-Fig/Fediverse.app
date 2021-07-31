@@ -1,5 +1,5 @@
 import 'package:fedi/app/auth/host/auth_host_model.dart';
-import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../obj/obj_test_helper.dart';

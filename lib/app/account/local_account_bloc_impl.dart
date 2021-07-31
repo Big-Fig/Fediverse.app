@@ -12,11 +12,10 @@ import 'package:easy_dispose/easy_dispose.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
 import 'package:fedi/duration/duration_extension.dart';
-import 'package:fedi/pleroma/api/account/auth/pleroma_api_auth_account_service.dart';
-import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
-import 'package:fedi/pleroma/api/web_sockets/pleroma_api_web_sockets_service.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
+import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 
 var _logger = Logger('local_account_bloc_impl.dart');
@@ -94,7 +93,7 @@ class LocalAccountBloc extends AccountBloc {
       LocalAccountBloc(
         isNeedPreFetchRelationship: isNeedPreFetchRelationship,
         pleromaWebSocketsService:
-            IPleromaApiWebSocketsService.of(context, listen: false),
+            Provider.of<IPleromaApiWebSocketsService>(context, listen: false),
         statusRepository: IStatusRepository.of(context, listen: false),
         account: account,
         isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
@@ -102,7 +101,7 @@ class LocalAccountBloc extends AccountBloc {
             isNeedWatchLocalRepositoryForUpdates,
         accountRepository: IAccountRepository.of(context, listen: false),
         pleromaAuthAccountService:
-            IPleromaApiAuthAccountService.of(context, listen: false),
+            Provider.of<IPleromaApiAuthAccountService>(context, listen: false),
         myAccount: IMyAccountBloc.of(context, listen: false).myAccount,
       );
 

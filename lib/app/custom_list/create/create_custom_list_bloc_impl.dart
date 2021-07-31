@@ -11,8 +11,7 @@ import 'package:fedi/app/custom_list/edit/edit_custom_list_bloc_proxy_provider.d
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
-import 'package:fedi/pleroma/api/account/auth/pleroma_api_auth_account_service.dart';
-import 'package:fedi/pleroma/api/list/pleroma_api_list_service.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -23,12 +22,12 @@ class CreateCustomListBloc extends EditCustomListBloc
     required Function(ICustomList)? onSubmit,
   }) {
     var createCustomListBloc = CreateCustomListBloc(
-      pleromaListService: IPleromaApiListService.of(
+      pleromaListService: Provider.of<IPleromaApiListService>(
         context,
         listen: false,
       ),
       statusRepository: IStatusRepository.of(context, listen: false),
-      pleromaAuthAccountService: IPleromaApiAuthAccountService.of(
+      pleromaAuthAccountService: Provider.of<IPleromaApiAuthAccountService>(
         context,
         listen: false,
       ),

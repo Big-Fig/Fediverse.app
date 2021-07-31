@@ -5,7 +5,7 @@ import 'package:fedi/app/home/home_bloc.dart';
 import 'package:fedi/app/home/home_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
-import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
+import 'package:base_fediverse_api/base_fediverse_api.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 

@@ -1,7 +1,7 @@
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/media/attachment/list/media_attachment_list_bloc.dart';
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/foundation.dart';
 
 class MediaAttachmentListBloc extends DisposableOwner

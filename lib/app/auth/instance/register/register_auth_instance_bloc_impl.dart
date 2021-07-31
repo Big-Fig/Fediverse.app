@@ -10,18 +10,10 @@ import 'package:fedi/app/auth/oauth_last_launched/local_preferences/auth_oauth_l
 import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/localization/settings/localization_settings_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
-import 'package:fedi/connection/connection_service.dart';
+import 'package:base_fediverse_api/base_fediverse_api.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
-import 'package:fedi/pleroma/api/captcha/pleroma_api_captcha_service.dart';
-import 'package:fedi/pleroma/api/captcha/pleroma_api_captcha_service_impl.dart';
-import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
-import 'package:fedi/pleroma/api/instance/pleroma_api_instance_service.dart';
-import 'package:fedi/pleroma/api/instance/pleroma_api_instance_service_impl.dart';
-import 'package:fedi/pleroma/api/rest/pleroma_api_rest_service.dart';
-import 'package:fedi/pleroma/api/rest/pleroma_api_rest_service_impl.dart';
-import 'package:fedi/rest/rest_service.dart';
-import 'package:fedi/rest/rest_service_impl.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:logging/logging.dart';
 
 final _logger = Logger('register_auth_instance_bloc_impl.dart');

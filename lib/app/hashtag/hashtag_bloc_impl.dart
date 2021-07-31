@@ -7,8 +7,9 @@ import 'package:fedi/app/hashtag/hashtag_bloc.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:fedi/pleroma/api/featured_tags/pleroma_api_featured_tags_service.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 
 class HashtagBloc extends DisposableOwner implements IHashtagBloc {
@@ -97,7 +98,7 @@ class HashtagBloc extends DisposableOwner implements IHashtagBloc {
     required bool needLoadFeaturedState,
   }) {
     var pleromaApiFeaturedTagsService =
-        IPleromaApiFeaturedTagsService.of(context, listen: false);
+        Provider.of<IPleromaApiFeaturedTagsService>(context, listen: false);
 
     return HashtagBloc(
       pleromaApiFeaturedTagsService: pleromaApiFeaturedTagsService,

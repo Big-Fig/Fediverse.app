@@ -17,7 +17,7 @@ import 'package:fedi/collapsible/owner/collapsible_owner_widget.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
-import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:fedi/ui/scroll/scroll_controller_bloc.dart';
 import 'package:fedi/ui/scroll/scroll_controller_bloc_impl.dart';
 import 'package:flutter/cupertino.dart';

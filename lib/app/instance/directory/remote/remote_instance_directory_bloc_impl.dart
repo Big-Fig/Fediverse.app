@@ -5,8 +5,7 @@ import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/instance/remote/remote_instance_bloc.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:fedi/pleroma/api/directory/pleroma_api_directory_service.dart';
-import 'package:fedi/pleroma/api/directory/pleroma_api_directory_service_impl.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 
 class RemoteInstanceDirectoryBloc extends InstanceDirectoryBloc

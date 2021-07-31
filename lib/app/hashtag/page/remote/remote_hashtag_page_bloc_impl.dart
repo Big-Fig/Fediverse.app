@@ -18,8 +18,7 @@ import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dar
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc_impl.dart';
 import 'package:fedi/pagination/pagination_model.dart';
-import 'package:fedi/pleroma/api/timeline/pleroma_api_timeline_service.dart';
-import 'package:fedi/pleroma/api/timeline/pleroma_api_timeline_service_impl.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_dispose/easy_dispose.dart';

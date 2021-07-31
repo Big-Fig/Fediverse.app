@@ -11,7 +11,7 @@ import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository_model.d
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/database/dao/populated_database_dao_mixin.dart';
 import 'package:fedi/app/database/dao/repository/remote/populated_app_remote_database_dao_repository.dart';
-import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
 

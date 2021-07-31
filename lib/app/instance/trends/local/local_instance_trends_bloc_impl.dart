@@ -5,9 +5,9 @@ import 'package:fedi/app/instance/trends/instance_trends_bloc_proxy_provider.dar
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:fedi/pleroma/api/trends/pleroma_api_trends_service.dart';
-import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 class LocalInstanceTrendsBloc extends InstanceTrendsBloc
     implements IInstanceTrendsBloc {
@@ -26,7 +26,7 @@ class LocalInstanceTrendsBloc extends InstanceTrendsBloc
 
   static LocalInstanceTrendsBloc createFromContext(BuildContext context) {
     var pleromaApiTrendsService =
-        IPleromaApiTrendsService.of(context, listen: false);
+        Provider.of<IPleromaApiTrendsService>(context, listen: false);
     var currentAuthInstanceBloc =
         ICurrentAuthInstanceBloc.of(context, listen: false);
 

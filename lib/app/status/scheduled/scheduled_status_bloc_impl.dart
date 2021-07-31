@@ -7,13 +7,10 @@ import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository
 import 'package:fedi/app/status/scheduled/scheduled_status_bloc.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_model.dart';
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
-import 'package:fedi/pleroma/api/status/auth/pleroma_api_auth_status_service.dart';
-import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
-import 'package:fedi/pleroma/api/status/scheduled/pleroma_api_scheduled_status_service.dart';
-import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
+import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 
 var _logger = Logger('scheduled_status_bloc_impl.dart');
@@ -189,9 +186,10 @@ class ScheduledStatusBloc extends DisposableOwner
   }) =>
       ScheduledStatusBloc(
         pleromaAuthStatusService:
-            IPleromaApiAuthStatusService.of(context, listen: false),
+            Provider.of<IPleromaApiAuthStatusService>(context, listen: false),
         pleromaScheduledStatusService:
-            IPleromaApiScheduledStatusService.of(context, listen: false),
+            Provider.of<IPleromaApiScheduledStatusService>(context,
+                listen: false),
         statusRepository: IStatusRepository.of(context, listen: false),
         scheduledStatusRepository:
             IScheduledStatusRepository.of(context, listen: false),
@@ -263,8 +261,8 @@ class ScheduledStatusBloc extends DisposableOwner
       visibilityString: scheduledStatus.params.visibilityPleroma.toJsonValue(),
       mediaAttachments: scheduledStatus.mediaAttachments,
       poll: scheduledStatus.params.poll?.toPostStatusPoll(),
-      inReplyToPleromaStatus: scheduledStatus.params.inReplyToPleromaApiStatus
-          ?.toPleromaApiStatus(),
+      inReplyToPleromaStatus:
+          scheduledStatus.params.inReplyToStatus?.toPleromaApiStatus(),
       inReplyToConversationId: scheduledStatus.params.inReplyToConversationId,
       isNsfwSensitiveEnabled: scheduledStatus.params.sensitive,
       to: scheduledStatus.params.to,

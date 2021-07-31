@@ -7,11 +7,8 @@ import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler.dart';
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:fedi/pleroma/api/notification/pleroma_api_notification_model.dart';
-import 'package:fedi/pleroma/api/web_sockets/pleroma_api_web_sockets_model.dart';
-import 'package:fedi/web_sockets/channel/web_sockets_channel.dart';
-import 'package:fedi/web_sockets/channel/web_sockets_channel_model.dart';
-import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:base_fediverse_api/base_fediverse_api.dart';
 import 'package:logging/logging.dart';
 
 abstract class WebSocketsChannelHandler extends DisposableOwner

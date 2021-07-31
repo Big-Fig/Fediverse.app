@@ -1859,7 +1859,7 @@ class $DbStatusesTable extends DbStatuses
   }
 
   static TypeConverter<PleromaApiVisibility, String> $converter0 =
-      PleromaApiVisibilityTypeConverter();
+      PleromaApiVisibilityMoorTypeConverter();
   static TypeConverter<PleromaApiApplication, String> $converter1 =
       PleromaApplicationDatabaseConverter();
   static TypeConverter<List<PleromaApiMediaAttachment>, String> $converter2 =

@@ -1,5 +1,5 @@
 import 'package:fedi/app/settings/settings_model.dart';
-import 'package:fedi/web_sockets/handling_type/web_sockets_handling_type_model.dart';
+import 'package:base_fediverse_api/base_fediverse_api.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 

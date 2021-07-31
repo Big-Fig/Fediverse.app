@@ -10,7 +10,7 @@ import 'package:fedi/app/notification/notification_model_adapter.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/notification/repository/notification_repository_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
-import 'package:fedi/pleroma/api/notification/pleroma_api_notification_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:moor/moor.dart';
 
 class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<

@@ -5,11 +5,10 @@ import 'package:fedi/app/chat/pleroma/post/pleroma_chat_post_message_bloc_proxy_
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_model.dart';
 import 'package:fedi/app/message/post_message_bloc_impl.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart';
-import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
-import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_service.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
+import 'package:provider/provider.dart';
 
 var _logger = Logger('chat_post_message_bloc_impl.dart');
 
@@ -86,7 +85,8 @@ class PleromaChatPostMessageBloc extends PostMessageBloc
         context,
         listen: false,
       ),
-      pleromaMediaAttachmentService: IPleromaApiMediaAttachmentService.of(
+      pleromaMediaAttachmentService:
+          Provider.of<IPleromaApiMediaAttachmentService>(
         context,
         listen: false,
       ),

@@ -1,11 +1,12 @@
 import 'package:fedi/async/loading/init/async_init_loading_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:fedi/json/json_model.dart';
+// import 'package:fedi/json/json_model.dart';
 import 'package:fedi/local_preferences/local_preference_bloc.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:base_fediverse_api/base_fediverse_api.dart';
 
 abstract class LocalPreferenceBloc<T> extends AsyncInitLoadingBloc
     implements IAsyncInitLoadingBloc, ILocalPreferenceBloc<T> {

@@ -14,10 +14,11 @@ import 'package:fedi/emoji_picker/custom_emoji_picker_bloc.dart';
 import 'package:fedi/emoji_picker/custom_emoji_picker_bloc_impl.dart';
 import 'package:fedi/emoji_picker/custom_emoji_picker_widget.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:fedi/mastodon/api/emoji/mastodon_api_custom_emoji_service.dart';
-import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_service.dart';
+import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 class EmojiPickerWidget extends StatelessWidget {
   final EmojiSelectedCallback onEmojiSelected;
@@ -44,7 +45,7 @@ class EmojiPickerWidget extends StatelessWidget {
         if (useImageEmoji) {
           customCategoryBloc = EmojiPickerCustomImageUrlCategoryBloc(
             pleromaApiEmojiService:
-                IPleromaApiEmojiService.of(context, listen: false),
+                Provider.of<IPleromaApiEmojiService>(context, listen: false),
             preferenceBloc:
                 IEmojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc.of(
               context,
@@ -54,7 +55,7 @@ class EmojiPickerWidget extends StatelessWidget {
               context,
               listen: false,
             ),
-            mastodonApiEmojiService: IMastodonApiEmojiService.of(
+            mastodonApiEmojiService: Provider.of<IMastodonApiEmojiService>(
               context,
               listen: false,
             ),

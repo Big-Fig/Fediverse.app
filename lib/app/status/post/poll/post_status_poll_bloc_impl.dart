@@ -11,7 +11,7 @@ import 'package:fedi/form/form_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:fedi/form/group/one_type/one_type_form_group_bloc.dart';
 import 'package:fedi/form/group/one_type/one_type_form_group_bloc_impl.dart';
-import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 
 class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
   static DurationDateTimeValueFormFieldBloc createDurationDateTimeLengthBloc(

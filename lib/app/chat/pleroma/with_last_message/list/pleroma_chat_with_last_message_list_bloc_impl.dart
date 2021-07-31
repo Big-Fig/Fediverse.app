@@ -15,10 +15,11 @@ import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
-import 'package:fedi/pleroma/api/chat/pleroma_api_chat_service.dart';
-import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:base_fediverse_api/base_fediverse_api.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
+import 'package:provider/provider.dart';
 
 var _logger = Logger('pleroma_chat_with_last_message_list_bloc_impl.dart');
 
@@ -90,7 +91,8 @@ class PleromaChatWithLastMessageListBloc extends DisposableOwner
     required WebSocketsListenType webSocketsListenType,
   }) =>
       PleromaChatWithLastMessageListBloc(
-        pleromaChatService: IPleromaApiChatService.of(context, listen: false),
+        pleromaChatService:
+            Provider.of<IPleromaApiChatService>(context, listen: false),
         chatWithLastMessageRepository:
             IPleromaChatWithLastMessageRepository.of(context, listen: false),
         chatMessageRepository:

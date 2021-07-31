@@ -2,12 +2,9 @@ import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/instance/announcement/instance_announcement_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 
 import '../../../../date_time/date_time_test_helper.dart';
-import '../../../../pleroma/api/anouncement/pleroma_api_announcement_test_helper.dart';
-import '../../../../pleroma/api/mention/pleroma_api_mention_test_helper.dart';
-import '../../../../pleroma/api/status/pleroma_api_status_test_helper.dart';
-import '../../../../pleroma/api/tag/pleroma_api_tag_test_helper.dart';
 
 // ignore_for_file: no-magic-number
 class InstanceAnnouncementDatabaseTestHelper {

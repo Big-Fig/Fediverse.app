@@ -1,9 +1,7 @@
 import 'package:fedi/app/timeline/settings/timeline_settings_model.dart';
-import 'package:fedi/pleroma/api/timeline/pleroma_api_timeline_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 
 import '../../../enum/enum_test_helper.dart';
-import '../../../pleroma/api/account/pleroma_api_account_test_helper.dart';
-import '../../../pleroma/api/list/pleroma_api_list_test_helper.dart';
 
 // ignore_for_file: no-magic-number, no-equal-arguments
 class TimelineSettingsModelTestHelper {

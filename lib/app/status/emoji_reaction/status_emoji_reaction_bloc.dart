@@ -1,5 +1,5 @@
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 

@@ -15,12 +15,12 @@ import 'package:fedi/app/ui/dialog/chooser/fedi_chooser_dialog.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/dialog/dialog_model.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
-import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_service.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:fedi/share/income/income_share_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:logging/logging.dart';
 import 'package:fedi/app/html/html_text_helper.dart';
+import 'package:provider/provider.dart';
 
 final _logger = Logger('income_share_action_chooser_dialog.dart');
 
@@ -158,7 +158,8 @@ Future<List<IPleromaApiMediaAttachment>?> _uploadMediaIfNeed({
       contentMessage: S.of(context).app_media_upload_progress,
       asyncCode: () async {
         var pleromaApiMediaAttachmentService =
-            IPleromaApiMediaAttachmentService.of(context, listen: false);
+            Provider.of<IPleromaApiMediaAttachmentService>(context,
+                listen: false);
 
         var futures = incomeShareEventMedias!.map(
           (incomeShareEventMedia) async {

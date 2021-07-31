@@ -25,10 +25,10 @@ import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_b
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
-import 'package:fedi/pleroma/api/account/auth/pleroma_api_auth_account_service.dart';
-import 'package:fedi/pleroma/api/list/pleroma_api_list_service.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
+import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 
 final _logger = Logger('edit_custom_list_bloc_impl.dart');
@@ -44,7 +44,7 @@ class EditCustomListBloc extends DisposableOwner
     var editCustomListBloc = EditCustomListBloc(
       customList: initialValue,
       statusRepository: IStatusRepository.of(context, listen: false),
-      pleromaListService: IPleromaApiListService.of(
+      pleromaListService: Provider.of<IPleromaApiListService>(
         context,
         listen: false,
       ),
@@ -52,7 +52,7 @@ class EditCustomListBloc extends DisposableOwner
         context,
         listen: false,
       ),
-      pleromaAuthAccountService: IPleromaApiAuthAccountService.of(
+      pleromaAuthAccountService: Provider.of<IPleromaApiAuthAccountService>(
         context,
         listen: false,
       ),

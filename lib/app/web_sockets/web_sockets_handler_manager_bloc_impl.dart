@@ -14,8 +14,8 @@ import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/timeline/public/public_timeline_websockets_handler_impl.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:fedi/pleroma/api/web_sockets/pleroma_api_web_sockets_service.dart';
-import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:base_fediverse_api/base_fediverse_api.dart';
 
 class WebSocketsHandlerManagerBloc extends DisposableOwner
     implements IWebSocketsHandlerManagerBloc {

@@ -6,7 +6,7 @@ import 'package:fedi/app/status/post/settings/post_status_settings_bloc_impl.dar
 import 'package:fedi/app/status/post/settings/post_status_settings_model.dart';
 import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
 import 'package:fedi/localization/localization_model.dart';
-import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../../rxdart/rxdart_test_helper.dart';

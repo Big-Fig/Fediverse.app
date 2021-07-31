@@ -7,13 +7,7 @@ import 'package:fedi/app/chat/conversation/repository/conversation_chat_reposito
 import 'package:fedi/app/chat/conversation/share/conversation_chat_share_bloc.dart';
 import 'package:fedi/app/share/to_account/share_to_account_bloc_impl.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
-import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
-import 'package:fedi/pleroma/api/account/pleroma_api_account_service.dart';
-import 'package:fedi/pleroma/api/conversation/pleroma_api_conversation_service.dart';
-import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
-import 'package:fedi/pleroma/api/status/auth/pleroma_api_auth_status_service.dart';
-import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
-import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:fedi/repository/repository_model.dart';
 
 abstract class ConversationChatShareBloc extends ShareToAccountBloc

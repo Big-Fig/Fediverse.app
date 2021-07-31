@@ -12,8 +12,8 @@ import 'package:fedi/form/field/value/string/string_value_form_field_bloc_impl.d
 import 'package:fedi/form/field/value/string/validation/string_value_form_field_non_empty_validation.dart';
 import 'package:fedi/form/form_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
-import 'package:fedi/mastodon/api/filter/mastodon_api_filter_model.dart';
-import 'package:fedi/pleroma/api/filter/pleroma_api_filter_model.dart';
+import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 
 final _wholeWordRegex = RegExp(r'^[a-zA-Z0-9_]+$');
 

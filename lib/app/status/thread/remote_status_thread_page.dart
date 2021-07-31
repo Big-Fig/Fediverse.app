@@ -10,13 +10,13 @@ import 'package:fedi/app/status/thread/remote_status_thread_bloc_impl.dart';
 import 'package:fedi/app/status/thread/status_thread_bloc.dart';
 import 'package:fedi/app/status/thread/status_thread_bloc_proxy_provider.dart';
 import 'package:fedi/app/status/thread/status_thread_page.dart';
-import 'package:fedi/connection/connection_service.dart';
+import 'package:base_fediverse_api/base_fediverse_api.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:fedi/mastodon/api/media/attachment/mastodon_api_media_attachment_model.dart';
-import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
-import 'package:fedi/pleroma/api/status/pleroma_api_status_service_impl.dart';
+import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 Future goToRemoteStatusThreadPageBasedOnRemoteInstanceStatus(
   BuildContext context, {
@@ -56,7 +56,7 @@ Future goToRemoteStatusThreadPageBasedOnLocalInstanceRemoteStatus(
 
         remoteInstanceBloc = RemoteInstanceBloc(
           instanceUri: instanceUri,
-          connectionService: IConnectionService.of(
+          connectionService: Provider.of<IConnectionService>(
             context,
             listen: false,
           ),
@@ -119,7 +119,7 @@ MaterialPageRoute createRemoteStatusThreadPageRouteBasedOnRemoteInstanceStatus({
 
         return RemoteInstanceBloc(
           instanceUri: instanceUri,
-          connectionService: IConnectionService.of(
+          connectionService: Provider.of<IConnectionService>(
             context,
             listen: false,
           ),

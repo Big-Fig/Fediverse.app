@@ -4,17 +4,20 @@
 
 import 'dart:async' as _i6;
 
-import 'package:fedi/pleroma/api/account/my/pleroma_api_my_account_model.dart'
-    as _i3;
-import 'package:fedi/pleroma/api/account/my/pleroma_api_my_account_service.dart'
-    as _i5;
-import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart' as _i4;
-import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart'
-    as _i8;
-import 'package:fedi/pleroma/api/pleroma_api_service.dart' as _i7;
-import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart' as _i9;
-import 'package:fedi/rest/rest_service.dart' as _i2;
+import 'package:base_fediverse_api/src/rest/rest_service.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
+import 'package:pleroma_fediverse_api/src/pleroma/api/account/my/pleroma_api_my_account_model.dart'
+    as _i3;
+import 'package:pleroma_fediverse_api/src/pleroma/api/account/my/pleroma_api_my_account_service.dart'
+    as _i5;
+import 'package:pleroma_fediverse_api/src/pleroma/api/account/pleroma_api_account_model.dart'
+    as _i4;
+import 'package:pleroma_fediverse_api/src/pleroma/api/pagination/pleroma_api_pagination_model.dart'
+    as _i8;
+import 'package:pleroma_fediverse_api/src/pleroma/api/pleroma_api_service.dart'
+    as _i7;
+import 'package:pleroma_fediverse_api/src/pleroma/api/status/pleroma_api_status_model.dart'
+    as _i9;
 
 // ignore_for_file: avoid_redundant_argument_values
 // ignore_for_file: comment_references

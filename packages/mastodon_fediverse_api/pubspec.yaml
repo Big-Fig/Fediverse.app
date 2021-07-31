@@ -1,0 +1,32 @@
+name: mastodon_fediverse_api
+description: A simple command-line application.
+version: 1.0.0
+# homepage: https://www.example.com
+
+publish_to: none
+
+environment:
+  sdk: '>=2.12.0 <3.0.0'
+
+dependencies:
+
+  base_fediverse_api:
+    path: ../base_fediverse_api
+  # Disposable logic
+  easy_dispose: ^1.0.1
+  easy_dispose_rxdart: ^1.0.1
+  http: ^0.13.3
+  logging: ^1.0.1
+  path: ^1.8.0
+  hive: ^2.0.4
+  json_annotation: ^4.0.1
+
+dev_dependencies:
+  test: ^1.17.9
+  mockito: ^5.0.13
+  # additional linters
+  dart_code_metrics: 4.1.0
+  lints: 1.0.1
+  hive_generator: ^1.1.0
+  build_runner: ^2.0.6
+  json_serializable: 4.1.3

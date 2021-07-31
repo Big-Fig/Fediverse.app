@@ -3,9 +3,8 @@ import 'dart:async';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/poll/poll_bloc.dart';
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:fedi/mastodon/api/poll/mastodon_api_poll_model.dart';
-import 'package:fedi/pleroma/api/poll/pleroma_api_poll_model.dart';
-import 'package:fedi/pleroma/api/poll/pleroma_api_poll_service.dart';
+import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
 

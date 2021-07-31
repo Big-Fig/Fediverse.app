@@ -8,7 +8,7 @@ import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pagination/network_only/network_only_pagination_bloc.dart';
 import 'package:fedi/pagination/network_only/network_only_pagination_bloc_proxy_provider.dart';
 import 'package:fedi/pagination/pagination_model.dart';
-import 'package:fedi/pleroma/api/pleroma_api_service.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 

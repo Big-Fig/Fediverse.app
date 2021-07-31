@@ -6,8 +6,7 @@ import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/chat/message/chat_message_model.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/pleroma/api/account/my/pleroma_api_my_account_model.dart';
-import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 
 class GuestMyAccountBloc extends DisposableOwner implements IMyAccountBloc {
   @override

@@ -1,7 +1,6 @@
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_model.dart';
-import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
-import 'package:fedi/pleroma/api/account/pleroma_api_account_service.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
 

@@ -17,19 +17,14 @@ import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/timeline/type/timeline_type_model.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
-import 'package:fedi/mastodon/api/filter/mastodon_api_filter_model.dart';
-import 'package:fedi/pleroma/api/account/pleroma_api_account_service.dart';
-import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
-import 'package:fedi/pleroma/api/pleroma_api_service.dart';
-import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
-import 'package:fedi/pleroma/api/timeline/auth/pleroma_api_auth_timeline_service.dart';
-import 'package:fedi/pleroma/api/timeline/pleroma_api_timeline_model.dart';
-import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
+import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:fedi/repository/repository_model.dart';
-import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
+import 'package:base_fediverse_api/base_fediverse_api.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
+import 'package:provider/provider.dart';
 
 var _logger = Logger('timeline_status_cached_list_bloc_impl.dart');
 
@@ -374,11 +369,12 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
     required ITimelineLocalPreferenceBloc timelineLocalPreferencesBloc,
   }) =>
       TimelineStatusCachedListBloc(
-        pleromaApiAccountService: IPleromaApiAccountService.of(
+        pleromaApiAccountService: Provider.of<IPleromaApiAccountService>(
           context,
           listen: false,
         ),
-        pleromaApiAuthTimelineService: IPleromaApiAuthTimelineService.of(
+        pleromaApiAuthTimelineService:
+            Provider.of<IPleromaApiAuthTimelineService>(
           context,
           listen: false,
         ),

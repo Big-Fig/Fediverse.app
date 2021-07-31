@@ -1,7 +1,6 @@
 import 'package:fedi/collection/collection_hash_utils.dart';
 import 'package:fedi/duration/duration_extension.dart';
-import 'package:fedi/pleroma/api/poll/pleroma_api_poll_model.dart';
-import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -120,4 +119,62 @@ extension PleromaPostStatusPollExtension on IPleromaApiPostStatusPoll {
       options: options,
     );
   }
+
+  PleromaApiPostStatusPoll toPleromaApiPostStatusPoll() {
+    if (this is PleromaApiPostStatusPoll) {
+      return this as PleromaApiPostStatusPoll;
+    } else {
+      return PleromaApiPostStatusPoll(
+        expiresInSeconds: expiresInSeconds,
+        hideTotals: hideTotals,
+        multiple: multiple,
+        options: options,
+      );
+    }
+  }
+}
+
+extension IPleromaApiPollExtension on IPleromaApiPoll {
+  PleromaApiPoll toPleromaApiPoll({bool forceNewObject = false}) {
+    if (this is PleromaApiPoll && !forceNewObject) {
+      return this as PleromaApiPoll;
+    } else {
+      return PleromaApiPoll(
+        expired: expired,
+        expiresAt: expiresAt,
+        id: id,
+        multiple: multiple,
+        options:
+            options.toPleromaApiPollOptions(forceNewObject: forceNewObject),
+        ownVotes: ownVotes,
+        voted: voted,
+        votesCount: votesCount,
+        votersCount: votersCount,
+      );
+    }
+  }
+
+  PostStatusPoll toPostStatusPoll({
+    required PleromaApiInstancePollLimits limits,
+  }) {
+    return PostStatusPoll(
+      durationLength: expiresAt?.calculatePostDurationLength(
+        limits: limits,
+      ),
+      // todo: implement  hideTotals
+      hideTotals: false,
+      multiple: multiple,
+      options: options.toPleromaApiPollOptionTitles(),
+    );
+  }
+}
+
+extension IPostStatusPollPleromaApiPostStatusPollExtension on IPostStatusPoll {
+  PleromaApiPostStatusPoll toPleromaApiPostStatusPoll() =>
+      PleromaApiPostStatusPoll(
+        options: options,
+        multiple: multiple,
+        expiresInSeconds: durationLength!.totalSeconds,
+        hideTotals: hideTotals,
+      );
 }

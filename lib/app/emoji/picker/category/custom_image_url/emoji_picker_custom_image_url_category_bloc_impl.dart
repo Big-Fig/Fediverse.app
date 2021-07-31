@@ -5,8 +5,8 @@ import 'package:fedi/app/emoji/picker/category/custom_image_url/local_preference
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/emoji_picker/category/image_url/custom_emoji_picker_image_url_category_bloc.dart';
 import 'package:fedi/emoji_picker/item/image_url/custom_emoji_picker_image_url_item_model.dart';
-import 'package:fedi/mastodon/api/emoji/mastodon_api_custom_emoji_service.dart';
-import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_service.dart';
+import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart' as path;
 

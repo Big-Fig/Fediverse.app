@@ -13,12 +13,11 @@ import 'package:fedi/form/group/one_type/one_type_form_group_bloc.dart';
 import 'package:fedi/form/group/one_type/one_type_form_group_bloc_impl.dart';
 import 'package:fedi/form/group/pair/link_pair_form_group_bloc.dart';
 import 'package:fedi/form/group/pair/link_pair_form_group_bloc_impl.dart';
-import 'package:fedi/pleroma/api/account/my/pleroma_api_my_account_model.dart';
-import 'package:fedi/pleroma/api/account/my/pleroma_api_my_account_service.dart';
-import 'package:fedi/pleroma/api/field/pleroma_api_field_model.dart';
-import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:easy_dispose/easy_dispose.dart';
+import 'package:provider/provider.dart';
+import 'package:fedi/mastodon/api/field/mastodon_api_field_extension.dart';
 
 class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
   final ICurrentAuthInstanceBloc currentAuthInstanceBloc;
@@ -371,7 +370,7 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
       ),
       myAccountBloc: IMyAccountBloc.of(context, listen: false),
       pleromaMyAccountService:
-          IPleromaApiMyAccountService.of(context, listen: false),
+          Provider.of<IPleromaApiMyAccountService>(context, listen: false),
       customFieldLimits: info?.pleroma?.metadata?.fieldsLimits,
       noteMaxLength: info?.descriptionLimit,
       avatarUploadSizeInBytes: info?.avatarUploadLimit,

@@ -4,9 +4,9 @@ import 'package:fedi/app/instance/activity/instance_activity_bloc_impl.dart';
 import 'package:fedi/app/instance/activity/instance_activity_bloc_proxy_provider.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
-import 'package:fedi/pleroma/api/instance/pleroma_api_instance_service.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 class LocalInstanceActivityBloc extends InstanceActivityBloc
     implements IInstanceActivityBloc {
@@ -23,7 +23,7 @@ class LocalInstanceActivityBloc extends InstanceActivityBloc
 
   static LocalInstanceActivityBloc createFromContext(BuildContext context) {
     var pleromaInstanceService =
-        IPleromaApiInstanceService.of(context, listen: false);
+        Provider.of<IPleromaApiInstanceService>(context, listen: false);
     var currentAuthInstanceBloc =
         ICurrentAuthInstanceBloc.of(context, listen: false);
 

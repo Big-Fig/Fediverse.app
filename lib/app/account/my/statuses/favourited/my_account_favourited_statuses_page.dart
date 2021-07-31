@@ -14,7 +14,7 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
 import 'package:fedi/collapsible/owner/collapsible_owner_widget.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:fedi/pleroma/api/account/my/pleroma_api_my_account_service.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -66,7 +66,7 @@ MaterialPageRoute createMyAccountFavouritedStatusesPage() {
     builder: (context) =>
         DisposableProvider<IMyAccountFavouritedStatusesCachedListBloc>(
       create: (context) => MyAccountFavouritedStatusesCachedListBloc(
-        pleromaMyAccountService: IPleromaApiMyAccountService.of(
+        pleromaMyAccountService: Provider.of<IPleromaApiMyAccountService>(
           context,
           listen: false,
         ),

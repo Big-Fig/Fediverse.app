@@ -3,11 +3,10 @@ import 'package:fedi/app/filter/list/cached/filter_cached_list_bloc.dart';
 import 'package:fedi/app/filter/repository/filter_repository.dart';
 import 'package:fedi/app/filter/repository/filter_repository_model.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:fedi/pleroma/api/pleroma_api_service.dart';
-import 'package:fedi/pleroma/api/filter/pleroma_api_filter_service.dart';
-import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 class FilterCachedListBloc extends IFilterCachedListBloc {
   final IPleromaApiFilterService pleromaFilterService;
@@ -65,7 +64,7 @@ class FilterCachedListBloc extends IFilterCachedListBloc {
 
   static FilterCachedListBloc createFromContext(BuildContext context) =>
       FilterCachedListBloc(
-        pleromaFilterService: IPleromaApiFilterService.of(
+        pleromaFilterService: Provider.of<IPleromaApiFilterService>(
           context,
           listen: false,
         ),

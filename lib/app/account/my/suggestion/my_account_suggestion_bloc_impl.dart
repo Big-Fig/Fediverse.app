@@ -10,8 +10,9 @@ import 'package:fedi/app/account/pagination/network_only/account_network_only_pa
 import 'package:fedi/app/account/pagination/network_only/account_network_only_pagination_bloc_impl.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
-import 'package:fedi/pleroma/api/suggestions/pleroma_api_suggestions_service.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 class MyAccountSuggestionBloc extends DisposableOwner
     implements IMyAccountSuggestionBloc {
@@ -70,7 +71,7 @@ class MyAccountSuggestionBloc extends DisposableOwner
 
   static MyAccountSuggestionBloc createFromContext(BuildContext context) {
     var pleromaApiSuggestionsService =
-        IPleromaApiSuggestionsService.of(context, listen: false);
+        Provider.of<IPleromaApiSuggestionsService>(context, listen: false);
 
     return MyAccountSuggestionBloc(
       pleromaApiSuggestionsService: pleromaApiSuggestionsService,

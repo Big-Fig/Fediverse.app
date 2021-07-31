@@ -7,15 +7,12 @@ import 'package:fedi/app/status/repository/status_repository_impl.dart';
 import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
-import 'package:fedi/pleroma/api/timeline/pleroma_api_timeline_model.dart';
-import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:moor/ffi.dart';
 import 'package:moor/moor.dart';
 
-import '../../../pleroma/api/media/pleroma_api_media_test_helper.dart';
-import '../../../pleroma/api/tag/pleroma_api_tag_test_helper.dart';
 import '../../../rxdart/rxdart_test_helper.dart';
 import '../../account/database/account_database_test_helper.dart';
 import '../../conversation/conversation_test_helper.dart';

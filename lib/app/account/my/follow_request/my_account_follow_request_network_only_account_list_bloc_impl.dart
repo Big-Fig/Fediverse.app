@@ -10,10 +10,7 @@ import 'package:fedi/app/list/network_only/network_only_list_bloc.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:fedi/pleroma/api/account/my/pleroma_api_my_account_service.dart';
-import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
-import 'package:fedi/pleroma/api/pleroma_api_service.dart';
-import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -117,7 +114,7 @@ class MyAccountFollowRequestNetworkOnlyAccountListBloc extends DisposableOwner
     BuildContext context,
   ) =>
       MyAccountFollowRequestNetworkOnlyAccountListBloc(
-        pleromaMyAccountService: IPleromaApiMyAccountService.of(
+        pleromaMyAccountService: Provider.of<IPleromaApiMyAccountService>(
           context,
           listen: false,
         ),

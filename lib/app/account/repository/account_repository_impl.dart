@@ -14,7 +14,7 @@ import 'package:fedi/app/database/dao/populated_database_dao_mixin.dart';
 import 'package:fedi/app/database/dao/repository/remote/populated_app_remote_database_dao_repository.dart';
 import 'package:fedi/app/status/database/status_favourited_accounts_database_dao.dart';
 import 'package:fedi/app/status/database/status_reblogged_accounts_database_dao.dart';
-import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:moor/moor.dart';
 
 class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<

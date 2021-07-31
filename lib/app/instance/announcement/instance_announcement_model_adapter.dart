@@ -1,9 +1,6 @@
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/instance/announcement/instance_announcement_model.dart';
-import 'package:fedi/pleroma/api/announcement/pleroma_api_announcement_model.dart';
-import 'package:fedi/pleroma/api/mention/pleroma_api_mention_model.dart';
-import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
-import 'package:fedi/pleroma/api/tag/pleroma_api_tag_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 
 extension IPleromaInstanceAnnouncementExtension on IPleromaApiAnnouncement {
   IInstanceAnnouncement toDbInstanceAnnouncementPopulatedWrapper() =>

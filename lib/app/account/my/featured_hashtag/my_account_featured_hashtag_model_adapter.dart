@@ -1,5 +1,5 @@
 import 'package:fedi/app/account/my/featured_hashtag/my_account_featured_hashtag_model.dart';
-import 'package:fedi/pleroma/api/featured_tags/pleroma_api_featured_tags_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 
 extension IPleromaFeaturedTagExtension on IPleromaApiFeaturedTag {
   MyAccountFeaturedHashtag toMyAccountFeaturedHashtag() {

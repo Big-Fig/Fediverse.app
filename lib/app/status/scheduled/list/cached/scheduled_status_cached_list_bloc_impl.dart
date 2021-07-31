@@ -5,9 +5,7 @@ import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository_model.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_model.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:fedi/pleroma/api/pleroma_api_service.dart';
-import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
-import 'package:fedi/pleroma/api/status/scheduled/pleroma_api_scheduled_status_service.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -41,7 +39,8 @@ class ScheduledStatusCachedListBloc extends IScheduledStatusCachedListBloc {
   ) =>
       ScheduledStatusCachedListBloc(
         pleromaScheduledStatusService:
-            IPleromaApiScheduledStatusService.of(context, listen: false),
+            Provider.of<IPleromaApiScheduledStatusService>(context,
+                listen: false),
         scheduledStatusRepository:
             IScheduledStatusRepository.of(context, listen: false),
       );

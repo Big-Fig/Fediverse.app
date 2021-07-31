@@ -3,8 +3,7 @@ import 'package:fedi/app/status/reply/status_reply_loader_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
-import 'package:fedi/pleroma/api/status/pleroma_api_status_service.dart';
-import 'package:fedi/pleroma/api/status/pleroma_api_status_service_impl.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 
 class RemoteStatusReplyLoaderBloc extends AsyncInitLoadingBloc

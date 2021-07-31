@@ -7,8 +7,7 @@ import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:fedi/pleroma/api/status/emoji_reaction/pleroma_api_status_emoji_reaction_service.dart';
-import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -52,7 +51,8 @@ class StatusEmojiReactionListWidget extends StatelessWidget {
                                   listen: false,
                                 ),
                                 pleromaApiStatusEmojiReactionService:
-                                    IPleromaApiStatusEmojiReactionService.of(
+                                Provider
+                                    .of<IPleromaApiStatusEmojiReactionService>(
                                   context,
                                   listen: false,
                                 ),

@@ -5,8 +5,9 @@ import 'package:fedi/app/chat/pleroma/pleroma_chat_page.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/app/toast/toast_service.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:fedi/pleroma/api/chat/pleroma_api_chat_service.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 Future goToPleromaChatWithAccount({
   required BuildContext context,
@@ -25,7 +26,7 @@ Future goToPleromaChatWithAccount({
         context: context,
         asyncCode: () async {
           var pleromaChatService =
-              IPleromaApiChatService.of(context, listen: false);
+              Provider.of<IPleromaApiChatService>(context, listen: false);
 
           var pleromaApiChat =
               await pleromaChatService.getOrCreateChatByAccountId(

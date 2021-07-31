@@ -1,5 +1,5 @@
 import 'package:fedi/app/notification/tab/notification_tab_model.dart';
-import 'package:fedi/pleroma/api/notification/pleroma_api_notification_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 
 class NotificationTabExcludeHelper {
   static List<PleromaApiNotificationType> mapTabToExcludeTypes({

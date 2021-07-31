@@ -9,12 +9,9 @@ import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
-import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_service.dart';
-import 'package:fedi/pleroma/api/status/auth/pleroma_api_auth_status_service.dart';
-import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
-import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 
 class PostStatusStartConversationChatBloc extends PostStatusBloc {
@@ -72,13 +69,14 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
     return PostStatusStartConversationChatBloc(
       successCallback: successCallback,
       conversationAccountsWithoutMe: conversationAccountsWithoutMe,
-      pleromaAuthStatusService: IPleromaApiAuthStatusService.of(
+      pleromaAuthStatusService: Provider.of<IPleromaApiAuthStatusService>(
         context,
         listen: false,
       ),
       statusRepository: IStatusRepository.of(context, listen: false),
       pleromaMediaAttachmentService:
-          IPleromaApiMediaAttachmentService.of(context, listen: false),
+          Provider.of<IPleromaApiMediaAttachmentService>(context,
+              listen: false),
       maximumMessageLength: info.maxTootChars,
       pleromaInstancePollLimits: info.pollLimits,
       maximumFileSizeInBytes: info.uploadLimit,

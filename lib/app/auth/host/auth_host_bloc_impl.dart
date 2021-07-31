@@ -12,29 +12,16 @@ import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/oauth_last_launched/local_preferences/auth_oauth_last_launched_host_to_login_local_preference_bloc.dart';
 import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
-import 'package:fedi/connection/connection_service.dart';
+import 'package:base_fediverse_api/base_fediverse_api.dart';
+import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
-import 'package:fedi/mastodon/api/application/mastodon_api_application_model.dart';
-import 'package:fedi/pleroma/api/account/my/pleroma_api_my_account_service_impl.dart';
-import 'package:fedi/pleroma/api/account/public/pleroma_api_account_public_model.dart';
-import 'package:fedi/pleroma/api/account/public/pleroma_api_account_public_service.dart';
-import 'package:fedi/pleroma/api/account/public/pleroma_api_account_public_service_impl.dart';
-import 'package:fedi/pleroma/api/application/pleroma_api_application_model.dart';
-import 'package:fedi/pleroma/api/application/pleroma_api_application_service.dart';
-import 'package:fedi/pleroma/api/application/pleroma_api_application_service_impl.dart';
-import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
-import 'package:fedi/pleroma/api/instance/pleroma_api_instance_service_impl.dart';
-import 'package:fedi/pleroma/api/oauth/pleroma_api_oauth_model.dart';
-import 'package:fedi/pleroma/api/oauth/pleroma_api_oauth_service.dart';
-import 'package:fedi/pleroma/api/oauth/pleroma_api_oauth_service_impl.dart';
-import 'package:fedi/pleroma/api/rest/auth/pleroma_api_auth_rest_service_impl.dart';
-import 'package:fedi/pleroma/api/rest/pleroma_api_rest_model.dart';
-import 'package:fedi/pleroma/api/rest/pleroma_api_rest_service.dart';
-import 'package:fedi/pleroma/api/rest/pleroma_api_rest_service_impl.dart';
-import 'package:fedi/rest/rest_service.dart';
-import 'package:fedi/rest/rest_service_impl.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:logging/logging.dart';
+import 'package:provider/provider.dart';
+import 'package:uni_links/uni_links.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:path/path.dart';
 
 const scopes = 'read write follow push';
 
@@ -206,8 +193,8 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     await pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc
         .setValue(baseUrl.toString());
 
-    var authCode = await pleromaOAuthService
-        .launchAuthorizeFormAndExtractAuthorizationCode(
+    var authCode = await launchAuthorizeFormAndExtractAuthorizationCode(
+      pleromaOAuthService: pleromaOAuthService,
       authorizeRequest: PleromaApiOAuthAuthorizeRequest(
         redirectUri: await _calculateRedirectUri(),
         scope: scopes,
@@ -468,7 +455,8 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
         instanceBaseUri: instanceBaseUri,
         isPleroma: false,
         preferencesService: ILocalPreferencesService.of(context, listen: false),
-        connectionService: IConnectionService.of(context, listen: false),
+        connectionService:
+            Provider.of<IConnectionService>(context, listen: false),
         currentInstanceBloc:
             ICurrentAuthInstanceBloc.of(context, listen: false),
         pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc:
@@ -507,4 +495,54 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     await pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc
         .performAsyncInit();
   }
+}
+
+@override
+Future<String?> launchAuthorizeFormAndExtractAuthorizationCode({
+  required PleromaApiOAuthAuthorizeRequest authorizeRequest,
+  required IPleromaApiOAuthService pleromaOAuthService,
+}) async {
+  _logger.finest(() => 'launchAuthorizeFormAndExtractAuthorizationCode');
+  var host = pleromaOAuthService.restService.baseUri;
+  var baseUrl = join(IPleromaApiOAuthService.oauthRelativeUrlPath, 'authorize');
+
+  var keyValueMap = authorizeRequest.toJson();
+
+  var queryArgs = keyValueMap.entries
+      .map((entry) => '${entry.key}=${entry.value}')
+      .join('&');
+
+  queryArgs = queryArgs.replaceAll(' ', '%20');
+
+  var url = '$host/$baseUrl?$queryArgs';
+  var isCanLaunch = await canLaunch(url);
+
+  _logger.finest(() => 'launchAuthorizeFormAndExtractAuthorizationCode \n'
+      '\t url = $url\n'
+      '\t canLaunch=$isCanLaunch');
+
+  var completer = Completer<String>();
+  if (isCanLaunch) {
+    // ignore: avoid-late-keyword
+    late StreamSubscription<Uri?> subscription;
+    subscription = uriLinkStream.listen(
+      (Uri? uri) {
+        subscription.cancel();
+        closeWebView();
+        var code = IPleromaApiOAuthService.extractAuthCodeFromUri(uri!);
+        completer.complete(code);
+      },
+      onError: (e) {
+        subscription.cancel();
+        closeWebView();
+        completer.completeError(e);
+      },
+    );
+    _logger.finest(() => 'launch url=$url');
+    await launch(url);
+  } else {
+    completer.completeError(PleromaApiOAuthCantLaunchException());
+  }
+
+  return completer.future;
 }

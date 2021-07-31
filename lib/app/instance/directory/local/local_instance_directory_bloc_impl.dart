@@ -5,9 +5,9 @@ import 'package:fedi/app/instance/directory/instance_directory_bloc_proxy_provid
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:fedi/pleroma/api/directory/pleroma_api_directory_service.dart';
-import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 class LocalInstanceDirectoryBloc extends InstanceDirectoryBloc
     implements IInstanceDirectoryBloc {
@@ -26,7 +26,7 @@ class LocalInstanceDirectoryBloc extends InstanceDirectoryBloc
 
   static LocalInstanceDirectoryBloc createFromContext(BuildContext context) {
     var pleromaApiDirectoryService =
-        IPleromaApiDirectoryService.of(context, listen: false);
+        Provider.of<IPleromaApiDirectoryService>(context, listen: false);
     var currentAuthInstanceBloc =
         ICurrentAuthInstanceBloc.of(context, listen: false);
 

@@ -14,9 +14,10 @@ import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
-import 'package:fedi/pleroma/api/conversation/pleroma_api_conversation_service.dart';
-import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:base_fediverse_api/base_fediverse_api.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ConversationChatWithLastMessageListBloc extends DisposableOwner
     implements IConversationChatWithLastMessageListBloc {
@@ -88,7 +89,7 @@ class ConversationChatWithLastMessageListBloc extends DisposableOwner
           context,
           listen: false,
         ),
-        conversationService: IPleromaApiConversationService.of(
+        conversationService: Provider.of<IPleromaApiConversationService>(
           context,
           listen: false,
         ),

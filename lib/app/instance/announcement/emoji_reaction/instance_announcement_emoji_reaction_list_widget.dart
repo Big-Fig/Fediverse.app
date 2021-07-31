@@ -1,7 +1,7 @@
 import 'package:fedi/app/instance/announcement/emoji_reaction/instance_announcement_emoji_reaction_list_item_widget.dart';
 import 'package:fedi/app/instance/announcement/instance_announcement_bloc.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:fedi/pleroma/api/announcement/pleroma_api_announcement_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 

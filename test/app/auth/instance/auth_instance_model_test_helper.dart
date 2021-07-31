@@ -1,8 +1,5 @@
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
-
-import '../../../pleroma/api/application/pleroma_api_application_test_helper.dart';
-import '../../../pleroma/api/instance/pleroma_api_instance_test_helper.dart';
-import '../../../pleroma/api/oauth/pleroma_api_oauth_test_helper.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 
 // ignore_for_file: no-magic-number
 class AuthInstanceModelTestHelper {

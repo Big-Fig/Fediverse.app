@@ -9,16 +9,11 @@ import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/duration/duration_extension.dart';
-import 'package:fedi/pleroma/api/account/pleroma_api_account_service.dart';
-import 'package:fedi/pleroma/api/pleroma_api_service.dart';
-import 'package:fedi/pleroma/api/poll/pleroma_api_poll_model.dart';
-import 'package:fedi/pleroma/api/poll/pleroma_api_poll_service.dart';
-import 'package:fedi/pleroma/api/status/auth/pleroma_api_auth_status_service.dart';
-import 'package:fedi/pleroma/api/status/emoji_reaction/pleroma_api_status_emoji_reaction_service.dart';
-import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
+import 'package:provider/provider.dart';
 
 final _logger = Logger('local_status_bloc_impl.dart');
 
@@ -67,20 +62,20 @@ class LocalStatusBloc extends StatusBloc {
         delayInit: delayInit,
         isNeedWatchLocalRepositoryForUpdates:
             isNeedWatchLocalRepositoryForUpdates,
-        pleromaAuthStatusService: IPleromaApiAuthStatusService.of(
+        pleromaAuthStatusService: Provider.of<IPleromaApiAuthStatusService>(
           context,
           listen: false,
         ),
-        pleromaAccountService: IPleromaApiAccountService.of(
+        pleromaAccountService: Provider.of<IPleromaApiAccountService>(
           context,
           listen: false,
         ),
         pleromaApiStatusEmojiReactionService:
-            IPleromaApiStatusEmojiReactionService.of(
+        Provider.of<IPleromaApiStatusEmojiReactionService>(
           context,
           listen: false,
         ),
-        pleromaPollService: IPleromaApiPollService.of(
+        pleromaPollService: Provider.of<IPleromaApiPollService>(
           context,
           listen: false,
         ),

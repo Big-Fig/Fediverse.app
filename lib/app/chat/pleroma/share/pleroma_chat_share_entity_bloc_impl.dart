@@ -12,10 +12,7 @@ import 'package:fedi/app/share/entity/share_entity_bloc.dart';
 import 'package:fedi/app/share/entity/share_entity_model.dart';
 import 'package:fedi/app/share/to_account/share_to_account_bloc.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:fedi/pleroma/api/account/pleroma_api_account_service.dart';
-import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart';
-import 'package:fedi/pleroma/api/chat/pleroma_api_chat_service.dart';
-import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_service.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -130,7 +127,7 @@ class PleromaChatShareEntityBloc extends PleromaChatShareBloc
           context,
           listen: false,
         ),
-        pleromaChatService: IPleromaApiChatService.of(
+        pleromaChatService: Provider.of<IPleromaApiChatService>(
           context,
           listen: false,
         ),
@@ -142,7 +139,7 @@ class PleromaChatShareEntityBloc extends PleromaChatShareBloc
           context,
           listen: false,
         ),
-        pleromaAccountService: IPleromaApiAccountService.of(
+        pleromaAccountService: Provider.of<IPleromaApiAccountService>(
           context,
           listen: false,
         ),
@@ -150,7 +147,8 @@ class PleromaChatShareEntityBloc extends PleromaChatShareBloc
           context,
           listen: false,
         ),
-        pleromaApiMediaAttachmentService: IPleromaApiMediaAttachmentService.of(
+        pleromaApiMediaAttachmentService:
+            Provider.of<IPleromaApiMediaAttachmentService>(
           context,
           listen: false,
         ),

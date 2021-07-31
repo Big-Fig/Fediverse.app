@@ -6,7 +6,7 @@ import 'package:fedi/app/captcha/pleroma/pleroma_form_captcha_string_field_bloc.
 import 'package:fedi/app/captcha/pleroma/pleroma_form_captcha_string_field_bloc_impl.dart';
 import 'package:fedi/form/field/value/string/validation/string_value_form_field_non_empty_validation.dart';
 import 'package:fedi/form/form_item_bloc.dart';
-import 'package:fedi/pleroma/api/captcha/pleroma_api_captcha_service.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 
 class RegisterAuthInstanceFormStepperCaptchaItemBloc
     extends RegisterAuthInstanceFormStepperItemBloc
