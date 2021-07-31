@@ -1,5 +1,5 @@
 import 'package:fedi/app/status/post/settings/post_status_settings_model.dart';
-import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 
 import '../../../../localization/localization_model_test_helper.dart';
 

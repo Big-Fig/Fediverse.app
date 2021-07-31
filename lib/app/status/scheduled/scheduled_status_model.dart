@@ -1,12 +1,11 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/pending/pending_model.dart';
-import 'package:fedi/app/status/post/poll/post_status_poll_model.dart';
 import 'package:fedi/app/status/post/post_status_data_status_status_adapter.dart';
 import 'package:fedi/app/status/post/post_status_model.dart';
+import 'package:fedi/app/status/post/poll/post_status_poll_model.dart';
 import 'package:fedi/obj/equal_comparable_obj.dart';
-import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
-import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 abstract class IScheduledStatus
@@ -107,7 +106,7 @@ extension IPleromaScheduledStatusParamsExtension
         spoilerText: spoilerText,
         visibility: visibility,
         scheduledAt: scheduledAt,
-        poll: poll,
+        poll: poll?.toPleromaApiPostStatusPoll(),
         idempotency: idempotency,
         inReplyToId: inReplyToId,
         applicationId: applicationId,
@@ -122,15 +121,14 @@ extension IPleromaScheduledStatusParamsExtension
 
 extension IScheduledStatusExtension on IScheduledStatus {
   IPostStatusData get postStatusData => PostStatusData(
-        subject: params.spoilerText,
+    subject: params.spoilerText,
         text: params.text,
         scheduledAt: scheduledAt,
         visibilityString: params.visibility,
         mediaAttachments: mediaAttachments,
         poll: params.poll?.toPostStatusPoll(),
         to: params.to,
-        inReplyToPleromaStatus:
-            params.inReplyToPleromaApiStatus?.toPleromaApiStatus(),
+        inReplyToPleromaStatus: params.inReplyToStatus?.toPleromaApiStatus(),
         inReplyToConversationId: params.inReplyToConversationId,
         isNsfwSensitiveEnabled: params.sensitive,
         language: params.language,

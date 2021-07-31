@@ -5,12 +5,11 @@ import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_re
 import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:fedi/pleroma/api/pleroma_api_service.dart';
-import 'package:fedi/pleroma/api/chat/pleroma_api_chat_service.dart';
-import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
+import 'package:provider/provider.dart';
 
 var _logger = Logger('pleroma_chat_message_cached_list_bloc_impl.dart');
 
@@ -116,7 +115,8 @@ class PleromaChatMessageCachedListBloc extends DisposableOwner
   }) =>
       PleromaChatMessageCachedListBloc(
         chat: chat,
-        pleromaChatService: IPleromaApiChatService.of(context, listen: false),
+        pleromaChatService:
+            Provider.of<IPleromaApiChatService>(context, listen: false),
         chatMessageRepository:
             IPleromaChatMessageRepository.of(context, listen: false),
       );

@@ -4,9 +4,7 @@ import 'package:fedi/app/chat/message/chat_message_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/pending/pending_model.dart';
 import 'package:fedi/obj/equal_comparable_obj.dart';
-import 'package:fedi/pleroma/api/card/pleroma_api_card_model.dart';
-import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_model.dart';
-import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 
 abstract class IPleromaChatMessage extends IChatMessage
     implements IEqualComparableObj<IPleromaChatMessage> {

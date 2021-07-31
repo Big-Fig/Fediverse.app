@@ -7,10 +7,7 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
-import 'package:fedi/pleroma/api/pleroma_api_service.dart';
-import 'package:fedi/pleroma/api/timeline/pleroma_api_timeline_service.dart';
-import 'package:fedi/pleroma/api/timeline/pleroma_api_timeline_service_impl.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 

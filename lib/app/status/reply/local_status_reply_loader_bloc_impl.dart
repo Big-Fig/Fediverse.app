@@ -2,8 +2,9 @@ import 'package:fedi/app/status/reply/status_reply_loader_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
-import 'package:fedi/pleroma/api/status/pleroma_api_status_service.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 class LocalStatusReplyLoaderBloc extends AsyncInitLoadingBloc
     implements IStatusReplyLoaderBloc {
@@ -20,7 +21,7 @@ class LocalStatusReplyLoaderBloc extends AsyncInitLoadingBloc
   ) =>
       LocalStatusReplyLoaderBloc(
         pleromaStatusService:
-            IPleromaApiStatusService.of(context, listen: false),
+            Provider.of<IPleromaApiStatusService>(context, listen: false),
         statusRepository: IStatusRepository.of(context, listen: false),
         originalStatus: originalStatus,
       );

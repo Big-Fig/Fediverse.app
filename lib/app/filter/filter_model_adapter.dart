@@ -1,6 +1,6 @@
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/filter/filter_model.dart';
-import 'package:fedi/pleroma/api/filter/pleroma_api_filter_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 
 extension IPleromaFilterExtension on IPleromaApiFilter {
   IFilter toDbFilterPopulatedWrapper() => DbFilterPopulatedWrapper(

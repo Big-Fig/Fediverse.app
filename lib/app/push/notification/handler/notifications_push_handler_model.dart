@@ -1,4 +1,4 @@
-import 'package:fedi/pleroma/api/push/pleroma_api_push_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:fedi/push/push_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';

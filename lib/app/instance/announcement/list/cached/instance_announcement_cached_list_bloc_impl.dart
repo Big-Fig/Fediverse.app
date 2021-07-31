@@ -5,10 +5,10 @@ import 'package:fedi/app/instance/announcement/repository/instance_announcement_
 import 'package:fedi/app/instance/announcement/settings/instance_announcement_settings_model.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:fedi/pleroma/api/announcement/pleroma_api_announcement_service.dart';
-import 'package:fedi/pleroma/api/pleroma_api_service.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:easy_dispose/easy_dispose.dart';
 
@@ -87,7 +87,8 @@ class InstanceAnnouncementCachedListBloc
     required InstanceAnnouncementSettings instanceAnnouncementSettings,
   }) =>
       InstanceAnnouncementCachedListBloc(
-        pleromaApiAnnouncementService: IPleromaApiAnnouncementService.of(
+        pleromaApiAnnouncementService:
+            Provider.of<IPleromaApiAnnouncementService>(
           context,
           listen: false,
         ),

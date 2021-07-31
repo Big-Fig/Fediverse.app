@@ -4,7 +4,7 @@ import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/status/emoji_reaction/status_emoji_reaction_bloc.dart';
 import 'package:fedi/app/status/emoji_reaction/status_emoji_reaction_model_adapter_proxy_provider.dart';
 import 'package:fedi/app/status/status_bloc.dart';
-import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

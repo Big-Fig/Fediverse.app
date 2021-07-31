@@ -2,7 +2,7 @@ import 'package:fedi/app/pagination/network_only/network_only_pleroma_pagination
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/pagination/network_only/network_only_pagination_bloc_impl.dart';
 import 'package:fedi/pagination/pagination_model.dart';
-import 'package:fedi/pleroma/api/pleroma_api_service.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 
 abstract class NetworkOnlyPleromaPaginationBloc<TItem>
     extends NetworkOnlyPaginationBloc<PaginationPage<TItem>, TItem>

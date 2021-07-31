@@ -9,9 +9,7 @@ import 'package:fedi/app/search/result/search_result_model.dart';
 import 'package:fedi/app/status/list/status_list_bloc.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
-import 'package:fedi/pleroma/api/pleroma_api_service.dart';
-import 'package:fedi/pleroma/api/search/pleroma_api_search_service.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -97,7 +95,7 @@ class SearchResultItemNetworkOnlyListBloc
           context,
           listen: false,
         ),
-        pleromaSearchService: IPleromaApiSearchService.of(
+        pleromaSearchService: Provider.of<IPleromaApiSearchService>(
           context,
           listen: false,
         ),

@@ -1,8 +1,8 @@
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_model.dart';
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:fedi/mastodon/api/media/attachment/mastodon_api_media_attachment_model.dart';
-import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
+import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 
 class UploadedUploadMediaAttachmentBloc extends DisposableOwner
     implements IUploadMediaAttachmentBloc {

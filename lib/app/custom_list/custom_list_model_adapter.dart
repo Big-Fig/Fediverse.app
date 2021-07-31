@@ -1,5 +1,5 @@
 import 'package:fedi/app/custom_list/custom_list_model.dart';
-import 'package:fedi/pleroma/api/list/pleroma_api_list_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 
 extension IPleromaListExtension on IPleromaApiList {
   CustomList toCustomList() {

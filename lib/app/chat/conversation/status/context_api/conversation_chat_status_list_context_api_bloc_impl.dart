@@ -3,11 +3,10 @@ import 'package:fedi/app/chat/conversation/status/list/cached/conversation_chat_
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/pleroma/api/pleroma_api_service.dart';
-import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
-import 'package:fedi/pleroma/api/status/pleroma_api_status_service.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
+import 'package:provider/provider.dart';
 
 var _logger =
     Logger('conversation_chat_status_list_context_api_bloc_impl.dart');
@@ -74,7 +73,7 @@ class ConversationChatStatusListContextApiBloc
       ConversationChatStatusListContextApiBloc(
         conversation: conversation,
         pleromaStatusService:
-            IPleromaApiStatusService.of(context, listen: false),
+            Provider.of<IPleromaApiStatusService>(context, listen: false),
         statusRepository: IStatusRepository.of(context, listen: false),
         statusToFetchContext: statusToFetchContext,
       );

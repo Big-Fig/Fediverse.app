@@ -10,8 +10,9 @@ import 'package:fedi/app/hashtag/pagination/network_only/hashtag_network_only_pa
 import 'package:fedi/app/hashtag/pagination/network_only/hashtag_network_only_pagination_bloc_impl.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
-import 'package:fedi/pleroma/api/featured_tags/pleroma_api_featured_tags_service.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 class MyAccountFeaturedHashtagSuggestionBloc extends DisposableOwner
     implements IMyAccountFeaturedHashtagSuggestionBloc {
@@ -68,7 +69,7 @@ class MyAccountFeaturedHashtagSuggestionBloc extends DisposableOwner
     BuildContext context,
   ) {
     var pleromaApiFeaturedTagsService =
-        IPleromaApiFeaturedTagsService.of(context, listen: false);
+        Provider.of<IPleromaApiFeaturedTagsService>(context, listen: false);
 
     return MyAccountFeaturedHashtagSuggestionBloc(
       pleromaApiFeaturedTagsService: pleromaApiFeaturedTagsService,

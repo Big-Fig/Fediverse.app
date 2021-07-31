@@ -1,5 +1,5 @@
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:fedi/pleroma/api/pleroma_api_service.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 
 abstract class INetworkOnlyListBloc<T> extends DisposableOwner {
   IPleromaApi get pleromaApi;

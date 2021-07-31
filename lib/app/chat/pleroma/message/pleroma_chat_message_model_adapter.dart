@@ -1,10 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
 import 'package:fedi/app/database/app_database.dart';
-import 'package:fedi/pleroma/api/card/pleroma_api_card_model.dart';
-import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart';
-import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_model.dart';
-import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 
 extension IPleromaApiChatMessageExtension on IPleromaApiChatMessage {
   DbPleromaChatMessagePopulatedWrapper toDbChatMessagePopulatedWrapper({

@@ -2,11 +2,9 @@ import 'package:fedi/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
-import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
-import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../../pleroma/api/application/pleroma_api_application_test_helper.dart';
 import '../../account/database/account_database_test_helper.dart';
 
 // ignore_for_file: no-magic-number

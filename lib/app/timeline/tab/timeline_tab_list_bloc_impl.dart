@@ -3,7 +3,7 @@ import 'package:fedi/app/timeline/tab/timeline_tab_bloc.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_list_bloc.dart';
 import 'package:fedi/app/timeline/type/timeline_type_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
-import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
+import 'package:base_fediverse_api/base_fediverse_api.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 

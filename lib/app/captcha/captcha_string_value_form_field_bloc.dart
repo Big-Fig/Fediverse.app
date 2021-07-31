@@ -1,6 +1,5 @@
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
-import 'package:fedi/pleroma/api/captcha/native/pleroma_api_native_captcha_image_extension.dart';
-import 'package:fedi/pleroma/api/captcha/pleroma_api_captcha_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -57,7 +56,7 @@ extension ICaptchaStringValueFormFieldBlocExtension
             case PleromaApiCaptchaType.unknown:
               return Image.network(captcha!.url!);
             case PleromaApiCaptchaType.native:
-              return captcha!.decodeUrlAsBase64Image();
+              return Image.memory(captcha!.decodeUrlAsBase64ImageBytes());
             default:
               return null;
           }

@@ -13,13 +13,7 @@ import 'package:fedi/app/share/entity/share_entity_model.dart';
 import 'package:fedi/app/share/to_account/share_to_account_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:fedi/pleroma/api/account/pleroma_api_account_service.dart';
-import 'package:fedi/pleroma/api/conversation/pleroma_api_conversation_service.dart';
-import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
-import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_service.dart';
-import 'package:fedi/pleroma/api/status/auth/pleroma_api_auth_status_service.dart';
-import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
-import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -177,16 +171,16 @@ class ConversationChatShareEntityBloc extends ConversationChatShareBloc
           context,
           listen: false,
         ),
-        pleromaApiAuthStatusService: IPleromaApiAuthStatusService.of(
+        pleromaApiAuthStatusService: Provider.of<IPleromaApiAuthStatusService>(
           context,
           listen: false,
         ),
         pleromaConversationService:
-            IPleromaApiConversationService.of(context, listen: false),
+            Provider.of<IPleromaApiConversationService>(context, listen: false),
         statusRepository: IStatusRepository.of(context, listen: false),
         accountRepository: IAccountRepository.of(context, listen: false),
         myAccountBloc: IMyAccountBloc.of(context, listen: false),
-        pleromaAccountService: IPleromaApiAccountService.of(
+        pleromaAccountService: Provider.of<IPleromaApiAccountService>(
           context,
           listen: false,
         ),
@@ -198,7 +192,8 @@ class ConversationChatShareEntityBloc extends ConversationChatShareBloc
           context,
           listen: false,
         ),
-        pleromaApiMediaAttachmentService: IPleromaApiMediaAttachmentService.of(
+        pleromaApiMediaAttachmentService:
+            Provider.of<IPleromaApiMediaAttachmentService>(
           context,
           listen: false,
         ),

@@ -21,6 +21,30 @@ default_platform(:android)
       )
     end
 
+    lane :update_metadata do
+    supply(
+      track: 'beta',
+      skip_upload_metadata: false,
+      skip_upload_changelogs: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+      skip_upload_apk: true,
+      skip_upload_aab: true,
+    )
+    end
+
+    lane :update_screenshots do
+    supply(
+      track: 'beta',
+      skip_upload_metadata: true,
+      skip_upload_changelogs: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: false,
+      skip_upload_apk: true,
+      skip_upload_aab: true,
+    )
+    end
+
 platform :android do
 #  desc "Runs all the tests"
 #  lane :test do

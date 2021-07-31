@@ -4,12 +4,7 @@ import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/collection/collection_hash_utils.dart';
 import 'package:fedi/date_time/date_time_extension.dart';
 import 'package:fedi/duration/duration_extension.dart';
-import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
-import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
-import 'package:fedi/pleroma/api/mention/pleroma_api_mention_model.dart';
-import 'package:fedi/pleroma/api/poll/pleroma_api_poll_model.dart';
-import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
-import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
 

@@ -1,5 +1,5 @@
 import 'package:fedi/collection/collection_hash_utils.dart';
-import 'package:fedi/pleroma/api/emoji/pleroma_api_emoji_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/foundation.dart';
 
 class EmojiText {

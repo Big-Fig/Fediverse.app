@@ -3,8 +3,7 @@ import 'package:fedi/app/media/attachment/reupload/media_attachment_reupload_ser
 import 'package:fedi/app/share/entity/settings/share_entity_settings_model.dart';
 import 'package:fedi/app/share/entity/share_entity_model.dart';
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
-import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_service.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';

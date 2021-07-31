@@ -1,6 +1,6 @@
 import 'package:fedi/app/emoji/reaction/emoji_reaction_model.dart';
 import 'package:fedi/app/instance/announcement/emoji_reaction/instance_announcement_emoji_reaction_model_adapter.dart';
-import 'package:fedi/pleroma/api/announcement/pleroma_api_announcement_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 

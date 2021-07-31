@@ -532,7 +532,7 @@ Future logInToInstance(BuildContext context) async {
           var testAuthInstanceJsonString;
           if (Platform.isAndroid) {
             testAuthInstanceJsonString =
-            configService.androidTestAuthInstanceJson!;
+                configService.androidTestAuthInstanceJson!;
           } else {
             testAuthInstanceJsonString = configService.iosTestAuthInstanceJson!;
           }

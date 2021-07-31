@@ -2,8 +2,9 @@ import 'package:fedi/app/custom_list/custom_list_bloc.dart';
 import 'package:fedi/app/custom_list/custom_list_model.dart';
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:fedi/pleroma/api/list/pleroma_api_list_service.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
 
@@ -48,7 +49,7 @@ class CustomListBloc extends DisposableOwner implements ICustomListBloc {
   }) =>
       CustomListBloc(
         customList: customList,
-        pleromaListService: IPleromaApiListService.of(
+        pleromaListService: Provider.of<IPleromaApiListService>(
           context,
           listen: false,
         ),

@@ -3,8 +3,7 @@ import 'package:fedi/app/hashtag/hashtag_model.dart';
 import 'package:fedi/app/hashtag/hashtag_model_adapter.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:fedi/pleroma/api/featured_tags/pleroma_api_featured_tags_service.dart';
-import 'package:fedi/pleroma/api/pleroma_api_service.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:logging/logging.dart';
 
 final _logger = Logger(

@@ -12,14 +12,11 @@ import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/pending/pending_model.dart';
-import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart';
-import 'package:fedi/pleroma/api/chat/pleroma_api_chat_service.dart';
-import 'package:fedi/pleroma/api/id/pleroma_api_fake_id_helper.dart';
-import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
-import 'package:fedi/pleroma/api/pleroma_api_service.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
+import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:easy_dispose/easy_dispose.dart';
 
@@ -190,7 +187,8 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
     bool needRefreshFromNetworkOnInit = false,
   }) {
     return PleromaChatBloc(
-      pleromaChatService: IPleromaApiChatService.of(context, listen: false),
+      pleromaChatService:
+          Provider.of<IPleromaApiChatService>(context, listen: false),
       myAccountBloc: IMyAccountBloc.of(context, listen: false),
       chat: chat,
       lastChatMessage: lastChatMessage,

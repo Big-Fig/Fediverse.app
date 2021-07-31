@@ -16,7 +16,7 @@ import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
-import 'package:fedi/pleroma/api/account/my/pleroma_api_my_account_service.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -128,7 +128,8 @@ class _AuthInstanceChooserItemsToChooseWidget extends StatelessWidget {
                   return DisposableProvider<IAccountBloc>(
                     create: (context) => MyAccountBloc(
                       instance: instance,
-                      pleromaMyAccountService: IPleromaApiMyAccountService.of(
+                      pleromaMyAccountService:
+                          Provider.of<IPleromaApiMyAccountService>(
                         context,
                         listen: false,
                       ),

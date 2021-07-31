@@ -1,5 +1,5 @@
 import 'package:fedi/app/timeline/type/timeline_type_model.dart';
-import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 
 extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
   bool isOnlyWithMediaFilterSupportedOnInstance(

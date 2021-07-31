@@ -1,4 +1,4 @@
-import 'package:fedi/web_sockets/handling_type/web_sockets_handling_type_model.dart';
+import 'package:base_fediverse_api/base_fediverse_api.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -39,12 +39,6 @@ void main() {
       var objFromJsonValue = typeConverter.fromJson(jsonValue);
 
       expect(value, objFromJsonValue);
-
-      var sqlValue = typeConverter.mapToSql(value);
-
-      var objFromSqlValue = typeConverter.mapToDart(sqlValue);
-
-      expect(value, objFromSqlValue);
     }
   });
 }

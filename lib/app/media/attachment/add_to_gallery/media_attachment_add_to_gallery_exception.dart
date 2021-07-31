@@ -1,4 +1,4 @@
-import 'package:fedi/mastodon/api/media/attachment/mastodon_api_media_attachment_model.dart';
+import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
 
 class MediaAttachmentCantAddToGalleryException implements Exception {
   final IMastodonApiMediaAttachment? mediaAttachment;

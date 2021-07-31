@@ -6,7 +6,11 @@
       "fonts": [
         {
           "font": "../../../../assets/fonts/Rubik-Regular.ttf",
-          "supported": ["ru-RU", "en-US"]
+          "supported": [
+            "ru-RU",
+            "en-US",
+            "pl-PL"
+          ]
         }
       ],
       "color": "#fafafa",

@@ -10,9 +10,7 @@ import 'package:fedi/app/auth/instance/register/form/stepper/item/submit/registe
 import 'package:fedi/app/auth/instance/register/form/stepper/item/submit/register_auth_instance_form_submit_stepper_item_bloc_impl.dart';
 import 'package:fedi/form/form_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
-import 'package:fedi/pleroma/api/account/public/pleroma_api_account_public_model.dart';
-import 'package:fedi/pleroma/api/captcha/pleroma_api_captcha_service.dart';
-import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 
 class RegisterAuthInstanceFormBloc extends FormBloc
     implements IRegisterAuthInstanceFormBloc {

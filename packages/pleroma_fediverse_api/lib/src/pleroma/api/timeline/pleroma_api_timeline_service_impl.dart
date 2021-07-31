@@ -1,0 +1,142 @@
+import 'package:pleroma_fediverse_api/src/pleroma/api/pagination/pleroma_api_pagination_model.dart';
+import 'package:pleroma_fediverse_api/src/pleroma/api/pleroma_api_service.dart';
+import 'package:pleroma_fediverse_api/src/pleroma/api/rest/pleroma_api_rest_service.dart';
+import 'package:pleroma_fediverse_api/src/pleroma/api/status/pleroma_api_status_model.dart';
+import 'package:pleroma_fediverse_api/src/pleroma/api/timeline/pleroma_api_timeline_model.dart';
+import 'package:pleroma_fediverse_api/src/pleroma/api/timeline/pleroma_api_timeline_service.dart';
+import 'package:pleroma_fediverse_api/src/pleroma/api/visibility/pleroma_api_visibility_model.dart';
+import 'package:base_fediverse_api/base_fediverse_api.dart';
+import 'package:path/path.dart';
+
+class PleromaApiTimelineService extends BasePleromaApiService
+    implements IPleromaApiTimelineService {
+  @override
+  Uri get baseUrl => restService.baseUri;
+
+  final timelineRelativeUrlPath = '/api/v1/timelines/';
+
+  PleromaApiTimelineService({
+    required IPleromaApiRestService restService,
+  }) : super(
+          restService: restService,
+        );
+
+  @override
+  Future<List<IPleromaApiStatus>> getHashtagTimeline({
+    required String hashtag,
+    IPleromaApiPaginationRequest? pagination,
+    bool? onlyWithMedia = false,
+    bool onlyLocal = false,
+    bool withMuted = false,
+    List<PleromaApiVisibility>? excludeVisibilities = const [
+      PleromaApiVisibility.direct,
+    ],
+  }) {
+    assert(hashtag.isNotEmpty);
+
+    return getTimeline(
+      relativeTimeLineUrlPath: 'tag/$hashtag',
+      pagination: pagination,
+      onlyWithMedia: onlyWithMedia,
+      onlyLocal: onlyLocal,
+      withMuted: withMuted,
+      excludeVisibilities: excludeVisibilities,
+      pleromaReplyVisibilityFilter: null,
+      onlyFromInstance: null,
+      onlyRemote: null,
+    );
+  }
+
+  @override
+  // todo: refactor long-parameter-list
+  // ignore: long-parameter-list
+  Future<List<IPleromaApiStatus>> getPublicTimeline({
+    IPleromaApiPaginationRequest? pagination,
+    bool? onlyWithMedia = false,
+    bool onlyLocal = false,
+    bool onlyRemote = false,
+    bool withMuted = false,
+    String? onlyFromInstance,
+    List<PleromaApiVisibility>? excludeVisibilities = const [
+      PleromaApiVisibility.direct,
+    ],
+    PleromaApiReplyVisibilityFilter? pleromaReplyVisibilityFilter,
+  }) {
+    return getTimeline(
+      relativeTimeLineUrlPath: 'public',
+      pagination: pagination,
+      onlyWithMedia: onlyWithMedia,
+      onlyLocal: onlyLocal,
+      withMuted: withMuted,
+      excludeVisibilities: excludeVisibilities,
+      pleromaReplyVisibilityFilter: pleromaReplyVisibilityFilter,
+      onlyFromInstance: onlyFromInstance,
+      onlyRemote: onlyRemote,
+    );
+  }
+
+  // todo: refactor long-parameter-list
+  // ignore: long-parameter-list
+  Future<List<IPleromaApiStatus>> getTimeline({
+    required String relativeTimeLineUrlPath,
+    required IPleromaApiPaginationRequest? pagination,
+    required bool? onlyWithMedia,
+    required bool onlyLocal,
+    required bool withMuted,
+    required bool? onlyRemote,
+    required List<PleromaApiVisibility>? excludeVisibilities,
+    required PleromaApiReplyVisibilityFilter? pleromaReplyVisibilityFilter,
+    required String? onlyFromInstance,
+  }) async {
+    var request = RestRequest.get(
+      relativePath: join('/api/v1/timelines/', relativeTimeLineUrlPath),
+      queryArgs: [
+        ...(pagination?.toQueryArgs() ?? <RestRequestQueryArg>[]),
+        if (onlyLocal)
+          RestRequestQueryArg(
+            key: 'local',
+            value: 'true',
+          ),
+        if (onlyRemote == true)
+          RestRequestQueryArg(
+            key: 'remote',
+            value: 'true',
+          ),
+        if (onlyWithMedia != null)
+          RestRequestQueryArg(
+            key: 'only_media',
+            value: onlyWithMedia.toString(),
+          ),
+        if (onlyFromInstance != null)
+          RestRequestQueryArg(
+            key: 'instance',
+            value: onlyFromInstance,
+          ),
+        if (pleromaReplyVisibilityFilter != null)
+          RestRequestQueryArg(
+            key: 'reply_visibility',
+            value: pleromaReplyVisibilityFilter.toJsonValue(),
+          ),
+        // array
+        ...(excludeVisibilities?.map((visibility) => RestRequestQueryArg(
+                  key: 'exclude_visibilities[]',
+                  value: visibility.toJsonValue(),
+                )) ??
+            []),
+      ],
+    );
+
+    return await sendAndProcessPleromaApiStatusResponse(request);
+  }
+
+  Future<List<IPleromaApiStatus>> sendAndProcessPleromaApiStatusResponse(
+    RestRequest<dynamic> request,
+  ) async {
+    var httpResponse = await restService.sendHttpRequest(request);
+
+    return restService.processJsonListResponse(
+      httpResponse,
+      PleromaApiStatus.fromJson,
+    );
+  }
+}

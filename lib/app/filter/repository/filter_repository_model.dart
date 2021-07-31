@@ -1,4 +1,4 @@
-import 'package:fedi/mastodon/api/filter/mastodon_api_filter_model.dart';
+import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
 

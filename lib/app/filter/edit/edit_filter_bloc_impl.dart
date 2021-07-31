@@ -15,11 +15,10 @@ import 'package:fedi/app/filter/form/filter_form_bloc_impl.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
-import 'package:fedi/pleroma/api/account/pleroma_api_account_service.dart';
-import 'package:fedi/pleroma/api/filter/pleroma_api_filter_model.dart';
-import 'package:fedi/pleroma/api/filter/pleroma_api_filter_service.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fedi/form/form_item_bloc.dart';
+import 'package:provider/provider.dart';
 
 class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
   static EditFilterBloc createFromContext(
@@ -31,7 +30,7 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
     var editFilterBloc = EditFilterBloc(
       filter: initialValue,
       statusRepository: IStatusRepository.of(context, listen: false),
-      pleromaFilterService: IPleromaApiFilterService.of(
+      pleromaFilterService: Provider.of<IPleromaApiFilterService>(
         context,
         listen: false,
       ),
@@ -39,7 +38,7 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
         context,
         listen: false,
       ),
-      pleromaAccountService: IPleromaApiAccountService.of(
+      pleromaAccountService: Provider.of<IPleromaApiAccountService>(
         context,
         listen: false,
       ),

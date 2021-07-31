@@ -1,5 +1,5 @@
 import 'package:fedi/app/moor/moor_converters.dart';
-import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:moor/moor.dart';
 
 // todo: add foreign keys
@@ -21,7 +21,7 @@ class DbStatuses extends Table {
   TextColumn? get spoilerText => text().nullable()();
 
   TextColumn? get visibility =>
-      text().map(PleromaApiVisibilityTypeConverter())();
+      text().map(PleromaApiVisibilityMoorTypeConverter())();
 
   TextColumn? get uri => text()();
 
@@ -105,4 +105,21 @@ class DbStatuses extends Table {
   TextColumn? get oldPendingRemoteId => text().nullable()();
 
   TextColumn? get wasSentWithIdempotencyKey => text().nullable()();
+}
+
+class PleromaApiVisibilityMoorTypeConverter
+    implements TypeConverter<PleromaApiVisibility, String> {
+  const PleromaApiVisibilityMoorTypeConverter();
+
+  PleromaApiVisibility fromJson(String? value) =>
+      value?.toPleromaApiVisibility() ?? defaultPleromaApiVisibility;
+
+  String toJson(PleromaApiVisibility? value) =>
+      value?.toJsonValue() ?? defaultPleromaApiVisibility.toJsonValue();
+
+  @override
+  PleromaApiVisibility? mapToDart(String? fromDb) => fromJson(fromDb);
+
+  @override
+  String? mapToSql(PleromaApiVisibility? value) => toJson(value);
 }

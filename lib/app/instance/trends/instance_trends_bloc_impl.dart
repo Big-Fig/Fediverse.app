@@ -7,8 +7,7 @@ import 'package:fedi/app/instance/trends/hashtag_list/network_only/instance_tren
 import 'package:fedi/app/instance/trends/instance_trends_bloc.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
-import 'package:fedi/pleroma/api/trends/pleroma_api_trends_service.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 
 import 'package:rxdart/rxdart.dart';
 

@@ -6,13 +6,11 @@ import 'package:fedi/app/account/repository/account_repository_model.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
-import 'package:fedi/pleroma/api/account/pleroma_api_account_service.dart';
-import 'package:fedi/pleroma/api/pleroma_api_service.dart';
-import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
+import 'package:provider/provider.dart';
 
 var _logger = Logger('account_following_account_cached_list_bloc_impl.dart');
 
@@ -103,7 +101,7 @@ class AccountFollowingAccountCachedListBloc extends DisposableOwner
   }) =>
       AccountFollowingAccountCachedListBloc(
         accountRepository: IAccountRepository.of(context, listen: false),
-        pleromaAccountService: IPleromaApiAccountService.of(
+        pleromaAccountService: Provider.of<IPleromaApiAccountService>(
           context,
           listen: false,
         ),

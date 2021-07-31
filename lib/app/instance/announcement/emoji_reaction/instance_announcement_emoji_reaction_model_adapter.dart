@@ -1,5 +1,5 @@
 import 'package:fedi/app/emoji/reaction/emoji_reaction_model.dart';
-import 'package:fedi/pleroma/api/announcement/pleroma_api_announcement_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 
 class InstanceAnnouncementEmojiReactionAdapter implements IEmojiReaction {
   final IPleromaApiAnnouncementReaction pleromaApiAnnouncementReaction;

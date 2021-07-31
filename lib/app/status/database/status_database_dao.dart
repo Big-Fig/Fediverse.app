@@ -4,8 +4,7 @@ import 'package:fedi/app/pending/pending_model.dart';
 import 'package:fedi/app/status/database/status_database_model.dart';
 import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/pleroma/api/timeline/pleroma_api_timeline_model.dart';
-import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
 

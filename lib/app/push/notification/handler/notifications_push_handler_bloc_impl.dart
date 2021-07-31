@@ -17,20 +17,11 @@ import 'package:fedi/app/push/notification/notification_model.dart';
 import 'package:fedi/app/push/notification/rich/rich_notifications_service.dart';
 import 'package:fedi/app/push/notification/rich/rich_notifications_service_background_message_impl.dart';
 import 'package:fedi/app/status/repository/status_repository_impl.dart';
-import 'package:fedi/connection/connection_service.dart';
+import 'package:base_fediverse_api/base_fediverse_api.dart';
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:fedi/pleroma/api/account/my/pleroma_api_my_account_service_impl.dart';
-import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
-import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart';
-import 'package:fedi/pleroma/api/chat/pleroma_api_chat_service_impl.dart';
-import 'package:fedi/pleroma/api/notification/pleroma_api_notification_model.dart';
-import 'package:fedi/pleroma/api/push/pleroma_api_push_model.dart';
-import 'package:fedi/pleroma/api/rest/auth/pleroma_api_auth_rest_service_impl.dart';
-import 'package:fedi/pleroma/api/status/auth/pleroma_api_auth_status_service_impl.dart';
-import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:fedi/push/fcm/fcm_push_service.dart';
 import 'package:fedi/push/push_model.dart';
-import 'package:fedi/rest/rest_service_impl.dart';
 import 'package:logging/logging.dart';
 
 var _logger = Logger('push_handler_bloc_impl.dart');
@@ -156,7 +147,7 @@ class NotificationsPushHandlerBloc extends DisposableOwner
         '\t handled =$handled');
 
     if (!handled) {
-      if (body.notificationActionType != null) {
+      if (body.notificationAction?.toNotificationActionType() != null) {
         await _handleNewAction(
           pushMessage: pushMessage,
           body: body,
@@ -177,7 +168,8 @@ class NotificationsPushHandlerBloc extends DisposableOwner
   }) async {
     var remoteNotification = body.pleromaApiNotification!;
 
-    var notificationActionType = body.notificationActionType!;
+    var notificationActionType =
+        body.notificationAction!.toNotificationActionType();
 
     switch (notificationActionType) {
       case NotificationActionType.acceptFollowRequest:

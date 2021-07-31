@@ -3,7 +3,7 @@ import 'package:fedi/app/form/field/value/select_from_list/multi/multi_select_fr
 import 'package:fedi/form/field/value/select_from_list/multi/multi_select_from_list_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/select_from_list/multi/multi_select_from_list_value_form_field_bloc_proxy_provider.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:fedi/mastodon/api/filter/mastodon_api_filter_model.dart';
+import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 

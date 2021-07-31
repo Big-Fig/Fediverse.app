@@ -30,10 +30,10 @@ import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
-import 'package:fedi/pleroma/api/list/pleroma_api_list_service.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:fedi/ui/scroll/scroll_controller_bloc.dart';
 import 'package:fedi/ui/scroll/scroll_controller_bloc_impl.dart';
-import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
+import 'package:base_fediverse_api/base_fediverse_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -337,7 +337,7 @@ class _CustomListPageWrapper extends StatelessWidget {
   ) {
     var customListBloc = CustomListBloc(
       customList: customList,
-      pleromaListService: IPleromaApiListService.of(
+      pleromaListService: Provider.of<IPleromaApiListService>(
         context,
         listen: false,
       ),

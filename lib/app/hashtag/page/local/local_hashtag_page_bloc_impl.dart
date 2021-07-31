@@ -24,10 +24,8 @@ import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
-import 'package:fedi/pleroma/api/account/pleroma_api_account_service.dart';
-import 'package:fedi/pleroma/api/timeline/auth/pleroma_api_auth_timeline_service.dart';
-import 'package:fedi/pleroma/api/timeline/pleroma_api_timeline_service.dart';
-import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:base_fediverse_api/base_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_dispose/easy_dispose.dart';
@@ -90,7 +88,7 @@ class LocalHashtagPageBloc extends HashtagPageBloc
     required IMyAccountFeaturedHashtag? myAccountFeaturedHashtag,
   }) {
     var pleromaApiTimelineService =
-        IPleromaApiTimelineService.of(context, listen: false);
+        Provider.of<IPleromaApiTimelineService>(context, listen: false);
 
     return LocalHashtagPageBloc(
       hashtag: hashtag,
@@ -100,7 +98,7 @@ class LocalHashtagPageBloc extends HashtagPageBloc
         context,
         listen: false,
       ),
-      pleromaApiAccountService: IPleromaApiAccountService.of(
+      pleromaApiAccountService: Provider.of<IPleromaApiAccountService>(
         context,
         listen: false,
       ),
@@ -120,7 +118,8 @@ class LocalHashtagPageBloc extends HashtagPageBloc
         context,
         listen: false,
       ),
-      pleromaApiAuthTimelineService: IPleromaApiAuthTimelineService.of(
+      pleromaApiAuthTimelineService:
+          Provider.of<IPleromaApiAuthTimelineService>(
         context,
         listen: false,
       ),

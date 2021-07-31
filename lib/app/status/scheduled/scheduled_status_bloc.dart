@@ -1,7 +1,7 @@
 import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_model.dart';
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 

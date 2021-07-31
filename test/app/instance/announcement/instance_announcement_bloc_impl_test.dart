@@ -5,8 +5,7 @@ import 'package:fedi/app/instance/announcement/instance_announcement_model.dart'
 import 'package:fedi/app/instance/announcement/instance_announcement_model_adapter.dart';
 import 'package:fedi/app/instance/announcement/repository/instance_announcement_repository.dart';
 import 'package:fedi/app/instance/announcement/repository/instance_announcement_repository_impl.dart';
-import 'package:fedi/pleroma/api/announcement/pleroma_api_announcement_service.dart';
-import 'package:fedi/pleroma/api/pleroma_api_service.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';

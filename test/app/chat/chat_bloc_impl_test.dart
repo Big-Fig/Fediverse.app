@@ -21,9 +21,7 @@ import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository_impl.da
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
-import 'package:fedi/pleroma/api/account/my/pleroma_api_my_account_service.dart';
-import 'package:fedi/pleroma/api/chat/pleroma_api_chat_service.dart';
-import 'package:fedi/pleroma/api/pleroma_api_service.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';

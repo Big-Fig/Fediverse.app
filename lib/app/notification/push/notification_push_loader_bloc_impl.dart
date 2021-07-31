@@ -15,16 +15,8 @@ import 'package:fedi/app/push/notification/handler/notifications_push_handler_mo
 import 'package:fedi/app/push/notification/notification_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
-import 'package:fedi/pleroma/api/account/my/pleroma_api_my_account_service.dart';
-import 'package:fedi/pleroma/api/account/pleroma_api_account_model.dart';
-import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart';
-import 'package:fedi/pleroma/api/chat/pleroma_api_chat_service.dart';
-import 'package:fedi/pleroma/api/notification/pleroma_api_notification_model.dart';
-import 'package:fedi/pleroma/api/notification/pleroma_api_notification_service.dart';
-import 'package:fedi/pleroma/api/status/auth/pleroma_api_auth_status_service.dart';
-import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
 import 'package:logging/logging.dart';
-
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:rxdart/rxdart.dart';
 
 var _logger = Logger('notification_push_loader_bloc_impl.dart');
@@ -143,8 +135,9 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
     required IPleromaApiNotification remoteNotification,
     required NotificationsPushHandlerMessage notificationsPushHandlerMessage,
   }) async {
-    var notificationActionType =
-        notificationsPushHandlerMessage.body.notificationActionType!;
+    var notificationActionType = notificationsPushHandlerMessage
+        .body.notificationAction!
+        .toNotificationActionType();
 
     switch (notificationActionType) {
       case NotificationActionType.acceptFollowRequest:

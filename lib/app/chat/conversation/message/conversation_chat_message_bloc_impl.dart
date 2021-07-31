@@ -7,11 +7,9 @@ import 'package:fedi/app/chat/conversation/message/conversation_chat_message_mod
 import 'package:fedi/app/chat/message/chat_message_bloc_impl.dart';
 import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
-import 'package:fedi/pleroma/api/account/pleroma_api_account_service.dart';
-import 'package:fedi/pleroma/api/conversation/pleroma_api_conversation_service.dart';
-import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
-import 'package:fedi/pleroma/api/status/auth/pleroma_api_auth_status_service.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:easy_dispose/easy_dispose.dart';
 
@@ -32,11 +30,11 @@ class ConversationChatMessageBloc extends ChatMessageBloc
             ).currentInstance?.info?.pollLimits ??
             PleromaApiInstancePollLimits.defaultLimits,
         conversationChatService:
-            IPleromaApiConversationService.of(context, listen: false),
+            Provider.of<IPleromaApiConversationService>(context, listen: false),
         authStatusService:
-            IPleromaApiAuthStatusService.of(context, listen: false),
+            Provider.of<IPleromaApiAuthStatusService>(context, listen: false),
         pleromaAccountService:
-            IPleromaApiAccountService.of(context, listen: false),
+            Provider.of<IPleromaApiAccountService>(context, listen: false),
         statusRepository: IStatusRepository.of(context, listen: false),
         accountRepository: IAccountRepository.of(context, listen: false),
         chatMessage: chatMessage,

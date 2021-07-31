@@ -8,8 +8,8 @@ import 'package:fedi/app/notification/repository/notification_repository_model.d
 import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:fedi/app/ui/badge/bool/fedi_bool_badge_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
-import 'package:fedi/mastodon/api/filter/mastodon_api_filter_model.dart';
-import 'package:fedi/pleroma/api/notification/pleroma_api_notification_model.dart';
+import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:easy_dispose/easy_dispose.dart';

@@ -1,2 +1,2 @@
 package_name("com.fediverse.app")
-json_key_file("play-store-credentials.json")
+json_key_file("fastlane/play-store-credentials.json")

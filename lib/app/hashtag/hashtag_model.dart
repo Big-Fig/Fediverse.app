@@ -1,4 +1,4 @@
-import 'package:fedi/pleroma/api/tag/history/pleroma_api_tag_history_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 
 abstract class IHashtag {
   String get name;

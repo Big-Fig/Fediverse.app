@@ -5,8 +5,7 @@ import 'package:fedi/app/captcha/captcha_string_value_form_field_bloc.dart';
 import 'package:fedi/app/captcha/pleroma/pleroma_form_captcha_string_field_bloc.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/field/value/value_form_field_validation.dart';
-import 'package:fedi/pleroma/api/captcha/pleroma_api_captcha_model.dart';
-import 'package:fedi/pleroma/api/captcha/pleroma_api_captcha_service.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 

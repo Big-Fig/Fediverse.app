@@ -8,9 +8,10 @@ import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository.dart';
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:fedi/pleroma/api/status/auth/pleroma_api_auth_status_service.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:moor/moor.dart';
+import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 
 class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
@@ -84,7 +85,7 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
   }) =>
       DraftStatusBloc(
         pleromaAuthStatusService:
-            IPleromaApiAuthStatusService.of(context, listen: false),
+            Provider.of<IPleromaApiAuthStatusService>(context, listen: false),
         statusRepository: IStatusRepository.of(context, listen: false),
         draftStatusRepository:
             IDraftStatusRepository.of(context, listen: false),

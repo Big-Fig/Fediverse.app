@@ -5,7 +5,7 @@ import 'package:fedi/app/status/thread/status_thread_bloc.dart';
 import 'package:fedi/app/status/thread/status_thread_bloc_proxy_provider.dart';
 import 'package:fedi/app/status/thread/status_thread_page.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 

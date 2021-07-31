@@ -2,8 +2,7 @@ import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/status/emoji_reaction/status_emoji_reaction_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/pleroma/api/status/emoji_reaction/pleroma_api_status_emoji_reaction_service.dart';
-import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:rxdart/rxdart.dart';
 
 class StatusEmojiReactionBloc extends DisposableOwner

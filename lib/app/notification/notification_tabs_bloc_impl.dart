@@ -12,10 +12,11 @@ import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
-import 'package:fedi/pleroma/api/notification/pleroma_api_notification_service.dart';
-import 'package:fedi/web_sockets/listen_type/web_sockets_listen_type_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:base_fediverse_api/base_fediverse_api.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
+import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 
 var _logger = Logger('notification_tabs_bloc_impl.dart');
@@ -82,7 +83,7 @@ class NotificationsTabsBloc extends AsyncInitLoadingBloc
       NotificationsTabsBloc(
         startTab: NotificationTab.all,
         pleromaNotificationService:
-            IPleromaApiNotificationService.of(context, listen: false),
+            Provider.of<IPleromaApiNotificationService>(context, listen: false),
         notificationRepository:
             INotificationRepository.of(context, listen: false),
         webSocketsHandlerManagerBloc: IWebSocketsHandlerManagerBloc.of(

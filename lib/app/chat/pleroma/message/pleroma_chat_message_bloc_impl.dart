@@ -6,10 +6,9 @@ import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_bloc.dart';
 import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_bloc.dart';
-import 'package:fedi/pleroma/api/account/pleroma_api_account_service.dart';
-import 'package:fedi/pleroma/api/chat/pleroma_api_chat_model.dart';
-import 'package:fedi/pleroma/api/chat/pleroma_api_chat_service.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:easy_dispose/easy_dispose.dart';
 
@@ -22,9 +21,10 @@ class PleromaChatMessageBloc extends ChatMessageBloc
     bool delayInit = true,
   }) =>
       PleromaChatMessageBloc(
-        pleromaChatService: IPleromaApiChatService.of(context, listen: false),
+        pleromaChatService:
+            Provider.of<IPleromaApiChatService>(context, listen: false),
         pleromaAccountService:
-            IPleromaApiAccountService.of(context, listen: false),
+            Provider.of<IPleromaApiAccountService>(context, listen: false),
         chatMessageRepository:
             IPleromaChatMessageRepository.of(context, listen: false),
         accountRepository: IAccountRepository.of(context, listen: false),

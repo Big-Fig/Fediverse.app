@@ -13,15 +13,13 @@ import 'package:fedi/app/instance/remote/remote_instance_bloc.dart';
 import 'package:fedi/app/instance/remote/remote_instance_bloc_impl.dart';
 import 'package:fedi/app/instance/remote/remote_instance_error_data.dart';
 import 'package:fedi/app/status/status_model.dart';
+import 'package:base_fediverse_api/base_fediverse_api.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
-import 'package:fedi/connection/connection_service.dart';
-import 'package:fedi/pleroma/api/account/pleroma_api_account_service.dart';
-import 'package:fedi/pleroma/api/account/pleroma_api_account_service_impl.dart';
-import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
-import 'package:fedi/pleroma/api/status/pleroma_api_status_service_impl.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
+import 'package:provider/provider.dart';
 
 final _logger = Logger('remote_account_details_page.dart');
 
@@ -84,7 +82,7 @@ Future goToRemoteAccountDetailsPageBasedOnLocalInstanceRemoteAccount(
 
         remoteInstanceBloc = RemoteInstanceBloc(
           instanceUri: instanceUri,
-          connectionService: IConnectionService.of(
+          connectionService: Provider.of(
             context,
             listen: false,
           ),
@@ -165,7 +163,7 @@ Future<IStatus?> loadRemoteAccountAnyStatusOnLocalInstance(
   IAccount localInstanceRemoteAccount,
 ) async {
   var localInstancePleromaAccountService =
-      IPleromaApiAccountService.of(context, listen: false);
+      Provider.of<IPleromaApiAccountService>(context, listen: false);
 
   var remoteStatuses =
       await localInstancePleromaAccountService.getAccountStatuses(
@@ -173,7 +171,7 @@ Future<IStatus?> loadRemoteAccountAnyStatusOnLocalInstance(
     pagination: PleromaApiPaginationRequest(limit: 1),
   );
 
-  var firstPleromaStatus = remoteStatuses.singleOrNull;
+  var firstPleromaStatus = remoteStatuses.firstOrNull;
 
   return firstPleromaStatus?.toDbStatusPopulatedWrapper();
 }
@@ -189,7 +187,7 @@ MaterialPageRoute createRemoteAccountDetailsPageRoute({
 
           return RemoteInstanceBloc(
             instanceUri: instanceUri,
-            connectionService: IConnectionService.of(
+            connectionService: Provider.of<IConnectionService>(
               context,
               listen: false,
             ),

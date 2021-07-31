@@ -19,7 +19,7 @@ import 'package:fedi/app/toast/toast_service.dart';
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
-import 'package:fedi/pleroma/api/notification/pleroma_api_notification_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 

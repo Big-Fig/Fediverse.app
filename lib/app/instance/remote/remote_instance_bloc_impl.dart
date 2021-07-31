@@ -1,12 +1,10 @@
 import 'package:fedi/app/instance/remote/remote_instance_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
-import 'package:fedi/connection/connection_service.dart';
+import 'package:base_fediverse_api/base_fediverse_api.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
-import 'package:fedi/pleroma/api/instance/pleroma_api_instance_service_impl.dart';
-import 'package:fedi/pleroma/api/rest/pleroma_api_rest_service_impl.dart';
-import 'package:fedi/rest/rest_service_impl.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 class RemoteInstanceBloc extends AsyncInitLoadingBloc
     implements IRemoteInstanceBloc {
@@ -42,7 +40,7 @@ class RemoteInstanceBloc extends AsyncInitLoadingBloc
   }) =>
       RemoteInstanceBloc(
         instanceUri: instanceUri,
-        connectionService: IConnectionService.of(
+        connectionService: Provider.of<IConnectionService>(
           context,
           listen: false,
         ),

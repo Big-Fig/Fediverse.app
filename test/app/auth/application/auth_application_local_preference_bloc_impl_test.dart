@@ -1,9 +1,8 @@
 import 'package:fedi/app/auth/host/application/auth_host_application_local_preference_bloc_impl.dart';
-import 'package:fedi/pleroma/api/application/pleroma_api_application_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../local_preferences/local_preferences_test_helper.dart';
-import '../../../pleroma/api/application/pleroma_api_application_test_helper.dart';
 
 // ignore_for_file: no-magic-number
 

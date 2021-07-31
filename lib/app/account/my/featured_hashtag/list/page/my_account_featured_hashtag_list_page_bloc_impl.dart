@@ -10,8 +10,9 @@ import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:fedi/pleroma/api/featured_tags/pleroma_api_featured_tags_service.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 class AccountFeaturedHashtagListPageBloc extends DisposableOwner
     implements IAccountFeaturedHashtagListPageBloc {
@@ -64,7 +65,7 @@ class AccountFeaturedHashtagListPageBloc extends DisposableOwner
     BuildContext context,
   ) {
     var pleromaApiFeaturedTagsService =
-        IPleromaApiFeaturedTagsService.of(context, listen: false);
+        Provider.of<IPleromaApiFeaturedTagsService>(context, listen: false);
 
     return AccountFeaturedHashtagListPageBloc(
       pleromaApiFeaturedTagsService: pleromaApiFeaturedTagsService,

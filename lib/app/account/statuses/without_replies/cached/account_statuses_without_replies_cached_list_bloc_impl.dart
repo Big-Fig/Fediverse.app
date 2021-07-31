@@ -10,12 +10,11 @@ import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:fedi/pleroma/api/account/pleroma_api_account_service.dart';
-import 'package:fedi/pleroma/api/pleroma_api_service.dart';
-import 'package:fedi/pleroma/api/pagination/pleroma_api_pagination_model.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
+import 'package:provider/provider.dart';
 
 var _logger =
     Logger('account_statuses_without_replies_cached_list_bloc_impl.dart');
@@ -58,7 +57,7 @@ class AccountStatusesWithoutRepliesListBloc
     return AccountStatusesWithoutRepliesListBloc(
       account: account,
       pleromaAccountService:
-          IPleromaApiAccountService.of(context, listen: false),
+          Provider.of<IPleromaApiAccountService>(context, listen: false),
       webSocketsHandlerManagerBloc: IWebSocketsHandlerManagerBloc.of(
         context,
         listen: false,

@@ -2,8 +2,9 @@ import 'package:fedi/app/account/my/featured_hashtag/my_account_featured_hashtag
 import 'package:fedi/app/account/my/featured_hashtag/my_account_featured_hashtag_model.dart';
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:fedi/pleroma/api/featured_tags/pleroma_api_featured_tags_service.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 
 class MyAccountFeaturedHashtagBloc extends DisposableOwner
@@ -53,7 +54,8 @@ class MyAccountFeaturedHashtagBloc extends DisposableOwner
     BuildContext context, {
     required IMyAccountFeaturedHashtag featuredHashtag,
   }) {
-    var pleromaApiFeaturedTagsService = IPleromaApiFeaturedTagsService.of(
+    var pleromaApiFeaturedTagsService =
+        Provider.of<IPleromaApiFeaturedTagsService>(
       context,
       listen: false,
     );

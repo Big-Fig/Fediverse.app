@@ -18,12 +18,31 @@ default_platform(:ios)
 platform :ios do
 
     lane :screenshots do
-      frameit(
+        frameit(
         path: "./fastlane/screenshots",
-      )
+        )
     end
 
+    lane :update_metadata do
+        deliver(
+            submit_for_review: false,
+            automatic_release: false,
+            skip_metadata: false,
+            skip_screenshots: true,
+            skip_binary_upload: true,
+        )
+    end
 
+    lane :update_screenshots do
+        deliver(
+            submit_for_review: false,
+            automatic_release: false,
+            skip_metadata: true,
+            skip_screenshots: false,
+            skip_binary_upload: true,
+            overwrite_screenshots: true,
+        )
+    end
 
 #  desc "Push a new beta build to TestFlight"
 #  lane :beta do

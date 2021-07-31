@@ -8,7 +8,7 @@ import 'package:fedi/app/share/external/external_share_bloc_proxy_provider.dart'
 import 'package:fedi/app/share/external/external_share_model.dart';
 import 'package:fedi/app/share/external/external_share_service.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_service.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -104,7 +104,8 @@ class ExternalShareEntityBloc extends ExternalShareBloc
           listen: false,
         ),
         popupTitle: popupTitle,
-        pleromaApiMediaAttachmentService: IPleromaApiMediaAttachmentService.of(
+        pleromaApiMediaAttachmentService:
+            Provider.of<IPleromaApiMediaAttachmentService>(
           context,
           listen: false,
         ),

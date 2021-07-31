@@ -32,11 +32,12 @@ import 'package:fedi/app/status/post/new/new_post_status_bloc_impl.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/status_bar/fedi_light_status_bar_style_area.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
-import 'package:fedi/pleroma/api/notification/pleroma_api_notification_service.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
+import 'package:provider/provider.dart';
 
 var _logger = Logger('home_page.dart');
 
@@ -223,7 +224,8 @@ class _HomePageNotificationTabWidget extends StatelessWidget {
         var homeBloc = IHomeBloc.of(context, listen: false);
 
         var notificationsHomeTabBloc = NotificationsHomeTabBloc(
-          pleromaNotificationService: IPleromaApiNotificationService.of(
+          pleromaNotificationService:
+              Provider.of<IPleromaApiNotificationService>(
             context,
             listen: false,
           ),

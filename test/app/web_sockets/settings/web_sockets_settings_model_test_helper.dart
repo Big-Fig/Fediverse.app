@@ -1,6 +1,6 @@
 // ignore_for_file: no-magic-number
 import 'package:fedi/app/web_sockets/settings/web_sockets_settings_model.dart';
-import 'package:fedi/web_sockets/handling_type/web_sockets_handling_type_model.dart';
+import 'package:base_fediverse_api/base_fediverse_api.dart';
 
 class WebSocketsSettingsModelTestHelper {
   static WebSocketsSettings createTestWebSocketsSettings({

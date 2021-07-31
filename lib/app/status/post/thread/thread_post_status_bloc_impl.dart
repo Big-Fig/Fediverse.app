@@ -1,4 +1,6 @@
 import 'package:collection/collection.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
+import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/status/post/post_status_bloc_impl.dart';
@@ -10,17 +12,11 @@ import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/app/status/thread/status_thread_bloc.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:fedi/pleroma/api/instance/pleroma_api_instance_model.dart';
-import 'package:fedi/pleroma/api/media/attachment/pleroma_api_media_attachment_service.dart';
-import 'package:fedi/pleroma/api/status/auth/pleroma_api_auth_status_service.dart';
-import 'package:fedi/pleroma/api/status/pleroma_api_status_model.dart';
-import 'package:fedi/pleroma/api/visibility/pleroma_api_visibility_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
 
 var _logger = Logger('thread_post_status_bloc_impl.dart');
 
@@ -88,10 +84,13 @@ class ThreadPostStatusBloc extends PostStatusBloc
       inReplyToStatus: inReplyToStatus,
       statusThreadBloc: IStatusThreadBloc.of(context, listen: false),
       pleromaAuthStatusService:
-          IPleromaApiAuthStatusService.of(context, listen: false),
+          Provider.of<IPleromaApiAuthStatusService>(context, listen: false),
       statusRepository: IStatusRepository.of(context, listen: false),
       pleromaMediaAttachmentService:
-          IPleromaApiMediaAttachmentService.of(context, listen: false),
+          Provider.of<IPleromaApiMediaAttachmentService>(
+        context,
+        listen: false,
+      ),
       maximumMessageLength: info.maxTootChars,
       pleromaInstancePollLimits: info.pollLimits,
       maximumFileSizeInBytes: info.uploadLimit,
