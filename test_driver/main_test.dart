@@ -3,8 +3,6 @@
 // process or even from another computer. If you are familiar with
 // Selenium/WebDriver for web, Espresso for Android or UI Automation for iOS,
 // this is simply Flutter's version of that.
-import 'dart:convert' as c;
-import 'dart:io';
 
 import 'package:fedi/app/auth/instance/join/from_scratch/from_scratch_join_auth_instance_page_keys.dart';
 import 'package:fedi/app/auth/instance/join/join_auth_instance_widget_keys.dart';

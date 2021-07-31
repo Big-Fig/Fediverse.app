@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert' as c;
 import 'dart:io';
 
 import 'package:fedi/app/app_model.dart';
@@ -17,21 +16,6 @@ Future main() async {
     Platform.isAndroid ? 'http://10.0.2.2:4000' : 'http://localhost:4000';
 
     return Future.value(instanceHost);
-
-    final response = {
-      // 'counterIncrementButtonTooltip':
-      //     localizations.counterIncrementButtonTooltip,
-      // 'counterText': localizations.counterText,
-      // 'title': localizations.title,
-      // 'locale': Intl.defaultLocale,
-      'counterIncrementButtonTooltip': 'counterIncrementButtonTooltip',
-    };
-
-    return Future.value(
-      c.jsonEncode(
-        response,
-      ),
-    );
   };
 
   enableFlutterDriverExtension(handler: handler);
