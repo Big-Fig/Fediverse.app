@@ -1,15 +1,15 @@
 import 'dart:async';
 
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/status/post/poll/post_status_poll_model.dart';
 import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_bloc.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_model.dart';
-import 'package:easy_dispose/easy_dispose.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -188,8 +188,10 @@ class ScheduledStatusBloc extends DisposableOwner
         pleromaAuthStatusService:
             Provider.of<IPleromaApiAuthStatusService>(context, listen: false),
         pleromaScheduledStatusService:
-            Provider.of<IPleromaApiScheduledStatusService>(context,
-                listen: false),
+            Provider.of<IPleromaApiScheduledStatusService>(
+          context,
+          listen: false,
+        ),
         statusRepository: IStatusRepository.of(context, listen: false),
         scheduledStatusRepository:
             IScheduledStatusRepository.of(context, listen: false),

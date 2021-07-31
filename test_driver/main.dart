@@ -13,7 +13,7 @@ Future main() async {
     // final localizations =
     //     await ExampleLocalizations.load(locale);
     var instanceHost =
-    Platform.isAndroid ? 'http://10.0.2.2:4000' : 'http://localhost:4000';
+        Platform.isAndroid ? 'http://10.0.2.2:4000' : 'http://localhost:4000';
 
     return Future.value(instanceHost);
   };

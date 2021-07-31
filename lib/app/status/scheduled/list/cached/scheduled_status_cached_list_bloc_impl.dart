@@ -1,14 +1,14 @@
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/status/list/status_list_bloc.dart';
 import 'package:fedi/app/status/scheduled/list/cached/scheduled_status_cached_list_bloc.dart';
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository.dart';
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository_model.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_model.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:provider/provider.dart';
 
 var _logger = Logger('scheduled_status_cached_list_bloc_impl.dart');
@@ -34,19 +34,18 @@ class ScheduledStatusCachedListBloc extends IScheduledStatusCachedListBloc {
   @override
   IPleromaApi get pleromaApi => pleromaScheduledStatusService;
 
-  static ScheduledStatusCachedListBloc createFromContext(
-    BuildContext context,
-  ) =>
+  static ScheduledStatusCachedListBloc createFromContext(BuildContext context,) =>
       ScheduledStatusCachedListBloc(
         pleromaScheduledStatusService:
-            Provider.of<IPleromaApiScheduledStatusService>(context,
-                listen: false),
+            Provider.of<IPleromaApiScheduledStatusService>(
+          context,
+          listen: false,
+        ),
         scheduledStatusRepository:
             IScheduledStatusRepository.of(context, listen: false),
       );
 
-  static Widget provideToContext(
-    BuildContext context, {
+  static Widget provideToContext(BuildContext context, {
     required Widget child,
   }) {
     return DisposableProvider<IScheduledStatusCachedListBloc>(
@@ -82,8 +81,7 @@ class ScheduledStatusCachedListBloc extends IScheduledStatusCachedListBloc {
 
   @override
   Stream<List<IScheduledStatus>> watchLocalItemsNewerThanItem(
-    IScheduledStatus? item,
-  ) =>
+      IScheduledStatus? item,) =>
       scheduledStatusRepository.watchFindAllInAppType(
         filters: _scheduledStatusRepositoryFilters,
         pagination: RepositoryPagination(
@@ -106,7 +104,7 @@ class ScheduledStatusCachedListBloc extends IScheduledStatusCachedListBloc {
         '\t olderThan=$olderThan');
 
     var remoteStatuses =
-        await pleromaScheduledStatusService.getScheduledStatuses(
+    await pleromaScheduledStatusService.getScheduledStatuses(
       pagination: PleromaApiPaginationRequest(
         limit: limit,
         sinceId: newerThan?.remoteId,
