@@ -252,13 +252,22 @@ dev_dependencies:
   # fvm flutter pub global activate --source path ../screenshots
 
   base_fediverse_api:
-    path: packages/base_fediverse_api
+    git:
+      url: https://github.com/xal/dart_fediverse_api.git
+      ref: master
+      path: base_fediverse_api
 
   mastodon_fediverse_api:
-    path: packages/mastodon_fediverse_api
+    git:
+      url: https://github.com/xal/dart_fediverse_api.git
+      ref: master
+      path: mastodon_fediverse_api
 
   pleroma_fediverse_api:
-    path: packages/pleroma_fediverse_api
+    git:
+      url: https://github.com/xal/dart_fediverse_api.git
+      ref: master
+      path: pleroma_fediverse_api
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
