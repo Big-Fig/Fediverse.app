@@ -35,18 +35,20 @@ class ScheduledStatusCachedListBloc extends IScheduledStatusCachedListBloc {
   IPleromaApi get pleromaApi => pleromaScheduledStatusService;
 
   static ScheduledStatusCachedListBloc createFromContext(
-      BuildContext context,) =>
+    BuildContext context,
+  ) =>
       ScheduledStatusCachedListBloc(
         pleromaScheduledStatusService:
-        Provider.of<IPleromaApiScheduledStatusService>(
+            Provider.of<IPleromaApiScheduledStatusService>(
           context,
           listen: false,
         ),
         scheduledStatusRepository:
-        IScheduledStatusRepository.of(context, listen: false),
+            IScheduledStatusRepository.of(context, listen: false),
       );
 
-  static Widget provideToContext(BuildContext context, {
+  static Widget provideToContext(
+    BuildContext context, {
     required Widget child,
   }) {
     return DisposableProvider<IScheduledStatusCachedListBloc>(
@@ -82,7 +84,8 @@ class ScheduledStatusCachedListBloc extends IScheduledStatusCachedListBloc {
 
   @override
   Stream<List<IScheduledStatus>> watchLocalItemsNewerThanItem(
-      IScheduledStatus? item,) =>
+    IScheduledStatus? item,
+  ) =>
       scheduledStatusRepository.watchFindAllInAppType(
         filters: _scheduledStatusRepositoryFilters,
         pagination: RepositoryPagination(
@@ -105,7 +108,7 @@ class ScheduledStatusCachedListBloc extends IScheduledStatusCachedListBloc {
         '\t olderThan=$olderThan');
 
     var remoteStatuses =
-    await pleromaScheduledStatusService.getScheduledStatuses(
+        await pleromaScheduledStatusService.getScheduledStatuses(
       pagination: PleromaApiPaginationRequest(
         limit: limit,
         sinceId: newerThan?.remoteId,

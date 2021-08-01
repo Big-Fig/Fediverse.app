@@ -40,30 +40,29 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
     required bool markMediaAsNsfwOnAttach,
     required String? language,
   }) : super(
-    isExpirePossible: false,
-    pleromaAuthStatusService: pleromaAuthStatusService,
-    statusRepository: statusRepository,
-    scheduledStatusRepository: scheduledStatusRepository,
-    pleromaMediaAttachmentService: pleromaMediaAttachmentService,
-    initialData: PostStatusBloc.defaultInitData.copyWith(
-      visibilityString: PleromaApiVisibility.direct.toJsonValue(),
-      language: language,
-    ),
-    initialAccountsToMention: conversationAccountsWithoutMe,
-    maximumMessageLength: maximumMessageLength,
-    pleromaInstancePollLimits: pleromaInstancePollLimits,
-    maximumFileSizeInBytes: maximumFileSizeInBytes,
-    markMediaAsNsfwOnAttach: markMediaAsNsfwOnAttach,
-    unfocusOnClear: true,
-  );
+          isExpirePossible: false,
+          pleromaAuthStatusService: pleromaAuthStatusService,
+          statusRepository: statusRepository,
+          scheduledStatusRepository: scheduledStatusRepository,
+          pleromaMediaAttachmentService: pleromaMediaAttachmentService,
+          initialData: PostStatusBloc.defaultInitData.copyWith(
+            visibilityString: PleromaApiVisibility.direct.toJsonValue(),
+            language: language,
+          ),
+          initialAccountsToMention: conversationAccountsWithoutMe,
+          maximumMessageLength: maximumMessageLength,
+          pleromaInstancePollLimits: pleromaInstancePollLimits,
+          maximumFileSizeInBytes: maximumFileSizeInBytes,
+          markMediaAsNsfwOnAttach: markMediaAsNsfwOnAttach,
+          unfocusOnClear: true,
+        );
 
   static PostStatusStartConversationChatBloc createFromContext(
-      BuildContext context, {
-        required List<IAccount> conversationAccountsWithoutMe,
-        required StatusCallback successCallback,
-      }) {
-    var info = ICurrentAuthInstanceBloc
-        .of(context, listen: false)
+    BuildContext context, {
+    required List<IAccount> conversationAccountsWithoutMe,
+    required StatusCallback successCallback,
+  }) {
+    var info = ICurrentAuthInstanceBloc.of(context, listen: false)
         .currentInstance!
         .info!;
 
@@ -86,8 +85,7 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
       markMediaAsNsfwOnAttach:
           IPostStatusSettingsBloc.of(context, listen: false)
               .markMediaAsNsfwOnAttach,
-      language: IPostStatusSettingsBloc
-          .of(context, listen: false)
+      language: IPostStatusSettingsBloc.of(context, listen: false)
           .defaultStatusLocale
           ?.localeString,
       scheduledStatusRepository: IScheduledStatusRepository.of(
@@ -97,7 +95,8 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
     );
   }
 
-  static Widget provideToContext(BuildContext context, {
+  static Widget provideToContext(
+    BuildContext context, {
     required List<IAccount> conversationAccountsWithoutMe,
     required Widget child,
     required StatusCallback successCallback,
@@ -105,10 +104,10 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
     return DisposableProvider<IPostStatusBloc>(
       create: (context) =>
           PostStatusStartConversationChatBloc.createFromContext(
-            context,
-            successCallback: successCallback,
-            conversationAccountsWithoutMe: conversationAccountsWithoutMe,
-          ),
+        context,
+        successCallback: successCallback,
+        conversationAccountsWithoutMe: conversationAccountsWithoutMe,
+      ),
       child: PostStatusMessageBlocProxyProvider(child: child),
     );
   }
@@ -120,27 +119,28 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
   bool get isReadyToPost => super.isReadyToPost && mentionedAccts.isNotEmpty;
 
   @override
-  Stream<bool> get isReadyToPostStream =>
-      Rx.combineLatest6(
+  Stream<bool> get isReadyToPostStream => Rx.combineLatest6(
         inputWithoutMentionedAcctsTextStream,
         mediaAttachmentsBloc.mediaAttachmentBlocsStream,
         mediaAttachmentsBloc.isAllAttachedMediaUploadedStream,
         pollBloc.isHaveAtLeastOneErrorStream,
         pollBloc.isSomethingChangedStream,
         mentionedAcctsStream,
-            (dynamic inputWithoutMentionedAcctsText,
-            dynamic mediaAttachmentBlocs,
-            dynamic isAllAttachedMediaUploaded,
-            dynamic isHaveAtLeastOneError,
-            dynamic isPollBlocChanged,
-            dynamic mentionedAccts,) =>
-        calculateStatusBlocIsReadyToPost(
-          inputText: inputWithoutMentionedAcctsText,
-          mediaAttachmentBlocs: mediaAttachmentBlocs,
-          isAllAttachedMediaUploaded: isAllAttachedMediaUploaded,
-          isPollBlocHaveErrors: isHaveAtLeastOneError,
-          isPollBlocChanged: isPollBlocChanged,
-        ) &&
+        (
+          dynamic inputWithoutMentionedAcctsText,
+          dynamic mediaAttachmentBlocs,
+          dynamic isAllAttachedMediaUploaded,
+          dynamic isHaveAtLeastOneError,
+          dynamic isPollBlocChanged,
+          dynamic mentionedAccts,
+        ) =>
+            calculateStatusBlocIsReadyToPost(
+              inputText: inputWithoutMentionedAcctsText,
+              mediaAttachmentBlocs: mediaAttachmentBlocs,
+              isAllAttachedMediaUploaded: isAllAttachedMediaUploaded,
+              isPollBlocHaveErrors: isHaveAtLeastOneError,
+              isPollBlocChanged: isPollBlocChanged,
+            ) &&
             mentionedAccts?.isNotEmpty == true,
       );
 }

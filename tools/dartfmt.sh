@@ -11,7 +11,7 @@ function checkfmt() {
 
   echo >&2 "Dart files must be formatted with dartfmt. Please run:"
   for fn in $unformatted; do
-    echo >&2 "  dartfmt -w $PWD/$fn"
+    echo >&2 "  flutter format -w $PWD/$fn"
   done
 
   return 1
