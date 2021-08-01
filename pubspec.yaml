@@ -254,19 +254,22 @@ dev_dependencies:
   base_fediverse_api:
     git:
       url: https://github.com/xal/dart_fediverse_api.git
-      ref: master
+      #      ref: master
+      ref: stable
       path: base_fediverse_api
 
   mastodon_fediverse_api:
     git:
       url: https://github.com/xal/dart_fediverse_api.git
-      ref: master
+      #      ref: master
+      ref: stable
       path: mastodon_fediverse_api
 
   pleroma_fediverse_api:
     git:
       url: https://github.com/xal/dart_fediverse_api.git
-      ref: master
+      #      ref: master
+      ref: stable
       path: pleroma_fediverse_api
 
 # For information on the generic Dart part of this file, see the
