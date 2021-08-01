@@ -121,7 +121,7 @@ extension IPleromaScheduledStatusParamsExtension
 
 extension IScheduledStatusExtension on IScheduledStatus {
   IPostStatusData get postStatusData => PostStatusData(
-    subject: params.spoilerText,
+        subject: params.spoilerText,
         text: params.text,
         scheduledAt: scheduledAt,
         visibilityString: params.visibility,
