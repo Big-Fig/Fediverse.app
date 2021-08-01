@@ -12,8 +12,8 @@ import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:provider/provider.dart';
 
 typedef PostStatusDataCallback = Future<bool> Function(
-    IPostStatusData postStatusData,
-    );
+  IPostStatusData postStatusData,
+);
 
 class EditPostStatusBloc extends PostStatusBloc {
   final PostStatusDataCallback postStatusDataCallback;
@@ -31,29 +31,29 @@ class EditPostStatusBloc extends PostStatusBloc {
     required bool markMediaAsNsfwOnAttach,
     required bool isPleromaInstance,
   }) : super(
-    isExpirePossible: isPleromaInstance,
-    pleromaAuthStatusService: pleromaAuthStatusService,
-    statusRepository: statusRepository,
-    scheduledStatusRepository: scheduledStatusRepository,
-    pleromaMediaAttachmentService: pleromaMediaAttachmentService,
-    initialData: initialData,
-    maximumMessageLength: maximumMessageLength,
-    pleromaInstancePollLimits: pleromaInstancePollLimits,
-    maximumFileSizeInBytes: maximumFileSizeInBytes,
-    markMediaAsNsfwOnAttach: markMediaAsNsfwOnAttach,
-    unfocusOnClear: true,
-  );
+          isExpirePossible: isPleromaInstance,
+          pleromaAuthStatusService: pleromaAuthStatusService,
+          statusRepository: statusRepository,
+          scheduledStatusRepository: scheduledStatusRepository,
+          pleromaMediaAttachmentService: pleromaMediaAttachmentService,
+          initialData: initialData,
+          maximumMessageLength: maximumMessageLength,
+          pleromaInstancePollLimits: pleromaInstancePollLimits,
+          maximumFileSizeInBytes: maximumFileSizeInBytes,
+          markMediaAsNsfwOnAttach: markMediaAsNsfwOnAttach,
+          unfocusOnClear: true,
+        );
 
-  static EditPostStatusBloc createFromContext(BuildContext context, {
+  static EditPostStatusBloc createFromContext(
+    BuildContext context, {
     required IPostStatusData initialData,
     required PostStatusDataCallback postStatusDataCallback,
   }) {
-    var info = ICurrentAuthInstanceBloc
-        .of(context, listen: false)
+    var info = ICurrentAuthInstanceBloc.of(context, listen: false)
         .currentInstance!
         .info!;
     var postStatusSettingsBloc =
-    IPostStatusSettingsBloc.of(context, listen: false);
+        IPostStatusSettingsBloc.of(context, listen: false);
 
     return EditPostStatusBloc(
       pleromaAuthStatusService: Provider.of<IPleromaApiAuthStatusService>(
@@ -62,7 +62,7 @@ class EditPostStatusBloc extends PostStatusBloc {
       ),
       statusRepository: IStatusRepository.of(context, listen: false),
       pleromaMediaAttachmentService:
-      Provider.of<IPleromaApiMediaAttachmentService>(
+          Provider.of<IPleromaApiMediaAttachmentService>(
         context,
         listen: false,
       ),
@@ -80,18 +80,18 @@ class EditPostStatusBloc extends PostStatusBloc {
     );
   }
 
-  static Widget provideToContext(BuildContext context, {
+  static Widget provideToContext(
+    BuildContext context, {
     required Widget child,
     required IPostStatusData? initialData,
     required PostStatusDataCallback postStatusDataCallback,
   }) {
     return DisposableProvider<IPostStatusBloc>(
-      create: (context) =>
-          EditPostStatusBloc.createFromContext(
-            context,
-            initialData: initialData!,
-            postStatusDataCallback: postStatusDataCallback,
-          ),
+      create: (context) => EditPostStatusBloc.createFromContext(
+        context,
+        initialData: initialData!,
+        postStatusDataCallback: postStatusDataCallback,
+      ),
       child: PostStatusMessageBlocProxyProvider(child: child),
     );
   }
