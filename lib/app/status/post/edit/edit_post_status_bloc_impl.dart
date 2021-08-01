@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 
 typedef PostStatusDataCallback = Future<bool> Function(
     IPostStatusData postStatusData,
-);
+    );
 
 class EditPostStatusBloc extends PostStatusBloc {
   final PostStatusDataCallback postStatusDataCallback;
@@ -48,7 +48,8 @@ class EditPostStatusBloc extends PostStatusBloc {
     required IPostStatusData initialData,
     required PostStatusDataCallback postStatusDataCallback,
   }) {
-    var info = ICurrentAuthInstanceBloc.of(context, listen: false)
+    var info = ICurrentAuthInstanceBloc
+        .of(context, listen: false)
         .currentInstance!
         .info!;
     var postStatusSettingsBloc =
@@ -61,7 +62,7 @@ class EditPostStatusBloc extends PostStatusBloc {
       ),
       statusRepository: IStatusRepository.of(context, listen: false),
       pleromaMediaAttachmentService:
-          Provider.of<IPleromaApiMediaAttachmentService>(
+      Provider.of<IPleromaApiMediaAttachmentService>(
         context,
         listen: false,
       ),
@@ -85,11 +86,12 @@ class EditPostStatusBloc extends PostStatusBloc {
     required PostStatusDataCallback postStatusDataCallback,
   }) {
     return DisposableProvider<IPostStatusBloc>(
-      create: (context) => EditPostStatusBloc.createFromContext(
-        context,
-        initialData: initialData!,
-        postStatusDataCallback: postStatusDataCallback,
-      ),
+      create: (context) =>
+          EditPostStatusBloc.createFromContext(
+            context,
+            initialData: initialData!,
+            postStatusDataCallback: postStatusDataCallback,
+          ),
       child: PostStatusMessageBlocProxyProvider(child: child),
     );
   }

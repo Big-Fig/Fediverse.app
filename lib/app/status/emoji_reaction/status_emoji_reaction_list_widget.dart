@@ -50,8 +50,7 @@ class StatusEmojiReactionListWidget extends StatelessWidget {
                                   context,
                                   listen: false,
                                 ),
-                                pleromaApiStatusEmojiReactionService:
-                                Provider
+                                pleromaApiStatusEmojiReactionService: Provider
                                     .of<IPleromaApiStatusEmojiReactionService>(
                                   context,
                                   listen: false,

@@ -57,11 +57,13 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
     unfocusOnClear: true,
   );
 
-  static PostStatusStartConversationChatBloc createFromContext(BuildContext context, {
-    required List<IAccount> conversationAccountsWithoutMe,
-    required StatusCallback successCallback,
-  }) {
-    var info = ICurrentAuthInstanceBloc.of(context, listen: false)
+  static PostStatusStartConversationChatBloc createFromContext(
+      BuildContext context, {
+        required List<IAccount> conversationAccountsWithoutMe,
+        required StatusCallback successCallback,
+      }) {
+    var info = ICurrentAuthInstanceBloc
+        .of(context, listen: false)
         .currentInstance!
         .info!;
 
@@ -84,7 +86,8 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
       markMediaAsNsfwOnAttach:
           IPostStatusSettingsBloc.of(context, listen: false)
               .markMediaAsNsfwOnAttach,
-      language: IPostStatusSettingsBloc.of(context, listen: false)
+      language: IPostStatusSettingsBloc
+          .of(context, listen: false)
           .defaultStatusLocale
           ?.localeString,
       scheduledStatusRepository: IScheduledStatusRepository.of(
@@ -117,26 +120,27 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
   bool get isReadyToPost => super.isReadyToPost && mentionedAccts.isNotEmpty;
 
   @override
-  Stream<bool> get isReadyToPostStream => Rx.combineLatest6(
-    inputWithoutMentionedAcctsTextStream,
-    mediaAttachmentsBloc.mediaAttachmentBlocsStream,
-    mediaAttachmentsBloc.isAllAttachedMediaUploadedStream,
-    pollBloc.isHaveAtLeastOneErrorStream,
-    pollBloc.isSomethingChangedStream,
-    mentionedAcctsStream,
-        (dynamic inputWithoutMentionedAcctsText,
-        dynamic mediaAttachmentBlocs,
-        dynamic isAllAttachedMediaUploaded,
-        dynamic isHaveAtLeastOneError,
-        dynamic isPollBlocChanged,
-        dynamic mentionedAccts,) =>
-    calculateStatusBlocIsReadyToPost(
-      inputText: inputWithoutMentionedAcctsText,
-      mediaAttachmentBlocs: mediaAttachmentBlocs,
-      isAllAttachedMediaUploaded: isAllAttachedMediaUploaded,
-      isPollBlocHaveErrors: isHaveAtLeastOneError,
-      isPollBlocChanged: isPollBlocChanged,
-    ) &&
-        mentionedAccts?.isNotEmpty == true,
-  );
+  Stream<bool> get isReadyToPostStream =>
+      Rx.combineLatest6(
+        inputWithoutMentionedAcctsTextStream,
+        mediaAttachmentsBloc.mediaAttachmentBlocsStream,
+        mediaAttachmentsBloc.isAllAttachedMediaUploadedStream,
+        pollBloc.isHaveAtLeastOneErrorStream,
+        pollBloc.isSomethingChangedStream,
+        mentionedAcctsStream,
+            (dynamic inputWithoutMentionedAcctsText,
+            dynamic mediaAttachmentBlocs,
+            dynamic isAllAttachedMediaUploaded,
+            dynamic isHaveAtLeastOneError,
+            dynamic isPollBlocChanged,
+            dynamic mentionedAccts,) =>
+        calculateStatusBlocIsReadyToPost(
+          inputText: inputWithoutMentionedAcctsText,
+          mediaAttachmentBlocs: mediaAttachmentBlocs,
+          isAllAttachedMediaUploaded: isAllAttachedMediaUploaded,
+          isPollBlocHaveErrors: isHaveAtLeastOneError,
+          isPollBlocChanged: isPollBlocChanged,
+        ) &&
+            mentionedAccts?.isNotEmpty == true,
+      );
 }

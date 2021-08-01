@@ -255,21 +255,21 @@ dev_dependencies:
     git:
       url: https://github.com/xal/dart_fediverse_api.git
       #      ref: master
-      ref: stable
+      ref: before_refactoring
       path: base_fediverse_api
 
   mastodon_fediverse_api:
     git:
       url: https://github.com/xal/dart_fediverse_api.git
       #      ref: master
-      ref: stable
+      ref: before_refactoring
       path: mastodon_fediverse_api
 
   pleroma_fediverse_api:
     git:
       url: https://github.com/xal/dart_fediverse_api.git
       #      ref: master
-      ref: stable
+      ref: before_refactoring
       path: pleroma_fediverse_api
 
 # For information on the generic Dart part of this file, see the

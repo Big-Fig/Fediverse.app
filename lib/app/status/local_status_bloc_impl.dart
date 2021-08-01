@@ -71,7 +71,7 @@ class LocalStatusBloc extends StatusBloc {
           listen: false,
         ),
         pleromaApiStatusEmojiReactionService:
-        Provider.of<IPleromaApiStatusEmojiReactionService>(
+            Provider.of<IPleromaApiStatusEmojiReactionService>(
           context,
           listen: false,
         ),
