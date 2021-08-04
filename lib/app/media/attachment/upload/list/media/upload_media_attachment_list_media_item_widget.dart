@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:fedi/app/media/attachment/media_attachment_widget.dart';
+import 'package:fedi/app/media/attachment/upload/metadata/edit/edit_upload_media_attachment_metadata_dialog.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc_device_impl.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_failed_notification_overlay.dart';
@@ -18,9 +19,9 @@ import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
 import 'package:fedi/media/player/media_player_model.dart';
 import 'package:fedi/media/player/video/video_media_player_bloc_impl.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:provider/provider.dart';
 
 class UploadMediaAttachmentListMediaItemWidget extends StatefulWidget {
@@ -106,6 +107,14 @@ class _UploadMediaAttachmentListMediaItemWidgetState
                   const _UploadMediaAttachmentListMediaItemTopLeftActionWidget(),
             ),
           ),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: Padding(
+              padding: widget.contentPadding,
+              child:
+                  const _UploadMediaAttachmentListMediaItemBottomRightActionWidget(),
+            ),
+          ),
         ],
       ),
     );
@@ -189,6 +198,45 @@ class _UploadMediaAttachmentListMediaItemTopLeftActionWidget
   }
 }
 
+class _UploadMediaAttachmentListMediaItemBottomRightActionWidget
+    extends StatelessWidget {
+  const _UploadMediaAttachmentListMediaItemBottomRightActionWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var uploadMediaAttachmentBloc = IUploadMediaAttachmentBloc.of(context);
+    var size = 24.0;
+
+    return InkWell(
+      onTap: () async {
+        var metadata = await showEditUploadMediaAttachmentMetadataDialog(
+                context: context,
+        initialMetadata: uploadMediaAttachmentBloc.metadata,);
+
+        uploadMediaAttachmentBloc.changeMetadata(metadata);
+      },
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(size),
+        child: Container(
+          width: size,
+          // ignore: no-equal-arguments
+          height: size,
+          // ignore: no-magic-number
+          color: IFediUiColorTheme.of(context).darkGrey.withOpacity(0.8),
+          child: Icon(
+            FediIcons.pen,
+            color: IFediUiColorTheme.of(context).white,
+            // ignore: no-magic-number
+            size: size * 0.5,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _UploadMediaAttachmentListMediaItemTopRightActionWidget
     extends StatelessWidget {
   const _UploadMediaAttachmentListMediaItemTopRightActionWidget({
@@ -206,9 +254,9 @@ class _UploadMediaAttachmentListMediaItemTopRightActionWidget
         var uploadState = snapshot.data!;
 
         switch (uploadState.type) {
-          case UploadMediaAttachmentStateType.notUploaded:
           case UploadMediaAttachmentStateType.uploading:
             return const _UploadMediaAttachmentListMediaItemLoadingWidget();
+          case UploadMediaAttachmentStateType.notUploaded:
           case UploadMediaAttachmentStateType.uploaded:
             return const _UploadMediaAttachmentListMediaItemRemoveButtonWidget();
           case UploadMediaAttachmentStateType.failed:

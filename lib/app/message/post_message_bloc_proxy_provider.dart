@@ -12,7 +12,7 @@ class PostMessageBlocProxyProvider extends StatelessWidget {
   Widget build(BuildContext context) {
     return ProxyProvider<IPostMessageBloc,
         IUploadMediaAttachmentsCollectionBloc>(
-      update: (context, value, previous) => value.mediaAttachmentsBloc,
+      update: (context, value, previous) => value.uploadMediaAttachmentsBloc,
       child: child,
     );
   }

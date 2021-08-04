@@ -8383,6 +8383,56 @@ class S {
       args: [],
     );
   }
+
+  /// `Edit metadata`
+  String get app_media_upload_metadata_dialog_title {
+    return Intl.message(
+      'Edit metadata',
+      name: 'app_media_upload_metadata_dialog_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save`
+  String get app_media_upload_metadata_dialog_action_save {
+    return Intl.message(
+      'Save',
+      name: 'app_media_upload_metadata_dialog_action_save',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete`
+  String get app_media_upload_metadata_dialog_action_delete {
+    return Intl.message(
+      'Delete',
+      name: 'app_media_upload_metadata_dialog_action_delete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Description`
+  String get app_media_upload_metadata_dialog_field_description_hint {
+    return Intl.message(
+      'Description',
+      name: 'app_media_upload_metadata_dialog_field_description_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Description`
+  String get app_media_description_title {
+    return Intl.message(
+      'Description',
+      name: 'app_media_description_title',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

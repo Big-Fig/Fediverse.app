@@ -7,6 +7,8 @@ import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_entity_page.dart'
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/media/attachment/add_to_gallery/media_attachment_add_to_gallery_exception.dart';
 import 'package:fedi/app/media/attachment/add_to_gallery/media_attachment_add_to_gallery_helper.dart';
+import 'package:fedi/app/media/attachment/media_attachment_unknown_widget.dart';
+import 'package:fedi/app/media/attachment/metadata/media_attachment_metadata_button_widget.dart';
 import 'package:fedi/app/media/attachment/reupload/media_attachment_reupload_service.dart';
 import 'package:fedi/app/media/settings/media_settings_bloc.dart';
 import 'package:fedi/app/share/entity/share_entity_model.dart';
@@ -15,6 +17,7 @@ import 'package:fedi/app/share/share_chooser_dialog.dart';
 import 'package:fedi/app/status/post/new/new_post_status_page.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
+import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/indicator/fedi_indicator_widget.dart';
 import 'package:fedi/app/ui/media/player/audio/fedi_audio_player_widget.dart';
@@ -24,13 +27,14 @@ import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/error/error_data_model.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
 import 'package:fedi/media/player/audio/audio_media_player_bloc_impl.dart';
 import 'package:fedi/media/player/media_player_model.dart';
 import 'package:fedi/media/player/video/video_media_player_bloc_impl.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/material.dart';
+import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 
 class MediaAttachmentDetailsPage extends StatefulWidget {
@@ -137,6 +141,25 @@ class _MediaAttachmentDetailsPageState
     BuildContext context,
     IPleromaApiMediaAttachment mediaAttachment,
   ) {
+    return Provider<IPleromaApiMediaAttachment>.value(
+      value: mediaAttachment,
+      child: Stack(
+        children: [
+          buildMediaAttachmentItemBodyContent(mediaAttachment, context),
+          Positioned(
+            top: 8.0,
+            right: 8.0,
+            child: const MediaAttachmentMetadataButtonWidget(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildMediaAttachmentItemBodyContent(
+    IPleromaApiMediaAttachment mediaAttachment,
+    BuildContext context,
+  ) {
     switch (mediaAttachment.typeAsMastodonApi) {
       case MastodonApiMediaAttachmentType.image:
       case MastodonApiMediaAttachmentType.gifv:
@@ -178,11 +201,10 @@ class _MediaAttachmentDetailsPageState
         );
       case MastodonApiMediaAttachmentType.unknown:
       default:
-        return Center(
-          child: Text(
-            S.of(context).app_media_attachment_details_notSupported_type(
-                  mediaAttachment.type,
-                ),
+        return Padding(
+          padding: FediPadding.allBigPadding,
+          child: Center(
+            child: MediaAttachmentUnknownWidget(),
           ),
         );
     }

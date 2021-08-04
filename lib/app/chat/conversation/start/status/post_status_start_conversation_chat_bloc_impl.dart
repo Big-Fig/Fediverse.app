@@ -121,8 +121,8 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
   @override
   Stream<bool> get isReadyToPostStream => Rx.combineLatest6(
         inputWithoutMentionedAcctsTextStream,
-        mediaAttachmentsBloc.mediaAttachmentBlocsStream,
-        mediaAttachmentsBloc.isAllAttachedMediaUploadedStream,
+        uploadMediaAttachmentsBloc.uploadMediaAttachmentBlocsStream,
+        uploadMediaAttachmentsBloc.isAllAttachedMediaUploadedStream,
         pollBloc.isHaveAtLeastOneErrorStream,
         pollBloc.isSomethingChangedStream,
         mentionedAcctsStream,

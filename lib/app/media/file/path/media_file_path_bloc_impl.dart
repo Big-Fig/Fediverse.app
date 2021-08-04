@@ -1,5 +1,5 @@
-import 'package:fedi/app/media/file/path/media_file_path_bloc.dart';
 import 'package:easy_dispose/easy_dispose.dart';
+import 'package:fedi/app/media/file/path/media_file_path_bloc.dart';
 import 'package:path/path.dart' as path_lib;
 
 class MediaFilePathBloc extends DisposableOwner implements IMediaFilePathBloc {
@@ -12,6 +12,11 @@ class MediaFilePathBloc extends DisposableOwner implements IMediaFilePathBloc {
 
   MediaFilePathBloc({
     required this.path,
+    String? customName,
   })  : extension = path?.isNotEmpty == true ? path_lib.extension(path!) : '',
-        name = path?.isNotEmpty == true ? path_lib.basename(path!) : '';
+        name = customName?.isNotEmpty == true
+            ? customName!
+            : path?.isNotEmpty == true
+                ? path_lib.basename(path!)
+                : '';
 }

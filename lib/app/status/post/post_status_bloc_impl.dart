@@ -34,7 +34,7 @@ abstract class PostStatusBloc extends PostMessageBloc
   bool get isAnyDataEntered {
     return inputText?.isNotEmpty == true ||
         subjectText?.isNotEmpty == true ||
-        mediaAttachmentsBloc.mediaAttachmentBlocs.isNotEmpty ||
+        uploadMediaAttachmentsBloc.uploadMediaAttachmentBlocs.isNotEmpty ||
         pollBloc.isSomethingChanged;
   }
 
@@ -154,12 +154,12 @@ abstract class PostStatusBloc extends PostMessageBloc
     if (initialDataMediaAttachments != null) {
       initialDataMediaAttachments.forEach(
         (attachment) {
-          mediaAttachmentsBloc.addUploadedAttachment(attachment);
+          uploadMediaAttachmentsBloc.addUploadedAttachment(attachment);
         },
       );
     }
     if (markMediaAsNsfwOnAttach) {
-      mediaAttachmentsBloc.mediaAttachmentBlocsStream.listen(
+      uploadMediaAttachmentsBloc.uploadMediaAttachmentBlocsStream.listen(
         (blocs) {
           if (!alreadyMarkMediaNsfwByDefault && blocs.isNotEmpty) {
             alreadyMarkMediaNsfwByDefault = true;
@@ -304,9 +304,9 @@ abstract class PostStatusBloc extends PostMessageBloc
   @override
   bool get isReadyToPost => calculateStatusBlocIsReadyToPost(
         inputText: inputWithoutMentionedAcctsText,
-        mediaAttachmentBlocs: mediaAttachmentsBloc.mediaAttachmentBlocs,
+        mediaAttachmentBlocs: uploadMediaAttachmentsBloc.uploadMediaAttachmentBlocs,
         isAllAttachedMediaUploaded:
-            mediaAttachmentsBloc.isAllAttachedMediaUploaded,
+            uploadMediaAttachmentsBloc.isAllAttachedMediaUploaded,
         isPollBlocHaveErrors: pollBloc.isHaveAtLeastOneError,
         isPollBlocChanged: pollBloc.isSomethingChanged,
       );
@@ -314,8 +314,8 @@ abstract class PostStatusBloc extends PostMessageBloc
   @override
   Stream<bool> get isReadyToPostStream => Rx.combineLatest5(
         inputWithoutMentionedAcctsTextStream,
-        mediaAttachmentsBloc.mediaAttachmentBlocsStream,
-        mediaAttachmentsBloc.isAllAttachedMediaUploadedStream,
+        uploadMediaAttachmentsBloc.uploadMediaAttachmentBlocsStream,
+        uploadMediaAttachmentsBloc.isAllAttachedMediaUploadedStream,
         pollBloc.isHaveAtLeastOneErrorStream,
         pollBloc.isSomethingChangedStream,
         (
@@ -476,6 +476,13 @@ abstract class PostStatusBloc extends PostMessageBloc
 
   @override
   Future post() async {
+
+    var success = await tryUploadAllAttachments();
+
+    if(!success) {
+      return;
+    }
+
     var postStatusData = calculateCurrentPostStatusData();
 
     await internalPostStatusData(postStatusData);
@@ -497,11 +504,11 @@ abstract class PostStatusBloc extends PostMessageBloc
       .toList();
 
   List<IPleromaApiMediaAttachment>? _calculateMediaAttachmentsField() {
-    List<IPleromaApiMediaAttachment>? mediaAttachments = mediaAttachmentsBloc
-        .mediaAttachmentBlocs
+    List<IPleromaApiMediaAttachment>? mediaAttachments = uploadMediaAttachmentsBloc
+        .uploadMediaAttachmentBlocs
         .where(
           (bloc) =>
-              bloc.uploadState!.type == UploadMediaAttachmentStateType.uploaded,
+              bloc.uploadState.type == UploadMediaAttachmentStateType.uploaded,
         )
         .map((bloc) => bloc.pleromaMediaAttachment!)
         .toList();
