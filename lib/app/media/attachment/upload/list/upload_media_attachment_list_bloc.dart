@@ -44,9 +44,9 @@ abstract class IUploadMediaAttachmentsCollectionBloc extends IDisposable {
 
   Stream<bool> get isPossibleToAttachMediaStream;
 
-  List<IUploadMediaAttachmentBloc> get mediaAttachmentBlocs;
+  List<IUploadMediaAttachmentBloc> get uploadMediaAttachmentBlocs;
 
-  Stream<List<IUploadMediaAttachmentBloc>> get mediaAttachmentBlocsStream;
+  Stream<List<IUploadMediaAttachmentBloc>> get uploadMediaAttachmentBlocsStream;
 
   Future attachMedia(IMediaDeviceFile mediaDeviceFile);
 

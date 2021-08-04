@@ -90,7 +90,7 @@ class _PostMessageMediaAttachmentsWidget extends StatelessWidget {
     return StreamBuilder<double>(
       stream: Rx.combineLatest2(
         postMessageBloc.isAnySelectedActionVisibleStream,
-        postMessageBloc.mediaAttachmentsBloc.mediaAttachmentBlocsStream,
+        postMessageBloc.uploadMediaAttachmentsBloc.uploadMediaAttachmentBlocsStream,
         (
           bool isAnySelectedActionVisible,
           List<IUploadMediaAttachmentBloc>? mediaAttachmentBlocs,

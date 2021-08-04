@@ -6,14 +6,17 @@ import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.da
 import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:fedi/app/message/post_message_model.dart';
 import 'package:fedi/form/form_item_validation.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
+import 'package:logging/logging.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:rxdart/rxdart.dart';
+
+final _logger = Logger('post_message_bloc_impl.dart');
 
 abstract class PostMessageBloc extends DisposableOwner
     implements IPostMessageBloc {
   @override
-  final IUploadMediaAttachmentsCollectionBloc mediaAttachmentsBloc;
+  final IUploadMediaAttachmentsCollectionBloc uploadMediaAttachmentsBloc;
 
   final bool unfocusOnClear;
   @override
@@ -50,13 +53,13 @@ abstract class PostMessageBloc extends DisposableOwner
     required this.maximumMessageLength,
     required int? maximumFileSizeInBytes,
     required this.unfocusOnClear,
-  }) : mediaAttachmentsBloc = UploadMediaAttachmentsCollectionBloc(
+  }) : uploadMediaAttachmentsBloc = UploadMediaAttachmentsCollectionBloc(
           maximumMediaAttachmentCount: maximumMediaAttachmentCount,
           pleromaMediaAttachmentService: pleromaMediaAttachmentService,
           maximumFileSizeInBytes: maximumFileSizeInBytes,
         ) {
     inputTextErrorsSubject.disposeWith(this);
-    mediaAttachmentsBloc.disposeWith(this);
+    uploadMediaAttachmentsBloc.disposeWith(this);
     inputTextSubject.disposeWith(this);
     isInputFocusedSubject.disposeWith(this);
     inputFocusNode.disposeWith(this);
@@ -76,7 +79,7 @@ abstract class PostMessageBloc extends DisposableOwner
     selectedActionSubject.disposeWith(this);
     inputTextController.disposeWith(this);
 
-    mediaAttachmentsBloc.mediaAttachmentBlocsStream.listen(
+    uploadMediaAttachmentsBloc.uploadMediaAttachmentBlocsStream.listen(
       (_) {
         regenerateIdempotencyKey();
       },
@@ -97,16 +100,17 @@ abstract class PostMessageBloc extends DisposableOwner
   @override
   bool get isReadyToPost => calculateIsReadyToPost(
         inputText: inputText,
-        mediaAttachmentBlocs: mediaAttachmentsBloc.mediaAttachmentBlocs,
+        mediaAttachmentBlocs:
+            uploadMediaAttachmentsBloc.uploadMediaAttachmentBlocs,
         isAllAttachedMediaUploaded:
-            mediaAttachmentsBloc.isAllAttachedMediaUploaded,
+            uploadMediaAttachmentsBloc.isAllAttachedMediaUploaded,
       );
 
   @override
   Stream<bool> get isReadyToPostStream => Rx.combineLatest3(
         inputTextStream,
-        mediaAttachmentsBloc.mediaAttachmentBlocsStream,
-        mediaAttachmentsBloc.isAllAttachedMediaUploadedStream,
+        uploadMediaAttachmentsBloc.uploadMediaAttachmentBlocsStream,
+        uploadMediaAttachmentsBloc.isAllAttachedMediaUploadedStream,
         (
           dynamic inputWithoutMentionedAcctsText,
           dynamic mediaAttachmentBlocs,
@@ -145,7 +149,7 @@ abstract class PostMessageBloc extends DisposableOwner
 
   void clear() {
     inputTextController.clear();
-    mediaAttachmentsBloc.clear();
+    uploadMediaAttachmentsBloc.clear();
     if (unfocusOnClear) {
       inputFocusNode.unfocus();
     }
@@ -162,7 +166,9 @@ abstract class PostMessageBloc extends DisposableOwner
     var textIsNotEmpty = inputText?.trim().isEmpty != true;
     var mediaAttached = mediaAttachmentBlocs?.isEmpty != true;
 
-    return (textIsNotEmpty || mediaAttached) && isAllAttachedMediaUploaded!;
+    return (textIsNotEmpty || mediaAttached)
+        // && isAllAttachedMediaUploaded!
+        ;
   }
 
   @override
@@ -259,5 +265,44 @@ abstract class PostMessageBloc extends DisposableOwner
   void toggleExpanded() {
     var newValue = !isExpanded;
     isExpandedSubject.add(newValue);
+  }
+
+  Future<bool> tryUploadAllAttachments() async {
+    var uploadMediaAttachmentBlocs =
+        uploadMediaAttachmentsBloc.uploadMediaAttachmentBlocs;
+    var isNotEmpty = uploadMediaAttachmentBlocs.isNotEmpty;
+
+    bool result;
+
+    if (isNotEmpty) {
+      var isAllAttachedMediaUploaded =
+          uploadMediaAttachmentsBloc.isAllAttachedMediaUploaded;
+      if (!isAllAttachedMediaUploaded) {
+        var futures = uploadMediaAttachmentBlocs
+            .where(
+              (bloc) => !bloc.isUploaded,
+            )
+            .map(
+              (bloc) => bloc.startUpload(),
+            );
+
+        await Future.wait(futures);
+
+        var allUploaded = uploadMediaAttachmentBlocs.fold<bool>(
+          true,
+          (previousValue, element) => previousValue && element.isUploaded,
+        );
+
+        return allUploaded;
+      } else {
+        result = true;
+      }
+    } else {
+      result = true;
+    }
+
+    _logger.finest(() => 'tryUploadAllAttachments $result');
+
+    return result;
   }
 }

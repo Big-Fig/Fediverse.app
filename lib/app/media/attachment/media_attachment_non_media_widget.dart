@@ -1,9 +1,9 @@
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/media/file/path/media_file_path_bloc.dart';
 import 'package:fedi/app/media/file/path/media_file_path_bloc_impl.dart';
 import 'package:fedi/app/media/file/path/media_file_path_widget.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/material.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 
 class MediaAttachmentNonMediaWidget extends StatelessWidget {
   final double opacity;
@@ -20,7 +20,12 @@ class MediaAttachmentNonMediaWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return DisposableProxyProvider<IPleromaApiMediaAttachment,
         IMediaFilePathBloc>(
-      update: (context, value, _) => MediaFilePathBloc(path: value.remoteUrl),
+      update: (context, value, _) {
+        return MediaFilePathBloc(
+          path: value.remoteUrl,
+          customName: value.description,
+        );
+      },
       child: MediaFilePathWidget(
         opacity: opacity,
         actionsWidget: actionsWidget,

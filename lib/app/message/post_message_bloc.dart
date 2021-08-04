@@ -13,7 +13,7 @@ abstract class IPostMessageBloc implements IDisposable {
 
   FocusNode get inputFocusNode;
 
-  IUploadMediaAttachmentsCollectionBloc get mediaAttachmentsBloc;
+  IUploadMediaAttachmentsCollectionBloc get uploadMediaAttachmentsBloc;
 
   bool get isReadyToPost;
 

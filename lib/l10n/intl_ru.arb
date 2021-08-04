@@ -1654,5 +1654,15 @@
   "app_about_field_reportBugSuggestIdea_value": "Написать",
   "@app_about_field_reportBugSuggestIdea_value": {},
   "app_about_field_joinBeta_label": "Стать Beta тестером",
-  "@app_about_field_joinBeta_label": {}
+  "@app_about_field_joinBeta_label": {},
+  "app_media_upload_metadata_dialog_title": "Редактировать",
+  "@app_media_upload_metadata_dialog_title": {},
+  "app_media_upload_metadata_dialog_action_save": "Сохранить",
+  "@app_media_upload_metadata_dialog_save": {},
+  "app_media_upload_metadata_dialog_action_delete": "Удалить",
+  "@app_media_upload_metadata_dialog_delete": {},
+  "app_media_upload_metadata_dialog_field_description_hint": "Описание",
+  "@app_media_upload_metadata_dialog_field_description_hint": {},
+  "app_media_description_title": "Описание",
+  "@app_media_description_title": {}
 }

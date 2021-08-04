@@ -1189,6 +1189,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_media_attachment_upload_remove_dialog_content":
             MessageLookupByLibrary.simpleMessage(
                 "Вы действительно хотите убрать прикрепленный файл?"),
+        "app_media_description_title":
+            MessageLookupByLibrary.simpleMessage("Описание"),
         "app_media_player_error_action_moreDetails":
             MessageLookupByLibrary.simpleMessage("Больше информации"),
         "app_media_player_error_action_reload":
@@ -1204,6 +1206,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_media_upload_failed_notification_exceedSize_content": m33,
         "app_media_upload_failed_notification_title":
             MessageLookupByLibrary.simpleMessage("Ошибка загрузки"),
+        "app_media_upload_metadata_dialog_action_delete":
+            MessageLookupByLibrary.simpleMessage("Удалить"),
+        "app_media_upload_metadata_dialog_action_save":
+            MessageLookupByLibrary.simpleMessage("Сохранить"),
+        "app_media_upload_metadata_dialog_field_description_hint":
+            MessageLookupByLibrary.simpleMessage("Описание"),
+        "app_media_upload_metadata_dialog_title":
+            MessageLookupByLibrary.simpleMessage("Редактировать"),
         "app_media_upload_progress":
             MessageLookupByLibrary.simpleMessage("Загрузка файлов на сервер"),
         "app_notification_action_dismiss":

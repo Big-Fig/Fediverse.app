@@ -1652,5 +1652,15 @@
   "app_about_field_reportBugSuggestIdea_value": "Create issue",
   "@app_about_field_reportBugSuggestIdea_value": {},
   "app_about_field_joinBeta_label": "Become Beta tester",
-  "@app_about_field_joinBeta_label": {}
+  "@app_about_field_joinBeta_label": {},
+  "app_media_upload_metadata_dialog_title": "Edit metadata",
+  "@app_media_upload_metadata_dialog_title": {},
+  "app_media_upload_metadata_dialog_action_save": "Save",
+  "@app_media_upload_metadata_dialog_save": {},
+  "app_media_upload_metadata_dialog_action_delete": "Delete",
+  "@app_media_upload_metadata_dialog_delete": {},
+  "app_media_upload_metadata_dialog_field_description_hint": "Description",
+  "@app_media_upload_metadata_dialog_field_description_hint": {},
+  "app_media_description_title": "Description",
+  "@app_media_description_title": {}
 }
