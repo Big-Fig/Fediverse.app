@@ -212,8 +212,9 @@ class _UploadMediaAttachmentListMediaItemBottomRightActionWidget
     return InkWell(
       onTap: () async {
         var metadata = await showEditUploadMediaAttachmentMetadataDialog(
-                context: context,
-        initialMetadata: uploadMediaAttachmentBloc.metadata,);
+          context: context,
+          initialMetadata: uploadMediaAttachmentBloc.metadata,
+        );
 
         uploadMediaAttachmentBloc.changeMetadata(metadata);
       },

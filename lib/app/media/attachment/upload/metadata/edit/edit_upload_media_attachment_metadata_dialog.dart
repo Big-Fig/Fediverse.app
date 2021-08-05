@@ -8,11 +8,11 @@ import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/dialog/dialog_model.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
 import 'package:fedi/form/form_item_bloc.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:fedi/generated/l10n.dart';
 
 typedef SaveCallback = Function(UploadMediaAttachmentMetadata metadata);
 
@@ -141,7 +141,9 @@ class EditUploadMediaAttachmentMetadataDialog extends FediDialog {
         child: StringValueFormFieldRowWidget(
           label: null,
           autocorrect: false,
-          hint: S.of(context).app_media_upload_metadata_dialog_field_description_hint,
+          hint: S
+              .of(context)
+              .app_media_upload_metadata_dialog_field_description_hint,
           // ignore: no-empty-block
           onSubmitted: (_) {
             // nothing
