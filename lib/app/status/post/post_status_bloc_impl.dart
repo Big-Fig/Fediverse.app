@@ -16,9 +16,9 @@ import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/duration/duration_extension.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:rxdart/rxdart.dart';
 
 var _logger = Logger('post_status_bloc_impl.dart');
@@ -304,7 +304,8 @@ abstract class PostStatusBloc extends PostMessageBloc
   @override
   bool get isReadyToPost => calculateStatusBlocIsReadyToPost(
         inputText: inputWithoutMentionedAcctsText,
-        mediaAttachmentBlocs: uploadMediaAttachmentsBloc.uploadMediaAttachmentBlocs,
+        mediaAttachmentBlocs:
+            uploadMediaAttachmentsBloc.uploadMediaAttachmentBlocs,
         isAllAttachedMediaUploaded:
             uploadMediaAttachmentsBloc.isAllAttachedMediaUploaded,
         isPollBlocHaveErrors: pollBloc.isHaveAtLeastOneError,
@@ -476,10 +477,9 @@ abstract class PostStatusBloc extends PostMessageBloc
 
   @override
   Future post() async {
-
     var success = await tryUploadAllAttachments();
 
-    if(!success) {
+    if (!success) {
       return;
     }
 
@@ -504,14 +504,15 @@ abstract class PostStatusBloc extends PostMessageBloc
       .toList();
 
   List<IPleromaApiMediaAttachment>? _calculateMediaAttachmentsField() {
-    List<IPleromaApiMediaAttachment>? mediaAttachments = uploadMediaAttachmentsBloc
-        .uploadMediaAttachmentBlocs
-        .where(
-          (bloc) =>
-              bloc.uploadState.type == UploadMediaAttachmentStateType.uploaded,
-        )
-        .map((bloc) => bloc.pleromaMediaAttachment!)
-        .toList();
+    List<IPleromaApiMediaAttachment>? mediaAttachments =
+        uploadMediaAttachmentsBloc.uploadMediaAttachmentBlocs
+            .where(
+              (bloc) =>
+                  bloc.uploadState.type ==
+                  UploadMediaAttachmentStateType.uploaded,
+            )
+            .map((bloc) => bloc.pleromaMediaAttachment!)
+            .toList();
     // media ids shouldnt be empty (should be null in this case)
     if (mediaAttachments.isEmpty) {
       mediaAttachments = null;

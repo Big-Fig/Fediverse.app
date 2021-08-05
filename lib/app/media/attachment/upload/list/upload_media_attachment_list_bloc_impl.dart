@@ -151,8 +151,9 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
       uploadMediaAttachmentBlocsSubject.value;
 
   @override
-  Stream<List<IUploadMediaAttachmentBloc>> get uploadMediaAttachmentBlocsStream =>
-      uploadMediaAttachmentBlocsSubject.stream;
+  Stream<List<IUploadMediaAttachmentBloc>>
+      get uploadMediaAttachmentBlocsStream =>
+          uploadMediaAttachmentBlocsSubject.stream;
 
   @override
   Future attachMedia(IMediaDeviceFile mediaDeviceFile) async {
