@@ -204,6 +204,7 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         .asyncInitAndRegister<IExternalShareService>(externalShareService);
 
     var connectionService = ConnectionService()..disposeWith(this);
+    await connectionService.internalAsyncInit();
     await globalProviderService
         .asyncInitAndRegister<IConnectionService>(connectionService);
     var cameraMediaService = CameraMediaService()..disposeWith(this);
