@@ -480,13 +480,13 @@ class FediApp extends StatelessWidget {
                 id: actualTheme.id,
               );
             }
-          } catch (e, stackTrace) {
+          } catch (e) {
             // todo: remove this hack. IInstanceFrontendConfigurationsBloc should init before this
             _logger.warning(
               () =>
                   'failed to retrieve IInstanceFrontendConfigurationsBloc. Not initialized yet?',
-              e,
-              stackTrace,
+              // e,
+              // stackTrace,
             );
           }
 
