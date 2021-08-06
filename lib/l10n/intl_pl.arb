@@ -1652,5 +1652,15 @@
   "app_push_richNotification_poll_title": "Zmieniono ankietę",
   "@app_push_richNotification_poll_title": {},
   "app_push_richNotification_poll_summary": "Zmieniono ankietę",
-  "@app_push_richNotification_poll_summary": {}
+  "@app_push_richNotification_poll_summary": {},
+  "app_media_upload_metadata_dialog_title": "Edytuj metadane",
+  "@app_media_upload_metadata_dialog_title": {},
+  "app_media_upload_metadata_dialog_action_save": "Ratować",
+  "@app_media_upload_metadata_dialog_action_save": {},
+  "app_media_upload_metadata_dialog_action_delete": "Usunąć",
+  "@app_media_upload_metadata_dialog_action_delete": {},
+  "app_media_upload_metadata_dialog_field_description_hint": "Opis",
+  "@app_media_upload_metadata_dialog_field_description_hint": {},
+  "app_media_description_title": "Opis",
+  "@app_media_description_title": {}
 }

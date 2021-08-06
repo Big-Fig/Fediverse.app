@@ -1205,6 +1205,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_media_attachment_upload_remove_dialog_content":
             MessageLookupByLibrary.simpleMessage(
                 "Czy na pewno chcesz usunąć załącznik?"),
+        "app_media_description_title":
+            MessageLookupByLibrary.simpleMessage("Opis"),
         "app_media_player_error_action_moreDetails":
             MessageLookupByLibrary.simpleMessage("Więcej szczegółów"),
         "app_media_player_error_action_reload":
@@ -1220,6 +1222,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_media_upload_failed_notification_exceedSize_content": m33,
         "app_media_upload_failed_notification_title":
             MessageLookupByLibrary.simpleMessage("Nie udało się wysłać"),
+        "app_media_upload_metadata_dialog_action_delete":
+            MessageLookupByLibrary.simpleMessage("Usunąć"),
+        "app_media_upload_metadata_dialog_action_save":
+            MessageLookupByLibrary.simpleMessage("Ratować"),
+        "app_media_upload_metadata_dialog_field_description_hint":
+            MessageLookupByLibrary.simpleMessage("Opis"),
+        "app_media_upload_metadata_dialog_title":
+            MessageLookupByLibrary.simpleMessage("Edytuj metadane"),
         "app_media_upload_progress":
             MessageLookupByLibrary.simpleMessage("Wysyłanie mediów"),
         "app_notification_action_dismiss":
