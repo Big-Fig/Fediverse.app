@@ -1,3 +1,4 @@
+import 'package:base_fediverse_api/base_fediverse_api.dart';
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/account/my/local_preferences/my_account_local_preference_bloc.dart';
 import 'package:fedi/app/account/my/local_preferences/my_account_local_preference_bloc_impl.dart';
@@ -66,6 +67,10 @@ import 'package:fedi/app/instance/announcement/repository/instance_announcement_
 import 'package:fedi/app/instance/announcement/settings/local_preferences/instance/instance_instance_announcement_settings_local_preference_bloc.dart';
 import 'package:fedi/app/instance/announcement/settings/local_preferences/instance/instance_instance_announcement_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/instance/announcement/settings/local_preferences/instance_announcement_settings_local_preference_bloc.dart';
+import 'package:fedi/app/instance/frontend_configurations/instance_frontend_configurations_bloc.dart';
+import 'package:fedi/app/instance/frontend_configurations/instance_frontend_configurations_bloc_impl.dart';
+import 'package:fedi/app/instance/frontend_configurations/local_preferences/instance_frontend_configurations_local_preference_bloc.dart';
+import 'package:fedi/app/instance/frontend_configurations/local_preferences/instance_frontend_configurations_local_preference_bloc_impl.dart';
 import 'package:fedi/app/media/attachment/reupload/media_attachment_reupload_service.dart';
 import 'package:fedi/app/media/attachment/reupload/media_attachment_reupload_service_impl.dart';
 import 'package:fedi/app/media/settings/local_preferences/global/global_media_settings_local_preference_bloc.dart';
@@ -130,16 +135,14 @@ import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc.dart';
 import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc_impl.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc_impl.dart';
-import 'package:base_fediverse_api/base_fediverse_api.dart';
 import 'package:fedi/database/database_service.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
-import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:fedi/provider/provider_context_bloc_impl.dart';
 import 'package:fedi/push/fcm/fcm_push_service.dart';
 import 'package:fedi/push/relay/push_relay_service.dart';
-
 import 'package:logging/logging.dart';
+import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
+import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 
 var _logger = Logger('current_auth_instance_context_bloc_imp.dart');
 
@@ -409,6 +412,15 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     await globalProviderService.asyncInitAndRegister<
         IPleromaApiInstanceService>(pleromaInstanceService);
 
+    var pleromaApiFrontendConfigurationsService =
+        PleromaApiFrontendConfigurationsService(
+      restService: pleromaAuthRestService,
+    )..disposeWith(this);
+    await globalProviderService
+        .asyncInitAndRegister<IPleromaApiFrontendConfigurationsService>(
+      pleromaApiFrontendConfigurationsService,
+    );
+
     var pleromaSearchService =
         PleromaApiSearchService(restApiAuthService: pleromaAuthRestService)
           ..disposeWith(this);
@@ -474,6 +486,29 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
           ..disposeWith(this);
     await globalProviderService.asyncInitAndRegister<IMastodonApiEmojiService>(
       mastodonApiEmojiService,
+    );
+
+    var instanceFrontendConfigurationsLocalPreferenceBloc =
+        InstanceFrontendConfigurationsLocalPreferenceBloc(
+      preferencesService,
+      userAtHost: userAtHost,
+    )..disposeWith(this);
+
+    await globalProviderService.asyncInitAndRegister<
+        IInstanceFrontendConfigurationsLocalPreferenceBloc>(
+      instanceFrontendConfigurationsLocalPreferenceBloc,
+    );
+
+    var instanceFrontendConfigurationsBloc = InstanceFrontendConfigurationsBloc(
+      pleromaApiFrontendConfigurationsService:
+          pleromaApiFrontendConfigurationsService,
+      instanceFrontendConfigurationsLocalPreferenceBloc:
+          instanceFrontendConfigurationsLocalPreferenceBloc,
+    )..disposeWith(this);
+
+    await globalProviderService
+        .asyncInitAndRegister<IInstanceFrontendConfigurationsBloc>(
+      instanceFrontendConfigurationsBloc,
     );
 
     var myAccountLocalPreferenceBloc = MyAccountLocalPreferenceBloc(
