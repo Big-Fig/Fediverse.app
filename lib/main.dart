@@ -27,6 +27,7 @@ import 'package:fedi/app/home/home_model.dart';
 import 'package:fedi/app/home/home_page.dart';
 import 'package:fedi/app/init/init_bloc.dart';
 import 'package:fedi/app/init/init_bloc_impl.dart';
+import 'package:fedi/app/instance/frontend_configurations/instance_frontend_configurations_bloc.dart';
 import 'package:fedi/app/localization/settings/localization_settings_bloc.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_bloc.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_model.dart';
@@ -446,8 +447,43 @@ class FediApp extends StatelessWidget {
           _logger.finest(() => 'currentTheme $currentTheme '
               'themeMode $themeMode');
 
+          var actualTheme = currentTheme ?? lightFediUiTheme;
+          // todo: refactor hack
+          try {
+            var frontendConfigurationsBloc =
+                IInstanceFrontendConfigurationsBloc.of(context);
+            var brandColor = frontendConfigurationsBloc.brandColor;
+
+            if (brandColor != null) {
+              Color brandColorDark;
+              if (actualTheme.colorTheme.brightness == Brightness.light) {
+                // ignore: no-magic-number
+                brandColorDark = darken(brandColor, 0.2);
+              } else {
+                // ignore: no-magic-number
+                brandColorDark = lighten(brandColor, 0.2);
+              }
+              var newColorTheme = FediUiColorThemeOverride(
+                baseTheme: actualTheme.colorTheme,
+                primaryOverride: brandColor,
+                primaryDarkOverride: brandColorDark,
+              );
+              var newTextTheme = FediUiTextTheme(colorTheme: newColorTheme);
+
+              var newThemeData = createBaseFediThemeData(brandColor);
+              newThemeData = actualTheme.adoptThemeData(newThemeData);
+              actualTheme = FediUiThemeOverride(
+                originalFediUiTheme: actualTheme,
+                colorTheme: newColorTheme,
+                textTheme: newTextTheme,
+                themeData: newThemeData,
+                id: actualTheme.id,
+              );
+            }
+          } catch (e) {}
+
           return provideCurrentTheme(
-            currentTheme: currentTheme ?? lightFediUiTheme,
+            currentTheme: actualTheme,
             child: StreamBuilder<LocalizationLocale?>(
               stream: localizationSettingsBloc.localizationLocaleStream,
               builder: (context, snapshot) {
@@ -601,4 +637,24 @@ void _initIncomeShareHandler({
   ).disposeWith(bloc);
 
   bloc.checkForInitialEvent();
+}
+
+// ignore: no-magic-number
+Color darken(Color color, [double amount = 0.1]) {
+  assert(amount >= 0 && amount <= 1);
+
+  final hsl = HSLColor.fromColor(color);
+  final hslDark = hsl.withLightness((hsl.lightness - amount).clamp(0.0, 1.0));
+
+  return hslDark.toColor();
+}
+
+// ignore: no-magic-number
+Color lighten(Color color, [double amount = 0.1]) {
+  assert(amount >= 0 && amount <= 1);
+
+  final hsl = HSLColor.fromColor(color);
+  final hslLight = hsl.withLightness((hsl.lightness + amount).clamp(0.0, 1.0));
+
+  return hslLight.toColor();
 }

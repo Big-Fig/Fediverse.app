@@ -26,15 +26,108 @@ abstract class IFediUiTheme extends IUiTheme {
 
   @override
   IFediUiTextTheme get textTheme;
+
+  ThemeData adoptThemeData(ThemeData themeData);
+}
+
+class FediUiThemeOverride implements IFediUiTheme {
+  @override
+  final String id;
+
+  @override
+  final ThemeData themeData;
+  @override
+  final IFediUiColorTheme colorTheme;
+  @override
+  final IFediUiTextTheme textTheme;
+  final IFediUiTheme originalFediUiTheme;
+
+  FediUiThemeOverride({
+    required this.colorTheme,
+    required this.textTheme,
+    required this.themeData,
+    required this.id,
+    required this.originalFediUiTheme,
+  });
+
+  @override
+  ThemeData adoptThemeData(ThemeData themeData) => originalFediUiTheme.adoptThemeData(themeData);
 }
 
 abstract class IFediUiColorTheme implements IUiColorTheme {
-  static IFediUiColorTheme of(BuildContext context, {bool listen = true}) =>
+  static IFediUiColorTheme of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IFediUiColorTheme>(context, listen: listen);
 }
 
+class FediUiColorThemeOverride implements IFediUiColorTheme {
+  final IFediUiColorTheme baseTheme;
+  final Color? primaryOverride;
+  final Color? primaryDarkOverride;
+
+  FediUiColorThemeOverride({
+    required this.baseTheme,
+    required this.primaryOverride,
+    required this.primaryDarkOverride,
+  });
+
+  @override
+  Color get black => baseTheme.black;
+
+  @override
+  Brightness get brightness => baseTheme.brightness;
+
+  @override
+  Color get darkGrey => baseTheme.darkGrey;
+
+  @override
+  Color get error => baseTheme.error;
+
+  @override
+  Color get grey => baseTheme.grey;
+
+  @override
+  Color get imageDarkOverlay => baseTheme.imageDarkOverlay;
+
+  @override
+  Color get lightGrey => baseTheme.lightGrey;
+
+  @override
+  Color get mediumGrey => baseTheme.mediumGrey;
+
+  @override
+  Color get modalBottomSheetDarkOverlay =>
+      baseTheme.modalBottomSheetDarkOverlay;
+
+  @override
+  Color get offWhite => baseTheme.offWhite;
+
+  @override
+  Color get primary => primaryOverride ?? baseTheme.primary;
+
+  @override
+  Color get primaryDark => primaryDarkOverride ?? baseTheme.primaryDark;
+
+  @override
+  Color get secondary => baseTheme.secondary;
+
+  @override
+  Color get transparent => baseTheme.transparent;
+
+  @override
+  Color get ultraLightGrey => baseTheme.ultraLightGrey;
+
+  @override
+  Color get white => baseTheme.white;
+}
+
 abstract class IFediUiTextTheme implements IUiTextTheme {
-  static IFediUiTextTheme of(BuildContext context, {bool listen = true}) =>
+  static IFediUiTextTheme of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IFediUiTextTheme>(context, listen: listen);
 
   TextStyle get smallShortWhite;

@@ -14,9 +14,10 @@ class PostMessageAttachActionWidget extends StatelessWidget {
     var postMessageBloc = IPostMessageBloc.of(context, listen: false);
 
     return StreamBuilder<bool>(
-      stream:
-          postMessageBloc.uploadMediaAttachmentsBloc.isPossibleToAttachMediaStream,
-      initialData: postMessageBloc.uploadMediaAttachmentsBloc.isPossibleToAttachMedia,
+      stream: postMessageBloc
+          .uploadMediaAttachmentsBloc.isPossibleToAttachMediaStream,
+      initialData:
+          postMessageBloc.uploadMediaAttachmentsBloc.isPossibleToAttachMedia,
       builder: (context, snapshot) {
         var isPossibleToAttach = snapshot.data!;
 

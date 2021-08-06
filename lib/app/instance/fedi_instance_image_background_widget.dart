@@ -2,6 +2,7 @@ import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/cache/files/files_cache_service.dart';
+import 'package:fedi/app/instance/frontend_configurations/instance_frontend_configurations_bloc.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
@@ -26,6 +27,9 @@ class FediInstanceImageBackgroundWidget extends StatelessWidget {
 
     var myAccountBloc = IMyAccountBloc.of(context);
 
+    var instanceFrontendConfigurationsBloc =
+        IInstanceFrontendConfigurationsBloc.of(context);
+
     return StreamBuilder<String?>(
       stream: myAccountBloc.pleromaBackgroundImageStream,
       builder: (context, snapshot) {
@@ -34,7 +38,9 @@ class FediInstanceImageBackgroundWidget extends StatelessWidget {
         var backgroundImage = accountBackgroundImage;
 
         if (backgroundImage?.isNotEmpty != true) {
-          backgroundImage = currentInstance?.info?.backgroundImage;
+          backgroundImage =
+              instanceFrontendConfigurationsBloc.backgroundImage ??
+                  currentInstance?.info?.backgroundImage;
         }
 
         String? backgroundImageAbsolutePath;
