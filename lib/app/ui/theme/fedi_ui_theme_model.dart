@@ -51,7 +51,8 @@ class FediUiThemeOverride implements IFediUiTheme {
   });
 
   @override
-  ThemeData adoptThemeData(ThemeData themeData) => originalFediUiTheme.adoptThemeData(themeData);
+  ThemeData adoptThemeData(ThemeData themeData) =>
+      originalFediUiTheme.adoptThemeData(themeData);
 }
 
 abstract class IFediUiColorTheme implements IUiColorTheme {

@@ -60,10 +60,9 @@ class InstanceFrontendConfigurationsBloc extends AsyncInitLoadingBloc
   @override
   Stream<Color?> get brandColorStream =>
       instanceFrontendConfigurationsStream.map(
-            (instanceFrontendConfigurations) =>
-        instanceFrontendConfigurations?.brandColor,
+        (instanceFrontendConfigurations) =>
+            instanceFrontendConfigurations?.brandColor,
       );
-
 }
 
 extension IInstanceFrontendConfigurationsLocalPreferenceBlocExtension
