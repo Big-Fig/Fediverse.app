@@ -7,5 +7,3 @@ Piękny i lekki klient Pleroma i Mastodon:
 - obsługa wielu kont i multiinstancji.
 
 Możesz podłączyć dowolną instancję Pleromy lub Mastodon lub utworzyć konto na fedi.app.
-
-Fedi jest oprogramowaniem typu open source. Możesz zapoznać się z kodem źródłowym na https://github.com/Big-Fig/Fediverse.app.
