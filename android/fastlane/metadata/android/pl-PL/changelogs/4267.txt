@@ -1,0 +1,13 @@
+Pierwsze publiczne wydanie open-source.
+Dodano:
+- Autouzupełnianie listy serwerów
+- Lepszą stronę szczegółów instancji. Przeglądaj instancje jako gość przez publiczne API
+- Stronę informacji
+- Obsługę przychodzących udostępnień
+- Opcję włączania/wyłączania zbierania informacji o błędach
+Zmieniono:
+- Nowa logika powiadomień push
+- Usprawione UI/UX udostępniania
+Naprawiono:
+- Brak możliwości logowania na niektórych instancjach przez błąd parsowania JSON(Mastodon)
+- Wiele mniejszych poprawek

@@ -1223,9 +1223,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_media_upload_failed_notification_title":
             MessageLookupByLibrary.simpleMessage("Nie udało się wysłać"),
         "app_media_upload_metadata_dialog_action_delete":
-            MessageLookupByLibrary.simpleMessage("Usunąć"),
+            MessageLookupByLibrary.simpleMessage("Usuń"),
         "app_media_upload_metadata_dialog_action_save":
-            MessageLookupByLibrary.simpleMessage("Ratować"),
+            MessageLookupByLibrary.simpleMessage("Zapisz"),
         "app_media_upload_metadata_dialog_field_description_hint":
             MessageLookupByLibrary.simpleMessage("Opis"),
         "app_media_upload_metadata_dialog_title":

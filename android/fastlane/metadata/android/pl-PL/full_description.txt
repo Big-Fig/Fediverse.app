@@ -1,11 +1,11 @@
-Piękny i lekki klient Pleroma i Mastodon:
+Piękny i lekki klient Pleromy i Mastodon:a
 - obsługa powiadomień push;
 - reakcje emoji na instancjach Pleromy;
-- Obsługa wiadomości bezpośrednich w przypadku Mastodon i czatów w instancjach Pleromy;
+- Obsługa wiadomości bezpośrednich na Mastodonie i czatów na instancjach Pleromy;
 - przesyłanie dowolnych plików multimedialnych;
 - dostęp offline do danych i obrazów w pamięci podręcznej;
-- obsługa wielu kont i multiinstancji.
+- obsługa wielu kont i instancji.
 
-Możesz podłączyć dowolną instancję Pleromy lub Mastodon lub utworzyć konto na fedi.app.
+Możesz połączyć się z dowolną instancję Pleromy lub Mastodon, lub utworzyć konto na fedi.app.
 
-Fedi jest oprogramowaniem typu open source. Możesz zapoznać się z kodem źródłowym na https://github.com/Big-Fig/Fediverse.app.
+Fedi jest oprogramowaniem typu open source. Możesz przejrzeć kod źródłowy na https://github.com/Big-Fig/Fediverse.app.

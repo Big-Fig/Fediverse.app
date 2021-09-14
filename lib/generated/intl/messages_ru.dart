@@ -1482,7 +1482,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_share_with_message_field_message_label":
             MessageLookupByLibrary.simpleMessage("Сообщение"),
         "app_status_action_bookmark":
-            MessageLookupByLibrary.simpleMessage("В избраннле"),
+            MessageLookupByLibrary.simpleMessage("В избранное"),
         "app_status_action_copyLink":
             MessageLookupByLibrary.simpleMessage("Скопировать ссылку"),
         "app_status_action_delete":
