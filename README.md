@@ -579,3 +579,7 @@ It is also important to add `Target` and `ShareExtension` to the same group ID.
 ## 3rd Party
 
 * Original `assets/server_list.txt` is taken from [tateisu/SubwayTooter](https://github.com/tateisu/SubwayTooter)
+
+## Thanks
+
+* [mkljczk](https://github.com/mkljczk) for PL translation
