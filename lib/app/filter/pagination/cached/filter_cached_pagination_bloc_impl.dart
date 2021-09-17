@@ -7,7 +7,7 @@ import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pagination/cached/cached_pagination_bloc.dart';
 import 'package:fedi/pagination/cached/cached_pagination_bloc_proxy_provider.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
@@ -25,7 +25,7 @@ class FilterCachedPaginationBloc extends CachedPleromaPaginationBloc<IFilter>
         );
 
   @override
-  IPleromaApi get pleromaApi => filterListService.pleromaApi;
+  IUnifediApiService get unifediApi => filterListService.unifediApi;
 
   @override
   Future<List<IFilter>> loadLocalItems({

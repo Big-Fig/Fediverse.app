@@ -1,5 +1,5 @@
 import 'package:fedi/app/settings/settings_model.dart';
-import 'package:fedi/json/json_model.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -9,7 +9,7 @@ part 'status_sensitive_settings_model.g.dart';
 @JsonSerializable(explicitToJson: true)
 @HiveType(typeId: -32 + 85)
 class StatusSensitiveSettings
-    implements IJsonObject, ISettings<StatusSensitiveSettings> {
+    implements IJsonObj, ISettings<StatusSensitiveSettings> {
   @HiveField(0)
   @JsonKey(name: 'is_always_show_spoiler')
   final bool isAlwaysShowSpoiler;

@@ -4,7 +4,7 @@ import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:fedi/repository/repository.dart';
 import 'package:flutter/widgets.dart';
 import 'package:moor/moor.dart';
@@ -16,7 +16,7 @@ abstract class IAccountRepository
         IAppRemoteReadWriteRepository<
             DbAccount,
             IAccount,
-            IPleromaApiAccount,
+            IUnifediApiAccount,
             int,
             String,
             AccountRepositoryFilters,
@@ -31,50 +31,50 @@ abstract class IAccountRepository
       );
 
   Future upsertConversationRemoteAccounts(
-    List<IPleromaApiAccount> remoteAccounts, {
+    List<IUnifediApiAccount> remoteAccounts, {
     required String conversationRemoteId,
     required Batch? batchTransaction,
   });
 
   Future upsertConversationRemoteAccount(
-    IPleromaApiAccount remoteAccount, {
+    IUnifediApiAccount remoteAccount, {
     required String conversationRemoteId,
     required Batch? batchTransaction,
   });
 
   Future upsertChatRemoteAccount(
-    IPleromaApiAccount remoteAccount, {
+    IUnifediApiAccount remoteAccount, {
     required String chatRemoteId,
     required Batch? batchTransaction,
   });
 
   Future upsertChatRemoteAccounts(
-    List<IPleromaApiAccount> remoteAccounts, {
+    List<IUnifediApiAccount> remoteAccounts, {
     required String chatRemoteId,
     required Batch? batchTransaction,
   });
 
   Future addAccountFollowings({
     required String accountRemoteId,
-    required List<PleromaApiAccount> followings,
+    required List<UnifediApiAccount> followings,
     required Batch? batchTransaction,
   });
 
   Future addAccountFollowers({
     required String accountRemoteId,
-    required List<IPleromaApiAccount> followers,
+    required List<IUnifediApiAccount> followers,
     required Batch? batchTransaction,
   });
 
   Future updateStatusRebloggedBy({
     required String statusRemoteId,
-    required List<IPleromaApiAccount> rebloggedByAccounts,
+    required List<IUnifediApiAccount> rebloggedByAccounts,
     required Batch? batchTransaction,
   });
 
   Future updateStatusFavouritedBy({
     required String statusRemoteId,
-    required List<IPleromaApiAccount> favouritedByAccounts,
+    required List<IUnifediApiAccount> favouritedByAccounts,
     required Batch? batchTransaction,
   });
 

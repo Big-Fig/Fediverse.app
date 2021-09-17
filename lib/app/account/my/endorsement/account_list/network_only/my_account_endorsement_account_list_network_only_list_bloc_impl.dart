@@ -3,7 +3,7 @@ import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/account/my/endorsement/account_list/network_only/my_account_endorsement_account_list_network_only_list_bloc.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:logging/logging.dart';
 
 final _logger = Logger(
@@ -12,10 +12,10 @@ final _logger = Logger(
 
 class MyAccountEndorsementAccountListNetworkOnlyListBloc extends DisposableOwner
     implements IMyAccountEndorsementAccountListNetworkOnlyListBloc {
-  final IPleromaApiEndorsementsService pleromaApiEndorsementsService;
+  final IUnifediApiMyAccountService unifediApiMyAccountService;
 
   @override
-  IPleromaApi get pleromaApi => pleromaApiEndorsementsService;
+  IUnifediApiService get unifediApi => unifediApiMyAccountService;
 
   @override
   final InstanceLocation instanceLocation;
@@ -24,7 +24,7 @@ class MyAccountEndorsementAccountListNetworkOnlyListBloc extends DisposableOwner
   final Uri? remoteInstanceUriOrNull;
 
   MyAccountEndorsementAccountListNetworkOnlyListBloc({
-    required this.pleromaApiEndorsementsService,
+    required this.unifediApiMyAccountService,
     required this.instanceLocation,
     required this.remoteInstanceUriOrNull,
   });
@@ -36,16 +36,16 @@ class MyAccountEndorsementAccountListNetworkOnlyListBloc extends DisposableOwner
     required String? minId,
     required String? maxId,
   }) async {
-    var pleromaAccounts = await pleromaApiEndorsementsService.getEndorsements(
-      pagination: PleromaApiPaginationRequest(
+    var unifediApiAccounts = await unifediApiMyAccountService.getMyEndorsements(
+      pagination: UnifediApiPagination(
         limit: itemsCountPerPage,
-        sinceId: minId,
+        minId: minId,
         maxId: maxId,
       ),
     );
-    List<IAccount> result = pleromaAccounts
+    List<IAccount> result = unifediApiAccounts
         .map(
-          (pleromaAccount) => pleromaAccount.toDbAccountWrapper(),
+          (unifediApiAccount) => unifediApiAccount.toDbAccountWrapper(),
         )
         .toList();
 

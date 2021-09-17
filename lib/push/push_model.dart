@@ -1,5 +1,5 @@
 import 'package:fedi/collection/collection_hash_utils.dart';
-import 'package:fedi/json/json_model.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -15,7 +15,7 @@ typedef PushMessageListener = dynamic Function(PushMessage message);
 //@HiveType()
 @HiveType(typeId: -32 + 67)
 @JsonSerializable(explicitToJson: true)
-class PushMessage implements IJsonObject {
+class PushMessage implements IJsonObj {
   PushMessageType get type => typeString.toPushMessageType();
 
   @HiveField(1)
@@ -81,7 +81,7 @@ class PushMessage implements IJsonObject {
 //@HiveType()
 @HiveType(typeId: -32 + 73)
 @JsonSerializable(explicitToJson: true)
-class PushNotification implements IJsonObject {
+class PushNotification implements IJsonObj {
   @HiveField(0)
   final String? title;
   @HiveField(1)

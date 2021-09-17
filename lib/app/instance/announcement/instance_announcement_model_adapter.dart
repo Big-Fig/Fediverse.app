@@ -1,8 +1,8 @@
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/instance/announcement/instance_announcement_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
-extension IPleromaInstanceAnnouncementExtension on IPleromaApiAnnouncement {
+extension IPleromaInstanceAnnouncementExtension on IUnifediApiAnnouncement {
   IInstanceAnnouncement toDbInstanceAnnouncementPopulatedWrapper() =>
       DbInstanceAnnouncementPopulatedWrapper(
         dbInstanceAnnouncementPopulated: DbInstanceAnnouncementPopulated(
@@ -18,26 +18,26 @@ extension IPleromaInstanceAnnouncementExtension on IPleromaApiAnnouncement {
         updatedAt: updatedAt,
         read: read ?? false,
         content: content,
-        reactions: reactions?.toPleromaApiAnnouncementReactions(),
-        mentions: mentions?.toPleromaApiMentions(),
-        statuses: statuses?.toPleromaApiStatuses(),
-        tags: tags?.toPleromaApiTags(),
+        reactions: reactions?.toUnifediApiEmojiReactionList(),
+        mentions: mentions?.toUnifediApiMentionList(),
+        statuses: statuses?.toUnifediApiStatusList(),
+        tags: tags?.toUnifediApiTagList(),
       );
 }
 
 extension IInstanceAnnouncementExtension on IInstanceAnnouncement {
-  PleromaApiAnnouncement toPleromaInstanceAnnouncement() {
-    return PleromaApiAnnouncement(
+  UnifediApiAnnouncement toPleromaInstanceAnnouncement() {
+    return UnifediApiAnnouncement(
       id: remoteId,
       content: content,
       allDay: allDay,
       publishedAt: publishedAt,
       updatedAt: updatedAt,
       read: read,
-      reactions: reactions?.toPleromaApiAnnouncementReactions(),
-      statuses: statuses?.toPleromaApiStatuses(),
-      mentions: mentions?.toPleromaApiMentions(),
-      tags: tags?.toPleromaApiTags(),
+      reactions: reactions?.toUnifediApiEmojiReactionList(),
+      statuses: statuses?.toUnifediApiStatusList(),
+      mentions: mentions?.toUnifediApiMentionList(),
+      tags: tags?.toUnifediApiTagList(),
       scheduledAt: scheduledAt,
       startsAt: startsAt,
       endsAt: endsAt,

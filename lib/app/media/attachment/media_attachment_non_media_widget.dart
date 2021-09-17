@@ -3,7 +3,7 @@ import 'package:fedi/app/media/file/path/media_file_path_bloc.dart';
 import 'package:fedi/app/media/file/path/media_file_path_bloc_impl.dart';
 import 'package:fedi/app/media/file/path/media_file_path_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class MediaAttachmentNonMediaWidget extends StatelessWidget {
   final double opacity;
@@ -18,7 +18,7 @@ class MediaAttachmentNonMediaWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DisposableProxyProvider<IPleromaApiMediaAttachment,
+    return DisposableProxyProvider<IUnifediApiMediaAttachment,
         IMediaFilePathBloc>(
       update: (context, value, _) {
         return MediaFilePathBloc(

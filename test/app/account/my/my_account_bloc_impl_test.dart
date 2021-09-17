@@ -11,7 +11,7 @@ import 'package:fedi/app/emoji/text/emoji_text_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -27,12 +27,12 @@ import 'my_account_test_helper.dart';
 // ignore_for_file: no-magic-number, avoid-late-keyword
 
 @GenerateMocks([
-  IPleromaApiMyAccountService,
+  IUnifediApiMyAccountService,
 ])
 void main() {
   late IMyAccount myAccount;
   late IMyAccountBloc myAccountBloc;
-  late MockIPleromaApiMyAccountService pleromaMyAccountServiceMock;
+  late MockIUnifediApiMyAccountService unifediApiMyAccountServiceMock;
   late AppDatabase database;
   late IAccountRepository accountRepository;
   late MyAccountLocalPreferenceBloc myAccountLocalPreferenceBloc;
@@ -44,16 +44,16 @@ void main() {
     database = AppDatabase(VmDatabase.memory());
     accountRepository = AccountRepository(appDatabase: database);
 
-    pleromaMyAccountServiceMock = MockIPleromaApiMyAccountService();
+    unifediApiMyAccountServiceMock = MockIUnifediApiMyAccountService();
 
-    when(pleromaMyAccountServiceMock.isConnected).thenReturn(true);
-    when(pleromaMyAccountServiceMock.pleromaApiState).thenReturn(
-      PleromaApiState.validAuth,
+    when(unifediApiMyAccountServiceMock.isConnected).thenReturn(true);
+    when(unifediApiMyAccountServiceMock.unifediApiState).thenReturn(
+      UnifediApiState.validAuth,
     );
 
     preferencesService = MemoryLocalPreferencesService();
 
-    myAccount = await MyAccountTestHelper.createTestMyAccount(seed: 'seed1');
+    myAccount = await MyAccountMockHelper.createTestMyAccount(seed: 'seed1');
     authInstance = AuthInstance(
       urlHost: 'fedi.app',
       acct: myAccount.acct,
@@ -71,11 +71,11 @@ void main() {
     );
 
     await myAccountLocalPreferenceBloc
-        .setValue(myAccount as PleromaMyAccountWrapper?);
+        .setValue(myAccount as UnifediApiMyAccountWrapper?);
     await Future.delayed(Duration(milliseconds: 1));
 
     myAccountBloc = MyAccountBloc(
-      pleromaMyAccountService: pleromaMyAccountServiceMock,
+      unifediApiMyAccountService: unifediApiMyAccountServiceMock,
       accountRepository: accountRepository,
       myAccountLocalPreferenceBloc: myAccountLocalPreferenceBloc,
       instance: authInstance,
@@ -88,22 +88,22 @@ void main() {
     await myAccountLocalPreferenceBloc.dispose();
     await preferencesService.dispose();
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
     await database.close();
   });
 
   Future _update(IMyAccount account) async {
     await myAccountLocalPreferenceBloc.setValue(
-      account.toPleromaApiMyAccountWrapper(),
+      account.toUnifediApiMyAccountWrapper(),
     );
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
   }
 
   test('account', () async {
-    AccountTestHelper.expectAccount(myAccountBloc.account, myAccount);
+    AccountMockHelper.expectAccount(myAccountBloc.account, myAccount);
 
-    var newValue = await MyAccountTestHelper.createTestMyAccount(
+    var newValue = await MyAccountMockHelper.createTestMyAccount(
       seed: 'seed2',
       remoteId: myAccount.remoteId,
     );
@@ -114,13 +114,13 @@ void main() {
       listened = newValue;
     });
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
-    AccountTestHelper.expectAccount(listened, myAccount);
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
+    AccountMockHelper.expectAccount(listened, myAccount);
 
     await _update(newValue);
 
-    AccountTestHelper.expectAccount(myAccountBloc.account, newValue);
-    AccountTestHelper.expectAccount(listened, newValue);
+    AccountMockHelper.expectAccount(myAccountBloc.account, newValue);
+    AccountMockHelper.expectAccount(listened, newValue);
     await subscription.cancel();
   });
 
@@ -135,7 +135,7 @@ void main() {
       listened = newValue;
     });
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
     expect(listened, myAccount.acct);
 
     await _update(myAccount.copyWith(acct: newValue));
@@ -155,7 +155,7 @@ void main() {
       listened = newValue;
     });
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
     expect(listened, myAccount.note);
 
     await _update(myAccount.copyWith(note: newValue));
@@ -175,7 +175,7 @@ void main() {
       listened = newValue;
     });
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
     expect(listened, myAccount.header);
 
     await _update(myAccount.copyWith(header: newValue));
@@ -195,7 +195,7 @@ void main() {
       listened = newValue;
     });
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
     expect(listened, myAccount.avatar);
 
     await _update(myAccount.copyWith(avatar: newValue));
@@ -228,7 +228,7 @@ void main() {
     expect(myAccountBloc.fields, myAccount.fields ?? []);
 
     var newValue = [
-      PleromaApiField(
+      UnifediApiField(
         name: 'newName',
         value: 'newValue',
         verifiedAt: null,
@@ -254,7 +254,7 @@ void main() {
   test('statusesCount', () async {
     expect(myAccountBloc.statusesCount, myAccount.statusesCount);
 
-    var newValue = myAccount.statusesCount + 1;
+    var newValue = myAccount.statusesCount! + 1;
 
     var listened;
 
@@ -274,7 +274,7 @@ void main() {
   test('statusesCount', () async {
     expect(myAccountBloc.statusesCount, myAccount.statusesCount);
 
-    var newValue = myAccount.statusesCount + 1;
+    var newValue = myAccount.statusesCount! + 1;
 
     var listened;
 
@@ -294,7 +294,7 @@ void main() {
   test('followingCount', () async {
     expect(myAccountBloc.followingCount, myAccount.followingCount);
 
-    var newValue = myAccount.followingCount + 1;
+    var newValue = myAccount.followingCount! + 1;
 
     var listened;
 
@@ -314,7 +314,7 @@ void main() {
   test('followersCount', () async {
     expect(myAccountBloc.followersCount, myAccount.followersCount);
 
-    var newValue = myAccount.followersCount + 1;
+    var newValue = myAccount.followersCount! + 1;
 
     var listened;
 
@@ -382,12 +382,12 @@ void main() {
     await subscription.cancel();
 
     var newEmojis = [
-      PleromaApiEmoji(
+      UnifediApiEmoji(
         url: 'url',
         staticUrl: 'staticUrl',
         visibleInPicker: null,
-        shortcode: null,
-        category: null,
+        name: 'asd',
+        tags: null,
       ),
     ];
 
@@ -429,9 +429,9 @@ void main() {
   });
 
   test('refreshFromNetwork', () async {
-    AccountTestHelper.expectAccount(myAccountBloc.account, myAccount);
+    AccountMockHelper.expectAccount(myAccountBloc.account, myAccount);
 
-    var newValue = await MyAccountTestHelper.createTestMyAccount(
+    var newValue = await MyAccountMockHelper.createTestMyAccount(
       seed: 'seed2',
       remoteId: myAccount.remoteId,
     );
@@ -443,17 +443,17 @@ void main() {
     });
 
     await Future.delayed(Duration(milliseconds: 1));
-    AccountTestHelper.expectAccount(listened, myAccount);
+    AccountMockHelper.expectAccount(listened, myAccount);
 
-    when(pleromaMyAccountServiceMock.verifyCredentials()).thenAnswer(
-      (_) async => newValue.pleromaAccount,
+    when(unifediApiMyAccountServiceMock.verifyCredentials()).thenAnswer(
+      (_) async => newValue.unifediApiAccount,
     );
 
     await myAccountBloc.refreshFromNetwork(isNeedPreFetchRelationship: false);
 
     await Future.delayed(Duration(milliseconds: 1));
 
-    AccountTestHelper.expectAccount(myAccountBloc.account, newValue);
+    AccountMockHelper.expectAccount(myAccountBloc.account, newValue);
     await subscription.cancel();
   });
 
@@ -500,17 +500,17 @@ void main() {
   });
 
   test('updateMyAccountByRemote', () async {
-    AccountTestHelper.expectAccount(myAccountBloc.account, myAccount);
+    AccountMockHelper.expectAccount(myAccountBloc.account, myAccount);
 
-    var newValue = await MyAccountTestHelper.createTestMyAccount(
+    var newValue = await MyAccountMockHelper.createTestMyAccount(
       seed: 'seed2',
       remoteId: myAccount.remoteId,
     );
     await myAccountBloc
-        .updateMyAccountByMyPleromaAccount(newValue.pleromaAccount);
+        .updateMyAccountByMyUnifediApiAccount(newValue.unifediApiAccount);
 
     await Future.delayed(Duration(milliseconds: 1));
-    AccountTestHelper.expectAccount(myAccountBloc.account, newValue);
+    AccountMockHelper.expectAccount(myAccountBloc.account, newValue);
   });
 
   test('checkAccountIsMe', () async {
@@ -521,7 +521,7 @@ void main() {
       false,
     );
     expect(
-      myAccountBloc.checkAccountIsMe((await AccountTestHelper.createTestAccount(
+      myAccountBloc.checkAccountIsMe((await AccountMockHelper.createTestAccount(
         seed: 'seed3',
         remoteId: myAccount.remoteId,
       ))),
@@ -531,8 +531,8 @@ void main() {
 
   test('checkIsStatusFromMe', () async {
     var dbAccount =
-        await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed3');
-    var dbStatus = await StatusDatabaseTestHelper.createTestDbStatus(
+        await AccountDatabaseMockHelper.createTestDbAccount(seed: 'seed3');
+    var dbStatus = await StatusDatabaseMockHelper.createTestDbStatus(
       seed: 'seed4',
       dbAccount: dbAccount,
     );

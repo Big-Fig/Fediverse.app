@@ -1,37 +1,37 @@
 import 'package:fedi/app/notification/tab/notification_tab_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class NotificationTabExcludeHelper {
-  static List<PleromaApiNotificationType> mapTabToExcludeTypes({
+  static List<UnifediApiNotificationType> mapTabToExcludeTypes({
     required NotificationTab tab,
   }) {
-    List<PleromaApiNotificationType> excludeTypes;
+    List<UnifediApiNotificationType> excludeTypes;
 
     switch (tab) {
       case NotificationTab.all:
         excludeTypes = [
-          PleromaApiNotificationType.pleromaChatMention,
+          UnifediApiNotificationType.chatMentionValue,
         ];
         break;
       case NotificationTab.mentions:
-        excludeTypes = PleromaApiNotificationType.values.valuesWithoutSelected([
-          PleromaApiNotificationType.mention,
+        excludeTypes = UnifediApiNotificationType.values.valuesWithoutSelected([
+          UnifediApiNotificationType.mention,
         ]);
         break;
       case NotificationTab.reblogs:
-        excludeTypes = PleromaApiNotificationType.values.valuesWithoutSelected([
-          PleromaApiNotificationType.reblog,
+        excludeTypes = UnifediApiNotificationType.values.valuesWithoutSelected([
+          UnifediApiNotificationType.reblog,
         ]);
         break;
       case NotificationTab.favourites:
-        excludeTypes = PleromaApiNotificationType.values.valuesWithoutSelected([
-          PleromaApiNotificationType.favourite,
+        excludeTypes = UnifediApiNotificationType.values.valuesWithoutSelected([
+          UnifediApiNotificationType.favouriteValue,
         ]);
         break;
       case NotificationTab.follows:
-        excludeTypes = PleromaApiNotificationType.values.valuesWithoutSelected([
-          PleromaApiNotificationType.follow,
-          PleromaApiNotificationType.followRequest,
+        excludeTypes = UnifediApiNotificationType.values.valuesWithoutSelected([
+          UnifediApiNotificationType.followValue,
+          UnifediApiNotificationType.followRequestValue,
         ]);
         break;
     }

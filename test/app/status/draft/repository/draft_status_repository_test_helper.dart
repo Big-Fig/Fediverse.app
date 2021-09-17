@@ -3,7 +3,7 @@ import 'package:fedi/app/status/draft/repository/draft_status_repository_impl.da
 import 'package:flutter_test/flutter_test.dart';
 import 'package:moor/moor.dart';
 
-class DraftStatusRepositoryTestHelper {
+class DraftStatusRepositoryMockHelper {
   static Future<DbDraftStatus> insertDbDraftStatus(
     DraftStatusRepository draftStatusRepository,
     DbDraftStatus draftStatusData, {

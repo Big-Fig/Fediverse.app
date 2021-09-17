@@ -3,7 +3,7 @@ import 'package:fedi/app/status/visibility/form/single_from_list/status_visibili
 import 'package:fedi/app/status/visibility/status_visibility_icon_widget.dart';
 import 'package:fedi/app/status/visibility/status_visibility_title_widget.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/cupertino.dart';
 
 class StatusVisibilitySelectSingleFromListValueFormFieldRowWidget
@@ -12,7 +12,7 @@ class StatusVisibilitySelectSingleFromListValueFormFieldRowWidget
   Widget build(BuildContext context) =>
       StatusVisibilitySelectSingleFromListValueFormFieldBlocProxyProvider(
         child:
-            SingleSelectFromListValueFormFieldRowWidget<PleromaApiVisibility>(
+            SingleSelectFromListValueFormFieldRowWidget<UnifediApiVisibility>(
           label: S
               .of(context)
               .app_status_post_settings_field_defaultVisibility_label,

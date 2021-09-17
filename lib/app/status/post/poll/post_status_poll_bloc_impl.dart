@@ -11,11 +11,11 @@ import 'package:fedi/form/form_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:fedi/form/group/one_type/one_type_form_group_bloc.dart';
 import 'package:fedi/form/group/one_type/one_type_form_group_bloc_impl.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
   static DurationDateTimeValueFormFieldBloc createDurationDateTimeLengthBloc(
-    PleromaApiInstancePollLimits pollLimit,
+    UnifediApiInstancePollLimits pollLimit,
   ) {
     var pollMinimumExpiration = pollLimit.minExpirationDurationOrDefault;
 
@@ -23,7 +23,7 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
 
     return DurationDateTimeValueFormFieldBloc(
       originValue: DurationDateTime(
-        duration: PleromaApiInstancePollLimits.defaultPollExpiration,
+        duration: UnifediApiInstancePollLimits.defaultPollExpiration,
         dateTime: null,
       ),
       minDuration: pollMinimumExpiration,
@@ -33,7 +33,7 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
     );
   }
 
-  final PleromaApiInstancePollLimits pollLimits;
+  final UnifediApiInstancePollLimits pollLimits;
 
   int get pollMaximumOptionsCount => pollLimits.maxOptionsOrDefault;
 

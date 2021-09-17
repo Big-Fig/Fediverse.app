@@ -8,18 +8,18 @@ import 'ui_settings_model_test_helper.dart';
 
 void main() {
   test('equal & hashcode & toString', () async {
-    ObjTestHelper.testEqualsHashcodeToString(
+    ObjMockHelper.testEqualsHashcodeToString(
       ({required String seed}) =>
-          UiSettingsModelTestHelper.createTestUiSettings(
+          UiSettingsModelMockHelper.createTestUiSettings(
         seed: seed,
       ),
     );
   });
 
   test('toJson & fromJson', () async {
-    JsonTestHelper.testFromJsonToJson(
+    JsonMockHelper.testFromJsonToJson(
       ({required String seed}) =>
-          UiSettingsModelTestHelper.createTestUiSettings(
+          UiSettingsModelMockHelper.createTestUiSettings(
         seed: seed,
       ),
       UiSettings.fromJson,
@@ -27,19 +27,19 @@ void main() {
   });
 
   test('hive save&load', () async {
-    await HiveTestHelper.testHiveSaveAndLoad(
+    await HiveMockHelper.testHiveSaveAndLoad(
       ({required String seed}) =>
-          UiSettingsModelTestHelper.createTestUiSettings(
+          UiSettingsModelMockHelper.createTestUiSettings(
         seed: seed,
       ),
     );
   });
 
   test('copyWith', () async {
-    var obj1 = UiSettingsModelTestHelper.createTestUiSettings(
+    var obj1 = UiSettingsModelMockHelper.createTestUiSettings(
       seed: 'seed1',
     );
-    var obj2 = UiSettingsModelTestHelper.createTestUiSettings(
+    var obj2 = UiSettingsModelMockHelper.createTestUiSettings(
       seed: 'seed2',
     );
 
@@ -54,7 +54,7 @@ void main() {
   });
 
   test('clone', () async {
-    var obj1 = UiSettingsModelTestHelper.createTestUiSettings(
+    var obj1 = UiSettingsModelMockHelper.createTestUiSettings(
       seed: 'seed1',
     );
 
@@ -64,7 +64,7 @@ void main() {
   });
 
   test('hive adapter', () async {
-    HiveTestHelper.testAdapter(
+    HiveMockHelper.testAdapter(
       () => UiSettingsAdapter(),
     );
   });

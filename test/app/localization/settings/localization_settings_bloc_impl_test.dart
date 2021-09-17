@@ -59,7 +59,7 @@ void main() {
     );
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     var defaultValue =
         GlobalLocalizationSettingsLocalPreferenceBloc.defaultValue;
@@ -83,13 +83,13 @@ void main() {
     );
 
     var testLocalizationLocale =
-        LocalizationModelTestHelper.createTestLocalizationLocale(seed: 'seed');
+        LocalizationModelMockHelper.createTestLocalizationLocale(seed: 'seed');
 
     await localizationSettingsBloc
         .changeLocalizationLocale(testLocalizationLocale);
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(
       listened?.localizationLocale,
@@ -115,7 +115,7 @@ void main() {
         .changeLocalizationLocale(nullLocalizationLocale);
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(
       listened?.localizationLocale,

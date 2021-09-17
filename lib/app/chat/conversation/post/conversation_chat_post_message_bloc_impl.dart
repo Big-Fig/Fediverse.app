@@ -8,7 +8,7 @@ import 'package:fedi/app/status/post/settings/post_status_settings_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -17,30 +17,30 @@ class ConversationChatPostMessageBloc extends PostStatusBloc {
 
   ConversationChatPostMessageBloc({
     required this.conversationChatBloc,
-    required IPleromaApiAuthStatusService pleromaAuthStatusService,
+    required IUnifediApiStatusService unifediApiStatusService,
     required IStatusRepository statusRepository,
     required IScheduledStatusRepository scheduledStatusRepository,
-    required IPleromaApiMediaAttachmentService pleromaMediaAttachmentService,
+    required IUnifediApiMediaAttachmentService unifediApiMediaAttachmentService,
     required int? maximumMessageLength,
-    required PleromaApiInstancePollLimits? pleromaInstancePollLimits,
+    required UnifediApiInstancePollLimits? pollLimits,
     required int? maximumFileSizeInBytes,
     required bool markMediaAsNsfwOnAttach,
     required String? language,
   }) : super(
           isExpirePossible: false,
-          pleromaAuthStatusService: pleromaAuthStatusService,
+          unifediApiStatusService: unifediApiStatusService,
           statusRepository: statusRepository,
           scheduledStatusRepository: scheduledStatusRepository,
-          pleromaMediaAttachmentService: pleromaMediaAttachmentService,
+          unifediApiMediaAttachmentService: unifediApiMediaAttachmentService,
           initialData: PostStatusBloc.defaultInitData.copyWith(
-            visibilityString: PleromaApiVisibility.private.toJsonValue(),
+            visibilityString: UnifediApiVisibility.private.toJsonValue(),
             language: language,
             inReplyToConversationId: conversationChatBloc.conversation.remoteId,
           ),
           // we dont need mentions if we have inReplyToConversationId
           initialAccountsToMention: null,
           maximumMessageLength: maximumMessageLength,
-          pleromaInstancePollLimits: pleromaInstancePollLimits,
+          pollLimits: pollLimits,
           maximumFileSizeInBytes: maximumFileSizeInBytes,
           markMediaAsNsfwOnAttach: markMediaAsNsfwOnAttach,
           unfocusOnClear: false,
@@ -55,7 +55,7 @@ class ConversationChatPostMessageBloc extends PostStatusBloc {
         .info!;
 
     return ConversationChatPostMessageBloc(
-      pleromaAuthStatusService: Provider.of<IPleromaApiAuthStatusService>(
+      unifediApiStatusService: Provider.of<IUnifediApiStatusService>(
         context,
         listen: false,
       ),
@@ -63,14 +63,14 @@ class ConversationChatPostMessageBloc extends PostStatusBloc {
         context,
         listen: false,
       ),
-      pleromaMediaAttachmentService:
-          Provider.of<IPleromaApiMediaAttachmentService>(
+      unifediApiMediaAttachmentService:
+          Provider.of<IUnifediApiMediaAttachmentService>(
         context,
         listen: false,
       ),
-      maximumMessageLength: info.maxTootChars,
-      pleromaInstancePollLimits: info.pollLimits,
-      maximumFileSizeInBytes: info.uploadLimit,
+      maximumMessageLength: info.limits?.status?.maxTootChars,
+      pollLimits: info.limits?.poll,
+      maximumFileSizeInBytes: info.limits?.media.uploadLimit,
       markMediaAsNsfwOnAttach: IPostStatusSettingsBloc.of(
         context,
         listen: false,

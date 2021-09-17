@@ -21,18 +21,19 @@ import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
-import 'package:base_fediverse_api/base_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 
 class LocalInstancePublicTimelinePageBloc extends InstancePublicTimelinePageBloc
     implements ILocalInstancePublicTimelinePageBloc {
   @override
-  final IPleromaApiTimelineService pleromaApiTimelineService;
+  final IUnifediApiTimelineService unifediApiTimelineService;
 
-  final IPleromaApiAuthTimelineService pleromaApiAuthTimelineService;
-  final IPleromaApiAccountService pleromaApiAccountService;
+  final IUnifediApiTimelineService unifediApiTimelineService;
+  final IUnifediApiAccountService unifediApiAccountService;
   final IStatusRepository statusRepository;
   final IFilterRepository filterRepository;
   final ICurrentAuthInstanceBloc currentAuthInstanceBloc;
@@ -56,19 +57,18 @@ class LocalInstancePublicTimelinePageBloc extends InstancePublicTimelinePageBloc
 
   LocalInstancePublicTimelinePageBloc({
     required this.localPreferencesService,
-    required this.pleromaApiTimelineService,
-    required this.pleromaApiAuthTimelineService,
-    required this.pleromaApiAccountService,
+    required this.unifediApiTimelineService,
+    required this.unifediApiAccountService,
     required this.statusRepository,
     required this.filterRepository,
     required this.currentAuthInstanceBloc,
     required this.webSocketsHandlerManagerBloc,
     required this.paginationSettingsBloc,
     required this.myAccountBloc,
-    required IPleromaApiInstance pleromaApiInstance,
+    required IUnifediApiInstance unifediApiInstance,
   }) : super(
-          instanceUri: pleromaApiTimelineService.restService.baseUri,
-          pleromaApiInstance: pleromaApiInstance,
+          instanceUri: unifediApiTimelineService.restService.baseUri,
+          unifediApiInstance: unifediApiInstance,
         );
 
   @override
@@ -77,19 +77,19 @@ class LocalInstancePublicTimelinePageBloc extends InstancePublicTimelinePageBloc
 
   static LocalInstancePublicTimelinePageBloc createFromContext(
     BuildContext context, {
-    required IPleromaApiInstance pleromaApiInstance,
+    required IUnifediApiInstance unifediApiInstance,
   }) {
-    var pleromaApiTimelineService =
-        Provider.of<IPleromaApiTimelineService>(context, listen: false);
+    var unifediApiTimelineService =
+        Provider.of<IUnifediApiTimelineService>(context, listen: false);
 
     return LocalInstancePublicTimelinePageBloc(
-      pleromaApiInstance: pleromaApiInstance,
-      pleromaApiTimelineService: pleromaApiTimelineService,
+      unifediApiInstance: unifediApiInstance,
+      unifediApiTimelineService: unifediApiTimelineService,
       localPreferencesService: ILocalPreferencesService.of(
         context,
         listen: false,
       ),
-      pleromaApiAccountService: Provider.of<IPleromaApiAccountService>(
+      unifediApiAccountService: Provider.of<IUnifediApiAccountService>(
         context,
         listen: false,
       ),
@@ -109,11 +109,7 @@ class LocalInstancePublicTimelinePageBloc extends InstancePublicTimelinePageBloc
         context,
         listen: false,
       ),
-      pleromaApiAuthTimelineService:
-          Provider.of<IPleromaApiAuthTimelineService>(
-        context,
-        listen: false,
-      ),
+
       myAccountBloc: IMyAccountBloc.of(
         context,
         listen: false,
@@ -128,16 +124,16 @@ class LocalInstancePublicTimelinePageBloc extends InstancePublicTimelinePageBloc
   static Widget provideToContext(
     BuildContext context, {
     required Widget child,
-    required IPleromaApiInstance pleromaApiInstance,
+    required IUnifediApiInstance unifediApiInstance,
   }) {
-    return Provider<IPleromaApiInstance>.value(
-      value: pleromaApiInstance,
-      child: DisposableProxyProvider<IPleromaApiInstance,
+    return Provider<IUnifediApiInstance>.value(
+      value: unifediApiInstance,
+      child: DisposableProxyProvider<IUnifediApiInstance,
           ILocalInstancePublicTimelinePageBloc>(
-        update: (context, pleromaApiInstance, previous) =>
+        update: (context, unifediApiInstance, previous) =>
             LocalInstancePublicTimelinePageBloc.createFromContext(
           context,
-          pleromaApiInstance: pleromaApiInstance,
+          unifediApiInstance: unifediApiInstance,
         ),
         child: ProxyProvider<ILocalInstancePublicTimelinePageBloc,
             IInstancePublicTimelinePageBloc>(
@@ -161,22 +157,22 @@ class LocalInstancePublicTimelinePageBloc extends InstancePublicTimelinePageBloc
     timelineLocalPreferenceBloc =
         TimelineLocalPreferenceBloc.instancePublicTimeline(
       localPreferencesService,
-      pleromaApiInstance: pleromaApiInstance,
+      unifediApiInstance: unifediApiInstance,
     );
     await timelineLocalPreferenceBloc.performAsyncInit();
 
     addDisposable(timelineLocalPreferenceBloc);
 
     statusCachedListBloc = TimelineStatusCachedListBloc(
-      pleromaApiAccountService: pleromaApiAccountService,
-      pleromaApiAuthTimelineService: pleromaApiAuthTimelineService,
+      unifediApiAccountService: unifediApiAccountService,
+      unifediApiTimelineService: unifediApiTimelineService,
       statusRepository: statusRepository,
       filterRepository: filterRepository,
       currentInstanceBloc: currentAuthInstanceBloc,
       timelineLocalPreferenceBloc: timelineLocalPreferenceBloc,
       webSocketsHandlerManagerBloc: webSocketsHandlerManagerBloc,
       myAccountBloc: myAccountBloc,
-      webSocketsListenType: WebSocketsListenType.foreground,
+      handlerType: WebSocketsChannelHandlerType.foregroundValue,
     );
     await statusCachedListBloc.performAsyncInit();
     addDisposable(statusCachedListBloc);

@@ -1,8 +1,8 @@
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/filter/filter_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
-extension IPleromaFilterExtension on IPleromaApiFilter {
+extension IPleromaFilterExtension on IUnifediApiFilter {
   IFilter toDbFilterPopulatedWrapper() => DbFilterPopulatedWrapper(
         dbFilterPopulated: DbFilterPopulated(
           dbFilter: toDbFilter(),
@@ -21,8 +21,8 @@ extension IPleromaFilterExtension on IPleromaApiFilter {
 }
 
 extension IFilterExtension on IFilter {
-  PleromaApiFilter toPleromaFilter() {
-    return PleromaApiFilter(
+  UnifediApiFilter toPleromaFilter() {
+    return UnifediApiFilter(
       id: remoteId,
       phrase: phrase,
       context: context,

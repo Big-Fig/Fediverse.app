@@ -41,7 +41,7 @@ class RecentSelectAccountBloc extends DisposableOwner
             (account) => account.id == selectedAccount.remoteId,
           );
 
-          recentItems.add(selectedAccount.toPleromaApiAccount());
+          recentItems.add(selectedAccount.toUnifediApiAccount());
         }
 
         recentSelectAccountLocalPreferenceBloc.setValue(

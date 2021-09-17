@@ -7,7 +7,7 @@ import 'package:fedi/app/status/post/unsaved/post_status_unsaved_dialog.dart';
 import 'package:fedi/app/ui/button/icon/fedi_dismiss_icon_button.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -111,7 +111,7 @@ void goToNewPostStatusPageWithInitial(
   BuildContext context, {
   String? initialText,
   String? initialSubject,
-  List<PleromaApiMediaAttachment>? initialMediaAttachments,
+  List<UnifediApiMediaAttachment>? initialMediaAttachments,
 }) {
   Navigator.push(
     context,

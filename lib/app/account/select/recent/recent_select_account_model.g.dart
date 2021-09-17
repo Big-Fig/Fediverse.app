@@ -18,7 +18,7 @@ class RecentSelectAccountListAdapter
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return RecentSelectAccountList(
-      recentItems: (fields[0] as List?)?.cast<PleromaApiAccount>(),
+      recentItems: (fields[0] as List?)?.cast<UnifediApiAccount>(),
     );
   }
 
@@ -49,7 +49,7 @@ RecentSelectAccountList _$RecentSelectAccountListFromJson(
     Map<String, dynamic> json) {
   return RecentSelectAccountList(
     recentItems: (json['recentItems'] as List<dynamic>?)
-        ?.map((e) => PleromaApiAccount.fromJson(e as Map<String, dynamic>))
+        ?.map((e) => UnifediApiAccount.fromJson(e as Map<String, dynamic>))
         .toList(),
   );
 }

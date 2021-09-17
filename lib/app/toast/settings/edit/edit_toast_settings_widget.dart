@@ -30,14 +30,14 @@ class EditToastSettingsWidget extends StatelessWidget {
           _EditToastSettingsReblogFieldWidget(),
           _EditToastSettingsPollFieldWidget(),
           _EditToastSettingsPleromaMentionFieldWidget(),
-          _EditToastSettingsPleromaEmojiReactionFieldWidget(),
+          _EditToastSettingsEmojiReactionFieldWidget(),
         ],
       );
 }
 
-class _EditToastSettingsPleromaEmojiReactionFieldWidget
+class _EditToastSettingsEmojiReactionFieldWidget
     extends StatelessWidget {
-  const _EditToastSettingsPleromaEmojiReactionFieldWidget({
+  const _EditToastSettingsEmojiReactionFieldWidget({
     Key? key,
   }) : super(key: key);
 
@@ -46,7 +46,7 @@ class _EditToastSettingsPleromaEmojiReactionFieldWidget
     var editToastSettingsBloc = IEditToastSettingsBloc.of(context);
 
     return ProxyProvider<IEditToastSettingsBloc, IBoolValueFormFieldBloc>(
-      update: (context, value, previous) => value.pleromaEmojiReactionFieldBloc,
+      update: (context, value, previous) => value.emojiReactionFieldBloc,
       child: BoolValueFormFieldRowWidget(
         label:
             S.of(context).app_push_settings_field_pleroma_emojiReaction_label,
@@ -68,7 +68,7 @@ class _EditToastSettingsPleromaMentionFieldWidget extends StatelessWidget {
     var editToastSettingsBloc = IEditToastSettingsBloc.of(context);
 
     return ProxyProvider<IEditToastSettingsBloc, IBoolValueFormFieldBloc>(
-      update: (context, value, previous) => value.pleromaChatMentionFieldBloc,
+      update: (context, value, previous) => value.chatMentionFieldBloc,
       child: BoolValueFormFieldRowWidget(
         label: S.of(context).app_push_settings_field_pleroma_chat_label,
         descriptionOnDisabled: editToastSettingsBloc.isEnabled

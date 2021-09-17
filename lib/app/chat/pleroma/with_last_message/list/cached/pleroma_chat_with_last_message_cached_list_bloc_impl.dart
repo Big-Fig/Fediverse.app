@@ -3,7 +3,7 @@ import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository_model.d
 import 'package:fedi/app/chat/pleroma/with_last_message/list/cached/pleroma_chat_with_last_message_cached_list_bloc.dart';
 import 'package:fedi/app/chat/pleroma/with_last_message/pleroma_chat_with_last_message_model.dart';
 import 'package:fedi/app/chat/pleroma/with_last_message/repository/pleroma_chat_with_last_message_repository.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:logging/logging.dart';
 
@@ -12,7 +12,7 @@ var _logger =
 
 class PleromaChatWithLastMessageCachedListBloc
     extends IPleromaChatWithLastMessageCachedListBloc {
-  final IPleromaApiChatService pleromaChatService;
+  final IUnifediApiChatService pleromaChatService;
   final IPleromaChatRepository chatRepository;
   final IPleromaChatWithLastMessageRepository chatWithLastMessageRepository;
 
@@ -23,7 +23,7 @@ class PleromaChatWithLastMessageCachedListBloc
   });
 
   @override
-  IPleromaApi get pleromaApi => pleromaChatService;
+  IUnifediApiService get unifediApi => pleromaChatService;
 
   PleromaChatRepositoryFilters? get filters => null;
 
@@ -40,12 +40,12 @@ class PleromaChatWithLastMessageCachedListBloc
         '\t newerThan = $newerThan'
         '\t olderThan = $olderThan');
 
-    List<IPleromaApiChat> remoteChats;
+    List<IUnifediApiChat> remoteChats;
 
     remoteChats = await pleromaChatService.getChats(
-      pagination: PleromaApiPaginationRequest(
+      pagination: UnifediApiPagination(
         maxId: olderThan?.chat.remoteId,
-        sinceId: newerThan?.chat.remoteId,
+        minId: newerThan?.chat.remoteId,
         limit: limit,
       ),
     );

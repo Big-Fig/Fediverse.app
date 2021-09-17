@@ -5,9 +5,9 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-class EditMyAccountPleromaAcceptsChatMessagesFieldWidget
+class EditMyAccountacceptsChatMessagesFieldWidget
     extends StatelessWidget {
-  const EditMyAccountPleromaAcceptsChatMessagesFieldWidget({
+  const EditMyAccountacceptsChatMessagesFieldWidget({
     Key? key,
   }) : super(key: key);
 

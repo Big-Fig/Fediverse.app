@@ -12,8 +12,8 @@ import 'package:fedi/form/field/value/string/string_value_form_field_bloc_impl.d
 import 'package:fedi/form/field/value/string/validation/string_value_form_field_non_empty_validation.dart';
 import 'package:fedi/form/form_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
-import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+
+import 'package:unifedi_api/unifedi_api.dart';
 
 final _wholeWordRegex = RegExp(r'^[a-zA-Z0-9_]+$');
 
@@ -52,7 +52,7 @@ class FilterFormBloc extends FormBloc implements IFilterFormBloc {
         ),
         contextField = FilterContextMultiSelectFromListValueFormFieldBloc(
           originValue:
-              initialValue?.contextAsMastodonApiFilterContextType ?? [],
+              initialValue?.contextAsUnifediApiFilterContextType ?? [],
           validators: [
             MultiSelectFromListValueFormFieldNonNullAndNonEmptyValidationError
                 .createValidator(),
@@ -108,8 +108,8 @@ class FilterFormBloc extends FormBloc implements IFilterFormBloc {
       ];
 
   @override
-  IPostPleromaApiFilter calculateFormValue() {
-    return PostPleromaApiFilter(
+  IPostUnifediApiFilter calculateFormValue() {
+    return PostUnifediApiFilter(
       phrase: phraseField.currentValue,
       irreversible: irreversibleField.currentValue ?? false,
       wholeWord: wholeWordField.currentValue ?? false,
@@ -117,10 +117,10 @@ class FilterFormBloc extends FormBloc implements IFilterFormBloc {
       context: contextField.currentValue
           .where(
             (contextType) =>
-                contextType != MastodonApiFilterContextType.unknown,
+                contextType != UnifediApiFilterContextType.unknown,
           )
           .map(
-            (contextType) => contextType.toJsonValue(),
+            (contextType) => contextType.stringValue,
           )
           .toList(),
     );

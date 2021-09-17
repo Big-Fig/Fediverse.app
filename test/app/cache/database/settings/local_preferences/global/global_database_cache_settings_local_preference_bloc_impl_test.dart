@@ -9,7 +9,7 @@ import '../../database_cache_settings_model_test_helper.dart';
 
 void main() {
   test('save & load', () async {
-    await LocalPreferencesTestHelper.testSaveAndLoad<DatabaseCacheSettings,
+    await LocalPreferencesMockHelper.testSaveAndLoad<DatabaseCacheSettings,
         GlobalDatabaseCacheSettingsLocalPreferenceBloc>(
       defaultValue: GlobalDatabaseCacheSettingsLocalPreferenceBloc.defaultValue,
       blocCreator: (localPreferencesService) =>
@@ -17,7 +17,7 @@ void main() {
         localPreferencesService,
       ),
       testObjectCreator: ({required String seed}) =>
-          DatabaseCacheSettingsModelTestHelper.createTestDatabaseCacheSettings(
+          DatabaseCacheSettingsModelMockHelper.createTestDatabaseCacheSettings(
         seed: seed,
       ),
     );

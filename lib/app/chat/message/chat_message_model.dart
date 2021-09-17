@@ -1,7 +1,7 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/emoji/text/emoji_text_model.dart';
 import 'package:fedi/app/pending/pending_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 abstract class IChatMessage {
   int? get localId;
@@ -16,13 +16,13 @@ abstract class IChatMessage {
 
   String? get content;
 
-  List<IPleromaApiMediaAttachment>? get mediaAttachments;
+  List<IUnifediApiMediaAttachment>? get mediaAttachments;
 
   DateTime get createdAt;
 
-  List<IPleromaApiEmoji>? get emojis;
+  List<IUnifediApiEmoji>? get emojis;
 
-  IPleromaApiCard? get card;
+  IUnifediApiCard? get card;
 
   PendingState? get pendingState;
 
@@ -41,9 +41,9 @@ abstract class IChatMessage {
     IAccount? account,
     String? content,
     DateTime? createdAt,
-    List<IPleromaApiMediaAttachment>? mediaAttachments,
-    List<PleromaApiEmoji>? emojis,
-    IPleromaApiCard? card,
+    List<IUnifediApiMediaAttachment>? mediaAttachments,
+    List<UnifediApiEmoji>? emojis,
+    IUnifediApiCard? card,
     PendingState? pendingState,
     String? oldPendingRemoteId,
     bool? deleted,

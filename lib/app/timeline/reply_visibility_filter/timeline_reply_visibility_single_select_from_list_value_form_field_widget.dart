@@ -1,8 +1,8 @@
 import 'package:fedi/app/form/field/value/select_from_list/single/single_select_from_list_value_form_field_row_widget.dart';
 import 'package:fedi/app/timeline/reply_visibility_filter/timeline_reply_visibility_single_select_from_list_value_form_field_bloc_proxy_provider.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class TimelineReplyVisibilityFilterSelectSingleFromListValueFormFieldWidget
     extends StatelessWidget {
@@ -20,7 +20,7 @@ class TimelineReplyVisibilityFilterSelectSingleFromListValueFormFieldWidget
   Widget build(BuildContext context) =>
       TimelineReplyVisibilityFilterSelectSingleFromListValueFormFieldBlocProxyProvider(
         child: SingleSelectFromListValueFormFieldRowWidget<
-            PleromaApiReplyVisibilityFilter?>(
+            UnifediApiReplyVisibilityFilter?>(
           label: label ??
               S
                   .of(context)
@@ -38,18 +38,10 @@ class TimelineReplyVisibilityFilterSelectSingleFromListValueFormFieldWidget
 
 String mapTimelineTypeToLabel(
   BuildContext context,
-  PleromaApiReplyVisibilityFilter? pleromaReplyVisibilityFilter,
-) {
-  if (pleromaReplyVisibilityFilter == null) {
-    return S.of(context).app_timeline_settings_replyVisibilityFilter_field_null;
-  }
-
-  switch (pleromaReplyVisibilityFilter) {
-    case PleromaApiReplyVisibilityFilter.self:
-      return S.of(context).app_timeline_settings_replyVisibilityFilter_self;
-    case PleromaApiReplyVisibilityFilter.following:
-      return S
-          .of(context)
-          .app_timeline_settings_replyVisibilityFilter_following;
-  }
-}
+  UnifediApiReplyVisibilityFilter? unifediApiReplyVisibilityFilter,
+) => unifediApiReplyVisibilityFilter?.map(
+    following: (_) => S
+        .of(context)
+        .app_timeline_settings_replyVisibilityFilter_following,
+    self: (_) => S.of(context).app_timeline_settings_replyVisibilityFilter_self,
+  ) ?? S.of(context).app_timeline_settings_replyVisibilityFilter_field_null;

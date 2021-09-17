@@ -8,7 +8,7 @@ import 'package:fedi/app/status/scheduled/scheduled_status_model.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:provider/provider.dart';
 
 var _logger = Logger('scheduled_status_cached_list_bloc_impl.dart');
@@ -18,7 +18,7 @@ const _excludeScheduleAtExpired = true;
 
 class ScheduledStatusCachedListBloc extends IScheduledStatusCachedListBloc {
   final IScheduledStatusRepository scheduledStatusRepository;
-  final IPleromaApiScheduledStatusService pleromaScheduledStatusService;
+  final IUnifediApiStatusService pleromaScheduledStatusService;
 
   ScheduledStatusRepositoryFilters get _scheduledStatusRepositoryFilters =>
       ScheduledStatusRepositoryFilters(
@@ -32,14 +32,14 @@ class ScheduledStatusCachedListBloc extends IScheduledStatusCachedListBloc {
   }) : super();
 
   @override
-  IPleromaApi get pleromaApi => pleromaScheduledStatusService;
+  IUnifediApiService get unifediApi => pleromaScheduledStatusService;
 
   static ScheduledStatusCachedListBloc createFromContext(
     BuildContext context,
   ) =>
       ScheduledStatusCachedListBloc(
         pleromaScheduledStatusService:
-            Provider.of<IPleromaApiScheduledStatusService>(
+            Provider.of<IUnifediApiStatusService>(
           context,
           listen: false,
         ),
@@ -109,9 +109,9 @@ class ScheduledStatusCachedListBloc extends IScheduledStatusCachedListBloc {
 
     var remoteStatuses =
         await pleromaScheduledStatusService.getScheduledStatuses(
-      pagination: PleromaApiPaginationRequest(
+      pagination: UnifediApiPagination(
         limit: limit,
-        sinceId: newerThan?.remoteId,
+        minId: newerThan?.remoteId,
         maxId: olderThan?.remoteId,
       ),
     );

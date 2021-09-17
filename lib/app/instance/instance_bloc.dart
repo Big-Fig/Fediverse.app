@@ -1,14 +1,17 @@
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 abstract class IInstanceBloc implements IDisposable {
   static IInstanceBloc of(
     BuildContext context, {
     bool listen = true,
   }) =>
-      Provider.of<IInstanceBloc>(context, listen: listen);
+      Provider.of<IInstanceBloc>(
+        context,
+        listen: listen,
+      );
 
   bool get isPleroma;
 
@@ -16,9 +19,9 @@ abstract class IInstanceBloc implements IDisposable {
 
   Uri get instanceUri;
 
-  IPleromaApiInstance? get instance;
+  IUnifediApiInstance? get instance;
 
-  Stream<IPleromaApiInstance?> get instanceStream;
+  Stream<IUnifediApiInstance?> get instanceStream;
 }
 
 extension IInstanceBlocExtension on IInstanceBloc {

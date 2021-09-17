@@ -2,7 +2,7 @@ import 'package:fedi/app/account/my/featured_hashtag/my_account_featured_hashtag
 import 'package:fedi/app/account/my/featured_hashtag/my_account_featured_hashtag_model.dart';
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
@@ -11,11 +11,11 @@ class MyAccountFeaturedHashtagBloc extends DisposableOwner
     implements IMyAccountFeaturedHashtagBloc {
   @override
   final IMyAccountFeaturedHashtag featuredHashtag;
-  final IPleromaApiFeaturedTagsService pleromaApiFeaturedTagsService;
+  final IUnifediApiMyAccountService unifediApiMyAccountService;
 
   MyAccountFeaturedHashtagBloc({
     required this.featuredHashtag,
-    required this.pleromaApiFeaturedTagsService,
+    required this.unifediApiMyAccountService,
   }) {
     unFeaturedSubject.disposeWith(this);
   }
@@ -32,8 +32,8 @@ class MyAccountFeaturedHashtagBloc extends DisposableOwner
   Future unFeature() async {
     assert(!unFeatured);
 
-    await pleromaApiFeaturedTagsService.unFeatureTag(
-      id: featuredHashtag.remoteId,
+    await unifediApiMyAccountService.unfeatureMyAccountTag(
+      tagId: featuredHashtag.remoteId!,
     );
 
     unFeaturedSubject.add(true);
@@ -43,7 +43,7 @@ class MyAccountFeaturedHashtagBloc extends DisposableOwner
   Future featureAgain() async {
     assert(unFeatured);
 
-    await pleromaApiFeaturedTagsService.featureTag(
+    await unifediApiMyAccountService.featureMyAccountTag(
       name: featuredHashtag.name,
     );
 
@@ -54,14 +54,14 @@ class MyAccountFeaturedHashtagBloc extends DisposableOwner
     BuildContext context, {
     required IMyAccountFeaturedHashtag featuredHashtag,
   }) {
-    var pleromaApiFeaturedTagsService =
-        Provider.of<IPleromaApiFeaturedTagsService>(
+    var unifediApiMyAccountService =
+        Provider.of<IUnifediApiMyAccountService>(
       context,
       listen: false,
     );
 
     return MyAccountFeaturedHashtagBloc(
-      pleromaApiFeaturedTagsService: pleromaApiFeaturedTagsService,
+      unifediApiMyAccountService: unifediApiMyAccountService,
       featuredHashtag: featuredHashtag,
     );
   }

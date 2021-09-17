@@ -24,10 +24,10 @@ class TimelineSettingsAdapter extends TypeAdapter<TimelineSettings> {
       onlyLocal: fields[5] as bool?,
       withMuted: fields[6] as bool?,
       excludeVisibilitiesStrings: (fields[7] as List?)?.cast<String>(),
-      onlyInRemoteList: fields[9] as PleromaApiList?,
+      onlyInRemoteList: fields[9] as UnifediApiList?,
       withRemoteHashtag: fields[10] as String?,
       replyVisibilityFilterString: fields[11] as String?,
-      onlyFromRemoteAccount: fields[13] as PleromaApiAccount?,
+      onlyFromRemoteAccount: fields[13] as UnifediApiAccount?,
       onlyPinned: fields[14] as bool?,
       excludeReblogs: fields[15] as bool?,
       webSocketsUpdates: fields[16] as bool?,
@@ -100,13 +100,13 @@ TimelineSettings _$TimelineSettingsFromJson(Map<String, dynamic> json) {
             .toList(),
     onlyInRemoteList: json['only_in_list'] == null
         ? null
-        : PleromaApiList.fromJson(json['only_in_list'] as Map<String, dynamic>),
+        : UnifediApiList.fromJson(json['only_in_list'] as Map<String, dynamic>),
     withRemoteHashtag: json['with_remote_hashtag'] as String?,
     replyVisibilityFilterString:
         json['reply_visibility_filter_string'] as String?,
     onlyFromRemoteAccount: json['only_from_remote_account'] == null
         ? null
-        : PleromaApiAccount.fromJson(
+        : UnifediApiAccount.fromJson(
             json['only_from_remote_account'] as Map<String, dynamic>),
     onlyPinned: json['only_pinned'] as bool?,
     excludeReblogs: json['exclude_reblogs'] as bool?,

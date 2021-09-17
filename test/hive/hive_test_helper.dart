@@ -1,5 +1,5 @@
 import 'package:fedi/app/hive/hive_service_impl.dart';
-import 'package:fedi/json/json_model.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/hive.dart';
 import 'package:hive/src/backend/storage_backend.dart';
@@ -34,7 +34,7 @@ BoxImpl _getBox({
 @GenerateMocks([], customMocks: [
   MockSpec<StorageBackend>(returnNullOnMissingStub: true),
 ])
-class HiveTestHelper {
+class HiveMockHelper {
   static void testAdapter<T>(T Function() adapterCreator) {
     var adapter1 = adapterCreator();
     var adapter2 = adapterCreator();
@@ -43,7 +43,7 @@ class HiveTestHelper {
     expect(adapter1.hashCode == adapter2.hashCode, true);
   }
 
-  static Future testHiveSaveAndLoad<T extends IJsonObject>(
+  static Future testHiveSaveAndLoad<T extends IJsonObj>(
     T Function({
       required String seed,
     })

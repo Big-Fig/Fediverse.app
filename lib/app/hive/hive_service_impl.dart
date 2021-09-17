@@ -31,8 +31,8 @@ import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/emoji_picker/item/code/custom_emoji_picker_code_item_model.dart';
 import 'package:fedi/emoji_picker/item/image_url/custom_emoji_picker_image_url_item_model.dart';
 import 'package:fedi/localization/localization_model.dart';
-import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:fedi/push/push_model.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
@@ -47,36 +47,36 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
 
   // ignore: long-method
   static void registerAdapters() {
-    //  PleromaApiFieldAdapter
+    //  UnifediApiFieldAdapter
     var adaptersRegistered = Hive.isAdapterRegistered(5);
     if (adaptersRegistered) {
       return;
     }
-    Hive.registerAdapter(PleromaApiFieldAdapter());
-    Hive.registerAdapter(PleromaApiEmojiAdapter());
-    Hive.registerAdapter(PleromaApiMyAccountPleromaPartAdapter());
+    Hive.registerAdapter(UnifediApiFieldAdapter());
+    Hive.registerAdapter(UnifediApiEmojiAdapter());
+    Hive.registerAdapter(UnifediApiMyAccountPleromaPartAdapter());
     Hive.registerAdapter(
-      PleromaApiMyAccountPleromaPartNotificationsSettingsAdapter(),
+      UnifediApiMyAccountNotificationsSettingsAdapter(),
     );
-    Hive.registerAdapter(PleromaApiAccountRelationshipAdapter());
-    Hive.registerAdapter(PleromaApiMyAccountSourceAdapter());
-    Hive.registerAdapter(PleromaApiMyAccountSourcePleromaPartAdapter());
+    Hive.registerAdapter(UnifediApiAccountRelationshipAdapter());
+    Hive.registerAdapter(UnifediApiMyAccountSourceAdapter());
+    Hive.registerAdapter(UnifediApiMyAccountSourcePleromaPartAdapter());
     Hive.registerAdapter(PushSettingsAdapter());
     Hive.registerAdapter(AuthInstanceListAdapter());
     Hive.registerAdapter(AuthInstanceAdapter());
-    Hive.registerAdapter(PleromaApiOAuthTokenAdapter());
-    Hive.registerAdapter(PleromaApiClientApplicationAdapter());
-    Hive.registerAdapter(PleromaMyAccountWrapperAdapter());
-    Hive.registerAdapter(PleromaApiMyAccountAdapter());
+    Hive.registerAdapter(UnifediApiOAuthTokenAdapter());
+    Hive.registerAdapter(UnifediApiClientApplicationAdapter());
+    Hive.registerAdapter(UnifediApiMyAccountWrapperAdapter());
+    Hive.registerAdapter(UnifediApiMyAccountAdapter());
     Hive.registerAdapter(NotificationsPushHandlerUnhandledListAdapter());
-    Hive.registerAdapter(PleromaApiPushMessageBodyAdapter());
-    Hive.registerAdapter(PleromaApiInstancePleromaPartAdapter());
-    Hive.registerAdapter(PleromaApiInstanceAdapter());
-    Hive.registerAdapter(PleromaApiInstancePleromaPartMetadataAdapter());
-    Hive.registerAdapter(MastodonApiInstanceStatsAdapter());
-    Hive.registerAdapter(MastodonApiUrlsAdapter());
-    Hive.registerAdapter(PleromaApiInstancePollLimitsAdapter());
-    Hive.registerAdapter(PleromaApiAccountAdapter());
+    Hive.registerAdapter(UnifediApiPushMessageBodyAdapter());
+    Hive.registerAdapter(UnifediApiInstancePleromaPartAdapter());
+    Hive.registerAdapter(UnifediApiInstanceAdapter());
+    Hive.registerAdapter(UnifediApiInstancePleromaPartMetadataAdapter());
+    Hive.registerAdapter(UnifediApiInstanceStatsAdapter());
+    Hive.registerAdapter(UnifediApiInstanceUrlsAdapter());
+    Hive.registerAdapter(UnifediApiInstancePollLimitsAdapter());
+    Hive.registerAdapter(UnifediApiAccountAdapter());
     Hive.registerAdapter(RecentSearchListAdapter());
     Hive.registerAdapter(NotificationsPushHandlerMessageAdapter());
     Hive.registerAdapter(PushMessageAdapter());
@@ -85,16 +85,16 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
     Hive.registerAdapter(EmojiPickerRecentCategoryItemsListAdapter());
     Hive.registerAdapter(CustomEmojiPickerCodeItemAdapter());
     Hive.registerAdapter(
-      PleromaApiInstancePleromaPartMetadataFieldLimitsAdapter(),
+      UnifediApiInstancePleromaPartMetadataFieldLimitsAdapter(),
     );
     Hive.registerAdapter(PushNotificationAdapter());
-    Hive.registerAdapter(PleromaApiTagAdapter());
-    Hive.registerAdapter(PleromaApiAccountPleromaPartAdapter());
-    Hive.registerAdapter(PleromaApiCustomEmojiAdapter());
-    Hive.registerAdapter(PleromaApiTagHistoryAdapter());
+    Hive.registerAdapter(UnifediApiTagAdapter());
+    Hive.registerAdapter(UnifediApiAccountPleromaPartAdapter());
+    Hive.registerAdapter(UnifediApiCustomEmojiAdapter());
+    Hive.registerAdapter(UnifediApiTagHistoryAdapter());
     Hive.registerAdapter(TimelineAdapter());
     Hive.registerAdapter(TimelineSettingsAdapter());
-    Hive.registerAdapter(PleromaApiListAdapter());
+    Hive.registerAdapter(UnifediApiListAdapter());
     Hive.registerAdapter(TimelinesHomeTabStorageAdapter());
     Hive.registerAdapter(LocalizationLocaleAdapter());
     Hive.registerAdapter(PostStatusSettingsAdapter());
@@ -111,18 +111,18 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
     Hive.registerAdapter(DatabaseCacheSettingsAdapter());
     Hive.registerAdapter(FilesCacheSettingsAdapter());
     Hive.registerAdapter(
-      PleromaApiInstancePleromaPartMetadataFederationAdapter(),
+      UnifediApiInstancePleromaPartMetadataFederationAdapter(),
     );
     Hive.registerAdapter(
-      PleromaApiInstancePleromaPartMetadataFederationMfrObjectAgeAdapter(),
+      UnifediApiInstancePleromaPartMetadataFederationMfrObjectAgeAdapter(),
     );
-    Hive.registerAdapter(PleromaApiFilterAdapter());
+    Hive.registerAdapter(UnifediApiFilterAdapter());
     Hive.registerAdapter(InstanceAnnouncementSettingsAdapter());
     Hive.registerAdapter(CrashReportingSettingsAdapter());
     Hive.registerAdapter(PushRelaySettingsAdapter());
-    Hive.registerAdapter(PleromaApiFrontendConfigurationsAdapter());
-    Hive.registerAdapter(PleromaApiFrontendConfigurationsMastoFeAdapter());
-    Hive.registerAdapter(PleromaApiFrontendConfigurationsPleromaFeAdapter());
-    Hive.registerAdapter(PleromaApiFrontendConfigurationsSoapboxFeAdapter());
+    Hive.registerAdapter(UnifediApiFrontendConfigurationsAdapter());
+    Hive.registerAdapter(UnifediApiFrontendConfigurationsMastoFeAdapter());
+    Hive.registerAdapter(UnifediApiFrontendConfigurationsPleromaFeAdapter());
+    Hive.registerAdapter(UnifediApiFrontendConfigurationsSoapboxFeAdapter());
   }
 }

@@ -69,7 +69,7 @@ void main() {
     );
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     var defaultValue = GlobalChatSettingsLocalPreferenceBloc.defaultValue;
 
@@ -92,7 +92,7 @@ void main() {
     );
 
     var testCountConversationsInChatsUnreadBadges =
-        ChatSettingsModelTestHelper.createTestChatSettings(seed: 'seed')
+        ChatSettingsModelMockHelper.createTestChatSettings(seed: 'seed')
             .countConversationsInChatsUnreadBadges;
 
     await chatSettingsBloc.changeCountConversationsInChatsUnreadBadges(
@@ -130,7 +130,7 @@ void main() {
     );
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     var defaultValue = GlobalChatSettingsLocalPreferenceBloc.defaultValue;
 
@@ -153,7 +153,7 @@ void main() {
     );
 
     var testCountConversationsInChatsUnreadBadges =
-        ChatSettingsModelTestHelper.createTestChatSettings(seed: 'seed')
+        ChatSettingsModelMockHelper.createTestChatSettings(seed: 'seed')
             .replaceConversationsWithPleromaChats;
 
     await chatSettingsBloc.changeReplaceConversationsWithPleromaChats(
@@ -161,7 +161,7 @@ void main() {
     );
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(
       listenedSettingsData?.replaceConversationsWithPleromaChats,

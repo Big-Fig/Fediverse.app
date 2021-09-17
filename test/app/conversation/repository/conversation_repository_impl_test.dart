@@ -48,7 +48,7 @@ void main() {
     );
 
     dbAccount =
-        await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed1');
+        await AccountDatabaseMockHelper.createTestDbAccount(seed: 'seed1');
     var accountId = await accountRepository.insertInDbType(
       dbAccount,
       mode: null,
@@ -56,24 +56,24 @@ void main() {
     // assign local id for further equal with data retrieved from db
     dbAccount = dbAccount.copyWith(id: accountId);
 
-    dbStatus = await StatusDatabaseTestHelper.createTestDbStatus(
+    dbStatus = await StatusDatabaseMockHelper.createTestDbStatus(
       seed: 'seed3',
       dbAccount: dbAccount,
     );
 
     dbStatusPopulated =
-        await StatusDatabaseTestHelper.createTestDbStatusPopulated(
+        await StatusDatabaseMockHelper.createTestDbStatusPopulated(
       dbStatus,
       accountRepository,
     );
 
     var reblogDbAccount =
-        await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed11');
+        await AccountDatabaseMockHelper.createTestDbAccount(seed: 'seed11');
     await accountRepository.insertInDbType(
       reblogDbAccount,
       mode: null,
     );
-    var reblogDbStatus = await StatusDatabaseTestHelper.createTestDbStatus(
+    var reblogDbStatus = await StatusDatabaseMockHelper.createTestDbStatus(
       seed: 'seed33',
       dbAccount: reblogDbAccount,
     );
@@ -103,7 +103,7 @@ void main() {
     );
 
     dbConversation =
-        await ConversationDatabaseTestHelper.createTestDbConversation(
+        await ConversationDatabaseMockHelper.createTestDbConversation(
       seed: 'seed4',
     );
   });
@@ -121,7 +121,7 @@ void main() {
       mode: null,
     );
     assert(id > 0, true);
-    ConversationDatabaseTestHelper.expectDbConversation(
+    ConversationDatabaseMockHelper.expectDbConversation(
       await conversationRepository.findByDbIdInAppType(id),
       dbConversation,
     );
@@ -129,13 +129,13 @@ void main() {
 
   test('upsertAll', () async {
     var dbConversation1 =
-        (await ConversationDatabaseTestHelper.createTestDbConversation(
+        (await ConversationDatabaseMockHelper.createTestDbConversation(
       seed: 'seed5',
     ))
             .copyWith(remoteId: 'remoteId1');
     // same remote id
     var dbConversation2 =
-        (await ConversationDatabaseTestHelper.createTestDbConversation(
+        (await ConversationDatabaseMockHelper.createTestDbConversation(
       seed: 'seed6',
     ))
             .copyWith(remoteId: 'remoteId1');
@@ -153,7 +153,7 @@ void main() {
     );
     expect((await conversationRepository.getAllInAppType()).length, 1);
 
-    ConversationDatabaseTestHelper.expectDbConversation(
+    ConversationDatabaseMockHelper.expectDbConversation(
       (await conversationRepository.getAllInAppType()).first,
       dbConversation2,
     );
@@ -253,7 +253,7 @@ void main() {
       dbConversation,
       mode: null,
     );
-    ConversationDatabaseTestHelper.expectDbConversation(
+    ConversationDatabaseMockHelper.expectDbConversation(
       await conversationRepository
           .findByRemoteIdInAppType(dbConversation.remoteId),
       dbConversation,
@@ -285,16 +285,16 @@ void main() {
     // // with reblog
     // expect(await statusRepository.countAll(), 2);
     // expect(await accountRepository.countAll(), 2);
-    // ConversationDatabaseTestHelper.expectDbConversation(
+    // ConversationDatabaseMockHelper.expectDbConversation(
     //   await conversationRepository
     //       .findByRemoteIdInAppType(dbConversation.remoteId),
     //   dbConversation,
     // );
-    // AccountDatabaseTestHelper.expectDbAccount(
+    // AccountDatabaseMockHelper.expectDbAccount(
     //   await accountRepository.findByRemoteIdInAppType(dbAccount.remoteId),
     //   dbAccount,
     // );
-    // StatusDatabaseTestHelper.expectDbStatus(
+    // StatusDatabaseMockHelper.expectDbStatus(
     //   await statusRepository.findByRemoteIdInAppType(dbStatus.remoteId),
     //   dbStatus,
     // );
@@ -325,16 +325,16 @@ void main() {
     // with reblog
     expect(await statusRepository.countAll(), 2);
     expect(await accountRepository.countAll(), 2);
-    ConversationDatabaseTestHelper.expectDbConversation(
+    ConversationDatabaseMockHelper.expectDbConversation(
       await conversationRepository
           .findByRemoteIdInAppType(dbConversation.remoteId),
       dbConversation,
     );
-    AccountDatabaseTestHelper.expectDbAccount(
+    AccountDatabaseMockHelper.expectDbAccount(
       await accountRepository.findByRemoteIdInAppType(dbAccount.remoteId),
       dbAccount,
     );
-    StatusDatabaseTestHelper.expectDbStatus(
+    StatusDatabaseMockHelper.expectDbStatus(
       await statusRepository.findByRemoteIdInAppType(dbStatus.remoteId),
       dbStatus,
     );
@@ -370,16 +370,16 @@ void main() {
     // with reblog
     expect(await statusRepository.countAll(), 2);
     expect(await accountRepository.countAll(), 2);
-    ConversationDatabaseTestHelper.expectDbConversation(
+    ConversationDatabaseMockHelper.expectDbConversation(
       await conversationRepository
           .findByRemoteIdInAppType(dbConversation.remoteId),
       dbConversation,
     );
-    AccountDatabaseTestHelper.expectDbAccount(
+    AccountDatabaseMockHelper.expectDbAccount(
       await accountRepository.findByRemoteIdInAppType(dbAccount.remoteId),
       dbAccount,
     );
-    StatusDatabaseTestHelper.expectDbStatus(
+    StatusDatabaseMockHelper.expectDbStatus(
       await statusRepository.findByRemoteIdInAppType(dbStatus.remoteId),
       dbStatus,
     );
@@ -411,16 +411,16 @@ void main() {
     // with reblog
     expect(await statusRepository.countAll(), 2);
     expect(await accountRepository.countAll(), 2);
-    ConversationDatabaseTestHelper.expectDbConversation(
+    ConversationDatabaseMockHelper.expectDbConversation(
       await conversationRepository
           .findByRemoteIdInAppType(dbConversation.remoteId),
       dbConversation,
     );
-    AccountDatabaseTestHelper.expectDbAccount(
+    AccountDatabaseMockHelper.expectDbAccount(
       await accountRepository.findByRemoteIdInAppType(dbAccount.remoteId),
       dbAccount,
     );
-    StatusDatabaseTestHelper.expectDbStatus(
+    StatusDatabaseMockHelper.expectDbStatus(
       await statusRepository.findByRemoteIdInAppType(dbStatus.remoteId),
       dbStatus,
     );
@@ -436,7 +436,7 @@ void main() {
     expect((await query.get()).length, 0);
 
     await conversationRepository.insertInDbType(
-      (await ConversationDatabaseTestHelper.createTestDbConversation(
+      (await ConversationDatabaseMockHelper.createTestDbConversation(
         seed: 'seed1',
       ))
           .copyWith(),
@@ -446,7 +446,7 @@ void main() {
     expect((await query.get()).length, 1);
 
     await conversationRepository.insertInDbType(
-      (await ConversationDatabaseTestHelper.createTestDbConversation(
+      (await ConversationDatabaseMockHelper.createTestDbConversation(
         seed: 'seed2',
       ))
           .copyWith(),
@@ -456,7 +456,7 @@ void main() {
     expect((await query.get()).length, 2);
 
     await conversationRepository.insertInDbType(
-      (await ConversationDatabaseTestHelper.createTestDbConversation(
+      (await ConversationDatabaseMockHelper.createTestDbConversation(
         seed: 'seed3',
       ))
           .copyWith(),
@@ -500,7 +500,7 @@ void main() {
       var query = conversationRepository.createQuery(
         filters: null,
         pagination: RepositoryPagination<IConversationChat>(
-          newerThanItem: await ConversationTestHelper.createTestConversation(
+          newerThanItem: await ConversationMockHelper.createTestConversation(
             seed: 'remoteId5',
             remoteId: 'remoteId5',
           ),
@@ -509,9 +509,9 @@ void main() {
             ConversationRepositoryChatOrderingTermData.updatedAtDesc,
       );
 
-      await ConversationRepositoryTestHelper.insertDbConversation(
+      await ConversationRepositoryMockHelper.insertDbConversation(
         conversationRepository,
-        (await ConversationDatabaseTestHelper.createTestDbConversation(
+        (await ConversationDatabaseMockHelper.createTestDbConversation(
           seed: 'seed2',
         ))
             .copyWith(
@@ -521,9 +521,9 @@ void main() {
 
       expect((await query.get()).length, 0);
 
-      await ConversationRepositoryTestHelper.insertDbConversation(
+      await ConversationRepositoryMockHelper.insertDbConversation(
         conversationRepository,
-        (await ConversationDatabaseTestHelper.createTestDbConversation(
+        (await ConversationDatabaseMockHelper.createTestDbConversation(
           seed: 'seed2',
         ))
             .copyWith(
@@ -533,18 +533,18 @@ void main() {
 
       expect((await query.get()).length, 0);
 
-      await ConversationRepositoryTestHelper.insertDbConversation(
+      await ConversationRepositoryMockHelper.insertDbConversation(
         conversationRepository,
-        (await ConversationDatabaseTestHelper.createTestDbConversation(
+        (await ConversationDatabaseMockHelper.createTestDbConversation(
           seed: 'seed1',
         ))
             .copyWith(remoteId: 'remoteId6'),
       );
 
       expect((await query.get()).length, 1);
-      await ConversationRepositoryTestHelper.insertDbConversation(
+      await ConversationRepositoryMockHelper.insertDbConversation(
         conversationRepository,
-        (await ConversationDatabaseTestHelper.createTestDbConversation(
+        (await ConversationDatabaseMockHelper.createTestDbConversation(
           seed: 'seed1',
         ))
             .copyWith(remoteId: 'remoteId7'),
@@ -558,7 +558,7 @@ void main() {
     var query = conversationRepository.createQuery(
       filters: null,
       pagination: RepositoryPagination<IConversationChat>(
-        olderThanItem: await ConversationTestHelper.createTestConversation(
+        olderThanItem: await ConversationMockHelper.createTestConversation(
           seed: 'remoteId5',
           remoteId: 'remoteId5',
         ),
@@ -567,18 +567,18 @@ void main() {
           ConversationRepositoryChatOrderingTermData.updatedAtDesc,
     );
 
-    await ConversationRepositoryTestHelper.insertDbConversation(
+    await ConversationRepositoryMockHelper.insertDbConversation(
       conversationRepository,
-      (await ConversationDatabaseTestHelper.createTestDbConversation(
+      (await ConversationDatabaseMockHelper.createTestDbConversation(
         seed: 'seed2',
       ))
           .copyWith(remoteId: 'remoteId3'),
     );
 
     expect((await query.get()).length, 1);
-    await ConversationRepositoryTestHelper.insertDbConversation(
+    await ConversationRepositoryMockHelper.insertDbConversation(
       conversationRepository,
-      (await ConversationDatabaseTestHelper.createTestDbConversation(
+      (await ConversationDatabaseMockHelper.createTestDbConversation(
         seed: 'seed2',
       ))
           .copyWith(
@@ -588,9 +588,9 @@ void main() {
 
     expect((await query.get()).length, 2);
 
-    await ConversationRepositoryTestHelper.insertDbConversation(
+    await ConversationRepositoryMockHelper.insertDbConversation(
       conversationRepository,
-      (await ConversationDatabaseTestHelper.createTestDbConversation(
+      (await ConversationDatabaseMockHelper.createTestDbConversation(
         seed: 'seed2',
       ))
           .copyWith(
@@ -600,9 +600,9 @@ void main() {
 
     expect((await query.get()).length, 2);
 
-    await ConversationRepositoryTestHelper.insertDbConversation(
+    await ConversationRepositoryMockHelper.insertDbConversation(
       conversationRepository,
-      (await ConversationDatabaseTestHelper.createTestDbConversation(
+      (await ConversationDatabaseMockHelper.createTestDbConversation(
         seed: 'seed1',
       ))
           .copyWith(
@@ -617,11 +617,11 @@ void main() {
     var query = conversationRepository.createQuery(
       filters: null,
       pagination: RepositoryPagination<IConversationChat>(
-        newerThanItem: await ConversationTestHelper.createTestConversation(
+        newerThanItem: await ConversationMockHelper.createTestConversation(
           seed: 'remoteId2',
           remoteId: 'remoteId2',
         ),
-        olderThanItem: await ConversationTestHelper.createTestConversation(
+        olderThanItem: await ConversationMockHelper.createTestConversation(
           seed: 'remoteId5',
           remoteId: 'remoteId5',
         ),
@@ -630,9 +630,9 @@ void main() {
           ConversationRepositoryChatOrderingTermData.updatedAtDesc,
     );
 
-    await ConversationRepositoryTestHelper.insertDbConversation(
+    await ConversationRepositoryMockHelper.insertDbConversation(
       conversationRepository,
-      (await ConversationDatabaseTestHelper.createTestDbConversation(
+      (await ConversationDatabaseMockHelper.createTestDbConversation(
         seed: 'seed1',
       ))
           .copyWith(
@@ -642,9 +642,9 @@ void main() {
 
     expect((await query.get()).length, 0);
 
-    await ConversationRepositoryTestHelper.insertDbConversation(
+    await ConversationRepositoryMockHelper.insertDbConversation(
       conversationRepository,
-      (await ConversationDatabaseTestHelper.createTestDbConversation(
+      (await ConversationDatabaseMockHelper.createTestDbConversation(
         seed: 'seed2',
       ))
           .copyWith(
@@ -653,9 +653,9 @@ void main() {
     );
 
     expect((await query.get()).length, 0);
-    await ConversationRepositoryTestHelper.insertDbConversation(
+    await ConversationRepositoryMockHelper.insertDbConversation(
       conversationRepository,
-      (await ConversationDatabaseTestHelper.createTestDbConversation(
+      (await ConversationDatabaseMockHelper.createTestDbConversation(
         seed: 'seed3',
       ))
           .copyWith(
@@ -665,9 +665,9 @@ void main() {
 
     expect((await query.get()).length, 1);
 
-    await ConversationRepositoryTestHelper.insertDbConversation(
+    await ConversationRepositoryMockHelper.insertDbConversation(
       conversationRepository,
-      (await ConversationDatabaseTestHelper.createTestDbConversation(
+      (await ConversationDatabaseMockHelper.createTestDbConversation(
         seed: 'seed4',
       ))
           .copyWith(
@@ -677,9 +677,9 @@ void main() {
 
     expect((await query.get()).length, 2);
 
-    await ConversationRepositoryTestHelper.insertDbConversation(
+    await ConversationRepositoryMockHelper.insertDbConversation(
       conversationRepository,
-      (await ConversationDatabaseTestHelper.createTestDbConversation(
+      (await ConversationDatabaseMockHelper.createTestDbConversation(
         seed: 'seed5',
       ))
           .copyWith(
@@ -689,9 +689,9 @@ void main() {
 
     expect((await query.get()).length, 2);
 
-    await ConversationRepositoryTestHelper.insertDbConversation(
+    await ConversationRepositoryMockHelper.insertDbConversation(
       conversationRepository,
-      (await ConversationDatabaseTestHelper.createTestDbConversation(
+      (await ConversationDatabaseMockHelper.createTestDbConversation(
         seed: 'seed6',
       ))
           .copyWith(
@@ -710,9 +710,9 @@ void main() {
     );
 
     var conversation2 =
-        await ConversationRepositoryTestHelper.insertDbConversation(
+        await ConversationRepositoryMockHelper.insertDbConversation(
       conversationRepository,
-      (await ConversationDatabaseTestHelper.createTestDbConversation(
+      (await ConversationDatabaseMockHelper.createTestDbConversation(
         seed: 'seed2',
       ))
           .copyWith(
@@ -720,9 +720,9 @@ void main() {
       ),
     );
     var conversation1 =
-        await ConversationRepositoryTestHelper.insertDbConversation(
+        await ConversationRepositoryMockHelper.insertDbConversation(
       conversationRepository,
-      (await ConversationDatabaseTestHelper.createTestDbConversation(
+      (await ConversationDatabaseMockHelper.createTestDbConversation(
         seed: 'seed1',
       ))
           .copyWith(
@@ -730,9 +730,9 @@ void main() {
       ),
     );
     var conversation3 =
-        await ConversationRepositoryTestHelper.insertDbConversation(
+        await ConversationRepositoryMockHelper.insertDbConversation(
       conversationRepository,
-      (await ConversationDatabaseTestHelper.createTestDbConversation(
+      (await ConversationDatabaseMockHelper.createTestDbConversation(
         seed: 'seed3',
       ))
           .copyWith(
@@ -746,15 +746,15 @@ void main() {
       3,
     );
 
-    ConversationDatabaseTestHelper.expectDbConversation(
+    ConversationDatabaseMockHelper.expectDbConversation(
       actualList[0],
       conversation1,
     );
-    ConversationDatabaseTestHelper.expectDbConversation(
+    ConversationDatabaseMockHelper.expectDbConversation(
       actualList[1],
       conversation2,
     );
-    ConversationDatabaseTestHelper.expectDbConversation(
+    ConversationDatabaseMockHelper.expectDbConversation(
       actualList[2],
       conversation3,
     );
@@ -768,9 +768,9 @@ void main() {
     );
 
     var conversation2 =
-        await ConversationRepositoryTestHelper.insertDbConversation(
+        await ConversationRepositoryMockHelper.insertDbConversation(
       conversationRepository,
-      (await ConversationDatabaseTestHelper.createTestDbConversation(
+      (await ConversationDatabaseMockHelper.createTestDbConversation(
         seed: 'seed2',
       ))
           .copyWith(
@@ -778,9 +778,9 @@ void main() {
       ),
     );
     var conversation1 =
-        await ConversationRepositoryTestHelper.insertDbConversation(
+        await ConversationRepositoryMockHelper.insertDbConversation(
       conversationRepository,
-      (await ConversationDatabaseTestHelper.createTestDbConversation(
+      (await ConversationDatabaseMockHelper.createTestDbConversation(
         seed: 'seed1',
       ))
           .copyWith(
@@ -788,9 +788,9 @@ void main() {
       ),
     );
     var conversation3 =
-        await ConversationRepositoryTestHelper.insertDbConversation(
+        await ConversationRepositoryMockHelper.insertDbConversation(
       conversationRepository,
-      (await ConversationDatabaseTestHelper.createTestDbConversation(
+      (await ConversationDatabaseMockHelper.createTestDbConversation(
         seed: 'seed3',
       ))
           .copyWith(
@@ -801,15 +801,15 @@ void main() {
     var actualList = (await query.get());
     expect(actualList.length, 3);
 
-    ConversationDatabaseTestHelper.expectDbConversation(
+    ConversationDatabaseMockHelper.expectDbConversation(
       actualList[0],
       conversation3,
     );
-    ConversationDatabaseTestHelper.expectDbConversation(
+    ConversationDatabaseMockHelper.expectDbConversation(
       actualList[1],
       conversation2,
     );
-    ConversationDatabaseTestHelper.expectDbConversation(
+    ConversationDatabaseMockHelper.expectDbConversation(
       actualList[2],
       conversation1,
     );
@@ -826,23 +826,23 @@ void main() {
     );
 
     var conversation2 =
-        await ConversationRepositoryTestHelper.insertDbConversation(
+        await ConversationRepositoryMockHelper.insertDbConversation(
       conversationRepository,
-      (await ConversationDatabaseTestHelper.createTestDbConversation(
+      (await ConversationDatabaseMockHelper.createTestDbConversation(
         seed: 'seed2',
       ))
           .copyWith(remoteId: 'remoteId2'),
     );
-    await ConversationRepositoryTestHelper.insertDbConversation(
+    await ConversationRepositoryMockHelper.insertDbConversation(
       conversationRepository,
-      (await ConversationDatabaseTestHelper.createTestDbConversation(
+      (await ConversationDatabaseMockHelper.createTestDbConversation(
         seed: 'seed1',
       ))
           .copyWith(remoteId: 'remoteId1'),
     );
-    await ConversationRepositoryTestHelper.insertDbConversation(
+    await ConversationRepositoryMockHelper.insertDbConversation(
       conversationRepository,
-      (await ConversationDatabaseTestHelper.createTestDbConversation(
+      (await ConversationDatabaseMockHelper.createTestDbConversation(
         seed: 'seed3',
       ))
           .copyWith(remoteId: 'remoteId3'),
@@ -851,7 +851,7 @@ void main() {
     var actualList = (await query.get());
     expect(actualList.length, 1);
 
-    ConversationDatabaseTestHelper.expectDbConversation(
+    ConversationDatabaseMockHelper.expectDbConversation(
       actualList[0],
       conversation2,
     );
@@ -860,11 +860,11 @@ void main() {
   test('insertInDbTypeBatch duplicated', () async {
     expect(await conversationRepository.countAll(), 0);
 
-    var dbItem1 = await ConversationDatabaseTestHelper.createTestDbConversation(
+    var dbItem1 = await ConversationDatabaseMockHelper.createTestDbConversation(
       seed: 'seed1',
     );
     var dbItem1copy =
-        await ConversationDatabaseTestHelper.createTestDbConversation(
+        await ConversationDatabaseMockHelper.createTestDbConversation(
       seed: 'seed1',
     );
 
@@ -888,23 +888,23 @@ void main() {
     expect(await conversationRepository.countAll(), 0);
 
     var conversation1 =
-        await ConversationTestHelper.createTestConversation(seed: 'seed1');
+        await ConversationMockHelper.createTestConversation(seed: 'seed1');
     var conversation1Copy =
-        await ConversationTestHelper.createTestConversation(seed: 'seed1');
+        await ConversationMockHelper.createTestConversation(seed: 'seed1');
 
     var remoteConversation1 = conversation1.toPleromaConversation(
       accounts: [
-        await AccountTestHelper.createTestAccount(seed: 'seed1'),
+        await AccountMockHelper.createTestAccount(seed: 'seed1'),
       ],
-      lastStatus: await StatusTestHelper.createTestStatus(
+      lastStatus: await StatusMockHelper.createTestStatus(
         seed: 'seed1',
       ),
     );
     var remoteConversation1Copy = conversation1Copy.toPleromaConversation(
       accounts: [
-        await AccountTestHelper.createTestAccount(seed: 'seed1'),
+        await AccountMockHelper.createTestAccount(seed: 'seed1'),
       ],
-      lastStatus: await StatusTestHelper.createTestStatus(
+      lastStatus: await StatusMockHelper.createTestStatus(
         seed: 'seed1',
       ),
     );
@@ -928,23 +928,23 @@ void main() {
     expect(await conversationRepository.countAll(), 0);
 
     var conversation1 =
-        await ConversationTestHelper.createTestConversation(seed: 'seed1');
+        await ConversationMockHelper.createTestConversation(seed: 'seed1');
     var conversation1Copy =
-        await ConversationTestHelper.createTestConversation(seed: 'seed1');
+        await ConversationMockHelper.createTestConversation(seed: 'seed1');
 
     var remoteConversation1 = conversation1.toPleromaConversation(
       accounts: [
-        await AccountTestHelper.createTestAccount(seed: 'seed1'),
+        await AccountMockHelper.createTestAccount(seed: 'seed1'),
       ],
-      lastStatus: await StatusTestHelper.createTestStatus(
+      lastStatus: await StatusMockHelper.createTestStatus(
         seed: 'seed1',
       ),
     );
     var remoteConversation1Copy = conversation1Copy.toPleromaConversation(
       accounts: [
-        await AccountTestHelper.createTestAccount(seed: 'seed1'),
+        await AccountMockHelper.createTestAccount(seed: 'seed1'),
       ],
-      lastStatus: await StatusTestHelper.createTestStatus(
+      lastStatus: await StatusMockHelper.createTestStatus(
         seed: 'seed1',
       ),
     );
@@ -995,37 +995,37 @@ void main() {
     expect(await conversationRepository.countAll(), 0);
 
     var conversation1 =
-        await ConversationTestHelper.createTestConversation(seed: 'seed1');
+        await ConversationMockHelper.createTestConversation(seed: 'seed1');
     var conversation2 =
-        await ConversationTestHelper.createTestConversation(seed: 'seed2');
+        await ConversationMockHelper.createTestConversation(seed: 'seed2');
     var conversation3 =
-        await ConversationTestHelper.createTestConversation(seed: 'seed3');
+        await ConversationMockHelper.createTestConversation(seed: 'seed3');
 
     var remoteConversation1 = conversation1.toPleromaConversation(
       accounts: [
-        await AccountTestHelper.createTestAccount(seed: 'seed1'),
+        await AccountMockHelper.createTestAccount(seed: 'seed1'),
       ],
-      lastStatus: await StatusTestHelper.createTestStatus(
+      lastStatus: await StatusMockHelper.createTestStatus(
         seed: 'seed1',
-        account: await AccountTestHelper.createTestAccount(seed: 'seed1'),
+        account: await AccountMockHelper.createTestAccount(seed: 'seed1'),
       ),
     );
     var remoteConversation2 = conversation2.toPleromaConversation(
       accounts: [
-        await AccountTestHelper.createTestAccount(seed: 'seed1'),
+        await AccountMockHelper.createTestAccount(seed: 'seed1'),
       ],
-      lastStatus: await StatusTestHelper.createTestStatus(
+      lastStatus: await StatusMockHelper.createTestStatus(
         seed: 'seed2',
-        account: await AccountTestHelper.createTestAccount(seed: 'seed1'),
+        account: await AccountMockHelper.createTestAccount(seed: 'seed1'),
       ),
     );
     var remoteConversation3 = conversation3.toPleromaConversation(
       accounts: [
-        await AccountTestHelper.createTestAccount(seed: 'seed1'),
+        await AccountMockHelper.createTestAccount(seed: 'seed1'),
       ],
-      lastStatus: await StatusTestHelper.createTestStatus(
+      lastStatus: await StatusMockHelper.createTestStatus(
         seed: 'seed3',
-        account: await AccountTestHelper.createTestAccount(seed: 'seed1'),
+        account: await AccountMockHelper.createTestAccount(seed: 'seed1'),
       ),
     );
 

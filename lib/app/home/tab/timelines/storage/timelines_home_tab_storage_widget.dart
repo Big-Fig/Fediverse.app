@@ -203,7 +203,7 @@ class _TimelinesHomeTabStorageListItemWidget extends StatelessWidget {
             context: context,
             timeline: timeline,
             lockedSource: false,
-            pleromaApiInstance: ICurrentAuthInstanceBloc.of(
+            unifediApiInstance: ICurrentAuthInstanceBloc.of(
               context,
               listen: false,
             ).currentInstance!.info!,
@@ -240,7 +240,7 @@ class _TimelinesHomeTabStorageListItemTitleWidget extends StatelessWidget {
           instanceLocation: InstanceLocation.local,
           timeline: timeline,
           lockedSource: false,
-          pleromaApiInstance: ICurrentAuthInstanceBloc.of(
+          unifediApiInstance: ICurrentAuthInstanceBloc.of(
             context,
             listen: false,
           ).currentInstance!.info!,
@@ -296,7 +296,7 @@ class _TimelinesHomeTabStorageListItemEndingWidget extends StatelessWidget {
                   instanceLocation: InstanceLocation.local,
                   timeline: Provider.of(context, listen: false),
                   lockedSource: false,
-                  pleromaApiInstance: ICurrentAuthInstanceBloc.of(
+                  unifediApiInstance: ICurrentAuthInstanceBloc.of(
                     context,
                     listen: false,
                   ).currentInstance!.info!,

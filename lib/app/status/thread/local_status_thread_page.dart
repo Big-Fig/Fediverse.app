@@ -5,14 +5,14 @@ import 'package:fedi/app/status/thread/status_thread_bloc.dart';
 import 'package:fedi/app/status/thread/status_thread_bloc_proxy_provider.dart';
 import 'package:fedi/app/status/thread/status_thread_page.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 Future goToLocalStatusThreadPage(
   BuildContext context, {
   required IStatus status,
-  required IPleromaApiMediaAttachment? initialMediaAttachment,
+  required IUnifediApiMediaAttachment? initialMediaAttachment,
 }) {
   return Navigator.push(
     context,
@@ -25,7 +25,7 @@ Future goToLocalStatusThreadPage(
 
 MaterialPageRoute createLocalStatusThreadPageRoute({
   required IStatus status,
-  required IPleromaApiMediaAttachment? initialMediaAttachment,
+  required IUnifediApiMediaAttachment? initialMediaAttachment,
 }) {
   return MaterialPageRoute(
     builder: (context) => DisposableProvider<IStatusThreadBloc>(

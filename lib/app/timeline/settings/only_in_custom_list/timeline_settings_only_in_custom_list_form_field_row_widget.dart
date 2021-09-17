@@ -4,7 +4,7 @@ import 'package:fedi/app/ui/dialog/chooser/selection/single/fedi_single_selectio
 import 'package:fedi/app/ui/form/fedi_form_single_choose_custom_field_row.dart';
 import 'package:fedi/dialog/dialog_model.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
@@ -22,13 +22,13 @@ class TimelineSettingsOnlyInCustomListFormFieldRowWidget
   Widget build(BuildContext context) {
     var fieldBloc = ITimelineSettingsOnlyInCustomListFormFieldBloc.of(context);
 
-    return StreamBuilder<IPleromaApiList?>(
+    return StreamBuilder<IUnifediApiList?>(
       stream: fieldBloc.currentValueStream,
       initialData: fieldBloc.currentValue,
       builder: (context, snapshot) {
         var currentValue = snapshot.data;
 
-        return FediFormSingleChooseCustomFromListFieldRow<IPleromaApiList?>(
+        return FediFormSingleChooseCustomFromListFieldRow<IUnifediApiList?>(
           isEnabled: fieldBloc.isEnabled,
           description: description,
           descriptionOnDisabled: descriptionOnDisabled,
@@ -41,7 +41,7 @@ class TimelineSettingsOnlyInCustomListFormFieldRowWidget
           },
           startCustomSelectCallback: () async {
             var pleromaListService =
-                Provider.of<IPleromaApiListService>(context, listen: false);
+                Provider.of<IUnifediApiListService>(context, listen: false);
 
             var dialogResult =
                 await PleromaAsyncOperationHelper.performPleromaAsyncOperation(

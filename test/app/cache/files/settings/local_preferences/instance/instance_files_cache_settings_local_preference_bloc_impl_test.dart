@@ -9,7 +9,7 @@ import '../../files_cache_settings_model_test_helper.dart';
 
 void main() {
   test('save & load', () async {
-    await LocalPreferencesTestHelper.testSaveAndLoad<FilesCacheSettings,
+    await LocalPreferencesMockHelper.testSaveAndLoad<FilesCacheSettings,
         InstanceFilesCacheSettingsLocalPreferenceBloc>(
       defaultValue: InstanceFilesCacheSettingsLocalPreferenceBloc.defaultValue,
       blocCreator: (localPreferencesService) =>
@@ -18,7 +18,7 @@ void main() {
         userAtHost: 'user@host',
       ),
       testObjectCreator: ({required String seed}) =>
-          FilesCacheSettingsModelTestHelper.createTestFilesCacheSettings(
+          FilesCacheSettingsModelMockHelper.createTestFilesCacheSettings(
         seed: seed,
       ),
     );

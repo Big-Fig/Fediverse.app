@@ -8,18 +8,18 @@ import 'recent_search_model_test_helper.dart';
 
 void main() {
   test('equal & hashcode & toString', () async {
-    ObjTestHelper.testEqualsHashcodeToString(
+    ObjMockHelper.testEqualsHashcodeToString(
       ({required String seed}) =>
-          RecentSearchModelTestHelper.createTestRecentSearchList(
+          RecentSearchModelMockHelper.createTestRecentSearchList(
         seed: seed,
       ),
     );
   });
 
   test('toJson & fromJson', () async {
-    JsonTestHelper.testFromJsonToJson(
+    JsonMockHelper.testFromJsonToJson(
       ({required String seed}) =>
-          RecentSearchModelTestHelper.createTestRecentSearchList(
+          RecentSearchModelMockHelper.createTestRecentSearchList(
         seed: seed,
       ),
       RecentSearchList.fromJson,
@@ -27,16 +27,16 @@ void main() {
   });
 
   test('hive save&load', () async {
-    await HiveTestHelper.testHiveSaveAndLoad(
+    await HiveMockHelper.testHiveSaveAndLoad(
       ({required String seed}) =>
-          RecentSearchModelTestHelper.createTestRecentSearchList(
+          RecentSearchModelMockHelper.createTestRecentSearchList(
         seed: seed,
       ),
     );
   });
 
   test('hive adapter', () async {
-    HiveTestHelper.testAdapter(
+    HiveMockHelper.testAdapter(
       () => RecentSearchListAdapter(),
     );
   });

@@ -18,16 +18,17 @@ import 'package:fedi/app/push/settings/local_preferences/instance/instance_push_
 import 'package:fedi/app/push/settings/push_settings_model.dart';
 import 'package:fedi/app/ui/theme/light/light_fedi_ui_theme_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
-import 'package:base_fediverse_api/base_fediverse_api.dart';
+import 'package:fedi/connection/connection_service_impl.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/local_preferences/hive_local_preferences_service_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/localization/localization_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:fedi/push/push_model.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 var _logger = Logger('rich_notifications_service_background_message_impl.dart');
 
@@ -44,11 +45,11 @@ const _mentionGroupKey = 'push.mention.group';
 const _pollChannelKey = 'push.poll';
 const _moveChannelKey = 'push.move';
 const _followRequestChannelKey = 'push.followRequest';
-const _pleromaEmojiReactionChannelKey = 'push.pleromaEmojiReaction';
-const _pleromaEmojiReactionGroupKey = 'push.pleromaEmojiReaction.group';
-const _pleromaChatMentionChannelKey = 'push.pleromaChatMention';
-const _pleromaChatMentionGroupKey = 'push.pleromaChatMention.group';
-const _pleromaReportChannelKey = 'push.pleromaReport';
+const _emojiReactionChannelKey = 'push.emojiReaction';
+const _emojiReactionGroupKey = 'push.emojiReaction.group';
+const _chatMentionChannelKey = 'push.chatMention';
+const _chatMentionGroupKey = 'push.chatMention.group';
+const _reportChannelKey = 'push.report';
 const _unknownChannelKey = 'push.unknown';
 
 // todo: refactor all push notifications code
@@ -82,9 +83,9 @@ class RichNotificationsServiceBackgroundMessage extends AsyncInitLoadingBloc
         _createPollChannel(),
         _createMoveChannel(),
         _createFollowRequestChannel(),
-        _createPleromaEmojiReactionChannel(),
-        _createPleromaChatMentionChannel(),
-        _createPleromaReportChannel(),
+        _createEmojiReactionChannel(),
+        _createChatMentionChannel(),
+        _createReportChannel(),
         _createUnknownChannel(),
       ],
     );
@@ -136,13 +137,13 @@ class RichNotificationsServiceBackgroundMessage extends AsyncInitLoadingBloc
       payload,
     );
 
-    var notification = _notificationPayloadData.pleromaApiNotification;
-    var pleromaApiPushMessageBody = PleromaApiPushMessageBody(
+    var notification = _notificationPayloadData.unifediApiNotification;
+    var unifediApiPushMessageBody = UnifediApiPushMessageBody(
       notificationId: notification.id,
       server: _notificationPayloadData.serverHost,
       account: _notificationPayloadData.acct,
       notificationType: notification.type,
-      pleromaApiNotification: notification.toPleromaApiNotification(),
+      unifediApiNotification: notification.toUnifediApiNotification(),
       notificationAction: notificationAction,
       notificationActionInput: notificationActionInput,
     );
@@ -151,7 +152,7 @@ class RichNotificationsServiceBackgroundMessage extends AsyncInitLoadingBloc
       PushMessage(
         typeString: pushMessageType.toJsonValue(),
         notification: null,
-        data: pleromaApiPushMessageBody.toJson(),
+        data: unifediApiPushMessageBody.toJson(),
       ),
     );
   }
@@ -296,20 +297,18 @@ class RichNotificationsServiceBackgroundMessage extends AsyncInitLoadingBloc
         onlyAlertOnce: false,
       );
 
-  NotificationChannel _createPleromaEmojiReactionChannel() =>
-      NotificationChannel(
-        channelKey: _pleromaEmojiReactionChannelKey,
-        channelName:
-            localizationContext.app_push_channel_pleromaEmojiReaction_name,
-        channelDescription: localizationContext
-            .app_push_channel_pleromaEmojiReaction_description,
+  NotificationChannel _createEmojiReactionChannel() => NotificationChannel(
+        channelKey: _emojiReactionChannelKey,
+        channelName: localizationContext.app_push_channel_emojiReaction_name,
+        channelDescription:
+            localizationContext.app_push_channel_emojiReaction_description,
         channelShowBadge: false,
         importance: NotificationImportance.Default,
         playSound: false,
         enableVibration: false,
         enableLights: false,
         ledColor: lightFediUiTheme.colorTheme.primary,
-        groupKey: _pleromaEmojiReactionGroupKey,
+        groupKey: _emojiReactionGroupKey,
         groupSort: GroupSort.Desc,
         groupAlertBehavior: GroupAlertBehavior.All,
         defaultPrivacy: NotificationPrivacy.Public,
@@ -318,19 +317,18 @@ class RichNotificationsServiceBackgroundMessage extends AsyncInitLoadingBloc
         onlyAlertOnce: false,
       );
 
-  NotificationChannel _createPleromaChatMentionChannel() => NotificationChannel(
-        channelKey: _pleromaChatMentionChannelKey,
-        channelName:
-            localizationContext.app_push_channel_pleromaChatMention_name,
+  NotificationChannel _createChatMentionChannel() => NotificationChannel(
+        channelKey: _chatMentionChannelKey,
+        channelName: localizationContext.app_push_channel_chatMention_name,
         channelDescription:
-            localizationContext.app_push_channel_pleromaChatMention_description,
+            localizationContext.app_push_channel_chatMention_description,
         channelShowBadge: true,
         importance: NotificationImportance.Max,
         playSound: true,
         enableVibration: true,
         enableLights: true,
         ledColor: lightFediUiTheme.colorTheme.primary,
-        groupKey: _pleromaChatMentionGroupKey,
+        groupKey: _chatMentionGroupKey,
         groupSort: GroupSort.Desc,
         groupAlertBehavior: GroupAlertBehavior.Summary,
         defaultPrivacy: NotificationPrivacy.Private,
@@ -339,11 +337,11 @@ class RichNotificationsServiceBackgroundMessage extends AsyncInitLoadingBloc
         onlyAlertOnce: false,
       );
 
-  NotificationChannel _createPleromaReportChannel() => NotificationChannel(
-        channelKey: _pleromaReportChannelKey,
-        channelName: localizationContext.app_push_channel_pleromaReport_name,
+  NotificationChannel _createReportChannel() => NotificationChannel(
+        channelKey: _reportChannelKey,
+        channelName: localizationContext.app_push_channel_report_name,
         channelDescription:
-            localizationContext.app_push_channel_pleromaReport_description,
+            localizationContext.app_push_channel_report_description,
         channelShowBadge: true,
         importance: NotificationImportance.Default,
         playSound: true,
@@ -399,7 +397,7 @@ Future richNotificationsFirebaseMessagingBackgroundHandler(
   }
 }
 
-Future<IPleromaApiNotification?> loadNotificationForPushMessageData({
+Future<IUnifediApiNotification?> loadNotificationForPushMessageData({
   required Map<String, dynamic> data,
   required bool createPushNotification,
 }) async {
@@ -427,14 +425,14 @@ Future<IPleromaApiNotification?> loadNotificationForPushMessageData({
   }
 }
 
-Future<IPleromaApiNotification?> loadLastNotificationForAcctOnHost({
+Future<IUnifediApiNotification?> loadLastNotificationForAcctOnHost({
   required String acct,
   required String host,
   required bool createPushNotification,
 }) async {
   var disposableOwner = DisposableOwner();
 
-  IPleromaApiNotification? notification;
+  IUnifediApiNotification? notification;
 
   try {
     var configService = ConfigService(appLaunchType: AppLaunchType.normal);
@@ -478,23 +476,23 @@ Future<IPleromaApiNotification?> loadLastNotificationForAcctOnHost({
   return notification;
 }
 
-Future<IPleromaApiNotification?> _loadNotificationForInstance({
+Future<IUnifediApiNotification?> _loadNotificationForInstance({
   required ILocalPreferencesService localPreferencesService,
   required AuthInstance authInstance,
   required IConfigService configService,
   required bool createPushNotification,
 }) async {
-  var pleromaApiNotification = await _loadLastNotificationForInstance(
+  var unifediApiNotification = await _loadLastNotificationForInstance(
     localPreferencesService: localPreferencesService,
     authInstance: authInstance,
   );
 
   if (createPushNotification) {
-    if (pleromaApiNotification != null) {
+    if (unifediApiNotification != null) {
       await _createPushNotification(
         localPreferencesService: localPreferencesService,
         authInstance: authInstance,
-        pleromaApiNotification: pleromaApiNotification,
+        unifediApiNotification: unifediApiNotification,
       );
     } else {
       _logger.warning(
@@ -503,10 +501,10 @@ Future<IPleromaApiNotification?> _loadNotificationForInstance({
     }
   }
 
-  return pleromaApiNotification;
+  return unifediApiNotification;
 }
 
-Future<IPleromaApiNotification?> _loadLastNotificationForInstance({
+Future<IUnifediApiNotification?> _loadLastNotificationForInstance({
   required ILocalPreferencesService localPreferencesService,
   required AuthInstance authInstance,
 }) async {
@@ -533,24 +531,26 @@ Future<IPleromaApiNotification?> _loadLastNotificationForInstance({
   var restService = RestService(baseUri: authInstance.uri);
   disposableOwner.addDisposable(restService);
 
-  var pleromaApiAuthRestService = PleromaApiAuthRestService(
+  var unifediApiAuthRestService = UnifediApiAuthRestService(
     restService: restService,
     connectionService: connectionService,
     isPleroma: authInstance.isPleroma,
     accessToken: authInstance.token!.accessToken,
   );
-  disposableOwner.addDisposable(pleromaApiAuthRestService);
+  disposableOwner.addDisposable(unifediApiAuthRestService);
 
-  var pleromaApiNotificationService = PleromaApiNotificationService(
-    restApiAuthService: pleromaApiAuthRestService,
+  var unifediApiNotificationService = UnifediApiNotificationService(
+    restApiAuthService: unifediApiAuthRestService,
   );
-  disposableOwner.addDisposable(pleromaApiNotificationService);
+  disposableOwner.addDisposable(unifediApiNotificationService);
 
   try {
-    var pleromaApiNotifications =
-        await pleromaApiNotificationService.getNotifications(
-      pagination: PleromaApiPaginationRequest(
+    var unifediApiNotifications =
+        await unifediApiNotificationService.getNotifications(
+      pagination: UnifediApiPagination(
         limit: 1,
+        minId: null,
+        maxId: null,
       ),
       excludeTypes: _calculateExcludePushNotificationTypesBaseOnPushSettings(
         pushSettings: pushSettings,
@@ -562,7 +562,7 @@ Future<IPleromaApiNotification?> _loadLastNotificationForInstance({
       ),
     );
 
-    return pleromaApiNotifications.firstOrNull;
+    return unifediApiNotifications.firstOrNull;
   } catch (e, stackTrace) {
     _logger.warning(() => 'failed to load notification', e, stackTrace);
 
@@ -572,41 +572,43 @@ Future<IPleromaApiNotification?> _loadLastNotificationForInstance({
   }
 }
 
-List<PleromaApiNotificationType>
+List<UnifediApiNotificationType>
     _calculateExcludePushNotificationTypesBaseOnPushSettings({
   required PushSettings pushSettings,
   required bool isPleroma,
 }) {
   return [
-    if (pushSettings.favourite != true) PleromaApiNotificationType.favourite,
-    if (pushSettings.follow != true) PleromaApiNotificationType.follow,
-    if (pushSettings.mention != true) PleromaApiNotificationType.mention,
-    if (pushSettings.reblog != true) PleromaApiNotificationType.reblog,
-    if (pushSettings.poll != true) PleromaApiNotificationType.poll,
-    if (pushSettings.pleromaChatMention != true && isPleroma)
-      PleromaApiNotificationType.pleromaChatMention,
-    if (pushSettings.pleromaEmojiReaction != true && isPleroma)
-      PleromaApiNotificationType.pleromaEmojiReaction,
+    if (pushSettings.favourite != true)
+      UnifediApiNotificationType.favouriteValue,
+    if (pushSettings.follow != true) UnifediApiNotificationType.followValue,
+    if (pushSettings.mention != true) UnifediApiNotificationType.mentionValue,
+    if (pushSettings.reblog != true) UnifediApiNotificationType.reblogValue,
+    if (pushSettings.poll != true) UnifediApiNotificationType.pollValue,
+    if (pushSettings.chatMention != true && isPleroma)
+      UnifediApiNotificationType.chatMentionValue,
+    if (pushSettings.emojiReaction != true && isPleroma)
+      UnifediApiNotificationType.emojiReactionValue,
   ];
 }
 
-List<PleromaApiNotificationType>
+List<UnifediApiNotificationType>
     _calculateIncludePushNotificationTypesBaseOnPushSettings({
   required PushSettings pushSettings,
   required bool isPleroma,
 }) {
   return [
-    if (pushSettings.favourite == true) PleromaApiNotificationType.favourite,
-    if (pushSettings.follow == true) PleromaApiNotificationType.follow,
-    if (pushSettings.mention == true) PleromaApiNotificationType.mention,
-    if (pushSettings.reblog == true) PleromaApiNotificationType.reblog,
-    if (pushSettings.poll == true) PleromaApiNotificationType.poll,
-    if (pushSettings.pleromaChatMention == true && isPleroma)
-      PleromaApiNotificationType.pleromaChatMention,
-    if (pushSettings.pleromaEmojiReaction == true && isPleroma)
-      PleromaApiNotificationType.pleromaEmojiReaction,
-    if (isPleroma) PleromaApiNotificationType.pleromaReport,
-    PleromaApiNotificationType.followRequest,
+    if (pushSettings.favourite == true)
+      UnifediApiNotificationType.favouriteValue,
+    if (pushSettings.follow == true) UnifediApiNotificationType.followValue,
+    if (pushSettings.mention == true) UnifediApiNotificationType.mentionValue,
+    if (pushSettings.reblog == true) UnifediApiNotificationType.reblogValue,
+    if (pushSettings.poll == true) UnifediApiNotificationType.pollValue,
+    if (pushSettings.chatMention == true && isPleroma)
+      UnifediApiNotificationType.chatMentionValue,
+    if (pushSettings.emojiReaction == true && isPleroma)
+      UnifediApiNotificationType.emojiReactionValue,
+    if (isPleroma) UnifediApiNotificationType.reportValue,
+    UnifediApiNotificationType.followRequestValue,
   ];
 }
 
@@ -614,9 +616,9 @@ List<PleromaApiNotificationType>
 Future<void> _createPushNotification({
   required ILocalPreferencesService localPreferencesService,
   required AuthInstance authInstance,
-  required IPleromaApiNotification pleromaApiNotification,
+  required IUnifediApiNotification unifediApiNotification,
 }) async {
-  _logger.finest(() => 'create push for $pleromaApiNotification');
+  _logger.finest(() => 'create push for $unifediApiNotification');
 
   var disposableOwner = DisposableOwner();
 
@@ -641,23 +643,23 @@ Future<void> _createPushNotification({
     locale.toLocale(),
   );
 
-  var mediaAttachment = calculatePleromaApiNotificationPushMediaAttachment(
+  var mediaAttachment = calculateUnifediApiNotificationPushMediaAttachment(
     localizationContext: localizationContext,
-    pleromaApiNotification: pleromaApiNotification,
+    unifediApiNotification: unifediApiNotification,
   );
-  var body = calculatePleromaApiNotificationPushBody(
+  var body = calculateUnifediApiNotificationPushBody(
     localizationContext: localizationContext,
-    pleromaApiNotification: pleromaApiNotification,
+    unifediApiNotification: unifediApiNotification,
   );
 
-  var pleromaApiNotificationType = pleromaApiNotification.typeAsPleromaApi;
+  var unifediApiNotificationType = unifediApiNotification.typeAsUnifediApi;
 
   var isMentionType =
-      pleromaApiNotificationType == PleromaApiNotificationType.mention;
-  var isPleromaChatMentionType = pleromaApiNotificationType ==
-      PleromaApiNotificationType.pleromaChatMention;
-  var isFollowRequestType =
-      pleromaApiNotificationType == PleromaApiNotificationType.followRequest;
+      unifediApiNotificationType == UnifediApiNotificationType.mentionValue;
+  var isChatMentionType =
+      unifediApiNotificationType == UnifediApiNotificationType.chatMentionValue;
+  var isFollowRequestType = unifediApiNotificationType ==
+      UnifediApiNotificationType.followRequestValue;
 
   NotificationLayout layout;
   if (body?.isNotEmpty == true) {
@@ -671,24 +673,24 @@ Future<void> _createPushNotification({
   var notificationPayloadData = _NotificationPayloadData(
     acct: authInstance.acct,
     serverHost: authInstance.urlHost,
-    pleromaApiNotification: pleromaApiNotification,
+    unifediApiNotification: unifediApiNotification,
   );
   await AwesomeNotifications().createNotification(
     content: NotificationContent(
-      id: _extractNotificationId(pleromaApiNotification),
-      channelKey: _calculateChannelKey(pleromaApiNotification),
-      title: calculatePleromaApiNotificationPushTitle(
+      id: _extractNotificationId(unifediApiNotification),
+      channelKey: _calculateChannelKey(unifediApiNotification),
+      title: calculateUnifediApiNotificationPushTitle(
         localizationContext: localizationContext,
-        pleromaApiNotification: pleromaApiNotification,
+        unifediApiNotification: unifediApiNotification,
       ),
       body: body,
       summary: calculateSummary(
         localizationContext: localizationContext,
-        pleromaApiNotification: pleromaApiNotification,
+        unifediApiNotification: unifediApiNotification,
       ),
       showWhen: false,
       icon: null,
-      largeIcon: pleromaApiNotification.account?.avatar,
+      largeIcon: unifediApiNotification.account?.avatar,
       bigPicture: mediaAttachment?.url,
       customSound: null,
       autoCancel: true,
@@ -698,7 +700,7 @@ Future<void> _createPushNotification({
       notificationLayout: layout,
       hideLargeIconOnExpand: false,
       ticker: null,
-      createdDate: pleromaApiNotification.createdAt.toIso8601String(),
+      createdDate: unifediApiNotification.createdAt.toIso8601String(),
     ),
     actionButtons: [
       if (isFollowRequestType)
@@ -719,7 +721,7 @@ Future<void> _createPushNotification({
           autoCancel: true,
           buttonType: ActionButtonType.Default,
         ),
-      if (isPleromaChatMentionType || isMentionType)
+      if (isChatMentionType || isMentionType)
         NotificationActionButton(
           key: NotificationActionType.reply.toJsonValue(),
           label: localizationContext.app_push_richNotification_action_reply,
@@ -735,69 +737,47 @@ Future<void> _createPushNotification({
 
 String? calculateSummary({
   required S localizationContext,
-  required IPleromaApiNotification pleromaApiNotification,
-}) {
-  String? summary;
+  required IUnifediApiNotification unifediApiNotification,
+}) =>
+    unifediApiNotification.typeAsUnifediApi.map(
+      follow: (_) =>
+          localizationContext.app_push_richNotification_follow_summary,
+      favourite: (_) =>
+          localizationContext.app_push_richNotification_favourite_summary,
+      reblog: (_) =>
+          localizationContext.app_push_richNotification_reblog_summary,
+      mention: (_) =>
+          localizationContext.app_push_richNotification_mention_summary,
+      poll: (_) => localizationContext.app_push_richNotification_poll_summary,
+      move: (_) => localizationContext.app_push_richNotification_move_summary,
+      followRequest: (_) =>
+          localizationContext.app_push_richNotification_followRequest_summary,
+      emojiReaction: (_) =>
+          localizationContext.app_push_richNotification_emojiReaction_summary,
+      chatMention: (_) =>
+          localizationContext.app_push_richNotification_chatMention_summary,
+      report: (_) =>
+          localizationContext.app_push_richNotification_report_summary,
+      unknown: (_) =>
+          localizationContext.app_push_richNotification_unknown_summary,
+    );
 
-  switch (pleromaApiNotification.typeAsPleromaApi) {
-    case PleromaApiNotificationType.follow:
-      summary = localizationContext.app_push_richNotification_follow_summary;
-      break;
-    case PleromaApiNotificationType.favourite:
-      summary = localizationContext.app_push_richNotification_favourite_summary;
-      break;
-    case PleromaApiNotificationType.reblog:
-      summary = localizationContext.app_push_richNotification_reblog_summary;
-      break;
-    case PleromaApiNotificationType.mention:
-      summary = localizationContext.app_push_richNotification_mention_summary;
-      break;
-    case PleromaApiNotificationType.poll:
-      summary = localizationContext.app_push_richNotification_poll_summary;
-      break;
-    case PleromaApiNotificationType.move:
-      summary = localizationContext.app_push_richNotification_move_summary;
-      break;
-    case PleromaApiNotificationType.followRequest:
-      summary =
-          localizationContext.app_push_richNotification_followRequest_summary;
-      break;
-    case PleromaApiNotificationType.pleromaEmojiReaction:
-      summary = localizationContext
-          .app_push_richNotification_pleromaEmojiReaction_summary;
-      break;
-    case PleromaApiNotificationType.pleromaChatMention:
-      summary = localizationContext
-          .app_push_richNotification_pleromaChatMention_summary;
-      break;
-    case PleromaApiNotificationType.pleromaReport:
-      summary =
-          localizationContext.app_push_richNotification_pleromaReport_summary;
-      break;
-    case PleromaApiNotificationType.unknown:
-      summary = localizationContext.app_push_richNotification_unknown_summary;
-      break;
-  }
-
-  return summary;
-}
-
-String? calculatePleromaApiNotificationPushBody({
+String? calculateUnifediApiNotificationPushBody({
   required S localizationContext,
-  required IPleromaApiNotification pleromaApiNotification,
+  required IUnifediApiNotification unifediApiNotification,
 }) {
-  var status = pleromaApiNotification.status;
-  var chatMessage = pleromaApiNotification.chatMessage;
+  var status = unifediApiNotification.status;
+  var chatMessage = unifediApiNotification.chatMessage;
 
   String? body;
 
-  var pleromaApiNotificationType = pleromaApiNotification.typeAsPleromaApi;
+  var unifediApiNotificationType = unifediApiNotification.typeAsUnifediApi;
 
   var isMentionType =
-      pleromaApiNotificationType == PleromaApiNotificationType.mention;
+      unifediApiNotificationType == UnifediApiNotificationType.mentionValue;
 
-  var isPleromaChatMentionType = pleromaApiNotificationType ==
-      PleromaApiNotificationType.pleromaChatMention;
+  var isChatMentionType =
+      unifediApiNotificationType == UnifediApiNotificationType.chatMentionValue;
   if (isMentionType && status != null) {
     var spoilerText = status.spoilerText;
     if (spoilerText?.isNotEmpty == true) {
@@ -805,7 +785,7 @@ String? calculatePleromaApiNotificationPushBody({
     } else {
       body = status.content;
     }
-  } else if (isPleromaChatMentionType && chatMessage != null) {
+  } else if (isChatMentionType && chatMessage != null) {
     body = chatMessage.content;
   }
 
@@ -814,132 +794,86 @@ String? calculatePleromaApiNotificationPushBody({
   return body;
 }
 
-IPleromaApiMediaAttachment? calculatePleromaApiNotificationPushMediaAttachment({
+IUnifediApiMediaAttachment? calculateUnifediApiNotificationPushMediaAttachment({
   required S localizationContext,
-  required IPleromaApiNotification pleromaApiNotification,
+  required IUnifediApiNotification unifediApiNotification,
 }) {
-  var status = pleromaApiNotification.status;
-  var chatMessage = pleromaApiNotification.chatMessage;
+  var status = unifediApiNotification.status;
+  var chatMessage = unifediApiNotification.chatMessage;
 
-  IPleromaApiMediaAttachment? mediaAttachment;
+  IUnifediApiMediaAttachment? mediaAttachment;
 
-  var pleromaApiNotificationType = pleromaApiNotification.typeAsPleromaApi;
+  var unifediApiNotificationType = unifediApiNotification.typeAsUnifediApi;
 
   var isMentionType =
-      pleromaApiNotificationType == PleromaApiNotificationType.mention;
-  var isPleromaChatMentionType = pleromaApiNotificationType ==
-      PleromaApiNotificationType.pleromaChatMention;
+      unifediApiNotificationType == UnifediApiNotificationType.mentionValue;
+  var isChatMentionType =
+      unifediApiNotificationType == UnifediApiNotificationType.chatMentionValue;
   if (isMentionType && status != null) {
     if (!status.sensitive) {
       mediaAttachment = status.mediaAttachments?.firstOrNull;
     }
-  } else if (isPleromaChatMentionType && chatMessage != null) {
+  } else if (isChatMentionType && chatMessage != null) {
     mediaAttachment = chatMessage.mediaAttachment;
   }
 
   return mediaAttachment;
 }
 
-String calculatePleromaApiNotificationPushTitle({
+String calculateUnifediApiNotificationPushTitle({
   required S localizationContext,
-  required IPleromaApiNotification pleromaApiNotification,
+  required IUnifediApiNotification unifediApiNotification,
 }) {
-  String? title;
-  var acct = pleromaApiNotification.account?.acct ?? '';
+  var acct = unifediApiNotification.account?.acct ?? '';
 
-  switch (pleromaApiNotification.typeAsPleromaApi) {
-    case PleromaApiNotificationType.follow:
-      title = localizationContext.app_push_richNotification_follow_title(acct);
-      break;
-    case PleromaApiNotificationType.favourite:
-      title =
-          localizationContext.app_push_richNotification_favourite_title(acct);
-      break;
-    case PleromaApiNotificationType.reblog:
-      title = localizationContext.app_push_richNotification_reblog_title(acct);
-      break;
-    case PleromaApiNotificationType.mention:
-      title = localizationContext.app_push_richNotification_mention_title(acct);
-      break;
-    case PleromaApiNotificationType.poll:
-      title = localizationContext.app_push_richNotification_poll_title;
-      break;
-    case PleromaApiNotificationType.move:
-      title = localizationContext.app_push_richNotification_move_title(acct);
-      break;
-    case PleromaApiNotificationType.followRequest:
-      title = localizationContext
-          .app_push_richNotification_followRequest_title(acct);
-      break;
-    case PleromaApiNotificationType.pleromaEmojiReaction:
-      title = localizationContext
-          .app_push_richNotification_pleromaEmojiReaction_title(
-        acct,
-        pleromaApiNotification.emoji!,
-      );
-      break;
-    case PleromaApiNotificationType.pleromaChatMention:
-      title = localizationContext
-          .app_push_richNotification_pleromaChatMention_title(acct);
-      break;
-    case PleromaApiNotificationType.pleromaReport:
-      title = localizationContext
-          .app_push_richNotification_pleromaReport_title(acct);
-      break;
-    case PleromaApiNotificationType.unknown:
-      title = localizationContext.app_push_richNotification_unknown_title;
-      break;
-  }
-
-  return title;
+  return unifediApiNotification.typeAsUnifediApi.map(
+    follow: (_) =>
+        localizationContext.app_push_richNotification_follow_title(acct),
+    favourite: (_) =>
+        localizationContext.app_push_richNotification_favourite_title(acct),
+    reblog: (_) =>
+        localizationContext.app_push_richNotification_reblog_title(acct),
+    mention: (_) =>
+        localizationContext.app_push_richNotification_mention_title(acct),
+    poll: (_) => localizationContext.app_push_richNotification_poll_title,
+    move: (_) => localizationContext.app_push_richNotification_move_title(acct),
+    followRequest: (_) =>
+        localizationContext.app_push_richNotification_followRequest_title(acct),
+    emojiReaction: (_) =>
+        localizationContext.app_push_richNotification_emojiReaction_title(
+      acct,
+      unifediApiNotification.emoji!,
+    ),
+    chatMention: (_) =>
+        localizationContext.app_push_richNotification_chatMention_title(acct),
+    report: (_) =>
+        localizationContext.app_push_richNotification_report_title(acct),
+    unknown: (_) => localizationContext.app_push_richNotification_unknown_title,
+  );
 }
 
-String _calculateChannelKey(IPleromaApiNotification pleromaApiNotification) {
-  String channelKey;
+String _calculateChannelKey(IUnifediApiNotification unifediApiNotification) {
+  var typeAsUnifediApi = unifediApiNotification.typeAsUnifediApi;
 
-  switch (pleromaApiNotification.typeAsPleromaApi) {
-    case PleromaApiNotificationType.follow:
-      channelKey = _followChannelKey;
-      break;
-    case PleromaApiNotificationType.favourite:
-      channelKey = _favouriteChannelKey;
-      break;
-    case PleromaApiNotificationType.reblog:
-      channelKey = _reblogChannelKey;
-      break;
-    case PleromaApiNotificationType.mention:
-      channelKey = _mentionChannelKey;
-      break;
-    case PleromaApiNotificationType.poll:
-      channelKey = _pollChannelKey;
-      break;
-    case PleromaApiNotificationType.move:
-      channelKey = _moveChannelKey;
-      break;
-    case PleromaApiNotificationType.followRequest:
-      channelKey = _followRequestChannelKey;
-      break;
-    case PleromaApiNotificationType.pleromaEmojiReaction:
-      channelKey = _pleromaEmojiReactionChannelKey;
-      break;
-    case PleromaApiNotificationType.pleromaChatMention:
-      channelKey = _pleromaChatMentionChannelKey;
-      break;
-    case PleromaApiNotificationType.pleromaReport:
-      channelKey = _pleromaReportChannelKey;
-      break;
-    case PleromaApiNotificationType.unknown:
-      channelKey = _unknownChannelKey;
-      break;
-  }
-
-  return channelKey;
+  return typeAsUnifediApi.map(
+    follow: (_) => _followChannelKey,
+    favourite: (_) => _favouriteChannelKey,
+    reblog: (_) => _reblogChannelKey,
+    mention: (_) => _mentionChannelKey,
+    poll: (_) => _pollChannelKey,
+    move: (_) => _moveChannelKey,
+    followRequest: (_) => _followRequestChannelKey,
+    emojiReaction: (_) => _emojiReactionChannelKey,
+    chatMention: (_) => _chatMentionGroupKey,
+    report: (_) => _reportChannelKey,
+    unknown: (_) => _unknownChannelKey,
+  );
 }
 
-int _extractNotificationId(IPleromaApiNotification pleromaApiNotification) {
+int _extractNotificationId(IUnifediApiNotification unifediApiNotification) {
   try {
     // usually id is int type
-    return int.parse(pleromaApiNotification.id);
+    return int.parse(unifediApiNotification.id);
   } catch (_) {
     // if id is not it just use ms from epoch to make it unique
     return DateTime.now().millisecondsSinceEpoch;
@@ -988,12 +922,12 @@ class _NotificationPayloadData {
 
   final String acct;
   final String serverHost;
-  final IPleromaApiNotification pleromaApiNotification;
+  final IUnifediApiNotification unifediApiNotification;
 
   _NotificationPayloadData({
     required this.acct,
     required this.serverHost,
-    required this.pleromaApiNotification,
+    required this.unifediApiNotification,
   });
 
   // Payload is Map<String, String> not Map<String, dynamic>
@@ -1002,7 +936,7 @@ class _NotificationPayloadData {
         _notificationContentPayloadAcctKey: acct,
         _notificationContentPayloadServerHostKey: serverHost,
         _notificationContentPayloadNotificationJsonKey: jsonEncode(
-          pleromaApiNotification.toJson(),
+          unifediApiNotification.toJson(),
         ),
       };
 
@@ -1012,13 +946,13 @@ class _NotificationPayloadData {
     var notificationJsonString =
         payload[_notificationContentPayloadNotificationJsonKey]!;
     var notificationJson = jsonDecode(notificationJsonString);
-    var pleromaApiNotification =
-        PleromaApiNotification.fromJson(notificationJson);
+    var unifediApiNotification =
+        UnifediApiNotification.fromJson(notificationJson);
 
     return _NotificationPayloadData(
       acct: acct,
       serverHost: serverHost,
-      pleromaApiNotification: pleromaApiNotification,
+      unifediApiNotification: unifediApiNotification,
     );
   }
 
@@ -1029,16 +963,16 @@ class _NotificationPayloadData {
           runtimeType == other.runtimeType &&
           acct == other.acct &&
           serverHost == other.serverHost &&
-          pleromaApiNotification == other.pleromaApiNotification;
+          unifediApiNotification == other.unifediApiNotification;
 
   @override
   int get hashCode =>
-      acct.hashCode ^ serverHost.hashCode ^ pleromaApiNotification.hashCode;
+      acct.hashCode ^ serverHost.hashCode ^ unifediApiNotification.hashCode;
 
   @override
   String toString() => '_NotificationPayloadData{'
       'acct: $acct, '
       'serverHost: $serverHost, '
-      'pleromaApiNotification: $pleromaApiNotification'
+      'unifediApiNotification: $unifediApiNotification'
       '}';
 }

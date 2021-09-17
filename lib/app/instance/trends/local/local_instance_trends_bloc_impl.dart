@@ -5,33 +5,34 @@ import 'package:fedi/app/instance/trends/instance_trends_bloc_proxy_provider.dar
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 
 class LocalInstanceTrendsBloc extends InstanceTrendsBloc
     implements IInstanceTrendsBloc {
-  @override
-  final IPleromaApiTrendsService pleromaApiTrendsService;
+
+  final IUnifediApiInstanceService unifediApiInstanceService;
 
   LocalInstanceTrendsBloc({
-    required IPleromaApiInstance? initialInstance,
-    required this.pleromaApiTrendsService,
+    required IUnifediApiInstance? initialInstance,
+    required this.unifediApiInstanceService,
     required IPaginationSettingsBloc paginationSettingsBloc,
   }) : super(
-          instanceUri: pleromaApiTrendsService.restService.baseUri,
+          instanceUri: unifediApiInstanceService.restService.accessBloc.access.uri,
           initialInstance: initialInstance,
           paginationSettingsBloc: paginationSettingsBloc,
         );
 
   static LocalInstanceTrendsBloc createFromContext(BuildContext context) {
-    var pleromaApiTrendsService =
-        Provider.of<IPleromaApiTrendsService>(context, listen: false);
+    var unifediApiInstanceService =
+        Provider.of<IUnifediApiInstanceService>(context, listen: false);
     var currentAuthInstanceBloc =
         ICurrentAuthInstanceBloc.of(context, listen: false);
 
     return LocalInstanceTrendsBloc(
-      pleromaApiTrendsService: pleromaApiTrendsService,
+      unifediApiInstanceService: unifediApiInstanceService,
       initialInstance: currentAuthInstanceBloc.currentInstance!.info,
       paginationSettingsBloc: IPaginationSettingsBloc.of(
         context,

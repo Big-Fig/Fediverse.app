@@ -19,7 +19,7 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/share/income/income_share_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:logging/logging.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:provider/provider.dart';
 
 final _logger = Logger('income_share_action_chooser_dialog.dart');
@@ -146,19 +146,19 @@ ShareEntityItem _mapIncomeShareEventToShareEntity(
       isNeedReUploadMediaAttachments: false,
     );
 
-Future<List<IPleromaApiMediaAttachment>?> _uploadMediaIfNeed({
+Future<List<IUnifediApiMediaAttachment>?> _uploadMediaIfNeed({
   required BuildContext context,
   required List<IncomeShareEventMedia>? incomeShareEventMedias,
 }) async {
-  List<IPleromaApiMediaAttachment>? mediaAttachments;
+  List<IUnifediApiMediaAttachment>? mediaAttachments;
   if (incomeShareEventMedias?.isNotEmpty == true) {
     var dialogResult = await PleromaAsyncOperationHelper
-        .performPleromaAsyncOperation<List<IPleromaApiMediaAttachment>>(
+        .performPleromaAsyncOperation<List<IUnifediApiMediaAttachment>>(
       context: context,
       contentMessage: S.of(context).app_media_upload_progress,
       asyncCode: () async {
-        var pleromaApiMediaAttachmentService =
-            Provider.of<IPleromaApiMediaAttachmentService>(
+        var unifediApiMediaAttachmentService =
+            Provider.of<IUnifediApiMediaAttachmentService>(
           context,
           listen: false,
         );
@@ -166,21 +166,21 @@ Future<List<IPleromaApiMediaAttachment>?> _uploadMediaIfNeed({
         var futures = incomeShareEventMedias!.map(
           (incomeShareEventMedia) async {
             var file = File(incomeShareEventMedia.path);
-            var pleromaApiMediaAttachment =
-                await pleromaApiMediaAttachmentService.uploadMedia(
+            var unifediApiMediaAttachment =
+                await unifediApiMediaAttachmentService.uploadMedia(
               file: file,
             );
 
             // shared filed was copied to temp folder
             await file.delete();
 
-            return pleromaApiMediaAttachment;
+            return unifediApiMediaAttachment;
           },
         );
 
-        var pleromaApiMediaAttachments = await Future.wait(futures);
+        var unifediApiMediaAttachments = await Future.wait(futures);
 
-        return pleromaApiMediaAttachments;
+        return unifediApiMediaAttachments;
       },
     );
 

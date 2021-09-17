@@ -5,8 +5,8 @@ import 'package:fedi/app/emoji/picker/category/custom_image_url/local_preference
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/emoji_picker/category/image_url/custom_emoji_picker_image_url_category_bloc.dart';
 import 'package:fedi/emoji_picker/item/image_url/custom_emoji_picker_image_url_item_model.dart';
-import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart' as path;
 
@@ -17,14 +17,13 @@ var _logger = Logger('emoji_picker_custom_image_url_category_bloc_impl.dart');
 class EmojiPickerCustomImageUrlCategoryBloc extends AsyncInitLoadingBloc
     implements ICustomEmojiPickerImageUrlCategoryBloc {
   final ICurrentAuthInstanceBloc currentAuthInstanceBloc;
-  final IPleromaApiEmojiService pleromaApiEmojiService;
-  final IMastodonApiEmojiService mastodonApiEmojiService;
+  final IUnifediApiInstanceService unifediApiInstanceService;
+  final IUnifediApiInstanceService unifediApiInstanceService;
   final IEmojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc
       preferenceBloc;
 
   EmojiPickerCustomImageUrlCategoryBloc({
-    required this.pleromaApiEmojiService,
-    required this.mastodonApiEmojiService,
+    required this.unifediApiInstanceService,
     required this.currentAuthInstanceBloc,
     required this.preferenceBloc,
   });
@@ -44,13 +43,13 @@ class EmojiPickerCustomImageUrlCategoryBloc extends AsyncInitLoadingBloc
   }
 
   Future<void> _loadMastodon() async {
-    await mastodonApiEmojiService.getCustomEmojis().then(
+    await unifediApiInstanceService.getCustomEmojis().then(
       (customEmojis) async {
         var emojiItems = customEmojis.map(
           (customEmoji) {
             return CustomEmojiPickerImageUrlItem(
               imageUrl: customEmoji.staticUrl!,
-              name: customEmoji.shortcode!,
+              name: customEmoji.name,
             );
           },
         ).toList();
@@ -77,12 +76,12 @@ class EmojiPickerCustomImageUrlCategoryBloc extends AsyncInitLoadingBloc
     var urlHost = currentInstance.urlHost;
     var urlSchema = currentInstance.urlSchema;
 
-    await pleromaApiEmojiService.getCustomEmojis().then(
+    await unifediApiInstanceService.getCustomEmojis().then(
       (customEmojis) async {
         var emojiItems = customEmojis.map(
           (customEmoji) {
             var baseUrl = '$urlSchema://$urlHost';
-            var imageUrl = '${customEmoji.imageUrl}';
+            var imageUrl = '${customEmoji.url}';
 
             if (baseUrl.endsWith('/') && imageUrl.startsWith('/')) {
               baseUrl = baseUrl.substring(0, baseUrl.length - 1);

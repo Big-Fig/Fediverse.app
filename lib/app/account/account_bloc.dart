@@ -3,7 +3,7 @@ import 'package:fedi/app/emoji/text/emoji_text_model.dart';
 import 'package:fedi/app/instance/location/instance_location_bloc.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -16,32 +16,32 @@ abstract class IAccountBloc extends DisposableOwner
 
   Stream<IAccount> get accountStream;
 
-  IPleromaApiAccountRelationship? get relationship;
+  IUnifediApiAccountRelationship? get relationship;
 
-  Stream<IPleromaApiAccountRelationship?>? get relationshipStream;
+  Stream<IUnifediApiAccountRelationship?>? get relationshipStream;
 
-  Future<IPleromaApiAccountRelationship> toggleFollow();
+  Future<IUnifediApiAccountRelationship> toggleFollow();
 
-  Future<IPleromaApiAccountRelationship> toggleMute();
+  Future<IUnifediApiAccountRelationship> toggleMute();
 
-  Future<IPleromaApiAccountRelationship> mute({
+  Future<IUnifediApiAccountRelationship> mute({
     required bool notifications,
     required Duration? duration,
   });
 
-  Future<IPleromaApiAccountRelationship> unMute();
+  Future<IUnifediApiAccountRelationship> unMute();
 
-  Future<IPleromaApiAccountRelationship> subscribe();
+  Future<IUnifediApiAccountRelationship> subscribe();
 
-  Future<IPleromaApiAccountRelationship> unSubscribe();
+  Future<IUnifediApiAccountRelationship> unSubscribe();
 
-  Future<IPleromaApiAccountRelationship> togglePin();
+  Future<IUnifediApiAccountRelationship> togglePin();
 
-  Future<IPleromaApiAccountRelationship> toggleBlock();
+  Future<IUnifediApiAccountRelationship> toggleBlock();
 
-  Future<IPleromaApiAccountRelationship> toggleSubscribe();
+  Future<IUnifediApiAccountRelationship> toggleSubscribe();
 
-  Future<IPleromaApiAccountRelationship> toggleBlockDomain();
+  Future<IUnifediApiAccountRelationship> toggleBlockDomain();
 
   Future refreshFromNetwork({
     required bool isNeedPreFetchRelationship,
@@ -87,44 +87,44 @@ extension IAccountBlocExtension on IAccountBloc {
   Stream<String?> get avatarStream =>
       accountStream.map((account) => account.avatar);
 
-  String? get pleromaBackgroundImage => account.pleromaBackgroundImage;
+  String? get backgroundImage => account.backgroundImage;
 
-  Stream<String?> get pleromaBackgroundImageStream =>
-      accountStream.map((account) => account.pleromaBackgroundImage);
+  Stream<String?> get backgroundImageStream =>
+      accountStream.map((account) => account.backgroundImage);
 
-  bool? get pleromaHideFavorites => account.pleromaHideFavorites;
+  bool? get hideFavorites => account.hideFavorites;
 
-  Stream<bool?> get pleromaHideFavoritesStream =>
-      accountStream.map((account) => account.pleromaHideFavorites);
+  Stream<bool?> get hideFavoritesStream =>
+      accountStream.map((account) => account.hideFavorites);
 
-  bool? get pleromaHideFollowers => account.pleromaHideFollowers;
+  bool? get hideFollowers => account.hideFollowers;
 
-  Stream<bool?> get pleromaHideFollowersStream =>
-      accountStream.map((account) => account.pleromaHideFollowers);
+  Stream<bool?> get hideFollowersStream =>
+      accountStream.map((account) => account.hideFollowers);
 
-  bool? get pleromaHideFollowersCount => account.pleromaHideFollowersCount;
+  bool? get hideFollowersCount => account.hideFollowersCount;
 
-  Stream<bool?> get pleromaHideFollowersCountStream =>
-      accountStream.map((account) => account.pleromaHideFollowersCount);
+  Stream<bool?> get hideFollowersCountStream =>
+      accountStream.map((account) => account.hideFollowersCount);
 
-  bool? get pleromaHideFollows => account.pleromaHideFollows;
+  bool? get hideFollows => account.hideFollows;
 
-  Stream<bool?> get pleromaHideFollowsStream =>
-      accountStream.map((account) => account.pleromaHideFollows);
+  Stream<bool?> get hideFollowsStream =>
+      accountStream.map((account) => account.hideFollows);
 
-  bool? get pleromaAcceptsChatMessages => account.pleromaAcceptsChatMessages;
+  bool? get acceptsChatMessages => account.acceptsChatMessages;
 
-  Stream<bool?> get pleromaAcceptsChatMessagesStream =>
-      accountStream.map((account) => account.pleromaAcceptsChatMessages);
+  Stream<bool?> get acceptsChatMessagesStream =>
+      accountStream.map((account) => account.acceptsChatMessages);
 
-  bool? get pleromaHideFollowsCount => account.pleromaHideFollowsCount;
+  bool? get hideFollowsCount => account.hideFollowsCount;
 
-  Stream<bool?> get pleromaHideFollowsCountStream =>
-      accountStream.map((account) => account.pleromaHideFollowsCount);
+  Stream<bool?> get hideFollowsCountStream =>
+      accountStream.map((account) => account.hideFollowsCount);
 
-  List<IPleromaApiField> get fields => account.fields ?? [];
+  List<IUnifediApiField> get fields => account.fields ?? [];
 
-  Stream<List<IPleromaApiField>> get fieldsStream =>
+  Stream<List<IUnifediApiField>> get fieldsStream =>
       accountStream.map((account) => account.fields ?? []);
 
   int? get followersCount => account.followersCount;

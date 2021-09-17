@@ -10,10 +10,11 @@ import 'package:fedi/app/auth/oauth_last_launched/local_preferences/auth_oauth_l
 import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/localization/settings/localization_settings_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
-import 'package:base_fediverse_api/base_fediverse_api.dart';
+import 'package:fedi/connection/connection_service.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:logging/logging.dart';
 
 final _logger = Logger('register_auth_instance_bloc_impl.dart');
@@ -32,19 +33,19 @@ class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
   final IConfigService configService;
 
   // ignore: avoid-late-keyword
-  late IPleromaApiInstance pleromaApiInstance;
+  late IUnifediApiInstance unifediApiInstance;
 
   // ignore: avoid-late-keyword
   late IRestService restService;
 
   // ignore: avoid-late-keyword
-  late IPleromaApiRestService pleromaRestService;
+  late IUnifediApiRestService unifediApiRestService;
 
   // ignore: avoid-late-keyword
-  late IPleromaApiCaptchaService pleromaApiCaptchaService;
+  late IUnifediApiInstanceService unifediApiInstanceService;
 
   // ignore: avoid-late-keyword
-  late IPleromaApiInstanceService pleromaInstanceService;
+  late IUnifediApiInstanceService pleromaInstanceService;
 
   @override
   // ignore: avoid-late-keyword
@@ -60,27 +61,27 @@ class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
     required this.configService,
   }) : super() {
     restService = RestService(baseUri: instanceBaseUri);
-    pleromaRestService = PleromaApiRestService(
+    unifediApiRestService = UnifediApiRestService(
       connectionService: connectionService,
       restService: restService,
     );
 
-    pleromaApiCaptchaService = PleromaApiCaptchaService(
-      restService: pleromaRestService,
+    unifediApiInstanceService = UnifediApiInstanceService(
+      restService: unifediApiRestService,
     );
 
     pleromaInstanceService =
-        PleromaApiInstanceService(restService: pleromaRestService);
+        UnifediApiInstanceService(restService: unifediApiRestService);
 
     registrationResultStreamController.disposeWith(this);
     restService.disposeWith(this);
-    pleromaRestService.disposeWith(this);
+    unifediApiRestService.disposeWith(this);
     pleromaInstanceService.disposeWith(this);
   }
 
   @override
   Future<AuthHostRegistrationResult> submit() async {
-    var pleromaAccountRegisterRequest =
+    var unifediApiAccountRegisterRequest =
         registerAuthInstanceFormBloc.calculateRegisterFormData();
 
     AuthHostRegistrationResult registrationResult;
@@ -99,7 +100,7 @@ class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
       await authApplicationBloc.performAsyncInit();
 
       registrationResult = await authApplicationBloc.registerAccount(
-        request: pleromaAccountRegisterRequest,
+        request: unifediApiAccountRegisterRequest,
       );
     } catch (e, stackTrace) {
       // todo: refactor
@@ -137,14 +138,14 @@ class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
 
   @override
   Future internalAsyncInit() async {
-    pleromaApiInstance = await pleromaInstanceService.getInstance();
+    unifediApiInstance = await pleromaInstanceService.getInstance();
 
     registerAuthInstanceFormBloc = RegisterAuthInstanceFormBloc(
-      pleromaApiInstance: pleromaApiInstance,
-      pleromaApiCaptchaService: pleromaApiCaptchaService,
+      unifediApiInstance: unifediApiInstance,
+      unifediApiInstanceService: unifediApiInstanceService,
       instanceBaseUri: instanceBaseUri,
       // localizationSettingsBloc: localizationSettingsBloc,
-      manualApprovalRequired: pleromaApiInstance.approvalRequired == true,
+      manualApprovalRequired: unifediApiInstance.approvalRequired == true,
     )..disposeWith(this);
   }
 }

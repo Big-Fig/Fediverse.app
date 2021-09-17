@@ -12,7 +12,7 @@ import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/url/url_helper.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -158,7 +158,7 @@ class ConversationChatStatusListItemWidget extends StatelessWidget {
   }
 
   Widget buildMediaContent(IStatusBloc statusBloc) =>
-      StreamBuilder<List<IPleromaApiMediaAttachment>?>(
+      StreamBuilder<List<IUnifediApiMediaAttachment>?>(
         stream: statusBloc.mediaAttachmentsStream,
         builder: (context, snapshot) {
           var mediaAttachments = snapshot.data;

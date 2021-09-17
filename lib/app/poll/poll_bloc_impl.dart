@@ -3,13 +3,13 @@ import 'dart:async';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/poll/poll_bloc.dart';
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
 
 class PollBloc extends DisposableOwner implements IPollBloc {
-  final BehaviorSubject<IPleromaApiPoll> pollSubject;
+  final BehaviorSubject<IUnifediApiPoll> pollSubject;
 
   BehaviorSubject<bool> isNeedShowResultsWithoutVoteSubject =
       BehaviorSubject.seeded(false);
@@ -22,16 +22,16 @@ class PollBloc extends DisposableOwner implements IPollBloc {
   Stream<bool> get isNeedShowResultsWithoutVoteStream =>
       isNeedShowResultsWithoutVoteSubject.stream;
 
-  final BehaviorSubject<List<IPleromaApiPollOption>> selectedVotesSubject =
+  final BehaviorSubject<List<IUnifediApiPollOption>> selectedVotesSubject =
       BehaviorSubject.seeded([]);
 
-  final IPleromaApiPollService? pleromaPollService;
+  final IUnifediApiPollService? unifediApiPollService;
 
   final InstanceLocation instanceLocation;
 
   PollBloc({
-    required IPleromaApiPoll poll,
-    required this.pleromaPollService,
+    required IUnifediApiPoll poll,
+    required this.unifediApiPollService,
     required this.instanceLocation,
   }) : pollSubject = BehaviorSubject.seeded(poll) {
     pollSubject.disposeWith(this);
@@ -58,10 +58,10 @@ class PollBloc extends DisposableOwner implements IPollBloc {
       instanceLocation == InstanceLocation.local;
 
   @override
-  IPleromaApiPoll get poll => pollSubject.value;
+  IUnifediApiPoll get poll => pollSubject.value;
 
   @override
-  Stream<IPleromaApiPoll> get pollStream => pollSubject.stream;
+  Stream<IUnifediApiPoll> get pollStream => pollSubject.stream;
 
   @override
   bool get isPossibleToVote => isLocalInstanceLocation && poll.isPossibleToVote;
@@ -96,7 +96,7 @@ class PollBloc extends DisposableOwner implements IPollBloc {
       );
 
   @override
-  void onPollOptionSelected(IPleromaApiPollOption pollOption) {
+  void onPollOptionSelected(IUnifediApiPollOption pollOption) {
     if (!multiple) {
       selectedVotes.clear();
     }
@@ -121,7 +121,7 @@ class PollBloc extends DisposableOwner implements IPollBloc {
       voteIndexes.add(index);
     });
 
-    var updatedPoll = await pleromaPollService!.vote(
+    var updatedPoll = await unifediApiPollService!.vote(
       pollRemoteId: poll.id!,
       voteIndexes: voteIndexes,
     );
@@ -132,10 +132,10 @@ class PollBloc extends DisposableOwner implements IPollBloc {
   }
 
   @override
-  List<IPleromaApiPollOption> get selectedVotes => selectedVotesSubject.value;
+  List<IUnifediApiPollOption> get selectedVotes => selectedVotesSubject.value;
 
   @override
-  Stream<List<IPleromaApiPollOption>> get selectedVotesStream =>
+  Stream<List<IUnifediApiPollOption>> get selectedVotesStream =>
       selectedVotesSubject.stream;
 
   @override
@@ -147,14 +147,14 @@ class PollBloc extends DisposableOwner implements IPollBloc {
       );
 
   @override
-  void onPollUpdated(IPleromaApiPoll? poll) {
+  void onPollUpdated(IUnifediApiPoll? poll) {
     // TODO: WTF?
     pollSubject.add(poll!);
   }
 
   @override
   Future refreshFromNetwork() async {
-    var remotePoll = await pleromaPollService!.getPoll(
+    var remotePoll = await unifediApiPollService!.getPoll(
       pollRemoteId: poll.id!,
     );
 

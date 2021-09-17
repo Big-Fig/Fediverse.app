@@ -26,18 +26,18 @@ void main() {
     expect(database.migrationsToExecuted, database.schemaVersion);
   });
 
-  test('test dbMigration v4->v5 pleromaBackgroundImage', () async {
+  test('test dbMigration v4->v5 backgroundImage', () async {
     var accountDao = database.accountDao;
 
     await accountDao.clear(batchTransaction: null);
 
     expect((await accountDao.getAll()).isNotEmpty, false);
 
-    var pleromaBackgroundImage = 'pleromaBackgroundImage11';
+    var backgroundImage = 'backgroundImage11';
     var testDbAccount =
-        await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed1');
+        await AccountDatabaseMockHelper.createTestDbAccount(seed: 'seed1');
     testDbAccount =
-        testDbAccount.copyWith(pleromaBackgroundImage: pleromaBackgroundImage);
+        testDbAccount.copyWith(backgroundImage: backgroundImage);
     await accountDao.insert(
       entity: testDbAccount,
       mode: null,
@@ -45,8 +45,8 @@ void main() {
 
     expect(
       (await accountDao.findByRemoteId(testDbAccount.remoteId))!
-          .pleromaBackgroundImage,
-      pleromaBackgroundImage,
+          .backgroundImage,
+      backgroundImage,
     );
   });
 }

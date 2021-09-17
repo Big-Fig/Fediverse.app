@@ -1,13 +1,13 @@
 import 'package:fedi/app/auth/host/auth_host_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 import 'instance/auth_instance_model_test_helper.dart';
 
 // ignore_for_file: no-magic-number
-class AuthHostModelTestHelper {
+class AuthHostModelMockHelper {
   static AuthHostRegistrationResult createTestAuthHostRegistrationResult({
     required String seed,
-    PleromaApiInstance? pleromaApiInstance,
+    UnifediApiInstance? unifediApiInstance,
     DisabledRegistrationAuthHostException?
         disabledRegistrationAuthHostException,
     InvitesOnlyRegistrationAuthHostException?
@@ -20,14 +20,14 @@ class AuthHostModelTestHelper {
     dynamic unknownHostException,
   }) =>
       AuthHostRegistrationResult(
-        token: PleromaApiOAuthTestHelper.createTestPleromaApiOAuthToken(
+        token: UnifediApiOAuthMockHelper.createTestUnifediApiOAuthToken(
           seed: seed,
         ),
-        pleromaInstance: pleromaApiInstance ??
-            PleromaApiInstanceTestHelper.createTestPleromaApiInstance(
+        pleromaInstance: unifediApiInstance ??
+            UnifediApiInstanceMockHelper.createTestUnifediApiInstance(
               seed: seed,
             ),
-        authInstance: AuthInstanceModelTestHelper.createTestAuthInstance(
+        authInstance: AuthInstanceModelMockHelper.createTestAuthInstance(
           seed: seed,
         ),
         cantRegisterAppAuthHostException: cantRegisterAppAuthHostException,

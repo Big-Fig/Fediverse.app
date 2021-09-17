@@ -1,12 +1,12 @@
 import 'package:collection/collection.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/instance/announcement/instance_announcement_bloc.dart';
 import 'package:fedi/app/instance/announcement/instance_announcement_model.dart';
 import 'package:fedi/app/instance/announcement/repository/instance_announcement_repository.dart';
-import 'package:easy_dispose/easy_dispose.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class InstanceAnnouncementBloc extends DisposableOwner
     implements IInstanceAnnouncementBloc {
@@ -24,8 +24,8 @@ class InstanceAnnouncementBloc extends DisposableOwner
     bool isNeedWatchLocalRepositoryForUpdates = true,
   }) =>
       InstanceAnnouncementBloc(
-        pleromaApiAnnouncementService:
-            Provider.of<IPleromaApiAnnouncementService>(context, listen: false),
+        unifediApiAnnouncementService:
+            Provider.of<IUnifediApiAnnouncementService>(context, listen: false),
         instanceAnnouncementRepository:
             IInstanceAnnouncementRepository.of(context, listen: false),
         instanceAnnouncement: instanceAnnouncement,
@@ -35,12 +35,12 @@ class InstanceAnnouncementBloc extends DisposableOwner
 
   final BehaviorSubject<IInstanceAnnouncement> _instanceAnnouncementSubject;
 
-  final IPleromaApiAnnouncementService pleromaApiAnnouncementService;
+  final IUnifediApiAnnouncementService unifediApiAnnouncementService;
   final IInstanceAnnouncementRepository instanceAnnouncementRepository;
   final bool isNeedWatchLocalRepositoryForUpdates;
 
   InstanceAnnouncementBloc({
-    required this.pleromaApiAnnouncementService,
+    required this.unifediApiAnnouncementService,
     required this.instanceAnnouncementRepository,
     required IInstanceAnnouncement instanceAnnouncement,
     this.isNeedWatchLocalRepositoryForUpdates = true,
@@ -84,7 +84,7 @@ class InstanceAnnouncementBloc extends DisposableOwner
   DateTime? get endsAt => instanceAnnouncement.endsAt;
 
   @override
-  List<IPleromaApiAnnouncementReaction>? get reactions =>
+  List<IUnifediApiEmojiReaction>? get reactions =>
       instanceAnnouncement.reactions;
 
   @override
@@ -112,21 +112,22 @@ class InstanceAnnouncementBloc extends DisposableOwner
 
     assert(foundReaction == null || !foundReaction.me);
 
-    await pleromaApiAnnouncementService.addAnnouncementReaction(
+    await unifediApiAnnouncementService.addAnnouncementReaction(
       announcementId: instanceAnnouncement.remoteId,
       name: emojiName,
     );
     if (foundReaction != null) {
-      foundReaction = foundReaction.copyWith(
+      foundReaction = foundReaction.toUnifediApiEmojiReaction().copyWith(
         count: foundReaction.count + 1,
       );
     } else {
-      foundReaction = PleromaApiAnnouncementReaction(
+      foundReaction = UnifediApiEmojiReaction(
         name: emojiName,
         count: 1,
         me: true,
         url: null,
         staticUrl: null,
+        accounts: null,
       );
     }
 
@@ -152,7 +153,7 @@ class InstanceAnnouncementBloc extends DisposableOwner
 
     assert(foundReaction?.me == true);
 
-    await pleromaApiAnnouncementService.removeAnnouncementReaction(
+    await unifediApiAnnouncementService.removeAnnouncementReaction(
       announcementId: instanceAnnouncement.remoteId,
       name: emojiName,
     );
@@ -175,7 +176,7 @@ class InstanceAnnouncementBloc extends DisposableOwner
 
   @override
   Future dismiss() async {
-    await pleromaApiAnnouncementService.dismissAnnouncement(
+    await unifediApiAnnouncementService.dismissAnnouncement(
       announcementId: instanceAnnouncement.remoteId,
     );
     await updateDismissed(true);
@@ -187,7 +188,7 @@ class InstanceAnnouncementBloc extends DisposableOwner
       );
 
   @override
-  Stream<List<IPleromaApiAnnouncementReaction>?> get reactionsStream =>
+  Stream<List<IUnifediApiEmojiReaction>?> get reactionsStream =>
       instanceAnnouncementStream.map(
         (instanceAnnouncement) => instanceAnnouncement.reactions,
       );
@@ -198,7 +199,7 @@ class InstanceAnnouncementBloc extends DisposableOwner
       );
 
   Future updateReactions(
-    List<IPleromaApiAnnouncementReaction> newReactionsList,
+    List<IUnifediApiEmojiReaction> newReactionsList,
   ) async {
     var updatedInstanceAnnouncements = instanceAnnouncement.copyWith(
       reactions: newReactionsList,
@@ -227,16 +228,16 @@ class InstanceAnnouncementBloc extends DisposableOwner
   int? get localId => instanceAnnouncement.localId;
 
   @override
-  List<IPleromaApiMention>? get mentions => instanceAnnouncement.mentions;
+  List<IUnifediApiMention>? get mentions => instanceAnnouncement.mentions;
 
   @override
   DateTime get publishedAt => instanceAnnouncement.publishedAt;
 
   @override
-  List<IPleromaApiStatus>? get statuses => instanceAnnouncement.statuses;
+  List<IUnifediApiStatus>? get statuses => instanceAnnouncement.statuses;
 
   @override
-  List<IPleromaApiTag>? get tags => instanceAnnouncement.tags;
+  List<IUnifediApiTag>? get tags => instanceAnnouncement.tags;
 
   @override
   Future toggleEmojiReaction({

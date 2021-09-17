@@ -49,7 +49,7 @@ import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc_impl.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:fedi/provider/tab_controller_provider.dart';
 import 'package:fedi/ui/scroll/scroll_controller_bloc.dart';
 import 'package:flutter/cupertino.dart';
@@ -395,7 +395,7 @@ class _AccountHomeTabProviderFavouritedTabProviderWidget
   Widget build(BuildContext context) {
     return DisposableProvider<IMyAccountFavouritedStatusesCachedListBloc>(
       create: (context) => MyAccountFavouritedStatusesCachedListBloc(
-        pleromaMyAccountService: Provider.of<IPleromaApiMyAccountService>(
+        unifediApiMyAccountService: Provider.of<IUnifediApiMyAccountService>(
           context,
           listen: false,
         ),
@@ -409,7 +409,7 @@ class _AccountHomeTabProviderFavouritedTabProviderWidget
         update: (context, value, previous) => value,
         child: StatusCachedListBlocProxyProvider(
           child: ProxyProvider<IMyAccountFavouritedStatusesCachedListBloc,
-              IPleromaCachedListBloc<IStatus?>>(
+              ICachedListBloc<IStatus?>>(
             update: (context, value, previous) => value,
             child: StatusCachedListBlocLoadingWidget(
               child: StatusCachedPaginationBloc.provideToContext(

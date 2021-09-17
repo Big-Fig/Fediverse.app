@@ -31,15 +31,14 @@ import 'package:fedi/media/player/audio/audio_media_player_bloc_impl.dart';
 import 'package:fedi/media/player/media_player_model.dart';
 import 'package:fedi/media/player/video/video_media_player_bloc_impl.dart';
 import 'package:flutter/material.dart';
-import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
 import 'package:photo_view/photo_view.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class MediaAttachmentDetailsPage extends StatefulWidget {
-  final List<IPleromaApiMediaAttachment> mediaAttachments;
-  final IPleromaApiMediaAttachment? initialMediaAttachment;
+  final List<IUnifediApiMediaAttachment> mediaAttachments;
+  final IUnifediApiMediaAttachment? initialMediaAttachment;
   final InstanceLocation instanceLocation;
 
   int get initialIndex => initialMediaAttachment != null
@@ -53,7 +52,7 @@ class MediaAttachmentDetailsPage extends StatefulWidget {
   });
 
   MediaAttachmentDetailsPage.single({
-    required IPleromaApiMediaAttachment mediaAttachment,
+    required IUnifediApiMediaAttachment mediaAttachment,
     required InstanceLocation instanceLocation,
   }) : this.multi(
           mediaAttachments: [mediaAttachment],
@@ -68,7 +67,7 @@ class MediaAttachmentDetailsPage extends StatefulWidget {
 
 class _MediaAttachmentDetailsPageState
     extends State<MediaAttachmentDetailsPage> {
-  IPleromaApiMediaAttachment get mediaAttachment =>
+  IUnifediApiMediaAttachment get mediaAttachment =>
       selectedMediaAttachmentSubject.valueOrNull ??
       widget.mediaAttachments.first;
 
@@ -76,13 +75,13 @@ class _MediaAttachmentDetailsPageState
   late PageController _controller;
 
   // ignore: avoid-late-keyword
-  late BehaviorSubject<IPleromaApiMediaAttachment?>
+  late BehaviorSubject<IUnifediApiMediaAttachment?>
       selectedMediaAttachmentSubject;
 
-  Stream<IPleromaApiMediaAttachment?> get selectedMediaAttachmentStream =>
+  Stream<IUnifediApiMediaAttachment?> get selectedMediaAttachmentStream =>
       selectedMediaAttachmentSubject.stream;
 
-  IPleromaApiMediaAttachment? get selectedMediaAttachment =>
+  IUnifediApiMediaAttachment? get selectedMediaAttachment =>
       selectedMediaAttachmentSubject.valueOrNull;
 
   // ignore: avoid-late-keyword
@@ -139,9 +138,9 @@ class _MediaAttachmentDetailsPageState
 
   Widget buildMediaAttachmentBody(
     BuildContext context,
-    IPleromaApiMediaAttachment mediaAttachment,
+    IUnifediApiMediaAttachment mediaAttachment,
   ) {
-    return Provider<IPleromaApiMediaAttachment>.value(
+    return Provider<IUnifediApiMediaAttachment>.value(
       value: mediaAttachment,
       child: Stack(
         children: [
@@ -157,27 +156,15 @@ class _MediaAttachmentDetailsPageState
   }
 
   Widget buildMediaAttachmentItemBodyContent(
-    IPleromaApiMediaAttachment mediaAttachment,
+    IUnifediApiMediaAttachment mediaAttachment,
     BuildContext context,
   ) {
-    switch (mediaAttachment.typeAsMastodonApi) {
-      case MastodonApiMediaAttachmentType.image:
-      case MastodonApiMediaAttachmentType.gifv:
-        return IFilesCacheService.of(context).createCachedNetworkImageWidget(
-          imageBuilder: (context, imageProvider) {
-            return PhotoView(
-              backgroundDecoration: BoxDecoration(
-                color: IFediUiColorTheme.of(context).ultraLightGrey,
-              ),
-              imageProvider: imageProvider,
-            );
-          },
-          placeholder: (context, url) => buildDetails(),
-          errorWidget: (context, url, error) => buildDetails(),
-          imageUrl: mediaAttachment.url,
-        );
-      case MastodonApiMediaAttachmentType.video:
+    return mediaAttachment.typeAsUnifediApi.map(
+      image: (_) => _buildCached(context, mediaAttachment),
+      gifv: (_) => _buildCached(context, mediaAttachment),
+      video: (_) {
         var mediaSettingsBloc = IMediaSettingsBloc.of(context, listen: false);
+
         return VideoMediaPlayerBloc.provideToContext(
           context,
           autoInit: mediaSettingsBloc.autoInit,
@@ -189,8 +176,10 @@ class _MediaAttachmentDetailsPageState
               VideoMediaPlayerBloc.calculateDefaultAspectRatio(context),
           isFullscreen: false,
         );
-      case MastodonApiMediaAttachmentType.audio:
+      },
+      audio: (_) {
         var mediaSettingsBloc = IMediaSettingsBloc.of(context, listen: false);
+
         return AudioMediaPlayerBloc.provideToContext(
           context,
           autoInit: mediaSettingsBloc.autoInit,
@@ -199,15 +188,31 @@ class _MediaAttachmentDetailsPageState
               MediaPlayerSource.network(networkUrl: mediaAttachment.url),
           child: const FediAudioPlayerWidget(),
         );
-      case MastodonApiMediaAttachmentType.unknown:
-      default:
-        return Padding(
-          padding: FediPadding.allBigPadding,
-          child: Center(
-            child: MediaAttachmentUnknownWidget(),
+      },
+      unknown: (_) => Padding(
+        padding: FediPadding.allBigPadding,
+        child: Center(
+          child: MediaAttachmentUnknownWidget(),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCached(
+      BuildContext context, IUnifediApiMediaAttachment mediaAttachment) {
+    return IFilesCacheService.of(context).createCachedNetworkImageWidget(
+      imageBuilder: (context, imageProvider) {
+        return PhotoView(
+          backgroundDecoration: BoxDecoration(
+            color: IFediUiColorTheme.of(context).ultraLightGrey,
           ),
+          imageProvider: imageProvider,
         );
-    }
+      },
+      placeholder: (context, url) => buildDetails(),
+      errorWidget: (context, url, error) => buildDetails(),
+      imageUrl: mediaAttachment.url!,
+    );
   }
 
   Widget buildBody(BuildContext context) {
@@ -231,7 +236,7 @@ class _MediaAttachmentDetailsPageState
             // todo: refactor
             // ignore: no-magic-number
             bottom: 12.0,
-            child: StreamBuilder<IPleromaApiMediaAttachment?>(
+            child: StreamBuilder<IUnifediApiMediaAttachment?>(
               stream: selectedMediaAttachmentStream,
               initialData: selectedMediaAttachment,
               builder: (context, snapshot) {
@@ -259,7 +264,7 @@ class _MediaAttachmentDetailsPageState
 
   Widget buildDetails() =>
       IFilesCacheService.of(context).createCachedNetworkImageWidget(
-        imageUrl: mediaAttachment.url,
+        imageUrl: mediaAttachment.url!,
         imageBuilder: (context, imageProvider) {
           return PhotoView(
             backgroundDecoration: BoxDecoration(
@@ -285,7 +290,7 @@ class _MediaAttachmentDetailsPageShareAction extends StatelessWidget {
     required this.instanceLocation,
   }) : super(key: key);
 
-  final IPleromaApiMediaAttachment mediaAttachment;
+  final IUnifediApiMediaAttachment mediaAttachment;
   final InstanceLocation instanceLocation;
 
   @override
@@ -329,7 +334,7 @@ class _MediaAttachmentDetailsPageShareAction extends StatelessWidget {
             Navigator.of(parentContext).pop();
 
             var dialogResult = await PleromaAsyncOperationHelper
-                .performPleromaAsyncOperation<IPleromaApiMediaAttachment>(
+                .performPleromaAsyncOperation<IUnifediApiMediaAttachment>(
               context: parentContext,
               asyncCode: () async {
                 var mediaAttachmentReuploadService =
@@ -347,7 +352,7 @@ class _MediaAttachmentDetailsPageShareAction extends StatelessWidget {
               goToNewPostStatusPageWithInitial(
                 parentContext,
                 initialMediaAttachments: [
-                  reuploadedMediaAttachment.toPleromaApiMediaAttachment(),
+                  reuploadedMediaAttachment.toUnifediApiMediaAttachment(),
                 ],
               );
             }
@@ -359,7 +364,7 @@ class _MediaAttachmentDetailsPageShareAction extends StatelessWidget {
 }
 
 ShareEntity _mapMediaAttachmentToShareEntity(
-  IPleromaApiMediaAttachment mediaAttachment,
+  IUnifediApiMediaAttachment mediaAttachment,
 ) =>
     ShareEntity(
       items: [
@@ -383,7 +388,7 @@ class _MediaAttachmentDetailsPageAddToGalleryAction extends StatelessWidget {
     required this.mediaAttachment,
   }) : super(key: key);
 
-  final IPleromaApiMediaAttachment mediaAttachment;
+  final IUnifediApiMediaAttachment mediaAttachment;
 
   @override
   Widget build(BuildContext context) {
@@ -434,7 +439,7 @@ class _MediaAttachmentDetailsPageAddToGalleryAction extends StatelessWidget {
 
 void goToSingleMediaAttachmentDetailsPage(
   BuildContext context, {
-  required IPleromaApiMediaAttachment mediaAttachment,
+  required IUnifediApiMediaAttachment mediaAttachment,
   required InstanceLocation instanceLocation,
 }) {
   Navigator.push(
@@ -450,8 +455,8 @@ void goToSingleMediaAttachmentDetailsPage(
 
 void goToMultiMediaAttachmentDetailsPage(
   BuildContext context, {
-  required List<IPleromaApiMediaAttachment> mediaAttachments,
-  required IPleromaApiMediaAttachment? initialMediaAttachment,
+  required List<IUnifediApiMediaAttachment> mediaAttachments,
+  required IUnifediApiMediaAttachment? initialMediaAttachment,
   required InstanceLocation instanceLocation,
 }) {
   Navigator.push(

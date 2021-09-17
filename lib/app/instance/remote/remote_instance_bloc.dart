@@ -1,6 +1,6 @@
 import 'package:fedi/async/loading/init/async_init_loading_bloc.dart';
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -14,7 +14,7 @@ abstract class IRemoteInstanceBloc
 
   Uri get instanceUri;
 
-  IPleromaApiRestService get pleromaRestService;
+  IUnifediApiManager get unifediApiManager;
 
-  IPleromaApiInstance? get pleromaApiInstance;
+  IUnifediApiInstance? get unifediApiInstance;
 }

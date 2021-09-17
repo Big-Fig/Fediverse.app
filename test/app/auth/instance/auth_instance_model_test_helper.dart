@@ -1,8 +1,9 @@
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
+import 'package:unifedi_api/unifedi_api_mock_helper.dart';
 
 // ignore_for_file: no-magic-number
-class AuthInstanceModelTestHelper {
+class AuthInstanceModelMockHelper {
   static AuthInstance createTestAuthInstance({
     required String seed,
   }) =>
@@ -10,16 +11,16 @@ class AuthInstanceModelTestHelper {
         urlSchema: seed + 'urlSchema',
         urlHost: seed + 'urlHost',
         acct: seed + 'acct',
-        token: PleromaApiOAuthTestHelper.createTestPleromaApiOAuthToken(
+        token: UnifediApiOAuthMockHelper.generate(
           seed: seed,
         ),
         authCode: seed + 'authCode',
         isPleroma: seed.hashCode % 2 == 0,
-        application: PleromaApiApplicationTestHelper
-            .createTestPleromaApiClientApplication(
+        application: UnifediApiApplicationMockHelper
+            .createTestUnifediApiClientApplication(
           seed: seed,
         ),
-        info: PleromaApiInstanceTestHelper.createTestPleromaApiInstance(
+        info: UnifediApiInstanceMockHelper.createTestUnifediApiInstance(
           seed: seed,
         ),
       );

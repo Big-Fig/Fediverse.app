@@ -18,10 +18,10 @@ class DbChatMessages extends Table {
   DateTimeColumn? get createdAt => dateTime()();
 
   TextColumn? get emojis =>
-      text().map(PleromaApiEmojiListDatabaseConverter()).nullable()();
+      text().map(UnifediApiEmojiListDatabaseConverter()).nullable()();
 
   TextColumn? get mediaAttachment =>
-      text().map(PleromaMediaAttachmentDatabaseConverter()).nullable()();
+      text().map(unifediApiMediaAttachmentDatabaseConverter()).nullable()();
 
   TextColumn? get card =>
       text().map(PleromaCardDatabaseConverter()).nullable()();

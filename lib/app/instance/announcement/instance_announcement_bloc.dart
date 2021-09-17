@@ -1,6 +1,6 @@
 import 'package:fedi/app/instance/announcement/instance_announcement_model.dart';
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -21,11 +21,11 @@ abstract class IInstanceAnnouncementBloc implements IDisposable {
 
   String get content;
 
-  List<IPleromaApiStatus>? get statuses;
+  List<IUnifediApiStatus>? get statuses;
 
-  List<IPleromaApiMention>? get mentions;
+  List<IUnifediApiMention>? get mentions;
 
-  List<IPleromaApiTag>? get tags;
+  List<IUnifediApiTag>? get tags;
 
   bool get allDay;
 
@@ -39,9 +39,9 @@ abstract class IInstanceAnnouncementBloc implements IDisposable {
 
   Stream<bool> get readStream;
 
-  List<IPleromaApiAnnouncementReaction>? get reactions;
+  List<IUnifediApiEmojiReaction>? get reactions;
 
-  Stream<List<IPleromaApiAnnouncementReaction>?> get reactionsStream;
+  Stream<List<IUnifediApiEmojiReaction>?> get reactionsStream;
 
   DateTime? get scheduledAt;
 

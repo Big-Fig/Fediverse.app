@@ -7,7 +7,7 @@ import 'package:fedi/app/instance/directory/account_list/network_only/instance_d
 import 'package:fedi/app/instance/directory/instance_directory_bloc.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 import 'package:rxdart/rxdart.dart';
 
@@ -16,11 +16,11 @@ abstract class InstanceDirectoryBloc extends DisposableOwner
   @override
   final Uri instanceUri;
 
-  final BehaviorSubject<IPleromaApiInstance?> instanceSubject;
+  final BehaviorSubject<IUnifediApiInstance?> instanceSubject;
   final IPaginationSettingsBloc paginationSettingsBloc;
 
   InstanceDirectoryBloc({
-    required IPleromaApiInstance? initialInstance,
+    required IUnifediApiInstance? initialInstance,
     required this.instanceUri,
     required this.paginationSettingsBloc,
   }) : instanceSubject = BehaviorSubject.seeded(initialInstance) {
@@ -28,7 +28,7 @@ abstract class InstanceDirectoryBloc extends DisposableOwner
 
     instanceDirectoryAccountListNetworkOnlyListBloc =
         InstanceDirectoryAccountListNetworkOnlyListBloc(
-      pleromaApiDirectoryService: pleromaApiDirectoryService,
+      unifediApiInstanceService: unifediApiInstanceService,
       remoteInstanceUriOrNull: instanceUri,
       instanceLocation: instanceLocation,
     );
@@ -53,19 +53,19 @@ abstract class InstanceDirectoryBloc extends DisposableOwner
     accountPaginationListBloc.refreshWithoutController();
   }
 
-  IPleromaApiDirectoryService get pleromaApiDirectoryService;
+  IUnifediApiInstanceService get unifediApiInstanceService;
 
   @override
-  IPleromaApiInstance? get instance => instanceSubject.value;
+  IUnifediApiInstance? get instance => instanceSubject.value;
 
   @override
-  Stream<IPleromaApiInstance?> get instanceStream => instanceSubject.stream;
+  Stream<IUnifediApiInstance?> get instanceStream => instanceSubject.stream;
 
   @override
-  bool get isPleroma => instance!.isPleroma;
+  bool get isPleroma => instance!.typeAsUnifediApi.isPleroma;
 
   @override
-  bool get isMastodon => instance!.isMastodon;
+  bool get isMastodon => instance!.typeAsUnifediApi.isMastodon;
 
   @override
   // ignore: avoid-late-keyword

@@ -3,13 +3,13 @@ import 'package:fedi/app/instance/announcement/list/instance_announcement_list_b
 import 'package:fedi/app/instance/announcement/settings/instance_announcement_settings_model.dart';
 import 'package:fedi/app/list/cached/pleroma_cached_list_bloc.dart';
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IInstanceAnnouncementCachedListBloc extends DisposableOwner
     implements
-        IPleromaCachedListBloc<IInstanceAnnouncement>,
+        ICachedListBloc<IInstanceAnnouncement>,
         IInstanceAnnouncementListBloc {
   static IInstanceAnnouncementCachedListBloc of(
     BuildContext context, {
@@ -29,7 +29,7 @@ abstract class IInstanceAnnouncementCachedListBloc extends DisposableOwner
   );
 
   @override
-  IPleromaApi get pleromaApi;
+  IUnifediApiService get unifediApi;
 
   @override
   Future<List<IInstanceAnnouncement>> loadLocalItems({

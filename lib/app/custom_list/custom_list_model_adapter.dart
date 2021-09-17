@@ -1,7 +1,7 @@
 import 'package:fedi/app/custom_list/custom_list_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
-extension IPleromaListExtension on IPleromaApiList {
+extension IPleromaListExtension on IUnifediApiList {
   CustomList toCustomList() {
     if (this is CustomList) {
       return this as CustomList;
@@ -15,11 +15,11 @@ extension IPleromaListExtension on IPleromaApiList {
 }
 
 extension ICustomListExtension on ICustomList {
-  PleromaApiList toPleromaList() {
-    if (this is PleromaApiList) {
-      return this as PleromaApiList;
+  UnifediApiList toPleromaList() {
+    if (this is UnifediApiList) {
+      return this as UnifediApiList;
     } else {
-      return PleromaApiList(
+      return UnifediApiList(
         id: remoteId,
         title: title,
       );

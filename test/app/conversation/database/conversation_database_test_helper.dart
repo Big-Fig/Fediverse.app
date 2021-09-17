@@ -2,7 +2,7 @@ import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-class ConversationDatabaseTestHelper {
+class ConversationDatabaseMockHelper {
   static Future<DbConversation> createTestDbConversation({
     required String seed,
     String? remoteId,

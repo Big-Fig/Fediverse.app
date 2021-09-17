@@ -1,11 +1,11 @@
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
 import 'package:fedi/app/database/app_database.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-class ChatMessageDatabaseTestHelper {
+class ChatMessageDatabaseMockHelper {
   static Future<DbChatMessagePopulated> createTestDbChatMessagePopulated(
     DbChatMessage dbChatMessage,
     AccountRepository accountRepository,
@@ -24,10 +24,10 @@ class ChatMessageDatabaseTestHelper {
     required String seed,
     DateTime? createdAt,
     required DbAccount dbAccount,
-    bool pleromaThreadMuted = false,
+    bool threadMuted = false,
     String? remoteId,
     String? chatRemoteId,
-    PleromaApiCard? card,
+    UnifediApiCard? card,
   }) async {
     var dbChatMessage = DbChatMessage(
       id: null,
@@ -53,7 +53,7 @@ class ChatMessageDatabaseTestHelper {
 
     expect(actual!.localId != null, true);
     var dbChatMessage = expected!.dbChatMessage;
-    ChatMessageDatabaseTestHelper.expectDbChatMessage(actual, dbChatMessage);
+    ChatMessageDatabaseMockHelper.expectDbChatMessage(actual, dbChatMessage);
   }
 
   static void expectDbChatMessage(

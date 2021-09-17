@@ -35,10 +35,10 @@ void main() {
     expect((await notificationDao.getAll()).isNotEmpty, false);
 
     var testDbNotification =
-        await NotificationDatabaseTestHelper.createTestDbNotification(
+        await NotificationDatabaseMockHelper.createTestDbNotification(
       seed: 'seed1',
       dbAccount:
-          await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed2'),
+          await AccountDatabaseMockHelper.createTestDbAccount(seed: 'seed2'),
     );
     await notificationDao.insert(
       entity: testDbNotification,

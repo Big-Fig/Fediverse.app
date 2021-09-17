@@ -13,7 +13,7 @@ import 'package:fedi/app/status/post/new/new_post_status_page.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 
 class ChatSelectionShareActionButtonWidget extends StatelessWidget {
@@ -70,12 +70,12 @@ class ChatSelectionShareActionButtonWidget extends StatelessWidget {
                 chatSelectionBloc.calculateSelectionAsMediaAttachments();
 
             var originalMediaAttachments = mediaAttachments;
-            List<IPleromaApiMediaAttachment>? reuploadedMediaAttachments;
+            List<IUnifediApiMediaAttachment>? reuploadedMediaAttachments;
 
             if (originalMediaAttachments?.isNotEmpty == true) {
               var dialogResult = await PleromaAsyncOperationHelper
                   .performPleromaAsyncOperation<
-                      List<IPleromaApiMediaAttachment>>(
+                      List<IUnifediApiMediaAttachment>>(
                 context: context,
                 asyncCode: () async {
                   var futures = originalMediaAttachments!.map(
@@ -98,7 +98,7 @@ class ChatSelectionShareActionButtonWidget extends StatelessWidget {
                 context,
                 initialText: rawText,
                 initialMediaAttachments:
-                    reuploadedMediaAttachments?.toPleromaApiMediaAttachments(),
+                    reuploadedMediaAttachments?.toUnifediApiMediaAttachmentList(),
               );
               // Future.delayed(Duration(milliseconds: 1000), () {
               // });

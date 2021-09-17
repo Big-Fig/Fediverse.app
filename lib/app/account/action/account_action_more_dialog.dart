@@ -17,7 +17,7 @@ import 'package:fedi/app/ui/modal_bottom_sheet/fedi_modal_bottom_sheet.dart';
 import 'package:fedi/app/url/url_helper.dart';
 import 'package:fedi/dialog/dialog_model.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -61,7 +61,7 @@ class AccountActionMoreDialog extends StatelessWidget {
 
     var isLocal = accountBloc.instanceLocation == InstanceLocation.local;
 
-    return StreamBuilder<IPleromaApiAccountRelationship?>(
+    return StreamBuilder<IUnifediApiAccountRelationship?>(
       stream: accountBloc.relationshipStream,
       builder: (context, snapshot) {
         var accountRelationship = snapshot.data;

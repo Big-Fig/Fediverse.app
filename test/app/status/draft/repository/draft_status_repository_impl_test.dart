@@ -21,7 +21,7 @@ void main() {
 
     draftStatusRepository = DraftStatusRepository(appDatabase: database);
 
-    dbDraftStatus = await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
+    dbDraftStatus = await DraftStatusDatabaseMockHelper.createTestDbDraftStatus(
       seed: 'seed4',
     );
   });
@@ -37,7 +37,7 @@ void main() {
       mode: null,
     );
     assert(id > 0, true);
-    DraftStatusDatabaseTestHelper.expectDbDraftStatus(
+    DraftStatusDatabaseMockHelper.expectDbDraftStatus(
       await draftStatusRepository.findByDbIdInAppType(id),
       dbDraftStatus,
     );
@@ -45,13 +45,13 @@ void main() {
 
   test('upsertAll', () async {
     var dbDraftStatus1 =
-        (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
+        (await DraftStatusDatabaseMockHelper.createTestDbDraftStatus(
       seed: 'seed5',
     ))
             .copyWith(id: 1);
     // same remote id
     var dbDraftStatus2 =
-        (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
+        (await DraftStatusDatabaseMockHelper.createTestDbDraftStatus(
       seed: 'seed6',
     ))
             .copyWith(id: 1);
@@ -69,7 +69,7 @@ void main() {
     );
     expect((await draftStatusRepository.getAllInAppType()).length, 1);
 
-    DraftStatusDatabaseTestHelper.expectDbDraftStatus(
+    DraftStatusDatabaseMockHelper.expectDbDraftStatus(
       (await draftStatusRepository.getAllInAppType()).first,
       dbDraftStatus2,
     );
@@ -104,7 +104,7 @@ void main() {
     expect((await query.get()).length, 0);
 
     await draftStatusRepository.insertInDbType(
-      (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
+      (await DraftStatusDatabaseMockHelper.createTestDbDraftStatus(
         seed: 'seed1',
       ))
           .copyWith(),
@@ -114,7 +114,7 @@ void main() {
     expect((await query.get()).length, 1);
 
     await draftStatusRepository.insertInDbType(
-      (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
+      (await DraftStatusDatabaseMockHelper.createTestDbDraftStatus(
         seed: 'seed2',
       ))
           .copyWith(),
@@ -124,7 +124,7 @@ void main() {
     expect((await query.get()).length, 2);
 
     await draftStatusRepository.insertInDbType(
-      (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
+      (await DraftStatusDatabaseMockHelper.createTestDbDraftStatus(
         seed: 'seed3',
       ))
           .copyWith(),
@@ -138,7 +138,7 @@ void main() {
     var query = draftStatusRepository.createQuery(
       filters: null,
       pagination: RepositoryPagination(
-        newerThanItem: await DraftStatusTestHelper.createTestDraftStatus(
+        newerThanItem: await DraftStatusMockHelper.createTestDraftStatus(
           seed: 'remoteId5',
           updatedAt: DateTime(2005),
         ),
@@ -146,9 +146,9 @@ void main() {
       orderingTermData: DraftStatusRepositoryOrderingTermData.updatedAtDesc,
     );
 
-    await DraftStatusRepositoryTestHelper.insertDbDraftStatus(
+    await DraftStatusRepositoryMockHelper.insertDbDraftStatus(
       draftStatusRepository,
-      (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
+      (await DraftStatusDatabaseMockHelper.createTestDbDraftStatus(
         seed: 'seed2',
       ))
           .copyWith(updatedAt: DateTime(2004)),
@@ -156,9 +156,9 @@ void main() {
 
     expect((await query.get()).length, 0);
 
-    await DraftStatusRepositoryTestHelper.insertDbDraftStatus(
+    await DraftStatusRepositoryMockHelper.insertDbDraftStatus(
       draftStatusRepository,
-      (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
+      (await DraftStatusDatabaseMockHelper.createTestDbDraftStatus(
         seed: 'seed2',
       ))
           .copyWith(updatedAt: DateTime(2005)),
@@ -166,9 +166,9 @@ void main() {
 
     expect((await query.get()).length, 0);
 
-    await DraftStatusRepositoryTestHelper.insertDbDraftStatus(
+    await DraftStatusRepositoryMockHelper.insertDbDraftStatus(
       draftStatusRepository,
-      (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
+      (await DraftStatusDatabaseMockHelper.createTestDbDraftStatus(
         seed: 'seed1',
       ))
           .copyWith(updatedAt: DateTime(2006)),
@@ -177,9 +177,9 @@ void main() {
     var all = (await draftStatusRepository.getAllInDbType());
     expect(all.length, 3);
     expect((await query.get()).length, 1);
-    await DraftStatusRepositoryTestHelper.insertDbDraftStatus(
+    await DraftStatusRepositoryMockHelper.insertDbDraftStatus(
       draftStatusRepository,
-      (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
+      (await DraftStatusDatabaseMockHelper.createTestDbDraftStatus(
         seed: 'seed1',
       ))
           .copyWith(updatedAt: DateTime(2007)),
@@ -192,7 +192,7 @@ void main() {
     var query = draftStatusRepository.createQuery(
       filters: null,
       pagination: RepositoryPagination(
-        olderThanItem: await DraftStatusTestHelper.createTestDraftStatus(
+        olderThanItem: await DraftStatusMockHelper.createTestDraftStatus(
           seed: 'remoteId5',
           updatedAt: DateTime(2005),
         ),
@@ -200,18 +200,18 @@ void main() {
       orderingTermData: DraftStatusRepositoryOrderingTermData.updatedAtDesc,
     );
 
-    await DraftStatusRepositoryTestHelper.insertDbDraftStatus(
+    await DraftStatusRepositoryMockHelper.insertDbDraftStatus(
       draftStatusRepository,
-      (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
+      (await DraftStatusDatabaseMockHelper.createTestDbDraftStatus(
         seed: 'seed2',
       ))
           .copyWith(updatedAt: DateTime(2003)),
     );
 
     expect((await query.get()).length, 1);
-    await DraftStatusRepositoryTestHelper.insertDbDraftStatus(
+    await DraftStatusRepositoryMockHelper.insertDbDraftStatus(
       draftStatusRepository,
-      (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
+      (await DraftStatusDatabaseMockHelper.createTestDbDraftStatus(
         seed: 'seed2',
       ))
           .copyWith(updatedAt: DateTime(2004)),
@@ -219,9 +219,9 @@ void main() {
 
     expect((await query.get()).length, 2);
 
-    await DraftStatusRepositoryTestHelper.insertDbDraftStatus(
+    await DraftStatusRepositoryMockHelper.insertDbDraftStatus(
       draftStatusRepository,
-      (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
+      (await DraftStatusDatabaseMockHelper.createTestDbDraftStatus(
         seed: 'seed2',
       ))
           .copyWith(updatedAt: DateTime(2005, 2)),
@@ -229,9 +229,9 @@ void main() {
 
     expect((await query.get()).length, 2);
 
-    await DraftStatusRepositoryTestHelper.insertDbDraftStatus(
+    await DraftStatusRepositoryMockHelper.insertDbDraftStatus(
       draftStatusRepository,
-      (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
+      (await DraftStatusDatabaseMockHelper.createTestDbDraftStatus(
         seed: 'seed1',
       ))
           .copyWith(
@@ -246,11 +246,11 @@ void main() {
     var query = draftStatusRepository.createQuery(
       filters: null,
       pagination: RepositoryPagination(
-        newerThanItem: await DraftStatusTestHelper.createTestDraftStatus(
+        newerThanItem: await DraftStatusMockHelper.createTestDraftStatus(
           seed: 'remoteId2',
           updatedAt: DateTime(2002),
         ),
-        olderThanItem: await DraftStatusTestHelper.createTestDraftStatus(
+        olderThanItem: await DraftStatusMockHelper.createTestDraftStatus(
           seed: 'remoteId5',
           updatedAt: DateTime(2005),
         ),
@@ -258,9 +258,9 @@ void main() {
       orderingTermData: DraftStatusRepositoryOrderingTermData.updatedAtDesc,
     );
 
-    await DraftStatusRepositoryTestHelper.insertDbDraftStatus(
+    await DraftStatusRepositoryMockHelper.insertDbDraftStatus(
       draftStatusRepository,
-      (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
+      (await DraftStatusDatabaseMockHelper.createTestDbDraftStatus(
         seed: 'seed1',
       ))
           .copyWith(
@@ -270,9 +270,9 @@ void main() {
 
     expect((await query.get()).length, 0);
 
-    await DraftStatusRepositoryTestHelper.insertDbDraftStatus(
+    await DraftStatusRepositoryMockHelper.insertDbDraftStatus(
       draftStatusRepository,
-      (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
+      (await DraftStatusDatabaseMockHelper.createTestDbDraftStatus(
         seed: 'seed2',
       ))
           .copyWith(
@@ -281,9 +281,9 @@ void main() {
     );
 
     expect((await query.get()).length, 0);
-    await DraftStatusRepositoryTestHelper.insertDbDraftStatus(
+    await DraftStatusRepositoryMockHelper.insertDbDraftStatus(
       draftStatusRepository,
-      (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
+      (await DraftStatusDatabaseMockHelper.createTestDbDraftStatus(
         seed: 'seed3',
       ))
           .copyWith(
@@ -293,9 +293,9 @@ void main() {
 
     expect((await query.get()).length, 1);
 
-    await DraftStatusRepositoryTestHelper.insertDbDraftStatus(
+    await DraftStatusRepositoryMockHelper.insertDbDraftStatus(
       draftStatusRepository,
-      (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
+      (await DraftStatusDatabaseMockHelper.createTestDbDraftStatus(
         seed: 'seed4',
       ))
           .copyWith(
@@ -305,9 +305,9 @@ void main() {
 
     expect((await query.get()).length, 2);
 
-    await DraftStatusRepositoryTestHelper.insertDbDraftStatus(
+    await DraftStatusRepositoryMockHelper.insertDbDraftStatus(
       draftStatusRepository,
-      (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
+      (await DraftStatusDatabaseMockHelper.createTestDbDraftStatus(
         seed: 'seed5',
       ))
           .copyWith(
@@ -317,9 +317,9 @@ void main() {
 
     expect((await query.get()).length, 2);
 
-    await DraftStatusRepositoryTestHelper.insertDbDraftStatus(
+    await DraftStatusRepositoryMockHelper.insertDbDraftStatus(
       draftStatusRepository,
-      (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
+      (await DraftStatusDatabaseMockHelper.createTestDbDraftStatus(
         seed: 'seed6',
       ))
           .copyWith(
@@ -338,9 +338,9 @@ void main() {
     );
 
     var draftStatus2 =
-        await DraftStatusRepositoryTestHelper.insertDbDraftStatus(
+        await DraftStatusRepositoryMockHelper.insertDbDraftStatus(
       draftStatusRepository,
-      (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
+      (await DraftStatusDatabaseMockHelper.createTestDbDraftStatus(
         seed: 'seed2',
       ))
           .copyWith(
@@ -348,9 +348,9 @@ void main() {
       ),
     );
     var draftStatus1 =
-        await DraftStatusRepositoryTestHelper.insertDbDraftStatus(
+        await DraftStatusRepositoryMockHelper.insertDbDraftStatus(
       draftStatusRepository,
-      (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
+      (await DraftStatusDatabaseMockHelper.createTestDbDraftStatus(
         seed: 'seed1',
       ))
           .copyWith(
@@ -358,9 +358,9 @@ void main() {
       ),
     );
     var draftStatus3 =
-        await DraftStatusRepositoryTestHelper.insertDbDraftStatus(
+        await DraftStatusRepositoryMockHelper.insertDbDraftStatus(
       draftStatusRepository,
-      (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
+      (await DraftStatusDatabaseMockHelper.createTestDbDraftStatus(
         seed: 'seed3',
       ))
           .copyWith(
@@ -372,15 +372,15 @@ void main() {
 
     expect(actualList.length, 3);
 
-    DraftStatusDatabaseTestHelper.expectDbDraftStatus(
+    DraftStatusDatabaseMockHelper.expectDbDraftStatus(
       actualList[0],
       draftStatus1,
     );
-    DraftStatusDatabaseTestHelper.expectDbDraftStatus(
+    DraftStatusDatabaseMockHelper.expectDbDraftStatus(
       actualList[1],
       draftStatus2,
     );
-    DraftStatusDatabaseTestHelper.expectDbDraftStatus(
+    DraftStatusDatabaseMockHelper.expectDbDraftStatus(
       actualList[2],
       draftStatus3,
     );
@@ -394,9 +394,9 @@ void main() {
     );
 
     var draftStatus2 =
-        await DraftStatusRepositoryTestHelper.insertDbDraftStatus(
+        await DraftStatusRepositoryMockHelper.insertDbDraftStatus(
       draftStatusRepository,
-      (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
+      (await DraftStatusDatabaseMockHelper.createTestDbDraftStatus(
         seed: 'seed2',
       ))
           .copyWith(
@@ -404,9 +404,9 @@ void main() {
       ),
     );
     var draftStatus1 =
-        await DraftStatusRepositoryTestHelper.insertDbDraftStatus(
+        await DraftStatusRepositoryMockHelper.insertDbDraftStatus(
       draftStatusRepository,
-      (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
+      (await DraftStatusDatabaseMockHelper.createTestDbDraftStatus(
         seed: 'seed1',
       ))
           .copyWith(
@@ -414,9 +414,9 @@ void main() {
       ),
     );
     var draftStatus3 =
-        await DraftStatusRepositoryTestHelper.insertDbDraftStatus(
+        await DraftStatusRepositoryMockHelper.insertDbDraftStatus(
       draftStatusRepository,
-      (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
+      (await DraftStatusDatabaseMockHelper.createTestDbDraftStatus(
         seed: 'seed3',
       ))
           .copyWith(
@@ -427,15 +427,15 @@ void main() {
 
     expect(actualList.length, 3);
 
-    DraftStatusDatabaseTestHelper.expectDbDraftStatus(
+    DraftStatusDatabaseMockHelper.expectDbDraftStatus(
       actualList[0],
       draftStatus3,
     );
-    DraftStatusDatabaseTestHelper.expectDbDraftStatus(
+    DraftStatusDatabaseMockHelper.expectDbDraftStatus(
       actualList[1],
       draftStatus2,
     );
-    DraftStatusDatabaseTestHelper.expectDbDraftStatus(
+    DraftStatusDatabaseMockHelper.expectDbDraftStatus(
       actualList[2],
       draftStatus1,
     );
@@ -452,27 +452,27 @@ void main() {
     );
 
     var draftStatus2 =
-        await DraftStatusRepositoryTestHelper.insertDbDraftStatus(
+        await DraftStatusRepositoryMockHelper.insertDbDraftStatus(
       draftStatusRepository,
-      (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
+      (await DraftStatusDatabaseMockHelper.createTestDbDraftStatus(
         seed: 'seed2',
       ))
           .copyWith(
         updatedAt: DateTime(2002),
       ),
     );
-    await DraftStatusRepositoryTestHelper.insertDbDraftStatus(
+    await DraftStatusRepositoryMockHelper.insertDbDraftStatus(
       draftStatusRepository,
-      (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
+      (await DraftStatusDatabaseMockHelper.createTestDbDraftStatus(
         seed: 'seed1',
       ))
           .copyWith(
         updatedAt: DateTime(2001),
       ),
     );
-    await DraftStatusRepositoryTestHelper.insertDbDraftStatus(
+    await DraftStatusRepositoryMockHelper.insertDbDraftStatus(
       draftStatusRepository,
-      (await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
+      (await DraftStatusDatabaseMockHelper.createTestDbDraftStatus(
         seed: 'seed3',
       ))
           .copyWith(
@@ -484,7 +484,7 @@ void main() {
 
     expect(actualList.length, 1);
 
-    DraftStatusDatabaseTestHelper.expectDbDraftStatus(
+    DraftStatusDatabaseMockHelper.expectDbDraftStatus(
       actualList[0],
       draftStatus2,
     );

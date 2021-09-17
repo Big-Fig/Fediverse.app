@@ -25,18 +25,18 @@ import 'package:pleroma_fediverse_api/src/pleroma/api/push/pleroma_api_push_serv
 
 class _FakeIRestService extends _i1.Fake implements _i2.IRestService {}
 
-class _FakePleromaApiPushSubscription extends _i1.Fake
-    implements _i3.PleromaApiPushSubscription {
+class _FakeUnifediApiPushSubscription extends _i1.Fake
+    implements _i3.UnifediApiPushSubscription {
   @override
   String toString() => super.toString();
 }
 
-/// A class which mocks [IPleromaApiPushService].
+/// A class which mocks [IUnifediApiPushSubscriptionService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockIPleromaApiPushService extends _i1.Mock
-    implements _i4.IPleromaApiPushService {
-  MockIPleromaApiPushService() {
+class MockIUnifediApiPushSubscriptionService extends _i1.Mock
+    implements _i4.IUnifediApiPushSubscriptionService {
+  MockIUnifediApiPushSubscriptionService() {
     _i1.throwOnMissingStub(this);
   }
 
@@ -45,14 +45,14 @@ class MockIPleromaApiPushService extends _i1.Mock
       (super.noSuchMethod(Invocation.getter(#restService),
           returnValue: _FakeIRestService()) as _i2.IRestService);
   @override
-  _i5.Stream<_i6.PleromaApiState> get pleromaApiStateStream =>
-      (super.noSuchMethod(Invocation.getter(#pleromaApiStateStream),
-              returnValue: Stream<_i6.PleromaApiState>.empty())
-          as _i5.Stream<_i6.PleromaApiState>);
+  _i5.Stream<_i6.UnifediApiState> get unifediApiStateStream =>
+      (super.noSuchMethod(Invocation.getter(#unifediApiStateStream),
+              returnValue: Stream<_i6.UnifediApiState>.empty())
+          as _i5.Stream<_i6.UnifediApiState>);
   @override
-  _i6.PleromaApiState get pleromaApiState =>
-      (super.noSuchMethod(Invocation.getter(#pleromaApiState),
-          returnValue: _i6.PleromaApiState.validAuth) as _i6.PleromaApiState);
+  _i6.UnifediApiState get unifediApiState =>
+      (super.noSuchMethod(Invocation.getter(#unifediApiState),
+          returnValue: _i6.UnifediApiState.validAuth) as _i6.UnifediApiState);
   @override
   _i5.Stream<bool> get isConnectedStream =>
       (super.noSuchMethod(Invocation.getter(#isConnectedStream),
@@ -66,21 +66,21 @@ class MockIPleromaApiPushService extends _i1.Mock
       (super.noSuchMethod(Invocation.getter(#isDisposed), returnValue: false)
           as bool);
   @override
-  _i5.Future<_i3.PleromaApiPushSubscription> subscribe(
+  _i5.Future<_i3.UnifediApiPushSubscription> subscribe(
           {String? endpointCallbackUrl,
-          _i3.PleromaApiPushSubscribeData? data}) =>
+          _i3.UnifediApiPushSubscribeData? data}) =>
       (super.noSuchMethod(
               Invocation.method(#subscribe, [],
                   {#endpointCallbackUrl: endpointCallbackUrl, #data: data}),
-              returnValue: Future<_i3.PleromaApiPushSubscription>.value(
-                  _FakePleromaApiPushSubscription()))
-          as _i5.Future<_i3.PleromaApiPushSubscription>);
+              returnValue: Future<_i3.UnifediApiPushSubscription>.value(
+                  _FakeUnifediApiPushSubscription()))
+          as _i5.Future<_i3.UnifediApiPushSubscription>);
   @override
-  _i5.Future<_i3.PleromaApiPushSubscription> retrieveCurrentSubscription() =>
+  _i5.Future<_i3.UnifediApiPushSubscription> retrieveCurrentSubscription() =>
       (super.noSuchMethod(Invocation.method(#retrieveCurrentSubscription, []),
-              returnValue: Future<_i3.PleromaApiPushSubscription>.value(
-                  _FakePleromaApiPushSubscription()))
-          as _i5.Future<_i3.PleromaApiPushSubscription>);
+              returnValue: Future<_i3.UnifediApiPushSubscription>.value(
+                  _FakeUnifediApiPushSubscription()))
+          as _i5.Future<_i3.UnifediApiPushSubscription>);
   @override
   _i5.Future<dynamic> unsubscribe() =>
       (super.noSuchMethod(Invocation.method(#unsubscribe, []),

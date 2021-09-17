@@ -5,11 +5,12 @@ import 'package:fedi/app/web_sockets/settings/local_preferences/instance/instanc
 import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc_impl.dart';
 import 'package:fedi/app/web_sockets/settings/web_sockets_settings_model.dart';
 import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
-import 'package:base_fediverse_api/base_fediverse_api.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../rxdart/rxdart_test_helper.dart';
 import 'web_sockets_settings_model_test_helper.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 
 // ignore_for_file: no-magic-number, avoid-late-keyword
 void main() {
@@ -61,7 +62,7 @@ void main() {
   });
 
   test('handlingType', () async {
-    WebSocketsHandlingType? listened;
+    WebSocketsMode? listened;
 
     StreamSubscription subscriptionListenedWebSocketsAgeLimitType =
         webSocketsSettingsBloc.handlingTypeStream.listen(
@@ -71,7 +72,7 @@ void main() {
     );
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     var defaultValue = GlobalWebSocketsSettingsLocalPreferenceBloc.defaultValue;
 
@@ -94,14 +95,14 @@ void main() {
     );
 
     var testHandlingType =
-        WebSocketsSettingsModelTestHelper.createTestWebSocketsSettings(
+        WebSocketsSettingsModelMockHelper.createTestWebSocketsSettings(
       seed: 'seed',
     ).handlingType;
 
     await webSocketsSettingsBloc.changeHandlingType(testHandlingType);
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(
       listenedSettingsData?.handlingType,

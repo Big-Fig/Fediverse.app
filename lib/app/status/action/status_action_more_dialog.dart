@@ -30,7 +30,7 @@ import 'package:fedi/app/ui/spacer/fedi_big_vertical_spacer.dart';
 import 'package:fedi/app/url/url_helper.dart';
 import 'package:fedi/dialog/dialog_model.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -93,9 +93,9 @@ class StatusActionMoreDialogBody extends StatelessWidget {
               } else {
                 return RemoteAccountBloc(
                   // todo: remove hack
-                  // actually we dont need pleromaAccountService here
+                  // actually we dont need unifediApiAccountService here
                   // should be refactored
-                  pleromaAccountService: null,
+                  unifediApiAccountService: null,
                   account: statusBloc.account,
                   instanceUri: statusBloc.remoteInstanceUriOrNull,
                   isNeedRefreshFromNetworkOnInit: false,
@@ -294,12 +294,12 @@ class StatusActionMoreDialogBody extends StatelessWidget {
             Navigator.of(parentContext).pop();
 
             var originalMediaAttachments = status.mediaAttachments;
-            List<IPleromaApiMediaAttachment>? reuploadedMediaAttachments;
+            List<IUnifediApiMediaAttachment>? reuploadedMediaAttachments;
 
             if (originalMediaAttachments?.isNotEmpty == true) {
               var dialogResult = await PleromaAsyncOperationHelper
                   .performPleromaAsyncOperation<
-                      List<IPleromaApiMediaAttachment>>(
+                      List<IUnifediApiMediaAttachment>>(
                 context: parentContext,
                 asyncCode: () async {
                   var mediaAttachmentReuploadService =
@@ -331,7 +331,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
                 initialSubject:
                     status.spoilerText?.extractRawStringFromHtmlString(),
                 initialMediaAttachments:
-                    reuploadedMediaAttachments?.toPleromaApiMediaAttachments(),
+                    reuploadedMediaAttachments?.toUnifediApiMediaAttachmentList(),
               );
             }
           },

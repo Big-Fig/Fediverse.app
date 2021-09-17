@@ -7,18 +7,18 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class HashtagStatusListNetworkOnlyListBloc extends IStatusNetworkOnlyListBloc {
   final Uri instanceUri;
-  final IPleromaApiTimelineService pleromaApiTimelineService;
+  final IUnifediApiTimelineService unifediApiTimelineService;
   final ITimelineLocalPreferenceBloc timelineLocalPreferenceBloc;
 
   HashtagStatusListNetworkOnlyListBloc({
     required this.instanceUri,
-    required this.pleromaApiTimelineService,
+    required this.unifediApiTimelineService,
     required this.timelineLocalPreferenceBloc,
   });
 
@@ -28,17 +28,17 @@ class HashtagStatusListNetworkOnlyListBloc extends IStatusNetworkOnlyListBloc {
     required Uri instanceUri,
   }) {
     var remoteInstanceBloc = IRemoteInstanceBloc.of(context, listen: false);
-    var pleromaApiTimelineService = PleromaApiTimelineService(
-      restService: remoteInstanceBloc.pleromaRestService,
+    var unifediApiTimelineService = UnifediApiTimelineService(
+      restService: remoteInstanceBloc.unifediApiRestService,
     );
 
     var bloc = HashtagStatusListNetworkOnlyListBloc(
       timelineLocalPreferenceBloc: timelineLocalPreferenceBloc,
       instanceUri: instanceUri,
-      pleromaApiTimelineService: pleromaApiTimelineService,
+      unifediApiTimelineService: unifediApiTimelineService,
     );
 
-    bloc.addDisposable(pleromaApiTimelineService);
+    bloc.addDisposable(unifediApiTimelineService);
 
     return bloc;
   }
@@ -83,14 +83,14 @@ class HashtagStatusListNetworkOnlyListBloc extends IStatusNetworkOnlyListBloc {
     required String? maxId,
   }) async {
     var timeline = timelineLocalPreferenceBloc.value!;
-    var pleromaStatuses = await pleromaApiTimelineService.getHashtagTimeline(
+    var pleromaStatuses = await unifediApiTimelineService.getHashtagTimeline(
       hashtag: timeline.withRemoteHashtag!,
       onlyLocal: timeline.onlyLocal == true,
       onlyWithMedia: timeline.onlyWithMedia == true,
       excludeVisibilities: timeline.excludeVisibilities,
-      pagination: PleromaApiPaginationRequest(
+      pagination: UnifediApiPagination(
         limit: itemsCountPerPage,
-        sinceId: minId,
+        minId: minId,
         maxId: maxId,
       ),
     );
@@ -103,5 +103,5 @@ class HashtagStatusListNetworkOnlyListBloc extends IStatusNetworkOnlyListBloc {
   }
 
   @override
-  IPleromaApi get pleromaApi => pleromaApiTimelineService;
+  IUnifediApiService get unifediApi => unifediApiTimelineService;
 }

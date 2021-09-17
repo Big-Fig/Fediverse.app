@@ -14,10 +14,11 @@ import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
-import 'package:base_fediverse_api/base_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 
 class ConversationChatWithLastMessageListBloc extends DisposableOwner
     implements IConversationChatWithLastMessageListBloc {
@@ -47,7 +48,7 @@ class ConversationChatWithLastMessageListBloc extends DisposableOwner
   final IPaginationSettingsBloc paginationSettingsBloc;
 
   ConversationChatWithLastMessageListBloc({
-    required IPleromaApiConversationService conversationService,
+    required IUnifediApiConversationService conversationService,
     required this.conversationRepository,
     required this.paginationSettingsBloc,
     required this.conversationChatWithLastMessageRepository,
@@ -76,7 +77,7 @@ class ConversationChatWithLastMessageListBloc extends DisposableOwner
     paginationListWithNewItemsBloc.disposeWith(this);
     webSocketsHandlerManagerBloc
         .listenConversationChannel(
-          listenType: WebSocketsListenType.foreground,
+          handlerType: WebSocketsChannelHandlerType.foregroundValue,
         )
         .disposeWith(this);
   }
@@ -89,7 +90,7 @@ class ConversationChatWithLastMessageListBloc extends DisposableOwner
           context,
           listen: false,
         ),
-        conversationService: Provider.of<IPleromaApiConversationService>(
+        conversationService: Provider.of<IUnifediApiConversationService>(
           context,
           listen: false,
         ),

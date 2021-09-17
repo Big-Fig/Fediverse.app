@@ -4,13 +4,13 @@ import 'package:fedi/app/toast/settings/toast_settings_model.dart';
 import '../../push/settings/push_settings_model_test_helper.dart';
 
 // ignore_for_file: no-magic-number
-class ToastSettingsModelTestHelper {
+class ToastSettingsModelMockHelper {
   static ToastSettings createTestToastSettings({
     required String seed,
   }) =>
       // hack to be sure that seed1 and seed2 wil produce different objects
       ToastSettings.fromEnum(
-        pushSettings: PushSettingsModelTestHelper.createTestPushSettings(
+        pushSettings: PushSettingsModelMockHelper.createTestPushSettings(
           seed: seed,
         ),
         handlingType: ToastHandlingType

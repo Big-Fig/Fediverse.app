@@ -8,7 +8,7 @@ import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc_de
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_model.dart';
 import 'package:fedi/app/media/attachment/upload/uploaded_upload_media_attachment_bloc_impl.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:rxdart/rxdart.dart';
 
 class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
@@ -18,13 +18,13 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
   @override
   final int? maximumFileSizeInBytes;
 
-  final IPleromaApiMediaAttachmentService pleromaMediaAttachmentService;
+  final IUnifediApiMediaAttachmentService unifediApiMediaAttachmentService;
 
   DisposableOwner? uploadedSubscriptionDisposable;
 
   UploadMediaAttachmentsCollectionBloc({
     required this.maximumMediaAttachmentCount,
-    required this.pleromaMediaAttachmentService,
+    required this.unifediApiMediaAttachmentService,
     required this.maximumFileSizeInBytes,
   }) {
     uploadMediaAttachmentBlocsSubject.disposeWith(this);
@@ -162,7 +162,7 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
     if (existedBloc == null) {
       var uploadMediaAttachmentBloc = UploadMediaAttachmentBlocDevice(
         mediaDeviceFile: mediaDeviceFile,
-        pleromaMediaAttachmentService: pleromaMediaAttachmentService,
+        unifediApiMediaAttachmentService: unifediApiMediaAttachmentService,
         maximumFileSizeInBytes: maximumFileSizeInBytes,
       );
       uploadMediaAttachmentBlocsSubject.add(
@@ -262,10 +262,10 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
   }
 
   @override
-  void addUploadedAttachment(IPleromaApiMediaAttachment attachment) {
+  void addUploadedAttachment(IUnifediApiMediaAttachment attachment) {
     uploadMediaAttachmentBlocs.add(
       UploadedUploadMediaAttachmentBloc(
-        pleromaMediaAttachment: attachment,
+        unifediApiMediaAttachment: attachment,
       ),
     );
     uploadMediaAttachmentBlocsSubject.add(uploadMediaAttachmentBlocs);

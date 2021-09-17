@@ -3,7 +3,7 @@ import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/cupertino.dart';
 
 DateTime _lastRefreshErrorShowedDateTime = DateTime.now();
@@ -68,7 +68,7 @@ class _FediPaginationListLoadingErrorNotificationOverlayBuilderWidgetState
     if (error is CantUpdateFromNetworkException) {
       return S.of(context).app_list_cantUpdateFromNetwork;
     } else {
-      if (error is PleromaApiRestException &&
+      if (error is UnifediApiRestException &&
           error.decodedErrorDescriptionOrBody.isNotEmpty) {
         return error.decodedErrorDescriptionOrBody;
       } else {

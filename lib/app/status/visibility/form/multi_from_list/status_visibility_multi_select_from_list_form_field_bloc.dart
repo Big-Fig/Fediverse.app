@@ -1,5 +1,5 @@
 import 'package:fedi/form/field/value/select_from_list/multi/multi_select_from_list_value_form_field_bloc.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 abstract class IStatusVisibilityMultiSelectFromListFormFieldBloc
-    implements IMultiSelectFromListValueFormFieldBloc<PleromaApiVisibility> {}
+    implements IMultiSelectFromListValueFormFieldBloc<UnifediApiVisibility> {}

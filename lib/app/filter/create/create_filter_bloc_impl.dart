@@ -10,7 +10,7 @@ import 'package:fedi/app/filter/edit/edit_filter_bloc_proxy_provider.dart';
 import 'package:fedi/app/filter/filter_model.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_dispose/easy_dispose.dart';
@@ -21,12 +21,12 @@ class CreateFilterBloc extends EditFilterBloc implements ICreateFilterBloc {
     required Function(IFilter)? onSubmit,
   }) {
     var createFilterBloc = CreateFilterBloc(
-      pleromaFilterService: Provider.of<IPleromaApiFilterService>(
+      unifediApiFilterService: Provider.of<IUnifediApiFilterService>(
         context,
         listen: false,
       ),
       statusRepository: IStatusRepository.of(context, listen: false),
-      pleromaAccountService: Provider.of<IPleromaApiAccountService>(
+      unifediApiAccountService: Provider.of<IUnifediApiAccountService>(
         context,
         listen: false,
       ),
@@ -77,11 +77,11 @@ class CreateFilterBloc extends EditFilterBloc implements ICreateFilterBloc {
   }
 
   @override
-  Future<IPleromaApiFilter> actuallySubmitFilter(
+  Future<IUnifediApiFilter> actuallySubmitFilter(
     String? filterRemoteId,
-    IPostPleromaApiFilter postPleromaFilter,
+    IPostUnifediApiFilter postPleromaFilter,
   ) async {
-    var remoteFilter = await pleromaFilterService.createFilter(
+    var remoteFilter = await unifediApiFilterService.createFilter(
       postPleromaFilter: postPleromaFilter,
     );
 
@@ -89,21 +89,21 @@ class CreateFilterBloc extends EditFilterBloc implements ICreateFilterBloc {
   }
 
   CreateFilterBloc({
-    required IPleromaApiFilterService pleromaFilterService,
+    required IUnifediApiFilterService unifediApiFilterService,
     required IStatusRepository statusRepository,
     required IMyAccountBloc myAccountBloc,
     required IAccountRepository accountRepository,
-    required IPleromaApiAccountService pleromaAccountService,
+    required IUnifediApiAccountService unifediApiAccountService,
     required ITimelinesHomeTabStorageBloc timelinesHomeTabStorageBloc,
     required AuthInstance currentInstance,
   }) : super(
           isPossibleToDelete: false,
-          pleromaFilterService: pleromaFilterService,
+          unifediApiFilterService: unifediApiFilterService,
           statusRepository: statusRepository,
           filter: null,
           myAccountBloc: myAccountBloc,
           accountRepository: accountRepository,
-          pleromaAccountService: pleromaAccountService,
+          unifediApiAccountService: unifediApiAccountService,
           timelinesHomeTabStorageBloc: timelinesHomeTabStorageBloc,
           currentInstance: currentInstance,
         );

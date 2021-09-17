@@ -7,7 +7,7 @@ import 'package:fedi/app/notification/repository/notification_repository_impl.da
 import 'package:fedi/app/notification/repository/notification_repository_model.dart';
 import 'package:fedi/app/status/repository/status_repository_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:moor/ffi.dart';
@@ -55,7 +55,7 @@ void main() {
     );
 
     dbAccount =
-        await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed1');
+        await AccountDatabaseMockHelper.createTestDbAccount(seed: 'seed1');
     var accountId = await accountRepository.insertInDbType(
       dbAccount,
       mode: null,
@@ -63,24 +63,24 @@ void main() {
     // assign local id for further equal with data retrieved from db
     dbAccount = dbAccount.copyWith(id: accountId);
 
-    dbStatus = await StatusDatabaseTestHelper.createTestDbStatus(
+    dbStatus = await StatusDatabaseMockHelper.createTestDbStatus(
       seed: 'seed3',
       dbAccount: dbAccount,
     );
 
     dbStatusPopulated =
-        await StatusDatabaseTestHelper.createTestDbStatusPopulated(
+        await StatusDatabaseMockHelper.createTestDbStatusPopulated(
       dbStatus,
       accountRepository,
     );
 
     var reblogDbAccount =
-        await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed11');
+        await AccountDatabaseMockHelper.createTestDbAccount(seed: 'seed11');
     await accountRepository.insertInDbType(
       reblogDbAccount,
       mode: null,
     );
-    var reblogDbStatus = await StatusDatabaseTestHelper.createTestDbStatus(
+    var reblogDbStatus = await StatusDatabaseMockHelper.createTestDbStatus(
       seed: 'seed33',
       dbAccount: reblogDbAccount,
     );
@@ -108,7 +108,7 @@ void main() {
     );
 
     dbNotification =
-        await NotificationDatabaseTestHelper.createTestDbNotification(
+        await NotificationDatabaseMockHelper.createTestDbNotification(
       seed: 'seed4',
       dbAccount: dbAccount,
       dbStatus: dbStatus,
@@ -134,7 +134,7 @@ void main() {
       mode: null,
     );
     assert(id > 0, true);
-    NotificationDatabaseTestHelper.expectDbNotificationPopulated(
+    NotificationDatabaseMockHelper.expectDbNotificationPopulated(
       (await notificationRepository.findByDbIdInAppType(id))!,
       dbNotificationPopulated,
     );
@@ -142,14 +142,14 @@ void main() {
 
   test('upsertAll', () async {
     var dbNotification1 =
-        (await NotificationDatabaseTestHelper.createTestDbNotification(
+        (await NotificationDatabaseMockHelper.createTestDbNotification(
       seed: 'seed5',
       dbAccount: dbAccount,
     ))
             .copyWith(remoteId: 'remoteId1');
     // same remote id
     var dbNotification2 =
-        (await NotificationDatabaseTestHelper.createTestDbNotification(
+        (await NotificationDatabaseMockHelper.createTestDbNotification(
       seed: 'seed6',
       dbAccount: dbAccount,
     ))
@@ -168,9 +168,9 @@ void main() {
     );
     expect((await notificationRepository.getAllInAppType()).length, 1);
 
-    NotificationDatabaseTestHelper.expectDbNotificationPopulated(
+    NotificationDatabaseMockHelper.expectDbNotificationPopulated(
       (await notificationRepository.getAllInAppType()).first,
-      await NotificationDatabaseTestHelper.createTestNotificationPopulated(
+      await NotificationDatabaseMockHelper.createTestNotificationPopulated(
         dbNotification2,
         accountRepository,
       ),
@@ -199,7 +199,7 @@ void main() {
   test('updateLocalNotificationByRemoteNotification', () async {
     var id = await notificationRepository.insertInDbType(
       dbNotification.copyWith(
-        type: PleromaApiNotificationType.follow.toJsonValue(),
+        type: UnifediApiNotificationType.followValue.stringValue,
       ),
       mode: null,
     );
@@ -214,7 +214,7 @@ void main() {
     );
     var newContent = 'newContent';
     var newAcct = 'newAcct';
-    var newType = PleromaApiNotificationType.reblog;
+    var newType = UnifediApiNotificationType.reblogValue;
     var newRemoteNotification = DbNotificationPopulatedWrapper(
       dbNotificationPopulated: DbNotificationPopulated.statusPopulated(
         dbNotification: dbNotification.copyWith(id: id),
@@ -230,7 +230,7 @@ void main() {
           replyDbStatus: null,
         ),
       ),
-    ).toPleromaApiNotification();
+    ).toUnifediApiNotification();
     await notificationRepository.updateNotificationByRemoteType(
       appItem: oldLocalNotification,
       remoteItem: newRemoteNotification,
@@ -257,7 +257,7 @@ void main() {
       dbNotification,
       mode: null,
     );
-    NotificationDatabaseTestHelper.expectDbNotificationPopulated(
+    NotificationDatabaseMockHelper.expectDbNotificationPopulated(
       (await notificationRepository
           .findByRemoteIdInAppType(dbNotification.remoteId))!,
       dbNotificationPopulated,
@@ -269,7 +269,7 @@ void main() {
 
     var remoteNotification = DbNotificationPopulatedWrapper(
       dbNotificationPopulated: dbNotificationPopulated,
-    ).toPleromaApiNotification();
+    ).toUnifediApiNotification();
     await notificationRepository.upsertRemoteNotification(
       remoteNotification,
       unread: false,
@@ -280,16 +280,16 @@ void main() {
     // with reblog
     expect(await statusRepository.countAll(), 2);
     expect(await accountRepository.countAll(), 2);
-    NotificationDatabaseTestHelper.expectDbNotification(
+    NotificationDatabaseMockHelper.expectDbNotification(
       (await notificationRepository
           .findByRemoteIdInAppType(dbNotification.remoteId))!,
       dbNotification,
     );
-    AccountDatabaseTestHelper.expectDbAccount(
+    AccountDatabaseMockHelper.expectDbAccount(
       await accountRepository.findByRemoteIdInAppType(dbAccount.remoteId),
       dbAccount,
     );
-    StatusDatabaseTestHelper.expectDbStatus(
+    StatusDatabaseMockHelper.expectDbStatus(
       await statusRepository.findByRemoteIdInAppType(dbStatus.remoteId),
       dbStatus,
     );
@@ -298,7 +298,7 @@ void main() {
     await notificationRepository.upsertRemoteNotification(
       DbNotificationPopulatedWrapper(
         dbNotificationPopulated: dbNotificationPopulated,
-      ).toPleromaApiNotification(),
+      ).toUnifediApiNotification(),
       unread: false,
       batchTransaction: null,
     );
@@ -306,16 +306,16 @@ void main() {
     // with reblog
     expect(await statusRepository.countAll(), 2);
     expect(await accountRepository.countAll(), 2);
-    NotificationDatabaseTestHelper.expectDbNotification(
+    NotificationDatabaseMockHelper.expectDbNotification(
       (await notificationRepository
           .findByRemoteIdInAppType(dbNotification.remoteId))!,
       dbNotification,
     );
-    AccountDatabaseTestHelper.expectDbAccount(
+    AccountDatabaseMockHelper.expectDbAccount(
       await accountRepository.findByRemoteIdInAppType(dbAccount.remoteId),
       dbAccount,
     );
-    StatusDatabaseTestHelper.expectDbStatus(
+    StatusDatabaseMockHelper.expectDbStatus(
       await statusRepository.findByRemoteIdInAppType(dbStatus.remoteId),
       dbStatus,
     );
@@ -328,7 +328,7 @@ void main() {
       [
         DbNotificationPopulatedWrapper(
           dbNotificationPopulated: dbNotificationPopulated,
-        ).toPleromaApiNotification(),
+        ).toUnifediApiNotification(),
       ],
       unread: false,
       batchTransaction: null,
@@ -338,16 +338,16 @@ void main() {
     // with reblog
     expect(await statusRepository.countAll(), 2);
     expect(await accountRepository.countAll(), 2);
-    NotificationDatabaseTestHelper.expectDbNotification(
+    NotificationDatabaseMockHelper.expectDbNotification(
       (await notificationRepository
           .findByRemoteIdInAppType(dbNotification.remoteId))!,
       dbNotification,
     );
-    AccountDatabaseTestHelper.expectDbAccount(
+    AccountDatabaseMockHelper.expectDbAccount(
       await accountRepository.findByRemoteIdInAppType(dbAccount.remoteId),
       dbAccount,
     );
-    StatusDatabaseTestHelper.expectDbStatus(
+    StatusDatabaseMockHelper.expectDbStatus(
       await statusRepository.findByRemoteIdInAppType(dbStatus.remoteId),
       dbStatus,
     );
@@ -356,7 +356,7 @@ void main() {
       [
         DbNotificationPopulatedWrapper(
           dbNotificationPopulated: dbNotificationPopulated,
-        ).toPleromaApiNotification(),
+        ).toUnifediApiNotification(),
       ],
       unread: false,
       batchTransaction: null,
@@ -367,16 +367,16 @@ void main() {
     // with reblog
     expect(await statusRepository.countAll(), 2);
     expect(await accountRepository.countAll(), 2);
-    NotificationDatabaseTestHelper.expectDbNotification(
+    NotificationDatabaseMockHelper.expectDbNotification(
       (await notificationRepository
           .findByRemoteIdInAppType(dbNotification.remoteId))!,
       dbNotification,
     );
-    AccountDatabaseTestHelper.expectDbAccount(
+    AccountDatabaseMockHelper.expectDbAccount(
       await accountRepository.findByRemoteIdInAppType(dbAccount.remoteId),
       dbAccount,
     );
-    StatusDatabaseTestHelper.expectDbStatus(
+    StatusDatabaseMockHelper.expectDbStatus(
       await statusRepository.findByRemoteIdInAppType(dbStatus.remoteId),
       dbStatus,
     );
@@ -389,9 +389,9 @@ void main() {
       orderingTermData: null,
     );
 
-    await NotificationRepositoryTestHelper.insertDbNotification(
+    await NotificationRepositoryMockHelper.insertDbNotification(
       notificationRepository,
-      (await NotificationDatabaseTestHelper.createTestDbNotification(
+      (await NotificationDatabaseMockHelper.createTestDbNotification(
         seed: 'seed1',
         dbAccount: dbAccount,
       ))
@@ -400,9 +400,9 @@ void main() {
 
     expect((await query.get()).length, 1);
 
-    await NotificationRepositoryTestHelper.insertDbNotification(
+    await NotificationRepositoryMockHelper.insertDbNotification(
       notificationRepository,
-      (await NotificationDatabaseTestHelper.createTestDbNotification(
+      (await NotificationDatabaseMockHelper.createTestDbNotification(
         seed: 'seed2',
         dbAccount: dbAccount,
       ))
@@ -416,33 +416,33 @@ void main() {
       pagination: null,
       filters: NotificationRepositoryFilters(
         excludeTypes: [
-          PleromaApiNotificationType.follow,
+          UnifediApiNotificationType.followValue,
         ],
       ),
       orderingTermData: NotificationRepositoryOrderingTermData.createdAtDesc,
     );
 
-    await NotificationRepositoryTestHelper.insertDbNotification(
+    await NotificationRepositoryMockHelper.insertDbNotification(
       notificationRepository,
-      (await NotificationDatabaseTestHelper.createTestDbNotification(
+      (await NotificationDatabaseMockHelper.createTestDbNotification(
         seed: 'seed1',
         dbAccount: dbAccount,
       ))
           .copyWith(
-        type: PleromaApiNotificationType.follow.toJsonValue(),
+        type: UnifediApiNotificationType.followValue.stringValue,
       ),
     );
 
     expect((await query.get()).length, 0);
 
-    await NotificationRepositoryTestHelper.insertDbNotification(
+    await NotificationRepositoryMockHelper.insertDbNotification(
       notificationRepository,
-      (await NotificationDatabaseTestHelper.createTestDbNotification(
+      (await NotificationDatabaseMockHelper.createTestDbNotification(
         seed: 'seed2',
         dbAccount: dbAccount,
       ))
           .copyWith(
-        type: PleromaApiNotificationType.reblog.toJsonValue(),
+        type: UnifediApiNotificationType.reblogValue.stringValue,
       ),
     );
     expect((await query.get()).length, 1);
@@ -452,7 +452,7 @@ void main() {
     var query = notificationRepository.createQuery(
       filters: null,
       pagination: RepositoryPagination<INotification>(
-        newerThanItem: await NotificationTestHelper.createTestNotification(
+        newerThanItem: await NotificationMockHelper.createTestNotification(
           seed: 'remoteId5',
           remoteId: 'remoteId5',
           createdAt: DateTime(5),
@@ -461,9 +461,9 @@ void main() {
       orderingTermData: NotificationRepositoryOrderingTermData.createdAtDesc,
     );
 
-    await NotificationRepositoryTestHelper.insertDbNotification(
+    await NotificationRepositoryMockHelper.insertDbNotification(
       notificationRepository,
-      (await NotificationDatabaseTestHelper.createTestDbNotification(
+      (await NotificationDatabaseMockHelper.createTestDbNotification(
         seed: 'seed2',
         dbAccount: dbAccount,
       ))
@@ -475,9 +475,9 @@ void main() {
 
     expect((await query.get()).length, 0);
 
-    await NotificationRepositoryTestHelper.insertDbNotification(
+    await NotificationRepositoryMockHelper.insertDbNotification(
       notificationRepository,
-      (await NotificationDatabaseTestHelper.createTestDbNotification(
+      (await NotificationDatabaseMockHelper.createTestDbNotification(
         seed: 'seed2',
         dbAccount: dbAccount,
       ))
@@ -489,9 +489,9 @@ void main() {
 
     expect((await query.get()).length, 0);
 
-    await NotificationRepositoryTestHelper.insertDbNotification(
+    await NotificationRepositoryMockHelper.insertDbNotification(
       notificationRepository,
-      (await NotificationDatabaseTestHelper.createTestDbNotification(
+      (await NotificationDatabaseMockHelper.createTestDbNotification(
         seed: 'seed1',
         dbAccount: dbAccount,
       ))
@@ -502,9 +502,9 @@ void main() {
     );
 
     expect((await query.get()).length, 1);
-    await NotificationRepositoryTestHelper.insertDbNotification(
+    await NotificationRepositoryMockHelper.insertDbNotification(
       notificationRepository,
-      (await NotificationDatabaseTestHelper.createTestDbNotification(
+      (await NotificationDatabaseMockHelper.createTestDbNotification(
         seed: 'seed1',
         dbAccount: dbAccount,
       ))
@@ -521,7 +521,7 @@ void main() {
     var query = notificationRepository.createQuery(
       filters: null,
       pagination: RepositoryPagination<INotification>(
-        olderThanItem: await NotificationTestHelper.createTestNotification(
+        olderThanItem: await NotificationMockHelper.createTestNotification(
           seed: 'remoteId5',
           remoteId: 'remoteId5',
           createdAt: DateTime(5),
@@ -530,9 +530,9 @@ void main() {
       orderingTermData: NotificationRepositoryOrderingTermData.createdAtDesc,
     );
 
-    await NotificationRepositoryTestHelper.insertDbNotification(
+    await NotificationRepositoryMockHelper.insertDbNotification(
       notificationRepository,
-      (await NotificationDatabaseTestHelper.createTestDbNotification(
+      (await NotificationDatabaseMockHelper.createTestDbNotification(
         seed: 'seed2',
         dbAccount: dbAccount,
       ))
@@ -543,9 +543,9 @@ void main() {
     );
 
     expect((await query.get()).length, 1);
-    await NotificationRepositoryTestHelper.insertDbNotification(
+    await NotificationRepositoryMockHelper.insertDbNotification(
       notificationRepository,
-      (await NotificationDatabaseTestHelper.createTestDbNotification(
+      (await NotificationDatabaseMockHelper.createTestDbNotification(
         seed: 'seed2',
         dbAccount: dbAccount,
       ))
@@ -557,9 +557,9 @@ void main() {
 
     expect((await query.get()).length, 2);
 
-    await NotificationRepositoryTestHelper.insertDbNotification(
+    await NotificationRepositoryMockHelper.insertDbNotification(
       notificationRepository,
-      (await NotificationDatabaseTestHelper.createTestDbNotification(
+      (await NotificationDatabaseMockHelper.createTestDbNotification(
         seed: 'seed2',
         dbAccount: dbAccount,
       ))
@@ -571,9 +571,9 @@ void main() {
 
     expect((await query.get()).length, 2);
 
-    await NotificationRepositoryTestHelper.insertDbNotification(
+    await NotificationRepositoryMockHelper.insertDbNotification(
       notificationRepository,
-      (await NotificationDatabaseTestHelper.createTestDbNotification(
+      (await NotificationDatabaseMockHelper.createTestDbNotification(
         seed: 'seed1',
         dbAccount: dbAccount,
       ))
@@ -592,12 +592,12 @@ void main() {
       var query = notificationRepository.createQuery(
         filters: null,
         pagination: RepositoryPagination<INotification>(
-          newerThanItem: await NotificationTestHelper.createTestNotification(
+          newerThanItem: await NotificationMockHelper.createTestNotification(
             seed: 'remoteId2',
             remoteId: 'remoteId2',
             createdAt: DateTime(2),
           ),
-          olderThanItem: await NotificationTestHelper.createTestNotification(
+          olderThanItem: await NotificationMockHelper.createTestNotification(
             seed: 'remoteId5',
             remoteId: 'remoteId5',
             createdAt: DateTime(5),
@@ -606,9 +606,9 @@ void main() {
         orderingTermData: NotificationRepositoryOrderingTermData.createdAtDesc,
       );
 
-      await NotificationRepositoryTestHelper.insertDbNotification(
+      await NotificationRepositoryMockHelper.insertDbNotification(
         notificationRepository,
-        (await NotificationDatabaseTestHelper.createTestDbNotification(
+        (await NotificationDatabaseMockHelper.createTestDbNotification(
           seed: 'seed1',
           dbAccount: dbAccount,
         ))
@@ -620,9 +620,9 @@ void main() {
 
       expect((await query.get()).length, 0);
 
-      await NotificationRepositoryTestHelper.insertDbNotification(
+      await NotificationRepositoryMockHelper.insertDbNotification(
         notificationRepository,
-        (await NotificationDatabaseTestHelper.createTestDbNotification(
+        (await NotificationDatabaseMockHelper.createTestDbNotification(
           seed: 'seed2',
           dbAccount: dbAccount,
         ))
@@ -633,9 +633,9 @@ void main() {
       );
 
       expect((await query.get()).length, 0);
-      await NotificationRepositoryTestHelper.insertDbNotification(
+      await NotificationRepositoryMockHelper.insertDbNotification(
         notificationRepository,
-        (await NotificationDatabaseTestHelper.createTestDbNotification(
+        (await NotificationDatabaseMockHelper.createTestDbNotification(
           seed: 'seed3',
           dbAccount: dbAccount,
         ))
@@ -647,9 +647,9 @@ void main() {
 
       expect((await query.get()).length, 1);
 
-      await NotificationRepositoryTestHelper.insertDbNotification(
+      await NotificationRepositoryMockHelper.insertDbNotification(
         notificationRepository,
-        (await NotificationDatabaseTestHelper.createTestDbNotification(
+        (await NotificationDatabaseMockHelper.createTestDbNotification(
           seed: 'seed4',
           dbAccount: dbAccount,
         ))
@@ -661,9 +661,9 @@ void main() {
 
       expect((await query.get()).length, 2);
 
-      await NotificationRepositoryTestHelper.insertDbNotification(
+      await NotificationRepositoryMockHelper.insertDbNotification(
         notificationRepository,
-        (await NotificationDatabaseTestHelper.createTestDbNotification(
+        (await NotificationDatabaseMockHelper.createTestDbNotification(
           seed: 'seed5',
           dbAccount: dbAccount,
         ))
@@ -675,9 +675,9 @@ void main() {
 
       expect((await query.get()).length, 2);
 
-      await NotificationRepositoryTestHelper.insertDbNotification(
+      await NotificationRepositoryMockHelper.insertDbNotification(
         notificationRepository,
-        (await NotificationDatabaseTestHelper.createTestDbNotification(
+        (await NotificationDatabaseMockHelper.createTestDbNotification(
           seed: 'seed6',
           dbAccount: dbAccount,
         ))
@@ -699,27 +699,27 @@ void main() {
     );
 
     var notification2 =
-        await NotificationRepositoryTestHelper.insertDbNotification(
+        await NotificationRepositoryMockHelper.insertDbNotification(
       notificationRepository,
-      (await NotificationDatabaseTestHelper.createTestDbNotification(
+      (await NotificationDatabaseMockHelper.createTestDbNotification(
         seed: 'seed2',
         dbAccount: dbAccount,
       ))
           .copyWith(remoteId: 'remoteId2'),
     );
     var notification1 =
-        await NotificationRepositoryTestHelper.insertDbNotification(
+        await NotificationRepositoryMockHelper.insertDbNotification(
       notificationRepository,
-      (await NotificationDatabaseTestHelper.createTestDbNotification(
+      (await NotificationDatabaseMockHelper.createTestDbNotification(
         seed: 'seed1',
         dbAccount: dbAccount,
       ))
           .copyWith(remoteId: 'remoteId1'),
     );
     var notification3 =
-        await NotificationRepositoryTestHelper.insertDbNotification(
+        await NotificationRepositoryMockHelper.insertDbNotification(
       notificationRepository,
-      (await NotificationDatabaseTestHelper.createTestDbNotification(
+      (await NotificationDatabaseMockHelper.createTestDbNotification(
         seed: 'seed3',
         dbAccount: dbAccount,
       ))
@@ -751,27 +751,27 @@ void main() {
     );
 
     var notification2 =
-        await NotificationRepositoryTestHelper.insertDbNotification(
+        await NotificationRepositoryMockHelper.insertDbNotification(
       notificationRepository,
-      (await NotificationDatabaseTestHelper.createTestDbNotification(
+      (await NotificationDatabaseMockHelper.createTestDbNotification(
         seed: 'seed2',
         dbAccount: dbAccount,
       ))
           .copyWith(remoteId: 'remoteId2'),
     );
     var notification1 =
-        await NotificationRepositoryTestHelper.insertDbNotification(
+        await NotificationRepositoryMockHelper.insertDbNotification(
       notificationRepository,
-      (await NotificationDatabaseTestHelper.createTestDbNotification(
+      (await NotificationDatabaseMockHelper.createTestDbNotification(
         seed: 'seed1',
         dbAccount: dbAccount,
       ))
           .copyWith(remoteId: 'remoteId1'),
     );
     var notification3 =
-        await NotificationRepositoryTestHelper.insertDbNotification(
+        await NotificationRepositoryMockHelper.insertDbNotification(
       notificationRepository,
-      (await NotificationDatabaseTestHelper.createTestDbNotification(
+      (await NotificationDatabaseMockHelper.createTestDbNotification(
         seed: 'seed3',
         dbAccount: dbAccount,
       ))
@@ -806,25 +806,25 @@ void main() {
     );
 
     var notification2 =
-        await NotificationRepositoryTestHelper.insertDbNotification(
+        await NotificationRepositoryMockHelper.insertDbNotification(
       notificationRepository,
-      (await NotificationDatabaseTestHelper.createTestDbNotification(
+      (await NotificationDatabaseMockHelper.createTestDbNotification(
         seed: 'seed2',
         dbAccount: dbAccount,
       ))
           .copyWith(remoteId: 'remoteId2'),
     );
-    await NotificationRepositoryTestHelper.insertDbNotification(
+    await NotificationRepositoryMockHelper.insertDbNotification(
       notificationRepository,
-      (await NotificationDatabaseTestHelper.createTestDbNotification(
+      (await NotificationDatabaseMockHelper.createTestDbNotification(
         seed: 'seed1',
         dbAccount: dbAccount,
       ))
           .copyWith(remoteId: 'remoteId1'),
     );
-    await NotificationRepositoryTestHelper.insertDbNotification(
+    await NotificationRepositoryMockHelper.insertDbNotification(
       notificationRepository,
-      (await NotificationDatabaseTestHelper.createTestDbNotification(
+      (await NotificationDatabaseMockHelper.createTestDbNotification(
         seed: 'seed3',
         dbAccount: dbAccount,
       ))
@@ -853,25 +853,25 @@ void main() {
       );
 
       var notification2 =
-          await NotificationRepositoryTestHelper.insertDbNotification(
+          await NotificationRepositoryMockHelper.insertDbNotification(
         notificationRepository,
-        (await NotificationDatabaseTestHelper.createTestDbNotification(
+        (await NotificationDatabaseMockHelper.createTestDbNotification(
           seed: 'seed2',
           dbAccount: dbAccount,
         ))
             .copyWith(createdAt: DateTime(2)),
       );
-      await NotificationRepositoryTestHelper.insertDbNotification(
+      await NotificationRepositoryMockHelper.insertDbNotification(
         notificationRepository,
-        (await NotificationDatabaseTestHelper.createTestDbNotification(
+        (await NotificationDatabaseMockHelper.createTestDbNotification(
           seed: 'seed1',
           dbAccount: dbAccount,
         ))
             .copyWith(createdAt: DateTime(1)),
       );
-      await NotificationRepositoryTestHelper.insertDbNotification(
+      await NotificationRepositoryMockHelper.insertDbNotification(
         notificationRepository,
-        (await NotificationDatabaseTestHelper.createTestDbNotification(
+        (await NotificationDatabaseMockHelper.createTestDbNotification(
           seed: 'seed3',
           dbAccount: dbAccount,
         ))
@@ -897,14 +897,14 @@ void main() {
       )),
       0,
     );
-    await NotificationRepositoryTestHelper.insertDbNotification(
+    await NotificationRepositoryMockHelper.insertDbNotification(
       notificationRepository,
-      (await NotificationDatabaseTestHelper.createTestDbNotification(
+      (await NotificationDatabaseMockHelper.createTestDbNotification(
         seed: 'seed1',
         dbAccount: dbAccount,
       ))
           .copyWith(
-        type: PleromaApiNotificationType.follow.toJsonValue(),
+        type: UnifediApiNotificationType.followValue.stringValue,
         unread: true,
       ),
     );
@@ -912,7 +912,7 @@ void main() {
     expect(
       (await notificationRepository.calculateCount(
         filters: NotificationRepositoryFilters(
-          onlyWithType: PleromaApiNotificationType.reblog,
+          onlyWithType: UnifediApiNotificationType.reblog,
           onlyUnread: true,
         ),
       )),
@@ -921,7 +921,7 @@ void main() {
     expect(
       (await notificationRepository.calculateCount(
         filters: NotificationRepositoryFilters(
-          onlyWithType: PleromaApiNotificationType.follow,
+          onlyWithType: UnifediApiNotificationType.followValue,
           onlyUnread: true,
         ),
       )),
@@ -936,14 +936,14 @@ void main() {
       1,
     );
 
-    await NotificationRepositoryTestHelper.insertDbNotification(
+    await NotificationRepositoryMockHelper.insertDbNotification(
       notificationRepository,
-      (await NotificationDatabaseTestHelper.createTestDbNotification(
+      (await NotificationDatabaseMockHelper.createTestDbNotification(
         seed: 'seed2',
         dbAccount: dbAccount,
       ))
           .copyWith(
-        type: PleromaApiNotificationType.follow.toJsonValue(),
+        type: UnifediApiNotificationType.followValue.stringValue,
         unread: false,
       ),
     );
@@ -951,7 +951,7 @@ void main() {
     expect(
       (await notificationRepository.calculateCount(
         filters: NotificationRepositoryFilters(
-          onlyWithType: PleromaApiNotificationType.reblog,
+          onlyWithType: UnifediApiNotificationType.reblogValue,
           onlyUnread: true,
         ),
       )),
@@ -960,7 +960,7 @@ void main() {
     expect(
       (await notificationRepository.calculateCount(
         filters: NotificationRepositoryFilters(
-          onlyWithType: PleromaApiNotificationType.follow,
+          onlyWithType: UnifediApiNotificationType.followValue,
           onlyUnread: true,
         ),
       )),
@@ -975,14 +975,14 @@ void main() {
       1,
     );
 
-    await NotificationRepositoryTestHelper.insertDbNotification(
+    await NotificationRepositoryMockHelper.insertDbNotification(
       notificationRepository,
-      (await NotificationDatabaseTestHelper.createTestDbNotification(
+      (await NotificationDatabaseMockHelper.createTestDbNotification(
         seed: 'seed3',
         dbAccount: dbAccount,
       ))
           .copyWith(
-        type: PleromaApiNotificationType.reblog.toJsonValue(),
+        type: UnifediApiNotificationType.reblogValue.stringValue,
         unread: true,
       ),
     );
@@ -990,7 +990,7 @@ void main() {
     expect(
       (await notificationRepository.calculateCount(
         filters: NotificationRepositoryFilters(
-          onlyWithType: PleromaApiNotificationType.reblog,
+          onlyWithType: UnifediApiNotificationType.reblogValue,
           onlyUnread: true,
         ),
       )),
@@ -999,7 +999,7 @@ void main() {
     expect(
       (await notificationRepository.calculateCount(
         filters: NotificationRepositoryFilters(
-          onlyWithType: PleromaApiNotificationType.follow,
+          onlyWithType: UnifediApiNotificationType.followValue,
           onlyUnread: true,
         ),
       )),
@@ -1022,9 +1022,9 @@ void main() {
   //         excludeStatusTextConditions: null,
   //       )),
   //       0);
-  //   await NotificationRepositoryTestHelper.insertDbNotification(
+  //   await NotificationRepositoryMockHelper.insertDbNotification(
   //       notificationRepository,
-  //       (await NotificationDatabaseTestHelper.createTestDbNotification(seed: 'seed1', dbAccount: dbAccount))
+  //       (await NotificationDatabaseMockHelper.createTestDbNotification(seed: 'seed1', dbAccount: dbAccount))
   //           .copyWith(
   //           type: PleromaNotificationType.follow.toJsonValue(),
   //           unread: true));
@@ -1047,9 +1047,9 @@ void main() {
   //       )),
   //       1);
   //
-  //   await NotificationRepositoryTestHelper.insertDbNotification(
+  //   await NotificationRepositoryMockHelper.insertDbNotification(
   //       notificationRepository,
-  //       (await NotificationDatabaseTestHelper.createTestDbNotification(seed: 'seed2', dbAccount: dbAccount))
+  //       (await NotificationDatabaseMockHelper.createTestDbNotification(seed: 'seed2', dbAccount: dbAccount))
   //           .copyWith(
   //           type: PleromaNotificationType.follow.toJsonValue(),
   //           unread: false));
@@ -1072,9 +1072,9 @@ void main() {
   //       )),
   //       1);
   //
-  //   await NotificationRepositoryTestHelper.insertDbNotification(
+  //   await NotificationRepositoryMockHelper.insertDbNotification(
   //       notificationRepository,
-  //       (await NotificationDatabaseTestHelper.createTestDbNotification(seed: 'seed3', dbAccount: dbAccount))
+  //       (await NotificationDatabaseMockHelper.createTestDbNotification(seed: 'seed3', dbAccount: dbAccount))
   //           .copyWith(
   //           type: PleromaNotificationType.reblog.toJsonValue(),
   //           unread: true));

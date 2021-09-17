@@ -8,7 +8,7 @@ import 'package:fedi/app/message/post_message_model.dart';
 import 'package:fedi/form/form_item_validation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:rxdart/rxdart.dart';
 
 final _logger = Logger('post_message_bloc_impl.dart');
@@ -48,14 +48,14 @@ abstract class PostMessageBloc extends DisposableOwner
   String? idempotencyKey;
 
   PostMessageBloc({
-    required IPleromaApiMediaAttachmentService pleromaMediaAttachmentService,
+    required IUnifediApiMediaAttachmentService unifediApiMediaAttachmentService,
     required int maximumMediaAttachmentCount,
     required this.maximumMessageLength,
     required int? maximumFileSizeInBytes,
     required this.unfocusOnClear,
   }) : uploadMediaAttachmentsBloc = UploadMediaAttachmentsCollectionBloc(
           maximumMediaAttachmentCount: maximumMediaAttachmentCount,
-          pleromaMediaAttachmentService: pleromaMediaAttachmentService,
+          unifediApiMediaAttachmentService: unifediApiMediaAttachmentService,
           maximumFileSizeInBytes: maximumFileSizeInBytes,
         ) {
     inputTextErrorsSubject.disposeWith(this);

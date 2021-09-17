@@ -18,7 +18,7 @@ import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dar
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc_impl.dart';
 import 'package:fedi/pagination/pagination_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_dispose/easy_dispose.dart';
@@ -28,7 +28,7 @@ class RemoteHashtagPageBloc extends HashtagPageBloc
   @override
   final IRemoteInstanceBloc remoteInstanceBloc;
   @override
-  final IPleromaApiTimelineService pleromaApiTimelineService;
+  final IUnifediApiTimelineService unifediApiTimelineService;
 
   final IPaginationSettingsBloc paginationSettingsBloc;
 
@@ -39,14 +39,14 @@ class RemoteHashtagPageBloc extends HashtagPageBloc
     required this.remoteInstanceBloc,
     required this.paginationSettingsBloc,
     required IHashtag hashtag,
-  })  : pleromaApiTimelineService = PleromaApiTimelineService(
-          restService: remoteInstanceBloc.pleromaRestService,
+  })  : unifediApiTimelineService = UnifediApiTimelineService(
+          restService: remoteInstanceBloc.unifediApiRestService,
         ),
         super(
           hashtag: hashtag,
           instanceUri: remoteInstanceBloc.instanceUri,
         ) {
-    addDisposable(pleromaApiTimelineService);
+    addDisposable(unifediApiTimelineService);
   }
 
   static RemoteHashtagPageBloc createFromContext(
@@ -109,13 +109,13 @@ class RemoteHashtagPageBloc extends HashtagPageBloc
 
     addDisposable(timelineLocalPreferenceBloc);
 
-    var pleromaApiTimelineService = PleromaApiTimelineService(
-      restService: remoteInstanceBloc.pleromaRestService,
+    var unifediApiTimelineService = UnifediApiTimelineService(
+      restService: remoteInstanceBloc.unifediApiRestService,
     );
-    addDisposable(pleromaApiTimelineService);
+    addDisposable(unifediApiTimelineService);
 
     statusNetworkOnlyListBloc = HashtagStatusListNetworkOnlyListBloc(
-      pleromaApiTimelineService: pleromaApiTimelineService,
+      unifediApiTimelineService: unifediApiTimelineService,
       instanceUri: instanceUri,
       timelineLocalPreferenceBloc: timelineLocalPreferenceBloc,
     );

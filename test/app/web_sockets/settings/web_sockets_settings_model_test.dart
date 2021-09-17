@@ -8,18 +8,18 @@ import 'web_sockets_settings_model_test_helper.dart';
 
 void main() {
   test('equal & hashcode & toString', () async {
-    ObjTestHelper.testEqualsHashcodeToString(
+    ObjMockHelper.testEqualsHashcodeToString(
       ({required String seed}) =>
-          WebSocketsSettingsModelTestHelper.createTestWebSocketsSettings(
+          WebSocketsSettingsModelMockHelper.createTestWebSocketsSettings(
         seed: seed,
       ),
     );
   });
 
   test('toJson & fromJson', () async {
-    JsonTestHelper.testFromJsonToJson(
+    JsonMockHelper.testFromJsonToJson(
       ({required String seed}) =>
-          WebSocketsSettingsModelTestHelper.createTestWebSocketsSettings(
+          WebSocketsSettingsModelMockHelper.createTestWebSocketsSettings(
         seed: seed,
       ),
       WebSocketsSettings.fromJson,
@@ -27,19 +27,19 @@ void main() {
   });
 
   test('hive save&load', () async {
-    await HiveTestHelper.testHiveSaveAndLoad(
+    await HiveMockHelper.testHiveSaveAndLoad(
       ({required String seed}) =>
-          WebSocketsSettingsModelTestHelper.createTestWebSocketsSettings(
+          WebSocketsSettingsModelMockHelper.createTestWebSocketsSettings(
         seed: seed,
       ),
     );
   });
 
   test('copyWith', () async {
-    var obj1 = WebSocketsSettingsModelTestHelper.createTestWebSocketsSettings(
+    var obj1 = WebSocketsSettingsModelMockHelper.createTestWebSocketsSettings(
       seed: 'seed1',
     );
-    var obj2 = WebSocketsSettingsModelTestHelper.createTestWebSocketsSettings(
+    var obj2 = WebSocketsSettingsModelMockHelper.createTestWebSocketsSettings(
       seed: 'seed2',
     );
 
@@ -53,7 +53,7 @@ void main() {
   });
 
   test('clone', () async {
-    var obj1 = WebSocketsSettingsModelTestHelper.createTestWebSocketsSettings(
+    var obj1 = WebSocketsSettingsModelMockHelper.createTestWebSocketsSettings(
       seed: 'seed1',
     );
 
@@ -63,7 +63,7 @@ void main() {
   });
 
   test('hive adapter', () async {
-    HiveTestHelper.testAdapter(
+    HiveMockHelper.testAdapter(
       () => WebSocketsSettingsAdapter(),
     );
   });

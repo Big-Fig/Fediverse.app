@@ -3,7 +3,7 @@ import 'package:fedi/app/hashtag/hashtag_model_adapter.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/instance/trends/hashtag_list/network_only/instance_trends_hashtag_list_network_only_list_bloc.dart';
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:logging/logging.dart';
 
 final _logger =
@@ -11,10 +11,10 @@ final _logger =
 
 class InstanceTrendsHashtagListNetworkOnlyListBloc extends DisposableOwner
     implements IInstanceTrendsHashtagListNetworkOnlyListBloc {
-  final IPleromaApiTrendsService pleromaApiTrendsService;
+  final IUnifediApiInstanceService UnifediApiInstanceService;
 
   @override
-  IPleromaApi get pleromaApi => pleromaApiTrendsService;
+  IUnifediApiService get unifediApi => UnifediApiInstanceService;
 
   @override
   final InstanceLocation instanceLocation;
@@ -23,7 +23,7 @@ class InstanceTrendsHashtagListNetworkOnlyListBloc extends DisposableOwner
   final Uri? remoteInstanceUriOrNull;
 
   InstanceTrendsHashtagListNetworkOnlyListBloc({
-    required this.pleromaApiTrendsService,
+    required this.UnifediApiInstanceService,
     required this.instanceLocation,
     required this.remoteInstanceUriOrNull,
   });
@@ -40,7 +40,7 @@ class InstanceTrendsHashtagListNetworkOnlyListBloc extends DisposableOwner
       return [];
     }
 
-    var pleromaHashtags = await pleromaApiTrendsService.getTrendingTags();
+    var pleromaHashtags = await UnifediApiInstanceService.getTrendingTags();
     List<IHashtag> result = pleromaHashtags
         .map(
           (pleromaHashtag) => pleromaHashtag.toHashtag(),

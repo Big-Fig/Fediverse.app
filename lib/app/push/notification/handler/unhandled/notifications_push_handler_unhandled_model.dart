@@ -1,6 +1,6 @@
 import 'package:fedi/app/push/notification/handler/notifications_push_handler_model.dart';
 import 'package:fedi/collection/collection_hash_utils.dart';
-import 'package:fedi/json/json_model.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -14,7 +14,7 @@ part 'notifications_push_handler_unhandled_model.g.dart';
 //@HiveType()
 @HiveType(typeId: -32 + 55)
 @JsonSerializable(explicitToJson: true)
-class NotificationsPushHandlerUnhandledList implements IJsonObject {
+class NotificationsPushHandlerUnhandledList implements IJsonObj {
   @HiveField(0)
   final List<NotificationsPushHandlerMessage> messages;
 

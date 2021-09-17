@@ -6,7 +6,7 @@ import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/dialog/chooser/selection/single/fedi_single_selection_chooser_dialog.dart';
 import 'package:fedi/dialog/dialog_model.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +22,7 @@ class PostStatusVisibilityActionWidget extends StatelessWidget {
       listen: false,
     ).currentInstance!.isPleroma;
 
-    return StreamBuilder<PleromaApiVisibility>(
+    return StreamBuilder<UnifediApiVisibility>(
       stream: postStatusBloc.visibilityStream,
       initialData: postStatusBloc.visibility,
       builder: (context, snapshot) {
@@ -44,34 +44,34 @@ class PostStatusVisibilityActionWidget extends StatelessWidget {
                 buildVisibilityDialogAction(
                   context: context,
                   postStatusBloc: postStatusBloc,
-                  visibility: PleromaApiVisibility.public,
+                  visibility: UnifediApiVisibility.publicValue,
                 ),
                 if (isPleromaInstance)
                   buildVisibilityDialogAction(
                     context: context,
                     postStatusBloc: postStatusBloc,
-                    visibility: PleromaApiVisibility.local,
+                    visibility: UnifediApiVisibility.localValue,
                   ),
                 buildVisibilityDialogAction(
                   context: context,
                   postStatusBloc: postStatusBloc,
-                  visibility: PleromaApiVisibility.direct,
+                  visibility: UnifediApiVisibility.directValue,
                 ),
                 if (isPleromaInstance)
                   buildVisibilityDialogAction(
                     context: context,
                     postStatusBloc: postStatusBloc,
-                    visibility: PleromaApiVisibility.list,
+                    visibility: UnifediApiVisibility.listValue,
                   ),
                 buildVisibilityDialogAction(
                   context: context,
                   postStatusBloc: postStatusBloc,
-                  visibility: PleromaApiVisibility.unlisted,
+                  visibility: UnifediApiVisibility.unlistedValue,
                 ),
                 buildVisibilityDialogAction(
                   context: context,
                   postStatusBloc: postStatusBloc,
-                  visibility: PleromaApiVisibility.private,
+                  visibility: UnifediApiVisibility.privateValue,
                 ),
               ],
             );
@@ -84,7 +84,7 @@ class PostStatusVisibilityActionWidget extends StatelessWidget {
   SelectionDialogAction buildVisibilityDialogAction({
     required BuildContext context,
     required IPostStatusBloc postStatusBloc,
-    required PleromaApiVisibility visibility,
+    required UnifediApiVisibility visibility,
   }) {
     DialogActionCallback? onPressed;
     var isPossibleToChangeVisibility =

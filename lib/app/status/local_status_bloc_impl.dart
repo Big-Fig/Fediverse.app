@@ -9,7 +9,7 @@ import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/duration/duration_extension.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
@@ -21,26 +21,22 @@ class LocalStatusBloc extends StatusBloc {
   final IStatusRepository statusRepository;
   final IAccountRepository accountRepository;
   final bool isNeedWatchLocalRepositoryForUpdates;
-  final IPleromaApiAuthStatusService pleromaAuthStatusService;
 
   LocalStatusBloc({
     required this.statusRepository,
     required this.accountRepository,
     required this.isNeedWatchLocalRepositoryForUpdates,
-    required this.pleromaAuthStatusService,
-    required IPleromaApiAccountService pleromaAccountService,
-    required IPleromaApiStatusEmojiReactionService
-        pleromaApiStatusEmojiReactionService,
-    required IPleromaApiPollService pleromaPollService,
+    required IUnifediApiStatusService unifediApiStatusService,
+    required IUnifediApiAccountService unifediApiAccountService,
+    required IUnifediApiPollService unifediApiPollService,
     required IStatus status,
     required bool isNeedRefreshFromNetworkOnInit,
     required bool delayInit,
   }) : super(
-          pleromaStatusService: pleromaAuthStatusService,
-          pleromaAccountService: pleromaAccountService,
-          pleromaApiStatusEmojiReactionService:
-              pleromaApiStatusEmojiReactionService,
-          pleromaPollService: pleromaPollService,
+
+    unifediApiStatusService: unifediApiStatusService,
+          unifediApiAccountService: unifediApiAccountService,
+          unifediApiPollService: unifediApiPollService,
           status: status,
           isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
           delayInit: delayInit,
@@ -62,20 +58,16 @@ class LocalStatusBloc extends StatusBloc {
         delayInit: delayInit,
         isNeedWatchLocalRepositoryForUpdates:
             isNeedWatchLocalRepositoryForUpdates,
-        pleromaAuthStatusService: Provider.of<IPleromaApiAuthStatusService>(
+        unifediApiStatusService: Provider.of<IUnifediApiStatusService>(
           context,
           listen: false,
         ),
-        pleromaAccountService: Provider.of<IPleromaApiAccountService>(
+        unifediApiAccountService: Provider.of<IUnifediApiAccountService>(
           context,
           listen: false,
         ),
-        pleromaApiStatusEmojiReactionService:
-            Provider.of<IPleromaApiStatusEmojiReactionService>(
-          context,
-          listen: false,
-        ),
-        pleromaPollService: Provider.of<IPleromaApiPollService>(
+
+        unifediApiPollService: Provider.of<IUnifediApiPollService>(
           context,
           listen: false,
         ),
@@ -129,9 +121,9 @@ class LocalStatusBloc extends StatusBloc {
         accountRemoteId,
       );
       if (account == null) {
-        if (pleromaAccountService.isApiReadyToUse) {
-          var remoteAccount = await pleromaAccountService.getAccount(
-            accountRemoteId: accountRemoteId,
+        if (unifediApiAccountService.isApiReadyToUse) {
+          var remoteAccount = await unifediApiAccountService.getAccount(
+            accountId: accountRemoteId,
             withRelationship: false,
           );
           await accountRepository.upsertInRemoteType(
@@ -201,7 +193,7 @@ class LocalStatusBloc extends StatusBloc {
   }
 
   @override
-  Future<IStatus> onPollUpdated(IPleromaApiPoll? poll) async {
+  Future<IStatus> onPollUpdated(IUnifediApiPoll? poll) async {
     var updatedLocalStatus = await super.onPollUpdated(poll);
 
     await statusRepository.updateByDbIdInDbType(
@@ -237,14 +229,14 @@ class LocalStatusBloc extends StatusBloc {
 
   @override
   Future<IStatus> toggleFavourite() async {
-    IPleromaApiStatus remoteStatus;
+    IUnifediApiStatus remoteStatus;
     if (reblogOrOriginal.favourited) {
-      remoteStatus = await pleromaAuthStatusService.unFavouriteStatus(
-        statusRemoteId: reblogOrOriginal.remoteId!,
+      remoteStatus = await unifediApiStatusService.unFavouriteStatus(
+        statusId: reblogOrOriginal.remoteId!,
       );
     } else {
-      remoteStatus = await pleromaAuthStatusService.favouriteStatus(
-        statusRemoteId: reblogOrOriginal.remoteId!,
+      remoteStatus = await unifediApiStatusService.favouriteStatus(
+        statusId: reblogOrOriginal.remoteId!,
       );
     }
 
@@ -265,14 +257,15 @@ class LocalStatusBloc extends StatusBloc {
   Future<IStatus> toggleReblog() async {
     _logger.finest(() =>
         'requestToggleReblog status.reblogged=${reblogOrOriginal.reblogged}');
-    IPleromaApiStatus remoteStatus;
+    IUnifediApiStatus remoteStatus;
     if (reblogOrOriginal.reblogged) {
-      remoteStatus = await pleromaAuthStatusService.unReblogStatus(
-        statusRemoteId: reblogOrOriginal.remoteId!,
+      remoteStatus = await unifediApiStatusService.unReblogStatus(
+        statusId: reblogOrOriginal.remoteId!,
       );
     } else {
-      remoteStatus = await pleromaAuthStatusService.reblogStatus(
-        statusRemoteId: reblogOrOriginal.remoteId!,
+      remoteStatus = await unifediApiStatusService.reblogStatus(
+        statusId: reblogOrOriginal.remoteId!,
+        visibility: null,
       );
     }
 
@@ -293,7 +286,7 @@ class LocalStatusBloc extends StatusBloc {
   }) async {
     if (duration != null) {
       assert(
-        pleromaAuthStatusService.isPleroma,
+        unifediApiStatusService.isPleroma,
         'Muting with duration supported only on pleroma',
       );
     }
@@ -315,15 +308,15 @@ class LocalStatusBloc extends StatusBloc {
   Future<IStatus> _actualMuteUnmute({
     required int? expireDurationInSeconds,
   }) async {
-    IPleromaApiStatus remoteStatus;
+    IUnifediApiStatus remoteStatus;
 
     if (reblogOrOriginal.muted) {
-      remoteStatus = await pleromaAuthStatusService.unMuteStatus(
-        statusRemoteId: reblogOrOriginal.remoteId!,
+      remoteStatus = await unifediApiStatusService.unMuteStatus(
+        statusId: reblogOrOriginal.remoteId!,
       );
     } else {
-      remoteStatus = await pleromaAuthStatusService.muteStatus(
-        statusRemoteId: reblogOrOriginal.remoteId!,
+      remoteStatus = await unifediApiStatusService.muteStatus(
+        statusId: reblogOrOriginal.remoteId!,
         expireDurationInSeconds: expireDurationInSeconds,
       );
     }
@@ -343,14 +336,14 @@ class LocalStatusBloc extends StatusBloc {
 
   @override
   Future<IStatus> toggleBookmark() async {
-    IPleromaApiStatus remoteStatus;
+    IUnifediApiStatus remoteStatus;
     if (reblogOrOriginal.bookmarked) {
-      remoteStatus = await pleromaAuthStatusService.unBookmarkStatus(
-        statusRemoteId: reblogOrOriginal.remoteId!,
+      remoteStatus = await unifediApiStatusService.unBookmarkStatus(
+        statusId: reblogOrOriginal.remoteId!,
       );
     } else {
-      remoteStatus = await pleromaAuthStatusService.bookmarkStatus(
-        statusRemoteId: reblogOrOriginal.remoteId!,
+      remoteStatus = await unifediApiStatusService.bookmarkStatus(
+        statusId: reblogOrOriginal.remoteId!,
       );
     }
 
@@ -369,20 +362,20 @@ class LocalStatusBloc extends StatusBloc {
 
   @override
   Future<IStatus> togglePin() async {
-    IPleromaApiStatus remoteStatus;
+    IUnifediApiStatus remoteStatus;
     if (reblogOrOriginal.pinned) {
-      remoteStatus = await pleromaAuthStatusService.unPinStatus(
-        statusRemoteId: reblogOrOriginal.remoteId!,
+      remoteStatus = await unifediApiStatusService.unPinStatus(
+        statusId: reblogOrOriginal.remoteId!,
       );
     } else {
       // reblogged dont support pin
       if (reblogOrOriginal.reblogged) {
-        remoteStatus = await pleromaAuthStatusService.pinStatus(
-          statusRemoteId: reblog!.remoteId!,
+        remoteStatus = await unifediApiStatusService.pinStatus(
+          statusId: reblog!.remoteId!,
         );
       } else {
-        remoteStatus = await pleromaAuthStatusService.pinStatus(
-          statusRemoteId: status.remoteId!,
+        remoteStatus = await unifediApiStatusService.pinStatus(
+          statusId: status.remoteId!,
         );
       }
     }
@@ -402,8 +395,8 @@ class LocalStatusBloc extends StatusBloc {
 
   @override
   Future delete() async {
-    await pleromaAuthStatusService.deleteStatus(
-      statusRemoteId: status.remoteId!,
+    await unifediApiStatusService.deleteStatus(
+      statusId: status.remoteId!,
     );
 
     await statusRepository.markStatusAsDeleted(
@@ -412,11 +405,11 @@ class LocalStatusBloc extends StatusBloc {
   }
 
   @override
-  Future<IPleromaApiStatus> toggleEmojiReaction({
+  Future<IUnifediApiStatus> toggleEmojiReaction({
     required String emoji,
   }) async {
     var alreadyAdded;
-    var foundEmojiReaction = pleromaEmojiReactions?.firstWhereOrNull(
+    var foundEmojiReaction = emojiReactions?.firstWhereOrNull(
       (emojiReaction) => emojiReaction.name == emoji,
     );
 
@@ -426,15 +419,15 @@ class LocalStatusBloc extends StatusBloc {
       alreadyAdded = false;
     }
 
-    IPleromaApiStatus? remoteStatus;
+    IUnifediApiStatus? remoteStatus;
     if (alreadyAdded) {
-      remoteStatus = await pleromaApiStatusEmojiReactionService!.removeReaction(
-        statusRemoteId: status.remoteId!,
+      remoteStatus = await unifediApiStatusService!.removeEmojiReaction(
+        statusId: status.remoteId!,
         emoji: emoji,
       );
     } else {
-      remoteStatus = await pleromaApiStatusEmojiReactionService!.addReaction(
-        statusRemoteId: status.remoteId!,
+      remoteStatus = await unifediApiStatusService!.addEmojiReaction(
+        statusId: status.remoteId!,
         emoji: emoji,
       );
     }
@@ -447,7 +440,7 @@ class LocalStatusBloc extends StatusBloc {
   }
 
   Future _updateByRemoteStatus(
-    IPleromaApiStatus remoteStatus, {
+    IUnifediApiStatus remoteStatus, {
     Batch? batchTransaction,
   }) =>
       statusRepository.updateAppTypeByRemoteType(
@@ -470,5 +463,5 @@ class LocalStatusBloc extends StatusBloc {
   Uri? get remoteInstanceUriOrNull => null;
 
   @override
-  bool get isPleroma => pleromaAuthStatusService.isPleroma;
+  bool get isPleroma => unifediApiStatusService.isPleroma;
 }

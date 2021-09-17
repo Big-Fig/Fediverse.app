@@ -3,18 +3,18 @@ import 'package:fedi/app/account/my/domain_block/my_account_domain_block_model.d
 import 'package:fedi/app/list/network_only/network_only_list_bloc.dart';
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class MyAccountDomainBlockNetworkOnlyDomainListBloc extends DisposableOwner
     implements IMyAccountDomainBlockNetworkOnlyListBloc {
-  final IPleromaApiAuthAccountService pleromaAuthAccountService;
-  final IPleromaApiMyAccountService pleromaMyAccountService;
+  final IUnifediApiAccountService pleromaAuthAccountService;
+  final IUnifediApiMyAccountService unifediApiMyAccountService;
 
   MyAccountDomainBlockNetworkOnlyDomainListBloc({
     required this.pleromaAuthAccountService,
-    required this.pleromaMyAccountService,
+    required this.unifediApiMyAccountService,
   });
 
   @override
@@ -29,9 +29,9 @@ class MyAccountDomainBlockNetworkOnlyDomainListBloc extends DisposableOwner
     String? minId,
     String? maxId,
   }) async {
-    var remoteDomains = await pleromaMyAccountService.getDomainBlocks(
-      pagination: PleromaApiPaginationRequest(
-        sinceId: minId,
+    var remoteDomains = await unifediApiMyAccountService.getMyDomainBlocks(
+      pagination: UnifediApiPagination(
+        minId: minId,
         maxId: maxId,
         limit: itemsCountPerPage,
       ),
@@ -43,17 +43,17 @@ class MyAccountDomainBlockNetworkOnlyDomainListBloc extends DisposableOwner
   }
 
   @override
-  IPleromaApi get pleromaApi => pleromaMyAccountService;
+  IUnifediApiService get unifediApi => unifediApiMyAccountService;
 
   static MyAccountDomainBlockNetworkOnlyDomainListBloc createFromContext(
     BuildContext context,
   ) =>
       MyAccountDomainBlockNetworkOnlyDomainListBloc(
-        pleromaMyAccountService: Provider.of<IPleromaApiMyAccountService>(
+        unifediApiMyAccountService: Provider.of<IUnifediApiMyAccountService>(
           context,
           listen: false,
         ),
-        pleromaAuthAccountService: Provider.of<IPleromaApiAuthAccountService>(
+        pleromaAuthAccountService: Provider.of<IUnifediApiAccountService>(
           context,
           listen: false,
         ),

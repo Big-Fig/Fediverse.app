@@ -3,7 +3,7 @@ import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/notification/notification_model.dart';
 import 'package:fedi/app/notification/repository/notification_repository_model.dart';
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:fedi/repository/repository.dart';
 import 'package:flutter/widgets.dart';
 import 'package:moor/moor.dart';
@@ -14,7 +14,7 @@ abstract class INotificationRepository
         IAppRemoteReadWriteRepository<
             DbNotification,
             INotification,
-            IPleromaApiNotification,
+            IUnifediApiNotification,
             int,
             String,
             NotificationRepositoryFilters,
@@ -51,20 +51,20 @@ abstract class INotificationRepository
   Future<INotification?> getOldestOrderByRemoteId();
 
   Future upsertRemoteNotification(
-    IPleromaApiNotification remoteItem, {
+    IUnifediApiNotification remoteItem, {
     required bool unread,
     required Batch? batchTransaction,
   });
 
   Future upsertRemoteNotifications(
-    List<IPleromaApiNotification> pleromaNotifications, {
+    List<IUnifediApiNotification> pleromaNotifications, {
     required bool unread,
     required Batch? batchTransaction,
   });
 
   Future updateNotificationByRemoteType({
     required INotification appItem,
-    required IPleromaApiNotification remoteItem,
+    required IUnifediApiNotification remoteItem,
     required bool? unread,
     required Batch? batchTransaction,
   });

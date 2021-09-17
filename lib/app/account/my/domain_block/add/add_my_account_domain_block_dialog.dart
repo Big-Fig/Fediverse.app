@@ -7,7 +7,7 @@ import 'package:fedi/dialog/base_dialog.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
@@ -51,7 +51,7 @@ class AddMyAccountDomainBlockDialog extends FediDialog {
           cancelable: true,
         ) {
     addMyAccountDomainBlockBloc = AddMyAccountDomainBlockBloc(
-      pleromaAuthAccountService: Provider.of<IPleromaApiAuthAccountService>(
+      pleromaAuthAccountService: Provider.of<IUnifediApiAccountService>(
         context,
         listen: false,
       ),

@@ -1,22 +1,22 @@
 abstract class IMyAccountFeaturedHashtag {
-  String get remoteId;
+  String? get remoteId;
 
   String get name;
 
-  int get statusesCount;
+  int? get statusesCount;
 
   DateTime? get lastStatusAt;
 }
 
 class MyAccountFeaturedHashtag extends IMyAccountFeaturedHashtag {
   @override
-  final String remoteId;
+  final String? remoteId;
 
   @override
   final String name;
 
   @override
-  final int statusesCount;
+  final int? statusesCount;
 
   @override
   final DateTime? lastStatusAt;

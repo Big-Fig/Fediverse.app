@@ -35,10 +35,10 @@ class EditToastSettingsBloc
   late IBoolValueFormFieldBloc pollFieldBloc;
   @override
   // ignore: avoid-late-keyword
-  late IBoolValueFormFieldBloc pleromaChatMentionFieldBloc;
+  late IBoolValueFormFieldBloc chatMentionFieldBloc;
   @override
   // ignore: avoid-late-keyword
-  late IBoolValueFormFieldBloc pleromaEmojiReactionFieldBloc;
+  late IBoolValueFormFieldBloc emojiReactionFieldBloc;
 
   @override
   // ignore: avoid-late-keyword
@@ -52,8 +52,8 @@ class EditToastSettingsBloc
         mentionFieldBloc,
         reblogFieldBloc,
         pollFieldBloc,
-        pleromaChatMentionFieldBloc,
-        pleromaEmojiReactionFieldBloc,
+        chatMentionFieldBloc,
+        emojiReactionFieldBloc,
         toastHandlingTypeSingleFromListValueFormFieldBloc,
       ];
 
@@ -99,14 +99,14 @@ class EditToastSettingsBloc
       originValue: currentPushSettings!.poll! && isMastodonOrGlobal,
       isEnabled: isEnabled && isMastodonOrGlobal,
     );
-    pleromaChatMentionFieldBloc = BoolValueFormFieldBloc(
+    chatMentionFieldBloc = BoolValueFormFieldBloc(
       originValue:
-          currentPushSettings!.pleromaChatMention! && isPleromaOrGlobal,
+          currentPushSettings!.chatMention! && isPleromaOrGlobal,
       isEnabled: isEnabled && isPleromaOrGlobal,
     );
-    pleromaEmojiReactionFieldBloc = BoolValueFormFieldBloc(
+    emojiReactionFieldBloc = BoolValueFormFieldBloc(
       originValue:
-          currentPushSettings!.pleromaEmojiReaction! && isPleromaOrGlobal,
+          currentPushSettings!.emojiReaction! && isPleromaOrGlobal,
       isEnabled: isEnabled && isPleromaOrGlobal,
     );
 
@@ -123,8 +123,8 @@ class EditToastSettingsBloc
     addDisposable(mentionFieldBloc);
     addDisposable(reblogFieldBloc);
     addDisposable(pollFieldBloc);
-    addDisposable(pleromaChatMentionFieldBloc);
-    addDisposable(pleromaEmojiReactionFieldBloc);
+    addDisposable(chatMentionFieldBloc);
+    addDisposable(emojiReactionFieldBloc);
     addDisposable(
       toastHandlingTypeSingleFromListValueFormFieldBloc,
     );
@@ -139,8 +139,8 @@ class EditToastSettingsBloc
         mention: mentionFieldBloc.currentValue,
         reblog: reblogFieldBloc.currentValue,
         poll: pollFieldBloc.currentValue,
-        pleromaChatMention: pleromaChatMentionFieldBloc.currentValue,
-        pleromaEmojiReaction: pleromaEmojiReactionFieldBloc.currentValue,
+        chatMention: chatMentionFieldBloc.currentValue,
+        emojiReaction: emojiReactionFieldBloc.currentValue,
       ),
       handlingType:
           toastHandlingTypeSingleFromListValueFormFieldBloc.currentValue,
@@ -168,12 +168,12 @@ class EditToastSettingsBloc
     pollFieldBloc.changeCurrentValue(
       pushSettings.poll! && (currentInstance!.isMastodon || isNotGlobal),
     );
-    pleromaChatMentionFieldBloc.changeCurrentValue(
-      pushSettings.pleromaChatMention! &&
+    chatMentionFieldBloc.changeCurrentValue(
+      pushSettings.chatMention! &&
           (currentInstance!.isPleroma || isNotGlobal),
     );
-    pleromaEmojiReactionFieldBloc.changeCurrentValue(
-      pushSettings.pleromaEmojiReaction! &&
+    emojiReactionFieldBloc.changeCurrentValue(
+      pushSettings.emojiReaction! &&
           (currentInstance!.isPleroma || isNotGlobal),
     );
 

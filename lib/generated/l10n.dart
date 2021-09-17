@@ -2187,30 +2187,30 @@ class S {
   }
 
   /// `{emoji} for your post.`
-  String app_notification_header_pleromaEmojiReaction(Object emoji) {
+  String app_notification_header_emojiReaction(Object emoji) {
     return Intl.message(
       '$emoji for your post.',
-      name: 'app_notification_header_pleromaEmojiReaction',
+      name: 'app_notification_header_emojiReaction',
       desc: '',
       args: [emoji],
     );
   }
 
   /// `Chat: `
-  String get app_notification_header_pleromaChatMention_prefix {
+  String get app_notification_header_chatMention_prefix {
     return Intl.message(
       'Chat: ',
-      name: 'app_notification_header_pleromaChatMention_prefix',
+      name: 'app_notification_header_chatMention_prefix',
       desc: '',
       args: [],
     );
   }
 
   /// `{status}.`
-  String app_notification_header_pleromaChatMention_postfix(Object status) {
+  String app_notification_header_chatMention_postfix(Object status) {
     return Intl.message(
       '$status.',
-      name: 'app_notification_header_pleromaChatMention_postfix',
+      name: 'app_notification_header_chatMention_postfix',
       desc: '',
       args: [status],
     );
@@ -8044,121 +8044,121 @@ class S {
   }
 
   /// `Emoji reactions`
-  String get app_push_channel_pleromaEmojiReaction_name {
+  String get app_push_channel_emojiReaction_name {
     return Intl.message(
       'Emoji reactions',
-      name: 'app_push_channel_pleromaEmojiReaction_name',
+      name: 'app_push_channel_emojiReaction_name',
       desc: '',
       args: [],
     );
   }
 
   /// `Pleroma-only emoji reactions for statuses`
-  String get app_push_channel_pleromaEmojiReaction_description {
+  String get app_push_channel_emojiReaction_description {
     return Intl.message(
       'Pleroma-only emoji reactions for statuses',
-      name: 'app_push_channel_pleromaEmojiReaction_description',
+      name: 'app_push_channel_emojiReaction_description',
       desc: '',
       args: [],
     );
   }
 
   /// `{acct} reacted {emoji}`
-  String app_push_richNotification_pleromaEmojiReaction_title(
+  String app_push_richNotification_emojiReaction_title(
       Object acct, Object emoji) {
     return Intl.message(
       '$acct reacted $emoji',
-      name: 'app_push_richNotification_pleromaEmojiReaction_title',
+      name: 'app_push_richNotification_emojiReaction_title',
       desc: '',
       args: [acct, emoji],
     );
   }
 
   /// `Someone reacted`
-  String get app_push_richNotification_pleromaEmojiReaction_summary {
+  String get app_push_richNotification_emojiReaction_summary {
     return Intl.message(
       'Someone reacted',
-      name: 'app_push_richNotification_pleromaEmojiReaction_summary',
+      name: 'app_push_richNotification_emojiReaction_summary',
       desc: '',
       args: [],
     );
   }
 
   /// `Chat`
-  String get app_push_channel_pleromaChatMention_name {
+  String get app_push_channel_chatMention_name {
     return Intl.message(
       'Chat',
-      name: 'app_push_channel_pleromaChatMention_name',
+      name: 'app_push_channel_chatMention_name',
       desc: '',
       args: [],
     );
   }
 
   /// `Pleroma-only chat messages`
-  String get app_push_channel_pleromaChatMention_description {
+  String get app_push_channel_chatMention_description {
     return Intl.message(
       'Pleroma-only chat messages',
-      name: 'app_push_channel_pleromaChatMention_description',
+      name: 'app_push_channel_chatMention_description',
       desc: '',
       args: [],
     );
   }
 
   /// `Chat with {acct}`
-  String app_push_richNotification_pleromaChatMention_title(Object acct) {
+  String app_push_richNotification_chatMention_title(Object acct) {
     return Intl.message(
       'Chat with $acct',
-      name: 'app_push_richNotification_pleromaChatMention_title',
+      name: 'app_push_richNotification_chatMention_title',
       desc: '',
       args: [acct],
     );
   }
 
   /// `You have new message in chat`
-  String get app_push_richNotification_pleromaChatMention_summary {
+  String get app_push_richNotification_chatMention_summary {
     return Intl.message(
       'You have new message in chat',
-      name: 'app_push_richNotification_pleromaChatMention_summary',
+      name: 'app_push_richNotification_chatMention_summary',
       desc: '',
       args: [],
     );
   }
 
   /// `Reports`
-  String get app_push_channel_pleromaReport_name {
+  String get app_push_channel_report_name {
     return Intl.message(
       'Reports',
-      name: 'app_push_channel_pleromaReport_name',
+      name: 'app_push_channel_report_name',
       desc: '',
       args: [],
     );
   }
 
   /// `When people report your statues`
-  String get app_push_channel_pleromaReport_description {
+  String get app_push_channel_report_description {
     return Intl.message(
       'When people report your statues',
-      name: 'app_push_channel_pleromaReport_description',
+      name: 'app_push_channel_report_description',
       desc: '',
       args: [],
     );
   }
 
   /// `{acct} reported your status`
-  String app_push_richNotification_pleromaReport_title(Object acct) {
+  String app_push_richNotification_report_title(Object acct) {
     return Intl.message(
       '$acct reported your status',
-      name: 'app_push_richNotification_pleromaReport_title',
+      name: 'app_push_richNotification_report_title',
       desc: '',
       args: [acct],
     );
   }
 
   /// `Someone reported your status`
-  String get app_push_richNotification_pleromaReport_summary {
+  String get app_push_richNotification_report_summary {
     return Intl.message(
       'Someone reported your status',
-      name: 'app_push_richNotification_pleromaReport_summary',
+      name: 'app_push_richNotification_report_summary',
       desc: '',
       args: [],
     );

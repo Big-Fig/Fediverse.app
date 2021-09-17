@@ -1,7 +1,7 @@
 import 'package:fedi/app/status/post/poll/post_status_poll_model.dart';
 
 // ignore_for_file: no-magic-number
-class PostStatusModelTestHelper {
+class PostStatusModelMockHelper {
   static PostStatusPoll createTestPostStatusPoll({
     required String seed,
   }) =>

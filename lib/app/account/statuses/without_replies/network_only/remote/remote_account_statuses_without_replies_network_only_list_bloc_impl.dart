@@ -7,7 +7,7 @@ import 'package:fedi/app/status/list/network_only/status_network_only_list_bloc.
 import 'package:fedi/app/status/list/network_only/status_network_only_list_bloc_proxy_provider.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_dispose/easy_dispose.dart';
@@ -18,11 +18,11 @@ class RemoteAccountStatusesWithoutRepliesNetworkOnlyListBloc
 
   RemoteAccountStatusesWithoutRepliesNetworkOnlyListBloc({
     required IAccount? account,
-    required IPleromaApiAccountService pleromaAccountService,
+    required IUnifediApiAccountService unifediApiAccountService,
     required this.instanceUri,
   }) : super(
           account: account,
-          pleromaAccountService: pleromaAccountService,
+          unifediApiAccountService: unifediApiAccountService,
         );
 
   static RemoteAccountStatusesWithoutRepliesNetworkOnlyListBloc
@@ -32,17 +32,17 @@ class RemoteAccountStatusesWithoutRepliesNetworkOnlyListBloc
     required Uri instanceUri,
   }) {
     var remoteInstanceBloc = IRemoteInstanceBloc.of(context, listen: false);
-    var pleromaAccountService = PleromaApiAccountService(
-      restService: remoteInstanceBloc.pleromaRestService,
+    var unifediApiAccountService = UnifediApiAccountService(
+      restService: remoteInstanceBloc.unifediApiRestService,
     );
 
     var bloc = RemoteAccountStatusesWithoutRepliesNetworkOnlyListBloc(
       account: account,
       instanceUri: instanceUri,
-      pleromaAccountService: pleromaAccountService,
+      unifediApiAccountService: unifediApiAccountService,
     );
 
-    pleromaAccountService.disposeWith(bloc);
+    unifediApiAccountService.disposeWith(bloc);
 
     return bloc;
   }

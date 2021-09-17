@@ -45,7 +45,7 @@ void main() {
     expect(listened, null);
 
     await paginationBloc.requestPage(pageIndex: 1, forceToSkipCache: false);
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
     expect(listened, 1);
     expect(
       paginationBloc.loadedPagesMinimumIndex,
@@ -55,7 +55,7 @@ void main() {
     listened = false;
 
     await paginationBloc.requestPage(pageIndex: 0, forceToSkipCache: false);
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
     expect(
       paginationBloc.loadedPagesMinimumIndex,
       0,
@@ -63,7 +63,7 @@ void main() {
     expect(listened, 0);
 
     await paginationBloc.requestPage(pageIndex: 2, forceToSkipCache: false);
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
     expect(listened, 0);
     expect(
       paginationBloc.loadedPagesMinimumIndex,
@@ -90,21 +90,21 @@ void main() {
     );
 
     await paginationBloc.requestPage(pageIndex: 1, forceToSkipCache: false);
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
     expect(listened, 1);
     expect(paginationBloc.loadedPagesMaximumIndex, 1);
 
     listened = null;
 
     await paginationBloc.requestPage(pageIndex: 0, forceToSkipCache: false);
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
     expect(listened, 1);
     expect(paginationBloc.loadedPagesMaximumIndex, 1);
 
     listened = null;
 
     await paginationBloc.requestPage(pageIndex: 2, forceToSkipCache: false);
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
     expect(listened, 2);
     expect(paginationBloc.loadedPagesMaximumIndex, 2);
 
@@ -119,35 +119,35 @@ void main() {
         paginationBloc.isLoadedPagesInSequenceStream.listen((newValue) {
       listened = newValue;
     });
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
     expect(listened, true);
 
     listened = null;
 
     await paginationBloc.requestPage(pageIndex: 1, forceToSkipCache: false);
     expect(paginationBloc.isLoadedPagesInSequence, false);
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
     expect(listened, false);
 
     listened = null;
 
     await paginationBloc.requestPage(pageIndex: 0, forceToSkipCache: false);
     expect(paginationBloc.isLoadedPagesInSequence, true);
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
     expect(listened, true);
 
     listened = null;
 
     await paginationBloc.requestPage(pageIndex: 2, forceToSkipCache: false);
     expect(paginationBloc.isLoadedPagesInSequence, true);
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
     expect(listened, true);
 
     listened = null;
 
     await paginationBloc.requestPage(pageIndex: 4, forceToSkipCache: false);
     expect(paginationBloc.isLoadedPagesInSequence, false);
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
     expect(listened, false);
 
     listened = null;
@@ -163,7 +163,7 @@ void main() {
         paginationBloc.loadedPageIndexesSortedByIndexStream.listen((newValue) {
       listened = newValue;
     });
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
     expect(listened.length, 0);
 
     await paginationBloc.requestPage(pageIndex: 1, forceToSkipCache: false);
@@ -171,7 +171,7 @@ void main() {
     expect(paginationBloc.loadedPageIndexesSortedByIndex[0], 1);
     listened = null;
 
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
     expect(listened.length, 1);
     expect(listened[0], 1);
 
@@ -182,7 +182,7 @@ void main() {
 
     listened = null;
 
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(listened.length, 2);
     expect(listened[0], 0);
@@ -196,7 +196,7 @@ void main() {
 
     listened = null;
 
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
     expect(listened.length, 3);
     expect(listened[0], 0);
     expect(listened[1], 1);
@@ -210,7 +210,7 @@ void main() {
     expect(paginationBloc.loadedPageIndexesSortedByIndex[3], 4);
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(listened.length, 4);
     expect(listened[0], 0);
@@ -233,7 +233,7 @@ void main() {
       listened = newValue;
     });
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
     expect(listened.length, 0);
 
     await paginationBloc.requestPage(
@@ -250,7 +250,7 @@ void main() {
     );
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(
       listened.length,
@@ -279,7 +279,7 @@ void main() {
     );
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(
       listened.length,
@@ -316,7 +316,7 @@ void main() {
     );
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(listened.length, 3);
     expect(
@@ -358,7 +358,7 @@ void main() {
     );
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(
       listened.length,

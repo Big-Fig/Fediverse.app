@@ -19,19 +19,19 @@ void main() {
   });
 
   test('PushMessage toJson & fromJson', () async {
-    JsonTestHelper.testFromJsonToJson(
-      ({required String seed}) => PushModelTestHelper.createTestPushMessage(
+    JsonMockHelper.testFromJsonToJson(
+      ({required String seed}) => PushModelMockHelper.createTestPushMessage(
         seed: seed,
       ),
       PushMessage.fromJson,
     );
   });
 
-  test('PostPleromaApiFilter copyWith', () async {
-    var obj1 = PushModelTestHelper.createTestPushMessage(
+  test('PostUnifediApiFilter copyWith', () async {
+    var obj1 = PushModelMockHelper.createTestPushMessage(
       seed: 'seed1',
     );
-    var obj2 = PushModelTestHelper.createTestPushMessage(
+    var obj2 = PushModelMockHelper.createTestPushMessage(
       seed: 'seed2',
     );
 
@@ -47,9 +47,9 @@ void main() {
   });
 
   test('PushNotification toJson & fromJson', () async {
-    JsonTestHelper.testFromJsonToJson(
+    JsonMockHelper.testFromJsonToJson(
       ({required String seed}) =>
-          PushModelTestHelper.createTestPushNotification(
+          PushModelMockHelper.createTestPushNotification(
         seed: seed,
       ),
       PushNotification.fromJson,
@@ -57,21 +57,21 @@ void main() {
   });
 
   test('PushMessage hive save&load', () async {
-    await HiveTestHelper.testHiveSaveAndLoad(
-      ({required String seed}) => PushModelTestHelper.createTestPushMessage(
+    await HiveMockHelper.testHiveSaveAndLoad(
+      ({required String seed}) => PushModelMockHelper.createTestPushMessage(
         seed: seed,
       ),
     );
   });
 
   test('PushMessage hive adapter', () async {
-    HiveTestHelper.testAdapter(
+    HiveMockHelper.testAdapter(
       () => PushMessageAdapter(),
     );
   });
 
   test('PushNotificationAdapter hive adapter', () async {
-    HiveTestHelper.testAdapter(
+    HiveMockHelper.testAdapter(
       () => PushNotificationAdapter(),
     );
   });

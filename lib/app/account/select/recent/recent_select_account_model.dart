@@ -1,5 +1,5 @@
-import 'package:fedi/json/json_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -12,9 +12,9 @@ part 'recent_select_account_model.g.dart';
 //@HiveType()
 @HiveType(typeId: -32 + 93)
 @JsonSerializable(explicitToJson: true)
-class RecentSelectAccountList implements IJsonObject {
+class RecentSelectAccountList implements IJsonObj {
   @HiveField(0)
-  final List<PleromaApiAccount>? recentItems;
+  final List<UnifediApiAccount>? recentItems;
 
   RecentSelectAccountList({this.recentItems});
 

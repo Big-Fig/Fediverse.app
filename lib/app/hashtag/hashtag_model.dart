@@ -1,11 +1,11 @@
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 abstract class IHashtag {
   String get name;
 
   String get url;
 
-  List<IPleromaApiTagHistory>? get history;
+  IUnifediApiTagHistory? get history;
 }
 
 class Hashtag extends IHashtag {
@@ -13,10 +13,10 @@ class Hashtag extends IHashtag {
   final String name;
 
   @override
-  final List<IPleromaApiTagHistory>? history;
+  final IUnifediApiTagHistory? history;
 
   @override
-  final String url;
+  final String? url;
 
   Hashtag({
     required this.name,

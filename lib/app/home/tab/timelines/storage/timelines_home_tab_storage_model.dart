@@ -1,6 +1,6 @@
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/collection/collection_hash_utils.dart';
-import 'package:fedi/json/json_model.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
@@ -41,7 +41,7 @@ class TimelinesHomeTabStorageListItem {
 //@HiveType()
 @HiveType(typeId: -32 + 81)
 @JsonSerializable()
-class TimelinesHomeTabStorage implements IJsonObject {
+class TimelinesHomeTabStorage implements IJsonObj {
   @HiveField(0)
   @JsonKey(name: 'timeline_ids')
   final List<String> timelineIds;

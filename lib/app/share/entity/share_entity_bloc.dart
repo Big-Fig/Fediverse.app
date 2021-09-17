@@ -3,7 +3,7 @@ import 'package:fedi/app/media/attachment/reupload/media_attachment_reupload_ser
 import 'package:fedi/app/share/entity/settings/share_entity_settings_model.dart';
 import 'package:fedi/app/share/entity/share_entity_model.dart';
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -50,9 +50,9 @@ extension IShareEntityExtension on IShareEntityBloc {
     }
   }
 
-  Future<List<IPleromaApiMediaAttachment>?> convertAllItemsToMediaAttachments({
+  Future<List<IUnifediApiMediaAttachment>?> convertAllItemsToMediaAttachments({
     required ShareEntitySettings settings,
-    required IPleromaApiMediaAttachmentService pleromaApiMediaAttachmentService,
+    required IUnifediApiMediaAttachmentService unifediApiMediaAttachmentService,
     required IMediaAttachmentReuploadService mediaAttachmentReuploadService,
     required bool reUploadRequired,
   }) async {
@@ -60,13 +60,13 @@ extension IShareEntityExtension on IShareEntityBloc {
       return null;
     }
 
-    var mediaAttachments = <IPleromaApiMediaAttachment>[];
+    var mediaAttachments = <IUnifediApiMediaAttachment>[];
 
     for (var item in shareEntity.items) {
       var itemMediaAttachments = await convertSingleItemToMediaAttachments(
         item: item,
         mediaAttachmentReuploadService: mediaAttachmentReuploadService,
-        pleromaApiMediaAttachmentService: pleromaApiMediaAttachmentService,
+        unifediApiMediaAttachmentService: unifediApiMediaAttachmentService,
         reUploadRequired: reUploadRequired,
       );
       mediaAttachments.addAll(itemMediaAttachments ?? []);
@@ -76,13 +76,13 @@ extension IShareEntityExtension on IShareEntityBloc {
   }
 }
 
-Future<List<IPleromaApiMediaAttachment>?> convertSingleItemToMediaAttachments({
+Future<List<IUnifediApiMediaAttachment>?> convertSingleItemToMediaAttachments({
   required ShareEntityItem item,
   required IMediaAttachmentReuploadService mediaAttachmentReuploadService,
-  required IPleromaApiMediaAttachmentService pleromaApiMediaAttachmentService,
+  required IUnifediApiMediaAttachmentService unifediApiMediaAttachmentService,
   required bool reUploadRequired,
 }) async {
-  var mediaAttachments = <IPleromaApiMediaAttachment>[];
+  var mediaAttachments = <IUnifediApiMediaAttachment>[];
   var itemMediaAttachments = item.mediaAttachments;
   if (itemMediaAttachments != null) {
     if (item.isNeedReUploadMediaAttachments && reUploadRequired) {
@@ -103,7 +103,7 @@ Future<List<IPleromaApiMediaAttachment>?> convertSingleItemToMediaAttachments({
 
   if (mediaLocalFiles != null) {
     for (var mediaLocalFile in mediaLocalFiles) {
-      var mediaAttachment = await pleromaApiMediaAttachmentService.uploadMedia(
+      var mediaAttachment = await unifediApiMediaAttachmentService.uploadMedia(
         file: mediaLocalFile.file,
       );
       mediaAttachments.add(mediaAttachment);

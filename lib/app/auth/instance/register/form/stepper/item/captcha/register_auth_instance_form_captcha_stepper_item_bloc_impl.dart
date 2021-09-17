@@ -6,7 +6,7 @@ import 'package:fedi/app/captcha/pleroma/pleroma_form_captcha_string_field_bloc.
 import 'package:fedi/app/captcha/pleroma/pleroma_form_captcha_string_field_bloc_impl.dart';
 import 'package:fedi/form/field/value/string/validation/string_value_form_field_non_empty_validation.dart';
 import 'package:fedi/form/form_item_bloc.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class RegisterAuthInstanceFormStepperCaptchaItemBloc
     extends RegisterAuthInstanceFormStepperItemBloc
@@ -15,15 +15,15 @@ class RegisterAuthInstanceFormStepperCaptchaItemBloc
   // ignore: avoid-late-keyword
   late IPleromaFormCaptchaStringFieldBloc captchaFieldBloc;
 
-  final IPleromaApiCaptchaService pleromaApiCaptchaService;
+  final IUnifediApiInstanceService unifediApiInstanceService;
 
   RegisterAuthInstanceFormStepperCaptchaItemBloc({
-    required this.pleromaApiCaptchaService,
+    required this.unifediApiInstanceService,
   }) : super(
           isAllItemsInitialized: false,
         ) {
     captchaFieldBloc = PleromaFormCaptchaStringFieldBloc(
-      pleromaCaptchaService: pleromaApiCaptchaService,
+      pleromaCaptchaService: unifediApiInstanceService,
       originValue: '',
       validators: [
         StringValueFormFieldNonEmptyValidationError.createValidator(),

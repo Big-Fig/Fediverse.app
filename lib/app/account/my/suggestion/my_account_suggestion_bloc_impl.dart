@@ -10,7 +10,7 @@ import 'package:fedi/app/account/pagination/network_only/account_network_only_pa
 import 'package:fedi/app/account/pagination/network_only/account_network_only_pagination_bloc_impl.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -18,13 +18,14 @@ class MyAccountSuggestionBloc extends DisposableOwner
     implements IMyAccountSuggestionBloc {
   final IPaginationSettingsBloc paginationSettingsBloc;
 
+  final IUnifediApiMyAccountService unifediApiMyAccountService;
   MyAccountSuggestionBloc({
-    required this.pleromaApiSuggestionsService,
+    required this.unifediApiMyAccountService,
     required this.paginationSettingsBloc,
   }) {
     myAccountSuggestionAccountListNetworkOnlyListBloc =
         MyAccountSuggestionAccountListNetworkOnlyListBloc(
-      pleromaApiSuggestionsService: pleromaApiSuggestionsService,
+          unifediApiMyAccountService: unifediApiMyAccountService,
       remoteInstanceUriOrNull: remoteInstanceUriOrNull,
       instanceLocation: instanceLocation,
     );
@@ -47,7 +48,6 @@ class MyAccountSuggestionBloc extends DisposableOwner
     accountPaginationListBloc.refreshWithoutController();
   }
 
-  final IPleromaApiSuggestionsService pleromaApiSuggestionsService;
 
   @override
   // ignore: avoid-late-keyword
@@ -70,11 +70,11 @@ class MyAccountSuggestionBloc extends DisposableOwner
   Uri? get remoteInstanceUriOrNull => null;
 
   static MyAccountSuggestionBloc createFromContext(BuildContext context) {
-    var pleromaApiSuggestionsService =
-        Provider.of<IPleromaApiSuggestionsService>(context, listen: false);
+    var unifediApiMyAccountService =
+        Provider.of<IUnifediApiMyAccountService>(context, listen: false);
 
     return MyAccountSuggestionBloc(
-      pleromaApiSuggestionsService: pleromaApiSuggestionsService,
+      unifediApiMyAccountService: unifediApiMyAccountService,
       paginationSettingsBloc: IPaginationSettingsBloc.of(
         context,
         listen: false,

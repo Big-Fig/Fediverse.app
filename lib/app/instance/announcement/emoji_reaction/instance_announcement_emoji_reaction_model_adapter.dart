@@ -1,35 +1,35 @@
 import 'package:fedi/app/emoji/reaction/emoji_reaction_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class InstanceAnnouncementEmojiReactionAdapter implements IEmojiReaction {
-  final IPleromaApiAnnouncementReaction pleromaApiAnnouncementReaction;
+  final IUnifediApiEmojiReaction unifediApiEmojiReaction;
 
   InstanceAnnouncementEmojiReactionAdapter({
-    required this.pleromaApiAnnouncementReaction,
+    required this.unifediApiEmojiReaction,
   });
 
   @override
-  int get count => pleromaApiAnnouncementReaction.count;
+  int get count => unifediApiEmojiReaction.count;
 
   @override
-  bool get me => pleromaApiAnnouncementReaction.me;
+  bool get me => unifediApiEmojiReaction.me;
 
   @override
-  String get name => pleromaApiAnnouncementReaction.name;
+  String get name => unifediApiEmojiReaction.name;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is InstanceAnnouncementEmojiReactionAdapter &&
           runtimeType == other.runtimeType &&
-          pleromaApiAnnouncementReaction ==
-              other.pleromaApiAnnouncementReaction;
+          unifediApiEmojiReaction ==
+              other.unifediApiEmojiReaction;
 
   @override
-  int get hashCode => pleromaApiAnnouncementReaction.hashCode;
+  int get hashCode => unifediApiEmojiReaction.hashCode;
 
   @override
   String toString() => 'InstanceAnnouncementEmojiReactionAdapter{'
-      'pleromaApiAnnouncementReaction: $pleromaApiAnnouncementReaction'
+      'unifediApiEmojiReaction: $unifediApiEmojiReaction'
       '}';
 }

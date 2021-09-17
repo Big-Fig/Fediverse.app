@@ -1,7 +1,7 @@
 import 'package:fedi/app/instance/announcement/emoji_reaction/instance_announcement_emoji_reaction_list_item_widget.dart';
 import 'package:fedi/app/instance/announcement/instance_announcement_bloc.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -12,13 +12,13 @@ class InstanceAnnouncementEmojiReactionListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var instanceAnnouncementBloc = IInstanceAnnouncementBloc.of(context);
 
-    return StreamBuilder<List<IPleromaApiAnnouncementReaction>?>(
+    return StreamBuilder<List<IUnifediApiEmojiReaction>?>(
       stream: instanceAnnouncementBloc.reactionsStream,
       initialData: instanceAnnouncementBloc.reactions,
       builder: (context, snapshot) {
         var reactions = snapshot.data;
 
-        return Provider<List<IPleromaApiAnnouncementReaction>?>.value(
+        return Provider<List<IUnifediApiEmojiReaction>?>.value(
           value: reactions,
           child: const _InstanceAnnouncementEmojiReactionListBodyWidget(),
         );
@@ -35,7 +35,7 @@ class _InstanceAnnouncementEmojiReactionListBodyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var reactions =
-        Provider.of<List<IPleromaApiAnnouncementReaction>?>(context);
+        Provider.of<List<IUnifediApiEmojiReaction>?>(context);
 
     if (reactions?.isNotEmpty == true) {
       return Padding(
@@ -43,7 +43,7 @@ class _InstanceAnnouncementEmojiReactionListBodyWidget extends StatelessWidget {
         child: Row(
           children: reactions!
               .map(
-                (reaction) => Provider<IPleromaApiAnnouncementReaction>.value(
+                (reaction) => Provider<IUnifediApiEmojiReaction>.value(
                   value: reaction,
                   child:
                       const InstanceAnnouncementEmojiReactionListItemWidget(),

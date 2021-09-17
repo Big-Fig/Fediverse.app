@@ -4,17 +4,17 @@ import 'package:fedi/app/instance/details/instance_details_bloc_impl.dart';
 import 'package:fedi/app/instance/details/instance_details_bloc_proxy_provider.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class LocalInstanceDetailsBloc extends InstanceDetailsBloc
     implements IInstanceDetailsBloc {
   @override
-  final IPleromaApiInstanceService pleromaInstanceService;
+  final IUnifediApiInstanceService pleromaInstanceService;
 
   LocalInstanceDetailsBloc({
-    required IPleromaApiInstance? initialInstance,
+    required IUnifediApiInstance? initialInstance,
     required this.pleromaInstanceService,
   }) : super(
           instanceUri: pleromaInstanceService.restService.baseUri,
@@ -23,7 +23,7 @@ class LocalInstanceDetailsBloc extends InstanceDetailsBloc
 
   static LocalInstanceDetailsBloc createFromContext(BuildContext context) {
     var pleromaInstanceService =
-        Provider.of<IPleromaApiInstanceService>(context, listen: false);
+        Provider.of<IUnifediApiInstanceService>(context, listen: false);
     var currentAuthInstanceBloc =
         ICurrentAuthInstanceBloc.of(context, listen: false);
 

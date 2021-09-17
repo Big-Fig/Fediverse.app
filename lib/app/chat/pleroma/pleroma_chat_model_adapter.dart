@@ -4,9 +4,9 @@ import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
 import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model_adapter.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
 import 'package:fedi/app/database/app_database.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
-extension IPleromaApiChatPleromaExtension on IPleromaApiChat {
+extension IUnifediApiChatPleromaExtension on IUnifediApiChat {
   DbChat toDbChat() {
     var updatedAt = this.updatedAt;
     // todo: hack
@@ -24,7 +24,7 @@ extension IPleromaApiChatPleromaExtension on IPleromaApiChat {
 }
 
 extension IPleromaChatExtension on IPleromaChat {
-  PleromaApiChat toPleromaApiChat({
+  UnifediApiChat toUnifediApiChat({
     required IPleromaChatMessage? lastChatMessage,
     required List<IAccount> accounts,
   }) {
@@ -33,11 +33,11 @@ extension IPleromaChatExtension on IPleromaChat {
     var isSingleAccount = accounts.length < 2;
     assert(isSingleAccount, 'only direct chats supported');
 
-    return PleromaApiChat(
+    return UnifediApiChat(
       unread: unread,
-      lastMessage: lastChatMessage?.toPleromaApiChatMessage(),
+      lastMessage: lastChatMessage?.toUnifediApiChatMessage(),
       id: remoteId,
-      account: accounts.first.toPleromaApiAccount(),
+      account: accounts.first.toUnifediApiAccount(),
       updatedAt: updatedAt,
     );
   }

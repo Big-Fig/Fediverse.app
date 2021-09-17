@@ -14,7 +14,7 @@ import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc_proxy_provider.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:fedi/ui/scroll/scroll_controller_bloc.dart';
 import 'package:fedi/ui/scroll/scroll_controller_bloc_impl.dart';
 import 'package:flutter/cupertino.dart';
@@ -38,14 +38,14 @@ class LocalInstancePublicTimelinePage extends StatelessWidget {
 }
 
 MaterialPageRoute createLocalInstancePublicTimelinePageRoute({
-  required IPleromaApiInstance pleromaApiInstance,
+  required IUnifediApiInstance unifediApiInstance,
 }) =>
     MaterialPageRoute(
       builder: (context) =>
           LocalInstancePublicTimelinePageBloc.provideToContext(
         context,
-        pleromaApiInstance: pleromaApiInstance,
-        child: ProxyProvider<ICurrentAuthInstanceBloc, IPleromaApiInstance>(
+        unifediApiInstance: unifediApiInstance,
+        child: ProxyProvider<ICurrentAuthInstanceBloc, IUnifediApiInstance>(
           update: (context, value, previous) => value.currentInstance!.info!,
           child: const LocalInstancePublicTimelinePage(),
         ),
@@ -54,12 +54,12 @@ MaterialPageRoute createLocalInstancePublicTimelinePageRoute({
 
 void goToLocalInstancePublicTimelinePage({
   required BuildContext context,
-  required IPleromaApiInstance pleromaApiInstance,
+  required IUnifediApiInstance unifediApiInstance,
 }) {
   Navigator.push(
     context,
     createLocalInstancePublicTimelinePageRoute(
-      pleromaApiInstance: pleromaApiInstance,
+      unifediApiInstance: unifediApiInstance,
     ),
   );
 }
@@ -86,7 +86,7 @@ class LocalInstancePublicTimelinePageBodyWidget extends StatelessWidget {
               instancePublicTimelinePageBloc.statusCachedListBloc,
           child: StatusCachedListBlocProxyProvider(
             child: ProxyProvider<IStatusCachedListBloc,
-                IPleromaCachedListBloc<IStatus>>(
+                ICachedListBloc<IStatus>>(
               update: (context, value, previous) => value,
               child: ProxyProvider<ILocalInstancePublicTimelinePageBloc,
                   IStatusCachedPaginationBloc>(

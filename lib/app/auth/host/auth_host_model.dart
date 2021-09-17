@@ -1,5 +1,5 @@
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class DisabledRegistrationAuthHostException implements Exception {
   const DisabledRegistrationAuthHostException();
@@ -32,8 +32,8 @@ class AuthHostRegistrationResult {
       cantRetrieveAppTokenAuthHostException;
   final CantRegisterAppAuthHostException? cantRegisterAppAuthHostException;
   final dynamic unknownHostException;
-  final PleromaApiOAuthToken? token;
-  final IPleromaApiInstance pleromaInstance;
+  final UnifediApiOAuthToken? token;
+  final IUnifediApiInstance pleromaInstance;
   final AuthInstance? authInstance;
 
   AuthHostRegistrationResult({
@@ -49,8 +49,8 @@ class AuthHostRegistrationResult {
   });
 
   AuthHostRegistrationResult.noErrors({
-    required PleromaApiOAuthToken? token,
-    required IPleromaApiInstance pleromaInstance,
+    required UnifediApiOAuthToken? token,
+    required IUnifediApiInstance pleromaInstance,
     required AuthInstance? authInstance,
   }) : this(
           token: token,

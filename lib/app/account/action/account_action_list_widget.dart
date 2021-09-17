@@ -12,7 +12,7 @@ import 'package:fedi/app/ui/shader_mask/fedi_fade_shader_mask.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -141,7 +141,7 @@ class _AccountActionListFollowWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context);
 
-    return StreamBuilder<IPleromaApiAccountRelationship?>(
+    return StreamBuilder<IUnifediApiAccountRelationship?>(
       stream: accountBloc.relationshipStream,
       builder: (context, snapshot) {
         var relationship = accountBloc.relationship;

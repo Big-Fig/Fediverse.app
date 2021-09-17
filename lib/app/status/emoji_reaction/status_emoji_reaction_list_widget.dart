@@ -7,7 +7,7 @@ import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +19,7 @@ class StatusEmojiReactionListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context);
 
-    return StreamBuilder<List<IPleromaApiStatusEmojiReaction>?>(
+    return StreamBuilder<List<IUnifediApiEmojiReaction>?>(
       stream: statusBloc.reblogPlusOriginalEmojiReactionsStream,
       builder: (context, snapshot) {
         var emojiReactions = snapshot.data;
@@ -35,10 +35,10 @@ class StatusEmojiReactionListWidget extends StatelessWidget {
                 children: emojiReactions!
                     .map(
                       (emojiReaction) =>
-                          Provider<IPleromaApiStatusEmojiReaction>.value(
+                          Provider<IUnifediApiEmojiReaction>.value(
                         value: emojiReaction,
                         child: DisposableProxyProvider<
-                            IPleromaApiStatusEmojiReaction,
+                            IUnifediApiEmojiReaction,
                             IStatusEmojiReactionBloc>(
                           update: (context, value, previous) {
                             if (statusBloc.instanceLocation ==
@@ -50,8 +50,8 @@ class StatusEmojiReactionListWidget extends StatelessWidget {
                                   context,
                                   listen: false,
                                 ),
-                                pleromaApiStatusEmojiReactionService: Provider
-                                    .of<IPleromaApiStatusEmojiReactionService>(
+                                UnifediApiStatusService: Provider
+                                    .of<IUnifediApiStatusService>(
                                   context,
                                   listen: false,
                                 ),

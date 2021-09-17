@@ -43,8 +43,16 @@ dependencies:
   url_launcher: 6.0.8
 
   # object serialization
-  hive: 2.0.4
-  hive_flutter: 1.1.0
+  hive:
+    git:
+      url: https://github.com/xal/hive
+      ref: xal/nested_type_registry
+      path: hive
+  hive_flutter:
+    git:
+      url: https://github.com/xal/hive
+      ref: xal/nested_type_registry
+      path: hive_flutter
 
   # render status body, description, notes and other texts which may have html tags
   flutter_html: 2.1.0
@@ -235,7 +243,11 @@ dev_dependencies:
   moor_generator: 4.4.0
 
   # object serialization generator
-  hive_generator: 1.1.0
+  hive_generator:
+    git:
+      url: https://github.com/xal/hive
+      ref: xal/nested_type_registry
+      path: hive_generator
 
   # additional linters
   dart_code_metrics: 4.0.1
@@ -251,26 +263,12 @@ dev_dependencies:
   # fvm flutter pub global activate -sgit https://github.com/xal/screenshots.git
   # fvm flutter pub global activate --source path ../screenshots
 
-  base_fediverse_api:
-    git:
-      url: https://github.com/xal/dart_fediverse_api.git
-      #      ref: master
-      ref: before_refactoring
-      path: base_fediverse_api
+  fediverse_api:
+    path: ../dart_fediverse_api/fediverse_api
 
-  mastodon_fediverse_api:
-    git:
-      url: https://github.com/xal/dart_fediverse_api.git
-      #      ref: master
-      ref: before_refactoring
-      path: mastodon_fediverse_api
+  unifedi_api:
+    path: ../dart_fediverse_api/unifedi_api
 
-  pleroma_fediverse_api:
-    git:
-      url: https://github.com/xal/dart_fediverse_api.git
-      #      ref: master
-      ref: before_refactoring
-      path: pleroma_fediverse_api
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

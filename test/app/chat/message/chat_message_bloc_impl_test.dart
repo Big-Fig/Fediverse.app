@@ -14,7 +14,7 @@ import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository_impl.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/emoji/text/emoji_text_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -27,16 +27,16 @@ import 'chat_message_test_helper.dart';
 
 // ignore_for_file: no-magic-number, avoid-late-keyword
 @GenerateMocks([
-  IPleromaApiChatService,
-  IPleromaApiAuthAccountService,
+  IUnifediApiChatService,
+  IUnifediApiAccountService,
   IMyAccountBloc,
 ])
 void main() {
   late IPleromaChat chat;
   late IPleromaChatMessage chatMessage;
   late IPleromaChatMessageBloc chatMessageBloc;
-  late MockIPleromaApiChatService pleromaChatServiceMock;
-  late MockIPleromaApiAuthAccountService pleromaAccountServiceMock;
+  late MockIUnifediApiChatService pleromaChatServiceMock;
+  late MockIUnifediApiAccountService unifediApiAccountServiceMock;
   late AppDatabase database;
   late IAccountRepository accountRepository;
   late IPleromaChatRepository chatRepository;
@@ -59,26 +59,26 @@ void main() {
       );
 
       myAccountBloc = MockIMyAccountBloc();
-      pleromaChatServiceMock = MockIPleromaApiChatService();
-      pleromaAccountServiceMock = MockIPleromaApiAuthAccountService();
+      pleromaChatServiceMock = MockIUnifediApiChatService();
+      unifediApiAccountServiceMock = MockIUnifediApiAccountService();
 
       when(pleromaChatServiceMock.isConnected).thenReturn(true);
-      when(pleromaChatServiceMock.pleromaApiState).thenReturn(
-        PleromaApiState.validAuth,
+      when(pleromaChatServiceMock.unifediApiState).thenReturn(
+        UnifediApiState.validAuth,
       );
-      when(pleromaAccountServiceMock.isConnected).thenReturn(true);
-      when(pleromaAccountServiceMock.pleromaApiState).thenReturn(
-        PleromaApiState.validAuth,
+      when(unifediApiAccountServiceMock.isConnected).thenReturn(true);
+      when(unifediApiAccountServiceMock.unifediApiState).thenReturn(
+        UnifediApiState.validAuth,
       );
 
-      chat = await ChatTestHelper.createTestChat(seed: 'seed1');
-      chatMessage = await ChatMessageTestHelper.createTestChatMessage(
+      chat = await ChatMockHelper.createTestChat(seed: 'seed1');
+      chatMessage = await ChatMessageMockHelper.createTestChatMessage(
         seed: 'seed1',
         chatRemoteId: chat.remoteId,
       );
 
       await accountRepository.upsertChatRemoteAccount(
-        chatMessage.account!.toPleromaApiAccount(),
+        chatMessage.account!.toUnifediApiAccount(),
         chatRemoteId: chatMessage.chatRemoteId,
         batchTransaction: null,
       );
@@ -90,7 +90,7 @@ void main() {
         delayInit: false,
         isNeedWatchLocalRepositoryForUpdates: true,
         accountRepository: accountRepository,
-        pleromaAccountService: pleromaAccountServiceMock,
+        unifediApiAccountService: unifediApiAccountServiceMock,
         pleromaChatBloc: PleromaChatBloc(
           pleromaChatService: pleromaChatServiceMock,
           myAccountBloc: myAccountBloc,
@@ -114,23 +114,23 @@ void main() {
 
   Future _update(IPleromaChatMessage chatMessage) async {
     await chatMessageRepository.upsertInRemoteType(
-      chatMessage.toPleromaApiChatMessage(),
+      chatMessage.toUnifediApiChatMessage(),
     );
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
   }
 
   test('chatMessage', () async {
-    ChatMessageTestHelper.expectChatMessage(
+    ChatMessageMockHelper.expectChatMessage(
       chatMessageBloc.chatMessage,
       chatMessage,
     );
 
-    var newValue = await ChatMessageTestHelper.createTestChatMessage(
+    var newValue = await ChatMessageMockHelper.createTestChatMessage(
       seed: 'seed2',
       remoteId: chatMessage.remoteId,
     );
     await accountRepository.upsertChatRemoteAccount(
-      newValue.account!.toPleromaApiAccount(),
+      newValue.account!.toUnifediApiAccount(),
       chatRemoteId: newValue.chatRemoteId,
       batchTransaction: null,
     );
@@ -142,16 +142,16 @@ void main() {
     });
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
-    ChatMessageTestHelper.expectChatMessage(listened, chatMessage);
+    await RxDartMockHelper.waitForData(() => listened);
+    ChatMessageMockHelper.expectChatMessage(listened, chatMessage);
 
     await _update(newValue);
 
-    ChatMessageTestHelper.expectChatMessage(
+    ChatMessageMockHelper.expectChatMessage(
       chatMessageBloc.chatMessage,
       newValue,
     );
-    ChatMessageTestHelper.expectChatMessage(listened, newValue);
+    ChatMessageMockHelper.expectChatMessage(listened, newValue);
     await subscription.cancel();
   });
 
@@ -167,7 +167,7 @@ void main() {
     });
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
     expect(listened, chatMessage.content);
 
     await _update(chatMessage.copyWith(content: newValue));
@@ -188,11 +188,11 @@ void main() {
     });
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     // same if emojis is empty or null
     await _update(
-      chatMessage.copyWith(content: newValue, emojis: <PleromaApiEmoji>[]),
+      chatMessage.copyWith(content: newValue, emojis: <UnifediApiEmoji>[]),
     );
 
     expect(
@@ -215,17 +215,17 @@ void main() {
       chatMessage.copyWith(
         content: newValue,
         emojis: [
-          PleromaApiEmoji(
-            shortcode: 'emoji1',
+          UnifediApiEmoji(
+            name: 'emoji1',
             url: 'https://fedi.app/emoji1.png',
-            category: null,
+            tags: null,
             staticUrl: null,
             visibleInPicker: null,
           ),
-          PleromaApiEmoji(
-            shortcode: 'emoji2',
+          UnifediApiEmoji(
+            name: 'emoji2',
             url: 'https://fedi.app/emoji2.png',
-            category: null,
+            tags: null,
             staticUrl: null,
             visibleInPicker: null,
           ),
@@ -238,19 +238,19 @@ void main() {
       EmojiText(
         text: 'newContent :emoji: :emoji1: :emoji2:',
         emojis: [
-          PleromaApiEmoji(
-            shortcode: 'emoji1',
+          UnifediApiEmoji(
+            name: 'emoji1',
             url: 'https://fedi.app/emoji1.png',
             staticUrl: null,
             visibleInPicker: null,
-            category: null,
+            tags: null,
           ),
-          PleromaApiEmoji(
-            shortcode: 'emoji2',
+          UnifediApiEmoji(
+            name: 'emoji2',
             url: 'https://fedi.app/emoji2.png',
             staticUrl: null,
             visibleInPicker: null,
-            category: null,
+            tags: null,
           ),
         ],
       ),
@@ -260,19 +260,19 @@ void main() {
       EmojiText(
         text: 'newContent :emoji: :emoji1: :emoji2:',
         emojis: [
-          PleromaApiEmoji(
-            shortcode: 'emoji1',
+          UnifediApiEmoji(
+            name: 'emoji1',
             url: 'https://fedi.app/emoji1.png',
             staticUrl: null,
             visibleInPicker: null,
-            category: null,
+            tags: null,
           ),
-          PleromaApiEmoji(
-            shortcode: 'emoji2',
+          UnifediApiEmoji(
+            name: 'emoji2',
             url: 'https://fedi.app/emoji2.png',
             staticUrl: null,
             visibleInPicker: null,
-            category: null,
+            tags: null,
           ),
         ],
       ),
@@ -293,7 +293,7 @@ void main() {
     });
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
     expect(listened, chatMessage.createdAt);
 
     await _update(chatMessage.copyWith(createdAt: newValue));
@@ -304,7 +304,7 @@ void main() {
   });
 
 //  test('refreshFromNetwork', () async {
-//    ChatMessageTestHelper.expectChatMessage(chatMessageBloc.chatMessage, chatMessage);
+//    ChatMessageMockHelper.expectChatMessage(chatMessageBloc.chatMessage, chatMessage);
 //
 //    var id = await chatMessageRepository.upsertRemoteChatMessage(
 //        mapLocalChatMessageToRemoteChatMessage(chatMessage),
@@ -312,7 +312,7 @@ void main() {
 //        conversationRemoteId: null);
 //    chatMessage = chatMessage.copyWith(id: id);
 //
-//    var newValue = await ChatMessageTestHelper.createTestChatMessage(
+//    var newValue = await ChatMessageMockHelper.createTestChatMessage(
 //        seed: 'seed2', remoteId: chatMessage.remoteId);
 //
 //    var listened;
@@ -322,8 +322,8 @@ void main() {
 //    });
 //
 //    listened = null;
-//     await RxDartTestHelper.waitForData(() => listened);
-//    ChatMessageTestHelper.expectChatMessage(listened, chatMessage);
+//     await RxDartMockHelper.waitForData(() => listened);
+//    ChatMessageMockHelper.expectChatMessage(listened, chatMessage);
 //
 //    when(pleromaChatServiceMock.getChatMessage(
 //            chatMessageRemoteId: chatMessage.remoteId))
@@ -333,9 +333,9 @@ void main() {
 //    await chatMessageBloc.refreshFromNetwork();
 //
 //    listened = null;
-//     await RxDartTestHelper.waitForData(() => listened);
+//     await RxDartMockHelper.waitForData(() => listened);
 //
-//    ChatMessageTestHelper.expectChatMessage(listened, newValue);
+//    ChatMessageMockHelper.expectChatMessage(listened, newValue);
 //    await subscription.cancel();
 //  });
 }

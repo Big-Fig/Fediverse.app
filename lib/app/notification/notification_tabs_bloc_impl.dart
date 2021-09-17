@@ -12,8 +12,9 @@ import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
-import 'package:base_fediverse_api/base_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
+import 'package:fediverse_api/fediverse_api.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
@@ -55,7 +56,7 @@ class NotificationsTabsBloc extends AsyncInitLoadingBloc
   @override
   Stream<NotificationTab> get selectedTabStream => selectedTabSubject!.stream;
 
-  final IPleromaApiNotificationService pleromaNotificationService;
+  final IUnifediApiNotificationService pleromaNotificationService;
   final INotificationRepository notificationRepository;
   final IFilterRepository filterRepository;
   final IPaginationSettingsBloc paginationSettingsBloc;
@@ -72,7 +73,7 @@ class NotificationsTabsBloc extends AsyncInitLoadingBloc
 
     addDisposable(
       webSocketsHandlerManagerBloc.listenMyAccountChannel(
-        listenType: WebSocketsListenType.foreground,
+        handlerType: WebSocketsChannelHandlerType.foregroundValue,
         notification: true,
         chat: false,
       ),
@@ -83,7 +84,7 @@ class NotificationsTabsBloc extends AsyncInitLoadingBloc
       NotificationsTabsBloc(
         startTab: NotificationTab.all,
         pleromaNotificationService:
-            Provider.of<IPleromaApiNotificationService>(context, listen: false),
+            Provider.of<IUnifediApiNotificationService>(context, listen: false),
         notificationRepository:
             INotificationRepository.of(context, listen: false),
         webSocketsHandlerManagerBloc: IWebSocketsHandlerManagerBloc.of(

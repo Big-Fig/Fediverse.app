@@ -10,7 +10,7 @@ import 'package:fedi/app/auth/instance/register/form/stepper/item/submit/registe
 import 'package:fedi/app/auth/instance/register/form/stepper/item/submit/register_auth_instance_form_submit_stepper_item_bloc_impl.dart';
 import 'package:fedi/form/form_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class RegisterAuthInstanceFormBloc extends FormBloc
     implements IRegisterAuthInstanceFormBloc {
@@ -35,8 +35,8 @@ class RegisterAuthInstanceFormBloc extends FormBloc
   final Uri instanceBaseUri;
 
   RegisterAuthInstanceFormBloc({
-    required IPleromaApiInstance pleromaApiInstance,
-    required IPleromaApiCaptchaService? pleromaApiCaptchaService,
+    required IUnifediApiInstance unifediApiInstance,
+    required IUnifediApiInstanceService? unifediApiInstanceService,
     required this.instanceBaseUri,
     required this.manualApprovalRequired,
   }) : super(isAllItemsInitialized: false) {
@@ -46,9 +46,9 @@ class RegisterAuthInstanceFormBloc extends FormBloc
             ..disposeWith(this);
     }
 
-    if (pleromaApiCaptchaService != null && pleromaApiInstance.isPleroma) {
+    if (unifediApiInstanceService != null && unifediApiInstance.typeAsUnifediApi.isPleroma) {
       captchaStepperItemBloc = RegisterAuthInstanceFormStepperCaptchaItemBloc(
-        pleromaApiCaptchaService: pleromaApiCaptchaService,
+        unifediApiInstanceService: unifediApiInstanceService,
       )..disposeWith(this);
     }
 
@@ -70,7 +70,7 @@ class RegisterAuthInstanceFormBloc extends FormBloc
       ];
 
   @override
-  PleromaApiAccountPublicRegisterRequest calculateRegisterFormData() {
+  UnifediApiAccountPublicRegisterRequest calculateRegisterFormData() {
     final validUsername = accountStepperItemBloc.usernameFieldBloc.currentValue;
     final validEmail = accountStepperItemBloc.emailFieldBloc.currentValue;
     final validPassword = accountStepperItemBloc.passwordFieldBloc.currentValue;
@@ -85,7 +85,7 @@ class RegisterAuthInstanceFormBloc extends FormBloc
 
     final reason = manualApproveStepperItemBloc?.reasonFieldBloc.currentValue;
 
-    var request = PleromaApiAccountPublicRegisterRequest(
+    var request = UnifediApiAccountPublicRegisterRequest(
       agreement: agreeTermsOfService,
       email: validEmail,
       locale: null,

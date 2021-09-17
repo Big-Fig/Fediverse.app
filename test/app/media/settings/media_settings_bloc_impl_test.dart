@@ -69,7 +69,7 @@ void main() {
     );
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     var defaultValue = GlobalMediaSettingsLocalPreferenceBloc.defaultValue;
 
@@ -92,13 +92,13 @@ void main() {
     );
 
     var testAutoPlay =
-        MediaSettingsModelTestHelper.createTestMediaSettings(seed: 'seed')
+        MediaSettingsModelMockHelper.createTestMediaSettings(seed: 'seed')
             .autoPlay;
 
     await mediaSettingsBloc.changeAutoPlay(testAutoPlay);
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(
       listened?.autoPlay,
@@ -131,7 +131,7 @@ void main() {
     );
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     var defaultValue = GlobalMediaSettingsLocalPreferenceBloc.defaultValue;
 
@@ -154,13 +154,13 @@ void main() {
     );
 
     var testAutoPlay =
-        MediaSettingsModelTestHelper.createTestMediaSettings(seed: 'seed')
+        MediaSettingsModelMockHelper.createTestMediaSettings(seed: 'seed')
             .autoInit;
 
     await mediaSettingsBloc.changeAutoInit(testAutoPlay);
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(
       listened?.autoInit,

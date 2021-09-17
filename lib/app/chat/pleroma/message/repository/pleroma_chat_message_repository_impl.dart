@@ -8,7 +8,7 @@ import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/database/dao/populated_database_dao_mixin.dart';
 import 'package:fedi/app/database/dao/repository/remote/populated_app_remote_database_dao_repository.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
@@ -20,7 +20,7 @@ class PleromaChatMessageRepository
         DbChatMessage,
         DbChatMessagePopulated,
         IPleromaChatMessage,
-        IPleromaApiChatMessage,
+        IUnifediApiChatMessage,
         int,
         String,
         $DbChatMessagesTable,
@@ -180,10 +180,10 @@ class PleromaChatMessageRepository
       appItem.toDbChatMessage();
 
   @override
-  IPleromaApiChatMessage mapAppItemToRemoteItem(
+  IUnifediApiChatMessage mapAppItemToRemoteItem(
     IPleromaChatMessage appItem,
   ) =>
-      appItem.toPleromaApiChatMessage();
+      appItem.toUnifediApiChatMessage();
 
   @override
   DbChatMessagePopulated mapAppItemToDbPopulatedItem(
@@ -198,16 +198,16 @@ class PleromaChatMessageRepository
       dbPopulatedItem.toDbChatMessagePopulatedWrapper();
 
   @override
-  IPleromaApiChatMessage mapDbPopulatedItemToRemoteItem(
+  IUnifediApiChatMessage mapDbPopulatedItemToRemoteItem(
     DbChatMessagePopulated dbPopulatedItem,
   ) =>
       dbPopulatedItem
           .toDbChatMessagePopulatedWrapper()
-          .toPleromaApiChatMessage();
+          .toUnifediApiChatMessage();
 
   @override
   IPleromaChatMessage mapRemoteItemToAppItem(
-    IPleromaApiChatMessage remoteItem,
+    IUnifediApiChatMessage remoteItem,
   ) {
     return remoteItem.toDbChatMessagePopulatedWrapper(
       dbAccount: null,
@@ -236,7 +236,7 @@ class PleromaChatMessageRepository
 
   @override
   Future<int> insertInRemoteType(
-    IPleromaApiChatMessage remoteItem, {
+    IUnifediApiChatMessage remoteItem, {
     required InsertMode? mode,
   }) =>
       insertInDbType(
@@ -248,7 +248,7 @@ class PleromaChatMessageRepository
 
   @override
   Future<void> insertInRemoteTypeBatch(
-    IPleromaApiChatMessage remoteItem, {
+    IUnifediApiChatMessage remoteItem, {
     required InsertMode? mode,
     required Batch? batchTransaction,
   }) {
@@ -263,7 +263,7 @@ class PleromaChatMessageRepository
   @override
   Future<void> updateAppTypeByRemoteType({
     required IPleromaChatMessage appItem,
-    required IPleromaApiChatMessage remoteItem,
+    required IUnifediApiChatMessage remoteItem,
     required Batch? batchTransaction,
   }) =>
       updateByDbIdInDbType(

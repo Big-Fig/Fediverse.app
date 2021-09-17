@@ -462,7 +462,7 @@ ErrorData createInstanceDeadErrorData(
   error,
   StackTrace stackTrace,
 ) =>
-    AuthInstancePleromaRestErrorData.createFromContext(
+    AuthInstanceUnifediApiRestErrorData.createFromContext(
       context: context,
       error: error,
       stackTrace: stackTrace,

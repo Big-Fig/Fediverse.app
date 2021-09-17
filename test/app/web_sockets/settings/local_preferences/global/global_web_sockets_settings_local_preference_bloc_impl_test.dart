@@ -9,7 +9,7 @@ import '../../web_sockets_settings_model_test_helper.dart';
 
 void main() {
   test('save & load', () async {
-    await LocalPreferencesTestHelper.testSaveAndLoad<WebSocketsSettings,
+    await LocalPreferencesMockHelper.testSaveAndLoad<WebSocketsSettings,
         GlobalWebSocketsSettingsLocalPreferenceBloc>(
       defaultValue: GlobalWebSocketsSettingsLocalPreferenceBloc.defaultValue,
       blocCreator: (localPreferencesService) =>
@@ -17,7 +17,7 @@ void main() {
         localPreferencesService,
       ),
       testObjectCreator: ({required String seed}) =>
-          WebSocketsSettingsModelTestHelper.createTestWebSocketsSettings(
+          WebSocketsSettingsModelMockHelper.createTestWebSocketsSettings(
         seed: seed,
       ),
     );

@@ -1,7 +1,7 @@
 import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_bloc.dart';
 import 'package:fedi/app/status/post/settings/post_status_settings_model.dart';
 import 'package:fedi/localization/localization_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -19,11 +19,11 @@ abstract class IPostStatusSettingsBloc
 
   Future changeMarkMediaAsNsfwOnAttach(bool value);
 
-  PleromaApiVisibility get defaultVisibilityAsPleromaApi;
+  UnifediApiVisibility get defaultVisibilityAsUnifediApi;
 
-  Stream<PleromaApiVisibility> get defaultVisibilityAsPleromaApiStream;
+  Stream<UnifediApiVisibility> get defaultVisibilityAsUnifediApiStream;
 
-  Future changeDefaultVisibilityAsPleromaApi(PleromaApiVisibility value);
+  Future changeDefaultVisibilityAsUnifediApi(UnifediApiVisibility value);
 
   LocalizationLocale? get defaultStatusLocale;
 

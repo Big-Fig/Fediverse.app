@@ -9,7 +9,7 @@ import '../../media_settings_model_test_helper.dart';
 
 void main() {
   test('save & load', () async {
-    await LocalPreferencesTestHelper.testSaveAndLoad<MediaSettings,
+    await LocalPreferencesMockHelper.testSaveAndLoad<MediaSettings,
         GlobalMediaSettingsLocalPreferenceBloc>(
       defaultValue: GlobalMediaSettingsLocalPreferenceBloc.defaultValue,
       blocCreator: (localPreferencesService) =>
@@ -17,7 +17,7 @@ void main() {
         localPreferencesService,
       ),
       testObjectCreator: ({required String seed}) =>
-          MediaSettingsModelTestHelper.createTestMediaSettings(
+          MediaSettingsModelMockHelper.createTestMediaSettings(
         seed: seed,
       ),
     );

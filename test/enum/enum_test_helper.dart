@@ -1,4 +1,4 @@
-class EnumTestHelper {
+class EnumMockHelper {
   static T createTestEnum<T>({
     required String seed,
     required List<T> values,

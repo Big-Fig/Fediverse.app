@@ -1,5 +1,5 @@
 import 'package:fedi/app/database/app_database.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 // ignore_for_file: no-magic-number
 
@@ -18,13 +18,13 @@ abstract class IInstanceAnnouncement {
 
   bool get read;
 
-  List<IPleromaApiAnnouncementReaction>? get reactions;
+  List<IUnifediApiEmojiReaction>? get reactions;
 
-  List<IPleromaApiStatus>? get statuses;
+  List<IUnifediApiStatus>? get statuses;
 
-  List<IPleromaApiMention>? get mentions;
+  List<IUnifediApiMention>? get mentions;
 
-  List<IPleromaApiTag>? get tags;
+  List<IUnifediApiTag>? get tags;
 
   DateTime? get scheduledAt;
 
@@ -40,10 +40,10 @@ abstract class IInstanceAnnouncement {
     DateTime? publishedAt,
     DateTime? updatedAt,
     bool? read,
-    List<IPleromaApiAnnouncementReaction>? reactions,
-    List<IPleromaApiMention>? mentions,
-    List<IPleromaApiStatus>? statuses,
-    List<IPleromaApiTag>? tags,
+    List<IUnifediApiEmojiReaction>? reactions,
+    List<IUnifediApiMention>? mentions,
+    List<IUnifediApiStatus>? statuses,
+    List<IUnifediApiTag>? tags,
     DateTime? scheduledAt,
     DateTime? startsAt,
     DateTime? endsAt,
@@ -93,7 +93,7 @@ class DbInstanceAnnouncementPopulatedWrapper implements IInstanceAnnouncement {
   int? get localId => dbInstanceAnnouncement.id;
 
   @override
-  List<IPleromaApiAnnouncementReaction>? get reactions =>
+  List<IUnifediApiEmojiReaction>? get reactions =>
       dbInstanceAnnouncement.reactions;
 
   @override
@@ -115,16 +115,16 @@ class DbInstanceAnnouncementPopulatedWrapper implements IInstanceAnnouncement {
   DateTime get updatedAt => dbInstanceAnnouncement.updatedAt;
 
   @override
-  List<IPleromaApiMention>? get mentions => dbInstanceAnnouncement.mentions;
+  List<IUnifediApiMention>? get mentions => dbInstanceAnnouncement.mentions;
 
   @override
   DateTime get publishedAt => dbInstanceAnnouncement.publishedAt;
 
   @override
-  List<IPleromaApiStatus>? get statuses => dbInstanceAnnouncement.statuses;
+  List<IUnifediApiStatus>? get statuses => dbInstanceAnnouncement.statuses;
 
   @override
-  List<IPleromaApiTag>? get tags => dbInstanceAnnouncement.tags;
+  List<IUnifediApiTag>? get tags => dbInstanceAnnouncement.tags;
 
   @override
   // ignore: long-parameter-list
@@ -136,10 +136,10 @@ class DbInstanceAnnouncementPopulatedWrapper implements IInstanceAnnouncement {
     DateTime? publishedAt,
     DateTime? updatedAt,
     bool? read,
-    List<IPleromaApiAnnouncementReaction>? reactions,
-    List<IPleromaApiMention>? mentions,
-    List<IPleromaApiStatus>? statuses,
-    List<IPleromaApiTag>? tags,
+    List<IUnifediApiEmojiReaction>? reactions,
+    List<IUnifediApiMention>? mentions,
+    List<IUnifediApiStatus>? statuses,
+    List<IUnifediApiTag>? tags,
     DateTime? scheduledAt,
     DateTime? startsAt,
     DateTime? endsAt,
@@ -154,10 +154,10 @@ class DbInstanceAnnouncementPopulatedWrapper implements IInstanceAnnouncement {
             publishedAt: publishedAt,
             updatedAt: updatedAt,
             read: read,
-            reactions: reactions?.toPleromaApiAnnouncementReactions(),
-            tags: tags?.toPleromaApiTags(),
-            mentions: mentions?.toPleromaApiMentions(),
-            statuses: statuses?.toPleromaApiStatuses(),
+            reactions: reactions?.toUnifediApiEmojiReactionList(),
+            tags: tags?.toUnifediApiTagList(),
+            mentions: mentions?.toUnifediApiMentionList(),
+            statuses: statuses?.toUnifediApiStatusList(),
             scheduledAt: scheduledAt,
             startsAt: startsAt,
             endsAt: endsAt,
@@ -207,10 +207,10 @@ extension IInstanceAnnouncementExtension on IInstanceAnnouncement {
         updatedAt: updatedAt,
         read: read,
         content: content,
-        reactions: reactions?.toPleromaApiAnnouncementReactions(),
-        mentions: mentions?.toPleromaApiMentions(),
-        statuses: statuses?.toPleromaApiStatuses(),
-        tags: tags?.toPleromaApiTags(),
+        reactions: reactions?.toUnifediApiEmojiReactionList(),
+        mentions: mentions?.toUnifediApiMentionList(),
+        statuses: statuses?.toUnifediApiStatusList(),
+        tags: tags?.toUnifediApiTagList(),
       );
     }
   }

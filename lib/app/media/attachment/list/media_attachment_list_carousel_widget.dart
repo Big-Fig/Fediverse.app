@@ -5,8 +5,8 @@ import 'package:fedi/app/ui/media/fedi_media_carousel_bloc.dart';
 import 'package:fedi/app/ui/media/fedi_media_carousel_bloc_impl.dart';
 import 'package:fedi/app/ui/media/fedi_media_carousel_widget.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -40,7 +40,7 @@ class MediaAttachmentListCarouselBodyWidget extends StatelessWidget {
     assert(mediaAttachments.isNotEmpty);
 
     if (mediaAttachments.length == 1) {
-      return Provider<IPleromaApiMediaAttachment>.value(
+      return Provider<IUnifediApiMediaAttachment>.value(
         value: mediaAttachments.first,
         child: const MediaAttachmentListItemWidget(),
       );
@@ -62,12 +62,12 @@ class MediaAttachmentListCarouselBodyWidget extends StatelessWidget {
 class MediaAttachmentListItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var mediaAttachment = Provider.of<IPleromaApiMediaAttachment>(context);
+    var mediaAttachment = Provider.of<IUnifediApiMediaAttachment>(context);
     Widget child = const MediaAttachmentWidget();
-    if (mediaAttachment.typeAsMastodonApi ==
-            MastodonApiMediaAttachmentType.image ||
-        mediaAttachment.typeAsMastodonApi ==
-            MastodonApiMediaAttachmentType.gifv) {
+    if (mediaAttachment.typeAsUnifediApi ==
+            UnifediApiMediaAttachmentType.image ||
+        mediaAttachment.typeAsUnifediApi ==
+            UnifediApiMediaAttachmentType.gifv) {
       child = InkWell(
         onTap: () {
           var mediaAttachmentListBloc =
@@ -95,7 +95,7 @@ Widget _carouselWidgetBuilder(BuildContext context, int index) {
   var mediaAttachmentListBloc = IMediaAttachmentListBloc.of(context);
   var mediaAttachments = mediaAttachmentListBloc.mediaAttachments;
 
-  return Provider<IPleromaApiMediaAttachment>.value(
+  return Provider<IUnifediApiMediaAttachment>.value(
     value: mediaAttachments[index],
     child: const MediaAttachmentListItemWidget(),
   );

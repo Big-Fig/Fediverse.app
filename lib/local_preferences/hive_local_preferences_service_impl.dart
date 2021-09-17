@@ -1,6 +1,7 @@
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:base_fediverse_api/base_fediverse_api.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:hive/hive.dart';
 import 'package:logging/logging.dart';
@@ -91,7 +92,7 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
   @override
   Future<bool> setObjectPreference(
     String key,
-    IJsonObject? preferencesObject,
+    IJsonObj? preferencesObject,
   ) async {
     // _logger.fine(() => 'setObjectPreference $key -> $preferencesObject');
     await _box.put(key, preferencesObject);

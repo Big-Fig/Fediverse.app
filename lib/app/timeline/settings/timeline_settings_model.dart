@@ -1,7 +1,7 @@
 import 'package:fedi/app/settings/settings_model.dart';
 import 'package:fedi/app/timeline/type/timeline_type_model.dart';
 import 'package:fedi/collection/collection_hash_utils.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -35,7 +35,7 @@ class TimelineSettings extends ISettings<TimelineSettings> {
       );
 
   static TimelineSettings createDefaultCustomListSettings({
-    required IPleromaApiList? onlyInRemoteList,
+    required IUnifediApiList? onlyInRemoteList,
   }) =>
       TimelineSettings.list(
         withMuted: false,
@@ -57,7 +57,7 @@ class TimelineSettings extends ISettings<TimelineSettings> {
       );
 
   static TimelineSettings createDefaultAccountSettings({
-    required IPleromaApiAccount? onlyFromRemoteAccount,
+    required IUnifediApiAccount? onlyFromRemoteAccount,
   }) =>
       TimelineSettings.account(
         onlyWithMedia: false,
@@ -98,7 +98,7 @@ class TimelineSettings extends ISettings<TimelineSettings> {
 
   @HiveField(9)
   @JsonKey(name: 'only_in_list')
-  final PleromaApiList? onlyInRemoteList;
+  final UnifediApiList? onlyInRemoteList;
 
   @HiveField(10)
   @JsonKey(name: 'with_remote_hashtag')
@@ -110,7 +110,7 @@ class TimelineSettings extends ISettings<TimelineSettings> {
 
   @HiveField(13)
   @JsonKey(name: 'only_from_remote_account')
-  final PleromaApiAccount? onlyFromRemoteAccount;
+  final UnifediApiAccount? onlyFromRemoteAccount;
 
   @HiveField(14)
   @JsonKey(name: 'only_pinned')
@@ -149,7 +149,7 @@ class TimelineSettings extends ISettings<TimelineSettings> {
   TimelineSettings.home({
     required bool onlyLocal,
     required bool withMuted,
-    required List<PleromaApiVisibility> excludeVisibilities,
+    required List<UnifediApiVisibility> excludeVisibilities,
     required bool websocketsUpdates,
   }) : this(
           onlyWithMedia: null,
@@ -159,7 +159,7 @@ class TimelineSettings extends ISettings<TimelineSettings> {
           onlyLocal: onlyLocal,
           withMuted: withMuted,
           excludeVisibilitiesStrings: excludeVisibilities
-              .map((excludeVisibility) => excludeVisibility.toJsonValue())
+              .map((excludeVisibility) => excludeVisibility.stringValue)
               .toList(),
           onlyInRemoteList: null,
           withRemoteHashtag: null,
@@ -176,7 +176,7 @@ class TimelineSettings extends ISettings<TimelineSettings> {
     required bool onlyRemote,
     required bool onlyLocal,
     required bool withMuted,
-    required List<PleromaApiVisibility> excludeVisibilities,
+    required List<UnifediApiVisibility> excludeVisibilities,
     required bool websocketsUpdates,
     required String? onlyFromInstance,
   }) : this(
@@ -187,7 +187,7 @@ class TimelineSettings extends ISettings<TimelineSettings> {
           onlyLocal: onlyLocal,
           withMuted: withMuted,
           excludeVisibilitiesStrings: excludeVisibilities
-              .map((excludeVisibility) => excludeVisibility.toJsonValue())
+              .map((excludeVisibility) => excludeVisibility.stringValue)
               .toList(),
           onlyInRemoteList: null,
           withRemoteHashtag: null,
@@ -203,7 +203,7 @@ class TimelineSettings extends ISettings<TimelineSettings> {
     required bool onlyWithMedia,
     required bool onlyLocal,
     required bool withMuted,
-    required List<PleromaApiVisibility> excludeVisibilities,
+    required List<UnifediApiVisibility> excludeVisibilities,
     required String? withRemoteHashtag,
     required bool websocketsUpdates,
   }) : this(
@@ -214,7 +214,7 @@ class TimelineSettings extends ISettings<TimelineSettings> {
           onlyLocal: onlyLocal,
           withMuted: withMuted,
           excludeVisibilitiesStrings: excludeVisibilities
-              .map((excludeVisibility) => excludeVisibility.toJsonValue())
+              .map((excludeVisibility) => excludeVisibility.stringValue)
               .toList(),
           onlyInRemoteList: null,
           withRemoteHashtag: withRemoteHashtag,
@@ -228,8 +228,8 @@ class TimelineSettings extends ISettings<TimelineSettings> {
 
   TimelineSettings.list({
     required bool withMuted,
-    required List<PleromaApiVisibility> excludeVisibilities,
-    required IPleromaApiList? onlyInRemoteList,
+    required List<UnifediApiVisibility> excludeVisibilities,
+    required IUnifediApiList? onlyInRemoteList,
     required bool websocketsUpdates,
   }) : this(
           onlyWithMedia: null,
@@ -239,9 +239,9 @@ class TimelineSettings extends ISettings<TimelineSettings> {
           onlyLocal: null,
           withMuted: withMuted,
           excludeVisibilitiesStrings: excludeVisibilities
-              .map((excludeVisibility) => excludeVisibility.toJsonValue())
+              .map((excludeVisibility) => excludeVisibility.stringValue)
               .toList(),
-          onlyInRemoteList: onlyInRemoteList?.toPleromaApiList(),
+          onlyInRemoteList: onlyInRemoteList?.toUnifediApiList(),
           withRemoteHashtag: null,
           replyVisibilityFilterString: null,
           onlyFromRemoteAccount: null,
@@ -252,7 +252,7 @@ class TimelineSettings extends ISettings<TimelineSettings> {
         );
 
   TimelineSettings.account({
-    required IPleromaApiAccount? onlyFromRemoteAccount,
+    required IUnifediApiAccount? onlyFromRemoteAccount,
     required bool onlyWithMedia,
     required bool excludeReplies,
     required bool excludeReblogs,
@@ -269,7 +269,7 @@ class TimelineSettings extends ISettings<TimelineSettings> {
           onlyInRemoteList: null,
           withRemoteHashtag: null,
           replyVisibilityFilterString: null,
-          onlyFromRemoteAccount: onlyFromRemoteAccount?.toPleromaApiAccount(),
+          onlyFromRemoteAccount: onlyFromRemoteAccount?.toUnifediApiAccount(),
           onlyPinned: onlyPinned,
           excludeReblogs: excludeReblogs,
           webSocketsUpdates: websocketsUpdates,
@@ -329,7 +329,7 @@ class TimelineSettings extends ISettings<TimelineSettings> {
         ' excludeVisibilitiesStrings: $excludeVisibilitiesStrings,'
         ' onlyInListWithRemoteId: $onlyInRemoteList,'
         ' withHashtag: $withRemoteHashtag,'
-        ' PleromaReplyVisibilityFilterString:'
+        ' UnifediApiReplyVisibilityFilterString:'
         ' $replyVisibilityFilterString,'
         ' onlyFromAccountWithRemoteId: $onlyFromRemoteAccount,'
         ' onlyFromInstance: $onlyFromInstance,'
@@ -343,14 +343,14 @@ class TimelineSettings extends ISettings<TimelineSettings> {
   @override
   Map<String, dynamic> toJson() => _$TimelineSettingsToJson(this);
 
-  List<PleromaApiVisibility>? get excludeVisibilities =>
+  List<UnifediApiVisibility>? get excludeVisibilities =>
       excludeVisibilitiesStrings
           ?.map((excludeVisibilityString) =>
-              excludeVisibilityString.toPleromaApiVisibility())
+              excludeVisibilityString.toUnifediApiVisibility())
           .toList();
 
-  PleromaApiReplyVisibilityFilter? get replyVisibilityFilter =>
-      replyVisibilityFilterString?.toPleromaApiReplyVisibilityFilter();
+  UnifediApiReplyVisibilityFilter? get replyVisibilityFilter =>
+      replyVisibilityFilterString?.toUnifediApiReplyVisibilityFilter();
 
   static String generateUniqueTimelineId() =>
       '${DateTime.now().millisecondsSinceEpoch}';
@@ -367,10 +367,10 @@ class TimelineSettings extends ISettings<TimelineSettings> {
     bool? onlyLocal,
     bool? withMuted,
     List<String>? excludeVisibilitiesStrings,
-    PleromaApiList? onlyInRemoteList,
+    UnifediApiList? onlyInRemoteList,
     String? withRemoteHashtag,
     String? replyVisibilityFilterString,
-    PleromaApiAccount? onlyFromRemoteAccount,
+    UnifediApiAccount? onlyFromRemoteAccount,
     bool? onlyPinned,
     bool? excludeReblogs,
     bool? webSocketsUpdates,

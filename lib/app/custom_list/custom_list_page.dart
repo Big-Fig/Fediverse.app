@@ -30,14 +30,15 @@ import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:fedi/ui/scroll/scroll_controller_bloc.dart';
 import 'package:fedi/ui/scroll/scroll_controller_bloc_impl.dart';
-import 'package:base_fediverse_api/base_fediverse_api.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_dispose/easy_dispose.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 
 class CustomListPage extends StatefulWidget {
   const CustomListPage();
@@ -202,7 +203,7 @@ class _CustomListPageAppBarSettingsActionWidget extends StatelessWidget {
             settings: timeline.settings,
           ),
           lockedSource: true,
-          pleromaApiInstance: ICurrentAuthInstanceBloc.of(
+          unifediApiInstance: ICurrentAuthInstanceBloc.of(
             context,
             listen: false,
           ).currentInstance!.info!,
@@ -288,7 +289,7 @@ class _CustomListPageWrapper extends StatelessWidget {
             var customListTimelineStatusCachedListBloc =
                 TimelineStatusCachedListBloc.createFromContext(
               context,
-              webSocketsListenType: WebSocketsListenType.foreground,
+              handlerType: WebSocketsChannelHandlerType.foregroundValue,
               timelineLocalPreferencesBloc: ITimelineLocalPreferenceBloc.of(
                 context,
                 listen: false,
@@ -299,7 +300,7 @@ class _CustomListPageWrapper extends StatelessWidget {
           },
           child: StatusCachedListBlocProxyProvider(
             child: ProxyProvider<IStatusCachedListBloc,
-                IPleromaCachedListBloc<IStatus>>(
+                ICachedListBloc<IStatus>>(
               update: (context, value, previous) => value,
               child: StatusCachedListBlocLoadingWidget(
                 child: StatusCachedPaginationBloc.provideToContext(
@@ -337,7 +338,7 @@ class _CustomListPageWrapper extends StatelessWidget {
   ) {
     var customListBloc = CustomListBloc(
       customList: customList,
-      pleromaListService: Provider.of<IPleromaApiListService>(
+      pleromaListService: Provider.of<IUnifediApiListService>(
         context,
         listen: false,
       ),

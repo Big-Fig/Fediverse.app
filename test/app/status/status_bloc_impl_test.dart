@@ -10,12 +10,13 @@ import 'package:fedi/app/status/repository/status_repository_impl.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:moor/ffi.dart';
+import 'package:unifedi_api/unifedi_api.dart';
+import 'package:unifedi_api/unifedi_api_mock_helper.dart';
 
 import '../../rxdart/rxdart_test_helper.dart';
 import '../account/account_test_helper.dart';
@@ -24,19 +25,16 @@ import 'status_test_helper.dart';
 
 // ignore_for_file: no-magic-number, avoid-late-keyword
 @GenerateMocks([
-  IPleromaApiAuthStatusService,
-  IPleromaApiAuthAccountService,
-  IPleromaApiStatusEmojiReactionService,
-  IPleromaApiPollService,
+  IUnifediApiStatusService,
+  IUnifediApiAccountService,
+  IUnifediApiPollService,
 ])
 Future<void> main() async {
   late IStatus status;
   late IStatusBloc statusBloc;
-  late MockIPleromaApiAuthStatusService pleromaAuthStatusServiceMock;
-  late MockIPleromaApiAuthAccountService pleromaAccountServiceMock;
-  late MockIPleromaApiStatusEmojiReactionService
-      pleromaApiStatusEmojiReactionServiceMock;
-  late MockIPleromaApiPollService pleromaPollServiceMock;
+  late MockIUnifediApiStatusService unifediApiStatusServiceMock;
+  late MockIUnifediApiAccountService unifediApiAccountServiceMock;
+  late MockIUnifediApiPollService unifediApiPollServiceMock;
   late AppDatabase database;
   late IAccountRepository accountRepository;
   late IStatusRepository statusRepository;
@@ -49,36 +47,21 @@ Future<void> main() async {
       accountRepository: accountRepository,
     );
 
-    pleromaAuthStatusServiceMock = MockIPleromaApiAuthStatusService();
-    pleromaAccountServiceMock = MockIPleromaApiAuthAccountService();
-    pleromaPollServiceMock = MockIPleromaApiPollService();
-    pleromaApiStatusEmojiReactionServiceMock =
-        MockIPleromaApiStatusEmojiReactionService();
+    unifediApiStatusServiceMock = MockIUnifediApiStatusService();
+    unifediApiAccountServiceMock = MockIUnifediApiAccountService();
+    unifediApiPollServiceMock = MockIUnifediApiPollService();
+    unifediApiStatusServiceMock = MockIUnifediApiStatusService();
 
-    when(pleromaAuthStatusServiceMock.isConnected).thenReturn(true);
-    when(pleromaAuthStatusServiceMock.pleromaApiState)
-        .thenReturn(PleromaApiState.validAuth);
-
-    when(pleromaAccountServiceMock.isConnected).thenReturn(true);
-    when(pleromaAccountServiceMock.pleromaApiState)
-        .thenReturn(PleromaApiState.validAuth);
-
-    when(pleromaApiStatusEmojiReactionServiceMock.isConnected).thenReturn(true);
-    when(pleromaApiStatusEmojiReactionServiceMock.pleromaApiState)
-        .thenReturn(PleromaApiState.validAuth);
-
-    status = await StatusTestHelper.createTestStatus(seed: 'seed1');
+    status = await StatusMockHelper.createTestStatus(seed: 'seed1');
 
     statusBloc = LocalStatusBloc(
       status: status,
-      pleromaAuthStatusService: pleromaAuthStatusServiceMock,
+      unifediApiStatusService: unifediApiStatusServiceMock,
       statusRepository: statusRepository,
       delayInit: false,
       accountRepository: accountRepository,
-      pleromaAccountService: pleromaAccountServiceMock,
-      pleromaApiStatusEmojiReactionService:
-          pleromaApiStatusEmojiReactionServiceMock,
-      pleromaPollService: pleromaPollServiceMock,
+      unifediApiAccountService: unifediApiAccountServiceMock,
+      unifediApiPollService: unifediApiPollServiceMock,
       isNeedWatchLocalRepositoryForUpdates: true,
       isNeedRefreshFromNetworkOnInit: false,
     );
@@ -93,16 +76,16 @@ Future<void> main() async {
 
   Future _update(IStatus status) async {
     await statusRepository.upsertInRemoteType(
-      status.toPleromaApiStatus(),
+      status.toUnifediApiStatus(),
     );
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
   }
 
   test('status', () async {
-    StatusTestHelper.expectStatus(statusBloc.status, status);
+    StatusMockHelper.expectStatus(statusBloc.status, status);
 
-    var newValue = await StatusTestHelper.createTestStatus(
+    var newValue = await StatusMockHelper.createTestStatus(
       seed: 'seed2',
       remoteId: status.remoteId,
     );
@@ -113,19 +96,19 @@ Future<void> main() async {
       listened = newValue;
     });
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
-    StatusTestHelper.expectStatus(
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
+    StatusMockHelper.expectStatus(
       listened,
       status,
     );
 
     await _update(newValue);
 
-    StatusTestHelper.expectStatus(
+    StatusMockHelper.expectStatus(
       statusBloc.status,
       newValue,
     );
-    StatusTestHelper.expectStatus(
+    StatusMockHelper.expectStatus(
       listened,
       newValue,
     );
@@ -133,14 +116,14 @@ Future<void> main() async {
   });
 
   test('reblog', () async {
-    StatusTestHelper.expectStatus(
+    StatusMockHelper.expectStatus(
       statusBloc.reblog,
       status.reblog,
     );
 
-    var reblog = await StatusTestHelper.createTestStatus(seed: 'reblog');
+    var reblog = await StatusMockHelper.createTestStatus(seed: 'reblog');
 
-    var newValue = await StatusTestHelper.createTestStatus(
+    var newValue = await StatusMockHelper.createTestStatus(
       seed: 'seed2',
       remoteId: status.remoteId,
       reblog: reblog,
@@ -151,7 +134,7 @@ Future<void> main() async {
     var subscription = statusBloc.reblogStream.listen((newValue) {
       listened = newValue;
     });
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
     expect(
       listened,
       status.reblog,
@@ -159,26 +142,26 @@ Future<void> main() async {
 
     await _update(newValue);
 
-    StatusTestHelper.expectStatus(
+    StatusMockHelper.expectStatus(
       statusBloc.reblog,
       reblog,
     );
-    StatusTestHelper.expectStatus(
+    StatusMockHelper.expectStatus(
       listened,
       reblog,
     );
     await subscription.cancel();
   });
   test('reblogOrOriginal', () async {
-    StatusTestHelper.expectStatus(
+    StatusMockHelper.expectStatus(
       statusBloc.reblogOrOriginal,
       status,
     );
 
     var reblog =
-        await StatusTestHelper.createTestStatus(seed: 'reblogOrOriginal');
+        await StatusMockHelper.createTestStatus(seed: 'reblogOrOriginal');
 
-    var newValue = await StatusTestHelper.createTestStatus(
+    var newValue = await StatusMockHelper.createTestStatus(
       seed: 'seed2',
       remoteId: status.remoteId,
       reblog: reblog,
@@ -189,7 +172,7 @@ Future<void> main() async {
     var subscription = statusBloc.reblogOrOriginalStream.listen((newValue) {
       listened = newValue;
     });
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
     expect(
       listened,
       status,
@@ -197,11 +180,11 @@ Future<void> main() async {
 
     await _update(newValue);
 
-    StatusTestHelper.expectStatus(
+    StatusMockHelper.expectStatus(
       statusBloc.reblogOrOriginal,
       reblog,
     );
-    StatusTestHelper.expectStatus(
+    StatusMockHelper.expectStatus(
       listened,
       reblog,
     );
@@ -222,7 +205,7 @@ Future<void> main() async {
       listened = newValue;
     });
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
     expect(
       listened,
       status.content,
@@ -250,7 +233,7 @@ Future<void> main() async {
       listened = newValue;
     });
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
 
     // same if emojis is empty or null
     await _update(status.copyWith(
@@ -277,18 +260,18 @@ Future<void> main() async {
     await _update(status.copyWith(
       content: newValue,
       emojis: [
-        PleromaApiEmoji(
-          shortcode: 'emoji1',
+        UnifediApiEmoji(
+          name: 'emoji1',
           url: 'https://fedi.app/emoji1.png',
           visibleInPicker: null,
-          category: null,
+          tags: null,
           staticUrl: null,
         ),
-        PleromaApiEmoji(
-          shortcode: 'emoji2',
+        UnifediApiEmoji(
+          name: 'emoji2',
           url: 'https://fedi.app/emoji2.png',
           visibleInPicker: null,
-          category: null,
+          tags: null,
           staticUrl: null,
         ),
       ],
@@ -298,19 +281,19 @@ Future<void> main() async {
       EmojiText(
         text: 'newContent :emoji: :emoji1: :emoji2:',
         emojis: [
-          PleromaApiEmoji(
-            shortcode: 'emoji1',
+          UnifediApiEmoji(
+            name: 'emoji1',
             url: 'https://fedi.app/emoji1.png',
             staticUrl: null,
             visibleInPicker: null,
-            category: null,
+            tags: null,
           ),
-          PleromaApiEmoji(
-            shortcode: 'emoji2',
+          UnifediApiEmoji(
+            name: 'emoji2',
             url: 'https://fedi.app/emoji2.png',
             staticUrl: null,
             visibleInPicker: null,
-            category: null,
+            tags: null,
           ),
         ],
       ),
@@ -320,19 +303,19 @@ Future<void> main() async {
       EmojiText(
         text: 'newContent :emoji: :emoji1: :emoji2:',
         emojis: [
-          PleromaApiEmoji(
-            shortcode: 'emoji1',
+          UnifediApiEmoji(
+            name: 'emoji1',
             url: 'https://fedi.app/emoji1.png',
             staticUrl: null,
             visibleInPicker: null,
-            category: null,
+            tags: null,
           ),
-          PleromaApiEmoji(
-            shortcode: 'emoji2',
+          UnifediApiEmoji(
+            name: 'emoji2',
             url: 'https://fedi.app/emoji2.png',
             staticUrl: null,
             visibleInPicker: null,
-            category: null,
+            tags: null,
           ),
         ],
       ),
@@ -346,7 +329,10 @@ Future<void> main() async {
       status.card,
     );
 
-    var newValue = PleromaApiCard.only(url: 'fedi.app');
+    var newValue = UnifediApiCard.only(
+      url: 'fedi.app',
+      type: UnifediApiCardType.linkValue.stringValue,
+    );
 
     var listened;
 
@@ -354,7 +340,7 @@ Future<void> main() async {
       listened = newValue;
     });
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
     expect(
       listened,
       status.card,
@@ -379,11 +365,17 @@ Future<void> main() async {
       status.card,
     );
 
-    var reblogValue = PleromaApiCard.only(url: 'fedi_1.app');
-    var newValue = PleromaApiCard.only(url: 'fedi_2.app');
+    var reblogValue = UnifediApiCard.only(
+      url: 'fedi_1.app',
+      type: UnifediApiCardType.linkValue.stringValue,
+    );
+    var newValue = UnifediApiCard.only(
+      url: 'fedi_2.app',
+      type: UnifediApiCardType.linkValue.stringValue,
+    );
 
     var reblog =
-        await StatusTestHelper.createTestStatus(seed: 'reblogOrOriginalCard');
+        await StatusMockHelper.createTestStatus(seed: 'reblogOrOriginalCard');
 
     var listened;
 
@@ -391,7 +383,7 @@ Future<void> main() async {
       listened = newValue;
     });
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
     expect(
       listened,
       status.card,
@@ -424,9 +416,9 @@ Future<void> main() async {
       status.reblog != null,
     );
 
-    var reblog = await StatusTestHelper.createTestStatus(seed: 'isHaveReblog');
+    var reblog = await StatusMockHelper.createTestStatus(seed: 'isHaveReblog');
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
 
     await _update(status.copyWith(reblog: reblog));
 
@@ -438,12 +430,12 @@ Future<void> main() async {
   });
 
   test('account', () async {
-    AccountTestHelper.expectAccount(
+    AccountMockHelper.expectAccount(
       statusBloc.account,
       status.account,
     );
 
-    var newValue = await AccountTestHelper.createTestAccount(seed: 'seed3');
+    var newValue = await AccountMockHelper.createTestAccount(seed: 'seed3');
 
     var listened;
 
@@ -451,19 +443,19 @@ Future<void> main() async {
       listened = newValue;
     });
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
-    AccountTestHelper.expectAccount(
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
+    AccountMockHelper.expectAccount(
       listened,
       status.account,
     );
 
     await _update(status.copyWith(account: newValue));
 
-    AccountTestHelper.expectAccount(
+    AccountMockHelper.expectAccount(
       statusBloc.account,
       newValue,
     );
-    AccountTestHelper.expectAccount(
+    AccountMockHelper.expectAccount(
       listened,
       newValue,
     );
@@ -471,17 +463,17 @@ Future<void> main() async {
   });
 
   test('reblogOrOriginalAccount', () async {
-    AccountTestHelper.expectAccount(
+    AccountMockHelper.expectAccount(
       statusBloc.reblogOrOriginalAccount,
       status.account,
     );
 
-    var reblog = await StatusTestHelper.createTestStatus(
+    var reblog = await StatusMockHelper.createTestStatus(
       seed: 'accountReblogOrOriginal',
     );
 
-    var reblogValue = await AccountTestHelper.createTestAccount(seed: 'reblog');
-    var newValue = await AccountTestHelper.createTestAccount(seed: 'test');
+    var reblogValue = await AccountMockHelper.createTestAccount(seed: 'reblog');
+    var newValue = await AccountMockHelper.createTestAccount(seed: 'test');
 
     var listened;
 
@@ -490,18 +482,18 @@ Future<void> main() async {
       listened = newValue;
     });
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
-    AccountTestHelper.expectAccount(listened, status.account);
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
+    AccountMockHelper.expectAccount(listened, status.account);
 
     await _update(
       status.copyWith(reblog: reblog.copyWith(account: reblogValue)),
     );
 
-    AccountTestHelper.expectAccount(
+    AccountMockHelper.expectAccount(
       statusBloc.reblogOrOriginalAccount,
       reblogValue,
     );
-    AccountTestHelper.expectAccount(
+    AccountMockHelper.expectAccount(
       listened,
       reblogValue,
     );
@@ -511,11 +503,11 @@ Future<void> main() async {
       reblog: reblog.copyWith(account: reblogValue),
     ));
 
-    AccountTestHelper.expectAccount(
+    AccountMockHelper.expectAccount(
       statusBloc.reblogOrOriginalAccount,
       reblogValue,
     );
-    AccountTestHelper.expectAccount(
+    AccountMockHelper.expectAccount(
       listened,
       reblogValue,
     );
@@ -536,7 +528,7 @@ Future<void> main() async {
       listened = newValue;
     });
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
     expect(
       listened,
       status.reblogged,
@@ -568,7 +560,7 @@ Future<void> main() async {
       listened = newValue;
     });
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
     expect(
       listened,
       status.bookmarked,
@@ -600,7 +592,7 @@ Future<void> main() async {
       listened = newValue;
     });
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
     expect(listened, status.pinned);
 
     await _update(status.copyWith(pinned: newValue));
@@ -629,7 +621,7 @@ Future<void> main() async {
       listened = newValue;
     });
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
     expect(listened, status.muted);
 
     await _update(status.copyWith(muted: newValue));
@@ -656,7 +648,7 @@ Future<void> main() async {
       listened = newValue;
     });
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
     expect(
       listened,
       status.favourited,
@@ -683,7 +675,7 @@ Future<void> main() async {
 
     var newValue = 'inReplyToRemoteId';
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
 
     await _update(status.copyWith(inReplyToRemoteId: newValue));
 
@@ -696,9 +688,9 @@ Future<void> main() async {
       status.reblog != null,
     );
 
-    var reblog = await StatusTestHelper.createTestStatus(seed: 'isHaveReblog');
+    var reblog = await StatusMockHelper.createTestStatus(seed: 'isHaveReblog');
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
 
     await _update(status.copyWith(reblog: reblog));
 
@@ -712,7 +704,7 @@ Future<void> main() async {
     );
 
     var newValue = [
-      PleromaApiMediaTestHelper.createTestPleromaApiMediaAttachment(
+      UnifediApiMediaAttachmentMockHelper.generate(
         seed: 'seed',
       ),
     ];
@@ -723,7 +715,7 @@ Future<void> main() async {
       listened = newValue;
     });
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
     expect(
       listened,
       status.mediaAttachments,
@@ -744,35 +736,37 @@ Future<void> main() async {
 
   test('emojiReactions', () async {
     expect(
-      statusBloc.pleromaEmojiReactions,
-      status.pleromaEmojiReactions,
+      statusBloc.emojiReactions,
+      status.emojiReactions,
     );
 
     var newValue = [
-      PleromaApiStatusEmojiReaction.only(
+      UnifediApiEmojiReaction(
         name: 'newName',
         count: 1,
         me: true,
+        url: null,
+        staticUrl: null,
+        accounts: null,
       ),
     ];
 
     var listened;
 
-    var subscription =
-        statusBloc.pleromaEmojiReactionsStream.listen((newValue) {
+    var subscription = statusBloc.emojiReactionsStream.listen((newValue) {
       listened = newValue;
     });
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
     expect(
       listened,
-      status.pleromaEmojiReactions,
+      status.emojiReactions,
     );
 
-    await _update(status.copyWith(pleromaEmojiReactions: newValue));
+    await _update(status.copyWith(emojiReactions: newValue));
 
     expect(
-      statusBloc.pleromaEmojiReactions,
+      statusBloc.emojiReactions,
       newValue,
     );
     expect(
@@ -784,29 +778,33 @@ Future<void> main() async {
 
   test('reblogPlusOriginalEmojiReactions', () async {
     expect(
-      statusBloc.reblogPlusOriginalPleromaEmojiReactions,
-      status.pleromaEmojiReactions,
+      statusBloc.reblogPlusOriginalEmojiReactions,
+      status.emojiReactions,
     );
 
-    var reblog = await StatusTestHelper.createTestStatus(
+    var reblog = await StatusMockHelper.createTestStatus(
       seed: 'reblogPlusOriginalEmojiReactions',
     );
 
     var reblogEmojiAccount =
-        await AccountTestHelper.createTestAccount(seed: 'reblogEmojiAccount');
+        await AccountMockHelper.createTestAccount(seed: 'reblogEmojiAccount');
     var emojiAccount =
-        await AccountTestHelper.createTestAccount(seed: 'emojiAccount');
+        await AccountMockHelper.createTestAccount(seed: 'emojiAccount');
 
     var reblogValue = [
-      PleromaApiStatusEmojiReaction(
+      UnifediApiEmojiReaction(
+        url: null,
+        staticUrl: null,
         name: 'emoji',
         count: 2,
         me: false,
         accounts: [
-          reblogEmojiAccount.toPleromaApiAccount(),
+          reblogEmojiAccount.toUnifediApiAccount(),
         ],
       ),
-      PleromaApiStatusEmojiReaction(
+      UnifediApiEmojiReaction(
+        url: null,
+        staticUrl: null,
         name: 'emojiReblog',
         count: 1,
         me: true,
@@ -814,15 +812,19 @@ Future<void> main() async {
       ),
     ];
     var newValue = [
-      PleromaApiStatusEmojiReaction(
+      UnifediApiEmojiReaction(
+        url: null,
+        staticUrl: null,
         name: 'emoji',
         count: 3,
         me: true,
         accounts: [
-          emojiAccount.toPleromaApiAccount(),
+          emojiAccount.toUnifediApiAccount(),
         ],
       ),
-      PleromaApiStatusEmojiReaction(
+      UnifediApiEmojiReaction(
+        url: null,
+        staticUrl: null,
         name: 'emojiOriginal',
         count: 1,
         me: true,
@@ -837,24 +839,24 @@ Future<void> main() async {
       listened = newValue;
     });
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
     expect(
       listened,
-      status.pleromaEmojiReactions,
+      status.emojiReactions,
     );
 
-    await _update(status.copyWith(pleromaEmojiReactions: newValue));
+    await _update(status.copyWith(emojiReactions: newValue));
 
     expect(
-      statusBloc.reblogPlusOriginalPleromaEmojiReactions![0],
+      statusBloc.reblogPlusOriginalEmojiReactions![0],
       newValue[0],
     );
     expect(
-      statusBloc.reblogPlusOriginalPleromaEmojiReactions![1],
+      statusBloc.reblogPlusOriginalEmojiReactions![1],
       newValue[1],
     );
     expect(
-      statusBloc.reblogPlusOriginalPleromaEmojiReactions,
+      statusBloc.reblogPlusOriginalEmojiReactions,
       newValue,
     );
     expect(
@@ -863,27 +865,33 @@ Future<void> main() async {
     );
 
     await _update(status.copyWith(
-      pleromaEmojiReactions: newValue,
-      reblog: reblog.copyWith(pleromaEmojiReactions: reblogValue),
+      emojiReactions: newValue,
+      reblog: reblog.copyWith(emojiReactions: reblogValue),
     ));
 
     var expected = [
-      PleromaApiStatusEmojiReaction(
+      UnifediApiEmojiReaction(
+        url: null,
+        staticUrl: null,
         name: 'emojiOriginal',
         count: 1,
         me: true,
         accounts: [],
       ),
-      PleromaApiStatusEmojiReaction(
+      UnifediApiEmojiReaction(
+        url: null,
+        staticUrl: null,
         name: 'emoji',
         count: 5,
         me: true,
         accounts: [
-          emojiAccount.toPleromaApiAccount(),
-          reblogEmojiAccount.toPleromaApiAccount(),
+          emojiAccount.toUnifediApiAccount(),
+          reblogEmojiAccount.toUnifediApiAccount(),
         ],
       ),
-      PleromaApiStatusEmojiReaction(
+      UnifediApiEmojiReaction(
+        url: null,
+        staticUrl: null,
         name: 'emojiReblog',
         count: 1,
         me: true,
@@ -892,19 +900,19 @@ Future<void> main() async {
     ];
 
     expect(
-      statusBloc.reblogPlusOriginalPleromaEmojiReactions![0],
+      statusBloc.reblogPlusOriginalEmojiReactions![0],
       expected[0],
     );
     expect(
-      statusBloc.reblogPlusOriginalPleromaEmojiReactions![1],
+      statusBloc.reblogPlusOriginalEmojiReactions![1],
       expected[1],
     );
     expect(
-      statusBloc.reblogPlusOriginalPleromaEmojiReactions![2],
+      statusBloc.reblogPlusOriginalEmojiReactions![2],
       expected[2],
     );
     expect(
-      statusBloc.reblogPlusOriginalPleromaEmojiReactions,
+      statusBloc.reblogPlusOriginalEmojiReactions,
       expected,
     );
 
@@ -934,7 +942,7 @@ Future<void> main() async {
       status.account.avatar,
     );
 
-    var newValue = await AccountTestHelper.createTestAccount(seed: 'seed3');
+    var newValue = await AccountMockHelper.createTestAccount(seed: 'seed3');
 
     var listened;
 
@@ -942,7 +950,7 @@ Future<void> main() async {
       listened = newValue;
     });
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
     expect(
       listened,
       status.account.avatar,
@@ -968,7 +976,7 @@ Future<void> main() async {
     );
 
     var newValue = [
-      PleromaApiMention.only(
+      UnifediApiMention(
         username: 'newUsername',
         url: 'url',
         id: 'id',
@@ -982,7 +990,7 @@ Future<void> main() async {
       listened = newValue;
     });
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
     expect(
       listened,
       status.mentions,
@@ -1016,7 +1024,7 @@ Future<void> main() async {
       listened = newValue;
     });
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
     expect(
       listened,
       status.spoilerText,
@@ -1049,7 +1057,7 @@ Future<void> main() async {
       listened = newValue;
     });
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
     expect(
       listened,
       status.nsfwSensitive,
@@ -1076,7 +1084,7 @@ Future<void> main() async {
   //     listened = newValue;
   //   });
   //
-  //   await RxDartTestHelper.waitToExecuteRxCallbacks();
+  //   await RxDartMockHelper.waitToExecuteRxCallbacks();
   //
   //   await _update(status.copyWith(nsfwSensitive: true));
   //
@@ -1085,14 +1093,14 @@ Future<void> main() async {
   //
   //   statusBloc.changeDisplayNsfwSensitive(true);
   //
-  //   await RxDartTestHelper.waitToExecuteRxCallbacks();
+  //   await RxDartMockHelper.waitToExecuteRxCallbacks();
   //
   //   expect(statusBloc.nsfwSensitiveAndDisplayNsfwContentEnabled, true);
   //   expect(listened, true);
   //
   //   statusBloc.changeDisplayNsfwSensitive(false);
   //
-  //   await RxDartTestHelper.waitToExecuteRxCallbacks();
+  //   await RxDartMockHelper.waitToExecuteRxCallbacks();
   //
   //   expect(statusBloc.nsfwSensitiveAndDisplayNsfwContentEnabled, false);
   //   expect(listened, false);
@@ -1114,7 +1122,7 @@ Future<void> main() async {
       listened = newValue;
     });
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
     expect(
       listened,
       status.spoilerText?.isNotEmpty == true,
@@ -1140,7 +1148,7 @@ Future<void> main() async {
   //     listened = newValue;
   //   });
   //
-  //   await RxDartTestHelper.waitToExecuteRxCallbacks();
+  //   await RxDartMockHelper.waitToExecuteRxCallbacks();
   //
   //   await _update(status.copyWith(spoilerText: 'newSpoilerText'));
   //
@@ -1149,14 +1157,14 @@ Future<void> main() async {
   //
   //   statusBloc.changeDisplaySpoiler(true);
   //
-  //   await RxDartTestHelper.waitToExecuteRxCallbacks();
+  //   await RxDartMockHelper.waitToExecuteRxCallbacks();
   //
   //   expect(statusBloc.containsSpoilerAndDisplaySpoilerContentEnabled, true);
   //   expect(listened, true);
   //
   //   statusBloc.changeDisplaySpoiler(false);
   //
-  //   await RxDartTestHelper.waitToExecuteRxCallbacks();
+  //   await RxDartMockHelper.waitToExecuteRxCallbacks();
   //
   //   expect(statusBloc.containsSpoilerAndDisplaySpoilerContentEnabled, false);
   //   expect(listened, false);
@@ -1178,7 +1186,7 @@ Future<void> main() async {
       listened = newValue;
     });
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
     expect(
       listened,
       status.createdAt,
@@ -1211,7 +1219,7 @@ Future<void> main() async {
       listened = newValue;
     });
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
     expect(
       listened,
       status.favouritesCount,
@@ -1240,7 +1248,7 @@ Future<void> main() async {
     var newValue = 3;
 
     var reblog =
-        await StatusTestHelper.createTestStatus(seed: 'favouritesCount');
+        await StatusMockHelper.createTestStatus(seed: 'favouritesCount');
 
     var listened;
 
@@ -1249,7 +1257,7 @@ Future<void> main() async {
       listened = newValue;
     });
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
     expect(
       listened,
       status.favouritesCount,
@@ -1297,7 +1305,7 @@ Future<void> main() async {
       listened = newValue;
     });
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
     expect(
       listened,
       status.reblogsCount,
@@ -1325,7 +1333,7 @@ Future<void> main() async {
     var reblogValue = 4;
     var newValue = 3;
 
-    var reblog = await StatusTestHelper.createTestStatus(seed: 'reblogsCount');
+    var reblog = await StatusMockHelper.createTestStatus(seed: 'reblogsCount');
 
     var listened;
 
@@ -1334,7 +1342,7 @@ Future<void> main() async {
       listened = newValue;
     });
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
     expect(
       listened,
       status.reblogsCount,
@@ -1382,7 +1390,7 @@ Future<void> main() async {
       listened = newValue;
     });
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
     expect(
       listened,
       status.repliesCount,
@@ -1402,17 +1410,17 @@ Future<void> main() async {
   });
 
   test('refreshFromNetwork', () async {
-    StatusTestHelper.expectStatus(
+    StatusMockHelper.expectStatus(
       statusBloc.status,
       status,
     );
 
     var id = await statusRepository.upsertInRemoteType(
-      status.toPleromaApiStatus(),
+      status.toUnifediApiStatus(),
     );
     status = status.copyWith(id: id);
 
-    var newValue = await StatusTestHelper.createTestStatus(
+    var newValue = await StatusMockHelper.createTestStatus(
       seed: 'seed2',
       remoteId: status.remoteId,
     );
@@ -1423,23 +1431,23 @@ Future<void> main() async {
       listened = newValue;
     });
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
-    StatusTestHelper.expectStatus(
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
+    StatusMockHelper.expectStatus(
       listened,
       status,
     );
 
     when(
-      pleromaAuthStatusServiceMock.getStatus(statusRemoteId: status.remoteId!),
+      unifediApiStatusServiceMock.getStatus(statusRemoteId: status.remoteId!),
     ).thenAnswer(
-      (_) async => newValue.toPleromaApiStatus(),
+      (_) async => newValue.toUnifediApiStatus(),
     );
 
     await statusBloc.refreshFromNetwork();
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
 
-    StatusTestHelper.expectStatus(
+    StatusMockHelper.expectStatus(
       listened,
       newValue,
     );
@@ -1449,13 +1457,13 @@ Future<void> main() async {
   test('loadAccountByMentionUrl', () async {
     var accountId1 = 'accountId1';
     await _update(status.copyWith(mentions: [
-      PleromaApiMention(
+      UnifediApiMention(
         id: accountId1,
         url: 'url1',
         acct: 'acct1',
         username: 'name1',
       ),
-      PleromaApiMention(
+      UnifediApiMention(
         id: 'accountId2',
         url: 'url2',
         acct: 'acct2',
@@ -1463,23 +1471,23 @@ Future<void> main() async {
       ),
     ]));
 
-    var account = await AccountTestHelper.createTestAccount(
+    var account = await AccountMockHelper.createTestAccount(
       seed: 'loadAccountByMentionUrl',
       remoteId: accountId1,
     );
 
-    when(pleromaAccountServiceMock.getAccount(
+    when(unifediApiAccountServiceMock.getAccount(
       accountRemoteId: accountId1,
       withRelationship: false,
     )).thenAnswer(
-      (_) async => account.toPleromaApiAccount(),
+      (_) async => account.toUnifediApiAccount(),
     );
 
     expect(
       await statusBloc.loadAccountByMentionUrl(url: 'invalid url'),
       null,
     );
-    AccountTestHelper.expectAccount(
+    AccountMockHelper.expectAccount(
       await statusBloc.loadAccountByMentionUrl(url: 'url1'),
       account,
     );
@@ -1487,13 +1495,13 @@ Future<void> main() async {
 
   test('inReplyToAccount', () async {
     var account1 =
-        await AccountTestHelper.createTestAccount(seed: 'inReplyToAccount');
+        await AccountMockHelper.createTestAccount(seed: 'inReplyToAccount');
 
     await accountRepository.upsertInRemoteType(
-      account1.toPleromaApiAccount(),
+      account1.toUnifediApiAccount(),
     );
 
-    AccountTestHelper.expectAccount(
+    AccountMockHelper.expectAccount(
       await statusBloc.getInReplyToAccount(),
       null,
     );
@@ -1503,12 +1511,12 @@ Future<void> main() async {
       listened = newValue;
     });
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
     expect(listened, null);
 
     await _update(status.copyWith(inReplyToAccountRemoteId: account1.remoteId));
 
-    AccountTestHelper.expectAccount(
+    AccountMockHelper.expectAccount(
       await statusBloc.getInReplyToAccount(),
       account1,
     );
@@ -1518,7 +1526,7 @@ Future<void> main() async {
 
   test('requestToggleReblog', () async {
     var id = await statusRepository.upsertInRemoteType(
-      status.toPleromaApiStatus(),
+      status.toUnifediApiStatus(),
     );
     status = status.copyWith(id: id);
 
@@ -1533,29 +1541,29 @@ Future<void> main() async {
       listened = newValue;
     });
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
     expect(
       statusBloc.reblogged,
       status.reblogged,
     );
 
-    when(pleromaAuthStatusServiceMock.reblogStatus(
+    when(unifediApiStatusServiceMock.reblogStatus(
       statusRemoteId: status.remoteId,
     )).thenAnswer(
-      (_) async => status.copyWith(reblogged: true).toPleromaApiStatus(),
+      (_) async => status.copyWith(reblogged: true).toUnifediApiStatus(),
     );
 
-    when(pleromaAuthStatusServiceMock.unReblogStatus(
+    when(unifediApiStatusServiceMock.unReblogStatus(
       statusRemoteId: status.remoteId,
     )).thenAnswer(
-      (_) async => status.copyWith(reblogged: false).toPleromaApiStatus(),
+      (_) async => status.copyWith(reblogged: false).toUnifediApiStatus(),
     );
 
     var initialValue = status.reblogged;
 
     await statusBloc.toggleReblog();
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
 
     expect(
       statusBloc.reblogged,
@@ -1568,7 +1576,7 @@ Future<void> main() async {
 
     await statusBloc.toggleReblog();
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
 
     expect(
       statusBloc.reblogged,
@@ -1584,7 +1592,7 @@ Future<void> main() async {
 
   test('requestToggleFavourite', () async {
     var id = await statusRepository.upsertInRemoteType(
-      status.toPleromaApiStatus(),
+      status.toUnifediApiStatus(),
     );
     status = status.copyWith(id: id);
 
@@ -1599,29 +1607,29 @@ Future<void> main() async {
       listened = newValue;
     });
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
     expect(
       statusBloc.favourited,
       status.favourited,
     );
 
-    when(pleromaAuthStatusServiceMock.favouriteStatus(
+    when(unifediApiStatusServiceMock.favouriteStatus(
       statusRemoteId: status.remoteId,
     )).thenAnswer(
-      (_) async => status.copyWith(favourited: true).toPleromaApiStatus(),
+      (_) async => status.copyWith(favourited: true).toUnifediApiStatus(),
     );
 
-    when(pleromaAuthStatusServiceMock.unFavouriteStatus(
+    when(unifediApiStatusServiceMock.unFavouriteStatus(
       statusRemoteId: status.remoteId,
     )).thenAnswer(
-      (_) async => status.copyWith(favourited: false).toPleromaApiStatus(),
+      (_) async => status.copyWith(favourited: false).toUnifediApiStatus(),
     );
 
     var initialValue = status.favourited;
 
     await statusBloc.toggleFavourite();
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
 
     expect(
       statusBloc.favourited,
@@ -1634,7 +1642,7 @@ Future<void> main() async {
 
     await statusBloc.toggleFavourite();
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
 
     expect(statusBloc.favourited, initialValue);
     expect(
@@ -1647,7 +1655,7 @@ Future<void> main() async {
 
   test('requestToggleMute', () async {
     var id = await statusRepository.upsertInRemoteType(
-      status.toPleromaApiStatus(),
+      status.toUnifediApiStatus(),
     );
     status = status.copyWith(id: id);
 
@@ -1662,30 +1670,30 @@ Future<void> main() async {
       listened = newValue;
     });
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
     expect(
       statusBloc.muted,
       status.muted,
     );
 
-    when(pleromaAuthStatusServiceMock.muteStatus(
+    when(unifediApiStatusServiceMock.muteStatus(
       statusRemoteId: status.remoteId,
       expireDurationInSeconds: null,
     )).thenAnswer(
-      (_) async => status.copyWith(muted: true).toPleromaApiStatus(),
+      (_) async => status.copyWith(muted: true).toUnifediApiStatus(),
     );
 
-    when(pleromaAuthStatusServiceMock.unMuteStatus(
+    when(unifediApiStatusServiceMock.unMuteStatus(
       statusRemoteId: status.remoteId,
     )).thenAnswer(
-      (_) async => status.copyWith(muted: false).toPleromaApiStatus(),
+      (_) async => status.copyWith(muted: false).toUnifediApiStatus(),
     );
 
     var initialValue = status.muted;
 
     await statusBloc.toggleMute(duration: null);
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
 
     expect(
       statusBloc.muted,
@@ -1698,7 +1706,7 @@ Future<void> main() async {
 
     await statusBloc.toggleMute(duration: null);
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
 
     expect(
       statusBloc.muted,
@@ -1714,7 +1722,7 @@ Future<void> main() async {
 
   test('requestToggleBookmark', () async {
     var id = await statusRepository.upsertInRemoteType(
-      status.toPleromaApiStatus(),
+      status.toUnifediApiStatus(),
     );
     status = status.copyWith(id: id);
 
@@ -1729,29 +1737,29 @@ Future<void> main() async {
       listened = newValue;
     });
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
     expect(
       statusBloc.bookmarked,
       status.bookmarked,
     );
 
-    when(pleromaAuthStatusServiceMock.bookmarkStatus(
+    when(unifediApiStatusServiceMock.bookmarkStatus(
       statusRemoteId: status.remoteId,
     )).thenAnswer(
-      (_) async => status.copyWith(bookmarked: true).toPleromaApiStatus(),
+      (_) async => status.copyWith(bookmarked: true).toUnifediApiStatus(),
     );
 
-    when(pleromaAuthStatusServiceMock.unBookmarkStatus(
+    when(unifediApiStatusServiceMock.unBookmarkStatus(
       statusRemoteId: status.remoteId,
     )).thenAnswer(
-      (_) async => status.copyWith(bookmarked: false).toPleromaApiStatus(),
+      (_) async => status.copyWith(bookmarked: false).toUnifediApiStatus(),
     );
 
     var initialValue = status.bookmarked;
 
     await statusBloc.toggleBookmark();
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
 
     expect(
       statusBloc.bookmarked,
@@ -1764,7 +1772,7 @@ Future<void> main() async {
 
     await statusBloc.toggleBookmark();
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
 
     expect(
       statusBloc.bookmarked,
@@ -1780,7 +1788,7 @@ Future<void> main() async {
 
   test('requestTogglePin', () async {
     var id = await statusRepository.upsertInRemoteType(
-      status.toPleromaApiStatus(),
+      status.toUnifediApiStatus(),
     );
     status = status.copyWith(id: id);
 
@@ -1795,29 +1803,29 @@ Future<void> main() async {
       listened = newValue;
     });
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
     expect(
       statusBloc.pinned,
       status.pinned,
     );
 
-    when(pleromaAuthStatusServiceMock.pinStatus(
+    when(unifediApiStatusServiceMock.pinStatus(
       statusRemoteId: status.remoteId,
     )).thenAnswer(
-      (_) async => status.copyWith(pinned: true).toPleromaApiStatus(),
+      (_) async => status.copyWith(pinned: true).toUnifediApiStatus(),
     );
 
-    when(pleromaAuthStatusServiceMock.unPinStatus(
+    when(unifediApiStatusServiceMock.unPinStatus(
       statusRemoteId: status.remoteId,
     )).thenAnswer(
-      (_) async => status.copyWith(pinned: false).toPleromaApiStatus(),
+      (_) async => status.copyWith(pinned: false).toUnifediApiStatus(),
     );
 
     var initialValue = status.pinned;
 
     await statusBloc.togglePin();
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
 
     expect(
       statusBloc.pinned,
@@ -1830,7 +1838,7 @@ Future<void> main() async {
 
     await statusBloc.togglePin();
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
 
     expect(
       statusBloc.pinned,
@@ -1848,58 +1856,61 @@ Future<void> main() async {
     var emoji1 = 'emoji1';
     var emoji2 = 'emoji2';
 
-    var account1 = await AccountTestHelper.createTestAccount(seed: 'account1');
-    var account2 = await AccountTestHelper.createTestAccount(seed: 'account2');
+    var account1 = await AccountMockHelper.createTestAccount(seed: 'account1');
+    var account2 = await AccountMockHelper.createTestAccount(seed: 'account2');
 
-    var reaction2 = PleromaApiStatusEmojiReaction(
+    var reaction2 = UnifediApiEmojiReaction(
       name: emoji2,
       count: 1,
       me: true,
       accounts: [
-        account2.toPleromaApiAccount(),
+        account2.toUnifediApiAccount(),
       ],
+      url: null,
+      staticUrl: null,
     );
 
     status = status.copyWith(
-      pleromaEmojiReactions: [
+      emojiReactions: [
         reaction2,
       ],
     );
 
     await _update(status);
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
 
     expect(
-      statusBloc.pleromaEmojiReactions,
-      status.pleromaEmojiReactions,
+      statusBloc.emojiReactions,
+      status.emojiReactions,
     );
     expect(
       listEquals(
-        statusBloc.pleromaEmojiReactions,
-        status.pleromaEmojiReactions,
+        statusBloc.emojiReactions,
+        status.emojiReactions,
       ),
       true,
     );
 
-    when(pleromaApiStatusEmojiReactionServiceMock.addReaction(
+    when(unifediApiStatusServiceMock.addEmojiReaction(
       emoji: emoji1,
-      statusRemoteId: status.remoteId,
+      statusId: status.remoteId,
     )).thenAnswer((_) async {
-      var reactions =
-          status.pleromaEmojiReactions ?? <PleromaApiStatusEmojiReaction>[];
+      var reactions = status.emojiReactions ?? <UnifediApiEmojiReaction>[];
 
       var reaction = reactions.firstWhereOrNull(
         (reaction) => reaction.name == emoji1,
       );
 
       if (reaction == null) {
-        reaction = PleromaApiStatusEmojiReaction(
+        reaction = UnifediApiEmojiReaction(
+          url: null,
+          staticUrl: null,
           name: emoji1,
           count: 1,
           me: true,
           accounts: [
-            account1.toPleromaApiAccount(),
+            account1.toUnifediApiAccount(),
           ],
         );
         reactions.add(reaction);
@@ -1907,7 +1918,7 @@ Future<void> main() async {
         reactions.remove(reaction);
         var accounts = reaction.accounts!;
         accounts.add(
-          account1.toPleromaApiAccount(),
+          account1.toUnifediApiAccount(),
         );
         reaction = reaction.copyWith(
           count: reaction.count + 1,
@@ -1917,17 +1928,14 @@ Future<void> main() async {
         reactions.add(reaction);
       }
 
-      return status
-          .copyWith(pleromaEmojiReactions: reactions)
-          .toPleromaApiStatus();
+      return status.copyWith(emojiReactions: reactions).toUnifediApiStatus();
     });
 
-    when(pleromaApiStatusEmojiReactionServiceMock.removeReaction(
+    when(unifediApiStatusServiceMock.removeEmojiReaction(
       emoji: emoji1,
-      statusRemoteId: status.remoteId,
+      statusId: status.remoteId,
     )).thenAnswer((_) async {
-      var reactions =
-          status.pleromaEmojiReactions ?? <PleromaApiStatusEmojiReaction>[];
+      var reactions = status.emojiReactions ?? <UnifediApiEmojiReaction>[];
 
       var reaction = reactions.firstWhereOrNull(
         (reaction) => reaction.name == emoji1,
@@ -1952,41 +1960,40 @@ Future<void> main() async {
         }
       }
 
-      return status
-          .copyWith(pleromaEmojiReactions: reactions)
-          .toPleromaApiStatus();
+      return status.copyWith(emojiReactions: reactions).toUnifediApiStatus();
     });
 
     var listened;
 
-    var subscription =
-        statusBloc.pleromaEmojiReactionsStream.listen((newValue) {
+    var subscription = statusBloc.emojiReactionsStream.listen((newValue) {
       listened = newValue;
     });
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
     expect(
       listened,
-      status.pleromaEmojiReactions,
+      status.emojiReactions,
     );
 
     await statusBloc.toggleEmojiReaction(emoji: emoji1);
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
 
     var newReactions = [
       reaction2,
-      PleromaApiStatusEmojiReaction(
+      UnifediApiEmojiReaction(
+        url: null,
+        staticUrl: null,
         name: emoji1,
         count: 1,
         me: true,
         accounts: [
-          account1.toPleromaApiAccount(),
+          account1.toUnifediApiAccount(),
         ],
       ),
     ];
     expect(
-      statusBloc.pleromaEmojiReactions,
+      statusBloc.emojiReactions,
       newReactions,
     );
     expect(
@@ -1996,13 +2003,13 @@ Future<void> main() async {
 
     await statusBloc.toggleEmojiReaction(emoji: emoji1);
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
 
     newReactions = [
       reaction2,
     ];
     expect(
-      statusBloc.pleromaEmojiReactions,
+      statusBloc.emojiReactions,
       newReactions,
     );
     expect(

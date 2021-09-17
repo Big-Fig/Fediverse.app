@@ -20,7 +20,7 @@ void main() {
     dbFile = await file.copy(filePath + '.temp');
     database = AppDatabase(VmDatabase(dbFile, logStatements: false));
     dbAccount =
-        await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed');
+        await AccountDatabaseMockHelper.createTestDbAccount(seed: 'seed');
     await database.accountDao.insert(entity: dbAccount, mode: null);
   });
 
@@ -39,7 +39,7 @@ void main() {
 
     expect((await statusDao.getAll()).isNotEmpty, false);
 
-    var dbStatus = await StatusDatabaseTestHelper.createTestDbStatus(
+    var dbStatus = await StatusDatabaseMockHelper.createTestDbStatus(
       seed: 'seed1',
       dbAccount: dbAccount,
     );
@@ -89,7 +89,7 @@ void main() {
 
       expect((await statusDao.getAll()).isNotEmpty, false);
 
-      var dbStatus = await StatusDatabaseTestHelper.createTestDbStatus(
+      var dbStatus = await StatusDatabaseMockHelper.createTestDbStatus(
         seed: 'seed1',
         dbAccount: dbAccount,
       );
@@ -140,7 +140,7 @@ void main() {
       expect((await chatMessageDao.getAll()).isNotEmpty, false);
 
       var dbChatMessage =
-          await ChatMessageDatabaseTestHelper.createTestDbChatMessage(
+          await ChatMessageDatabaseMockHelper.createTestDbChatMessage(
         seed: 'seed1',
         dbAccount: dbAccount,
       );
@@ -192,7 +192,7 @@ void main() {
       expect((await chatMessageDao.getAll()).isNotEmpty, false);
 
       var dbChatMessage =
-          await ChatMessageDatabaseTestHelper.createTestDbChatMessage(
+          await ChatMessageDatabaseMockHelper.createTestDbChatMessage(
         seed: 'seed1',
         dbAccount: dbAccount,
       );

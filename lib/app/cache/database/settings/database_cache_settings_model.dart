@@ -1,7 +1,7 @@
 import 'package:fedi/app/cache/database/limit/age/database_cache_age_limit_model.dart';
 import 'package:fedi/app/cache/database/limit/entries_count/database_cache_entries_count_limit_model.dart';
 import 'package:fedi/app/settings/settings_model.dart';
-import 'package:fedi/json/json_model.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -11,7 +11,7 @@ part 'database_cache_settings_model.g.dart';
 @JsonSerializable(explicitToJson: true)
 @HiveType(typeId: -32 + 96)
 class DatabaseCacheSettings
-    implements IJsonObject, ISettings<DatabaseCacheSettings> {
+    implements IJsonObj, ISettings<DatabaseCacheSettings> {
   @HiveField(2)
   @JsonKey(name: 'entries_count_by_type_limit_type')
   final String entriesCountByTypeLimitTypeString;

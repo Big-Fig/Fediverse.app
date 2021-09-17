@@ -4,7 +4,7 @@ import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository_model.d
 import 'package:fedi/app/chat/pleroma/with_last_message/pleroma_chat_with_last_message_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:fedi/repository/repository.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
@@ -16,7 +16,7 @@ abstract class IPleromaChatRepository
         IAppRemoteReadWriteRepository<
             DbChat,
             IPleromaChat,
-            IPleromaApiChat,
+            IUnifediApiChat,
             int,
             String,
             PleromaChatRepositoryFilters,

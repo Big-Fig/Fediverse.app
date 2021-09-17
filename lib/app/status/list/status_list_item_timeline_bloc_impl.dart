@@ -2,7 +2,7 @@ import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class StatusListItemTimelineBloc extends DisposableOwner
     implements IStatusListItemTimelineBloc {
@@ -34,7 +34,7 @@ class StatusListItemTimelineBloc extends DisposableOwner
   @override
   final bool collapsible;
   @override
-  final IPleromaApiMediaAttachment? initialMediaAttachment;
+  final IUnifediApiMediaAttachment? initialMediaAttachment;
 
   @override
   final bool isCommentsActionEnabled;
@@ -71,7 +71,7 @@ class StatusListItemTimelineBloc extends DisposableOwner
     bool isFirstReplyInThread = true,
     bool displayActions = true,
     required StatusAndContextCallback? statusCallback,
-    required IPleromaApiMediaAttachment? initialMediaAttachment,
+    required IUnifediApiMediaAttachment? initialMediaAttachment,
   }) : this._private(
           status: status,
           collapsible: collapsible,
@@ -93,7 +93,7 @@ class StatusListItemTimelineBloc extends DisposableOwner
     required bool displayActions,
     required StatusAndContextCallback statusCallback,
     required AccountCallback accountMentionCallback,
-    required IPleromaApiMediaAttachment? initialMediaAttachment,
+    required IUnifediApiMediaAttachment? initialMediaAttachment,
     required bool isCommentsActionEnabled,
   }) : this._private(
           status: status,

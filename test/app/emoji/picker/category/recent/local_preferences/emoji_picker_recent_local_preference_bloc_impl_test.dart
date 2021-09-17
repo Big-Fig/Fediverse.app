@@ -9,7 +9,7 @@ import '../emoji_picker_recent_test_helper.dart';
 
 void main() {
   test('save & load', () async {
-    await LocalPreferencesTestHelper.testSaveAndLoad<
+    await LocalPreferencesMockHelper.testSaveAndLoad<
         EmojiPickerRecentCategoryItemsList,
         EmojiPickerRecentCategoryLocalPreferenceBloc>(
       defaultValue: EmojiPickerRecentCategoryLocalPreferenceBloc.defaultValue,
@@ -19,7 +19,7 @@ void main() {
         userAtHost: 'user@host',
       ),
       testObjectCreator: ({required String seed}) =>
-          EmojiPickerRecentCategoryItemsListModelTestHelper
+          EmojiPickerRecentCategoryItemsListModelMockHelper
               .createTestEmojiPickerRecentCategoryItemsList(
         seed: seed,
       ),

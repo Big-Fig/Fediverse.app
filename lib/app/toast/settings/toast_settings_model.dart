@@ -1,7 +1,7 @@
 import 'package:fedi/app/push/settings/push_settings_model.dart';
 import 'package:fedi/app/settings/settings_model.dart';
 import 'package:fedi/app/toast/handling_type/toast_handling_type_model.dart';
-import 'package:fedi/json/json_model.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -10,7 +10,7 @@ part 'toast_settings_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 @HiveType(typeId: -32 + 86)
-class ToastSettings implements IJsonObject, ISettings<ToastSettings> {
+class ToastSettings implements IJsonObj, ISettings<ToastSettings> {
   @HiveField(3)
   @JsonKey(name: 'push_settings')
   final PushSettings pushSettings;

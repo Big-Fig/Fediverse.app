@@ -23,15 +23,15 @@ import 'package:pleroma_fediverse_api/src/pleroma/api/pleroma_api_service.dart'
 
 class _FakeIRestService extends _i1.Fake implements _i2.IRestService {}
 
-class _FakeIPleromaApiFilter extends _i1.Fake implements _i3.IPleromaApiFilter {
+class _FakeIUnifediApiFilter extends _i1.Fake implements _i3.IUnifediApiFilter {
 }
 
-/// A class which mocks [IPleromaApiFilterService].
+/// A class which mocks [IUnifediApiFilterService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockIPleromaApiFilterService extends _i1.Mock
-    implements _i4.IPleromaApiFilterService {
-  MockIPleromaApiFilterService() {
+class MockIUnifediApiFilterService extends _i1.Mock
+    implements _i4.IUnifediApiFilterService {
+  MockIUnifediApiFilterService() {
     _i1.throwOnMissingStub(this);
   }
 
@@ -40,14 +40,14 @@ class MockIPleromaApiFilterService extends _i1.Mock
       (super.noSuchMethod(Invocation.getter(#restService),
           returnValue: _FakeIRestService()) as _i2.IRestService);
   @override
-  _i5.Stream<_i6.PleromaApiState> get pleromaApiStateStream =>
-      (super.noSuchMethod(Invocation.getter(#pleromaApiStateStream),
-              returnValue: Stream<_i6.PleromaApiState>.empty())
-          as _i5.Stream<_i6.PleromaApiState>);
+  _i5.Stream<_i6.UnifediApiState> get unifediApiStateStream =>
+      (super.noSuchMethod(Invocation.getter(#unifediApiStateStream),
+              returnValue: Stream<_i6.UnifediApiState>.empty())
+          as _i5.Stream<_i6.UnifediApiState>);
   @override
-  _i6.PleromaApiState get pleromaApiState =>
-      (super.noSuchMethod(Invocation.getter(#pleromaApiState),
-          returnValue: _i6.PleromaApiState.validAuth) as _i6.PleromaApiState);
+  _i6.UnifediApiState get unifediApiState =>
+      (super.noSuchMethod(Invocation.getter(#unifediApiState),
+          returnValue: _i6.UnifediApiState.validAuth) as _i6.UnifediApiState);
   @override
   _i5.Stream<bool> get isConnectedStream =>
       (super.noSuchMethod(Invocation.getter(#isConnectedStream),
@@ -61,19 +61,19 @@ class MockIPleromaApiFilterService extends _i1.Mock
       (super.noSuchMethod(Invocation.getter(#isDisposed), returnValue: false)
           as bool);
   @override
-  _i5.Future<List<_i3.IPleromaApiFilter>> getFilters(
-          {_i7.IPleromaApiPaginationRequest? pagination}) =>
+  _i5.Future<List<_i3.IUnifediApiFilter>> getFilters(
+          {_i7.IUnifediApiPagination? pagination}) =>
       (super.noSuchMethod(
               Invocation.method(#getFilters, [], {#pagination: pagination}),
-              returnValue: Future<List<_i3.IPleromaApiFilter>>.value(
-                  <_i3.IPleromaApiFilter>[]))
-          as _i5.Future<List<_i3.IPleromaApiFilter>>);
+              returnValue: Future<List<_i3.IUnifediApiFilter>>.value(
+                  <_i3.IUnifediApiFilter>[]))
+          as _i5.Future<List<_i3.IUnifediApiFilter>>);
   @override
-  _i5.Future<_i3.IPleromaApiFilter> getFilter({String? filterRemoteId}) =>
+  _i5.Future<_i3.IUnifediApiFilter> getFilter({String? filterRemoteId}) =>
       (super.noSuchMethod(
           Invocation.method(#getFilter, [], {#filterRemoteId: filterRemoteId}),
-          returnValue: Future<_i3.IPleromaApiFilter>.value(
-              _FakeIPleromaApiFilter())) as _i5.Future<_i3.IPleromaApiFilter>);
+          returnValue: Future<_i3.IUnifediApiFilter>.value(
+              _FakeIUnifediApiFilter())) as _i5.Future<_i3.IUnifediApiFilter>);
   @override
   _i5.Future<dynamic> deleteFilter({String? filterRemoteId}) =>
       (super.noSuchMethod(
@@ -81,26 +81,26 @@ class MockIPleromaApiFilterService extends _i1.Mock
               #deleteFilter, [], {#filterRemoteId: filterRemoteId}),
           returnValue: Future<dynamic>.value()) as _i5.Future<dynamic>);
   @override
-  _i5.Future<_i3.IPleromaApiFilter> createFilter(
-          {_i3.IPostPleromaApiFilter? postPleromaFilter}) =>
+  _i5.Future<_i3.IUnifediApiFilter> createFilter(
+          {_i3.IPostUnifediApiFilter? postPleromaFilter}) =>
       (super.noSuchMethod(
               Invocation.method(
                   #createFilter, [], {#postPleromaFilter: postPleromaFilter}),
               returnValue:
-                  Future<_i3.IPleromaApiFilter>.value(_FakeIPleromaApiFilter()))
-          as _i5.Future<_i3.IPleromaApiFilter>);
+                  Future<_i3.IUnifediApiFilter>.value(_FakeIUnifediApiFilter()))
+          as _i5.Future<_i3.IUnifediApiFilter>);
   @override
-  _i5.Future<_i3.IPleromaApiFilter> updateFilter(
+  _i5.Future<_i3.IUnifediApiFilter> updateFilter(
           {String? filterRemoteId,
-          _i3.IPostPleromaApiFilter? postPleromaFilter}) =>
+          _i3.IPostUnifediApiFilter? postPleromaFilter}) =>
       (super.noSuchMethod(
               Invocation.method(#updateFilter, [], {
                 #filterRemoteId: filterRemoteId,
                 #postPleromaFilter: postPleromaFilter
               }),
               returnValue:
-                  Future<_i3.IPleromaApiFilter>.value(_FakeIPleromaApiFilter()))
-          as _i5.Future<_i3.IPleromaApiFilter>);
+                  Future<_i3.IUnifediApiFilter>.value(_FakeIUnifediApiFilter()))
+          as _i5.Future<_i3.IUnifediApiFilter>);
   @override
   _i5.Future<dynamic> dispose() =>
       (super.noSuchMethod(Invocation.method(#dispose, []),

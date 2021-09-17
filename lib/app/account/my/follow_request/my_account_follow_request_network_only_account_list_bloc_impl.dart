@@ -10,20 +10,20 @@ import 'package:fedi/app/list/network_only/network_only_list_bloc.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class MyAccountFollowRequestNetworkOnlyAccountListBloc extends DisposableOwner
     implements IMyAccountFollowRequestNetworkOnlyAccountListBloc {
   final IMyAccountBloc myAccountBloc;
-  final IPleromaApiMyAccountService pleromaMyAccountService;
+  final IUnifediApiMyAccountService unifediApiMyAccountService;
   final IAccountRepository accountRepository;
   final INotificationRepository notificationRepository;
 
   MyAccountFollowRequestNetworkOnlyAccountListBloc({
     required this.myAccountBloc,
-    required this.pleromaMyAccountService,
+    required this.unifediApiMyAccountService,
     required this.accountRepository,
     required this.notificationRepository,
   });
@@ -32,25 +32,25 @@ class MyAccountFollowRequestNetworkOnlyAccountListBloc extends DisposableOwner
   Future acceptFollowRequest({
     required IAccount account,
   }) async {
-    var accountRelationship = await pleromaMyAccountService.acceptFollowRequest(
-      accountRemoteId: account.remoteId,
+    var accountRelationship = await unifediApiMyAccountService.acceptMyFollowRequest(
+      accountId: account.remoteId,
     );
 
     await _processFollowRequestAction(
       account,
-      accountRelationship,
+      accountRelationship!,
     );
   }
 
   Future _processFollowRequestAction(
     IAccount account,
-    IPleromaApiAccountRelationship accountRelationship,
+    IUnifediApiAccountRelationship accountRelationship,
   ) async {
-    var pleromaAccount = account
+    var unifediApiAccount = account
         .copyWith(
-          pleromaRelationship: accountRelationship,
+          relationship: accountRelationship,
         )
-        .toPleromaApiAccount();
+        .toUnifediApiAccount();
 
     await notificationRepository.batch((batch) {
       notificationRepository.dismissFollowRequestNotificationsFromAccount(
@@ -58,7 +58,7 @@ class MyAccountFollowRequestNetworkOnlyAccountListBloc extends DisposableOwner
         batchTransaction: batch,
       );
       accountRepository.upsertInRemoteTypeBatch(
-        pleromaAccount,
+        unifediApiAccount,
         batchTransaction: batch,
       );
     });
@@ -70,13 +70,13 @@ class MyAccountFollowRequestNetworkOnlyAccountListBloc extends DisposableOwner
   Future rejectFollowRequest({
     required IAccount account,
   }) async {
-    var accountRelationship = await pleromaMyAccountService.rejectFollowRequest(
-      accountRemoteId: account.remoteId,
+    var accountRelationship = await unifediApiMyAccountService.rejectMyFollowRequest(
+      accountId: account.remoteId,
     );
 
     await _processFollowRequestAction(
       account,
-      accountRelationship,
+      accountRelationship!,
     );
   }
 
@@ -87,9 +87,9 @@ class MyAccountFollowRequestNetworkOnlyAccountListBloc extends DisposableOwner
     String? minId,
     String? maxId,
   }) async {
-    var remoteAccounts = await pleromaMyAccountService.getFollowRequests(
-      pagination: PleromaApiPaginationRequest(
-        sinceId: minId,
+    var remoteAccounts = await unifediApiMyAccountService.getMyFollowRequests(
+      pagination: UnifediApiPagination(
+        minId: minId,
         maxId: maxId,
         limit: itemsCountPerPage,
       ),
@@ -102,19 +102,19 @@ class MyAccountFollowRequestNetworkOnlyAccountListBloc extends DisposableOwner
 
     return remoteAccounts
         .map(
-          (pleromaAccount) => pleromaAccount.toDbAccountWrapper(),
+          (unifediApiAccount) => unifediApiAccount.toDbAccountWrapper(),
         )
         .toList();
   }
 
   @override
-  IPleromaApi get pleromaApi => pleromaMyAccountService;
+  IUnifediApiService get unifediApi => unifediApiMyAccountService;
 
   static MyAccountFollowRequestNetworkOnlyAccountListBloc createFromContext(
     BuildContext context,
   ) =>
       MyAccountFollowRequestNetworkOnlyAccountListBloc(
-        pleromaMyAccountService: Provider.of<IPleromaApiMyAccountService>(
+        unifediApiMyAccountService: Provider.of<IUnifediApiMyAccountService>(
           context,
           listen: false,
         ),

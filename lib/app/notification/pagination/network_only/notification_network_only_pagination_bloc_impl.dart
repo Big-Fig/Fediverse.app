@@ -5,7 +5,7 @@ import 'package:fedi/app/notification/pagination/network_only/notification_netwo
 import 'package:fedi/app/pagination/network_only/network_only_pleroma_pagination_bloc_impl.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
@@ -24,7 +24,7 @@ class NotificationNetworkOnlyPaginationBloc
         );
 
   @override
-  IPleromaApi get pleromaApi => listService.pleromaApi;
+  IUnifediApiService get unifediApi => listService.unifediApi;
 
   static NotificationNetworkOnlyPaginationBloc createFromContext(
     BuildContext context, {

@@ -8,18 +8,18 @@ import 'auth_instance_model_test_helper.dart';
 
 void main() {
   test('equal & hashcode & toString', () async {
-    ObjTestHelper.testEqualsHashcodeToString(
+    ObjMockHelper.testEqualsHashcodeToString(
       ({required String seed}) =>
-          AuthInstanceModelTestHelper.createTestAuthInstance(
+          AuthInstanceModelMockHelper.createTestAuthInstance(
         seed: seed,
       ),
     );
   });
 
   test('toJson & fromJson', () async {
-    JsonTestHelper.testFromJsonToJson(
+    JsonMockHelper.testFromJsonToJson(
       ({required String seed}) =>
-          AuthInstanceModelTestHelper.createTestAuthInstance(
+          AuthInstanceModelMockHelper.createTestAuthInstance(
         seed: seed,
       ),
       AuthInstance.fromJson,
@@ -27,19 +27,19 @@ void main() {
   });
 
   test('hive save&load', () async {
-    await HiveTestHelper.testHiveSaveAndLoad(
+    await HiveMockHelper.testHiveSaveAndLoad(
       ({required String seed}) =>
-          AuthInstanceModelTestHelper.createTestAuthInstance(
+          AuthInstanceModelMockHelper.createTestAuthInstance(
         seed: seed,
       ),
     );
   });
 
   test('copyWith', () async {
-    var obj1 = AuthInstanceModelTestHelper.createTestAuthInstance(
+    var obj1 = AuthInstanceModelMockHelper.createTestAuthInstance(
       seed: 'seed1',
     );
-    var obj2 = AuthInstanceModelTestHelper.createTestAuthInstance(
+    var obj2 = AuthInstanceModelMockHelper.createTestAuthInstance(
       seed: 'seed2',
     );
 
@@ -60,7 +60,7 @@ void main() {
   });
 
   test('hive adapter', () async {
-    HiveTestHelper.testAdapter(
+    HiveMockHelper.testAdapter(
       () => AuthInstanceAdapter(),
     );
   });

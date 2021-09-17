@@ -21,12 +21,12 @@ import 'package:pleroma_fediverse_api/src/pleroma/api/pleroma_api_service.dart'
 
 class _FakeIRestService extends _i1.Fake implements _i2.IRestService {}
 
-/// A class which mocks [IPleromaApiAnnouncementService].
+/// A class which mocks [IUnifediApiAnnouncementService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockIPleromaApiAnnouncementService extends _i1.Mock
-    implements _i3.IPleromaApiAnnouncementService {
-  MockIPleromaApiAnnouncementService() {
+class MockIUnifediApiAnnouncementService extends _i1.Mock
+    implements _i3.IUnifediApiAnnouncementService {
+  MockIUnifediApiAnnouncementService() {
     _i1.throwOnMissingStub(this);
   }
 
@@ -35,14 +35,14 @@ class MockIPleromaApiAnnouncementService extends _i1.Mock
       (super.noSuchMethod(Invocation.getter(#restService),
           returnValue: _FakeIRestService()) as _i2.IRestService);
   @override
-  _i4.Stream<_i5.PleromaApiState> get pleromaApiStateStream =>
-      (super.noSuchMethod(Invocation.getter(#pleromaApiStateStream),
-              returnValue: Stream<_i5.PleromaApiState>.empty())
-          as _i4.Stream<_i5.PleromaApiState>);
+  _i4.Stream<_i5.UnifediApiState> get unifediApiStateStream =>
+      (super.noSuchMethod(Invocation.getter(#unifediApiStateStream),
+              returnValue: Stream<_i5.UnifediApiState>.empty())
+          as _i4.Stream<_i5.UnifediApiState>);
   @override
-  _i5.PleromaApiState get pleromaApiState =>
-      (super.noSuchMethod(Invocation.getter(#pleromaApiState),
-          returnValue: _i5.PleromaApiState.validAuth) as _i5.PleromaApiState);
+  _i5.UnifediApiState get unifediApiState =>
+      (super.noSuchMethod(Invocation.getter(#unifediApiState),
+          returnValue: _i5.UnifediApiState.validAuth) as _i5.UnifediApiState);
   @override
   _i4.Stream<bool> get isConnectedStream =>
       (super.noSuchMethod(Invocation.getter(#isConnectedStream),
@@ -56,14 +56,14 @@ class MockIPleromaApiAnnouncementService extends _i1.Mock
       (super.noSuchMethod(Invocation.getter(#isDisposed), returnValue: false)
           as bool);
   @override
-  _i4.Future<List<_i6.IPleromaApiAnnouncement>> getAnnouncements(
+  _i4.Future<List<_i6.IUnifediApiAnnouncement>> getAnnouncements(
           {bool? withDismissed = false}) =>
       (super.noSuchMethod(
               Invocation.method(
                   #getAnnouncements, [], {#withDismissed: withDismissed}),
-              returnValue: Future<List<_i6.IPleromaApiAnnouncement>>.value(
-                  <_i6.IPleromaApiAnnouncement>[]))
-          as _i4.Future<List<_i6.IPleromaApiAnnouncement>>);
+              returnValue: Future<List<_i6.IUnifediApiAnnouncement>>.value(
+                  <_i6.IUnifediApiAnnouncement>[]))
+          as _i4.Future<List<_i6.IUnifediApiAnnouncement>>);
   @override
   _i4.Future<dynamic> dismissAnnouncement({String? announcementId}) =>
       (super.noSuchMethod(

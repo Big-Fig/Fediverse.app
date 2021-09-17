@@ -10,7 +10,7 @@ import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -18,15 +18,15 @@ class AccountFeaturedHashtagListPageBloc extends DisposableOwner
     implements IAccountFeaturedHashtagListPageBloc {
   final IPaginationSettingsBloc paginationSettingsBloc;
 
-  final IPleromaApiFeaturedTagsService pleromaApiFeaturedTagsService;
+  final IUnifediApiMyAccountService unifediApiMyAccountService;
 
   AccountFeaturedHashtagListPageBloc({
     required this.paginationSettingsBloc,
-    required this.pleromaApiFeaturedTagsService,
+    required this.unifediApiMyAccountService,
   }) {
     accountFeaturedHashtagListNetworkOnlyListBloc =
         AccountFeaturedHashtagListNetworkOnlyListBloc(
-      pleromaApiFeaturedTagsService: pleromaApiFeaturedTagsService,
+          unifediApiMyAccountService: unifediApiMyAccountService,
     );
 
     accountFeaturedHashtagListNetworkOnlyPaginationBloc =
@@ -64,11 +64,11 @@ class AccountFeaturedHashtagListPageBloc extends DisposableOwner
   static AccountFeaturedHashtagListPageBloc createFromContext(
     BuildContext context,
   ) {
-    var pleromaApiFeaturedTagsService =
-        Provider.of<IPleromaApiFeaturedTagsService>(context, listen: false);
+    var unifediApiMyAccountService =
+        Provider.of<IUnifediApiMyAccountService>(context, listen: false);
 
     return AccountFeaturedHashtagListPageBloc(
-      pleromaApiFeaturedTagsService: pleromaApiFeaturedTagsService,
+      unifediApiMyAccountService: unifediApiMyAccountService,
       paginationSettingsBloc: IPaginationSettingsBloc.of(
         context,
         listen: false,

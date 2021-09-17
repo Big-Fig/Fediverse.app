@@ -1,7 +1,7 @@
 import 'package:fedi/app/cache/files/limit/age/files_cache_age_limit_model.dart';
 import 'package:fedi/app/cache/files/limit/size_count/files_cache_size_count_limit_model.dart';
 import 'package:fedi/app/settings/settings_model.dart';
-import 'package:fedi/json/json_model.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -10,7 +10,7 @@ part 'files_cache_settings_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 @HiveType(typeId: -32 + 97)
-class FilesCacheSettings implements IJsonObject, ISettings<FilesCacheSettings> {
+class FilesCacheSettings implements IJsonObj, ISettings<FilesCacheSettings> {
   @HiveField(2)
   @JsonKey(name: 'files_cache_size_limit_count_type_string')
   final String sizeLimitCountTypeString;

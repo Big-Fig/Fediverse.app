@@ -3,7 +3,7 @@ import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-class ChatDatabaseTestHelper {
+class ChatDatabaseMockHelper {
 // ignore_for_file: no-magic-number
   static Future<DbChat> createTestDbChat({
     required String seed,

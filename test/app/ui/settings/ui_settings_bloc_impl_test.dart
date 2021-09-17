@@ -57,7 +57,7 @@ void main() {
     );
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     var defaultValue = GlobalUiSettingsLocalPreferenceBloc.defaultValue;
 
@@ -80,13 +80,13 @@ void main() {
     );
 
     var testStatusFontSize =
-        UiSettingsModelTestHelper.createTestUiSettings(seed: 'seed')
+        UiSettingsModelMockHelper.createTestUiSettings(seed: 'seed')
             .statusFontSize;
 
     await uiSettingsBloc.changeStatusFontSize(testStatusFontSize);
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(
       listened?.statusFontSize,
@@ -140,12 +140,12 @@ void main() {
     );
 
     var testThemeId =
-        UiSettingsModelTestHelper.createTestUiSettings(seed: 'seed').themeId;
+        UiSettingsModelMockHelper.createTestUiSettings(seed: 'seed').themeId;
 
     await uiSettingsBloc.changeThemeId(testThemeId);
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(
       listened,

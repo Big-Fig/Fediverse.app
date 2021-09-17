@@ -10,7 +10,7 @@ import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -19,12 +19,12 @@ class MyAccountEndorsementBloc extends DisposableOwner
   final IPaginationSettingsBloc paginationSettingsBloc;
 
   MyAccountEndorsementBloc({
-    required this.pleromaApiEndorsementsService,
+    required this.unifediApiMyAccountService,
     required this.paginationSettingsBloc,
   }) {
     myAccountEndorsementAccountListNetworkOnlyListBloc =
         MyAccountEndorsementAccountListNetworkOnlyListBloc(
-      pleromaApiEndorsementsService: pleromaApiEndorsementsService,
+      unifediApiMyAccountService: unifediApiMyAccountService,
       remoteInstanceUriOrNull: remoteInstanceUriOrNull,
       instanceLocation: instanceLocation,
     );
@@ -46,7 +46,7 @@ class MyAccountEndorsementBloc extends DisposableOwner
     accountPaginationListBloc.refreshWithoutController();
   }
 
-  final IPleromaApiEndorsementsService pleromaApiEndorsementsService;
+  final IUnifediApiMyAccountService unifediApiMyAccountService;
 
   @override
   // ignore: avoid-late-keyword
@@ -69,11 +69,11 @@ class MyAccountEndorsementBloc extends DisposableOwner
   Uri? get remoteInstanceUriOrNull => null;
 
   static MyAccountEndorsementBloc createFromContext(BuildContext context) {
-    var pleromaApiEndorsementsService =
-        Provider.of<IPleromaApiEndorsementsService>(context, listen: false);
+    var unifediApiMyAccountService =
+        Provider.of<IUnifediApiMyAccountService>(context, listen: false);
 
     return MyAccountEndorsementBloc(
-      pleromaApiEndorsementsService: pleromaApiEndorsementsService,
+      unifediApiMyAccountService: unifediApiMyAccountService,
       paginationSettingsBloc: IPaginationSettingsBloc.of(
         context,
         listen: false,

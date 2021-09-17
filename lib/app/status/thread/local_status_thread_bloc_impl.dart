@@ -5,8 +5,8 @@ import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/thread/status_thread_bloc_impl.dart';
-import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -18,10 +18,10 @@ class LocalStatusThreadBloc extends StatusThreadBloc {
     required this.statusRepository,
     required this.filterRepository,
     required IStatus initialStatusToFetchThread,
-    required IPleromaApiMediaAttachment? initialMediaAttachment,
-    required IPleromaApiStatusService pleromaStatusService,
+    required IUnifediApiMediaAttachment? initialMediaAttachment,
+    required IUnifediApiStatusService unifediApiStatusService,
   }) : super(
-          pleromaStatusService: pleromaStatusService,
+          unifediApiStatusService: unifediApiStatusService,
           initialStatusToFetchThread: initialStatusToFetchThread,
           initialMediaAttachment: initialMediaAttachment,
         );
@@ -29,12 +29,12 @@ class LocalStatusThreadBloc extends StatusThreadBloc {
   static LocalStatusThreadBloc createFromContext(
     BuildContext context, {
     required IStatus initialStatusToFetchThread,
-    required IPleromaApiMediaAttachment? initialMediaAttachment,
+    required IUnifediApiMediaAttachment? initialMediaAttachment,
   }) =>
       LocalStatusThreadBloc(
         initialStatusToFetchThread: initialStatusToFetchThread,
         initialMediaAttachment: initialMediaAttachment,
-        pleromaStatusService: Provider.of<IPleromaApiStatusService>(
+        unifediApiStatusService: Provider.of<IUnifediApiStatusService>(
           context,
           listen: false,
         ),
@@ -51,7 +51,7 @@ class LocalStatusThreadBloc extends StatusThreadBloc {
   FilterRepositoryFilters get filterRepositoryFilters =>
       FilterRepositoryFilters(
         onlyWithContextTypes: [
-          MastodonApiFilterContextType.thread,
+          UnifediApiFilterContextType.thread,
         ],
         notExpired: true,
       );
@@ -76,7 +76,7 @@ class LocalStatusThreadBloc extends StatusThreadBloc {
       );
 
   @override
-  void onInitialStatusUpdated(IPleromaApiStatus updatedStartRemoteStatus) {
+  void onInitialStatusUpdated(IUnifediApiStatus updatedStartRemoteStatus) {
     // ignore: unawaited_futures
     statusRepository.updateAppTypeByRemoteType(
       appItem: initialStatusToFetchThread,

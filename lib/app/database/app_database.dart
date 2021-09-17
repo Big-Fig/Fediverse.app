@@ -42,7 +42,7 @@ import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/scheduled/database/scheduled_status_database_dao.dart';
 import 'package:fedi/app/status/scheduled/database/scheduled_status_database_model.dart';
 import 'package:fedi/moor/moor_json_type_converter.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:moor/moor.dart';
 
 part 'app_database.g.dart';
@@ -203,7 +203,7 @@ class AppDatabase extends _$AppDatabase {
   }
 
   Future<void> _migrate9to10(Migrator m) async {
-    await m.addColumn(dbAccounts, dbAccounts.pleromaAcceptsChatMessages);
+    await m.addColumn(dbAccounts, dbAccounts.acceptsChatMessages);
   }
 
   Future<void> _migrate8to9(Migrator m) async {
@@ -223,7 +223,7 @@ class AppDatabase extends _$AppDatabase {
       await m.addColumn(dbNotifications, dbNotifications.dismissed);
 
   Future<void> _migrate4to5(Migrator m) async =>
-      await m.addColumn(dbAccounts, dbAccounts.pleromaBackgroundImage);
+      await m.addColumn(dbAccounts, dbAccounts.backgroundImage);
 
   Future<void> _migrate3to4(Migrator m) async =>
       await m.addColumn(dbStatuses, dbStatuses.deleted);

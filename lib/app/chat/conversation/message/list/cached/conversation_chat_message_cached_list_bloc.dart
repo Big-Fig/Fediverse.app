@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IConversationChatMessageCachedListBloc
-    implements IDisposable, IPleromaCachedListBloc<IConversationChatMessage> {
+    implements IDisposable, ICachedListBloc<IConversationChatMessage> {
   static IConversationChatMessageCachedListBloc of(
     BuildContext context, {
     bool listen = true,

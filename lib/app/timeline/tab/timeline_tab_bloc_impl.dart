@@ -17,11 +17,12 @@ import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
-import 'package:base_fediverse_api/base_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 
 var _logger = Logger('timeline_tab_bloc_impl.dart');
 
@@ -43,8 +44,8 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
   late ICachedPaginationListWithNewItemsBloc<CachedPaginationPage<IStatus>,
       IStatus> paginationListWithNewItemsBloc;
 
-  final IPleromaApiAccountService pleromaApiAccountService;
-  final IPleromaApiAuthTimelineService pleromaApiAuthTimelineService;
+  final IUnifediApiAccountService unifediApiAccountService;
+  final IUnifediApiTimelineService unifediApiTimelineService;
   final IStatusRepository statusRepository;
   final ICurrentAuthInstanceBloc currentAuthInstanceBloc;
   final IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc;
@@ -55,19 +56,19 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
   @override
   final String timelineId;
 
-  final WebSocketsListenType webSocketsListenType;
+  final WebSocketsChannelHandlerType handlerType;
   final IPaginationSettingsBloc paginationSettingsBloc;
 
   TimelineTabBloc({
     required this.timelineId,
     required this.preferencesService,
-    required this.pleromaApiAuthTimelineService,
-    required this.pleromaApiAccountService,
+    required this.unifediApiTimelineService,
+    required this.unifediApiAccountService,
     required this.statusRepository,
     required this.currentAuthInstanceBloc,
     required this.webSocketsHandlerManagerBloc,
     required this.myAccountBloc,
-    required this.webSocketsListenType,
+    required this.handlerType,
     required this.filterRepository,
     required this.paginationSettingsBloc,
   }) {
@@ -84,23 +85,23 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
   }
 
   TimelineStatusCachedListBloc createListService({
-    required WebSocketsListenType webSocketsListenType,
+    required WebSocketsChannelHandlerType handlerType,
   }) =>
       TimelineStatusCachedListBloc(
-        pleromaApiAccountService: pleromaApiAccountService,
-        pleromaApiAuthTimelineService: pleromaApiAuthTimelineService,
+        unifediApiAccountService: unifediApiAccountService,
+        unifediApiTimelineService: unifediApiTimelineService,
         statusRepository: statusRepository,
         currentInstanceBloc: currentAuthInstanceBloc,
         timelineLocalPreferenceBloc: timelineLocalPreferencesBloc,
         webSocketsHandlerManagerBloc: webSocketsHandlerManagerBloc,
-        webSocketsListenType: webSocketsListenType,
+        handlerType: handlerType,
         filterRepository: filterRepository,
         myAccountBloc: myAccountBloc,
       );
 
   @override
-  void resubscribeWebSocketsUpdates(WebSocketsListenType webSocketsListenType) {
-    statusCachedListBloc.resubscribeWebSocketsUpdates(webSocketsListenType);
+  void resubscribeWebSocketsUpdates(WebSocketsChannelHandlerType handlerType) {
+    statusCachedListBloc.resubscribeWebSocketsUpdates(handlerType);
   }
 
   @override
@@ -108,7 +109,7 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
     await timelineLocalPreferencesBloc.performAsyncInit();
 
     statusCachedListBloc =
-        createListService(webSocketsListenType: webSocketsListenType);
+        createListService(handlerType: handlerType);
     addDisposable(statusCachedListBloc);
 
     await statusCachedListBloc.performAsyncInit();
@@ -149,19 +150,19 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
   static TimelineTabBloc createFromContext(
     BuildContext context, {
     required String timelineId,
-    required WebSocketsListenType webSocketsListenType,
+    required WebSocketsChannelHandlerType handlerType,
   }) =>
       TimelineTabBloc(
         timelineId: timelineId,
-        webSocketsListenType: webSocketsListenType,
+        handlerType: handlerType,
         filterRepository: IFilterRepository.of(
           context,
           listen: false,
         ),
-        pleromaApiAuthTimelineService:
-            Provider.of<IPleromaApiAuthTimelineService>(context, listen: false),
-        pleromaApiAccountService:
-            Provider.of<IPleromaApiAccountService>(context, listen: false),
+        unifediApiTimelineService:
+            Provider.of<IUnifediApiTimelineService>(context, listen: false),
+        unifediApiAccountService:
+            Provider.of<IUnifediApiAccountService>(context, listen: false),
         statusRepository: IStatusRepository.of(context, listen: false),
         myAccountBloc: IMyAccountBloc.of(context, listen: false),
         currentAuthInstanceBloc:

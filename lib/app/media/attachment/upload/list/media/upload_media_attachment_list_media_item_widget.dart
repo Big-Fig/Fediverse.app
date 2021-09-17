@@ -21,7 +21,7 @@ import 'package:fedi/media/player/media_player_model.dart';
 import 'package:fedi/media/player/video/video_media_player_bloc_impl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:provider/provider.dart';
 
 class UploadMediaAttachmentListMediaItemWidget extends StatefulWidget {
@@ -363,9 +363,9 @@ class _UploadMediaAttachmentListMediaItemPreviewWidget extends StatelessWidget {
         mediaDeviceFile: bloc.mediaDeviceFile,
       );
     } else if (bloc is UploadedUploadMediaAttachmentBloc) {
-      var pleromaMediaAttachment = bloc.pleromaMediaAttachment;
-      mediaPreview = Provider<IPleromaApiMediaAttachment>.value(
-        value: pleromaMediaAttachment,
+      var unifediApiMediaAttachment = bloc.unifediApiMediaAttachment;
+      mediaPreview = Provider<IUnifediApiMediaAttachment>.value(
+        value: unifediApiMediaAttachment,
         child: const MediaAttachmentWidget(),
       );
     } else {

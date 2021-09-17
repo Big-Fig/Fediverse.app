@@ -1,13 +1,14 @@
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/draft/draft_status_model.dart';
 import 'package:fedi/app/status/post/post_status_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../post/post_status_model_helper.dart';
+import 'package:unifedi_api/unifedi_api_mock_helper.dart';
 
 // ignore_for_file: no-magic-number
-class DraftStatusDatabaseTestHelper {
+class DraftStatusDatabaseMockHelper {
   static Future<DbDraftStatus> createTestDbDraftStatus({
     required String seed,
     DateTime? updatedAt,
@@ -19,24 +20,24 @@ class DraftStatusDatabaseTestHelper {
           subject: seed + 'subject',
           text: seed + 'text',
           scheduledAt: DateTime(2000 + seed.hashCode % 7),
-          visibilityString: PleromaApiVisibility
-              .values[seed.hashCode % PleromaApiVisibility.values.length]
-              .toJsonValue(),
+          visibilityString: UnifediApiVisibility
+              .values[seed.hashCode % UnifediApiVisibility.values.length]
+              .stringValue,
           to: [
             seed + '1',
             seed + '2',
           ],
           mediaAttachments: [
-            PleromaApiMediaTestHelper.createTestPleromaApiMediaAttachment(
+            UnifediApiMediaAttachmentMockHelper.generate(
               seed: seed + '1',
             ),
-            PleromaApiMediaTestHelper.createTestPleromaApiMediaAttachment(
+            UnifediApiMediaAttachmentMockHelper.generate(
               seed: seed + '2',
             ),
           ],
-          poll: PostStatusModelTestHelper.createTestPostStatusPoll(seed: seed),
+          poll: PostStatusModelMockHelper.createTestPostStatusPoll(seed: seed),
           inReplyToPleromaStatus:
-              PleromaApiStatusTestHelper.createTestPleromaApiStatus(
+              UnifediApiStatusMockHelper.generate(
             seed: seed + 'inReplyToPleromaStatus',
           ),
           inReplyToConversationId: seed + 'inReplyToConversationId',

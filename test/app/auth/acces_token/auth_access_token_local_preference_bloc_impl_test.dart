@@ -1,5 +1,5 @@
 import 'package:fedi/app/auth/host/access_token/auth_host_access_token_local_preference_bloc_impl.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../local_preferences/local_preferences_test_helper.dart';
@@ -8,7 +8,7 @@ import '../../../local_preferences/local_preferences_test_helper.dart';
 
 void main() {
   test('save & load', () async {
-    await LocalPreferencesTestHelper.testSaveAndLoad<PleromaApiOAuthToken,
+    await LocalPreferencesMockHelper.testSaveAndLoad<UnifediApiOAuthToken,
         AuthHostAccessTokenLocalPreferenceBloc>(
       defaultValue: AuthHostAccessTokenLocalPreferenceBloc.defaultValue,
       blocCreator: (localPreferencesService) =>
@@ -17,7 +17,7 @@ void main() {
         host: 'host',
       ),
       testObjectCreator: ({required String seed}) =>
-          PleromaApiOAuthTestHelper.createTestPleromaApiOAuthToken(
+          UnifediApiOAuthMockHelper.createTestUnifediApiOAuthToken(
         seed: seed,
       ),
     );

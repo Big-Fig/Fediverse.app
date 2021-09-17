@@ -24,21 +24,22 @@ import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
-import 'package:base_fediverse_api/base_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_dispose/easy_dispose.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 
 class LocalHashtagPageBloc extends HashtagPageBloc
     implements ILocalHashtagPageBloc {
   final IMyAccountFeaturedHashtag? myAccountFeaturedHashtag;
 
   @override
-  final IPleromaApiTimelineService pleromaApiTimelineService;
+  final IUnifediApiTimelineService unifediApiTimelineService;
 
-  final IPleromaApiAuthTimelineService pleromaApiAuthTimelineService;
-  final IPleromaApiAccountService pleromaApiAccountService;
+  final IUnifediApiTimelineService unifediApiTimelineService;
+  final IUnifediApiAccountService unifediApiAccountService;
   final IStatusRepository statusRepository;
   final IFilterRepository filterRepository;
   final ICurrentAuthInstanceBloc currentAuthInstanceBloc;
@@ -62,9 +63,8 @@ class LocalHashtagPageBloc extends HashtagPageBloc
 
   LocalHashtagPageBloc({
     required this.localPreferencesService,
-    required this.pleromaApiTimelineService,
-    required this.pleromaApiAuthTimelineService,
-    required this.pleromaApiAccountService,
+    required this.unifediApiTimelineService,
+    required this.unifediApiAccountService,
     required this.statusRepository,
     required this.filterRepository,
     required this.currentAuthInstanceBloc,
@@ -74,7 +74,7 @@ class LocalHashtagPageBloc extends HashtagPageBloc
     required IHashtag hashtag,
     required this.myAccountFeaturedHashtag,
   }) : super(
-          instanceUri: pleromaApiTimelineService.restService.baseUri,
+          instanceUri: unifediApiTimelineService.restService.accessBloc.access.uri,
           hashtag: hashtag,
         );
 
@@ -87,18 +87,18 @@ class LocalHashtagPageBloc extends HashtagPageBloc
     required IHashtag hashtag,
     required IMyAccountFeaturedHashtag? myAccountFeaturedHashtag,
   }) {
-    var pleromaApiTimelineService =
-        Provider.of<IPleromaApiTimelineService>(context, listen: false);
+    var unifediApiTimelineService =
+        Provider.of<IUnifediApiTimelineService>(context, listen: false);
 
     return LocalHashtagPageBloc(
       hashtag: hashtag,
       myAccountFeaturedHashtag: myAccountFeaturedHashtag,
-      pleromaApiTimelineService: pleromaApiTimelineService,
+      unifediApiTimelineService: unifediApiTimelineService,
       localPreferencesService: ILocalPreferencesService.of(
         context,
         listen: false,
       ),
-      pleromaApiAccountService: Provider.of<IPleromaApiAccountService>(
+      unifediApiAccountService: Provider.of<IUnifediApiAccountService>(
         context,
         listen: false,
       ),
@@ -118,11 +118,7 @@ class LocalHashtagPageBloc extends HashtagPageBloc
         context,
         listen: false,
       ),
-      pleromaApiAuthTimelineService:
-          Provider.of<IPleromaApiAuthTimelineService>(
-        context,
-        listen: false,
-      ),
+
       myAccountBloc: IMyAccountBloc.of(
         context,
         listen: false,
@@ -183,15 +179,15 @@ class LocalHashtagPageBloc extends HashtagPageBloc
     await timelineLocalPreferenceBloc.performAsyncInit();
 
     statusCachedListBloc = TimelineStatusCachedListBloc(
-      pleromaApiAccountService: pleromaApiAccountService,
-      pleromaApiAuthTimelineService: pleromaApiAuthTimelineService,
+      unifediApiAccountService: unifediApiAccountService,
+      unifediApiTimelineService: unifediApiTimelineService,
       statusRepository: statusRepository,
       filterRepository: filterRepository,
       currentInstanceBloc: currentAuthInstanceBloc,
       timelineLocalPreferenceBloc: timelineLocalPreferenceBloc,
       webSocketsHandlerManagerBloc: webSocketsHandlerManagerBloc,
       myAccountBloc: myAccountBloc,
-      webSocketsListenType: WebSocketsListenType.foreground,
+      handlerType: WebSocketsChannelHandlerType.foregroundValue,
     )..disposeWith(this);
     await statusCachedListBloc.performAsyncInit();
 

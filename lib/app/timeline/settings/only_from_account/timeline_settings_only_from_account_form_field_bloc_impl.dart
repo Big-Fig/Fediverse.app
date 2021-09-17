@@ -1,16 +1,16 @@
 import 'package:fedi/app/timeline/settings/only_from_account/timeline_settings_only_from_account_form_field_bloc.dart';
 import 'package:fedi/form/field/value/value_form_field_bloc_impl.dart';
 import 'package:fedi/form/field/value/value_form_field_validation.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class TimelineSettingsOnlyFromAccountFormFieldBloc
-    extends ValueFormFieldBloc<IPleromaApiAccount?>
+    extends ValueFormFieldBloc<IUnifediApiAccount?>
     implements ITimelineSettingsOnlyFromAccountFormFieldBloc {
   TimelineSettingsOnlyFromAccountFormFieldBloc({
     bool isNullValuePossible = true,
-    required IPleromaApiAccount? originValue,
+    required IUnifediApiAccount? originValue,
     bool isEnabled = true,
-    List<FormValueFieldValidation<IPleromaApiAccount>> validators = const [],
+    List<FormValueFieldValidation<IUnifediApiAccount>> validators = const [],
   }) : super(
           originValue: originValue,
           isEnabled: isEnabled,

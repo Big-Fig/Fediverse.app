@@ -13,13 +13,14 @@ import 'package:fedi/app/instance/remote/remote_instance_bloc.dart';
 import 'package:fedi/app/instance/remote/remote_instance_bloc_impl.dart';
 import 'package:fedi/app/instance/remote/remote_instance_error_data.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:base_fediverse_api/base_fediverse_api.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:fedi/connection/connection_service.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 final _logger = Logger('remote_account_details_page.dart');
 
@@ -75,8 +76,8 @@ Future goToRemoteAccountDetailsPageBasedOnLocalInstanceRemoteAccount(
     asyncCode: () async {
       IAccount? result;
       RemoteInstanceBloc? remoteInstanceBloc;
-      PleromaApiStatusService? pleromaStatusService;
-      PleromaApiAccountService? pleromaAccountService;
+      IUnifediApiStatusService? unifediApiStatusService;
+      IUnifediApiAccountService? unifediApiAccountService;
       try {
         var instanceUri = localInstanceRemoteAccount!.urlRemoteHostUri;
 
@@ -86,14 +87,14 @@ Future goToRemoteAccountDetailsPageBasedOnLocalInstanceRemoteAccount(
             context,
             listen: false,
           ),
-          pleromaApiInstance: null,
+          unifediApiInstance: null,
         );
 
-        pleromaStatusService = PleromaApiStatusService(
-          restService: remoteInstanceBloc.pleromaRestService,
+        unifediApiStatusService = UnifediApiStatusService(
+          restService: remoteInstanceBloc.unifediApiRestService,
         );
-        pleromaAccountService = PleromaApiAccountService(
-          restService: remoteInstanceBloc.pleromaRestService,
+        unifediApiAccountService = UnifediApiAccountService(
+          restService: remoteInstanceBloc.unifediApiRestService,
         );
 
         try {
@@ -101,21 +102,21 @@ Future goToRemoteAccountDetailsPageBasedOnLocalInstanceRemoteAccount(
           result = await loadRemoteInstanceAccountViaAccountInStatus(
             context,
             localInstanceRemoteAccount,
-            pleromaStatusService,
+            unifediApiStatusService!,
           );
         } catch (e) {
           // load in Pleroma way. Use username as id
-          var pleromaAccount = await pleromaAccountService.getAccount(
-            accountRemoteId: localInstanceRemoteAccount.username,
+          var unifediApiAccount = await unifediApiAccountService!.getAccount(
+            accountId: localInstanceRemoteAccount.username,
             withRelationship: false,
           );
-          result = pleromaAccount.toDbAccountWrapper();
+          result = unifediApiAccount.toDbAccountWrapper();
         }
       } finally {
         // ignore: unawaited_futures
-        pleromaStatusService?.dispose();
+        unifediApiStatusService?.dispose();
         // ignore: unawaited_futures
-        pleromaAccountService?.dispose();
+        unifediApiAccountService?.dispose();
         // ignore: unawaited_futures
         remoteInstanceBloc?.dispose();
       }
@@ -136,7 +137,7 @@ Future goToRemoteAccountDetailsPageBasedOnLocalInstanceRemoteAccount(
 Future<IAccount?> loadRemoteInstanceAccountViaAccountInStatus(
   BuildContext context,
   IAccount localInstanceRemoteAccount,
-  PleromaApiStatusService pleromaStatusService,
+  IUnifediApiStatusService unifediApiStatusService,
 ) async {
   var remoteAccountAnyStatusOnLocalInstance =
       await loadRemoteAccountAnyStatusOnLocalInstance(
@@ -149,8 +150,8 @@ Future<IAccount?> loadRemoteInstanceAccountViaAccountInStatus(
     var remoteInstanceStatusRemoteId =
         remoteAccountAnyStatusOnLocalInstance.urlRemoteId;
 
-    var remoteInstanceRemoteStatus = await pleromaStatusService.getStatus(
-      statusRemoteId: remoteInstanceStatusRemoteId,
+    var remoteInstanceRemoteStatus = await unifediApiStatusService.getStatus(
+      statusId: remoteInstanceStatusRemoteId,
     );
     result = remoteInstanceRemoteStatus.account.toDbAccountWrapper();
   }
@@ -162,13 +163,24 @@ Future<IStatus?> loadRemoteAccountAnyStatusOnLocalInstance(
   BuildContext context,
   IAccount localInstanceRemoteAccount,
 ) async {
-  var localInstancePleromaAccountService =
-      Provider.of<IPleromaApiAccountService>(context, listen: false);
+  var localInstanceUnifediApiAccountService =
+      Provider.of<IUnifediApiAccountService>(context, listen: false);
 
   var remoteStatuses =
-      await localInstancePleromaAccountService.getAccountStatuses(
-    accountRemoteId: localInstanceRemoteAccount.remoteId,
-    pagination: PleromaApiPaginationRequest(limit: 1),
+      await localInstanceUnifediApiAccountService.getAccountStatuses(
+    accountId: localInstanceRemoteAccount.remoteId,
+    pagination: UnifediApiPagination(
+      limit: 1,
+      maxId: null,
+      minId: null,
+    ),
+    excludeVisibilities: null,
+    tagged: null,
+    pinned: null,
+    excludeReplies: null,
+    excludeReblogs: null,
+    withMuted: null,
+    onlyWithMedia: null,
   );
 
   var firstPleromaStatus = remoteStatuses.firstOrNull;
@@ -191,7 +203,7 @@ MaterialPageRoute createRemoteAccountDetailsPageRoute({
               context,
               listen: false,
             ),
-            pleromaApiInstance: null,
+            unifediApiInstance: null,
           );
         },
         child: DisposableProvider<IAccountDetailsBloc>(

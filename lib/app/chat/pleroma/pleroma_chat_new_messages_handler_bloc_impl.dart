@@ -2,11 +2,11 @@ import 'package:fedi/app/chat/pleroma/current/pleroma_chat_current_bloc.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class PleromaChatNewMessagesHandlerBloc extends DisposableOwner
     implements IPleromaChatNewMessagesHandlerBloc {
-  final IPleromaApiChatService pleromaChatService;
+  final IUnifediApiChatService pleromaChatService;
   final IPleromaChatRepository chatRepository;
   final IPleromaChatCurrentBloc currentChatBloc;
 
@@ -17,7 +17,7 @@ class PleromaChatNewMessagesHandlerBloc extends DisposableOwner
   });
 
   @override
-  Future handleNewMessage(IPleromaApiChatMessage chatMessage) async {
+  Future handleNewMessage(IUnifediApiChatMessage chatMessage) async {
     var chatId = chatMessage.chatId;
 
     // local chat message may not exist
@@ -67,7 +67,7 @@ class PleromaChatNewMessagesHandlerBloc extends DisposableOwner
   }
 
   @override
-  Future handleChatUpdate(IPleromaApiChat chat) async {
+  Future handleChatUpdate(IUnifediApiChat chat) async {
     // increase only if chat closed now
     var chatId = chat.id;
     var isMessageForOpenedChat =

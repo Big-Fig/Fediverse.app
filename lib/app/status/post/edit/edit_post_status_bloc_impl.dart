@@ -8,7 +8,7 @@ import 'package:fedi/app/status/post/settings/post_status_settings_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository.dart';
 import 'package:flutter/widgets.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:provider/provider.dart';
 
 typedef PostStatusDataCallback = Future<bool> Function(
@@ -19,26 +19,26 @@ class EditPostStatusBloc extends PostStatusBloc {
   final PostStatusDataCallback postStatusDataCallback;
 
   EditPostStatusBloc({
-    required IPleromaApiAuthStatusService pleromaAuthStatusService,
+    required IUnifediApiStatusService unifediApiStatusService,
     required IStatusRepository statusRepository,
     required IScheduledStatusRepository scheduledStatusRepository,
-    required IPleromaApiMediaAttachmentService pleromaMediaAttachmentService,
+    required IUnifediApiMediaAttachmentService unifediApiMediaAttachmentService,
     required IPostStatusData initialData,
     required this.postStatusDataCallback,
     required int? maximumMessageLength,
-    required PleromaApiInstancePollLimits? pleromaInstancePollLimits,
+    required UnifediApiInstancePollLimits? pollLimits,
     required int? maximumFileSizeInBytes,
     required bool markMediaAsNsfwOnAttach,
     required bool isPleromaInstance,
   }) : super(
           isExpirePossible: isPleromaInstance,
-          pleromaAuthStatusService: pleromaAuthStatusService,
+          unifediApiStatusService: unifediApiStatusService,
           statusRepository: statusRepository,
           scheduledStatusRepository: scheduledStatusRepository,
-          pleromaMediaAttachmentService: pleromaMediaAttachmentService,
+          unifediApiMediaAttachmentService: unifediApiMediaAttachmentService,
           initialData: initialData,
           maximumMessageLength: maximumMessageLength,
-          pleromaInstancePollLimits: pleromaInstancePollLimits,
+          pollLimits: pollLimits,
           maximumFileSizeInBytes: maximumFileSizeInBytes,
           markMediaAsNsfwOnAttach: markMediaAsNsfwOnAttach,
           unfocusOnClear: true,
@@ -56,23 +56,23 @@ class EditPostStatusBloc extends PostStatusBloc {
         IPostStatusSettingsBloc.of(context, listen: false);
 
     return EditPostStatusBloc(
-      pleromaAuthStatusService: Provider.of<IPleromaApiAuthStatusService>(
+      unifediApiStatusService: Provider.of<IUnifediApiStatusService>(
         context,
         listen: false,
       ),
       statusRepository: IStatusRepository.of(context, listen: false),
-      pleromaMediaAttachmentService:
-          Provider.of<IPleromaApiMediaAttachmentService>(
+      unifediApiMediaAttachmentService:
+          Provider.of<IUnifediApiMediaAttachmentService>(
         context,
         listen: false,
       ),
       initialData: initialData,
       postStatusDataCallback: postStatusDataCallback,
       maximumMessageLength: info.maxTootChars,
-      pleromaInstancePollLimits: info.pollLimits,
+      pollLimits: info.pollLimits,
       maximumFileSizeInBytes: info.uploadLimit,
       markMediaAsNsfwOnAttach: postStatusSettingsBloc.markMediaAsNsfwOnAttach,
-      isPleromaInstance: info.isPleroma,
+      isPleromaInstance: info.typeAsUnifediApi.isPleroma,
       scheduledStatusRepository: IScheduledStatusRepository.of(
         context,
         listen: false,

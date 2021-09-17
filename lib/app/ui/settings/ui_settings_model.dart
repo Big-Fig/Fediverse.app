@@ -1,6 +1,6 @@
 import 'package:fedi/app/settings/settings_model.dart';
 import 'package:fedi/app/ui/settings/font_size/ui_settings_font_size_model.dart';
-import 'package:fedi/json/json_model.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -9,7 +9,7 @@ part 'ui_settings_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 @HiveType(typeId: -32 + 91)
-class UiSettings implements IJsonObject, ISettings<UiSettings> {
+class UiSettings implements IJsonObj, ISettings<UiSettings> {
   @HiveField(0)
   @JsonKey(name: 'theme_id')
   final String? themeId;

@@ -1,18 +1,19 @@
+import 'dart:async';
 import 'dart:io';
 
-import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
 import 'package:fedi/permission/storage_permission_bloc.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:logging/logging.dart';
 
+import 'package:unifedi_api/unifedi_api.dart';
+
 var _logger = Logger('media_attachment_add_to_gallery_helper.dart');
 
 Future<bool> addMediaAttachmentToGallery({
   required BuildContext context,
-  required IPleromaApiMediaAttachment mediaAttachment,
+  required IUnifediApiMediaAttachment mediaAttachment,
 }) async {
   _logger.finest(() => 'addMediaAttachmentToGallery start');
 
@@ -34,18 +35,22 @@ Future<bool> addMediaAttachmentToGallery({
   return result;
 }
 
-Future<bool?> _save(IPleromaApiMediaAttachment mediaAttachment) async {
-  bool? saved;
-  var typeMastodon = mediaAttachment.typeAsMastodonApi;
-  if (typeMastodon == MastodonApiMediaAttachmentType.image) {
-    saved = await GallerySaver.saveImage(mediaAttachment.url);
-  } else if (typeMastodon == MastodonApiMediaAttachmentType.video ||
-      typeMastodon == MastodonApiMediaAttachmentType.gifv) {
-    saved = await GallerySaver.saveVideo(mediaAttachment.url);
-  } else {
-    saved = false;
-  }
-  _logger.finest(() => 'addMediaAttachmentToGallery saved =  $saved');
+Future<bool?> _save(IUnifediApiMediaAttachment mediaAttachment) async {
+  var typeAsUnifediApi = mediaAttachment.typeAsUnifediApi;
+  var saved = await typeAsUnifediApi.maybeMap<FutureOr<bool?>>(
+    image: (_) => _saveImage(mediaAttachment),
+    video: (_) => _saveVideo(mediaAttachment),
+    // no-equal-arguments
+    gifv: (_) => _saveVideo(mediaAttachment),
+    orElse: () => false,
+  );
+  _logger.finest(() => '_save saved =  $saved');
 
   return saved;
 }
+
+Future<bool?> _saveVideo(IUnifediApiMediaAttachment mediaAttachment) =>
+    GallerySaver.saveVideo(mediaAttachment.url!);
+
+Future<bool?> _saveImage(IUnifediApiMediaAttachment mediaAttachment) =>
+    GallerySaver.saveImage(mediaAttachment.url!);

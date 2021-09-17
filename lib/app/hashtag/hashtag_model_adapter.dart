@@ -1,7 +1,7 @@
 import 'package:fedi/app/hashtag/hashtag_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
-extension IPleromaTagExtension on IPleromaApiTag {
+extension IPleromaTagExtension on IUnifediApiTag {
   Hashtag toHashtag() {
     if (this is Hashtag) {
       return this as Hashtag;
@@ -16,14 +16,14 @@ extension IPleromaTagExtension on IPleromaApiTag {
 }
 
 extension IHashtagExtension on IHashtag {
-  PleromaApiTag toPleromaTag() {
-    if (this is PleromaApiTag) {
-      return this as PleromaApiTag;
+  UnifediApiTag toPleromaTag() {
+    if (this is UnifediApiTag) {
+      return this as UnifediApiTag;
     } else {
-      return PleromaApiTag(
+      return UnifediApiTag(
         name: name,
         url: url,
-        history: history?.toPleromaApiTagHistories(),
+        history: history?.toUnifediApiTagHistories(),
       );
     }
   }

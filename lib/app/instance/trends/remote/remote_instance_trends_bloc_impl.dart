@@ -5,7 +5,7 @@ import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/instance/remote/remote_instance_bloc.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 
 class RemoteInstanceTrendsBloc extends InstanceTrendsBloc
@@ -13,20 +13,20 @@ class RemoteInstanceTrendsBloc extends InstanceTrendsBloc
   final IRemoteInstanceBloc remoteInstanceBloc;
 
   @override
-  final IPleromaApiTrendsService pleromaApiTrendsService;
+  final IUnifediApiInstanceService UnifediApiInstanceService;
 
   RemoteInstanceTrendsBloc({
     required this.remoteInstanceBloc,
     required IPaginationSettingsBloc paginationSettingsBloc,
-  })  : pleromaApiTrendsService = PleromaApiTrendsService(
-          restService: remoteInstanceBloc.pleromaRestService,
+  })  : UnifediApiInstanceService = UnifediApiInstanceService(
+          restService: remoteInstanceBloc.unifediApiRestService,
         ),
         super(
           initialInstance: null,
           instanceUri: remoteInstanceBloc.instanceUri,
           paginationSettingsBloc: paginationSettingsBloc,
         ) {
-    addDisposable(pleromaApiTrendsService);
+    addDisposable(UnifediApiInstanceService);
   }
 
   static RemoteInstanceTrendsBloc createFromContext(BuildContext context) {

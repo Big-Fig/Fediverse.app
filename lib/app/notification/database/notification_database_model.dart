@@ -24,13 +24,13 @@ class DbNotifications extends Table {
       .map(PleromaNotificationPleromaPartDatabaseConverter())();
 
   TextColumn get report =>
-      text().nullable().map(PleromaAccountReportDatabaseConverter())();
+      text().nullable().map(UnifediApiAccountReportDatabaseConverter())();
 
   TextColumn get chatMessage =>
       text().nullable().map(PleromaChatMessageDatabaseConverter())();
 
   TextColumn get target =>
-      text().nullable().map(PleromaAccountDatabaseConverter())();
+      text().nullable().map(UnifediApiAccountDatabaseConverter())();
 
   BoolColumn get unread => boolean().nullable()();
 

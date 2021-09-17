@@ -14,7 +14,7 @@ import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/app/status/thread/status_thread_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -42,29 +42,29 @@ class ThreadPostStatusBloc extends PostStatusBloc
   ThreadPostStatusBloc({
     required IStatus inReplyToStatus,
     required this.statusThreadBloc,
-    required IPleromaApiAuthStatusService pleromaAuthStatusService,
+    required IUnifediApiStatusService unifediApiStatusService,
     required IStatusRepository statusRepository,
     required IScheduledStatusRepository scheduledStatusRepository,
-    required IPleromaApiMediaAttachmentService pleromaMediaAttachmentService,
+    required IUnifediApiMediaAttachmentService unifediApiMediaAttachmentService,
     required int? maximumMessageLength,
-    required PleromaApiInstancePollLimits? pleromaInstancePollLimits,
+    required UnifediApiInstancePollLimits? pollLimits,
     required int? maximumFileSizeInBytes,
     required bool markMediaAsNsfwOnAttach,
     required String? language,
     required bool isPleromaInstance,
   }) : super(
           isExpirePossible: isPleromaInstance,
-          pleromaAuthStatusService: pleromaAuthStatusService,
+          unifediApiStatusService: unifediApiStatusService,
           statusRepository: statusRepository,
           scheduledStatusRepository: scheduledStatusRepository,
-          pleromaMediaAttachmentService: pleromaMediaAttachmentService,
+          unifediApiMediaAttachmentService: unifediApiMediaAttachmentService,
           initialData: PostStatusBloc.defaultInitData.copyWith(
-            visibilityString: PleromaApiVisibility.public.toJsonValue(),
+            visibilityString: UnifediApiVisibility.publicValue.stringValue,
             language: language,
-            inReplyToPleromaStatus: inReplyToStatus.toPleromaApiStatus(),
+            inReplyToPleromaStatus: inReplyToStatus.toUnifediApiStatus(),
           ),
           maximumMessageLength: maximumMessageLength,
-          pleromaInstancePollLimits: pleromaInstancePollLimits,
+          pollLimits: pollLimits,
           maximumFileSizeInBytes: maximumFileSizeInBytes,
           markMediaAsNsfwOnAttach: markMediaAsNsfwOnAttach,
           unfocusOnClear: true,
@@ -83,16 +83,16 @@ class ThreadPostStatusBloc extends PostStatusBloc
     return ThreadPostStatusBloc(
       inReplyToStatus: inReplyToStatus,
       statusThreadBloc: IStatusThreadBloc.of(context, listen: false),
-      pleromaAuthStatusService:
-          Provider.of<IPleromaApiAuthStatusService>(context, listen: false),
+      unifediApiStatusService:
+          Provider.of<IUnifediApiStatusService>(context, listen: false),
       statusRepository: IStatusRepository.of(context, listen: false),
-      pleromaMediaAttachmentService:
-          Provider.of<IPleromaApiMediaAttachmentService>(
+      unifediApiMediaAttachmentService:
+          Provider.of<IUnifediApiMediaAttachmentService>(
         context,
         listen: false,
       ),
       maximumMessageLength: info.maxTootChars,
-      pleromaInstancePollLimits: info.pollLimits,
+      pollLimits: info.pollLimits,
       maximumFileSizeInBytes: info.uploadLimit,
       markMediaAsNsfwOnAttach:
           IPostStatusSettingsBloc.of(context, listen: false)
@@ -100,7 +100,7 @@ class ThreadPostStatusBloc extends PostStatusBloc
       language: IPostStatusSettingsBloc.of(context, listen: false)
           .defaultStatusLocale
           ?.localeString,
-      isPleromaInstance: info.isPleroma,
+      isPleromaInstance: info.typeAsUnifediApi.isPleroma,
       scheduledStatusRepository: IScheduledStatusRepository.of(
         context,
         listen: false,
@@ -131,7 +131,7 @@ class ThreadPostStatusBloc extends PostStatusBloc
   bool get isPossibleToChangeVisibility => false;
 
   @override
-  Future onStatusPosted(IPleromaApiStatus remoteStatus) async {
+  Future onStatusPosted(IUnifediApiStatus remoteStatus) async {
     _logger.finest(() => 'onStatusPosted $onStatusPosted');
     var status =
         await statusRepository.findByRemoteIdInAppType(remoteStatus.id);
@@ -200,8 +200,8 @@ class ThreadPostStatusBloc extends PostStatusBloc
     // we should force DIRECT visibility if inReplyToStatus have DIRECT too
     var inReplyToStatus = notCanceledOriginInReplyToStatus;
     if (inReplyToStatus != null) {
-      if (inReplyToStatus.visibility == PleromaApiVisibility.direct) {
-        return PleromaApiVisibility.direct.toJsonValue();
+      if (inReplyToStatus.visibility == UnifediApiVisibility.directValue) {
+        return UnifediApiVisibility.directValue.stringValue;
       } else {
         return super.calculateVisibilityField();
       }
@@ -212,7 +212,7 @@ class ThreadPostStatusBloc extends PostStatusBloc
 
   @override
   List<String>? calculateToField() {
-    if (pleromaAuthStatusService.isPleroma) {
+    if (unifediApiStatusService.isPleroma) {
       if (originInReplyToStatus != null && !originInReplyToStatusCanceled!) {
         var inReplyToStatusAcct = originInReplyToStatus!.account.acct;
 

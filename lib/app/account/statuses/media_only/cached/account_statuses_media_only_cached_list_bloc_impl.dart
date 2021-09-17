@@ -10,7 +10,7 @@ import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -32,14 +32,14 @@ class AccountStatusesMediaOnlyCachedListBloc
 
   AccountStatusesMediaOnlyCachedListBloc({
     required IAccount account,
-    required IPleromaApiAccountService pleromaAccountService,
+    required IUnifediApiAccountService unifediApiAccountService,
     required IStatusRepository statusRepository,
     required IFilterRepository filterRepository,
     required IMyAccountBloc myAccountBloc,
     required IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc,
   }) : super(
           account: account,
-          pleromaAccountService: pleromaAccountService,
+          unifediApiAccountService: unifediApiAccountService,
           webSocketsHandlerManagerBloc: webSocketsHandlerManagerBloc,
           statusRepository: statusRepository,
           filterRepository: filterRepository,
@@ -47,7 +47,7 @@ class AccountStatusesMediaOnlyCachedListBloc
         );
 
   @override
-  IPleromaApi get pleromaApi => pleromaAccountService;
+  IUnifediApiService get unifediApi => unifediApiAccountService;
 
   static AccountStatusesMediaOnlyCachedListBloc createFromContext(
     BuildContext context, {
@@ -55,8 +55,8 @@ class AccountStatusesMediaOnlyCachedListBloc
   }) {
     return AccountStatusesMediaOnlyCachedListBloc(
       account: account,
-      pleromaAccountService:
-          Provider.of<IPleromaApiAccountService>(context, listen: false),
+      unifediApiAccountService:
+          Provider.of<IUnifediApiAccountService>(context, listen: false),
       webSocketsHandlerManagerBloc: IWebSocketsHandlerManagerBloc.of(
         context,
         listen: false,
@@ -121,11 +121,17 @@ class AccountStatusesMediaOnlyCachedListBloc
         '\t newerThan=$newerThan'
         '\t olderThan=$olderThan');
 
-    var remoteStatuses = await pleromaAccountService.getAccountStatuses(
+    var remoteStatuses = await unifediApiAccountService.getAccountStatuses(
       onlyWithMedia: true,
-      accountRemoteId: account.remoteId,
-      pagination: PleromaApiPaginationRequest(
-        sinceId: newerThan?.remoteId,
+      accountId: account.remoteId,
+      pinned: null,
+      tagged: null,
+      excludeReblogs: null,
+      excludeReplies: null,
+      excludeVisibilities: null,
+      withMuted: null,
+      pagination: UnifediApiPagination(
+        minId: newerThan?.remoteId,
         maxId: olderThan?.remoteId,
         limit: limit,
       ),

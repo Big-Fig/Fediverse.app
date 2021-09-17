@@ -10,7 +10,7 @@ import '../../push_settings_model_test_helper.dart';
 
 void main() {
   test('save & load', () async {
-    await LocalPreferencesTestHelper.testSaveAndLoad<PushSettings,
+    await LocalPreferencesMockHelper.testSaveAndLoad<PushSettings,
         PushSettingsLocalPreferenceBloc>(
       defaultValue: InstancePushSettingsLocalPreferenceBloc.defaultValue,
       blocCreator: (localPreferencesService) =>
@@ -19,7 +19,7 @@ void main() {
         userAtHost: 'user@host',
       ),
       testObjectCreator: ({required String seed}) =>
-          PushSettingsModelTestHelper.createTestPushSettings(
+          PushSettingsModelMockHelper.createTestPushSettings(
         seed: seed,
       ),
     );

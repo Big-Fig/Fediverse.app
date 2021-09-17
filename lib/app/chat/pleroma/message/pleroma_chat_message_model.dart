@@ -4,7 +4,7 @@ import 'package:fedi/app/chat/message/chat_message_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/pending/pending_model.dart';
 import 'package:fedi/obj/equal_comparable_obj.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 abstract class IPleromaChatMessage extends IChatMessage
     implements IEqualComparableObj<IPleromaChatMessage> {
@@ -16,9 +16,9 @@ abstract class IPleromaChatMessage extends IChatMessage
     IAccount? account,
     String? content,
     DateTime? createdAt,
-    List<IPleromaApiMediaAttachment>? mediaAttachments,
-    List<PleromaApiEmoji>? emojis,
-    IPleromaApiCard? card,
+    List<IUnifediApiMediaAttachment>? mediaAttachments,
+    List<UnifediApiEmoji>? emojis,
+    IUnifediApiCard? card,
     PendingState? pendingState,
     String? oldPendingRemoteId,
     bool? deleted,
@@ -80,10 +80,10 @@ extension IPleromaChatDbMessage on IPleromaChatMessage {
         chatRemoteId: chatRemoteId,
         content: content,
         createdAt: createdAt,
-        emojis: emojis?.toPleromaApiEmojis(),
-        card: card?.toPleromaApiCard(),
+        emojis: emojis?.toUnifediApiEmojiList(),
+        card: card?.toUnifediApiCard(),
         mediaAttachment:
-            mediaAttachments?.singleOrNull?.toPleromaApiMediaAttachment(),
+            mediaAttachments?.singleOrNull?.toUnifediApiMediaAttachment(),
         accountRemoteId: accountRemoteId,
         pendingState: pendingState,
         oldPendingRemoteId: oldPendingRemoteId,
@@ -138,20 +138,20 @@ class DbPleromaChatMessagePopulatedWrapper extends IPleromaChatMessage {
   String? get content => dbChatMessagePopulated.dbChatMessage.content;
 
   @override
-  IPleromaApiCard? get card => dbChatMessagePopulated.dbChatMessage.card;
+  IUnifediApiCard? get card => dbChatMessagePopulated.dbChatMessage.card;
 
   @override
   DateTime get createdAt => dbChatMessagePopulated.dbChatMessage.createdAt;
 
   @override
-  List<IPleromaApiEmoji>? get emojis =>
+  List<IUnifediApiEmoji>? get emojis =>
       dbChatMessagePopulated.dbChatMessage.emojis;
 
   @override
   String get remoteId => dbChatMessagePopulated.dbChatMessage.remoteId;
 
   @override
-  List<IPleromaApiMediaAttachment>? get mediaAttachments {
+  List<IUnifediApiMediaAttachment>? get mediaAttachments {
     var mediaAttachment = dbChatMessagePopulated.dbChatMessage.mediaAttachment;
 
     return mediaAttachment != null
@@ -182,9 +182,9 @@ class DbPleromaChatMessagePopulatedWrapper extends IPleromaChatMessage {
     IAccount? account,
     String? content,
     DateTime? createdAt,
-    List<IPleromaApiMediaAttachment>? mediaAttachments,
-    List<PleromaApiEmoji>? emojis,
-    IPleromaApiCard? card,
+    List<IUnifediApiMediaAttachment>? mediaAttachments,
+    List<UnifediApiEmoji>? emojis,
+    IUnifediApiCard? card,
     PendingState? pendingState,
     String? oldPendingRemoteId,
     bool? deleted,
@@ -257,9 +257,9 @@ class DbChatMessagePopulated {
     IAccount? account,
     String? content,
     DateTime? createdAt,
-    IPleromaApiMediaAttachment? mediaAttachment,
-    List<IPleromaApiEmoji>? emojis,
-    IPleromaApiCard? card,
+    IUnifediApiMediaAttachment? mediaAttachment,
+    List<IUnifediApiEmoji>? emojis,
+    IUnifediApiCard? card,
     PendingState? pendingState,
     String? oldPendingRemoteId,
     bool? deleted,
@@ -273,9 +273,9 @@ class DbChatMessagePopulated {
           chatRemoteId: chatRemoteId ?? dbChatMessage.chatRemoteId,
           content: content ?? dbChatMessage.content,
           createdAt: createdAt ?? dbChatMessage.createdAt,
-          emojis: emojis?.toPleromaApiEmojis() ?? dbChatMessage.emojis,
-          card: card?.toPleromaApiCard() ?? dbChatMessage.card,
-          mediaAttachment: mediaAttachment?.toPleromaApiMediaAttachment() ??
+          emojis: emojis?.toUnifediApiEmojiList() ?? dbChatMessage.emojis,
+          card: card?.toUnifediApiCard() ?? dbChatMessage.card,
+          mediaAttachment: mediaAttachment?.toUnifediApiMediaAttachment() ??
               dbChatMessage.mediaAttachment,
           accountRemoteId: account?.remoteId ?? dbChatMessage.accountRemoteId,
           pendingState: pendingState ?? dbChatMessage.pendingState,

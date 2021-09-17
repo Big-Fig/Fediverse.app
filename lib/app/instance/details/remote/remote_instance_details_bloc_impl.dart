@@ -4,7 +4,7 @@ import 'package:fedi/app/instance/details/instance_details_bloc_proxy_provider.d
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/instance/remote/remote_instance_bloc.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 
 class RemoteInstanceDetailsBloc extends InstanceDetailsBloc
@@ -12,12 +12,12 @@ class RemoteInstanceDetailsBloc extends InstanceDetailsBloc
   final IRemoteInstanceBloc remoteInstanceBloc;
 
   @override
-  final IPleromaApiInstanceService pleromaInstanceService;
+  final IUnifediApiInstanceService pleromaInstanceService;
 
   RemoteInstanceDetailsBloc({
     required this.remoteInstanceBloc,
-  })  : pleromaInstanceService = PleromaApiInstanceService(
-          restService: remoteInstanceBloc.pleromaRestService,
+  })  : pleromaInstanceService = UnifediApiInstanceService(
+          restService: remoteInstanceBloc.unifediApiRestService,
         ),
         super(
           initialInstance: null,

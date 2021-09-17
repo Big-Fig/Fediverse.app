@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/collection/collection_hash_utils.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/foundation.dart';
 
 class ShareEntity {
@@ -37,8 +37,8 @@ class ShareEntity {
   bool get isHaveFromAccount =>
       items.map((item) => item.isHaveFromAccount).fold(false, _foldBoolOr);
 
-  List<IPleromaApiMediaAttachment> get allMediaAttachments => items.fold(
-        <IPleromaApiMediaAttachment>[],
+  List<IUnifediApiMediaAttachment> get allMediaAttachments => items.fold(
+        <IUnifediApiMediaAttachment>[],
         (previousValue, element) {
           var mediaAttachments = element.mediaAttachments;
           if (mediaAttachments != null) {
@@ -84,7 +84,7 @@ class ShareEntityItem {
   final IAccount? fromAccount;
   final String? text;
   final String? linkToOriginal;
-  final List<IPleromaApiMediaAttachment>? mediaAttachments;
+  final List<IUnifediApiMediaAttachment>? mediaAttachments;
   final List<ShareEntityItemLocalMediaFile>? mediaLocalFiles;
   final bool isNeedReUploadMediaAttachments;
 

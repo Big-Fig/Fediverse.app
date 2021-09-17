@@ -5,7 +5,7 @@ import 'package:fedi/app/pending/pending_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/obj/equal_comparable_obj.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 abstract class IConversationChatMessage extends IChatMessage
     implements IEqualComparableObj<IConversationChatMessage> {
@@ -19,9 +19,9 @@ abstract class IConversationChatMessage extends IChatMessage
     IAccount? account,
     String? content,
     DateTime? createdAt,
-    List<IPleromaApiMediaAttachment>? mediaAttachments,
-    List<PleromaApiEmoji>? emojis,
-    IPleromaApiCard? card,
+    List<IUnifediApiMediaAttachment>? mediaAttachments,
+    List<UnifediApiEmoji>? emojis,
+    IUnifediApiCard? card,
     PendingState? pendingState,
     String? oldPendingRemoteId,
     bool? deleted,
@@ -36,7 +36,7 @@ extension IStatusConversationChatMessageExtension on IStatus {
           ConversationChatMessageStatusAdapter(status: this);
 }
 
-extension IPleromaStatusConversationChatMessageExtension on IPleromaApiStatus {
+extension IPleromaStatusConversationChatMessageExtension on IUnifediApiStatus {
   ConversationChatMessageStatusAdapter
       toConversationChatMessageStatusAdapter() =>
           ConversationChatMessageStatusAdapter(
@@ -70,25 +70,25 @@ class ConversationChatMessageStatusAdapter extends IConversationChatMessage {
   IAccount get account => status.account;
 
   @override
-  String get chatRemoteId => status.pleromaDirectConversationId!.toString();
+  String get chatRemoteId => status.directConversationId!.toString();
 
   @override
   String? get content => status.content;
 
   @override
-  IPleromaApiCard? get card => status.card;
+  IUnifediApiCard? get card => status.card;
 
   @override
   DateTime get createdAt => status.createdAt;
 
   @override
-  List<IPleromaApiEmoji>? get emojis => status.emojis;
+  List<IUnifediApiEmoji>? get emojis => status.emojis;
 
   @override
   String get remoteId => status.remoteId!;
 
   @override
-  List<IPleromaApiMediaAttachment>? get mediaAttachments =>
+  List<IUnifediApiMediaAttachment>? get mediaAttachments =>
       status.mediaAttachments;
 
   @override
@@ -106,9 +106,9 @@ class ConversationChatMessageStatusAdapter extends IConversationChatMessage {
     IAccount? account,
     String? content,
     DateTime? createdAt,
-    List<IPleromaApiMediaAttachment>? mediaAttachments,
-    List<PleromaApiEmoji>? emojis,
-    IPleromaApiCard? card,
+    List<IUnifediApiMediaAttachment>? mediaAttachments,
+    List<UnifediApiEmoji>? emojis,
+    IUnifediApiCard? card,
     PendingState? pendingState,
     String? oldPendingRemoteId,
     bool? deleted,
@@ -119,14 +119,14 @@ class ConversationChatMessageStatusAdapter extends IConversationChatMessage {
       status: status.copyWith(
         id: localId,
         remoteId: remoteId,
-        pleromaDirectConversationId:
+        directConversationId:
             chatRemoteId != null ? int.tryParse(chatRemoteId) : null,
         account: account,
         content: content,
         createdAt: createdAt,
-        mediaAttachments: mediaAttachments?.toPleromaApiMediaAttachments(),
+        mediaAttachments: mediaAttachments?.toUnifediApiMediaAttachmentList(),
         emojis: emojis,
-        card: card?.toPleromaApiCard(),
+        card: card?.toUnifediApiCard(),
         pendingState: pendingState,
         oldPendingRemoteId: oldPendingRemoteId,
         deleted: deleted,

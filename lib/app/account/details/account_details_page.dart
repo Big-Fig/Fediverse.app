@@ -519,7 +519,7 @@ class _AccountDetailsPageBodyTabFavouritesProvider extends StatelessWidget {
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context);
 
-    var hideFavourites = accountBloc.account.pleromaHideFavorites != false;
+    var hideFavourites = accountBloc.account.hideFavorites != false;
     if (hideFavourites) {
       return FediEmptyWidget(
         title:

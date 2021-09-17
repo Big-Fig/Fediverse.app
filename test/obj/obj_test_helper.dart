@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 
-class ObjTestHelper {
+class ObjMockHelper {
   static void testEqualsHashcodeToString<T>(
     T Function({
       required String seed,

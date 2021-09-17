@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import '../account/account_test_helper.dart';
 import 'database/status_database_test_helper.dart';
 
-class StatusTestHelper {
+class StatusMockHelper {
   static Future<DbStatusPopulatedWrapper> createTestStatus({
     required String seed,
     String? remoteId,
@@ -14,12 +14,12 @@ class StatusTestHelper {
     DbStatusPopulatedWrapper? reblog,
     DbStatusPopulatedWrapper? reply,
   }) async {
-    account = account ?? await AccountTestHelper.createTestAccount(seed: seed);
+    account = account ?? await AccountMockHelper.createTestAccount(seed: seed);
     var dbAccount = account.toDbAccount();
 
     return DbStatusPopulatedWrapper(
       dbStatusPopulated: DbStatusPopulated(
-        dbStatus: await StatusDatabaseTestHelper.createTestDbStatus(
+        dbStatus: await StatusDatabaseMockHelper.createTestDbStatus(
           createdAt: createdAt,
           seed: seed,
           remoteId: remoteId,
@@ -147,47 +147,47 @@ class StatusTestHelper {
     );
 
     expect(
-      actual.pleromaContent,
-      expected.pleromaContent,
+      actual.contentVariants,
+      expected.contentVariants,
     );
     expect(
-      actual.pleromaConversationId,
-      expected.pleromaConversationId,
+      actual.conversationId,
+      expected.conversationId,
     );
     expect(
-      actual.pleromaDirectConversationId,
-      expected.pleromaDirectConversationId,
+      actual.directConversationId,
+      expected.directConversationId,
     );
     expect(
-      actual.pleromaInReplyToAccountAcct,
-      expected.pleromaInReplyToAccountAcct,
+      actual.inReplyToAccountAcct,
+      expected.inReplyToAccountAcct,
     );
     expect(
-      actual.pleromaLocal,
-      expected.pleromaLocal,
+      actual.local,
+      expected.local,
     );
     expect(
-      actual.pleromaSpoilerText,
-      expected.pleromaSpoilerText,
+      actual.spoilerTextVariants,
+      expected.spoilerTextVariants,
     );
     expect(
-      actual.pleromaExpiresAt,
-      expected.pleromaExpiresAt,
+      actual.expiresAt,
+      expected.expiresAt,
     );
     expect(
-      actual.pleromaEmojiReactions,
-      expected.pleromaEmojiReactions,
+      actual.emojiReactions,
+      expected.emojiReactions,
     );
     expect(
-      actual.pleromaThreadMuted,
-      expected.pleromaThreadMuted,
+      actual.threadMuted,
+      expected.threadMuted,
     );
 
-    AccountTestHelper.expectAccount(
+    AccountMockHelper.expectAccount(
       actual.account,
       expected.account,
     );
-    StatusTestHelper.expectStatus(
+    StatusMockHelper.expectStatus(
       actual.reblog,
       expected.reblog,
     );

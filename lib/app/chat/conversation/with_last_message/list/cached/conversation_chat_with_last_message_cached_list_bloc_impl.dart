@@ -4,7 +4,7 @@ import 'package:fedi/app/chat/conversation/repository/conversation_chat_reposito
 import 'package:fedi/app/chat/conversation/with_last_message/conversation_chat_with_last_message_model.dart';
 import 'package:fedi/app/chat/conversation/with_last_message/conversation_chat_with_last_message_repository.dart';
 import 'package:fedi/app/chat/conversation/with_last_message/list/cached/conversation_chat_with_last_message_cached_list_bloc.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:logging/logging.dart';
 
@@ -13,7 +13,7 @@ var _logger =
 
 class ConversationChatWithLastMessageCachedListBloc
     extends IConversationChatWithLastMessageCachedListBloc {
-  final IPleromaApiConversationService conversationChatService;
+  final IUnifediApiConversationService conversationChatService;
   final IConversationChatRepository conversationRepository;
   final IConversationChatWithLastMessageRepository
       chatWithLastMessageRepository;
@@ -25,7 +25,7 @@ class ConversationChatWithLastMessageCachedListBloc
   });
 
   @override
-  IPleromaApi get pleromaApi => conversationChatService;
+  IUnifediApiService get unifediApi => conversationChatService;
 
   @override
   Future refreshItemsFromRemoteForPage({
@@ -37,12 +37,12 @@ class ConversationChatWithLastMessageCachedListBloc
         '\t newerThan = $newerThan'
         '\t olderThan = $olderThan');
 
-    List<IPleromaApiConversation>? remoteConversations;
+    List<IUnifediApiConversation>? remoteConversations;
 
     remoteConversations = await conversationChatService.getConversations(
-      pagination: PleromaApiPaginationRequest(
+      pagination: UnifediApiPagination(
         maxId: olderThan?.chat.remoteId,
-        sinceId: newerThan?.chat.remoteId,
+        minId: newerThan?.chat.remoteId,
         limit: limit,
       ),
     );

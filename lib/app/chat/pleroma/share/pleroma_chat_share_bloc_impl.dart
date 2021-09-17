@@ -6,14 +6,14 @@ import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository_model.dart';
 import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_bloc.dart';
 import 'package:fedi/app/share/to_account/share_to_account_bloc_impl.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:fedi/repository/repository_model.dart';
 
 abstract class PleromaChatShareBloc extends ShareToAccountBloc
     implements IPleromaChatShareBloc {
   final IPleromaChatRepository chatRepository;
   final IPleromaChatMessageRepository chatMessageRepository;
-  final IPleromaApiChatService pleromaChatService;
+  final IUnifediApiChatService pleromaChatService;
 
   PleromaChatShareBloc({
     required this.chatRepository,
@@ -21,11 +21,11 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
     required this.pleromaChatService,
     required IMyAccountBloc myAccountBloc,
     required IAccountRepository accountRepository,
-    required IPleromaApiAccountService pleromaAccountService,
+    required IUnifediApiAccountService unifediApiAccountService,
   }) : super(
           myAccountBloc: myAccountBloc,
           accountRepository: accountRepository,
-          pleromaAccountService: pleromaAccountService,
+          unifediApiAccountService: unifediApiAccountService,
         );
 
   @override
@@ -33,7 +33,7 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
     var messageSendDataList = await createPleromaChatMessageSendDataList();
 
     var targetAccounts = [account];
-    List<IPleromaApiChat> pleromaChatsByAccounts;
+    List<IUnifediApiChat> pleromaChatsByAccounts;
     if (targetAccounts.isNotEmpty) {
       var chatsByAccountsFuture = targetAccounts.map(
         (account) => pleromaChatService.getOrCreateChatByAccountId(
@@ -58,13 +58,14 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
 
     // todo: think about throttling & sorting
     // perhaps send in sequence instead of parallel
-    Iterable<Future<List<IPleromaApiChatMessage>>>
+    Iterable<Future<List<IUnifediApiChatMessage>>>
         pleromaChatMessagesListFuture;
     pleromaChatMessagesListFuture = allChatsIds.map(
       (chatId) {
         var futures = messageSendDataList.map(
           (messageSendData) => pleromaChatService.sendMessage(
             chatId: chatId,
+
             data: messageSendData,
           ),
         );
@@ -73,13 +74,13 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
       },
     );
 
-    List<List<IPleromaApiChatMessage>> pleromaChatMessagesList;
+    List<List<IUnifediApiChatMessage>> pleromaChatMessagesList;
     pleromaChatMessagesList = await Future.wait(pleromaChatMessagesListFuture);
 
-    var pleromaChatMessages = <IPleromaApiChatMessage>[];
+    var pleromaChatMessages = <IUnifediApiChatMessage>[];
 
     pleromaChatMessagesList.forEach(
-      (List<IPleromaApiChatMessage> items) {
+      (List<IUnifediApiChatMessage> items) {
         pleromaChatMessages.addAll(items);
       },
     );
@@ -92,7 +93,7 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
     return true;
   }
 
-  Future<List<PleromaApiChatMessageSendData>>
+  Future<List<UnifediApiChatMessageSendData>>
       createPleromaChatMessageSendDataList();
 
   @override
@@ -118,7 +119,7 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
   }
 
   @override
-  Future<List<IPleromaApiAccount>> customRemoteAccountListLoader({
+  Future<List<IUnifediApiAccount>> customRemoteAccountListLoader({
     required int? limit,
     required IAccount? newerThan,
     required IAccount? olderThan,
@@ -127,8 +128,10 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
       return [];
     }
     var pleromaChats = await pleromaChatService.getChats(
-      pagination: PleromaApiPaginationRequest(
+      pagination: UnifediApiPagination(
         limit: limit,
+        minId: null,
+        maxId: null,
       ),
     );
 

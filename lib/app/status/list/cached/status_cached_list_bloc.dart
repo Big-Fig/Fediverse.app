@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 abstract class IStatusCachedListBloc
     implements
         DisposableOwner,
-        IPleromaCachedListBloc<IStatus>,
+        ICachedListBloc<IStatus>,
         IAsyncInitLoadingBloc,
         IStatusListBloc {
   static IStatusCachedListBloc of(

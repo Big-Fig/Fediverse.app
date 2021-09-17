@@ -4,9 +4,9 @@ import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/notification/notification_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
-extension IPleromaNotificationExtension on IPleromaApiNotification {
+extension IPleromaNotificationExtension on IUnifediApiNotification {
   DbNotification toDbNotification({
     required bool? unread,
   }) {
@@ -28,10 +28,10 @@ extension IPleromaNotificationExtension on IPleromaApiNotification {
       pleroma: remoteNotification.pleroma,
       type: remoteNotification.type,
       unread: unread == true,
-      chatMessage: remoteNotification.chatMessage?.toPleromaApiChatMessage(),
+      chatMessage: remoteNotification.chatMessage?.toUnifediApiChatMessage(),
       dismissed: null,
-      report: remoteNotification.report?.toPleromaApiAccountReport(),
-      target: remoteNotification.target?.toPleromaApiAccount(),
+      report: remoteNotification.report?.toUnifediApiAccountReport(),
+      target: remoteNotification.target?.toUnifediApiAccount(),
     );
   }
 
@@ -111,9 +111,8 @@ extension INotificationExtension on INotification {
         chatRemoteId: chatRemoteId,
         chatMessageRemoteId: chatMessageRemoteId,
         emoji: emoji,
-        pleroma: pleroma,
-        chatMessage: chatMessage?.toPleromaApiChatMessage(),
-        target: target?.toPleromaApiAccount(),
+        chatMessage: chatMessage?.toUnifediApiChatMessage(),
+        target: target?.toUnifediApiAccount(),
         unread: unread,
         type: type,
         createdAt: createdAt,
@@ -122,35 +121,24 @@ extension INotificationExtension on INotification {
     }
   }
 
-  PleromaApiNotification toPleromaApiNotification() {
+  UnifediApiNotification toUnifediApiNotification() {
     var localNotification = this;
 
-    var pleroma = localNotification.pleroma;
-
     var unread = localNotification.unread ?? false;
+    var isSeen = !unread;
 
-    if (pleroma != null) {
-      pleroma = pleroma.copyWith(
-        isSeen: !unread,
-      );
-    } else {
-      pleroma = PleromaApiNotificationPleromaPart(
-        isSeen: !unread,
-        isMuted: null,
-      );
-    }
-
-    return PleromaApiNotification(
+    return UnifediApiNotification(
       id: localNotification.remoteId,
       createdAt: localNotification.createdAt,
-      account: localNotification.account?.toPleromaApiAccount(),
+      account: localNotification.account?.toUnifediApiAccount(),
       type: localNotification.type,
       emoji: localNotification.emoji,
-      pleroma: pleroma,
-      chatMessage: localNotification.chatMessage?.toPleromaApiChatMessage(),
-      target: localNotification.target?.toPleromaApiAccount(),
-      report: localNotification.report?.toPleromaApiAccountReport(),
-      status: localNotification.status?.toPleromaApiStatus(),
+      isSeen: isSeen,
+      isMuted: null,
+      chatMessage: localNotification.chatMessage?.toUnifediApiChatMessage(),
+      target: localNotification.target?.toUnifediApiAccount(),
+      report: localNotification.report?.toUnifediApiAccountReport(),
+      status: localNotification.status?.toUnifediApiStatus(),
     );
   }
 }

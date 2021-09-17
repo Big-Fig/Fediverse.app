@@ -1,6 +1,6 @@
 import 'package:fedi/app/instance/activity/instance_activity_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:easy_dispose/easy_dispose.dart';
@@ -8,21 +8,21 @@ import 'package:easy_dispose/easy_dispose.dart';
 abstract class InstanceActivityBloc extends AsyncInitLoadingBloc
     implements IInstanceActivityBloc {
   @override
-  final IPleromaApiInstance? instance;
+  final IUnifediApiInstance? instance;
 
   @override
-  Stream<IPleromaApiInstance?> get instanceStream => Stream.value(instance);
+  Stream<IUnifediApiInstance?> get instanceStream => Stream.value(instance);
 
   @override
-  bool get isMastodon => instance?.isMastodon == true;
+  bool get isMastodon => instance?.typeAsUnifediApi.isMastodon == true;
 
   @override
-  bool get isPleroma => instance?.isPleroma == true;
+  bool get isPleroma => instance?.typeAsUnifediApi.isPleroma == true;
 
   @override
   final Uri instanceUri;
 
-  final BehaviorSubject<List<IPleromaApiInstanceActivityItem>?> activitySubject;
+  final BehaviorSubject<List<IUnifediApiInstanceActivityItem>?> activitySubject;
 
   @override
   final RefreshController refreshController;
@@ -36,10 +36,10 @@ abstract class InstanceActivityBloc extends AsyncInitLoadingBloc
     addCustomDisposable(() => refreshController.dispose());
   }
 
-  IPleromaApiInstanceService get pleromaInstanceService;
+  IUnifediApiInstanceService get pleromaInstanceService;
 
   @override
-  Future<List<IPleromaApiInstanceActivityItem>> refresh() async {
+  Future<List<IUnifediApiInstanceActivityItem>> refresh() async {
     var activity = await pleromaInstanceService.getActivity();
     activitySubject.add(activity);
 
@@ -47,11 +47,11 @@ abstract class InstanceActivityBloc extends AsyncInitLoadingBloc
   }
 
   @override
-  List<IPleromaApiInstanceActivityItem>? get activity =>
+  List<IUnifediApiInstanceActivityItem>? get activity =>
       activitySubject.valueOrNull;
 
   @override
-  Stream<List<IPleromaApiInstanceActivityItem>?> get activityStream =>
+  Stream<List<IUnifediApiInstanceActivityItem>?> get activityStream =>
       activitySubject.stream;
 
   @override

@@ -3,7 +3,7 @@ import 'package:fedi/app/account/my/featured_hashtag/my_account_featured_hashtag
 import 'package:fedi/app/account/my/featured_hashtag/list/network_only/my_account_featured_hashtag_list_network_only_list_bloc.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:logging/logging.dart';
 
 final _logger =
@@ -11,10 +11,10 @@ final _logger =
 
 class AccountFeaturedHashtagListNetworkOnlyListBloc extends DisposableOwner
     implements IAccountFeaturedHashtagListNetworkOnlyListBloc {
-  final IPleromaApiFeaturedTagsService pleromaApiFeaturedTagsService;
+  final IUnifediApiMyAccountService unifediApiMyAccountService;
 
   @override
-  IPleromaApi get pleromaApi => pleromaApiFeaturedTagsService;
+  IUnifediApiService get unifediApi => unifediApiMyAccountService;
 
   @override
   InstanceLocation get instanceLocation => InstanceLocation.local;
@@ -23,7 +23,7 @@ class AccountFeaturedHashtagListNetworkOnlyListBloc extends DisposableOwner
   Uri? get remoteInstanceUriOrNull => null;
 
   AccountFeaturedHashtagListNetworkOnlyListBloc({
-    required this.pleromaApiFeaturedTagsService,
+    required this.unifediApiMyAccountService,
   });
 
   @override
@@ -39,7 +39,7 @@ class AccountFeaturedHashtagListNetworkOnlyListBloc extends DisposableOwner
     }
 
     var pleromaFeaturedHashtags =
-        await pleromaApiFeaturedTagsService.getFeaturedTags(
+        await unifediApiMyAccountService.getMyFeaturedTags(
       pagination: null,
     );
     List<IMyAccountFeaturedHashtag> result = pleromaFeaturedHashtags

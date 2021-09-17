@@ -9,7 +9,7 @@ import '../auth_instance_model_test_helper.dart';
 
 void main() {
   test('save & load', () async {
-    await LocalPreferencesTestHelper.testSaveAndLoad<AuthInstanceList,
+    await LocalPreferencesMockHelper.testSaveAndLoad<AuthInstanceList,
         AuthInstanceListLocalPreferenceBloc>(
       defaultValue: AuthInstanceListLocalPreferenceBloc.defaultValue,
       blocCreator: (localPreferencesService) =>
@@ -17,7 +17,7 @@ void main() {
         localPreferencesService,
       ),
       testObjectCreator: ({required String seed}) =>
-          AuthInstanceListModelTestHelper.createTestAuthInstanceList(
+          AuthInstanceListModelMockHelper.createTestAuthInstanceList(
         seed: seed,
       ),
     );

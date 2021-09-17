@@ -3,7 +3,7 @@ import 'package:fedi/dialog/async/async_dialog.dart';
 import 'package:fedi/dialog/async/async_dialog_model.dart';
 import 'package:fedi/error/error_data_model.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 
 class PleromaAsyncOperationHelper {
@@ -49,7 +49,7 @@ class PleromaAsyncOperationHelper {
     dynamic error,
     StackTrace stackTrace,
   ) {
-    if (error is PleromaApiUnprocessableOrThrottledRestException) {
+    if (error is UnifediApiUnprocessableOrThrottledRestException) {
       return ErrorData(
         error: error,
         stackTrace: stackTrace,
@@ -68,7 +68,7 @@ class PleromaAsyncOperationHelper {
     dynamic error,
     StackTrace stackTrace,
   ) {
-    if (error is PleromaApiForbiddenRestException) {
+    if (error is UnifediApiForbiddenRestException) {
       return ErrorData(
         error: error,
         stackTrace: stackTrace,
@@ -89,7 +89,7 @@ class PleromaAsyncOperationHelper {
     dynamic error,
     StackTrace stackTrace,
   ) {
-    if (error is PleromaApiRestException) {
+    if (error is UnifediApiRestException) {
       return ErrorData(
         error: error,
         stackTrace: stackTrace,

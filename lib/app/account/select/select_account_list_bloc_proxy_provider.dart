@@ -15,7 +15,7 @@ class SelectAccountListBlocProxyProvider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ProxyProvider<ISelectAccountListBloc,
-        IPleromaCachedListBloc<IAccount>>(
+        ICachedListBloc<IAccount>>(
       update: (context, value, previous) => value,
       child: ProxyProvider<ISelectAccountListBloc, IAccountCachedListBloc>(
         update: (context, value, previous) => value,

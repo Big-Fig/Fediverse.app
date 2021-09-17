@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'database/draft_status_database_test_helper.dart';
 
-class DraftStatusTestHelper {
+class DraftStatusMockHelper {
   static Future<DbDraftStatusPopulatedWrapper> createTestDraftStatus({
     required String seed,
     DateTime? updatedAt,
@@ -11,7 +11,7 @@ class DraftStatusTestHelper {
       DbDraftStatusPopulatedWrapper(
         dbDraftStatusPopulated: DbDraftStatusPopulated(
           dbDraftStatus:
-              await DraftStatusDatabaseTestHelper.createTestDbDraftStatus(
+              await DraftStatusDatabaseMockHelper.createTestDbDraftStatus(
             seed: seed,
             updatedAt: updatedAt,
           ),

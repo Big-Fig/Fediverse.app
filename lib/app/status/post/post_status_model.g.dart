@@ -17,14 +17,14 @@ PostStatusData _$PostStatusDataFromJson(Map<String, dynamic> json) {
     to: (json['to'] as List<dynamic>?)?.map((e) => e as String).toList(),
     mediaAttachments: (json['media_attachments'] as List<dynamic>?)
         ?.map((e) =>
-            PleromaApiMediaAttachment.fromJson(e as Map<String, dynamic>))
+            UnifediApiMediaAttachment.fromJson(e as Map<String, dynamic>))
         .toList(),
     poll: json['poll'] == null
         ? null
         : PostStatusPoll.fromJson(json['poll'] as Map<String, dynamic>),
     inReplyToPleromaStatus: json['in_reply_to_status'] == null
         ? null
-        : PleromaApiStatus.fromJson(
+        : UnifediApiStatus.fromJson(
             json['in_reply_to_status'] as Map<String, dynamic>),
     inReplyToConversationId: json['in_reply_to_conversation_id'] as String?,
     isNsfwSensitiveEnabled: json['is_nsfw_sensitive_enabled'] as bool,

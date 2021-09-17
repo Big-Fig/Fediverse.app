@@ -5,7 +5,7 @@ import 'package:fedi/app/instance/announcement/instance_announcement_model.dart'
 import 'package:fedi/app/instance/announcement/instance_announcement_model_adapter.dart';
 import 'package:fedi/app/instance/announcement/repository/instance_announcement_repository.dart';
 import 'package:fedi/app/instance/announcement/repository/instance_announcement_repository_impl.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -17,12 +17,12 @@ import 'instance_announcement_test_helper.dart';
 
 // ignore_for_file: no-magic-number, avoid-late-keyword
 @GenerateMocks([
-  IPleromaApiAnnouncementService,
+  IUnifediApiAnnouncementService,
 ])
 void main() {
   late IInstanceAnnouncement instanceAnnouncement;
   late IInstanceAnnouncementBloc instanceAnnouncementBloc;
-  late MockIPleromaApiAnnouncementService pleromaAnnouncementServiceMock;
+  late MockIUnifediApiAnnouncementService unifediApiAnnouncementServiceMock;
   late AppDatabase database;
   late IInstanceAnnouncementRepository instanceAnnouncementRepository;
 
@@ -32,20 +32,20 @@ void main() {
       appDatabase: database,
     );
 
-    pleromaAnnouncementServiceMock = MockIPleromaApiAnnouncementService();
+    unifediApiAnnouncementServiceMock = MockIUnifediApiAnnouncementService();
 
-    when(pleromaAnnouncementServiceMock.isConnected).thenReturn(true);
-    when(pleromaAnnouncementServiceMock.pleromaApiState)
-        .thenReturn(PleromaApiState.validAuth);
+    when(unifediApiAnnouncementServiceMock.isConnected).thenReturn(true);
+    when(unifediApiAnnouncementServiceMock.unifediApiState)
+        .thenReturn(UnifediApiState.validAuth);
 
     instanceAnnouncement =
-        await InstanceAnnouncementTestHelper.createTestInstanceAnnouncement(
+        await InstanceAnnouncementMockHelper.createTestInstanceAnnouncement(
       seed: 'seed1',
     );
 
     instanceAnnouncementBloc = InstanceAnnouncementBloc(
       instanceAnnouncement: instanceAnnouncement,
-      pleromaApiAnnouncementService: pleromaAnnouncementServiceMock,
+      unifediApiAnnouncementService: unifediApiAnnouncementServiceMock,
       instanceAnnouncementRepository: instanceAnnouncementRepository,
       delayInit: false,
     );
@@ -62,17 +62,17 @@ void main() {
       instanceAnnouncement.toPleromaInstanceAnnouncement(),
     );
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
   }
 
   test('instanceAnnouncement', () async {
-    InstanceAnnouncementTestHelper.expectInstanceAnnouncement(
+    InstanceAnnouncementMockHelper.expectInstanceAnnouncement(
       instanceAnnouncementBloc.instanceAnnouncement,
       instanceAnnouncement,
     );
 
     var newValue =
-        await InstanceAnnouncementTestHelper.createTestInstanceAnnouncement(
+        await InstanceAnnouncementMockHelper.createTestInstanceAnnouncement(
       seed: 'seed2',
       remoteId: instanceAnnouncement.remoteId,
     );
@@ -85,19 +85,19 @@ void main() {
     });
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
-    InstanceAnnouncementTestHelper.expectInstanceAnnouncement(
+    await RxDartMockHelper.waitForData(() => listened);
+    InstanceAnnouncementMockHelper.expectInstanceAnnouncement(
       listened,
       instanceAnnouncement,
     );
 
     await _update(newValue);
 
-    InstanceAnnouncementTestHelper.expectInstanceAnnouncement(
+    InstanceAnnouncementMockHelper.expectInstanceAnnouncement(
       instanceAnnouncementBloc.instanceAnnouncement,
       newValue,
     );
-    InstanceAnnouncementTestHelper.expectInstanceAnnouncement(
+    InstanceAnnouncementMockHelper.expectInstanceAnnouncement(
       listened,
       newValue,
     );
@@ -122,7 +122,7 @@ void main() {
   //   });
   //
   //   listened = null;
-  //   await RxDartTestHelper.waitForData(() => listened);
+  //   await RxDartMockHelper.waitForData(() => listened);
   //   expect(
   //     listened,
   //     instanceAnnouncement.isExpired,
@@ -146,7 +146,7 @@ void main() {
   //   });
   //
   //   listened = null;
-  //   await RxDartTestHelper.waitForData(() => listened);
+  //   await RxDartMockHelper.waitForData(() => listened);
   //   expect(listened, instanceAnnouncement.isExpired);
   //
   //   await _update(instanceAnnouncement.copyWith(expiresAt: DateTime(1990)));

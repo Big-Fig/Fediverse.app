@@ -6,7 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IScheduledStatusCachedListBloc extends DisposableOwner
-    implements IPleromaCachedListBloc<IScheduledStatus>, IStatusListBloc {
+    implements ICachedListBloc<IScheduledStatus>, IStatusListBloc {
   static IScheduledStatusCachedListBloc of(
     BuildContext context, {
     bool listen = true,

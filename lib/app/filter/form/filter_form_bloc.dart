@@ -3,7 +3,7 @@ import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/duration/date_time/duration_date_time_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
 import 'package:fedi/form/form_bloc.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -21,5 +21,5 @@ abstract class IFilterFormBloc extends IFormBloc {
 
   IFilterContextMultiSelectFromListValueFormFieldBloc get contextField;
 
-  IPostPleromaApiFilter calculateFormValue();
+  IPostUnifediApiFilter calculateFormValue();
 }

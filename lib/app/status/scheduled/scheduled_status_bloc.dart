@@ -1,7 +1,7 @@
 import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_model.dart';
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -27,9 +27,9 @@ abstract class IScheduledStatusBloc implements IDisposable {
 
   Stream<String?> get spoilerTextStream;
 
-  List<IPleromaApiMediaAttachment>? get mediaAttachments;
+  List<IUnifediApiMediaAttachment>? get mediaAttachments;
 
-  Stream<List<IPleromaApiMediaAttachment>?> get mediaAttachmentsStream;
+  Stream<List<IUnifediApiMediaAttachment>?> get mediaAttachmentsStream;
 
   Future reSchedule({
     required DateTime scheduledAt,

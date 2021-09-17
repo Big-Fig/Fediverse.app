@@ -13,7 +13,7 @@ class EditWebSocketsSettingsBloc
 
   @override
   // ignore: avoid-late-keyword
-  late WebSocketsHandlingTypeSingleFromListValueFormFieldBloc typeFieldBloc;
+  late WebSocketsModeSingleFromListValueFormFieldBloc typeFieldBloc;
 
   @override
   List<IFormItemBloc> get currentItems => [
@@ -32,7 +32,7 @@ class EditWebSocketsSettingsBloc
           isAllItemsInitialized: false,
           isGlobalForced: isGlobalForced,
         ) {
-    typeFieldBloc = WebSocketsHandlingTypeSingleFromListValueFormFieldBloc(
+    typeFieldBloc = WebSocketsModeSingleFromListValueFormFieldBloc(
       originValue: currentSettings.type,
       isEnabled: isEnabled,
     );

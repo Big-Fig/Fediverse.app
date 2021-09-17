@@ -3,7 +3,7 @@ import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:fedi/app/status/post/poll/post_status_poll_bloc.dart';
 import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -32,9 +32,9 @@ abstract class IPostStatusBloc implements IPostMessageBloc {
 
   bool get isPossibleToChangeVisibility;
 
-  PleromaApiVisibility? get visibility;
+  UnifediApiVisibility? get visibility;
 
-  Stream<PleromaApiVisibility> get visibilityStream;
+  Stream<UnifediApiVisibility> get visibilityStream;
 
   bool? get isNsfwSensitiveEnabled;
 
@@ -54,7 +54,7 @@ abstract class IPostStatusBloc implements IPostMessageBloc {
 
   void removeMentionByAcct(String acct);
 
-  void changeVisibility(PleromaApiVisibility visibility);
+  void changeVisibility(UnifediApiVisibility visibility);
 
   void changeNsfwSensitive(bool nsfwSensitive);
 

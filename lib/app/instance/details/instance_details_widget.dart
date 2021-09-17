@@ -32,8 +32,8 @@ import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/url/url_helper.dart';
 import 'package:fedi/file/file_size_helper.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:fedi/ui/callback/on_click_ui_callback.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -125,7 +125,7 @@ class _InstanceDetailsBodyWidget extends StatelessWidget {
             key: Key(InstanceDetailsWidgetKeys.statsKey),
           ),
           const _InstanceDetailsBodyMessagesLimitsWidget(),
-          const _InstanceDetailsPleromaPollLimitsWidget(),
+          const _InstanceDetailsUnifediApiPollLimitsWidget(),
           const _InstanceDetailsPleromaUploadLimitsWidget(),
           const _InstanceDetailsBodyMetadataWidget(),
           const _InstanceDetailsPleromaMetadataFederationWidget(),
@@ -421,35 +421,28 @@ class _InstanceDetailsVersionTypeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var instanceDetailsBloc = IInstanceDetailsBloc.of(context);
 
-    return StreamBuilder<PleromaApiInstanceVersionType?>(
-      stream: instanceDetailsBloc.versionTypeStream,
-      initialData: instanceDetailsBloc.versionType,
+    return StreamBuilder<UnifediApiInstanceType>(
+      stream: instanceDetailsBloc.instanceTypeStream,
+      initialData: instanceDetailsBloc.instanceType,
       builder: (context, snapshot) {
-        var versionType = snapshot.data;
+        var instanceType = snapshot.data!;
 
-        if (versionType != null) {
-          String versionTypeString;
+        if (instanceType != null) {
+          String instanceTypeString;
 
-          switch (versionType) {
-            case PleromaApiInstanceVersionType.pleroma:
-              versionTypeString = S
-                  .of(context)
-                  .app_instance_details_field_pleroma_metadata_fields_verstionType_value_pleroma;
-              break;
-            case PleromaApiInstanceVersionType.mastodon:
-              versionTypeString = S
-                  .of(context)
-                  .app_instance_details_field_pleroma_metadata_fields_verstionType_value_mastodon;
-              break;
-            case PleromaApiInstanceVersionType.unknown:
-              versionTypeString = S
-                  .of(context)
-                  .app_instance_details_field_pleroma_metadata_fields_verstionType_value_unknown;
-              break;
-          }
+          instanceTypeString = instanceType.map(pleroma: (_) =>S
+              .of(context)
+              .app_instance_details_field_pleroma_metadata_fields_verstionType_value_pleroma,
+            mastodon: (_) => S
+                .of(context)
+                .app_instance_details_field_pleroma_metadata_fields_verstionType_value_mastodon,
+            unknown: (_) => S
+                .of(context)
+                .app_instance_details_field_pleroma_metadata_fields_verstionType_value_unknown,
+          );
 
           return Text(
-            versionTypeString.toUpperCase(),
+            instanceTypeString.toUpperCase(),
             style: IFediUiTextTheme.of(context).bigTallBoldDarkGrey,
           );
         } else {
@@ -674,7 +667,7 @@ class _InstanceDetailsStatsWidget extends StatelessWidget {
       builder: (context, snapshot) {
         var isHaveStatsFields = snapshot.data!;
         if (isHaveStatsFields) {
-          return StreamBuilder<MastodonApiInstanceStats?>(
+          return StreamBuilder<IUnifediApiInstanceStats?>(
             stream: instanceDetailsBloc.statsStream,
             initialData: instanceDetailsBloc.stats,
             builder: (context, snapshot) {
@@ -912,7 +905,7 @@ class _InstanceDetailsContactAccountWidget extends StatelessWidget {
 
     var isLocal = instanceLocation == InstanceLocation.local;
 
-    return StreamBuilder<IPleromaApiAccount?>(
+    return StreamBuilder<IUnifediApiAccount?>(
       stream: instanceDetailsBloc.contactAccountStream,
       initialData: instanceDetailsBloc.contactAccount,
       builder: (context, snapshot) {
@@ -1105,13 +1098,13 @@ class _InstanceDetailsPublicTimelineWidget extends StatelessWidget {
     if (isLocal) {
       goToLocalInstancePublicTimelinePage(
         context: context,
-        pleromaApiInstance: instanceDetailsBloc.instance!,
+        unifediApiInstance: instanceDetailsBloc.instance!,
       );
     } else {
       goToRemoteInstancePublicTimelinePage(
         context: context,
         remoteInstanceUri: instanceDetailsBloc.instanceUri,
-        pleromaApiInstance: instanceDetailsBloc.instance!,
+        unifediApiInstance: instanceDetailsBloc.instance!,
       );
     }
   }
@@ -1256,8 +1249,8 @@ class _InstanceDetailsPleromaImageDescriptionLimitWidget
   }
 }
 
-class _InstanceDetailsPleromaPollLimitsWidget extends StatelessWidget {
-  const _InstanceDetailsPleromaPollLimitsWidget({
+class _InstanceDetailsUnifediApiPollLimitsWidget extends StatelessWidget {
+  const _InstanceDetailsUnifediApiPollLimitsWidget({
     Key? key,
   }) : super(key: key);
 
@@ -1271,14 +1264,14 @@ class _InstanceDetailsPleromaPollLimitsWidget extends StatelessWidget {
       builder: (context, snapshot) {
         var isHaveMessagesLimitsFields = snapshot.data!;
         if (isHaveMessagesLimitsFields) {
-          return StreamBuilder<PleromaApiInstancePollLimits?>(
+          return StreamBuilder<IUnifediApiInstancePollLimits?>(
             stream: instanceDetailsBloc.pollLimitsStream,
             initialData: instanceDetailsBloc.pollLimits,
             builder: (context, snapshot) {
               var pollLimits = snapshot.data;
 
               if (pollLimits != null) {
-                return _InstanceDetailsPleromaPollLimitsBodyWidget(
+                return _InstanceDetailsUnifediApiPollLimitsBodyWidget(
                   pollLimits: pollLimits,
                 );
               } else {
@@ -1294,13 +1287,13 @@ class _InstanceDetailsPleromaPollLimitsWidget extends StatelessWidget {
   }
 }
 
-class _InstanceDetailsPleromaPollLimitsBodyWidget extends StatelessWidget {
-  const _InstanceDetailsPleromaPollLimitsBodyWidget({
+class _InstanceDetailsUnifediApiPollLimitsBodyWidget extends StatelessWidget {
+  const _InstanceDetailsUnifediApiPollLimitsBodyWidget({
     Key? key,
     required this.pollLimits,
   }) : super(key: key);
 
-  final PleromaApiInstancePollLimits pollLimits;
+  final IUnifediApiInstancePollLimits pollLimits;
 
   @override
   Widget build(BuildContext context) {
@@ -1531,7 +1524,7 @@ class _InstanceDetailsPleromaMetadataFederationWidget extends StatelessWidget {
         var isHaveFederationFields = snapshot.data!;
         if (isHaveFederationFields) {
           return StreamBuilder<
-              PleromaApiInstancePleromaPartMetadataFederation?>(
+              UnifediApiInstancePleromaPartMetadataFederation?>(
             stream: instanceDetailsBloc.pleromaMetadataFederationStream,
             initialData: instanceDetailsBloc.pleromaMetadataFederation,
             builder: (context, snapshot) {
@@ -1556,7 +1549,7 @@ class _InstanceDetailsPleromaMetadataFederationWidget extends StatelessWidget {
 
   Widget _buildBody(
     BuildContext context,
-    PleromaApiInstancePleromaPartMetadataFederation pleromaMetadataFederation,
+    UnifediApiInstancePleromaPartMetadataFederation pleromaMetadataFederation,
   ) =>
       Column(
         mainAxisSize: MainAxisSize.min,
@@ -1593,7 +1586,7 @@ class _InstanceDetailsPleromaMetadataFederationWidget extends StatelessWidget {
 
 class _InstanceDetailsPleromaMetadataFederationMfrObjectAgeActionsWidget
     extends StatelessWidget {
-  final PleromaApiInstancePleromaPartMetadataFederation
+  final UnifediApiInstancePleromaPartMetadataFederation
       pleromaMetadataFederation;
 
   const _InstanceDetailsPleromaMetadataFederationMfrObjectAgeActionsWidget({
@@ -1619,7 +1612,7 @@ class _InstanceDetailsPleromaMetadataFederationQuarantinedInstancesWidget
     required this.pleromaMetadataFederation,
   }) : super(key: key);
 
-  final PleromaApiInstancePleromaPartMetadataFederation
+  final UnifediApiInstancePleromaPartMetadataFederation
       pleromaMetadataFederation;
 
   @override
@@ -1640,7 +1633,7 @@ class _InstanceDetailsPleromaMetadataFederationMfrObjectAgeThresholdWidget
     required this.pleromaMetadataFederation,
   }) : super(key: key);
 
-  final PleromaApiInstancePleromaPartMetadataFederation
+  final UnifediApiInstancePleromaPartMetadataFederation
       pleromaMetadataFederation;
 
   @override
@@ -1666,7 +1659,7 @@ class _InstanceDetailsPleromaMetadataFederationMfrPoliciesWidget
     required this.pleromaMetadataFederation,
   }) : super(key: key);
 
-  final PleromaApiInstancePleromaPartMetadataFederation
+  final UnifediApiInstancePleromaPartMetadataFederation
       pleromaMetadataFederation;
 
   @override
@@ -1686,7 +1679,7 @@ class __InstanceDetailsPleromaMetadataFederationExclusionsWidget
     required this.pleromaMetadataFederation,
   }) : super(key: key);
 
-  final PleromaApiInstancePleromaPartMetadataFederation
+  final UnifediApiInstancePleromaPartMetadataFederation
       pleromaMetadataFederation;
 
   @override
@@ -1708,7 +1701,7 @@ class _InstanceDetailsPleromaMetadataFederationEnabledFieldWidget
     required this.pleromaMetadataFederation,
   }) : super(key: key);
 
-  final PleromaApiInstancePleromaPartMetadataFederation
+  final UnifediApiInstancePleromaPartMetadataFederation
       pleromaMetadataFederation;
 
   @override
@@ -1756,7 +1749,7 @@ class _InstanceDetailsPleromaMetadataFieldsLimitsWidget
 
         if (isHaveMessagesLimitsFields) {
           return StreamBuilder<
-              PleromaApiInstancePleromaPartMetadataFieldLimits?>(
+              UnifediApiInstancePleromaPartMetadataFieldLimits?>(
             stream: instanceDetailsBloc.pleromaMetadataFieldsLimitsStream,
             initialData: instanceDetailsBloc.pleromaMetadataFieldsLimits,
             builder: (context, snapshot) {

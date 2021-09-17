@@ -7,66 +7,66 @@ import 'package:fedi/app/status/post/settings/post_status_settings_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class NewPostStatusBloc extends PostStatusBloc {
   NewPostStatusBloc({
-    required IPleromaApiAuthStatusService pleromaAuthStatusService,
+    required IUnifediApiStatusService unifediApiStatusService,
     required IStatusRepository statusRepository,
     required IScheduledStatusRepository scheduledStatusRepository,
-    required IPleromaApiMediaAttachmentService pleromaMediaAttachmentService,
+    required IUnifediApiMediaAttachmentService unifediApiMediaAttachmentService,
     required int? maximumMessageLength,
-    required PleromaApiInstancePollLimits? pleromaInstancePollLimits,
+    required UnifediApiInstancePollLimits? pollLimits,
     required int? maximumFileSizeInBytes,
     required bool markMediaAsNsfwOnAttach,
     required bool isPleromaInstance,
     required IPostStatusData initialData,
   }) : super(
           isExpirePossible: isPleromaInstance,
-          pleromaAuthStatusService: pleromaAuthStatusService,
+          unifediApiStatusService: unifediApiStatusService,
           statusRepository: statusRepository,
           scheduledStatusRepository: scheduledStatusRepository,
-          pleromaMediaAttachmentService: pleromaMediaAttachmentService,
+          unifediApiMediaAttachmentService: unifediApiMediaAttachmentService,
           maximumMessageLength: maximumMessageLength,
           initialData: initialData,
-          pleromaInstancePollLimits: pleromaInstancePollLimits,
+          pollLimits: pollLimits,
           maximumFileSizeInBytes: maximumFileSizeInBytes,
           markMediaAsNsfwOnAttach: markMediaAsNsfwOnAttach,
           unfocusOnClear: true,
         );
 
   NewPostStatusBloc.withInitial({
-    required IPleromaApiAuthStatusService pleromaAuthStatusService,
+    required IUnifediApiStatusService unifediApiStatusService,
     required IStatusRepository statusRepository,
     required IScheduledStatusRepository scheduledStatusRepository,
-    required IPleromaApiMediaAttachmentService pleromaMediaAttachmentService,
+    required IUnifediApiMediaAttachmentService unifediApiMediaAttachmentService,
     required int? maximumMessageLength,
-    required PleromaApiInstancePollLimits? pleromaInstancePollLimits,
+    required UnifediApiInstancePollLimits? pollLimits,
     required int? maximumFileSizeInBytes,
-    required PleromaApiVisibility initialVisibility,
+    required UnifediApiVisibility initialVisibility,
     required String? initialText,
     required String? initialSubject,
-    required List<PleromaApiMediaAttachment>? initialMediaAttachments,
+    required List<UnifediApiMediaAttachment>? initialMediaAttachments,
     required bool? markMediaAsNsfwOnAttach,
     required String? initialLanguage,
     required bool isPleromaInstance,
   }) : this(
           isPleromaInstance: isPleromaInstance,
-          pleromaAuthStatusService: pleromaAuthStatusService,
+          unifediApiStatusService: unifediApiStatusService,
           scheduledStatusRepository: scheduledStatusRepository,
           statusRepository: statusRepository,
-          pleromaMediaAttachmentService: pleromaMediaAttachmentService,
+          unifediApiMediaAttachmentService: unifediApiMediaAttachmentService,
           maximumMessageLength: maximumMessageLength,
           initialData: PostStatusBloc.defaultInitData.copyWith(
-            visibilityString: initialVisibility.toJsonValue(),
+            visibilityString: initialVisibility.stringValue,
             language: initialLanguage,
             text: initialText,
             subject: initialSubject,
             mediaAttachments: initialMediaAttachments,
           ),
-          pleromaInstancePollLimits: pleromaInstancePollLimits,
+          pollLimits: pollLimits,
           maximumFileSizeInBytes: maximumFileSizeInBytes,
           markMediaAsNsfwOnAttach: markMediaAsNsfwOnAttach ?? false,
         );
@@ -75,7 +75,7 @@ class NewPostStatusBloc extends PostStatusBloc {
     BuildContext context, {
     required String? initialText,
     required String? initialSubject,
-    required List<PleromaApiMediaAttachment>? initialMediaAttachments,
+    required List<UnifediApiMediaAttachment>? initialMediaAttachments,
   }) {
     var info = ICurrentAuthInstanceBloc.of(context, listen: false)
         .currentInstance!
@@ -85,7 +85,7 @@ class NewPostStatusBloc extends PostStatusBloc {
         IPostStatusSettingsBloc.of(context, listen: false);
 
     return NewPostStatusBloc.withInitial(
-      pleromaAuthStatusService: Provider.of<IPleromaApiAuthStatusService>(
+      unifediApiStatusService: Provider.of<IUnifediApiStatusService>(
         context,
         listen: false,
       ),
@@ -93,21 +93,21 @@ class NewPostStatusBloc extends PostStatusBloc {
         context,
         listen: false,
       ),
-      pleromaMediaAttachmentService:
-          Provider.of<IPleromaApiMediaAttachmentService>(
+      unifediApiMediaAttachmentService:
+          Provider.of<IUnifediApiMediaAttachmentService>(
         context,
         listen: false,
       ),
       initialLanguage: postStatusSettingsBloc.defaultStatusLocale?.localeString,
-      initialVisibility: postStatusSettingsBloc.defaultVisibilityAsPleromaApi,
+      initialVisibility: postStatusSettingsBloc.defaultVisibilityAsUnifediApi,
       initialText: initialText,
       initialSubject: initialSubject,
       initialMediaAttachments: initialMediaAttachments,
-      maximumMessageLength: info.maxTootChars,
-      pleromaInstancePollLimits: info.pollLimits,
-      maximumFileSizeInBytes: info.uploadLimit,
+      maximumMessageLength: info.limits?.status?.maxTootChars,
+      pollLimits: info.limits?.poll,
+      maximumFileSizeInBytes: info.limits?.media?.uploadLimit,
       markMediaAsNsfwOnAttach: postStatusSettingsBloc.markMediaAsNsfwOnAttach,
-      isPleromaInstance: info.isPleroma,
+      isPleromaInstance: info.typeAsUnifediApi.isPleroma,
       scheduledStatusRepository: IScheduledStatusRepository.of(
         context,
         listen: false,
@@ -120,7 +120,7 @@ class NewPostStatusBloc extends PostStatusBloc {
     required Widget child,
     required String? initialText,
     required String? initialSubject,
-    required List<PleromaApiMediaAttachment>? initialMediaAttachments,
+    required List<UnifediApiMediaAttachment>? initialMediaAttachments,
   }) {
     return DisposableProvider<IPostStatusBloc>(
       create: (context) => NewPostStatusBloc.createFromContextWithInitial(
@@ -145,7 +145,7 @@ class NewPostStatusBloc extends PostStatusBloc {
         IPostStatusSettingsBloc.of(context, listen: false);
 
     return NewPostStatusBloc(
-      pleromaAuthStatusService: Provider.of<IPleromaApiAuthStatusService>(
+      unifediApiStatusService: Provider.of<IUnifediApiStatusService>(
         context,
         listen: false,
       ),
@@ -153,17 +153,17 @@ class NewPostStatusBloc extends PostStatusBloc {
         context,
         listen: false,
       ),
-      pleromaMediaAttachmentService:
-          Provider.of<IPleromaApiMediaAttachmentService>(
+      unifediApiMediaAttachmentService:
+          Provider.of<IUnifediApiMediaAttachmentService>(
         context,
         listen: false,
       ),
       initialData: initialData,
       maximumMessageLength: info.maxTootChars,
-      pleromaInstancePollLimits: info.pollLimits,
+      pollLimits: info.pollLimits,
       maximumFileSizeInBytes: info.uploadLimit,
       markMediaAsNsfwOnAttach: postStatusSettingsBloc.markMediaAsNsfwOnAttach,
-      isPleromaInstance: info.isPleroma,
+      isPleromaInstance: info.typeAsUnifediApi.isPleroma,
       scheduledStatusRepository: IScheduledStatusRepository.of(
         context,
         listen: false,

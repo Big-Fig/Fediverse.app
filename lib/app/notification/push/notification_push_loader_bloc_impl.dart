@@ -16,8 +16,8 @@ import 'package:fedi/app/push/notification/notification_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:logging/logging.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 var _logger = Logger('notification_push_loader_bloc_impl.dart');
 
@@ -25,7 +25,7 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
     implements INotificationPushLoaderBloc {
   final AuthInstance currentInstance;
   final INotificationsPushHandlerBloc notificationsPushHandlerBloc;
-  final IPleromaApiNotificationService pleromaNotificationService;
+  final IUnifediApiNotificationService pleromaNotificationService;
 
   final INotificationRepository notificationRepository;
   final IAccountRepository accountRepository;
@@ -33,9 +33,9 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
   final IPleromaChatMessageRepository chatMessageRepository;
   final IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
   final IMyAccountBloc myAccountBloc;
-  final IPleromaApiMyAccountService pleromaApiMyAccountService;
-  final IPleromaApiChatService pleromaApiChatService;
-  final IPleromaApiAuthStatusService pleromaApiAuthStatusService;
+  final IUnifediApiMyAccountService unifediApiMyAccountService;
+  final IUnifediApiChatService unifediApiChatService;
+  final IUnifediApiStatusService unifediApiStatusService;
 
   BehaviorSubject<NotificationPushLoaderNotification?>
       launchPushLoaderNotificationSubject = BehaviorSubject();
@@ -64,9 +64,9 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
     required this.chatNewMessagesHandlerBloc,
     required this.myAccountBloc,
     required this.accountRepository,
-    required this.pleromaApiMyAccountService,
-    required this.pleromaApiAuthStatusService,
-    required this.pleromaApiChatService,
+    required this.unifediApiMyAccountService,
+    required this.unifediApiStatusService,
+    required this.unifediApiChatService,
     required this.statusRepository,
     required this.chatMessageRepository,
   }) {
@@ -101,14 +101,14 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
     if (isForCurrentInstance) {
       var remoteNotificationId = pleromaPushMessage.notificationId;
 
-      IPleromaApiNotification? remoteNotification =
-          pleromaPushMessage.pleromaApiNotification;
+      IUnifediApiNotification? remoteNotification =
+          pleromaPushMessage.unifediApiNotification;
 
       // if we have only remoteNotificationId
       // in case we have decrypted push notifications
       // via old PushRelay server or on Flutter side(not implemented yet)
       remoteNotification ??= await pleromaNotificationService.getNotification(
-        notificationRemoteId: remoteNotificationId,
+        notificationId: remoteNotificationId,
       );
 
       handled = true;
@@ -132,7 +132,7 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
   }
 
   Future<void> _handleNewAction({
-    required IPleromaApiNotification remoteNotification,
+    required IUnifediApiNotification remoteNotification,
     required NotificationsPushHandlerMessage notificationsPushHandlerMessage,
   }) async {
     var notificationActionType = notificationsPushHandlerMessage
@@ -164,7 +164,7 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
   }
 
   Future<void> _handleNewReplyAction({
-    required IPleromaApiNotification remoteNotification,
+    required IUnifediApiNotification remoteNotification,
     required NotificationsPushHandlerMessage notificationsPushHandlerMessage,
   }) async {
     var notificationActionInput =
@@ -177,26 +177,24 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
       return;
     }
 
-    var pleromaApiNotificationType = remoteNotification.typeAsPleromaApi;
-    switch (pleromaApiNotificationType) {
-      case PleromaApiNotificationType.pleromaChatMention:
-        var chatMessage = remoteNotification.chatMessage!;
-        var pleromaApiChatMessage = await pleromaApiChatService.sendMessage(
-          chatId: chatMessage.chatId,
-          data: PleromaApiChatMessageSendData(
-            content: notificationActionInput,
-            idempotencyKey: null,
-            mediaId: null,
-          ),
-        );
-        await chatMessageRepository.upsertInRemoteType(pleromaApiChatMessage);
-        break;
+    var unifediApiNotificationType = remoteNotification.typeAsUnifediApi;
 
-      case PleromaApiNotificationType.mention:
+    await unifediApiNotificationType.maybeMap<FutureOr>(
+      chatMention: (_) async {
+        var chatMessage = remoteNotification.chatMessage!;
+        var unifediApiChatMessage = await unifediApiChatService.sendMessage(
+          chatId: chatMessage.chatId,
+          content: notificationActionInput,
+          idempotencyKey: null,
+          mediaId: null,
+        );
+        await chatMessageRepository.upsertInRemoteType(unifediApiChatMessage);
+      },
+      mention: (_) async {
         var status = remoteNotification.status!;
         var directConversationId = status.pleroma?.directConversationId;
-        var pleromaApiStatus = await pleromaApiAuthStatusService.postStatus(
-          data: PleromaApiPostStatus(
+        var unifediApiStatus = await unifediApiStatusService.postStatus(
+          data: UnifediApiPostStatus(
             contentType: null,
             expiresInSeconds: null,
             inReplyToConversationId: directConversationId?.toString(),
@@ -215,52 +213,51 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
             ],
           ),
         );
-        await statusRepository.upsertInRemoteType(pleromaApiStatus);
-        break;
-
-      default:
-        _logger.warning(() => 'cant _handleNewReplyAction '
-            'invalid pleromaApiNotificationType $pleromaApiNotificationType');
-        break;
-    }
+        await statusRepository.upsertInRemoteType(unifediApiStatus);
+      },
+      orElse: () async => _logger.warning(
+        () => 'cant _handleNewReplyAction '
+            'invalid unifediApiNotificationType $unifediApiNotificationType',
+      ),
+    );
   }
 
   Future<void> _handleNewFollowRequestAction({
-    required IPleromaApiNotification remoteNotification,
+    required IUnifediApiNotification remoteNotification,
     required NotificationsPushHandlerMessage notificationsPushHandlerMessage,
     required bool accept,
   }) async {
-    var pleromaApiAccount = remoteNotification.account!;
-    var accountRemoteId = pleromaApiAccount.id;
+    var unifediApiAccount = remoteNotification.account!;
+    var accountRemoteId = unifediApiAccount.id;
 
-    IPleromaApiAccountRelationship pleromaApiAccountRelationship;
+    IUnifediApiAccountRelationship unifediApiAccountRelationship;
     if (accept) {
-      pleromaApiAccountRelationship =
-          await pleromaApiMyAccountService.acceptFollowRequest(
+      unifediApiAccountRelationship =
+          await unifediApiMyAccountService.acceptFollowRequest(
         accountRemoteId: accountRemoteId,
       );
     } else {
-      pleromaApiAccountRelationship =
-          await pleromaApiMyAccountService.rejectFollowRequest(
+      unifediApiAccountRelationship =
+          await unifediApiMyAccountService.rejectFollowRequest(
         accountRemoteId: accountRemoteId,
       );
     }
 
     await _processFollowRequestAction(
-      pleromaApiAccount: pleromaApiAccount,
-      accountRelationship: pleromaApiAccountRelationship,
+      unifediApiAccount: unifediApiAccount,
+      accountRelationship: unifediApiAccountRelationship,
     );
   }
 
   // todo: refactor copy-pasted code
   Future _processFollowRequestAction({
-    required IPleromaApiAccount pleromaApiAccount,
-    required IPleromaApiAccountRelationship accountRelationship,
+    required IUnifediApiAccount unifediApiAccount,
+    required IUnifediApiAccountRelationship accountRelationship,
   }) async {
-    var localAccount = pleromaApiAccount.toDbAccountWrapper().copyWith(
-          pleromaRelationship: accountRelationship,
+    var localAccount = unifediApiAccount.toDbAccountWrapper().copyWith(
+          relationship: accountRelationship,
         );
-    pleromaApiAccount = localAccount.toPleromaApiAccount();
+    unifediApiAccount = localAccount.toUnifediApiAccount();
 
     await notificationRepository.batch((batch) {
       notificationRepository.dismissFollowRequestNotificationsFromAccount(
@@ -268,7 +265,7 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
         batchTransaction: batch,
       );
       accountRepository.upsertInRemoteTypeBatch(
-        pleromaApiAccount,
+        unifediApiAccount,
         batchTransaction: batch,
       );
     });
@@ -277,7 +274,7 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
   }
 
   Future<void> _handleNewMessage({
-    required IPleromaApiNotification remoteNotification,
+    required IUnifediApiNotification remoteNotification,
     required NotificationsPushHandlerMessage notificationsPushHandlerMessage,
   }) async {
     var all = await notificationRepository.countAll();
@@ -322,10 +319,11 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
       await chatNewMessagesHandlerBloc.handleNewMessage(chatMessage);
     }
 
-    var pleromaNotificationType = remoteNotification.typeAsPleromaApi;
+    var unifediApiNotificationType = remoteNotification.typeAsUnifediApi;
 
     // refresh to update followRequestCount
-    if (pleromaNotificationType == PleromaApiNotificationType.followRequest) {
+    if (unifediApiNotificationType ==
+        UnifediApiNotificationType.followRequestValue) {
       // ignore: unawaited_futures
       myAccountBloc.refreshFromNetwork(
         isNeedPreFetchRelationship: false,

@@ -27,7 +27,7 @@ class StatusActionsListWidget extends StatelessWidget {
       var remoteInstanceBloc = IRemoteInstanceBloc.of(context);
       // todo: refactor
       isPleromaInstance =
-          remoteInstanceBloc.pleromaApiInstance?.pleroma != null;
+          remoteInstanceBloc.unifediApiInstance!.typeAsUnifediApi.isPleroma;
     }
 
     return Padding(

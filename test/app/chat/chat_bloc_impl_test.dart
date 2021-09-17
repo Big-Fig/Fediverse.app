@@ -21,7 +21,7 @@ import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository_impl.da
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -36,14 +36,14 @@ import 'message/chat_message_test_helper.dart';
 
 // ignore_for_file: no-magic-number, avoid-late-keyword
 @GenerateMocks([
-  IPleromaApiChatService,
-  IPleromaApiMyAccountService,
+  IUnifediApiChatService,
+  IUnifediApiMyAccountService,
 ])
 void main() {
   late IPleromaChat chat;
   late IPleromaChatBloc chatBloc;
-  late MockIPleromaApiChatService pleromaChatServiceMock;
-  late MockIPleromaApiMyAccountService pleromaMyAccountServiceMock;
+  late MockIUnifediApiChatService pleromaChatServiceMock;
+  late MockIUnifediApiMyAccountService unifediApiMyAccountServiceMock;
   late AppDatabase database;
   late IAccountRepository accountRepository;
   late IPleromaChatMessageRepository chatMessageRepository;
@@ -68,13 +68,13 @@ void main() {
       chatMessageRepository: chatMessageRepository,
     );
 
-    pleromaChatServiceMock = MockIPleromaApiChatService();
-    pleromaMyAccountServiceMock = MockIPleromaApiMyAccountService();
+    pleromaChatServiceMock = MockIUnifediApiChatService();
+    unifediApiMyAccountServiceMock = MockIUnifediApiMyAccountService();
 
     preferencesService = MemoryLocalPreferencesService();
 
     myAccount =
-        await MyAccountTestHelper.createTestMyAccount(seed: 'myAccount');
+        await MyAccountMockHelper.createTestMyAccount(seed: 'myAccount');
     authInstance = AuthInstance(
       urlHost: 'fedi.app',
       acct: myAccount.acct,
@@ -92,22 +92,22 @@ void main() {
     );
 
     await myAccountLocalPreferenceBloc.setValue(
-      myAccount.toPleromaApiMyAccountWrapper(),
+      myAccount.toUnifediApiMyAccountWrapper(),
     );
 
     myAccountBloc = MyAccountBloc(
-      pleromaMyAccountService: pleromaMyAccountServiceMock,
+      unifediApiMyAccountService: unifediApiMyAccountServiceMock,
       accountRepository: accountRepository,
       myAccountLocalPreferenceBloc: myAccountLocalPreferenceBloc,
       instance: authInstance,
     );
 
     when(pleromaChatServiceMock.isConnected).thenReturn(true);
-    when(pleromaChatServiceMock.pleromaApiState).thenReturn(
-      PleromaApiState.validAuth,
+    when(pleromaChatServiceMock.unifediApiState).thenReturn(
+      UnifediApiState.validAuth,
     );
 
-    chat = await ChatTestHelper.createTestChat(seed: 'seed1');
+    chat = await ChatMockHelper.createTestChat(seed: 'seed1');
 
     chatBloc = PleromaChatBloc(
       chat: chat,
@@ -139,24 +139,24 @@ void main() {
     await accountRepository.upsertChatRemoteAccounts(
       accounts
           .map(
-            (account) => account.toPleromaApiAccount(),
+            (account) => account.toUnifediApiAccount(),
           )
           .toList(),
       chatRemoteId: chat.remoteId,
       batchTransaction: null,
     );
-    await chatRepository.upsertInRemoteType(chat.toPleromaApiChat(
+    await chatRepository.upsertInRemoteType(chat.toUnifediApiChat(
       lastChatMessage: lastChatMessage,
       accounts: accounts,
     ));
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
   }
 
   test('chat', () async {
-    ChatTestHelper.expectChat(chatBloc.chat, chat);
+    ChatMockHelper.expectChat(chatBloc.chat, chat);
 
-    var newValue = await ChatTestHelper.createTestChat(
+    var newValue = await ChatMockHelper.createTestChat(
       seed: 'seed2',
       remoteId: chat.remoteId,
     );
@@ -168,16 +168,16 @@ void main() {
     });
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
-    ChatTestHelper.expectChat(listened, chat);
+    ChatMockHelper.expectChat(listened, chat);
 
-    var account1 = await AccountTestHelper.createTestAccount(seed: 'account1');
+    var account1 = await AccountMockHelper.createTestAccount(seed: 'account1');
 
     await _update(newValue, accounts: [account1]);
 
-    ChatTestHelper.expectChat(chatBloc.chat, newValue);
-    ChatTestHelper.expectChat(listened, newValue);
+    ChatMockHelper.expectChat(chatBloc.chat, newValue);
+    ChatMockHelper.expectChat(listened, newValue);
     await subscription.cancel();
   });
 
@@ -193,7 +193,7 @@ void main() {
     });
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(listened, chat.updatedAt);
 
@@ -205,27 +205,27 @@ void main() {
   });
 
   test('lastChatMessage', () async {
-    var account1 = await AccountTestHelper.createTestAccount(
+    var account1 = await AccountMockHelper.createTestAccount(
       seed: 'chatMessage1',
     );
-    var account2 = await AccountTestHelper.createTestAccount(
+    var account2 = await AccountMockHelper.createTestAccount(
       seed: 'chatMessage1',
     );
 
-    var chatMessage1 = await ChatMessageTestHelper.createTestChatMessage(
+    var chatMessage1 = await ChatMessageMockHelper.createTestChatMessage(
       seed: 'chatMessage1',
       chatRemoteId: chat.remoteId,
       createdAt: DateTime(2001),
       account: account1,
     );
-    var chatMessage2 = await ChatMessageTestHelper.createTestChatMessage(
+    var chatMessage2 = await ChatMessageMockHelper.createTestChatMessage(
       seed: 'chatMessage2',
       chatRemoteId: chat.remoteId,
       createdAt: DateTime(2002),
       account: account2,
     );
 
-    var newValue = await ChatTestHelper.createTestChat(
+    var newValue = await ChatMockHelper.createTestChat(
       seed: 'seed2',
       remoteId: chat.remoteId,
       account: account2,
@@ -243,16 +243,16 @@ void main() {
       lastChatMessage: chatMessage1,
     );
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
 
-    ChatMessageTestHelper.expectChatMessage(
+    ChatMessageMockHelper.expectChatMessage(
       chatBloc.lastChatMessage,
       chatMessage1,
     );
-    ChatMessageTestHelper.expectChatMessage(listened, chatMessage1);
+    ChatMessageMockHelper.expectChatMessage(listened, chatMessage1);
 
     await chatMessageRepository.upsertInRemoteType(
-      chatMessage2.toPleromaApiChatMessage(),
+      chatMessage2.toUnifediApiChatMessage(),
     );
 
     await _update(
@@ -261,23 +261,23 @@ void main() {
       lastChatMessage: chatMessage1,
     );
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
 
-    ChatMessageTestHelper.expectChatMessage(
+    ChatMessageMockHelper.expectChatMessage(
       chatBloc.lastChatMessage,
       chatMessage2,
     );
-    ChatMessageTestHelper.expectChatMessage(listened, chatMessage2);
+    ChatMessageMockHelper.expectChatMessage(listened, chatMessage2);
 
     await subscription.cancel();
   });
 
 // todo: rework after backend chats with several accounts rework
   test('accounts', () async {
-    var account1 = await AccountTestHelper.createTestAccount(seed: 'account1');
-    var account2 = await AccountTestHelper.createTestAccount(seed: 'account2');
+    var account1 = await AccountMockHelper.createTestAccount(seed: 'account1');
+    var account2 = await AccountMockHelper.createTestAccount(seed: 'account2');
 
-    var newValue = await ChatTestHelper.createTestChat(
+    var newValue = await ChatMockHelper.createTestChat(
       seed: 'seed2',
       remoteId: chat.remoteId,
     );
@@ -290,32 +290,32 @@ void main() {
 
     await _update(newValue, accounts: [account1]);
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
 
-    AccountTestHelper.expectAccount(chatBloc.accounts[0], account1);
-    AccountTestHelper.expectAccount(listened[0], account1);
+    AccountMockHelper.expectAccount(chatBloc.accounts[0], account1);
+    AccountMockHelper.expectAccount(listened[0], account1);
 
     await _update(newValue, accounts: [
       account2, //      account3
     ]);
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
 
-    AccountTestHelper.expectAccount(chatBloc.accounts[0], account2);
-//    AccountTestHelper.expectAccount(chatBloc.accounts[2], account3);
-    AccountTestHelper.expectAccount(listened[0], account2);
-//    AccountTestHelper.expectAccount(listened[2], account3);
+    AccountMockHelper.expectAccount(chatBloc.accounts[0], account2);
+//    AccountMockHelper.expectAccount(chatBloc.accounts[2], account3);
+    AccountMockHelper.expectAccount(listened[0], account2);
+//    AccountMockHelper.expectAccount(listened[2], account3);
 
     await subscription.cancel();
   });
 
 //
 //  test('accounts', () async {
-//    var account1 = await AccountTestHelper.createTestAccount(seed: 'account1');
-//    var account2 = await AccountTestHelper.createTestAccount(seed: 'account2');
-////    var account3 = await AccountTestHelper.createTestAccount(seed: 'account3');
+//    var account1 = await AccountMockHelper.createTestAccount(seed: 'account1');
+//    var account2 = await AccountMockHelper.createTestAccount(seed: 'account2');
+////    var account3 = await AccountMockHelper.createTestAccount(seed: 'account3');
 //
-//    var newValue = await ChatTestHelper.createTestChat(seed: 'seed2', remoteId: chat.remoteId);
+//    var newValue = await ChatMockHelper.createTestChat(seed: 'seed2', remoteId: chat.remoteId);
 //
 //    var listened;
 //
@@ -327,11 +327,11 @@ void main() {
 //
 //
 //     listened = null;
-//     await RxDartTestHelper.waitForData(() => listened);
+//     await RxDartMockHelper.waitForData(() => listened);
 
 //
-//    AccountTestHelper.expectAccount(chatBloc.accounts[0], account1);
-//    AccountTestHelper.expectAccount(listened[0], account1);
+//    AccountMockHelper.expectAccount(chatBloc.accounts[0], account1);
+//    AccountMockHelper.expectAccount(listened[0], account1);
 //
 //    await _update(newValue, accounts: [
 //      account2, //      account3
@@ -340,23 +340,23 @@ void main() {
 //
 //
 //     listened = null;
-//     await RxDartTestHelper.waitForData(() => listened);
+//     await RxDartMockHelper.waitForData(() => listened);
 
 //
-//    AccountTestHelper.expectAccount(chatBloc.accounts[0], account1);
-//    AccountTestHelper.expectAccount(chatBloc.accounts[1], account2);
-////    AccountTestHelper.expectAccount(chatBloc.accounts[2], account3);
-//    AccountTestHelper.expectAccount(listened[0], account1);
-//    AccountTestHelper.expectAccount(listened[1], account2);
-////    AccountTestHelper.expectAccount(listened[2], account3);
+//    AccountMockHelper.expectAccount(chatBloc.accounts[0], account1);
+//    AccountMockHelper.expectAccount(chatBloc.accounts[1], account2);
+////    AccountMockHelper.expectAccount(chatBloc.accounts[2], account3);
+//    AccountMockHelper.expectAccount(listened[0], account1);
+//    AccountMockHelper.expectAccount(listened[1], account2);
+////    AccountMockHelper.expectAccount(listened[2], account3);
 //
 //    await subscription.cancel();
 //  });
 
 //  test('refreshFromNetwork', () async {
-//    ChatTestHelper.expectChat(chatBloc.chat, chat);
+//    ChatMockHelper.expectChat(chatBloc.chat, chat);
 //
-//    var newValue = await ChatTestHelper.createTestChat(
+//    var newValue = await ChatMockHelper.createTestChat(
 //        seed: 'seed2', remoteId: chat.remoteId);
 //
 //    var listened;
@@ -367,9 +367,9 @@ void main() {
 //
 //
 //     listened = null;
-//     await RxDartTestHelper.waitForData(() => listened);
+//     await RxDartMockHelper.waitForData(() => listened);
 
-//    ChatTestHelper.expectChat(listened, chat);
+//    ChatMockHelper.expectChat(listened, chat);
 //
 //    when(pleromaChatServiceMock.getChat(
 //            chatRemoteId: chat.remoteId))
@@ -382,11 +382,11 @@ void main() {
 //
 //
 //     listened = null;
-//     await RxDartTestHelper.waitForData(() => listened);
+//     await RxDartMockHelper.waitForData(() => listened);
 
 //
-//    ChatTestHelper.expectChat(chatBloc.chat, newValue);
-//    ChatTestHelper.expectChat(listened, newValue);
+//    ChatMockHelper.expectChat(chatBloc.chat, newValue);
+//    ChatMockHelper.expectChat(listened, newValue);
 //    await subscription.cancel();
 //  });
 }

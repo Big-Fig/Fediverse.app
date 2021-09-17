@@ -5,7 +5,7 @@ import 'package:fedi/app/chat/pleroma/pleroma_chat_page.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/app/toast/toast_service.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -19,24 +19,24 @@ Future goToPleromaChatWithAccount({
     goToPleromaChatPage(context, chat: chat);
   } else {
     var isAccountAcceptsChatMessages =
-        account.pleromaAcceptsChatMessages != false;
+        account.acceptsChatMessages != false;
     if (isAccountAcceptsChatMessages) {
       var dialogResult = await PleromaAsyncOperationHelper
           .performPleromaAsyncOperation<IPleromaChat?>(
         context: context,
         asyncCode: () async {
           var pleromaChatService =
-              Provider.of<IPleromaApiChatService>(context, listen: false);
+              Provider.of<IUnifediApiChatService>(context, listen: false);
 
-          var pleromaApiChat =
+          var unifediApiChat =
               await pleromaChatService.getOrCreateChatByAccountId(
             accountId: account.remoteId,
           );
 
-          await chatRepository.upsertInRemoteType(pleromaApiChat);
+          await chatRepository.upsertInRemoteType(unifediApiChat);
 
           return await chatRepository
-              .findByRemoteIdInAppType(pleromaApiChat.id);
+              .findByRemoteIdInAppType(unifediApiChat.id);
         },
       );
       chat = dialogResult.result;

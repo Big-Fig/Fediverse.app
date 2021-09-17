@@ -1,9 +1,9 @@
 import 'package:fedi/app/account/account_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:fedi/app/notification/notification_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
+
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -31,9 +31,9 @@ abstract class INotificationBloc implements IDisposable {
 
   Stream<String?> get chatRemoteIdStream;
 
-  IPleromaApiChatMessage? get chatMessage;
+  IUnifediApiChatMessage? get chatMessage;
 
-  Stream<IPleromaApiChatMessage?> get chatMessageStream;
+  Stream<IUnifediApiChatMessage?> get chatMessageStream;
 
   String get remoteId;
 
@@ -41,11 +41,7 @@ abstract class INotificationBloc implements IDisposable {
 
   Stream<IAccount?> get accountStream;
 
-  String get type;
-
-  MastodonApiNotificationType get typeMastodon;
-
-  PleromaApiNotificationType get typePleroma;
+  UnifediApiNotificationType get typeAsUnifediApi;
 
   DateTime get createdAt;
 

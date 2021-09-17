@@ -9,8 +9,8 @@ import 'emoji_picker_custom_image_url_category_test_helper.dart';
 
 void main() {
   test('equal & hashcode & toString', () async {
-    ObjTestHelper.testEqualsHashcodeToString(
-      ({required String seed}) => CustomEmojiPickerImageUrlItemModelTestHelper
+    ObjMockHelper.testEqualsHashcodeToString(
+      ({required String seed}) => CustomEmojiPickerImageUrlItemModelMockHelper
           .createTestEmojiPickerCustomImageUrlCategoryItems(
         seed: seed,
       ),
@@ -18,8 +18,8 @@ void main() {
   });
 
   test('toJson & fromJson', () async {
-    JsonTestHelper.testFromJsonToJson(
-      ({required String seed}) => CustomEmojiPickerImageUrlItemModelTestHelper
+    JsonMockHelper.testFromJsonToJson(
+      ({required String seed}) => CustomEmojiPickerImageUrlItemModelMockHelper
           .createTestEmojiPickerCustomImageUrlCategoryItems(
         seed: seed,
       ),
@@ -28,8 +28,8 @@ void main() {
   });
 
   test('hive save&load', () async {
-    await HiveTestHelper.testHiveSaveAndLoad(
-      ({required String seed}) => CustomEmojiPickerImageUrlItemModelTestHelper
+    await HiveMockHelper.testHiveSaveAndLoad(
+      ({required String seed}) => CustomEmojiPickerImageUrlItemModelMockHelper
           .createTestEmojiPickerCustomImageUrlCategoryItems(
         seed: seed,
       ),
@@ -37,7 +37,7 @@ void main() {
   });
 
   test('hive adapter', () async {
-    HiveTestHelper.testAdapter(
+    HiveMockHelper.testAdapter(
       () => CustomEmojiPickerImageUrlItemAdapter(),
     );
   });

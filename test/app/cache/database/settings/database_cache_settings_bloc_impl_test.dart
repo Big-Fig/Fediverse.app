@@ -73,7 +73,7 @@ void main() {
     );
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     var defaultValue =
         GlobalDatabaseCacheSettingsLocalPreferenceBloc.defaultValue;
@@ -97,7 +97,7 @@ void main() {
     );
 
     var testDatabaseCacheAgeLimitType =
-        DatabaseCacheSettingsModelTestHelper.createTestDatabaseCacheSettings(
+        DatabaseCacheSettingsModelMockHelper.createTestDatabaseCacheSettings(
       seed: 'seed',
     ).ageLimitType;
 
@@ -105,7 +105,7 @@ void main() {
         .changeAgeLimitType(testDatabaseCacheAgeLimitType);
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(
       listenedSettingsData?.ageLimitType,
@@ -140,7 +140,7 @@ void main() {
     );
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     var defaultValue =
         GlobalDatabaseCacheSettingsLocalPreferenceBloc.defaultValue;
@@ -164,7 +164,7 @@ void main() {
     );
 
     var testDatabaseCacheEntriesCountByTypeLimitType =
-        DatabaseCacheSettingsModelTestHelper.createTestDatabaseCacheSettings(
+        DatabaseCacheSettingsModelMockHelper.createTestDatabaseCacheSettings(
       seed: 'seed',
     ).entriesCountByTypeLimitType;
 
@@ -173,7 +173,7 @@ void main() {
     );
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(
       listenedSettingsData?.entriesCountByTypeLimitType,

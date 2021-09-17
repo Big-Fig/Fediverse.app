@@ -1,6 +1,6 @@
 import 'package:fedi/app/chat/message/chat_message_model.dart';
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -36,7 +36,7 @@ abstract class IChatSelectionBloc implements IDisposable {
 
   String calculateSelectionAsRawText();
 
-  List<IPleromaApiMediaAttachment>? calculateSelectionAsMediaAttachments();
+  List<IUnifediApiMediaAttachment>? calculateSelectionAsMediaAttachments();
 
   void clearSelection();
 }

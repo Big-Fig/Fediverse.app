@@ -25,7 +25,7 @@ void main() {
         ScheduledStatusRepository(appDatabase: database);
 
     dbScheduledStatus =
-        await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+        await ScheduledStatusDatabaseMockHelper.createTestDbScheduledStatus(
       seed: 'seed4',
     );
   });
@@ -41,7 +41,7 @@ void main() {
       mode: null,
     );
     assert(id > 0, true);
-    ScheduledStatusDatabaseTestHelper.expectDbScheduledStatus(
+    ScheduledStatusDatabaseMockHelper.expectDbScheduledStatus(
       await scheduledStatusRepository.findByDbIdInAppType(id),
       dbScheduledStatus,
     );
@@ -49,13 +49,13 @@ void main() {
 
   test('upsertAll', () async {
     var dbScheduledStatus1 =
-        (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+        (await ScheduledStatusDatabaseMockHelper.createTestDbScheduledStatus(
       seed: 'seed5',
     ))
             .copyWith(remoteId: 'remoteId1');
     // same remote id
     var dbScheduledStatus2 =
-        (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+        (await ScheduledStatusDatabaseMockHelper.createTestDbScheduledStatus(
       seed: 'seed6',
     ))
             .copyWith(remoteId: 'remoteId1');
@@ -73,7 +73,7 @@ void main() {
     );
     expect((await scheduledStatusRepository.getAllInAppType()).length, 1);
 
-    ScheduledStatusDatabaseTestHelper.expectDbScheduledStatus(
+    ScheduledStatusDatabaseMockHelper.expectDbScheduledStatus(
       (await scheduledStatusRepository.getAllInAppType()).first,
       dbScheduledStatus2,
     );
@@ -137,7 +137,7 @@ void main() {
       dbScheduledStatus!,
       mode: null,
     );
-    ScheduledStatusDatabaseTestHelper.expectDbScheduledStatus(
+    ScheduledStatusDatabaseMockHelper.expectDbScheduledStatus(
       await scheduledStatusRepository
           .findByRemoteIdInAppType(dbScheduledStatus!.remoteId),
       dbScheduledStatus,
@@ -184,7 +184,7 @@ void main() {
     );
 
     expect(await scheduledStatusRepository.countAll(), 1);
-    ScheduledStatusDatabaseTestHelper.expectDbScheduledStatus(
+    ScheduledStatusDatabaseMockHelper.expectDbScheduledStatus(
       await scheduledStatusRepository
           .findByRemoteIdInAppType(dbScheduledStatus!.remoteId),
       dbScheduledStatus,
@@ -200,7 +200,7 @@ void main() {
     );
     expect(await scheduledStatusRepository.countAll(), 1);
 
-    ScheduledStatusDatabaseTestHelper.expectDbScheduledStatus(
+    ScheduledStatusDatabaseMockHelper.expectDbScheduledStatus(
       await scheduledStatusRepository
           .findByRemoteIdInAppType(dbScheduledStatus!.remoteId),
       dbScheduledStatus,
@@ -218,7 +218,7 @@ void main() {
     );
 
     expect(await scheduledStatusRepository.countAll(), 1);
-    ScheduledStatusDatabaseTestHelper.expectDbScheduledStatus(
+    ScheduledStatusDatabaseMockHelper.expectDbScheduledStatus(
       await scheduledStatusRepository
           .findByRemoteIdInAppType(dbScheduledStatus!.remoteId),
       dbScheduledStatus,
@@ -233,7 +233,7 @@ void main() {
     );
     // update item with same id
     expect(await scheduledStatusRepository.countAll(), 1);
-    ScheduledStatusDatabaseTestHelper.expectDbScheduledStatus(
+    ScheduledStatusDatabaseMockHelper.expectDbScheduledStatus(
       await scheduledStatusRepository
           .findByRemoteIdInAppType(dbScheduledStatus!.remoteId),
       dbScheduledStatus,
@@ -250,7 +250,7 @@ void main() {
     expect((await query.get()).length, 0);
 
     await scheduledStatusRepository.insertInDbType(
-      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+      (await ScheduledStatusDatabaseMockHelper.createTestDbScheduledStatus(
         seed: 'seed1',
       ))
           .copyWith(),
@@ -260,7 +260,7 @@ void main() {
     expect((await query.get()).length, 1);
 
     await scheduledStatusRepository.insertInDbType(
-      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+      (await ScheduledStatusDatabaseMockHelper.createTestDbScheduledStatus(
         seed: 'seed2',
       ))
           .copyWith(),
@@ -270,7 +270,7 @@ void main() {
     expect((await query.get()).length, 2);
 
     await scheduledStatusRepository.insertInDbType(
-      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+      (await ScheduledStatusDatabaseMockHelper.createTestDbScheduledStatus(
         seed: 'seed3',
       ))
           .copyWith(),
@@ -290,13 +290,13 @@ void main() {
     );
 
     var scheduledStatus =
-        (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+        (await ScheduledStatusDatabaseMockHelper.createTestDbScheduledStatus(
       seed: 'seed2',
       canceled: false,
     ))
             .copyWith(remoteId: 'remoteId4');
     scheduledStatus =
-        await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+        await ScheduledStatusRepositoryMockHelper.insertDbScheduledStatus(
       scheduledStatusRepository,
       scheduledStatus,
     );
@@ -322,9 +322,9 @@ void main() {
       orderingTermData: null,
     );
 
-    await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+    await ScheduledStatusRepositoryMockHelper.insertDbScheduledStatus(
       scheduledStatusRepository,
-      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+      (await ScheduledStatusDatabaseMockHelper.createTestDbScheduledStatus(
         seed: 'seed2',
         scheduledAt: DateTime.now().add(Duration(minutes: 1)),
       ))
@@ -333,9 +333,9 @@ void main() {
 
     expect((await query.get()).length, 1);
 
-    await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+    await ScheduledStatusRepositoryMockHelper.insertDbScheduledStatus(
       scheduledStatusRepository,
-      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+      (await ScheduledStatusDatabaseMockHelper.createTestDbScheduledStatus(
         seed: 'seed3',
         scheduledAt: DateTime.now().subtract(Duration(minutes: 1)),
       ))
@@ -350,7 +350,7 @@ void main() {
       filters: null,
       pagination: RepositoryPagination(
         newerThanItem:
-            await ScheduledStatusTestHelper.createTestScheduledStatus(
+            await ScheduledStatusMockHelper.createTestScheduledStatus(
           seed: 'remoteId5',
           remoteId: 'remoteId5',
         ),
@@ -358,9 +358,9 @@ void main() {
       orderingTermData: ScheduledStatusRepositoryOrderingTermData.remoteIdDesc,
     );
 
-    await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+    await ScheduledStatusRepositoryMockHelper.insertDbScheduledStatus(
       scheduledStatusRepository,
-      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+      (await ScheduledStatusDatabaseMockHelper.createTestDbScheduledStatus(
         seed: 'seed2',
       ))
           .copyWith(remoteId: 'remoteId4'),
@@ -368,9 +368,9 @@ void main() {
 
     expect((await query.get()).length, 0);
 
-    await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+    await ScheduledStatusRepositoryMockHelper.insertDbScheduledStatus(
       scheduledStatusRepository,
-      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+      (await ScheduledStatusDatabaseMockHelper.createTestDbScheduledStatus(
         seed: 'seed2',
       ))
           .copyWith(remoteId: 'remoteId5'),
@@ -378,18 +378,18 @@ void main() {
 
     expect((await query.get()).length, 0);
 
-    await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+    await ScheduledStatusRepositoryMockHelper.insertDbScheduledStatus(
       scheduledStatusRepository,
-      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+      (await ScheduledStatusDatabaseMockHelper.createTestDbScheduledStatus(
         seed: 'seed1',
       ))
           .copyWith(remoteId: 'remoteId6'),
     );
 
     expect((await query.get()).length, 1);
-    await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+    await ScheduledStatusRepositoryMockHelper.insertDbScheduledStatus(
       scheduledStatusRepository,
-      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+      (await ScheduledStatusDatabaseMockHelper.createTestDbScheduledStatus(
         seed: 'seed1',
       ))
           .copyWith(remoteId: 'remoteId7'),
@@ -403,7 +403,7 @@ void main() {
       filters: null,
       pagination: RepositoryPagination(
         olderThanItem:
-            await ScheduledStatusTestHelper.createTestScheduledStatus(
+            await ScheduledStatusMockHelper.createTestScheduledStatus(
           seed: 'remoteId5',
           remoteId: 'remoteId5',
         ),
@@ -411,18 +411,18 @@ void main() {
       orderingTermData: ScheduledStatusRepositoryOrderingTermData.remoteIdDesc,
     );
 
-    await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+    await ScheduledStatusRepositoryMockHelper.insertDbScheduledStatus(
       scheduledStatusRepository,
-      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+      (await ScheduledStatusDatabaseMockHelper.createTestDbScheduledStatus(
         seed: 'seed2',
       ))
           .copyWith(remoteId: 'remoteId3'),
     );
 
     expect((await query.get()).length, 1);
-    await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+    await ScheduledStatusRepositoryMockHelper.insertDbScheduledStatus(
       scheduledStatusRepository,
-      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+      (await ScheduledStatusDatabaseMockHelper.createTestDbScheduledStatus(
         seed: 'seed2',
       ))
           .copyWith(
@@ -432,9 +432,9 @@ void main() {
 
     expect((await query.get()).length, 2);
 
-    await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+    await ScheduledStatusRepositoryMockHelper.insertDbScheduledStatus(
       scheduledStatusRepository,
-      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+      (await ScheduledStatusDatabaseMockHelper.createTestDbScheduledStatus(
         seed: 'seed2',
       ))
           .copyWith(
@@ -444,9 +444,9 @@ void main() {
 
     expect((await query.get()).length, 2);
 
-    await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+    await ScheduledStatusRepositoryMockHelper.insertDbScheduledStatus(
       scheduledStatusRepository,
-      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+      (await ScheduledStatusDatabaseMockHelper.createTestDbScheduledStatus(
         seed: 'seed1',
       ))
           .copyWith(
@@ -462,12 +462,12 @@ void main() {
       filters: null,
       pagination: RepositoryPagination(
         newerThanItem:
-            await ScheduledStatusTestHelper.createTestScheduledStatus(
+            await ScheduledStatusMockHelper.createTestScheduledStatus(
           seed: 'remoteId2',
           remoteId: 'remoteId2',
         ),
         olderThanItem:
-            await ScheduledStatusTestHelper.createTestScheduledStatus(
+            await ScheduledStatusMockHelper.createTestScheduledStatus(
           seed: 'remoteId5',
           remoteId: 'remoteId5',
         ),
@@ -475,9 +475,9 @@ void main() {
       orderingTermData: ScheduledStatusRepositoryOrderingTermData.remoteIdDesc,
     );
 
-    await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+    await ScheduledStatusRepositoryMockHelper.insertDbScheduledStatus(
       scheduledStatusRepository,
-      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+      (await ScheduledStatusDatabaseMockHelper.createTestDbScheduledStatus(
         seed: 'seed1',
       ))
           .copyWith(
@@ -487,9 +487,9 @@ void main() {
 
     expect((await query.get()).length, 0);
 
-    await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+    await ScheduledStatusRepositoryMockHelper.insertDbScheduledStatus(
       scheduledStatusRepository,
-      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+      (await ScheduledStatusDatabaseMockHelper.createTestDbScheduledStatus(
         seed: 'seed2',
       ))
           .copyWith(
@@ -498,9 +498,9 @@ void main() {
     );
 
     expect((await query.get()).length, 0);
-    await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+    await ScheduledStatusRepositoryMockHelper.insertDbScheduledStatus(
       scheduledStatusRepository,
-      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+      (await ScheduledStatusDatabaseMockHelper.createTestDbScheduledStatus(
         seed: 'seed3',
       ))
           .copyWith(
@@ -510,9 +510,9 @@ void main() {
 
     expect((await query.get()).length, 1);
 
-    await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+    await ScheduledStatusRepositoryMockHelper.insertDbScheduledStatus(
       scheduledStatusRepository,
-      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+      (await ScheduledStatusDatabaseMockHelper.createTestDbScheduledStatus(
         seed: 'seed4',
       ))
           .copyWith(
@@ -522,9 +522,9 @@ void main() {
 
     expect((await query.get()).length, 2);
 
-    await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+    await ScheduledStatusRepositoryMockHelper.insertDbScheduledStatus(
       scheduledStatusRepository,
-      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+      (await ScheduledStatusDatabaseMockHelper.createTestDbScheduledStatus(
         seed: 'seed5',
       ))
           .copyWith(
@@ -534,9 +534,9 @@ void main() {
 
     expect((await query.get()).length, 2);
 
-    await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+    await ScheduledStatusRepositoryMockHelper.insertDbScheduledStatus(
       scheduledStatusRepository,
-      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+      (await ScheduledStatusDatabaseMockHelper.createTestDbScheduledStatus(
         seed: 'seed6',
       ))
           .copyWith(
@@ -555,9 +555,9 @@ void main() {
     );
 
     var scheduledStatus2 =
-        await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+        await ScheduledStatusRepositoryMockHelper.insertDbScheduledStatus(
       scheduledStatusRepository,
-      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+      (await ScheduledStatusDatabaseMockHelper.createTestDbScheduledStatus(
         seed: 'seed2',
       ))
           .copyWith(
@@ -565,9 +565,9 @@ void main() {
       ),
     );
     var scheduledStatus1 =
-        await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+        await ScheduledStatusRepositoryMockHelper.insertDbScheduledStatus(
       scheduledStatusRepository,
-      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+      (await ScheduledStatusDatabaseMockHelper.createTestDbScheduledStatus(
         seed: 'seed1',
       ))
           .copyWith(
@@ -575,9 +575,9 @@ void main() {
       ),
     );
     var scheduledStatus3 =
-        await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+        await ScheduledStatusRepositoryMockHelper.insertDbScheduledStatus(
       scheduledStatusRepository,
-      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+      (await ScheduledStatusDatabaseMockHelper.createTestDbScheduledStatus(
         seed: 'seed3',
       ))
           .copyWith(
@@ -589,15 +589,15 @@ void main() {
 
     expect(actualList.length, 3);
 
-    ScheduledStatusDatabaseTestHelper.expectDbScheduledStatus(
+    ScheduledStatusDatabaseMockHelper.expectDbScheduledStatus(
       actualList[0],
       scheduledStatus1,
     );
-    ScheduledStatusDatabaseTestHelper.expectDbScheduledStatus(
+    ScheduledStatusDatabaseMockHelper.expectDbScheduledStatus(
       actualList[1],
       scheduledStatus2,
     );
-    ScheduledStatusDatabaseTestHelper.expectDbScheduledStatus(
+    ScheduledStatusDatabaseMockHelper.expectDbScheduledStatus(
       actualList[2],
       scheduledStatus3,
     );
@@ -611,9 +611,9 @@ void main() {
     );
 
     var scheduledStatus2 =
-        await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+        await ScheduledStatusRepositoryMockHelper.insertDbScheduledStatus(
       scheduledStatusRepository,
-      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+      (await ScheduledStatusDatabaseMockHelper.createTestDbScheduledStatus(
         seed: 'seed2',
       ))
           .copyWith(
@@ -621,9 +621,9 @@ void main() {
       ),
     );
     var scheduledStatus1 =
-        await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+        await ScheduledStatusRepositoryMockHelper.insertDbScheduledStatus(
       scheduledStatusRepository,
-      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+      (await ScheduledStatusDatabaseMockHelper.createTestDbScheduledStatus(
         seed: 'seed1',
       ))
           .copyWith(
@@ -631,9 +631,9 @@ void main() {
       ),
     );
     var scheduledStatus3 =
-        await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+        await ScheduledStatusRepositoryMockHelper.insertDbScheduledStatus(
       scheduledStatusRepository,
-      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+      (await ScheduledStatusDatabaseMockHelper.createTestDbScheduledStatus(
         seed: 'seed3',
       ))
           .copyWith(
@@ -647,15 +647,15 @@ void main() {
       3,
     );
 
-    ScheduledStatusDatabaseTestHelper.expectDbScheduledStatus(
+    ScheduledStatusDatabaseMockHelper.expectDbScheduledStatus(
       actualList[0],
       scheduledStatus3,
     );
-    ScheduledStatusDatabaseTestHelper.expectDbScheduledStatus(
+    ScheduledStatusDatabaseMockHelper.expectDbScheduledStatus(
       actualList[1],
       scheduledStatus2,
     );
-    ScheduledStatusDatabaseTestHelper.expectDbScheduledStatus(
+    ScheduledStatusDatabaseMockHelper.expectDbScheduledStatus(
       actualList[2],
       scheduledStatus1,
     );
@@ -672,27 +672,27 @@ void main() {
     );
 
     var scheduledStatus2 =
-        await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+        await ScheduledStatusRepositoryMockHelper.insertDbScheduledStatus(
       scheduledStatusRepository,
-      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+      (await ScheduledStatusDatabaseMockHelper.createTestDbScheduledStatus(
         seed: 'seed2',
       ))
           .copyWith(
         remoteId: 'remoteId2',
       ),
     );
-    await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+    await ScheduledStatusRepositoryMockHelper.insertDbScheduledStatus(
       scheduledStatusRepository,
-      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+      (await ScheduledStatusDatabaseMockHelper.createTestDbScheduledStatus(
         seed: 'seed1',
       ))
           .copyWith(
         remoteId: 'remoteId1',
       ),
     );
-    await ScheduledStatusRepositoryTestHelper.insertDbScheduledStatus(
+    await ScheduledStatusRepositoryMockHelper.insertDbScheduledStatus(
       scheduledStatusRepository,
-      (await ScheduledStatusDatabaseTestHelper.createTestDbScheduledStatus(
+      (await ScheduledStatusDatabaseMockHelper.createTestDbScheduledStatus(
         seed: 'seed3',
       ))
           .copyWith(
@@ -704,7 +704,7 @@ void main() {
 
     expect(actualList.length, 1);
 
-    ScheduledStatusDatabaseTestHelper.expectDbScheduledStatus(
+    ScheduledStatusDatabaseMockHelper.expectDbScheduledStatus(
       actualList[0],
       scheduledStatus2,
     );

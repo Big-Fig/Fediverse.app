@@ -1,6 +1,6 @@
 import 'package:fedi/app/database/app_database.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 typedef AccountCallback = Function(BuildContext context, IAccount account);
 typedef AccountsListCallback = Function(
@@ -9,112 +9,6 @@ typedef AccountsListCallback = Function(
 );
 
 abstract class IAccount {
-  String? get fqn;
-
-  static List<IAccount> excludeAccountFromList(
-    List<IAccount> accounts,
-    bool Function(IAccount account) predicate,
-  ) =>
-      accounts
-          .where(
-            (account) => predicate(account),
-          )
-          .toList();
-
-  int? get localId;
-
-  String get remoteId;
-
-  String get username;
-
-  String get url;
-
-  int get statusesCount;
-
-  String? get note;
-
-  bool get locked;
-
-  String get headerStatic;
-
-  String get header;
-
-  int get followingCount;
-
-  int get followersCount;
-
-  String? get displayName;
-
-  DateTime get createdAt;
-
-  bool? get bot;
-
-  String get avatarStatic;
-
-  String get avatar;
-
-  String get acct;
-
-  DateTime? get lastStatusAt;
-
-  List<IPleromaApiField>? get fields;
-
-  List<IPleromaApiEmoji>? get emojis;
-
-  // start pleroma related fields
-
-  String? get pleromaBackgroundImage;
-
-  bool? get pleromaIsConfirmed;
-
-  String? get pleromaApId;
-
-  String? get pleromaFavicon;
-
-  List<String>? get pleromaAlsoKnownAs;
-
-  ///  Lists an array of tags for the user
-  List<PleromaApiTag>? get pleromaTags;
-
-  /// Includes fields as documented for
-  /// Mastodon API https://docs.joinmastodon.org/entities/relationship/
-  PleromaApiAccountRelationship? get pleromaRelationship;
-
-  /// boolean, nullable, true if user is an admin
-  bool? get pleromaIsAdmin;
-
-  /// boolean, nullable, true if user is a moderator
-  bool? get pleromaIsModerator;
-
-  bool? get pleromaAcceptsChatMessages;
-
-  /// boolean, true if a new user account is waiting on email confirmation to
-  /// be activated
-  bool? get pleromaConfirmationPending;
-
-  /// TODO: CHECK, was in previous implementation, but not exist at
-  /// https://docs-develop.pleroma.social/backend/API/differences_in_mastoapi_responses/
-
-  bool? get pleromaHideFavorites;
-
-  bool? get pleromaHideFollowers;
-
-  bool? get pleromaHideFollows;
-
-  bool? get pleromaHideFollowersCount;
-
-  bool? get pleromaHideFollowsCount;
-
-  bool? get pleromaDeactivated;
-
-  ///  boolean, true when the user allows automatically follow moved
-  ///  following accounts
-  bool? get pleromaAllowFollowingMove;
-
-  /// TODO: CHECK, was in previous implementation, but not exist at
-  /// https://docs-develop.pleroma.social/backend/API/differences_in_mastoapi_responses/
-  bool? get pleromaSkipThreadContainment;
-
   IAccount copyWith({
     int? id,
     String? remoteId,
@@ -134,24 +28,118 @@ abstract class IAccount {
     String? avatar,
     String? acct,
     DateTime? lastStatusAt,
-    List<PleromaApiField>? fields,
-    List<PleromaApiEmoji>? emojis,
-    List<PleromaApiTag>? pleromaTags,
-    IPleromaApiAccountRelationship? pleromaRelationship,
-    bool? pleromaIsAdmin,
-    bool? pleromaIsModerator,
-    bool? pleromaConfirmationPending,
-    bool? pleromaHideFavorites,
-    bool? pleromaHideFollowers,
-    bool? pleromaHideFollows,
-    bool? pleromaHideFollowersCount,
-    bool? pleromaHideFollowsCount,
-    bool? pleromaDeactivated,
-    bool? pleromaAllowFollowingMove,
-    bool? pleromaSkipThreadContainment,
-    String? pleromaBackgroundImage,
-    bool? pleromaAcceptsChatMessages,
+    List<UnifediApiField>? fields,
+    List<UnifediApiEmoji>? emojis,
+    List<UnifediApiTag>? tags,
+    IUnifediApiAccountRelationship? relationship,
+    bool? isAdmin,
+    bool? isModerator,
+    bool? confirmationPending,
+    bool? hideFavorites,
+    bool? hideFollowers,
+    bool? hideFollows,
+    bool? hideFollowersCount,
+    bool? hideFollowsCount,
+    bool? deactivated,
+    bool? allowFollowingMove,
+    bool? skipThreadContainment,
+    String? backgroundImage,
+    bool? acceptsChatMessages,
   });
+
+  String get username;
+
+  String get url;
+
+  int? get statusesCount;
+
+  String? get note;
+
+  bool? get bot;
+
+  bool? get locked;
+
+  int? get localId;
+
+  String get remoteId;
+
+  String? get headerStatic;
+
+  String? get header;
+
+  int? get followingCount;
+
+  int? get followersCount;
+
+  String? get displayName;
+
+  DateTime get createdAt;
+
+  String get avatarStatic;
+
+  String get avatar;
+
+  String get acct;
+
+  DateTime? get lastStatusAt;
+
+  List<IUnifediApiField>? get fields;
+
+  List<IUnifediApiEmoji>? get emojis;
+
+  String? get fqn;
+
+  String? get backgroundImage;
+
+  List<IUnifediApiTag>? get tags;
+
+  IUnifediApiAccountRelationship? get relationship;
+
+  bool? get isAdmin;
+
+  bool? get isModerator;
+
+  bool? get confirmationPending;
+
+  bool? get hideFavorites;
+
+  bool? get hideFollowers;
+
+  bool? get hideFollows;
+
+  bool? get hideFollowersCount;
+
+  bool? get hideFollowsCount;
+
+  bool? get deactivated;
+
+  bool? get allowFollowingMove;
+
+  bool? get acceptsChatMessages;
+
+  bool? get skipThreadContainment;
+
+  bool? get isConfirmed;
+
+  String? get favicon;
+
+  String? get apId;
+
+  List<String>? get alsoKnownAs;
+
+  bool? get suspended;
+
+  DateTime? get muteExpiresAt;
+
+  static List<IAccount> excludeAccountFromList(
+    List<IAccount> accounts,
+    bool Function(IAccount account) predicate,
+  ) =>
+      accounts
+          .where(
+            (account) => predicate(account),
+          )
+          .toList();
 }
 
 class DbAccountPopulated {
@@ -205,84 +193,82 @@ class DbAccountPopulatedWrapper implements IAccount {
   String get displayName => dbAccount.displayName!;
 
   @override
-  List<IPleromaApiEmoji>? get emojis => dbAccount.emojis;
+  List<IUnifediApiEmoji>? get emojis => dbAccount.emojis;
 
   @override
-  List<IPleromaApiField>? get fields => dbAccount.fields;
+  List<IUnifediApiField>? get fields => dbAccount.fields;
 
   @override
-  int get followersCount => dbAccount.followersCount;
+  int? get followersCount => dbAccount.followersCount;
 
   @override
-  int get followingCount => dbAccount.followingCount;
+  int? get followingCount => dbAccount.followingCount;
 
   @override
-  String get header => dbAccount.header;
+  String? get header => dbAccount.header;
 
   @override
-  String get headerStatic => dbAccount.headerStatic;
+  String? get headerStatic => dbAccount.headerStatic;
 
   @override
   DateTime? get lastStatusAt => dbAccount.lastStatusAt;
 
   @override
-  int? get localId => dbAccount.id;
+  int get localId => dbAccount.id;
 
   @override
-  bool get locked => dbAccount.locked;
+  bool? get locked => dbAccount.locked;
 
   @override
   String? get note => dbAccount.note;
 
   @override
-  bool? get pleromaAllowFollowingMove => dbAccount.pleromaAllowFollowingMove;
+  bool? get allowFollowingMove => dbAccount.allowFollowingMove;
 
   @override
-  bool? get pleromaConfirmationPending => dbAccount.pleromaConfirmationPending;
+  bool? get confirmationPending => dbAccount.confirmationPending;
 
   @override
-  bool? get pleromaDeactivated => dbAccount.pleromaDeactivated;
+  bool? get deactivated => dbAccount.deactivated;
 
   @override
-  bool? get pleromaHideFavorites => dbAccount.pleromaHideFavorites;
+  bool? get hideFavorites => dbAccount.hideFavorites;
 
   @override
-  bool? get pleromaHideFollowers => dbAccount.pleromaHideFollowers;
+  bool? get hideFollowers => dbAccount.hideFollowers;
 
   @override
-  bool? get pleromaHideFollowersCount => dbAccount.pleromaHideFollowersCount;
+  bool? get hideFollowersCount => dbAccount.hideFollowersCount;
 
   @override
-  bool? get pleromaHideFollows => dbAccount.pleromaHideFollows;
+  bool? get hideFollows => dbAccount.hideFollows;
 
   @override
-  bool? get pleromaHideFollowsCount => dbAccount.pleromaHideFollowsCount;
+  bool? get hideFollowsCount => dbAccount.hideFollowsCount;
 
   @override
-  bool? get pleromaIsAdmin => dbAccount.pleromaIsAdmin;
+  bool? get isAdmin => dbAccount.isAdmin;
 
   @override
-  bool? get pleromaIsModerator => dbAccount.pleromaIsModerator;
+  bool? get isModerator => dbAccount.isModerator;
 
   @override
-  bool? get pleromaAcceptsChatMessages => dbAccount.pleromaAcceptsChatMessages;
+  bool? get acceptsChatMessages => dbAccount.acceptsChatMessages;
 
   @override
-  PleromaApiAccountRelationship? get pleromaRelationship =>
-      dbAccount.pleromaRelationship;
+  UnifediApiAccountRelationship? get relationship => dbAccount.relationship;
 
   @override
-  bool? get pleromaSkipThreadContainment =>
-      dbAccount.pleromaSkipThreadContainment;
+  bool? get skipThreadContainment => dbAccount.skipThreadContainment;
 
   @override
-  List<PleromaApiTag>? get pleromaTags => dbAccount.pleromaTags;
+  List<UnifediApiTag>? get tags => dbAccount.tags;
 
   @override
   String get remoteId => dbAccount.remoteId;
 
   @override
-  int get statusesCount => dbAccount.statusesCount;
+  int? get statusesCount => dbAccount.statusesCount;
 
   @override
   String get url => dbAccount.url;
@@ -291,28 +277,34 @@ class DbAccountPopulatedWrapper implements IAccount {
   String get username => dbAccount.username;
 
   @override
-  String? get pleromaBackgroundImage => dbAccount.pleromaBackgroundImage;
-
-  // todo: implement
-  @override
-  List<String>? get pleromaAlsoKnownAs => null;
+  String? get backgroundImage => dbAccount.backgroundImage;
 
   @override
-  String? get pleromaApId => null;
+  List<String>? get alsoKnownAs => dbAccount.alsoKnownAs;
 
   @override
-  String? get pleromaFavicon => null;
+  String? get apId => dbAccount.apId;
 
   @override
-  bool? get pleromaIsConfirmed => null;
+  String? get favicon => dbAccount.favicon;
 
   @override
-  String? get fqn => null;
+  bool? get isConfirmed => dbAccount.isConfirmed;
 
   @override
-  String toString() {
-    return 'DbAccountWrapper{dbAccount: $dbAccount}';
-  }
+  String? get fqn => dbAccount.fqn;
+
+  @override
+  DateTime? get muteExpiresAt => dbAccount.muteExpiresAt;
+
+  @override
+  bool? get noRichText => dbAccount.noRichText;
+
+  @override
+  bool? get showRole => dbAccount.showRole;
+
+  @override
+  bool? get suspended => dbAccount.suspended;
 
   @override
   // ignore: long-parameter-list
@@ -335,23 +327,23 @@ class DbAccountPopulatedWrapper implements IAccount {
     String? avatar,
     String? acct,
     DateTime? lastStatusAt,
-    List<PleromaApiField>? fields,
-    List<PleromaApiEmoji>? emojis,
-    List<PleromaApiTag>? pleromaTags,
-    IPleromaApiAccountRelationship? pleromaRelationship,
-    bool? pleromaIsAdmin,
-    bool? pleromaIsModerator,
-    bool? pleromaConfirmationPending,
-    bool? pleromaHideFavorites,
-    bool? pleromaHideFollowers,
-    bool? pleromaHideFollows,
-    bool? pleromaHideFollowersCount,
-    bool? pleromaHideFollowsCount,
-    bool? pleromaDeactivated,
-    bool? pleromaAllowFollowingMove,
-    bool? pleromaSkipThreadContainment,
-    String? pleromaBackgroundImage,
-    bool? pleromaAcceptsChatMessages,
+    List<UnifediApiField>? fields,
+    List<UnifediApiEmoji>? emojis,
+    List<UnifediApiTag>? tags,
+    IUnifediApiAccountRelationship? relationship,
+    bool? isAdmin,
+    bool? isModerator,
+    bool? confirmationPending,
+    bool? hideFavorites,
+    bool? hideFollowers,
+    bool? hideFollows,
+    bool? hideFollowersCount,
+    bool? hideFollowsCount,
+    bool? deactivated,
+    bool? allowFollowingMove,
+    bool? skipThreadContainment,
+    String? backgroundImage,
+    bool? acceptsChatMessages,
   }) =>
       DbAccountPopulatedWrapper(
         dbAccountPopulated: DbAccountPopulated(
@@ -376,32 +368,25 @@ class DbAccountPopulatedWrapper implements IAccount {
             lastStatusAt: lastStatusAt,
             fields: fields,
             emojis: emojis,
-            pleromaRelationship:
-                pleromaRelationship?.toPleromaApiAccountRelationship() ??
-                    this.pleromaRelationship,
-            pleromaTags: pleromaTags ?? this.pleromaTags,
-            pleromaIsAdmin: pleromaIsAdmin ?? this.pleromaIsAdmin,
-            pleromaIsModerator: pleromaIsModerator ?? this.pleromaIsModerator,
-            pleromaConfirmationPending:
-                pleromaConfirmationPending ?? this.pleromaConfirmationPending,
-            pleromaHideFavorites:
-                pleromaHideFavorites ?? this.pleromaHideFavorites,
-            pleromaHideFollowers:
-                pleromaHideFollowers ?? this.pleromaHideFollowers,
-            pleromaHideFollows: pleromaHideFollows ?? this.pleromaHideFollows,
-            pleromaHideFollowersCount:
-                pleromaHideFollowersCount ?? this.pleromaHideFollowersCount,
-            pleromaHideFollowsCount:
-                pleromaHideFollowsCount ?? this.pleromaHideFollowsCount,
-            pleromaDeactivated: pleromaDeactivated ?? this.pleromaDeactivated,
-            pleromaAllowFollowingMove:
-                pleromaAllowFollowingMove ?? this.pleromaAllowFollowingMove,
-            pleromaSkipThreadContainment: pleromaSkipThreadContainment ??
-                this.pleromaSkipThreadContainment,
-            pleromaBackgroundImage:
-                pleromaBackgroundImage ?? this.pleromaBackgroundImage,
-            pleromaAcceptsChatMessages:
-                pleromaAcceptsChatMessages ?? this.pleromaAcceptsChatMessages,
+            relationship: relationship?.toUnifediApiAccountRelationship() ??
+                this.relationship,
+            tags: tags ?? this.tags,
+            isAdmin: isAdmin ?? this.isAdmin,
+            isModerator: isModerator ?? this.isModerator,
+            confirmationPending:
+                confirmationPending ?? this.confirmationPending,
+            hideFavorites: hideFavorites ?? this.hideFavorites,
+            hideFollowers: hideFollowers ?? this.hideFollowers,
+            hideFollows: hideFollows ?? this.hideFollows,
+            hideFollowersCount: hideFollowersCount ?? this.hideFollowersCount,
+            hideFollowsCount: hideFollowsCount ?? this.hideFollowsCount,
+            deactivated: deactivated ?? this.deactivated,
+            allowFollowingMove: allowFollowingMove ?? this.allowFollowingMove,
+            skipThreadContainment:
+                skipThreadContainment ?? this.skipThreadContainment,
+            backgroundImage: backgroundImage ?? this.backgroundImage,
+            acceptsChatMessages:
+                acceptsChatMessages ?? this.acceptsChatMessages,
           ),
         ),
       );
@@ -451,49 +436,26 @@ extension IAccountExtension on IAccount {
         avatar: avatar,
         acct: acct,
         lastStatusAt: lastStatusAt,
-        fields: fields?.toPleromaApiFields(),
-        emojis: emojis?.toPleromaApiEmojis(),
-        pleromaTags: pleroma.tags?.toPleromaApiTags(),
-        pleromaRelationship: pleroma.relationship,
-        pleromaIsAdmin: pleroma.isAdmin,
-        pleromaIsModerator: pleroma.isModerator,
-        pleromaConfirmationPending: pleroma.confirmationPending,
-        pleromaHideFavorites: pleroma.hideFavorites,
-        pleromaHideFollows: pleroma.hideFollows,
-        pleromaHideFollowers: pleroma.hideFollowers,
-        pleromaHideFollowersCount: pleroma.hideFollowersCount,
-        pleromaHideFollowsCount: pleroma.hideFollowsCount,
-        pleromaDeactivated: pleroma.deactivated,
-        pleromaAllowFollowingMove: pleroma.allowFollowingMove,
-        pleromaSkipThreadContainment: pleroma.skipThreadContainment,
-        pleromaBackgroundImage: pleroma.backgroundImage,
-        pleromaAcceptsChatMessages: pleroma.acceptsChatMessages,
+        fields: fields?.toUnifediApiFieldList(),
+        emojis: emojis?.toUnifediApiEmojiList(),
+        backgroundImage: backgroundImage,
+        tags: tags?.toUnifediApiTagList(),
+        relationship: relationship?.toUnifediApiAccountRelationship(),
+        isAdmin: isAdmin,
+        isModerator: isModerator,
+        confirmationPending: confirmationPending,
+        hideFavorites: hideFavorites,
+        hideFollowers: hideFollowers,
+        hideFollows: hideFollows,
+        hideFollowersCount: hideFollowersCount,
+        hideFollowsCount: hideFollowsCount,
+        deactivated: deactivated,
+        allowFollowingMove: allowFollowingMove,
+        skipThreadContainment: skipThreadContainment,
+        acceptsChatMessages: acceptsChatMessages,
       );
     }
   }
-
-  PleromaApiAccountPleromaPart get pleroma => PleromaApiAccountPleromaPart(
-        backgroundImage: pleromaBackgroundImage,
-        tags: pleromaTags?.toPleromaApiTags(),
-        relationship: pleromaRelationship,
-        isAdmin: pleromaIsAdmin,
-        isModerator: pleromaIsModerator,
-        confirmationPending: pleromaConfirmationPending,
-        hideFavorites: pleromaHideFavorites,
-        hideFollowers: pleromaHideFollowers,
-        hideFollows: pleromaHideFollows,
-        hideFollowersCount: pleromaHideFollowersCount,
-        hideFollowsCount: pleromaHideFollowsCount,
-        deactivated: pleromaDeactivated,
-        allowFollowingMove: pleromaAllowFollowingMove,
-        skipThreadContainment: pleromaSkipThreadContainment,
-        acceptsChatMessages: pleromaAcceptsChatMessages,
-        // todo: should be implemented
-        apId: null,
-        alsoKnownAs: null,
-        isConfirmed: null,
-        favicon: null,
-      );
 
   bool get isAcctOnRemoteHost => acctRemoteHost?.isNotEmpty == true;
 

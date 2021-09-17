@@ -1,5 +1,5 @@
 import 'package:fedi/app/auth/host/auth_host_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../obj/obj_test_helper.dart';
@@ -7,9 +7,9 @@ import 'auth_host_model_test_helper.dart';
 
 void main() {
   test('equal & hashcode & toString', () async {
-    ObjTestHelper.testEqualsHashcodeToString(
+    ObjMockHelper.testEqualsHashcodeToString(
       ({required String seed}) =>
-          AuthHostModelTestHelper.createTestAuthHostRegistrationResult(
+          AuthHostModelMockHelper.createTestAuthHostRegistrationResult(
         seed: seed,
       ),
     );
@@ -17,28 +17,34 @@ void main() {
 
   test('approvalRequired', () async {
     expect(
-      AuthHostModelTestHelper.createTestAuthHostRegistrationResult(
+      AuthHostModelMockHelper.createTestAuthHostRegistrationResult(
         seed: 'seed',
-        pleromaApiInstance: PleromaApiInstance.only(
+        unifediApiInstance: UnifediApiInstance.only(
           approvalRequired: true,
+          uri: 'https://fedi.app',
+          versionString: '1.0.0',
         ),
       ).approvalRequired,
       true,
     );
     expect(
-      AuthHostModelTestHelper.createTestAuthHostRegistrationResult(
+      AuthHostModelMockHelper.createTestAuthHostRegistrationResult(
         seed: 'seed',
-        pleromaApiInstance: PleromaApiInstance.only(
+        unifediApiInstance: UnifediApiInstance.only(
           approvalRequired: null,
+          uri: 'https://fedi.app',
+          versionString: '1.0.0',
         ),
       ).approvalRequired,
       false,
     );
     expect(
-      AuthHostModelTestHelper.createTestAuthHostRegistrationResult(
+      AuthHostModelMockHelper.createTestAuthHostRegistrationResult(
         seed: 'seed',
-        pleromaApiInstance: PleromaApiInstance.only(
+        unifediApiInstance: UnifediApiInstance.only(
           approvalRequired: false,
+          uri: 'https://fedi.app',
+          versionString: '1.0.0',
         ),
       ).approvalRequired,
       false,
@@ -47,17 +53,19 @@ void main() {
 
   test('isPossibleToLogin', () async {
     expect(
-      AuthHostModelTestHelper.createTestAuthHostRegistrationResult(
+      AuthHostModelMockHelper.createTestAuthHostRegistrationResult(
         seed: 'seed',
-        pleromaApiInstance: PleromaApiInstance.only(
+        unifediApiInstance: UnifediApiInstance.only(
           approvalRequired: false,
+          uri: 'https://fedi.app',
+          versionString: '1.0.0',
         ),
       ).isPossibleToLogin,
       true,
     );
 
     expect(
-      AuthHostModelTestHelper.createTestAuthHostRegistrationResult(
+      AuthHostModelMockHelper.createTestAuthHostRegistrationResult(
         seed: 'seed',
         unknownHostException: Exception(),
       ).isPossibleToLogin,
@@ -65,10 +73,12 @@ void main() {
     );
 
     expect(
-      AuthHostModelTestHelper.createTestAuthHostRegistrationResult(
+      AuthHostModelMockHelper.createTestAuthHostRegistrationResult(
         seed: 'seed',
-        pleromaApiInstance: PleromaApiInstance.only(
+        unifediApiInstance: UnifediApiInstance.only(
           approvalRequired: true,
+          uri: 'https://fedi.app',
+          versionString: '1.0.0',
         ),
       ).isPossibleToLogin,
       false,
@@ -77,7 +87,7 @@ void main() {
 
   test('emailConfirmationRequired', () async {
     expect(
-      AuthHostModelTestHelper.createTestAuthHostRegistrationResult(
+      AuthHostModelMockHelper.createTestAuthHostRegistrationResult(
         seed: 'seed',
         emailConfirmationRequiredAuthHostException: null,
       ).emailConfirmationRequired,
@@ -85,7 +95,7 @@ void main() {
     );
 
     expect(
-      AuthHostModelTestHelper.createTestAuthHostRegistrationResult(
+      AuthHostModelMockHelper.createTestAuthHostRegistrationResult(
         seed: 'seed',
         emailConfirmationRequiredAuthHostException:
             const EmailConfirmationRequiredAuthHostException(),

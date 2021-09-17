@@ -8,18 +8,18 @@ import 'database_cache_settings_model_test_helper.dart';
 
 void main() {
   test('equal & hashcode & toString', () async {
-    ObjTestHelper.testEqualsHashcodeToString(
+    ObjMockHelper.testEqualsHashcodeToString(
       ({required String seed}) =>
-          DatabaseCacheSettingsModelTestHelper.createTestDatabaseCacheSettings(
+          DatabaseCacheSettingsModelMockHelper.createTestDatabaseCacheSettings(
         seed: seed,
       ),
     );
   });
 
   test('toJson & fromJson', () async {
-    JsonTestHelper.testFromJsonToJson(
+    JsonMockHelper.testFromJsonToJson(
       ({required String seed}) =>
-          DatabaseCacheSettingsModelTestHelper.createTestDatabaseCacheSettings(
+          DatabaseCacheSettingsModelMockHelper.createTestDatabaseCacheSettings(
         seed: seed,
       ),
       DatabaseCacheSettings.fromJson,
@@ -27,9 +27,9 @@ void main() {
   });
 
   test('hive save&load', () async {
-    await HiveTestHelper.testHiveSaveAndLoad(
+    await HiveMockHelper.testHiveSaveAndLoad(
       ({required String seed}) =>
-          DatabaseCacheSettingsModelTestHelper.createTestDatabaseCacheSettings(
+          DatabaseCacheSettingsModelMockHelper.createTestDatabaseCacheSettings(
         seed: seed,
       ),
     );
@@ -37,7 +37,7 @@ void main() {
 
   test('clone', () async {
     var obj1 =
-        DatabaseCacheSettingsModelTestHelper.createTestDatabaseCacheSettings(
+        DatabaseCacheSettingsModelMockHelper.createTestDatabaseCacheSettings(
       seed: 'seed1',
     );
 
@@ -48,11 +48,11 @@ void main() {
 
   test('copyWith', () async {
     var obj1 =
-        DatabaseCacheSettingsModelTestHelper.createTestDatabaseCacheSettings(
+        DatabaseCacheSettingsModelMockHelper.createTestDatabaseCacheSettings(
       seed: 'seed1',
     );
     var obj2 =
-        DatabaseCacheSettingsModelTestHelper.createTestDatabaseCacheSettings(
+        DatabaseCacheSettingsModelMockHelper.createTestDatabaseCacheSettings(
       seed: 'seed2',
     );
 
@@ -67,7 +67,7 @@ void main() {
   });
 
   test('hive adapter', () async {
-    HiveTestHelper.testAdapter(
+    HiveMockHelper.testAdapter(
       () => DatabaseCacheSettingsAdapter(),
     );
   });

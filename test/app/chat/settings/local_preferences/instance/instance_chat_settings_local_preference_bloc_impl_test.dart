@@ -9,7 +9,7 @@ import '../../chat_settings_model_test_helper.dart';
 
 void main() {
   test('save & load', () async {
-    await LocalPreferencesTestHelper.testSaveAndLoad<ChatSettings,
+    await LocalPreferencesMockHelper.testSaveAndLoad<ChatSettings,
         InstanceChatSettingsLocalPreferenceBloc>(
       defaultValue: InstanceChatSettingsLocalPreferenceBloc.defaultValue,
       blocCreator: (localPreferencesService) =>
@@ -18,7 +18,7 @@ void main() {
         userAtHost: 'user@host',
       ),
       testObjectCreator: ({required String seed}) =>
-          ChatSettingsModelTestHelper.createTestChatSettings(
+          ChatSettingsModelMockHelper.createTestChatSettings(
         seed: seed,
       ),
     );

@@ -7,19 +7,19 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class InstancePublicTimelineStatusListNetworkOnlyListBloc
     extends IStatusNetworkOnlyListBloc {
   final Uri instanceUri;
-  final IPleromaApiTimelineService pleromaApiTimelineService;
+  final IUnifediApiTimelineService unifediApiTimelineService;
   final ITimelineLocalPreferenceBloc timelineLocalPreferenceBloc;
 
   InstancePublicTimelineStatusListNetworkOnlyListBloc({
     required this.instanceUri,
-    required this.pleromaApiTimelineService,
+    required this.unifediApiTimelineService,
     required this.timelineLocalPreferenceBloc,
   });
 
@@ -29,17 +29,17 @@ class InstancePublicTimelineStatusListNetworkOnlyListBloc
     required Uri instanceUri,
   }) {
     var remoteInstanceBloc = IRemoteInstanceBloc.of(context, listen: false);
-    var pleromaApiTimelineService = PleromaApiTimelineService(
-      restService: remoteInstanceBloc.pleromaRestService,
+    var unifediApiTimelineService = UnifediApiTimelineService(
+      restService: remoteInstanceBloc.unifediApiRestService,
     );
 
     var bloc = InstancePublicTimelineStatusListNetworkOnlyListBloc(
       timelineLocalPreferenceBloc: timelineLocalPreferenceBloc,
       instanceUri: instanceUri,
-      pleromaApiTimelineService: pleromaApiTimelineService,
+      unifediApiTimelineService: unifediApiTimelineService,
     );
 
-    bloc.addDisposable(pleromaApiTimelineService);
+    bloc.addDisposable(unifediApiTimelineService);
 
     return bloc;
   }
@@ -84,17 +84,17 @@ class InstancePublicTimelineStatusListNetworkOnlyListBloc
     required String? maxId,
   }) async {
     var timeline = timelineLocalPreferenceBloc.value!;
-    var pleromaStatuses = await pleromaApiTimelineService.getPublicTimeline(
+    var pleromaStatuses = await unifediApiTimelineService.getPublicTimeline(
       onlyLocal: timeline.onlyLocal == true,
       onlyRemote: timeline.onlyRemote == true,
       onlyWithMedia: timeline.onlyWithMedia == true,
       withMuted: timeline.withMuted == true,
       onlyFromInstance: timeline.onlyFromInstance,
       excludeVisibilities: timeline.excludeVisibilities,
-      pleromaReplyVisibilityFilter: timeline.replyVisibilityFilter,
-      pagination: PleromaApiPaginationRequest(
+      replyVisibilityFilter: timeline.replyVisibilityFilter,
+      pagination: UnifediApiPagination(
         limit: itemsCountPerPage,
-        sinceId: minId,
+        minId: minId,
         maxId: maxId,
       ),
     );
@@ -107,5 +107,5 @@ class InstancePublicTimelineStatusListNetworkOnlyListBloc
   }
 
   @override
-  IPleromaApi get pleromaApi => pleromaApiTimelineService;
+  IUnifediApiService get unifediApi => unifediApiTimelineService;
 }

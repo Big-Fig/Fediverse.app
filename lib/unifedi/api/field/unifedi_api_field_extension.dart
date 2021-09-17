@@ -1,10 +1,10 @@
 import 'package:flutter_html/html_parser.dart';
 import 'package:logging/logging.dart';
-import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
-final _logger = Logger('mastodon_api_field_extension.dart');
+final _logger = Logger('unifedi_api_field_extension.dart');
 
-extension IMastodonApiFieldExtension on IMastodonApiField {
+extension IUnifediApiFieldExtension on IUnifediApiField {
   String? get valueAsRawUrl {
     if (value?.isNotEmpty == true) {
       try {

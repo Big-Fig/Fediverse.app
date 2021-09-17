@@ -18,7 +18,7 @@ import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dar
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc_impl.dart';
 import 'package:fedi/pagination/pagination_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -28,7 +28,7 @@ class RemoteInstancePublicTimelinePageBloc
   @override
   final IRemoteInstanceBloc remoteInstanceBloc;
   @override
-  final IPleromaApiTimelineService pleromaApiTimelineService;
+  final IUnifediApiTimelineService unifediApiTimelineService;
 
   final IPaginationSettingsBloc paginationSettingsBloc;
 
@@ -38,25 +38,25 @@ class RemoteInstancePublicTimelinePageBloc
   RemoteInstancePublicTimelinePageBloc({
     required this.remoteInstanceBloc,
     required this.paginationSettingsBloc,
-    required IPleromaApiInstance pleromaApiInstance,
-  })  : pleromaApiTimelineService = PleromaApiTimelineService(
-          restService: remoteInstanceBloc.pleromaRestService,
+    required IUnifediApiInstance unifediApiInstance,
+  })  : unifediApiTimelineService = UnifediApiTimelineService(
+          restService: remoteInstanceBloc.unifediApiRestService,
         ),
         super(
-          pleromaApiInstance: pleromaApiInstance,
+          unifediApiInstance: unifediApiInstance,
           instanceUri: remoteInstanceBloc.instanceUri,
         ) {
-    addDisposable(pleromaApiTimelineService);
+    addDisposable(unifediApiTimelineService);
   }
 
   static RemoteInstancePublicTimelinePageBloc createFromContext(
     BuildContext context, {
-    required IPleromaApiInstance pleromaApiInstance,
+    required IUnifediApiInstance unifediApiInstance,
     required IRemoteInstanceBloc remoteInstanceBloc,
   }) {
     return RemoteInstancePublicTimelinePageBloc(
       remoteInstanceBloc: remoteInstanceBloc,
-      pleromaApiInstance: pleromaApiInstance,
+      unifediApiInstance: unifediApiInstance,
       paginationSettingsBloc: IPaginationSettingsBloc.of(
         context,
         listen: false,
@@ -67,17 +67,17 @@ class RemoteInstancePublicTimelinePageBloc
   static Widget provideToContext(
     BuildContext context, {
     required Widget child,
-    required IPleromaApiInstance pleromaApiInstance,
+    required IUnifediApiInstance unifediApiInstance,
   }) =>
-      Provider<IPleromaApiInstance>.value(
-        value: pleromaApiInstance,
+      Provider<IUnifediApiInstance>.value(
+        value: unifediApiInstance,
         child: DisposableProxyProvider<IRemoteInstanceBloc,
             IRemoteInstancePublicTimelinePageBloc>(
           update: (context, value, previous) =>
               RemoteInstancePublicTimelinePageBloc.createFromContext(
             context,
             remoteInstanceBloc: value,
-            pleromaApiInstance: pleromaApiInstance,
+            unifediApiInstance: unifediApiInstance,
           ),
           child: ProxyProvider<IRemoteInstancePublicTimelinePageBloc,
               IInstancePublicTimelinePageBloc>(
@@ -105,7 +105,7 @@ class RemoteInstancePublicTimelinePageBloc
         TimelineLocalPreferenceBloc.instancePublicTimeline(
       memoryLocalPreferencesService,
       // userAtHost: userAtHost,
-      pleromaApiInstance: pleromaApiInstance,
+      unifediApiInstance: unifediApiInstance,
     );
     await timelineLocalPreferenceBloc.performAsyncInit();
 
@@ -121,14 +121,14 @@ class RemoteInstancePublicTimelinePageBloc
 
     addDisposable(timelineLocalPreferenceBloc);
 
-    var pleromaApiTimelineService = PleromaApiTimelineService(
-      restService: remoteInstanceBloc.pleromaRestService,
+    var unifediApiTimelineService = UnifediApiTimelineService(
+      restService: remoteInstanceBloc.unifediApiRestService,
     );
-    addDisposable(pleromaApiTimelineService);
+    addDisposable(unifediApiTimelineService);
 
     statusNetworkOnlyListBloc =
         InstancePublicTimelineStatusListNetworkOnlyListBloc(
-      pleromaApiTimelineService: pleromaApiTimelineService,
+      unifediApiTimelineService: unifediApiTimelineService,
       instanceUri: instanceUri,
       timelineLocalPreferenceBloc: timelineLocalPreferenceBloc,
     );

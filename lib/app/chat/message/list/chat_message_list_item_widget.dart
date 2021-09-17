@@ -24,7 +24,7 @@ import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/url/url_helper.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -368,14 +368,14 @@ class _ChatMessageListItemCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var messageBloc = IChatMessageBloc.of(context);
 
-    return StreamBuilder<IPleromaApiCard?>(
+    return StreamBuilder<IUnifediApiCard?>(
       stream: messageBloc.cardStream,
       initialData: messageBloc.card,
       builder: (context, snapshot) {
         var card = snapshot.data;
 
         if (card != null) {
-          return Provider<IPleromaApiCard?>.value(
+          return Provider<IUnifediApiCard?>.value(
             value: card,
             child: const CardWidget(),
           );
@@ -420,7 +420,7 @@ class _ChatMessageListItemMediaContentWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var messageBloc = IChatMessageBloc.of(context);
 
-    return StreamBuilder<List<IPleromaApiMediaAttachment>?>(
+    return StreamBuilder<List<IUnifediApiMediaAttachment>?>(
       stream: messageBloc.mediaAttachmentsStream,
       initialData: messageBloc.mediaAttachments,
       builder: (context, snapshot) {
@@ -429,7 +429,7 @@ class _ChatMessageListItemMediaContentWidget extends StatelessWidget {
           return const SizedBox.shrink();
         }
 
-        return Provider<List<IPleromaApiMediaAttachment>?>.value(
+        return Provider<List<IUnifediApiMediaAttachment>?>.value(
           value: mediaAttachments!,
           child: InkWell(
             onTap: () {
@@ -440,7 +440,7 @@ class _ChatMessageListItemMediaContentWidget extends StatelessWidget {
                 instanceLocation: InstanceLocation.local,
               );
             },
-            child: ProxyProvider<List<IPleromaApiMediaAttachment>?,
+            child: ProxyProvider<List<IUnifediApiMediaAttachment>?,
                 IMediaAttachmentListBloc>(
               update: (context, mediaAttachments, previous) {
                 if (previous != null &&

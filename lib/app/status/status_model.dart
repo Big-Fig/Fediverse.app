@@ -2,9 +2,9 @@ import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/pending/pending_model.dart';
 import 'package:fedi/obj/equal_comparable_obj.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 final _logger = Logger('status_model.dart');
 
@@ -15,6 +15,56 @@ typedef StatusAndContextCallback = Function(
 typedef StatusCallback = Function(IStatus? status);
 
 abstract class IStatus implements IEqualComparableObj<IStatus> {
+
+  IStatus copyWith({
+    IAccount? account,
+    IStatus? reblog,
+    int? id,
+    String? remoteId,
+    DateTime? createdAt,
+    IStatus? inReplyToStatus,
+    String? inReplyToRemoteId,
+    String? inReplyToAccountRemoteId,
+    bool? nsfwSensitive,
+    String? spoilerText,
+    UnifediApiVisibility? visibility,
+    String? uri,
+    String? url,
+    int? repliesCount,
+    int? reblogsCount,
+    int? favouritesCount,
+    bool? favourited,
+    bool? reblogged,
+    bool? muted,
+    bool? bookmarked,
+    bool? pinned,
+    String? content,
+    String? reblogStatusRemoteId,
+    UnifediApiApplication? application,
+    String? accountRemoteId,
+    List<UnifediApiMediaAttachment>? mediaAttachments,
+    List<UnifediApiMention>? mentions,
+    List<UnifediApiTag>? tags,
+    List<UnifediApiEmoji>? emojis,
+    UnifediApiPoll? poll,
+    UnifediApiCard? card,
+    String? language,
+    IUnifediApiContentVariants? contentVariants,
+    int? conversationId,
+    int? directConversationId,
+    String? inReplyToAccountAcct,
+    bool? local,
+    IUnifediApiContentVariants? spoilerTextVariants,
+    DateTime? expiresAt,
+    bool? threadMuted,
+    List<UnifediApiEmojiReaction>? emojiReactions,
+    bool? deleted,
+    PendingState? pendingState,
+    String? oldPendingRemoteId,
+    bool? hiddenLocallyOnDevice,
+    String? wasSentWithIdempotencyKey,
+  });
+
   static bool isItemsEqual(IStatus a, IStatus b) => a.remoteId == b.remoteId;
 
   static int compareItemsToSort(IStatus? a, IStatus? b) {
@@ -71,23 +121,23 @@ abstract class IStatus implements IEqualComparableObj<IStatus> {
 
   String? get reblogStatusRemoteId;
 
-  PleromaApiApplication? get application;
+  UnifediApiApplication? get application;
 
   IAccount get account;
 
-  List<PleromaApiMediaAttachment>? get mediaAttachments;
+  List<UnifediApiMediaAttachment>? get mediaAttachments;
 
-  List<PleromaApiMention>? get mentions;
+  List<UnifediApiMention>? get mentions;
 
-  List<PleromaApiTag>? get tags;
+  List<UnifediApiTag>? get tags;
 
-  List<PleromaApiEmoji>? get emojis;
+  List<UnifediApiEmoji>? get emojis;
 
-  PleromaApiPoll? get poll;
+  UnifediApiPoll? get poll;
 
-  PleromaApiCard? get card;
+  UnifediApiCard? get card;
 
-  PleromaApiVisibility get visibility;
+  UnifediApiVisibility get visibility;
 
   String? get language;
 
@@ -96,38 +146,38 @@ abstract class IStatus implements IEqualComparableObj<IStatus> {
   /// a map consisting of alternate representations of the content property with
   /// the key being it's mimetype.
   /// Currently the only alternate representation supported is text/plain
-  PleromaApiContent? get pleromaContent;
+  UnifediApiContentVariants? get contentVariants;
 
   /// the ID of the AP context the status is associated with (if any)
 
-  int? get pleromaConversationId;
+  int? get conversationId;
 
   /// the ID of the Mastodon direct message conversation the status
   /// is associated with (if any)
-  int? get pleromaDirectConversationId;
+  int? get directConversationId;
 
   /// the acct property of User entity for replied user (if any)
-  String? get pleromaInReplyToAccountAcct;
+  String? get inReplyToAccountAcct;
 
-  bool? get pleromaLocal;
+  bool? get local;
 
   /// a map consisting of alternate representations of the spoiler_text property
   /// with the key being it's mimetype. Currently the only alternate
   /// representation supported is text/plain
-  PleromaApiContent? get pleromaSpoilerText;
+  UnifediApiContentVariants? get spoilerTextVariants;
 
   /// a datetime (iso8601) that states when
   /// the post will expire (be deleted automatically),
   /// or empty if the post wont expire
-  DateTime? get pleromaExpiresAt;
+  DateTime? get expiresAt;
 
-  bool? get pleromaThreadMuted;
+  bool? get threadMuted;
 
   /// A list with emoji / reaction maps. The format is
   /// {name: '☕', count: 1, me: true}.
   /// Contains no information about the reacting users,
   /// for that use the /statuses/:id/reactions endpoint.
-  List<PleromaApiStatusEmojiReaction>? get pleromaEmojiReactions;
+  List<UnifediApiEmojiReaction>? get emojiReactions;
 
   bool get isReply =>
       inReplyToAccountRemoteId != null && inReplyToRemoteId != null;
@@ -143,55 +193,6 @@ abstract class IStatus implements IEqualComparableObj<IStatus> {
   bool get hiddenLocallyOnDevice;
 
   String? get wasSentWithIdempotencyKey;
-
-  IStatus copyWith({
-    IAccount? account,
-    IStatus? reblog,
-    int? id,
-    String? remoteId,
-    DateTime? createdAt,
-    IStatus? inReplyToStatus,
-    String? inReplyToRemoteId,
-    String? inReplyToAccountRemoteId,
-    bool? nsfwSensitive,
-    String? spoilerText,
-    PleromaApiVisibility? visibility,
-    String? uri,
-    String? url,
-    int? repliesCount,
-    int? reblogsCount,
-    int? favouritesCount,
-    bool? favourited,
-    bool? reblogged,
-    bool? muted,
-    bool? bookmarked,
-    bool? pinned,
-    String? content,
-    String? reblogStatusRemoteId,
-    PleromaApiApplication? application,
-    String? accountRemoteId,
-    List<PleromaApiMediaAttachment>? mediaAttachments,
-    List<PleromaApiMention>? mentions,
-    List<PleromaApiTag>? tags,
-    List<PleromaApiEmoji>? emojis,
-    PleromaApiPoll? poll,
-    PleromaApiCard? card,
-    String? language,
-    PleromaApiContent? pleromaContent,
-    int? pleromaConversationId,
-    int? pleromaDirectConversationId,
-    String? pleromaInReplyToAccountAcct,
-    bool? pleromaLocal,
-    PleromaApiContent? pleromaSpoilerText,
-    DateTime? pleromaExpiresAt,
-    bool? pleromaThreadMuted,
-    List<PleromaApiStatusEmojiReaction>? pleromaEmojiReactions,
-    bool? deleted,
-    PendingState? pendingState,
-    String? oldPendingRemoteId,
-    bool? hiddenLocallyOnDevice,
-    String? wasSentWithIdempotencyKey,
-  });
 }
 
 extension IStatusDbExtension on IStatus {
@@ -260,15 +261,15 @@ extension IStatusDbExtension on IStatus {
         poll: poll,
         card: card,
         language: language,
-        pleromaContent: pleromaContent,
-        pleromaConversationId: pleromaConversationId,
-        pleromaDirectConversationId: pleromaDirectConversationId,
-        pleromaInReplyToAccountAcct: pleromaInReplyToAccountAcct,
-        pleromaLocal: pleromaLocal,
-        pleromaSpoilerText: pleromaSpoilerText,
-        pleromaExpiresAt: pleromaExpiresAt,
-        pleromaThreadMuted: pleromaThreadMuted,
-        pleromaEmojiReactions: pleromaEmojiReactions,
+        contentVariants: contentVariants,
+        conversationId: conversationId,
+        directConversationId: directConversationId,
+        inReplyToAccountAcct: inReplyToAccountAcct,
+        local: local,
+        spoilerTextVariants: spoilerTextVariants,
+        expiresAt: expiresAt,
+        threadMuted: threadMuted,
+        emojiReactions: emojiReactions,
         deleted: deleted,
         oldPendingRemoteId: oldPendingRemoteId,
         hiddenLocallyOnDevice: hiddenLocallyOnDevice,
@@ -365,14 +366,14 @@ class DbStatusPopulatedWrapper extends IStatus {
       );
 
   @override
-  PleromaApiApplication? get application =>
+  UnifediApiApplication? get application =>
       dbStatusPopulated.dbStatus.application;
 
   @override
   bool get bookmarked => dbStatusPopulated.dbStatus.bookmarked == true;
 
   @override
-  PleromaApiCard? get card => dbStatusPopulated.dbStatus.card;
+  UnifediApiCard? get card => dbStatusPopulated.dbStatus.card;
 
   @override
   String? get content => dbStatusPopulated.dbStatus.content;
@@ -381,7 +382,7 @@ class DbStatusPopulatedWrapper extends IStatus {
   DateTime get createdAt => dbStatusPopulated.dbStatus.createdAt;
 
   @override
-  List<PleromaApiEmoji>? get emojis => dbStatusPopulated.dbStatus.emojis;
+  List<UnifediApiEmoji>? get emojis => dbStatusPopulated.dbStatus.emojis;
 
   @override
   bool get favourited => dbStatusPopulated.dbStatus.favourited;
@@ -422,50 +423,50 @@ class DbStatusPopulatedWrapper extends IStatus {
   int? get localId => dbStatusPopulated.dbStatus.id;
 
   @override
-  List<PleromaApiMediaAttachment>? get mediaAttachments =>
+  List<UnifediApiMediaAttachment>? get mediaAttachments =>
       dbStatusPopulated.dbStatus.mediaAttachments;
 
   @override
-  List<PleromaApiMention>? get mentions => dbStatusPopulated.dbStatus.mentions;
+  List<UnifediApiMention>? get mentions => dbStatusPopulated.dbStatus.mentions;
 
   @override
   bool get muted => dbStatusPopulated.dbStatus.muted;
 
   @override
-  PleromaApiContent? get pleromaContent =>
-      dbStatusPopulated.dbStatus.pleromaContent;
+  UnifediApiContentVariants? get contentVariants =>
+      dbStatusPopulated.dbStatus.contentVariants;
 
   @override
-  int? get pleromaConversationId =>
-      dbStatusPopulated.dbStatus.pleromaConversationId;
+  int? get conversationId =>
+      dbStatusPopulated.dbStatus.conversationId;
 
   @override
-  int? get pleromaDirectConversationId =>
-      dbStatusPopulated.dbStatus.pleromaDirectConversationId;
+  int? get directConversationId =>
+      dbStatusPopulated.dbStatus.directConversationId;
 
   @override
-  List<PleromaApiStatusEmojiReaction>? get pleromaEmojiReactions =>
-      dbStatusPopulated.dbStatus.pleromaEmojiReactions;
+  List<UnifediApiEmojiReaction>? get emojiReactions =>
+      dbStatusPopulated.dbStatus.emojiReactions;
 
   @override
-  DateTime? get pleromaExpiresAt => dbStatusPopulated.dbStatus.pleromaExpiresAt;
+  DateTime? get expiresAt => dbStatusPopulated.dbStatus.expiresAt;
 
   @override
-  String? get pleromaInReplyToAccountAcct =>
-      dbStatusPopulated.dbStatus.pleromaInReplyToAccountAcct;
+  String? get inReplyToAccountAcct =>
+      dbStatusPopulated.dbStatus.inReplyToAccountAcct;
 
   @override
-  bool? get pleromaLocal => dbStatusPopulated.dbStatus.pleromaLocal;
+  bool? get local => dbStatusPopulated.dbStatus.local;
 
   @override
-  PleromaApiContent? get pleromaSpoilerText =>
-      dbStatusPopulated.dbStatus.pleromaSpoilerText;
+  UnifediApiContentVariants? get spoilerTextVariants =>
+      dbStatusPopulated.dbStatus.spoilerTextVariants;
 
   @override
-  bool? get pleromaThreadMuted => dbStatusPopulated.dbStatus.pleromaThreadMuted;
+  bool? get threadMuted => dbStatusPopulated.dbStatus.threadMuted;
 
   @override
-  PleromaApiPoll? get poll => dbStatusPopulated.dbStatus.poll;
+  UnifediApiPoll? get poll => dbStatusPopulated.dbStatus.poll;
 
   @override
   String? get reblogStatusRemoteId =>
@@ -490,7 +491,7 @@ class DbStatusPopulatedWrapper extends IStatus {
   String? get spoilerText => dbStatusPopulated.dbStatus.spoilerText;
 
   @override
-  List<PleromaApiTag>? get tags => dbStatusPopulated.dbStatus.tags;
+  List<UnifediApiTag>? get tags => dbStatusPopulated.dbStatus.tags;
 
   @override
   String get uri => dbStatusPopulated.dbStatus.uri;
@@ -499,7 +500,7 @@ class DbStatusPopulatedWrapper extends IStatus {
   String? get url => dbStatusPopulated.dbStatus.url;
 
   @override
-  PleromaApiVisibility get visibility => dbStatusPopulated.dbStatus.visibility;
+  UnifediApiVisibility get visibility => dbStatusPopulated.dbStatus.visibility;
 
   @override
   String? get language => dbStatusPopulated.dbStatus.language;
@@ -571,7 +572,7 @@ class DbStatusPopulatedWrapper extends IStatus {
     String? inReplyToAccountRemoteId,
     bool? nsfwSensitive,
     String? spoilerText,
-    PleromaApiVisibility? visibility,
+    UnifediApiVisibility? visibility,
     String? uri,
     String? url,
     int? repliesCount,
@@ -584,24 +585,24 @@ class DbStatusPopulatedWrapper extends IStatus {
     bool? pinned,
     String? content,
     String? reblogStatusRemoteId,
-    PleromaApiApplication? application,
+    UnifediApiApplication? application,
     String? accountRemoteId,
-    List<PleromaApiMediaAttachment>? mediaAttachments,
-    List<PleromaApiMention>? mentions,
-    List<PleromaApiTag>? tags,
-    List<PleromaApiEmoji>? emojis,
-    PleromaApiPoll? poll,
-    PleromaApiCard? card,
+    List<UnifediApiMediaAttachment>? mediaAttachments,
+    List<UnifediApiMention>? mentions,
+    List<UnifediApiTag>? tags,
+    List<UnifediApiEmoji>? emojis,
+    UnifediApiPoll? poll,
+    UnifediApiCard? card,
     String? language,
-    PleromaApiContent? pleromaContent,
-    int? pleromaConversationId,
-    int? pleromaDirectConversationId,
-    String? pleromaInReplyToAccountAcct,
-    bool? pleromaLocal,
-    PleromaApiContent? pleromaSpoilerText,
-    DateTime? pleromaExpiresAt,
-    bool? pleromaThreadMuted,
-    List<PleromaApiStatusEmojiReaction>? pleromaEmojiReactions,
+    UnifediApiContentVariants? contentVariants,
+    int? conversationId,
+    int? directConversationId,
+    String? inReplyToAccountAcct,
+    bool? local,
+    UnifediApiContentVariants? spoilerTextVariants,
+    DateTime? expiresAt,
+    bool? threadMuted,
+    List<UnifediApiEmojiReaction>? emojiReactions,
     bool? deleted,
     PendingState? pendingState,
     String? oldPendingRemoteId,
@@ -650,15 +651,15 @@ class DbStatusPopulatedWrapper extends IStatus {
           poll: poll,
           card: card,
           language: language,
-          pleromaContent: pleromaContent,
-          pleromaConversationId: pleromaConversationId,
-          pleromaDirectConversationId: pleromaDirectConversationId,
-          pleromaInReplyToAccountAcct: pleromaInReplyToAccountAcct,
-          pleromaLocal: pleromaLocal,
-          pleromaSpoilerText: pleromaSpoilerText,
-          pleromaExpiresAt: pleromaExpiresAt,
-          pleromaThreadMuted: pleromaThreadMuted,
-          pleromaEmojiReactions: pleromaEmojiReactions,
+          contentVariants: contentVariants,
+          conversationId: conversationId,
+          directConversationId: directConversationId,
+          inReplyToAccountAcct: inReplyToAccountAcct,
+          local: local,
+          spoilerTextVariants: spoilerTextVariants,
+          expiresAt: expiresAt,
+          threadMuted: threadMuted,
+          emojiReactions: emojiReactions,
           deleted: deleted,
           pendingState: pendingState,
           oldPendingRemoteId: oldPendingRemoteId,
@@ -684,21 +685,21 @@ class DbStatusPopulatedWrapper extends IStatus {
           avatar: account?.avatar,
           acct: account?.acct,
           lastStatusAt: account?.lastStatusAt,
-          fields: account?.fields?.toPleromaApiFields(),
-          emojis: account?.emojis?.toPleromaApiEmojis(),
-          pleromaRelationship: account?.pleromaRelationship,
-          pleromaTags: account?.pleromaTags?.toPleromaApiTags(),
-          pleromaIsAdmin: account?.pleromaIsAdmin,
-          pleromaIsModerator: account?.pleromaIsModerator,
-          pleromaConfirmationPending: account?.pleromaConfirmationPending,
-          pleromaHideFavorites: account?.pleromaHideFavorites,
-          pleromaHideFollowers: account?.pleromaHideFollowers,
-          pleromaHideFollows: account?.pleromaHideFollows,
-          pleromaHideFollowersCount: account?.pleromaHideFollowersCount,
-          pleromaHideFollowsCount: account?.pleromaHideFollowsCount,
-          pleromaDeactivated: account?.pleromaDeactivated,
-          pleromaAllowFollowingMove: account?.pleromaAllowFollowingMove,
-          pleromaSkipThreadContainment: account?.pleromaSkipThreadContainment,
+          fields: account?.fields?.toUnifediApiFieldList(),
+          emojis: account?.emojis?.toUnifediApiEmojiList(),
+          relationship: account?.relationship?.toUnifediApiAccountRelationship(),
+          tags: account?.tags?.toUnifediApiTagList(),
+          isAdmin: account?.isAdmin,
+          isModerator: account?.isModerator,
+          confirmationPending: account?.confirmationPending,
+          hideFavorites: account?.hideFavorites,
+          hideFollowers: account?.hideFollowers,
+          hideFollows: account?.hideFollows,
+          hideFollowersCount: account?.hideFollowersCount,
+          hideFollowsCount: account?.hideFollowsCount,
+          deactivated: account?.deactivated,
+          allowFollowingMove: account?.allowFollowingMove,
+          skipThreadContainment: account?.skipThreadContainment,
         ),
         reblogDbStatus: reblogStatus,
         reblogDbStatusAccount: reblogStatusAccount,
@@ -869,10 +870,10 @@ class CantExtractStatusRemoteIdFromStatusUrlException implements Exception {
   }
 }
 
-extension IPleromaApiMentionStatusListExtension on List<IStatus> {
-  List<IPleromaApiMention> findAllMentions() {
+extension IUnifediApiMentionStatusListExtension on List<IStatus> {
+  List<IUnifediApiMention> findAllMentions() {
     var statuses = this;
-    var mentions = <IPleromaApiMention>{};
+    var mentions = <IUnifediApiMention>{};
 
     statuses.forEach(
       (status) {

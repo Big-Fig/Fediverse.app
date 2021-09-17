@@ -1,9 +1,9 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
+
 import 'package:fedi/obj/equal_comparable_obj.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class NotificationState {
   final bool? dismissed;
@@ -48,19 +48,17 @@ abstract class INotification implements IEqualComparableObj<INotification> {
 
   String? get chatRemoteId;
 
-  IPleromaApiChatMessage? get chatMessage;
+  IUnifediApiChatMessage? get chatMessage;
 
-  IPleromaApiAccountReport? get report;
+  IUnifediApiAccountReport? get report;
 
   String get type;
 
-  PleromaApiNotificationType get typePleroma;
 
-  MastodonApiNotificationType get typeAsMastodonApi;
+  UnifediApiNotificationType get typeAsUnifediApi;
 
   String? get emoji;
 
-  PleromaApiNotificationPleromaPart? get pleroma;
 
   bool get isContainsChat;
 
@@ -72,20 +70,8 @@ abstract class INotification implements IEqualComparableObj<INotification> {
 
   bool get dismissed;
 
-  IPleromaApiAccount? get target;
+  IUnifediApiAccount? get target;
 
-  INotification copyWith({
-    int? localId,
-    String? remoteId,
-    bool? unread,
-    DateTime? createdAt,
-    IStatus? status,
-    String? emoji,
-    PleromaApiNotificationPleromaPart? pleroma,
-    IAccount? account,
-    MastodonApiNotificationType? type,
-    bool? dismissed,
-  });
 }
 
 class DbNotificationPopulatedWrapper implements INotification {
@@ -134,16 +120,11 @@ class DbNotificationPopulatedWrapper implements INotification {
   String? get emoji => dbNotificationPopulated.dbNotification.emoji;
 
   @override
-  PleromaApiNotificationPleromaPart? get pleroma =>
-      dbNotificationPopulated.dbNotification.pleroma;
 
   @override
-  MastodonApiNotificationType get typeAsMastodonApi =>
-      type.toMastodonApiNotificationType();
+  UnifediApiNotificationType get typeAsUnifediApi =>
+      type.toUnifediApiNotificationType();
 
-  @override
-  PleromaApiNotificationType get typePleroma =>
-      type.toPleromaApiNotificationType();
 
   @override
   String get type => dbNotificationPopulated.dbNotification.type;
@@ -165,8 +146,7 @@ class DbNotificationPopulatedWrapper implements INotification {
     IStatus? status,
     IAccount? account,
     String? emoji,
-    PleromaApiNotificationPleromaPart? pleroma,
-    MastodonApiNotificationType? type,
+    UnifediApiNotificationType? type,
     bool? dismissed,
   }) =>
       DbNotificationPopulatedWrapper(
@@ -176,8 +156,7 @@ class DbNotificationPopulatedWrapper implements INotification {
             remoteId: remoteId ?? this.remoteId,
             unread: unread ?? this.unread,
             createdAt: createdAt ?? this.createdAt,
-            type: type?.toJsonValue() ?? this.type,
-            pleroma: pleroma ?? this.pleroma,
+            type: type?.stringValue ?? this.type,
             emoji: emoji ?? this.emoji,
             dismissed: dismissed ?? this.dismissed,
           ),
@@ -225,15 +204,15 @@ class DbNotificationPopulatedWrapper implements INotification {
       dbNotificationPopulated.dbNotification.dismissed == true;
 
   @override
-  IPleromaApiChatMessage? get chatMessage =>
+  IUnifediApiChatMessage? get chatMessage =>
       dbNotificationPopulated.dbNotification.chatMessage;
 
   @override
-  IPleromaApiAccountReport? get report =>
+  IUnifediApiAccountReport? get report =>
       dbNotificationPopulated.dbNotification.report;
 
   @override
-  IPleromaApiAccount? get target =>
+  IUnifediApiAccount? get target =>
       dbNotificationPopulated.dbNotification.target;
 
   @override

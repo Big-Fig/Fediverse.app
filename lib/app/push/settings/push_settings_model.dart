@@ -23,9 +23,9 @@ class PushSettings extends ISettings<PushSettings> {
   @HiveField(5)
   final bool? poll;
   @HiveField(6)
-  final bool? pleromaChatMention;
+  final bool? chatMention;
   @HiveField(7)
-  final bool? pleromaEmojiReaction;
+  final bool? emojiReaction;
 
   PushSettings({
     required this.favourite,
@@ -33,8 +33,8 @@ class PushSettings extends ISettings<PushSettings> {
     required this.mention,
     required this.reblog,
     required this.poll,
-    required this.pleromaChatMention,
-    required this.pleromaEmojiReaction,
+    required this.chatMention,
+    required this.emojiReaction,
   });
 
   PushSettings.defaultAllEnabled()
@@ -44,8 +44,8 @@ class PushSettings extends ISettings<PushSettings> {
           mention: true,
           reblog: true,
           poll: true,
-          pleromaChatMention: true,
-          pleromaEmojiReaction: true,
+          chatMention: true,
+          emojiReaction: true,
         );
 
   PushSettings.defaultAllDisabled()
@@ -55,8 +55,8 @@ class PushSettings extends ISettings<PushSettings> {
           mention: false,
           reblog: false,
           poll: false,
-          pleromaChatMention: false,
-          pleromaEmojiReaction: false,
+          chatMention: false,
+          emojiReaction: false,
         );
 
   @override
@@ -69,8 +69,8 @@ class PushSettings extends ISettings<PushSettings> {
           mention == other.mention &&
           reblog == other.reblog &&
           poll == other.poll &&
-          pleromaChatMention == other.pleromaChatMention &&
-          pleromaEmojiReaction == other.pleromaEmojiReaction;
+          chatMention == other.chatMention &&
+          emojiReaction == other.emojiReaction;
 
   @override
   int get hashCode =>
@@ -79,15 +79,15 @@ class PushSettings extends ISettings<PushSettings> {
       mention.hashCode ^
       reblog.hashCode ^
       poll.hashCode ^
-      pleromaChatMention.hashCode ^
-      pleromaEmojiReaction.hashCode;
+      chatMention.hashCode ^
+      emojiReaction.hashCode;
 
   @override
   String toString() {
     return 'PushSettings{favourite: $favourite,'
         ' follow: $follow, mention: $mention,'
         ' reblog: $reblog, poll: $poll,'
-        ' pleromaChat: $pleromaChatMention, pleromaEmojiReaction: $pleromaEmojiReaction}';
+        ' pleromaChat: $chatMention, emojiReaction: $emojiReaction}';
   }
 
   static PushSettings fromJson(Map<String, dynamic> json) =>
@@ -103,8 +103,8 @@ class PushSettings extends ISettings<PushSettings> {
     bool? mention,
     bool? reblog,
     bool? poll,
-    bool? pleromaChatMention,
-    bool? pleromaEmojiReaction,
+    bool? chatMention,
+    bool? emojiReaction,
   }) =>
       PushSettings(
         favourite: favourite ?? this.favourite,
@@ -112,8 +112,8 @@ class PushSettings extends ISettings<PushSettings> {
         mention: mention ?? this.mention,
         reblog: reblog ?? this.reblog,
         poll: poll ?? this.poll,
-        pleromaChatMention: pleromaChatMention ?? this.pleromaChatMention,
-        pleromaEmojiReaction: pleromaEmojiReaction ?? this.pleromaEmojiReaction,
+        chatMention: chatMention ?? this.chatMention,
+        emojiReaction: emojiReaction ?? this.emojiReaction,
       );
 
   @override

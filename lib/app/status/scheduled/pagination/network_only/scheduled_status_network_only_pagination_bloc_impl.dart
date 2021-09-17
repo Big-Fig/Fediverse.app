@@ -5,7 +5,7 @@ import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/status/scheduled/pagination/network_only/scheduled_status_network_only_pagination_bloc.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_model.dart';
 import 'package:fedi/pagination/pagination_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
@@ -24,7 +24,7 @@ class ScheduledStatusNetworkOnlyPaginationBloc
         );
 
   @override
-  IPleromaApi get pleromaApi => listService.pleromaApi;
+  IUnifediApiService get unifediApi => listService.unifediApi;
 
   static ScheduledStatusNetworkOnlyPaginationBloc createFromContext(
     BuildContext context, {

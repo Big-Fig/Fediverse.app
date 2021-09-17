@@ -2,7 +2,7 @@ import 'package:fedi/app/chat/conversation/repository/conversation_chat_reposito
 import 'package:fedi/app/database/app_database.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-class ConversationRepositoryTestHelper {
+class ConversationRepositoryMockHelper {
   static Future<DbConversation> insertDbConversation(
     ConversationChatRepository conversationRepository,
     DbConversation conversationData,

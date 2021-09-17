@@ -16,7 +16,7 @@ import 'package:fedi/collapsible/owner/collapsible_owner_widget.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:fedi/ui/scroll/scroll_controller_bloc.dart';
 import 'package:fedi/ui/scroll/scroll_controller_bloc_impl.dart';
 import 'package:flutter/cupertino.dart';
@@ -39,17 +39,17 @@ class RemoteInstancePublicTimelinePage extends StatelessWidget {
 
 MaterialPageRoute createRemoteInstancePublicTimelinePageRoute({
   required Uri remoteInstanceUri,
-  required IPleromaApiInstance pleromaApiInstance,
+  required IUnifediApiInstance unifediApiInstance,
   required IRemoteInstanceBloc remoteInstanceBloc,
 }) =>
     MaterialPageRoute(
       builder: (context) => Provider.value(
         value: remoteInstanceBloc,
-        child: ProxyProvider<IRemoteInstanceBloc, IPleromaApiInstance>(
-          update: (context, value, previous) => value.pleromaApiInstance!,
+        child: ProxyProvider<IRemoteInstanceBloc, IUnifediApiInstance>(
+          update: (context, value, previous) => value.unifediApiInstance!,
           child: RemoteInstancePublicTimelinePageBloc.provideToContext(
             context,
-            pleromaApiInstance: pleromaApiInstance,
+            unifediApiInstance: unifediApiInstance,
             child: const RemoteInstancePublicTimelinePage(),
           ),
         ),
@@ -59,7 +59,7 @@ MaterialPageRoute createRemoteInstancePublicTimelinePageRoute({
 Future goToRemoteInstancePublicTimelinePage({
   required BuildContext context,
   required Uri remoteInstanceUri,
-  required IPleromaApiInstance pleromaApiInstance,
+  required IUnifediApiInstance unifediApiInstance,
 }) async {
   var dialogResult = await PleromaAsyncOperationHelper
       .performPleromaAsyncOperation<IRemoteInstanceBloc>(
@@ -82,7 +82,7 @@ Future goToRemoteInstancePublicTimelinePage({
       context,
       createRemoteInstancePublicTimelinePageRoute(
         remoteInstanceUri: remoteInstanceUri,
-        pleromaApiInstance: pleromaApiInstance,
+        unifediApiInstance: unifediApiInstance,
         remoteInstanceBloc: remoteInstanceBloc,
       ),
     );

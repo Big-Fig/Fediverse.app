@@ -10,14 +10,14 @@ import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/chat/message/chat_message_model.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:easy_dispose/easy_dispose.dart';
 
 class MyAccountBloc extends IMyAccountBloc {
   static const selfActionError = SelfActionNotPossibleException();
 
   final IMyAccountLocalPreferenceBloc myAccountLocalPreferenceBloc;
-  final IPleromaApiMyAccountService pleromaMyAccountService;
+  final IUnifediApiMyAccountService unifediApiMyAccountService;
   final IAccountRepository accountRepository;
 
   @override
@@ -28,7 +28,7 @@ class MyAccountBloc extends IMyAccountBloc {
 
   MyAccountBloc({
     required this.myAccountLocalPreferenceBloc,
-    required this.pleromaMyAccountService,
+    required this.unifediApiMyAccountService,
     required this.accountRepository,
     required this.instance,
   }) {
@@ -36,7 +36,7 @@ class MyAccountBloc extends IMyAccountBloc {
       (myAccount) {
         if (myAccount != null) {
           accountRepository.upsertInRemoteType(
-            myAccount.toPleromaApiAccount(),
+            myAccount.toUnifediApiAccount(),
           );
         }
       },
@@ -59,12 +59,12 @@ class MyAccountBloc extends IMyAccountBloc {
   IAccount get account => myAccount!;
 
   @override
-  Future<IPleromaApiAccountRelationship> toggleBlock() {
+  Future<IUnifediApiAccountRelationship> toggleBlock() {
     throw selfActionError;
   }
 
   @override
-  Future<IPleromaApiAccountRelationship> toggleFollow() {
+  Future<IUnifediApiAccountRelationship> toggleFollow() {
     throw selfActionError;
   }
 
@@ -72,9 +72,9 @@ class MyAccountBloc extends IMyAccountBloc {
   Future refreshFromNetwork({
     required bool isNeedPreFetchRelationship,
   }) async {
-    var remoteMyAccount = await pleromaMyAccountService.verifyCredentials();
+    var remoteMyAccount = await unifediApiMyAccountService.verifyMyCredentials();
 
-    await updateMyAccountByMyPleromaAccount(remoteMyAccount);
+    await updateMyAccountByMyUnifediApiAccount(remoteMyAccount);
   }
 
   @override
@@ -86,26 +86,26 @@ class MyAccountBloc extends IMyAccountBloc {
       myAccount!.remoteId == status.account.remoteId;
 
   @override
-  IPleromaApiAccountRelationship get relationship => throw selfActionError;
+  IUnifediApiAccountRelationship get relationship => throw selfActionError;
 
   @override
-  Stream<IPleromaApiAccountRelationship> get relationshipStream =>
+  Stream<IUnifediApiAccountRelationship> get relationshipStream =>
       throw selfActionError;
 
   @override
-  Future<IPleromaApiAccountRelationship> togglePin() => throw selfActionError;
+  Future<IUnifediApiAccountRelationship> togglePin() => throw selfActionError;
 
   @override
-  Future<IPleromaApiAccountRelationship> toggleBlockDomain() =>
+  Future<IUnifediApiAccountRelationship> toggleBlockDomain() =>
       throw selfActionError;
 
   @override
-  Future updateMyAccountByMyPleromaAccount(
-    IPleromaApiMyAccount pleromaMyAccount,
+  Future updateMyAccountByMyUnifediApiAccount(
+    IUnifediApiMyAccount unifediApiMyAccount,
   ) async {
     await myAccountLocalPreferenceBloc.setValue(
-      PleromaMyAccountWrapper(
-        pleromaAccount: pleromaMyAccount.toPleromaApiMyAccount(),
+      UnifediApiMyAccountWrapper(
+        unifediApiAccount: unifediApiMyAccount.toUnifediApiMyAccount(),
       ),
     );
   }
@@ -113,8 +113,8 @@ class MyAccountBloc extends IMyAccountBloc {
   @override
   Future updateMyAccountByMyAccount(IMyAccount myAccount) async {
     await myAccountLocalPreferenceBloc.setValue(
-      PleromaMyAccountWrapper(
-        pleromaAccount: myAccount.toPleromaApiMyAccount(),
+      UnifediApiMyAccountWrapper(
+        unifediApiAccount: myAccount.toUnifediApiMyAccount(),
       ),
     );
   }
@@ -123,11 +123,11 @@ class MyAccountBloc extends IMyAccountBloc {
   Future decreaseFollowingRequestCount() async {
     assert(followRequestsCount! > 0);
     await myAccountLocalPreferenceBloc.setValue(
-      myAccountLocalPreferenceBloc.value!
+      myAccountLocalPreferenceBloc.value!.toUnifediApiMyAccountWrapper()
           .copyWith(
             followRequestsCount: followRequestsCount! - 1,
           )
-          .toPleromaApiMyAccountWrapper(),
+          .toUnifediApiMyAccountWrapper(),
     );
   }
 
@@ -137,27 +137,27 @@ class MyAccountBloc extends IMyAccountBloc {
   }
 
   @override
-  Future<IPleromaApiAccountRelationship> mute({
+  Future<IUnifediApiAccountRelationship> mute({
     required bool notifications,
     required Duration? duration,
   }) =>
       throw selfActionError;
 
   @override
-  Future<IPleromaApiAccountRelationship> unMute() => throw selfActionError;
+  Future<IUnifediApiAccountRelationship> unMute() => throw selfActionError;
 
   @override
-  Future<IPleromaApiAccountRelationship> subscribe() => throw selfActionError;
+  Future<IUnifediApiAccountRelationship> subscribe() => throw selfActionError;
 
   @override
-  Future<IPleromaApiAccountRelationship> toggleMute() => throw selfActionError;
+  Future<IUnifediApiAccountRelationship> toggleMute() => throw selfActionError;
 
   @override
-  Future<IPleromaApiAccountRelationship> toggleSubscribe() =>
+  Future<IUnifediApiAccountRelationship> toggleSubscribe() =>
       throw selfActionError;
 
   @override
-  Future<IPleromaApiAccountRelationship> unSubscribe() => throw selfActionError;
+  Future<IUnifediApiAccountRelationship> unSubscribe() => throw selfActionError;
 
   @override
   InstanceLocation get instanceLocation => InstanceLocation.local;

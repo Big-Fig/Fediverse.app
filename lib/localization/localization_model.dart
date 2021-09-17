@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:ui';
 
-import 'package:fedi/json/json_model.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -10,7 +10,7 @@ part 'localization_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 @HiveType(typeId: -32 + 82)
-class LocalizationLocale implements IJsonObject {
+class LocalizationLocale implements IJsonObj {
   @HiveField(0)
   final String languageCode;
   @HiveField(1)

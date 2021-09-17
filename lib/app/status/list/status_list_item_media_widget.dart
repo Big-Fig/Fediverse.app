@@ -7,7 +7,7 @@ import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -52,7 +52,7 @@ class StatusListItemMediaWidget extends StatelessWidget {
           'media ${statusBloc.reblogOrOriginalMediaAttachments?.length}',
     );
 
-    var mediaAttachment = Provider.of<IPleromaApiMediaAttachment>(context);
+    var mediaAttachment = Provider.of<IUnifediApiMediaAttachment>(context);
     var previewUrl = mediaAttachment.previewUrl;
 
     var child = mediaAttachmentPreviewUrlWidget(previewUrl!, context);

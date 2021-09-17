@@ -2,7 +2,7 @@ import 'package:fedi/app/status/post/settings/local_preferences/global/global_po
 import 'package:fedi/app/status/post/settings/local_preferences/post_status_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/status/post/settings/post_status_settings_model.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class GlobalPostStatusSettingsLocalPreferenceBloc
     extends PostStatusSettingsLocalPreferenceBloc<PostStatusSettings>
@@ -12,7 +12,7 @@ class GlobalPostStatusSettingsLocalPreferenceBloc
   ) : super(preferencesService, 'postStatus.settings.global');
 
   static final defaultValue = PostStatusSettings(
-    defaultVisibilityString: PleromaApiVisibility.public.toJsonValue(),
+    defaultVisibilityString: UnifediApiVisibility.publicValue.stringValue,
     markMediaAsNsfwOnAttach: false,
     defaultStatusLocale: null,
   );

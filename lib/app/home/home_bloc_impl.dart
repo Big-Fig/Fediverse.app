@@ -5,9 +5,10 @@ import 'package:fedi/app/home/home_bloc.dart';
 import 'package:fedi/app/home/home_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
-import 'package:base_fediverse_api/base_fediverse_api.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 
 var _logger = Logger('home_bloc_impl.dart');
 
@@ -59,12 +60,12 @@ class HomeBloc extends DisposableOwner implements IHomeBloc {
       () => homeTimelinesInactiveUnreadBadgeSubscription?.cancel(),
     );
 
-    // WebSocketsListenType.background because it is listening for any home tab
+    // WebSocketsChannelHandlerType.background because it is listening for any home tab
     // timelines, notifications, chats overrides websockets listening with
-    // WebSocketsListenType.foreground
+    // WebSocketsChannelHandlerType.foreground
     addDisposable(
       webSocketsHandlerManagerBloc.listenMyAccountChannel(
-        listenType: WebSocketsListenType.background,
+        handlerType: WebSocketsChannelHandlerType.backgroundValue,
         notification: false,
         chat: false,
       ),

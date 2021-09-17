@@ -3,8 +3,8 @@ import 'package:fedi/app/custom_list/custom_list_model.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_model.dart';
 import 'package:fedi/app/timeline/type/timeline_type_model.dart';
-import 'package:fedi/json/json_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -17,7 +17,7 @@ part 'timeline_model.g.dart';
 //@HiveType()
 @HiveType(typeId: -32 + 78)
 @JsonSerializable(explicitToJson: true)
-class Timeline implements IJsonObject {
+class Timeline implements IJsonObj {
   @HiveField(0)
   final String id;
   @HiveField(1)
@@ -84,7 +84,7 @@ class Timeline implements IJsonObject {
         );
 
   Timeline.hashtag({
-    required IPleromaApiTag remoteTag,
+    required IUnifediApiTag remoteTag,
     required TimelineSettings settings,
     bool isPossibleToDelete = true,
   }) : this.byType(
@@ -96,7 +96,7 @@ class Timeline implements IJsonObject {
         );
 
   Timeline.customList({
-    required IPleromaApiList remoteList,
+    required IUnifediApiList remoteList,
     required TimelineSettings settings,
     bool isPossibleToDelete = true,
   }) : this.byType(
@@ -108,7 +108,7 @@ class Timeline implements IJsonObject {
         );
 
   Timeline.account({
-    required IPleromaApiAccount account,
+    required IUnifediApiAccount account,
     required TimelineSettings settings,
     bool isPossibleToDelete = true,
   }) : this.byType(
@@ -168,20 +168,20 @@ class Timeline implements IJsonObject {
   List<String?>? get excludeVisibilitiesStrings =>
       settings.excludeVisibilitiesStrings;
 
-  List<PleromaApiVisibility>? get excludeVisibilities =>
+  List<UnifediApiVisibility>? get excludeVisibilities =>
       settings.excludeVisibilities;
 
-  PleromaApiList? get onlyInRemoteList => settings.onlyInRemoteList;
+  UnifediApiList? get onlyInRemoteList => settings.onlyInRemoteList;
 
   String? get withRemoteHashtag => settings.withRemoteHashtag;
 
-  String? get pleromaReplyVisibilityFilterString =>
+  String? get unifediApiReplyVisibilityFilterString =>
       settings.replyVisibilityFilterString;
 
-  PleromaApiReplyVisibilityFilter? get replyVisibilityFilter =>
+  UnifediApiReplyVisibilityFilter? get replyVisibilityFilter =>
       settings.replyVisibilityFilter;
 
-  PleromaApiAccount? get onlyFromRemoteAccount =>
+  UnifediApiAccount? get onlyFromRemoteAccount =>
       settings.onlyFromRemoteAccount;
 
   String? get onlyFromInstance => settings.onlyFromInstance;
@@ -206,15 +206,15 @@ class Timeline implements IJsonObject {
       );
 }
 
-extension TimelineIdPleromaListExtension on IPleromaApiList {
+extension TimelineIdPleromaListExtension on IUnifediApiList {
   String calculateTimelineId() => 'list.$id';
 }
 
-extension TimelineIdPleromaTagExtension on IPleromaApiTag {
+extension TimelineIdPleromaTagExtension on IUnifediApiTag {
   String calculateTimelineId() => 'hashtag.$name';
 }
 
-extension TimelineIdPleromaAccountExtension on IPleromaApiAccount {
+extension TimelineIdUnifediApiAccountExtension on IUnifediApiAccount {
   String calculateTimelineId() => 'account.$id';
 }
 

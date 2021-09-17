@@ -5,7 +5,7 @@ import 'package:fedi/app/captcha/captcha_string_value_form_field_bloc.dart';
 import 'package:fedi/app/captcha/pleroma/pleroma_form_captcha_string_field_bloc.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/field/value/value_form_field_validation.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -16,10 +16,10 @@ final _logger = Logger('pleroma_form_captcha_string_field_bloc_impl.dart');
 
 class PleromaFormCaptchaStringFieldBloc extends StringValueFormFieldBloc
     implements IPleromaFormCaptchaStringFieldBloc {
-  final IPleromaApiCaptchaService pleromaCaptchaService;
+  final IUnifediApiInstanceService pleromaCaptchaService;
 
   final BehaviorSubject<bool> isLoadingSubject = BehaviorSubject.seeded(false);
-  final BehaviorSubject<PleromaApiCaptcha?> captchaSubject = BehaviorSubject();
+  final BehaviorSubject<UnifediApiCaptcha?> captchaSubject = BehaviorSubject();
   final BehaviorSubject<dynamic> captchaLoadingErrorSubject = BehaviorSubject();
   final BehaviorSubject<DateTime?> captchaLoadedDateTimeSubject =
       BehaviorSubject();
@@ -101,10 +101,10 @@ class PleromaFormCaptchaStringFieldBloc extends StringValueFormFieldBloc
       isDisabledOnServerSide == true ? [] : superErrors;
 
   @override
-  PleromaApiCaptcha? get captcha => captchaSubject.value;
+  UnifediApiCaptcha? get captcha => captchaSubject.value;
 
   @override
-  Stream<PleromaApiCaptcha?> get captchaStream => captchaSubject.stream;
+  Stream<UnifediApiCaptcha?> get captchaStream => captchaSubject.stream;
 
   @override
   DateTime? get captchaLoadedDateTime => captchaLoadedDateTimeSubject.value;
@@ -133,8 +133,8 @@ class PleromaFormCaptchaStringFieldBloc extends StringValueFormFieldBloc
   Stream<bool?> get isDisabledOnServerSideStream =>
       captchaStream.map(_calculateIsDisabledOnServerSide);
 
-  static bool _calculateIsDisabledOnServerSide(PleromaApiCaptcha? captcha) =>
-      captcha?.typeAsPleromaApi == PleromaApiCaptchaType.none;
+  static bool _calculateIsDisabledOnServerSide(UnifediApiCaptcha? captcha) =>
+      captcha?.typeAsUnifediApi == UnifediApiCaptchaType.noneValue;
 
   PleromaFormCaptchaStringFieldBloc({
     required this.pleromaCaptchaService,
@@ -214,7 +214,7 @@ class PleromaFormCaptchaStringFieldBloc extends StringValueFormFieldBloc
       }
 
       if (!captchaSubject.isClosed) {
-        captchaSubject.add(captcha.toPleromaApiCaptcha());
+        captchaSubject.add(captcha.toUnifediApiCaptcha());
       }
       _logger.finest(() => 'reloadCaptcha FINISH $captcha');
     } catch (e, stackTrace) {

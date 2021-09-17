@@ -1,5 +1,5 @@
-import 'package:fedi/json/json_model.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 
-abstract class ISettings<T> implements IJsonObject {
+abstract class ISettings<T> implements IJsonObj {
   T clone();
 }

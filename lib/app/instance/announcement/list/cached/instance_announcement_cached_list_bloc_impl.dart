@@ -5,7 +5,7 @@ import 'package:fedi/app/instance/announcement/repository/instance_announcement_
 import 'package:fedi/app/instance/announcement/settings/instance_announcement_settings_model.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +14,7 @@ import 'package:easy_dispose/easy_dispose.dart';
 
 class InstanceAnnouncementCachedListBloc
     extends IInstanceAnnouncementCachedListBloc {
-  final IPleromaApiAnnouncementService pleromaApiAnnouncementService;
+  final IUnifediApiAnnouncementService unifediApiAnnouncementService;
   final IInstanceAnnouncementRepository instanceAnnouncementRepository;
   final BehaviorSubject<InstanceAnnouncementSettings>
       instanceAnnouncementSettingsSubject;
@@ -28,10 +28,10 @@ class InstanceAnnouncementCachedListBloc
       instanceAnnouncementSettingsSubject.stream;
 
   @override
-  IPleromaApi get pleromaApi => pleromaApiAnnouncementService;
+  IUnifediApiService get unifediApi => unifediApiAnnouncementService;
 
   InstanceAnnouncementCachedListBloc({
-    required this.pleromaApiAnnouncementService,
+    required this.unifediApiAnnouncementService,
     required this.instanceAnnouncementRepository,
     required InstanceAnnouncementSettings instanceAnnouncementSettings,
   }) : instanceAnnouncementSettingsSubject =
@@ -68,7 +68,7 @@ class InstanceAnnouncementCachedListBloc
   }) async {
     if (newerThan == null && olderThan == null) {
       var remoteInstanceAnnouncements =
-          await pleromaApiAnnouncementService.getAnnouncements(
+          await unifediApiAnnouncementService.getAnnouncements(
         withDismissed: instanceAnnouncementSettings.withDismissed,
       );
 
@@ -87,8 +87,8 @@ class InstanceAnnouncementCachedListBloc
     required InstanceAnnouncementSettings instanceAnnouncementSettings,
   }) =>
       InstanceAnnouncementCachedListBloc(
-        pleromaApiAnnouncementService:
-            Provider.of<IPleromaApiAnnouncementService>(
+        unifediApiAnnouncementService:
+            Provider.of<IUnifediApiAnnouncementService>(
           context,
           listen: false,
         ),

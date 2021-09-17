@@ -7,7 +7,7 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/app/status/thread/status_thread_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -18,7 +18,7 @@ var _logger = Logger('status_thread_bloc_impl.dart');
 
 abstract class StatusThreadBloc extends AsyncInitLoadingBloc
     implements IStatusThreadBloc {
-  final IPleromaApiStatusService pleromaStatusService;
+  final IUnifediApiStatusService unifediApiStatusService;
 
   @override
   // ignore: avoid-late-keyword
@@ -34,7 +34,7 @@ abstract class StatusThreadBloc extends AsyncInitLoadingBloc
       onNewStatusAddedStreamController.stream;
 
   @override
-  final IPleromaApiMediaAttachment? initialMediaAttachment;
+  final IUnifediApiMediaAttachment? initialMediaAttachment;
 
   @override
   final ItemScrollController itemScrollController = ItemScrollController();
@@ -49,7 +49,7 @@ abstract class StatusThreadBloc extends AsyncInitLoadingBloc
   bool isJumpedToStartState = false;
 
   StatusThreadBloc({
-    required this.pleromaStatusService,
+    required this.unifediApiStatusService,
     required this.initialStatusToFetchThread,
     required this.initialMediaAttachment,
   })  : statusesSubject = BehaviorSubject.seeded(
@@ -78,10 +78,10 @@ abstract class StatusThreadBloc extends AsyncInitLoadingBloc
       );
 
   @override
-  List<IPleromaApiMention> get mentions => statuses.findAllMentions();
+  List<IUnifediApiMention> get mentions => statuses.findAllMentions();
 
   @override
-  Stream<List<IPleromaApiMention>> get mentionsStream =>
+  Stream<List<IUnifediApiMention>> get mentionsStream =>
       statusesStream.map((statuses) => statuses.findAllMentions());
 
   @override
@@ -102,8 +102,8 @@ abstract class StatusThreadBloc extends AsyncInitLoadingBloc
       _logger.finest(() => 'refresh');
 
       // update start status
-      var updatedStartRemoteStatus = await pleromaStatusService.getStatus(
-        statusRemoteId: initialStatusToFetchThread.remoteId!,
+      var updatedStartRemoteStatus = await unifediApiStatusService.getStatus(
+        statusId: initialStatusToFetchThread.remoteId!,
       );
       // dont await because we dont need it
       onInitialStatusUpdated(updatedStartRemoteStatus);
@@ -115,8 +115,8 @@ abstract class StatusThreadBloc extends AsyncInitLoadingBloc
       );
 
       // update context
-      var remoteStatusContext = await pleromaStatusService.getStatusContext(
-        statusRemoteId: initialStatusToFetchThread.remoteId!,
+      var remoteStatusContext = await unifediApiStatusService.getStatusContext(
+        statusId: initialStatusToFetchThread.remoteId!,
       );
       var ancestors = remoteStatusContext.ancestors.where(
         (remoteStatus) => isNotFiltered(
@@ -161,7 +161,7 @@ abstract class StatusThreadBloc extends AsyncInitLoadingBloc
 
   Stream<List<IFilter>> watchFilters();
 
-  void onInitialStatusUpdated(IPleromaApiStatus updatedStartRemoteStatus);
+  void onInitialStatusUpdated(IUnifediApiStatus updatedStartRemoteStatus);
 
   @override
   int get initialStatusToFetchThreadIndex =>
@@ -243,7 +243,7 @@ abstract class StatusThreadBloc extends AsyncInitLoadingBloc
   }
 
   bool isNotFiltered({
-    required IPleromaApiStatus remoteStatus,
+    required IUnifediApiStatus remoteStatus,
     required List<IFilter> filters,
   }) {
     var spoilerText = remoteStatus.spoilerText;

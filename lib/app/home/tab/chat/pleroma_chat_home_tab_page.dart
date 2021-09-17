@@ -31,11 +31,12 @@ import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
-import 'package:base_fediverse_api/base_fediverse_api.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 
 var _logger = Logger('chat_messages_home_tab_page.dart');
 
@@ -74,7 +75,7 @@ class PleromaChatHomeTabPage extends StatelessWidget {
     return DisposableProvider<IPleromaChatWithLastMessageListBloc>(
       create: (context) => PleromaChatWithLastMessageListBloc.createFromContext(
         context,
-        webSocketsListenType: WebSocketsListenType.foreground,
+        handlerType: WebSocketsChannelHandlerType.foregroundValue,
       ),
       child: Builder(builder: (context) {
         var chatsListBloc =

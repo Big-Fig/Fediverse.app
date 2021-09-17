@@ -48,7 +48,7 @@ void main() {
     );
 
     dbAccount =
-        await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed1');
+        await AccountDatabaseMockHelper.createTestDbAccount(seed: 'seed1');
     var accountId = await accountRepository.insertInDbType(
       dbAccount,
       mode: null,
@@ -56,7 +56,7 @@ void main() {
     // assign local id for further equal with data retrieved from db
     dbAccount = dbAccount.copyWith(id: accountId);
 
-    dbChat = await ChatDatabaseTestHelper.createTestDbChat(
+    dbChat = await ChatDatabaseMockHelper.createTestDbChat(
       seed: 'seed4',
       dbAccount: dbAccount,
     );
@@ -66,14 +66,14 @@ void main() {
     );
 
     chat = DbPleromaChatPopulatedWrapper(dbChatPopulated: dbChatPopulated);
-    dbChatMessage = await ChatMessageDatabaseTestHelper.createTestDbChatMessage(
+    dbChatMessage = await ChatMessageDatabaseMockHelper.createTestDbChatMessage(
       seed: 'seed3',
       dbAccount: dbAccount,
       chatRemoteId: dbChat.remoteId,
     );
 
     dbChatMessagePopulated =
-        await ChatMessageDatabaseTestHelper.createTestDbChatMessagePopulated(
+        await ChatMessageDatabaseMockHelper.createTestDbChatMessagePopulated(
       dbChatMessage,
       accountRepository,
     );
@@ -102,14 +102,14 @@ void main() {
       mode: null,
     );
     assert(id > 0, true);
-    ChatDatabaseTestHelper.expectDbChat(
+    ChatDatabaseMockHelper.expectDbChat(
       await chatRepository.findByDbIdInAppType(id),
       dbChat,
     );
   });
 
   test('upsertAll', () async {
-    var dbChat1 = (await ChatDatabaseTestHelper.createTestDbChat(
+    var dbChat1 = (await ChatDatabaseMockHelper.createTestDbChat(
       seed: 'seed5',
       dbAccount: dbAccount,
     ))
@@ -117,7 +117,7 @@ void main() {
       remoteId: 'remoteId1',
     );
     // same remote id
-    var dbChat2 = (await ChatDatabaseTestHelper.createTestDbChat(
+    var dbChat2 = (await ChatDatabaseMockHelper.createTestDbChat(
       seed: 'seed6',
       dbAccount: dbAccount,
     ))
@@ -136,7 +136,7 @@ void main() {
     );
     expect((await chatRepository.getAllInAppType()).length, 1);
 
-    ChatDatabaseTestHelper.expectDbChat(
+    ChatDatabaseMockHelper.expectDbChat(
       (await chatRepository.getAllInAppType()).first,
       dbChat2,
     );
@@ -179,7 +179,7 @@ void main() {
       id: id,
       remoteId: newRemoteId,
     )
-        .toPleromaApiChat(
+        .toUnifediApiChat(
       lastChatMessage: DbPleromaChatMessagePopulatedWrapper(
         dbChatMessagePopulated: DbChatMessagePopulated(
           dbChatMessage: dbChatMessage.copyWith(content: newContent),
@@ -227,7 +227,7 @@ void main() {
       dbChat,
       mode: null,
     );
-    ChatDatabaseTestHelper.expectDbChat(
+    ChatDatabaseMockHelper.expectDbChat(
       await chatRepository.findByRemoteIdInAppType(dbChat.remoteId),
       dbChat,
     );
@@ -239,7 +239,7 @@ void main() {
     await chatRepository.upsertInRemoteType(
       DbPleromaChatPopulatedWrapper(
         dbChatPopulated: dbChatPopulated,
-      ).toPleromaApiChat(
+      ).toUnifediApiChat(
         accounts: [
           DbAccountPopulatedWrapper(
             dbAccountPopulated: DbAccountPopulated(
@@ -263,15 +263,15 @@ void main() {
       await accountRepository.countAll(),
       1,
     );
-    ChatDatabaseTestHelper.expectDbChat(
+    ChatDatabaseMockHelper.expectDbChat(
       await chatRepository.findByRemoteIdInAppType(dbChat.remoteId),
       dbChat,
     );
-    AccountDatabaseTestHelper.expectDbAccount(
+    AccountDatabaseMockHelper.expectDbAccount(
       await accountRepository.findByRemoteIdInAppType(dbAccount.remoteId),
       dbAccount,
     );
-    ChatMessageDatabaseTestHelper.expectDbChatMessage(
+    ChatMessageDatabaseMockHelper.expectDbChatMessage(
       await chatMessageRepository
           .findByRemoteIdInAppType(dbChatMessage.remoteId),
       dbChatMessage,
@@ -282,7 +282,7 @@ void main() {
     await chatRepository.upsertInRemoteType(
       DbPleromaChatPopulatedWrapper(
         dbChatPopulated: dbChatPopulated,
-      ).toPleromaApiChat(
+      ).toUnifediApiChat(
         accounts: [
           DbAccountPopulatedWrapper(
             dbAccountPopulated: DbAccountPopulated(
@@ -298,15 +298,15 @@ void main() {
     expect(await chatRepository.countAll(), 1);
     expect(await chatMessageRepository.countAll(), 1);
     expect(await accountRepository.countAll(), 1);
-    ChatDatabaseTestHelper.expectDbChat(
+    ChatDatabaseMockHelper.expectDbChat(
       await chatRepository.findByRemoteIdInAppType(dbChat.remoteId),
       dbChat,
     );
-    AccountDatabaseTestHelper.expectDbAccount(
+    AccountDatabaseMockHelper.expectDbAccount(
       await accountRepository.findByRemoteIdInAppType(dbAccount.remoteId),
       dbAccount,
     );
-    ChatMessageDatabaseTestHelper.expectDbChatMessage(
+    ChatMessageDatabaseMockHelper.expectDbChatMessage(
       await chatMessageRepository
           .findByRemoteIdInAppType(dbChatMessage.remoteId),
       dbChatMessage,
@@ -318,7 +318,7 @@ void main() {
     await chatRepository.upsertAllInRemoteType(
       [
         DbPleromaChatPopulatedWrapper(dbChatPopulated: dbChatPopulated)
-            .toPleromaApiChat(
+            .toUnifediApiChat(
           accounts: [
             DbAccountPopulatedWrapper(
               dbAccountPopulated: DbAccountPopulated(
@@ -338,15 +338,15 @@ void main() {
 
     expect(await chatMessageRepository.countAll(), 1);
     expect(await accountRepository.countAll(), 1);
-    ChatDatabaseTestHelper.expectDbChat(
+    ChatDatabaseMockHelper.expectDbChat(
       await chatRepository.findByRemoteIdInAppType(dbChat.remoteId),
       dbChat,
     );
-    AccountDatabaseTestHelper.expectDbAccount(
+    AccountDatabaseMockHelper.expectDbAccount(
       await accountRepository.findByRemoteIdInAppType(dbAccount.remoteId),
       dbAccount,
     );
-    ChatMessageDatabaseTestHelper.expectDbChatMessage(
+    ChatMessageDatabaseMockHelper.expectDbChatMessage(
       await chatMessageRepository
           .findByRemoteIdInAppType(dbChatMessage.remoteId),
       dbChatMessage,
@@ -355,7 +355,7 @@ void main() {
     await chatRepository.upsertAllInRemoteType(
       [
         DbPleromaChatPopulatedWrapper(dbChatPopulated: dbChatPopulated)
-            .toPleromaApiChat(
+            .toUnifediApiChat(
           accounts: [
             DbAccountPopulatedWrapper(
               dbAccountPopulated: DbAccountPopulated(
@@ -375,15 +375,15 @@ void main() {
 
     expect(await chatMessageRepository.countAll(), 1);
     expect(await accountRepository.countAll(), 1);
-    ChatDatabaseTestHelper.expectDbChat(
+    ChatDatabaseMockHelper.expectDbChat(
       await chatRepository.findByRemoteIdInAppType(dbChat.remoteId),
       dbChat,
     );
-    AccountDatabaseTestHelper.expectDbAccount(
+    AccountDatabaseMockHelper.expectDbAccount(
       await accountRepository.findByRemoteIdInAppType(dbAccount.remoteId),
       dbAccount,
     );
-    ChatMessageDatabaseTestHelper.expectDbChatMessage(
+    ChatMessageDatabaseMockHelper.expectDbChatMessage(
       await chatMessageRepository
           .findByRemoteIdInAppType(dbChatMessage.remoteId),
       dbChatMessage,
@@ -400,7 +400,7 @@ void main() {
     expect((await query.get()).length, 0);
 
     await chatRepository.insertInDbType(
-      (await ChatDatabaseTestHelper.createTestDbChat(
+      (await ChatDatabaseMockHelper.createTestDbChat(
         seed: 'seed1',
         dbAccount: dbAccount,
       ))
@@ -411,7 +411,7 @@ void main() {
     expect((await query.get()).length, 1);
 
     await chatRepository.insertInDbType(
-      (await ChatDatabaseTestHelper.createTestDbChat(
+      (await ChatDatabaseMockHelper.createTestDbChat(
         seed: 'seed2',
         dbAccount: dbAccount,
       ))
@@ -422,7 +422,7 @@ void main() {
     expect((await query.get()).length, 2);
 
     await chatRepository.insertInDbType(
-      (await ChatDatabaseTestHelper.createTestDbChat(
+      (await ChatDatabaseMockHelper.createTestDbChat(
         seed: 'seed3',
         dbAccount: dbAccount,
       ))
@@ -437,7 +437,7 @@ void main() {
     var query = chatRepository.createQuery(
       filters: null,
       pagination: RepositoryPagination(
-        newerThanItem: await ChatTestHelper.createTestChat(
+        newerThanItem: await ChatMockHelper.createTestChat(
           seed: 'remoteId5',
           remoteId: 'remoteId5'
               '',
@@ -447,9 +447,9 @@ void main() {
       orderingTermData: PleromaChatRepositoryOrderingTermData.updatedAtDesc,
     );
 
-    await ChatRepositoryTestHelper.insertDbChat(
+    await ChatRepositoryMockHelper.insertDbChat(
       chatRepository,
-      (await ChatDatabaseTestHelper.createTestDbChat(
+      (await ChatDatabaseMockHelper.createTestDbChat(
         seed: 'seed2',
         dbAccount: dbAccount,
       ))
@@ -458,9 +458,9 @@ void main() {
 
     expect((await query.get()).length, 0);
 
-    await ChatRepositoryTestHelper.insertDbChat(
+    await ChatRepositoryMockHelper.insertDbChat(
       chatRepository,
-      (await ChatDatabaseTestHelper.createTestDbChat(
+      (await ChatDatabaseMockHelper.createTestDbChat(
         seed: 'seed2',
         dbAccount: dbAccount,
       ))
@@ -469,9 +469,9 @@ void main() {
 
     expect((await query.get()).length, 0);
 
-    await ChatRepositoryTestHelper.insertDbChat(
+    await ChatRepositoryMockHelper.insertDbChat(
       chatRepository,
-      (await ChatDatabaseTestHelper.createTestDbChat(
+      (await ChatDatabaseMockHelper.createTestDbChat(
         seed: 'seed1',
         dbAccount: dbAccount,
       ))
@@ -479,9 +479,9 @@ void main() {
     );
 
     expect((await query.get()).length, 1);
-    await ChatRepositoryTestHelper.insertDbChat(
+    await ChatRepositoryMockHelper.insertDbChat(
       chatRepository,
-      (await ChatDatabaseTestHelper.createTestDbChat(
+      (await ChatDatabaseMockHelper.createTestDbChat(
         seed: 'seed1',
         dbAccount: dbAccount,
       ))
@@ -495,7 +495,7 @@ void main() {
     var query = chatRepository.createQuery(
       filters: null,
       pagination: RepositoryPagination(
-        olderThanItem: await ChatTestHelper.createTestChat(
+        olderThanItem: await ChatMockHelper.createTestChat(
           seed: 'remoteId5',
           remoteId: 'remoteId5'
               '',
@@ -505,9 +505,9 @@ void main() {
       orderingTermData: PleromaChatRepositoryOrderingTermData.updatedAtDesc,
     );
 
-    await ChatRepositoryTestHelper.insertDbChat(
+    await ChatRepositoryMockHelper.insertDbChat(
       chatRepository,
-      (await ChatDatabaseTestHelper.createTestDbChat(
+      (await ChatDatabaseMockHelper.createTestDbChat(
         seed: 'seed2',
         dbAccount: dbAccount,
       ))
@@ -515,9 +515,9 @@ void main() {
     );
 
     expect((await query.get()).length, 1);
-    await ChatRepositoryTestHelper.insertDbChat(
+    await ChatRepositoryMockHelper.insertDbChat(
       chatRepository,
-      (await ChatDatabaseTestHelper.createTestDbChat(
+      (await ChatDatabaseMockHelper.createTestDbChat(
         seed: 'seed2',
         dbAccount: dbAccount,
       ))
@@ -526,9 +526,9 @@ void main() {
 
     expect((await query.get()).length, 2);
 
-    await ChatRepositoryTestHelper.insertDbChat(
+    await ChatRepositoryMockHelper.insertDbChat(
       chatRepository,
-      (await ChatDatabaseTestHelper.createTestDbChat(
+      (await ChatDatabaseMockHelper.createTestDbChat(
         seed: 'seed2',
         dbAccount: dbAccount,
       ))
@@ -537,9 +537,9 @@ void main() {
 
     expect((await query.get()).length, 2);
 
-    await ChatRepositoryTestHelper.insertDbChat(
+    await ChatRepositoryMockHelper.insertDbChat(
       chatRepository,
-      (await ChatDatabaseTestHelper.createTestDbChat(
+      (await ChatDatabaseMockHelper.createTestDbChat(
         seed: 'seed1',
         dbAccount: dbAccount,
       ))
@@ -553,13 +553,13 @@ void main() {
     var query = chatRepository.createQuery(
       filters: null,
       pagination: RepositoryPagination(
-        newerThanItem: await ChatTestHelper.createTestChat(
+        newerThanItem: await ChatMockHelper.createTestChat(
           seed: 'remoteId2',
           remoteId: 'remoteId2'
               '',
           updatedAt: DateTime(2002),
         ),
-        olderThanItem: await ChatTestHelper.createTestChat(
+        olderThanItem: await ChatMockHelper.createTestChat(
           seed: 'remoteId5',
           remoteId: 'remoteId5'
               '',
@@ -569,9 +569,9 @@ void main() {
       orderingTermData: PleromaChatRepositoryOrderingTermData.updatedAtDesc,
     );
 
-    await ChatRepositoryTestHelper.insertDbChat(
+    await ChatRepositoryMockHelper.insertDbChat(
       chatRepository,
-      (await ChatDatabaseTestHelper.createTestDbChat(
+      (await ChatDatabaseMockHelper.createTestDbChat(
         seed: 'seed1',
         dbAccount: dbAccount,
       ))
@@ -580,9 +580,9 @@ void main() {
 
     expect((await query.get()).length, 0);
 
-    await ChatRepositoryTestHelper.insertDbChat(
+    await ChatRepositoryMockHelper.insertDbChat(
       chatRepository,
-      (await ChatDatabaseTestHelper.createTestDbChat(
+      (await ChatDatabaseMockHelper.createTestDbChat(
         seed: 'seed2',
         dbAccount: dbAccount,
       ))
@@ -590,9 +590,9 @@ void main() {
     );
 
     expect((await query.get()).length, 0);
-    await ChatRepositoryTestHelper.insertDbChat(
+    await ChatRepositoryMockHelper.insertDbChat(
       chatRepository,
-      (await ChatDatabaseTestHelper.createTestDbChat(
+      (await ChatDatabaseMockHelper.createTestDbChat(
         seed: 'seed3',
         dbAccount: dbAccount,
       ))
@@ -601,9 +601,9 @@ void main() {
 
     expect((await query.get()).length, 1);
 
-    await ChatRepositoryTestHelper.insertDbChat(
+    await ChatRepositoryMockHelper.insertDbChat(
       chatRepository,
-      (await ChatDatabaseTestHelper.createTestDbChat(
+      (await ChatDatabaseMockHelper.createTestDbChat(
         seed: 'seed4',
         dbAccount: dbAccount,
       ))
@@ -612,9 +612,9 @@ void main() {
 
     expect((await query.get()).length, 2);
 
-    await ChatRepositoryTestHelper.insertDbChat(
+    await ChatRepositoryMockHelper.insertDbChat(
       chatRepository,
-      (await ChatDatabaseTestHelper.createTestDbChat(
+      (await ChatDatabaseMockHelper.createTestDbChat(
         seed: 'seed5',
         dbAccount: dbAccount,
       ))
@@ -623,9 +623,9 @@ void main() {
 
     expect((await query.get()).length, 2);
 
-    await ChatRepositoryTestHelper.insertDbChat(
+    await ChatRepositoryMockHelper.insertDbChat(
       chatRepository,
-      (await ChatDatabaseTestHelper.createTestDbChat(
+      (await ChatDatabaseMockHelper.createTestDbChat(
         seed: 'seed6',
         dbAccount: dbAccount,
       ))
@@ -642,25 +642,25 @@ void main() {
       orderingTermData: PleromaChatRepositoryOrderingTermData.remoteIdAsc,
     );
 
-    var chat2 = await ChatRepositoryTestHelper.insertDbChat(
+    var chat2 = await ChatRepositoryMockHelper.insertDbChat(
       chatRepository,
-      (await ChatDatabaseTestHelper.createTestDbChat(
+      (await ChatDatabaseMockHelper.createTestDbChat(
         seed: 'seed2',
         dbAccount: dbAccount,
       ))
           .copyWith(remoteId: 'remoteId2'),
     );
-    var chat1 = await ChatRepositoryTestHelper.insertDbChat(
+    var chat1 = await ChatRepositoryMockHelper.insertDbChat(
       chatRepository,
-      (await ChatDatabaseTestHelper.createTestDbChat(
+      (await ChatDatabaseMockHelper.createTestDbChat(
         seed: 'seed1',
         dbAccount: dbAccount,
       ))
           .copyWith(remoteId: 'remoteId1'),
     );
-    var chat3 = await ChatRepositoryTestHelper.insertDbChat(
+    var chat3 = await ChatRepositoryMockHelper.insertDbChat(
       chatRepository,
-      (await ChatDatabaseTestHelper.createTestDbChat(
+      (await ChatDatabaseMockHelper.createTestDbChat(
         seed: 'seed3',
         dbAccount: dbAccount,
       ))
@@ -682,25 +682,25 @@ void main() {
       orderingTermData: PleromaChatRepositoryOrderingTermData.remoteIdDesc,
     );
 
-    var chat2 = await ChatRepositoryTestHelper.insertDbChat(
+    var chat2 = await ChatRepositoryMockHelper.insertDbChat(
       chatRepository,
-      (await ChatDatabaseTestHelper.createTestDbChat(
+      (await ChatDatabaseMockHelper.createTestDbChat(
         seed: 'seed2',
         dbAccount: dbAccount,
       ))
           .copyWith(remoteId: 'remoteId2'),
     );
-    var chat1 = await ChatRepositoryTestHelper.insertDbChat(
+    var chat1 = await ChatRepositoryMockHelper.insertDbChat(
       chatRepository,
-      (await ChatDatabaseTestHelper.createTestDbChat(
+      (await ChatDatabaseMockHelper.createTestDbChat(
         seed: 'seed1',
         dbAccount: dbAccount,
       ))
           .copyWith(remoteId: 'remoteId1'),
     );
-    var chat3 = await ChatRepositoryTestHelper.insertDbChat(
+    var chat3 = await ChatRepositoryMockHelper.insertDbChat(
       chatRepository,
-      (await ChatDatabaseTestHelper.createTestDbChat(
+      (await ChatDatabaseMockHelper.createTestDbChat(
         seed: 'seed3',
         dbAccount: dbAccount,
       ))
@@ -725,25 +725,25 @@ void main() {
       orderingTermData: PleromaChatRepositoryOrderingTermData.remoteIdDesc,
     );
 
-    var chat2 = await ChatRepositoryTestHelper.insertDbChat(
+    var chat2 = await ChatRepositoryMockHelper.insertDbChat(
       chatRepository,
-      (await ChatDatabaseTestHelper.createTestDbChat(
+      (await ChatDatabaseMockHelper.createTestDbChat(
         seed: 'seed2',
         dbAccount: dbAccount,
       ))
           .copyWith(remoteId: 'remoteId2'),
     );
-    await ChatRepositoryTestHelper.insertDbChat(
+    await ChatRepositoryMockHelper.insertDbChat(
       chatRepository,
-      (await ChatDatabaseTestHelper.createTestDbChat(
+      (await ChatDatabaseMockHelper.createTestDbChat(
         seed: 'seed1',
         dbAccount: dbAccount,
       ))
           .copyWith(remoteId: 'remoteId1'),
     );
-    await ChatRepositoryTestHelper.insertDbChat(
+    await ChatRepositoryMockHelper.insertDbChat(
       chatRepository,
-      (await ChatDatabaseTestHelper.createTestDbChat(
+      (await ChatDatabaseMockHelper.createTestDbChat(
         seed: 'seed3',
         dbAccount: dbAccount,
       ))
@@ -757,17 +757,17 @@ void main() {
   });
 
   test('incrementUnreadCount', () async {
-    var chat2 = await ChatRepositoryTestHelper.insertDbChat(
+    var chat2 = await ChatRepositoryMockHelper.insertDbChat(
       chatRepository,
-      (await ChatDatabaseTestHelper.createTestDbChat(
+      (await ChatDatabaseMockHelper.createTestDbChat(
         seed: 'seed2',
         dbAccount: dbAccount,
       ))
           .copyWith(remoteId: 'remoteId2', unread: 1),
     );
-    var chat3 = await ChatRepositoryTestHelper.insertDbChat(
+    var chat3 = await ChatRepositoryMockHelper.insertDbChat(
       chatRepository,
-      (await ChatDatabaseTestHelper.createTestDbChat(
+      (await ChatDatabaseMockHelper.createTestDbChat(
         seed: 'seed3',
         dbAccount: dbAccount,
       ))
@@ -790,17 +790,17 @@ void main() {
   });
 
   test('incrementUnreadCount', () async {
-    var chat2 = await ChatRepositoryTestHelper.insertDbChat(
+    var chat2 = await ChatRepositoryMockHelper.insertDbChat(
       chatRepository,
-      (await ChatDatabaseTestHelper.createTestDbChat(
+      (await ChatDatabaseMockHelper.createTestDbChat(
         seed: 'seed2',
         dbAccount: dbAccount,
       ))
           .copyWith(remoteId: 'remoteId2', unread: 1),
     );
-    var chat3 = await ChatRepositoryTestHelper.insertDbChat(
+    var chat3 = await ChatRepositoryMockHelper.insertDbChat(
       chatRepository,
-      (await ChatDatabaseTestHelper.createTestDbChat(
+      (await ChatDatabaseMockHelper.createTestDbChat(
         seed: 'seed3',
         dbAccount: dbAccount,
       ))
@@ -833,22 +833,22 @@ void main() {
     });
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(await chatRepository.getTotalUnreadCount(), 0);
     expect(listened, 0);
 
-    var chat2 = await ChatRepositoryTestHelper.insertDbChat(
+    var chat2 = await ChatRepositoryMockHelper.insertDbChat(
       chatRepository,
-      (await ChatDatabaseTestHelper.createTestDbChat(
+      (await ChatDatabaseMockHelper.createTestDbChat(
         seed: 'seed2',
         dbAccount: dbAccount,
       ))
           .copyWith(remoteId: 'remoteId2', unread: 1),
     );
-    var chat3 = await ChatRepositoryTestHelper.insertDbChat(
+    var chat3 = await ChatRepositoryMockHelper.insertDbChat(
       chatRepository,
-      (await ChatDatabaseTestHelper.createTestDbChat(
+      (await ChatDatabaseMockHelper.createTestDbChat(
         seed: 'seed3',
         dbAccount: dbAccount,
       ))
@@ -856,7 +856,7 @@ void main() {
     );
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(await chatRepository.getTotalUnreadCount(), 2);
     expect(listened, 2);
@@ -872,7 +872,7 @@ void main() {
     );
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(await chatRepository.getTotalUnreadCount(), 1);
     expect(listened, 1);
@@ -882,7 +882,7 @@ void main() {
     );
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(await chatRepository.getTotalUnreadCount(), 2);
     expect(listened, 2);
@@ -892,7 +892,7 @@ void main() {
     );
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(await chatRepository.getTotalUnreadCount(), 3);
     expect(listened, 3);

@@ -4,7 +4,7 @@ import 'package:fedi/app/pending/pending_model.dart';
 import 'package:fedi/app/status/database/status_database_model.dart';
 import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
 
@@ -156,7 +156,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
   ) =>
       query
         ..where((status) =>
-            status.pleromaLocal.equals(true) |
+            status.local.equals(true) |
             status.url.like('%$localDomain%'));
 
   // todo: improve performance: remove url.like filter. Add local flag on insert
@@ -165,7 +165,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
     String? localDomain,
   ) =>
       query
-        ..where((status) => (status.pleromaLocal.equals(true).not() &
+        ..where((status) => (status.local.equals(true).not() &
             status.url.like('%$localDomain%').not()));
 
   // todo: improve performance: remove url.like filter. Add local flag on insert
@@ -303,8 +303,8 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
         ..where(
           (status) => status.muted.equals(false),
           // (status.muted.equals(false)) &
-          // (status.pleromaThreadMuted.equals(false) |
-          //     isNull(status.pleromaThreadMuted))
+          // (status.threadMuted.equals(false) |
+          //     isNull(status.threadMuted))
         );
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyFromAccountWhere(
@@ -386,12 +386,12 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addExcludeVisibilitiesWhere(
     SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
-    List<PleromaApiVisibility> excludeVisibilities,
+    List<UnifediApiVisibility> excludeVisibilities,
   ) {
     assert(excludeVisibilities.isNotEmpty);
 
     List<String?> excludeVisibilityStrings = excludeVisibilities
-        .map((visibility) => visibility.toJsonValue())
+        .map((visibility) => visibility.stringValue)
         .toList();
 
     return query
@@ -654,7 +654,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
         filters?.replyVisibilityFilterCondition?.replyVisibilityFilter;
     if (filters?.replyVisibilityFilterCondition?.replyVisibilityFilter !=
         null) {
-      if (replyVisibilityFilter == PleromaApiReplyVisibilityFilter.self) {
+      if (replyVisibilityFilter == UnifediApiReplyVisibilityFilter.selfValue) {
         addOnlyInReplyToAccountRemoteIdOrNotReply(
           query,
           filters?.replyVisibilityFilterCondition?.myAccountRemoteId,
@@ -721,7 +721,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
         filters?.replyVisibilityFilterCondition?.replyVisibilityFilter;
     if (filters?.replyVisibilityFilterCondition?.replyVisibilityFilter !=
         null) {
-      if (replyVisibilityFilter == PleromaApiReplyVisibilityFilter.following) {
+      if (replyVisibilityFilter == UnifediApiReplyVisibilityFilter.followingValue) {
         includeReplyToAccountFollowing = true;
       }
     }
@@ -742,7 +742,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
 
     if (filters?.replyVisibilityFilterCondition?.replyVisibilityFilter !=
         null) {
-      if (replyVisibilityFilter == PleromaApiReplyVisibilityFilter.following) {
+      if (replyVisibilityFilter == UnifediApiReplyVisibilityFilter.followingValue) {
         finalQuery = addReplyToAccountSelfOrFollowingWhere(
           joinQuery,
           filters?.replyVisibilityFilterCondition?.myAccountRemoteId,

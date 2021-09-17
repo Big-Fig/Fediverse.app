@@ -1,6 +1,6 @@
 import 'package:fedi/collection/collection_hash_utils.dart';
 import 'package:fedi/emoji_picker/item/image_url/custom_emoji_picker_image_url_item_model.dart';
-import 'package:fedi/json/json_model.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -14,7 +14,7 @@ part 'emoji_picker_custom_image_url_category_model.g.dart';
 //@HiveType()
 @HiveType(typeId: -32 + 68)
 @JsonSerializable(explicitToJson: true)
-class EmojiPickerCustomImageUrlCategoryItems implements IJsonObject {
+class EmojiPickerCustomImageUrlCategoryItems implements IJsonObj {
   @HiveField(0)
   final List<CustomEmojiPickerImageUrlItem> items;
 

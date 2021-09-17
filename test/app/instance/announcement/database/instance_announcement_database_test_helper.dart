@@ -2,12 +2,14 @@ import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/instance/announcement/instance_announcement_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
+import 'package:unifedi_api/unifedi_api_mock_helper.dart';
 
 import '../../../../date_time/date_time_test_helper.dart';
+import 'package:unifedi_api/unifedi_api_mock_helper.dart';
 
 // ignore_for_file: no-magic-number
-class InstanceAnnouncementDatabaseTestHelper {
+class InstanceAnnouncementDatabaseMockHelper {
   static DbInstanceAnnouncement createTestDbInstanceAnnouncement({
     required String seed,
     String? remoteId,
@@ -20,37 +22,37 @@ class InstanceAnnouncementDatabaseTestHelper {
       id: null,
       remoteId: remoteId ?? seed + 'remoteId',
       allDay: allDay,
-      publishedAt: DateTimeTestHelper.createTestDateTime(seed: seed + '1'),
-      updatedAt: DateTimeTestHelper.createTestDateTime(seed: seed + '2'),
+      publishedAt: DateTimeMockHelper.createTestDateTime(seed: seed + '1'),
+      updatedAt: DateTimeMockHelper.createTestDateTime(seed: seed + '2'),
       read: read,
       content: seed + 'content',
       reactions: [
-        PleromaApiAnnouncementTestHelper
-            .createTestPleromaPleromaApiAnnouncementReaction(
+        UnifediApiEmojiReactionMockHelper
+            .generate(
           seed: seed + ' 1',
         ),
-        PleromaApiAnnouncementTestHelper
-            .createTestPleromaPleromaApiAnnouncementReaction(
+        UnifediApiEmojiReactionMockHelper
+            .generate(
           seed: seed + ' 2',
         ),
       ],
       mentions: [
-        PleromaApiMentionTestHelper.createTestPleromaApiMention(
+        UnifediApiMentionMockHelper.generate(
           seed: seed + '1',
         ),
-        PleromaApiMentionTestHelper.createTestPleromaApiMention(
+        UnifediApiMentionMockHelper.generate(
           seed: seed + '2',
         ),
       ],
       tags: [
-        PleromaApiTagTestHelper.createTestPleromaApiTag(seed: seed + '1'),
-        PleromaApiTagTestHelper.createTestPleromaApiTag(seed: seed + '2'),
+        UnifediApiTagMockHelper.generate(seed: seed + '1'),
+        UnifediApiTagMockHelper.generate(seed: seed + '2'),
       ],
       statuses: [
-        PleromaApiStatusTestHelper.createTestPleromaApiStatus(
+        UnifediApiStatusMockHelper.generate(
           seed: seed + '1',
         ),
-        PleromaApiStatusTestHelper.createTestPleromaApiStatus(
+        UnifediApiStatusMockHelper.generate(
           seed: seed + '2',
         ),
       ],
@@ -67,7 +69,7 @@ class InstanceAnnouncementDatabaseTestHelper {
   ) {
     expect(actual.localId != null, true);
     var dbInstanceAnnouncement = expected.dbInstanceAnnouncement;
-    InstanceAnnouncementDatabaseTestHelper.expectDbInstanceAnnouncement(
+    InstanceAnnouncementDatabaseMockHelper.expectDbInstanceAnnouncement(
       actual,
       dbInstanceAnnouncement,
     );

@@ -4,7 +4,7 @@ import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/account/my/suggestion/account_list/network_only/my_account_suggestion_account_list_network_only_list_bloc.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -14,7 +14,7 @@ final _logger = Logger(
 
 class MyAccountSuggestionAccountListNetworkOnlyListBloc extends DisposableOwner
     implements IMyAccountSuggestionAccountListNetworkOnlyListBloc {
-  final IPleromaApiSuggestionsService pleromaApiSuggestionsService;
+  final IUnifediApiMyAccountService unifediApiMyAccountService;
 
   final BehaviorSubject<List<IAccount>> removedAccountSuggestionsSubject =
       BehaviorSubject.seeded([]);
@@ -26,7 +26,7 @@ class MyAccountSuggestionAccountListNetworkOnlyListBloc extends DisposableOwner
       removedAccountSuggestionsSubject.stream;
 
   @override
-  IPleromaApi get pleromaApi => pleromaApiSuggestionsService;
+  IUnifediApiService get unifediApi => unifediApiMyAccountService;
 
   @override
   final InstanceLocation instanceLocation;
@@ -35,7 +35,7 @@ class MyAccountSuggestionAccountListNetworkOnlyListBloc extends DisposableOwner
   final Uri? remoteInstanceUriOrNull;
 
   MyAccountSuggestionAccountListNetworkOnlyListBloc({
-    required this.pleromaApiSuggestionsService,
+    required this.unifediApiMyAccountService,
     required this.instanceLocation,
     required this.remoteInstanceUriOrNull,
   }) {
@@ -49,12 +49,12 @@ class MyAccountSuggestionAccountListNetworkOnlyListBloc extends DisposableOwner
     required String? minId,
     required String? maxId,
   }) async {
-    var pleromaAccounts = await pleromaApiSuggestionsService.getSuggestions(
+    var unifediApiAccounts = await unifediApiMyAccountService.getMySuggestions(
       limit: itemsCountPerPage,
     );
-    List<IAccount> result = pleromaAccounts
+    List<IAccount> result = unifediApiAccounts
         .map(
-          (pleromaAccount) => pleromaAccount.toDbAccountWrapper(),
+          (unifediApiAccount) => unifediApiAccount.toDbAccountWrapper(),
         )
         .toList();
 
@@ -68,7 +68,7 @@ class MyAccountSuggestionAccountListNetworkOnlyListBloc extends DisposableOwner
   Future removeSuggestion({
     required IAccount account,
   }) async {
-    await pleromaApiSuggestionsService.removeSuggestion(
+    await unifediApiMyAccountService.removeMyAccountSuggestion(
       accountId: account.remoteId,
     );
 

@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/post/post_status_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:moor/ffi.dart';
 
@@ -40,9 +40,9 @@ void main() {
         canceled: false,
         id: null,
         remoteId: 'asda',
-        params: PleromaApiScheduledStatusParams.only(
+        params: UnifediApiScheduledStatusParams.only(
           sensitive: true,
-          visibility: PleromaApiVisibility.private.toJsonValue(),
+          visibility: UnifediApiVisibility.private.toJsonValue(),
           scheduledAt: DateTime.now(),
         ),
       ),
@@ -63,7 +63,7 @@ void main() {
         id: null,
         updatedAt: DateTime.now(),
         data: PostStatusData.only(
-          visibility: PleromaApiVisibility.private,
+          visibility: UnifediApiVisibility.privateValue,
           isNsfwSensitiveEnabled: true,
         ),
       ),

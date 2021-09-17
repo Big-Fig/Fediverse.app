@@ -4,9 +4,9 @@ import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 
 class MyAccountLocalPreferenceBloc
-    extends ObjectLocalPreferenceBloc<PleromaMyAccountWrapper?>
+    extends ObjectLocalPreferenceBloc<UnifediApiMyAccountWrapper?>
     implements IMyAccountLocalPreferenceBloc {
-  static const PleromaMyAccountWrapper? defaultValue = null;
+  static const UnifediApiMyAccountWrapper? defaultValue = null;
 
   MyAccountLocalPreferenceBloc(
     ILocalPreferencesService preferencesService, {
@@ -15,9 +15,9 @@ class MyAccountLocalPreferenceBloc
           preferencesService: preferencesService,
           key: 'account.my.$userAtHost',
           schemaVersion: 1,
-          jsonConverter: (json) => PleromaMyAccountWrapper.fromJson(json),
+          jsonConverter: (json) => UnifediApiMyAccountWrapper.fromJson(json),
         );
 
   @override
-  PleromaMyAccountWrapper? get defaultPreferenceValue => defaultValue;
+  UnifediApiMyAccountWrapper? get defaultPreferenceValue => defaultValue;
 }

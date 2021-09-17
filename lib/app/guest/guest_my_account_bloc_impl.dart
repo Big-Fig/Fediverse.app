@@ -6,7 +6,7 @@ import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/chat/message/chat_message_model.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class GuestMyAccountBloc extends DisposableOwner implements IMyAccountBloc {
   @override
@@ -45,7 +45,7 @@ class GuestMyAccountBloc extends DisposableOwner implements IMyAccountBloc {
   bool get isLocalCacheExist => false;
 
   @override
-  Future<IPleromaApiAccountRelationship> mute({
+  Future<IUnifediApiAccountRelationship> mute({
     required bool notifications,
     required Duration? duration,
   }) {
@@ -69,58 +69,58 @@ class GuestMyAccountBloc extends DisposableOwner implements IMyAccountBloc {
   }
 
   @override
-  IPleromaApiAccountRelationship? get relationship =>
+  IUnifediApiAccountRelationship? get relationship =>
       throw UnimplementedError();
 
   @override
-  Stream<IPleromaApiAccountRelationship?>? get relationshipStream =>
+  Stream<IUnifediApiAccountRelationship?>? get relationshipStream =>
       throw UnimplementedError();
 
   @override
   Uri? get remoteInstanceUriOrNull => throw UnimplementedError();
 
   @override
-  Future<IPleromaApiAccountRelationship> subscribe() {
+  Future<IUnifediApiAccountRelationship> subscribe() {
     throw UnimplementedError();
   }
 
   @override
-  Future<IPleromaApiAccountRelationship> toggleBlock() {
+  Future<IUnifediApiAccountRelationship> toggleBlock() {
     throw UnimplementedError();
   }
 
   @override
-  Future<IPleromaApiAccountRelationship> toggleBlockDomain() {
+  Future<IUnifediApiAccountRelationship> toggleBlockDomain() {
     throw UnimplementedError();
   }
 
   @override
-  Future<IPleromaApiAccountRelationship> toggleFollow() {
+  Future<IUnifediApiAccountRelationship> toggleFollow() {
     throw UnimplementedError();
   }
 
   @override
-  Future<IPleromaApiAccountRelationship> toggleMute() {
+  Future<IUnifediApiAccountRelationship> toggleMute() {
     throw UnimplementedError();
   }
 
   @override
-  Future<IPleromaApiAccountRelationship> togglePin() {
+  Future<IUnifediApiAccountRelationship> togglePin() {
     throw UnimplementedError();
   }
 
   @override
-  Future<IPleromaApiAccountRelationship> toggleSubscribe() {
+  Future<IUnifediApiAccountRelationship> toggleSubscribe() {
     throw UnimplementedError();
   }
 
   @override
-  Future<IPleromaApiAccountRelationship> unMute() {
+  Future<IUnifediApiAccountRelationship> unMute() {
     throw UnimplementedError();
   }
 
   @override
-  Future<IPleromaApiAccountRelationship> unSubscribe() {
+  Future<IUnifediApiAccountRelationship> unSubscribe() {
     throw UnimplementedError();
   }
 
@@ -130,8 +130,8 @@ class GuestMyAccountBloc extends DisposableOwner implements IMyAccountBloc {
   }
 
   @override
-  Future updateMyAccountByMyPleromaAccount(
-    IPleromaApiMyAccount pleromaMyAccount,
+  Future updateMyAccountByMyUnifediApiAccount(
+    IUnifediApiMyAccount unifediApiMyAccount,
   ) {
     throw UnimplementedError();
   }

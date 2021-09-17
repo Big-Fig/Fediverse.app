@@ -3,14 +3,14 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'database/scheduled_status_database_test_helper.dart';
 
-class ScheduledStatusTestHelper {
+class ScheduledStatusMockHelper {
   static Future<DbScheduledStatusPopulatedWrapper> createTestScheduledStatus({
     required String seed,
     String? remoteId,
   }) async =>
       DbScheduledStatusPopulatedWrapper(
         dbScheduledStatusPopulated: DbScheduledStatusPopulated(
-          dbScheduledStatus: await ScheduledStatusDatabaseTestHelper
+          dbScheduledStatus: await ScheduledStatusDatabaseMockHelper
               .createTestDbScheduledStatus(
             seed: seed,
             remoteId: remoteId,

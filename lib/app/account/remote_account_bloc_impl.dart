@@ -7,7 +7,7 @@ import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/instance/location/instance_location_exception.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/instance/remote/remote_instance_bloc.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
@@ -17,13 +17,13 @@ class RemoteAccountBloc extends AccountBloc {
   final Uri? instanceUri;
 
   RemoteAccountBloc({
-    required IPleromaApiAccountService? pleromaAccountService,
+    required IUnifediApiAccountService? unifediApiAccountService,
     required IAccount account,
     required this.instanceUri,
     bool isNeedRefreshFromNetworkOnInit = false,
     bool delayInit = true,
   }) : super(
-          pleromaAccountService: pleromaAccountService,
+          unifediApiAccountService: unifediApiAccountService,
           account: account,
           isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
           delayInit: delayInit,
@@ -37,18 +37,18 @@ class RemoteAccountBloc extends AccountBloc {
   }) {
     var remoteInstanceBloc = IRemoteInstanceBloc.of(context, listen: false);
 
-    var pleromaAccountService = PleromaApiAccountService(
-      restService: remoteInstanceBloc.pleromaRestService,
+    var unifediApiAccountService = UnifediApiAccountService(
+      restService: remoteInstanceBloc.unifediApiRestService,
     );
 
     var remoteAccountBloc = RemoteAccountBloc(
       account: account,
       isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
-      pleromaAccountService: pleromaAccountService,
+      unifediApiAccountService: unifediApiAccountService,
       instanceUri: remoteInstanceBloc.instanceUri,
     );
 
-    pleromaAccountService.disposeWith(remoteAccountBloc);
+    unifediApiAccountService.disposeWith(remoteAccountBloc);
 
     return remoteAccountBloc;
   }
@@ -99,7 +99,7 @@ class RemoteAccountBloc extends AccountBloc {
   }
 
   @override
-  Future<IPleromaApiAccountRelationship> mute({
+  Future<IUnifediApiAccountRelationship> mute({
     required bool notifications,
     required Duration? duration,
   }) {
@@ -107,53 +107,53 @@ class RemoteAccountBloc extends AccountBloc {
   }
 
   @override
-  Future<IPleromaApiAccountRelationship> subscribe() {
+  Future<IUnifediApiAccountRelationship> subscribe() {
     throw UnsupportedOnRemoteInstanceLocationException();
   }
 
   @override
-  Future<IPleromaApiAccountRelationship> toggleBlock() {
+  Future<IUnifediApiAccountRelationship> toggleBlock() {
     throw UnsupportedOnRemoteInstanceLocationException();
   }
 
   @override
-  Future<IPleromaApiAccountRelationship> toggleBlockDomain() {
+  Future<IUnifediApiAccountRelationship> toggleBlockDomain() {
     throw UnsupportedOnRemoteInstanceLocationException();
   }
 
   @override
-  Future<IPleromaApiAccountRelationship> toggleFollow() {
+  Future<IUnifediApiAccountRelationship> toggleFollow() {
     throw UnsupportedOnRemoteInstanceLocationException();
   }
 
   @override
-  Future<IPleromaApiAccountRelationship> toggleMute() {
+  Future<IUnifediApiAccountRelationship> toggleMute() {
     throw UnsupportedOnRemoteInstanceLocationException();
   }
 
   @override
-  Future<IPleromaApiAccountRelationship> togglePin() {
+  Future<IUnifediApiAccountRelationship> togglePin() {
     throw UnsupportedOnRemoteInstanceLocationException();
   }
 
   @override
-  Future<IPleromaApiAccountRelationship> toggleSubscribe() {
+  Future<IUnifediApiAccountRelationship> toggleSubscribe() {
     throw UnsupportedOnRemoteInstanceLocationException();
   }
 
   @override
-  Future<IPleromaApiAccountRelationship> unMute() {
+  Future<IUnifediApiAccountRelationship> unMute() {
     throw UnsupportedOnRemoteInstanceLocationException();
   }
 
   @override
-  Future<IPleromaApiAccountRelationship> unSubscribe() {
+  Future<IUnifediApiAccountRelationship> unSubscribe() {
     throw UnsupportedOnRemoteInstanceLocationException();
   }
 
   @override
-  IPleromaApiAccountRelationship? get relationship => null;
+  IUnifediApiAccountRelationship? get relationship => null;
 
   @override
-  Stream<IPleromaApiAccountRelationship>? get relationshipStream => null;
+  Stream<IUnifediApiAccountRelationship>? get relationshipStream => null;
 }

@@ -8,18 +8,18 @@ import 'pagination_settings_model_test_helper.dart';
 
 void main() {
   test('equal & hashcode & toString', () async {
-    ObjTestHelper.testEqualsHashcodeToString(
+    ObjMockHelper.testEqualsHashcodeToString(
       ({required String seed}) =>
-          PaginationSettingsModelTestHelper.createTestPaginationSettings(
+          PaginationSettingsModelMockHelper.createTestPaginationSettings(
         seed: seed,
       ),
     );
   });
 
   test('toJson & fromJson', () async {
-    JsonTestHelper.testFromJsonToJson(
+    JsonMockHelper.testFromJsonToJson(
       ({required String seed}) =>
-          PaginationSettingsModelTestHelper.createTestPaginationSettings(
+          PaginationSettingsModelMockHelper.createTestPaginationSettings(
         seed: seed,
       ),
       PaginationSettings.fromJson,
@@ -27,19 +27,19 @@ void main() {
   });
 
   test('hive save&load', () async {
-    await HiveTestHelper.testHiveSaveAndLoad(
+    await HiveMockHelper.testHiveSaveAndLoad(
       ({required String seed}) =>
-          PaginationSettingsModelTestHelper.createTestPaginationSettings(
+          PaginationSettingsModelMockHelper.createTestPaginationSettings(
         seed: seed,
       ),
     );
   });
 
   test('copyWith', () async {
-    var obj1 = PaginationSettingsModelTestHelper.createTestPaginationSettings(
+    var obj1 = PaginationSettingsModelMockHelper.createTestPaginationSettings(
       seed: 'seed1',
     );
-    var obj2 = PaginationSettingsModelTestHelper.createTestPaginationSettings(
+    var obj2 = PaginationSettingsModelMockHelper.createTestPaginationSettings(
       seed: 'seed2',
     );
 
@@ -53,7 +53,7 @@ void main() {
   });
 
   test('clone', () async {
-    var obj1 = PaginationSettingsModelTestHelper.createTestPaginationSettings(
+    var obj1 = PaginationSettingsModelMockHelper.createTestPaginationSettings(
       seed: 'seed1',
     );
 
@@ -63,7 +63,7 @@ void main() {
   });
 
   test('hive adapter', () async {
-    HiveTestHelper.testAdapter(
+    HiveMockHelper.testAdapter(
       () => PaginationSettingsAdapter(),
     );
   });

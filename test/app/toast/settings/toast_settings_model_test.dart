@@ -8,9 +8,9 @@ import 'toast_settings_model_test_helper.dart';
 
 void main() {
   test('equal & hashcode & toString', () async {
-    ObjTestHelper.testEqualsHashcodeToString(
+    ObjMockHelper.testEqualsHashcodeToString(
       ({required String seed}) =>
-          ToastSettingsModelTestHelper.createTestToastSettings(
+          ToastSettingsModelMockHelper.createTestToastSettings(
         seed: seed,
       ),
       skipHashCodeDiffTest: true,
@@ -18,9 +18,9 @@ void main() {
   });
 
   test('toJson & fromJson', () async {
-    JsonTestHelper.testFromJsonToJson(
+    JsonMockHelper.testFromJsonToJson(
       ({required String seed}) =>
-          ToastSettingsModelTestHelper.createTestToastSettings(
+          ToastSettingsModelMockHelper.createTestToastSettings(
         seed: seed,
       ),
       ToastSettings.fromJson,
@@ -28,19 +28,19 @@ void main() {
   });
 
   test('hive save&load', () async {
-    await HiveTestHelper.testHiveSaveAndLoad(
+    await HiveMockHelper.testHiveSaveAndLoad(
       ({required String seed}) =>
-          ToastSettingsModelTestHelper.createTestToastSettings(
+          ToastSettingsModelMockHelper.createTestToastSettings(
         seed: seed,
       ),
     );
   });
 
   test('copyWith', () async {
-    var obj1 = ToastSettingsModelTestHelper.createTestToastSettings(
+    var obj1 = ToastSettingsModelMockHelper.createTestToastSettings(
       seed: 'seed1',
     );
-    var obj2 = ToastSettingsModelTestHelper.createTestToastSettings(
+    var obj2 = ToastSettingsModelMockHelper.createTestToastSettings(
       seed: 'seed2',
     );
 
@@ -55,7 +55,7 @@ void main() {
   });
 
   test('clone', () async {
-    var obj1 = ToastSettingsModelTestHelper.createTestToastSettings(
+    var obj1 = ToastSettingsModelMockHelper.createTestToastSettings(
       seed: 'seed1',
     );
 
@@ -65,7 +65,7 @@ void main() {
   });
 
   test('hive adapter', () async {
-    HiveTestHelper.testAdapter(
+    HiveMockHelper.testAdapter(
       () => ToastSettingsAdapter(),
     );
   });

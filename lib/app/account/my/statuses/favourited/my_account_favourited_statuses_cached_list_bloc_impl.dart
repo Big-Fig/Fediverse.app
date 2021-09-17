@@ -4,7 +4,7 @@ import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:fedi/repository/repository_model.dart';
 
 var _statusRepositoryFilters = StatusRepositoryFilters(
@@ -14,15 +14,15 @@ var _statusRepositoryFilters = StatusRepositoryFilters(
 class MyAccountFavouritedStatusesCachedListBloc extends AsyncInitLoadingBloc
     implements IMyAccountFavouritedStatusesCachedListBloc {
   final IStatusRepository statusRepository;
-  final IPleromaApiMyAccountService pleromaMyAccountService;
+  final IUnifediApiMyAccountService unifediApiMyAccountService;
 
   MyAccountFavouritedStatusesCachedListBloc({
-    required this.pleromaMyAccountService,
+    required this.unifediApiMyAccountService,
     required this.statusRepository,
   });
 
   @override
-  IPleromaApi get pleromaApi => pleromaMyAccountService;
+  IUnifediApiService get unifediApi => unifediApiMyAccountService;
 
   @override
   Stream<bool> get settingsChangedStream => Stream.empty();
@@ -67,9 +67,9 @@ class MyAccountFavouritedStatusesCachedListBloc extends AsyncInitLoadingBloc
     IStatus? newerThan,
     IStatus? olderThan,
   }) async {
-    var remoteStatuses = await pleromaMyAccountService.getFavourites(
-      pagination: PleromaApiPaginationRequest(
-        sinceId: newerThan?.remoteId,
+    var remoteStatuses = await unifediApiMyAccountService.getMyFavourites(
+      pagination: UnifediApiPagination(
+        minId: newerThan?.remoteId,
         maxId: olderThan?.remoteId,
         limit: limit,
       ),

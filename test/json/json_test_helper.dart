@@ -1,8 +1,8 @@
-import 'package:fedi/json/json_model.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-class JsonTestHelper {
-  static void testFromJsonToJson<T extends IJsonObject>(
+class JsonMockHelper {
+  static void testFromJsonToJson<T extends IJsonObj>(
     T Function({
       required String seed,
     })

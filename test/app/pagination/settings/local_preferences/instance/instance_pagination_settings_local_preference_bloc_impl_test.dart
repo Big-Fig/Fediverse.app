@@ -9,7 +9,7 @@ import '../../pagination_settings_model_test_helper.dart';
 
 void main() {
   test('save & load', () async {
-    await LocalPreferencesTestHelper.testSaveAndLoad<PaginationSettings,
+    await LocalPreferencesMockHelper.testSaveAndLoad<PaginationSettings,
         InstancePaginationSettingsLocalPreferenceBloc>(
       defaultValue: InstancePaginationSettingsLocalPreferenceBloc.defaultValue,
       blocCreator: (localPreferencesService) =>
@@ -18,7 +18,7 @@ void main() {
         userAtHost: 'user@host',
       ),
       testObjectCreator: ({required String seed}) =>
-          PaginationSettingsModelTestHelper.createTestPaginationSettings(
+          PaginationSettingsModelMockHelper.createTestPaginationSettings(
         seed: seed,
       ),
     );

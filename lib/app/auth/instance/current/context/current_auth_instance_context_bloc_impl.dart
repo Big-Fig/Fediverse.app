@@ -1,4 +1,5 @@
-import 'package:base_fediverse_api/base_fediverse_api.dart';
+import 'package:fedi/connection/connection_service.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/account/my/local_preferences/my_account_local_preference_bloc.dart';
 import 'package:fedi/app/account/my/local_preferences/my_account_local_preference_bloc_impl.dart';
@@ -141,8 +142,8 @@ import 'package:fedi/provider/provider_context_bloc_impl.dart';
 import 'package:fedi/push/fcm/fcm_push_service.dart';
 import 'package:fedi/push/relay/push_relay_service.dart';
 import 'package:logging/logging.dart';
-import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+
+import 'package:unifedi_api/unifedi_api.dart';
 
 var _logger = Logger('current_auth_instance_context_bloc_imp.dart');
 
@@ -299,15 +300,15 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
 
     await globalProviderService.asyncInitAndRegister<IRestService>(restService);
 
-    var pleromaRestService = PleromaApiRestService(
+    var unifediApiRestService = UnifediApiRestService(
       restService: restService,
       connectionService: connectionService,
     )..disposeWith(this);
 
     await globalProviderService
-        .asyncInitAndRegister<IPleromaApiRestService>(pleromaRestService);
+        .asyncInitAndRegister<IUnifediApiRestService>(unifediApiRestService);
 
-    var pleromaAuthRestService = PleromaApiAuthRestService(
+    var pleromaAuthRestService = UnifediApiAuthRestService(
       restService: restService,
       connectionService: connectionService,
       accessToken: currentInstance.token!.accessToken,
@@ -315,177 +316,169 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     )..disposeWith(this);
 
     await globalProviderService.asyncInitAndRegister<
-        IPleromaApiAuthRestService>(pleromaAuthRestService);
+        IUnifediApiAuthRestService>(pleromaAuthRestService);
 
     var pleromaCaptchaService =
-        PleromaApiCaptchaService(restService: pleromaAuthRestService)
+        UnifediApiInstanceService(restService: pleromaAuthRestService)
           ..disposeWith(this);
     await globalProviderService
-        .asyncInitAndRegister<IPleromaApiCaptchaService>(pleromaCaptchaService);
+        .asyncInitAndRegister<IUnifediApiInstanceService>(pleromaCaptchaService);
 
-    var pleromaAnnouncementsService = PleromaApiAnnouncementService(
+    var unifediApiAnnouncementsService = UnifediApiAnnouncementService(
       restService: pleromaAuthRestService,
     )..disposeWith(this);
     await globalProviderService.asyncInitAndRegister<
-        IPleromaApiAnnouncementService>(pleromaAnnouncementsService);
+        IUnifediApiAnnouncementService>(unifediApiAnnouncementsService);
 
-    var pleromaMediaAttachmentService = PleromaApiMediaAttachmentService(
+    var unifediApiMediaAttachmentService = UnifediApiMediaAttachmentService(
       restApiAuthService: pleromaAuthRestService,
     )..disposeWith(this);
     await globalProviderService.asyncInitAndRegister<
-        IPleromaApiMediaAttachmentService>(pleromaMediaAttachmentService);
+        IUnifediApiMediaAttachmentService>(unifediApiMediaAttachmentService);
 
-    var pleromaListService = PleromaApiListService(
+    var pleromaListService = UnifediApiListService(
       restApiAuthService: pleromaAuthRestService,
     )..disposeWith(this);
     await globalProviderService
-        .asyncInitAndRegister<IPleromaApiListService>(pleromaListService);
+        .asyncInitAndRegister<IUnifediApiListService>(pleromaListService);
 
-    var pleromaMyAccountService =
-        PleromaApiMyAccountService(restApiAuthService: pleromaAuthRestService)
+    var unifediApiMyAccountService =
+        UnifediApiMyAccountService(restApiAuthService: pleromaAuthRestService)
           ..disposeWith(this);
     await globalProviderService
-        .asyncInitAndRegister<IPleromaApiMyAccountService>(
-      pleromaMyAccountService,
+        .asyncInitAndRegister<IUnifediApiMyAccountService>(
+      unifediApiMyAccountService,
     );
 
-    var pleromaAccountPublicService =
-        PleromaApiAccountPublicService(restService: pleromaAuthRestService)
+    var unifediApiAccountService =
+        UnifediApiAccountService(restService: pleromaAuthRestService)
           ..disposeWith(this);
     await globalProviderService.asyncInitAndRegister<
-        IPleromaApiAccountPublicService>(pleromaAccountPublicService);
+        IUnifediApiAccountService>(unifediApiAccountService);
 
-    var pleromaAccountService =
-        PleromaApiAuthAccountService(authRestService: pleromaAuthRestService)
-          ..disposeWith(this);
-    await globalProviderService
-        .asyncInitAndRegister<IPleromaApiAccountService>(pleromaAccountService);
-    await globalProviderService.asyncInitAndRegister<
-        IPleromaApiAuthAccountService>(pleromaAccountService);
-
-    var pleromaApiAuthTimelineService =
-        PleromaApiAuthTimelineService(authRestService: pleromaAuthRestService)
-          ..disposeWith(this);
-    await globalProviderService.asyncInitAndRegister<
-        IPleromaApiAuthTimelineService>(pleromaApiAuthTimelineService);
-    await globalProviderService.asyncInitAndRegister<
-        IPleromaApiTimelineService>(pleromaApiAuthTimelineService);
-
-    var pleromaStatusService =
-        PleromaApiAuthStatusService(authRestService: pleromaAuthRestService)
+    var unifediApiAccountService =
+        UnifediApiAccountService(authRestService: pleromaAuthRestService)
           ..disposeWith(this);
     await globalProviderService
-        .asyncInitAndRegister<IPleromaApiStatusService>(pleromaStatusService);
+        .asyncInitAndRegister<IUnifediApiAccountService>(unifediApiAccountService);
     await globalProviderService.asyncInitAndRegister<
-        IPleromaApiAuthStatusService>(pleromaStatusService);
+        IUnifediApiAccountService>(unifediApiAccountService);
 
-    var pleromaScheduledStatusService = PleromaApiScheduledStatusService(
+    var unifediApiTimelineService =
+        UnifediApiTimelineService(authRestService: pleromaAuthRestService)
+          ..disposeWith(this);
+    await globalProviderService.asyncInitAndRegister<
+        IUnifediApiTimelineService>(unifediApiTimelineService);
+    await globalProviderService.asyncInitAndRegister<
+        IUnifediApiTimelineService>(unifediApiTimelineService);
+
+    var unifediApiStatusService =
+        UnifediApiStatusService(authRestService: pleromaAuthRestService)
+          ..disposeWith(this);
+    await globalProviderService
+        .asyncInitAndRegister<IUnifediApiStatusService>(unifediApiStatusService);
+    await globalProviderService.asyncInitAndRegister<
+        IUnifediApiStatusService>(unifediApiStatusService);
+
+    var pleromaScheduledStatusService = UnifediApiStatusService(
       authRestService: pleromaAuthRestService,
     )..disposeWith(this);
     await globalProviderService.asyncInitAndRegister<
-        IPleromaApiScheduledStatusService>(pleromaScheduledStatusService);
+        IUnifediApiStatusService>(pleromaScheduledStatusService);
 
-    var pleromaApiStatusEmojiReactionService =
-        PleromaApiStatusEmojiReactionService(
-      authRestService: pleromaAuthRestService,
-    )..disposeWith(this);
-    await globalProviderService
-        .asyncInitAndRegister<IPleromaApiStatusEmojiReactionService>(
-      pleromaApiStatusEmojiReactionService,
-    );
 
-    var pleromaConversationService = PleromaApiConversationService(
+    var pleromaConversationService = UnifediApiConversationService(
       restApiAuthService: pleromaAuthRestService,
     )..disposeWith(this);
     await globalProviderService.asyncInitAndRegister<
-        IPleromaApiConversationService>(pleromaConversationService);
+        IUnifediApiConversationService>(pleromaConversationService);
 
     var pleromaChatService =
-        PleromaApiChatService(restApiAuthService: pleromaAuthRestService)
+        UnifediApiChatService(restApiAuthService: pleromaAuthRestService)
           ..disposeWith(this);
     await globalProviderService
-        .asyncInitAndRegister<IPleromaApiChatService>(pleromaChatService);
+        .asyncInitAndRegister<IUnifediApiChatService>(pleromaChatService);
 
     var pleromaInstanceService =
-        PleromaApiInstanceService(restService: pleromaAuthRestService)
+        UnifediApiInstanceService(restService: pleromaAuthRestService)
           ..disposeWith(this);
     await globalProviderService.asyncInitAndRegister<
-        IPleromaApiInstanceService>(pleromaInstanceService);
+        IUnifediApiInstanceService>(pleromaInstanceService);
 
-    var pleromaApiFrontendConfigurationsService =
-        PleromaApiFrontendConfigurationsService(
+    var unifediApiInstanceService =
+        UnifediApiInstanceService(
       restService: pleromaAuthRestService,
     )..disposeWith(this);
     await globalProviderService
-        .asyncInitAndRegister<IPleromaApiFrontendConfigurationsService>(
-      pleromaApiFrontendConfigurationsService,
+        .asyncInitAndRegister<IUnifediApiInstanceService>(
+      unifediApiInstanceService,
     );
 
     var pleromaSearchService =
-        PleromaApiSearchService(restApiAuthService: pleromaAuthRestService)
+        UnifediApiSearchService(restApiAuthService: pleromaAuthRestService)
           ..disposeWith(this);
     await globalProviderService
-        .asyncInitAndRegister<IPleromaApiSearchService>(pleromaSearchService);
+        .asyncInitAndRegister<IUnifediApiSearchService>(pleromaSearchService);
 
-    var pleromaNotificationService = PleromaApiNotificationService(
+    var pleromaNotificationService = UnifediApiNotificationService(
       restApiAuthService: pleromaAuthRestService,
     )..disposeWith(this);
     await globalProviderService.asyncInitAndRegister<
-        IPleromaApiNotificationService>(pleromaNotificationService);
+        IUnifediApiNotificationService>(pleromaNotificationService);
 
     var pleromaDirectoryService =
-        PleromaApiDirectoryService(restService: pleromaAuthRestService)
+        UnifediApiInstanceService(restService: pleromaAuthRestService)
           ..disposeWith(this);
     await globalProviderService.asyncInitAndRegister<
-        IPleromaApiDirectoryService>(pleromaDirectoryService);
+        IUnifediApiInstanceService>(pleromaDirectoryService);
 
-    var pleromaEndorsementsService = PleromaApiEndorsementsService(
+    var pleromaEndorsementsService = UnifediApiMyAccountService(
       restApiAuthService: pleromaAuthRestService,
     )..disposeWith(this);
     await globalProviderService.asyncInitAndRegister<
-        IPleromaApiEndorsementsService>(pleromaEndorsementsService);
+        IUnifediApiMyAccountService>(pleromaEndorsementsService);
 
-    var pleromaFeaturedTagsService = PleromaApiFeaturedTagsService(
+    var unifediApiInstanceService = UnifediApiInstanceService(
       restApiAuthService: pleromaAuthRestService,
     )..disposeWith(this);
     await globalProviderService.asyncInitAndRegister<
-        IPleromaApiFeaturedTagsService>(pleromaFeaturedTagsService);
+        IUnifediApiInstanceService>(unifediApiInstanceService);
 
     var pleromaMarkersService =
-        PleromaApiMarkersService(restApiAuthService: pleromaAuthRestService)
+        UnifediApiMarkerService(restApiAuthService: pleromaAuthRestService)
           ..disposeWith(this);
     await globalProviderService
-        .asyncInitAndRegister<IPleromaApiMarkersService>(pleromaMarkersService);
+        .asyncInitAndRegister<IUnifediApiMarkerService>(pleromaMarkersService);
 
     var pleromaSuggestionsService =
-        PleromaApiSuggestionsService(restApiAuthService: pleromaAuthRestService)
+        UnifediApiInstanceService(restApiAuthService: pleromaAuthRestService)
           ..disposeWith(this);
     await globalProviderService.asyncInitAndRegister<
-        IPleromaApiSuggestionsService>(pleromaSuggestionsService);
+        IUnifediApiInstanceService>(pleromaSuggestionsService);
 
     var pleromaTrendsService =
-        PleromaApiTrendsService(restService: pleromaAuthRestService)
+        UnifediApiInstanceService(restService: pleromaAuthRestService)
           ..disposeWith(this);
     await globalProviderService
-        .asyncInitAndRegister<IPleromaApiTrendsService>(pleromaTrendsService);
+        .asyncInitAndRegister<IUnifediApiInstanceService>(pleromaTrendsService);
 
-    var pleromaPollService =
-        PleromaApiPollService(restService: pleromaAuthRestService)
+    var unifediApiPollService =
+        UnifediApiPollService(restService: pleromaAuthRestService)
           ..disposeWith(this);
     await globalProviderService
-        .asyncInitAndRegister<IPleromaApiPollService>(pleromaPollService);
+        .asyncInitAndRegister<IUnifediApiPollService>(unifediApiPollService);
 
     var pleromaEmojiService =
-        PleromaApiEmojiService(restApiAuthService: pleromaAuthRestService)
+        UnifediApiInstanceService(restApiAuthService: pleromaAuthRestService)
           ..disposeWith(this);
     await globalProviderService
-        .asyncInitAndRegister<IPleromaApiEmojiService>(pleromaEmojiService);
+        .asyncInitAndRegister<IUnifediApiInstanceService>(pleromaEmojiService);
 
-    var mastodonApiEmojiService =
-        MastodonApiEmojiService(restService: pleromaAuthRestService)
+    var unifediApiInstanceService =
+        UnifediApiInstanceService(restService: pleromaAuthRestService)
           ..disposeWith(this);
-    await globalProviderService.asyncInitAndRegister<IMastodonApiEmojiService>(
-      mastodonApiEmojiService,
+    await globalProviderService.asyncInitAndRegister<IUnifediApiInstanceService>(
+      unifediApiInstanceService,
     );
 
     var instanceFrontendConfigurationsLocalPreferenceBloc =
@@ -500,8 +493,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     );
 
     var instanceFrontendConfigurationsBloc = InstanceFrontendConfigurationsBloc(
-      pleromaApiFrontendConfigurationsService:
-          pleromaApiFrontendConfigurationsService,
+      unifediApiInstanceService:
+          unifediApiInstanceService,
       instanceFrontendConfigurationsLocalPreferenceBloc:
           instanceFrontendConfigurationsLocalPreferenceBloc,
     )..disposeWith(this);
@@ -575,7 +568,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     );
 
     var myAccountBloc = MyAccountBloc(
-      pleromaMyAccountService: pleromaMyAccountService,
+      unifediApiMyAccountService: unifediApiMyAccountService,
       myAccountLocalPreferenceBloc: myAccountLocalPreferenceBloc,
       accountRepository: accountRepository,
       instance: currentInstance,
@@ -622,15 +615,15 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
       var notificationsPushHandlerBloc =
           appContextBloc.get<INotificationsPushHandlerBloc>();
 
-      var pleromaPushService = PleromaApiPushService(
-        keys: PleromaApiPushSubscriptionKeys(
+      var pleromaPushService = UnifediApiPushSubscriptionService(
+        keys: UnifediApiPushSubscriptionKeys(
           p256dh: configService.pushSubscriptionKeysP256dh!,
           auth: configService.pushSubscriptionKeysAuth!,
         ),
         restService: pleromaAuthRestService,
       )..disposeWith(this);
       await globalProviderService
-          .asyncInitAndRegister<IPleromaApiPushService>(pleromaPushService);
+          .asyncInitAndRegister<IUnifediApiPushSubscriptionService>(pleromaPushService);
 
       var pushSettingsBloc = PushSettingsBloc(
         pushRelayService: pushRelayService,
@@ -668,12 +661,12 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         pleromaNotificationService: pleromaNotificationService,
         chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
         myAccountBloc: myAccountBloc,
-        pleromaApiMyAccountService: pleromaMyAccountService,
+        unifediApiMyAccountService: unifediApiMyAccountService,
         accountRepository: accountRepository,
         statusRepository: statusRepository,
         chatMessageRepository: chatMessageRepository,
-        pleromaApiAuthStatusService: pleromaStatusService,
-        pleromaApiChatService: pleromaChatService,
+        unifediApiStatusService: unifediApiStatusService,
+        unifediApiChatService: pleromaChatService,
       )..disposeWith(this);
 
       await globalProviderService.asyncInitAndRegister<
@@ -684,7 +677,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         .value.timelineIds.isNotEmpty) {
       var remoteLists = await pleromaListService.getLists();
 
-      var timelines = [
+      var timelines = <Timeline>[
         Timeline.home(
           label: null,
           id: 'home',
@@ -935,7 +928,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     await globalProviderService
         .asyncInitAndRegister<IWebSocketsService>(webSocketsService);
 
-    var pleromaWebSocketsService = PleromaApiWebSocketsService(
+    var pleromaWebSocketsService = UnifediApiWebSocketsService(
       webSocketsService: webSocketsService,
       accessToken: currentInstance.token!.accessToken,
       baseUri: currentInstance.uri,
@@ -943,7 +936,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     )..disposeWith(this);
 
     await globalProviderService
-        .asyncInitAndRegister<IPleromaApiWebSocketsService>(
+        .asyncInitAndRegister<IUnifediApiWebSocketsService>(
       pleromaWebSocketsService,
     );
 
@@ -989,12 +982,12 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
       recentShareSelectAccountLocalPreferenceBloc,
     );
 
-    var pleromaFilterService = PleromaApiFilterService(
+    var unifediApiFilterService = UnifediApiFilterService(
       restApiAuthService: pleromaAuthRestService,
     )..disposeWith(this);
 
     await globalProviderService
-        .asyncInitAndRegister<IPleromaApiFilterService>(pleromaFilterService);
+        .asyncInitAndRegister<IUnifediApiFilterService>(unifediApiFilterService);
 
     var filterRepository = FilterRepository(
       appDatabase: moorDatabaseService.appDatabase,
@@ -1015,7 +1008,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         .asyncInitAndRegister<IFilesCacheService>(filesCacheService);
 
     var mediaAttachmentReuploadService = MediaAttachmentReuploadService(
-      pleromaMediaAttachmentService: pleromaMediaAttachmentService,
+      unifediApiMediaAttachmentService: unifediApiMediaAttachmentService,
       filesCacheService: filesCacheService,
     )..disposeWith(this);
 

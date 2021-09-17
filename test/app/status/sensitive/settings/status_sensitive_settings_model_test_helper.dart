@@ -1,7 +1,7 @@
 import 'package:fedi/app/status/sensitive/settings/status_sensitive_settings_model.dart';
 
 // ignore_for_file: no-magic-number
-class StatusSensitiveSettingsModelTestHelper {
+class StatusSensitiveSettingsModelMockHelper {
   static StatusSensitiveSettings createTestStatusSensitiveSettings({
     required String seed,
   }) =>

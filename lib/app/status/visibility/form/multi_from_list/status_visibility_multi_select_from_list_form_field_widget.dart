@@ -3,7 +3,7 @@ import 'package:fedi/app/status/visibility/form/multi_from_list/status_visibilit
 import 'package:fedi/app/status/visibility/status_visibility_title_widget.dart';
 import 'package:fedi/form/field/value/select_from_list/multi/multi_select_from_list_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/select_from_list/multi/multi_select_from_list_value_form_field_bloc_proxy_provider.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
@@ -22,10 +22,10 @@ class StatusVisibilityMultiSelectFromListFormFieldWidget
   @override
   Widget build(BuildContext context) => ProxyProvider<
           IStatusVisibilityMultiSelectFromListFormFieldBloc,
-          IMultiSelectFromListValueFormFieldBloc<PleromaApiVisibility>>(
+          IMultiSelectFromListValueFormFieldBloc<UnifediApiVisibility>>(
         update: (context, value, _) => value,
         child: MultiSelectFromListValueFormFieldBlocProxyProvider<
-            PleromaApiVisibility>(
+            UnifediApiVisibility>(
           child: MultiSelectFromListValueFormFieldRowWidget(
             label: label,
             description: description,
@@ -41,7 +41,7 @@ class StatusVisibilityMultiSelectFromListFormFieldWidget
 
   String mapValueToTitle(
     BuildContext context,
-    PleromaApiVisibility visibility,
+    UnifediApiVisibility visibility,
   ) =>
       StatusVisibilityTitleWidget.mapVisibilityToTitle(
         context,

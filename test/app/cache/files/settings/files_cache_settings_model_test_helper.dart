@@ -3,7 +3,7 @@ import 'package:fedi/app/cache/files/limit/size_count/files_cache_size_count_lim
 import 'package:fedi/app/cache/files/settings/files_cache_settings_model.dart';
 
 // ignore_for_file: no-magic-number
-class FilesCacheSettingsModelTestHelper {
+class FilesCacheSettingsModelMockHelper {
   static FilesCacheSettings createTestFilesCacheSettings({
     required String seed,
   }) =>

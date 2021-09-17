@@ -10,7 +10,7 @@ import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:flutter/widgets.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -20,7 +20,7 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
   final List<IAccount> conversationAccountsWithoutMe;
 
   @override
-  Future onStatusPosted(IPleromaApiStatus remoteStatus) async {
+  Future onStatusPosted(IUnifediApiStatus remoteStatus) async {
     await super.onStatusPosted(remoteStatus);
     successCallback(
       remoteStatus.toDbStatusPopulatedWrapper(),
@@ -30,28 +30,28 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
   PostStatusStartConversationChatBloc({
     required this.conversationAccountsWithoutMe,
     required this.successCallback,
-    required IPleromaApiAuthStatusService pleromaAuthStatusService,
+    required IUnifediApiStatusService unifediApiStatusService,
     required IStatusRepository statusRepository,
     required IScheduledStatusRepository scheduledStatusRepository,
-    required IPleromaApiMediaAttachmentService pleromaMediaAttachmentService,
+    required IUnifediApiMediaAttachmentService unifediApiMediaAttachmentService,
     required int? maximumMessageLength,
-    required PleromaApiInstancePollLimits? pleromaInstancePollLimits,
+    required UnifediApiInstancePollLimits? pollLimits,
     required int? maximumFileSizeInBytes,
     required bool markMediaAsNsfwOnAttach,
     required String? language,
   }) : super(
           isExpirePossible: false,
-          pleromaAuthStatusService: pleromaAuthStatusService,
+          unifediApiStatusService: unifediApiStatusService,
           statusRepository: statusRepository,
           scheduledStatusRepository: scheduledStatusRepository,
-          pleromaMediaAttachmentService: pleromaMediaAttachmentService,
+          unifediApiMediaAttachmentService: unifediApiMediaAttachmentService,
           initialData: PostStatusBloc.defaultInitData.copyWith(
-            visibilityString: PleromaApiVisibility.direct.toJsonValue(),
+            visibilityString: UnifediApiVisibility.directValue.stringValue,
             language: language,
           ),
           initialAccountsToMention: conversationAccountsWithoutMe,
           maximumMessageLength: maximumMessageLength,
-          pleromaInstancePollLimits: pleromaInstancePollLimits,
+          pollLimits: pollLimits,
           maximumFileSizeInBytes: maximumFileSizeInBytes,
           markMediaAsNsfwOnAttach: markMediaAsNsfwOnAttach,
           unfocusOnClear: true,
@@ -69,19 +69,19 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
     return PostStatusStartConversationChatBloc(
       successCallback: successCallback,
       conversationAccountsWithoutMe: conversationAccountsWithoutMe,
-      pleromaAuthStatusService: Provider.of<IPleromaApiAuthStatusService>(
+      unifediApiStatusService: Provider.of<IUnifediApiStatusService>(
         context,
         listen: false,
       ),
       statusRepository: IStatusRepository.of(context, listen: false),
-      pleromaMediaAttachmentService:
-          Provider.of<IPleromaApiMediaAttachmentService>(
+      unifediApiMediaAttachmentService:
+          Provider.of<IUnifediApiMediaAttachmentService>(
         context,
         listen: false,
       ),
-      maximumMessageLength: info.maxTootChars,
-      pleromaInstancePollLimits: info.pollLimits,
-      maximumFileSizeInBytes: info.uploadLimit,
+      maximumMessageLength: info.limits?.status?.maxTootChars,
+      pollLimits: info.limits?.poll,
+      maximumFileSizeInBytes: info.limits?.media?.uploadLimit,
       markMediaAsNsfwOnAttach:
           IPostStatusSettingsBloc.of(context, listen: false)
               .markMediaAsNsfwOnAttach,

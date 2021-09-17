@@ -7,9 +7,9 @@ import 'localization_model_test_helper.dart';
 
 void main() {
   test('equal & hashcode & toString', () async {
-    ObjTestHelper.testEqualsHashcodeToString(
+    ObjMockHelper.testEqualsHashcodeToString(
       ({required String seed}) =>
-          LocalizationModelTestHelper.createTestLocalizationLocale(
+          LocalizationModelMockHelper.createTestLocalizationLocale(
         seed: seed,
       ),
     );
@@ -42,7 +42,7 @@ void main() {
   });
 
   test('hive adapter', () async {
-    HiveTestHelper.testAdapter(
+    HiveMockHelper.testAdapter(
       () => LocalizationLocaleAdapter(),
     );
   });

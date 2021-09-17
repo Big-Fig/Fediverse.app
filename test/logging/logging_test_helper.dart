@@ -1,6 +1,6 @@
 import 'package:logging/logging.dart';
 
-class LoggingTestHelper {
+class LoggingMockHelper {
   static void initTestLog() {
     Logger.root.level = Level.ALL; // defaults to Level.INFO
     Logger.root.onRecord.listen((record) {

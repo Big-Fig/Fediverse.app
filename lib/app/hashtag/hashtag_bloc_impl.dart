@@ -7,7 +7,7 @@ import 'package:fedi/app/hashtag/hashtag_bloc.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
@@ -15,7 +15,7 @@ import 'package:rxdart/rxdart.dart';
 class HashtagBloc extends DisposableOwner implements IHashtagBloc {
   @override
   final IHashtag hashtag;
-  final IPleromaApiFeaturedTagsService pleromaApiFeaturedTagsService;
+  final IUnifediApiInstanceService UnifediApiInstanceService;
   final bool needLoadFeaturedState;
 
   final AuthInstance authInstance;
@@ -26,7 +26,7 @@ class HashtagBloc extends DisposableOwner implements IHashtagBloc {
 
   HashtagBloc({
     required this.hashtag,
-    required this.pleromaApiFeaturedTagsService,
+    required this.UnifediApiInstanceService,
     required this.needLoadFeaturedState,
     required this.authInstance,
     required IMyAccountFeaturedHashtag? featuredHashtag,
@@ -72,19 +72,19 @@ class HashtagBloc extends DisposableOwner implements IHashtagBloc {
   Future feature() async {
     assert(!featured);
 
-    var pleromaApiFeatureTag = await pleromaApiFeaturedTagsService.featureTag(
+    var unifediApiFeatureTag = await UnifediApiInstanceService.featureTag(
       name: hashtag.name,
     );
 
     featuredHashtagSubject
-        .add(pleromaApiFeatureTag.toMyAccountFeaturedHashtag());
+        .add(unifediApiFeatureTag.toMyAccountFeaturedHashtag());
   }
 
   @override
   Future unFeature() async {
     assert(featured);
 
-    await pleromaApiFeaturedTagsService.unFeatureTag(
+    await UnifediApiInstanceService.unFeatureTag(
       id: featuredHashtag!.remoteId,
     );
 
@@ -97,11 +97,11 @@ class HashtagBloc extends DisposableOwner implements IHashtagBloc {
     required IMyAccountFeaturedHashtag? myAccountFeaturedHashtag,
     required bool needLoadFeaturedState,
   }) {
-    var pleromaApiFeaturedTagsService =
-        Provider.of<IPleromaApiFeaturedTagsService>(context, listen: false);
+    var UnifediApiInstanceService =
+        Provider.of<IUnifediApiInstanceService>(context, listen: false);
 
     return HashtagBloc(
-      pleromaApiFeaturedTagsService: pleromaApiFeaturedTagsService,
+      UnifediApiInstanceService: UnifediApiInstanceService,
       hashtag: hashtag,
       authInstance:
           ICurrentAuthInstanceBloc.of(context, listen: false).currentInstance!,
@@ -134,13 +134,13 @@ class HashtagBloc extends DisposableOwner implements IHashtagBloc {
     }
 
     isLoadingFeaturedHashtagStateSubject.add(true);
-    var pleromaApiFeaturedTags =
-        await pleromaApiFeaturedTagsService.getFeaturedTags();
+    var unifediApiTags =
+        await UnifediApiInstanceService.getFeaturedTags();
 
-    var found = pleromaApiFeaturedTags
+    var found = unifediApiTags
         .map(
-          (pleromaApiFeaturedTag) =>
-              pleromaApiFeaturedTag.toMyAccountFeaturedHashtag(),
+          (unifediApiTag) =>
+              unifediApiTag.toMyAccountFeaturedHashtag(),
         )
         .firstWhereOrNull(
           (featuredTag) => featuredTag.name == hashtag.name,

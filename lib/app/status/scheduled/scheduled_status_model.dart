@@ -5,7 +5,7 @@ import 'package:fedi/app/status/post/post_status_data_status_status_adapter.dart
 import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/post/poll/post_status_poll_model.dart';
 import 'package:fedi/obj/equal_comparable_obj.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 abstract class IScheduledStatus
@@ -16,9 +16,9 @@ abstract class IScheduledStatus
 
   DateTime get scheduledAt;
 
-  IPleromaApiScheduledStatusParams get params;
+  IUnifediApiScheduledStatusParams get params;
 
-  List<PleromaApiMediaAttachment>? get mediaAttachments;
+  List<UnifediApiMediaAttachment>? get mediaAttachments;
 
   bool get canceled;
 
@@ -26,9 +26,9 @@ abstract class IScheduledStatus
     int? localId,
     String? remoteId,
     DateTime? scheduledAt,
-    IPleromaApiScheduledStatusParams? params,
+    IUnifediApiScheduledStatusParams? params,
     bool? canceled,
-    List<PleromaApiMediaAttachment>? mediaAttachments,
+    List<UnifediApiMediaAttachment>? mediaAttachments,
   });
 
   static int compareItemsToSort(IScheduledStatus? a, IScheduledStatus? b) {
@@ -94,19 +94,19 @@ class DbScheduledStatusPopulated {
 }
 
 extension IPleromaScheduledStatusParamsExtension
-    on IPleromaApiScheduledStatusParams {
-  PleromaApiScheduledStatusParams toPleromaScheduledStatusParams() {
-    if (this is PleromaApiScheduledStatusParams) {
-      return this as PleromaApiScheduledStatusParams;
+    on IUnifediApiScheduledStatusParams {
+  UnifediApiScheduledStatusParams toPleromaScheduledStatusParams() {
+    if (this is UnifediApiScheduledStatusParams) {
+      return this as UnifediApiScheduledStatusParams;
     } else {
-      return PleromaApiScheduledStatusParams(
+      return UnifediApiScheduledStatusParams(
         text: text,
         mediaIds: mediaIds,
         sensitive: sensitive,
         spoilerText: spoilerText,
         visibility: visibility,
         scheduledAt: scheduledAt,
-        poll: poll?.toPleromaApiPostStatusPoll(),
+        poll: poll?.toUnifediApiPostStatusPoll(),
         idempotency: idempotency,
         inReplyToId: inReplyToId,
         applicationId: applicationId,
@@ -128,7 +128,7 @@ extension IScheduledStatusExtension on IScheduledStatus {
         mediaAttachments: mediaAttachments,
         poll: params.poll?.toPostStatusPoll(),
         to: params.to,
-        inReplyToPleromaStatus: params.inReplyToStatus?.toPleromaApiStatus(),
+        inReplyToPleromaStatus: params.inReplyToStatus?.toUnifediApiStatus(),
         inReplyToConversationId: params.inReplyToConversationId,
         isNsfwSensitiveEnabled: params.sensitive,
         language: params.language,
@@ -194,9 +194,9 @@ class DbScheduledStatusPopulatedWrapper implements IScheduledStatus {
     int? localId,
     String? remoteId,
     DateTime? scheduledAt,
-    IPleromaApiScheduledStatusParams? params,
+    IUnifediApiScheduledStatusParams? params,
     bool? canceled,
-    List<PleromaApiMediaAttachment>? mediaAttachments,
+    List<UnifediApiMediaAttachment>? mediaAttachments,
   }) =>
       DbScheduledStatusPopulatedWrapper(
         dbScheduledStatusPopulated: DbScheduledStatusPopulated(
@@ -216,11 +216,11 @@ class DbScheduledStatusPopulatedWrapper implements IScheduledStatus {
   int? get localId => dbScheduledStatus.id;
 
   @override
-  List<PleromaApiMediaAttachment>? get mediaAttachments =>
+  List<UnifediApiMediaAttachment>? get mediaAttachments =>
       dbScheduledStatus.mediaAttachments;
 
   @override
-  IPleromaApiScheduledStatusParams get params => dbScheduledStatus.params;
+  IUnifediApiScheduledStatusParams get params => dbScheduledStatus.params;
 
   @override
   String? get remoteId => dbScheduledStatus.remoteId;

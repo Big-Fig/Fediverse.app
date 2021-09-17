@@ -1,7 +1,7 @@
 import 'package:fedi/localization/localization_model.dart';
 
 // ignore_for_file: no-magic-number
-class LocalizationModelTestHelper {
+class LocalizationModelMockHelper {
   static LocalizationLocale createTestLocalizationLocale({
     required String seed,
   }) =>

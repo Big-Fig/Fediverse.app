@@ -7,7 +7,7 @@ import 'package:fedi/app/chat/conversation/message/conversation_chat_message_mod
 import 'package:fedi/app/chat/message/chat_message_bloc_impl.dart';
 import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
@@ -15,7 +15,7 @@ import 'package:easy_dispose/easy_dispose.dart';
 
 class ConversationChatMessageBloc extends ChatMessageBloc
     implements IConversationChatMessageBloc {
-  final PleromaApiInstancePollLimits pleromaInstancePollLimits;
+  final UnifediApiInstancePollLimits pollLimits;
 
   static ConversationChatMessageBloc createFromContext(
     BuildContext context,
@@ -24,17 +24,16 @@ class ConversationChatMessageBloc extends ChatMessageBloc
     bool delayInit = true,
   }) =>
       ConversationChatMessageBloc(
-        pleromaInstancePollLimits: ICurrentAuthInstanceBloc.of(
+        pollLimits: ICurrentAuthInstanceBloc.of(
               context,
               listen: false,
-            ).currentInstance?.info?.pollLimits ??
-            PleromaApiInstancePollLimits.defaultLimits,
+            ).currentInstance?.info?.limits.poll,
         conversationChatService:
-            Provider.of<IPleromaApiConversationService>(context, listen: false),
+            Provider.of<IUnifediApiConversationService>(context, listen: false),
         authStatusService:
-            Provider.of<IPleromaApiAuthStatusService>(context, listen: false),
-        pleromaAccountService:
-            Provider.of<IPleromaApiAccountService>(context, listen: false),
+            Provider.of<IUnifediApiStatusService>(context, listen: false),
+        unifediApiAccountService:
+            Provider.of<IUnifediApiAccountService>(context, listen: false),
         statusRepository: IStatusRepository.of(context, listen: false),
         accountRepository: IAccountRepository.of(context, listen: false),
         chatMessage: chatMessage,
@@ -50,21 +49,21 @@ class ConversationChatMessageBloc extends ChatMessageBloc
 
   final BehaviorSubject<IConversationChatMessage> _chatMessageSubject;
 
-  final IPleromaApiConversationService conversationChatService;
-  final IPleromaApiAuthStatusService authStatusService;
-  final IPleromaApiAccountService pleromaAccountService;
+  final IUnifediApiConversationService conversationChatService;
+  final IUnifediApiStatusService authStatusService;
+  final IUnifediApiAccountService unifediApiAccountService;
   final IStatusRepository statusRepository;
   final IAccountRepository accountRepository;
   final IConversationChatBloc conversationChatBloc;
 
   ConversationChatMessageBloc({
     required this.conversationChatService,
-    required this.pleromaAccountService,
+    required this.unifediApiAccountService,
     required this.statusRepository,
     required this.authStatusService,
     required this.accountRepository,
     required this.conversationChatBloc,
-    required this.pleromaInstancePollLimits,
+    required this.pollLimits,
     required IConversationChatMessage
         chatMessage, // for better performance we dont
     // update
@@ -123,7 +122,7 @@ class ConversationChatMessageBloc extends ChatMessageBloc
   @override
   Future refreshFromNetwork() async {
     var remoteStatus = await authStatusService.getStatus(
-      statusRemoteId: chatMessage.remoteId,
+      statusId: chatMessage.remoteId,
     );
 
     await statusRepository.updateAppTypeByRemoteType(
@@ -141,7 +140,7 @@ class ConversationChatMessageBloc extends ChatMessageBloc
   @override
   Future resendPendingFailed() => conversationChatBloc.postMessage(
         postStatusData: chatMessage.status.calculatePostStatusData(
-          limits: pleromaInstancePollLimits,
+          limits: pollLimits,
         ),
         oldPendingFailedConversationChatMessage: chatMessage,
       );

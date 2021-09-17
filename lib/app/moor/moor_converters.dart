@@ -1,7 +1,7 @@
 import 'package:fedi/app/pending/pending_model.dart';
 import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/moor/moor_json_type_converter.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:moor/moor.dart';
 
 class PendingStateDatabaseConverter
@@ -16,76 +16,63 @@ class PendingStateDatabaseConverter
 }
 
 class PleromaApplicationDatabaseConverter
-    extends JsonDatabaseConverter<PleromaApiApplication> {
+    extends JsonDatabaseConverter<UnifediApiApplication> {
   const PleromaApplicationDatabaseConverter() : super();
 
   @override
-  PleromaApiApplication fromJson(Map<String, dynamic>? json) =>
-      PleromaApiApplication.fromJson(json!);
+  UnifediApiApplication fromJson(Map<String, dynamic>? json) =>
+      UnifediApiApplication.fromJson(json!);
 
   @override
-  Map<String, dynamic> toJson(PleromaApiApplication obj) => obj.toJson();
+  Map<String, dynamic> toJson(UnifediApiApplication obj) => obj.toJson();
 }
 
-class PleromaNotificationPleromaPartDatabaseConverter
-    extends JsonDatabaseConverter<PleromaApiNotificationPleromaPart> {
-  const PleromaNotificationPleromaPartDatabaseConverter() : super();
+class UnifediApiAccountReportDatabaseConverter
+    extends JsonDatabaseConverter<UnifediApiAccountReport> {
+  const UnifediApiAccountReportDatabaseConverter() : super();
 
   @override
-  PleromaApiNotificationPleromaPart fromJson(Map<String, dynamic>? json) =>
-      PleromaApiNotificationPleromaPart.fromJson(json!);
+  UnifediApiAccountReport fromJson(Map<String, dynamic>? json) =>
+      UnifediApiAccountReport.fromJson(json!);
 
   @override
-  Map<String, dynamic> toJson(PleromaApiNotificationPleromaPart obj) =>
-      obj.toJson();
-}
-
-class PleromaAccountReportDatabaseConverter
-    extends JsonDatabaseConverter<PleromaApiAccountReport> {
-  const PleromaAccountReportDatabaseConverter() : super();
-
-  @override
-  PleromaApiAccountReport fromJson(Map<String, dynamic>? json) =>
-      PleromaApiAccountReport.fromJson(json!);
-
-  @override
-  Map<String, dynamic> toJson(PleromaApiAccountReport obj) => obj.toJson();
+  Map<String, dynamic> toJson(UnifediApiAccountReport obj) => obj.toJson();
 }
 
 class PleromaChatMessageDatabaseConverter
-    extends JsonDatabaseConverter<PleromaApiChatMessage> {
+    extends JsonDatabaseConverter<UnifediApiChatMessage> {
   const PleromaChatMessageDatabaseConverter() : super();
 
   @override
-  PleromaApiChatMessage fromJson(Map<String, dynamic>? json) =>
-      PleromaApiChatMessage.fromJson(json!);
+  UnifediApiChatMessage fromJson(Map<String, dynamic>? json) =>
+      UnifediApiChatMessage.fromJson(json!);
 
   @override
-  Map<String, dynamic> toJson(PleromaApiChatMessage obj) => obj.toJson();
+  Map<String, dynamic> toJson(UnifediApiChatMessage obj) => obj.toJson();
 }
 
-class PleromaAccountDatabaseConverter
-    extends JsonDatabaseConverter<PleromaApiAccount> {
-  const PleromaAccountDatabaseConverter() : super();
+class UnifediApiAccountDatabaseConverter
+    extends JsonDatabaseConverter<UnifediApiAccount> {
+  const UnifediApiAccountDatabaseConverter() : super();
 
   @override
-  PleromaApiAccount fromJson(Map<String, dynamic>? json) =>
-      PleromaApiAccount.fromJson(json!);
+  UnifediApiAccount fromJson(Map<String, dynamic>? json) =>
+      UnifediApiAccount.fromJson(json!);
 
   @override
-  Map<String, dynamic> toJson(PleromaApiAccount obj) => obj.toJson();
+  Map<String, dynamic> toJson(UnifediApiAccount obj) => obj.toJson();
 }
 
 class PleromaScheduledStatusParamsDatabaseConverter
-    extends JsonDatabaseConverter<PleromaApiScheduledStatusParams> {
+    extends JsonDatabaseConverter<UnifediApiScheduledStatusParams> {
   const PleromaScheduledStatusParamsDatabaseConverter() : super();
 
   @override
-  PleromaApiScheduledStatusParams fromJson(Map<String, dynamic>? json) =>
-      PleromaApiScheduledStatusParams.fromJson(json!);
+  UnifediApiScheduledStatusParams fromJson(Map<String, dynamic>? json) =>
+      UnifediApiScheduledStatusParams.fromJson(json!);
 
   @override
-  Map<String, dynamic> toJson(PleromaApiScheduledStatusParams obj) =>
+  Map<String, dynamic> toJson(UnifediApiScheduledStatusParams obj) =>
       obj.toJson();
 }
 
@@ -101,216 +88,216 @@ class PostStatusDataDatabaseConverter
   Map<String, dynamic> toJson(PostStatusData obj) => obj.toJson();
 }
 
-class PleromaApiMyAccountPleromaPartNotificationsSettingsDatabaseConverter
+class UnifediApiMyAccountNotificationsSettingsDatabaseConverter
     extends JsonDatabaseConverter<
-        PleromaApiMyAccountPleromaPartNotificationsSettings> {
-  const PleromaApiMyAccountPleromaPartNotificationsSettingsDatabaseConverter()
+        UnifediApiMyAccountNotificationsSettings> {
+  const UnifediApiMyAccountNotificationsSettingsDatabaseConverter()
       : super();
 
   @override
-  PleromaApiMyAccountPleromaPartNotificationsSettings fromJson(
+  UnifediApiMyAccountNotificationsSettings fromJson(
     Map<String, dynamic>? json,
   ) =>
-      PleromaApiMyAccountPleromaPartNotificationsSettings.fromJson(json!);
+      UnifediApiMyAccountNotificationsSettings.fromJson(json!);
 
   @override
   Map<String, dynamic> toJson(
-    PleromaApiMyAccountPleromaPartNotificationsSettings obj,
+    UnifediApiMyAccountNotificationsSettings obj,
   ) =>
       obj.toJson();
 }
 
-class PleromaApiAccountRelationshipDatabaseConverter
-    extends JsonDatabaseConverter<PleromaApiAccountRelationship> {
-  const PleromaApiAccountRelationshipDatabaseConverter() : super();
+class UnifediApiAccountRelationshipDatabaseConverter
+    extends JsonDatabaseConverter<UnifediApiAccountRelationship> {
+  const UnifediApiAccountRelationshipDatabaseConverter() : super();
 
   @override
-  PleromaApiAccountRelationship fromJson(Map<String, dynamic>? json) =>
-      PleromaApiAccountRelationship.fromJson(json!);
+  UnifediApiAccountRelationship fromJson(Map<String, dynamic>? json) =>
+      UnifediApiAccountRelationship.fromJson(json!);
 
   @override
-  Map<String, dynamic> toJson(PleromaApiAccountRelationship obj) =>
+  Map<String, dynamic> toJson(UnifediApiAccountRelationship obj) =>
       obj.toJson();
 }
 
-class PleromaMyAccountSourceDatabaseConverter
-    extends JsonDatabaseConverter<PleromaApiMyAccountSource> {
-  const PleromaMyAccountSourceDatabaseConverter() : super();
+class UnifediApiMyAccountSourceDatabaseConverter
+    extends JsonDatabaseConverter<UnifediApiMyAccountSource> {
+  const UnifediApiMyAccountSourceDatabaseConverter() : super();
 
   @override
-  PleromaApiMyAccountSource fromJson(Map<String, dynamic>? json) =>
-      PleromaApiMyAccountSource.fromJson(json!);
+  UnifediApiMyAccountSource fromJson(Map<String, dynamic>? json) =>
+      UnifediApiMyAccountSource.fromJson(json!);
 
   @override
-  Map<String, dynamic> toJson(PleromaApiMyAccountSource obj) => obj.toJson();
+  Map<String, dynamic> toJson(UnifediApiMyAccountSource obj) => obj.toJson();
 }
 
 class PleromaStatusDatabaseConverter
-    extends JsonDatabaseConverter<PleromaApiStatus> {
+    extends JsonDatabaseConverter<UnifediApiStatus> {
   const PleromaStatusDatabaseConverter() : super();
 
   @override
-  PleromaApiStatus fromJson(Map<String, dynamic>? json) =>
-      PleromaApiStatus.fromJson(json!);
+  UnifediApiStatus fromJson(Map<String, dynamic>? json) =>
+      UnifediApiStatus.fromJson(json!);
 
   @override
-  Map<String, dynamic> toJson(PleromaApiStatus obj) => obj.toJson();
+  Map<String, dynamic> toJson(UnifediApiStatus obj) => obj.toJson();
 }
 
-class PleromaMediaAttachmentListDatabaseConverter
-    extends JsonListDatabaseConverter<PleromaApiMediaAttachment> {
-  const PleromaMediaAttachmentListDatabaseConverter() : super();
+class unifediApiMediaAttachmentListDatabaseConverter
+    extends JsonListDatabaseConverter<UnifediApiMediaAttachment> {
+  const unifediApiMediaAttachmentListDatabaseConverter() : super();
 
   @override
-  PleromaApiMediaAttachment fromJson(Map<String, dynamic> json) =>
-      PleromaApiMediaAttachment.fromJson(json);
+  UnifediApiMediaAttachment fromJson(Map<String, dynamic> json) =>
+      UnifediApiMediaAttachment.fromJson(json);
 
   @override
-  Map<String, dynamic> toJson(PleromaApiMediaAttachment obj) => obj.toJson();
+  Map<String, dynamic> toJson(UnifediApiMediaAttachment obj) => obj.toJson();
 }
 
-class PleromaApiAnnouncementReactionListDatabaseConverter
-    extends JsonListDatabaseConverter<PleromaApiAnnouncementReaction> {
-  const PleromaApiAnnouncementReactionListDatabaseConverter() : super();
+class UnifediApiEmojiReactionListDatabaseConverter
+    extends JsonListDatabaseConverter<UnifediApiEmojiReaction> {
+  const UnifediApiEmojiReactionListDatabaseConverter() : super();
 
   @override
-  PleromaApiAnnouncementReaction fromJson(Map<String, dynamic> json) =>
-      PleromaApiAnnouncementReaction.fromJson(json);
+  UnifediApiEmojiReaction fromJson(Map<String, dynamic> json) =>
+      UnifediApiEmojiReaction.fromJson(json);
 
   @override
-  Map<String, dynamic> toJson(PleromaApiAnnouncementReaction obj) =>
+  Map<String, dynamic> toJson(UnifediApiEmojiReaction obj) =>
       obj.toJson();
 }
 
-class PleromaMediaAttachmentDatabaseConverter
-    extends JsonDatabaseConverter<PleromaApiMediaAttachment> {
-  const PleromaMediaAttachmentDatabaseConverter() : super();
+class unifediApiMediaAttachmentDatabaseConverter
+    extends JsonDatabaseConverter<UnifediApiMediaAttachment> {
+  const unifediApiMediaAttachmentDatabaseConverter() : super();
 
   @override
-  PleromaApiMediaAttachment fromJson(Map<String, dynamic>? json) =>
-      PleromaApiMediaAttachment.fromJson(json!);
+  UnifediApiMediaAttachment fromJson(Map<String, dynamic>? json) =>
+      UnifediApiMediaAttachment.fromJson(json!);
 
   @override
-  Map<String, dynamic> toJson(PleromaApiMediaAttachment obj) => obj.toJson();
+  Map<String, dynamic> toJson(UnifediApiMediaAttachment obj) => obj.toJson();
 }
 
 class PleromaMentionListDatabaseConverter
-    extends JsonListDatabaseConverter<PleromaApiMention> {
+    extends JsonListDatabaseConverter<UnifediApiMention> {
   const PleromaMentionListDatabaseConverter() : super();
 
   @override
-  PleromaApiMention fromJson(Map<String, dynamic> json) =>
-      PleromaApiMention.fromJson(json);
+  UnifediApiMention fromJson(Map<String, dynamic> json) =>
+      UnifediApiMention.fromJson(json);
 
   @override
-  Map<String, dynamic> toJson(PleromaApiMention obj) => obj.toJson();
+  Map<String, dynamic> toJson(UnifediApiMention obj) => obj.toJson();
 }
 
-class PleromaApiFieldListDatabaseConverter
-    extends JsonListDatabaseConverter<PleromaApiField> {
-  const PleromaApiFieldListDatabaseConverter() : super();
+class UnifediApiFieldListDatabaseConverter
+    extends JsonListDatabaseConverter<UnifediApiField> {
+  const UnifediApiFieldListDatabaseConverter() : super();
 
   @override
-  PleromaApiField fromJson(Map<String, dynamic> json) =>
-      PleromaApiField.fromJson(json);
+  UnifediApiField fromJson(Map<String, dynamic> json) =>
+      UnifediApiField.fromJson(json);
 
   @override
-  Map<String, dynamic> toJson(PleromaApiField obj) => obj.toJson();
+  Map<String, dynamic> toJson(UnifediApiField obj) => obj.toJson();
 }
 
-class PleromaApiTagListDatabaseConverter
-    extends JsonListDatabaseConverter<PleromaApiTag> {
-  const PleromaApiTagListDatabaseConverter() : super();
+class UnifediApiTagListDatabaseConverter
+    extends JsonListDatabaseConverter<UnifediApiTag> {
+  const UnifediApiTagListDatabaseConverter() : super();
 
   @override
-  PleromaApiTag fromJson(Map<String, dynamic> json) =>
-      PleromaApiTag.fromJson(json);
+  UnifediApiTag fromJson(Map<String, dynamic> json) =>
+      UnifediApiTag.fromJson(json);
 
   @override
-  Map<String, dynamic> toJson(PleromaApiTag obj) => obj.toJson();
+  Map<String, dynamic> toJson(UnifediApiTag obj) => obj.toJson();
 }
 
-class PleromaApiStatusListDatabaseConverter
-    extends JsonListDatabaseConverter<PleromaApiStatus> {
-  const PleromaApiStatusListDatabaseConverter() : super();
+class UnifediApiStatusListDatabaseConverter
+    extends JsonListDatabaseConverter<UnifediApiStatus> {
+  const UnifediApiStatusListDatabaseConverter() : super();
 
   @override
-  PleromaApiStatus fromJson(Map<String, dynamic> json) =>
-      PleromaApiStatus.fromJson(json);
+  UnifediApiStatus fromJson(Map<String, dynamic> json) =>
+      UnifediApiStatus.fromJson(json);
 
   @override
-  Map<String, dynamic> toJson(PleromaApiStatus obj) => obj.toJson();
+  Map<String, dynamic> toJson(UnifediApiStatus obj) => obj.toJson();
 }
 
-class PleromaApiMentionListDatabaseConverter
-    extends JsonListDatabaseConverter<PleromaApiMention> {
-  const PleromaApiMentionListDatabaseConverter() : super();
+class UnifediApiMentionListDatabaseConverter
+    extends JsonListDatabaseConverter<UnifediApiMention> {
+  const UnifediApiMentionListDatabaseConverter() : super();
 
   @override
-  PleromaApiMention fromJson(Map<String, dynamic> json) =>
-      PleromaApiMention.fromJson(json);
+  UnifediApiMention fromJson(Map<String, dynamic> json) =>
+      UnifediApiMention.fromJson(json);
 
   @override
-  Map<String, dynamic> toJson(PleromaApiMention obj) => obj.toJson();
+  Map<String, dynamic> toJson(UnifediApiMention obj) => obj.toJson();
 }
 
-class PleromaApiEmojiListDatabaseConverter
-    extends JsonListDatabaseConverter<PleromaApiEmoji> {
-  const PleromaApiEmojiListDatabaseConverter() : super();
+class UnifediApiEmojiListDatabaseConverter
+    extends JsonListDatabaseConverter<UnifediApiEmoji> {
+  const UnifediApiEmojiListDatabaseConverter() : super();
 
   @override
-  PleromaApiEmoji fromJson(Map<String, dynamic> json) =>
-      PleromaApiEmoji.fromJson(json);
+  UnifediApiEmoji fromJson(Map<String, dynamic> json) =>
+      UnifediApiEmoji.fromJson(json);
 
   @override
-  Map<String, dynamic> toJson(PleromaApiEmoji obj) => obj.toJson();
+  Map<String, dynamic> toJson(UnifediApiEmoji obj) => obj.toJson();
 }
 
-class PleromaPollDatabaseConverter
-    extends JsonDatabaseConverter<PleromaApiPoll> {
-  const PleromaPollDatabaseConverter() : super();
+class UnifediApiPollDatabaseConverter
+    extends JsonDatabaseConverter<UnifediApiPoll> {
+  const UnifediApiPollDatabaseConverter() : super();
 
   @override
-  PleromaApiPoll fromJson(Map<String, dynamic>? json) =>
-      PleromaApiPoll.fromJson(json!);
+  UnifediApiPoll fromJson(Map<String, dynamic>? json) =>
+      UnifediApiPoll.fromJson(json!);
 
   @override
-  Map<String, dynamic> toJson(PleromaApiPoll obj) => obj.toJson();
+  Map<String, dynamic> toJson(UnifediApiPoll obj) => obj.toJson();
 }
 
 class PleromaCardDatabaseConverter
-    extends JsonDatabaseConverter<PleromaApiCard> {
+    extends JsonDatabaseConverter<UnifediApiCard> {
   const PleromaCardDatabaseConverter() : super();
 
   @override
-  PleromaApiCard fromJson(Map<String, dynamic>? json) =>
-      PleromaApiCard.fromJson(json!);
+  UnifediApiCard fromJson(Map<String, dynamic>? json) =>
+      UnifediApiCard.fromJson(json!);
 
   @override
-  Map<String, dynamic> toJson(PleromaApiCard obj) => obj.toJson();
+  Map<String, dynamic> toJson(UnifediApiCard obj) => obj.toJson();
 }
 
 class PleromaContentDatabaseConverter
-    extends JsonDatabaseConverter<PleromaApiContent> {
+    extends JsonDatabaseConverter<UnifediApiContentVariants> {
   const PleromaContentDatabaseConverter() : super();
 
   @override
-  PleromaApiContent fromJson(Map<String, dynamic>? json) =>
-      PleromaApiContent.fromJson(json!);
+  UnifediApiContentVariants fromJson(Map<String, dynamic>? json) =>
+      UnifediApiContentVariants.fromJson(json!);
 
   @override
-  Map<String, dynamic> toJson(PleromaApiContent obj) => obj.toJson();
+  Map<String, dynamic> toJson(UnifediApiContentVariants obj) => obj.toJson();
 }
 
-class PleromaEmojiReactionsListDatabaseConverter
-    extends JsonListDatabaseConverter<PleromaApiStatusEmojiReaction> {
-  const PleromaEmojiReactionsListDatabaseConverter() : super();
+class EmojiReactionsListDatabaseConverter
+    extends JsonListDatabaseConverter<UnifediApiEmojiReaction> {
+  const EmojiReactionsListDatabaseConverter() : super();
 
   @override
-  PleromaApiStatusEmojiReaction fromJson(Map<String, dynamic> json) =>
-      PleromaApiStatusEmojiReaction.fromJson(json);
+  UnifediApiEmojiReaction fromJson(Map<String, dynamic> json) =>
+      UnifediApiEmojiReaction.fromJson(json);
 
   @override
-  Map<String, dynamic> toJson(PleromaApiStatusEmojiReaction obj) =>
+  Map<String, dynamic> toJson(UnifediApiEmojiReaction obj) =>
       obj.toJson();
 }

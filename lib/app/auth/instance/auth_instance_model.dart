@@ -1,5 +1,5 @@
-import 'package:fedi/json/json_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -12,7 +12,7 @@ part 'auth_instance_model.g.dart';
 // ignore_for_file: no-magic-number
 @HiveType(typeId: -32 + 50)
 @JsonSerializable(explicitToJson: true)
-class AuthInstance extends IJsonObject {
+class AuthInstance extends IJsonObj {
   @HiveField(0)
   @JsonKey(name: 'url_schema')
   final String? urlSchema;
@@ -22,7 +22,7 @@ class AuthInstance extends IJsonObject {
   @HiveField(2)
   final String acct;
   @HiveField(3)
-  final PleromaApiOAuthToken? token;
+  final UnifediApiOAuthToken? token;
   @HiveField(4)
   @JsonKey(name: 'auth_code')
   final String? authCode;
@@ -36,13 +36,13 @@ class AuthInstance extends IJsonObject {
   bool get isSupportFeaturedTags => isMastodon;
 
   @HiveField(6)
-  final PleromaApiClientApplication? application;
+  final UnifediApiClientApplication? application;
 
   @HiveField(7)
-  final PleromaApiInstance? info;
+  final UnifediApiInstance? info;
 
   bool get isSupportChats =>
-      info?.pleroma?.metadata?.features?.contains('pleroma_chat_messages') ==
+      info?.features?.contains('pleroma_chat_messages') ==
       true;
 
   String get userAtHost {
@@ -124,11 +124,11 @@ class AuthInstance extends IJsonObject {
     String? urlSchema,
     String? urlHost,
     String? acct,
-    PleromaApiOAuthToken? token,
+    UnifediApiOAuthToken? token,
     String? authCode,
     bool? isPleroma,
-    PleromaApiClientApplication? application,
-    IPleromaApiInstance? info,
+    UnifediApiClientApplication? application,
+    IUnifediApiInstance? info,
   }) {
     return AuthInstance(
       urlSchema: urlSchema ?? this.urlSchema,
@@ -138,7 +138,7 @@ class AuthInstance extends IJsonObject {
       authCode: authCode ?? this.authCode,
       isPleroma: isPleroma ?? this.isPleroma,
       application: application ?? this.application,
-      info: info?.toPleromaApiInstance() ?? this.info,
+      info: info?.toUnifediApiInstance() ?? this.info,
     );
   }
 

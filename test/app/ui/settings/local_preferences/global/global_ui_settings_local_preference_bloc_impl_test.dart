@@ -10,13 +10,13 @@ import '../../ui_settings_model_test_helper.dart';
 
 void main() {
   test('save & load', () async {
-    await LocalPreferencesTestHelper.testSaveAndLoad<UiSettings,
+    await LocalPreferencesMockHelper.testSaveAndLoad<UiSettings,
         UiSettingsLocalPreferenceBloc>(
       defaultValue: GlobalUiSettingsLocalPreferenceBloc.defaultValue,
       blocCreator: (localPreferencesService) =>
           GlobalUiSettingsLocalPreferenceBloc(localPreferencesService),
       testObjectCreator: ({required String seed}) =>
-          UiSettingsModelTestHelper.createTestUiSettings(
+          UiSettingsModelMockHelper.createTestUiSettings(
         seed: seed,
       ),
     );

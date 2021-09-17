@@ -5,33 +5,33 @@ import 'package:fedi/app/instance/directory/instance_directory_bloc_proxy_provid
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class LocalInstanceDirectoryBloc extends InstanceDirectoryBloc
     implements IInstanceDirectoryBloc {
   @override
-  final IPleromaApiDirectoryService pleromaApiDirectoryService;
+  final IUnifediApiInstanceService unifediApiInstanceService;
 
   LocalInstanceDirectoryBloc({
-    required IPleromaApiInstance? initialInstance,
-    required this.pleromaApiDirectoryService,
+    required IUnifediApiInstance? initialInstance,
+    required this.unifediApiInstanceService,
     required IPaginationSettingsBloc paginationSettingsBloc,
   }) : super(
-          instanceUri: pleromaApiDirectoryService.restService.baseUri,
+          instanceUri: unifediApiInstanceService.restService.baseUri,
           initialInstance: initialInstance,
           paginationSettingsBloc: paginationSettingsBloc,
         );
 
   static LocalInstanceDirectoryBloc createFromContext(BuildContext context) {
-    var pleromaApiDirectoryService =
-        Provider.of<IPleromaApiDirectoryService>(context, listen: false);
+    var unifediApiInstanceService =
+        Provider.of<IUnifediApiInstanceService>(context, listen: false);
     var currentAuthInstanceBloc =
         ICurrentAuthInstanceBloc.of(context, listen: false);
 
     return LocalInstanceDirectoryBloc(
-      pleromaApiDirectoryService: pleromaApiDirectoryService,
+      unifediApiInstanceService: unifediApiInstanceService,
       initialInstance: currentAuthInstanceBloc.currentInstance!.info,
       paginationSettingsBloc: IPaginationSettingsBloc.of(
         context,

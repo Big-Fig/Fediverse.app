@@ -6,7 +6,7 @@ import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_bloc.dart';
 import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_bloc.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
@@ -22,9 +22,9 @@ class PleromaChatMessageBloc extends ChatMessageBloc
   }) =>
       PleromaChatMessageBloc(
         pleromaChatService:
-            Provider.of<IPleromaApiChatService>(context, listen: false),
-        pleromaAccountService:
-            Provider.of<IPleromaApiAccountService>(context, listen: false),
+            Provider.of<IUnifediApiChatService>(context, listen: false),
+        unifediApiAccountService:
+            Provider.of<IUnifediApiAccountService>(context, listen: false),
         chatMessageRepository:
             IPleromaChatMessageRepository.of(context, listen: false),
         accountRepository: IAccountRepository.of(context, listen: false),
@@ -41,15 +41,15 @@ class PleromaChatMessageBloc extends ChatMessageBloc
 
   final BehaviorSubject<IPleromaChatMessage> _chatMessageSubject;
 
-  final IPleromaApiChatService pleromaChatService;
-  final IPleromaApiAccountService pleromaAccountService;
+  final IUnifediApiChatService pleromaChatService;
+  final IUnifediApiAccountService unifediApiAccountService;
   final IPleromaChatMessageRepository chatMessageRepository;
   final IAccountRepository accountRepository;
   final IPleromaChatBloc pleromaChatBloc;
 
   PleromaChatMessageBloc({
     required this.pleromaChatService,
-    required this.pleromaAccountService,
+    required this.unifediApiAccountService,
     required this.chatMessageRepository,
     required this.accountRepository,
     required this.pleromaChatBloc,
@@ -119,16 +119,16 @@ class PleromaChatMessageBloc extends ChatMessageBloc
   Future resendPendingFailed() {
     var mediaId = chatMessage.mediaAttachments?.singleOrNull?.id;
 
-    var pleromaApiChatMessageSendData = PleromaApiChatMessageSendData(
+    var unifediApiChatMessageSendData = UnifediApiChatMessageSendData(
       content: chatMessage.content,
       mediaId: mediaId,
       idempotencyKey: chatMessage.wasSentWithIdempotencyKey,
     );
 
     return pleromaChatBloc.postMessage(
-      pleromaApiChatMessageSendData: pleromaApiChatMessageSendData,
+      unifediApiChatMessageSendData: unifediApiChatMessageSendData,
       oldPendingFailedPleromaChatMessage: chatMessage,
-      pleromaApiChatMessageSendDataMediaAttachment:
+      unifediApiChatMessageSendDataMediaAttachment:
           chatMessage.mediaAttachments?.singleOrNull,
     );
   }

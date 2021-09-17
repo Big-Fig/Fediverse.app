@@ -18,7 +18,7 @@ class NotificationsPushHandlerMessageAdapter
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return NotificationsPushHandlerMessage(
-      body: fields[0] as PleromaApiPushMessageBody,
+      body: fields[0] as UnifediApiPushMessageBody,
       pushMessage: fields[1] as PushMessage,
     );
   }
@@ -51,7 +51,7 @@ class NotificationsPushHandlerMessageAdapter
 NotificationsPushHandlerMessage _$NotificationsPushHandlerMessageFromJson(
     Map<String, dynamic> json) {
   return NotificationsPushHandlerMessage(
-    body: PleromaApiPushMessageBody.fromJson(
+    body: UnifediApiPushMessageBody.fromJson(
         json['body'] as Map<String, dynamic>),
     pushMessage:
         PushMessage.fromJson(json['push_message'] as Map<String, dynamic>),

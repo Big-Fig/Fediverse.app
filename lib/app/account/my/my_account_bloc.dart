@@ -4,7 +4,7 @@ import 'package:fedi/app/account/my/my_account_model.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/chat/message/chat_message_model.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:html_unescape/html_unescape.dart';
 import 'package:provider/provider.dart';
@@ -42,8 +42,8 @@ abstract class IMyAccountBloc extends IAccountBloc {
 
   bool checkIsStatusFromMe(IStatus status);
 
-  Future updateMyAccountByMyPleromaAccount(
-    IPleromaApiMyAccount pleromaMyAccount,
+  Future updateMyAccountByMyUnifediApiAccount(
+    IUnifediApiMyAccount unifediApiMyAccount,
   );
 
   Future updateMyAccountByMyAccount(IMyAccount myAccount);
@@ -60,17 +60,17 @@ extension IMyAccountBlocExtension on IMyAccountBloc {
         (myAccount) => myAccount!.followRequestsCount,
       );
 
-  int? get pleromaUnreadNotificationsCount =>
-      myAccount!.pleromaUnreadNotificationsCount;
+  int? get unreadNotificationsCount =>
+      myAccount!.unreadNotificationsCount;
 
-  Stream<int?> get pleromaUnreadNotificationsCountStream => myAccountStream.map(
-        (myAccount) => myAccount!.pleromaUnreadNotificationsCount,
+  Stream<int?> get unreadNotificationsCountStream => myAccountStream.map(
+        (myAccount) => myAccount!.unreadNotificationsCount,
       );
 
-  int? get pleromaUnreadConversationCount =>
-      myAccount!.pleromaUnreadConversationCount;
+  int? get unreadConversationCount =>
+      myAccount!.unreadConversationCount;
 
-  Stream<int?> get pleromaUnreadConversationCountStream => myAccountStream.map(
-        (myAccount) => myAccount!.pleromaUnreadConversationCount,
+  Stream<int?> get unreadConversationCountStream => myAccountStream.map(
+        (myAccount) => myAccount!.unreadConversationCount,
       );
 }

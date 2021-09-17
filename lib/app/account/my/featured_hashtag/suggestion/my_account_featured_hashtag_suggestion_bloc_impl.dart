@@ -10,23 +10,23 @@ import 'package:fedi/app/hashtag/pagination/network_only/hashtag_network_only_pa
 import 'package:fedi/app/hashtag/pagination/network_only/hashtag_network_only_pagination_bloc_impl.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class MyAccountFeaturedHashtagSuggestionBloc extends DisposableOwner
     implements IMyAccountFeaturedHashtagSuggestionBloc {
   final IPaginationSettingsBloc paginationSettingsBloc;
 
-  final IPleromaApiFeaturedTagsService pleromaApiFeaturedTagsService;
+  final IUnifediApiMyAccountService unifediApiMyAccountService;
 
   MyAccountFeaturedHashtagSuggestionBloc({
     required this.paginationSettingsBloc,
-    required this.pleromaApiFeaturedTagsService,
+    required this.unifediApiMyAccountService,
   }) {
     myAccountFeaturedHashtagSuggestionHashtagListNetworkOnlyListBloc =
         MyAccountFeaturedHashtagSuggestionHashtagListNetworkOnlyListBloc(
-      pleromaApiFeaturedTagsService: pleromaApiFeaturedTagsService,
+          unifediApiMyAccountService: unifediApiMyAccountService,
     );
 
     myAccountFeaturedHashtagSuggestionHashtagListNetworkOnlyPaginationBloc =
@@ -68,11 +68,11 @@ class MyAccountFeaturedHashtagSuggestionBloc extends DisposableOwner
   static MyAccountFeaturedHashtagSuggestionBloc createFromContext(
     BuildContext context,
   ) {
-    var pleromaApiFeaturedTagsService =
-        Provider.of<IPleromaApiFeaturedTagsService>(context, listen: false);
+    var unifediApiMyAccountService =
+        Provider.of<IUnifediApiMyAccountService>(context, listen: false);
 
     return MyAccountFeaturedHashtagSuggestionBloc(
-      pleromaApiFeaturedTagsService: pleromaApiFeaturedTagsService,
+      unifediApiMyAccountService: unifediApiMyAccountService,
       paginationSettingsBloc: IPaginationSettingsBloc.of(
         context,
         listen: false,

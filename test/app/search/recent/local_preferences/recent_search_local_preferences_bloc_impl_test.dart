@@ -9,7 +9,7 @@ import '../recent_search_model_test_helper.dart';
 
 void main() {
   test('save & load', () async {
-    await LocalPreferencesTestHelper.testSaveAndLoad<RecentSearchList,
+    await LocalPreferencesMockHelper.testSaveAndLoad<RecentSearchList,
         RecentSearchLocalPreferenceBloc>(
       defaultValue: RecentSearchLocalPreferenceBloc.defaultValue,
       blocCreator: (localPreferencesService) => RecentSearchLocalPreferenceBloc(
@@ -17,7 +17,7 @@ void main() {
         userAtHost: 'user@host',
       ),
       testObjectCreator: ({required String seed}) =>
-          RecentSearchModelTestHelper.createTestRecentSearchList(
+          RecentSearchModelMockHelper.createTestRecentSearchList(
         seed: seed,
       ),
     );

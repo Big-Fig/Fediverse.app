@@ -22,8 +22,8 @@ class PushSettingsAdapter extends TypeAdapter<PushSettings> {
       mention: fields[3] as bool?,
       reblog: fields[4] as bool?,
       poll: fields[5] as bool?,
-      pleromaChatMention: fields[6] as bool?,
-      pleromaEmojiReaction: fields[7] as bool?,
+      chatMention: fields[6] as bool?,
+      emojiReaction: fields[7] as bool?,
     );
   }
 
@@ -42,9 +42,9 @@ class PushSettingsAdapter extends TypeAdapter<PushSettings> {
       ..writeByte(5)
       ..write(obj.poll)
       ..writeByte(6)
-      ..write(obj.pleromaChatMention)
+      ..write(obj.chatMention)
       ..writeByte(7)
-      ..write(obj.pleromaEmojiReaction);
+      ..write(obj.emojiReaction);
   }
 
   @override
@@ -69,8 +69,8 @@ PushSettings _$PushSettingsFromJson(Map<String, dynamic> json) {
     mention: json['mention'] as bool?,
     reblog: json['reblog'] as bool?,
     poll: json['poll'] as bool?,
-    pleromaChatMention: json['pleromaChatMention'] as bool?,
-    pleromaEmojiReaction: json['pleromaEmojiReaction'] as bool?,
+    chatMention: json['chatMention'] as bool?,
+    emojiReaction: json['emojiReaction'] as bool?,
   );
 }
 
@@ -81,6 +81,6 @@ Map<String, dynamic> _$PushSettingsToJson(PushSettings instance) =>
       'mention': instance.mention,
       'reblog': instance.reblog,
       'poll': instance.poll,
-      'pleromaChatMention': instance.pleromaChatMention,
-      'pleromaEmojiReaction': instance.pleromaEmojiReaction,
+      'chatMention': instance.chatMention,
+      'emojiReaction': instance.emojiReaction,
     };

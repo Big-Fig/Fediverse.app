@@ -16,7 +16,7 @@ import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -113,13 +113,13 @@ class _AuthInstanceChooserItemsToChooseWidget extends StatelessWidget {
                       Provider.of<AuthInstance>(context, listen: false);
 
                   // todo: remove hack
-                  // sometimes IPleromaApiMyAccountService is not accessible
+                  // sometimes IUnifediApiMyAccountService is not accessible
                   // during account switching
                   try {
-                    Provider.of<IPleromaApiMyAccountService>(context);
+                    Provider.of<IUnifediApiMyAccountService>(context);
                   } catch (e) {
                     _logger.finest(
-                      () => 'error fetching IPleromaApiMyAccountService',
+                      () => 'error fetching IUnifediApiMyAccountService',
                     );
 
                     return const SizedBox.shrink();
@@ -128,8 +128,8 @@ class _AuthInstanceChooserItemsToChooseWidget extends StatelessWidget {
                   return DisposableProvider<IAccountBloc>(
                     create: (context) => MyAccountBloc(
                       instance: instance,
-                      pleromaMyAccountService:
-                          Provider.of<IPleromaApiMyAccountService>(
+                      unifediApiMyAccountService:
+                          Provider.of<IUnifediApiMyAccountService>(
                         context,
                         listen: false,
                       ),

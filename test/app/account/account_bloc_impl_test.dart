@@ -8,7 +8,7 @@ import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/emoji/text/emoji_text_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_impl.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -20,17 +20,17 @@ import 'account_test_helper.dart';
 // ignore_for_file: avoid-late-keyword
 
 @GenerateMocks([
-  IPleromaApiAuthAccountService,
-  IPleromaApiWebSocketsService,
+  IUnifediApiAccountService,
+  IUnifediApiWebSocketsService,
 ])
 void main() {
   late IAccount account;
   late IAccountBloc accountBloc;
-  late MockIPleromaApiAuthAccountService pleromaAuthAccountServiceMock;
+  late MockIUnifediApiAccountService pleromaAuthAccountServiceMock;
   late AppDatabase database;
   late IAccountRepository accountRepository;
   late IStatusRepository statusRepository;
-  late MockIPleromaApiWebSocketsService pleromaWebSocketsService;
+  late MockIUnifediApiWebSocketsService pleromaWebSocketsService;
 
   setUp(() async {
     database = AppDatabase(VmDatabase.memory());
@@ -40,18 +40,18 @@ void main() {
       accountRepository: accountRepository,
     );
 
-    pleromaAuthAccountServiceMock = MockIPleromaApiAuthAccountService();
+    pleromaAuthAccountServiceMock = MockIUnifediApiAccountService();
 
     when(pleromaAuthAccountServiceMock.isConnected).thenReturn(true);
-    when(pleromaAuthAccountServiceMock.pleromaApiState)
-        .thenReturn(PleromaApiState.validAuth);
+    when(pleromaAuthAccountServiceMock.unifediApiState)
+        .thenReturn(UnifediApiState.validAuth);
 
-    account = await AccountTestHelper.createTestAccount(seed: 'seed1');
+    account = await AccountMockHelper.createTestAccount(seed: 'seed1');
 
-    pleromaWebSocketsService = MockIPleromaApiWebSocketsService();
+    pleromaWebSocketsService = MockIUnifediApiWebSocketsService();
 
     await accountRepository.upsertInRemoteType(
-      account.toPleromaApiAccount(),
+      account.toUnifediApiAccount(),
     );
     account = (await accountRepository.findByRemoteIdInAppType(
       account.remoteId,
@@ -76,16 +76,16 @@ void main() {
 
   Future _update(IAccount account) async {
     await accountRepository.upsertInRemoteType(
-      account.toPleromaApiAccount(),
+      account.toUnifediApiAccount(),
     );
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
   }
 
   test('account', () async {
-    AccountTestHelper.expectAccount(accountBloc.account, account);
+    AccountMockHelper.expectAccount(accountBloc.account, account);
 
-    var newValue = await AccountTestHelper.createTestAccount(
+    var newValue = await AccountMockHelper.createTestAccount(
       seed: 'seed2',
       remoteId: account.remoteId,
     );
@@ -97,14 +97,14 @@ void main() {
     });
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
-    AccountTestHelper.expectAccount(listened, account);
+    AccountMockHelper.expectAccount(listened, account);
 
     await _update(newValue);
 
-    AccountTestHelper.expectAccount(accountBloc.account, newValue);
-    AccountTestHelper.expectAccount(listened, newValue);
+    AccountMockHelper.expectAccount(accountBloc.account, newValue);
+    AccountMockHelper.expectAccount(listened, newValue);
     await subscription.cancel();
   });
 
@@ -120,7 +120,7 @@ void main() {
     });
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(listened, account.acct);
 
@@ -146,7 +146,7 @@ void main() {
     });
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(listened, account.note);
 
@@ -168,7 +168,7 @@ void main() {
     });
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(listened, account.header);
 
@@ -190,7 +190,7 @@ void main() {
     });
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(listened, account.avatar);
 
@@ -212,7 +212,7 @@ void main() {
     });
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(listened, account.displayName);
 
@@ -226,7 +226,7 @@ void main() {
     expect(accountBloc.fields, account.fields ?? []);
 
     var newValue = [
-      PleromaApiField(
+      UnifediApiField(
         name: 'newName',
         value: 'newValue',
         verifiedAt: null,
@@ -240,7 +240,7 @@ void main() {
     });
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(listened, account.fields ?? []);
 
@@ -254,7 +254,7 @@ void main() {
   test('statusesCount', () async {
     expect(accountBloc.statusesCount, account.statusesCount);
 
-    var newValue = account.statusesCount + 1;
+    var newValue = account.statusesCount! + 1;
 
     var listened;
 
@@ -263,7 +263,7 @@ void main() {
     });
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(listened, account.statusesCount);
 
@@ -276,7 +276,7 @@ void main() {
   test('statusesCount', () async {
     expect(accountBloc.statusesCount, account.statusesCount);
 
-    var newValue = account.statusesCount + 1;
+    var newValue = account.statusesCount! + 1;
 
     var listened;
 
@@ -285,7 +285,7 @@ void main() {
     });
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(listened, account.statusesCount);
 
@@ -298,7 +298,7 @@ void main() {
   test('followingCount', () async {
     expect(accountBloc.followingCount, account.followingCount);
 
-    var newValue = account.followingCount + 1;
+    var newValue = account.followingCount! + 1;
 
     var listened;
 
@@ -307,7 +307,7 @@ void main() {
     });
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(listened, account.followingCount);
 
@@ -320,7 +320,7 @@ void main() {
   test('followersCount', () async {
     expect(accountBloc.followersCount, account.followersCount);
 
-    var newValue = account.followersCount + 1;
+    var newValue = account.followersCount! + 1;
 
     var listened;
 
@@ -329,7 +329,7 @@ void main() {
     });
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(listened, account.followersCount);
 
@@ -359,7 +359,7 @@ void main() {
     });
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(
       listened,
@@ -392,12 +392,12 @@ void main() {
     await subscription.cancel();
 
     var newEmojis = [
-      PleromaApiEmoji(
+      UnifediApiEmoji(
         url: 'url',
         staticUrl: 'staticUrl',
         visibleInPicker: null,
-        shortcode: null,
-        category: null,
+        name: 'name',
+        tags: null,
       ),
     ];
 
@@ -406,7 +406,7 @@ void main() {
     });
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(
       listened,
@@ -439,10 +439,10 @@ void main() {
   });
 
   test('accountRelationship', () async {
-    expect(accountBloc.relationship, account.pleromaRelationship);
+    expect(accountBloc.relationship, account.relationship);
 
     var newValue =
-        AccountTestHelper.createTestAccountRelationship(seed: 'seed0');
+        AccountMockHelper.createTestAccountRelationship(seed: 'seed0');
 
     var listened;
 
@@ -451,11 +451,11 @@ void main() {
     });
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
-    expect(accountBloc.relationship, account.pleromaRelationship);
+    expect(accountBloc.relationship, account.relationship);
 
-    await _update(account.copyWith(pleromaRelationship: newValue));
+    await _update(account.copyWith(relationship: newValue));
 
     expect(accountBloc.relationship, newValue);
     expect(listened, newValue);
@@ -463,9 +463,9 @@ void main() {
   });
 
   test('refreshFromNetwork', () async {
-    AccountTestHelper.expectAccount(accountBloc.account, account);
+    AccountMockHelper.expectAccount(accountBloc.account, account);
 
-    var newValue = await AccountTestHelper.createTestAccount(
+    var newValue = await AccountMockHelper.createTestAccount(
       seed: 'seed2',
       remoteId: account.remoteId,
     );
@@ -477,16 +477,16 @@ void main() {
     });
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
-    AccountTestHelper.expectAccount(listened, account);
+    AccountMockHelper.expectAccount(listened, account);
 
     var newRelationship =
-        AccountTestHelper.createTestAccountRelationship(seed: 'seed11');
+        AccountMockHelper.createTestAccountRelationship(seed: 'seed11');
     when(pleromaAuthAccountServiceMock.getAccount(
       accountRemoteId: account.remoteId,
       withRelationship: false,
-    )).thenAnswer((_) async => newValue.toPleromaApiAccount());
+    )).thenAnswer((_) async => newValue.toUnifediApiAccount());
 
     when(
       pleromaAuthAccountServiceMock.getRelationshipWithAccounts(
@@ -499,39 +499,39 @@ void main() {
     await accountBloc.refreshFromNetwork(isNeedPreFetchRelationship: true);
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
-    AccountTestHelper.expectAccount(
+    AccountMockHelper.expectAccount(
       accountBloc.account,
-      newValue.copyWith(pleromaRelationship: newRelationship),
+      newValue.copyWith(relationship: newRelationship),
     );
-    AccountTestHelper.expectAccount(
+    AccountMockHelper.expectAccount(
       listened,
-      newValue.copyWith(pleromaRelationship: newRelationship),
+      newValue.copyWith(relationship: newRelationship),
     );
     await subscription.cancel();
   });
 
   test('toggleBlock', () async {
-    expect(accountBloc.relationship, account.pleromaRelationship);
+    expect(accountBloc.relationship, account.relationship);
 
-    IPleromaApiAccountRelationship? listened;
+    IUnifediApiAccountRelationship? listened;
 
     var subscription = accountBloc.relationshipStream!.listen((newValue) {
       listened = newValue;
     });
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
-    expect(accountBloc.relationship, account.pleromaRelationship);
+    expect(accountBloc.relationship, account.relationship);
 
     when(
       pleromaAuthAccountServiceMock.blockAccount(
         accountRemoteId: account.remoteId,
       ),
     ).thenAnswer(
-      (_) async => account.pleromaRelationship!.copyWith(
+      (_) async => account.relationship!.copyWith(
         blocking: true,
       ),
     );
@@ -541,17 +541,17 @@ void main() {
         accountRemoteId: account.remoteId,
       ),
     ).thenAnswer(
-      (_) async => account.pleromaRelationship!.copyWith(
+      (_) async => account.relationship!.copyWith(
         blocking: false,
       ),
     );
 
-    var initialValue = account.pleromaRelationship!.blocking!;
+    var initialValue = account.relationship!.blocking!;
 
     await accountBloc.toggleBlock();
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(accountBloc.relationship!.blocking, !initialValue);
     expect(listened!.blocking, !initialValue);
@@ -559,7 +559,7 @@ void main() {
     await accountBloc.toggleBlock();
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(accountBloc.relationship!.blocking, initialValue);
     expect(listened!.blocking, initialValue);
@@ -567,38 +567,38 @@ void main() {
     await subscription.cancel();
   });
   test('toggleFollow', () async {
-    expect(accountBloc.relationship, account.pleromaRelationship);
+    expect(accountBloc.relationship, account.relationship);
 
-    IPleromaApiAccountRelationship? listened;
+    IUnifediApiAccountRelationship? listened;
 
     var subscription = accountBloc.relationshipStream!.listen((newValue) {
       listened = newValue;
     });
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
-    expect(accountBloc.relationship, account.pleromaRelationship);
+    expect(accountBloc.relationship, account.relationship);
 
     when(pleromaAuthAccountServiceMock.followAccount(
       accountRemoteId: account.remoteId,
     )).thenAnswer(
-      (_) async => account.pleromaRelationship!.copyWith(following: true),
+      (_) async => account.relationship!.copyWith(following: true),
     );
 
     when(pleromaAuthAccountServiceMock.unFollowAccount(
       accountRemoteId: account.remoteId,
-    )).thenAnswer((_) async => account.pleromaRelationship!.copyWith(
+    )).thenAnswer((_) async => account.relationship!.copyWith(
           following: false,
           requested: false,
         ));
 
-    var initialValue = account.pleromaRelationship!.following!;
+    var initialValue = account.relationship!.following!;
 
     await accountBloc.toggleFollow();
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(accountBloc.relationship!.following, !initialValue);
     expect(listened!.following, !initialValue);
@@ -606,7 +606,7 @@ void main() {
     await accountBloc.toggleFollow();
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(accountBloc.relationship!.following, initialValue);
     expect(listened!.following, initialValue);
@@ -614,24 +614,24 @@ void main() {
     await subscription.cancel();
   });
   test('mute & unmute', () async {
-    expect(accountBloc.relationship, account.pleromaRelationship);
+    expect(accountBloc.relationship, account.relationship);
 
-    IPleromaApiAccountRelationship? listened;
+    IUnifediApiAccountRelationship? listened;
 
     var subscription = accountBloc.relationshipStream!.listen((newValue) {
       listened = newValue;
     });
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
-    expect(accountBloc.relationship, account.pleromaRelationship);
+    expect(accountBloc.relationship, account.relationship);
 
     when(pleromaAuthAccountServiceMock.muteAccount(
       accountRemoteId: account.remoteId,
       notifications: true,
       expireDurationInSeconds: null,
-    )).thenAnswer((_) async => account.pleromaRelationship!.copyWith(
+    )).thenAnswer((_) async => account.relationship!.copyWith(
           muting: true,
           mutingNotifications: true,
         ));
@@ -640,7 +640,7 @@ void main() {
       accountRemoteId: account.remoteId,
       notifications: false,
       expireDurationInSeconds: null,
-    )).thenAnswer((_) async => account.pleromaRelationship!.copyWith(
+    )).thenAnswer((_) async => account.relationship!.copyWith(
           muting: true,
           mutingNotifications: false,
         ));
@@ -648,14 +648,14 @@ void main() {
     when(pleromaAuthAccountServiceMock.unMuteAccount(
       accountRemoteId: account.remoteId,
     )).thenAnswer(
-      (_) async => account.pleromaRelationship!.copyWith(muting: false),
+      (_) async => account.relationship!.copyWith(muting: false),
     );
 
     if (accountBloc.relationshipMuting == true) {
       await accountBloc.unMute();
     }
 
-    var initialValue = account.pleromaRelationship!.muting!;
+    var initialValue = account.relationship!.muting!;
 
     await accountBloc.mute(
       notifications: false,
@@ -663,7 +663,7 @@ void main() {
     );
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(accountBloc.relationship!.muting, !initialValue);
     expect(listened!.muting, !initialValue);
@@ -671,7 +671,7 @@ void main() {
     await accountBloc.unMute();
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(accountBloc.relationship!.muting, initialValue);
     expect(listened!.muting, initialValue);
@@ -679,37 +679,37 @@ void main() {
     await subscription.cancel();
   });
   test('togglePin', () async {
-    expect(accountBloc.relationship, account.pleromaRelationship);
+    expect(accountBloc.relationship, account.relationship);
 
-    IPleromaApiAccountRelationship? listened;
+    IUnifediApiAccountRelationship? listened;
 
     var subscription = accountBloc.relationshipStream!.listen((newValue) {
       listened = newValue;
     });
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
-    expect(accountBloc.relationship, account.pleromaRelationship);
+    expect(accountBloc.relationship, account.relationship);
 
     when(pleromaAuthAccountServiceMock.pinAccount(
       accountRemoteId: account.remoteId,
     )).thenAnswer(
-      (_) async => account.pleromaRelationship!.copyWith(muting: true),
+      (_) async => account.relationship!.copyWith(muting: true),
     );
 
     when(pleromaAuthAccountServiceMock.unPinAccount(
       accountRemoteId: account.remoteId,
     )).thenAnswer(
-      (_) async => account.pleromaRelationship!.copyWith(muting: false),
+      (_) async => account.relationship!.copyWith(muting: false),
     );
 
-    var initialValue = account.pleromaRelationship!.muting!;
+    var initialValue = account.relationship!.muting!;
 
     await accountBloc.togglePin();
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(accountBloc.relationship!.muting, !initialValue);
     expect(listened!.muting, !initialValue);
@@ -717,7 +717,7 @@ void main() {
     await accountBloc.togglePin();
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(accountBloc.relationship!.muting, initialValue);
     expect(listened!.muting, initialValue);

@@ -1,6 +1,6 @@
 import 'package:fedi/app/emoji/reaction/emoji_reaction_model.dart';
 import 'package:fedi/app/instance/announcement/emoji_reaction/instance_announcement_emoji_reaction_model_adapter.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
@@ -14,10 +14,10 @@ class InstanceAnnouncementEmojiReactionAdapterProxyProvider
 
   @override
   Widget build(BuildContext context) {
-    return ProxyProvider<IPleromaApiAnnouncementReaction, IEmojiReaction>(
+    return ProxyProvider<IUnifediApiEmojiReaction, IEmojiReaction>(
       update: (context, value, previous) =>
           InstanceAnnouncementEmojiReactionAdapter(
-        pleromaApiAnnouncementReaction: value,
+        unifediApiEmojiReaction: value,
       ),
       child: child,
     );

@@ -1,5 +1,5 @@
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -13,9 +13,9 @@ abstract class IPollBloc implements IDisposable {
         listen: listen,
       );
 
-  IPleromaApiPoll get poll;
+  IUnifediApiPoll get poll;
 
-  Stream<IPleromaApiPoll> get pollStream;
+  Stream<IUnifediApiPoll> get pollStream;
 
   bool get isNeedShowResultsWithoutVote;
 
@@ -39,11 +39,11 @@ abstract class IPollBloc implements IDisposable {
 
   Stream<int?> get votersCountStream;
 
-  void onPollOptionSelected(IPleromaApiPollOption pollOption);
+  void onPollOptionSelected(IUnifediApiPollOption pollOption);
 
-  List<IPleromaApiPollOption> get selectedVotes;
+  List<IUnifediApiPollOption> get selectedVotes;
 
-  Stream<List<IPleromaApiPollOption>> get selectedVotesStream;
+  Stream<List<IUnifediApiPollOption>> get selectedVotesStream;
 
   bool get isVoted;
 
@@ -51,7 +51,7 @@ abstract class IPollBloc implements IDisposable {
 
   Future vote();
 
-  void onPollUpdated(IPleromaApiPoll? poll);
+  void onPollUpdated(IUnifediApiPoll? poll);
 
   Future refreshFromNetwork();
 

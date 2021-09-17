@@ -1,10 +1,10 @@
 import 'package:fedi/collection/collection_hash_utils.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/foundation.dart';
 
 class EmojiText {
   final String text;
-  final List<IPleromaApiEmoji>? emojis;
+  final List<IUnifediApiEmoji>? emojis;
 
   EmojiText({
     required this.text,

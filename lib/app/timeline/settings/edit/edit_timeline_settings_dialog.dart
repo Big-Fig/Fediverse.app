@@ -15,7 +15,7 @@ import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -24,7 +24,7 @@ void showEditTimelineSettingsDialog({
   required BuildContext context,
   required Timeline timeline,
   required bool lockedSource,
-  required IPleromaApiInstance pleromaApiInstance,
+  required IUnifediApiInstance unifediApiInstance,
   required InstanceLocation instanceLocation,
 }) {
   showEditTimelineLocalPreferenceBlocSettingsDialog(
@@ -35,7 +35,7 @@ void showEditTimelineSettingsDialog({
       timeline,
     ),
     lockedSource: lockedSource,
-    pleromaApiInstance: pleromaApiInstance,
+    unifediApiInstance: unifediApiInstance,
     instanceLocation: instanceLocation,
   );
 }
@@ -44,7 +44,7 @@ void showEditTimelineLocalPreferenceBlocSettingsDialog({
   required BuildContext context,
   required Timeline timeline,
   required bool lockedSource,
-  required IPleromaApiInstance pleromaApiInstance,
+  required IUnifediApiInstance unifediApiInstance,
   required ITimelineLocalPreferenceBloc timelineLocalPreferenceBloc,
   required InstanceLocation instanceLocation,
 }) {
@@ -76,7 +76,7 @@ void showEditTimelineLocalPreferenceBlocSettingsDialog({
                   timelineType: timeline.type,
                   isEnabled: true,
                   isNullableValuesPossible: false,
-                  pleromaApiInstance: pleromaApiInstance,
+                  unifediApiInstance: unifediApiInstance,
                   settingsBloc: timelineSettingsBloc,
                   webSocketsSettingsBloc: IWebSocketsSettingsBloc.of(
                     context,

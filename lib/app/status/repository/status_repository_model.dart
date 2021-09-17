@@ -2,22 +2,22 @@ import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
 import 'package:fedi/app/filter/filter_model.dart';
 import 'package:fedi/collection/collection_hash_utils.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:moor/moor.dart';
 
-class PleromaReplyVisibilityFilterCondition {
+class UnifediApiReplyVisibilityFilterCondition {
   final String? myAccountRemoteId;
-  final PleromaApiReplyVisibilityFilter? replyVisibilityFilter;
+  final UnifediApiReplyVisibilityFilter? replyVisibilityFilter;
 
-  PleromaReplyVisibilityFilterCondition({
+  UnifediApiReplyVisibilityFilterCondition({
     required this.myAccountRemoteId,
     required this.replyVisibilityFilter,
   });
 
   @override
-  String toString() => 'PleromaReplyVisibilityFilterCondition{'
+  String toString() => 'UnifediApiReplyVisibilityFilterCondition{'
       'myAccountRemoteId: $myAccountRemoteId, '
       'replyVisibilityFilter: $replyVisibilityFilter'
       '}';
@@ -25,7 +25,7 @@ class PleromaReplyVisibilityFilterCondition {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PleromaReplyVisibilityFilterCondition &&
+      other is UnifediApiReplyVisibilityFilterCondition &&
           runtimeType == other.runtimeType &&
           myAccountRemoteId == other.myAccountRemoteId &&
           replyVisibilityFilter == other.replyVisibilityFilter;
@@ -44,7 +44,7 @@ class StatusRepositoryFilters {
   final StatusOnlyLocalCondition? onlyLocalCondition;
   final bool? onlyWithMedia;
   final bool? withMuted;
-  final List<PleromaApiVisibility>? excludeVisibilities;
+  final List<UnifediApiVisibility>? excludeVisibilities;
   final bool? onlyNoNsfwSensitive;
   final bool? onlyNoReplies;
   final bool? isFromHomeTimeline;
@@ -56,7 +56,7 @@ class StatusRepositoryFilters {
   final StatusOnlyRemoteCondition? onlyRemoteCondition;
   final bool mustBeConversationItem;
   final String? onlyFromInstance;
-  final PleromaReplyVisibilityFilterCondition? replyVisibilityFilterCondition;
+  final UnifediApiReplyVisibilityFilterCondition? replyVisibilityFilterCondition;
   final bool onlyPendingStatePublishedOrNull;
 
   static const StatusRepositoryFilters empty = StatusRepositoryFilters();

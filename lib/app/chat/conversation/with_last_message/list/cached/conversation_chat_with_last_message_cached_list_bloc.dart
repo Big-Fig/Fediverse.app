@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 
 abstract class IConversationChatWithLastMessageCachedListBloc
     extends DisposableOwner
-    implements IPleromaCachedListBloc<IConversationChatWithLastMessage> {
+    implements ICachedListBloc<IConversationChatWithLastMessage> {
   static IConversationChatWithLastMessageCachedListBloc of(
     BuildContext context, {
     bool listen = true,

@@ -1,7 +1,8 @@
 import 'package:fedi/app/settings/settings_model.dart';
-import 'package:base_fediverse_api/base_fediverse_api.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 
 // ignore_for_file: no-magic-number
 part 'web_sockets_settings_model.g.dart';
@@ -13,21 +14,21 @@ class WebSocketsSettings implements ISettings<WebSocketsSettings> {
   @JsonKey(name: 'type_string')
   final String handlingTypeString;
 
-  WebSocketsHandlingType get handlingType =>
-      handlingTypeString.toWebSocketsHandlingType();
+  WebSocketsMode get handlingType =>
+      handlingTypeString.toWebSocketsMode();
 
   WebSocketsSettings({
     required this.handlingTypeString,
   });
 
   WebSocketsSettings.fromEnum({
-    required WebSocketsHandlingType handlingType,
+    required WebSocketsMode handlingType,
   }) : this(
           handlingTypeString: handlingType.toJsonValue(),
         );
 
-  WebSocketsHandlingType get type =>
-      handlingTypeString.toWebSocketsHandlingType();
+  WebSocketsMode get type =>
+      handlingTypeString.toWebSocketsMode();
 
   @override
   bool operator ==(Object other) =>
@@ -49,7 +50,7 @@ class WebSocketsSettings implements ISettings<WebSocketsSettings> {
   WebSocketsSettings clone() => copyWith();
 
   WebSocketsSettings copyWith({
-    WebSocketsHandlingType? handlingType,
+    WebSocketsMode? handlingType,
   }) =>
       WebSocketsSettings.fromEnum(
         handlingType: handlingType ?? this.handlingType,

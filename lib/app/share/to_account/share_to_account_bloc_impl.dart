@@ -4,7 +4,7 @@ import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/share/to_account/share_to_account_bloc.dart';
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
 
@@ -23,13 +23,13 @@ abstract class ShareToAccountBloc extends DisposableOwner
 
   ShareToAccountBloc({
     required IMyAccountBloc myAccountBloc,
-    required IPleromaApiAccountService pleromaAccountService,
+    required IUnifediApiAccountService unifediApiAccountService,
     required IAccountRepository accountRepository,
   }) {
     alreadySharedToAccountsSubject.disposeWith(this);
   }
 
-  Future<List<IPleromaApiAccount>> customRemoteAccountListLoader({
+  Future<List<IUnifediApiAccount>> customRemoteAccountListLoader({
     required int? limit,
     required IAccount? newerThan,
     required IAccount? olderThan,

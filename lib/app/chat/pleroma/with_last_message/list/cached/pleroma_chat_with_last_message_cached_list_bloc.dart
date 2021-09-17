@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class IPleromaChatWithLastMessageCachedListBloc extends DisposableOwner
-    implements IPleromaCachedListBloc<IPleromaChatWithLastMessage> {
+    implements ICachedListBloc<IPleromaChatWithLastMessage> {
   static IPleromaChatWithLastMessageCachedListBloc of(
     BuildContext context, {
     bool listen = true,

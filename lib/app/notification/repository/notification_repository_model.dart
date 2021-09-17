@@ -1,11 +1,11 @@
 import 'package:fedi/app/status/repository/status_repository_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
 
 class NotificationRepositoryFilters {
-  final PleromaApiNotificationType? onlyWithType;
-  final List<PleromaApiNotificationType>? excludeTypes;
+  final UnifediApiNotificationType? onlyWithType;
+  final List<UnifediApiNotificationType>? excludeTypes;
   final bool onlyNotDismissed;
   final bool? onlyUnread;
   final List<StatusTextCondition>? excludeStatusTextConditions;

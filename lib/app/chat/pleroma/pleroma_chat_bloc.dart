@@ -2,7 +2,7 @@ import 'package:fedi/app/chat/chat_bloc.dart';
 import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -28,9 +28,9 @@ abstract class IPleromaChatBloc implements IChatBloc, IAsyncInitLoadingBloc {
   Stream<IPleromaChatMessage> get onMessageLocallyHiddenStream;
 
   Future postMessage({
-    required IPleromaApiChatMessageSendData pleromaApiChatMessageSendData,
-    required IPleromaApiMediaAttachment?
-        pleromaApiChatMessageSendDataMediaAttachment,
+    required IUnifediApiChatMessageSendData unifediApiChatMessageSendData,
+    required IUnifediApiMediaAttachment?
+        unifediApiChatMessageSendDataMediaAttachment,
     required IPleromaChatMessage? oldPendingFailedPleromaChatMessage,
   });
 

@@ -31,7 +31,7 @@ class FediInstanceImageBackgroundWidget extends StatelessWidget {
         IInstanceFrontendConfigurationsBloc.of(context);
 
     return StreamBuilder<String?>(
-      stream: myAccountBloc.pleromaBackgroundImageStream,
+      stream: myAccountBloc.backgroundImageStream,
       builder: (context, snapshot) {
         var accountBackgroundImage = snapshot.data;
 

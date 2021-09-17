@@ -1,4 +1,4 @@
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:fedi/push/push_model.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -14,7 +14,7 @@ part 'notifications_push_handler_model.g.dart';
 @JsonSerializable(explicitToJson: true)
 class NotificationsPushHandlerMessage {
   @HiveField(0)
-  final PleromaApiPushMessageBody body;
+  final UnifediApiPushMessageBody body;
   @HiveField(1)
   @JsonKey(name: 'push_message')
   final PushMessage pushMessage;
@@ -41,7 +41,7 @@ class NotificationsPushHandlerMessage {
           pushMessage == other.pushMessage;
 
   NotificationsPushHandlerMessage copyWith({
-    PleromaApiPushMessageBody? body,
+    UnifediApiPushMessageBody? body,
     PushMessage? pushMessage,
   }) =>
       NotificationsPushHandlerMessage(

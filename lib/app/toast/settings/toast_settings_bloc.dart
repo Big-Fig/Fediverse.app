@@ -2,7 +2,7 @@ import 'package:fedi/app/push/settings/push_settings_model.dart';
 import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_bloc.dart';
 import 'package:fedi/app/toast/handling_type/toast_handling_type_model.dart';
 import 'package:fedi/app/toast/settings/toast_settings_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -53,19 +53,19 @@ abstract class IToastSettingsBloc
 
   Future changePoll(bool value);
 
-  bool get pleromaChatMention;
+  bool get chatMention;
 
-  Stream<bool> get pleromaChatMentionStream;
+  Stream<bool> get chatMentionStream;
 
-  Future changePleromaChatMention(bool value);
+  Future changeChatMention(bool value);
 
-  bool get pleromaEmojiReaction;
+  bool get emojiReaction;
 
-  Stream<bool> get pleromaEmojiReactionStream;
+  Stream<bool> get emojiReactionStream;
 
-  Future changePleromaEmojiReaction(bool value);
+  Future changeEmojiReaction(bool value);
 
   bool isNotificationTypeEnabled(
-    PleromaApiNotificationType pleromaNotificationType,
+    UnifediApiNotificationType unifediApiNotificationType,
   );
 }

@@ -3,7 +3,7 @@ import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/instance/remote/remote_instance_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/thread/status_thread_bloc_impl.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 
 class RemoteStatusThreadBloc extends StatusThreadBloc {
@@ -11,11 +11,11 @@ class RemoteStatusThreadBloc extends StatusThreadBloc {
 
   RemoteStatusThreadBloc({
     required IStatus initialStatusToFetchThread,
-    required IPleromaApiMediaAttachment? initialMediaAttachment,
-    required IPleromaApiStatusService pleromaStatusService,
+    required IUnifediApiMediaAttachment? initialMediaAttachment,
+    required IUnifediApiStatusService unifediApiStatusService,
     required this.instanceUri,
   }) : super(
-          pleromaStatusService: pleromaStatusService,
+          unifediApiStatusService: unifediApiStatusService,
           initialStatusToFetchThread: initialStatusToFetchThread,
           initialMediaAttachment: initialMediaAttachment,
         );
@@ -23,22 +23,22 @@ class RemoteStatusThreadBloc extends StatusThreadBloc {
   static RemoteStatusThreadBloc createFromContext(
     BuildContext context, {
     required IStatus initialStatusToFetchThread,
-    required IPleromaApiMediaAttachment? initialMediaAttachment,
+    required IUnifediApiMediaAttachment? initialMediaAttachment,
   }) {
     var remoteInstanceBloc = IRemoteInstanceBloc.of(context, listen: false);
 
-    var pleromaStatusService = PleromaApiStatusService(
-      restService: remoteInstanceBloc.pleromaRestService,
+    var unifediApiStatusService = UnifediApiStatusService(
+      restService: remoteInstanceBloc.unifediApiRestService,
     );
 
     var remoteStatusThreadBloc = RemoteStatusThreadBloc(
       initialStatusToFetchThread: initialStatusToFetchThread,
       initialMediaAttachment: initialMediaAttachment,
-      pleromaStatusService: pleromaStatusService,
+      unifediApiStatusService: unifediApiStatusService,
       instanceUri: remoteInstanceBloc.instanceUri,
     );
 
-    remoteStatusThreadBloc.addDisposable(pleromaStatusService);
+    remoteStatusThreadBloc.addDisposable(unifediApiStatusService);
 
     return remoteStatusThreadBloc;
   }
@@ -52,7 +52,7 @@ class RemoteStatusThreadBloc extends StatusThreadBloc {
   @override
   // ignore: no-empty-block
   Future<void> onInitialStatusUpdated(
-    IPleromaApiStatus updatedStartRemoteStatus,
+    IUnifediApiStatus updatedStartRemoteStatus,
     // ignore: no-empty-block
   ) async {
     // nothing

@@ -6,7 +6,7 @@ import 'package:fedi/app/status/list/network_only/status_network_only_list_bloc.
 import 'package:fedi/app/status/list/network_only/status_network_only_list_bloc_proxy_provider.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -14,10 +14,10 @@ class LocalAccountStatusesFavouritesNetworkOnlyListBloc
     extends AccountStatusesFavouritesNetworkOnlyListBloc {
   LocalAccountStatusesFavouritesNetworkOnlyListBloc({
     required IAccount? account,
-    required IPleromaApiAccountService pleromaAccountService,
+    required IUnifediApiAccountService unifediApiAccountService,
   }) : super(
           account: account,
-          pleromaAccountService: pleromaAccountService,
+          unifediApiAccountService: unifediApiAccountService,
         );
 
   static LocalAccountStatusesFavouritesNetworkOnlyListBloc createFromContext(
@@ -26,8 +26,8 @@ class LocalAccountStatusesFavouritesNetworkOnlyListBloc
   }) {
     return LocalAccountStatusesFavouritesNetworkOnlyListBloc(
       account: account,
-      pleromaAccountService:
-          Provider.of<IPleromaApiAccountService>(context, listen: false),
+      unifediApiAccountService:
+          Provider.of<IUnifediApiAccountService>(context, listen: false),
     );
   }
 

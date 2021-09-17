@@ -1,15 +1,15 @@
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/media/attachment/list/media_attachment_list_bloc.dart';
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/foundation.dart';
 
 class MediaAttachmentListBloc extends DisposableOwner
     implements IMediaAttachmentListBloc {
   @override
-  final List<IPleromaApiMediaAttachment> mediaAttachments;
+  final List<IUnifediApiMediaAttachment> mediaAttachments;
   @override
-  final IPleromaApiMediaAttachment? initialMediaAttachment;
+  final IUnifediApiMediaAttachment? initialMediaAttachment;
 
   // TODO: refactor
   @override
@@ -19,7 +19,7 @@ class MediaAttachmentListBloc extends DisposableOwner
   final Uri? remoteInstanceUriOrNull;
 
   MediaAttachmentListBloc({
-    required List<IPleromaApiMediaAttachment>? mediaAttachments,
+    required List<IUnifediApiMediaAttachment>? mediaAttachments,
     required this.initialMediaAttachment,
     required this.instanceLocation,
     required this.remoteInstanceUriOrNull,

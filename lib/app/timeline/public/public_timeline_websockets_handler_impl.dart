@@ -6,12 +6,13 @@ import 'package:fedi/app/instance/announcement/repository/instance_announcement_
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_impl.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
-import 'package:base_fediverse_api/base_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
+
 
 class PublicTimelineWebSocketsHandler extends WebSocketsChannelHandler {
   PublicTimelineWebSocketsHandler({
-    required IPleromaApiWebSocketsService pleromaWebSocketsService,
+    required IUnifediApiWebSocketsService pleromaWebSocketsService,
     required IStatusRepository statusRepository,
     required INotificationRepository notificationRepository,
     required IInstanceAnnouncementRepository instanceAnnouncementRepository,
@@ -22,7 +23,7 @@ class PublicTimelineWebSocketsHandler extends WebSocketsChannelHandler {
     required bool? onlyLocal,
     required bool? onlyRemote,
     required bool? onlyMedia,
-    required WebSocketsListenType listenType,
+    required WebSocketsChannelHandlerType handlerType,
     required String? onlyFromInstance,
     required IMyAccountBloc myAccountBloc,
   }) : super(
@@ -33,7 +34,7 @@ class PublicTimelineWebSocketsHandler extends WebSocketsChannelHandler {
             onlyFromInstance: onlyFromInstance,
             onlyMedia: onlyMedia,
           ),
-          listenType: listenType,
+          handlerType: handlerType,
           statusRepository: statusRepository,
           notificationRepository: notificationRepository,
           instanceAnnouncementRepository: instanceAnnouncementRepository,

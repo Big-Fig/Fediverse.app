@@ -3,9 +3,10 @@ import 'package:fedi/app/timeline/tab/timeline_tab_bloc.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_list_bloc.dart';
 import 'package:fedi/app/timeline/type/timeline_type_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
-import 'package:base_fediverse_api/base_fediverse_api.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 
 final _logger = Logger('timeline_tab_list_bloc_impl.dart');
 
@@ -41,7 +42,7 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
     required String? oldSelectedTimelineId,
     required ITimelineTabBloc Function(
       String timelineId,
-      WebSocketsListenType webSocketsListenType,
+      WebSocketsChannelHandlerType handlerType,
     )
         timelineTabBlocCreator,
   }) {
@@ -52,8 +53,8 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
       var timelineTabBloc = timelineTabBlocCreator(
         timelineId,
         selectedTimelineId == timelineId
-            ? WebSocketsListenType.foreground
-            : WebSocketsListenType.background,
+            ? WebSocketsChannelHandlerType.foregroundValue
+            : WebSocketsChannelHandlerType.backgroundValue,
       );
 
       timelineTabBlocs.add(timelineTabBloc);
@@ -102,8 +103,8 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
     for (var bloc in timelineTabBlocs) {
       bloc.resubscribeWebSocketsUpdates(
         bloc == selectedTimelineTabBloc
-            ? WebSocketsListenType.foreground
-            : WebSocketsListenType.background,
+            ? WebSocketsChannelHandlerType.foregroundValue
+            : WebSocketsChannelHandlerType.backgroundValue,
       );
     }
 

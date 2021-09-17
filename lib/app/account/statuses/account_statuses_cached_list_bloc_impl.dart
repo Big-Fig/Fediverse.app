@@ -8,16 +8,17 @@ import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
-import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
-import 'package:base_fediverse_api/base_fediverse_api.dart';
+
+import 'package:unifedi_api/unifedi_api.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:flutter/foundation.dart';
 import 'package:easy_dispose/easy_dispose.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 
 abstract class AccountStatusesCachedListBloc extends AsyncInitLoadingBloc
     implements IStatusCachedListBloc {
   final IAccount account;
-  final IPleromaApiAccountService pleromaAccountService;
+  final IUnifediApiAccountService unifediApiAccountService;
 
   final IStatusRepository statusRepository;
   final IFilterRepository filterRepository;
@@ -33,7 +34,7 @@ abstract class AccountStatusesCachedListBloc extends AsyncInitLoadingBloc
 
   AccountStatusesCachedListBloc({
     required this.account,
-    required this.pleromaAccountService,
+    required this.unifediApiAccountService,
     required this.statusRepository,
     required this.filterRepository,
     required this.myAccountBloc,
@@ -41,7 +42,7 @@ abstract class AccountStatusesCachedListBloc extends AsyncInitLoadingBloc
   }) : super() {
     webSocketsHandlerManagerBloc
         .listenAccountChannel(
-          listenType: WebSocketsListenType.foreground,
+          handlerType: WebSocketsChannelHandlerType.foregroundValue,
           accountId: account.remoteId,
           notification: false,
         )
@@ -49,7 +50,7 @@ abstract class AccountStatusesCachedListBloc extends AsyncInitLoadingBloc
   }
 
   @override
-  IPleromaApi get pleromaApi => pleromaAccountService;
+  IUnifediApiService get unifediApi => unifediApiAccountService;
 
   @override
   Stream<bool> get settingsChangedStream => Stream.empty();
@@ -58,7 +59,7 @@ abstract class AccountStatusesCachedListBloc extends AsyncInitLoadingBloc
       FilterRepositoryFilters(
         notExpired: true,
         onlyWithContextTypes: [
-          MastodonApiFilterContextType.account,
+          UnifediApiFilterContextType.accountValue,
         ],
       );
 

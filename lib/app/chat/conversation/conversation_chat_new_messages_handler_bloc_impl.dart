@@ -2,11 +2,11 @@ import 'package:fedi/app/chat/conversation/conversation_chat_new_messages_handle
 import 'package:fedi/app/chat/conversation/current/conversation_chat_current_bloc.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class ConversationChatNewMessagesHandlerBloc extends DisposableOwner
     implements IConversationChatNewMessagesHandlerBloc {
-  final IPleromaApiConversationService conversationChatService;
+  final IUnifediApiConversationService conversationChatService;
   final IConversationChatRepository conversationRepository;
   final IConversationChatCurrentBloc currentChatBloc;
 
@@ -17,7 +17,7 @@ class ConversationChatNewMessagesHandlerBloc extends DisposableOwner
   });
 
   @override
-  Future handleChatUpdate(IPleromaApiConversation conversation) async {
+  Future handleChatUpdate(IUnifediApiConversation conversation) async {
     var conversationRemoteId = conversation.id;
     var isMessageForOpenedChat =
         currentChatBloc.currentChat?.remoteId == conversationRemoteId;

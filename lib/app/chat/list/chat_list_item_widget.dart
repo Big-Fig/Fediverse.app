@@ -226,7 +226,7 @@ class _ChatListItemLastMessageWidget extends StatelessWidget {
               if (description?.isNotEmpty == true) {
                 return description;
               } else {
-                return path.basename(mediaAttachment.url);
+                return path.basename(mediaAttachment.url!);
               }
             },
           ).join(', ');

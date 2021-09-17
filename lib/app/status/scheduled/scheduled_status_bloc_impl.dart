@@ -9,7 +9,7 @@ import 'package:fedi/app/status/scheduled/scheduled_status_bloc.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -30,14 +30,14 @@ class ScheduledStatusBloc extends DisposableOwner
   @override
   Stream<ScheduledStatusState?> get stateStream => _stateSubject.stream;
 
-  final IPleromaApiAuthStatusService pleromaAuthStatusService;
-  final IPleromaApiScheduledStatusService pleromaScheduledStatusService;
+  final IUnifediApiStatusService unifediApiStatusService;
+  final IUnifediApiStatusService pleromaScheduledStatusService;
   final IScheduledStatusRepository scheduledStatusRepository;
   final IStatusRepository statusRepository;
   final bool isNeedWatchLocalRepositoryForUpdates;
 
   ScheduledStatusBloc({
-    required this.pleromaAuthStatusService,
+    required this.unifediApiStatusService,
     required this.pleromaScheduledStatusService,
     required this.statusRepository,
     required this.scheduledStatusRepository,
@@ -127,18 +127,18 @@ class ScheduledStatusBloc extends DisposableOwner
       );
 
   @override
-  List<IPleromaApiMediaAttachment>? get mediaAttachments =>
+  List<IUnifediApiMediaAttachment>? get mediaAttachments =>
       scheduledStatus.mediaAttachments;
 
   @override
-  Stream<List<IPleromaApiMediaAttachment>?> get mediaAttachmentsStream =>
+  Stream<List<IUnifediApiMediaAttachment>?> get mediaAttachmentsStream =>
       scheduledStatusStream
           .map((scheduledStatus) => scheduledStatus.mediaAttachments);
 
   @override
   Future cancelSchedule() async {
     await pleromaScheduledStatusService.cancelScheduledStatus(
-      scheduledStatusRemoteId: remoteId!,
+      scheduledStatusId: remoteId!,
     );
 
     await scheduledStatusRepository.markAsCanceled(
@@ -153,7 +153,7 @@ class ScheduledStatusBloc extends DisposableOwner
   }) async {
     var newScheduledStatus =
         await pleromaScheduledStatusService.reScheduleStatus(
-      scheduledStatusRemoteId: remoteId!,
+      scheduledStatusId: remoteId!,
       scheduledAt: scheduledAt,
     );
 
@@ -168,7 +168,7 @@ class ScheduledStatusBloc extends DisposableOwner
   Future refreshFromNetwork() async {
     var newScheduledStatus =
         await pleromaScheduledStatusService.getScheduledStatus(
-      scheduledStatusRemoteId: remoteId!,
+          scheduledStatusId: remoteId!,
     );
 
     await scheduledStatusRepository.updateAppTypeByRemoteType(
@@ -185,10 +185,10 @@ class ScheduledStatusBloc extends DisposableOwner
     bool delayInit = true,
   }) =>
       ScheduledStatusBloc(
-        pleromaAuthStatusService:
-            Provider.of<IPleromaApiAuthStatusService>(context, listen: false),
+        unifediApiStatusService:
+            Provider.of<IUnifediApiStatusService>(context, listen: false),
         pleromaScheduledStatusService:
-            Provider.of<IPleromaApiScheduledStatusService>(
+            Provider.of<IUnifediApiStatusService>(
           context,
           listen: false,
         ),
@@ -225,10 +225,10 @@ class ScheduledStatusBloc extends DisposableOwner
   Future postScheduledPost(PostStatusData postStatusData) async {
     await cancelSchedule();
 
-    var pleromaScheduledStatus = await pleromaAuthStatusService.scheduleStatus(
-      data: PleromaApiScheduleStatus(
+    var pleromaScheduledStatus = await unifediApiStatusService.scheduleStatus(
+      data: UnifediApiScheduleStatus(
         mediaIds:
-            postStatusData.mediaAttachments?.toPleromaApiMediaAttachmentIds(),
+            postStatusData.mediaAttachments?.toUnifediApiMediaAttachmentIdList(),
         status: postStatusData.text,
         sensitive: postStatusData.isNsfwSensitiveEnabled,
         visibility: postStatusData.visibilityString,
@@ -260,11 +260,11 @@ class ScheduledStatusBloc extends DisposableOwner
       subject: scheduledStatus.params.spoilerText,
       text: scheduledStatus.params.text,
       scheduledAt: scheduledStatus.scheduledAt,
-      visibilityString: scheduledStatus.params.visibilityPleroma.toJsonValue(),
+      visibilityString: scheduledStatus.params.visibilityAsUnifediApi.stringValue,
       mediaAttachments: scheduledStatus.mediaAttachments,
       poll: scheduledStatus.params.poll?.toPostStatusPoll(),
       inReplyToPleromaStatus:
-          scheduledStatus.params.inReplyToStatus?.toPleromaApiStatus(),
+          scheduledStatus.params.inReplyToStatus?.toUnifediApiStatus(),
       inReplyToConversationId: scheduledStatus.params.inReplyToConversationId,
       isNsfwSensitiveEnabled: scheduledStatus.params.sensitive,
       to: scheduledStatus.params.to,

@@ -1,3 +1,5 @@
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/auth/instance/current/context/init/current_auth_instance_context_init_bloc.dart';
 import 'package:fedi/app/auth/instance/current/context/init/current_auth_instance_context_init_model.dart';
@@ -8,37 +10,35 @@ import 'package:fedi/app/filter/repository/filter_repository.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/notification/repository/notification_repository_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:easy_dispose/easy_dispose.dart';
-import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 var _logger = Logger('current_auth_instance_context_init_bloc_impl.dart');
 
 class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
     implements ICurrentAuthInstanceContextInitBloc {
   final IMyAccountBloc myAccountBloc;
-  final IPleromaApiInstanceService pleromaInstanceService;
-  final IPleromaApiNotificationService pleromaNotificationService;
-  final IPleromaApiChatService pleromaChatService;
-  final IPleromaApiConversationService pleromaConversationService;
-  final IPleromaApiFilterService pleromaFilterService;
+  final IUnifediApiInstanceService pleromaInstanceService;
+  final IUnifediApiNotificationService pleromaNotificationService;
+  final IUnifediApiChatService pleromaChatService;
+  final IUnifediApiConversationService pleromaConversationService;
+  final IUnifediApiFilterService unifediApiFilterService;
   final IFilterRepository filterRepository;
   final INotificationRepository notificationRepository;
   final IConversationChatRepository conversationChatRepository;
   final IPleromaChatRepository pleromaChatRepository;
   final ICurrentAuthInstanceBloc currentAuthInstanceBloc;
-  final IPleromaApiAuthRestService pleromaAuthRestService;
+  final IUnifediApiAuthRestService pleromaAuthRestService;
 
   CurrentAuthInstanceContextInitBloc({
     required this.myAccountBloc,
     required this.pleromaInstanceService,
     required this.currentAuthInstanceBloc,
     required this.pleromaAuthRestService,
-    required this.pleromaFilterService,
+    required this.unifediApiFilterService,
     required this.pleromaConversationService,
     required this.pleromaChatService,
     required this.pleromaNotificationService,
@@ -49,10 +49,10 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
   }) {
     stateSubject.disposeWith(this);
 
-    pleromaAuthRestService.pleromaApiStateStream.listen(
-      (pleromaApiState) {
-        _logger.finest(() => 'pleromaApiState $pleromaApiState');
-        if (pleromaApiState == PleromaApiState.brokenAuth) {
+    pleromaAuthRestService.unifediApiStateStream.listen(
+      (unifediApiState) {
+        _logger.finest(() => 'unifediApiState $unifediApiState');
+        if (unifediApiState == UnifediApiState.brokenAuth) {
           _logger.finest(() =>
               ' stateSubject.add(CurrentAuthInstanceContextInitState.invalidCredentials)');
           stateSubject
@@ -98,7 +98,7 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
         requiredDataRefreshSuccess = true;
       } catch (e, stackTrace) {
         _logger.warning(() => 'failed to update instance info', e, stackTrace);
-        if (e is PleromaApiInvalidCredentialsForbiddenRestException) {
+        if (e is UnifediApiInvalidCredentialsForbiddenRestException) {
           stateSubject.add(
             CurrentAuthInstanceContextInitState.invalidCredentials,
           );
@@ -154,9 +154,9 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
 
     if (isPleroma) {
       myAccountUnreadConversationCount =
-          myAccountBloc.myAccount!.pleromaUnreadConversationCount ?? 0;
+          myAccountBloc.myAccount!.unreadConversationCount ?? 0;
       myAccountUnreadNotificationsCount =
-          myAccountBloc.myAccount!.pleromaUnreadNotificationsCount ?? 0;
+          myAccountBloc.myAccount!.unreadNotificationsCount ?? 0;
     }
 
     var isNeedUpdateChats = isPleroma && (actualPleromaChatUnreadCount == 0);
@@ -184,7 +184,9 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
   }
 
   Future updateFilters() async {
-    var remoteFilters = await pleromaFilterService.getFilters();
+    var remoteFilters = await unifediApiFilterService.getFilters(
+      pagination: null,
+    );
 
     await filterRepository.batch((batch) {
       filterRepository.clear(batchTransaction: batch);
@@ -262,15 +264,15 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
           context,
           listen: false,
         ),
-        pleromaChatService: Provider.of<IPleromaApiChatService>(
+        pleromaChatService: Provider.of<IUnifediApiChatService>(
           context,
           listen: false,
         ),
-        pleromaNotificationService: Provider.of<IPleromaApiNotificationService>(
+        pleromaNotificationService: Provider.of<IUnifediApiNotificationService>(
           context,
           listen: false,
         ),
-        pleromaConversationService: Provider.of<IPleromaApiConversationService>(
+        pleromaConversationService: Provider.of<IUnifediApiConversationService>(
           context,
           listen: false,
         ),
@@ -278,7 +280,7 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
           context,
           listen: false,
         ),
-        pleromaInstanceService: Provider.of<IPleromaApiInstanceService>(
+        pleromaInstanceService: Provider.of<IUnifediApiInstanceService>(
           context,
           listen: false,
         ),
@@ -286,7 +288,7 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
           context,
           listen: false,
         ),
-        pleromaAuthRestService: Provider.of<IPleromaApiAuthRestService>(
+        pleromaAuthRestService: Provider.of<IUnifediApiAuthRestService>(
           context,
           listen: false,
         ),
@@ -294,7 +296,7 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
           context,
           listen: false,
         ),
-        pleromaFilterService: Provider.of<IPleromaApiFilterService>(
+        unifediApiFilterService: Provider.of<IUnifediApiFilterService>(
           context,
           listen: false,
         ),

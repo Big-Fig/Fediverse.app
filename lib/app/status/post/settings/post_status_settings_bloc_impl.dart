@@ -3,7 +3,7 @@ import 'package:fedi/app/status/post/settings/local_preferences/post_status_sett
 import 'package:fedi/app/status/post/settings/post_status_settings_bloc.dart';
 import 'package:fedi/app/status/post/settings/post_status_settings_model.dart';
 import 'package:fedi/localization/localization_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class PostStatusSettingsBloc
     extends GlobalOrInstanceSettingsLocalPreferenceBloc<PostStatusSettings>
@@ -33,19 +33,19 @@ class PostStatusSettingsBloc
       );
 
   @override
-  PleromaApiVisibility get defaultVisibilityAsPleromaApi =>
-      settingsData.defaultVisibilityAsPleromaApi;
+  UnifediApiVisibility get defaultVisibilityAsUnifediApi =>
+      settingsData.defaultVisibilityAsUnifediApi;
 
   @override
-  Stream<PleromaApiVisibility> get defaultVisibilityAsPleromaApiStream =>
+  Stream<UnifediApiVisibility> get defaultVisibilityAsUnifediApiStream =>
       settingsDataStream
-          .map((settings) => settings.defaultVisibilityAsPleromaApi);
+          .map((settings) => settings.defaultVisibilityAsUnifediApi);
 
   @override
-  Future changeDefaultVisibilityAsPleromaApi(PleromaApiVisibility value) =>
+  Future changeDefaultVisibilityAsUnifediApi(UnifediApiVisibility value) =>
       updateInstanceSettings(
         settingsData.copyWith(
-          defaultVisibilityString: value.toJsonValue(),
+          defaultVisibilityString: value.stringValue,
         ),
       );
 
@@ -63,7 +63,7 @@ class PostStatusSettingsBloc
         PostStatusSettings(
           markMediaAsNsfwOnAttach: markMediaAsNsfwOnAttach,
           defaultStatusLocale: value,
-          defaultVisibilityString: defaultVisibilityAsPleromaApi.toJsonValue(),
+          defaultVisibilityString: defaultVisibilityAsUnifediApi.stringValue,
         ),
         // copy with dont support null
         // settingsData?.copyWith(

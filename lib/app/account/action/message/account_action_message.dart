@@ -12,7 +12,7 @@ Future goToMessagesPageAccountAction(BuildContext context) async {
 
   var isInstanceSupportChats = authInstanceBloc.currentInstance!.isSupportChats;
   var isAccountAcceptsChatMessages =
-      account.pleromaAcceptsChatMessages != false;
+      account.acceptsChatMessages != false;
   var isPossibleToStartPleromaChat =
       isInstanceSupportChats && isAccountAcceptsChatMessages;
   if (isPossibleToStartPleromaChat) {

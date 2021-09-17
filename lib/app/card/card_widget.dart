@@ -9,8 +9,8 @@ import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/url/url_helper.dart';
-import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +21,7 @@ const _cardWithoutContentImageSize = _cardWithContentImageSize * 3;
 class CardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var card = Provider.of<IPleromaApiCard?>(context);
+    var card = Provider.of<IUnifediApiCard?>(context);
 
     if (card == null) {
       return const SizedBox.shrink();
@@ -30,7 +30,7 @@ class CardWidget extends StatelessWidget {
     var isHaveContent = card.isHaveContent;
     var isHaveImage = card.isHaveImage;
 
-    return ProxyProvider<IPleromaApiCard?, IPleromaApiCard>(
+    return ProxyProvider<IUnifediApiCard?, IUnifediApiCard>(
       update: (context, value, previous) => value!,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: FediSizes.mediumPadding),
@@ -72,7 +72,7 @@ class _CardContentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var card = Provider.of<IPleromaApiCard>(context);
+    var card = Provider.of<IUnifediApiCard>(context);
 
     return Expanded(
       child: Container(
@@ -111,7 +111,7 @@ class _CardImageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var card = Provider.of<IPleromaApiCard>(context);
+    var card = Provider.of<IUnifediApiCard>(context);
 
     return IFilesCacheService.of(context).createCachedNetworkImageWidget(
       width: _cardWithContentImageSize,
@@ -135,7 +135,7 @@ class _CardProviderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var card = Provider.of<IPleromaApiCard>(context);
+    var card = Provider.of<IUnifediApiCard>(context);
 
     return Text(
       card.providerName!,
@@ -152,7 +152,7 @@ class _CardTitleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var card = Provider.of<IPleromaApiCard>(context);
+    var card = Provider.of<IUnifediApiCard>(context);
 
     return Text(
       card.title!,
@@ -170,8 +170,8 @@ class _CardDescriptionWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => ProxyProvider<IPleromaApiCard, String?>(
-        update: (BuildContext context, IPleromaApiCard value, previous) =>
+  Widget build(BuildContext context) => ProxyProvider<IUnifediApiCard, String?>(
+        update: (BuildContext context, IUnifediApiCard value, previous) =>
             value.description,
         child: ProxyProvider<String?, IHtmlTextBloc>(
           update:

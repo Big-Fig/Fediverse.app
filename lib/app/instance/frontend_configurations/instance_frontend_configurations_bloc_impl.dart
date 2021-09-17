@@ -4,26 +4,26 @@ import 'package:fedi/app/instance/frontend_configurations/instance_frontend_conf
 import 'package:fedi/app/instance/frontend_configurations/local_preferences/instance_frontend_configurations_local_preference_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:logging/logging.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 final _logger = Logger('instance_frontend_configurations_bloc_impl.dart');
 
 class InstanceFrontendConfigurationsBloc extends AsyncInitLoadingBloc
     implements IInstanceFrontendConfigurationsBloc {
-  final IPleromaApiFrontendConfigurationsService
-      pleromaApiFrontendConfigurationsService;
+  final IUnifediApiInstanceService
+      unifediApiInstanceService;
   final IInstanceFrontendConfigurationsLocalPreferenceBloc
       instanceFrontendConfigurationsLocalPreferenceBloc;
 
   InstanceFrontendConfigurationsBloc({
-    required this.pleromaApiFrontendConfigurationsService,
+    required this.unifediApiInstanceService,
     required this.instanceFrontendConfigurationsLocalPreferenceBloc,
   });
 
   @override
   Future internalAsyncInit() async {
     try {
-      var frontendConfigurations = await pleromaApiFrontendConfigurationsService
+      var frontendConfigurations = await unifediApiInstanceService
           .getFrontendConfigurations();
 
       await instanceFrontendConfigurationsLocalPreferenceBloc
@@ -37,10 +37,10 @@ class InstanceFrontendConfigurationsBloc extends AsyncInitLoadingBloc
     }
   }
 
-  IPleromaApiFrontendConfigurations? get instanceFrontendConfigurations =>
+  IUnifediApiFrontendConfigurations? get instanceFrontendConfigurations =>
       instanceFrontendConfigurationsLocalPreferenceBloc.value;
 
-  Stream<IPleromaApiFrontendConfigurations?>
+  Stream<IUnifediApiFrontendConfigurations?>
       get instanceFrontendConfigurationsStream =>
           instanceFrontendConfigurationsLocalPreferenceBloc.stream;
 
@@ -66,9 +66,9 @@ class InstanceFrontendConfigurationsBloc extends AsyncInitLoadingBloc
 }
 
 extension IInstanceFrontendConfigurationsLocalPreferenceBlocExtension
-    on IPleromaApiFrontendConfigurations {
+    on IUnifediApiFrontendConfigurations {
   Color? get brandColor {
-    var brandColorString = soapboxFe?.brandColor;
+    var brandColorString = brandHexColor;
     if (brandColorString != null) {
       try {
         return Color(
@@ -90,7 +90,7 @@ extension IInstanceFrontendConfigurationsLocalPreferenceBlocExtension
     }
   }
 
-  String? get background => pleromaFe?.background;
+  String? get background => backgroundImage;
 }
 
 int _hexStringToHexInt(String hex) {

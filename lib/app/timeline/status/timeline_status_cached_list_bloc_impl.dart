@@ -17,21 +17,22 @@ import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/timeline/type/timeline_type_model.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
-import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:fedi/repository/repository_model.dart';
-import 'package:base_fediverse_api/base_fediverse_api.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 
 var _logger = Logger('timeline_status_cached_list_bloc_impl.dart');
 
 class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
     implements IStatusCachedListBloc {
-  final IPleromaApiAccountService pleromaApiAccountService;
-  final IPleromaApiAuthTimelineService pleromaApiAuthTimelineService;
+  final IUnifediApiAccountService unifediApiAccountService;
+  final IUnifediApiTimelineService unifediApiTimelineService;
   final IStatusRepository statusRepository;
   final IFilterRepository filterRepository;
   final ICurrentAuthInstanceBloc currentInstanceBloc;
@@ -87,7 +88,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
         isFromHomeTimeline: isFromHomeTimeline,
         excludeTextConditions: excludeTextConditions,
         replyVisibilityFilterCondition: timeline.replyVisibilityFilter != null
-            ? PleromaReplyVisibilityFilterCondition(
+            ? UnifediApiReplyVisibilityFilterCondition(
                 myAccountRemoteId: myAccountBloc.myAccount!.remoteId,
                 replyVisibilityFilter: timeline.replyVisibilityFilter,
               )
@@ -105,15 +106,15 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
   Timeline? currentTimelineData;
 
   TimelineStatusCachedListBloc({
-    required this.pleromaApiAccountService,
-    required this.pleromaApiAuthTimelineService,
+    required this.unifediApiAccountService,
+    required this.unifediApiTimelineService,
     required this.statusRepository,
     required this.filterRepository,
     required this.currentInstanceBloc,
     required this.timelineLocalPreferenceBloc,
     required this.webSocketsHandlerManagerBloc,
     required this.myAccountBloc,
-    required WebSocketsListenType webSocketsListenType,
+    required WebSocketsChannelHandlerType handlerType,
   }) {
     settingsChangedStreamController.disposeWith(this);
 
@@ -130,7 +131,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
       },
     ).disposeWith(this);
 
-    resubscribeWebSocketsUpdates(webSocketsListenType);
+    resubscribeWebSocketsUpdates(handlerType);
 
     addCustomDisposable(
       () => webSocketsListenerDisposable?.dispose(),
@@ -140,7 +141,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
   IDisposable? webSocketsListenerDisposable;
 
   void resubscribeWebSocketsUpdates(
-    WebSocketsListenType webSocketsListenType,
+    WebSocketsChannelHandlerType handlerType,
   ) {
     webSocketsListenerDisposable?.dispose();
 
@@ -148,14 +149,14 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
         timeline.isWebSocketsUpdatesEnabled ?? true;
     _logger.finest(() => 'resubscribeWebSocketsUpdates '
         'isWebSocketsUpdatesEnabled $isWebSocketsUpdatesEnabled '
-        'webSocketsListenType $webSocketsListenType '
+        'WebSocketsChannelHandlerType $WebSocketsChannelHandlerType '
         'timelineType $timelineType ');
     if (isWebSocketsUpdatesEnabled) {
       switch (timelineType) {
         case TimelineType.public:
           webSocketsListenerDisposable =
               webSocketsHandlerManagerBloc.listenPublicChannel(
-            listenType: webSocketsListenType,
+            handlerType: handlerType,
             onlyLocal: timeline.onlyLocal,
             onlyMedia: timeline.onlyWithMedia,
             onlyRemote: timeline.onlyRemote,
@@ -165,7 +166,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
         case TimelineType.home:
           webSocketsListenerDisposable =
               webSocketsHandlerManagerBloc.listenMyAccountChannel(
-            listenType: webSocketsListenType,
+            handlerType: handlerType,
             notification: false,
             chat: false,
           );
@@ -174,7 +175,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
         case TimelineType.customList:
           webSocketsListenerDisposable =
               webSocketsHandlerManagerBloc.listenListChannel(
-            listenType: webSocketsListenType,
+            handlerType: handlerType,
             listId: timeline.onlyInRemoteList!.id,
           );
           break;
@@ -182,7 +183,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
         case TimelineType.hashtag:
           webSocketsListenerDisposable =
               webSocketsHandlerManagerBloc.listenHashtagChannel(
-            listenType: webSocketsListenType,
+            handlerType: handlerType,
             hashtag: timeline.withRemoteHashtag!,
             local: timeline.onlyLocal,
           );
@@ -190,7 +191,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
         case TimelineType.account:
           webSocketsListenerDisposable =
               webSocketsHandlerManagerBloc.listenAccountChannel(
-            listenType: webSocketsListenType,
+            handlerType: handlerType,
             accountId: timeline.onlyFromRemoteAccount!.id,
             notification: false,
           );
@@ -200,7 +201,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
   }
 
   @override
-  IPleromaApi get pleromaApi => pleromaApiAuthTimelineService;
+  IUnifediApiService get unifediApi => unifediApiTimelineService;
 
   bool get isFromHomeTimeline => timelineType == TimelineType.home;
 
@@ -214,10 +215,10 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
 
   bool get onlyWithMedia => timeline.onlyWithMedia == true;
 
-  List<PleromaApiVisibility>? get excludeVisibilities =>
+  List<UnifediApiVisibility>? get excludeVisibilities =>
       timeline.excludeVisibilities;
 
-  PleromaApiReplyVisibilityFilter? get pleromaReplyVisibilityFilter =>
+  UnifediApiReplyVisibilityFilter? get replyVisibilityFilter =>
       timeline.replyVisibilityFilter;
 
   @override
@@ -231,11 +232,11 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
         '\t newerThan = $newerThan'
         '\t olderThan = $olderThan');
 
-    List<IPleromaApiStatus>? remoteStatuses;
+    List<IUnifediApiStatus>? remoteStatuses;
 
-    var pagination = PleromaApiPaginationRequest(
+    var pagination = UnifediApiPagination(
       limit: limit,
-      sinceId: newerThan?.remoteId,
+      minId: newerThan?.remoteId,
       maxId: olderThan?.remoteId,
     );
     switch (timelineType) {
@@ -274,17 +275,23 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
     }
   }
 
-  Future<List<IPleromaApiStatus>> _loadAccountTimeline() async {
-    return await pleromaApiAccountService.getAccountStatuses(
-      accountRemoteId: timeline.onlyFromRemoteAccount!.id,
+  Future<List<IUnifediApiStatus>> _loadAccountTimeline() async {
+    return await unifediApiAccountService.getAccountStatuses(
+      accountId: timeline.onlyFromRemoteAccount!.id,
       onlyWithMedia: onlyWithMedia,
+      pinned: null,
+      tagged: null,
+      excludeReblogs: null,
+      excludeReplies: null,
+      excludeVisibilities: null,
+      withMuted: null,
     );
   }
 
-  Future<List<IPleromaApiStatus>> _loadHashtagTimeline(
-    PleromaApiPaginationRequest pagination,
+  Future<List<IUnifediApiStatus>> _loadHashtagTimeline(
+    UnifediApiPagination pagination,
   ) async {
-    return await pleromaApiAuthTimelineService.getHashtagTimeline(
+    return await unifediApiTimelineService.getHashtagTimeline(
       hashtag: timeline.withRemoteHashtag!,
       pagination: pagination,
       onlyLocal: onlyLocal,
@@ -294,22 +301,22 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
     );
   }
 
-  Future<List<IPleromaApiStatus>> _loadHomeTimeline(
-    PleromaApiPaginationRequest pagination,
+  Future<List<IUnifediApiStatus>> _loadHomeTimeline(
+    UnifediApiPagination pagination,
   ) async {
-    return await pleromaApiAuthTimelineService.getHomeTimeline(
+    return await unifediApiTimelineService.getHomeTimeline(
       pagination: pagination,
       onlyLocal: onlyLocal,
       withMuted: withMuted,
       excludeVisibilities: excludeVisibilities,
-      pleromaReplyVisibilityFilter: pleromaReplyVisibilityFilter,
+      replyVisibilityFilter: replyVisibilityFilter,
     );
   }
 
-  Future<List<IPleromaApiStatus>> _loadListTimeline(
-    PleromaApiPaginationRequest pagination,
+  Future<List<IUnifediApiStatus>> _loadListTimeline(
+    UnifediApiPagination pagination,
   ) async {
-    return await pleromaApiAuthTimelineService.getListTimeline(
+    return await unifediApiTimelineService.getListTimeline(
       listId: timeline.onlyInRemoteList!.id,
       pagination: pagination,
       onlyLocal: onlyLocal,
@@ -318,10 +325,10 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
     );
   }
 
-  Future<List<IPleromaApiStatus>> _loadPublicTimeline(
-    PleromaApiPaginationRequest pagination,
+  Future<List<IUnifediApiStatus>> _loadPublicTimeline(
+    UnifediApiPagination pagination,
   ) async {
-    return await pleromaApiAuthTimelineService.getPublicTimeline(
+    return await unifediApiTimelineService.getPublicTimeline(
       pagination: pagination,
       onlyLocal: onlyLocal,
       onlyRemote: onlyRemote,
@@ -329,7 +336,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
       onlyWithMedia: onlyWithMedia,
       withMuted: withMuted,
       excludeVisibilities: excludeVisibilities,
-      pleromaReplyVisibilityFilter: pleromaReplyVisibilityFilter,
+      replyVisibilityFilter: replyVisibilityFilter,
     );
   }
 
@@ -365,16 +372,16 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
 
   static TimelineStatusCachedListBloc createFromContext(
     BuildContext context, {
-    required WebSocketsListenType webSocketsListenType,
+    required WebSocketsChannelHandlerType handlerType,
     required ITimelineLocalPreferenceBloc timelineLocalPreferencesBloc,
   }) =>
       TimelineStatusCachedListBloc(
-        pleromaApiAccountService: Provider.of<IPleromaApiAccountService>(
+        unifediApiAccountService: Provider.of<IUnifediApiAccountService>(
           context,
           listen: false,
         ),
-        pleromaApiAuthTimelineService:
-            Provider.of<IPleromaApiAuthTimelineService>(
+        unifediApiTimelineService:
+            Provider.of<IUnifediApiTimelineService>(
           context,
           listen: false,
         ),
@@ -391,7 +398,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
           context,
           listen: false,
         ),
-        webSocketsListenType: webSocketsListenType,
+        handlerType: handlerType,
         filterRepository: IFilterRepository.of(
           context,
           listen: false,
@@ -403,18 +410,18 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
       );
 
   FilterRepositoryFilters get filterRepositoryFilters {
-    List<MastodonApiFilterContextType>? onlyWithContextTypes;
+    List<UnifediApiFilterContextType>? onlyWithContextTypes;
 
     switch (timelineType) {
       case TimelineType.public:
         onlyWithContextTypes = [
-          MastodonApiFilterContextType.public,
+          UnifediApiFilterContextType.public,
         ];
         break;
       case TimelineType.home:
       case TimelineType.customList:
         onlyWithContextTypes = [
-          MastodonApiFilterContextType.homeAndCustomLists,
+          UnifediApiFilterContextType.homeAndCustomLists,
         ];
         break;
       case TimelineType.hashtag:
@@ -422,7 +429,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
         break;
       case TimelineType.account:
         onlyWithContextTypes = [
-          MastodonApiFilterContextType.account,
+          UnifediApiFilterContextType.accountValue,
         ];
         break;
     }

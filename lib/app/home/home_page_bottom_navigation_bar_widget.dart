@@ -22,7 +22,7 @@ import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/icon/fedi_transparent_icon.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -144,8 +144,8 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
               context,
               listen: false,
             ),
-            excludeTypes: <PleromaApiNotificationType>[
-              PleromaApiNotificationType.pleromaChatMention,
+            excludeTypes: <UnifediApiNotificationType>[
+              UnifediApiNotificationType.chatMentionValue,
             ],
           ),
           child: FediBoolBadgeWidget(

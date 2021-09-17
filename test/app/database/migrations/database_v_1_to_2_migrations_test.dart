@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository_impl.dart';
 import 'package:fedi/app/database/app_database.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:moor/ffi.dart';
 
@@ -42,7 +42,7 @@ void main() {
     var accountDao = database.accountDao;
     var updatedRemoteId = 'updatedRemoteId1';
 
-    var dbAccount = await AccountDatabaseTestHelper.createTestDbAccount(
+    var dbAccount = await AccountDatabaseMockHelper.createTestDbAccount(
       seed: 'seed',
       remoteId: 'accountRemoteId',
     );
@@ -57,7 +57,7 @@ void main() {
         accountRemoteId: dbAccount.remoteId,
         createdAt: DateTime.now(),
         content: 'content',
-        card: PleromaApiCard.only(title: pleromaCardTitle),
+        card: UnifediApiCard.only(title: pleromaCardTitle),
       ),
       mode: null,
     );

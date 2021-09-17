@@ -7,7 +7,7 @@ import 'package:fedi/app/media/attachment/upload/upload_media_attachment_model.d
 import 'package:fedi/app/message/post_message_bloc_impl.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:provider/provider.dart';
 
 var _logger = Logger('chat_post_message_bloc_impl.dart');
@@ -19,12 +19,12 @@ class PleromaChatPostMessageBloc extends PostMessageBloc
   PleromaChatPostMessageBloc({
     required this.pleromaChatBloc,
     required int? maximumMessageLength,
-    required IPleromaApiMediaAttachmentService pleromaMediaAttachmentService,
+    required IUnifediApiMediaAttachmentService unifediApiMediaAttachmentService,
     required int? maximumFileSizeInBytes,
   }) : super(
           maximumMessageLength: maximumMessageLength,
           maximumMediaAttachmentCount: 1,
-          pleromaMediaAttachmentService: pleromaMediaAttachmentService,
+          unifediApiMediaAttachmentService: unifediApiMediaAttachmentService,
           maximumFileSizeInBytes: maximumFileSizeInBytes,
           unfocusOnClear: false,
         );
@@ -40,18 +40,18 @@ class PleromaChatPostMessageBloc extends PostMessageBloc
     // todo: refactor
     // ignore: unawaited_futures
     pleromaChatBloc.postMessage(
-      pleromaApiChatMessageSendData: calculateSendData(),
-      pleromaApiChatMessageSendDataMediaAttachment: calculateMediaAttachment(),
+      unifediApiChatMessageSendData: calculateSendData(),
+      unifediApiChatMessageSendDataMediaAttachment: calculateMediaAttachment(),
       oldPendingFailedPleromaChatMessage: null,
     );
 
     clear();
   }
 
-  PleromaApiChatMessageSendData calculateSendData() {
+  UnifediApiChatMessageSendData calculateSendData() {
     var mediaId = calculateMediaAttachmentId();
 
-    var data = PleromaApiChatMessageSendData(
+    var data = UnifediApiChatMessageSendData(
       content: inputText,
       mediaId: mediaId,
       idempotencyKey: idempotencyKey,
@@ -65,15 +65,15 @@ class PleromaChatPostMessageBloc extends PostMessageBloc
     return calculateMediaAttachment()?.id;
   }
 
-  IPleromaApiMediaAttachment? calculateMediaAttachment() {
+  IUnifediApiMediaAttachment? calculateMediaAttachment() {
     var mediaAttachmentBlocs =
         uploadMediaAttachmentsBloc.uploadMediaAttachmentBlocs.where(
       (bloc) =>
           bloc.uploadState.type == UploadMediaAttachmentStateType.uploaded,
     );
-    IPleromaApiMediaAttachment? mediaAttachment;
+    IUnifediApiMediaAttachment? mediaAttachment;
     if (mediaAttachmentBlocs.isNotEmpty) {
-      mediaAttachment = mediaAttachmentBlocs.first.pleromaMediaAttachment;
+      mediaAttachment = mediaAttachmentBlocs.first.unifediApiMediaAttachment;
     }
 
     return mediaAttachment;
@@ -92,8 +92,8 @@ class PleromaChatPostMessageBloc extends PostMessageBloc
         context,
         listen: false,
       ),
-      pleromaMediaAttachmentService:
-          Provider.of<IPleromaApiMediaAttachmentService>(
+      unifediApiMediaAttachmentService:
+          Provider.of<IUnifediApiMediaAttachmentService>(
         context,
         listen: false,
       ),

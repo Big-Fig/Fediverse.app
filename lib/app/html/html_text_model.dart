@@ -1,4 +1,4 @@
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_html/style.dart';
 
@@ -29,7 +29,7 @@ class HtmlTextResultData {
 class HtmlTextInputData {
   final String? input;
 
-  final List<IPleromaApiEmoji>? emojis;
+  final List<IUnifediApiEmoji>? emojis;
 
   bool get isHaveEmojis => emojis?.isNotEmpty == true;
 

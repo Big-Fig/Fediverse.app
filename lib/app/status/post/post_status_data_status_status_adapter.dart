@@ -5,7 +5,7 @@ import 'package:fedi/app/status/post/poll/post_status_poll_model.dart';
 import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class PostStatusDataStatusStatusAdapter implements IStatus {
   @override
@@ -70,15 +70,15 @@ class PostStatusDataStatusStatusAdapter implements IStatus {
         tags: tags,
         poll: poll,
         language: language,
-        pleromaContent: pleromaContent,
-        pleromaConversationId: pleromaConversationId,
-        pleromaDirectConversationId: pleromaDirectConversationId,
-        pleromaInReplyToAccountAcct: pleromaInReplyToAccountAcct,
-        pleromaLocal: pleromaLocal,
-        pleromaSpoilerText: pleromaSpoilerText,
-        pleromaExpiresAt: pleromaExpiresAt,
-        pleromaThreadMuted: pleromaThreadMuted,
-        pleromaEmojiReactions: pleromaEmojiReactions,
+        contentVariants: contentVariants,
+        conversationId: conversationId,
+        directConversationId: directConversationId,
+        inReplyToAccountAcct: inReplyToAccountAcct,
+        local: local,
+        spoilerTextVariants: spoilerTextVariants,
+        expiresAt: expiresAt,
+        threadMuted: threadMuted,
+        emojiReactions: emojiReactions,
         deleted: deleted,
         pendingState: pendingState,
         oldPendingRemoteId: oldPendingRemoteId,
@@ -89,19 +89,19 @@ class PostStatusDataStatusStatusAdapter implements IStatus {
       );
 
   @override
-  PleromaApiApplication? get application => null;
+  UnifediApiApplication? get application => null;
 
   @override
   bool get bookmarked => false;
 
   @override
-  PleromaApiCard? get card => null;
+  UnifediApiCard? get card => null;
 
   @override
   String? get content => postStatusData.text;
 
   @override
-  List<PleromaApiEmoji> get emojis => [];
+  List<UnifediApiEmoji> get emojis => [];
 
   @override
   bool get favourited => false;
@@ -120,7 +120,7 @@ class PostStatusDataStatusStatusAdapter implements IStatus {
   String? get language => postStatusData.language;
 
   @override
-  List<PleromaApiMention> get mentions => [];
+  List<UnifediApiMention> get mentions => [];
 
   @override
   bool get muted => false;
@@ -132,34 +132,34 @@ class PostStatusDataStatusStatusAdapter implements IStatus {
   bool get pinned => false;
 
   @override
-  PleromaApiContent? get pleromaContent => null;
+  UnifediApiContentVariants? get contentVariants => null;
 
   @override
-  int? get pleromaConversationId => null;
+  int? get conversationId => null;
 
   @override
-  int? get pleromaDirectConversationId => null;
+  int? get directConversationId => null;
 
   @override
-  List<PleromaApiStatusEmojiReaction>? get pleromaEmojiReactions => null;
+  List<UnifediApiEmojiReaction>? get emojiReactions => null;
 
   @override
-  DateTime? get pleromaExpiresAt => null;
+  DateTime? get expiresAt => null;
 
   @override
-  String? get pleromaInReplyToAccountAcct => null;
+  String? get inReplyToAccountAcct => null;
 
   @override
-  bool? get pleromaLocal => null;
+  bool? get local => null;
 
   @override
-  PleromaApiContent? get pleromaSpoilerText => null;
+  UnifediApiContentVariants? get spoilerTextVariants => null;
 
   @override
-  bool? get pleromaThreadMuted => null;
+  bool? get threadMuted => null;
 
   @override
-  PleromaApiPoll? get poll => postStatusData.poll?.toPleromaPoll();
+  UnifediApiPoll? get poll => postStatusData.poll?.toUnifediApiPoll();
 
   @override
   IStatus? get reblog => null;
@@ -183,7 +183,7 @@ class PostStatusDataStatusStatusAdapter implements IStatus {
   String get spoilerText => postStatusData.subject ?? '';
 
   @override
-  List<PleromaApiTag> get tags => [];
+  List<UnifediApiTag> get tags => [];
 
   @override
   String get uri => '';
@@ -192,7 +192,7 @@ class PostStatusDataStatusStatusAdapter implements IStatus {
   String get url => '';
 
   @override
-  PleromaApiVisibility get visibility => postStatusData.visibilityPleroma;
+  UnifediApiVisibility get visibility => postStatusData.visibilityPleroma;
 
   @override
   bool get isHaveReblog => false;
@@ -205,7 +205,7 @@ class PostStatusDataStatusStatusAdapter implements IStatus {
       postStatusData.inReplyToPleromaStatus?.toDbStatusPopulatedWrapper();
 
   @override
-  List<PleromaApiMediaAttachment>? get mediaAttachments =>
+  List<UnifediApiMediaAttachment>? get mediaAttachments =>
       postStatusData.mediaAttachments;
 
   @override
@@ -227,7 +227,7 @@ class PostStatusDataStatusStatusAdapter implements IStatus {
     String? inReplyToAccountRemoteId,
     bool? nsfwSensitive,
     String? spoilerText,
-    PleromaApiVisibility? visibility,
+    UnifediApiVisibility? visibility,
     String? uri,
     String? url,
     int? repliesCount,
@@ -240,24 +240,24 @@ class PostStatusDataStatusStatusAdapter implements IStatus {
     bool? pinned,
     String? content,
     String? reblogStatusRemoteId,
-    PleromaApiApplication? application,
+    UnifediApiApplication? application,
     String? accountRemoteId,
-    List<PleromaApiMediaAttachment>? mediaAttachments,
-    List<PleromaApiMention>? mentions,
-    List<PleromaApiTag>? tags,
-    List<PleromaApiEmoji>? emojis,
-    PleromaApiPoll? poll,
-    PleromaApiCard? card,
+    List<UnifediApiMediaAttachment>? mediaAttachments,
+    List<UnifediApiMention>? mentions,
+    List<UnifediApiTag>? tags,
+    List<UnifediApiEmoji>? emojis,
+    UnifediApiPoll? poll,
+    UnifediApiCard? card,
     String? language,
-    PleromaApiContent? pleromaContent,
-    int? pleromaConversationId,
-    int? pleromaDirectConversationId,
-    String? pleromaInReplyToAccountAcct,
-    bool? pleromaLocal,
-    PleromaApiContent? pleromaSpoilerText,
-    DateTime? pleromaExpiresAt,
-    bool? pleromaThreadMuted,
-    List<PleromaApiStatusEmojiReaction?>? pleromaEmojiReactions,
+    UnifediApiContentVariants? contentVariants,
+    int? conversationId,
+    int? directConversationId,
+    String? inReplyToAccountAcct,
+    bool? local,
+    UnifediApiContentVariants? spoilerTextVariants,
+    DateTime? expiresAt,
+    bool? threadMuted,
+    List<UnifediApiEmojiReaction?>? emojiReactions,
     bool? deleted,
     PendingState? pendingState,
     String? oldPendingRemoteId,

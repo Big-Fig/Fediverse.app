@@ -8,16 +8,16 @@ import 'timeline_model_test_helper.dart';
 
 void main() {
   test('equal & hashcode & toString', () async {
-    ObjTestHelper.testEqualsHashcodeToString(
-      ({required String seed}) => TimelineModelTestHelper.createTestTimeline(
+    ObjMockHelper.testEqualsHashcodeToString(
+      ({required String seed}) => TimelineModelMockHelper.createTestTimeline(
         seed: seed,
       ),
     );
   });
 
   test('toJson & fromJson', () async {
-    JsonTestHelper.testFromJsonToJson(
-      ({required String seed}) => TimelineModelTestHelper.createTestTimeline(
+    JsonMockHelper.testFromJsonToJson(
+      ({required String seed}) => TimelineModelMockHelper.createTestTimeline(
         seed: seed,
       ),
       Timeline.fromJson,
@@ -25,15 +25,15 @@ void main() {
   });
 
   test('hive save&load', () async {
-    await HiveTestHelper.testHiveSaveAndLoad(
-      ({required String seed}) => TimelineModelTestHelper.createTestTimeline(
+    await HiveMockHelper.testHiveSaveAndLoad(
+      ({required String seed}) => TimelineModelMockHelper.createTestTimeline(
         seed: seed,
       ),
     );
   });
 
   test('hive adapter', () async {
-    HiveTestHelper.testAdapter(
+    HiveMockHelper.testAdapter(
       () => TimelineAdapter(),
     );
   });

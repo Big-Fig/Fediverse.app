@@ -8,18 +8,18 @@ import 'localization_settings_model_test_helper.dart';
 
 void main() {
   test('equal & hashcode & toString', () async {
-    ObjTestHelper.testEqualsHashcodeToString(
+    ObjMockHelper.testEqualsHashcodeToString(
       ({required String seed}) =>
-          LocalizationSettingsModelTestHelper.createTestLocalizationSettings(
+          LocalizationSettingsModelMockHelper.createTestLocalizationSettings(
         seed: seed,
       ),
     );
   });
 
   test('toJson & fromJson', () async {
-    JsonTestHelper.testFromJsonToJson(
+    JsonMockHelper.testFromJsonToJson(
       ({required String seed}) =>
-          LocalizationSettingsModelTestHelper.createTestLocalizationSettings(
+          LocalizationSettingsModelMockHelper.createTestLocalizationSettings(
         seed: seed,
       ),
       LocalizationSettings.fromJson,
@@ -27,9 +27,9 @@ void main() {
   });
 
   test('hive save&load', () async {
-    await HiveTestHelper.testHiveSaveAndLoad(
+    await HiveMockHelper.testHiveSaveAndLoad(
       ({required String seed}) =>
-          LocalizationSettingsModelTestHelper.createTestLocalizationSettings(
+          LocalizationSettingsModelMockHelper.createTestLocalizationSettings(
         seed: seed,
       ),
     );
@@ -37,11 +37,11 @@ void main() {
 
   test('copyWith', () async {
     var obj1 =
-        LocalizationSettingsModelTestHelper.createTestLocalizationSettings(
+        LocalizationSettingsModelMockHelper.createTestLocalizationSettings(
       seed: 'seed1',
     );
     var obj2 =
-        LocalizationSettingsModelTestHelper.createTestLocalizationSettings(
+        LocalizationSettingsModelMockHelper.createTestLocalizationSettings(
       seed: 'seed2',
     );
 
@@ -56,7 +56,7 @@ void main() {
 
   test('clone', () async {
     var obj1 =
-        LocalizationSettingsModelTestHelper.createTestLocalizationSettings(
+        LocalizationSettingsModelMockHelper.createTestLocalizationSettings(
       seed: 'seed1',
     );
 
@@ -66,7 +66,7 @@ void main() {
   });
 
   test('hive adapter', () async {
-    HiveTestHelper.testAdapter(
+    HiveMockHelper.testAdapter(
       () => LocalizationSettingsAdapter(),
     );
   });

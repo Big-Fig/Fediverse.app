@@ -7,7 +7,7 @@ import 'package:fedi/app/push/settings/push_settings_bloc.dart';
 import 'package:fedi/app/push/settings/push_settings_model.dart';
 import 'package:fedi/app/push/settings/relay/local_preferences/push_relay_settings_local_preference_bloc.dart';
 import 'package:fedi/app/push/settings/relay/push_relay_settings_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:fedi/push/fcm/fcm_push_service.dart';
 import 'package:fedi/push/relay/push_relay_service.dart';
 import 'package:logging/logging.dart';
@@ -19,7 +19,7 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
       instancePushSettingsLocalPreferenceBloc;
   final IPushRelaySettingsLocalPreferenceBloc<PushRelaySettings?>
       instancePushRelaySettingsLocalPreferenceBloc;
-  final IPleromaApiPushService pleromaPushService;
+  final IUnifediApiPushSubscriptionService pleromaPushService;
   final IPushRelayService pushRelayService;
   final AuthInstance currentInstance;
   final IFcmPushService fcmPushService;
@@ -191,31 +191,31 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
       );
 
   @override
-  bool get pleromaChatMention => settingsData.pleromaChatMention == true;
+  bool get chatMention => settingsData.chatMention == true;
 
   @override
-  Stream<bool> get pleromaChatMentionStream => settingsDataStream.map(
-        (settings) => settings.pleromaChatMention == true,
+  Stream<bool> get chatMentionStream => settingsDataStream.map(
+        (settings) => settings.chatMention == true,
       );
 
   @override
-  Future changePleromaChatMention(bool value) => updateSettings(
+  Future changeChatMention(bool value) => updateSettings(
         settingsData.copyWith(
-          pleromaChatMention: value,
+          chatMention: value,
         ),
       );
 
   @override
-  bool get pleromaEmojiReaction => settingsData.pleromaEmojiReaction == true;
+  bool get emojiReaction => settingsData.emojiReaction == true;
 
   @override
-  Stream<bool> get pleromaEmojiReactionStream => settingsDataStream
-      .map((settings) => settings.pleromaEmojiReaction == true);
+  Stream<bool> get emojiReactionStream => settingsDataStream
+      .map((settings) => settings.emojiReaction == true);
 
   @override
-  Future changePleromaEmojiReaction(bool value) => updateSettings(
+  Future changeEmojiReaction(bool value) => updateSettings(
         settingsData.copyWith(
-          pleromaEmojiReaction: value,
+          emojiReaction: value,
         ),
       );
 
@@ -268,7 +268,7 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
     PushSettings? newSettings,
   ) async {
     bool success;
-    PleromaApiPushSubscription? subscription;
+    UnifediApiPushSubscription? subscription;
     try {
       var pushRelayEndPointUrl = pushRelayService.createPushRelayEndPointUrl(
         account: currentInstance.acct,
@@ -277,28 +277,28 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
       );
       subscription = await pleromaPushService.subscribe(
         endpointCallbackUrl: pushRelayEndPointUrl,
-        data: PleromaApiPushSubscribeData(
-          alerts: PleromaApiPushSubscribeRequestDataAlerts(
+        data: UnifediApiPushSubscribeData(
+          alerts: UnifediApiPushSubscribeRequestDataAlerts(
             favourite: newSettings!.favourite,
             follow: newSettings.follow,
             mention: newSettings.mention,
             reblog: newSettings.reblog,
             poll: newSettings.poll,
-            pleromaChatMention: newSettings.pleromaChatMention,
-            pleromaEmojiReaction: newSettings.pleromaEmojiReaction,
+            chatMention: newSettings.chatMention,
+            emojiReaction: newSettings.emojiReaction,
           ),
         ),
       );
       await instancePushSettingsLocalPreferenceBloc.setValue(
         PushSettings(
-          favourite: subscription.alerts?.favourite ?? false,
-          follow: subscription.alerts?.follow ?? false,
-          mention: subscription.alerts?.mention ?? false,
-          reblog: subscription.alerts?.reblog ?? false,
-          poll: subscription.alerts?.poll ?? false,
-          pleromaChatMention: subscription.alerts?.pleromaChatMention ?? false,
-          pleromaEmojiReaction:
-              subscription.alerts?.pleromaEmojiReaction ?? false,
+          favourite: subscription?.alerts.favourite ?? false,
+          follow: subscription?.alerts.follow ?? false,
+          mention: subscription?.alerts.mention ?? false,
+          reblog: subscription?.alerts.reblog ?? false,
+          poll: subscription?.alerts.poll ?? false,
+          chatMention: subscription?.alerts.chatMention ?? false,
+          emojiReaction:
+              subscription?.alerts.emojiReaction ?? false,
         ),
       );
 

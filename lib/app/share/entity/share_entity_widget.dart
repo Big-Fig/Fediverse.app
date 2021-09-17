@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/media/attachment/media_attachment_widget.dart';
 import 'package:fedi/app/media/file/path/media_file_path_bloc.dart';
 import 'package:fedi/app/media/file/path/media_file_path_bloc_impl.dart';
@@ -17,18 +18,16 @@ import 'package:fedi/app/ui/media/player/audio/fedi_audio_player_widget.dart';
 import 'package:fedi/app/ui/media/player/video/fedi_video_player_widget.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_vertical_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
 import 'package:fedi/media/player/audio/audio_media_player_bloc.dart';
 import 'package:fedi/media/player/audio/audio_media_player_bloc_impl.dart';
 import 'package:fedi/media/player/media_player_model.dart';
 import 'package:fedi/media/player/video/video_media_player_bloc.dart';
 import 'package:fedi/media/player/video/video_media_player_bloc_impl.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mime_type/mime_type.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class ShareEntityWidget extends StatelessWidget {
   final Widget? footer;
@@ -151,7 +150,7 @@ class _ShareEntityMediaWidget extends StatelessWidget {
         items.addAll(
           allMediaAttachments.map(
             (mediaAttachment) => _ShareEntityCarouselItem(
-              pleromaApiMediaAttachment: mediaAttachment,
+              unifediApiMediaAttachment: mediaAttachment,
               localFile: null,
             ),
           ),
@@ -159,7 +158,7 @@ class _ShareEntityMediaWidget extends StatelessWidget {
         items.addAll(
           allMediaLocalFiles.map(
             (localFile) => _ShareEntityCarouselItem(
-              pleromaApiMediaAttachment: null,
+              unifediApiMediaAttachment: null,
               localFile: localFile,
             ),
           ),
@@ -192,11 +191,11 @@ class _ShareEntityMediaWidget extends StatelessWidget {
 }
 
 class _ShareEntityCarouselItem {
-  final IPleromaApiMediaAttachment? pleromaApiMediaAttachment;
+  final IUnifediApiMediaAttachment? unifediApiMediaAttachment;
   final ShareEntityItemLocalMediaFile? localFile;
 
   _ShareEntityCarouselItem({
-    required this.pleromaApiMediaAttachment,
+    required this.unifediApiMediaAttachment,
     required this.localFile,
   });
 
@@ -205,15 +204,15 @@ class _ShareEntityCarouselItem {
       identical(this, other) ||
       other is _ShareEntityCarouselItem &&
           runtimeType == other.runtimeType &&
-          pleromaApiMediaAttachment == other.pleromaApiMediaAttachment &&
+          unifediApiMediaAttachment == other.unifediApiMediaAttachment &&
           localFile == other.localFile;
 
   @override
-  int get hashCode => pleromaApiMediaAttachment.hashCode ^ localFile.hashCode;
+  int get hashCode => unifediApiMediaAttachment.hashCode ^ localFile.hashCode;
 
   @override
   String toString() => '_ShareEntityCarouselItem{'
-      'pleromaApiMediaAttachment: $pleromaApiMediaAttachment, '
+      'unifediApiMediaAttachment: $unifediApiMediaAttachment, '
       'localFile: $localFile'
       '}';
 }
@@ -237,10 +236,10 @@ class _ShareEntityCarouselItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var item = Provider.of<_ShareEntityCarouselItem>(context);
 
-    if (item.pleromaApiMediaAttachment != null) {
+    if (item.unifediApiMediaAttachment != null) {
       return ProxyProvider<_ShareEntityCarouselItem,
-          IPleromaApiMediaAttachment>(
-        update: (context, value, previous) => value.pleromaApiMediaAttachment!,
+          IUnifediApiMediaAttachment>(
+        update: (context, value, previous) => value.unifediApiMediaAttachment!,
         child: const MediaAttachmentWidget(),
       );
     } else {
@@ -268,75 +267,65 @@ class _ShareEntityCarouselItemLocalFileWidget extends StatelessWidget {
 
     var type = _mapMimeToType(mimeType);
 
-    Widget child;
-
-    switch (type) {
-      case MastodonApiMediaAttachmentType.unknown:
-        child = DisposableProxyProvider<ShareEntityItemLocalMediaFile,
-            IMediaFilePathBloc>(
-          update: (context, value, _) =>
-              MediaFilePathBloc(path: value.file.path),
-          child: MediaFilePathWidget(
-            opacity: 1.0,
-            actionsWidget: null,
-          ),
-        );
-        break;
-      case MastodonApiMediaAttachmentType.image:
-      case MastodonApiMediaAttachmentType.gifv:
-        child = Image.file(file);
-        break;
-      case MastodonApiMediaAttachmentType.video:
-        child = DisposableProvider<IVideoMediaPlayerBloc>(
-          create: (context) {
-            return VideoMediaPlayerBloc(
-              mediaPlayerSource: MediaPlayerSource.file(file: file),
-              autoInit: true,
-              autoPlay: false,
-              desiredAspectRatio:
-                  VideoMediaPlayerBloc.calculateDefaultAspectRatio(context),
-              isFullScreenSupportEnabled: false,
-              isFullscreen: false,
-            );
-          },
-          child: FediVideoPlayerWidget(),
-        );
-        break;
-      case MastodonApiMediaAttachmentType.audio:
-        child = DisposableProvider<IAudioMediaPlayerBloc>(
-          create: (context) {
-            return AudioMediaPlayerBloc(
-              mediaPlayerSource: MediaPlayerSource.file(file: file),
-              autoInit: true,
-              autoPlay: false,
-            );
-          },
-          child: FediAudioPlayerWidget(),
-        );
-        break;
-    }
-
-    return child;
+    return type.map(
+      image: (_) => Image.file(file),
+      // ignore: no-equal-arguments
+      gifv: (_) => Image.file(file),
+      video: (_) => DisposableProvider<IVideoMediaPlayerBloc>(
+        create: (context) {
+          return VideoMediaPlayerBloc(
+            mediaPlayerSource: MediaPlayerSource.file(file: file),
+            autoInit: true,
+            autoPlay: false,
+            desiredAspectRatio:
+                VideoMediaPlayerBloc.calculateDefaultAspectRatio(context),
+            isFullScreenSupportEnabled: false,
+            isFullscreen: false,
+          );
+        },
+        child: FediVideoPlayerWidget(),
+      ),
+      audio: (_) => DisposableProvider<IAudioMediaPlayerBloc>(
+        create: (context) {
+          return AudioMediaPlayerBloc(
+            mediaPlayerSource: MediaPlayerSource.file(file: file),
+            autoInit: true,
+            autoPlay: false,
+          );
+        },
+        child: FediAudioPlayerWidget(),
+      ),
+      unknown: (_) => DisposableProxyProvider<ShareEntityItemLocalMediaFile,
+          IMediaFilePathBloc>(
+        update: (context, value, _) => MediaFilePathBloc(path: value.file.path),
+        child: MediaFilePathWidget(
+          opacity: 1.0,
+          actionsWidget: null,
+        ),
+      ),
+    );
   }
 
-  MastodonApiMediaAttachmentType _mapMimeToType(String? mimeType) {
+  UnifediApiMediaAttachmentType _mapMimeToType(String? mimeType) {
     var mimeTypePrefix = mimeType?.split('/').firstOrNull;
 
-    MastodonApiMediaAttachmentType type;
+    UnifediApiMediaAttachmentType type;
 
     switch (mimeTypePrefix) {
       case 'audio':
-        type = MastodonApiMediaAttachmentType.audio;
+        type = UnifediApiMediaAttachmentType.audioValue;
         break;
       case 'video':
-        type = MastodonApiMediaAttachmentType.video;
+        type = UnifediApiMediaAttachmentType.videoValue;
         break;
       case 'image':
-        type = MastodonApiMediaAttachmentType.image;
+        type = UnifediApiMediaAttachmentType.imageValue;
         break;
 
       default:
-        type = MastodonApiMediaAttachmentType.unknown;
+        type = UnifediApiMediaAttachmentType.unknown(
+          stringValue: 'mimeTypePrefix',
+        );
         break;
     }
 

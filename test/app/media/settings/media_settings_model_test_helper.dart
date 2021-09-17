@@ -1,7 +1,7 @@
 import 'package:fedi/app/media/settings/media_settings_model.dart';
 
 // ignore_for_file: no-magic-number
-class MediaSettingsModelTestHelper {
+class MediaSettingsModelMockHelper {
   static MediaSettings createTestMediaSettings({
     required String seed,
   }) =>

@@ -1,7 +1,7 @@
 import 'package:fedi/app/chat/settings/chat_settings_model.dart';
 
 // ignore_for_file: no-magic-number
-class ChatSettingsModelTestHelper {
+class ChatSettingsModelMockHelper {
   static ChatSettings createTestChatSettings({
     required String seed,
   }) =>

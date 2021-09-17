@@ -16,10 +16,10 @@ class EditWebSocketsSettingsWidget extends StatelessWidget {
         mainAxisSize: shrinkWrap ? MainAxisSize.min : MainAxisSize.max,
         children: [
           ProxyProvider<IEditWebSocketsSettingsBloc,
-              IWebSocketsHandlingTypeSingleFromListValueFormFieldBloc>(
+              IWebSocketsModeSingleFromListValueFormFieldBloc>(
             update: (context, value, previous) => value.typeFieldBloc,
             child:
-                const WebSocketsHandlingTypeSingleFromListValueFormFieldRowWidget(),
+                const WebSocketsModeSingleFromListValueFormFieldRowWidget(),
           ),
         ],
       );

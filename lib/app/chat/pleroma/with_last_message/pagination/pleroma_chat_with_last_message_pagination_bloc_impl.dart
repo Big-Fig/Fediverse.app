@@ -5,7 +5,7 @@ import 'package:fedi/app/chat/pleroma/with_last_message/pleroma_chat_with_last_m
 import 'package:fedi/app/pagination/cached/cached_pleroma_pagination_bloc_impl.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class PleromaChatWithLastMessagePaginationBloc
     extends CachedPleromaPaginationBloc<IPleromaChatWithLastMessage>
@@ -22,7 +22,7 @@ class PleromaChatWithLastMessagePaginationBloc
         );
 
   @override
-  IPleromaApi get pleromaApi => cachedListBloc.pleromaApi;
+  IUnifediApiService get unifediApi => cachedListBloc.unifediApi;
 
   @override
   Future<List<IPleromaChatWithLastMessage>> loadLocalItems({

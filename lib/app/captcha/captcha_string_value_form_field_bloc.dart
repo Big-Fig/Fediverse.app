@@ -1,7 +1,7 @@
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 abstract class ICaptchaStringValueFormFieldBloc
     extends IStringValueFormFieldBloc {
@@ -23,9 +23,9 @@ abstract class ICaptchaStringValueFormFieldBloc
 
   Stream<dynamic> get captchaLoadingErrorStream;
 
-  PleromaApiCaptcha? get captcha;
+  UnifediApiCaptcha? get captcha;
 
-  Stream<PleromaApiCaptcha?> get captchaStream;
+  Stream<UnifediApiCaptcha?> get captchaStream;
 
   Future reloadCaptcha();
 
@@ -43,23 +43,20 @@ extension ICaptchaStringValueFormFieldBlocExtension
         (captchaLoadingError) => captchaLoadingError != null,
       );
 
-  PleromaApiCaptchaType? get captchaType => captcha?.typeAsPleromaApi;
+  UnifediApiCaptchaType? get captchaType => captcha?.typeAsUnifediApi;
 
-  Stream<PleromaApiCaptchaType?> get captchaTypeStream => captchaStream.map(
-        (captcha) => captcha?.typeAsPleromaApi,
+  Stream<UnifediApiCaptchaType?> get captchaTypeStream => captchaStream.map(
+        (captcha) => captcha?.typeAsUnifediApi,
       );
 
   Stream<Image?> get captchaImageStream => captchaStream.asyncMap(
         (captcha) async {
-          switch (captcha?.typeAsPleromaApi) {
-            case PleromaApiCaptchaType.kocaptcha:
-            case PleromaApiCaptchaType.unknown:
-              return Image.network(captcha!.url!);
-            case PleromaApiCaptchaType.native:
-              return Image.memory(captcha!.decodeUrlAsBase64ImageBytes());
-            default:
-              return null;
-          }
+          captcha?.typeAsUnifediApi.map(
+            native: (_) => Image.memory(captcha.decodeUrlAsBase64ImageBytes()),
+            kocaptcha: (_) => Image.network(captcha.url!),
+            none: (_) => null,
+            unknown: (_) => Image.network(captcha.url!),
+          );
         },
       );
 }

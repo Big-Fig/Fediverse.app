@@ -5,7 +5,7 @@ import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_re
 import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -15,7 +15,7 @@ var _logger = Logger('pleroma_chat_message_cached_list_bloc_impl.dart');
 
 class PleromaChatMessageCachedListBloc extends DisposableOwner
     implements IPleromaChatMessageCachedListBloc {
-  final IPleromaApiChatService pleromaChatService;
+  final IUnifediApiChatService pleromaChatService;
   final IPleromaChatMessageRepository chatMessageRepository;
   final IPleromaChat chat;
 
@@ -37,7 +37,7 @@ class PleromaChatMessageCachedListBloc extends DisposableOwner
   });
 
   @override
-  IPleromaApi get pleromaApi => pleromaChatService;
+  IUnifediApiService get unifediApi => pleromaChatService;
 
   @override
   Future refreshItemsFromRemoteForPage({
@@ -52,9 +52,9 @@ class PleromaChatMessageCachedListBloc extends DisposableOwner
 
     var remoteMessages = await pleromaChatService.getChatMessages(
       chatId: chat.remoteId,
-      pagination: PleromaApiPaginationRequest(
+      pagination: UnifediApiPagination(
         maxId: olderThan?.remoteId,
-        sinceId: newerThan?.remoteId,
+        minId: newerThan?.remoteId,
         limit: limit,
       ),
     );
@@ -116,7 +116,7 @@ class PleromaChatMessageCachedListBloc extends DisposableOwner
       PleromaChatMessageCachedListBloc(
         chat: chat,
         pleromaChatService:
-            Provider.of<IPleromaApiChatService>(context, listen: false),
+            Provider.of<IUnifediApiChatService>(context, listen: false),
         chatMessageRepository:
             IPleromaChatMessageRepository.of(context, listen: false),
       );

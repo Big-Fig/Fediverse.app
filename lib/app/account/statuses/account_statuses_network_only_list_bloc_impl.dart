@@ -1,17 +1,17 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/status/list/network_only/status_network_only_list_bloc.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 abstract class AccountStatusesNetworkOnlyListBloc
     extends IStatusNetworkOnlyListBloc {
   final IAccount? account;
-  final IPleromaApiAccountService pleromaAccountService;
+  final IUnifediApiAccountService unifediApiAccountService;
 
   AccountStatusesNetworkOnlyListBloc({
     required this.account,
-    required this.pleromaAccountService,
+    required this.unifediApiAccountService,
   }) : super();
 
   @override
-  IPleromaApi get pleromaApi => pleromaAccountService;
+  IUnifediApiService get unifediApi => unifediApiAccountService;
 }

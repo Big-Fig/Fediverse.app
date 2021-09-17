@@ -12,10 +12,11 @@ import 'package:fedi/app/localization/settings/localization_settings_bloc.dart';
 import 'package:fedi/app/toast/toast_service.dart';
 import 'package:fedi/app/ui/button/icon/fedi_dismiss_icon_button.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
-import 'package:base_fediverse_api/base_fediverse_api.dart';
+import 'package:fedi/connection/connection_service.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -98,7 +99,7 @@ Future<AuthHostRegistrationResult?> goToRegisterAuthInstancePage(
                     _showEmailConfirmationRequiredToast(context);
                   } else {
                     var error = registrationResult.anyError;
-                    if (error is PleromaApiRestException) {
+                    if (error is UnifediApiRestException) {
                       _showCantLoginToast(
                         context,
                         errorDescription: error.decodedErrorDescriptionOrBody,

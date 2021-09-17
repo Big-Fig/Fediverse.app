@@ -1,13 +1,13 @@
-import 'package:fedi/json/json_model.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 
 part 'app_analytics_model.g.dart';
-
 @JsonSerializable()
 // ignore: no-magic-number
 @HiveType(typeId: -32 + 94)
-class AppAnalyticsData implements IJsonObject {
+class AppAnalyticsData implements IJsonObj {
   @HiveField(0)
   final int appOpenedCount;
 

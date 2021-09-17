@@ -1,34 +1,34 @@
 import 'package:fedi/app/emoji/reaction/emoji_reaction_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class StatusEmojiReactionAdapter implements IEmojiReaction {
-  final IPleromaApiStatusEmojiReaction pleromaApiStatusEmojiReaction;
+  final IUnifediApiEmojiReaction UnifediApiEmojiReaction;
 
   StatusEmojiReactionAdapter({
-    required this.pleromaApiStatusEmojiReaction,
+    required this.UnifediApiEmojiReaction,
   });
 
   @override
-  int get count => pleromaApiStatusEmojiReaction.count;
+  int get count => UnifediApiEmojiReaction.count;
 
   @override
-  bool get me => pleromaApiStatusEmojiReaction.me;
+  bool get me => UnifediApiEmojiReaction.me;
 
   @override
-  String get name => pleromaApiStatusEmojiReaction.name;
+  String get name => UnifediApiEmojiReaction.name;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is StatusEmojiReactionAdapter &&
           runtimeType == other.runtimeType &&
-          pleromaApiStatusEmojiReaction == other.pleromaApiStatusEmojiReaction;
+          UnifediApiEmojiReaction == other.UnifediApiEmojiReaction;
 
   @override
-  int get hashCode => pleromaApiStatusEmojiReaction.hashCode;
+  int get hashCode => UnifediApiEmojiReaction.hashCode;
 
   @override
   String toString() => 'StatusEmojiReactionAdapter{'
-      'pleromaApiStatusEmojiReaction: $pleromaApiStatusEmojiReaction'
+      'UnifediApiEmojiReaction: $UnifediApiEmojiReaction'
       '}';
 }

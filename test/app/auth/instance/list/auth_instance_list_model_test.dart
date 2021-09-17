@@ -8,18 +8,18 @@ import 'auth_instance_model_test_helper.dart';
 
 void main() {
   test('equal & hashcode & toString', () async {
-    ObjTestHelper.testEqualsHashcodeToString(
+    ObjMockHelper.testEqualsHashcodeToString(
       ({required String seed}) =>
-          AuthInstanceListModelTestHelper.createTestAuthInstanceList(
+          AuthInstanceListModelMockHelper.createTestAuthInstanceList(
         seed: seed,
       ),
     );
   });
 
   test('toJson & fromJson', () async {
-    JsonTestHelper.testFromJsonToJson(
+    JsonMockHelper.testFromJsonToJson(
       ({required String seed}) =>
-          AuthInstanceListModelTestHelper.createTestAuthInstanceList(
+          AuthInstanceListModelMockHelper.createTestAuthInstanceList(
         seed: seed,
       ),
       AuthInstanceList.fromJson,
@@ -27,16 +27,16 @@ void main() {
   });
 
   test('hive save&load', () async {
-    await HiveTestHelper.testHiveSaveAndLoad(
+    await HiveMockHelper.testHiveSaveAndLoad(
       ({required String seed}) =>
-          AuthInstanceListModelTestHelper.createTestAuthInstanceList(
+          AuthInstanceListModelMockHelper.createTestAuthInstanceList(
         seed: seed,
       ),
     );
   });
 
   test('hive adapter', () async {
-    HiveTestHelper.testAdapter(
+    HiveMockHelper.testAdapter(
       () => AuthInstanceListAdapter(),
     );
   });

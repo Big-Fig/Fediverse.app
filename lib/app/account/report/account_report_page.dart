@@ -10,7 +10,7 @@ import 'package:fedi/app/ui/button/fedi_text_button.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -119,7 +119,7 @@ MaterialPageRoute createAccountReportPageRoute({
       create: (context) => AccountReportBloc(
         account: account,
         statuses: statuses,
-        pleromaAuthAccountService: Provider.of<IPleromaApiAuthAccountService>(
+        pleromaAuthAccountService: Provider.of<IUnifediApiAccountService>(
           context,
           listen: false,
         ),

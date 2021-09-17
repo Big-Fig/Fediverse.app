@@ -5,8 +5,8 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-class EditMyAccountPleromaHideFollowersFieldWidget extends StatelessWidget {
-  const EditMyAccountPleromaHideFollowersFieldWidget({
+class EditMyAccounthideFollowersFieldWidget extends StatelessWidget {
+  const EditMyAccounthideFollowersFieldWidget({
     Key? key,
   }) : super(key: key);
 

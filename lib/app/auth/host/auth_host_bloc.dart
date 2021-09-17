@@ -1,20 +1,20 @@
 import 'package:fedi/app/auth/host/auth_host_model.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 abstract class IAuthHostBloc extends IDisposable {
   bool get isHostApplicationRegistered;
 
-  PleromaApiClientApplication? get hostApplication;
+  UnifediApiClientApplication? get hostApplication;
 
-  Stream<PleromaApiClientApplication?> get hostApplicationStream;
+  Stream<UnifediApiClientApplication?> get hostApplicationStream;
 
   bool get isHostAccessTokenExist;
 
-  PleromaApiOAuthToken? get hostAccessToken;
+  UnifediApiOAuthToken? get hostAccessToken;
 
-  Stream<PleromaApiOAuthToken?> get hostAccessTokenStream;
+  Stream<UnifediApiOAuthToken?> get hostAccessTokenStream;
 
   Future<AuthInstance> loginWithAuthCode(String authCode);
 
@@ -25,7 +25,7 @@ abstract class IAuthHostBloc extends IDisposable {
   Future<AuthInstance?> launchLoginToAccount();
 
   Future<AuthHostRegistrationResult> registerAccount({
-    required IPleromaApiAccountPublicRegisterRequest request,
+    required IUnifediApiAccountPublicRegisterRequest request,
   });
 
   Future checkApplicationRegistration();

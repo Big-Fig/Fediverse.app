@@ -9,7 +9,7 @@ import 'package:fedi/app/status/status_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
@@ -22,17 +22,16 @@ class RemoteStatusBloc extends StatusBloc {
 
   RemoteStatusBloc({
     required this.instanceUri,
-    required IPleromaApiStatusService pleromaStatusService,
-    required IPleromaApiAccountService pleromaAccountService,
+    required IUnifediApiStatusService unifediApiStatusService,
+    required IUnifediApiPollService unifediApiPollService,
+    required IUnifediApiAccountService unifediApiAccountService,
     required IStatus status,
     required bool isNeedRefreshFromNetworkOnInit,
     required bool delayInit,
   }) : super(
-          pleromaStatusService: pleromaStatusService,
-          pleromaAccountService: pleromaAccountService,
-          // todo: rework passing null to separate classes without these fields
-          pleromaApiStatusEmojiReactionService: null,
-          pleromaPollService: null,
+          unifediApiStatusService: unifediApiStatusService,
+          unifediApiAccountService: unifediApiAccountService,
+          unifediApiPollService: unifediApiPollService,
           status: status,
           isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
           delayInit: delayInit,
@@ -49,24 +48,24 @@ class RemoteStatusBloc extends StatusBloc {
   }) {
     var remoteInstanceBloc = IRemoteInstanceBloc.of(context, listen: false);
 
-    var pleromaAccountService = PleromaApiAccountService(
-      restService: remoteInstanceBloc.pleromaRestService,
+    var unifediApiAccountService = UnifediApiAccountService(
+      restService: remoteInstanceBloc.unifediApiRestService,
     );
-    var pleromaStatusService = PleromaApiStatusService(
-      restService: remoteInstanceBloc.pleromaRestService,
+    var unifediApiStatusService = UnifediApiStatusService(
+      restService: remoteInstanceBloc.unifediApiRestService,
     );
 
     var remoteStatusBloc = RemoteStatusBloc(
       status: status,
       isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
       delayInit: delayInit,
-      pleromaStatusService: pleromaStatusService,
-      pleromaAccountService: pleromaAccountService,
+      unifediApiStatusService: unifediApiStatusService,
+      unifediApiAccountService: unifediApiAccountService,
       instanceUri: remoteInstanceBloc.instanceUri,
     );
 
-    remoteStatusBloc.addDisposable(pleromaAccountService);
-    remoteStatusBloc.addDisposable(pleromaStatusService);
+    remoteStatusBloc.addDisposable(unifediApiAccountService);
+    remoteStatusBloc.addDisposable(unifediApiStatusService);
 
     return remoteStatusBloc;
   }
@@ -115,8 +114,8 @@ class RemoteStatusBloc extends StatusBloc {
     // todo: dont load account if inReplyToStatus already loaded
     var inReplyToAccountRemoteId = status.inReplyToAccountRemoteId;
     if (inReplyToAccountRemoteId != null) {
-      var remoteAccount = await pleromaAccountService.getAccount(
-        accountRemoteId: inReplyToAccountRemoteId,
+      var remoteAccount = await unifediApiAccountService.getAccount(
+        accountId: inReplyToAccountRemoteId,
         withRelationship: false,
       );
 
@@ -131,8 +130,8 @@ class RemoteStatusBloc extends StatusBloc {
   Future _checkIsInReplyToStatusLoaded() async {
     var inReplyToRemoteId = status.inReplyToRemoteId;
     if (inReplyToRemoteId != null) {
-      var remoteStatus = await pleromaStatusService.getStatus(
-        statusRemoteId: inReplyToRemoteId,
+      var remoteStatus = await unifediApiStatusService.getStatus(
+        statusId: inReplyToRemoteId,
       );
 
       inReplyToStatusSubject.add(
@@ -181,9 +180,9 @@ class RemoteStatusBloc extends StatusBloc {
     if (foundMention != null) {
       var accountRemoteId = foundMention.id;
 
-      if (pleromaAccountService.isApiReadyToUse) {
-        var remoteAccount = await pleromaAccountService.getAccount(
-          accountRemoteId: accountRemoteId,
+      if (unifediApiAccountService.isApiReadyToUse) {
+        var remoteAccount = await unifediApiAccountService.getAccount(
+          accountId: accountRemoteId,
           withRelationship: false,
         );
 
@@ -205,7 +204,7 @@ class RemoteStatusBloc extends StatusBloc {
   }
 
   @override
-  Future<IPleromaApiStatus> toggleEmojiReaction({
+  Future<IUnifediApiStatus> toggleEmojiReaction({
     required String? emoji,
   }) {
     throw UnsupportedOnRemoteInstanceLocationException();

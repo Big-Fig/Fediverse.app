@@ -3,7 +3,7 @@ import 'package:fedi/app/account/select/single/single_select_account_page.dart';
 import 'package:fedi/app/timeline/settings/only_from_account/timeline_settings_only_from_account_form_field_bloc.dart';
 import 'package:fedi/app/ui/form/fedi_form_single_choose_custom_field_row.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/cupertino.dart';
 
 class TimelineSettingsOnlyFromAccountFormFieldRowWidget
@@ -20,13 +20,13 @@ class TimelineSettingsOnlyFromAccountFormFieldRowWidget
   Widget build(BuildContext context) {
     var fieldBloc = ITimelineSettingsOnlyFromAccountFormFieldBloc.of(context);
 
-    return StreamBuilder<IPleromaApiAccount?>(
+    return StreamBuilder<IUnifediApiAccount?>(
       stream: fieldBloc.currentValueStream,
       initialData: fieldBloc.currentValue,
       builder: (context, snapshot) {
         var currentValue = snapshot.data;
 
-        return FediFormSingleChooseCustomFromListFieldRow<IPleromaApiAccount?>(
+        return FediFormSingleChooseCustomFromListFieldRow<IUnifediApiAccount?>(
           isNullValuePossible: fieldBloc.isNullValuePossible,
           isEnabled: fieldBloc.isEnabled,
           error: fieldBloc.isHaveAtLeastOneError
@@ -42,7 +42,7 @@ class TimelineSettingsOnlyFromAccountFormFieldRowWidget
               context,
               accountSelectedCallback: (context, account) {
                 fieldBloc.changeCurrentValue(
-                  account.toPleromaApiAccount(),
+                  account.toUnifediApiAccount(),
                 );
                 Navigator.of(context).pop();
               },
@@ -56,8 +56,8 @@ class TimelineSettingsOnlyFromAccountFormFieldRowWidget
               .of(context)
               .app_timeline_settings_onlyFromRemoteAccount_field_label,
           value: currentValue,
-          valueToTextMapper: (pleromaAccount) =>
-              pleromaAccount?.acct ??
+          valueToTextMapper: (unifediApiAccount) =>
+              unifediApiAccount?.acct ??
               S
                   .of(context)
                   .app_timeline_settings_onlyFromRemoteAccount_field_null,

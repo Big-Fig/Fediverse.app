@@ -1,5 +1,5 @@
 import 'package:fedi/collection/collection_hash_utils.dart';
-import 'package:fedi/json/json_model.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -13,7 +13,7 @@ part 'recent_search_model.g.dart';
 //@HiveType()
 @HiveType(typeId: -32 + 65)
 @JsonSerializable(explicitToJson: true)
-class RecentSearchList implements IJsonObject {
+class RecentSearchList implements IJsonObj {
   @HiveField(0)
   final List<String> recentItems;
 
