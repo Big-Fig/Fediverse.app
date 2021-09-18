@@ -35,7 +35,7 @@ void main() {
   late IPleromaChat chat;
   late IPleromaChatMessage chatMessage;
   late IPleromaChatMessageBloc chatMessageBloc;
-  late MockIUnifediApiChatService pleromaChatServiceMock;
+  late MockIUnifediApiChatService pleromaApiChatServiceMock;
   late MockIUnifediApiAccountService unifediApiAccountServiceMock;
   late AppDatabase database;
   late IAccountRepository accountRepository;
@@ -59,11 +59,11 @@ void main() {
       );
 
       myAccountBloc = MockIMyAccountBloc();
-      pleromaChatServiceMock = MockIUnifediApiChatService();
+      pleromaApiChatServiceMock = MockIUnifediApiChatService();
       unifediApiAccountServiceMock = MockIUnifediApiAccountService();
 
-      when(pleromaChatServiceMock.isConnected).thenReturn(true);
-      when(pleromaChatServiceMock.unifediApiState).thenReturn(
+      when(pleromaApiChatServiceMock.isConnected).thenReturn(true);
+      when(pleromaApiChatServiceMock.unifediApiState).thenReturn(
         UnifediApiState.validAuth,
       );
       when(unifediApiAccountServiceMock.isConnected).thenReturn(true);
@@ -85,14 +85,14 @@ void main() {
 
       chatMessageBloc = PleromaChatMessageBloc(
         chatMessage: chatMessage,
-        pleromaChatService: pleromaChatServiceMock,
+        pleromaApiChatService: pleromaApiChatServiceMock,
         chatMessageRepository: chatMessageRepository,
         delayInit: false,
         isNeedWatchLocalRepositoryForUpdates: true,
         accountRepository: accountRepository,
         unifediApiAccountService: unifediApiAccountServiceMock,
         pleromaChatBloc: PleromaChatBloc(
-          pleromaChatService: pleromaChatServiceMock,
+          pleromaApiChatService: pleromaApiChatServiceMock,
           myAccountBloc: myAccountBloc,
           chatRepository: chatRepository,
           chatMessageRepository: chatMessageRepository,
@@ -325,7 +325,7 @@ void main() {
 //     await RxDartMockHelper.waitForData(() => listened);
 //    ChatMessageMockHelper.expectChatMessage(listened, chatMessage);
 //
-//    when(pleromaChatServiceMock.getChatMessage(
+//    when(pleromaApiChatServiceMock.getChatMessage(
 //            chatMessageRemoteId: chatMessage.remoteId))
 //        .thenAnswer(
 //            (_) async => mapLocalChatMessageToRemoteChatMessage(newValue));

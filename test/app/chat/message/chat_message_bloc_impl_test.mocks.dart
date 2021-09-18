@@ -148,7 +148,7 @@ class MockIUnifediApiChatService extends _i1.Mock
           as _i8.Future<_i3.IUnifediApiChat>);
   @override
   _i8.Future<_i3.IUnifediApiChatMessage> sendMessage(
-          {String? chatId, _i3.IUnifediApiChatMessageSendData? data}) =>
+          {String? chatId, _i3.IUnifediApiPostChatMessage? data}) =>
       (super.noSuchMethod(
           Invocation.method(#sendMessage, [], {#chatId: chatId, #data: data}),
           returnValue: Future<_i3.IUnifediApiChatMessage>.value(

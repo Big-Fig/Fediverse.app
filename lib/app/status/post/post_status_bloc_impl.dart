@@ -49,9 +49,7 @@ abstract class PostStatusBloc extends PostMessageBloc
     required this.statusRepository,
     required this.scheduledStatusRepository,
     required IUnifediApiMediaAttachmentService unifediApiMediaAttachmentService,
-    // ignore: no-magic-number
-    int maximumMediaAttachmentCount =
-        IUnifediApiStatusService.maximumMediaAttachmentCount,
+    required int? maximumMediaAttachmentCount,
     required int? maximumMessageLength,
     required IPostStatusData? initialData,
     List<IAccount>? initialAccountsToMention = const [],
@@ -218,7 +216,7 @@ abstract class PostStatusBloc extends PostMessageBloc
 
   @override
   IStatus? get originInReplyToStatus =>
-      initialData.inReplyToPleromaStatus?.toDbStatusPopulatedWrapper();
+      initialData.inReplyToUnifediApiStatus?.toDbStatusPopulatedWrapper();
 
   String? get inReplyToStatusRemoteId => originInReplyToStatus?.remoteId;
 
@@ -236,7 +234,7 @@ abstract class PostStatusBloc extends PostMessageBloc
     visibilityString: UnifediApiVisibility.publicValue.stringValue,
     mediaAttachments: null,
     poll: null,
-    inReplyToPleromaStatus: null,
+    inReplyToUnifediApiStatus: null,
     inReplyToConversationId: null,
     isNsfwSensitiveEnabled: false,
     to: null,
@@ -594,7 +592,7 @@ abstract class PostStatusBloc extends PostMessageBloc
   }
 
   IStatus? calculateInReplyToStatusField() =>
-      initialData.inReplyToPleromaStatus?.toDbStatusPopulatedWrapper();
+      initialData.inReplyToUnifediApiStatus?.toDbStatusPopulatedWrapper();
 
   IPostStatusPoll? _calculatePostStatusPoll() {
     IPostStatusPoll? poll;
@@ -752,12 +750,11 @@ abstract class PostStatusBloc extends PostMessageBloc
                 textUrl: mediaAttachment.textUrl,
                 type: mediaAttachment.type,
                 url: mediaAttachment.url,
-                pleroma: mediaAttachment.pleroma,
               ),
             )
             .toList(),
         poll: _calculatePostStatusPoll()?.toPostStatusPoll(),
-        inReplyToPleromaStatus:
+        inReplyToUnifediApiStatus:
             calculateInReplyToStatusField()?.toUnifediApiStatus(),
         inReplyToConversationId: initialData.inReplyToConversationId,
         isNsfwSensitiveEnabled: isNsfwSensitiveEnabled,
@@ -766,8 +763,8 @@ abstract class PostStatusBloc extends PostMessageBloc
         expiresInSeconds: expireAtSubject.valueOrNull?.totalSeconds,
       );
 
-  UnifediApiScheduleStatus calculateScheduleStatus() {
-    return UnifediApiScheduleStatus(
+  UnifediApiSchedulePostStatus calculateScheduleStatus() {
+    return UnifediApiSchedulePostStatus(
       mediaIds: _calculateMediaIdsField(),
       status: calculateStatusTextField(),
       sensitive: isNsfwSensitiveEnabled,

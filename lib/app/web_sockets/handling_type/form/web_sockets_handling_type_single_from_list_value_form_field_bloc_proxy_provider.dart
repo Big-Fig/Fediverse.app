@@ -4,6 +4,7 @@ import 'package:fedi/form/field/value/select_from_list/single/single_select_from
 import 'package:fediverse_api/fediverse_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 
 class WebSocketsModeSingleFromListValueFormFieldBlocProxyProvider
     extends StatelessWidget {

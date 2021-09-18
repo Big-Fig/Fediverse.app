@@ -29,7 +29,7 @@ abstract class IPostStatusData {
 
   IPostStatusPoll? get poll;
 
-  IUnifediApiStatus? get inReplyToPleromaStatus;
+  IUnifediApiStatus? get inReplyToUnifediApiStatus;
 
   String? get inReplyToConversationId;
 
@@ -46,7 +46,7 @@ abstract class IPostStatusData {
     List<String>? to,
     List<IUnifediApiMediaAttachment>? mediaAttachments,
     UnifediApiPostStatusPoll? poll,
-    UnifediApiStatus? inReplyToPleromaStatus,
+    UnifediApiStatus? inReplyToUnifediApiStatus,
     String? inReplyToConversationId,
     bool? isNsfwSensitiveEnabled,
     int? expiresInSeconds,
@@ -82,7 +82,7 @@ class PostStatusData implements IPostStatusData {
   final PostStatusPoll? poll;
   @override
   @JsonKey(name: 'in_reply_to_status')
-  final UnifediApiStatus? inReplyToPleromaStatus;
+  final UnifediApiStatus? inReplyToUnifediApiStatus;
   @override
   @JsonKey(name: 'in_reply_to_conversation_id')
   final String? inReplyToConversationId;
@@ -106,7 +106,7 @@ class PostStatusData implements IPostStatusData {
     required this.to,
     required this.mediaAttachments,
     required this.poll,
-    required this.inReplyToPleromaStatus,
+    required this.inReplyToUnifediApiStatus,
     required this.inReplyToConversationId,
     required this.isNsfwSensitiveEnabled,
     required this.language,
@@ -121,7 +121,7 @@ class PostStatusData implements IPostStatusData {
     List<String>? to,
     List<IUnifediApiMediaAttachment>? mediaAttachments,
     PostStatusPoll? poll,
-    IUnifediApiStatus? inReplyToPleromaStatus,
+    IUnifediApiStatus? inReplyToUnifediApiStatus,
     String? inReplyToConversationId,
     bool isNsfwSensitiveEnabled = false,
     String? language,
@@ -134,7 +134,7 @@ class PostStatusData implements IPostStatusData {
           to: to,
           mediaAttachments: mediaAttachments?.toUnifediApiMediaAttachmentList(),
           poll: poll,
-          inReplyToPleromaStatus: inReplyToPleromaStatus?.toUnifediApiStatus(),
+          inReplyToUnifediApiStatus: inReplyToUnifediApiStatus?.toUnifediApiStatus(),
           inReplyToConversationId: inReplyToConversationId,
           isNsfwSensitiveEnabled: isNsfwSensitiveEnabled,
           language: language,
@@ -155,7 +155,7 @@ class PostStatusData implements IPostStatusData {
     List<String>? to,
     List<IUnifediApiMediaAttachment>? mediaAttachments,
     IUnifediApiPostStatusPoll? poll,
-    UnifediApiStatus? inReplyToPleromaStatus,
+    UnifediApiStatus? inReplyToUnifediApiStatus,
     String? inReplyToConversationId,
     bool? isNsfwSensitiveEnabled,
     int? expiresInSeconds,
@@ -170,8 +170,8 @@ class PostStatusData implements IPostStatusData {
         to: to ?? this.to,
         mediaAttachments: mediaAttachments?.toUnifediApiMediaAttachmentList(),
         poll: poll?.toPostStatusPoll() ?? this.poll,
-        inReplyToPleromaStatus:
-            inReplyToPleromaStatus ?? this.inReplyToPleromaStatus,
+        inReplyToUnifediApiStatus:
+            inReplyToUnifediApiStatus ?? this.inReplyToUnifediApiStatus,
         inReplyToConversationId:
             inReplyToConversationId ?? this.inReplyToConversationId,
         isNsfwSensitiveEnabled:
@@ -190,7 +190,7 @@ class PostStatusData implements IPostStatusData {
           listEquals(to, other.to) &&
           listEquals(mediaAttachments, other.mediaAttachments) &&
           poll == other.poll &&
-          inReplyToPleromaStatus == other.inReplyToPleromaStatus &&
+          inReplyToUnifediApiStatus == other.inReplyToUnifediApiStatus &&
           inReplyToConversationId == other.inReplyToConversationId &&
           isNsfwSensitiveEnabled == other.isNsfwSensitiveEnabled &&
           language == other.language;
@@ -204,7 +204,7 @@ class PostStatusData implements IPostStatusData {
       listHash(to) ^
       listHash(mediaAttachments) ^
       poll.hashCode ^
-      inReplyToPleromaStatus.hashCode ^
+      inReplyToUnifediApiStatus.hashCode ^
       inReplyToConversationId.hashCode ^
       isNsfwSensitiveEnabled.hashCode ^
       language.hashCode;
@@ -217,7 +217,7 @@ class PostStatusData implements IPostStatusData {
       'visibility: $visibilityString, '
       'attachments: $mediaAttachments, '
       'poll: $poll, '
-      'inReplyToStatus: $inReplyToPleromaStatus, '
+      'inReplyToStatus: $inReplyToUnifediApiStatus, '
       'inReplyToConversationId: $inReplyToConversationId, '
       'to: $to, '
       'language: $language, '
@@ -231,14 +231,14 @@ class PostStatusData implements IPostStatusData {
 }
 
 extension IPostStatusDataExtension on IPostStatusData {
-  UnifediApiScheduleStatus toPleromaScheduleStatus({
+  UnifediApiSchedulePostStatus toUnifediApiSchedulePostStatus({
     required String? idempotencyKey,
   }) {
     assert(isScheduled);
 
-    return UnifediApiScheduleStatus(
+    return UnifediApiSchedulePostStatus(
       inReplyToConversationId: inReplyToConversationId,
-      inReplyToId: inReplyToPleromaStatus?.id,
+      inReplyToId: inReplyToUnifediApiStatus?.id,
       visibility: visibilityString,
       mediaIds: mediaAttachments?.toUnifediApiMediaAttachmentIdList(),
       sensitive: isNsfwSensitiveEnabled,
@@ -267,7 +267,7 @@ extension IPostStatusDataExtension on IPostStatusData {
         to: to,
         mediaAttachments: mediaAttachments?.toUnifediApiMediaAttachmentList(),
         poll: poll?.toPostStatusPoll(),
-        inReplyToPleromaStatus: inReplyToPleromaStatus?.toUnifediApiStatus(),
+        inReplyToUnifediApiStatus: inReplyToUnifediApiStatus?.toUnifediApiStatus(),
         inReplyToConversationId: inReplyToConversationId,
         isNsfwSensitiveEnabled: isNsfwSensitiveEnabled,
         language: language,
@@ -276,16 +276,13 @@ extension IPostStatusDataExtension on IPostStatusData {
     }
   }
 
-  UnifediApiPostStatus toPleromaPostStatus({
-    required String? idempotencyKey,
-  }) {
+  UnifediApiPostStatus toPleromaPostStatus() {
     assert(!isScheduled);
 
     return UnifediApiPostStatus(
-      idempotencyKey: idempotencyKey,
       expiresInSeconds: expiresInSeconds,
       inReplyToConversationId: inReplyToConversationId,
-      inReplyToId: inReplyToPleromaStatus?.id,
+      inReplyToId: inReplyToUnifediApiStatus?.id,
       visibility: visibilityString,
       mediaIds: mediaAttachments?.toUnifediApiMediaAttachmentIdList(),
       sensitive: isNsfwSensitiveEnabled,
@@ -302,7 +299,7 @@ extension IPostStatusDataExtension on IPostStatusData {
 
 extension PostStatusDataStatusExtension on IStatus {
   PostStatusData calculatePostStatusData({
-    required UnifediApiInstancePollLimits limits,
+    required IUnifediApiInstancePollLimits? limits,
   }) =>
       PostStatusData(
         subject: spoilerText,
@@ -314,7 +311,7 @@ extension PostStatusDataStatusExtension on IStatus {
         poll: poll?.toPostStatusPoll(
           limits: limits,
         ),
-        inReplyToPleromaStatus: inReplyToStatus?.toUnifediApiStatus(),
+        inReplyToUnifediApiStatus: inReplyToStatus?.toUnifediApiStatus(),
         inReplyToConversationId: directConversationId?.toString(),
         isNsfwSensitiveEnabled: nsfwSensitive,
         language: language,

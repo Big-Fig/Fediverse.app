@@ -53,7 +53,7 @@ abstract class InstanceTrendsBloc extends DisposableOwner
     hashtagPaginationListBloc.refreshWithoutController();
   }
 
-  IUnifediApiInstanceService get UnifediApiInstanceService;
+  IUnifediApiInstanceService get unifediApiInstanceService;
 
   @override
   IUnifediApiInstance? get instance => instanceSubject.value;

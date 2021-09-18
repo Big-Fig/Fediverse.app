@@ -24,7 +24,7 @@ abstract class AccountStatusesFavouritesNetworkOnlyListBloc
     String? minId,
     String? maxId,
   }) async {
-    var pleromaStatuses =
+    var unifediApiStatuses =
         await unifediApiAccountService.getAccountFavouritedStatuses(
       accountId: account!.remoteId,
       pagination: UnifediApiPagination(
@@ -34,9 +34,9 @@ abstract class AccountStatusesFavouritesNetworkOnlyListBloc
       ),
     );
 
-    return pleromaStatuses
+    return unifediApiStatuses
         .map(
-          (pleromaStatus) => pleromaStatus.toDbStatusPopulatedWrapper(),
+          (unifediApiStatus) => unifediApiStatus.toDbStatusPopulatedWrapper(),
         )
         .toList();
   }

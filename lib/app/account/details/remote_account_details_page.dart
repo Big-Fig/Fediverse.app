@@ -183,9 +183,9 @@ Future<IStatus?> loadRemoteAccountAnyStatusOnLocalInstance(
     onlyWithMedia: null,
   );
 
-  var firstPleromaStatus = remoteStatuses.firstOrNull;
+  var firstUnifediApiStatus = remoteStatuses.firstOrNull;
 
-  return firstPleromaStatus?.toDbStatusPopulatedWrapper();
+  return firstUnifediApiStatus?.toDbStatusPopulatedWrapper();
 }
 
 MaterialPageRoute createRemoteAccountDetailsPageRoute({

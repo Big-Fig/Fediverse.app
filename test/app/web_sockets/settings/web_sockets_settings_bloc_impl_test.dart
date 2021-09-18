@@ -5,12 +5,11 @@ import 'package:fedi/app/web_sockets/settings/local_preferences/instance/instanc
 import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc_impl.dart';
 import 'package:fedi/app/web_sockets/settings/web_sockets_settings_model.dart';
 import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
-import 'package:fediverse_api/fediverse_api.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../rxdart/rxdart_test_helper.dart';
 import 'web_sockets_settings_model_test_helper.dart';
-import 'package:fediverse_api/fediverse_api_utils.dart';
 
 // ignore_for_file: no-magic-number, avoid-late-keyword
 void main() {

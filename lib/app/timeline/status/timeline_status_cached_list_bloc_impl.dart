@@ -415,13 +415,13 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
     switch (timelineType) {
       case TimelineType.public:
         onlyWithContextTypes = [
-          UnifediApiFilterContextType.public,
+          UnifediApiFilterContextType.publicValue,
         ];
         break;
       case TimelineType.home:
       case TimelineType.customList:
         onlyWithContextTypes = [
-          UnifediApiFilterContextType.homeAndCustomLists,
+          UnifediApiFilterContextType.homeValue,
         ];
         break;
       case TimelineType.hashtag:

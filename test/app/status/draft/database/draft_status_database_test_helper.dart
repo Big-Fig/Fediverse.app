@@ -1,11 +1,11 @@
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/draft/draft_status_model.dart';
 import 'package:fedi/app/status/post/post_status_model.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:unifedi_api/unifedi_api.dart';
+import 'package:unifedi_api/unifedi_api_mock_helper.dart';
 
 import '../../post/post_status_model_helper.dart';
-import 'package:unifedi_api/unifedi_api_mock_helper.dart';
 
 // ignore_for_file: no-magic-number
 class DraftStatusDatabaseMockHelper {
@@ -36,9 +36,8 @@ class DraftStatusDatabaseMockHelper {
             ),
           ],
           poll: PostStatusModelMockHelper.createTestPostStatusPoll(seed: seed),
-          inReplyToPleromaStatus:
-              UnifediApiStatusMockHelper.generate(
-            seed: seed + 'inReplyToPleromaStatus',
+          inReplyToUnifediApiStatus: UnifediApiStatusMockHelper.generate(
+            seed: seed + 'inReplyToUnifediApiStatus',
           ),
           inReplyToConversationId: seed + 'inReplyToConversationId',
           isNsfwSensitiveEnabled: seed.hashCode % 2 == 0,

@@ -13,6 +13,7 @@ import 'package:fediverse_api/fediverse_api.dart';
 class LocalInstanceTrendsBloc extends InstanceTrendsBloc
     implements IInstanceTrendsBloc {
 
+  @override
   final IUnifediApiInstanceService unifediApiInstanceService;
 
   LocalInstanceTrendsBloc({

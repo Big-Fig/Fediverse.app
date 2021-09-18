@@ -14,11 +14,10 @@ import 'package:fedi/form/group/one_type/one_type_form_group_bloc.dart';
 import 'package:fedi/form/group/one_type/one_type_form_group_bloc_impl.dart';
 import 'package:fedi/form/group/pair/link_pair_form_group_bloc.dart';
 import 'package:fedi/form/group/pair/link_pair_form_group_bloc_impl.dart';
+import 'package:fedi/unifedi/api/field/unifedi_api_field_extension.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:unifedi_api/unifedi_api.dart';
-
-import '../../../../unifedi/api/field/unifedi_api_field_extension.dart';
 
 class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
   final ICurrentAuthInstanceBloc currentAuthInstanceBloc;
@@ -236,70 +235,10 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
 
   @override
   Future submitChanges() async {
-    await _updateFiles();
-
     await _updateData();
   }
 
   Future _updateData() async {
-    var fieldsAttributes = <int, UnifediApiField>{};
-
-    customFieldsGroupBloc.items.asMap().entries.forEach(
-      (entry) {
-        var index = entry.key;
-        var field = entry.value;
-        fieldsAttributes[index] = UnifediApiField(
-          name: field.keyField.currentValue,
-          value: field.valueField.currentValue,
-          verifiedAt: null,
-        );
-      },
-    );
-
-    var isPleromaInstance = currentAuthInstanceBloc.currentInstance!.isPleroma;
-
-    var remoteMyAccount = await unifediApiMyAccountService.updateMyCredentials(
-      displayName: displayNameField.currentValue,
-      note: noteField.currentValue,
-      fieldsAttributes: fieldsAttributes,
-      locked: lockedField.currentValue,
-      discoverable: discoverableField.currentValue,
-      bot: botField.currentValue,
-      acceptsChatMessages:
-          isPleromaInstance ? acceptsChatMessagesField.currentValue : null,
-      allowFollowingMove:
-          isPleromaInstance ? allowFollowingMoveField.currentValue : null,
-      backgroundImage: await backgroundField.currentMediaDeviceFile?.loadFile(),
-      hideFavorites:
-          isPleromaInstance ? hideFavouritesField.currentValue : null,
-      hideFollowers: isPleromaInstance ? hideFollowersField.currentValue : null,
-      hideFollowersCount:
-          isPleromaInstance ? hideFollowersCountField.currentValue : null,
-      hideFollows: isPleromaInstance ? hideFollowsField.currentValue : null,
-      hideFollowsCount:
-          isPleromaInstance ? hideFollowsCountField.currentValue : null,
-      noRichText: isPleromaInstance ? noRichTextField.currentValue : null,
-      showRole: isPleromaInstance ? showRoleField.currentValue : null,
-      skipThreadContainment:
-          isPleromaInstance ? skipThreadContainmentField.currentValue : null,
-      // todo: check
-      alsoKnownAs: null,
-      defaultScope: null,
-      settingsStore: null,
-      sensitive: null,
-      avatar: null,
-      language: null,
-      privacy: null,
-      deleteAvatar: null,
-      header: null,
-      deleteBackgroundImage: null,
-      deleteHeader: null,
-    );
-
-    await myAccountBloc.updateMyAccountByMyUnifediApiAccount(remoteMyAccount);
-  }
-
-  Future _updateFiles() async {
     var avatarPickedFile = avatarField.isSomethingChanged
         ? avatarField.currentMediaDeviceFile
         : null;
@@ -310,40 +249,105 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
     var backgroundPickedFile = backgroundField.isSomethingChanged
         ? backgroundField.currentMediaDeviceFile
         : null;
-    var isAnyFileExist = avatarPickedFile != null ||
-        headerPickedFile != null ||
-        backgroundPickedFile != null;
-    if (isAnyFileExist) {
-      var request = UnifediApiMyAccountFilesRequest(
-        avatar: await avatarPickedFile?.loadFile(),
-        header: await headerPickedFile?.loadFile(),
-        backgroundImage: await backgroundPickedFile?.loadFile(),
-      );
 
-      await _sendUnifediApiMyAccountFilesRequest(request);
+    var fieldsAttributes = <UnifediApiField>[];
 
-      if (avatarPickedFile?.isNeedDeleteAfterUsage == true) {
-        await avatarPickedFile!.delete();
-      }
-      if (headerPickedFile?.isNeedDeleteAfterUsage == true) {
-        await headerPickedFile!.delete();
-      }
-      if (backgroundPickedFile?.isNeedDeleteAfterUsage == true) {
-        await backgroundPickedFile!.delete();
-      }
+    customFieldsGroupBloc.items.forEach(
+      (field) {
+        fieldsAttributes.add(
+          UnifediApiField(
+            name: field.keyField.currentValue,
+            value: field.valueField.currentValue,
+            verifiedAt: null,
+          ),
+        );
+      },
+    );
+
+    var isPleromaInstance = currentAuthInstanceBloc.currentInstance!.isPleroma;
+
+    var remoteMyAccount = await unifediApiMyAccountService.updateMyCredentials(
+      editMyAccount: await _calculateUnifediApiEditMyAccount(
+        isPleromaInstance: isPleromaInstance,
+        fieldsAttributes: fieldsAttributes,
+      ),
+    );
+
+    await myAccountBloc.updateMyAccountByMyUnifediApiAccount(remoteMyAccount);
+
+    if (avatarPickedFile?.isNeedDeleteAfterUsage == true) {
+      await avatarPickedFile!.delete();
+    }
+    if (headerPickedFile?.isNeedDeleteAfterUsage == true) {
+      await headerPickedFile!.delete();
+    }
+    if (backgroundPickedFile?.isNeedDeleteAfterUsage == true) {
+      await backgroundPickedFile!.delete();
     }
   }
 
-  UnifediApiMyAccountEdit _calculateUnifediApiMyAccountEdit() {}
+  Future<UnifediApiEditMyAccount> _calculateUnifediApiEditMyAccount({
+    required bool isPleromaInstance,
+    required List<UnifediApiField> fieldsAttributes,
+  }) async =>
+      UnifediApiEditMyAccount(
+        displayName: displayNameField.currentValue,
+        note: noteField.currentValue,
+        fieldsAttributes: fieldsAttributes,
+        locked: lockedField.currentValue,
+        discoverable: discoverableField.currentValue,
+        bot: botField.currentValue,
+        acceptsChatMessages:
+            isPleromaInstance ? acceptsChatMessagesField.currentValue : null,
+        allowFollowingMove:
+            isPleromaInstance ? allowFollowingMoveField.currentValue : null,
+        backgroundImageLocalFilePath:
+            await backgroundField.currentMediaDeviceFile?.calculateFilePath(),
 
-  Future _sendUnifediApiMyAccountFilesRequest(
-    UnifediApiMyAccountFilesRequest unifediApiMyAccountFilesRequest,
-  ) async {
-    var remoteMyAccount = await unifediApiMyAccountService
-        .updateFiles(unifediApiMyAccountFilesRequest);
+        hideFavorites:
+            isPleromaInstance ? hideFavouritesField.currentValue : null,
 
-    await myAccountBloc.updateMyAccountByMyUnifediApiAccount(remoteMyAccount);
-  }
+        hideFollowers:
+            isPleromaInstance ? hideFollowersField.currentValue : null,
+
+        hideFollowersCount:
+            isPleromaInstance ? hideFollowersCountField.currentValue : null,
+
+        hideFollows: isPleromaInstance ? hideFollowsField.currentValue : null,
+
+        hideFollowsCount:
+            isPleromaInstance ? hideFollowsCountField.currentValue : null,
+
+        noRichText: isPleromaInstance ? noRichTextField.currentValue : null,
+
+        showRole: isPleromaInstance ? showRoleField.currentValue : null,
+
+        skipThreadContainment:
+            isPleromaInstance ? skipThreadContainmentField.currentValue : null,
+
+        // todo: check
+        alsoKnownAs: null,
+
+        defaultScope: null,
+
+        settingsStore: null,
+
+        sensitive: null,
+
+        avatarLocalFilePath: null,
+
+        language: null,
+
+        privacy: null,
+
+        deleteAvatar: null,
+
+        headerLocalFilePath: null,
+
+        deleteBackgroundImage: null,
+
+        deleteHeader: null,
+      );
 
   static EditMyAccountBloc createFromContext(BuildContext context) {
     var info = ICurrentAuthInstanceBloc.of(context, listen: false)

@@ -25,11 +25,11 @@ Future goToPleromaChatWithAccount({
           .performPleromaAsyncOperation<IPleromaChat?>(
         context: context,
         asyncCode: () async {
-          var pleromaChatService =
+          var pleromaApiChatService =
               Provider.of<IUnifediApiChatService>(context, listen: false);
 
           var unifediApiChat =
-              await pleromaChatService.getOrCreateChatByAccountId(
+              await pleromaApiChatService.getOrCreateChatByAccountId(
             accountId: account.remoteId,
           );
 

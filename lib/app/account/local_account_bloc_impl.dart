@@ -25,7 +25,7 @@ class LocalAccountBloc extends AccountBloc {
 
   final IAccountRepository accountRepository;
   final IStatusRepository statusRepository;
-  final IUnifediApiWebSocketsService pleromaWebSocketsService;
+  final IUnifediApiWebSocketsService unifediApiWebSocketsService;
   final bool isNeedWatchLocalRepositoryForUpdates;
   final bool isNeedPreFetchRelationship;
 
@@ -51,7 +51,7 @@ class LocalAccountBloc extends AccountBloc {
       );
 
   LocalAccountBloc({
-    required this.pleromaWebSocketsService,
+    required this.unifediApiWebSocketsService,
     required this.myAccount,
     required this.accountRepository,
     required this.statusRepository,
@@ -91,7 +91,7 @@ class LocalAccountBloc extends AccountBloc {
   }) =>
       LocalAccountBloc(
         isNeedPreFetchRelationship: isNeedPreFetchRelationship,
-        pleromaWebSocketsService:
+        unifediApiWebSocketsService:
             Provider.of<IUnifediApiWebSocketsService>(context, listen: false),
         statusRepository: IStatusRepository.of(context, listen: false),
         account: account,

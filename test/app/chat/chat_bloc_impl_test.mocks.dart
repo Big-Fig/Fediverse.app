@@ -129,7 +129,7 @@ class MockIUnifediApiChatService extends _i1.Mock
           as _i7.Future<_i3.IUnifediApiChat>);
   @override
   _i7.Future<_i3.IUnifediApiChatMessage> sendMessage(
-          {String? chatId, _i3.IUnifediApiChatMessageSendData? data}) =>
+          {String? chatId, _i3.IUnifediApiPostChatMessage? data}) =>
       (super.noSuchMethod(
           Invocation.method(#sendMessage, [], {#chatId: chatId, #data: data}),
           returnValue: Future<_i3.IUnifediApiChatMessage>.value(
@@ -184,7 +184,7 @@ class MockIUnifediApiMyAccountService extends _i1.Mock
           as bool);
   @override
   _i7.Future<_i4.IUnifediApiMyAccount> updateCredentials(
-          _i4.IUnifediApiMyAccountEdit? accountEditData) =>
+          _i4.IUnifediApiEditMyAccount? accountEditData) =>
       (super.noSuchMethod(
               Invocation.method(#updateCredentials, [accountEditData]),
               returnValue: Future<_i4.IUnifediApiMyAccount>.value(

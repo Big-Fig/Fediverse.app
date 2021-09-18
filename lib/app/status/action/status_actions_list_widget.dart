@@ -9,6 +9,7 @@ import 'package:fedi/app/status/action/status_reblog_action_widget.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class StatusActionsListWidget extends StatelessWidget {
   const StatusActionsListWidget();
@@ -29,6 +30,7 @@ class StatusActionsListWidget extends StatelessWidget {
       isPleromaInstance =
           remoteInstanceBloc.unifediApiInstance!.typeAsUnifediApi.isPleroma;
     }
+
 
     return Padding(
       padding: const EdgeInsets.symmetric(

@@ -23,7 +23,7 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
   final IMyAccountBloc myAccountBloc;
   final IUnifediApiInstanceService pleromaInstanceService;
   final IUnifediApiNotificationService pleromaNotificationService;
-  final IUnifediApiChatService pleromaChatService;
+  final IUnifediApiChatService pleromaApiChatService;
   final IUnifediApiConversationService pleromaConversationService;
   final IUnifediApiFilterService unifediApiFilterService;
   final IFilterRepository filterRepository;
@@ -40,7 +40,7 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
     required this.pleromaAuthRestService,
     required this.unifediApiFilterService,
     required this.pleromaConversationService,
-    required this.pleromaChatService,
+    required this.pleromaApiChatService,
     required this.pleromaNotificationService,
     required this.filterRepository,
     required this.notificationRepository,
@@ -223,8 +223,13 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
   }
 
   Future updateNotifications() async {
-    var remoteNotifications =
-        await pleromaNotificationService.getNotifications();
+    var remoteNotifications = await pleromaNotificationService.getNotifications(
+      pagination: null,
+      excludeTypes: null,
+      onlyFromAccountId: null,
+      includeTypes: null,
+      excludeVisibilities: null,
+    );
     await notificationRepository.upsertAllInRemoteType(
       remoteNotifications,
       batchTransaction: null,
@@ -232,7 +237,7 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
   }
 
   Future updateChats() async {
-    var remoteChats = await pleromaChatService.getChats();
+    var remoteChats = await pleromaApiChatService.getChats();
     await pleromaChatRepository.upsertAllInRemoteType(
       remoteChats,
       batchTransaction: null,
@@ -264,7 +269,7 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
           context,
           listen: false,
         ),
-        pleromaChatService: Provider.of<IUnifediApiChatService>(
+        pleromaApiChatService: Provider.of<IUnifediApiChatService>(
           context,
           listen: false,
         ),

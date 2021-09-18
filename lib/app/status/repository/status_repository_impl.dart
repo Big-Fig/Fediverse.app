@@ -652,7 +652,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     if (batchTransaction != null) {
       // if conversation not specified we try to fetch it from status
       conversationRemoteId = conversationRemoteId ??
-          remoteStatus.pleroma?.directConversationId?.toString();
+          remoteStatus.directConversationId?.toString();
 
       _logger.finer(() => 'upsertRemoteStatus $remoteStatus '
           'listRemoteId => $listRemoteId '

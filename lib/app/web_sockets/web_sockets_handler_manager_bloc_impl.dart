@@ -20,7 +20,7 @@ import 'package:fediverse_api/fediverse_api_utils.dart';
 
 class WebSocketsHandlerManagerBloc extends DisposableOwner
     implements IWebSocketsHandlerManagerBloc {
-  final IUnifediApiWebSocketsService pleromaWebSocketsService;
+  final IUnifediApiWebSocketsService unifediApiWebSocketsService;
   final IConversationChatRepository conversationRepository;
   final INotificationRepository notificationRepository;
   final IInstanceAnnouncementRepository instanceAnnouncementRepository;
@@ -31,7 +31,7 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
   final IMyAccountBloc myAccountBloc;
 
   WebSocketsHandlerManagerBloc({
-    required this.pleromaWebSocketsService,
+    required this.unifediApiWebSocketsService,
     required this.conversationRepository,
     required this.notificationRepository,
     required this.instanceAnnouncementRepository,
@@ -52,7 +52,7 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
         handlerType: handlerType,
         notification: notification,
         chat: chat,
-        pleromaWebSocketsService: pleromaWebSocketsService,
+        unifediApiWebSocketsService: unifediApiWebSocketsService,
         statusRepository: statusRepository,
         conversationRepository: conversationRepository,
         notificationRepository: notificationRepository,
@@ -70,7 +70,7 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
   }) =>
       AccountWebSocketsHandler(
         handlerType: handlerType,
-        pleromaWebSocketsService: pleromaWebSocketsService,
+        unifediApiWebSocketsService: unifediApiWebSocketsService,
         statusRepository: statusRepository,
         conversationRepository: conversationRepository,
         notificationRepository: notificationRepository,
@@ -93,7 +93,7 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
         instanceAnnouncementRepository: instanceAnnouncementRepository,
         conversationRepository: conversationRepository,
         statusRepository: statusRepository,
-        pleromaWebSocketsService: pleromaWebSocketsService,
+        unifediApiWebSocketsService: unifediApiWebSocketsService,
         chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
         conversationChatNewMessagesHandlerBloc:
             conversationChatNewMessagesHandlerBloc,
@@ -105,7 +105,7 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
     required WebSocketsChannelHandlerType handlerType,
   }) =>
       ConversationChatWebSocketsHandler(
-        pleromaWebSocketsService: pleromaWebSocketsService,
+        unifediApiWebSocketsService: unifediApiWebSocketsService,
         statusRepository: statusRepository,
         conversationRepository: conversationRepository,
         notificationRepository: notificationRepository,
@@ -132,7 +132,7 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
         onlyMedia: onlyMedia,
         onlyRemote: onlyRemote,
         onlyFromInstance: onlyFromInstance,
-        pleromaWebSocketsService: pleromaWebSocketsService,
+        unifediApiWebSocketsService: unifediApiWebSocketsService,
         statusRepository: statusRepository,
         conversationRepository: conversationRepository,
         notificationRepository: notificationRepository,
@@ -153,7 +153,7 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
         handlerType: handlerType,
         hashtag: hashtag,
         local: local,
-        pleromaWebSocketsService: pleromaWebSocketsService,
+        unifediApiWebSocketsService: unifediApiWebSocketsService,
         statusRepository: statusRepository,
         conversationRepository: conversationRepository,
         notificationRepository: notificationRepository,
@@ -172,7 +172,7 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
       CustomListStatusListWebSocketsHandler(
         handlerType: handlerType,
         customListRemoteId: listId,
-        pleromaWebSocketsService: pleromaWebSocketsService,
+        unifediApiWebSocketsService: unifediApiWebSocketsService,
         statusRepository: statusRepository,
         conversationRepository: conversationRepository,
         notificationRepository: notificationRepository,

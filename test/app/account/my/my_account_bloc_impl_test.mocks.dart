@@ -69,7 +69,7 @@ class MockIUnifediApiMyAccountService extends _i1.Mock
           as bool);
   @override
   _i6.Future<_i3.IUnifediApiMyAccount> updateCredentials(
-          _i3.IUnifediApiMyAccountEdit? accountEditData) =>
+          _i3.IUnifediApiEditMyAccount? accountEditData) =>
       (super.noSuchMethod(
               Invocation.method(#updateCredentials, [accountEditData]),
               returnValue: Future<_i3.IUnifediApiMyAccount>.value(

@@ -21,7 +21,7 @@ abstract class AccountStatusesMediaOnlyNetworkOnlyListBloc
     String? minId,
     String? maxId,
   }) async {
-    var pleromaStatuses = await unifediApiAccountService.getAccountStatuses(
+    var unifediApiStatuses = await unifediApiAccountService.getAccountStatuses(
       onlyWithMedia: true,
       accountId: account!.remoteId,
       pagination: UnifediApiPagination(
@@ -37,9 +37,9 @@ abstract class AccountStatusesMediaOnlyNetworkOnlyListBloc
       withMuted: null,
     );
 
-    return pleromaStatuses
+    return unifediApiStatuses
         .map(
-          (pleromaStatus) => pleromaStatus.toDbStatusPopulatedWrapper(),
+          (unifediApiStatus) => unifediApiStatus.toDbStatusPopulatedWrapper(),
         )
         .toList();
   }

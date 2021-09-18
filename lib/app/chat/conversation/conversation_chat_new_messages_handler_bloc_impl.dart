@@ -36,9 +36,9 @@ class ConversationChatNewMessagesHandlerBloc extends DisposableOwner
         await _updateConversationById(conversationRemoteId);
       } else {
         if (conversation.lastStatus != null) {
-          conversation = conversation.copyWith(
+          conversation = conversation.toUnifediApiConversation().copyWith(
             accounts: [
-              conversation.lastStatus!.account,
+              conversation.lastStatus!.account.toUnifediApiAccount(),
             ],
           );
         }

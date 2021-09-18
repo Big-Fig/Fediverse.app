@@ -6,12 +6,12 @@ import 'package:unifedi_api/unifedi_api.dart';
 
 class PleromaChatNewMessagesHandlerBloc extends DisposableOwner
     implements IPleromaChatNewMessagesHandlerBloc {
-  final IUnifediApiChatService pleromaChatService;
+  final IUnifediApiChatService pleromaApiChatService;
   final IPleromaChatRepository chatRepository;
   final IPleromaChatCurrentBloc currentChatBloc;
 
   PleromaChatNewMessagesHandlerBloc({
-    required this.pleromaChatService,
+    required this.pleromaApiChatService,
     required this.chatRepository,
     required this.currentChatBloc,
   });
@@ -26,7 +26,7 @@ class PleromaChatNewMessagesHandlerBloc extends DisposableOwner
       chatId,
     );
     if (chat == null) {
-      var remoteChat = await pleromaChatService.getChat(
+      var remoteChat = await pleromaApiChatService.getChat(
         id: chatId,
       );
       await chatRepository.upsertInRemoteType(
@@ -49,7 +49,7 @@ class PleromaChatNewMessagesHandlerBloc extends DisposableOwner
           currentChatBloc.currentChat?.remoteId == chatId;
 
       if (isMessageForOpenedChat) {
-        var updatedChat = await pleromaChatService.markChatAsRead(
+        var updatedChat = await pleromaApiChatService.markChatAsRead(
           chatId: chatId,
           lastReadChatMessageId: chatMessage.id,
         );
@@ -77,7 +77,7 @@ class PleromaChatNewMessagesHandlerBloc extends DisposableOwner
       var lastReadChatMessageId = chat.lastMessage?.id;
 
       if (lastReadChatMessageId != null) {
-        chat = await pleromaChatService.markChatAsRead(
+        chat = await pleromaApiChatService.markChatAsRead(
           chatId: chatId,
           lastReadChatMessageId: lastReadChatMessageId,
         );

@@ -43,18 +43,19 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
       visibility: pleromaVisibility,
     );
 
-    var pleromaStatusList = <IUnifediApiStatus>[];
+    var unifediApiStatusList = <IUnifediApiStatus>[];
 
     for (var sendData in sendDataList) {
       // todo: send to conversation id
-      var pleromaStatus = await unifediApiStatusService.postStatus(
+      var unifediApiStatus = await unifediApiStatusService.postStatus(
+        idempotencyKey: null,
         data: sendData,
       );
-      pleromaStatusList.add(pleromaStatus);
+      unifediApiStatusList.add(unifediApiStatus);
     }
 
     await statusRepository.upsertAllInRemoteType(
-      pleromaStatusList,
+      unifediApiStatusList,
       batchTransaction: null,
     );
 

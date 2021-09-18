@@ -4,7 +4,7 @@ import 'package:fedi/app/pending/pending_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
-extension PleromaStatusDbExtension on IUnifediApiStatus {
+extension UnifediApiStatusDbExtension on IUnifediApiStatus {
   DbStatusPopulatedWrapper toDbStatusPopulatedWrapper() {
     if (this is DbStatusPopulatedWrapper) {
       return this as DbStatusPopulatedWrapper;

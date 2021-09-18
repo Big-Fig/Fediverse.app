@@ -148,7 +148,7 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
 
   Future<IUnifediApiFilter> actuallySubmitFilter(
     String? filterRemoteId,
-    IPostUnifediApiFilter postPleromaFilter,
+    IUnifediApiPostFilter postPleromaFilter,
   ) async {
     var remoteFilter = await unifediApiFilterService.updateFilter(
       id: filterRemoteId!,

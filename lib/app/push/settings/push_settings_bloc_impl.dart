@@ -2,15 +2,16 @@ import 'dart:async';
 
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
+import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/push/settings/local_preferences/push_settings_local_preference_bloc.dart';
 import 'package:fedi/app/push/settings/push_settings_bloc.dart';
 import 'package:fedi/app/push/settings/push_settings_model.dart';
 import 'package:fedi/app/push/settings/relay/local_preferences/push_relay_settings_local_preference_bloc.dart';
 import 'package:fedi/app/push/settings/relay/push_relay_settings_model.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:fedi/push/fcm/fcm_push_service.dart';
 import 'package:fedi/push/relay/push_relay_service.dart';
 import 'package:logging/logging.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 final _logger = Logger('push_settings_bloc_impl.dart');
 
@@ -23,6 +24,7 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
   final IPushRelayService pushRelayService;
   final AuthInstance currentInstance;
   final IFcmPushService fcmPushService;
+  final IConfigService configService;
   final StreamController<Exception> failedToUpdateStreamController =
       StreamController.broadcast();
 
@@ -40,6 +42,7 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
     required this.pushRelayService,
     required this.currentInstance,
     required this.fcmPushService,
+    required this.configService,
   }) {
     failedToUpdateStreamController.disposeWith(this);
     addCustomDisposable(
@@ -209,8 +212,8 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
   bool get emojiReaction => settingsData.emojiReaction == true;
 
   @override
-  Stream<bool> get emojiReactionStream => settingsDataStream
-      .map((settings) => settings.emojiReaction == true);
+  Stream<bool> get emojiReactionStream =>
+      settingsDataStream.map((settings) => settings.emojiReaction == true);
 
   @override
   Future changeEmojiReaction(bool value) => updateSettings(
@@ -268,7 +271,7 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
     PushSettings? newSettings,
   ) async {
     bool success;
-    UnifediApiPushSubscription? subscription;
+    IUnifediApiPushSubscription? subscription;
     try {
       var pushRelayEndPointUrl = pushRelayService.createPushRelayEndPointUrl(
         account: currentInstance.acct,
@@ -276,29 +279,32 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
         fcmDeviceToken: deviceToken,
       );
       subscription = await pleromaPushService.subscribe(
-        endpointCallbackUrl: pushRelayEndPointUrl,
-        data: UnifediApiPushSubscribeData(
-          alerts: UnifediApiPushSubscribeRequestDataAlerts(
-            favourite: newSettings!.favourite,
-            follow: newSettings.follow,
-            mention: newSettings.mention,
-            reblog: newSettings.reblog,
-            poll: newSettings.poll,
-            chatMention: newSettings.chatMention,
-            emojiReaction: newSettings.emojiReaction,
+        metadata: UnifediApiPushSubscriptionMetadata(
+          endpoint: pushRelayEndPointUrl,
+          keys: UnifediApiPushSubscriptionKeys(
+            auth: configService.pushSubscriptionKeysAuth!,
+            p256dh: configService.pushSubscriptionKeysP256dh!,
           ),
+        ),
+        alerts: UnifediApiPushSubscriptionAlerts(
+          favourite: newSettings!.favourite,
+          follow: newSettings.follow,
+          mention: newSettings.mention,
+          reblog: newSettings.reblog,
+          poll: newSettings.poll,
+          chatMention: newSettings.chatMention,
+          emojiReaction: newSettings.emojiReaction,
         ),
       );
       await instancePushSettingsLocalPreferenceBloc.setValue(
         PushSettings(
-          favourite: subscription?.alerts.favourite ?? false,
-          follow: subscription?.alerts.follow ?? false,
-          mention: subscription?.alerts.mention ?? false,
-          reblog: subscription?.alerts.reblog ?? false,
-          poll: subscription?.alerts.poll ?? false,
-          chatMention: subscription?.alerts.chatMention ?? false,
-          emojiReaction:
-              subscription?.alerts.emojiReaction ?? false,
+          favourite: subscription.alerts.favourite ?? false,
+          follow: subscription.alerts.follow ?? false,
+          mention: subscription.alerts.mention ?? false,
+          reblog: subscription.alerts.reblog ?? false,
+          poll: subscription.alerts.poll ?? false,
+          chatMention: subscription.alerts.chatMention ?? false,
+          emojiReaction: subscription.alerts.emojiReaction ?? false,
         ),
       );
 

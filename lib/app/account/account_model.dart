@@ -214,7 +214,7 @@ class DbAccountPopulatedWrapper implements IAccount {
   DateTime? get lastStatusAt => dbAccount.lastStatusAt;
 
   @override
-  int get localId => dbAccount.id;
+  int? get localId => dbAccount.id;
 
   @override
   bool? get locked => dbAccount.locked;

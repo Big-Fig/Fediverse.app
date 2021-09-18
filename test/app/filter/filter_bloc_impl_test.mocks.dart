@@ -82,7 +82,7 @@ class MockIUnifediApiFilterService extends _i1.Mock
           returnValue: Future<dynamic>.value()) as _i5.Future<dynamic>);
   @override
   _i5.Future<_i3.IUnifediApiFilter> createFilter(
-          {_i3.IPostUnifediApiFilter? postPleromaFilter}) =>
+          {_i3.IUnifediApiPostFilter? postPleromaFilter}) =>
       (super.noSuchMethod(
               Invocation.method(
                   #createFilter, [], {#postPleromaFilter: postPleromaFilter}),
@@ -92,7 +92,7 @@ class MockIUnifediApiFilterService extends _i1.Mock
   @override
   _i5.Future<_i3.IUnifediApiFilter> updateFilter(
           {String? filterRemoteId,
-          _i3.IPostUnifediApiFilter? postPleromaFilter}) =>
+          _i3.IUnifediApiPostFilter? postPleromaFilter}) =>
       (super.noSuchMethod(
               Invocation.method(#updateFilter, [], {
                 #filterRemoteId: filterRemoteId,

@@ -11,7 +11,7 @@ abstract class AccountStatusesPinnedOnlyNetworkOnlyListBloc
     required IUnifediApiAccountService unifediApiAccountService,
   }) : super(
             account: account,
-            unifediApiAccountService: unifediApiAccountService);
+            unifediApiAccountService: unifediApiAccountService,);
 
   @override
   IUnifediApiService get unifediApi => unifediApiAccountService;
@@ -23,7 +23,7 @@ abstract class AccountStatusesPinnedOnlyNetworkOnlyListBloc
     String? minId,
     String? maxId,
   }) async {
-    var pleromaStatuses = await unifediApiAccountService.getAccountStatuses(
+    var unifediApiStatuses = await unifediApiAccountService.getAccountStatuses(
       pinned: true,
       accountId: account!.remoteId,
       pagination: UnifediApiPagination(
@@ -39,8 +39,8 @@ abstract class AccountStatusesPinnedOnlyNetworkOnlyListBloc
       onlyWithMedia: null,
     );
 
-    return pleromaStatuses
-        .map((pleromaStatus) => pleromaStatus.toDbStatusPopulatedWrapper())
+    return unifediApiStatuses
+        .map((unifediApiStatus) => unifediApiStatus.toDbStatusPopulatedWrapper())
         .toList();
   }
 }

@@ -2,11 +2,9 @@ import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/instance/announcement/instance_announcement_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:unifedi_api/unifedi_api_mock_helper.dart';
 
 import '../../../../date_time/date_time_test_helper.dart';
-import 'package:unifedi_api/unifedi_api_mock_helper.dart';
 
 // ignore_for_file: no-magic-number
 class InstanceAnnouncementDatabaseMockHelper {
@@ -27,12 +25,10 @@ class InstanceAnnouncementDatabaseMockHelper {
       read: read,
       content: seed + 'content',
       reactions: [
-        UnifediApiEmojiReactionMockHelper
-            .generate(
+        UnifediApiEmojiReactionMockHelper.generate(
           seed: seed + ' 1',
         ),
-        UnifediApiEmojiReactionMockHelper
-            .generate(
+        UnifediApiEmojiReactionMockHelper.generate(
           seed: seed + ' 2',
         ),
       ],

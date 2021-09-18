@@ -199,7 +199,7 @@ class _MediaAttachmentDetailsPageState
   }
 
   Widget _buildCached(
-      BuildContext context, IUnifediApiMediaAttachment mediaAttachment) {
+      BuildContext context, IUnifediApiMediaAttachment mediaAttachment,) {
     return IFilesCacheService.of(context).createCachedNetworkImageWidget(
       imageBuilder: (context, imageProvider) {
         return PhotoView(

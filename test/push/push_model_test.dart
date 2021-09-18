@@ -27,7 +27,7 @@ void main() {
     );
   });
 
-  test('PostUnifediApiFilter copyWith', () async {
+  test('UnifediApiPostFilter copyWith', () async {
     var obj1 = PushModelMockHelper.createTestPushMessage(
       seed: 'seed1',
     );

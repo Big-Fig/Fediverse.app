@@ -1,9 +1,8 @@
 import 'package:connectivity/connectivity.dart';
 import 'package:easy_dispose/easy_dispose.dart';
+import 'package:fedi/connection/connection_service.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
-
-import 'connection_service.dart';
 
 var _logger = Logger('connection_service_impl.dart');
 
@@ -11,7 +10,7 @@ class ConnectionService extends DisposableOwner implements IConnectionService {
   final Connectivity connectivity = Connectivity();
 
   final BehaviorSubject<ConnectivityResult> _connectionStateSubject =
-  BehaviorSubject.seeded(ConnectivityResult.none);
+      BehaviorSubject.seeded(ConnectivityResult.none);
 
   @override
   Stream<ConnectivityResult> get connectionStateStream =>
@@ -27,14 +26,14 @@ class ConnectionService extends DisposableOwner implements IConnectionService {
 
   bool _mapConnectivityResult(connectivityResult) =>
       connectivityResult == ConnectivityResult.wifi ||
-          connectivityResult == ConnectivityResult.mobile;
+      connectivityResult == ConnectivityResult.mobile;
 
   @override
   bool get isConnected => _mapConnectivityResult(connectionState);
 
   ConnectionService() {
     connectivity.onConnectivityChanged.listen(
-          (connectivityResult) {
+      (connectivityResult) {
         _updateConnectivity(connectivityResult);
       },
     ).disposeWith(this);

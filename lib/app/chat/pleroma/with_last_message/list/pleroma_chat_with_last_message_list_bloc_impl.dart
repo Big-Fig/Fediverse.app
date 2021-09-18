@@ -51,7 +51,7 @@ class PleromaChatWithLastMessageListBloc extends DisposableOwner
   final IPaginationSettingsBloc paginationSettingsBloc;
 
   PleromaChatWithLastMessageListBloc({
-    required IUnifediApiChatService pleromaChatService,
+    required IUnifediApiChatService pleromaApiChatService,
     required this.chatMessageRepository,
     required this.chatRepository,
     required this.chatWithLastMessageRepository,
@@ -61,7 +61,7 @@ class PleromaChatWithLastMessageListBloc extends DisposableOwner
   }) {
     _logger.finest(() => 'constructor');
     chatListBloc = PleromaChatWithLastMessageCachedListBloc(
-      pleromaChatService: pleromaChatService,
+      pleromaApiChatService: pleromaApiChatService,
       chatWithLastMessageRepository: chatWithLastMessageRepository,
       chatRepository: chatRepository,
     )..disposeWith(this);
@@ -78,7 +78,7 @@ class PleromaChatWithLastMessageListBloc extends DisposableOwner
       mergeNewItemsImmediately: true,
     )..disposeWith(this);
 
-    if (pleromaChatService.isPleroma) {
+    if (pleromaApiChatService.isPleroma) {
       webSocketsHandlerManagerBloc
           .listenPleromaChatChannel(
             handlerType: handlerType,
@@ -92,7 +92,7 @@ class PleromaChatWithLastMessageListBloc extends DisposableOwner
     required WebSocketsChannelHandlerType handlerType,
   }) =>
       PleromaChatWithLastMessageListBloc(
-        pleromaChatService:
+        pleromaApiChatService:
             Provider.of<IUnifediApiChatService>(context, listen: false),
         chatWithLastMessageRepository:
             IPleromaChatWithLastMessageRepository.of(context, listen: false),

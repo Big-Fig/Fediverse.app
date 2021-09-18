@@ -198,7 +198,7 @@ class MockIUnifediApiStatusService extends _i1.Mock
           as _i9.Future<_i4.IUnifediApiStatus>);
   @override
   _i9.Future<_i4.IUnifediApiScheduledStatus> scheduleStatus(
-          {_i4.IUnifediApiScheduleStatus? data}) =>
+          {_i4.IUnifediApiSchedulePostStatus? data}) =>
       (super.noSuchMethod(Invocation.method(#scheduleStatus, [], {#data: data}),
               returnValue: Future<_i4.IUnifediApiScheduledStatus>.value(
                   _FakeIUnifediApiScheduledStatus()))
@@ -369,7 +369,7 @@ class MockIUnifediApiMyAccountService extends _i1.Mock
           as bool);
   @override
   _i9.Future<_i6.IUnifediApiMyAccount> updateCredentials(
-          _i6.IUnifediApiMyAccountEdit? accountEditData) =>
+          _i6.IUnifediApiEditMyAccount? accountEditData) =>
       (super.noSuchMethod(
               Invocation.method(#updateCredentials, [accountEditData]),
               returnValue: Future<_i6.IUnifediApiMyAccount>.value(

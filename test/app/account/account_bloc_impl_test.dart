@@ -30,7 +30,7 @@ void main() {
   late AppDatabase database;
   late IAccountRepository accountRepository;
   late IStatusRepository statusRepository;
-  late MockIUnifediApiWebSocketsService pleromaWebSocketsService;
+  late MockIUnifediApiWebSocketsService unifediApiWebSocketsService;
 
   setUp(() async {
     database = AppDatabase(VmDatabase.memory());
@@ -48,7 +48,7 @@ void main() {
 
     account = await AccountMockHelper.createTestAccount(seed: 'seed1');
 
-    pleromaWebSocketsService = MockIUnifediApiWebSocketsService();
+    unifediApiWebSocketsService = MockIUnifediApiWebSocketsService();
 
     await accountRepository.upsertInRemoteType(
       account.toUnifediApiAccount(),
@@ -62,7 +62,7 @@ void main() {
       pleromaAuthAccountService: pleromaAuthAccountServiceMock,
       accountRepository: accountRepository,
       delayInit: false,
-      pleromaWebSocketsService: pleromaWebSocketsService,
+      unifediApiWebSocketsService: unifediApiWebSocketsService,
       statusRepository: statusRepository,
       myAccount: null,
     );
@@ -531,7 +531,7 @@ void main() {
         accountRemoteId: account.remoteId,
       ),
     ).thenAnswer(
-      (_) async => account.relationship!.copyWith(
+      (_) async => account.relationship!.toUnifediApiAccountRelationship().copyWith(
         blocking: true,
       ),
     );
@@ -541,7 +541,7 @@ void main() {
         accountRemoteId: account.remoteId,
       ),
     ).thenAnswer(
-      (_) async => account.relationship!.copyWith(
+      (_) async => account.relationship!.toUnifediApiAccountRelationship().copyWith(
         blocking: false,
       ),
     );
@@ -583,12 +583,12 @@ void main() {
     when(pleromaAuthAccountServiceMock.followAccount(
       accountRemoteId: account.remoteId,
     )).thenAnswer(
-      (_) async => account.relationship!.copyWith(following: true),
+      (_) async => account.relationship!.toUnifediApiAccountRelationship().copyWith(following: true),
     );
 
     when(pleromaAuthAccountServiceMock.unFollowAccount(
       accountRemoteId: account.remoteId,
-    )).thenAnswer((_) async => account.relationship!.copyWith(
+    )).thenAnswer((_) async => account.relationship!.toUnifediApiAccountRelationship().copyWith(
           following: false,
           requested: false,
         ));
@@ -631,7 +631,7 @@ void main() {
       accountRemoteId: account.remoteId,
       notifications: true,
       expireDurationInSeconds: null,
-    )).thenAnswer((_) async => account.relationship!.copyWith(
+    )).thenAnswer((_) async => account.toUnifediApiAccountRelationship().relationship!.copyWith(
           muting: true,
           mutingNotifications: true,
         ));
@@ -640,7 +640,7 @@ void main() {
       accountRemoteId: account.remoteId,
       notifications: false,
       expireDurationInSeconds: null,
-    )).thenAnswer((_) async => account.relationship!.copyWith(
+    )).thenAnswer((_) async => account.relationship!.toUnifediApiAccountRelationship().copyWith(
           muting: true,
           mutingNotifications: false,
         ));
@@ -648,7 +648,7 @@ void main() {
     when(pleromaAuthAccountServiceMock.unMuteAccount(
       accountRemoteId: account.remoteId,
     )).thenAnswer(
-      (_) async => account.relationship!.copyWith(muting: false),
+      (_) async => account.relationship!.toUnifediApiAccountRelationship().copyWith(muting: false),
     );
 
     if (accountBloc.relationshipMuting == true) {
@@ -695,13 +695,13 @@ void main() {
     when(pleromaAuthAccountServiceMock.pinAccount(
       accountRemoteId: account.remoteId,
     )).thenAnswer(
-      (_) async => account.relationship!.copyWith(muting: true),
+      (_) async => account.relationship!.toUnifediApiAccountRelationship().copyWith(muting: true),
     );
 
     when(pleromaAuthAccountServiceMock.unPinAccount(
       accountRemoteId: account.remoteId,
     )).thenAnswer(
-      (_) async => account.relationship!.copyWith(muting: false),
+      (_) async => account.relationship!.toUnifediApiAccountRelationship().copyWith(muting: false),
     );
 
     var initialValue = account.relationship!.muting!;

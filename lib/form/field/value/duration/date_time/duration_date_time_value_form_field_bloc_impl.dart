@@ -8,7 +8,7 @@ class DurationDateTimeValueFormFieldBloc
     extends ValueFormFieldBloc<DurationDateTime?>
     implements IDurationDateTimeValueFormFieldBloc {
   @override
-  final Duration minDuration;
+  final Duration? minDuration;
   @override
   final Duration? maxDuration;
 

@@ -108,7 +108,7 @@ class MockIUnifediApiStatusService extends _i1.Mock
           as _i8.Future<_i3.IUnifediApiStatus>);
   @override
   _i8.Future<_i3.IUnifediApiScheduledStatus> scheduleStatus(
-          {_i3.IUnifediApiScheduleStatus? data}) =>
+          {_i3.IUnifediApiSchedulePostStatus? data}) =>
       (super.noSuchMethod(Invocation.method(#scheduleStatus, [], {#data: data}),
               returnValue: Future<_i3.IUnifediApiScheduledStatus>.value(
                   _FakeIUnifediApiScheduledStatus()))

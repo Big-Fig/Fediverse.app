@@ -65,9 +65,9 @@ class MediaAttachmentListItemWidget extends StatelessWidget {
     var mediaAttachment = Provider.of<IUnifediApiMediaAttachment>(context);
     Widget child = const MediaAttachmentWidget();
     if (mediaAttachment.typeAsUnifediApi ==
-            UnifediApiMediaAttachmentType.image ||
+            UnifediApiMediaAttachmentType.imageValue ||
         mediaAttachment.typeAsUnifediApi ==
-            UnifediApiMediaAttachmentType.gifv) {
+            UnifediApiMediaAttachmentType.gifvValue) {
       child = InkWell(
         onTap: () {
           var mediaAttachmentListBloc =

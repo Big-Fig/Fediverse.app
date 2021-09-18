@@ -143,12 +143,22 @@ extension IUnifediApiPollExtension on IUnifediApiPoll {
   }
 
   PostStatusPoll toPostStatusPoll({
-    required UnifediApiInstancePollLimits limits,
+    required IUnifediApiInstancePollLimits? limits,
   }) {
+    Duration? durationLength;
+    var expiresAt = this.expiresAt;
+    if(expiresAt != null) {
+      durationLength = DateTime.now().difference(expiresAt).abs();
+      var minExpirationDuration = limits?.minExpirationDuration;
+      if(minExpirationDuration != null) {
+        if(minExpirationDuration> durationLength) {
+          durationLength = minExpirationDuration;
+        }
+      }
+    }
+
     return PostStatusPoll(
-      durationLength: expiresAt?.calculatePostDurationLength(
-        limits: limits,
-      ),
+      durationLength: durationLength,
       // todo: implement  hideTotals
       hideTotals: false,
       multiple: multiple,

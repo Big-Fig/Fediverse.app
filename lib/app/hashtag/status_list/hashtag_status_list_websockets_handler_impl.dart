@@ -13,7 +13,7 @@ import 'package:fediverse_api/fediverse_api_utils.dart';
 class HashtagStatusListWebSocketsHandler extends WebSocketsChannelHandler {
   HashtagStatusListWebSocketsHandler({
     required String hashtag,
-    required IUnifediApiWebSocketsService pleromaWebSocketsService,
+    required IUnifediApiWebSocketsService unifediApiWebSocketsService,
     required IStatusRepository statusRepository,
     required INotificationRepository notificationRepository,
     required IInstanceAnnouncementRepository instanceAnnouncementRepository,
@@ -26,7 +26,7 @@ class HashtagStatusListWebSocketsHandler extends WebSocketsChannelHandler {
     required IMyAccountBloc myAccountBloc,
   }) : super(
           myAccountBloc: myAccountBloc,
-          webSocketsChannel: pleromaWebSocketsService.getHashtagChannel(
+          webSocketsChannel: unifediApiWebSocketsService.getHashtagChannel(
             hashtag: hashtag,
             local: local,
           ),

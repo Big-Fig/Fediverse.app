@@ -132,9 +132,9 @@ class UnifediApiMyAccountSourceDatabaseConverter
   Map<String, dynamic> toJson(UnifediApiMyAccountSource obj) => obj.toJson();
 }
 
-class PleromaStatusDatabaseConverter
+class UnifediApiStatusDatabaseConverter
     extends JsonDatabaseConverter<UnifediApiStatus> {
-  const PleromaStatusDatabaseConverter() : super();
+  const UnifediApiStatusDatabaseConverter() : super();
 
   @override
   UnifediApiStatus fromJson(Map<String, dynamic>? json) =>

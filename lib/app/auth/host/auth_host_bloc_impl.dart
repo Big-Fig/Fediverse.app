@@ -13,7 +13,7 @@ import 'package:fedi/app/auth/oauth_last_launched/local_preferences/auth_oauth_l
 import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/connection/connection_service.dart';
-import 'package:fediverse_api/fediverse_api.dart';
+
 
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:unifedi_api/unifedi_api.dart';
@@ -45,7 +45,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
   String get instanceBaseUriScheme => instanceBaseUri.scheme;
 
   // ignore: avoid-late-keyword
-  late IUnifediApiApplicationService pleromaApplicationService;
+  late IUnifediApiInstanceService unifediApiInstanceService;
 
   // ignore: avoid-late-keyword
   late IRestService restService;
@@ -53,8 +53,6 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
   // ignore: avoid-late-keyword
   late IUnifediApiRestService unifediApiRestService;
 
-  // ignore: avoid-late-keyword
-  late IUnifediApiOAuthService pleromaOAuthService;
 
   // ignore: avoid-late-keyword
   late IUnifediApiAccountService unifediApiAccountService;
@@ -99,7 +97,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
       connectionService: connectionService,
     )..disposeWith(this);
 
-    pleromaApplicationService =
+    unifediApiApplicationService =
         UnifediApiApplicationService(restService: unifediApiRestService)
           ..disposeWith(this);
 
@@ -139,7 +137,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     _logger.finest(() => 'registerApplication');
     var redirectUri = await _calculateRedirectUri();
 
-    var application = await pleromaApplicationService.registerApp(
+    var application = await unifediApiApplicationService.registerApp(
       registrationRequest: UnifediApiApplicationRegistrationRequest(
         clientName: 'Fedi',
         redirectUris: redirectUri,
@@ -279,7 +277,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
       urlHost: instanceBaseUriHost.toLowerCase(),
       urlSchema: instanceBaseUriScheme,
       authCode: authCode,
-      token: token,
+      token: token.toUnifediApiOAuthToken(),
       acct: myAccount.acct,
       application: hostApplication,
       info: hostInstance.toUnifediApiInstance(),

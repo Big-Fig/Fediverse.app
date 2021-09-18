@@ -15,35 +15,29 @@ import 'package:unifedi_api/unifedi_api.dart';
 
 class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
   static DurationDateTimeValueFormFieldBloc createDurationDateTimeLengthBloc(
-    UnifediApiInstancePollLimits pollLimit,
-  ) {
-    var pollMinimumExpiration = pollLimit.minExpirationDurationOrDefault;
-
-    var pollMaximumExpiration = pollLimit.maxExpirationDurationOrDefault;
-
-    return DurationDateTimeValueFormFieldBloc(
+    IUnifediApiInstancePollLimits? pollLimit,
+  ) => DurationDateTimeValueFormFieldBloc(
       originValue: DurationDateTime(
-        duration: UnifediApiInstancePollLimits.defaultPollExpiration,
+        duration: Duration(days: 1),
         dateTime: null,
       ),
-      minDuration: pollMinimumExpiration,
-      maxDuration: pollMaximumExpiration,
+      minDuration: pollLimit?.minExpirationDuration,
+      maxDuration: pollLimit?.maxExpirationDuration,
       isNullValuePossible: false,
       isEnabled: true,
     );
-  }
 
-  final UnifediApiInstancePollLimits pollLimits;
+  final IUnifediApiInstancePollLimits? pollLimits;
 
-  int get pollMaximumOptionsCount => pollLimits.maxOptionsOrDefault;
+  int? get pollMaximumOptionsCount => pollLimits?.maxOptions;
 
-  int? get pollMaximumOptionLength => pollLimits.maxOptionCharsOrDefault;
+  int? get pollMaximumOptionLength => pollLimits?.maxOptionChars;
 
-  Duration get pollMinimumExpiration =>
-      pollLimits.minExpirationDurationOrDefault;
+  Duration? get pollMinimumExpiration =>
+      pollLimits?.minExpirationDuration;
 
-  Duration get pollMaximumExpiration =>
-      pollLimits.maxExpirationDurationOrDefault;
+  Duration? get pollMaximumExpiration =>
+      pollLimits?.maxExpirationDuration;
 
   PostStatusPollBloc({
     required this.pollLimits,

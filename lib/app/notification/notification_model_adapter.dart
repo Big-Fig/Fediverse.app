@@ -11,7 +11,7 @@ extension IPleromaNotificationExtension on IUnifediApiNotification {
     required bool? unread,
   }) {
     var remoteNotification = this;
-    var isSeen = remoteNotification.pleroma?.isSeen;
+    var isSeen = remoteNotification.isSeen;
     if (isSeen != null) {
       unread = !isSeen;
     }
@@ -25,7 +25,6 @@ extension IPleromaNotificationExtension on IUnifediApiNotification {
       chatRemoteId: remoteNotification.chatMessage?.chatId,
       chatMessageRemoteId: remoteNotification.chatMessage?.id,
       emoji: remoteNotification.emoji,
-      pleroma: remoteNotification.pleroma,
       type: remoteNotification.type,
       unread: unread == true,
       chatMessage: remoteNotification.chatMessage?.toUnifediApiChatMessage(),

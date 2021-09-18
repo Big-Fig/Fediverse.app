@@ -393,11 +393,11 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     await globalProviderService.asyncInitAndRegister<
         IUnifediApiConversationService>(pleromaConversationService);
 
-    var pleromaChatService =
+    var pleromaApiChatService =
         UnifediApiChatService(restApiAuthService: pleromaAuthRestService)
           ..disposeWith(this);
     await globalProviderService
-        .asyncInitAndRegister<IUnifediApiChatService>(pleromaChatService);
+        .asyncInitAndRegister<IUnifediApiChatService>(pleromaApiChatService);
 
     var pleromaInstanceService =
         UnifediApiInstanceService(restService: pleromaAuthRestService)
@@ -591,7 +591,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     var chatNewMessagesHandlerBloc = PleromaChatNewMessagesHandlerBloc(
       chatRepository: chatRepository,
       currentChatBloc: currentPleromaChatBloc,
-      pleromaChatService: pleromaChatService,
+      pleromaApiChatService: pleromaApiChatService,
     )..disposeWith(this);
 
     await globalProviderService.asyncInitAndRegister<
@@ -666,7 +666,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         statusRepository: statusRepository,
         chatMessageRepository: chatMessageRepository,
         unifediApiStatusService: unifediApiStatusService,
-        unifediApiChatService: pleromaChatService,
+        unifediApiChatService: pleromaApiChatService,
       )..disposeWith(this);
 
       await globalProviderService.asyncInitAndRegister<
@@ -928,7 +928,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
     await globalProviderService
         .asyncInitAndRegister<IWebSocketsService>(webSocketsService);
 
-    var pleromaWebSocketsService = UnifediApiWebSocketsService(
+    var unifediApiWebSocketsService = UnifediApiWebSocketsService(
       webSocketsService: webSocketsService,
       accessToken: currentInstance.token!.accessToken,
       baseUri: currentInstance.uri,
@@ -937,7 +937,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
 
     await globalProviderService
         .asyncInitAndRegister<IUnifediApiWebSocketsService>(
-      pleromaWebSocketsService,
+      unifediApiWebSocketsService,
     );
 
     var instanceAnnouncementRepository = InstanceAnnouncementRepository(
@@ -948,7 +948,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
         IInstanceAnnouncementRepository>(instanceAnnouncementRepository);
 
     var webSocketsHandlerManagerBloc = WebSocketsHandlerManagerBloc(
-      pleromaWebSocketsService: pleromaWebSocketsService,
+      unifediApiWebSocketsService: unifediApiWebSocketsService,
       conversationRepository: conversationRepository,
       notificationRepository: notificationRepository,
       instanceAnnouncementRepository: instanceAnnouncementRepository,

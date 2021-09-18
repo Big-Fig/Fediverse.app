@@ -111,10 +111,10 @@ class PostStatusDataStatusStatusAdapter implements IStatus {
 
   @override
   String? get inReplyToAccountRemoteId =>
-      postStatusData.inReplyToPleromaStatus?.account.id;
+      postStatusData.inReplyToUnifediApiStatus?.account.id;
 
   @override
-  String? get inReplyToRemoteId => postStatusData.inReplyToPleromaStatus?.id;
+  String? get inReplyToRemoteId => postStatusData.inReplyToUnifediApiStatus?.id;
 
   @override
   String? get language => postStatusData.language;
@@ -198,11 +198,11 @@ class PostStatusDataStatusStatusAdapter implements IStatus {
   bool get isHaveReblog => false;
 
   @override
-  bool get isReply => postStatusData.inReplyToPleromaStatus != null;
+  bool get isReply => postStatusData.inReplyToUnifediApiStatus != null;
 
   @override
   IStatus? get inReplyToStatus =>
-      postStatusData.inReplyToPleromaStatus?.toDbStatusPopulatedWrapper();
+      postStatusData.inReplyToUnifediApiStatus?.toDbStatusPopulatedWrapper();
 
   @override
   List<UnifediApiMediaAttachment>? get mediaAttachments =>

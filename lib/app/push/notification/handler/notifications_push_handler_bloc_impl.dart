@@ -274,7 +274,7 @@ class NotificationsPushHandlerBloc extends DisposableOwner
         var chatMessage = remoteNotification.chatMessage!;
         var unifediApiChatMessage = await unifediApiChatService.sendMessage(
           chatId: chatMessage.chatId,
-          data: UnifediApiChatMessageSendData(
+          data: UnifediApiPostChatMessage(
             content: notificationActionInput,
             idempotencyKey: null,
             mediaId: null,
@@ -284,7 +284,7 @@ class NotificationsPushHandlerBloc extends DisposableOwner
       },
       mention: (_) async {
         var status = remoteNotification.status!;
-        var directConversationId = status.pleroma?.directConversationId;
+        var directConversationId = status.directConversationId;
         var unifediApiStatus = await unifediApiStatusService.postStatus(
           data: UnifediApiPostStatus(
             contentType: null,

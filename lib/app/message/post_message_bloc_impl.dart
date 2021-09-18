@@ -49,7 +49,7 @@ abstract class PostMessageBloc extends DisposableOwner
 
   PostMessageBloc({
     required IUnifediApiMediaAttachmentService unifediApiMediaAttachmentService,
-    required int maximumMediaAttachmentCount,
+    required int? maximumMediaAttachmentCount,
     required this.maximumMessageLength,
     required int? maximumFileSizeInBytes,
     required this.unfocusOnClear,

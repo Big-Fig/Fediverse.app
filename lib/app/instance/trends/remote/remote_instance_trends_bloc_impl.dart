@@ -13,12 +13,12 @@ class RemoteInstanceTrendsBloc extends InstanceTrendsBloc
   final IRemoteInstanceBloc remoteInstanceBloc;
 
   @override
-  final IUnifediApiInstanceService UnifediApiInstanceService;
+  final IUnifediApiInstanceService unifediApiInstanceService;
 
   RemoteInstanceTrendsBloc({
     required this.remoteInstanceBloc,
     required IPaginationSettingsBloc paginationSettingsBloc,
-  })  : UnifediApiInstanceService = UnifediApiInstanceService(
+  })  : unifediApiInstanceService = UnifediApiInstanceService(
           restService: remoteInstanceBloc.unifediApiRestService,
         ),
         super(

@@ -83,7 +83,7 @@ class HashtagStatusListNetworkOnlyListBloc extends IStatusNetworkOnlyListBloc {
     required String? maxId,
   }) async {
     var timeline = timelineLocalPreferenceBloc.value!;
-    var pleromaStatuses = await unifediApiTimelineService.getHashtagTimeline(
+    var unifediApiStatuses = await unifediApiTimelineService.getHashtagTimeline(
       hashtag: timeline.withRemoteHashtag!,
       onlyLocal: timeline.onlyLocal == true,
       onlyWithMedia: timeline.onlyWithMedia == true,
@@ -95,9 +95,9 @@ class HashtagStatusListNetworkOnlyListBloc extends IStatusNetworkOnlyListBloc {
       ),
     );
 
-    return pleromaStatuses
+    return unifediApiStatuses
         .map(
-          (pleromaStatus) => pleromaStatus.toDbStatusPopulatedWrapper(),
+          (unifediApiStatus) => unifediApiStatus.toDbStatusPopulatedWrapper(),
         )
         .toList();
   }

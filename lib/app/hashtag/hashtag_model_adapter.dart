@@ -23,7 +23,7 @@ extension IHashtagExtension on IHashtag {
       return UnifediApiTag(
         name: name,
         url: url,
-        history: history?.toUnifediApiTagHistories(),
+        history: history?.toUnifediApiTagHistory(),
       );
     }
   }

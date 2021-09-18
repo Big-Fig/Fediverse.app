@@ -21,5 +21,5 @@ abstract class IFilterFormBloc extends IFormBloc {
 
   IFilterContextMultiSelectFromListValueFormFieldBloc get contextField;
 
-  IPostUnifediApiFilter calculateFormValue();
+  IUnifediApiPostFilter calculateFormValue();
 }

@@ -13,12 +13,12 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
     implements IPleromaChatShareBloc {
   final IPleromaChatRepository chatRepository;
   final IPleromaChatMessageRepository chatMessageRepository;
-  final IUnifediApiChatService pleromaChatService;
+  final IUnifediApiChatService pleromaApiChatService;
 
   PleromaChatShareBloc({
     required this.chatRepository,
     required this.chatMessageRepository,
-    required this.pleromaChatService,
+    required this.pleromaApiChatService,
     required IMyAccountBloc myAccountBloc,
     required IAccountRepository accountRepository,
     required IUnifediApiAccountService unifediApiAccountService,
@@ -36,7 +36,7 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
     List<IUnifediApiChat> pleromaChatsByAccounts;
     if (targetAccounts.isNotEmpty) {
       var chatsByAccountsFuture = targetAccounts.map(
-        (account) => pleromaChatService.getOrCreateChatByAccountId(
+        (account) => pleromaApiChatService.getOrCreateChatByAccountId(
           accountId: account.remoteId,
         ),
       );
@@ -63,7 +63,7 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
     pleromaChatMessagesListFuture = allChatsIds.map(
       (chatId) {
         var futures = messageSendDataList.map(
-          (messageSendData) => pleromaChatService.sendMessage(
+          (messageSendData) => pleromaApiChatService.sendMessage(
             chatId: chatId,
 
             data: messageSendData,
@@ -93,7 +93,7 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
     return true;
   }
 
-  Future<List<UnifediApiChatMessageSendData>>
+  Future<List<UnifediApiPostChatMessage>>
       createPleromaChatMessageSendDataList();
 
   @override
@@ -127,7 +127,7 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
     if (newerThan != null || olderThan != null) {
       return [];
     }
-    var pleromaChats = await pleromaChatService.getChats(
+    var pleromaChats = await pleromaApiChatService.getChats(
       pagination: UnifediApiPagination(
         limit: limit,
         minId: null,

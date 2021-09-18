@@ -3,7 +3,7 @@ import 'package:unifedi_api/unifedi_api.dart';
 abstract class IHashtag {
   String get name;
 
-  String get url;
+  String? get url;
 
   IUnifediApiTagHistory? get history;
 }

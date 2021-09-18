@@ -21,7 +21,7 @@ class PleromaChatMessageBloc extends ChatMessageBloc
     bool delayInit = true,
   }) =>
       PleromaChatMessageBloc(
-        pleromaChatService:
+        pleromaApiChatService:
             Provider.of<IUnifediApiChatService>(context, listen: false),
         unifediApiAccountService:
             Provider.of<IUnifediApiAccountService>(context, listen: false),
@@ -41,14 +41,14 @@ class PleromaChatMessageBloc extends ChatMessageBloc
 
   final BehaviorSubject<IPleromaChatMessage> _chatMessageSubject;
 
-  final IUnifediApiChatService pleromaChatService;
+  final IUnifediApiChatService pleromaApiChatService;
   final IUnifediApiAccountService unifediApiAccountService;
   final IPleromaChatMessageRepository chatMessageRepository;
   final IAccountRepository accountRepository;
   final IPleromaChatBloc pleromaChatBloc;
 
   PleromaChatMessageBloc({
-    required this.pleromaChatService,
+    required this.pleromaApiChatService,
     required this.unifediApiAccountService,
     required this.chatMessageRepository,
     required this.accountRepository,
@@ -119,16 +119,16 @@ class PleromaChatMessageBloc extends ChatMessageBloc
   Future resendPendingFailed() {
     var mediaId = chatMessage.mediaAttachments?.singleOrNull?.id;
 
-    var unifediApiChatMessageSendData = UnifediApiChatMessageSendData(
+    var unifediApiPostChatMessage = UnifediApiPostChatMessage(
       content: chatMessage.content,
       mediaId: mediaId,
       idempotencyKey: chatMessage.wasSentWithIdempotencyKey,
     );
 
     return pleromaChatBloc.postMessage(
-      unifediApiChatMessageSendData: unifediApiChatMessageSendData,
+      unifediApiPostChatMessage: unifediApiPostChatMessage,
       oldPendingFailedPleromaChatMessage: chatMessage,
-      unifediApiChatMessageSendDataMediaAttachment:
+      unifediApiPostChatMessageMediaAttachment:
           chatMessage.mediaAttachments?.singleOrNull,
     );
   }

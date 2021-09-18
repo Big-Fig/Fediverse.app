@@ -1,6 +1,6 @@
 import 'package:fedi/app/moor/moor_converters.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:moor/moor.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 // todo: add foreign keys
 @DataClassName('DbStatus')
@@ -111,15 +111,16 @@ class UnifediApiVisibilityMoorTypeConverter
     implements TypeConverter<UnifediApiVisibility, String> {
   const UnifediApiVisibilityMoorTypeConverter();
 
-  UnifediApiVisibility fromJson(String? value) =>
-      value?.toUnifediApiVisibility() ?? defaultUnifediApiVisibility;
+  UnifediApiVisibility fromJson(String value) =>
+      value.toUnifediApiVisibility() ??
+      UnifediApiVisibility.unknown(stringValue: value);
 
-  String toJson(UnifediApiVisibility? value) =>
-      value?.stringValue ?? defaultUnifediApiVisibility.stringValue;
-
-  @override
-  UnifediApiVisibility? mapToDart(String? fromDb) => fromJson(fromDb);
+  String toJson(UnifediApiVisibility value) =>
+      value.stringValue ;
 
   @override
-  String? mapToSql(UnifediApiVisibility? value) => toJson(value);
+  UnifediApiVisibility mapToDart(String? fromDb) => fromJson(fromDb!);
+
+  @override
+  String mapToSql(UnifediApiVisibility? value) => toJson(value!);
 }

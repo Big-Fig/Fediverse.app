@@ -19,9 +19,6 @@ class DbNotifications extends Table {
 
   TextColumn get emoji => text().nullable()();
 
-  TextColumn get pleroma => text()
-      .nullable()
-      .map(PleromaNotificationPleromaPartDatabaseConverter())();
 
   TextColumn get report =>
       text().nullable().map(UnifediApiAccountReportDatabaseConverter())();

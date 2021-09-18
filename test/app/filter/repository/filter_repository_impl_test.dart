@@ -3,16 +3,14 @@ import 'package:fedi/app/filter/filter_model.dart';
 import 'package:fedi/app/filter/filter_model_adapter.dart';
 import 'package:fedi/app/filter/repository/filter_repository_impl.dart';
 import 'package:fedi/app/filter/repository/filter_repository_model.dart';
-
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:moor/ffi.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 import '../database/filter_database_test_helper.dart';
 import '../filter_test_helper.dart';
 import 'filter_repository_test_helper.dart';
-import 'package:unifedi_api/unifedi_api_mock_helper.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 
 // ignore_for_file: no-magic-number, avoid-late-keyword
 

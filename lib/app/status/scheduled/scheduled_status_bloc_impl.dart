@@ -226,15 +226,16 @@ class ScheduledStatusBloc extends DisposableOwner
     await cancelSchedule();
 
     var pleromaScheduledStatus = await unifediApiStatusService.scheduleStatus(
-      data: UnifediApiScheduleStatus(
+      idempotencyKey: null,
+      data: UnifediApiSchedulePostStatus(
         mediaIds:
             postStatusData.mediaAttachments?.toUnifediApiMediaAttachmentIdList(),
         status: postStatusData.text,
         sensitive: postStatusData.isNsfwSensitiveEnabled,
         visibility: postStatusData.visibilityString,
-        inReplyToId: postStatusData.inReplyToPleromaStatus?.id,
+        inReplyToId: postStatusData.inReplyToUnifediApiStatus?.id,
         inReplyToConversationId: postStatusData.inReplyToConversationId,
-        idempotencyKey: null,
+
         scheduledAt: postStatusData.scheduledAt!,
         to: postStatusData.to,
         poll: postStatusData.poll?.toPleromaPostStatusPoll(),
@@ -263,7 +264,7 @@ class ScheduledStatusBloc extends DisposableOwner
       visibilityString: scheduledStatus.params.visibilityAsUnifediApi.stringValue,
       mediaAttachments: scheduledStatus.mediaAttachments,
       poll: scheduledStatus.params.poll?.toPostStatusPoll(),
-      inReplyToPleromaStatus:
+      inReplyToUnifediApiStatus:
           scheduledStatus.params.inReplyToStatus?.toUnifediApiStatus(),
       inReplyToConversationId: scheduledStatus.params.inReplyToConversationId,
       isNsfwSensitiveEnabled: scheduledStatus.params.sensitive,

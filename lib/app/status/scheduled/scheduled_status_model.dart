@@ -128,7 +128,7 @@ extension IScheduledStatusExtension on IScheduledStatus {
         mediaAttachments: mediaAttachments,
         poll: params.poll?.toPostStatusPoll(),
         to: params.to,
-        inReplyToPleromaStatus: params.inReplyToStatus?.toUnifediApiStatus(),
+        inReplyToUnifediApiStatus: params.inReplyToStatus?.toUnifediApiStatus(),
         inReplyToConversationId: params.inReplyToConversationId,
         isNsfwSensitiveEnabled: params.sensitive,
         language: params.language,

@@ -421,12 +421,12 @@ class LocalStatusBloc extends StatusBloc {
 
     IUnifediApiStatus? remoteStatus;
     if (alreadyAdded) {
-      remoteStatus = await unifediApiStatusService!.removeEmojiReaction(
+      remoteStatus = await unifediApiStatusService.removeEmojiReaction(
         statusId: status.remoteId!,
         emoji: emoji,
       );
     } else {
-      remoteStatus = await unifediApiStatusService!.addEmojiReaction(
+      remoteStatus = await unifediApiStatusService.addEmojiReaction(
         statusId: status.remoteId!,
         emoji: emoji,
       );

@@ -42,7 +42,7 @@ import 'message/chat_message_test_helper.dart';
 void main() {
   late IPleromaChat chat;
   late IPleromaChatBloc chatBloc;
-  late MockIUnifediApiChatService pleromaChatServiceMock;
+  late MockIUnifediApiChatService pleromaApiChatServiceMock;
   late MockIUnifediApiMyAccountService unifediApiMyAccountServiceMock;
   late AppDatabase database;
   late IAccountRepository accountRepository;
@@ -68,7 +68,7 @@ void main() {
       chatMessageRepository: chatMessageRepository,
     );
 
-    pleromaChatServiceMock = MockIUnifediApiChatService();
+    pleromaApiChatServiceMock = MockIUnifediApiChatService();
     unifediApiMyAccountServiceMock = MockIUnifediApiMyAccountService();
 
     preferencesService = MemoryLocalPreferencesService();
@@ -102,8 +102,8 @@ void main() {
       instance: authInstance,
     );
 
-    when(pleromaChatServiceMock.isConnected).thenReturn(true);
-    when(pleromaChatServiceMock.unifediApiState).thenReturn(
+    when(pleromaApiChatServiceMock.isConnected).thenReturn(true);
+    when(pleromaApiChatServiceMock.unifediApiState).thenReturn(
       UnifediApiState.validAuth,
     );
 
@@ -111,7 +111,7 @@ void main() {
 
     chatBloc = PleromaChatBloc(
       chat: chat,
-      pleromaChatService: pleromaChatServiceMock,
+      pleromaApiChatService: pleromaApiChatServiceMock,
       accountRepository: accountRepository,
       chatMessageRepository: chatMessageRepository,
       chatRepository: chatRepository,
@@ -371,7 +371,7 @@ void main() {
 
 //    ChatMockHelper.expectChat(listened, chat);
 //
-//    when(pleromaChatServiceMock.getChat(
+//    when(pleromaApiChatServiceMock.getChat(
 //            chatRemoteId: chat.remoteId))
 //        .thenAnswer((_) async => mapLocalChatToRemoteChat(
 //            newValue,

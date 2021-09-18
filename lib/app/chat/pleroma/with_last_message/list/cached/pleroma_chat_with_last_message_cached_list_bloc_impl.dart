@@ -12,18 +12,18 @@ var _logger =
 
 class PleromaChatWithLastMessageCachedListBloc
     extends IPleromaChatWithLastMessageCachedListBloc {
-  final IUnifediApiChatService pleromaChatService;
+  final IUnifediApiChatService pleromaApiChatService;
   final IPleromaChatRepository chatRepository;
   final IPleromaChatWithLastMessageRepository chatWithLastMessageRepository;
 
   PleromaChatWithLastMessageCachedListBloc({
-    required this.pleromaChatService,
+    required this.pleromaApiChatService,
     required this.chatRepository,
     required this.chatWithLastMessageRepository,
   });
 
   @override
-  IUnifediApiService get unifediApi => pleromaChatService;
+  IUnifediApiService get unifediApi => pleromaApiChatService;
 
   PleromaChatRepositoryFilters? get filters => null;
 
@@ -42,7 +42,7 @@ class PleromaChatWithLastMessageCachedListBloc
 
     List<IUnifediApiChat> remoteChats;
 
-    remoteChats = await pleromaChatService.getChats(
+    remoteChats = await pleromaApiChatService.getChats(
       pagination: UnifediApiPagination(
         maxId: olderThan?.chat.remoteId,
         minId: newerThan?.chat.remoteId,

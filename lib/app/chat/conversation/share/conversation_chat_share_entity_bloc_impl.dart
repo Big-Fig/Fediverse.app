@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
@@ -12,10 +13,9 @@ import 'package:fedi/app/share/entity/share_entity_bloc.dart';
 import 'package:fedi/app/share/entity/share_entity_model.dart';
 import 'package:fedi/app/share/to_account/share_to_account_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class ConversationChatShareEntityBloc extends ConversationChatShareBloc
     implements IConversationChatShareBloc, IShareEntityBloc {
@@ -68,9 +68,10 @@ class ConversationChatShareEntityBloc extends ConversationChatShareBloc
 
     var result = <IUnifediApiPostStatus>[];
 
-    var maximumMediaAttachmentCount =
-        IUnifediApiStatusService.maximumMediaAttachmentCount;
+    var maximumMediaAttachmentCount = unifediApiStatusService.restService
+        .accessBloc.access.instance?.limits?.status?.maxMediaAttachmentsCount;
     if (mediaAttachments != null &&
+        maximumMediaAttachmentCount != null &&
         mediaAttachments.length > maximumMediaAttachmentCount) {
       var length = mediaAttachments.length;
       var currentIndex = 0;
@@ -119,7 +120,6 @@ class ConversationChatShareEntityBloc extends ConversationChatShareBloc
       visibility: visibility.stringValue,
       contentType: null,
       expiresInSeconds: null,
-      idempotencyKey: null,
       inReplyToConversationId: null,
       inReplyToId: null,
       language: null,

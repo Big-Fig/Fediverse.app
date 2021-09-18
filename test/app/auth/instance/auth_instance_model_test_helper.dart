@@ -1,5 +1,5 @@
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
-import 'package:unifedi_api/unifedi_api.dart';
+
 import 'package:unifedi_api/unifedi_api_mock_helper.dart';
 
 // ignore_for_file: no-magic-number
@@ -16,11 +16,11 @@ class AuthInstanceModelMockHelper {
         ),
         authCode: seed + 'authCode',
         isPleroma: seed.hashCode % 2 == 0,
-        application: UnifediApiApplicationMockHelper
-            .createTestUnifediApiClientApplication(
+        application: UnifediApiClientApplicationMockHelper
+            .generate(
           seed: seed,
         ),
-        info: UnifediApiInstanceMockHelper.createTestUnifediApiInstance(
+        info: UnifediApiInstanceMockHelper.generate(
           seed: seed,
         ),
       );

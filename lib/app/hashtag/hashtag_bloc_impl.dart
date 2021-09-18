@@ -15,7 +15,7 @@ import 'package:rxdart/rxdart.dart';
 class HashtagBloc extends DisposableOwner implements IHashtagBloc {
   @override
   final IHashtag hashtag;
-  final IUnifediApiInstanceService UnifediApiInstanceService;
+  final IUnifediApiMyAccountService unifediApiMyAccountService;
   final bool needLoadFeaturedState;
 
   final AuthInstance authInstance;
@@ -26,7 +26,7 @@ class HashtagBloc extends DisposableOwner implements IHashtagBloc {
 
   HashtagBloc({
     required this.hashtag,
-    required this.UnifediApiInstanceService,
+    required this.unifediApiMyAccountService,
     required this.needLoadFeaturedState,
     required this.authInstance,
     required IMyAccountFeaturedHashtag? featuredHashtag,
@@ -72,7 +72,7 @@ class HashtagBloc extends DisposableOwner implements IHashtagBloc {
   Future feature() async {
     assert(!featured);
 
-    var unifediApiFeatureTag = await UnifediApiInstanceService.featureTag(
+    var unifediApiFeatureTag = await unifediApiMyAccountService.featureMyAccountTag(
       name: hashtag.name,
     );
 
@@ -84,8 +84,8 @@ class HashtagBloc extends DisposableOwner implements IHashtagBloc {
   Future unFeature() async {
     assert(featured);
 
-    await UnifediApiInstanceService.unFeatureTag(
-      id: featuredHashtag!.remoteId,
+    await unifediApiMyAccountService.unfeatureMyAccountTag(
+      tagId: featuredHashtag!.remoteId!,
     );
 
     featuredHashtagSubject.add(null);

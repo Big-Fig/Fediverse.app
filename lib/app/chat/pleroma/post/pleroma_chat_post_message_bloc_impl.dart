@@ -40,18 +40,18 @@ class PleromaChatPostMessageBloc extends PostMessageBloc
     // todo: refactor
     // ignore: unawaited_futures
     pleromaChatBloc.postMessage(
-      unifediApiChatMessageSendData: calculateSendData(),
-      unifediApiChatMessageSendDataMediaAttachment: calculateMediaAttachment(),
+      unifediApiPostChatMessage: calculateSendData(),
+      unifediApiPostChatMessageMediaAttachment: calculateMediaAttachment(),
       oldPendingFailedPleromaChatMessage: null,
     );
 
     clear();
   }
 
-  UnifediApiChatMessageSendData calculateSendData() {
+  UnifediApiPostChatMessage calculateSendData() {
     var mediaId = calculateMediaAttachmentId();
 
-    var data = UnifediApiChatMessageSendData(
+    var data = UnifediApiPostChatMessage(
       content: inputText,
       mediaId: mediaId,
       idempotencyKey: idempotencyKey,
@@ -97,8 +97,8 @@ class PleromaChatPostMessageBloc extends PostMessageBloc
         context,
         listen: false,
       ),
-      maximumMessageLength: info.chatLimit,
-      maximumFileSizeInBytes: info.uploadLimit,
+      maximumMessageLength: info.limits?.chat?.messageLimit,
+      maximumFileSizeInBytes: info.limits?.media?.uploadLimit,
     );
   }
 

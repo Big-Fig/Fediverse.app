@@ -244,7 +244,7 @@ void main() {
     );
     expect(
       (await notificationRepository.findByDbIdInAppType(id))!.type,
-      newType.toJsonValue(),
+      newType.stringValue,
     );
     expect(
       (await notificationRepository.findByDbIdInAppType(id))!.account!.acct,
@@ -912,7 +912,7 @@ void main() {
     expect(
       (await notificationRepository.calculateCount(
         filters: NotificationRepositoryFilters(
-          onlyWithType: UnifediApiNotificationType.reblog,
+          onlyWithType: UnifediApiNotificationType.reblogValue,
           onlyUnread: true,
         ),
       )),

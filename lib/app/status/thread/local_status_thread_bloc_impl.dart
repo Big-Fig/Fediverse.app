@@ -51,7 +51,7 @@ class LocalStatusThreadBloc extends StatusThreadBloc {
   FilterRepositoryFilters get filterRepositoryFilters =>
       FilterRepositoryFilters(
         onlyWithContextTypes: [
-          UnifediApiFilterContextType.thread,
+          UnifediApiFilterContextType.threadValue,
         ],
         notExpired: true,
       );

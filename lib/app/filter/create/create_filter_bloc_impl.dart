@@ -79,7 +79,7 @@ class CreateFilterBloc extends EditFilterBloc implements ICreateFilterBloc {
   @override
   Future<IUnifediApiFilter> actuallySubmitFilter(
     String? filterRemoteId,
-    IPostUnifediApiFilter postPleromaFilter,
+    IUnifediApiPostFilter postPleromaFilter,
   ) async {
     var remoteFilter = await unifediApiFilterService.createFilter(
       postPleromaFilter: postPleromaFilter,

@@ -15,7 +15,7 @@ class WebSocketsSettings implements ISettings<WebSocketsSettings> {
   final String handlingTypeString;
 
   WebSocketsMode get handlingType =>
-      handlingTypeString.toWebSocketsMode();
+      WebSocketsMode.fromStringValue(handlingTypeString);
 
   WebSocketsSettings({
     required this.handlingTypeString,
@@ -24,7 +24,7 @@ class WebSocketsSettings implements ISettings<WebSocketsSettings> {
   WebSocketsSettings.fromEnum({
     required WebSocketsMode handlingType,
   }) : this(
-          handlingTypeString: handlingType.toJsonValue(),
+          handlingTypeString: handlingType.stringValue,
         );
 
   WebSocketsMode get type =>

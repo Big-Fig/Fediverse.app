@@ -52,12 +52,12 @@ class TimelineLocalPreferenceBloc extends ObjectLocalPreferenceBloc<Timeline?>
     required IUnifediApiInstance unifediApiInstance,
   }) : this.byId(
           preferencesService,
-          userAtHost: unifediApiInstance.uri!,
+          userAtHost: unifediApiInstance.uri,
           timelineId: 'public',
           defaultPreferenceValue: Timeline(
-            id: unifediApiInstance.uri!,
+            id: unifediApiInstance.uri,
             // ignore: no-equal-arguments
-            label: unifediApiInstance.uri!,
+            label: unifediApiInstance.uri,
             isPossibleToDelete: true,
             settings: TimelineSettings.createDefaultPublicSettings(),
             typeString: TimelineType.public.toJsonValue(),

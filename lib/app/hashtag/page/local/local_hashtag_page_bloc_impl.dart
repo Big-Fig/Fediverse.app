@@ -38,7 +38,6 @@ class LocalHashtagPageBloc extends HashtagPageBloc
   @override
   final IUnifediApiTimelineService unifediApiTimelineService;
 
-  final IUnifediApiTimelineService unifediApiTimelineService;
   final IUnifediApiAccountService unifediApiAccountService;
   final IStatusRepository statusRepository;
   final IFilterRepository filterRepository;

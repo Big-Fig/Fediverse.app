@@ -95,7 +95,7 @@ class _HashtagListItemHistoryWidget extends StatelessWidget {
     var hashtag = Provider.of<IHashtag>(context);
     var history = hashtag.history;
 
-    if (history?.isNotEmpty != true) {
+    if (history?.items.isNotEmpty != true) {
       return const SizedBox.shrink();
     }
 

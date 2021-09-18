@@ -14,7 +14,7 @@ import 'package:rxdart/rxdart.dart';
 class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
     implements IUploadMediaAttachmentsCollectionBloc {
   @override
-  final int maximumMediaAttachmentCount;
+  final int? maximumMediaAttachmentCount;
   @override
   final int? maximumFileSizeInBytes;
 
@@ -212,7 +212,7 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
 
   static bool calculateIsMaximumAttachmentReached({
     required List<IUploadMediaAttachmentBloc> mediaAttachmentBlocs,
-    required int maximumMediaAttachmentCount,
+    required int? maximumMediaAttachmentCount,
   }) {
     var maximumMediaAttachmentCountLeft =
         calculateMaximumMediaAttachmentCountLeft(

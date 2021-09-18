@@ -15,12 +15,12 @@ class NotificationTabExcludeHelper {
         break;
       case NotificationTab.mentions:
         excludeTypes = UnifediApiNotificationType.values.valuesWithoutSelected([
-          UnifediApiNotificationType.mention,
+          UnifediApiNotificationType.mentionValue,
         ]);
         break;
       case NotificationTab.reblogs:
         excludeTypes = UnifediApiNotificationType.values.valuesWithoutSelected([
-          UnifediApiNotificationType.reblog,
+          UnifediApiNotificationType.reblogValue,
         ]);
         break;
       case NotificationTab.favourites:

@@ -42,7 +42,7 @@ void main() {
         remoteId: 'asda',
         params: UnifediApiScheduledStatusParams.only(
           sensitive: true,
-          visibility: UnifediApiVisibility.private.toJsonValue(),
+          visibility: UnifediApiVisibility.privateValue.stringValue,
           scheduledAt: DateTime.now(),
         ),
       ),

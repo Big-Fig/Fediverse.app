@@ -84,7 +84,7 @@ class InstancePublicTimelineStatusListNetworkOnlyListBloc
     required String? maxId,
   }) async {
     var timeline = timelineLocalPreferenceBloc.value!;
-    var pleromaStatuses = await unifediApiTimelineService.getPublicTimeline(
+    var unifediApiStatuses = await unifediApiTimelineService.getPublicTimeline(
       onlyLocal: timeline.onlyLocal == true,
       onlyRemote: timeline.onlyRemote == true,
       onlyWithMedia: timeline.onlyWithMedia == true,
@@ -99,9 +99,9 @@ class InstancePublicTimelineStatusListNetworkOnlyListBloc
       ),
     );
 
-    return pleromaStatuses
+    return unifediApiStatuses
         .map(
-          (pleromaStatus) => pleromaStatus.toDbStatusPopulatedWrapper(),
+          (unifediApiStatus) => unifediApiStatus.toDbStatusPopulatedWrapper(),
         )
         .toList();
   }

@@ -15,7 +15,7 @@ class ConversationChatWebSocketsHandler extends WebSocketsChannelHandler {
   String get logTag => 'conversation_chat_websockets_handler_impl.dart';
 
   ConversationChatWebSocketsHandler({
-    required IUnifediApiWebSocketsService pleromaWebSocketsService,
+    required IUnifediApiWebSocketsService unifediApiWebSocketsService,
     required IStatusRepository statusRepository,
     required INotificationRepository notificationRepository,
     required IInstanceAnnouncementRepository instanceAnnouncementRepository,
@@ -28,7 +28,7 @@ class ConversationChatWebSocketsHandler extends WebSocketsChannelHandler {
     required IMyAccountBloc myAccountBloc,
   }) : super(
           myAccountBloc: myAccountBloc,
-          webSocketsChannel: pleromaWebSocketsService.getDirectChannel(
+          webSocketsChannel: unifediApiWebSocketsService.getDirectChannel(
             accountId: accountId,
           ),
           statusRepository: statusRepository,

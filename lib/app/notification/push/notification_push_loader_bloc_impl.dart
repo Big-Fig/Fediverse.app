@@ -192,7 +192,7 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
       },
       mention: (_) async {
         var status = remoteNotification.status!;
-        var directConversationId = status.pleroma?.directConversationId;
+        var directConversationId = status.directConversationId;
         var unifediApiStatus = await unifediApiStatusService.postStatus(
           data: UnifediApiPostStatus(
             contentType: null,

@@ -13,7 +13,7 @@ import 'package:fediverse_api/fediverse_api_utils.dart';
 class CustomListStatusListWebSocketsHandler extends WebSocketsChannelHandler {
   CustomListStatusListWebSocketsHandler({
     required String customListRemoteId,
-    required IUnifediApiWebSocketsService pleromaWebSocketsService,
+    required IUnifediApiWebSocketsService unifediApiWebSocketsService,
     required IStatusRepository statusRepository,
     required INotificationRepository notificationRepository,
     required IInstanceAnnouncementRepository instanceAnnouncementRepository,
@@ -25,7 +25,7 @@ class CustomListStatusListWebSocketsHandler extends WebSocketsChannelHandler {
     required IMyAccountBloc myAccountBloc,
   }) : super(
           myAccountBloc: myAccountBloc,
-          webSocketsChannel: pleromaWebSocketsService.getListChannel(
+          webSocketsChannel: unifediApiWebSocketsService.getListChannel(
             listId: customListRemoteId,
           ),
           statusRepository: statusRepository,

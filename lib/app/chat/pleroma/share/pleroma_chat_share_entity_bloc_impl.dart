@@ -33,21 +33,21 @@ class PleromaChatShareEntityBloc extends PleromaChatShareBloc
     this.isNeedReUploadMediaAttachments = true,
     required IPleromaChatRepository chatRepository,
     required IPleromaChatMessageRepository chatMessageRepository,
-    required IUnifediApiChatService pleromaChatService,
+    required IUnifediApiChatService pleromaApiChatService,
     required IMyAccountBloc myAccountBloc,
     required IAccountRepository accountRepository,
     required IUnifediApiAccountService unifediApiAccountService,
   }) : super(
           chatRepository: chatRepository,
           chatMessageRepository: chatMessageRepository,
-          pleromaChatService: pleromaChatService,
+          pleromaApiChatService: pleromaApiChatService,
           myAccountBloc: myAccountBloc,
           accountRepository: accountRepository,
           unifediApiAccountService: unifediApiAccountService,
         );
 
   @override
-  Future<List<UnifediApiChatMessageSendData>>
+  Future<List<UnifediApiPostChatMessage>>
       createPleromaChatMessageSendDataList() async {
     var text = convertAllItemsToRawText(
       settings: shareEntitySettingsBloc.shareEntitySettings,
@@ -59,13 +59,13 @@ class PleromaChatShareEntityBloc extends PleromaChatShareBloc
       reUploadRequired: true,
     );
 
-    var messageSendData = UnifediApiChatMessageSendData(
+    var messageSendData = UnifediApiPostChatMessage(
       content: text?.trim(),
       mediaId: mediaAttachments?.firstOrNull?.id,
       idempotencyKey: null,
     );
 
-    var result = <UnifediApiChatMessageSendData>[];
+    var result = <UnifediApiPostChatMessage>[];
 
     result.add(messageSendData);
 
@@ -73,7 +73,7 @@ class PleromaChatShareEntityBloc extends PleromaChatShareBloc
       mediaAttachments.skip(1).forEach(
         (mediaAttachment) {
           result.add(
-            UnifediApiChatMessageSendData(
+            UnifediApiPostChatMessage(
               content: null,
               mediaId: mediaAttachment.id,
               idempotencyKey: null,
@@ -127,7 +127,7 @@ class PleromaChatShareEntityBloc extends PleromaChatShareBloc
           context,
           listen: false,
         ),
-        pleromaChatService: Provider.of<IUnifediApiChatService>(
+        pleromaApiChatService: Provider.of<IUnifediApiChatService>(
           context,
           listen: false,
         ),

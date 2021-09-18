@@ -288,7 +288,7 @@ String? _calculateDescriptionOrShortDescriptionWithParsedHashtags(
     var isMastodon = instance!.typeAsUnifediApi.isMastodon;
     var isPleroma = instance.typeAsUnifediApi.isPleroma;
 
-    var host = instance.uri!;
+    var host = instance.uri;
     // todo: check
     var scheme = 'https';
     hashtags.forEach(
@@ -329,7 +329,7 @@ String? _calculateDescriptionOrShortDescription(
 
 bool _calculateIsHaveDetailsFields(IUnifediApiInstance? instance) =>
     instance?.email != null ||
-    instance?.version != null ||
+    instance?.versionString != null ||
     instance?.languages != null ||
     instance?.vapidPublicKey != null;
 

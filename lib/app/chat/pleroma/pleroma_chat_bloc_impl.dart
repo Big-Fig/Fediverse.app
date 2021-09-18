@@ -5,6 +5,7 @@ import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/chat/chat_bloc_impl.dart';
 import 'package:fedi/app/chat/message/chat_message_model.dart';
+import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_bloc_impl.dart';
 import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_bloc.dart';
@@ -47,7 +48,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
       _lastMessageSubject.stream;
 
   final IMyAccountBloc myAccountBloc;
-  final IUnifediApiChatService pleromaChatService;
+  final IUnifediApiChatService pleromaApiChatService;
   final IPleromaChatRepository chatRepository;
   final IPleromaChatMessageRepository chatMessageRepository;
   final IAccountRepository accountRepository;
@@ -60,7 +61,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
       onMessageLocallyHiddenStreamController.stream;
 
   PleromaChatBloc({
-    required this.pleromaChatService,
+    required this.pleromaApiChatService,
     required this.myAccountBloc,
     required this.chatRepository,
     required this.chatMessageRepository,
@@ -146,7 +147,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
 
   @override
   Future refreshFromNetwork() async {
-    var remoteChat = await pleromaChatService.getChat(id: chat.remoteId);
+    var remoteChat = await pleromaApiChatService.getChat(id: chat.remoteId);
 
     await accountRepository.batch((batch) {
       accountRepository.upsertChatRemoteAccount(
@@ -187,7 +188,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
     bool needRefreshFromNetworkOnInit = false,
   }) {
     return PleromaChatBloc(
-      pleromaChatService:
+      pleromaApiChatService:
           Provider.of<IUnifediApiChatService>(context, listen: false),
       myAccountBloc: IMyAccountBloc.of(context, listen: false),
       chat: chat,
@@ -203,7 +204,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
   @override
   Future markAsRead() async {
     if (chat.unread > 0) {
-      if (pleromaChatService.isApiReadyToUse) {
+      if (pleromaApiChatService.isApiReadyToUse) {
         var lastReadChatMessageId = lastChatMessage?.remoteId;
         if (lastReadChatMessageId == null) {
           var lastMessage = await chatMessageRepository.getChatLastChatMessage(
@@ -213,7 +214,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
         }
 
         if (lastReadChatMessageId != null) {
-          var updatedRemoteChat = await pleromaChatService.markChatAsRead(
+          var updatedRemoteChat = await pleromaApiChatService.markChatAsRead(
             chatId: chat.remoteId,
             lastReadChatMessageId: lastReadChatMessageId,
           );
@@ -236,7 +237,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
     for (var chatMessage in chatMessages) {
       var remoteId = chatMessage.remoteId;
       if (chatMessage.isPendingStatePublishedOrNull) {
-        await pleromaChatService.deleteChatMessage(
+        await pleromaApiChatService.deleteChatMessage(
           chatId: chat.remoteId,
           chatMessageRemoteId: remoteId,
         );
@@ -257,9 +258,9 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
   // todo: refactor
   // ignore: long-method
   Future postMessage({
-    required IUnifediApiChatMessageSendData unifediApiChatMessageSendData,
+    required IUnifediApiPostChatMessage unifediApiPostChatMessage,
     required IUnifediApiMediaAttachment?
-        unifediApiChatMessageSendDataMediaAttachment,
+        unifediApiPostChatMessageMediaAttachment,
     required IPleromaChatMessage? oldPendingFailedPleromaChatMessage,
   }) async {
     DbChatMessage dbChatMessage;
@@ -273,7 +274,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
                 id: localChatMessageId,
               );
 
-      unifediApiChatMessageSendData = unifediApiChatMessageSendData.copyWith(
+      unifediApiPostChatMessage = unifediApiPostChatMessage.copyWith(
         idempotencyKey: dbChatMessage.wasSentWithIdempotencyKey,
       );
 
@@ -294,9 +295,9 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
         chatRemoteId: chat.remoteId,
         accountRemoteId: myAccountBloc.account.remoteId,
         createdAt: createdAt,
-        content: unifediApiChatMessageSendData.content,
+        content: unifediApiPostChatMessage.content,
         emojis: null,
-        mediaAttachment: unifediApiChatMessageSendDataMediaAttachment
+        mediaAttachment: unifediApiPostChatMessageMediaAttachment
             ?.toUnifediApiMediaAttachment(),
         card: null,
         pendingState: PendingState.pending,
@@ -311,15 +312,14 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
         mode: null,
       );
 
-      unifediApiChatMessageSendData = unifediApiChatMessageSendData.copyWith(
+      unifediApiPostChatMessage = unifediApiPostChatMessage.copyWith(
         idempotencyKey: fakeUniqueRemoteRemoteId,
       );
     }
 
     try {
-      var pleromaChatMessage = await pleromaChatService.sendMessage(
-        chatId: chat.remoteId,
-        data: unifediApiChatMessageSendData,
+      var pleromaChatMessage = await pleromaApiChatService.sendMessage(
+        postChatMessage: PleromaChatMessage
       );
       onMessageLocallyHiddenStreamController.add(
         DbPleromaChatMessagePopulatedWrapper(
@@ -364,7 +364,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
     required IPleromaChatMessage? pleromaChatMessage,
   }) async {
     if (pleromaChatMessage!.isPendingStatePublishedOrNull) {
-      await pleromaChatService.deleteChatMessage(
+      await pleromaApiChatService.deleteChatMessage(
         chatMessageRemoteId: pleromaChatMessage.remoteId,
         chatId: pleromaChatMessage.chatRemoteId,
       );

@@ -15,7 +15,7 @@ import 'package:easy_dispose/easy_dispose.dart';
 
 class ConversationChatMessageBloc extends ChatMessageBloc
     implements IConversationChatMessageBloc {
-  final UnifediApiInstancePollLimits pollLimits;
+  final IUnifediApiInstancePollLimits? pollLimits;
 
   static ConversationChatMessageBloc createFromContext(
     BuildContext context,

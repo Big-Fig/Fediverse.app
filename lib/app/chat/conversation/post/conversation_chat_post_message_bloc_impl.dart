@@ -33,7 +33,7 @@ class ConversationChatPostMessageBloc extends PostStatusBloc {
           scheduledStatusRepository: scheduledStatusRepository,
           unifediApiMediaAttachmentService: unifediApiMediaAttachmentService,
           initialData: PostStatusBloc.defaultInitData.copyWith(
-            visibilityString: UnifediApiVisibility.private.toJsonValue(),
+            visibilityString: UnifediApiVisibility.privateValue.stringValue,
             language: language,
             inReplyToConversationId: conversationChatBloc.conversation.remoteId,
           ),

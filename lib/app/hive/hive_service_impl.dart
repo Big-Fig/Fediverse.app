@@ -54,13 +54,10 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
     }
     Hive.registerAdapter(UnifediApiFieldAdapter());
     Hive.registerAdapter(UnifediApiEmojiAdapter());
-    Hive.registerAdapter(UnifediApiMyAccountPleromaPartAdapter());
     Hive.registerAdapter(
       UnifediApiMyAccountNotificationsSettingsAdapter(),
     );
     Hive.registerAdapter(UnifediApiAccountRelationshipAdapter());
-    Hive.registerAdapter(UnifediApiMyAccountSourceAdapter());
-    Hive.registerAdapter(UnifediApiMyAccountSourcePleromaPartAdapter());
     Hive.registerAdapter(PushSettingsAdapter());
     Hive.registerAdapter(AuthInstanceListAdapter());
     Hive.registerAdapter(AuthInstanceAdapter());
@@ -69,10 +66,7 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
     Hive.registerAdapter(UnifediApiMyAccountWrapperAdapter());
     Hive.registerAdapter(UnifediApiMyAccountAdapter());
     Hive.registerAdapter(NotificationsPushHandlerUnhandledListAdapter());
-    Hive.registerAdapter(UnifediApiPushMessageBodyAdapter());
-    Hive.registerAdapter(UnifediApiInstancePleromaPartAdapter());
     Hive.registerAdapter(UnifediApiInstanceAdapter());
-    Hive.registerAdapter(UnifediApiInstancePleromaPartMetadataAdapter());
     Hive.registerAdapter(UnifediApiInstanceStatsAdapter());
     Hive.registerAdapter(UnifediApiInstanceUrlsAdapter());
     Hive.registerAdapter(UnifediApiInstancePollLimitsAdapter());
@@ -84,13 +78,9 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
     Hive.registerAdapter(CustomEmojiPickerImageUrlItemAdapter());
     Hive.registerAdapter(EmojiPickerRecentCategoryItemsListAdapter());
     Hive.registerAdapter(CustomEmojiPickerCodeItemAdapter());
-    Hive.registerAdapter(
-      UnifediApiInstancePleromaPartMetadataFieldLimitsAdapter(),
-    );
     Hive.registerAdapter(PushNotificationAdapter());
     Hive.registerAdapter(UnifediApiTagAdapter());
-    Hive.registerAdapter(UnifediApiAccountPleromaPartAdapter());
-    Hive.registerAdapter(UnifediApiCustomEmojiAdapter());
+    Hive.registerAdapter(UnifediApiEmojiAdapter());
     Hive.registerAdapter(UnifediApiTagHistoryAdapter());
     Hive.registerAdapter(TimelineAdapter());
     Hive.registerAdapter(TimelineSettingsAdapter());
@@ -110,19 +100,12 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
     Hive.registerAdapter(PaginationSettingsAdapter());
     Hive.registerAdapter(DatabaseCacheSettingsAdapter());
     Hive.registerAdapter(FilesCacheSettingsAdapter());
-    Hive.registerAdapter(
-      UnifediApiInstancePleromaPartMetadataFederationAdapter(),
-    );
-    Hive.registerAdapter(
-      UnifediApiInstancePleromaPartMetadataFederationMfrObjectAgeAdapter(),
-    );
+
     Hive.registerAdapter(UnifediApiFilterAdapter());
     Hive.registerAdapter(InstanceAnnouncementSettingsAdapter());
     Hive.registerAdapter(CrashReportingSettingsAdapter());
     Hive.registerAdapter(PushRelaySettingsAdapter());
     Hive.registerAdapter(UnifediApiFrontendConfigurationsAdapter());
-    Hive.registerAdapter(UnifediApiFrontendConfigurationsMastoFeAdapter());
-    Hive.registerAdapter(UnifediApiFrontendConfigurationsPleromaFeAdapter());
-    Hive.registerAdapter(UnifediApiFrontendConfigurationsSoapboxFeAdapter());
+
   }
 }

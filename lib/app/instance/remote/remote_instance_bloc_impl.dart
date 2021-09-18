@@ -21,7 +21,7 @@ class RemoteInstanceBloc extends AsyncInitLoadingBloc
     required this.instanceUri,
     required this.connectionService,
     required this.unifediApiInstance,
-  }) {}
+  });
 
   static RemoteInstanceBloc createFromContext(
     BuildContext context, {

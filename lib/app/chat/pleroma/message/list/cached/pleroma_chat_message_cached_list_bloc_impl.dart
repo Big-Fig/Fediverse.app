@@ -15,7 +15,7 @@ var _logger = Logger('pleroma_chat_message_cached_list_bloc_impl.dart');
 
 class PleromaChatMessageCachedListBloc extends DisposableOwner
     implements IPleromaChatMessageCachedListBloc {
-  final IUnifediApiChatService pleromaChatService;
+  final IUnifediApiChatService pleromaApiChatService;
   final IPleromaChatMessageRepository chatMessageRepository;
   final IPleromaChat chat;
 
@@ -32,12 +32,12 @@ class PleromaChatMessageCachedListBloc extends DisposableOwner
 
   PleromaChatMessageCachedListBloc({
     required this.chat,
-    required this.pleromaChatService,
+    required this.pleromaApiChatService,
     required this.chatMessageRepository,
   });
 
   @override
-  IUnifediApiService get unifediApi => pleromaChatService;
+  IUnifediApiService get unifediApi => pleromaApiChatService;
 
   @override
   Future refreshItemsFromRemoteForPage({
@@ -50,7 +50,7 @@ class PleromaChatMessageCachedListBloc extends DisposableOwner
         '\t newerThan = $newerThan'
         '\t olderThan = $olderThan');
 
-    var remoteMessages = await pleromaChatService.getChatMessages(
+    var remoteMessages = await pleromaApiChatService.getChatMessages(
       chatId: chat.remoteId,
       pagination: UnifediApiPagination(
         maxId: olderThan?.remoteId,
@@ -115,7 +115,7 @@ class PleromaChatMessageCachedListBloc extends DisposableOwner
   }) =>
       PleromaChatMessageCachedListBloc(
         chat: chat,
-        pleromaChatService:
+        pleromaApiChatService:
             Provider.of<IUnifediApiChatService>(context, listen: false),
         chatMessageRepository:
             IPleromaChatMessageRepository.of(context, listen: false),

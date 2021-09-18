@@ -164,7 +164,7 @@ class InstanceAnnouncementBloc extends DisposableOwner
 
     // ignore: no-magic-number
     if (foundReaction!.count > 2) {
-      var newReaction = foundReaction.copyWith(
+      var newReaction = foundReaction.toUnifediApiEmojiReaction().copyWith(
         count: foundReaction.count - 1,
       );
 

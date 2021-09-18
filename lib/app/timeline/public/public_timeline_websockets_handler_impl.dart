@@ -12,7 +12,7 @@ import 'package:fediverse_api/fediverse_api_utils.dart';
 
 class PublicTimelineWebSocketsHandler extends WebSocketsChannelHandler {
   PublicTimelineWebSocketsHandler({
-    required IUnifediApiWebSocketsService pleromaWebSocketsService,
+    required IUnifediApiWebSocketsService unifediApiWebSocketsService,
     required IStatusRepository statusRepository,
     required INotificationRepository notificationRepository,
     required IInstanceAnnouncementRepository instanceAnnouncementRepository,
@@ -28,7 +28,7 @@ class PublicTimelineWebSocketsHandler extends WebSocketsChannelHandler {
     required IMyAccountBloc myAccountBloc,
   }) : super(
           myAccountBloc: myAccountBloc,
-          webSocketsChannel: pleromaWebSocketsService.getPublicChannel(
+          webSocketsChannel: unifediApiWebSocketsService.getPublicChannel(
             onlyLocal: onlyLocal,
             onlyRemote: onlyRemote,
             onlyFromInstance: onlyFromInstance,

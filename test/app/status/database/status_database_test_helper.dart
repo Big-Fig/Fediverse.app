@@ -2,11 +2,11 @@ import 'package:fedi/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:unifedi_api/unifedi_api.dart';
+import 'package:unifedi_api/unifedi_api_mock_helper.dart';
 
 import '../../account/database/account_database_test_helper.dart';
-import 'package:unifedi_api/unifedi_api_mock_helper.dart';
 
 // ignore_for_file: no-magic-number
 
@@ -59,8 +59,7 @@ class StatusDatabaseMockHelper {
       bookmarked: false,
       content: seed + 'content',
       reblogStatusRemoteId: null,
-      application:
-          UnifediApiApplicationMockHelper.generate(
+      application: UnifediApiApplicationMockHelper.generate(
         seed: seed,
       ),
       accountRemoteId: dbAccount.remoteId,

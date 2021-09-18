@@ -6,7 +6,7 @@ import 'package:fedi/app/url/url_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
-import '../../../unifedi/api/field/unifedi_api_field_extension.dart';
+import 'package:fedi/unifedi/api/field/unifedi_api_field_extension.dart';
 
 class AccountFieldListItemWidget extends StatelessWidget {
   final IUnifediApiField field;

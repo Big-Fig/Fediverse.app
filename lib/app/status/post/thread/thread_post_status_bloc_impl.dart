@@ -61,7 +61,7 @@ class ThreadPostStatusBloc extends PostStatusBloc
           initialData: PostStatusBloc.defaultInitData.copyWith(
             visibilityString: UnifediApiVisibility.publicValue.stringValue,
             language: language,
-            inReplyToPleromaStatus: inReplyToStatus.toUnifediApiStatus(),
+            inReplyToUnifediApiStatus: inReplyToStatus.toUnifediApiStatus(),
           ),
           maximumMessageLength: maximumMessageLength,
           pollLimits: pollLimits,
@@ -91,9 +91,9 @@ class ThreadPostStatusBloc extends PostStatusBloc
         context,
         listen: false,
       ),
-      maximumMessageLength: info.maxTootChars,
-      pollLimits: info.pollLimits,
-      maximumFileSizeInBytes: info.uploadLimit,
+      maximumMessageLength: info.limits?.status?.maxTootChars,
+      pollLimits: info.limits?.poll,
+      maximumFileSizeInBytes: info.limits?.media?.uploadLimit,
       markMediaAsNsfwOnAttach:
           IPostStatusSettingsBloc.of(context, listen: false)
               .markMediaAsNsfwOnAttach,
