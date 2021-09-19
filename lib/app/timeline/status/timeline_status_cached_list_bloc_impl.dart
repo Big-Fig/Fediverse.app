@@ -20,7 +20,6 @@ import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 
 import 'package:unifedi_api/unifedi_api.dart';
 import 'package:fedi/repository/repository_model.dart';
-import 'package:fediverse_api/fediverse_api.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -277,6 +276,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
 
   Future<List<IUnifediApiStatus>> _loadAccountTimeline() async {
     return await unifediApiAccountService.getAccountStatuses(
+      pagination: null,
       accountId: timeline.onlyFromRemoteAccount!.id,
       onlyWithMedia: onlyWithMedia,
       pinned: null,

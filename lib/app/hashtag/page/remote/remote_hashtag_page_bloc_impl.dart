@@ -1,3 +1,4 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
 import 'package:fedi/app/hashtag/page/hashtag_page_bloc.dart';
@@ -18,10 +19,9 @@ import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dar
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc_impl.dart';
 import 'package:fedi/pagination/pagination_model.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:easy_dispose/easy_dispose.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class RemoteHashtagPageBloc extends HashtagPageBloc
     implements IRemoteHashtagPageBloc {
@@ -39,9 +39,7 @@ class RemoteHashtagPageBloc extends HashtagPageBloc
     required this.remoteInstanceBloc,
     required this.paginationSettingsBloc,
     required IHashtag hashtag,
-  })  : unifediApiTimelineService = UnifediApiTimelineService(
-          restService: remoteInstanceBloc.unifediApiRestService,
-        ),
+  })  : unifediApiTimelineService = remoteInstanceBloc.unifediApiManager.createTimelineService(),
         super(
           hashtag: hashtag,
           instanceUri: remoteInstanceBloc.instanceUri,
@@ -109,9 +107,8 @@ class RemoteHashtagPageBloc extends HashtagPageBloc
 
     addDisposable(timelineLocalPreferenceBloc);
 
-    var unifediApiTimelineService = UnifediApiTimelineService(
-      restService: remoteInstanceBloc.unifediApiRestService,
-    );
+    var unifediApiTimelineService =
+        remoteInstanceBloc.unifediApiManager.createTimelineService();
     addDisposable(unifediApiTimelineService);
 
     statusNetworkOnlyListBloc = HashtagStatusListNetworkOnlyListBloc(

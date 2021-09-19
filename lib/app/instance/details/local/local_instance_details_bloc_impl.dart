@@ -11,24 +11,24 @@ import 'package:provider/provider.dart';
 class LocalInstanceDetailsBloc extends InstanceDetailsBloc
     implements IInstanceDetailsBloc {
   @override
-  final IUnifediApiInstanceService pleromaInstanceService;
+  final IUnifediApiInstanceService unifediApiInstanceService;
 
   LocalInstanceDetailsBloc({
     required IUnifediApiInstance? initialInstance,
-    required this.pleromaInstanceService,
+    required this.unifediApiInstanceService,
   }) : super(
-          instanceUri: pleromaInstanceService.restService.baseUri,
+          instanceUri: unifediApiInstanceService.baseUri,
           initialInstance: initialInstance,
         );
 
   static LocalInstanceDetailsBloc createFromContext(BuildContext context) {
-    var pleromaInstanceService =
+    var unifediApiInstanceService =
         Provider.of<IUnifediApiInstanceService>(context, listen: false);
     var currentAuthInstanceBloc =
         ICurrentAuthInstanceBloc.of(context, listen: false);
 
     return LocalInstanceDetailsBloc(
-      pleromaInstanceService: pleromaInstanceService,
+      unifediApiInstanceService: unifediApiInstanceService,
       initialInstance: currentAuthInstanceBloc.currentInstance!.info,
     );
   }

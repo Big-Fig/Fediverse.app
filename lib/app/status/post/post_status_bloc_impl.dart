@@ -18,8 +18,8 @@ import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/duration/duration_extension.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 var _logger = Logger('post_status_bloc_impl.dart');
 
@@ -612,7 +612,7 @@ abstract class PostStatusBloc extends PostMessageBloc
     return poll;
   }
 
-  UnifediApiPostStatusPoll? _calculatePleromaPostStatusPollField() {
+  UnifediApiPostStatusPoll? _calculatepostStatusPollField() {
     var poll;
     if (pollBloc.isSomethingChanged) {
       var expiresInSeconds = pollBloc
@@ -700,7 +700,8 @@ abstract class PostStatusBloc extends PostMessageBloc
 
   Future actualPostStatus() async {
     var remoteStatus = await unifediApiStatusService.postStatus(
-      data: calculatePleromaPostStatus(),
+      idempotencyKey: idempotencyKey,
+      postStatus: calculatepostStatus(),
     );
 
     await statusRepository.upsertRemoteStatusWithAllArguments(
@@ -729,7 +730,8 @@ abstract class PostStatusBloc extends PostMessageBloc
 
   Future actualScheduleStatus() async {
     var scheduledStatus = await unifediApiStatusService.scheduleStatus(
-      data: calculateScheduleStatus(),
+      idempotencyKey: idempotencyKey,
+      postStatus: calculateScheduleStatus(),
     );
     await scheduledStatusRepository.upsertInRemoteType(scheduledStatus);
   }
@@ -750,6 +752,9 @@ abstract class PostStatusBloc extends PostMessageBloc
                 textUrl: mediaAttachment.textUrl,
                 type: mediaAttachment.type,
                 url: mediaAttachment.url,
+                blurhash: null,
+                meta: null,
+                mimeType: null,
               ),
             )
             .toList(),
@@ -771,10 +776,9 @@ abstract class PostStatusBloc extends PostMessageBloc
       visibility: calculateVisibilityField(),
       inReplyToId: calculateInReplyToStatusField()?.remoteId,
       inReplyToConversationId: initialData.inReplyToConversationId,
-      idempotencyKey: idempotencyKey,
       scheduledAt: scheduledAt!,
       to: calculateToField(),
-      poll: _calculatePleromaPostStatusPollField(),
+      poll: _calculatepostStatusPollField(),
       spoilerText: _calculateSpoilerTextField(),
       expiresInSeconds: expireAtSubject.valueOrNull?.totalSeconds,
       language: initialData.language,
@@ -783,7 +787,7 @@ abstract class PostStatusBloc extends PostMessageBloc
     );
   }
 
-  UnifediApiPostStatus calculatePleromaPostStatus() {
+  UnifediApiPostStatus calculatepostStatus() {
     return UnifediApiPostStatus(
       mediaIds: _calculateMediaIdsField(),
       status: calculateStatusTextField(),
@@ -791,9 +795,8 @@ abstract class PostStatusBloc extends PostMessageBloc
       visibility: calculateVisibilityField(),
       inReplyToId: calculateInReplyToStatusField()?.remoteId,
       inReplyToConversationId: initialData.inReplyToConversationId,
-      idempotencyKey: idempotencyKey,
       to: calculateToField(),
-      poll: _calculatePleromaPostStatusPollField(),
+      poll: _calculatepostStatusPollField(),
       spoilerText: _calculateSpoilerTextField(),
       language: initialData.language,
       expiresInSeconds: expireAtSubject.valueOrNull?.totalSeconds,

@@ -12,18 +12,16 @@ class RemoteInstanceActivityBloc extends InstanceActivityBloc
   final IRemoteInstanceBloc remoteInstanceBloc;
 
   @override
-  final IUnifediApiInstanceService pleromaInstanceService;
+  final IUnifediApiInstanceService unifediApiInstanceService;
 
   RemoteInstanceActivityBloc({
     required this.remoteInstanceBloc,
-  })  : pleromaInstanceService = UnifediApiInstanceService(
-          restService: remoteInstanceBloc.unifediApiRestService,
-        ),
+  })  : unifediApiInstanceService = remoteInstanceBloc.unifediApiManager.createInstanceService(),
         super(
           instance: null,
           instanceUri: remoteInstanceBloc.instanceUri,
         ) {
-    addDisposable(pleromaInstanceService);
+    addDisposable(unifediApiInstanceService);
   }
 
   static RemoteInstanceActivityBloc createFromContext(BuildContext context) {

@@ -18,9 +18,7 @@ class RemoteInstanceTrendsBloc extends InstanceTrendsBloc
   RemoteInstanceTrendsBloc({
     required this.remoteInstanceBloc,
     required IPaginationSettingsBloc paginationSettingsBloc,
-  })  : unifediApiInstanceService = UnifediApiInstanceService(
-          restService: remoteInstanceBloc.unifediApiRestService,
-        ),
+  })  : unifediApiInstanceService = remoteInstanceBloc.unifediApiManager.createInstanceService(),
         super(
           initialInstance: null,
           instanceUri: remoteInstanceBloc.instanceUri,

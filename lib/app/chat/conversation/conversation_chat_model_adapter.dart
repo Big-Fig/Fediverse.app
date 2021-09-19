@@ -25,11 +25,11 @@ extension IConversationChatExtension on IConversationChat {
     var unread = this.unread;
 
     return UnifediApiConversation(
+      recipients: null,
       unread: (unread > 0) ? true : false,
       lastStatus: lastStatus?.toUnifediApiStatus(),
       id: remoteId,
       accounts: accounts.toUnifediApiAccountList(),
-      pleroma: pleroma?.toUnifediApiConversationPleromaPart(),
     );
   }
 }

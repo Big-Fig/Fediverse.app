@@ -352,8 +352,7 @@ class TimelineSettings extends ISettings<TimelineSettings> {
   UnifediApiReplyVisibilityFilter? get replyVisibilityFilter =>
       replyVisibilityFilterString?.toUnifediApiReplyVisibilityFilter();
 
-  static String generateUniqueTimelineId() =>
-      '${DateTime.now().millisecondsSinceEpoch}';
+
 
   @override
   TimelineSettings clone() => copyWith();

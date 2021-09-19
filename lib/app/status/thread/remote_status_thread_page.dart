@@ -11,7 +11,6 @@ import 'package:fedi/app/status/thread/status_thread_bloc.dart';
 import 'package:fedi/app/status/thread/status_thread_bloc_proxy_provider.dart';
 import 'package:fedi/app/status/thread/status_thread_page.dart';
 import 'package:fedi/connection/connection_service.dart';
-import 'package:fediverse_api/fediverse_api.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 
 import 'package:unifedi_api/unifedi_api.dart';
@@ -48,7 +47,7 @@ Future goToRemoteStatusThreadPageBasedOnLocalInstanceRemoteStatus(
     asyncCode: () async {
       IStatus? result;
       RemoteInstanceBloc? remoteInstanceBloc;
-      UnifediApiStatusService? unifediApiStatusService;
+      IUnifediApiStatusService? unifediApiStatusService;
       try {
         var instanceUri = localInstanceRemoteStatus!.urlRemoteHostUri;
 
@@ -64,12 +63,10 @@ Future goToRemoteStatusThreadPageBasedOnLocalInstanceRemoteStatus(
           unifediApiInstance: null,
         );
 
-        unifediApiStatusService = UnifediApiStatusService(
-          restService: remoteInstanceBloc.unifediApiRestService,
-        );
+        unifediApiStatusService = remoteInstanceBloc.unifediApiManager.createStatusService();
 
         var remoteInstanceRemoteStatus = await unifediApiStatusService.getStatus(
-          statusRemoteId: remoteInstanceStatusRemoteId,
+          statusId: remoteInstanceStatusRemoteId,
         );
 
         result = remoteInstanceRemoteStatus.toDbStatusPopulatedWrapper();

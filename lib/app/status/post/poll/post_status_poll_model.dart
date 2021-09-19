@@ -1,8 +1,8 @@
 import 'package:fedi/collection/collection_hash_utils.dart';
 import 'package:fedi/duration/duration_extension.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 part 'post_status_poll_model.g.dart';
 
@@ -73,8 +73,7 @@ class PostStatusPoll implements IPostStatusPoll {
 }
 
 extension IPostStatusPollExtension on IPostStatusPoll {
-  UnifediApiPostStatusPoll toPleromaPostStatusPoll() =>
-      UnifediApiPostStatusPoll(
+  UnifediApiPostStatusPoll topostStatusPoll() => UnifediApiPostStatusPoll(
         options: options,
         multiple: multiple,
         expiresInSeconds: durationLength!.totalSeconds,
@@ -100,7 +99,12 @@ extension IPostStatusPollExtension on IPostStatusPoll {
       expired: false,
       voted: true,
       multiple: multiple,
-      options: options.toUnifediApiPollOptions(),
+      options: options
+          .map((option) => UnifediApiPollOption(
+                title: option,
+                votesCount: null,
+              ))
+          .toList(),
       ownVotes: [],
       votersCount: 0,
       votesCount: 0,
@@ -110,7 +114,7 @@ extension IPostStatusPollExtension on IPostStatusPoll {
   }
 }
 
-extension PleromaPostStatusPollExtension on IUnifediApiPostStatusPoll {
+extension PostStatusPollExtension on IUnifediApiPostStatusPoll {
   PostStatusPoll toPostStatusPoll() {
     return PostStatusPoll(
       durationLength: expiresInSeconds.toDuration(),
@@ -119,7 +123,6 @@ extension PleromaPostStatusPollExtension on IUnifediApiPostStatusPoll {
       options: options,
     );
   }
-
 }
 
 extension IUnifediApiPollExtension on IUnifediApiPoll {
@@ -132,8 +135,7 @@ extension IUnifediApiPollExtension on IUnifediApiPoll {
         expiresAt: expiresAt,
         id: id,
         multiple: multiple,
-        options:
-            options.toUnifediApiPollOptions(forceNewObject: forceNewObject),
+        options: options.toUnifediApiPollOptionList(),
         ownVotes: ownVotes,
         voted: voted,
         votesCount: votesCount,
@@ -147,11 +149,11 @@ extension IUnifediApiPollExtension on IUnifediApiPoll {
   }) {
     Duration? durationLength;
     var expiresAt = this.expiresAt;
-    if(expiresAt != null) {
+    if (expiresAt != null) {
       durationLength = DateTime.now().difference(expiresAt).abs();
       var minExpirationDuration = limits?.minExpirationDuration;
-      if(minExpirationDuration != null) {
-        if(minExpirationDuration> durationLength) {
+      if (minExpirationDuration != null) {
+        if (minExpirationDuration > durationLength) {
           durationLength = minExpirationDuration;
         }
       }

@@ -1,5 +1,4 @@
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:fediverse_api/fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:fediverse_api/fediverse_api_utils.dart';

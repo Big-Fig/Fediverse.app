@@ -36,11 +36,11 @@ abstract class InstanceActivityBloc extends AsyncInitLoadingBloc
     addCustomDisposable(() => refreshController.dispose());
   }
 
-  IUnifediApiInstanceService get pleromaInstanceService;
+  IUnifediApiInstanceService get unifediApiInstanceService;
 
   @override
   Future<List<IUnifediApiInstanceActivityItem>> refresh() async {
-    var activity = await pleromaInstanceService.getActivity();
+    var activity = await unifediApiInstanceService.getActivity();
     activitySubject.add(activity);
 
     return activity;

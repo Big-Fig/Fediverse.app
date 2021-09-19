@@ -11,24 +11,24 @@ import 'package:provider/provider.dart';
 class LocalInstanceActivityBloc extends InstanceActivityBloc
     implements IInstanceActivityBloc {
   @override
-  final IUnifediApiInstanceService pleromaInstanceService;
+  final IUnifediApiInstanceService unifediApiInstanceService;
 
   LocalInstanceActivityBloc({
     required IUnifediApiInstance instance,
-    required this.pleromaInstanceService,
+    required this.unifediApiInstanceService,
   }) : super(
-          instanceUri: pleromaInstanceService.restService.baseUri,
+          instanceUri: unifediApiInstanceService.baseUri,
           instance: instance,
         );
 
   static LocalInstanceActivityBloc createFromContext(BuildContext context) {
-    var pleromaInstanceService =
+    var unifediApiInstanceService =
         Provider.of<IUnifediApiInstanceService>(context, listen: false);
     var currentAuthInstanceBloc =
         ICurrentAuthInstanceBloc.of(context, listen: false);
 
     return LocalInstanceActivityBloc(
-      pleromaInstanceService: pleromaInstanceService,
+      unifediApiInstanceService: unifediApiInstanceService,
       instance: currentAuthInstanceBloc.currentInstance!.info!,
     );
   }

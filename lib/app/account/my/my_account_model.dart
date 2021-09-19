@@ -281,11 +281,11 @@ class UnifediApiMyAccountWrapper extends IMyAccount {
   String? get chatToken => unifediApiAccount.chatToken;
 
   @override
-  UnifediApiMyAccountNotificationsSettings? get pleromaNotificationSettings =>
+  UnifediApiMyAccountNotificationsSettings? get notificationSettings =>
       unifediApiAccount.notificationSettings;
 
   @override
-  Map<String, dynamic>? get pleromaSettingsStore =>
+  Map<String, dynamic>? get settingsStore =>
       unifediApiAccount.settingsStore;
 
   @override

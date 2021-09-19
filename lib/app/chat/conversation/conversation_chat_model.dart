@@ -4,10 +4,8 @@ import 'package:fedi/app/chat/conversation/message/conversation_chat_message_mod
 import 'package:fedi/app/chat/conversation/with_last_message/conversation_chat_with_last_message_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 
 abstract class IConversationChat implements IChat {
-  IUnifediApiConversationPleromaPart? get pleroma;
 
   @override
   IConversationChat copyWith({
@@ -138,10 +136,6 @@ class DbConversationChatPopulatedWrapper implements IConversationChat {
 
   @override
   DateTime? get updatedAt => dbConversationPopulated.dbConversation.updatedAt;
-
-  @override
-  // todo: implement
-  IUnifediApiConversationPleromaPart? get pleroma => null;
 
   @override
   List<IAccount> get accounts => throw Exception(

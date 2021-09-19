@@ -12,18 +12,16 @@ class RemoteInstanceDetailsBloc extends InstanceDetailsBloc
   final IRemoteInstanceBloc remoteInstanceBloc;
 
   @override
-  final IUnifediApiInstanceService pleromaInstanceService;
+  final IUnifediApiInstanceService unifediApiInstanceService;
 
   RemoteInstanceDetailsBloc({
     required this.remoteInstanceBloc,
-  })  : pleromaInstanceService = UnifediApiInstanceService(
-          restService: remoteInstanceBloc.unifediApiRestService,
-        ),
+  })  : unifediApiInstanceService = remoteInstanceBloc.unifediApiManager.createInstanceService(),
         super(
           initialInstance: null,
           instanceUri: remoteInstanceBloc.instanceUri,
         ) {
-    addDisposable(pleromaInstanceService);
+    addDisposable(unifediApiInstanceService);
   }
 
   static RemoteInstanceDetailsBloc createFromContext(BuildContext context) {

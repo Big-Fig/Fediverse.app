@@ -15,7 +15,6 @@ import 'package:fedi/app/timeline/public/public_timeline_websockets_handler_impl
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:unifedi_api/unifedi_api.dart';
-import 'package:fediverse_api/fediverse_api.dart';
 import 'package:fediverse_api/fediverse_api_utils.dart';
 
 class WebSocketsHandlerManagerBloc extends DisposableOwner

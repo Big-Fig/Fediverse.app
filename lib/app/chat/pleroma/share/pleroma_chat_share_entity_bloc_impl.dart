@@ -48,7 +48,7 @@ class PleromaChatShareEntityBloc extends PleromaChatShareBloc
 
   @override
   Future<List<UnifediApiPostChatMessage>>
-      createPleromaChatMessageSendDataList() async {
+      createUnifediApiChatMessageSendDataList() async {
     var text = convertAllItemsToRawText(
       settings: shareEntitySettingsBloc.shareEntitySettings,
     );
@@ -62,7 +62,6 @@ class PleromaChatShareEntityBloc extends PleromaChatShareBloc
     var messageSendData = UnifediApiPostChatMessage(
       content: text?.trim(),
       mediaId: mediaAttachments?.firstOrNull?.id,
-      idempotencyKey: null,
     );
 
     var result = <UnifediApiPostChatMessage>[];
@@ -76,7 +75,6 @@ class PleromaChatShareEntityBloc extends PleromaChatShareBloc
             UnifediApiPostChatMessage(
               content: null,
               mediaId: mediaAttachment.id,
-              idempotencyKey: null,
             ),
           );
         },

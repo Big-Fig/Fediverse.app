@@ -11,7 +11,6 @@ import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/localization/settings/localization_settings_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/connection/connection_service.dart';
-import 'package:fediverse_api/fediverse_api.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:unifedi_api/unifedi_api.dart';
@@ -36,22 +35,21 @@ class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
   late IUnifediApiInstance unifediApiInstance;
 
   // ignore: avoid-late-keyword
-  late IRestService restService;
+  late IUnifediApiManager apiManager;
 
-  // ignore: avoid-late-keyword
-  late IUnifediApiRestService unifediApiRestService;
 
   // ignore: avoid-late-keyword
   late IUnifediApiInstanceService unifediApiInstanceService;
 
-  // ignore: avoid-late-keyword
-  late IUnifediApiInstanceService pleromaInstanceService;
+  final String localeName;
 
   @override
   // ignore: avoid-late-keyword
   late RegisterAuthInstanceFormBloc registerAuthInstanceFormBloc;
 
   RegisterAuthInstanceBloc({
+
+    required this.localeName,
     required this.instanceBaseUri,
     required this.localPreferencesService,
     required this.connectionService,
@@ -60,23 +58,19 @@ class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
     required this.localizationSettingsBloc,
     required this.configService,
   }) : super() {
-    restService = RestService(baseUri: instanceBaseUri);
-    unifediApiRestService = UnifediApiRestService(
-      connectionService: connectionService,
-      restService: restService,
+
+    apiManager = currentInstanceBloc
+        .currentInstance!.info!.typeAsUnifediApi
+        .createApiManager(
+      uri: instanceBaseUri.toString(),
     );
 
-    unifediApiInstanceService = UnifediApiInstanceService(
-      restService: unifediApiRestService,
-    );
-
-    pleromaInstanceService =
-        UnifediApiInstanceService(restService: unifediApiRestService);
+    unifediApiInstanceService = apiManager.createInstanceService();
 
     registrationResultStreamController.disposeWith(this);
-    restService.disposeWith(this);
-    unifediApiRestService.disposeWith(this);
-    pleromaInstanceService.disposeWith(this);
+
+    apiManager.disposeWith(this);
+    unifediApiInstanceService.disposeWith(this);
   }
 
   @override
@@ -100,7 +94,7 @@ class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
       await authApplicationBloc.performAsyncInit();
 
       registrationResult = await authApplicationBloc.registerAccount(
-        request: unifediApiAccountRegisterRequest,
+        registerAccount: unifediApiAccountRegisterRequest,
       );
     } catch (e, stackTrace) {
       // todo: refactor
@@ -138,9 +132,10 @@ class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
 
   @override
   Future internalAsyncInit() async {
-    unifediApiInstance = await pleromaInstanceService.getInstance();
+    unifediApiInstance = await unifediApiInstanceService.getInstance();
 
     registerAuthInstanceFormBloc = RegisterAuthInstanceFormBloc(
+      localeName:localeName,
       unifediApiInstance: unifediApiInstance,
       unifediApiInstanceService: unifediApiInstanceService,
       instanceBaseUri: instanceBaseUri,

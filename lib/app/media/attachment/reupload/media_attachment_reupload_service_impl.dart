@@ -1,6 +1,6 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/cache/files/files_cache_service.dart';
 import 'package:fedi/app/media/attachment/reupload/media_attachment_reupload_service.dart';
-import 'package:easy_dispose/easy_dispose.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
 class MediaAttachmentReuploadService extends DisposableOwner
@@ -22,7 +22,13 @@ class MediaAttachmentReuploadService extends DisposableOwner
     var file = await filesCacheService.getImageByUrl(imageUrl: url!);
 
     var unifediApiMediaAttachment =
-        await unifediApiMediaAttachmentService.uploadMedia(file: file);
+        await unifediApiMediaAttachmentService.uploadMedia(
+      file: file,
+      thumbnail: null,
+      description: null,
+      focus: null,
+      processInBackground: null,
+    );
 
     return unifediApiMediaAttachment;
   }

@@ -80,7 +80,7 @@ class ConversationChatShareEntityBloc extends ConversationChatShareBloc
       do {
         minIndex = currentIndex * maximumMediaAttachmentCount;
         maxIndex = (currentIndex + 1) * maximumMediaAttachmentCount;
-        var messageSendData = _createUnifediApiPostStatus(
+        var messageSendData = _createPostStatus(
           text: text,
           to: to,
           visibility: visibility,
@@ -96,7 +96,7 @@ class ConversationChatShareEntityBloc extends ConversationChatShareBloc
         result.add(messageSendData);
       } while (maxIndex < length);
     } else {
-      var messageSendData = _createUnifediApiPostStatus(
+      var messageSendData = _createPostStatus(
         text: text,
         to: to,
         visibility: visibility,
@@ -109,7 +109,7 @@ class ConversationChatShareEntityBloc extends ConversationChatShareBloc
     return result;
   }
 
-  UnifediApiPostStatus _createUnifediApiPostStatus({
+  UnifediApiPostStatus _createPostStatus({
     required String? text,
     required String to,
     required UnifediApiVisibility visibility,

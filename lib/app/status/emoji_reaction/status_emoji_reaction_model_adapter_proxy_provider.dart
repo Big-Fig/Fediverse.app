@@ -15,7 +15,7 @@ class StatusEmojiReactionAdapterProxyProvider extends StatelessWidget {
   Widget build(BuildContext context) {
     return ProxyProvider<IUnifediApiEmojiReaction, IEmojiReaction>(
       update: (context, value, previous) => StatusEmojiReactionAdapter(
-        UnifediApiEmojiReaction: value,
+        unifediApiEmojiReaction: value,
       ),
       child: child,
     );

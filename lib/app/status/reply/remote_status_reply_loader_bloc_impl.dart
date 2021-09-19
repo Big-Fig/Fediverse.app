@@ -20,9 +20,7 @@ class RemoteStatusReplyLoaderBloc extends AsyncInitLoadingBloc
   ) {
     var remoteInstanceBloc = IRemoteInstanceBloc.of(context, listen: false);
 
-    var unifediApiStatusService = UnifediApiStatusService(
-      restService: remoteInstanceBloc.unifediApiRestService,
-    );
+    var unifediApiStatusService = remoteInstanceBloc.unifediApiManager.createStatusService();
     var bloc = RemoteStatusReplyLoaderBloc(
       unifediApiStatusService: unifediApiStatusService,
       originalStatus: originalStatus,

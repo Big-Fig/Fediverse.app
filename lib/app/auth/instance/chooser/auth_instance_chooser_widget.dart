@@ -128,7 +128,7 @@ class _AuthInstanceChooserItemsToChooseWidget extends StatelessWidget {
                   return DisposableProvider<IAccountBloc>(
                     create: (context) => MyAccountBloc(
                       instance: instance,
-                      unifediApiMyAccountService:
+                      apiMyAccountService:
                           Provider.of<IUnifediApiMyAccountService>(
                         context,
                         listen: false,

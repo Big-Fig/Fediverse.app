@@ -25,9 +25,11 @@ class ConversationChatPostMessageBloc extends PostStatusBloc {
     required UnifediApiInstancePollLimits? pollLimits,
     required int? maximumFileSizeInBytes,
     required bool markMediaAsNsfwOnAttach,
+    required int? maximumMediaAttachmentCount,
     required String? language,
   }) : super(
           isExpirePossible: false,
+          maximumMediaAttachmentCount: maximumMediaAttachmentCount,
           unifediApiStatusService: unifediApiStatusService,
           statusRepository: statusRepository,
           scheduledStatusRepository: scheduledStatusRepository,
@@ -70,7 +72,8 @@ class ConversationChatPostMessageBloc extends PostStatusBloc {
       ),
       maximumMessageLength: info.limits?.status?.maxTootChars,
       pollLimits: info.limits?.poll,
-      maximumFileSizeInBytes: info.limits?.media.uploadLimit,
+      maximumMediaAttachmentCount: info.limits?.status?.maxMediaAttachmentsCount,
+      maximumFileSizeInBytes: info.limits?.media?.uploadLimit,
       markMediaAsNsfwOnAttach: IPostStatusSettingsBloc.of(
         context,
         listen: false,

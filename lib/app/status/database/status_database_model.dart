@@ -53,7 +53,7 @@ class DbStatuses extends Table {
   TextColumn? get accountRemoteId => text()();
 
   TextColumn? get mediaAttachments =>
-      text().map(unifediApiMediaAttachmentListDatabaseConverter()).nullable()();
+      text().map(UnifediApiMediaAttachmentListDatabaseConverter()).nullable()();
 
   TextColumn? get mentions =>
       text().map(PleromaMentionListDatabaseConverter()).nullable()();
@@ -112,8 +112,7 @@ class UnifediApiVisibilityMoorTypeConverter
   const UnifediApiVisibilityMoorTypeConverter();
 
   UnifediApiVisibility fromJson(String value) =>
-      value.toUnifediApiVisibility() ??
-      UnifediApiVisibility.unknown(stringValue: value);
+      value.toUnifediApiVisibility();
 
   String toJson(UnifediApiVisibility value) =>
       value.stringValue ;

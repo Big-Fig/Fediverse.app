@@ -17,7 +17,6 @@ import 'package:fedi/app/emoji/text/emoji_text_model.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
 import 'package:moor/ffi.dart';
 
 import '../../../rxdart/rxdart_test_helper.dart';
@@ -35,7 +34,7 @@ void main() {
   late IPleromaChat chat;
   late IPleromaChatMessage chatMessage;
   late IPleromaChatMessageBloc chatMessageBloc;
-  late MockIUnifediApiChatService pleromaApiChatServiceMock;
+  late MockIUnifediApiChatService unifediApiChatServiceMock;
   late MockIUnifediApiAccountService unifediApiAccountServiceMock;
   late AppDatabase database;
   late IAccountRepository accountRepository;
@@ -59,17 +58,8 @@ void main() {
       );
 
       myAccountBloc = MockIMyAccountBloc();
-      pleromaApiChatServiceMock = MockIUnifediApiChatService();
+      unifediApiChatServiceMock = MockIUnifediApiChatService();
       unifediApiAccountServiceMock = MockIUnifediApiAccountService();
-
-      when(pleromaApiChatServiceMock.isConnected).thenReturn(true);
-      when(pleromaApiChatServiceMock.unifediApiState).thenReturn(
-        UnifediApiState.validAuth,
-      );
-      when(unifediApiAccountServiceMock.isConnected).thenReturn(true);
-      when(unifediApiAccountServiceMock.unifediApiState).thenReturn(
-        UnifediApiState.validAuth,
-      );
 
       chat = await ChatMockHelper.createTestChat(seed: 'seed1');
       chatMessage = await ChatMessageMockHelper.createTestChatMessage(
@@ -85,14 +75,14 @@ void main() {
 
       chatMessageBloc = PleromaChatMessageBloc(
         chatMessage: chatMessage,
-        pleromaApiChatService: pleromaApiChatServiceMock,
+        pleromaApiChatService: unifediApiChatServiceMock,
         chatMessageRepository: chatMessageRepository,
         delayInit: false,
         isNeedWatchLocalRepositoryForUpdates: true,
         accountRepository: accountRepository,
         unifediApiAccountService: unifediApiAccountServiceMock,
         pleromaChatBloc: PleromaChatBloc(
-          pleromaApiChatService: pleromaApiChatServiceMock,
+          unifediApiChatService: unifediApiChatServiceMock,
           myAccountBloc: myAccountBloc,
           chatRepository: chatRepository,
           chatMessageRepository: chatMessageRepository,
@@ -325,7 +315,7 @@ void main() {
 //     await RxDartMockHelper.waitForData(() => listened);
 //    ChatMessageMockHelper.expectChatMessage(listened, chatMessage);
 //
-//    when(pleromaApiChatServiceMock.getChatMessage(
+//    when(unifediApiChatServiceMock.getChatMessage(
 //            chatMessageRemoteId: chatMessage.remoteId))
 //        .thenAnswer(
 //            (_) async => mapLocalChatMessageToRemoteChatMessage(newValue));

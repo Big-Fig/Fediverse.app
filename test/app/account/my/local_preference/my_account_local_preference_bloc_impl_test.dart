@@ -1,6 +1,7 @@
 import 'package:fedi/app/account/my/local_preferences/my_account_local_preference_bloc_impl.dart';
 import 'package:fedi/app/account/my/my_account_model.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:unifedi_api/unifedi_api_mock_helper.dart';
 
 
 import '../../../../local_preferences/local_preferences_test_helper.dart';
@@ -17,7 +18,7 @@ void main() {
       ),
       testObjectCreator: ({required String seed}) => UnifediApiMyAccountWrapper(
         unifediApiAccount:
-            UnifediApiMyAccountMockHelper.createTestUnifediApiMyAccount(
+            UnifediApiMyAccountMockHelper.generate(
           seed: seed,
         ),
       ),

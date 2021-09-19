@@ -231,9 +231,7 @@ class PostStatusData implements IPostStatusData {
 }
 
 extension IPostStatusDataExtension on IPostStatusData {
-  UnifediApiSchedulePostStatus toUnifediApiSchedulePostStatus({
-    required String? idempotencyKey,
-  }) {
+  UnifediApiSchedulePostStatus toUnifediApiSchedulePostStatus() {
     assert(isScheduled);
 
     return UnifediApiSchedulePostStatus(
@@ -247,9 +245,8 @@ extension IPostStatusDataExtension on IPostStatusData {
       to: to,
       scheduledAt: scheduledAt!,
       expiresInSeconds: expiresInSeconds,
-      poll: poll?.toPleromaPostStatusPoll(),
+      poll: poll?.topostStatusPoll(),
       language: language,
-      idempotencyKey: idempotencyKey,
       contentType: null,
       preview: null,
     );
@@ -276,7 +273,7 @@ extension IPostStatusDataExtension on IPostStatusData {
     }
   }
 
-  UnifediApiPostStatus toPleromaPostStatus() {
+  UnifediApiPostStatus topostStatus() {
     assert(!isScheduled);
 
     return UnifediApiPostStatus(
@@ -290,7 +287,7 @@ extension IPostStatusDataExtension on IPostStatusData {
       spoilerText: subject,
       status: text,
       to: to,
-      poll: poll?.toPleromaPostStatusPoll(),
+      poll: poll?.topostStatusPoll(),
       contentType: null,
       preview: null,
     );

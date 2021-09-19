@@ -28,7 +28,7 @@ abstract class InstanceTrendsBloc extends DisposableOwner
 
     instanceTrendsHashtagListNetworkOnlyListBloc =
         InstanceTrendsHashtagListNetworkOnlyListBloc(
-      UnifediApiInstanceService: UnifediApiInstanceService,
+          unifediApiInstanceService: unifediApiInstanceService,
       remoteInstanceUriOrNull: instanceUri,
       instanceLocation: instanceLocation,
     );

@@ -24,7 +24,7 @@ class DbNotifications extends Table {
       text().nullable().map(UnifediApiAccountReportDatabaseConverter())();
 
   TextColumn get chatMessage =>
-      text().nullable().map(PleromaChatMessageDatabaseConverter())();
+      text().nullable().map(UnifediApiChatMessageDatabaseConverter())();
 
   TextColumn get target =>
       text().nullable().map(UnifediApiAccountDatabaseConverter())();

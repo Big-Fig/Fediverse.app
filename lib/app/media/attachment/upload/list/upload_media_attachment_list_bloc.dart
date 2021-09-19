@@ -36,7 +36,7 @@ abstract class IUploadMediaAttachmentsCollectionBloc extends IDisposable {
 
   Stream<bool> get isAllAttachedMediaUploadedStream;
 
-  int get maximumMediaAttachmentCount;
+  int? get maximumMediaAttachmentCount;
 
   int? get maximumFileSizeInBytes;
 

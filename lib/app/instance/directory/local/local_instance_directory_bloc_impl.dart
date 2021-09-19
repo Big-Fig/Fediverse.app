@@ -19,7 +19,7 @@ class LocalInstanceDirectoryBloc extends InstanceDirectoryBloc
     required this.unifediApiInstanceService,
     required IPaginationSettingsBloc paginationSettingsBloc,
   }) : super(
-          instanceUri: unifediApiInstanceService.restService.baseUri,
+          instanceUri: unifediApiInstanceService.baseUri,
           initialInstance: initialInstance,
           paginationSettingsBloc: paginationSettingsBloc,
         );

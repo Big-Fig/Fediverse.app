@@ -8,7 +8,6 @@ import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/duration/duration_extension.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -292,7 +291,7 @@ class LocalStatusBloc extends StatusBloc {
     }
 
     return await _actualMuteUnmute(
-      expireDurationInSeconds: duration?.totalSeconds,
+      expiresIn: duration,
     );
   }
 
@@ -301,12 +300,12 @@ class LocalStatusBloc extends StatusBloc {
     required Duration? duration,
   }) async {
     return await _actualMuteUnmute(
-      expireDurationInSeconds: duration?.totalSeconds,
+      expiresIn: duration,
     );
   }
 
   Future<IStatus> _actualMuteUnmute({
-    required int? expireDurationInSeconds,
+    required Duration? expiresIn,
   }) async {
     IUnifediApiStatus remoteStatus;
 
@@ -317,7 +316,7 @@ class LocalStatusBloc extends StatusBloc {
     } else {
       remoteStatus = await unifediApiStatusService.muteStatus(
         statusId: reblogOrOriginal.remoteId!,
-        expireDurationInSeconds: expireDurationInSeconds,
+        expiresIn: expiresIn,
       );
     }
 

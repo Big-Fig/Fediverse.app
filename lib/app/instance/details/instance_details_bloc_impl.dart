@@ -23,7 +23,7 @@ abstract class InstanceDetailsBloc extends AsyncInitLoadingBloc
     addCustomDisposable(() => refreshController.dispose());
   }
 
-  IUnifediApiInstanceService get pleromaInstanceService;
+  IUnifediApiInstanceService get unifediApiInstanceService;
 
   @override
   IUnifediApiInstance? get instance => instanceSubject.valueOrNull;
@@ -39,7 +39,7 @@ abstract class InstanceDetailsBloc extends AsyncInitLoadingBloc
 
   @override
   Future<IUnifediApiInstance> refresh() async {
-    var instance = await pleromaInstanceService.getInstance();
+    var instance = await unifediApiInstanceService.getInstance();
     instanceSubject.add(instance);
 
     return instance;

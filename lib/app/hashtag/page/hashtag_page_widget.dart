@@ -14,10 +14,10 @@ import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/url/url_helper.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class HashtagPageAppBarWidget extends StatelessWidget
     implements PreferredSizeWidget {
@@ -73,10 +73,13 @@ class _HashtagPageAppBarOpenInBrowserAction extends StatelessWidget {
       color: IFediUiColorTheme.of(context).darkGrey,
       icon: Icon(FediIcons.external_icon),
       onPressed: () {
-        UrlHelper.handleUrlClickOnLocalInstanceLocation(
-          context: context,
-          url: hashtag.url,
-        );
+        var url = hashtag.url;
+        if (url != null) {
+          UrlHelper.handleUrlClickOnLocalInstanceLocation(
+            context: context,
+            url: url,
+          );
+        }
       },
     );
   }

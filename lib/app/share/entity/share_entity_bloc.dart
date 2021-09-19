@@ -1,12 +1,12 @@
 import 'package:collection/collection.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/media/attachment/reupload/media_attachment_reupload_service.dart';
 import 'package:fedi/app/share/entity/settings/share_entity_settings_model.dart';
 import 'package:fedi/app/share/entity/share_entity_model.dart';
-import 'package:easy_dispose/easy_dispose.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 final _dateFormat = DateFormat('yyyy-MM-dd HH:mm');
 
@@ -105,6 +105,10 @@ Future<List<IUnifediApiMediaAttachment>?> convertSingleItemToMediaAttachments({
     for (var mediaLocalFile in mediaLocalFiles) {
       var mediaAttachment = await unifediApiMediaAttachmentService.uploadMedia(
         file: mediaLocalFile.file,
+        thumbnail: null,
+        description: null,
+        focus: null,
+        processInBackground: null,
       );
       mediaAttachments.add(mediaAttachment);
     }

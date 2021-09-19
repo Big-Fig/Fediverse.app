@@ -9,10 +9,8 @@ import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/form_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
-import 'package:logging/logging.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
-final _logger = Logger('account_report_bloc_impl.dart');
 
 class AccountReportBloc extends FormBloc implements IAccountReportBloc {
   @override

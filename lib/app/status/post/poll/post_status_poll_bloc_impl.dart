@@ -43,12 +43,12 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
     required this.pollLimits,
   })  : pollOptionsGroupBloc = OneTypeFormGroupBloc<IStringValueFormFieldBloc>(
           originalItems:
-              createDefaultPollOptions(pollLimits.maxOptionCharsOrDefault),
+              createDefaultPollOptions(pollLimits?.maxOptionChars),
           // ignore: no-magic-number
           minimumFieldsCount: 2,
-          maximumFieldsCount: pollLimits.maxOptionsOrDefault,
+          maximumFieldsCount: pollLimits?.maxOptions,
           newEmptyFieldCreator: () =>
-              createPollOptionBloc(pollLimits.maxOptionCharsOrDefault),
+              createPollOptionBloc(pollLimits?.maxOptionChars),
         ),
         durationDateTimeLengthFieldBloc =
             createDurationDateTimeLengthBloc(pollLimits),
@@ -137,7 +137,7 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
     // super.clear();
 
     pollOptionsGroupBloc.changeFields(
-      createDefaultPollOptions(pollLimits.maxOptionChars),
+      createDefaultPollOptions(pollLimits?.maxOptionChars),
     );
 
     multiplyFieldBloc.clear();

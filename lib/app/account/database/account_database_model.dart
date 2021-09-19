@@ -1,4 +1,5 @@
 import 'package:fedi/app/moor/moor_converters.dart';
+import 'package:fedi/moor/moor_json_type_converter.dart';
 import 'package:moor/moor.dart';
 
 // todo: add foreign keys
@@ -15,27 +16,28 @@ class DbAccounts extends Table {
 
   TextColumn get note => text().nullable()();
 
-  BoolColumn get locked => boolean()();
+  BoolColumn get locked => boolean().nullable()();
 
-  TextColumn get headerStatic => text()();
+  TextColumn get headerStatic => text().nullable()();
 
-  TextColumn get header => text()();
+  TextColumn get header => text().nullable()();
 
-  IntColumn get followingCount => integer()();
+  IntColumn get followingCount => integer().nullable()();
 
-  IntColumn get followersCount => integer()();
+  IntColumn get followersCount => integer().nullable()();
 
-  IntColumn get statusesCount => integer()();
+  IntColumn get statusesCount => integer().nullable()();
 
   TextColumn get displayName => text().nullable()();
 
-  DateTimeColumn get createdAt => dateTime()();
+  DateTimeColumn get createdAt => dateTime().nullable()();
 
   BoolColumn get bot => boolean().nullable()();
 
-  TextColumn get avatarStatic => text()();
+  TextColumn get avatarStatic => text().nullable()();
 
-  TextColumn get avatar => text()();
+  TextColumn get avatar => text().nullable()();
+
 
   TextColumn get acct => text()();
 
@@ -49,6 +51,10 @@ class DbAccounts extends Table {
   TextColumn get emojis => text()
       .nullable()
       .map(UnifediApiEmojiListDatabaseConverter())
+      .nullable()();
+  TextColumn get alsoKnownAs => text()
+      .nullable()
+      .map(StringListDatabaseConverter())
       .nullable()();
 
   TextColumn get backgroundImage => text().nullable()();
@@ -84,4 +90,10 @@ class DbAccounts extends Table {
   BoolColumn get skipThreadContainment => boolean().nullable()();
 
   BoolColumn get acceptsChatMessages => boolean().nullable()();
+  BoolColumn get suspended => boolean().nullable()();
+  BoolColumn get isConfirmed => boolean().nullable()();
+  DateTimeColumn get muteExpiresAt => dateTime().nullable()();
+  TextColumn get fqn => text().nullable()();
+  TextColumn get favicon => text().nullable()();
+  TextColumn get apId => text().nullable()();
 }

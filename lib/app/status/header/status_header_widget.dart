@@ -69,7 +69,7 @@ class StatusHeaderWidget extends StatelessWidget {
           // ignore: no-magic-number
           borderRadius: BorderRadius.circular(12.0),
           child: IFilesCacheService.of(context).createCachedNetworkImageWidget(
-            imageUrl: account.avatar,
+            imageUrl: account.avatar!,
             placeholder: (context, url) => Container(
               width: FediSizes.accountAvatarSmallSize,
               // ignore: no-equal-arguments

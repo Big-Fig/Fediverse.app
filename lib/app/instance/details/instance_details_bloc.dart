@@ -166,10 +166,10 @@ extension IInstanceDetailsBlocExtension on IInstanceDetailsBloc {
       instanceStream.map((instance) => instance?.features);
 
   IUnifediApiInstanceFederation?
-      get pleromaMetadataFederation => instance?.federation;
+      get unifediApiInstanceFederation => instance?.federation;
 
   Stream<IUnifediApiInstanceFederation?>
-      get pleromaMetadataFederationStream => instanceStream
+      get unifediApiInstanceFederationStream => instanceStream
           .map((instance) => instance?.federation);
 
   List<String>? get pleromaMetadataPostFormats =>

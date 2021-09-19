@@ -24,7 +24,6 @@ import 'package:fedi/local_preferences/hive_local_preferences_service_impl.dart'
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/localization/localization_model.dart';
 import 'package:fedi/push/push_model.dart';
-import 'package:fediverse_api/fediverse_api.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -138,7 +137,7 @@ class RichNotificationsServiceBackgroundMessage extends AsyncInitLoadingBloc
     );
 
     var notification = _notificationPayloadData.unifediApiNotification;
-    var unifediApiPushMessageBody = UnifediApiPushMessageBody(
+    var FediversePushTootRelayMessage = FediversePushTootRelayMessage(
       notificationId: notification.id,
       server: _notificationPayloadData.serverHost,
       account: _notificationPayloadData.acct,
@@ -152,7 +151,7 @@ class RichNotificationsServiceBackgroundMessage extends AsyncInitLoadingBloc
       PushMessage(
         typeString: pushMessageType.toJsonValue(),
         notification: null,
-        data: unifediApiPushMessageBody.toJson(),
+        data: FediversePushTootRelayMessage.toJson(),
       ),
     );
   }

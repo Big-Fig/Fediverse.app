@@ -1,3 +1,4 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
@@ -20,20 +21,15 @@ class PublicTimelineWebSocketsHandler extends WebSocketsChannelHandler {
     required IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc,
     required IConversationChatNewMessagesHandlerBloc
         conversationChatNewMessagesHandlerBloc,
-    required bool? onlyLocal,
-    required bool? onlyRemote,
-    required bool? onlyMedia,
+    required this.onlyLocal,
+    required this.onlyRemote,
+    required this.onlyMedia,
+    required this.onlyFromInstance,
     required WebSocketsChannelHandlerType handlerType,
-    required String? onlyFromInstance,
     required IMyAccountBloc myAccountBloc,
   }) : super(
           myAccountBloc: myAccountBloc,
-          webSocketsChannel: unifediApiWebSocketsService.getPublicChannel(
-            onlyLocal: onlyLocal,
-            onlyRemote: onlyRemote,
-            onlyFromInstance: onlyFromInstance,
-            onlyMedia: onlyMedia,
-          ),
+          unifediApiWebSocketsService: unifediApiWebSocketsService,
           handlerType: handlerType,
           statusRepository: statusRepository,
           notificationRepository: notificationRepository,
@@ -46,6 +42,24 @@ class PublicTimelineWebSocketsHandler extends WebSocketsChannelHandler {
           statusConversationRemoteId: null,
           isFromHomeTimeline: false,
         );
+
+
+  final bool? onlyLocal;
+  final  bool? onlyRemote;
+  final  bool? onlyMedia;
+  final  String? onlyFromInstance;
+
+  @override
+  IDisposable initListener() =>
+      unifediApiWebSocketsService.listenForPublicEvents(
+        localOnly: onlyLocal== true,
+        remoteOnly: onlyRemote== true,
+        mediaOnly: onlyMedia == true,
+        onlyFromInstance: onlyFromInstance,
+        handlerType: handlerType,
+        onEvent: handleEvent,
+      );
+
 
   @override
   String get logTag => 'public_timeline_websockets_handler_impl.dart';

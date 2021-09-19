@@ -97,16 +97,12 @@ void main() {
       );
 
       myAccountBloc = MyAccountBloc(
-        unifediApiMyAccountService: unifediApiMyAccountServiceMock,
+        apiMyAccountService: unifediApiMyAccountServiceMock,
         accountRepository: accountRepository,
         myAccountLocalPreferenceBloc: myAccountLocalPreferenceBloc,
         instance: authInstance,
       );
 
-      when(pleromaConversationServiceMock.isConnected).thenReturn(true);
-      when(pleromaConversationServiceMock.unifediApiState).thenReturn(
-        UnifediApiState.validAuth,
-      );
 
       conversation =
           await ConversationMockHelper.createTestConversation(seed: 'seed1');
@@ -394,7 +390,7 @@ void main() {
     );
 
     when(pleromaConversationServiceMock.getConversation(
-      conversationRemoteId: conversation.remoteId,
+      conversationId: conversation.remoteId,
     )).thenAnswer(
       (_) async => newValue.toPleromaConversation(
         accounts: [],

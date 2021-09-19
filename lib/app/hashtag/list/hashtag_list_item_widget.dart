@@ -121,12 +121,13 @@ class _HashtagListItemHistoryAccountsWidget extends StatelessWidget {
     var hashtag = Provider.of<IHashtag>(context);
     var history = hashtag.history;
 
-    if (history.itemsisNotEmpty != true) {
+    var items = history?.items ?? [];
+    if (items.isEmpty) {
       return const SizedBox.shrink();
     }
 
     return FediStatisticItemWidget(
-      valueString: history.items.first.accounts.toString(),
+      valueString: items.first.accounts.toString(),
       label: S.of(context).app_hashtag_history_accounts,
       color: IFediUiColorTheme.of(context).darkGrey,
     );
@@ -143,12 +144,13 @@ class _HashtagListItemStatusesWidget extends StatelessWidget {
     var hashtag = Provider.of<IHashtag>(context);
     var history = hashtag.history;
 
-    if (history.items.isNotEmpty != true) {
+    var items = history?.items ?? [];
+    if (items.isEmpty) {
       return const SizedBox.shrink();
     }
 
     return FediStatisticItemWidget(
-      valueString: history.items.first.uses.toString(),
+      valueString: items.first.uses.toString(),
       label: S.of(context).app_hashtag_history_statuses,
       color: IFediUiColorTheme.of(context).darkGrey,
     );
@@ -165,19 +167,20 @@ class _HashtagListItemHistoryGraphWidget extends StatelessWidget {
     var hashtag = Provider.of<IHashtag>(context);
     var history = hashtag.history;
 
-    if (history.items.isNotEmpty != true) {
+    var items = history?.items ?? [];
+    if (items.isEmpty) {
       return SizedBox.shrink();
     }
 
-    var maxUses = history.items.first.uses;
+    var maxUses = items.first.uses;
 
-    for (var item in history.items) {
+    for (var item in items) {
       maxUses = max(item.uses, maxUses);
     }
 
     var featureUses = FediChartLineGraphPainterFeature(
       color: IFediUiColorTheme.of(context).primary,
-      data: history.reversed
+      data: items.reversed
           .map((item) => item.uses.toDouble() / maxUses)
           .toList(),
     );

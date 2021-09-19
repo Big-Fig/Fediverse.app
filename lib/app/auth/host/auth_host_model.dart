@@ -33,7 +33,7 @@ class AuthHostRegistrationResult {
   final CantRegisterAppAuthHostException? cantRegisterAppAuthHostException;
   final dynamic unknownHostException;
   final UnifediApiOAuthToken? token;
-  final IUnifediApiInstance pleromaInstance;
+  final IUnifediApiInstance unifediApiInstance;
   final AuthInstance? authInstance;
 
   AuthHostRegistrationResult({
@@ -44,17 +44,17 @@ class AuthHostRegistrationResult {
     required this.cantRegisterAppAuthHostException,
     required this.unknownHostException,
     required this.token,
-    required this.pleromaInstance,
+    required this.unifediApiInstance,
     required this.authInstance,
   });
 
   AuthHostRegistrationResult.noErrors({
     required UnifediApiOAuthToken? token,
-    required IUnifediApiInstance pleromaInstance,
+    required IUnifediApiInstance unifediApiInstance,
     required AuthInstance? authInstance,
   }) : this(
           token: token,
-          pleromaInstance: pleromaInstance,
+          unifediApiInstance: unifediApiInstance,
           authInstance: authInstance,
           disabledRegistrationAuthHostException: null,
           invitesOnlyRegistrationAuthHostException: null,
@@ -72,7 +72,7 @@ class AuthHostRegistrationResult {
       cantRegisterAppAuthHostException ??
       unknownHostException;
 
-  bool get approvalRequired => pleromaInstance.approvalRequired == true;
+  bool get approvalRequired => unifediApiInstance.approvalRequired == true;
 
   bool get isHaveNoErrors =>
       disabledRegistrationAuthHostException == null &&
@@ -110,7 +110,7 @@ class AuthHostRegistrationResult {
               other.cantRegisterAppAuthHostException &&
           unknownHostException == other.unknownHostException &&
           token == other.token &&
-          pleromaInstance == other.pleromaInstance &&
+          unifediApiInstance == other.unifediApiInstance &&
           authInstance == other.authInstance;
 
   @override
@@ -122,7 +122,7 @@ class AuthHostRegistrationResult {
       cantRegisterAppAuthHostException.hashCode ^
       unknownHostException.hashCode ^
       token.hashCode ^
-      pleromaInstance.hashCode ^
+      unifediApiInstance.hashCode ^
       authInstance.hashCode;
 
   @override
@@ -139,7 +139,7 @@ class AuthHostRegistrationResult {
       '$cantRegisterAppAuthHostException, '
       'unknownHostException: $unknownHostException, '
       'token: $token, '
-      'pleromaInstance: $pleromaInstance, '
+      'unifediApiInstance: $unifediApiInstance, '
       'authInstance: $authInstance'
       '}';
 }

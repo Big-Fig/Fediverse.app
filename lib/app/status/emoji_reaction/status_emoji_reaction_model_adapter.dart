@@ -2,33 +2,33 @@ import 'package:fedi/app/emoji/reaction/emoji_reaction_model.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
 class StatusEmojiReactionAdapter implements IEmojiReaction {
-  final IUnifediApiEmojiReaction UnifediApiEmojiReaction;
+  final IUnifediApiEmojiReaction unifediApiEmojiReaction;
 
   StatusEmojiReactionAdapter({
-    required this.UnifediApiEmojiReaction,
+    required this.unifediApiEmojiReaction,
   });
 
   @override
-  int get count => UnifediApiEmojiReaction.count;
+  int get count => unifediApiEmojiReaction.count;
 
   @override
-  bool get me => UnifediApiEmojiReaction.me;
+  bool get me => unifediApiEmojiReaction.me;
 
   @override
-  String get name => UnifediApiEmojiReaction.name;
+  String get name => unifediApiEmojiReaction.name;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is StatusEmojiReactionAdapter &&
           runtimeType == other.runtimeType &&
-          UnifediApiEmojiReaction == other.UnifediApiEmojiReaction;
+          unifediApiEmojiReaction == other.unifediApiEmojiReaction;
 
   @override
-  int get hashCode => UnifediApiEmojiReaction.hashCode;
+  int get hashCode => unifediApiEmojiReaction.hashCode;
 
   @override
   String toString() => 'StatusEmojiReactionAdapter{'
-      'UnifediApiEmojiReaction: $UnifediApiEmojiReaction'
+      'unifediApiEmojiReaction: $unifediApiEmojiReaction'
       '}';
 }

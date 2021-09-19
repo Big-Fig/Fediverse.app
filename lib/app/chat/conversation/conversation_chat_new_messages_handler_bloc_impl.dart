@@ -24,7 +24,7 @@ class ConversationChatNewMessagesHandlerBloc extends DisposableOwner
 
     if (isMessageForOpenedChat) {
       conversation = await conversationChatService.markConversationAsRead(
-        conversationRemoteId: conversationRemoteId,
+        conversationId: conversationRemoteId,
       );
     }
 
@@ -55,7 +55,7 @@ class ConversationChatNewMessagesHandlerBloc extends DisposableOwner
 
   Future _updateConversationById(String conversationRemoteId) async {
     var conversation = await conversationChatService.getConversation(
-      conversationRemoteId: conversationRemoteId,
+      conversationId: conversationRemoteId,
     );
 
     await conversationRepository.upsertInRemoteType(

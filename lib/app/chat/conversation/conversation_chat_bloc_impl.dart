@@ -17,6 +17,7 @@ import 'package:fedi/app/status/post/post_status_data_status_status_adapter.dart
 import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/id/fake_id_helper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -216,7 +217,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
   @override
   Future refreshFromNetwork() async {
     var remoteConversation = await pleromaConversationService.getConversation(
-      conversationRemoteId: chat.remoteId,
+      conversationId: chat.remoteId,
     );
 
     await accountRepository.batch((batch) {
@@ -353,7 +354,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
     DbStatus dbStatus;
     int? localStatusId;
 
-    UnifediApiPostStatus pleromaPostStatus;
+    UnifediApiPostStatus postStatus;
     String? idempotencyKey;
     var oldMessageExist = oldPendingFailedConversationChatMessage != null;
     if (oldMessageExist) {
@@ -363,7 +364,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
           .copyWith(id: localStatusId);
 
       idempotencyKey = dbStatus.wasSentWithIdempotencyKey;
-      pleromaPostStatus = postStatusData.toPleromaPostStatus();
+      postStatus = postStatusData.topostStatus();
 
       await statusRepository.updateByDbIdInDbType(
         dbId: localStatusId,
@@ -374,7 +375,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
       );
     } else {
       var createdAt = DateTime.now();
-      var fakeUniqueRemoteRemoteId = generateUniqueUnifediApiFakeId();
+      var fakeUniqueRemoteRemoteId = FakeIdHelper.generateUniqueId();
       var account = myAccountBloc.account;
       var postStatusDataStatusStatusAdapter = PostStatusDataStatusStatusAdapter(
         account: account.toDbAccountWrapper(),
@@ -402,13 +403,13 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
       );
 
       idempotencyKey = fakeUniqueRemoteRemoteId;
-      pleromaPostStatus = postStatusData.toPleromaPostStatus();
+      postStatus = postStatusData.topostStatus();
     }
 
     try {
       var unifediApiStatus = await unifediApiStatusService.postStatus(
         idempotencyKey:idempotencyKey,
-        data: pleromaPostStatus,
+        postStatus: postStatus,
       );
 
       onMessageLocallyHiddenStreamController.add(

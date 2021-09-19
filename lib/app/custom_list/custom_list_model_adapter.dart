@@ -22,6 +22,7 @@ extension ICustomListExtension on ICustomList {
       return UnifediApiList(
         id: remoteId,
         title: title,
+        repliesPolicy: null,
       );
     }
   }

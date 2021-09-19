@@ -39,9 +39,9 @@ class UnifediApiAccountReportDatabaseConverter
   Map<String, dynamic> toJson(UnifediApiAccountReport obj) => obj.toJson();
 }
 
-class PleromaChatMessageDatabaseConverter
+class UnifediApiChatMessageDatabaseConverter
     extends JsonDatabaseConverter<UnifediApiChatMessage> {
-  const PleromaChatMessageDatabaseConverter() : super();
+  const UnifediApiChatMessageDatabaseConverter() : super();
 
   @override
   UnifediApiChatMessage fromJson(Map<String, dynamic>? json) =>
@@ -120,17 +120,7 @@ class UnifediApiAccountRelationshipDatabaseConverter
       obj.toJson();
 }
 
-class UnifediApiMyAccountSourceDatabaseConverter
-    extends JsonDatabaseConverter<UnifediApiMyAccountSource> {
-  const UnifediApiMyAccountSourceDatabaseConverter() : super();
 
-  @override
-  UnifediApiMyAccountSource fromJson(Map<String, dynamic>? json) =>
-      UnifediApiMyAccountSource.fromJson(json!);
-
-  @override
-  Map<String, dynamic> toJson(UnifediApiMyAccountSource obj) => obj.toJson();
-}
 
 class UnifediApiStatusDatabaseConverter
     extends JsonDatabaseConverter<UnifediApiStatus> {
@@ -144,9 +134,9 @@ class UnifediApiStatusDatabaseConverter
   Map<String, dynamic> toJson(UnifediApiStatus obj) => obj.toJson();
 }
 
-class unifediApiMediaAttachmentListDatabaseConverter
+class UnifediApiMediaAttachmentListDatabaseConverter
     extends JsonListDatabaseConverter<UnifediApiMediaAttachment> {
-  const unifediApiMediaAttachmentListDatabaseConverter() : super();
+  const UnifediApiMediaAttachmentListDatabaseConverter() : super();
 
   @override
   UnifediApiMediaAttachment fromJson(Map<String, dynamic> json) =>
@@ -169,9 +159,9 @@ class UnifediApiEmojiReactionListDatabaseConverter
       obj.toJson();
 }
 
-class unifediApiMediaAttachmentDatabaseConverter
+class UnifediApiMediaAttachmentDatabaseConverter
     extends JsonDatabaseConverter<UnifediApiMediaAttachment> {
-  const unifediApiMediaAttachmentDatabaseConverter() : super();
+  const UnifediApiMediaAttachmentDatabaseConverter() : super();
 
   @override
   UnifediApiMediaAttachment fromJson(Map<String, dynamic>? json) =>

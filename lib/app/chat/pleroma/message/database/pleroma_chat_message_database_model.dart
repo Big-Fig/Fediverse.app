@@ -21,7 +21,7 @@ class DbChatMessages extends Table {
       text().map(UnifediApiEmojiListDatabaseConverter()).nullable()();
 
   TextColumn? get mediaAttachment =>
-      text().map(unifediApiMediaAttachmentDatabaseConverter()).nullable()();
+      text().map(UnifediApiMediaAttachmentDatabaseConverter()).nullable()();
 
   TextColumn? get card =>
       text().map(PleromaCardDatabaseConverter()).nullable()();

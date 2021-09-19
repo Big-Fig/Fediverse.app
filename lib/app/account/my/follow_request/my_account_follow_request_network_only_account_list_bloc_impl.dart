@@ -32,7 +32,7 @@ class MyAccountFollowRequestNetworkOnlyAccountListBloc extends DisposableOwner
   Future acceptFollowRequest({
     required IAccount account,
   }) async {
-    var accountRelationship = await unifediApiMyAccountService.acceptMyFollowRequest(
+    var accountRelationship = await unifediApiMyAccountService.acceptMyAccountFollowRequest(
       accountId: account.remoteId,
     );
 
@@ -70,7 +70,7 @@ class MyAccountFollowRequestNetworkOnlyAccountListBloc extends DisposableOwner
   Future rejectFollowRequest({
     required IAccount account,
   }) async {
-    var accountRelationship = await unifediApiMyAccountService.rejectMyFollowRequest(
+    var accountRelationship = await unifediApiMyAccountService.rejectMyAccountFollowRequest(
       accountId: account.remoteId,
     );
 

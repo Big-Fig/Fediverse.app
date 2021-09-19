@@ -7,8 +7,8 @@ import 'package:fedi/app/media/attachment/upload/upload_media_attachment_model.d
 import 'package:fedi/app/media/attachment/upload/upload_media_exception.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
 import 'package:logging/logging.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 var _logger = Logger('device_upload_media_attachment_bloc_impl.dart');
 
@@ -117,6 +117,9 @@ class UploadMediaAttachmentBlocDevice extends DisposableOwner
         .uploadMedia(
       file: await mediaDeviceFile.loadFile(),
       description: metadata?.description,
+      thumbnail: null,
+      focus: null,
+      processInBackground: null,
     )
         .then((unifediApiMediaAttachment) {
       this.unifediApiMediaAttachment = unifediApiMediaAttachment;

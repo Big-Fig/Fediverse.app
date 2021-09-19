@@ -1438,7 +1438,7 @@ Future<void> main() async {
     );
 
     when(
-      unifediApiStatusServiceMock.getStatus(statusRemoteId: status.remoteId!),
+      unifediApiStatusServiceMock.getStatus(statusId: status.remoteId!),
     ).thenAnswer(
       (_) async => newValue.toUnifediApiStatus(),
     );
@@ -1477,7 +1477,7 @@ Future<void> main() async {
     );
 
     when(unifediApiAccountServiceMock.getAccount(
-      accountRemoteId: accountId1,
+      accountId: accountId1,
       withRelationship: false,
     )).thenAnswer(
       (_) async => account.toUnifediApiAccount(),
@@ -1548,13 +1548,13 @@ Future<void> main() async {
     );
 
     when(unifediApiStatusServiceMock.reblogStatus(
-      statusRemoteId: status.remoteId,
+      statusId: status.remoteId,
     )).thenAnswer(
       (_) async => status.copyWith(reblogged: true).toUnifediApiStatus(),
     );
 
     when(unifediApiStatusServiceMock.unReblogStatus(
-      statusRemoteId: status.remoteId,
+      statusId: status.remoteId,
     )).thenAnswer(
       (_) async => status.copyWith(reblogged: false).toUnifediApiStatus(),
     );
@@ -1614,13 +1614,13 @@ Future<void> main() async {
     );
 
     when(unifediApiStatusServiceMock.favouriteStatus(
-      statusRemoteId: status.remoteId,
+      statusId: status.remoteId,
     )).thenAnswer(
       (_) async => status.copyWith(favourited: true).toUnifediApiStatus(),
     );
 
     when(unifediApiStatusServiceMock.unFavouriteStatus(
-      statusRemoteId: status.remoteId,
+      statusId: status.remoteId,
     )).thenAnswer(
       (_) async => status.copyWith(favourited: false).toUnifediApiStatus(),
     );
@@ -1677,14 +1677,14 @@ Future<void> main() async {
     );
 
     when(unifediApiStatusServiceMock.muteStatus(
-      statusRemoteId: status.remoteId,
-      expireDurationInSeconds: null,
+      statusId: status.remoteId,
+      expiresIn: null,
     )).thenAnswer(
       (_) async => status.copyWith(muted: true).toUnifediApiStatus(),
     );
 
     when(unifediApiStatusServiceMock.unMuteStatus(
-      statusRemoteId: status.remoteId,
+      statusId: status.remoteId,
     )).thenAnswer(
       (_) async => status.copyWith(muted: false).toUnifediApiStatus(),
     );
@@ -1744,13 +1744,13 @@ Future<void> main() async {
     );
 
     when(unifediApiStatusServiceMock.bookmarkStatus(
-      statusRemoteId: status.remoteId,
+      statusId: status.remoteId,
     )).thenAnswer(
       (_) async => status.copyWith(bookmarked: true).toUnifediApiStatus(),
     );
 
     when(unifediApiStatusServiceMock.unBookmarkStatus(
-      statusRemoteId: status.remoteId,
+      statusId: status.remoteId,
     )).thenAnswer(
       (_) async => status.copyWith(bookmarked: false).toUnifediApiStatus(),
     );
@@ -1810,13 +1810,13 @@ Future<void> main() async {
     );
 
     when(unifediApiStatusServiceMock.pinStatus(
-      statusRemoteId: status.remoteId,
+      statusId: status.remoteId,
     )).thenAnswer(
       (_) async => status.copyWith(pinned: true).toUnifediApiStatus(),
     );
 
     when(unifediApiStatusServiceMock.unPinStatus(
-      statusRemoteId: status.remoteId,
+      statusId: status.remoteId,
     )).thenAnswer(
       (_) async => status.copyWith(pinned: false).toUnifediApiStatus(),
     );

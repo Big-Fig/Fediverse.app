@@ -109,7 +109,6 @@ extension IPleromaScheduledStatusParamsExtension
         poll: poll?.toUnifediApiPostStatusPoll(),
         idempotency: idempotency,
         inReplyToId: inReplyToId,
-        applicationId: applicationId,
         language: language,
         expiresInSeconds: expiresInSeconds,
         to: to,
@@ -128,7 +127,9 @@ extension IScheduledStatusExtension on IScheduledStatus {
         mediaAttachments: mediaAttachments,
         poll: params.poll?.toPostStatusPoll(),
         to: params.to,
-        inReplyToUnifediApiStatus: params.inReplyToStatus?.toUnifediApiStatus(),
+        // todo: rework
+        // inReplyToUnifediApiStatus: params.inReplyToStatus?.toUnifediApiStatus(),
+        inReplyToUnifediApiStatus: null,
         inReplyToConversationId: params.inReplyToConversationId,
         isNsfwSensitiveEnabled: params.sensitive,
         language: params.language,

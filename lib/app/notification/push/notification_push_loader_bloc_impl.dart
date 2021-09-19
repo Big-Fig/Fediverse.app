@@ -184,9 +184,11 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
         var chatMessage = remoteNotification.chatMessage!;
         var unifediApiChatMessage = await unifediApiChatService.sendMessage(
           chatId: chatMessage.chatId,
-          content: notificationActionInput,
+          postChatMessage: UnifediApiPostChatMessage(
+            content: notificationActionInput,
+            mediaId: null,
+          ),
           idempotencyKey: null,
-          mediaId: null,
         );
         await chatMessageRepository.upsertInRemoteType(unifediApiChatMessage);
       },
@@ -194,7 +196,8 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
         var status = remoteNotification.status!;
         var directConversationId = status.directConversationId;
         var unifediApiStatus = await unifediApiStatusService.postStatus(
-          data: UnifediApiPostStatus(
+          idempotencyKey: null,
+          postStatus: UnifediApiPostStatus(
             contentType: null,
             expiresInSeconds: null,
             inReplyToConversationId: directConversationId?.toString(),
@@ -230,23 +233,24 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
     var unifediApiAccount = remoteNotification.account!;
     var accountRemoteId = unifediApiAccount.id;
 
-    IUnifediApiAccountRelationship unifediApiAccountRelationship;
+    IUnifediApiAccountRelationship? unifediApiAccountRelationship;
     if (accept) {
       unifediApiAccountRelationship =
-          await unifediApiMyAccountService.acceptFollowRequest(
-        accountRemoteId: accountRemoteId,
+          await unifediApiMyAccountService.acceptMyAccountFollowRequest(
+        accountId: accountRemoteId,
       );
     } else {
       unifediApiAccountRelationship =
-          await unifediApiMyAccountService.rejectFollowRequest(
-        accountRemoteId: accountRemoteId,
+          await unifediApiMyAccountService.rejectMyAccountFollowRequest(
+        accountId: accountRemoteId,
       );
     }
-
-    await _processFollowRequestAction(
-      unifediApiAccount: unifediApiAccount,
-      accountRelationship: unifediApiAccountRelationship,
-    );
+    if (unifediApiAccountRelationship != null) {
+      await _processFollowRequestAction(
+        unifediApiAccount: unifediApiAccount,
+        accountRelationship: unifediApiAccountRelationship,
+      );
+    }
   }
 
   // todo: refactor copy-pasted code

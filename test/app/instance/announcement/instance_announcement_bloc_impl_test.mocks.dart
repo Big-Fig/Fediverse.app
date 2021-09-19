@@ -2,16 +2,16 @@
 // in fedi/test/app/instance/announcement/instance_announcement_bloc_impl_test.dart.
 // Do not manually edit this file.
 
-import 'dart:async' as _i4;
+import 'dart:async' as _i5;
 
-import 'package:base_fediverse_api/src/rest/rest_service.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:pleroma_fediverse_api/src/pleroma/api/announcement/pleroma_api_announcement_model.dart'
+import 'package:unifedi_api/src/api/announcement/service/unifedi_api_announcement_service.dart'
+    as _i4;
+import 'package:unifedi_api/src/api/announcement/unifedi_api_announcement_model.dart'
     as _i6;
-import 'package:pleroma_fediverse_api/src/pleroma/api/announcement/pleroma_api_announcement_service.dart'
-    as _i3;
-import 'package:pleroma_fediverse_api/src/pleroma/api/pleroma_api_service.dart'
-    as _i5;
+import 'package:unifedi_api/src/api/feature/unifedi_api_feature_model.dart'
+    as _i2;
+import 'package:unifedi_api/src/api/rest/unifedi_api_rest_service.dart' as _i3;
 
 // ignore_for_file: avoid_redundant_argument_values
 // ignore_for_file: comment_references
@@ -19,73 +19,77 @@ import 'package:pleroma_fediverse_api/src/pleroma/api/pleroma_api_service.dart'
 // ignore_for_file: prefer_const_constructors
 // ignore_for_file: unnecessary_parenthesis
 
-class _FakeIRestService extends _i1.Fake implements _i2.IRestService {}
+class _FakeIUnifediApiFeature extends _i1.Fake
+    implements _i2.IUnifediApiFeature {}
+
+class _FakeIUnifediApiRestService extends _i1.Fake
+    implements _i3.IUnifediApiRestService {}
 
 /// A class which mocks [IUnifediApiAnnouncementService].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockIUnifediApiAnnouncementService extends _i1.Mock
-    implements _i3.IUnifediApiAnnouncementService {
+    implements _i4.IUnifediApiAnnouncementService {
   MockIUnifediApiAnnouncementService() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i2.IRestService get restService =>
+  _i2.IUnifediApiFeature get getAnnouncementsFeature =>
+      (super.noSuchMethod(Invocation.getter(#getAnnouncementsFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i2.IUnifediApiFeature get dismissAnnouncementFeature =>
+      (super.noSuchMethod(Invocation.getter(#dismissAnnouncementFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i2.IUnifediApiFeature get addAnnouncementReactionFeature =>
+      (super.noSuchMethod(Invocation.getter(#addAnnouncementReactionFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i2.IUnifediApiFeature get removeAnnouncementReactionFeature =>
+      (super.noSuchMethod(Invocation.getter(#removeAnnouncementReactionFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i3.IUnifediApiRestService get restService =>
       (super.noSuchMethod(Invocation.getter(#restService),
-          returnValue: _FakeIRestService()) as _i2.IRestService);
-  @override
-  _i4.Stream<_i5.UnifediApiState> get unifediApiStateStream =>
-      (super.noSuchMethod(Invocation.getter(#unifediApiStateStream),
-              returnValue: Stream<_i5.UnifediApiState>.empty())
-          as _i4.Stream<_i5.UnifediApiState>);
-  @override
-  _i5.UnifediApiState get unifediApiState =>
-      (super.noSuchMethod(Invocation.getter(#unifediApiState),
-          returnValue: _i5.UnifediApiState.validAuth) as _i5.UnifediApiState);
-  @override
-  _i4.Stream<bool> get isConnectedStream =>
-      (super.noSuchMethod(Invocation.getter(#isConnectedStream),
-          returnValue: Stream<bool>.empty()) as _i4.Stream<bool>);
-  @override
-  bool get isConnected =>
-      (super.noSuchMethod(Invocation.getter(#isConnected), returnValue: false)
-          as bool);
+              returnValue: _FakeIUnifediApiRestService())
+          as _i3.IUnifediApiRestService);
   @override
   bool get isDisposed =>
       (super.noSuchMethod(Invocation.getter(#isDisposed), returnValue: false)
           as bool);
   @override
-  _i4.Future<List<_i6.IUnifediApiAnnouncement>> getAnnouncements(
-          {bool? withDismissed = false}) =>
+  _i5.Future<List<_i6.IUnifediApiAnnouncement>> getAnnouncements(
+          {bool? withDismissed}) =>
       (super.noSuchMethod(
               Invocation.method(
                   #getAnnouncements, [], {#withDismissed: withDismissed}),
               returnValue: Future<List<_i6.IUnifediApiAnnouncement>>.value(
                   <_i6.IUnifediApiAnnouncement>[]))
-          as _i4.Future<List<_i6.IUnifediApiAnnouncement>>);
+          as _i5.Future<List<_i6.IUnifediApiAnnouncement>>);
   @override
-  _i4.Future<dynamic> dismissAnnouncement({String? announcementId}) =>
+  _i5.Future<dynamic> dismissAnnouncement({String? announcementId}) =>
       (super.noSuchMethod(
           Invocation.method(
               #dismissAnnouncement, [], {#announcementId: announcementId}),
-          returnValue: Future<dynamic>.value()) as _i4.Future<dynamic>);
+          returnValue: Future<dynamic>.value()) as _i5.Future<dynamic>);
   @override
-  _i4.Future<dynamic> addAnnouncementReaction(
+  _i5.Future<dynamic> addAnnouncementReaction(
           {String? announcementId, String? name}) =>
       (super.noSuchMethod(
           Invocation.method(#addAnnouncementReaction, [],
               {#announcementId: announcementId, #name: name}),
-          returnValue: Future<dynamic>.value()) as _i4.Future<dynamic>);
+          returnValue: Future<dynamic>.value()) as _i5.Future<dynamic>);
   @override
-  _i4.Future<dynamic> removeAnnouncementReaction(
+  _i5.Future<dynamic> removeAnnouncementReaction(
           {String? announcementId, String? name}) =>
       (super.noSuchMethod(
           Invocation.method(#removeAnnouncementReaction, [],
               {#announcementId: announcementId, #name: name}),
-          returnValue: Future<dynamic>.value()) as _i4.Future<dynamic>);
+          returnValue: Future<dynamic>.value()) as _i5.Future<dynamic>);
   @override
-  _i4.Future<dynamic> dispose() =>
+  _i5.Future<dynamic> dispose() =>
       (super.noSuchMethod(Invocation.method(#dispose, []),
-          returnValue: Future<dynamic>.value()) as _i4.Future<dynamic>);
+          returnValue: Future<dynamic>.value()) as _i5.Future<dynamic>);
 }

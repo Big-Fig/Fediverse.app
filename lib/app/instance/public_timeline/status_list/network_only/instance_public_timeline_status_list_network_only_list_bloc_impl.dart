@@ -29,9 +29,7 @@ class InstancePublicTimelineStatusListNetworkOnlyListBloc
     required Uri instanceUri,
   }) {
     var remoteInstanceBloc = IRemoteInstanceBloc.of(context, listen: false);
-    var unifediApiTimelineService = UnifediApiTimelineService(
-      restService: remoteInstanceBloc.unifediApiRestService,
-    );
+    var unifediApiTimelineService = remoteInstanceBloc.unifediApiManager.createTimelineService();
 
     var bloc = InstancePublicTimelineStatusListNetworkOnlyListBloc(
       timelineLocalPreferenceBloc: timelineLocalPreferenceBloc,

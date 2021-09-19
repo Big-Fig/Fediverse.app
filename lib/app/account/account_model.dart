@@ -178,16 +178,16 @@ class DbAccountPopulatedWrapper implements IAccount {
   String get acct => dbAccount.acct;
 
   @override
-  String get avatar => dbAccount.avatar;
+  String? get avatar => dbAccount.avatar;
 
   @override
-  String get avatarStatic => dbAccount.avatarStatic;
+  String? get avatarStatic => dbAccount.avatarStatic;
 
   @override
   bool? get bot => dbAccount.bot;
 
   @override
-  DateTime get createdAt => dbAccount.createdAt;
+  DateTime? get createdAt => dbAccount.createdAt;
 
   @override
   String get displayName => dbAccount.displayName!;
@@ -296,12 +296,6 @@ class DbAccountPopulatedWrapper implements IAccount {
 
   @override
   DateTime? get muteExpiresAt => dbAccount.muteExpiresAt;
-
-  @override
-  bool? get noRichText => dbAccount.noRichText;
-
-  @override
-  bool? get showRole => dbAccount.showRole;
 
   @override
   bool? get suspended => dbAccount.suspended;

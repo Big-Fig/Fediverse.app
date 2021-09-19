@@ -45,11 +45,11 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
 
     var unifediApiStatusList = <IUnifediApiStatus>[];
 
-    for (var sendData in sendDataList) {
+    for (var postStatus in sendDataList) {
       // todo: send to conversation id
       var unifediApiStatus = await unifediApiStatusService.postStatus(
         idempotencyKey: null,
-        data: sendData,
+        postStatus: postStatus,
       );
       unifediApiStatusList.add(unifediApiStatus);
     }
@@ -124,8 +124,11 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
     var pleromaConversations =
         await unifediApiConversationService.getConversations(
       pagination: UnifediApiPagination(
+        minId: null,
         limit: limit,
+        maxId: null,
       ),
+          recipientsIds: null,
     );
 
     await conversationRepository.upsertAllInRemoteType(

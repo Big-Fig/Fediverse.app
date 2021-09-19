@@ -11,7 +11,7 @@ class PushHandlerModelMockHelper {
         pushMessage: PushModelMockHelper.createTestPushMessage(
           seed: seed,
         ),
-        body: UnifediApiPushMockHelper.createTestUnifediApiPushMessageBody(
+        body: UnifediApiPushMockHelper.createTestFediversePushTootRelayMessage(
           seed: seed,
         ),
       );

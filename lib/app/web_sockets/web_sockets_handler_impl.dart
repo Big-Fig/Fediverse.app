@@ -7,10 +7,9 @@ import 'package:fedi/app/instance/announcement/repository/instance_announcement_
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler.dart';
-import 'package:fediverse_api/fediverse_api.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:logging/logging.dart';
 import 'package:unifedi_api/unifedi_api.dart';
-import 'package:fediverse_api/fediverse_api_utils.dart';
 
 abstract class WebSocketsChannelHandler extends DisposableOwner
     implements IWebSocketsHandler {
@@ -19,7 +18,7 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
 
   String get logTag;
 
-  final IWebSocketsChannel<UnifediApiWebSocketsEvent> webSocketsChannel;
+  late IDisposable webSocketsChannelDisposable;
   final IStatusRepository statusRepository;
   final INotificationRepository notificationRepository;
   final IInstanceAnnouncementRepository instanceAnnouncementRepository;
@@ -34,9 +33,10 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
   final String? statusConversationRemoteId;
   final bool isFromHomeTimeline;
   final WebSocketsChannelHandlerType handlerType;
+  final IUnifediApiWebSocketsService unifediApiWebSocketsService;
 
   WebSocketsChannelHandler({
-    required this.webSocketsChannel,
+    required this.unifediApiWebSocketsService,
     required this.statusRepository,
     required this.conversationRepository,
     required this.notificationRepository,
@@ -50,22 +50,12 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
     required this.handlerType,
   }) {
     _logger = Logger(logTag);
-    _logger.finest(() =>
-        'Start listen to ${webSocketsChannel.config.calculateWebSocketsUrl()}');
-
-    addDisposable(
-      webSocketsChannel.listenForEvents(
-        listener: WebSocketChannelListener<UnifediApiWebSocketsEvent>(
-          handlerType: handlerType,
-          onEvent: (UnifediApiWebSocketsEvent event) {
-            handleEvent(event);
-          },
-        ),
-      ),
-    );
+    webSocketsChannelDisposable = initListener();
   }
 
-  Future handleEvent(UnifediApiWebSocketsEvent event) async {
+  IDisposable initListener();
+
+  Future handleEvent(IUnifediApiWebSocketsEvent event) async {
     _logger.finest(() => 'event $event');
 
     await event.typeAsUnifediApi.when(
@@ -128,9 +118,11 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
         var chat = event.chat!;
         await chatNewMessagesHandlerBloc.handleChatUpdate(chat);
       },
+      // no-equal-arguments
       followRelationshipsUpdate: (_) {
         // TODO: Not implemented yet
       },
+      // no-equal-arguments
       unknown: (_) {
         // TODO: Not implemented yet
       },

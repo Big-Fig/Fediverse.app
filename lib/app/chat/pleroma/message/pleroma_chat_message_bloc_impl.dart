@@ -112,7 +112,7 @@ class PleromaChatMessageBloc extends ChatMessageBloc
 
   @override
   Future delete() => pleromaChatBloc.deleteMessage(
-        pleromaChatMessage: chatMessage,
+        chatMessage: chatMessage,
       );
 
   @override
@@ -122,10 +122,11 @@ class PleromaChatMessageBloc extends ChatMessageBloc
     var unifediApiPostChatMessage = UnifediApiPostChatMessage(
       content: chatMessage.content,
       mediaId: mediaId,
-      idempotencyKey: chatMessage.wasSentWithIdempotencyKey,
+
     );
 
     return pleromaChatBloc.postMessage(
+      idempotencyKey: chatMessage.wasSentWithIdempotencyKey,
       unifediApiPostChatMessage: unifediApiPostChatMessage,
       oldPendingFailedPleromaChatMessage: chatMessage,
       unifediApiPostChatMessageMediaAttachment:

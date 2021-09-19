@@ -10,6 +10,7 @@ import 'package:fedi/app/auth/instance/register/form/stepper/item/submit/registe
 import 'package:fedi/app/auth/instance/register/form/stepper/item/submit/register_auth_instance_form_submit_stepper_item_bloc_impl.dart';
 import 'package:fedi/form/form_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
+import 'package:fedi/localization/localization_model.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
 class RegisterAuthInstanceFormBloc extends FormBloc
@@ -34,10 +35,13 @@ class RegisterAuthInstanceFormBloc extends FormBloc
   final bool manualApprovalRequired;
   final Uri instanceBaseUri;
 
+  final String localeName;
+
   RegisterAuthInstanceFormBloc({
     required IUnifediApiInstance unifediApiInstance,
     required IUnifediApiInstanceService? unifediApiInstanceService,
     required this.instanceBaseUri,
+    required this.localeName,
     required this.manualApprovalRequired,
   }) : super(isAllItemsInitialized: false) {
     if (manualApprovalRequired) {
@@ -46,7 +50,8 @@ class RegisterAuthInstanceFormBloc extends FormBloc
             ..disposeWith(this);
     }
 
-    if (unifediApiInstanceService != null && unifediApiInstance.typeAsUnifediApi.isPleroma) {
+    if (unifediApiInstanceService != null &&
+        unifediApiInstance.typeAsUnifediApi.isPleroma) {
       captchaStepperItemBloc = RegisterAuthInstanceFormStepperCaptchaItemBloc(
         unifediApiInstanceService: unifediApiInstanceService,
       )..disposeWith(this);
@@ -70,7 +75,7 @@ class RegisterAuthInstanceFormBloc extends FormBloc
       ];
 
   @override
-  UnifediApiAccountPublicRegisterRequest calculateRegisterFormData() {
+  UnifediApiRegisterAccount calculateRegisterFormData() {
     final validUsername = accountStepperItemBloc.usernameFieldBloc.currentValue;
     final validEmail = accountStepperItemBloc.emailFieldBloc.currentValue;
     final validPassword = accountStepperItemBloc.passwordFieldBloc.currentValue;
@@ -85,10 +90,11 @@ class RegisterAuthInstanceFormBloc extends FormBloc
 
     final reason = manualApproveStepperItemBloc?.reasonFieldBloc.currentValue;
 
-    var request = UnifediApiAccountPublicRegisterRequest(
-      agreement: agreeTermsOfService,
+    var request = UnifediApiRegisterAccount(
+      agreement: agreeTermsOfService!,
       email: validEmail,
-      locale: null,
+      locale: localeName,
+      inviteToken: null,
       // locale: locale?.localeString,
       password: validPassword,
       username: validUsername,
@@ -96,6 +102,8 @@ class RegisterAuthInstanceFormBloc extends FormBloc
       captchaAnswerData: captcha?.answerData,
       captchaToken: captcha?.token,
       reason: reason,
+      bio: null,
+      fullName: null,
     );
 
     return request;

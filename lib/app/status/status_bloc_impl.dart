@@ -9,9 +9,9 @@ import 'package:fedi/app/poll/poll_bloc.dart';
 import 'package:fedi/app/poll/poll_bloc_impl.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 var _logger = Logger('status_bloc_impl.dart');
 
@@ -21,7 +21,7 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
   late IPollBloc pollBloc;
 
   final BehaviorSubject<IStatus> statusSubject;
-  
+
   final IUnifediApiAccountService unifediApiAccountService;
   final IUnifediApiStatusService unifediApiStatusService;
   final IUnifediApiPollService unifediApiPollService;
@@ -286,10 +286,14 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
     var foundPleromaHashtag = tagsToSearch?.firstWhereOrNull(
       (pleromaHashtag) {
         // todo: ask user open on local instance or remote
-        var pleromaHashtagUrl = pleromaHashtag.url.toLowerCase();
-        var success = url.toLowerCase().contains(pleromaHashtagUrl);
+        var pleromaHashtagUrl = pleromaHashtag.url?.toLowerCase();
+        if (pleromaHashtagUrl != null) {
+          var success = url.toLowerCase().contains(pleromaHashtagUrl);
 
-        return success;
+          return success;
+        } else {
+          return false;
+        }
       },
     );
 
@@ -354,32 +358,27 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
       statusStream.map((status) => status.repliesCount);
 
   @override
-  List<IUnifediApiEmojiReaction>? get emojiReactions =>
-      status.emojiReactions;
+  List<IUnifediApiEmojiReaction>? get emojiReactions => status.emojiReactions;
 
   @override
-  Stream<List<IUnifediApiEmojiReaction>?>
-      get emojiReactionsStream =>
-          statusStream.map((status) => status.emojiReactions);
+  Stream<List<IUnifediApiEmojiReaction>?> get emojiReactionsStream =>
+      statusStream.map((status) => status.emojiReactions);
 
   @override
-  int? get emojiReactionsCount =>
-      emojiReactions?.sumUnifediApiEmojiReactions();
+  int? get emojiReactionsCount => emojiReactions?.sumUnifediApiEmojiReactions();
 
   @override
-  Stream<int?> get emojiReactionsCountStream =>
-      emojiReactionsStream.map(
-        (emojiReactions) =>
-            emojiReactions?.sumUnifediApiEmojiReactions(),
+  Stream<int?> get emojiReactionsCountStream => emojiReactionsStream.map(
+        (emojiReactions) => emojiReactions?.sumUnifediApiEmojiReactions(),
       );
 
   List<IUnifediApiEmojiReaction>? get reblogEmojiReactions =>
       reblog?.emojiReactions;
 
-  Stream<List<IUnifediApiEmojiReaction>?>
-      get reblogEmojiReactionsStream => reblogStream.map(
-            (status) => status?.emojiReactions,
-          );
+  Stream<List<IUnifediApiEmojiReaction>?> get reblogEmojiReactionsStream =>
+      reblogStream.map(
+        (status) => status?.emojiReactions,
+      );
 
   @override
   int? get reblogPlusOriginalEmojiReactionsCount =>
@@ -388,16 +387,14 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
   @override
   Stream<int?> get reblogPlusOriginalEmojiReactionsCountStream =>
       reblogPlusOriginalEmojiReactionsStream.map(
-        (emojiReactions) =>
-            emojiReactions?.sumUnifediApiEmojiReactions(),
+        (emojiReactions) => emojiReactions?.sumUnifediApiEmojiReactions(),
       );
 
   @override
-  List<IUnifediApiEmojiReaction>?
-      get reblogPlusOriginalEmojiReactions =>
-          emojiReactions?.mergeUnifediApiEmojiReactionsLists(
-            reblogEmojiReactions,
-          );
+  List<IUnifediApiEmojiReaction>? get reblogPlusOriginalEmojiReactions =>
+      emojiReactions?.mergeUnifediApiEmojiReactionsLists(
+        reblogEmojiReactions,
+      );
 
   @override
   Stream<List<IUnifediApiEmojiReaction>?>

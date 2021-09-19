@@ -1,5 +1,6 @@
 import 'package:fedi/app/auth/host/auth_host_model.dart';
 import 'package:unifedi_api/unifedi_api.dart';
+import 'package:unifedi_api/unifedi_api_mock_helper.dart';
 
 import 'instance/auth_instance_model_test_helper.dart';
 
@@ -20,11 +21,11 @@ class AuthHostModelMockHelper {
     dynamic unknownHostException,
   }) =>
       AuthHostRegistrationResult(
-        token: UnifediApiOAuthMockHelper.createTestUnifediApiOAuthToken(
+        token: UnifediApiOAuthMockHelper.generate(
           seed: seed,
         ),
-        pleromaInstance: unifediApiInstance ??
-            UnifediApiInstanceMockHelper.createTestUnifediApiInstance(
+        unifediApiInstance: unifediApiInstance ??
+            UnifediApiInstanceMockHelper.generate(
               seed: seed,
             ),
         authInstance: AuthInstanceModelMockHelper.createTestAuthInstance(

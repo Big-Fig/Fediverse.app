@@ -21,7 +21,6 @@ import 'package:fedi/app/status/repository/status_repository_impl.dart';
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/push/fcm/fcm_push_service.dart';
 import 'package:fedi/push/push_model.dart';
-import 'package:fediverse_api/fediverse_api.dart';
 import 'package:logging/logging.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
@@ -101,7 +100,7 @@ class NotificationsPushHandlerBloc extends DisposableOwner
             PushMessage(
               typeString: PushMessageType.foreground.toJsonValue(),
               notification: null,
-              data: UnifediApiPushMessageBody(
+              data: FediversePushTootRelayMessage(
                 notificationId: unifediApiNotification.id,
                 server: data['server'],
                 account: data['account'],
@@ -128,7 +127,7 @@ class NotificationsPushHandlerBloc extends DisposableOwner
 
     var data = pushMessage.data;
 
-    var body = UnifediApiPushMessageBody.fromJson(data!);
+    var body = FediversePushTootRelayMessage.fromJson(data!);
 
     var pushMessageHandler = NotificationsPushHandlerMessage(
       pushMessage: pushMessage,
@@ -165,7 +164,7 @@ class NotificationsPushHandlerBloc extends DisposableOwner
   // todo: refactor copy-pasted code
   Future<void> _handleNewAction({
     required PushMessage pushMessage,
-    required UnifediApiPushMessageBody body,
+    required FediversePushTootRelayMessage body,
   }) async {
     var remoteNotification = body.unifediApiNotification!;
 
@@ -203,7 +202,7 @@ class NotificationsPushHandlerBloc extends DisposableOwner
   Future<void> _handleNewReplyAction({
     required IUnifediApiNotification remoteNotification,
     required PushMessage pushMessage,
-    required UnifediApiPushMessageBody body,
+    required FediversePushTootRelayMessage body,
   }) async {
     var notificationActionInput = body.notificationActionInput;
 
@@ -246,25 +245,16 @@ class NotificationsPushHandlerBloc extends DisposableOwner
       acct: body.account,
     )!;
 
-    var restService = RestService(baseUri: authInstance.uri);
-    addDisposable(restService);
-
-    var unifediApiAuthRestService = UnifediApiAuthRestService(
-      restService: restService,
-      connectionService: connectionService,
-      accessToken: authInstance.token!.accessToken,
-      isPleroma: authInstance.isPleroma,
+    var apiManager = authInstance.info!.typeAsUnifediApi.createApiManager(
+      uri: authInstance.uri.toString(),
     );
-    addDisposable(unifediApiAuthRestService);
 
-    var unifediApiChatService = UnifediApiChatService(
-      restApiAuthService: unifediApiAuthRestService,
-    );
+    addDisposable(apiManager);
+
+    var unifediApiChatService = apiManager.createChatService();
     addDisposable(unifediApiChatService);
 
-    var unifediApiStatusService = UnifediApiStatusService(
-      authRestService: unifediApiAuthRestService,
-    );
+    var unifediApiStatusService = apiManager.createStatusService();
     addDisposable(unifediApiChatService);
 
     var unifediApiNotificationType = remoteNotification.typeAsUnifediApi;
@@ -273,10 +263,10 @@ class NotificationsPushHandlerBloc extends DisposableOwner
       chatMention: (_) async {
         var chatMessage = remoteNotification.chatMessage!;
         var unifediApiChatMessage = await unifediApiChatService.sendMessage(
+          idempotencyKey: null,
           chatId: chatMessage.chatId,
-          data: UnifediApiPostChatMessage(
+          postChatMessage: UnifediApiPostChatMessage(
             content: notificationActionInput,
-            idempotencyKey: null,
             mediaId: null,
           ),
         );
@@ -286,7 +276,8 @@ class NotificationsPushHandlerBloc extends DisposableOwner
         var status = remoteNotification.status!;
         var directConversationId = status.directConversationId;
         var unifediApiStatus = await unifediApiStatusService.postStatus(
-          data: UnifediApiPostStatus(
+          idempotencyKey: null,
+          postStatus: UnifediApiPostStatus(
             contentType: null,
             expiresInSeconds: null,
             inReplyToConversationId: directConversationId?.toString(),
@@ -319,7 +310,7 @@ class NotificationsPushHandlerBloc extends DisposableOwner
   Future<void> _handleNewFollowRequestAction({
     required IUnifediApiNotification remoteNotification,
     required PushMessage pushMessage,
-    required UnifediApiPushMessageBody body,
+    required FediversePushTootRelayMessage body,
     required bool accept,
   }) async {
     var unifediApiAccount = remoteNotification.account!;
@@ -346,17 +337,17 @@ class NotificationsPushHandlerBloc extends DisposableOwner
     );
     disposableOwner.addDisposable(statusRepository);
 
-    var pleromaChatMessageRepository = PleromaChatMessageRepository(
+    var chatMessageRepository = PleromaChatMessageRepository(
       appDatabase: appDatabaseService.appDatabase,
       accountRepository: accountRepository,
     );
-    disposableOwner.addDisposable(pleromaChatMessageRepository);
+    disposableOwner.addDisposable(chatMessageRepository);
 
     var notificationRepository = NotificationRepository(
       appDatabase: appDatabaseService.appDatabase,
       accountRepository: accountRepository,
       statusRepository: statusRepository,
-      chatMessageRepository: pleromaChatMessageRepository,
+      chatMessageRepository: chatMessageRepository,
     );
     disposableOwner.addDisposable(notificationRepository);
 
@@ -365,50 +356,44 @@ class NotificationsPushHandlerBloc extends DisposableOwner
       acct: body.account,
     )!;
 
-    var restService = RestService(baseUri: authInstance.uri);
-    addDisposable(restService);
-
-    var unifediApiAuthRestService = UnifediApiAuthRestService(
-      restService: restService,
-      connectionService: connectionService,
-      accessToken: authInstance.token!.accessToken,
-      isPleroma: authInstance.isPleroma,
+    var apiManager = authInstance.info!.typeAsUnifediApi.createApiManager(
+      uri: authInstance.uri.toString(),
     );
-    addDisposable(unifediApiAuthRestService);
 
-    var unifediApiMyAccountService = UnifediApiMyAccountService(
-      restApiAuthService: unifediApiAuthRestService,
-    );
+    addDisposable(apiManager);
+
+    var unifediApiMyAccountService = apiManager.createMyAccountService();
     addDisposable(unifediApiMyAccountService);
 
-    IUnifediApiAccountRelationship unifediApiAccountRelationship;
+    IUnifediApiAccountRelationship? unifediApiAccountRelationship;
     if (accept) {
       unifediApiAccountRelationship =
-          await unifediApiMyAccountService.acceptFollowRequest(
-        accountRemoteId: accountRemoteId,
+          await unifediApiMyAccountService.acceptMyAccountFollowRequest(
+        accountId: accountRemoteId,
       );
     } else {
       unifediApiAccountRelationship =
-          await unifediApiMyAccountService.rejectFollowRequest(
-        accountRemoteId: accountRemoteId,
+          await unifediApiMyAccountService.rejectMyAccountFollowRequest(
+        accountId: accountRemoteId,
       );
     }
+    if (unifediApiAccountRelationship != null) {
+      var localAccount = unifediApiAccount.toDbAccountWrapper().copyWith(
+            relationship: unifediApiAccountRelationship,
+          );
+      unifediApiAccount = localAccount.toUnifediApiAccount();
 
-    var localAccount = unifediApiAccount.toDbAccountWrapper().copyWith(
-          relationship: unifediApiAccountRelationship,
+      await notificationRepository.batch((batch) {
+        notificationRepository.dismissFollowRequestNotificationsFromAccount(
+          account: localAccount,
+          batchTransaction: batch,
         );
-    unifediApiAccount = localAccount.toUnifediApiAccount();
-
-    await notificationRepository.batch((batch) {
-      notificationRepository.dismissFollowRequestNotificationsFromAccount(
-        account: localAccount,
-        batchTransaction: batch,
-      );
-      accountRepository.upsertInRemoteTypeBatch(
-        unifediApiAccount,
-        batchTransaction: batch,
-      );
-    });
+        accountRepository.upsertInRemoteTypeBatch(
+          unifediApiAccount,
+          batchTransaction: batch,
+        );
+      });
+    }
 
     // await myAccountBloc.decreaseFollowingRequestCount();
 
@@ -417,7 +402,7 @@ class NotificationsPushHandlerBloc extends DisposableOwner
 
   Future<void> _handleNewMessage({
     required PushMessage pushMessage,
-    required UnifediApiPushMessageBody body,
+    required FediversePushTootRelayMessage body,
   }) async {
     var instanceForMessage = instanceListBloc.findInstanceByCredentials(
       host: body.server,

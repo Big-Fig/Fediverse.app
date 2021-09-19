@@ -1,6 +1,7 @@
 import 'package:fedi/app/auth/host/application/auth_host_application_local_preference_bloc_impl.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:unifedi_api/unifedi_api_mock_helper.dart';
 
 import '../../../local_preferences/local_preferences_test_helper.dart';
 

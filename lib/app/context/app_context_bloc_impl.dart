@@ -125,7 +125,6 @@ import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc.dart';
 import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc_impl.dart';
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/connection/connection_service_impl.dart';
-import 'package:fediverse_api/fediverse_api.dart';
 import 'package:fedi/date_time/timeago/date_time_timeago_init_helper.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/in_app_review/ask/local_preferences/ask_in_app_review_local_preference_bloc.dart';

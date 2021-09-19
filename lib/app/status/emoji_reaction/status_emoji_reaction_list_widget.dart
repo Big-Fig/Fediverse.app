@@ -50,7 +50,7 @@ class StatusEmojiReactionListWidget extends StatelessWidget {
                                   context,
                                   listen: false,
                                 ),
-                                UnifediApiStatusService: Provider
+                                unifediApiStatusService: Provider
                                     .of<IUnifediApiStatusService>(
                                   context,
                                   listen: false,

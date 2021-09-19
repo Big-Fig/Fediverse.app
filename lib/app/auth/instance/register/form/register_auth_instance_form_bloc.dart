@@ -23,7 +23,7 @@ abstract class IRegisterAuthInstanceFormBloc implements IFormBloc {
 
   IRegisterAuthInstanceFormStepperSubmitItemBloc get submitStepperItemBloc;
 
-  UnifediApiAccountPublicRegisterRequest calculateRegisterFormData();
+  UnifediApiRegisterAccount calculateRegisterFormData();
 
   void onRegisterFailed();
 }

@@ -46,11 +46,6 @@ void main() {
 
     unifediApiMyAccountServiceMock = MockIUnifediApiMyAccountService();
 
-    when(unifediApiMyAccountServiceMock.isConnected).thenReturn(true);
-    when(unifediApiMyAccountServiceMock.unifediApiState).thenReturn(
-      UnifediApiState.validAuth,
-    );
-
     preferencesService = MemoryLocalPreferencesService();
 
     myAccount = await MyAccountMockHelper.createTestMyAccount(seed: 'seed1');
@@ -75,7 +70,7 @@ void main() {
     await Future.delayed(Duration(milliseconds: 1));
 
     myAccountBloc = MyAccountBloc(
-      unifediApiMyAccountService: unifediApiMyAccountServiceMock,
+      apiMyAccountService: unifediApiMyAccountServiceMock,
       accountRepository: accountRepository,
       myAccountLocalPreferenceBloc: myAccountLocalPreferenceBloc,
       instance: authInstance,
@@ -445,7 +440,7 @@ void main() {
     await Future.delayed(Duration(milliseconds: 1));
     AccountMockHelper.expectAccount(listened, myAccount);
 
-    when(unifediApiMyAccountServiceMock.verifyCredentials()).thenAnswer(
+    when(unifediApiMyAccountServiceMock.verifyMyCredentials()).thenAnswer(
       (_) async => newValue.unifediApiAccount,
     );
 

@@ -26,7 +26,8 @@ extension IAccountFeaturedHashtagExtension on IMyAccountFeaturedHashtag {
         id: remoteId,
         statusesCount: statusesCount,
         lastStatusAt: lastStatusAt,
-
+        url: null,
+        history: null,
       );
     }
   }

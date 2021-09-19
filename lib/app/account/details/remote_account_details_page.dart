@@ -15,7 +15,6 @@ import 'package:fedi/app/instance/remote/remote_instance_error_data.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/connection/connection_service.dart';
-import 'package:fediverse_api/fediverse_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -90,19 +89,15 @@ Future goToRemoteAccountDetailsPageBasedOnLocalInstanceRemoteAccount(
           unifediApiInstance: null,
         );
 
-        unifediApiStatusService = UnifediApiStatusService(
-          restService: remoteInstanceBloc.unifediApiRestService,
-        );
-        unifediApiAccountService = UnifediApiAccountService(
-          restService: remoteInstanceBloc.unifediApiRestService,
-        );
+        unifediApiStatusService = remoteInstanceBloc.unifediApiManager.createStatusService();
+        unifediApiAccountService = remoteInstanceBloc.unifediApiManager.createAccountService();
 
         try {
           // load in Mastodon way. Extract account from status
           result = await loadRemoteInstanceAccountViaAccountInStatus(
             context,
             localInstanceRemoteAccount,
-            unifediApiStatusService!,
+            unifediApiStatusService,
           );
         } catch (e) {
           // load in Pleroma way. Use username as id

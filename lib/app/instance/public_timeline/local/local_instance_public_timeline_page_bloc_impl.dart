@@ -22,7 +22,6 @@ import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:unifedi_api/unifedi_api.dart';
-import 'package:fediverse_api/fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:fediverse_api/fediverse_api_utils.dart';
@@ -66,7 +65,7 @@ class LocalInstancePublicTimelinePageBloc extends InstancePublicTimelinePageBloc
     required this.myAccountBloc,
     required IUnifediApiInstance unifediApiInstance,
   }) : super(
-          instanceUri: unifediApiTimelineService.restService.baseUri,
+          instanceUri: unifediApiTimelineService.baseUri,
           unifediApiInstance: unifediApiInstance,
         );
 

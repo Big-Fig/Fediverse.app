@@ -87,7 +87,7 @@ class FilterBloc extends DisposableOwner implements IFilterBloc {
 
   Future refreshFromNetwork() async {
     var remoteFilter =
-        await unifediApiFilterService.getFilter(id: remoteId);
+        await unifediApiFilterService.getFilter(filterId: remoteId);
 
     return _updateByRemoteFilter(
       remoteFilter,

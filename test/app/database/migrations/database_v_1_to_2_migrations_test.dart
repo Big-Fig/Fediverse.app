@@ -35,7 +35,7 @@ void main() {
     var pleromaCardTitle = 'pleromaCardTitle';
     var chatMessageDao = database.chatMessageDao;
     var accountRepository = AccountRepository(appDatabase: database);
-    var pleromaChatMessageRepository = PleromaChatMessageRepository(
+    var chatMessageRepository = PleromaChatMessageRepository(
       accountRepository: accountRepository,
       appDatabase: database,
     );
@@ -64,12 +64,12 @@ void main() {
       ),
       mode: null,
     );
-    var found = await pleromaChatMessageRepository
+    var found = await chatMessageRepository
         .findByRemoteIdInAppType(updatedRemoteId);
 
     expect(pleromaCardTitle, found!.card!.title);
 
     await accountRepository.dispose();
-    await pleromaChatMessageRepository.dispose();
+    await chatMessageRepository.dispose();
   });
 }

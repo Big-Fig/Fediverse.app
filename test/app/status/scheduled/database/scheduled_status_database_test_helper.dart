@@ -40,7 +40,6 @@ class ScheduledStatusDatabaseMockHelper {
           poll: null,
           idempotency: seed + 'idempotency1',
           inReplyToId: seed + 'inReplyToId1',
-          applicationId: seed + 'textId1',
           to: null,
           expiresInSeconds: null,
           language: null,

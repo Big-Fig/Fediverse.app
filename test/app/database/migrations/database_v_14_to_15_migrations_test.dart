@@ -31,7 +31,7 @@ void main() {
   late INotificationRepository notificationRepository;
   late IAccountRepository accountRepository;
   late IStatusRepository statusRepository;
-  late IPleromaChatMessageRepository pleromaChatMessageRepository;
+  late IPleromaChatMessageRepository chatMessageRepository;
 
   late DbAccountPopulatedWrapper account1;
   setUp(() async {
@@ -46,7 +46,7 @@ void main() {
       accountRepository: accountRepository,
     );
 
-    pleromaChatMessageRepository = PleromaChatMessageRepository(
+    chatMessageRepository = PleromaChatMessageRepository(
       appDatabase: database,
       accountRepository: accountRepository,
     );
@@ -55,7 +55,7 @@ void main() {
       appDatabase: database,
       accountRepository: accountRepository,
       statusRepository: statusRepository,
-      chatMessageRepository: pleromaChatMessageRepository,
+      chatMessageRepository: chatMessageRepository,
     );
 
     account1 =
@@ -65,7 +65,7 @@ void main() {
 
   tearDown(() async {
     await notificationRepository.dispose();
-    await pleromaChatMessageRepository.dispose();
+    await chatMessageRepository.dispose();
     await accountRepository.dispose();
     await statusRepository.dispose();
     await database.close();

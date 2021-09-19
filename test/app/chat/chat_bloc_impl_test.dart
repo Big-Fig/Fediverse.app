@@ -24,7 +24,6 @@ import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dar
 import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
 import 'package:moor/ffi.dart';
 
 import '../../rxdart/rxdart_test_helper.dart';
@@ -96,22 +95,17 @@ void main() {
     );
 
     myAccountBloc = MyAccountBloc(
-      unifediApiMyAccountService: unifediApiMyAccountServiceMock,
+      apiMyAccountService: unifediApiMyAccountServiceMock,
       accountRepository: accountRepository,
       myAccountLocalPreferenceBloc: myAccountLocalPreferenceBloc,
       instance: authInstance,
-    );
-
-    when(pleromaApiChatServiceMock.isConnected).thenReturn(true);
-    when(pleromaApiChatServiceMock.unifediApiState).thenReturn(
-      UnifediApiState.validAuth,
     );
 
     chat = await ChatMockHelper.createTestChat(seed: 'seed1');
 
     chatBloc = PleromaChatBloc(
       chat: chat,
-      pleromaApiChatService: pleromaApiChatServiceMock,
+      unifediApiChatService: pleromaApiChatServiceMock,
       accountRepository: accountRepository,
       chatMessageRepository: chatMessageRepository,
       chatRepository: chatRepository,

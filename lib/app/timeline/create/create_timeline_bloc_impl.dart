@@ -18,6 +18,7 @@ import 'package:fedi/form/field/value/string/string_value_form_field_bloc_impl.d
 import 'package:fedi/form/field/value/string/validation/string_value_form_field_non_empty_validation.dart';
 import 'package:fedi/form/form_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
+import 'package:fedi/id/fake_id_helper.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -58,7 +59,7 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
     required this.webSocketsSettingsBloc,
     required ILocalPreferencesService localPreferencesService,
   }) : super(isAllItemsInitialized: false) {
-    var timelineId = TimelineSettings.generateUniqueTimelineId();
+    var timelineId = FakeIdHelper.generateUniqueId();
 
     var startType = TimelineType.public;
     timelineLocalPreferencesBloc = _createTimelineLocalPreferencesBloc(

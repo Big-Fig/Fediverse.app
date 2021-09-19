@@ -227,7 +227,7 @@ class ScheduledStatusBloc extends DisposableOwner
 
     var pleromaScheduledStatus = await unifediApiStatusService.scheduleStatus(
       idempotencyKey: null,
-      data: UnifediApiSchedulePostStatus(
+      postStatus: UnifediApiSchedulePostStatus(
         mediaIds:
             postStatusData.mediaAttachments?.toUnifediApiMediaAttachmentIdList(),
         status: postStatusData.text,
@@ -238,7 +238,7 @@ class ScheduledStatusBloc extends DisposableOwner
 
         scheduledAt: postStatusData.scheduledAt!,
         to: postStatusData.to,
-        poll: postStatusData.poll?.toPleromaPostStatusPoll(),
+        poll: postStatusData.poll?.topostStatusPoll(),
         spoilerText: postStatusData.subject,
         language: postStatusData.language,
         expiresInSeconds: postStatusData.expiresInSeconds,
@@ -265,7 +265,8 @@ class ScheduledStatusBloc extends DisposableOwner
       mediaAttachments: scheduledStatus.mediaAttachments,
       poll: scheduledStatus.params.poll?.toPostStatusPoll(),
       inReplyToUnifediApiStatus:
-          scheduledStatus.params.inReplyToStatus?.toUnifediApiStatus(),
+          // todo: rework
+          null,
       inReplyToConversationId: scheduledStatus.params.inReplyToConversationId,
       isNsfwSensitiveEnabled: scheduledStatus.params.sensitive,
       to: scheduledStatus.params.to,

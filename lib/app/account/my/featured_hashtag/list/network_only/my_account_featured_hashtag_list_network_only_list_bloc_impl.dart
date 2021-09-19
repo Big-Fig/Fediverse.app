@@ -39,7 +39,7 @@ class AccountFeaturedHashtagListNetworkOnlyListBloc extends DisposableOwner
     }
 
     var pleromaFeaturedHashtags =
-        await unifediApiMyAccountService.getMyFeaturedTags(
+        await unifediApiMyAccountService.getMyAccountFeaturedTags(
       pagination: null,
     );
     List<IMyAccountFeaturedHashtag> result = pleromaFeaturedHashtags

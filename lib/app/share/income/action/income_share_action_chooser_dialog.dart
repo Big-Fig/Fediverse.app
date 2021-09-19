@@ -19,8 +19,8 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/share/income/income_share_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:logging/logging.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 final _logger = Logger('income_share_action_chooser_dialog.dart');
 
@@ -168,7 +168,11 @@ Future<List<IUnifediApiMediaAttachment>?> _uploadMediaIfNeed({
             var file = File(incomeShareEventMedia.path);
             var unifediApiMediaAttachment =
                 await unifediApiMediaAttachmentService.uploadMedia(
-              file: file,
+                  file: file,
+              thumbnail: null,
+              description: null,
+              focus: null,
+              processInBackground: null,
             );
 
             // shared filed was copied to temp folder

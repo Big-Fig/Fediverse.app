@@ -17,7 +17,7 @@ class MyAccountBloc extends IMyAccountBloc {
   static const selfActionError = SelfActionNotPossibleException();
 
   final IMyAccountLocalPreferenceBloc myAccountLocalPreferenceBloc;
-  final IUnifediApiMyAccountService unifediApiMyAccountService;
+  final IUnifediApiMyAccountService apiMyAccountService;
   final IAccountRepository accountRepository;
 
   @override
@@ -28,7 +28,7 @@ class MyAccountBloc extends IMyAccountBloc {
 
   MyAccountBloc({
     required this.myAccountLocalPreferenceBloc,
-    required this.unifediApiMyAccountService,
+    required this.apiMyAccountService,
     required this.accountRepository,
     required this.instance,
   }) {
@@ -72,7 +72,7 @@ class MyAccountBloc extends IMyAccountBloc {
   Future refreshFromNetwork({
     required bool isNeedPreFetchRelationship,
   }) async {
-    var remoteMyAccount = await unifediApiMyAccountService.verifyMyCredentials();
+    var remoteMyAccount = await apiMyAccountService.verifyMyCredentials();
 
     await updateMyAccountByMyUnifediApiAccount(remoteMyAccount);
   }

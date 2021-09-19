@@ -2,18 +2,20 @@
 // in fedi/test/app/filter/filter_bloc_impl_test.dart.
 // Do not manually edit this file.
 
-import 'dart:async' as _i5;
+import 'dart:async' as _i6;
 
-import 'package:base_fediverse_api/src/rest/rest_service.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:pleroma_fediverse_api/src/pleroma/api/filter/pleroma_api_filter_model.dart'
-    as _i3;
-import 'package:pleroma_fediverse_api/src/pleroma/api/filter/pleroma_api_filter_service.dart'
+import 'package:unifedi_api/src/api/feature/unifedi_api_feature_model.dart'
+    as _i2;
+import 'package:unifedi_api/src/api/filter/post/unifedi_api_post_filter_model.dart'
+    as _i8;
+import 'package:unifedi_api/src/api/filter/service/unifedi_api_filter_service.dart'
+    as _i5;
+import 'package:unifedi_api/src/api/filter/unifedi_api_filter_model.dart'
     as _i4;
-import 'package:pleroma_fediverse_api/src/pleroma/api/pagination/pleroma_api_pagination_model.dart'
+import 'package:unifedi_api/src/api/pagination/unifedi_api_pagination_model.dart'
     as _i7;
-import 'package:pleroma_fediverse_api/src/pleroma/api/pleroma_api_service.dart'
-    as _i6;
+import 'package:unifedi_api/src/api/rest/unifedi_api_rest_service.dart' as _i3;
 
 // ignore_for_file: avoid_redundant_argument_values
 // ignore_for_file: comment_references
@@ -21,88 +23,91 @@ import 'package:pleroma_fediverse_api/src/pleroma/api/pleroma_api_service.dart'
 // ignore_for_file: prefer_const_constructors
 // ignore_for_file: unnecessary_parenthesis
 
-class _FakeIRestService extends _i1.Fake implements _i2.IRestService {}
+class _FakeIUnifediApiFeature extends _i1.Fake
+    implements _i2.IUnifediApiFeature {}
 
-class _FakeIUnifediApiFilter extends _i1.Fake implements _i3.IUnifediApiFilter {
+class _FakeIUnifediApiRestService extends _i1.Fake
+    implements _i3.IUnifediApiRestService {}
+
+class _FakeIUnifediApiFilter extends _i1.Fake implements _i4.IUnifediApiFilter {
 }
 
 /// A class which mocks [IUnifediApiFilterService].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockIUnifediApiFilterService extends _i1.Mock
-    implements _i4.IUnifediApiFilterService {
+    implements _i5.IUnifediApiFilterService {
   MockIUnifediApiFilterService() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i2.IRestService get restService =>
+  _i2.IUnifediApiFeature get getFiltersFeature =>
+      (super.noSuchMethod(Invocation.getter(#getFiltersFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i2.IUnifediApiFeature get getFilterFeature =>
+      (super.noSuchMethod(Invocation.getter(#getFilterFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i2.IUnifediApiFeature get deleteFilterFeature =>
+      (super.noSuchMethod(Invocation.getter(#deleteFilterFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i2.IUnifediApiFeature get createFilterFeature =>
+      (super.noSuchMethod(Invocation.getter(#createFilterFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i2.IUnifediApiFeature get updateFilterFeature =>
+      (super.noSuchMethod(Invocation.getter(#updateFilterFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i3.IUnifediApiRestService get restService =>
       (super.noSuchMethod(Invocation.getter(#restService),
-          returnValue: _FakeIRestService()) as _i2.IRestService);
-  @override
-  _i5.Stream<_i6.UnifediApiState> get unifediApiStateStream =>
-      (super.noSuchMethod(Invocation.getter(#unifediApiStateStream),
-              returnValue: Stream<_i6.UnifediApiState>.empty())
-          as _i5.Stream<_i6.UnifediApiState>);
-  @override
-  _i6.UnifediApiState get unifediApiState =>
-      (super.noSuchMethod(Invocation.getter(#unifediApiState),
-          returnValue: _i6.UnifediApiState.validAuth) as _i6.UnifediApiState);
-  @override
-  _i5.Stream<bool> get isConnectedStream =>
-      (super.noSuchMethod(Invocation.getter(#isConnectedStream),
-          returnValue: Stream<bool>.empty()) as _i5.Stream<bool>);
-  @override
-  bool get isConnected =>
-      (super.noSuchMethod(Invocation.getter(#isConnected), returnValue: false)
-          as bool);
+              returnValue: _FakeIUnifediApiRestService())
+          as _i3.IUnifediApiRestService);
   @override
   bool get isDisposed =>
       (super.noSuchMethod(Invocation.getter(#isDisposed), returnValue: false)
           as bool);
   @override
-  _i5.Future<List<_i3.IUnifediApiFilter>> getFilters(
+  _i6.Future<List<_i4.IUnifediApiFilter>> getFilters(
           {_i7.IUnifediApiPagination? pagination}) =>
       (super.noSuchMethod(
               Invocation.method(#getFilters, [], {#pagination: pagination}),
-              returnValue: Future<List<_i3.IUnifediApiFilter>>.value(
-                  <_i3.IUnifediApiFilter>[]))
-          as _i5.Future<List<_i3.IUnifediApiFilter>>);
+              returnValue: Future<List<_i4.IUnifediApiFilter>>.value(
+                  <_i4.IUnifediApiFilter>[]))
+          as _i6.Future<List<_i4.IUnifediApiFilter>>);
   @override
-  _i5.Future<_i3.IUnifediApiFilter> getFilter({String? filterRemoteId}) =>
-      (super.noSuchMethod(
-          Invocation.method(#getFilter, [], {#filterRemoteId: filterRemoteId}),
-          returnValue: Future<_i3.IUnifediApiFilter>.value(
-              _FakeIUnifediApiFilter())) as _i5.Future<_i3.IUnifediApiFilter>);
-  @override
-  _i5.Future<dynamic> deleteFilter({String? filterRemoteId}) =>
-      (super.noSuchMethod(
-          Invocation.method(
-              #deleteFilter, [], {#filterRemoteId: filterRemoteId}),
-          returnValue: Future<dynamic>.value()) as _i5.Future<dynamic>);
-  @override
-  _i5.Future<_i3.IUnifediApiFilter> createFilter(
-          {_i3.IUnifediApiPostFilter? postPleromaFilter}) =>
-      (super.noSuchMethod(
-              Invocation.method(
-                  #createFilter, [], {#postPleromaFilter: postPleromaFilter}),
+  _i6.Future<_i4.IUnifediApiFilter> getFilter({String? filterId}) => (super
+          .noSuchMethod(
+              Invocation.method(#getFilter, [], {#filterId: filterId}),
               returnValue:
-                  Future<_i3.IUnifediApiFilter>.value(_FakeIUnifediApiFilter()))
-          as _i5.Future<_i3.IUnifediApiFilter>);
+                  Future<_i4.IUnifediApiFilter>.value(_FakeIUnifediApiFilter()))
+      as _i6.Future<_i4.IUnifediApiFilter>);
   @override
-  _i5.Future<_i3.IUnifediApiFilter> updateFilter(
-          {String? filterRemoteId,
-          _i3.IUnifediApiPostFilter? postPleromaFilter}) =>
+  _i6.Future<dynamic> deleteFilter({String? filterId}) => (super.noSuchMethod(
+      Invocation.method(#deleteFilter, [], {#filterId: filterId}),
+      returnValue: Future<dynamic>.value()) as _i6.Future<dynamic>);
+  @override
+  _i6.Future<_i4.IUnifediApiFilter> createFilter(
+          {_i8.IUnifediApiPostFilter? postFilter}) =>
       (super.noSuchMethod(
-              Invocation.method(#updateFilter, [], {
-                #filterRemoteId: filterRemoteId,
-                #postPleromaFilter: postPleromaFilter
-              }),
+              Invocation.method(#createFilter, [], {#postFilter: postFilter}),
               returnValue:
-                  Future<_i3.IUnifediApiFilter>.value(_FakeIUnifediApiFilter()))
-          as _i5.Future<_i3.IUnifediApiFilter>);
+                  Future<_i4.IUnifediApiFilter>.value(_FakeIUnifediApiFilter()))
+          as _i6.Future<_i4.IUnifediApiFilter>);
   @override
-  _i5.Future<dynamic> dispose() =>
+  _i6.Future<_i4.IUnifediApiFilter> updateFilter(
+          {String? filterId, _i8.IUnifediApiPostFilter? postFilter}) =>
+      (super.noSuchMethod(
+              Invocation.method(#updateFilter, [],
+                  {#filterId: filterId, #postFilter: postFilter}),
+              returnValue:
+                  Future<_i4.IUnifediApiFilter>.value(_FakeIUnifediApiFilter()))
+          as _i6.Future<_i4.IUnifediApiFilter>);
+  @override
+  _i6.Future<dynamic> dispose() =>
       (super.noSuchMethod(Invocation.method(#dispose, []),
-          returnValue: Future<dynamic>.value()) as _i5.Future<dynamic>);
+          returnValue: Future<dynamic>.value()) as _i6.Future<dynamic>);
 }

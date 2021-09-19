@@ -12,6 +12,7 @@ import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:moor/ffi.dart';
 import 'package:moor/moor.dart';
+import 'package:unifedi_api/unifedi_api_mock_helper.dart';
 
 import '../../../rxdart/rxdart_test_helper.dart';
 import '../../account/database/account_database_test_helper.dart';
@@ -19,7 +20,6 @@ import '../../conversation/conversation_test_helper.dart';
 import '../database/status_database_test_helper.dart';
 import '../status_test_helper.dart';
 import 'status_repository_test_helper.dart';
-import 'package:unifedi_api/unifedi_api_mock_helper.dart';
 
 // ignore_for_file: no-magic-number, avoid-late-keyword
 const String baseUrl = 'https://pleroma.com';

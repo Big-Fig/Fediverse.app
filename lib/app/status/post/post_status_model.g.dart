@@ -50,7 +50,8 @@ Map<String, dynamic> _$PostStatusDataToJson(PostStatusData instance) {
   writeNotNull('media_attachments',
       instance.mediaAttachments?.map((e) => e.toJson()).toList());
   writeNotNull('poll', instance.poll?.toJson());
-  writeNotNull('in_reply_to_status', instance.inReplyToUnifediApiStatus?.toJson());
+  writeNotNull(
+      'in_reply_to_status', instance.inReplyToUnifediApiStatus?.toJson());
   writeNotNull('in_reply_to_conversation_id', instance.inReplyToConversationId);
   val['is_nsfw_sensitive_enabled'] = instance.isNsfwSensitiveEnabled;
   writeNotNull('language', instance.language);

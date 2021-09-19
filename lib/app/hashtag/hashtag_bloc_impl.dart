@@ -1,3 +1,4 @@
+
 import 'package:collection/collection.dart';
 import 'package:fedi/app/account/my/featured_hashtag/my_account_featured_hashtag_model.dart';
 import 'package:fedi/app/account/my/featured_hashtag/my_account_featured_hashtag_model_adapter.dart';
@@ -97,11 +98,11 @@ class HashtagBloc extends DisposableOwner implements IHashtagBloc {
     required IMyAccountFeaturedHashtag? myAccountFeaturedHashtag,
     required bool needLoadFeaturedState,
   }) {
-    var UnifediApiInstanceService =
-        Provider.of<IUnifediApiInstanceService>(context, listen: false);
+    var unifediApiMyAccountService =
+        Provider.of<IUnifediApiMyAccountService>(context, listen: false);
 
     return HashtagBloc(
-      UnifediApiInstanceService: UnifediApiInstanceService,
+      unifediApiMyAccountService: unifediApiMyAccountService,
       hashtag: hashtag,
       authInstance:
           ICurrentAuthInstanceBloc.of(context, listen: false).currentInstance!,
@@ -135,7 +136,9 @@ class HashtagBloc extends DisposableOwner implements IHashtagBloc {
 
     isLoadingFeaturedHashtagStateSubject.add(true);
     var unifediApiTags =
-        await UnifediApiInstanceService.getFeaturedTags();
+        await unifediApiMyAccountService.getMyAccountFeaturedTags(
+          pagination: null,
+        );
 
     var found = unifediApiTags
         .map(

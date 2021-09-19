@@ -48,17 +48,14 @@ class RemoteStatusBloc extends StatusBloc {
   }) {
     var remoteInstanceBloc = IRemoteInstanceBloc.of(context, listen: false);
 
-    var unifediApiAccountService = UnifediApiAccountService(
-      restService: remoteInstanceBloc.unifediApiRestService,
-    );
-    var unifediApiStatusService = UnifediApiStatusService(
-      restService: remoteInstanceBloc.unifediApiRestService,
-    );
+    var unifediApiAccountService = remoteInstanceBloc.unifediApiManager.createAccountService();
+    var unifediApiStatusService = remoteInstanceBloc.unifediApiManager.createStatusService();
 
     var remoteStatusBloc = RemoteStatusBloc(
       status: status,
       isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
       delayInit: delayInit,
+      unifediApiPollService: remoteInstanceBloc.unifediApiManager.createPollService(),
       unifediApiStatusService: unifediApiStatusService,
       unifediApiAccountService: unifediApiAccountService,
       instanceUri: remoteInstanceBloc.instanceUri,

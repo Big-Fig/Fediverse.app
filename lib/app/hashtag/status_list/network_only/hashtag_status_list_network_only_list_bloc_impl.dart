@@ -28,9 +28,7 @@ class HashtagStatusListNetworkOnlyListBloc extends IStatusNetworkOnlyListBloc {
     required Uri instanceUri,
   }) {
     var remoteInstanceBloc = IRemoteInstanceBloc.of(context, listen: false);
-    var unifediApiTimelineService = UnifediApiTimelineService(
-      restService: remoteInstanceBloc.unifediApiRestService,
-    );
+    var unifediApiTimelineService = remoteInstanceBloc.unifediApiManager.createTimelineService();
 
     var bloc = HashtagStatusListNetworkOnlyListBloc(
       timelineLocalPreferenceBloc: timelineLocalPreferenceBloc,
@@ -88,6 +86,7 @@ class HashtagStatusListNetworkOnlyListBloc extends IStatusNetworkOnlyListBloc {
       onlyLocal: timeline.onlyLocal == true,
       onlyWithMedia: timeline.onlyWithMedia == true,
       excludeVisibilities: timeline.excludeVisibilities,
+      withMuted: timeline.withMuted,
       pagination: UnifediApiPagination(
         limit: itemsCountPerPage,
         minId: minId,

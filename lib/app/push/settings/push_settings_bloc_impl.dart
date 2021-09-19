@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/auth/instance/auth_instance_model.dart';
-import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/push/settings/local_preferences/push_settings_local_preference_bloc.dart';
 import 'package:fedi/app/push/settings/push_settings_bloc.dart';
 import 'package:fedi/app/push/settings/push_settings_model.dart';
@@ -24,10 +23,12 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
   final IPushRelayService pushRelayService;
   final AuthInstance currentInstance;
   final IFcmPushService fcmPushService;
-  final IConfigService configService;
   final StreamController<Exception> failedToUpdateStreamController =
       StreamController.broadcast();
 
+
+  final String pushSubscriptionKeysAuth;
+  final String pushSubscriptionKeysP256dh;
   PushRelaySettings? get pushRelaySettings =>
       instancePushRelaySettingsLocalPreferenceBloc.value;
 
@@ -36,13 +37,15 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
       failedToUpdateStreamController.stream;
 
   PushSettingsBloc({
+    required this.pushSubscriptionKeysAuth,
+    required this.pushSubscriptionKeysP256dh,
     required this.instancePushSettingsLocalPreferenceBloc,
     required this.instancePushRelaySettingsLocalPreferenceBloc,
     required this.pleromaPushService,
     required this.pushRelayService,
     required this.currentInstance,
     required this.fcmPushService,
-    required this.configService,
+
   }) {
     failedToUpdateStreamController.disposeWith(this);
     addCustomDisposable(
@@ -282,8 +285,8 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
         metadata: UnifediApiPushSubscriptionMetadata(
           endpoint: pushRelayEndPointUrl,
           keys: UnifediApiPushSubscriptionKeys(
-            auth: configService.pushSubscriptionKeysAuth!,
-            p256dh: configService.pushSubscriptionKeysP256dh!,
+            auth: pushSubscriptionKeysAuth!,
+            p256dh: pushSubscriptionKeysP256dh!,
           ),
         ),
         alerts: UnifediApiPushSubscriptionAlerts(

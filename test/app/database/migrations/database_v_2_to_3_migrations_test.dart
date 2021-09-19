@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/post/post_status_model.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:moor/ffi.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 // ignore_for_file: no-magic-number, avoid-late-keyword
 
@@ -40,10 +40,20 @@ void main() {
         canceled: false,
         id: null,
         remoteId: 'asda',
-        params: UnifediApiScheduledStatusParams.only(
+        params: UnifediApiScheduledStatusParams(
           sensitive: true,
           visibility: UnifediApiVisibility.privateValue.stringValue,
           scheduledAt: DateTime.now(),
+          expiresInSeconds: null,
+          text: null,
+          mediaIds: null,
+          spoilerText: null,
+          language: null,
+          poll: null,
+          idempotency: null,
+          inReplyToId: null,
+          inReplyToConversationId: null,
+          to: null,
         ),
       ),
       mode: null,

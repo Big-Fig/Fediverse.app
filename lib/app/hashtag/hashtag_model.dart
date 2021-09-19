@@ -5,6 +5,8 @@ abstract class IHashtag {
 
   String? get url;
 
+  int? get statusesCount;
+
   IUnifediApiTagHistory? get history;
 }
 
@@ -40,4 +42,8 @@ class Hashtag extends IHashtag {
 
   @override
   int get hashCode => name.hashCode ^ history.hashCode ^ url.hashCode;
+
+  @override
+  // TODO: implement statusesCount
+  int? get statusesCount => throw UnimplementedError();
 }

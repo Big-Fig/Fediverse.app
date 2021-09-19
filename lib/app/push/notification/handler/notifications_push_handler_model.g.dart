@@ -18,7 +18,7 @@ class NotificationsPushHandlerMessageAdapter
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return NotificationsPushHandlerMessage(
-      body: fields[0] as UnifediApiPushMessageBody,
+      body: fields[0] as dynamic,
       pushMessage: fields[1] as PushMessage,
     );
   }
@@ -51,8 +51,7 @@ class NotificationsPushHandlerMessageAdapter
 NotificationsPushHandlerMessage _$NotificationsPushHandlerMessageFromJson(
     Map<String, dynamic> json) {
   return NotificationsPushHandlerMessage(
-    body: UnifediApiPushMessageBody.fromJson(
-        json['body'] as Map<String, dynamic>),
+    body: json['body'],
     pushMessage:
         PushMessage.fromJson(json['push_message'] as Map<String, dynamic>),
   );
@@ -61,6 +60,6 @@ NotificationsPushHandlerMessage _$NotificationsPushHandlerMessageFromJson(
 Map<String, dynamic> _$NotificationsPushHandlerMessageToJson(
         NotificationsPushHandlerMessage instance) =>
     <String, dynamic>{
-      'body': instance.body.toJson(),
+      'body': instance.body,
       'push_message': instance.pushMessage.toJson(),
     };

@@ -18,7 +18,6 @@ class EmojiPickerCustomImageUrlCategoryBloc extends AsyncInitLoadingBloc
     implements ICustomEmojiPickerImageUrlCategoryBloc {
   final ICurrentAuthInstanceBloc currentAuthInstanceBloc;
   final IUnifediApiInstanceService unifediApiInstanceService;
-  final IUnifediApiInstanceService unifediApiInstanceService;
   final IEmojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc
       preferenceBloc;
 

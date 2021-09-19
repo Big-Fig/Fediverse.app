@@ -40,6 +40,7 @@ class PleromaChatPostMessageBloc extends PostMessageBloc
     // todo: refactor
     // ignore: unawaited_futures
     pleromaChatBloc.postMessage(
+      idempotencyKey: idempotencyKey,
       unifediApiPostChatMessage: calculateSendData(),
       unifediApiPostChatMessageMediaAttachment: calculateMediaAttachment(),
       oldPendingFailedPleromaChatMessage: null,
@@ -54,7 +55,6 @@ class PleromaChatPostMessageBloc extends PostMessageBloc
     var data = UnifediApiPostChatMessage(
       content: inputText,
       mediaId: mediaId,
-      idempotencyKey: idempotencyKey,
     );
     _logger.finest(() => 'calculateSendData data=$data');
 

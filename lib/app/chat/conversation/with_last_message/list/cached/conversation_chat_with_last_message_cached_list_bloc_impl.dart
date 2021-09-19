@@ -45,6 +45,7 @@ class ConversationChatWithLastMessageCachedListBloc
         minId: newerThan?.chat.remoteId,
         limit: limit,
       ),
+      recipientsIds: null,
     );
 
     await conversationRepository.upsertAllInRemoteType(

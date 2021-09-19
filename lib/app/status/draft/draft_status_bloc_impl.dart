@@ -122,17 +122,16 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
     if (postStatusData.isScheduled) {
       var pleromaScheduledStatus =
           await unifediApiStatusService.scheduleStatus(
-        data: postStatusData.toUnifediApiSchedulePostStatus(
           idempotencyKey: null,
+            postStatus: postStatusData.toUnifediApiSchedulePostStatus(
         ),
       );
       await scheduledStatusRepository
           .upsertInRemoteType(pleromaScheduledStatus);
     } else {
       var unifediApiStatus = await unifediApiStatusService.postStatus(
-        data: postStatusData.toPleromaPostStatus(
-          idempotencyKey: null,
-        ),
+        idempotencyKey: null,
+        postStatus: postStatusData.topostStatus(),
       );
       await statusRepository.upsertRemoteStatusWithAllArguments(
         unifediApiStatus,

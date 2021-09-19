@@ -1,7 +1,6 @@
 import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:fediverse_api/fediverse_api_utils.dart';
 
 part 'app_analytics_model.g.dart';
 @JsonSerializable()

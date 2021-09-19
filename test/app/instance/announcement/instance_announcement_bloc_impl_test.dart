@@ -8,7 +8,6 @@ import 'package:fedi/app/instance/announcement/repository/instance_announcement_
 import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
 import 'package:moor/ffi.dart';
 
 import '../../../rxdart/rxdart_test_helper.dart';
@@ -34,9 +33,6 @@ void main() {
 
     unifediApiAnnouncementServiceMock = MockIUnifediApiAnnouncementService();
 
-    when(unifediApiAnnouncementServiceMock.isConnected).thenReturn(true);
-    when(unifediApiAnnouncementServiceMock.unifediApiState)
-        .thenReturn(UnifediApiState.validAuth);
 
     instanceAnnouncement =
         await InstanceAnnouncementMockHelper.createTestInstanceAnnouncement(

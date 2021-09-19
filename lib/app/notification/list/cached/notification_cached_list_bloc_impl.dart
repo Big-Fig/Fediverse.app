@@ -105,6 +105,9 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
   }) async {
     // todo: dont exclude pleroma types on mastodon instances
     var remoteNotifications = await pleromaNotificationService.getNotifications(
+      includeTypes: null,
+      excludeVisibilities: null,
+      onlyFromAccountId: null,
       pagination: UnifediApiPagination(
         limit: limit,
         minId: newerThan?.remoteId,

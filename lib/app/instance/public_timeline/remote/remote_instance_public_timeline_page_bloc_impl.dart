@@ -39,9 +39,7 @@ class RemoteInstancePublicTimelinePageBloc
     required this.remoteInstanceBloc,
     required this.paginationSettingsBloc,
     required IUnifediApiInstance unifediApiInstance,
-  })  : unifediApiTimelineService = UnifediApiTimelineService(
-          restService: remoteInstanceBloc.unifediApiRestService,
-        ),
+  })  : unifediApiTimelineService = remoteInstanceBloc.unifediApiManager.createTimelineService(),
         super(
           unifediApiInstance: unifediApiInstance,
           instanceUri: remoteInstanceBloc.instanceUri,
@@ -121,9 +119,7 @@ class RemoteInstancePublicTimelinePageBloc
 
     addDisposable(timelineLocalPreferenceBloc);
 
-    var unifediApiTimelineService = UnifediApiTimelineService(
-      restService: remoteInstanceBloc.unifediApiRestService,
-    );
+    var unifediApiTimelineService = remoteInstanceBloc.unifediApiManager.createTimelineService();
     addDisposable(unifediApiTimelineService);
 
     statusNetworkOnlyListBloc =

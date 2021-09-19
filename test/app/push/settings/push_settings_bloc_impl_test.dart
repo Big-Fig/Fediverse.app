@@ -62,8 +62,8 @@ void main() {
     )).thenReturn('testUrl');
     when(fcmPushService.askPermissions()).thenAnswer((_) async => true);
     when(pleromaPushService.subscribe(
-      endpointCallbackUrl: anyNamed('endpointCallbackUrl'),
-      data: anyNamed('data'),
+      metadata: anyNamed('metadata'),
+      alerts: anyNamed('alerts'),
     )).thenAnswer((invocation) async {
       return UnifediApiPushSubscription(
         alerts: (invocation.namedArguments[Symbol('data')]
@@ -76,6 +76,8 @@ void main() {
     });
 
     pushSettingsBloc = PushSettingsBloc(
+      pushSubscriptionKeysAuth: 'pushSubscriptionKeysAuth',
+      pushSubscriptionKeysP256dh : 'pushSubscriptionKeysP256dh',
       instancePushRelaySettingsLocalPreferenceBloc:
           instancePushRelaySettingsLocalPreferenceBloc,
       instancePushSettingsLocalPreferenceBloc:

@@ -5,7 +5,7 @@ import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/chat/chat_bloc_impl.dart';
 import 'package:fedi/app/chat/message/chat_message_model.dart';
-import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_bloc_impl.dart';
+
 import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_bloc.dart';
@@ -13,6 +13,7 @@ import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/pending/pending_model.dart';
+import 'package:fedi/id/fake_id_helper.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -48,7 +49,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
       _lastMessageSubject.stream;
 
   final IMyAccountBloc myAccountBloc;
-  final IUnifediApiChatService pleromaApiChatService;
+  final IUnifediApiChatService unifediApiChatService;
   final IPleromaChatRepository chatRepository;
   final IPleromaChatMessageRepository chatMessageRepository;
   final IAccountRepository accountRepository;
@@ -61,7 +62,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
       onMessageLocallyHiddenStreamController.stream;
 
   PleromaChatBloc({
-    required this.pleromaApiChatService,
+    required this.unifediApiChatService,
     required this.myAccountBloc,
     required this.chatRepository,
     required this.chatMessageRepository,
@@ -147,7 +148,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
 
   @override
   Future refreshFromNetwork() async {
-    var remoteChat = await pleromaApiChatService.getChat(id: chat.remoteId);
+    var remoteChat = await unifediApiChatService.getChat(id: chat.remoteId);
 
     await accountRepository.batch((batch) {
       accountRepository.upsertChatRemoteAccount(
@@ -188,7 +189,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
     bool needRefreshFromNetworkOnInit = false,
   }) {
     return PleromaChatBloc(
-      pleromaApiChatService:
+      unifediApiChatService:
           Provider.of<IUnifediApiChatService>(context, listen: false),
       myAccountBloc: IMyAccountBloc.of(context, listen: false),
       chat: chat,
@@ -204,7 +205,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
   @override
   Future markAsRead() async {
     if (chat.unread > 0) {
-      if (pleromaApiChatService.isApiReadyToUse) {
+      if (unifediApiChatService.isApiReadyToUse) {
         var lastReadChatMessageId = lastChatMessage?.remoteId;
         if (lastReadChatMessageId == null) {
           var lastMessage = await chatMessageRepository.getChatLastChatMessage(
@@ -214,7 +215,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
         }
 
         if (lastReadChatMessageId != null) {
-          var updatedRemoteChat = await pleromaApiChatService.markChatAsRead(
+          var updatedRemoteChat = await unifediApiChatService.markChatAsRead(
             chatId: chat.remoteId,
             lastReadChatMessageId: lastReadChatMessageId,
           );
@@ -237,9 +238,9 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
     for (var chatMessage in chatMessages) {
       var remoteId = chatMessage.remoteId;
       if (chatMessage.isPendingStatePublishedOrNull) {
-        await pleromaApiChatService.deleteChatMessage(
+        await unifediApiChatService.deleteChatMessage(
           chatId: chat.remoteId,
-          chatMessageRemoteId: remoteId,
+          chatMessageId: remoteId,
         );
       }
 
@@ -258,6 +259,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
   // todo: refactor
   // ignore: long-method
   Future postMessage({
+    required String? idempotencyKey,
     required IUnifediApiPostChatMessage unifediApiPostChatMessage,
     required IUnifediApiMediaAttachment?
         unifediApiPostChatMessageMediaAttachment,
@@ -274,9 +276,8 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
                 id: localChatMessageId,
               );
 
-      unifediApiPostChatMessage = unifediApiPostChatMessage.copyWith(
-        idempotencyKey: dbChatMessage.wasSentWithIdempotencyKey,
-      );
+        idempotencyKey = dbChatMessage.wasSentWithIdempotencyKey;
+
 
       await chatMessageRepository.updateByDbIdInDbType(
         dbId: localChatMessageId,
@@ -287,7 +288,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
       );
     } else {
       var createdAt = DateTime.now();
-      var fakeUniqueRemoteRemoteId = generateUniqueUnifediApiFakeId();
+      var fakeUniqueRemoteRemoteId = FakeIdHelper.generateUniqueId();
 
       dbChatMessage = DbChatMessage(
         id: null,
@@ -318,8 +319,10 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
     }
 
     try {
-      var pleromaChatMessage = await pleromaApiChatService.sendMessage(
-        postChatMessage: PleromaChatMessage
+      var unifediApiChatMessage = await unifediApiChatService.sendMessage(
+        idempotencyKey: idempotencyKey,
+        chatId: chat.remoteId,
+        postChatMessage: unifediApiPostChatMessage,
       );
       onMessageLocallyHiddenStreamController.add(
         DbPleromaChatMessagePopulatedWrapper(
@@ -342,7 +345,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
         );
 
         chatMessageRepository.upsertInRemoteTypeBatch(
-          pleromaChatMessage,
+          unifediApiChatMessage,
           batchTransaction: batch,
         );
       });
@@ -361,22 +364,22 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
 
   @override
   Future deleteMessage({
-    required IPleromaChatMessage? pleromaChatMessage,
+    required IPleromaChatMessage chatMessage,
   }) async {
-    if (pleromaChatMessage!.isPendingStatePublishedOrNull) {
-      await pleromaApiChatService.deleteChatMessage(
-        chatMessageRemoteId: pleromaChatMessage.remoteId,
-        chatId: pleromaChatMessage.chatRemoteId,
+    if (chatMessage!.isPendingStatePublishedOrNull) {
+      await unifediApiChatService.deleteChatMessage(
+        chatMessageId: chatMessage.remoteId,
+        chatId: chatMessage.chatRemoteId,
       );
 
       await chatMessageRepository.markChatMessageAsDeleted(
-        chatMessageRemoteId: pleromaChatMessage.remoteId,
+        chatMessageRemoteId: chatMessage.remoteId,
       );
     } else {
       await chatMessageRepository.markChatMessageAsHiddenLocallyOnDevice(
-        chatMessageLocalId: pleromaChatMessage.localId!,
+        chatMessageLocalId: chatMessage.localId!,
       );
-      onMessageLocallyHiddenStreamController.add(pleromaChatMessage);
+      onMessageLocallyHiddenStreamController.add(chatMessage);
     }
   }
 

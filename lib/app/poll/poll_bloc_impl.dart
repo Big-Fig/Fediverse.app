@@ -122,7 +122,7 @@ class PollBloc extends DisposableOwner implements IPollBloc {
     });
 
     var updatedPoll = await unifediApiPollService!.vote(
-      pollRemoteId: poll.id!,
+      pollId: poll.id!,
       voteIndexes: voteIndexes,
     );
 
@@ -155,7 +155,7 @@ class PollBloc extends DisposableOwner implements IPollBloc {
   @override
   Future refreshFromNetwork() async {
     var remotePoll = await unifediApiPollService!.getPoll(
-      pollRemoteId: poll.id!,
+      pollId: poll.id!,
     );
 
     pollSubject.add(remotePoll);

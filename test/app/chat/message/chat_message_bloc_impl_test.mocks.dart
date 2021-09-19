@@ -2,38 +2,49 @@
 // in fedi/test/app/chat/message/chat_message_bloc_impl_test.dart.
 // Do not manually edit this file.
 
-import 'dart:async' as _i8;
+import 'dart:async' as _i12;
 
-import 'package:base_fediverse_api/src/rest/rest_service.dart' as _i2;
-import 'package:easy_dispose/src/composite_disposable.dart' as _i17;
-import 'package:easy_dispose/src/disposable.dart' as _i18;
-import 'package:fedi/app/account/account_model.dart' as _i6;
-import 'package:fedi/app/account/my/my_account_bloc.dart' as _i14;
-import 'package:fedi/app/account/my/my_account_model.dart' as _i15;
-import 'package:fedi/app/auth/instance/auth_instance_model.dart' as _i5;
-import 'package:fedi/app/chat/message/chat_message_model.dart' as _i21;
+import 'package:easy_dispose/src/composite_disposable.dart' as _i24;
+import 'package:easy_dispose/src/disposable.dart' as _i25;
+import 'package:fedi/app/account/account_model.dart' as _i10;
+import 'package:fedi/app/account/my/my_account_bloc.dart' as _i21;
+import 'package:fedi/app/account/my/my_account_model.dart' as _i22;
+import 'package:fedi/app/auth/instance/auth_instance_model.dart' as _i9;
+import 'package:fedi/app/chat/message/chat_message_model.dart' as _i28;
 import 'package:fedi/app/instance/location/instance_location_model.dart'
-    as _i16;
-import 'package:fedi/app/status/status_model.dart' as _i19;
+    as _i23;
+import 'package:fedi/app/status/status_model.dart' as _i26;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:pleroma_fediverse_api/src/pleroma/api/account/auth/pleroma_api_auth_account_service.dart'
-    as _i11;
-import 'package:pleroma_fediverse_api/src/pleroma/api/account/my/pleroma_api_my_account_model.dart'
+import 'package:unifedi_api/src/api/account/identity_proof/unifedi_api_account_identity_proof_model.dart'
+    as _i19;
+import 'package:unifedi_api/src/api/account/my/unifedi_api_my_account_model.dart'
+    as _i27;
+import 'package:unifedi_api/src/api/account/register/unifedi_api_register_account_model.dart'
     as _i20;
-import 'package:pleroma_fediverse_api/src/pleroma/api/account/pleroma_api_account_model.dart'
-    as _i4;
-import 'package:pleroma_fediverse_api/src/pleroma/api/chat/pleroma_api_chat_model.dart'
-    as _i3;
-import 'package:pleroma_fediverse_api/src/pleroma/api/chat/pleroma_api_chat_service.dart'
+import 'package:unifedi_api/src/api/account/relationship/unifedi_api_account_relationship_model.dart'
     as _i7;
-import 'package:pleroma_fediverse_api/src/pleroma/api/list/pleroma_api_list_model.dart'
-    as _i12;
-import 'package:pleroma_fediverse_api/src/pleroma/api/pagination/pleroma_api_pagination_model.dart'
-    as _i10;
-import 'package:pleroma_fediverse_api/src/pleroma/api/pleroma_api_service.dart'
-    as _i9;
-import 'package:pleroma_fediverse_api/src/pleroma/api/status/pleroma_api_status_model.dart'
+import 'package:unifedi_api/src/api/account/service/unifedi_api_account_service.dart'
+    as _i15;
+import 'package:unifedi_api/src/api/account/unifedi_api_account_model.dart'
+    as _i6;
+import 'package:unifedi_api/src/api/chat/message/post/unifedi_api_post_chat_message_model.dart'
+    as _i14;
+import 'package:unifedi_api/src/api/chat/message/unifedi_api_chat_message_model.dart'
+    as _i5;
+import 'package:unifedi_api/src/api/chat/service/unifedi_api_chat_service.dart'
+    as _i11;
+import 'package:unifedi_api/src/api/chat/unifedi_api_chat_model.dart' as _i4;
+import 'package:unifedi_api/src/api/feature/unifedi_api_feature_model.dart'
+    as _i2;
+import 'package:unifedi_api/src/api/list/unifedi_api_list_model.dart' as _i18;
+import 'package:unifedi_api/src/api/oauth/unifedi_api_oauth_model.dart' as _i8;
+import 'package:unifedi_api/src/api/pagination/unifedi_api_pagination_model.dart'
     as _i13;
+import 'package:unifedi_api/src/api/rest/unifedi_api_rest_service.dart' as _i3;
+import 'package:unifedi_api/src/api/status/unifedi_api_status_model.dart'
+    as _i16;
+import 'package:unifedi_api/src/api/visibility/unifedi_api_visibility_sealed.dart'
+    as _i17;
 
 // ignore_for_file: avoid_redundant_argument_values
 // ignore_for_file: comment_references
@@ -41,87 +52,98 @@ import 'package:pleroma_fediverse_api/src/pleroma/api/status/pleroma_api_status_
 // ignore_for_file: prefer_const_constructors
 // ignore_for_file: unnecessary_parenthesis
 
-class _FakeIRestService extends _i1.Fake implements _i2.IRestService {}
+class _FakeIUnifediApiFeature extends _i1.Fake
+    implements _i2.IUnifediApiFeature {}
 
-class _FakeIUnifediApiChat extends _i1.Fake implements _i3.IUnifediApiChat {}
+class _FakeIUnifediApiRestService extends _i1.Fake
+    implements _i3.IUnifediApiRestService {}
+
+class _FakeIUnifediApiChat extends _i1.Fake implements _i4.IUnifediApiChat {}
 
 class _FakeIUnifediApiChatMessage extends _i1.Fake
-    implements _i3.IUnifediApiChatMessage {}
-
-class _FakeIUnifediApiAccountRelationship extends _i1.Fake
-    implements _i4.IUnifediApiAccountRelationship {}
+    implements _i5.IUnifediApiChatMessage {}
 
 class _FakeIUnifediApiAccount extends _i1.Fake
-    implements _i4.IUnifediApiAccount {}
+    implements _i6.IUnifediApiAccount {}
 
-class _FakeAuthInstance extends _i1.Fake implements _i5.AuthInstance {
+class _FakeIUnifediApiAccountRelationship extends _i1.Fake
+    implements _i7.IUnifediApiAccountRelationship {}
+
+class _FakeIUnifediApiOAuthToken extends _i1.Fake
+    implements _i8.IUnifediApiOAuthToken {}
+
+class _FakeAuthInstance extends _i1.Fake implements _i9.AuthInstance {
   @override
   String toString() => super.toString();
 }
 
-class _FakeIAccount extends _i1.Fake implements _i6.IAccount {}
+class _FakeIAccount extends _i1.Fake implements _i10.IAccount {}
 
 /// A class which mocks [IUnifediApiChatService].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockIUnifediApiChatService extends _i1.Mock
-    implements _i7.IUnifediApiChatService {
+    implements _i11.IUnifediApiChatService {
   MockIUnifediApiChatService() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  bool get isPleroma =>
-      (super.noSuchMethod(Invocation.getter(#isPleroma), returnValue: false)
-          as bool);
+  _i2.IUnifediApiFeature get getChatsFeature =>
+      (super.noSuchMethod(Invocation.getter(#getChatsFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
   @override
-  bool get isMastodon =>
-      (super.noSuchMethod(Invocation.getter(#isMastodon), returnValue: false)
-          as bool);
+  _i2.IUnifediApiFeature get getChatMessagesFeature =>
+      (super.noSuchMethod(Invocation.getter(#getChatMessagesFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
   @override
-  _i2.IRestService get restService =>
+  _i2.IUnifediApiFeature get markChatAsReadFeature =>
+      (super.noSuchMethod(Invocation.getter(#markChatAsReadFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i2.IUnifediApiFeature get getChatFeature =>
+      (super.noSuchMethod(Invocation.getter(#getChatFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i2.IUnifediApiFeature get getOrCreateChatByAccountIdFeature =>
+      (super.noSuchMethod(Invocation.getter(#getOrCreateChatByAccountIdFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i2.IUnifediApiFeature get sendMessageFeature =>
+      (super.noSuchMethod(Invocation.getter(#sendMessageFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i2.IUnifediApiFeature get deleteChatMessageFeature =>
+      (super.noSuchMethod(Invocation.getter(#deleteChatMessageFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i3.IUnifediApiRestService get restService =>
       (super.noSuchMethod(Invocation.getter(#restService),
-          returnValue: _FakeIRestService()) as _i2.IRestService);
-  @override
-  _i8.Stream<_i9.UnifediApiState> get unifediApiStateStream =>
-      (super.noSuchMethod(Invocation.getter(#unifediApiStateStream),
-              returnValue: Stream<_i9.UnifediApiState>.empty())
-          as _i8.Stream<_i9.UnifediApiState>);
-  @override
-  _i9.UnifediApiState get unifediApiState =>
-      (super.noSuchMethod(Invocation.getter(#unifediApiState),
-          returnValue: _i9.UnifediApiState.validAuth) as _i9.UnifediApiState);
-  @override
-  _i8.Stream<bool> get isConnectedStream =>
-      (super.noSuchMethod(Invocation.getter(#isConnectedStream),
-          returnValue: Stream<bool>.empty()) as _i8.Stream<bool>);
-  @override
-  bool get isConnected =>
-      (super.noSuchMethod(Invocation.getter(#isConnected), returnValue: false)
-          as bool);
+              returnValue: _FakeIUnifediApiRestService())
+          as _i3.IUnifediApiRestService);
   @override
   bool get isDisposed =>
       (super.noSuchMethod(Invocation.getter(#isDisposed), returnValue: false)
           as bool);
   @override
-  _i8.Future<List<_i3.IUnifediApiChat>> getChats(
-          {_i10.IUnifediApiPagination? pagination}) =>
+  _i12.Future<List<_i4.IUnifediApiChat>> getChats(
+          {_i13.IUnifediApiPagination? pagination}) =>
       (super.noSuchMethod(
               Invocation.method(#getChats, [], {#pagination: pagination}),
-              returnValue: Future<List<_i3.IUnifediApiChat>>.value(
-                  <_i3.IUnifediApiChat>[]))
-          as _i8.Future<List<_i3.IUnifediApiChat>>);
+              returnValue: Future<List<_i4.IUnifediApiChat>>.value(
+                  <_i4.IUnifediApiChat>[]))
+          as _i12.Future<List<_i4.IUnifediApiChat>>);
   @override
-  _i8.Future<List<_i3.IUnifediApiChatMessage>> getChatMessages(
-          {String? chatId, _i10.IUnifediApiPagination? pagination}) =>
+  _i12.Future<List<_i5.IUnifediApiChatMessage>> getChatMessages(
+          {String? chatId, _i13.IUnifediApiPagination? pagination}) =>
       (super.noSuchMethod(
           Invocation.method(
               #getChatMessages, [], {#chatId: chatId, #pagination: pagination}),
-          returnValue: Future<List<_i3.IUnifediApiChatMessage>>.value(
-              <_i3.IUnifediApiChatMessage>[])) as _i8
-          .Future<List<_i3.IUnifediApiChatMessage>>);
+          returnValue: Future<List<_i5.IUnifediApiChatMessage>>.value(
+              <_i5.IUnifediApiChatMessage>[])) as _i12
+          .Future<List<_i5.IUnifediApiChatMessage>>);
   @override
-  _i8.Future<_i3.IUnifediApiChat> markChatAsRead(
+  _i12.Future<_i4.IUnifediApiChat> markChatAsRead(
           {String? chatId, String? lastReadChatMessageId}) =>
       (super.noSuchMethod(
               Invocation.method(#markChatAsRead, [], {
@@ -129,284 +151,242 @@ class MockIUnifediApiChatService extends _i1.Mock
                 #lastReadChatMessageId: lastReadChatMessageId
               }),
               returnValue:
-                  Future<_i3.IUnifediApiChat>.value(_FakeIUnifediApiChat()))
-          as _i8.Future<_i3.IUnifediApiChat>);
+                  Future<_i4.IUnifediApiChat>.value(_FakeIUnifediApiChat()))
+          as _i12.Future<_i4.IUnifediApiChat>);
   @override
-  _i8.Future<_i3.IUnifediApiChat> getChat({String? id}) =>
+  _i12.Future<_i4.IUnifediApiChat> getChat({String? id}) =>
       (super.noSuchMethod(Invocation.method(#getChat, [], {#id: id}),
               returnValue:
-                  Future<_i3.IUnifediApiChat>.value(_FakeIUnifediApiChat()))
-          as _i8.Future<_i3.IUnifediApiChat>);
+                  Future<_i4.IUnifediApiChat>.value(_FakeIUnifediApiChat()))
+          as _i12.Future<_i4.IUnifediApiChat>);
   @override
-  _i8.Future<_i3.IUnifediApiChat> getOrCreateChatByAccountId(
+  _i12.Future<_i4.IUnifediApiChat> getOrCreateChatByAccountId(
           {String? accountId}) =>
       (super.noSuchMethod(
               Invocation.method(
                   #getOrCreateChatByAccountId, [], {#accountId: accountId}),
               returnValue:
-                  Future<_i3.IUnifediApiChat>.value(_FakeIUnifediApiChat()))
-          as _i8.Future<_i3.IUnifediApiChat>);
+                  Future<_i4.IUnifediApiChat>.value(_FakeIUnifediApiChat()))
+          as _i12.Future<_i4.IUnifediApiChat>);
   @override
-  _i8.Future<_i3.IUnifediApiChatMessage> sendMessage(
-          {String? chatId, _i3.IUnifediApiPostChatMessage? data}) =>
+  _i12.Future<_i5.IUnifediApiChatMessage> sendMessage(
+          {String? idempotencyKey,
+          String? chatId,
+          _i14.IUnifediApiPostChatMessage? postChatMessage}) =>
       (super.noSuchMethod(
-          Invocation.method(#sendMessage, [], {#chatId: chatId, #data: data}),
-          returnValue: Future<_i3.IUnifediApiChatMessage>.value(
-              _FakeIUnifediApiChatMessage())) as _i8
-          .Future<_i3.IUnifediApiChatMessage>);
+              Invocation.method(#sendMessage, [], {
+                #idempotencyKey: idempotencyKey,
+                #chatId: chatId,
+                #postChatMessage: postChatMessage
+              }),
+              returnValue: Future<_i5.IUnifediApiChatMessage>.value(
+                  _FakeIUnifediApiChatMessage()))
+          as _i12.Future<_i5.IUnifediApiChatMessage>);
   @override
-  _i8.Future<dynamic> deleteChatMessage(
-          {String? chatMessageRemoteId, String? chatId}) =>
+  _i12.Future<dynamic> deleteChatMessage(
+          {String? chatMessageId, String? chatId}) =>
       (super.noSuchMethod(
           Invocation.method(#deleteChatMessage, [],
-              {#chatMessageRemoteId: chatMessageRemoteId, #chatId: chatId}),
-          returnValue: Future<dynamic>.value()) as _i8.Future<dynamic>);
+              {#chatMessageId: chatMessageId, #chatId: chatId}),
+          returnValue: Future<dynamic>.value()) as _i12.Future<dynamic>);
   @override
-  _i8.Future<dynamic> dispose() =>
+  _i12.Future<dynamic> dispose() =>
       (super.noSuchMethod(Invocation.method(#dispose, []),
-          returnValue: Future<dynamic>.value()) as _i8.Future<dynamic>);
+          returnValue: Future<dynamic>.value()) as _i12.Future<dynamic>);
 }
 
 /// A class which mocks [IUnifediApiAccountService].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockIUnifediApiAccountService extends _i1.Mock
-    implements _i11.IUnifediApiAccountService {
+    implements _i15.IUnifediApiAccountService {
   MockIUnifediApiAccountService() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i2.IRestService get restService =>
+  _i2.IUnifediApiFeature get getAccountStatusesFeature =>
+      (super.noSuchMethod(Invocation.getter(#getAccountStatusesFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i2.IUnifediApiFeature get getAccountStatusesWithMutedFeature => (super
+      .noSuchMethod(Invocation.getter(#getAccountStatusesWithMutedFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i2.IUnifediApiFeature get getAccountStatusesExcludeVisibilitiesFeature =>
+      (super.noSuchMethod(
+          Invocation.getter(#getAccountStatusesExcludeVisibilitiesFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i2.IUnifediApiFeature get getAccountStatusesPaginationMinIdFeature =>
+      (super.noSuchMethod(
+          Invocation.getter(#getAccountStatusesPaginationMinIdFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i2.IUnifediApiFeature get getAccountStatusesExcludeReblogsFeature => (super
+      .noSuchMethod(Invocation.getter(#getAccountStatusesExcludeReblogsFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i2.IUnifediApiFeature get getAccountStatusesTaggedFeature =>
+      (super.noSuchMethod(Invocation.getter(#getAccountStatusesTaggedFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i2.IUnifediApiFeature get getAccountFavouritedStatusesFeature => (super
+      .noSuchMethod(Invocation.getter(#getAccountFavouritedStatusesFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i2.IUnifediApiFeature get getAccountFeature =>
+      (super.noSuchMethod(Invocation.getter(#getAccountFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i2.IUnifediApiFeature get getAccountWithRelationshipFeature =>
+      (super.noSuchMethod(Invocation.getter(#getAccountWithRelationshipFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i2.IUnifediApiFeature get getRelationshipWithAccountsFeature => (super
+      .noSuchMethod(Invocation.getter(#getRelationshipWithAccountsFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i2.IUnifediApiFeature get searchFeature =>
+      (super.noSuchMethod(Invocation.getter(#searchFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i2.IUnifediApiFeature get getListsWithAccountFeature =>
+      (super.noSuchMethod(Invocation.getter(#getListsWithAccountFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i2.IUnifediApiFeature get getAccountIdentifyProofsFeature =>
+      (super.noSuchMethod(Invocation.getter(#getAccountIdentifyProofsFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i2.IUnifediApiFeature get followAccountFeature =>
+      (super.noSuchMethod(Invocation.getter(#followAccountFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i2.IUnifediApiFeature get followAccountNotifyFeature =>
+      (super.noSuchMethod(Invocation.getter(#followAccountNotifyFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i2.IUnifediApiFeature get unFollowAccountFeature =>
+      (super.noSuchMethod(Invocation.getter(#unFollowAccountFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i2.IUnifediApiFeature get pinAccountFeature =>
+      (super.noSuchMethod(Invocation.getter(#pinAccountFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i2.IUnifediApiFeature get unPinAccountFeature =>
+      (super.noSuchMethod(Invocation.getter(#unPinAccountFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i2.IUnifediApiFeature get muteAccountFeature =>
+      (super.noSuchMethod(Invocation.getter(#muteAccountFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i2.IUnifediApiFeature get unMuteAccountFeature =>
+      (super.noSuchMethod(Invocation.getter(#unMuteAccountFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i2.IUnifediApiFeature get subscribeAccountFeature =>
+      (super.noSuchMethod(Invocation.getter(#subscribeAccountFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i2.IUnifediApiFeature get unSubscribeAccountFeature =>
+      (super.noSuchMethod(Invocation.getter(#unSubscribeAccountFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i2.IUnifediApiFeature get blockAccountFeature =>
+      (super.noSuchMethod(Invocation.getter(#blockAccountFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i2.IUnifediApiFeature get unBlockAccountFeature =>
+      (super.noSuchMethod(Invocation.getter(#unBlockAccountFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i2.IUnifediApiFeature get blockDomainFeature =>
+      (super.noSuchMethod(Invocation.getter(#blockDomainFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i2.IUnifediApiFeature get unBlockDomainFeature =>
+      (super.noSuchMethod(Invocation.getter(#unBlockDomainFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i2.IUnifediApiFeature get noteFeature =>
+      (super.noSuchMethod(Invocation.getter(#noteFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i2.IUnifediApiFeature get reportAccountFeature =>
+      (super.noSuchMethod(Invocation.getter(#reportAccountFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i2.IUnifediApiFeature get reportAccountForwardFeature =>
+      (super.noSuchMethod(Invocation.getter(#reportAccountForwardFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i2.IUnifediApiFeature get getAccountFollowingsFeature =>
+      (super.noSuchMethod(Invocation.getter(#getAccountFollowingsFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i2.IUnifediApiFeature get getAccountFollowersFeature =>
+      (super.noSuchMethod(Invocation.getter(#getAccountFollowersFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i2.IUnifediApiFeature get getAccountFollowingsWithRelationshipFeature =>
+      (super.noSuchMethod(
+          Invocation.getter(#getAccountFollowingsWithRelationshipFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i2.IUnifediApiFeature get getAccountFollowersWithRelationshipFeature =>
+      (super.noSuchMethod(
+          Invocation.getter(#getAccountFollowersWithRelationshipFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i2.IUnifediApiFeature get registerAccountFeature =>
+      (super.noSuchMethod(Invocation.getter(#registerAccountFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i2.IUnifediApiFeature get registerAccountReasonFeature =>
+      (super.noSuchMethod(Invocation.getter(#registerAccountReasonFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i2.IUnifediApiFeature get registerAccountCaptchaFeature =>
+      (super.noSuchMethod(Invocation.getter(#registerAccountCaptchaFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i2.IUnifediApiFeature get registerAccountFullNameFeature =>
+      (super.noSuchMethod(Invocation.getter(#registerAccountFullNameFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i2.IUnifediApiFeature get registerAccountBioFeature =>
+      (super.noSuchMethod(Invocation.getter(#registerAccountBioFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i2.IUnifediApiFeature get registerAccountInviteTokenFeature =>
+      (super.noSuchMethod(Invocation.getter(#registerAccountInviteTokenFeature),
+          returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
+  @override
+  _i3.IUnifediApiRestService get restService =>
       (super.noSuchMethod(Invocation.getter(#restService),
-          returnValue: _FakeIRestService()) as _i2.IRestService);
-  @override
-  _i8.Stream<_i9.UnifediApiState> get unifediApiStateStream =>
-      (super.noSuchMethod(Invocation.getter(#unifediApiStateStream),
-              returnValue: Stream<_i9.UnifediApiState>.empty())
-          as _i8.Stream<_i9.UnifediApiState>);
-  @override
-  _i9.UnifediApiState get unifediApiState =>
-      (super.noSuchMethod(Invocation.getter(#unifediApiState),
-          returnValue: _i9.UnifediApiState.validAuth) as _i9.UnifediApiState);
-  @override
-  _i8.Stream<bool> get isConnectedStream =>
-      (super.noSuchMethod(Invocation.getter(#isConnectedStream),
-          returnValue: Stream<bool>.empty()) as _i8.Stream<bool>);
-  @override
-  bool get isConnected =>
-      (super.noSuchMethod(Invocation.getter(#isConnected), returnValue: false)
-          as bool);
+              returnValue: _FakeIUnifediApiRestService())
+          as _i3.IUnifediApiRestService);
   @override
   bool get isDisposed =>
       (super.noSuchMethod(Invocation.getter(#isDisposed), returnValue: false)
           as bool);
   @override
-  bool get isPleroma =>
-      (super.noSuchMethod(Invocation.getter(#isPleroma), returnValue: false)
-          as bool);
-  @override
-  bool get isMastodon =>
-      (super.noSuchMethod(Invocation.getter(#isMastodon), returnValue: false)
-          as bool);
-  @override
-  _i8.Future<List<_i4.IUnifediApiAccountRelationship>>
-      getRelationshipWithAccounts({List<String>? remoteAccountIds}) =>
-          (super.noSuchMethod(
-                  Invocation.method(#getRelationshipWithAccounts, [],
-                      {#remoteAccountIds: remoteAccountIds}),
-                  returnValue:
-                      Future<List<_i4.IUnifediApiAccountRelationship>>.value(
-                          <_i4.IUnifediApiAccountRelationship>[]))
-              as _i8.Future<List<_i4.IUnifediApiAccountRelationship>>);
-  @override
-  _i8.Future<List<_i4.IUnifediApiAccount>> search(
-          {String? query,
-          bool? resolve,
-          bool? following,
-          _i10.IUnifediApiPagination? pagination}) =>
-      (super.noSuchMethod(
-              Invocation.method(#search, [], {
-                #query: query,
-                #resolve: resolve,
-                #following: following,
-                #pagination: pagination
-              }),
-              returnValue: Future<List<_i4.IUnifediApiAccount>>.value(
-                  <_i4.IUnifediApiAccount>[]))
-          as _i8.Future<List<_i4.IUnifediApiAccount>>);
-  @override
-  _i8.Future<List<_i12.IUnifediApiList>> getListsWithAccount(
-          {String? accountRemoteId}) =>
-      (super.noSuchMethod(
-          Invocation.method(
-              #getListsWithAccount, [], {#accountRemoteId: accountRemoteId}),
-          returnValue: Future<List<_i12.IUnifediApiList>>.value(
-              <_i12.IUnifediApiList>[])) as _i8
-          .Future<List<_i12.IUnifediApiList>>);
-  @override
-  _i8.Future<List<_i4.IUnifediApiAccountIdentityProof>>
-      getAccountIdentifyProofs({String? accountRemoteId}) => (super
-              .noSuchMethod(
-                  Invocation.method(#getAccountIdentifyProofs, [], {
-                    #accountRemoteId: accountRemoteId
-                  }),
-                  returnValue:
-                      Future<List<_i4.IUnifediApiAccountIdentityProof>>.value(
-                          <_i4.IUnifediApiAccountIdentityProof>[]))
-          as _i8.Future<List<_i4.IUnifediApiAccountIdentityProof>>);
-  @override
-  _i8.Future<_i4.IUnifediApiAccountRelationship> followAccount(
-          {String? accountRemoteId}) =>
-      (super.noSuchMethod(
-              Invocation.method(
-                  #followAccount, [], {#accountRemoteId: accountRemoteId}),
-              returnValue: Future<_i4.IUnifediApiAccountRelationship>.value(
-                  _FakeIUnifediApiAccountRelationship()))
-          as _i8.Future<_i4.IUnifediApiAccountRelationship>);
-  @override
-  _i8.Future<_i4.IUnifediApiAccountRelationship> unFollowAccount(
-          {String? accountRemoteId}) =>
-      (super.noSuchMethod(
-              Invocation.method(
-                  #unFollowAccount, [], {#accountRemoteId: accountRemoteId}),
-              returnValue: Future<_i4.IUnifediApiAccountRelationship>.value(
-                  _FakeIUnifediApiAccountRelationship()))
-          as _i8.Future<_i4.IUnifediApiAccountRelationship>);
-  @override
-  _i8.Future<_i4.IUnifediApiAccountRelationship> subscribeAccount(
-          {String? accountRemoteId}) =>
-      (super.noSuchMethod(
-              Invocation.method(
-                  #subscribeAccount, [], {#accountRemoteId: accountRemoteId}),
-              returnValue: Future<_i4.IUnifediApiAccountRelationship>.value(
-                  _FakeIUnifediApiAccountRelationship()))
-          as _i8.Future<_i4.IUnifediApiAccountRelationship>);
-  @override
-  _i8.Future<_i4.IUnifediApiAccountRelationship> unSubscribeAccount(
-          {String? accountRemoteId}) =>
-      (super.noSuchMethod(
-              Invocation.method(
-                  #unSubscribeAccount, [], {#accountRemoteId: accountRemoteId}),
-              returnValue: Future<_i4.IUnifediApiAccountRelationship>.value(
-                  _FakeIUnifediApiAccountRelationship()))
-          as _i8.Future<_i4.IUnifediApiAccountRelationship>);
-  @override
-  _i8.Future<_i4.IUnifediApiAccountRelationship> pinAccount(
-          {String? accountRemoteId}) =>
-      (super.noSuchMethod(
-              Invocation.method(
-                  #pinAccount, [], {#accountRemoteId: accountRemoteId}),
-              returnValue: Future<_i4.IUnifediApiAccountRelationship>.value(
-                  _FakeIUnifediApiAccountRelationship()))
-          as _i8.Future<_i4.IUnifediApiAccountRelationship>);
-  @override
-  _i8.Future<_i4.IUnifediApiAccountRelationship> unPinAccount(
-          {String? accountRemoteId}) =>
-      (super.noSuchMethod(
-              Invocation.method(
-                  #unPinAccount, [], {#accountRemoteId: accountRemoteId}),
-              returnValue: Future<_i4.IUnifediApiAccountRelationship>.value(
-                  _FakeIUnifediApiAccountRelationship()))
-          as _i8.Future<_i4.IUnifediApiAccountRelationship>);
-  @override
-  _i8.Future<_i4.IUnifediApiAccountRelationship> muteAccount(
-          {String? accountRemoteId,
-          bool? notifications,
-          int? expireDurationInSeconds}) =>
-      (super.noSuchMethod(
-              Invocation.method(#muteAccount, [], {
-                #accountRemoteId: accountRemoteId,
-                #notifications: notifications,
-                #expireDurationInSeconds: expireDurationInSeconds
-              }),
-              returnValue: Future<_i4.IUnifediApiAccountRelationship>.value(
-                  _FakeIUnifediApiAccountRelationship()))
-          as _i8.Future<_i4.IUnifediApiAccountRelationship>);
-  @override
-  _i8.Future<_i4.IUnifediApiAccountRelationship> unMuteAccount(
-          {String? accountRemoteId}) =>
-      (super.noSuchMethod(
-              Invocation.method(
-                  #unMuteAccount, [], {#accountRemoteId: accountRemoteId}),
-              returnValue: Future<_i4.IUnifediApiAccountRelationship>.value(
-                  _FakeIUnifediApiAccountRelationship()))
-          as _i8.Future<_i4.IUnifediApiAccountRelationship>);
-  @override
-  _i8.Future<_i4.IUnifediApiAccountRelationship> blockAccount(
-          {String? accountRemoteId}) =>
-      (super.noSuchMethod(
-              Invocation.method(
-                  #blockAccount, [], {#accountRemoteId: accountRemoteId}),
-              returnValue: Future<_i4.IUnifediApiAccountRelationship>.value(
-                  _FakeIUnifediApiAccountRelationship()))
-          as _i8.Future<_i4.IUnifediApiAccountRelationship>);
-  @override
-  _i8.Future<_i4.IUnifediApiAccountRelationship> unBlockAccount(
-          {String? accountRemoteId}) =>
-      (super.noSuchMethod(
-              Invocation.method(
-                  #unBlockAccount, [], {#accountRemoteId: accountRemoteId}),
-              returnValue: Future<_i4.IUnifediApiAccountRelationship>.value(
-                  _FakeIUnifediApiAccountRelationship()))
-          as _i8.Future<_i4.IUnifediApiAccountRelationship>);
-  @override
-  _i8.Future<dynamic> blockDomain({String? domain}) => (super.noSuchMethod(
-      Invocation.method(#blockDomain, [], {#domain: domain}),
-      returnValue: Future<dynamic>.value()) as _i8.Future<dynamic>);
-  @override
-  _i8.Future<dynamic> unBlockDomain({String? domain}) => (super.noSuchMethod(
-      Invocation.method(#unBlockDomain, [], {#domain: domain}),
-      returnValue: Future<dynamic>.value()) as _i8.Future<dynamic>);
-  @override
-  _i8.Future<dynamic> reportAccount(
-          {_i4.IUnifediApiAccountReportRequest? reportRequest}) =>
-      (super.noSuchMethod(
-          Invocation.method(
-              #reportAccount, [], {#reportRequest: reportRequest}),
-          returnValue: Future<dynamic>.value()) as _i8.Future<dynamic>);
-  @override
-  _i8.Future<List<_i4.IUnifediApiAccount>> getAccountFollowings(
-          {String? accountRemoteId,
-          bool? withRelationship,
-          _i10.IUnifediApiPagination? pagination}) =>
-      (super.noSuchMethod(
-              Invocation.method(#getAccountFollowings, [], {
-                #accountRemoteId: accountRemoteId,
-                #withRelationship: withRelationship,
-                #pagination: pagination
-              }),
-              returnValue: Future<List<_i4.IUnifediApiAccount>>.value(
-                  <_i4.IUnifediApiAccount>[]))
-          as _i8.Future<List<_i4.IUnifediApiAccount>>);
-  @override
-  _i8.Future<List<_i4.IUnifediApiAccount>> getAccountFollowers(
-          {String? accountRemoteId,
-          bool? withRelationship,
-          _i10.IUnifediApiPagination? pagination}) =>
-      (super.noSuchMethod(
-              Invocation.method(#getAccountFollowers, [], {
-                #accountRemoteId: accountRemoteId,
-                #withRelationship: withRelationship,
-                #pagination: pagination
-              }),
-              returnValue: Future<List<_i4.IUnifediApiAccount>>.value(
-                  <_i4.IUnifediApiAccount>[]))
-          as _i8.Future<List<_i4.IUnifediApiAccount>>);
-  @override
-  _i8.Future<List<_i13.IUnifediApiStatus>> getAccountStatuses(
-          {String? accountRemoteId,
+  _i12.Future<List<_i16.IUnifediApiStatus>> getAccountStatuses(
+          {String? accountId,
           String? tagged,
           bool? pinned,
           bool? excludeReplies,
           bool? excludeReblogs,
-          List<String>? excludeVisibilities,
+          List<_i17.UnifediApiVisibility>? excludeVisibilities,
           bool? withMuted,
           bool? onlyWithMedia,
-          _i10.IUnifediApiPagination? pagination}) =>
+          _i13.IUnifediApiPagination? pagination}) =>
       (super.noSuchMethod(
               Invocation.method(#getAccountStatuses, [], {
-                #accountRemoteId: accountRemoteId,
+                #accountId: accountId,
                 #tagged: tagged,
                 #pinned: pinned,
                 #excludeReplies: excludeReplies,
@@ -416,80 +396,276 @@ class MockIUnifediApiAccountService extends _i1.Mock
                 #onlyWithMedia: onlyWithMedia,
                 #pagination: pagination
               }),
-              returnValue: Future<List<_i13.IUnifediApiStatus>>.value(
-                  <_i13.IUnifediApiStatus>[]))
-          as _i8.Future<List<_i13.IUnifediApiStatus>>);
+              returnValue: Future<List<_i16.IUnifediApiStatus>>.value(
+                  <_i16.IUnifediApiStatus>[]))
+          as _i12.Future<List<_i16.IUnifediApiStatus>>);
   @override
-  _i8.Future<List<_i13.IUnifediApiStatus>> getAccountFavouritedStatuses(
-          {String? accountRemoteId,
-          _i10.IUnifediApiPagination? pagination}) =>
+  List<_i17.UnifediApiVisibility>
+      calculatePossibleExcludeVisibilitiesValues() => (super.noSuchMethod(
+          Invocation.method(#calculatePossibleExcludeVisibilitiesValues, []),
+          returnValue: <
+              _i17.UnifediApiVisibility>[]) as List<_i17.UnifediApiVisibility>);
+  @override
+  _i12.Future<List<_i16.IUnifediApiStatus>> getAccountFavouritedStatuses(
+          {String? accountId, _i13.IUnifediApiPagination? pagination}) =>
       (super.noSuchMethod(
               Invocation.method(#getAccountFavouritedStatuses, [],
-                  {#accountRemoteId: accountRemoteId, #pagination: pagination}),
-              returnValue: Future<List<_i13.IUnifediApiStatus>>.value(
-                  <_i13.IUnifediApiStatus>[]))
-          as _i8.Future<List<_i13.IUnifediApiStatus>>);
+                  {#accountId: accountId, #pagination: pagination}),
+              returnValue: Future<List<_i16.IUnifediApiStatus>>.value(
+                  <_i16.IUnifediApiStatus>[]))
+          as _i12.Future<List<_i16.IUnifediApiStatus>>);
   @override
-  _i8.Future<_i4.IUnifediApiAccount> getAccount(
-          {String? accountRemoteId, bool? withRelationship}) =>
+  _i12.Future<_i6.IUnifediApiAccount> getAccount(
+          {String? accountId, bool? withRelationship}) =>
       (super.noSuchMethod(
-              Invocation.method(#getAccount, [], {
-                #accountRemoteId: accountRemoteId,
-                #withRelationship: withRelationship
-              }),
-              returnValue: Future<_i4.IUnifediApiAccount>.value(
+              Invocation.method(#getAccount, [],
+                  {#accountId: accountId, #withRelationship: withRelationship}),
+              returnValue: Future<_i6.IUnifediApiAccount>.value(
                   _FakeIUnifediApiAccount()))
-          as _i8.Future<_i4.IUnifediApiAccount>);
+          as _i12.Future<_i6.IUnifediApiAccount>);
   @override
-  _i8.Future<dynamic> dispose() =>
+  _i12.Future<List<_i7.IUnifediApiAccountRelationship>>
+      getRelationshipWithAccounts({List<String>? accountIds}) =>
+          (super.noSuchMethod(
+              Invocation.method(
+                  #getRelationshipWithAccounts, [], {#accountIds: accountIds}),
+              returnValue:
+                  Future<List<_i7.IUnifediApiAccountRelationship>>.value(
+                      <_i7.IUnifediApiAccountRelationship>[])) as _i12
+              .Future<List<_i7.IUnifediApiAccountRelationship>>);
+  @override
+  _i12.Future<List<_i6.IUnifediApiAccount>> search(
+          {String? query, bool? resolve, bool? following, int? limit}) =>
+      (super.noSuchMethod(
+              Invocation.method(#search, [], {
+                #query: query,
+                #resolve: resolve,
+                #following: following,
+                #limit: limit
+              }),
+              returnValue: Future<List<_i6.IUnifediApiAccount>>.value(
+                  <_i6.IUnifediApiAccount>[]))
+          as _i12.Future<List<_i6.IUnifediApiAccount>>);
+  @override
+  _i12.Future<List<_i18.IUnifediApiList>> getListsWithAccount(
+          {String? accountId}) =>
+      (super.noSuchMethod(
+          Invocation.method(#getListsWithAccount, [], {#accountId: accountId}),
+          returnValue: Future<List<_i18.IUnifediApiList>>.value(
+              <_i18.IUnifediApiList>[])) as _i12
+          .Future<List<_i18.IUnifediApiList>>);
+  @override
+  _i12.Future<List<_i19.IUnifediApiAccountIdentityProof>>
+      getAccountIdentifyProofs({String? accountId}) => (super.noSuchMethod(
+          Invocation.method(
+              #getAccountIdentifyProofs, [], {#accountId: accountId}),
+          returnValue: Future<List<_i19.IUnifediApiAccountIdentityProof>>.value(
+              <_i19.IUnifediApiAccountIdentityProof>[])) as _i12
+          .Future<List<_i19.IUnifediApiAccountIdentityProof>>);
+  @override
+  _i12.Future<_i7.IUnifediApiAccountRelationship> followAccount(
+          {String? accountId, bool? notify, bool? reblogs}) =>
+      (super.noSuchMethod(
+              Invocation.method(#followAccount, [],
+                  {#accountId: accountId, #notify: notify, #reblogs: reblogs}),
+              returnValue: Future<_i7.IUnifediApiAccountRelationship>.value(
+                  _FakeIUnifediApiAccountRelationship()))
+          as _i12.Future<_i7.IUnifediApiAccountRelationship>);
+  @override
+  _i12.Future<_i7.IUnifediApiAccountRelationship> unFollowAccount(
+          {String? accountId}) =>
+      (super.noSuchMethod(
+              Invocation.method(#unFollowAccount, [], {#accountId: accountId}),
+              returnValue: Future<_i7.IUnifediApiAccountRelationship>.value(
+                  _FakeIUnifediApiAccountRelationship()))
+          as _i12.Future<_i7.IUnifediApiAccountRelationship>);
+  @override
+  _i12.Future<_i7.IUnifediApiAccountRelationship> subscribeAccount(
+          {String? accountId}) =>
+      (super.noSuchMethod(
+              Invocation.method(#subscribeAccount, [], {#accountId: accountId}),
+              returnValue: Future<_i7.IUnifediApiAccountRelationship>.value(
+                  _FakeIUnifediApiAccountRelationship()))
+          as _i12.Future<_i7.IUnifediApiAccountRelationship>);
+  @override
+  _i12.Future<_i7.IUnifediApiAccountRelationship> unSubscribeAccount(
+          {String? accountId}) =>
+      (super.noSuchMethod(
+          Invocation.method(#unSubscribeAccount, [], {#accountId: accountId}),
+          returnValue: Future<_i7.IUnifediApiAccountRelationship>.value(
+              _FakeIUnifediApiAccountRelationship())) as _i12
+          .Future<_i7.IUnifediApiAccountRelationship>);
+  @override
+  _i12.Future<_i7.IUnifediApiAccountRelationship> pinAccount(
+          {String? accountId}) =>
+      (super.noSuchMethod(
+              Invocation.method(#pinAccount, [], {#accountId: accountId}),
+              returnValue: Future<_i7.IUnifediApiAccountRelationship>.value(
+                  _FakeIUnifediApiAccountRelationship()))
+          as _i12.Future<_i7.IUnifediApiAccountRelationship>);
+  @override
+  _i12.Future<_i7.IUnifediApiAccountRelationship> unPinAccount(
+          {String? accountId}) =>
+      (super.noSuchMethod(
+              Invocation.method(#unPinAccount, [], {#accountId: accountId}),
+              returnValue: Future<_i7.IUnifediApiAccountRelationship>.value(
+                  _FakeIUnifediApiAccountRelationship()))
+          as _i12.Future<_i7.IUnifediApiAccountRelationship>);
+  @override
+  _i12.Future<_i7.IUnifediApiAccountRelationship> muteAccount(
+          {String? accountId, bool? notifications, Duration? expireIn}) =>
+      (super.noSuchMethod(
+              Invocation.method(#muteAccount, [], {
+                #accountId: accountId,
+                #notifications: notifications,
+                #expireIn: expireIn
+              }),
+              returnValue: Future<_i7.IUnifediApiAccountRelationship>.value(
+                  _FakeIUnifediApiAccountRelationship()))
+          as _i12.Future<_i7.IUnifediApiAccountRelationship>);
+  @override
+  _i12.Future<_i7.IUnifediApiAccountRelationship> unMuteAccount(
+          {String? accountId}) =>
+      (super.noSuchMethod(
+              Invocation.method(#unMuteAccount, [], {#accountId: accountId}),
+              returnValue: Future<_i7.IUnifediApiAccountRelationship>.value(
+                  _FakeIUnifediApiAccountRelationship()))
+          as _i12.Future<_i7.IUnifediApiAccountRelationship>);
+  @override
+  _i12.Future<_i7.IUnifediApiAccountRelationship> blockAccount(
+          {String? accountId}) =>
+      (super.noSuchMethod(
+              Invocation.method(#blockAccount, [], {#accountId: accountId}),
+              returnValue: Future<_i7.IUnifediApiAccountRelationship>.value(
+                  _FakeIUnifediApiAccountRelationship()))
+          as _i12.Future<_i7.IUnifediApiAccountRelationship>);
+  @override
+  _i12.Future<_i7.IUnifediApiAccountRelationship> unBlockAccount(
+          {String? accountId}) =>
+      (super.noSuchMethod(
+              Invocation.method(#unBlockAccount, [], {#accountId: accountId}),
+              returnValue: Future<_i7.IUnifediApiAccountRelationship>.value(
+                  _FakeIUnifediApiAccountRelationship()))
+          as _i12.Future<_i7.IUnifediApiAccountRelationship>);
+  @override
+  _i12.Future<dynamic> blockDomain({String? domain}) => (super.noSuchMethod(
+      Invocation.method(#blockDomain, [], {#domain: domain}),
+      returnValue: Future<dynamic>.value()) as _i12.Future<dynamic>);
+  @override
+  _i12.Future<dynamic> unBlockDomain({String? domain}) => (super.noSuchMethod(
+      Invocation.method(#unBlockDomain, [], {#domain: domain}),
+      returnValue: Future<dynamic>.value()) as _i12.Future<dynamic>);
+  @override
+  _i12.Future<dynamic> reportAccount(
+          {String? accountId,
+          List<String>? statusIds,
+          String? comment,
+          bool? forward}) =>
+      (super.noSuchMethod(
+          Invocation.method(#reportAccount, [], {
+            #accountId: accountId,
+            #statusIds: statusIds,
+            #comment: comment,
+            #forward: forward
+          }),
+          returnValue: Future<dynamic>.value()) as _i12.Future<dynamic>);
+  @override
+  _i12.Future<List<_i6.IUnifediApiAccount>> getAccountFollowings(
+          {String? accountId,
+          bool? withRelationship,
+          _i13.IUnifediApiPagination? pagination}) =>
+      (super.noSuchMethod(
+              Invocation.method(#getAccountFollowings, [], {
+                #accountId: accountId,
+                #withRelationship: withRelationship,
+                #pagination: pagination
+              }),
+              returnValue: Future<List<_i6.IUnifediApiAccount>>.value(
+                  <_i6.IUnifediApiAccount>[]))
+          as _i12.Future<List<_i6.IUnifediApiAccount>>);
+  @override
+  _i12.Future<List<_i6.IUnifediApiAccount>> getAccountFollowers(
+          {String? accountId,
+          bool? withRelationship,
+          _i13.IUnifediApiPagination? pagination}) =>
+      (super.noSuchMethod(
+              Invocation.method(#getAccountFollowers, [], {
+                #accountId: accountId,
+                #withRelationship: withRelationship,
+                #pagination: pagination
+              }),
+              returnValue: Future<List<_i6.IUnifediApiAccount>>.value(
+                  <_i6.IUnifediApiAccount>[]))
+          as _i12.Future<List<_i6.IUnifediApiAccount>>);
+  @override
+  _i12.Future<_i7.IUnifediApiAccountRelationship> note(
+          {String? accountId, String? comment}) =>
+      (super.noSuchMethod(
+              Invocation.method(
+                  #note, [], {#accountId: accountId, #comment: comment}),
+              returnValue: Future<_i7.IUnifediApiAccountRelationship>.value(
+                  _FakeIUnifediApiAccountRelationship()))
+          as _i12.Future<_i7.IUnifediApiAccountRelationship>);
+  @override
+  _i12.Future<_i8.IUnifediApiOAuthToken> registerAccount(
+          {_i20.IUnifediApiRegisterAccount? registerAccount}) =>
+      (super.noSuchMethod(
+              Invocation.method(
+                  #registerAccount, [], {#registerAccount: registerAccount}),
+              returnValue: Future<_i8.IUnifediApiOAuthToken>.value(
+                  _FakeIUnifediApiOAuthToken()))
+          as _i12.Future<_i8.IUnifediApiOAuthToken>);
+  @override
+  _i12.Future<dynamic> dispose() =>
       (super.noSuchMethod(Invocation.method(#dispose, []),
-          returnValue: Future<dynamic>.value()) as _i8.Future<dynamic>);
+          returnValue: Future<dynamic>.value()) as _i12.Future<dynamic>);
 }
 
 /// A class which mocks [IMyAccountBloc].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockIMyAccountBloc extends _i1.Mock implements _i14.IMyAccountBloc {
+class MockIMyAccountBloc extends _i1.Mock implements _i21.IMyAccountBloc {
   MockIMyAccountBloc() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i8.Stream<_i15.IMyAccount?> get myAccountStream =>
+  _i12.Stream<_i22.IMyAccount?> get myAccountStream =>
       (super.noSuchMethod(Invocation.getter(#myAccountStream),
-              returnValue: Stream<_i15.IMyAccount?>.empty())
-          as _i8.Stream<_i15.IMyAccount?>);
+              returnValue: Stream<_i22.IMyAccount?>.empty())
+          as _i12.Stream<_i22.IMyAccount?>);
   @override
-  _i5.AuthInstance get instance =>
+  _i9.AuthInstance get instance =>
       (super.noSuchMethod(Invocation.getter(#instance),
-          returnValue: _FakeAuthInstance()) as _i5.AuthInstance);
+          returnValue: _FakeAuthInstance()) as _i9.AuthInstance);
   @override
   bool get isLocalCacheExist =>
       (super.noSuchMethod(Invocation.getter(#isLocalCacheExist),
           returnValue: false) as bool);
   @override
-  _i6.IAccount get account => (super.noSuchMethod(Invocation.getter(#account),
-      returnValue: _FakeIAccount()) as _i6.IAccount);
+  _i10.IAccount get account => (super.noSuchMethod(Invocation.getter(#account),
+      returnValue: _FakeIAccount()) as _i10.IAccount);
   @override
-  _i8.Stream<_i6.IAccount> get accountStream => (super.noSuchMethod(
-      Invocation.getter(#accountStream),
-      returnValue: Stream<_i6.IAccount>.empty()) as _i8.Stream<_i6.IAccount>);
+  _i12.Stream<_i10.IAccount> get accountStream =>
+      (super.noSuchMethod(Invocation.getter(#accountStream),
+              returnValue: Stream<_i10.IAccount>.empty())
+          as _i12.Stream<_i10.IAccount>);
   @override
-  _i16.InstanceLocation get instanceLocation =>
+  _i23.InstanceLocation get instanceLocation =>
       (super.noSuchMethod(Invocation.getter(#instanceLocation),
-          returnValue: _i16.InstanceLocation.local) as _i16.InstanceLocation);
+          returnValue: _i23.InstanceLocation.local) as _i23.InstanceLocation);
   @override
-  _i17.DisposeOrder get disposeOrder =>
+  _i24.DisposeOrder get disposeOrder =>
       (super.noSuchMethod(Invocation.getter(#disposeOrder),
-          returnValue: _i17.DisposeOrder.lifo) as _i17.DisposeOrder);
+          returnValue: _i24.DisposeOrder.lifo) as _i24.DisposeOrder);
   @override
   bool get catchExceptions => (super
           .noSuchMethod(Invocation.getter(#catchExceptions), returnValue: false)
       as bool);
   @override
-  List<_i18.IDisposable> get disposables =>
+  List<_i25.IDisposable> get disposables =>
       (super.noSuchMethod(Invocation.getter(#disposables),
-          returnValue: <_i18.IDisposable>[]) as List<_i18.IDisposable>);
+          returnValue: <_i25.IDisposable>[]) as List<_i25.IDisposable>);
   @override
   bool get isDisposed =>
       (super.noSuchMethod(Invocation.getter(#isDisposed), returnValue: false)
@@ -499,116 +675,116 @@ class MockIMyAccountBloc extends _i1.Mock implements _i14.IMyAccountBloc {
       super.noSuchMethod(Invocation.setter(#isDisposed, _isDisposed),
           returnValueForMissingStub: null);
   @override
-  bool checkAccountIsMe(_i6.IAccount? account) =>
+  bool checkAccountIsMe(_i10.IAccount? account) =>
       (super.noSuchMethod(Invocation.method(#checkAccountIsMe, [account]),
           returnValue: false) as bool);
   @override
-  bool checkIsStatusFromMe(_i19.IStatus? status) =>
+  bool checkIsStatusFromMe(_i26.IStatus? status) =>
       (super.noSuchMethod(Invocation.method(#checkIsStatusFromMe, [status]),
           returnValue: false) as bool);
   @override
-  _i8.Future<dynamic> updateMyAccountByMyUnifediApiAccount(
-          _i20.IUnifediApiMyAccount? unifediApiMyAccount) =>
+  _i12.Future<dynamic> updateMyAccountByMyUnifediApiAccount(
+          _i27.IUnifediApiMyAccount? unifediApiMyAccount) =>
       (super.noSuchMethod(
           Invocation.method(
               #updateMyAccountByMyUnifediApiAccount, [unifediApiMyAccount]),
-          returnValue: Future<dynamic>.value()) as _i8.Future<dynamic>);
+          returnValue: Future<dynamic>.value()) as _i12.Future<dynamic>);
   @override
-  _i8.Future<dynamic> updateMyAccountByMyAccount(_i15.IMyAccount? myAccount) =>
+  _i12.Future<dynamic> updateMyAccountByMyAccount(_i22.IMyAccount? myAccount) =>
       (super.noSuchMethod(
           Invocation.method(#updateMyAccountByMyAccount, [myAccount]),
-          returnValue: Future<dynamic>.value()) as _i8.Future<dynamic>);
+          returnValue: Future<dynamic>.value()) as _i12.Future<dynamic>);
   @override
-  _i8.Future<dynamic> decreaseFollowingRequestCount() =>
+  _i12.Future<dynamic> decreaseFollowingRequestCount() =>
       (super.noSuchMethod(Invocation.method(#decreaseFollowingRequestCount, []),
-          returnValue: Future<dynamic>.value()) as _i8.Future<dynamic>);
+          returnValue: Future<dynamic>.value()) as _i12.Future<dynamic>);
   @override
-  bool checkIsChatMessageFromMe(_i21.IChatMessage? chatMessage) => (super
+  bool checkIsChatMessageFromMe(_i28.IChatMessage? chatMessage) => (super
       .noSuchMethod(Invocation.method(#checkIsChatMessageFromMe, [chatMessage]),
           returnValue: false) as bool);
   @override
-  _i8.Future<_i4.IUnifediApiAccountRelationship> toggleFollow() =>
+  _i12.Future<_i7.IUnifediApiAccountRelationship> toggleFollow() =>
       (super.noSuchMethod(Invocation.method(#toggleFollow, []),
-              returnValue: Future<_i4.IUnifediApiAccountRelationship>.value(
+              returnValue: Future<_i7.IUnifediApiAccountRelationship>.value(
                   _FakeIUnifediApiAccountRelationship()))
-          as _i8.Future<_i4.IUnifediApiAccountRelationship>);
+          as _i12.Future<_i7.IUnifediApiAccountRelationship>);
   @override
-  _i8.Future<_i4.IUnifediApiAccountRelationship> toggleMute() =>
+  _i12.Future<_i7.IUnifediApiAccountRelationship> toggleMute() =>
       (super.noSuchMethod(Invocation.method(#toggleMute, []),
-              returnValue: Future<_i4.IUnifediApiAccountRelationship>.value(
+              returnValue: Future<_i7.IUnifediApiAccountRelationship>.value(
                   _FakeIUnifediApiAccountRelationship()))
-          as _i8.Future<_i4.IUnifediApiAccountRelationship>);
+          as _i12.Future<_i7.IUnifediApiAccountRelationship>);
   @override
-  _i8.Future<_i4.IUnifediApiAccountRelationship> mute(
+  _i12.Future<_i7.IUnifediApiAccountRelationship> mute(
           {bool? notifications, Duration? duration}) =>
       (super.noSuchMethod(
           Invocation.method(
               #mute, [], {#notifications: notifications, #duration: duration}),
-          returnValue: Future<_i4.IUnifediApiAccountRelationship>.value(
-              _FakeIUnifediApiAccountRelationship())) as _i8
-          .Future<_i4.IUnifediApiAccountRelationship>);
+          returnValue: Future<_i7.IUnifediApiAccountRelationship>.value(
+              _FakeIUnifediApiAccountRelationship())) as _i12
+          .Future<_i7.IUnifediApiAccountRelationship>);
   @override
-  _i8.Future<_i4.IUnifediApiAccountRelationship> unMute() =>
+  _i12.Future<_i7.IUnifediApiAccountRelationship> unMute() =>
       (super.noSuchMethod(Invocation.method(#unMute, []),
-              returnValue: Future<_i4.IUnifediApiAccountRelationship>.value(
+              returnValue: Future<_i7.IUnifediApiAccountRelationship>.value(
                   _FakeIUnifediApiAccountRelationship()))
-          as _i8.Future<_i4.IUnifediApiAccountRelationship>);
+          as _i12.Future<_i7.IUnifediApiAccountRelationship>);
   @override
-  _i8.Future<_i4.IUnifediApiAccountRelationship> subscribe() =>
+  _i12.Future<_i7.IUnifediApiAccountRelationship> subscribe() =>
       (super.noSuchMethod(Invocation.method(#subscribe, []),
-              returnValue: Future<_i4.IUnifediApiAccountRelationship>.value(
+              returnValue: Future<_i7.IUnifediApiAccountRelationship>.value(
                   _FakeIUnifediApiAccountRelationship()))
-          as _i8.Future<_i4.IUnifediApiAccountRelationship>);
+          as _i12.Future<_i7.IUnifediApiAccountRelationship>);
   @override
-  _i8.Future<_i4.IUnifediApiAccountRelationship> unSubscribe() =>
+  _i12.Future<_i7.IUnifediApiAccountRelationship> unSubscribe() =>
       (super.noSuchMethod(Invocation.method(#unSubscribe, []),
-              returnValue: Future<_i4.IUnifediApiAccountRelationship>.value(
+              returnValue: Future<_i7.IUnifediApiAccountRelationship>.value(
                   _FakeIUnifediApiAccountRelationship()))
-          as _i8.Future<_i4.IUnifediApiAccountRelationship>);
+          as _i12.Future<_i7.IUnifediApiAccountRelationship>);
   @override
-  _i8.Future<_i4.IUnifediApiAccountRelationship> togglePin() =>
+  _i12.Future<_i7.IUnifediApiAccountRelationship> togglePin() =>
       (super.noSuchMethod(Invocation.method(#togglePin, []),
-              returnValue: Future<_i4.IUnifediApiAccountRelationship>.value(
+              returnValue: Future<_i7.IUnifediApiAccountRelationship>.value(
                   _FakeIUnifediApiAccountRelationship()))
-          as _i8.Future<_i4.IUnifediApiAccountRelationship>);
+          as _i12.Future<_i7.IUnifediApiAccountRelationship>);
   @override
-  _i8.Future<_i4.IUnifediApiAccountRelationship> toggleBlock() =>
+  _i12.Future<_i7.IUnifediApiAccountRelationship> toggleBlock() =>
       (super.noSuchMethod(Invocation.method(#toggleBlock, []),
-              returnValue: Future<_i4.IUnifediApiAccountRelationship>.value(
+              returnValue: Future<_i7.IUnifediApiAccountRelationship>.value(
                   _FakeIUnifediApiAccountRelationship()))
-          as _i8.Future<_i4.IUnifediApiAccountRelationship>);
+          as _i12.Future<_i7.IUnifediApiAccountRelationship>);
   @override
-  _i8.Future<_i4.IUnifediApiAccountRelationship> toggleSubscribe() =>
+  _i12.Future<_i7.IUnifediApiAccountRelationship> toggleSubscribe() =>
       (super.noSuchMethod(Invocation.method(#toggleSubscribe, []),
-              returnValue: Future<_i4.IUnifediApiAccountRelationship>.value(
+              returnValue: Future<_i7.IUnifediApiAccountRelationship>.value(
                   _FakeIUnifediApiAccountRelationship()))
-          as _i8.Future<_i4.IUnifediApiAccountRelationship>);
+          as _i12.Future<_i7.IUnifediApiAccountRelationship>);
   @override
-  _i8.Future<_i4.IUnifediApiAccountRelationship> toggleBlockDomain() =>
+  _i12.Future<_i7.IUnifediApiAccountRelationship> toggleBlockDomain() =>
       (super.noSuchMethod(Invocation.method(#toggleBlockDomain, []),
-              returnValue: Future<_i4.IUnifediApiAccountRelationship>.value(
+              returnValue: Future<_i7.IUnifediApiAccountRelationship>.value(
                   _FakeIUnifediApiAccountRelationship()))
-          as _i8.Future<_i4.IUnifediApiAccountRelationship>);
+          as _i12.Future<_i7.IUnifediApiAccountRelationship>);
   @override
-  _i8.Future<dynamic> refreshFromNetwork({bool? isNeedPreFetchRelationship}) =>
+  _i12.Future<dynamic> refreshFromNetwork({bool? isNeedPreFetchRelationship}) =>
       (super.noSuchMethod(
           Invocation.method(#refreshFromNetwork, [],
               {#isNeedPreFetchRelationship: isNeedPreFetchRelationship}),
-          returnValue: Future<dynamic>.value()) as _i8.Future<dynamic>);
+          returnValue: Future<dynamic>.value()) as _i12.Future<dynamic>);
   @override
-  void addDisposable(_i18.IDisposable? disposable) =>
+  void addDisposable(_i25.IDisposable? disposable) =>
       super.noSuchMethod(Invocation.method(#addDisposable, [disposable]),
           returnValueForMissingStub: null);
   @override
-  void addDisposables(Iterable<_i18.IDisposable>? disposables) =>
+  void addDisposables(Iterable<_i25.IDisposable>? disposables) =>
       super.noSuchMethod(Invocation.method(#addDisposables, [disposables]),
           returnValueForMissingStub: null);
   @override
-  _i8.Future<dynamic> performDispose() =>
+  _i12.Future<dynamic> performDispose() =>
       (super.noSuchMethod(Invocation.method(#performDispose, []),
-          returnValue: Future<dynamic>.value()) as _i8.Future<dynamic>);
+          returnValue: Future<dynamic>.value()) as _i12.Future<dynamic>);
   @override
-  _i8.Future<dynamic> dispose() =>
+  _i12.Future<dynamic> dispose() =>
       (super.noSuchMethod(Invocation.method(#dispose, []),
-          returnValue: Future<dynamic>.value()) as _i8.Future<dynamic>);
+          returnValue: Future<dynamic>.value()) as _i12.Future<dynamic>);
 }

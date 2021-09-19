@@ -21,7 +21,6 @@ import 'package:fedi/form/field/value/string/string_value_form_field_bloc_impl.d
 import 'package:fedi/form/field/value/validation/value_form_field_non_null_validation.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:unifedi_api/unifedi_api.dart';
-import 'package:fediverse_api/fediverse_api.dart';
 
 class EditTimelineSettingsBloc
     extends EditInstanceSettingsBloc<TimelineSettings?>

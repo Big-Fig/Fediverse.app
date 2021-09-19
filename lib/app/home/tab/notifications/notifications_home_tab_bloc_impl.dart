@@ -28,7 +28,7 @@ class NotificationsHomeTabBloc extends HomeTabBloc
           await notificationRepository.getNewestOrderByRemoteId();
       if (newestNotification != null) {
         await pleromaNotificationService.markAsReadList(
-          maxNotificationRemoteId: newestNotification.remoteId,
+          maxNotificationId: newestNotification.remoteId,
         );
       }
     }
