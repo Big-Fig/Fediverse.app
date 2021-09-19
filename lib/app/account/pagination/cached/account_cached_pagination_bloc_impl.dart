@@ -5,6 +5,7 @@ import 'package:fedi/app/list/cached/pleroma_cached_list_bloc.dart';
 import 'package:fedi/app/pagination/cached/cached_pleroma_pagination_bloc_impl.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
+import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/pagination/cached/cached_pagination_bloc.dart';
 import 'package:fedi/pagination/cached/cached_pagination_bloc_proxy_provider.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
@@ -20,7 +21,9 @@ class AccountCachedPaginationBloc extends CachedPleromaPaginationBloc<IAccount>
     required this.listService,
     required IPaginationSettingsBloc paginationSettingsBloc,
     required int? maximumCachedPagesCount,
+    required IConnectionService connectionService,
   }) : super(
+          connectionService: connectionService,
           maximumCachedPagesCount: maximumCachedPagesCount,
           paginationSettingsBloc: paginationSettingsBloc,
         );
@@ -64,6 +67,10 @@ class AccountCachedPaginationBloc extends CachedPleromaPaginationBloc<IAccount>
     int? maximumCachedPagesCount,
   }) =>
       AccountCachedPaginationBloc(
+        connectionService: Provider.of<IConnectionService>(
+          context,
+          listen: false,
+        ),
         maximumCachedPagesCount: maximumCachedPagesCount,
         paginationSettingsBloc: IPaginationSettingsBloc.of(
           context,

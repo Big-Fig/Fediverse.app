@@ -10,6 +10,7 @@ import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
+import 'package:fedi/connection/connection_service.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -21,6 +22,7 @@ class MyAccountEndorsementBloc extends DisposableOwner
   MyAccountEndorsementBloc({
     required this.unifediApiMyAccountService,
     required this.paginationSettingsBloc,
+    required IConnectionService connectionService,
   }) {
     myAccountEndorsementAccountListNetworkOnlyListBloc =
         MyAccountEndorsementAccountListNetworkOnlyListBloc(
@@ -31,6 +33,7 @@ class MyAccountEndorsementBloc extends DisposableOwner
 
     myAccountEndorsementAccountListNetworkOnlyPaginationBloc =
         AccountNetworkOnlyPaginationBloc(
+      connectionService: connectionService,
       listBloc: myAccountEndorsementAccountListNetworkOnlyListBloc,
       maximumCachedPagesCount: null,
       paginationSettingsBloc: paginationSettingsBloc,
@@ -73,6 +76,10 @@ class MyAccountEndorsementBloc extends DisposableOwner
         Provider.of<IUnifediApiMyAccountService>(context, listen: false);
 
     return MyAccountEndorsementBloc(
+      connectionService: Provider.of<IConnectionService>(
+        context,
+        listen: false,
+      ),
       unifediApiMyAccountService: unifediApiMyAccountService,
       paginationSettingsBloc: IPaginationSettingsBloc.of(
         context,

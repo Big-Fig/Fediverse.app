@@ -28,10 +28,11 @@ class WebSocketsModeSingleFromListValueFormFieldRowWidget
 String mapWebSocketsModeToLabel(
   BuildContext context,
   WebSocketsMode mode,
-) => mode.map(
-    disabled: (_) => S.of(context).app_web_sockets_settings_type_disabled,
-    onlyForeground: (_) =>
-        S.of(context).app_web_sockets_settings_type_onlyForeground,
-    foregroundAndBackground: (_) =>
-        S.of(context).app_web_sockets_settings_type_foregroundAndBackground,
-  );
+) =>
+    mode.map(
+      disabled: (_) => S.of(context).app_web_sockets_settings_type_disabled,
+      onlyForeground: (_) =>
+          S.of(context).app_web_sockets_settings_type_onlyForeground,
+      foregroundAndBackground: (_) =>
+          S.of(context).app_web_sockets_settings_type_foregroundAndBackground,
+    );

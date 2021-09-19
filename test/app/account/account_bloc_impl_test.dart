@@ -42,7 +42,6 @@ void main() {
 
     pleromaAuthAccountServiceMock = MockIUnifediApiAccountService();
 
-
     account = await AccountMockHelper.createTestAccount(seed: 'seed1');
 
     unifediApiWebSocketsService = MockIUnifediApiWebSocketsService();
@@ -528,9 +527,10 @@ void main() {
         accountId: account.remoteId,
       ),
     ).thenAnswer(
-      (_) async => account.relationship!.toUnifediApiAccountRelationship().copyWith(
-        blocking: true,
-      ),
+      (_) async =>
+          account.relationship!.toUnifediApiAccountRelationship().copyWith(
+                blocking: true,
+              ),
     );
 
     when(
@@ -538,9 +538,10 @@ void main() {
         accountId: account.remoteId,
       ),
     ).thenAnswer(
-      (_) async => account.relationship!.toUnifediApiAccountRelationship().copyWith(
-        blocking: false,
-      ),
+      (_) async =>
+          account.relationship!.toUnifediApiAccountRelationship().copyWith(
+                blocking: false,
+              ),
     );
 
     var initialValue = account.relationship!.blocking!;
@@ -580,15 +581,18 @@ void main() {
     when(pleromaAuthAccountServiceMock.followAccount(
       accountId: account.remoteId,
     )).thenAnswer(
-      (_) async => account.relationship!.toUnifediApiAccountRelationship().copyWith(following: true),
+      (_) async => account.relationship!
+          .toUnifediApiAccountRelationship()
+          .copyWith(following: true),
     );
 
     when(pleromaAuthAccountServiceMock.unFollowAccount(
       accountId: account.remoteId,
-    )).thenAnswer((_) async => account.relationship!.toUnifediApiAccountRelationship().copyWith(
-          following: false,
-          requested: false,
-        ));
+    )).thenAnswer((_) async =>
+        account.relationship!.toUnifediApiAccountRelationship().copyWith(
+              following: false,
+              requested: false,
+            ));
 
     var initialValue = account.relationship!.following!;
 
@@ -628,24 +632,28 @@ void main() {
       accountId: account.remoteId,
       notifications: true,
       expireIn: null,
-    )).thenAnswer((_) async => account.relationship!.toUnifediApiAccountRelationship().copyWith(
-          muting: true,
-          mutingNotifications: true,
-        ));
+    )).thenAnswer((_) async =>
+        account.relationship!.toUnifediApiAccountRelationship().copyWith(
+              muting: true,
+              mutingNotifications: true,
+            ));
 
     when(pleromaAuthAccountServiceMock.muteAccount(
       accountId: account.remoteId,
       notifications: false,
       expireIn: null,
-    )).thenAnswer((_) async => account.relationship!.toUnifediApiAccountRelationship().copyWith(
-          muting: true,
-          mutingNotifications: false,
-        ));
+    )).thenAnswer((_) async =>
+        account.relationship!.toUnifediApiAccountRelationship().copyWith(
+              muting: true,
+              mutingNotifications: false,
+            ));
 
     when(pleromaAuthAccountServiceMock.unMuteAccount(
       accountId: account.remoteId,
     )).thenAnswer(
-      (_) async => account.relationship!.toUnifediApiAccountRelationship().copyWith(muting: false),
+      (_) async => account.relationship!
+          .toUnifediApiAccountRelationship()
+          .copyWith(muting: false),
     );
 
     if (accountBloc.relationshipMuting == true) {
@@ -692,13 +700,17 @@ void main() {
     when(pleromaAuthAccountServiceMock.pinAccount(
       accountId: account.remoteId,
     )).thenAnswer(
-      (_) async => account.relationship!.toUnifediApiAccountRelationship().copyWith(muting: true),
+      (_) async => account.relationship!
+          .toUnifediApiAccountRelationship()
+          .copyWith(muting: true),
     );
 
     when(pleromaAuthAccountServiceMock.unPinAccount(
       accountId: account.remoteId,
     )).thenAnswer(
-      (_) async => account.relationship!.toUnifediApiAccountRelationship().copyWith(muting: false),
+      (_) async => account.relationship!
+          .toUnifediApiAccountRelationship()
+          .copyWith(muting: false),
     );
 
     var initialValue = account.relationship!.muting!;

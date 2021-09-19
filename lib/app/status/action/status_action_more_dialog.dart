@@ -330,8 +330,8 @@ class StatusActionMoreDialogBody extends StatelessWidget {
                     (status.content?.extractRawStringFromHtmlString() ?? ''),
                 initialSubject:
                     status.spoilerText?.extractRawStringFromHtmlString(),
-                initialMediaAttachments:
-                    reuploadedMediaAttachments?.toUnifediApiMediaAttachmentList(),
+                initialMediaAttachments: reuploadedMediaAttachments
+                    ?.toUnifediApiMediaAttachmentList(),
               );
             }
           },

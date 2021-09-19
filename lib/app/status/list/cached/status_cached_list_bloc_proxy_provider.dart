@@ -12,8 +12,7 @@ class StatusCachedListBlocProxyProvider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ProxyProvider<IStatusCachedListBloc,
-        ICachedListBloc<IStatus?>>(
+    return ProxyProvider<IStatusCachedListBloc, ICachedListBloc<IStatus?>>(
       update: (context, value, previous) => value,
       child: ProxyProvider<IStatusCachedListBloc, IStatusListBloc>(
         update: (context, value, previous) => value,

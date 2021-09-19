@@ -188,11 +188,11 @@ class EditTimelineSettingsBloc
         ),
         webSocketsUpdatesFieldBloc = BoolValueFormFieldBloc(
           originValue: (settingsBloc.settingsData?.webSocketsUpdates ?? true) &&
-              webSocketsSettingsBloc.handlingType.isEnabled,
+              webSocketsSettingsBloc.isEnabled,
           isEnabled: timelineType.isWebSocketsUpdatesFilterSupportedOnInstance(
                 unifediApiInstance,
               ) &&
-              webSocketsSettingsBloc.handlingType.isEnabled &&
+              webSocketsSettingsBloc.isEnabled &&
               instanceLocation == InstanceLocation.local,
         ),
         onlyFromInstanceFieldBloc = StringValueFormFieldBloc(
@@ -281,7 +281,8 @@ class EditTimelineSettingsBloc
       onlyLocal: newOnlyLocal,
       withMuted: withMutedFieldBloc.currentValue,
       excludeVisibilitiesStrings: excludeVisibilitiesFieldBloc.currentValue
-          .map((e) => e.stringValue).toList(),
+          .map((e) => e.stringValue)
+          .toList(),
       onlyInRemoteList:
           onlyInCustomListFieldBloc.currentValue?.toUnifediApiList(),
       withRemoteHashtag: withRemoteHashtagFieldBloc.currentValue,

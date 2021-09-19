@@ -14,10 +14,8 @@ import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
-import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:logging/logging.dart';
-import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 import 'package:uni_links/uni_links.dart';
 import 'package:unifedi_api/unifedi_api.dart';
@@ -40,6 +38,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
 
   String get instanceBaseUriScheme => instanceBaseUri.scheme;
 
+  // ignore: avoid-late-keyword
   late IUnifediApiAccessScopes scopes;
 
   // ignore: avoid-late-keyword
@@ -337,7 +336,6 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
       }
     }
 
-
     return result;
   }
 
@@ -464,7 +462,7 @@ Future<String?> launchAuthorizeFormAndExtractAuthorizationCode({
     (Uri? uri) {
       subscription.cancel();
       closeWebView();
-      var code = unifediApiInstanceService.extractAuthCodeFromCallbackUrl(url!);
+      var code = unifediApiInstanceService.extractAuthCodeFromCallbackUrl(url);
       completer.complete(code);
     },
     onError: (e) {

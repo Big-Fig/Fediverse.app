@@ -294,8 +294,7 @@ void main() {
 
     var testEmojiReaction = true;
 
-    await toastSettingsBloc
-        .changeEmojiReaction(testEmojiReaction);
+    await toastSettingsBloc.changeEmojiReaction(testEmojiReaction);
     await RxDartMockHelper.waitToExecuteRxCallbacks();
 
     expect(
@@ -318,8 +317,7 @@ void main() {
 
     testEmojiReaction = false;
 
-    await toastSettingsBloc
-        .changeEmojiReaction(testEmojiReaction);
+    await toastSettingsBloc.changeEmojiReaction(testEmojiReaction);
     await RxDartMockHelper.waitToExecuteRxCallbacks();
 
     expect(

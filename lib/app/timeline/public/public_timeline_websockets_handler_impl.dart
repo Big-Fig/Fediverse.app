@@ -10,7 +10,6 @@ import 'package:fedi/app/web_sockets/web_sockets_handler_impl.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 import 'package:fediverse_api/fediverse_api_utils.dart';
 
-
 class PublicTimelineWebSocketsHandler extends WebSocketsChannelHandler {
   PublicTimelineWebSocketsHandler({
     required IUnifediApiWebSocketsService unifediApiWebSocketsService,
@@ -43,23 +42,21 @@ class PublicTimelineWebSocketsHandler extends WebSocketsChannelHandler {
           isFromHomeTimeline: false,
         );
 
-
   final bool? onlyLocal;
-  final  bool? onlyRemote;
-  final  bool? onlyMedia;
-  final  String? onlyFromInstance;
+  final bool? onlyRemote;
+  final bool? onlyMedia;
+  final String? onlyFromInstance;
 
   @override
   IDisposable initListener() =>
       unifediApiWebSocketsService.listenForPublicEvents(
-        localOnly: onlyLocal== true,
-        remoteOnly: onlyRemote== true,
+        localOnly: onlyLocal == true,
+        remoteOnly: onlyRemote == true,
         mediaOnly: onlyMedia == true,
         onlyFromInstance: onlyFromInstance,
         handlerType: handlerType,
         onEvent: handleEvent,
       );
-
 
   @override
   String get logTag => 'public_timeline_websockets_handler_impl.dart';

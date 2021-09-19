@@ -31,7 +31,6 @@ class StatusActionsListWidget extends StatelessWidget {
           remoteInstanceBloc.unifediApiInstance!.typeAsUnifediApi.isPleroma;
     }
 
-
     return Padding(
       padding: const EdgeInsets.symmetric(
         vertical: FediSizes.smallPadding,

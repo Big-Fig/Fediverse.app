@@ -5,6 +5,7 @@ import 'package:fedi/app/instance/trends/instance_trends_bloc_proxy_provider.dar
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
+import 'package:fedi/connection/connection_service.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +13,6 @@ import 'package:fediverse_api/fediverse_api.dart';
 
 class LocalInstanceTrendsBloc extends InstanceTrendsBloc
     implements IInstanceTrendsBloc {
-
   @override
   final IUnifediApiInstanceService unifediApiInstanceService;
 
@@ -20,8 +20,11 @@ class LocalInstanceTrendsBloc extends InstanceTrendsBloc
     required IUnifediApiInstance? initialInstance,
     required this.unifediApiInstanceService,
     required IPaginationSettingsBloc paginationSettingsBloc,
+    required IConnectionService connectionService,
   }) : super(
-          instanceUri: unifediApiInstanceService.restService.accessBloc.access.uri,
+          connectionService: connectionService,
+          instanceUri:
+              unifediApiInstanceService.restService.accessBloc.access.uri,
           initialInstance: initialInstance,
           paginationSettingsBloc: paginationSettingsBloc,
         );
@@ -33,6 +36,10 @@ class LocalInstanceTrendsBloc extends InstanceTrendsBloc
         ICurrentAuthInstanceBloc.of(context, listen: false);
 
     return LocalInstanceTrendsBloc(
+      connectionService: Provider.of<IConnectionService>(
+        context,
+        listen: false,
+      ),
       unifediApiInstanceService: unifediApiInstanceService,
       initialInstance: currentAuthInstanceBloc.currentInstance!.info,
       paginationSettingsBloc: IPaginationSettingsBloc.of(

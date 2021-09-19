@@ -17,8 +17,7 @@ class StatusEmojiReactionBloc extends DisposableOwner
       emojiReactionSubject.stream;
 
   @override
-  IUnifediApiEmojiReaction get emojiReaction =>
-      emojiReactionSubject.value;
+  IUnifediApiEmojiReaction get emojiReaction => emojiReactionSubject.value;
 
   StatusEmojiReactionBloc({
     required this.status,
@@ -39,8 +38,7 @@ class AuthStatusEmojiReactionBloc extends StatusEmojiReactionBloc
     implements IStatusEmojiReactionBloc {
   final IStatusRepository statusRepository;
 
-  final IUnifediApiStatusService
-  unifediApiStatusService;
+  final IUnifediApiStatusService unifediApiStatusService;
 
   AuthStatusEmojiReactionBloc({
     required IStatus status,

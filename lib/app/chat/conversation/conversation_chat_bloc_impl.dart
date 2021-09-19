@@ -17,6 +17,7 @@ import 'package:fedi/app/status/post/post_status_data_status_status_adapter.dart
 import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/id/fake_id_helper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
@@ -75,6 +76,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
   final IConversationChatRepository conversationRepository;
   final IStatusRepository statusRepository;
   final IAccountRepository accountRepository;
+  final IConnectionService connectionService;
 
   @override
   List<IAccount> get accountsWithoutMe => accounts;
@@ -112,6 +114,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
     required this.unifediApiStatusService,
     required this.statusRepository,
     required this.accountRepository,
+    required this.connectionService,
     required IConversationChat conversation,
     required IConversationChatMessage? lastChatMessage,
     bool needRefreshFromNetworkOnInit = false,
@@ -263,6 +266,8 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
     bool needRefreshFromNetworkOnInit = false,
   }) {
     return ConversationChatBloc(
+      connectionService:
+          Provider.of<IConnectionService>(context, listen: false),
       pleromaConversationService:
           Provider.of<IUnifediApiConversationService>(context, listen: false),
       myAccountBloc: IMyAccountBloc.of(context, listen: false),
@@ -283,7 +288,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
   @override
   Future markAsRead() async {
     if (chat.unread > 0) {
-      if (pleromaConversationService.isApiReadyToUse) {
+      if (connectionService.isConnected) {
         var lastReadChatMessageId = lastChatMessage?.remoteId;
         if (lastReadChatMessageId == null) {
           var lastStatus = await statusRepository.getConversationLastStatus(
@@ -408,7 +413,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
 
     try {
       var unifediApiStatus = await unifediApiStatusService.postStatus(
-        idempotencyKey:idempotencyKey,
+        idempotencyKey: idempotencyKey,
         postStatus: postStatus,
       );
 

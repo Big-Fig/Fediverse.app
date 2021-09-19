@@ -54,7 +54,7 @@ class ThreadPostStatusBloc extends PostStatusBloc
     required String? language,
     required bool isPleromaInstance,
   }) : super(
-    maximumMediaAttachmentCount: maximumMediaAttachmentCount,
+          maximumMediaAttachmentCount: maximumMediaAttachmentCount,
           isExpirePossible: isPleromaInstance,
           unifediApiStatusService: unifediApiStatusService,
           statusRepository: statusRepository,
@@ -96,7 +96,8 @@ class ThreadPostStatusBloc extends PostStatusBloc
       maximumMessageLength: info.limits?.status?.maxTootChars,
       pollLimits: info.limits?.poll,
       maximumFileSizeInBytes: info.limits?.media?.uploadLimit,
-      maximumMediaAttachmentCount: info.limits?.status?.maxMediaAttachmentsCount,
+      maximumMediaAttachmentCount:
+          info.limits?.status?.maxMediaAttachmentsCount,
       markMediaAsNsfwOnAttach:
           IPostStatusSettingsBloc.of(context, listen: false)
               .markMediaAsNsfwOnAttach,

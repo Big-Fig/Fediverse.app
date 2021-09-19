@@ -63,9 +63,11 @@ Future goToRemoteStatusThreadPageBasedOnLocalInstanceRemoteStatus(
           unifediApiInstance: null,
         );
 
-        unifediApiStatusService = remoteInstanceBloc.unifediApiManager.createStatusService();
+        unifediApiStatusService =
+            remoteInstanceBloc.unifediApiManager.createStatusService();
 
-        var remoteInstanceRemoteStatus = await unifediApiStatusService.getStatus(
+        var remoteInstanceRemoteStatus =
+            await unifediApiStatusService.getStatus(
           statusId: remoteInstanceStatusRemoteId,
         );
 

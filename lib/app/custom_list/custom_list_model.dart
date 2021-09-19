@@ -1,5 +1,3 @@
-
-
 abstract class ICustomList {
   String get remoteId;
 

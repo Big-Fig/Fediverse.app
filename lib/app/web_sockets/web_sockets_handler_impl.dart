@@ -18,6 +18,7 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
 
   String get logTag;
 
+  // ignore: avoid-late-keyword
   late IDisposable webSocketsChannelDisposable;
   final IStatusRepository statusRepository;
   final INotificationRepository notificationRepository;
@@ -118,11 +119,11 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
         var chat = event.chat!;
         await chatNewMessagesHandlerBloc.handleChatUpdate(chat);
       },
-      // no-equal-arguments
+      // ignore: no-equal-arguments
       followRelationshipsUpdate: (_) {
         // TODO: Not implemented yet
       },
-      // no-equal-arguments
+      // ignore: no-equal-arguments
       unknown: (_) {
         // TODO: Not implemented yet
       },

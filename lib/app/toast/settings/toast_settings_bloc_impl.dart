@@ -190,23 +190,24 @@ class ToastSettingsBloc
   @override
   bool isNotificationTypeEnabled(
     UnifediApiNotificationType unifediApiNotificationType,
-  ) => unifediApiNotificationType.map(
-      follow: (_) => follow,
-      favourite: (_) => favourite,
-      reblog: (_) => reblog,
-      mention: (_) => mention,
-      poll: (_) => poll,
-      // todo: handle move type?
-      move: (_) => false,
-      // todo: handle move type?
-      // ignore:no-equal-arguments
-      followRequest: (_) => false,
-      emojiReaction: (_) => emojiReaction,
-      chatMention: (_) => chatMention,
-      // todo: handle report type?
-      // ignore:no-equal-arguments
-      report: (_) => false,
-      // display unknown by default
-      unknown: (_) => true,
-    );
+  ) =>
+      unifediApiNotificationType.map(
+        follow: (_) => follow,
+        favourite: (_) => favourite,
+        reblog: (_) => reblog,
+        mention: (_) => mention,
+        poll: (_) => poll,
+        // todo: handle move type?
+        move: (_) => false,
+        // todo: handle move type?
+        // ignore:no-equal-arguments
+        followRequest: (_) => false,
+        emojiReaction: (_) => emojiReaction,
+        chatMention: (_) => chatMention,
+        // todo: handle report type?
+        // ignore:no-equal-arguments
+        report: (_) => false,
+        // display unknown by default
+        unknown: (_) => true,
+      );
 }

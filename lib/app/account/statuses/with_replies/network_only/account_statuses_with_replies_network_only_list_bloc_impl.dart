@@ -9,7 +9,9 @@ abstract class AccountStatusesWithRepliesNetworkOnlyListBloc
   AccountStatusesWithRepliesNetworkOnlyListBloc({
     required IAccount? account,
     required IUnifediApiAccountService unifediApiAccountService,
-  }) : super(account: account, unifediApiAccountService: unifediApiAccountService);
+  }) : super(
+            account: account,
+            unifediApiAccountService: unifediApiAccountService);
 
   @override
   IUnifediApiService get unifediApi => unifediApiAccountService;
@@ -28,7 +30,6 @@ abstract class AccountStatusesWithRepliesNetworkOnlyListBloc
         minId: minId,
         maxId: maxId,
       ),
-
       tagged: null,
       pinned: null,
       excludeReplies: null,
@@ -39,7 +40,8 @@ abstract class AccountStatusesWithRepliesNetworkOnlyListBloc
     );
 
     return unifediApiStatuses
-        .map((unifediApiStatus) => unifediApiStatus.toDbStatusPopulatedWrapper())
+        .map(
+            (unifediApiStatus) => unifediApiStatus.toDbStatusPopulatedWrapper())
         .toList();
   }
 }

@@ -24,8 +24,9 @@ extension IHashtagExtension on IHashtag {
         name: name,
         url: url,
         history: history?.toUnifediApiTagHistory(),
-        statusesCount: statusesCount, id: null, lastStatusAt: null,
-
+        statusesCount: statusesCount,
+        id: null,
+        lastStatusAt: null,
       );
     }
   }

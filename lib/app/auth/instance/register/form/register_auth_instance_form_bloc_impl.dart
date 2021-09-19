@@ -10,7 +10,6 @@ import 'package:fedi/app/auth/instance/register/form/stepper/item/submit/registe
 import 'package:fedi/app/auth/instance/register/form/stepper/item/submit/register_auth_instance_form_submit_stepper_item_bloc_impl.dart';
 import 'package:fedi/form/form_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
-import 'package:fedi/localization/localization_model.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
 class RegisterAuthInstanceFormBloc extends FormBloc

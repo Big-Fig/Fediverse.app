@@ -10,6 +10,7 @@ import 'package:fedi/app/hashtag/pagination/network_only/hashtag_network_only_pa
 import 'package:fedi/app/hashtag/pagination/network_only/hashtag_network_only_pagination_bloc_impl.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
+import 'package:fedi/connection/connection_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:unifedi_api/unifedi_api.dart';
@@ -23,14 +24,16 @@ class MyAccountFeaturedHashtagSuggestionBloc extends DisposableOwner
   MyAccountFeaturedHashtagSuggestionBloc({
     required this.paginationSettingsBloc,
     required this.unifediApiMyAccountService,
+    required IConnectionService connectionService,
   }) {
     myAccountFeaturedHashtagSuggestionHashtagListNetworkOnlyListBloc =
         MyAccountFeaturedHashtagSuggestionHashtagListNetworkOnlyListBloc(
-          unifediApiMyAccountService: unifediApiMyAccountService,
+      unifediApiMyAccountService: unifediApiMyAccountService,
     );
 
     myAccountFeaturedHashtagSuggestionHashtagListNetworkOnlyPaginationBloc =
         HashtagNetworkOnlyPaginationBloc(
+      connectionService: connectionService,
       listBloc:
           myAccountFeaturedHashtagSuggestionHashtagListNetworkOnlyListBloc,
       maximumCachedPagesCount: null,
@@ -72,6 +75,10 @@ class MyAccountFeaturedHashtagSuggestionBloc extends DisposableOwner
         Provider.of<IUnifediApiMyAccountService>(context, listen: false);
 
     return MyAccountFeaturedHashtagSuggestionBloc(
+      connectionService: Provider.of<IConnectionService>(
+        context,
+        listen: false,
+      ),
       unifediApiMyAccountService: unifediApiMyAccountService,
       paginationSettingsBloc: IPaginationSettingsBloc.of(
         context,

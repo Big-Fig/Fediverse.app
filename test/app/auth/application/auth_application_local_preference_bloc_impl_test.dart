@@ -5,7 +5,6 @@ import 'package:unifedi_api/unifedi_api_mock_helper.dart';
 
 import '../../../local_preferences/local_preferences_test_helper.dart';
 
-
 // ignore_for_file: no-magic-number
 
 void main() {

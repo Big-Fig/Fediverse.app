@@ -8,6 +8,7 @@ import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/connection/connection_service.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -20,8 +21,10 @@ class LocalStatusBloc extends StatusBloc {
   final IStatusRepository statusRepository;
   final IAccountRepository accountRepository;
   final bool isNeedWatchLocalRepositoryForUpdates;
+  final IConnectionService connectionService;
 
   LocalStatusBloc({
+    required this.connectionService,
     required this.statusRepository,
     required this.accountRepository,
     required this.isNeedWatchLocalRepositoryForUpdates,
@@ -32,8 +35,7 @@ class LocalStatusBloc extends StatusBloc {
     required bool isNeedRefreshFromNetworkOnInit,
     required bool delayInit,
   }) : super(
-
-    unifediApiStatusService: unifediApiStatusService,
+          unifediApiStatusService: unifediApiStatusService,
           unifediApiAccountService: unifediApiAccountService,
           unifediApiPollService: unifediApiPollService,
           status: status,
@@ -55,6 +57,10 @@ class LocalStatusBloc extends StatusBloc {
         status: status,
         isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
         delayInit: delayInit,
+        connectionService: Provider.of<IConnectionService>(
+          context,
+          listen: false,
+        ),
         isNeedWatchLocalRepositoryForUpdates:
             isNeedWatchLocalRepositoryForUpdates,
         unifediApiStatusService: Provider.of<IUnifediApiStatusService>(
@@ -65,7 +71,6 @@ class LocalStatusBloc extends StatusBloc {
           context,
           listen: false,
         ),
-
         unifediApiPollService: Provider.of<IUnifediApiPollService>(
           context,
           listen: false,
@@ -120,7 +125,7 @@ class LocalStatusBloc extends StatusBloc {
         accountRemoteId,
       );
       if (account == null) {
-        if (unifediApiAccountService.isApiReadyToUse) {
+        if (connectionService.isConnected) {
           var remoteAccount = await unifediApiAccountService.getAccount(
             accountId: accountRemoteId,
             withRelationship: false,

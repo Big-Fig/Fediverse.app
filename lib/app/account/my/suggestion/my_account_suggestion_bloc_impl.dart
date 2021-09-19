@@ -10,6 +10,7 @@ import 'package:fedi/app/account/pagination/network_only/account_network_only_pa
 import 'package:fedi/app/account/pagination/network_only/account_network_only_pagination_bloc_impl.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
+import 'package:fedi/connection/connection_service.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -22,16 +23,18 @@ class MyAccountSuggestionBloc extends DisposableOwner
   MyAccountSuggestionBloc({
     required this.unifediApiMyAccountService,
     required this.paginationSettingsBloc,
+    required IConnectionService connectionService,
   }) {
     myAccountSuggestionAccountListNetworkOnlyListBloc =
         MyAccountSuggestionAccountListNetworkOnlyListBloc(
-          unifediApiMyAccountService: unifediApiMyAccountService,
+      unifediApiMyAccountService: unifediApiMyAccountService,
       remoteInstanceUriOrNull: remoteInstanceUriOrNull,
       instanceLocation: instanceLocation,
     );
 
     myAccountSuggestionAccountListNetworkOnlyPaginationBloc =
         AccountNetworkOnlyPaginationBloc(
+      connectionService: connectionService,
       listBloc: myAccountSuggestionAccountListNetworkOnlyListBloc,
       maximumCachedPagesCount: null,
       paginationSettingsBloc: paginationSettingsBloc,
@@ -47,7 +50,6 @@ class MyAccountSuggestionBloc extends DisposableOwner
     // ignore: unawaited_futures
     accountPaginationListBloc.refreshWithoutController();
   }
-
 
   @override
   // ignore: avoid-late-keyword
@@ -74,6 +76,10 @@ class MyAccountSuggestionBloc extends DisposableOwner
         Provider.of<IUnifediApiMyAccountService>(context, listen: false);
 
     return MyAccountSuggestionBloc(
+      connectionService: Provider.of<IConnectionService>(
+        context,
+        listen: false,
+      ),
       unifediApiMyAccountService: unifediApiMyAccountService,
       paginationSettingsBloc: IPaginationSettingsBloc.of(
         context,

@@ -56,7 +56,8 @@ class StatusRepositoryFilters {
   final StatusOnlyRemoteCondition? onlyRemoteCondition;
   final bool mustBeConversationItem;
   final String? onlyFromInstance;
-  final UnifediApiReplyVisibilityFilterCondition? replyVisibilityFilterCondition;
+  final UnifediApiReplyVisibilityFilterCondition?
+      replyVisibilityFilterCondition;
   final bool onlyPendingStatePublishedOrNull;
 
   static const StatusRepositoryFilters empty = StatusRepositoryFilters();

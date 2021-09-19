@@ -5,8 +5,7 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-class EditMyAccounthideFollowersCountFieldWidget
-    extends StatelessWidget {
+class EditMyAccounthideFollowersCountFieldWidget extends StatelessWidget {
   const EditMyAccounthideFollowersCountFieldWidget({
     Key? key,
   }) : super(key: key);

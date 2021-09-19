@@ -14,6 +14,7 @@ import 'package:fedi/app/timeline/tab/timeline_tab_bloc.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
+import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
@@ -51,7 +52,7 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
   final ILocalPreferencesService preferencesService;
   final IMyAccountBloc myAccountBloc;
   final IFilterRepository filterRepository;
-
+  final IConnectionService connectionService;
   @override
   final String timelineId;
 
@@ -60,6 +61,7 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
 
   TimelineTabBloc({
     required this.timelineId,
+    required this.connectionService,
     required this.preferencesService,
     required this.unifediApiTimelineService,
     required this.unifediApiAccountService,
@@ -107,13 +109,13 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
   Future internalAsyncInit() async {
     await timelineLocalPreferencesBloc.performAsyncInit();
 
-    statusCachedListBloc =
-        createListService(handlerType: handlerType);
+    statusCachedListBloc = createListService(handlerType: handlerType);
     addDisposable(statusCachedListBloc);
 
     await statusCachedListBloc.performAsyncInit();
 
     statusCachedPaginationBloc = StatusCachedPaginationBloc(
+      connectionService: connectionService,
       maximumCachedPagesCount: null,
       statusListService: statusCachedListBloc,
       paginationSettingsBloc: paginationSettingsBloc,
@@ -152,6 +154,10 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
     required WebSocketsChannelHandlerType handlerType,
   }) =>
       TimelineTabBloc(
+        connectionService: Provider.of<IConnectionService>(
+          context,
+          listen: false,
+        ),
         timelineId: timelineId,
         handlerType: handlerType,
         filterRepository: IFilterRepository.of(

@@ -15,7 +15,6 @@ typedef StatusAndContextCallback = Function(
 typedef StatusCallback = Function(IStatus? status);
 
 abstract class IStatus implements IEqualComparableObj<IStatus> {
-
   IStatus copyWith({
     IAccount? account,
     IStatus? reblog,
@@ -437,8 +436,7 @@ class DbStatusPopulatedWrapper extends IStatus {
       dbStatusPopulated.dbStatus.contentVariants;
 
   @override
-  int? get conversationId =>
-      dbStatusPopulated.dbStatus.conversationId;
+  int? get conversationId => dbStatusPopulated.dbStatus.conversationId;
 
   @override
   int? get directConversationId =>
@@ -594,12 +592,12 @@ class DbStatusPopulatedWrapper extends IStatus {
     UnifediApiPoll? poll,
     UnifediApiCard? card,
     String? language,
-    UnifediApiContentVariants? contentVariants,
+    IUnifediApiContentVariants? contentVariants,
     int? conversationId,
     int? directConversationId,
     String? inReplyToAccountAcct,
     bool? local,
-    UnifediApiContentVariants? spoilerTextVariants,
+    IUnifediApiContentVariants? spoilerTextVariants,
     DateTime? expiresAt,
     bool? threadMuted,
     List<UnifediApiEmojiReaction>? emojiReactions,
@@ -651,12 +649,13 @@ class DbStatusPopulatedWrapper extends IStatus {
           poll: poll,
           card: card,
           language: language,
-          contentVariants: contentVariants,
+          contentVariants: contentVariants?.toUnifediApiContentVariants(),
           conversationId: conversationId,
           directConversationId: directConversationId,
           inReplyToAccountAcct: inReplyToAccountAcct,
           local: local,
-          spoilerTextVariants: spoilerTextVariants,
+          spoilerTextVariants:
+              spoilerTextVariants?.toUnifediApiContentVariants(),
           expiresAt: expiresAt,
           threadMuted: threadMuted,
           emojiReactions: emojiReactions,
@@ -687,7 +686,8 @@ class DbStatusPopulatedWrapper extends IStatus {
           lastStatusAt: account?.lastStatusAt,
           fields: account?.fields?.toUnifediApiFieldList(),
           emojis: account?.emojis?.toUnifediApiEmojiList(),
-          relationship: account?.relationship?.toUnifediApiAccountRelationship(),
+          relationship:
+              account?.relationship?.toUnifediApiAccountRelationship(),
           tags: account?.tags?.toUnifediApiTagList(),
           isAdmin: account?.isAdmin,
           isModerator: account?.isModerator,

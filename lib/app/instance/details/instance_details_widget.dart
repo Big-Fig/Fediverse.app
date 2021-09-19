@@ -425,14 +425,15 @@ class _InstanceDetailsVersionTypeWidget extends StatelessWidget {
       stream: instanceDetailsBloc.instanceTypeStream,
       initialData: instanceDetailsBloc.instanceType,
       builder: (context, snapshot) {
-        var instanceType = snapshot.data!;
+        var instanceType = snapshot.data;
 
         if (instanceType != null) {
           String instanceTypeString;
 
-          instanceTypeString = instanceType.map(pleroma: (_) =>S
-              .of(context)
-              .app_instance_details_field_pleroma_metadata_fields_verstionType_value_pleroma,
+          instanceTypeString = instanceType.map(
+            pleroma: (_) => S
+                .of(context)
+                .app_instance_details_field_pleroma_metadata_fields_verstionType_value_pleroma,
             mastodon: (_) => S
                 .of(context)
                 .app_instance_details_field_pleroma_metadata_fields_verstionType_value_mastodon,
@@ -1508,7 +1509,8 @@ class _InstanceDetailsPleromaMetadataFeaturesWidget extends StatelessWidget {
   }
 }
 
-class _InstanceDetailsunifediApiInstanceFederationWidget extends StatelessWidget {
+class _InstanceDetailsunifediApiInstanceFederationWidget
+    extends StatelessWidget {
   const _InstanceDetailsunifediApiInstanceFederationWidget({
     Key? key,
   }) : super(key: key);
@@ -1523,8 +1525,7 @@ class _InstanceDetailsunifediApiInstanceFederationWidget extends StatelessWidget
       builder: (context, snapshot) {
         var isHaveFederationFields = snapshot.data!;
         if (isHaveFederationFields) {
-          return StreamBuilder<
-              IUnifediApiInstanceFederation?>(
+          return StreamBuilder<IUnifediApiInstanceFederation?>(
             stream: instanceDetailsBloc.unifediApiInstanceFederationStream,
             initialData: instanceDetailsBloc.unifediApiInstanceFederation,
             builder: (context, snapshot) {
@@ -1586,8 +1587,7 @@ class _InstanceDetailsunifediApiInstanceFederationWidget extends StatelessWidget
 
 class _InstanceDetailsUnifediApiInstanceFederationMfrObjectAgeActionsWidget
     extends StatelessWidget {
-  final IUnifediApiInstanceFederation
-      unifediApiInstanceFederation;
+  final IUnifediApiInstanceFederation unifediApiInstanceFederation;
 
   const _InstanceDetailsUnifediApiInstanceFederationMfrObjectAgeActionsWidget({
     Key? key,
@@ -1612,8 +1612,7 @@ class _InstanceDetailsunifediApiInstanceFederationQuarantinedInstancesWidget
     required this.unifediApiInstanceFederation,
   }) : super(key: key);
 
-  final IUnifediApiInstanceFederation
-      unifediApiInstanceFederation;
+  final IUnifediApiInstanceFederation unifediApiInstanceFederation;
 
   @override
   Widget build(BuildContext context) {
@@ -1633,8 +1632,7 @@ class _InstanceDetailsUnifediApiInstanceFederationMfrObjectAgeThresholdWidget
     required this.unifediApiInstanceFederation,
   }) : super(key: key);
 
-  final IUnifediApiInstanceFederation
-      unifediApiInstanceFederation;
+  final IUnifediApiInstanceFederation unifediApiInstanceFederation;
 
   @override
   Widget build(BuildContext context) {
@@ -1659,8 +1657,7 @@ class _InstanceDetailsUnifediApiInstanceFederationMfrPoliciesWidget
     required this.unifediApiInstanceFederation,
   }) : super(key: key);
 
-  final IUnifediApiInstanceFederation
-      unifediApiInstanceFederation;
+  final IUnifediApiInstanceFederation unifediApiInstanceFederation;
 
   @override
   Widget build(BuildContext context) {
@@ -1679,8 +1676,7 @@ class _InstanceDetailsUnifediApiInstanceFederationExclusionsWidget
     required this.unifediApiInstanceFederation,
   }) : super(key: key);
 
-  final IUnifediApiInstanceFederation
-      unifediApiInstanceFederation;
+  final IUnifediApiInstanceFederation unifediApiInstanceFederation;
 
   @override
   Widget build(BuildContext context) {
@@ -1701,8 +1697,7 @@ class _InstanceDetailsUnifediApiInstanceFederationEnabledFieldWidget
     required this.unifediApiInstanceFederation,
   }) : super(key: key);
 
-  final IUnifediApiInstanceFederation
-      unifediApiInstanceFederation;
+  final IUnifediApiInstanceFederation unifediApiInstanceFederation;
 
   @override
   Widget build(BuildContext context) {
@@ -1748,8 +1743,7 @@ class _InstanceDetailsPleromaMetadataFieldsLimitsWidget
         var isHaveMessagesLimitsFields = snapshot.data!;
 
         if (isHaveMessagesLimitsFields) {
-          return StreamBuilder<
-              IUnifediApiInstanceFieldLimits?>(
+          return StreamBuilder<IUnifediApiInstanceFieldLimits?>(
             stream: instanceDetailsBloc.pleromaMetadataFieldsLimitsStream,
             initialData: instanceDetailsBloc.pleromaMetadataFieldsLimits,
             builder: (context, snapshot) {

@@ -37,7 +37,6 @@ class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
   // ignore: avoid-late-keyword
   late IUnifediApiManager apiManager;
 
-
   // ignore: avoid-late-keyword
   late IUnifediApiInstanceService unifediApiInstanceService;
 
@@ -48,7 +47,6 @@ class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
   late RegisterAuthInstanceFormBloc registerAuthInstanceFormBloc;
 
   RegisterAuthInstanceBloc({
-
     required this.localeName,
     required this.instanceBaseUri,
     required this.localPreferencesService,
@@ -58,9 +56,7 @@ class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
     required this.localizationSettingsBloc,
     required this.configService,
   }) : super() {
-
-    apiManager = currentInstanceBloc
-        .currentInstance!.info!.typeAsUnifediApi
+    apiManager = currentInstanceBloc.currentInstance!.info!.typeAsUnifediApi
         .createApiManager(
       uri: instanceBaseUri.toString(),
     );
@@ -135,7 +131,7 @@ class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
     unifediApiInstance = await unifediApiInstanceService.getInstance();
 
     registerAuthInstanceFormBloc = RegisterAuthInstanceFormBloc(
-      localeName:localeName,
+      localeName: localeName,
       unifediApiInstance: unifediApiInstance,
       unifediApiInstanceService: unifediApiInstanceService,
       instanceBaseUri: instanceBaseUri,

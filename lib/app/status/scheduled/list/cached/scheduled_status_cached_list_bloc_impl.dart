@@ -38,8 +38,7 @@ class ScheduledStatusCachedListBloc extends IScheduledStatusCachedListBloc {
     BuildContext context,
   ) =>
       ScheduledStatusCachedListBloc(
-        pleromaScheduledStatusService:
-            Provider.of<IUnifediApiStatusService>(
+        pleromaScheduledStatusService: Provider.of<IUnifediApiStatusService>(
           context,
           listen: false,
         ),

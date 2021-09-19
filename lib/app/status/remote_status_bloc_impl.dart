@@ -9,6 +9,8 @@ import 'package:fedi/app/status/status_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
+import 'package:fedi/connection/connection_service.dart';
+import 'package:provider/provider.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
@@ -19,7 +21,7 @@ class RemoteStatusBloc extends StatusBloc {
 
   final BehaviorSubject<IAccount> inReplyToAccountSubject = BehaviorSubject();
   final BehaviorSubject<IStatus?> inReplyToStatusSubject = BehaviorSubject();
-
+  final IConnectionService connectionService;
   RemoteStatusBloc({
     required this.instanceUri,
     required IUnifediApiStatusService unifediApiStatusService,
@@ -28,6 +30,7 @@ class RemoteStatusBloc extends StatusBloc {
     required IStatus status,
     required bool isNeedRefreshFromNetworkOnInit,
     required bool delayInit,
+    required this.connectionService,
   }) : super(
           unifediApiStatusService: unifediApiStatusService,
           unifediApiAccountService: unifediApiAccountService,
@@ -48,14 +51,19 @@ class RemoteStatusBloc extends StatusBloc {
   }) {
     var remoteInstanceBloc = IRemoteInstanceBloc.of(context, listen: false);
 
-    var unifediApiAccountService = remoteInstanceBloc.unifediApiManager.createAccountService();
-    var unifediApiStatusService = remoteInstanceBloc.unifediApiManager.createStatusService();
+    var unifediApiAccountService =
+        remoteInstanceBloc.unifediApiManager.createAccountService();
+    var unifediApiStatusService =
+        remoteInstanceBloc.unifediApiManager.createStatusService();
 
     var remoteStatusBloc = RemoteStatusBloc(
       status: status,
+      connectionService:
+          Provider.of<IConnectionService>(context, listen: false),
       isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
       delayInit: delayInit,
-      unifediApiPollService: remoteInstanceBloc.unifediApiManager.createPollService(),
+      unifediApiPollService:
+          remoteInstanceBloc.unifediApiManager.createPollService(),
       unifediApiStatusService: unifediApiStatusService,
       unifediApiAccountService: unifediApiAccountService,
       instanceUri: remoteInstanceBloc.instanceUri,
@@ -177,7 +185,7 @@ class RemoteStatusBloc extends StatusBloc {
     if (foundMention != null) {
       var accountRemoteId = foundMention.id;
 
-      if (unifediApiAccountService.isApiReadyToUse) {
+      if (connectionService.isConnected) {
         var remoteAccount = await unifediApiAccountService.getAccount(
           accountId: accountRemoteId,
           withRelationship: false,

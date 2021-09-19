@@ -14,6 +14,7 @@ import 'package:fedi/app/status/pagination/network_only/status_network_only_pagi
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc.dart';
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc_impl.dart';
+import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc_impl.dart';
@@ -31,15 +32,18 @@ class RemoteInstancePublicTimelinePageBloc
   final IUnifediApiTimelineService unifediApiTimelineService;
 
   final IPaginationSettingsBloc paginationSettingsBloc;
+  final IConnectionService connectionService;
 
   // ignore: avoid-late-keyword
   late MemoryLocalPreferencesService memoryLocalPreferencesService;
 
   RemoteInstancePublicTimelinePageBloc({
+    required this.connectionService,
     required this.remoteInstanceBloc,
     required this.paginationSettingsBloc,
     required IUnifediApiInstance unifediApiInstance,
-  })  : unifediApiTimelineService = remoteInstanceBloc.unifediApiManager.createTimelineService(),
+  })  : unifediApiTimelineService =
+            remoteInstanceBloc.unifediApiManager.createTimelineService(),
         super(
           unifediApiInstance: unifediApiInstance,
           instanceUri: remoteInstanceBloc.instanceUri,
@@ -53,6 +57,10 @@ class RemoteInstancePublicTimelinePageBloc
     required IRemoteInstanceBloc remoteInstanceBloc,
   }) {
     return RemoteInstancePublicTimelinePageBloc(
+      connectionService: Provider.of<IConnectionService>(
+        context,
+        listen: false,
+      ),
       remoteInstanceBloc: remoteInstanceBloc,
       unifediApiInstance: unifediApiInstance,
       paginationSettingsBloc: IPaginationSettingsBloc.of(
@@ -119,7 +127,8 @@ class RemoteInstancePublicTimelinePageBloc
 
     addDisposable(timelineLocalPreferenceBloc);
 
-    var unifediApiTimelineService = remoteInstanceBloc.unifediApiManager.createTimelineService();
+    var unifediApiTimelineService =
+        remoteInstanceBloc.unifediApiManager.createTimelineService();
     addDisposable(unifediApiTimelineService);
 
     statusNetworkOnlyListBloc =
@@ -131,6 +140,7 @@ class RemoteInstancePublicTimelinePageBloc
     addDisposable(statusNetworkOnlyListBloc);
 
     statusNetworkOnlyPaginationBloc = StatusNetworkOnlyPaginationBloc(
+      connectionService: connectionService,
       paginationSettingsBloc: paginationSettingsBloc,
       maximumCachedPagesCount: null,
       listService: statusNetworkOnlyListBloc,

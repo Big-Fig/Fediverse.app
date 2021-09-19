@@ -4,6 +4,7 @@ import 'package:fedi/app/push/settings/local_preferences/instance/instance_push_
 import 'package:fedi/app/push/settings/push_settings_bloc_impl.dart';
 import 'package:fedi/app/push/settings/push_settings_model.dart';
 import 'package:fedi/app/push/settings/relay/local_preferences/instance/instance_push_relay_settings_local_preference_bloc_impl.dart';
+import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 import 'package:fedi/push/fcm/fcm_push_service.dart';
@@ -21,6 +22,7 @@ import './push_settings_bloc_impl_test.mocks.dart';
   IUnifediApiPushSubscriptionService,
   IPushRelayService,
   IFcmPushService,
+  IConnectionService,
 ])
 void main() {
   late MemoryLocalPreferencesService memoryLocalPreferencesService;
@@ -66,9 +68,8 @@ void main() {
       alerts: anyNamed('alerts'),
     )).thenAnswer((invocation) async {
       return UnifediApiPushSubscription(
-        alerts: (invocation.namedArguments[Symbol('data')]
-                as UnifediApiPushSubscribeData)
-            .alerts!,
+        alerts: invocation.namedArguments[Symbol('alerts')],
+        metadata: invocation.namedArguments[Symbol('metadata')],
         endpoint: 'endpoint',
         serverKey: 'serverKey',
         id: 'id',
@@ -76,8 +77,9 @@ void main() {
     });
 
     pushSettingsBloc = PushSettingsBloc(
+      connectionService: MockIConnectionService(),
       pushSubscriptionKeysAuth: 'pushSubscriptionKeysAuth',
-      pushSubscriptionKeysP256dh : 'pushSubscriptionKeysP256dh',
+      pushSubscriptionKeysP256dh: 'pushSubscriptionKeysP256dh',
       instancePushRelaySettingsLocalPreferenceBloc:
           instancePushRelaySettingsLocalPreferenceBloc,
       instancePushSettingsLocalPreferenceBloc:

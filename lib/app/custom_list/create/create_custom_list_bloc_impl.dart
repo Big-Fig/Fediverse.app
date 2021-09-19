@@ -11,6 +11,7 @@ import 'package:fedi/app/custom_list/edit/edit_custom_list_bloc_proxy_provider.d
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
+import 'package:fedi/connection/connection_service.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -22,6 +23,10 @@ class CreateCustomListBloc extends EditCustomListBloc
     required Function(ICustomList)? onSubmit,
   }) {
     var createCustomListBloc = CreateCustomListBloc(
+      connectionService: Provider.of<IConnectionService>(
+        context,
+        listen: false,
+      ),
       pleromaListService: Provider.of<IUnifediApiListService>(
         context,
         listen: false,
@@ -97,7 +102,9 @@ class CreateCustomListBloc extends EditCustomListBloc
     required IUnifediApiAccountService pleromaAuthAccountService,
     required ITimelinesHomeTabStorageBloc timelinesHomeTabStorageBloc,
     required IPaginationSettingsBloc paginationSettingsBloc,
+    required IConnectionService connectionService,
   }) : super(
+          connectionService: connectionService,
           isPossibleToDelete: false,
           pleromaListService: pleromaListService,
           statusRepository: statusRepository,

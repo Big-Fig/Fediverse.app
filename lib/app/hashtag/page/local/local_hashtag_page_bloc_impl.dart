@@ -21,6 +21,7 @@ import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bl
 import 'package:fedi/app/timeline/status/timeline_status_cached_list_bloc_impl.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
+import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
@@ -59,8 +60,9 @@ class LocalHashtagPageBloc extends HashtagPageBloc
   // ignore: avoid-late-keyword
   late ICachedPaginationListWithNewItemsBloc<CachedPaginationPage<IStatus>,
       IStatus> statusCachedPaginationListWithNewItemsBloc;
-
+  final IConnectionService connectionService;
   LocalHashtagPageBloc({
+    required this.connectionService,
     required this.localPreferencesService,
     required this.unifediApiTimelineService,
     required this.unifediApiAccountService,
@@ -73,7 +75,8 @@ class LocalHashtagPageBloc extends HashtagPageBloc
     required IHashtag hashtag,
     required this.myAccountFeaturedHashtag,
   }) : super(
-          instanceUri: unifediApiTimelineService.restService.accessBloc.access.uri,
+          instanceUri:
+              unifediApiTimelineService.restService.accessBloc.access.uri,
           hashtag: hashtag,
         );
 
@@ -90,6 +93,10 @@ class LocalHashtagPageBloc extends HashtagPageBloc
         Provider.of<IUnifediApiTimelineService>(context, listen: false);
 
     return LocalHashtagPageBloc(
+      connectionService: Provider.of<IConnectionService>(
+        context,
+        listen: false,
+      ),
       hashtag: hashtag,
       myAccountFeaturedHashtag: myAccountFeaturedHashtag,
       unifediApiTimelineService: unifediApiTimelineService,
@@ -117,7 +124,6 @@ class LocalHashtagPageBloc extends HashtagPageBloc
         context,
         listen: false,
       ),
-
       myAccountBloc: IMyAccountBloc.of(
         context,
         listen: false,
@@ -191,6 +197,7 @@ class LocalHashtagPageBloc extends HashtagPageBloc
     await statusCachedListBloc.performAsyncInit();
 
     statusCachedPaginationBloc = StatusCachedPaginationBloc(
+      connectionService: connectionService,
       statusListService: statusCachedListBloc,
       paginationSettingsBloc: paginationSettingsBloc,
       maximumCachedPagesCount: null,

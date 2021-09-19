@@ -168,7 +168,7 @@ Future<List<IUnifediApiMediaAttachment>?> _uploadMediaIfNeed({
             var file = File(incomeShareEventMedia.path);
             var unifediApiMediaAttachment =
                 await unifediApiMediaAttachmentService.uploadMedia(
-                  file: file,
+              file: file,
               thumbnail: null,
               description: null,
               focus: null,

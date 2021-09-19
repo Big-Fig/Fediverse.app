@@ -64,8 +64,7 @@ class RemoteInstanceBloc extends AsyncInitLoadingBloc
       uri: instanceUri.toString(),
     );
 
-    var apiInstanceService =
-        unifediApiManager.createInstanceService();
+    var apiInstanceService = unifediApiManager.createInstanceService();
     unifediApiInstance = await apiInstanceService.getInstance();
     await typeDetectorBloc.dispose();
 

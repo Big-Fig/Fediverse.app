@@ -37,8 +37,7 @@ class StatusEmojiReactionListWidget extends StatelessWidget {
                       (emojiReaction) =>
                           Provider<IUnifediApiEmojiReaction>.value(
                         value: emojiReaction,
-                        child: DisposableProxyProvider<
-                            IUnifediApiEmojiReaction,
+                        child: DisposableProxyProvider<IUnifediApiEmojiReaction,
                             IStatusEmojiReactionBloc>(
                           update: (context, value, previous) {
                             if (statusBloc.instanceLocation ==
@@ -50,8 +49,8 @@ class StatusEmojiReactionListWidget extends StatelessWidget {
                                   context,
                                   listen: false,
                                 ),
-                                unifediApiStatusService: Provider
-                                    .of<IUnifediApiStatusService>(
+                                unifediApiStatusService:
+                                    Provider.of<IUnifediApiStatusService>(
                                   context,
                                   listen: false,
                                 ),

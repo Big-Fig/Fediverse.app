@@ -89,8 +89,10 @@ Future goToRemoteAccountDetailsPageBasedOnLocalInstanceRemoteAccount(
           unifediApiInstance: null,
         );
 
-        unifediApiStatusService = remoteInstanceBloc.unifediApiManager.createStatusService();
-        unifediApiAccountService = remoteInstanceBloc.unifediApiManager.createAccountService();
+        unifediApiStatusService =
+            remoteInstanceBloc.unifediApiManager.createStatusService();
+        unifediApiAccountService =
+            remoteInstanceBloc.unifediApiManager.createAccountService();
 
         try {
           // load in Mastodon way. Extract account from status
@@ -101,7 +103,7 @@ Future goToRemoteAccountDetailsPageBasedOnLocalInstanceRemoteAccount(
           );
         } catch (e) {
           // load in Pleroma way. Use username as id
-          var unifediApiAccount = await unifediApiAccountService!.getAccount(
+          var unifediApiAccount = await unifediApiAccountService.getAccount(
             accountId: localInstanceRemoteAccount.username,
             withRelationship: false,
           );

@@ -200,7 +200,6 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
   UnifediApiNotificationType get typeAsUnifediApi =>
       notification.typeAsUnifediApi;
 
-
   @override
   Future dismiss() async {
     await pleromaNotificationService.dismissNotification(

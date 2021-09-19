@@ -18,8 +18,7 @@ class EditWebSocketsSettingsWidget extends StatelessWidget {
           ProxyProvider<IEditWebSocketsSettingsBloc,
               IWebSocketsModeSingleFromListValueFormFieldBloc>(
             update: (context, value, previous) => value.typeFieldBloc,
-            child:
-                const WebSocketsModeSingleFromListValueFormFieldRowWidget(),
+            child: const WebSocketsModeSingleFromListValueFormFieldRowWidget(),
           ),
         ],
       );

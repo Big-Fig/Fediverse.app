@@ -35,8 +35,7 @@ class EditToastSettingsWidget extends StatelessWidget {
       );
 }
 
-class _EditToastSettingsEmojiReactionFieldWidget
-    extends StatelessWidget {
+class _EditToastSettingsEmojiReactionFieldWidget extends StatelessWidget {
   const _EditToastSettingsEmojiReactionFieldWidget({
     Key? key,
   }) : super(key: key);

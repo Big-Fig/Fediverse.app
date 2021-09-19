@@ -16,7 +16,8 @@ class RemoteInstanceDetailsBloc extends InstanceDetailsBloc
 
   RemoteInstanceDetailsBloc({
     required this.remoteInstanceBloc,
-  })  : unifediApiInstanceService = remoteInstanceBloc.unifediApiManager.createInstanceService(),
+  })  : unifediApiInstanceService =
+            remoteInstanceBloc.unifediApiManager.createInstanceService(),
         super(
           initialInstance: null,
           instanceUri: remoteInstanceBloc.instanceUri,

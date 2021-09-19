@@ -64,8 +64,8 @@ void main() {
       ),
       mode: null,
     );
-    var found = await chatMessageRepository
-        .findByRemoteIdInAppType(updatedRemoteId);
+    var found =
+        await chatMessageRepository.findByRemoteIdInAppType(updatedRemoteId);
 
     expect(pleromaCardTitle, found!.card!.title);
 

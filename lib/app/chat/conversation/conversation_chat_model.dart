@@ -6,7 +6,6 @@ import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/status_model.dart';
 
 abstract class IConversationChat implements IChat {
-
   @override
   IConversationChat copyWith({
     int? id,

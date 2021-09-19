@@ -123,7 +123,8 @@ class MyAccountBloc extends IMyAccountBloc {
   Future decreaseFollowingRequestCount() async {
     assert(followRequestsCount! > 0);
     await myAccountLocalPreferenceBloc.setValue(
-      myAccountLocalPreferenceBloc.value!.toUnifediApiMyAccountWrapper()
+      myAccountLocalPreferenceBloc.value!
+          .toUnifediApiMyAccountWrapper()
           .copyWith(
             followRequestsCount: followRequestsCount! - 1,
           )

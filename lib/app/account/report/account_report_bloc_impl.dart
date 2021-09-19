@@ -11,7 +11,6 @@ import 'package:fedi/form/form_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
-
 class AccountReportBloc extends FormBloc implements IAccountReportBloc {
   @override
   final IAccount account;

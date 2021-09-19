@@ -32,7 +32,8 @@ class RemoteAccountStatusesWithoutRepliesNetworkOnlyListBloc
     required Uri instanceUri,
   }) {
     var remoteInstanceBloc = IRemoteInstanceBloc.of(context, listen: false);
-    var unifediApiAccountService = remoteInstanceBloc.unifediApiManager.createAccountService();
+    var unifediApiAccountService =
+        remoteInstanceBloc.unifediApiManager.createAccountService();
 
     var bloc = RemoteAccountStatusesWithoutRepliesNetworkOnlyListBloc(
       account: account,

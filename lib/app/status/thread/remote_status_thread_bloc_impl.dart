@@ -27,7 +27,8 @@ class RemoteStatusThreadBloc extends StatusThreadBloc {
   }) {
     var remoteInstanceBloc = IRemoteInstanceBloc.of(context, listen: false);
 
-    var unifediApiStatusService = remoteInstanceBloc.unifediApiManager.createStatusService();
+    var unifediApiStatusService =
+        remoteInstanceBloc.unifediApiManager.createStatusService();
 
     var remoteStatusThreadBloc = RemoteStatusThreadBloc(
       initialStatusToFetchThread: initialStatusToFetchThread,

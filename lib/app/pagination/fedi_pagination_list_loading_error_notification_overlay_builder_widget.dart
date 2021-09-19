@@ -5,6 +5,7 @@ import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_model.dart';
 
 import 'package:flutter/cupertino.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 DateTime _lastRefreshErrorShowedDateTime = DateTime.now();
 DateTime _lastLoadMoreErrorShowedDateTime = DateTime.now();
@@ -68,9 +69,9 @@ class _FediPaginationListLoadingErrorNotificationOverlayBuilderWidgetState
     if (error is CantUpdateFromNetworkException) {
       return S.of(context).app_list_cantUpdateFromNetwork;
     } else {
-      if (error is UnifediApiRestException &&
-          error.decodedErrorDescriptionOrBody.isNotEmpty) {
-        return error.decodedErrorDescriptionOrBody;
+      if (error is IUnifediApiRestErrorException &&
+          error.unifediError.descriptionOrContent != null) {
+        return error.unifediError.descriptionOrContent!;
       } else {
         return error.toString();
       }

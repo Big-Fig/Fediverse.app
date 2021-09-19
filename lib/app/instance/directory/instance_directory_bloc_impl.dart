@@ -7,6 +7,7 @@ import 'package:fedi/app/instance/directory/account_list/network_only/instance_d
 import 'package:fedi/app/instance/directory/instance_directory_bloc.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:easy_dispose/easy_dispose.dart';
+import 'package:fedi/connection/connection_service.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
 import 'package:rxdart/rxdart.dart';
@@ -18,10 +19,11 @@ abstract class InstanceDirectoryBloc extends DisposableOwner
 
   final BehaviorSubject<IUnifediApiInstance?> instanceSubject;
   final IPaginationSettingsBloc paginationSettingsBloc;
-
+  final IConnectionService connectionService;
   InstanceDirectoryBloc({
     required IUnifediApiInstance? initialInstance,
     required this.instanceUri,
+    required this.connectionService,
     required this.paginationSettingsBloc,
   }) : instanceSubject = BehaviorSubject.seeded(initialInstance) {
     instanceSubject.disposeWith(this);
@@ -35,6 +37,7 @@ abstract class InstanceDirectoryBloc extends DisposableOwner
 
     instanceDirectoryAccountListNetworkOnlyPaginationBloc =
         AccountNetworkOnlyPaginationBloc(
+      connectionService: connectionService,
       listBloc: instanceDirectoryAccountListNetworkOnlyListBloc,
       maximumCachedPagesCount: null,
       paginationSettingsBloc: paginationSettingsBloc,

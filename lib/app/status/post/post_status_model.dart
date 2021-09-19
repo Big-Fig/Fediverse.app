@@ -134,7 +134,8 @@ class PostStatusData implements IPostStatusData {
           to: to,
           mediaAttachments: mediaAttachments?.toUnifediApiMediaAttachmentList(),
           poll: poll,
-          inReplyToUnifediApiStatus: inReplyToUnifediApiStatus?.toUnifediApiStatus(),
+          inReplyToUnifediApiStatus:
+              inReplyToUnifediApiStatus?.toUnifediApiStatus(),
           inReplyToConversationId: inReplyToConversationId,
           isNsfwSensitiveEnabled: isNsfwSensitiveEnabled,
           language: language,
@@ -264,7 +265,8 @@ extension IPostStatusDataExtension on IPostStatusData {
         to: to,
         mediaAttachments: mediaAttachments?.toUnifediApiMediaAttachmentList(),
         poll: poll?.toPostStatusPoll(),
-        inReplyToUnifediApiStatus: inReplyToUnifediApiStatus?.toUnifediApiStatus(),
+        inReplyToUnifediApiStatus:
+            inReplyToUnifediApiStatus?.toUnifediApiStatus(),
         inReplyToConversationId: inReplyToConversationId,
         isNsfwSensitiveEnabled: isNsfwSensitiveEnabled,
         language: language,

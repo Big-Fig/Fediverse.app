@@ -16,16 +16,17 @@ import 'package:unifedi_api/unifedi_api.dart';
 class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
   static DurationDateTimeValueFormFieldBloc createDurationDateTimeLengthBloc(
     IUnifediApiInstancePollLimits? pollLimit,
-  ) => DurationDateTimeValueFormFieldBloc(
-      originValue: DurationDateTime(
-        duration: Duration(days: 1),
-        dateTime: null,
-      ),
-      minDuration: pollLimit?.minExpirationDuration,
-      maxDuration: pollLimit?.maxExpirationDuration,
-      isNullValuePossible: false,
-      isEnabled: true,
-    );
+  ) =>
+      DurationDateTimeValueFormFieldBloc(
+        originValue: DurationDateTime(
+          duration: Duration(days: 1),
+          dateTime: null,
+        ),
+        minDuration: pollLimit?.minExpirationDuration,
+        maxDuration: pollLimit?.maxExpirationDuration,
+        isNullValuePossible: false,
+        isEnabled: true,
+      );
 
   final IUnifediApiInstancePollLimits? pollLimits;
 
@@ -33,17 +34,14 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
 
   int? get pollMaximumOptionLength => pollLimits?.maxOptionChars;
 
-  Duration? get pollMinimumExpiration =>
-      pollLimits?.minExpirationDuration;
+  Duration? get pollMinimumExpiration => pollLimits?.minExpirationDuration;
 
-  Duration? get pollMaximumExpiration =>
-      pollLimits?.maxExpirationDuration;
+  Duration? get pollMaximumExpiration => pollLimits?.maxExpirationDuration;
 
   PostStatusPollBloc({
     required this.pollLimits,
   })  : pollOptionsGroupBloc = OneTypeFormGroupBloc<IStringValueFormFieldBloc>(
-          originalItems:
-              createDefaultPollOptions(pollLimits?.maxOptionChars),
+          originalItems: createDefaultPollOptions(pollLimits?.maxOptionChars),
           // ignore: no-magic-number
           minimumFieldsCount: 2,
           maximumFieldsCount: pollLimits?.maxOptions,

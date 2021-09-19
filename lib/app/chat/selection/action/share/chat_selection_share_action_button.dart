@@ -97,8 +97,8 @@ class ChatSelectionShareActionButtonWidget extends StatelessWidget {
               goToNewPostStatusPageWithInitial(
                 context,
                 initialText: rawText,
-                initialMediaAttachments:
-                    reuploadedMediaAttachments?.toUnifediApiMediaAttachmentList(),
+                initialMediaAttachments: reuploadedMediaAttachments
+                    ?.toUnifediApiMediaAttachmentList(),
               );
               // Future.delayed(Duration(milliseconds: 1000), () {
               // });

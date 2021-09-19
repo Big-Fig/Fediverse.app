@@ -129,7 +129,6 @@ class AccountStatusesWithRepliesCachedListBloc
         minId: newerThan?.remoteId,
         maxId: olderThan?.remoteId,
       ),
-
       tagged: null,
       pinned: null,
       excludeReplies: null,

@@ -106,6 +106,5 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
     Hive.registerAdapter(CrashReportingSettingsAdapter());
     Hive.registerAdapter(PushRelaySettingsAdapter());
     Hive.registerAdapter(UnifediApiFrontendConfigurationsAdapter());
-
   }
 }

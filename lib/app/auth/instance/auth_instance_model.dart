@@ -42,8 +42,7 @@ class AuthInstance extends IJsonObj {
   final UnifediApiInstance? info;
 
   bool get isSupportChats =>
-      info?.features?.contains('pleroma_chat_messages') ==
-      true;
+      info?.features?.contains('pleroma_chat_messages') == true;
 
   String get userAtHost {
     var result = '$acct@$urlHost';

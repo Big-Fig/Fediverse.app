@@ -25,9 +25,9 @@ class ConversationChatMessageBloc extends ChatMessageBloc
   }) =>
       ConversationChatMessageBloc(
         pollLimits: ICurrentAuthInstanceBloc.of(
-              context,
-              listen: false,
-            ).currentInstance?.info?.limits?.poll,
+          context,
+          listen: false,
+        ).currentInstance?.info?.limits?.poll,
         conversationChatService:
             Provider.of<IUnifediApiConversationService>(context, listen: false),
         authStatusService:

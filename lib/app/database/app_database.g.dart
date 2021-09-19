@@ -1863,10 +1863,10 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
   final int? followersCount;
   final int? statusesCount;
   final String? displayName;
-  final DateTime? createdAt;
+  final DateTime createdAt;
   final bool? bot;
-  final String? avatarStatic;
-  final String? avatar;
+  final String avatarStatic;
+  final String avatar;
   final String acct;
   final DateTime? lastStatusAt;
   final List<UnifediApiField>? fields;
@@ -1906,10 +1906,10 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
       this.followersCount,
       this.statusesCount,
       this.displayName,
-      this.createdAt,
+      required this.createdAt,
       this.bot,
-      this.avatarStatic,
-      this.avatar,
+      required this.avatarStatic,
+      required this.avatar,
       required this.acct,
       this.lastStatusAt,
       this.fields,
@@ -1964,13 +1964,13 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
       displayName: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}display_name']),
       createdAt: const DateTimeType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}created_at']),
+          .mapFromDatabaseResponse(data['${effectivePrefix}created_at'])!,
       bot: const BoolType()
           .mapFromDatabaseResponse(data['${effectivePrefix}bot']),
       avatarStatic: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}avatar_static']),
+          .mapFromDatabaseResponse(data['${effectivePrefix}avatar_static'])!,
       avatar: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}avatar']),
+          .mapFromDatabaseResponse(data['${effectivePrefix}avatar'])!,
       acct: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}acct'])!,
       lastStatusAt: const DateTimeType()
@@ -2058,18 +2058,12 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
     if (!nullToAbsent || displayName != null) {
       map['display_name'] = Variable<String?>(displayName);
     }
-    if (!nullToAbsent || createdAt != null) {
-      map['created_at'] = Variable<DateTime?>(createdAt);
-    }
+    map['created_at'] = Variable<DateTime>(createdAt);
     if (!nullToAbsent || bot != null) {
       map['bot'] = Variable<bool?>(bot);
     }
-    if (!nullToAbsent || avatarStatic != null) {
-      map['avatar_static'] = Variable<String?>(avatarStatic);
-    }
-    if (!nullToAbsent || avatar != null) {
-      map['avatar'] = Variable<String?>(avatar);
-    }
+    map['avatar_static'] = Variable<String>(avatarStatic);
+    map['avatar'] = Variable<String>(avatar);
     map['acct'] = Variable<String>(acct);
     if (!nullToAbsent || lastStatusAt != null) {
       map['last_status_at'] = Variable<DateTime?>(lastStatusAt);
@@ -2180,15 +2174,10 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
       displayName: displayName == null && nullToAbsent
           ? const Value.absent()
           : Value(displayName),
-      createdAt: createdAt == null && nullToAbsent
-          ? const Value.absent()
-          : Value(createdAt),
+      createdAt: Value(createdAt),
       bot: bot == null && nullToAbsent ? const Value.absent() : Value(bot),
-      avatarStatic: avatarStatic == null && nullToAbsent
-          ? const Value.absent()
-          : Value(avatarStatic),
-      avatar:
-          avatar == null && nullToAbsent ? const Value.absent() : Value(avatar),
+      avatarStatic: Value(avatarStatic),
+      avatar: Value(avatar),
       acct: Value(acct),
       lastStatusAt: lastStatusAt == null && nullToAbsent
           ? const Value.absent()
@@ -2276,10 +2265,10 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
       followersCount: serializer.fromJson<int?>(json['followersCount']),
       statusesCount: serializer.fromJson<int?>(json['statusesCount']),
       displayName: serializer.fromJson<String?>(json['displayName']),
-      createdAt: serializer.fromJson<DateTime?>(json['createdAt']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       bot: serializer.fromJson<bool?>(json['bot']),
-      avatarStatic: serializer.fromJson<String?>(json['avatarStatic']),
-      avatar: serializer.fromJson<String?>(json['avatar']),
+      avatarStatic: serializer.fromJson<String>(json['avatarStatic']),
+      avatar: serializer.fromJson<String>(json['avatar']),
       acct: serializer.fromJson<String>(json['acct']),
       lastStatusAt: serializer.fromJson<DateTime?>(json['lastStatusAt']),
       fields: serializer.fromJson<List<UnifediApiField>?>(json['fields']),
@@ -2330,10 +2319,10 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
       'followersCount': serializer.toJson<int?>(followersCount),
       'statusesCount': serializer.toJson<int?>(statusesCount),
       'displayName': serializer.toJson<String?>(displayName),
-      'createdAt': serializer.toJson<DateTime?>(createdAt),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
       'bot': serializer.toJson<bool?>(bot),
-      'avatarStatic': serializer.toJson<String?>(avatarStatic),
-      'avatar': serializer.toJson<String?>(avatar),
+      'avatarStatic': serializer.toJson<String>(avatarStatic),
+      'avatar': serializer.toJson<String>(avatar),
       'acct': serializer.toJson<String>(acct),
       'lastStatusAt': serializer.toJson<DateTime?>(lastStatusAt),
       'fields': serializer.toJson<List<UnifediApiField>?>(fields),
@@ -2606,10 +2595,10 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
   final Value<int?> followersCount;
   final Value<int?> statusesCount;
   final Value<String?> displayName;
-  final Value<DateTime?> createdAt;
+  final Value<DateTime> createdAt;
   final Value<bool?> bot;
-  final Value<String?> avatarStatic;
-  final Value<String?> avatar;
+  final Value<String> avatarStatic;
+  final Value<String> avatar;
   final Value<String> acct;
   final Value<DateTime?> lastStatusAt;
   final Value<List<UnifediApiField>?> fields;
@@ -2693,10 +2682,10 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
     this.followersCount = const Value.absent(),
     this.statusesCount = const Value.absent(),
     this.displayName = const Value.absent(),
-    this.createdAt = const Value.absent(),
+    required DateTime createdAt,
     this.bot = const Value.absent(),
-    this.avatarStatic = const Value.absent(),
-    this.avatar = const Value.absent(),
+    required String avatarStatic,
+    required String avatar,
     required String acct,
     this.lastStatusAt = const Value.absent(),
     this.fields = const Value.absent(),
@@ -2726,6 +2715,9 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
   })  : remoteId = Value(remoteId),
         username = Value(username),
         url = Value(url),
+        createdAt = Value(createdAt),
+        avatarStatic = Value(avatarStatic),
+        avatar = Value(avatar),
         acct = Value(acct);
   static Insertable<DbAccount> custom({
     Expression<int?>? id,
@@ -2740,10 +2732,10 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
     Expression<int?>? followersCount,
     Expression<int?>? statusesCount,
     Expression<String?>? displayName,
-    Expression<DateTime?>? createdAt,
+    Expression<DateTime>? createdAt,
     Expression<bool?>? bot,
-    Expression<String?>? avatarStatic,
-    Expression<String?>? avatar,
+    Expression<String>? avatarStatic,
+    Expression<String>? avatar,
     Expression<String>? acct,
     Expression<DateTime?>? lastStatusAt,
     Expression<List<UnifediApiField>?>? fields,
@@ -2835,10 +2827,10 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
       Value<int?>? followersCount,
       Value<int?>? statusesCount,
       Value<String?>? displayName,
-      Value<DateTime?>? createdAt,
+      Value<DateTime>? createdAt,
       Value<bool?>? bot,
-      Value<String?>? avatarStatic,
-      Value<String?>? avatar,
+      Value<String>? avatarStatic,
+      Value<String>? avatar,
       Value<String>? acct,
       Value<DateTime?>? lastStatusAt,
       Value<List<UnifediApiField>?>? fields,
@@ -2952,16 +2944,16 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
       map['display_name'] = Variable<String?>(displayName.value);
     }
     if (createdAt.present) {
-      map['created_at'] = Variable<DateTime?>(createdAt.value);
+      map['created_at'] = Variable<DateTime>(createdAt.value);
     }
     if (bot.present) {
       map['bot'] = Variable<bool?>(bot.value);
     }
     if (avatarStatic.present) {
-      map['avatar_static'] = Variable<String?>(avatarStatic.value);
+      map['avatar_static'] = Variable<String>(avatarStatic.value);
     }
     if (avatar.present) {
-      map['avatar'] = Variable<String?>(avatar.value);
+      map['avatar'] = Variable<String>(avatar.value);
     }
     if (acct.present) {
       map['acct'] = Variable<String>(acct.value);
@@ -3168,8 +3160,8 @@ class $DbAccountsTable extends DbAccounts
       typeName: 'TEXT', requiredDuringInsert: false);
   final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
   late final GeneratedColumn<DateTime?> createdAt = GeneratedColumn<DateTime?>(
-      'created_at', aliasedName, true,
-      typeName: 'INTEGER', requiredDuringInsert: false);
+      'created_at', aliasedName, false,
+      typeName: 'INTEGER', requiredDuringInsert: true);
   final VerificationMeta _botMeta = const VerificationMeta('bot');
   late final GeneratedColumn<bool?> bot = GeneratedColumn<bool?>(
       'bot', aliasedName, true,
@@ -3179,12 +3171,12 @@ class $DbAccountsTable extends DbAccounts
   final VerificationMeta _avatarStaticMeta =
       const VerificationMeta('avatarStatic');
   late final GeneratedColumn<String?> avatarStatic = GeneratedColumn<String?>(
-      'avatar_static', aliasedName, true,
-      typeName: 'TEXT', requiredDuringInsert: false);
+      'avatar_static', aliasedName, false,
+      typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _avatarMeta = const VerificationMeta('avatar');
   late final GeneratedColumn<String?> avatar = GeneratedColumn<String?>(
-      'avatar', aliasedName, true,
-      typeName: 'TEXT', requiredDuringInsert: false);
+      'avatar', aliasedName, false,
+      typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _acctMeta = const VerificationMeta('acct');
   late final GeneratedColumn<String?> acct = GeneratedColumn<String?>(
       'acct', aliasedName, false,
@@ -3461,6 +3453,8 @@ class $DbAccountsTable extends DbAccounts
     if (data.containsKey('created_at')) {
       context.handle(_createdAtMeta,
           createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
     }
     if (data.containsKey('bot')) {
       context.handle(
@@ -3471,10 +3465,14 @@ class $DbAccountsTable extends DbAccounts
           _avatarStaticMeta,
           avatarStatic.isAcceptableOrUnknown(
               data['avatar_static']!, _avatarStaticMeta));
+    } else if (isInserting) {
+      context.missing(_avatarStaticMeta);
     }
     if (data.containsKey('avatar')) {
       context.handle(_avatarMeta,
           avatar.isAcceptableOrUnknown(data['avatar']!, _avatarMeta));
+    } else if (isInserting) {
+      context.missing(_avatarMeta);
     }
     if (data.containsKey('acct')) {
       context.handle(
@@ -6979,7 +6977,7 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
   final String? content;
   final DateTime createdAt;
   final List<UnifediApiEmoji>? emojis;
-  final dynamic? mediaAttachment;
+  final UnifediApiMediaAttachment? mediaAttachment;
   final UnifediApiCard? card;
   final PendingState? pendingState;
   final bool? deleted;
@@ -7130,7 +7128,8 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
       content: serializer.fromJson<String?>(json['content']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       emojis: serializer.fromJson<List<UnifediApiEmoji>?>(json['emojis']),
-      mediaAttachment: serializer.fromJson<dynamic?>(json['mediaAttachment']),
+      mediaAttachment: serializer
+          .fromJson<UnifediApiMediaAttachment?>(json['mediaAttachment']),
       card: serializer.fromJson<UnifediApiCard?>(json['card']),
       pendingState: serializer.fromJson<PendingState?>(json['pendingState']),
       deleted: serializer.fromJson<bool?>(json['deleted']),
@@ -7153,7 +7152,8 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
       'content': serializer.toJson<String?>(content),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'emojis': serializer.toJson<List<UnifediApiEmoji>?>(emojis),
-      'mediaAttachment': serializer.toJson<dynamic?>(mediaAttachment),
+      'mediaAttachment':
+          serializer.toJson<UnifediApiMediaAttachment?>(mediaAttachment),
       'card': serializer.toJson<UnifediApiCard?>(card),
       'pendingState': serializer.toJson<PendingState?>(pendingState),
       'deleted': serializer.toJson<bool?>(deleted),
@@ -7172,7 +7172,7 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
           String? content,
           DateTime? createdAt,
           List<UnifediApiEmoji>? emojis,
-          dynamic? mediaAttachment,
+          UnifediApiMediaAttachment? mediaAttachment,
           UnifediApiCard? card,
           PendingState? pendingState,
           bool? deleted,
@@ -7277,7 +7277,7 @@ class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
   final Value<String?> content;
   final Value<DateTime> createdAt;
   final Value<List<UnifediApiEmoji>?> emojis;
-  final Value<dynamic?> mediaAttachment;
+  final Value<UnifediApiMediaAttachment?> mediaAttachment;
   final Value<UnifediApiCard?> card;
   final Value<PendingState?> pendingState;
   final Value<bool?> deleted;
@@ -7327,7 +7327,7 @@ class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
     Expression<String?>? content,
     Expression<DateTime>? createdAt,
     Expression<List<UnifediApiEmoji>?>? emojis,
-    Expression<dynamic?>? mediaAttachment,
+    Expression<UnifediApiMediaAttachment?>? mediaAttachment,
     Expression<UnifediApiCard?>? card,
     Expression<PendingState?>? pendingState,
     Expression<bool?>? deleted,
@@ -7364,7 +7364,7 @@ class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
       Value<String?>? content,
       Value<DateTime>? createdAt,
       Value<List<UnifediApiEmoji>?>? emojis,
-      Value<dynamic?>? mediaAttachment,
+      Value<UnifediApiMediaAttachment?>? mediaAttachment,
       Value<UnifediApiCard?>? card,
       Value<PendingState?>? pendingState,
       Value<bool?>? deleted,
@@ -7513,11 +7513,12 @@ class $DbChatMessagesTable extends DbChatMessages
               $DbChatMessagesTable.$converter0);
   final VerificationMeta _mediaAttachmentMeta =
       const VerificationMeta('mediaAttachment');
-  late final GeneratedColumnWithTypeConverter<dynamic, String?>
-      mediaAttachment = GeneratedColumn<String?>(
-              'media_attachment', aliasedName, true,
-              typeName: 'TEXT', requiredDuringInsert: false)
-          .withConverter<dynamic>($DbChatMessagesTable.$converter1);
+  late final GeneratedColumnWithTypeConverter<UnifediApiMediaAttachment,
+      String?> mediaAttachment = GeneratedColumn<String?>(
+          'media_attachment', aliasedName, true,
+          typeName: 'TEXT', requiredDuringInsert: false)
+      .withConverter<UnifediApiMediaAttachment>(
+          $DbChatMessagesTable.$converter1);
   final VerificationMeta _cardMeta = const VerificationMeta('card');
   late final GeneratedColumnWithTypeConverter<UnifediApiCard, String?> card =
       GeneratedColumn<String?>('card', aliasedName, true,
@@ -7660,8 +7661,8 @@ class $DbChatMessagesTable extends DbChatMessages
 
   static TypeConverter<List<UnifediApiEmoji>, String> $converter0 =
       UnifediApiEmojiListDatabaseConverter();
-  static TypeConverter<dynamic, String> $converter1 =
-      unifediApiMediaAttachmentDatabaseConverter();
+  static TypeConverter<UnifediApiMediaAttachment, String> $converter1 =
+      UnifediApiMediaAttachmentDatabaseConverter();
   static TypeConverter<UnifediApiCard, String> $converter2 =
       PleromaCardDatabaseConverter();
   static TypeConverter<PendingState, String> $converter3 =

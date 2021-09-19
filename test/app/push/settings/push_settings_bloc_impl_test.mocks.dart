@@ -4,7 +4,11 @@
 
 import 'dart:async' as _i6;
 
+import 'package:connectivity_platform_interface/src/enums.dart' as _i14;
+import 'package:easy_dispose/src/composite_disposable.dart' as _i15;
+import 'package:easy_dispose/src/disposable.dart' as _i16;
 import 'package:fedi/async/loading/init/async_init_loading_model.dart' as _i12;
+import 'package:fedi/connection/connection_service.dart' as _i13;
 import 'package:fedi/push/fcm/fcm_push_service.dart' as _i10;
 import 'package:fedi/push/push_model.dart' as _i11;
 import 'package:fedi/push/relay/push_relay_service.dart' as _i9;
@@ -173,6 +177,70 @@ class MockIFcmPushService extends _i1.Mock implements _i10.IFcmPushService {
   @override
   _i6.Future<dynamic> performAsyncInit() =>
       (super.noSuchMethod(Invocation.method(#performAsyncInit, []),
+          returnValue: Future<dynamic>.value()) as _i6.Future<dynamic>);
+  @override
+  _i6.Future<dynamic> dispose() =>
+      (super.noSuchMethod(Invocation.method(#dispose, []),
+          returnValue: Future<dynamic>.value()) as _i6.Future<dynamic>);
+}
+
+/// A class which mocks [IConnectionService].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockIConnectionService extends _i1.Mock
+    implements _i13.IConnectionService {
+  MockIConnectionService() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i6.Stream<_i14.ConnectivityResult> get connectionStateStream =>
+      (super.noSuchMethod(Invocation.getter(#connectionStateStream),
+              returnValue: Stream<_i14.ConnectivityResult>.empty())
+          as _i6.Stream<_i14.ConnectivityResult>);
+  @override
+  _i6.Stream<bool> get isConnectedStream =>
+      (super.noSuchMethod(Invocation.getter(#isConnectedStream),
+          returnValue: Stream<bool>.empty()) as _i6.Stream<bool>);
+  @override
+  bool get isConnected =>
+      (super.noSuchMethod(Invocation.getter(#isConnected), returnValue: false)
+          as bool);
+  @override
+  _i15.DisposeOrder get disposeOrder =>
+      (super.noSuchMethod(Invocation.getter(#disposeOrder),
+          returnValue: _i15.DisposeOrder.lifo) as _i15.DisposeOrder);
+  @override
+  bool get catchExceptions => (super
+          .noSuchMethod(Invocation.getter(#catchExceptions), returnValue: false)
+      as bool);
+  @override
+  List<_i16.IDisposable> get disposables =>
+      (super.noSuchMethod(Invocation.getter(#disposables),
+          returnValue: <_i16.IDisposable>[]) as List<_i16.IDisposable>);
+  @override
+  bool get isDisposed =>
+      (super.noSuchMethod(Invocation.getter(#isDisposed), returnValue: false)
+          as bool);
+  @override
+  set isDisposed(bool? _isDisposed) =>
+      super.noSuchMethod(Invocation.setter(#isDisposed, _isDisposed),
+          returnValueForMissingStub: null);
+  @override
+  _i6.Future<dynamic> internalAsyncInit() =>
+      (super.noSuchMethod(Invocation.method(#internalAsyncInit, []),
+          returnValue: Future<dynamic>.value()) as _i6.Future<dynamic>);
+  @override
+  void addDisposable(_i16.IDisposable? disposable) =>
+      super.noSuchMethod(Invocation.method(#addDisposable, [disposable]),
+          returnValueForMissingStub: null);
+  @override
+  void addDisposables(Iterable<_i16.IDisposable>? disposables) =>
+      super.noSuchMethod(Invocation.method(#addDisposables, [disposables]),
+          returnValueForMissingStub: null);
+  @override
+  _i6.Future<dynamic> performDispose() =>
+      (super.noSuchMethod(Invocation.method(#performDispose, []),
           returnValue: Future<dynamic>.value()) as _i6.Future<dynamic>);
   @override
   _i6.Future<dynamic> dispose() =>

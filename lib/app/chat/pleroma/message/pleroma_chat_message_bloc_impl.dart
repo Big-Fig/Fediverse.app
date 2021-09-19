@@ -122,7 +122,6 @@ class PleromaChatMessageBloc extends ChatMessageBloc
     var unifediApiPostChatMessage = UnifediApiPostChatMessage(
       content: chatMessage.content,
       mediaId: mediaId,
-
     );
 
     return pleromaChatBloc.postMessage(

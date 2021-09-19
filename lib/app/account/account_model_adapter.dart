@@ -119,7 +119,6 @@ extension IAccountUnifediApiAccountExtension on IAccount {
       suspended: suspended,
       alsoKnownAs: alsoKnownAs,
       muteExpiresAt: muteExpiresAt,
-
     );
   }
 }

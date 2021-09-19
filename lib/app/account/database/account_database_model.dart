@@ -30,14 +30,13 @@ class DbAccounts extends Table {
 
   TextColumn get displayName => text().nullable()();
 
-  DateTimeColumn get createdAt => dateTime().nullable()();
+  DateTimeColumn get createdAt => dateTime()();
 
   BoolColumn get bot => boolean().nullable()();
 
-  TextColumn get avatarStatic => text().nullable()();
+  TextColumn get avatarStatic => text()();
 
-  TextColumn get avatar => text().nullable()();
-
+  TextColumn get avatar => text()();
 
   TextColumn get acct => text()();
 
@@ -52,10 +51,8 @@ class DbAccounts extends Table {
       .nullable()
       .map(UnifediApiEmojiListDatabaseConverter())
       .nullable()();
-  TextColumn get alsoKnownAs => text()
-      .nullable()
-      .map(StringListDatabaseConverter())
-      .nullable()();
+  TextColumn get alsoKnownAs =>
+      text().nullable().map(StringListDatabaseConverter()).nullable()();
 
   TextColumn get backgroundImage => text().nullable()();
 

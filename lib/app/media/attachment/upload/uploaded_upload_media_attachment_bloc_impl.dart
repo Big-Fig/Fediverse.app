@@ -32,15 +32,15 @@ class UploadedUploadMediaAttachmentBloc extends DisposableOwner
 
   @override
   bool get isMedia => unifediApiMediaAttachment.typeAsUnifediApi.map(
-      image: (_) =>true,
-      // ignore:no-equal-arguments
-      gifv: (_) =>true,
-      // ignore:no-equal-arguments
-      video: (_) =>true,
-      // ignore:no-equal-arguments
-      audio: (_) =>true,
-      unknown: (_) =>false,
-    );
+        image: (_) => true,
+        // ignore:no-equal-arguments
+        gifv: (_) => true,
+        // ignore:no-equal-arguments
+        video: (_) => true,
+        // ignore:no-equal-arguments
+        audio: (_) => true,
+        unknown: (_) => false,
+      );
 
   @override
   int? get maximumFileSizeInBytes => null;

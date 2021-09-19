@@ -28,7 +28,8 @@ class HashtagStatusListNetworkOnlyListBloc extends IStatusNetworkOnlyListBloc {
     required Uri instanceUri,
   }) {
     var remoteInstanceBloc = IRemoteInstanceBloc.of(context, listen: false);
-    var unifediApiTimelineService = remoteInstanceBloc.unifediApiManager.createTimelineService();
+    var unifediApiTimelineService =
+        remoteInstanceBloc.unifediApiManager.createTimelineService();
 
     var bloc = HashtagStatusListNetworkOnlyListBloc(
       timelineLocalPreferenceBloc: timelineLocalPreferenceBloc,

@@ -34,8 +34,7 @@ class _InstanceAnnouncementEmojiReactionListBodyWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var reactions =
-        Provider.of<List<IUnifediApiEmojiReaction>?>(context);
+    var reactions = Provider.of<List<IUnifediApiEmojiReaction>?>(context);
 
     if (reactions?.isNotEmpty == true) {
       return Padding(

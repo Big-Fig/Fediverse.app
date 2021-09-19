@@ -54,8 +54,7 @@ class MyAccountFeaturedHashtagBloc extends DisposableOwner
     BuildContext context, {
     required IMyAccountFeaturedHashtag featuredHashtag,
   }) {
-    var unifediApiMyAccountService =
-        Provider.of<IUnifediApiMyAccountService>(
+    var unifediApiMyAccountService = Provider.of<IUnifediApiMyAccountService>(
       context,
       listen: false,
     );

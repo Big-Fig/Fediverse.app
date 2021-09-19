@@ -75,7 +75,8 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
     );
 
     List<List<IUnifediApiChatMessage>> unifediApiChatMessagesList;
-    unifediApiChatMessagesList = await Future.wait(unifediApiChatMessagesListFuture);
+    unifediApiChatMessagesList =
+        await Future.wait(unifediApiChatMessagesListFuture);
 
     var unifediApiChatMessages = <IUnifediApiChatMessage>[];
 

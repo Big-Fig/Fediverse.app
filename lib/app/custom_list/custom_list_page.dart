@@ -298,8 +298,8 @@ class _CustomListPageWrapper extends StatelessWidget {
             return customListTimelineStatusCachedListBloc;
           },
           child: StatusCachedListBlocProxyProvider(
-            child: ProxyProvider<IStatusCachedListBloc,
-                ICachedListBloc<IStatus>>(
+            child:
+                ProxyProvider<IStatusCachedListBloc, ICachedListBloc<IStatus>>(
               update: (context, value, previous) => value,
               child: StatusCachedListBlocLoadingWidget(
                 child: StatusCachedPaginationBloc.provideToContext(

@@ -35,8 +35,7 @@ class MyAccountFeaturedHashtagSuggestionHashtagListNetworkOnlyListBloc
       return [];
     }
 
-    var pleromaHashtags =
-        await unifediApiMyAccountService.getMySuggestedTags();
+    var pleromaHashtags = await unifediApiMyAccountService.getMySuggestedTags();
     List<IHashtag> result = pleromaHashtags
         .map(
           (pleromaHashtag) => pleromaHashtag.toHashtag(),

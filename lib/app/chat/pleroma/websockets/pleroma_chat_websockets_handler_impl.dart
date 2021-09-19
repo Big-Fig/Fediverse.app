@@ -27,7 +27,7 @@ class PleromaChatWebSocketsHandler extends WebSocketsChannelHandler {
     required IMyAccountBloc myAccountBloc,
   }) : super(
           myAccountBloc: myAccountBloc,
-        unifediApiWebSocketsService: unifediApiWebSocketsService,
+          unifediApiWebSocketsService: unifediApiWebSocketsService,
           statusRepository: statusRepository,
           notificationRepository: notificationRepository,
           instanceAnnouncementRepository: instanceAnnouncementRepository,
@@ -40,7 +40,6 @@ class PleromaChatWebSocketsHandler extends WebSocketsChannelHandler {
           isFromHomeTimeline: false,
           handlerType: handlerType,
         );
-
 
   @override
   IDisposable initListener() =>

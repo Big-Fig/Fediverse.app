@@ -34,9 +34,9 @@ DialogAction buildDeleteAndSaveToDrafts(
   IStatusBloc statusBloc,
 ) {
   var pollLimits = ICurrentAuthInstanceBloc.of(
-        context,
-        listen: false,
-      ).currentInstance?.info?.limits?.poll;
+    context,
+    listen: false,
+  ).currentInstance?.info?.limits?.poll;
 
   return DialogAction(
     label: S.of(context).app_status_delete_dialog_action_deleteAndSaveToDrafts,
@@ -86,9 +86,9 @@ DialogAction buildDeleteAndStartNewAction(
   IStatusBloc statusBloc,
 ) {
   var pollLimits = ICurrentAuthInstanceBloc.of(
-        context,
-        listen: false,
-      ).currentInstance?.info?.limits?.poll;
+    context,
+    listen: false,
+  ).currentInstance?.info?.limits?.poll;
 
   return DialogAction(
     label: S.of(context).app_status_delete_dialog_action_deleteAndStartNew,

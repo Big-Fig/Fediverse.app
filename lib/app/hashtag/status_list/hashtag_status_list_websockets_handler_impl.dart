@@ -25,7 +25,7 @@ class HashtagStatusListWebSocketsHandler extends WebSocketsChannelHandler {
     required WebSocketsChannelHandlerType handlerType,
     required IMyAccountBloc myAccountBloc,
   }) : super(
-    unifediApiWebSocketsService: unifediApiWebSocketsService,
+          unifediApiWebSocketsService: unifediApiWebSocketsService,
           myAccountBloc: myAccountBloc,
           statusRepository: statusRepository,
           notificationRepository: notificationRepository,
@@ -46,11 +46,11 @@ class HashtagStatusListWebSocketsHandler extends WebSocketsChannelHandler {
   @override
   IDisposable initListener() =>
       unifediApiWebSocketsService.listenForHashtagEvents(
-    tag: hashtag,
-    localOnly: local == true,
-    handlerType: handlerType,
-    onEvent: handleEvent,
-  );
+        tag: hashtag,
+        localOnly: local == true,
+        handlerType: handlerType,
+        onEvent: handleEvent,
+      );
 
   @override
   String get logTag => 'hashtag_timeline_websockets_handler_impl.dart';

@@ -14,8 +14,7 @@ class WebSocketsModeSingleFromListValueFormFieldBloc
     this.possibleValues = WebSocketsMode.values,
     required WebSocketsMode originValue,
     bool isEnabled = true,
-    List<FormValueFieldValidation<WebSocketsMode>> validators =
-        const [],
+    List<FormValueFieldValidation<WebSocketsMode>> validators = const [],
   }) : super(
           originValue: originValue,
           isEnabled: isEnabled,

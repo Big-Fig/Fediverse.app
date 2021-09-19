@@ -352,8 +352,6 @@ class TimelineSettings extends ISettings<TimelineSettings> {
   UnifediApiReplyVisibilityFilter? get replyVisibilityFilter =>
       replyVisibilityFilterString?.toUnifediApiReplyVisibilityFilter();
 
-
-
   @override
   TimelineSettings clone() => copyWith();
 

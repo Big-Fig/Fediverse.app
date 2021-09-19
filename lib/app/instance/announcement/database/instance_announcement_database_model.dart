@@ -18,9 +18,8 @@ class DbInstanceAnnouncements extends Table {
 
   TextColumn get content => text()();
 
-  TextColumn? get reactions => text()
-      .map(UnifediApiEmojiReactionListDatabaseConverter())
-      .nullable()();
+  TextColumn? get reactions =>
+      text().map(UnifediApiEmojiReactionListDatabaseConverter()).nullable()();
 
   TextColumn? get mentions =>
       text().map(UnifediApiMentionListDatabaseConverter()).nullable()();

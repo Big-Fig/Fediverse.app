@@ -66,16 +66,18 @@ extension UnifediApiStatusDbExtension on IUnifediApiStatus {
       emojis: remoteStatus.emojis?.toUnifediApiEmojiList(),
       poll: remoteStatus.poll?.toUnifediApiPoll(),
       card: remoteStatus.card?.toUnifediApiCard(),
-      contentVariants: remoteStatus.contentVariants?.toUnifediApiContentVariants(),
+      contentVariants:
+          remoteStatus.contentVariants?.toUnifediApiContentVariants(),
       conversationId: remoteStatus.conversationId,
       directConversationId: remoteStatus.directConversationId,
       inReplyToAccountAcct: remoteStatus.inReplyToAccountAcct,
       local: remoteStatus.local,
-      spoilerTextVariants: remoteStatus.spoilerTextVariants?.toUnifediApiContentVariants(),
+      spoilerTextVariants:
+          remoteStatus.spoilerTextVariants?.toUnifediApiContentVariants(),
       expiresAt: remoteStatus.expiresAt,
       threadMuted: remoteStatus.threadMuted,
-      emojiReactions: remoteStatus.emojiReactions
-          ?.toUnifediApiEmojiReactionList(),
+      emojiReactions:
+          remoteStatus.emojiReactions?.toUnifediApiEmojiReactionList(),
       accountRemoteId: remoteStatus.account.id,
       // remote statuses always published
       pendingState: PendingState.published,
@@ -88,8 +90,6 @@ extension UnifediApiStatusDbExtension on IUnifediApiStatus {
 }
 
 extension IStatusPleromaExtension on IStatus {
-
-
   UnifediApiStatus toUnifediApiStatus() {
     return UnifediApiStatus(
       id: remoteId!,

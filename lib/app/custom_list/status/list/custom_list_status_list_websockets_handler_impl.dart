@@ -24,7 +24,7 @@ class CustomListStatusListWebSocketsHandler extends WebSocketsChannelHandler {
     required WebSocketsChannelHandlerType handlerType,
     required IMyAccountBloc myAccountBloc,
   }) : super(
-    unifediApiWebSocketsService: unifediApiWebSocketsService,
+          unifediApiWebSocketsService: unifediApiWebSocketsService,
           myAccountBloc: myAccountBloc,
           statusRepository: statusRepository,
           notificationRepository: notificationRepository,
@@ -39,7 +39,6 @@ class CustomListStatusListWebSocketsHandler extends WebSocketsChannelHandler {
           handlerType: handlerType,
         );
   final String customListRemoteId;
-
 
   @override
   IDisposable initListener() =>

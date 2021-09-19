@@ -17,6 +17,7 @@ import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
+import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
 import 'package:unifedi_api/unifedi_api.dart';
@@ -37,6 +38,7 @@ import 'conversation_test_helper.dart';
   IUnifediApiConversationService,
   IUnifediApiStatusService,
   IUnifediApiMyAccountService,
+  IConnectionService,
 ])
 void main() {
   late IConversationChat conversation;
@@ -103,12 +105,12 @@ void main() {
         instance: authInstance,
       );
 
-
       conversation =
           await ConversationMockHelper.createTestConversation(seed: 'seed1');
 
       conversationBloc = ConversationChatBloc(
         conversation: conversation,
+        connectionService: MockIConnectionService(),
         pleromaConversationService: pleromaConversationServiceMock,
         accountRepository: accountRepository,
         statusRepository: statusRepository,

@@ -36,8 +36,7 @@ void main() {
     var backgroundImage = 'backgroundImage11';
     var testDbAccount =
         await AccountDatabaseMockHelper.createTestDbAccount(seed: 'seed1');
-    testDbAccount =
-        testDbAccount.copyWith(backgroundImage: backgroundImage);
+    testDbAccount = testDbAccount.copyWith(backgroundImage: backgroundImage);
     await accountDao.insert(
       entity: testDbAccount,
       mode: null,

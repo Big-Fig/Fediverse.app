@@ -9,7 +9,9 @@ abstract class AccountStatusesMediaOnlyNetworkOnlyListBloc
   AccountStatusesMediaOnlyNetworkOnlyListBloc({
     required IAccount? account,
     required IUnifediApiAccountService unifediApiAccountService,
-  }) : super(account: account, unifediApiAccountService: unifediApiAccountService);
+  }) : super(
+            account: account,
+            unifediApiAccountService: unifediApiAccountService);
 
   @override
   IUnifediApiService get unifediApi => unifediApiAccountService;

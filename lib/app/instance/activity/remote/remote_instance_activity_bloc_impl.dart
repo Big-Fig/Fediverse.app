@@ -16,7 +16,8 @@ class RemoteInstanceActivityBloc extends InstanceActivityBloc
 
   RemoteInstanceActivityBloc({
     required this.remoteInstanceBloc,
-  })  : unifediApiInstanceService = remoteInstanceBloc.unifediApiManager.createInstanceService(),
+  })  : unifediApiInstanceService =
+            remoteInstanceBloc.unifediApiManager.createInstanceService(),
         super(
           instance: null,
           instanceUri: remoteInstanceBloc.instanceUri,

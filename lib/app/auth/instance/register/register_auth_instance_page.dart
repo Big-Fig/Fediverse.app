@@ -22,6 +22,7 @@ import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class RegisterAuthInstancePage extends StatelessWidget {
   const RegisterAuthInstancePage();
@@ -33,8 +34,8 @@ class RegisterAuthInstancePage extends StatelessWidget {
     return Scaffold(
       appBar: FediPageTitleAppBar(
         title: S.of(context).app_auth_instance_register_title(
-          registerAuthInstanceBloc.instanceBaseUri.host,
-        ),
+              registerAuthInstanceBloc.instanceBaseUri.host,
+            ),
         leading: const FediDismissIconButton(),
       ),
       body: const SafeArea(
@@ -50,24 +51,27 @@ class RegisterAuthInstancePage extends StatelessWidget {
 
 // ignore: long-method
 Future<AuthHostRegistrationResult?> goToRegisterAuthInstancePage(
-    BuildContext context, {
-      required Uri instanceBaseUri,
-    }) async =>
+  BuildContext context, {
+  required Uri instanceBaseUri,
+}) async =>
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) {
           return DisposableProvider<IRegisterAuthInstanceBloc>(
             create: (context) {
-              var localizationSettingsLocalPreferenceBloc = ILocalizationSettingsLocalPreferenceBloc
-                  .of(context, listen: false,);
+              var localizationSettingsLocalPreferenceBloc =
+                  ILocalizationSettingsLocalPreferenceBloc.of(
+                context,
+                listen: false,
+              );
 
-              var localeName = localizationSettingsLocalPreferenceBloc.value
-                  ?.localizationLocale?.localeString ?? Platform.localeName;
-
+              var localeName = localizationSettingsLocalPreferenceBloc
+                      .value?.localizationLocale?.localeString ??
+                  Platform.localeName;
 
               var registerAuthInstanceBloc = RegisterAuthInstanceBloc(
-                localeName:localeName,
+                localeName: localeName,
                 instanceBaseUri: instanceBaseUri,
                 localPreferencesService: ILocalPreferencesService.of(
                   context,
@@ -82,7 +86,7 @@ Future<AuthHostRegistrationResult?> goToRegisterAuthInstancePage(
                   listen: false,
                 ),
                 pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc:
-                IAuthApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc.of(
+                    IAuthApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc.of(
                   context,
                   listen: false,
                 ),
@@ -97,7 +101,7 @@ Future<AuthHostRegistrationResult?> goToRegisterAuthInstancePage(
               );
 
               registerAuthInstanceBloc.registrationResultStream.listen(
-                    (AuthHostRegistrationResult registrationResult) async {
+                (AuthHostRegistrationResult registrationResult) async {
                   if (registrationResult.isPossibleToLogin) {
                     await ICurrentAuthInstanceBloc.of(context, listen: false)
                         .changeCurrentInstance(
@@ -110,10 +114,11 @@ Future<AuthHostRegistrationResult?> goToRegisterAuthInstancePage(
                       _showEmailConfirmationRequiredToast(context);
                     } else {
                       var error = registrationResult.anyError;
-                      if (error is UnifediApiRestException) {
+                      if (error is IUnifediApiRestErrorException) {
                         _showCantLoginToast(
                           context,
-                          errorDescription: error.decodedErrorDescriptionOrBody,
+                          errorDescription:
+                              error.unifediError.descriptionOrContent,
                         );
                       } else {
                         _showCantLoginToast(
@@ -160,18 +165,17 @@ void _showEmailConfirmationRequiredToast(BuildContext context) {
   );
 }
 
-void _showCantLoginToast(BuildContext context, {
+void _showCantLoginToast(
+  BuildContext context, {
   required String? errorDescription,
 }) {
   IToastService.of(context, listen: false).showInfoToast(
     context: context,
     title:
-    S
-        .of(context)
-        .app_auth_instance_register_cantLogin_notification_title,
+        S.of(context).app_auth_instance_register_cantLogin_notification_title,
     content:
-    S.of(context).app_auth_instance_register_cantLogin_notification_content(
-      errorDescription ?? '',
-    ),
+        S.of(context).app_auth_instance_register_cantLogin_notification_content(
+              errorDescription ?? '',
+            ),
   );
 }

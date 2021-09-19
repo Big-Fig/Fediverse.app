@@ -249,8 +249,8 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
       accountRepository: accountRepository,
     )..disposeWith(this);
 
-    await globalProviderService
-        .asyncInitAndRegister<IPleromaChatMessageRepository>(chatMessageRepository);
+    await globalProviderService.asyncInitAndRegister<
+        IPleromaChatMessageRepository>(chatMessageRepository);
 
     var chatRepository = PleromaChatRepository(
       appDatabase: moorDatabaseService.appDatabase,
@@ -514,6 +514,7 @@ class CurrentAuthInstanceContextBloc extends ProviderContextBloc
           IUnifediApiPushSubscriptionService>(pleromaPushService);
 
       var pushSettingsBloc = PushSettingsBloc(
+        connectionService: connectionService,
         pushSubscriptionKeysP256dh: configService.pushSubscriptionKeysP256dh!,
         pushSubscriptionKeysAuth: configService.pushSubscriptionKeysAuth!,
         pushRelayService: pushRelayService,

@@ -12,6 +12,7 @@ import 'package:fedi/app/chat/pleroma/with_last_message/repository/pleroma_chat_
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:easy_dispose/easy_dispose.dart';
+import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
@@ -55,6 +56,7 @@ class PleromaChatWithLastMessageListBloc extends DisposableOwner
     required this.chatRepository,
     required this.chatWithLastMessageRepository,
     required this.paginationSettingsBloc,
+    required IConnectionService connectionService,
     required IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc,
     required WebSocketsChannelHandlerType handlerType,
   }) {
@@ -65,6 +67,7 @@ class PleromaChatWithLastMessageListBloc extends DisposableOwner
       chatRepository: chatRepository,
     )..disposeWith(this);
     chatPaginationBloc = PleromaChatWithLastMessagePaginationBloc(
+      connectionService: connectionService,
       cachedListBloc: chatListBloc,
       paginationSettingsBloc: paginationSettingsBloc,
       maximumCachedPagesCount: null,
@@ -91,6 +94,10 @@ class PleromaChatWithLastMessageListBloc extends DisposableOwner
     required WebSocketsChannelHandlerType handlerType,
   }) =>
       PleromaChatWithLastMessageListBloc(
+        connectionService: Provider.of<IConnectionService>(
+          context,
+          listen: false,
+        ),
         pleromaApiChatService:
             Provider.of<IUnifediApiChatService>(context, listen: false),
         chatWithLastMessageRepository:

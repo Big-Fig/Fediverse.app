@@ -87,8 +87,8 @@ class LocalHashtagPageBodyWidget extends StatelessWidget {
           update: (context, hashtagPageBloc, _) =>
               hashtagPageBloc.statusCachedListBloc,
           child: StatusCachedListBlocProxyProvider(
-            child: ProxyProvider<IStatusCachedListBloc,
-                ICachedListBloc<IStatus>>(
+            child:
+                ProxyProvider<IStatusCachedListBloc, ICachedListBloc<IStatus>>(
               update: (context, value, previous) => value,
               child: ProxyProvider<ILocalHashtagPageBloc,
                   IStatusCachedPaginationBloc>(

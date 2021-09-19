@@ -40,7 +40,7 @@ Future<bool?> _save(IUnifediApiMediaAttachment mediaAttachment) async {
   var saved = await typeAsUnifediApi.maybeMap<FutureOr<bool?>>(
     image: (_) => _saveImage(mediaAttachment),
     video: (_) => _saveVideo(mediaAttachment),
-    // no-equal-arguments
+    // ignore: no-equal-arguments
     gifv: (_) => _saveVideo(mediaAttachment),
     orElse: () => false,
   );

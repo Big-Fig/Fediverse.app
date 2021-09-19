@@ -10,8 +10,9 @@ abstract class AccountStatusesPinnedOnlyNetworkOnlyListBloc
     required IAccount? account,
     required IUnifediApiAccountService unifediApiAccountService,
   }) : super(
-            account: account,
-            unifediApiAccountService: unifediApiAccountService,);
+          account: account,
+          unifediApiAccountService: unifediApiAccountService,
+        );
 
   @override
   IUnifediApiService get unifediApi => unifediApiAccountService;
@@ -40,7 +41,8 @@ abstract class AccountStatusesPinnedOnlyNetworkOnlyListBloc
     );
 
     return unifediApiStatuses
-        .map((unifediApiStatus) => unifediApiStatus.toDbStatusPopulatedWrapper())
+        .map(
+            (unifediApiStatus) => unifediApiStatus.toDbStatusPopulatedWrapper())
         .toList();
   }
 }

@@ -37,7 +37,8 @@ class RemoteAccountBloc extends AccountBloc {
   }) {
     var remoteInstanceBloc = IRemoteInstanceBloc.of(context, listen: false);
 
-    var unifediApiAccountService = remoteInstanceBloc.unifediApiManager.createAccountService();
+    var unifediApiAccountService =
+        remoteInstanceBloc.unifediApiManager.createAccountService();
 
     var remoteAccountBloc = RemoteAccountBloc(
       account: account,

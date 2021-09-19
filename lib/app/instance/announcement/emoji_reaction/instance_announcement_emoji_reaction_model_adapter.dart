@@ -22,8 +22,7 @@ class InstanceAnnouncementEmojiReactionAdapter implements IEmojiReaction {
       identical(this, other) ||
       other is InstanceAnnouncementEmojiReactionAdapter &&
           runtimeType == other.runtimeType &&
-          unifediApiEmojiReaction ==
-              other.unifediApiEmojiReaction;
+          unifediApiEmojiReaction == other.unifediApiEmojiReaction;
 
   @override
   int get hashCode => unifediApiEmojiReaction.hashCode;

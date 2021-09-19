@@ -2,5 +2,4 @@ import 'package:fedi/form/field/value/select_from_list/single/single_select_from
 import 'package:fediverse_api/fediverse_api_utils.dart';
 
 abstract class IWebSocketsModeSingleFromListValueFormFieldBloc
-    implements
-        ISingleSelectFromListValueFormFieldBloc<WebSocketsMode> {}
+    implements ISingleSelectFromListValueFormFieldBloc<WebSocketsMode> {}

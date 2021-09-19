@@ -111,11 +111,9 @@ class UnifediApiVisibilityMoorTypeConverter
     implements TypeConverter<UnifediApiVisibility, String> {
   const UnifediApiVisibilityMoorTypeConverter();
 
-  UnifediApiVisibility fromJson(String value) =>
-      value.toUnifediApiVisibility();
+  UnifediApiVisibility fromJson(String value) => value.toUnifediApiVisibility();
 
-  String toJson(UnifediApiVisibility value) =>
-      value.stringValue ;
+  String toJson(UnifediApiVisibility value) => value.stringValue;
 
   @override
   UnifediApiVisibility mapToDart(String? fromDb) => fromJson(fromDb!);

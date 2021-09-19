@@ -64,7 +64,7 @@ void main() {
     WebSocketsMode? listened;
 
     StreamSubscription subscriptionListenedWebSocketsAgeLimitType =
-        webSocketsSettingsBloc.handlingTypeStream.listen(
+        webSocketsSettingsBloc.modeStream.listen(
       (data) {
         listened = data;
       },
@@ -89,7 +89,7 @@ void main() {
       defaultValue.handlingType,
     );
     expect(
-      webSocketsSettingsBloc.handlingType,
+      webSocketsSettingsBloc.mode,
       defaultValue.handlingType,
     );
 
@@ -98,7 +98,7 @@ void main() {
       seed: 'seed',
     ).handlingType;
 
-    await webSocketsSettingsBloc.changeHandlingType(testHandlingType);
+    await webSocketsSettingsBloc.changeMode(testHandlingType);
 
     listened = null;
     await RxDartMockHelper.waitForData(() => listened);
@@ -117,7 +117,7 @@ void main() {
       testHandlingType,
     );
     expect(
-      webSocketsSettingsBloc.handlingType,
+      webSocketsSettingsBloc.mode,
       testHandlingType,
     );
 

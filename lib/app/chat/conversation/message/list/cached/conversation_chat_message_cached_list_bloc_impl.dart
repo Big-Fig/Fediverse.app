@@ -26,7 +26,8 @@ class ConversationChatMessageCachedListBloc extends DisposableOwner
   });
 
   @override
-  IUnifediApiService get unifediApi => conversationChatStatusListBloc.unifediApi;
+  IUnifediApiService get unifediApi =>
+      conversationChatStatusListBloc.unifediApi;
 
   @override
   Future<bool> refreshItemsFromRemoteForPage({

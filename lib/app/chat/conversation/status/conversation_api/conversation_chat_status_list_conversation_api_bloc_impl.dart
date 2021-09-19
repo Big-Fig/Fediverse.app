@@ -37,7 +37,7 @@ class ConversationChatStatusListConversationApiBloc
 
     var remoteStatuses =
         await pleromaConversationService.getConversationStatuses(
-          conversationId: conversation!.remoteId,
+      conversationId: conversation!.remoteId,
       pagination: UnifediApiPagination(
         limit: limit,
         minId: newerThan?.remoteId,

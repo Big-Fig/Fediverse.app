@@ -136,47 +136,46 @@ extension IInstanceDetailsBlocExtension on IInstanceDetailsBloc {
 
   int? get avatarUploadLimit => instance?.limits?.media?.avatarUploadLimit;
 
-  Stream<int?> get avatarUploadLimitStream =>
-      instanceStream.map((instance) => instance?.limits?.media?.avatarUploadLimit);
+  Stream<int?> get avatarUploadLimitStream => instanceStream
+      .map((instance) => instance?.limits?.media?.avatarUploadLimit);
 
-  int? get backgroundUploadLimit => instance?.limits?.media?.backgroundUploadLimit;
+  int? get backgroundUploadLimit =>
+      instance?.limits?.media?.backgroundUploadLimit;
 
-  Stream<int?> get backgroundUploadLimitStream =>
-      instanceStream.map((instance) => instance?.limits?.media?.backgroundUploadLimit);
+  Stream<int?> get backgroundUploadLimitStream => instanceStream
+      .map((instance) => instance?.limits?.media?.backgroundUploadLimit);
 
   int? get bannerUploadLimit => instance?.limits?.media?.bannerUploadLimit;
 
-  Stream<int?> get bannerUploadLimitStream =>
-      instanceStream.map((instance) => instance?.limits?.media?.backgroundUploadLimit);
+  Stream<int?> get bannerUploadLimitStream => instanceStream
+      .map((instance) => instance?.limits?.media?.backgroundUploadLimit);
 
   int? get descriptionLimit => instance?.limits?.media?.descriptionLimit;
 
-  Stream<int?> get descriptionLimitStream =>
-      instanceStream.map((instance) => instance?.limits?.media?.descriptionLimit);
+  Stream<int?> get descriptionLimitStream => instanceStream
+      .map((instance) => instance?.limits?.media?.descriptionLimit);
 
   int? get chatLimit => instance?.limits?.chat?.messageLimit;
 
   Stream<int?> get chatLimitStream =>
       instanceStream.map((instance) => instance?.limits?.chat?.messageLimit);
 
-  List<String>? get pleromaMetadataFeatures =>
-      instance?.features;
+  List<String>? get pleromaMetadataFeatures => instance?.features;
 
   Stream<List<String>?> get pleromaMetadataFeaturesStream =>
       instanceStream.map((instance) => instance?.features);
 
-  IUnifediApiInstanceFederation?
-      get unifediApiInstanceFederation => instance?.federation;
+  IUnifediApiInstanceFederation? get unifediApiInstanceFederation =>
+      instance?.federation;
 
   Stream<IUnifediApiInstanceFederation?>
-      get unifediApiInstanceFederationStream => instanceStream
-          .map((instance) => instance?.federation);
+      get unifediApiInstanceFederationStream =>
+          instanceStream.map((instance) => instance?.federation);
 
-  List<String>? get pleromaMetadataPostFormats =>
-      instance?.postFormats;
+  List<String>? get pleromaMetadataPostFormats => instance?.postFormats;
 
-  Stream<List<String>?> get pleromaMetadataPostFormatsStream => instanceStream
-      .map((instance) => instance?.postFormats);
+  Stream<List<String>?> get pleromaMetadataPostFormatsStream =>
+      instanceStream.map((instance) => instance?.postFormats);
 
   bool? get pleromaMetadataAccountActivationRequired =>
       instance?.accountActivationRequired;
@@ -186,13 +185,12 @@ extension IInstanceDetailsBlocExtension on IInstanceDetailsBloc {
         (instance) => instance?.accountActivationRequired,
       );
 
-  IUnifediApiInstanceFieldLimits?
-      get pleromaMetadataFieldsLimits =>
-          instance?.limits?.field;
+  IUnifediApiInstanceFieldLimits? get pleromaMetadataFieldsLimits =>
+      instance?.limits?.field;
 
   Stream<IUnifediApiInstanceFieldLimits?>
-      get pleromaMetadataFieldsLimitsStream => instanceStream
-          .map((instance) => instance?.limits?.field);
+      get pleromaMetadataFieldsLimitsStream =>
+          instanceStream.map((instance) => instance?.limits?.field);
 
   String? get vapidPublicKey => instance?.vapidPublicKey;
 
@@ -345,9 +343,9 @@ bool _calculateIsHaveStatsFields(IUnifediApiInstance? instance) =>
 
 bool _calculateIsHaveUploadLimitsFields(IUnifediApiInstance? instance) =>
     instance?.limits?.media?.uploadLimit != null ||
-        instance?.limits?.media?.avatarUploadLimit != null ||
-        instance?.limits?.media?.bannerUploadLimit != null ||
-        instance?.limits?.media?.backgroundUploadLimit != null;
+    instance?.limits?.media?.avatarUploadLimit != null ||
+    instance?.limits?.media?.bannerUploadLimit != null ||
+    instance?.limits?.media?.backgroundUploadLimit != null;
 
 bool _calculateIsHaveMessagesLimitsFields(IUnifediApiInstance? instance) =>
     instance?.limits?.status?.maxTootChars != null ||

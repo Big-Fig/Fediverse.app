@@ -85,8 +85,8 @@ class LocalInstancePublicTimelinePageBodyWidget extends StatelessWidget {
           update: (context, instancePublicTimelinePageBloc, _) =>
               instancePublicTimelinePageBloc.statusCachedListBloc,
           child: StatusCachedListBlocProxyProvider(
-            child: ProxyProvider<IStatusCachedListBloc,
-                ICachedListBloc<IStatus>>(
+            child:
+                ProxyProvider<IStatusCachedListBloc, ICachedListBloc<IStatus>>(
               update: (context, value, previous) => value,
               child: ProxyProvider<ILocalInstancePublicTimelinePageBloc,
                   IStatusCachedPaginationBloc>(

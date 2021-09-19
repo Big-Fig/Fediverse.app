@@ -83,7 +83,8 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
       ),
       maximumMessageLength: info.limits?.status?.maxTootChars,
       pollLimits: info.limits?.poll,
-      maximumMediaAttachmentCount: info.limits?.status?.maxMediaAttachmentsCount,
+      maximumMediaAttachmentCount:
+          info.limits?.status?.maxMediaAttachmentsCount,
       maximumFileSizeInBytes: info.limits?.media?.uploadLimit,
       markMediaAsNsfwOnAttach:
           IPostStatusSettingsBloc.of(context, listen: false)

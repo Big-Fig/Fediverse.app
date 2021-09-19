@@ -29,6 +29,8 @@ import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
+import 'package:fedi/app/push/fedi_push_notification_model_impl.dart';
+
 var _logger = Logger('rich_notifications_service_background_message_impl.dart');
 
 const _pushDataAccountKey = 'account';
@@ -137,7 +139,7 @@ class RichNotificationsServiceBackgroundMessage extends AsyncInitLoadingBloc
     );
 
     var notification = _notificationPayloadData.unifediApiNotification;
-    var FediversePushTootRelayMessage = FediversePushTootRelayMessage(
+    var fediPushNotification = FediPushNotification(
       notificationId: notification.id,
       server: _notificationPayloadData.serverHost,
       account: _notificationPayloadData.acct,
@@ -151,7 +153,7 @@ class RichNotificationsServiceBackgroundMessage extends AsyncInitLoadingBloc
       PushMessage(
         typeString: pushMessageType.toJsonValue(),
         notification: null,
-        data: FediversePushTootRelayMessage.toJson(),
+        data: fediPushNotification.toJson(),
       ),
     );
   }
@@ -527,25 +529,20 @@ Future<IUnifediApiNotification?> _loadLastNotificationForInstance({
   await connectionService.internalAsyncInit();
   disposableOwner.addDisposable(connectionService);
 
-  var restService = RestService(baseUri: authInstance.uri);
-  disposableOwner.addDisposable(restService);
-
-  var unifediApiAuthRestService = UnifediApiAuthRestService(
-    restService: restService,
-    connectionService: connectionService,
-    isPleroma: authInstance.isPleroma,
-    accessToken: authInstance.token!.accessToken,
+  var apiManager = authInstance.info!.typeAsUnifediApi.createApiManager(
+    uri: authInstance.uri.toString(),
   );
-  disposableOwner.addDisposable(unifediApiAuthRestService);
 
-  var unifediApiNotificationService = UnifediApiNotificationService(
-    restApiAuthService: unifediApiAuthRestService,
-  );
+  disposableOwner.addDisposable(apiManager);
+
+  var unifediApiNotificationService = apiManager.createNotificationService();
   disposableOwner.addDisposable(unifediApiNotificationService);
 
   try {
     var unifediApiNotifications =
         await unifediApiNotificationService.getNotifications(
+      excludeVisibilities: null,
+      onlyFromAccountId: null,
       pagination: UnifediApiPagination(
         limit: 1,
         minId: null,

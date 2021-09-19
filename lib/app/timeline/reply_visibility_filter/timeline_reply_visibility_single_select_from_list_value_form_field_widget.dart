@@ -39,9 +39,11 @@ class TimelineReplyVisibilityFilterSelectSingleFromListValueFormFieldWidget
 String mapTimelineTypeToLabel(
   BuildContext context,
   UnifediApiReplyVisibilityFilter? unifediApiReplyVisibilityFilter,
-) => unifediApiReplyVisibilityFilter?.map(
-    following: (_) => S
-        .of(context)
-        .app_timeline_settings_replyVisibilityFilter_following,
-    self: (_) => S.of(context).app_timeline_settings_replyVisibilityFilter_self,
-  ) ?? S.of(context).app_timeline_settings_replyVisibilityFilter_field_null;
+) =>
+    unifediApiReplyVisibilityFilter?.map(
+      following: (_) =>
+          S.of(context).app_timeline_settings_replyVisibilityFilter_following,
+      self: (_) =>
+          S.of(context).app_timeline_settings_replyVisibilityFilter_self,
+    ) ??
+    S.of(context).app_timeline_settings_replyVisibilityFilter_field_null;

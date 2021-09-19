@@ -10,6 +10,7 @@ import 'package:fedi/app/status/repository/status_repository_impl.dart';
 import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
+import 'package:fedi/connection/connection_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -28,6 +29,7 @@ import 'status_test_helper.dart';
   IUnifediApiStatusService,
   IUnifediApiAccountService,
   IUnifediApiPollService,
+  IConnectionService,
 ])
 Future<void> main() async {
   late IStatus status;
@@ -55,6 +57,7 @@ Future<void> main() async {
     status = await StatusMockHelper.createTestStatus(seed: 'seed1');
 
     statusBloc = LocalStatusBloc(
+      connectionService: MockIConnectionService(),
       status: status,
       unifediApiStatusService: unifediApiStatusServiceMock,
       statusRepository: statusRepository,

@@ -11,6 +11,7 @@ import 'package:fedi/app/chat/conversation/with_last_message/pagination/list/con
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:easy_dispose/easy_dispose.dart';
+import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
@@ -51,6 +52,7 @@ class ConversationChatWithLastMessageListBloc extends DisposableOwner
     required this.conversationRepository,
     required this.paginationSettingsBloc,
     required this.conversationChatWithLastMessageRepository,
+    required IConnectionService connectionService,
     required IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc,
   }) : cachedListBloc = ConversationChatWithLastMessageCachedListBloc(
           conversationChatService: conversationService,
@@ -59,6 +61,7 @@ class ConversationChatWithLastMessageListBloc extends DisposableOwner
           conversationRepository: conversationRepository,
         ) {
     paginationBloc = ConversationChatWithLastMessagePaginationBloc(
+      connectionService: connectionService,
       paginationSettingsBloc: paginationSettingsBloc,
       listService: cachedListBloc,
       maximumCachedPagesCount: null,
@@ -85,6 +88,10 @@ class ConversationChatWithLastMessageListBloc extends DisposableOwner
     BuildContext context,
   ) =>
       ConversationChatWithLastMessageListBloc(
+        connectionService: Provider.of<IConnectionService>(
+          context,
+          listen: false,
+        ),
         conversationRepository: IConversationChatRepository.of(
           context,
           listen: false,

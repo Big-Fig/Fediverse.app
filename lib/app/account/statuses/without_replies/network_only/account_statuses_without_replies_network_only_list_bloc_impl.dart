@@ -32,7 +32,6 @@ abstract class AccountStatusesWithoutRepliesNetworkOnlyListBloc
         minId: minId,
         maxId: maxId,
       ),
-
       tagged: null,
       pinned: null,
       excludeReblogs: null,

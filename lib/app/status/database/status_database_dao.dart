@@ -156,8 +156,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
   ) =>
       query
         ..where((status) =>
-            status.local.equals(true) |
-            status.url.like('%$localDomain%'));
+            status.local.equals(true) | status.url.like('%$localDomain%'));
 
   // todo: improve performance: remove url.like filter. Add local flag on insert
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyRemoteWhere(
@@ -721,7 +720,8 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
         filters?.replyVisibilityFilterCondition?.replyVisibilityFilter;
     if (filters?.replyVisibilityFilterCondition?.replyVisibilityFilter !=
         null) {
-      if (replyVisibilityFilter == UnifediApiReplyVisibilityFilter.followingValue) {
+      if (replyVisibilityFilter ==
+          UnifediApiReplyVisibilityFilter.followingValue) {
         includeReplyToAccountFollowing = true;
       }
     }
@@ -742,7 +742,8 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
 
     if (filters?.replyVisibilityFilterCondition?.replyVisibilityFilter !=
         null) {
-      if (replyVisibilityFilter == UnifediApiReplyVisibilityFilter.followingValue) {
+      if (replyVisibilityFilter ==
+          UnifediApiReplyVisibilityFilter.followingValue) {
         finalQuery = addReplyToAccountSelfOrFollowingWhere(
           joinQuery,
           filters?.replyVisibilityFilterCondition?.myAccountRemoteId,

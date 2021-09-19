@@ -161,6 +161,7 @@ class _MediaAttachmentDetailsPageState
   ) {
     return mediaAttachment.typeAsUnifediApi.map(
       image: (_) => _buildCached(context, mediaAttachment),
+      // ignore: no-equal-arguments
       gifv: (_) => _buildCached(context, mediaAttachment),
       video: (_) {
         var mediaSettingsBloc = IMediaSettingsBloc.of(context, listen: false);
@@ -199,7 +200,9 @@ class _MediaAttachmentDetailsPageState
   }
 
   Widget _buildCached(
-      BuildContext context, IUnifediApiMediaAttachment mediaAttachment,) {
+    BuildContext context,
+    IUnifediApiMediaAttachment mediaAttachment,
+  ) {
     return IFilesCacheService.of(context).createCachedNetworkImageWidget(
       imageBuilder: (context, imageProvider) {
         return PhotoView(

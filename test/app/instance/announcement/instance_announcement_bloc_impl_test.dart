@@ -33,7 +33,6 @@ void main() {
 
     unifediApiAnnouncementServiceMock = MockIUnifediApiAnnouncementService();
 
-
     instanceAnnouncement =
         await InstanceAnnouncementMockHelper.createTestInstanceAnnouncement(
       seed: 'seed1',

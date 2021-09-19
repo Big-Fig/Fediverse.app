@@ -1,11 +1,11 @@
 import 'dart:async';
 
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/chat/chat_bloc_impl.dart';
 import 'package:fedi/app/chat/message/chat_message_model.dart';
-
 import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_bloc.dart';
@@ -13,14 +13,14 @@ import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/pending/pending_model.dart';
+import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/id/fake_id_helper.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:easy_dispose/easy_dispose.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 final _logger = Logger('pleroma_chat_bloc_impl.dart');
 
@@ -53,6 +53,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
   final IPleromaChatRepository chatRepository;
   final IPleromaChatMessageRepository chatMessageRepository;
   final IAccountRepository accountRepository;
+  final IConnectionService connectionService;
 
   final StreamController<IPleromaChatMessage>
       onMessageLocallyHiddenStreamController = StreamController.broadcast();
@@ -67,6 +68,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
     required this.chatRepository,
     required this.chatMessageRepository,
     required this.accountRepository,
+    required this.connectionService,
     required IPleromaChat chat,
     required IPleromaChatMessage? lastChatMessage,
     bool needRefreshFromNetworkOnInit = false,
@@ -189,6 +191,10 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
     bool needRefreshFromNetworkOnInit = false,
   }) {
     return PleromaChatBloc(
+      connectionService: Provider.of<IConnectionService>(
+        context,
+        listen: false,
+      ),
       unifediApiChatService:
           Provider.of<IUnifediApiChatService>(context, listen: false),
       myAccountBloc: IMyAccountBloc.of(context, listen: false),
@@ -205,7 +211,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
   @override
   Future markAsRead() async {
     if (chat.unread > 0) {
-      if (unifediApiChatService.isApiReadyToUse) {
+      if (connectionService.isConnected) {
         var lastReadChatMessageId = lastChatMessage?.remoteId;
         if (lastReadChatMessageId == null) {
           var lastMessage = await chatMessageRepository.getChatLastChatMessage(
@@ -276,8 +282,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
                 id: localChatMessageId,
               );
 
-        idempotencyKey = dbChatMessage.wasSentWithIdempotencyKey;
-
+      idempotencyKey = dbChatMessage.wasSentWithIdempotencyKey;
 
       await chatMessageRepository.updateByDbIdInDbType(
         dbId: localChatMessageId,
@@ -313,9 +318,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
         mode: null,
       );
 
-      unifediApiPostChatMessage = unifediApiPostChatMessage.copyWith(
-        idempotencyKey: fakeUniqueRemoteRemoteId,
-      );
+      idempotencyKey = fakeUniqueRemoteRemoteId;
     }
 
     try {
@@ -366,7 +369,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
   Future deleteMessage({
     required IPleromaChatMessage chatMessage,
   }) async {
-    if (chatMessage!.isPendingStatePublishedOrNull) {
+    if (chatMessage.isPendingStatePublishedOrNull) {
       await unifediApiChatService.deleteChatMessage(
         chatMessageId: chatMessage.remoteId,
         chatId: chatMessage.chatRemoteId,

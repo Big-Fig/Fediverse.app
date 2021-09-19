@@ -4,6 +4,7 @@ import 'package:fedi/app/status/scheduled/list/cached/scheduled_status_cached_li
 import 'package:fedi/app/status/scheduled/pagination/cached/scheduled_status_cached_pagination_bloc.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_model.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
+import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/pagination/cached/cached_pagination_bloc.dart';
 import 'package:fedi/pagination/cached/cached_pagination_bloc_proxy_provider.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
@@ -20,7 +21,9 @@ class ScheduledStatusCachedPaginationBloc
     required this.scheduledStatusListService,
     required IPaginationSettingsBloc paginationSettingsBloc,
     required int? maximumCachedPagesCount,
+    required IConnectionService connectionService,
   }) : super(
+          connectionService: connectionService,
           maximumCachedPagesCount: maximumCachedPagesCount,
           paginationSettingsBloc: paginationSettingsBloc,
         );
@@ -63,6 +66,10 @@ class ScheduledStatusCachedPaginationBloc
     int? maximumCachedPagesCount,
   }) =>
       ScheduledStatusCachedPaginationBloc(
+        connectionService: Provider.of<IConnectionService>(
+          context,
+          listen: false,
+        ),
         scheduledStatusListService:
             Provider.of<IScheduledStatusCachedListBloc>(context, listen: false),
         paginationSettingsBloc: IPaginationSettingsBloc.of(

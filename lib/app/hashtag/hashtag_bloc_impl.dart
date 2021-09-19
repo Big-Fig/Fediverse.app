@@ -1,4 +1,3 @@
-
 import 'package:collection/collection.dart';
 import 'package:fedi/app/account/my/featured_hashtag/my_account_featured_hashtag_model.dart';
 import 'package:fedi/app/account/my/featured_hashtag/my_account_featured_hashtag_model_adapter.dart';
@@ -73,7 +72,8 @@ class HashtagBloc extends DisposableOwner implements IHashtagBloc {
   Future feature() async {
     assert(!featured);
 
-    var unifediApiFeatureTag = await unifediApiMyAccountService.featureMyAccountTag(
+    var unifediApiFeatureTag =
+        await unifediApiMyAccountService.featureMyAccountTag(
       name: hashtag.name,
     );
 
@@ -137,13 +137,12 @@ class HashtagBloc extends DisposableOwner implements IHashtagBloc {
     isLoadingFeaturedHashtagStateSubject.add(true);
     var unifediApiTags =
         await unifediApiMyAccountService.getMyAccountFeaturedTags(
-          pagination: null,
-        );
+      pagination: null,
+    );
 
     var found = unifediApiTags
         .map(
-          (unifediApiTag) =>
-              unifediApiTag.toMyAccountFeaturedHashtag(),
+          (unifediApiTag) => unifediApiTag.toMyAccountFeaturedHashtag(),
         )
         .firstWhereOrNull(
           (featuredTag) => featuredTag.name == hashtag.name,

@@ -95,8 +95,8 @@ class DbFilterPopulatedWrapper implements IFilter {
   }
 
   @override
-  List<UnifediApiFilterContextType>
-      get contextAsUnifediApiFilterContextType => context
+  List<UnifediApiFilterContextType> get contextAsUnifediApiFilterContextType =>
+      context
           .map(
             (contextString) => contextString.toUnifediApiFilterContextType(),
           )

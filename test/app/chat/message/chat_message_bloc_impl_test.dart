@@ -14,6 +14,7 @@ import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository_impl.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/emoji/text/emoji_text_model.dart';
+import 'package:fedi/connection/connection_service.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -29,6 +30,7 @@ import 'chat_message_test_helper.dart';
   IUnifediApiChatService,
   IUnifediApiAccountService,
   IMyAccountBloc,
+  IConnectionService,
 ])
 void main() {
   late IPleromaChat chat;
@@ -82,6 +84,7 @@ void main() {
         accountRepository: accountRepository,
         unifediApiAccountService: unifediApiAccountServiceMock,
         pleromaChatBloc: PleromaChatBloc(
+          connectionService: MockIConnectionService(),
           unifediApiChatService: unifediApiChatServiceMock,
           myAccountBloc: myAccountBloc,
           chatRepository: chatRepository,

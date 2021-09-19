@@ -33,7 +33,6 @@ void main() {
 
     unifediApiFilterServiceMock = MockIUnifediApiFilterService();
 
-
     filter = await FilterMockHelper.createTestFilter(
       seed: 'seed1',
     );

@@ -84,8 +84,7 @@ abstract class IStatusBloc implements IDisposable, IInstanceLocationBloc {
 
   Stream<int?> get emojiReactionsCountStream;
 
-  List<IUnifediApiEmojiReaction>?
-      get reblogPlusOriginalEmojiReactions;
+  List<IUnifediApiEmojiReaction>? get reblogPlusOriginalEmojiReactions;
 
   Stream<List<IUnifediApiEmojiReaction>?>
       get reblogPlusOriginalEmojiReactionsStream;

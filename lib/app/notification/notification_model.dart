@@ -54,11 +54,9 @@ abstract class INotification implements IEqualComparableObj<INotification> {
 
   String get type;
 
-
   UnifediApiNotificationType get typeAsUnifediApi;
 
   String? get emoji;
-
 
   bool get isContainsChat;
 
@@ -71,7 +69,6 @@ abstract class INotification implements IEqualComparableObj<INotification> {
   bool get dismissed;
 
   IUnifediApiAccount? get target;
-
 }
 
 class DbNotificationPopulatedWrapper implements INotification {
@@ -120,11 +117,9 @@ class DbNotificationPopulatedWrapper implements INotification {
   String? get emoji => dbNotificationPopulated.dbNotification.emoji;
 
   @override
-
   @override
   UnifediApiNotificationType get typeAsUnifediApi =>
       type.toUnifediApiNotificationType();
-
 
   @override
   String get type => dbNotificationPopulated.dbNotification.type;
@@ -136,7 +131,6 @@ class DbNotificationPopulatedWrapper implements INotification {
   @override
   bool get unread => dbNotificationPopulated.dbNotification.unread == true;
 
-  @override
   // ignore: long-parameter-list, code-metrics
   DbNotificationPopulatedWrapper copyWith({
     int? localId,

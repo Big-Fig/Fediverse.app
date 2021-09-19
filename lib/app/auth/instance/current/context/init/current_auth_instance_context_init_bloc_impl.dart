@@ -1,4 +1,4 @@
-
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/auth/instance/current/context/init/current_auth_instance_context_init_bloc.dart';
@@ -10,6 +10,8 @@ import 'package:fedi/app/filter/repository/filter_repository.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/notification/repository/notification_repository_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
+import 'package:fedi/connection/connection_service.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
@@ -31,6 +33,7 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
   final IConversationChatRepository conversationChatRepository;
   final IPleromaChatRepository pleromaChatRepository;
   final ICurrentAuthInstanceBloc currentAuthInstanceBloc;
+  final IConnectionService connectionService;
 
   CurrentAuthInstanceContextInitBloc({
     required this.myAccountBloc,
@@ -44,31 +47,41 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
     required this.notificationRepository,
     required this.conversationChatRepository,
     required this.pleromaChatRepository,
+    required this.connectionService,
   }) {
     stateSubject.disposeWith(this);
 
-    pleromaAuthRestService.unifediApiStateStream.listen(
-      (unifediApiState) {
-        _logger.finest(() => 'unifediApiState $unifediApiState');
-        if (unifediApiState == UnifediApiState.brokenAuth) {
+    unifediApiInstanceService.restService.unifediApiErrorStream
+        .listen((apiError) {
+      var statusCode = apiError.statusCode;
+      var restResponseCodeType =
+          RestResponseCodeType.detectByStatusCode(statusCode);
+
+      if (restResponseCodeType == RestResponseCodeType.clientErrorValue) {
+        var clientErrorCodeType =
+            RestResponseClientErrorCodeType.detectByStatusCode(statusCode);
+
+        if (clientErrorCodeType ==
+            RestResponseClientErrorCodeType.unauthorizedValue) {
           _logger.finest(() =>
               ' stateSubject.add(CurrentAuthInstanceContextInitState.invalidCredentials)');
           stateSubject
               .add(CurrentAuthInstanceContextInitState.invalidCredentials);
         }
-      },
-    ).disposeWith(this);
+      }
+    }).disposeWith(this);
   }
 
   bool instanceInfoUpdatedDuringRequiredDataUpdate = false;
 
   @override
+  // ignore: long-method
   Future refreshFromNetwork({
     required bool isNeedWaitForOptionalData,
   }) async {
     instanceInfoUpdatedDuringRequiredDataUpdate = false;
     stateSubject.add(CurrentAuthInstanceContextInitState.loading);
-    var isConnected = unifediApiInstanceService.isConnected;
+    var isConnected = connectionService.isConnected;
     _logger.finest(() => 'refresh isApiReadyToUse $isConnected');
 
     bool? requiredDataRefreshSuccess;
@@ -96,11 +109,25 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
         requiredDataRefreshSuccess = true;
       } catch (e, stackTrace) {
         _logger.warning(() => 'failed to update instance info', e, stackTrace);
-        if (e is UnifediApiInvalidCredentialsForbiddenRestException) {
-          stateSubject.add(
-            CurrentAuthInstanceContextInitState.invalidCredentials,
-          );
-          rethrow;
+        if (e is IUnifediApiRestErrorException) {
+          if (e.unifediError.statusCode ==
+              RestResponseClientErrorCodeType.forbiddenIntValue) {
+            stateSubject.add(
+              CurrentAuthInstanceContextInitState.invalidCredentials,
+            );
+            rethrow;
+          } else {
+            if (myAccountBloc.isLocalCacheExist) {
+              stateSubject.add(
+                CurrentAuthInstanceContextInitState.localCacheExist,
+              );
+            } else {
+              stateSubject.add(
+                CurrentAuthInstanceContextInitState
+                    .cantFetchAndLocalCacheNotExist,
+              );
+            }
+          }
         } else {
           if (myAccountBloc.isLocalCacheExist) {
             stateSubject.add(
@@ -245,11 +272,10 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
   }
 
   Future updateConversations() async {
-    var remoteConversations =
-        await pleromaConversationService.getConversations(
-          pagination: null,
-          recipientsIds: null,
-        );
+    var remoteConversations = await pleromaConversationService.getConversations(
+      pagination: null,
+      recipientsIds: null,
+    );
     await conversationChatRepository.upsertAllInRemoteType(
       remoteConversations,
       batchTransaction: null,
@@ -260,6 +286,10 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
     BuildContext context,
   ) =>
       CurrentAuthInstanceContextInitBloc(
+        connectionService: Provider.of<IConnectionService>(
+          context,
+          listen: false,
+        ),
         pleromaChatRepository: IPleromaChatRepository.of(
           context,
           listen: false,
@@ -293,10 +323,6 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
           listen: false,
         ),
         currentAuthInstanceBloc: ICurrentAuthInstanceBloc.of(
-          context,
-          listen: false,
-        ),
-        pleromaAuthRestService: Provider.of<IUnifediApiAuthRestService>(
           context,
           listen: false,
         ),

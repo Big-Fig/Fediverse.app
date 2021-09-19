@@ -7,6 +7,7 @@ import 'package:fedi/app/push/settings/push_settings_bloc.dart';
 import 'package:fedi/app/push/settings/push_settings_model.dart';
 import 'package:fedi/app/push/settings/relay/local_preferences/push_relay_settings_local_preference_bloc.dart';
 import 'package:fedi/app/push/settings/relay/push_relay_settings_model.dart';
+import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/push/fcm/fcm_push_service.dart';
 import 'package:fedi/push/relay/push_relay_service.dart';
 import 'package:logging/logging.dart';
@@ -25,7 +26,7 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
   final IFcmPushService fcmPushService;
   final StreamController<Exception> failedToUpdateStreamController =
       StreamController.broadcast();
-
+  final IConnectionService connectionService;
 
   final String pushSubscriptionKeysAuth;
   final String pushSubscriptionKeysP256dh;
@@ -44,8 +45,8 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
     required this.pleromaPushService,
     required this.pushRelayService,
     required this.currentInstance,
+    required this.connectionService,
     required this.fcmPushService,
-
   }) {
     failedToUpdateStreamController.disposeWith(this);
     addCustomDisposable(
@@ -79,7 +80,7 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
           '_checkResubscribe pushRelayBaseUrlChanged $pushRelayBaseUrlChanged');
       if (pushRelayBaseUrlChanged) {
         var deviceToken = fcmPushService.deviceToken;
-        var isApiReadyToUse = pleromaPushService.isApiReadyToUse;
+        var isApiReadyToUse = connectionService.isConnected;
         var isReady = deviceToken != null && isApiReadyToUse;
 
         _logger.finest(() => '_checkResubscribe isReady $isReady');
@@ -101,9 +102,9 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
             },
           ).disposeWith(resubscribeDisposable!);
 
-          pleromaPushService.isApiReadyToUseStream.listen(
-            (isApiReadyToUse) {
-              if (isApiReadyToUse) {
+          connectionService.isConnectedStream.listen(
+            (isConnected) {
+              if (isConnected) {
                 _checkResubscribe(listenChangedIsNotReady: false);
               }
             },
@@ -285,8 +286,8 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
         metadata: UnifediApiPushSubscriptionMetadata(
           endpoint: pushRelayEndPointUrl,
           keys: UnifediApiPushSubscriptionKeys(
-            auth: pushSubscriptionKeysAuth!,
-            p256dh: pushSubscriptionKeysP256dh!,
+            auth: pushSubscriptionKeysAuth,
+            p256dh: pushSubscriptionKeysP256dh,
           ),
         ),
         alerts: UnifediApiPushSubscriptionAlerts(

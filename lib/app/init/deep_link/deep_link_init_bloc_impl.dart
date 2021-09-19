@@ -57,7 +57,12 @@ class DeepLinkInitBloc extends AsyncInitLoadingBloc
         isPleroma: false,
       );
       await authHostBloc.performAsyncInit();
-      var authCode = IUnifediApiOAuthService.extractAuthCodeFromUri(initialUri);
+
+      var instanceService =
+          authHostBloc.unifediApiManager.createInstanceService();
+
+      var authCode =
+          instanceService.extractAuthCodeFromCallbackUrl(initialUri.toString());
 
       try {
         var authInstance = await authHostBloc.loginWithAuthCode(authCode);
@@ -70,6 +75,8 @@ class DeepLinkInitBloc extends AsyncInitLoadingBloc
           stackTrace,
         );
       }
+
+      await instanceService.dispose();
     }
   }
 }

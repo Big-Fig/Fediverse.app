@@ -19,17 +19,20 @@ class WebSocketsSettingsBloc
         );
 
   @override
-  WebSocketsMode get handlingType => settingsData.type;
+  WebSocketsMode get mode => settingsData.type;
 
   @override
-  Stream<WebSocketsMode> get handlingTypeStream =>
+  Stream<WebSocketsMode> get modeStream =>
       settingsDataStream.map((settings) => settings.type);
 
   @override
-  Future changeHandlingType(WebSocketsMode value) =>
-      updateInstanceSettings(
+  Future changeMode(WebSocketsMode value) => updateInstanceSettings(
         settingsData.copyWith(
           handlingType: value,
         ),
       );
+
+  @override
+  // TODO: implement isEnabled
+  bool get isEnabled => throw UnimplementedError();
 }

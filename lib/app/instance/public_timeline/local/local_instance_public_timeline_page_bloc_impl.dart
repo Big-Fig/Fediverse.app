@@ -18,6 +18,7 @@ import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bl
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc_impl.dart';
 import 'package:fedi/app/timeline/status/timeline_status_cached_list_bloc_impl.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
+import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
@@ -39,6 +40,7 @@ class LocalInstancePublicTimelinePageBloc extends InstancePublicTimelinePageBloc
   final IMyAccountBloc myAccountBloc;
   final IPaginationSettingsBloc paginationSettingsBloc;
   final ILocalPreferencesService localPreferencesService;
+  final IConnectionService connectionService;
 
   @override
   // ignore: avoid-late-keyword
@@ -63,6 +65,7 @@ class LocalInstancePublicTimelinePageBloc extends InstancePublicTimelinePageBloc
     required this.webSocketsHandlerManagerBloc,
     required this.paginationSettingsBloc,
     required this.myAccountBloc,
+    required this.connectionService,
     required IUnifediApiInstance unifediApiInstance,
   }) : super(
           instanceUri: unifediApiTimelineService.baseUri,
@@ -81,6 +84,10 @@ class LocalInstancePublicTimelinePageBloc extends InstancePublicTimelinePageBloc
         Provider.of<IUnifediApiTimelineService>(context, listen: false);
 
     return LocalInstancePublicTimelinePageBloc(
+      connectionService: Provider.of<IConnectionService>(
+        context,
+        listen: false,
+      ),
       unifediApiInstance: unifediApiInstance,
       unifediApiTimelineService: unifediApiTimelineService,
       localPreferencesService: ILocalPreferencesService.of(
@@ -107,7 +114,6 @@ class LocalInstancePublicTimelinePageBloc extends InstancePublicTimelinePageBloc
         context,
         listen: false,
       ),
-
       myAccountBloc: IMyAccountBloc.of(
         context,
         listen: false,
@@ -177,6 +183,7 @@ class LocalInstancePublicTimelinePageBloc extends InstancePublicTimelinePageBloc
 
     statusCachedPaginationBloc = StatusCachedPaginationBloc(
       statusListService: statusCachedListBloc,
+      connectionService: connectionService,
       paginationSettingsBloc: paginationSettingsBloc,
       maximumCachedPagesCount: null,
     );

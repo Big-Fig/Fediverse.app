@@ -89,10 +89,8 @@ class PostStatusDataDatabaseConverter
 }
 
 class UnifediApiMyAccountNotificationsSettingsDatabaseConverter
-    extends JsonDatabaseConverter<
-        UnifediApiMyAccountNotificationsSettings> {
-  const UnifediApiMyAccountNotificationsSettingsDatabaseConverter()
-      : super();
+    extends JsonDatabaseConverter<UnifediApiMyAccountNotificationsSettings> {
+  const UnifediApiMyAccountNotificationsSettingsDatabaseConverter() : super();
 
   @override
   UnifediApiMyAccountNotificationsSettings fromJson(
@@ -119,8 +117,6 @@ class UnifediApiAccountRelationshipDatabaseConverter
   Map<String, dynamic> toJson(UnifediApiAccountRelationship obj) =>
       obj.toJson();
 }
-
-
 
 class UnifediApiStatusDatabaseConverter
     extends JsonDatabaseConverter<UnifediApiStatus> {
@@ -155,8 +151,7 @@ class UnifediApiEmojiReactionListDatabaseConverter
       UnifediApiEmojiReaction.fromJson(json);
 
   @override
-  Map<String, dynamic> toJson(UnifediApiEmojiReaction obj) =>
-      obj.toJson();
+  Map<String, dynamic> toJson(UnifediApiEmojiReaction obj) => obj.toJson();
 }
 
 class UnifediApiMediaAttachmentDatabaseConverter
@@ -288,6 +283,5 @@ class EmojiReactionsListDatabaseConverter
       UnifediApiEmojiReaction.fromJson(json);
 
   @override
-  Map<String, dynamic> toJson(UnifediApiEmojiReaction obj) =>
-      obj.toJson();
+  Map<String, dynamic> toJson(UnifediApiEmojiReaction obj) => obj.toJson();
 }

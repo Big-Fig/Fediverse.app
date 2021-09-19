@@ -118,8 +118,8 @@ class InstanceAnnouncementBloc extends DisposableOwner
     );
     if (foundReaction != null) {
       foundReaction = foundReaction.toUnifediApiEmojiReaction().copyWith(
-        count: foundReaction.count + 1,
-      );
+            count: foundReaction.count + 1,
+          );
     } else {
       foundReaction = UnifediApiEmojiReaction(
         name: emojiName,
@@ -165,8 +165,8 @@ class InstanceAnnouncementBloc extends DisposableOwner
     // ignore: no-magic-number
     if (foundReaction!.count > 2) {
       var newReaction = foundReaction.toUnifediApiEmojiReaction().copyWith(
-        count: foundReaction.count - 1,
-      );
+            count: foundReaction.count - 1,
+          );
 
       newReactionsList.add(newReaction);
     }

@@ -23,7 +23,8 @@ typedef AccountListLoader = Future<List<IAccount>> Function({
   required IAccount? olderThan,
 });
 
-typedef UnifediApiAccountListLoader = Future<List<IUnifediApiAccount>> Function({
+typedef UnifediApiAccountListLoader = Future<List<IUnifediApiAccount>>
+    Function({
   required int? limit,
   required IAccount? newerThan,
   required IAccount? olderThan,

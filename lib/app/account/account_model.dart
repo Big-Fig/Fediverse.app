@@ -178,16 +178,16 @@ class DbAccountPopulatedWrapper implements IAccount {
   String get acct => dbAccount.acct;
 
   @override
-  String? get avatar => dbAccount.avatar;
+  String get avatar => dbAccount.avatar;
 
   @override
-  String? get avatarStatic => dbAccount.avatarStatic;
+  String get avatarStatic => dbAccount.avatarStatic;
 
   @override
   bool? get bot => dbAccount.bot;
 
   @override
-  DateTime? get createdAt => dbAccount.createdAt;
+  DateTime get createdAt => dbAccount.createdAt;
 
   @override
   String get displayName => dbAccount.displayName!;

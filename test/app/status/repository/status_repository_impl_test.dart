@@ -2380,7 +2380,8 @@ void main() {
 
     var query = statusRepository.createQuery(
       filters: StatusRepositoryFilters(
-        replyVisibilityFilterCondition: UnifediApiReplyVisibilityFilterCondition(
+        replyVisibilityFilterCondition:
+            UnifediApiReplyVisibilityFilterCondition(
           replyVisibilityFilter: UnifediApiReplyVisibilityFilter.selfValue,
           myAccountRemoteId: myDbAccount.remoteId,
         ),
@@ -2459,7 +2460,8 @@ void main() {
 
     var query = statusRepository.createQuery(
       filters: StatusRepositoryFilters(
-        replyVisibilityFilterCondition: UnifediApiReplyVisibilityFilterCondition(
+        replyVisibilityFilterCondition:
+            UnifediApiReplyVisibilityFilterCondition(
           replyVisibilityFilter: UnifediApiReplyVisibilityFilter.followingValue,
           myAccountRemoteId: myDbAccount.remoteId,
         ),

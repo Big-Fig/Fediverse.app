@@ -26,8 +26,7 @@ class WebSocketsSettings implements ISettings<WebSocketsSettings> {
           handlingTypeString: handlingType.stringValue,
         );
 
-  WebSocketsMode get type =>
-      WebSocketsMode.fromStringValue(handlingTypeString);
+  WebSocketsMode get type => WebSocketsMode.fromStringValue(handlingTypeString);
 
   @override
   bool operator ==(Object other) =>

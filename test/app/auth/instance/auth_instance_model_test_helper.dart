@@ -16,8 +16,7 @@ class AuthInstanceModelMockHelper {
         ),
         authCode: seed + 'authCode',
         isPleroma: seed.hashCode % 2 == 0,
-        application: UnifediApiClientApplicationMockHelper
-            .generate(
+        application: UnifediApiClientApplicationMockHelper.generate(
           seed: seed,
         ),
         info: UnifediApiInstanceMockHelper.generate(

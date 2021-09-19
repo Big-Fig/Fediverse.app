@@ -100,13 +100,11 @@ class EditToastSettingsBloc
       isEnabled: isEnabled && isMastodonOrGlobal,
     );
     chatMentionFieldBloc = BoolValueFormFieldBloc(
-      originValue:
-          currentPushSettings!.chatMention! && isPleromaOrGlobal,
+      originValue: currentPushSettings!.chatMention! && isPleromaOrGlobal,
       isEnabled: isEnabled && isPleromaOrGlobal,
     );
     emojiReactionFieldBloc = BoolValueFormFieldBloc(
-      originValue:
-          currentPushSettings!.emojiReaction! && isPleromaOrGlobal,
+      originValue: currentPushSettings!.emojiReaction! && isPleromaOrGlobal,
       isEnabled: isEnabled && isPleromaOrGlobal,
     );
 
@@ -169,8 +167,7 @@ class EditToastSettingsBloc
       pushSettings.poll! && (currentInstance!.isMastodon || isNotGlobal),
     );
     chatMentionFieldBloc.changeCurrentValue(
-      pushSettings.chatMention! &&
-          (currentInstance!.isPleroma || isNotGlobal),
+      pushSettings.chatMention! && (currentInstance!.isPleroma || isNotGlobal),
     );
     emojiReactionFieldBloc.changeCurrentValue(
       pushSettings.emojiReaction! &&

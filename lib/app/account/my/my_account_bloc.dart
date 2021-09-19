@@ -60,15 +60,13 @@ extension IMyAccountBlocExtension on IMyAccountBloc {
         (myAccount) => myAccount!.followRequestsCount,
       );
 
-  int? get unreadNotificationsCount =>
-      myAccount!.unreadNotificationsCount;
+  int? get unreadNotificationsCount => myAccount!.unreadNotificationsCount;
 
   Stream<int?> get unreadNotificationsCountStream => myAccountStream.map(
         (myAccount) => myAccount!.unreadNotificationsCount,
       );
 
-  int? get unreadConversationCount =>
-      myAccount!.unreadConversationCount;
+  int? get unreadConversationCount => myAccount!.unreadConversationCount;
 
   Stream<int?> get unreadConversationCountStream => myAccountStream.map(
         (myAccount) => myAccount!.unreadConversationCount,

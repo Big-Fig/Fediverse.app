@@ -380,8 +380,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
           context,
           listen: false,
         ),
-        unifediApiTimelineService:
-            Provider.of<IUnifediApiTimelineService>(
+        unifediApiTimelineService: Provider.of<IUnifediApiTimelineService>(
           context,
           listen: false,
         ),

@@ -18,8 +18,7 @@ Future goToPleromaChatWithAccount({
   if (chat != null) {
     goToPleromaChatPage(context, chat: chat);
   } else {
-    var isAccountAcceptsChatMessages =
-        account.acceptsChatMessages != false;
+    var isAccountAcceptsChatMessages = account.acceptsChatMessages != false;
     if (isAccountAcceptsChatMessages) {
       var dialogResult = await PleromaAsyncOperationHelper
           .performPleromaAsyncOperation<IPleromaChat?>(

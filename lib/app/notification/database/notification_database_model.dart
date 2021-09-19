@@ -19,7 +19,6 @@ class DbNotifications extends Table {
 
   TextColumn get emoji => text().nullable()();
 
-
   TextColumn get report =>
       text().nullable().map(UnifediApiAccountReportDatabaseConverter())();
 

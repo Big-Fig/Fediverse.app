@@ -25,6 +25,7 @@ import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_b
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
+import 'package:fedi/connection/connection_service.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -42,6 +43,10 @@ class EditCustomListBloc extends DisposableOwner
     required VoidCallback? onDelete,
   }) {
     var editCustomListBloc = EditCustomListBloc(
+      connectionService: Provider.of<IConnectionService>(
+        context,
+        listen: false,
+      ),
       customList: initialValue,
       statusRepository: IStatusRepository.of(context, listen: false),
       pleromaListService: Provider.of<IUnifediApiListService>(
@@ -139,7 +144,7 @@ class EditCustomListBloc extends DisposableOwner
   @override
   final bool isPossibleToDelete;
   final IPaginationSettingsBloc paginationSettingsBloc;
-
+  final IConnectionService connectionService;
   EditCustomListBloc({
     required this.customList,
     required this.pleromaListService,
@@ -147,6 +152,7 @@ class EditCustomListBloc extends DisposableOwner
     required this.isPossibleToDelete,
     required this.timelinesHomeTabStorageBloc,
     required this.paginationSettingsBloc,
+    required this.connectionService,
     required IMyAccountBloc myAccountBloc,
     required IAccountRepository accountRepository,
     required IUnifediApiAccountService pleromaAuthAccountService,
@@ -170,6 +176,7 @@ class EditCustomListBloc extends DisposableOwner
 
     customListAccountListNetworkOnlyPaginationBloc =
         AccountNetworkOnlyPaginationBloc(
+      connectionService: connectionService,
       listBloc: customListAccountListNetworkOnlyListBloc,
       maximumCachedPagesCount: null,
       paginationSettingsBloc: paginationSettingsBloc,

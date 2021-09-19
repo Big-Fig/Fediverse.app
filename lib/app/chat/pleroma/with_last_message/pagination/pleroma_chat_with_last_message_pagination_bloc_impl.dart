@@ -4,6 +4,7 @@ import 'package:fedi/app/chat/pleroma/with_last_message/pagination/pleroma_chat_
 import 'package:fedi/app/chat/pleroma/with_last_message/pleroma_chat_with_last_message_model.dart';
 import 'package:fedi/app/pagination/cached/cached_pleroma_pagination_bloc_impl.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
+import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
@@ -16,7 +17,9 @@ class PleromaChatWithLastMessagePaginationBloc
     required this.cachedListBloc,
     required IPaginationSettingsBloc paginationSettingsBloc,
     required int? maximumCachedPagesCount,
+    required IConnectionService connectionService,
   }) : super(
+          connectionService: connectionService,
           maximumCachedPagesCount: maximumCachedPagesCount,
           paginationSettingsBloc: paginationSettingsBloc,
         );

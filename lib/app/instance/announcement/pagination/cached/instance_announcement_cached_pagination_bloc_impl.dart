@@ -4,6 +4,7 @@ import 'package:fedi/app/instance/announcement/pagination/cached/instance_announ
 import 'package:fedi/app/pagination/cached/cached_pleroma_pagination_bloc_impl.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
+import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/pagination/cached/cached_pagination_bloc.dart';
 import 'package:fedi/pagination/cached/cached_pagination_bloc_proxy_provider.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
@@ -20,13 +21,16 @@ class InstanceAnnouncementCachedPaginationBloc
     required this.instanceAnnouncementListService,
     required IPaginationSettingsBloc paginationSettingsBloc,
     required int? maximumCachedPagesCount,
+    required IConnectionService connectionService,
   }) : super(
+          connectionService: connectionService,
           maximumCachedPagesCount: maximumCachedPagesCount,
           paginationSettingsBloc: paginationSettingsBloc,
         );
 
   @override
-  IUnifediApiService get unifediApi => instanceAnnouncementListService.unifediApi;
+  IUnifediApiService get unifediApi =>
+      instanceAnnouncementListService.unifediApi;
 
   @override
   Future<List<IInstanceAnnouncement>> loadLocalItems({
@@ -63,6 +67,10 @@ class InstanceAnnouncementCachedPaginationBloc
     int? maximumCachedPagesCount,
   }) =>
       InstanceAnnouncementCachedPaginationBloc(
+        connectionService: Provider.of<IConnectionService>(
+          context,
+          listen: false,
+        ),
         instanceAnnouncementListService:
             Provider.of<IInstanceAnnouncementCachedListBloc>(
           context,

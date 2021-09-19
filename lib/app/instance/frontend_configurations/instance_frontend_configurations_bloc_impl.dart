@@ -10,8 +10,7 @@ final _logger = Logger('instance_frontend_configurations_bloc_impl.dart');
 
 class InstanceFrontendConfigurationsBloc extends AsyncInitLoadingBloc
     implements IInstanceFrontendConfigurationsBloc {
-  final IUnifediApiInstanceService
-      unifediApiInstanceService;
+  final IUnifediApiInstanceService unifediApiInstanceService;
   final IInstanceFrontendConfigurationsLocalPreferenceBloc
       instanceFrontendConfigurationsLocalPreferenceBloc;
 
@@ -23,8 +22,8 @@ class InstanceFrontendConfigurationsBloc extends AsyncInitLoadingBloc
   @override
   Future internalAsyncInit() async {
     try {
-      var frontendConfigurations = await unifediApiInstanceService
-          .getFrontendConfigurations();
+      var frontendConfigurations =
+          await unifediApiInstanceService.getFrontendConfigurations();
 
       await instanceFrontendConfigurationsLocalPreferenceBloc
           .setValue(frontendConfigurations);

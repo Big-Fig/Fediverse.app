@@ -285,8 +285,7 @@ class UnifediApiMyAccountWrapper extends IMyAccount {
       unifediApiAccount.notificationSettings;
 
   @override
-  Map<String, dynamic>? get settingsStore =>
-      unifediApiAccount.settingsStore;
+  Map<String, dynamic>? get settingsStore => unifediApiAccount.settingsStore;
 
   @override
   int? get unreadConversationCount => unifediApiAccount.unreadConversationCount;
@@ -332,6 +331,141 @@ class UnifediApiMyAccountWrapper extends IMyAccount {
 
   @override
   int get hashCode => unifediApiAccount.hashCode;
+
+  @override
+  String? get actorType => unifediApiAccount.actorType;
+
+  @override
+  String? get language => unifediApiAccount.language;
+
+  @override
+  DateTime? get muteExpiresAt => unifediApiAccount.muteExpiresAt;
+
+  @override
+  bool? get noRichText => unifediApiAccount.noRichText;
+
+  @override
+  String? get privacy => unifediApiAccount.privacy;
+
+  @override
+  bool? get sensitive => unifediApiAccount.sensitive;
+
+  @override
+  bool? get showRole => unifediApiAccount.showRole;
+
+  @override
+  bool? get suspended => unifediApiAccount.suspended;
+
+  @override
+  // ignore: long-parameter-list, long-method
+  IMyAccount copyWith({
+    int? id,
+    String? remoteId,
+    String? username,
+    String? url,
+    String? note,
+    bool? locked,
+    String? headerStatic,
+    String? header,
+    int? followingCount,
+    int? followersCount,
+    int? statusesCount,
+    String? displayName,
+    DateTime? createdAt,
+    bool? bot,
+    String? avatarStatic,
+    String? avatar,
+    String? acct,
+    DateTime? lastStatusAt,
+    List<UnifediApiField>? fields,
+    List<UnifediApiEmoji>? emojis,
+    List<UnifediApiTag>? tags,
+    IUnifediApiAccountRelationship? relationship,
+    bool? isAdmin,
+    bool? isModerator,
+    bool? confirmationPending,
+    bool? hideFavorites,
+    bool? hideFollowers,
+    bool? hideFollows,
+    bool? hideFollowersCount,
+    bool? hideFollowsCount,
+    int? followRequestsCount,
+    bool? deactivated,
+    bool? allowFollowingMove,
+    bool? skipThreadContainment,
+    String? backgroundImage,
+    bool? acceptsChatMessages,
+  }) =>
+      UnifediApiMyAccountWrapper(
+        unifediApiAccount: UnifediApiMyAccount(
+          header: header ?? unifediApiAccount.header,
+          headerStatic: headerStatic ?? unifediApiAccount.headerStatic,
+          username: username ?? unifediApiAccount.username,
+          url: url ?? unifediApiAccount.url,
+          statusesCount: statusesCount ?? unifediApiAccount.statusesCount,
+          note: note ?? unifediApiAccount.note,
+          locked: locked ?? unifediApiAccount.locked,
+          id: remoteId ?? unifediApiAccount.id,
+          followingCount: followingCount ?? unifediApiAccount.followingCount,
+          followersCount: followersCount ?? unifediApiAccount.followersCount,
+          fields: fields ?? unifediApiAccount.fields?.toUnifediApiFieldList(),
+          emojis: emojis ?? unifediApiAccount.emojis?.toUnifediApiEmojiList(),
+          displayName: displayName ?? unifediApiAccount.displayName,
+          createdAt: createdAt ?? unifediApiAccount.createdAt,
+          bot: bot ?? unifediApiAccount.bot,
+          avatarStatic: avatarStatic ?? unifediApiAccount.avatarStatic,
+          avatar: avatar ?? unifediApiAccount.avatar,
+          acct: acct ?? unifediApiAccount.acct,
+          suspended: suspended ?? unifediApiAccount.suspended,
+          muteExpiresAt: muteExpiresAt ?? unifediApiAccount.muteExpiresAt,
+          lastStatusAt: lastStatusAt ?? unifediApiAccount.lastStatusAt,
+          discoverable: discoverable ?? unifediApiAccount.discoverable,
+          followRequestsCount:
+              followRequestsCount ?? unifediApiAccount.followRequestsCount,
+          fqn: fqn ?? unifediApiAccount.fqn,
+          backgroundImage: backgroundImage ?? unifediApiAccount.backgroundImage,
+          tags: tags ?? unifediApiAccount.tags?.toUnifediApiTagList(),
+          relationship: (relationship ?? unifediApiAccount.relationship)
+              ?.toUnifediApiAccountRelationship(),
+          isAdmin: isAdmin ?? unifediApiAccount.isAdmin,
+          isModerator: isModerator ?? unifediApiAccount.isModerator,
+          confirmationPending:
+              confirmationPending ?? unifediApiAccount.confirmationPending,
+          hideFavorites: hideFavorites ?? unifediApiAccount.hideFavorites,
+          hideFollowers: hideFollowers ?? unifediApiAccount.hideFollowers,
+          hideFollows: hideFollows ?? unifediApiAccount.hideFollows,
+          hideFollowersCount:
+              hideFollowersCount ?? unifediApiAccount.hideFollowersCount,
+          hideFollowsCount:
+              hideFollowsCount ?? unifediApiAccount.hideFollowsCount,
+          settingsStore: settingsStore ?? unifediApiAccount.settingsStore,
+          chatToken: chatToken ?? unifediApiAccount.chatToken,
+          deactivated: deactivated ?? unifediApiAccount.deactivated,
+          allowFollowingMove:
+              allowFollowingMove ?? unifediApiAccount.allowFollowingMove,
+          unreadConversationCount: unreadConversationCount ??
+              unifediApiAccount.unreadConversationCount,
+          skipThreadContainment:
+              skipThreadContainment ?? unifediApiAccount.skipThreadContainment,
+          notificationSettings:
+              (notificationSettings ?? unifediApiAccount.notificationSettings)
+                  ?.toUnifediApiMyAccountNotificationsSettings(),
+          acceptsChatMessages:
+              acceptsChatMessages ?? unifediApiAccount.acceptsChatMessages,
+          isConfirmed: isConfirmed ?? unifediApiAccount.isConfirmed,
+          favicon: favicon ?? unifediApiAccount.favicon,
+          apId: apId ?? unifediApiAccount.apId,
+          alsoKnownAs: alsoKnownAs ?? unifediApiAccount.alsoKnownAs,
+          unreadNotificationsCount: unreadNotificationsCount ??
+              unifediApiAccount.unreadNotificationsCount,
+          noRichText: noRichText ?? unifediApiAccount.noRichText,
+          actorType: actorType ?? unifediApiAccount.actorType,
+          showRole: showRole ?? unifediApiAccount.showRole,
+          language: language ?? unifediApiAccount.language,
+          privacy: privacy ?? unifediApiAccount.privacy,
+          sensitive: sensitive ?? unifediApiAccount.sensitive,
+        ),
+      );
 }
 
 class SelfActionNotPossibleException implements Exception {

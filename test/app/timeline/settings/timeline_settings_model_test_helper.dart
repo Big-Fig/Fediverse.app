@@ -26,15 +26,13 @@ class TimelineSettingsModelMockHelper {
             values: UnifediApiReplyVisibilityFilter.values,
           ).stringValue,
         ],
-        onlyInRemoteList:
-            UnifediApiListMockHelper.generate(seed: seed),
+        onlyInRemoteList: UnifediApiListMockHelper.generate(seed: seed),
         withRemoteHashtag: seed + 'withRemoteHashtag',
         replyVisibilityFilterString: EnumMockHelper.createTestEnum(
           seed: seed,
           values: UnifediApiReplyVisibilityFilter.values,
         ).stringValue,
-        onlyFromRemoteAccount:
-            UnifediApiAccountMockHelper.generate(seed: seed),
+        onlyFromRemoteAccount: UnifediApiAccountMockHelper.generate(seed: seed),
         onlyPinned: seed.hashCode % 2 == 0,
         excludeReblogs: seed.hashCode % 2 == 1,
         webSocketsUpdates: seed.hashCode % 2 == 0,

@@ -18,8 +18,8 @@ class WebSocketsModeSingleFromListValueFormFieldBlocProxyProvider
           IWebSocketsModeSingleFromListValueFormFieldBloc,
           ISingleSelectFromListValueFormFieldBloc<WebSocketsMode>>(
         update: (context, value, previous) => value,
-        child: SingleSelectFromListValueFormFieldBlocProxyProvider<
-            WebSocketsMode>(
+        child:
+            SingleSelectFromListValueFormFieldBlocProxyProvider<WebSocketsMode>(
           child: child,
         ),
       );

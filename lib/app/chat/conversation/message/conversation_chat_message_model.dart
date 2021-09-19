@@ -36,7 +36,8 @@ extension IStatusConversationChatMessageExtension on IStatus {
           ConversationChatMessageStatusAdapter(status: this);
 }
 
-extension IUnifediApiStatusConversationChatMessageExtension on IUnifediApiStatus {
+extension IUnifediApiStatusConversationChatMessageExtension
+    on IUnifediApiStatus {
   ConversationChatMessageStatusAdapter
       toConversationChatMessageStatusAdapter() =>
           ConversationChatMessageStatusAdapter(

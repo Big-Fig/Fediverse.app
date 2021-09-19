@@ -180,9 +180,8 @@ class _HashtagListItemHistoryGraphWidget extends StatelessWidget {
 
     var featureUses = FediChartLineGraphPainterFeature(
       color: IFediUiColorTheme.of(context).primary,
-      data: items.reversed
-          .map((item) => item.uses.toDouble() / maxUses)
-          .toList(),
+      data:
+          items.reversed.map((item) => item.uses.toDouble() / maxUses).toList(),
     );
 
     var labels = featureUses.data.map((d) => '').toList();

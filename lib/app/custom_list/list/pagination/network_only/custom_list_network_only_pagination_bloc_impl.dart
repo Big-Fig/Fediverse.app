@@ -6,6 +6,7 @@ import 'package:fedi/app/pagination/network_only/network_only_pleroma_pagination
 import 'package:fedi/app/pagination/network_only/network_only_pleroma_pagination_bloc_impl.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
+import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:unifedi_api/unifedi_api.dart';
@@ -21,7 +22,9 @@ class CustomListNetworkOnlyPaginationBloc
     required this.listService,
     required IPaginationSettingsBloc paginationSettingsBloc,
     required int? maximumCachedPagesCount,
+    required IConnectionService connectionService,
   }) : super(
+          connectionService: connectionService,
           maximumCachedPagesCount: maximumCachedPagesCount,
           paginationSettingsBloc: paginationSettingsBloc,
         );
@@ -34,6 +37,10 @@ class CustomListNetworkOnlyPaginationBloc
     int? maximumCachedPagesCount,
   }) =>
       CustomListNetworkOnlyPaginationBloc(
+        connectionService: Provider.of<IConnectionService>(
+          context,
+          listen: false,
+        ),
         maximumCachedPagesCount: maximumCachedPagesCount,
         paginationSettingsBloc: IPaginationSettingsBloc.of(
           context,

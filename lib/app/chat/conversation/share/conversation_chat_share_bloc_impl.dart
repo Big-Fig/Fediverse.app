@@ -128,7 +128,7 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
         limit: limit,
         maxId: null,
       ),
-          recipientsIds: null,
+      recipientsIds: null,
     );
 
     await conversationRepository.upsertAllInRemoteType(

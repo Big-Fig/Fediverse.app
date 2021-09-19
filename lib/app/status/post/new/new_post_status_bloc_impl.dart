@@ -25,7 +25,7 @@ class NewPostStatusBloc extends PostStatusBloc {
     required IPostStatusData initialData,
     required int? maximumMediaAttachmentCount,
   }) : super(
-    maximumMediaAttachmentCount:maximumMediaAttachmentCount,
+          maximumMediaAttachmentCount: maximumMediaAttachmentCount,
           isExpirePossible: isPleromaInstance,
           unifediApiStatusService: unifediApiStatusService,
           statusRepository: statusRepository,
@@ -56,7 +56,7 @@ class NewPostStatusBloc extends PostStatusBloc {
     required bool isPleromaInstance,
     required int? maximumMediaAttachmentCount,
   }) : this(
-    maximumMediaAttachmentCount:maximumMediaAttachmentCount,
+          maximumMediaAttachmentCount: maximumMediaAttachmentCount,
           isPleromaInstance: isPleromaInstance,
           unifediApiStatusService: unifediApiStatusService,
           scheduledStatusRepository: scheduledStatusRepository,
@@ -110,7 +110,8 @@ class NewPostStatusBloc extends PostStatusBloc {
       maximumMessageLength: info.limits?.status?.maxTootChars,
       pollLimits: info.limits?.poll,
       maximumFileSizeInBytes: info.limits?.media?.uploadLimit,
-      maximumMediaAttachmentCount: info.limits?.status?.maxMediaAttachmentsCount,
+      maximumMediaAttachmentCount:
+          info.limits?.status?.maxMediaAttachmentsCount,
       markMediaAsNsfwOnAttach: postStatusSettingsBloc.markMediaAsNsfwOnAttach,
       isPleromaInstance: info.typeAsUnifediApi.isPleroma,
       scheduledStatusRepository: IScheduledStatusRepository.of(
@@ -167,7 +168,8 @@ class NewPostStatusBloc extends PostStatusBloc {
       maximumMessageLength: info.limits?.status?.maxTootChars,
       pollLimits: info.limits?.poll,
       maximumFileSizeInBytes: info.limits?.media?.uploadLimit,
-      maximumMediaAttachmentCount: info.limits?.status?.maxMediaAttachmentsCount,
+      maximumMediaAttachmentCount:
+          info.limits?.status?.maxMediaAttachmentsCount,
       markMediaAsNsfwOnAttach: postStatusSettingsBloc.markMediaAsNsfwOnAttach,
       isPleromaInstance: info.typeAsUnifediApi.isPleroma,
       scheduledStatusRepository: IScheduledStatusRepository.of(

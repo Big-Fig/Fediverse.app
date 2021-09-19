@@ -10,6 +10,8 @@ import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_re
 import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/database/app_database_service_impl.dart';
 import 'package:fedi/app/notification/repository/notification_repository_impl.dart';
+import 'package:fedi/app/push/fedi_push_notification_model.dart';
+import 'package:fedi/app/push/fedi_push_notification_model_impl.dart';
 import 'package:fedi/app/push/notification/handler/notifications_push_handler_bloc.dart';
 import 'package:fedi/app/push/notification/handler/notifications_push_handler_model.dart';
 import 'package:fedi/app/push/notification/handler/unhandled/local_preferences/notifications_push_handler_unhandled_local_preference_bloc.dart';
@@ -100,7 +102,7 @@ class NotificationsPushHandlerBloc extends DisposableOwner
             PushMessage(
               typeString: PushMessageType.foreground.toJsonValue(),
               notification: null,
-              data: FediversePushTootRelayMessage(
+              data: FediPushNotification(
                 notificationId: unifediApiNotification.id,
                 server: data['server'],
                 account: data['account'],
@@ -127,7 +129,7 @@ class NotificationsPushHandlerBloc extends DisposableOwner
 
     var data = pushMessage.data;
 
-    var body = FediversePushTootRelayMessage.fromJson(data!);
+    var body = FediPushNotification.fromJson(data!);
 
     var pushMessageHandler = NotificationsPushHandlerMessage(
       pushMessage: pushMessage,
@@ -164,7 +166,7 @@ class NotificationsPushHandlerBloc extends DisposableOwner
   // todo: refactor copy-pasted code
   Future<void> _handleNewAction({
     required PushMessage pushMessage,
-    required FediversePushTootRelayMessage body,
+    required FediPushNotification body,
   }) async {
     var remoteNotification = body.unifediApiNotification!;
 
@@ -202,7 +204,7 @@ class NotificationsPushHandlerBloc extends DisposableOwner
   Future<void> _handleNewReplyAction({
     required IUnifediApiNotification remoteNotification,
     required PushMessage pushMessage,
-    required FediversePushTootRelayMessage body,
+    required FediPushNotification body,
   }) async {
     var notificationActionInput = body.notificationActionInput;
 
@@ -310,7 +312,7 @@ class NotificationsPushHandlerBloc extends DisposableOwner
   Future<void> _handleNewFollowRequestAction({
     required IUnifediApiNotification remoteNotification,
     required PushMessage pushMessage,
-    required FediversePushTootRelayMessage body,
+    required FediPushNotification body,
     required bool accept,
   }) async {
     var unifediApiAccount = remoteNotification.account!;
@@ -402,7 +404,7 @@ class NotificationsPushHandlerBloc extends DisposableOwner
 
   Future<void> _handleNewMessage({
     required PushMessage pushMessage,
-    required FediversePushTootRelayMessage body,
+    required FediPushNotification body,
   }) async {
     var instanceForMessage = instanceListBloc.findInstanceByCredentials(
       host: body.server,

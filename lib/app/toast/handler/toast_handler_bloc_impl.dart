@@ -21,6 +21,7 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 final _logger = Logger('toast_handler_bloc_impl.dart');
 
@@ -153,8 +154,7 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
             currentInstancePleromaChatCurrentBloc.currentChat?.remoteId !=
                 notification.chatRemoteId;
       } else if (notification.isContainsStatus) {
-        var directConversationId =
-            notification.status!.directConversationId;
+        var directConversationId = notification.status!.directConversationId;
         if (directConversationId != null) {
           isNeedShowToast = currentInstanceConversationChatCurrentBloc
                   .currentChat?.remoteId !=
@@ -229,9 +229,8 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
     var pleromaPushMessage = notificationsPushHandlerMessage.body;
 
     var notificationType = pleromaPushMessage.notificationType;
-
     var unifediApiNotificationType =
-        notificationType.toUnifediApiNotificationType();
+        UnifediApiNotificationType.fromStringValue(notificationType);
 
     var instanceLocalPreferencesBloc = InstanceToastSettingsLocalPreferenceBloc(
       localPreferencesService,

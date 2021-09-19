@@ -5,6 +5,7 @@ import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/status/pagination/network_only/status_network_only_pagination_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
+import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/pagination/network_only/network_only_pagination_bloc.dart';
 import 'package:fedi/pagination/network_only/network_only_pagination_bloc_proxy_provider.dart';
 import 'package:fedi/pagination/pagination_model.dart';
@@ -21,7 +22,9 @@ class StatusNetworkOnlyPaginationBloc
     required this.listService,
     required IPaginationSettingsBloc paginationSettingsBloc,
     required int? maximumCachedPagesCount,
+    required IConnectionService connectionService,
   }) : super(
+          connectionService: connectionService,
           maximumCachedPagesCount: maximumCachedPagesCount,
           paginationSettingsBloc: paginationSettingsBloc,
         );
@@ -34,6 +37,10 @@ class StatusNetworkOnlyPaginationBloc
     int? maximumCachedPagesCount,
   }) =>
       StatusNetworkOnlyPaginationBloc(
+        connectionService: Provider.of<IConnectionService>(
+          context,
+          listen: false,
+        ),
         maximumCachedPagesCount: maximumCachedPagesCount,
         paginationSettingsBloc: IPaginationSettingsBloc.of(
           context,

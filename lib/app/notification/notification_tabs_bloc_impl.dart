@@ -10,6 +10,7 @@ import 'package:fedi/app/notification/tab/notification_tab_model.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
+import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:unifedi_api/unifedi_api.dart';
@@ -59,6 +60,7 @@ class NotificationsTabsBloc extends AsyncInitLoadingBloc
   final INotificationRepository notificationRepository;
   final IFilterRepository filterRepository;
   final IPaginationSettingsBloc paginationSettingsBloc;
+  final IConnectionService connectionService;
 
   NotificationsTabsBloc({
     required NotificationTab startTab,
@@ -66,6 +68,7 @@ class NotificationsTabsBloc extends AsyncInitLoadingBloc
     required this.notificationRepository,
     required this.filterRepository,
     required this.paginationSettingsBloc,
+    required this.connectionService,
     required IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc,
   }) {
     selectedTabSubject = BehaviorSubject.seeded(startTab)..disposeWith(this);
@@ -81,6 +84,10 @@ class NotificationsTabsBloc extends AsyncInitLoadingBloc
 
   static NotificationsTabsBloc createFromContext(BuildContext context) =>
       NotificationsTabsBloc(
+        connectionService: Provider.of<IConnectionService>(
+          context,
+          listen: false,
+        ),
         startTab: NotificationTab.all,
         pleromaNotificationService:
             Provider.of<IUnifediApiNotificationService>(context, listen: false),
@@ -111,6 +118,7 @@ class NotificationsTabsBloc extends AsyncInitLoadingBloc
         pleromaNotificationService: pleromaNotificationService,
         filterRepository: filterRepository,
         paginationSettingsBloc: paginationSettingsBloc,
+        connectionService: connectionService,
       );
 
       await notificationTabBloc.performAsyncInit();

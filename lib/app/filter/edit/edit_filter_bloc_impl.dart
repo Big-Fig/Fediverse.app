@@ -136,8 +136,7 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
   Future<IFilter> submit() async {
     var filterRemoteId = filter?.remoteId;
     var postFilter = filterFormBloc.calculateFormValue();
-    var remoteFilter =
-        await actuallySubmitFilter(filterRemoteId, postFilter);
+    var remoteFilter = await actuallySubmitFilter(filterRemoteId, postFilter);
 
     var localFilter = remoteFilter.toDbFilterPopulatedWrapper();
 

@@ -44,13 +44,15 @@ class StatusVisibilityTitleWidget extends StatelessWidget {
   static String mapVisibilityToTitle(
     BuildContext context,
     UnifediApiVisibility visibility,
-  ) => visibility.map(
-      public: (_) => S.of(context).app_status_post_visibility_state_public,
-      unlisted: (_) => S.of(context).app_status_post_visibility_state_unlisted,
-      direct: (_) => S.of(context).app_status_post_visibility_state_direct,
-      private: (_) => S.of(context).app_status_post_visibility_state_private,
-      list: (_) => S.of(context).app_status_post_visibility_state_list,
-      local: (_) => S.of(context).app_status_post_visibility_state_local,
-      unknown: (_) => throw UnimplementedError(),
-    );
+  ) =>
+      visibility.map(
+        public: (_) => S.of(context).app_status_post_visibility_state_public,
+        unlisted: (_) =>
+            S.of(context).app_status_post_visibility_state_unlisted,
+        direct: (_) => S.of(context).app_status_post_visibility_state_direct,
+        private: (_) => S.of(context).app_status_post_visibility_state_private,
+        list: (_) => S.of(context).app_status_post_visibility_state_list,
+        local: (_) => S.of(context).app_status_post_visibility_state_local,
+        unknown: (_) => throw UnimplementedError(),
+      );
 }

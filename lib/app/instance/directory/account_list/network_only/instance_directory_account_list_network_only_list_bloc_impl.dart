@@ -35,7 +35,8 @@ class InstanceDirectoryAccountListNetworkOnlyListBloc extends DisposableOwner
     required String? minId,
     required String? maxId,
   }) async {
-    var unifediApiAccounts = await unifediApiInstanceService.getDirectoryAccounts(
+    var unifediApiAccounts =
+        await unifediApiInstanceService.getDirectoryAccounts(
       pagination: UnifediApiPagination(
         limit: itemsCountPerPage,
         minId: minId,

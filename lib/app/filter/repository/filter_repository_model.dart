@@ -1,8 +1,6 @@
-
 import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
 import 'package:unifedi_api/unifedi_api.dart';
-
 
 class FilterRepositoryFilters {
   final List<UnifediApiFilterContextType>? onlyWithContextTypes;

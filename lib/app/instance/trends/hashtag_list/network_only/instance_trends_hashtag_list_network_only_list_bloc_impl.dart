@@ -5,6 +5,7 @@ import 'package:fedi/app/instance/trends/hashtag_list/network_only/instance_tren
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 import 'package:logging/logging.dart';
+import 'package:fedi/app/hashtag/hashtag_model_adapter.dart';
 
 final _logger =
     Logger('instance_trends_hashtag_list_network_only_list_bloc_impl.dart');

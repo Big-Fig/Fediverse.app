@@ -4,6 +4,7 @@ import 'package:fedi/app/search/result/list/search_result_item_network_only_list
 import 'package:fedi/app/search/result/pagination/search_result_item_network_only_pagination_bloc.dart';
 import 'package:fedi/app/search/result/search_result_model.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
+import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:unifedi_api/unifedi_api.dart';
@@ -19,7 +20,9 @@ class SearchResultItemNetworkOnlyPaginationBloc
     required this.listBloc,
     required IPaginationSettingsBloc paginationSettingsBloc,
     required int? maximumCachedPagesCount,
+    required IConnectionService connectionService,
   }) : super(
+          connectionService: connectionService,
           maximumCachedPagesCount: maximumCachedPagesCount,
           paginationSettingsBloc: paginationSettingsBloc,
         );
@@ -32,6 +35,10 @@ class SearchResultItemNetworkOnlyPaginationBloc
     int? maximumCachedPagesCount,
   }) =>
       SearchResultItemNetworkOnlyPaginationBloc(
+        connectionService: Provider.of<IConnectionService>(
+          context,
+          listen: false,
+        ),
         maximumCachedPagesCount: maximumCachedPagesCount,
         paginationSettingsBloc: IPaginationSettingsBloc.of(
           context,

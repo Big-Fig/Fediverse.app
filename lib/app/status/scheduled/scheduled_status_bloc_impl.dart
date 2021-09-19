@@ -31,14 +31,12 @@ class ScheduledStatusBloc extends DisposableOwner
   Stream<ScheduledStatusState?> get stateStream => _stateSubject.stream;
 
   final IUnifediApiStatusService unifediApiStatusService;
-  final IUnifediApiStatusService pleromaScheduledStatusService;
   final IScheduledStatusRepository scheduledStatusRepository;
   final IStatusRepository statusRepository;
   final bool isNeedWatchLocalRepositoryForUpdates;
 
   ScheduledStatusBloc({
     required this.unifediApiStatusService,
-    required this.pleromaScheduledStatusService,
     required this.statusRepository,
     required this.scheduledStatusRepository,
     required IScheduledStatus scheduledStatus, // for better performance we dont
@@ -137,7 +135,7 @@ class ScheduledStatusBloc extends DisposableOwner
 
   @override
   Future cancelSchedule() async {
-    await pleromaScheduledStatusService.cancelScheduledStatus(
+    await unifediApiStatusService.cancelScheduledStatus(
       scheduledStatusId: remoteId!,
     );
 
@@ -151,8 +149,7 @@ class ScheduledStatusBloc extends DisposableOwner
   Future reSchedule({
     required DateTime scheduledAt,
   }) async {
-    var newScheduledStatus =
-        await pleromaScheduledStatusService.reScheduleStatus(
+    var newScheduledStatus = await unifediApiStatusService.reScheduleStatus(
       scheduledStatusId: remoteId!,
       scheduledAt: scheduledAt,
     );
@@ -166,9 +163,8 @@ class ScheduledStatusBloc extends DisposableOwner
 
   @override
   Future refreshFromNetwork() async {
-    var newScheduledStatus =
-        await pleromaScheduledStatusService.getScheduledStatus(
-          scheduledStatusId: remoteId!,
+    var newScheduledStatus = await unifediApiStatusService.getScheduledStatus(
+      scheduledStatusId: remoteId!,
     );
 
     await scheduledStatusRepository.updateAppTypeByRemoteType(
@@ -187,11 +183,6 @@ class ScheduledStatusBloc extends DisposableOwner
       ScheduledStatusBloc(
         unifediApiStatusService:
             Provider.of<IUnifediApiStatusService>(context, listen: false),
-        pleromaScheduledStatusService:
-            Provider.of<IUnifediApiStatusService>(
-          context,
-          listen: false,
-        ),
         statusRepository: IStatusRepository.of(context, listen: false),
         scheduledStatusRepository:
             IScheduledStatusRepository.of(context, listen: false),
@@ -228,14 +219,13 @@ class ScheduledStatusBloc extends DisposableOwner
     var pleromaScheduledStatus = await unifediApiStatusService.scheduleStatus(
       idempotencyKey: null,
       postStatus: UnifediApiSchedulePostStatus(
-        mediaIds:
-            postStatusData.mediaAttachments?.toUnifediApiMediaAttachmentIdList(),
+        mediaIds: postStatusData.mediaAttachments
+            ?.toUnifediApiMediaAttachmentIdList(),
         status: postStatusData.text,
         sensitive: postStatusData.isNsfwSensitiveEnabled,
         visibility: postStatusData.visibilityString,
         inReplyToId: postStatusData.inReplyToUnifediApiStatus?.id,
         inReplyToConversationId: postStatusData.inReplyToConversationId,
-
         scheduledAt: postStatusData.scheduledAt!,
         to: postStatusData.to,
         poll: postStatusData.poll?.topostStatusPoll(),
@@ -261,7 +251,8 @@ class ScheduledStatusBloc extends DisposableOwner
       subject: scheduledStatus.params.spoilerText,
       text: scheduledStatus.params.text,
       scheduledAt: scheduledStatus.scheduledAt,
-      visibilityString: scheduledStatus.params.visibilityAsUnifediApi.stringValue,
+      visibilityString:
+          scheduledStatus.params.visibilityAsUnifediApi.stringValue,
       mediaAttachments: scheduledStatus.mediaAttachments,
       poll: scheduledStatus.params.poll?.toPostStatusPoll(),
       inReplyToUnifediApiStatus:
