@@ -33,6 +33,9 @@ import 'package:fedi/localization/localization_model.dart';
 import 'package:fedi/push/push_model.dart';
 import 'package:fediverse_api/fediverse_api.dart';
 import 'package:hive/hive.dart';
+
+// ignore: implementation_imports
+import 'package:hive/src/registry/nested_type_registry_adapter_impl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
@@ -87,46 +90,70 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
     Hive.registerAdapter(CrashReportingSettingsAdapter());
     Hive.registerAdapter(PushRelaySettingsAdapter());
 
-    Hive.registerNestedTypeRegistryAdapter(
-      FediverseHiveHelper.createNestedTypeRegistryAdapter(
-        typeId: 150 + 0,
-        idToAdapterMap: UnifediHiveHelper.fediverseIdToAdapterMap,
-      ),
-    );
+    var fediverseAdapter = NestedTypeRegistryAdapterImpl(typeId: 150 + 0);
+    FediverseHiveHelper.registerFediverseAdapters(fediverseAdapter);
+    Hive.registerNestedTypeRegistryAdapter(fediverseAdapter);
 
-    Hive.registerNestedTypeRegistryAdapter(
-      FediverseHiveHelper.createNestedTypeRegistryAdapter(
-        typeId: 150 + 1,
-        idToAdapterMap: UnifediHiveHelper.mastodonIdToAdapterMap,
-      ),
-    );
+    var mastodonAdapter = NestedTypeRegistryAdapterImpl(typeId: 150 + 1);
+    UnifediHiveHelper.registerMastodonAdapters(mastodonAdapter);
+    Hive.registerNestedTypeRegistryAdapter(mastodonAdapter);
 
-    Hive.registerNestedTypeRegistryAdapter(
-      FediverseHiveHelper.createNestedTypeRegistryAdapter(
-        typeId: 150 + 2,
-        idToAdapterMap: UnifediHiveHelper.pleromaIdToAdapterMap,
-      ),
-    );
+    var pleromaAdapter = NestedTypeRegistryAdapterImpl(typeId: 150 + 2);
+    UnifediHiveHelper.registerPleromaAdapters(pleromaAdapter);
+    Hive.registerNestedTypeRegistryAdapter(pleromaAdapter);
 
-    Hive.registerNestedTypeRegistryAdapter(
-      FediverseHiveHelper.createNestedTypeRegistryAdapter(
-        typeId: 150 + 3,
-        idToAdapterMap: UnifediHiveHelper.unifediIdToAdapterMap,
-      ),
-    );
+    var unifediAdapter = NestedTypeRegistryAdapterImpl(typeId: 150 + 3);
+    UnifediHiveHelper.registerUnifediAdapters(unifediAdapter);
+    Hive.registerNestedTypeRegistryAdapter(unifediAdapter);
 
-    Hive.registerNestedTypeRegistryAdapter(
-      FediverseHiveHelper.createNestedTypeRegistryAdapter(
-        typeId: 150 + 4,
-        idToAdapterMap: UnifediHiveHelper.mastodonAdaptersIdToAdapterMap,
-      ),
-    );
+    var unifediMastodonAdapter = NestedTypeRegistryAdapterImpl(typeId: 150 + 4);
+    UnifediHiveHelper.registerUnifediMastodonAdapters(unifediMastodonAdapter);
+    Hive.registerNestedTypeRegistryAdapter(unifediMastodonAdapter);
 
-    Hive.registerNestedTypeRegistryAdapter(
-      FediverseHiveHelper.createNestedTypeRegistryAdapter(
-        typeId: 150 + 5,
-        idToAdapterMap: UnifediHiveHelper.pleromaAdaptersIdToAdapterMap,
-      ),
-    );
+    var unifediPleromaAdapter = NestedTypeRegistryAdapterImpl(typeId: 150 + 5);
+    UnifediHiveHelper.registerUnifediPleromaAdapters(unifediPleromaAdapter);
+    Hive.registerNestedTypeRegistryAdapter(unifediPleromaAdapter);
+
+    // Hive.registerNestedTypeRegistryAdapter(
+    //   FediverseHiveHelper.createNestedTypeRegistryAdapter(
+    //     typeId: 150 + 0,
+    //     idToAdapterMap: UnifediHiveHelper.fediverseIdToAdapterMap,
+    //   ),
+    // );
+    //
+    // Hive.registerNestedTypeRegistryAdapter(
+    //   FediverseHiveHelper.createNestedTypeRegistryAdapter(
+    //     typeId: 150 + 1,
+    //     idToAdapterMap: UnifediHiveHelper.mastodonIdToAdapterMap,
+    //   ),
+    // );
+    //
+    // Hive.registerNestedTypeRegistryAdapter(
+    //   FediverseHiveHelper.createNestedTypeRegistryAdapter(
+    //     typeId: 150 + 2,
+    //     idToAdapterMap: UnifediHiveHelper.pleromaIdToAdapterMap,
+    //   ),
+    // );
+    //
+    // Hive.registerNestedTypeRegistryAdapter(
+    //   FediverseHiveHelper.createNestedTypeRegistryAdapter(
+    //     typeId: 150 + 3,
+    //     idToAdapterMap: UnifediHiveHelper.unifediIdToAdapterMap,
+    //   ),
+    // );
+    //
+    // Hive.registerNestedTypeRegistryAdapter(
+    //   FediverseHiveHelper.createNestedTypeRegistryAdapter(
+    //     typeId: 150 + 4,
+    //     idToAdapterMap: UnifediHiveHelper.mastodonAdaptersIdToAdapterMap,
+    //   ),
+    // );
+    //
+    // Hive.registerNestedTypeRegistryAdapter(
+    //   FediverseHiveHelper.createNestedTypeRegistryAdapter(
+    //     typeId: 150 + 5,
+    //     idToAdapterMap: UnifediHiveHelper.pleromaAdaptersIdToAdapterMap,
+    //   ),
+    // );
   }
 }
