@@ -107,7 +107,6 @@ extension IPleromaScheduledStatusParamsExtension
         visibility: visibility,
         scheduledAt: scheduledAt,
         poll: poll?.toUnifediApiPostStatusPoll(),
-        idempotency: idempotency,
         inReplyToId: inReplyToId,
         language: language,
         expiresInSeconds: expiresInSeconds,

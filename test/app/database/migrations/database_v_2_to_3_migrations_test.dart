@@ -50,7 +50,6 @@ void main() {
           spoilerText: null,
           language: null,
           poll: null,
-          idempotency: null,
           inReplyToId: null,
           inReplyToConversationId: null,
           to: null,

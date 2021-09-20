@@ -42,7 +42,8 @@ abstract class AccountStatusesPinnedOnlyNetworkOnlyListBloc
 
     return unifediApiStatuses
         .map(
-            (unifediApiStatus) => unifediApiStatus.toDbStatusPopulatedWrapper())
+          (unifediApiStatus) => unifediApiStatus.toDbStatusPopulatedWrapper(),
+        )
         .toList();
   }
 }

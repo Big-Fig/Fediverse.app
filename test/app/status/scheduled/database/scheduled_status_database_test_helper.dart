@@ -38,7 +38,6 @@ class ScheduledStatusDatabaseMockHelper {
           visibility: UnifediApiVisibility.publicValue.stringValue,
           scheduledAt: DateTime(seed.hashCode % 10),
           poll: null,
-          idempotency: seed + 'idempotency1',
           inReplyToId: seed + 'inReplyToId1',
           to: null,
           expiresInSeconds: null,
