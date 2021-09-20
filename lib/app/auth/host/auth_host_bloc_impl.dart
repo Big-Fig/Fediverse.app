@@ -84,15 +84,33 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
       host: instanceBaseUriHost,
     )..disposeWith(this);
 
-    unifediApiManager = currentInstanceBloc
-        .currentInstance!.info!.typeAsUnifediApi
-        .createApiManager(
-      uri: instanceBaseUri.toString(),
-    );
+    if (isPleroma) {
+      unifediApiManager = createPleromaApiManager(
+        uri: instanceBaseUri.toString(),
+      );
+    } else {
+      unifediApiManager = createMastodonApiManager(
+        uri: instanceBaseUri.toString(),
+      );
+    }
+    // todo: remove hack
+    // unifediApiManager = currentInstanceBloc
+    //     .currentInstance!.info!.typeAsUnifediApi
+    //     .createApiManager(
+    //   uri: instanceBaseUri.toString(),
+    // );
 
     unifediApiInstanceService = unifediApiManager.createInstanceService();
 
     unifediApiAccountService = unifediApiManager.createAccountService();
+
+    // todo: remove hack
+    scopes = unifediApiInstanceService
+        .calculateAvailableScopes()
+        .toUnifediApiAccessScopes()
+        .copyWith(
+      targetPermissions: [],
+    );
   }
 
   @override
