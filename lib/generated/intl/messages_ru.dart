@@ -1244,10 +1244,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Упоминул вас: "),
         "app_notification_header_move":
             MessageLookupByLibrary.simpleMessage("Перемещен."),
-        "app_notification_header_chatMention_postfix": m35,
-        "app_notification_header_chatMention_prefix":
+        "app_notification_header_pleromaChatMention_postfix": m35,
+        "app_notification_header_pleromaChatMention_prefix":
             MessageLookupByLibrary.simpleMessage("Чат: "),
-        "app_notification_header_emojiReaction": m36,
+        "app_notification_header_pleromaEmojiReaction": m36,
         "app_notification_header_poll":
             MessageLookupByLibrary.simpleMessage("Опрос окончен."),
         "app_notification_header_reblog":
@@ -1292,20 +1292,20 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Когда кто-то переместился"),
         "app_push_channel_move_name":
             MessageLookupByLibrary.simpleMessage("Пермещения"),
-        "app_push_channel_chatMention_description":
+        "app_push_channel_pleromaChatMention_description":
             MessageLookupByLibrary.simpleMessage(
                 "Сообщения в чате(только Pleroma)"),
-        "app_push_channel_chatMention_name":
+        "app_push_channel_pleromaChatMention_name":
             MessageLookupByLibrary.simpleMessage("Чат"),
-        "app_push_channel_emojiReaction_description":
+        "app_push_channel_pleromaEmojiReaction_description":
             MessageLookupByLibrary.simpleMessage(
                 "Эмодди реакции для записей(только Pleroma)"),
-        "app_push_channel_emojiReaction_name":
+        "app_push_channel_pleromaEmojiReaction_name":
             MessageLookupByLibrary.simpleMessage("Эмоджи реакции"),
-        "app_push_channel_report_description":
+        "app_push_channel_pleromaReport_description":
             MessageLookupByLibrary.simpleMessage(
                 "Когда кто-то жалуется на ваши записи"),
-        "app_push_channel_report_name":
+        "app_push_channel_pleromaReport_name":
             MessageLookupByLibrary.simpleMessage("Жалолбы"),
         "app_push_channel_poll_description":
             MessageLookupByLibrary.simpleMessage("Оповещения об обрасах"),
@@ -1358,17 +1358,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_push_richNotification_move_summary":
             MessageLookupByLibrary.simpleMessage("Кто-то переместился"),
         "app_push_richNotification_move_title": m46,
-        "app_push_richNotification_chatMention_summary":
+        "app_push_richNotification_pleromaChatMention_summary":
             MessageLookupByLibrary.simpleMessage(
                 "Вам кто-то написал через чат"),
-        "app_push_richNotification_chatMention_title": m47,
-        "app_push_richNotification_emojiReaction_summary":
+        "app_push_richNotification_pleromaChatMention_title": m47,
+        "app_push_richNotification_pleromaEmojiReaction_summary":
             MessageLookupByLibrary.simpleMessage("Кто-то оценил вашу запись"),
-        "app_push_richNotification_emojiReaction_title": m48,
-        "app_push_richNotification_report_summary":
+        "app_push_richNotification_pleromaEmojiReaction_title": m48,
+        "app_push_richNotification_pleromaReport_summary":
             MessageLookupByLibrary.simpleMessage(
                 "Кто-то пожаловася на вашу запись"),
-        "app_push_richNotification_report_title": m49,
+        "app_push_richNotification_pleromaReport_title": m49,
         "app_push_richNotification_poll_summary":
             MessageLookupByLibrary.simpleMessage("Опрос изменился"),
         "app_push_richNotification_poll_title":

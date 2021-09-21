@@ -1260,10 +1260,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Wspomniał(a) o tobie: "),
         "app_notification_header_move":
             MessageLookupByLibrary.simpleMessage("Przeniósł(-osła) się."),
-        "app_notification_header_chatMention_postfix": m35,
-        "app_notification_header_chatMention_prefix":
+        "app_notification_header_pleromaChatMention_postfix": m35,
+        "app_notification_header_pleromaChatMention_prefix":
             MessageLookupByLibrary.simpleMessage("Czat: "),
-        "app_notification_header_emojiReaction": m36,
+        "app_notification_header_pleromaEmojiReaction": m36,
         "app_notification_header_poll": MessageLookupByLibrary.simpleMessage(
             "Ankieta w której głosowałeś(-aś) zakończyła się."),
         "app_notification_header_reblog":
@@ -1307,20 +1307,20 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Gdy ktoś przeniósł się"),
         "app_push_channel_move_name":
             MessageLookupByLibrary.simpleMessage("Przenoszenie"),
-        "app_push_channel_chatMention_description":
+        "app_push_channel_pleromaChatMention_description":
             MessageLookupByLibrary.simpleMessage(
                 "Wiadomości czatu wyłącznego dla Pleromy"),
-        "app_push_channel_chatMention_name":
+        "app_push_channel_pleromaChatMention_name":
             MessageLookupByLibrary.simpleMessage("Czat"),
-        "app_push_channel_emojiReaction_description":
+        "app_push_channel_pleromaEmojiReaction_description":
             MessageLookupByLibrary.simpleMessage(
                 "Reakcje emoji do wpisów wyłączne dla Pleromy"),
-        "app_push_channel_emojiReaction_name":
+        "app_push_channel_pleromaEmojiReaction_name":
             MessageLookupByLibrary.simpleMessage("Reakcje emoji"),
-        "app_push_channel_report_description":
+        "app_push_channel_pleromaReport_description":
             MessageLookupByLibrary.simpleMessage(
                 "Kiedy ludzie zgłaszają twoje wpisy"),
-        "app_push_channel_report_name":
+        "app_push_channel_pleromaReport_name":
             MessageLookupByLibrary.simpleMessage("Zgłoszenia"),
         "app_push_channel_poll_description":
             MessageLookupByLibrary.simpleMessage(
@@ -1374,15 +1374,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_push_richNotification_move_summary":
             MessageLookupByLibrary.simpleMessage("Ktoś przeniósł się"),
         "app_push_richNotification_move_title": m46,
-        "app_push_richNotification_chatMention_summary":
+        "app_push_richNotification_pleromaChatMention_summary":
             MessageLookupByLibrary.simpleMessage("Masz nową wiadomość czatu"),
-        "app_push_richNotification_chatMention_title": m47,
-        "app_push_richNotification_emojiReaction_summary":
+        "app_push_richNotification_pleromaChatMention_title": m47,
+        "app_push_richNotification_pleromaEmojiReaction_summary":
             MessageLookupByLibrary.simpleMessage("Ktoś zareagował"),
-        "app_push_richNotification_emojiReaction_title": m48,
-        "app_push_richNotification_report_summary":
+        "app_push_richNotification_pleromaEmojiReaction_title": m48,
+        "app_push_richNotification_pleromaReport_summary":
             MessageLookupByLibrary.simpleMessage("Ktoś zgłosił twój wpis"),
-        "app_push_richNotification_report_title": m49,
+        "app_push_richNotification_pleromaReport_title": m49,
         "app_push_richNotification_poll_summary":
             MessageLookupByLibrary.simpleMessage("Zmieniono ankietę"),
         "app_push_richNotification_poll_title":
