@@ -480,7 +480,9 @@ Future<String?> launchAuthorizeFormAndExtractAuthorizationCode({
     (Uri? uri) {
       subscription.cancel();
       closeWebView();
-      var code = unifediApiInstanceService.extractAuthCodeFromCallbackUrl(url);
+      var code = unifediApiInstanceService.extractAuthCodeFromCallbackUrl(
+        uri.toString(),
+      );
       completer.complete(code);
     },
     onError: (e) {
