@@ -2,12 +2,12 @@ import 'package:fedi/app/auth/instance/register/form/stepper/register_auth_insta
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class RegisterAuthInstanceFormWidget extends StatelessWidget {
-  const RegisterAuthInstanceFormWidget({
+class RegisterUnifediApiAccessFormWidget extends StatelessWidget {
+  const RegisterUnifediApiAccessFormWidget({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) =>
-      const RegisterAuthInstanceFormStepperWidget();
+      const RegisterUnifediApiAccessFormStepperWidget();
 }

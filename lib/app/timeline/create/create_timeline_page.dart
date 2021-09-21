@@ -108,7 +108,7 @@ MaterialPageRoute createCreateItemTimelinesHomeTabStoragePageRoute(
           timelinesHomeTabStorageBloc.add(timeline);
           Navigator.of(context).pop();
         },
-        authInstance: ICurrentAuthInstanceBloc.of(context, listen: false)
+        authInstance: ICurrentUnifediApiAccessBloc.of(context, listen: false)
             .currentInstance!,
         localPreferencesService: ILocalPreferencesService.of(
           context,

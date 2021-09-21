@@ -18,14 +18,14 @@ import 'package:logging/logging.dart';
 
 final _logger = Logger('register_auth_instance_bloc_impl.dart');
 
-class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
-    implements IRegisterAuthInstanceBloc {
+class RegisterUnifediApiAccessBloc extends AsyncInitLoadingBloc
+    implements IRegisterUnifediApiAccessBloc {
   @override
   final Uri instanceBaseUri;
 
   final ILocalPreferencesService localPreferencesService;
   final IConnectionService connectionService;
-  final ICurrentAuthInstanceBloc currentInstanceBloc;
+  final ICurrentUnifediApiAccessBloc currentInstanceBloc;
   final IAuthApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc
       pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc;
   final ILocalizationSettingsBloc localizationSettingsBloc;
@@ -44,9 +44,9 @@ class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
 
   @override
   // ignore: avoid-late-keyword
-  late RegisterAuthInstanceFormBloc registerAuthInstanceFormBloc;
+  late RegisterUnifediApiAccessFormBloc registerUnifediApiAccessFormBloc;
 
-  RegisterAuthInstanceBloc({
+  RegisterUnifediApiAccessBloc({
     required this.localeName,
     required this.instanceBaseUri,
     required this.localPreferencesService,
@@ -72,7 +72,7 @@ class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
   @override
   Future<AuthHostRegistrationResult> submit() async {
     var unifediApiAccountRegisterRequest =
-        registerAuthInstanceFormBloc.calculateRegisterFormData();
+        registerUnifediApiAccessFormBloc.calculateRegisterFormData();
 
     AuthHostRegistrationResult registrationResult;
     AuthHostBloc? authApplicationBloc;
@@ -95,14 +95,14 @@ class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
     } catch (e, stackTrace) {
       // todo: refactor
       _logger.warning(() => 'submit', e, stackTrace);
-      registerAuthInstanceFormBloc.onRegisterFailed();
+      registerUnifediApiAccessFormBloc.onRegisterFailed();
       rethrow;
     } finally {
       await authApplicationBloc?.dispose();
     }
 
     if (!registrationResult.isHaveNoErrors) {
-      registerAuthInstanceFormBloc.onRegisterFailed();
+      registerUnifediApiAccessFormBloc.onRegisterFailed();
     }
 
     // todo: rework when fail
@@ -120,17 +120,17 @@ class RegisterAuthInstanceBloc extends AsyncInitLoadingBloc
 
   @override
   bool get isReadyToSubmit =>
-      registerAuthInstanceFormBloc.isHaveChangesAndNoErrors;
+      registerUnifediApiAccessFormBloc.isHaveChangesAndNoErrors;
 
   @override
   Stream<bool> get isReadyToSubmitStream =>
-      registerAuthInstanceFormBloc.isHaveChangesAndNoErrorsStream;
+      registerUnifediApiAccessFormBloc.isHaveChangesAndNoErrorsStream;
 
   @override
   Future internalAsyncInit() async {
     unifediApiInstance = await unifediApiInstanceService.getInstance();
 
-    registerAuthInstanceFormBloc = RegisterAuthInstanceFormBloc(
+    registerUnifediApiAccessFormBloc = RegisterUnifediApiAccessFormBloc(
       localeName: localeName,
       unifediApiInstance: unifediApiInstance,
       unifediApiInstanceService: unifediApiInstanceService,

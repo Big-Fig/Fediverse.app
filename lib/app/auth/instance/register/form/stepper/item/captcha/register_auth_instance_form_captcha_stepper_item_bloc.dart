@@ -4,13 +4,13 @@ import 'package:fedi/app/captcha/pleroma/pleroma_form_captcha_string_field_bloc.
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IRegisterAuthInstanceFormStepperCaptchaItemBloc
-    implements IRegisterAuthInstanceFormStepperItemBloc, IDisposable {
-  static IRegisterAuthInstanceFormStepperCaptchaItemBloc of(
+abstract class IRegisterUnifediApiAccessFormStepperCaptchaItemBloc
+    implements IRegisterUnifediApiAccessFormStepperItemBloc, IDisposable {
+  static IRegisterUnifediApiAccessFormStepperCaptchaItemBloc of(
     BuildContext context, {
     bool listen = true,
   }) =>
-      Provider.of<IRegisterAuthInstanceFormStepperCaptchaItemBloc>(
+      Provider.of<IRegisterUnifediApiAccessFormStepperCaptchaItemBloc>(
         context,
         listen: listen,
       );

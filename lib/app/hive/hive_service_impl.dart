@@ -1,6 +1,6 @@
 import 'package:fedi/analytics/app/app_analytics_model.dart';
 import 'package:fedi/app/account/select/recent/recent_select_account_model.dart';
-import 'package:fedi/app/auth/instance/auth_instance_model.dart';
+
 import 'package:fedi/app/auth/instance/list/auth_instance_list_model.dart';
 import 'package:fedi/app/cache/database/settings/database_cache_settings_model.dart';
 import 'package:fedi/app/cache/files/settings/files_cache_settings_model.dart';
@@ -58,8 +58,8 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
     }
 
     Hive.registerAdapter(PushSettingsAdapter());
-    Hive.registerAdapter(AuthInstanceListAdapter());
-    Hive.registerAdapter(AuthInstanceAdapter());
+    Hive.registerAdapter(UnifediApiAccessListAdapter());
+    Hive.registerAdapter(UnifediApiAccessAdapter());
     Hive.registerAdapter(NotificationsPushHandlerUnhandledListAdapter());
     Hive.registerAdapter(RecentSearchListAdapter());
     Hive.registerAdapter(NotificationsPushHandlerMessageAdapter());

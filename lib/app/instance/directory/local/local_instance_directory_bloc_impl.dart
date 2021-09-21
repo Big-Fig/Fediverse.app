@@ -30,8 +30,8 @@ class LocalInstanceDirectoryBloc extends InstanceDirectoryBloc
   static LocalInstanceDirectoryBloc createFromContext(BuildContext context) {
     var unifediApiInstanceService =
         Provider.of<IUnifediApiInstanceService>(context, listen: false);
-    var currentAuthInstanceBloc =
-        ICurrentAuthInstanceBloc.of(context, listen: false);
+    var currentUnifediApiAccessBloc =
+        ICurrentUnifediApiAccessBloc.of(context, listen: false);
 
     return LocalInstanceDirectoryBloc(
       connectionService: Provider.of<IConnectionService>(
@@ -39,7 +39,7 @@ class LocalInstanceDirectoryBloc extends InstanceDirectoryBloc
         listen: false,
       ),
       unifediApiInstanceService: unifediApiInstanceService,
-      initialInstance: currentAuthInstanceBloc.currentInstance!.info,
+      initialInstance: currentUnifediApiAccessBloc.currentInstance!.info,
       paginationSettingsBloc: IPaginationSettingsBloc.of(
         context,
         listen: false,

@@ -23,6 +23,7 @@ import 'package:fedi/in_app_review/in_app_review_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 
 void showAccountHomeTabMenuDialog(BuildContext context) {
   showFediModalBottomSheetDialog(
@@ -103,7 +104,7 @@ class _AccountHomeTabMenuDialogBodyInstanceItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var currentInstanceUrlHost =
-        ICurrentAuthInstanceBloc.of(context, listen: false)
+        ICurrentUnifediApiAccessBloc.of(context, listen: false)
             .currentInstance!
             .urlHost;
 
@@ -149,7 +150,7 @@ class _InstanceSettingsHomeTabMenuDialogBodySettingsItemWidget
 
   @override
   Widget build(BuildContext context) {
-    var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
+    var currentUnifediApiAccessBloc = ICurrentUnifediApiAccessBloc.of(context);
 
     return InkWell(
       onTap: () {
@@ -158,7 +159,7 @@ class _InstanceSettingsHomeTabMenuDialogBodySettingsItemWidget
       child: _SimpleAccountHomeTabMenuDialogBodyItem(
         iconData: FediIcons.instance,
         text: S.of(context).app_account_home_tab_menu_action_instance_settings(
-              currentAuthInstanceBloc.currentInstance!.userAtHost,
+              currentUnifediApiAccessBloc.currentInstance!.userAtHost,
             ),
       ),
     );

@@ -1,1 +1,1 @@
-enum AuthInstanceState { notLogged, logged }
+enum UnifediApiAccessState { notLogged, logged }

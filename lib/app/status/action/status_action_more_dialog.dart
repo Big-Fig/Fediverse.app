@@ -389,8 +389,8 @@ class _StatusActionMoreDialogBodyStatusActionsWidget extends StatelessWidget {
     var isStatusFromMe = myAccountBloc.checkIsStatusFromMe(status);
     var isLocal = statusBloc.instanceLocation == InstanceLocation.local;
 
-    var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
-    var currentInstance = currentAuthInstanceBloc.currentInstance;
+    var currentUnifediApiAccessBloc = ICurrentUnifediApiAccessBloc.of(context);
+    var currentInstance = currentUnifediApiAccessBloc.currentInstance;
 
     return FediChooserDialogBody(
       title: S.of(context).app_status_action_popup_title,

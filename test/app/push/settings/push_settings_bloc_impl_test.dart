@@ -6,15 +6,15 @@ import 'package:fedi/app/push/settings/push_settings_model.dart';
 import 'package:fedi/app/push/settings/relay/local_preferences/instance/instance_push_relay_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:fedi/push/fcm/fcm_push_service.dart';
 import 'package:fedi/push/relay/push_relay_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:unifedi_api/unifedi_api.dart';
+import 'package:unifedi_api/unifedi_api_mock_helper.dart';
 
 import '../../../rxdart/rxdart_test_helper.dart';
-import '../../auth/instance/auth_instance_model_test_helper.dart';
 import './push_settings_bloc_impl_test.mocks.dart';
 
 // ignore_for_file: no-magic-number, avoid-late-keyword
@@ -87,7 +87,7 @@ void main() {
       pleromaPushService: pleromaPushService,
       pushRelayService: pushRelayService,
       fcmPushService: fcmPushService,
-      currentInstance: AuthInstanceModelMockHelper.createTestAuthInstance(
+      currentInstance: UnifediApiAccessMockHelper.generate(
         seed: 'seed',
       ),
     );

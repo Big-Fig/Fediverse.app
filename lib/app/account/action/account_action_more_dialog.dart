@@ -20,6 +20,7 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 
 void showAccountActionMoreDialog({
   required BuildContext context,
@@ -54,10 +55,10 @@ class AccountActionMoreDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context);
     var isAcctRemoteDomainExist = accountBloc.isAcctRemoteDomainExist;
-    var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
-    var isEndorsementSupported = currentAuthInstanceBloc.isEndorsementSupported;
+
+    var isEndorsementSupported = accountBloc.isEndorsementSupported;
     var isSubscribeToAccountFeatureSupported =
-        currentAuthInstanceBloc.isSubscribeToAccountFeatureSupported;
+        accountBloc.isSubscribeToAccountFeatureSupported;
 
     var isLocal = accountBloc.instanceLocation == InstanceLocation.local;
 
@@ -195,7 +196,7 @@ class AccountActionMoreDialog extends StatelessWidget {
     String label;
     if (isLocal) {
       var currentInstanceUrlHost =
-          ICurrentAuthInstanceBloc.of(context, listen: false)
+          ICurrentUnifediApiAccessBloc.of(context, listen: false)
               .currentInstance!
               .urlHost;
       label = S

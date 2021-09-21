@@ -158,6 +158,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 
 var _logger = Logger('app_context_bloc_impl.dart');
 
@@ -317,16 +318,17 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     );
 
     var instanceListLocalPreferenceBloc =
-        AuthInstanceListLocalPreferenceBloc(hiveLocalPreferencesService)
+        UnifediApiAccessListLocalPreferenceBloc(hiveLocalPreferencesService)
           ..disposeWith(this);
-    await globalProviderService.asyncInitAndRegister<
-        IAuthInstanceListLocalPreferenceBloc>(instanceListLocalPreferenceBloc);
+    await globalProviderService
+        .asyncInitAndRegister<IUnifediApiAccessListLocalPreferenceBloc>(
+            instanceListLocalPreferenceBloc);
 
-    var instanceListBloc = AuthInstanceListBloc(
+    var instanceListBloc = UnifediApiAccessListBloc(
       instanceListLocalPreferenceBloc: instanceListLocalPreferenceBloc,
     )..disposeWith(this);
     await globalProviderService
-        .asyncInitAndRegister<IAuthInstanceListBloc>(instanceListBloc);
+        .asyncInitAndRegister<IUnifediApiAccessListBloc>(instanceListBloc);
 
     instanceListBloc.instanceRemovedStream.listen(
       (removedInstance) {
@@ -365,19 +367,19 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     ).disposeWith(this);
 
     var currentInstanceLocalPreferenceBloc =
-        CurrentAuthInstanceLocalPreferenceBloc(hiveLocalPreferencesService)
+        CurrentUnifediApiAccessLocalPreferenceBloc(hiveLocalPreferencesService)
           ..disposeWith(this);
     await globalProviderService
-        .asyncInitAndRegister<ICurrentAuthInstanceLocalPreferenceBloc>(
+        .asyncInitAndRegister<ICurrentUnifediApiAccessLocalPreferenceBloc>(
       currentInstanceLocalPreferenceBloc,
     );
 
-    var currentInstanceBloc = CurrentAuthInstanceBloc(
+    var currentInstanceBloc = CurrentUnifediApiAccessBloc(
       instanceListBloc: instanceListBloc,
       currentLocalPreferenceBloc: currentInstanceLocalPreferenceBloc,
     )..disposeWith(this);
-    await globalProviderService
-        .asyncInitAndRegister<ICurrentAuthInstanceBloc>(currentInstanceBloc);
+    await globalProviderService.asyncInitAndRegister<
+        ICurrentUnifediApiAccessBloc>(currentInstanceBloc);
 
     var globalLocalizationSettingsLocalPreferencesBloc =
         GlobalLocalizationSettingsLocalPreferenceBloc(

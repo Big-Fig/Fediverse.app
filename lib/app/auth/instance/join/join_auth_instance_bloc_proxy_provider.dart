@@ -3,14 +3,15 @@ import 'package:fedi/app/server_list/server_list_auto_complete_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
-class JoinAuthInstanceBlocProxyProvider extends StatelessWidget {
+class JoinUnifediApiAccessBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  JoinAuthInstanceBlocProxyProvider({required this.child});
+  JoinUnifediApiAccessBlocProxyProvider({required this.child});
 
   @override
   Widget build(BuildContext context) {
-    return ProxyProvider<IJoinAuthInstanceBloc, IServerListAutoCompleteBloc>(
+    return ProxyProvider<IJoinUnifediApiAccessBloc,
+        IServerListAutoCompleteBloc>(
       update: (context, value, previous) => value.serverListAutoCompleteBloc,
       child: child,
     );

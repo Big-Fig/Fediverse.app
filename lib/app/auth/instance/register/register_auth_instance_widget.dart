@@ -8,26 +8,28 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class RegisterAuthInstanceWidget extends StatelessWidget {
-  const RegisterAuthInstanceWidget({
+class RegisterUnifediApiAccessWidget extends StatelessWidget {
+  const RegisterUnifediApiAccessWidget({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var registerAuthInstanceBloc = IRegisterAuthInstanceBloc.of(context);
+    var registerUnifediApiAccessBloc =
+        IRegisterUnifediApiAccessBloc.of(context);
 
     return Padding(
       padding: FediPadding.verticalBigPadding,
       child: FediAsyncInitLoadingWidget(
-        asyncInitLoadingBloc: registerAuthInstanceBloc,
+        asyncInitLoadingBloc: registerUnifediApiAccessBloc,
         loadingFinishedBuilder: (context) => ProxyProvider<
-            IRegisterAuthInstanceBloc, IRegisterAuthInstanceFormBloc>(
+            IRegisterUnifediApiAccessBloc, IRegisterUnifediApiAccessFormBloc>(
           update: (context, value, previous) =>
-              value.registerAuthInstanceFormBloc,
-          child: const RegisterAuthInstanceFormWidget(
+              value.registerUnifediApiAccessFormBloc,
+          child: const RegisterUnifediApiAccessFormWidget(
             key: Key(
-              RegisterAuthInstanceWidgetKeys.registerAuthInstanceFormWidgetKey,
+              RegisterUnifediApiAccessWidgetKeys
+                  .registerUnifediApiAccessFormWidgetKey,
             ),
           ),
         ),

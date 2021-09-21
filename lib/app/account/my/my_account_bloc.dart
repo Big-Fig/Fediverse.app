@@ -1,7 +1,7 @@
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/my/my_account_model.dart';
-import 'package:fedi/app/auth/instance/auth_instance_model.dart';
+
 import 'package:fedi/app/chat/message/chat_message_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:unifedi_api/unifedi_api.dart';
@@ -34,7 +34,7 @@ abstract class IMyAccountBloc extends IAccountBloc {
 
   Stream<IMyAccount?> get myAccountStream;
 
-  AuthInstance get instance;
+  UnifediApiAccess get instance;
 
   bool get isLocalCacheExist;
 

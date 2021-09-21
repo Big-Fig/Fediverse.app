@@ -485,4 +485,20 @@ class LocalAccountBloc extends AccountBloc {
 
   @override
   Uri? get remoteInstanceUriOrNull => null;
+
+  @override
+  bool get isEndorsementSupported =>
+      pleromaAuthAccountService.isFeatureSupported(
+        pleromaAuthAccountService.pinAccountFeature,
+      );
+
+  @override
+  bool get isSubscribeToAccountFeatureSupported =>
+      pleromaAuthAccountService.isFeatureSupported(
+        pleromaAuthAccountService.subscribeAccountFeature,
+      );
+
+  @override
+  // todo: remove hack
+  bool get isSupportChats => pleromaAuthAccountService.isPleroma;
 }

@@ -2,7 +2,7 @@ import 'package:fedi/app/auth/instance/register/form/stepper/item/register_auth_
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:fedi/ui/stepper/fedi_stepper_model.dart';
 
-abstract class IRegisterAuthInstanceFormStepperItemBloc
+abstract class IRegisterUnifediApiAccessFormStepperItemBloc
     implements IFediStepperItem, IFormItemBloc {
-  RegisterAuthInstanceFormStepperItemType get type;
+  RegisterUnifediApiAccessFormStepperItemType get type;
 }

@@ -55,6 +55,7 @@ import 'package:fedi/ui/scroll/scroll_controller_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 
 const _headerBackgroundHeight = 120.0;
 
@@ -438,7 +439,7 @@ class _AccountHomeTabCurrentInstanceNameWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var currentInstanceBloc =
-        ICurrentAuthInstanceBloc.of(context, listen: false);
+        ICurrentUnifediApiAccessBloc.of(context, listen: false);
 
     return AutoSizeText(
       currentInstanceBloc.currentInstance!.userAtHost,

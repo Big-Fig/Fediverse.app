@@ -59,7 +59,7 @@ void main() {
         await screenshot(driver, config, '1_Login');
 
         var hostTextField = find.byValueKey(
-          JoinAuthInstanceWidgetKeys.hostTextFieldKey,
+          JoinUnifediApiAccessWidgetKeys.hostTextFieldKey,
         );
         await driver.tap(hostTextField);
 
@@ -72,7 +72,7 @@ void main() {
         // }
 
         var exploreAsGuestButton = find.byValueKey(
-          JoinAuthInstanceWidgetKeys.exploreAsGuestButtonKey,
+          JoinUnifediApiAccessWidgetKeys.exploreAsGuestButtonKey,
         );
 
         await driver.waitFor(exploreAsGuestButton);
@@ -94,19 +94,20 @@ void main() {
 
         await driver.waitFor(
           find.byValueKey(
-            FromScratchJoinAuthInstancePageKeys.joinAuthInstanceWidgetKey,
+            FromScratchJoinUnifediApiAccessPageKeys
+                .joinUnifediApiAccessWidgetKey,
           ),
         );
 
         await driver.tap(
           find.byValueKey(
-            JoinAuthInstanceWidgetKeys.signUpButtonKey,
+            JoinUnifediApiAccessWidgetKeys.signUpButtonKey,
           ),
         );
 
         await driver.waitFor(
           find.byValueKey(
-            RegisterAuthInstancePageKeys.registerAuthInstanceWidgetKey,
+            RegisterUnifediApiAccessPageKeys.registerUnifediApiAccessWidgetKey,
           ),
         );
 
@@ -119,17 +120,18 @@ void main() {
         );
 
         hostTextField = find.byValueKey(
-          JoinAuthInstanceWidgetKeys.hostTextFieldKey,
+          JoinUnifediApiAccessWidgetKeys.hostTextFieldKey,
         );
         await driver.tap(hostTextField);
 
         await driver.enterText('mastodon.social');
 
-        print('before joinAuthInstanceWidgetKey');
+        print('before joinUnifediApiAccessWidgetKey');
 
         await driver.waitFor(
           find.byValueKey(
-            FromScratchJoinAuthInstancePageKeys.joinAuthInstanceWidgetKey,
+            FromScratchJoinUnifediApiAccessPageKeys
+                .joinUnifediApiAccessWidgetKey,
           ),
         );
 
@@ -137,7 +139,7 @@ void main() {
 
         await driver.tap(
           find.byValueKey(
-            JoinAuthInstanceWidgetKeys.loginButtonKey,
+            JoinUnifediApiAccessWidgetKeys.loginButtonKey,
           ),
         );
 

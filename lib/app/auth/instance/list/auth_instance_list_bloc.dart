@@ -1,27 +1,28 @@
-import 'package:fedi/app/auth/instance/auth_instance_model.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IAuthInstanceListBloc implements IDisposable {
-  static IAuthInstanceListBloc of(BuildContext context, {bool listen = true}) =>
-      Provider.of<IAuthInstanceListBloc>(context, listen: listen);
+abstract class IUnifediApiAccessListBloc implements IDisposable {
+  static IUnifediApiAccessListBloc of(BuildContext context,
+          {bool listen = true}) =>
+      Provider.of<IUnifediApiAccessListBloc>(context, listen: listen);
 
-  List<AuthInstance> get availableInstances;
+  List<UnifediApiAccess> get availableInstances;
 
-  Stream<List<AuthInstance>> get availableInstancesStream;
+  Stream<List<UnifediApiAccess>> get availableInstancesStream;
 
-  Stream<AuthInstance> get instanceRemovedStream;
+  Stream<UnifediApiAccess> get instanceRemovedStream;
 
   bool get isHaveInstances;
 
   Stream<bool> get isHaveInstancesStream;
 
-  Future addInstance(AuthInstance instance);
+  Future addInstance(UnifediApiAccess instance);
 
-  Future removeInstance(AuthInstance instance);
+  Future removeInstance(UnifediApiAccess instance);
 
-  AuthInstance? findInstanceByCredentials({
+  UnifediApiAccess? findInstanceByCredentials({
     required String host,
     required String acct,
   });

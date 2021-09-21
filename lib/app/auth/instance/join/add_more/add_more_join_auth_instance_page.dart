@@ -7,7 +7,7 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class AddMoreJoinAuthInstancePage extends StatelessWidget {
+class AddMoreJoinUnifediApiAccessPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,22 +17,22 @@ class AddMoreJoinAuthInstancePage extends StatelessWidget {
         leading: const FediDismissIconButton(),
       ),
       body: const SafeArea(
-        child: JoinAuthInstanceWidget(),
+        child: JoinUnifediApiAccessWidget(),
       ),
     );
   }
 
-  const AddMoreJoinAuthInstancePage();
+  const AddMoreJoinUnifediApiAccessPage();
 }
 
-void goToAddMoreJoinAuthInstancePage(BuildContext context) {
+void goToAddMoreJoinUnifediApiAccessPage(BuildContext context) {
   Navigator.push(
     context,
     MaterialPageRoute(
-      builder: (context) => JoinAuthInstanceBloc.provideToContext(
+      builder: (context) => JoinUnifediApiAccessBloc.provideToContext(
         context,
         isFromScratch: false,
-        child: const AddMoreJoinAuthInstancePage(),
+        child: const AddMoreJoinUnifediApiAccessPage(),
       ),
     ),
   );

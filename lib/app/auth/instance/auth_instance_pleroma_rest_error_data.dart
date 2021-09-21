@@ -2,8 +2,8 @@ import 'package:fedi/error/error_data_model.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
-class AuthInstanceUnifediApiRestErrorData extends ErrorData {
-  AuthInstanceUnifediApiRestErrorData({
+class UnifediApiAccessUnifediApiRestErrorData extends ErrorData {
+  UnifediApiAccessUnifediApiRestErrorData({
     required dynamic error,
     required StackTrace stackTrace,
     required ErrorDataTitleCreator titleCreator,
@@ -15,12 +15,12 @@ class AuthInstanceUnifediApiRestErrorData extends ErrorData {
           contentCreator: contentCreator,
         );
 
-  static AuthInstanceUnifediApiRestErrorData createFromContext({
+  static UnifediApiAccessUnifediApiRestErrorData createFromContext({
     required BuildContext? context,
     required dynamic error,
     required StackTrace stackTrace,
   }) {
-    return AuthInstanceUnifediApiRestErrorData(
+    return UnifediApiAccessUnifediApiRestErrorData(
       error: error,
       stackTrace: stackTrace,
       titleCreator: (context) =>

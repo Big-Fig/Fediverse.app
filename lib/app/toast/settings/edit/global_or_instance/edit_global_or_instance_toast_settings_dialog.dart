@@ -45,8 +45,9 @@ void showEditGlobalOrInstanceToastSettingsDialog({
           ),
           globalOrInstanceSettingsType: globalOrInstanceType,
           isEnabled: isEnabled,
-          currentInstance: ICurrentAuthInstanceBloc.of(context, listen: false)
-              .currentInstance,
+          currentInstance:
+              ICurrentUnifediApiAccessBloc.of(context, listen: false)
+                  .currentInstance,
           switchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc:
               ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc.of(
             context,

@@ -17,7 +17,7 @@ import 'package:flutter/material.dart';
 void showEditGlobalPostStatusSettingsDialog({
   required BuildContext context,
 }) {
-  var isPleromaInstance = ICurrentAuthInstanceBloc.of(
+  var isPleromaInstance = ICurrentUnifediApiAccessBloc.of(
     context,
     listen: false,
   ).currentInstance!.isPleroma;

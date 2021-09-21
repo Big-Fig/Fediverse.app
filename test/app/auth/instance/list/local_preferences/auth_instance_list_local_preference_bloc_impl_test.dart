@@ -9,15 +9,15 @@ import '../auth_instance_model_test_helper.dart';
 
 void main() {
   test('save & load', () async {
-    await LocalPreferencesMockHelper.testSaveAndLoad<AuthInstanceList,
-        AuthInstanceListLocalPreferenceBloc>(
-      defaultValue: AuthInstanceListLocalPreferenceBloc.defaultValue,
+    await LocalPreferencesMockHelper.testSaveAndLoad<UnifediApiAccessList,
+        UnifediApiAccessListLocalPreferenceBloc>(
+      defaultValue: UnifediApiAccessListLocalPreferenceBloc.defaultValue,
       blocCreator: (localPreferencesService) =>
-          AuthInstanceListLocalPreferenceBloc(
+          UnifediApiAccessListLocalPreferenceBloc(
         localPreferencesService,
       ),
       testObjectCreator: ({required String seed}) =>
-          AuthInstanceListModelMockHelper.createTestAuthInstanceList(
+          UnifediApiAccessListModelMockHelper.createTestUnifediApiAccessList(
         seed: seed,
       ),
     );

@@ -83,8 +83,8 @@ class AccountDetailsPageBody extends StatelessWidget {
 
     var isRemote = accountBloc.instanceLocation == InstanceLocation.remote;
 
-    var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
-    var currentInstance = currentAuthInstanceBloc.currentInstance;
+    var currentUnifediApiAccessBloc = ICurrentUnifediApiAccessBloc.of(context);
+    var currentInstance = currentUnifediApiAccessBloc.currentInstance;
 
     return Scaffold(
       backgroundColor: IFediUiColorTheme.of(context).white,

@@ -4,7 +4,7 @@ import 'package:easy_dispose/easy_dispose.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
-import 'package:fedi/app/auth/instance/auth_instance_model.dart';
+
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/filter/edit/edit_filter_bloc.dart';
 import 'package:fedi/app/filter/edit/edit_filter_bloc_proxy_provider.dart';
@@ -51,7 +51,7 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
         context,
         listen: false,
       ),
-      currentInstance: ICurrentAuthInstanceBloc.of(
+      currentInstance: ICurrentUnifediApiAccessBloc.of(
         context,
         listen: false,
       ).currentInstance!,
@@ -104,7 +104,7 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
   @override
   final bool isPossibleToDelete;
 
-  final AuthInstance currentInstance;
+  final UnifediApiAccess currentInstance;
 
   EditFilterBloc({
     required this.filter,

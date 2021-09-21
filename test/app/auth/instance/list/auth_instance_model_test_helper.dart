@@ -1,14 +1,13 @@
 import 'package:fedi/app/auth/instance/list/auth_instance_list_model.dart';
-
-import '../auth_instance_model_test_helper.dart';
+import 'package:unifedi_api/unifedi_api_mock_helper.dart';
 
 // ignore_for_file: no-magic-number
-class AuthInstanceListModelMockHelper {
-  static AuthInstanceList createTestAuthInstanceList({
+class UnifediApiAccessListModelMockHelper {
+  static UnifediApiAccessList createTestUnifediApiAccessList({
     required String seed,
   }) =>
-      AuthInstanceList(instances: [
-        AuthInstanceModelMockHelper.createTestAuthInstance(seed: seed + '1'),
-        AuthInstanceModelMockHelper.createTestAuthInstance(seed: seed + '2'),
+      UnifediApiAccessList(instances: [
+        UnifediApiAccessMockHelper.generate(seed: seed + '1'),
+        UnifediApiAccessMockHelper.generate(seed: seed + '2'),
       ]);
 }

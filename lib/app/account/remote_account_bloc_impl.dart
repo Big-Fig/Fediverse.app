@@ -155,4 +155,12 @@ class RemoteAccountBloc extends AccountBloc {
 
   @override
   Stream<IUnifediApiAccountRelationship>? get relationshipStream => null;
+  @override
+  bool get isEndorsementSupported => false;
+
+  @override
+  bool get isSubscribeToAccountFeatureSupported => false;
+
+  @override
+  bool get isSupportChats => false;
 }

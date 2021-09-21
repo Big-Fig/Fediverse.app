@@ -18,14 +18,14 @@ class DeepLinkInitBloc extends AsyncInitLoadingBloc
       pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc;
   final ILocalPreferencesService localPreferencesService;
   final IConnectionService connectionService;
-  final ICurrentAuthInstanceBloc currentAuthInstanceBloc;
+  final ICurrentUnifediApiAccessBloc currentUnifediApiAccessBloc;
   final IConfigService configService;
 
   DeepLinkInitBloc({
     required this.pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc,
     required this.localPreferencesService,
     required this.connectionService,
-    required this.currentAuthInstanceBloc,
+    required this.currentUnifediApiAccessBloc,
     required this.configService,
   });
 
@@ -50,7 +50,7 @@ class DeepLinkInitBloc extends AsyncInitLoadingBloc
         instanceBaseUri: Uri.parse(lastLaunchedHost),
         preferencesService: localPreferencesService,
         connectionService: connectionService,
-        currentInstanceBloc: currentAuthInstanceBloc,
+        currentInstanceBloc: currentUnifediApiAccessBloc,
         pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc:
             pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc,
         // doesnt matter here
@@ -67,7 +67,7 @@ class DeepLinkInitBloc extends AsyncInitLoadingBloc
       try {
         var authInstance = await authHostBloc.loginWithAuthCode(authCode);
 
-        await currentAuthInstanceBloc.changeCurrentInstance(authInstance);
+        await currentUnifediApiAccessBloc.changeCurrentInstance(authInstance);
       } catch (e, stackTrace) {
         _logger.warning(
           () => 'Failed to _handleLoginOnAndroidWithoutChrome ',

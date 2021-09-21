@@ -1,5 +1,5 @@
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:fedi/app/auth/instance/auth_instance_model.dart';
+
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/timeline/create/create_timeline_bloc.dart';
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc_impl.dart';
@@ -21,12 +21,14 @@ import 'package:fedi/form/form_item_bloc.dart';
 import 'package:fedi/id/fake_id_helper.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:unifedi_api/unifedi_api.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 
 typedef TimelineSavedCallback = Function(Timeline timeline);
 
 class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
   final TimelineSavedCallback timelineSavedCallback;
-  final AuthInstance authInstance;
+  final UnifediApiAccess authInstance;
 
   @override
   IEditTimelineSettingsBloc? get editTimelineSettingsBloc =>

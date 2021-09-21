@@ -16,14 +16,15 @@ class StatusActionsListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
+    var currentUnifediApiAccessBloc = ICurrentUnifediApiAccessBloc.of(context);
 
     var statusBloc = IStatusBloc.of(context);
     var isLocal = statusBloc.instanceLocation == InstanceLocation.local;
 
     bool isPleromaInstance;
     if (isLocal) {
-      isPleromaInstance = currentAuthInstanceBloc.currentInstance!.isPleroma;
+      isPleromaInstance =
+          currentUnifediApiAccessBloc.currentInstance!.isPleroma;
     } else {
       var remoteInstanceBloc = IRemoteInstanceBloc.of(context);
       // todo: refactor

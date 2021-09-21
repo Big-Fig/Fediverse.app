@@ -7,7 +7,6 @@ import 'package:fedi/app/auth/host/application/auth_host_application_local_prefe
 import 'package:fedi/app/auth/host/application/auth_host_application_local_preference_bloc_impl.dart';
 import 'package:fedi/app/auth/host/auth_host_bloc.dart';
 import 'package:fedi/app/auth/host/auth_host_model.dart';
-import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/oauth_last_launched/local_preferences/auth_oauth_last_launched_host_to_login_local_preference_bloc.dart';
 import 'package:fedi/app/config/config_service.dart';
@@ -39,7 +38,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
   String get instanceBaseUriScheme => instanceBaseUri.scheme;
 
   // ignore: avoid-late-keyword
-  late IUnifediApiAccessScopes scopes;
+  late UnifediApiAccessScopes scopes;
 
   // ignore: avoid-late-keyword
   late IUnifediApiInstanceService unifediApiInstanceService;
@@ -59,7 +58,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
       hostAccessTokenLocalPreferenceBloc;
 
   // ignore: avoid-late-keyword
-  late ICurrentAuthInstanceBloc currentInstanceBloc;
+  late ICurrentUnifediApiAccessBloc currentInstanceBloc;
   final IAuthApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc
       pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc;
   final IConnectionService connectionService;
@@ -186,7 +185,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
   }
 
   @override
-  Future<AuthInstance?> launchLoginToAccount() async {
+  Future<UnifediApiAccess?> launchLoginToAccount() async {
     _logger.finest(() => 'launchLoginToAccount');
     await checkApplicationRegistration();
 
@@ -215,7 +214,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
   }
 
   @override
-  Future<AuthInstance> loginWithAuthCode(String authCode) async {
+  Future<UnifediApiAccess> loginWithAuthCode(String authCode) async {
     var token =
         await unifediApiInstanceService.retrieveAccountAccessTokenFromAuthCode(
       redirectUri: await _calculateRedirectUri(),
@@ -232,7 +231,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     );
   }
 
-  Future<AuthInstance> _createInstanceFromToken({
+  Future<UnifediApiAccess> _createInstanceFromToken({
     required IUnifediApiOAuthToken token,
     required String authCode,
   }) async {
@@ -240,7 +239,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
 
     var hostInstance = await unifediApiInstanceService.getInstance();
 
-    var instance = await _createAuthInstance(
+    var instance = await _createUnifediApiAccess(
       authCode: authCode,
       token: token,
       hostInstance: hostInstance,
@@ -251,7 +250,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     return instance;
   }
 
-  Future<AuthInstance> _createAuthInstance({
+  Future<UnifediApiAccess> _createUnifediApiAccess({
     required String? authCode,
     required IUnifediApiOAuthToken token,
     required IUnifediApiInstance hostInstance,
@@ -259,17 +258,32 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     var unifediApiMyAccountService = unifediApiManager.createMyAccountService();
     var myAccount = await unifediApiMyAccountService.verifyMyCredentials();
 
-    var instance = AuthInstance(
-      urlHost: instanceBaseUriHost.toLowerCase(),
-      urlSchema: instanceBaseUriScheme,
-      authCode: authCode,
-      token: token.toUnifediApiOAuthToken(),
-      acct: myAccount.acct,
-      application: hostApplication,
-      info: hostInstance.toUnifediApiInstance(),
-      // todo: replace with isPleroma getter with same logic
-      isPleroma: hostInstance.typeAsUnifediApi.isPleroma,
+    var instance = UnifediApiAccess(
+      url: instanceBaseUri.toString(),
+      instance: hostInstance.toUnifediApiInstance(),
+      applicationAccessToken: UnifediApiAccessApplicationAccessToken(
+        accessToken: '',
+        clientApplication: hostApplication!,
+        scopes: scopes,
+      ),
+      userAccessToken: UnifediApiAccessUserAccessToken(
+        accessToken: '',
+        scopes: scopes,
+        user: myAccount.acct,
+      ),
     );
+    //
+    // var instance = UnifediApiAccess(
+    //   urlHost: instanceBaseUriHost.toLowerCase(),
+    //   urlSchema: instanceBaseUriScheme,
+    //   authCode: authCode,
+    //   token: token.toUnifediApiOAuthToken(),
+    //   acct: myAccount.acct,
+    //   application: hostApplication,
+    //   info: hostInstance.toUnifediApiInstance(),
+    //   // todo: replace with isPleroma getter with same logic
+    //   isPleroma: hostInstance.typeAsUnifediApi.isPleroma,
+    // );
     await unifediApiMyAccountService.dispose();
 
     return instance;
@@ -317,9 +331,9 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
             emailConfirmationRequiredAuthHostException;
         dynamic unknownHostException;
 
-        AuthInstance? instance;
+        UnifediApiAccess? instance;
         try {
-          instance = await _createAuthInstance(
+          instance = await _createUnifediApiAccess(
             authCode: null,
             token: token,
             hostInstance: hostInstance,
@@ -413,7 +427,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
         connectionService:
             Provider.of<IConnectionService>(context, listen: false),
         currentInstanceBloc:
-            ICurrentAuthInstanceBloc.of(context, listen: false),
+            ICurrentUnifediApiAccessBloc.of(context, listen: false),
         pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc:
             IAuthApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc.of(
           context,
@@ -434,7 +448,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
       await unifediApiInstanceService.revokeAccessToken(
         clientId: instance.application!.clientId!,
         clientSecret: instance.application!.clientSecret!,
-        token: instance.token!.accessToken,
+        token: instance.userAccessToken!.accessToken,
       );
     } finally {
       await currentInstanceBloc.logoutCurrentInstance();

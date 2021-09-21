@@ -11,11 +11,12 @@ import 'package:flutter/material.dart';
 void showMyAccountActionListBottomSheetDialog(BuildContext context) {
   showFediModalBottomSheetDialog(
     context: context,
-    child: DisposableProvider<IAuthInstanceChooserBloc>(
-      create: (context) => AuthInstanceChooserBloc.createFromContext(context),
+    child: DisposableProvider<IUnifediApiAccessChooserBloc>(
+      create: (context) =>
+          UnifediApiAccessChooserBloc.createFromContext(context),
       child: Padding(
         padding: FediPadding.allBigPadding,
-        child: const AuthInstanceChooserWidget(),
+        child: const UnifediApiAccessChooserWidget(),
       ),
     ),
   );

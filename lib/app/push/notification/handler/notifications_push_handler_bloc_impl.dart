@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
-import 'package:fedi/app/auth/instance/auth_instance_model.dart';
+
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/list/auth_instance_list_bloc.dart';
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository_impl.dart';
@@ -25,6 +25,7 @@ import 'package:fedi/push/fcm/fcm_push_service.dart';
 import 'package:fedi/push/push_model.dart';
 import 'package:logging/logging.dart';
 import 'package:unifedi_api/unifedi_api.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 
 var _logger = Logger('push_handler_bloc_impl.dart');
 
@@ -35,8 +36,8 @@ class NotificationsPushHandlerBloc extends DisposableOwner
       unhandledLocalPreferencesBloc;
   final IFcmPushService fcmPushService;
   final IRichNotificationsService richNotificationsService;
-  final IAuthInstanceListBloc instanceListBloc;
-  final ICurrentAuthInstanceBloc currentInstanceBloc;
+  final IUnifediApiAccessListBloc instanceListBloc;
+  final ICurrentUnifediApiAccessBloc currentInstanceBloc;
   final IConfigService configService;
   final IConnectionService connectionService;
 
@@ -440,7 +441,7 @@ class NotificationsPushHandlerBloc extends DisposableOwner
 
   @override
   List<NotificationsPushHandlerMessage> loadUnhandledMessagesForInstance(
-    AuthInstance instance,
+    UnifediApiAccess instance,
   ) =>
       unhandledLocalPreferencesBloc.loadUnhandledMessagesForInstance(instance);
 

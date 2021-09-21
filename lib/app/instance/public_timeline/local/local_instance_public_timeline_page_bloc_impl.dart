@@ -26,6 +26,7 @@ import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:fediverse_api/fediverse_api_utils.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 
 class LocalInstancePublicTimelinePageBloc extends InstancePublicTimelinePageBloc
     implements ILocalInstancePublicTimelinePageBloc {
@@ -35,7 +36,7 @@ class LocalInstancePublicTimelinePageBloc extends InstancePublicTimelinePageBloc
   final IUnifediApiAccountService unifediApiAccountService;
   final IStatusRepository statusRepository;
   final IFilterRepository filterRepository;
-  final ICurrentAuthInstanceBloc currentAuthInstanceBloc;
+  final ICurrentUnifediApiAccessBloc currentUnifediApiAccessBloc;
   final IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc;
   final IMyAccountBloc myAccountBloc;
   final IPaginationSettingsBloc paginationSettingsBloc;
@@ -61,7 +62,7 @@ class LocalInstancePublicTimelinePageBloc extends InstancePublicTimelinePageBloc
     required this.unifediApiAccountService,
     required this.statusRepository,
     required this.filterRepository,
-    required this.currentAuthInstanceBloc,
+    required this.currentUnifediApiAccessBloc,
     required this.webSocketsHandlerManagerBloc,
     required this.paginationSettingsBloc,
     required this.myAccountBloc,
@@ -98,7 +99,7 @@ class LocalInstancePublicTimelinePageBloc extends InstancePublicTimelinePageBloc
         context,
         listen: false,
       ),
-      currentAuthInstanceBloc: ICurrentAuthInstanceBloc.of(
+      currentUnifediApiAccessBloc: ICurrentUnifediApiAccessBloc.of(
         context,
         listen: false,
       ),
@@ -172,7 +173,7 @@ class LocalInstancePublicTimelinePageBloc extends InstancePublicTimelinePageBloc
       unifediApiTimelineService: unifediApiTimelineService,
       statusRepository: statusRepository,
       filterRepository: filterRepository,
-      currentInstanceBloc: currentAuthInstanceBloc,
+      currentInstanceBloc: currentUnifediApiAccessBloc,
       timelineLocalPreferenceBloc: timelineLocalPreferenceBloc,
       webSocketsHandlerManagerBloc: webSocketsHandlerManagerBloc,
       myAccountBloc: myAccountBloc,
@@ -207,5 +208,6 @@ class LocalInstancePublicTimelinePageBloc extends InstancePublicTimelinePageBloc
   }
 
   @override
-  String get userAtHost => currentAuthInstanceBloc.currentInstance!.userAtHost;
+  String get userAtHost =>
+      currentUnifediApiAccessBloc.currentInstance!.userAtHost;
 }

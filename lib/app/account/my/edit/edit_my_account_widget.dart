@@ -22,6 +22,7 @@ import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 const double _editAccountAvatarSize = 120.0;
 const double _editAccountAvatarCircleBorderWidth = 4.0;
@@ -90,11 +91,11 @@ class _EditMyAccountBodyWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
+    var currentUnifediApiAccessBloc = ICurrentUnifediApiAccessBloc.of(context);
 
     return Column(
       children: [
-        if (currentAuthInstanceBloc.currentInstance!.isPleroma)
+        if (currentUnifediApiAccessBloc.currentInstance!.isPleroma)
           const EditMyAccountPleromaBackgroundFieldWidget(
             backgroundHeight: _editAccountBackgroundHeight,
           ),
@@ -103,7 +104,7 @@ class _EditMyAccountBodyWidget extends StatelessWidget {
         const EditMyAccountLockedFieldWidget(),
         const EditMyAccountDiscoverableFieldWidget(),
         const EditMyAccountBotFieldWidget(),
-        if (currentAuthInstanceBloc.currentInstance!.isPleroma) ...[
+        if (currentUnifediApiAccessBloc.currentInstance!.isPleroma) ...[
           const EditMyAccountacceptsChatMessagesFieldWidget(),
           const EditMyAccountPleromaAllowFollowingMoveFieldWidget(),
           const EditMyAccountPleromaHideFavouritesFieldWidget(),

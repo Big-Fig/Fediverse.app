@@ -35,11 +35,11 @@ void goToRemoteAccountDetailsPageBasedOnRemoteInstanceAccount(
         'remoteInstanceAccount $remoteInstanceAccount',
   );
 
-  var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(
+  var currentUnifediApiAccessBloc = ICurrentUnifediApiAccessBloc.of(
     context,
     listen: false,
   );
-  var currentInstance = currentAuthInstanceBloc.currentInstance;
+  var currentInstance = currentUnifediApiAccessBloc.currentInstance;
 
   if (isAcctRemoteDomainExist && currentInstance != null) {
     // jumping from instance to instance
@@ -205,7 +205,9 @@ MaterialPageRoute createRemoteAccountDetailsPageRoute({
         },
         child: DisposableProvider<IAccountDetailsBloc>(
           create: (context) => AccountDetailsBloc(
-            currentAuthInstanceBloc: ICurrentAuthInstanceBloc.of(
+            unifediApiAccountService:
+                Provider.of<IUnifediApiAccountService>(context),
+            currentUnifediApiAccessBloc: ICurrentUnifediApiAccessBloc.of(
               context,
               listen: false,
             ),

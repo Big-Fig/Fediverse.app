@@ -47,7 +47,7 @@ class ThreadPostStatusBloc extends PostStatusBloc
     required IScheduledStatusRepository scheduledStatusRepository,
     required IUnifediApiMediaAttachmentService unifediApiMediaAttachmentService,
     required int? maximumMessageLength,
-    required UnifediApiInstancePollLimits? pollLimits,
+    required IUnifediApiInstancePollLimits? pollLimits,
     required int? maximumFileSizeInBytes,
     required int? maximumMediaAttachmentCount,
     required bool markMediaAsNsfwOnAttach,
@@ -78,7 +78,7 @@ class ThreadPostStatusBloc extends PostStatusBloc
     BuildContext context, {
     required IStatus inReplyToStatus,
   }) {
-    var info = ICurrentAuthInstanceBloc.of(context, listen: false)
+    var info = ICurrentUnifediApiAccessBloc.of(context, listen: false)
         .currentInstance!
         .info!;
 

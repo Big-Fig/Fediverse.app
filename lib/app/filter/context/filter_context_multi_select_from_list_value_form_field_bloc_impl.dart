@@ -1,4 +1,3 @@
-import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/filter/context/filter_context_multi_select_from_list_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/select_from_list/multi/multi_select_from_list_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/field/value/value_form_field_validation.dart';
@@ -7,7 +6,7 @@ import 'package:unifedi_api/unifedi_api.dart';
 class FilterContextMultiSelectFromListValueFormFieldBloc
     extends MultiSelectFromListValueFormFieldBloc<UnifediApiFilterContextType>
     implements IFilterContextMultiSelectFromListValueFormFieldBloc {
-  final AuthInstance? currentInstance;
+  final UnifediApiAccess? currentInstance;
 
   @override
   List<UnifediApiFilterContextType> get possibleValues {

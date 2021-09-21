@@ -19,6 +19,7 @@ import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 
 void showEditTimelineSettingsDialog({
   required BuildContext context,
@@ -104,9 +105,9 @@ TimelineLocalPreferenceBloc _createTimelinePreferencesBloc(
     context,
     listen: false,
   );
-  var currentAuthInstanceBloc =
-      ICurrentAuthInstanceBloc.of(context, listen: false);
-  var currentInstance = currentAuthInstanceBloc.currentInstance!;
+  var currentUnifediApiAccessBloc =
+      ICurrentUnifediApiAccessBloc.of(context, listen: false);
+  var currentInstance = currentUnifediApiAccessBloc.currentInstance!;
 
   return TimelineLocalPreferenceBloc.byId(
     localPreferencesService,

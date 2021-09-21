@@ -5,14 +5,14 @@ import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 
-class RegisterAuthInstanceFormStepperManualApproveItemBloc
-    extends RegisterAuthInstanceFormStepperItemBloc
-    implements IRegisterAuthInstanceFormStepperManualApproveItemBloc {
+class RegisterUnifediApiAccessFormStepperManualApproveItemBloc
+    extends RegisterUnifediApiAccessFormStepperItemBloc
+    implements IRegisterUnifediApiAccessFormStepperManualApproveItemBloc {
   @override
   // ignore: avoid-late-keyword
   late IStringValueFormFieldBloc reasonFieldBloc;
 
-  RegisterAuthInstanceFormStepperManualApproveItemBloc()
+  RegisterUnifediApiAccessFormStepperManualApproveItemBloc()
       : super(
           isAllItemsInitialized: false,
         ) {
@@ -26,8 +26,8 @@ class RegisterAuthInstanceFormStepperManualApproveItemBloc
   }
 
   @override
-  RegisterAuthInstanceFormStepperItemType get type =>
-      RegisterAuthInstanceFormStepperItemType.manualApprove;
+  RegisterUnifediApiAccessFormStepperItemType get type =>
+      RegisterUnifediApiAccessFormStepperItemType.manualApprove;
 
   @override
   List<IFormItemBloc> get currentItems => [

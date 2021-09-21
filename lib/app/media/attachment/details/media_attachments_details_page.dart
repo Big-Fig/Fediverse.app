@@ -115,8 +115,8 @@ class _MediaAttachmentDetailsPageState
 
   @override
   Widget build(BuildContext context) {
-    var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
-    var currentInstance = currentAuthInstanceBloc.currentInstance;
+    var currentUnifediApiAccessBloc = ICurrentUnifediApiAccessBloc.of(context);
+    var currentInstance = currentUnifediApiAccessBloc.currentInstance;
 
     return Scaffold(
       appBar: FediPageTitleAppBar(

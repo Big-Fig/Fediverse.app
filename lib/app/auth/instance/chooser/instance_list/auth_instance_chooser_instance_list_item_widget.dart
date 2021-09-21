@@ -13,9 +13,10 @@ import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 
-class AuthInstanceChooserInstanceListItemWidget extends StatelessWidget {
-  const AuthInstanceChooserInstanceListItemWidget();
+class UnifediApiAccessChooserInstanceListItemWidget extends StatelessWidget {
+  const UnifediApiAccessChooserInstanceListItemWidget();
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +28,10 @@ class AuthInstanceChooserInstanceListItemWidget extends StatelessWidget {
           Flexible(
             child: Row(
               children: <Widget>[
-                const _AuthInstanceChooserInstanceListItemLogoutButtonWidget(),
+                const _UnifediApiAccessChooserInstanceListItemLogoutButtonWidget(),
                 Flexible(
                   child:
-                      const _AuthInstanceChooserInstanceListItemAccountInfoWidget(),
+                      const _UnifediApiAccessChooserInstanceListItemAccountInfoWidget(),
                 ),
               ],
             ),
@@ -38,7 +39,7 @@ class AuthInstanceChooserInstanceListItemWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: FediSizes.bigPadding),
             child:
-                const _AuthInstanceChooserInstanceListItemSelectedIconWidget(),
+                const _UnifediApiAccessChooserInstanceListItemSelectedIconWidget(),
           ),
         ],
       ),
@@ -46,19 +47,19 @@ class AuthInstanceChooserInstanceListItemWidget extends StatelessWidget {
   }
 }
 
-class _AuthInstanceChooserInstanceListItemAccountInfoWidget
+class _UnifediApiAccessChooserInstanceListItemAccountInfoWidget
     extends StatelessWidget {
   static const msToWaitBeforeChangeInstance = 500;
 
-  const _AuthInstanceChooserInstanceListItemAccountInfoWidget({
+  const _UnifediApiAccessChooserInstanceListItemAccountInfoWidget({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var instanceChooserBloc = IAuthInstanceChooserBloc.of(context);
+    var instanceChooserBloc = IUnifediApiAccessChooserBloc.of(context);
     var instanceListItemBloc =
-        IAuthInstanceChooserInstanceListItemBloc.of(context);
+        IUnifediApiAccessChooserInstanceListItemBloc.of(context);
 
     return InkWell(
       onTap: () {
@@ -86,7 +87,7 @@ class _AuthInstanceChooserInstanceListItemAccountInfoWidget
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const AccountDisplayNameWidget(),
-                const _AuthInstanceChooserInstanceListItemUserAtHostWidget(),
+                const _UnifediApiAccessChooserInstanceListItemUserAtHostWidget(),
               ],
             ),
           ),
@@ -96,16 +97,16 @@ class _AuthInstanceChooserInstanceListItemAccountInfoWidget
   }
 }
 
-class _AuthInstanceChooserInstanceListItemUserAtHostWidget
+class _UnifediApiAccessChooserInstanceListItemUserAtHostWidget
     extends StatelessWidget {
-  const _AuthInstanceChooserInstanceListItemUserAtHostWidget({
+  const _UnifediApiAccessChooserInstanceListItemUserAtHostWidget({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var instanceListItemBloc =
-        IAuthInstanceChooserInstanceListItemBloc.of(context);
+        IUnifediApiAccessChooserInstanceListItemBloc.of(context);
 
     return Text(
       instanceListItemBloc.instance.userAtHost,
@@ -115,16 +116,16 @@ class _AuthInstanceChooserInstanceListItemUserAtHostWidget
   }
 }
 
-class _AuthInstanceChooserInstanceListItemSelectedIconWidget
+class _UnifediApiAccessChooserInstanceListItemSelectedIconWidget
     extends StatelessWidget {
-  const _AuthInstanceChooserInstanceListItemSelectedIconWidget({
+  const _UnifediApiAccessChooserInstanceListItemSelectedIconWidget({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var instanceListItemBloc =
-        IAuthInstanceChooserInstanceListItemBloc.of(context);
+        IUnifediApiAccessChooserInstanceListItemBloc.of(context);
     if (instanceListItemBloc.isSelected) {
       return FediIconInCircleTransparentButton(
         FediIcons.check,
@@ -138,17 +139,17 @@ class _AuthInstanceChooserInstanceListItemSelectedIconWidget
   }
 }
 
-class _AuthInstanceChooserInstanceListItemLogoutButtonWidget
+class _UnifediApiAccessChooserInstanceListItemLogoutButtonWidget
     extends StatelessWidget {
-  const _AuthInstanceChooserInstanceListItemLogoutButtonWidget({
+  const _UnifediApiAccessChooserInstanceListItemLogoutButtonWidget({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var instanceChooserBloc = IAuthInstanceChooserBloc.of(context);
+    var instanceChooserBloc = IUnifediApiAccessChooserBloc.of(context);
     var instanceListItemBloc =
-        IAuthInstanceChooserInstanceListItemBloc.of(context);
+        IUnifediApiAccessChooserInstanceListItemBloc.of(context);
 
     return FediIconButton(
       icon: Icon(FediIcons.remove_circle),

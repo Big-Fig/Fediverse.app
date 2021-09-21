@@ -1,4 +1,4 @@
-import 'package:fedi/app/auth/instance/auth_instance_model.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:fedi/collection/collection_hash_utils.dart';
 import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:flutter/foundation.dart';
@@ -14,18 +14,18 @@ part 'auth_instance_list_model.g.dart';
 //@HiveType()
 @HiveType(typeId: -32 + 49)
 @JsonSerializable(explicitToJson: true)
-class AuthInstanceList extends IJsonObj {
+class UnifediApiAccessList extends IJsonObj {
   @HiveField(0)
-  final List<AuthInstance> instances;
+  final List<UnifediApiAccess> instances;
 
-  AuthInstanceList({
+  UnifediApiAccessList({
     required this.instances,
   });
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is AuthInstanceList &&
+      other is UnifediApiAccessList &&
           runtimeType == other.runtimeType &&
           listEquals(instances, other.instances);
 
@@ -34,12 +34,12 @@ class AuthInstanceList extends IJsonObj {
 
   @override
   String toString() {
-    return 'AuthInstanceList{instances: $instances}';
+    return 'UnifediApiAccessList{instances: $instances}';
   }
 
-  static AuthInstanceList fromJson(Map<String, dynamic> json) =>
-      _$AuthInstanceListFromJson(json);
+  static UnifediApiAccessList fromJson(Map<String, dynamic> json) =>
+      _$UnifediApiAccessListFromJson(json);
 
   @override
-  Map<String, dynamic> toJson() => _$AuthInstanceListToJson(this);
+  Map<String, dynamic> toJson() => _$UnifediApiAccessListToJson(this);
 }

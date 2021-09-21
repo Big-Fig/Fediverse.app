@@ -74,7 +74,7 @@ class _FakeIUnifediApiAccountRelationship extends _i1.Fake
 class _FakeIUnifediApiOAuthToken extends _i1.Fake
     implements _i8.IUnifediApiOAuthToken {}
 
-class _FakeAuthInstance extends _i1.Fake implements _i9.AuthInstance {
+class _FakeUnifediApiAccess extends _i1.Fake implements _i9.UnifediApiAccess {
   @override
   String toString() => super.toString();
 }
@@ -637,9 +637,9 @@ class MockIMyAccountBloc extends _i1.Mock implements _i21.IMyAccountBloc {
               returnValue: Stream<_i22.IMyAccount?>.empty())
           as _i12.Stream<_i22.IMyAccount?>);
   @override
-  _i9.AuthInstance get instance =>
+  _i9.UnifediApiAccess get instance =>
       (super.noSuchMethod(Invocation.getter(#instance),
-          returnValue: _FakeAuthInstance()) as _i9.AuthInstance);
+          returnValue: _FakeUnifediApiAccess()) as _i9.UnifediApiAccess);
   @override
   bool get isLocalCacheExist =>
       (super.noSuchMethod(Invocation.getter(#isLocalCacheExist),

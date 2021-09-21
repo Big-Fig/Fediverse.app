@@ -29,8 +29,8 @@ class HashtagPageAppBarWidget extends StatelessWidget
 
     String title;
 
-    var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
-    var currentInstance = currentAuthInstanceBloc.currentInstance;
+    var currentUnifediApiAccessBloc = ICurrentUnifediApiAccessBloc.of(context);
+    var currentInstance = currentUnifediApiAccessBloc.currentInstance;
 
     var hashtagPageBloc = IHashtagPageBloc.of(context);
     var isLocal = hashtagPageBloc.instanceLocation == InstanceLocation.local;

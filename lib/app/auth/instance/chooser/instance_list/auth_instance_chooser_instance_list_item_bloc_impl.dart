@@ -1,16 +1,16 @@
-import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:easy_dispose/easy_dispose.dart';
 
 import 'package:fedi/app/auth/instance/chooser/instance_list/auth_instance_chooser_instance_list_item_bloc.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
-class AuthInstanceChooserInstanceListItemBloc extends DisposableOwner
-    implements IAuthInstanceChooserInstanceListItemBloc {
+class UnifediApiAccessChooserInstanceListItemBloc extends DisposableOwner
+    implements IUnifediApiAccessChooserInstanceListItemBloc {
   @override
   final bool isSelected;
   @override
-  final AuthInstance instance;
+  final UnifediApiAccess instance;
 
-  AuthInstanceChooserInstanceListItemBloc({
+  UnifediApiAccessChooserInstanceListItemBloc({
     required this.isSelected,
     required this.instance,
   });
@@ -18,7 +18,7 @@ class AuthInstanceChooserInstanceListItemBloc extends DisposableOwner
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is AuthInstanceChooserInstanceListItemBloc &&
+      other is UnifediApiAccessChooserInstanceListItemBloc &&
           runtimeType == other.runtimeType &&
           isSelected == other.isSelected &&
           instance == other.instance;

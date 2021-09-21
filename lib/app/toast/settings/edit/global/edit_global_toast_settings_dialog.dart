@@ -37,8 +37,8 @@ DisposableProvider<IToastSettingsBloc> _buildBody() {
         toastSettingsBloc: value,
         globalOrInstanceSettingsType: GlobalOrInstanceSettingsType.global,
         isEnabled: true,
-        currentInstance:
-            ICurrentAuthInstanceBloc.of(context, listen: false).currentInstance,
+        currentInstance: ICurrentUnifediApiAccessBloc.of(context, listen: false)
+            .currentInstance,
       ),
       child: const EditToastSettingsWidget(
         shrinkWrap: true,

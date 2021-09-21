@@ -4,7 +4,7 @@ import 'package:fedi/app/account/my/local_preferences/my_account_local_preferenc
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/my/my_account_bloc_impl.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
-import 'package:fedi/app/auth/instance/auth_instance_model.dart';
+
 import 'package:fedi/app/auth/instance/chooser/auth_instance_chooser_bloc.dart';
 import 'package:fedi/app/auth/instance/chooser/instance_list/auth_instance_chooser_instance_list_item_bloc.dart';
 import 'package:fedi/app/auth/instance/chooser/instance_list/auth_instance_chooser_instance_list_item_bloc_impl.dart';
@@ -21,17 +21,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 
 var _logger = Logger('auth_instance_chooser_widget.dart');
 
-class AuthInstanceChooserWidget extends StatelessWidget {
+class UnifediApiAccessChooserWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var instanceChooserBloc = IAuthInstanceChooserBloc.of(context);
+    var instanceChooserBloc = IUnifediApiAccessChooserBloc.of(context);
 
     _logger.finest(() => 'build');
 
-    return StreamBuilder<List<AuthInstance>>(
+    return StreamBuilder<List<UnifediApiAccess>>(
       stream: instanceChooserBloc.instancesAvailableToChooseStream,
       builder: (context, snapshot) {
         var instancesAvailableToChoose = snapshot.data;
@@ -43,8 +44,8 @@ class AuthInstanceChooserWidget extends StatelessWidget {
         return ListView(
           shrinkWrap: true,
           children: [
-            const _AuthInstanceChooserSelectedInstanceRowWidget(),
-            StreamBuilder<List<AuthInstance>>(
+            const _UnifediApiAccessChooserSelectedInstanceRowWidget(),
+            StreamBuilder<List<UnifediApiAccess>>(
               stream: instanceChooserBloc.instancesAvailableToChooseStream,
               builder: (context, snapshot) {
                 var instancesAvailableToChoose = snapshot.data;
@@ -55,15 +56,16 @@ class AuthInstanceChooserWidget extends StatelessWidget {
                 _logger.finest(() => 'build instancesAvailableToChoose '
                     '${instancesAvailableToChoose.length}');
 
-                return Provider<List<AuthInstance>>.value(
+                return Provider<List<UnifediApiAccess>>.value(
                   value: instancesAvailableToChoose,
-                  child: const _AuthInstanceChooserItemsToChooseWidget(),
+                  child: const _UnifediApiAccessChooserItemsToChooseWidget(),
                 );
               },
             ),
             const Padding(
               padding: FediPadding.allSmallPadding,
-              child: _AuthInstanceChooserInstanceListItemAddAccountRowWidget(),
+              child:
+                  _UnifediApiAccessChooserInstanceListItemAddAccountRowWidget(),
             ),
           ],
         );
@@ -73,22 +75,23 @@ class AuthInstanceChooserWidget extends StatelessWidget {
 
   Widget buildItemsToChoose(
     int itemCount,
-    List<AuthInstance> instancesAvailableToChoose,
-    IAuthInstanceChooserBloc instanceChooserBloc,
+    List<UnifediApiAccess> instancesAvailableToChoose,
+    IUnifediApiAccessChooserBloc instanceChooserBloc,
   ) =>
-      _AuthInstanceChooserItemsToChooseWidget();
+      _UnifediApiAccessChooserItemsToChooseWidget();
 
-  const AuthInstanceChooserWidget();
+  const UnifediApiAccessChooserWidget();
 }
 
-class _AuthInstanceChooserItemsToChooseWidget extends StatelessWidget {
-  const _AuthInstanceChooserItemsToChooseWidget({
+class _UnifediApiAccessChooserItemsToChooseWidget extends StatelessWidget {
+  const _UnifediApiAccessChooserItemsToChooseWidget({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var instancesAvailableToChoose = Provider.of<List<AuthInstance>>(context);
+    var instancesAvailableToChoose =
+        Provider.of<List<UnifediApiAccess>>(context);
 
     return ListView.builder(
       shrinkWrap: true,
@@ -96,9 +99,9 @@ class _AuthInstanceChooserItemsToChooseWidget extends StatelessWidget {
       itemBuilder: (BuildContext context, int index) {
         var instance = instancesAvailableToChoose[index];
 
-        return Provider<AuthInstance>.value(
+        return Provider<UnifediApiAccess>.value(
           value: instance,
-          child: DisposableProxyProvider<AuthInstance,
+          child: DisposableProxyProvider<UnifediApiAccess,
               IMyAccountLocalPreferenceBloc>(
             update: (context, value, previous) => MyAccountLocalPreferenceBloc(
               ILocalPreferencesService.of(context, listen: false),
@@ -110,7 +113,7 @@ class _AuthInstanceChooserItemsToChooseWidget extends StatelessWidget {
                     IMyAccountLocalPreferenceBloc.of(context, listen: false),
                 loadingFinishedBuilder: (context) {
                   var instance =
-                      Provider.of<AuthInstance>(context, listen: false);
+                      Provider.of<UnifediApiAccess>(context, listen: false);
 
                   // todo: remove hack
                   // sometimes IUnifediApiMyAccountService is not accessible
@@ -141,14 +144,15 @@ class _AuthInstanceChooserItemsToChooseWidget extends StatelessWidget {
                         listen: false,
                       ),
                     ),
-                    child: DisposableProxyProvider<AuthInstance,
-                        IAuthInstanceChooserInstanceListItemBloc>(
+                    child: DisposableProxyProvider<UnifediApiAccess,
+                        IUnifediApiAccessChooserInstanceListItemBloc>(
                       update: (context, instance, _) =>
-                          AuthInstanceChooserInstanceListItemBloc(
+                          UnifediApiAccessChooserInstanceListItemBloc(
                         instance: instance,
                         isSelected: false,
                       ),
-                      child: const AuthInstanceChooserInstanceListItemWidget(),
+                      child:
+                          const UnifediApiAccessChooserInstanceListItemWidget(),
                     ),
                   );
                 },
@@ -161,14 +165,15 @@ class _AuthInstanceChooserItemsToChooseWidget extends StatelessWidget {
   }
 }
 
-class _AuthInstanceChooserSelectedInstanceRowWidget extends StatelessWidget {
-  const _AuthInstanceChooserSelectedInstanceRowWidget({
+class _UnifediApiAccessChooserSelectedInstanceRowWidget
+    extends StatelessWidget {
+  const _UnifediApiAccessChooserSelectedInstanceRowWidget({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var instanceChooserBloc = IAuthInstanceChooserBloc.of(context);
+    var instanceChooserBloc = IUnifediApiAccessChooserBloc.of(context);
 
     // todo: remove hack
     // sometimes IMyAccountBloc is not accessible during account switching
@@ -176,7 +181,7 @@ class _AuthInstanceChooserSelectedInstanceRowWidget extends StatelessWidget {
       Provider.of<IMyAccountBloc>(context);
     } catch (e) {
       _logger.finest(
-        () => '_AuthInstanceChooserSelectedInstanceRowWidget '
+        () => '_UnifediApiAccessChooserSelectedInstanceRowWidget '
             'error fetching myAccountBloc',
       );
 
@@ -185,7 +190,7 @@ class _AuthInstanceChooserSelectedInstanceRowWidget extends StatelessWidget {
 
     return ProxyProvider<IMyAccountBloc, IAccountBloc>(
       update: (BuildContext context, value, previous) => value,
-      child: StreamBuilder<AuthInstance?>(
+      child: StreamBuilder<UnifediApiAccess?>(
         stream: instanceChooserBloc.selectedInstanceStream,
         builder: (context, snapshot) {
           var authInstance = snapshot.data;
@@ -194,16 +199,16 @@ class _AuthInstanceChooserSelectedInstanceRowWidget extends StatelessWidget {
             return const SizedBox.shrink();
           }
 
-          return Provider<AuthInstance>.value(
+          return Provider<UnifediApiAccess>.value(
             value: authInstance,
-            child: DisposableProxyProvider<AuthInstance,
-                IAuthInstanceChooserInstanceListItemBloc>(
+            child: DisposableProxyProvider<UnifediApiAccess,
+                IUnifediApiAccessChooserInstanceListItemBloc>(
               update: (context, authInstance, _) =>
-                  AuthInstanceChooserInstanceListItemBloc(
+                  UnifediApiAccessChooserInstanceListItemBloc(
                 instance: authInstance,
                 isSelected: true,
               ),
-              child: const AuthInstanceChooserInstanceListItemWidget(),
+              child: const UnifediApiAccessChooserInstanceListItemWidget(),
             ),
           );
         },
@@ -212,9 +217,9 @@ class _AuthInstanceChooserSelectedInstanceRowWidget extends StatelessWidget {
   }
 }
 
-class _AuthInstanceChooserInstanceListItemAddAccountRowWidget
+class _UnifediApiAccessChooserInstanceListItemAddAccountRowWidget
     extends StatelessWidget {
-  const _AuthInstanceChooserInstanceListItemAddAccountRowWidget({
+  const _UnifediApiAccessChooserInstanceListItemAddAccountRowWidget({
     Key? key,
   }) : super(key: key);
 
@@ -224,7 +229,7 @@ class _AuthInstanceChooserInstanceListItemAddAccountRowWidget
       S.of(context).app_auth_instance_chooser_action_addInstance,
       expanded: false,
       onPressed: () {
-        goToAddMoreJoinAuthInstancePage(context);
+        goToAddMoreJoinUnifediApiAccessPage(context);
       },
     );
   }

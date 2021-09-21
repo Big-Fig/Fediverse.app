@@ -1,5 +1,5 @@
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:fedi/app/auth/instance/auth_instance_model.dart';
+
 import 'package:fedi/app/filter/context/filter_context_multi_select_from_list_value_form_field_bloc_impl.dart';
 import 'package:fedi/app/filter/filter_model.dart';
 import 'package:fedi/app/filter/form/filter_form_bloc.dart';
@@ -31,7 +31,7 @@ class FilterFormBloc extends FormBloc implements IFilterFormBloc {
   @override
   final FilterContextMultiSelectFromListValueFormFieldBloc contextField;
 
-  final AuthInstance currentInstance;
+  final UnifediApiAccess currentInstance;
 
   FilterFormBloc({
     required IFilter? initialValue,

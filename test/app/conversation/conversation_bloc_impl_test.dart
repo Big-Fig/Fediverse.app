@@ -6,7 +6,6 @@ import 'package:fedi/app/account/my/my_account_bloc_impl.dart';
 import 'package:fedi/app/account/my/my_account_model.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
-import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_bloc.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_bloc_impl.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
@@ -20,11 +19,12 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
-import 'package:unifedi_api/unifedi_api.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:moor/ffi.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 import '../../rxdart/rxdart_test_helper.dart';
 import '../account/account_test_helper.dart';
@@ -53,7 +53,7 @@ void main() {
   late IMyAccountBloc myAccountBloc;
   late IMyAccount myAccount;
 
-  late AuthInstance authInstance;
+  late UnifediApiAccess authInstance;
   late ILocalPreferencesService preferencesService;
   late IMyAccountLocalPreferenceBloc myAccountLocalPreferenceBloc;
 
@@ -78,15 +78,11 @@ void main() {
 
       myAccount =
           await MyAccountMockHelper.createTestMyAccount(seed: 'myAccount');
-      authInstance = AuthInstance(
-        urlHost: 'fedi.app',
-        acct: myAccount.acct,
-        token: null,
-        authCode: null,
-        isPleroma: false,
-        application: null,
-        info: null,
-        urlSchema: null,
+      authInstance = UnifediApiAccess(
+        url: 'https:/fedi.app',
+        instance: null,
+        applicationAccessToken: null,
+        userAccessToken: null,
       );
 
       myAccountLocalPreferenceBloc = MyAccountLocalPreferenceBloc(

@@ -18,7 +18,7 @@ class NewPostStatusBloc extends PostStatusBloc {
     required IScheduledStatusRepository scheduledStatusRepository,
     required IUnifediApiMediaAttachmentService unifediApiMediaAttachmentService,
     required int? maximumMessageLength,
-    required UnifediApiInstancePollLimits? pollLimits,
+    required IUnifediApiInstancePollLimits? pollLimits,
     required int? maximumFileSizeInBytes,
     required bool markMediaAsNsfwOnAttach,
     required bool isPleromaInstance,
@@ -45,7 +45,7 @@ class NewPostStatusBloc extends PostStatusBloc {
     required IScheduledStatusRepository scheduledStatusRepository,
     required IUnifediApiMediaAttachmentService unifediApiMediaAttachmentService,
     required int? maximumMessageLength,
-    required UnifediApiInstancePollLimits? pollLimits,
+    required IUnifediApiInstancePollLimits? pollLimits,
     required int? maximumFileSizeInBytes,
     required UnifediApiVisibility initialVisibility,
     required String? initialText,
@@ -81,7 +81,7 @@ class NewPostStatusBloc extends PostStatusBloc {
     required String? initialSubject,
     required List<UnifediApiMediaAttachment>? initialMediaAttachments,
   }) {
-    var info = ICurrentAuthInstanceBloc.of(context, listen: false)
+    var info = ICurrentUnifediApiAccessBloc.of(context, listen: false)
         .currentInstance!
         .info!;
 
@@ -143,7 +143,7 @@ class NewPostStatusBloc extends PostStatusBloc {
     BuildContext context, {
     required IPostStatusData initialData,
   }) {
-    var info = ICurrentAuthInstanceBloc.of(context, listen: false)
+    var info = ICurrentUnifediApiAccessBloc.of(context, listen: false)
         .currentInstance!
         .info!;
 

@@ -1,4 +1,3 @@
-import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
 class DisabledRegistrationAuthHostException implements Exception {
@@ -34,7 +33,7 @@ class AuthHostRegistrationResult {
   final dynamic unknownHostException;
   final UnifediApiOAuthToken? token;
   final IUnifediApiInstance unifediApiInstance;
-  final AuthInstance? authInstance;
+  final UnifediApiAccess? authInstance;
 
   AuthHostRegistrationResult({
     required this.disabledRegistrationAuthHostException,
@@ -51,7 +50,7 @@ class AuthHostRegistrationResult {
   AuthHostRegistrationResult.noErrors({
     required UnifediApiOAuthToken? token,
     required IUnifediApiInstance unifediApiInstance,
-    required AuthInstance? authInstance,
+    required UnifediApiAccess? authInstance,
   }) : this(
           token: token,
           unifediApiInstance: unifediApiInstance,
@@ -82,10 +81,10 @@ class AuthHostRegistrationResult {
       cantRegisterAppAuthHostException == null &&
       unknownHostException == null;
 
-  bool get isAuthInstanceExist => authInstance != null;
+  bool get isUnifediApiAccessExist => authInstance != null;
 
   bool get isPossibleToLogin =>
-      isAuthInstanceExist &&
+      isUnifediApiAccessExist &&
       !approvalRequired &&
       !emailConfirmationRequired &&
       isHaveNoErrors;

@@ -5,7 +5,7 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/localization/localization_model.dart';
 import 'package:flutter/cupertino.dart';
 
-class RegisterAuthInstanceLocaleSingleFromListValueFormFieldRowWidget
+class RegisterUnifediApiAccessLocaleSingleFromListValueFormFieldRowWidget
     extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
@@ -24,5 +24,5 @@ class RegisterAuthInstanceLocaleSingleFromListValueFormFieldRowWidget
         ),
       );
 
-  const RegisterAuthInstanceLocaleSingleFromListValueFormFieldRowWidget();
+  const RegisterUnifediApiAccessLocaleSingleFromListValueFormFieldRowWidget();
 }

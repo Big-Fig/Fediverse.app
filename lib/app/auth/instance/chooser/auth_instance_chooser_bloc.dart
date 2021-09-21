@@ -1,24 +1,24 @@
-import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
-abstract class IAuthInstanceChooserBloc implements IDisposable {
-  static IAuthInstanceChooserBloc of(
+abstract class IUnifediApiAccessChooserBloc implements IDisposable {
+  static IUnifediApiAccessChooserBloc of(
     BuildContext context, {
     bool listen = true,
   }) =>
-      Provider.of<IAuthInstanceChooserBloc>(context, listen: listen);
+      Provider.of<IUnifediApiAccessChooserBloc>(context, listen: listen);
 
-  AuthInstance? get selectedInstance;
+  UnifediApiAccess? get selectedInstance;
 
-  Stream<AuthInstance?> get selectedInstanceStream;
+  Stream<UnifediApiAccess?> get selectedInstanceStream;
 
-  List<AuthInstance> get instancesAvailableToChoose;
+  List<UnifediApiAccess> get instancesAvailableToChoose;
 
-  Stream<List<AuthInstance>> get instancesAvailableToChooseStream;
+  Stream<List<UnifediApiAccess>> get instancesAvailableToChooseStream;
 
-  Future chooseInstance(AuthInstance instance);
+  Future chooseInstance(UnifediApiAccess instance);
 
-  Future removeInstance(AuthInstance instance);
+  Future removeInstance(UnifediApiAccess instance);
 }

@@ -4,17 +4,18 @@ import 'package:easy_dispose/easy_dispose.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class ICurrentAuthInstanceContextInitBloc
+abstract class ICurrentUnifediApiAccessContextInitBloc
     implements IAsyncInitLoadingBloc, IDisposable {
-  static ICurrentAuthInstanceContextInitBloc of(
+  static ICurrentUnifediApiAccessContextInitBloc of(
     BuildContext context, {
     bool listen = true,
   }) =>
-      Provider.of<ICurrentAuthInstanceContextInitBloc>(context, listen: listen);
+      Provider.of<ICurrentUnifediApiAccessContextInitBloc>(context,
+          listen: listen);
 
-  CurrentAuthInstanceContextInitState? get state;
+  CurrentUnifediApiAccessContextInitState? get state;
 
-  Stream<CurrentAuthInstanceContextInitState> get stateStream;
+  Stream<CurrentUnifediApiAccessContextInitState> get stateStream;
 
   Future refreshFromNetwork({required bool isNeedWaitForOptionalData});
 }

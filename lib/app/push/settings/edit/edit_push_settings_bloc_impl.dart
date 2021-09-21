@@ -1,4 +1,4 @@
-import 'package:fedi/app/auth/instance/auth_instance_model.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:fedi/app/push/settings/edit/edit_push_settings_bloc.dart';
 import 'package:fedi/app/push/settings/push_settings_bloc.dart';
 import 'package:fedi/app/push/settings/push_settings_model.dart';
@@ -10,7 +10,7 @@ import 'package:fedi/form/form_item_bloc.dart';
 class EditPushSettingsBloc extends EditInstanceSettingsBloc<PushSettings?>
     implements IEditPushSettingsBloc {
   final IPushSettingsBloc pushSettingsBloc;
-  final AuthInstance? currentInstance;
+  final UnifediApiAccess? currentInstance;
 
   @override
   final IBoolValueFormFieldBloc favouriteFieldBloc;

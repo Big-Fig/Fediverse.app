@@ -1,4 +1,4 @@
-class RegisterAuthInstanceWidgetKeys {
-  static const registerAuthInstanceFormWidgetKey =
-      'RegisterAuthInstanceWidget_RegisterAuthInstanceFormWidgetKey';
+class RegisterUnifediApiAccessWidgetKeys {
+  static const registerUnifediApiAccessFormWidgetKey =
+      'RegisterUnifediApiAccessWidget_RegisterUnifediApiAccessFormWidgetKey';
 }

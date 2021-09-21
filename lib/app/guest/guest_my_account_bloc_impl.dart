@@ -2,7 +2,7 @@ import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/my/my_account_model.dart';
-import 'package:fedi/app/auth/instance/auth_instance_model.dart';
+
 import 'package:fedi/app/chat/message/chat_message_model.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/status/status_model.dart';
@@ -36,7 +36,7 @@ class GuestMyAccountBloc extends DisposableOwner implements IMyAccountBloc {
   }
 
   @override
-  AuthInstance get instance => throw UnimplementedError();
+  UnifediApiAccess get instance => throw UnimplementedError();
 
   @override
   InstanceLocation get instanceLocation => InstanceLocation.remote;
@@ -135,4 +135,13 @@ class GuestMyAccountBloc extends DisposableOwner implements IMyAccountBloc {
   ) {
     throw UnimplementedError();
   }
+
+  @override
+  bool get isEndorsementSupported => false;
+
+  @override
+  bool get isSubscribeToAccountFeatureSupported => false;
+
+  @override
+  bool get isSupportChats => false;
 }

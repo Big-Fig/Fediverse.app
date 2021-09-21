@@ -22,7 +22,7 @@ class AccountFeaturedHashtagListItemWidget extends StatelessWidget {
     var accountFeaturedHashtag =
         Provider.of<IMyAccountFeaturedHashtag>(context);
 
-    var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
+    var currentUnifediApiAccessBloc = ICurrentUnifediApiAccessBloc.of(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -36,7 +36,7 @@ class AccountFeaturedHashtagListItemWidget extends StatelessWidget {
                   context: context,
                   hashtag: Hashtag(
                     name: accountFeaturedHashtag.name,
-                    url: currentAuthInstanceBloc.createHashtagUrl(
+                    url: currentUnifediApiAccessBloc.createHashtagUrl(
                       hashtag: accountFeaturedHashtag.name,
                     ),
                     history: null,

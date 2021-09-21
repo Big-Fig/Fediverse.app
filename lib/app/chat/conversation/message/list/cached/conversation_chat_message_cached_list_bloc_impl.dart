@@ -141,7 +141,8 @@ ConversationChatStatusListBloc _createStatusListBloc({
   required IConversationChat? conversation,
   required IConversationChatMessage? lastMessage,
 }) {
-  var currentInstanceBloc = ICurrentAuthInstanceBloc.of(context, listen: false);
+  var currentInstanceBloc =
+      ICurrentUnifediApiAccessBloc.of(context, listen: false);
 
   if (currentInstanceBloc.currentInstance!.isPleroma) {
     // pleroma instances support loading by conversation id

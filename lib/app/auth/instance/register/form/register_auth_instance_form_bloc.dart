@@ -7,21 +7,23 @@ import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IRegisterAuthInstanceFormBloc implements IFormBloc {
-  static IRegisterAuthInstanceFormBloc of(
+abstract class IRegisterUnifediApiAccessFormBloc implements IFormBloc {
+  static IRegisterUnifediApiAccessFormBloc of(
     BuildContext context, {
     bool listen = true,
   }) =>
-      Provider.of<IRegisterAuthInstanceFormBloc>(context, listen: listen);
+      Provider.of<IRegisterUnifediApiAccessFormBloc>(context, listen: listen);
 
-  IRegisterAuthInstanceFormStepperManualApproveItemBloc?
+  IRegisterUnifediApiAccessFormStepperManualApproveItemBloc?
       get manualApproveStepperItemBloc;
 
-  IRegisterAuthInstanceFormStepperAccountItemBloc get accountStepperItemBloc;
+  IRegisterUnifediApiAccessFormStepperAccountItemBloc
+      get accountStepperItemBloc;
 
-  IRegisterAuthInstanceFormStepperCaptchaItemBloc? get captchaStepperItemBloc;
+  IRegisterUnifediApiAccessFormStepperCaptchaItemBloc?
+      get captchaStepperItemBloc;
 
-  IRegisterAuthInstanceFormStepperSubmitItemBloc get submitStepperItemBloc;
+  IRegisterUnifediApiAccessFormStepperSubmitItemBloc get submitStepperItemBloc;
 
   UnifediApiRegisterAccount calculateRegisterFormData();
 

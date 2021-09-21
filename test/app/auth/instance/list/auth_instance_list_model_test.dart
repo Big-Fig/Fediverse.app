@@ -10,7 +10,7 @@ void main() {
   test('equal & hashcode & toString', () async {
     ObjMockHelper.testEqualsHashcodeToString(
       ({required String seed}) =>
-          AuthInstanceListModelMockHelper.createTestAuthInstanceList(
+          UnifediApiAccessListModelMockHelper.createTestUnifediApiAccessList(
         seed: seed,
       ),
     );
@@ -19,17 +19,17 @@ void main() {
   test('toJson & fromJson', () async {
     JsonMockHelper.testFromJsonToJson(
       ({required String seed}) =>
-          AuthInstanceListModelMockHelper.createTestAuthInstanceList(
+          UnifediApiAccessListModelMockHelper.createTestUnifediApiAccessList(
         seed: seed,
       ),
-      AuthInstanceList.fromJson,
+      UnifediApiAccessList.fromJson,
     );
   });
 
   test('hive save&load', () async {
     await HiveMockHelper.testHiveSaveAndLoad(
       ({required String seed}) =>
-          AuthInstanceListModelMockHelper.createTestAuthInstanceList(
+          UnifediApiAccessListModelMockHelper.createTestUnifediApiAccessList(
         seed: seed,
       ),
     );
@@ -37,7 +37,7 @@ void main() {
 
   test('hive adapter', () async {
     HiveMockHelper.testAdapter(
-      () => AuthInstanceListAdapter(),
+      () => UnifediApiAccessListAdapter(),
     );
   });
 }

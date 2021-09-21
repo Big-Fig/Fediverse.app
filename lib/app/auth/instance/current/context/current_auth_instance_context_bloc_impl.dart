@@ -6,7 +6,7 @@ import 'package:fedi/app/account/my/my_account_bloc_impl.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/app/app_model.dart';
-import 'package:fedi/app/auth/instance/auth_instance_model.dart';
+
 import 'package:fedi/app/auth/instance/current/context/current_auth_instance_context_bloc.dart';
 import 'package:fedi/app/cache/database/limit/age/database_cache_age_limit_model.dart';
 import 'package:fedi/app/cache/database/limit/entries_count/database_cache_entries_count_limit_model.dart';
@@ -142,17 +142,18 @@ import 'package:fedi/push/fcm/fcm_push_service.dart';
 import 'package:fedi/push/relay/push_relay_service.dart';
 import 'package:logging/logging.dart';
 import 'package:unifedi_api/unifedi_api.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 
 var _logger = Logger('current_auth_instance_context_bloc_imp.dart');
 
-class CurrentAuthInstanceContextBloc extends ProviderContextBloc
-    implements ICurrentAuthInstanceContextBloc {
-  final AuthInstance currentInstance;
+class CurrentUnifediApiAccessContextBloc extends ProviderContextBloc
+    implements ICurrentUnifediApiAccessContextBloc {
+  final UnifediApiAccess currentInstance;
   final IAppContextBloc appContextBloc;
 
   bool get isPleromaInstance => currentInstance.isPleroma;
 
-  CurrentAuthInstanceContextBloc({
+  CurrentUnifediApiAccessContextBloc({
     required this.currentInstance,
     required this.appContextBloc,
   });

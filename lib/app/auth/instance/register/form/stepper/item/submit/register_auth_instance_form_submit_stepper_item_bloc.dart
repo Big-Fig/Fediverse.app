@@ -4,13 +4,13 @@ import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IRegisterAuthInstanceFormStepperSubmitItemBloc
-    implements IRegisterAuthInstanceFormStepperItemBloc, IDisposable {
-  static IRegisterAuthInstanceFormStepperSubmitItemBloc of(
+abstract class IRegisterUnifediApiAccessFormStepperSubmitItemBloc
+    implements IRegisterUnifediApiAccessFormStepperItemBloc, IDisposable {
+  static IRegisterUnifediApiAccessFormStepperSubmitItemBloc of(
     BuildContext context, {
     bool listen = true,
   }) =>
-      Provider.of<IRegisterAuthInstanceFormStepperSubmitItemBloc>(
+      Provider.of<IRegisterUnifediApiAccessFormStepperSubmitItemBloc>(
         context,
         listen: listen,
       );

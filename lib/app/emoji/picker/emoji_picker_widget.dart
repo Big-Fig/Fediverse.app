@@ -51,7 +51,7 @@ class EmojiPickerWidget extends StatelessWidget {
               context,
               listen: false,
             ),
-            currentAuthInstanceBloc: ICurrentAuthInstanceBloc.of(
+            currentUnifediApiAccessBloc: ICurrentUnifediApiAccessBloc.of(
               context,
               listen: false,
             ),

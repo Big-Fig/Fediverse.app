@@ -1,11 +1,11 @@
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 
-class RegisterAuthInstanceFormStepperItemDescriptionWidget
+class RegisterUnifediApiAccessFormStepperItemDescriptionWidget
     extends StatelessWidget {
   final String text;
 
-  const RegisterAuthInstanceFormStepperItemDescriptionWidget({
+  const RegisterUnifediApiAccessFormStepperItemDescriptionWidget({
     required this.text,
   });
 

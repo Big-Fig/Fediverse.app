@@ -42,7 +42,7 @@ class LocalHashtagPageBloc extends HashtagPageBloc
   final IUnifediApiAccountService unifediApiAccountService;
   final IStatusRepository statusRepository;
   final IFilterRepository filterRepository;
-  final ICurrentAuthInstanceBloc currentAuthInstanceBloc;
+  final ICurrentUnifediApiAccessBloc currentUnifediApiAccessBloc;
   final IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc;
   final IMyAccountBloc myAccountBloc;
   final IPaginationSettingsBloc paginationSettingsBloc;
@@ -68,7 +68,7 @@ class LocalHashtagPageBloc extends HashtagPageBloc
     required this.unifediApiAccountService,
     required this.statusRepository,
     required this.filterRepository,
-    required this.currentAuthInstanceBloc,
+    required this.currentUnifediApiAccessBloc,
     required this.webSocketsHandlerManagerBloc,
     required this.paginationSettingsBloc,
     required this.myAccountBloc,
@@ -108,7 +108,7 @@ class LocalHashtagPageBloc extends HashtagPageBloc
         context,
         listen: false,
       ),
-      currentAuthInstanceBloc: ICurrentAuthInstanceBloc.of(
+      currentUnifediApiAccessBloc: ICurrentUnifediApiAccessBloc.of(
         context,
         listen: false,
       ),
@@ -188,7 +188,7 @@ class LocalHashtagPageBloc extends HashtagPageBloc
       unifediApiTimelineService: unifediApiTimelineService,
       statusRepository: statusRepository,
       filterRepository: filterRepository,
-      currentInstanceBloc: currentAuthInstanceBloc,
+      currentInstanceBloc: currentUnifediApiAccessBloc,
       timelineLocalPreferenceBloc: timelineLocalPreferenceBloc,
       webSocketsHandlerManagerBloc: webSocketsHandlerManagerBloc,
       myAccountBloc: myAccountBloc,
@@ -220,5 +220,6 @@ class LocalHashtagPageBloc extends HashtagPageBloc
   }
 
   @override
-  String get userAtHost => currentAuthInstanceBloc.currentInstance!.userAtHost;
+  String get userAtHost =>
+      currentUnifediApiAccessBloc.currentInstance!.userAtHost;
 }

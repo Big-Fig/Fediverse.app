@@ -38,6 +38,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fediverse_api/fediverse_api_utils.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 
 class CustomListPage extends StatefulWidget {
   const CustomListPage();
@@ -202,7 +203,7 @@ class _CustomListPageAppBarSettingsActionWidget extends StatelessWidget {
             settings: timeline.settings,
           ),
           lockedSource: true,
-          unifediApiInstance: ICurrentAuthInstanceBloc.of(
+          unifediApiInstance: ICurrentUnifediApiAccessBloc.of(
             context,
             listen: false,
           ).currentInstance!.info!,
@@ -236,8 +237,8 @@ MaterialPageRoute createCustomListPageRoute({
   required Function(ICustomList? customList)? onChanged,
   required VoidCallback? onDeleted,
 }) {
-  var currentAuthInstanceBloc =
-      ICurrentAuthInstanceBloc.of(context, listen: false);
+  var currentUnifediApiAccessBloc =
+      ICurrentUnifediApiAccessBloc.of(context, listen: false);
 
   return MaterialPageRoute(
     builder: (context) {
@@ -247,7 +248,8 @@ MaterialPageRoute createCustomListPageRoute({
           create: (context) {
             var bloc = TimelineLocalPreferenceBloc.customList(
               ILocalPreferencesService.of(context, listen: false),
-              userAtHost: currentAuthInstanceBloc.currentInstance!.userAtHost,
+              userAtHost:
+                  currentUnifediApiAccessBloc.currentInstance!.userAtHost,
               customList: customList,
             );
 

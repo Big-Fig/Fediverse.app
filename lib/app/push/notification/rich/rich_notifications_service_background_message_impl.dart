@@ -4,7 +4,7 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:collection/collection.dart';
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/app_model.dart';
-import 'package:fedi/app/auth/instance/auth_instance_model.dart';
+
 import 'package:fedi/app/auth/instance/list/local_preferences/auth_instance_list_local_preference_bloc_impl.dart';
 import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/config/config_service_impl.dart';
@@ -30,6 +30,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
 import 'package:fedi/app/push/fedi_push_notification_model_impl.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 
 var _logger = Logger('rich_notifications_service_background_message_impl.dart');
 
@@ -481,7 +482,7 @@ Future<IUnifediApiNotification?> loadLastNotificationForAcctOnHost({
 
 Future<IUnifediApiNotification?> _loadNotificationForInstance({
   required ILocalPreferencesService localPreferencesService,
-  required AuthInstance authInstance,
+  required UnifediApiAccess authInstance,
   required IConfigService configService,
   required bool createPushNotification,
 }) async {
@@ -509,7 +510,7 @@ Future<IUnifediApiNotification?> _loadNotificationForInstance({
 
 Future<IUnifediApiNotification?> _loadLastNotificationForInstance({
   required ILocalPreferencesService localPreferencesService,
-  required AuthInstance authInstance,
+  required UnifediApiAccess authInstance,
 }) async {
   var disposableOwner = DisposableOwner();
 
@@ -613,7 +614,7 @@ List<UnifediApiNotificationType>
 // ignore: long-method
 Future<void> _createPushNotification({
   required ILocalPreferencesService localPreferencesService,
-  required AuthInstance authInstance,
+  required UnifediApiAccess authInstance,
   required IUnifediApiNotification unifediApiNotification,
 }) async {
   _logger.finest(() => 'create push for $unifediApiNotification');
@@ -878,7 +879,7 @@ int _extractNotificationId(IUnifediApiNotification unifediApiNotification) {
   }
 }
 
-Future<AuthInstance?> _findInstanceByUserAtHost({
+Future<UnifediApiAccess?> _findInstanceByUserAtHost({
   required String acct,
   required String host,
   required ILocalPreferencesService localPreferencesService,
@@ -886,7 +887,7 @@ Future<AuthInstance?> _findInstanceByUserAtHost({
   var disposableOwner = DisposableOwner();
 
   var authInstanceListLocalPreferenceBloc =
-      AuthInstanceListLocalPreferenceBloc(localPreferencesService);
+      UnifediApiAccessListLocalPreferenceBloc(localPreferencesService);
   await authInstanceListLocalPreferenceBloc.performAsyncInit();
   disposableOwner.addDisposable(
     authInstanceListLocalPreferenceBloc,
@@ -894,7 +895,7 @@ Future<AuthInstance?> _findInstanceByUserAtHost({
 
   var authInstanceList = authInstanceListLocalPreferenceBloc.value!;
 
-  AuthInstance? foundInstance;
+  UnifediApiAccess? foundInstance;
 
   for (var authInstance in authInstanceList.instances) {
     var found = authInstance.isInstanceWithHostAndAcct(

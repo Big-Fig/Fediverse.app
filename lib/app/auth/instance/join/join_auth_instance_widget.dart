@@ -6,7 +6,7 @@ import 'package:fedi/app/app_model.dart';
 import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi/app/auth/host/auth_host_model.dart';
-import 'package:fedi/app/auth/instance/auth_instance_model.dart';
+
 import 'package:fedi/app/auth/instance/auth_instance_pleroma_rest_error_data.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/join/join_auth_instance_bloc.dart';
@@ -31,11 +31,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:logging/logging.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 final _logger = Logger('join_auth_instance_widget.dart');
 
-class JoinAuthInstanceWidget extends StatelessWidget {
-  const JoinAuthInstanceWidget({
+class JoinUnifediApiAccessWidget extends StatelessWidget {
+  const JoinUnifediApiAccessWidget({
     Key? key,
   }) : super(key: key);
 
@@ -54,7 +55,7 @@ class JoinAuthInstanceWidget extends StatelessWidget {
               ),
               Padding(
                 padding: FediPadding.allSmallPadding,
-                child: const _JoinAuthInstanceLogoWidget(),
+                child: const _JoinUnifediApiAccessLogoWidget(),
               ),
               Spacer(
                 flex: 1,
@@ -63,13 +64,13 @@ class JoinAuthInstanceWidget extends StatelessWidget {
                 padding: EdgeInsets.only(
                   bottom: FediSizes.bigPadding,
                 ),
-                child: const _JoinAuthInstanceHostTextFieldWidget(),
+                child: const _JoinUnifediApiAccessHostTextFieldWidget(),
               ),
               Padding(
                 padding: FediPadding.verticalBigPadding,
-                child: const _JoinAuthInstanceActionsWidget(),
+                child: const _JoinUnifediApiAccessActionsWidget(),
               ),
-              const _JoinAuthInstanceHelpMeChooseWidget(),
+              const _JoinUnifediApiAccessHelpMeChooseWidget(),
               Spacer(
                 flex: 1,
               ),
@@ -80,8 +81,8 @@ class JoinAuthInstanceWidget extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const _JoinAuthInstanceTermsOfServiceButtonWidget(),
-                    const _JoinAuthInstanceAboutButtonWidget(),
+                    const _JoinUnifediApiAccessTermsOfServiceButtonWidget(),
+                    const _JoinUnifediApiAccessAboutButtonWidget(),
                   ],
                 ),
               ),
@@ -91,8 +92,8 @@ class JoinAuthInstanceWidget extends StatelessWidget {
       );
 }
 
-class _JoinAuthInstanceHelpMeChooseWidget extends StatelessWidget {
-  const _JoinAuthInstanceHelpMeChooseWidget({
+class _JoinUnifediApiAccessHelpMeChooseWidget extends StatelessWidget {
+  const _JoinUnifediApiAccessHelpMeChooseWidget({
     Key? key,
   }) : super(key: key);
 
@@ -123,8 +124,8 @@ class _JoinAuthInstanceHelpMeChooseWidget extends StatelessWidget {
   }
 }
 
-class _JoinAuthInstanceActionsWidget extends StatelessWidget {
-  const _JoinAuthInstanceActionsWidget({
+class _JoinUnifediApiAccessActionsWidget extends StatelessWidget {
+  const _JoinUnifediApiAccessActionsWidget({
     Key? key,
   }) : super(key: key);
 
@@ -139,28 +140,28 @@ class _JoinAuthInstanceActionsWidget extends StatelessWidget {
             children: <Widget>[
               Expanded(
                 flex: 1,
-                child: const _JoinAuthInstanceSignUpButtonWidget(
-                  key: Key(JoinAuthInstanceWidgetKeys.signUpButtonKey),
+                child: const _JoinUnifediApiAccessSignUpButtonWidget(
+                  key: Key(JoinUnifediApiAccessWidgetKeys.signUpButtonKey),
                 ),
               ),
               Expanded(
                 flex: 1,
-                child: const _JoinAuthInstanceLoginButtonWidget(
-                  key: Key(JoinAuthInstanceWidgetKeys.loginButtonKey),
+                child: const _JoinUnifediApiAccessLoginButtonWidget(
+                  key: Key(JoinUnifediApiAccessWidgetKeys.loginButtonKey),
                 ),
               ),
             ],
           ),
           const FediBigVerticalSpacer(),
-          const _JoinAuthInstanceExploreAsGuestButtonWidget(),
+          const _JoinUnifediApiAccessExploreAsGuestButtonWidget(),
         ],
       ),
     );
   }
 }
 
-class _JoinAuthInstanceLoginButtonWidget extends StatelessWidget {
-  const _JoinAuthInstanceLoginButtonWidget({
+class _JoinUnifediApiAccessLoginButtonWidget extends StatelessWidget {
+  const _JoinUnifediApiAccessLoginButtonWidget({
     Key? key,
   }) : super(key: key);
 
@@ -184,14 +185,14 @@ class _JoinAuthInstanceLoginButtonWidget extends StatelessWidget {
   }
 }
 
-class _JoinAuthInstanceExploreAsGuestButtonWidget extends StatelessWidget {
-  const _JoinAuthInstanceExploreAsGuestButtonWidget({
+class _JoinUnifediApiAccessExploreAsGuestButtonWidget extends StatelessWidget {
+  const _JoinUnifediApiAccessExploreAsGuestButtonWidget({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var joinInstanceBloc = IJoinAuthInstanceBloc.of(context);
+    var joinInstanceBloc = IJoinUnifediApiAccessBloc.of(context);
 
     return Padding(
       padding: EdgeInsets.only(
@@ -201,7 +202,7 @@ class _JoinAuthInstanceExploreAsGuestButtonWidget extends StatelessWidget {
       ),
       child: FediTransparentTextButtonWithBorder(
         S.of(context).app_auth_instance_join_action_exploreAsGuest,
-        key: Key(JoinAuthInstanceWidgetKeys.exploreAsGuestButtonKey),
+        key: Key(JoinUnifediApiAccessWidgetKeys.exploreAsGuestButtonKey),
         onPressed: () {
           var hostUri = joinInstanceBloc.extractCurrentUri();
           goToRemoteInstanceDetailsPage(
@@ -216,8 +217,8 @@ class _JoinAuthInstanceExploreAsGuestButtonWidget extends StatelessWidget {
   }
 }
 
-class _JoinAuthInstanceSignUpButtonWidget extends StatelessWidget {
-  const _JoinAuthInstanceSignUpButtonWidget({
+class _JoinUnifediApiAccessSignUpButtonWidget extends StatelessWidget {
+  const _JoinUnifediApiAccessSignUpButtonWidget({
     Key? key,
   }) : super(key: key);
 
@@ -241,14 +242,14 @@ class _JoinAuthInstanceSignUpButtonWidget extends StatelessWidget {
   }
 }
 
-class _JoinAuthInstanceHostTextFieldWidget extends StatelessWidget {
-  const _JoinAuthInstanceHostTextFieldWidget({
+class _JoinUnifediApiAccessHostTextFieldWidget extends StatelessWidget {
+  const _JoinUnifediApiAccessHostTextFieldWidget({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var joinInstanceBloc = IJoinAuthInstanceBloc.of(context);
+    var joinInstanceBloc = IJoinUnifediApiAccessBloc.of(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -263,7 +264,7 @@ class _JoinAuthInstanceHostTextFieldWidget extends StatelessWidget {
             VoidCallback onFieldSubmitted,
           ) =>
               FediTransparentEditTextField(
-            key: Key(JoinAuthInstanceWidgetKeys.hostTextFieldKey),
+            key: Key(JoinUnifediApiAccessWidgetKeys.hostTextFieldKey),
             autocorrect: false,
             expanded: false,
             hintText: IConfigService.of(context).appDefaultInstanceUrl,
@@ -300,8 +301,8 @@ class _JoinAuthInstanceHostTextFieldWidget extends StatelessWidget {
   }
 }
 
-class _JoinAuthInstanceLogoWidget extends StatelessWidget {
-  const _JoinAuthInstanceLogoWidget({
+class _JoinUnifediApiAccessLogoWidget extends StatelessWidget {
+  const _JoinUnifediApiAccessLogoWidget({
     Key? key,
   }) : super(key: key);
 
@@ -329,8 +330,8 @@ class _JoinAuthInstanceLogoWidget extends StatelessWidget {
   }
 }
 
-class _JoinAuthInstanceTermsOfServiceButtonWidget extends StatelessWidget {
-  const _JoinAuthInstanceTermsOfServiceButtonWidget({
+class _JoinUnifediApiAccessTermsOfServiceButtonWidget extends StatelessWidget {
+  const _JoinUnifediApiAccessTermsOfServiceButtonWidget({
     Key? key,
   }) : super(key: key);
 
@@ -372,8 +373,8 @@ class _JoinAuthInstanceTermsOfServiceButtonWidget extends StatelessWidget {
   }
 }
 
-class _JoinAuthInstanceAboutButtonWidget extends StatelessWidget {
-  const _JoinAuthInstanceAboutButtonWidget({
+class _JoinUnifediApiAccessAboutButtonWidget extends StatelessWidget {
+  const _JoinUnifediApiAccessAboutButtonWidget({
     Key? key,
   }) : super(key: key);
 
@@ -394,7 +395,7 @@ class _JoinAuthInstanceAboutButtonWidget extends StatelessWidget {
 }
 
 Future signUpToInstance(BuildContext context) async {
-  var joinInstanceBloc = IJoinAuthInstanceBloc.of(context, listen: false);
+  var joinInstanceBloc = IJoinUnifediApiAccessBloc.of(context, listen: false);
   var hostUri = joinInstanceBloc.extractCurrentUri();
   var asyncDialogResult =
       await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
@@ -414,7 +415,7 @@ Future signUpToInstance(BuildContext context) async {
     errorDataBuilders: _createSignUpErrorDataBuilders(),
   );
   if (asyncDialogResult.success) {
-    var registrationResult = await goToRegisterAuthInstancePage(
+    var registrationResult = await goToRegisterUnifediApiAccessPage(
       context,
       instanceBaseUri: hostUri,
     );
@@ -462,7 +463,7 @@ ErrorData createInstanceDeadErrorData(
   error,
   StackTrace stackTrace,
 ) =>
-    AuthInstanceUnifediApiRestErrorData.createFromContext(
+    UnifediApiAccessUnifediApiRestErrorData.createFromContext(
       context: context,
       error: error,
       stackTrace: stackTrace,
@@ -498,7 +499,7 @@ ErrorData createRegistrationInvitesOnlyErrorData(
 
 // ignore: long-method
 Future logInToInstance(BuildContext context) async {
-  var joinInstanceBloc = IJoinAuthInstanceBloc.of(context, listen: false);
+  var joinInstanceBloc = IJoinUnifediApiAccessBloc.of(context, listen: false);
 
   var configService = IConfigService.of(context, listen: false);
 
@@ -506,7 +507,7 @@ Future logInToInstance(BuildContext context) async {
   _logger.finest(() => 'logInToInstance $appLaunchType');
 
   var dialogResult = await PleromaAsyncOperationHelper
-      .performPleromaAsyncOperation<AuthInstance?>(
+      .performPleromaAsyncOperation<UnifediApiAccess?>(
     context: context,
     contentMessage:
         S.of(context).app_auth_instance_join_progress_dialog_content,
@@ -529,17 +530,19 @@ Future logInToInstance(BuildContext context) async {
           }
 
         case AppLaunchType.mock:
-          var testAuthInstanceJsonString;
+          var testUnifediApiAccessJsonString;
           if (Platform.isAndroid) {
-            testAuthInstanceJsonString =
-                configService.androidTestAuthInstanceJson!;
+            testUnifediApiAccessJsonString =
+                configService.androidTestUnifediApiAccessJson!;
           } else {
-            testAuthInstanceJsonString = configService.iosTestAuthInstanceJson!;
+            testUnifediApiAccessJsonString =
+                configService.iosTestUnifediApiAccessJson!;
           }
 
-          var testAuthInstanceJson = jsonDecode(testAuthInstanceJsonString);
+          var testUnifediApiAccessJson =
+              jsonDecode(testUnifediApiAccessJsonString);
 
-          return AuthInstance.fromJson(testAuthInstanceJson);
+          return UnifediApiAccess.fromJson(testUnifediApiAccessJson);
       }
     },
     errorDataBuilders: [
@@ -564,7 +567,7 @@ Future logInToInstance(BuildContext context) async {
 
     _logger.finest(() => 'after pop before change auth');
 
-    await ICurrentAuthInstanceBloc.of(context, listen: false)
+    await ICurrentUnifediApiAccessBloc.of(context, listen: false)
         .changeCurrentInstance(
       authInstance,
     );

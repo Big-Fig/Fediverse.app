@@ -1,4 +1,3 @@
-import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/storage/local_preferences/timelines_home_tab_storage_local_preference_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_model.dart';
@@ -11,13 +10,15 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:easy_dispose/easy_dispose.dart';
+import 'package:unifedi_api/unifedi_api.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 
 var _logger = Logger('timelines_home_tab_storage_bloc_impl.dart');
 
 class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
     implements ITimelinesHomeTabStorageBloc {
   final ILocalPreferencesService preferencesService;
-  final AuthInstance authInstance;
+  final UnifediApiAccess authInstance;
   final ITimelinesHomeTabStorageLocalPreferenceBloc preferences;
 
   final BehaviorSubject<TimelinesHomeTabStorageUiState> uiStateSubject =

@@ -36,6 +36,7 @@ import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 import 'package:fediverse_api/fediverse_api_utils.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 var _logger = Logger('chat_messages_home_tab_page.dart');
 
@@ -125,12 +126,13 @@ class _ChatMessagesHomeTabPageContentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
+    var currentUnifediApiAccessBloc = ICurrentUnifediApiAccessBloc.of(context);
 
-    var currentInstance = currentAuthInstanceBloc.currentInstance!;
+    var currentInstance = currentUnifediApiAccessBloc.currentInstance!;
     var isPleromaInstance = currentInstance.isPleroma;
 
-    var isSupportChats = currentInstance.isSupportChats;
+    // todo: remove hack
+    var isSupportChats = isPleromaInstance;
 
     var fediUiColorTheme = IFediUiColorTheme.of(context);
 
@@ -186,12 +188,13 @@ class _ChatMessagesHomeTabPageHeaderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
+    var currentUnifediApiAccessBloc = ICurrentUnifediApiAccessBloc.of(context);
 
-    var currentInstance = currentAuthInstanceBloc.currentInstance!;
+    var currentInstance = currentUnifediApiAccessBloc.currentInstance!;
     var isPleromaInstance = currentInstance.isPleroma;
 
-    var isSupportChats = currentInstance.isSupportChats;
+    // todo: remove hack
+    var isSupportChats = isPleromaInstance;
 
     return FediTabMainHeaderBarWidget(
       leadingWidgets: [

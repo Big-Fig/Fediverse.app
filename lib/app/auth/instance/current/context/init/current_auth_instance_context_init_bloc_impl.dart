@@ -20,8 +20,8 @@ import 'package:unifedi_api/unifedi_api.dart';
 
 var _logger = Logger('current_auth_instance_context_init_bloc_impl.dart');
 
-class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
-    implements ICurrentAuthInstanceContextInitBloc {
+class CurrentUnifediApiAccessContextInitBloc extends AsyncInitLoadingBloc
+    implements ICurrentUnifediApiAccessContextInitBloc {
   final IMyAccountBloc myAccountBloc;
   final IUnifediApiInstanceService unifediApiInstanceService;
   final IUnifediApiNotificationService pleromaNotificationService;
@@ -32,13 +32,13 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
   final INotificationRepository notificationRepository;
   final IConversationChatRepository conversationChatRepository;
   final IPleromaChatRepository pleromaChatRepository;
-  final ICurrentAuthInstanceBloc currentAuthInstanceBloc;
+  final ICurrentUnifediApiAccessBloc currentUnifediApiAccessBloc;
   final IConnectionService connectionService;
 
-  CurrentAuthInstanceContextInitBloc({
+  CurrentUnifediApiAccessContextInitBloc({
     required this.myAccountBloc,
     required this.unifediApiInstanceService,
-    required this.currentAuthInstanceBloc,
+    required this.currentUnifediApiAccessBloc,
     required this.unifediApiFilterService,
     required this.pleromaConversationService,
     required this.pleromaApiChatService,
@@ -64,9 +64,9 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
         if (clientErrorCodeType ==
             RestResponseClientErrorCodeType.unauthorizedValue) {
           _logger.finest(() =>
-              ' stateSubject.add(CurrentAuthInstanceContextInitState.invalidCredentials)');
+              ' stateSubject.add(CurrentUnifediApiAccessContextInitState.invalidCredentials)');
           stateSubject
-              .add(CurrentAuthInstanceContextInitState.invalidCredentials);
+              .add(CurrentUnifediApiAccessContextInitState.invalidCredentials);
         }
       }
     }).disposeWith(this);
@@ -80,7 +80,7 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
     required bool isNeedWaitForOptionalData,
   }) async {
     instanceInfoUpdatedDuringRequiredDataUpdate = false;
-    stateSubject.add(CurrentAuthInstanceContextInitState.loading);
+    stateSubject.add(CurrentUnifediApiAccessContextInitState.loading);
     var isConnected = connectionService.isConnected;
     _logger.finest(() => 'refresh isApiReadyToUse $isConnected');
 
@@ -92,18 +92,19 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
           isNeedPreFetchRelationship: false,
         );
 
-        if (currentAuthInstanceBloc.currentInstance == null) {
+        if (currentUnifediApiAccessBloc.currentInstance == null) {
           await updateInstanceInformation();
           instanceInfoUpdatedDuringRequiredDataUpdate = true;
         }
 
         if (myAccountBloc.isLocalCacheExist) {
           stateSubject.add(
-            CurrentAuthInstanceContextInitState.localCacheExist,
+            CurrentUnifediApiAccessContextInitState.localCacheExist,
           );
         } else {
           stateSubject.add(
-            CurrentAuthInstanceContextInitState.cantFetchAndLocalCacheNotExist,
+            CurrentUnifediApiAccessContextInitState
+                .cantFetchAndLocalCacheNotExist,
           );
         }
         requiredDataRefreshSuccess = true;
@@ -113,17 +114,17 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
           if (e.unifediError.statusCode ==
               RestResponseClientErrorCodeType.forbiddenIntValue) {
             stateSubject.add(
-              CurrentAuthInstanceContextInitState.invalidCredentials,
+              CurrentUnifediApiAccessContextInitState.invalidCredentials,
             );
             rethrow;
           } else {
             if (myAccountBloc.isLocalCacheExist) {
               stateSubject.add(
-                CurrentAuthInstanceContextInitState.localCacheExist,
+                CurrentUnifediApiAccessContextInitState.localCacheExist,
               );
             } else {
               stateSubject.add(
-                CurrentAuthInstanceContextInitState
+                CurrentUnifediApiAccessContextInitState
                     .cantFetchAndLocalCacheNotExist,
               );
             }
@@ -131,11 +132,11 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
         } else {
           if (myAccountBloc.isLocalCacheExist) {
             stateSubject.add(
-              CurrentAuthInstanceContextInitState.localCacheExist,
+              CurrentUnifediApiAccessContextInitState.localCacheExist,
             );
           } else {
             stateSubject.add(
-              CurrentAuthInstanceContextInitState
+              CurrentUnifediApiAccessContextInitState
                   .cantFetchAndLocalCacheNotExist,
             );
           }
@@ -144,11 +145,12 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
     } else {
       if (myAccountBloc.isLocalCacheExist) {
         stateSubject.add(
-          CurrentAuthInstanceContextInitState.localCacheExist,
+          CurrentUnifediApiAccessContextInitState.localCacheExist,
         );
       } else {
         stateSubject.add(
-          CurrentAuthInstanceContextInitState.cantFetchAndLocalCacheNotExist,
+          CurrentUnifediApiAccessContextInitState
+              .cantFetchAndLocalCacheNotExist,
         );
       }
     }
@@ -162,8 +164,8 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
   }
 
   Future refreshOptionalData() async {
-    var isPleroma = currentAuthInstanceBloc.currentInstance!.isPleroma;
-    var isMastodon = currentAuthInstanceBloc.currentInstance!.isMastodon;
+    var isPleroma = currentUnifediApiAccessBloc.currentInstance!.isPleroma;
+    var isMastodon = currentUnifediApiAccessBloc.currentInstance!.isMastodon;
 
     var actualNotificationUnreadCount =
         await notificationRepository.calculateCount(
@@ -224,20 +226,22 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
 
   Future updateInstanceInformation() async {
     var info = await unifediApiInstanceService.getInstance();
-    var currentInstance = currentAuthInstanceBloc.currentInstance!;
-    currentInstance = currentInstance.copyWith(info: info);
-    await currentAuthInstanceBloc.changeCurrentInstance(currentInstance);
+    var currentInstance = currentUnifediApiAccessBloc.currentInstance!;
+    currentInstance =
+        currentInstance.copyWith(instance: info.toUnifediApiInstance());
+    await currentUnifediApiAccessBloc.changeCurrentInstance(currentInstance);
   }
 
   // ignore: close_sinks
-  BehaviorSubject<CurrentAuthInstanceContextInitState> stateSubject =
-      BehaviorSubject.seeded(CurrentAuthInstanceContextInitState.loading);
+  BehaviorSubject<CurrentUnifediApiAccessContextInitState> stateSubject =
+      BehaviorSubject.seeded(CurrentUnifediApiAccessContextInitState.loading);
 
   @override
-  CurrentAuthInstanceContextInitState? get state => stateSubject.valueOrNull;
+  CurrentUnifediApiAccessContextInitState? get state =>
+      stateSubject.valueOrNull;
 
   @override
-  Stream<CurrentAuthInstanceContextInitState> get stateStream =>
+  Stream<CurrentUnifediApiAccessContextInitState> get stateStream =>
       stateSubject.stream;
 
   @override
@@ -282,10 +286,10 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
     );
   }
 
-  static CurrentAuthInstanceContextInitBloc createFromContext(
+  static CurrentUnifediApiAccessContextInitBloc createFromContext(
     BuildContext context,
   ) =>
-      CurrentAuthInstanceContextInitBloc(
+      CurrentUnifediApiAccessContextInitBloc(
         connectionService: Provider.of<IConnectionService>(
           context,
           listen: false,
@@ -322,7 +326,7 @@ class CurrentAuthInstanceContextInitBloc extends AsyncInitLoadingBloc
           context,
           listen: false,
         ),
-        currentAuthInstanceBloc: ICurrentAuthInstanceBloc.of(
+        currentUnifediApiAccessBloc: ICurrentUnifediApiAccessBloc.of(
           context,
           listen: false,
         ),

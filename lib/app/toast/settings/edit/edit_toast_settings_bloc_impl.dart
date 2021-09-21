@@ -1,4 +1,4 @@
-import 'package:fedi/app/auth/instance/auth_instance_model.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:fedi/app/push/settings/push_settings_model.dart';
 import 'package:fedi/app/settings/global_or_instance/edit/edit_global_or_instance_settings_bloc_impl.dart';
 import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_model.dart';
@@ -16,7 +16,7 @@ class EditToastSettingsBloc
     implements IEditToastSettingsBloc {
   final IToastSettingsBloc toastSettingsBloc;
 
-  final AuthInstance? currentInstance;
+  final UnifediApiAccess? currentInstance;
 
   @override
   // ignore: avoid-late-keyword

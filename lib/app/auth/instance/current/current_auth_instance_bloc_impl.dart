@@ -1,33 +1,34 @@
 import 'package:collection/collection.dart';
-import 'package:fedi/app/auth/instance/auth_instance_model.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/current/local_preferences/current_auth_instance_local_preference_bloc.dart';
 import 'package:fedi/app/auth/instance/list/auth_instance_list_bloc.dart';
 import 'package:fedi/app/hashtag/hashtag_url_helper.dart';
-import 'package:easy_dispose/easy_dispose.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:logging/logging.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 var _logger = Logger('current_auth_instance_bloc_impl.dart');
 
-class CurrentAuthInstanceBloc extends DisposableOwner
-    implements ICurrentAuthInstanceBloc {
-  final IAuthInstanceListBloc instanceListBloc;
-  final ICurrentAuthInstanceLocalPreferenceBloc currentLocalPreferenceBloc;
+class CurrentUnifediApiAccessBloc extends DisposableOwner
+    implements ICurrentUnifediApiAccessBloc {
+  final IUnifediApiAccessListBloc instanceListBloc;
+  final ICurrentUnifediApiAccessLocalPreferenceBloc currentLocalPreferenceBloc;
 
-  CurrentAuthInstanceBloc({
+  CurrentUnifediApiAccessBloc({
     required this.instanceListBloc,
     required this.currentLocalPreferenceBloc,
   });
 
   @override
-  AuthInstance? get currentInstance => currentLocalPreferenceBloc.value;
+  UnifediApiAccess? get currentInstance => currentLocalPreferenceBloc.value;
 
   @override
-  Stream<AuthInstance?> get currentInstanceStream =>
+  Stream<UnifediApiAccess?> get currentInstanceStream =>
       currentLocalPreferenceBloc.stream;
 
   @override
-  Future changeCurrentInstance(AuthInstance instance) async {
+  Future changeCurrentInstance(UnifediApiAccess instance) async {
     _logger.finest(() => 'changeCurrentInstance $instance');
 
     var found = instanceListBloc.availableInstances.firstWhereOrNull(
@@ -43,7 +44,8 @@ class CurrentAuthInstanceBloc extends DisposableOwner
   }
 
   @override
-  bool isCurrentInstance(AuthInstance instance) => currentInstance == instance;
+  bool isCurrentInstance(UnifediApiAccess instance) =>
+      currentInstance == instance;
 
   @override
   Future logoutCurrentInstance() async {
@@ -67,7 +69,7 @@ class CurrentAuthInstanceBloc extends DisposableOwner
     var isMastodon = currentInstance!.isMastodon;
     var isPleroma = currentInstance!.isPleroma;
     var urlHost = currentInstance!.urlHost;
-    var urlSchema = currentInstance!.urlSchema!;
+    var urlSchema = currentInstance!.urlSchema;
 
     return HashtagUrlHelper.calculateHashtagUrl(
       urlSchema: urlSchema,
@@ -77,4 +79,8 @@ class CurrentAuthInstanceBloc extends DisposableOwner
       hashtag: hashtag,
     );
   }
+
+  @override
+  // todo: remove hack
+  bool get isSupportChats => currentInstance!.isPleroma;
 }

@@ -1,4 +1,4 @@
-import 'package:fedi/app/auth/instance/auth_instance_model.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 import 'package:fedi/app/push/notification/handler/notifications_push_handler_model.dart';
 import 'package:fedi/app/push/notification/handler/unhandled/notifications_push_handler_unhandled_model.dart';
 import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
@@ -23,6 +23,6 @@ abstract class INotificationsPushHandlerUnhandledLocalPreferenceBloc
   Future<bool> markAsHandled(List<NotificationsPushHandlerMessage> messages);
 
   List<NotificationsPushHandlerMessage> loadUnhandledMessagesForInstance(
-    AuthInstance instance,
+    UnifediApiAccess instance,
   );
 }

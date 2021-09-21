@@ -26,7 +26,7 @@ class EditPostStatusBloc extends PostStatusBloc {
     required IPostStatusData initialData,
     required this.postStatusDataCallback,
     required int? maximumMessageLength,
-    required UnifediApiInstancePollLimits? pollLimits,
+    required IUnifediApiInstancePollLimits? pollLimits,
     required int? maximumFileSizeInBytes,
     required bool markMediaAsNsfwOnAttach,
     required bool isPleromaInstance,
@@ -51,7 +51,7 @@ class EditPostStatusBloc extends PostStatusBloc {
     required IPostStatusData initialData,
     required PostStatusDataCallback postStatusDataCallback,
   }) {
-    var info = ICurrentAuthInstanceBloc.of(context, listen: false)
+    var info = ICurrentUnifediApiAccessBloc.of(context, listen: false)
         .currentInstance!
         .info!;
     var postStatusSettingsBloc =

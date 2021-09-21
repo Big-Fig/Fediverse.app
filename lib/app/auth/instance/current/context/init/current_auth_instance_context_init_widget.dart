@@ -16,23 +16,24 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 
 var _logger = Logger('current_auth_instance_context_init_widget.dart');
 
-class CurrentAuthInstanceContextInitWidget extends StatefulWidget {
+class CurrentUnifediApiAccessContextInitWidget extends StatefulWidget {
   final Widget child;
 
-  const CurrentAuthInstanceContextInitWidget({
+  const CurrentUnifediApiAccessContextInitWidget({
     required this.child,
   });
 
   @override
-  _CurrentAuthInstanceContextInitWidgetState createState() =>
-      _CurrentAuthInstanceContextInitWidgetState();
+  _CurrentUnifediApiAccessContextInitWidgetState createState() =>
+      _CurrentUnifediApiAccessContextInitWidgetState();
 }
 
-class _CurrentAuthInstanceContextInitWidgetState
-    extends State<CurrentAuthInstanceContextInitWidget> {
+class _CurrentUnifediApiAccessContextInitWidgetState
+    extends State<CurrentUnifediApiAccessContextInitWidget> {
   FediIndeterminateProgressDialog? loadingInstanceProgressDialog;
   StreamSubscription? subscription;
 
@@ -43,10 +44,10 @@ class _CurrentAuthInstanceContextInitWidgetState
     super.didChangeDependencies();
 
     var currentInstanceContextLoadingBloc =
-        ICurrentAuthInstanceContextInitBloc.of(context, listen: false);
+        ICurrentUnifediApiAccessContextInitBloc.of(context, listen: false);
 
     var isLoading = currentInstanceContextLoadingBloc.state ==
-        CurrentAuthInstanceContextInitState.loading;
+        CurrentUnifediApiAccessContextInitState.loading;
     _logger.finest(() => 'didChangeDependencies '
         'isLoading $isLoading disposed $disposed');
     Future.delayed(
@@ -63,7 +64,7 @@ class _CurrentAuthInstanceContextInitWidgetState
 
   void showProgressDialog(
     BuildContext context,
-    ICurrentAuthInstanceContextInitBloc currentInstanceContextLoadingBloc,
+    ICurrentUnifediApiAccessContextInitBloc currentInstanceContextLoadingBloc,
   ) {
     var myAccountBloc = IMyAccountBloc.of(context, listen: false);
     var isAlreadyShown = loadingInstanceProgressDialog?.isShowing == true;
@@ -91,9 +92,9 @@ class _CurrentAuthInstanceContextInitWidgetState
   }
 
   void onStateChanged(
-    ICurrentAuthInstanceContextInitBloc currentInstanceContextLoadingBloc,
+    ICurrentUnifediApiAccessContextInitBloc currentInstanceContextLoadingBloc,
   ) {
-    var state = CurrentAuthInstanceContextInitState.loading;
+    var state = CurrentUnifediApiAccessContextInitState.loading;
     var isNotLoading = currentInstanceContextLoadingBloc.state != state;
     _logger.finest(() => 'onStateChanged $state isNotLoading $isNotLoading');
     if (isNotLoading) {
@@ -120,11 +121,11 @@ class _CurrentAuthInstanceContextInitWidgetState
   @override
   Widget build(BuildContext context) {
     var currentInstanceContextLoadingBloc =
-        ICurrentAuthInstanceContextInitBloc.of(context, listen: false);
+        ICurrentUnifediApiAccessContextInitBloc.of(context, listen: false);
 
     _logger.finest(() => 'build');
 
-    return StreamBuilder<CurrentAuthInstanceContextInitState>(
+    return StreamBuilder<CurrentUnifediApiAccessContextInitState>(
       stream: currentInstanceContextLoadingBloc.stateStream.distinct(),
       initialData: currentInstanceContextLoadingBloc.state,
       builder: (context, snapshot) {
@@ -132,13 +133,13 @@ class _CurrentAuthInstanceContextInitWidgetState
         _logger.finest(() => 'state $state');
 
         switch (state) {
-          case CurrentAuthInstanceContextInitState.localCacheExist:
+          case CurrentUnifediApiAccessContextInitState.localCacheExist:
             return widget.child;
-          case CurrentAuthInstanceContextInitState
+          case CurrentUnifediApiAccessContextInitState
               .cantFetchAndLocalCacheNotExist:
-          case CurrentAuthInstanceContextInitState.invalidCredentials:
-            return const _CurrentAuthInstanceContextInitSessionExpiredWidget();
-          case CurrentAuthInstanceContextInitState.loading:
+          case CurrentUnifediApiAccessContextInitState.invalidCredentials:
+            return const _CurrentUnifediApiAccessContextInitSessionExpiredWidget();
+          case CurrentUnifediApiAccessContextInitState.loading:
           case null:
             return const SplashPage(
               displayVersionInfo: true,
@@ -149,9 +150,9 @@ class _CurrentAuthInstanceContextInitWidgetState
   }
 }
 
-class _CurrentAuthInstanceContextInitSessionExpiredWidget
+class _CurrentUnifediApiAccessContextInitSessionExpiredWidget
     extends StatelessWidget {
-  const _CurrentAuthInstanceContextInitSessionExpiredWidget({
+  const _CurrentUnifediApiAccessContextInitSessionExpiredWidget({
     Key? key,
   }) : super(key: key);
 
@@ -169,14 +170,14 @@ class _CurrentAuthInstanceContextInitSessionExpiredWidget
                 Padding(
                   padding: FediPadding.allBigPadding,
                   child:
-                      const _CurrentAuthInstanceContextInitSessionExpiredDescriptionWidget(),
+                      const _CurrentUnifediApiAccessContextInitSessionExpiredDescriptionWidget(),
                 ),
                 const FediSmallVerticalSpacer(),
-                const _CurrentAuthInstanceContextInitSessionExpiredRefreshButtonWidget(),
+                const _CurrentUnifediApiAccessContextInitSessionExpiredRefreshButtonWidget(),
                 const FediSmallVerticalSpacer(),
-                const _CurrentAuthInstanceContextInitSessionExpiredChooseAccountButtonWidget(),
+                const _CurrentUnifediApiAccessContextInitSessionExpiredChooseAccountButtonWidget(),
                 const FediSmallVerticalSpacer(),
-                const _CurrentAuthInstanceContextInitSessionExpiredLogoutButtonWidgetWidget(),
+                const _CurrentUnifediApiAccessContextInitSessionExpiredLogoutButtonWidgetWidget(),
               ],
             ),
           ),
@@ -186,9 +187,9 @@ class _CurrentAuthInstanceContextInitSessionExpiredWidget
   }
 }
 
-class _CurrentAuthInstanceContextInitSessionExpiredLogoutButtonWidgetWidget
+class _CurrentUnifediApiAccessContextInitSessionExpiredLogoutButtonWidgetWidget
     extends StatelessWidget {
-  const _CurrentAuthInstanceContextInitSessionExpiredLogoutButtonWidgetWidget({
+  const _CurrentUnifediApiAccessContextInitSessionExpiredLogoutButtonWidgetWidget({
     Key? key,
   }) : super(key: key);
 
@@ -199,7 +200,7 @@ class _CurrentAuthInstanceContextInitSessionExpiredLogoutButtonWidgetWidget
           .of(context)
           .app_auth_instance_current_context_loading_cantLoad_action_logout,
       onPressed: () {
-        ICurrentAuthInstanceBloc.of(context, listen: false)
+        ICurrentUnifediApiAccessBloc.of(context, listen: false)
             .logoutCurrentInstance();
       },
       color: IFediUiColorTheme.of(context).white,
@@ -208,9 +209,9 @@ class _CurrentAuthInstanceContextInitSessionExpiredLogoutButtonWidgetWidget
   }
 }
 
-class _CurrentAuthInstanceContextInitSessionExpiredChooseAccountButtonWidget
+class _CurrentUnifediApiAccessContextInitSessionExpiredChooseAccountButtonWidget
     extends StatelessWidget {
-  const _CurrentAuthInstanceContextInitSessionExpiredChooseAccountButtonWidget({
+  const _CurrentUnifediApiAccessContextInitSessionExpiredChooseAccountButtonWidget({
     Key? key,
   }) : super(key: key);
 
@@ -229,16 +230,16 @@ class _CurrentAuthInstanceContextInitSessionExpiredChooseAccountButtonWidget
   }
 }
 
-class _CurrentAuthInstanceContextInitSessionExpiredRefreshButtonWidget
+class _CurrentUnifediApiAccessContextInitSessionExpiredRefreshButtonWidget
     extends StatelessWidget {
-  const _CurrentAuthInstanceContextInitSessionExpiredRefreshButtonWidget({
+  const _CurrentUnifediApiAccessContextInitSessionExpiredRefreshButtonWidget({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var currentInstanceContextLoadingBloc =
-        ICurrentAuthInstanceContextInitBloc.of(context);
+        ICurrentUnifediApiAccessContextInitBloc.of(context);
 
     return FediTransparentTextButtonWithBorder(
       S
@@ -255,19 +256,19 @@ class _CurrentAuthInstanceContextInitSessionExpiredRefreshButtonWidget
   }
 }
 
-class _CurrentAuthInstanceContextInitSessionExpiredDescriptionWidget
+class _CurrentUnifediApiAccessContextInitSessionExpiredDescriptionWidget
     extends StatelessWidget {
-  const _CurrentAuthInstanceContextInitSessionExpiredDescriptionWidget({
+  const _CurrentUnifediApiAccessContextInitSessionExpiredDescriptionWidget({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
+    var currentUnifediApiAccessBloc = ICurrentUnifediApiAccessBloc.of(context);
 
     return Text(
       S.of(context).app_auth_instance_current_context_loading_cantLoad_content(
-            currentAuthInstanceBloc.currentInstance!.userAtHost,
+            currentUnifediApiAccessBloc.currentInstance!.userAtHost,
           ),
       textAlign: TextAlign.center,
       style: IFediUiTextTheme.of(context).mediumShortBoldWhite,

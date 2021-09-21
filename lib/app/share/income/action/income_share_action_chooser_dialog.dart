@@ -31,11 +31,11 @@ Future showIncomeShareActionChooserDialog(
 }) async {
   _logger.finest(() => 'showIncomeShareInstanceChooserDialog');
 
-  var currentAuthInstanceBloc =
-      ICurrentAuthInstanceBloc.of(context, listen: false);
+  var currentUnifediApiAccessBloc =
+      ICurrentUnifediApiAccessBloc.of(context, listen: false);
   var types = IncomeShareActionType.values;
 
-  var isPleroma = currentAuthInstanceBloc.currentInstance!.isPleroma;
+  var isPleroma = currentUnifediApiAccessBloc.currentInstance!.isPleroma;
 
   if (!isPleroma) {
     types = types

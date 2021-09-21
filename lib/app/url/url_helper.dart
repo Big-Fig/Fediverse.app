@@ -6,6 +6,7 @@ import 'package:fedi/app/instance/location/instance_location_bloc.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/ui/dialog/alert/fedi_simple_alert_dialog.dart';
 import 'package:fedi/generated/l10n.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:logging/logging.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -82,12 +83,12 @@ class UrlHelper {
 
         var urlHost = uri.host;
 
-        var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(
+        var currentUnifediApiAccessBloc = ICurrentUnifediApiAccessBloc.of(
           context,
           listen: false,
         );
         var localInstanceDomain =
-            currentAuthInstanceBloc.currentInstance!.urlHost;
+            currentUnifediApiAccessBloc.currentInstance!.urlHost;
 
         if (localInstanceDomain != urlHost) {
           return showHashtagPageChooserDialog(
@@ -137,11 +138,11 @@ class UrlHelper {
     BuildContext context,
     String url,
   ) {
-    var currentAuthInstanceBloc =
-        ICurrentAuthInstanceBloc.of(context, listen: false);
+    var currentUnifediApiAccessBloc =
+        ICurrentUnifediApiAccessBloc.of(context, listen: false);
 
-    var urlHost = currentAuthInstanceBloc.currentInstance!.urlHost;
-    var urlSchema = currentAuthInstanceBloc.currentInstance!.urlSchema;
+    var urlHost = currentUnifediApiAccessBloc.currentInstance!.urlHost;
+    var urlSchema = currentUnifediApiAccessBloc.currentInstance!.urlSchema;
 
     url = '$urlSchema://$urlHost$url';
 

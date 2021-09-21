@@ -9,6 +9,12 @@ import 'package:provider/provider.dart';
 
 abstract class IAccountBloc extends DisposableOwner
     implements IInstanceLocationBloc {
+  bool get isEndorsementSupported;
+
+  bool get isSubscribeToAccountFeatureSupported;
+
+  bool get isSupportChats;
+
   static IAccountBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IAccountBloc>(context, listen: listen);
 

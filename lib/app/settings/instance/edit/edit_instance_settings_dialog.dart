@@ -3,15 +3,16 @@ import 'package:fedi/app/settings/settings_dialog.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 
 void showEditInstanceSettingsDialog({
   required BuildContext context,
   required String subTitle,
   required Widget child,
 }) {
-  var currentAuthInstanceBloc =
-      ICurrentAuthInstanceBloc.of(context, listen: false);
-  var currentInstance = currentAuthInstanceBloc.currentInstance!;
+  var currentUnifediApiAccessBloc =
+      ICurrentUnifediApiAccessBloc.of(context, listen: false);
+  var currentInstance = currentUnifediApiAccessBloc.currentInstance!;
   showSettingsDialog(
     context: context,
     title: S.of(context).app_account_home_tab_menu_action_instance_settings(

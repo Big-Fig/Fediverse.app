@@ -9,12 +9,12 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class RegisterAuthInstanceAcceptTermsOfServiceBoolValueFormFieldRowWidget
+class RegisterUnifediApiAccessAcceptTermsOfServiceBoolValueFormFieldRowWidget
     extends StatelessWidget {
   final Uri instanceBaseUri;
   final bool displayErrors;
 
-  const RegisterAuthInstanceAcceptTermsOfServiceBoolValueFormFieldRowWidget({
+  const RegisterUnifediApiAccessAcceptTermsOfServiceBoolValueFormFieldRowWidget({
     required this.instanceBaseUri,
     this.displayErrors = true,
   });
@@ -29,7 +29,7 @@ class RegisterAuthInstanceAcceptTermsOfServiceBoolValueFormFieldRowWidget
                 .app_auth_instance_register_field_acceptTermsOfService_label,
           ),
           description:
-              _RegisterAuthInstanceAcceptTermsOfServiceBoolValueFormFieldRowDescriptionWidget(
+              _RegisterUnifediApiAccessAcceptTermsOfServiceBoolValueFormFieldRowDescriptionWidget(
             instanceBaseUri: instanceBaseUri,
           ),
           descriptionOnDisabled: null,
@@ -38,9 +38,9 @@ class RegisterAuthInstanceAcceptTermsOfServiceBoolValueFormFieldRowWidget
       );
 }
 
-class _RegisterAuthInstanceAcceptTermsOfServiceBoolValueFormFieldRowDescriptionWidget
+class _RegisterUnifediApiAccessAcceptTermsOfServiceBoolValueFormFieldRowDescriptionWidget
     extends StatelessWidget {
-  const _RegisterAuthInstanceAcceptTermsOfServiceBoolValueFormFieldRowDescriptionWidget({
+  const _RegisterUnifediApiAccessAcceptTermsOfServiceBoolValueFormFieldRowDescriptionWidget({
     Key? key,
     required this.instanceBaseUri,
   }) : super(key: key);

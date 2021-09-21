@@ -22,7 +22,7 @@ class ConversationChatPostMessageBloc extends PostStatusBloc {
     required IScheduledStatusRepository scheduledStatusRepository,
     required IUnifediApiMediaAttachmentService unifediApiMediaAttachmentService,
     required int? maximumMessageLength,
-    required UnifediApiInstancePollLimits? pollLimits,
+    required IUnifediApiInstancePollLimits? pollLimits,
     required int? maximumFileSizeInBytes,
     required bool markMediaAsNsfwOnAttach,
     required int? maximumMediaAttachmentCount,
@@ -52,7 +52,7 @@ class ConversationChatPostMessageBloc extends PostStatusBloc {
     BuildContext context, {
     required IConversationChat? conversation,
   }) {
-    var info = ICurrentAuthInstanceBloc.of(context, listen: false)
+    var info = ICurrentUnifediApiAccessBloc.of(context, listen: false)
         .currentInstance!
         .info!;
 

@@ -33,6 +33,7 @@ import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/local_preferences/local_preferences_service_migration_bloc.dart';
 import 'package:fedi/local_preferences/local_preferences_service_migration_bloc_impl.dart';
 import 'package:fedi/app/auth/oauth_last_launched/local_preferences/auth_oauth_last_launched_host_to_login_local_preference_bloc_impl.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 
 class FediLocalPreferencesServiceMigrationBloc
     extends LocalPreferencesServiceMigrationBloc {
@@ -50,7 +51,7 @@ class FediLocalPreferencesServiceMigrationBloc
     ILocalPreferencesService inputService,
   ) async {
     var instanceListLocalPreferenceBloc =
-        AuthInstanceListLocalPreferenceBloc(inputService);
+        UnifediApiAccessListLocalPreferenceBloc(inputService);
     await instanceListLocalPreferenceBloc.performAsyncInit();
     var authInstanceList = instanceListLocalPreferenceBloc.value!;
 
@@ -89,8 +90,8 @@ class FediLocalPreferencesServiceMigrationBloc
     }
 
     return [
-      (lps) => AuthInstanceListLocalPreferenceBloc(lps),
-      (lps) => CurrentAuthInstanceLocalPreferenceBloc(lps),
+      (lps) => UnifediApiAccessListLocalPreferenceBloc(lps),
+      (lps) => CurrentUnifediApiAccessLocalPreferenceBloc(lps),
       (lps) => NotificationsPushHandlerUnhandledLocalPreferenceBloc(lps),
       (lps) => AuthOAuthLastLaunchedHostToLoginLocalPreferenceBloc(lps),
       (lps) => GlobalChatSettingsLocalPreferenceBloc(lps),

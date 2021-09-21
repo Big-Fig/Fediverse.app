@@ -25,6 +25,7 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 import 'package:fediverse_api/fediverse_api_utils.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 
 var _logger = Logger('timeline_status_cached_list_bloc_impl.dart');
 
@@ -34,7 +35,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
   final IUnifediApiTimelineService unifediApiTimelineService;
   final IStatusRepository statusRepository;
   final IFilterRepository filterRepository;
-  final ICurrentAuthInstanceBloc currentInstanceBloc;
+  final ICurrentUnifediApiAccessBloc currentInstanceBloc;
   final ITimelineLocalPreferenceBloc timelineLocalPreferenceBloc;
   final IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc;
   final IMyAccountBloc myAccountBloc;
@@ -388,7 +389,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
           context,
           listen: false,
         ),
-        currentInstanceBloc: ICurrentAuthInstanceBloc.of(
+        currentInstanceBloc: ICurrentUnifediApiAccessBloc.of(
           context,
           listen: false,
         ),

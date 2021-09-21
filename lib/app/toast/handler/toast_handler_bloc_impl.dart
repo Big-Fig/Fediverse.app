@@ -1,4 +1,3 @@
-import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/list/auth_instance_list_bloc.dart';
 import 'package:fedi/app/chat/conversation/current/conversation_chat_current_bloc.dart';
@@ -22,6 +21,7 @@ import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:unifedi_api/unifedi_api.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 
 final _logger = Logger('toast_handler_bloc_impl.dart');
 
@@ -33,9 +33,10 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
       ToastHandlerBloc(
         context: context,
         toastService: toastService,
-        authInstanceListBloc: IAuthInstanceListBloc.of(context, listen: false),
-        currentAuthInstanceBloc:
-            ICurrentAuthInstanceBloc.of(context, listen: false),
+        authInstanceListBloc:
+            IUnifediApiAccessListBloc.of(context, listen: false),
+        currentUnifediApiAccessBloc:
+            ICurrentUnifediApiAccessBloc.of(context, listen: false),
         notificationsPushHandlerBloc:
             INotificationsPushHandlerBloc.of(context, listen: false),
         localPreferencesService:
@@ -53,13 +54,14 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
         localizationContext: S.of(context),
       );
 
-  AuthInstance? get currentInstance => currentAuthInstanceBloc.currentInstance;
+  UnifediApiAccess? get currentInstance =>
+      currentUnifediApiAccessBloc.currentInstance;
 
   // TODO: remove context field?
   final BuildContext context;
   final IToastService toastService;
-  final IAuthInstanceListBloc authInstanceListBloc;
-  final ICurrentAuthInstanceBloc currentAuthInstanceBloc;
+  final IUnifediApiAccessListBloc authInstanceListBloc;
+  final ICurrentUnifediApiAccessBloc currentUnifediApiAccessBloc;
   final ILocalPreferencesService localPreferencesService;
   final IToastSettingsBloc currentInstanceToastSettingsBloc;
   final INotificationsPushHandlerBloc notificationsPushHandlerBloc;
@@ -73,7 +75,7 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
   ToastHandlerBloc({
     required this.context,
     required this.toastService,
-    required this.currentAuthInstanceBloc,
+    required this.currentUnifediApiAccessBloc,
     required this.authInstanceListBloc,
     required this.notificationsPushHandlerBloc,
     required this.localPreferencesService,
@@ -271,7 +273,7 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
           if (instanceByCredentials != null) {
             await notificationsPushHandlerBloc
                 .markAsLaunchMessage(notificationsPushHandlerMessage);
-            await currentAuthInstanceBloc
+            await currentUnifediApiAccessBloc
                 .changeCurrentInstance(instanceByCredentials);
           }
         },

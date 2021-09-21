@@ -3,9 +3,10 @@ import 'package:fedi/app/server_list/server_list_auto_complete_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IJoinAuthInstanceBloc implements IDisposable {
-  static IJoinAuthInstanceBloc of(BuildContext context, {bool listen = true}) =>
-      Provider.of<IJoinAuthInstanceBloc>(context, listen: listen);
+abstract class IJoinUnifediApiAccessBloc implements IDisposable {
+  static IJoinUnifediApiAccessBloc of(BuildContext context,
+          {bool listen = true}) =>
+      Provider.of<IJoinUnifediApiAccessBloc>(context, listen: listen);
 
   bool get isFromScratch;
 

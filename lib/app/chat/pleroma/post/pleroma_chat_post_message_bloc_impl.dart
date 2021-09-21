@@ -83,7 +83,7 @@ class PleromaChatPostMessageBloc extends PostMessageBloc
     BuildContext context, {
     required String? chatRemoteId,
   }) {
-    var info = ICurrentAuthInstanceBloc.of(context, listen: false)
+    var info = ICurrentUnifediApiAccessBloc.of(context, listen: false)
         .currentInstance!
         .info!;
 

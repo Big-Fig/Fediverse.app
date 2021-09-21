@@ -12,6 +12,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 
 final _logger = Logger('edit_global_or_instance_settings_dialog.dart');
 
@@ -30,9 +31,9 @@ void showEditGlobalOrInstanceSettingsDialog({
   required IGlobalOrInstanceSettingsBloc globalOrInstanceSettingsBloc,
   required ShowGlobalSettingsDialogCallback showGlobalSettingsDialogCallback,
 }) {
-  var currentAuthInstanceBloc =
-      ICurrentAuthInstanceBloc.of(context, listen: false);
-  var currentInstance = currentAuthInstanceBloc.currentInstance!;
+  var currentUnifediApiAccessBloc =
+      ICurrentUnifediApiAccessBloc.of(context, listen: false);
+  var currentInstance = currentUnifediApiAccessBloc.currentInstance!;
 
   showSettingsDialog(
     context: context,

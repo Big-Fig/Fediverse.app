@@ -1,16 +1,15 @@
 import 'package:collection/collection.dart';
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/account/my/featured_hashtag/my_account_featured_hashtag_model.dart';
 import 'package:fedi/app/account/my/featured_hashtag/my_account_featured_hashtag_model_adapter.dart';
-import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/hashtag/hashtag_bloc.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
-import 'package:easy_dispose/easy_dispose.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class HashtagBloc extends DisposableOwner implements IHashtagBloc {
   @override
@@ -18,11 +17,13 @@ class HashtagBloc extends DisposableOwner implements IHashtagBloc {
   final IUnifediApiMyAccountService unifediApiMyAccountService;
   final bool needLoadFeaturedState;
 
-  final AuthInstance authInstance;
+  final UnifediApiAccess authInstance;
 
   @override
   bool get isInstanceSupportFeaturedTags =>
-      authInstance.isFeaturedTagsSupported;
+      unifediApiMyAccountService.isFeatureSupported(
+        unifediApiMyAccountService.featureMyAccountTagFeature,
+      );
 
   HashtagBloc({
     required this.hashtag,
@@ -104,8 +105,8 @@ class HashtagBloc extends DisposableOwner implements IHashtagBloc {
     return HashtagBloc(
       unifediApiMyAccountService: unifediApiMyAccountService,
       hashtag: hashtag,
-      authInstance:
-          ICurrentAuthInstanceBloc.of(context, listen: false).currentInstance!,
+      authInstance: ICurrentUnifediApiAccessBloc.of(context, listen: false)
+          .currentInstance!,
       featuredHashtag: myAccountFeaturedHashtag,
       needLoadFeaturedState: needLoadFeaturedState,
     );

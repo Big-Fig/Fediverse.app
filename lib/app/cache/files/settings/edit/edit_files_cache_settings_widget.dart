@@ -11,6 +11,7 @@ import 'package:fedi/app/ui/description/fedi_note_description_widget.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 
 class EditFilesCacheSettingsWidget extends StatelessWidget {
   final bool shrinkWrap;
@@ -44,14 +45,14 @@ class _EditFilesCacheSettingsClearAllButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
+    var currentUnifediApiAccessBloc = ICurrentUnifediApiAccessBloc.of(context);
     var filesCacheService = IFilesCacheService.of(context);
 
     return PleromaAsyncOperationButtonBuilderWidget(
       asyncButtonAction: () => filesCacheService.clear(),
       builder: (context, onPressed) => FediPrimaryFilledTextButtonWithBorder(
         S.of(context).app_cache_settings_action_clear_all_now(
-              currentAuthInstanceBloc.currentInstance!.userAtHost,
+              currentUnifediApiAccessBloc.currentInstance!.userAtHost,
             ),
         onPressed: onPressed,
         expanded: false,

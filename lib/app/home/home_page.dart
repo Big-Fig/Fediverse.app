@@ -125,7 +125,11 @@ class _HomePageAccountTabWidget extends StatelessWidget {
         var homeBloc = IHomeBloc.of(context, listen: false);
 
         var accountHomeTabBloc = AccountHomeTabBloc(
-          currentAuthInstanceBloc: ICurrentAuthInstanceBloc.of(
+          unifediApiAccountService:
+              Provider.of<IUnifediApiAccountService>(context),
+          unifediApiMyAccountService:
+              Provider.of<IUnifediApiMyAccountService>(context),
+          currentUnifediApiAccessBloc: ICurrentUnifediApiAccessBloc.of(
             context,
             listen: false,
           ),

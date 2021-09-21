@@ -4,7 +4,7 @@ import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
-import 'package:fedi/app/auth/instance/auth_instance_model.dart';
+
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_bloc.dart';
@@ -18,12 +18,13 @@ import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:unifedi_api/unifedi_api.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 
 var _logger = Logger('notification_push_loader_bloc_impl.dart');
 
 class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
     implements INotificationPushLoaderBloc {
-  final AuthInstance currentInstance;
+  final UnifediApiAccess currentInstance;
   final INotificationsPushHandlerBloc notificationsPushHandlerBloc;
   final IUnifediApiNotificationService pleromaNotificationService;
 

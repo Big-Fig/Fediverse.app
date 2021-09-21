@@ -6,7 +6,7 @@ import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/my/local_preferences/my_account_local_preference_bloc.dart';
 import 'package:fedi/app/account/my/my_account_model.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
-import 'package:fedi/app/auth/instance/auth_instance_model.dart';
+
 import 'package:fedi/app/chat/message/chat_message_model.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/status/status_model.dart';
@@ -21,7 +21,7 @@ class MyAccountBloc extends IMyAccountBloc {
   final IAccountRepository accountRepository;
 
   @override
-  final AuthInstance instance;
+  final UnifediApiAccess instance;
 
   @override
   bool get isLocalCacheExist => myAccount != null;
@@ -165,4 +165,13 @@ class MyAccountBloc extends IMyAccountBloc {
 
   @override
   Uri? get remoteInstanceUriOrNull => null;
+
+  @override
+  bool get isEndorsementSupported => false;
+
+  @override
+  bool get isSubscribeToAccountFeatureSupported => false;
+
+  @override
+  bool get isSupportChats => false;
 }

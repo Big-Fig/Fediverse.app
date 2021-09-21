@@ -32,8 +32,8 @@ class LocalInstanceTrendsBloc extends InstanceTrendsBloc
   static LocalInstanceTrendsBloc createFromContext(BuildContext context) {
     var unifediApiInstanceService =
         Provider.of<IUnifediApiInstanceService>(context, listen: false);
-    var currentAuthInstanceBloc =
-        ICurrentAuthInstanceBloc.of(context, listen: false);
+    var currentUnifediApiAccessBloc =
+        ICurrentUnifediApiAccessBloc.of(context, listen: false);
 
     return LocalInstanceTrendsBloc(
       connectionService: Provider.of<IConnectionService>(
@@ -41,7 +41,7 @@ class LocalInstanceTrendsBloc extends InstanceTrendsBloc
         listen: false,
       ),
       unifediApiInstanceService: unifediApiInstanceService,
-      initialInstance: currentAuthInstanceBloc.currentInstance!.info,
+      initialInstance: currentUnifediApiAccessBloc.currentInstance!.info,
       paginationSettingsBloc: IPaginationSettingsBloc.of(
         context,
         listen: false,

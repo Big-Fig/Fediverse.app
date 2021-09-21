@@ -3,20 +3,20 @@ import 'package:fedi/app/auth/instance/list/local_preferences/auth_instance_list
 import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 
-class AuthInstanceListLocalPreferenceBloc
-    extends ObjectLocalPreferenceBloc<AuthInstanceList?>
-    implements IAuthInstanceListLocalPreferenceBloc {
-  static const AuthInstanceList? defaultValue = null;
+class UnifediApiAccessListLocalPreferenceBloc
+    extends ObjectLocalPreferenceBloc<UnifediApiAccessList?>
+    implements IUnifediApiAccessListLocalPreferenceBloc {
+  static const UnifediApiAccessList? defaultValue = null;
 
-  AuthInstanceListLocalPreferenceBloc(
+  UnifediApiAccessListLocalPreferenceBloc(
     ILocalPreferencesService preferencesService,
   ) : super(
           preferencesService: preferencesService,
           key: 'instance.list',
           schemaVersion: 1,
-          jsonConverter: (json) => AuthInstanceList.fromJson(json),
+          jsonConverter: (json) => UnifediApiAccessList.fromJson(json),
         );
 
   @override
-  AuthInstanceList? get defaultPreferenceValue => defaultValue;
+  UnifediApiAccessList? get defaultPreferenceValue => defaultValue;
 }

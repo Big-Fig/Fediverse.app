@@ -1,7 +1,9 @@
-class JoinAuthInstanceWidgetKeys {
-  static const loginButtonKey = 'JoinAuthInstanceWidgetKeys_LoginButtonKey';
-  static const signUpButtonKey = 'JoinAuthInstanceWidgetKeys_SignUpButtonKey';
+class JoinUnifediApiAccessWidgetKeys {
+  static const loginButtonKey = 'JoinUnifediApiAccessWidgetKeys_LoginButtonKey';
+  static const signUpButtonKey =
+      'JoinUnifediApiAccessWidgetKeys_SignUpButtonKey';
   static const exploreAsGuestButtonKey =
-      'JoinAuthInstanceWidgetKeys_ExploreAsGuestButtonKey';
-  static const hostTextFieldKey = 'JoinAuthInstanceWidgetKeys_HostTextFieldKey';
+      'JoinUnifediApiAccessWidgetKeys_ExploreAsGuestButtonKey';
+  static const hostTextFieldKey =
+      'JoinUnifediApiAccessWidgetKeys_HostTextFieldKey';
 }

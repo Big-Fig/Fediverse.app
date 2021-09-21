@@ -24,12 +24,12 @@ class LocalInstanceActivityBloc extends InstanceActivityBloc
   static LocalInstanceActivityBloc createFromContext(BuildContext context) {
     var unifediApiInstanceService =
         Provider.of<IUnifediApiInstanceService>(context, listen: false);
-    var currentAuthInstanceBloc =
-        ICurrentAuthInstanceBloc.of(context, listen: false);
+    var currentUnifediApiAccessBloc =
+        ICurrentUnifediApiAccessBloc.of(context, listen: false);
 
     return LocalInstanceActivityBloc(
       unifediApiInstanceService: unifediApiInstanceService,
-      instance: currentAuthInstanceBloc.currentInstance!.info!,
+      instance: currentUnifediApiAccessBloc.currentInstance!.info!,
     );
   }
 

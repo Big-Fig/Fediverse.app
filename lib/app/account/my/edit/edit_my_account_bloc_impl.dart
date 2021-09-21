@@ -20,7 +20,7 @@ import 'package:provider/provider.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
 class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
-  final ICurrentAuthInstanceBloc currentAuthInstanceBloc;
+  final ICurrentUnifediApiAccessBloc currentUnifediApiAccessBloc;
   final IMyAccountBloc myAccountBloc;
   final IUnifediApiMyAccountService unifediApiMyAccountService;
 
@@ -94,7 +94,7 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
   // ignore: long-method
   EditMyAccountBloc({
     required this.myAccountBloc,
-    required this.currentAuthInstanceBloc,
+    required this.currentUnifediApiAccessBloc,
     required this.unifediApiMyAccountService,
     required int? noteMaxLength,
     required int? avatarUploadSizeInBytes,
@@ -264,7 +264,8 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
       },
     );
 
-    var isPleromaInstance = currentAuthInstanceBloc.currentInstance!.isPleroma;
+    var isPleromaInstance =
+        currentUnifediApiAccessBloc.currentInstance!.isPleroma;
 
     var remoteMyAccount = await unifediApiMyAccountService.updateMyCredentials(
       editMyAccount: await _calculateUnifediApiEditMyAccount(
@@ -350,19 +351,19 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
       );
 
   static EditMyAccountBloc createFromContext(BuildContext context) {
-    var info = ICurrentAuthInstanceBloc.of(context, listen: false)
+    var info = ICurrentUnifediApiAccessBloc.of(context, listen: false)
         .currentInstance!
         .info;
 
     return EditMyAccountBloc(
-      currentAuthInstanceBloc: ICurrentAuthInstanceBloc.of(
+      currentUnifediApiAccessBloc: ICurrentUnifediApiAccessBloc.of(
         context,
         listen: false,
       ),
       myAccountBloc: IMyAccountBloc.of(context, listen: false),
       unifediApiMyAccountService:
           Provider.of<IUnifediApiMyAccountService>(context, listen: false),
-      customFieldLimits: info?.limits?.field,
+      customFieldLimits: info?.limits?.field?.toUnifediApiInstanceFieldLimits(),
       // todo: check
       noteMaxLength: null,
       avatarUploadSizeInBytes: info?.limits?.media?.avatarUploadLimit,

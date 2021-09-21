@@ -23,6 +23,7 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 import 'package:fediverse_api/fediverse_api_utils.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 
 var _logger = Logger('timeline_tab_bloc_impl.dart');
 
@@ -47,7 +48,7 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
   final IUnifediApiAccountService unifediApiAccountService;
   final IUnifediApiTimelineService unifediApiTimelineService;
   final IStatusRepository statusRepository;
-  final ICurrentAuthInstanceBloc currentAuthInstanceBloc;
+  final ICurrentUnifediApiAccessBloc currentUnifediApiAccessBloc;
   final IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc;
   final ILocalPreferencesService preferencesService;
   final IMyAccountBloc myAccountBloc;
@@ -66,7 +67,7 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
     required this.unifediApiTimelineService,
     required this.unifediApiAccountService,
     required this.statusRepository,
-    required this.currentAuthInstanceBloc,
+    required this.currentUnifediApiAccessBloc,
     required this.webSocketsHandlerManagerBloc,
     required this.myAccountBloc,
     required this.handlerType,
@@ -77,7 +78,7 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
 
     timelineLocalPreferencesBloc = TimelineLocalPreferenceBloc.byId(
       preferencesService,
-      userAtHost: currentAuthInstanceBloc.currentInstance!.userAtHost,
+      userAtHost: currentUnifediApiAccessBloc.currentInstance!.userAtHost,
       timelineId: timelineId,
       defaultPreferenceValue: null,
     );
@@ -92,7 +93,7 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
         unifediApiAccountService: unifediApiAccountService,
         unifediApiTimelineService: unifediApiTimelineService,
         statusRepository: statusRepository,
-        currentInstanceBloc: currentAuthInstanceBloc,
+        currentInstanceBloc: currentUnifediApiAccessBloc,
         timelineLocalPreferenceBloc: timelineLocalPreferencesBloc,
         webSocketsHandlerManagerBloc: webSocketsHandlerManagerBloc,
         handlerType: handlerType,
@@ -170,8 +171,8 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
             Provider.of<IUnifediApiAccountService>(context, listen: false),
         statusRepository: IStatusRepository.of(context, listen: false),
         myAccountBloc: IMyAccountBloc.of(context, listen: false),
-        currentAuthInstanceBloc:
-            ICurrentAuthInstanceBloc.of(context, listen: false),
+        currentUnifediApiAccessBloc:
+            ICurrentUnifediApiAccessBloc.of(context, listen: false),
         preferencesService: ILocalPreferencesService.of(context, listen: false),
         webSocketsHandlerManagerBloc:
             IWebSocketsHandlerManagerBloc.of(context, listen: false),

@@ -9,9 +9,9 @@ import 'package:fedi/form/field/value/string/validation/string_value_form_field_
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:easy_dispose/easy_dispose.dart';
 
-class RegisterAuthInstanceFormStepperAccountItemBloc
-    extends RegisterAuthInstanceFormStepperItemBloc
-    implements IRegisterAuthInstanceFormStepperAccountItemBloc {
+class RegisterUnifediApiAccessFormStepperAccountItemBloc
+    extends RegisterUnifediApiAccessFormStepperItemBloc
+    implements IRegisterUnifediApiAccessFormStepperAccountItemBloc {
   @override
   final IStringValueFormFieldBloc usernameFieldBloc = StringValueFormFieldBloc(
     originValue: '',
@@ -40,7 +40,7 @@ class RegisterAuthInstanceFormStepperAccountItemBloc
     maxLength: null,
   );
 
-  RegisterAuthInstanceFormStepperAccountItemBloc()
+  RegisterUnifediApiAccessFormStepperAccountItemBloc()
       : super(
           isAllItemsInitialized: true,
         ) {
@@ -50,8 +50,8 @@ class RegisterAuthInstanceFormStepperAccountItemBloc
   }
 
   @override
-  RegisterAuthInstanceFormStepperItemType get type =>
-      RegisterAuthInstanceFormStepperItemType.account;
+  RegisterUnifediApiAccessFormStepperItemType get type =>
+      RegisterUnifediApiAccessFormStepperItemType.account;
 
   @override
   List<IFormItemBloc> get currentItems => [

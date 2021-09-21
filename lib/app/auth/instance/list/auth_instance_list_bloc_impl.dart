@@ -1,37 +1,39 @@
 import 'dart:async';
 
 import 'package:collection/collection.dart';
-import 'package:fedi/app/auth/instance/auth_instance_model.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/auth/instance/list/auth_instance_list_bloc.dart';
 import 'package:fedi/app/auth/instance/list/auth_instance_list_model.dart';
 import 'package:fedi/app/auth/instance/list/local_preferences/auth_instance_list_local_preference_bloc.dart';
-import 'package:easy_dispose/easy_dispose.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:logging/logging.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 var _logger = Logger('auth_instance_list_bloc_impl.dart');
 
-class AuthInstanceListBloc extends DisposableOwner
-    implements IAuthInstanceListBloc {
-  final IAuthInstanceListLocalPreferenceBloc instanceListLocalPreferenceBloc;
+class UnifediApiAccessListBloc extends DisposableOwner
+    implements IUnifediApiAccessListBloc {
+  final IUnifediApiAccessListLocalPreferenceBloc
+      instanceListLocalPreferenceBloc;
 
-  AuthInstanceListBloc({
+  UnifediApiAccessListBloc({
     required this.instanceListLocalPreferenceBloc,
   });
 
   @override
-  List<AuthInstance> get availableInstances =>
+  List<UnifediApiAccess> get availableInstances =>
       instanceListLocalPreferenceBloc.value?.instances ?? [];
 
   @override
-  Stream<List<AuthInstance>> get availableInstancesStream =>
+  Stream<List<UnifediApiAccess>> get availableInstancesStream =>
       instanceListLocalPreferenceBloc.stream
           .map((instanceList) => instanceList?.instances ?? []);
 
-  StreamController<AuthInstance> instanceRemovedStreamController =
+  StreamController<UnifediApiAccess> instanceRemovedStreamController =
       StreamController.broadcast();
 
   @override
-  Stream<AuthInstance> get instanceRemovedStream =>
+  Stream<UnifediApiAccess> get instanceRemovedStream =>
       instanceRemovedStreamController.stream;
 
   @override
@@ -42,13 +44,13 @@ class AuthInstanceListBloc extends DisposableOwner
       .map((availableInstances) => availableInstances.isNotEmpty);
 
   @override
-  Future addInstance(AuthInstance instance) async {
+  Future addInstance(UnifediApiAccess instance) async {
     _logger.finest(() => 'addInstance $instance');
     var instances = availableInstances;
     if (!instances.contains(instance)) {
       _logger.finest(() => 'addInstance before setValue');
       await instanceListLocalPreferenceBloc.setValue(
-        AuthInstanceList(
+        UnifediApiAccessList(
           instances: [
             ...instances,
             instance,
@@ -60,7 +62,7 @@ class AuthInstanceListBloc extends DisposableOwner
   }
 
   @override
-  Future removeInstance(AuthInstance instance) async {
+  Future removeInstance(UnifediApiAccess instance) async {
     _logger.finest(() => 'removeInstance $instance');
     var instances = availableInstances.toList(growable: true);
 
@@ -71,7 +73,7 @@ class AuthInstanceListBloc extends DisposableOwner
     if (foundInstanceToRemove != null) {
       instances.remove(foundInstanceToRemove);
       await instanceListLocalPreferenceBloc.setValue(
-        AuthInstanceList(
+        UnifediApiAccessList(
           instances: instances,
         ),
       );
@@ -81,7 +83,7 @@ class AuthInstanceListBloc extends DisposableOwner
   }
 
   @override
-  AuthInstance? findInstanceByCredentials({
+  UnifediApiAccess? findInstanceByCredentials({
     required String host,
     required String acct,
   }) {

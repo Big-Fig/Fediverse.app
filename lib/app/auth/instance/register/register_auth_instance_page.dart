@@ -24,24 +24,25 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
-class RegisterAuthInstancePage extends StatelessWidget {
-  const RegisterAuthInstancePage();
+class RegisterUnifediApiAccessPage extends StatelessWidget {
+  const RegisterUnifediApiAccessPage();
 
   @override
   Widget build(BuildContext context) {
-    var registerAuthInstanceBloc = IRegisterAuthInstanceBloc.of(context);
+    var registerUnifediApiAccessBloc =
+        IRegisterUnifediApiAccessBloc.of(context);
 
     return Scaffold(
       appBar: FediPageTitleAppBar(
         title: S.of(context).app_auth_instance_register_title(
-              registerAuthInstanceBloc.instanceBaseUri.host,
+              registerUnifediApiAccessBloc.instanceBaseUri.host,
             ),
         leading: const FediDismissIconButton(),
       ),
       body: const SafeArea(
-        child: RegisterAuthInstanceWidget(
+        child: RegisterUnifediApiAccessWidget(
           key: Key(
-            RegisterAuthInstancePageKeys.registerAuthInstanceWidgetKey,
+            RegisterUnifediApiAccessPageKeys.registerUnifediApiAccessWidgetKey,
           ),
         ),
       ),
@@ -50,7 +51,7 @@ class RegisterAuthInstancePage extends StatelessWidget {
 }
 
 // ignore: long-method
-Future<AuthHostRegistrationResult?> goToRegisterAuthInstancePage(
+Future<AuthHostRegistrationResult?> goToRegisterUnifediApiAccessPage(
   BuildContext context, {
   required Uri instanceBaseUri,
 }) async =>
@@ -58,7 +59,7 @@ Future<AuthHostRegistrationResult?> goToRegisterAuthInstancePage(
       context,
       MaterialPageRoute(
         builder: (context) {
-          return DisposableProvider<IRegisterAuthInstanceBloc>(
+          return DisposableProvider<IRegisterUnifediApiAccessBloc>(
             create: (context) {
               var localizationSettingsLocalPreferenceBloc =
                   ILocalizationSettingsLocalPreferenceBloc.of(
@@ -70,7 +71,7 @@ Future<AuthHostRegistrationResult?> goToRegisterAuthInstancePage(
                       .value?.localizationLocale?.localeString ??
                   Platform.localeName;
 
-              var registerAuthInstanceBloc = RegisterAuthInstanceBloc(
+              var registerUnifediApiAccessBloc = RegisterUnifediApiAccessBloc(
                 localeName: localeName,
                 instanceBaseUri: instanceBaseUri,
                 localPreferencesService: ILocalPreferencesService.of(
@@ -81,7 +82,7 @@ Future<AuthHostRegistrationResult?> goToRegisterAuthInstancePage(
                   context,
                   listen: false,
                 ),
-                currentInstanceBloc: ICurrentAuthInstanceBloc.of(
+                currentInstanceBloc: ICurrentUnifediApiAccessBloc.of(
                   context,
                   listen: false,
                 ),
@@ -100,10 +101,11 @@ Future<AuthHostRegistrationResult?> goToRegisterAuthInstancePage(
                 ),
               );
 
-              registerAuthInstanceBloc.registrationResultStream.listen(
+              registerUnifediApiAccessBloc.registrationResultStream.listen(
                 (AuthHostRegistrationResult registrationResult) async {
                   if (registrationResult.isPossibleToLogin) {
-                    await ICurrentAuthInstanceBloc.of(context, listen: false)
+                    await ICurrentUnifediApiAccessBloc.of(context,
+                            listen: false)
                         .changeCurrentInstance(
                       registrationResult.authInstance!,
                     );
@@ -131,11 +133,11 @@ Future<AuthHostRegistrationResult?> goToRegisterAuthInstancePage(
 
                   Navigator.pop(context, registrationResult);
                 },
-              ).disposeWith(registerAuthInstanceBloc);
+              ).disposeWith(registerUnifediApiAccessBloc);
 
-              return registerAuthInstanceBloc;
+              return registerUnifediApiAccessBloc;
             },
-            child: const RegisterAuthInstancePage(),
+            child: const RegisterUnifediApiAccessPage(),
           );
         },
       ),

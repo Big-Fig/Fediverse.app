@@ -40,7 +40,7 @@ abstract class PostStatusBloc extends PostMessageBloc
 
   final bool markMediaAsNsfwOnAttach;
   bool alreadyMarkMediaNsfwByDefault = false;
-  final UnifediApiInstancePollLimits? pollLimits;
+  final IUnifediApiInstancePollLimits? pollLimits;
 
   // todo: refactor arguments in class
   // ignore: long-method

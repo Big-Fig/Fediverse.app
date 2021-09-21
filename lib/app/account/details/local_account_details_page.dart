@@ -8,6 +8,8 @@ import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 void goToLocalAccountDetailsPage(
   BuildContext context, {
@@ -23,7 +25,9 @@ MaterialPageRoute createLocalAccountDetailsPageRoute(IAccount account) {
   return MaterialPageRoute(
     builder: (context) => DisposableProvider<IAccountDetailsBloc>(
       create: (context) => AccountDetailsBloc(
-        currentAuthInstanceBloc: ICurrentAuthInstanceBloc.of(
+        unifediApiAccountService:
+            Provider.of<IUnifediApiAccountService>(context),
+        currentUnifediApiAccessBloc: ICurrentUnifediApiAccessBloc.of(
           context,
           listen: false,
         ),

@@ -5,17 +5,17 @@ import 'package:fedi/app/account/my/my_account_bloc_impl.dart';
 import 'package:fedi/app/account/my/my_account_model.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
-import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/emoji/text/emoji_text_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
-import 'package:unifedi_api/unifedi_api.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:moor/ffi.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 import '../../../rxdart/rxdart_test_helper.dart';
 import '../../status/database/status_database_test_helper.dart';
@@ -23,7 +23,6 @@ import '../account_test_helper.dart';
 import '../database/account_database_test_helper.dart';
 import 'my_account_bloc_impl_test.mocks.dart';
 import 'my_account_test_helper.dart';
-
 // ignore_for_file: no-magic-number, avoid-late-keyword
 
 @GenerateMocks([
@@ -37,7 +36,7 @@ void main() {
   late IAccountRepository accountRepository;
   late MyAccountLocalPreferenceBloc myAccountLocalPreferenceBloc;
 
-  late AuthInstance authInstance;
+  late UnifediApiAccess authInstance;
   late ILocalPreferencesService preferencesService;
 
   setUp(() async {
@@ -49,15 +48,11 @@ void main() {
     preferencesService = MemoryLocalPreferencesService();
 
     myAccount = await MyAccountMockHelper.createTestMyAccount(seed: 'seed1');
-    authInstance = AuthInstance(
-      urlHost: 'fedi.app',
-      acct: myAccount.acct,
-      urlSchema: null,
-      token: null,
-      authCode: null,
-      isPleroma: true,
-      application: null,
-      info: null,
+    authInstance = UnifediApiAccess(
+      url: 'https:/fedi.app',
+      instance: null,
+      applicationAccessToken: null,
+      userAccessToken: null,
     );
 
     myAccountLocalPreferenceBloc = MyAccountLocalPreferenceBloc(

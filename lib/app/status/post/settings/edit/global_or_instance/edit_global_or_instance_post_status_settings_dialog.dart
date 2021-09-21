@@ -21,7 +21,7 @@ import 'package:provider/provider.dart';
 void showEditGlobalOrInstancePostStatusSettingsDialog({
   required BuildContext context,
 }) {
-  var isPleromaInstance = ICurrentAuthInstanceBloc.of(
+  var isPleromaInstance = ICurrentUnifediApiAccessBloc.of(
     context,
     listen: false,
   ).currentInstance!.isPleroma;

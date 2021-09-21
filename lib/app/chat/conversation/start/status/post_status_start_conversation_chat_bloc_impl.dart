@@ -35,7 +35,7 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
     required IScheduledStatusRepository scheduledStatusRepository,
     required IUnifediApiMediaAttachmentService unifediApiMediaAttachmentService,
     required int? maximumMessageLength,
-    required UnifediApiInstancePollLimits? pollLimits,
+    required IUnifediApiInstancePollLimits? pollLimits,
     required int? maximumFileSizeInBytes,
     required bool markMediaAsNsfwOnAttach,
     required String? language,
@@ -64,7 +64,7 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
     required List<IAccount> conversationAccountsWithoutMe,
     required StatusCallback successCallback,
   }) {
-    var info = ICurrentAuthInstanceBloc.of(context, listen: false)
+    var info = ICurrentUnifediApiAccessBloc.of(context, listen: false)
         .currentInstance!
         .info!;
 
