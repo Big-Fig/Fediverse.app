@@ -37,6 +37,8 @@ abstract class INotificationBloc implements IDisposable {
 
   String get remoteId;
 
+  String get type;
+
   IAccount? get account;
 
   Stream<IAccount?> get accountStream;

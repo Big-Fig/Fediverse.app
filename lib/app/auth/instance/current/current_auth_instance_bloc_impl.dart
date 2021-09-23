@@ -4,7 +4,6 @@ import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/current/local_preferences/current_auth_instance_local_preference_bloc.dart';
 import 'package:fedi/app/auth/instance/list/auth_instance_list_bloc.dart';
 import 'package:fedi/app/auth/instance/local_preferences/auth_instance_local_preference_bloc_impl.dart';
-import 'package:fedi/app/auth/instance/local_preferences_auth_instance_bloc_impl.dart';
 import 'package:fedi/app/hashtag/hashtag_url_helper.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fediverse_api/fediverse_api.dart';

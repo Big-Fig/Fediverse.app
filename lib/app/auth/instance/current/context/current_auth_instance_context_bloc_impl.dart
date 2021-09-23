@@ -305,7 +305,8 @@ class CurrentUnifediApiAccessContextBloc extends ProviderContextBloc
     await unifediApiAccessLocalPreferenceBloc.performAsyncInit();
     await globalProviderService
         .asyncInitAndRegister<IUnifediApiAccessLocalPreferenceBloc>(
-            unifediApiAccessLocalPreferenceBloc);
+      unifediApiAccessLocalPreferenceBloc,
+    );
 
     var localPreferencesUnifediApiAccessBloc =
         LocalPreferencesUnifediApiAccessBloc(
@@ -313,7 +314,8 @@ class CurrentUnifediApiAccessContextBloc extends ProviderContextBloc
     );
 
     await globalProviderService.asyncInitAndRegister<IUnifediApiAccessBloc>(
-        localPreferencesUnifediApiAccessBloc);
+      localPreferencesUnifediApiAccessBloc,
+    );
 
     var unifediApiManager =
         currentInstance.info!.typeAsUnifediApi.createApiManager(

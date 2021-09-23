@@ -69,7 +69,6 @@ void main() {
     )).thenAnswer((invocation) async {
       return UnifediApiPushSubscription(
         alerts: invocation.namedArguments[Symbol('alerts')],
-        metadata: invocation.namedArguments[Symbol('metadata')],
         endpoint: 'endpoint',
         serverKey: 'serverKey',
         id: 'id',
