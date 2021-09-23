@@ -6,8 +6,10 @@ import 'package:fedi/app/account/my/my_account_bloc_impl.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/app/app_model.dart';
-
 import 'package:fedi/app/auth/instance/current/context/current_auth_instance_context_bloc.dart';
+import 'package:fedi/app/auth/instance/local_preferences/auth_instance_local_preference_bloc.dart';
+import 'package:fedi/app/auth/instance/local_preferences/auth_instance_local_preference_bloc_impl.dart';
+import 'package:fedi/app/auth/instance/local_preferences_auth_instance_bloc_impl.dart';
 import 'package:fedi/app/cache/database/limit/age/database_cache_age_limit_model.dart';
 import 'package:fedi/app/cache/database/limit/entries_count/database_cache_entries_count_limit_model.dart';
 import 'package:fedi/app/cache/database/settings/database_cache_settings_bloc.dart';
@@ -140,9 +142,9 @@ import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/provider/provider_context_bloc_impl.dart';
 import 'package:fedi/push/fcm/fcm_push_service.dart';
 import 'package:fedi/push/relay/push_relay_service.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:logging/logging.dart';
 import 'package:unifedi_api/unifedi_api.dart';
-import 'package:fediverse_api/fediverse_api.dart';
 
 var _logger = Logger('current_auth_instance_context_bloc_imp.dart');
 
@@ -294,9 +296,29 @@ class CurrentUnifediApiAccessContextBloc extends ProviderContextBloc
       conversationChatWithLastMessageRepository,
     );
 
+    var unifediApiAccessLocalPreferenceBloc =
+        UnifediApiAccessLocalPreferenceBloc(
+      preferencesService: preferencesService,
+      userAtHost: currentInstance.userAtHost,
+    );
+
+    await unifediApiAccessLocalPreferenceBloc.performAsyncInit();
+    await globalProviderService
+        .asyncInitAndRegister<IUnifediApiAccessLocalPreferenceBloc>(
+            unifediApiAccessLocalPreferenceBloc);
+
+    var localPreferencesUnifediApiAccessBloc =
+        LocalPreferencesUnifediApiAccessBloc(
+      accessLocalPreferenceBloc: unifediApiAccessLocalPreferenceBloc,
+    );
+
+    await globalProviderService.asyncInitAndRegister<IUnifediApiAccessBloc>(
+        localPreferencesUnifediApiAccessBloc);
+
     var unifediApiManager =
         currentInstance.info!.typeAsUnifediApi.createApiManager(
-      uri: currentInstance.uri.toString(),
+      apiAccessBloc: localPreferencesUnifediApiAccessBloc,
+      computeImpl: null,
     );
     await globalProviderService
         .asyncInitAndRegister<IUnifediApiManager>(unifediApiManager);

@@ -6,6 +6,8 @@ import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/app_model.dart';
 
 import 'package:fedi/app/auth/instance/list/local_preferences/auth_instance_list_local_preference_bloc_impl.dart';
+import 'package:fedi/app/auth/instance/local_preferences/auth_instance_local_preference_bloc_impl.dart';
+import 'package:fedi/app/auth/instance/local_preferences_auth_instance_bloc_impl.dart';
 import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/config/config_service_impl.dart';
 import 'package:fedi/app/hive/hive_service_impl.dart';
@@ -532,8 +534,22 @@ Future<IUnifediApiNotification?> _loadLastNotificationForInstance({
   await connectionService.internalAsyncInit();
   disposableOwner.addDisposable(connectionService);
 
+  var unifediApiAccessLocalPreferenceBloc = UnifediApiAccessLocalPreferenceBloc(
+    preferencesService: localPreferencesService,
+    userAtHost: authInstance.userAtHost,
+  );
+  disposableOwner.addDisposable(unifediApiAccessLocalPreferenceBloc);
+
+  var localPreferencesUnifediApiAccessBloc =
+      LocalPreferencesUnifediApiAccessBloc(
+    accessLocalPreferenceBloc: unifediApiAccessLocalPreferenceBloc,
+  );
+
+  disposableOwner.addDisposable(localPreferencesUnifediApiAccessBloc);
+
   var apiManager = authInstance.info!.typeAsUnifediApi.createApiManager(
-    uri: authInstance.uri.toString(),
+    apiAccessBloc: localPreferencesUnifediApiAccessBloc,
+    computeImpl: null,
   );
 
   disposableOwner.addDisposable(apiManager);

@@ -3,7 +3,10 @@ import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/current/local_preferences/current_auth_instance_local_preference_bloc.dart';
 import 'package:fedi/app/auth/instance/list/auth_instance_list_bloc.dart';
+import 'package:fedi/app/auth/instance/local_preferences/auth_instance_local_preference_bloc_impl.dart';
+import 'package:fedi/app/auth/instance/local_preferences_auth_instance_bloc_impl.dart';
 import 'package:fedi/app/hashtag/hashtag_url_helper.dart';
+import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fediverse_api/fediverse_api.dart';
 import 'package:logging/logging.dart';
 import 'package:unifedi_api/unifedi_api.dart';
@@ -12,10 +15,12 @@ var _logger = Logger('current_auth_instance_bloc_impl.dart');
 
 class CurrentUnifediApiAccessBloc extends DisposableOwner
     implements ICurrentUnifediApiAccessBloc {
+  final ILocalPreferencesService localPreferencesService;
   final IUnifediApiAccessListBloc instanceListBloc;
   final ICurrentUnifediApiAccessLocalPreferenceBloc currentLocalPreferenceBloc;
 
   CurrentUnifediApiAccessBloc({
+    required this.localPreferencesService,
     required this.instanceListBloc,
     required this.currentLocalPreferenceBloc,
   });
@@ -30,6 +35,15 @@ class CurrentUnifediApiAccessBloc extends DisposableOwner
   @override
   Future changeCurrentInstance(UnifediApiAccess instance) async {
     _logger.finest(() => 'changeCurrentInstance $instance');
+
+    var unifediApiAccessLocalPreferenceBloc =
+        UnifediApiAccessLocalPreferenceBloc(
+      preferencesService: localPreferencesService,
+      userAtHost: instance.userAtHost,
+    );
+    await unifediApiAccessLocalPreferenceBloc.performAsyncInit();
+    await unifediApiAccessLocalPreferenceBloc.setValue(instance);
+    await unifediApiAccessLocalPreferenceBloc.dispose();
 
     var found = instanceListBloc.availableInstances.firstWhereOrNull(
       (existInstance) => existInstance.userAtHost == instance.userAtHost,

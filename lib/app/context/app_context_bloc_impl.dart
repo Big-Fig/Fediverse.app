@@ -322,7 +322,8 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
           ..disposeWith(this);
     await globalProviderService
         .asyncInitAndRegister<IUnifediApiAccessListLocalPreferenceBloc>(
-            instanceListLocalPreferenceBloc);
+      instanceListLocalPreferenceBloc,
+    );
 
     var instanceListBloc = UnifediApiAccessListBloc(
       instanceListLocalPreferenceBloc: instanceListLocalPreferenceBloc,
@@ -375,6 +376,7 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     );
 
     var currentInstanceBloc = CurrentUnifediApiAccessBloc(
+      localPreferencesService: hiveLocalPreferencesService,
       instanceListBloc: instanceListBloc,
       currentLocalPreferenceBloc: currentInstanceLocalPreferenceBloc,
     )..disposeWith(this);
@@ -443,6 +445,7 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         notificationsPushHandlerUnhandledLocalPreferencesBloc,
       );
       var notificationsPushHandlerBloc = NotificationsPushHandlerBloc(
+        localPreferencesService: hiveLocalPreferencesService,
         richNotificationsService: richNotificationsServiceBackgroundMessage,
         currentInstanceBloc: currentInstanceBloc,
         instanceListBloc: instanceListBloc,

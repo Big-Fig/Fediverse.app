@@ -6,6 +6,8 @@ import 'package:fedi/app/account/repository/account_repository_impl.dart';
 
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/instance/list/auth_instance_list_bloc.dart';
+import 'package:fedi/app/auth/instance/local_preferences/auth_instance_local_preference_bloc_impl.dart';
+import 'package:fedi/app/auth/instance/local_preferences_auth_instance_bloc_impl.dart';
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository_impl.dart';
 import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/database/app_database_service_impl.dart';
@@ -21,6 +23,7 @@ import 'package:fedi/app/push/notification/rich/rich_notifications_service.dart'
 import 'package:fedi/app/push/notification/rich/rich_notifications_service_background_message_impl.dart';
 import 'package:fedi/app/status/repository/status_repository_impl.dart';
 import 'package:fedi/connection/connection_service.dart';
+import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/push/fcm/fcm_push_service.dart';
 import 'package:fedi/push/push_model.dart';
 import 'package:logging/logging.dart';
@@ -40,10 +43,12 @@ class NotificationsPushHandlerBloc extends DisposableOwner
   final ICurrentUnifediApiAccessBloc currentInstanceBloc;
   final IConfigService configService;
   final IConnectionService connectionService;
+  final ILocalPreferencesService localPreferencesService;
 
   final List<IPushRealTimeHandler> realTimeHandlers = [];
 
   NotificationsPushHandlerBloc({
+    required this.localPreferencesService,
     required this.unhandledLocalPreferencesBloc,
     required this.currentInstanceBloc,
     required this.instanceListBloc,
@@ -248,8 +253,23 @@ class NotificationsPushHandlerBloc extends DisposableOwner
       acct: body.account,
     )!;
 
+    var unifediApiAccessLocalPreferenceBloc =
+        UnifediApiAccessLocalPreferenceBloc(
+      preferencesService: localPreferencesService,
+      userAtHost: authInstance.userAtHost,
+    );
+    addDisposable(unifediApiAccessLocalPreferenceBloc);
+
+    var localPreferencesUnifediApiAccessBloc =
+        LocalPreferencesUnifediApiAccessBloc(
+      accessLocalPreferenceBloc: unifediApiAccessLocalPreferenceBloc,
+    );
+
+    addDisposable(localPreferencesUnifediApiAccessBloc);
+
     var apiManager = authInstance.info!.typeAsUnifediApi.createApiManager(
-      uri: authInstance.uri.toString(),
+      apiAccessBloc: localPreferencesUnifediApiAccessBloc,
+      computeImpl: null,
     );
 
     addDisposable(apiManager);
@@ -359,8 +379,23 @@ class NotificationsPushHandlerBloc extends DisposableOwner
       acct: body.account,
     )!;
 
+    var unifediApiAccessLocalPreferenceBloc =
+        UnifediApiAccessLocalPreferenceBloc(
+      preferencesService: localPreferencesService,
+      userAtHost: authInstance.userAtHost,
+    );
+    addDisposable(unifediApiAccessLocalPreferenceBloc);
+
+    var localPreferencesUnifediApiAccessBloc =
+        LocalPreferencesUnifediApiAccessBloc(
+      accessLocalPreferenceBloc: unifediApiAccessLocalPreferenceBloc,
+    );
+
+    addDisposable(localPreferencesUnifediApiAccessBloc);
+
     var apiManager = authInstance.info!.typeAsUnifediApi.createApiManager(
-      uri: authInstance.uri.toString(),
+      apiAccessBloc: localPreferencesUnifediApiAccessBloc,
+      computeImpl: null,
     );
 
     addDisposable(apiManager);

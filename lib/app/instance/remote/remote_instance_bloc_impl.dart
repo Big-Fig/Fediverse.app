@@ -1,4 +1,5 @@
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
+import 'package:fedi/app/auth/instance/memory_auth_instance_bloc_impl.dart';
 import 'package:fedi/app/instance/remote/remote_instance_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/connection/connection_service.dart';
@@ -60,8 +61,20 @@ class RemoteInstanceBloc extends AsyncInitLoadingBloc
       url: instanceUri.toString(),
     );
 
+    var unifediApiAccessBloc = MemoryUnifediApiAccessBloc(
+      access: UnifediApiAccess(
+        url: instanceUri.toString(),
+        instance: null,
+        userAccessToken: null,
+        applicationAccessToken: null,
+      ),
+    );
     unifediApiManager = instanceType.createApiManager(
-      uri: instanceUri.toString(),
+      apiAccessBloc: unifediApiAccessBloc,
+      computeImpl: null,
+    );
+    unifediApiManager.addDisposable(
+      unifediApiAccessBloc,
     );
 
     var apiInstanceService = unifediApiManager.createInstanceService();

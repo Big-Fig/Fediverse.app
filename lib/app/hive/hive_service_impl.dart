@@ -1,4 +1,5 @@
 import 'package:fedi/analytics/app/app_analytics_model.dart';
+import 'package:fedi/app/account/my/my_account_model.dart';
 import 'package:fedi/app/account/select/recent/recent_select_account_model.dart';
 
 import 'package:fedi/app/auth/instance/list/auth_instance_list_model.dart';
@@ -89,6 +90,7 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
     Hive.registerAdapter(InstanceAnnouncementSettingsAdapter());
     Hive.registerAdapter(CrashReportingSettingsAdapter());
     Hive.registerAdapter(PushRelaySettingsAdapter());
+    Hive.registerAdapter(UnifediApiMyAccountWrapperAdapter());
 
     var fediverseAdapter = NestedTypeRegistryAdapterImpl(typeId: 150 + 0);
     FediverseHiveHelper.registerFediverseAdapters(fediverseAdapter);

@@ -4,6 +4,7 @@ import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi/app/auth/host/auth_host_model.dart';
 import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/auth/instance/memory_auth_instance_bloc_impl.dart';
 import 'package:fedi/app/auth/instance/register/form/register_auth_instance_form_bloc_impl.dart';
 import 'package:fedi/app/auth/instance/register/register_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/oauth_last_launched/local_preferences/auth_oauth_last_launched_host_to_login_local_preference_bloc.dart';
@@ -13,8 +14,8 @@ import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:logging/logging.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 final _logger = Logger('register_auth_instance_bloc_impl.dart');
 
@@ -58,7 +59,15 @@ class RegisterUnifediApiAccessBloc extends AsyncInitLoadingBloc
   }) : super() {
     apiManager = currentInstanceBloc.currentInstance!.info!.typeAsUnifediApi
         .createApiManager(
-      uri: instanceBaseUri.toString(),
+      apiAccessBloc: MemoryUnifediApiAccessBloc(
+        access: UnifediApiAccess(
+          url: instanceBaseUri.toString(),
+          instance: null,
+          applicationAccessToken: null,
+          userAccessToken: null,
+        ),
+      ),
+      computeImpl: null,
     );
 
     unifediApiInstanceService = apiManager.createInstanceService();
@@ -79,7 +88,6 @@ class RegisterUnifediApiAccessBloc extends AsyncInitLoadingBloc
     try {
       authApplicationBloc = AuthHostBloc(
         instanceBaseUri: instanceBaseUri,
-        isPleroma: false,
         preferencesService: localPreferencesService,
         connectionService: connectionService,
         currentInstanceBloc: currentInstanceBloc,

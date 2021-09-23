@@ -18,7 +18,7 @@ void main() {
         host: 'host',
       ),
       testObjectCreator: ({required String seed}) =>
-          UnifediApiOAuthMockHelper.generate(
+          UnifediApiOAuthTokenMockHelper.generate(
         seed: seed,
       ),
     );

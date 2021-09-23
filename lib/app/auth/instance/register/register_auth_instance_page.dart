@@ -18,7 +18,6 @@ import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -104,9 +103,10 @@ Future<AuthHostRegistrationResult?> goToRegisterUnifediApiAccessPage(
               registerUnifediApiAccessBloc.registrationResultStream.listen(
                 (AuthHostRegistrationResult registrationResult) async {
                   if (registrationResult.isPossibleToLogin) {
-                    await ICurrentUnifediApiAccessBloc.of(context,
-                            listen: false)
-                        .changeCurrentInstance(
+                    await ICurrentUnifediApiAccessBloc.of(
+                      context,
+                      listen: false,
+                    ).changeCurrentInstance(
                       registrationResult.authInstance!,
                     );
                   } else {

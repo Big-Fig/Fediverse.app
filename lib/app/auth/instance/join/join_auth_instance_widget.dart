@@ -522,6 +522,7 @@ Future logInToInstance(BuildContext context) async {
               context,
               instanceBaseUri: hostUri,
             );
+            await bloc.performAsyncInit();
             var instance = await bloc.launchLoginToAccount();
 
             return instance;

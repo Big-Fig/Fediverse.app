@@ -19,7 +19,7 @@ class AuthHostModelMockHelper {
     dynamic unknownHostException,
   }) =>
       AuthHostRegistrationResult(
-        token: UnifediApiOAuthMockHelper.generate(
+        token: UnifediApiOAuthTokenMockHelper.generate(
           seed: seed,
         ),
         unifediApiInstance: unifediApiInstance ??

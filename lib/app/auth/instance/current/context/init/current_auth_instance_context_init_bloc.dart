@@ -1,6 +1,6 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/auth/instance/current/context/init/current_auth_instance_context_init_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc.dart';
-import 'package:easy_dispose/easy_dispose.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -10,8 +10,10 @@ abstract class ICurrentUnifediApiAccessContextInitBloc
     BuildContext context, {
     bool listen = true,
   }) =>
-      Provider.of<ICurrentUnifediApiAccessContextInitBloc>(context,
-          listen: listen);
+      Provider.of<ICurrentUnifediApiAccessContextInitBloc>(
+        context,
+        listen: listen,
+      );
 
   CurrentUnifediApiAccessContextInitState? get state;
 
