@@ -4,12 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
 abstract class IAccountHomeTabBloc extends IHomeTabBloc {
-  bool get isEndorsementSupported;
-
-  bool get isFeaturedTagsSupported;
-
-  bool get isSuggestionSupported;
-
   static IAccountHomeTabBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IAccountHomeTabBloc>(context, listen: listen);
 
