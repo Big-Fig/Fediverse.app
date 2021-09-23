@@ -33,6 +33,5 @@ class WebSocketsSettingsBloc
       );
 
   @override
-  // TODO: implement isEnabled
-  bool get isEnabled => throw UnimplementedError();
+  bool get isEnabled => mode != WebSocketsMode.disabledValue;
 }
