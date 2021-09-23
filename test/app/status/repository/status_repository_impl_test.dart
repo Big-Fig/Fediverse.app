@@ -559,6 +559,16 @@ void main() {
           .copyWith(muted: false),
     );
 
+    // recreate query otherwise we have strange sql errors
+    // looks like bug in moor which happens only in tests
+    query = statusRepository.createQuery(
+      filters: StatusRepositoryFilters(
+        withMuted: true,
+      ),
+      pagination: null,
+      orderingTermData: null,
+    );
+
     expect((await query.get()).length, 6);
   });
 
@@ -810,6 +820,22 @@ void main() {
           .copyWith(remoteId: 'remoteId6'),
     );
 
+    // recreate query otherwise we have strange sql errors
+    // looks like bug in moor which happens only in tests
+    query = statusRepository.createQuery(
+      filters: null,
+      pagination: RepositoryPagination<IStatus>(
+        newerThanItem: await StatusMockHelper.createTestStatus(
+          seed: 'remoteId2',
+          remoteId: 'remoteId2',
+        ),
+        olderThanItem: await StatusMockHelper.createTestStatus(
+          seed: 'remoteId5',
+          remoteId: 'remoteId5',
+        ),
+      ),
+      orderingTermData: StatusRepositoryOrderingTermData.remoteIdAsc,
+    );
     expect((await query.get()).length, 2);
   });
 
@@ -1209,6 +1235,16 @@ void main() {
     await StatusRepositoryMockHelper.insertDbStatus(
       statusRepository,
       dbStatus6,
+    );
+
+    // recreate query otherwise we have strange sql errors
+    // looks like bug in moor which happens only in tests
+    query = statusRepository.createQuery(
+      filters: StatusRepositoryFilters(
+        onlyWithHashtag: '#cats',
+      ),
+      pagination: null,
+      orderingTermData: null,
     );
 
     expect((await query.get()).length, 2);
