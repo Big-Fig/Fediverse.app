@@ -74,26 +74,37 @@ class DbStatuses extends Table {
   TextColumn? get language => text().nullable()();
 
   //  expanded pleroma object fields
-  TextColumn? get contentVariants =>
-      text().map(PleromaContentDatabaseConverter()).nullable()();
+  TextColumn? get contentVariants => text()
+      .named('pleroma_content')
+      .map(PleromaContentDatabaseConverter())
+      .nullable()();
 
-  IntColumn? get conversationId => integer().nullable()();
+  IntColumn? get conversationId =>
+      integer().named('pleroma_conversation_id').nullable()();
 
-  IntColumn? get directConversationId => integer().nullable()();
+  IntColumn? get directConversationId =>
+      integer().named('pleroma_direct_conversation_id').nullable()();
 
-  TextColumn? get inReplyToAccountAcct => text().nullable()();
+  TextColumn? get inReplyToAccountAcct =>
+      text().named('pleroma_in_reply_to_account_acct').nullable()();
 
-  BoolColumn? get local => boolean().nullable()();
+  BoolColumn? get local => boolean().named('pleroma_local').nullable()();
 
-  TextColumn? get spoilerTextVariants =>
-      text().map(PleromaContentDatabaseConverter()).nullable()();
+  TextColumn? get spoilerTextVariants => text()
+      .named('pleroma_spoiler_text')
+      .map(PleromaContentDatabaseConverter())
+      .nullable()();
 
-  DateTimeColumn? get expiresAt => dateTime().nullable()();
+  DateTimeColumn? get expiresAt =>
+      dateTime().named('pleroma_expires_at').nullable()();
 
-  BoolColumn? get threadMuted => boolean().nullable()();
+  BoolColumn? get threadMuted =>
+      boolean().named('pleroma_thread_muted').nullable()();
 
-  TextColumn? get emojiReactions =>
-      text().map(EmojiReactionsListDatabaseConverter()).nullable()();
+  TextColumn? get emojiReactions => text()
+      .named('pleroma_emoji_reations')
+      .map(EmojiReactionsListDatabaseConverter())
+      .nullable()();
 
   BoolColumn? get deleted => boolean().nullable()();
 

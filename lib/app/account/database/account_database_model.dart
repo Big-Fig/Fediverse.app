@@ -56,37 +56,52 @@ class DbAccounts extends Table {
 
   TextColumn get backgroundImage => text().nullable()();
 
-  TextColumn get tags =>
-      text().nullable().map(UnifediApiTagListDatabaseConverter()).nullable()();
+  TextColumn get tags => text()
+      .named('pleroma_tags')
+      .nullable()
+      .map(UnifediApiTagListDatabaseConverter())
+      .nullable()();
 
   TextColumn get relationship => text()
+      .named('pleroma_relationship')
       .nullable()
       .map(UnifediApiAccountRelationshipDatabaseConverter())
       .nullable()();
 
-  BoolColumn get isAdmin => boolean().nullable()();
+  BoolColumn get isAdmin => boolean().named('pleroma_is_admin').nullable()();
 
-  BoolColumn get isModerator => boolean().nullable()();
+  BoolColumn get isModerator =>
+      boolean().named('pleroma_is_moderator').nullable()();
 
-  BoolColumn get confirmationPending => boolean().nullable()();
+  BoolColumn get confirmationPending =>
+      boolean().named('pleroma_confirmation_pending').nullable()();
 
-  BoolColumn get hideFavorites => boolean().nullable()();
+  BoolColumn get hideFavorites =>
+      boolean().named('pleroma_hide_favorites').nullable()();
 
-  BoolColumn get hideFollowers => boolean().nullable()();
+  BoolColumn get hideFollowers =>
+      boolean().named('pleroma_hide_followers').nullable()();
 
-  BoolColumn get hideFollows => boolean().nullable()();
+  BoolColumn get hideFollows =>
+      boolean().named('pleroma_hide_follows').nullable()();
 
-  BoolColumn get hideFollowersCount => boolean().nullable()();
+  BoolColumn get hideFollowersCount =>
+      boolean().named('pleroma_hide_followers_count').nullable()();
 
-  BoolColumn get hideFollowsCount => boolean().nullable()();
+  BoolColumn get hideFollowsCount =>
+      boolean().named('pleroma_hide_follows_count').nullable()();
 
-  BoolColumn get deactivated => boolean().nullable()();
+  BoolColumn get deactivated =>
+      boolean().named('pleroma_deactivated').nullable()();
 
-  BoolColumn get allowFollowingMove => boolean().nullable()();
+  BoolColumn get allowFollowingMove =>
+      boolean().named('pleroma_allow_following_move').nullable()();
 
-  BoolColumn get skipThreadContainment => boolean().nullable()();
+  BoolColumn get skipThreadContainment =>
+      boolean().named('pleroma_skip_thread_containment').nullable()();
 
-  BoolColumn get acceptsChatMessages => boolean().nullable()();
+  BoolColumn get acceptsChatMessages =>
+      boolean().named('pleroma_accepts_chat_messages').nullable()();
   BoolColumn get suspended => boolean().nullable()();
   BoolColumn get isConfirmed => boolean().nullable()();
   DateTimeColumn get muteExpiresAt => dateTime().nullable()();

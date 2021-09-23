@@ -103,7 +103,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase(QueryExecutor e) : super(e);
 
   @override
-  int get schemaVersion => 16;
+  int get schemaVersion => 17;
 
   int? migrationsFromExecuted;
   int? migrationsToExecuted;
@@ -163,6 +163,9 @@ class AppDatabase extends _$AppDatabase {
               case 15:
                 await _migrate15to16(m);
                 break;
+              case 16:
+                await _migrate16to17(m);
+                break;
               default:
                 throw 'invalid currentVersion $currentVersion';
             }
@@ -170,6 +173,15 @@ class AppDatabase extends _$AppDatabase {
           }
         },
       );
+
+  Future<void> _migrate16to17(Migrator m) async {
+    await m.addColumn(dbAccounts, dbAccounts.suspended);
+    await m.addColumn(dbAccounts, dbAccounts.isConfirmed);
+    await m.addColumn(dbAccounts, dbAccounts.muteExpiresAt);
+    await m.addColumn(dbAccounts, dbAccounts.fqn);
+    await m.addColumn(dbAccounts, dbAccounts.favicon);
+    await m.addColumn(dbAccounts, dbAccounts.apId);
+  }
 
   Future<void> _migrate15to16(Migrator m) async {
     await m.createTable(dbInstanceAnnouncements);
