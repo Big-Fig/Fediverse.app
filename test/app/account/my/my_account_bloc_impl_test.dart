@@ -52,7 +52,19 @@ void main() {
       url: 'https:/fedi.app',
       instance: null,
       applicationAccessToken: null,
-      userAccessToken: null,
+      userAccessToken: UnifediApiAccessUserToken(
+        user: 'user',
+        scopes: UnifediApiAccessScopes(
+          globalPermissions: [],
+          targetPermissions: [],
+        ),
+        oauthToken: UnifediApiOAuthToken(
+          accessToken: 'accessToken',
+          tokenType: 'tokenType',
+          id: 'id',
+          me: 'me',
+        ),
+      ),
     );
 
     myAccountLocalPreferenceBloc = MyAccountLocalPreferenceBloc(

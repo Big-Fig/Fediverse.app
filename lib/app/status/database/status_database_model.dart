@@ -102,7 +102,7 @@ class DbStatuses extends Table {
       boolean().named('pleroma_thread_muted').nullable()();
 
   TextColumn? get emojiReactions => text()
-      .named('pleroma_emoji_reations')
+      .named('pleroma_emoji_reactions')
       .map(EmojiReactionsListDatabaseConverter())
       .nullable()();
 

@@ -176,7 +176,7 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
           data['${effectivePrefix}pleroma_thread_muted']),
       emojiReactions: $DbStatusesTable.$converter10.mapToDart(const StringType()
           .mapFromDatabaseResponse(
-              data['${effectivePrefix}pleroma_emoji_reations'])),
+              data['${effectivePrefix}pleroma_emoji_reactions'])),
       deleted: const BoolType()
           .mapFromDatabaseResponse(data['${effectivePrefix}deleted']),
       hiddenLocallyOnDevice: const BoolType().mapFromDatabaseResponse(
@@ -299,7 +299,7 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
     }
     if (!nullToAbsent || emojiReactions != null) {
       final converter = $DbStatusesTable.$converter10;
-      map['pleroma_emoji_reations'] =
+      map['pleroma_emoji_reactions'] =
           Variable<String?>(converter.mapToSql(emojiReactions));
     }
     if (!nullToAbsent || deleted != null) {
@@ -1004,7 +1004,7 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
         'pleroma_spoiler_text': spoilerTextVariants,
       if (expiresAt != null) 'pleroma_expires_at': expiresAt,
       if (threadMuted != null) 'pleroma_thread_muted': threadMuted,
-      if (emojiReactions != null) 'pleroma_emoji_reations': emojiReactions,
+      if (emojiReactions != null) 'pleroma_emoji_reactions': emojiReactions,
       if (deleted != null) 'deleted': deleted,
       if (hiddenLocallyOnDevice != null)
         'hidden_locally_on_device': hiddenLocallyOnDevice,
@@ -1245,7 +1245,7 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
     }
     if (emojiReactions.present) {
       final converter = $DbStatusesTable.$converter10;
-      map['pleroma_emoji_reations'] =
+      map['pleroma_emoji_reactions'] =
           Variable<String?>(converter.mapToSql(emojiReactions.value));
     }
     if (deleted.present) {
@@ -1534,7 +1534,7 @@ class $DbStatusesTable extends DbStatuses
       const VerificationMeta('emojiReactions');
   late final GeneratedColumnWithTypeConverter<List<UnifediApiEmojiReaction>,
       String?> emojiReactions = GeneratedColumn<String?>(
-          'pleroma_emoji_reations', aliasedName, true,
+          'pleroma_emoji_reactions', aliasedName, true,
           typeName: 'TEXT', requiredDuringInsert: false)
       .withConverter<List<UnifediApiEmojiReaction>>(
           $DbStatusesTable.$converter10);
@@ -1879,7 +1879,6 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
   final DateTime? lastStatusAt;
   final List<UnifediApiField>? fields;
   final List<UnifediApiEmoji>? emojis;
-  final List<String>? alsoKnownAs;
   final String? backgroundImage;
   final List<UnifediApiTag>? tags;
   final UnifediApiAccountRelationship? relationship;
@@ -1901,6 +1900,7 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
   final String? fqn;
   final String? favicon;
   final String? apId;
+  final List<String>? alsoKnownAs;
   DbAccount(
       {this.id,
       required this.remoteId,
@@ -1922,7 +1922,6 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
       this.lastStatusAt,
       this.fields,
       this.emojis,
-      this.alsoKnownAs,
       this.backgroundImage,
       this.tags,
       this.relationship,
@@ -1943,7 +1942,8 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
       this.muteExpiresAt,
       this.fqn,
       this.favicon,
-      this.apId});
+      this.apId,
+      this.alsoKnownAs});
   factory DbAccount.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -1987,13 +1987,11 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
           .mapFromDatabaseResponse(data['${effectivePrefix}fields'])),
       emojis: $DbAccountsTable.$converter1.mapToDart(const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}emojis'])),
-      alsoKnownAs: $DbAccountsTable.$converter2.mapToDart(const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}also_known_as'])),
-      backgroundImage: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}background_image']),
-      tags: $DbAccountsTable.$converter3.mapToDart(const StringType()
+      backgroundImage: const StringType().mapFromDatabaseResponse(
+          data['${effectivePrefix}pleroma_background_image']),
+      tags: $DbAccountsTable.$converter2.mapToDart(const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}pleroma_tags'])),
-      relationship: $DbAccountsTable.$converter4.mapToDart(const StringType()
+      relationship: $DbAccountsTable.$converter3.mapToDart(const StringType()
           .mapFromDatabaseResponse(
               data['${effectivePrefix}pleroma_relationship'])),
       isAdmin: const BoolType()
@@ -2032,6 +2030,8 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
           .mapFromDatabaseResponse(data['${effectivePrefix}favicon']),
       apId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}ap_id']),
+      alsoKnownAs: $DbAccountsTable.$converter4.mapToDart(const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}also_known_as'])),
     );
   }
   @override
@@ -2085,19 +2085,15 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
       final converter = $DbAccountsTable.$converter1;
       map['emojis'] = Variable<String?>(converter.mapToSql(emojis));
     }
-    if (!nullToAbsent || alsoKnownAs != null) {
-      final converter = $DbAccountsTable.$converter2;
-      map['also_known_as'] = Variable<String?>(converter.mapToSql(alsoKnownAs));
-    }
     if (!nullToAbsent || backgroundImage != null) {
-      map['background_image'] = Variable<String?>(backgroundImage);
+      map['pleroma_background_image'] = Variable<String?>(backgroundImage);
     }
     if (!nullToAbsent || tags != null) {
-      final converter = $DbAccountsTable.$converter3;
+      final converter = $DbAccountsTable.$converter2;
       map['pleroma_tags'] = Variable<String?>(converter.mapToSql(tags));
     }
     if (!nullToAbsent || relationship != null) {
-      final converter = $DbAccountsTable.$converter4;
+      final converter = $DbAccountsTable.$converter3;
       map['pleroma_relationship'] =
           Variable<String?>(converter.mapToSql(relationship));
     }
@@ -2158,6 +2154,10 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
     if (!nullToAbsent || apId != null) {
       map['ap_id'] = Variable<String?>(apId);
     }
+    if (!nullToAbsent || alsoKnownAs != null) {
+      final converter = $DbAccountsTable.$converter4;
+      map['also_known_as'] = Variable<String?>(converter.mapToSql(alsoKnownAs));
+    }
     return map;
   }
 
@@ -2199,9 +2199,6 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
           fields == null && nullToAbsent ? const Value.absent() : Value(fields),
       emojis:
           emojis == null && nullToAbsent ? const Value.absent() : Value(emojis),
-      alsoKnownAs: alsoKnownAs == null && nullToAbsent
-          ? const Value.absent()
-          : Value(alsoKnownAs),
       backgroundImage: backgroundImage == null && nullToAbsent
           ? const Value.absent()
           : Value(backgroundImage),
@@ -2259,6 +2256,9 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
           ? const Value.absent()
           : Value(favicon),
       apId: apId == null && nullToAbsent ? const Value.absent() : Value(apId),
+      alsoKnownAs: alsoKnownAs == null && nullToAbsent
+          ? const Value.absent()
+          : Value(alsoKnownAs),
     );
   }
 
@@ -2286,7 +2286,6 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
       lastStatusAt: serializer.fromJson<DateTime?>(json['lastStatusAt']),
       fields: serializer.fromJson<List<UnifediApiField>?>(json['fields']),
       emojis: serializer.fromJson<List<UnifediApiEmoji>?>(json['emojis']),
-      alsoKnownAs: serializer.fromJson<List<String>?>(json['alsoKnownAs']),
       backgroundImage: serializer.fromJson<String?>(json['backgroundImage']),
       tags: serializer.fromJson<List<UnifediApiTag>?>(json['tags']),
       relationship: serializer
@@ -2314,6 +2313,7 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
       fqn: serializer.fromJson<String?>(json['fqn']),
       favicon: serializer.fromJson<String?>(json['favicon']),
       apId: serializer.fromJson<String?>(json['apId']),
+      alsoKnownAs: serializer.fromJson<List<String>?>(json['alsoKnownAs']),
     );
   }
   @override
@@ -2340,7 +2340,6 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
       'lastStatusAt': serializer.toJson<DateTime?>(lastStatusAt),
       'fields': serializer.toJson<List<UnifediApiField>?>(fields),
       'emojis': serializer.toJson<List<UnifediApiEmoji>?>(emojis),
-      'alsoKnownAs': serializer.toJson<List<String>?>(alsoKnownAs),
       'backgroundImage': serializer.toJson<String?>(backgroundImage),
       'tags': serializer.toJson<List<UnifediApiTag>?>(tags),
       'relationship':
@@ -2363,6 +2362,7 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
       'fqn': serializer.toJson<String?>(fqn),
       'favicon': serializer.toJson<String?>(favicon),
       'apId': serializer.toJson<String?>(apId),
+      'alsoKnownAs': serializer.toJson<List<String>?>(alsoKnownAs),
     };
   }
 
@@ -2387,7 +2387,6 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
           DateTime? lastStatusAt,
           List<UnifediApiField>? fields,
           List<UnifediApiEmoji>? emojis,
-          List<String>? alsoKnownAs,
           String? backgroundImage,
           List<UnifediApiTag>? tags,
           UnifediApiAccountRelationship? relationship,
@@ -2408,7 +2407,8 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
           DateTime? muteExpiresAt,
           String? fqn,
           String? favicon,
-          String? apId}) =>
+          String? apId,
+          List<String>? alsoKnownAs}) =>
       DbAccount(
         id: id ?? this.id,
         remoteId: remoteId ?? this.remoteId,
@@ -2430,7 +2430,6 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
         lastStatusAt: lastStatusAt ?? this.lastStatusAt,
         fields: fields ?? this.fields,
         emojis: emojis ?? this.emojis,
-        alsoKnownAs: alsoKnownAs ?? this.alsoKnownAs,
         backgroundImage: backgroundImage ?? this.backgroundImage,
         tags: tags ?? this.tags,
         relationship: relationship ?? this.relationship,
@@ -2453,6 +2452,7 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
         fqn: fqn ?? this.fqn,
         favicon: favicon ?? this.favicon,
         apId: apId ?? this.apId,
+        alsoKnownAs: alsoKnownAs ?? this.alsoKnownAs,
       );
   @override
   String toString() {
@@ -2477,7 +2477,6 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
           ..write('lastStatusAt: $lastStatusAt, ')
           ..write('fields: $fields, ')
           ..write('emojis: $emojis, ')
-          ..write('alsoKnownAs: $alsoKnownAs, ')
           ..write('backgroundImage: $backgroundImage, ')
           ..write('tags: $tags, ')
           ..write('relationship: $relationship, ')
@@ -2498,7 +2497,8 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
           ..write('muteExpiresAt: $muteExpiresAt, ')
           ..write('fqn: $fqn, ')
           ..write('favicon: $favicon, ')
-          ..write('apId: $apId')
+          ..write('apId: $apId, ')
+          ..write('alsoKnownAs: $alsoKnownAs')
           ..write(')'))
         .toString();
   }
@@ -2546,7 +2546,7 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
                                                                               .hashCode,
                                                                           $mrjc(
                                                                               fields.hashCode,
-                                                                              $mrjc(emojis.hashCode, $mrjc(alsoKnownAs.hashCode, $mrjc(backgroundImage.hashCode, $mrjc(tags.hashCode, $mrjc(relationship.hashCode, $mrjc(isAdmin.hashCode, $mrjc(isModerator.hashCode, $mrjc(confirmationPending.hashCode, $mrjc(hideFavorites.hashCode, $mrjc(hideFollowers.hashCode, $mrjc(hideFollows.hashCode, $mrjc(hideFollowersCount.hashCode, $mrjc(hideFollowsCount.hashCode, $mrjc(deactivated.hashCode, $mrjc(allowFollowingMove.hashCode, $mrjc(skipThreadContainment.hashCode, $mrjc(acceptsChatMessages.hashCode, $mrjc(suspended.hashCode, $mrjc(isConfirmed.hashCode, $mrjc(muteExpiresAt.hashCode, $mrjc(fqn.hashCode, $mrjc(favicon.hashCode, apId.hashCode))))))))))))))))))))))))))))))))))))))))));
+                                                                              $mrjc(emojis.hashCode, $mrjc(backgroundImage.hashCode, $mrjc(tags.hashCode, $mrjc(relationship.hashCode, $mrjc(isAdmin.hashCode, $mrjc(isModerator.hashCode, $mrjc(confirmationPending.hashCode, $mrjc(hideFavorites.hashCode, $mrjc(hideFollowers.hashCode, $mrjc(hideFollows.hashCode, $mrjc(hideFollowersCount.hashCode, $mrjc(hideFollowsCount.hashCode, $mrjc(deactivated.hashCode, $mrjc(allowFollowingMove.hashCode, $mrjc(skipThreadContainment.hashCode, $mrjc(acceptsChatMessages.hashCode, $mrjc(suspended.hashCode, $mrjc(isConfirmed.hashCode, $mrjc(muteExpiresAt.hashCode, $mrjc(fqn.hashCode, $mrjc(favicon.hashCode, $mrjc(apId.hashCode, alsoKnownAs.hashCode))))))))))))))))))))))))))))))))))))))))));
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -2571,7 +2571,6 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
           other.lastStatusAt == this.lastStatusAt &&
           other.fields == this.fields &&
           other.emojis == this.emojis &&
-          other.alsoKnownAs == this.alsoKnownAs &&
           other.backgroundImage == this.backgroundImage &&
           other.tags == this.tags &&
           other.relationship == this.relationship &&
@@ -2592,7 +2591,8 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
           other.muteExpiresAt == this.muteExpiresAt &&
           other.fqn == this.fqn &&
           other.favicon == this.favicon &&
-          other.apId == this.apId);
+          other.apId == this.apId &&
+          other.alsoKnownAs == this.alsoKnownAs);
 }
 
 class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
@@ -2616,7 +2616,6 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
   final Value<DateTime?> lastStatusAt;
   final Value<List<UnifediApiField>?> fields;
   final Value<List<UnifediApiEmoji>?> emojis;
-  final Value<List<String>?> alsoKnownAs;
   final Value<String?> backgroundImage;
   final Value<List<UnifediApiTag>?> tags;
   final Value<UnifediApiAccountRelationship?> relationship;
@@ -2638,6 +2637,7 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
   final Value<String?> fqn;
   final Value<String?> favicon;
   final Value<String?> apId;
+  final Value<List<String>?> alsoKnownAs;
   const DbAccountsCompanion({
     this.id = const Value.absent(),
     this.remoteId = const Value.absent(),
@@ -2659,7 +2659,6 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
     this.lastStatusAt = const Value.absent(),
     this.fields = const Value.absent(),
     this.emojis = const Value.absent(),
-    this.alsoKnownAs = const Value.absent(),
     this.backgroundImage = const Value.absent(),
     this.tags = const Value.absent(),
     this.relationship = const Value.absent(),
@@ -2681,6 +2680,7 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
     this.fqn = const Value.absent(),
     this.favicon = const Value.absent(),
     this.apId = const Value.absent(),
+    this.alsoKnownAs = const Value.absent(),
   });
   DbAccountsCompanion.insert({
     this.id = const Value.absent(),
@@ -2703,7 +2703,6 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
     this.lastStatusAt = const Value.absent(),
     this.fields = const Value.absent(),
     this.emojis = const Value.absent(),
-    this.alsoKnownAs = const Value.absent(),
     this.backgroundImage = const Value.absent(),
     this.tags = const Value.absent(),
     this.relationship = const Value.absent(),
@@ -2725,6 +2724,7 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
     this.fqn = const Value.absent(),
     this.favicon = const Value.absent(),
     this.apId = const Value.absent(),
+    this.alsoKnownAs = const Value.absent(),
   })  : remoteId = Value(remoteId),
         username = Value(username),
         url = Value(url),
@@ -2753,7 +2753,6 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
     Expression<DateTime?>? lastStatusAt,
     Expression<List<UnifediApiField>?>? fields,
     Expression<List<UnifediApiEmoji>?>? emojis,
-    Expression<List<String>?>? alsoKnownAs,
     Expression<String?>? backgroundImage,
     Expression<List<UnifediApiTag>?>? tags,
     Expression<UnifediApiAccountRelationship?>? relationship,
@@ -2775,6 +2774,7 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
     Expression<String?>? fqn,
     Expression<String?>? favicon,
     Expression<String?>? apId,
+    Expression<List<String>?>? alsoKnownAs,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -2797,8 +2797,7 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
       if (lastStatusAt != null) 'last_status_at': lastStatusAt,
       if (fields != null) 'fields': fields,
       if (emojis != null) 'emojis': emojis,
-      if (alsoKnownAs != null) 'also_known_as': alsoKnownAs,
-      if (backgroundImage != null) 'background_image': backgroundImage,
+      if (backgroundImage != null) 'pleroma_background_image': backgroundImage,
       if (tags != null) 'pleroma_tags': tags,
       if (relationship != null) 'pleroma_relationship': relationship,
       if (isAdmin != null) 'pleroma_is_admin': isAdmin,
@@ -2825,6 +2824,7 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
       if (fqn != null) 'fqn': fqn,
       if (favicon != null) 'favicon': favicon,
       if (apId != null) 'ap_id': apId,
+      if (alsoKnownAs != null) 'also_known_as': alsoKnownAs,
     });
   }
 
@@ -2849,7 +2849,6 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
       Value<DateTime?>? lastStatusAt,
       Value<List<UnifediApiField>?>? fields,
       Value<List<UnifediApiEmoji>?>? emojis,
-      Value<List<String>?>? alsoKnownAs,
       Value<String?>? backgroundImage,
       Value<List<UnifediApiTag>?>? tags,
       Value<UnifediApiAccountRelationship?>? relationship,
@@ -2870,7 +2869,8 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
       Value<DateTime?>? muteExpiresAt,
       Value<String?>? fqn,
       Value<String?>? favicon,
-      Value<String?>? apId}) {
+      Value<String?>? apId,
+      Value<List<String>?>? alsoKnownAs}) {
     return DbAccountsCompanion(
       id: id ?? this.id,
       remoteId: remoteId ?? this.remoteId,
@@ -2892,7 +2892,6 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
       lastStatusAt: lastStatusAt ?? this.lastStatusAt,
       fields: fields ?? this.fields,
       emojis: emojis ?? this.emojis,
-      alsoKnownAs: alsoKnownAs ?? this.alsoKnownAs,
       backgroundImage: backgroundImage ?? this.backgroundImage,
       tags: tags ?? this.tags,
       relationship: relationship ?? this.relationship,
@@ -2915,6 +2914,7 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
       fqn: fqn ?? this.fqn,
       favicon: favicon ?? this.favicon,
       apId: apId ?? this.apId,
+      alsoKnownAs: alsoKnownAs ?? this.alsoKnownAs,
     );
   }
 
@@ -2983,20 +2983,16 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
       final converter = $DbAccountsTable.$converter1;
       map['emojis'] = Variable<String?>(converter.mapToSql(emojis.value));
     }
-    if (alsoKnownAs.present) {
-      final converter = $DbAccountsTable.$converter2;
-      map['also_known_as'] =
-          Variable<String?>(converter.mapToSql(alsoKnownAs.value));
-    }
     if (backgroundImage.present) {
-      map['background_image'] = Variable<String?>(backgroundImage.value);
+      map['pleroma_background_image'] =
+          Variable<String?>(backgroundImage.value);
     }
     if (tags.present) {
-      final converter = $DbAccountsTable.$converter3;
+      final converter = $DbAccountsTable.$converter2;
       map['pleroma_tags'] = Variable<String?>(converter.mapToSql(tags.value));
     }
     if (relationship.present) {
-      final converter = $DbAccountsTable.$converter4;
+      final converter = $DbAccountsTable.$converter3;
       map['pleroma_relationship'] =
           Variable<String?>(converter.mapToSql(relationship.value));
     }
@@ -3060,6 +3056,11 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
     if (apId.present) {
       map['ap_id'] = Variable<String?>(apId.value);
     }
+    if (alsoKnownAs.present) {
+      final converter = $DbAccountsTable.$converter4;
+      map['also_known_as'] =
+          Variable<String?>(converter.mapToSql(alsoKnownAs.value));
+    }
     return map;
   }
 
@@ -3086,7 +3087,6 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
           ..write('lastStatusAt: $lastStatusAt, ')
           ..write('fields: $fields, ')
           ..write('emojis: $emojis, ')
-          ..write('alsoKnownAs: $alsoKnownAs, ')
           ..write('backgroundImage: $backgroundImage, ')
           ..write('tags: $tags, ')
           ..write('relationship: $relationship, ')
@@ -3107,7 +3107,8 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
           ..write('muteExpiresAt: $muteExpiresAt, ')
           ..write('fqn: $fqn, ')
           ..write('favicon: $favicon, ')
-          ..write('apId: $apId')
+          ..write('apId: $apId, ')
+          ..write('alsoKnownAs: $alsoKnownAs')
           ..write(')'))
         .toString();
   }
@@ -3215,22 +3216,16 @@ class $DbAccountsTable extends DbAccounts
       emojis = GeneratedColumn<String?>('emojis', aliasedName, true,
               typeName: 'TEXT', requiredDuringInsert: false)
           .withConverter<List<UnifediApiEmoji>>($DbAccountsTable.$converter1);
-  final VerificationMeta _alsoKnownAsMeta =
-      const VerificationMeta('alsoKnownAs');
-  late final GeneratedColumnWithTypeConverter<List<String>, String?>
-      alsoKnownAs = GeneratedColumn<String?>('also_known_as', aliasedName, true,
-              typeName: 'TEXT', requiredDuringInsert: false)
-          .withConverter<List<String>>($DbAccountsTable.$converter2);
   final VerificationMeta _backgroundImageMeta =
       const VerificationMeta('backgroundImage');
   late final GeneratedColumn<String?> backgroundImage =
-      GeneratedColumn<String?>('background_image', aliasedName, true,
+      GeneratedColumn<String?>('pleroma_background_image', aliasedName, true,
           typeName: 'TEXT', requiredDuringInsert: false);
   final VerificationMeta _tagsMeta = const VerificationMeta('tags');
   late final GeneratedColumnWithTypeConverter<List<UnifediApiTag>, String?>
       tags = GeneratedColumn<String?>('pleroma_tags', aliasedName, true,
               typeName: 'TEXT', requiredDuringInsert: false)
-          .withConverter<List<UnifediApiTag>>($DbAccountsTable.$converter3);
+          .withConverter<List<UnifediApiTag>>($DbAccountsTable.$converter2);
   final VerificationMeta _relationshipMeta =
       const VerificationMeta('relationship');
   late final GeneratedColumnWithTypeConverter<UnifediApiAccountRelationship,
@@ -3238,7 +3233,7 @@ class $DbAccountsTable extends DbAccounts
           'pleroma_relationship', aliasedName, true,
           typeName: 'TEXT', requiredDuringInsert: false)
       .withConverter<UnifediApiAccountRelationship>(
-          $DbAccountsTable.$converter4);
+          $DbAccountsTable.$converter3);
   final VerificationMeta _isAdminMeta = const VerificationMeta('isAdmin');
   late final GeneratedColumn<bool?> isAdmin = GeneratedColumn<bool?>(
       'pleroma_is_admin', aliasedName, true,
@@ -3356,6 +3351,12 @@ class $DbAccountsTable extends DbAccounts
   late final GeneratedColumn<String?> apId = GeneratedColumn<String?>(
       'ap_id', aliasedName, true,
       typeName: 'TEXT', requiredDuringInsert: false);
+  final VerificationMeta _alsoKnownAsMeta =
+      const VerificationMeta('alsoKnownAs');
+  late final GeneratedColumnWithTypeConverter<List<String>, String?>
+      alsoKnownAs = GeneratedColumn<String?>('also_known_as', aliasedName, true,
+              typeName: 'TEXT', requiredDuringInsert: false)
+          .withConverter<List<String>>($DbAccountsTable.$converter4);
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -3378,7 +3379,6 @@ class $DbAccountsTable extends DbAccounts
         lastStatusAt,
         fields,
         emojis,
-        alsoKnownAs,
         backgroundImage,
         tags,
         relationship,
@@ -3399,7 +3399,8 @@ class $DbAccountsTable extends DbAccounts
         muteExpiresAt,
         fqn,
         favicon,
-        apId
+        apId,
+        alsoKnownAs
       ];
   @override
   String get aliasedName => _alias ?? 'db_accounts';
@@ -3511,12 +3512,11 @@ class $DbAccountsTable extends DbAccounts
     }
     context.handle(_fieldsMeta, const VerificationResult.success());
     context.handle(_emojisMeta, const VerificationResult.success());
-    context.handle(_alsoKnownAsMeta, const VerificationResult.success());
-    if (data.containsKey('background_image')) {
+    if (data.containsKey('pleroma_background_image')) {
       context.handle(
           _backgroundImageMeta,
           backgroundImage.isAcceptableOrUnknown(
-              data['background_image']!, _backgroundImageMeta));
+              data['pleroma_background_image']!, _backgroundImageMeta));
     }
     context.handle(_tagsMeta, const VerificationResult.success());
     context.handle(_relationshipMeta, const VerificationResult.success());
@@ -3622,6 +3622,7 @@ class $DbAccountsTable extends DbAccounts
       context.handle(
           _apIdMeta, apId.isAcceptableOrUnknown(data['ap_id']!, _apIdMeta));
     }
+    context.handle(_alsoKnownAsMeta, const VerificationResult.success());
     return context;
   }
 
@@ -3642,12 +3643,12 @@ class $DbAccountsTable extends DbAccounts
       UnifediApiFieldListDatabaseConverter();
   static TypeConverter<List<UnifediApiEmoji>, String> $converter1 =
       UnifediApiEmojiListDatabaseConverter();
-  static TypeConverter<List<String>, String> $converter2 =
-      StringListDatabaseConverter();
-  static TypeConverter<List<UnifediApiTag>, String> $converter3 =
+  static TypeConverter<List<UnifediApiTag>, String> $converter2 =
       UnifediApiTagListDatabaseConverter();
-  static TypeConverter<UnifediApiAccountRelationship, String> $converter4 =
+  static TypeConverter<UnifediApiAccountRelationship, String> $converter3 =
       UnifediApiAccountRelationshipDatabaseConverter();
+  static TypeConverter<List<String>, String> $converter4 =
+      StringListDatabaseConverter();
 }
 
 class DbConversation extends DataClass implements Insertable<DbConversation> {

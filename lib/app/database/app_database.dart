@@ -181,6 +181,7 @@ class AppDatabase extends _$AppDatabase {
     await m.addColumn(dbAccounts, dbAccounts.fqn);
     await m.addColumn(dbAccounts, dbAccounts.favicon);
     await m.addColumn(dbAccounts, dbAccounts.apId);
+    await m.addColumn(dbAccounts, dbAccounts.alsoKnownAs);
   }
 
   Future<void> _migrate15to16(Migrator m) async {

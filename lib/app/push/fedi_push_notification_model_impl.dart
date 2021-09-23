@@ -4,7 +4,7 @@ import 'package:unifedi_api/unifedi_api.dart';
 
 part 'fedi_push_notification_model_impl.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class FediPushNotification implements IFediPushNotification {
   @override
   final String account;

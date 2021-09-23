@@ -30,5 +30,5 @@ Map<String, dynamic> _$FediPushNotificationToJson(
       'notification_id': instance.notificationId,
       'notification_type': instance.notificationType,
       'server': instance.server,
-      'notification': instance.unifediApiNotification,
+      'notification': instance.unifediApiNotification?.toJson(),
     };

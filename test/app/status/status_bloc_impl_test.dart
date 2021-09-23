@@ -37,12 +37,13 @@ Future<void> main() async {
   late MockIUnifediApiStatusService unifediApiStatusServiceMock;
   late MockIUnifediApiAccountService unifediApiAccountServiceMock;
   late MockIUnifediApiPollService unifediApiPollServiceMock;
+  late MockIConnectionService connectionService;
   late AppDatabase database;
   late IAccountRepository accountRepository;
   late IStatusRepository statusRepository;
 
   setUp(() async {
-    database = AppDatabase(VmDatabase.memory());
+    database = AppDatabase(VmDatabase.memory(logStatements: false));
     accountRepository = AccountRepository(appDatabase: database);
     statusRepository = StatusRepository(
       appDatabase: database,
@@ -53,11 +54,16 @@ Future<void> main() async {
     unifediApiAccountServiceMock = MockIUnifediApiAccountService();
     unifediApiPollServiceMock = MockIUnifediApiPollService();
     unifediApiStatusServiceMock = MockIUnifediApiStatusService();
+    connectionService = MockIConnectionService();
+
+    when(connectionService.isConnected).thenAnswer(
+      (_) => true,
+    );
 
     status = await StatusMockHelper.createTestStatus(seed: 'seed1');
 
     statusBloc = LocalStatusBloc(
-      connectionService: MockIConnectionService(),
+      connectionService: connectionService,
       status: status,
       unifediApiStatusService: unifediApiStatusServiceMock,
       statusRepository: statusRepository,

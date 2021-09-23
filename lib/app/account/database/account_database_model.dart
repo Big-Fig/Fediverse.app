@@ -51,10 +51,9 @@ class DbAccounts extends Table {
       .nullable()
       .map(UnifediApiEmojiListDatabaseConverter())
       .nullable()();
-  TextColumn get alsoKnownAs =>
-      text().nullable().map(StringListDatabaseConverter()).nullable()();
 
-  TextColumn get backgroundImage => text().nullable()();
+  TextColumn get backgroundImage =>
+      text().named('pleroma_background_image').nullable()();
 
   TextColumn get tags => text()
       .named('pleroma_tags')
@@ -102,10 +101,19 @@ class DbAccounts extends Table {
 
   BoolColumn get acceptsChatMessages =>
       boolean().named('pleroma_accepts_chat_messages').nullable()();
+
   BoolColumn get suspended => boolean().nullable()();
+
   BoolColumn get isConfirmed => boolean().nullable()();
+
   DateTimeColumn get muteExpiresAt => dateTime().nullable()();
+
   TextColumn get fqn => text().nullable()();
+
   TextColumn get favicon => text().nullable()();
+
   TextColumn get apId => text().nullable()();
+
+  TextColumn get alsoKnownAs =>
+      text().nullable().map(StringListDatabaseConverter()).nullable()();
 }
