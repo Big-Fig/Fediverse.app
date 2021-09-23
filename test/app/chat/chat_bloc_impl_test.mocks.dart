@@ -2,38 +2,40 @@
 // in fedi/test/app/chat/chat_bloc_impl_test.dart.
 // Do not manually edit this file.
 
-import 'dart:async' as _i9;
+import 'dart:async' as _i10;
 
-import 'package:connectivity_platform_interface/src/enums.dart' as _i18;
-import 'package:easy_dispose/src/composite_disposable.dart' as _i19;
-import 'package:easy_dispose/src/disposable.dart' as _i20;
-import 'package:fedi/connection/connection_service.dart' as _i17;
+import 'package:connectivity_platform_interface/src/enums.dart' as _i19;
+import 'package:easy_dispose/src/composite_disposable.dart' as _i20;
+import 'package:easy_dispose/src/disposable.dart' as _i21;
+import 'package:fedi/connection/connection_service.dart' as _i18;
+import 'package:fediverse_api/src/api/requirement/state/fediverse_api_feature_requirement_state_sealed.dart'
+    as _i6;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:unifedi_api/src/api/account/my/edit/unifedi_api_edit_my_account_model.dart'
-    as _i13;
-import 'package:unifedi_api/src/api/account/my/service/unifedi_api_my_account_service.dart'
-    as _i12;
-import 'package:unifedi_api/src/api/account/my/unifedi_api_my_account_model.dart'
-    as _i6;
-import 'package:unifedi_api/src/api/account/relationship/unifedi_api_account_relationship_model.dart'
-    as _i16;
-import 'package:unifedi_api/src/api/account/unifedi_api_account_model.dart'
     as _i14;
+import 'package:unifedi_api/src/api/account/my/service/unifedi_api_my_account_service.dart'
+    as _i13;
+import 'package:unifedi_api/src/api/account/my/unifedi_api_my_account_model.dart'
+    as _i7;
+import 'package:unifedi_api/src/api/account/relationship/unifedi_api_account_relationship_model.dart'
+    as _i17;
+import 'package:unifedi_api/src/api/account/unifedi_api_account_model.dart'
+    as _i15;
 import 'package:unifedi_api/src/api/chat/message/post/unifedi_api_post_chat_message_model.dart'
-    as _i11;
+    as _i12;
 import 'package:unifedi_api/src/api/chat/message/unifedi_api_chat_message_model.dart'
     as _i5;
 import 'package:unifedi_api/src/api/chat/service/unifedi_api_chat_service.dart'
-    as _i8;
+    as _i9;
 import 'package:unifedi_api/src/api/chat/unifedi_api_chat_model.dart' as _i4;
 import 'package:unifedi_api/src/api/feature/unifedi_api_feature_model.dart'
     as _i2;
 import 'package:unifedi_api/src/api/pagination/unifedi_api_pagination_model.dart'
-    as _i10;
+    as _i11;
 import 'package:unifedi_api/src/api/rest/unifedi_api_rest_service.dart' as _i3;
 import 'package:unifedi_api/src/api/status/unifedi_api_status_model.dart'
-    as _i15;
-import 'package:unifedi_api/src/api/tag/unifedi_api_tag_model.dart' as _i7;
+    as _i16;
+import 'package:unifedi_api/src/api/tag/unifedi_api_tag_model.dart' as _i8;
 
 // ignore_for_file: avoid_redundant_argument_values
 // ignore_for_file: comment_references
@@ -52,16 +54,19 @@ class _FakeIUnifediApiChat extends _i1.Fake implements _i4.IUnifediApiChat {}
 class _FakeIUnifediApiChatMessage extends _i1.Fake
     implements _i5.IUnifediApiChatMessage {}
 
-class _FakeIUnifediApiMyAccount extends _i1.Fake
-    implements _i6.IUnifediApiMyAccount {}
+class _FakeFediverseApiFeatureRequirementState extends _i1.Fake
+    implements _i6.FediverseApiFeatureRequirementState {}
 
-class _FakeIUnifediApiTag extends _i1.Fake implements _i7.IUnifediApiTag {}
+class _FakeIUnifediApiMyAccount extends _i1.Fake
+    implements _i7.IUnifediApiMyAccount {}
+
+class _FakeIUnifediApiTag extends _i1.Fake implements _i8.IUnifediApiTag {}
 
 /// A class which mocks [IUnifediApiChatService].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockIUnifediApiChatService extends _i1.Mock
-    implements _i8.IUnifediApiChatService {
+    implements _i9.IUnifediApiChatService {
   MockIUnifediApiChatService() {
     _i1.throwOnMissingStub(this);
   }
@@ -104,24 +109,24 @@ class MockIUnifediApiChatService extends _i1.Mock
       (super.noSuchMethod(Invocation.getter(#isDisposed), returnValue: false)
           as bool);
   @override
-  _i9.Future<List<_i4.IUnifediApiChat>> getChats(
-          {_i10.IUnifediApiPagination? pagination}) =>
+  _i10.Future<List<_i4.IUnifediApiChat>> getChats(
+          {_i11.IUnifediApiPagination? pagination}) =>
       (super.noSuchMethod(
               Invocation.method(#getChats, [], {#pagination: pagination}),
               returnValue: Future<List<_i4.IUnifediApiChat>>.value(
                   <_i4.IUnifediApiChat>[]))
-          as _i9.Future<List<_i4.IUnifediApiChat>>);
+          as _i10.Future<List<_i4.IUnifediApiChat>>);
   @override
-  _i9.Future<List<_i5.IUnifediApiChatMessage>> getChatMessages(
-          {String? chatId, _i10.IUnifediApiPagination? pagination}) =>
+  _i10.Future<List<_i5.IUnifediApiChatMessage>> getChatMessages(
+          {String? chatId, _i11.IUnifediApiPagination? pagination}) =>
       (super.noSuchMethod(
           Invocation.method(
               #getChatMessages, [], {#chatId: chatId, #pagination: pagination}),
           returnValue: Future<List<_i5.IUnifediApiChatMessage>>.value(
-              <_i5.IUnifediApiChatMessage>[])) as _i9
+              <_i5.IUnifediApiChatMessage>[])) as _i10
           .Future<List<_i5.IUnifediApiChatMessage>>);
   @override
-  _i9.Future<_i4.IUnifediApiChat> markChatAsRead(
+  _i10.Future<_i4.IUnifediApiChat> markChatAsRead(
           {String? chatId, String? lastReadChatMessageId}) =>
       (super.noSuchMethod(
               Invocation.method(#markChatAsRead, [], {
@@ -130,27 +135,27 @@ class MockIUnifediApiChatService extends _i1.Mock
               }),
               returnValue:
                   Future<_i4.IUnifediApiChat>.value(_FakeIUnifediApiChat()))
-          as _i9.Future<_i4.IUnifediApiChat>);
+          as _i10.Future<_i4.IUnifediApiChat>);
   @override
-  _i9.Future<_i4.IUnifediApiChat> getChat({String? id}) =>
+  _i10.Future<_i4.IUnifediApiChat> getChat({String? id}) =>
       (super.noSuchMethod(Invocation.method(#getChat, [], {#id: id}),
               returnValue:
                   Future<_i4.IUnifediApiChat>.value(_FakeIUnifediApiChat()))
-          as _i9.Future<_i4.IUnifediApiChat>);
+          as _i10.Future<_i4.IUnifediApiChat>);
   @override
-  _i9.Future<_i4.IUnifediApiChat> getOrCreateChatByAccountId(
+  _i10.Future<_i4.IUnifediApiChat> getOrCreateChatByAccountId(
           {String? accountId}) =>
       (super.noSuchMethod(
               Invocation.method(
                   #getOrCreateChatByAccountId, [], {#accountId: accountId}),
               returnValue:
                   Future<_i4.IUnifediApiChat>.value(_FakeIUnifediApiChat()))
-          as _i9.Future<_i4.IUnifediApiChat>);
+          as _i10.Future<_i4.IUnifediApiChat>);
   @override
-  _i9.Future<_i5.IUnifediApiChatMessage> sendMessage(
+  _i10.Future<_i5.IUnifediApiChatMessage> sendMessage(
           {String? idempotencyKey,
           String? chatId,
-          _i11.IUnifediApiPostChatMessage? postChatMessage}) =>
+          _i12.IUnifediApiPostChatMessage? postChatMessage}) =>
       (super.noSuchMethod(
               Invocation.method(#sendMessage, [], {
                 #idempotencyKey: idempotencyKey,
@@ -159,25 +164,31 @@ class MockIUnifediApiChatService extends _i1.Mock
               }),
               returnValue: Future<_i5.IUnifediApiChatMessage>.value(
                   _FakeIUnifediApiChatMessage()))
-          as _i9.Future<_i5.IUnifediApiChatMessage>);
+          as _i10.Future<_i5.IUnifediApiChatMessage>);
   @override
-  _i9.Future<dynamic> deleteChatMessage(
+  _i10.Future<dynamic> deleteChatMessage(
           {String? chatMessageId, String? chatId}) =>
       (super.noSuchMethod(
           Invocation.method(#deleteChatMessage, [],
               {#chatMessageId: chatMessageId, #chatId: chatId}),
-          returnValue: Future<dynamic>.value()) as _i9.Future<dynamic>);
+          returnValue: Future<dynamic>.value()) as _i10.Future<dynamic>);
   @override
-  _i9.Future<dynamic> dispose() =>
+  _i6.FediverseApiFeatureRequirementState checkFeatureState(
+          _i2.IUnifediApiFeature? feature) =>
+      (super.noSuchMethod(Invocation.method(#checkFeatureState, [feature]),
+              returnValue: _FakeFediverseApiFeatureRequirementState())
+          as _i6.FediverseApiFeatureRequirementState);
+  @override
+  _i10.Future<dynamic> dispose() =>
       (super.noSuchMethod(Invocation.method(#dispose, []),
-          returnValue: Future<dynamic>.value()) as _i9.Future<dynamic>);
+          returnValue: Future<dynamic>.value()) as _i10.Future<dynamic>);
 }
 
 /// A class which mocks [IUnifediApiMyAccountService].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockIUnifediApiMyAccountService extends _i1.Mock
-    implements _i12.IUnifediApiMyAccountService {
+    implements _i13.IUnifediApiMyAccountService {
   MockIUnifediApiMyAccountService() {
     _i1.throwOnMissingStub(this);
   }
@@ -347,173 +358,179 @@ class MockIUnifediApiMyAccountService extends _i1.Mock
       (super.noSuchMethod(Invocation.getter(#isDisposed), returnValue: false)
           as bool);
   @override
-  _i9.Future<_i6.IUnifediApiMyAccount> updateMyCredentials(
-          {_i13.IUnifediApiEditMyAccount? editMyAccount}) =>
+  _i10.Future<_i7.IUnifediApiMyAccount> updateMyCredentials(
+          {_i14.IUnifediApiEditMyAccount? editMyAccount}) =>
       (super.noSuchMethod(
               Invocation.method(
                   #updateMyCredentials, [], {#editMyAccount: editMyAccount}),
-              returnValue: Future<_i6.IUnifediApiMyAccount>.value(
+              returnValue: Future<_i7.IUnifediApiMyAccount>.value(
                   _FakeIUnifediApiMyAccount()))
-          as _i9.Future<_i6.IUnifediApiMyAccount>);
+          as _i10.Future<_i7.IUnifediApiMyAccount>);
   @override
-  _i9.Future<_i6.IUnifediApiMyAccount> verifyMyCredentials() =>
+  _i10.Future<_i7.IUnifediApiMyAccount> verifyMyCredentials() =>
       (super.noSuchMethod(Invocation.method(#verifyMyCredentials, []),
-              returnValue: Future<_i6.IUnifediApiMyAccount>.value(
+              returnValue: Future<_i7.IUnifediApiMyAccount>.value(
                   _FakeIUnifediApiMyAccount()))
-          as _i9.Future<_i6.IUnifediApiMyAccount>);
+          as _i10.Future<_i7.IUnifediApiMyAccount>);
   @override
-  _i9.Future<List<String>> getMyDomainBlocks(
-          {_i10.IUnifediApiPagination? pagination}) =>
+  _i10.Future<List<String>> getMyDomainBlocks(
+          {_i11.IUnifediApiPagination? pagination}) =>
       (super.noSuchMethod(
           Invocation.method(#getMyDomainBlocks, [], {#pagination: pagination}),
           returnValue:
-              Future<List<String>>.value(<String>[])) as _i9
+              Future<List<String>>.value(<String>[])) as _i10
           .Future<List<String>>);
   @override
-  _i9.Future<List<_i14.IUnifediApiAccount>> getMyAccountBlocks(
-          {_i10.IUnifediApiPagination? pagination}) =>
+  _i10.Future<List<_i15.IUnifediApiAccount>> getMyAccountBlocks(
+          {_i11.IUnifediApiPagination? pagination}) =>
       (super.noSuchMethod(
           Invocation.method(#getMyAccountBlocks, [], {#pagination: pagination}),
-          returnValue: Future<List<_i14.IUnifediApiAccount>>.value(
-              <_i14.IUnifediApiAccount>[])) as _i9
-          .Future<List<_i14.IUnifediApiAccount>>);
+          returnValue: Future<List<_i15.IUnifediApiAccount>>.value(
+              <_i15.IUnifediApiAccount>[])) as _i10
+          .Future<List<_i15.IUnifediApiAccount>>);
   @override
-  _i9.Future<List<_i14.IUnifediApiAccount>> getMyAccountMutes(
-          {bool? withRelationship, _i10.IUnifediApiPagination? pagination}) =>
+  _i10.Future<List<_i15.IUnifediApiAccount>> getMyAccountMutes(
+          {bool? withRelationship, _i11.IUnifediApiPagination? pagination}) =>
       (super.noSuchMethod(
               Invocation.method(#getMyAccountMutes, [], {
                 #withRelationship: withRelationship,
                 #pagination: pagination
               }),
-              returnValue: Future<List<_i14.IUnifediApiAccount>>.value(
-                  <_i14.IUnifediApiAccount>[]))
-          as _i9.Future<List<_i14.IUnifediApiAccount>>);
+              returnValue: Future<List<_i15.IUnifediApiAccount>>.value(
+                  <_i15.IUnifediApiAccount>[]))
+          as _i10.Future<List<_i15.IUnifediApiAccount>>);
   @override
-  _i9.Future<List<_i15.IUnifediApiStatus>> getMyBookmarks(
-          {_i10.IUnifediApiPagination? pagination}) =>
+  _i10.Future<List<_i16.IUnifediApiStatus>> getMyBookmarks(
+          {_i11.IUnifediApiPagination? pagination}) =>
       (super.noSuchMethod(
               Invocation.method(#getMyBookmarks, [], {#pagination: pagination}),
-              returnValue: Future<List<_i15.IUnifediApiStatus>>.value(
-                  <_i15.IUnifediApiStatus>[]))
-          as _i9.Future<List<_i15.IUnifediApiStatus>>);
+              returnValue: Future<List<_i16.IUnifediApiStatus>>.value(
+                  <_i16.IUnifediApiStatus>[]))
+          as _i10.Future<List<_i16.IUnifediApiStatus>>);
   @override
-  _i9.Future<List<_i15.IUnifediApiStatus>> getMyFavourites(
-          {_i10.IUnifediApiPagination? pagination}) =>
+  _i10.Future<List<_i16.IUnifediApiStatus>> getMyFavourites(
+          {_i11.IUnifediApiPagination? pagination}) =>
       (super.noSuchMethod(
           Invocation.method(#getMyFavourites, [], {#pagination: pagination}),
-          returnValue: Future<List<_i15.IUnifediApiStatus>>.value(
-              <_i15.IUnifediApiStatus>[])) as _i9
-          .Future<List<_i15.IUnifediApiStatus>>);
+          returnValue: Future<List<_i16.IUnifediApiStatus>>.value(
+              <_i16.IUnifediApiStatus>[])) as _i10
+          .Future<List<_i16.IUnifediApiStatus>>);
   @override
-  _i9.Future<List<_i14.IUnifediApiAccount>> getMyFollowRequests(
-          {_i10.IUnifediApiPagination? pagination}) =>
+  _i10.Future<List<_i15.IUnifediApiAccount>> getMyFollowRequests(
+          {_i11.IUnifediApiPagination? pagination}) =>
       (super.noSuchMethod(
               Invocation.method(
                   #getMyFollowRequests, [], {#pagination: pagination}),
-              returnValue: Future<List<_i14.IUnifediApiAccount>>.value(
-                  <_i14.IUnifediApiAccount>[]))
-          as _i9.Future<List<_i14.IUnifediApiAccount>>);
+              returnValue: Future<List<_i15.IUnifediApiAccount>>.value(
+                  <_i15.IUnifediApiAccount>[]))
+          as _i10.Future<List<_i15.IUnifediApiAccount>>);
   @override
-  _i9.Future<_i16.IUnifediApiAccountRelationship?> acceptMyAccountFollowRequest(
-          {String? accountId}) =>
-      (super.noSuchMethod(
+  _i10.Future<_i17.IUnifediApiAccountRelationship?>
+      acceptMyAccountFollowRequest({String? accountId}) => (super.noSuchMethod(
               Invocation.method(
                   #acceptMyAccountFollowRequest, [], {#accountId: accountId}),
-              returnValue: Future<_i16.IUnifediApiAccountRelationship?>.value())
-          as _i9.Future<_i16.IUnifediApiAccountRelationship?>);
+              returnValue: Future<_i17.IUnifediApiAccountRelationship?>.value())
+          as _i10.Future<_i17.IUnifediApiAccountRelationship?>);
   @override
-  _i9.Future<_i16.IUnifediApiAccountRelationship?> rejectMyAccountFollowRequest(
-          {String? accountId}) =>
-      (super.noSuchMethod(
+  _i10.Future<_i17.IUnifediApiAccountRelationship?>
+      rejectMyAccountFollowRequest({String? accountId}) => (super.noSuchMethod(
               Invocation.method(
                   #rejectMyAccountFollowRequest, [], {#accountId: accountId}),
-              returnValue: Future<_i16.IUnifediApiAccountRelationship?>.value())
-          as _i9.Future<_i16.IUnifediApiAccountRelationship?>);
+              returnValue: Future<_i17.IUnifediApiAccountRelationship?>.value())
+          as _i10.Future<_i17.IUnifediApiAccountRelationship?>);
   @override
-  _i9.Future<List<_i14.IUnifediApiAccount>> getMyEndorsements(
-          {_i10.IUnifediApiPagination? pagination}) =>
+  _i10.Future<List<_i15.IUnifediApiAccount>> getMyEndorsements(
+          {_i11.IUnifediApiPagination? pagination}) =>
       (super.noSuchMethod(
           Invocation.method(#getMyEndorsements, [], {#pagination: pagination}),
-          returnValue: Future<List<_i14.IUnifediApiAccount>>.value(
-              <_i14.IUnifediApiAccount>[])) as _i9
-          .Future<List<_i14.IUnifediApiAccount>>);
+          returnValue: Future<List<_i15.IUnifediApiAccount>>.value(
+              <_i15.IUnifediApiAccount>[])) as _i10
+          .Future<List<_i15.IUnifediApiAccount>>);
   @override
-  _i9.Future<List<_i7.IUnifediApiTag>> getMyAccountFeaturedTags(
-          {_i10.IUnifediApiPagination? pagination}) =>
+  _i10.Future<List<_i8.IUnifediApiTag>> getMyAccountFeaturedTags(
+          {_i11.IUnifediApiPagination? pagination}) =>
       (super.noSuchMethod(
-          Invocation.method(
-              #getMyAccountFeaturedTags, [], {#pagination: pagination}),
-          returnValue: Future<List<_i7.IUnifediApiTag>>.value(
-              <_i7.IUnifediApiTag>[])) as _i9.Future<List<_i7.IUnifediApiTag>>);
+              Invocation.method(
+                  #getMyAccountFeaturedTags, [], {#pagination: pagination}),
+              returnValue: Future<List<_i8.IUnifediApiTag>>.value(
+                  <_i8.IUnifediApiTag>[]))
+          as _i10.Future<List<_i8.IUnifediApiTag>>);
   @override
-  _i9.Future<List<_i7.IUnifediApiTag>> getMySuggestedTags() =>
+  _i10.Future<List<_i8.IUnifediApiTag>> getMySuggestedTags() =>
       (super.noSuchMethod(Invocation.method(#getMySuggestedTags, []),
-          returnValue: Future<List<_i7.IUnifediApiTag>>.value(
-              <_i7.IUnifediApiTag>[])) as _i9.Future<List<_i7.IUnifediApiTag>>);
+              returnValue: Future<List<_i8.IUnifediApiTag>>.value(
+                  <_i8.IUnifediApiTag>[]))
+          as _i10.Future<List<_i8.IUnifediApiTag>>);
   @override
-  _i9.Future<_i7.IUnifediApiTag> featureMyAccountTag({String? name}) => (super
+  _i10.Future<_i8.IUnifediApiTag> featureMyAccountTag({String? name}) => (super
       .noSuchMethod(Invocation.method(#featureMyAccountTag, [], {#name: name}),
           returnValue:
-              Future<_i7.IUnifediApiTag>.value(_FakeIUnifediApiTag())) as _i9
-      .Future<_i7.IUnifediApiTag>);
+              Future<_i8.IUnifediApiTag>.value(_FakeIUnifediApiTag())) as _i10
+      .Future<_i8.IUnifediApiTag>);
   @override
-  _i9.Future<dynamic> unfeatureMyAccountTag({String? tagId}) =>
+  _i10.Future<dynamic> unfeatureMyAccountTag({String? tagId}) =>
       (super.noSuchMethod(
           Invocation.method(#unfeatureMyAccountTag, [], {#tagId: tagId}),
-          returnValue: Future<dynamic>.value()) as _i9.Future<dynamic>);
+          returnValue: Future<dynamic>.value()) as _i10.Future<dynamic>);
   @override
-  _i9.Future<List<_i14.IUnifediApiAccount>> getMySuggestions({int? limit}) =>
+  _i10.Future<List<_i15.IUnifediApiAccount>> getMySuggestions({int? limit}) =>
       (super.noSuchMethod(
               Invocation.method(#getMySuggestions, [], {#limit: limit}),
-              returnValue: Future<List<_i14.IUnifediApiAccount>>.value(
-                  <_i14.IUnifediApiAccount>[]))
-          as _i9.Future<List<_i14.IUnifediApiAccount>>);
+              returnValue: Future<List<_i15.IUnifediApiAccount>>.value(
+                  <_i15.IUnifediApiAccount>[]))
+          as _i10.Future<List<_i15.IUnifediApiAccount>>);
   @override
-  _i9.Future<dynamic> removeMyAccountSuggestion({String? accountId}) =>
+  _i10.Future<dynamic> removeMyAccountSuggestion({String? accountId}) =>
       (super.noSuchMethod(
           Invocation.method(
               #removeMyAccountSuggestion, [], {#accountId: accountId}),
-          returnValue: Future<dynamic>.value()) as _i9.Future<dynamic>);
+          returnValue: Future<dynamic>.value()) as _i10.Future<dynamic>);
   @override
-  _i9.Future<dynamic> dispose() =>
+  _i6.FediverseApiFeatureRequirementState checkFeatureState(
+          _i2.IUnifediApiFeature? feature) =>
+      (super.noSuchMethod(Invocation.method(#checkFeatureState, [feature]),
+              returnValue: _FakeFediverseApiFeatureRequirementState())
+          as _i6.FediverseApiFeatureRequirementState);
+  @override
+  _i10.Future<dynamic> dispose() =>
       (super.noSuchMethod(Invocation.method(#dispose, []),
-          returnValue: Future<dynamic>.value()) as _i9.Future<dynamic>);
+          returnValue: Future<dynamic>.value()) as _i10.Future<dynamic>);
 }
 
 /// A class which mocks [IConnectionService].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockIConnectionService extends _i1.Mock
-    implements _i17.IConnectionService {
+    implements _i18.IConnectionService {
   MockIConnectionService() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i9.Stream<_i18.ConnectivityResult> get connectionStateStream =>
+  _i10.Stream<_i19.ConnectivityResult> get connectionStateStream =>
       (super.noSuchMethod(Invocation.getter(#connectionStateStream),
-              returnValue: Stream<_i18.ConnectivityResult>.empty())
-          as _i9.Stream<_i18.ConnectivityResult>);
+              returnValue: Stream<_i19.ConnectivityResult>.empty())
+          as _i10.Stream<_i19.ConnectivityResult>);
   @override
-  _i9.Stream<bool> get isConnectedStream =>
+  _i10.Stream<bool> get isConnectedStream =>
       (super.noSuchMethod(Invocation.getter(#isConnectedStream),
-          returnValue: Stream<bool>.empty()) as _i9.Stream<bool>);
+          returnValue: Stream<bool>.empty()) as _i10.Stream<bool>);
   @override
   bool get isConnected =>
       (super.noSuchMethod(Invocation.getter(#isConnected), returnValue: false)
           as bool);
   @override
-  _i19.DisposeOrder get disposeOrder =>
+  _i20.DisposeOrder get disposeOrder =>
       (super.noSuchMethod(Invocation.getter(#disposeOrder),
-          returnValue: _i19.DisposeOrder.lifo) as _i19.DisposeOrder);
+          returnValue: _i20.DisposeOrder.lifo) as _i20.DisposeOrder);
   @override
   bool get catchExceptions => (super
           .noSuchMethod(Invocation.getter(#catchExceptions), returnValue: false)
       as bool);
   @override
-  List<_i20.IDisposable> get disposables =>
+  List<_i21.IDisposable> get disposables =>
       (super.noSuchMethod(Invocation.getter(#disposables),
-          returnValue: <_i20.IDisposable>[]) as List<_i20.IDisposable>);
+          returnValue: <_i21.IDisposable>[]) as List<_i21.IDisposable>);
   @override
   bool get isDisposed =>
       (super.noSuchMethod(Invocation.getter(#isDisposed), returnValue: false)
@@ -523,23 +540,23 @@ class MockIConnectionService extends _i1.Mock
       super.noSuchMethod(Invocation.setter(#isDisposed, _isDisposed),
           returnValueForMissingStub: null);
   @override
-  _i9.Future<dynamic> internalAsyncInit() =>
+  _i10.Future<dynamic> internalAsyncInit() =>
       (super.noSuchMethod(Invocation.method(#internalAsyncInit, []),
-          returnValue: Future<dynamic>.value()) as _i9.Future<dynamic>);
+          returnValue: Future<dynamic>.value()) as _i10.Future<dynamic>);
   @override
-  void addDisposable(_i20.IDisposable? disposable) =>
+  void addDisposable(_i21.IDisposable? disposable) =>
       super.noSuchMethod(Invocation.method(#addDisposable, [disposable]),
           returnValueForMissingStub: null);
   @override
-  void addDisposables(Iterable<_i20.IDisposable>? disposables) =>
+  void addDisposables(Iterable<_i21.IDisposable>? disposables) =>
       super.noSuchMethod(Invocation.method(#addDisposables, [disposables]),
           returnValueForMissingStub: null);
   @override
-  _i9.Future<dynamic> performDispose() =>
+  _i10.Future<dynamic> performDispose() =>
       (super.noSuchMethod(Invocation.method(#performDispose, []),
-          returnValue: Future<dynamic>.value()) as _i9.Future<dynamic>);
+          returnValue: Future<dynamic>.value()) as _i10.Future<dynamic>);
   @override
-  _i9.Future<dynamic> dispose() =>
+  _i10.Future<dynamic> dispose() =>
       (super.noSuchMethod(Invocation.method(#dispose, []),
-          returnValue: Future<dynamic>.value()) as _i9.Future<dynamic>);
+          returnValue: Future<dynamic>.value()) as _i10.Future<dynamic>);
 }

@@ -2,19 +2,21 @@
 // in fedi/test/app/filter/filter_bloc_impl_test.dart.
 // Do not manually edit this file.
 
-import 'dart:async' as _i6;
+import 'dart:async' as _i7;
 
+import 'package:fediverse_api/src/api/requirement/state/fediverse_api_feature_requirement_state_sealed.dart'
+    as _i5;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:unifedi_api/src/api/feature/unifedi_api_feature_model.dart'
     as _i2;
 import 'package:unifedi_api/src/api/filter/post/unifedi_api_post_filter_model.dart'
-    as _i8;
+    as _i9;
 import 'package:unifedi_api/src/api/filter/service/unifedi_api_filter_service.dart'
-    as _i5;
+    as _i6;
 import 'package:unifedi_api/src/api/filter/unifedi_api_filter_model.dart'
     as _i4;
 import 'package:unifedi_api/src/api/pagination/unifedi_api_pagination_model.dart'
-    as _i7;
+    as _i8;
 import 'package:unifedi_api/src/api/rest/unifedi_api_rest_service.dart' as _i3;
 
 // ignore_for_file: avoid_redundant_argument_values
@@ -32,11 +34,14 @@ class _FakeIUnifediApiRestService extends _i1.Fake
 class _FakeIUnifediApiFilter extends _i1.Fake implements _i4.IUnifediApiFilter {
 }
 
+class _FakeFediverseApiFeatureRequirementState extends _i1.Fake
+    implements _i5.FediverseApiFeatureRequirementState {}
+
 /// A class which mocks [IUnifediApiFilterService].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockIUnifediApiFilterService extends _i1.Mock
-    implements _i5.IUnifediApiFilterService {
+    implements _i6.IUnifediApiFilterService {
   MockIUnifediApiFilterService() {
     _i1.throwOnMissingStub(this);
   }
@@ -71,43 +76,49 @@ class MockIUnifediApiFilterService extends _i1.Mock
       (super.noSuchMethod(Invocation.getter(#isDisposed), returnValue: false)
           as bool);
   @override
-  _i6.Future<List<_i4.IUnifediApiFilter>> getFilters(
-          {_i7.IUnifediApiPagination? pagination}) =>
+  _i7.Future<List<_i4.IUnifediApiFilter>> getFilters(
+          {_i8.IUnifediApiPagination? pagination}) =>
       (super.noSuchMethod(
               Invocation.method(#getFilters, [], {#pagination: pagination}),
               returnValue: Future<List<_i4.IUnifediApiFilter>>.value(
                   <_i4.IUnifediApiFilter>[]))
-          as _i6.Future<List<_i4.IUnifediApiFilter>>);
+          as _i7.Future<List<_i4.IUnifediApiFilter>>);
   @override
-  _i6.Future<_i4.IUnifediApiFilter> getFilter({String? filterId}) => (super
+  _i7.Future<_i4.IUnifediApiFilter> getFilter({String? filterId}) => (super
           .noSuchMethod(
               Invocation.method(#getFilter, [], {#filterId: filterId}),
               returnValue:
                   Future<_i4.IUnifediApiFilter>.value(_FakeIUnifediApiFilter()))
-      as _i6.Future<_i4.IUnifediApiFilter>);
+      as _i7.Future<_i4.IUnifediApiFilter>);
   @override
-  _i6.Future<dynamic> deleteFilter({String? filterId}) => (super.noSuchMethod(
+  _i7.Future<dynamic> deleteFilter({String? filterId}) => (super.noSuchMethod(
       Invocation.method(#deleteFilter, [], {#filterId: filterId}),
-      returnValue: Future<dynamic>.value()) as _i6.Future<dynamic>);
+      returnValue: Future<dynamic>.value()) as _i7.Future<dynamic>);
   @override
-  _i6.Future<_i4.IUnifediApiFilter> createFilter(
-          {_i8.IUnifediApiPostFilter? postFilter}) =>
+  _i7.Future<_i4.IUnifediApiFilter> createFilter(
+          {_i9.IUnifediApiPostFilter? postFilter}) =>
       (super.noSuchMethod(
               Invocation.method(#createFilter, [], {#postFilter: postFilter}),
               returnValue:
                   Future<_i4.IUnifediApiFilter>.value(_FakeIUnifediApiFilter()))
-          as _i6.Future<_i4.IUnifediApiFilter>);
+          as _i7.Future<_i4.IUnifediApiFilter>);
   @override
-  _i6.Future<_i4.IUnifediApiFilter> updateFilter(
-          {String? filterId, _i8.IUnifediApiPostFilter? postFilter}) =>
+  _i7.Future<_i4.IUnifediApiFilter> updateFilter(
+          {String? filterId, _i9.IUnifediApiPostFilter? postFilter}) =>
       (super.noSuchMethod(
               Invocation.method(#updateFilter, [],
                   {#filterId: filterId, #postFilter: postFilter}),
               returnValue:
                   Future<_i4.IUnifediApiFilter>.value(_FakeIUnifediApiFilter()))
-          as _i6.Future<_i4.IUnifediApiFilter>);
+          as _i7.Future<_i4.IUnifediApiFilter>);
   @override
-  _i6.Future<dynamic> dispose() =>
+  _i5.FediverseApiFeatureRequirementState checkFeatureState(
+          _i2.IUnifediApiFeature? feature) =>
+      (super.noSuchMethod(Invocation.method(#checkFeatureState, [feature]),
+              returnValue: _FakeFediverseApiFeatureRequirementState())
+          as _i5.FediverseApiFeatureRequirementState);
+  @override
+  _i7.Future<dynamic> dispose() =>
       (super.noSuchMethod(Invocation.method(#dispose, []),
-          returnValue: Future<dynamic>.value()) as _i6.Future<dynamic>);
+          returnValue: Future<dynamic>.value()) as _i7.Future<dynamic>);
 }

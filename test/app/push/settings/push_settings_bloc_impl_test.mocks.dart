@@ -2,25 +2,27 @@
 // in fedi/test/app/push/settings/push_settings_bloc_impl_test.dart.
 // Do not manually edit this file.
 
-import 'dart:async' as _i6;
+import 'dart:async' as _i7;
 
-import 'package:connectivity_platform_interface/src/enums.dart' as _i14;
-import 'package:easy_dispose/src/composite_disposable.dart' as _i15;
-import 'package:easy_dispose/src/disposable.dart' as _i16;
-import 'package:fedi/async/loading/init/async_init_loading_model.dart' as _i12;
-import 'package:fedi/connection/connection_service.dart' as _i13;
-import 'package:fedi/push/fcm/fcm_push_service.dart' as _i10;
-import 'package:fedi/push/push_model.dart' as _i11;
-import 'package:fedi/push/relay/push_relay_service.dart' as _i9;
+import 'package:connectivity_platform_interface/src/enums.dart' as _i15;
+import 'package:easy_dispose/src/composite_disposable.dart' as _i16;
+import 'package:easy_dispose/src/disposable.dart' as _i17;
+import 'package:fedi/async/loading/init/async_init_loading_model.dart' as _i13;
+import 'package:fedi/connection/connection_service.dart' as _i14;
+import 'package:fedi/push/fcm/fcm_push_service.dart' as _i11;
+import 'package:fedi/push/push_model.dart' as _i12;
+import 'package:fedi/push/relay/push_relay_service.dart' as _i10;
+import 'package:fediverse_api/src/api/requirement/state/fediverse_api_feature_requirement_state_sealed.dart'
+    as _i5;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:unifedi_api/src/api/feature/unifedi_api_feature_model.dart'
     as _i2;
 import 'package:unifedi_api/src/api/push/subscription/alerts/unifedi_api_push_subscription_alerts_model.dart'
-    as _i8;
+    as _i9;
 import 'package:unifedi_api/src/api/push/subscription/metadata/unifedi_api_push_subscription_metadata_model.dart'
-    as _i7;
+    as _i8;
 import 'package:unifedi_api/src/api/push/subscription/service/unifedi_api_push_subscription_service.dart'
-    as _i5;
+    as _i6;
 import 'package:unifedi_api/src/api/push/subscription/unifedi_api_push_subscription_model.dart'
     as _i4;
 import 'package:unifedi_api/src/api/rest/unifedi_api_rest_service.dart' as _i3;
@@ -40,11 +42,14 @@ class _FakeIUnifediApiRestService extends _i1.Fake
 class _FakeIUnifediApiPushSubscription extends _i1.Fake
     implements _i4.IUnifediApiPushSubscription {}
 
+class _FakeFediverseApiFeatureRequirementState extends _i1.Fake
+    implements _i5.FediverseApiFeatureRequirementState {}
+
 /// A class which mocks [IUnifediApiPushSubscriptionService].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockIUnifediApiPushSubscriptionService extends _i1.Mock
-    implements _i5.IUnifediApiPushSubscriptionService {
+    implements _i6.IUnifediApiPushSubscriptionService {
   MockIUnifediApiPushSubscriptionService() {
     _i1.throwOnMissingStub(this);
   }
@@ -79,35 +84,41 @@ class MockIUnifediApiPushSubscriptionService extends _i1.Mock
       (super.noSuchMethod(Invocation.getter(#isDisposed), returnValue: false)
           as bool);
   @override
-  _i6.Future<_i4.IUnifediApiPushSubscription> subscribe(
-          {_i7.IUnifediApiPushSubscriptionMetadata? metadata,
-          _i8.IUnifediApiPushSubscriptionAlerts? alerts}) =>
+  _i7.Future<_i4.IUnifediApiPushSubscription> subscribe(
+          {_i8.IUnifediApiPushSubscriptionMetadata? metadata,
+          _i9.IUnifediApiPushSubscriptionAlerts? alerts}) =>
       (super.noSuchMethod(
               Invocation.method(
                   #subscribe, [], {#metadata: metadata, #alerts: alerts}),
               returnValue: Future<_i4.IUnifediApiPushSubscription>.value(
                   _FakeIUnifediApiPushSubscription()))
-          as _i6.Future<_i4.IUnifediApiPushSubscription>);
+          as _i7.Future<_i4.IUnifediApiPushSubscription>);
   @override
-  _i6.Future<_i4.IUnifediApiPushSubscription> getCurrentSubscription() =>
+  _i7.Future<_i4.IUnifediApiPushSubscription> getCurrentSubscription() =>
       (super.noSuchMethod(Invocation.method(#getCurrentSubscription, []),
               returnValue: Future<_i4.IUnifediApiPushSubscription>.value(
                   _FakeIUnifediApiPushSubscription()))
-          as _i6.Future<_i4.IUnifediApiPushSubscription>);
+          as _i7.Future<_i4.IUnifediApiPushSubscription>);
   @override
-  _i6.Future<dynamic> unsubscribe() =>
+  _i7.Future<dynamic> unsubscribe() =>
       (super.noSuchMethod(Invocation.method(#unsubscribe, []),
-          returnValue: Future<dynamic>.value()) as _i6.Future<dynamic>);
+          returnValue: Future<dynamic>.value()) as _i7.Future<dynamic>);
   @override
-  _i6.Future<dynamic> dispose() =>
+  _i5.FediverseApiFeatureRequirementState checkFeatureState(
+          _i2.IUnifediApiFeature? feature) =>
+      (super.noSuchMethod(Invocation.method(#checkFeatureState, [feature]),
+              returnValue: _FakeFediverseApiFeatureRequirementState())
+          as _i5.FediverseApiFeatureRequirementState);
+  @override
+  _i7.Future<dynamic> dispose() =>
       (super.noSuchMethod(Invocation.method(#dispose, []),
-          returnValue: Future<dynamic>.value()) as _i6.Future<dynamic>);
+          returnValue: Future<dynamic>.value()) as _i7.Future<dynamic>);
 }
 
 /// A class which mocks [IPushRelayService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockIPushRelayService extends _i1.Mock implements _i9.IPushRelayService {
+class MockIPushRelayService extends _i1.Mock implements _i10.IPushRelayService {
   MockIPushRelayService() {
     _i1.throwOnMissingStub(this);
   }
@@ -131,93 +142,93 @@ class MockIPushRelayService extends _i1.Mock implements _i9.IPushRelayService {
           }),
           returnValue: '') as String);
   @override
-  _i6.Future<dynamic> dispose() =>
+  _i7.Future<dynamic> dispose() =>
       (super.noSuchMethod(Invocation.method(#dispose, []),
-          returnValue: Future<dynamic>.value()) as _i6.Future<dynamic>);
+          returnValue: Future<dynamic>.value()) as _i7.Future<dynamic>);
 }
 
 /// A class which mocks [IFcmPushService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockIFcmPushService extends _i1.Mock implements _i10.IFcmPushService {
+class MockIFcmPushService extends _i1.Mock implements _i11.IFcmPushService {
   MockIFcmPushService() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i6.Stream<String> get deviceTokenStream =>
+  _i7.Stream<String> get deviceTokenStream =>
       (super.noSuchMethod(Invocation.getter(#deviceTokenStream),
-          returnValue: Stream<String>.empty()) as _i6.Stream<String>);
+          returnValue: Stream<String>.empty()) as _i7.Stream<String>);
   @override
-  _i6.Stream<_i11.PushMessage> get messageStream =>
+  _i7.Stream<_i12.PushMessage> get messageStream =>
       (super.noSuchMethod(Invocation.getter(#messageStream),
-              returnValue: Stream<_i11.PushMessage>.empty())
-          as _i6.Stream<_i11.PushMessage>);
+              returnValue: Stream<_i12.PushMessage>.empty())
+          as _i7.Stream<_i12.PushMessage>);
   @override
-  _i6.Stream<_i12.AsyncInitLoadingState> get initLoadingStateStream =>
+  _i7.Stream<_i13.AsyncInitLoadingState> get initLoadingStateStream =>
       (super.noSuchMethod(Invocation.getter(#initLoadingStateStream),
-              returnValue: Stream<_i12.AsyncInitLoadingState>.empty())
-          as _i6.Stream<_i12.AsyncInitLoadingState>);
+              returnValue: Stream<_i13.AsyncInitLoadingState>.empty())
+          as _i7.Stream<_i13.AsyncInitLoadingState>);
   @override
-  _i6.Stream<bool> get isLoadingStream =>
+  _i7.Stream<bool> get isLoadingStream =>
       (super.noSuchMethod(Invocation.getter(#isLoadingStream),
-          returnValue: Stream<bool>.empty()) as _i6.Stream<bool>);
+          returnValue: Stream<bool>.empty()) as _i7.Stream<bool>);
   @override
   bool get isDisposed =>
       (super.noSuchMethod(Invocation.getter(#isDisposed), returnValue: false)
           as bool);
   @override
-  _i6.Future<bool> askPermissions() =>
+  _i7.Future<bool> askPermissions() =>
       (super.noSuchMethod(Invocation.method(#askPermissions, []),
-          returnValue: Future<bool>.value(false)) as _i6.Future<bool>);
+          returnValue: Future<bool>.value(false)) as _i7.Future<bool>);
   @override
   void clearInitialMessage() =>
       super.noSuchMethod(Invocation.method(#clearInitialMessage, []),
           returnValueForMissingStub: null);
   @override
-  _i6.Future<dynamic> performAsyncInit() =>
+  _i7.Future<dynamic> performAsyncInit() =>
       (super.noSuchMethod(Invocation.method(#performAsyncInit, []),
-          returnValue: Future<dynamic>.value()) as _i6.Future<dynamic>);
+          returnValue: Future<dynamic>.value()) as _i7.Future<dynamic>);
   @override
-  _i6.Future<dynamic> dispose() =>
+  _i7.Future<dynamic> dispose() =>
       (super.noSuchMethod(Invocation.method(#dispose, []),
-          returnValue: Future<dynamic>.value()) as _i6.Future<dynamic>);
+          returnValue: Future<dynamic>.value()) as _i7.Future<dynamic>);
 }
 
 /// A class which mocks [IConnectionService].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockIConnectionService extends _i1.Mock
-    implements _i13.IConnectionService {
+    implements _i14.IConnectionService {
   MockIConnectionService() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i6.Stream<_i14.ConnectivityResult> get connectionStateStream =>
+  _i7.Stream<_i15.ConnectivityResult> get connectionStateStream =>
       (super.noSuchMethod(Invocation.getter(#connectionStateStream),
-              returnValue: Stream<_i14.ConnectivityResult>.empty())
-          as _i6.Stream<_i14.ConnectivityResult>);
+              returnValue: Stream<_i15.ConnectivityResult>.empty())
+          as _i7.Stream<_i15.ConnectivityResult>);
   @override
-  _i6.Stream<bool> get isConnectedStream =>
+  _i7.Stream<bool> get isConnectedStream =>
       (super.noSuchMethod(Invocation.getter(#isConnectedStream),
-          returnValue: Stream<bool>.empty()) as _i6.Stream<bool>);
+          returnValue: Stream<bool>.empty()) as _i7.Stream<bool>);
   @override
   bool get isConnected =>
       (super.noSuchMethod(Invocation.getter(#isConnected), returnValue: false)
           as bool);
   @override
-  _i15.DisposeOrder get disposeOrder =>
+  _i16.DisposeOrder get disposeOrder =>
       (super.noSuchMethod(Invocation.getter(#disposeOrder),
-          returnValue: _i15.DisposeOrder.lifo) as _i15.DisposeOrder);
+          returnValue: _i16.DisposeOrder.lifo) as _i16.DisposeOrder);
   @override
   bool get catchExceptions => (super
           .noSuchMethod(Invocation.getter(#catchExceptions), returnValue: false)
       as bool);
   @override
-  List<_i16.IDisposable> get disposables =>
+  List<_i17.IDisposable> get disposables =>
       (super.noSuchMethod(Invocation.getter(#disposables),
-          returnValue: <_i16.IDisposable>[]) as List<_i16.IDisposable>);
+          returnValue: <_i17.IDisposable>[]) as List<_i17.IDisposable>);
   @override
   bool get isDisposed =>
       (super.noSuchMethod(Invocation.getter(#isDisposed), returnValue: false)
@@ -227,23 +238,23 @@ class MockIConnectionService extends _i1.Mock
       super.noSuchMethod(Invocation.setter(#isDisposed, _isDisposed),
           returnValueForMissingStub: null);
   @override
-  _i6.Future<dynamic> internalAsyncInit() =>
+  _i7.Future<dynamic> internalAsyncInit() =>
       (super.noSuchMethod(Invocation.method(#internalAsyncInit, []),
-          returnValue: Future<dynamic>.value()) as _i6.Future<dynamic>);
+          returnValue: Future<dynamic>.value()) as _i7.Future<dynamic>);
   @override
-  void addDisposable(_i16.IDisposable? disposable) =>
+  void addDisposable(_i17.IDisposable? disposable) =>
       super.noSuchMethod(Invocation.method(#addDisposable, [disposable]),
           returnValueForMissingStub: null);
   @override
-  void addDisposables(Iterable<_i16.IDisposable>? disposables) =>
+  void addDisposables(Iterable<_i17.IDisposable>? disposables) =>
       super.noSuchMethod(Invocation.method(#addDisposables, [disposables]),
           returnValueForMissingStub: null);
   @override
-  _i6.Future<dynamic> performDispose() =>
+  _i7.Future<dynamic> performDispose() =>
       (super.noSuchMethod(Invocation.method(#performDispose, []),
-          returnValue: Future<dynamic>.value()) as _i6.Future<dynamic>);
+          returnValue: Future<dynamic>.value()) as _i7.Future<dynamic>);
   @override
-  _i6.Future<dynamic> dispose() =>
+  _i7.Future<dynamic> dispose() =>
       (super.noSuchMethod(Invocation.method(#dispose, []),
-          returnValue: Future<dynamic>.value()) as _i6.Future<dynamic>);
+          returnValue: Future<dynamic>.value()) as _i7.Future<dynamic>);
 }

@@ -2,13 +2,15 @@
 // in fedi/test/app/instance/announcement/instance_announcement_bloc_impl_test.dart.
 // Do not manually edit this file.
 
-import 'dart:async' as _i5;
+import 'dart:async' as _i6;
 
+import 'package:fediverse_api/src/api/requirement/state/fediverse_api_feature_requirement_state_sealed.dart'
+    as _i4;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:unifedi_api/src/api/announcement/service/unifedi_api_announcement_service.dart'
-    as _i4;
+    as _i5;
 import 'package:unifedi_api/src/api/announcement/unifedi_api_announcement_model.dart'
-    as _i6;
+    as _i7;
 import 'package:unifedi_api/src/api/feature/unifedi_api_feature_model.dart'
     as _i2;
 import 'package:unifedi_api/src/api/rest/unifedi_api_rest_service.dart' as _i3;
@@ -25,11 +27,14 @@ class _FakeIUnifediApiFeature extends _i1.Fake
 class _FakeIUnifediApiRestService extends _i1.Fake
     implements _i3.IUnifediApiRestService {}
 
+class _FakeFediverseApiFeatureRequirementState extends _i1.Fake
+    implements _i4.FediverseApiFeatureRequirementState {}
+
 /// A class which mocks [IUnifediApiAnnouncementService].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockIUnifediApiAnnouncementService extends _i1.Mock
-    implements _i4.IUnifediApiAnnouncementService {
+    implements _i5.IUnifediApiAnnouncementService {
   MockIUnifediApiAnnouncementService() {
     _i1.throwOnMissingStub(this);
   }
@@ -60,36 +65,42 @@ class MockIUnifediApiAnnouncementService extends _i1.Mock
       (super.noSuchMethod(Invocation.getter(#isDisposed), returnValue: false)
           as bool);
   @override
-  _i5.Future<List<_i6.IUnifediApiAnnouncement>> getAnnouncements(
+  _i6.Future<List<_i7.IUnifediApiAnnouncement>> getAnnouncements(
           {bool? withDismissed}) =>
       (super.noSuchMethod(
               Invocation.method(
                   #getAnnouncements, [], {#withDismissed: withDismissed}),
-              returnValue: Future<List<_i6.IUnifediApiAnnouncement>>.value(
-                  <_i6.IUnifediApiAnnouncement>[]))
-          as _i5.Future<List<_i6.IUnifediApiAnnouncement>>);
+              returnValue: Future<List<_i7.IUnifediApiAnnouncement>>.value(
+                  <_i7.IUnifediApiAnnouncement>[]))
+          as _i6.Future<List<_i7.IUnifediApiAnnouncement>>);
   @override
-  _i5.Future<dynamic> dismissAnnouncement({String? announcementId}) =>
+  _i6.Future<dynamic> dismissAnnouncement({String? announcementId}) =>
       (super.noSuchMethod(
           Invocation.method(
               #dismissAnnouncement, [], {#announcementId: announcementId}),
-          returnValue: Future<dynamic>.value()) as _i5.Future<dynamic>);
+          returnValue: Future<dynamic>.value()) as _i6.Future<dynamic>);
   @override
-  _i5.Future<dynamic> addAnnouncementReaction(
+  _i6.Future<dynamic> addAnnouncementReaction(
           {String? announcementId, String? name}) =>
       (super.noSuchMethod(
           Invocation.method(#addAnnouncementReaction, [],
               {#announcementId: announcementId, #name: name}),
-          returnValue: Future<dynamic>.value()) as _i5.Future<dynamic>);
+          returnValue: Future<dynamic>.value()) as _i6.Future<dynamic>);
   @override
-  _i5.Future<dynamic> removeAnnouncementReaction(
+  _i6.Future<dynamic> removeAnnouncementReaction(
           {String? announcementId, String? name}) =>
       (super.noSuchMethod(
           Invocation.method(#removeAnnouncementReaction, [],
               {#announcementId: announcementId, #name: name}),
-          returnValue: Future<dynamic>.value()) as _i5.Future<dynamic>);
+          returnValue: Future<dynamic>.value()) as _i6.Future<dynamic>);
   @override
-  _i5.Future<dynamic> dispose() =>
+  _i4.FediverseApiFeatureRequirementState checkFeatureState(
+          _i2.IUnifediApiFeature? feature) =>
+      (super.noSuchMethod(Invocation.method(#checkFeatureState, [feature]),
+              returnValue: _FakeFediverseApiFeatureRequirementState())
+          as _i4.FediverseApiFeatureRequirementState);
+  @override
+  _i6.Future<dynamic> dispose() =>
       (super.noSuchMethod(Invocation.method(#dispose, []),
-          returnValue: Future<dynamic>.value()) as _i5.Future<dynamic>);
+          returnValue: Future<dynamic>.value()) as _i6.Future<dynamic>);
 }
