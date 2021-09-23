@@ -53,7 +53,8 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
   // ignore: long-method
   static void registerAdapters() {
     //  UnifediApiFieldAdapter
-    var adaptersRegistered = Hive.isAdapterRegistered(5);
+    // todo: remove hack
+    var adaptersRegistered = Hive.isAdapterRegistered(15);
     if (adaptersRegistered) {
       return;
     }
