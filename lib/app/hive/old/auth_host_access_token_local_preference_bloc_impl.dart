@@ -1,10 +1,10 @@
-import 'package:fedi/app/auth/host/access_token/auth_host_access_token_local_preference_bloc.dart';
+import 'package:fedi/app/hive/old/auth_host_access_token_local_preference_bloc.dart';
 import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
-import 'package:unifedi_api/unifedi_api.dart';
+import 'package:pleroma_api/pleroma_api.dart';
 
 class AuthHostAccessTokenLocalPreferenceBloc
-    extends ObjectLocalPreferenceBloc<UnifediApiOAuthToken?>
+    extends ObjectLocalPreferenceBloc<PleromaApiOAuthToken?>
     implements IAuthHostAccessTokenLocalPreferenceBloc {
   AuthHostAccessTokenLocalPreferenceBloc(
     ILocalPreferencesService preferencesService, {
@@ -13,11 +13,11 @@ class AuthHostAccessTokenLocalPreferenceBloc
           preferencesService: preferencesService,
           key: 'auth.host.$host.access_token',
           schemaVersion: 1,
-          jsonConverter: (json) => UnifediApiOAuthToken.fromJson(json),
+          jsonConverter: (json) => PleromaApiOAuthToken.fromJson(json),
         );
 
-  static const UnifediApiOAuthToken? defaultValue = null;
+  static const PleromaApiOAuthToken? defaultValue = null;
 
   @override
-  UnifediApiOAuthToken? get defaultPreferenceValue => defaultValue;
+  PleromaApiOAuthToken? get defaultPreferenceValue => defaultValue;
 }

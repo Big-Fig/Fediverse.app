@@ -12,7 +12,7 @@ class UnifediApiAccessListLocalPreferenceBloc
     ILocalPreferencesService preferencesService,
   ) : super(
           preferencesService: preferencesService,
-          key: 'instance.list',
+          key: 'access.list',
           schemaVersion: 1,
           jsonConverter: (json) => UnifediApiAccessList.fromJson(json),
         );

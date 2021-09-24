@@ -1,10 +1,10 @@
-import 'package:fedi/app/auth/host/application/auth_host_application_local_preference_bloc.dart';
+import 'package:fedi/app/hive/old/auth_host_application_local_preference_bloc.dart';
 import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
-import 'package:unifedi_api/unifedi_api.dart';
+import 'package:pleroma_api/pleroma_api.dart';
 
 class AuthHostApplicationLocalPreferenceBloc
-    extends ObjectLocalPreferenceBloc<UnifediApiClientApplication?>
+    extends ObjectLocalPreferenceBloc<PleromaApiClientApplication?>
     implements IAuthHostApplicationLocalPreferenceBloc {
   AuthHostApplicationLocalPreferenceBloc(
     ILocalPreferencesService preferencesService, {
@@ -13,11 +13,11 @@ class AuthHostApplicationLocalPreferenceBloc
           preferencesService: preferencesService,
           key: 'auth.host.$host.application',
           schemaVersion: 1,
-          jsonConverter: (json) => UnifediApiClientApplication.fromJson(json),
+          jsonConverter: (json) => PleromaApiClientApplication.fromJson(json),
         );
 
-  static const UnifediApiClientApplication? defaultValue = null;
+  static const PleromaApiClientApplication? defaultValue = null;
 
   @override
-  UnifediApiClientApplication? get defaultPreferenceValue => defaultValue;
+  PleromaApiClientApplication? get defaultPreferenceValue => defaultValue;
 }

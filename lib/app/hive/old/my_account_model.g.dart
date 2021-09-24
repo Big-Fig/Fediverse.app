@@ -1,32 +1,33 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'access_list_model.dart';
+part of 'my_account_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class UnifediApiAccessListAdapter extends TypeAdapter<UnifediApiAccessList> {
+class PleromaMyAccountWrapperAdapter
+    extends TypeAdapter<PleromaMyAccountWrapper> {
   @override
-  final int typeId = 73;
+  final int typeId = 0;
 
   @override
-  UnifediApiAccessList read(BinaryReader reader) {
+  PleromaMyAccountWrapper read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return UnifediApiAccessList(
-      instances: (fields[0] as List).cast<UnifediApiAccess>(),
+    return PleromaMyAccountWrapper(
+      pleromaAccount: fields[0] as PleromaApiMyAccount,
     );
   }
 
   @override
-  void write(BinaryWriter writer, UnifediApiAccessList obj) {
+  void write(BinaryWriter writer, PleromaMyAccountWrapper obj) {
     writer
       ..writeByte(1)
       ..writeByte(0)
-      ..write(obj.instances);
+      ..write(obj.pleromaAccount);
   }
 
   @override
@@ -35,7 +36,7 @@ class UnifediApiAccessListAdapter extends TypeAdapter<UnifediApiAccessList> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is UnifediApiAccessListAdapter &&
+      other is PleromaMyAccountWrapperAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
@@ -44,16 +45,16 @@ class UnifediApiAccessListAdapter extends TypeAdapter<UnifediApiAccessList> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-UnifediApiAccessList _$UnifediApiAccessListFromJson(Map<String, dynamic> json) {
-  return UnifediApiAccessList(
-    instances: (json['instances'] as List<dynamic>)
-        .map((e) => UnifediApiAccess.fromJson(e as Map<String, dynamic>))
-        .toList(),
+PleromaMyAccountWrapper _$PleromaMyAccountWrapperFromJson(
+    Map<String, dynamic> json) {
+  return PleromaMyAccountWrapper(
+    pleromaAccount: PleromaApiMyAccount.fromJson(
+        json['remote_account'] as Map<String, dynamic>),
   );
 }
 
-Map<String, dynamic> _$UnifediApiAccessListToJson(
-        UnifediApiAccessList instance) =>
+Map<String, dynamic> _$PleromaMyAccountWrapperToJson(
+        PleromaMyAccountWrapper instance) =>
     <String, dynamic>{
-      'instances': instance.instances.map((e) => e.toJson()).toList(),
+      'remote_account': instance.pleromaAccount.toJson(),
     };

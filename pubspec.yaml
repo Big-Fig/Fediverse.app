@@ -266,6 +266,12 @@ dev_dependencies:
   fediverse_api:
     path: ../dart_fediverse_api/fediverse_api
 
+  pleroma_api:
+    path: ../dart_fediverse_api/pleroma_api
+
+  mastodon_api:
+    path: ../dart_fediverse_api/mastodon_api
+
   unifedi_api:
     path: ../dart_fediverse_api/unifedi_api
 

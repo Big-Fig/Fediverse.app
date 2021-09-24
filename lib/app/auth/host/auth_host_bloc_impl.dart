@@ -1,10 +1,11 @@
 import 'dart:async';
 
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:fedi/app/auth/host/access_token/auth_host_access_token_local_preference_bloc.dart';
-import 'package:fedi/app/auth/host/access_token/auth_host_access_token_local_preference_bloc_impl.dart';
-import 'package:fedi/app/auth/host/application/auth_host_application_local_preference_bloc.dart';
-import 'package:fedi/app/auth/host/application/auth_host_application_local_preference_bloc_impl.dart';
+import 'package:fedi/app/access/host/access_token/access_host_access_token_local_preference_bloc.dart';
+import 'package:fedi/app/access/host/access_token/access_host_access_token_local_preference_bloc_impl.dart';
+import 'package:fedi/app/access/host/application/access_host_application_local_preference_bloc.dart';
+import 'package:fedi/app/access/host/application/access_host_application_local_preference_bloc_impl.dart';
+
 import 'package:fedi/app/auth/host/auth_host_bloc.dart';
 import 'package:fedi/app/auth/host/auth_host_model.dart';
 import 'package:fedi/app/access/current/current_access_bloc.dart';
@@ -50,11 +51,11 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
   late IUnifediApiAccountService unifediApiAccountService;
 
   // ignore: avoid-late-keyword
-  late IAuthHostApplicationLocalPreferenceBloc
+  late IAccessHostApplicationLocalPreferenceBloc
       hostApplicationLocalPreferenceBloc;
 
   // ignore: avoid-late-keyword
-  late IAuthHostAccessTokenLocalPreferenceBloc
+  late IAccessHostAccessTokenLocalPreferenceBloc
       hostAccessTokenLocalPreferenceBloc;
 
   // ignore: avoid-late-keyword
@@ -83,12 +84,14 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
         userAccessToken: null,
       ),
     )..disposeWith(this);
-    hostApplicationLocalPreferenceBloc = AuthHostApplicationLocalPreferenceBloc(
+    hostApplicationLocalPreferenceBloc =
+        AccessHostApplicationLocalPreferenceBloc(
       preferencesService,
       host: instanceBaseUriHost,
     )..disposeWith(this);
 
-    hostAccessTokenLocalPreferenceBloc = AuthHostAccessTokenLocalPreferenceBloc(
+    hostAccessTokenLocalPreferenceBloc =
+        AccessHostAccessTokenLocalPreferenceBloc(
       preferencesService,
       host: instanceBaseUriHost,
     )..disposeWith(this);

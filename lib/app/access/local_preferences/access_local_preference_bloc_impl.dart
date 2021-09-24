@@ -13,7 +13,7 @@ class UnifediApiAccessLocalPreferenceBloc
     required String userAtHost,
   }) : super(
           preferencesService: preferencesService,
-          key: '$userAtHost.instance',
+          key: '$userAtHost.access',
           schemaVersion: 1,
           jsonConverter: (json) => UnifediApiAccess.fromJson(json),
         );

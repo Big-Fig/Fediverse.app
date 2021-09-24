@@ -9,7 +9,7 @@ part of 'my_account_model.dart';
 class UnifediApiMyAccountWrapperAdapter
     extends TypeAdapter<UnifediApiMyAccountWrapper> {
   @override
-  final int typeId = 21;
+  final int typeId = 72;
 
   @override
   UnifediApiMyAccountWrapper read(BinaryReader reader) {

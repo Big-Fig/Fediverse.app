@@ -1,28 +1,28 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'access_list_model.dart';
+part of 'auth_instance_list_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class UnifediApiAccessListAdapter extends TypeAdapter<UnifediApiAccessList> {
+class AuthInstanceListAdapter extends TypeAdapter<AuthInstanceList> {
   @override
-  final int typeId = 73;
+  final int typeId = 17;
 
   @override
-  UnifediApiAccessList read(BinaryReader reader) {
+  AuthInstanceList read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return UnifediApiAccessList(
-      instances: (fields[0] as List).cast<UnifediApiAccess>(),
+    return AuthInstanceList(
+      instances: (fields[0] as List).cast<AuthInstance>(),
     );
   }
 
   @override
-  void write(BinaryWriter writer, UnifediApiAccessList obj) {
+  void write(BinaryWriter writer, AuthInstanceList obj) {
     writer
       ..writeByte(1)
       ..writeByte(0)
@@ -35,7 +35,7 @@ class UnifediApiAccessListAdapter extends TypeAdapter<UnifediApiAccessList> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is UnifediApiAccessListAdapter &&
+      other is AuthInstanceListAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
@@ -44,16 +44,15 @@ class UnifediApiAccessListAdapter extends TypeAdapter<UnifediApiAccessList> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-UnifediApiAccessList _$UnifediApiAccessListFromJson(Map<String, dynamic> json) {
-  return UnifediApiAccessList(
+AuthInstanceList _$AuthInstanceListFromJson(Map<String, dynamic> json) {
+  return AuthInstanceList(
     instances: (json['instances'] as List<dynamic>)
-        .map((e) => UnifediApiAccess.fromJson(e as Map<String, dynamic>))
+        .map((e) => AuthInstance.fromJson(e as Map<String, dynamic>))
         .toList(),
   );
 }
 
-Map<String, dynamic> _$UnifediApiAccessListToJson(
-        UnifediApiAccessList instance) =>
+Map<String, dynamic> _$AuthInstanceListToJson(AuthInstanceList instance) =>
     <String, dynamic>{
       'instances': instance.instances.map((e) => e.toJson()).toList(),
     };

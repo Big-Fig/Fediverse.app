@@ -1,7 +1,7 @@
 import 'package:fedi/analytics/app/local_preferences/app_analytics_local_preference_bloc_impl.dart';
+import 'package:fedi/app/access/host/access_token/access_host_access_token_local_preference_bloc_impl.dart';
+import 'package:fedi/app/access/host/application/access_host_application_local_preference_bloc_impl.dart';
 import 'package:fedi/app/account/my/local_preferences/my_account_local_preference_bloc_impl.dart';
-import 'package:fedi/app/auth/host/access_token/auth_host_access_token_local_preference_bloc_impl.dart';
-import 'package:fedi/app/auth/host/application/auth_host_application_local_preference_bloc_impl.dart';
 import 'package:fedi/app/access/current/local_preferences/current_access_local_preference_bloc_impl.dart';
 import 'package:fedi/app/access/list/local_preferences/access_list_local_preference_bloc_impl.dart';
 import 'package:fedi/app/chat/settings/local_preferences/global/global_chat_settings_local_preference_bloc_impl.dart';
@@ -62,8 +62,8 @@ class FediLocalPreferencesServiceMigrationBloc
       var userAtHost = authInstance.userAtHost;
 
       authInstancesBlocCreators.addAll([
-        (lps) => AuthHostAccessTokenLocalPreferenceBloc(lps, host: host),
-        (lps) => AuthHostApplicationLocalPreferenceBloc(lps, host: host),
+        (lps) => AccessHostAccessTokenLocalPreferenceBloc(lps, host: host),
+        (lps) => AccessHostApplicationLocalPreferenceBloc(lps, host: host),
       ]);
       authInstancesBlocCreators
           .addAll(calculateUserAtHostLocalPreferencesBlocCreators(userAtHost));
