@@ -15,7 +15,7 @@ import 'package:fedi/app/account/statuses/media_only/cached/account_statuses_med
 import 'package:fedi/app/account/statuses/pinned_only/network_only/local/local_account_statuses_pinned_only_network_only_list_bloc_impl.dart';
 import 'package:fedi/app/account/statuses/with_replies/cached/account_statuses_with_replies_cached_list_bloc_impl.dart';
 import 'package:fedi/app/account/statuses/without_replies/cached/account_statuses_without_replies_cached_list_bloc_impl.dart';
-import 'package:fedi/app/access/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/home/tab/account/account_home_tab_bloc.dart';
 import 'package:fedi/app/home/tab/account/account_home_tab_page_keys.dart';
 import 'package:fedi/app/home/tab/account/menu/account_home_tab_menu_dialog.dart';

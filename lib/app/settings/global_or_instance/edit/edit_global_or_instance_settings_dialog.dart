@@ -1,4 +1,4 @@
-import 'package:fedi/app/access/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/settings/global_or_instance/edit/switch/switch_edit_global_or_instance_settings_bool_value_form_field_bloc.dart';
 import 'package:fedi/app/settings/global_or_instance/edit/switch/switch_edit_global_or_instance_settings_bool_value_form_field_bloc_impl.dart';
 import 'package:fedi/app/settings/global_or_instance/edit/switch/switch_edit_global_or_instance_settings_bool_value_form_field_row.dart';

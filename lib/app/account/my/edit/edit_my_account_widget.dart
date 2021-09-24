@@ -17,7 +17,7 @@ import 'package:fedi/app/account/my/edit/field/pleroma/hide_follows/edit_my_acco
 import 'package:fedi/app/account/my/edit/field/pleroma/no_rich_text/edit_my_account_pleroma_no_rich_text_field_widget.dart';
 import 'package:fedi/app/account/my/edit/field/pleroma/show_role/edit_my_account_pleroma_show_role_field_widget.dart';
 import 'package:fedi/app/account/my/edit/field/pleroma/skip_thread_containment/edit_my_account_pleroma_skip_thread_containment_field_widget.dart';
-import 'package:fedi/app/access/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
 import 'package:flutter/cupertino.dart';

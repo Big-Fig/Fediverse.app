@@ -131,7 +131,7 @@ class _FediStepperNextActionButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => FediPrimaryFilledTextButtonWithBorder(
-        S.of(context).app_auth_instance_register_action_nextStep,
+        S.of(context).app_access_register_action_nextStep,
         onPressed: onStepContinue,
         expanded: false,
       );
@@ -154,7 +154,7 @@ class _FediStepperSubmitActionButtonWidget<T extends IFediStepperItem>
         final isHaveAtLeastOneError = snapshot.data!;
 
         return FediPrimaryFilledTextButtonWithBorder(
-          S.of(context).app_auth_instance_register_action_submit,
+          S.of(context).app_access_register_action_submit,
           onPressed:
               isHaveAtLeastOneError ? null : () => fediStepperBloc.submit(),
           expanded: false,
@@ -174,7 +174,7 @@ class _FediStepperBackActionButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => FediTransparentTextButtonWithBorder(
-        S.of(context).app_auth_instance_register_action_previousStep,
+        S.of(context).app_access_register_action_previousStep,
         onPressed: onStepCancel,
         expanded: false,
         color: IFediUiColorTheme.of(context).mediumGrey,

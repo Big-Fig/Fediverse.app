@@ -1,6 +1,6 @@
 import 'package:fedi/app/about/about_page.dart';
 import 'package:fedi/app/account/my/statuses/bookmarked/my_account_bookmarked_statuses_page.dart';
-import 'package:fedi/app/access/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/custom_list/list/custom_list_list_page.dart';
 import 'package:fedi/app/home/tab/account/menu/account_home_tab_menu_dialog_keys.dart';

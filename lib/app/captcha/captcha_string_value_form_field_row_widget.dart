@@ -230,7 +230,7 @@ class _FormCaptchaStringFormFieldRowBodyContentWidget extends StatelessWidget {
                           FediFormColumnDesc(
                             S
                                 .of(context)
-                                .app_auth_instance_register_field_captcha_description,
+                                .app_access_register_field_captcha_description,
                           ),
                           FediTransparentEditTextField(
                             focusNode: focusNode,

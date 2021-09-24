@@ -6,7 +6,7 @@ import 'package:fedi/app/account/local_account_bloc_impl.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/remote_account_bloc_impl.dart';
 import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
-import 'package:fedi/app/access/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/chat/conversation/share/conversation_chat_share_entity_page.dart';
 import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_entity_page.dart';
 import 'package:fedi/app/html/html_text_helper.dart';

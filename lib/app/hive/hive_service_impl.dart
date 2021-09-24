@@ -2,7 +2,7 @@ import 'package:fedi/analytics/app/app_analytics_model.dart';
 import 'package:fedi/app/account/my/my_account_model.dart';
 import 'package:fedi/app/account/select/recent/recent_select_account_model.dart';
 
-import 'package:fedi/app/access/list/auth_instance_list_model.dart';
+import 'package:fedi/app/access/list/access_list_model.dart';
 import 'package:fedi/app/cache/database/settings/database_cache_settings_model.dart';
 import 'package:fedi/app/cache/files/settings/files_cache_settings_model.dart';
 import 'package:fedi/app/chat/settings/chat_settings_model.dart';

@@ -4,10 +4,10 @@ import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
 
-import 'package:fedi/app/access/current/current_auth_instance_bloc.dart';
-import 'package:fedi/app/access/list/auth_instance_list_bloc.dart';
-import 'package:fedi/app/access/local_preferences/auth_instance_local_preference_bloc_impl.dart';
-import 'package:fedi/app/access/local_preferences_auth_instance_bloc_impl.dart';
+import 'package:fedi/app/access/current/current_access_bloc.dart';
+import 'package:fedi/app/access/list/access_list_bloc.dart';
+import 'package:fedi/app/access/local_preferences/access_local_preference_bloc_impl.dart';
+import 'package:fedi/app/access/local_preferences_access_bloc_impl.dart';
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository_impl.dart';
 import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/database/app_database_service_impl.dart';

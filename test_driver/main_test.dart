@@ -4,9 +4,9 @@
 // Selenium/WebDriver for web, Espresso for Android or UI Automation for iOS,
 // this is simply Flutter's version of that.
 
-import 'package:fedi/app/access/join/from_scratch/from_scratch_join_auth_instance_page_keys.dart';
-import 'package:fedi/app/access/join/join_auth_instance_widget_keys.dart';
-import 'package:fedi/app/access/register/register_auth_instance_page_keys.dart';
+import 'package:fedi/app/access/join/from_scratch/from_scratch_join_access_page_keys.dart';
+import 'package:fedi/app/access/join/join_access_widget_keys.dart';
+import 'package:fedi/app/access/register/register_access_page_keys.dart';
 import 'package:fedi/app/home/home_page_bottom_navigation_bar_widget_keys.dart';
 import 'package:fedi/app/home/home_page_keys.dart';
 import 'package:fedi/app/home/tab/account/account_home_tab_page_keys.dart';

@@ -1,4 +1,4 @@
-import 'package:fedi/app/access/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/custom_list/custom_list_bloc.dart';
 import 'package:fedi/app/custom_list/custom_list_bloc_impl.dart';
 import 'package:fedi/app/custom_list/custom_list_model.dart';

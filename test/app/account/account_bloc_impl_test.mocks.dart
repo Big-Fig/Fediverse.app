@@ -551,13 +551,18 @@ class MockIUnifediApiWebSocketsService extends _i1.Mock
       (super.noSuchMethod(Invocation.getter(#listenForHashtagEventsFeature),
           returnValue: _FakeIUnifediApiFeature()) as _i2.IUnifediApiFeature);
   @override
-  _i8.IWebSocketsService get webSocketsService =>
-      (super.noSuchMethod(Invocation.getter(#webSocketsService),
-          returnValue: _FakeIWebSocketsService()) as _i8.IWebSocketsService);
+  _i3.IUnifediApiRestService get restService =>
+      (super.noSuchMethod(Invocation.getter(#restService),
+              returnValue: _FakeIUnifediApiRestService())
+          as _i3.IUnifediApiRestService);
   @override
   bool get isDisposed =>
       (super.noSuchMethod(Invocation.getter(#isDisposed), returnValue: false)
           as bool);
+  @override
+  _i8.IWebSocketsService get webSocketsService =>
+      (super.noSuchMethod(Invocation.getter(#webSocketsService),
+          returnValue: _FakeIWebSocketsService()) as _i8.IWebSocketsService);
   @override
   _i9.IDisposable listenForPublicEvents(
           {_i19.WebSocketsChannelHandlerType? handlerType,
@@ -643,6 +648,12 @@ class MockIUnifediApiWebSocketsService extends _i1.Mock
             #onEvent: onEvent
           }),
           returnValue: _FakeIDisposable()) as _i9.IDisposable);
+  @override
+  _i7.FediverseApiFeatureRequirementState checkFeatureState(
+          _i2.IUnifediApiFeature? feature) =>
+      (super.noSuchMethod(Invocation.method(#checkFeatureState, [feature]),
+              returnValue: _FakeFediverseApiFeatureRequirementState())
+          as _i7.FediverseApiFeatureRequirementState);
   @override
   _i11.Future<dynamic> dispose() =>
       (super.noSuchMethod(Invocation.method(#dispose, []),

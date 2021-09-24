@@ -1275,72 +1275,71 @@ class S {
   }
 
   /// `Log Out`
-  String get app_auth_instance_logout_dialog_title {
+  String get app_access_logout_dialog_title {
     return Intl.message(
       'Log Out',
-      name: 'app_auth_instance_logout_dialog_title',
+      name: 'app_access_logout_dialog_title',
       desc: '',
       args: [],
     );
   }
 
   /// `Log out of {userAtHost}`
-  String app_auth_instance_logout_dialog_content(Object userAtHost) {
+  String app_access_logout_dialog_content(Object userAtHost) {
     return Intl.message(
       'Log out of $userAtHost',
-      name: 'app_auth_instance_logout_dialog_content',
+      name: 'app_access_logout_dialog_content',
       desc: '',
       args: [userAtHost],
     );
   }
 
   /// `Add account`
-  String get app_auth_instance_chooser_action_addInstance {
+  String get app_access_chooser_action_addInstance {
     return Intl.message(
       'Add account',
-      name: 'app_auth_instance_chooser_action_addInstance',
+      name: 'app_access_chooser_action_addInstance',
       desc: '',
       args: [],
     );
   }
 
   /// `Loading Instance`
-  String get app_auth_instance_current_context_loading_loading_title {
+  String get app_access_current_context_loading_loading_title {
     return Intl.message(
       'Loading Instance',
-      name: 'app_auth_instance_current_context_loading_loading_title',
+      name: 'app_access_current_context_loading_loading_title',
       desc: '',
       args: [],
     );
   }
 
   /// `{userAtHost}`
-  String app_auth_instance_current_context_loading_loading_content(
-      Object userAtHost) {
+  String app_access_current_context_loading_loading_content(Object userAtHost) {
     return Intl.message(
       '$userAtHost',
-      name: 'app_auth_instance_current_context_loading_loading_content',
+      name: 'app_access_current_context_loading_loading_content',
       desc: '',
       args: [userAtHost],
     );
   }
 
   /// `Can't load {userAtHost} instance.\nApp error or session expired`
-  String app_auth_instance_current_context_loading_cantLoad_content(
+  String app_access_current_context_loading_cantLoad_content(
       Object userAtHost) {
     return Intl.message(
       'Can\'t load $userAtHost instance.\nApp error or session expired',
-      name: 'app_auth_instance_current_context_loading_cantLoad_content',
+      name: 'app_access_current_context_loading_cantLoad_content',
       desc: '',
       args: [userAtHost],
     );
   }
 
   /// `Refresh`
-  String get app_auth_instance_current_context_loading_cantLoad_action_refresh {
+  String get app_access_current_context_loading_cantLoad_action_refresh {
     return Intl.message(
       'Refresh',
-      name: 'app_auth_instance_current_context_loading_cantLoad_action_refresh',
+      name: 'app_access_current_context_loading_cantLoad_action_refresh',
       desc: '',
       args: [],
     );
@@ -1348,423 +1347,421 @@ class S {
 
   /// `Choose different account`
   String
-      get app_auth_instance_current_context_loading_cantLoad_action_chooseDifferentAccount {
+      get app_access_current_context_loading_cantLoad_action_chooseDifferentAccount {
     return Intl.message(
       'Choose different account',
       name:
-          'app_auth_instance_current_context_loading_cantLoad_action_chooseDifferentAccount',
+          'app_access_current_context_loading_cantLoad_action_chooseDifferentAccount',
       desc: '',
       args: [],
     );
   }
 
   /// `Logout`
-  String get app_auth_instance_current_context_loading_cantLoad_action_logout {
+  String get app_access_current_context_loading_cantLoad_action_logout {
     return Intl.message(
       'Logout',
-      name: 'app_auth_instance_current_context_loading_cantLoad_action_logout',
+      name: 'app_access_current_context_loading_cantLoad_action_logout',
       desc: '',
       args: [],
     );
   }
 
   /// `Join new instance`
-  String get app_auth_instance_join_new_title {
+  String get app_access_join_new_title {
     return Intl.message(
       'Join new instance',
-      name: 'app_auth_instance_join_new_title',
+      name: 'app_access_join_new_title',
       desc: '',
       args: [],
     );
   }
 
   /// `By using Fedi, you agree to our`
-  String get app_auth_instance_join_action_tos_prefix {
+  String get app_access_join_action_tos_prefix {
     return Intl.message(
       'By using Fedi, you agree to our',
-      name: 'app_auth_instance_join_action_tos_prefix',
+      name: 'app_access_join_action_tos_prefix',
       desc: '',
       args: [],
     );
   }
 
   /// `Terms`
-  String get app_auth_instance_join_action_tos_terms {
+  String get app_access_join_action_tos_terms {
     return Intl.message(
       'Terms',
-      name: 'app_auth_instance_join_action_tos_terms',
+      name: 'app_access_join_action_tos_terms',
       desc: '',
       args: [],
     );
   }
 
   /// `.`
-  String get app_auth_instance_join_action_tos_postfix {
+  String get app_access_join_action_tos_postfix {
     return Intl.message(
       '.',
-      name: 'app_auth_instance_join_action_tos_postfix',
+      name: 'app_access_join_action_tos_postfix',
       desc: '',
       args: [],
     );
   }
 
   /// `Login`
-  String get app_auth_instance_join_action_login {
+  String get app_access_join_action_login {
     return Intl.message(
       'Login',
-      name: 'app_auth_instance_join_action_login',
+      name: 'app_access_join_action_login',
       desc: '',
       args: [],
     );
   }
 
   /// `Explore as guest`
-  String get app_auth_instance_join_action_exploreAsGuest {
+  String get app_access_join_action_exploreAsGuest {
     return Intl.message(
       'Explore as guest',
-      name: 'app_auth_instance_join_action_exploreAsGuest',
+      name: 'app_access_join_action_exploreAsGuest',
       desc: '',
       args: [],
     );
   }
 
   /// `Sign up`
-  String get app_auth_instance_join_action_signUp {
+  String get app_access_join_action_signUp {
     return Intl.message(
       'Sign up',
-      name: 'app_auth_instance_join_action_signUp',
+      name: 'app_access_join_action_signUp',
       desc: '',
       args: [],
     );
   }
 
   /// `About`
-  String get app_auth_instance_join_action_about {
+  String get app_access_join_action_about {
     return Intl.message(
       'About',
-      name: 'app_auth_instance_join_action_about',
+      name: 'app_access_join_action_about',
       desc: '',
       args: [],
     );
   }
 
   /// `Help me choose instance`
-  String get app_auth_instance_join_action_helpMeChooseInstance {
+  String get app_access_join_action_helpMeChooseInstance {
     return Intl.message(
       'Help me choose instance',
-      name: 'app_auth_instance_join_action_helpMeChooseInstance',
+      name: 'app_access_join_action_helpMeChooseInstance',
       desc: '',
       args: [],
     );
   }
 
   /// `Pleroma or Mastodon Instance`
-  String get app_auth_instance_join_field_host_helper {
+  String get app_access_join_field_host_helper {
     return Intl.message(
       'Pleroma or Mastodon Instance',
-      name: 'app_auth_instance_join_field_host_helper',
+      name: 'app_access_join_field_host_helper',
       desc: '',
       args: [],
     );
   }
 
   /// `Checking instance`
-  String get app_auth_instance_join_progress_dialog_content {
+  String get app_access_join_progress_dialog_content {
     return Intl.message(
       'Checking instance',
-      name: 'app_auth_instance_join_progress_dialog_content',
+      name: 'app_access_join_progress_dialog_content',
       desc: '',
       args: [],
     );
   }
 
   /// `Fail to connect to instance`
-  String get app_auth_instance_join_fail_dialog_title {
+  String get app_access_join_fail_dialog_title {
     return Intl.message(
       'Fail to connect to instance',
-      name: 'app_auth_instance_join_fail_dialog_title',
+      name: 'app_access_join_fail_dialog_title',
       desc: '',
       args: [],
     );
   }
 
   /// `Details: {error}`
-  String app_auth_instance_join_fail_dialog_content(Object error) {
+  String app_access_join_fail_dialog_content(Object error) {
     return Intl.message(
       'Details: $error',
-      name: 'app_auth_instance_join_fail_dialog_content',
+      name: 'app_access_join_fail_dialog_content',
       desc: '',
       args: [error],
     );
   }
 
   /// `Instance owner disabled registration`
-  String get app_auth_instance_join_registrationDisabled_dialog_title {
+  String get app_access_join_registrationDisabled_dialog_title {
     return Intl.message(
       'Instance owner disabled registration',
-      name: 'app_auth_instance_join_registrationDisabled_dialog_title',
+      name: 'app_access_join_registrationDisabled_dialog_title',
       desc: '',
       args: [],
     );
   }
 
   /// `Instance owner limit registration to invites-only`
-  String get app_auth_instance_join_invitesOnly_dialog_title {
+  String get app_access_join_invitesOnly_dialog_title {
     return Intl.message(
       'Instance owner limit registration to invites-only',
-      name: 'app_auth_instance_join_invitesOnly_dialog_title',
+      name: 'app_access_join_invitesOnly_dialog_title',
       desc: '',
       args: [],
     );
   }
 
   /// `Try any other instance, or register by invite link in your browser`
-  String get app_auth_instance_join_invitesOnly_dialog_content {
+  String get app_access_join_invitesOnly_dialog_content {
     return Intl.message(
       'Try any other instance, or register by invite link in your browser',
-      name: 'app_auth_instance_join_invitesOnly_dialog_content',
+      name: 'app_access_join_invitesOnly_dialog_content',
       desc: '',
       args: [],
     );
   }
 
   /// `Create account on {host}`
-  String app_auth_instance_register_title(Object host) {
+  String app_access_register_title(Object host) {
     return Intl.message(
       'Create account on $host',
-      name: 'app_auth_instance_register_title',
+      name: 'app_access_register_title',
       desc: '',
       args: [host],
     );
   }
 
   /// `Success registration`
-  String get app_auth_instance_register_approvalRequired_notification_title {
+  String get app_access_register_approvalRequired_notification_title {
     return Intl.message(
       'Success registration',
-      name: 'app_auth_instance_register_approvalRequired_notification_title',
+      name: 'app_access_register_approvalRequired_notification_title',
       desc: '',
       args: [],
     );
   }
 
   /// `You can login once moderators will approve your account`
-  String get app_auth_instance_register_approvalRequired_notification_content {
+  String get app_access_register_approvalRequired_notification_content {
     return Intl.message(
       'You can login once moderators will approve your account',
-      name: 'app_auth_instance_register_approvalRequired_notification_content',
+      name: 'app_access_register_approvalRequired_notification_content',
       desc: '',
       args: [],
     );
   }
 
   /// `Accounts manual approve`
-  String get app_auth_instance_register_step_manualApprove_title {
+  String get app_access_register_step_manualApprove_title {
     return Intl.message(
       'Accounts manual approve',
-      name: 'app_auth_instance_register_step_manualApprove_title',
+      name: 'app_access_register_step_manualApprove_title',
       desc: '',
       args: [],
     );
   }
 
   /// `Instance owners enabled manual approve by moderators to prevent spam.\nYou will need to wait moderation approve until you will can use your account`
-  String get app_auth_instance_register_step_manualApprove_description {
+  String get app_access_register_step_manualApprove_description {
     return Intl.message(
       'Instance owners enabled manual approve by moderators to prevent spam.\nYou will need to wait moderation approve until you will can use your account',
-      name: 'app_auth_instance_register_step_manualApprove_description',
+      name: 'app_access_register_step_manualApprove_description',
       desc: '',
       args: [],
     );
   }
 
   /// `Captcha`
-  String get app_auth_instance_register_step_captcha_title {
+  String get app_access_register_step_captcha_title {
     return Intl.message(
       'Captcha',
-      name: 'app_auth_instance_register_step_captcha_title',
+      name: 'app_access_register_step_captcha_title',
       desc: '',
       args: [],
     );
   }
 
   /// `Instance owners enabled captcha to prevent spam`
-  String get app_auth_instance_register_step_captcha_description {
+  String get app_access_register_step_captcha_description {
     return Intl.message(
       'Instance owners enabled captcha to prevent spam',
-      name: 'app_auth_instance_register_step_captcha_description',
+      name: 'app_access_register_step_captcha_description',
       desc: '',
       args: [],
     );
   }
 
   /// `Instance owners disabled captcha`
-  String
-      get app_auth_instance_register_step_captcha_description_disabledOnServer {
+  String get app_access_register_step_captcha_description_disabledOnServer {
     return Intl.message(
       'Instance owners disabled captcha',
-      name:
-          'app_auth_instance_register_step_captcha_description_disabledOnServer',
+      name: 'app_access_register_step_captcha_description_disabledOnServer',
       desc: '',
       args: [],
     );
   }
 
   /// `Account`
-  String get app_auth_instance_register_step_account_title {
+  String get app_access_register_step_account_title {
     return Intl.message(
       'Account',
-      name: 'app_auth_instance_register_step_account_title',
+      name: 'app_access_register_step_account_title',
       desc: '',
       args: [],
     );
   }
 
   /// `Submit`
-  String get app_auth_instance_register_step_submit_title {
+  String get app_access_register_step_submit_title {
     return Intl.message(
       'Submit',
-      name: 'app_auth_instance_register_step_submit_title',
+      name: 'app_access_register_step_submit_title',
       desc: '',
       args: [],
     );
   }
 
   /// `Next`
-  String get app_auth_instance_register_action_nextStep {
+  String get app_access_register_action_nextStep {
     return Intl.message(
       'Next',
-      name: 'app_auth_instance_register_action_nextStep',
+      name: 'app_access_register_action_nextStep',
       desc: '',
       args: [],
     );
   }
 
   /// `Back`
-  String get app_auth_instance_register_action_previousStep {
+  String get app_access_register_action_previousStep {
     return Intl.message(
       'Back',
-      name: 'app_auth_instance_register_action_previousStep',
+      name: 'app_access_register_action_previousStep',
       desc: '',
       args: [],
     );
   }
 
   /// `Submit`
-  String get app_auth_instance_register_action_submit {
+  String get app_access_register_action_submit {
     return Intl.message(
       'Submit',
-      name: 'app_auth_instance_register_action_submit',
+      name: 'app_access_register_action_submit',
       desc: '',
       args: [],
     );
   }
 
   /// `Username*`
-  String get app_auth_instance_register_field_username_label {
+  String get app_access_register_field_username_label {
     return Intl.message(
       'Username*',
-      name: 'app_auth_instance_register_field_username_label',
+      name: 'app_access_register_field_username_label',
       desc: '',
       args: [],
     );
   }
 
   /// `lain`
-  String get app_auth_instance_register_field_username_hint {
+  String get app_access_register_field_username_hint {
     return Intl.message(
       'lain',
-      name: 'app_auth_instance_register_field_username_hint',
+      name: 'app_access_register_field_username_hint',
       desc: '',
       args: [],
     );
   }
 
   /// `Captcha*`
-  String get app_auth_instance_register_field_captcha_label {
+  String get app_access_register_field_captcha_label {
     return Intl.message(
       'Captcha*',
-      name: 'app_auth_instance_register_field_captcha_label',
+      name: 'app_access_register_field_captcha_label',
       desc: '',
       args: [],
     );
   }
 
   /// `Tap to reload`
-  String get app_auth_instance_register_field_captcha_description {
+  String get app_access_register_field_captcha_description {
     return Intl.message(
       'Tap to reload',
-      name: 'app_auth_instance_register_field_captcha_description',
+      name: 'app_access_register_field_captcha_description',
       desc: '',
       args: [],
     );
   }
 
   /// `Characters from picture`
-  String get app_auth_instance_register_field_captcha_hint {
+  String get app_access_register_field_captcha_hint {
     return Intl.message(
       'Characters from picture',
-      name: 'app_auth_instance_register_field_captcha_hint',
+      name: 'app_access_register_field_captcha_hint',
       desc: '',
       args: [],
     );
   }
 
   /// `Email Address*`
-  String get app_auth_instance_register_field_email_label {
+  String get app_access_register_field_email_label {
     return Intl.message(
       'Email Address*',
-      name: 'app_auth_instance_register_field_email_label',
+      name: 'app_access_register_field_email_label',
       desc: '',
       args: [],
     );
   }
 
   /// `You will need to confirm it`
-  String get app_auth_instance_register_field_email_description {
+  String get app_access_register_field_email_description {
     return Intl.message(
       'You will need to confirm it',
-      name: 'app_auth_instance_register_field_email_description',
+      name: 'app_access_register_field_email_description',
       desc: '',
       args: [],
     );
   }
 
   /// `you@example.com`
-  String get app_auth_instance_register_field_email_hint {
+  String get app_access_register_field_email_hint {
     return Intl.message(
       'you@example.com',
-      name: 'app_auth_instance_register_field_email_hint',
+      name: 'app_access_register_field_email_hint',
       desc: '',
       args: [],
     );
   }
 
   /// `Password*`
-  String get app_auth_instance_register_field_password_label {
+  String get app_access_register_field_password_label {
     return Intl.message(
       'Password*',
-      name: 'app_auth_instance_register_field_password_label',
+      name: 'app_access_register_field_password_label',
       desc: '',
       args: [],
     );
   }
 
   /// `Password`
-  String get app_auth_instance_register_field_password_hint {
+  String get app_access_register_field_password_hint {
     return Intl.message(
       'Password',
-      name: 'app_auth_instance_register_field_password_hint',
+      name: 'app_access_register_field_password_hint',
       desc: '',
       args: [],
     );
   }
 
   /// `Sign up`
-  String get app_auth_instance_register_action_createAccount {
+  String get app_access_register_action_createAccount {
     return Intl.message(
       'Sign up',
-      name: 'app_auth_instance_register_action_createAccount',
+      name: 'app_access_register_action_createAccount',
       desc: '',
       args: [],
     );
@@ -6017,41 +6014,41 @@ class S {
   }
 
   /// `Accept Terms of Service`
-  String get app_auth_instance_register_field_acceptTermsOfService_label {
+  String get app_access_register_field_acceptTermsOfService_label {
     return Intl.message(
       'Accept Terms of Service',
-      name: 'app_auth_instance_register_field_acceptTermsOfService_label',
+      name: 'app_access_register_field_acceptTermsOfService_label',
       desc: '',
       args: [],
     );
   }
 
   /// `Locale`
-  String get app_auth_instance_register_field_locale_label {
+  String get app_access_register_field_locale_label {
     return Intl.message(
       'Locale',
-      name: 'app_auth_instance_register_field_locale_label',
+      name: 'app_access_register_field_locale_label',
       desc: '',
       args: [],
     );
   }
 
   /// `{domain}`
-  String app_auth_instance_register_field_acceptTermsOfService_description(
+  String app_access_register_field_acceptTermsOfService_description(
       Object domain) {
     return Intl.message(
       '$domain',
-      name: 'app_auth_instance_register_field_acceptTermsOfService_description',
+      name: 'app_access_register_field_acceptTermsOfService_description',
       desc: '',
       args: [domain],
     );
   }
 
   /// `Default language for your statuses and confirmation email`
-  String get app_auth_instance_register_field_locale_description {
+  String get app_access_register_field_locale_description {
     return Intl.message(
       'Default language for your statuses and confirmation email',
-      name: 'app_auth_instance_register_field_locale_description',
+      name: 'app_access_register_field_locale_description',
       desc: '',
       args: [],
     );
@@ -6068,12 +6065,10 @@ class S {
   }
 
   /// `Success registration`
-  String
-      get app_auth_instance_register_emailConfirmationRequired_notification_title {
+  String get app_access_register_emailConfirmationRequired_notification_title {
     return Intl.message(
       'Success registration',
-      name:
-          'app_auth_instance_register_emailConfirmationRequired_notification_title',
+      name: 'app_access_register_emailConfirmationRequired_notification_title',
       desc: '',
       args: [],
     );
@@ -6081,52 +6076,52 @@ class S {
 
   /// `Please confirm email before login`
   String
-      get app_auth_instance_register_emailConfirmationRequired_notification_content {
+      get app_access_register_emailConfirmationRequired_notification_content {
     return Intl.message(
       'Please confirm email before login',
       name:
-          'app_auth_instance_register_emailConfirmationRequired_notification_content',
+          'app_access_register_emailConfirmationRequired_notification_content',
       desc: '',
       args: [],
     );
   }
 
   /// `Success registration`
-  String get app_auth_instance_register_cantLogin_notification_title {
+  String get app_access_register_cantLogin_notification_title {
     return Intl.message(
       'Success registration',
-      name: 'app_auth_instance_register_cantLogin_notification_title',
+      name: 'app_access_register_cantLogin_notification_title',
       desc: '',
       args: [],
     );
   }
 
   /// `Error during login: {errorDescription}`
-  String app_auth_instance_register_cantLogin_notification_content(
+  String app_access_register_cantLogin_notification_content(
       Object errorDescription) {
     return Intl.message(
       'Error during login: $errorDescription',
-      name: 'app_auth_instance_register_cantLogin_notification_content',
+      name: 'app_access_register_cantLogin_notification_content',
       desc: '',
       args: [errorDescription],
     );
   }
 
   /// `Reason (optional)`
-  String get app_auth_instance_register_field_reason_label {
+  String get app_access_register_field_reason_label {
     return Intl.message(
       'Reason (optional)',
-      name: 'app_auth_instance_register_field_reason_label',
+      name: 'app_access_register_field_reason_label',
       desc: '',
       args: [],
     );
   }
 
   /// `Will be reviewed by moderators`
-  String get app_auth_instance_register_field_reason_hint {
+  String get app_access_register_field_reason_hint {
     return Intl.message(
       'Will be reviewed by moderators',
-      name: 'app_auth_instance_register_field_reason_hint',
+      name: 'app_access_register_field_reason_hint',
       desc: '',
       args: [],
     );

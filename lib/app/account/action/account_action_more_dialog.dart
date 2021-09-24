@@ -6,7 +6,7 @@ import 'package:fedi/app/account/details/remote_account_details_page.dart';
 import 'package:fedi/app/account/remote_account_bloc_impl.dart';
 import 'package:fedi/app/account/report/account_report_page.dart';
 import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
-import 'package:fedi/app/access/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/instance/details/local/local_instance_details_page.dart';
 import 'package:fedi/app/instance/details/remote/remote_instance_details_page.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';

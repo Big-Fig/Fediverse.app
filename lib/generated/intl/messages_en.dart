@@ -615,130 +615,129 @@ class MessageLookup extends MessageLookupByLibrary {
                 "No network or remote server unavailable"),
         "app_async_timeout_error_dialog_title":
             MessageLookupByLibrary.simpleMessage("Timeout reached"),
-        "app_auth_instance_chooser_action_addInstance":
+        "app_access_chooser_action_addInstance":
             MessageLookupByLibrary.simpleMessage("Add account"),
-        "app_auth_instance_current_context_loading_cantLoad_action_chooseDifferentAccount":
+        "app_access_current_context_loading_cantLoad_action_chooseDifferentAccount":
             MessageLookupByLibrary.simpleMessage("Choose different account"),
-        "app_auth_instance_current_context_loading_cantLoad_action_logout":
+        "app_access_current_context_loading_cantLoad_action_logout":
             MessageLookupByLibrary.simpleMessage("Logout"),
-        "app_auth_instance_current_context_loading_cantLoad_action_refresh":
+        "app_access_current_context_loading_cantLoad_action_refresh":
             MessageLookupByLibrary.simpleMessage("Refresh"),
-        "app_auth_instance_current_context_loading_cantLoad_content": m12,
-        "app_auth_instance_current_context_loading_loading_content": m13,
-        "app_auth_instance_current_context_loading_loading_title":
+        "app_access_current_context_loading_cantLoad_content": m12,
+        "app_access_current_context_loading_loading_content": m13,
+        "app_access_current_context_loading_loading_title":
             MessageLookupByLibrary.simpleMessage("Loading Instance"),
-        "app_auth_instance_join_action_about":
+        "app_access_join_action_about":
             MessageLookupByLibrary.simpleMessage("About"),
-        "app_auth_instance_join_action_exploreAsGuest":
+        "app_access_join_action_exploreAsGuest":
             MessageLookupByLibrary.simpleMessage("Explore as guest"),
-        "app_auth_instance_join_action_helpMeChooseInstance":
+        "app_access_join_action_helpMeChooseInstance":
             MessageLookupByLibrary.simpleMessage("Help me choose instance"),
-        "app_auth_instance_join_action_login":
+        "app_access_join_action_login":
             MessageLookupByLibrary.simpleMessage("Login"),
-        "app_auth_instance_join_action_signUp":
+        "app_access_join_action_signUp":
             MessageLookupByLibrary.simpleMessage("Sign up"),
-        "app_auth_instance_join_action_tos_postfix":
+        "app_access_join_action_tos_postfix":
             MessageLookupByLibrary.simpleMessage("."),
-        "app_auth_instance_join_action_tos_prefix":
+        "app_access_join_action_tos_prefix":
             MessageLookupByLibrary.simpleMessage(
                 "By using Fedi, you agree to our"),
-        "app_auth_instance_join_action_tos_terms":
+        "app_access_join_action_tos_terms":
             MessageLookupByLibrary.simpleMessage("Terms"),
-        "app_auth_instance_join_fail_dialog_content": m14,
-        "app_auth_instance_join_fail_dialog_title":
+        "app_access_join_fail_dialog_content": m14,
+        "app_access_join_fail_dialog_title":
             MessageLookupByLibrary.simpleMessage("Fail to connect to instance"),
-        "app_auth_instance_join_field_host_helper":
+        "app_access_join_field_host_helper":
             MessageLookupByLibrary.simpleMessage(
                 "Pleroma or Mastodon Instance"),
-        "app_auth_instance_join_invitesOnly_dialog_content":
+        "app_access_join_invitesOnly_dialog_content":
             MessageLookupByLibrary.simpleMessage(
                 "Try any other instance, or register by invite link in your browser"),
-        "app_auth_instance_join_invitesOnly_dialog_title":
+        "app_access_join_invitesOnly_dialog_title":
             MessageLookupByLibrary.simpleMessage(
                 "Instance owner limit registration to invites-only"),
-        "app_auth_instance_join_new_title":
+        "app_access_join_new_title":
             MessageLookupByLibrary.simpleMessage("Join new instance"),
-        "app_auth_instance_join_progress_dialog_content":
+        "app_access_join_progress_dialog_content":
             MessageLookupByLibrary.simpleMessage("Checking instance"),
-        "app_auth_instance_join_registrationDisabled_dialog_title":
+        "app_access_join_registrationDisabled_dialog_title":
             MessageLookupByLibrary.simpleMessage(
                 "Instance owner disabled registration"),
-        "app_auth_instance_logout_dialog_content": m15,
-        "app_auth_instance_logout_dialog_title":
+        "app_access_logout_dialog_content": m15,
+        "app_access_logout_dialog_title":
             MessageLookupByLibrary.simpleMessage("Log Out"),
-        "app_auth_instance_register_action_createAccount":
+        "app_access_register_action_createAccount":
             MessageLookupByLibrary.simpleMessage("Sign up"),
-        "app_auth_instance_register_action_nextStep":
+        "app_access_register_action_nextStep":
             MessageLookupByLibrary.simpleMessage("Next"),
-        "app_auth_instance_register_action_previousStep":
+        "app_access_register_action_previousStep":
             MessageLookupByLibrary.simpleMessage("Back"),
-        "app_auth_instance_register_action_submit":
+        "app_access_register_action_submit":
             MessageLookupByLibrary.simpleMessage("Submit"),
-        "app_auth_instance_register_approvalRequired_notification_content":
+        "app_access_register_approvalRequired_notification_content":
             MessageLookupByLibrary.simpleMessage(
                 "You can login once moderators will approve your account"),
-        "app_auth_instance_register_approvalRequired_notification_title":
+        "app_access_register_approvalRequired_notification_title":
             MessageLookupByLibrary.simpleMessage("Success registration"),
-        "app_auth_instance_register_cantLogin_notification_content": m16,
-        "app_auth_instance_register_cantLogin_notification_title":
+        "app_access_register_cantLogin_notification_content": m16,
+        "app_access_register_cantLogin_notification_title":
             MessageLookupByLibrary.simpleMessage("Success registration"),
-        "app_auth_instance_register_emailConfirmationRequired_notification_content":
+        "app_access_register_emailConfirmationRequired_notification_content":
             MessageLookupByLibrary.simpleMessage(
                 "Please confirm email before login"),
-        "app_auth_instance_register_emailConfirmationRequired_notification_title":
+        "app_access_register_emailConfirmationRequired_notification_title":
             MessageLookupByLibrary.simpleMessage("Success registration"),
-        "app_auth_instance_register_field_acceptTermsOfService_description":
-            m17,
-        "app_auth_instance_register_field_acceptTermsOfService_label":
+        "app_access_register_field_acceptTermsOfService_description": m17,
+        "app_access_register_field_acceptTermsOfService_label":
             MessageLookupByLibrary.simpleMessage("Accept Terms of Service"),
-        "app_auth_instance_register_field_captcha_description":
+        "app_access_register_field_captcha_description":
             MessageLookupByLibrary.simpleMessage("Tap to reload"),
-        "app_auth_instance_register_field_captcha_hint":
+        "app_access_register_field_captcha_hint":
             MessageLookupByLibrary.simpleMessage("Characters from picture"),
-        "app_auth_instance_register_field_captcha_label":
+        "app_access_register_field_captcha_label":
             MessageLookupByLibrary.simpleMessage("Captcha*"),
-        "app_auth_instance_register_field_email_description":
+        "app_access_register_field_email_description":
             MessageLookupByLibrary.simpleMessage("You will need to confirm it"),
-        "app_auth_instance_register_field_email_hint":
+        "app_access_register_field_email_hint":
             MessageLookupByLibrary.simpleMessage("you@example.com"),
-        "app_auth_instance_register_field_email_label":
+        "app_access_register_field_email_label":
             MessageLookupByLibrary.simpleMessage("Email Address*"),
-        "app_auth_instance_register_field_locale_description":
+        "app_access_register_field_locale_description":
             MessageLookupByLibrary.simpleMessage(
                 "Default language for your statuses and confirmation email"),
-        "app_auth_instance_register_field_locale_label":
+        "app_access_register_field_locale_label":
             MessageLookupByLibrary.simpleMessage("Locale"),
-        "app_auth_instance_register_field_password_hint":
+        "app_access_register_field_password_hint":
             MessageLookupByLibrary.simpleMessage("Password"),
-        "app_auth_instance_register_field_password_label":
+        "app_access_register_field_password_label":
             MessageLookupByLibrary.simpleMessage("Password*"),
-        "app_auth_instance_register_field_reason_hint":
+        "app_access_register_field_reason_hint":
             MessageLookupByLibrary.simpleMessage(
                 "Will be reviewed by moderators"),
-        "app_auth_instance_register_field_reason_label":
+        "app_access_register_field_reason_label":
             MessageLookupByLibrary.simpleMessage("Reason (optional)"),
-        "app_auth_instance_register_field_username_hint":
+        "app_access_register_field_username_hint":
             MessageLookupByLibrary.simpleMessage("lain"),
-        "app_auth_instance_register_field_username_label":
+        "app_access_register_field_username_label":
             MessageLookupByLibrary.simpleMessage("Username*"),
-        "app_auth_instance_register_step_account_title":
+        "app_access_register_step_account_title":
             MessageLookupByLibrary.simpleMessage("Account"),
-        "app_auth_instance_register_step_captcha_description":
+        "app_access_register_step_captcha_description":
             MessageLookupByLibrary.simpleMessage(
                 "Instance owners enabled captcha to prevent spam"),
-        "app_auth_instance_register_step_captcha_description_disabledOnServer":
+        "app_access_register_step_captcha_description_disabledOnServer":
             MessageLookupByLibrary.simpleMessage(
                 "Instance owners disabled captcha"),
-        "app_auth_instance_register_step_captcha_title":
+        "app_access_register_step_captcha_title":
             MessageLookupByLibrary.simpleMessage("Captcha"),
-        "app_auth_instance_register_step_manualApprove_description":
+        "app_access_register_step_manualApprove_description":
             MessageLookupByLibrary.simpleMessage(
                 "Instance owners enabled manual approve by moderators to prevent spam.\nYou will need to wait moderation approve until you will can use your account"),
-        "app_auth_instance_register_step_manualApprove_title":
+        "app_access_register_step_manualApprove_title":
             MessageLookupByLibrary.simpleMessage("Accounts manual approve"),
-        "app_auth_instance_register_step_submit_title":
+        "app_access_register_step_submit_title":
             MessageLookupByLibrary.simpleMessage("Submit"),
-        "app_auth_instance_register_title": m18,
+        "app_access_register_title": m18,
         "app_cache_database_settings_currentEntriesCountByType_label":
             MessageLookupByLibrary.simpleMessage(
                 "Current max entries count by type"),

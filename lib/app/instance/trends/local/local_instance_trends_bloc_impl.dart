@@ -1,4 +1,4 @@
-import 'package:fedi/app/access/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/instance/trends/instance_trends_bloc.dart';
 import 'package:fedi/app/instance/trends/instance_trends_bloc_impl.dart';
 import 'package:fedi/app/instance/trends/instance_trends_bloc_proxy_provider.dart';

@@ -1,5 +1,5 @@
 import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
-import 'package:fedi/app/access/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/draft/list/draft_status_list_page.dart';
 import 'package:fedi/app/status/draft/repository/draft_status_repository.dart';
