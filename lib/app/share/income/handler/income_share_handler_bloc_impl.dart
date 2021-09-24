@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 
-import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
-import 'package:fedi/app/auth/instance/list/auth_instance_list_bloc.dart';
+import 'package:fedi/app/access/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/access/list/auth_instance_list_bloc.dart';
 import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/share/income/handler/income_share_handler_bloc.dart';
 import 'package:fedi/app/share/income/handler/income_share_handler_model.dart';

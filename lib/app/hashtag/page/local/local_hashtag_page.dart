@@ -1,5 +1,5 @@
 import 'package:fedi/app/account/my/featured_hashtag/my_account_featured_hashtag_model.dart';
-import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/access/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
 import 'package:fedi/app/hashtag/page/hashtag_page_widget.dart';
 import 'package:fedi/app/hashtag/page/local/local_hashtag_page_bloc.dart';

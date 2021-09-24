@@ -1,4 +1,4 @@
-import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/access/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/instance/activity/instance_activity_bloc.dart';
 import 'package:fedi/app/instance/activity/instance_activity_bloc_impl.dart';
 import 'package:fedi/app/instance/activity/instance_activity_bloc_proxy_provider.dart';

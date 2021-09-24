@@ -1,4 +1,4 @@
-import 'package:fedi/app/auth/instance/list/auth_instance_list_model.dart';
+import 'package:fedi/app/access/list/auth_instance_list_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../../hive/hive_test_helper.dart';

@@ -1,4 +1,4 @@
-import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/access/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/push/settings/edit/edit_push_settings_bloc.dart';
 import 'package:fedi/app/push/settings/edit/edit_push_settings_bloc_impl.dart';

@@ -1,5 +1,5 @@
-import 'package:fedi/app/auth/instance/list/auth_instance_list_model.dart';
-import 'package:fedi/app/auth/instance/list/local_preferences/auth_instance_list_local_preference_bloc_impl.dart';
+import 'package:fedi/app/access/list/local_preferences/auth_instance_list_local_preference_bloc_impl.dart';
+import 'package:fedi/app/access/list/auth_instance_list_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../../../local_preferences/local_preferences_test_helper.dart';

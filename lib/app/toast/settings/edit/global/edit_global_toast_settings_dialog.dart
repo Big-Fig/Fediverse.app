@@ -1,4 +1,4 @@
-import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/access/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/settings/global/edit/edit_global_settings_dialog.dart';
 import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_model.dart';
 import 'package:fedi/app/toast/settings/edit/edit_toast_settings_bloc.dart';

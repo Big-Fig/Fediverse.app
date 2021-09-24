@@ -1,4 +1,4 @@
-import 'package:fedi/app/auth/instance/current/local_preferences/current_auth_instance_local_preference_bloc_impl.dart';
+import 'package:fedi/app/access/current/local_preferences/current_auth_instance_local_preference_bloc_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 import 'package:unifedi_api/unifedi_api_mock_helper.dart';

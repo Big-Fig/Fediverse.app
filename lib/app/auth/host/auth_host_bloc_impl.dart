@@ -7,8 +7,8 @@ import 'package:fedi/app/auth/host/application/auth_host_application_local_prefe
 import 'package:fedi/app/auth/host/application/auth_host_application_local_preference_bloc_impl.dart';
 import 'package:fedi/app/auth/host/auth_host_bloc.dart';
 import 'package:fedi/app/auth/host/auth_host_model.dart';
-import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
-import 'package:fedi/app/auth/instance/memory_auth_instance_bloc_impl.dart';
+import 'package:fedi/app/access/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/access/memory_auth_instance_bloc_impl.dart';
 import 'package:fedi/app/auth/oauth_last_launched/local_preferences/auth_oauth_last_launched_host_to_login_local_preference_bloc.dart';
 import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
@@ -64,6 +64,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
   final IConnectionService connectionService;
   final IConfigService configService;
 
+  // ignore: avoid-late-keyword
   late MemoryUnifediApiAccessBloc memoryUnifediApiAccessBloc;
 
   AuthHostBloc({

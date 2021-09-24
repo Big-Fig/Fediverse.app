@@ -1,4 +1,4 @@
-import 'package:fedi/app/auth/instance/list/auth_instance_list_model.dart';
+import 'package:fedi/app/access/list/auth_instance_list_model.dart';
 import 'package:unifedi_api/unifedi_api_mock_helper.dart';
 
 // ignore_for_file: no-magic-number

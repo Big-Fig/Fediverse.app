@@ -5,9 +5,9 @@ import 'package:collection/collection.dart';
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/app_model.dart';
 
-import 'package:fedi/app/auth/instance/list/local_preferences/auth_instance_list_local_preference_bloc_impl.dart';
-import 'package:fedi/app/auth/instance/local_preferences/auth_instance_local_preference_bloc_impl.dart';
-import 'package:fedi/app/auth/instance/local_preferences_auth_instance_bloc_impl.dart';
+import 'package:fedi/app/access/list/local_preferences/auth_instance_list_local_preference_bloc_impl.dart';
+import 'package:fedi/app/access/local_preferences/auth_instance_local_preference_bloc_impl.dart';
+import 'package:fedi/app/access/local_preferences_auth_instance_bloc_impl.dart';
 import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/config/config_service_impl.dart';
 import 'package:fedi/app/hive/hive_service_impl.dart';
