@@ -24,7 +24,9 @@ class RegisterUnifediApiAccessAcceptTermsOfServiceBoolValueFormFieldRowWidget
         child: FediFormFieldRow(
           displayErrors: displayErrors,
           label: FediFormRowLabel(
-            S.of(context).app_access_register_field_acceptTermsOfService_label,
+            S
+                .of(context)
+                .app_auth_instance_register_field_acceptTermsOfService_label,
           ),
           description:
               _RegisterUnifediApiAccessAcceptTermsOfServiceBoolValueFormFieldRowDescriptionWidget(
@@ -57,7 +59,7 @@ class _RegisterUnifediApiAccessAcceptTermsOfServiceBoolValueFormFieldRowDescript
       child: FediFormColumnDesc(
         S
             .of(context)
-            .app_access_register_field_acceptTermsOfService_description(
+            .app_auth_instance_register_field_acceptTermsOfService_description(
               instanceBaseUri.host,
             ),
         textStyle: IFediUiTextTheme.of(context).bigTallPrimary,

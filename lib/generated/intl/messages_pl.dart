@@ -630,130 +630,131 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_async_timeout_error_dialog_title":
             MessageLookupByLibrary.simpleMessage(
                 "Przekroczono czas oczekiwania"),
-        "app_access_chooser_action_addInstance":
+        "app_auth_instance_chooser_action_addInstance":
             MessageLookupByLibrary.simpleMessage("Dodaj konto"),
-        "app_access_current_context_loading_cantLoad_action_chooseDifferentAccount":
+        "app_auth_instance_current_context_loading_cantLoad_action_chooseDifferentAccount":
             MessageLookupByLibrary.simpleMessage("Wybierz inne konto"),
-        "app_access_current_context_loading_cantLoad_action_logout":
+        "app_auth_instance_current_context_loading_cantLoad_action_logout":
             MessageLookupByLibrary.simpleMessage("Wyloguj się"),
-        "app_access_current_context_loading_cantLoad_action_refresh":
+        "app_auth_instance_current_context_loading_cantLoad_action_refresh":
             MessageLookupByLibrary.simpleMessage("Odśwież"),
-        "app_access_current_context_loading_cantLoad_content": m12,
-        "app_access_current_context_loading_loading_content": m13,
-        "app_access_current_context_loading_loading_title":
+        "app_auth_instance_current_context_loading_cantLoad_content": m12,
+        "app_auth_instance_current_context_loading_loading_content": m13,
+        "app_auth_instance_current_context_loading_loading_title":
             MessageLookupByLibrary.simpleMessage("Ładowanie instancji"),
-        "app_access_join_action_about":
+        "app_auth_instance_join_action_about":
             MessageLookupByLibrary.simpleMessage("Informacje"),
-        "app_access_join_action_exploreAsGuest":
+        "app_auth_instance_join_action_exploreAsGuest":
             MessageLookupByLibrary.simpleMessage("Przeglądaj jako gość"),
-        "app_access_join_action_helpMeChooseInstance":
+        "app_auth_instance_join_action_helpMeChooseInstance":
             MessageLookupByLibrary.simpleMessage("Pomóż mi wybrać instancję"),
-        "app_access_join_action_login":
+        "app_auth_instance_join_action_login":
             MessageLookupByLibrary.simpleMessage("Zaloguj się"),
-        "app_access_join_action_signUp":
+        "app_auth_instance_join_action_signUp":
             MessageLookupByLibrary.simpleMessage("Zarejestruj się"),
-        "app_access_join_action_tos_postfix":
+        "app_auth_instance_join_action_tos_postfix":
             MessageLookupByLibrary.simpleMessage("."),
-        "app_access_join_action_tos_prefix":
+        "app_auth_instance_join_action_tos_prefix":
             MessageLookupByLibrary.simpleMessage(
                 "Korzystając z Fedi, akceptujesz nasze"),
-        "app_access_join_action_tos_terms":
+        "app_auth_instance_join_action_tos_terms":
             MessageLookupByLibrary.simpleMessage("Zasady"),
-        "app_access_join_fail_dialog_content": m14,
-        "app_access_join_fail_dialog_title":
+        "app_auth_instance_join_fail_dialog_content": m14,
+        "app_auth_instance_join_fail_dialog_title":
             MessageLookupByLibrary.simpleMessage(
                 "Nie udało się połączyć z instancją"),
-        "app_access_join_field_host_helper":
+        "app_auth_instance_join_field_host_helper":
             MessageLookupByLibrary.simpleMessage(
                 "Instancja Pleromy lub Mastodona"),
-        "app_access_join_invitesOnly_dialog_content":
+        "app_auth_instance_join_invitesOnly_dialog_content":
             MessageLookupByLibrary.simpleMessage(
                 "Spróbuj innej instancji, lub zarejestruj się z odnośnika z zaproszeniem"),
-        "app_access_join_invitesOnly_dialog_title":
+        "app_auth_instance_join_invitesOnly_dialog_title":
             MessageLookupByLibrary.simpleMessage(
                 "Właściciel instancji ograniczył rejestrację do osób zaproszonych"),
-        "app_access_join_new_title":
+        "app_auth_instance_join_new_title":
             MessageLookupByLibrary.simpleMessage("Dołącz do nowej instancji"),
-        "app_access_join_progress_dialog_content":
+        "app_auth_instance_join_progress_dialog_content":
             MessageLookupByLibrary.simpleMessage("Sprawdzanie instancji"),
-        "app_access_join_registrationDisabled_dialog_title":
+        "app_auth_instance_join_registrationDisabled_dialog_title":
             MessageLookupByLibrary.simpleMessage(
                 "Właściciel instancji wyłączył rejestrację"),
-        "app_access_logout_dialog_content": m15,
-        "app_access_logout_dialog_title":
+        "app_auth_instance_logout_dialog_content": m15,
+        "app_auth_instance_logout_dialog_title":
             MessageLookupByLibrary.simpleMessage("Wyloguj się"),
-        "app_access_register_action_createAccount":
+        "app_auth_instance_register_action_createAccount":
             MessageLookupByLibrary.simpleMessage("Zarejestruj się"),
-        "app_access_register_action_nextStep":
+        "app_auth_instance_register_action_nextStep":
             MessageLookupByLibrary.simpleMessage("Dalej"),
-        "app_access_register_action_previousStep":
+        "app_auth_instance_register_action_previousStep":
             MessageLookupByLibrary.simpleMessage("Wróć"),
-        "app_access_register_action_submit":
+        "app_auth_instance_register_action_submit":
             MessageLookupByLibrary.simpleMessage("Wyślij"),
-        "app_access_register_approvalRequired_notification_content":
+        "app_auth_instance_register_approvalRequired_notification_content":
             MessageLookupByLibrary.simpleMessage(
                 "Możesz zalogować się, gdy moderatorzy zatwierdzą Twoje konto"),
-        "app_access_register_approvalRequired_notification_title":
+        "app_auth_instance_register_approvalRequired_notification_title":
             MessageLookupByLibrary.simpleMessage("Pomyślnie zarejestrowano"),
-        "app_access_register_cantLogin_notification_content": m16,
-        "app_access_register_cantLogin_notification_title":
+        "app_auth_instance_register_cantLogin_notification_content": m16,
+        "app_auth_instance_register_cantLogin_notification_title":
             MessageLookupByLibrary.simpleMessage("Pomyślnie zarejestrowano"),
-        "app_access_register_emailConfirmationRequired_notification_content":
+        "app_auth_instance_register_emailConfirmationRequired_notification_content":
             MessageLookupByLibrary.simpleMessage(
                 "Potwierdź adres e-mail przed zalogowaniem"),
-        "app_access_register_emailConfirmationRequired_notification_title":
+        "app_auth_instance_register_emailConfirmationRequired_notification_title":
             MessageLookupByLibrary.simpleMessage("Pomyślnie zarejestrowano"),
-        "app_access_register_field_acceptTermsOfService_description": m17,
-        "app_access_register_field_acceptTermsOfService_label":
+        "app_auth_instance_register_field_acceptTermsOfService_description":
+            m17,
+        "app_auth_instance_register_field_acceptTermsOfService_label":
             MessageLookupByLibrary.simpleMessage("Akceptuj Zasady użytkowania"),
-        "app_access_register_field_captcha_description":
+        "app_auth_instance_register_field_captcha_description":
             MessageLookupByLibrary.simpleMessage("Naciśnij, aby przeładować"),
-        "app_access_register_field_captcha_hint":
+        "app_auth_instance_register_field_captcha_hint":
             MessageLookupByLibrary.simpleMessage("Znaki z obrazka"),
-        "app_access_register_field_captcha_label":
+        "app_auth_instance_register_field_captcha_label":
             MessageLookupByLibrary.simpleMessage("Captcha*"),
-        "app_access_register_field_email_description":
+        "app_auth_instance_register_field_email_description":
             MessageLookupByLibrary.simpleMessage("Wymagane jest potwierdzenie"),
-        "app_access_register_field_email_hint":
+        "app_auth_instance_register_field_email_hint":
             MessageLookupByLibrary.simpleMessage("ty@example.com"),
-        "app_access_register_field_email_label":
+        "app_auth_instance_register_field_email_label":
             MessageLookupByLibrary.simpleMessage("Adres e-mail*"),
-        "app_access_register_field_locale_description":
+        "app_auth_instance_register_field_locale_description":
             MessageLookupByLibrary.simpleMessage(
                 "Domyślny język wpisów i maila potwierdzającego"),
-        "app_access_register_field_locale_label":
+        "app_auth_instance_register_field_locale_label":
             MessageLookupByLibrary.simpleMessage("Język"),
-        "app_access_register_field_password_hint":
+        "app_auth_instance_register_field_password_hint":
             MessageLookupByLibrary.simpleMessage("Hasło"),
-        "app_access_register_field_password_label":
+        "app_auth_instance_register_field_password_label":
             MessageLookupByLibrary.simpleMessage("Hasło*"),
-        "app_access_register_field_reason_hint":
+        "app_auth_instance_register_field_reason_hint":
             MessageLookupByLibrary.simpleMessage(
                 "Zostanie sprawdzone przez moderatorów"),
-        "app_access_register_field_reason_label":
+        "app_auth_instance_register_field_reason_label":
             MessageLookupByLibrary.simpleMessage("Przyczyna (opcjonalna)"),
-        "app_access_register_field_username_hint":
+        "app_auth_instance_register_field_username_hint":
             MessageLookupByLibrary.simpleMessage("lain"),
-        "app_access_register_field_username_label":
+        "app_auth_instance_register_field_username_label":
             MessageLookupByLibrary.simpleMessage("Nazwa użytkownika*"),
-        "app_access_register_step_account_title":
+        "app_auth_instance_register_step_account_title":
             MessageLookupByLibrary.simpleMessage("Konto"),
-        "app_access_register_step_captcha_description":
+        "app_auth_instance_register_step_captcha_description":
             MessageLookupByLibrary.simpleMessage(
                 "Właściciele instancji włączyli captchę, aby zapobiec spamowi"),
-        "app_access_register_step_captcha_description_disabledOnServer":
+        "app_auth_instance_register_step_captcha_description_disabledOnServer":
             MessageLookupByLibrary.simpleMessage(
                 "Właściciele instancji wyłączyli captchę"),
-        "app_access_register_step_captcha_title":
+        "app_auth_instance_register_step_captcha_title":
             MessageLookupByLibrary.simpleMessage("Captcha"),
-        "app_access_register_step_manualApprove_description":
+        "app_auth_instance_register_step_manualApprove_description":
             MessageLookupByLibrary.simpleMessage(
                 "Właściciele instancji włączyli ręczne zatwierdzanie przez moderatorów, aby ograniczyć spam.\nMusisz czekać na zatwierdzenie przez moderatora, zanim skorzystasz ze swojego konta"),
-        "app_access_register_step_manualApprove_title":
+        "app_auth_instance_register_step_manualApprove_title":
             MessageLookupByLibrary.simpleMessage("Ręczne zatwierdzanie kont"),
-        "app_access_register_step_submit_title":
+        "app_auth_instance_register_step_submit_title":
             MessageLookupByLibrary.simpleMessage("Wyślij"),
-        "app_access_register_title": m18,
+        "app_auth_instance_register_title": m18,
         "app_cache_database_settings_currentEntriesCountByType_label":
             MessageLookupByLibrary.simpleMessage(
                 "Bieżąca maksymalna liczba wpisów jest liczona według typu"),

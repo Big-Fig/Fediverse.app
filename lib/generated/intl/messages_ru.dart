@@ -616,132 +616,133 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Нет соединения или сервер недоступен"),
         "app_async_timeout_error_dialog_title":
             MessageLookupByLibrary.simpleMessage("Нет ответа"),
-        "app_access_chooser_action_addInstance":
+        "app_auth_instance_chooser_action_addInstance":
             MessageLookupByLibrary.simpleMessage("Добавить аккаунт"),
-        "app_access_current_context_loading_cantLoad_action_chooseDifferentAccount":
+        "app_auth_instance_current_context_loading_cantLoad_action_chooseDifferentAccount":
             MessageLookupByLibrary.simpleMessage("Выберите другой аккаунт"),
-        "app_access_current_context_loading_cantLoad_action_logout":
+        "app_auth_instance_current_context_loading_cantLoad_action_logout":
             MessageLookupByLibrary.simpleMessage("Выйти"),
-        "app_access_current_context_loading_cantLoad_action_refresh":
+        "app_auth_instance_current_context_loading_cantLoad_action_refresh":
             MessageLookupByLibrary.simpleMessage("Перезагрузить"),
-        "app_access_current_context_loading_cantLoad_content": m12,
-        "app_access_current_context_loading_loading_content": m13,
-        "app_access_current_context_loading_loading_title":
+        "app_auth_instance_current_context_loading_cantLoad_content": m12,
+        "app_auth_instance_current_context_loading_loading_content": m13,
+        "app_auth_instance_current_context_loading_loading_title":
             MessageLookupByLibrary.simpleMessage("Загрузка аккаунта"),
-        "app_access_join_action_about":
+        "app_auth_instance_join_action_about":
             MessageLookupByLibrary.simpleMessage("О Fedi"),
-        "app_access_join_action_exploreAsGuest":
+        "app_auth_instance_join_action_exploreAsGuest":
             MessageLookupByLibrary.simpleMessage("Посмотреть как гость"),
-        "app_access_join_action_helpMeChooseInstance":
+        "app_auth_instance_join_action_helpMeChooseInstance":
             MessageLookupByLibrary.simpleMessage("Как выбрать сервер?"),
-        "app_access_join_action_login":
+        "app_auth_instance_join_action_login":
             MessageLookupByLibrary.simpleMessage("Вход"),
-        "app_access_join_action_signUp":
+        "app_auth_instance_join_action_signUp":
             MessageLookupByLibrary.simpleMessage("Регистрация"),
-        "app_access_join_action_tos_postfix":
+        "app_auth_instance_join_action_tos_postfix":
             MessageLookupByLibrary.simpleMessage("."),
-        "app_access_join_action_tos_prefix":
+        "app_auth_instance_join_action_tos_prefix":
             MessageLookupByLibrary.simpleMessage(
                 "Используя Fedi вы соглашаетесь с"),
-        "app_access_join_action_tos_terms":
+        "app_auth_instance_join_action_tos_terms":
             MessageLookupByLibrary.simpleMessage("условиями"),
-        "app_access_join_fail_dialog_content": m14,
-        "app_access_join_fail_dialog_title":
+        "app_auth_instance_join_fail_dialog_content": m14,
+        "app_auth_instance_join_fail_dialog_title":
             MessageLookupByLibrary.simpleMessage(
                 "Невозможно подключится к серверу"),
-        "app_access_join_field_host_helper":
+        "app_auth_instance_join_field_host_helper":
             MessageLookupByLibrary.simpleMessage("Pleroma или Mastodon сервер"),
-        "app_access_join_invitesOnly_dialog_content":
+        "app_auth_instance_join_invitesOnly_dialog_content":
             MessageLookupByLibrary.simpleMessage(
                 "Используйте другой сервер, или заргестрируйтесь по ссылке-приглашению в браузере"),
-        "app_access_join_invitesOnly_dialog_title":
+        "app_auth_instance_join_invitesOnly_dialog_title":
             MessageLookupByLibrary.simpleMessage(
                 "Владелец сервера включил регистрацию только по приглашениям"),
-        "app_access_join_new_title":
+        "app_auth_instance_join_new_title":
             MessageLookupByLibrary.simpleMessage("Добавить аккаунт"),
-        "app_access_join_progress_dialog_content":
+        "app_auth_instance_join_progress_dialog_content":
             MessageLookupByLibrary.simpleMessage("Проверка сервера"),
-        "app_access_join_registrationDisabled_dialog_title":
+        "app_auth_instance_join_registrationDisabled_dialog_title":
             MessageLookupByLibrary.simpleMessage(
                 "Владелец сервера отключил регистрацию"),
-        "app_access_logout_dialog_content": m15,
-        "app_access_logout_dialog_title":
+        "app_auth_instance_logout_dialog_content": m15,
+        "app_auth_instance_logout_dialog_title":
             MessageLookupByLibrary.simpleMessage("Выйти"),
-        "app_access_register_action_createAccount":
+        "app_auth_instance_register_action_createAccount":
             MessageLookupByLibrary.simpleMessage("Регистрация"),
-        "app_access_register_action_nextStep":
+        "app_auth_instance_register_action_nextStep":
             MessageLookupByLibrary.simpleMessage("Дальше"),
-        "app_access_register_action_previousStep":
+        "app_auth_instance_register_action_previousStep":
             MessageLookupByLibrary.simpleMessage("Назад"),
-        "app_access_register_action_submit":
+        "app_auth_instance_register_action_submit":
             MessageLookupByLibrary.simpleMessage("Отправить"),
-        "app_access_register_approvalRequired_notification_content":
+        "app_auth_instance_register_approvalRequired_notification_content":
             MessageLookupByLibrary.simpleMessage(
                 "Вы сможете войти как толькоо модераторы подтвердят ваш аккаунт"),
-        "app_access_register_approvalRequired_notification_title":
+        "app_auth_instance_register_approvalRequired_notification_title":
             MessageLookupByLibrary.simpleMessage("Успешная регистрация"),
-        "app_access_register_cantLogin_notification_content": m16,
-        "app_access_register_cantLogin_notification_title":
+        "app_auth_instance_register_cantLogin_notification_content": m16,
+        "app_auth_instance_register_cantLogin_notification_title":
             MessageLookupByLibrary.simpleMessage("Успешная регистрация"),
-        "app_access_register_emailConfirmationRequired_notification_content":
+        "app_auth_instance_register_emailConfirmationRequired_notification_content":
             MessageLookupByLibrary.simpleMessage(
                 "Подтвердите email перед входом"),
-        "app_access_register_emailConfirmationRequired_notification_title":
+        "app_auth_instance_register_emailConfirmationRequired_notification_title":
             MessageLookupByLibrary.simpleMessage("Успешная регистрация"),
-        "app_access_register_field_acceptTermsOfService_description": m17,
-        "app_access_register_field_acceptTermsOfService_label":
+        "app_auth_instance_register_field_acceptTermsOfService_description":
+            m17,
+        "app_auth_instance_register_field_acceptTermsOfService_label":
             MessageLookupByLibrary.simpleMessage(
                 "Принимаю условия использования"),
-        "app_access_register_field_captcha_description":
+        "app_auth_instance_register_field_captcha_description":
             MessageLookupByLibrary.simpleMessage("Нажмите для перезагрузки"),
-        "app_access_register_field_captcha_hint":
+        "app_auth_instance_register_field_captcha_hint":
             MessageLookupByLibrary.simpleMessage("Символы с картинки"),
-        "app_access_register_field_captcha_label":
+        "app_auth_instance_register_field_captcha_label":
             MessageLookupByLibrary.simpleMessage("Captcha*"),
-        "app_access_register_field_email_description":
+        "app_auth_instance_register_field_email_description":
             MessageLookupByLibrary.simpleMessage(
                 "Будет необходимо подтверждение"),
-        "app_access_register_field_email_hint":
+        "app_auth_instance_register_field_email_hint":
             MessageLookupByLibrary.simpleMessage("you@example.com"),
-        "app_access_register_field_email_label":
+        "app_auth_instance_register_field_email_label":
             MessageLookupByLibrary.simpleMessage("Email*"),
-        "app_access_register_field_locale_description":
+        "app_auth_instance_register_field_locale_description":
             MessageLookupByLibrary.simpleMessage(
                 "Язык по умолчания для ваших записей и подтверждающего email"),
-        "app_access_register_field_locale_label":
+        "app_auth_instance_register_field_locale_label":
             MessageLookupByLibrary.simpleMessage("Язык"),
-        "app_access_register_field_password_hint":
+        "app_auth_instance_register_field_password_hint":
             MessageLookupByLibrary.simpleMessage("Пароль"),
-        "app_access_register_field_password_label":
+        "app_auth_instance_register_field_password_label":
             MessageLookupByLibrary.simpleMessage("Пароль*"),
-        "app_access_register_field_reason_hint":
+        "app_auth_instance_register_field_reason_hint":
             MessageLookupByLibrary.simpleMessage(
                 "Будет проверено модераторами"),
-        "app_access_register_field_reason_label":
+        "app_auth_instance_register_field_reason_label":
             MessageLookupByLibrary.simpleMessage("Причина (опционально)"),
-        "app_access_register_field_username_hint":
+        "app_auth_instance_register_field_username_hint":
             MessageLookupByLibrary.simpleMessage("lain"),
-        "app_access_register_field_username_label":
+        "app_auth_instance_register_field_username_label":
             MessageLookupByLibrary.simpleMessage("Никнейм*"),
-        "app_access_register_step_account_title":
+        "app_auth_instance_register_step_account_title":
             MessageLookupByLibrary.simpleMessage("Аккаунт"),
-        "app_access_register_step_captcha_description":
+        "app_auth_instance_register_step_captcha_description":
             MessageLookupByLibrary.simpleMessage(
                 "Владельцы сервера включили обязательну captcha для защиты от спама"),
-        "app_access_register_step_captcha_description_disabledOnServer":
+        "app_auth_instance_register_step_captcha_description_disabledOnServer":
             MessageLookupByLibrary.simpleMessage(
                 "Владельцы сервера отключили captcha"),
-        "app_access_register_step_captcha_title":
+        "app_auth_instance_register_step_captcha_title":
             MessageLookupByLibrary.simpleMessage("Captcha"),
-        "app_access_register_step_manualApprove_description":
+        "app_auth_instance_register_step_manualApprove_description":
             MessageLookupByLibrary.simpleMessage(
                 "Владельцы сервера включили ручное подтверждение аккаунтов для защиты от спама.\nВы не сможете пользоваться аккаунтов до его подтверждения модераторами"),
-        "app_access_register_step_manualApprove_title":
+        "app_auth_instance_register_step_manualApprove_title":
             MessageLookupByLibrary.simpleMessage(
                 "Ручное подтверждение аккаунтов"),
-        "app_access_register_step_submit_title":
+        "app_auth_instance_register_step_submit_title":
             MessageLookupByLibrary.simpleMessage("Отправить"),
-        "app_access_register_title": m18,
+        "app_auth_instance_register_title": m18,
         "app_cache_database_settings_currentEntriesCountByType_label":
             MessageLookupByLibrary.simpleMessage(
                 "Максимальное количество записей (по типу сейчас)"),

@@ -158,8 +158,8 @@ class _UnifediApiAccessChooserInstanceListItemLogoutButtonWidget
       onPressed: () async {
         await FediConfirmAlertDialog(
           context: context,
-          title: S.of(context).app_access_logout_dialog_title,
-          contentText: S.of(context).app_access_logout_dialog_content(
+          title: S.of(context).app_auth_instance_logout_dialog_title,
+          contentText: S.of(context).app_auth_instance_logout_dialog_content(
                 instanceListItemBloc.instance.userAtHost,
               ),
           onAction: (context) async {

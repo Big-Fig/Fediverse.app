@@ -13,7 +13,7 @@ class AddMoreJoinUnifediApiAccessPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: IFediUiColorTheme.of(context).primaryDark,
       appBar: FediPageTitleAppBar(
-        title: S.of(context).app_access_join_new_title,
+        title: S.of(context).app_auth_instance_join_new_title,
         leading: const FediDismissIconButton(),
       ),
       body: const SafeArea(

@@ -111,7 +111,7 @@ class _JoinUnifediApiAccessHelpMeChooseWidget extends StatelessWidget {
         child: Padding(
           padding: FediPadding.allMediumPadding,
           child: Text(
-            S.of(context).app_access_join_action_helpMeChooseInstance,
+            S.of(context).app_auth_instance_join_action_helpMeChooseInstance,
             style: IFediUiTextTheme.of(context).mediumLightGrey.copyWith(
                   decoration: TextDecoration.underline,
                 ),
@@ -174,7 +174,7 @@ class _JoinUnifediApiAccessLoginButtonWidget extends StatelessWidget {
         right: FediSizes.smallPadding,
       ),
       child: FediTransparentTextButtonWithBorder(
-        S.of(context).app_access_join_action_login,
+        S.of(context).app_auth_instance_join_action_login,
         onPressed: () {
           logInToInstance(context);
         },
@@ -201,7 +201,7 @@ class _JoinUnifediApiAccessExploreAsGuestButtonWidget extends StatelessWidget {
         right: FediSizes.smallPadding,
       ),
       child: FediTransparentTextButtonWithBorder(
-        S.of(context).app_access_join_action_exploreAsGuest,
+        S.of(context).app_auth_instance_join_action_exploreAsGuest,
         key: Key(JoinUnifediApiAccessWidgetKeys.exploreAsGuestButtonKey),
         onPressed: () {
           var hostUri = joinInstanceBloc.extractCurrentUri();
@@ -231,7 +231,7 @@ class _JoinUnifediApiAccessSignUpButtonWidget extends StatelessWidget {
         right: FediSizes.smallPadding,
       ),
       child: FediTransparentTextButtonWithBorder(
-        S.of(context).app_access_join_action_signUp,
+        S.of(context).app_auth_instance_join_action_signUp,
         onPressed: () {
           signUpToInstance(context);
         },
@@ -289,7 +289,7 @@ class _JoinUnifediApiAccessHostTextFieldWidget extends StatelessWidget {
           ),
         ),
         Text(
-          S.of(context).app_access_join_field_host_helper,
+          S.of(context).app_auth_instance_join_field_host_helper,
           style: IFediUiTextTheme.of(context).mediumShortWhite.copyWith(
                 // todo: refactor
                 // ignore: no-magic-number
@@ -348,7 +348,7 @@ class _JoinUnifediApiAccessTermsOfServiceButtonWidget extends StatelessWidget {
         text: TextSpan(
           children: <TextSpan>[
             TextSpan(
-              text: S.of(context).app_access_join_action_tos_prefix,
+              text: S.of(context).app_auth_instance_join_action_tos_prefix,
               style: textStyle,
             ),
             TextSpan(
@@ -356,14 +356,14 @@ class _JoinUnifediApiAccessTermsOfServiceButtonWidget extends StatelessWidget {
               style: textStyle,
             ),
             TextSpan(
-              text: S.of(context).app_access_join_action_tos_terms,
+              text: S.of(context).app_auth_instance_join_action_tos_terms,
               style: textStyle.copyWith(
                 fontWeight: FontWeight.w500,
                 decoration: TextDecoration.underline,
               ),
             ),
             TextSpan(
-              text: S.of(context).app_access_join_action_tos_postfix,
+              text: S.of(context).app_auth_instance_join_action_tos_postfix,
               style: textStyle,
             ),
           ],
@@ -386,7 +386,7 @@ class _JoinUnifediApiAccessAboutButtonWidget extends StatelessWidget {
           );
         },
         child: Text(
-          S.of(context).app_access_join_action_about,
+          S.of(context).app_auth_instance_join_action_about,
           style: IFediUiTextTheme.of(context).mediumShortWhite.copyWith(
                 decoration: TextDecoration.underline,
               ),
@@ -400,7 +400,8 @@ Future signUpToInstance(BuildContext context) async {
   var asyncDialogResult =
       await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
     context: context,
-    contentMessage: S.of(context).app_access_join_progress_dialog_content,
+    contentMessage:
+        S.of(context).app_auth_instance_join_progress_dialog_content,
     asyncCode: () async {
       AuthHostBloc authHostBloc;
       authHostBloc = AuthHostBloc.createFromContext(
@@ -476,8 +477,9 @@ ErrorData createRegistrationDisabledErrorData(
     ErrorData(
       error: error,
       stackTrace: stackTrace,
-      titleCreator: (context) =>
-          S.of(context).app_access_join_registrationDisabled_dialog_title,
+      titleCreator: (context) => S
+          .of(context)
+          .app_auth_instance_join_registrationDisabled_dialog_title,
       contentCreator: null,
     );
 
@@ -490,9 +492,9 @@ ErrorData createRegistrationInvitesOnlyErrorData(
       error: error,
       stackTrace: stackTrace,
       titleCreator: (context) =>
-          S.of(context).app_access_join_invitesOnly_dialog_title,
+          S.of(context).app_auth_instance_join_invitesOnly_dialog_title,
       contentCreator: (context) =>
-          S.of(context).app_access_join_invitesOnly_dialog_content,
+          S.of(context).app_auth_instance_join_invitesOnly_dialog_content,
     );
 
 // ignore: long-method
@@ -507,7 +509,8 @@ Future logInToInstance(BuildContext context) async {
   var dialogResult = await PleromaAsyncOperationHelper
       .performPleromaAsyncOperation<UnifediApiAccess?>(
     context: context,
-    contentMessage: S.of(context).app_access_join_progress_dialog_content,
+    contentMessage:
+        S.of(context).app_auth_instance_join_progress_dialog_content,
     cancelable: true,
     asyncCode: () async {
       switch (appLaunchType) {

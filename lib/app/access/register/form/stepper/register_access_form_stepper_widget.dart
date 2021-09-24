@@ -89,16 +89,17 @@ class _RegisterUnifediApiAccessFormStepperTitleWidget extends StatelessWidget {
 
     switch (type) {
       case RegisterUnifediApiAccessFormStepperItemType.manualApprove:
-        text = S.of(context).app_access_register_step_manualApprove_title;
+        text =
+            S.of(context).app_auth_instance_register_step_manualApprove_title;
         break;
       case RegisterUnifediApiAccessFormStepperItemType.account:
-        text = S.of(context).app_access_register_step_account_title;
+        text = S.of(context).app_auth_instance_register_step_account_title;
         break;
       case RegisterUnifediApiAccessFormStepperItemType.captcha:
-        text = S.of(context).app_access_register_step_captcha_title;
+        text = S.of(context).app_auth_instance_register_step_captcha_title;
         break;
       case RegisterUnifediApiAccessFormStepperItemType.submit:
-        text = S.of(context).app_access_register_step_submit_title;
+        text = S.of(context).app_auth_instance_register_step_submit_title;
         break;
     }
 

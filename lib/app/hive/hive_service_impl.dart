@@ -116,47 +116,46 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
     var unifediPleromaAdapter = NestedTypeRegistryAdapterImpl(typeId: 150 + 5);
     UnifediHiveHelper.registerUnifediPleromaAdapters(unifediPleromaAdapter);
     Hive.registerNestedTypeRegistryAdapter(unifediPleromaAdapter);
+  }
 
-    // Hive.registerNestedTypeRegistryAdapter(
-    //   FediverseHiveHelper.createNestedTypeRegistryAdapter(
-    //     typeId: 150 + 0,
-    //     idToAdapterMap: UnifediHiveHelper.fediverseIdToAdapterMap,
-    //   ),
-    // );
-    //
-    // Hive.registerNestedTypeRegistryAdapter(
-    //   FediverseHiveHelper.createNestedTypeRegistryAdapter(
-    //     typeId: 150 + 1,
-    //     idToAdapterMap: UnifediHiveHelper.mastodonIdToAdapterMap,
-    //   ),
-    // );
-    //
-    // Hive.registerNestedTypeRegistryAdapter(
-    //   FediverseHiveHelper.createNestedTypeRegistryAdapter(
-    //     typeId: 150 + 2,
-    //     idToAdapterMap: UnifediHiveHelper.pleromaIdToAdapterMap,
-    //   ),
-    // );
-    //
-    // Hive.registerNestedTypeRegistryAdapter(
-    //   FediverseHiveHelper.createNestedTypeRegistryAdapter(
-    //     typeId: 150 + 3,
-    //     idToAdapterMap: UnifediHiveHelper.unifediIdToAdapterMap,
-    //   ),
-    // );
-    //
-    // Hive.registerNestedTypeRegistryAdapter(
-    //   FediverseHiveHelper.createNestedTypeRegistryAdapter(
-    //     typeId: 150 + 4,
-    //     idToAdapterMap: UnifediHiveHelper.mastodonAdaptersIdToAdapterMap,
-    //   ),
-    // );
-    //
-    // Hive.registerNestedTypeRegistryAdapter(
-    //   FediverseHiveHelper.createNestedTypeRegistryAdapter(
-    //     typeId: 150 + 5,
-    //     idToAdapterMap: UnifediHiveHelper.pleromaAdaptersIdToAdapterMap,
-    //   ),
-    // );
+  static void registerOldAdapters() {
+    Hive.registerAdapter(PleromaApiFieldAdapter());
+    Hive.registerAdapter(PleromaApiEmojiAdapter());
+    Hive.registerAdapter(PleromaApiMyAccountPleromaPartAdapter());
+    Hive.registerAdapter(
+      PleromaApiMyAccountPleromaPartNotificationsSettingsAdapter(),
+    );
+    Hive.registerAdapter(PleromaApiAccountRelationshipAdapter());
+    Hive.registerAdapter(PleromaApiMyAccountSourceAdapter());
+    Hive.registerAdapter(PleromaApiMyAccountSourcePleromaPartAdapter());
+    Hive.registerAdapter(AuthInstanceListAdapter());
+    Hive.registerAdapter(AuthInstanceAdapter());
+    Hive.registerAdapter(PleromaApiOAuthTokenAdapter());
+    Hive.registerAdapter(PleromaApiClientApplicationAdapter());
+    Hive.registerAdapter(PleromaMyAccountWrapperAdapter());
+    Hive.registerAdapter(PleromaApiMyAccountAdapter());
+    Hive.registerAdapter(PleromaApiPushMessageBodyAdapter());
+    Hive.registerAdapter(PleromaApiInstancePleromaPartAdapter());
+    Hive.registerAdapter(PleromaApiInstanceAdapter());
+    Hive.registerAdapter(PleromaApiInstancePleromaPartMetadataAdapter());
+    Hive.registerAdapter(MastodonApiInstanceStatsAdapter());
+    Hive.registerAdapter(MastodonApiUrlsAdapter());
+    Hive.registerAdapter(PleromaApiInstancePollLimitsAdapter());
+    Hive.registerAdapter(PleromaApiAccountAdapter());
+    Hive.registerAdapter(
+      PleromaApiInstancePleromaPartMetadataFieldLimitsAdapter(),
+    );
+    Hive.registerAdapter(PleromaApiTagAdapter());
+    Hive.registerAdapter(PleromaApiAccountPleromaPartAdapter());
+    Hive.registerAdapter(PleromaApiCustomEmojiAdapter());
+    Hive.registerAdapter(PleromaApiTagHistoryAdapter());
+    Hive.registerAdapter(PleromaApiListAdapter());
+    Hive.registerAdapter(
+      PleromaApiInstancePleromaPartMetadataFederationAdapter(),
+    );
+    Hive.registerAdapter(
+      PleromaApiInstancePleromaPartMetadataFederationMfrObjectAgeAdapter(),
+    );
+    Hive.registerAdapter(PleromaApiFilterAdapter());
   }
 }

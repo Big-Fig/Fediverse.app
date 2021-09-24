@@ -72,12 +72,14 @@ class _CurrentUnifediApiAccessContextInitWidgetState
     if (!isAlreadyShown) {
       loadingInstanceProgressDialog = FediIndeterminateProgressDialog(
         cancelableOperation: null,
-        titleMessage:
-            S.of(context).app_access_current_context_loading_loading_title,
-        contentMessage:
-            S.of(context).app_access_current_context_loading_loading_content(
-                  myAccountBloc.instance.userAtHost,
-                ),
+        titleMessage: S
+            .of(context)
+            .app_auth_instance_current_context_loading_loading_title,
+        contentMessage: S
+            .of(context)
+            .app_auth_instance_current_context_loading_loading_content(
+              myAccountBloc.instance.userAtHost,
+            ),
       );
 
       loadingInstanceProgressDialog!.show(context);
@@ -194,7 +196,9 @@ class _CurrentUnifediApiAccessContextInitSessionExpiredLogoutButtonWidgetWidget
   @override
   Widget build(BuildContext context) {
     return FediTransparentTextButtonWithBorder(
-      S.of(context).app_access_current_context_loading_cantLoad_action_logout,
+      S
+          .of(context)
+          .app_auth_instance_current_context_loading_cantLoad_action_logout,
       onPressed: () {
         ICurrentUnifediApiAccessBloc.of(context, listen: false)
             .logoutCurrentInstance();
@@ -216,7 +220,7 @@ class _CurrentUnifediApiAccessContextInitSessionExpiredChooseAccountButtonWidget
     return FediTransparentTextButtonWithBorder(
       S
           .of(context)
-          .app_access_current_context_loading_cantLoad_action_chooseDifferentAccount,
+          .app_auth_instance_current_context_loading_cantLoad_action_chooseDifferentAccount,
       onPressed: () {
         showMyAccountActionListBottomSheetDialog(context);
       },
@@ -238,7 +242,9 @@ class _CurrentUnifediApiAccessContextInitSessionExpiredRefreshButtonWidget
         ICurrentUnifediApiAccessContextInitBloc.of(context);
 
     return FediTransparentTextButtonWithBorder(
-      S.of(context).app_access_current_context_loading_cantLoad_action_refresh,
+      S
+          .of(context)
+          .app_auth_instance_current_context_loading_cantLoad_action_refresh,
       onPressed: () {
         currentInstanceContextLoadingBloc.refreshFromNetwork(
           isNeedWaitForOptionalData: false,
@@ -261,7 +267,7 @@ class _CurrentUnifediApiAccessContextInitSessionExpiredDescriptionWidget
     var currentUnifediApiAccessBloc = ICurrentUnifediApiAccessBloc.of(context);
 
     return Text(
-      S.of(context).app_access_current_context_loading_cantLoad_content(
+      S.of(context).app_auth_instance_current_context_loading_cantLoad_content(
             currentUnifediApiAccessBloc.currentInstance!.userAtHost,
           ),
       textAlign: TextAlign.center,

@@ -33,7 +33,7 @@ class RegisterUnifediApiAccessPage extends StatelessWidget {
 
     return Scaffold(
       appBar: FediPageTitleAppBar(
-        title: S.of(context).app_access_register_title(
+        title: S.of(context).app_auth_instance_register_title(
               registerUnifediApiAccessBloc.instanceBaseUri.host,
             ),
         leading: const FediDismissIconButton(),
@@ -146,10 +146,12 @@ Future<AuthHostRegistrationResult?> goToRegisterUnifediApiAccessPage(
 void _showApprovalRequiredToast(BuildContext context) {
   IToastService.of(context, listen: false).showInfoToast(
     context: context,
-    title:
-        S.of(context).app_access_register_approvalRequired_notification_title,
-    content:
-        S.of(context).app_access_register_approvalRequired_notification_content,
+    title: S
+        .of(context)
+        .app_auth_instance_register_approvalRequired_notification_title,
+    content: S
+        .of(context)
+        .app_auth_instance_register_approvalRequired_notification_content,
   );
 }
 
@@ -158,10 +160,10 @@ void _showEmailConfirmationRequiredToast(BuildContext context) {
     context: context,
     title: S
         .of(context)
-        .app_access_register_emailConfirmationRequired_notification_title,
+        .app_auth_instance_register_emailConfirmationRequired_notification_title,
     content: S
         .of(context)
-        .app_access_register_emailConfirmationRequired_notification_content,
+        .app_auth_instance_register_emailConfirmationRequired_notification_content,
   );
 }
 
@@ -171,9 +173,11 @@ void _showCantLoginToast(
 }) {
   IToastService.of(context, listen: false).showInfoToast(
     context: context,
-    title: S.of(context).app_access_register_cantLogin_notification_title,
-    content: S.of(context).app_access_register_cantLogin_notification_content(
-          errorDescription ?? '',
-        ),
+    title:
+        S.of(context).app_auth_instance_register_cantLogin_notification_title,
+    content:
+        S.of(context).app_auth_instance_register_cantLogin_notification_content(
+              errorDescription ?? '',
+            ),
   );
 }

@@ -16,7 +16,7 @@ class RegisterUnifediApiAccessFormStepperManualApproveItemWidget
           RegisterUnifediApiAccessFormStepperItemDescriptionWidget(
             text: S
                 .of(context)
-                .app_access_register_step_manualApprove_description,
+                .app_auth_instance_register_step_manualApprove_description,
           ),
           const _RegisterUnifediApiAccessFormReasonFieldWidget(),
         ],
@@ -44,8 +44,8 @@ class _RegisterUnifediApiAccessFormReasonFieldWidget extends StatelessWidget {
             IStringValueFormFieldBloc>(
           update: (context, itemBloc, _) => itemBloc.reasonFieldBloc,
           child: StringValueFormFieldRowWidget(
-            label: S.of(context).app_access_register_field_reason_label,
-            hint: S.of(context).app_access_register_field_reason_hint,
+            label: S.of(context).app_auth_instance_register_field_reason_label,
+            hint: S.of(context).app_auth_instance_register_field_reason_hint,
             autocorrect: false,
             onSubmitted: null,
             displayErrors: isEditingStarted,

@@ -226,7 +226,7 @@ class _UnifediApiAccessChooserInstanceListItemAddAccountRowWidget
   @override
   Widget build(BuildContext context) {
     return FediPrimaryFilledTextButtonWithBorder(
-      S.of(context).app_access_chooser_action_addInstance,
+      S.of(context).app_auth_instance_chooser_action_addInstance,
       expanded: false,
       onPressed: () {
         goToAddMoreJoinUnifediApiAccessPage(context);

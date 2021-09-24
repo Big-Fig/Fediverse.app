@@ -40,8 +40,9 @@ class _RegisterUnifediApiAccessFormUsernameFieldWidget extends StatelessWidget {
             IStringValueFormFieldBloc>(
           update: (context, itemBloc, _) => itemBloc.usernameFieldBloc,
           child: StringValueFormFieldRowWidget(
-            label: S.of(context).app_access_register_field_username_label,
-            hint: S.of(context).app_access_register_field_username_hint,
+            label:
+                S.of(context).app_auth_instance_register_field_username_label,
+            hint: S.of(context).app_auth_instance_register_field_username_hint,
             autocorrect: false,
             displayErrors: isEditingStarted,
             onSubmitted: (String value) {
@@ -80,8 +81,9 @@ class _RegisterUnifediApiAccessFormEmailFieldWidget extends StatelessWidget {
                 IStringValueFormFieldBloc>(
               update: (context, itemBloc, _) => itemBloc.emailFieldBloc,
               child: StringValueFormFieldRowWidget(
-                label: S.of(context).app_access_register_field_email_label,
-                hint: S.of(context).app_access_register_field_email_hint,
+                label:
+                    S.of(context).app_auth_instance_register_field_email_label,
+                hint: S.of(context).app_auth_instance_register_field_email_hint,
                 autocorrect: false,
                 displayErrors: isEditingStarted,
                 onSubmitted: (String value) {
@@ -92,7 +94,7 @@ class _RegisterUnifediApiAccessFormEmailFieldWidget extends StatelessWidget {
               ),
             ),
             FediFormColumnDesc(
-              S.of(context).app_access_register_field_email_description,
+              S.of(context).app_auth_instance_register_field_email_description,
             ),
           ],
         );
@@ -122,8 +124,9 @@ class _RegisterUnifediApiAccessFormPasswordFieldWidget extends StatelessWidget {
             IStringValueFormFieldBloc>(
           update: (context, itemBloc, _) => itemBloc.passwordFieldBloc,
           child: StringValueFormFieldRowWidget(
-            label: S.of(context).app_access_register_field_password_label,
-            hint: S.of(context).app_access_register_field_password_hint,
+            label:
+                S.of(context).app_auth_instance_register_field_password_label,
+            hint: S.of(context).app_auth_instance_register_field_password_hint,
             autocorrect: false,
             onSubmitted: null,
             obscureText: true,

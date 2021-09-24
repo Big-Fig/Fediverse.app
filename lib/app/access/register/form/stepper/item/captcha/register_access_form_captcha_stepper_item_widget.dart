@@ -28,7 +28,7 @@ class RegisterUnifediApiAccessFormStepperCaptchaItemWidget
               RegisterUnifediApiAccessFormStepperItemDescriptionWidget(
                 text: S
                     .of(context)
-                    .app_access_register_step_captcha_description_disabledOnServer,
+                    .app_auth_instance_register_step_captcha_description_disabledOnServer,
               ),
               const FediBigVerticalSpacer(),
             ],
@@ -38,8 +38,9 @@ class RegisterUnifediApiAccessFormStepperCaptchaItemWidget
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               RegisterUnifediApiAccessFormStepperItemDescriptionWidget(
-                text:
-                    S.of(context).app_access_register_step_captcha_description,
+                text: S
+                    .of(context)
+                    .app_auth_instance_register_step_captcha_description,
               ),
               const _RegisterUnifediApiAccessFormCaptchaFieldWidget(),
             ],
@@ -71,8 +72,8 @@ class _RegisterUnifediApiAccessFormCaptchaFieldWidget extends StatelessWidget {
             ICaptchaStringValueFormFieldBloc>(
           update: (context, value, previous) => value.captchaFieldBloc,
           child: FormCaptchaStringFormFieldRowWidget(
-            label: S.of(context).app_access_register_field_captcha_label,
-            hint: S.of(context).app_access_register_field_captcha_hint,
+            label: S.of(context).app_auth_instance_register_field_captcha_label,
+            hint: S.of(context).app_auth_instance_register_field_captcha_hint,
             displayErrors: isEditingStarted,
             autocorrect: false,
             onSubmitted: null,
