@@ -8,7 +8,7 @@ part of 'access_list_model.dart';
 
 class UnifediApiAccessListAdapter extends TypeAdapter<UnifediApiAccessList> {
   @override
-  final int typeId = 73;
+  final int typeId = 83;
 
   @override
   UnifediApiAccessList read(BinaryReader reader) {

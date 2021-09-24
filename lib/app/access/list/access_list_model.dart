@@ -12,7 +12,7 @@ part 'access_list_model.g.dart';
 // see reservedIds in Hive,
 // which not exist in Hive 0.x
 //@HiveType()
-@HiveType(typeId: -32 + 105)
+@HiveType(typeId: -32 + 115)
 @JsonSerializable(explicitToJson: true)
 class UnifediApiAccessList extends IJsonObj {
   @HiveField(0)

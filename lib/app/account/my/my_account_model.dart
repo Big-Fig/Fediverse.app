@@ -153,7 +153,7 @@ extension IMyAccountExtension on IMyAccount {
   }
 }
 
-@HiveType(typeId: -32 + 104)
+@HiveType(typeId: -32 + 114)
 @JsonSerializable(explicitToJson: true)
 class UnifediApiMyAccountWrapper extends IMyAccount {
   @HiveField(0)

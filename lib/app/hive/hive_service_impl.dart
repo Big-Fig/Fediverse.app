@@ -172,6 +172,13 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
       66,
     );
     _registerOverrideAdapter(PleromaApiFilterAdapter(), 68);
+    _registerOverrideAdapter(PleromaApiFrontendConfigurationsAdapter(), 72);
+    _registerOverrideAdapter(
+        PleromaApiFrontendConfigurationsMastoFeAdapter(), 73);
+    _registerOverrideAdapter(
+        PleromaApiFrontendConfigurationsPleromaFeAdapter(), 74);
+    _registerOverrideAdapter(
+        PleromaApiFrontendConfigurationsSoapboxFeAdapter(), 75);
   }
 
   static void _registerOverrideAdapter<T>(TypeAdapter<T> adapter, int id) {
