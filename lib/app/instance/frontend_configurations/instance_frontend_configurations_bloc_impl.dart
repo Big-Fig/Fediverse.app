@@ -22,11 +22,15 @@ class InstanceFrontendConfigurationsBloc extends AsyncInitLoadingBloc
   @override
   Future internalAsyncInit() async {
     try {
-      var frontendConfigurations =
-          await unifediApiInstanceService.getFrontendConfigurations();
+      var featureSupported = unifediApiInstanceService.isFeatureSupported(
+          unifediApiInstanceService.getFrontendConfigurationsFeature);
+      if (featureSupported) {
+        var frontendConfigurations =
+            await unifediApiInstanceService.getFrontendConfigurations();
 
-      await instanceFrontendConfigurationsLocalPreferenceBloc
-          .setValue(frontendConfigurations);
+        await instanceFrontendConfigurationsLocalPreferenceBloc
+            .setValue(frontendConfigurations);
+      }
     } catch (e, stackTrace) {
       _logger.warning(
         () => 'error during loading frontendConfigurations',

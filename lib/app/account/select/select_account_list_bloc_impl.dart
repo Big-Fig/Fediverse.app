@@ -153,7 +153,7 @@ class SelectAccountListBloc extends DisposableOwner
         maxId: olderThan?.remoteId,
         limit: limit,
       ),
-      withRelationship: false,
+      withRelationship: null,
       accountId: myAccountBloc.account.remoteId,
     );
   }

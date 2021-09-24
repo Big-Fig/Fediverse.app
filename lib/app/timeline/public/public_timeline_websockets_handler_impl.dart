@@ -7,8 +7,8 @@ import 'package:fedi/app/instance/announcement/repository/instance_announcement_
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_impl.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:fediverse_api/fediverse_api_utils.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class PublicTimelineWebSocketsHandler extends WebSocketsChannelHandler {
   PublicTimelineWebSocketsHandler({
@@ -48,15 +48,26 @@ class PublicTimelineWebSocketsHandler extends WebSocketsChannelHandler {
   final String? onlyFromInstance;
 
   @override
-  IDisposable initListener() =>
-      unifediApiWebSocketsService.listenForPublicEvents(
-        localOnly: onlyLocal == true,
-        remoteOnly: onlyRemote == true,
-        mediaOnly: onlyMedia == true,
-        onlyFromInstance: onlyFromInstance,
-        handlerType: handlerType,
-        onEvent: handleEvent,
-      );
+  IDisposable initListener() {
+    var onlyRemoteSupported = unifediApiWebSocketsService.isFeatureSupported(
+      unifediApiWebSocketsService.listenForPublicEventsRemoteOnlyArgFeature,
+    );
+    var onlyFromInstanceRemoteSupported =
+        unifediApiWebSocketsService.isFeatureSupported(
+      unifediApiWebSocketsService
+          .listenForPublicEventsOnlyFromInstanceArgFeature,
+    );
+
+    return unifediApiWebSocketsService.listenForPublicEvents(
+      localOnly: onlyLocal == true,
+      remoteOnly: onlyRemoteSupported ? onlyRemote : null,
+      mediaOnly: onlyMedia == true,
+      onlyFromInstance:
+          onlyFromInstanceRemoteSupported ? onlyFromInstance : null,
+      handlerType: handlerType,
+      onEvent: handleEvent,
+    );
+  }
 
   @override
   String get logTag => 'public_timeline_websockets_handler_impl.dart';

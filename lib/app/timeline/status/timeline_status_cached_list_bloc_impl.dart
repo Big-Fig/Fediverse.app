@@ -17,15 +17,14 @@ import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/timeline/type/timeline_type_model.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
-
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:fedi/repository/repository_model.dart';
+import 'package:fediverse_api/fediverse_api.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
-import 'package:fediverse_api/fediverse_api_utils.dart';
-import 'package:fediverse_api/fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 var _logger = Logger('timeline_status_cached_list_bloc_impl.dart');
 
@@ -205,15 +204,15 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
 
   bool get isFromHomeTimeline => timelineType == TimelineType.home;
 
-  bool get onlyLocal => timeline.onlyLocal == true;
+  bool? get onlyLocal => timeline.onlyLocal;
 
-  bool get onlyRemote => timeline.onlyRemote == true;
+  bool? get onlyRemote => timeline.onlyRemote;
 
   String? get onlyFromInstance => timeline.onlyFromInstance;
 
-  bool get withMuted => timeline.withMuted == true;
+  bool? get withMuted => timeline.withMuted;
 
-  bool get onlyWithMedia => timeline.onlyWithMedia == true;
+  bool? get onlyWithMedia => timeline.onlyWithMedia;
 
   List<UnifediApiVisibility>? get excludeVisibilities =>
       timeline.excludeVisibilities;
@@ -292,52 +291,108 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
   Future<List<IUnifediApiStatus>> _loadHashtagTimeline(
     UnifediApiPagination pagination,
   ) async {
+    var withMutedSupported = unifediApiTimelineService.isFeatureSupported(
+      unifediApiTimelineService.getHashtagTimelineWithMutedFeature,
+    );
+    var onlyWithMediaSupported = unifediApiTimelineService.isFeatureSupported(
+      unifediApiTimelineService.getHashtagTimelineOnlyMediaFeature,
+    );
+
+    var excludeVisibilitiesSupported =
+        unifediApiTimelineService.isFeatureSupported(
+      unifediApiTimelineService.getHashtagTimelineExcludeVisibilitiesFeature,
+    );
+
     return await unifediApiTimelineService.getHashtagTimeline(
       hashtag: timeline.withRemoteHashtag!,
       pagination: pagination,
       onlyLocal: onlyLocal,
-      onlyWithMedia: onlyWithMedia,
-      withMuted: withMuted,
-      excludeVisibilities: excludeVisibilities,
+      onlyWithMedia: onlyWithMediaSupported ? onlyWithMedia : null,
+      withMuted: withMutedSupported ? withMuted : null,
+      excludeVisibilities:
+          excludeVisibilitiesSupported ? excludeVisibilities : null,
     );
   }
 
   Future<List<IUnifediApiStatus>> _loadHomeTimeline(
     UnifediApiPagination pagination,
   ) async {
+    var withMutedSupported = unifediApiTimelineService.isFeatureSupported(
+      unifediApiTimelineService.getHomeTimelineWithMutedFeature,
+    );
+    var replyVisibilityFilterSupported =
+        unifediApiTimelineService.isFeatureSupported(
+      unifediApiTimelineService.getHomeTimelineReplyVisibilityFilterFeature,
+    );
+
+    var excludeVisibilitiesSupported =
+        unifediApiTimelineService.isFeatureSupported(
+      unifediApiTimelineService.getHomeTimelineExcludeVisibilitiesFeature,
+    );
+
     return await unifediApiTimelineService.getHomeTimeline(
       pagination: pagination,
       onlyLocal: onlyLocal,
-      withMuted: withMuted,
-      excludeVisibilities: excludeVisibilities,
-      replyVisibilityFilter: replyVisibilityFilter,
+      withMuted: withMutedSupported ? withMuted : null,
+      excludeVisibilities:
+          excludeVisibilitiesSupported ? excludeVisibilities : null,
+      replyVisibilityFilter:
+          replyVisibilityFilterSupported ? replyVisibilityFilter : null,
     );
   }
 
   Future<List<IUnifediApiStatus>> _loadListTimeline(
     UnifediApiPagination pagination,
   ) async {
+    var withMutedSupported = unifediApiTimelineService.isFeatureSupported(
+      unifediApiTimelineService.getListTimelineWithMutedFeature,
+    );
+
+    var excludeVisibilitiesSupported =
+        unifediApiTimelineService.isFeatureSupported(
+      unifediApiTimelineService.getListTimelineExcludeVisibilitiesFeature,
+    );
+    var onlyLocalSupported = unifediApiTimelineService.isFeatureSupported(
+      unifediApiTimelineService.getListTimelineOnlyLocalFilterFeature,
+    );
+
     return await unifediApiTimelineService.getListTimeline(
       listId: timeline.onlyInRemoteList!.id,
       pagination: pagination,
-      onlyLocal: onlyLocal,
-      withMuted: withMuted,
-      excludeVisibilities: excludeVisibilities,
+      onlyLocal: onlyLocalSupported ? onlyLocal : null,
+      withMuted: withMutedSupported ? withMuted : null,
+      excludeVisibilities:
+          excludeVisibilitiesSupported ? excludeVisibilities : null,
     );
   }
 
   Future<List<IUnifediApiStatus>> _loadPublicTimeline(
     UnifediApiPagination pagination,
   ) async {
+    var withMutedSupported = unifediApiTimelineService.isFeatureSupported(
+      unifediApiTimelineService.getHomeTimelineWithMutedFeature,
+    );
+    var replyVisibilityFilterSupported =
+        unifediApiTimelineService.isFeatureSupported(
+      unifediApiTimelineService.getHomeTimelineReplyVisibilityFilterFeature,
+    );
+
+    var excludeVisibilitiesSupported =
+        unifediApiTimelineService.isFeatureSupported(
+      unifediApiTimelineService.getHomeTimelineExcludeVisibilitiesFeature,
+    );
+
     return await unifediApiTimelineService.getPublicTimeline(
       pagination: pagination,
       onlyLocal: onlyLocal,
       onlyRemote: onlyRemote,
       onlyFromInstance: onlyFromInstance,
       onlyWithMedia: onlyWithMedia,
-      withMuted: withMuted,
-      excludeVisibilities: excludeVisibilities,
-      replyVisibilityFilter: replyVisibilityFilter,
+      withMuted: withMutedSupported ? withMuted : null,
+      excludeVisibilities:
+          excludeVisibilitiesSupported ? excludeVisibilities : null,
+      replyVisibilityFilter:
+          replyVisibilityFilterSupported ? replyVisibilityFilter : null,
     );
   }
 
