@@ -11,7 +11,7 @@ class InstanceFrontendConfigurationsLocalPreferenceBloc
     required String userAtHost,
   }) : super(
           preferencesService: preferencesService,
-          key: '$userAtHost.frontend_configurations',
+          key: 'access.$userAtHost.frontend_configurations',
           schemaVersion: 1,
           jsonConverter: (json) =>
               UnifediApiFrontendConfigurations.fromJson(json),
