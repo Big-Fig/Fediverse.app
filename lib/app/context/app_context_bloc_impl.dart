@@ -371,7 +371,7 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         CurrentUnifediApiAccessLocalPreferenceBloc(hiveLocalPreferencesService)
           ..disposeWith(this);
     await globalProviderService
-        .asyncInitAndRegister<ICurrentUnifediApiAccessLocalPreferenceBlocOld>(
+        .asyncInitAndRegister<ICurrentUnifediApiAccessLocalPreferenceBloc>(
       currentInstanceLocalPreferenceBloc,
     );
 

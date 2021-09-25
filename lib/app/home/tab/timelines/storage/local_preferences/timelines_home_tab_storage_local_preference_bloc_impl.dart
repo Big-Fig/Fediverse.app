@@ -11,7 +11,7 @@ class TimelinesHomeTabStorageLocalPreferenceBloc
     required String userAtHost,
   }) : super(
           preferencesService: preferencesService,
-          key: '$userAtHost.timelines.storage',
+          key: '$userAtHost.timelines.storage.new',
           schemaVersion: 1,
           jsonConverter: (json) => TimelinesHomeTabStorage.fromJson(json),
         );

@@ -13,7 +13,7 @@ class MyAccountLocalPreferenceBloc
     required String userAtHost,
   }) : super(
           preferencesService: preferencesService,
-          key: 'account.my.$userAtHost',
+          key: 'access.account.my.$userAtHost',
           schemaVersion: 1,
           jsonConverter: (json) => UnifediApiMyAccountWrapper.fromJson(json),
         );

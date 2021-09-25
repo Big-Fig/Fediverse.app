@@ -5,7 +5,7 @@ import 'package:unifedi_api/unifedi_api.dart';
 
 class CurrentUnifediApiAccessLocalPreferenceBloc
     extends ObjectLocalPreferenceBloc<UnifediApiAccess?>
-    implements ICurrentUnifediApiAccessLocalPreferenceBlocOld {
+    implements ICurrentUnifediApiAccessLocalPreferenceBloc {
   static const UnifediApiAccess? defaultValue = null;
 
   CurrentUnifediApiAccessLocalPreferenceBloc(
