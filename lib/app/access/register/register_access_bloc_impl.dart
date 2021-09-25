@@ -1,12 +1,12 @@
 import 'dart:async';
 
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:fedi/app/auth/host/auth_host_bloc_impl.dart';
-import 'package:fedi/app/auth/host/auth_host_model.dart';
 import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/access/memory_access_bloc_impl.dart';
 import 'package:fedi/app/access/register/form/register_access_form_bloc_impl.dart';
 import 'package:fedi/app/access/register/register_access_bloc.dart';
+import 'package:fedi/app/auth/host/auth_host_bloc_impl.dart';
+import 'package:fedi/app/auth/host/auth_host_model.dart';
 import 'package:fedi/app/auth/oauth_last_launched/local_preferences/auth_oauth_last_launched_host_to_login_local_preference_bloc.dart';
 import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/localization/settings/localization_settings_bloc.dart';
@@ -33,6 +33,9 @@ class RegisterUnifediApiAccessBloc extends AsyncInitLoadingBloc
   final IConfigService configService;
 
   // ignore: avoid-late-keyword
+  late MemoryUnifediApiAccessBloc memoryUnifediApiAccessBloc;
+
+  // ignore: avoid-late-keyword
   late IUnifediApiInstance unifediApiInstance;
 
   // ignore: avoid-late-keyword
@@ -56,26 +59,17 @@ class RegisterUnifediApiAccessBloc extends AsyncInitLoadingBloc
     required this.pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc,
     required this.localizationSettingsBloc,
     required this.configService,
-  }) : super() {
-    apiManager = currentInstanceBloc.currentInstance!.info!.typeAsUnifediApi
-        .createApiManager(
-      apiAccessBloc: MemoryUnifediApiAccessBloc(
-        access: UnifediApiAccess(
-          url: instanceBaseUri.toString(),
-          instance: null,
-          applicationAccessToken: null,
-          userAccessToken: null,
-        ),
+  }) {
+    memoryUnifediApiAccessBloc = MemoryUnifediApiAccessBloc(
+      access: UnifediApiAccess(
+        url: instanceBaseUri.toString(),
+        instance: null,
+        applicationAccessToken: null,
+        userAccessToken: null,
       ),
-      computeImpl: null,
-    );
-
-    unifediApiInstanceService = apiManager.createInstanceService();
+    )..disposeWith(this);
 
     registrationResultStreamController.disposeWith(this);
-
-    apiManager.disposeWith(this);
-    unifediApiInstanceService.disposeWith(this);
   }
 
   @override
@@ -136,6 +130,28 @@ class RegisterUnifediApiAccessBloc extends AsyncInitLoadingBloc
 
   @override
   Future internalAsyncInit() async {
+    var detectorBloc = UnifediApiInstanceTypeDetectorBloc();
+    var instanceType = await detectorBloc.detectInstanceType(
+      url: instanceBaseUri.toString(),
+    );
+
+    if (instanceType.isPleroma) {
+      apiManager = createPleromaApiManager(
+        apiAccessBloc: memoryUnifediApiAccessBloc,
+        computeImpl: null,
+      );
+    } else {
+      apiManager = createMastodonApiManager(
+        apiAccessBloc: memoryUnifediApiAccessBloc,
+        computeImpl: null,
+      );
+    }
+
+    unifediApiInstanceService = apiManager.createInstanceService();
+
+    apiManager.disposeWith(this);
+    unifediApiInstanceService.disposeWith(this);
+
     unifediApiInstance = await unifediApiInstanceService.getInstance();
 
     registerUnifediApiAccessFormBloc = RegisterUnifediApiAccessFormBloc(

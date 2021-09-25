@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart' show IterableExtension;
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/instance/remote/remote_instance_bloc.dart';
 import 'package:fedi/app/instance/remote/remote_instance_bloc_impl.dart';
@@ -10,13 +11,12 @@ import 'package:fedi/app/status/thread/remote_status_thread_bloc_impl.dart';
 import 'package:fedi/app/status/thread/status_thread_bloc.dart';
 import 'package:fedi/app/status/thread/status_thread_bloc_proxy_provider.dart';
 import 'package:fedi/app/status/thread/status_thread_page.dart';
+import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/connection/connection_service.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 Future goToRemoteStatusThreadPageBasedOnRemoteInstanceStatus(
   BuildContext context, {
@@ -62,6 +62,8 @@ Future goToRemoteStatusThreadPageBasedOnLocalInstanceRemoteStatus(
           ),
           unifediApiInstance: null,
         );
+
+        await remoteInstanceBloc.performAsyncInit();
 
         unifediApiStatusService =
             remoteInstanceBloc.unifediApiManager.createStatusService();
@@ -126,17 +128,23 @@ MaterialPageRoute createRemoteStatusThreadPageRouteBasedOnRemoteInstanceStatus({
           unifediApiInstance: null,
         );
       },
-      child: DisposableProvider<IStatusThreadBloc>(
-        create: (context) => RemoteStatusThreadBloc.createFromContext(
-          context,
-          initialStatusToFetchThread: status,
-          initialMediaAttachment: initialMediaAttachment,
-        ),
-        child: StatusThreadBlocProxyProvider(
-          child: ThreadPostStatusBloc.provideToContext(
-            context,
-            inReplyToStatus: status,
-            child: const StatusThreadPage(),
+      child: Builder(
+        builder: (context) => FediAsyncInitLoadingWidget(
+          asyncInitLoadingBloc: IRemoteInstanceBloc.of(context),
+          // todo: remove hack
+          loadingFinishedBuilder: (_) => DisposableProvider<IStatusThreadBloc>(
+            create: (context) => RemoteStatusThreadBloc.createFromContext(
+              context,
+              initialStatusToFetchThread: status,
+              initialMediaAttachment: initialMediaAttachment,
+            ),
+            child: StatusThreadBlocProxyProvider(
+              child: ThreadPostStatusBloc.provideToContext(
+                context,
+                inReplyToStatus: status,
+                child: const StatusThreadPage(),
+              ),
+            ),
           ),
         ),
       ),

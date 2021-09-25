@@ -1,6 +1,7 @@
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/access/memory_access_bloc_impl.dart';
 import 'package:fedi/app/instance/remote/remote_instance_bloc.dart';
+import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/connection/connection_service.dart';
 import 'package:flutter/widgets.dart';
@@ -47,7 +48,13 @@ class RemoteInstanceBloc extends AsyncInitLoadingBloc
           context,
           instanceUri: instanceUri,
         ),
-        child: child,
+        // TODO: remove hack
+        child: Builder(
+          builder: (context) => FediAsyncInitLoadingWidget(
+            asyncInitLoadingBloc: IRemoteInstanceBloc.of(context),
+            loadingFinishedBuilder: (_) => child,
+          ),
+        ),
       );
 
   @override

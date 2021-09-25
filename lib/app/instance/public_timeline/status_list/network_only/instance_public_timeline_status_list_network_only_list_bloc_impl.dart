@@ -1,3 +1,4 @@
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/instance/remote/remote_instance_bloc.dart';
 import 'package:fedi/app/list/network_only/network_only_list_bloc.dart';
@@ -6,10 +7,9 @@ import 'package:fedi/app/status/list/network_only/status_network_only_list_bloc_
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class InstancePublicTimelineStatusListNetworkOnlyListBloc
     extends IStatusNetworkOnlyListBloc {
@@ -83,14 +83,41 @@ class InstancePublicTimelineStatusListNetworkOnlyListBloc
     required String? maxId,
   }) async {
     var timeline = timelineLocalPreferenceBloc.value!;
+    var onlyFromInstanceSupported =
+        unifediApiTimelineService.isFeatureSupported(
+      unifediApiTimelineService.getPublicTimelineOnlyFromInstanceFeature,
+    );
+    var onlyRemoteInstanceSupported =
+        unifediApiTimelineService.isFeatureSupported(
+      unifediApiTimelineService.getPublicTimelineOnlyRemoteFeature,
+    );
+    var excludeVisibilitiesSupported =
+        unifediApiTimelineService.isFeatureSupported(
+      unifediApiTimelineService.getPublicTimelineExcludeVisibilitiesFeature,
+    );
+    var onlyMediaSupported = unifediApiTimelineService.isFeatureSupported(
+      unifediApiTimelineService.getPublicTimelineOnlyMediaFeature,
+    );
+    var replyVisibilityFilterSupported =
+        unifediApiTimelineService.isFeatureSupported(
+      unifediApiTimelineService.getPublicTimelineReplyVisibilityFilterFeature,
+    );
+    var withMutedSupported = unifediApiTimelineService.isFeatureSupported(
+      unifediApiTimelineService.getPublicTimelineWithMutedFeature,
+    );
+
     var unifediApiStatuses = await unifediApiTimelineService.getPublicTimeline(
-      onlyLocal: timeline.onlyLocal == true,
-      onlyRemote: timeline.onlyRemote == true,
-      onlyWithMedia: timeline.onlyWithMedia == true,
-      withMuted: timeline.withMuted == true,
-      onlyFromInstance: timeline.onlyFromInstance,
-      excludeVisibilities: timeline.excludeVisibilities,
-      replyVisibilityFilter: timeline.replyVisibilityFilter,
+      onlyLocal: timeline.onlyLocal,
+      onlyRemote: onlyRemoteInstanceSupported ? timeline.onlyRemote : null,
+      onlyWithMedia: onlyMediaSupported ? timeline.onlyWithMedia : null,
+      withMuted: withMutedSupported ? timeline.withMuted : null,
+      onlyFromInstance:
+          onlyFromInstanceSupported ? timeline.onlyFromInstance : null,
+      excludeVisibilities:
+          excludeVisibilitiesSupported ? timeline.excludeVisibilities : null,
+      replyVisibilityFilter: replyVisibilityFilterSupported
+          ? timeline.replyVisibilityFilter
+          : null,
       pagination: UnifediApiPagination(
         limit: itemsCountPerPage,
         minId: minId,

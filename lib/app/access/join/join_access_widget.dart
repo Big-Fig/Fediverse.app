@@ -408,6 +408,8 @@ Future signUpToInstance(BuildContext context) async {
         context,
         instanceBaseUri: hostUri,
       );
+
+      await authHostBloc.performAsyncInit();
       await authHostBloc.checkApplicationRegistration();
       await authHostBloc.checkIsRegistrationsEnabled();
       await authHostBloc.dispose();

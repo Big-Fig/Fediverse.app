@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
+import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
@@ -8,12 +9,12 @@ import 'package:fedi/app/account/details/account_details_bloc_impl.dart';
 import 'package:fedi/app/account/details/account_details_page.dart';
 import 'package:fedi/app/account/remote_account_bloc_impl.dart';
 import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
-import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/instance/remote/remote_instance_bloc.dart';
 import 'package:fedi/app/instance/remote/remote_instance_bloc_impl.dart';
 import 'package:fedi/app/instance/remote/remote_instance_error_data.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
+import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/connection/connection_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -88,6 +89,8 @@ Future goToRemoteAccountDetailsPageBasedOnLocalInstanceRemoteAccount(
           ),
           unifediApiInstance: null,
         );
+
+        await remoteInstanceBloc.performAsyncInit();
 
         unifediApiStatusService =
             remoteInstanceBloc.unifediApiManager.createStatusService();
@@ -203,22 +206,36 @@ MaterialPageRoute createRemoteAccountDetailsPageRoute({
             unifediApiInstance: null,
           );
         },
-        child: DisposableProvider<IAccountDetailsBloc>(
-          create: (context) => AccountDetailsBloc(
-            unifediApiAccountService:
-                Provider.of<IUnifediApiAccountService>(context),
-            currentUnifediApiAccessBloc: ICurrentUnifediApiAccessBloc.of(
-              context,
-              listen: false,
+        child: Builder(
+          builder: (context) => FediAsyncInitLoadingWidget(
+            asyncInitLoadingBloc: IRemoteInstanceBloc.of(context),
+            // todo: remove hack
+            loadingFinishedBuilder: (_) => DisposableProxyProvider<
+                IRemoteInstanceBloc, IUnifediApiAccountService>(
+              update: (context, value, previous) =>
+                  value.unifediApiManager.createAccountService(),
+              child: DisposableProvider<IAccountDetailsBloc>(
+                create: (context) => AccountDetailsBloc(
+                  unifediApiAccountService:
+                      Provider.of<IUnifediApiAccountService>(
+                    context,
+                    listen: false,
+                  ),
+                  currentUnifediApiAccessBloc: ICurrentUnifediApiAccessBloc.of(
+                    context,
+                    listen: false,
+                  ),
+                ),
+                child: DisposableProvider<IAccountBloc>(
+                  create: (context) => RemoteAccountBloc.createFromContext(
+                    context,
+                    account: account,
+                    isNeedRefreshFromNetworkOnInit: false,
+                  ),
+                  child: const AccountDetailsPage(),
+                ),
+              ),
             ),
-          ),
-          child: DisposableProvider<IAccountBloc>(
-            create: (context) => RemoteAccountBloc.createFromContext(
-              context,
-              account: account,
-              isNeedRefreshFromNetworkOnInit: false,
-            ),
-            child: const AccountDetailsPage(),
           ),
         ),
       );

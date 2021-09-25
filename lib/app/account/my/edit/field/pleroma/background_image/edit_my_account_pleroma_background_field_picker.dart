@@ -6,7 +6,6 @@ import 'package:fedi/media/device/file/media_device_file_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:provider/provider.dart';
 
 Future<IMediaDeviceFile?> showEditMyAccountPleromaBackgroundFieldPicker(
   BuildContext context,
