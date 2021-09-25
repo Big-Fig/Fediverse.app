@@ -538,6 +538,7 @@ Future<IUnifediApiNotification?> _loadLastNotificationForInstance({
     preferencesService: localPreferencesService,
     userAtHost: authInstance.userAtHost,
   );
+  await unifediApiAccessLocalPreferenceBloc.performAsyncInit();
   disposableOwner.addDisposable(unifediApiAccessLocalPreferenceBloc);
 
   var localPreferencesUnifediApiAccessBloc =
@@ -879,7 +880,7 @@ String _calculateChannelKey(IUnifediApiNotification unifediApiNotification) {
     move: (_) => _moveChannelKey,
     followRequest: (_) => _followRequestChannelKey,
     emojiReaction: (_) => _emojiReactionChannelKey,
-    chatMention: (_) => _chatMentionGroupKey,
+    chatMention: (_) => _chatMentionChannelKey,
     report: (_) => _reportChannelKey,
     unknown: (_) => _unknownChannelKey,
   );
@@ -960,7 +961,9 @@ class _NotificationPayloadData {
     var serverHost = payload[_notificationContentPayloadServerHostKey]!;
     var notificationJsonString =
         payload[_notificationContentPayloadNotificationJsonKey]!;
-    var notificationJson = jsonDecode(notificationJsonString);
+    // TODO: check. value? wtf
+    var notificationJson = jsonDecode(notificationJsonString)['value'];
+
     var unifediApiNotification =
         UnifediApiNotification.fromJson(notificationJson);
 

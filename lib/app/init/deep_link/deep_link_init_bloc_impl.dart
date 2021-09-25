@@ -70,6 +70,7 @@ class DeepLinkInitBloc extends AsyncInitLoadingBloc
           preferencesService: localPreferencesService,
           userAtHost: authInstance.userAtHost,
         );
+        await apiAccessLocalPreferenceBloc.performAsyncInit();
 
         await apiAccessLocalPreferenceBloc.setValue(authInstance);
 
