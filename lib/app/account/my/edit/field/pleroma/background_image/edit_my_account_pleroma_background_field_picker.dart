@@ -48,10 +48,6 @@ Future _cropAndSelect(
   BuildContext context,
   IMediaDeviceFile mediaDeviceFile,
 ) async {
-  var mediaDeviceFile = Provider.of<IMediaDeviceFile>(
-    context,
-    listen: false,
-  );
   var croppedFile = await goToCropImagePage(
     context: context,
     file: await mediaDeviceFile.loadFile(),

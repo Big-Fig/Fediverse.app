@@ -1,8 +1,8 @@
 import 'package:easy_dispose/easy_dispose.dart';
+import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/my/edit/edit_my_account_bloc.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
-import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/form/field/file_picker_or_url/image/image_file_picker_or_url_form_field_bloc.dart';
 import 'package:fedi/form/field/file_picker_or_url/image/image_file_picker_or_url_form_field_bloc_impl.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc_impl.dart';
@@ -302,8 +302,6 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
             isPleromaInstance ? acceptsChatMessagesField.currentValue : null,
         allowFollowingMove:
             isPleromaInstance ? allowFollowingMoveField.currentValue : null,
-        backgroundImageLocalFilePath:
-            await backgroundField.currentMediaDeviceFile?.calculateFilePath(),
 
         hideFavorites:
             isPleromaInstance ? hideFavouritesField.currentValue : null,
@@ -325,6 +323,15 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
 
         skipThreadContainment:
             isPleromaInstance ? skipThreadContainmentField.currentValue : null,
+        backgroundImageLocalFilePath:
+            await backgroundField.currentMediaDeviceFile?.calculateFilePath(),
+        avatarLocalFilePath:
+            await avatarField.currentMediaDeviceFile?.calculateFilePath(),
+        headerLocalFilePath:
+            await headerField.currentMediaDeviceFile?.calculateFilePath(),
+        deleteAvatar: avatarField.isOriginalDeleted,
+        deleteBackgroundImage: backgroundField.isOriginalDeleted,
+        deleteHeader: headerField.isOriginalDeleted,
 
         // todo: check
         alsoKnownAs: null,
@@ -335,19 +342,9 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
 
         sensitive: null,
 
-        avatarLocalFilePath: null,
-
         language: null,
 
         privacy: null,
-
-        deleteAvatar: null,
-
-        headerLocalFilePath: null,
-
-        deleteBackgroundImage: null,
-
-        deleteHeader: null,
       );
 
   static EditMyAccountBloc createFromContext(BuildContext context) {
