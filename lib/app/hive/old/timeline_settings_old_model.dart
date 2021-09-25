@@ -1,7 +1,6 @@
 import 'package:fedi/app/settings/settings_model.dart';
 import 'package:fedi/app/timeline/type/timeline_type_model.dart';
 import 'package:fedi/collection/collection_hash_utils.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';

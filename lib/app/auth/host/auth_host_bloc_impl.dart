@@ -235,6 +235,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
               user: '',
               oauthToken: token.toUnifediApiOAuthToken(),
               scopes: scopes,
+              myAccount: null,
             ),
           ),
     );
@@ -284,6 +285,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
         oauthToken: token.toUnifediApiOAuthToken(),
         scopes: scopes,
         user: myAccount.acct,
+        myAccount: myAccount.toUnifediApiMyAccount(),
       ),
     );
     //

@@ -92,6 +92,7 @@ void main() {
           id: 'id',
           me: 'me',
         ),
+        myAccount: null,
       ),
     );
 
