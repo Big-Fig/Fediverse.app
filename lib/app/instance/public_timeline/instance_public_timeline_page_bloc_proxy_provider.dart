@@ -19,7 +19,7 @@ class InstancePublicTimelinePageBlocProxyProvider extends StatelessWidget {
         child: ProxyProvider<IInstancePublicTimelinePageBloc, IInstanceBloc>(
           update: (context, bloc, previous) => bloc,
           child: ProxyProvider<IInstancePublicTimelinePageBloc,
-              ITimelineLocalPreferenceBloc>(
+              ITimelineLocalPreferenceBlocOld>(
             update: (context, bloc, previous) =>
                 bloc.timelineLocalPreferenceBloc,
             child: child,

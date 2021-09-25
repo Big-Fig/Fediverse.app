@@ -19,7 +19,7 @@ abstract class IInstancePublicTimelinePageBloc
   }) =>
       Provider.of<IInstancePublicTimelinePageBloc>(context, listen: listen);
 
-  ITimelineLocalPreferenceBloc get timelineLocalPreferenceBloc;
+  ITimelineLocalPreferenceBlocOld get timelineLocalPreferenceBloc;
 
   RefreshController get refreshController;
 

@@ -3,13 +3,13 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:pleroma_api/pleroma_api.dart';
 
-abstract class IAuthHostApplicationLocalPreferenceBloc
+abstract class IAuthHostApplicationLocalPreferenceBlocOld
     implements LocalPreferenceBloc<PleromaApiClientApplication?> {
-  static IAuthHostApplicationLocalPreferenceBloc of(
+  static IAuthHostApplicationLocalPreferenceBlocOld of(
     BuildContext context, {
     bool listen = true,
   }) =>
-      Provider.of<IAuthHostApplicationLocalPreferenceBloc>(
+      Provider.of<IAuthHostApplicationLocalPreferenceBlocOld>(
         context,
         listen: listen,
       );

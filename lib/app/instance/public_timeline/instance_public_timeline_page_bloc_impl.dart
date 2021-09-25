@@ -22,7 +22,7 @@ abstract class InstancePublicTimelinePageBloc extends AsyncInitLoadingBloc
   final IUnifediApiInstance unifediApiInstance;
 
   @override
-  ITimelineLocalPreferenceBloc get timelineLocalPreferenceBloc;
+  ITimelineLocalPreferenceBlocOld get timelineLocalPreferenceBloc;
 
   @override
   final Uri instanceUri;

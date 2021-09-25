@@ -1,12 +1,12 @@
-import 'package:fedi/app/hive/old/auth_host_access_token_local_preference_bloc.dart';
+import 'package:fedi/app/hive/old/auth_host_access_token_local_preference_old_bloc.dart';
 import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:pleroma_api/pleroma_api.dart';
 
-class AuthHostAccessTokenLocalPreferenceBloc
+class AuthHostAccessTokenLocalPreferenceBlocOld
     extends ObjectLocalPreferenceBloc<PleromaApiOAuthToken?>
-    implements IAuthHostAccessTokenLocalPreferenceBloc {
-  AuthHostAccessTokenLocalPreferenceBloc(
+    implements IAuthHostAccessTokenLocalPreferenceBlocOld {
+  AuthHostAccessTokenLocalPreferenceBlocOld(
     ILocalPreferencesService preferencesService, {
     required String host,
   }) : super(

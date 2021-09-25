@@ -1,32 +1,33 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'auth_instance_list_model.dart';
+part of 'my_account_old_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class AuthInstanceListAdapter extends TypeAdapter<AuthInstanceList> {
+class PleromaMyAccountWrapperOldAdapter
+    extends TypeAdapter<PleromaMyAccountWrapperOld> {
   @override
-  final int typeId = 17;
+  final int typeId = 0;
 
   @override
-  AuthInstanceList read(BinaryReader reader) {
+  PleromaMyAccountWrapperOld read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return AuthInstanceList(
-      instances: (fields[0] as List).cast<AuthInstance>(),
+    return PleromaMyAccountWrapperOld(
+      pleromaAccount: fields[0] as PleromaApiMyAccount,
     );
   }
 
   @override
-  void write(BinaryWriter writer, AuthInstanceList obj) {
+  void write(BinaryWriter writer, PleromaMyAccountWrapperOld obj) {
     writer
       ..writeByte(1)
       ..writeByte(0)
-      ..write(obj.instances);
+      ..write(obj.pleromaAccount);
   }
 
   @override
@@ -35,7 +36,7 @@ class AuthInstanceListAdapter extends TypeAdapter<AuthInstanceList> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is AuthInstanceListAdapter &&
+      other is PleromaMyAccountWrapperOldAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
@@ -44,15 +45,16 @@ class AuthInstanceListAdapter extends TypeAdapter<AuthInstanceList> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-AuthInstanceList _$AuthInstanceListFromJson(Map<String, dynamic> json) {
-  return AuthInstanceList(
-    instances: (json['instances'] as List<dynamic>)
-        .map((e) => AuthInstance.fromJson(e as Map<String, dynamic>))
-        .toList(),
+PleromaMyAccountWrapperOld _$PleromaMyAccountWrapperOldFromJson(
+    Map<String, dynamic> json) {
+  return PleromaMyAccountWrapperOld(
+    pleromaAccount: PleromaApiMyAccount.fromJson(
+        json['remote_account'] as Map<String, dynamic>),
   );
 }
 
-Map<String, dynamic> _$AuthInstanceListToJson(AuthInstanceList instance) =>
+Map<String, dynamic> _$PleromaMyAccountWrapperOldToJson(
+        PleromaMyAccountWrapperOld instance) =>
     <String, dynamic>{
-      'instances': instance.instances.map((e) => e.toJson()).toList(),
+      'remote_account': instance.pleromaAccount.toJson(),
     };

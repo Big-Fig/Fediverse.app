@@ -9,9 +9,11 @@ import 'package:fedi/app/crash_reporting/settings/crash_reporting_settings_model
 import 'package:fedi/app/emoji/picker/category/custom_image_url/emoji_picker_custom_image_url_category_model.dart';
 import 'package:fedi/app/emoji/picker/category/recent/emoji_picker_recent_category_model.dart';
 import 'package:fedi/app/hive/hive_service.dart';
-import 'package:fedi/app/hive/old/auth_instance_list_model.dart';
-import 'package:fedi/app/hive/old/auth_instance_model.dart';
-import 'package:fedi/app/hive/old/my_account_model.dart';
+import 'package:fedi/app/hive/old/auth_instance_list_old_model.dart';
+import 'package:fedi/app/hive/old/auth_instance_old_model.dart';
+import 'package:fedi/app/hive/old/my_account_old_model.dart';
+import 'package:fedi/app/hive/old/timeline_old_model.dart';
+import 'package:fedi/app/hive/old/timeline_settings_old_model.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_model.dart';
 import 'package:fedi/app/instance/announcement/settings/instance_announcement_settings_model.dart';
 import 'package:fedi/app/localization/settings/localization_settings_model.dart';
@@ -74,8 +76,7 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
     Hive.registerAdapter(EmojiPickerRecentCategoryItemsListAdapter());
     Hive.registerAdapter(CustomEmojiPickerCodeItemAdapter());
     Hive.registerAdapter(PushNotificationAdapter());
-    Hive.registerAdapter(TimelineAdapter());
-    Hive.registerAdapter(TimelineSettingsAdapter());
+
     Hive.registerAdapter(TimelinesHomeTabStorageAdapter());
     Hive.registerAdapter(LocalizationLocaleAdapter());
     Hive.registerAdapter(PostStatusSettingsAdapter());
@@ -98,6 +99,10 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
     // updated ids
     Hive.registerAdapter(UnifediApiMyAccountWrapperAdapter());
     Hive.registerAdapter(UnifediApiAccessListAdapter());
+    Hive.registerAdapter(TimelineAdapter());
+    Hive.registerAdapter(TimelineSettingsAdapter());
+    // registered inside unifedi api package
+    // Hive.registerAdapter(UnifediApiAccessAdapter());
 
     var fediverseAdapter = NestedTypeRegistryAdapterImpl(typeId: 150 + 0);
     FediverseHiveHelper.registerFediverseAdapters(fediverseAdapter);
@@ -127,9 +132,11 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
   }
 
   static void registerOldAdapters() {
-    _registerOverrideAdapter(AuthInstanceListAdapter(), 17);
-    _registerOverrideAdapter(AuthInstanceAdapter(), 18);
-    _registerOverrideAdapter(PleromaMyAccountWrapperAdapter(), 21);
+    _registerOverrideAdapter(AuthInstanceListOldAdapter(), 17);
+    _registerOverrideAdapter(AuthInstanceOldAdapter(), 18);
+    _registerOverrideAdapter(TimelineOldAdapter(), 46);
+    _registerOverrideAdapter(TimelineSettingsOldAdapter(), 47);
+    _registerOverrideAdapter(PleromaMyAccountWrapperOldAdapter(), 21);
     //
     // replaced with new adapter
     // _registerOverrideAdapter(PleromaApiPushMessageBodyAdapter());
@@ -174,11 +181,17 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
     _registerOverrideAdapter(PleromaApiFilterAdapter(), 68);
     _registerOverrideAdapter(PleromaApiFrontendConfigurationsAdapter(), 72);
     _registerOverrideAdapter(
-        PleromaApiFrontendConfigurationsMastoFeAdapter(), 73);
+      PleromaApiFrontendConfigurationsMastoFeAdapter(),
+      73,
+    );
     _registerOverrideAdapter(
-        PleromaApiFrontendConfigurationsPleromaFeAdapter(), 74);
+      PleromaApiFrontendConfigurationsPleromaFeAdapter(),
+      74,
+    );
     _registerOverrideAdapter(
-        PleromaApiFrontendConfigurationsSoapboxFeAdapter(), 75);
+      PleromaApiFrontendConfigurationsSoapboxFeAdapter(),
+      75,
+    );
   }
 
   static void _registerOverrideAdapter<T>(TypeAdapter<T> adapter, int id) {

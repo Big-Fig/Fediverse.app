@@ -26,7 +26,7 @@ abstract class HashtagPageBloc extends AsyncInitLoadingBloc
   final IHashtag hashtag;
 
   @override
-  ITimelineLocalPreferenceBloc get timelineLocalPreferenceBloc;
+  ITimelineLocalPreferenceBlocOld get timelineLocalPreferenceBloc;
 
   HashtagPageBloc({
     required this.instanceUri,

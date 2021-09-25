@@ -5,7 +5,7 @@ import 'package:easy_dispose/easy_dispose.dart';
 
 class TimelineSettingsBloc extends DisposableOwner
     implements ITimelineSettingsBloc {
-  final ITimelineLocalPreferenceBloc timelineLocalPreferencesBloc;
+  final ITimelineLocalPreferenceBlocOld timelineLocalPreferencesBloc;
 
   TimelineSettingsBloc({
     required this.timelineLocalPreferencesBloc,

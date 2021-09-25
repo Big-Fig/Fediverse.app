@@ -3,16 +3,16 @@ import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
-class CurrentUnifediApiAccessLocalPreferenceBloc
+class CurrentUnifediApiAccessLocalPreferenceBlocOld
     extends ObjectLocalPreferenceBloc<UnifediApiAccess?>
     implements ICurrentUnifediApiAccessLocalPreferenceBlocOld {
   static const UnifediApiAccess? defaultValue = null;
 
-  CurrentUnifediApiAccessLocalPreferenceBloc(
+  CurrentUnifediApiAccessLocalPreferenceBlocOld(
     ILocalPreferencesService preferencesService,
   ) : super(
           preferencesService: preferencesService,
-          key: 'access.current',
+          key: 'instance.current',
           schemaVersion: 1,
           jsonConverter: (json) => UnifediApiAccess.fromJson(json),
         );

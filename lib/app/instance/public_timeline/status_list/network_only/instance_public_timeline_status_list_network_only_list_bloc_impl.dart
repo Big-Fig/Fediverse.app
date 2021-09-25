@@ -15,7 +15,7 @@ class InstancePublicTimelineStatusListNetworkOnlyListBloc
     extends IStatusNetworkOnlyListBloc {
   final Uri instanceUri;
   final IUnifediApiTimelineService unifediApiTimelineService;
-  final ITimelineLocalPreferenceBloc timelineLocalPreferenceBloc;
+  final ITimelineLocalPreferenceBlocOld timelineLocalPreferenceBloc;
 
   InstancePublicTimelineStatusListNetworkOnlyListBloc({
     required this.instanceUri,
@@ -25,7 +25,7 @@ class InstancePublicTimelineStatusListNetworkOnlyListBloc
 
   static InstancePublicTimelineStatusListNetworkOnlyListBloc createFromContext(
     BuildContext context, {
-    required ITimelineLocalPreferenceBloc timelineLocalPreferenceBloc,
+    required ITimelineLocalPreferenceBlocOld timelineLocalPreferenceBloc,
     required Uri instanceUri,
   }) {
     var remoteInstanceBloc = IRemoteInstanceBloc.of(context, listen: false);
@@ -45,7 +45,7 @@ class InstancePublicTimelineStatusListNetworkOnlyListBloc
 
   static Widget provideToContext(
     BuildContext context, {
-    required ITimelineLocalPreferenceBloc timelineLocalPreferenceBloc,
+    required ITimelineLocalPreferenceBlocOld timelineLocalPreferenceBloc,
     required Widget child,
     required Uri instanceUri,
   }) {

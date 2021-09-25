@@ -35,7 +35,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
   final IStatusRepository statusRepository;
   final IFilterRepository filterRepository;
   final ICurrentUnifediApiAccessBloc currentInstanceBloc;
-  final ITimelineLocalPreferenceBloc timelineLocalPreferenceBloc;
+  final ITimelineLocalPreferenceBlocOld timelineLocalPreferenceBloc;
   final IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc;
   final IMyAccountBloc myAccountBloc;
 
@@ -429,7 +429,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
   static TimelineStatusCachedListBloc createFromContext(
     BuildContext context, {
     required WebSocketsChannelHandlerType handlerType,
-    required ITimelineLocalPreferenceBloc timelineLocalPreferencesBloc,
+    required ITimelineLocalPreferenceBlocOld timelineLocalPreferencesBloc,
   }) =>
       TimelineStatusCachedListBloc(
         unifediApiAccountService: Provider.of<IUnifediApiAccountService>(

@@ -15,7 +15,7 @@ class TimelineWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var timelineLocalPreferencesBloc =
-        ITimelineLocalPreferenceBloc.of(context, listen: false);
+        ITimelineLocalPreferenceBlocOld.of(context, listen: false);
 
     return Container(
       color: IFediUiColorTheme.of(context).offWhite,

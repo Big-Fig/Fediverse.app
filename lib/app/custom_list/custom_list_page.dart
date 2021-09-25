@@ -185,7 +185,7 @@ class _CustomListPageAppBarSettingsActionWidget extends StatelessWidget {
         color: IFediUiColorTheme.of(context).darkGrey,
       ),
       onPressed: () {
-        var timeline = ITimelineLocalPreferenceBloc.of(
+        var timeline = ITimelineLocalPreferenceBlocOld.of(
           context,
           listen: false,
         ).value!;
@@ -244,7 +244,7 @@ MaterialPageRoute createCustomListPageRoute({
     builder: (context) {
       return Provider<ICustomList>.value(
         value: customList,
-        child: DisposableProvider<ITimelineLocalPreferenceBloc>(
+        child: DisposableProvider<ITimelineLocalPreferenceBlocOld>(
           create: (context) {
             var bloc = TimelineLocalPreferenceBloc.customList(
               ILocalPreferencesService.of(context, listen: false),
@@ -283,7 +283,7 @@ class _CustomListPageWrapper extends StatelessWidget {
 
     return FediAsyncInitLoadingWidget(
       asyncInitLoadingBloc:
-          ITimelineLocalPreferenceBloc.of(context, listen: false),
+          ITimelineLocalPreferenceBlocOld.of(context, listen: false),
       loadingFinishedBuilder: (BuildContext context) {
         return DisposableProvider<IStatusCachedListBloc>(
           create: (BuildContext context) {
@@ -291,7 +291,7 @@ class _CustomListPageWrapper extends StatelessWidget {
                 TimelineStatusCachedListBloc.createFromContext(
               context,
               handlerType: WebSocketsChannelHandlerType.foregroundValue,
-              timelineLocalPreferencesBloc: ITimelineLocalPreferenceBloc.of(
+              timelineLocalPreferencesBloc: ITimelineLocalPreferenceBlocOld.of(
                 context,
                 listen: false,
               ),

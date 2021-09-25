@@ -46,7 +46,7 @@ void showEditTimelineLocalPreferenceBlocSettingsDialog({
   required Timeline timeline,
   required bool lockedSource,
   required IUnifediApiInstance unifediApiInstance,
-  required ITimelineLocalPreferenceBloc timelineLocalPreferenceBloc,
+  required ITimelineLocalPreferenceBlocOld timelineLocalPreferenceBloc,
   required InstanceLocation instanceLocation,
 }) {
   showSettingsDialog(
@@ -57,14 +57,14 @@ void showEditTimelineLocalPreferenceBlocSettingsDialog({
         ),
     child: Provider<Timeline>.value(
       value: timeline,
-      child: Provider<ITimelineLocalPreferenceBloc>.value(
+      child: Provider<ITimelineLocalPreferenceBlocOld>.value(
         value: timelineLocalPreferenceBloc,
         child: Builder(
           builder: (context) => FediAsyncInitLoadingWidget(
             asyncInitLoadingBloc:
-                ITimelineLocalPreferenceBloc.of(context, listen: false),
+                ITimelineLocalPreferenceBlocOld.of(context, listen: false),
             loadingFinishedBuilder: (context) => DisposableProxyProvider<
-                ITimelineLocalPreferenceBloc, ITimelineSettingsBloc>(
+                ITimelineLocalPreferenceBlocOld, ITimelineSettingsBloc>(
               update: (context, timelineLocalPreferencesBloc, _) =>
                   TimelineSettingsBloc(
                 timelineLocalPreferencesBloc: timelineLocalPreferencesBloc,

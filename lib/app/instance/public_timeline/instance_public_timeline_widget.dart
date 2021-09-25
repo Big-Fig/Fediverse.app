@@ -57,7 +57,7 @@ class _InstancePublicTimelinePageAppBarSettingsActionWidget
         color: IFediUiColorTheme.of(context).darkGrey,
       ),
       onPressed: () {
-        var timelineLocalPreferenceBloc = ITimelineLocalPreferenceBloc.of(
+        var timelineLocalPreferenceBloc = ITimelineLocalPreferenceBlocOld.of(
           context,
           listen: false,
         );

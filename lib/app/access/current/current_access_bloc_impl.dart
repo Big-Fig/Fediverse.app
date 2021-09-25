@@ -16,7 +16,8 @@ class CurrentUnifediApiAccessBloc extends DisposableOwner
     implements ICurrentUnifediApiAccessBloc {
   final ILocalPreferencesService localPreferencesService;
   final IUnifediApiAccessListBloc instanceListBloc;
-  final ICurrentUnifediApiAccessLocalPreferenceBloc currentLocalPreferenceBloc;
+  final ICurrentUnifediApiAccessLocalPreferenceBlocOld
+      currentLocalPreferenceBloc;
 
   CurrentUnifediApiAccessBloc({
     required this.localPreferencesService,

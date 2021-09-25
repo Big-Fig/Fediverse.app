@@ -160,7 +160,7 @@ class RemoteHashtagPageBloc extends HashtagPageBloc
 
   @override
   // ignore: avoid-late-keyword
-  late ITimelineLocalPreferenceBloc timelineLocalPreferenceBloc;
+  late ITimelineLocalPreferenceBlocOld timelineLocalPreferenceBloc;
 
   @override
   String get userAtHost => remoteInstanceBloc.instanceUri.host;

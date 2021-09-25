@@ -17,7 +17,7 @@ abstract class IHashtagPageBloc
 
   IHashtag get hashtag;
 
-  ITimelineLocalPreferenceBloc get timelineLocalPreferenceBloc;
+  ITimelineLocalPreferenceBlocOld get timelineLocalPreferenceBloc;
 
   RefreshController get refreshController;
 

@@ -222,7 +222,7 @@ class _TimelinesHomeTabPageBodyState extends State<_TimelinesHomeTabPageBody>
 
     return Provider<ITimelineTabBloc>.value(
       value: tabBloc,
-      child: ProxyProvider<ITimelineTabBloc, ITimelineLocalPreferenceBloc>(
+      child: ProxyProvider<ITimelineTabBloc, ITimelineLocalPreferenceBlocOld>(
         update: (context, value, previous) =>
             value.timelineLocalPreferencesBloc,
         // value: tabBloc.timelineLocalPreferencesBloc,

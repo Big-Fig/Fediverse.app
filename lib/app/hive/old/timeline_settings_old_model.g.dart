@@ -1,22 +1,22 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'timeline_settings_model.dart';
+part of 'timeline_settings_old_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class TimelineSettingsAdapter extends TypeAdapter<TimelineSettings> {
+class TimelineSettingsOldAdapter extends TypeAdapter<TimelineSettingsOld> {
   @override
-  final int typeId = 85;
+  final int typeId = 47;
 
   @override
-  TimelineSettings read(BinaryReader reader) {
+  TimelineSettingsOld read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return TimelineSettings(
+    return TimelineSettingsOld(
       onlyWithMedia: fields[1] as bool?,
       excludeReplies: fields[2] as bool?,
       excludeNsfwSensitive: fields[3] as bool?,
@@ -24,10 +24,10 @@ class TimelineSettingsAdapter extends TypeAdapter<TimelineSettings> {
       onlyLocal: fields[5] as bool?,
       withMuted: fields[6] as bool?,
       excludeVisibilitiesStrings: (fields[7] as List?)?.cast<String>(),
-      onlyInRemoteList: fields[9] as UnifediApiList?,
+      onlyInRemoteList: fields[9] as PleromaApiList?,
       withRemoteHashtag: fields[10] as String?,
       replyVisibilityFilterString: fields[11] as String?,
-      onlyFromRemoteAccount: fields[13] as UnifediApiAccount?,
+      onlyFromRemoteAccount: fields[13] as PleromaApiAccount?,
       onlyPinned: fields[14] as bool?,
       excludeReblogs: fields[15] as bool?,
       webSocketsUpdates: fields[16] as bool?,
@@ -36,7 +36,7 @@ class TimelineSettingsAdapter extends TypeAdapter<TimelineSettings> {
   }
 
   @override
-  void write(BinaryWriter writer, TimelineSettings obj) {
+  void write(BinaryWriter writer, TimelineSettingsOld obj) {
     writer
       ..writeByte(15)
       ..writeByte(1)
@@ -77,7 +77,7 @@ class TimelineSettingsAdapter extends TypeAdapter<TimelineSettings> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is TimelineSettingsAdapter &&
+      other is TimelineSettingsOldAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
@@ -86,8 +86,8 @@ class TimelineSettingsAdapter extends TypeAdapter<TimelineSettings> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-TimelineSettings _$TimelineSettingsFromJson(Map<String, dynamic> json) {
-  return TimelineSettings(
+TimelineSettingsOld _$TimelineSettingsOldFromJson(Map<String, dynamic> json) {
+  return TimelineSettingsOld(
     onlyWithMedia: json['only_with_media'] as bool?,
     excludeReplies: json['exclude_replies'] as bool?,
     excludeNsfwSensitive: json['exclude_nsfw_sensitive'] as bool?,
@@ -100,13 +100,13 @@ TimelineSettings _$TimelineSettingsFromJson(Map<String, dynamic> json) {
             .toList(),
     onlyInRemoteList: json['only_in_list'] == null
         ? null
-        : UnifediApiList.fromJson(json['only_in_list'] as Map<String, dynamic>),
+        : PleromaApiList.fromJson(json['only_in_list'] as Map<String, dynamic>),
     withRemoteHashtag: json['with_remote_hashtag'] as String?,
     replyVisibilityFilterString:
         json['reply_visibility_filter_string'] as String?,
     onlyFromRemoteAccount: json['only_from_remote_account'] == null
         ? null
-        : UnifediApiAccount.fromJson(
+        : PleromaApiAccount.fromJson(
             json['only_from_remote_account'] as Map<String, dynamic>),
     onlyPinned: json['only_pinned'] as bool?,
     excludeReblogs: json['exclude_reblogs'] as bool?,
@@ -115,7 +115,8 @@ TimelineSettings _$TimelineSettingsFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$TimelineSettingsToJson(TimelineSettings instance) =>
+Map<String, dynamic> _$TimelineSettingsOldToJson(
+        TimelineSettingsOld instance) =>
     <String, dynamic>{
       'only_with_media': instance.onlyWithMedia,
       'exclude_replies': instance.excludeReplies,

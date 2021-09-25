@@ -16,7 +16,7 @@ abstract class ITimelineTabBloc implements IAsyncInitLoadingBloc, IDisposable {
 
   Timeline get timeline;
 
-  ITimelineLocalPreferenceBloc get timelineLocalPreferencesBloc;
+  ITimelineLocalPreferenceBlocOld get timelineLocalPreferencesBloc;
 
   String get timelineId;
 

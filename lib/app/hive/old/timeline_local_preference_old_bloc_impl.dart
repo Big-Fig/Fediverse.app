@@ -11,12 +11,13 @@ import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
-class TimelineLocalPreferenceBloc extends ObjectLocalPreferenceBloc<Timeline?>
+class TimelineLocalPreferenceBlocOld
+    extends ObjectLocalPreferenceBloc<Timeline?>
     implements ITimelineLocalPreferenceBlocOld {
   @override
   final Timeline? defaultPreferenceValue;
 
-  TimelineLocalPreferenceBloc.byId(
+  TimelineLocalPreferenceBlocOld.byId(
     ILocalPreferencesService preferencesService, {
     required String userAtHost,
     required String timelineId,
@@ -28,7 +29,7 @@ class TimelineLocalPreferenceBloc extends ObjectLocalPreferenceBloc<Timeline?>
           jsonConverter: (json) => Timeline.fromJson(json),
         );
 
-  TimelineLocalPreferenceBloc.customList(
+  TimelineLocalPreferenceBlocOld.customList(
     ILocalPreferencesService preferencesService, {
     required String userAtHost,
     required ICustomList customList,
@@ -47,7 +48,7 @@ class TimelineLocalPreferenceBloc extends ObjectLocalPreferenceBloc<Timeline?>
           ),
         );
 
-  TimelineLocalPreferenceBloc.instancePublicTimeline(
+  TimelineLocalPreferenceBlocOld.instancePublicTimeline(
     ILocalPreferencesService preferencesService, {
     required IUnifediApiInstance unifediApiInstance,
   }) : this.byId(
@@ -64,7 +65,7 @@ class TimelineLocalPreferenceBloc extends ObjectLocalPreferenceBloc<Timeline?>
           ),
         );
 
-  TimelineLocalPreferenceBloc.hashtag(
+  TimelineLocalPreferenceBlocOld.hashtag(
     ILocalPreferencesService preferencesService, {
     required String userAtHost,
     required IHashtag hashtag,
@@ -83,7 +84,7 @@ class TimelineLocalPreferenceBloc extends ObjectLocalPreferenceBloc<Timeline?>
           ),
         );
 
-  TimelineLocalPreferenceBloc.account(
+  TimelineLocalPreferenceBlocOld.account(
     ILocalPreferencesService preferencesService, {
     required String userAtHost,
     required IAccount account,

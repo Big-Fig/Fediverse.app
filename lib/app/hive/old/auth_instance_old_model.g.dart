@@ -1,22 +1,22 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'auth_instance_model.dart';
+part of 'auth_instance_old_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class AuthInstanceAdapter extends TypeAdapter<AuthInstance> {
+class AuthInstanceOldAdapter extends TypeAdapter<AuthInstanceOld> {
   @override
   final int typeId = 18;
 
   @override
-  AuthInstance read(BinaryReader reader) {
+  AuthInstanceOld read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return AuthInstance(
+    return AuthInstanceOld(
       urlSchema: fields[0] as String?,
       urlHost: fields[1] as String,
       acct: fields[2] as String,
@@ -29,7 +29,7 @@ class AuthInstanceAdapter extends TypeAdapter<AuthInstance> {
   }
 
   @override
-  void write(BinaryWriter writer, AuthInstance obj) {
+  void write(BinaryWriter writer, AuthInstanceOld obj) {
     writer
       ..writeByte(8)
       ..writeByte(0)
@@ -56,7 +56,7 @@ class AuthInstanceAdapter extends TypeAdapter<AuthInstance> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is AuthInstanceAdapter &&
+      other is AuthInstanceOldAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
@@ -65,8 +65,8 @@ class AuthInstanceAdapter extends TypeAdapter<AuthInstance> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-AuthInstance _$AuthInstanceFromJson(Map<String, dynamic> json) {
-  return AuthInstance(
+AuthInstanceOld _$AuthInstanceOldFromJson(Map<String, dynamic> json) {
+  return AuthInstanceOld(
     urlSchema: json['url_schema'] as String?,
     urlHost: json['url_host'] as String,
     acct: json['acct'] as String,
@@ -85,7 +85,7 @@ AuthInstance _$AuthInstanceFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$AuthInstanceToJson(AuthInstance instance) =>
+Map<String, dynamic> _$AuthInstanceOldToJson(AuthInstanceOld instance) =>
     <String, dynamic>{
       'url_schema': instance.urlSchema,
       'url_host': instance.urlHost,

@@ -1,32 +1,32 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'timeline_model.dart';
+part of 'timeline_old_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class TimelineAdapter extends TypeAdapter<Timeline> {
+class TimelineOldAdapter extends TypeAdapter<TimelineOld> {
   @override
-  final int typeId = 84;
+  final int typeId = 46;
 
   @override
-  Timeline read(BinaryReader reader) {
+  TimelineOld read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Timeline(
+    return TimelineOld(
       id: fields[0] as String,
       typeString: fields[3] as String,
-      settings: fields[4] as TimelineSettings,
+      settings: fields[4] as TimelineSettingsOld,
       label: fields[1] as String?,
       isPossibleToDelete: fields[2] as bool,
     );
   }
 
   @override
-  void write(BinaryWriter writer, Timeline obj) {
+  void write(BinaryWriter writer, TimelineOld obj) {
     writer
       ..writeByte(5)
       ..writeByte(0)
@@ -47,7 +47,7 @@ class TimelineAdapter extends TypeAdapter<Timeline> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is TimelineAdapter &&
+      other is TimelineOldAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
@@ -56,18 +56,19 @@ class TimelineAdapter extends TypeAdapter<Timeline> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-Timeline _$TimelineFromJson(Map<String, dynamic> json) {
-  return Timeline(
+TimelineOld _$TimelineOldFromJson(Map<String, dynamic> json) {
+  return TimelineOld(
     id: json['id'] as String,
     typeString: json['type_string'] as String,
     settings:
-        TimelineSettings.fromJson(json['settings'] as Map<String, dynamic>),
+        TimelineSettingsOld.fromJson(json['settings'] as Map<String, dynamic>),
     label: json['label'] as String?,
     isPossibleToDelete: json['is_possible_to_delete'] as bool,
   );
 }
 
-Map<String, dynamic> _$TimelineToJson(Timeline instance) => <String, dynamic>{
+Map<String, dynamic> _$TimelineOldToJson(TimelineOld instance) =>
+    <String, dynamic>{
       'id': instance.id,
       'label': instance.label,
       'is_possible_to_delete': instance.isPossibleToDelete,

@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:pleroma_api/pleroma_api.dart';
 import 'package:fediverse_api/fediverse_api_utils.dart';
 
-part 'auth_instance_model.g.dart';
+part 'auth_instance_old_model.g.dart';
 
 // -32 is hack for hive 0.x backward ids compatibility
 // see reservedIds in Hive,
@@ -12,7 +12,7 @@ part 'auth_instance_model.g.dart';
 // ignore_for_file: no-magic-number
 @HiveType(typeId: -32 + 50)
 @JsonSerializable(explicitToJson: true)
-class AuthInstance implements IJsonObj {
+class AuthInstanceOld implements IJsonObj {
   @HiveField(0)
   @JsonKey(name: 'url_schema')
   final String? urlSchema;
@@ -49,7 +49,7 @@ class AuthInstance implements IJsonObj {
 
   Uri get uri => Uri(scheme: urlSchema, host: urlHost);
 
-  AuthInstance({
+  AuthInstanceOld({
     required this.urlSchema,
     required this.urlHost,
     required this.acct,
@@ -73,7 +73,7 @@ class AuthInstance implements IJsonObj {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is AuthInstance &&
+      other is AuthInstanceOld &&
           runtimeType == other.runtimeType &&
           urlSchema == other.urlSchema &&
           urlHost == other.urlHost &&
@@ -111,7 +111,7 @@ class AuthInstance implements IJsonObj {
       this.acct == acct && urlHost == host;
 
   // ignore: long-parameter-list
-  AuthInstance copyWith({
+  AuthInstanceOld copyWith({
     String? urlSchema,
     String? urlHost,
     String? acct,
@@ -121,7 +121,7 @@ class AuthInstance implements IJsonObj {
     PleromaApiClientApplication? application,
     IPleromaApiInstance? info,
   }) {
-    return AuthInstance(
+    return AuthInstanceOld(
       urlSchema: urlSchema ?? this.urlSchema,
       urlHost: urlHost ?? this.urlHost,
       acct: acct ?? this.acct,
@@ -133,9 +133,9 @@ class AuthInstance implements IJsonObj {
     );
   }
 
-  static AuthInstance fromJson(Map<String, dynamic> json) =>
-      _$AuthInstanceFromJson(json);
+  static AuthInstanceOld fromJson(Map<String, dynamic> json) =>
+      _$AuthInstanceOldFromJson(json);
 
   @override
-  Map<String, dynamic> toJson() => _$AuthInstanceToJson(this);
+  Map<String, dynamic> toJson() => _$AuthInstanceOldToJson(this);
 }

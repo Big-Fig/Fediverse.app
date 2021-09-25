@@ -14,7 +14,7 @@ import 'package:provider/provider.dart';
 class HashtagStatusListNetworkOnlyListBloc extends IStatusNetworkOnlyListBloc {
   final Uri instanceUri;
   final IUnifediApiTimelineService unifediApiTimelineService;
-  final ITimelineLocalPreferenceBloc timelineLocalPreferenceBloc;
+  final ITimelineLocalPreferenceBlocOld timelineLocalPreferenceBloc;
 
   HashtagStatusListNetworkOnlyListBloc({
     required this.instanceUri,
@@ -24,7 +24,7 @@ class HashtagStatusListNetworkOnlyListBloc extends IStatusNetworkOnlyListBloc {
 
   static HashtagStatusListNetworkOnlyListBloc createFromContext(
     BuildContext context, {
-    required ITimelineLocalPreferenceBloc timelineLocalPreferenceBloc,
+    required ITimelineLocalPreferenceBlocOld timelineLocalPreferenceBloc,
     required Uri instanceUri,
   }) {
     var remoteInstanceBloc = IRemoteInstanceBloc.of(context, listen: false);
@@ -44,7 +44,7 @@ class HashtagStatusListNetworkOnlyListBloc extends IStatusNetworkOnlyListBloc {
 
   static Widget provideToContext(
     BuildContext context, {
-    required ITimelineLocalPreferenceBloc timelineLocalPreferenceBloc,
+    required ITimelineLocalPreferenceBlocOld timelineLocalPreferenceBloc,
     required Widget child,
     required Uri instanceUri,
   }) {

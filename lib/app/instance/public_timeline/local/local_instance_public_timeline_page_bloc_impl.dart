@@ -75,7 +75,7 @@ class LocalInstancePublicTimelinePageBloc extends InstancePublicTimelinePageBloc
 
   @override
   // ignore: avoid-late-keyword
-  late ITimelineLocalPreferenceBloc timelineLocalPreferenceBloc;
+  late ITimelineLocalPreferenceBlocOld timelineLocalPreferenceBloc;
 
   static LocalInstancePublicTimelinePageBloc createFromContext(
     BuildContext context, {

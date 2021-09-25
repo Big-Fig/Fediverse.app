@@ -1,12 +1,12 @@
-import 'package:fedi/app/hive/old/auth_instance_model.dart';
+import 'package:fedi/app/hive/old/auth_instance_old_model.dart';
 import 'package:fedi/collection/collection_hash_utils.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:fediverse_api/fediverse_api_utils.dart';
 
 // ignore_for_file: no-magic-number
-part 'auth_instance_list_model.g.dart';
+part 'auth_instance_list_old_model.g.dart';
 
 // -32 is hack for hive 0.x backward ids compatibility
 // see reservedIds in Hive,
@@ -14,18 +14,18 @@ part 'auth_instance_list_model.g.dart';
 //@HiveType()
 @HiveType(typeId: -32 + 49)
 @JsonSerializable(explicitToJson: true)
-class AuthInstanceList implements IJsonObj {
+class AuthInstanceListOld implements IJsonObj {
   @HiveField(0)
-  final List<AuthInstance> instances;
+  final List<AuthInstanceOld> instances;
 
-  AuthInstanceList({
+  AuthInstanceListOld({
     required this.instances,
   });
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is AuthInstanceList &&
+      other is AuthInstanceListOld &&
           runtimeType == other.runtimeType &&
           listEquals(instances, other.instances);
 
@@ -37,9 +37,9 @@ class AuthInstanceList implements IJsonObj {
     return 'AuthInstanceList{instances: $instances}';
   }
 
-  static AuthInstanceList fromJson(Map<String, dynamic> json) =>
-      _$AuthInstanceListFromJson(json);
+  static AuthInstanceListOld fromJson(Map<String, dynamic> json) =>
+      _$AuthInstanceListOldFromJson(json);
 
   @override
-  Map<String, dynamic> toJson() => _$AuthInstanceListToJson(this);
+  Map<String, dynamic> toJson() => _$AuthInstanceListOldToJson(this);
 }
