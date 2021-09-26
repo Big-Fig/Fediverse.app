@@ -13,8 +13,6 @@ class AuthHostModelMockHelper {
         invitesOnlyRegistrationAuthHostException,
     EmailConfirmationRequiredAuthHostException?
         emailConfirmationRequiredAuthHostException,
-    CantRetrieveAppTokenAuthHostException?
-        cantRetrieveAppTokenAuthHostException,
     CantRegisterAppAuthHostException? cantRegisterAppAuthHostException,
     dynamic unknownHostException,
   }) =>
@@ -30,8 +28,6 @@ class AuthHostModelMockHelper {
           seed: seed,
         ),
         cantRegisterAppAuthHostException: cantRegisterAppAuthHostException,
-        cantRetrieveAppTokenAuthHostException:
-            cantRetrieveAppTokenAuthHostException,
         emailConfirmationRequiredAuthHostException:
             emailConfirmationRequiredAuthHostException,
         invitesOnlyRegistrationAuthHostException:

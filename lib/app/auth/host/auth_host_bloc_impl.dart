@@ -1,15 +1,14 @@
 import 'dart:async';
 
 import 'package:easy_dispose/easy_dispose.dart';
+import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/access/host/access_token/access_host_access_token_local_preference_bloc.dart';
 import 'package:fedi/app/access/host/access_token/access_host_access_token_local_preference_bloc_impl.dart';
 import 'package:fedi/app/access/host/application/access_host_application_local_preference_bloc.dart';
 import 'package:fedi/app/access/host/application/access_host_application_local_preference_bloc_impl.dart';
-
+import 'package:fedi/app/access/memory_access_bloc_impl.dart';
 import 'package:fedi/app/auth/host/auth_host_bloc.dart';
 import 'package:fedi/app/auth/host/auth_host_model.dart';
-import 'package:fedi/app/access/current/current_access_bloc.dart';
-import 'package:fedi/app/access/memory_access_bloc_impl.dart';
 import 'package:fedi/app/auth/oauth_last_launched/local_preferences/auth_oauth_last_launched_host_to_login_local_preference_bloc.dart';
 import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
@@ -17,9 +16,12 @@ import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:logging/logging.dart';
+import 'package:mastodon_api/mastodon_api.dart';
+import 'package:pleroma_api/pleroma_api.dart';
 import 'package:provider/provider.dart';
 import 'package:uni_links/uni_links.dart';
 import 'package:unifedi_api/unifedi_api.dart';
+import 'package:unifedi_api/unifedi_api_pleroma_adapter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 var _logger = Logger('auth_host_bloc_impl.dart');
@@ -76,14 +78,6 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     required this.currentInstanceBloc,
     required this.configService,
   }) {
-    memoryUnifediApiAccessBloc = MemoryUnifediApiAccessBloc(
-      access: UnifediApiAccess(
-        url: instanceBaseUri.toString(),
-        instance: null,
-        applicationAccessToken: null,
-        userAccessToken: null,
-      ),
-    )..disposeWith(this);
     hostApplicationLocalPreferenceBloc =
         AccessHostApplicationLocalPreferenceBloc(
       preferencesService,
@@ -94,6 +88,15 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
         AccessHostAccessTokenLocalPreferenceBloc(
       preferencesService,
       host: instanceBaseUriHost,
+    )..disposeWith(this);
+
+    memoryUnifediApiAccessBloc = MemoryUnifediApiAccessBloc(
+      access: UnifediApiAccess(
+        url: instanceBaseUri.toString(),
+        instance: null,
+        applicationAccessToken: null,
+        userAccessToken: null,
+      ),
     )..disposeWith(this);
   }
 
@@ -106,9 +109,6 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
       hostApplicationLocalPreferenceBloc.stream;
 
   @override
-  bool get isHostAccessTokenExist => hostAccessToken != null;
-
-  @override
   UnifediApiOAuthToken? get hostAccessToken =>
       hostAccessTokenLocalPreferenceBloc.value;
 
@@ -117,7 +117,12 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
       hostAccessTokenLocalPreferenceBloc.stream;
 
   @override
-  bool get isHostApplicationRegistered => hostApplication != null;
+  bool get isHostAccessTokenExist =>
+      memoryUnifediApiAccessBloc.access.applicationAccessToken != null;
+
+  @override
+  bool get isHostApplicationRegistered =>
+      memoryUnifediApiAccessBloc.access.applicationAccessToken != null;
 
   @override
   Future registerApplication() async {
@@ -161,31 +166,6 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     var redirectUri = configService.appAddNewInstanceCallbackUrl;
 
     return redirectUri;
-  }
-
-  @override
-  Future<bool> retrieveAppAccessToken() async {
-    try {
-      var accessToken = await unifediApiInstanceService.retrieveAppAccessToken(
-        displayCodeRedirectUriWasUsed: false,
-        redirectUri: await _calculateRedirectUri(),
-        scopes: scopes,
-        clientSecret: hostApplication!.clientSecret!,
-        clientId: hostApplication!.clientId!,
-      );
-      await hostAccessTokenLocalPreferenceBloc
-          .setValue(accessToken.toUnifediApiOAuthToken());
-
-      return true;
-    } catch (e, stackTrace) {
-      _logger.severe(
-        () => 'retrieveAppAccessToken error',
-        e,
-        stackTrace,
-      );
-
-      return false;
-    }
   }
 
   @override
@@ -312,14 +292,24 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     required IUnifediApiRegisterAccount registerAccount,
   }) async {
     await checkApplicationRegistration();
-    await checkHostAccessTokenRegistration();
     await checkIsRegistrationsEnabled();
+
+    var hostInstance = await unifediApiInstanceService.getInstance();
 
     var token = await unifediApiAccountService.registerAccount(
       registerAccount: registerAccount,
     );
 
-    var hostInstance = await unifediApiInstanceService.getInstance();
+    memoryUnifediApiAccessBloc.changeAccess(
+      memoryUnifediApiAccessBloc.access.toUnifediApiAccess().copyWith(
+            userAccessToken: UnifediApiAccessUserToken(
+              myAccount: null,
+              user: registerAccount.username,
+              scopes: scopes,
+              oauthToken: token.toUnifediApiOAuthToken(),
+            ),
+          ),
+    );
 
     AuthHostRegistrationResult result;
     if (hostInstance.approvalRequired == true) {
@@ -338,7 +328,6 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
               const EmailConfirmationRequiredAuthHostException(),
           unknownHostException: null,
           cantRegisterAppAuthHostException: null,
-          cantRetrieveAppTokenAuthHostException: null,
           invitesOnlyRegistrationAuthHostException: null,
           disabledRegistrationAuthHostException: null,
         );
@@ -377,7 +366,6 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
               emailConfirmationRequiredAuthHostException,
           unknownHostException: unknownHostException,
           cantRegisterAppAuthHostException: null,
-          cantRetrieveAppTokenAuthHostException: null,
           invitesOnlyRegistrationAuthHostException: null,
           disabledRegistrationAuthHostException: null,
         );
@@ -422,16 +410,6 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     return result;
   }
 
-  Future checkHostAccessTokenRegistration() async {
-    if (!isHostAccessTokenExist) {
-      var success = await retrieveAppAccessToken();
-
-      if (!success) {
-        throw const CantRetrieveAppTokenAuthHostException();
-      }
-    }
-  }
-
   static AuthHostBloc createFromContext(
     BuildContext context, {
     required Uri instanceBaseUri,
@@ -474,6 +452,38 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
   Future internalAsyncInit() async {
     await hostApplicationLocalPreferenceBloc.performAsyncInit();
     await hostAccessTokenLocalPreferenceBloc.performAsyncInit();
+
+    var unifediApiClientApplication = hostApplicationLocalPreferenceBloc.value;
+    var unifediApiOAuthToken = hostAccessTokenLocalPreferenceBloc.value;
+    if (unifediApiClientApplication != null && unifediApiOAuthToken != null) {
+      var scopes = IPleromaApiAccessScopes.calculateAvailableScopes(
+        PleromaApiVersion(
+          major: 2,
+          minor: 4,
+          patch: 51,
+          buildNumber: 116,
+          commit: 'gd86b10a5',
+          mastodonCompatibilityVersion: MastodonApiVersion(
+            major: 2,
+            minor: 7,
+            patch: 2,
+            buildNumber: null,
+            commit: null,
+          ),
+        ),
+      ).toUnifediApiAccessScopesPleromaAdapter().toUnifediApiAccessScopes();
+
+      memoryUnifediApiAccessBloc.changeAccess(
+        memoryUnifediApiAccessBloc.access.toUnifediApiAccess().copyWith(
+              applicationAccessToken: UnifediApiAccessApplicationToken(
+                scopes: scopes,
+                clientApplication: unifediApiClientApplication,
+                oauthToken: unifediApiOAuthToken,
+              ),
+            ),
+      );
+    }
+
     await pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc
         .performAsyncInit();
 

@@ -12,10 +12,6 @@ class EmailConfirmationRequiredAuthHostException implements Exception {
   const EmailConfirmationRequiredAuthHostException();
 }
 
-class CantRetrieveAppTokenAuthHostException implements Exception {
-  const CantRetrieveAppTokenAuthHostException();
-}
-
 class CantRegisterAppAuthHostException implements Exception {
   const CantRegisterAppAuthHostException();
 }
@@ -27,8 +23,6 @@ class AuthHostRegistrationResult {
       invitesOnlyRegistrationAuthHostException;
   final EmailConfirmationRequiredAuthHostException?
       emailConfirmationRequiredAuthHostException;
-  final CantRetrieveAppTokenAuthHostException?
-      cantRetrieveAppTokenAuthHostException;
   final CantRegisterAppAuthHostException? cantRegisterAppAuthHostException;
   final dynamic unknownHostException;
   final UnifediApiOAuthToken? token;
@@ -39,7 +33,6 @@ class AuthHostRegistrationResult {
     required this.disabledRegistrationAuthHostException,
     required this.invitesOnlyRegistrationAuthHostException,
     required this.emailConfirmationRequiredAuthHostException,
-    required this.cantRetrieveAppTokenAuthHostException,
     required this.cantRegisterAppAuthHostException,
     required this.unknownHostException,
     required this.token,
@@ -58,7 +51,6 @@ class AuthHostRegistrationResult {
           disabledRegistrationAuthHostException: null,
           invitesOnlyRegistrationAuthHostException: null,
           emailConfirmationRequiredAuthHostException: null,
-          cantRetrieveAppTokenAuthHostException: null,
           cantRegisterAppAuthHostException: null,
           unknownHostException: null,
         );
@@ -67,7 +59,6 @@ class AuthHostRegistrationResult {
       disabledRegistrationAuthHostException ??
       invitesOnlyRegistrationAuthHostException ??
       emailConfirmationRequiredAuthHostException ??
-      cantRetrieveAppTokenAuthHostException ??
       cantRegisterAppAuthHostException ??
       unknownHostException;
 
@@ -77,7 +68,6 @@ class AuthHostRegistrationResult {
       disabledRegistrationAuthHostException == null &&
       invitesOnlyRegistrationAuthHostException == null &&
       emailConfirmationRequiredAuthHostException == null &&
-      cantRetrieveAppTokenAuthHostException == null &&
       cantRegisterAppAuthHostException == null &&
       unknownHostException == null;
 
@@ -103,8 +93,6 @@ class AuthHostRegistrationResult {
               other.invitesOnlyRegistrationAuthHostException &&
           emailConfirmationRequiredAuthHostException ==
               other.emailConfirmationRequiredAuthHostException &&
-          cantRetrieveAppTokenAuthHostException ==
-              other.cantRetrieveAppTokenAuthHostException &&
           cantRegisterAppAuthHostException ==
               other.cantRegisterAppAuthHostException &&
           unknownHostException == other.unknownHostException &&
@@ -117,7 +105,6 @@ class AuthHostRegistrationResult {
       disabledRegistrationAuthHostException.hashCode ^
       invitesOnlyRegistrationAuthHostException.hashCode ^
       emailConfirmationRequiredAuthHostException.hashCode ^
-      cantRetrieveAppTokenAuthHostException.hashCode ^
       cantRegisterAppAuthHostException.hashCode ^
       unknownHostException.hashCode ^
       token.hashCode ^
@@ -133,8 +120,6 @@ class AuthHostRegistrationResult {
       'emailConfirmationRequiredAuthHostException: '
       '$emailConfirmationRequiredAuthHostException, '
       'cantRetrieveAppTokenAuthHostException: '
-      '$cantRetrieveAppTokenAuthHostException, '
-      'cantRegisterAppAuthHostException: '
       '$cantRegisterAppAuthHostException, '
       'unknownHostException: $unknownHostException, '
       'token: $token, '
