@@ -258,7 +258,7 @@ class NotificationsPushHandlerBloc extends DisposableOwner
       preferencesService: localPreferencesService,
       userAtHost: authInstance.userAtHost,
     );
-    unifediApiAccessLocalPreferenceBloc.performAsyncInit();
+    await unifediApiAccessLocalPreferenceBloc.performAsyncInit();
     addDisposable(unifediApiAccessLocalPreferenceBloc);
 
     var localPreferencesUnifediApiAccessBloc =
@@ -385,7 +385,7 @@ class NotificationsPushHandlerBloc extends DisposableOwner
       preferencesService: localPreferencesService,
       userAtHost: authInstance.userAtHost,
     );
-    unifediApiAccessLocalPreferenceBloc.performAsyncInit();
+    await unifediApiAccessLocalPreferenceBloc.performAsyncInit();
     addDisposable(unifediApiAccessLocalPreferenceBloc);
 
     var localPreferencesUnifediApiAccessBloc =
