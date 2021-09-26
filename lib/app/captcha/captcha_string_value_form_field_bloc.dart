@@ -50,14 +50,12 @@ extension ICaptchaStringValueFormFieldBlocExtension
       );
 
   Stream<Image?> get captchaImageStream => captchaStream.asyncMap(
-        (captcha) async {
-          captcha?.typeAsUnifediApi.map(
-            native: (_) => Image.memory(captcha.decodeUrlAsBase64ImageBytes()),
-            kocaptcha: (_) => Image.network(captcha.url!),
-            none: (_) => null,
-            // ignore: no-equal-arguments
-            unknown: (_) => Image.network(captcha.url!),
-          );
-        },
+        (captcha) async => captcha?.typeAsUnifediApi.map(
+          native: (_) => Image.memory(captcha.decodeUrlAsBase64ImageBytes()),
+          kocaptcha: (_) => Image.network(captcha.url!),
+          none: (_) => null,
+          // ignore: no-equal-arguments
+          unknown: (_) => Image.network(captcha.url!),
+        ),
       );
 }
