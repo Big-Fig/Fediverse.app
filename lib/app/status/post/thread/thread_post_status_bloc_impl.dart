@@ -132,7 +132,7 @@ class ThreadPostStatusBloc extends PostStatusBloc
   }
 
   @override
-  bool get isPossibleToChangeVisibility => false;
+  bool get isPossibleToChangeVisibility => true;
 
   @override
   Future onStatusPosted(IUnifediApiStatus remoteStatus) async {

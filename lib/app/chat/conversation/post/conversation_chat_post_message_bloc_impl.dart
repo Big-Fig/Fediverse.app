@@ -109,7 +109,7 @@ class ConversationChatPostMessageBloc extends PostStatusBloc {
   }
 
   @override
-  bool get isPossibleToChangeVisibility => false;
+  bool get isPossibleToChangeVisibility => true;
 
   @override
   Future actualPostStatus() async {

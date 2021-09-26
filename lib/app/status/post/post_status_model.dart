@@ -275,12 +275,17 @@ extension IPostStatusDataExtension on IPostStatusData {
     }
   }
 
-  UnifediApiPostStatus topostStatus() {
+  UnifediApiPostStatus toPostStatus({
+    required bool inReplyToConversationIdSupported,
+    required bool previewSupported,
+    required bool expiresInSupported,
+  }) {
     assert(!isScheduled);
 
     return UnifediApiPostStatus(
-      expiresInSeconds: expiresInSeconds,
-      inReplyToConversationId: inReplyToConversationId,
+      expiresInSeconds: expiresInSupported ? expiresInSeconds : null,
+      inReplyToConversationId:
+          inReplyToConversationIdSupported ? inReplyToConversationId : null,
       inReplyToId: inReplyToUnifediApiStatus?.id,
       visibility: visibilityString,
       mediaIds: mediaAttachments?.toUnifediApiMediaAttachmentIdList(),
