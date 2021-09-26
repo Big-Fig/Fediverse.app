@@ -369,7 +369,24 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
           .copyWith(id: localStatusId);
 
       idempotencyKey = dbStatus.wasSentWithIdempotencyKey;
-      postStatus = postStatusData.topostStatus();
+      var inReplyToConversationIdSupported =
+          unifediApiStatusService.isFeatureSupported(
+        unifediApiStatusService.postStatusInReplyToConversationIdFeature,
+      );
+
+      var previewSupported = unifediApiStatusService.isFeatureSupported(
+        unifediApiStatusService.postStatusPreviewFeature,
+      );
+
+      var expiresInSupported = unifediApiStatusService.isFeatureSupported(
+        unifediApiStatusService.postStatusExpiresInFeature,
+      );
+
+      postStatus = postStatusData.toPostStatus(
+        inReplyToConversationIdSupported: inReplyToConversationIdSupported,
+        previewSupported: previewSupported,
+        expiresInSupported: expiresInSupported,
+      );
 
       await statusRepository.updateByDbIdInDbType(
         dbId: localStatusId,
@@ -408,7 +425,25 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
       );
 
       idempotencyKey = fakeUniqueRemoteRemoteId;
-      postStatus = postStatusData.topostStatus();
+
+      var inReplyToConversationIdSupported =
+          unifediApiStatusService.isFeatureSupported(
+        unifediApiStatusService.postStatusInReplyToConversationIdFeature,
+      );
+
+      var previewSupported = unifediApiStatusService.isFeatureSupported(
+        unifediApiStatusService.postStatusPreviewFeature,
+      );
+
+      var expiresInSupported = unifediApiStatusService.isFeatureSupported(
+        unifediApiStatusService.postStatusExpiresInFeature,
+      );
+
+      postStatus = postStatusData.toPostStatus(
+        inReplyToConversationIdSupported: inReplyToConversationIdSupported,
+        previewSupported: previewSupported,
+        expiresInSupported: expiresInSupported,
+      );
     }
 
     try {
