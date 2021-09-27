@@ -53,7 +53,7 @@ class CurrentUnifediApiAccessContextInitBloc extends AsyncInitLoadingBloc
 
     unifediApiInstanceService.restService.unifediApiErrorStream
         .listen((apiError) {
-      var statusCode = apiError.statusCode;
+      var statusCode = apiError.restResponseError.statusCode;
       var restResponseCodeType =
           RestResponseCodeType.detectByStatusCode(statusCode);
 
@@ -111,7 +111,7 @@ class CurrentUnifediApiAccessContextInitBloc extends AsyncInitLoadingBloc
       } catch (e, stackTrace) {
         _logger.warning(() => 'failed to update instance info', e, stackTrace);
         if (e is IUnifediApiRestErrorException) {
-          if (e.unifediError.statusCode ==
+          if (e.unifediError.restResponseError.statusCode ==
               RestResponseClientErrorCodeType.forbiddenIntValue) {
             stateSubject.add(
               CurrentUnifediApiAccessContextInitState.invalidCredentials,

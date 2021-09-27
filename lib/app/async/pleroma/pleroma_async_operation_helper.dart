@@ -51,7 +51,7 @@ class PleromaAsyncOperationHelper {
     StackTrace stackTrace,
   ) {
     if (error is IUnifediApiRestErrorException) {
-      var statusCode = error.unifediError.statusCode;
+      var statusCode = error.unifediError.restResponseError.statusCode;
 
       if (statusCode ==
           RestResponseClientErrorCodeType.tooManyRequestsValue.intValue) {
@@ -77,7 +77,7 @@ class PleromaAsyncOperationHelper {
     StackTrace stackTrace,
   ) {
     if (error is IUnifediApiRestErrorException) {
-      var statusCode = error.unifediError.statusCode;
+      var statusCode = error.unifediError.restResponseError.statusCode;
       var descriptionOrContent = error.unifediError.descriptionOrContent;
       if (statusCode ==
           RestResponseClientErrorCodeType.forbiddenValue.intValue) {

@@ -295,41 +295,28 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     await checkIsRegistrationsEnabled();
 
     var hostInstance = await unifediApiInstanceService.getInstance();
-
-    var token = await unifediApiAccountService.registerAccount(
-      registerAccount: registerAccount,
-    );
-
-    memoryUnifediApiAccessBloc.changeAccess(
-      memoryUnifediApiAccessBloc.access.toUnifediApiAccess().copyWith(
-            userAccessToken: UnifediApiAccessUserToken(
-              myAccount: null,
-              user: registerAccount.username,
-              scopes: scopes,
-              oauthToken: token.toUnifediApiOAuthToken(),
-            ),
-          ),
-    );
-
     AuthHostRegistrationResult result;
-    if (hostInstance.approvalRequired == true) {
-      result = AuthHostRegistrationResult.noErrors(
-        authInstance: null,
-        token: token.toUnifediApiOAuthToken(),
-        unifediApiInstance: hostInstance,
+    try {
+      var token = await unifediApiAccountService.registerAccount(
+        registerAccount: registerAccount,
       );
-    } else {
-      if (token == null) {
-        result = AuthHostRegistrationResult(
+
+      memoryUnifediApiAccessBloc.changeAccess(
+        memoryUnifediApiAccessBloc.access.toUnifediApiAccess().copyWith(
+              userAccessToken: UnifediApiAccessUserToken(
+                myAccount: null,
+                user: registerAccount.username,
+                scopes: scopes,
+                oauthToken: token.toUnifediApiOAuthToken(),
+              ),
+            ),
+      );
+
+      if (hostInstance.approvalRequired == true) {
+        result = AuthHostRegistrationResult.noErrors(
           authInstance: null,
           token: token.toUnifediApiOAuthToken(),
           unifediApiInstance: hostInstance,
-          emailConfirmationRequiredAuthHostException:
-              const EmailConfirmationRequiredAuthHostException(),
-          unknownHostException: null,
-          cantRegisterAppAuthHostException: null,
-          invitesOnlyRegistrationAuthHostException: null,
-          disabledRegistrationAuthHostException: null,
         );
       } else {
         EmailConfirmationRequiredAuthHostException?
@@ -369,6 +356,40 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
           invitesOnlyRegistrationAuthHostException: null,
           disabledRegistrationAuthHostException: null,
         );
+      }
+    } on IUnifediApiRestErrorException catch (e, stackTrace) {
+      _logger.warning(
+        () => 'error during registerAccount',
+        e,
+        stackTrace,
+      );
+
+      var identifierAsUnifediApi =
+          e.unifediError.details?.identifierAsUnifediApi;
+
+      if (identifierAsUnifediApi != null) {
+        var mapResult = identifierAsUnifediApi.maybeWhen(
+          missingConfirmedEmail: (_) => AuthHostRegistrationResult(
+            authInstance: null,
+            token: null,
+            unifediApiInstance: hostInstance,
+            emailConfirmationRequiredAuthHostException:
+                const EmailConfirmationRequiredAuthHostException(),
+            unknownHostException: null,
+            cantRegisterAppAuthHostException: null,
+            invitesOnlyRegistrationAuthHostException: null,
+            disabledRegistrationAuthHostException: null,
+          ),
+          awaitingApproval: (_) => throw UnimplementedError(),
+          orElse: () => null,
+        );
+        if (mapResult != null) {
+          result = mapResult;
+        } else {
+          rethrow;
+        }
+      } else {
+        rethrow;
       }
     }
 
