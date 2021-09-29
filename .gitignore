@@ -151,3 +151,6 @@ flutter_sdk
 # special test to get full coverage
 /test/coverage_helper_test.dart
 /ios/fastlane/Preview.html
+
+# strange newly generated files
+/ios/build/Pods.build/**
