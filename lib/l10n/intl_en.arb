@@ -798,7 +798,7 @@
   "app_localization_settings_field_localizationLocale_label": "Language",
   "@app_localization_settings_field_localizationLocale_label": {},
   "app_status_post_settings_field_markMediaAsNsfwOnAttach_label": "Mark media as NSFW",
-  "app_status_post_settings_field_dontUploadMediaDuringEditingOnAttach_label": "Don't upload media during editing",
+  "app_status_post_settings_field_dontUploadMediaDuringEditing_label": "Don't upload media during editing",
   "@app_status_post_settings_field_markMediaAsNsfwOnAttach_label": {},
   "app_status_post_settings_field_defaultVisibility_label": "Default visibility",
   "@app_status_post_settings_field_defaultVisibility_label": {},

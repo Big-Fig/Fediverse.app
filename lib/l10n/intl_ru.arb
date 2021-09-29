@@ -800,7 +800,7 @@
   "app_localization_settings_field_localizationLocale_label": "Язык",
   "@app_localization_settings_field_localizationLocale_label": {},
   "app_status_post_settings_field_markMediaAsNsfwOnAttach_label": "Помечать медиа как NSFW",
-  "app_status_post_settings_field_dontUploadMediaDuringEditingOnAttach_label": "Не загружать медиа при редактировании",
+  "app_status_post_settings_field_dontUploadMediaDuringEditing_label": "Не загружать медиа при редактировании",
   "@app_status_post_settings_field_markMediaAsNsfwOnAttach_label": {},
   "app_status_post_settings_field_defaultVisibility_label": "Видимость по умолчанию",
   "@app_status_post_settings_field_defaultVisibility_label": {},
