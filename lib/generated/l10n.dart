@@ -1174,10 +1174,10 @@ class S {
     );
   }
 
-  /// `Pleroma API error`
+  /// `API error`
   String get app_async_pleroma_error_common_dialog_title {
     return Intl.message(
-      'Pleroma API error',
+      'API error',
       name: 'app_async_pleroma_error_common_dialog_title',
       desc: '',
       args: [],
