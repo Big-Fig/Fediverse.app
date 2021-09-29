@@ -135,13 +135,21 @@ class RegisterUnifediApiAccessBloc extends AsyncInitLoadingBloc
 
     unifediApiInstance = await unifediApiInstanceService.getInstance();
 
+    var manualApprovalRequired = unifediApiInstance.approvalRequired == true;
+
+    // todo: remove hack
+    manualApprovalRequired = unifediApiInstance.typeAsUnifediApi.maybeMap(
+      mastodon: (_) => true,
+      // not changed
+      orElse: () => manualApprovalRequired,
+    );
+
     registerUnifediApiAccessFormBloc = RegisterUnifediApiAccessFormBloc(
       localeName: localeName,
       unifediApiInstance: unifediApiInstance,
       unifediApiInstanceService: unifediApiInstanceService,
       instanceBaseUri: instanceBaseUri,
-      // localizationSettingsBloc: localizationSettingsBloc,
-      manualApprovalRequired: unifediApiInstance.approvalRequired == true,
+      manualApprovalRequired: manualApprovalRequired,
     )..disposeWith(this);
   }
 }
