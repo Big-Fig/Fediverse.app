@@ -3,11 +3,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class RegisterUnifediApiAccessFormWidget extends StatelessWidget {
+  final RegisterCallback onRegister;
+
   const RegisterUnifediApiAccessFormWidget({
+    required this.onRegister,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) =>
-      const RegisterUnifediApiAccessFormStepperWidget();
+      RegisterUnifediApiAccessFormStepperWidget(
+        onRegister: onRegister,
+      );
 }

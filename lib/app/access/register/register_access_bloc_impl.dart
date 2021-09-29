@@ -5,8 +5,8 @@ import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/access/memory_access_bloc_impl.dart';
 import 'package:fedi/app/access/register/form/register_access_form_bloc_impl.dart';
 import 'package:fedi/app/access/register/register_access_bloc.dart';
+import 'package:fedi/app/access/register/response/register_response_model.dart';
 import 'package:fedi/app/auth/host/auth_host_bloc_impl.dart';
-import 'package:fedi/app/auth/host/auth_host_model.dart';
 import 'package:fedi/app/auth/oauth_last_launched/local_preferences/auth_oauth_last_launched_host_to_login_local_preference_bloc.dart';
 import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/localization/settings/localization_settings_bloc.dart';
@@ -68,16 +68,13 @@ class RegisterUnifediApiAccessBloc extends AsyncInitLoadingBloc
         userAccessToken: null,
       ),
     )..disposeWith(this);
-
-    registrationResultStreamController.disposeWith(this);
   }
 
   @override
-  Future<AuthHostRegistrationResult> submit() async {
+  Future<RegisterResponse> register() async {
     var unifediApiAccountRegisterRequest =
         registerUnifediApiAccessFormBloc.calculateRegisterFormData();
 
-    AuthHostRegistrationResult registrationResult;
     AuthHostBloc? authApplicationBloc;
     try {
       authApplicationBloc = AuthHostBloc(
@@ -91,7 +88,7 @@ class RegisterUnifediApiAccessBloc extends AsyncInitLoadingBloc
       );
       await authApplicationBloc.performAsyncInit();
 
-      registrationResult = await authApplicationBloc.registerAccount(
+      return await authApplicationBloc.registerAccount(
         registerAccount: unifediApiAccountRegisterRequest,
       );
     } catch (e, stackTrace) {
@@ -102,23 +99,7 @@ class RegisterUnifediApiAccessBloc extends AsyncInitLoadingBloc
     } finally {
       await authApplicationBloc?.dispose();
     }
-
-    if (!registrationResult.isHaveNoErrors) {
-      registerUnifediApiAccessFormBloc.onRegisterFailed();
-    }
-
-    // todo: rework when fail
-    registrationResultStreamController.add(registrationResult);
-
-    return registrationResult;
   }
-
-  StreamController<AuthHostRegistrationResult>
-      registrationResultStreamController = StreamController.broadcast();
-
-  @override
-  Stream<AuthHostRegistrationResult> get registrationResultStream =>
-      registrationResultStreamController.stream;
 
   @override
   bool get isReadyToSubmit =>

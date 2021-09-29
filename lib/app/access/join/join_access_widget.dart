@@ -2,19 +2,17 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:fedi/app/about/about_page.dart';
-import 'package:fedi/app/app_model.dart';
-import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
-import 'package:fedi/app/auth/host/auth_host_bloc_impl.dart';
-import 'package:fedi/app/auth/host/auth_host_model.dart';
-
-import 'package:fedi/app/access/access_pleroma_rest_error_data.dart';
 import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/access/join/join_access_bloc.dart';
 import 'package:fedi/app/access/join/join_access_widget_keys.dart';
 import 'package:fedi/app/access/register/register_access_page.dart';
+import 'package:fedi/app/app_model.dart';
+import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
+import 'package:fedi/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/instance/details/remote/remote_instance_details_page.dart';
 import 'package:fedi/app/server_list/server_list_auto_complete_widget.dart';
+import 'package:fedi/app/toast/toast_service.dart';
 import 'package:fedi/app/tos/tos_page.dart';
 import 'package:fedi/app/ui/button/text/with_border/fedi_transparent_text_button_with_border.dart';
 import 'package:fedi/app/ui/edit_text/fedi_transparent_edit_text_field.dart';
@@ -23,8 +21,6 @@ import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_vertical_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/url/url_helper.dart';
-import 'package:fedi/dialog/async/async_dialog.dart';
-import 'package:fedi/error/error_data_model.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -394,6 +390,7 @@ class _JoinUnifediApiAccessAboutButtonWidget extends StatelessWidget {
       );
 }
 
+// ignore: long-method
 Future signUpToInstance(BuildContext context) async {
   var joinInstanceBloc = IJoinUnifediApiAccessBloc.of(context, listen: false);
   var hostUri = joinInstanceBloc.extractCurrentUri();
@@ -410,94 +407,109 @@ Future signUpToInstance(BuildContext context) async {
       );
 
       await authHostBloc.performAsyncInit();
-      await authHostBloc.checkApplicationRegistration();
-      await authHostBloc.checkIsRegistrationsEnabled();
+      await authHostBloc.registerApplication();
+      await authHostBloc.loadInstanceDetails(forceRefresh: true);
       await authHostBloc.dispose();
+
+      return authHostBloc.memoryUnifediApiAccessBloc.access.instance;
     },
-    errorDataBuilders: _createSignUpErrorDataBuilders(),
   );
-  if (asyncDialogResult.success) {
-    var registrationResult = await goToRegisterUnifediApiAccessPage(
-      context,
-      instanceBaseUri: hostUri,
-    );
-    if (registrationResult != null && !joinInstanceBloc.isFromScratch) {
-      // exit from join from scratch
-      Navigator.of(context).pop();
-      // exit from bottom modal dialog, todo: refactor
-      Navigator.of(context).pop();
+  var unifediApiInstance = asyncDialogResult.result;
+  if (unifediApiInstance != null) {
+    if (unifediApiInstance.invitesEnabled == true) {
+      var toastService = IToastService.of(context, listen: false);
+      toastService.showErrorToast(
+        context: context,
+        title: S.of(context).app_auth_instance_join_invitesOnly_dialog_title,
+        content:
+            S.of(context).app_auth_instance_join_invitesOnly_dialog_content,
+      );
+    } else if (unifediApiInstance.registrations != true) {
+      var toastService = IToastService.of(context, listen: false);
+      toastService.showErrorToast(
+        context: context,
+        title: S
+            .of(context)
+            .app_auth_instance_join_registrationDisabled_dialog_title,
+      );
+    } else {
+      var registerResponse = await goToRegisterUnifediApiAccessPage(
+        context,
+        instanceBaseUri: hostUri,
+      );
+      if (registerResponse != null) {
+        var response = registerResponse.response;
+        var access = registerResponse.access;
+
+        if (response.approvalRequired == true) {
+          _showApprovalRequiredToast(context);
+        } else if (response.emailConformationRequired == true) {
+          _showEmailConfirmationRequiredToast(context);
+        } else {
+          if (access != null) {
+            await ICurrentUnifediApiAccessBloc.of(
+              context,
+              listen: false,
+            ).changeCurrentInstance(
+              access.toUnifediApiAccess(),
+            );
+          } else {
+            _showCantLoginToast(
+              context,
+              errorDescription: null,
+            );
+          }
+        }
+
+        if (!joinInstanceBloc.isFromScratch) {
+          // exit from join from scratch
+          Navigator.of(context).pop();
+          // exit from bottom modal dialog, todo: refactor
+          Navigator.of(context).pop();
+        }
+      }
     }
   }
 }
 
-List<ErrorDataBuilder> _createSignUpErrorDataBuilders() {
-  return [
-    (context, error, stackTrace) {
-      if (error is DisabledRegistrationAuthHostException) {
-        return createRegistrationDisabledErrorData(
-          context,
-          error,
-          stackTrace,
-        );
-      } else if (error is InvitesOnlyRegistrationAuthHostException) {
-        return createRegistrationInvitesOnlyErrorData(
-          context,
-          error,
-          stackTrace,
-        );
-      } else {
-        return null;
-      }
-    },
-    (context, error, stackTrace) {
-      // todo: handle specific error
-      return createInstanceDeadErrorData(
-        context,
-        error,
-        stackTrace,
-      );
-    },
-  ];
+void _showApprovalRequiredToast(BuildContext context) {
+  IToastService.of(context, listen: false).showInfoToast(
+    context: context,
+    title: S
+        .of(context)
+        .app_auth_instance_register_approvalRequired_notification_title,
+    content: S
+        .of(context)
+        .app_auth_instance_register_approvalRequired_notification_content,
+  );
 }
 
-ErrorData createInstanceDeadErrorData(
-  BuildContext? context,
-  error,
-  StackTrace stackTrace,
-) =>
-    UnifediApiAccessUnifediApiRestErrorData.createFromContext(
-      context: context,
-      error: error,
-      stackTrace: stackTrace,
-    );
+void _showEmailConfirmationRequiredToast(BuildContext context) {
+  IToastService.of(context, listen: false).showInfoToast(
+    context: context,
+    title: S
+        .of(context)
+        .app_auth_instance_register_emailConfirmationRequired_notification_title,
+    content: S
+        .of(context)
+        .app_auth_instance_register_emailConfirmationRequired_notification_content,
+  );
+}
 
-ErrorData createRegistrationDisabledErrorData(
-  BuildContext? context,
-  error,
-  StackTrace stackTrace,
-) =>
-    ErrorData(
-      error: error,
-      stackTrace: stackTrace,
-      titleCreator: (context) => S
-          .of(context)
-          .app_auth_instance_join_registrationDisabled_dialog_title,
-      contentCreator: null,
-    );
-
-ErrorData createRegistrationInvitesOnlyErrorData(
-  BuildContext? context,
-  error,
-  StackTrace stackTrace,
-) =>
-    ErrorData(
-      error: error,
-      stackTrace: stackTrace,
-      titleCreator: (context) =>
-          S.of(context).app_auth_instance_join_invitesOnly_dialog_title,
-      contentCreator: (context) =>
-          S.of(context).app_auth_instance_join_invitesOnly_dialog_content,
-    );
+void _showCantLoginToast(
+  BuildContext context, {
+  required String? errorDescription,
+}) {
+  IToastService.of(context, listen: false).showInfoToast(
+    context: context,
+    title:
+        S.of(context).app_auth_instance_register_cantLogin_notification_title,
+    content:
+        S.of(context).app_auth_instance_register_cantLogin_notification_content(
+              errorDescription ?? '',
+            ),
+  );
+}
 
 // ignore: long-method
 Future logInToInstance(BuildContext context) async {
@@ -548,16 +560,6 @@ Future logInToInstance(BuildContext context) async {
           return UnifediApiAccess.fromJson(testUnifediApiAccessJson);
       }
     },
-    errorDataBuilders: [
-      (context, error, stackTrace) {
-        // todo: handle specific error
-        return createInstanceDeadErrorData(
-          context,
-          error,
-          stackTrace,
-        );
-      },
-    ],
   );
 
   var authInstance = dialogResult.result;

@@ -1,6 +1,6 @@
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:fedi/app/auth/host/auth_host_model.dart';
 import 'package:fedi/app/access/register/form/register_access_form_bloc.dart';
+import 'package:fedi/app/access/register/response/register_response_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -24,7 +24,5 @@ abstract class IRegisterUnifediApiAccessBloc
 
   IRegisterUnifediApiAccessFormBloc get registerUnifediApiAccessFormBloc;
 
-  Stream<AuthHostRegistrationResult> get registrationResultStream;
-
-  Future<AuthHostRegistrationResult> submit();
+  Future<RegisterResponse> register();
 }

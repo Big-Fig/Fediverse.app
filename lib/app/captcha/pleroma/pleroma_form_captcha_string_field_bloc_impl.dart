@@ -206,6 +206,7 @@ class PleromaFormCaptchaStringFieldBloc extends StringValueFormFieldBloc
 
     captchaLoadedDateTimeSubject.add(null);
     captchaSubject.add(null);
+    clear();
     captchaLoadingErrorSubject.add(null);
     try {
       var captcha = await pleromaCaptchaService.getCaptcha();

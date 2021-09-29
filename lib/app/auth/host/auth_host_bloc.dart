@@ -1,6 +1,5 @@
-import 'package:fedi/app/auth/host/auth_host_model.dart';
-
 import 'package:easy_dispose/easy_dispose.dart';
+import 'package:fedi/app/access/register/response/register_response_model.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
 abstract class IAuthHostBloc extends IDisposable {
@@ -22,13 +21,9 @@ abstract class IAuthHostBloc extends IDisposable {
 
   Future<UnifediApiAccess?> launchLoginToAccount();
 
-  Future<AuthHostRegistrationResult> registerAccount({
+  Future<RegisterResponse> registerAccount({
     required IUnifediApiRegisterAccount registerAccount,
   });
-
-  Future checkApplicationRegistration();
-
-  Future checkIsRegistrationsEnabled();
 
   Future logout();
 }

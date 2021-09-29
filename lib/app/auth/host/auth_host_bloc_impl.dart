@@ -7,8 +7,8 @@ import 'package:fedi/app/access/host/access_token/access_host_access_token_local
 import 'package:fedi/app/access/host/application/access_host_application_local_preference_bloc.dart';
 import 'package:fedi/app/access/host/application/access_host_application_local_preference_bloc_impl.dart';
 import 'package:fedi/app/access/memory_access_bloc_impl.dart';
+import 'package:fedi/app/access/register/response/register_response_model.dart';
 import 'package:fedi/app/auth/host/auth_host_bloc.dart';
-import 'package:fedi/app/auth/host/auth_host_model.dart';
 import 'package:fedi/app/auth/oauth_last_launched/local_preferences/auth_oauth_last_launched_host_to_login_local_preference_bloc.dart';
 import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
@@ -127,6 +127,12 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
   @override
   Future registerApplication() async {
     _logger.finest(() => 'registerApplication');
+    var alreadyRegistered = memoryUnifediApiAccessBloc
+            .access.applicationAccessToken?.clientApplication !=
+        null;
+    if (alreadyRegistered) {
+      return;
+    }
     var redirectUri = await _calculateRedirectUri();
 
     var application = await unifediApiInstanceService.registerApp(
@@ -171,7 +177,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
   @override
   Future<UnifediApiAccess?> launchLoginToAccount() async {
     _logger.finest(() => 'launchLoginToAccount');
-    await checkApplicationRegistration();
+    await registerApplication();
 
     var baseUrl = unifediApiAccountService.baseUri;
 
@@ -230,17 +236,12 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     required IUnifediApiOAuthToken token,
     required String authCode,
   }) async {
-    var unifediApiInstanceService = unifediApiManager.createInstanceService();
-
-    var hostInstance = await unifediApiInstanceService.getInstance();
+    await loadInstanceDetails();
 
     var instance = await _createUnifediApiAccess(
       authCode: authCode,
       token: token,
-      hostInstance: hostInstance,
     );
-
-    await unifediApiInstanceService.dispose();
 
     memoryUnifediApiAccessBloc.changeAccess(instance);
 
@@ -250,14 +251,14 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
   Future<UnifediApiAccess> _createUnifediApiAccess({
     required String? authCode,
     required IUnifediApiOAuthToken token,
-    required IUnifediApiInstance hostInstance,
   }) async {
     var unifediApiMyAccountService = unifediApiManager.createMyAccountService();
     var myAccount = await unifediApiMyAccountService.verifyMyCredentials();
 
     var instance = UnifediApiAccess(
       url: instanceBaseUri.toString(),
-      instance: hostInstance.toUnifediApiInstance(),
+      instance:
+          memoryUnifediApiAccessBloc.access.instance?.toUnifediApiInstance(),
       applicationAccessToken: memoryUnifediApiAccessBloc
           .access.applicationAccessToken!
           .toUnifediApiAccessApplicationToken(),
@@ -288,147 +289,114 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
   @override
   // todo: fix long-method
   // ignore: long-method
-  Future<AuthHostRegistrationResult> registerAccount({
+  Future<RegisterResponse> registerAccount({
     required IUnifediApiRegisterAccount registerAccount,
   }) async {
-    await checkApplicationRegistration();
-    await checkIsRegistrationsEnabled();
+    await registerApplication();
 
-    var hostInstance = await unifediApiInstanceService.getInstance();
-    AuthHostRegistrationResult result;
-    try {
-      var token = await unifediApiAccountService.registerAccount(
-        registerAccount: registerAccount,
+    var registerAccountResponse =
+        await unifediApiAccountService.registerAccount(
+      registerAccount: registerAccount,
+    );
+
+    IUnifediApiMyAccount? myAccount;
+
+    var token = registerAccountResponse.authToken;
+
+    RegisterResponse registerResponse;
+
+    if (token != null) {
+      var unifediApiMyAccountService =
+          unifediApiManager.createMyAccountService();
+
+      UnifediApiAccessUserToken unifediApiAccessUserToken;
+      unifediApiAccessUserToken = UnifediApiAccessUserToken(
+        myAccount: null,
+        user: registerAccount.username,
+        scopes: scopes,
+        oauthToken: token.toUnifediApiOAuthToken(),
       );
-
       memoryUnifediApiAccessBloc.changeAccess(
         memoryUnifediApiAccessBloc.access.toUnifediApiAccess().copyWith(
-              userAccessToken: UnifediApiAccessUserToken(
-                myAccount: null,
-                user: registerAccount.username,
-                scopes: scopes,
-                oauthToken: token.toUnifediApiOAuthToken(),
-              ),
+              userAccessToken: unifediApiAccessUserToken,
             ),
       );
 
-      if (hostInstance.approvalRequired == true) {
-        result = AuthHostRegistrationResult.noErrors(
-          authInstance: null,
-          token: token.toUnifediApiOAuthToken(),
-          unifediApiInstance: hostInstance,
-        );
-      } else {
-        EmailConfirmationRequiredAuthHostException?
-            emailConfirmationRequiredAuthHostException;
-        dynamic unknownHostException;
-
-        UnifediApiAccess? instance;
-        try {
-          instance = await _createUnifediApiAccess(
-            authCode: null,
-            token: token,
-            hostInstance: hostInstance,
-          );
-        } catch (e, stackTrace) {
-          _logger.warning(() => 'error during registerAccount', e, stackTrace);
-          if (e is IUnifediApiRestErrorException) {
-            if (e.unifediError.descriptionOrContent ==
-                emailConfirmationRequiredDescription) {
-              emailConfirmationRequiredAuthHostException =
-                  const EmailConfirmationRequiredAuthHostException();
-            } else {
-              unknownHostException = e;
-            }
-          } else {
-            unknownHostException = e;
-          }
-        }
-
-        result = AuthHostRegistrationResult(
-          authInstance: instance,
-          token: token.toUnifediApiOAuthToken(),
-          unifediApiInstance: hostInstance,
-          emailConfirmationRequiredAuthHostException:
-              emailConfirmationRequiredAuthHostException,
-          unknownHostException: unknownHostException,
-          cantRegisterAppAuthHostException: null,
-          invitesOnlyRegistrationAuthHostException: null,
-          disabledRegistrationAuthHostException: null,
-        );
-      }
-    } on IUnifediApiRestErrorException catch (e, stackTrace) {
-      _logger.warning(
-        () => 'error during registerAccount',
-        e,
-        stackTrace,
+      registerResponse = RegisterResponse(
+        access: memoryUnifediApiAccessBloc.access,
+        response: registerAccountResponse,
+        myAccount: myAccount?.toUnifediApiMyAccount(),
       );
 
-      var identifierAsUnifediApi =
-          e.unifediError.details?.identifierAsUnifediApi;
+      try {
+        myAccount = await unifediApiMyAccountService.verifyMyCredentials();
 
-      if (identifierAsUnifediApi != null) {
-        var mapResult = identifierAsUnifediApi.maybeWhen(
-          missingConfirmedEmail: (_) => AuthHostRegistrationResult(
-            authInstance: null,
-            token: null,
-            unifediApiInstance: hostInstance,
-            emailConfirmationRequiredAuthHostException:
-                const EmailConfirmationRequiredAuthHostException(),
-            unknownHostException: null,
-            cantRegisterAppAuthHostException: null,
-            invitesOnlyRegistrationAuthHostException: null,
-            disabledRegistrationAuthHostException: null,
-          ),
-          awaitingApproval: (_) => throw UnimplementedError(),
-          orElse: () => null,
+        unifediApiAccessUserToken = UnifediApiAccessUserToken(
+          myAccount: myAccount.toUnifediApiMyAccount(),
+          user: registerAccount.username,
+          scopes: scopes,
+          oauthToken: token.toUnifediApiOAuthToken(),
         );
-        if (mapResult != null) {
-          result = mapResult;
-        } else {
-          rethrow;
-        }
-      } else {
-        rethrow;
+
+        registerResponse = RegisterResponse(
+          access: memoryUnifediApiAccessBloc.access,
+          response: registerAccountResponse,
+          myAccount: myAccount.toUnifediApiMyAccount(),
+        );
+      } on IUnifediApiRestErrorException catch (e, stackTrace) {
+        _logger.finest(
+          () => 'error during loading myAccount',
+          e,
+          stackTrace,
+        );
+        var identifierAsUnifediApi =
+            e.unifediError.details?.identifierAsUnifediApi;
+
+        identifierAsUnifediApi?.maybeWhen(
+          missingConfirmedEmail: (_) {
+            registerResponse = RegisterResponse(
+              access: registerResponse.access,
+              response: registerResponse.response
+                  .toUnifediApiRegisterAccountResponse()
+                  .copyWith(
+                    emailConformationRequired: true,
+                  ),
+              myAccount: registerResponse.myAccount,
+            );
+          },
+          awaitingApproval: (_) {
+            registerResponse = RegisterResponse(
+              access: registerResponse.access,
+              response: registerResponse.response
+                  .toUnifediApiRegisterAccountResponse()
+                  .copyWith(
+                    approvalRequired: true,
+                  ),
+              myAccount: registerResponse.myAccount,
+            );
+          },
+          orElse: () {
+            // nothing
+          },
+        );
+      } finally {
+        await unifediApiMyAccountService.dispose();
       }
-    }
 
-    return result;
-  }
-
-  @override
-  Future checkApplicationRegistration() async {
-    _logger.finest(
-      () => 'checkApplicationRegistration $isHostApplicationRegistered',
-    );
-    if (!isHostApplicationRegistered) {
-      await registerApplication();
-      _logger.finest(() => 'checkApplicationRegistration');
-    }
-  }
-
-  @override
-  Future checkIsRegistrationsEnabled() async {
-    _logger.finest(() => 'checkIsRegistrationsEnabled');
-
-    var result = false;
-
-    var unifediApiInstance = await unifediApiInstanceService.getInstance();
-
-    var isRegistrationEnabled = unifediApiInstance.registrations;
-
-    if (isRegistrationEnabled != false) {
-      result = true;
+      memoryUnifediApiAccessBloc.changeAccess(
+        memoryUnifediApiAccessBloc.access.toUnifediApiAccess().copyWith(
+              userAccessToken: unifediApiAccessUserToken,
+            ),
+      );
     } else {
-      var invitesEnabled = unifediApiInstance.invitesEnabled;
-      if (invitesEnabled == true) {
-        throw const InvitesOnlyRegistrationAuthHostException();
-      } else {
-        throw const DisabledRegistrationAuthHostException();
-      }
+      registerResponse = RegisterResponse(
+        access: null,
+        myAccount: null,
+        response: registerAccountResponse,
+      );
     }
 
-    return result;
+    return registerResponse;
   }
 
   static AuthHostBloc createFromContext(
@@ -527,13 +495,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
 
     unifediApiInstanceService = unifediApiManager.createInstanceService();
 
-    var instance = await unifediApiInstanceService.getInstance();
-
-    memoryUnifediApiAccessBloc.changeAccess(
-      memoryUnifediApiAccessBloc.access.toUnifediApiAccess().copyWith(
-            instance: instance.toUnifediApiInstance(),
-          ),
-    );
+    await loadInstanceDetails();
 
     unifediApiAccountService = unifediApiManager.createAccountService();
 
@@ -546,6 +508,19 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     );
 
     await detectorBloc.dispose();
+  }
+
+  Future loadInstanceDetails({
+    bool forceRefresh = false,
+  }) async {
+    if (forceRefresh || memoryUnifediApiAccessBloc.access.instance == null) {
+      var instance = await unifediApiInstanceService.getInstance();
+      memoryUnifediApiAccessBloc.changeAccess(
+        memoryUnifediApiAccessBloc.access.toUnifediApiAccess().copyWith(
+              instance: instance.toUnifediApiInstance(),
+            ),
+      );
+    }
   }
 }
 

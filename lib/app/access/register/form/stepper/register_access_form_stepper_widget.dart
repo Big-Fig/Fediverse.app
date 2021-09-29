@@ -1,4 +1,3 @@
-import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/access/register/form/register_access_form_bloc.dart';
 import 'package:fedi/app/access/register/form/stepper/item/account/register_access_form_account_stepper_item_bloc.dart';
 import 'package:fedi/app/access/register/form/stepper/item/account/register_access_from_account_stepper_item_widget.dart';
@@ -11,6 +10,8 @@ import 'package:fedi/app/access/register/form/stepper/item/register_access_form_
 import 'package:fedi/app/access/register/form/stepper/item/submit/register_access_form_submit_stepper_item_bloc.dart';
 import 'package:fedi/app/access/register/form/stepper/item/submit/register_access_form_submit_stepper_item_widget.dart';
 import 'package:fedi/app/access/register/register_access_bloc.dart';
+import 'package:fedi/app/access/register/response/register_response_model.dart';
+import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/ui/stepper/fedi_stepper_bloc.dart';
@@ -20,8 +21,17 @@ import 'package:fedi/ui/stepper/fedi_stepper_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
+typedef RegisterCallback = Function(
+  BuildContext context,
+  RegisterResponse registerResponse,
+);
+
 class RegisterUnifediApiAccessFormStepperWidget extends StatelessWidget {
-  const RegisterUnifediApiAccessFormStepperWidget();
+  final RegisterCallback onRegister;
+
+  const RegisterUnifediApiAccessFormStepperWidget({
+    required this.onRegister,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -40,13 +50,19 @@ class RegisterUnifediApiAccessFormStepperWidget extends StatelessWidget {
 
         return FediStepperBloc<IRegisterUnifediApiAccessFormStepperItemBloc>(
           steps: steps,
-          submitCallback: () =>
-              PleromaAsyncOperationHelper.performPleromaAsyncOperation(
-            context: context,
-            asyncCode: () =>
-                IRegisterUnifediApiAccessBloc.of(context, listen: false)
-                    .submit(),
-          ),
+          submitCallback: () async {
+            var dialogResult =
+                await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+              context: context,
+              asyncCode: () =>
+                  IRegisterUnifediApiAccessBloc.of(context, listen: false)
+                      .register(),
+            );
+            var registrationResponse = dialogResult.result;
+            if (registrationResponse != null) {
+              onRegister(context, registrationResponse);
+            }
+          },
         );
       },
       child: FediStepperBlocProxyProvider(
