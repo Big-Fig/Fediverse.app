@@ -54,44 +54,49 @@ class _UploadMediaAttachmentListNonMediaItemWidgetState
   Widget build(BuildContext context) {
     var mediaItemBloc = IUploadMediaAttachmentBloc.of(context);
 
-    return StreamBuilder<UploadMediaAttachmentState>(
-      stream: mediaItemBloc.uploadStateStream,
-      builder: (context, snapshot) {
-        var uploadState = snapshot.data;
+    return InkWell(
+      onTap: () {
+        mediaItemBloc.startUploadIfPossible();
+      },
+      child: StreamBuilder<UploadMediaAttachmentState>(
+        stream: mediaItemBloc.uploadStateStream,
+        builder: (context, snapshot) {
+          var uploadState = snapshot.data;
 
-        return FutureBuilder(
-          future: mediaItemBloc.calculateFilePath(),
-          builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
-            var filePath = snapshot.data;
-            var isUploaded =
-                uploadState?.type == UploadMediaAttachmentStateType.uploaded;
+          return FutureBuilder(
+            future: mediaItemBloc.calculateFilePath(),
+            builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
+              var filePath = snapshot.data;
+              var isUploaded =
+                  uploadState?.type == UploadMediaAttachmentStateType.uploaded;
 
-            if (isUploaded) {
-              return Provider<String>.value(
-                value: filePath ?? '',
-                child: DisposableProxyProvider<String, IMediaFilePathBloc>(
-                  update: (context, filePath, _) =>
-                      MediaFilePathBloc(path: filePath),
+              if (isUploaded) {
+                return Provider<String>.value(
+                  value: filePath ?? '',
+                  child: DisposableProxyProvider<String, IMediaFilePathBloc>(
+                    update: (context, filePath, _) =>
+                        MediaFilePathBloc(path: filePath),
+                    child: const MediaFilePathWidget(
+                      opacity: 1.0,
+                      actionsWidget:
+                          _UploadMediaAttachmentListNonMediaItemActionsWidget(),
+                    ),
+                  ),
+                );
+              } else {
+                return DisposableProvider<IMediaFilePathBloc>(
+                  create: (context) => MediaFilePathBloc(path: filePath),
                   child: const MediaFilePathWidget(
-                    opacity: 1.0,
+                    opacity: 0.5,
                     actionsWidget:
                         _UploadMediaAttachmentListNonMediaItemActionsWidget(),
                   ),
-                ),
-              );
-            } else {
-              return DisposableProvider<IMediaFilePathBloc>(
-                create: (context) => MediaFilePathBloc(path: filePath),
-                child: const MediaFilePathWidget(
-                  opacity: 0.5,
-                  actionsWidget:
-                      _UploadMediaAttachmentListNonMediaItemActionsWidget(),
-                ),
-              );
-            }
-          },
-        );
-      },
+                );
+              }
+            },
+          );
+        },
+      ),
     );
   }
 
@@ -199,7 +204,7 @@ class _UploadMediaAttachmentListNonMediaItemErrorWidget
 
     return InkWell(
       onTap: () {
-        mediaItemBloc.startUpload();
+        mediaItemBloc.startUploadIfPossible();
       },
       child: ClipRRect(
         // todo: refactor

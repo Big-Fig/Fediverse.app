@@ -17,6 +17,7 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
   final int? maximumMediaAttachmentCount;
   @override
   final int? maximumFileSizeInBytes;
+  final bool dontUploadMediaDuringEditing;
 
   final IUnifediApiMediaAttachmentService unifediApiMediaAttachmentService;
 
@@ -26,6 +27,7 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
     required this.maximumMediaAttachmentCount,
     required this.unifediApiMediaAttachmentService,
     required this.maximumFileSizeInBytes,
+    required this.dontUploadMediaDuringEditing,
   }) {
     uploadMediaAttachmentBlocsSubject.disposeWith(this);
     isAllAttachedMediaUploadedSubject.disposeWith(this);
@@ -165,6 +167,12 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
         unifediApiMediaAttachmentService: unifediApiMediaAttachmentService,
         maximumFileSizeInBytes: maximumFileSizeInBytes,
       );
+      if (!dontUploadMediaDuringEditing) {
+        // no need to await
+        // ignore: unawaited_futures
+        uploadMediaAttachmentBloc.startUploadIfPossible();
+      }
+
       uploadMediaAttachmentBlocsSubject.add(
         [
           ...uploadMediaAttachmentBlocs,

@@ -20,19 +20,22 @@ class PostStatusSettingsAdapter extends TypeAdapter<PostStatusSettings> {
       markMediaAsNsfwOnAttach: fields[0] as bool,
       defaultVisibilityString: fields[1] as String,
       defaultStatusLocale: fields[2] as LocalizationLocale?,
+      dontUploadMediaDuringEditing: fields[3] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, PostStatusSettings obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.markMediaAsNsfwOnAttach)
       ..writeByte(1)
       ..write(obj.defaultVisibilityString)
       ..writeByte(2)
-      ..write(obj.defaultStatusLocale);
+      ..write(obj.defaultStatusLocale)
+      ..writeByte(3)
+      ..write(obj.dontUploadMediaDuringEditing);
   }
 
   @override
@@ -58,6 +61,8 @@ PostStatusSettings _$PostStatusSettingsFromJson(Map<String, dynamic> json) {
         ? null
         : LocalizationLocale.fromJson(
             json['default_status_locale'] as Map<String, dynamic>),
+    dontUploadMediaDuringEditing:
+        json['dont_upload_media_during_editing_on_attach'] as bool,
   );
 }
 
@@ -66,4 +71,6 @@ Map<String, dynamic> _$PostStatusSettingsToJson(PostStatusSettings instance) =>
       'mark_media_as_nsfw_on_attach': instance.markMediaAsNsfwOnAttach,
       'default_visibility': instance.defaultVisibilityString,
       'default_status_locale': instance.defaultStatusLocale?.toJson(),
+      'dont_upload_media_during_editing_on_attach':
+          instance.dontUploadMediaDuringEditing,
     };

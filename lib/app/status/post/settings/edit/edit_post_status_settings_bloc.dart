@@ -15,6 +15,7 @@ abstract class IEditPostStatusSettingsBloc
       Provider.of<IEditPostStatusSettingsBloc>(context, listen: listen);
 
   IBoolValueFormFieldBloc get markMediaAsNsfwOnAttachFormFieldBloc;
+  IBoolValueFormFieldBloc get dontUploadMediaDuringEditingFormFieldBloc;
 
   IStatusVisibilitySelectSingleFromListValueFormFieldBloc
       get defaultVisibilityFormFieldBloc;

@@ -375,6 +375,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
               myAccount: registerResponse.myAccount,
             );
           },
+          // ignore: no-empty-block
           orElse: () {
             // nothing
           },

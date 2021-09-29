@@ -5,10 +5,11 @@ import 'package:fedi/app/chat/pleroma/post/pleroma_chat_post_message_bloc.dart';
 import 'package:fedi/app/chat/pleroma/post/pleroma_chat_post_message_bloc_proxy_provider.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_model.dart';
 import 'package:fedi/app/message/post_message_bloc_impl.dart';
+import 'package:fedi/app/status/post/settings/post_status_settings_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 var _logger = Logger('chat_post_message_bloc_impl.dart');
 
@@ -21,12 +22,14 @@ class PleromaChatPostMessageBloc extends PostMessageBloc
     required int? maximumMessageLength,
     required IUnifediApiMediaAttachmentService unifediApiMediaAttachmentService,
     required int? maximumFileSizeInBytes,
+    required bool dontUploadMediaDuringEditing,
   }) : super(
           maximumMessageLength: maximumMessageLength,
           maximumMediaAttachmentCount: 1,
           unifediApiMediaAttachmentService: unifediApiMediaAttachmentService,
           maximumFileSizeInBytes: maximumFileSizeInBytes,
           unfocusOnClear: false,
+          dontUploadMediaDuringEditing: dontUploadMediaDuringEditing,
         );
 
   @override
@@ -97,6 +100,10 @@ class PleromaChatPostMessageBloc extends PostMessageBloc
         context,
         listen: false,
       ),
+      dontUploadMediaDuringEditing: IPostStatusSettingsBloc.of(
+        context,
+        listen: false,
+      ).dontUploadMediaDuringEditing,
       maximumMessageLength: info.limits?.chat?.messageLimit,
       maximumFileSizeInBytes: info.limits?.media?.uploadLimit,
     );

@@ -24,6 +24,8 @@ import 'package:unifedi_api/src/api/account/identity_proof/unifedi_api_account_i
     as _i20;
 import 'package:unifedi_api/src/api/account/my/unifedi_api_my_account_model.dart'
     as _i28;
+import 'package:unifedi_api/src/api/account/register/response/unifedi_api_register_account_response_model.dart'
+    as _i9;
 import 'package:unifedi_api/src/api/account/register/unifedi_api_register_account_model.dart'
     as _i21;
 import 'package:unifedi_api/src/api/account/relationship/unifedi_api_account_relationship_model.dart'
@@ -42,7 +44,6 @@ import 'package:unifedi_api/src/api/chat/unifedi_api_chat_model.dart' as _i4;
 import 'package:unifedi_api/src/api/feature/unifedi_api_feature_model.dart'
     as _i2;
 import 'package:unifedi_api/src/api/list/unifedi_api_list_model.dart' as _i19;
-import 'package:unifedi_api/src/api/oauth/unifedi_api_oauth_model.dart' as _i9;
 import 'package:unifedi_api/src/api/pagination/unifedi_api_pagination_model.dart'
     as _i14;
 import 'package:unifedi_api/src/api/rest/unifedi_api_rest_service.dart' as _i3;
@@ -77,8 +78,8 @@ class _FakeIUnifediApiAccount extends _i1.Fake
 class _FakeIUnifediApiAccountRelationship extends _i1.Fake
     implements _i8.IUnifediApiAccountRelationship {}
 
-class _FakeIUnifediApiOAuthToken extends _i1.Fake
-    implements _i9.IUnifediApiOAuthToken {}
+class _FakeIUnifediApiRegisterAccountResponse extends _i1.Fake
+    implements _i9.IUnifediApiRegisterAccountResponse {}
 
 class _FakeUnifediApiAccess extends _i1.Fake implements _i10.UnifediApiAccess {}
 
@@ -618,14 +619,14 @@ class MockIUnifediApiAccountService extends _i1.Mock
                   _FakeIUnifediApiAccountRelationship()))
           as _i13.Future<_i8.IUnifediApiAccountRelationship>);
   @override
-  _i13.Future<_i9.IUnifediApiOAuthToken> registerAccount(
+  _i13.Future<_i9.IUnifediApiRegisterAccountResponse> registerAccount(
           {_i21.IUnifediApiRegisterAccount? registerAccount}) =>
       (super.noSuchMethod(
               Invocation.method(
                   #registerAccount, [], {#registerAccount: registerAccount}),
-              returnValue: Future<_i9.IUnifediApiOAuthToken>.value(
-                  _FakeIUnifediApiOAuthToken()))
-          as _i13.Future<_i9.IUnifediApiOAuthToken>);
+              returnValue: Future<_i9.IUnifediApiRegisterAccountResponse>.value(
+                  _FakeIUnifediApiRegisterAccountResponse()))
+          as _i13.Future<_i9.IUnifediApiRegisterAccountResponse>);
   @override
   _i6.FediverseApiFeatureRequirementState checkFeatureState(
           _i2.IUnifediApiFeature? feature) =>

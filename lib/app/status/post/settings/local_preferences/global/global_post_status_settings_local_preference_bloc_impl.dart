@@ -14,6 +14,7 @@ class GlobalPostStatusSettingsLocalPreferenceBloc
   static final defaultValue = PostStatusSettings(
     defaultVisibilityString: UnifediApiVisibility.publicValue.stringValue,
     markMediaAsNsfwOnAttach: false,
+    dontUploadMediaDuringEditing: false,
     defaultStatusLocale: null,
   );
 

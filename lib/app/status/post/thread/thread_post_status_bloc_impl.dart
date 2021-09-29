@@ -51,9 +51,11 @@ class ThreadPostStatusBloc extends PostStatusBloc
     required int? maximumFileSizeInBytes,
     required int? maximumMediaAttachmentCount,
     required bool markMediaAsNsfwOnAttach,
+    required bool dontUploadMediaDuringEditing,
     required String? language,
     required bool isPleromaInstance,
   }) : super(
+          dontUploadMediaDuringEditing: dontUploadMediaDuringEditing,
           maximumMediaAttachmentCount: maximumMediaAttachmentCount,
           isExpirePossible: isPleromaInstance,
           unifediApiStatusService: unifediApiStatusService,
@@ -101,6 +103,9 @@ class ThreadPostStatusBloc extends PostStatusBloc
       markMediaAsNsfwOnAttach:
           IPostStatusSettingsBloc.of(context, listen: false)
               .markMediaAsNsfwOnAttach,
+      dontUploadMediaDuringEditing:
+          IPostStatusSettingsBloc.of(context, listen: false)
+              .dontUploadMediaDuringEditing,
       language: IPostStatusSettingsBloc.of(context, listen: false)
           .defaultStatusLocale
           ?.localeString,

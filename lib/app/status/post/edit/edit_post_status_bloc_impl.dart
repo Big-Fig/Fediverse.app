@@ -29,9 +29,11 @@ class EditPostStatusBloc extends PostStatusBloc {
     required IUnifediApiInstancePollLimits? pollLimits,
     required int? maximumFileSizeInBytes,
     required bool markMediaAsNsfwOnAttach,
+    required bool dontUploadMediaDuringEditing,
     required bool isPleromaInstance,
     required int? maximumMediaAttachmentCount,
   }) : super(
+          dontUploadMediaDuringEditing: dontUploadMediaDuringEditing,
           maximumMediaAttachmentCount: maximumMediaAttachmentCount,
           isExpirePossible: isPleromaInstance,
           unifediApiStatusService: unifediApiStatusService,
@@ -76,6 +78,8 @@ class EditPostStatusBloc extends PostStatusBloc {
       maximumMediaAttachmentCount:
           info.limits?.status?.maxMediaAttachmentsCount,
       markMediaAsNsfwOnAttach: postStatusSettingsBloc.markMediaAsNsfwOnAttach,
+      dontUploadMediaDuringEditing:
+          postStatusSettingsBloc.dontUploadMediaDuringEditing,
       isPleromaInstance: info.typeAsUnifediApi.isPleroma,
       scheduledStatusRepository: IScheduledStatusRepository.of(
         context,

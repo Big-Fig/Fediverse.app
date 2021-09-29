@@ -1573,6 +1573,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Invalid date or time"),
         "app_status_post_settings_field_defaultVisibility_label":
             MessageLookupByLibrary.simpleMessage("Default visibility"),
+        "app_status_post_settings_field_dontUploadMediaDuringEditing_label":
+            MessageLookupByLibrary.simpleMessage(
+                "Don\'t upload media during editing"),
         "app_status_post_settings_field_markMediaAsNsfwOnAttach_label":
             MessageLookupByLibrary.simpleMessage("Mark media as NSFW"),
         "app_status_post_settings_title":

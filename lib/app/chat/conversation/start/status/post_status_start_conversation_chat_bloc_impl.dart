@@ -38,9 +38,11 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
     required IUnifediApiInstancePollLimits? pollLimits,
     required int? maximumFileSizeInBytes,
     required bool markMediaAsNsfwOnAttach,
+    required bool dontUploadMediaDuringEditing,
     required String? language,
     required int? maximumMediaAttachmentCount,
   }) : super(
+          dontUploadMediaDuringEditing: dontUploadMediaDuringEditing,
           isExpirePossible: false,
           maximumMediaAttachmentCount: maximumMediaAttachmentCount,
           unifediApiStatusService: unifediApiStatusService,
@@ -89,6 +91,9 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
       markMediaAsNsfwOnAttach:
           IPostStatusSettingsBloc.of(context, listen: false)
               .markMediaAsNsfwOnAttach,
+      dontUploadMediaDuringEditing:
+          IPostStatusSettingsBloc.of(context, listen: false)
+              .dontUploadMediaDuringEditing,
       language: IPostStatusSettingsBloc.of(context, listen: false)
           .defaultStatusLocale
           ?.localeString,

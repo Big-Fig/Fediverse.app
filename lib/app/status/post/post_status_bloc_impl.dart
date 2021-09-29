@@ -39,6 +39,7 @@ abstract class PostStatusBloc extends PostMessageBloc
   }
 
   final bool markMediaAsNsfwOnAttach;
+
   bool alreadyMarkMediaNsfwByDefault = false;
   final IUnifediApiInstancePollLimits? pollLimits;
 
@@ -56,9 +57,11 @@ abstract class PostStatusBloc extends PostMessageBloc
     required this.pollLimits,
     required int? maximumFileSizeInBytes,
     required this.markMediaAsNsfwOnAttach,
+    required bool dontUploadMediaDuringEditing,
     required this.isExpirePossible,
     required bool unfocusOnClear,
   }) : super(
+          dontUploadMediaDuringEditing: dontUploadMediaDuringEditing,
           maximumMessageLength: maximumMessageLength,
           unifediApiMediaAttachmentService: unifediApiMediaAttachmentService,
           maximumMediaAttachmentCount: maximumMediaAttachmentCount,

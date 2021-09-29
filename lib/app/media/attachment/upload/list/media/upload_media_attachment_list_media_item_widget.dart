@@ -64,58 +64,63 @@ class _UploadMediaAttachmentListMediaItemWidgetState
     var bloc = IUploadMediaAttachmentBloc.of(context);
     const previewWidget = _UploadMediaAttachmentListMediaItemPreviewWidget();
 
-    return ClipRRect(
-      borderRadius: BorderRadius.all(
-        Radius.circular(FediSizes.borderRadiusBigSize),
-      ),
-      child: Stack(
-        alignment: Alignment.center,
-        children: <Widget>[
-          Positioned.fill(
-            child: StreamBuilder<UploadMediaAttachmentState>(
-              stream: bloc.uploadStateStream,
-              builder: (context, snapshot) {
-                var uploadState = snapshot.data;
+    return InkWell(
+      onTap: () {
+        bloc.startUploadIfPossible();
+      },
+      child: ClipRRect(
+        borderRadius: BorderRadius.all(
+          Radius.circular(FediSizes.borderRadiusBigSize),
+        ),
+        child: Stack(
+          alignment: Alignment.center,
+          children: <Widget>[
+            Positioned.fill(
+              child: StreamBuilder<UploadMediaAttachmentState>(
+                stream: bloc.uploadStateStream,
+                builder: (context, snapshot) {
+                  var uploadState = snapshot.data;
 
-                if (uploadState?.type ==
-                    UploadMediaAttachmentStateType.uploaded) {
-                  return previewWidget;
-                } else {
-                  return Opacity(
-                    // todo: refactor
-                    // ignore: no-magic-number
-                    opacity: 0.7,
-                    child: previewWidget,
-                  );
-                }
-              },
+                  if (uploadState?.type ==
+                      UploadMediaAttachmentStateType.uploaded) {
+                    return previewWidget;
+                  } else {
+                    return Opacity(
+                      // todo: refactor
+                      // ignore: no-magic-number
+                      opacity: 0.7,
+                      child: previewWidget,
+                    );
+                  }
+                },
+              ),
             ),
-          ),
-          Align(
-            alignment: Alignment.topRight,
-            child: Padding(
-              padding: widget.contentPadding,
-              child:
-                  const _UploadMediaAttachmentListMediaItemTopRightActionWidget(),
+            Align(
+              alignment: Alignment.topRight,
+              child: Padding(
+                padding: widget.contentPadding,
+                child:
+                    const _UploadMediaAttachmentListMediaItemTopRightActionWidget(),
+              ),
             ),
-          ),
-          Align(
-            alignment: Alignment.topLeft,
-            child: Padding(
-              padding: widget.contentPadding,
-              child:
-                  const _UploadMediaAttachmentListMediaItemTopLeftActionWidget(),
+            Align(
+              alignment: Alignment.topLeft,
+              child: Padding(
+                padding: widget.contentPadding,
+                child:
+                    const _UploadMediaAttachmentListMediaItemTopLeftActionWidget(),
+              ),
             ),
-          ),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: Padding(
-              padding: widget.contentPadding,
-              child:
-                  const _UploadMediaAttachmentListMediaItemBottomRightActionWidget(),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Padding(
+                padding: widget.contentPadding,
+                child:
+                    const _UploadMediaAttachmentListMediaItemBottomRightActionWidget(),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -312,7 +317,7 @@ class _UploadMediaAttachmentListMediaItemErrorButtonWidget
           context,
           listen: false,
         );
-        uploadMediaAttachmentBloc.startUpload();
+        uploadMediaAttachmentBloc.startUploadIfPossible();
       },
       child: ClipRRect(
         // todo: refactor

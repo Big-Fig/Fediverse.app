@@ -14,7 +14,7 @@ class UploadedUploadMediaAttachmentBloc extends DisposableOwner
   });
 
   @override
-  Future startUpload() async {
+  Future startUploadIfPossible() async {
     throw UnsupportedError('UploadMediaAttachmentUploadedBloc always uploaded');
   }
 

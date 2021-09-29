@@ -13,6 +13,8 @@ import 'package:fediverse_api/src/web_sockets/web_sockets_service.dart' as _i8;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:unifedi_api/src/api/account/identity_proof/unifedi_api_account_identity_proof_model.dart'
     as _i16;
+import 'package:unifedi_api/src/api/account/register/response/unifedi_api_register_account_response_model.dart'
+    as _i6;
 import 'package:unifedi_api/src/api/account/register/unifedi_api_register_account_model.dart'
     as _i17;
 import 'package:unifedi_api/src/api/account/relationship/unifedi_api_account_relationship_model.dart'
@@ -24,7 +26,6 @@ import 'package:unifedi_api/src/api/account/unifedi_api_account_model.dart'
 import 'package:unifedi_api/src/api/feature/unifedi_api_feature_model.dart'
     as _i2;
 import 'package:unifedi_api/src/api/list/unifedi_api_list_model.dart' as _i15;
-import 'package:unifedi_api/src/api/oauth/unifedi_api_oauth_model.dart' as _i6;
 import 'package:unifedi_api/src/api/pagination/unifedi_api_pagination_model.dart'
     as _i14;
 import 'package:unifedi_api/src/api/rest/unifedi_api_rest_service.dart' as _i3;
@@ -55,8 +56,8 @@ class _FakeIUnifediApiAccount extends _i1.Fake
 class _FakeIUnifediApiAccountRelationship extends _i1.Fake
     implements _i5.IUnifediApiAccountRelationship {}
 
-class _FakeIUnifediApiOAuthToken extends _i1.Fake
-    implements _i6.IUnifediApiOAuthToken {}
+class _FakeIUnifediApiRegisterAccountResponse extends _i1.Fake
+    implements _i6.IUnifediApiRegisterAccountResponse {}
 
 class _FakeFediverseApiFeatureRequirementState extends _i1.Fake
     implements _i7.FediverseApiFeatureRequirementState {}
@@ -478,14 +479,14 @@ class MockIUnifediApiAccountService extends _i1.Mock
                   _FakeIUnifediApiAccountRelationship()))
           as _i11.Future<_i5.IUnifediApiAccountRelationship>);
   @override
-  _i11.Future<_i6.IUnifediApiOAuthToken> registerAccount(
+  _i11.Future<_i6.IUnifediApiRegisterAccountResponse> registerAccount(
           {_i17.IUnifediApiRegisterAccount? registerAccount}) =>
       (super.noSuchMethod(
               Invocation.method(
                   #registerAccount, [], {#registerAccount: registerAccount}),
-              returnValue: Future<_i6.IUnifediApiOAuthToken>.value(
-                  _FakeIUnifediApiOAuthToken()))
-          as _i11.Future<_i6.IUnifediApiOAuthToken>);
+              returnValue: Future<_i6.IUnifediApiRegisterAccountResponse>.value(
+                  _FakeIUnifediApiRegisterAccountResponse()))
+          as _i11.Future<_i6.IUnifediApiRegisterAccountResponse>);
   @override
   _i7.FediverseApiFeatureRequirementState checkFeatureState(
           _i2.IUnifediApiFeature? feature) =>

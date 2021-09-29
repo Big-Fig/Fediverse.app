@@ -4067,6 +4067,16 @@ class S {
     );
   }
 
+  /// `Don't upload media during editing`
+  String get app_status_post_settings_field_dontUploadMediaDuringEditing_label {
+    return Intl.message(
+      'Don\'t upload media during editing',
+      name: 'app_status_post_settings_field_dontUploadMediaDuringEditing_label',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Default visibility`
   String get app_status_post_settings_field_defaultVisibility_label {
     return Intl.message(

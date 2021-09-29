@@ -29,6 +29,10 @@ class EditPostStatusSettingsBloc
 
   @override
   // ignore: avoid-late-keyword
+  late IBoolValueFormFieldBloc<bool> dontUploadMediaDuringEditingFormFieldBloc;
+
+  @override
+  // ignore: avoid-late-keyword
   late LocalizationLocaleSingleFromListValueFormFieldBloc
       defaultStatusLocaleFormFieldBloc;
 
@@ -36,6 +40,7 @@ class EditPostStatusSettingsBloc
   List<IFormItemBloc> get currentItems => [
         defaultVisibilityFormFieldBloc,
         markMediaAsNsfwOnAttachFormFieldBloc,
+        dontUploadMediaDuringEditingFormFieldBloc,
         defaultStatusLocaleFormFieldBloc,
       ];
 
@@ -62,6 +67,10 @@ class EditPostStatusSettingsBloc
       originValue: currentSettings.markMediaAsNsfwOnAttach,
       isEnabled: isEnabled,
     );
+    dontUploadMediaDuringEditingFormFieldBloc = BoolValueFormFieldBloc(
+      originValue: currentSettings.dontUploadMediaDuringEditing,
+      isEnabled: isEnabled,
+    );
 
     defaultStatusLocaleFormFieldBloc =
         LocalizationLocaleSingleFromListValueFormFieldBloc(
@@ -72,6 +81,7 @@ class EditPostStatusSettingsBloc
 
     addDisposable(defaultVisibilityFormFieldBloc);
     addDisposable(markMediaAsNsfwOnAttachFormFieldBloc);
+    addDisposable(dontUploadMediaDuringEditingFormFieldBloc);
     addDisposable(defaultStatusLocaleFormFieldBloc);
 
     onFormItemsChanged();
@@ -83,6 +93,8 @@ class EditPostStatusSettingsBloc
             defaultVisibilityFormFieldBloc.currentValue.stringValue,
         markMediaAsNsfwOnAttach:
             markMediaAsNsfwOnAttachFormFieldBloc.currentValue,
+        dontUploadMediaDuringEditing:
+            dontUploadMediaDuringEditingFormFieldBloc.currentValue,
         defaultStatusLocale: defaultStatusLocaleFormFieldBloc.currentValue,
       );
 
@@ -92,6 +104,8 @@ class EditPostStatusSettingsBloc
         .changeCurrentValue(settings.defaultVisibilityAsUnifediApi);
     markMediaAsNsfwOnAttachFormFieldBloc
         .changeCurrentValue(settings.markMediaAsNsfwOnAttach);
+    dontUploadMediaDuringEditingFormFieldBloc
+        .changeCurrentValue(settings.dontUploadMediaDuringEditing);
     defaultStatusLocaleFormFieldBloc
         .changeCurrentValue(settings.defaultStatusLocale);
   }

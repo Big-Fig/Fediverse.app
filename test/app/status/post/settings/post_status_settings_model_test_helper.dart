@@ -10,6 +10,7 @@ class PostStatusSettingsModelMockHelper {
   }) =>
       PostStatusSettings(
         markMediaAsNsfwOnAttach: seed.hashCode % 2 == 0,
+        dontUploadMediaDuringEditing: seed.hashCode % 2 == 1,
         defaultVisibilityString: UnifediApiVisibility
             .values[seed.hashCode % UnifediApiVisibility.values.length]
             .stringValue,

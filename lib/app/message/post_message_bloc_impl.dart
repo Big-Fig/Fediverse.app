@@ -8,13 +8,14 @@ import 'package:fedi/app/message/post_message_model.dart';
 import 'package:fedi/form/form_item_validation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 final _logger = Logger('post_message_bloc_impl.dart');
 
 abstract class PostMessageBloc extends DisposableOwner
     implements IPostMessageBloc {
+  final bool dontUploadMediaDuringEditing;
   @override
   final IUploadMediaAttachmentsCollectionBloc uploadMediaAttachmentsBloc;
 
@@ -53,10 +54,12 @@ abstract class PostMessageBloc extends DisposableOwner
     required this.maximumMessageLength,
     required int? maximumFileSizeInBytes,
     required this.unfocusOnClear,
+    required this.dontUploadMediaDuringEditing,
   }) : uploadMediaAttachmentsBloc = UploadMediaAttachmentsCollectionBloc(
           maximumMediaAttachmentCount: maximumMediaAttachmentCount,
           unifediApiMediaAttachmentService: unifediApiMediaAttachmentService,
           maximumFileSizeInBytes: maximumFileSizeInBytes,
+          dontUploadMediaDuringEditing: dontUploadMediaDuringEditing == true,
         ) {
     inputTextErrorsSubject.disposeWith(this);
     uploadMediaAttachmentsBloc.disposeWith(this);
@@ -283,7 +286,7 @@ abstract class PostMessageBloc extends DisposableOwner
               (bloc) => !bloc.isUploaded,
             )
             .map(
-              (bloc) => bloc.startUpload(),
+              (bloc) => bloc.startUploadIfPossible(),
             );
 
         await Future.wait(futures);

@@ -1,9 +1,9 @@
 import 'package:fedi/app/settings/settings_model.dart';
-import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:fedi/localization/localization_model.dart';
-import 'package:unifedi_api/unifedi_api.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 // ignore_for_file: no-magic-number
 part 'post_status_settings_model.g.dart';
@@ -22,6 +22,9 @@ class PostStatusSettings implements IJsonObj, ISettings<PostStatusSettings> {
   @HiveField(2)
   @JsonKey(name: 'default_status_locale')
   final LocalizationLocale? defaultStatusLocale;
+  @HiveField(3)
+  @JsonKey(name: 'dont_upload_media_during_editing_on_attach')
+  final bool dontUploadMediaDuringEditing;
 
   UnifediApiVisibility get defaultVisibilityAsUnifediApi =>
       defaultVisibilityString.toUnifediApiVisibility();
@@ -30,6 +33,7 @@ class PostStatusSettings implements IJsonObj, ISettings<PostStatusSettings> {
     required this.markMediaAsNsfwOnAttach,
     required this.defaultVisibilityString,
     required this.defaultStatusLocale,
+    required this.dontUploadMediaDuringEditing,
   });
 
   @override
@@ -39,20 +43,25 @@ class PostStatusSettings implements IJsonObj, ISettings<PostStatusSettings> {
           runtimeType == other.runtimeType &&
           markMediaAsNsfwOnAttach == other.markMediaAsNsfwOnAttach &&
           defaultVisibilityString == other.defaultVisibilityString &&
-          defaultStatusLocale == other.defaultStatusLocale;
+          defaultStatusLocale == other.defaultStatusLocale &&
+          dontUploadMediaDuringEditing == other.dontUploadMediaDuringEditing;
 
   @override
   int get hashCode =>
       markMediaAsNsfwOnAttach.hashCode ^
       defaultVisibilityString.hashCode ^
-      defaultStatusLocale.hashCode;
+      defaultStatusLocale.hashCode ^
+      dontUploadMediaDuringEditing.hashCode;
 
   @override
-  String toString() => 'PostStatusSettings{'
-      'markMediaAsNsfwOnAttach: $markMediaAsNsfwOnAttach, '
-      'defaultVisibilityString: $defaultVisibilityString, '
-      'defaultStatusLocale: $defaultStatusLocale'
-      '}';
+  String toString() {
+    return 'PostStatusSettings{'
+        'markMediaAsNsfwOnAttach: $markMediaAsNsfwOnAttach, '
+        'defaultVisibilityString: $defaultVisibilityString, '
+        'defaultStatusLocale: $defaultStatusLocale, '
+        'dontUploadMediaDuringEditing: $dontUploadMediaDuringEditing'
+        '}';
+  }
 
   static PostStatusSettings fromJson(Map<String, dynamic> json) =>
       _$PostStatusSettingsFromJson(json);
@@ -67,6 +76,7 @@ class PostStatusSettings implements IJsonObj, ISettings<PostStatusSettings> {
     bool? markMediaAsNsfwOnAttach,
     String? defaultVisibilityString,
     LocalizationLocale? defaultStatusLocale,
+    bool? dontUploadMediaDuringEditing,
   }) =>
       PostStatusSettings(
         markMediaAsNsfwOnAttach:
@@ -74,5 +84,7 @@ class PostStatusSettings implements IJsonObj, ISettings<PostStatusSettings> {
         defaultVisibilityString:
             defaultVisibilityString ?? this.defaultVisibilityString,
         defaultStatusLocale: defaultStatusLocale ?? this.defaultStatusLocale,
+        dontUploadMediaDuringEditing:
+            dontUploadMediaDuringEditing ?? this.dontUploadMediaDuringEditing,
       );
 }

@@ -69,7 +69,7 @@ class UploadMediaAttachmentBlocDevice extends DisposableOwner
   }
 
   @override
-  Future startUpload() async {
+  Future startUploadIfPossible() async {
     var type = uploadState.type;
     _logger.finest(() => 'startUpload $type');
     if (type == UploadMediaAttachmentStateType.uploaded) {

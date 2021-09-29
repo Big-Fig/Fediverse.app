@@ -21,10 +21,12 @@ class NewPostStatusBloc extends PostStatusBloc {
     required IUnifediApiInstancePollLimits? pollLimits,
     required int? maximumFileSizeInBytes,
     required bool markMediaAsNsfwOnAttach,
+    required bool dontUploadMediaDuringEditing,
     required bool isPleromaInstance,
     required IPostStatusData initialData,
     required int? maximumMediaAttachmentCount,
   }) : super(
+          dontUploadMediaDuringEditing: dontUploadMediaDuringEditing,
           maximumMediaAttachmentCount: maximumMediaAttachmentCount,
           isExpirePossible: isPleromaInstance,
           unifediApiStatusService: unifediApiStatusService,
@@ -51,11 +53,13 @@ class NewPostStatusBloc extends PostStatusBloc {
     required String? initialText,
     required String? initialSubject,
     required List<UnifediApiMediaAttachment>? initialMediaAttachments,
-    required bool? markMediaAsNsfwOnAttach,
+    required bool markMediaAsNsfwOnAttach,
+    required bool dontUploadMediaDuringEditing,
     required String? initialLanguage,
     required bool isPleromaInstance,
     required int? maximumMediaAttachmentCount,
   }) : this(
+          dontUploadMediaDuringEditing: dontUploadMediaDuringEditing,
           maximumMediaAttachmentCount: maximumMediaAttachmentCount,
           isPleromaInstance: isPleromaInstance,
           unifediApiStatusService: unifediApiStatusService,
@@ -72,7 +76,7 @@ class NewPostStatusBloc extends PostStatusBloc {
           ),
           pollLimits: pollLimits,
           maximumFileSizeInBytes: maximumFileSizeInBytes,
-          markMediaAsNsfwOnAttach: markMediaAsNsfwOnAttach ?? false,
+          markMediaAsNsfwOnAttach: markMediaAsNsfwOnAttach,
         );
 
   static NewPostStatusBloc createFromContextWithInitial(
@@ -113,6 +117,8 @@ class NewPostStatusBloc extends PostStatusBloc {
       maximumMediaAttachmentCount:
           info.limits?.status?.maxMediaAttachmentsCount,
       markMediaAsNsfwOnAttach: postStatusSettingsBloc.markMediaAsNsfwOnAttach,
+      dontUploadMediaDuringEditing:
+          postStatusSettingsBloc.dontUploadMediaDuringEditing,
       isPleromaInstance: info.typeAsUnifediApi.isPleroma,
       scheduledStatusRepository: IScheduledStatusRepository.of(
         context,
@@ -171,6 +177,8 @@ class NewPostStatusBloc extends PostStatusBloc {
       maximumMediaAttachmentCount:
           info.limits?.status?.maxMediaAttachmentsCount,
       markMediaAsNsfwOnAttach: postStatusSettingsBloc.markMediaAsNsfwOnAttach,
+      dontUploadMediaDuringEditing:
+          postStatusSettingsBloc.dontUploadMediaDuringEditing,
       isPleromaInstance: info.typeAsUnifediApi.isPleroma,
       scheduledStatusRepository: IScheduledStatusRepository.of(
         context,

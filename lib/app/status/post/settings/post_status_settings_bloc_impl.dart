@@ -31,6 +31,21 @@ class PostStatusSettingsBloc
           markMediaAsNsfwOnAttach: value,
         ),
       );
+  @override
+  bool get dontUploadMediaDuringEditing =>
+      settingsData.dontUploadMediaDuringEditing;
+
+  @override
+  Stream<bool> get dontUploadMediaDuringEditingStream => settingsDataStream
+      .map((settings) => settings.dontUploadMediaDuringEditing);
+
+  @override
+  Future changeDontUploadMediaDuringEditing(bool value) =>
+      updateInstanceSettings(
+        settingsData.copyWith(
+          dontUploadMediaDuringEditing: value,
+        ),
+      );
 
   @override
   UnifediApiVisibility get defaultVisibilityAsUnifediApi =>
@@ -61,6 +76,7 @@ class PostStatusSettingsBloc
   Future changeDefaultStatusLocale(LocalizationLocale? value) =>
       updateInstanceSettings(
         PostStatusSettings(
+          dontUploadMediaDuringEditing: dontUploadMediaDuringEditing,
           markMediaAsNsfwOnAttach: markMediaAsNsfwOnAttach,
           defaultStatusLocale: value,
           defaultVisibilityString: defaultVisibilityAsUnifediApi.stringValue,

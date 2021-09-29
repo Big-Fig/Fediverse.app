@@ -1597,6 +1597,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Неправильная дата или время"),
         "app_status_post_settings_field_defaultVisibility_label":
             MessageLookupByLibrary.simpleMessage("Видимость по умолчанию"),
+        "app_status_post_settings_field_dontUploadMediaDuringEditing_label":
+            MessageLookupByLibrary.simpleMessage(
+                "Не загружать медиа при редактировании"),
         "app_status_post_settings_field_markMediaAsNsfwOnAttach_label":
             MessageLookupByLibrary.simpleMessage("Помечать медиа как NSFW"),
         "app_status_post_settings_title":
