@@ -105,10 +105,10 @@ dependencies:
   json_annotation: ^4.1.0
 
   # advanced logging
-  logging: 1.0.1
+  logging: ^1.0.2
 
   # dependency injection framework
-  provider: 5.0.0
+  provider: ^6.0.1
 
   # fancy permission handler
   permission_handler: 7.1.0
@@ -119,7 +119,7 @@ dependencies:
   # commandline script to pull database from emulator
   # adb exec-out run-as com.fediverse.app cat ./databases/jffdev@fedi.app.sqlite > database.sqlite
   # sqlite orm
-  moor: 4.4.0
+  moor: 4.5.0
 
   # sqlite3_flutter_libs required for moor ffi
   sqlite3_flutter_libs: 0.5.0
@@ -219,7 +219,7 @@ dependencies:
   easy_dispose: 1.0.1
   easy_dispose_flutter: 1.0.1
   easy_dispose_rxdart: 1.0.1
-  easy_dispose_provider: 1.0.1
+  easy_dispose_provider: 1.0.2
 
 dev_dependencies:
   integration_test:
@@ -232,15 +232,15 @@ dev_dependencies:
   test: any
 
   # easy mock for tests
-  mockito: 5.0.10
+  mockito: 5.0.16
   # build tools runner
   # usage example
   # fvm flutter pub run build_runner build --delete-conflicting-outputs
-  build_runner: 2.0.4
+  build_runner: 2.1.2
   # build tool to generate json from & to methods
   json_serializable: 5.0.2
   # sql orm generator
-  moor_generator: 4.4.0
+  moor_generator: 4.5.1
 
   # object serialization generator
   hive_generator:
