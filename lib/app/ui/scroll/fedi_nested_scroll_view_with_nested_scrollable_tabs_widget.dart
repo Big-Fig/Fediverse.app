@@ -83,14 +83,14 @@ class FediNestedScrollViewWithNestedScrollableTabsWidget
         fediNestedScrollViewBloc.nestedScrollController;
     // extended_nested_scroll_view required to fix nested scrollables sync issue
 
-    return extended_nested_scroll_view.NestedScrollView(
+    return extended_nested_scroll_view.ExtendedNestedScrollView(
       // we use custom nested scroll controller to achieve scroll callbacks
       // from body scrollables
       controller: nestedScrollController,
       headerSliverBuilder: (BuildContext context, bool? innerBoxIsScrolled) =>
           buildTopSliverWidgets(context),
-      innerScrollPositionKeyBuilder: () =>
-          _innerScrollPositionKeyBuilder(context),
+      // innerScrollPositionKeyBuilder: () =>
+      //     _innerScrollPositionKeyBuilder(context),
       body: Builder(
         builder: (context) {
           // required by extended_nested_scroll_view
@@ -242,10 +242,11 @@ class _NestedBodyTabItemWidgetState extends State<_NestedBodyTabItemWidget>
         builder: (context) {
           return Stack(
             children: [
-              NestedScrollViewInnerScrollPositionKeyWidget(
-                widget.tabKey,
-                widget.tabBodyContentBuilder(context, widget.index),
-              ),
+              widget.tabBodyContentBuilder(context, widget.index),
+              // NestedScrollViewInnerScrollPositionKeyWidget(
+              //   widget.tabKey,
+              //   widget.tabBodyContentBuilder(context, widget.index),
+              // ),
               if (widget.tabBodyOverlayBuilder != null)
                 FediNestedScrollViewWidget.buildOverlay(
                   context,
