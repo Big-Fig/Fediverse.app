@@ -2,6 +2,7 @@ import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class FediPageCustomAppBar extends StatelessWidget
     implements PreferredSizeWidget {
@@ -36,7 +37,10 @@ class FediPageCustomAppBar extends StatelessWidget
           leading: leading,
           centerTitle: centerTitle,
           titleSpacing: 0.0,
-          brightness: fediUiColorTheme.brightness,
+          // todo: refactor
+          systemOverlayStyle: fediUiColorTheme.brightness == Brightness.light
+              ? SystemUiOverlayStyle.light
+              : SystemUiOverlayStyle.dark,
           backgroundColor: fediUiColorTheme.white,
           title: child,
           actions: actions,
