@@ -56,16 +56,14 @@ class TimelineOldAdapter extends TypeAdapter<TimelineOld> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-TimelineOld _$TimelineOldFromJson(Map<String, dynamic> json) {
-  return TimelineOld(
-    id: json['id'] as String,
-    typeString: json['type_string'] as String,
-    settings:
-        TimelineSettingsOld.fromJson(json['settings'] as Map<String, dynamic>),
-    label: json['label'] as String?,
-    isPossibleToDelete: json['is_possible_to_delete'] as bool,
-  );
-}
+TimelineOld _$TimelineOldFromJson(Map<String, dynamic> json) => TimelineOld(
+      id: json['id'] as String,
+      typeString: json['type_string'] as String,
+      settings: TimelineSettingsOld.fromJson(
+          json['settings'] as Map<String, dynamic>),
+      label: json['label'] as String?,
+      isPossibleToDelete: json['is_possible_to_delete'] as bool,
+    );
 
 Map<String, dynamic> _$TimelineOldToJson(TimelineOld instance) =>
     <String, dynamic>{

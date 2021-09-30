@@ -50,18 +50,17 @@ class EmojiPickerRecentCategoryItemsListAdapter
 // **************************************************************************
 
 EmojiPickerRecentCategoryItemsList _$EmojiPickerRecentCategoryItemsListFromJson(
-    Map<String, dynamic> json) {
-  return EmojiPickerRecentCategoryItemsList(
-    recentCodeItems: (json['recent_code_items'] as List<dynamic>)
-        .map((e) =>
-            CustomEmojiPickerCodeItem.fromJson(e as Map<String, dynamic>))
-        .toList(),
-    recentImageItems: (json['recent_image_items'] as List<dynamic>)
-        .map((e) =>
-            CustomEmojiPickerImageUrlItem.fromJson(e as Map<String, dynamic>))
-        .toList(),
-  );
-}
+        Map<String, dynamic> json) =>
+    EmojiPickerRecentCategoryItemsList(
+      recentCodeItems: (json['recent_code_items'] as List<dynamic>)
+          .map((e) =>
+              CustomEmojiPickerCodeItem.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      recentImageItems: (json['recent_image_items'] as List<dynamic>)
+          .map((e) =>
+              CustomEmojiPickerImageUrlItem.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
 
 Map<String, dynamic> _$EmojiPickerRecentCategoryItemsListToJson(
         EmojiPickerRecentCategoryItemsList instance) =>

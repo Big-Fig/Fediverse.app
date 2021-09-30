@@ -47,14 +47,13 @@ class EmojiPickerCustomImageUrlCategoryItemsAdapter
 
 EmojiPickerCustomImageUrlCategoryItems
     _$EmojiPickerCustomImageUrlCategoryItemsFromJson(
-        Map<String, dynamic> json) {
-  return EmojiPickerCustomImageUrlCategoryItems(
-    items: (json['items'] as List<dynamic>)
-        .map((e) =>
-            CustomEmojiPickerImageUrlItem.fromJson(e as Map<String, dynamic>))
-        .toList(),
-  );
-}
+            Map<String, dynamic> json) =>
+        EmojiPickerCustomImageUrlCategoryItems(
+          items: (json['items'] as List<dynamic>)
+              .map((e) => CustomEmojiPickerImageUrlItem.fromJson(
+                  e as Map<String, dynamic>))
+              .toList(),
+        );
 
 Map<String, dynamic> _$EmojiPickerCustomImageUrlCategoryItemsToJson(
         EmojiPickerCustomImageUrlCategoryItems instance) =>

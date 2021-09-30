@@ -46,12 +46,11 @@ class UnifediApiMyAccountWrapperAdapter
 // **************************************************************************
 
 UnifediApiMyAccountWrapper _$UnifediApiMyAccountWrapperFromJson(
-    Map<String, dynamic> json) {
-  return UnifediApiMyAccountWrapper(
-    unifediApiAccount: UnifediApiMyAccount.fromJson(
-        json['remote_account'] as Map<String, dynamic>),
-  );
-}
+        Map<String, dynamic> json) =>
+    UnifediApiMyAccountWrapper(
+      unifediApiAccount: UnifediApiMyAccount.fromJson(
+          json['remote_account'] as Map<String, dynamic>),
+    );
 
 Map<String, dynamic> _$UnifediApiMyAccountWrapperToJson(
         UnifediApiMyAccountWrapper instance) =>

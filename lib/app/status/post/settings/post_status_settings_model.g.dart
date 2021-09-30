@@ -53,18 +53,17 @@ class PostStatusSettingsAdapter extends TypeAdapter<PostStatusSettings> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-PostStatusSettings _$PostStatusSettingsFromJson(Map<String, dynamic> json) {
-  return PostStatusSettings(
-    markMediaAsNsfwOnAttach: json['mark_media_as_nsfw_on_attach'] as bool,
-    defaultVisibilityString: json['default_visibility'] as String,
-    defaultStatusLocale: json['default_status_locale'] == null
-        ? null
-        : LocalizationLocale.fromJson(
-            json['default_status_locale'] as Map<String, dynamic>),
-    dontUploadMediaDuringEditing:
-        json['dont_upload_media_during_editing_on_attach'] as bool,
-  );
-}
+PostStatusSettings _$PostStatusSettingsFromJson(Map<String, dynamic> json) =>
+    PostStatusSettings(
+      markMediaAsNsfwOnAttach: json['mark_media_as_nsfw_on_attach'] as bool,
+      defaultVisibilityString: json['default_visibility'] as String,
+      defaultStatusLocale: json['default_status_locale'] == null
+          ? null
+          : LocalizationLocale.fromJson(
+              json['default_status_locale'] as Map<String, dynamic>),
+      dontUploadMediaDuringEditing:
+          json['dont_upload_media_during_editing_on_attach'] as bool,
+    );
 
 Map<String, dynamic> _$PostStatusSettingsToJson(PostStatusSettings instance) =>
     <String, dynamic>{

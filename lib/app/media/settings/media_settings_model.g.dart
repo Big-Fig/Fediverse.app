@@ -47,12 +47,11 @@ class MediaSettingsAdapter extends TypeAdapter<MediaSettings> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-MediaSettings _$MediaSettingsFromJson(Map<String, dynamic> json) {
-  return MediaSettings(
-    autoInit: json['auto_init'] as bool,
-    autoPlay: json['auto_play'] as bool,
-  );
-}
+MediaSettings _$MediaSettingsFromJson(Map<String, dynamic> json) =>
+    MediaSettings(
+      autoInit: json['auto_init'] as bool,
+      autoPlay: json['auto_play'] as bool,
+    );
 
 Map<String, dynamic> _$MediaSettingsToJson(MediaSettings instance) =>
     <String, dynamic>{

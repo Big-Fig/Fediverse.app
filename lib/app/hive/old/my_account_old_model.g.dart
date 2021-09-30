@@ -46,12 +46,11 @@ class PleromaMyAccountWrapperOldAdapter
 // **************************************************************************
 
 PleromaMyAccountWrapperOld _$PleromaMyAccountWrapperOldFromJson(
-    Map<String, dynamic> json) {
-  return PleromaMyAccountWrapperOld(
-    pleromaAccount: PleromaApiMyAccount.fromJson(
-        json['remote_account'] as Map<String, dynamic>),
-  );
-}
+        Map<String, dynamic> json) =>
+    PleromaMyAccountWrapperOld(
+      pleromaAccount: PleromaApiMyAccount.fromJson(
+          json['remote_account'] as Map<String, dynamic>),
+    );
 
 Map<String, dynamic> _$PleromaMyAccountWrapperOldToJson(
         PleromaMyAccountWrapperOld instance) =>

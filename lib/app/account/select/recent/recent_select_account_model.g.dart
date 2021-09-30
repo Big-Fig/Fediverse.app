@@ -46,13 +46,12 @@ class RecentSelectAccountListAdapter
 // **************************************************************************
 
 RecentSelectAccountList _$RecentSelectAccountListFromJson(
-    Map<String, dynamic> json) {
-  return RecentSelectAccountList(
-    recentItems: (json['recentItems'] as List<dynamic>?)
-        ?.map((e) => UnifediApiAccount.fromJson(e as Map<String, dynamic>))
-        .toList(),
-  );
-}
+        Map<String, dynamic> json) =>
+    RecentSelectAccountList(
+      recentItems: (json['recentItems'] as List<dynamic>?)
+          ?.map((e) => UnifediApiAccount.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
 
 Map<String, dynamic> _$RecentSelectAccountListToJson(
         RecentSelectAccountList instance) =>

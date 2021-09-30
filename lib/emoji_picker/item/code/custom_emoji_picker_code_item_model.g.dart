@@ -49,12 +49,11 @@ class CustomEmojiPickerCodeItemAdapter
 // **************************************************************************
 
 CustomEmojiPickerCodeItem _$CustomEmojiPickerCodeItemFromJson(
-    Map<String, dynamic> json) {
-  return CustomEmojiPickerCodeItem(
-    code: json['code'] as String,
-    name: json['name'] as String,
-  );
-}
+        Map<String, dynamic> json) =>
+    CustomEmojiPickerCodeItem(
+      code: json['code'] as String,
+      name: json['name'] as String,
+    );
 
 Map<String, dynamic> _$CustomEmojiPickerCodeItemToJson(
         CustomEmojiPickerCodeItem instance) =>

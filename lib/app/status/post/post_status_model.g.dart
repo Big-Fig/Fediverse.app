@@ -6,32 +6,31 @@ part of 'post_status_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-PostStatusData _$PostStatusDataFromJson(Map<String, dynamic> json) {
-  return PostStatusData(
-    subject: json['subject'] as String?,
-    text: json['text'] as String?,
-    scheduledAt: json['scheduled_at'] == null
-        ? null
-        : DateTime.parse(json['scheduled_at'] as String),
-    visibilityString: json['visibility'] as String,
-    to: (json['to'] as List<dynamic>?)?.map((e) => e as String).toList(),
-    mediaAttachments: (json['media_attachments'] as List<dynamic>?)
-        ?.map((e) =>
-            UnifediApiMediaAttachment.fromJson(e as Map<String, dynamic>))
-        .toList(),
-    poll: json['poll'] == null
-        ? null
-        : PostStatusPoll.fromJson(json['poll'] as Map<String, dynamic>),
-    inReplyToUnifediApiStatus: json['in_reply_to_status'] == null
-        ? null
-        : UnifediApiStatus.fromJson(
-            json['in_reply_to_status'] as Map<String, dynamic>),
-    inReplyToConversationId: json['in_reply_to_conversation_id'] as String?,
-    isNsfwSensitiveEnabled: json['is_nsfw_sensitive_enabled'] as bool,
-    language: json['language'] as String?,
-    expiresInSeconds: json['expires_in_seconds'] as int?,
-  );
-}
+PostStatusData _$PostStatusDataFromJson(Map<String, dynamic> json) =>
+    PostStatusData(
+      subject: json['subject'] as String?,
+      text: json['text'] as String?,
+      scheduledAt: json['scheduled_at'] == null
+          ? null
+          : DateTime.parse(json['scheduled_at'] as String),
+      visibilityString: json['visibility'] as String,
+      to: (json['to'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      mediaAttachments: (json['media_attachments'] as List<dynamic>?)
+          ?.map((e) =>
+              UnifediApiMediaAttachment.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      poll: json['poll'] == null
+          ? null
+          : PostStatusPoll.fromJson(json['poll'] as Map<String, dynamic>),
+      inReplyToUnifediApiStatus: json['in_reply_to_status'] == null
+          ? null
+          : UnifediApiStatus.fromJson(
+              json['in_reply_to_status'] as Map<String, dynamic>),
+      inReplyToConversationId: json['in_reply_to_conversation_id'] as String?,
+      isNsfwSensitiveEnabled: json['is_nsfw_sensitive_enabled'] as bool,
+      language: json['language'] as String?,
+      expiresInSeconds: json['expires_in_seconds'] as int?,
+    );
 
 Map<String, dynamic> _$PostStatusDataToJson(PostStatusData instance) {
   final val = <String, dynamic>{};

@@ -47,14 +47,12 @@ class ChatSettingsAdapter extends TypeAdapter<ChatSettings> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-ChatSettings _$ChatSettingsFromJson(Map<String, dynamic> json) {
-  return ChatSettings(
-    replaceConversationsWithPleromaChats:
-        json['replace_conversations_with_pleroma_chats'] as bool,
-    countConversationsInChatsUnreadBadges:
-        json['count_conversations_in_chats_unread_badges'] as bool,
-  );
-}
+ChatSettings _$ChatSettingsFromJson(Map<String, dynamic> json) => ChatSettings(
+      replaceConversationsWithPleromaChats:
+          json['replace_conversations_with_pleroma_chats'] as bool,
+      countConversationsInChatsUnreadBadges:
+          json['count_conversations_in_chats_unread_badges'] as bool,
+    );
 
 Map<String, dynamic> _$ChatSettingsToJson(ChatSettings instance) =>
     <String, dynamic>{

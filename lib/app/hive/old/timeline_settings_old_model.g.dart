@@ -86,34 +86,34 @@ class TimelineSettingsOldAdapter extends TypeAdapter<TimelineSettingsOld> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-TimelineSettingsOld _$TimelineSettingsOldFromJson(Map<String, dynamic> json) {
-  return TimelineSettingsOld(
-    onlyWithMedia: json['only_with_media'] as bool?,
-    excludeReplies: json['exclude_replies'] as bool?,
-    excludeNsfwSensitive: json['exclude_nsfw_sensitive'] as bool?,
-    onlyRemote: json['only_remote'] as bool?,
-    onlyLocal: json['only_local'] as bool?,
-    withMuted: json['with_muted'] as bool?,
-    excludeVisibilitiesStrings:
-        (json['exclude_visibilities_strings'] as List<dynamic>?)
-            ?.map((e) => e as String)
-            .toList(),
-    onlyInRemoteList: json['only_in_list'] == null
-        ? null
-        : PleromaApiList.fromJson(json['only_in_list'] as Map<String, dynamic>),
-    withRemoteHashtag: json['with_remote_hashtag'] as String?,
-    replyVisibilityFilterString:
-        json['reply_visibility_filter_string'] as String?,
-    onlyFromRemoteAccount: json['only_from_remote_account'] == null
-        ? null
-        : PleromaApiAccount.fromJson(
-            json['only_from_remote_account'] as Map<String, dynamic>),
-    onlyPinned: json['only_pinned'] as bool?,
-    excludeReblogs: json['exclude_reblogs'] as bool?,
-    webSocketsUpdates: json['web_sockets_updates'] as bool?,
-    onlyFromInstance: json['instance'] as String?,
-  );
-}
+TimelineSettingsOld _$TimelineSettingsOldFromJson(Map<String, dynamic> json) =>
+    TimelineSettingsOld(
+      onlyWithMedia: json['only_with_media'] as bool?,
+      excludeReplies: json['exclude_replies'] as bool?,
+      excludeNsfwSensitive: json['exclude_nsfw_sensitive'] as bool?,
+      onlyRemote: json['only_remote'] as bool?,
+      onlyLocal: json['only_local'] as bool?,
+      withMuted: json['with_muted'] as bool?,
+      excludeVisibilitiesStrings:
+          (json['exclude_visibilities_strings'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList(),
+      onlyInRemoteList: json['only_in_list'] == null
+          ? null
+          : PleromaApiList.fromJson(
+              json['only_in_list'] as Map<String, dynamic>),
+      withRemoteHashtag: json['with_remote_hashtag'] as String?,
+      replyVisibilityFilterString:
+          json['reply_visibility_filter_string'] as String?,
+      onlyFromRemoteAccount: json['only_from_remote_account'] == null
+          ? null
+          : PleromaApiAccount.fromJson(
+              json['only_from_remote_account'] as Map<String, dynamic>),
+      onlyPinned: json['only_pinned'] as bool?,
+      excludeReblogs: json['exclude_reblogs'] as bool?,
+      webSocketsUpdates: json['web_sockets_updates'] as bool?,
+      onlyFromInstance: json['instance'] as String?,
+    );
 
 Map<String, dynamic> _$TimelineSettingsOldToJson(
         TimelineSettingsOld instance) =>

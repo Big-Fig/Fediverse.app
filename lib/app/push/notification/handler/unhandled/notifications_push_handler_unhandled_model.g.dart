@@ -46,14 +46,14 @@ class NotificationsPushHandlerUnhandledListAdapter
 // **************************************************************************
 
 NotificationsPushHandlerUnhandledList
-    _$NotificationsPushHandlerUnhandledListFromJson(Map<String, dynamic> json) {
-  return NotificationsPushHandlerUnhandledList(
-    messages: (json['messages'] as List<dynamic>)
-        .map((e) =>
-            NotificationsPushHandlerMessage.fromJson(e as Map<String, dynamic>))
-        .toList(),
-  );
-}
+    _$NotificationsPushHandlerUnhandledListFromJson(
+            Map<String, dynamic> json) =>
+        NotificationsPushHandlerUnhandledList(
+          messages: (json['messages'] as List<dynamic>)
+              .map((e) => NotificationsPushHandlerMessage.fromJson(
+                  e as Map<String, dynamic>))
+              .toList(),
+        );
 
 Map<String, dynamic> _$NotificationsPushHandlerUnhandledListToJson(
         NotificationsPushHandlerUnhandledList instance) =>

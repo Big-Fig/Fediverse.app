@@ -52,14 +52,13 @@ class StatusSensitiveSettingsAdapter
 // **************************************************************************
 
 StatusSensitiveSettings _$StatusSensitiveSettingsFromJson(
-    Map<String, dynamic> json) {
-  return StatusSensitiveSettings(
-    isAlwaysShowSpoiler: json['is_always_show_spoiler'] as bool,
-    isAlwaysShowNsfw: json['is_always_show_nsfw'] as bool,
-    nsfwDisplayDelayDurationMicrosecondsTotal:
-        json['nsfw_display_delay_duration_seconds_total'] as int?,
-  );
-}
+        Map<String, dynamic> json) =>
+    StatusSensitiveSettings(
+      isAlwaysShowSpoiler: json['is_always_show_spoiler'] as bool,
+      isAlwaysShowNsfw: json['is_always_show_nsfw'] as bool,
+      nsfwDisplayDelayDurationMicrosecondsTotal:
+          json['nsfw_display_delay_duration_seconds_total'] as int?,
+    );
 
 Map<String, dynamic> _$StatusSensitiveSettingsToJson(
         StatusSensitiveSettings instance) =>

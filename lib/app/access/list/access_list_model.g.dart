@@ -44,13 +44,13 @@ class UnifediApiAccessListAdapter extends TypeAdapter<UnifediApiAccessList> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-UnifediApiAccessList _$UnifediApiAccessListFromJson(Map<String, dynamic> json) {
-  return UnifediApiAccessList(
-    instances: (json['instances'] as List<dynamic>)
-        .map((e) => UnifediApiAccess.fromJson(e as Map<String, dynamic>))
-        .toList(),
-  );
-}
+UnifediApiAccessList _$UnifediApiAccessListFromJson(
+        Map<String, dynamic> json) =>
+    UnifediApiAccessList(
+      instances: (json['instances'] as List<dynamic>)
+          .map((e) => UnifediApiAccess.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
 
 Map<String, dynamic> _$UnifediApiAccessListToJson(
         UnifediApiAccessList instance) =>

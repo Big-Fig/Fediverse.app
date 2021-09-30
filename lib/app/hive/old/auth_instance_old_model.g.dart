@@ -65,25 +65,25 @@ class AuthInstanceOldAdapter extends TypeAdapter<AuthInstanceOld> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-AuthInstanceOld _$AuthInstanceOldFromJson(Map<String, dynamic> json) {
-  return AuthInstanceOld(
-    urlSchema: json['url_schema'] as String?,
-    urlHost: json['url_host'] as String,
-    acct: json['acct'] as String,
-    token: json['token'] == null
-        ? null
-        : PleromaApiOAuthToken.fromJson(json['token'] as Map<String, dynamic>),
-    authCode: json['auth_code'] as String?,
-    isPleroma: json['is_pleroma_instance'] as bool,
-    application: json['application'] == null
-        ? null
-        : PleromaApiClientApplication.fromJson(
-            json['application'] as Map<String, dynamic>),
-    info: json['info'] == null
-        ? null
-        : PleromaApiInstance.fromJson(json['info'] as Map<String, dynamic>),
-  );
-}
+AuthInstanceOld _$AuthInstanceOldFromJson(Map<String, dynamic> json) =>
+    AuthInstanceOld(
+      urlSchema: json['url_schema'] as String?,
+      urlHost: json['url_host'] as String,
+      acct: json['acct'] as String,
+      token: json['token'] == null
+          ? null
+          : PleromaApiOAuthToken.fromJson(
+              json['token'] as Map<String, dynamic>),
+      authCode: json['auth_code'] as String?,
+      isPleroma: json['is_pleroma_instance'] as bool,
+      application: json['application'] == null
+          ? null
+          : PleromaApiClientApplication.fromJson(
+              json['application'] as Map<String, dynamic>),
+      info: json['info'] == null
+          ? null
+          : PleromaApiInstance.fromJson(json['info'] as Map<String, dynamic>),
+    );
 
 Map<String, dynamic> _$AuthInstanceOldToJson(AuthInstanceOld instance) =>
     <String, dynamic>{

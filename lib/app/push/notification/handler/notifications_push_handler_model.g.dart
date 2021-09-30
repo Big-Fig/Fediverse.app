@@ -49,13 +49,12 @@ class NotificationsPushHandlerMessageAdapter
 // **************************************************************************
 
 NotificationsPushHandlerMessage _$NotificationsPushHandlerMessageFromJson(
-    Map<String, dynamic> json) {
-  return NotificationsPushHandlerMessage(
-    body: FediPushNotification.fromJson(json['body'] as Map<String, dynamic>),
-    pushMessage:
-        PushMessage.fromJson(json['push_message'] as Map<String, dynamic>),
-  );
-}
+        Map<String, dynamic> json) =>
+    NotificationsPushHandlerMessage(
+      body: FediPushNotification.fromJson(json['body'] as Map<String, dynamic>),
+      pushMessage:
+          PushMessage.fromJson(json['push_message'] as Map<String, dynamic>),
+    );
 
 Map<String, dynamic> _$NotificationsPushHandlerMessageToJson(
         NotificationsPushHandlerMessage instance) =>

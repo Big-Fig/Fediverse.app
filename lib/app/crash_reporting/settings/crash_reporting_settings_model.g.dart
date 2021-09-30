@@ -46,11 +46,10 @@ class CrashReportingSettingsAdapter
 // **************************************************************************
 
 CrashReportingSettings _$CrashReportingSettingsFromJson(
-    Map<String, dynamic> json) {
-  return CrashReportingSettings(
-    reportingEnabled: json['reporting_enabled'] as bool,
-  );
-}
+        Map<String, dynamic> json) =>
+    CrashReportingSettings(
+      reportingEnabled: json['reporting_enabled'] as bool,
+    );
 
 Map<String, dynamic> _$CrashReportingSettingsToJson(
         CrashReportingSettings instance) =>

@@ -46,13 +46,12 @@ class TimelinesHomeTabStorageAdapter
 // **************************************************************************
 
 TimelinesHomeTabStorage _$TimelinesHomeTabStorageFromJson(
-    Map<String, dynamic> json) {
-  return TimelinesHomeTabStorage(
-    timelineIds: (json['timeline_ids'] as List<dynamic>)
-        .map((e) => e as String)
-        .toList(),
-  );
-}
+        Map<String, dynamic> json) =>
+    TimelinesHomeTabStorage(
+      timelineIds: (json['timeline_ids'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
+    );
 
 Map<String, dynamic> _$TimelinesHomeTabStorageToJson(
         TimelinesHomeTabStorage instance) =>

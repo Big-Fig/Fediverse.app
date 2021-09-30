@@ -50,13 +50,12 @@ class LocalizationLocaleAdapter extends TypeAdapter<LocalizationLocale> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-LocalizationLocale _$LocalizationLocaleFromJson(Map<String, dynamic> json) {
-  return LocalizationLocale(
-    languageCode: json['languageCode'] as String,
-    scriptCode: json['scriptCode'] as String?,
-    countryCode: json['countryCode'] as String?,
-  );
-}
+LocalizationLocale _$LocalizationLocaleFromJson(Map<String, dynamic> json) =>
+    LocalizationLocale(
+      languageCode: json['languageCode'] as String,
+      scriptCode: json['scriptCode'] as String?,
+      countryCode: json['countryCode'] as String?,
+    );
 
 Map<String, dynamic> _$LocalizationLocaleToJson(LocalizationLocale instance) =>
     <String, dynamic>{

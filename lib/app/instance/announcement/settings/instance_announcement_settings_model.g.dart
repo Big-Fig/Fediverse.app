@@ -46,11 +46,10 @@ class InstanceAnnouncementSettingsAdapter
 // **************************************************************************
 
 InstanceAnnouncementSettings _$InstanceAnnouncementSettingsFromJson(
-    Map<String, dynamic> json) {
-  return InstanceAnnouncementSettings(
-    withDismissed: json['withDismissed'] as bool,
-  );
-}
+        Map<String, dynamic> json) =>
+    InstanceAnnouncementSettings(
+      withDismissed: json['withDismissed'] as bool,
+    );
 
 Map<String, dynamic> _$InstanceAnnouncementSettingsToJson(
         InstanceAnnouncementSettings instance) =>

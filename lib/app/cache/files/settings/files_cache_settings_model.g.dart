@@ -47,13 +47,12 @@ class FilesCacheSettingsAdapter extends TypeAdapter<FilesCacheSettings> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-FilesCacheSettings _$FilesCacheSettingsFromJson(Map<String, dynamic> json) {
-  return FilesCacheSettings(
-    sizeLimitCountTypeString:
-        json['files_cache_size_limit_count_type_string'] as String,
-    ageLimitTypeString: json['files_cache_ageL_limit_type_string'] as String,
-  );
-}
+FilesCacheSettings _$FilesCacheSettingsFromJson(Map<String, dynamic> json) =>
+    FilesCacheSettings(
+      sizeLimitCountTypeString:
+          json['files_cache_size_limit_count_type_string'] as String,
+      ageLimitTypeString: json['files_cache_ageL_limit_type_string'] as String,
+    );
 
 Map<String, dynamic> _$FilesCacheSettingsToJson(FilesCacheSettings instance) =>
     <String, dynamic>{

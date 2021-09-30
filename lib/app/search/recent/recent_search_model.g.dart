@@ -44,12 +44,12 @@ class RecentSearchListAdapter extends TypeAdapter<RecentSearchList> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-RecentSearchList _$RecentSearchListFromJson(Map<String, dynamic> json) {
-  return RecentSearchList(
-    recentItems:
-        (json['recentItems'] as List<dynamic>).map((e) => e as String).toList(),
-  );
-}
+RecentSearchList _$RecentSearchListFromJson(Map<String, dynamic> json) =>
+    RecentSearchList(
+      recentItems: (json['recentItems'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
+    );
 
 Map<String, dynamic> _$RecentSearchListToJson(RecentSearchList instance) =>
     <String, dynamic>{

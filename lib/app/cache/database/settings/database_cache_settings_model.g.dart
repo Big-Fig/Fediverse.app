@@ -48,13 +48,12 @@ class DatabaseCacheSettingsAdapter extends TypeAdapter<DatabaseCacheSettings> {
 // **************************************************************************
 
 DatabaseCacheSettings _$DatabaseCacheSettingsFromJson(
-    Map<String, dynamic> json) {
-  return DatabaseCacheSettings(
-    entriesCountByTypeLimitTypeString:
-        json['entries_count_by_type_limit_type'] as String,
-    ageLimitTypeString: json['age_limit_in_microseconds_type'] as String,
-  );
-}
+        Map<String, dynamic> json) =>
+    DatabaseCacheSettings(
+      entriesCountByTypeLimitTypeString:
+          json['entries_count_by_type_limit_type'] as String,
+      ageLimitTypeString: json['age_limit_in_microseconds_type'] as String,
+    );
 
 Map<String, dynamic> _$DatabaseCacheSettingsToJson(
         DatabaseCacheSettings instance) =>
