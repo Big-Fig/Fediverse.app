@@ -1,4 +1,4 @@
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/connection/connection_service.dart';
 import 'package:logging/logging.dart';
