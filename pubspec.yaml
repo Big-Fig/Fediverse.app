@@ -241,6 +241,8 @@ dev_dependencies:
   json_serializable: 5.0.2
   # sql orm generator
   moor_generator: 4.5.1
+  # required by sqlparser. Otherwise strange errors -
+  sqlparser: ^0.17.2
 
   # object serialization generator
   hive_generator:
