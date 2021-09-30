@@ -61,7 +61,6 @@ class FilesCacheService extends DisposableOwner implements IFilesCacheService {
     String? cacheKey,
     int? maxWidthDiskCache,
     int? maxHeightDiskCache,
-    ImageRenderMethodForWeb? imageRenderMethodForWeb,
   }) {
     assert(imageUrl?.isNotEmpty == true);
 
@@ -115,7 +114,6 @@ class FilesCacheService extends DisposableOwner implements IFilesCacheService {
           memCacheHeight: memCacheHeight,
           maxWidthDiskCache: maxWidthDiskCache,
           maxHeightDiskCache: maxHeightDiskCache,
-          imageRenderMethodForWeb: imageRenderMethodForWeb,
         );
       },
     );

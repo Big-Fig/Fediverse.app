@@ -43,6 +43,5 @@ abstract class IFilesCacheService implements IDisposable {
     String? cacheKey,
     int? maxWidthDiskCache,
     int? maxHeightDiskCache,
-    ImageRenderMethodForWeb? imageRenderMethodForWeb,
   });
 }
