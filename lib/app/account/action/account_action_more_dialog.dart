@@ -219,7 +219,7 @@ class AccountActionMoreDialog extends StatelessWidget {
           var remoteInstanceUri = Uri.parse(
             'https://$remoteDomainOrNull',
           );
-          goToRemoteInstanceDetailsPage(
+          await goToRemoteInstanceDetailsPage(
             context,
             remoteInstanceUri: remoteInstanceUri,
           );
