@@ -1,6 +1,6 @@
 import 'package:fedi/app/account/account_model.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 import 'database/account_database_test_helper.dart';
 

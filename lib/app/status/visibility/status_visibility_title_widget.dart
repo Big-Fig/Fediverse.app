@@ -1,9 +1,9 @@
 import 'package:fedi/app/status/visibility/status_visibility_ui.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class StatusVisibilityTitleWidget extends StatelessWidget {
   final UnifediApiVisibility visibility;

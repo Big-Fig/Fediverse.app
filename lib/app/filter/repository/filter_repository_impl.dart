@@ -6,8 +6,8 @@ import 'package:fedi/app/filter/filter_model.dart';
 import 'package:fedi/app/filter/filter_model_adapter.dart';
 import 'package:fedi/app/filter/repository/filter_repository.dart';
 import 'package:fedi/app/filter/repository/filter_repository_model.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:moor/moor.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class FilterRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     DbFilter,

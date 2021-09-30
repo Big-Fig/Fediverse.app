@@ -1,4 +1,6 @@
 import 'package:collection/collection.dart' show IterableExtension;
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
+import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/instance/location/instance_location_exception.dart';
@@ -8,13 +10,11 @@ import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/status/status_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/connection/connection_service.dart';
-import 'package:provider/provider.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class RemoteStatusBloc extends StatusBloc {
   final Uri instanceUri;

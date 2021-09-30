@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/chat/message/chat_message_bloc_impl.dart';
@@ -6,11 +7,10 @@ import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_bloc.dart';
 import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_bloc.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:easy_dispose/easy_dispose.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class PleromaChatMessageBloc extends ChatMessageBloc
     implements IPleromaChatMessageBloc {

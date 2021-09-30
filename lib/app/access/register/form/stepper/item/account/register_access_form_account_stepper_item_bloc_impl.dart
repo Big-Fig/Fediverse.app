@@ -1,3 +1,4 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/access/register/form/stepper/item/account/register_access_form_account_stepper_item_bloc.dart';
 import 'package:fedi/app/access/register/form/stepper/item/register_access_form_stepper_item_bloc_impl.dart';
 import 'package:fedi/app/access/register/form/stepper/item/register_access_form_stepper_item_model.dart';
@@ -7,7 +8,6 @@ import 'package:fedi/form/field/value/string/string_value_form_field_bloc_impl.d
 import 'package:fedi/form/field/value/string/validation/string_value_form_field_length_validation.dart';
 import 'package:fedi/form/field/value/string/validation/string_value_form_field_non_empty_validation.dart';
 import 'package:fedi/form/form_item_bloc.dart';
-import 'package:easy_dispose/easy_dispose.dart';
 
 class RegisterUnifediApiAccessFormStepperAccountItemBloc
     extends RegisterUnifediApiAccessFormStepperItemBloc

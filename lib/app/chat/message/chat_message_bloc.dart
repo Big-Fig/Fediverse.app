@@ -1,11 +1,11 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/chat/message/chat_message_model.dart';
 import 'package:fedi/app/emoji/text/emoji_text_model.dart';
 import 'package:fedi/app/pending/pending_model.dart';
-import 'package:easy_dispose/easy_dispose.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 abstract class IChatMessageBloc implements IDisposable {
   static IChatMessageBloc of(BuildContext context, {bool listen = true}) =>

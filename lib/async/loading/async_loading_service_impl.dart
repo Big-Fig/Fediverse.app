@@ -1,5 +1,5 @@
-import 'package:fedi/async/loading/async_loading_service.dart';
 import 'package:easy_dispose/easy_dispose.dart';
+import 'package:fedi/async/loading/async_loading_service.dart';
 import 'package:rxdart/rxdart.dart';
 
 typedef LoadingFunction = Future Function();

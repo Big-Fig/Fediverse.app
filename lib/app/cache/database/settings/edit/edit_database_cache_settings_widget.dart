@@ -1,5 +1,5 @@
-import 'package:fedi/app/async/pleroma/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/access/current/current_access_bloc.dart';
+import 'package:fedi/app/async/pleroma/pleroma_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/cache/database/form/info/instance/current_max_age/current_max_age_instance_database_cache_info_form_field_bloc.dart';
 import 'package:fedi/app/cache/database/form/info/instance/current_max_age/current_max_age_instance_database_cache_info_form_field_row_widget.dart';
 import 'package:fedi/app/cache/database/form/info/instance/current_max_entries_count_by_type/current_max_entries_count_by_type_instance_database_cache_info_form_field_bloc.dart';
@@ -13,9 +13,9 @@ import 'package:fedi/app/ui/button/text/with_border/fedi_primary_filled_text_but
 import 'package:fedi/app/ui/description/fedi_note_description_widget.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_vertical_spacer.dart';
 import 'package:fedi/generated/l10n.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
-import 'package:fediverse_api/fediverse_api.dart';
 
 class EditDatabaseCacheSettingsWidget extends StatelessWidget {
   final bool shrinkWrap;

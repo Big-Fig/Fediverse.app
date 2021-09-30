@@ -1,13 +1,13 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/filter/filter_bloc.dart';
 import 'package:fedi/app/filter/filter_model.dart';
 import 'package:fedi/app/filter/repository/filter_repository.dart';
-import 'package:easy_dispose/easy_dispose.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 var _logger = Logger('filter_bloc_impl.dart');
 

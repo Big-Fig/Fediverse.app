@@ -1,10 +1,10 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/crash_reporting/settings/crash_reporting_settings_bloc.dart';
 import 'package:fedi/app/crash_reporting/settings/crash_reporting_settings_model.dart';
 import 'package:fedi/app/crash_reporting/settings/edit/edit_crash_reporting_settings_bloc.dart';
 import 'package:fedi/app/settings/global/edit/edit_global_settings_bloc_impl.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
-import 'package:easy_dispose/easy_dispose.dart';
 
 class EditCrashReportingSettingsBloc
     extends EditGlobalSettingsBloc<CrashReportingSettings?>

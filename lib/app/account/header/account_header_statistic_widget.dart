@@ -1,11 +1,10 @@
+import 'package:fedi/app/account/header/account_header_bloc.dart';
 import 'package:fedi/app/ui/statistic/fedi_statistic_item_widget.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-
-import 'package:fedi/app/account/header/account_header_bloc.dart';
 
 final _numberFormat = NumberFormat('#,###');
 

@@ -1,6 +1,6 @@
 import 'package:fedi/collection/collection_hash_utils.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/foundation.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class EmojiText {
   final String text;

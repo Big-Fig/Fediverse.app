@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:easy_dispose/easy_dispose.dart';
-
 import 'package:fedi/app/push/settings/local_preferences/push_settings_local_preference_bloc.dart';
 import 'package:fedi/app/push/settings/push_settings_bloc.dart';
 import 'package:fedi/app/push/settings/push_settings_model.dart';
@@ -10,9 +9,9 @@ import 'package:fedi/app/push/settings/relay/push_relay_settings_model.dart';
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/push/fcm/fcm_push_service.dart';
 import 'package:fedi/push/relay/push_relay_service.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:logging/logging.dart';
 import 'package:unifedi_api/unifedi_api.dart';
-import 'package:fediverse_api/fediverse_api.dart';
 
 final _logger = Logger('push_settings_bloc_impl.dart');
 

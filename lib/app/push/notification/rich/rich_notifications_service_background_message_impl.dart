@@ -3,17 +3,17 @@ import 'dart:convert';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:collection/collection.dart';
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:fedi/app/app_model.dart';
-
 import 'package:fedi/app/access/list/local_preferences/access_list_local_preference_bloc_impl.dart';
 import 'package:fedi/app/access/local_preferences/access_local_preference_bloc_impl.dart';
 import 'package:fedi/app/access/local_preferences_access_bloc_impl.dart';
+import 'package:fedi/app/app_model.dart';
 import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/config/config_service_impl.dart';
 import 'package:fedi/app/hive/hive_service_impl.dart';
 import 'package:fedi/app/html/html_text_helper.dart';
 import 'package:fedi/app/localization/settings/local_preferences/global/global_localization_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/logging/logging_service_impl.dart';
+import 'package:fedi/app/push/fedi_push_notification_model_impl.dart';
 import 'package:fedi/app/push/notification/notification_model.dart';
 import 'package:fedi/app/push/notification/rich/rich_notifications_service.dart';
 import 'package:fedi/app/push/settings/local_preferences/instance/instance_push_settings_local_preference_bloc_impl.dart';
@@ -26,13 +26,11 @@ import 'package:fedi/local_preferences/hive_local_preferences_service_impl.dart'
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/localization/localization_model.dart';
 import 'package:fedi/push/push_model.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:unifedi_api/unifedi_api.dart';
-
-import 'package:fedi/app/push/fedi_push_notification_model_impl.dart';
-import 'package:fediverse_api/fediverse_api.dart';
 
 var _logger = Logger('rich_notifications_service_background_message_impl.dart');
 

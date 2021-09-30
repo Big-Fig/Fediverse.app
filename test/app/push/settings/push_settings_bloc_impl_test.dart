@@ -14,8 +14,8 @@ import 'package:mockito/mockito.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 import 'package:unifedi_api/unifedi_api_mock_helper.dart';
 
-import '../../../rxdart/rxdart_test_helper.dart';
 import './push_settings_bloc_impl_test.mocks.dart';
+import '../../../rxdart/rxdart_test_helper.dart';
 
 // ignore_for_file: no-magic-number, avoid-late-keyword
 @GenerateMocks([

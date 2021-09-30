@@ -8,8 +8,8 @@ import 'package:fedi/app/status/post/settings/post_status_settings_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository.dart';
 import 'package:flutter/widgets.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 typedef PostStatusDataCallback = Future<bool> Function(
   IPostStatusData postStatusData,

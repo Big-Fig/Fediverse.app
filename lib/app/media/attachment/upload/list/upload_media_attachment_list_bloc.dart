@@ -1,9 +1,9 @@
-import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.dart';
 import 'package:easy_dispose/easy_dispose.dart';
+import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 abstract class IUploadMediaAttachmentsCollectionBloc extends IDisposable {
   static IUploadMediaAttachmentsCollectionBloc of(

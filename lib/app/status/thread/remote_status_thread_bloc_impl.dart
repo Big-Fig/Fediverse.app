@@ -3,8 +3,8 @@ import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/instance/remote/remote_instance_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/thread/status_thread_bloc_impl.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class RemoteStatusThreadBloc extends StatusThreadBloc {
   final Uri instanceUri;

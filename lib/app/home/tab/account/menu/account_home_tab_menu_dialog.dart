@@ -1,6 +1,6 @@
 import 'package:fedi/app/about/about_page.dart';
-import 'package:fedi/app/account/my/statuses/bookmarked/my_account_bookmarked_statuses_page.dart';
 import 'package:fedi/app/access/current/current_access_bloc.dart';
+import 'package:fedi/app/account/my/statuses/bookmarked/my_account_bookmarked_statuses_page.dart';
 import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/custom_list/list/custom_list_list_page.dart';
 import 'package:fedi/app/home/tab/account/menu/account_home_tab_menu_dialog_keys.dart';
@@ -20,10 +20,10 @@ import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/in_app_review/ask/local_preferences/ask_in_app_review_local_preference_bloc.dart';
 import 'package:fedi/in_app_review/in_app_review_bloc.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:fediverse_api/fediverse_api.dart';
 
 void showAccountHomeTabMenuDialog(BuildContext context) {
   showFediModalBottomSheetDialog(

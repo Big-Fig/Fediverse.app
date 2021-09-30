@@ -1,10 +1,10 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/custom_list/account_list/network_only/custom_list_account_list_network_only_list_bloc.dart';
 import 'package:fedi/app/custom_list/custom_list_model.dart';
-import 'package:easy_dispose/easy_dispose.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:logging/logging.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 final _logger =
     Logger('custom_list_account_list_network_only_list_bloc_impl.dart');

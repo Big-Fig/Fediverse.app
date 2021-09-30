@@ -4,9 +4,9 @@ import 'package:fedi/app/hashtag/hashtag_model.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_model.dart';
 import 'package:fedi/app/timeline/type/timeline_type_model.dart';
 import 'package:fediverse_api/fediverse_api_utils.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 // ignore_for_file: no-magic-number
 part 'timeline_model.g.dart';

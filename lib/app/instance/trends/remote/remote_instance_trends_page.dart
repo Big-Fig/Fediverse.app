@@ -1,7 +1,7 @@
 import 'package:fedi/app/instance/app_bar/instance_host_app_bar_widget.dart';
+import 'package:fedi/app/instance/remote/remote_instance_bloc_impl.dart';
 import 'package:fedi/app/instance/trends/instance_trends_widget.dart';
 import 'package:fedi/app/instance/trends/remote/remote_instance_trends_bloc_impl.dart';
-import 'package:fedi/app/instance/remote/remote_instance_bloc_impl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

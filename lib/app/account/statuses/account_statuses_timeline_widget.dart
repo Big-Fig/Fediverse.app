@@ -1,3 +1,4 @@
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/statuses/account_statuses_widget.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
@@ -8,13 +9,13 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/thread/local_status_thread_page.dart';
 import 'package:fedi/app/status/thread/remote_status_thread_page.dart';
 import 'package:fedi/app/ui/list/fedi_list_tile.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pagination/list/pagination_list_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
 class AccountStatusesTimelineWidget extends AccountStatusesWidget {
   final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
+
   const AccountStatusesTimelineWidget({
     Key? key,
     Widget? header,

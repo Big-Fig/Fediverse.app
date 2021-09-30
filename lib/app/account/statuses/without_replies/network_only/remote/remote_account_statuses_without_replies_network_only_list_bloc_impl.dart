@@ -1,3 +1,5 @@
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/statuses/without_replies/network_only/account_statuses_without_replies_network_only_list_bloc_impl.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
@@ -6,11 +8,9 @@ import 'package:fedi/app/list/network_only/network_only_list_bloc.dart';
 import 'package:fedi/app/status/list/network_only/status_network_only_list_bloc.dart';
 import 'package:fedi/app/status/list/network_only/status_network_only_list_bloc_proxy_provider.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:easy_dispose/easy_dispose.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class RemoteAccountStatusesWithoutRepliesNetworkOnlyListBloc
     extends AccountStatusesWithoutRepliesNetworkOnlyListBloc {

@@ -3,9 +3,9 @@ import 'package:fedi/app/access/register/form/stepper/item/captcha/register_acce
 import 'package:fedi/app/access/register/form/stepper/item/manual_approve/register_access_form_manual_approve_stepper_item_bloc.dart';
 import 'package:fedi/app/access/register/form/stepper/item/submit/register_access_form_submit_stepper_item_bloc.dart';
 import 'package:fedi/form/form_bloc.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 abstract class IRegisterUnifediApiAccessFormBloc implements IFormBloc {
   static IRegisterUnifediApiAccessFormBloc of(

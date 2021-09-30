@@ -1,3 +1,5 @@
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
+import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_widget.dart';
 import 'package:fedi/app/account/acct/account_acct_widget.dart';
@@ -20,7 +22,6 @@ import 'package:fedi/app/account/statuses/with_replies/cached/account_statuses_w
 import 'package:fedi/app/account/statuses/with_replies/network_only/remote/remote_account_statuses_with_replies_network_only_list_bloc_impl.dart';
 import 'package:fedi/app/account/statuses/without_replies/cached/account_statuses_without_replies_cached_list_bloc_impl.dart';
 import 'package:fedi/app/account/statuses/without_replies/network_only/remote/remote_account_statuses_without_replies_network_only_list_bloc_impl.dart';
-import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/instance/remote/remote_instance_bloc.dart';
 import 'package:fedi/app/search/search_model.dart';
@@ -43,7 +44,6 @@ import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_with_nested_scrollabl
 import 'package:fedi/app/ui/status_bar/fedi_dark_status_bar_style_area.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/collapsible/owner/collapsible_owner_widget.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc_impl.dart';

@@ -1,5 +1,5 @@
-import 'package:fedi/app/access/list/local_preferences/access_list_local_preference_bloc_impl.dart';
 import 'package:fedi/app/access/list/access_list_model.dart';
+import 'package:fedi/app/access/list/local_preferences/access_list_local_preference_bloc_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../../local_preferences/local_preferences_test_helper.dart';

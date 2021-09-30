@@ -3,10 +3,9 @@ import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/spacer/fedi_medium_horizontal_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/url/url_helper.dart';
+import 'package:fedi/unifedi/api/field/unifedi_api_field_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:unifedi_api/unifedi_api.dart';
-
-import 'package:fedi/unifedi/api/field/unifedi_api_field_extension.dart';
 
 class AccountFieldListItemWidget extends StatelessWidget {
   final IUnifediApiField field;

@@ -1,16 +1,16 @@
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/list/cached/account_cached_list_bloc.dart';
 import 'package:fedi/app/account/list/cached/account_cached_list_bloc_proxy_provider.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/account/repository/account_repository_model.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
-import 'package:easy_dispose/easy_dispose.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 var _logger = Logger('account_following_account_cached_list_bloc_impl.dart');
 

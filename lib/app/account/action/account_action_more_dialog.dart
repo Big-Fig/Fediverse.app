@@ -1,3 +1,4 @@
+import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/action/message/account_action_message.dart';
@@ -6,7 +7,6 @@ import 'package:fedi/app/account/details/remote_account_details_page.dart';
 import 'package:fedi/app/account/remote_account_bloc_impl.dart';
 import 'package:fedi/app/account/report/account_report_page.dart';
 import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
-import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/instance/details/local/local_instance_details_page.dart';
 import 'package:fedi/app/instance/details/remote/remote_instance_details_page.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
@@ -17,10 +17,10 @@ import 'package:fedi/app/ui/modal_bottom_sheet/fedi_modal_bottom_sheet.dart';
 import 'package:fedi/app/url/url_helper.dart';
 import 'package:fedi/dialog/dialog_model.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:unifedi_api/unifedi_api.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:fediverse_api/fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 void showAccountActionMoreDialog({
   required BuildContext context,

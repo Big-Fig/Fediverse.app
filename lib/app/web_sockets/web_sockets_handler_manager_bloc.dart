@@ -1,7 +1,7 @@
 import 'package:easy_dispose/easy_dispose.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:fediverse_api/fediverse_api_utils.dart';
 
 abstract class IWebSocketsHandlerManagerBloc implements IDisposable {
   static IWebSocketsHandlerManagerBloc of(

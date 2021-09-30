@@ -1,7 +1,8 @@
+import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:pleroma_api/pleroma_api.dart';
-import 'package:fediverse_api/fediverse_api_utils.dart';
+
 // ignore_for_file: no-magic-number
 part 'my_account_old_model.g.dart';
 

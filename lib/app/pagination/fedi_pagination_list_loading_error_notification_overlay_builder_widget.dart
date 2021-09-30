@@ -1,9 +1,8 @@
-import 'package:fedi/app/toast/toast_service.dart';
 import 'package:easy_dispose/easy_dispose.dart';
+import 'package:fedi/app/toast/toast_service.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_model.dart';
-
 import 'package:flutter/cupertino.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 

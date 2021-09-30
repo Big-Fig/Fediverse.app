@@ -1,3 +1,4 @@
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/settings/global_or_instance/edit/edit_global_or_instance_settings_bloc.dart';
 import 'package:fedi/app/settings/global_or_instance/edit/edit_global_or_instance_settings_dialog.dart';
@@ -8,7 +9,6 @@ import 'package:fedi/app/toast/settings/edit/edit_toast_settings_widget.dart';
 import 'package:fedi/app/toast/settings/edit/global/edit_global_toast_settings_dialog.dart';
 import 'package:fedi/app/toast/settings/edit/global_or_instance/edit_global_or_instance_toast_settings_bloc_impl.dart';
 import 'package:fedi/app/toast/settings/toast_settings_bloc.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

@@ -2,10 +2,10 @@ import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
 import 'package:fedi/app/filter/filter_model.dart';
 import 'package:fedi/collection/collection_hash_utils.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:moor/moor.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class UnifediApiReplyVisibilityFilterCondition {
   final String? myAccountRemoteId;

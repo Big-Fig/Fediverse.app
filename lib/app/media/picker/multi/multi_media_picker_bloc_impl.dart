@@ -1,12 +1,12 @@
 import 'dart:async';
 
 import 'package:collection/collection.dart' show IterableExtension;
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/media/picker/media_picker_bloc_impl.dart';
 import 'package:fedi/app/media/picker/multi/multi_media_picker_bloc.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:easy_dispose/easy_dispose.dart';
 
 final _logger = Logger('multi_media_picker_bloc_impl.dart');
 

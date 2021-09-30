@@ -2,10 +2,10 @@ import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/access/chooser/access_chooser_bloc.dart';
 import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/access/list/access_list_bloc.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:unifedi_api/unifedi_api.dart';
-import 'package:fediverse_api/fediverse_api.dart';
 
 var _logger = Logger('auth_instance_chooser_bloc_impl.dart');
 

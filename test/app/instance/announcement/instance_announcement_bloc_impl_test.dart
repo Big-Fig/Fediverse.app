@@ -5,13 +5,13 @@ import 'package:fedi/app/instance/announcement/instance_announcement_model.dart'
 import 'package:fedi/app/instance/announcement/instance_announcement_model_adapter.dart';
 import 'package:fedi/app/instance/announcement/repository/instance_announcement_repository.dart';
 import 'package:fedi/app/instance/announcement/repository/instance_announcement_repository_impl.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:moor/ffi.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
-import '../../../rxdart/rxdart_test_helper.dart';
 import './instance_announcement_bloc_impl_test.mocks.dart';
+import '../../../rxdart/rxdart_test_helper.dart';
 import 'instance_announcement_test_helper.dart';
 
 // ignore_for_file: no-magic-number, avoid-late-keyword

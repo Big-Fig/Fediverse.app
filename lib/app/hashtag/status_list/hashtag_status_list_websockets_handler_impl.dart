@@ -7,8 +7,8 @@ import 'package:fedi/app/instance/announcement/repository/instance_announcement_
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_impl.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:fediverse_api/fediverse_api_utils.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class HashtagStatusListWebSocketsHandler extends WebSocketsChannelHandler {
   HashtagStatusListWebSocketsHandler({

@@ -1,13 +1,12 @@
 import 'dart:async';
 
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:fedi/app/account/account_model_adapter.dart';
-import 'package:fedi/app/account/repository/account_repository_impl.dart';
-
 import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/access/list/access_list_bloc.dart';
 import 'package:fedi/app/access/local_preferences/access_local_preference_bloc_impl.dart';
 import 'package:fedi/app/access/local_preferences_access_bloc_impl.dart';
+import 'package:fedi/app/account/account_model_adapter.dart';
+import 'package:fedi/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository_impl.dart';
 import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/database/app_database_service_impl.dart';
@@ -26,9 +25,9 @@ import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/push/fcm/fcm_push_service.dart';
 import 'package:fedi/push/push_model.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:logging/logging.dart';
 import 'package:unifedi_api/unifedi_api.dart';
-import 'package:fediverse_api/fediverse_api.dart';
 
 var _logger = Logger('push_handler_bloc_impl.dart');
 

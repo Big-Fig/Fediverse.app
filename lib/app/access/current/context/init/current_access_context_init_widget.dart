@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:fedi/app/account/my/action/my_account_action_list_bottom_sheet_dialog.dart';
-import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/access/current/context/init/current_access_context_init_bloc.dart';
 import 'package:fedi/app/access/current/context/init/current_access_context_init_model.dart';
 import 'package:fedi/app/access/current/current_access_bloc.dart';
+import 'package:fedi/app/account/my/action/my_account_action_list_bottom_sheet_dialog.dart';
+import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/splash/splash_page.dart';
 import 'package:fedi/app/ui/button/text/with_border/fedi_transparent_text_button_with_border.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
@@ -13,10 +13,10 @@ import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
 import 'package:fedi/app/ui/status_bar/fedi_light_status_bar_style_area.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/generated/l10n.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
-import 'package:fediverse_api/fediverse_api.dart';
 
 var _logger = Logger('current_access_context_init_widget.dart');
 

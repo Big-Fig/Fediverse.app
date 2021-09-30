@@ -1,3 +1,4 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/account/my/domain_block/add/add_my_account_domain_block_bloc.dart';
 import 'package:fedi/app/account/my/domain_block/add/add_my_account_domain_block_bloc_impl.dart';
 import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
@@ -7,12 +8,11 @@ import 'package:fedi/dialog/base_dialog.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:easy_dispose/easy_dispose.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class AddMyAccountDomainBlockDialog extends FediDialog {
   // ignore: avoid-late-keyword

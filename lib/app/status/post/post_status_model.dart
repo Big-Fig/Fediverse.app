@@ -4,9 +4,9 @@ import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/collection/collection_hash_utils.dart';
 import 'package:fedi/date_time/date_time_extension.dart';
 import 'package:fedi/duration/duration_extension.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 part 'post_status_model.g.dart';
 

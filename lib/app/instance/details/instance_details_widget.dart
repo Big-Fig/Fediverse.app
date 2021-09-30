@@ -32,8 +32,6 @@ import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/url/url_helper.dart';
 import 'package:fedi/file/file_size_helper.dart';
 import 'package:fedi/generated/l10n.dart';
-
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:fedi/ui/callback/on_click_ui_callback.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -41,6 +39,7 @@ import 'package:flutter_html/style.dart';
 import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 final _logger = Logger('instance_details_widget.dart');
 

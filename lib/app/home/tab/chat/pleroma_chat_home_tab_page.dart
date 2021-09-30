@@ -31,11 +31,11 @@ import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
-import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
 var _logger = Logger('chat_messages_home_tab_page.dart');

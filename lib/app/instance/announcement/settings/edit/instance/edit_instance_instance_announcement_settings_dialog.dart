@@ -1,3 +1,4 @@
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/instance/announcement/settings/edit/edit_instance_announcement_settings_bloc.dart';
 import 'package:fedi/app/instance/announcement/settings/edit/edit_instance_announcement_settings_bloc_impl.dart';
 import 'package:fedi/app/instance/announcement/settings/edit/edit_instance_announcement_settings_widget.dart';
@@ -5,7 +6,6 @@ import 'package:fedi/app/instance/announcement/settings/instance_announcement_se
 import 'package:fedi/app/instance/announcement/settings/instance_announcement_settings_bloc_impl.dart';
 import 'package:fedi/app/instance/announcement/settings/local_preferences/instance/instance_instance_announcement_settings_local_preference_bloc.dart';
 import 'package:fedi/app/settings/instance/edit/edit_instance_settings_dialog.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

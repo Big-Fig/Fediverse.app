@@ -1,11 +1,11 @@
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/account/my/domain_block/list/network_only/my_account_domain_block_network_only_list_bloc.dart';
 import 'package:fedi/app/account/my/domain_block/my_account_domain_block_model.dart';
 import 'package:fedi/app/list/network_only/network_only_list_bloc.dart';
-import 'package:easy_dispose/easy_dispose.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class MyAccountDomainBlockNetworkOnlyDomainListBloc extends DisposableOwner
     implements IMyAccountDomainBlockNetworkOnlyListBloc {

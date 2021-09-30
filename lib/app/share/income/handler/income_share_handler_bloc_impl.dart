@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-
 import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/access/list/access_list_bloc.dart';
 import 'package:fedi/app/config/config_service.dart';
@@ -11,10 +10,10 @@ import 'package:fedi/app/share/income/handler/income_share_handler_model.dart';
 import 'package:fedi/app/share/income/handler/last_chosen_instance/last_chosen_instance_income_share_handler_local_preference_bloc.dart';
 import 'package:fedi/share/income/income_share_model.dart';
 import 'package:fedi/share/income/income_share_service.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:unifedi_api/unifedi_api.dart';
-import 'package:fediverse_api/fediverse_api.dart';
 
 final _logger = Logger('income_share_handler_bloc_impl.dart');
 

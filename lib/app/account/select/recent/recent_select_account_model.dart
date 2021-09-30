@@ -1,7 +1,7 @@
 import 'package:fediverse_api/fediverse_api_utils.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 // ignore_for_file: no-magic-number
 part 'recent_select_account_model.g.dart';

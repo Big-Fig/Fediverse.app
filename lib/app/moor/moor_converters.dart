@@ -1,8 +1,8 @@
 import 'package:fedi/app/pending/pending_model.dart';
 import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/moor/moor_json_type_converter.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:moor/moor.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class PendingStateDatabaseConverter
     extends TypeConverter<PendingState, String> {

@@ -1,12 +1,11 @@
 import 'dart:async';
 
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/poll/poll_bloc.dart';
-import 'package:easy_dispose/easy_dispose.dart';
-
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class PollBloc extends DisposableOwner implements IPollBloc {
   final BehaviorSubject<IUnifediApiPoll> pollSubject;

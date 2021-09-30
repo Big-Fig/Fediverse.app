@@ -1,27 +1,26 @@
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
+import 'package:fedi/app/access/chooser/access_chooser_bloc.dart';
+import 'package:fedi/app/access/chooser/instance_list/access_chooser_instance_list_item_bloc.dart';
+import 'package:fedi/app/access/chooser/instance_list/access_chooser_instance_list_item_bloc_impl.dart';
+import 'package:fedi/app/access/chooser/instance_list/access_chooser_instance_list_item_widget.dart';
+import 'package:fedi/app/access/join/add_more/add_more_join_access_page.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/my/local_preferences/my_account_local_preference_bloc.dart';
 import 'package:fedi/app/account/my/local_preferences/my_account_local_preference_bloc_impl.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/my/my_account_bloc_impl.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
-
-import 'package:fedi/app/access/chooser/access_chooser_bloc.dart';
-import 'package:fedi/app/access/chooser/instance_list/access_chooser_instance_list_item_bloc.dart';
-import 'package:fedi/app/access/chooser/instance_list/access_chooser_instance_list_item_bloc_impl.dart';
-import 'package:fedi/app/access/chooser/instance_list/access_chooser_instance_list_item_widget.dart';
-import 'package:fedi/app/access/join/add_more/add_more_join_access_page.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/app/ui/button/text/with_border/fedi_primary_filled_text_button_with_border.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
-import 'package:unifedi_api/unifedi_api.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
-import 'package:fediverse_api/fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 var _logger = Logger('auth_instance_chooser_widget.dart');
 

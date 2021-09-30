@@ -59,7 +59,7 @@ abstract class PostMessageBloc extends DisposableOwner
           maximumMediaAttachmentCount: maximumMediaAttachmentCount,
           unifediApiMediaAttachmentService: unifediApiMediaAttachmentService,
           maximumFileSizeInBytes: maximumFileSizeInBytes,
-          dontUploadMediaDuringEditing: dontUploadMediaDuringEditing == true,
+          dontUploadMediaDuringEditing: dontUploadMediaDuringEditing,
         ) {
     inputTextErrorsSubject.disposeWith(this);
     uploadMediaAttachmentsBloc.disposeWith(this);

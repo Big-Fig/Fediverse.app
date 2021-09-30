@@ -42,8 +42,8 @@ import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/scheduled/database/scheduled_status_database_dao.dart';
 import 'package:fedi/app/status/scheduled/database/scheduled_status_database_model.dart';
 import 'package:fedi/moor/moor_json_type_converter.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:moor/moor.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 part 'app_database.g.dart';
 

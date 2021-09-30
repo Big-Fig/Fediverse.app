@@ -1,17 +1,17 @@
 import 'package:collection/collection.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/list/network_only/network_only_list_bloc.dart';
 import 'package:fedi/app/pagination/network_only/network_only_pleroma_pagination_bloc_impl.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/status/pagination/network_only/status_network_only_pagination_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/pagination/network_only/network_only_pagination_bloc.dart';
 import 'package:fedi/pagination/network_only/network_only_pagination_bloc_proxy_provider.dart';
 import 'package:fedi/pagination/pagination_model.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class StatusNetworkOnlyPaginationBloc
     extends NetworkOnlyPleromaPaginationBloc<IStatus>

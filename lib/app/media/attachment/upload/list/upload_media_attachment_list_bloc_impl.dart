@@ -8,8 +8,8 @@ import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc_de
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_model.dart';
 import 'package:fedi/app/media/attachment/upload/uploaded_upload_media_attachment_bloc_impl.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
     implements IUploadMediaAttachmentsCollectionBloc {

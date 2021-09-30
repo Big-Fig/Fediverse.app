@@ -1,8 +1,8 @@
+import 'package:fedi/app/access/chooser/access_chooser_bloc.dart';
+import 'package:fedi/app/access/chooser/instance_list/access_chooser_instance_list_item_bloc.dart';
 import 'package:fedi/app/account/avatar/account_avatar_widget.dart';
 import 'package:fedi/app/account/display_name/account_display_name_widget.dart';
 import 'package:fedi/app/auth/host/auth_host_bloc_impl.dart';
-import 'package:fedi/app/access/chooser/access_chooser_bloc.dart';
-import 'package:fedi/app/access/chooser/instance_list/access_chooser_instance_list_item_bloc.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
 import 'package:fedi/app/ui/dialog/alert/fedi_confirm_alert_dialog.dart';
@@ -11,9 +11,9 @@ import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/generated/l10n.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fediverse_api/fediverse_api.dart';
 
 class UnifediApiAccessChooserInstanceListItemWidget extends StatelessWidget {
   const UnifediApiAccessChooserInstanceListItemWidget();

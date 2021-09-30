@@ -5,9 +5,9 @@ import 'package:fedi/app/captcha/captcha_string_value_form_field_bloc.dart';
 import 'package:fedi/app/captcha/pleroma/pleroma_form_captcha_string_field_bloc.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/field/value/value_form_field_validation.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 // ignore: no-magic-number
 const checkCaptchaExpiredDuration = Duration(seconds: 5);

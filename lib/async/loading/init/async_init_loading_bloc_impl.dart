@@ -1,12 +1,12 @@
 import 'dart:async';
 
+import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
 import 'package:fedi/async/loading/async_loading_service_impl.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
 
 var _logger = Logger('async_init_loading_bloc_impl.dart');
 

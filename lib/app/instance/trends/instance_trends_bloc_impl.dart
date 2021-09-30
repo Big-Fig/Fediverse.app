@@ -1,3 +1,4 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/hashtag/pagination/list/hashtag_pagination_list_bloc.dart';
 import 'package:fedi/app/hashtag/pagination/list/hashtag_pagination_list_bloc_impl.dart';
 import 'package:fedi/app/hashtag/pagination/network_only/hashtag_network_only_pagination_bloc.dart';
@@ -6,11 +7,9 @@ import 'package:fedi/app/instance/trends/hashtag_list/network_only/instance_tren
 import 'package:fedi/app/instance/trends/hashtag_list/network_only/instance_trends_hashtag_list_network_only_list_bloc_impl.dart';
 import 'package:fedi/app/instance/trends/instance_trends_bloc.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
-import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/connection/connection_service.dart';
-import 'package:unifedi_api/unifedi_api.dart';
-
 import 'package:rxdart/rxdart.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 abstract class InstanceTrendsBloc extends DisposableOwner
     implements IInstanceTrendsBloc {

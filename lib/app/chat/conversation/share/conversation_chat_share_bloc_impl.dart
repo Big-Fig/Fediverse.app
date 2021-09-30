@@ -7,8 +7,8 @@ import 'package:fedi/app/chat/conversation/repository/conversation_chat_reposito
 import 'package:fedi/app/chat/conversation/share/conversation_chat_share_bloc.dart';
 import 'package:fedi/app/share/to_account/share_to_account_bloc_impl.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:fedi/repository/repository_model.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 abstract class ConversationChatShareBloc extends ShareToAccountBloc
     implements IConversationChatShareBloc {

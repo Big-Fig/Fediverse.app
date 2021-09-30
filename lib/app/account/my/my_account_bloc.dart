@@ -1,13 +1,12 @@
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/my/my_account_model.dart';
-
 import 'package:fedi/app/chat/message/chat_message_model.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:html_unescape/html_unescape.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 abstract class IMyAccountBloc extends IAccountBloc {
   String? get noteUnescaped {

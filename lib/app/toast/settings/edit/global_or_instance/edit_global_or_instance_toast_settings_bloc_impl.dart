@@ -1,8 +1,8 @@
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:fedi/app/settings/global_or_instance/edit/switch/switch_edit_global_or_instance_settings_bool_value_form_field_bloc.dart';
 import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_model.dart';
 import 'package:fedi/app/toast/settings/edit/edit_toast_settings_bloc_impl.dart';
 import 'package:fedi/app/toast/settings/toast_settings_bloc.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class EditGlobalOrInstanceToastSettingsBloc extends EditToastSettingsBloc {
   ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc

@@ -3,8 +3,8 @@ import 'package:fedi/app/account/select/single/single_select_account_page.dart';
 import 'package:fedi/app/timeline/settings/only_from_account/timeline_settings_only_from_account_form_field_bloc.dart';
 import 'package:fedi/app/ui/form/fedi_form_single_choose_custom_field_row.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class TimelineSettingsOnlyFromAccountFormFieldRowWidget
     extends StatelessWidget {

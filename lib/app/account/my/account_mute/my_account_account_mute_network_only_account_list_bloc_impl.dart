@@ -1,3 +1,5 @@
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/account/list/network_only/account_network_only_list_bloc.dart';
@@ -6,12 +8,9 @@ import 'package:fedi/app/account/my/account_mute/my_account_account_mute_network
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/list/network_only/network_only_list_bloc.dart';
-import 'package:easy_dispose/easy_dispose.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class MyAccountAccountMuteNetworkOnlyAccountListBloc extends DisposableOwner
     implements IMyAccountAccountMuteNetworkOnlyAccountListBloc {

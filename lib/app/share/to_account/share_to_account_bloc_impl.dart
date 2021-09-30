@@ -1,12 +1,12 @@
 import 'package:collection/collection.dart' show IterableExtension;
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/share/to_account/share_to_account_bloc.dart';
-import 'package:easy_dispose/easy_dispose.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 abstract class ShareToAccountBloc extends DisposableOwner
     implements IShareToAccountBloc {

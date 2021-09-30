@@ -1,3 +1,4 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/access/list/access_list_bloc.dart';
 import 'package:fedi/app/chat/conversation/current/conversation_chat_current_bloc.dart';
@@ -15,13 +16,12 @@ import 'package:fedi/app/toast/settings/local_preferences/instance/instance_toas
 import 'package:fedi/app/toast/settings/toast_settings_bloc.dart';
 import 'package:fedi/app/toast/settings/toast_settings_bloc_impl.dart';
 import 'package:fedi/app/toast/toast_service.dart';
-import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:unifedi_api/unifedi_api.dart';
-import 'package:fediverse_api/fediverse_api.dart';
 
 final _logger = Logger('toast_handler_bloc_impl.dart');
 

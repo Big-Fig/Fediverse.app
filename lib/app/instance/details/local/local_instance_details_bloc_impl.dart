@@ -1,12 +1,12 @@
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/instance/details/instance_details_bloc.dart';
 import 'package:fedi/app/instance/details/instance_details_bloc_impl.dart';
 import 'package:fedi/app/instance/details/instance_details_bloc_proxy_provider.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class LocalInstanceDetailsBloc extends InstanceDetailsBloc
     implements IInstanceDetailsBloc {

@@ -1,9 +1,9 @@
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
-import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/access/current/context/init/current_access_context_init_bloc.dart';
 import 'package:fedi/app/access/current/context/init/current_access_context_init_model.dart';
 import 'package:fedi/app/access/current/current_access_bloc.dart';
+import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/app/filter/repository/filter_repository.dart';

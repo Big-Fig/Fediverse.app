@@ -1,11 +1,10 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
-
+import 'package:fedi/app/hashtag/hashtag_model_adapter.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/instance/trends/hashtag_list/network_only/instance_trends_hashtag_list_network_only_list_bloc.dart';
-import 'package:easy_dispose/easy_dispose.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:logging/logging.dart';
-import 'package:fedi/app/hashtag/hashtag_model_adapter.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 final _logger =
     Logger('instance_trends_hashtag_list_network_only_list_bloc_impl.dart');

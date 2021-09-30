@@ -1,7 +1,7 @@
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/search/result/pagination/search_adapter_pagination_bloc_impl.dart';
 import 'package:fedi/app/search/result/search_result_model.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/widgets.dart';

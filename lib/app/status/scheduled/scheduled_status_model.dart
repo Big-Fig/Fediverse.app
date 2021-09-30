@@ -1,12 +1,12 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/pending/pending_model.dart';
+import 'package:fedi/app/status/post/poll/post_status_poll_model.dart';
 import 'package:fedi/app/status/post/post_status_data_status_status_adapter.dart';
 import 'package:fedi/app/status/post/post_status_model.dart';
-import 'package:fedi/app/status/post/poll/post_status_poll_model.dart';
 import 'package:fedi/obj/equal_comparable_obj.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 abstract class IScheduledStatus
     implements IEqualComparableObj<IScheduledStatus> {

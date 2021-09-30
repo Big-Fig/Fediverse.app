@@ -2,10 +2,6 @@ import 'dart:async';
 
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:fedi/app/account/account_model_adapter.dart';
-import 'package:fedi/app/account/details/local_account_details_page.dart';
-import 'package:fedi/app/app_model.dart';
-
 import 'package:fedi/app/access/current/context/current_access_context_bloc_impl.dart';
 import 'package:fedi/app/access/current/context/init/current_access_context_init_bloc.dart';
 import 'package:fedi/app/access/current/context/init/current_access_context_init_bloc_impl.dart';
@@ -16,6 +12,9 @@ import 'package:fedi/app/access/join/from_scratch/from_scratch_join_access_page.
 import 'package:fedi/app/access/join/join_access_bloc.dart';
 import 'package:fedi/app/access/join/join_access_bloc_impl.dart';
 import 'package:fedi/app/access/join/join_access_bloc_proxy_provider.dart';
+import 'package:fedi/app/account/account_model_adapter.dart';
+import 'package:fedi/app/account/details/local_account_details_page.dart';
+import 'package:fedi/app/app_model.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_page.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/app/config/config_service.dart';
@@ -58,6 +57,7 @@ import 'package:fedi/localization/localization_model.dart';
 import 'package:fedi/overlay_notification/overlay_notification_service_provider.dart';
 import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_handler_widget.dart';
 import 'package:fedi/ui/theme/ui_theme_proxy_provider.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -66,7 +66,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 import 'package:unifedi_api/unifedi_api.dart';
-import 'package:fediverse_api/fediverse_api.dart';
 
 var _logger = Logger('main.dart');
 

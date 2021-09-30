@@ -1,3 +1,5 @@
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/custom_list/custom_list_bloc.dart';
 import 'package:fedi/app/custom_list/custom_list_bloc_impl.dart';
@@ -26,19 +28,17 @@ import 'package:fedi/app/ui/page/app_bar/fedi_page_app_bar_text_action_widget.da
 import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/collapsible/owner/collapsible_owner_widget.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:fedi/ui/scroll/scroll_controller_bloc.dart';
 import 'package:fedi/ui/scroll/scroll_controller_bloc_impl.dart';
+import 'package:fediverse_api/fediverse_api.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:easy_dispose/easy_dispose.dart';
-import 'package:fediverse_api/fediverse_api_utils.dart';
-import 'package:fediverse_api/fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class CustomListPage extends StatefulWidget {
   const CustomListPage();

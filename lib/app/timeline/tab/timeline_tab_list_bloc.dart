@@ -1,6 +1,6 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc.dart';
-import 'package:easy_dispose/easy_dispose.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';

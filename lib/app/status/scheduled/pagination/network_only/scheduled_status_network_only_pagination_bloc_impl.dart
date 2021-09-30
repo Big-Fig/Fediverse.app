@@ -6,9 +6,9 @@ import 'package:fedi/app/status/scheduled/pagination/network_only/scheduled_stat
 import 'package:fedi/app/status/scheduled/scheduled_status_model.dart';
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/pagination/pagination_model.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class ScheduledStatusNetworkOnlyPaginationBloc
     extends NetworkOnlyPleromaPaginationBloc<IScheduledStatus>

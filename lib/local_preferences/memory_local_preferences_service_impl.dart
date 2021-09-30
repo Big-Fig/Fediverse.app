@@ -1,10 +1,9 @@
 import 'dart:convert';
 
-import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:fediverse_api/fediverse_api_utils.dart';
-
+import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:logging/logging.dart';
 
 var _logger = Logger('memory_local_preferences_service_impl.dart');

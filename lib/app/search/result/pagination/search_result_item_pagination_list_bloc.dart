@@ -1,3 +1,4 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/search/input/search_input_bloc.dart';
 import 'package:fedi/app/search/result/search_result_model.dart';
@@ -7,7 +8,6 @@ import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:easy_dispose/easy_dispose.dart';
 
 class SearchResultItemPaginationListBloc extends PaginationListBloc<
     PaginationPage<ISearchResultItem>, ISearchResultItem> {

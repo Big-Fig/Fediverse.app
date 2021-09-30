@@ -7,9 +7,9 @@ import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/instance/location/instance_location_exception.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/instance/remote/remote_instance_bloc.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 final Logger _logger = Logger('remote_account_bloc_impl.dart');
 
@@ -155,6 +155,7 @@ class RemoteAccountBloc extends AccountBloc {
 
   @override
   Stream<IUnifediApiAccountRelationship>? get relationshipStream => null;
+
   @override
   bool get isEndorsementSupported => false;
 

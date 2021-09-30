@@ -1,11 +1,11 @@
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
+import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/details/account_details_bloc.dart';
 import 'package:fedi/app/account/details/account_details_bloc_impl.dart';
 import 'package:fedi/app/account/details/account_details_page.dart';
 import 'package:fedi/app/account/local_account_bloc_impl.dart';
-import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';

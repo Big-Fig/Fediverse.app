@@ -3,9 +3,9 @@ import 'package:fedi/app/status/visibility/form/multi_from_list/status_visibilit
 import 'package:fedi/app/status/visibility/status_visibility_title_widget.dart';
 import 'package:fedi/form/field/value/select_from_list/multi/multi_select_from_list_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/select_from_list/multi/multi_select_from_list_value_form_field_bloc_proxy_provider.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class StatusVisibilityMultiSelectFromListFormFieldWidget
     extends StatelessWidget {

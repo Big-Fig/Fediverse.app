@@ -1,7 +1,7 @@
-import 'package:fedi/analytics/app/app_analytics_bloc.dart';
-import 'package:fedi/app/config/config_service.dart';
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
+import 'package:fedi/analytics/app/app_analytics_bloc.dart';
+import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/in_app_review/ask/local_preferences/ask_in_app_review_local_preference_bloc.dart';
 import 'package:fedi/in_app_review/checker/in_app_review_checker_bloc.dart';
 import 'package:flutter/widgets.dart';

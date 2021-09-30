@@ -1,3 +1,4 @@
+import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
 import 'package:fedi/app/settings/global_or_instance/edit/switch/switch_edit_global_or_instance_settings_bool_value_form_field_bloc.dart';
 import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_bloc.dart';
 import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_model.dart';
@@ -6,7 +7,6 @@ import 'package:fedi/form/field/value/value_form_field_validation.dart';
 import 'package:fedi/form/form_item_validation.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
 
 final _logger = Logger(
   'switch_edit_global_or_instance_settings_form_bool_field_bloc_impl.dart',

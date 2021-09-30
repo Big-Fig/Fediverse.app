@@ -1,5 +1,4 @@
 import 'package:easy_dispose/easy_dispose.dart';
-
 import 'package:fedi/app/push/notification/handler/notifications_push_handler_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';

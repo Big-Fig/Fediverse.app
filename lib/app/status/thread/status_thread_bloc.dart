@@ -2,10 +2,10 @@ import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/status/list/status_list_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 abstract class IStatusThreadBloc
     implements IAsyncInitLoadingBloc, IStatusListBloc {

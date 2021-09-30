@@ -1,9 +1,9 @@
 import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/settings/settings_dialog.dart';
 import 'package:fedi/generated/l10n.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fediverse_api/fediverse_api.dart';
 
 void showEditInstanceSettingsDialog({
   required BuildContext context,

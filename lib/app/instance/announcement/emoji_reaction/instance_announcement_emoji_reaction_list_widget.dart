@@ -1,9 +1,9 @@
 import 'package:fedi/app/instance/announcement/emoji_reaction/instance_announcement_emoji_reaction_list_item_widget.dart';
 import 'package:fedi/app/instance/announcement/instance_announcement_bloc.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class InstanceAnnouncementEmojiReactionListWidget extends StatelessWidget {
   const InstanceAnnouncementEmojiReactionListWidget();

@@ -26,11 +26,11 @@ import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/connection/connection_service.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 final _logger = Logger('edit_custom_list_bloc_impl.dart');
 
@@ -145,6 +145,7 @@ class EditCustomListBloc extends DisposableOwner
   final bool isPossibleToDelete;
   final IPaginationSettingsBloc paginationSettingsBloc;
   final IConnectionService connectionService;
+
   EditCustomListBloc({
     required this.customList,
     required this.pleromaListService,

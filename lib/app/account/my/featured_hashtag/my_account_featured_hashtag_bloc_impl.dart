@@ -1,11 +1,11 @@
-import 'package:fedi/app/account/my/featured_hashtag/my_account_featured_hashtag_bloc.dart';
-import 'package:fedi/app/account/my/featured_hashtag/my_account_featured_hashtag_model.dart';
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:unifedi_api/unifedi_api.dart';
+import 'package:fedi/app/account/my/featured_hashtag/my_account_featured_hashtag_bloc.dart';
+import 'package:fedi/app/account/my/featured_hashtag/my_account_featured_hashtag_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class MyAccountFeaturedHashtagBloc extends DisposableOwner
     implements IMyAccountFeaturedHashtagBloc {

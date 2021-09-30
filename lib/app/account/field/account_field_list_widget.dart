@@ -1,9 +1,9 @@
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/field/account_field_list_item_widget.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class AccountFieldListWidget extends StatelessWidget {
   final Brightness brightness;

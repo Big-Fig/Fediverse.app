@@ -1,8 +1,8 @@
+import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_model.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 abstract class AccountBloc extends IAccountBloc {
   final BehaviorSubject<IAccount> accountSubject;

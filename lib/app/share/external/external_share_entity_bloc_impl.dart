@@ -1,3 +1,4 @@
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/media/attachment/reupload/media_attachment_reupload_service.dart';
 import 'package:fedi/app/share/entity/settings/share_entity_settings_bloc.dart';
 import 'package:fedi/app/share/entity/share_entity_bloc.dart';
@@ -7,10 +8,9 @@ import 'package:fedi/app/share/external/external_share_bloc_impl.dart';
 import 'package:fedi/app/share/external/external_share_bloc_proxy_provider.dart';
 import 'package:fedi/app/share/external/external_share_model.dart';
 import 'package:fedi/app/share/external/external_share_service.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class ExternalShareEntityBloc extends ExternalShareBloc
     implements IShareEntityBloc {

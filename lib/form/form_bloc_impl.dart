@@ -1,8 +1,8 @@
+import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
 import 'package:fedi/form/form_bloc.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:fedi/form/group/form_group_bloc_impl.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
 
 abstract class FormBloc extends FormGroupBloc implements IFormBloc {
   BehaviorSubject<List<IFormItemBloc>> itemsSubject = BehaviorSubject();

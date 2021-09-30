@@ -1,6 +1,6 @@
-import 'package:fedi/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/access/local_preferences/access_local_preference_bloc_impl.dart';
+import 'package:fedi/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi/app/auth/oauth_last_launched/local_preferences/auth_oauth_last_launched_host_to_login_local_preference_bloc.dart';
 import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/init/deep_link/deep_link_init_bloc.dart';

@@ -1,5 +1,5 @@
-import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/access/current/current_access_bloc.dart';
+import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/filter/repository/filter_repository.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/status/pagination/cached/list/status_cached_pagination_list_with_new_items_bloc_impl.dart';
@@ -18,12 +18,12 @@ import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
-import 'package:unifedi_api/unifedi_api.dart';
+import 'package:fediverse_api/fediverse_api.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
-import 'package:fediverse_api/fediverse_api_utils.dart';
-import 'package:fediverse_api/fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 var _logger = Logger('timeline_tab_bloc_impl.dart');
 

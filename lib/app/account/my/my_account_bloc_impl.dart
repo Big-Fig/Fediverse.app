@@ -1,17 +1,16 @@
 import 'dart:async';
 
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
-import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/my/local_preferences/my_account_local_preference_bloc.dart';
+import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/my/my_account_model.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
-
 import 'package:fedi/app/chat/message/chat_message_model.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:unifedi_api/unifedi_api.dart';
-import 'package:easy_dispose/easy_dispose.dart';
 
 class MyAccountBloc extends IMyAccountBloc {
   static const selfActionError = SelfActionNotPossibleException();

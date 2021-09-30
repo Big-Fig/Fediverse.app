@@ -1,5 +1,5 @@
-import 'package:fedi/app/account/my/featured_hashtag/my_account_featured_hashtag_model.dart';
 import 'package:easy_dispose/easy_dispose.dart';
+import 'package:fedi/app/account/my/featured_hashtag/my_account_featured_hashtag_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 

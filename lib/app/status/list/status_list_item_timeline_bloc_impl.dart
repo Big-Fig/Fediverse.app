@@ -1,7 +1,7 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:easy_dispose/easy_dispose.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
 class StatusListItemTimelineBloc extends DisposableOwner

@@ -1,15 +1,14 @@
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/media/attachment/details/media_attachments_details_page.dart';
 import 'package:fedi/app/media/attachment/list/media_attachment_list_bloc.dart';
 import 'package:fedi/app/media/attachment/media_attachment_widget.dart';
 import 'package:fedi/app/ui/media/fedi_media_carousel_bloc.dart';
 import 'package:fedi/app/ui/media/fedi_media_carousel_bloc_impl.dart';
 import 'package:fedi/app/ui/media/fedi_media_carousel_widget.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class MediaAttachmentListCarouselWidget extends StatelessWidget {
   const MediaAttachmentListCarouselWidget();

@@ -1,6 +1,5 @@
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart'
     as extended_nested_scroll_view;
-import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_bloc.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_widget.dart';

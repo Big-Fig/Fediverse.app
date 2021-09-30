@@ -1,9 +1,9 @@
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:fedi/collection/collection_hash_utils.dart';
 import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 // ignore_for_file: no-magic-number
 part 'access_list_model.g.dart';

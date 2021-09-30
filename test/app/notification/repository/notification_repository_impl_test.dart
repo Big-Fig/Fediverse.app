@@ -7,10 +7,10 @@ import 'package:fedi/app/notification/repository/notification_repository_impl.da
 import 'package:fedi/app/notification/repository/notification_repository_model.dart';
 import 'package:fedi/app/status/repository/status_repository_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:moor/ffi.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 import '../../account/database/account_database_test_helper.dart';
 import '../../status/database/status_database_test_helper.dart';

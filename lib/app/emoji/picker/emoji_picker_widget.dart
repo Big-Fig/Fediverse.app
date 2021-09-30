@@ -14,11 +14,10 @@ import 'package:fedi/emoji_picker/custom_emoji_picker_bloc.dart';
 import 'package:fedi/emoji_picker/custom_emoji_picker_bloc_impl.dart';
 import 'package:fedi/emoji_picker/custom_emoji_picker_widget.dart';
 import 'package:fedi/generated/l10n.dart';
-
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class EmojiPickerWidget extends StatelessWidget {
   final EmojiSelectedCallback onEmojiSelected;

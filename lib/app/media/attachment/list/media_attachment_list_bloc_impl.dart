@@ -1,8 +1,8 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/media/attachment/list/media_attachment_list_bloc.dart';
-import 'package:easy_dispose/easy_dispose.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/foundation.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class MediaAttachmentListBloc extends DisposableOwner
     implements IMediaAttachmentListBloc {

@@ -1,3 +1,4 @@
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/account/pagination/cached/account_cached_pagination_bloc_impl.dart';
 import 'package:fedi/app/account/select/recent/recent_select_account_bloc.dart';
 import 'package:fedi/app/account/select/recent/recent_select_account_bloc_impl.dart';
@@ -15,7 +16,6 @@ import 'package:fedi/app/share/select_account/recent/local_preferences/recent_sh
 import 'package:fedi/app/share/select_account/recent/recent_share_select_account_widget.dart';
 import 'package:fedi/app/share/select_account/share_select_account_item_send_action_widget.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:flutter/cupertino.dart';
 
 class ShareSelectAccountWidget extends StatelessWidget {

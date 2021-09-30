@@ -6,8 +6,8 @@ import 'package:fedi/app/instance/announcement/instance_announcement_model.dart'
 import 'package:fedi/app/instance/announcement/instance_announcement_model_adapter.dart';
 import 'package:fedi/app/instance/announcement/repository/instance_announcement_repository.dart';
 import 'package:fedi/app/instance/announcement/repository/instance_announcement_repository_model.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:moor/moor.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class InstanceAnnouncementRepository
     extends PopulatedAppRemoteDatabaseDaoRepository<

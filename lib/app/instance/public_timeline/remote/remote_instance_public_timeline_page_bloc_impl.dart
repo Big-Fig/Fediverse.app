@@ -19,9 +19,9 @@ import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dar
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc_impl.dart';
 import 'package:fedi/pagination/pagination_model.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class RemoteInstancePublicTimelinePageBloc
     extends InstancePublicTimelinePageBloc

@@ -1,15 +1,15 @@
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/access/current/current_access_bloc.dart';
+import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/instance/trends/instance_trends_bloc.dart';
 import 'package:fedi/app/instance/trends/instance_trends_bloc_impl.dart';
 import 'package:fedi/app/instance/trends/instance_trends_bloc_proxy_provider.dart';
-import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/connection/connection_service.dart';
-import 'package:unifedi_api/unifedi_api.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:fediverse_api/fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class LocalInstanceTrendsBloc extends InstanceTrendsBloc
     implements IInstanceTrendsBloc {

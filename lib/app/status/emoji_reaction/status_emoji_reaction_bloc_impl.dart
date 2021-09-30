@@ -2,8 +2,8 @@ import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/status/emoji_reaction/status_emoji_reaction_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class StatusEmojiReactionBloc extends DisposableOwner
     implements IStatusEmojiReactionBloc {

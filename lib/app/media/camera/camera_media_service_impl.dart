@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:fedi/app/media/camera/camera_media_service.dart';
 import 'package:easy_dispose/easy_dispose.dart';
+import 'package:fedi/app/media/camera/camera_media_service.dart';
 import 'package:image_picker/image_picker.dart';
 
 class CameraMediaService extends DisposableOwner

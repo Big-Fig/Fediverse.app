@@ -6,9 +6,9 @@ import 'package:fedi/app/pagination/network_only/network_only_pleroma_pagination
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/pagination/pagination_model.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class MyAccountDomainBlockNetworkOnlyPaginationBloc
     extends NetworkOnlyPleromaPaginationBloc<DomainBlock>

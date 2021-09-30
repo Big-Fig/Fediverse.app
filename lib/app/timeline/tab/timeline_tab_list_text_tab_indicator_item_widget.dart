@@ -1,3 +1,4 @@
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/pagination/cached/cached_pagination_list_with_new_items_unread_badge_bloc_impl.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_bloc.dart';
 import 'package:fedi/app/timeline/tab/timeline_tab_list_tab_controller_bloc.dart';
@@ -12,7 +13,6 @@ import 'package:fedi/app/ui/tab/indicator/fedi_tab_indicator_bloc_impl.dart';
 import 'package:fedi/app/ui/tab/indicator/fedi_tab_indicator_model.dart';
 import 'package:fedi/app/ui/tab/indicator/text/fedi_text_tab_indicator_widget.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

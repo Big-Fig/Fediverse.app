@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository.dart';
@@ -11,10 +12,9 @@ import 'package:fedi/app/share/entity/settings/share_entity_settings_bloc.dart';
 import 'package:fedi/app/share/entity/share_entity_bloc.dart';
 import 'package:fedi/app/share/entity/share_entity_model.dart';
 import 'package:fedi/app/share/to_account/share_to_account_bloc.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class PleromaChatShareEntityBloc extends PleromaChatShareBloc
     implements IPleromaChatShareBloc, IShareEntityBloc {

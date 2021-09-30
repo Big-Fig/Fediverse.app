@@ -1,3 +1,4 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/my/websockets/my_account_websockets_handler_impl.dart';
 import 'package:fedi/app/account/websockets/account_websockets_handler_impl.dart';
@@ -13,9 +14,8 @@ import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/timeline/public/public_timeline_websockets_handler_impl.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
-import 'package:easy_dispose/easy_dispose.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:fediverse_api/fediverse_api_utils.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class WebSocketsHandlerManagerBloc extends DisposableOwner
     implements IWebSocketsHandlerManagerBloc {

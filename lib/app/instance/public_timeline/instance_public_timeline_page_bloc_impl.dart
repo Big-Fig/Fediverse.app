@@ -1,11 +1,11 @@
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_flutter/easy_dispose_flutter.dart';
 import 'package:fedi/app/instance/public_timeline/instance_public_timeline_page_bloc.dart';
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:easy_dispose/easy_dispose.dart';
-import 'package:easy_dispose_flutter/easy_dispose_flutter.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 abstract class InstancePublicTimelinePageBloc extends AsyncInitLoadingBloc
     implements IInstancePublicTimelinePageBloc {

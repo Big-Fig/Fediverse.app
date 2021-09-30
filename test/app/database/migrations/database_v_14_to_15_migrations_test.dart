@@ -13,9 +13,9 @@ import 'package:fedi/app/notification/repository/notification_repository_impl.da
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_impl.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:moor/ffi.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 import '../../account/account_test_helper.dart';
 import '../../chat/message/chat_message_test_helper.dart';

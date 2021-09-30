@@ -1,9 +1,9 @@
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
 import 'package:fedi/app/database/app_database.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class ChatMessageDatabaseMockHelper {
   static Future<DbChatMessagePopulated> createTestDbChatMessagePopulated(
