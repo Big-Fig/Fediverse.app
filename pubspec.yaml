@@ -158,7 +158,9 @@ dependencies:
   pull_to_refresh: 2.0.0
 
   # custom scroll view which fix bugs related to inner scrollables sync
-  extended_nested_scroll_view: 5.0.0
+  # extended_nested_scroll_view >= 4.0.0 have bugs with scrollable in tabs
+  # todo: update when bug will be fixed
+  extended_nested_scroll_view: 3.0.0
 
   # error overlay
   overlay_support: 1.2.1

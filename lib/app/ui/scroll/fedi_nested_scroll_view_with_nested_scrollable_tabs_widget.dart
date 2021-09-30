@@ -1,5 +1,6 @@
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart'
     as extended_nested_scroll_view;
+import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_bloc.dart';
 import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_widget.dart';
@@ -82,14 +83,14 @@ class FediNestedScrollViewWithNestedScrollableTabsWidget
         fediNestedScrollViewBloc.nestedScrollController;
     // extended_nested_scroll_view required to fix nested scrollables sync issue
 
-    return extended_nested_scroll_view.ExtendedNestedScrollView(
+    return extended_nested_scroll_view.NestedScrollView(
       // we use custom nested scroll controller to achieve scroll callbacks
       // from body scrollables
       controller: nestedScrollController,
       headerSliverBuilder: (BuildContext context, bool? innerBoxIsScrolled) =>
           buildTopSliverWidgets(context),
-      // innerScrollPositionKeyBuilder: () =>
-      //     _innerScrollPositionKeyBuilder(context),
+      innerScrollPositionKeyBuilder: () =>
+          _innerScrollPositionKeyBuilder(context),
       body: Builder(
         builder: (context) {
           // required by extended_nested_scroll_view
@@ -241,11 +242,10 @@ class _NestedBodyTabItemWidgetState extends State<_NestedBodyTabItemWidget>
         builder: (context) {
           return Stack(
             children: [
-              widget.tabBodyContentBuilder(context, widget.index),
-              // NestedScrollViewInnerScrollPositionKeyWidget(
-              //   widget.tabKey,
-              //   widget.tabBodyContentBuilder(context, widget.index),
-              // ),
+              NestedScrollViewInnerScrollPositionKeyWidget(
+                widget.tabKey,
+                widget.tabBodyContentBuilder(context, widget.index),
+              ),
               if (widget.tabBodyOverlayBuilder != null)
                 FediNestedScrollViewWidget.buildOverlay(
                   context,
