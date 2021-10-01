@@ -12,7 +12,7 @@ abstract class ICustomEmojiPickerCategoryBloc
   }) =>
       Provider.of<ICustomEmojiPickerCategoryBloc>(context, listen: listen);
 
-  List<CustomEmojiPickerItem> get items;
+  List<CustomEmojiPickerItem>? get items;
 
   Stream<List<CustomEmojiPickerItem>?> get itemsStream;
 }

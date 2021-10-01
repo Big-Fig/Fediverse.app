@@ -4,7 +4,7 @@ import 'package:fedi/emoji_picker/item/image_url/custom_emoji_picker_image_url_i
 abstract class ICustomEmojiPickerImageUrlCategoryBloc
     extends ICustomEmojiPickerCategoryBloc {
   @override
-  final List<CustomEmojiPickerImageUrlItem> items;
+  final List<CustomEmojiPickerImageUrlItem>? items;
 
   ICustomEmojiPickerImageUrlCategoryBloc({
     required this.items,

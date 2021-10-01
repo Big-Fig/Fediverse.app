@@ -113,8 +113,7 @@ class EmojiPickerCustomImageUrlCategoryBloc extends AsyncInitLoadingBloc
   }
 
   @override
-  List<CustomEmojiPickerImageUrlItem> get items =>
-      preferenceBloc.value?.items ?? [];
+  List<CustomEmojiPickerImageUrlItem>? get items => preferenceBloc.value?.items;
 
   @override
   Stream<List<CustomEmojiPickerImageUrlItem>?> get itemsStream =>

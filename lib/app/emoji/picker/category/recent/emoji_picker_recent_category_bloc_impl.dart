@@ -23,15 +23,14 @@ class EmojiPickerRecentCategoryBloc extends AsyncInitLoadingBloc
   }
 
   @override
-  List<CustomEmojiPickerItem> get items =>
-      preferenceBloc.value?.recentItems ?? [];
+  List<CustomEmojiPickerItem>? get items => preferenceBloc.value?.recentItems;
 
   @override
-  Stream<List<CustomEmojiPickerItem>> get itemsStream =>
-      preferenceBloc.stream.map((list) => list?.recentItems ?? []);
+  Stream<List<CustomEmojiPickerItem>?> get itemsStream =>
+      preferenceBloc.stream.map((list) => list?.recentItems);
 
   void onEmojiSelected(CustomEmojiPickerItem emojiItem) {
-    var currentItems = items;
+    var currentItems = items ?? [];
     var alreadyExist = currentItems.contains(emojiItem);
     _logger.finest(() => 'onEmojiSelected $emojiItem \n'
         'alreadyExist $alreadyExist');
@@ -46,6 +45,6 @@ class EmojiPickerRecentCategoryBloc extends AsyncInitLoadingBloc
         ),
       );
     }
-    _logger.finest(() => 'onEmojiSelected items ${items.length} ');
+    _logger.finest(() => 'onEmojiSelected items ${items?.length} ');
   }
 }
