@@ -26,10 +26,11 @@ import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/push/fcm/fcm_push_service.dart';
 import 'package:fedi/push/push_model.dart';
 import 'package:fediverse_api/fediverse_api.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:logging/logging.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
-var _logger = Logger('push_handler_bloc_impl.dart');
+var _logger = Logger('notifications_push_handler_bloc_impl.dart');
 
 // todo: refactor all push notifications code
 class NotificationsPushHandlerBloc extends DisposableOwner
@@ -267,9 +268,15 @@ class NotificationsPushHandlerBloc extends DisposableOwner
 
     addDisposable(localPreferencesUnifediApiAccessBloc);
 
+    var webSocketsModeSettingsBloc = WebSocketsModeSettingsBloc(
+      mode: WebSocketsMode.disabledValue,
+    );
+    webSocketsModeSettingsBloc.disposeWith(this);
+
     var apiManager = authInstance.info!.typeAsUnifediApi.createApiManager(
       apiAccessBloc: localPreferencesUnifediApiAccessBloc,
       computeImpl: null,
+      webSocketsModeSettingsBloc: webSocketsModeSettingsBloc,
     );
 
     addDisposable(apiManager);
@@ -394,9 +401,15 @@ class NotificationsPushHandlerBloc extends DisposableOwner
 
     addDisposable(localPreferencesUnifediApiAccessBloc);
 
+    var webSocketsModeSettingsBloc = WebSocketsModeSettingsBloc(
+      mode: WebSocketsMode.disabledValue,
+    );
+    webSocketsModeSettingsBloc.disposeWith(this);
+
     var apiManager = authInstance.info!.typeAsUnifediApi.createApiManager(
       apiAccessBloc: localPreferencesUnifediApiAccessBloc,
       computeImpl: null,
+      webSocketsModeSettingsBloc: webSocketsModeSettingsBloc,
     );
 
     addDisposable(apiManager);

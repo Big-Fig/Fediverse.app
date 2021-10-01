@@ -317,10 +317,32 @@ class CurrentUnifediApiAccessContextBloc extends ProviderContextBloc
       localPreferencesUnifediApiAccessBloc,
     );
 
+    var instanceWebSocketsSettingsLocalPreferencesBloc =
+        InstanceWebSocketsSettingsLocalPreferenceBloc(
+      preferencesService,
+      userAtHost: userAtHost,
+    )..disposeWith(this);
+
+    await globalProviderService
+        .asyncInitAndRegister<IInstanceWebSocketsSettingsLocalPreferenceBloc>(
+      instanceWebSocketsSettingsLocalPreferencesBloc,
+    );
+
+    var webSocketsSettingsBloc = WebSocketsSettingsBloc(
+      instanceLocalPreferencesBloc:
+          instanceWebSocketsSettingsLocalPreferencesBloc,
+      globalLocalPreferencesBloc:
+          appContextBloc.get<IGlobalWebSocketsSettingsLocalPreferenceBloc>(),
+    )..disposeWith(this);
+
+    await globalProviderService
+        .asyncInitAndRegister<IWebSocketsSettingsBloc>(webSocketsSettingsBloc);
+
     var unifediApiManager =
         currentInstance.info!.typeAsUnifediApi.createApiManager(
       apiAccessBloc: localPreferencesUnifediApiAccessBloc,
       computeImpl: null,
+      webSocketsModeSettingsBloc: webSocketsSettingsBloc,
     );
     await globalProviderService
         .asyncInitAndRegister<IUnifediApiManager>(unifediApiManager);
@@ -706,17 +728,6 @@ class CurrentUnifediApiAccessContextBloc extends ProviderContextBloc
       instanceStatusSensitiveSettingsLocalPreferencesBloc,
     );
 
-    var instanceWebSocketsSettingsLocalPreferencesBloc =
-        InstanceWebSocketsSettingsLocalPreferenceBloc(
-      preferencesService,
-      userAtHost: userAtHost,
-    )..disposeWith(this);
-
-    await globalProviderService
-        .asyncInitAndRegister<IInstanceWebSocketsSettingsLocalPreferenceBloc>(
-      instanceWebSocketsSettingsLocalPreferencesBloc,
-    );
-
     var instancePaginationSettingsLocalPreferencesBloc =
         InstancePaginationSettingsLocalPreferenceBloc(
       preferencesService,
@@ -795,16 +806,6 @@ class CurrentUnifediApiAccessContextBloc extends ProviderContextBloc
 
     await globalProviderService.asyncInitAndRegister<
         IStatusSensitiveSettingsBloc>(statusSensitiveSettingsBloc);
-
-    var webSocketsSettingsBloc = WebSocketsSettingsBloc(
-      instanceLocalPreferencesBloc:
-          instanceWebSocketsSettingsLocalPreferencesBloc,
-      globalLocalPreferencesBloc:
-          appContextBloc.get<IGlobalWebSocketsSettingsLocalPreferenceBloc>(),
-    )..disposeWith(this);
-
-    await globalProviderService
-        .asyncInitAndRegister<IWebSocketsSettingsBloc>(webSocketsSettingsBloc);
 
     var paginationSettingsBloc = PaginationSettingsBloc(
       instanceLocalPreferencesBloc:

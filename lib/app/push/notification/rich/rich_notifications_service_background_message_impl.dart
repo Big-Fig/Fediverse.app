@@ -27,6 +27,7 @@ import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/localization/localization_model.dart';
 import 'package:fedi/push/push_model.dart';
 import 'package:fediverse_api/fediverse_api.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -546,9 +547,15 @@ Future<IUnifediApiNotification?> _loadLastNotificationForInstance({
 
   disposableOwner.addDisposable(localPreferencesUnifediApiAccessBloc);
 
+  var webSocketsModeSettingsBloc = WebSocketsModeSettingsBloc(
+    mode: WebSocketsMode.disabledValue,
+  );
+  webSocketsModeSettingsBloc.disposeWith(disposableOwner);
+
   var apiManager = authInstance.info!.typeAsUnifediApi.createApiManager(
     apiAccessBloc: localPreferencesUnifediApiAccessBloc,
     computeImpl: null,
+    webSocketsModeSettingsBloc: webSocketsModeSettingsBloc,
   );
 
   disposableOwner.addDisposable(apiManager);

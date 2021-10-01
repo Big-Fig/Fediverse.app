@@ -14,6 +14,7 @@ import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:logging/logging.dart';
 import 'package:mastodon_api/mastodon_api.dart';
@@ -481,16 +482,21 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     var instanceType = await detectorBloc.detectInstanceType(
       url: instanceBaseUri.toString(),
     );
-
+    var webSocketsModeSettingsBloc = WebSocketsModeSettingsBloc(
+      mode: WebSocketsMode.disabledValue,
+    );
+    webSocketsModeSettingsBloc.disposeWith(this);
     if (instanceType.isPleroma) {
       unifediApiManager = createPleromaApiManager(
         apiAccessBloc: memoryUnifediApiAccessBloc,
         computeImpl: null,
+        webSocketsModeSettingsBloc: webSocketsModeSettingsBloc,
       );
     } else {
       unifediApiManager = createMastodonApiManager(
         apiAccessBloc: memoryUnifediApiAccessBloc,
         computeImpl: null,
+        webSocketsModeSettingsBloc: webSocketsModeSettingsBloc,
       );
     }
 
