@@ -48,7 +48,7 @@ class MyAccountFollowRequestNetworkOnlyAccountListBloc extends DisposableOwner
     IUnifediApiAccountRelationship accountRelationship,
   ) async {
     var unifediApiAccount = account
-        .copyWith(
+        .copyWithTemp(
           relationship: accountRelationship,
         )
         .toUnifediApiAccount();

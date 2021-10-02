@@ -1,9 +1,12 @@
 import 'package:fedi/app/push/fedi_push_notification_model_impl.dart';
 import 'package:fedi/push/push_model.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 // ignore_for_file: no-magic-number
+part 'notifications_push_handler_model.freezed.dart';
+
 part 'notifications_push_handler_model.g.dart';
 
 // -32 is hack for hive 0.x backward ids compatibility
@@ -11,50 +14,15 @@ part 'notifications_push_handler_model.g.dart';
 // which not exist in Hive 0.x
 //@HiveType()
 @HiveType(typeId: -32 + 66)
-@JsonSerializable(explicitToJson: true)
-class NotificationsPushHandlerMessage {
-  @HiveField(0)
-  final FediPushNotification body;
-  @HiveField(1)
-  @JsonKey(name: 'push_message')
-  final PushMessage pushMessage;
+@freezed
+class NotificationsPushHandlerMessage with _$NotificationsPushHandlerMessage {
+  const factory NotificationsPushHandlerMessage({
+    @HiveField(0) required FediPushNotification body,
+    @HiveField(1)
+    @JsonKey(name: 'push_message')
+        required PushMessage pushMessage,
+  }) = _NotificationsPushHandlerMessage;
 
-  NotificationsPushHandlerMessage({
-    required this.body,
-    required this.pushMessage,
-  });
-
-  @override
-  String toString() {
-    return 'NotificationsPushHandlerMessage{'
-        'body: $body, '
-        'pushMessage: $pushMessage'
-        '}';
-  }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is NotificationsPushHandlerMessage &&
-          runtimeType == other.runtimeType &&
-          body == other.body &&
-          pushMessage == other.pushMessage;
-
-  NotificationsPushHandlerMessage copyWith({
-    FediPushNotification? body,
-    PushMessage? pushMessage,
-  }) =>
-      NotificationsPushHandlerMessage(
-        body: body ?? this.body,
-        pushMessage: pushMessage ?? this.pushMessage,
-      );
-
-  @override
-  int get hashCode => body.hashCode ^ pushMessage.hashCode;
-
-  static NotificationsPushHandlerMessage fromJson(Map<String, dynamic> json) =>
+  factory NotificationsPushHandlerMessage.fromJson(Map<String, dynamic> json) =>
       _$NotificationsPushHandlerMessageFromJson(json);
-
-  Map<String, dynamic> toJson() =>
-      _$NotificationsPushHandlerMessageToJson(this);
 }

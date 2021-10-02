@@ -23,7 +23,7 @@ void main() {
           ChatSettingsModelMockHelper.createTestChatSettings(
         seed: seed,
       ),
-      ChatSettings.fromJson,
+      (json) => ChatSettings.fromJson(json),
     );
   });
 

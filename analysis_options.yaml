@@ -9,6 +9,10 @@ analyzer:
     - lib/**.g.dart
     - test/**.mocks.dart
     - test/coverage_helper_test.dart
+    - "**/*.freezed.dart"
+    - "**/*.mocks.dart"
+  errors:
+    invalid_annotation_target: ignore
   plugins:
     - dart_code_metrics
 

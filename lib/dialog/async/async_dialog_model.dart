@@ -1,28 +1,35 @@
-class AsyncDialogResult<T> {
-  final T? result;
-  final bool success;
-  final bool canceled;
-  final dynamic handledError;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  AsyncDialogResult.success(this.result)
-      : success = true,
-        canceled = false,
-        handledError = null;
+part 'async_dialog_model.freezed.dart';
 
-  AsyncDialogResult.withError(this.handledError)
-      : success = false,
-        canceled = false,
-        result = null;
+@freezed
+class AsyncDialogResult<T> with _$AsyncDialogResult<T> {
+  const factory AsyncDialogResult({
+    required T? result,
+    required bool success,
+    required bool canceled,
+    required dynamic handledError,
+  }) = _AsyncDialogResult<T>;
 
-  AsyncDialogResult.canceled()
-      : success = false,
-        canceled = false,
-        result = null,
-        handledError = null;
+  static AsyncDialogResult<T> withResult<T>(T result) => AsyncDialogResult(
+        result: result,
+        success: true,
+        canceled: false,
+        handledError: null,
+      );
 
-  @override
-  String toString() {
-    return 'AsyncDialogResult{result: $result, success: $success,'
-        ' canceled: $canceled, handledError: $handledError}';
-  }
+  static AsyncDialogResult<T> withError<T>(dynamic handledError) =>
+      AsyncDialogResult(
+        result: null,
+        success: false,
+        canceled: false,
+        handledError: handledError,
+      );
+
+  static AsyncDialogResult<T> withCancel<T>() => AsyncDialogResult(
+        result: null,
+        success: false,
+        canceled: true,
+        handledError: null,
+      );
 }

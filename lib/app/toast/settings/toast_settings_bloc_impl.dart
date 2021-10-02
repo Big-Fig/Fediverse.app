@@ -169,7 +169,7 @@ class ToastSettingsBloc
   Future changeHandlingType(ToastHandlingType value) {
     return updateSettings(
       settingsData.copyWith(
-        handlingType: value,
+        handlingTypeString: value.toJsonValue(),
       ),
     );
   }

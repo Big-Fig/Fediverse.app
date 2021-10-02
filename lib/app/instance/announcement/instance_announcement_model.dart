@@ -1,5 +1,8 @@
 import 'package:fedi/app/database/app_database.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:unifedi_api/unifedi_api.dart';
+
+part 'instance_announcement_model.freezed.dart';
 
 // ignore_for_file: no-magic-number
 
@@ -31,54 +34,24 @@ abstract class IInstanceAnnouncement {
   DateTime? get startsAt;
 
   DateTime? get endsAt;
-
-  IInstanceAnnouncement copyWith({
-    int? localId,
-    String? remoteId,
-    String? text,
-    bool? allDay,
-    DateTime? publishedAt,
-    DateTime? updatedAt,
-    bool? read,
-    List<IUnifediApiEmojiReaction>? reactions,
-    List<IUnifediApiMention>? mentions,
-    List<IUnifediApiStatus>? statuses,
-    List<IUnifediApiTag>? tags,
-    DateTime? scheduledAt,
-    DateTime? startsAt,
-    DateTime? endsAt,
-  });
 }
 
-class DbInstanceAnnouncementPopulated {
-  final DbInstanceAnnouncement dbInstanceAnnouncement;
-
-  DbInstanceAnnouncementPopulated({
-    required this.dbInstanceAnnouncement,
-  });
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is DbInstanceAnnouncementPopulated &&
-          runtimeType == other.runtimeType &&
-          dbInstanceAnnouncement == other.dbInstanceAnnouncement;
-
-  @override
-  int get hashCode => dbInstanceAnnouncement.hashCode;
-
-  @override
-  String toString() => 'DbInstanceAnnouncementPopulated{'
-      'dbInstanceAnnouncement: $dbInstanceAnnouncement'
-      '}';
+@freezed
+class DbInstanceAnnouncementPopulated with _$DbInstanceAnnouncementPopulated {
+  const factory DbInstanceAnnouncementPopulated({
+    required DbInstanceAnnouncement dbInstanceAnnouncement,
+  }) = _DbInstanceAnnouncementPopulated;
 }
 
-class DbInstanceAnnouncementPopulatedWrapper implements IInstanceAnnouncement {
-  final DbInstanceAnnouncementPopulated dbInstanceAnnouncementPopulated;
+@freezed
+class DbInstanceAnnouncementPopulatedWrapper
+    with _$DbInstanceAnnouncementPopulatedWrapper
+    implements IInstanceAnnouncement {
+  const DbInstanceAnnouncementPopulatedWrapper._();
 
-  DbInstanceAnnouncementPopulatedWrapper({
-    required this.dbInstanceAnnouncementPopulated,
-  });
+  const factory DbInstanceAnnouncementPopulatedWrapper({
+    required DbInstanceAnnouncementPopulated dbInstanceAnnouncementPopulated,
+  }) = _DbInstanceAnnouncementPopulatedWrapper;
 
   DbInstanceAnnouncement get dbInstanceAnnouncement =>
       dbInstanceAnnouncementPopulated.dbInstanceAnnouncement;
@@ -125,45 +98,6 @@ class DbInstanceAnnouncementPopulatedWrapper implements IInstanceAnnouncement {
 
   @override
   List<IUnifediApiTag>? get tags => dbInstanceAnnouncement.tags;
-
-  @override
-  // ignore: long-parameter-list
-  IInstanceAnnouncement copyWith({
-    int? localId,
-    String? remoteId,
-    String? text,
-    bool? allDay,
-    DateTime? publishedAt,
-    DateTime? updatedAt,
-    bool? read,
-    List<IUnifediApiEmojiReaction>? reactions,
-    List<IUnifediApiMention>? mentions,
-    List<IUnifediApiStatus>? statuses,
-    List<IUnifediApiTag>? tags,
-    DateTime? scheduledAt,
-    DateTime? startsAt,
-    DateTime? endsAt,
-  }) =>
-      DbInstanceAnnouncementPopulatedWrapper(
-        dbInstanceAnnouncementPopulated: DbInstanceAnnouncementPopulated(
-          dbInstanceAnnouncement: dbInstanceAnnouncement.copyWith(
-            id: localId,
-            remoteId: remoteId,
-            content: text,
-            allDay: allDay,
-            publishedAt: publishedAt,
-            updatedAt: updatedAt,
-            read: read,
-            reactions: reactions?.toUnifediApiEmojiReactionList(),
-            tags: tags?.toUnifediApiTagList(),
-            mentions: mentions?.toUnifediApiMentionList(),
-            statuses: statuses?.toUnifediApiStatusList(),
-            scheduledAt: scheduledAt,
-            startsAt: startsAt,
-            endsAt: endsAt,
-          ),
-        ),
-      );
 }
 
 extension IInstanceAnnouncementExtension on IInstanceAnnouncement {

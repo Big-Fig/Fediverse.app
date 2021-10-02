@@ -679,7 +679,7 @@ void main() {
 
   test('createQuery no withDismissed', () async {
     var query = instanceAnnouncementRepository.createQuery(
-      filters: InstanceAnnouncementRepositoryFilters(
+      filters: InstanceAnnouncementRepositoryFilters.only(
         withDismissed: false,
       ),
       pagination: null,
@@ -717,7 +717,7 @@ void main() {
   });
   test('createQuery withDismissed', () async {
     var query = instanceAnnouncementRepository.createQuery(
-      filters: InstanceAnnouncementRepositoryFilters(
+      filters: InstanceAnnouncementRepositoryFilters.only(
         withDismissed: true,
       ),
       pagination: null,
@@ -756,7 +756,7 @@ void main() {
 
   test('createQuery no withExpired allDay=false', () async {
     var query = instanceAnnouncementRepository.createQuery(
-      filters: InstanceAnnouncementRepositoryFilters(
+      filters: InstanceAnnouncementRepositoryFilters.only(
         withExpired: false,
       ),
       pagination: null,
@@ -804,7 +804,7 @@ void main() {
 
   test('createQuery no withExpired allDay=true', () async {
     var query = instanceAnnouncementRepository.createQuery(
-      filters: InstanceAnnouncementRepositoryFilters(
+      filters: InstanceAnnouncementRepositoryFilters.only(
         withExpired: false,
       ),
       pagination: null,
@@ -852,7 +852,7 @@ void main() {
 
   test('createQuery withExpired', () async {
     var query = instanceAnnouncementRepository.createQuery(
-      filters: InstanceAnnouncementRepositoryFilters(
+      filters: InstanceAnnouncementRepositoryFilters.only(
         withExpired: true,
       ),
       pagination: null,
@@ -900,7 +900,7 @@ void main() {
 
   test('createQuery no withNotStartedYet allDay=false', () async {
     var query = instanceAnnouncementRepository.createQuery(
-      filters: InstanceAnnouncementRepositoryFilters(
+      filters: InstanceAnnouncementRepositoryFilters.only(
         withNotStartedYet: false,
       ),
       pagination: null,
@@ -948,7 +948,7 @@ void main() {
 
   test('createQuery no withNotStartedYet allDay=true', () async {
     var query = instanceAnnouncementRepository.createQuery(
-      filters: InstanceAnnouncementRepositoryFilters(
+      filters: InstanceAnnouncementRepositoryFilters.only(
         withNotStartedYet: false,
       ),
       pagination: null,
@@ -996,7 +996,7 @@ void main() {
 
   test('createQuery withNotStartedYet allDay=false', () async {
     var query = instanceAnnouncementRepository.createQuery(
-      filters: InstanceAnnouncementRepositoryFilters(
+      filters: InstanceAnnouncementRepositoryFilters.only(
         withNotStartedYet: true,
       ),
       pagination: null,

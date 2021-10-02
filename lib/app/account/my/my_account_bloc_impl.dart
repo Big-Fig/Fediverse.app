@@ -124,7 +124,7 @@ class MyAccountBloc extends IMyAccountBloc {
     await myAccountLocalPreferenceBloc.setValue(
       myAccountLocalPreferenceBloc.value!
           .toUnifediApiMyAccountWrapper()
-          .copyWith(
+          .copyWithTemp(
             followRequestsCount: followRequestsCount! - 1,
           )
           .toUnifediApiMyAccountWrapper(),

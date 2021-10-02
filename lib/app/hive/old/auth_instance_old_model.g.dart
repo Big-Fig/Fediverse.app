@@ -65,8 +65,8 @@ class AuthInstanceOldAdapter extends TypeAdapter<AuthInstanceOld> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-AuthInstanceOld _$AuthInstanceOldFromJson(Map<String, dynamic> json) =>
-    AuthInstanceOld(
+_$_AuthInstanceOld _$$_AuthInstanceOldFromJson(Map<String, dynamic> json) =>
+    _$_AuthInstanceOld(
       urlSchema: json['url_schema'] as String?,
       urlHost: json['url_host'] as String,
       acct: json['acct'] as String,
@@ -85,14 +85,22 @@ AuthInstanceOld _$AuthInstanceOldFromJson(Map<String, dynamic> json) =>
           : PleromaApiInstance.fromJson(json['info'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$AuthInstanceOldToJson(AuthInstanceOld instance) =>
-    <String, dynamic>{
-      'url_schema': instance.urlSchema,
-      'url_host': instance.urlHost,
-      'acct': instance.acct,
-      'token': instance.token?.toJson(),
-      'auth_code': instance.authCode,
-      'is_pleroma_instance': instance.isPleroma,
-      'application': instance.application?.toJson(),
-      'info': instance.info?.toJson(),
-    };
+Map<String, dynamic> _$$_AuthInstanceOldToJson(_$_AuthInstanceOld instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('url_schema', instance.urlSchema);
+  val['url_host'] = instance.urlHost;
+  val['acct'] = instance.acct;
+  writeNotNull('token', instance.token?.toJson());
+  writeNotNull('auth_code', instance.authCode);
+  val['is_pleroma_instance'] = instance.isPleroma;
+  writeNotNull('application', instance.application?.toJson());
+  writeNotNull('info', instance.info?.toJson());
+  return val;
+}

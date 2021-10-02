@@ -1,39 +1,19 @@
-class StatusSensitiveWarningState {
-  bool nsfwSensitive;
-  bool containsSpoiler;
-  bool displayEnabled;
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'status_sensitive_model.freezed.dart';
+
+@freezed
+class StatusSensitiveWarningState with _$StatusSensitiveWarningState {
+  const StatusSensitiveWarningState._();
+
+  const factory StatusSensitiveWarningState({
+    required bool nsfwSensitive,
+    required bool containsSpoiler,
+    required bool displayEnabled,
+  }) = _StatusSensitiveWarningState;
 
   bool get containsSpoilerAndDisplayEnabled =>
       !containsSpoiler || displayEnabled;
 
   bool get nsfwSensitiveAndDisplayEnabled => !nsfwSensitive || displayEnabled;
-
-  StatusSensitiveWarningState({
-    required this.nsfwSensitive,
-    required this.containsSpoiler,
-    required this.displayEnabled,
-  });
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is StatusSensitiveWarningState &&
-          runtimeType == other.runtimeType &&
-          nsfwSensitive == other.nsfwSensitive &&
-          containsSpoiler == other.containsSpoiler &&
-          displayEnabled == other.displayEnabled;
-
-  @override
-  int get hashCode =>
-      nsfwSensitive.hashCode ^
-      containsSpoiler.hashCode ^
-      displayEnabled.hashCode;
-
-  @override
-  String toString() {
-    return 'StatusSensitiveWarningState{'
-        'nsfwSensitive: $nsfwSensitive,'
-        ' containsSpoiler: $containsSpoiler,'
-        ' displayEnabled: $displayEnabled}';
-  }
 }

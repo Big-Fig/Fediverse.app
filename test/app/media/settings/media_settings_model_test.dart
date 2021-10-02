@@ -23,7 +23,7 @@ void main() {
           MediaSettingsModelMockHelper.createTestMediaSettings(
         seed: seed,
       ),
-      MediaSettings.fromJson,
+      (json) => MediaSettings.fromJson(json),
     );
   });
 

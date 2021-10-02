@@ -195,12 +195,6 @@ class PostStatusDataStatusStatusAdapter implements IStatus {
   UnifediApiVisibility get visibility => postStatusData.visibilityPleroma;
 
   @override
-  bool get isHaveReblog => false;
-
-  @override
-  bool get isReply => postStatusData.inReplyToUnifediApiStatus != null;
-
-  @override
   IStatus? get inReplyToStatus =>
       postStatusData.inReplyToUnifediApiStatus?.toDbStatusPopulatedWrapper();
 
@@ -213,59 +207,6 @@ class PostStatusDataStatusStatusAdapter implements IStatus {
 
   @override
   bool get hiddenLocallyOnDevice => false;
-
-  @override
-  // ignore: long-parameter-list
-  IStatus copyWith({
-    IAccount? account,
-    IStatus? reblog,
-    int? id,
-    String? remoteId,
-    DateTime? createdAt,
-    IStatus? inReplyToStatus,
-    String? inReplyToRemoteId,
-    String? inReplyToAccountRemoteId,
-    bool? nsfwSensitive,
-    String? spoilerText,
-    UnifediApiVisibility? visibility,
-    String? uri,
-    String? url,
-    int? repliesCount,
-    int? reblogsCount,
-    int? favouritesCount,
-    bool? favourited,
-    bool? reblogged,
-    bool? muted,
-    bool? bookmarked,
-    bool? pinned,
-    String? content,
-    String? reblogStatusRemoteId,
-    UnifediApiApplication? application,
-    String? accountRemoteId,
-    List<UnifediApiMediaAttachment>? mediaAttachments,
-    List<UnifediApiMention>? mentions,
-    List<UnifediApiTag>? tags,
-    List<UnifediApiEmoji>? emojis,
-    UnifediApiPoll? poll,
-    UnifediApiCard? card,
-    String? language,
-    IUnifediApiContentVariants? contentVariants,
-    int? conversationId,
-    int? directConversationId,
-    String? inReplyToAccountAcct,
-    bool? local,
-    IUnifediApiContentVariants? spoilerTextVariants,
-    DateTime? expiresAt,
-    bool? threadMuted,
-    List<UnifediApiEmojiReaction>? emojiReactions,
-    bool? deleted,
-    PendingState? pendingState,
-    String? oldPendingRemoteId,
-    bool? hiddenLocallyOnDevice,
-    String? wasSentWithIdempotencyKey,
-  }) {
-    throw UnsupportedError('Not supported for non-published statuses');
-  }
 
   @override
   int compareTo(IStatus b) => IStatus.compareItemsToSort(this, b);

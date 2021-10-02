@@ -44,12 +44,14 @@ class PaginationSettingsAdapter extends TypeAdapter<PaginationSettings> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-PaginationSettings _$PaginationSettingsFromJson(Map<String, dynamic> json) =>
-    PaginationSettings(
+_$_PaginationSettings _$$_PaginationSettingsFromJson(
+        Map<String, dynamic> json) =>
+    _$_PaginationSettings(
       pageSizeString: json['page_size'] as String,
     );
 
-Map<String, dynamic> _$PaginationSettingsToJson(PaginationSettings instance) =>
+Map<String, dynamic> _$$_PaginationSettingsToJson(
+        _$_PaginationSettings instance) =>
     <String, dynamic>{
       'page_size': instance.pageSizeString,
     };

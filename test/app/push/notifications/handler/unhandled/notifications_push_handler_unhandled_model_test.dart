@@ -24,7 +24,7 @@ void main() {
               .createTestPushHandlerUnhandledList(
         seed: seed,
       ),
-      NotificationsPushHandlerUnhandledList.fromJson,
+      (json) => NotificationsPushHandlerUnhandledList.fromJson(json),
     );
   });
 

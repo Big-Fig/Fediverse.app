@@ -1,9 +1,10 @@
-import 'package:fedi/collection/collection_hash_utils.dart';
 import 'package:fedi/emoji_picker/item/image_url/custom_emoji_picker_image_url_item_model.dart';
 import 'package:fediverse_api/fediverse_api_utils.dart';
-import 'package:flutter/foundation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+part 'emoji_picker_custom_image_url_category_model.freezed.dart';
 
 // ignore_for_file: no-magic-number
 part 'emoji_picker_custom_image_url_category_model.g.dart';
@@ -13,36 +14,16 @@ part 'emoji_picker_custom_image_url_category_model.g.dart';
 // which not exist in Hive 0.x
 //@HiveType()
 @HiveType(typeId: -32 + 68)
-@JsonSerializable(explicitToJson: true)
-class EmojiPickerCustomImageUrlCategoryItems implements IJsonObj {
-  @HiveField(0)
-  final List<CustomEmojiPickerImageUrlItem> items;
+@freezed
+class EmojiPickerCustomImageUrlCategoryItems
+    with _$EmojiPickerCustomImageUrlCategoryItems
+    implements IJsonObj {
+  const factory EmojiPickerCustomImageUrlCategoryItems({
+    @HiveField(0) required List<CustomEmojiPickerImageUrlItem> items,
+  }) = _EmojiPickerCustomImageUrlCategoryItems;
 
-  EmojiPickerCustomImageUrlCategoryItems({
-    required this.items,
-  });
-
-  @override
-  String toString() {
-    return 'EmojiPickerCustomImageUrlCategoryItems{items: $items}';
-  }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is EmojiPickerCustomImageUrlCategoryItems &&
-          runtimeType == other.runtimeType &&
-          listEquals(items, other.items);
-
-  @override
-  int get hashCode => listHash(items);
-
-  static EmojiPickerCustomImageUrlCategoryItems fromJson(
+  factory EmojiPickerCustomImageUrlCategoryItems.fromJson(
     Map<String, dynamic> json,
   ) =>
       _$EmojiPickerCustomImageUrlCategoryItemsFromJson(json);
-
-  @override
-  Map<String, dynamic> toJson() =>
-      _$EmojiPickerCustomImageUrlCategoryItemsToJson(this);
 }

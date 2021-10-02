@@ -23,7 +23,7 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
   final List<UnifediApiNotificationType> excludeTypes;
 
   NotificationRepositoryFilters get _notificationRepositoryFilters =>
-      NotificationRepositoryFilters(
+      NotificationRepositoryFilters.only(
         excludeTypes: excludeTypes,
         excludeStatusTextConditions: filters
             .map(

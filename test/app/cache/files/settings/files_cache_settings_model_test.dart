@@ -22,7 +22,7 @@ void main() {
           FilesCacheSettingsModelMockHelper.createTestFilesCacheSettings(
         seed: seed,
       ),
-      FilesCacheSettings.fromJson,
+      (json) => FilesCacheSettings.fromJson(json),
     );
   });
 
@@ -54,8 +54,8 @@ void main() {
     );
 
     var obj2Obj1CopyWith = obj1.copyWith(
-      sizeLimitCountType: obj2.sizeLimitCountType,
-      ageLimitType: obj2.ageLimitType,
+      sizeLimitCountTypeString: obj2.sizeLimitCountTypeString,
+      ageLimitTypeString: obj2.ageLimitTypeString,
     );
 
     expect(obj1 == obj2, false);

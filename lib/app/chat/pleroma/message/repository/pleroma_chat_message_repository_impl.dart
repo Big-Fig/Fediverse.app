@@ -114,7 +114,7 @@ class PleromaChatMessageRepository
     bool onlyPendingStatePublishedOrNull = false,
   }) async {
     var query = createQuery(
-      filters: PleromaChatMessageRepositoryFilters(
+      filters: PleromaChatMessageRepositoryFilters.only(
         onlyPendingStatePublishedOrNull: onlyPendingStatePublishedOrNull,
         onlyNotDeleted: true,
         onlyNotHiddenLocallyOnDevice: true,

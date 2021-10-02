@@ -18,7 +18,7 @@ class PleromaMyAccountWrapperOldAdapter
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PleromaMyAccountWrapperOld(
-      pleromaAccount: fields[0] as PleromaApiMyAccount,
+      pleromaAccount: fields[0] as PleromaMyAccountWrapperOld,
     );
   }
 
@@ -45,15 +45,15 @@ class PleromaMyAccountWrapperOldAdapter
 // JsonSerializableGenerator
 // **************************************************************************
 
-PleromaMyAccountWrapperOld _$PleromaMyAccountWrapperOldFromJson(
+_$_PleromaMyAccountWrapperOld _$$_PleromaMyAccountWrapperOldFromJson(
         Map<String, dynamic> json) =>
-    PleromaMyAccountWrapperOld(
-      pleromaAccount: PleromaApiMyAccount.fromJson(
+    _$_PleromaMyAccountWrapperOld(
+      pleromaAccount: PleromaMyAccountWrapperOld.fromJson(
           json['remote_account'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$PleromaMyAccountWrapperOldToJson(
-        PleromaMyAccountWrapperOld instance) =>
+Map<String, dynamic> _$$_PleromaMyAccountWrapperOldToJson(
+        _$_PleromaMyAccountWrapperOld instance) =>
     <String, dynamic>{
       'remote_account': instance.pleromaAccount.toJson(),
     };

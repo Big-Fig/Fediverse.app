@@ -465,9 +465,16 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
 
   @override
   Future<IStatus> onPollUpdated(IUnifediApiPoll? poll) async {
-    var updatedLocalStatus = status.copyWith(
-      poll: poll?.toUnifediApiPoll(),
+    var dbStatusPopulatedWrapper = status.toDbStatusPopulatedWrapper();
+
+    var updatedLocalStatus = dbStatusPopulatedWrapper.copyWith(
+      dbStatusPopulated: dbStatusPopulatedWrapper.dbStatusPopulated.copyWith(
+        dbStatus: dbStatusPopulatedWrapper.dbStatusPopulated.dbStatus.copyWith(
+          poll: poll?.toUnifediApiPoll(),
+        ),
+      ),
     );
+
     statusSubject.add(updatedLocalStatus);
 
     return updatedLocalStatus;

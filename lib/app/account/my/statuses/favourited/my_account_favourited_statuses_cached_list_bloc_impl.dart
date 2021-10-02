@@ -7,7 +7,7 @@ import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
-var _statusRepositoryFilters = StatusRepositoryFilters(
+var _statusRepositoryFilters = StatusRepositoryFilters.only(
   onlyFavourited: true,
 );
 

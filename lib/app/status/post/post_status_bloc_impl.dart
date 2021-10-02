@@ -230,7 +230,7 @@ abstract class PostStatusBloc extends PostMessageBloc
   // ignore: avoid-late-keyword
   late IPostStatusData initialData;
 
-  static final defaultInitData = PostStatusData(
+  static final PostStatusData defaultInitData = PostStatusData(
     subject: null,
     text: null,
     scheduledAt: null,

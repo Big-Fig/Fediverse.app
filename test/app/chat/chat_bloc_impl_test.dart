@@ -203,7 +203,17 @@ void main() {
 
     expect(listened, chat.updatedAt);
 
-    await _update(chat.copyWith(updatedAt: newValue), accounts: chat.accounts);
+    var dbPleromaChatPopulatedWrapper = chat.toDbPleromaChatPopulatedWrapper();
+    await _update(
+      dbPleromaChatPopulatedWrapper.copyWith(
+        dbChatPopulated: dbPleromaChatPopulatedWrapper.dbChatPopulated.copyWith(
+          dbChat: dbPleromaChatPopulatedWrapper.dbChatPopulated.dbChat.copyWith(
+            updatedAt: newValue,
+          ),
+        ),
+      ),
+      accounts: chat.accounts,
+    );
 
     expect(chatBloc.updatedAt, newValue);
     expect(listened, newValue);

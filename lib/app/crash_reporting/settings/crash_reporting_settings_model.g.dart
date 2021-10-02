@@ -45,14 +45,14 @@ class CrashReportingSettingsAdapter
 // JsonSerializableGenerator
 // **************************************************************************
 
-CrashReportingSettings _$CrashReportingSettingsFromJson(
+_$_CrashReportingSettings _$$_CrashReportingSettingsFromJson(
         Map<String, dynamic> json) =>
-    CrashReportingSettings(
+    _$_CrashReportingSettings(
       reportingEnabled: json['reporting_enabled'] as bool,
     );
 
-Map<String, dynamic> _$CrashReportingSettingsToJson(
-        CrashReportingSettings instance) =>
+Map<String, dynamic> _$$_CrashReportingSettingsToJson(
+        _$_CrashReportingSettings instance) =>
     <String, dynamic>{
       'reporting_enabled': instance.reportingEnabled,
     };

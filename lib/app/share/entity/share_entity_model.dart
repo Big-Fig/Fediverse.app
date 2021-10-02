@@ -1,12 +1,19 @@
 import 'dart:io';
 
 import 'package:fedi/app/account/account_model.dart';
-import 'package:fedi/collection/collection_hash_utils.dart';
 import 'package:flutter/foundation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
-class ShareEntity {
-  final List<ShareEntityItem> items;
+part 'share_entity_model.freezed.dart';
+
+@freezed
+class ShareEntity with _$ShareEntity {
+  const ShareEntity._();
+
+  const factory ShareEntity({
+    required List<ShareEntityItem> items,
+  }) = _ShareEntity;
 
   bool get isSingle => items.length == 1;
 
@@ -60,43 +67,21 @@ class ShareEntity {
           return previousValue;
         },
       );
-
-  ShareEntity({
-    required this.items,
-  }) : assert(items.isNotEmpty);
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is ShareEntity &&
-          runtimeType == other.runtimeType &&
-          listEquals(items, other.items);
-
-  @override
-  int get hashCode => listHash(items);
-
-  @override
-  String toString() => 'ShareEntity{items: $items}';
 }
 
-class ShareEntityItem {
-  final DateTime? createdAt;
-  final IAccount? fromAccount;
-  final String? text;
-  final String? linkToOriginal;
-  final List<IUnifediApiMediaAttachment>? mediaAttachments;
-  final List<ShareEntityItemLocalMediaFile>? mediaLocalFiles;
-  final bool isNeedReUploadMediaAttachments;
+@freezed
+class ShareEntityItem with _$ShareEntityItem {
+  const ShareEntityItem._();
 
-  ShareEntityItem({
-    required this.createdAt,
-    required this.fromAccount,
-    required this.text,
-    required this.linkToOriginal,
-    required this.mediaAttachments,
-    required this.mediaLocalFiles,
-    required this.isNeedReUploadMediaAttachments,
-  });
+  const factory ShareEntityItem({
+    required DateTime? createdAt,
+    required IAccount? fromAccount,
+    required String? text,
+    required String? linkToOriginal,
+    required List<IUnifediApiMediaAttachment>? mediaAttachments,
+    required List<ShareEntityItemLocalMediaFile>? mediaLocalFiles,
+    required bool isNeedReUploadMediaAttachments,
+  }) = _ShareEntityItem;
 
   bool get isHaveMedia => isHaveRemoteMedia || isHaveLocalMedia;
 
@@ -111,68 +96,14 @@ class ShareEntityItem {
   bool get isHaveFromAccount => fromAccount != null;
 
   bool get isHaveCreatedAt => createdAt != null;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is ShareEntityItem &&
-          runtimeType == other.runtimeType &&
-          createdAt == other.createdAt &&
-          fromAccount == other.fromAccount &&
-          text == other.text &&
-          linkToOriginal == other.linkToOriginal &&
-          listEquals(mediaAttachments, other.mediaAttachments) &&
-          listEquals(mediaLocalFiles, other.mediaLocalFiles) &&
-          isNeedReUploadMediaAttachments ==
-              other.isNeedReUploadMediaAttachments;
-
-  @override
-  int get hashCode =>
-      createdAt.hashCode ^
-      fromAccount.hashCode ^
-      text.hashCode ^
-      linkToOriginal.hashCode ^
-      listHash(mediaAttachments) ^
-      listHash(mediaLocalFiles) ^
-      isNeedReUploadMediaAttachments.hashCode;
-
-  @override
-  String toString() => 'ShareEntityItem{'
-      'createdAt: $createdAt, '
-      'fromAccount: $fromAccount, '
-      'text: $text, '
-      'linkToOriginal: $linkToOriginal, '
-      'mediaAttachments: $mediaAttachments, '
-      'mediaLocalFiles: $mediaLocalFiles, '
-      'isNeedReUploadMedia: $isNeedReUploadMediaAttachments'
-      '}';
 }
 
-class ShareEntityItemLocalMediaFile {
-  final File file;
-  final bool isNeedDeleteAfterUsage;
-
-  ShareEntityItemLocalMediaFile({
-    required this.file,
-    required this.isNeedDeleteAfterUsage,
-  });
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is ShareEntityItemLocalMediaFile &&
-          runtimeType == other.runtimeType &&
-          file == other.file &&
-          isNeedDeleteAfterUsage == other.isNeedDeleteAfterUsage;
-
-  @override
-  int get hashCode => file.hashCode ^ isNeedDeleteAfterUsage.hashCode;
-
-  @override
-  String toString() => 'ShareEntityItemLocalMediaFile{'
-      'file: $file, '
-      'isNeedDeleteAfterUsage: $isNeedDeleteAfterUsage'
-      '}';
+@freezed
+class ShareEntityItemLocalMediaFile with _$ShareEntityItemLocalMediaFile {
+  const factory ShareEntityItemLocalMediaFile({
+    required File file,
+    required bool isNeedDeleteAfterUsage,
+  }) = _ShareEntityItemLocalMediaFile;
 }
 
 bool _foldBoolOr(bool previousValue, bool element) => previousValue || element;

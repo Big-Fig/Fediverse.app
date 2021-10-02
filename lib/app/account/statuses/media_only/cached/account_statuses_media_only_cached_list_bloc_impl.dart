@@ -21,7 +21,7 @@ var _logger = Logger('account_statuses_media_only_cached_list_bloc_impl.dart');
 class AccountStatusesMediaOnlyCachedListBloc
     extends AccountStatusesCachedListBloc {
   StatusRepositoryFilters get _statusRepositoryFilters =>
-      StatusRepositoryFilters(
+      StatusRepositoryFilters.only(
         onlyWithMedia: true,
         withMuted: false,
         onlyNoNsfwSensitive: false,

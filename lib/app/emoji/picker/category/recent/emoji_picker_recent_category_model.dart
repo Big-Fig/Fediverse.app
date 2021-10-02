@@ -1,11 +1,13 @@
-import 'package:fedi/collection/collection_hash_utils.dart';
 import 'package:fedi/emoji_picker/item/code/custom_emoji_picker_code_item_model.dart';
 import 'package:fedi/emoji_picker/item/custom_emoji_picker_item_model.dart';
 import 'package:fedi/emoji_picker/item/image_url/custom_emoji_picker_image_url_item_model.dart';
 import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:flutter/foundation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+part 'emoji_picker_recent_category_model.freezed.dart';
 
 // ignore_for_file: no-magic-number
 part 'emoji_picker_recent_category_model.g.dart';
@@ -15,8 +17,10 @@ part 'emoji_picker_recent_category_model.g.dart';
 // which not exist in Hive 0.x
 //@HiveType()
 @HiveType(typeId: -32 + 70)
-@JsonSerializable(explicitToJson: true)
-class EmojiPickerRecentCategoryItemsList implements IJsonObj {
+@freezed
+class EmojiPickerRecentCategoryItemsList
+    with _$EmojiPickerRecentCategoryItemsList
+    implements IJsonObj {
   List<CustomEmojiPickerItem> get recentItems {
     var result = <CustomEmojiPickerItem>[];
     result.addAll(recentCodeItems);
@@ -25,43 +29,19 @@ class EmojiPickerRecentCategoryItemsList implements IJsonObj {
     return result;
   }
 
-  @HiveField(2)
-  @JsonKey(name: 'recent_code_items')
-  final List<CustomEmojiPickerCodeItem> recentCodeItems;
-  @HiveField(3)
-  @JsonKey(name: 'recent_image_items')
-  final List<CustomEmojiPickerImageUrlItem> recentImageItems;
+  const EmojiPickerRecentCategoryItemsList._();
 
-  EmojiPickerRecentCategoryItemsList({
-    required this.recentCodeItems,
-    required this.recentImageItems,
-  });
+  const factory EmojiPickerRecentCategoryItemsList({
+    @HiveField(2)
+    @JsonKey(name: 'recent_code_items')
+        required List<CustomEmojiPickerCodeItem> recentCodeItems,
+    @HiveField(3)
+    @JsonKey(name: 'recent_image_items')
+        required List<CustomEmojiPickerImageUrlItem> recentImageItems,
+  }) = _EmojiPickerRecentCategoryItemsList;
 
-  static EmojiPickerRecentCategoryItemsList fromJson(
+  factory EmojiPickerRecentCategoryItemsList.fromJson(
     Map<String, dynamic> json,
   ) =>
       _$EmojiPickerRecentCategoryItemsListFromJson(json);
-
-  @override
-  Map<String, dynamic> toJson() =>
-      _$EmojiPickerRecentCategoryItemsListToJson(this);
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is EmojiPickerRecentCategoryItemsList &&
-          runtimeType == other.runtimeType &&
-          listEquals(recentCodeItems, other.recentCodeItems) &&
-          listEquals(recentImageItems, other.recentImageItems);
-
-  @override
-  int get hashCode => listHash(recentCodeItems) ^ listHash(recentImageItems);
-
-  @override
-  String toString() {
-    return 'EmojiPickerRecentCategoryItemsList{'
-        'recentCodeItems: $recentCodeItems, '
-        'recentImageItems: $recentImageItems'
-        '}';
-  }
 }

@@ -9,7 +9,6 @@ import 'package:fedi/app/hive/old/auth_host_access_token_local_preference_old_bl
 import 'package:fedi/app/hive/old/auth_host_application_local_preference_old_bloc_impl.dart';
 import 'package:fedi/app/hive/old/auth_instance_list_local_preference_old_bloc_impl.dart';
 import 'package:fedi/app/hive/old/current_auth_instance_local_preference_old_bloc_impl.dart';
-import 'package:fedi/app/hive/old/my_account_local_preference_old_bloc_impl.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fediverse_api/fediverse_api.dart';
@@ -103,13 +102,13 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
           var userAtHost = instance.userAtHost;
           var host = instance.urlHost;
 
-          var authHostAccessTokenLocalPreferenceBlocOld =
+          var authHostAccessTokenLocalPreferenceBloc =
               AuthHostAccessTokenLocalPreferenceBlocOld(
             hiveLocalPreferencesService,
             host: host,
           );
-          await authHostAccessTokenLocalPreferenceBlocOld.performAsyncInit();
-          var hostAccessToken = authHostAccessTokenLocalPreferenceBlocOld.value;
+          await authHostAccessTokenLocalPreferenceBloc.performAsyncInit();
+          var hostAccessToken = authHostAccessTokenLocalPreferenceBloc.value;
 
           if (hostAccessToken != null) {
             hostTokenMap[userAtHost] = hostAccessToken;
@@ -117,13 +116,13 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
             hostAccessToken = hostTokenMap[userAtHost];
           }
 
-          var authHostApplicationLocalPreferenceBlocOld =
+          var authHostApplicationLocalPreferenceBloc =
               AuthHostApplicationLocalPreferenceBlocOld(
             hiveLocalPreferencesService,
             host: host,
           );
-          await authHostApplicationLocalPreferenceBlocOld.performAsyncInit();
-          var application = authHostApplicationLocalPreferenceBlocOld.value;
+          await authHostApplicationLocalPreferenceBloc.performAsyncInit();
+          var application = authHostApplicationLocalPreferenceBloc.value;
 
           if (application != null) {
             applicationMap[host] = application;
@@ -131,18 +130,16 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
             application = applicationMap[host];
           }
 
-          var myAccountBloc = MyAccountLocalPreferenceBlocOld(
+          var myAccountBloc = MyAccountLocalPreferenceBloc(
             hiveLocalPreferencesService,
             userAtHost: userAtHost,
           );
 
           await myAccountBloc.performAsyncInit();
 
-          var pleromaAccount = myAccountBloc.value?.pleromaAccount;
+          var unifediApiAccount = myAccountBloc.value?.unifediApiAccount;
 
-          var myAccount2 = pleromaAccount
-              ?.toUnifediApiMyAccountPleromaAdapter()
-              .toUnifediApiMyAccount();
+          var myAccount2 = unifediApiAccount?.toUnifediApiMyAccount();
 
           if (myAccount2 != null) {
             myAccountMap[userAtHost] = myAccount2;
@@ -196,12 +193,12 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
           await unifediApiAccessLocalPreferenceBloc.dispose();
 
           await myAccountBloc.setValue(null);
-          await authHostAccessTokenLocalPreferenceBlocOld.setValue(null);
-          await authHostApplicationLocalPreferenceBlocOld.setValue(null);
+          await authHostAccessTokenLocalPreferenceBloc.setValue(null);
+          await authHostApplicationLocalPreferenceBloc.setValue(null);
 
           await myAccountBloc.dispose();
-          await authHostAccessTokenLocalPreferenceBlocOld.dispose();
-          await authHostApplicationLocalPreferenceBlocOld.dispose();
+          await authHostAccessTokenLocalPreferenceBloc.dispose();
+          await authHostApplicationLocalPreferenceBloc.dispose();
         }
         // await authListBloc.setValue(null);
         var accessListLocalPreferenceBloc =
@@ -218,16 +215,16 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
         await accessListLocalPreferenceBloc.dispose();
       }
 
-      var currentInstanceBlocOld = CurrentAuthInstanceOldLocalPreferenceBlocOld(
+      var currentInstanceBloc = CurrentAuthInstanceOldLocalPreferenceBlocOld(
         hiveLocalPreferencesService,
       );
-      await currentInstanceBlocOld.performAsyncInit();
+      await currentInstanceBloc.performAsyncInit();
 
-      var currentInstanceOld = currentInstanceBlocOld.value;
+      var currentInstance = currentInstanceBloc.value;
 
-      if (currentInstanceOld != null) {
-        var hostAccessToken = hostTokenMap[currentInstanceOld.urlHost];
-        var application = applicationMap[currentInstanceOld.urlHost];
+      if (currentInstance != null) {
+        var hostAccessToken = hostTokenMap[currentInstance.urlHost];
+        var application = applicationMap[currentInstance.urlHost];
 
         var currentUnifediApiAccessLocalPreferenceBloc =
             CurrentUnifediApiAccessLocalPreferenceBloc(
@@ -236,21 +233,21 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
         await currentUnifediApiAccessLocalPreferenceBloc.performAsyncInit();
 
         var unifediApiAccess = UnifediApiAccess(
-          url: currentInstanceOld.uri.toString(),
-          instance: currentInstanceOld.info
+          url: currentInstance.uri.toString(),
+          instance: currentInstance.info
               ?.toUnifediApiInstancePleromaAdapter()
               .toUnifediApiInstance(),
           userAccessToken: UnifediApiAccessUserToken(
-            myAccount: myAccountMap[currentInstanceOld.userAtHost],
-            user: currentInstanceOld.acct,
+            myAccount: myAccountMap[currentInstance.userAtHost],
+            user: currentInstance.acct,
             scopes: scopes,
             // same as for user because we don't have app token
-            oauthToken: currentInstanceOld.token!
+            oauthToken: currentInstance.token!
                 .toUnifediApiOAuthTokenPleromaAdapter()
                 .toUnifediApiOAuthToken(),
           ),
           applicationAccessToken: UnifediApiAccessApplicationToken(
-            oauthToken: (hostAccessToken ?? currentInstanceOld.token!)
+            oauthToken: (hostAccessToken ?? currentInstance.token!)
                 .toUnifediApiOAuthTokenPleromaAdapter()
                 .toUnifediApiOAuthToken(),
             scopes: scopes,
@@ -263,12 +260,12 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
         await currentUnifediApiAccessLocalPreferenceBloc
             .setValue(unifediApiAccess);
 
-        await currentInstanceBlocOld.setValue(null);
+        await currentInstanceBloc.setValue(null);
 
         await currentUnifediApiAccessLocalPreferenceBloc.dispose();
       }
 
-      await currentInstanceBlocOld.dispose();
+      await currentInstanceBloc.dispose();
 
       for (var i = 0; i < hiveLocalPreferencesService._box.length; i++) {
         var keyAt = hiveLocalPreferencesService._box.keyAt(i);

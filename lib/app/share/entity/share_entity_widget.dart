@@ -274,7 +274,7 @@ class _ShareEntityCarouselItemLocalFileWidget extends StatelessWidget {
       video: (_) => DisposableProvider<IVideoMediaPlayerBloc>(
         create: (context) {
           return VideoMediaPlayerBloc(
-            mediaPlayerSource: MediaPlayerSource.file(file: file),
+            mediaPlayerSource: MediaPlayerSource.localFile(file: file),
             autoInit: true,
             autoPlay: false,
             desiredAspectRatio:
@@ -288,7 +288,7 @@ class _ShareEntityCarouselItemLocalFileWidget extends StatelessWidget {
       audio: (_) => DisposableProvider<IAudioMediaPlayerBloc>(
         create: (context) {
           return AudioMediaPlayerBloc(
-            mediaPlayerSource: MediaPlayerSource.file(file: file),
+            mediaPlayerSource: MediaPlayerSource.localFile(file: file),
             autoInit: true,
             autoPlay: false,
           );

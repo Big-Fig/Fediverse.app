@@ -22,13 +22,22 @@ FediPushNotification _$FediPushNotificationFromJson(
     );
 
 Map<String, dynamic> _$FediPushNotificationToJson(
-        FediPushNotification instance) =>
-    <String, dynamic>{
-      'account': instance.account,
-      'notification_action': instance.notificationAction,
-      'notification_action_input': instance.notificationActionInput,
-      'notification_id': instance.notificationId,
-      'notification_type': instance.notificationType,
-      'server': instance.server,
-      'notification': instance.unifediApiNotification?.toJson(),
-    };
+    FediPushNotification instance) {
+  final val = <String, dynamic>{
+    'account': instance.account,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('notification_action', instance.notificationAction);
+  writeNotNull('notification_action_input', instance.notificationActionInput);
+  val['notification_id'] = instance.notificationId;
+  val['notification_type'] = instance.notificationType;
+  val['server'] = instance.server;
+  writeNotNull('notification', instance.unifediApiNotification?.toJson());
+  return val;
+}

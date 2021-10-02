@@ -22,7 +22,7 @@ void main() {
           TimelineSettingsModelMockHelper.createTestTimelineSettings(
         seed: seed,
       ),
-      TimelineSettings.fromJson,
+      (json) => TimelineSettings.fromJson(json),
     );
   });
 

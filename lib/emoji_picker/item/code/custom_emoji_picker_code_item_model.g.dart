@@ -18,8 +18,8 @@ class CustomEmojiPickerCodeItemAdapter
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return CustomEmojiPickerCodeItem(
-      code: fields[1] as String,
       name: fields[0] as String,
+      code: fields[1] as String,
     );
   }
 
@@ -48,15 +48,15 @@ class CustomEmojiPickerCodeItemAdapter
 // JsonSerializableGenerator
 // **************************************************************************
 
-CustomEmojiPickerCodeItem _$CustomEmojiPickerCodeItemFromJson(
+_$_CustomEmojiPickerCodeItem _$$_CustomEmojiPickerCodeItemFromJson(
         Map<String, dynamic> json) =>
-    CustomEmojiPickerCodeItem(
-      code: json['code'] as String,
+    _$_CustomEmojiPickerCodeItem(
       name: json['name'] as String,
+      code: json['code'] as String,
     );
 
-Map<String, dynamic> _$CustomEmojiPickerCodeItemToJson(
-        CustomEmojiPickerCodeItem instance) =>
+Map<String, dynamic> _$$_CustomEmojiPickerCodeItemToJson(
+        _$_CustomEmojiPickerCodeItem instance) =>
     <String, dynamic>{
       'name': instance.name,
       'code': instance.code,

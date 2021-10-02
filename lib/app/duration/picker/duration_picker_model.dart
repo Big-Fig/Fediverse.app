@@ -1,32 +1,12 @@
-class DurationPickerResult {
-  final Duration? duration;
-  final bool canceled;
-  final bool deleted;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  DurationPickerResult({
-    required this.duration,
-    required this.canceled,
-    required this.deleted,
-  });
+part 'duration_picker_model.freezed.dart';
 
-  @override
-  String toString() {
-    return 'DurationPickerResult{'
-        'duration: $duration, '
-        'canceled: $canceled, '
-        'deleted: $deleted'
-        '}';
-  }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is DurationPickerResult &&
-          runtimeType == other.runtimeType &&
-          duration == other.duration &&
-          canceled == other.canceled &&
-          deleted == other.deleted;
-
-  @override
-  int get hashCode => duration.hashCode ^ canceled.hashCode ^ deleted.hashCode;
+@freezed
+class DurationPickerResult with _$DurationPickerResult {
+  const factory DurationPickerResult({
+    required Duration? duration,
+    required bool canceled,
+    required bool deleted,
+  }) = _DurationPickerResult;
 }

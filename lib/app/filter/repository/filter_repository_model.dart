@@ -1,70 +1,43 @@
 import 'package:fedi/repository/repository_model.dart';
-import 'package:moor/moor.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:moor/moor.dart' as moor;
 import 'package:unifedi_api/unifedi_api.dart';
 
-class FilterRepositoryFilters {
-  final List<UnifediApiFilterContextType>? onlyWithContextTypes;
-  final bool? notExpired;
+part 'filter_repository_model.freezed.dart';
 
+@freezed
+class FilterRepositoryFilters with _$FilterRepositoryFilters {
   static const FilterRepositoryFilters empty = FilterRepositoryFilters();
 
-  const FilterRepositoryFilters({
-    this.onlyWithContextTypes,
-    this.notExpired,
-  });
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is FilterRepositoryFilters &&
-          runtimeType == other.runtimeType &&
-          onlyWithContextTypes == other.onlyWithContextTypes &&
-          notExpired == other.notExpired;
-
-  @override
-  int get hashCode => onlyWithContextTypes.hashCode ^ notExpired.hashCode;
-
-  @override
-  String toString() {
-    return 'FilterRepositoryFilters{'
-        'onlyWithContextTypes: $onlyWithContextTypes, '
-        'notExpired: $notExpired'
-        '}';
-  }
+  const factory FilterRepositoryFilters({
+    final List<UnifediApiFilterContextType>? onlyWithContextTypes,
+    final bool? notExpired,
+  }) = _FilterRepositoryFilters;
 }
 
 enum FilterOrderType {
   remoteId,
 }
 
-class FilterOrderingTermData extends RepositoryOrderingTerm {
-  final FilterOrderType orderType;
-  @override
-  final OrderingMode orderingMode;
+@freezed
+class FilterOrderingTermData
+    with _$FilterOrderingTermData
+    implements RepositoryOrderingTerm {
+  const factory FilterOrderingTermData({
+    required FilterOrderType orderType,
+    required moor.OrderingMode orderingMode,
+  }) = _FilterOrderingTermData;
 
   static const FilterOrderingTermData remoteIdDesc = FilterOrderingTermData(
-    orderingMode: OrderingMode.desc,
+    orderingMode: moor.OrderingMode.desc,
     orderType: FilterOrderType.remoteId,
   );
   static const FilterOrderingTermData remoteIdAsc = FilterOrderingTermData(
-    orderingMode: OrderingMode.asc,
+    orderingMode: moor.OrderingMode.asc,
     orderType: FilterOrderType.remoteId,
   );
-
-  const FilterOrderingTermData({
-    required this.orderType,
-    required this.orderingMode,
-  });
 
   static const List<FilterOrderingTermData> defaultTerms = [
     remoteIdDesc,
   ];
-
-  @override
-  String toString() {
-    return 'FilterOrderingTermData{'
-        'orderByType: $orderType, '
-        'orderingMode: $orderingMode'
-        '}';
-  }
 }

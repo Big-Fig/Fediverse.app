@@ -1,6 +1,8 @@
 import 'package:fedi/emoji_picker/item/custom_emoji_picker_item_model.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
-import 'package:json_annotation/json_annotation.dart';
+
+part 'custom_emoji_picker_code_item_model.freezed.dart';
 
 // ignore_for_file: no-magic-number
 part 'custom_emoji_picker_code_item_model.g.dart';
@@ -10,43 +12,19 @@ part 'custom_emoji_picker_code_item_model.g.dart';
 // which not exist in Hive 0.x
 //@HiveType()
 @HiveType(typeId: -32 + 71)
-@JsonSerializable(explicitToJson: true)
-class CustomEmojiPickerCodeItem extends CustomEmojiPickerItem {
-  @override
-  @HiveField(0)
-  final String name;
-  @override
-  @HiveField(1)
-  final String code;
+@freezed
+class CustomEmojiPickerCodeItem
+    with _$CustomEmojiPickerCodeItem
+    implements CustomEmojiPickerItem {
+  const CustomEmojiPickerCodeItem._();
 
-  CustomEmojiPickerCodeItem({
-    required this.code,
-    required this.name,
-  });
+  const factory CustomEmojiPickerCodeItem({
+    @HiveField(0) required String name,
+    @HiveField(1) required String code,
+  }) = _CustomEmojiPickerCodeItem;
 
-  @override
-  String toString() {
-    return 'CustomEmojiPickerCodeItem{'
-        'name: $name, '
-        'code: $code'
-        '}';
-  }
-
-  static CustomEmojiPickerCodeItem fromJson(
+  factory CustomEmojiPickerCodeItem.fromJson(
     Map<String, dynamic> json,
   ) =>
       _$CustomEmojiPickerCodeItemFromJson(json);
-
-  Map<String, dynamic> toJson() => _$CustomEmojiPickerCodeItemToJson(this);
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is CustomEmojiPickerCodeItem &&
-          runtimeType == other.runtimeType &&
-          name == other.name &&
-          code == other.code;
-
-  @override
-  int get hashCode => name.hashCode ^ code.hashCode;
 }

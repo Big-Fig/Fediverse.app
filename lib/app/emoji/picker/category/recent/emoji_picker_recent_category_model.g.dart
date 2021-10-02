@@ -49,21 +49,21 @@ class EmojiPickerRecentCategoryItemsListAdapter
 // JsonSerializableGenerator
 // **************************************************************************
 
-EmojiPickerRecentCategoryItemsList _$EmojiPickerRecentCategoryItemsListFromJson(
-        Map<String, dynamic> json) =>
-    EmojiPickerRecentCategoryItemsList(
-      recentCodeItems: (json['recent_code_items'] as List<dynamic>)
-          .map((e) =>
-              CustomEmojiPickerCodeItem.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      recentImageItems: (json['recent_image_items'] as List<dynamic>)
-          .map((e) =>
-              CustomEmojiPickerImageUrlItem.fromJson(e as Map<String, dynamic>))
-          .toList(),
-    );
+_$_EmojiPickerRecentCategoryItemsList
+    _$$_EmojiPickerRecentCategoryItemsListFromJson(Map<String, dynamic> json) =>
+        _$_EmojiPickerRecentCategoryItemsList(
+          recentCodeItems: (json['recent_code_items'] as List<dynamic>)
+              .map((e) =>
+                  CustomEmojiPickerCodeItem.fromJson(e as Map<String, dynamic>))
+              .toList(),
+          recentImageItems: (json['recent_image_items'] as List<dynamic>)
+              .map((e) => CustomEmojiPickerImageUrlItem.fromJson(
+                  e as Map<String, dynamic>))
+              .toList(),
+        );
 
-Map<String, dynamic> _$EmojiPickerRecentCategoryItemsListToJson(
-        EmojiPickerRecentCategoryItemsList instance) =>
+Map<String, dynamic> _$$_EmojiPickerRecentCategoryItemsListToJson(
+        _$_EmojiPickerRecentCategoryItemsList instance) =>
     <String, dynamic>{
       'recent_code_items':
           instance.recentCodeItems.map((e) => e.toJson()).toList(),

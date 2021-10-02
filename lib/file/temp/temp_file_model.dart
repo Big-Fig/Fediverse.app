@@ -1,28 +1,11 @@
-class DownloadTempFileRequest {
-  final String url;
-  final String filenameWithExtension;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  DownloadTempFileRequest({
-    required this.url,
-    required this.filenameWithExtension,
-  });
+part 'temp_file_model.freezed.dart';
 
-  @override
-  String toString() {
-    return 'DownloadTempFileRequest{'
-        'url: $url, '
-        'filename: $filenameWithExtension'
-        '}';
-  }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is DownloadTempFileRequest &&
-          runtimeType == other.runtimeType &&
-          url == other.url &&
-          filenameWithExtension == other.filenameWithExtension;
-
-  @override
-  int get hashCode => url.hashCode ^ filenameWithExtension.hashCode;
+@freezed
+class DownloadTempFileRequest with _$DownloadTempFileRequest {
+  const factory DownloadTempFileRequest({
+    required String url,
+    required String filenameWithExtension,
+  }) = _DownloadTempFileRequest;
 }

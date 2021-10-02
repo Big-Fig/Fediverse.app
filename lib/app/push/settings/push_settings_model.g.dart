@@ -62,7 +62,8 @@ class PushSettingsAdapter extends TypeAdapter<PushSettings> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-PushSettings _$PushSettingsFromJson(Map<String, dynamic> json) => PushSettings(
+_$_PushSettings _$$_PushSettingsFromJson(Map<String, dynamic> json) =>
+    _$_PushSettings(
       favourite: json['favourite'] as bool?,
       follow: json['follow'] as bool?,
       mention: json['mention'] as bool?,
@@ -72,13 +73,21 @@ PushSettings _$PushSettingsFromJson(Map<String, dynamic> json) => PushSettings(
       emojiReaction: json['emojiReaction'] as bool?,
     );
 
-Map<String, dynamic> _$PushSettingsToJson(PushSettings instance) =>
-    <String, dynamic>{
-      'favourite': instance.favourite,
-      'follow': instance.follow,
-      'mention': instance.mention,
-      'reblog': instance.reblog,
-      'poll': instance.poll,
-      'chatMention': instance.chatMention,
-      'emojiReaction': instance.emojiReaction,
-    };
+Map<String, dynamic> _$$_PushSettingsToJson(_$_PushSettings instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('favourite', instance.favourite);
+  writeNotNull('follow', instance.follow);
+  writeNotNull('mention', instance.mention);
+  writeNotNull('reblog', instance.reblog);
+  writeNotNull('poll', instance.poll);
+  writeNotNull('chatMention', instance.chatMention);
+  writeNotNull('emojiReaction', instance.emojiReaction);
+  return val;
+}

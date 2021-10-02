@@ -1,38 +1,19 @@
 import 'package:fedi/repository/repository_model.dart';
-import 'package:moor/moor.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:moor/moor.dart' as moor;
 
-class PleromaChatRepositoryFilters {
-  static const PleromaChatRepositoryFilters empty =
+part 'pleroma_chat_repository_model.freezed.dart';
+
+@freezed
+class PleromaChatRepositoryFilters with _$PleromaChatRepositoryFilters {
+  static final PleromaChatRepositoryFilters empty =
       PleromaChatRepositoryFilters();
 
-  final bool withLastMessage;
+  const PleromaChatRepositoryFilters._();
 
-  const PleromaChatRepositoryFilters({
-    this.withLastMessage = false,
-  });
-
-  PleromaChatRepositoryFilters copyWith({
-    bool? withLastMessage,
-  }) {
-    return PleromaChatRepositoryFilters(
-      withLastMessage: withLastMessage ?? this.withLastMessage,
-    );
-  }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is PleromaChatRepositoryFilters &&
-          runtimeType == other.runtimeType &&
-          withLastMessage == other.withLastMessage;
-
-  @override
-  int get hashCode => withLastMessage.hashCode;
-
-  @override
-  String toString() {
-    return 'PleromaChatRepositoryFilters{withLastMessage: $withLastMessage}';
-  }
+  const factory PleromaChatRepositoryFilters({
+    @Default(false) bool withLastMessage,
+  }) = _PleromaChatRepositoryFilters;
 }
 
 enum PleromaChatOrderType {
@@ -40,47 +21,40 @@ enum PleromaChatOrderType {
   updatedAt,
 }
 
-class PleromaChatRepositoryOrderingTermData extends RepositoryOrderingTerm {
-  final PleromaChatOrderType orderType;
-  @override
-  final OrderingMode orderingMode;
+@freezed
+class PleromaChatRepositoryOrderingTermData
+    with _$PleromaChatRepositoryOrderingTermData
+    implements RepositoryOrderingTerm {
+  const PleromaChatRepositoryOrderingTermData._();
 
-  const PleromaChatRepositoryOrderingTermData({
-    required this.orderType,
-    required this.orderingMode,
-  });
+  const factory PleromaChatRepositoryOrderingTermData({
+    required PleromaChatOrderType orderType,
+    required moor.OrderingMode orderingMode,
+  }) = _PleromaChatRepositoryOrderingTermData;
 
   static const PleromaChatRepositoryOrderingTermData remoteIdDesc =
       PleromaChatRepositoryOrderingTermData(
-    orderingMode: OrderingMode.desc,
+    orderingMode: moor.OrderingMode.desc,
     orderType: PleromaChatOrderType.remoteId,
   );
   static const PleromaChatRepositoryOrderingTermData remoteIdAsc =
       PleromaChatRepositoryOrderingTermData(
-    orderingMode: OrderingMode.asc,
+    orderingMode: moor.OrderingMode.asc,
     orderType: PleromaChatOrderType.remoteId,
   );
 
   static const PleromaChatRepositoryOrderingTermData updatedAtDesc =
       PleromaChatRepositoryOrderingTermData(
-    orderingMode: OrderingMode.desc,
+    orderingMode: moor.OrderingMode.desc,
     orderType: PleromaChatOrderType.updatedAt,
   );
   static const PleromaChatRepositoryOrderingTermData updatedAtAsc =
       PleromaChatRepositoryOrderingTermData(
-    orderingMode: OrderingMode.asc,
+    orderingMode: moor.OrderingMode.asc,
     orderType: PleromaChatOrderType.updatedAt,
   );
 
   static const List<PleromaChatRepositoryOrderingTermData> defaultTerms = [
     updatedAtDesc,
   ];
-
-  @override
-  String toString() {
-    return 'ChatOrderingTermData{'
-        'orderByType: $orderType, '
-        'orderingMode: $orderingMode'
-        '}';
-  }
 }

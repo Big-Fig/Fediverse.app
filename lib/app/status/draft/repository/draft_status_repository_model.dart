@@ -1,11 +1,15 @@
 import 'package:fedi/repository/repository_model.dart';
-import 'package:moor/moor.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:moor/moor.dart' as moor;
 
-class DraftStatusRepositoryFilters {
-  static const DraftStatusRepositoryFilters empty =
+part 'draft_status_repository_model.freezed.dart';
+
+@freezed
+class DraftStatusRepositoryFilters with _$DraftStatusRepositoryFilters {
+  static final DraftStatusRepositoryFilters empty =
       DraftStatusRepositoryFilters();
 
-  const DraftStatusRepositoryFilters();
+  const factory DraftStatusRepositoryFilters() = _DraftStatusRepositoryFilters;
 }
 
 enum DraftStatusRepositoryOrderType {
@@ -13,46 +17,39 @@ enum DraftStatusRepositoryOrderType {
   updatedAt,
 }
 
-class DraftStatusRepositoryOrderingTermData extends RepositoryOrderingTerm {
-  final DraftStatusRepositoryOrderType orderType;
-  @override
-  final OrderingMode orderingMode;
+@freezed
+class DraftStatusRepositoryOrderingTermData
+    with _$DraftStatusRepositoryOrderingTermData
+    implements RepositoryOrderingTerm {
+  const DraftStatusRepositoryOrderingTermData._();
 
-  const DraftStatusRepositoryOrderingTermData({
-    required this.orderType,
-    required this.orderingMode,
-  });
+  const factory DraftStatusRepositoryOrderingTermData({
+    required DraftStatusRepositoryOrderType orderType,
+    required moor.OrderingMode orderingMode,
+  }) = _DraftStatusRepositoryOrderingTermData;
 
   static const DraftStatusRepositoryOrderingTermData localIdDesc =
       DraftStatusRepositoryOrderingTermData(
-    orderingMode: OrderingMode.desc,
+    orderingMode: moor.OrderingMode.desc,
     orderType: DraftStatusRepositoryOrderType.localId,
   );
   static const DraftStatusRepositoryOrderingTermData localIdAsc =
       DraftStatusRepositoryOrderingTermData(
-    orderingMode: OrderingMode.asc,
+    orderingMode: moor.OrderingMode.asc,
     orderType: DraftStatusRepositoryOrderType.localId,
   );
   static const DraftStatusRepositoryOrderingTermData updatedAtDesc =
       DraftStatusRepositoryOrderingTermData(
-    orderingMode: OrderingMode.desc,
+    orderingMode: moor.OrderingMode.desc,
     orderType: DraftStatusRepositoryOrderType.updatedAt,
   );
   static const DraftStatusRepositoryOrderingTermData updatedAtAsc =
       DraftStatusRepositoryOrderingTermData(
-    orderingMode: OrderingMode.asc,
+    orderingMode: moor.OrderingMode.asc,
     orderType: DraftStatusRepositoryOrderType.updatedAt,
   );
 
   static const List<DraftStatusRepositoryOrderingTermData> defaultTerms = [
     updatedAtDesc,
   ];
-
-  @override
-  String toString() {
-    return 'DraftStatusOrderingTermData{'
-        'orderByType: $orderType, '
-        'orderingMode: $orderingMode'
-        '}';
-  }
 }

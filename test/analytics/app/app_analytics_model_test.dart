@@ -22,7 +22,7 @@ void main() {
           AppAnalyticsModelMockHelper.createTestAppAnalyticsData(
         seed: seed,
       ),
-      AppAnalyticsData.fromJson,
+      (json) => AppAnalyticsData.fromJson(json),
     );
   });
 

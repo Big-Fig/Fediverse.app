@@ -18,8 +18,8 @@ class CustomEmojiPickerImageUrlItemAdapter
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return CustomEmojiPickerImageUrlItem(
-      imageUrl: fields[1] as String,
       name: fields[0] as String,
+      imageUrl: fields[1] as String,
     );
   }
 
@@ -48,15 +48,15 @@ class CustomEmojiPickerImageUrlItemAdapter
 // JsonSerializableGenerator
 // **************************************************************************
 
-CustomEmojiPickerImageUrlItem _$CustomEmojiPickerImageUrlItemFromJson(
+_$_CustomEmojiPickerImageUrlItem _$$_CustomEmojiPickerImageUrlItemFromJson(
         Map<String, dynamic> json) =>
-    CustomEmojiPickerImageUrlItem(
-      imageUrl: json['image_url'] as String,
+    _$_CustomEmojiPickerImageUrlItem(
       name: json['name'] as String,
+      imageUrl: json['image_url'] as String,
     );
 
-Map<String, dynamic> _$CustomEmojiPickerImageUrlItemToJson(
-        CustomEmojiPickerImageUrlItem instance) =>
+Map<String, dynamic> _$$_CustomEmojiPickerImageUrlItemToJson(
+        _$_CustomEmojiPickerImageUrlItem instance) =>
     <String, dynamic>{
       'name': instance.name,
       'image_url': instance.imageUrl,

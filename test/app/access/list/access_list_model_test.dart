@@ -22,7 +22,7 @@ void main() {
           UnifediApiAccessListModelMockHelper.createTestUnifediApiAccessList(
         seed: seed,
       ),
-      UnifediApiAccessList.fromJson,
+      (json) => UnifediApiAccessList.fromJson(json),
     );
   });
 

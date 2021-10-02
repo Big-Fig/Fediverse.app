@@ -258,7 +258,7 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
     required IUnifediApiAccount unifediApiAccount,
     required IUnifediApiAccountRelationship accountRelationship,
   }) async {
-    var localAccount = unifediApiAccount.toDbAccountWrapper().copyWith(
+    var localAccount = unifediApiAccount.toDbAccountWrapper().copyWithTemp(
           relationship: accountRelationship,
         );
     unifediApiAccount = localAccount.toUnifediApiAccount();

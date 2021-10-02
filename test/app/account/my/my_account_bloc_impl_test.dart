@@ -141,7 +141,7 @@ void main() {
     await RxDartMockHelper.waitToExecuteRxCallbacks();
     expect(listened, myAccount.acct);
 
-    await _update(myAccount.copyWith(acct: newValue));
+    await _update(myAccount.copyWithTemp(acct: newValue));
 
     expect(myAccountBloc.acct, newValue);
     expect(listened, newValue);
@@ -161,7 +161,7 @@ void main() {
     await RxDartMockHelper.waitToExecuteRxCallbacks();
     expect(listened, myAccount.note);
 
-    await _update(myAccount.copyWith(note: newValue));
+    await _update(myAccount.copyWithTemp(note: newValue));
 
     expect(myAccountBloc.note, newValue);
     expect(listened, newValue);
@@ -181,7 +181,7 @@ void main() {
     await RxDartMockHelper.waitToExecuteRxCallbacks();
     expect(listened, myAccount.header);
 
-    await _update(myAccount.copyWith(header: newValue));
+    await _update(myAccount.copyWithTemp(header: newValue));
 
     expect(myAccountBloc.header, newValue);
     expect(listened, newValue);
@@ -201,7 +201,7 @@ void main() {
     await RxDartMockHelper.waitToExecuteRxCallbacks();
     expect(listened, myAccount.avatar);
 
-    await _update(myAccount.copyWith(avatar: newValue));
+    await _update(myAccount.copyWithTemp(avatar: newValue));
 
     expect(myAccountBloc.avatar, newValue);
     expect(listened, newValue);
@@ -221,7 +221,7 @@ void main() {
     await Future.delayed(Duration(milliseconds: 1));
     expect(listened, myAccount.displayName);
 
-    await _update(myAccount.copyWith(displayName: newValue));
+    await _update(myAccount.copyWithTemp(displayName: newValue));
 
     expect(myAccountBloc.displayName, newValue);
     expect(listened, newValue);
@@ -247,7 +247,7 @@ void main() {
     await Future.delayed(Duration(milliseconds: 1));
     expect(listened, myAccount.fields ?? []);
 
-    await _update(myAccount.copyWith(fields: newValue));
+    await _update(myAccount.copyWithTemp(fields: newValue));
 
     expect(myAccountBloc.fields, newValue);
     expect(listened, newValue);
@@ -268,7 +268,7 @@ void main() {
     await Future.delayed(Duration(milliseconds: 1));
     expect(listened, myAccount.statusesCount);
 
-    await _update(myAccount.copyWith(statusesCount: newValue));
+    await _update(myAccount.copyWithTemp(statusesCount: newValue));
 
     expect(myAccountBloc.statusesCount, newValue);
     expect(listened, newValue);
@@ -288,7 +288,7 @@ void main() {
     await Future.delayed(Duration(milliseconds: 1));
     expect(listened, myAccount.statusesCount);
 
-    await _update(myAccount.copyWith(statusesCount: newValue));
+    await _update(myAccount.copyWithTemp(statusesCount: newValue));
 
     expect(myAccountBloc.statusesCount, newValue);
     expect(listened, newValue);
@@ -308,7 +308,7 @@ void main() {
     await Future.delayed(Duration(milliseconds: 1));
     expect(listened, myAccount.followingCount);
 
-    await _update(myAccount.copyWith(followingCount: newValue));
+    await _update(myAccount.copyWithTemp(followingCount: newValue));
 
     expect(myAccountBloc.followingCount, newValue);
     expect(listened, newValue);
@@ -328,7 +328,7 @@ void main() {
     await Future.delayed(Duration(milliseconds: 1));
     expect(listened, myAccount.followersCount);
 
-    await _update(myAccount.copyWith(followersCount: newValue));
+    await _update(myAccount.copyWithTemp(followersCount: newValue));
 
     expect(myAccountBloc.followersCount, newValue);
     expect(listened, newValue);
@@ -363,7 +363,7 @@ void main() {
     );
 
     await _update(
-      myAccount.copyWith(
+      myAccount.copyWithTemp(
         displayName: newDisplayNameValue,
       ),
     );
@@ -404,7 +404,7 @@ void main() {
       EmojiText(text: newDisplayNameValue, emojis: myAccount.emojis),
     );
 
-    await _update(myAccount.copyWith(
+    await _update(myAccount.copyWithTemp(
       displayName: newDisplayNameValue,
       emojis: newEmojis,
     ));
@@ -519,8 +519,8 @@ void main() {
   test('checkAccountIsMe', () async {
     expect(myAccountBloc.checkAccountIsMe(myAccount), true);
     expect(
-      myAccountBloc
-          .checkAccountIsMe(myAccount.copyWith(remoteId: 'invalidRemoteId')),
+      myAccountBloc.checkAccountIsMe(
+          myAccount.copyWithTemp(remoteId: 'invalidRemoteId')),
       false,
     );
     expect(

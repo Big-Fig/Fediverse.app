@@ -1,9 +1,9 @@
-import 'package:fedi/collection/collection_hash_utils.dart';
 import 'package:fediverse_api/fediverse_api_utils.dart';
-import 'package:flutter/foundation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
-import 'package:json_annotation/json_annotation.dart';
 import 'package:unifedi_api/unifedi_api.dart';
+
+part 'access_list_model.freezed.dart';
 
 // ignore_for_file: no-magic-number
 part 'access_list_model.g.dart';
@@ -13,33 +13,12 @@ part 'access_list_model.g.dart';
 // which not exist in Hive 0.x
 //@HiveType()
 @HiveType(typeId: -32 + 115)
-@JsonSerializable(explicitToJson: true)
-class UnifediApiAccessList extends IJsonObj {
-  @HiveField(0)
-  final List<UnifediApiAccess> instances;
+@freezed
+class UnifediApiAccessList with _$UnifediApiAccessList implements IJsonObj {
+  const factory UnifediApiAccessList({
+    @HiveField(0) required List<UnifediApiAccess> instances,
+  }) = _UnifediApiAccessList;
 
-  UnifediApiAccessList({
-    required this.instances,
-  });
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is UnifediApiAccessList &&
-          runtimeType == other.runtimeType &&
-          listEquals(instances, other.instances);
-
-  @override
-  int get hashCode => listHash(instances);
-
-  @override
-  String toString() {
-    return 'UnifediApiAccessList{instances: $instances}';
-  }
-
-  static UnifediApiAccessList fromJson(Map<String, dynamic> json) =>
+  factory UnifediApiAccessList.fromJson(Map<String, dynamic> json) =>
       _$UnifediApiAccessListFromJson(json);
-
-  @override
-  Map<String, dynamic> toJson() => _$UnifediApiAccessListToJson(this);
 }

@@ -51,7 +51,7 @@ class InstanceAnnouncementCachedListBloc
         newerThanItem: newerThan,
         limit: limit,
       ),
-      filters: InstanceAnnouncementRepositoryFilters(
+      filters: InstanceAnnouncementRepositoryFilters.only(
         withDismissed: instanceAnnouncementSettings.withDismissed,
       ),
       orderingTerms: [

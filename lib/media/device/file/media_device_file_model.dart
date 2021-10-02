@@ -1,5 +1,9 @@
 import 'dart:io';
 
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'media_device_file_model.freezed.dart';
+
 enum MediaDeviceFileType {
   image,
   video,
@@ -49,18 +53,17 @@ extension IMediaDeviceFileExtension on IMediaDeviceFile {
   }
 }
 
-class FileMediaDeviceFileMetadata extends IMediaDeviceFileMetadata {
-  final File originalFile;
-  final bool isNeedDeleteAfterUsage;
+@freezed
+class FileMediaDeviceFileMetadata
+    with _$FileMediaDeviceFileMetadata
+    implements IMediaDeviceFileMetadata {
+  const FileMediaDeviceFileMetadata._();
 
-  @override
-  final MediaDeviceFileType type;
-
-  FileMediaDeviceFileMetadata({
-    required this.originalFile,
-    required this.isNeedDeleteAfterUsage,
-    required this.type,
-  });
+  const factory FileMediaDeviceFileMetadata({
+    required File originalFile,
+    required bool isNeedDeleteAfterUsage,
+    required MediaDeviceFileType type,
+  }) = _FileMediaDeviceFileMetadata;
 
   @override
   String get deviceId => originalFile.absolute.path;
@@ -71,40 +74,19 @@ class FileMediaDeviceFileMetadata extends IMediaDeviceFileMetadata {
         isNeedDeleteAfterUsage: isNeedDeleteAfterUsage,
         metadata: this,
       );
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is FileMediaDeviceFileMetadata &&
-          runtimeType == other.runtimeType &&
-          originalFile == other.originalFile &&
-          isNeedDeleteAfterUsage == other.isNeedDeleteAfterUsage &&
-          type == other.type;
-
-  @override
-  int get hashCode =>
-      originalFile.hashCode ^ isNeedDeleteAfterUsage.hashCode ^ type.hashCode;
-
-  @override
-  String toString() {
-    return 'FileMediaDeviceFileMetadata{'
-        'isNeedDeleteAfterUsage: $originalFile,'
-        ' isNeedDeleteAfterUsage: $isNeedDeleteAfterUsage,'
-        ' type: $type}';
-  }
 }
 
-class FileMediaDeviceFile extends IMediaDeviceFile {
-  final File originalFile;
+@freezed
+class FileMediaDeviceFile
+    with _$FileMediaDeviceFile
+    implements IMediaDeviceFile {
+  const FileMediaDeviceFile._();
 
-  @override
-  final bool isNeedDeleteAfterUsage;
-
-  FileMediaDeviceFile({
-    required this.originalFile,
-    required this.isNeedDeleteAfterUsage,
-    required this.metadata,
-  });
+  const factory FileMediaDeviceFile({
+    required File originalFile,
+    required bool isNeedDeleteAfterUsage,
+    required IMediaDeviceFileMetadata metadata,
+  }) = _FileMediaDeviceFile;
 
   @override
   Future delete() => originalFile.delete();
@@ -114,31 +96,4 @@ class FileMediaDeviceFile extends IMediaDeviceFile {
 
   @override
   Future<String> calculateFilePath() async => originalFile.path;
-
-  @override
-  final IMediaDeviceFileMetadata metadata;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is FileMediaDeviceFile &&
-          runtimeType == other.runtimeType &&
-          originalFile == other.originalFile &&
-          isNeedDeleteAfterUsage == other.isNeedDeleteAfterUsage &&
-          metadata == other.metadata;
-
-  @override
-  int get hashCode =>
-      originalFile.hashCode ^
-      isNeedDeleteAfterUsage.hashCode ^
-      metadata.hashCode;
-
-  @override
-  String toString() {
-    return 'FileMediaDeviceFile{'
-        'originalFile: $originalFile,'
-        ' isNeedDeleteAfterUsage: $isNeedDeleteAfterUsage,'
-        ' metadata: $metadata'
-        '}';
-  }
 }

@@ -22,7 +22,7 @@ void main() {
           PushSettingsModelMockHelper.createTestPushSettings(
         seed: seed,
       ),
-      PushSettings.fromJson,
+      (json) => PushSettings.fromJson(json),
     );
   });
 

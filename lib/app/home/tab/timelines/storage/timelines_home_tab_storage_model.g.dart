@@ -45,16 +45,16 @@ class TimelinesHomeTabStorageAdapter
 // JsonSerializableGenerator
 // **************************************************************************
 
-TimelinesHomeTabStorage _$TimelinesHomeTabStorageFromJson(
+_$_TimelinesHomeTabStorage _$$_TimelinesHomeTabStorageFromJson(
         Map<String, dynamic> json) =>
-    TimelinesHomeTabStorage(
+    _$_TimelinesHomeTabStorage(
       timelineIds: (json['timeline_ids'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
     );
 
-Map<String, dynamic> _$TimelinesHomeTabStorageToJson(
-        TimelinesHomeTabStorage instance) =>
+Map<String, dynamic> _$$_TimelinesHomeTabStorageToJson(
+        _$_TimelinesHomeTabStorage instance) =>
     <String, dynamic>{
       'timeline_ids': instance.timelineIds,
     };

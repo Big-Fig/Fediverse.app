@@ -227,7 +227,7 @@ class LocalAccountBloc extends AccountBloc {
         accountRepository.updateAppTypeByRemoteType(
           appItem: account,
           remoteItem: account
-              .copyWith(
+              .copyWithTemp(
                 followersCount: account.followersCount! - 1,
                 relationship: newRelationship,
               )
@@ -263,7 +263,7 @@ class LocalAccountBloc extends AccountBloc {
       await accountRepository.updateAppTypeByRemoteType(
         appItem: account,
         remoteItem: account
-            .copyWith(
+            .copyWithTemp(
               followersCount: account.followersCount! + 1,
               relationship: newRelationship,
             )
@@ -398,7 +398,7 @@ class LocalAccountBloc extends AccountBloc {
     if (!accountRelationshipSubject.isClosed) {
       accountRelationshipSubject.add(newRelationship);
     }
-    var newAccount = account.copyWith(relationship: newRelationship);
+    var newAccount = account.copyWithTemp(relationship: newRelationship);
     var newRemoteAccount = newAccount.toUnifediApiAccount();
 
     _logger.finest(() => '_updateRelationship '

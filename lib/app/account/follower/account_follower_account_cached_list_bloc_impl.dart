@@ -21,7 +21,7 @@ class AccountFollowerAccountCachedListBloc extends DisposableOwner
   final IAccount account;
 
   AccountRepositoryFilters get _accountRepositoryFilters =>
-      AccountRepositoryFilters(
+      AccountRepositoryFilters.only(
         onlyInAccountFollowers: account,
       );
 

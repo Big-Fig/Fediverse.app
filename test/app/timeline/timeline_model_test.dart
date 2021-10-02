@@ -20,7 +20,7 @@ void main() {
       ({required String seed}) => TimelineModelMockHelper.createTestTimeline(
         seed: seed,
       ),
-      Timeline.fromJson,
+      (json) => Timeline.fromJson(json),
     );
   });
 

@@ -53,8 +53,9 @@ class PostStatusSettingsAdapter extends TypeAdapter<PostStatusSettings> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-PostStatusSettings _$PostStatusSettingsFromJson(Map<String, dynamic> json) =>
-    PostStatusSettings(
+_$_PostStatusSettings _$$_PostStatusSettingsFromJson(
+        Map<String, dynamic> json) =>
+    _$_PostStatusSettings(
       markMediaAsNsfwOnAttach: json['mark_media_as_nsfw_on_attach'] as bool,
       defaultVisibilityString: json['default_visibility'] as String,
       defaultStatusLocale: json['default_status_locale'] == null
@@ -65,11 +66,21 @@ PostStatusSettings _$PostStatusSettingsFromJson(Map<String, dynamic> json) =>
           json['dont_upload_media_during_editing_on_attach'] as bool,
     );
 
-Map<String, dynamic> _$PostStatusSettingsToJson(PostStatusSettings instance) =>
-    <String, dynamic>{
-      'mark_media_as_nsfw_on_attach': instance.markMediaAsNsfwOnAttach,
-      'default_visibility': instance.defaultVisibilityString,
-      'default_status_locale': instance.defaultStatusLocale?.toJson(),
-      'dont_upload_media_during_editing_on_attach':
-          instance.dontUploadMediaDuringEditing,
-    };
+Map<String, dynamic> _$$_PostStatusSettingsToJson(
+    _$_PostStatusSettings instance) {
+  final val = <String, dynamic>{
+    'mark_media_as_nsfw_on_attach': instance.markMediaAsNsfwOnAttach,
+    'default_visibility': instance.defaultVisibilityString,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('default_status_locale', instance.defaultStatusLocale?.toJson());
+  val['dont_upload_media_during_editing_on_attach'] =
+      instance.dontUploadMediaDuringEditing;
+  return val;
+}

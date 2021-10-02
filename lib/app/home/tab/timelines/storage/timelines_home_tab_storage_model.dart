@@ -1,38 +1,32 @@
 import 'package:fedi/app/timeline/timeline_model.dart';
-import 'package:fedi/collection/collection_hash_utils.dart';
 import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+part 'timelines_home_tab_storage_model.freezed.dart';
 
 // ignore_for_file: no-magic-number
 part 'timelines_home_tab_storage_model.g.dart';
 
 enum TimelinesHomeTabStorageUiState { edit, view }
 
-class TimelinesHomeTabStorageListItem {
-  final Timeline timeline;
-  final Key key;
+@freezed
+class TimelinesHomeTabStorageListItem with _$TimelinesHomeTabStorageListItem {
+  const factory TimelinesHomeTabStorageListItem({
+    required Timeline timeline,
+    required Key key,
+  }) = _TimelinesHomeTabStorageListItem;
 
-  TimelinesHomeTabStorageListItem(this.timeline)
-      : key = ValueKey('timeline.${timeline.id}');
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is TimelinesHomeTabStorageListItem &&
-          runtimeType == other.runtimeType &&
-          timeline == other.timeline &&
-          key == other.key;
-
-  @override
-  int get hashCode => timeline.hashCode ^ key.hashCode;
-
-  @override
-  String toString() {
-    return 'TimelinesHomeTabStorageListItem{timeline: $timeline, key: $key}';
-  }
+  static TimelinesHomeTabStorageListItem fromTimelineOnly({
+    required Timeline timeline,
+  }) =>
+      TimelinesHomeTabStorageListItem(
+        timeline: timeline,
+        key: ValueKey('timeline.${timeline.id}'),
+      );
 }
 
 // -32 is hack for hive 0.x backward ids compatibility
@@ -40,41 +34,16 @@ class TimelinesHomeTabStorageListItem {
 // which not exist in Hive 0.x
 //@HiveType()
 @HiveType(typeId: -32 + 81)
-@JsonSerializable()
-class TimelinesHomeTabStorage implements IJsonObj {
-  @HiveField(0)
-  @JsonKey(name: 'timeline_ids')
-  final List<String> timelineIds;
+@freezed
+class TimelinesHomeTabStorage
+    with _$TimelinesHomeTabStorage
+    implements IJsonObj {
+  const factory TimelinesHomeTabStorage({
+    @HiveField(0)
+    @JsonKey(name: 'timeline_ids')
+        required List<String> timelineIds,
+  }) = _TimelinesHomeTabStorage;
 
-  const TimelinesHomeTabStorage({
-    required this.timelineIds,
-  });
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is TimelinesHomeTabStorage &&
-          runtimeType == other.runtimeType &&
-          listEquals(timelineIds, other.timelineIds);
-
-  @override
-  int get hashCode => listHash(timelineIds);
-
-  TimelinesHomeTabStorage copyWith({
-    List<String>? timelineIds,
-  }) =>
-      TimelinesHomeTabStorage(
-        timelineIds: timelineIds ?? this.timelineIds,
-      );
-
-  @override
-  String toString() {
-    return 'TimelinesHomeTabStorage{timelineIds: $timelineIds}';
-  }
-
-  static TimelinesHomeTabStorage fromJson(Map<String, dynamic> json) =>
+  factory TimelinesHomeTabStorage.fromJson(Map<String, dynamic> json) =>
       _$TimelinesHomeTabStorageFromJson(json);
-
-  @override
-  Map<String, dynamic> toJson() => _$TimelinesHomeTabStorageToJson(this);
 }

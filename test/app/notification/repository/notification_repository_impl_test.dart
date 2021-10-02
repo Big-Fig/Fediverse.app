@@ -414,7 +414,7 @@ void main() {
   test('createQuery excludeTypes', () async {
     var query = notificationRepository.createQuery(
       pagination: null,
-      filters: NotificationRepositoryFilters(
+      filters: NotificationRepositoryFilters.only(
         excludeTypes: [
           UnifediApiNotificationType.followValue,
         ],
@@ -891,7 +891,7 @@ void main() {
   test('countUnread', () async {
     expect(
       (await notificationRepository.calculateCount(
-        filters: NotificationRepositoryFilters(
+        filters: NotificationRepositoryFilters.only(
           onlyUnread: true,
         ),
       )),
@@ -911,7 +911,7 @@ void main() {
 
     expect(
       (await notificationRepository.calculateCount(
-        filters: NotificationRepositoryFilters(
+        filters: NotificationRepositoryFilters.only(
           onlyWithType: UnifediApiNotificationType.reblogValue,
           onlyUnread: true,
         ),
@@ -920,7 +920,7 @@ void main() {
     );
     expect(
       (await notificationRepository.calculateCount(
-        filters: NotificationRepositoryFilters(
+        filters: NotificationRepositoryFilters.only(
           onlyWithType: UnifediApiNotificationType.followValue,
           onlyUnread: true,
         ),
@@ -929,7 +929,7 @@ void main() {
     );
     expect(
       (await notificationRepository.calculateCount(
-        filters: NotificationRepositoryFilters(
+        filters: NotificationRepositoryFilters.only(
           onlyUnread: true,
         ),
       )),
@@ -950,7 +950,7 @@ void main() {
 
     expect(
       (await notificationRepository.calculateCount(
-        filters: NotificationRepositoryFilters(
+        filters: NotificationRepositoryFilters.only(
           onlyWithType: UnifediApiNotificationType.reblogValue,
           onlyUnread: true,
         ),
@@ -959,7 +959,7 @@ void main() {
     );
     expect(
       (await notificationRepository.calculateCount(
-        filters: NotificationRepositoryFilters(
+        filters: NotificationRepositoryFilters.only(
           onlyWithType: UnifediApiNotificationType.followValue,
           onlyUnread: true,
         ),
@@ -968,7 +968,7 @@ void main() {
     );
     expect(
       (await notificationRepository.calculateCount(
-        filters: NotificationRepositoryFilters(
+        filters: NotificationRepositoryFilters.only(
           onlyUnread: true,
         ),
       )),
@@ -989,7 +989,7 @@ void main() {
 
     expect(
       (await notificationRepository.calculateCount(
-        filters: NotificationRepositoryFilters(
+        filters: NotificationRepositoryFilters.only(
           onlyWithType: UnifediApiNotificationType.reblogValue,
           onlyUnread: true,
         ),
@@ -998,7 +998,7 @@ void main() {
     );
     expect(
       (await notificationRepository.calculateCount(
-        filters: NotificationRepositoryFilters(
+        filters: NotificationRepositoryFilters.only(
           onlyWithType: UnifediApiNotificationType.followValue,
           onlyUnread: true,
         ),
@@ -1007,7 +1007,7 @@ void main() {
     );
     expect(
       (await notificationRepository.calculateCount(
-        filters: NotificationRepositoryFilters(
+        filters: NotificationRepositoryFilters.only(
           onlyUnread: true,
         ),
       )),

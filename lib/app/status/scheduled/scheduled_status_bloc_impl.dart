@@ -228,7 +228,7 @@ class ScheduledStatusBloc extends DisposableOwner
         inReplyToConversationId: postStatusData.inReplyToConversationId,
         scheduledAt: postStatusData.scheduledAt!,
         to: postStatusData.to,
-        poll: postStatusData.poll?.topostStatusPoll(),
+        poll: postStatusData.poll?.toUnifediApiPostStatusPoll(),
         spoilerText: postStatusData.subject,
         language: postStatusData.language,
         expiresInSeconds: postStatusData.expiresInSeconds,

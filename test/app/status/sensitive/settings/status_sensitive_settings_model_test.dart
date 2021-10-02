@@ -22,7 +22,7 @@ void main() {
           .createTestStatusSensitiveSettings(
         seed: seed,
       ),
-      StatusSensitiveSettings.fromJson,
+      (json) => StatusSensitiveSettings.fromJson(json),
     );
   });
 

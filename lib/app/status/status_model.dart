@@ -3,8 +3,11 @@ import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/pending/pending_model.dart';
 import 'package:fedi/obj/equal_comparable_obj.dart';
 import 'package:flutter/widgets.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logging/logging.dart';
 import 'package:unifedi_api/unifedi_api.dart';
+
+part 'status_model.freezed.dart';
 
 final _logger = Logger('status_model.dart');
 
@@ -15,55 +18,6 @@ typedef StatusAndContextCallback = Function(
 typedef StatusCallback = Function(IStatus? status);
 
 abstract class IStatus implements IEqualComparableObj<IStatus> {
-  IStatus copyWith({
-    IAccount? account,
-    IStatus? reblog,
-    int? id,
-    String? remoteId,
-    DateTime? createdAt,
-    IStatus? inReplyToStatus,
-    String? inReplyToRemoteId,
-    String? inReplyToAccountRemoteId,
-    bool? nsfwSensitive,
-    String? spoilerText,
-    UnifediApiVisibility? visibility,
-    String? uri,
-    String? url,
-    int? repliesCount,
-    int? reblogsCount,
-    int? favouritesCount,
-    bool? favourited,
-    bool? reblogged,
-    bool? muted,
-    bool? bookmarked,
-    bool? pinned,
-    String? content,
-    String? reblogStatusRemoteId,
-    UnifediApiApplication? application,
-    String? accountRemoteId,
-    List<UnifediApiMediaAttachment>? mediaAttachments,
-    List<UnifediApiMention>? mentions,
-    List<UnifediApiTag>? tags,
-    List<UnifediApiEmoji>? emojis,
-    UnifediApiPoll? poll,
-    UnifediApiCard? card,
-    String? language,
-    IUnifediApiContentVariants? contentVariants,
-    int? conversationId,
-    int? directConversationId,
-    String? inReplyToAccountAcct,
-    bool? local,
-    IUnifediApiContentVariants? spoilerTextVariants,
-    DateTime? expiresAt,
-    bool? threadMuted,
-    List<UnifediApiEmojiReaction>? emojiReactions,
-    bool? deleted,
-    PendingState? pendingState,
-    String? oldPendingRemoteId,
-    bool? hiddenLocallyOnDevice,
-    String? wasSentWithIdempotencyKey,
-  });
-
   static bool isItemsEqual(IStatus a, IStatus b) => a.remoteId == b.remoteId;
 
   static int compareItemsToSort(IStatus? a, IStatus? b) {
@@ -178,11 +132,6 @@ abstract class IStatus implements IEqualComparableObj<IStatus> {
   /// for that use the /statuses/:id/reactions endpoint.
   List<UnifediApiEmojiReaction>? get emojiReactions;
 
-  bool get isReply =>
-      inReplyToAccountRemoteId != null && inReplyToRemoteId != null;
-
-  bool get isHaveReblog => reblogStatusRemoteId != null;
-
   bool get deleted;
 
   PendingState? get pendingState;
@@ -195,6 +144,11 @@ abstract class IStatus implements IEqualComparableObj<IStatus> {
 }
 
 extension IStatusDbExtension on IStatus {
+  bool get isReply =>
+      inReplyToAccountRemoteId != null && inReplyToRemoteId != null;
+
+  bool get isHaveReblog => reblogStatusRemoteId != null;
+
   DbStatusPopulatedWrapper toDbStatusPopulatedWrapper() {
     if (this is DbStatusPopulatedWrapper) {
       return this as DbStatusPopulatedWrapper;
@@ -350,12 +304,14 @@ extension IStatusDbExtension on IStatus {
   }
 }
 
-class DbStatusPopulatedWrapper extends IStatus {
-  final DbStatusPopulated dbStatusPopulated;
-
-  DbStatusPopulatedWrapper({
-    required this.dbStatusPopulated,
-  });
+@freezed
+class DbStatusPopulatedWrapper
+    with _$DbStatusPopulatedWrapper
+    implements IStatus {
+  const DbStatusPopulatedWrapper._();
+  const factory DbStatusPopulatedWrapper({
+    required DbStatusPopulated dbStatusPopulated,
+  }) = _DbStatusPopulatedWrapper;
 
   @override
   DbAccountPopulatedWrapper get account => DbAccountPopulatedWrapper(
@@ -504,21 +460,6 @@ class DbStatusPopulatedWrapper extends IStatus {
   String? get language => dbStatusPopulated.dbStatus.language;
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is DbStatusPopulatedWrapper &&
-          runtimeType == other.runtimeType &&
-          dbStatusPopulated == other.dbStatusPopulated;
-
-  @override
-  int get hashCode => dbStatusPopulated.hashCode;
-
-  @override
-  String toString() {
-    return 'DbStatusPopulatedWrapper{dbStatusPopulated: $dbStatusPopulated}';
-  }
-
-  @override
   bool get pinned => dbStatusPopulated.dbStatus.pinned == true;
 
   @override
@@ -558,160 +499,6 @@ class DbStatusPopulatedWrapper extends IStatus {
   }
 
   @override
-  // ignore: long-parameter-list, code-metrics, long-method
-  DbStatusPopulatedWrapper copyWith({
-    IAccount? account,
-    IStatus? reblog,
-    int? id,
-    String? remoteId,
-    DateTime? createdAt,
-    IStatus? inReplyToStatus,
-    String? inReplyToRemoteId,
-    String? inReplyToAccountRemoteId,
-    bool? nsfwSensitive,
-    String? spoilerText,
-    UnifediApiVisibility? visibility,
-    String? uri,
-    String? url,
-    int? repliesCount,
-    int? reblogsCount,
-    int? favouritesCount,
-    bool? favourited,
-    bool? reblogged,
-    bool? muted,
-    bool? bookmarked,
-    bool? pinned,
-    String? content,
-    String? reblogStatusRemoteId,
-    UnifediApiApplication? application,
-    String? accountRemoteId,
-    List<UnifediApiMediaAttachment>? mediaAttachments,
-    List<UnifediApiMention>? mentions,
-    List<UnifediApiTag>? tags,
-    List<UnifediApiEmoji>? emojis,
-    UnifediApiPoll? poll,
-    UnifediApiCard? card,
-    String? language,
-    IUnifediApiContentVariants? contentVariants,
-    int? conversationId,
-    int? directConversationId,
-    String? inReplyToAccountAcct,
-    bool? local,
-    IUnifediApiContentVariants? spoilerTextVariants,
-    DateTime? expiresAt,
-    bool? threadMuted,
-    List<UnifediApiEmojiReaction>? emojiReactions,
-    bool? deleted,
-    PendingState? pendingState,
-    String? oldPendingRemoteId,
-    bool? hiddenLocallyOnDevice,
-    String? wasSentWithIdempotencyKey,
-  }) {
-    var reblogStatus = reblog?.toDbStatus();
-    var reblogStatusAccount = reblog?.account.toDbAccount();
-
-    var replyStatus = inReplyToStatus?.toDbStatus();
-    var replyStatusAccount = inReplyToStatus?.account.toDbAccount();
-
-    var replyReblogStatus = inReplyToStatus?.reblog?.toDbStatus();
-    var replyReblogStatusAccount =
-        inReplyToStatus?.reblog?.account.toDbAccount();
-
-    return DbStatusPopulatedWrapper(
-      dbStatusPopulated: dbStatusPopulated.copyWith(
-        dbStatus: dbStatusPopulated.dbStatus.copyWith(
-          id: id,
-          remoteId: remoteId,
-          createdAt: createdAt,
-          inReplyToRemoteId: inReplyToRemoteId,
-          inReplyToAccountRemoteId: inReplyToAccountRemoteId,
-          sensitive: nsfwSensitive,
-          spoilerText: spoilerText,
-          visibility: visibility,
-          uri: uri,
-          url: url,
-          repliesCount: repliesCount,
-          reblogsCount: reblogsCount,
-          favouritesCount: favouritesCount,
-          favourited: favourited,
-          reblogged: reblogged,
-          muted: muted,
-          bookmarked: bookmarked,
-          pinned: pinned,
-          content: content,
-          reblogStatusRemoteId: reblogStatusRemoteId,
-          application: application,
-          accountRemoteId: accountRemoteId,
-          mediaAttachments: mediaAttachments,
-          mentions: mentions,
-          tags: tags,
-          emojis: emojis,
-          poll: poll,
-          card: card,
-          language: language,
-          contentVariants: contentVariants?.toUnifediApiContentVariants(),
-          conversationId: conversationId,
-          directConversationId: directConversationId,
-          inReplyToAccountAcct: inReplyToAccountAcct,
-          local: local,
-          spoilerTextVariants:
-              spoilerTextVariants?.toUnifediApiContentVariants(),
-          expiresAt: expiresAt,
-          threadMuted: threadMuted,
-          emojiReactions: emojiReactions,
-          deleted: deleted,
-          pendingState: pendingState,
-          oldPendingRemoteId: oldPendingRemoteId,
-          hiddenLocallyOnDevice: hiddenLocallyOnDevice,
-          wasSentWithIdempotencyKey: wasSentWithIdempotencyKey,
-        ),
-        dbAccount: dbStatusPopulated.dbAccount.copyWith(
-          id: account?.localId,
-          remoteId: account?.remoteId,
-          username: account?.username,
-          url: account?.url,
-          note: account?.note,
-          locked: account?.locked,
-          headerStatic: account?.headerStatic,
-          header: account?.header,
-          followingCount: account?.followingCount,
-          followersCount: account?.followersCount,
-          statusesCount: account?.statusesCount,
-          displayName: account?.displayName,
-          createdAt: account?.createdAt,
-          bot: account?.bot,
-          avatarStatic: account?.avatarStatic,
-          avatar: account?.avatar,
-          acct: account?.acct,
-          lastStatusAt: account?.lastStatusAt,
-          fields: account?.fields?.toUnifediApiFieldList(),
-          emojis: account?.emojis?.toUnifediApiEmojiList(),
-          relationship:
-              account?.relationship?.toUnifediApiAccountRelationship(),
-          tags: account?.tags?.toUnifediApiTagList(),
-          isAdmin: account?.isAdmin,
-          isModerator: account?.isModerator,
-          confirmationPending: account?.confirmationPending,
-          hideFavorites: account?.hideFavorites,
-          hideFollowers: account?.hideFollowers,
-          hideFollows: account?.hideFollows,
-          hideFollowersCount: account?.hideFollowersCount,
-          hideFollowsCount: account?.hideFollowsCount,
-          deactivated: account?.deactivated,
-          allowFollowingMove: account?.allowFollowingMove,
-          skipThreadContainment: account?.skipThreadContainment,
-        ),
-        reblogDbStatus: reblogStatus,
-        reblogDbStatusAccount: reblogStatusAccount,
-        replyDbStatus: replyStatus,
-        replyDbStatusAccount: replyStatusAccount,
-        replyReblogDbStatus: replyReblogStatus,
-        replyReblogDbStatusAccount: replyReblogStatusAccount,
-      ),
-    );
-  }
-
-  @override
   String? get wasSentWithIdempotencyKey =>
       dbStatusPopulated.dbStatus.wasSentWithIdempotencyKey;
 
@@ -722,89 +509,19 @@ class DbStatusPopulatedWrapper extends IStatus {
   bool isEqualTo(IStatus b) => IStatus.isItemsEqual(this, b);
 }
 
-class DbStatusPopulated {
-  final DbStatus dbStatus;
-  final DbAccount dbAccount;
-  final DbStatus? reblogDbStatus;
-  final DbAccount? reblogDbStatusAccount;
-  final DbStatus? replyDbStatus;
-  final DbAccount? replyDbStatusAccount;
-  final DbStatus? replyReblogDbStatus;
-  final DbAccount? replyReblogDbStatusAccount;
-
-  DbStatusPopulated({
-    required this.dbStatus,
-    required this.dbAccount,
-    required this.reblogDbStatus,
-    required this.reblogDbStatusAccount,
-    required this.replyDbStatus,
-    required this.replyDbStatusAccount,
-    required this.replyReblogDbStatus,
-    required this.replyReblogDbStatusAccount,
-  });
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is DbStatusPopulated &&
-          runtimeType == other.runtimeType &&
-          dbStatus == other.dbStatus &&
-          dbAccount == other.dbAccount &&
-          reblogDbStatus == other.reblogDbStatus &&
-          reblogDbStatusAccount == other.reblogDbStatusAccount &&
-          replyDbStatus == other.replyDbStatus &&
-          replyDbStatusAccount == other.replyDbStatusAccount &&
-          replyReblogDbStatus == other.replyReblogDbStatus &&
-          replyReblogDbStatusAccount == other.replyReblogDbStatusAccount;
-
-  @override
-  int get hashCode =>
-      dbStatus.hashCode ^
-      dbAccount.hashCode ^
-      reblogDbStatus.hashCode ^
-      reblogDbStatusAccount.hashCode ^
-      replyDbStatus.hashCode ^
-      replyDbStatusAccount.hashCode ^
-      replyReblogDbStatus.hashCode ^
-      replyReblogDbStatusAccount.hashCode;
-
-  @override
-  String toString() {
-    return 'DbStatusPopulated{'
-        'dbStatus: $dbStatus, '
-        'dbAccount: $dbAccount, '
-        'reblogDbStatus: $reblogDbStatus, '
-        'reblogDbStatusAccount: $reblogDbStatusAccount, '
-        'replyDbStatus: $replyDbStatus, '
-        'replyDbStatusAccount: $replyDbStatusAccount, '
-        'replyReblogDbStatus: $replyReblogDbStatus, '
-        'replyReblogDbStatusAccount: $replyReblogDbStatusAccount'
-        '}';
-  }
-
-  // ignore: long-parameter-list
-  DbStatusPopulated copyWith({
-    DbStatus? dbStatus,
-    DbAccount? dbAccount,
-    DbStatus? reblogDbStatus,
-    DbAccount? reblogDbStatusAccount,
-    DbStatus? replyDbStatus,
-    DbAccount? replyDbStatusAccount,
-    DbStatus? replyReblogDbStatus,
-    DbAccount? replyReblogDbStatusAccount,
-  }) =>
-      DbStatusPopulated(
-        dbStatus: dbStatus ?? this.dbStatus,
-        dbAccount: dbAccount ?? this.dbAccount,
-        reblogDbStatus: reblogDbStatus ?? this.reblogDbStatus,
-        reblogDbStatusAccount:
-            reblogDbStatusAccount ?? this.reblogDbStatusAccount,
-        replyDbStatus: replyDbStatus ?? this.replyDbStatus,
-        replyDbStatusAccount: replyDbStatusAccount ?? this.replyDbStatusAccount,
-        replyReblogDbStatus: replyReblogDbStatus ?? this.replyReblogDbStatus,
-        replyReblogDbStatusAccount:
-            replyReblogDbStatusAccount ?? this.replyReblogDbStatusAccount,
-      );
+@freezed
+class DbStatusPopulated with _$DbStatusPopulated {
+  const DbStatusPopulated._();
+  const factory DbStatusPopulated({
+    required DbStatus dbStatus,
+    required DbAccount dbAccount,
+    required DbStatus? reblogDbStatus,
+    required DbAccount? reblogDbStatusAccount,
+    required DbStatus? replyDbStatus,
+    required DbAccount? replyDbStatusAccount,
+    required DbStatus? replyReblogDbStatus,
+    required DbAccount? replyReblogDbStatusAccount,
+  }) = _DbStatusPopulated;
 }
 
 extension IStatusExtension on IStatus {

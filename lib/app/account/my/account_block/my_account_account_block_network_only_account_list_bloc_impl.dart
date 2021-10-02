@@ -33,7 +33,7 @@ class MyAccountAccountBlockNetworkOnlyAccountListBloc extends DisposableOwner
     );
 
     var remoteAccount = account
-        .copyWith(
+        .copyWithTemp(
           relationship: accountRelationship,
         )
         .toUnifediApiAccount();
@@ -52,7 +52,7 @@ class MyAccountAccountBlockNetworkOnlyAccountListBloc extends DisposableOwner
     );
 
     var remoteAccount = account
-        .copyWith(
+        .copyWithTemp(
           relationship: accountRelationship,
         )
         .toUnifediApiAccount();

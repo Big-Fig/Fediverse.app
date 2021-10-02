@@ -45,18 +45,18 @@ class EmojiPickerCustomImageUrlCategoryItemsAdapter
 // JsonSerializableGenerator
 // **************************************************************************
 
-EmojiPickerCustomImageUrlCategoryItems
-    _$EmojiPickerCustomImageUrlCategoryItemsFromJson(
+_$_EmojiPickerCustomImageUrlCategoryItems
+    _$$_EmojiPickerCustomImageUrlCategoryItemsFromJson(
             Map<String, dynamic> json) =>
-        EmojiPickerCustomImageUrlCategoryItems(
+        _$_EmojiPickerCustomImageUrlCategoryItems(
           items: (json['items'] as List<dynamic>)
               .map((e) => CustomEmojiPickerImageUrlItem.fromJson(
                   e as Map<String, dynamic>))
               .toList(),
         );
 
-Map<String, dynamic> _$EmojiPickerCustomImageUrlCategoryItemsToJson(
-        EmojiPickerCustomImageUrlCategoryItems instance) =>
+Map<String, dynamic> _$$_EmojiPickerCustomImageUrlCategoryItemsToJson(
+        _$_EmojiPickerCustomImageUrlCategoryItems instance) =>
     <String, dynamic>{
       'items': instance.items.map((e) => e.toJson()).toList(),
     };

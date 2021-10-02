@@ -1,40 +1,19 @@
 import 'package:fedi/repository/repository_model.dart';
-import 'package:moor/moor.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:moor/moor.dart' as moor;
 
-class ConversationChatRepositoryFilters {
-  static const ConversationChatRepositoryFilters empty =
+part 'conversation_chat_repository_model.freezed.dart';
+
+@freezed
+class ConversationChatRepositoryFilters
+    with _$ConversationChatRepositoryFilters {
+  static final ConversationChatRepositoryFilters empty =
       ConversationChatRepositoryFilters();
 
-  final bool withLastMessage;
-
-  const ConversationChatRepositoryFilters({
-    this.withLastMessage = false,
-  });
-
-  ConversationChatRepositoryFilters copyWith({
-    bool? withLastMessage,
-  }) {
-    return ConversationChatRepositoryFilters(
-      withLastMessage: withLastMessage ?? this.withLastMessage,
-    );
-  }
-
-  @override
-  String toString() {
-    return 'ConversationChatRepositoryFilters{'
-        'withLastMessage: $withLastMessage'
-        '}';
-  }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is ConversationChatRepositoryFilters &&
-          runtimeType == other.runtimeType &&
-          withLastMessage == other.withLastMessage;
-
-  @override
-  int get hashCode => withLastMessage.hashCode;
+  const ConversationChatRepositoryFilters._();
+  const factory ConversationChatRepositoryFilters({
+    @Default(false) bool withLastMessage,
+  }) = _ConversationChatRepositoryFilters;
 }
 
 enum ConversationChatOrderType {
@@ -42,48 +21,38 @@ enum ConversationChatOrderType {
   updatedAt,
 }
 
+@freezed
 class ConversationRepositoryChatOrderingTermData
-    extends RepositoryOrderingTerm {
-  final ConversationChatOrderType orderType;
-  @override
-  final OrderingMode orderingMode;
-
-  const ConversationRepositoryChatOrderingTermData({
-    required this.orderType,
-    required this.orderingMode,
-  });
+    with _$ConversationRepositoryChatOrderingTermData
+    implements RepositoryOrderingTerm {
+  const factory ConversationRepositoryChatOrderingTermData({
+    required ConversationChatOrderType orderType,
+    required moor.OrderingMode orderingMode,
+  }) = _ConversationRepositoryChatOrderingTermData;
 
   static const ConversationRepositoryChatOrderingTermData remoteIdDesc =
       ConversationRepositoryChatOrderingTermData(
-    orderingMode: OrderingMode.desc,
+    orderingMode: moor.OrderingMode.desc,
     orderType: ConversationChatOrderType.remoteId,
   );
   static const ConversationRepositoryChatOrderingTermData remoteIdAsc =
       ConversationRepositoryChatOrderingTermData(
-    orderingMode: OrderingMode.asc,
+    orderingMode: moor.OrderingMode.asc,
     orderType: ConversationChatOrderType.remoteId,
   );
 
   static const ConversationRepositoryChatOrderingTermData updatedAtDesc =
       ConversationRepositoryChatOrderingTermData(
-    orderingMode: OrderingMode.desc,
+    orderingMode: moor.OrderingMode.desc,
     orderType: ConversationChatOrderType.updatedAt,
   );
   static const ConversationRepositoryChatOrderingTermData updatedAtAsc =
       ConversationRepositoryChatOrderingTermData(
-    orderingMode: OrderingMode.asc,
+    orderingMode: moor.OrderingMode.asc,
     orderType: ConversationChatOrderType.updatedAt,
   );
 
   static const List<ConversationRepositoryChatOrderingTermData> defaultTerms = [
     updatedAtDesc,
   ];
-
-  @override
-  String toString() {
-    return 'ConversationRepositoryChatOrderingTermData{'
-        'orderByType: $orderType,'
-        ' orderingMode: $orderingMode'
-        '}';
-  }
 }

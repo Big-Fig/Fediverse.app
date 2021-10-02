@@ -168,16 +168,28 @@ void main() {
     );
     assert(id > 0, true);
 
-    var oldLocalChat = chat.copyWith(id: id);
+    var dbPleromaChatPopulatedWrapper = chat.toDbPleromaChatPopulatedWrapper();
+    var oldLocalChat = dbPleromaChatPopulatedWrapper.copyWith(
+      dbChatPopulated: dbPleromaChatPopulatedWrapper.dbChatPopulated.copyWith(
+        dbChat: dbPleromaChatPopulatedWrapper.dbChatPopulated.dbChat.copyWith(
+          id: id,
+        ),
+      ),
+    );
 
     var newRemoteId = 'newRemoteId';
     var newAcct = 'newAcct';
     var newContent = 'newContent';
 
-    var newRemoteChat = chat
+    dbPleromaChatPopulatedWrapper = chat.toDbPleromaChatPopulatedWrapper();
+    var newRemoteChat = dbPleromaChatPopulatedWrapper
         .copyWith(
-      id: id,
-      remoteId: newRemoteId,
+      dbChatPopulated: dbPleromaChatPopulatedWrapper.dbChatPopulated.copyWith(
+        dbChat: dbPleromaChatPopulatedWrapper.dbChatPopulated.dbChat.copyWith(
+          id: id,
+          remoteId: newRemoteId,
+        ),
+      ),
     )
         .toUnifediApiChat(
       lastChatMessage: DbPleromaChatMessagePopulatedWrapper(

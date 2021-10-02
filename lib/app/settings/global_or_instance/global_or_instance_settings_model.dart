@@ -1,31 +1,19 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'global_or_instance_settings_model.freezed.dart';
+
 enum GlobalOrInstanceSettingsType { instance, global }
 
-class GlobalOrInstanceSettings<T> {
-  final T settings;
-  final GlobalOrInstanceSettingsType type;
-
+@freezed
+class GlobalOrInstanceSettings<T> with _$GlobalOrInstanceSettings<T> {
   bool get isInstance => type == GlobalOrInstanceSettingsType.instance;
 
   bool get isGlobal => type == GlobalOrInstanceSettingsType.global;
 
-  GlobalOrInstanceSettings({
-    required this.settings,
-    required this.type,
-  });
+  const GlobalOrInstanceSettings._();
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is GlobalOrInstanceSettings &&
-          runtimeType == other.runtimeType &&
-          settings == other.settings &&
-          type == other.type;
-
-  @override
-  int get hashCode => settings.hashCode ^ type.hashCode;
-
-  @override
-  String toString() {
-    return 'GlobalOrInstanceSettings{settings: $settings, type: $type}';
-  }
+  const factory GlobalOrInstanceSettings({
+    required T settings,
+    required GlobalOrInstanceSettingsType type,
+  }) = _GlobalOrInstanceSettings<T>;
 }

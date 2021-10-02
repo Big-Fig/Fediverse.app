@@ -753,7 +753,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       pagination: RepositoryPagination(
         limit: 1,
       ),
-      filters: StatusRepositoryFilters(
+      filters: StatusRepositoryFilters.only(
         isFromHomeTimeline: true,
       ),
       orderingTerms: [
@@ -770,7 +770,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       pagination: RepositoryPagination(
         newerThanItem: lastSeenStatus,
       ),
-      filters: StatusRepositoryFilters(
+      filters: StatusRepositoryFilters.only(
         isFromHomeTimeline: true,
       ),
       orderingTerms: [

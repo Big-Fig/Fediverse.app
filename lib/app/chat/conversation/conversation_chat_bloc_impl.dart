@@ -452,10 +452,22 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
         postStatus: postStatus,
       );
 
+      var conversationChatMessageStatusAdapter =
+          unifediApiStatus.toConversationChatMessageStatusAdapter();
+      var dbStatusPopulatedWrapper = conversationChatMessageStatusAdapter.status
+          .toDbStatusPopulatedWrapper();
       onMessageLocallyHiddenStreamController.add(
-        unifediApiStatus.toConversationChatMessageStatusAdapter().copyWith(
-              remoteId: dbStatus.remoteId,
+        conversationChatMessageStatusAdapter.copyWith(
+          status: dbStatusPopulatedWrapper.copyWith(
+            dbStatusPopulated:
+                dbStatusPopulatedWrapper.dbStatusPopulated.copyWith(
+              dbStatus:
+                  dbStatusPopulatedWrapper.dbStatusPopulated.dbStatus.copyWith(
+                remoteId: dbStatus.remoteId,
+              ),
             ),
+          ),
+        ),
       );
 
       await statusRepository.updateByDbIdInDbType(

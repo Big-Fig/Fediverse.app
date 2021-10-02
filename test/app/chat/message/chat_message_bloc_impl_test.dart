@@ -163,7 +163,20 @@ void main() {
     await RxDartMockHelper.waitForData(() => listened);
     expect(listened, chatMessage.content);
 
-    await _update(chatMessage.copyWith(content: newValue));
+    var dbChatMessagePopulatedWrapper =
+        chatMessage.toDbChatMessagePopulatedWrapper();
+    await _update(
+      dbChatMessagePopulatedWrapper.copyWith(
+        dbChatMessagePopulated:
+            dbChatMessagePopulatedWrapper.dbChatMessagePopulated.copyWith(
+          dbChatMessage: dbChatMessagePopulatedWrapper
+              .dbChatMessagePopulated.dbChatMessage
+              .copyWith(
+            content: newValue,
+          ),
+        ),
+      ),
+    );
 
     expect(chatMessageBloc.content, newValue);
     expect(listened, newValue);
@@ -184,8 +197,21 @@ void main() {
     await RxDartMockHelper.waitForData(() => listened);
 
     // same if emojis is empty or null
+
+    var dbChatMessagePopulatedWrapper =
+        chatMessage.toDbChatMessagePopulatedWrapper();
     await _update(
-      chatMessage.copyWith(content: newValue, emojis: <UnifediApiEmoji>[]),
+      dbChatMessagePopulatedWrapper.copyWith(
+        dbChatMessagePopulated:
+            dbChatMessagePopulatedWrapper.dbChatMessagePopulated.copyWith(
+          dbChatMessage: dbChatMessagePopulatedWrapper
+              .dbChatMessagePopulated.dbChatMessage
+              .copyWith(
+            content: newValue,
+            emojis: <UnifediApiEmoji>[],
+          ),
+        ),
+      ),
     );
 
     expect(
@@ -204,25 +230,35 @@ void main() {
     );
 
     // same if emojis is empty or null
+
+    dbChatMessagePopulatedWrapper =
+        chatMessage.toDbChatMessagePopulatedWrapper();
     await _update(
-      chatMessage.copyWith(
-        content: newValue,
-        emojis: [
-          UnifediApiEmoji(
-            name: 'emoji1',
-            url: 'https://fedi.app/emoji1.png',
-            tags: null,
-            staticUrl: null,
-            visibleInPicker: null,
+      dbChatMessagePopulatedWrapper.copyWith(
+        dbChatMessagePopulated:
+            dbChatMessagePopulatedWrapper.dbChatMessagePopulated.copyWith(
+          dbChatMessage: dbChatMessagePopulatedWrapper
+              .dbChatMessagePopulated.dbChatMessage
+              .copyWith(
+            content: newValue,
+            emojis: [
+              UnifediApiEmoji(
+                name: 'emoji1',
+                url: 'https://fedi.app/emoji1.png',
+                tags: null,
+                staticUrl: null,
+                visibleInPicker: null,
+              ),
+              UnifediApiEmoji(
+                name: 'emoji2',
+                url: 'https://fedi.app/emoji2.png',
+                tags: null,
+                staticUrl: null,
+                visibleInPicker: null,
+              ),
+            ],
           ),
-          UnifediApiEmoji(
-            name: 'emoji2',
-            url: 'https://fedi.app/emoji2.png',
-            tags: null,
-            staticUrl: null,
-            visibleInPicker: null,
-          ),
-        ],
+        ),
       ),
     );
 
@@ -289,7 +325,20 @@ void main() {
     await RxDartMockHelper.waitForData(() => listened);
     expect(listened, chatMessage.createdAt);
 
-    await _update(chatMessage.copyWith(createdAt: newValue));
+    var dbChatMessagePopulatedWrapper =
+        chatMessage.toDbChatMessagePopulatedWrapper();
+    await _update(
+      dbChatMessagePopulatedWrapper.copyWith(
+        dbChatMessagePopulated:
+            dbChatMessagePopulatedWrapper.dbChatMessagePopulated.copyWith(
+          dbChatMessage: dbChatMessagePopulatedWrapper
+              .dbChatMessagePopulated.dbChatMessage
+              .copyWith(
+            createdAt: newValue,
+          ),
+        ),
+      ),
+    );
 
     expect(chatMessageBloc.createdAt, newValue);
     expect(listened, newValue);

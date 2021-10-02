@@ -23,7 +23,7 @@ void main() {
           ToastSettingsModelMockHelper.createTestToastSettings(
         seed: seed,
       ),
-      ToastSettings.fromJson,
+      (json) => ToastSettings.fromJson(json),
     );
   });
 
@@ -46,7 +46,7 @@ void main() {
 
     var obj2Obj1CopyWith = obj1.copyWith(
       pushSettings: obj2.pushSettings,
-      handlingType: obj2.handlingType,
+      handlingTypeString: obj2.handlingTypeString,
     );
 
     expect(obj1 == obj2, false);

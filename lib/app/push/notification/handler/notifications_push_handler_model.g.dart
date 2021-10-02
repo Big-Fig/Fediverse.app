@@ -48,16 +48,16 @@ class NotificationsPushHandlerMessageAdapter
 // JsonSerializableGenerator
 // **************************************************************************
 
-NotificationsPushHandlerMessage _$NotificationsPushHandlerMessageFromJson(
+_$_NotificationsPushHandlerMessage _$$_NotificationsPushHandlerMessageFromJson(
         Map<String, dynamic> json) =>
-    NotificationsPushHandlerMessage(
+    _$_NotificationsPushHandlerMessage(
       body: FediPushNotification.fromJson(json['body'] as Map<String, dynamic>),
       pushMessage:
           PushMessage.fromJson(json['push_message'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$NotificationsPushHandlerMessageToJson(
-        NotificationsPushHandlerMessage instance) =>
+Map<String, dynamic> _$$_NotificationsPushHandlerMessageToJson(
+        _$_NotificationsPushHandlerMessage instance) =>
     <String, dynamic>{
       'body': instance.body.toJson(),
       'push_message': instance.pushMessage.toJson(),

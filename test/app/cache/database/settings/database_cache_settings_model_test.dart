@@ -22,7 +22,7 @@ void main() {
           DatabaseCacheSettingsModelMockHelper.createTestDatabaseCacheSettings(
         seed: seed,
       ),
-      DatabaseCacheSettings.fromJson,
+      (json) => DatabaseCacheSettings.fromJson(json),
     );
   });
 
@@ -57,8 +57,8 @@ void main() {
     );
 
     var obj2Obj1CopyWith = obj1.copyWith(
-      entriesCountByTypeLimitType: obj2.entriesCountByTypeLimitType,
-      ageLimitType: obj2.ageLimitType,
+      entriesCountByTypeLimitTypeString: obj2.entriesCountByTypeLimitTypeString,
+      ageLimitTypeString: obj2.ageLimitTypeString,
     );
 
     expect(obj1 == obj2, false);

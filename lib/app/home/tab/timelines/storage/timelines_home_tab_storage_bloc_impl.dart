@@ -92,7 +92,9 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
   @override
   List<TimelinesHomeTabStorageListItem> get timelineStorageItems => timelines
       .map(
-        (timeline) => TimelinesHomeTabStorageListItem(timeline),
+        (timeline) => TimelinesHomeTabStorageListItem.fromTimelineOnly(
+          timeline: timeline,
+        ),
       )
       .toList();
 
@@ -101,7 +103,10 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
       get timelineStorageItemsStream => timelinesStream.map(
             (timelines) => timelines
                 .map(
-                  (timeline) => TimelinesHomeTabStorageListItem(timeline),
+                  (timeline) =>
+                      TimelinesHomeTabStorageListItem.fromTimelineOnly(
+                    timeline: timeline,
+                  ),
                 )
                 .toList(),
           );

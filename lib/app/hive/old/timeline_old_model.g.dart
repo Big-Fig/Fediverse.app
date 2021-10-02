@@ -18,10 +18,10 @@ class TimelineOldAdapter extends TypeAdapter<TimelineOld> {
     };
     return TimelineOld(
       id: fields[0] as String,
-      typeString: fields[3] as String,
-      settings: fields[4] as TimelineSettingsOld,
       label: fields[1] as String?,
       isPossibleToDelete: fields[2] as bool,
+      typeString: fields[3] as String,
+      settings: fields[4] as TimelineSettingsOld,
     );
   }
 
@@ -56,20 +56,30 @@ class TimelineOldAdapter extends TypeAdapter<TimelineOld> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-TimelineOld _$TimelineOldFromJson(Map<String, dynamic> json) => TimelineOld(
+_$_TimelineOld _$$_TimelineOldFromJson(Map<String, dynamic> json) =>
+    _$_TimelineOld(
       id: json['id'] as String,
+      label: json['label'] as String?,
+      isPossibleToDelete: json['is_possible_to_delete'] as bool,
       typeString: json['type_string'] as String,
       settings: TimelineSettingsOld.fromJson(
           json['settings'] as Map<String, dynamic>),
-      label: json['label'] as String?,
-      isPossibleToDelete: json['is_possible_to_delete'] as bool,
     );
 
-Map<String, dynamic> _$TimelineOldToJson(TimelineOld instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'label': instance.label,
-      'is_possible_to_delete': instance.isPossibleToDelete,
-      'type_string': instance.typeString,
-      'settings': instance.settings.toJson(),
-    };
+Map<String, dynamic> _$$_TimelineOldToJson(_$_TimelineOld instance) {
+  final val = <String, dynamic>{
+    'id': instance.id,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('label', instance.label);
+  val['is_possible_to_delete'] = instance.isPossibleToDelete;
+  val['type_string'] = instance.typeString;
+  val['settings'] = instance.settings.toJson();
+  return val;
+}

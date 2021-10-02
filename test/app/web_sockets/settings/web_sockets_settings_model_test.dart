@@ -22,7 +22,7 @@ void main() {
           WebSocketsSettingsModelMockHelper.createTestWebSocketsSettings(
         seed: seed,
       ),
-      WebSocketsSettings.fromJson,
+      (json) => WebSocketsSettings.fromJson(json),
     );
   });
 
@@ -44,7 +44,7 @@ void main() {
     );
 
     var obj2Obj1CopyWith = obj1.copyWith(
-      handlingType: obj2.handlingType,
+      handlingTypeString: obj2.handlingTypeString,
     );
 
     expect(obj1 == obj2, false);

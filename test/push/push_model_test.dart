@@ -23,7 +23,7 @@ void main() {
       ({required String seed}) => PushModelMockHelper.createTestPushMessage(
         seed: seed,
       ),
-      PushMessage.fromJson,
+      (json) => PushMessage.fromJson(json),
     );
   });
 
@@ -52,7 +52,7 @@ void main() {
           PushModelMockHelper.createTestPushNotification(
         seed: seed,
       ),
-      PushNotification.fromJson,
+      (json) => PushNotification.fromJson(json),
     );
   });
 

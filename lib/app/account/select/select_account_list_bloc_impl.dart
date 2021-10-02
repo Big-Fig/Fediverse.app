@@ -176,7 +176,7 @@ class SelectAccountListBloc extends DisposableOwner
         onlyInAccountFollowing = myAccountBloc.account;
       }
       accounts = await accountRepository.findAllInAppType(
-        filters: AccountRepositoryFilters(
+        filters: AccountRepositoryFilters.only(
           onlyInAccountFollowing: onlyInAccountFollowing,
           searchQuery: searchText,
         ),
@@ -233,7 +233,7 @@ class SelectAccountListBloc extends DisposableOwner
     required int? limit,
   }) async {
     return await accountRepository.findAllInAppType(
-      filters: AccountRepositoryFilters(
+      filters: AccountRepositoryFilters.only(
         onlyInAccountFollowing: myAccountBloc.account,
       ),
       pagination: RepositoryPagination<IAccount>(

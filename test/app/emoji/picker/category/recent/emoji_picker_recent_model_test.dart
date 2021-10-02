@@ -24,7 +24,7 @@ void main() {
               .createTestEmojiPickerRecentCategoryItemsList(
         seed: seed,
       ),
-      EmojiPickerRecentCategoryItemsList.fromJson,
+      (json) => EmojiPickerRecentCategoryItemsList.fromJson(json),
     );
   });
 

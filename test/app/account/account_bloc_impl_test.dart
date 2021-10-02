@@ -121,7 +121,7 @@ void main() {
     expect(listened, account.acct);
 
     await _update(
-      account.copyWith(
+      account.copyWithTemp(
         acct: newValue,
       ),
     );
@@ -146,7 +146,7 @@ void main() {
 
     expect(listened, account.note);
 
-    await _update(account.copyWith(note: newValue));
+    await _update(account.copyWithTemp(note: newValue));
 
     expect(accountBloc.note, newValue);
     expect(listened, newValue);
@@ -168,7 +168,7 @@ void main() {
 
     expect(listened, account.header);
 
-    await _update(account.copyWith(header: newValue));
+    await _update(account.copyWithTemp(header: newValue));
 
     expect(accountBloc.header, newValue);
     expect(listened, newValue);
@@ -190,7 +190,7 @@ void main() {
 
     expect(listened, account.avatar);
 
-    await _update(account.copyWith(avatar: newValue));
+    await _update(account.copyWithTemp(avatar: newValue));
 
     expect(accountBloc.avatar, newValue);
     expect(listened, newValue);
@@ -212,7 +212,7 @@ void main() {
 
     expect(listened, account.displayName);
 
-    await _update(account.copyWith(displayName: newValue));
+    await _update(account.copyWithTemp(displayName: newValue));
 
     expect(accountBloc.displayName, newValue);
     expect(listened, newValue);
@@ -240,7 +240,7 @@ void main() {
 
     expect(listened, account.fields ?? []);
 
-    await _update(account.copyWith(fields: newValue));
+    await _update(account.copyWithTemp(fields: newValue));
 
     expect(accountBloc.fields, newValue);
     expect(listened, newValue);
@@ -263,7 +263,7 @@ void main() {
 
     expect(listened, account.statusesCount);
 
-    await _update(account.copyWith(statusesCount: newValue));
+    await _update(account.copyWithTemp(statusesCount: newValue));
 
     expect(accountBloc.statusesCount, newValue);
     expect(listened, newValue);
@@ -285,7 +285,7 @@ void main() {
 
     expect(listened, account.statusesCount);
 
-    await _update(account.copyWith(statusesCount: newValue));
+    await _update(account.copyWithTemp(statusesCount: newValue));
 
     expect(accountBloc.statusesCount, newValue);
     expect(listened, newValue);
@@ -307,7 +307,7 @@ void main() {
 
     expect(listened, account.followingCount);
 
-    await _update(account.copyWith(followingCount: newValue));
+    await _update(account.copyWithTemp(followingCount: newValue));
 
     expect(accountBloc.followingCount, newValue);
     expect(listened, newValue);
@@ -329,7 +329,7 @@ void main() {
 
     expect(listened, account.followersCount);
 
-    await _update(account.copyWith(followersCount: newValue));
+    await _update(account.copyWithTemp(followersCount: newValue));
 
     expect(accountBloc.followersCount, newValue);
     expect(listened, newValue);
@@ -366,7 +366,7 @@ void main() {
     );
 
     await _update(
-      account.copyWith(
+      account.copyWithTemp(
         displayName: newDisplayNameValue,
       ),
     );
@@ -410,7 +410,7 @@ void main() {
     );
 
     await _update(
-      account.copyWith(
+      account.copyWithTemp(
         displayName: newDisplayNameValue,
         emojis: newEmojis,
       ),
@@ -451,7 +451,7 @@ void main() {
 
     expect(accountBloc.relationship, account.relationship);
 
-    await _update(account.copyWith(relationship: newValue));
+    await _update(account.copyWithTemp(relationship: newValue));
 
     expect(accountBloc.relationship, newValue);
     expect(listened, newValue);
@@ -499,11 +499,11 @@ void main() {
 
     AccountMockHelper.expectAccount(
       accountBloc.account,
-      newValue.copyWith(relationship: newRelationship),
+      newValue.copyWithTemp(relationship: newRelationship),
     );
     AccountMockHelper.expectAccount(
       listened,
-      newValue.copyWith(relationship: newRelationship),
+      newValue.copyWithTemp(relationship: newRelationship),
     );
     await subscription.cancel();
   });

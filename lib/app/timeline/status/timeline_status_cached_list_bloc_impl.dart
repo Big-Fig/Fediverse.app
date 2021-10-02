@@ -56,7 +56,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
     if (timeline.onlyLocal == true) {
       var localUrlHost = currentInstanceBloc.currentInstance!.urlHost;
 
-      return StatusOnlyLocalCondition(localUrlHost);
+      return StatusOnlyLocalCondition(localUrlHost: localUrlHost);
     } else {
       return null;
     }
@@ -66,14 +66,14 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
     if (timeline.onlyRemote == true) {
       var localUrlHost = currentInstanceBloc.currentInstance!.urlHost;
 
-      return StatusOnlyRemoteCondition(localUrlHost);
+      return StatusOnlyRemoteCondition(localUrlHost: localUrlHost);
     } else {
       return null;
     }
   }
 
   StatusRepositoryFilters get _statusRepositoryFilters =>
-      StatusRepositoryFilters(
+      StatusRepositoryFilters.only(
         onlyInConversation: null,
         onlyFromAccount: timeline.onlyFromRemoteAccount?.toDbAccountWrapper(),
         onlyInListWithRemoteId: timeline.onlyInRemoteList?.id,

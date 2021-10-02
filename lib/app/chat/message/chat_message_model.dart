@@ -33,23 +33,6 @@ abstract class IChatMessage {
   bool get hiddenLocallyOnDevice;
 
   String? get wasSentWithIdempotencyKey;
-
-  IChatMessage copyWith({
-    int? localId,
-    String? remoteId,
-    String? chatRemoteId,
-    IAccount? account,
-    String? content,
-    DateTime? createdAt,
-    List<IUnifediApiMediaAttachment>? mediaAttachments,
-    List<UnifediApiEmoji>? emojis,
-    IUnifediApiCard? card,
-    PendingState? pendingState,
-    String? oldPendingRemoteId,
-    bool? deleted,
-    bool? hiddenLocallyOnDevice,
-    String? wasSentWithIdempotencyKey,
-  });
 }
 
 extension IChatMessageExtension on IChatMessage {

@@ -22,7 +22,7 @@ var _logger =
 class AccountStatusesWithoutRepliesListBloc
     extends AccountStatusesCachedListBloc {
   StatusRepositoryFilters get _statusRepositoryFilters =>
-      StatusRepositoryFilters(
+      StatusRepositoryFilters.only(
         onlyNoNsfwSensitive: false,
         onlyNoReplies: true,
         onlyFromAccount: account,

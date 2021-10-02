@@ -22,7 +22,7 @@ class StatusReblogAccountCachedListBloc extends DisposableOwner
   final IStatus status;
 
   AccountRepositoryFilters get _accountRepositoryFilters =>
-      AccountRepositoryFilters(
+      AccountRepositoryFilters.only(
         onlyInStatusRebloggedBy: status,
       );
 

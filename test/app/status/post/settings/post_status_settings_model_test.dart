@@ -22,7 +22,7 @@ void main() {
           PostStatusSettingsModelMockHelper.createTestPostStatusSettings(
         seed: seed,
       ),
-      PostStatusSettings.fromJson,
+      (json) => PostStatusSettings.fromJson(json),
     );
   });
 

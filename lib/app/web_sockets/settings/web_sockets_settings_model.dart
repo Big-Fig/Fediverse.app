@@ -1,61 +1,42 @@
 import 'package:fedi/app/settings/settings_model.dart';
 import 'package:fediverse_api/fediverse_api_utils.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+part 'web_sockets_settings_model.freezed.dart';
 
 // ignore_for_file: no-magic-number
 part 'web_sockets_settings_model.g.dart';
 
-@JsonSerializable(explicitToJson: true)
+@freezed
 @HiveType(typeId: -32 + 89)
-class WebSocketsSettings implements ISettings<WebSocketsSettings> {
-  @HiveField(0)
-  @JsonKey(name: 'type_string')
-  final String handlingTypeString;
+class WebSocketsSettings
+    with _$WebSocketsSettings
+    implements ISettings<WebSocketsSettings> {
+  const WebSocketsSettings._();
+
+  const factory WebSocketsSettings({
+    @HiveField(0)
+    @JsonKey(name: 'type_string')
+        required String handlingTypeString,
+  }) = _WebSocketsSettings;
 
   WebSocketsMode get handlingType =>
       WebSocketsMode.fromStringValue(handlingTypeString);
 
-  WebSocketsSettings({
-    required this.handlingTypeString,
-  });
-
-  WebSocketsSettings.fromEnum({
+  static WebSocketsSettings fromEnum({
     required WebSocketsMode handlingType,
-  }) : this(
-          handlingTypeString: handlingType.stringValue,
-        );
+  }) =>
+      WebSocketsSettings(
+        handlingTypeString: handlingType.stringValue,
+      );
 
   WebSocketsMode get type => WebSocketsMode.fromStringValue(handlingTypeString);
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is WebSocketsSettings &&
-          runtimeType == other.runtimeType &&
-          type == other.type;
-
-  @override
-  int get hashCode => type.hashCode;
-
-  static WebSocketsSettings fromJson(Map<String, dynamic> json) =>
+  factory WebSocketsSettings.fromJson(Map<String, dynamic> json) =>
       _$WebSocketsSettingsFromJson(json);
 
   @override
-  Map<String, dynamic> toJson() => _$WebSocketsSettingsToJson(this);
-
-  @override
   WebSocketsSettings clone() => copyWith();
-
-  WebSocketsSettings copyWith({
-    WebSocketsMode? handlingType,
-  }) =>
-      WebSocketsSettings.fromEnum(
-        handlingType: handlingType ?? this.handlingType,
-      );
-
-  @override
-  String toString() {
-    return 'WebSocketsSettings{handlingTypeString: $handlingTypeString}';
-  }
 }

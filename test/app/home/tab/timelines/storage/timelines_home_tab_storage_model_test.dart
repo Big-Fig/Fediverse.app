@@ -22,7 +22,7 @@ void main() {
           .createTestTimelinesHomeTabStorage(
         seed: seed,
       ),
-      TimelinesHomeTabStorage.fromJson,
+      (json) => TimelinesHomeTabStorage.fromJson(json),
     );
   });
 

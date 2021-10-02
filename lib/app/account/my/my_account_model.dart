@@ -1,8 +1,11 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fediverse_api/fediverse_api_utils.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:unifedi_api/unifedi_api.dart';
+
+part 'my_account_model.freezed.dart';
 
 // ignore_for_file: no-magic-number
 part 'my_account_model.g.dart';
@@ -35,7 +38,7 @@ abstract class IMyAccount extends IAccount implements IJsonObj {
   String? get language;
 
   @override
-  IMyAccount copyWith({
+  IMyAccount copyWithTemp({
     int? id,
     String? remoteId,
     String? username,
@@ -154,15 +157,17 @@ extension IMyAccountExtension on IMyAccount {
 }
 
 @HiveType(typeId: -32 + 114)
-@JsonSerializable(explicitToJson: true)
-class UnifediApiMyAccountWrapper extends IMyAccount {
-  @HiveField(0)
-  @JsonKey(name: 'remote_account')
-  final UnifediApiMyAccount unifediApiAccount;
+@freezed
+class UnifediApiMyAccountWrapper
+    with _$UnifediApiMyAccountWrapper
+    implements IMyAccount {
+  const UnifediApiMyAccountWrapper._();
 
-  UnifediApiMyAccountWrapper({
-    required this.unifediApiAccount,
-  });
+  const factory UnifediApiMyAccountWrapper({
+    @HiveField(0)
+    @JsonKey(name: 'remote_account')
+        required UnifediApiMyAccount unifediApiAccount,
+  }) = _UnifediApiMyAccountWrapper;
 
   @override
   bool? get discoverable => unifediApiAccount.discoverable;
@@ -306,27 +311,10 @@ class UnifediApiMyAccountWrapper extends IMyAccount {
   bool? get isConfirmed => unifediApiAccount.isConfirmed;
 
   @override
-  String toString() =>
-      'MyAccountRemoteWrapper{remoteAccount: $unifediApiAccount}';
-
-  @override
   String? get backgroundImage => unifediApiAccount.backgroundImage;
 
-  static UnifediApiMyAccountWrapper fromJson(Map<String, dynamic> json) =>
+  factory UnifediApiMyAccountWrapper.fromJson(Map<String, dynamic> json) =>
       _$UnifediApiMyAccountWrapperFromJson(json);
-
-  @override
-  Map<String, dynamic> toJson() => _$UnifediApiMyAccountWrapperToJson(this);
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is UnifediApiMyAccountWrapper &&
-          runtimeType == other.runtimeType &&
-          unifediApiAccount == other.unifediApiAccount;
-
-  @override
-  int get hashCode => unifediApiAccount.hashCode;
 
   @override
   String? get actorType => unifediApiAccount.actorType;
@@ -354,7 +342,7 @@ class UnifediApiMyAccountWrapper extends IMyAccount {
 
   @override
   // ignore: long-parameter-list, long-method
-  IMyAccount copyWith({
+  IMyAccount copyWithTemp({
     int? id,
     String? remoteId,
     String? username,

@@ -169,7 +169,7 @@ class CurrentUnifediApiAccessContextInitBloc extends AsyncInitLoadingBloc
 
     var actualNotificationUnreadCount =
         await notificationRepository.calculateCount(
-      filters: NotificationRepositoryFilters(onlyUnread: true),
+      filters: NotificationRepositoryFilters.only(onlyUnread: true),
     );
     var actualConversationChatUnreadCount =
         await conversationChatRepository.getTotalUnreadCount();

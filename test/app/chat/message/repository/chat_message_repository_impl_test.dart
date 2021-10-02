@@ -860,8 +860,11 @@ void main() {
 
     var chatRemoteId = 'chatRemoteId';
 
-    dbChatMessagePopulated =
-        dbChatMessagePopulated.copyWith(chatRemoteId: chatRemoteId);
+    dbChatMessagePopulated = dbChatMessagePopulated.copyWith(
+      dbChatMessage: dbChatMessagePopulated.dbChatMessage.copyWith(
+        chatRemoteId: chatRemoteId,
+      ),
+    );
 
     await chatMessageRepository.upsertAllInRemoteType(
       [

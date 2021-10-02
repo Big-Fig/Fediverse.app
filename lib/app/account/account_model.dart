@@ -1,6 +1,9 @@
 import 'package:fedi/app/database/app_database.dart';
 import 'package:flutter/widgets.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:unifedi_api/unifedi_api.dart';
+
+part 'account_model.freezed.dart';
 
 typedef AccountCallback = Function(BuildContext context, IAccount account);
 typedef AccountsListCallback = Function(
@@ -9,7 +12,7 @@ typedef AccountsListCallback = Function(
 );
 
 abstract class IAccount {
-  IAccount copyWith({
+  IAccount copyWithTemp({
     int? id,
     String? remoteId,
     String? username,
@@ -142,27 +145,11 @@ abstract class IAccount {
           .toList();
 }
 
-class DbAccountPopulated {
-  final DbAccount dbAccount;
-
-  DbAccountPopulated({
-    required this.dbAccount,
-  });
-
-  @override
-  String toString() {
-    return 'DbAccountPopulated{dbAccount: $dbAccount}';
-  }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is DbAccountPopulated &&
-          runtimeType == other.runtimeType &&
-          dbAccount == other.dbAccount;
-
-  @override
-  int get hashCode => dbAccount.hashCode;
+@freezed
+class DbAccountPopulated with _$DbAccountPopulated {
+  const factory DbAccountPopulated({
+    required DbAccount dbAccount,
+  }) = _DbAccountPopulated;
 }
 
 class DbAccountPopulatedWrapper implements IAccount {
@@ -302,7 +289,7 @@ class DbAccountPopulatedWrapper implements IAccount {
 
   @override
   // ignore: long-parameter-list
-  IAccount copyWith({
+  IAccount copyWithTemp({
     int? id,
     String? remoteId,
     String? username,

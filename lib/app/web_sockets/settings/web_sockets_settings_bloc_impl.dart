@@ -28,7 +28,7 @@ class WebSocketsSettingsBloc
   @override
   Future changeMode(WebSocketsMode value) => updateInstanceSettings(
         settingsData.copyWith(
-          handlingType: value,
+          handlingTypeString: value.stringValue,
         ),
       );
 

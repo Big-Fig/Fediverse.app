@@ -4,15 +4,17 @@ import 'package:collection/collection.dart' show IterableExtension;
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
 import 'package:fedi/app/ui/list/fedi_list_smart_refresher_model.dart';
-import 'package:fedi/collection/collection_hash_utils.dart';
 import 'package:fedi/obj/equal_comparable_obj.dart';
 import 'package:fedi/pagination/cached/cached_pagination_bloc.dart';
 import 'package:fedi/pagination/cached/cached_pagination_list_bloc_impl.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:flutter/foundation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
+
+part 'cached_pagination_list_with_new_items_bloc_impl.freezed.dart';
 
 var _logger = Logger('cached_pagination_list_with_new_items_bloc_impl.dart');
 
@@ -82,7 +84,7 @@ abstract class CachedPaginationListWithNewItemsBloc<
   }) : super(cachedPaginationBloc: paginationBloc) {
     combinedItemsResultSubject = BehaviorSubject.seeded(
       _CombinedItemsResult<TItem>(
-        request: _CalculateNewItemsInputData<TItem>(
+        request: CalculateNewItemsInputData<TItem>(
           superItems: null,
           mergedNewItems: null,
           updatedItems: [],
@@ -114,7 +116,7 @@ abstract class CachedPaginationListWithNewItemsBloc<
 
     super.itemsStream.listen(
       (superItems) async {
-        var calculateNewItemsRequest = _CalculateNewItemsInputData<TItem>(
+        var calculateNewItemsRequest = CalculateNewItemsInputData<TItem>(
           superItems: superItems,
           mergedNewItems: mergedNewItems,
           updatedItems: updatedItems,
@@ -125,7 +127,7 @@ abstract class CachedPaginationListWithNewItemsBloc<
     ).disposeWith(this);
     mergedNewItemsStream.listen(
       (mergedNewItems) async {
-        var calculateNewItemsRequest = _CalculateNewItemsInputData<TItem>(
+        var calculateNewItemsRequest = CalculateNewItemsInputData<TItem>(
           superItems: super.items,
           mergedNewItems: mergedNewItems,
           updatedItems: updatedItems,
@@ -136,7 +138,7 @@ abstract class CachedPaginationListWithNewItemsBloc<
     ).disposeWith(this);
     updatedItemsStream.listen(
       (updatedItems) async {
-        var calculateNewItemsRequest = _CalculateNewItemsInputData<TItem>(
+        var calculateNewItemsRequest = CalculateNewItemsInputData<TItem>(
           superItems: super.items,
           mergedNewItems: mergedNewItems,
           updatedItems: updatedItems,
@@ -148,7 +150,7 @@ abstract class CachedPaginationListWithNewItemsBloc<
   }
 
   Future _updateCombinedItemsResult(
-    _CalculateNewItemsInputData<TItem> calculateNewItemsInputData,
+    CalculateNewItemsInputData<TItem> calculateNewItemsInputData,
   ) async {
     var oldResult = combinedItemsResultSubject.value;
     var request = _CalculateNewItemsRequest<TItem>(
@@ -308,7 +310,7 @@ abstract class CachedPaginationListWithNewItemsBloc<
           // changed during sql request execute time
           // we need to filter again to be sure that newerItem is no
 
-          var actuallyNewRequest = _CalculateActuallyNewRequest<TItem>(
+          var actuallyNewRequest = CalculateActuallyNewRequest<TItem>(
             newItems: newItems,
             newerItem: newerItem,
             currentItems: currentItems,
@@ -357,7 +359,7 @@ abstract class CachedPaginationListWithNewItemsBloc<
 }
 
 class _CalculateNewItemsRequest<TItem extends IEqualComparableObj<TItem>> {
-  final _CalculateNewItemsInputData<TItem> inputData;
+  final CalculateNewItemsInputData<TItem> inputData;
   final _CombinedItemsResult<TItem> result;
 
   _CalculateNewItemsRequest({
@@ -366,38 +368,14 @@ class _CalculateNewItemsRequest<TItem extends IEqualComparableObj<TItem>> {
   });
 }
 
-class _CalculateNewItemsInputData<TItem extends IEqualComparableObj<TItem>> {
-  final List<TItem>? superItems;
-  final List<TItem>? mergedNewItems;
-  final List<TItem> updatedItems;
-
-  _CalculateNewItemsInputData({
-    required this.superItems,
-    required this.mergedNewItems,
-    required this.updatedItems,
-  });
-
-  @override
-  String toString() {
-    return '_CalculateNewItemsRequest{'
-        'superItems: $superItems, '
-        'updatedItems: $updatedItems, '
-        'mergedNewItems: $mergedNewItems'
-        '}';
-  }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is _CalculateNewItemsInputData &&
-          runtimeType == other.runtimeType &&
-          superItems == other.superItems &&
-          mergedNewItems == other.mergedNewItems &&
-          updatedItems == other.updatedItems;
-
-  @override
-  int get hashCode =>
-      superItems.hashCode ^ mergedNewItems.hashCode ^ updatedItems.hashCode;
+@freezed
+class CalculateNewItemsInputData<TItem extends IEqualComparableObj<TItem>>
+    with _$CalculateNewItemsInputData<TItem> {
+  const factory CalculateNewItemsInputData({
+    required List<TItem>? superItems,
+    required List<TItem>? mergedNewItems,
+    required List<TItem> updatedItems,
+  }) = _CalculateNewItemsInputData<TItem>;
 }
 
 _CombinedItemsResult<TItem>
@@ -463,41 +441,18 @@ _CombinedItemsResult<TItem>
   );
 }
 
-class _CalculateActuallyNewRequest<TItem> {
-  final TItem? newerItem;
-  final List<TItem> newItems;
-  final List<TItem> currentItems;
-
-  _CalculateActuallyNewRequest({
-    required this.newItems,
-    required this.currentItems,
-    required this.newerItem,
-  });
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is _CalculateActuallyNewRequest &&
-          runtimeType == other.runtimeType &&
-          newerItem == other.newerItem &&
-          listEquals(newItems, other.newItems) &&
-          listEquals(currentItems, other.currentItems) &&
-          listEquals(currentItems, other.currentItems);
-
-  @override
-  int get hashCode =>
-      newerItem?.hashCode ?? 0 ^ listHash(newItems) ^ listHash(currentItems);
-
-  @override
-  String toString() => '_CalculateActuallyNewRequest{'
-      'newerItem: $newerItem, '
-      'newItems: $newItems, '
-      'currentItems: $currentItems'
-      '}';
+@freezed
+class CalculateActuallyNewRequest<TItem>
+    with _$CalculateActuallyNewRequest<TItem> {
+  const factory CalculateActuallyNewRequest({
+    required TItem? newerItem,
+    required List<TItem> newItems,
+    required List<TItem> currentItems,
+  }) = _CalculateActuallyNewRequest<TItem>;
 }
 
 List<TItem> _calculateActuallyNew<TItem extends IEqualComparableObj<TItem>>(
-  _CalculateActuallyNewRequest<TItem> request,
+  CalculateActuallyNewRequest<TItem> request,
 ) {
   var newItems = request.newItems;
   var currentItems = request.currentItems;
@@ -541,7 +496,7 @@ List<TItem> _calculateActuallyNew<TItem extends IEqualComparableObj<TItem>>(
 }
 
 class _CombinedItemsResult<TItem extends IEqualComparableObj<TItem>> {
-  final _CalculateNewItemsInputData request;
+  final CalculateNewItemsInputData request;
   final List<TItem> resultItems;
 
   _CombinedItemsResult({

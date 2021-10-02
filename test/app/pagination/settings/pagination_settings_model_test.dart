@@ -22,7 +22,7 @@ void main() {
           PaginationSettingsModelMockHelper.createTestPaginationSettings(
         seed: seed,
       ),
-      PaginationSettings.fromJson,
+      (json) => PaginationSettings.fromJson(json),
     );
   });
 
@@ -44,7 +44,7 @@ void main() {
     );
 
     var obj2Obj1CopyWith = obj1.copyWith(
-      pageSize: obj2.pageSize,
+      pageSizeString: obj2.pageSizeString,
     );
 
     expect(obj1 == obj2, false);

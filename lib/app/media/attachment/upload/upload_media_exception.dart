@@ -1,35 +1,16 @@
 import 'dart:io';
 
-class UploadMediaExceedFileSizeLimitException implements Exception {
-  final File file;
-  final int? maximumFileSizeInBytes;
-  final int currentFileSizeInBytes;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  UploadMediaExceedFileSizeLimitException({
-    required this.file,
-    required this.maximumFileSizeInBytes,
-    required this.currentFileSizeInBytes,
-  });
+part 'upload_media_exception.freezed.dart';
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is UploadMediaExceedFileSizeLimitException &&
-          runtimeType == other.runtimeType &&
-          file == other.file &&
-          maximumFileSizeInBytes == other.maximumFileSizeInBytes &&
-          currentFileSizeInBytes == other.currentFileSizeInBytes;
-
-  @override
-  int get hashCode =>
-      file.hashCode ^
-      maximumFileSizeInBytes.hashCode ^
-      currentFileSizeInBytes.hashCode;
-
-  @override
-  String toString() {
-    return 'UploadMediaExceedFileSizeLimitException{file: $file,'
-        ' maximumFileSizeInBytes: $maximumFileSizeInBytes,'
-        ' currentFileSizeInBytes: $currentFileSizeInBytes}';
-  }
+@freezed
+class UploadMediaExceedFileSizeLimitException
+    with _$UploadMediaExceedFileSizeLimitException
+    implements Exception {
+  const factory UploadMediaExceedFileSizeLimitException({
+    required File file,
+    required int? maximumFileSizeInBytes,
+    required int currentFileSizeInBytes,
+  }) = _UploadMediaExceedFileSizeLimitException;
 }

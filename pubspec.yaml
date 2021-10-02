@@ -223,6 +223,21 @@ dependencies:
   easy_dispose_rxdart: 1.0.1
   easy_dispose_provider: 1.0.2
 
+  # code generator: unions, strings, equals & hash, etc
+  freezed_annotation: ^0.14.3
+
+  fediverse_api:
+    path: ../dart_fediverse_api/fediverse_api
+
+  pleroma_api:
+    path: ../dart_fediverse_api/pleroma_api
+
+  mastodon_api:
+    path: ../dart_fediverse_api/mastodon_api
+
+  unifedi_api:
+    path: ../dart_fediverse_api/unifedi_api
+
 dev_dependencies:
   integration_test:
     sdk: flutter
@@ -267,17 +282,8 @@ dev_dependencies:
   # fvm flutter pub global activate -sgit https://github.com/xal/screenshots.git
   # fvm flutter pub global activate --source path ../screenshots
 
-  fediverse_api:
-    path: ../dart_fediverse_api/fediverse_api
-
-  pleroma_api:
-    path: ../dart_fediverse_api/pleroma_api
-
-  mastodon_api:
-    path: ../dart_fediverse_api/mastodon_api
-
-  unifedi_api:
-    path: ../dart_fediverse_api/unifedi_api
+  # code generator: unions, strings, equals & hash, etc
+  freezed: ^0.14.5
 
 
 # For information on the generic Dart part of this file, see the

@@ -31,7 +31,7 @@ class MyAccountAccountMuteNetworkOnlyAccountListBloc extends DisposableOwner
     );
 
     var unifediApiAccount = account
-        .copyWith(
+        .copyWithTemp(
           relationship: accountRelationship,
         )
         .toUnifediApiAccount();
@@ -50,7 +50,7 @@ class MyAccountAccountMuteNetworkOnlyAccountListBloc extends DisposableOwner
     );
 
     var unifediApiAccount = account
-        .copyWith(
+        .copyWithTemp(
           relationship: accountRelationship,
         )
         .toUnifediApiAccount();
@@ -146,7 +146,7 @@ class MyAccountAccountMuteNetworkOnlyAccountListBloc extends DisposableOwner
     );
 
     var unifediApiAccount = account
-        .copyWith(
+        .copyWithTemp(
           relationship: accountRelationship,
         )
         .toUnifediApiAccount();

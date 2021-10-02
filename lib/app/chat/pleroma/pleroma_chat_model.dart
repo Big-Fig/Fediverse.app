@@ -4,17 +4,11 @@ import 'package:fedi/app/chat/chat_model.dart';
 import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
 import 'package:fedi/app/chat/pleroma/with_last_message/pleroma_chat_with_last_message_model.dart';
 import 'package:fedi/app/database/app_database.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'pleroma_chat_model.freezed.dart';
 
 abstract class IPleromaChat implements IChat {
-  @override
-  IPleromaChat copyWith({
-    int? id,
-    String? remoteId,
-    int? unread,
-    DateTime? updatedAt,
-    List<IAccount>? accounts,
-  });
-
   static int compareItemsToSort(
     IPleromaChat? a,
     IPleromaChat? b,
@@ -37,82 +31,33 @@ abstract class IPleromaChat implements IChat {
       a.remoteId == b.remoteId;
 }
 
-class DbPleromaChatPopulated {
-  final DbChat dbChat;
-  final DbAccount dbAccount;
-
-  DbPleromaChatPopulated({
-    required this.dbChat,
-    required this.dbAccount,
-  });
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is DbPleromaChatPopulated &&
-          runtimeType == other.runtimeType &&
-          dbChat == other.dbChat &&
-          dbAccount == other.dbAccount;
-
-  @override
-  int get hashCode => dbChat.hashCode ^ dbAccount.hashCode;
-
-  @override
-  String toString() {
-    return 'DbChatPopulated{'
-        'dbChat: $dbChat, '
-        'dbAccount: $dbAccount'
-        '}';
-  }
-
-  DbPleromaChatPopulated copyWith({
-    DbChat? dbChat,
-    DbAccount? dbAccount,
-  }) =>
-      DbPleromaChatPopulated(
-        dbChat: dbChat ?? this.dbChat,
-        dbAccount: dbAccount ?? this.dbAccount,
-      );
+@freezed
+class DbPleromaChatPopulated with _$DbPleromaChatPopulated {
+  const factory DbPleromaChatPopulated({
+    required DbChat dbChat,
+    required DbAccount dbAccount,
+  }) = _DbPleromaChatPopulated;
 }
 
-class DbPleromaChatWithLastMessagePopulated {
-  final DbPleromaChatPopulated dbPleromaChatPopulated;
-  final DbChatMessagePopulated? dbChatMessagePopulated;
-
-  DbPleromaChatWithLastMessagePopulated({
-    required this.dbPleromaChatPopulated,
-    required this.dbChatMessagePopulated,
-  });
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is DbPleromaChatWithLastMessagePopulated &&
-          runtimeType == other.runtimeType &&
-          dbPleromaChatPopulated == other.dbPleromaChatPopulated &&
-          dbChatMessagePopulated == other.dbChatMessagePopulated;
-
-  @override
-  int get hashCode =>
-      dbPleromaChatPopulated.hashCode ^ dbChatMessagePopulated.hashCode;
-
-  @override
-  String toString() {
-    return 'DbPleromaChatWithLastMessagePopulated{'
-        'dbPleromaChatPopulated: $dbPleromaChatPopulated, '
-        'dbChatMessagePopulated: $dbChatMessagePopulated'
-        '}';
-  }
+@freezed
+class DbPleromaChatWithLastMessagePopulated
+    with _$DbPleromaChatWithLastMessagePopulated {
+  const factory DbPleromaChatWithLastMessagePopulated({
+    required DbPleromaChatPopulated dbPleromaChatPopulated,
+    required DbChatMessagePopulated? dbChatMessagePopulated,
+  }) = _DbPleromaChatWithLastMessagePopulated;
 }
 
+@freezed
 class DbPleromaChatWithLastMessagePopulatedWrapper
+    with _$DbPleromaChatWithLastMessagePopulatedWrapper
     implements IPleromaChatWithLastMessage {
-  final DbPleromaChatWithLastMessagePopulated
-      dbPleromaChatWithLastMessagePopulated;
+  const DbPleromaChatWithLastMessagePopulatedWrapper._();
 
-  DbPleromaChatWithLastMessagePopulatedWrapper({
-    required this.dbPleromaChatWithLastMessagePopulated,
-  });
+  const factory DbPleromaChatWithLastMessagePopulatedWrapper({
+    required DbPleromaChatWithLastMessagePopulated
+        dbPleromaChatWithLastMessagePopulated,
+  }) = _DbPleromaChatWithLastMessagePopulatedWrapper;
 
   @override
   IPleromaChat get chat => DbPleromaChatPopulatedWrapper(
@@ -130,25 +75,6 @@ class DbPleromaChatWithLastMessagePopulatedWrapper
           : null;
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is DbPleromaChatWithLastMessagePopulatedWrapper &&
-          runtimeType == other.runtimeType &&
-          dbPleromaChatWithLastMessagePopulated ==
-              other.dbPleromaChatWithLastMessagePopulated;
-
-  @override
-  int get hashCode => dbPleromaChatWithLastMessagePopulated.hashCode;
-
-  @override
-  String toString() {
-    return 'DbPleromaChatWithLastMessagePopulatedWrapper{'
-        'dbPleromaChatWithLastMessagePopulated: '
-        '$dbPleromaChatWithLastMessagePopulated'
-        '}';
-  }
-
-  @override
   int compareTo(IPleromaChatWithLastMessage b) =>
       IPleromaChat.compareItemsToSort(
         chat,
@@ -162,12 +88,14 @@ class DbPleromaChatWithLastMessagePopulatedWrapper
       );
 }
 
-class DbPleromaChatPopulatedWrapper implements IPleromaChat {
-  final DbPleromaChatPopulated dbChatPopulated;
-
-  DbPleromaChatPopulatedWrapper({
-    required this.dbChatPopulated,
-  });
+@freezed
+class DbPleromaChatPopulatedWrapper
+    with _$DbPleromaChatPopulatedWrapper
+    implements IPleromaChat {
+  const DbPleromaChatPopulatedWrapper._();
+  const factory DbPleromaChatPopulatedWrapper({
+    required DbPleromaChatPopulated dbChatPopulated,
+  }) = _DbPleromaChatPopulatedWrapper;
 
   @override
   int? get localId => dbChatPopulated.dbChat.id;
@@ -182,33 +110,6 @@ class DbPleromaChatPopulatedWrapper implements IPleromaChat {
   DateTime? get updatedAt => dbChatPopulated.dbChat.updatedAt;
 
   @override
-  DbPleromaChatPopulatedWrapper copyWith({
-    int? id,
-    String? remoteId,
-    int? unread,
-    DateTime? updatedAt,
-    List<IAccount>? accounts,
-  }) {
-    // accounts should be null or single
-    // ignore: no-magic-number
-    assert(accounts?.length == null || accounts!.length < 2);
-
-    var account = accounts?.singleOrNull;
-
-    return DbPleromaChatPopulatedWrapper(
-      dbChatPopulated: DbPleromaChatPopulated(
-        dbChat: dbChatPopulated.dbChat.copyWith(
-          id: id ?? localId,
-          remoteId: remoteId ?? this.remoteId,
-          unread: unread ?? this.unread,
-          updatedAt: updatedAt ?? this.updatedAt,
-        ),
-        dbAccount: account?.toDbAccount() ?? dbChatPopulated.dbAccount,
-      ),
-    );
-  }
-
-  @override
   List<IAccount> get accounts => [
         DbAccountPopulatedWrapper(
           dbAccountPopulated: DbAccountPopulated(
@@ -216,21 +117,6 @@ class DbPleromaChatPopulatedWrapper implements IPleromaChat {
           ),
         ),
       ];
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is DbPleromaChatPopulatedWrapper &&
-          runtimeType == other.runtimeType &&
-          dbChatPopulated == other.dbChatPopulated;
-
-  @override
-  int get hashCode => dbChatPopulated.hashCode;
-
-  @override
-  String toString() {
-    return 'DbPleromaChatPopulatedWrapper{dbChatPopulated: $dbChatPopulated}';
-  }
 }
 
 extension IPleromaChatExtension on IPleromaChat {

@@ -22,7 +22,7 @@ void main() {
           RecentSearchModelMockHelper.createTestRecentSearchList(
         seed: seed,
       ),
-      RecentSearchList.fromJson,
+      (json) => RecentSearchList.fromJson(json),
     );
   });
 

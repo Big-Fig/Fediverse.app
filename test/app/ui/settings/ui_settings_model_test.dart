@@ -22,7 +22,7 @@ void main() {
           UiSettingsModelMockHelper.createTestUiSettings(
         seed: seed,
       ),
-      UiSettings.fromJson,
+      (json) => UiSettings.fromJson(json),
     );
   });
 
@@ -45,7 +45,7 @@ void main() {
 
     var obj2Obj1CopyWith = obj1.copyWith(
       themeId: obj2.themeId,
-      statusFontSize: obj2.statusFontSize,
+      statusFontSizeString: obj2.statusFontSizeString,
     );
 
     expect(obj1 == obj2, false);

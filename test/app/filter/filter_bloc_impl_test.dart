@@ -117,7 +117,7 @@ void main() {
       filter.isExpired,
     );
 
-    await _update(filter.copyWith(expiresAt: DateTime(3000)));
+    await _update(filter.copyWithTemp(expiresAt: DateTime(3000)));
 
     expect(
       filterBloc.isExpired,
@@ -138,7 +138,7 @@ void main() {
     await RxDartMockHelper.waitForData(() => listened);
     expect(listened, filter.isExpired);
 
-    await _update(filter.copyWith(expiresAt: DateTime(1990)));
+    await _update(filter.copyWithTemp(expiresAt: DateTime(1990)));
 
     expect(
       filterBloc.isExpired,

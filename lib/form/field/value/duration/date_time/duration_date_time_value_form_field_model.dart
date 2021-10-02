@@ -1,28 +1,11 @@
-class DurationDateTime {
-  final Duration? duration;
-  final DateTime? dateTime;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  DurationDateTime({
-    required this.duration,
-    required this.dateTime,
-  });
+part 'duration_date_time_value_form_field_model.freezed.dart';
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is DurationDateTime &&
-          runtimeType == other.runtimeType &&
-          duration == other.duration &&
-          dateTime == other.dateTime;
-
-  @override
-  int get hashCode => duration.hashCode ^ dateTime.hashCode;
-
-  @override
-  String toString() {
-    return 'DurationDateTime{'
-        'duration: $duration, '
-        'dateTime: $dateTime'
-        '}';
-  }
+@freezed
+class DurationDateTime with _$DurationDateTime {
+  const factory DurationDateTime({
+    required Duration? duration,
+    required DateTime? dateTime,
+  }) = _DurationDateTime;
 }

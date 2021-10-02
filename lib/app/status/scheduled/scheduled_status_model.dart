@@ -5,8 +5,11 @@ import 'package:fedi/app/status/post/poll/post_status_poll_model.dart';
 import 'package:fedi/app/status/post/post_status_data_status_status_adapter.dart';
 import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/obj/equal_comparable_obj.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:unifedi_api/unifedi_api.dart';
+
+part 'scheduled_status_model.freezed.dart';
 
 abstract class IScheduledStatus
     implements IEqualComparableObj<IScheduledStatus> {
@@ -22,7 +25,7 @@ abstract class IScheduledStatus
 
   bool get canceled;
 
-  IScheduledStatus copyWith({
+  IScheduledStatus copyWithTemp({
     int? localId,
     String? remoteId,
     DateTime? scheduledAt,
@@ -61,36 +64,11 @@ extension DbScheduledStatusPopulatedListExtension
   }
 }
 
-class DbScheduledStatusPopulated {
-  final DbScheduledStatus dbScheduledStatus;
-
-  DbScheduledStatusPopulated({
-    required this.dbScheduledStatus,
-  });
-
-  @override
-  String toString() {
-    return 'DbScheduledStatusPopulated{'
-        'dbScheduledStatus: $dbScheduledStatus'
-        '}';
-  }
-
-  DbScheduledStatusPopulated copyWith({
-    DbScheduledStatus? dbScheduledStatus,
-  }) =>
-      DbScheduledStatusPopulated(
-        dbScheduledStatus: dbScheduledStatus ?? this.dbScheduledStatus,
-      );
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is DbScheduledStatusPopulated &&
-          runtimeType == other.runtimeType &&
-          dbScheduledStatus == other.dbScheduledStatus;
-
-  @override
-  int get hashCode => dbScheduledStatus.hashCode;
+@freezed
+class DbScheduledStatusPopulated with _$DbScheduledStatusPopulated {
+  const factory DbScheduledStatusPopulated({
+    required DbScheduledStatus dbScheduledStatus,
+  }) = _DbScheduledStatusPopulated;
 }
 
 extension IPleromaScheduledStatusParamsExtension
@@ -179,18 +157,21 @@ extension IScheduledStatusExtension on IScheduledStatus {
   }
 }
 
-class DbScheduledStatusPopulatedWrapper implements IScheduledStatus {
-  final DbScheduledStatusPopulated dbScheduledStatusPopulated;
+@freezed
+class DbScheduledStatusPopulatedWrapper
+    with _$DbScheduledStatusPopulatedWrapper
+    implements IScheduledStatus {
+  const DbScheduledStatusPopulatedWrapper._();
 
-  DbScheduledStatusPopulatedWrapper({
-    required this.dbScheduledStatusPopulated,
-  });
+  const factory DbScheduledStatusPopulatedWrapper({
+    required DbScheduledStatusPopulated dbScheduledStatusPopulated,
+  }) = _DbScheduledStatusPopulatedWrapper;
 
   DbScheduledStatus get dbScheduledStatus =>
       dbScheduledStatusPopulated.dbScheduledStatus;
 
   @override
-  IScheduledStatus copyWith({
+  IScheduledStatus copyWithTemp({
     int? localId,
     String? remoteId,
     DateTime? scheduledAt,

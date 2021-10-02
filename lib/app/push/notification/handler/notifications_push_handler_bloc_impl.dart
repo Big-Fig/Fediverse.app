@@ -430,7 +430,7 @@ class NotificationsPushHandlerBloc extends DisposableOwner
       );
     }
     if (unifediApiAccountRelationship != null) {
-      var localAccount = unifediApiAccount.toDbAccountWrapper().copyWith(
+      var localAccount = unifediApiAccount.toDbAccountWrapper().copyWithTemp(
             relationship: unifediApiAccountRelationship,
           );
       unifediApiAccount = localAccount.toUnifediApiAccount();

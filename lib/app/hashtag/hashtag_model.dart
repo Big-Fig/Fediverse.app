@@ -1,4 +1,7 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:unifedi_api/unifedi_api.dart';
+
+part 'hashtag_model.freezed.dart';
 
 abstract class IHashtag {
   String get name;
@@ -10,40 +13,16 @@ abstract class IHashtag {
   IUnifediApiTagHistory? get history;
 }
 
-class Hashtag extends IHashtag {
-  @override
-  final String name;
-
-  @override
-  final IUnifediApiTagHistory? history;
-
-  @override
-  final String? url;
-
-  Hashtag({
-    required this.name,
-    required this.url,
-    required this.history,
-  });
-
-  @override
-  String toString() {
-    return 'Hashtag{name: $name, history: $history, url: $url}';
-  }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Hashtag &&
-          runtimeType == other.runtimeType &&
-          name == other.name &&
-          history == other.history &&
-          url == other.url;
-
-  @override
-  int get hashCode => name.hashCode ^ history.hashCode ^ url.hashCode;
+@freezed
+class Hashtag with _$Hashtag implements IHashtag {
+  const Hashtag._();
+  const factory Hashtag({
+    @override required String name,
+    @override required IUnifediApiTagHistory? history,
+    @override required String? url,
+  }) = _Hashtag;
 
   @override
   // TODO: implement statusesCount
-  int? get statusesCount => throw UnimplementedError();
+  int? get statusesCount => null;
 }

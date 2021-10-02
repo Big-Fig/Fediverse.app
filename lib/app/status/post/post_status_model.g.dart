@@ -6,8 +6,8 @@ part of 'post_status_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-PostStatusData _$PostStatusDataFromJson(Map<String, dynamic> json) =>
-    PostStatusData(
+_$_PostStatusData _$$_PostStatusDataFromJson(Map<String, dynamic> json) =>
+    _$_PostStatusData(
       subject: json['subject'] as String?,
       text: json['text'] as String?,
       scheduledAt: json['scheduled_at'] == null
@@ -32,7 +32,7 @@ PostStatusData _$PostStatusDataFromJson(Map<String, dynamic> json) =>
       expiresInSeconds: json['expires_in_seconds'] as int?,
     );
 
-Map<String, dynamic> _$PostStatusDataToJson(PostStatusData instance) {
+Map<String, dynamic> _$$_PostStatusDataToJson(_$_PostStatusData instance) {
   final val = <String, dynamic>{};
 
   void writeNotNull(String key, dynamic value) {

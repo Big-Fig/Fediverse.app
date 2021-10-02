@@ -23,7 +23,7 @@ void main() {
           .createTestEmojiPickerCustomImageUrlCategoryItems(
         seed: seed,
       ),
-      EmojiPickerCustomImageUrlCategoryItems.fromJson,
+      (json) => EmojiPickerCustomImageUrlCategoryItems.fromJson(json),
     );
   });
 

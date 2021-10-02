@@ -22,7 +22,7 @@ void main() {
           LocalizationSettingsModelMockHelper.createTestLocalizationSettings(
         seed: seed,
       ),
-      LocalizationSettings.fromJson,
+      (json) => LocalizationSettings.fromJson(json),
     );
   });
 

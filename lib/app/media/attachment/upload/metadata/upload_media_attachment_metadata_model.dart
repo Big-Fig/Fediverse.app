@@ -1,24 +1,14 @@
-class UploadMediaAttachmentMetadata {
-  final String? description;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  UploadMediaAttachmentMetadata({
-    required this.description,
-  });
+part 'upload_media_attachment_metadata_model.freezed.dart';
+
+@freezed
+class UploadMediaAttachmentMetadata with _$UploadMediaAttachmentMetadata {
+  const UploadMediaAttachmentMetadata._();
+
+  const factory UploadMediaAttachmentMetadata({
+    required String? description,
+  }) = _UploadMediaAttachmentMetadata;
 
   bool get isAnyDataExist => description?.isNotEmpty == true;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is UploadMediaAttachmentMetadata &&
-          runtimeType == other.runtimeType &&
-          description == other.description;
-
-  @override
-  int get hashCode => description.hashCode;
-
-  @override
-  String toString() => 'UploadMediaAttachmentMetadata{'
-      'description: $description'
-      '}';
 }

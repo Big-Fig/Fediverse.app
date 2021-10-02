@@ -226,7 +226,7 @@ void main() {
 
   test('createQuery searchQuery', () async {
     var query = accountRepository.createQuery(
-      filters: AccountRepositoryFilters(
+      filters: AccountRepositoryFilters.only(
         searchQuery: 'qu',
       ),
       pagination: null,
@@ -279,7 +279,7 @@ void main() {
       accountRepository,
     );
     var query = accountRepository.createQuery(
-      filters: AccountRepositoryFilters(
+      filters: AccountRepositoryFilters.only(
         onlyInStatusFavouritedBy:
             DbStatusPopulatedWrapper(dbStatusPopulated: status),
       ),
@@ -355,7 +355,7 @@ void main() {
       accountRepository,
     );
     var query = accountRepository.createQuery(
-      filters: AccountRepositoryFilters(
+      filters: AccountRepositoryFilters.only(
         onlyInStatusRebloggedBy:
             DbStatusPopulatedWrapper(dbStatusPopulated: status),
       ),
@@ -423,7 +423,7 @@ void main() {
     );
 
     var query = accountRepository.createQuery(
-      filters: AccountRepositoryFilters(
+      filters: AccountRepositoryFilters.only(
         onlyInAccountFollowers: DbAccountPopulatedWrapper(
           dbAccountPopulated: DbAccountPopulated(
             dbAccount: dbAccount1,
@@ -479,7 +479,7 @@ void main() {
     );
 
     var query = accountRepository.createQuery(
-      filters: AccountRepositoryFilters(
+      filters: AccountRepositoryFilters.only(
         onlyInAccountFollowing: DbAccountPopulatedWrapper(
           dbAccountPopulated: DbAccountPopulated(
             dbAccount: dbAccount1,
@@ -538,7 +538,7 @@ void main() {
     );
 
     var query = accountRepository.createQuery(
-      filters: AccountRepositoryFilters(
+      filters: AccountRepositoryFilters.only(
         onlyInConversation: conversation,
       ),
       pagination: null,

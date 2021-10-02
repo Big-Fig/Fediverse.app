@@ -1,41 +1,33 @@
 import 'package:fedi/repository/repository_model.dart';
-import 'package:moor/moor.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:moor/moor.dart' as moor;
 
-class InstanceAnnouncementRepositoryFilters {
-  final bool? withDismissed;
-  final bool? withExpired;
-  final bool? withNotStartedYet;
+part 'instance_announcement_repository_model.freezed.dart';
 
-  static const InstanceAnnouncementRepositoryFilters empty =
-      InstanceAnnouncementRepositoryFilters();
+@freezed
+class InstanceAnnouncementRepositoryFilters
+    with _$InstanceAnnouncementRepositoryFilters {
+  static final InstanceAnnouncementRepositoryFilters empty =
+      InstanceAnnouncementRepositoryFilters.only();
 
-  const InstanceAnnouncementRepositoryFilters({
-    this.withDismissed,
-    this.withExpired,
-    this.withNotStartedYet,
-  });
+  const InstanceAnnouncementRepositoryFilters._();
 
-  @override
-  String toString() => 'InstanceAnnouncementRepositoryFilters{'
-      'withDismissed: $withDismissed, '
-      'withExpired: $withExpired, '
-      'withNotStartedYet: $withNotStartedYet'
-      '}';
+  const factory InstanceAnnouncementRepositoryFilters({
+    required bool? withDismissed,
+    required bool? withExpired,
+    required bool? withNotStartedYet,
+  }) = _InstanceAnnouncementRepositoryFilters;
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is InstanceAnnouncementRepositoryFilters &&
-          runtimeType == other.runtimeType &&
-          withDismissed == other.withDismissed &&
-          withExpired == other.withExpired &&
-          withNotStartedYet == other.withNotStartedYet;
-
-  @override
-  int get hashCode =>
-      withDismissed.hashCode ^
-      withExpired.hashCode ^
-      withNotStartedYet.hashCode;
+  static InstanceAnnouncementRepositoryFilters only({
+    bool? withDismissed,
+    bool? withExpired,
+    bool? withNotStartedYet,
+  }) =>
+      InstanceAnnouncementRepositoryFilters(
+        withDismissed: withDismissed,
+        withExpired: withExpired,
+        withNotStartedYet: withNotStartedYet,
+      );
 }
 
 enum InstanceAnnouncementOrderType {
@@ -43,46 +35,39 @@ enum InstanceAnnouncementOrderType {
   updatedAt,
 }
 
-class InstanceAnnouncementOrderingTermData extends RepositoryOrderingTerm {
-  final InstanceAnnouncementOrderType orderType;
-  @override
-  final OrderingMode orderingMode;
+@freezed
+class InstanceAnnouncementOrderingTermData
+    with _$InstanceAnnouncementOrderingTermData
+    implements RepositoryOrderingTerm {
+  const InstanceAnnouncementOrderingTermData._();
+
+  const factory InstanceAnnouncementOrderingTermData({
+    required InstanceAnnouncementOrderType orderType,
+    required moor.OrderingMode orderingMode,
+  }) = _InstanceAnnouncementOrderingTermData;
 
   static const InstanceAnnouncementOrderingTermData remoteIdDesc =
       InstanceAnnouncementOrderingTermData(
-    orderingMode: OrderingMode.desc,
+    orderingMode: moor.OrderingMode.desc,
     orderType: InstanceAnnouncementOrderType.remoteId,
   );
   static const InstanceAnnouncementOrderingTermData remoteIdAsc =
       InstanceAnnouncementOrderingTermData(
-    orderingMode: OrderingMode.asc,
+    orderingMode: moor.OrderingMode.asc,
     orderType: InstanceAnnouncementOrderType.remoteId,
   );
   static const InstanceAnnouncementOrderingTermData updatedAtDesc =
       InstanceAnnouncementOrderingTermData(
-    orderingMode: OrderingMode.desc,
+    orderingMode: moor.OrderingMode.desc,
     orderType: InstanceAnnouncementOrderType.updatedAt,
   );
   static const InstanceAnnouncementOrderingTermData updatedAtAsc =
       InstanceAnnouncementOrderingTermData(
-    orderingMode: OrderingMode.asc,
+    orderingMode: moor.OrderingMode.asc,
     orderType: InstanceAnnouncementOrderType.updatedAt,
   );
-
-  const InstanceAnnouncementOrderingTermData({
-    required this.orderType,
-    required this.orderingMode,
-  });
 
   static const List<InstanceAnnouncementOrderingTermData> defaultTerms = [
     updatedAtDesc,
   ];
-
-  @override
-  String toString() {
-    return 'InstanceAnnouncementOrderingTermData{'
-        'orderByType: $orderType, '
-        'orderingMode: $orderingMode'
-        '}';
-  }
 }

@@ -2,21 +2,25 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:fediverse_api/fediverse_api_utils.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+part 'localization_model.freezed.dart';
 
 // ignore_for_file: no-magic-number
 part 'localization_model.g.dart';
 
-@JsonSerializable(explicitToJson: true)
 @HiveType(typeId: -32 + 82)
-class LocalizationLocale implements IJsonObj {
-  @HiveField(0)
-  final String languageCode;
-  @HiveField(1)
-  final String? scriptCode;
-  @HiveField(2)
-  final String? countryCode;
+@freezed
+class LocalizationLocale with _$LocalizationLocale implements IJsonObj {
+  const LocalizationLocale._();
+
+  const factory LocalizationLocale({
+    @HiveField(0) required String languageCode,
+    @HiveField(1) required String? scriptCode,
+    @HiveField(2) required String? countryCode,
+  }) = _LocalizationLocale;
 
   String get localeString {
     var result = '$languageCode';
@@ -66,37 +70,6 @@ class LocalizationLocale implements IJsonObj {
     return locale;
   }
 
-  LocalizationLocale({
-    required this.languageCode,
-    required this.scriptCode,
-    required this.countryCode,
-  });
-
-  static LocalizationLocale fromJson(Map<String, dynamic> json) =>
+  factory LocalizationLocale.fromJson(Map<String, dynamic> json) =>
       _$LocalizationLocaleFromJson(json);
-
-  @override
-  Map<String, dynamic> toJson() => _$LocalizationLocaleToJson(this);
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is LocalizationLocale &&
-          runtimeType == other.runtimeType &&
-          languageCode == other.languageCode &&
-          scriptCode == other.scriptCode &&
-          countryCode == other.countryCode;
-
-  @override
-  int get hashCode =>
-      languageCode.hashCode ^ scriptCode.hashCode ^ countryCode.hashCode;
-
-  @override
-  String toString() {
-    return 'LocalizationLocale{'
-        'languageCode: $languageCode,'
-        ' scriptCode: $scriptCode,'
-        ' countryCode: $countryCode'
-        '}';
-  }
 }

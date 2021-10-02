@@ -1,6 +1,9 @@
 import 'package:fedi/emoji_picker/item/custom_emoji_picker_item_model.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+part 'custom_emoji_picker_image_url_item_model.freezed.dart';
 
 // ignore_for_file: no-magic-number
 part 'custom_emoji_picker_image_url_item_model.g.dart';
@@ -10,41 +13,20 @@ part 'custom_emoji_picker_image_url_item_model.g.dart';
 // which not exist in Hive 0.x
 //@HiveType()
 @HiveType(typeId: -32 + 69)
-@JsonSerializable(explicitToJson: true)
-class CustomEmojiPickerImageUrlItem extends CustomEmojiPickerItem {
-  @override
-  @HiveField(0)
-  final String name;
-  @HiveField(1)
-  @JsonKey(name: 'image_url')
-  final String imageUrl;
+@freezed
+class CustomEmojiPickerImageUrlItem
+    with _$CustomEmojiPickerImageUrlItem
+    implements CustomEmojiPickerItem {
+  const CustomEmojiPickerImageUrlItem._();
 
-  CustomEmojiPickerImageUrlItem({
-    required this.imageUrl,
-    required this.name,
-  });
+  const factory CustomEmojiPickerImageUrlItem({
+    @HiveField(0) required String name,
+    @HiveField(1) @JsonKey(name: 'image_url') required String imageUrl,
+  }) = _CustomEmojiPickerImageUrlItem;
 
   @override
   String get code => ':$name:';
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is CustomEmojiPickerImageUrlItem &&
-          runtimeType == other.runtimeType &&
-          name == other.name &&
-          imageUrl == other.imageUrl;
-
-  @override
-  int get hashCode => name.hashCode ^ imageUrl.hashCode;
-
-  @override
-  String toString() {
-    return 'CustomEmojiPickerImageUrlItem{name: $name, imageUrl: $imageUrl}';
-  }
-
-  static CustomEmojiPickerImageUrlItem fromJson(Map<String, dynamic> json) =>
+  factory CustomEmojiPickerImageUrlItem.fromJson(Map<String, dynamic> json) =>
       _$CustomEmojiPickerImageUrlItemFromJson(json);
-
-  Map<String, dynamic> toJson() => _$CustomEmojiPickerImageUrlItemToJson(this);
 }

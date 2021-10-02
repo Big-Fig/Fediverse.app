@@ -201,15 +201,41 @@ class InstanceAnnouncementBloc extends DisposableOwner
   Future updateReactions(
     List<IUnifediApiEmojiReaction> newReactionsList,
   ) async {
-    var updatedInstanceAnnouncements = instanceAnnouncement.copyWith(
-      reactions: newReactionsList,
+    var dbInstanceAnnouncementPopulatedWrapper =
+        instanceAnnouncement.toDbInstanceAnnouncementPopulatedWrapper();
+
+    // todo: rework copy with
+    var updatedInstanceAnnouncements =
+        dbInstanceAnnouncementPopulatedWrapper.copyWith(
+      dbInstanceAnnouncementPopulated: dbInstanceAnnouncementPopulatedWrapper
+          .dbInstanceAnnouncementPopulated
+          .copyWith(
+        dbInstanceAnnouncement: dbInstanceAnnouncementPopulatedWrapper
+            .dbInstanceAnnouncementPopulated.dbInstanceAnnouncement
+            .copyWith(
+          reactions: newReactionsList.toUnifediApiEmojiReactionList(),
+        ),
+      ),
     );
     await _updateAnnouncement(updatedInstanceAnnouncements);
   }
 
   Future updateDismissed(bool dismissed) async {
-    var updatedInstanceAnnouncements = instanceAnnouncement.copyWith(
-      read: dismissed,
+    var dbInstanceAnnouncementPopulatedWrapper =
+        instanceAnnouncement.toDbInstanceAnnouncementPopulatedWrapper();
+
+    // todo: rework copy with
+    var updatedInstanceAnnouncements =
+        dbInstanceAnnouncementPopulatedWrapper.copyWith(
+      dbInstanceAnnouncementPopulated: dbInstanceAnnouncementPopulatedWrapper
+          .dbInstanceAnnouncementPopulated
+          .copyWith(
+        dbInstanceAnnouncement: dbInstanceAnnouncementPopulatedWrapper
+            .dbInstanceAnnouncementPopulated.dbInstanceAnnouncement
+            .copyWith(
+          read: dismissed,
+        ),
+      ),
     );
     await _updateAnnouncement(updatedInstanceAnnouncements);
   }

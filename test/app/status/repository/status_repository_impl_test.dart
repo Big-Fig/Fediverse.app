@@ -375,8 +375,9 @@ void main() {
 
   test('createQuery onlyLocalCondition', () async {
     var query = statusRepository.createQuery(
-      filters: StatusRepositoryFilters(
-        onlyLocalCondition: StatusOnlyLocalCondition('pleroma.com'),
+      filters: StatusRepositoryFilters.only(
+        onlyLocalCondition:
+            StatusOnlyLocalCondition(localUrlHost: 'pleroma.com'),
       ),
       pagination: null,
       orderingTermData: null,
@@ -433,7 +434,7 @@ void main() {
 
   test('createQuery onlyWithMedia', () async {
     var query = statusRepository.createQuery(
-      filters: StatusRepositoryFilters(
+      filters: StatusRepositoryFilters.only(
         onlyWithMedia: true,
       ),
       pagination: null,
@@ -482,7 +483,7 @@ void main() {
 
   test('createQuery withMuted', () async {
     var query = statusRepository.createQuery(
-      filters: StatusRepositoryFilters(
+      filters: StatusRepositoryFilters.only(
         withMuted: true,
       ),
       pagination: null,
@@ -562,7 +563,7 @@ void main() {
     // recreate query otherwise we have strange sql errors
     // looks like bug in moor which happens only in tests
     query = statusRepository.createQuery(
-      filters: StatusRepositoryFilters(
+      filters: StatusRepositoryFilters.only(
         withMuted: true,
       ),
       pagination: null,
@@ -574,7 +575,7 @@ void main() {
 
   test('createQuery excludeVisibilities', () async {
     var query = statusRepository.createQuery(
-      filters: StatusRepositoryFilters(
+      filters: StatusRepositoryFilters.only(
         excludeVisibilities: [
           UnifediApiVisibility.directValue,
           UnifediApiVisibility.unlistedValue,
@@ -992,7 +993,7 @@ void main() {
 
   test('createQuery onlyNoNsfwSensitive', () async {
     var query = statusRepository.createQuery(
-      filters: StatusRepositoryFilters(
+      filters: StatusRepositoryFilters.only(
         onlyNoNsfwSensitive: true,
       ),
       pagination: null,
@@ -1023,7 +1024,7 @@ void main() {
 
   test('createQuery onlyNoReplies', () async {
     var query = statusRepository.createQuery(
-      filters: StatusRepositoryFilters(
+      filters: StatusRepositoryFilters.only(
         onlyNoReplies: true,
       ),
       pagination: null,
@@ -1081,7 +1082,7 @@ void main() {
     );
 
     var query = statusRepository.createQuery(
-      filters: StatusRepositoryFilters(
+      filters: StatusRepositoryFilters.only(
         onlyFromAccountsFollowingByAccount: DbAccountPopulatedWrapper(
           dbAccountPopulated: DbAccountPopulated(
             dbAccount: await AccountDatabaseMockHelper.createTestDbAccount(
@@ -1121,7 +1122,7 @@ void main() {
 
   test('createQuery withHashtag', () async {
     var query = statusRepository.createQuery(
-      filters: StatusRepositoryFilters(
+      filters: StatusRepositoryFilters.only(
         onlyWithHashtag: '#cats',
       ),
       pagination: null,
@@ -1240,7 +1241,7 @@ void main() {
     // recreate query otherwise we have strange sql errors
     // looks like bug in moor which happens only in tests
     query = statusRepository.createQuery(
-      filters: StatusRepositoryFilters(
+      filters: StatusRepositoryFilters.only(
         onlyWithHashtag: '#cats',
       ),
       pagination: null,
@@ -1253,7 +1254,7 @@ void main() {
   test('createQuery onlyInListWithRemoteId', () async {
     var listWithRemoteId = 'listRemoteId';
     var query = statusRepository.createQuery(
-      filters: StatusRepositoryFilters(
+      filters: StatusRepositoryFilters.only(
         onlyInListWithRemoteId: listWithRemoteId,
       ),
       pagination: null,
@@ -1335,7 +1336,7 @@ void main() {
   test('createQuery onlyInConversation', () async {
     var conversationRemoteId = 'conversationRemoteId';
     var query = statusRepository.createQuery(
-      filters: StatusRepositoryFilters(
+      filters: StatusRepositoryFilters.only(
         onlyInConversation: DbConversationChatPopulatedWrapper(
           dbConversationPopulated: DbConversationPopulated(
             dbConversation: DbConversation(
@@ -1424,7 +1425,7 @@ void main() {
 
   test('createQuery onlyFromAccount', () async {
     var query = statusRepository.createQuery(
-      filters: StatusRepositoryFilters(
+      filters: StatusRepositoryFilters.only(
         onlyFromAccount: DbAccountPopulatedWrapper(
           dbAccountPopulated: DbAccountPopulated(
             dbAccount: dbAccount,
@@ -1697,7 +1698,7 @@ void main() {
     );
     expect(
       (await statusRepository.findAllInAppType(
-        filters: StatusRepositoryFilters(
+        filters: StatusRepositoryFilters.only(
           onlyInConversation:
               await ConversationMockHelper.createTestConversation(
             seed: 'seed5',
@@ -1747,7 +1748,7 @@ void main() {
 
     List<IStatus>? listened;
     var subscription = statusRepository.watchFindAllInAppType(
-      filters: StatusRepositoryFilters(
+      filters: StatusRepositoryFilters.only(
         onlyInListWithRemoteId: listRemoteId,
       ),
       pagination: RepositoryPagination<IStatus>(
@@ -1826,7 +1827,7 @@ void main() {
 
   test('createQuery excludeTextConditions wholeWord = false', () async {
     var query = statusRepository.createQuery(
-      filters: StatusRepositoryFilters(
+      filters: StatusRepositoryFilters.only(
         excludeTextConditions: [
           StatusTextCondition(phrase: 'test', wholeWord: false),
         ],
@@ -1898,7 +1899,7 @@ void main() {
 
   test('createQuery excludeTextConditions wholeWord = true', () async {
     var query = statusRepository.createQuery(
-      filters: StatusRepositoryFilters(
+      filters: StatusRepositoryFilters.only(
         excludeTextConditions: [
           StatusTextCondition(phrase: 'test', wholeWord: true),
         ],
@@ -1985,7 +1986,7 @@ void main() {
 
   test('createQuery excludeTextConditions reblog', () async {
     var query = statusRepository.createQuery(
-      filters: StatusRepositoryFilters(
+      filters: StatusRepositoryFilters.only(
         excludeTextConditions: [
           StatusTextCondition(phrase: 'test', wholeWord: false),
         ],
@@ -2070,7 +2071,7 @@ void main() {
 
   test('createQuery isFromHomeTimeline', () async {
     var query = statusRepository.createQuery(
-      filters: StatusRepositoryFilters(
+      filters: StatusRepositoryFilters.only(
         isFromHomeTimeline: true,
         // isFromHomeTimeline: null,
       ),
@@ -2151,8 +2152,9 @@ void main() {
 
   test('createQuery onlyRemoteCondition', () async {
     var query = statusRepository.createQuery(
-      filters: StatusRepositoryFilters(
-        onlyRemoteCondition: StatusOnlyRemoteCondition('pleroma.com'),
+      filters: StatusRepositoryFilters.only(
+        onlyRemoteCondition:
+            StatusOnlyRemoteCondition(localUrlHost: 'pleroma.com'),
       ),
       pagination: null,
       orderingTermData: null,
@@ -2218,8 +2220,10 @@ void main() {
 
   test('createQuery onlyRemoteCondition', () async {
     var query = statusRepository.createQuery(
-      filters: StatusRepositoryFilters(
-        onlyRemoteCondition: StatusOnlyRemoteCondition('pleroma.com'),
+      filters: StatusRepositoryFilters.only(
+        onlyRemoteCondition: StatusOnlyRemoteCondition(
+          localUrlHost: 'pleroma.com',
+        ),
       ),
       pagination: null,
       orderingTermData: null,
@@ -2287,9 +2291,13 @@ void main() {
     expect(
       () {
         statusRepository.createQuery(
-          filters: StatusRepositoryFilters(
-            onlyRemoteCondition: StatusOnlyRemoteCondition('pleroma.com'),
-            onlyLocalCondition: StatusOnlyLocalCondition('pleroma.com'),
+          filters: StatusRepositoryFilters.only(
+            onlyRemoteCondition: StatusOnlyRemoteCondition(
+              localUrlHost: 'pleroma.com',
+            ),
+            onlyLocalCondition: StatusOnlyLocalCondition(
+              localUrlHost: 'pleroma.com',
+            ),
           ),
           pagination: null,
           orderingTermData: null,
@@ -2303,7 +2311,7 @@ void main() {
     expect(
       () {
         statusRepository.createQuery(
-          filters: StatusRepositoryFilters(
+          filters: StatusRepositoryFilters.only(
             onlyFromInstance: 'pleroma.com',
           ),
           pagination: null,
@@ -2316,8 +2324,9 @@ void main() {
 
   test('createQuery onlyFromInstance', () async {
     var query = statusRepository.createQuery(
-      filters: StatusRepositoryFilters(
-        onlyRemoteCondition: StatusOnlyRemoteCondition('pleroma.com'),
+      filters: StatusRepositoryFilters.only(
+        onlyRemoteCondition:
+            StatusOnlyRemoteCondition(localUrlHost: 'pleroma.com'),
         onlyFromInstance: 'google.com',
       ),
       pagination: null,
@@ -2348,7 +2357,7 @@ void main() {
 
   test('createQuery onlyFavourited', () async {
     var query = statusRepository.createQuery(
-      filters: StatusRepositoryFilters(
+      filters: StatusRepositoryFilters.only(
         onlyFavourited: true,
       ),
       pagination: null,
@@ -2379,7 +2388,7 @@ void main() {
 
   test('createQuery onlyBookmarked', () async {
     var query = statusRepository.createQuery(
-      filters: StatusRepositoryFilters(
+      filters: StatusRepositoryFilters.only(
         onlyBookmarked: true,
       ),
       pagination: null,
@@ -2415,7 +2424,7 @@ void main() {
         await AccountDatabaseMockHelper.createTestDbAccount(seed: 'seed3');
 
     var query = statusRepository.createQuery(
-      filters: StatusRepositoryFilters(
+      filters: StatusRepositoryFilters.only(
         replyVisibilityFilterCondition:
             UnifediApiReplyVisibilityFilterCondition(
           replyVisibilityFilter: UnifediApiReplyVisibilityFilter.selfValue,
@@ -2495,7 +2504,7 @@ void main() {
         await AccountDatabaseMockHelper.createTestDbAccount(seed: 'seed4');
 
     var query = statusRepository.createQuery(
-      filters: StatusRepositoryFilters(
+      filters: StatusRepositoryFilters.only(
         replyVisibilityFilterCondition:
             UnifediApiReplyVisibilityFilterCondition(
           replyVisibilityFilter: UnifediApiReplyVisibilityFilter.followingValue,
@@ -2568,7 +2577,7 @@ void main() {
 
   test('createQuery onlyNotDeleted', () async {
     var query = statusRepository.createQuery(
-      filters: StatusRepositoryFilters(
+      filters: StatusRepositoryFilters.only(
         onlyNotDeleted: true,
       ),
       pagination: null,
@@ -2599,7 +2608,7 @@ void main() {
 
   test('createQuery mustBeConversationItem', () async {
     var query = statusRepository.createQuery(
-      filters: StatusRepositoryFilters(
+      filters: StatusRepositoryFilters.only(
         mustBeConversationItem: true,
       ),
       pagination: null,

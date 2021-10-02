@@ -155,7 +155,7 @@ class _UploadMediaAttachmentListMediaItemMediaPreviewWidget
           case MediaDeviceFileType.video:
             preview = VideoMediaPlayerBloc.provideToContext(
               context,
-              mediaPlayerSource: MediaPlayerSource.file(file: file),
+              mediaPlayerSource: MediaPlayerSource.localFile(file: file),
               desiredAspectRatio:
                   VideoMediaPlayerBloc.calculateDefaultAspectRatio(context),
               child: const FediVideoPlayerWidget(),

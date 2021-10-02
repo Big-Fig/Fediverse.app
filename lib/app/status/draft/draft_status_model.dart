@@ -3,39 +3,18 @@ import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/pending/pending_model.dart';
 import 'package:fedi/app/status/post/post_status_data_status_status_adapter.dart';
 import 'package:fedi/app/status/post/post_status_model.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-class DbDraftStatusPopulated {
-  final DbDraftStatus dbDraftStatus;
+part 'draft_status_model.freezed.dart';
 
-  DbDraftStatusPopulated({
-    required this.dbDraftStatus,
-  });
+@freezed
+class DbDraftStatusPopulated with _$DbDraftStatusPopulated {
+  const DbDraftStatusPopulated._();
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is DbDraftStatusPopulated &&
-          runtimeType == other.runtimeType &&
-          dbDraftStatus == other.dbDraftStatus;
-
-  @override
-  int get hashCode => dbDraftStatus.hashCode;
-
-  @override
-  String toString() {
-    return 'DbDraftStatusPopulated{'
-        'dbDraftStatus: $dbDraftStatus'
-        '}';
-  }
-
-  DbDraftStatusPopulated copyWith({
-    DbDraftStatus? dbDraftStatus,
-  }) {
-    return DbDraftStatusPopulated(
-      dbDraftStatus: dbDraftStatus ?? this.dbDraftStatus,
-    );
-  }
+  const factory DbDraftStatusPopulated({
+    required DbDraftStatus dbDraftStatus,
+  }) = _DbDraftStatusPopulated;
 }
 
 abstract class IDraftStatus {
@@ -46,14 +25,16 @@ abstract class IDraftStatus {
   PostStatusData get postStatusData;
 }
 
-class DbDraftStatusPopulatedWrapper implements IDraftStatus {
-  final DbDraftStatusPopulated dbDraftStatusPopulated;
+@freezed
+class DbDraftStatusPopulatedWrapper
+    with _$DbDraftStatusPopulatedWrapper
+    implements IDraftStatus {
+  const DbDraftStatusPopulatedWrapper._();
+  const factory DbDraftStatusPopulatedWrapper({
+    required DbDraftStatusPopulated dbDraftStatusPopulated,
+  }) = _DbDraftStatusPopulatedWrapper;
 
   DbDraftStatus get dbDraftStatus => dbDraftStatusPopulated.dbDraftStatus;
-
-  DbDraftStatusPopulatedWrapper({
-    required this.dbDraftStatusPopulated,
-  });
 
   @override
   int? get localId => dbDraftStatus.id;
