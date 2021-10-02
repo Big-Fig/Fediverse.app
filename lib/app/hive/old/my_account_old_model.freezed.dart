@@ -25,7 +25,7 @@ class _$PleromaMyAccountWrapperOldTearOff {
   _PleromaMyAccountWrapperOld call(
       {@HiveField(0)
       @JsonKey(name: 'remote_account')
-          required PleromaMyAccountWrapperOld pleromaAccount}) {
+          required PleromaApiMyAccount pleromaAccount}) {
     return _PleromaMyAccountWrapperOld(
       pleromaAccount: pleromaAccount,
     );
@@ -43,8 +43,7 @@ const $PleromaMyAccountWrapperOld = _$PleromaMyAccountWrapperOldTearOff();
 mixin _$PleromaMyAccountWrapperOld {
   @HiveField(0)
   @JsonKey(name: 'remote_account')
-  PleromaMyAccountWrapperOld get pleromaAccount =>
-      throw _privateConstructorUsedError;
+  PleromaApiMyAccount get pleromaAccount => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -60,9 +59,9 @@ abstract class $PleromaMyAccountWrapperOldCopyWith<$Res> {
   $Res call(
       {@HiveField(0)
       @JsonKey(name: 'remote_account')
-          PleromaMyAccountWrapperOld pleromaAccount});
+          PleromaApiMyAccount pleromaAccount});
 
-  $PleromaMyAccountWrapperOldCopyWith<$Res> get pleromaAccount;
+  $PleromaApiMyAccountCopyWith<$Res> get pleromaAccount;
 }
 
 /// @nodoc
@@ -82,14 +81,13 @@ class _$PleromaMyAccountWrapperOldCopyWithImpl<$Res>
       pleromaAccount: pleromaAccount == freezed
           ? _value.pleromaAccount
           : pleromaAccount // ignore: cast_nullable_to_non_nullable
-              as PleromaMyAccountWrapperOld,
+              as PleromaApiMyAccount,
     ));
   }
 
   @override
-  $PleromaMyAccountWrapperOldCopyWith<$Res> get pleromaAccount {
-    return $PleromaMyAccountWrapperOldCopyWith<$Res>(_value.pleromaAccount,
-        (value) {
+  $PleromaApiMyAccountCopyWith<$Res> get pleromaAccount {
+    return $PleromaApiMyAccountCopyWith<$Res>(_value.pleromaAccount, (value) {
       return _then(_value.copyWith(pleromaAccount: value));
     });
   }
@@ -106,10 +104,10 @@ abstract class _$PleromaMyAccountWrapperOldCopyWith<$Res>
   $Res call(
       {@HiveField(0)
       @JsonKey(name: 'remote_account')
-          PleromaMyAccountWrapperOld pleromaAccount});
+          PleromaApiMyAccount pleromaAccount});
 
   @override
-  $PleromaMyAccountWrapperOldCopyWith<$Res> get pleromaAccount;
+  $PleromaApiMyAccountCopyWith<$Res> get pleromaAccount;
 }
 
 /// @nodoc
@@ -132,19 +130,18 @@ class __$PleromaMyAccountWrapperOldCopyWithImpl<$Res>
       pleromaAccount: pleromaAccount == freezed
           ? _value.pleromaAccount
           : pleromaAccount // ignore: cast_nullable_to_non_nullable
-              as PleromaMyAccountWrapperOld,
+              as PleromaApiMyAccount,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$_PleromaMyAccountWrapperOld extends _PleromaMyAccountWrapperOld {
+class _$_PleromaMyAccountWrapperOld implements _PleromaMyAccountWrapperOld {
   const _$_PleromaMyAccountWrapperOld(
       {@HiveField(0)
       @JsonKey(name: 'remote_account')
-          required this.pleromaAccount})
-      : super._();
+          required this.pleromaAccount});
 
   factory _$_PleromaMyAccountWrapperOld.fromJson(Map<String, dynamic> json) =>
       _$$_PleromaMyAccountWrapperOldFromJson(json);
@@ -152,7 +149,7 @@ class _$_PleromaMyAccountWrapperOld extends _PleromaMyAccountWrapperOld {
   @override
   @HiveField(0)
   @JsonKey(name: 'remote_account')
-  final PleromaMyAccountWrapperOld pleromaAccount;
+  final PleromaApiMyAccount pleromaAccount;
 
   @override
   String toString() {
@@ -185,13 +182,13 @@ class _$_PleromaMyAccountWrapperOld extends _PleromaMyAccountWrapperOld {
   }
 }
 
-abstract class _PleromaMyAccountWrapperOld extends PleromaMyAccountWrapperOld {
+abstract class _PleromaMyAccountWrapperOld
+    implements PleromaMyAccountWrapperOld {
   const factory _PleromaMyAccountWrapperOld(
           {@HiveField(0)
           @JsonKey(name: 'remote_account')
-              required PleromaMyAccountWrapperOld pleromaAccount}) =
+              required PleromaApiMyAccount pleromaAccount}) =
       _$_PleromaMyAccountWrapperOld;
-  const _PleromaMyAccountWrapperOld._() : super._();
 
   factory _PleromaMyAccountWrapperOld.fromJson(Map<String, dynamic> json) =
       _$_PleromaMyAccountWrapperOld.fromJson;
@@ -199,8 +196,7 @@ abstract class _PleromaMyAccountWrapperOld extends PleromaMyAccountWrapperOld {
   @override
   @HiveField(0)
   @JsonKey(name: 'remote_account')
-  PleromaMyAccountWrapperOld get pleromaAccount =>
-      throw _privateConstructorUsedError;
+  PleromaApiMyAccount get pleromaAccount => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$PleromaMyAccountWrapperOldCopyWith<_PleromaMyAccountWrapperOld>
