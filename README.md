@@ -272,10 +272,6 @@ You can find full list in [`pubspec.yaml`](./pubspec.yaml) where each library ha
 * Fedi have unit-tests for Business Logic and Services classes
 * Integration & UI tests are not implemented yet
 
-### Backlog
-
-* You can explore [Fedi Trello board](https://trello.com/b/kLFe7CEL/fedi) for known issues and current work progress
-
 ### How to build from source
 
 ##### Clone repository
