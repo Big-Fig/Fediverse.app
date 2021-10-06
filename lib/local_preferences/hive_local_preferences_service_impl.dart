@@ -19,6 +19,7 @@ import 'package:logging/logging.dart';
 import 'package:mastodon_api/mastodon_api.dart';
 import 'package:pleroma_api/pleroma_api.dart';
 import 'package:unifedi_api/unifedi_api.dart';
+import 'package:unifedi_api/unifedi_api_mastodon_adapter.dart';
 import 'package:unifedi_api/unifedi_api_pleroma_adapter.dart';
 
 var _logger = Logger('hive_local_preferences_service_impl.dart');
@@ -159,11 +160,17 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
             await myAccountLocalPreferenceBlocNew.dispose();
           }
 
+          var isPleroma =
+              instance.info?.versionString.contains('Pleroma') == true;
           var unifediApiAccess = UnifediApiAccess(
             url: instance.uri.toString(),
-            instance: instance.info
-                ?.toUnifediApiInstancePleromaAdapter()
-                .toUnifediApiInstance(),
+            instance: isPleroma
+                ? instance.info
+                    ?.toUnifediApiInstancePleromaAdapter()
+                    .toUnifediApiInstance()
+                : instance.info
+                    ?.toUnifediApiInstanceMastodonAdapter()
+                    .toUnifediApiInstance(),
             userAccessToken: UnifediApiAccessUserToken(
               myAccount: myAccount2,
               user: instance.acct,
@@ -235,11 +242,17 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
         );
         await currentUnifediApiAccessLocalPreferenceBloc.performAsyncInit();
 
+        var isPleroma =
+            currentInstanceOld.info?.versionString.contains('Pleroma') == true;
         var unifediApiAccess = UnifediApiAccess(
           url: currentInstanceOld.uri.toString(),
-          instance: currentInstanceOld.info
-              ?.toUnifediApiInstancePleromaAdapter()
-              .toUnifediApiInstance(),
+          instance: isPleroma
+              ? currentInstanceOld.info
+                  ?.toUnifediApiInstancePleromaAdapter()
+                  .toUnifediApiInstance()
+              : currentInstanceOld.info
+                  ?.toUnifediApiInstanceMastodonAdapter()
+                  .toUnifediApiInstance(),
           userAccessToken: UnifediApiAccessUserToken(
             myAccount: myAccountMap[currentInstanceOld.userAtHost],
             user: currentInstanceOld.acct,
