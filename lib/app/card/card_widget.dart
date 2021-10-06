@@ -29,31 +29,28 @@ class CardWidget extends StatelessWidget {
     var isHaveContent = card.isHaveContent;
     var isHaveImage = card.isHaveImage;
 
-    return ProxyProvider<IUnifediApiCard?, IUnifediApiCard>(
-      update: (context, value, previous) => value!,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: FediSizes.mediumPadding),
-        child: Container(
-          height: isHaveContent
-              ? _cardWithContentImageSize
-              : _cardWithoutContentImageSize,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(FediSizes.smallPadding),
-            child: InkWell(
-              onTap: () async {
-                var url = card.url!;
-                await UrlHelper.handleUrlClick(
-                  context: context,
-                  url: url,
-                );
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  if (isHaveImage) const _CardImageWidget(),
-                  if (isHaveContent) const _CardContentWidget(),
-                ],
-              ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: FediSizes.mediumPadding),
+      child: Container(
+        height: isHaveContent
+            ? _cardWithContentImageSize
+            : _cardWithoutContentImageSize,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(FediSizes.smallPadding),
+          child: InkWell(
+            onTap: () async {
+              var url = card.url!;
+              await UrlHelper.handleUrlClick(
+                context: context,
+                url: url,
+              );
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                if (isHaveImage) const _CardImageWidget(),
+                if (isHaveContent) const _CardContentWidget(),
+              ],
             ),
           ),
         ),
