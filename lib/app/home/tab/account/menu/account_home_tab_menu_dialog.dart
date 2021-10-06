@@ -248,20 +248,13 @@ class _AboutHomeTabMenuDialogBodyListsItemWidget extends StatelessWidget {
       onTap: () {
         goToAboutPage(context: context);
       },
-      child: InstanceAnnouncementCountIntBadgeBloc.provideToContext(
-        context,
-        child: _AccountHomeTabMenuDialogBodyItem(
-          iconWidget: FediIntBadgeWidget(
-            offset: 0.0,
-            child: _AccountHomeTabMenuDialogBodyItemIcon(
-              iconData: FediIcons.info,
-            ),
-          ),
-          textWidget: _AccountHomeTabMenuDialogBodyItemText(
-            text: S
-                .of(context)
-                .app_account_home_tab_menu_action_instance_aboutApp,
-          ),
+      child: _AccountHomeTabMenuDialogBodyItem(
+        iconWidget: _AccountHomeTabMenuDialogBodyItemIcon(
+          iconData: FediIcons.info,
+        ),
+        textWidget: _AccountHomeTabMenuDialogBodyItemText(
+          text:
+              S.of(context).app_account_home_tab_menu_action_instance_aboutApp,
         ),
       ),
     );
