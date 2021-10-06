@@ -15,6 +15,7 @@ abstract class IFilesCacheService implements IDisposable {
     required String imageUrl,
   });
 
+  // ignore: long-parameter-list
   Widget createCachedNetworkImageWidget({
     String? stringKey,
     required String imageUrl,

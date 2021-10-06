@@ -29,6 +29,8 @@ abstract class IFilter {
 
   bool get wholeWord;
 
+  // TODO: remove old code
+  // ignore: long-parameter-list
   IFilter copyWithTemp({
     int? localId,
     String? remoteId,

@@ -520,7 +520,10 @@ void main() {
     expect(myAccountBloc.checkAccountIsMe(myAccount), true);
     expect(
       myAccountBloc.checkAccountIsMe(
-          myAccount.copyWithTemp(remoteId: 'invalidRemoteId')),
+        myAccount.copyWithTemp(
+          remoteId: 'invalidRemoteId',
+        ),
+      ),
       false,
     );
     expect(

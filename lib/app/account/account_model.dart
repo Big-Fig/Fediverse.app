@@ -12,6 +12,8 @@ typedef AccountsListCallback = Function(
 );
 
 abstract class IAccount {
+  // TODO: remove old code
+  // ignore: long-parameter-list
   IAccount copyWithTemp({
     int? id,
     String? remoteId,
