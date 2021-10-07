@@ -802,6 +802,8 @@
   "@app_status_post_settings_field_defaultVisibility_label": {},
   "app_status_sensitive_settings_field_isAlwaysShowSpoiler_label": "Always show spoilers",
   "@app_status_sensitive_settings_field_isAlwaysShowSpoiler_label": {},
+  "app_status_sensitive_settings_field_isNeedReplaceBlurWithFill_label": "Replace blur with fill",
+  "@app_status_sensitive_settings_field_isNeedReplaceBlurWithFill_label": {},
   "app_status_sensitive_settings_field_isAlwaysShowNsfw_label": "Always show NSFW",
   "@app_status_sensitive_settings_field_isAlwaysShowNsfw_label": {},
   "app_status_sensitive_settings_field_nsfwDisplayDelayDuration_label": "Remember \"Tap to view\"",

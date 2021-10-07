@@ -33,6 +33,9 @@ class StatusSensitiveSettings
     @HiveField(2)
     @JsonKey(name: 'nsfw_display_delay_duration_seconds_total')
         required int? nsfwDisplayDelayDurationMicrosecondsTotal,
+    @HiveField(3)
+    @JsonKey(name: 'is_need_replace_blur_with_fill')
+        required bool? isNeedReplaceBlurWithFill,
   }) = _StatusSensitiveSettings;
 
   factory StatusSensitiveSettings.fromJson(Map<String, dynamic> json) =>

@@ -4087,6 +4087,18 @@ class S {
     );
   }
 
+  /// `Replace blur with fill`
+  String
+      get app_status_sensitive_settings_field_isNeedReplaceBlurWithFill_label {
+    return Intl.message(
+      'Replace blur with fill',
+      name:
+          'app_status_sensitive_settings_field_isNeedReplaceBlurWithFill_label',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Always show NSFW`
   String get app_status_sensitive_settings_field_isAlwaysShowNsfw_label {
     return Intl.message(

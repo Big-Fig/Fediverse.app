@@ -37,11 +37,21 @@ class StatusSensitiveSettingsBloc
   }
 
   @override
+  Future changeIsNeedReplaceBlurWithFill(bool value) {
+    return updateInstanceSettings(
+      settingsData.copyWith(
+        isNeedReplaceBlurWithFill: value,
+      ),
+    );
+  }
+
+  @override
   Future changeNsfwDisplayDelayDuration(Duration? value) {
     return updateInstanceSettings(
       StatusSensitiveSettings(
         isAlwaysShowNsfw: isAlwaysShowNsfw,
         isAlwaysShowSpoiler: isAlwaysShowSpoiler,
+        isNeedReplaceBlurWithFill: isNeedReplaceBlurWithFill,
         nsfwDisplayDelayDurationMicrosecondsTotal: value?.inMicroseconds,
       ),
       // settingsData.copyWith(
@@ -63,6 +73,14 @@ class StatusSensitiveSettingsBloc
   @override
   Stream<bool> get isAlwaysShowSpoilerStream =>
       settingsDataStream.map((settings) => settings.isAlwaysShowSpoiler);
+
+  @override
+  bool get isNeedReplaceBlurWithFill =>
+      settingsData.isNeedReplaceBlurWithFill == true;
+
+  @override
+  Stream<bool> get isNeedReplaceBlurWithFillStream => settingsDataStream
+      .map((settings) => settings.isNeedReplaceBlurWithFill == true);
 
   @override
   Duration? get nsfwDisplayDelayDuration =>

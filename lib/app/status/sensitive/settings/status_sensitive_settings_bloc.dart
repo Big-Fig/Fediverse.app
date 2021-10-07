@@ -17,6 +17,12 @@ abstract class IStatusSensitiveSettingsBloc
 
   Future changeIsAlwaysShowSpoiler(bool value);
 
+  bool get isNeedReplaceBlurWithFill;
+
+  Stream<bool> get isNeedReplaceBlurWithFillStream;
+
+  Future changeIsNeedReplaceBlurWithFill(bool value);
+
   bool get isAlwaysShowNsfw;
 
   Stream<bool> get isAlwaysShowNsfwStream;

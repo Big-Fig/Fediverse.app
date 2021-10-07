@@ -27,10 +27,15 @@ class EditStatusSensitiveSettingsBloc
   late IBoolValueFormFieldBloc isAlwaysShowNsfwFieldBloc;
 
   @override
+  // ignore: avoid-late-keyword
+  late IBoolValueFormFieldBloc isNeedReplaceBlurWithFillFieldBloc;
+
+  @override
   List<IFormItemBloc> get currentItems => [
         nsfwDisplayDelayDurationFieldBloc,
         isAlwaysShowSpoilerFieldBloc,
         isAlwaysShowNsfwFieldBloc,
+        isNeedReplaceBlurWithFillFieldBloc,
       ];
 
   EditStatusSensitiveSettingsBloc({
@@ -60,10 +65,15 @@ class EditStatusSensitiveSettingsBloc
       originValue: currentSettings.isAlwaysShowNsfw,
       isEnabled: isEnabled,
     );
+    isNeedReplaceBlurWithFillFieldBloc = BoolValueFormFieldBloc(
+      originValue: currentSettings.isNeedReplaceBlurWithFill,
+      isEnabled: isEnabled,
+    );
 
     addDisposable(nsfwDisplayDelayDurationFieldBloc);
     addDisposable(isAlwaysShowSpoilerFieldBloc);
     addDisposable(isAlwaysShowNsfwFieldBloc);
+    addDisposable(isNeedReplaceBlurWithFillFieldBloc);
 
     onFormItemsChanged();
   }
@@ -75,6 +85,8 @@ class EditStatusSensitiveSettingsBloc
             nsfwDisplayDelayDurationFieldBloc.currentValue?.inMicroseconds,
         isAlwaysShowSpoiler: isAlwaysShowSpoilerFieldBloc.currentValue!,
         isAlwaysShowNsfw: isAlwaysShowNsfwFieldBloc.currentValue!,
+        isNeedReplaceBlurWithFill:
+            isNeedReplaceBlurWithFillFieldBloc.currentValue == true,
       );
 
   @override
@@ -84,5 +96,7 @@ class EditStatusSensitiveSettingsBloc
         .changeCurrentValue(settings.isAlwaysShowSpoiler);
     nsfwDisplayDelayDurationFieldBloc
         .changeCurrentValue(settings.nsfwDisplayDelayDuration);
+    isNeedReplaceBlurWithFillFieldBloc
+        .changeCurrentValue(settings.isNeedReplaceBlurWithFill);
   }
 }

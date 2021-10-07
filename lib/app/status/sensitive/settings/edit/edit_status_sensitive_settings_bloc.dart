@@ -18,4 +18,6 @@ abstract class IEditStatusSensitiveSettingsBloc
   IBoolValueFormFieldBloc get isAlwaysShowSpoilerFieldBloc;
 
   IBoolValueFormFieldBloc get isAlwaysShowNsfwFieldBloc;
+
+  IBoolValueFormFieldBloc get isNeedReplaceBlurWithFillFieldBloc;
 }
