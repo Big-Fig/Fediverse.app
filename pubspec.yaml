@@ -59,7 +59,7 @@ dependencies:
 
   # minutes/hours picker
   # duration_picker: 1.0.1
-  # it is 1.0.1 with minute fixes and widget layout changes
+  # it is duration_picker 1.0.1 with naming & visibility enhancments
   duration_picker:
     git:
       url: https://github.com/xal/duration_picker.git
@@ -95,11 +95,12 @@ dependencies:
 
   # customizable datetime picker
   # flutter_datetime_picker: 1.5.1
-  # it is 1.5.1 with fixes for null-safty compile warnings
+  # it is 1.5.1 with fixes for null-safety compile warnings
+  # Realank is official author. He just didn't release new version yet
   flutter_datetime_picker:
     git:
-      url: https://github.com/AlexHartford/flutter_datetime_picker.git
-      ref: master
+      url: https://github.com/Realank/flutter_datetime_picker.git
+      ref: eb9701172da23121d8632369e5a6c4382bcc5e45
 
   # annotations to generate json from & to methods
   json_annotation: ^4.1.0
