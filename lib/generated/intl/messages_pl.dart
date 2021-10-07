@@ -1653,6 +1653,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Zawsze pokazuj NSFW"),
         "app_status_sensitive_settings_field_isAlwaysShowSpoiler_label":
             MessageLookupByLibrary.simpleMessage("Zawsze pokazuj spoilery"),
+        "app_status_sensitive_settings_field_isNeedReplaceBlurWithFill_label":
+            MessageLookupByLibrary.simpleMessage(
+                "Zastąp rozmycie wypełnieniem"),
         "app_status_sensitive_settings_field_nsfwDisplayDelayDuration_label":
             MessageLookupByLibrary.simpleMessage(
                 "Zapamiętuj „Naciśnij, aby zobaczyć”"),

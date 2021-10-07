@@ -10,16 +10,48 @@ class FediBlurredOverlayWarningWidget extends StatelessWidget {
   final String? descriptionText;
   final String? buttonText;
   final VoidCallback? buttonAction;
+  final double sigma;
+  final Color? replaceBlurWithColor;
 
   FediBlurredOverlayWarningWidget({
     this.descriptionText,
     this.buttonText,
     this.buttonAction,
+    // ignore: no-magic-number
+    this.sigma = 6.0,
+    this.replaceBlurWithColor,
   });
 
   @override
   Widget build(BuildContext context) {
     var fediUiColorTheme = IFediUiColorTheme.of(context);
+
+    var child = Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        if (descriptionText != null) ...[
+          Text(
+            descriptionText!,
+            style: IFediUiTextTheme.of(context).bigTallDarkGrey,
+          ),
+          const FediBigVerticalSpacer(),
+        ],
+        if (buttonText != null && buttonAction != null)
+          Padding(
+            padding: FediPadding.allSmallPadding,
+            child: FediPrimaryFilledTextButtonWithBorder(
+              buttonText!,
+              limitMinWidth: true,
+              expanded: false,
+              enabledBorderColor: fediUiColorTheme.transparent,
+              // ignore: no-equal-arguments
+              disabledBorderColor: fediUiColorTheme.transparent,
+              onPressed: buttonAction,
+            ),
+          ),
+      ],
+    );
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
@@ -29,36 +61,16 @@ class FediBlurredOverlayWarningWidget extends StatelessWidget {
         }
       },
       child: ClipRect(
-        child: FediBackgroundBlur(
-          // ignore: no-magic-number
-          sigma: 6.0,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              if (descriptionText != null) ...[
-                Text(
-                  descriptionText!,
-                  style: IFediUiTextTheme.of(context).bigTallDarkGrey,
-                ),
-                const FediBigVerticalSpacer(),
-              ],
-              if (buttonText != null && buttonAction != null)
-                Padding(
-                  padding: FediPadding.allSmallPadding,
-                  child: FediPrimaryFilledTextButtonWithBorder(
-                    buttonText!,
-                    limitMinWidth: true,
-                    expanded: false,
-                    enabledBorderColor: fediUiColorTheme.transparent,
-                    // ignore: no-equal-arguments
-                    disabledBorderColor: fediUiColorTheme.transparent,
-                    onPressed: buttonAction,
-                  ),
-                ),
-            ],
-          ),
-        ),
+        child: replaceBlurWithColor != null
+            ? Container(
+                color: replaceBlurWithColor,
+                child: child,
+              )
+            : FediBackgroundBlur(
+                // ignore: no-magic-number
+                sigma: sigma,
+                child: child,
+              ),
       ),
     );
   }

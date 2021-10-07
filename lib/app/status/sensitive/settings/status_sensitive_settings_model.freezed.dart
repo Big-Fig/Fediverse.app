@@ -31,12 +31,16 @@ class _$StatusSensitiveSettingsTearOff {
           required bool isAlwaysShowNsfw,
       @HiveField(2)
       @JsonKey(name: 'nsfw_display_delay_duration_seconds_total')
-          required int? nsfwDisplayDelayDurationMicrosecondsTotal}) {
+          required int? nsfwDisplayDelayDurationMicrosecondsTotal,
+      @HiveField(3)
+      @JsonKey(name: 'is_need_replace_blur_with_fill')
+          required bool? isNeedReplaceBlurWithFill}) {
     return _StatusSensitiveSettings(
       isAlwaysShowSpoiler: isAlwaysShowSpoiler,
       isAlwaysShowNsfw: isAlwaysShowNsfw,
       nsfwDisplayDelayDurationMicrosecondsTotal:
           nsfwDisplayDelayDurationMicrosecondsTotal,
+      isNeedReplaceBlurWithFill: isNeedReplaceBlurWithFill,
     );
   }
 
@@ -60,6 +64,9 @@ mixin _$StatusSensitiveSettings {
   @JsonKey(name: 'nsfw_display_delay_duration_seconds_total')
   int? get nsfwDisplayDelayDurationMicrosecondsTotal =>
       throw _privateConstructorUsedError;
+  @HiveField(3)
+  @JsonKey(name: 'is_need_replace_blur_with_fill')
+  bool? get isNeedReplaceBlurWithFill => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -81,7 +88,10 @@ abstract class $StatusSensitiveSettingsCopyWith<$Res> {
           bool isAlwaysShowNsfw,
       @HiveField(2)
       @JsonKey(name: 'nsfw_display_delay_duration_seconds_total')
-          int? nsfwDisplayDelayDurationMicrosecondsTotal});
+          int? nsfwDisplayDelayDurationMicrosecondsTotal,
+      @HiveField(3)
+      @JsonKey(name: 'is_need_replace_blur_with_fill')
+          bool? isNeedReplaceBlurWithFill});
 }
 
 /// @nodoc
@@ -98,6 +108,7 @@ class _$StatusSensitiveSettingsCopyWithImpl<$Res>
     Object? isAlwaysShowSpoiler = freezed,
     Object? isAlwaysShowNsfw = freezed,
     Object? nsfwDisplayDelayDurationMicrosecondsTotal = freezed,
+    Object? isNeedReplaceBlurWithFill = freezed,
   }) {
     return _then(_value.copyWith(
       isAlwaysShowSpoiler: isAlwaysShowSpoiler == freezed
@@ -113,6 +124,10 @@ class _$StatusSensitiveSettingsCopyWithImpl<$Res>
               ? _value.nsfwDisplayDelayDurationMicrosecondsTotal
               : nsfwDisplayDelayDurationMicrosecondsTotal // ignore: cast_nullable_to_non_nullable
                   as int?,
+      isNeedReplaceBlurWithFill: isNeedReplaceBlurWithFill == freezed
+          ? _value.isNeedReplaceBlurWithFill
+          : isNeedReplaceBlurWithFill // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ));
   }
 }
@@ -133,7 +148,10 @@ abstract class _$StatusSensitiveSettingsCopyWith<$Res>
           bool isAlwaysShowNsfw,
       @HiveField(2)
       @JsonKey(name: 'nsfw_display_delay_duration_seconds_total')
-          int? nsfwDisplayDelayDurationMicrosecondsTotal});
+          int? nsfwDisplayDelayDurationMicrosecondsTotal,
+      @HiveField(3)
+      @JsonKey(name: 'is_need_replace_blur_with_fill')
+          bool? isNeedReplaceBlurWithFill});
 }
 
 /// @nodoc
@@ -153,6 +171,7 @@ class __$StatusSensitiveSettingsCopyWithImpl<$Res>
     Object? isAlwaysShowSpoiler = freezed,
     Object? isAlwaysShowNsfw = freezed,
     Object? nsfwDisplayDelayDurationMicrosecondsTotal = freezed,
+    Object? isNeedReplaceBlurWithFill = freezed,
   }) {
     return _then(_StatusSensitiveSettings(
       isAlwaysShowSpoiler: isAlwaysShowSpoiler == freezed
@@ -168,6 +187,10 @@ class __$StatusSensitiveSettingsCopyWithImpl<$Res>
               ? _value.nsfwDisplayDelayDurationMicrosecondsTotal
               : nsfwDisplayDelayDurationMicrosecondsTotal // ignore: cast_nullable_to_non_nullable
                   as int?,
+      isNeedReplaceBlurWithFill: isNeedReplaceBlurWithFill == freezed
+          ? _value.isNeedReplaceBlurWithFill
+          : isNeedReplaceBlurWithFill // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ));
   }
 }
@@ -184,7 +207,10 @@ class _$_StatusSensitiveSettings extends _StatusSensitiveSettings {
           required this.isAlwaysShowNsfw,
       @HiveField(2)
       @JsonKey(name: 'nsfw_display_delay_duration_seconds_total')
-          required this.nsfwDisplayDelayDurationMicrosecondsTotal})
+          required this.nsfwDisplayDelayDurationMicrosecondsTotal,
+      @HiveField(3)
+      @JsonKey(name: 'is_need_replace_blur_with_fill')
+          required this.isNeedReplaceBlurWithFill})
       : super._();
 
   factory _$_StatusSensitiveSettings.fromJson(Map<String, dynamic> json) =>
@@ -202,10 +228,14 @@ class _$_StatusSensitiveSettings extends _StatusSensitiveSettings {
   @HiveField(2)
   @JsonKey(name: 'nsfw_display_delay_duration_seconds_total')
   final int? nsfwDisplayDelayDurationMicrosecondsTotal;
+  @override
+  @HiveField(3)
+  @JsonKey(name: 'is_need_replace_blur_with_fill')
+  final bool? isNeedReplaceBlurWithFill;
 
   @override
   String toString() {
-    return 'StatusSensitiveSettings(isAlwaysShowSpoiler: $isAlwaysShowSpoiler, isAlwaysShowNsfw: $isAlwaysShowNsfw, nsfwDisplayDelayDurationMicrosecondsTotal: $nsfwDisplayDelayDurationMicrosecondsTotal)';
+    return 'StatusSensitiveSettings(isAlwaysShowSpoiler: $isAlwaysShowSpoiler, isAlwaysShowNsfw: $isAlwaysShowNsfw, nsfwDisplayDelayDurationMicrosecondsTotal: $nsfwDisplayDelayDurationMicrosecondsTotal, isNeedReplaceBlurWithFill: $isNeedReplaceBlurWithFill)';
   }
 
   @override
@@ -222,7 +252,12 @@ class _$_StatusSensitiveSettings extends _StatusSensitiveSettings {
                     nsfwDisplayDelayDurationMicrosecondsTotal) ||
                 const DeepCollectionEquality().equals(
                     other.nsfwDisplayDelayDurationMicrosecondsTotal,
-                    nsfwDisplayDelayDurationMicrosecondsTotal)));
+                    nsfwDisplayDelayDurationMicrosecondsTotal)) &&
+            (identical(other.isNeedReplaceBlurWithFill,
+                    isNeedReplaceBlurWithFill) ||
+                const DeepCollectionEquality().equals(
+                    other.isNeedReplaceBlurWithFill,
+                    isNeedReplaceBlurWithFill)));
   }
 
   @override
@@ -231,7 +266,8 @@ class _$_StatusSensitiveSettings extends _StatusSensitiveSettings {
       const DeepCollectionEquality().hash(isAlwaysShowSpoiler) ^
       const DeepCollectionEquality().hash(isAlwaysShowNsfw) ^
       const DeepCollectionEquality()
-          .hash(nsfwDisplayDelayDurationMicrosecondsTotal);
+          .hash(nsfwDisplayDelayDurationMicrosecondsTotal) ^
+      const DeepCollectionEquality().hash(isNeedReplaceBlurWithFill);
 
   @JsonKey(ignore: true)
   @override
@@ -255,7 +291,10 @@ abstract class _StatusSensitiveSettings extends StatusSensitiveSettings {
               required bool isAlwaysShowNsfw,
           @HiveField(2)
           @JsonKey(name: 'nsfw_display_delay_duration_seconds_total')
-              required int? nsfwDisplayDelayDurationMicrosecondsTotal}) =
+              required int? nsfwDisplayDelayDurationMicrosecondsTotal,
+          @HiveField(3)
+          @JsonKey(name: 'is_need_replace_blur_with_fill')
+              required bool? isNeedReplaceBlurWithFill}) =
       _$_StatusSensitiveSettings;
   const _StatusSensitiveSettings._() : super._();
 
@@ -275,6 +314,10 @@ abstract class _StatusSensitiveSettings extends StatusSensitiveSettings {
   @JsonKey(name: 'nsfw_display_delay_duration_seconds_total')
   int? get nsfwDisplayDelayDurationMicrosecondsTotal =>
       throw _privateConstructorUsedError;
+  @override
+  @HiveField(3)
+  @JsonKey(name: 'is_need_replace_blur_with_fill')
+  bool? get isNeedReplaceBlurWithFill => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$StatusSensitiveSettingsCopyWith<_StatusSensitiveSettings> get copyWith =>

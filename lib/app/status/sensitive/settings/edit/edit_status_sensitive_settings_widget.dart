@@ -22,6 +22,7 @@ class EditStatusSensitiveSettingsWidget extends StatelessWidget {
         const _EditStatusSensitiveSettingsAlwaysShowSpoilerFieldWidget(),
         const _EditStatusSensitiveSettingsAlwaysShowNsfwFieldWidget(),
         const _EditStatusSensitiveSettingsNsfwDisplayDurationWidget(),
+        const _EditStatusSensitiveSettingsReplaceBlurWithFillFieldWidget(),
       ],
     );
   }
@@ -82,6 +83,27 @@ class _EditStatusSensitiveSettingsAlwaysShowSpoilerFieldWidget
         label: S
             .of(context)
             .app_status_sensitive_settings_field_isAlwaysShowSpoiler_label,
+      ),
+    );
+  }
+}
+
+class _EditStatusSensitiveSettingsReplaceBlurWithFillFieldWidget
+    extends StatelessWidget {
+  const _EditStatusSensitiveSettingsReplaceBlurWithFillFieldWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ProxyProvider<IEditStatusSensitiveSettingsBloc,
+        IBoolValueFormFieldBloc>(
+      update: (context, value, previous) =>
+          value.isNeedReplaceBlurWithFillFieldBloc,
+      child: BoolValueFormFieldRowWidget(
+        label: S
+            .of(context)
+            .app_status_sensitive_settings_field_isNeedReplaceBlurWithFill_label,
       ),
     );
   }

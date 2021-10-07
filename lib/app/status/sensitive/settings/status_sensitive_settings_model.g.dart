@@ -21,19 +21,22 @@ class StatusSensitiveSettingsAdapter
       isAlwaysShowSpoiler: fields[0] as bool,
       isAlwaysShowNsfw: fields[1] as bool,
       nsfwDisplayDelayDurationMicrosecondsTotal: fields[2] as int?,
+      isNeedReplaceBlurWithFill: fields[3] as bool?,
     );
   }
 
   @override
   void write(BinaryWriter writer, StatusSensitiveSettings obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.isAlwaysShowSpoiler)
       ..writeByte(1)
       ..write(obj.isAlwaysShowNsfw)
       ..writeByte(2)
-      ..write(obj.nsfwDisplayDelayDurationMicrosecondsTotal);
+      ..write(obj.nsfwDisplayDelayDurationMicrosecondsTotal)
+      ..writeByte(3)
+      ..write(obj.isNeedReplaceBlurWithFill);
   }
 
   @override
@@ -58,6 +61,8 @@ _$_StatusSensitiveSettings _$$_StatusSensitiveSettingsFromJson(
       isAlwaysShowNsfw: json['is_always_show_nsfw'] as bool,
       nsfwDisplayDelayDurationMicrosecondsTotal:
           json['nsfw_display_delay_duration_seconds_total'] as int?,
+      isNeedReplaceBlurWithFill:
+          json['is_need_replace_blur_with_fill'] as bool?,
     );
 
 Map<String, dynamic> _$$_StatusSensitiveSettingsToJson(
@@ -75,5 +80,7 @@ Map<String, dynamic> _$$_StatusSensitiveSettingsToJson(
 
   writeNotNull('nsfw_display_delay_duration_seconds_total',
       instance.nsfwDisplayDelayDurationMicrosecondsTotal);
+  writeNotNull(
+      'is_need_replace_blur_with_fill', instance.isNeedReplaceBlurWithFill);
   return val;
 }

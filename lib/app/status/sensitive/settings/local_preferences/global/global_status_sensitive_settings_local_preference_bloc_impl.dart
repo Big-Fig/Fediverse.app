@@ -13,6 +13,7 @@ class GlobalStatusSensitiveSettingsLocalPreferenceBloc
   static final StatusSensitiveSettings defaultValue = StatusSensitiveSettings(
     isAlwaysShowNsfw: false,
     isAlwaysShowSpoiler: false,
+    isNeedReplaceBlurWithFill: false,
     nsfwDisplayDelayDurationMicrosecondsTotal:
         // ignore: no-magic-number
         Duration(minutes: 5).inMicroseconds,

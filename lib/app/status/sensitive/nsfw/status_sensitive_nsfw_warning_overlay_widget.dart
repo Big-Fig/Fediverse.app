@@ -1,5 +1,7 @@
+import 'package:fedi/app/status/sensitive/settings/status_sensitive_settings_bloc.dart';
 import 'package:fedi/app/status/sensitive/status_sensitive_bloc.dart';
 import 'package:fedi/app/ui/overlay/fedi_blurred_overlay_warning_widget.dart';
+import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -48,6 +50,12 @@ class _StatusSensitiveNsfwWarningOverlayBodyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => FediBlurredOverlayWarningWidget(
         buttonText: S.of(context).app_status_nsfw_action_view,
+        replaceBlurWithColor:
+            IStatusSensitiveSettingsBloc.of(context).isNeedReplaceBlurWithFill
+                ? IFediUiColorTheme.of(context).primaryDark
+                : null,
+        // ignore: no-magic-number
+        sigma: 10.0,
         buttonAction: () {
           var statusSensitiveBloc =
               IStatusSensitiveBloc.of(context, listen: false);

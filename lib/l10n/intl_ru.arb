@@ -804,6 +804,8 @@
   "@app_status_post_settings_field_defaultVisibility_label": {},
   "app_status_sensitive_settings_field_isAlwaysShowSpoiler_label": "Всегда показывать спойлеры",
   "@app_status_sensitive_settings_field_isAlwaysShowSpoiler_label": {},
+  "app_status_sensitive_settings_field_isNeedReplaceBlurWithFill_label": "Заливка вместо размытия",
+  "@app_status_sensitive_settings_field_isNeedReplaceBlurWithFill_label": {},
   "app_status_sensitive_settings_field_isAlwaysShowNsfw_label": "Всегда показывать NSFW",
   "@app_status_sensitive_settings_field_isAlwaysShowNsfw_label": {},
   "app_status_sensitive_settings_field_nsfwDisplayDelayDuration_label": "Запомнить просмотр",

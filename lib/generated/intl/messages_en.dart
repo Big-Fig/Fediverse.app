@@ -1618,6 +1618,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Always show NSFW"),
         "app_status_sensitive_settings_field_isAlwaysShowSpoiler_label":
             MessageLookupByLibrary.simpleMessage("Always show spoilers"),
+        "app_status_sensitive_settings_field_isNeedReplaceBlurWithFill_label":
+            MessageLookupByLibrary.simpleMessage("Replace blur with fill"),
         "app_status_sensitive_settings_field_nsfwDisplayDelayDuration_label":
             MessageLookupByLibrary.simpleMessage("Remember \"Tap to view\""),
         "app_status_sensitive_settings_title":

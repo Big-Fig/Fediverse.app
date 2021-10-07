@@ -1643,6 +1643,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Всегда показывать NSFW"),
         "app_status_sensitive_settings_field_isAlwaysShowSpoiler_label":
             MessageLookupByLibrary.simpleMessage("Всегда показывать спойлеры"),
+        "app_status_sensitive_settings_field_isNeedReplaceBlurWithFill_label":
+            MessageLookupByLibrary.simpleMessage("Заливка вместо размытия"),
         "app_status_sensitive_settings_field_nsfwDisplayDelayDuration_label":
             MessageLookupByLibrary.simpleMessage("Запомнить просмотр"),
         "app_status_sensitive_settings_title":

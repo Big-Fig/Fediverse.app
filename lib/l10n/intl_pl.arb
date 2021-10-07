@@ -789,6 +789,8 @@
   "@app_status_post_settings_field_defaultVisibility_label": {},
   "app_status_sensitive_settings_field_isAlwaysShowSpoiler_label": "Zawsze pokazuj spoilery",
   "@app_status_sensitive_settings_field_isAlwaysShowSpoiler_label": {},
+  "app_status_sensitive_settings_field_isNeedReplaceBlurWithFill_label": "Zastąp rozmycie wypełnieniem",
+  "@app_status_sensitive_settings_field_isNeedReplaceBlurWithFill_label": {},
   "app_status_sensitive_settings_field_isAlwaysShowNsfw_label": "Zawsze pokazuj NSFW",
   "@app_status_sensitive_settings_field_isAlwaysShowNsfw_label": {},
   "app_status_sensitive_settings_field_nsfwDisplayDelayDuration_label": "Zapamiętuj „Naciśnij, aby zobaczyć”",
