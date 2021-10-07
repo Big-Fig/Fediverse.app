@@ -18,18 +18,17 @@ class DbInstanceAnnouncements extends Table {
 
   TextColumn get content => text()();
 
-  TextColumn? get reactions => text()
-      .map(PleromaApiAnnouncementReactionListDatabaseConverter())
-      .nullable()();
+  TextColumn? get reactions =>
+      text().map(UnifediApiEmojiReactionListDatabaseConverter()).nullable()();
 
   TextColumn? get mentions =>
-      text().map(PleromaApiMentionListDatabaseConverter()).nullable()();
+      text().map(UnifediApiMentionListDatabaseConverter()).nullable()();
 
   TextColumn? get tags =>
-      text().map(PleromaApiTagListDatabaseConverter()).nullable()();
+      text().map(UnifediApiTagListDatabaseConverter()).nullable()();
 
   TextColumn? get statuses =>
-      text().map(PleromaApiStatusListDatabaseConverter()).nullable()();
+      text().map(UnifediApiStatusListDatabaseConverter()).nullable()();
 
   DateTimeColumn? get scheduledAt => dateTime().nullable()();
 

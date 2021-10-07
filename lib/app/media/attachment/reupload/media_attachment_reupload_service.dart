@@ -1,7 +1,7 @@
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 abstract class IMediaAttachmentReuploadService implements IDisposable {
   static IMediaAttachmentReuploadService of(
@@ -13,7 +13,7 @@ abstract class IMediaAttachmentReuploadService implements IDisposable {
         listen: listen,
       );
 
-  Future<IPleromaApiMediaAttachment> reuploadMediaAttachment({
-    required IPleromaApiMediaAttachment originalMediaAttachment,
+  Future<IUnifediApiMediaAttachment> reuploadMediaAttachment({
+    required IUnifediApiMediaAttachment originalMediaAttachment,
   });
 }

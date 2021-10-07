@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
@@ -16,14 +17,15 @@ import 'package:fedi/app/status/post/post_status_data_status_status_adapter.dart
 import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:fedi/connection/connection_service.dart';
+import 'package:fedi/id/fake_id_helper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:easy_dispose/easy_dispose.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 final _logger = Logger('conversation_chat_bloc_impl.dart');
 
@@ -69,11 +71,12 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
       onMessageLocallyHiddenStreamController.stream;
 
   final IMyAccountBloc myAccountBloc;
-  final IPleromaApiConversationService pleromaConversationService;
-  final IPleromaApiAuthStatusService pleromaAuthStatusService;
+  final IUnifediApiConversationService pleromaConversationService;
+  final IUnifediApiStatusService unifediApiStatusService;
   final IConversationChatRepository conversationRepository;
   final IStatusRepository statusRepository;
   final IAccountRepository accountRepository;
+  final IConnectionService connectionService;
 
   @override
   List<IAccount> get accountsWithoutMe => accounts;
@@ -108,9 +111,10 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
     required this.pleromaConversationService,
     required this.myAccountBloc,
     required this.conversationRepository,
-    required this.pleromaAuthStatusService,
+    required this.unifediApiStatusService,
     required this.statusRepository,
     required this.accountRepository,
+    required this.connectionService,
     required IConversationChat conversation,
     required IConversationChatMessage? lastChatMessage,
     bool needRefreshFromNetworkOnInit = false,
@@ -216,7 +220,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
   @override
   Future refreshFromNetwork() async {
     var remoteConversation = await pleromaConversationService.getConversation(
-      conversationRemoteId: chat.remoteId,
+      conversationId: chat.remoteId,
     );
 
     await accountRepository.batch((batch) {
@@ -246,7 +250,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
   }
 
   Future _updateByRemoteChat(
-    IPleromaApiConversation remoteChat, {
+    IUnifediApiConversation remoteChat, {
     required Batch batchTransaction,
   }) =>
       conversationRepository.updateAppTypeByRemoteType(
@@ -262,8 +266,10 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
     bool needRefreshFromNetworkOnInit = false,
   }) {
     return ConversationChatBloc(
+      connectionService:
+          Provider.of<IConnectionService>(context, listen: false),
       pleromaConversationService:
-          Provider.of<IPleromaApiConversationService>(context, listen: false),
+          Provider.of<IUnifediApiConversationService>(context, listen: false),
       myAccountBloc: IMyAccountBloc.of(context, listen: false),
       conversation: chat,
       lastChatMessage: lastChatMessage,
@@ -272,7 +278,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
           IConversationChatRepository.of(context, listen: false),
       statusRepository: IStatusRepository.of(context, listen: false),
       accountRepository: IAccountRepository.of(context, listen: false),
-      pleromaAuthStatusService: Provider.of<IPleromaApiAuthStatusService>(
+      unifediApiStatusService: Provider.of<IUnifediApiStatusService>(
         context,
         listen: false,
       ),
@@ -282,7 +288,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
   @override
   Future markAsRead() async {
     if (chat.unread > 0) {
-      if (pleromaConversationService.isApiReadyToUse) {
+      if (connectionService.isConnected) {
         var lastReadChatMessageId = lastChatMessage?.remoteId;
         if (lastReadChatMessageId == null) {
           var lastStatus = await statusRepository.getConversationLastStatus(
@@ -292,7 +298,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
         }
         var updatedRemoteChat =
             await pleromaConversationService.markConversationAsRead(
-          conversationRemoteId: chat.remoteId,
+          conversationId: chat.remoteId,
         );
 
         await conversationRepository.upsertInRemoteType(
@@ -316,8 +322,8 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
     // create queue instead of parallel requests to avoid throttle limit on server
     for (var chatMessage in chatMessages) {
       if (chatMessage.isPendingStatePublishedOrNull) {
-        await pleromaAuthStatusService.deleteStatus(
-          statusRemoteId: chatMessage.remoteId,
+        await unifediApiStatusService.deleteStatus(
+          statusId: chatMessage.remoteId,
         );
       }
     }
@@ -334,7 +340,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
   Future performActualDelete() async {
     var remoteId = conversation.remoteId;
     await pleromaConversationService.deleteConversation(
-      conversationRemoteId: remoteId,
+      conversationId: remoteId,
     );
 
     await conversationRepository.deleteByRemoteId(
@@ -353,7 +359,8 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
     DbStatus dbStatus;
     int? localStatusId;
 
-    PleromaApiPostStatus pleromaPostStatus;
+    UnifediApiPostStatus postStatus;
+    String? idempotencyKey;
     var oldMessageExist = oldPendingFailedConversationChatMessage != null;
     if (oldMessageExist) {
       localStatusId = oldPendingFailedConversationChatMessage!.status.localId!;
@@ -361,8 +368,24 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
           .toDbStatus()
           .copyWith(id: localStatusId);
 
-      pleromaPostStatus = postStatusData.toPleromaPostStatus(
-        idempotencyKey: dbStatus.wasSentWithIdempotencyKey,
+      idempotencyKey = dbStatus.wasSentWithIdempotencyKey;
+      var inReplyToConversationIdSupported =
+          unifediApiStatusService.isFeatureSupported(
+        unifediApiStatusService.postStatusInReplyToConversationIdFeature,
+      );
+
+      var previewSupported = unifediApiStatusService.isFeatureSupported(
+        unifediApiStatusService.postStatusPreviewFeature,
+      );
+
+      var expiresInSupported = unifediApiStatusService.isFeatureSupported(
+        unifediApiStatusService.postStatusExpiresInFeature,
+      );
+
+      postStatus = postStatusData.toPostStatus(
+        inReplyToConversationIdSupported: inReplyToConversationIdSupported,
+        previewSupported: previewSupported,
+        expiresInSupported: expiresInSupported,
       );
 
       await statusRepository.updateByDbIdInDbType(
@@ -374,7 +397,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
       );
     } else {
       var createdAt = DateTime.now();
-      var fakeUniqueRemoteRemoteId = generateUniquePleromaApiFakeId();
+      var fakeUniqueRemoteRemoteId = FakeIdHelper.generateUniqueId();
       var account = myAccountBloc.account;
       var postStatusDataStatusStatusAdapter = PostStatusDataStatusStatusAdapter(
         account: account.toDbAccountWrapper(),
@@ -401,20 +424,50 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
         batchTransaction: null,
       );
 
-      pleromaPostStatus = postStatusData.toPleromaPostStatus(
-        idempotencyKey: fakeUniqueRemoteRemoteId,
+      idempotencyKey = fakeUniqueRemoteRemoteId;
+
+      var inReplyToConversationIdSupported =
+          unifediApiStatusService.isFeatureSupported(
+        unifediApiStatusService.postStatusInReplyToConversationIdFeature,
+      );
+
+      var previewSupported = unifediApiStatusService.isFeatureSupported(
+        unifediApiStatusService.postStatusPreviewFeature,
+      );
+
+      var expiresInSupported = unifediApiStatusService.isFeatureSupported(
+        unifediApiStatusService.postStatusExpiresInFeature,
+      );
+
+      postStatus = postStatusData.toPostStatus(
+        inReplyToConversationIdSupported: inReplyToConversationIdSupported,
+        previewSupported: previewSupported,
+        expiresInSupported: expiresInSupported,
       );
     }
 
     try {
-      var pleromaStatus = await pleromaAuthStatusService.postStatus(
-        data: pleromaPostStatus,
+      var unifediApiStatus = await unifediApiStatusService.postStatus(
+        idempotencyKey: idempotencyKey,
+        postStatus: postStatus,
       );
 
+      var conversationChatMessageStatusAdapter =
+          unifediApiStatus.toConversationChatMessageStatusAdapter();
+      var dbStatusPopulatedWrapper = conversationChatMessageStatusAdapter.status
+          .toDbStatusPopulatedWrapper();
       onMessageLocallyHiddenStreamController.add(
-        pleromaStatus.toConversationChatMessageStatusAdapter().copyWith(
-              remoteId: dbStatus.remoteId,
+        conversationChatMessageStatusAdapter.copyWith(
+          status: dbStatusPopulatedWrapper.copyWith(
+            dbStatusPopulated:
+                dbStatusPopulatedWrapper.dbStatusPopulated.copyWith(
+              dbStatus:
+                  dbStatusPopulatedWrapper.dbStatusPopulated.dbStatus.copyWith(
+                remoteId: dbStatus.remoteId,
+              ),
             ),
+          ),
+        ),
       );
 
       await statusRepository.updateByDbIdInDbType(
@@ -427,7 +480,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
       );
 
       await statusRepository.upsertRemoteStatusForConversation(
-        pleromaStatus,
+        unifediApiStatus,
         conversationRemoteId: chat.remoteId,
         batchTransaction: null,
       );
@@ -449,8 +502,8 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
     required IConversationChatMessage conversationChatMessage,
   }) async {
     if (conversationChatMessage.isPendingStatePublishedOrNull) {
-      await pleromaAuthStatusService.deleteStatus(
-        statusRemoteId: conversationChatMessage.status.remoteId!,
+      await unifediApiStatusService.deleteStatus(
+        statusId: conversationChatMessage.status.remoteId!,
       );
 
       await statusRepository.markStatusAsDeleted(

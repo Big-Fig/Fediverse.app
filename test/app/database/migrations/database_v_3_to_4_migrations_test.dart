@@ -34,10 +34,10 @@ void main() {
 
     expect((await statusDao.getAll()).isNotEmpty, false);
 
-    var testDbStatus = await StatusDatabaseTestHelper.createTestDbStatus(
+    var testDbStatus = await StatusDatabaseMockHelper.createTestDbStatus(
       seed: 'seed1',
       dbAccount:
-          await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed2'),
+          await AccountDatabaseMockHelper.createTestDbAccount(seed: 'seed2'),
     );
     await statusDao.insert(
       entity: testDbStatus,

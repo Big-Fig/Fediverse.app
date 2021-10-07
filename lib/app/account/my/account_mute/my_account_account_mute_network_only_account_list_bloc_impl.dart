@@ -1,3 +1,5 @@
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/account/list/network_only/account_network_only_list_bloc.dart';
@@ -6,58 +8,55 @@ import 'package:fedi/app/account/my/account_mute/my_account_account_mute_network
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/list/network_only/network_only_list_bloc.dart';
-import 'package:easy_dispose/easy_dispose.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:fedi/duration/duration_extension.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class MyAccountAccountMuteNetworkOnlyAccountListBloc extends DisposableOwner
     implements IMyAccountAccountMuteNetworkOnlyAccountListBloc {
-  final IPleromaApiAuthAccountService pleromaAuthAccountService;
-  final IPleromaApiMyAccountService pleromaMyAccountService;
+  final IUnifediApiAccountService pleromaAuthAccountService;
+  final IUnifediApiMyAccountService unifediApiMyAccountService;
   final IAccountRepository accountRepository;
 
   MyAccountAccountMuteNetworkOnlyAccountListBloc({
     required this.pleromaAuthAccountService,
-    required this.pleromaMyAccountService,
+    required this.unifediApiMyAccountService,
     required this.accountRepository,
   });
 
   @override
   Future removeAccountMute({required IAccount? account}) async {
     var accountRelationship = await pleromaAuthAccountService.unMuteAccount(
-      accountRemoteId: account!.remoteId,
+      accountId: account!.remoteId,
     );
 
-    var pleromaAccount = account
-        .copyWith(
-          pleromaRelationship: accountRelationship,
+    var unifediApiAccount = account
+        .copyWithTemp(
+          relationship: accountRelationship,
         )
-        .toPleromaApiAccount();
+        .toUnifediApiAccount();
 
     await accountRepository.upsertInRemoteType(
-      pleromaAccount,
+      unifediApiAccount,
     );
   }
 
   @override
   Future addAccountMute({required IAccount account}) async {
     var accountRelationship = await pleromaAuthAccountService.muteAccount(
-      accountRemoteId: account.remoteId,
+      accountId: account.remoteId,
       notifications: false,
-      expireDurationInSeconds: null,
+      expireIn: null,
     );
 
-    var pleromaAccount = account
-        .copyWith(
-          pleromaRelationship: accountRelationship,
+    var unifediApiAccount = account
+        .copyWithTemp(
+          relationship: accountRelationship,
         )
-        .toPleromaApiAccount();
+        .toUnifediApiAccount();
 
     await accountRepository.upsertInRemoteType(
-      pleromaAccount,
+      unifediApiAccount,
     );
   }
 
@@ -68,9 +67,9 @@ class MyAccountAccountMuteNetworkOnlyAccountListBloc extends DisposableOwner
     String? minId,
     String? maxId,
   }) async {
-    var remoteAccounts = await pleromaMyAccountService.getAccountMutes(
-      pagination: PleromaApiPaginationRequest(
-        sinceId: minId,
+    var remoteAccounts = await unifediApiMyAccountService.getMyAccountMutes(
+      pagination: UnifediApiPagination(
+        minId: minId,
         maxId: maxId,
         limit: itemsCountPerPage,
       ),
@@ -87,13 +86,13 @@ class MyAccountAccountMuteNetworkOnlyAccountListBloc extends DisposableOwner
   }
 
   @override
-  IPleromaApi get pleromaApi => pleromaMyAccountService;
+  IUnifediApiService get unifediApi => unifediApiMyAccountService;
 
   static MyAccountAccountMuteNetworkOnlyAccountListBloc createFromContext(
     BuildContext context,
   ) =>
       MyAccountAccountMuteNetworkOnlyAccountListBloc(
-        pleromaMyAccountService: Provider.of<IPleromaApiMyAccountService>(
+        unifediApiMyAccountService: Provider.of<IUnifediApiMyAccountService>(
           context,
           listen: false,
         ),
@@ -101,7 +100,7 @@ class MyAccountAccountMuteNetworkOnlyAccountListBloc extends DisposableOwner
           context,
           listen: false,
         ),
-        pleromaAuthAccountService: Provider.of<IPleromaApiAuthAccountService>(
+        pleromaAuthAccountService: Provider.of<IUnifediApiAccountService>(
           context,
           listen: false,
         ),
@@ -137,23 +136,23 @@ class MyAccountAccountMuteNetworkOnlyAccountListBloc extends DisposableOwner
     required Duration? duration,
   }) async {
     await pleromaAuthAccountService.unMuteAccount(
-      accountRemoteId: account!.remoteId,
+      accountId: account!.remoteId,
     );
 
     var accountRelationship = await pleromaAuthAccountService.muteAccount(
-      accountRemoteId: account.remoteId,
+      accountId: account.remoteId,
       notifications: notifications,
-      expireDurationInSeconds: duration?.totalSeconds,
+      expireIn: duration,
     );
 
-    var pleromaAccount = account
-        .copyWith(
-          pleromaRelationship: accountRelationship,
+    var unifediApiAccount = account
+        .copyWithTemp(
+          relationship: accountRelationship,
         )
-        .toPleromaApiAccount();
+        .toUnifediApiAccount();
 
     await accountRepository.upsertInRemoteType(
-      pleromaAccount,
+      unifediApiAccount,
     );
   }
 

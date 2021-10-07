@@ -15,7 +15,7 @@ class InstanceAnnouncementCachedListBlocProxyProvider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ProxyProvider<IInstanceAnnouncementCachedListBloc,
-        IPleromaCachedListBloc<IInstanceAnnouncement>>(
+        ICachedListBloc<IInstanceAnnouncement>>(
       update: (context, value, previous) => value,
       child: ProxyProvider<IInstanceAnnouncementCachedListBloc,
           IInstanceAnnouncementListBloc>(

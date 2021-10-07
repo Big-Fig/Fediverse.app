@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'database/instance_announcement_database_test_helper.dart';
 
-class InstanceAnnouncementTestHelper {
+class InstanceAnnouncementMockHelper {
   static Future<DbInstanceAnnouncementPopulatedWrapper>
       createTestInstanceAnnouncement({
     required String seed,
@@ -12,7 +12,7 @@ class InstanceAnnouncementTestHelper {
   }) async {
     return DbInstanceAnnouncementPopulatedWrapper(
       dbInstanceAnnouncementPopulated: DbInstanceAnnouncementPopulated(
-        dbInstanceAnnouncement: InstanceAnnouncementDatabaseTestHelper
+        dbInstanceAnnouncement: InstanceAnnouncementDatabaseMockHelper
             .createTestDbInstanceAnnouncement(
           seed: seed,
           remoteId: remoteId,

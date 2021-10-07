@@ -1,3 +1,4 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
@@ -6,10 +7,9 @@ import 'package:fedi/app/instance/announcement/repository/instance_announcement_
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler.dart';
-import 'package:easy_dispose/easy_dispose.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
-import 'package:base_fediverse_api/base_fediverse_api.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:logging/logging.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 abstract class WebSocketsChannelHandler extends DisposableOwner
     implements IWebSocketsHandler {
@@ -18,7 +18,8 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
 
   String get logTag;
 
-  final IWebSocketsChannel<PleromaApiWebSocketsEvent> webSocketsChannel;
+  // ignore: avoid-late-keyword
+  late IDisposable webSocketsChannelDisposable;
   final IStatusRepository statusRepository;
   final INotificationRepository notificationRepository;
   final IInstanceAnnouncementRepository instanceAnnouncementRepository;
@@ -32,10 +33,11 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
   final String? statusListRemoteId;
   final String? statusConversationRemoteId;
   final bool isFromHomeTimeline;
-  final WebSocketsListenType listenType;
+  final WebSocketsChannelHandlerType handlerType;
+  final IUnifediApiWebSocketsService unifediApiWebSocketsService;
 
   WebSocketsChannelHandler({
-    required this.webSocketsChannel,
+    required this.unifediApiWebSocketsService,
     required this.statusRepository,
     required this.conversationRepository,
     required this.notificationRepository,
@@ -46,51 +48,34 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
     required this.statusConversationRemoteId,
     required this.myAccountBloc,
     required this.isFromHomeTimeline,
-    required this.listenType,
+    required this.handlerType,
   }) {
     _logger = Logger(logTag);
-    _logger.finest(() =>
-        'Start listen to ${webSocketsChannel.config.calculateWebSocketsUrl()}');
-
-    addDisposable(
-      webSocketsChannel.listenForEvents(
-        listener: WebSocketChannelListener<PleromaApiWebSocketsEvent>(
-          listenType: listenType,
-          onEvent: (PleromaApiWebSocketsEvent event) {
-            handleEvent(event);
-          },
-        ),
-      ),
-    );
+    webSocketsChannelDisposable = initListener();
   }
 
-  Future handleEvent(PleromaApiWebSocketsEvent event) async {
+  IDisposable initListener();
+
+  Future handleEvent(IUnifediApiWebSocketsEvent event) async {
     _logger.finest(() => 'event $event');
 
-    // todo: report bug to pleroma
-    if (event.payload == null || event.payload == 'null') {
-      _logger.warning(() => 'event payload is empty');
-
-      return;
-    }
-
-    switch (event.eventType) {
-      case PleromaApiWebSocketsEventType.update:
+    await event.typeAsUnifediApi.when(
+      update: (_) async {
         await statusRepository.upsertRemoteStatusWithAllArguments(
-          event.parsePayloadAsStatus(),
+          event.status!,
           isFromHomeTimeline: isFromHomeTimeline,
           listRemoteId: statusListRemoteId,
           conversationRemoteId: statusConversationRemoteId,
           batchTransaction: null,
         );
-        break;
-      case PleromaApiWebSocketsEventType.notification:
-        var notification = event.parsePayloadAsNotification();
+      },
+      notification: (_) async {
+        var notification = event.notification!;
 
-        var pleromaNotificationType = notification.typeAsPleromaApi;
+        var pleromaNotificationType = notification.typeAsUnifediApi;
         // refresh to update followRequestCount
         if (pleromaNotificationType ==
-            PleromaApiNotificationType.followRequest) {
+            UnifediApiNotificationType.followRequestValue) {
           // ignore: unawaited_futures
           myAccountBloc.refreshFromNetwork(
             isNeedPreFetchRelationship: false,
@@ -107,38 +92,41 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
         if (chatMessage != null) {
           await chatNewMessagesHandlerBloc.handleNewMessage(chatMessage);
         }
-        break;
-
-      case PleromaApiWebSocketsEventType.announcement:
-        var announcement = event.parsePayloadAsAnnouncement();
-
-        await instanceAnnouncementRepository.upsertInRemoteType(
-          announcement,
-        );
-
-        break;
-      case PleromaApiWebSocketsEventType.delete:
-        var statusRemoteId = event.payload!;
+      },
+      delete: (_) async {
+        var statusRemoteId = event.id!;
 
         await statusRepository.markStatusAsDeleted(
           statusRemoteId: statusRemoteId,
         );
-        break;
-      case PleromaApiWebSocketsEventType.filtersChanged:
-        // nothing
-        break;
-      case PleromaApiWebSocketsEventType.conversation:
-        await conversationChatNewMessagesHandlerBloc.handleChatUpdate(
-          event.parsePayloadAsConversation(),
+      },
+      filtersChanged: (_) {
+        // TODO: Not implemented yet
+      },
+      announcement: (_) async {
+        var announcement = event.announcement!;
+
+        await instanceAnnouncementRepository.upsertInRemoteType(
+          announcement,
         );
-        break;
-      case PleromaApiWebSocketsEventType.pleromaChatUpdate:
-        var chat = event.parsePayloadAsChat();
+      },
+      conversation: (_) async {
+        await conversationChatNewMessagesHandlerBloc.handleChatUpdate(
+          event.conversation!,
+        );
+      },
+      chatUpdate: (_) async {
+        var chat = event.chat!;
         await chatNewMessagesHandlerBloc.handleChatUpdate(chat);
-        break;
-      case PleromaApiWebSocketsEventType.unknown:
-        // TODO: Handle this case.
-        break;
-    }
+      },
+      // ignore: no-equal-arguments
+      followRelationshipsUpdate: (_) {
+        // TODO: Not implemented yet
+      },
+      // ignore: no-equal-arguments
+      unknown: (_) {
+        // TODO: Not implemented yet
+      },
+    );
   }
 }

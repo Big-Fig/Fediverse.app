@@ -1,27 +1,12 @@
 import 'package:fedi/app/status/status_model.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class StatusThreadStatusAtIndex {
-  final IStatus status;
-  final int index;
+part 'status_thread_model.freezed.dart';
 
-  StatusThreadStatusAtIndex({
-    required this.status,
-    required this.index,
-  });
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is StatusThreadStatusAtIndex &&
-          runtimeType == other.runtimeType &&
-          status == other.status &&
-          index == other.index;
-
-  @override
-  int get hashCode => status.hashCode ^ index.hashCode;
-
-  @override
-  String toString() {
-    return 'StatusThreadStatusAtIndex{status: $status, index: $index}';
-  }
+@freezed
+class StatusThreadStatusAtIndex with _$StatusThreadStatusAtIndex {
+  const factory StatusThreadStatusAtIndex({
+    required IStatus status,
+    required int index,
+  }) = _StatusThreadStatusAtIndex;
 }

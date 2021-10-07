@@ -2,20 +2,19 @@ import 'dart:async';
 
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
+import 'package:fedi/app/access/current/context/current_access_context_bloc_impl.dart';
+import 'package:fedi/app/access/current/context/init/current_access_context_init_bloc.dart';
+import 'package:fedi/app/access/current/context/init/current_access_context_init_bloc_impl.dart';
+import 'package:fedi/app/access/current/context/init/current_access_context_init_model.dart';
+import 'package:fedi/app/access/current/context/init/current_access_context_init_widget.dart';
+import 'package:fedi/app/access/current/current_access_bloc.dart';
+import 'package:fedi/app/access/join/from_scratch/from_scratch_join_access_page.dart';
+import 'package:fedi/app/access/join/join_access_bloc.dart';
+import 'package:fedi/app/access/join/join_access_bloc_impl.dart';
+import 'package:fedi/app/access/join/join_access_bloc_proxy_provider.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/account/details/local_account_details_page.dart';
 import 'package:fedi/app/app_model.dart';
-import 'package:fedi/app/auth/instance/auth_instance_model.dart';
-import 'package:fedi/app/auth/instance/current/context/current_auth_instance_context_bloc_impl.dart';
-import 'package:fedi/app/auth/instance/current/context/init/current_auth_instance_context_init_bloc.dart';
-import 'package:fedi/app/auth/instance/current/context/init/current_auth_instance_context_init_bloc_impl.dart';
-import 'package:fedi/app/auth/instance/current/context/init/current_auth_instance_context_init_model.dart';
-import 'package:fedi/app/auth/instance/current/context/init/current_auth_instance_context_init_widget.dart';
-import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
-import 'package:fedi/app/auth/instance/join/from_scratch/from_scratch_join_auth_instance_page.dart';
-import 'package:fedi/app/auth/instance/join/join_auth_instance_bloc.dart';
-import 'package:fedi/app/auth/instance/join/join_auth_instance_bloc_impl.dart';
-import 'package:fedi/app/auth/instance/join/join_auth_instance_bloc_proxy_provider.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_page.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/app/config/config_service.dart';
@@ -58,6 +57,7 @@ import 'package:fedi/localization/localization_model.dart';
 import 'package:fedi/overlay_notification/overlay_notification_service_provider.dart';
 import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_handler_widget.dart';
 import 'package:fedi/ui/theme/ui_theme_proxy_provider.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -65,10 +65,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 var _logger = Logger('main.dart');
 
-CurrentAuthInstanceContextBloc? currentInstanceContextBloc;
+CurrentUnifediApiAccessContextBloc? currentInstanceContextBloc;
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -96,7 +97,7 @@ Future launchApp({
 
       if (newState == AsyncInitLoadingState.finished) {
         var currentInstanceBloc =
-            initBloc.appContextBloc.get<ICurrentAuthInstanceBloc>();
+            initBloc.appContextBloc.get<ICurrentUnifediApiAccessBloc>();
 
         currentInstanceBloc.currentInstanceStream
             .distinct(
@@ -174,7 +175,7 @@ void runInitializedSplashApp({
 
 Future runInitializedApp({
   required IAppContextBloc appContextBloc,
-  required AuthInstance? currentInstance,
+  required UnifediApiAccess? currentInstance,
 }) async {
   _logger.finest(() => 'runInitializedApp $runInitializedApp');
   if (currentInstance != null) {
@@ -189,7 +190,7 @@ Future runInitializedApp({
 
 Future runInitializedCurrentInstanceApp({
   required IAppContextBloc appContextBloc,
-  required AuthInstance currentInstance,
+  required UnifediApiAccess currentInstance,
 }) async {
   runInitializedSplashApp(
     appContextBloc: appContextBloc,
@@ -198,7 +199,7 @@ Future runInitializedCurrentInstanceApp({
     await currentInstanceContextBloc!.dispose();
   }
 
-  currentInstanceContextBloc = CurrentAuthInstanceContextBloc(
+  currentInstanceContextBloc = CurrentUnifediApiAccessContextBloc(
     currentInstance: currentInstance,
     appContextBloc: appContextBloc,
   );
@@ -218,7 +219,7 @@ Future runInitializedCurrentInstanceApp({
   runApp(
     appContextBloc.provideContextToChild(
       child: currentInstanceContextBloc!.provideContextToChild(
-        child: DisposableProvider<ICurrentAuthInstanceContextInitBloc>(
+        child: DisposableProvider<ICurrentUnifediApiAccessContextInitBloc>(
           lazy: false,
           create: (context) => createCurrentInstanceContextBloc(
             context: context,
@@ -226,7 +227,7 @@ Future runInitializedCurrentInstanceApp({
           ),
           child: FediApp(
             instanceInitialized: true,
-            child: buildAuthInstanceContextInitWidget(
+            child: buildUnifediApiAccessContextInitWidget(
               pushLoaderBloc: pushLoaderBloc,
             ),
           ),
@@ -236,21 +237,21 @@ Future runInitializedCurrentInstanceApp({
   );
 }
 
-CurrentAuthInstanceContextInitBloc createCurrentInstanceContextBloc({
+CurrentUnifediApiAccessContextInitBloc createCurrentInstanceContextBloc({
   required BuildContext context,
   required INotificationPushLoaderBloc? pushLoaderBloc,
 }) {
   _logger.finest(() => 'createCurrentInstanceContextBloc');
-  var currentAuthInstanceContextLoadingBloc =
-      CurrentAuthInstanceContextInitBloc.createFromContext(context);
-  currentAuthInstanceContextLoadingBloc.performAsyncInit();
+  var currentUnifediApiAccessContextLoadingBloc =
+      CurrentUnifediApiAccessContextInitBloc.createFromContext(context);
+  currentUnifediApiAccessContextLoadingBloc.performAsyncInit();
 
-  currentAuthInstanceContextLoadingBloc.stateStream.distinct().listen(
+  currentUnifediApiAccessContextLoadingBloc.stateStream.distinct().listen(
     (state) {
       var isLocalCacheExist = state ==
-              CurrentAuthInstanceContextInitState
+              CurrentUnifediApiAccessContextInitState
                   .cantFetchAndLocalCacheNotExist ||
-          state == CurrentAuthInstanceContextInitState.localCacheExist;
+          state == CurrentUnifediApiAccessContextInitState.localCacheExist;
       if (isLocalCacheExist) {
         if (pushLoaderBloc != null) {
           pushLoaderBloc.launchPushLoaderNotificationStream.listen(
@@ -273,9 +274,9 @@ CurrentAuthInstanceContextInitBloc createCurrentInstanceContextBloc({
         }
       }
     },
-  ).disposeWith(currentAuthInstanceContextLoadingBloc);
+  ).disposeWith(currentUnifediApiAccessContextLoadingBloc);
 
-  return currentAuthInstanceContextLoadingBloc;
+  return currentUnifediApiAccessContextLoadingBloc;
 }
 
 Future handleLaunchPushLoaderNotification(
@@ -325,10 +326,10 @@ Future handleLaunchPushLoaderNotification(
   );
 }
 
-Widget buildAuthInstanceContextInitWidget({
+Widget buildUnifediApiAccessContextInitWidget({
   required INotificationPushLoaderBloc? pushLoaderBloc,
 }) =>
-    CurrentAuthInstanceContextInitWidget(
+    CurrentUnifediApiAccessContextInitWidget(
       child: DisposableProvider<IHomeBloc>(
         create: (context) {
           var homeBloc = HomeBloc(
@@ -372,15 +373,15 @@ Widget buildAuthInstanceContextInitWidget({
 void runInitializedLoginApp(IAppContextBloc appContextBloc) {
   runApp(
     appContextBloc.provideContextToChild(
-      child: DisposableProvider<IJoinAuthInstanceBloc>(
-        create: (context) => JoinAuthInstanceBloc(
+      child: DisposableProvider<IJoinUnifediApiAccessBloc>(
+        create: (context) => JoinUnifediApiAccessBloc(
           isFromScratch: true,
           configService: appContextBloc.get<IConfigService>(),
         ),
         child: FediApp(
           instanceInitialized: false,
-          child: JoinAuthInstanceBlocProxyProvider(
-            child: const FromScratchJoinAuthInstancePage(),
+          child: JoinUnifediApiAccessBlocProxyProvider(
+            child: const FromScratchJoinUnifediApiAccessPage(),
           ),
         ),
       ),

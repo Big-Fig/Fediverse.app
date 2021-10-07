@@ -1,17 +1,17 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:easy_dispose/easy_dispose.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:fedi/repository/repository.dart';
 import 'package:flutter/widgets.dart';
 import 'package:moor/moor.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 abstract class IStatusRepository
     implements
-        IAppRemoteReadWriteRepository<DbStatus, IStatus, IPleromaApiStatus, int,
+        IAppRemoteReadWriteRepository<DbStatus, IStatus, IUnifediApiStatus, int,
             String, StatusRepositoryFilters, StatusRepositoryOrderingTermData>,
         IDisposable {
   static IStatusRepository of(
@@ -30,37 +30,37 @@ abstract class IStatusRepository
   });
 
   Future upsertRemoteStatusForList(
-    IPleromaApiStatus remoteStatus, {
+    IUnifediApiStatus remoteStatus, {
     required String listRemoteId,
     required Batch? batchTransaction,
   });
 
   Future upsertRemoteStatusForConversation(
-    IPleromaApiStatus remoteStatus, {
+    IUnifediApiStatus remoteStatus, {
     required String conversationRemoteId,
     required Batch? batchTransaction,
   });
 
   Future upsertRemoteStatusForHomeTimeline(
-    IPleromaApiStatus remoteStatus, {
+    IUnifediApiStatus remoteStatus, {
     required bool isFromHomeTimeline,
     required Batch? batchTransaction,
   });
 
   Future upsertRemoteStatusesForList(
-    List<IPleromaApiStatus> remoteStatuses, {
+    List<IUnifediApiStatus> remoteStatuses, {
     required String listRemoteId,
     required Batch? batchTransaction,
   });
 
   Future upsertRemoteStatusesForConversation(
-    List<IPleromaApiStatus> remoteStatuses, {
+    List<IUnifediApiStatus> remoteStatuses, {
     required String conversationRemoteId,
     required Batch? batchTransaction,
   });
 
   Future upsertRemoteStatusesForHomeTimeline(
-    List<IPleromaApiStatus> remoteStatuses, {
+    List<IUnifediApiStatus> remoteStatuses, {
     required bool isFromHomeTimeline,
     required Batch? batchTransaction,
   });
@@ -123,7 +123,7 @@ abstract class IStatusRepository
   });
 
   Future upsertRemoteStatusWithAllArguments(
-    IPleromaApiStatus remoteStatus, {
+    IUnifediApiStatus remoteStatus, {
     required bool? isFromHomeTimeline,
     required String? listRemoteId,
     required String? conversationRemoteId,
@@ -131,7 +131,7 @@ abstract class IStatusRepository
   });
 
   Future upsertRemoteStatusesWithAllArguments(
-    List<IPleromaApiStatus> remoteStatuses, {
+    List<IUnifediApiStatus> remoteStatuses, {
     required bool? isFromHomeTimeline,
     required String? listRemoteId,
     required String? conversationRemoteId,

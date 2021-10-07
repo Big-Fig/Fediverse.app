@@ -1,12 +1,12 @@
-import 'package:fedi/app/status/body/status_body_bloc.dart';
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:fedi/app/status/body/status_body_bloc.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class StatusBodyBloc extends DisposableOwner implements IStatusBodyBloc {
   @override
   final bool collapsible;
   @override
-  final IPleromaApiMediaAttachment? initialMediaAttachment;
+  final IUnifediApiMediaAttachment? initialMediaAttachment;
 
   StatusBodyBloc({
     required this.collapsible,

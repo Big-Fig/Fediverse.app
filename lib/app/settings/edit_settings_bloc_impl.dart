@@ -1,10 +1,10 @@
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
 import 'package:fedi/app/settings/edit_settings_bloc.dart';
 import 'package:fedi/app/settings/settings_bloc.dart';
 import 'package:fedi/app/settings/settings_model.dart';
 import 'package:fedi/form/form_bloc_impl.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:easy_dispose/easy_dispose.dart';
-import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
 
 abstract class EditSettingsBloc<T extends ISettings?> extends FormBloc
     implements IEditSettingsBloc<T> {

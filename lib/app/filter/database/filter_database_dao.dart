@@ -3,9 +3,10 @@ import 'package:fedi/app/database/dao/remote/populated_app_remote_database_dao.d
 import 'package:fedi/app/filter/database/filter_database_model.dart';
 import 'package:fedi/app/filter/filter_model.dart';
 import 'package:fedi/app/filter/repository/filter_repository_model.dart';
-import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
+
 import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 part 'filter_database_dao.g.dart';
 
@@ -30,13 +31,13 @@ class FilterDao extends PopulatedAppRemoteDatabaseDao<
 
   SimpleSelectStatement<$DbFiltersTable, DbFilter> addContextTypesWhere(
     SimpleSelectStatement<$DbFiltersTable, DbFilter> query,
-    List<MastodonApiFilterContextType> contextTypes,
+    List<UnifediApiFilterContextType> contextTypes,
   ) {
     assert(contextTypes.isNotEmpty);
 
     var contextTypesStrings = contextTypes
         .map(
-          (visibility) => '${visibility.toJsonValue()}',
+          (visibility) => '${visibility.stringValue}',
         )
         .toList();
 

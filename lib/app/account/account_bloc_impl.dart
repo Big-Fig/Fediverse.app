@@ -1,17 +1,17 @@
+import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 abstract class AccountBloc extends IAccountBloc {
   final BehaviorSubject<IAccount> accountSubject;
 
-  final IPleromaApiAccountService? pleromaAccountService;
+  final IUnifediApiAccountService? unifediApiAccountService;
 
   // todo: remove hack. Dont init when bloc quickly disposed. Help
   AccountBloc({
-    required this.pleromaAccountService,
+    required this.unifediApiAccountService,
     required IAccount account,
     required bool isNeedRefreshFromNetworkOnInit,
     required bool delayInit,
@@ -57,9 +57,9 @@ abstract class AccountBloc extends IAccountBloc {
   @override
   Stream<IAccount> get accountStream => accountSubject.stream.distinct();
 
-  Future<IPleromaApiAccount> loadRemoteAccount() async {
-    return pleromaAccountService!.getAccount(
-      accountRemoteId: account.remoteId,
+  Future<IUnifediApiAccount> loadRemoteAccount() async {
+    return unifediApiAccountService!.getAccount(
+      accountId: account.remoteId,
       withRelationship: false,
     );
   }

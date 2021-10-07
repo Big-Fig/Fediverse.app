@@ -9,13 +9,13 @@ import '../app_analytics_model_test_helper.dart';
 
 void main() {
   test('save & load', () async {
-    await LocalPreferencesTestHelper.testSaveAndLoad<AppAnalyticsData,
+    await LocalPreferencesMockHelper.testSaveAndLoad<AppAnalyticsData,
         AppAnalyticsLocalPreferenceBloc>(
       defaultValue: AppAnalyticsLocalPreferenceBloc.defaultValue,
       blocCreator: (localPreferencesService) =>
           AppAnalyticsLocalPreferenceBloc(localPreferencesService),
       testObjectCreator: ({required String seed}) =>
-          AppAnalyticsModelTestHelper.createTestAppAnalyticsData(
+          AppAnalyticsModelMockHelper.createTestAppAnalyticsData(
         seed: seed,
       ),
     );

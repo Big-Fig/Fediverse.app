@@ -8,24 +8,26 @@ import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc_de
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_model.dart';
 import 'package:fedi/app/media/attachment/upload/uploaded_upload_media_attachment_bloc_impl.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
     implements IUploadMediaAttachmentsCollectionBloc {
   @override
-  final int maximumMediaAttachmentCount;
+  final int? maximumMediaAttachmentCount;
   @override
   final int? maximumFileSizeInBytes;
+  final bool dontUploadMediaDuringEditing;
 
-  final IPleromaApiMediaAttachmentService pleromaMediaAttachmentService;
+  final IUnifediApiMediaAttachmentService unifediApiMediaAttachmentService;
 
   DisposableOwner? uploadedSubscriptionDisposable;
 
   UploadMediaAttachmentsCollectionBloc({
     required this.maximumMediaAttachmentCount,
-    required this.pleromaMediaAttachmentService,
+    required this.unifediApiMediaAttachmentService,
     required this.maximumFileSizeInBytes,
+    required this.dontUploadMediaDuringEditing,
   }) {
     uploadMediaAttachmentBlocsSubject.disposeWith(this);
     isAllAttachedMediaUploadedSubject.disposeWith(this);
@@ -162,9 +164,15 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
     if (existedBloc == null) {
       var uploadMediaAttachmentBloc = UploadMediaAttachmentBlocDevice(
         mediaDeviceFile: mediaDeviceFile,
-        pleromaMediaAttachmentService: pleromaMediaAttachmentService,
+        unifediApiMediaAttachmentService: unifediApiMediaAttachmentService,
         maximumFileSizeInBytes: maximumFileSizeInBytes,
       );
+      if (!dontUploadMediaDuringEditing) {
+        // no need to await
+        // ignore: unawaited_futures
+        uploadMediaAttachmentBloc.startUploadIfPossible();
+      }
+
       uploadMediaAttachmentBlocsSubject.add(
         [
           ...uploadMediaAttachmentBlocs,
@@ -212,7 +220,7 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
 
   static bool calculateIsMaximumAttachmentReached({
     required List<IUploadMediaAttachmentBloc> mediaAttachmentBlocs,
-    required int maximumMediaAttachmentCount,
+    required int? maximumMediaAttachmentCount,
   }) {
     var maximumMediaAttachmentCountLeft =
         calculateMaximumMediaAttachmentCountLeft(
@@ -262,10 +270,10 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
   }
 
   @override
-  void addUploadedAttachment(IPleromaApiMediaAttachment attachment) {
+  void addUploadedAttachment(IUnifediApiMediaAttachment attachment) {
     uploadMediaAttachmentBlocs.add(
       UploadedUploadMediaAttachmentBloc(
-        pleromaMediaAttachment: attachment,
+        unifediApiMediaAttachment: attachment,
       ),
     );
     uploadMediaAttachmentBlocsSubject.add(uploadMediaAttachmentBlocs);

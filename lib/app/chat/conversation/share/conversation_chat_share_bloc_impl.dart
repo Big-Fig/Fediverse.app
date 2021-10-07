@@ -7,35 +7,35 @@ import 'package:fedi/app/chat/conversation/repository/conversation_chat_reposito
 import 'package:fedi/app/chat/conversation/share/conversation_chat_share_bloc.dart';
 import 'package:fedi/app/share/to_account/share_to_account_bloc_impl.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:fedi/repository/repository_model.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 abstract class ConversationChatShareBloc extends ShareToAccountBloc
     implements IConversationChatShareBloc {
   final IConversationChatRepository conversationRepository;
   final IStatusRepository statusRepository;
-  final IPleromaApiConversationService pleromaApiConversationService;
-  final IPleromaApiAuthStatusService pleromaApiAuthStatusService;
+  final IUnifediApiConversationService unifediApiConversationService;
+  final IUnifediApiStatusService unifediApiStatusService;
   final IMyAccountBloc myAccountBloc;
   final IAccountRepository accountRepository;
 
   ConversationChatShareBloc({
     required this.conversationRepository,
     required this.statusRepository,
-    required this.pleromaApiConversationService,
-    required this.pleromaApiAuthStatusService,
-    required IPleromaApiAccountService pleromaAccountService,
+    required this.unifediApiConversationService,
+    required this.unifediApiStatusService,
+    required IUnifediApiAccountService unifediApiAccountService,
     required this.myAccountBloc,
     required this.accountRepository,
   }) : super(
           myAccountBloc: myAccountBloc,
           accountRepository: accountRepository,
-          pleromaAccountService: pleromaAccountService,
+          unifediApiAccountService: unifediApiAccountService,
         );
 
   @override
   Future<bool> actuallyShareToAccount(IAccount account) async {
-    const pleromaVisibility = PleromaApiVisibility.direct;
+    const pleromaVisibility = UnifediApiVisibility.directValue;
 
     var targetAccounts = [account];
     var sendDataList = await createSendData(
@@ -43,27 +43,28 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
       visibility: pleromaVisibility,
     );
 
-    var pleromaStatusList = <IPleromaApiStatus>[];
+    var unifediApiStatusList = <IUnifediApiStatus>[];
 
-    for (var sendData in sendDataList) {
+    for (var postStatus in sendDataList) {
       // todo: send to conversation id
-      var pleromaStatus = await pleromaApiAuthStatusService.postStatus(
-        data: sendData,
+      var unifediApiStatus = await unifediApiStatusService.postStatus(
+        idempotencyKey: null,
+        postStatus: postStatus,
       );
-      pleromaStatusList.add(pleromaStatus);
+      unifediApiStatusList.add(unifediApiStatus);
     }
 
     await statusRepository.upsertAllInRemoteType(
-      pleromaStatusList,
+      unifediApiStatusList,
       batchTransaction: null,
     );
 
     return true;
   }
 
-  Future<List<IPleromaApiPostStatus>> createSendData({
+  Future<List<IUnifediApiPostStatus>> createSendData({
     required String to,
-    required PleromaApiVisibility visibility,
+    required UnifediApiVisibility visibility,
   });
 
   @override
@@ -111,7 +112,7 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
   }
 
   @override
-  Future<List<IPleromaApiAccount>> customRemoteAccountListLoader({
+  Future<List<IUnifediApiAccount>> customRemoteAccountListLoader({
     required int? limit,
     required IAccount? newerThan,
     required IAccount? olderThan,
@@ -121,10 +122,13 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
       return [];
     }
     var pleromaConversations =
-        await pleromaApiConversationService.getConversations(
-      pagination: PleromaApiPaginationRequest(
+        await unifediApiConversationService.getConversations(
+      pagination: UnifediApiPagination(
+        minId: null,
         limit: limit,
+        maxId: null,
       ),
+      recipientsIds: null,
     );
 
     await conversationRepository.upsertAllInRemoteType(
@@ -132,17 +136,17 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
       batchTransaction: null,
     );
 
-    var pleromaAccounts = <IPleromaApiAccount>[];
+    var unifediApiAccounts = <IUnifediApiAccount>[];
 
     for (var pleromaConversation in pleromaConversations) {
       var pleromaConversationAccounts = pleromaConversation.accounts;
-      pleromaAccounts.addAll(
+      unifediApiAccounts.addAll(
         pleromaConversationAccounts.where(
-          (pleromaAccount) {
-            var notOwn = pleromaAccount.id != myAccountBloc.account.remoteId;
-            var alreadyAdded = pleromaAccounts.firstWhereOrNull(
-                  (pleromaAccountsItem) =>
-                      pleromaAccountsItem.id == pleromaAccount.id,
+          (unifediApiAccount) {
+            var notOwn = unifediApiAccount.id != myAccountBloc.account.remoteId;
+            var alreadyAdded = unifediApiAccounts.firstWhereOrNull(
+                  (unifediApiAccountsItem) =>
+                      unifediApiAccountsItem.id == unifediApiAccount.id,
                 ) !=
                 null;
 
@@ -152,6 +156,6 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
       );
     }
 
-    return pleromaAccounts;
+    return unifediApiAccounts;
   }
 }

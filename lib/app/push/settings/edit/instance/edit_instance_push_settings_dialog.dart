@@ -1,4 +1,5 @@
-import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
+import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/push/settings/edit/edit_push_settings_bloc.dart';
 import 'package:fedi/app/push/settings/edit/edit_push_settings_bloc_impl.dart';
@@ -6,7 +7,6 @@ import 'package:fedi/app/push/settings/edit/edit_push_settings_widget.dart';
 import 'package:fedi/app/push/settings/push_settings_bloc.dart';
 import 'package:fedi/app/settings/instance/edit/edit_instance_settings_dialog.dart';
 import 'package:fedi/app/toast/toast_service.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +27,7 @@ void showEditInstancePushSettingsDialog({
             listen: false,
           ),
           isEnabled: true,
-          currentInstance: ICurrentAuthInstanceBloc.of(
+          currentInstance: ICurrentUnifediApiAccessBloc.of(
             context,
             listen: false,
           ).currentInstance,

@@ -1,0 +1,1 @@
+enum UnifediApiAccessState { notLogged, logged }

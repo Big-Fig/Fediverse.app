@@ -1,5 +1,5 @@
-import 'package:fedi/app/html/html_text_model.dart';
 import 'package:easy_dispose/easy_dispose.dart';
+import 'package:fedi/app/html/html_text_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_html/style.dart';
 import 'package:provider/provider.dart';

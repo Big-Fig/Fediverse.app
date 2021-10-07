@@ -38,8 +38,6 @@ class LightFediUiTheme implements IFediUiTheme {
       primaryColorBrightness: Brightness.light,
       primaryColorLight: Color(0xffffecb3),
       primaryColorDark: _lightFediUiColorTheme.primary,
-      accentColor: Color(0xff2196f3),
-      accentColorBrightness: Brightness.dark,
       canvasColor: Color(0xfffafafa),
       scaffoldBackgroundColor: Color(0xfffafafa),
       bottomAppBarColor: Color(0xffffffff),
@@ -50,7 +48,6 @@ class LightFediUiTheme implements IFediUiTheme {
       selectedRowColor: Color(0xfff5f5f5),
       unselectedWidgetColor: Color(0x8a000000),
       disabledColor: Color(0x61000000),
-      buttonColor: Color(0xffe0e0e0),
       toggleableActiveColor: Color(0xff1e88e5),
       secondaryHeaderColor: Color(0xffe3f2fd),
       textSelectionTheme: TextSelectionThemeData(
@@ -259,86 +256,6 @@ class LightFediUiTheme implements IFediUiTheme {
           fontStyle: FontStyle.normal,
         ),
       ),
-      accentTextTheme: TextTheme(
-        headline1: TextStyle(
-          color: Color(0xb3ffffff),
-          fontSize: null,
-          fontWeight: FontWeight.w400,
-          fontStyle: FontStyle.normal,
-        ),
-        headline2: TextStyle(
-          color: Color(0xb3ffffff),
-          fontSize: null,
-          fontWeight: FontWeight.w400,
-          fontStyle: FontStyle.normal,
-        ),
-        headline3: TextStyle(
-          color: Color(0xb3ffffff),
-          fontSize: null,
-          fontWeight: FontWeight.w400,
-          fontStyle: FontStyle.normal,
-        ),
-        headline4: TextStyle(
-          color: Color(0xb3ffffff),
-          fontSize: null,
-          fontWeight: FontWeight.w400,
-          fontStyle: FontStyle.normal,
-        ),
-        headline5: TextStyle(
-          color: Color(0xffffffff),
-          fontSize: null,
-          fontWeight: FontWeight.w400,
-          fontStyle: FontStyle.normal,
-        ),
-        headline6: TextStyle(
-          color: Color(0xffffffff),
-          fontSize: null,
-          fontWeight: FontWeight.w400,
-          fontStyle: FontStyle.normal,
-        ),
-        subtitle1: TextStyle(
-          color: Color(0xffffffff),
-          fontSize: null,
-          fontWeight: FontWeight.w400,
-          fontStyle: FontStyle.normal,
-        ),
-        bodyText1: TextStyle(
-          color: Color(0xffffffff),
-          fontSize: null,
-          fontWeight: FontWeight.w400,
-          fontStyle: FontStyle.normal,
-        ),
-        bodyText2: TextStyle(
-          color: Color(0xffffffff),
-          fontSize: null,
-          fontWeight: FontWeight.w400,
-          fontStyle: FontStyle.normal,
-        ),
-        caption: TextStyle(
-          color: Color(0xb3ffffff),
-          fontSize: null,
-          fontWeight: FontWeight.w400,
-          fontStyle: FontStyle.normal,
-        ),
-        button: TextStyle(
-          color: Color(0xffffffff),
-          fontSize: null,
-          fontWeight: FontWeight.w400,
-          fontStyle: FontStyle.normal,
-        ),
-        subtitle2: TextStyle(
-          color: Color(0xffffffff),
-          fontSize: null,
-          fontWeight: FontWeight.w400,
-          fontStyle: FontStyle.normal,
-        ),
-        overline: TextStyle(
-          color: Color(0xffffffff),
-          fontSize: null,
-          fontWeight: FontWeight.w400,
-          fontStyle: FontStyle.normal,
-        ),
-      ),
       inputDecorationTheme: InputDecorationTheme(
         labelStyle: TextStyle(
           color: Color(0xdd000000),
@@ -443,11 +360,6 @@ class LightFediUiTheme implements IFediUiTheme {
         size: 24,
       ),
       primaryIconTheme: IconThemeData(
-        color: Color(0xffffffff),
-        opacity: 1,
-        size: 24,
-      ),
-      accentIconTheme: IconThemeData(
         color: Color(0xffffffff),
         opacity: 1,
         size: 24,

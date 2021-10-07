@@ -1,10 +1,10 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/custom_list/account_list/network_only/custom_list_account_list_network_only_list_bloc.dart';
 import 'package:fedi/app/custom_list/custom_list_model.dart';
-import 'package:easy_dispose/easy_dispose.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:logging/logging.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 final _logger =
     Logger('custom_list_account_list_network_only_list_bloc_impl.dart');
@@ -12,10 +12,10 @@ final _logger =
 class CustomListAccountListNetworkOnlyListBloc extends DisposableOwner
     implements ICustomListAccountListNetworkOnlyListBloc {
   final ICustomList? customList;
-  final IPleromaApiListService pleromaListService;
+  final IUnifediApiListService pleromaListService;
 
   @override
-  IPleromaApi get pleromaApi => pleromaListService;
+  IUnifediApiService get unifediApi => pleromaListService;
 
   CustomListAccountListNetworkOnlyListBloc({
     required this.customList,
@@ -33,17 +33,17 @@ class CustomListAccountListNetworkOnlyListBloc extends DisposableOwner
     if (customList == null) {
       result = [];
     } else {
-      var pleromaAccounts = await pleromaListService.getListAccounts(
-        pagination: PleromaApiPaginationRequest(
+      var unifediApiAccounts = await pleromaListService.getListAccounts(
+        pagination: UnifediApiPagination(
           limit: itemsCountPerPage,
-          sinceId: minId,
+          minId: minId,
           maxId: maxId,
         ),
-        listRemoteId: customList!.remoteId,
+        listId: customList!.remoteId,
       );
-      result = pleromaAccounts
+      result = unifediApiAccounts
           .map(
-            (pleromaAccount) => pleromaAccount.toDbAccountWrapper(),
+            (unifediApiAccount) => unifediApiAccount.toDbAccountWrapper(),
           )
           .toList();
     }

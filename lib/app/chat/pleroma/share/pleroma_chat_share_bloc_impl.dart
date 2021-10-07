@@ -6,37 +6,37 @@ import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository_model.dart';
 import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_bloc.dart';
 import 'package:fedi/app/share/to_account/share_to_account_bloc_impl.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:fedi/repository/repository_model.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 abstract class PleromaChatShareBloc extends ShareToAccountBloc
     implements IPleromaChatShareBloc {
   final IPleromaChatRepository chatRepository;
   final IPleromaChatMessageRepository chatMessageRepository;
-  final IPleromaApiChatService pleromaChatService;
+  final IUnifediApiChatService pleromaApiChatService;
 
   PleromaChatShareBloc({
     required this.chatRepository,
     required this.chatMessageRepository,
-    required this.pleromaChatService,
+    required this.pleromaApiChatService,
     required IMyAccountBloc myAccountBloc,
     required IAccountRepository accountRepository,
-    required IPleromaApiAccountService pleromaAccountService,
+    required IUnifediApiAccountService unifediApiAccountService,
   }) : super(
           myAccountBloc: myAccountBloc,
           accountRepository: accountRepository,
-          pleromaAccountService: pleromaAccountService,
+          unifediApiAccountService: unifediApiAccountService,
         );
 
   @override
   Future<bool> actuallyShareToAccount(IAccount account) async {
-    var messageSendDataList = await createPleromaChatMessageSendDataList();
+    var messageSendDataList = await createUnifediApiChatMessageSendDataList();
 
     var targetAccounts = [account];
-    List<IPleromaApiChat> pleromaChatsByAccounts;
+    List<IUnifediApiChat> pleromaChatsByAccounts;
     if (targetAccounts.isNotEmpty) {
       var chatsByAccountsFuture = targetAccounts.map(
-        (account) => pleromaChatService.getOrCreateChatByAccountId(
+        (account) => pleromaApiChatService.getOrCreateChatByAccountId(
           accountId: account.remoteId,
         ),
       );
@@ -58,14 +58,15 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
 
     // todo: think about throttling & sorting
     // perhaps send in sequence instead of parallel
-    Iterable<Future<List<IPleromaApiChatMessage>>>
-        pleromaChatMessagesListFuture;
-    pleromaChatMessagesListFuture = allChatsIds.map(
+    Iterable<Future<List<IUnifediApiChatMessage>>>
+        unifediApiChatMessagesListFuture;
+    unifediApiChatMessagesListFuture = allChatsIds.map(
       (chatId) {
         var futures = messageSendDataList.map(
-          (messageSendData) => pleromaChatService.sendMessage(
+          (messageSendData) => pleromaApiChatService.sendMessage(
             chatId: chatId,
-            data: messageSendData,
+            postChatMessage: messageSendData,
+            idempotencyKey: null,
           ),
         );
 
@@ -73,27 +74,28 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
       },
     );
 
-    List<List<IPleromaApiChatMessage>> pleromaChatMessagesList;
-    pleromaChatMessagesList = await Future.wait(pleromaChatMessagesListFuture);
+    List<List<IUnifediApiChatMessage>> unifediApiChatMessagesList;
+    unifediApiChatMessagesList =
+        await Future.wait(unifediApiChatMessagesListFuture);
 
-    var pleromaChatMessages = <IPleromaApiChatMessage>[];
+    var unifediApiChatMessages = <IUnifediApiChatMessage>[];
 
-    pleromaChatMessagesList.forEach(
-      (List<IPleromaApiChatMessage> items) {
-        pleromaChatMessages.addAll(items);
+    unifediApiChatMessagesList.forEach(
+      (List<IUnifediApiChatMessage> items) {
+        unifediApiChatMessages.addAll(items);
       },
     );
 
     await chatMessageRepository.upsertAllInRemoteType(
-      pleromaChatMessages,
+      unifediApiChatMessages,
       batchTransaction: null,
     );
 
     return true;
   }
 
-  Future<List<PleromaApiChatMessageSendData>>
-      createPleromaChatMessageSendDataList();
+  Future<List<UnifediApiPostChatMessage>>
+      createUnifediApiChatMessageSendDataList();
 
   @override
   Future<List<IAccount>> customLocalAccountListLoader({
@@ -118,7 +120,7 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
   }
 
   @override
-  Future<List<IPleromaApiAccount>> customRemoteAccountListLoader({
+  Future<List<IUnifediApiAccount>> customRemoteAccountListLoader({
     required int? limit,
     required IAccount? newerThan,
     required IAccount? olderThan,
@@ -126,9 +128,11 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
     if (newerThan != null || olderThan != null) {
       return [];
     }
-    var pleromaChats = await pleromaChatService.getChats(
-      pagination: PleromaApiPaginationRequest(
+    var pleromaChats = await pleromaApiChatService.getChats(
+      pagination: UnifediApiPagination(
         limit: limit,
+        minId: null,
+        maxId: null,
       ),
     );
 

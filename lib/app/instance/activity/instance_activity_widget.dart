@@ -10,10 +10,10 @@ import 'package:fedi/app/ui/spacer/fedi_big_vertical_spacer.dart';
 import 'package:fedi/app/ui/statistic/fedi_statistic_item_widget.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 final _logger = Logger('instance_activity_widget.dart');
 
@@ -70,7 +70,7 @@ class _InstanceActivityGraphWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var instanceActivityBloc = IInstanceActivityBloc.of(context);
 
-    return StreamBuilder<List<IPleromaApiInstanceActivityItem>?>(
+    return StreamBuilder<List<IUnifediApiInstanceActivityItem>?>(
       stream: instanceActivityBloc.activityStream,
       initialData: instanceActivityBloc.activity,
       builder: (context, snapshot) {
@@ -154,7 +154,7 @@ class _InstanceActivityHeaderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var instanceActivityBloc = IInstanceActivityBloc.of(context);
 
-    return StreamBuilder<List<IPleromaApiInstanceActivityItem>?>(
+    return StreamBuilder<List<IUnifediApiInstanceActivityItem>?>(
       stream: instanceActivityBloc.activityStream,
       initialData: instanceActivityBloc.activity,
       builder: (context, snapshot) {

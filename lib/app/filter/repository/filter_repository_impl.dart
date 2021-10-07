@@ -6,14 +6,14 @@ import 'package:fedi/app/filter/filter_model.dart';
 import 'package:fedi/app/filter/filter_model_adapter.dart';
 import 'package:fedi/app/filter/repository/filter_repository.dart';
 import 'package:fedi/app/filter/repository/filter_repository_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:moor/moor.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class FilterRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     DbFilter,
     DbFilterPopulated,
     IFilter,
-    IPleromaApiFilter,
+    IUnifediApiFilter,
     int,
     String,
     $DbFiltersTable,
@@ -41,7 +41,7 @@ class FilterRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   DbFilter mapAppItemToDbItem(IFilter appItem) => appItem.toDbFilter();
 
   @override
-  IPleromaApiFilter mapAppItemToRemoteItem(IFilter appItem) =>
+  IUnifediApiFilter mapAppItemToRemoteItem(IFilter appItem) =>
       appItem.toPleromaFilter();
 
   @override
@@ -53,13 +53,13 @@ class FilterRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       dbPopulatedItem.toDbFilterPopulatedWrapper();
 
   @override
-  IPleromaApiFilter mapDbPopulatedItemToRemoteItem(
+  IUnifediApiFilter mapDbPopulatedItemToRemoteItem(
     DbFilterPopulated dbPopulatedItem,
   ) =>
       dbPopulatedItem.toDbFilterPopulatedWrapper().toPleromaFilter();
 
   @override
-  IFilter mapRemoteItemToAppItem(IPleromaApiFilter remoteItem) =>
+  IFilter mapRemoteItemToAppItem(IUnifediApiFilter remoteItem) =>
       remoteItem.toDbFilterPopulatedWrapper();
 
   @override
@@ -83,7 +83,7 @@ class FilterRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   Future<int> insertInRemoteType(
-    IPleromaApiFilter remoteItem, {
+    IUnifediApiFilter remoteItem, {
     required InsertMode? mode,
   }) =>
       insertInDbType(
@@ -95,7 +95,7 @@ class FilterRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   Future<void> insertInRemoteTypeBatch(
-    IPleromaApiFilter remoteItem, {
+    IUnifediApiFilter remoteItem, {
     required InsertMode? mode,
     required Batch? batchTransaction,
   }) {
@@ -110,7 +110,7 @@ class FilterRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   @override
   Future<void> updateAppTypeByRemoteType({
     required IFilter appItem,
-    required IPleromaApiFilter remoteItem,
+    required IUnifediApiFilter remoteItem,
     required Batch? batchTransaction,
   }) =>
       updateByDbIdInDbType(

@@ -1,13 +1,13 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/emoji/text/emoji_text_model.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
 import 'package:fedi/app/instance/location/instance_location_bloc.dart';
 import 'package:fedi/app/poll/poll_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:easy_dispose/easy_dispose.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 abstract class IStatusBloc implements IDisposable, IInstanceLocationBloc {
   static IStatusBloc of(BuildContext context, {bool listen = true}) =>
@@ -39,13 +39,13 @@ abstract class IStatusBloc implements IDisposable, IInstanceLocationBloc {
 
   Stream<EmojiText?> get contentWithEmojisStream;
 
-  IPleromaApiCard? get card;
+  IUnifediApiCard? get card;
 
-  Stream<IPleromaApiCard?> get cardStream;
+  Stream<IUnifediApiCard?> get cardStream;
 
-  IPleromaApiCard? get reblogOrOriginalCard;
+  IUnifediApiCard? get reblogOrOriginalCard;
 
-  Stream<IPleromaApiCard?> get reblogOrOriginalCardStream;
+  Stream<IUnifediApiCard?> get reblogOrOriginalCardStream;
 
   IAccount get account;
 
@@ -61,33 +61,32 @@ abstract class IStatusBloc implements IDisposable, IInstanceLocationBloc {
 
   String? get remoteId;
 
-  List<IPleromaApiMediaAttachment>? get mediaAttachments;
+  List<IUnifediApiMediaAttachment>? get mediaAttachments;
 
-  Stream<List<IPleromaApiMediaAttachment>?> get mediaAttachmentsStream;
+  Stream<List<IUnifediApiMediaAttachment>?> get mediaAttachmentsStream;
 
-  List<IPleromaApiMediaAttachment>? get reblogOrOriginalMediaAttachments;
+  List<IUnifediApiMediaAttachment>? get reblogOrOriginalMediaAttachments;
 
-  Stream<List<IPleromaApiMediaAttachment>?>
+  Stream<List<IUnifediApiMediaAttachment>?>
       get reblogOrOriginalMediaAttachmentsStream;
 
-  IPleromaApiPoll? get poll;
+  IUnifediApiPoll? get poll;
 
-  Stream<IPleromaApiPoll?> get pollStream;
+  Stream<IUnifediApiPoll?> get pollStream;
 
   IPollBloc get pollBloc;
 
-  List<IPleromaApiStatusEmojiReaction>? get pleromaEmojiReactions;
+  List<IUnifediApiEmojiReaction>? get emojiReactions;
 
-  Stream<List<IPleromaApiStatusEmojiReaction>?> get pleromaEmojiReactionsStream;
+  Stream<List<IUnifediApiEmojiReaction>?> get emojiReactionsStream;
 
-  int? get pleromaEmojiReactionsCount;
+  int? get emojiReactionsCount;
 
-  Stream<int?> get pleromaEmojiReactionsCountStream;
+  Stream<int?> get emojiReactionsCountStream;
 
-  List<IPleromaApiStatusEmojiReaction>?
-      get reblogPlusOriginalPleromaEmojiReactions;
+  List<IUnifediApiEmojiReaction>? get reblogPlusOriginalEmojiReactions;
 
-  Stream<List<IPleromaApiStatusEmojiReaction>?>
+  Stream<List<IUnifediApiEmojiReaction>?>
       get reblogPlusOriginalEmojiReactionsStream;
 
   int? get reblogPlusOriginalEmojiReactionsCount;
@@ -102,15 +101,15 @@ abstract class IStatusBloc implements IDisposable, IInstanceLocationBloc {
 
   Stream<bool> get favouritedStream;
 
-  List<IPleromaApiMention>? get mentions;
+  List<IUnifediApiMention>? get mentions;
 
-  Stream<List<IPleromaApiMention>?> get mentionsStream;
+  Stream<List<IUnifediApiMention>?> get mentionsStream;
 
-  List<IPleromaApiMention>? get reblogOrOriginalMentions;
+  List<IUnifediApiMention>? get reblogOrOriginalMentions;
 
-  List<IPleromaApiTag>? get tags;
+  List<IUnifediApiTag>? get tags;
 
-  List<IPleromaApiTag>? get reblogOrOriginalTags;
+  List<IUnifediApiTag>? get reblogOrOriginalTags;
 
   bool get reblogged;
 
@@ -200,12 +199,12 @@ abstract class IStatusBloc implements IDisposable, IInstanceLocationBloc {
 
   Future delete();
 
-  Future<IPleromaApiStatus> toggleEmojiReaction({
+  Future<IUnifediApiStatus> toggleEmojiReaction({
     required String emoji,
   });
 
   Future<IStatus> onPollUpdated(
-    IPleromaApiPoll poll,
+    IUnifediApiPoll poll,
   );
 
   bool get deleted;

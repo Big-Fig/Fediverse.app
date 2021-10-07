@@ -1,7 +1,7 @@
 import 'package:fedi/app/account/my/featured_hashtag/my_account_featured_hashtag_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
-extension IPleromaFeaturedTagExtension on IPleromaApiFeaturedTag {
+extension IUnifediApiTagExtension on IUnifediApiTag {
   MyAccountFeaturedHashtag toMyAccountFeaturedHashtag() {
     if (this is MyAccountFeaturedHashtag) {
       return this as MyAccountFeaturedHashtag;
@@ -17,15 +17,17 @@ extension IPleromaFeaturedTagExtension on IPleromaApiFeaturedTag {
 }
 
 extension IAccountFeaturedHashtagExtension on IMyAccountFeaturedHashtag {
-  PleromaApiFeaturedTag toPleromaFeaturedTag() {
-    if (this is PleromaApiFeaturedTag) {
-      return this as PleromaApiFeaturedTag;
+  UnifediApiTag toUnifediApiTag() {
+    if (this is UnifediApiTag) {
+      return this as UnifediApiTag;
     } else {
-      return PleromaApiFeaturedTag(
+      return UnifediApiTag(
         name: name,
         id: remoteId,
         statusesCount: statusesCount,
         lastStatusAt: lastStatusAt,
+        url: null,
+        history: null,
       );
     }
   }

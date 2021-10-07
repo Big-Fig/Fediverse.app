@@ -59,10 +59,6 @@
 	</dict>
 	<key>NSAppleMusicUsageDescription</key>
 	<string>To share audio</string>
-	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>Required when you use Bluetooth accessories</string>
-	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>Required when you use Bluetooth accessories</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Video sharing</string>
 	<key>NSLocationAlwaysUsageDescription</key>

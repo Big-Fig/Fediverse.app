@@ -1,4 +1,5 @@
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
+import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/action/account_action_more_dialog.dart';
@@ -6,7 +7,6 @@ import 'package:fedi/app/account/local_account_bloc_impl.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/remote_account_bloc_impl.dart';
 import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
-import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/chat/conversation/share/conversation_chat_share_entity_page.dart';
 import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_entity_page.dart';
 import 'package:fedi/app/html/html_text_helper.dart';
@@ -30,11 +30,11 @@ import 'package:fedi/app/ui/spacer/fedi_big_vertical_spacer.dart';
 import 'package:fedi/app/url/url_helper.dart';
 import 'package:fedi/dialog/dialog_model.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 void showStatusActionMoreDialog({
   required BuildContext context,
@@ -93,9 +93,9 @@ class StatusActionMoreDialogBody extends StatelessWidget {
               } else {
                 return RemoteAccountBloc(
                   // todo: remove hack
-                  // actually we dont need pleromaAccountService here
+                  // actually we dont need unifediApiAccountService here
                   // should be refactored
-                  pleromaAccountService: null,
+                  unifediApiAccountService: null,
                   account: statusBloc.account,
                   instanceUri: statusBloc.remoteInstanceUriOrNull,
                   isNeedRefreshFromNetworkOnInit: false,
@@ -294,12 +294,12 @@ class StatusActionMoreDialogBody extends StatelessWidget {
             Navigator.of(parentContext).pop();
 
             var originalMediaAttachments = status.mediaAttachments;
-            List<IPleromaApiMediaAttachment>? reuploadedMediaAttachments;
+            List<IUnifediApiMediaAttachment>? reuploadedMediaAttachments;
 
             if (originalMediaAttachments?.isNotEmpty == true) {
               var dialogResult = await PleromaAsyncOperationHelper
                   .performPleromaAsyncOperation<
-                      List<IPleromaApiMediaAttachment>>(
+                      List<IUnifediApiMediaAttachment>>(
                 context: parentContext,
                 asyncCode: () async {
                   var mediaAttachmentReuploadService =
@@ -330,8 +330,8 @@ class StatusActionMoreDialogBody extends StatelessWidget {
                     (status.content?.extractRawStringFromHtmlString() ?? ''),
                 initialSubject:
                     status.spoilerText?.extractRawStringFromHtmlString(),
-                initialMediaAttachments:
-                    reuploadedMediaAttachments?.toPleromaApiMediaAttachments(),
+                initialMediaAttachments: reuploadedMediaAttachments
+                    ?.toUnifediApiMediaAttachmentList(),
               );
             }
           },
@@ -389,8 +389,8 @@ class _StatusActionMoreDialogBodyStatusActionsWidget extends StatelessWidget {
     var isStatusFromMe = myAccountBloc.checkIsStatusFromMe(status);
     var isLocal = statusBloc.instanceLocation == InstanceLocation.local;
 
-    var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
-    var currentInstance = currentAuthInstanceBloc.currentInstance;
+    var currentUnifediApiAccessBloc = ICurrentUnifediApiAccessBloc.of(context);
+    var currentInstance = currentUnifediApiAccessBloc.currentInstance;
 
     return FediChooserDialogBody(
       title: S.of(context).app_status_action_popup_title,

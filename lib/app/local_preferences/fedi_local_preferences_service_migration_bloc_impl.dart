@@ -1,9 +1,10 @@
 import 'package:fedi/analytics/app/local_preferences/app_analytics_local_preference_bloc_impl.dart';
+import 'package:fedi/app/access/current/local_preferences/current_access_local_preference_bloc_impl.dart';
+import 'package:fedi/app/access/host/access_token/access_host_access_token_local_preference_bloc_impl.dart';
+import 'package:fedi/app/access/host/application/access_host_application_local_preference_bloc_impl.dart';
+import 'package:fedi/app/access/list/local_preferences/access_list_local_preference_bloc_impl.dart';
 import 'package:fedi/app/account/my/local_preferences/my_account_local_preference_bloc_impl.dart';
-import 'package:fedi/app/auth/host/access_token/auth_host_access_token_local_preference_bloc_impl.dart';
-import 'package:fedi/app/auth/host/application/auth_host_application_local_preference_bloc_impl.dart';
-import 'package:fedi/app/auth/instance/current/local_preferences/current_auth_instance_local_preference_bloc_impl.dart';
-import 'package:fedi/app/auth/instance/list/local_preferences/auth_instance_list_local_preference_bloc_impl.dart';
+import 'package:fedi/app/auth/oauth_last_launched/local_preferences/auth_oauth_last_launched_host_to_login_local_preference_bloc_impl.dart';
 import 'package:fedi/app/chat/settings/local_preferences/global/global_chat_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/chat/settings/local_preferences/instance/instance_chat_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/emoji/picker/category/custom_image_url/local_preferences/emoji_picker_custom_image_url_category_local_preference_bloc_impl.dart';
@@ -32,7 +33,7 @@ import 'package:fedi/app/web_sockets/settings/local_preferences/instance/instanc
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/local_preferences/local_preferences_service_migration_bloc.dart';
 import 'package:fedi/local_preferences/local_preferences_service_migration_bloc_impl.dart';
-import 'package:fedi/app/auth/oauth_last_launched/local_preferences/auth_oauth_last_launched_host_to_login_local_preference_bloc_impl.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 
 class FediLocalPreferencesServiceMigrationBloc
     extends LocalPreferencesServiceMigrationBloc {
@@ -50,7 +51,7 @@ class FediLocalPreferencesServiceMigrationBloc
     ILocalPreferencesService inputService,
   ) async {
     var instanceListLocalPreferenceBloc =
-        AuthInstanceListLocalPreferenceBloc(inputService);
+        UnifediApiAccessListLocalPreferenceBloc(inputService);
     await instanceListLocalPreferenceBloc.performAsyncInit();
     var authInstanceList = instanceListLocalPreferenceBloc.value!;
 
@@ -61,8 +62,8 @@ class FediLocalPreferencesServiceMigrationBloc
       var userAtHost = authInstance.userAtHost;
 
       authInstancesBlocCreators.addAll([
-        (lps) => AuthHostAccessTokenLocalPreferenceBloc(lps, host: host),
-        (lps) => AuthHostApplicationLocalPreferenceBloc(lps, host: host),
+        (lps) => AccessHostAccessTokenLocalPreferenceBloc(lps, host: host),
+        (lps) => AccessHostApplicationLocalPreferenceBloc(lps, host: host),
       ]);
       authInstancesBlocCreators
           .addAll(calculateUserAtHostLocalPreferencesBlocCreators(userAtHost));
@@ -89,8 +90,8 @@ class FediLocalPreferencesServiceMigrationBloc
     }
 
     return [
-      (lps) => AuthInstanceListLocalPreferenceBloc(lps),
-      (lps) => CurrentAuthInstanceLocalPreferenceBloc(lps),
+      (lps) => UnifediApiAccessListLocalPreferenceBloc(lps),
+      (lps) => CurrentUnifediApiAccessLocalPreferenceBloc(lps),
       (lps) => NotificationsPushHandlerUnhandledLocalPreferenceBloc(lps),
       (lps) => AuthOAuthLastLaunchedHostToLoginLocalPreferenceBloc(lps),
       (lps) => GlobalChatSettingsLocalPreferenceBloc(lps),

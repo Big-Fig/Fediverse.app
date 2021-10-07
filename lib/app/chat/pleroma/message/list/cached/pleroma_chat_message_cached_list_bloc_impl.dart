@@ -1,21 +1,21 @@
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/chat/pleroma/message/list/cached/pleroma_chat_message_cached_list_bloc.dart';
 import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository.dart';
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository_model.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
-import 'package:easy_dispose/easy_dispose.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 var _logger = Logger('pleroma_chat_message_cached_list_bloc_impl.dart');
 
 class PleromaChatMessageCachedListBloc extends DisposableOwner
     implements IPleromaChatMessageCachedListBloc {
-  final IPleromaApiChatService pleromaChatService;
+  final IUnifediApiChatService pleromaApiChatService;
   final IPleromaChatMessageRepository chatMessageRepository;
   final IPleromaChat chat;
 
@@ -32,12 +32,12 @@ class PleromaChatMessageCachedListBloc extends DisposableOwner
 
   PleromaChatMessageCachedListBloc({
     required this.chat,
-    required this.pleromaChatService,
+    required this.pleromaApiChatService,
     required this.chatMessageRepository,
   });
 
   @override
-  IPleromaApi get pleromaApi => pleromaChatService;
+  IUnifediApiService get unifediApi => pleromaApiChatService;
 
   @override
   Future refreshItemsFromRemoteForPage({
@@ -50,11 +50,11 @@ class PleromaChatMessageCachedListBloc extends DisposableOwner
         '\t newerThan = $newerThan'
         '\t olderThan = $olderThan');
 
-    var remoteMessages = await pleromaChatService.getChatMessages(
+    var remoteMessages = await pleromaApiChatService.getChatMessages(
       chatId: chat.remoteId,
-      pagination: PleromaApiPaginationRequest(
+      pagination: UnifediApiPagination(
         maxId: olderThan?.remoteId,
-        sinceId: newerThan?.remoteId,
+        minId: newerThan?.remoteId,
         limit: limit,
       ),
     );
@@ -115,8 +115,8 @@ class PleromaChatMessageCachedListBloc extends DisposableOwner
   }) =>
       PleromaChatMessageCachedListBloc(
         chat: chat,
-        pleromaChatService:
-            Provider.of<IPleromaApiChatService>(context, listen: false),
+        pleromaApiChatService:
+            Provider.of<IUnifediApiChatService>(context, listen: false),
         chatMessageRepository:
             IPleromaChatMessageRepository.of(context, listen: false),
       );

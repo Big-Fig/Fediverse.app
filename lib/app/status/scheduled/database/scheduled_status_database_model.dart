@@ -16,5 +16,5 @@ class DbScheduledStatuses extends Table {
       text().map(PleromaScheduledStatusParamsDatabaseConverter())();
 
   TextColumn? get mediaAttachments =>
-      text().map(PleromaMediaAttachmentListDatabaseConverter()).nullable()();
+      text().map(UnifediApiMediaAttachmentListDatabaseConverter()).nullable()();
 }

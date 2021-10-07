@@ -43,7 +43,7 @@ void goToSingleSelectAccountPage(
   required AccountCallback accountSelectedCallback,
   required bool excludeMyAccount,
   required bool followingsOnly,
-  required PleromaAccountListLoader? customRemoteAccountListLoader,
+  required UnifediApiAccountListLoader? customRemoteAccountListLoader,
   required AccountListLoader? customLocalAccountListLoader,
   List<Widget>? accountActions,
   bool isNeedPreFetchRelationship = false,

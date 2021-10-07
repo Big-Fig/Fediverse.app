@@ -7,21 +7,21 @@ import 'package:fedi/app/media/attachment/upload/upload_media_attachment_model.d
 import 'package:fedi/app/media/attachment/upload/upload_media_exception.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
 import 'package:logging/logging.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 var _logger = Logger('device_upload_media_attachment_bloc_impl.dart');
 
 class UploadMediaAttachmentBlocDevice extends DisposableOwner
     implements IUploadMediaAttachmentBloc {
-  final IPleromaApiMediaAttachmentService pleromaMediaAttachmentService;
+  final IUnifediApiMediaAttachmentService unifediApiMediaAttachmentService;
 
   @override
   final int? maximumFileSizeInBytes;
 
   final IMediaDeviceFile mediaDeviceFile;
   @override
-  IPleromaApiMediaAttachment? pleromaMediaAttachment;
+  IUnifediApiMediaAttachment? unifediApiMediaAttachment;
 
   BehaviorSubject<UploadMediaAttachmentMetadata?> metadataSubject =
       BehaviorSubject();
@@ -53,7 +53,7 @@ class UploadMediaAttachmentBlocDevice extends DisposableOwner
   UploadMediaAttachmentState get uploadState => uploadStateSubject.value;
 
   UploadMediaAttachmentBlocDevice({
-    required this.pleromaMediaAttachmentService,
+    required this.unifediApiMediaAttachmentService,
     required this.mediaDeviceFile,
     required this.maximumFileSizeInBytes,
   }) {
@@ -69,7 +69,7 @@ class UploadMediaAttachmentBlocDevice extends DisposableOwner
   }
 
   @override
-  Future startUpload() async {
+  Future startUploadIfPossible() async {
     var type = uploadState.type;
     _logger.finest(() => 'startUpload $type');
     if (type == UploadMediaAttachmentStateType.uploaded) {
@@ -113,13 +113,16 @@ class UploadMediaAttachmentBlocDevice extends DisposableOwner
       ),
     );
 
-    await pleromaMediaAttachmentService
+    await unifediApiMediaAttachmentService
         .uploadMedia(
       file: await mediaDeviceFile.loadFile(),
       description: metadata?.description,
+      thumbnail: null,
+      focus: null,
+      processInBackground: null,
     )
-        .then((pleromaMediaAttachment) {
-      this.pleromaMediaAttachment = pleromaMediaAttachment;
+        .then((unifediApiMediaAttachment) {
+      this.unifediApiMediaAttachment = unifediApiMediaAttachment;
       uploadStateSubject.add(
         UploadMediaAttachmentState(
           type: UploadMediaAttachmentStateType.uploaded,
@@ -172,7 +175,7 @@ class UploadMediaAttachmentBlocDevice extends DisposableOwner
     // re-upload
     // don't re-upload files
     // change only metadata via API
-    pleromaMediaAttachment = null;
+    unifediApiMediaAttachment = null;
     uploadStateSubject.add(
       UploadMediaAttachmentState(
         type: UploadMediaAttachmentStateType.notUploaded,

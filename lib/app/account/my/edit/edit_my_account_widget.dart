@@ -1,3 +1,4 @@
+import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/account/my/edit/field/avatar/edit_my_account_avatar_field_widget.dart';
 import 'package:fedi/app/account/my/edit/field/bot/edit_my_account_bot_field_widget.dart';
 import 'package:fedi/app/account/my/edit/field/custom_fields/edit_my_account_custom_fields_list_field_widget.dart';
@@ -17,11 +18,11 @@ import 'package:fedi/app/account/my/edit/field/pleroma/hide_follows/edit_my_acco
 import 'package:fedi/app/account/my/edit/field/pleroma/no_rich_text/edit_my_account_pleroma_no_rich_text_field_widget.dart';
 import 'package:fedi/app/account/my/edit/field/pleroma/show_role/edit_my_account_pleroma_show_role_field_widget.dart';
 import 'package:fedi/app/account/my/edit/field/pleroma/skip_thread_containment/edit_my_account_pleroma_skip_thread_containment_field_widget.dart';
-import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 const double _editAccountAvatarSize = 120.0;
 const double _editAccountAvatarCircleBorderWidth = 4.0;
@@ -90,11 +91,11 @@ class _EditMyAccountBodyWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
+    var currentUnifediApiAccessBloc = ICurrentUnifediApiAccessBloc.of(context);
 
     return Column(
       children: [
-        if (currentAuthInstanceBloc.currentInstance!.isPleroma)
+        if (currentUnifediApiAccessBloc.currentInstance!.isPleroma)
           const EditMyAccountPleromaBackgroundFieldWidget(
             backgroundHeight: _editAccountBackgroundHeight,
           ),
@@ -103,12 +104,12 @@ class _EditMyAccountBodyWidget extends StatelessWidget {
         const EditMyAccountLockedFieldWidget(),
         const EditMyAccountDiscoverableFieldWidget(),
         const EditMyAccountBotFieldWidget(),
-        if (currentAuthInstanceBloc.currentInstance!.isPleroma) ...[
-          const EditMyAccountPleromaAcceptsChatMessagesFieldWidget(),
+        if (currentUnifediApiAccessBloc.currentInstance!.isPleroma) ...[
+          const EditMyAccountacceptsChatMessagesFieldWidget(),
           const EditMyAccountPleromaAllowFollowingMoveFieldWidget(),
           const EditMyAccountPleromaHideFavouritesFieldWidget(),
-          const EditMyAccountPleromaHideFollowersFieldWidget(),
-          const EditMyAccountPleromaHideFollowersCountFieldWidget(),
+          const EditMyAccounthideFollowersFieldWidget(),
+          const EditMyAccounthideFollowersCountFieldWidget(),
           const EditMyAccountPleromaHideFollowsFieldWidget(),
           const EditMyAccountPleromaHideFollowsCountFieldWidget(),
           const EditMyAccountPleromaNoRichTextFieldWidget(),

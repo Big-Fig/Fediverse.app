@@ -13,9 +13,9 @@ import 'package:fedi/app/notification/repository/notification_repository_impl.da
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_impl.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:moor/ffi.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 import '../../account/account_test_helper.dart';
 import '../../chat/message/chat_message_test_helper.dart';
@@ -31,7 +31,7 @@ void main() {
   late INotificationRepository notificationRepository;
   late IAccountRepository accountRepository;
   late IStatusRepository statusRepository;
-  late IPleromaChatMessageRepository pleromaChatMessageRepository;
+  late IPleromaChatMessageRepository chatMessageRepository;
 
   late DbAccountPopulatedWrapper account1;
   setUp(() async {
@@ -46,7 +46,7 @@ void main() {
       accountRepository: accountRepository,
     );
 
-    pleromaChatMessageRepository = PleromaChatMessageRepository(
+    chatMessageRepository = PleromaChatMessageRepository(
       appDatabase: database,
       accountRepository: accountRepository,
     );
@@ -55,17 +55,17 @@ void main() {
       appDatabase: database,
       accountRepository: accountRepository,
       statusRepository: statusRepository,
-      chatMessageRepository: pleromaChatMessageRepository,
+      chatMessageRepository: chatMessageRepository,
     );
 
     account1 =
-        (await AccountTestHelper.createTestAccount(seed: 'reportAccount1'));
-    await accountRepository.upsertInRemoteType(account1.toPleromaApiAccount());
+        (await AccountMockHelper.createTestAccount(seed: 'reportAccount1'));
+    await accountRepository.upsertInRemoteType(account1.toUnifediApiAccount());
   });
 
   tearDown(() async {
     await notificationRepository.dispose();
-    await pleromaChatMessageRepository.dispose();
+    await chatMessageRepository.dispose();
     await accountRepository.dispose();
     await statusRepository.dispose();
     await database.close();
@@ -83,29 +83,29 @@ void main() {
     expect((await notificationDao.getAll()).isNotEmpty, false);
 
     var testDbNotification =
-        await NotificationDatabaseTestHelper.createTestDbNotification(
+        await NotificationDatabaseMockHelper.createTestDbNotification(
       seed: 'seed1',
       dbAccount: account1.dbAccount,
     );
 
     testDbNotification = testDbNotification.copyWith(
-      report: PleromaApiAccountReport(
-        account: account1.toPleromaApiAccount(),
+      report: UnifediApiAccountReport(
+        account: account1.toUnifediApiAccount(),
         statuses: [
-          (await StatusTestHelper.createTestStatus(seed: 'status1'))
-              .toPleromaApiStatus(),
-          (await StatusTestHelper.createTestStatus(seed: 'status2'))
-              .toPleromaApiStatus(),
+          (await StatusMockHelper.createTestStatus(seed: 'status1'))
+              .toUnifediApiStatus(),
+          (await StatusMockHelper.createTestStatus(seed: 'status2'))
+              .toUnifediApiStatus(),
         ],
-        user: (await AccountTestHelper.createTestAccount(seed: 'reportUser'))
-            .toPleromaApiAccount(),
+        user: (await AccountMockHelper.createTestAccount(seed: 'reportUser'))
+            .toUnifediApiAccount(),
       ),
     );
     await notificationDao.insert(
       entity: testDbNotification,
       mode: null,
     );
-    NotificationDatabaseTestHelper.expectDbNotification(
+    NotificationDatabaseMockHelper.expectDbNotification(
       (await notificationRepository
           .findByRemoteIdInAppType(testDbNotification.remoteId))!,
       testDbNotification,
@@ -120,19 +120,19 @@ void main() {
     expect((await notificationDao.getAll()).isNotEmpty, false);
 
     var testDbNotification =
-        await NotificationDatabaseTestHelper.createTestDbNotification(
+        await NotificationDatabaseMockHelper.createTestDbNotification(
       seed: 'seed1',
       dbAccount: account1.dbAccount,
     );
 
     testDbNotification = testDbNotification.copyWith(
-      target: account1.toPleromaApiAccount(),
+      target: account1.toUnifediApiAccount(),
     );
     await notificationDao.insert(
       entity: testDbNotification,
       mode: null,
     );
-    NotificationDatabaseTestHelper.expectDbNotification(
+    NotificationDatabaseMockHelper.expectDbNotification(
       (await notificationRepository
           .findByRemoteIdInAppType(testDbNotification.remoteId))!,
       testDbNotification,
@@ -146,21 +146,21 @@ void main() {
     expect((await notificationDao.getAll()).isNotEmpty, false);
 
     var testDbNotification =
-        await NotificationDatabaseTestHelper.createTestDbNotification(
+        await NotificationDatabaseMockHelper.createTestDbNotification(
       seed: 'seed1',
       dbAccount: account1.dbAccount,
     );
 
     testDbNotification = testDbNotification.copyWith(
       chatMessage:
-          (await ChatMessageTestHelper.createTestChatMessage(seed: 'seed1'))
-              .toPleromaApiChatMessage(),
+          (await ChatMessageMockHelper.createTestChatMessage(seed: 'seed1'))
+              .toUnifediApiChatMessage(),
     );
     await notificationDao.insert(
       entity: testDbNotification,
       mode: null,
     );
-    NotificationDatabaseTestHelper.expectDbNotification(
+    NotificationDatabaseMockHelper.expectDbNotification(
       (await notificationRepository
           .findByRemoteIdInAppType(testDbNotification.remoteId))!,
       testDbNotification,

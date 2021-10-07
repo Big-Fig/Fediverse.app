@@ -1,3 +1,4 @@
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/account/list/account_list_bloc.dart';
 import 'package:fedi/app/hashtag/hashtag_model_adapter.dart';
@@ -8,14 +9,13 @@ import 'package:fedi/app/search/result/list/search_result_item_network_only_list
 import 'package:fedi/app/search/result/search_result_model.dart';
 import 'package:fedi/app/status/list/status_list_bloc.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class SearchResultItemNetworkOnlyListBloc
     extends ISearchResultItemNetworkOnlyListBloc {
-  final IPleromaApiSearchService pleromaSearchService;
+  final IUnifediApiSearchService pleromaSearchService;
 
   final ISearchInputBloc searchInputBloc;
 
@@ -45,9 +45,14 @@ class SearchResultItemNetworkOnlyListBloc
         resolve: true,
         query: query!,
         type: null,
-        pagination: PleromaApiPaginationRequest(
+        pagination: UnifediApiPagination(
           limit: itemsCountPerPage,
+          minId: null,
+          maxId: null,
         ),
+        excludeUnreviewed: null,
+        accountId: null,
+        following: null,
       );
 
       searchResult.statuses.forEach(
@@ -85,7 +90,7 @@ class SearchResultItemNetworkOnlyListBloc
   }
 
   @override
-  IPleromaApi get pleromaApi => pleromaSearchService;
+  IUnifediApiService get unifediApi => pleromaSearchService;
 
   static SearchResultItemNetworkOnlyListBloc createFromContext(
     BuildContext context,
@@ -95,7 +100,7 @@ class SearchResultItemNetworkOnlyListBloc
           context,
           listen: false,
         ),
-        pleromaSearchService: Provider.of<IPleromaApiSearchService>(
+        pleromaSearchService: Provider.of<IUnifediApiSearchService>(
           context,
           listen: false,
         ),

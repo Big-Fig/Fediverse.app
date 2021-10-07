@@ -5,7 +5,7 @@ import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class MediaAttachmentMetadataButtonWidget extends StatelessWidget {
   const MediaAttachmentMetadataButtonWidget({
@@ -14,10 +14,10 @@ class MediaAttachmentMetadataButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final pleromaApiMediaAttachment =
-        Provider.of<IPleromaApiMediaAttachment>(context);
+    final unifediApiMediaAttachment =
+        Provider.of<IUnifediApiMediaAttachment>(context);
 
-    var description = pleromaApiMediaAttachment.description;
+    var description = unifediApiMediaAttachment.description;
 
     if (description != null && description.isNotEmpty) {
       return FediIconButton(

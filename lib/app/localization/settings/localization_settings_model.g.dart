@@ -44,17 +44,25 @@ class LocalizationSettingsAdapter extends TypeAdapter<LocalizationSettings> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-LocalizationSettings _$LocalizationSettingsFromJson(Map<String, dynamic> json) {
-  return LocalizationSettings(
-    localizationLocale: json['localization_locale'] == null
-        ? null
-        : LocalizationLocale.fromJson(
-            json['localization_locale'] as Map<String, dynamic>),
-  );
-}
+_$_LocalizationSettings _$$_LocalizationSettingsFromJson(
+        Map<String, dynamic> json) =>
+    _$_LocalizationSettings(
+      localizationLocale: json['localization_locale'] == null
+          ? null
+          : LocalizationLocale.fromJson(
+              json['localization_locale'] as Map<String, dynamic>),
+    );
 
-Map<String, dynamic> _$LocalizationSettingsToJson(
-        LocalizationSettings instance) =>
-    <String, dynamic>{
-      'localization_locale': instance.localizationLocale?.toJson(),
-    };
+Map<String, dynamic> _$$_LocalizationSettingsToJson(
+    _$_LocalizationSettings instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('localization_locale', instance.localizationLocale?.toJson());
+  return val;
+}

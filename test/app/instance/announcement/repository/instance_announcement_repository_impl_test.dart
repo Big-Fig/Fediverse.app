@@ -33,7 +33,7 @@ void main() {
     );
 
     dbInstanceAnnouncement =
-        InstanceAnnouncementDatabaseTestHelper.createTestDbInstanceAnnouncement(
+        InstanceAnnouncementDatabaseMockHelper.createTestDbInstanceAnnouncement(
       seed: 'seed4',
     );
 
@@ -53,7 +53,7 @@ void main() {
       mode: null,
     );
     assert(id > 0, true);
-    InstanceAnnouncementDatabaseTestHelper
+    InstanceAnnouncementDatabaseMockHelper
         .expectDbInstanceAnnouncementPopulated(
       (await instanceAnnouncementRepository.findByDbIdInAppType(id))!,
       dbInstanceAnnouncementPopulated,
@@ -61,11 +61,11 @@ void main() {
   });
 
   test('upsertAll', () async {
-    var dbInstanceAnnouncement1 = (InstanceAnnouncementDatabaseTestHelper
+    var dbInstanceAnnouncement1 = (InstanceAnnouncementDatabaseMockHelper
             .createTestDbInstanceAnnouncement(seed: 'seed5'))
         .copyWith(remoteId: 'remoteId1');
     // same remote id
-    var dbInstanceAnnouncement2 = (InstanceAnnouncementDatabaseTestHelper
+    var dbInstanceAnnouncement2 = (InstanceAnnouncementDatabaseMockHelper
             .createTestDbInstanceAnnouncement(seed: 'seed6'))
         .copyWith(remoteId: 'remoteId1');
 
@@ -82,10 +82,10 @@ void main() {
     );
     expect((await instanceAnnouncementRepository.getAllInAppType()).length, 1);
 
-    InstanceAnnouncementDatabaseTestHelper
+    InstanceAnnouncementDatabaseMockHelper
         .expectDbInstanceAnnouncementPopulated(
       (await instanceAnnouncementRepository.getAllInAppType()).first,
-      await InstanceAnnouncementDatabaseTestHelper
+      await InstanceAnnouncementDatabaseMockHelper
           .createTestInstanceAnnouncementPopulated(dbInstanceAnnouncement2),
     );
   });
@@ -146,7 +146,7 @@ void main() {
       dbInstanceAnnouncement,
       mode: null,
     );
-    InstanceAnnouncementDatabaseTestHelper
+    InstanceAnnouncementDatabaseMockHelper
         .expectDbInstanceAnnouncementPopulated(
       (await instanceAnnouncementRepository
           .findByRemoteIdInAppType(dbInstanceAnnouncement.remoteId))!,
@@ -165,7 +165,7 @@ void main() {
 
     expect(await instanceAnnouncementRepository.countAll(), 1);
 
-    InstanceAnnouncementDatabaseTestHelper.expectDbInstanceAnnouncement(
+    InstanceAnnouncementDatabaseMockHelper.expectDbInstanceAnnouncement(
       (await instanceAnnouncementRepository
           .findByRemoteIdInAppType(dbInstanceAnnouncement.remoteId))!,
       dbInstanceAnnouncement,
@@ -179,7 +179,7 @@ void main() {
     );
     expect(await instanceAnnouncementRepository.countAll(), 1);
 
-    InstanceAnnouncementDatabaseTestHelper.expectDbInstanceAnnouncement(
+    InstanceAnnouncementDatabaseMockHelper.expectDbInstanceAnnouncement(
       (await instanceAnnouncementRepository
           .findByRemoteIdInAppType(dbInstanceAnnouncement.remoteId))!,
       dbInstanceAnnouncement,
@@ -199,7 +199,7 @@ void main() {
 
     expect(await instanceAnnouncementRepository.countAll(), 1);
 
-    InstanceAnnouncementDatabaseTestHelper.expectDbInstanceAnnouncement(
+    InstanceAnnouncementDatabaseMockHelper.expectDbInstanceAnnouncement(
       (await instanceAnnouncementRepository
           .findByRemoteIdInAppType(dbInstanceAnnouncement.remoteId))!,
       dbInstanceAnnouncement,
@@ -216,7 +216,7 @@ void main() {
 
     // update item with same id
     expect(await instanceAnnouncementRepository.countAll(), 1);
-    InstanceAnnouncementDatabaseTestHelper.expectDbInstanceAnnouncement(
+    InstanceAnnouncementDatabaseMockHelper.expectDbInstanceAnnouncement(
       (await instanceAnnouncementRepository
           .findByRemoteIdInAppType(dbInstanceAnnouncement.remoteId))!,
       dbInstanceAnnouncement,
@@ -230,9 +230,9 @@ void main() {
       orderingTermData: null,
     );
 
-    await InstanceAnnouncementRepositoryTestHelper.insertDbInstanceAnnouncement(
+    await InstanceAnnouncementRepositoryMockHelper.insertDbInstanceAnnouncement(
       instanceAnnouncementRepository,
-      (InstanceAnnouncementDatabaseTestHelper.createTestDbInstanceAnnouncement(
+      (InstanceAnnouncementDatabaseMockHelper.createTestDbInstanceAnnouncement(
         seed: 'seed1',
       )).copyWith(),
     );
@@ -242,9 +242,9 @@ void main() {
       1,
     );
 
-    await InstanceAnnouncementRepositoryTestHelper.insertDbInstanceAnnouncement(
+    await InstanceAnnouncementRepositoryMockHelper.insertDbInstanceAnnouncement(
       instanceAnnouncementRepository,
-      (InstanceAnnouncementDatabaseTestHelper.createTestDbInstanceAnnouncement(
+      (InstanceAnnouncementDatabaseMockHelper.createTestDbInstanceAnnouncement(
         seed: 'seed2',
       )).copyWith(),
     );
@@ -259,7 +259,7 @@ void main() {
       filters: null,
       pagination: RepositoryPagination(
         newerThanItem:
-            await InstanceAnnouncementTestHelper.createTestInstanceAnnouncement(
+            await InstanceAnnouncementMockHelper.createTestInstanceAnnouncement(
           seed: 'remoteId5',
           remoteId: 'remoteId5',
         ),
@@ -267,9 +267,9 @@ void main() {
       orderingTermData: InstanceAnnouncementOrderingTermData.remoteIdDesc,
     );
 
-    await InstanceAnnouncementRepositoryTestHelper.insertDbInstanceAnnouncement(
+    await InstanceAnnouncementRepositoryMockHelper.insertDbInstanceAnnouncement(
       instanceAnnouncementRepository,
-      (InstanceAnnouncementDatabaseTestHelper.createTestDbInstanceAnnouncement(
+      (InstanceAnnouncementDatabaseMockHelper.createTestDbInstanceAnnouncement(
         seed: 'seed2',
       )).copyWith(
         remoteId: 'remoteId4',
@@ -278,9 +278,9 @@ void main() {
 
     expect((await query.get()).length, 0);
 
-    await InstanceAnnouncementRepositoryTestHelper.insertDbInstanceAnnouncement(
+    await InstanceAnnouncementRepositoryMockHelper.insertDbInstanceAnnouncement(
       instanceAnnouncementRepository,
-      (InstanceAnnouncementDatabaseTestHelper.createTestDbInstanceAnnouncement(
+      (InstanceAnnouncementDatabaseMockHelper.createTestDbInstanceAnnouncement(
         seed: 'seed2',
       )).copyWith(
         remoteId: 'remoteId5',
@@ -289,9 +289,9 @@ void main() {
 
     expect((await query.get()).length, 0);
 
-    await InstanceAnnouncementRepositoryTestHelper.insertDbInstanceAnnouncement(
+    await InstanceAnnouncementRepositoryMockHelper.insertDbInstanceAnnouncement(
       instanceAnnouncementRepository,
-      (InstanceAnnouncementDatabaseTestHelper.createTestDbInstanceAnnouncement(
+      (InstanceAnnouncementDatabaseMockHelper.createTestDbInstanceAnnouncement(
         seed: 'seed1',
       )).copyWith(
         remoteId: 'remoteId6',
@@ -299,9 +299,9 @@ void main() {
     );
 
     expect((await query.get()).length, 1);
-    await InstanceAnnouncementRepositoryTestHelper.insertDbInstanceAnnouncement(
+    await InstanceAnnouncementRepositoryMockHelper.insertDbInstanceAnnouncement(
       instanceAnnouncementRepository,
-      (InstanceAnnouncementDatabaseTestHelper.createTestDbInstanceAnnouncement(
+      (InstanceAnnouncementDatabaseMockHelper.createTestDbInstanceAnnouncement(
         seed: 'seed1',
       )).copyWith(
         remoteId: 'remoteId7',
@@ -316,7 +316,7 @@ void main() {
       filters: null,
       pagination: RepositoryPagination(
         olderThanItem:
-            await InstanceAnnouncementTestHelper.createTestInstanceAnnouncement(
+            await InstanceAnnouncementMockHelper.createTestInstanceAnnouncement(
           seed: 'remoteId5',
           remoteId: 'remoteId5',
         ),
@@ -324,9 +324,9 @@ void main() {
       orderingTermData: InstanceAnnouncementOrderingTermData.remoteIdDesc,
     );
 
-    await InstanceAnnouncementRepositoryTestHelper.insertDbInstanceAnnouncement(
+    await InstanceAnnouncementRepositoryMockHelper.insertDbInstanceAnnouncement(
       instanceAnnouncementRepository,
-      (InstanceAnnouncementDatabaseTestHelper.createTestDbInstanceAnnouncement(
+      (InstanceAnnouncementDatabaseMockHelper.createTestDbInstanceAnnouncement(
         seed: 'seed2',
       )).copyWith(
         remoteId: 'remoteId3',
@@ -334,9 +334,9 @@ void main() {
     );
 
     expect((await query.get()).length, 1);
-    await InstanceAnnouncementRepositoryTestHelper.insertDbInstanceAnnouncement(
+    await InstanceAnnouncementRepositoryMockHelper.insertDbInstanceAnnouncement(
       instanceAnnouncementRepository,
-      (InstanceAnnouncementDatabaseTestHelper.createTestDbInstanceAnnouncement(
+      (InstanceAnnouncementDatabaseMockHelper.createTestDbInstanceAnnouncement(
         seed: 'seed2',
       )).copyWith(
         remoteId: 'remoteId4',
@@ -345,9 +345,9 @@ void main() {
 
     expect((await query.get()).length, 2);
 
-    await InstanceAnnouncementRepositoryTestHelper.insertDbInstanceAnnouncement(
+    await InstanceAnnouncementRepositoryMockHelper.insertDbInstanceAnnouncement(
       instanceAnnouncementRepository,
-      (InstanceAnnouncementDatabaseTestHelper.createTestDbInstanceAnnouncement(
+      (InstanceAnnouncementDatabaseMockHelper.createTestDbInstanceAnnouncement(
         seed: 'seed2',
       )).copyWith(
         remoteId: 'remoteId5',
@@ -356,9 +356,9 @@ void main() {
 
     expect((await query.get()).length, 2);
 
-    await InstanceAnnouncementRepositoryTestHelper.insertDbInstanceAnnouncement(
+    await InstanceAnnouncementRepositoryMockHelper.insertDbInstanceAnnouncement(
       instanceAnnouncementRepository,
-      (InstanceAnnouncementDatabaseTestHelper.createTestDbInstanceAnnouncement(
+      (InstanceAnnouncementDatabaseMockHelper.createTestDbInstanceAnnouncement(
         seed: 'seed1',
       )).copyWith(
         remoteId: 'remoteId6',
@@ -374,12 +374,12 @@ void main() {
       var query = instanceAnnouncementRepository.createQuery(
         filters: null,
         pagination: RepositoryPagination(
-          olderThanItem: await InstanceAnnouncementTestHelper
+          olderThanItem: await InstanceAnnouncementMockHelper
               .createTestInstanceAnnouncement(
             seed: 'remoteId5',
             remoteId: 'remoteId5',
           ),
-          newerThanItem: await InstanceAnnouncementTestHelper
+          newerThanItem: await InstanceAnnouncementMockHelper
               .createTestInstanceAnnouncement(
             seed: 'remoteId2',
             remoteId: 'remoteId2',
@@ -388,10 +388,10 @@ void main() {
         orderingTermData: InstanceAnnouncementOrderingTermData.remoteIdDesc,
       );
 
-      await InstanceAnnouncementRepositoryTestHelper
+      await InstanceAnnouncementRepositoryMockHelper
           .insertDbInstanceAnnouncement(
         instanceAnnouncementRepository,
-        (InstanceAnnouncementDatabaseTestHelper
+        (InstanceAnnouncementDatabaseMockHelper
             .createTestDbInstanceAnnouncement(
           seed: 'seed1',
         )).copyWith(
@@ -401,10 +401,10 @@ void main() {
 
       expect((await query.get()).length, 0);
 
-      await InstanceAnnouncementRepositoryTestHelper
+      await InstanceAnnouncementRepositoryMockHelper
           .insertDbInstanceAnnouncement(
         instanceAnnouncementRepository,
-        (InstanceAnnouncementDatabaseTestHelper
+        (InstanceAnnouncementDatabaseMockHelper
             .createTestDbInstanceAnnouncement(
           seed: 'seed2',
         )).copyWith(
@@ -413,10 +413,10 @@ void main() {
       );
 
       expect((await query.get()).length, 0);
-      await InstanceAnnouncementRepositoryTestHelper
+      await InstanceAnnouncementRepositoryMockHelper
           .insertDbInstanceAnnouncement(
         instanceAnnouncementRepository,
-        (InstanceAnnouncementDatabaseTestHelper
+        (InstanceAnnouncementDatabaseMockHelper
             .createTestDbInstanceAnnouncement(
           seed: 'seed3',
         )).copyWith(
@@ -426,10 +426,10 @@ void main() {
 
       expect((await query.get()).length, 1);
 
-      await InstanceAnnouncementRepositoryTestHelper
+      await InstanceAnnouncementRepositoryMockHelper
           .insertDbInstanceAnnouncement(
         instanceAnnouncementRepository,
-        (InstanceAnnouncementDatabaseTestHelper
+        (InstanceAnnouncementDatabaseMockHelper
             .createTestDbInstanceAnnouncement(
           seed: 'seed4',
         )).copyWith(
@@ -439,10 +439,10 @@ void main() {
 
       expect((await query.get()).length, 2);
 
-      await InstanceAnnouncementRepositoryTestHelper
+      await InstanceAnnouncementRepositoryMockHelper
           .insertDbInstanceAnnouncement(
         instanceAnnouncementRepository,
-        (InstanceAnnouncementDatabaseTestHelper
+        (InstanceAnnouncementDatabaseMockHelper
             .createTestDbInstanceAnnouncement(
           seed: 'seed5',
         )).copyWith(
@@ -452,10 +452,10 @@ void main() {
 
       expect((await query.get()).length, 2);
 
-      await InstanceAnnouncementRepositoryTestHelper
+      await InstanceAnnouncementRepositoryMockHelper
           .insertDbInstanceAnnouncement(
         instanceAnnouncementRepository,
-        (InstanceAnnouncementDatabaseTestHelper
+        (InstanceAnnouncementDatabaseMockHelper
             .createTestDbInstanceAnnouncement(
           seed: 'seed6',
         )).copyWith(
@@ -474,24 +474,24 @@ void main() {
       orderingTermData: InstanceAnnouncementOrderingTermData.remoteIdAsc,
     );
 
-    var instanceAnnouncement2 = await InstanceAnnouncementRepositoryTestHelper
+    var instanceAnnouncement2 = await InstanceAnnouncementRepositoryMockHelper
         .insertDbInstanceAnnouncement(
       instanceAnnouncementRepository,
-      (InstanceAnnouncementDatabaseTestHelper.createTestDbInstanceAnnouncement(
+      (InstanceAnnouncementDatabaseMockHelper.createTestDbInstanceAnnouncement(
         seed: 'seed2',
       )).copyWith(remoteId: 'remoteId2'),
     );
-    var instanceAnnouncement1 = await InstanceAnnouncementRepositoryTestHelper
+    var instanceAnnouncement1 = await InstanceAnnouncementRepositoryMockHelper
         .insertDbInstanceAnnouncement(
       instanceAnnouncementRepository,
-      (InstanceAnnouncementDatabaseTestHelper.createTestDbInstanceAnnouncement(
+      (InstanceAnnouncementDatabaseMockHelper.createTestDbInstanceAnnouncement(
         seed: 'seed1',
       )).copyWith(remoteId: 'remoteId1'),
     );
-    var instanceAnnouncement3 = await InstanceAnnouncementRepositoryTestHelper
+    var instanceAnnouncement3 = await InstanceAnnouncementRepositoryMockHelper
         .insertDbInstanceAnnouncement(
       instanceAnnouncementRepository,
-      (InstanceAnnouncementDatabaseTestHelper.createTestDbInstanceAnnouncement(
+      (InstanceAnnouncementDatabaseMockHelper.createTestDbInstanceAnnouncement(
         seed: 'seed3',
       )).copyWith(remoteId: 'remoteId3'),
     );
@@ -500,7 +500,7 @@ void main() {
 
     expect(actualList.length, 3);
 
-    InstanceAnnouncementDatabaseTestHelper.expectDbInstanceAnnouncement(
+    InstanceAnnouncementDatabaseMockHelper.expectDbInstanceAnnouncement(
       DbInstanceAnnouncementPopulatedWrapper(
         dbInstanceAnnouncementPopulated: DbInstanceAnnouncementPopulated(
           dbInstanceAnnouncement: actualList[0].toDbInstanceAnnouncement(),
@@ -508,7 +508,7 @@ void main() {
       ),
       instanceAnnouncement1,
     );
-    InstanceAnnouncementDatabaseTestHelper.expectDbInstanceAnnouncement(
+    InstanceAnnouncementDatabaseMockHelper.expectDbInstanceAnnouncement(
       DbInstanceAnnouncementPopulatedWrapper(
         dbInstanceAnnouncementPopulated: DbInstanceAnnouncementPopulated(
           dbInstanceAnnouncement: actualList[1].toDbInstanceAnnouncement(),
@@ -516,7 +516,7 @@ void main() {
       ),
       instanceAnnouncement2,
     );
-    InstanceAnnouncementDatabaseTestHelper.expectDbInstanceAnnouncement(
+    InstanceAnnouncementDatabaseMockHelper.expectDbInstanceAnnouncement(
       DbInstanceAnnouncementPopulatedWrapper(
         dbInstanceAnnouncementPopulated: DbInstanceAnnouncementPopulated(
           dbInstanceAnnouncement: actualList[2].toDbInstanceAnnouncement(),
@@ -533,24 +533,24 @@ void main() {
       orderingTermData: InstanceAnnouncementOrderingTermData.remoteIdDesc,
     );
 
-    var instanceAnnouncement2 = await InstanceAnnouncementRepositoryTestHelper
+    var instanceAnnouncement2 = await InstanceAnnouncementRepositoryMockHelper
         .insertDbInstanceAnnouncement(
       instanceAnnouncementRepository,
-      (InstanceAnnouncementDatabaseTestHelper.createTestDbInstanceAnnouncement(
+      (InstanceAnnouncementDatabaseMockHelper.createTestDbInstanceAnnouncement(
         seed: 'seed2',
       )).copyWith(remoteId: 'remoteId2'),
     );
-    var instanceAnnouncement1 = await InstanceAnnouncementRepositoryTestHelper
+    var instanceAnnouncement1 = await InstanceAnnouncementRepositoryMockHelper
         .insertDbInstanceAnnouncement(
       instanceAnnouncementRepository,
-      (InstanceAnnouncementDatabaseTestHelper.createTestDbInstanceAnnouncement(
+      (InstanceAnnouncementDatabaseMockHelper.createTestDbInstanceAnnouncement(
         seed: 'seed1',
       )).copyWith(remoteId: 'remoteId1'),
     );
-    var instanceAnnouncement3 = await InstanceAnnouncementRepositoryTestHelper
+    var instanceAnnouncement3 = await InstanceAnnouncementRepositoryMockHelper
         .insertDbInstanceAnnouncement(
       instanceAnnouncementRepository,
-      (InstanceAnnouncementDatabaseTestHelper.createTestDbInstanceAnnouncement(
+      (InstanceAnnouncementDatabaseMockHelper.createTestDbInstanceAnnouncement(
         seed: 'seed3',
       )).copyWith(remoteId: 'remoteId3'),
     );
@@ -558,7 +558,7 @@ void main() {
     var actualList = await query.get();
     expect(actualList.length, 3);
 
-    InstanceAnnouncementDatabaseTestHelper.expectDbInstanceAnnouncement(
+    InstanceAnnouncementDatabaseMockHelper.expectDbInstanceAnnouncement(
       DbInstanceAnnouncementPopulatedWrapper(
         dbInstanceAnnouncementPopulated: DbInstanceAnnouncementPopulated(
           dbInstanceAnnouncement: actualList[0].toDbInstanceAnnouncement(),
@@ -566,7 +566,7 @@ void main() {
       ),
       instanceAnnouncement3,
     );
-    InstanceAnnouncementDatabaseTestHelper.expectDbInstanceAnnouncement(
+    InstanceAnnouncementDatabaseMockHelper.expectDbInstanceAnnouncement(
       DbInstanceAnnouncementPopulatedWrapper(
         dbInstanceAnnouncementPopulated: DbInstanceAnnouncementPopulated(
           dbInstanceAnnouncement: actualList[1].toDbInstanceAnnouncement(),
@@ -574,7 +574,7 @@ void main() {
       ),
       instanceAnnouncement2,
     );
-    InstanceAnnouncementDatabaseTestHelper.expectDbInstanceAnnouncement(
+    InstanceAnnouncementDatabaseMockHelper.expectDbInstanceAnnouncement(
       DbInstanceAnnouncementPopulatedWrapper(
         dbInstanceAnnouncementPopulated: DbInstanceAnnouncementPopulated(
           dbInstanceAnnouncement: actualList[2].toDbInstanceAnnouncement(),
@@ -594,22 +594,22 @@ void main() {
       orderingTermData: InstanceAnnouncementOrderingTermData.remoteIdDesc,
     );
 
-    var instanceAnnouncement2 = await InstanceAnnouncementRepositoryTestHelper
+    var instanceAnnouncement2 = await InstanceAnnouncementRepositoryMockHelper
         .insertDbInstanceAnnouncement(
       instanceAnnouncementRepository,
-      (InstanceAnnouncementDatabaseTestHelper.createTestDbInstanceAnnouncement(
+      (InstanceAnnouncementDatabaseMockHelper.createTestDbInstanceAnnouncement(
         seed: 'seed2',
       )).copyWith(remoteId: 'remoteId2'),
     );
-    await InstanceAnnouncementRepositoryTestHelper.insertDbInstanceAnnouncement(
+    await InstanceAnnouncementRepositoryMockHelper.insertDbInstanceAnnouncement(
       instanceAnnouncementRepository,
-      (InstanceAnnouncementDatabaseTestHelper.createTestDbInstanceAnnouncement(
+      (InstanceAnnouncementDatabaseMockHelper.createTestDbInstanceAnnouncement(
         seed: 'seed1',
       )).copyWith(remoteId: 'remoteId1'),
     );
-    await InstanceAnnouncementRepositoryTestHelper.insertDbInstanceAnnouncement(
+    await InstanceAnnouncementRepositoryMockHelper.insertDbInstanceAnnouncement(
       instanceAnnouncementRepository,
-      (InstanceAnnouncementDatabaseTestHelper.createTestDbInstanceAnnouncement(
+      (InstanceAnnouncementDatabaseMockHelper.createTestDbInstanceAnnouncement(
         seed: 'seed3',
       )).copyWith(remoteId: 'remoteId3'),
     );
@@ -617,7 +617,7 @@ void main() {
     var actualList = await query.get();
     expect(actualList.length, 1);
 
-    InstanceAnnouncementDatabaseTestHelper.expectDbInstanceAnnouncement(
+    InstanceAnnouncementDatabaseMockHelper.expectDbInstanceAnnouncement(
       DbInstanceAnnouncementPopulatedWrapper(
         dbInstanceAnnouncementPopulated: DbInstanceAnnouncementPopulated(
           dbInstanceAnnouncement: actualList[0].toDbInstanceAnnouncement(),
@@ -638,26 +638,26 @@ void main() {
         orderingTermData: InstanceAnnouncementOrderingTermData.updatedAtDesc,
       );
 
-      var instanceAnnouncement2 = await InstanceAnnouncementRepositoryTestHelper
+      var instanceAnnouncement2 = await InstanceAnnouncementRepositoryMockHelper
           .insertDbInstanceAnnouncement(
         instanceAnnouncementRepository,
-        (InstanceAnnouncementDatabaseTestHelper
+        (InstanceAnnouncementDatabaseMockHelper
             .createTestDbInstanceAnnouncement(
           seed: 'seed2',
         )).copyWith(updatedAt: DateTime(2002)),
       );
-      await InstanceAnnouncementRepositoryTestHelper
+      await InstanceAnnouncementRepositoryMockHelper
           .insertDbInstanceAnnouncement(
         instanceAnnouncementRepository,
-        (InstanceAnnouncementDatabaseTestHelper
+        (InstanceAnnouncementDatabaseMockHelper
             .createTestDbInstanceAnnouncement(
           seed: 'seed1',
         )).copyWith(updatedAt: DateTime(2001)),
       );
-      await InstanceAnnouncementRepositoryTestHelper
+      await InstanceAnnouncementRepositoryMockHelper
           .insertDbInstanceAnnouncement(
         instanceAnnouncementRepository,
-        (InstanceAnnouncementDatabaseTestHelper
+        (InstanceAnnouncementDatabaseMockHelper
             .createTestDbInstanceAnnouncement(
           seed: 'seed3',
         )).copyWith(updatedAt: DateTime(2003)),
@@ -666,7 +666,7 @@ void main() {
       var actualList = await query.get();
       expect(actualList.length, 1);
 
-      InstanceAnnouncementDatabaseTestHelper.expectDbInstanceAnnouncement(
+      InstanceAnnouncementDatabaseMockHelper.expectDbInstanceAnnouncement(
         DbInstanceAnnouncementPopulatedWrapper(
           dbInstanceAnnouncementPopulated: DbInstanceAnnouncementPopulated(
             dbInstanceAnnouncement: actualList[0].toDbInstanceAnnouncement(),
@@ -679,25 +679,25 @@ void main() {
 
   test('createQuery no withDismissed', () async {
     var query = instanceAnnouncementRepository.createQuery(
-      filters: InstanceAnnouncementRepositoryFilters(
+      filters: InstanceAnnouncementRepositoryFilters.only(
         withDismissed: false,
       ),
       pagination: null,
       orderingTermData: InstanceAnnouncementOrderingTermData.remoteIdDesc,
     );
 
-    await InstanceAnnouncementRepositoryTestHelper.insertDbInstanceAnnouncement(
+    await InstanceAnnouncementRepositoryMockHelper.insertDbInstanceAnnouncement(
       instanceAnnouncementRepository,
-      (InstanceAnnouncementDatabaseTestHelper.createTestDbInstanceAnnouncement(
+      (InstanceAnnouncementDatabaseMockHelper.createTestDbInstanceAnnouncement(
         seed: 'seed1',
         read: false,
       )),
     );
 
     expect((await query.get()).length, 1);
-    await InstanceAnnouncementRepositoryTestHelper.insertDbInstanceAnnouncement(
+    await InstanceAnnouncementRepositoryMockHelper.insertDbInstanceAnnouncement(
       instanceAnnouncementRepository,
-      (InstanceAnnouncementDatabaseTestHelper.createTestDbInstanceAnnouncement(
+      (InstanceAnnouncementDatabaseMockHelper.createTestDbInstanceAnnouncement(
         seed: 'seed2',
         read: true,
       )),
@@ -705,9 +705,9 @@ void main() {
 
     expect((await query.get()).length, 1);
 
-    await InstanceAnnouncementRepositoryTestHelper.insertDbInstanceAnnouncement(
+    await InstanceAnnouncementRepositoryMockHelper.insertDbInstanceAnnouncement(
       instanceAnnouncementRepository,
-      (InstanceAnnouncementDatabaseTestHelper.createTestDbInstanceAnnouncement(
+      (InstanceAnnouncementDatabaseMockHelper.createTestDbInstanceAnnouncement(
         seed: 'seed3',
         read: false,
       )),
@@ -717,25 +717,25 @@ void main() {
   });
   test('createQuery withDismissed', () async {
     var query = instanceAnnouncementRepository.createQuery(
-      filters: InstanceAnnouncementRepositoryFilters(
+      filters: InstanceAnnouncementRepositoryFilters.only(
         withDismissed: true,
       ),
       pagination: null,
       orderingTermData: InstanceAnnouncementOrderingTermData.remoteIdDesc,
     );
 
-    await InstanceAnnouncementRepositoryTestHelper.insertDbInstanceAnnouncement(
+    await InstanceAnnouncementRepositoryMockHelper.insertDbInstanceAnnouncement(
       instanceAnnouncementRepository,
-      (InstanceAnnouncementDatabaseTestHelper.createTestDbInstanceAnnouncement(
+      (InstanceAnnouncementDatabaseMockHelper.createTestDbInstanceAnnouncement(
         seed: 'seed1',
         read: false,
       )),
     );
 
     expect((await query.get()).length, 1);
-    await InstanceAnnouncementRepositoryTestHelper.insertDbInstanceAnnouncement(
+    await InstanceAnnouncementRepositoryMockHelper.insertDbInstanceAnnouncement(
       instanceAnnouncementRepository,
-      (InstanceAnnouncementDatabaseTestHelper.createTestDbInstanceAnnouncement(
+      (InstanceAnnouncementDatabaseMockHelper.createTestDbInstanceAnnouncement(
         seed: 'seed2',
         read: true,
       )),
@@ -743,9 +743,9 @@ void main() {
 
     expect((await query.get()).length, 2);
 
-    await InstanceAnnouncementRepositoryTestHelper.insertDbInstanceAnnouncement(
+    await InstanceAnnouncementRepositoryMockHelper.insertDbInstanceAnnouncement(
       instanceAnnouncementRepository,
-      (InstanceAnnouncementDatabaseTestHelper.createTestDbInstanceAnnouncement(
+      (InstanceAnnouncementDatabaseMockHelper.createTestDbInstanceAnnouncement(
         seed: 'seed3',
         read: false,
       )),
@@ -756,7 +756,7 @@ void main() {
 
   test('createQuery no withExpired allDay=false', () async {
     var query = instanceAnnouncementRepository.createQuery(
-      filters: InstanceAnnouncementRepositoryFilters(
+      filters: InstanceAnnouncementRepositoryFilters.only(
         withExpired: false,
       ),
       pagination: null,
@@ -765,9 +765,9 @@ void main() {
 
     var now = DateTime.now();
 
-    await InstanceAnnouncementRepositoryTestHelper.insertDbInstanceAnnouncement(
+    await InstanceAnnouncementRepositoryMockHelper.insertDbInstanceAnnouncement(
       instanceAnnouncementRepository,
-      (InstanceAnnouncementDatabaseTestHelper.createTestDbInstanceAnnouncement(
+      (InstanceAnnouncementDatabaseMockHelper.createTestDbInstanceAnnouncement(
         seed: 'seed1',
         allDay: false,
         endsAt: now.add(
@@ -777,9 +777,9 @@ void main() {
     );
 
     expect((await query.get()).length, 1);
-    await InstanceAnnouncementRepositoryTestHelper.insertDbInstanceAnnouncement(
+    await InstanceAnnouncementRepositoryMockHelper.insertDbInstanceAnnouncement(
       instanceAnnouncementRepository,
-      (InstanceAnnouncementDatabaseTestHelper.createTestDbInstanceAnnouncement(
+      (InstanceAnnouncementDatabaseMockHelper.createTestDbInstanceAnnouncement(
         seed: 'seed2',
         allDay: false,
         endsAt: now.subtract(
@@ -790,9 +790,9 @@ void main() {
 
     expect((await query.get()).length, 1);
 
-    await InstanceAnnouncementRepositoryTestHelper.insertDbInstanceAnnouncement(
+    await InstanceAnnouncementRepositoryMockHelper.insertDbInstanceAnnouncement(
       instanceAnnouncementRepository,
-      (InstanceAnnouncementDatabaseTestHelper.createTestDbInstanceAnnouncement(
+      (InstanceAnnouncementDatabaseMockHelper.createTestDbInstanceAnnouncement(
         seed: 'seed3',
         allDay: false,
         endsAt: null,
@@ -804,7 +804,7 @@ void main() {
 
   test('createQuery no withExpired allDay=true', () async {
     var query = instanceAnnouncementRepository.createQuery(
-      filters: InstanceAnnouncementRepositoryFilters(
+      filters: InstanceAnnouncementRepositoryFilters.only(
         withExpired: false,
       ),
       pagination: null,
@@ -813,9 +813,9 @@ void main() {
 
     var now = DateTime.now();
 
-    await InstanceAnnouncementRepositoryTestHelper.insertDbInstanceAnnouncement(
+    await InstanceAnnouncementRepositoryMockHelper.insertDbInstanceAnnouncement(
       instanceAnnouncementRepository,
-      (InstanceAnnouncementDatabaseTestHelper.createTestDbInstanceAnnouncement(
+      (InstanceAnnouncementDatabaseMockHelper.createTestDbInstanceAnnouncement(
         seed: 'seed1',
         allDay: true,
         endsAt: now.add(
@@ -825,9 +825,9 @@ void main() {
     );
 
     expect((await query.get()).length, 1);
-    await InstanceAnnouncementRepositoryTestHelper.insertDbInstanceAnnouncement(
+    await InstanceAnnouncementRepositoryMockHelper.insertDbInstanceAnnouncement(
       instanceAnnouncementRepository,
-      (InstanceAnnouncementDatabaseTestHelper.createTestDbInstanceAnnouncement(
+      (InstanceAnnouncementDatabaseMockHelper.createTestDbInstanceAnnouncement(
         seed: 'seed2',
         allDay: true,
         endsAt: now.subtract(
@@ -838,9 +838,9 @@ void main() {
 
     expect((await query.get()).length, 2);
 
-    await InstanceAnnouncementRepositoryTestHelper.insertDbInstanceAnnouncement(
+    await InstanceAnnouncementRepositoryMockHelper.insertDbInstanceAnnouncement(
       instanceAnnouncementRepository,
-      (InstanceAnnouncementDatabaseTestHelper.createTestDbInstanceAnnouncement(
+      (InstanceAnnouncementDatabaseMockHelper.createTestDbInstanceAnnouncement(
         seed: 'seed3',
         allDay: true,
         endsAt: null,
@@ -852,7 +852,7 @@ void main() {
 
   test('createQuery withExpired', () async {
     var query = instanceAnnouncementRepository.createQuery(
-      filters: InstanceAnnouncementRepositoryFilters(
+      filters: InstanceAnnouncementRepositoryFilters.only(
         withExpired: true,
       ),
       pagination: null,
@@ -861,9 +861,9 @@ void main() {
 
     var now = DateTime.now();
 
-    await InstanceAnnouncementRepositoryTestHelper.insertDbInstanceAnnouncement(
+    await InstanceAnnouncementRepositoryMockHelper.insertDbInstanceAnnouncement(
       instanceAnnouncementRepository,
-      (InstanceAnnouncementDatabaseTestHelper.createTestDbInstanceAnnouncement(
+      (InstanceAnnouncementDatabaseMockHelper.createTestDbInstanceAnnouncement(
         seed: 'seed1',
         allDay: false,
         endsAt: now.add(
@@ -873,9 +873,9 @@ void main() {
     );
 
     expect((await query.get()).length, 1);
-    await InstanceAnnouncementRepositoryTestHelper.insertDbInstanceAnnouncement(
+    await InstanceAnnouncementRepositoryMockHelper.insertDbInstanceAnnouncement(
       instanceAnnouncementRepository,
-      (InstanceAnnouncementDatabaseTestHelper.createTestDbInstanceAnnouncement(
+      (InstanceAnnouncementDatabaseMockHelper.createTestDbInstanceAnnouncement(
         seed: 'seed2',
         allDay: false,
         endsAt: now.subtract(
@@ -886,9 +886,9 @@ void main() {
 
     expect((await query.get()).length, 2);
 
-    await InstanceAnnouncementRepositoryTestHelper.insertDbInstanceAnnouncement(
+    await InstanceAnnouncementRepositoryMockHelper.insertDbInstanceAnnouncement(
       instanceAnnouncementRepository,
-      (InstanceAnnouncementDatabaseTestHelper.createTestDbInstanceAnnouncement(
+      (InstanceAnnouncementDatabaseMockHelper.createTestDbInstanceAnnouncement(
         seed: 'seed3',
         allDay: false,
         endsAt: null,
@@ -900,7 +900,7 @@ void main() {
 
   test('createQuery no withNotStartedYet allDay=false', () async {
     var query = instanceAnnouncementRepository.createQuery(
-      filters: InstanceAnnouncementRepositoryFilters(
+      filters: InstanceAnnouncementRepositoryFilters.only(
         withNotStartedYet: false,
       ),
       pagination: null,
@@ -909,9 +909,9 @@ void main() {
 
     var now = DateTime.now();
 
-    await InstanceAnnouncementRepositoryTestHelper.insertDbInstanceAnnouncement(
+    await InstanceAnnouncementRepositoryMockHelper.insertDbInstanceAnnouncement(
       instanceAnnouncementRepository,
-      (InstanceAnnouncementDatabaseTestHelper.createTestDbInstanceAnnouncement(
+      (InstanceAnnouncementDatabaseMockHelper.createTestDbInstanceAnnouncement(
         seed: 'seed1',
         allDay: false,
         startsAt: now.subtract(
@@ -921,9 +921,9 @@ void main() {
     );
 
     expect((await query.get()).length, 1);
-    await InstanceAnnouncementRepositoryTestHelper.insertDbInstanceAnnouncement(
+    await InstanceAnnouncementRepositoryMockHelper.insertDbInstanceAnnouncement(
       instanceAnnouncementRepository,
-      (InstanceAnnouncementDatabaseTestHelper.createTestDbInstanceAnnouncement(
+      (InstanceAnnouncementDatabaseMockHelper.createTestDbInstanceAnnouncement(
         seed: 'seed2',
         allDay: false,
         startsAt: now.add(
@@ -934,9 +934,9 @@ void main() {
 
     expect((await query.get()).length, 1);
 
-    await InstanceAnnouncementRepositoryTestHelper.insertDbInstanceAnnouncement(
+    await InstanceAnnouncementRepositoryMockHelper.insertDbInstanceAnnouncement(
       instanceAnnouncementRepository,
-      (InstanceAnnouncementDatabaseTestHelper.createTestDbInstanceAnnouncement(
+      (InstanceAnnouncementDatabaseMockHelper.createTestDbInstanceAnnouncement(
         seed: 'seed3',
         allDay: false,
         startsAt: null,
@@ -948,7 +948,7 @@ void main() {
 
   test('createQuery no withNotStartedYet allDay=true', () async {
     var query = instanceAnnouncementRepository.createQuery(
-      filters: InstanceAnnouncementRepositoryFilters(
+      filters: InstanceAnnouncementRepositoryFilters.only(
         withNotStartedYet: false,
       ),
       pagination: null,
@@ -957,9 +957,9 @@ void main() {
 
     var now = DateTime.now();
 
-    await InstanceAnnouncementRepositoryTestHelper.insertDbInstanceAnnouncement(
+    await InstanceAnnouncementRepositoryMockHelper.insertDbInstanceAnnouncement(
       instanceAnnouncementRepository,
-      (InstanceAnnouncementDatabaseTestHelper.createTestDbInstanceAnnouncement(
+      (InstanceAnnouncementDatabaseMockHelper.createTestDbInstanceAnnouncement(
         seed: 'seed1',
         allDay: true,
         startsAt: now.subtract(
@@ -969,9 +969,9 @@ void main() {
     );
 
     expect((await query.get()).length, 1);
-    await InstanceAnnouncementRepositoryTestHelper.insertDbInstanceAnnouncement(
+    await InstanceAnnouncementRepositoryMockHelper.insertDbInstanceAnnouncement(
       instanceAnnouncementRepository,
-      (InstanceAnnouncementDatabaseTestHelper.createTestDbInstanceAnnouncement(
+      (InstanceAnnouncementDatabaseMockHelper.createTestDbInstanceAnnouncement(
         seed: 'seed2',
         allDay: true,
         startsAt: now.add(
@@ -982,9 +982,9 @@ void main() {
 
     expect((await query.get()).length, 2);
 
-    await InstanceAnnouncementRepositoryTestHelper.insertDbInstanceAnnouncement(
+    await InstanceAnnouncementRepositoryMockHelper.insertDbInstanceAnnouncement(
       instanceAnnouncementRepository,
-      (InstanceAnnouncementDatabaseTestHelper.createTestDbInstanceAnnouncement(
+      (InstanceAnnouncementDatabaseMockHelper.createTestDbInstanceAnnouncement(
         seed: 'seed3',
         allDay: true,
         startsAt: null,
@@ -996,7 +996,7 @@ void main() {
 
   test('createQuery withNotStartedYet allDay=false', () async {
     var query = instanceAnnouncementRepository.createQuery(
-      filters: InstanceAnnouncementRepositoryFilters(
+      filters: InstanceAnnouncementRepositoryFilters.only(
         withNotStartedYet: true,
       ),
       pagination: null,
@@ -1005,9 +1005,9 @@ void main() {
 
     var now = DateTime.now();
 
-    await InstanceAnnouncementRepositoryTestHelper.insertDbInstanceAnnouncement(
+    await InstanceAnnouncementRepositoryMockHelper.insertDbInstanceAnnouncement(
       instanceAnnouncementRepository,
-      (InstanceAnnouncementDatabaseTestHelper.createTestDbInstanceAnnouncement(
+      (InstanceAnnouncementDatabaseMockHelper.createTestDbInstanceAnnouncement(
         seed: 'seed1',
         allDay: false,
         startsAt: now.subtract(
@@ -1017,9 +1017,9 @@ void main() {
     );
 
     expect((await query.get()).length, 1);
-    await InstanceAnnouncementRepositoryTestHelper.insertDbInstanceAnnouncement(
+    await InstanceAnnouncementRepositoryMockHelper.insertDbInstanceAnnouncement(
       instanceAnnouncementRepository,
-      (InstanceAnnouncementDatabaseTestHelper.createTestDbInstanceAnnouncement(
+      (InstanceAnnouncementDatabaseMockHelper.createTestDbInstanceAnnouncement(
         seed: 'seed2',
         allDay: false,
         startsAt: now.add(
@@ -1030,9 +1030,9 @@ void main() {
 
     expect((await query.get()).length, 2);
 
-    await InstanceAnnouncementRepositoryTestHelper.insertDbInstanceAnnouncement(
+    await InstanceAnnouncementRepositoryMockHelper.insertDbInstanceAnnouncement(
       instanceAnnouncementRepository,
-      (InstanceAnnouncementDatabaseTestHelper.createTestDbInstanceAnnouncement(
+      (InstanceAnnouncementDatabaseMockHelper.createTestDbInstanceAnnouncement(
         seed: 'seed3',
         allDay: false,
         startsAt: null,

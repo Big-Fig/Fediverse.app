@@ -1,29 +1,29 @@
 import 'dart:async';
 
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:fedi/app/auth/host/access_token/auth_host_access_token_local_preference_bloc.dart';
-import 'package:fedi/app/auth/host/access_token/auth_host_access_token_local_preference_bloc_impl.dart';
-import 'package:fedi/app/auth/host/application/auth_host_application_local_preference_bloc.dart';
-import 'package:fedi/app/auth/host/application/auth_host_application_local_preference_bloc_impl.dart';
+import 'package:fedi/app/access/current/current_access_bloc.dart';
+import 'package:fedi/app/access/host/access_token/access_host_access_token_local_preference_bloc.dart';
+import 'package:fedi/app/access/host/access_token/access_host_access_token_local_preference_bloc_impl.dart';
+import 'package:fedi/app/access/host/application/access_host_application_local_preference_bloc.dart';
+import 'package:fedi/app/access/host/application/access_host_application_local_preference_bloc_impl.dart';
+import 'package:fedi/app/access/memory_access_bloc_impl.dart';
+import 'package:fedi/app/access/register/response/register_response_model.dart';
 import 'package:fedi/app/auth/host/auth_host_bloc.dart';
-import 'package:fedi/app/auth/host/auth_host_model.dart';
-import 'package:fedi/app/auth/instance/auth_instance_model.dart';
-import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/auth/oauth_last_launched/local_preferences/auth_oauth_last_launched_host_to_login_local_preference_bloc.dart';
 import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
-import 'package:base_fediverse_api/base_fediverse_api.dart';
-import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
+import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:logging/logging.dart';
+import 'package:mastodon_api/mastodon_api.dart';
+import 'package:pleroma_api/pleroma_api.dart';
 import 'package:provider/provider.dart';
 import 'package:uni_links/uni_links.dart';
+import 'package:unifedi_api/unifedi_api.dart';
+import 'package:unifedi_api/unifedi_api_pleroma_adapter.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:path/path.dart';
-
-const scopes = 'read write follow push';
 
 var _logger = Logger('auth_host_bloc_impl.dart');
 
@@ -34,7 +34,6 @@ const emailConfirmationRequiredDescription =
 
 class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
   final Uri instanceBaseUri;
-  final bool isPleroma;
 
   String get instanceBaseUriString => instanceBaseUri.toString();
 
@@ -43,112 +42,130 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
   String get instanceBaseUriScheme => instanceBaseUri.scheme;
 
   // ignore: avoid-late-keyword
-  late IPleromaApiApplicationService pleromaApplicationService;
+  late UnifediApiAccessScopes scopes;
 
   // ignore: avoid-late-keyword
-  late IRestService restService;
+  late IUnifediApiInstanceService unifediApiInstanceService;
 
   // ignore: avoid-late-keyword
-  late IPleromaApiRestService pleromaRestService;
+  late IUnifediApiManager unifediApiManager;
 
   // ignore: avoid-late-keyword
-  late IPleromaApiOAuthService pleromaOAuthService;
+  late IUnifediApiAccountService unifediApiAccountService;
 
   // ignore: avoid-late-keyword
-  late IPleromaApiAccountPublicService pleromaAccountPublicService;
-
-  // ignore: avoid-late-keyword
-  late IAuthHostApplicationLocalPreferenceBloc
+  late IAccessHostApplicationLocalPreferenceBloc
       hostApplicationLocalPreferenceBloc;
 
   // ignore: avoid-late-keyword
-  late IAuthHostAccessTokenLocalPreferenceBloc
+  late IAccessHostAccessTokenLocalPreferenceBloc
       hostAccessTokenLocalPreferenceBloc;
 
   // ignore: avoid-late-keyword
-  late ICurrentAuthInstanceBloc currentInstanceBloc;
+  late ICurrentUnifediApiAccessBloc currentInstanceBloc;
   final IAuthApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc
       pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc;
   final IConnectionService connectionService;
   final IConfigService configService;
 
+  // ignore: avoid-late-keyword
+  late MemoryUnifediApiAccessBloc memoryUnifediApiAccessBloc;
+
   AuthHostBloc({
     required this.instanceBaseUri,
-    required this.isPleroma,
     required this.pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc,
     required ILocalPreferencesService preferencesService,
     required this.connectionService,
     required this.currentInstanceBloc,
     required this.configService,
   }) {
-    hostApplicationLocalPreferenceBloc = AuthHostApplicationLocalPreferenceBloc(
+    hostApplicationLocalPreferenceBloc =
+        AccessHostApplicationLocalPreferenceBloc(
       preferencesService,
       host: instanceBaseUriHost,
     )..disposeWith(this);
 
-    hostAccessTokenLocalPreferenceBloc = AuthHostAccessTokenLocalPreferenceBloc(
+    hostAccessTokenLocalPreferenceBloc =
+        AccessHostAccessTokenLocalPreferenceBloc(
       preferencesService,
       host: instanceBaseUriHost,
     )..disposeWith(this);
 
-    restService = RestService(baseUri: instanceBaseUri)..disposeWith(this);
-    pleromaRestService = PleromaApiRestService(
-      restService: restService,
-      connectionService: connectionService,
+    memoryUnifediApiAccessBloc = MemoryUnifediApiAccessBloc(
+      access: UnifediApiAccess(
+        url: instanceBaseUri.toString(),
+        instance: null,
+        applicationAccessToken: null,
+        userAccessToken: null,
+      ),
     )..disposeWith(this);
-
-    pleromaApplicationService =
-        PleromaApiApplicationService(restService: pleromaRestService)
-          ..disposeWith(this);
-
-    pleromaOAuthService =
-        PleromaApiOAuthService(restService: pleromaRestService)
-          ..disposeWith(this);
-
-    pleromaAccountPublicService =
-        PleromaApiAccountPublicService(restService: pleromaRestService)
-          ..disposeWith(this);
   }
 
   @override
-  PleromaApiClientApplication? get hostApplication =>
+  UnifediApiClientApplication? get hostApplication =>
       hostApplicationLocalPreferenceBloc.value;
 
   @override
-  Stream<PleromaApiClientApplication?> get hostApplicationStream =>
+  Stream<UnifediApiClientApplication?> get hostApplicationStream =>
       hostApplicationLocalPreferenceBloc.stream;
 
   @override
-  bool get isHostAccessTokenExist => hostAccessToken != null;
-
-  @override
-  PleromaApiOAuthToken? get hostAccessToken =>
+  UnifediApiOAuthToken? get hostAccessToken =>
       hostAccessTokenLocalPreferenceBloc.value;
 
   @override
-  Stream<PleromaApiOAuthToken?> get hostAccessTokenStream =>
+  Stream<UnifediApiOAuthToken?> get hostAccessTokenStream =>
       hostAccessTokenLocalPreferenceBloc.stream;
 
   @override
-  bool get isHostApplicationRegistered => hostApplication != null;
+  bool get isHostAccessTokenExist =>
+      memoryUnifediApiAccessBloc.access.applicationAccessToken != null;
+
+  @override
+  bool get isHostApplicationRegistered =>
+      memoryUnifediApiAccessBloc.access.applicationAccessToken != null;
 
   @override
   Future registerApplication() async {
     _logger.finest(() => 'registerApplication');
+    var alreadyRegistered = memoryUnifediApiAccessBloc
+            .access.applicationAccessToken?.clientApplication !=
+        null;
+    if (alreadyRegistered) {
+      return;
+    }
     var redirectUri = await _calculateRedirectUri();
 
-    var application = await pleromaApplicationService.registerApp(
-      registrationRequest: MastodonApiApplicationRegistrationRequest(
-        clientName: 'Fedi',
-        redirectUris: redirectUri,
-        scopes: scopes,
-        website: 'https://www.fediapp.com/',
-      ),
+    var application = await unifediApiInstanceService.registerApp(
+      clientName: 'Fedi',
+      redirectUri: redirectUri,
+      useDisplayCodeRedirectUri: false,
+      scopes: scopes,
+      website: 'https://www.fediapp.com/',
+    );
+
+    var appToken = await unifediApiInstanceService.retrieveAppAccessToken(
+      scopes: scopes,
+      redirectUri: redirectUri,
+      displayCodeRedirectUriWasUsed: false,
+      clientId: application.clientId!,
+      clientSecret: application.clientSecret!,
     );
 
     _logger.finest(() => 'registerApplication application = $application');
+    _logger.finest(() => 'registerApplication appToken = $appToken');
     await hostApplicationLocalPreferenceBloc.setValue(
-      application.toPleromaApiClientApplication(),
+      application.toUnifediApiClientApplication(),
+    );
+
+    memoryUnifediApiAccessBloc.changeAccess(
+      memoryUnifediApiAccessBloc.access.toUnifediApiAccess().copyWith(
+            applicationAccessToken: UnifediApiAccessApplicationToken(
+              scopes: scopes,
+              oauthToken: appToken.toUnifediApiOAuthToken(),
+              clientApplication: application.toUnifediApiClientApplication(),
+            ),
+          ),
     );
   }
 
@@ -159,48 +176,20 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
   }
 
   @override
-  Future<bool> retrieveAppAccessToken() async {
-    try {
-      var accessToken = await pleromaOAuthService.retrieveAppAccessToken(
-        tokenRequest: PleromaApiOAuthAppTokenRequest(
-          redirectUri: await _calculateRedirectUri(),
-          scope: scopes,
-          clientSecret: hostApplication!.clientSecret,
-          clientId: hostApplication!.clientId,
-        ),
-      );
-      await hostAccessTokenLocalPreferenceBloc.setValue(accessToken);
-
-      return true;
-    } catch (e, stackTrace) {
-      _logger.severe(
-        () => 'retrieveAppAccessToken error',
-        e,
-        stackTrace,
-      );
-
-      return false;
-    }
-  }
-
-  @override
-  Future<AuthInstance?> launchLoginToAccount() async {
+  Future<UnifediApiAccess?> launchLoginToAccount() async {
     _logger.finest(() => 'launchLoginToAccount');
-    await checkApplicationRegistration();
+    await registerApplication();
 
-    var baseUrl = pleromaOAuthService.restService.baseUri;
+    var baseUrl = unifediApiAccountService.baseUri;
 
     await pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc
         .setValue(baseUrl.toString());
 
     var authCode = await launchAuthorizeFormAndExtractAuthorizationCode(
-      pleromaOAuthService: pleromaOAuthService,
-      authorizeRequest: PleromaApiOAuthAuthorizeRequest(
-        redirectUri: await _calculateRedirectUri(),
-        scope: scopes,
-        forceLogin: true,
-        clientId: hostApplication!.clientId,
-      ),
+      unifediApiInstanceService: unifediApiInstanceService,
+      redirectUri: await _calculateRedirectUri(),
+      scopes: scopes,
+      clientId: hostApplication!.clientId!,
     );
     if (authCode != null) {
       // clear lastLaunch on success login
@@ -216,15 +205,26 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
   }
 
   @override
-  Future<AuthInstance> loginWithAuthCode(String authCode) async {
-    var token = await pleromaOAuthService.retrieveAccountAccessToken(
-      tokenRequest: PleromaApiOAuthAccountTokenRequest(
-        redirectUri: await _calculateRedirectUri(),
-        scope: scopes,
-        code: authCode,
-        clientSecret: hostApplication!.clientSecret,
-        clientId: hostApplication!.clientId,
-      ),
+  Future<UnifediApiAccess> loginWithAuthCode(String authCode) async {
+    var token =
+        await unifediApiInstanceService.retrieveAccountAccessTokenFromAuthCode(
+      redirectUri: await _calculateRedirectUri(),
+      displayCodeRedirectUriWasUsed: false,
+      scopes: scopes,
+      authCode: authCode,
+      clientSecret: hostApplication!.clientSecret!,
+      clientId: hostApplication!.clientId!,
+    );
+
+    memoryUnifediApiAccessBloc.changeAccess(
+      memoryUnifediApiAccessBloc.access.toUnifediApiAccess().copyWith(
+            userAccessToken: UnifediApiAccessUserToken(
+              user: '',
+              oauthToken: token.toUnifediApiOAuthToken(),
+              scopes: scopes,
+              myAccount: null,
+            ),
+          ),
     );
 
     return await _createInstanceFromToken(
@@ -233,58 +233,56 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     );
   }
 
-  Future<AuthInstance> _createInstanceFromToken({
-    required PleromaApiOAuthToken token,
+  Future<UnifediApiAccess> _createInstanceFromToken({
+    required IUnifediApiOAuthToken token,
     required String authCode,
   }) async {
-    var restService = RestService(baseUri: instanceBaseUri);
-    var pleromaAuthRestService = PleromaApiAuthRestService(
-      accessToken: token.accessToken,
-      connectionService: connectionService,
-      restService: restService,
-      isPleroma: isPleroma,
-    );
+    await loadInstanceDetails();
 
-    var pleromaInstanceService =
-        PleromaApiInstanceService(restService: pleromaAuthRestService);
-
-    var hostInstance = await pleromaInstanceService.getInstance();
-
-    var instance = await _createAuthInstance(
-      pleromaAuthRestService: pleromaAuthRestService,
+    var instance = await _createUnifediApiAccess(
       authCode: authCode,
       token: token,
-      hostInstance: hostInstance,
     );
 
-    await pleromaInstanceService.dispose();
-    await pleromaAuthRestService.dispose();
+    memoryUnifediApiAccessBloc.changeAccess(instance);
 
     return instance;
   }
 
-  Future<AuthInstance> _createAuthInstance({
-    required PleromaApiAuthRestService pleromaAuthRestService,
+  Future<UnifediApiAccess> _createUnifediApiAccess({
     required String? authCode,
-    required PleromaApiOAuthToken token,
-    required IPleromaApiInstance hostInstance,
+    required IUnifediApiOAuthToken token,
   }) async {
-    var pleromaMyAccountService =
-        PleromaApiMyAccountService(restApiAuthService: pleromaAuthRestService);
-    var myAccount = await pleromaMyAccountService.verifyCredentials();
+    var unifediApiMyAccountService = unifediApiManager.createMyAccountService();
+    var myAccount = await unifediApiMyAccountService.verifyMyCredentials();
 
-    var instance = AuthInstance(
-      urlHost: instanceBaseUriHost.toLowerCase(),
-      urlSchema: instanceBaseUriScheme,
-      authCode: authCode,
-      token: token,
-      acct: myAccount.acct,
-      application: hostApplication,
-      info: hostInstance.toPleromaApiInstance(),
-      // todo: replace with isPleroma getter with same logic
-      isPleroma: hostInstance.isPleroma,
+    var instance = UnifediApiAccess(
+      url: instanceBaseUri.toString(),
+      instance:
+          memoryUnifediApiAccessBloc.access.instance?.toUnifediApiInstance(),
+      applicationAccessToken: memoryUnifediApiAccessBloc
+          .access.applicationAccessToken!
+          .toUnifediApiAccessApplicationToken(),
+      userAccessToken: UnifediApiAccessUserToken(
+        oauthToken: token.toUnifediApiOAuthToken(),
+        scopes: scopes,
+        user: myAccount.acct,
+        myAccount: myAccount.toUnifediApiMyAccount(),
+      ),
     );
-    await pleromaMyAccountService.dispose();
+    //
+    // var instance = UnifediApiAccess(
+    //   urlHost: instanceBaseUriHost.toLowerCase(),
+    //   urlSchema: instanceBaseUriScheme,
+    //   authCode: authCode,
+    //   token: token.toUnifediApiOAuthToken(),
+    //   acct: myAccount.acct,
+    //   application: hostApplication,
+    //   info: hostInstance.toUnifediApiInstance(),
+    //   // todo: replace with isPleroma getter with same logic
+    //   isPleroma: hostInstance.typeAsUnifediApi.isPleroma,
+    // );
+    await unifediApiMyAccountService.dispose();
 
     return instance;
   }
@@ -292,159 +290,115 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
   @override
   // todo: fix long-method
   // ignore: long-method
-  Future<AuthHostRegistrationResult> registerAccount({
-    required IPleromaApiAccountPublicRegisterRequest request,
+  Future<RegisterResponse> registerAccount({
+    required IUnifediApiRegisterAccount registerAccount,
   }) async {
-    await checkApplicationRegistration();
-    await checkHostAccessTokenRegistration();
-    await checkIsRegistrationsEnabled();
+    await registerApplication();
 
-    var token = await pleromaAccountPublicService.registerAccount(
-      request: request,
-      appAccessToken: hostAccessToken!.accessToken,
+    var registerAccountResponse =
+        await unifediApiAccountService.registerAccount(
+      registerAccount: registerAccount,
     );
 
-    var restService = RestService(baseUri: instanceBaseUri);
+    IUnifediApiMyAccount? myAccount;
 
-    var pleromaRestService = PleromaApiRestService(
-      connectionService: connectionService,
-      restService: restService,
-    );
+    var token = registerAccountResponse.authToken;
 
-    var pleromaInstanceService =
-        PleromaApiInstanceService(restService: pleromaRestService);
+    RegisterResponse registerResponse;
 
-    var hostInstance = await pleromaInstanceService.getInstance();
+    if (token != null) {
+      var unifediApiMyAccountService =
+          unifediApiManager.createMyAccountService();
 
-    AuthHostRegistrationResult result;
-    if (hostInstance.approvalRequired == true) {
-      result = AuthHostRegistrationResult.noErrors(
-        authInstance: null,
-        token: token,
-        pleromaInstance: hostInstance,
+      UnifediApiAccessUserToken unifediApiAccessUserToken;
+      unifediApiAccessUserToken = UnifediApiAccessUserToken(
+        myAccount: null,
+        user: registerAccount.username,
+        scopes: scopes,
+        oauthToken: token.toUnifediApiOAuthToken(),
+      );
+      memoryUnifediApiAccessBloc.changeAccess(
+        memoryUnifediApiAccessBloc.access.toUnifediApiAccess().copyWith(
+              userAccessToken: unifediApiAccessUserToken,
+            ),
+      );
+
+      registerResponse = RegisterResponse(
+        access: memoryUnifediApiAccessBloc.access,
+        response: registerAccountResponse,
+        myAccount: myAccount?.toUnifediApiMyAccount(),
+      );
+
+      try {
+        myAccount = await unifediApiMyAccountService.verifyMyCredentials();
+
+        unifediApiAccessUserToken = UnifediApiAccessUserToken(
+          myAccount: myAccount.toUnifediApiMyAccount(),
+          user: registerAccount.username,
+          scopes: scopes,
+          oauthToken: token.toUnifediApiOAuthToken(),
+        );
+
+        registerResponse = RegisterResponse(
+          access: memoryUnifediApiAccessBloc.access,
+          response: registerAccountResponse,
+          myAccount: myAccount.toUnifediApiMyAccount(),
+        );
+      } on IUnifediApiRestErrorException catch (e, stackTrace) {
+        _logger.finest(
+          () => 'error during loading myAccount',
+          e,
+          stackTrace,
+        );
+        var identifierAsUnifediApi =
+            e.unifediError.details?.identifierAsUnifediApi;
+
+        identifierAsUnifediApi?.maybeWhen(
+          missingConfirmedEmail: (_) {
+            registerResponse = RegisterResponse(
+              access: registerResponse.access,
+              response: registerResponse.response
+                  .toUnifediApiRegisterAccountResponse()
+                  .copyWith(
+                    emailConformationRequired: true,
+                  ),
+              myAccount: registerResponse.myAccount,
+            );
+          },
+          awaitingApproval: (_) {
+            registerResponse = RegisterResponse(
+              access: registerResponse.access,
+              response: registerResponse.response
+                  .toUnifediApiRegisterAccountResponse()
+                  .copyWith(
+                    approvalRequired: true,
+                  ),
+              myAccount: registerResponse.myAccount,
+            );
+          },
+          // ignore: no-empty-block
+          orElse: () {
+            // nothing
+          },
+        );
+      } finally {
+        await unifediApiMyAccountService.dispose();
+      }
+
+      memoryUnifediApiAccessBloc.changeAccess(
+        memoryUnifediApiAccessBloc.access.toUnifediApiAccess().copyWith(
+              userAccessToken: unifediApiAccessUserToken,
+            ),
       );
     } else {
-      if (token == null) {
-        result = AuthHostRegistrationResult(
-          authInstance: null,
-          token: token,
-          pleromaInstance: hostInstance,
-          emailConfirmationRequiredAuthHostException:
-              const EmailConfirmationRequiredAuthHostException(),
-          unknownHostException: null,
-          cantRegisterAppAuthHostException: null,
-          cantRetrieveAppTokenAuthHostException: null,
-          invitesOnlyRegistrationAuthHostException: null,
-          disabledRegistrationAuthHostException: null,
-        );
-      } else {
-        var pleromaAuthRestService = PleromaApiAuthRestService(
-          accessToken: token.accessToken,
-          connectionService: connectionService,
-          restService: restService,
-          isPleroma: isPleroma,
-        );
-
-        EmailConfirmationRequiredAuthHostException?
-            emailConfirmationRequiredAuthHostException;
-        dynamic unknownHostException;
-
-        AuthInstance? instance;
-        try {
-          instance = await _createAuthInstance(
-            pleromaAuthRestService: pleromaAuthRestService,
-            authCode: null,
-            token: token,
-            hostInstance: hostInstance,
-          );
-        } catch (e, stackTrace) {
-          _logger.warning(() => 'error during registerAccount', e, stackTrace);
-          if (e is PleromaApiRestException) {
-            if (e.decodedErrorDescriptionOrBody ==
-                emailConfirmationRequiredDescription) {
-              emailConfirmationRequiredAuthHostException =
-                  const EmailConfirmationRequiredAuthHostException();
-            } else {
-              unknownHostException = e;
-            }
-          } else {
-            unknownHostException = e;
-          }
-        } finally {
-          await pleromaAuthRestService.dispose();
-        }
-
-        result = AuthHostRegistrationResult(
-          authInstance: instance,
-          token: token,
-          pleromaInstance: hostInstance,
-          emailConfirmationRequiredAuthHostException:
-              emailConfirmationRequiredAuthHostException,
-          unknownHostException: unknownHostException,
-          cantRegisterAppAuthHostException: null,
-          cantRetrieveAppTokenAuthHostException: null,
-          invitesOnlyRegistrationAuthHostException: null,
-          disabledRegistrationAuthHostException: null,
-        );
-      }
+      registerResponse = RegisterResponse(
+        access: null,
+        myAccount: null,
+        response: registerAccountResponse,
+      );
     }
 
-    await pleromaInstanceService.dispose();
-    await pleromaRestService.dispose();
-
-    return result;
-  }
-
-  @override
-  Future checkApplicationRegistration() async {
-    _logger.finest(
-      () => 'checkApplicationRegistration $isHostApplicationRegistered',
-    );
-    if (!isHostApplicationRegistered) {
-      await registerApplication();
-      _logger.finest(() => 'checkApplicationRegistration');
-    }
-  }
-
-  @override
-  Future checkIsRegistrationsEnabled() async {
-    _logger.finest(() => 'checkIsRegistrationsEnabled');
-
-    var result = false;
-
-    PleromaApiInstanceService? pleromaInstanceService;
-    try {
-      pleromaInstanceService =
-          PleromaApiInstanceService(restService: pleromaRestService);
-      var pleromaInstance = await pleromaInstanceService.getInstance();
-
-      var isRegistrationEnabled = pleromaInstance.registrations;
-
-      if (isRegistrationEnabled != false) {
-        result = true;
-      } else {
-        var invitesEnabled = pleromaInstance.invitesEnabled;
-        if (invitesEnabled == true) {
-          throw const InvitesOnlyRegistrationAuthHostException();
-        } else {
-          throw const DisabledRegistrationAuthHostException();
-        }
-      }
-    } finally {
-      await pleromaInstanceService?.dispose();
-    }
-
-    return result;
-  }
-
-  Future checkHostAccessTokenRegistration() async {
-    if (!isHostAccessTokenExist) {
-      var success = await retrieveAppAccessToken();
-
-      if (!success) {
-        throw const CantRetrieveAppTokenAuthHostException();
-      }
-    }
+    return registerResponse;
   }
 
   static AuthHostBloc createFromContext(
@@ -453,12 +407,11 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
   }) =>
       AuthHostBloc(
         instanceBaseUri: instanceBaseUri,
-        isPleroma: false,
         preferencesService: ILocalPreferencesService.of(context, listen: false),
         connectionService:
             Provider.of<IConnectionService>(context, listen: false),
         currentInstanceBloc:
-            ICurrentAuthInstanceBloc.of(context, listen: false),
+            ICurrentUnifediApiAccessBloc.of(context, listen: false),
         pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc:
             IAuthApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc.of(
           context,
@@ -476,12 +429,10 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
 
     var instance = currentInstance;
     try {
-      await pleromaOAuthService.revokeToken(
-        revokeRequest: PleromaApiOAuthAppTokenRevokeRequest(
-          clientId: instance.application!.clientId,
-          clientSecret: instance.application!.clientSecret,
-          token: instance.token!.accessToken,
-        ),
+      await unifediApiInstanceService.revokeAccessToken(
+        clientId: instance.application!.clientId!,
+        clientSecret: instance.application!.clientSecret!,
+        token: instance.userAccessToken!.accessToken,
       );
     } finally {
       await currentInstanceBloc.logoutCurrentInstance();
@@ -492,29 +443,110 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
   Future internalAsyncInit() async {
     await hostApplicationLocalPreferenceBloc.performAsyncInit();
     await hostAccessTokenLocalPreferenceBloc.performAsyncInit();
+
+    var unifediApiClientApplication = hostApplicationLocalPreferenceBloc.value;
+    var unifediApiOAuthToken = hostAccessTokenLocalPreferenceBloc.value;
+    if (unifediApiClientApplication != null && unifediApiOAuthToken != null) {
+      var scopes = IPleromaApiAccessScopes.calculateAvailableScopes(
+        PleromaApiVersion(
+          major: 2,
+          minor: 4,
+          patch: 51,
+          buildNumber: 116,
+          commit: 'gd86b10a5',
+          mastodonCompatibilityVersion: MastodonApiVersion(
+            major: 2,
+            minor: 7,
+            patch: 2,
+            buildNumber: null,
+            commit: null,
+          ),
+        ),
+      ).toUnifediApiAccessScopesPleromaAdapter().toUnifediApiAccessScopes();
+
+      memoryUnifediApiAccessBloc.changeAccess(
+        memoryUnifediApiAccessBloc.access.toUnifediApiAccess().copyWith(
+              applicationAccessToken: UnifediApiAccessApplicationToken(
+                scopes: scopes,
+                clientApplication: unifediApiClientApplication,
+                oauthToken: unifediApiOAuthToken,
+              ),
+            ),
+      );
+    }
+
     await pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc
         .performAsyncInit();
+
+    var detectorBloc = UnifediApiInstanceTypeDetectorBloc();
+    var instanceType = await detectorBloc.detectInstanceType(
+      url: instanceBaseUri.toString(),
+    );
+    var webSocketsModeSettingsBloc = WebSocketsModeSettingsBloc(
+      mode: WebSocketsMode.disabledValue,
+    );
+    webSocketsModeSettingsBloc.disposeWith(this);
+    if (instanceType.isPleroma) {
+      unifediApiManager = createPleromaApiManager(
+        apiAccessBloc: memoryUnifediApiAccessBloc,
+        computeImpl: null,
+        webSocketsModeSettingsBloc: webSocketsModeSettingsBloc,
+      );
+    } else {
+      unifediApiManager = createMastodonApiManager(
+        apiAccessBloc: memoryUnifediApiAccessBloc,
+        computeImpl: null,
+        webSocketsModeSettingsBloc: webSocketsModeSettingsBloc,
+      );
+    }
+
+    unifediApiInstanceService = unifediApiManager.createInstanceService();
+
+    await loadInstanceDetails();
+
+    unifediApiAccountService = unifediApiManager.createAccountService();
+
+    // todo: remove hack
+    scopes = unifediApiInstanceService
+        .calculateAvailableScopes()
+        .toUnifediApiAccessScopes()
+        .copyWith(
+      targetPermissions: [],
+    );
+
+    await detectorBloc.dispose();
+  }
+
+  Future loadInstanceDetails({
+    bool forceRefresh = false,
+  }) async {
+    if (forceRefresh || memoryUnifediApiAccessBloc.access.instance == null) {
+      var instance = await unifediApiInstanceService.getInstance();
+      memoryUnifediApiAccessBloc.changeAccess(
+        memoryUnifediApiAccessBloc.access.toUnifediApiAccess().copyWith(
+              instance: instance.toUnifediApiInstance(),
+            ),
+      );
+    }
   }
 }
 
 @override
 Future<String?> launchAuthorizeFormAndExtractAuthorizationCode({
-  required PleromaApiOAuthAuthorizeRequest authorizeRequest,
-  required IPleromaApiOAuthService pleromaOAuthService,
+  required IUnifediApiInstanceService unifediApiInstanceService,
+  required String redirectUri,
+  required IUnifediApiAccessScopes scopes,
+  required String clientId,
 }) async {
   _logger.finest(() => 'launchAuthorizeFormAndExtractAuthorizationCode');
-  var host = pleromaOAuthService.restService.baseUri;
-  var baseUrl = join(IPleromaApiOAuthService.oauthRelativeUrlPath, 'authorize');
 
-  var keyValueMap = authorizeRequest.toJson();
-
-  var queryArgs = keyValueMap.entries
-      .map((entry) => '${entry.key}=${entry.value}')
-      .join('&');
-
-  queryArgs = queryArgs.replaceAll(' ', '%20');
-
-  var url = '$host/$baseUrl?$queryArgs';
+  var url = unifediApiInstanceService.calculateAuthLoginUrl(
+    forceLogin: null,
+    clientId: clientId,
+    redirectUri: redirectUri,
+    useDisplayCodeRedirectUri: false,
+    scopes: scopes,
+  );
   var isCanLaunch = await canLaunch(url);
 
   _logger.finest(() => 'launchAuthorizeFormAndExtractAuthorizationCode \n'
@@ -522,27 +554,26 @@ Future<String?> launchAuthorizeFormAndExtractAuthorizationCode({
       '\t canLaunch=$isCanLaunch');
 
   var completer = Completer<String>();
-  if (isCanLaunch) {
-    // ignore: avoid-late-keyword
-    late StreamSubscription<Uri?> subscription;
-    subscription = uriLinkStream.listen(
-      (Uri? uri) {
-        subscription.cancel();
-        closeWebView();
-        var code = IPleromaApiOAuthService.extractAuthCodeFromUri(uri!);
-        completer.complete(code);
-      },
-      onError: (e) {
-        subscription.cancel();
-        closeWebView();
-        completer.completeError(e);
-      },
-    );
-    _logger.finest(() => 'launch url=$url');
-    await launch(url);
-  } else {
-    completer.completeError(PleromaApiOAuthCantLaunchException());
-  }
+
+  // ignore: avoid-late-keyword
+  late StreamSubscription<Uri?> subscription;
+  subscription = uriLinkStream.listen(
+    (Uri? uri) {
+      subscription.cancel();
+      closeWebView();
+      var code = unifediApiInstanceService.extractAuthCodeFromCallbackUrl(
+        uri.toString(),
+      );
+      completer.complete(code);
+    },
+    onError: (e) {
+      subscription.cancel();
+      closeWebView();
+      completer.completeError(e);
+    },
+  );
+  _logger.finest(() => 'launch url=$url');
+  await launch(url);
 
   return completer.future;
 }

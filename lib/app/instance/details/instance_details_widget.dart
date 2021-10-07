@@ -32,8 +32,6 @@ import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/url/url_helper.dart';
 import 'package:fedi/file/file_size_helper.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:fedi/ui/callback/on_click_ui_callback.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -41,6 +39,7 @@ import 'package:flutter_html/style.dart';
 import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 final _logger = Logger('instance_details_widget.dart');
 
@@ -125,10 +124,10 @@ class _InstanceDetailsBodyWidget extends StatelessWidget {
             key: Key(InstanceDetailsWidgetKeys.statsKey),
           ),
           const _InstanceDetailsBodyMessagesLimitsWidget(),
-          const _InstanceDetailsPleromaPollLimitsWidget(),
+          const _InstanceDetailsUnifediApiPollLimitsWidget(),
           const _InstanceDetailsPleromaUploadLimitsWidget(),
           const _InstanceDetailsBodyMetadataWidget(),
-          const _InstanceDetailsPleromaMetadataFederationWidget(),
+          const _InstanceDetailsunifediApiInstanceFederationWidget(),
           const _InstanceDetailsPleromaMetadataFieldsLimitsWidget(),
         ],
       ),
@@ -228,7 +227,7 @@ class _InstanceDetailsBodyMessagesLimitsWidget extends StatelessWidget {
                     .app_instance_details_field_messagesLimits_title,
               ),
               const _InstanceDetailsPleromaMaxTootCharsLimitWidget(),
-              const _InstanceDetailsPleromaChatMessageLimitWidget(),
+              const _InstanceDetailsunifediApiChatMessageLimitWidget(),
               const _InstanceDetailsPleromaImageDescriptionLimitWidget(),
             ],
           );
@@ -421,35 +420,29 @@ class _InstanceDetailsVersionTypeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var instanceDetailsBloc = IInstanceDetailsBloc.of(context);
 
-    return StreamBuilder<PleromaApiInstanceVersionType?>(
-      stream: instanceDetailsBloc.versionTypeStream,
-      initialData: instanceDetailsBloc.versionType,
+    return StreamBuilder<UnifediApiInstanceType>(
+      stream: instanceDetailsBloc.instanceTypeStream,
+      initialData: instanceDetailsBloc.instanceType,
       builder: (context, snapshot) {
-        var versionType = snapshot.data;
+        var instanceType = snapshot.data;
 
-        if (versionType != null) {
-          String versionTypeString;
+        if (instanceType != null) {
+          String instanceTypeString;
 
-          switch (versionType) {
-            case PleromaApiInstanceVersionType.pleroma:
-              versionTypeString = S
-                  .of(context)
-                  .app_instance_details_field_pleroma_metadata_fields_verstionType_value_pleroma;
-              break;
-            case PleromaApiInstanceVersionType.mastodon:
-              versionTypeString = S
-                  .of(context)
-                  .app_instance_details_field_pleroma_metadata_fields_verstionType_value_mastodon;
-              break;
-            case PleromaApiInstanceVersionType.unknown:
-              versionTypeString = S
-                  .of(context)
-                  .app_instance_details_field_pleroma_metadata_fields_verstionType_value_unknown;
-              break;
-          }
+          instanceTypeString = instanceType.map(
+            pleroma: (_) => S
+                .of(context)
+                .app_instance_details_field_pleroma_metadata_fields_verstionType_value_pleroma,
+            mastodon: (_) => S
+                .of(context)
+                .app_instance_details_field_pleroma_metadata_fields_verstionType_value_mastodon,
+            unknown: (_) => S
+                .of(context)
+                .app_instance_details_field_pleroma_metadata_fields_verstionType_value_unknown,
+          );
 
           return Text(
-            versionTypeString.toUpperCase(),
+            instanceTypeString.toUpperCase(),
             style: IFediUiTextTheme.of(context).bigTallBoldDarkGrey,
           );
         } else {
@@ -674,7 +667,7 @@ class _InstanceDetailsStatsWidget extends StatelessWidget {
       builder: (context, snapshot) {
         var isHaveStatsFields = snapshot.data!;
         if (isHaveStatsFields) {
-          return StreamBuilder<MastodonApiInstanceStats?>(
+          return StreamBuilder<IUnifediApiInstanceStats?>(
             stream: instanceDetailsBloc.statsStream,
             initialData: instanceDetailsBloc.stats,
             builder: (context, snapshot) {
@@ -912,7 +905,7 @@ class _InstanceDetailsContactAccountWidget extends StatelessWidget {
 
     var isLocal = instanceLocation == InstanceLocation.local;
 
-    return StreamBuilder<IPleromaApiAccount?>(
+    return StreamBuilder<IUnifediApiAccount?>(
       stream: instanceDetailsBloc.contactAccountStream,
       initialData: instanceDetailsBloc.contactAccount,
       builder: (context, snapshot) {
@@ -1105,13 +1098,13 @@ class _InstanceDetailsPublicTimelineWidget extends StatelessWidget {
     if (isLocal) {
       goToLocalInstancePublicTimelinePage(
         context: context,
-        pleromaApiInstance: instanceDetailsBloc.instance!,
+        unifediApiInstance: instanceDetailsBloc.instance!,
       );
     } else {
       goToRemoteInstancePublicTimelinePage(
         context: context,
         remoteInstanceUri: instanceDetailsBloc.instanceUri,
-        pleromaApiInstance: instanceDetailsBloc.instance!,
+        unifediApiInstance: instanceDetailsBloc.instance!,
       );
     }
   }
@@ -1197,8 +1190,8 @@ class _InstanceDetailsPleromaMaxTootCharsLimitWidget extends StatelessWidget {
   }
 }
 
-class _InstanceDetailsPleromaChatMessageLimitWidget extends StatelessWidget {
-  const _InstanceDetailsPleromaChatMessageLimitWidget({
+class _InstanceDetailsunifediApiChatMessageLimitWidget extends StatelessWidget {
+  const _InstanceDetailsunifediApiChatMessageLimitWidget({
     Key? key,
   }) : super(key: key);
 
@@ -1256,8 +1249,8 @@ class _InstanceDetailsPleromaImageDescriptionLimitWidget
   }
 }
 
-class _InstanceDetailsPleromaPollLimitsWidget extends StatelessWidget {
-  const _InstanceDetailsPleromaPollLimitsWidget({
+class _InstanceDetailsUnifediApiPollLimitsWidget extends StatelessWidget {
+  const _InstanceDetailsUnifediApiPollLimitsWidget({
     Key? key,
   }) : super(key: key);
 
@@ -1271,14 +1264,14 @@ class _InstanceDetailsPleromaPollLimitsWidget extends StatelessWidget {
       builder: (context, snapshot) {
         var isHaveMessagesLimitsFields = snapshot.data!;
         if (isHaveMessagesLimitsFields) {
-          return StreamBuilder<PleromaApiInstancePollLimits?>(
+          return StreamBuilder<IUnifediApiInstancePollLimits?>(
             stream: instanceDetailsBloc.pollLimitsStream,
             initialData: instanceDetailsBloc.pollLimits,
             builder: (context, snapshot) {
               var pollLimits = snapshot.data;
 
               if (pollLimits != null) {
-                return _InstanceDetailsPleromaPollLimitsBodyWidget(
+                return _InstanceDetailsUnifediApiPollLimitsBodyWidget(
                   pollLimits: pollLimits,
                 );
               } else {
@@ -1294,13 +1287,13 @@ class _InstanceDetailsPleromaPollLimitsWidget extends StatelessWidget {
   }
 }
 
-class _InstanceDetailsPleromaPollLimitsBodyWidget extends StatelessWidget {
-  const _InstanceDetailsPleromaPollLimitsBodyWidget({
+class _InstanceDetailsUnifediApiPollLimitsBodyWidget extends StatelessWidget {
+  const _InstanceDetailsUnifediApiPollLimitsBodyWidget({
     Key? key,
     required this.pollLimits,
   }) : super(key: key);
 
-  final PleromaApiInstancePollLimits pollLimits;
+  final IUnifediApiInstancePollLimits pollLimits;
 
   @override
   Widget build(BuildContext context) {
@@ -1515,8 +1508,9 @@ class _InstanceDetailsPleromaMetadataFeaturesWidget extends StatelessWidget {
   }
 }
 
-class _InstanceDetailsPleromaMetadataFederationWidget extends StatelessWidget {
-  const _InstanceDetailsPleromaMetadataFederationWidget({
+class _InstanceDetailsunifediApiInstanceFederationWidget
+    extends StatelessWidget {
+  const _InstanceDetailsunifediApiInstanceFederationWidget({
     Key? key,
   }) : super(key: key);
 
@@ -1530,17 +1524,16 @@ class _InstanceDetailsPleromaMetadataFederationWidget extends StatelessWidget {
       builder: (context, snapshot) {
         var isHaveFederationFields = snapshot.data!;
         if (isHaveFederationFields) {
-          return StreamBuilder<
-              PleromaApiInstancePleromaPartMetadataFederation?>(
-            stream: instanceDetailsBloc.pleromaMetadataFederationStream,
-            initialData: instanceDetailsBloc.pleromaMetadataFederation,
+          return StreamBuilder<IUnifediApiInstanceFederation?>(
+            stream: instanceDetailsBloc.unifediApiInstanceFederationStream,
+            initialData: instanceDetailsBloc.unifediApiInstanceFederation,
             builder: (context, snapshot) {
-              var pleromaMetadataFederation = snapshot.data;
+              var unifediApiInstanceFederation = snapshot.data;
 
-              if (pleromaMetadataFederation != null) {
+              if (unifediApiInstanceFederation != null) {
                 return _buildBody(
                   context,
-                  pleromaMetadataFederation,
+                  unifediApiInstanceFederation,
                 );
               } else {
                 return const SizedBox.shrink();
@@ -1556,49 +1549,48 @@ class _InstanceDetailsPleromaMetadataFederationWidget extends StatelessWidget {
 
   Widget _buildBody(
     BuildContext context,
-    PleromaApiInstancePleromaPartMetadataFederation pleromaMetadataFederation,
+    IUnifediApiInstanceFederation unifediApiInstanceFederation,
   ) =>
       Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          __InstanceDetailsPleromaMetadataFederationTitleWidget(),
-          if (pleromaMetadataFederation.enabled != null)
-            _InstanceDetailsPleromaMetadataFederationEnabledFieldWidget(
-              pleromaMetadataFederation: pleromaMetadataFederation,
+          __InstanceDetailsUnifediApiInstanceFederationTitleWidget(),
+          if (unifediApiInstanceFederation.enabled != null)
+            _InstanceDetailsUnifediApiInstanceFederationEnabledFieldWidget(
+              unifediApiInstanceFederation: unifediApiInstanceFederation,
             ),
-          if (pleromaMetadataFederation.exclusions != null)
-            __InstanceDetailsPleromaMetadataFederationExclusionsWidget(
-              pleromaMetadataFederation: pleromaMetadataFederation,
+          if (unifediApiInstanceFederation.exclusions != null)
+            _InstanceDetailsUnifediApiInstanceFederationExclusionsWidget(
+              unifediApiInstanceFederation: unifediApiInstanceFederation,
             ),
-          if (pleromaMetadataFederation.mrfPolicies?.isNotEmpty == true)
-            _InstanceDetailsPleromaMetadataFederationMfrPoliciesWidget(
-              pleromaMetadataFederation: pleromaMetadataFederation,
+          if (unifediApiInstanceFederation.mrfPolicies?.isNotEmpty == true)
+            _InstanceDetailsUnifediApiInstanceFederationMfrPoliciesWidget(
+              unifediApiInstanceFederation: unifediApiInstanceFederation,
             ),
-          if (pleromaMetadataFederation.mrfObjectAge?.threshold != null)
-            _InstanceDetailsPleromaMetadataFederationMfrObjectAgeThresholdWidget(
-              pleromaMetadataFederation: pleromaMetadataFederation,
+          if (unifediApiInstanceFederation.mrfObjectAge?.threshold != null)
+            _InstanceDetailsUnifediApiInstanceFederationMfrObjectAgeThresholdWidget(
+              unifediApiInstanceFederation: unifediApiInstanceFederation,
             ),
-          if (pleromaMetadataFederation.mrfObjectAge?.actions != null)
-            _InstanceDetailsPleromaMetadataFederationMfrObjectAgeActionsWidget(
-              pleromaMetadataFederation: pleromaMetadataFederation,
+          if (unifediApiInstanceFederation.mrfObjectAge?.actions != null)
+            _InstanceDetailsUnifediApiInstanceFederationMfrObjectAgeActionsWidget(
+              unifediApiInstanceFederation: unifediApiInstanceFederation,
             ),
-          if (pleromaMetadataFederation.quarantinedInstances?.isNotEmpty ==
+          if (unifediApiInstanceFederation.quarantinedInstances?.isNotEmpty ==
               true)
-            _InstanceDetailsPleromaMetadataFederationQuarantinedInstancesWidget(
-              pleromaMetadataFederation: pleromaMetadataFederation,
+            _InstanceDetailsunifediApiInstanceFederationQuarantinedInstancesWidget(
+              unifediApiInstanceFederation: unifediApiInstanceFederation,
             ),
         ],
       );
 }
 
-class _InstanceDetailsPleromaMetadataFederationMfrObjectAgeActionsWidget
+class _InstanceDetailsUnifediApiInstanceFederationMfrObjectAgeActionsWidget
     extends StatelessWidget {
-  final PleromaApiInstancePleromaPartMetadataFederation
-      pleromaMetadataFederation;
+  final IUnifediApiInstanceFederation unifediApiInstanceFederation;
 
-  const _InstanceDetailsPleromaMetadataFederationMfrObjectAgeActionsWidget({
+  const _InstanceDetailsUnifediApiInstanceFederationMfrObjectAgeActionsWidget({
     Key? key,
-    required this.pleromaMetadataFederation,
+    required this.unifediApiInstanceFederation,
   }) : super(key: key);
 
   @override
@@ -1607,20 +1599,19 @@ class _InstanceDetailsPleromaMetadataFederationMfrObjectAgeActionsWidget
       label: S
           .of(context)
           .app_instance_details_field_federation_mrfObjectAge_actions_label,
-      value: pleromaMetadataFederation.mrfObjectAge!.actions!.join('\n'),
+      value: unifediApiInstanceFederation.mrfObjectAge!.actions!.join('\n'),
     );
   }
 }
 
-class _InstanceDetailsPleromaMetadataFederationQuarantinedInstancesWidget
+class _InstanceDetailsunifediApiInstanceFederationQuarantinedInstancesWidget
     extends StatelessWidget {
-  const _InstanceDetailsPleromaMetadataFederationQuarantinedInstancesWidget({
+  const _InstanceDetailsunifediApiInstanceFederationQuarantinedInstancesWidget({
     Key? key,
-    required this.pleromaMetadataFederation,
+    required this.unifediApiInstanceFederation,
   }) : super(key: key);
 
-  final PleromaApiInstancePleromaPartMetadataFederation
-      pleromaMetadataFederation;
+  final IUnifediApiInstanceFederation unifediApiInstanceFederation;
 
   @override
   Widget build(BuildContext context) {
@@ -1628,20 +1619,19 @@ class _InstanceDetailsPleromaMetadataFederationQuarantinedInstancesWidget
       label: S
           .of(context)
           .app_instance_details_field_federation_quarantinedInstances_label,
-      value: pleromaMetadataFederation.quarantinedInstances!.join('\n'),
+      value: unifediApiInstanceFederation.quarantinedInstances!.join('\n'),
     );
   }
 }
 
-class _InstanceDetailsPleromaMetadataFederationMfrObjectAgeThresholdWidget
+class _InstanceDetailsUnifediApiInstanceFederationMfrObjectAgeThresholdWidget
     extends StatelessWidget {
-  const _InstanceDetailsPleromaMetadataFederationMfrObjectAgeThresholdWidget({
+  const _InstanceDetailsUnifediApiInstanceFederationMfrObjectAgeThresholdWidget({
     Key? key,
-    required this.pleromaMetadataFederation,
+    required this.unifediApiInstanceFederation,
   }) : super(key: key);
 
-  final PleromaApiInstancePleromaPartMetadataFederation
-      pleromaMetadataFederation;
+  final IUnifediApiInstanceFederation unifediApiInstanceFederation;
 
   @override
   Widget build(BuildContext context) {
@@ -1652,79 +1642,76 @@ class _InstanceDetailsPleromaMetadataFederationMfrObjectAgeThresholdWidget
       value: formatDuration(
         context: context,
         duration: Duration(
-          seconds: pleromaMetadataFederation.mrfObjectAge!.threshold!,
+          seconds: unifediApiInstanceFederation.mrfObjectAge!.threshold!,
         ),
       ),
     );
   }
 }
 
-class _InstanceDetailsPleromaMetadataFederationMfrPoliciesWidget
+class _InstanceDetailsUnifediApiInstanceFederationMfrPoliciesWidget
     extends StatelessWidget {
-  const _InstanceDetailsPleromaMetadataFederationMfrPoliciesWidget({
+  const _InstanceDetailsUnifediApiInstanceFederationMfrPoliciesWidget({
     Key? key,
-    required this.pleromaMetadataFederation,
+    required this.unifediApiInstanceFederation,
   }) : super(key: key);
 
-  final PleromaApiInstancePleromaPartMetadataFederation
-      pleromaMetadataFederation;
+  final IUnifediApiInstanceFederation unifediApiInstanceFederation;
 
   @override
   Widget build(BuildContext context) {
     return _SimpleInstanceDetailsRowWidget(
       label:
           S.of(context).app_instance_details_field_federation_mrfPolicies_label,
-      value: pleromaMetadataFederation.mrfPolicies!.join('\n'),
+      value: unifediApiInstanceFederation.mrfPolicies!.join('\n'),
     );
   }
 }
 
-class __InstanceDetailsPleromaMetadataFederationExclusionsWidget
+class _InstanceDetailsUnifediApiInstanceFederationExclusionsWidget
     extends StatelessWidget {
-  const __InstanceDetailsPleromaMetadataFederationExclusionsWidget({
+  const _InstanceDetailsUnifediApiInstanceFederationExclusionsWidget({
     Key? key,
-    required this.pleromaMetadataFederation,
+    required this.unifediApiInstanceFederation,
   }) : super(key: key);
 
-  final PleromaApiInstancePleromaPartMetadataFederation
-      pleromaMetadataFederation;
+  final IUnifediApiInstanceFederation unifediApiInstanceFederation;
 
   @override
   Widget build(BuildContext context) {
     return _SimpleInstanceDetailsRowWidget(
       label:
           S.of(context).app_instance_details_field_federation_exclusions_label,
-      value: pleromaMetadataFederation.enabled!
+      value: unifediApiInstanceFederation.enabled!
           ? S.of(context).app_instance_details_value_bool_true
           : S.of(context).app_instance_details_value_bool_false,
     );
   }
 }
 
-class _InstanceDetailsPleromaMetadataFederationEnabledFieldWidget
+class _InstanceDetailsUnifediApiInstanceFederationEnabledFieldWidget
     extends StatelessWidget {
-  const _InstanceDetailsPleromaMetadataFederationEnabledFieldWidget({
+  const _InstanceDetailsUnifediApiInstanceFederationEnabledFieldWidget({
     Key? key,
-    required this.pleromaMetadataFederation,
+    required this.unifediApiInstanceFederation,
   }) : super(key: key);
 
-  final PleromaApiInstancePleromaPartMetadataFederation
-      pleromaMetadataFederation;
+  final IUnifediApiInstanceFederation unifediApiInstanceFederation;
 
   @override
   Widget build(BuildContext context) {
     return _SimpleInstanceDetailsRowWidget(
       label: S.of(context).app_instance_details_field_federation_enabled_label,
-      value: pleromaMetadataFederation.enabled!
+      value: unifediApiInstanceFederation.enabled!
           ? S.of(context).app_instance_details_value_bool_true
           : S.of(context).app_instance_details_value_bool_false,
     );
   }
 }
 
-class __InstanceDetailsPleromaMetadataFederationTitleWidget
+class __InstanceDetailsUnifediApiInstanceFederationTitleWidget
     extends StatelessWidget {
-  const __InstanceDetailsPleromaMetadataFederationTitleWidget({
+  const __InstanceDetailsUnifediApiInstanceFederationTitleWidget({
     Key? key,
   }) : super(key: key);
 
@@ -1755,8 +1742,7 @@ class _InstanceDetailsPleromaMetadataFieldsLimitsWidget
         var isHaveMessagesLimitsFields = snapshot.data!;
 
         if (isHaveMessagesLimitsFields) {
-          return StreamBuilder<
-              PleromaApiInstancePleromaPartMetadataFieldLimits?>(
+          return StreamBuilder<IUnifediApiInstanceFieldLimits?>(
             stream: instanceDetailsBloc.pleromaMetadataFieldsLimitsStream,
             initialData: instanceDetailsBloc.pleromaMetadataFieldsLimits,
             builder: (context, snapshot) {

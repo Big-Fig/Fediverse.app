@@ -1,5 +1,5 @@
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:base_fediverse_api/base_fediverse_api.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -11,27 +11,27 @@ abstract class IWebSocketsHandlerManagerBloc implements IDisposable {
       Provider.of<IWebSocketsHandlerManagerBloc>(context, listen: listen);
 
   IDisposable listenMyAccountChannel({
-    required WebSocketsListenType listenType,
+    required WebSocketsChannelHandlerType handlerType,
     required bool notification,
     required bool chat,
   });
 
   IDisposable listenAccountChannel({
-    required WebSocketsListenType listenType,
+    required WebSocketsChannelHandlerType handlerType,
     required String accountId,
     required bool notification,
   });
 
   IDisposable listenConversationChannel({
-    required WebSocketsListenType listenType,
+    required WebSocketsChannelHandlerType handlerType,
   });
 
   IDisposable listenPleromaChatChannel({
-    required WebSocketsListenType listenType,
+    required WebSocketsChannelHandlerType handlerType,
   });
 
   IDisposable listenPublicChannel({
-    required WebSocketsListenType listenType,
+    required WebSocketsChannelHandlerType handlerType,
     required bool? onlyLocal,
     required bool? onlyMedia,
     required bool? onlyRemote,
@@ -39,13 +39,13 @@ abstract class IWebSocketsHandlerManagerBloc implements IDisposable {
   });
 
   IDisposable listenHashtagChannel({
-    required WebSocketsListenType listenType,
+    required WebSocketsChannelHandlerType handlerType,
     required String hashtag,
     required bool? local,
   });
 
   IDisposable listenListChannel({
-    required WebSocketsListenType listenType,
+    required WebSocketsChannelHandlerType handlerType,
     required String listId,
   });
 }

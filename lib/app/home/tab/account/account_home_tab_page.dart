@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
+import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/header/account_header_background_widget.dart';
 import 'package:fedi/app/account/my/action/my_account_action_list_bottom_sheet_dialog.dart';
@@ -15,7 +16,6 @@ import 'package:fedi/app/account/statuses/media_only/cached/account_statuses_med
 import 'package:fedi/app/account/statuses/pinned_only/network_only/local/local_account_statuses_pinned_only_network_only_list_bloc_impl.dart';
 import 'package:fedi/app/account/statuses/with_replies/cached/account_statuses_with_replies_cached_list_bloc_impl.dart';
 import 'package:fedi/app/account/statuses/without_replies/cached/account_statuses_without_replies_cached_list_bloc_impl.dart';
-import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/home/tab/account/account_home_tab_bloc.dart';
 import 'package:fedi/app/home/tab/account/account_home_tab_page_keys.dart';
 import 'package:fedi/app/home/tab/account/menu/account_home_tab_menu_dialog.dart';
@@ -49,12 +49,13 @@ import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc_impl.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:fedi/provider/tab_controller_provider.dart';
 import 'package:fedi/ui/scroll/scroll_controller_bloc.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 const _headerBackgroundHeight = 120.0;
 
@@ -395,7 +396,7 @@ class _AccountHomeTabProviderFavouritedTabProviderWidget
   Widget build(BuildContext context) {
     return DisposableProvider<IMyAccountFavouritedStatusesCachedListBloc>(
       create: (context) => MyAccountFavouritedStatusesCachedListBloc(
-        pleromaMyAccountService: Provider.of<IPleromaApiMyAccountService>(
+        unifediApiMyAccountService: Provider.of<IUnifediApiMyAccountService>(
           context,
           listen: false,
         ),
@@ -409,7 +410,7 @@ class _AccountHomeTabProviderFavouritedTabProviderWidget
         update: (context, value, previous) => value,
         child: StatusCachedListBlocProxyProvider(
           child: ProxyProvider<IMyAccountFavouritedStatusesCachedListBloc,
-              IPleromaCachedListBloc<IStatus?>>(
+              ICachedListBloc<IStatus?>>(
             update: (context, value, previous) => value,
             child: StatusCachedListBlocLoadingWidget(
               child: StatusCachedPaginationBloc.provideToContext(
@@ -438,7 +439,7 @@ class _AccountHomeTabCurrentInstanceNameWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var currentInstanceBloc =
-        ICurrentAuthInstanceBloc.of(context, listen: false);
+        ICurrentUnifediApiAccessBloc.of(context, listen: false);
 
     return AutoSizeText(
       currentInstanceBloc.currentInstance!.userAtHost,

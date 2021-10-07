@@ -44,13 +44,14 @@ class WebSocketsSettingsAdapter extends TypeAdapter<WebSocketsSettings> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-WebSocketsSettings _$WebSocketsSettingsFromJson(Map<String, dynamic> json) {
-  return WebSocketsSettings(
-    handlingTypeString: json['type_string'] as String,
-  );
-}
+_$_WebSocketsSettings _$$_WebSocketsSettingsFromJson(
+        Map<String, dynamic> json) =>
+    _$_WebSocketsSettings(
+      handlingTypeString: json['type_string'] as String,
+    );
 
-Map<String, dynamic> _$WebSocketsSettingsToJson(WebSocketsSettings instance) =>
+Map<String, dynamic> _$$_WebSocketsSettingsToJson(
+        _$_WebSocketsSettings instance) =>
     <String, dynamic>{
       'type_string': instance.handlingTypeString,
     };

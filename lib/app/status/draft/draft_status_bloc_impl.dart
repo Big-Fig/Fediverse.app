@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/draft/draft_status_bloc.dart';
 import 'package:fedi/app/status/draft/draft_status_model.dart';
@@ -7,18 +8,17 @@ import 'package:fedi/app/status/draft/repository/draft_status_repository.dart';
 import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository.dart';
-import 'package:easy_dispose/easy_dispose.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:moor/moor.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
   // ignore: close_sinks
   final BehaviorSubject<IDraftStatus> _draftStatusSubject;
 
-  final IPleromaApiAuthStatusService pleromaAuthStatusService;
+  final IUnifediApiStatusService unifediApiStatusService;
   final IDraftStatusRepository draftStatusRepository;
   final IScheduledStatusRepository scheduledStatusRepository;
   final IStatusRepository statusRepository;
@@ -35,7 +35,7 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
   Stream<DraftStatusState> get stateStream => _stateSubject.stream;
 
   DraftStatusBloc({
-    required this.pleromaAuthStatusService,
+    required this.unifediApiStatusService,
     required this.statusRepository,
     required this.scheduledStatusRepository,
     required this.draftStatusRepository,
@@ -84,8 +84,8 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
     bool delayInit = true,
   }) =>
       DraftStatusBloc(
-        pleromaAuthStatusService:
-            Provider.of<IPleromaApiAuthStatusService>(context, listen: false),
+        unifediApiStatusService:
+            Provider.of<IUnifediApiStatusService>(context, listen: false),
         statusRepository: IStatusRepository.of(context, listen: false),
         draftStatusRepository:
             IDraftStatusRepository.of(context, listen: false),
@@ -120,22 +120,38 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
   @override
   Future postDraft(PostStatusData postStatusData) async {
     if (postStatusData.isScheduled) {
-      var pleromaScheduledStatus =
-          await pleromaAuthStatusService.scheduleStatus(
-        data: postStatusData.toPleromaScheduleStatus(
-          idempotencyKey: null,
-        ),
+      var pleromaScheduledStatus = await unifediApiStatusService.scheduleStatus(
+        idempotencyKey: null,
+        postStatus: postStatusData.toUnifediApiSchedulePostStatus(),
       );
       await scheduledStatusRepository
           .upsertInRemoteType(pleromaScheduledStatus);
     } else {
-      var pleromaStatus = await pleromaAuthStatusService.postStatus(
-        data: postStatusData.toPleromaPostStatus(
-          idempotencyKey: null,
-        ),
+      var inReplyToConversationIdSupported =
+          unifediApiStatusService.isFeatureSupported(
+        unifediApiStatusService.postStatusInReplyToConversationIdFeature,
+      );
+
+      var previewSupported = unifediApiStatusService.isFeatureSupported(
+        unifediApiStatusService.postStatusPreviewFeature,
+      );
+
+      var expiresInSupported = unifediApiStatusService.isFeatureSupported(
+        unifediApiStatusService.postStatusExpiresInFeature,
+      );
+
+      var postStatus = postStatusData.toPostStatus(
+        inReplyToConversationIdSupported: inReplyToConversationIdSupported,
+        previewSupported: previewSupported,
+        expiresInSupported: expiresInSupported,
+      );
+
+      var unifediApiStatus = await unifediApiStatusService.postStatus(
+        idempotencyKey: null,
+        postStatus: postStatus,
       );
       await statusRepository.upsertRemoteStatusWithAllArguments(
-        pleromaStatus,
+        unifediApiStatus,
         listRemoteId: null,
         conversationRemoteId: postStatusData.inReplyToConversationId,
         isFromHomeTimeline: null,

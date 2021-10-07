@@ -10,14 +10,15 @@ import 'package:fedi/app/notification/tab/notification_tab_model.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
+import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
-import 'package:base_fediverse_api/base_fediverse_api.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 var _logger = Logger('notification_tabs_bloc_impl.dart');
 
@@ -55,10 +56,11 @@ class NotificationsTabsBloc extends AsyncInitLoadingBloc
   @override
   Stream<NotificationTab> get selectedTabStream => selectedTabSubject!.stream;
 
-  final IPleromaApiNotificationService pleromaNotificationService;
+  final IUnifediApiNotificationService pleromaNotificationService;
   final INotificationRepository notificationRepository;
   final IFilterRepository filterRepository;
   final IPaginationSettingsBloc paginationSettingsBloc;
+  final IConnectionService connectionService;
 
   NotificationsTabsBloc({
     required NotificationTab startTab,
@@ -66,13 +68,14 @@ class NotificationsTabsBloc extends AsyncInitLoadingBloc
     required this.notificationRepository,
     required this.filterRepository,
     required this.paginationSettingsBloc,
+    required this.connectionService,
     required IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc,
   }) {
     selectedTabSubject = BehaviorSubject.seeded(startTab)..disposeWith(this);
 
     addDisposable(
       webSocketsHandlerManagerBloc.listenMyAccountChannel(
-        listenType: WebSocketsListenType.foreground,
+        handlerType: WebSocketsChannelHandlerType.foregroundValue,
         notification: true,
         chat: false,
       ),
@@ -81,9 +84,13 @@ class NotificationsTabsBloc extends AsyncInitLoadingBloc
 
   static NotificationsTabsBloc createFromContext(BuildContext context) =>
       NotificationsTabsBloc(
+        connectionService: Provider.of<IConnectionService>(
+          context,
+          listen: false,
+        ),
         startTab: NotificationTab.all,
         pleromaNotificationService:
-            Provider.of<IPleromaApiNotificationService>(context, listen: false),
+            Provider.of<IUnifediApiNotificationService>(context, listen: false),
         notificationRepository:
             INotificationRepository.of(context, listen: false),
         webSocketsHandlerManagerBloc: IWebSocketsHandlerManagerBloc.of(
@@ -111,6 +118,7 @@ class NotificationsTabsBloc extends AsyncInitLoadingBloc
         pleromaNotificationService: pleromaNotificationService,
         filterRepository: filterRepository,
         paginationSettingsBloc: paginationSettingsBloc,
+        connectionService: connectionService,
       );
 
       await notificationTabBloc.performAsyncInit();

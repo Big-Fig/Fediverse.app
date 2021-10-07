@@ -1,33 +1,18 @@
 import 'package:fedi/form/group/pair/link_pair_form_group_bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class EditMyAccountCustomFieldsItemFieldData {
-  final ILinkPairFormGroupBloc customField;
-  final ILinkPairFormGroupBloc? nextCustomField;
-  final int index;
+part 'edit_my_account_custom_fields_field_model.freezed.dart';
 
-  EditMyAccountCustomFieldsItemFieldData({
-    required this.customField,
-    required this.nextCustomField,
-    required this.index,
-  });
+@freezed
+class EditMyAccountCustomFieldsItemFieldData
+    with _$EditMyAccountCustomFieldsItemFieldData {
+  const EditMyAccountCustomFieldsItemFieldData._();
+
+  const factory EditMyAccountCustomFieldsItemFieldData({
+    required ILinkPairFormGroupBloc customField,
+    required ILinkPairFormGroupBloc? nextCustomField,
+    required int index,
+  }) = _EditMyAccountCustomFieldsItemFieldData;
 
   int get number => index + 1;
-
-  @override
-  String toString() => 'EditMyAccountCustomFieldsItemFieldData{'
-      'customField: $customField,'
-      ' nextCustomField: $nextCustomField, index: $index}';
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is EditMyAccountCustomFieldsItemFieldData &&
-          runtimeType == other.runtimeType &&
-          customField == other.customField &&
-          nextCustomField == other.nextCustomField &&
-          index == other.index;
-
-  @override
-  int get hashCode =>
-      customField.hashCode ^ nextCustomField.hashCode ^ index.hashCode;
 }

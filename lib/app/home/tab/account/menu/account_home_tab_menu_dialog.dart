@@ -1,6 +1,6 @@
 import 'package:fedi/app/about/about_page.dart';
+import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/account/my/statuses/bookmarked/my_account_bookmarked_statuses_page.dart';
-import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/custom_list/list/custom_list_list_page.dart';
 import 'package:fedi/app/home/tab/account/menu/account_home_tab_menu_dialog_keys.dart';
@@ -20,6 +20,7 @@ import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/in_app_review/ask/local_preferences/ask_in_app_review_local_preference_bloc.dart';
 import 'package:fedi/in_app_review/in_app_review_bloc.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -103,7 +104,7 @@ class _AccountHomeTabMenuDialogBodyInstanceItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var currentInstanceUrlHost =
-        ICurrentAuthInstanceBloc.of(context, listen: false)
+        ICurrentUnifediApiAccessBloc.of(context, listen: false)
             .currentInstance!
             .urlHost;
 
@@ -149,7 +150,7 @@ class _InstanceSettingsHomeTabMenuDialogBodySettingsItemWidget
 
   @override
   Widget build(BuildContext context) {
-    var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
+    var currentUnifediApiAccessBloc = ICurrentUnifediApiAccessBloc.of(context);
 
     return InkWell(
       onTap: () {
@@ -158,7 +159,7 @@ class _InstanceSettingsHomeTabMenuDialogBodySettingsItemWidget
       child: _SimpleAccountHomeTabMenuDialogBodyItem(
         iconData: FediIcons.instance,
         text: S.of(context).app_account_home_tab_menu_action_instance_settings(
-              currentAuthInstanceBloc.currentInstance!.userAtHost,
+              currentUnifediApiAccessBloc.currentInstance!.userAtHost,
             ),
       ),
     );
@@ -247,20 +248,13 @@ class _AboutHomeTabMenuDialogBodyListsItemWidget extends StatelessWidget {
       onTap: () {
         goToAboutPage(context: context);
       },
-      child: InstanceAnnouncementCountIntBadgeBloc.provideToContext(
-        context,
-        child: _AccountHomeTabMenuDialogBodyItem(
-          iconWidget: FediIntBadgeWidget(
-            offset: 0.0,
-            child: _AccountHomeTabMenuDialogBodyItemIcon(
-              iconData: FediIcons.info,
-            ),
-          ),
-          textWidget: _AccountHomeTabMenuDialogBodyItemText(
-            text: S
-                .of(context)
-                .app_account_home_tab_menu_action_instance_aboutApp,
-          ),
+      child: _AccountHomeTabMenuDialogBodyItem(
+        iconWidget: _AccountHomeTabMenuDialogBodyItemIcon(
+          iconData: FediIcons.info,
+        ),
+        textWidget: _AccountHomeTabMenuDialogBodyItemText(
+          text:
+              S.of(context).app_account_home_tab_menu_action_instance_aboutApp,
         ),
       ),
     );

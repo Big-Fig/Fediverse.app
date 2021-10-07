@@ -594,7 +594,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Posts"),
         "app_async_pleroma_error_common_dialog_content": m10,
         "app_async_pleroma_error_common_dialog_title":
-            MessageLookupByLibrary.simpleMessage("Pleroma API error"),
+            MessageLookupByLibrary.simpleMessage("API error"),
         "app_async_pleroma_error_forbidden_dialog_content": m11,
         "app_async_pleroma_error_forbidden_dialog_title":
             MessageLookupByLibrary.simpleMessage(
@@ -1573,6 +1573,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Invalid date or time"),
         "app_status_post_settings_field_defaultVisibility_label":
             MessageLookupByLibrary.simpleMessage("Default visibility"),
+        "app_status_post_settings_field_dontUploadMediaDuringEditing_label":
+            MessageLookupByLibrary.simpleMessage(
+                "Don\'t upload media during editing"),
         "app_status_post_settings_field_markMediaAsNsfwOnAttach_label":
             MessageLookupByLibrary.simpleMessage("Mark media as NSFW"),
         "app_status_post_settings_title":

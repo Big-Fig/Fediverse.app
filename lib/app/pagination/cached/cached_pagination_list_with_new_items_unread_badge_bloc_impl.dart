@@ -1,5 +1,5 @@
-import 'package:fedi/app/ui/badge/bool/fedi_bool_badge_bloc.dart';
 import 'package:easy_dispose/easy_dispose.dart';
+import 'package:fedi/app/ui/badge/bool/fedi_bool_badge_bloc.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 
 class CachedPaginationListWithNewItemsUnreadBadgeBloc extends DisposableOwner

@@ -9,7 +9,7 @@ import '../emoji_picker_custom_image_url_category_test_helper.dart';
 
 void main() {
   test('save & load', () async {
-    await LocalPreferencesTestHelper.testSaveAndLoad<
+    await LocalPreferencesMockHelper.testSaveAndLoad<
         EmojiPickerCustomImageUrlCategoryItems,
         EmojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc>(
       defaultValue:
@@ -20,7 +20,7 @@ void main() {
         userAtHost: 'user@host',
       ),
       testObjectCreator: ({required String seed}) =>
-          CustomEmojiPickerImageUrlItemModelTestHelper
+          CustomEmojiPickerImageUrlItemModelMockHelper
               .createTestEmojiPickerCustomImageUrlCategoryItems(
         seed: seed,
       ),

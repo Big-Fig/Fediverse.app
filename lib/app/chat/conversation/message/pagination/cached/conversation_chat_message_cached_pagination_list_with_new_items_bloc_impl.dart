@@ -13,7 +13,6 @@ import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_wit
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc_proxy_provider.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
-
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 

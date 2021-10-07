@@ -22,8 +22,8 @@ class PushSettingsAdapter extends TypeAdapter<PushSettings> {
       mention: fields[3] as bool?,
       reblog: fields[4] as bool?,
       poll: fields[5] as bool?,
-      pleromaChatMention: fields[6] as bool?,
-      pleromaEmojiReaction: fields[7] as bool?,
+      chatMention: fields[6] as bool?,
+      emojiReaction: fields[7] as bool?,
     );
   }
 
@@ -42,9 +42,9 @@ class PushSettingsAdapter extends TypeAdapter<PushSettings> {
       ..writeByte(5)
       ..write(obj.poll)
       ..writeByte(6)
-      ..write(obj.pleromaChatMention)
+      ..write(obj.chatMention)
       ..writeByte(7)
-      ..write(obj.pleromaEmojiReaction);
+      ..write(obj.emojiReaction);
   }
 
   @override
@@ -62,25 +62,32 @@ class PushSettingsAdapter extends TypeAdapter<PushSettings> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-PushSettings _$PushSettingsFromJson(Map<String, dynamic> json) {
-  return PushSettings(
-    favourite: json['favourite'] as bool?,
-    follow: json['follow'] as bool?,
-    mention: json['mention'] as bool?,
-    reblog: json['reblog'] as bool?,
-    poll: json['poll'] as bool?,
-    pleromaChatMention: json['pleromaChatMention'] as bool?,
-    pleromaEmojiReaction: json['pleromaEmojiReaction'] as bool?,
-  );
-}
+_$_PushSettings _$$_PushSettingsFromJson(Map<String, dynamic> json) =>
+    _$_PushSettings(
+      favourite: json['favourite'] as bool?,
+      follow: json['follow'] as bool?,
+      mention: json['mention'] as bool?,
+      reblog: json['reblog'] as bool?,
+      poll: json['poll'] as bool?,
+      chatMention: json['chatMention'] as bool?,
+      emojiReaction: json['emojiReaction'] as bool?,
+    );
 
-Map<String, dynamic> _$PushSettingsToJson(PushSettings instance) =>
-    <String, dynamic>{
-      'favourite': instance.favourite,
-      'follow': instance.follow,
-      'mention': instance.mention,
-      'reblog': instance.reblog,
-      'poll': instance.poll,
-      'pleromaChatMention': instance.pleromaChatMention,
-      'pleromaEmojiReaction': instance.pleromaEmojiReaction,
-    };
+Map<String, dynamic> _$$_PushSettingsToJson(_$_PushSettings instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('favourite', instance.favourite);
+  writeNotNull('follow', instance.follow);
+  writeNotNull('mention', instance.mention);
+  writeNotNull('reblog', instance.reblog);
+  writeNotNull('poll', instance.poll);
+  writeNotNull('chatMention', instance.chatMention);
+  writeNotNull('emojiReaction', instance.emojiReaction);
+  return val;
+}

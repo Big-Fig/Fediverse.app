@@ -3,7 +3,7 @@ import 'package:fedi/emoji_picker/item/code/custom_emoji_picker_code_item_model.
 import 'package:fedi/emoji_picker/item/image_url/custom_emoji_picker_image_url_item_model.dart';
 
 // ignore_for_file: no-magic-number
-class EmojiPickerRecentCategoryItemsListModelTestHelper {
+class EmojiPickerRecentCategoryItemsListModelMockHelper {
   static CustomEmojiPickerCodeItem createTestCustomEmojiPickerCodeItem({
     required String seed,
   }) =>

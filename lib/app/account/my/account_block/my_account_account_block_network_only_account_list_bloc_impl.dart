@@ -1,3 +1,5 @@
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/account/list/network_only/account_network_only_list_bloc.dart';
@@ -6,21 +8,19 @@ import 'package:fedi/app/account/my/account_block/my_account_account_block_netwo
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/list/network_only/network_only_list_bloc.dart';
-import 'package:easy_dispose/easy_dispose.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class MyAccountAccountBlockNetworkOnlyAccountListBloc extends DisposableOwner
     implements IMyAccountAccountBlockNetworkOnlyAccountListBloc {
-  final IPleromaApiAuthAccountService pleromaAuthAccountService;
-  final IPleromaApiMyAccountService pleromaMyAccountService;
+  final IUnifediApiAccountService pleromaAuthAccountService;
+  final IUnifediApiMyAccountService unifediApiMyAccountService;
   final IAccountRepository accountRepository;
 
   MyAccountAccountBlockNetworkOnlyAccountListBloc({
     required this.pleromaAuthAccountService,
-    required this.pleromaMyAccountService,
+    required this.unifediApiMyAccountService,
     required this.accountRepository,
   });
 
@@ -29,14 +29,14 @@ class MyAccountAccountBlockNetworkOnlyAccountListBloc extends DisposableOwner
     required IAccount account,
   }) async {
     var accountRelationship = await pleromaAuthAccountService.unBlockAccount(
-      accountRemoteId: account.remoteId,
+      accountId: account.remoteId,
     );
 
     var remoteAccount = account
-        .copyWith(
-          pleromaRelationship: accountRelationship,
+        .copyWithTemp(
+          relationship: accountRelationship,
         )
-        .toPleromaApiAccount();
+        .toUnifediApiAccount();
 
     await accountRepository.upsertInRemoteType(
       remoteAccount,
@@ -48,14 +48,14 @@ class MyAccountAccountBlockNetworkOnlyAccountListBloc extends DisposableOwner
     required IAccount account,
   }) async {
     var accountRelationship = await pleromaAuthAccountService.blockAccount(
-      accountRemoteId: account.remoteId,
+      accountId: account.remoteId,
     );
 
     var remoteAccount = account
-        .copyWith(
-          pleromaRelationship: accountRelationship,
+        .copyWithTemp(
+          relationship: accountRelationship,
         )
-        .toPleromaApiAccount();
+        .toUnifediApiAccount();
 
     await accountRepository.upsertInRemoteType(
       remoteAccount,
@@ -69,9 +69,9 @@ class MyAccountAccountBlockNetworkOnlyAccountListBloc extends DisposableOwner
     String? minId,
     String? maxId,
   }) async {
-    var remoteAccounts = await pleromaMyAccountService.getAccountBlocks(
-      pagination: PleromaApiPaginationRequest(
-        sinceId: minId,
+    var remoteAccounts = await unifediApiMyAccountService.getMyAccountBlocks(
+      pagination: UnifediApiPagination(
+        minId: minId,
         maxId: maxId,
         limit: itemsCountPerPage,
       ),
@@ -91,13 +91,13 @@ class MyAccountAccountBlockNetworkOnlyAccountListBloc extends DisposableOwner
   }
 
   @override
-  IPleromaApi get pleromaApi => pleromaMyAccountService;
+  IUnifediApiService get unifediApi => unifediApiMyAccountService;
 
   static MyAccountAccountBlockNetworkOnlyAccountListBloc createFromContext(
     BuildContext context,
   ) =>
       MyAccountAccountBlockNetworkOnlyAccountListBloc(
-        pleromaMyAccountService: Provider.of<IPleromaApiMyAccountService>(
+        unifediApiMyAccountService: Provider.of<IUnifediApiMyAccountService>(
           context,
           listen: false,
         ),
@@ -105,7 +105,7 @@ class MyAccountAccountBlockNetworkOnlyAccountListBloc extends DisposableOwner
           context,
           listen: false,
         ),
-        pleromaAuthAccountService: Provider.of<IPleromaApiAuthAccountService>(
+        pleromaAuthAccountService: Provider.of<IUnifediApiAccountService>(
           context,
           listen: false,
         ),

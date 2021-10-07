@@ -2,14 +2,15 @@ import 'package:fedi/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:unifedi_api/unifedi_api.dart';
+import 'package:unifedi_api/unifedi_api_mock_helper.dart';
 
 import '../../account/database/account_database_test_helper.dart';
 
 // ignore_for_file: no-magic-number
 
-class StatusDatabaseTestHelper {
+class StatusDatabaseMockHelper {
   static Future<DbStatusPopulated> createTestDbStatusPopulated(
     DbStatus dbStatus,
     AccountRepository accountRepository,
@@ -33,7 +34,7 @@ class StatusDatabaseTestHelper {
     required String seed,
     DateTime? createdAt,
     required DbAccount dbAccount,
-    bool? pleromaThreadMuted = false,
+    bool? threadMuted = false,
     String? remoteId,
     String? inReplyToAccountRemoteId = 'inReplyToAccountRemoteId',
   }) async {
@@ -45,7 +46,7 @@ class StatusDatabaseTestHelper {
       inReplyToAccountRemoteId: inReplyToAccountRemoteId,
       sensitive: true,
       spoilerText: seed + 'spoilerText',
-      visibility: PleromaApiVisibility.public,
+      visibility: UnifediApiVisibility.publicValue,
       uri: seed + 'uri',
       url: seed + 'url',
       repliesCount: 3,
@@ -58,8 +59,7 @@ class StatusDatabaseTestHelper {
       bookmarked: false,
       content: seed + 'content',
       reblogStatusRemoteId: null,
-      application:
-          PleromaApiApplicationTestHelper.createTestPleromaApiApplication(
+      application: UnifediApiApplicationMockHelper.generate(
         seed: seed,
       ),
       accountRemoteId: dbAccount.remoteId,
@@ -70,43 +70,43 @@ class StatusDatabaseTestHelper {
       poll: null,
       card: null,
       language: seed + 'language',
-      pleromaContent: null,
-      pleromaConversationId: null,
-      pleromaDirectConversationId: null,
-      pleromaInReplyToAccountAcct: null,
-      pleromaLocal: true,
-      pleromaSpoilerText: null,
-      pleromaExpiresAt: DateTime(6),
-      pleromaThreadMuted: pleromaThreadMuted,
-      pleromaEmojiReactions: null,
+      contentVariants: null,
+      conversationId: null,
+      directConversationId: null,
+      inReplyToAccountAcct: null,
+      local: true,
+      spoilerTextVariants: null,
+      expiresAt: DateTime(6),
+      threadMuted: threadMuted,
+      emojiReactions: null,
     );
 
     return dbStatus;
   }
 
-  static Future<PleromaApiStatus> createTestRemoteStatus({
+  static Future<UnifediApiStatus> createTestRemoteStatus({
     required String seed,
     DateTime? createdAt,
     required DbAccount dbAccount,
-    bool pleromaThreadMuted = false,
+    bool threadMuted = false,
     String? remoteId,
     required AccountRepository accountRepository,
   }) async {
-    var dbStatus = await StatusDatabaseTestHelper.createTestDbStatus(
+    var dbStatus = await StatusDatabaseMockHelper.createTestDbStatus(
       seed: seed,
       dbAccount: dbAccount,
       createdAt: createdAt,
-      pleromaThreadMuted: pleromaThreadMuted,
+      threadMuted: threadMuted,
       remoteId: remoteId,
     );
     var dbStatusPopulated =
-        await StatusDatabaseTestHelper.createTestDbStatusPopulated(
+        await StatusDatabaseMockHelper.createTestDbStatusPopulated(
       dbStatus,
       accountRepository,
     );
 
     return DbStatusPopulatedWrapper(dbStatusPopulated: dbStatusPopulated)
-        .toPleromaApiStatus();
+        .toUnifediApiStatus();
   }
 
   static void expectDbStatusPopulated(
@@ -119,17 +119,17 @@ class StatusDatabaseTestHelper {
 
     expect(actual!.localId != null, true);
     var dbStatus = expected!.dbStatus;
-    StatusDatabaseTestHelper.expectDbStatus(actual, dbStatus);
+    StatusDatabaseMockHelper.expectDbStatus(actual, dbStatus);
 
-    AccountDatabaseTestHelper.expectDbAccount(
+    AccountDatabaseMockHelper.expectDbAccount(
       actual.account,
       expected.dbAccount,
     );
-    StatusDatabaseTestHelper.expectDbStatus(
+    StatusDatabaseMockHelper.expectDbStatus(
       actual.reblog,
       expected.reblogDbStatus,
     );
-    AccountDatabaseTestHelper.expectDbAccount(
+    AccountDatabaseMockHelper.expectDbAccount(
       actual.reblog?.account,
       expected.reblogDbStatusAccount,
     );
@@ -168,20 +168,20 @@ class StatusDatabaseTestHelper {
     expect(actual.visibility, expected.visibility);
     expect(actual.language, expected.language);
 
-    expect(actual.pleromaContent, expected.pleromaContent);
-    expect(actual.pleromaConversationId, expected.pleromaConversationId);
+    expect(actual.contentVariants, expected.contentVariants);
+    expect(actual.conversationId, expected.conversationId);
     expect(
-      actual.pleromaDirectConversationId,
-      expected.pleromaDirectConversationId,
+      actual.directConversationId,
+      expected.directConversationId,
     );
     expect(
-      actual.pleromaInReplyToAccountAcct,
-      expected.pleromaInReplyToAccountAcct,
+      actual.inReplyToAccountAcct,
+      expected.inReplyToAccountAcct,
     );
-    expect(actual.pleromaLocal, expected.pleromaLocal);
-    expect(actual.pleromaSpoilerText, expected.pleromaSpoilerText);
-    expect(actual.pleromaExpiresAt, expected.pleromaExpiresAt);
-    expect(actual.pleromaEmojiReactions, expected.pleromaEmojiReactions);
-    expect(actual.pleromaThreadMuted, expected.pleromaThreadMuted);
+    expect(actual.local, expected.local);
+    expect(actual.spoilerTextVariants, expected.spoilerTextVariants);
+    expect(actual.expiresAt, expected.expiresAt);
+    expect(actual.emojiReactions, expected.emojiReactions);
+    expect(actual.threadMuted, expected.threadMuted);
   }
 }

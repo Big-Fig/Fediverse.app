@@ -1,4 +1,4 @@
-import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/ui/dialog/chooser/fedi_chooser_dialog.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/dialog/dialog_model.dart';
@@ -12,10 +12,10 @@ void showShareChooserDialog(
   required Function(BuildContext context) chatsShareAction,
   required Function(BuildContext context) newStatusShareAction,
 }) {
-  var currentAuthInstanceBloc =
-      ICurrentAuthInstanceBloc.of(context, listen: false);
+  var currentUnifediApiAccessBloc =
+      ICurrentUnifediApiAccessBloc.of(context, listen: false);
 
-  var currentInstance = currentAuthInstanceBloc.currentInstance;
+  var currentInstance = currentUnifediApiAccessBloc.currentInstance;
   showFediChooserDialog(
     context: context,
     title: S.of(context).app_share_title,
@@ -35,7 +35,7 @@ void showShareChooserDialog(
             conversationsShareAction(context);
           },
         ),
-      if (currentInstance != null && currentInstance.isSupportChats)
+      if (currentInstance != null && currentUnifediApiAccessBloc.isSupportChats)
         DialogAction(
           icon: FediIcons.chat,
           label: S.of(context).app_share_action_shareToChats,

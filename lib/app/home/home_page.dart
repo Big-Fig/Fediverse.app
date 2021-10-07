@@ -1,6 +1,5 @@
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/chat/settings/chat_settings_bloc.dart';
 import 'package:fedi/app/home/home_bloc.dart';
 import 'package:fedi/app/home/home_model.dart';
@@ -32,12 +31,12 @@ import 'package:fedi/app/status/post/new/new_post_status_bloc_impl.dart';
 import 'package:fedi/app/ui/divider/fedi_ultra_light_grey_divider.dart';
 import 'package:fedi/app/ui/status_bar/fedi_light_status_bar_style_area.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 var _logger = Logger('home_page.dart');
 
@@ -124,12 +123,7 @@ class _HomePageAccountTabWidget extends StatelessWidget {
       create: (context) {
         var homeBloc = IHomeBloc.of(context, listen: false);
 
-        var accountHomeTabBloc = AccountHomeTabBloc(
-          currentAuthInstanceBloc: ICurrentAuthInstanceBloc.of(
-            context,
-            listen: false,
-          ),
-        );
+        var accountHomeTabBloc = AccountHomeTabBloc();
 
         homeBloc.reselectedTabStream.listen(
           (reselectedTab) {
@@ -225,7 +219,7 @@ class _HomePageNotificationTabWidget extends StatelessWidget {
 
         var notificationsHomeTabBloc = NotificationsHomeTabBloc(
           pleromaNotificationService:
-              Provider.of<IPleromaApiNotificationService>(
+              Provider.of<IUnifediApiNotificationService>(
             context,
             listen: false,
           ),

@@ -1,6 +1,6 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/chat/pleroma/current/pleroma_chat_current_bloc.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
-import 'package:easy_dispose/easy_dispose.dart';
 import 'package:rxdart/rxdart.dart';
 
 // todo: refactor with similar conversation chat class

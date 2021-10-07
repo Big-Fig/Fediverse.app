@@ -11,7 +11,7 @@ description: A new Flutter project.
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 2.7.1+269
+version: 3.0.2+272
 
 publish_to: none
 
@@ -26,28 +26,36 @@ dependencies:
     sdk: flutter
 
   # enhanced reorderable list
-  flutter_reorderable_list: 1.0.0
+  flutter_reorderable_list: 1.1.0
 
   # firebase auth
-  firebase_core: 1.3.0
+  firebase_core: 1.7.0
   # push notifications FCM
-  firebase_messaging: 10.0.3
+  firebase_messaging: 10.0.8
 
   # handle crashes and non-fatal errors
-  firebase_crashlytics: 2.0.7
+  firebase_crashlytics: 2.2.2
 
   # handle init urls. Used for login/register and navigation from notification
   uni_links: 0.5.1
 
   # launch browser to view links
-  url_launcher: 6.0.8
+  url_launcher: 6.0.12
 
   # object serialization
-  hive: 2.0.4
-  hive_flutter: 1.1.0
+  hive:
+    git:
+      url: https://github.com/xal/hive
+      ref: xal/nested_type_registry
+      path: hive
+  hive_flutter:
+    git:
+      url: https://github.com/xal/hive
+      ref: xal/nested_type_registry
+      path: hive_flutter
 
   # render status body, description, notes and other texts which may have html tags
-  flutter_html: 2.1.0
+  flutter_html: 2.1.2
 
   # minutes/hours picker
   # duration_picker: 1.0.1
@@ -60,30 +68,30 @@ dependencies:
   # media grid
   flutter_staggered_grid_view: 0.4.0
   # retrieve storage path to save files
-  path_provider: 2.0.2
+  path_provider: 2.0.5
   # fetch gallery albums and items
-  photo_manager: 1.2.4
+  photo_manager: 1.3.4
   # detect file mime type for share
   mime_type: 1.0.0
   # datetime formatter for statuses & chat messages
   timeago: 3.1.0
   # better image viewer with gestures support
-  photo_view: 0.11.1
+  photo_view: 0.12.0
   # positioned list view
   scrollable_positioned_list: 0.2.0-nullsafety.0
   # edit images during account editing
   image_cropper: 1.4.1
   # cache images locally
-  cached_network_image: 3.0.0
+  cached_network_image: 3.1.0
   # cache manager for cached_network_image. Use to set up cache settings
   flutter_cache_manager: 3.1.2
   # reactive programming
-  rxdart: 0.27.1
+  rxdart: 0.27.2
   # text size to fit constraints
   auto_size_text: 3.0.0-nullsafety.0
 
   # default media picker
-  image_picker: 0.8.1+3
+  image_picker: 0.8.4+2
 
   # customizable datetime picker
   # flutter_datetime_picker: 1.5.1
@@ -94,24 +102,24 @@ dependencies:
       ref: master
 
   # annotations to generate json from & to methods
-  json_annotation: 4.0.1
+  json_annotation: ^4.1.0
 
   # advanced logging
-  logging: 1.0.1
+  logging: ^1.0.2
 
   # dependency injection framework
-  provider: 5.0.0
+  provider: ^6.0.1
 
   # fancy permission handler
-  permission_handler: 7.1.0
+  permission_handler: 8.1.6
 
   # native kotlin/swift image convert & compress
-  flutter_image_compress: 1.0.0
+  flutter_image_compress: 1.1.0
 
   # commandline script to pull database from emulator
   # adb exec-out run-as com.fediverse.app cat ./databases/jffdev@fedi.app.sqlite > database.sqlite
   # sqlite orm
-  moor: 4.4.0
+  moor: 4.5.0
 
   # sqlite3_flutter_libs required for moor ffi
   sqlite3_flutter_libs: 0.5.0
@@ -120,13 +128,13 @@ dependencies:
   moor_inspector: 0.3.1
 
   # check internet connection state
-  connectivity: 3.0.6
+  connectivity_plus: 1.1.0
 
   # WebSockets API mobile implementation
   web_socket_channel: 2.1.0
 
   # save photo and video to gallery
-  gallery_saver: 2.1.0
+  gallery_saver: 2.2.0
 
   # share actions via native API
   share_plus: 2.1.4
@@ -141,44 +149,46 @@ dependencies:
   nested_scroll_controller: 1.0.0
 
   # media attachments carousel
-  carousel_slider: 4.0.0-nullsafety.0
+  carousel_slider: 4.0.0
 
   # video/audio players
-  video_player: 2.1.6
+  video_player: 2.2.5
 
   # pull to refresh and pull to load more
   pull_to_refresh: 2.0.0
 
   # custom scroll view which fix bugs related to inner scrollables sync
+  # extended_nested_scroll_view >= 4.0.0 have bugs with scrollable in tabs
+  # todo: update when bug will be fixed
   extended_nested_scroll_view: 3.0.0
 
   # error overlay
   overlay_support: 1.2.1
 
   # file picker for media attachment
-  file_picker: 3.0.3
+  file_picker: 4.1.3
 
   # unenscape account not field
   html_unescape: 2.0.0
 
   # shared preferences support. temporary required by custom emoji picker
   # Todo: refactor and remove
-  shared_preferences: 2.0.5
+  shared_preferences: 2.0.8
 
   # extended text fields with highlight mentions support
   extended_text_field: 8.0.0
 
   # detect keyboard visibility
-  flutter_keyboard_visibility: 5.0.1
+  flutter_keyboard_visibility: 5.0.3
 
   # list view item slide actions
   flutter_slidable: 0.6.0
 
   # disable wakelock for video player
-  wakelock: 0.5.2
+  wakelock: 0.5.6
 
   # ask for review inside app
-  in_app_review: 2.0.2
+  in_app_review: 2.0.3
 
   # better dateTime manipulation (especially for add duration to dateTime)
   jiffy: 4.1.0
@@ -202,16 +212,31 @@ dependencies:
   flutter_config: 2.0.0
 
   # get build details for config
-  package_info_plus: 1.0.3
+  package_info_plus: 1.0.6
 
   # rich notification with possible integration with FCM
-  awesome_notifications: 0.0.6+9
+  awesome_notifications: 0.0.6+10
 
   # Disposable logic
   easy_dispose: 1.0.1
   easy_dispose_flutter: 1.0.1
   easy_dispose_rxdart: 1.0.1
-  easy_dispose_provider: 1.0.1
+  easy_dispose_provider: 1.0.2
+
+  # code generator: unions, strings, equals & hash, etc
+  freezed_annotation: ^0.14.3
+
+  fediverse_api:
+    path: ../dart_fediverse_api/fediverse_api
+
+  pleroma_api:
+    path: ../dart_fediverse_api/pleroma_api
+
+  mastodon_api:
+    path: ../dart_fediverse_api/mastodon_api
+
+  unifedi_api:
+    path: ../dart_fediverse_api/unifedi_api
 
 dev_dependencies:
   integration_test:
@@ -224,21 +249,27 @@ dev_dependencies:
   test: any
 
   # easy mock for tests
-  mockito: 5.0.10
+  mockito: 5.0.16
   # build tools runner
   # usage example
   # fvm flutter pub run build_runner build --delete-conflicting-outputs
-  build_runner: 2.0.4
+  build_runner: 2.1.2
   # build tool to generate json from & to methods
-  json_serializable: 4.1.3
+  json_serializable: 5.0.2
   # sql orm generator
-  moor_generator: 4.4.0
+  moor_generator: 4.5.1
+  # required by sqlparser. Otherwise strange errors -
+  sqlparser: ^0.17.2
 
   # object serialization generator
-  hive_generator: 1.1.0
+  hive_generator:
+    git:
+      url: https://github.com/xal/hive
+      ref: xal/nested_type_registry
+      path: hive_generator
 
   # additional linters
-  dart_code_metrics: 4.0.1
+  dart_code_metrics: 4.3.3
   lints: 1.0.1
   flutter_lints: 1.0.3
 
@@ -251,26 +282,9 @@ dev_dependencies:
   # fvm flutter pub global activate -sgit https://github.com/xal/screenshots.git
   # fvm flutter pub global activate --source path ../screenshots
 
-  base_fediverse_api:
-    git:
-      url: https://github.com/xal/dart_fediverse_api.git
-      #      ref: master
-      ref: before_refactoring
-      path: base_fediverse_api
+  # code generator: unions, strings, equals & hash, etc
+  freezed: ^0.14.5
 
-  mastodon_fediverse_api:
-    git:
-      url: https://github.com/xal/dart_fediverse_api.git
-      #      ref: master
-      ref: before_refactoring
-      path: mastodon_fediverse_api
-
-  pleroma_fediverse_api:
-    git:
-      url: https://github.com/xal/dart_fediverse_api.git
-      #      ref: master
-      ref: before_refactoring
-      path: pleroma_fediverse_api
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -93,7 +93,7 @@ Future<dynamic> pushFullScreenPage(
     },
   );
 
-  await SystemChrome.setEnabledSystemUIOverlays([]);
+  await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
   if (isAndroid) {
     await SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeLeft,
@@ -111,8 +111,9 @@ Future<dynamic> pushFullScreenPage(
   // so we do not need to check Wakelock.isEnabled.
   await Wakelock.disable();
 
-  await SystemChrome.setEnabledSystemUIOverlays(
-    videoMediaPlayerBloc.systemOverlaysAfterFullScreen,
+  await SystemChrome.setEnabledSystemUIMode(
+    SystemUiMode.manual,
+    overlays: videoMediaPlayerBloc.systemOverlaysAfterFullScreen,
   );
   await SystemChrome.setPreferredOrientations(
     videoMediaPlayerBloc.deviceOrientationsAfterFullScreen,

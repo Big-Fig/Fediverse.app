@@ -1,3 +1,4 @@
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/account/my/statuses/bookmarked/my_account_bookmarked_statuses_cached_list_bloc.dart';
 import 'package:fedi/app/account/my/statuses/bookmarked/my_account_bookmarked_statuses_cached_list_bloc_impl.dart';
 import 'package:fedi/app/list/cached/pleroma_cached_list_bloc.dart';
@@ -12,12 +13,11 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/empty/fedi_empty_widget.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
 import 'package:fedi/collapsible/owner/collapsible_owner_widget.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class MyAccountBookmarkedStatusesPage extends StatelessWidget {
   @override
@@ -66,7 +66,7 @@ MaterialPageRoute createMyAccountBookmarkedStatusesPage() {
     builder: (context) =>
         DisposableProvider<IMyAccountBookmarkedStatusesCachedListBloc>(
       create: (context) => MyAccountBookmarkedStatusesCachedListBloc(
-        pleromaMyAccountService: Provider.of<IPleromaApiMyAccountService>(
+        unifediApiMyAccountService: Provider.of<IUnifediApiMyAccountService>(
           context,
           listen: false,
         ),
@@ -80,7 +80,7 @@ MaterialPageRoute createMyAccountBookmarkedStatusesPage() {
         update: (context, value, previous) => value,
         child: StatusCachedListBlocProxyProvider(
           child: ProxyProvider<IMyAccountBookmarkedStatusesCachedListBloc,
-              IPleromaCachedListBloc<IStatus>>(
+              ICachedListBloc<IStatus>>(
             update: (context, value, previous) => value,
             child: StatusCachedListBlocLoadingWidget(
               child: StatusCachedPaginationBloc.provideToContext(

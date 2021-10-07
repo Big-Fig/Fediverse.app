@@ -1,37 +1,20 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:path/path.dart' as path;
 
-class ShareUrlFile {
-  final String url;
-  final String filenameWithExtension;
+part 'external_share_model.freezed.dart';
 
-  ShareUrlFile({
-    required this.url,
-    required this.filenameWithExtension,
-  });
-
-  ShareUrlFile.fromUrl({
+@freezed
+class ShareUrlFile with _$ShareUrlFile {
+  const factory ShareUrlFile({
     required String url,
-  }) : this(
-          url: url,
-          filenameWithExtension: path.basename(url),
-        );
+    required String filenameWithExtension,
+  }) = _ShareUrlFile;
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is ShareUrlFile &&
-          runtimeType == other.runtimeType &&
-          url == other.url &&
-          filenameWithExtension == other.filenameWithExtension;
-
-  @override
-  int get hashCode => url.hashCode ^ filenameWithExtension.hashCode;
-
-  @override
-  String toString() {
-    return 'ShareUrlFile{'
-        'url: $url, '
-        'filename: $filenameWithExtension'
-        '}';
-  }
+  static ShareUrlFile fromUrl({
+    required String url,
+  }) =>
+      ShareUrlFile(
+        url: url,
+        filenameWithExtension: path.basename(url),
+      );
 }

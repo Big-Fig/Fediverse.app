@@ -1,9 +1,9 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/account/select/recent/local_preferences/recent_select_account_local_preference_bloc.dart';
 import 'package:fedi/app/account/select/recent/recent_select_account_bloc.dart';
 import 'package:fedi/app/account/select/recent/recent_select_account_model.dart';
 import 'package:fedi/app/account/select/select_account_list_bloc.dart';
-import 'package:easy_dispose/easy_dispose.dart';
 
 class RecentSelectAccountBloc extends DisposableOwner
     implements IRecentSelectAccountBloc {
@@ -41,7 +41,7 @@ class RecentSelectAccountBloc extends DisposableOwner
             (account) => account.id == selectedAccount.remoteId,
           );
 
-          recentItems.add(selectedAccount.toPleromaApiAccount());
+          recentItems.add(selectedAccount.toUnifediApiAccount());
         }
 
         recentSelectAccountLocalPreferenceBloc.setValue(

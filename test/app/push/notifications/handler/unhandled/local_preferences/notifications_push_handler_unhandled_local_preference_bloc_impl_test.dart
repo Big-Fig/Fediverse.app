@@ -9,7 +9,7 @@ import '../notifications_push_handler_unhandled_model_test_helper.dart';
 
 void main() {
   test('save & load', () async {
-    await LocalPreferencesTestHelper.testSaveAndLoad<
+    await LocalPreferencesMockHelper.testSaveAndLoad<
         NotificationsPushHandlerUnhandledList,
         NotificationsPushHandlerUnhandledLocalPreferenceBloc>(
       defaultValue:
@@ -19,7 +19,7 @@ void main() {
         localPreferencesService,
       ),
       testObjectCreator: ({required String seed}) =>
-          NotificationsPushHandlerUnhandledModelTestHelper
+          NotificationsPushHandlerUnhandledModelMockHelper
               .createTestPushHandlerUnhandledList(
         seed: seed,
       ),

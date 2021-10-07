@@ -1,7 +1,8 @@
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/share/entity/settings/share_entity_settings_bloc.dart';
 import 'package:fedi/app/share/entity/settings/share_entity_settings_model.dart';
 import 'package:fedi/app/share/entity/share_entity_model.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
@@ -10,7 +11,6 @@ import 'package:fedi/form/form_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:easy_dispose/easy_dispose.dart';
 
 class ShareEntitySettingsBloc extends FormBloc
     implements IShareEntitySettingsBloc {

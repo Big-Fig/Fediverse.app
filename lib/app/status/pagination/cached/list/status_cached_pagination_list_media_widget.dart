@@ -1,3 +1,4 @@
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/status/list/status_list_bloc.dart';
 import 'package:fedi/app/status/list/status_list_item_media_widget.dart';
@@ -12,17 +13,16 @@ import 'package:fedi/app/status/thread/local_status_thread_page.dart';
 import 'package:fedi/app/status/thread/remote_status_thread_page.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:fedi/ui/scroll/unfocus_on_scroll_area_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 var _logger = Logger('status_cached_pagination_list_media_widget.dart');
 
@@ -112,9 +112,9 @@ class StatusCachedPaginationListMediaWidget
       (status) {
         var mediaAttachments = (status.reblog?.mediaAttachments ??
                 status.mediaAttachments ??
-                <PleromaApiMediaAttachment>[])
+                <UnifediApiMediaAttachment>[])
             .where(
-          (mediaAttachment) => mediaAttachment.isImageOrGif,
+          (mediaAttachment) => mediaAttachment.typeAsUnifediApi.isImageOrGif,
         );
         mediaAttachments.forEach(
           (mediaAttachment) {
@@ -136,7 +136,10 @@ class StatusCachedPaginationListMediaWidget
     items = items
         .where((IStatus status) =>
             (status.reblog?.mediaAttachments ?? status.mediaAttachments)
-                ?.where((mediaAttachment) => mediaAttachment.isImageOrGif)
+                ?.where(
+                  (mediaAttachment) =>
+                      mediaAttachment.typeAsUnifediApi.isImageOrGif,
+                )
                 .isNotEmpty ==
             true)
         .toList();
@@ -248,7 +251,7 @@ class _StatusCachedPaginationListMediaItemBodyWidget extends StatelessWidget {
         padding: FediPadding.allSmallPadding,
         child: Center(
           child: ProxyProvider<_StatusWithMediaAttachment,
-              IPleromaApiMediaAttachment>(
+              IUnifediApiMediaAttachment>(
             update: (context, value, previous) => value.mediaAttachment,
             child: const StatusListItemMediaWidget(),
           ),
@@ -260,7 +263,7 @@ class _StatusCachedPaginationListMediaItemBodyWidget extends StatelessWidget {
 
 class _StatusWithMediaAttachment {
   final IStatus status;
-  final IPleromaApiMediaAttachment mediaAttachment;
+  final IUnifediApiMediaAttachment mediaAttachment;
 
   _StatusWithMediaAttachment({
     required this.status,

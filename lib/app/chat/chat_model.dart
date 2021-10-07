@@ -13,12 +13,4 @@ abstract class IChat {
   DateTime? get updatedAt;
 
   List<IAccount> get accounts;
-
-  IChat copyWith({
-    int? id,
-    String? remoteId,
-    int? unread,
-    DateTime? updatedAt,
-    List<IAccount>? accounts,
-  });
 }

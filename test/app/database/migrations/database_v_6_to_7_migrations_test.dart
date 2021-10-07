@@ -34,7 +34,7 @@ void main() {
     expect((await conversationDao.getAll()).isNotEmpty, false);
 
     var dbConversation =
-        await ConversationDatabaseTestHelper.createTestDbConversation(
+        await ConversationDatabaseMockHelper.createTestDbConversation(
       seed: 'seed',
     );
 

@@ -30,9 +30,9 @@ void main() {
     database = AppDatabase(VmDatabase.memory(logStatements: false));
     accountRepository = AccountRepository(appDatabase: database);
     dbAccount1 =
-        await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed1');
+        await AccountDatabaseMockHelper.createTestDbAccount(seed: 'seed1');
     dbAccount2 =
-        await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed2');
+        await AccountDatabaseMockHelper.createTestDbAccount(seed: 'seed2');
   });
 
   tearDown(() async {
@@ -46,7 +46,7 @@ void main() {
       mode: null,
     );
     assert(id > 0, true);
-    AccountDatabaseTestHelper.expectDbAccount(
+    AccountDatabaseMockHelper.expectDbAccount(
       await accountRepository.findByDbIdInAppType(id),
       dbAccount1,
     );
@@ -64,7 +64,7 @@ void main() {
       dbItem: dbAccount2,
       batchTransaction: null,
     );
-    AccountDatabaseTestHelper.expectDbAccount(
+    AccountDatabaseMockHelper.expectDbAccount(
       await accountRepository.findByDbIdInAppType(id),
       dbAccount2,
     );
@@ -92,7 +92,7 @@ void main() {
           acct: newAcct,
         ),
       ),
-    ).toPleromaApiAccount();
+    ).toUnifediApiAccount();
     await accountRepository.updateAppTypeByRemoteType(
       appItem: oldLocalAccount,
       remoteItem: newRemoteAccount,
@@ -109,7 +109,7 @@ void main() {
     );
     assert(id > 0, true);
 
-    AccountDatabaseTestHelper.expectDbAccount(
+    AccountDatabaseMockHelper.expectDbAccount(
       await accountRepository.findByRemoteIdInAppType(dbAccount1.remoteId),
       dbAccount1,
     );
@@ -123,11 +123,11 @@ void main() {
         dbAccountPopulated: DbAccountPopulated(
           dbAccount: dbAccount1,
         ),
-      ).toPleromaApiAccount(),
+      ).toUnifediApiAccount(),
     );
 
     expect(await accountRepository.countAll(), 1);
-    AccountDatabaseTestHelper.expectDbAccount(
+    AccountDatabaseMockHelper.expectDbAccount(
       await accountRepository.findByRemoteIdInAppType(dbAccount1.remoteId),
       dbAccount1,
     );
@@ -138,7 +138,7 @@ void main() {
         dbAccountPopulated: DbAccountPopulated(
           dbAccount: dbAccount1,
         ),
-      ).toPleromaApiAccount(),
+      ).toUnifediApiAccount(),
     );
     expect(await accountRepository.countAll(), 1);
   });
@@ -151,13 +151,13 @@ void main() {
           dbAccountPopulated: DbAccountPopulated(
             dbAccount: dbAccount1,
           ),
-        ).toPleromaApiAccount(),
+        ).toUnifediApiAccount(),
       ],
       batchTransaction: null,
     );
 
     expect(await accountRepository.countAll(), 1);
-    AccountDatabaseTestHelper.expectDbAccount(
+    AccountDatabaseMockHelper.expectDbAccount(
       await accountRepository.findByRemoteIdInAppType(dbAccount1.remoteId),
       dbAccount1,
     );
@@ -168,23 +168,23 @@ void main() {
           dbAccountPopulated: DbAccountPopulated(
             dbAccount: dbAccount1,
           ),
-        ).toPleromaApiAccount(),
+        ).toUnifediApiAccount(),
         DbAccountPopulatedWrapper(
           dbAccountPopulated: DbAccountPopulated(
             dbAccount: dbAccount2,
           ),
-        ).toPleromaApiAccount(),
+        ).toUnifediApiAccount(),
       ],
       batchTransaction: null,
     );
 
     // update item with same id
     expect(await accountRepository.countAll(), 2);
-    AccountDatabaseTestHelper.expectDbAccount(
+    AccountDatabaseMockHelper.expectDbAccount(
       await accountRepository.findByRemoteIdInAppType(dbAccount1.remoteId),
       dbAccount1,
     );
-    AccountDatabaseTestHelper.expectDbAccount(
+    AccountDatabaseMockHelper.expectDbAccount(
       await accountRepository.findByRemoteIdInAppType(dbAccount2.remoteId),
       dbAccount2,
     );
@@ -200,7 +200,7 @@ void main() {
     expect((await query.get()).length, 0);
 
     await accountRepository.insertInDbType(
-      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed1'))
+      (await AccountDatabaseMockHelper.createTestDbAccount(seed: 'seed1'))
           .copyWith(),
       mode: null,
     );
@@ -208,7 +208,7 @@ void main() {
     expect((await query.get()).length, 1);
 
     await accountRepository.insertInDbType(
-      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed2'))
+      (await AccountDatabaseMockHelper.createTestDbAccount(seed: 'seed2'))
           .copyWith(),
       mode: null,
     );
@@ -216,7 +216,7 @@ void main() {
     expect((await query.get()).length, 2);
 
     await accountRepository.insertInDbType(
-      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed3'))
+      (await AccountDatabaseMockHelper.createTestDbAccount(seed: 'seed3'))
           .copyWith(),
       mode: null,
     );
@@ -226,7 +226,7 @@ void main() {
 
   test('createQuery searchQuery', () async {
     var query = accountRepository.createQuery(
-      filters: AccountRepositoryFilters(
+      filters: AccountRepositoryFilters.only(
         searchQuery: 'qu',
       ),
       pagination: null,
@@ -236,7 +236,7 @@ void main() {
     expect((await query.get()).length, 0);
 
     await accountRepository.insertInDbType(
-      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed1'))
+      (await AccountDatabaseMockHelper.createTestDbAccount(seed: 'seed1'))
           .copyWith(acct: 'qu'),
       mode: null,
     );
@@ -244,7 +244,7 @@ void main() {
     expect((await query.get()).length, 1);
 
     await accountRepository.insertInDbType(
-      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed2'))
+      (await AccountDatabaseMockHelper.createTestDbAccount(seed: 'seed2'))
           .copyWith(acct: 'qur'),
       mode: null,
     );
@@ -252,7 +252,7 @@ void main() {
     expect((await query.get()).length, 2);
 
     await accountRepository.insertInDbType(
-      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed3'))
+      (await AccountDatabaseMockHelper.createTestDbAccount(seed: 'seed3'))
           .copyWith(acct: 'q'),
       mode: null,
     );
@@ -270,16 +270,16 @@ void main() {
       mode: null,
     );
 
-    var dbStatus = await StatusDatabaseTestHelper.createTestDbStatus(
+    var dbStatus = await StatusDatabaseMockHelper.createTestDbStatus(
       seed: 'seedStatus',
       dbAccount: dbAccount1,
     );
-    var status = await StatusDatabaseTestHelper.createTestDbStatusPopulated(
+    var status = await StatusDatabaseMockHelper.createTestDbStatusPopulated(
       dbStatus,
       accountRepository,
     );
     var query = accountRepository.createQuery(
-      filters: AccountRepositoryFilters(
+      filters: AccountRepositoryFilters.only(
         onlyInStatusFavouritedBy:
             DbStatusPopulatedWrapper(dbStatusPopulated: status),
       ),
@@ -296,7 +296,7 @@ void main() {
           dbAccountPopulated: DbAccountPopulated(
             dbAccount: dbAccount1,
           ),
-        ).toPleromaApiAccount(),
+        ).toUnifediApiAccount(),
       ],
       batchTransaction: null,
     );
@@ -310,12 +310,12 @@ void main() {
           dbAccountPopulated: DbAccountPopulated(
             dbAccount: dbAccount1,
           ),
-        ).toPleromaApiAccount(),
+        ).toUnifediApiAccount(),
         DbAccountPopulatedWrapper(
           dbAccountPopulated: DbAccountPopulated(
             dbAccount: dbAccount2,
           ),
-        ).toPleromaApiAccount(),
+        ).toUnifediApiAccount(),
       ],
       batchTransaction: null,
     );
@@ -329,7 +329,7 @@ void main() {
           dbAccountPopulated: DbAccountPopulated(
             dbAccount: dbAccount2,
           ),
-        ).toPleromaApiAccount(),
+        ).toUnifediApiAccount(),
       ],
       batchTransaction: null,
     );
@@ -346,16 +346,16 @@ void main() {
       mode: null,
     );
 
-    var dbStatus = await StatusDatabaseTestHelper.createTestDbStatus(
+    var dbStatus = await StatusDatabaseMockHelper.createTestDbStatus(
       seed: 'seedStatus',
       dbAccount: dbAccount1,
     );
-    var status = await StatusDatabaseTestHelper.createTestDbStatusPopulated(
+    var status = await StatusDatabaseMockHelper.createTestDbStatusPopulated(
       dbStatus,
       accountRepository,
     );
     var query = accountRepository.createQuery(
-      filters: AccountRepositoryFilters(
+      filters: AccountRepositoryFilters.only(
         onlyInStatusRebloggedBy:
             DbStatusPopulatedWrapper(dbStatusPopulated: status),
       ),
@@ -372,7 +372,7 @@ void main() {
           dbAccountPopulated: DbAccountPopulated(
             dbAccount: dbAccount1,
           ),
-        ).toPleromaApiAccount(),
+        ).toUnifediApiAccount(),
       ],
       batchTransaction: null,
     );
@@ -386,12 +386,12 @@ void main() {
           dbAccountPopulated: DbAccountPopulated(
             dbAccount: dbAccount1,
           ),
-        ).toPleromaApiAccount(),
+        ).toUnifediApiAccount(),
         DbAccountPopulatedWrapper(
           dbAccountPopulated: DbAccountPopulated(
             dbAccount: dbAccount2,
           ),
-        ).toPleromaApiAccount(),
+        ).toUnifediApiAccount(),
       ],
       batchTransaction: null,
     );
@@ -405,7 +405,7 @@ void main() {
           dbAccountPopulated: DbAccountPopulated(
             dbAccount: dbAccount2,
           ),
-        ).toPleromaApiAccount(),
+        ).toUnifediApiAccount(),
       ],
       batchTransaction: null,
     );
@@ -423,7 +423,7 @@ void main() {
     );
 
     var query = accountRepository.createQuery(
-      filters: AccountRepositoryFilters(
+      filters: AccountRepositoryFilters.only(
         onlyInAccountFollowers: DbAccountPopulatedWrapper(
           dbAccountPopulated: DbAccountPopulated(
             dbAccount: dbAccount1,
@@ -443,7 +443,7 @@ void main() {
           dbAccountPopulated: DbAccountPopulated(
             dbAccount: dbAccount2,
           ),
-        ).toPleromaApiAccount(),
+        ).toUnifediApiAccount(),
       ],
       batchTransaction: null,
     );
@@ -456,12 +456,12 @@ void main() {
           dbAccountPopulated: DbAccountPopulated(
             dbAccount: dbAccount1,
           ),
-        ).toPleromaApiAccount(),
+        ).toUnifediApiAccount(),
         DbAccountPopulatedWrapper(
           dbAccountPopulated: DbAccountPopulated(
             dbAccount: dbAccount2,
           ),
-        ).toPleromaApiAccount(),
+        ).toUnifediApiAccount(),
       ],
       batchTransaction: null,
     );
@@ -479,7 +479,7 @@ void main() {
     );
 
     var query = accountRepository.createQuery(
-      filters: AccountRepositoryFilters(
+      filters: AccountRepositoryFilters.only(
         onlyInAccountFollowing: DbAccountPopulatedWrapper(
           dbAccountPopulated: DbAccountPopulated(
             dbAccount: dbAccount1,
@@ -499,7 +499,7 @@ void main() {
           dbAccountPopulated: DbAccountPopulated(
             dbAccount: dbAccount2,
           ),
-        ).toPleromaApiAccount(),
+        ).toUnifediApiAccount(),
       ],
       batchTransaction: null,
     );
@@ -512,12 +512,12 @@ void main() {
           dbAccountPopulated: DbAccountPopulated(
             dbAccount: dbAccount1,
           ),
-        ).toPleromaApiAccount(),
+        ).toUnifediApiAccount(),
         DbAccountPopulatedWrapper(
           dbAccountPopulated: DbAccountPopulated(
             dbAccount: dbAccount2,
           ),
-        ).toPleromaApiAccount(),
+        ).toUnifediApiAccount(),
       ],
       batchTransaction: null,
     );
@@ -538,7 +538,7 @@ void main() {
     );
 
     var query = accountRepository.createQuery(
-      filters: AccountRepositoryFilters(
+      filters: AccountRepositoryFilters.only(
         onlyInConversation: conversation,
       ),
       pagination: null,
@@ -551,7 +551,7 @@ void main() {
         dbAccountPopulated: DbAccountPopulated(
           dbAccount: dbAccount1,
         ),
-      ).toPleromaApiAccount(),
+      ).toUnifediApiAccount(),
     );
     expect((await query.get()).length, 0);
 
@@ -561,7 +561,7 @@ void main() {
         dbAccountPopulated: DbAccountPopulated(
           dbAccount: dbAccount1,
         ),
-      ).toPleromaApiAccount(),
+      ).toUnifediApiAccount(),
       conversationRemoteId: conversationRemoteId,
       batchTransaction: null,
     );
@@ -573,7 +573,7 @@ void main() {
         dbAccountPopulated: DbAccountPopulated(
           dbAccount: dbAccount1,
         ),
-      ).toPleromaApiAccount(),
+      ).toUnifediApiAccount(),
       conversationRemoteId: conversationRemoteId,
       batchTransaction: null,
     );
@@ -586,7 +586,7 @@ void main() {
         dbAccountPopulated: DbAccountPopulated(
           dbAccount: dbAccount2,
         ),
-      ).toPleromaApiAccount(),
+      ).toUnifediApiAccount(),
       conversationRemoteId: conversationRemoteId,
       batchTransaction: null,
     );
@@ -598,7 +598,7 @@ void main() {
     var query = accountRepository.createQuery(
       filters: null,
       pagination: RepositoryPagination<IAccount>(
-        newerThanItem: await AccountTestHelper.createTestAccount(
+        newerThanItem: await AccountMockHelper.createTestAccount(
           seed: 'seed5',
           remoteId: 'remoteId5',
         ),
@@ -606,32 +606,32 @@ void main() {
       orderingTermData: AccountRepositoryOrderingTermData.remoteIdAsc,
     );
 
-    await AccountRepositoryTestHelper.insertDbAccount(
+    await AccountRepositoryMockHelper.insertDbAccount(
       accountRepository,
-      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed2'))
+      (await AccountDatabaseMockHelper.createTestDbAccount(seed: 'seed2'))
           .copyWith(remoteId: 'remoteId4'),
     );
 
     expect((await query.get()).length, 0);
 
-    await AccountRepositoryTestHelper.insertDbAccount(
+    await AccountRepositoryMockHelper.insertDbAccount(
       accountRepository,
-      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed2'))
+      (await AccountDatabaseMockHelper.createTestDbAccount(seed: 'seed2'))
           .copyWith(remoteId: 'remoteId5'),
     );
 
     expect((await query.get()).length, 0);
 
-    await AccountRepositoryTestHelper.insertDbAccount(
+    await AccountRepositoryMockHelper.insertDbAccount(
       accountRepository,
-      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed1'))
+      (await AccountDatabaseMockHelper.createTestDbAccount(seed: 'seed1'))
           .copyWith(remoteId: 'remoteId6'),
     );
 
     expect((await query.get()).length, 1);
-    await AccountRepositoryTestHelper.insertDbAccount(
+    await AccountRepositoryMockHelper.insertDbAccount(
       accountRepository,
-      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed1'))
+      (await AccountDatabaseMockHelper.createTestDbAccount(seed: 'seed1'))
           .copyWith(remoteId: 'remoteId7'),
     );
 
@@ -642,7 +642,7 @@ void main() {
     var query = accountRepository.createQuery(
       filters: null,
       pagination: RepositoryPagination<IAccount>(
-        olderThanItem: await AccountTestHelper.createTestAccount(
+        olderThanItem: await AccountMockHelper.createTestAccount(
           seed: 'seed5',
           remoteId: 'remoteId5',
         ),
@@ -650,32 +650,32 @@ void main() {
       orderingTermData: AccountRepositoryOrderingTermData.remoteIdAsc,
     );
 
-    await AccountRepositoryTestHelper.insertDbAccount(
+    await AccountRepositoryMockHelper.insertDbAccount(
       accountRepository,
-      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed2'))
+      (await AccountDatabaseMockHelper.createTestDbAccount(seed: 'seed2'))
           .copyWith(remoteId: 'remoteId3'),
     );
 
     expect((await query.get()).length, 1);
-    await AccountRepositoryTestHelper.insertDbAccount(
+    await AccountRepositoryMockHelper.insertDbAccount(
       accountRepository,
-      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed2'))
+      (await AccountDatabaseMockHelper.createTestDbAccount(seed: 'seed2'))
           .copyWith(remoteId: 'remoteId4'),
     );
 
     expect((await query.get()).length, 2);
 
-    await AccountRepositoryTestHelper.insertDbAccount(
+    await AccountRepositoryMockHelper.insertDbAccount(
       accountRepository,
-      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed2'))
+      (await AccountDatabaseMockHelper.createTestDbAccount(seed: 'seed2'))
           .copyWith(remoteId: 'remoteId5'),
     );
 
     expect((await query.get()).length, 2);
 
-    await AccountRepositoryTestHelper.insertDbAccount(
+    await AccountRepositoryMockHelper.insertDbAccount(
       accountRepository,
-      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed1'))
+      (await AccountDatabaseMockHelper.createTestDbAccount(seed: 'seed1'))
           .copyWith(remoteId: 'remoteId6'),
     );
 
@@ -686,11 +686,11 @@ void main() {
     var query = accountRepository.createQuery(
       filters: null,
       pagination: RepositoryPagination<IAccount>(
-        olderThanItem: await AccountTestHelper.createTestAccount(
+        olderThanItem: await AccountMockHelper.createTestAccount(
           seed: 'seed5',
           remoteId: 'remoteId5',
         ),
-        newerThanItem: await AccountTestHelper.createTestAccount(
+        newerThanItem: await AccountMockHelper.createTestAccount(
           seed: 'seed2',
           remoteId: 'remoteId2',
         ),
@@ -698,9 +698,9 @@ void main() {
       orderingTermData: AccountRepositoryOrderingTermData.remoteIdAsc,
     );
 
-    await AccountRepositoryTestHelper.insertDbAccount(
+    await AccountRepositoryMockHelper.insertDbAccount(
       accountRepository,
-      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed1'))
+      (await AccountDatabaseMockHelper.createTestDbAccount(seed: 'seed1'))
           .copyWith(
         remoteId: 'remoteId1',
       ),
@@ -708,40 +708,40 @@ void main() {
 
     expect((await query.get()).length, 0);
 
-    await AccountRepositoryTestHelper.insertDbAccount(
+    await AccountRepositoryMockHelper.insertDbAccount(
       accountRepository,
-      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed2'))
+      (await AccountDatabaseMockHelper.createTestDbAccount(seed: 'seed2'))
           .copyWith(remoteId: 'remoteId2'),
     );
 
     expect((await query.get()).length, 0);
-    await AccountRepositoryTestHelper.insertDbAccount(
+    await AccountRepositoryMockHelper.insertDbAccount(
       accountRepository,
-      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed3'))
+      (await AccountDatabaseMockHelper.createTestDbAccount(seed: 'seed3'))
           .copyWith(remoteId: 'remoteId3'),
     );
 
     expect((await query.get()).length, 1);
 
-    await AccountRepositoryTestHelper.insertDbAccount(
+    await AccountRepositoryMockHelper.insertDbAccount(
       accountRepository,
-      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed4'))
+      (await AccountDatabaseMockHelper.createTestDbAccount(seed: 'seed4'))
           .copyWith(remoteId: 'remoteId4'),
     );
 
     expect((await query.get()).length, 2);
 
-    await AccountRepositoryTestHelper.insertDbAccount(
+    await AccountRepositoryMockHelper.insertDbAccount(
       accountRepository,
-      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed5'))
+      (await AccountDatabaseMockHelper.createTestDbAccount(seed: 'seed5'))
           .copyWith(remoteId: 'remoteId5'),
     );
 
     expect((await query.get()).length, 2);
 
-    await AccountRepositoryTestHelper.insertDbAccount(
+    await AccountRepositoryMockHelper.insertDbAccount(
       accountRepository,
-      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed6'))
+      (await AccountDatabaseMockHelper.createTestDbAccount(seed: 'seed6'))
           .copyWith(remoteId: 'remoteId6'),
     );
 
@@ -755,19 +755,19 @@ void main() {
       orderingTermData: AccountRepositoryOrderingTermData.remoteIdAsc,
     );
 
-    var account2 = await AccountRepositoryTestHelper.insertDbAccount(
+    var account2 = await AccountRepositoryMockHelper.insertDbAccount(
       accountRepository,
-      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed2'))
+      (await AccountDatabaseMockHelper.createTestDbAccount(seed: 'seed2'))
           .copyWith(remoteId: 'remoteId2'),
     );
-    var account1 = await AccountRepositoryTestHelper.insertDbAccount(
+    var account1 = await AccountRepositoryMockHelper.insertDbAccount(
       accountRepository,
-      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed1'))
+      (await AccountDatabaseMockHelper.createTestDbAccount(seed: 'seed1'))
           .copyWith(remoteId: 'remoteId1'),
     );
-    var account3 = await AccountRepositoryTestHelper.insertDbAccount(
+    var account3 = await AccountRepositoryMockHelper.insertDbAccount(
       accountRepository,
-      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed3'))
+      (await AccountDatabaseMockHelper.createTestDbAccount(seed: 'seed3'))
           .copyWith(remoteId: 'remoteId3'),
     );
 
@@ -775,9 +775,9 @@ void main() {
 
     expect(actualList.length, 3);
 
-    AccountDatabaseTestHelper.expectDbAccount(actualList[0], account1);
-    AccountDatabaseTestHelper.expectDbAccount(actualList[1], account2);
-    AccountDatabaseTestHelper.expectDbAccount(actualList[2], account3);
+    AccountDatabaseMockHelper.expectDbAccount(actualList[0], account1);
+    AccountDatabaseMockHelper.expectDbAccount(actualList[1], account2);
+    AccountDatabaseMockHelper.expectDbAccount(actualList[2], account3);
   });
 
   test('createQuery orderingTermData remoteId desc no limit', () async {
@@ -787,28 +787,28 @@ void main() {
       orderingTermData: AccountRepositoryOrderingTermData.remoteIdDesc,
     );
 
-    var account2 = await AccountRepositoryTestHelper.insertDbAccount(
+    var account2 = await AccountRepositoryMockHelper.insertDbAccount(
       accountRepository,
-      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed2'))
+      (await AccountDatabaseMockHelper.createTestDbAccount(seed: 'seed2'))
           .copyWith(remoteId: 'remoteId2'),
     );
-    var account1 = await AccountRepositoryTestHelper.insertDbAccount(
+    var account1 = await AccountRepositoryMockHelper.insertDbAccount(
       accountRepository,
-      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed1'))
+      (await AccountDatabaseMockHelper.createTestDbAccount(seed: 'seed1'))
           .copyWith(remoteId: 'remoteId1'),
     );
-    var account3 = await AccountRepositoryTestHelper.insertDbAccount(
+    var account3 = await AccountRepositoryMockHelper.insertDbAccount(
       accountRepository,
-      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed3'))
+      (await AccountDatabaseMockHelper.createTestDbAccount(seed: 'seed3'))
           .copyWith(remoteId: 'remoteId3'),
     );
 
     var actualList = (await query.get());
     expect(actualList.length, 3);
 
-    AccountDatabaseTestHelper.expectDbAccount(actualList[0], account3);
-    AccountDatabaseTestHelper.expectDbAccount(actualList[1], account2);
-    AccountDatabaseTestHelper.expectDbAccount(actualList[2], account1);
+    AccountDatabaseMockHelper.expectDbAccount(actualList[0], account3);
+    AccountDatabaseMockHelper.expectDbAccount(actualList[1], account2);
+    AccountDatabaseMockHelper.expectDbAccount(actualList[2], account1);
   });
 
   test('createQuery orderingTermData remoteId desc & limit & offset', () async {
@@ -821,26 +821,26 @@ void main() {
       orderingTermData: AccountRepositoryOrderingTermData.remoteIdDesc,
     );
 
-    var account2 = await AccountRepositoryTestHelper.insertDbAccount(
+    var account2 = await AccountRepositoryMockHelper.insertDbAccount(
       accountRepository,
-      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed2'))
+      (await AccountDatabaseMockHelper.createTestDbAccount(seed: 'seed2'))
           .copyWith(remoteId: 'remoteId2'),
     );
-    await AccountRepositoryTestHelper.insertDbAccount(
+    await AccountRepositoryMockHelper.insertDbAccount(
       accountRepository,
-      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed1'))
+      (await AccountDatabaseMockHelper.createTestDbAccount(seed: 'seed1'))
           .copyWith(remoteId: 'remoteId1'),
     );
-    await AccountRepositoryTestHelper.insertDbAccount(
+    await AccountRepositoryMockHelper.insertDbAccount(
       accountRepository,
-      (await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed3'))
+      (await AccountDatabaseMockHelper.createTestDbAccount(seed: 'seed3'))
           .copyWith(remoteId: 'remoteId3'),
     );
 
     var actualList = (await query.get());
     expect(actualList.length, 1);
 
-    AccountDatabaseTestHelper.expectDbAccount(actualList[0], account2);
+    AccountDatabaseMockHelper.expectDbAccount(actualList[0], account2);
   });
 
   test('upsertRemoteAccount conversationRemoteId', () async {
@@ -853,12 +853,12 @@ void main() {
         dbAccountPopulated: DbAccountPopulated(
           dbAccount: dbAccount1,
         ),
-      ).toPleromaApiAccount(),
+      ).toUnifediApiAccount(),
       conversationRemoteId: conversationRemoteId,
       batchTransaction: null,
     );
 
-    var conversation = await ConversationTestHelper.createTestConversation(
+    var conversation = await ConversationMockHelper.createTestConversation(
       seed: 'seed1',
       remoteId: conversationRemoteId,
     );
@@ -900,7 +900,7 @@ void main() {
         dbAccountPopulated: DbAccountPopulated(
           dbAccount: dbAccount1,
         ),
-      ).toPleromaApiAccount(),
+      ).toUnifediApiAccount(),
       conversationRemoteId: conversationRemoteId,
       batchTransaction: null,
     );
@@ -911,7 +911,7 @@ void main() {
     );
     expect(
       (await accountRepository.getConversationAccounts(
-        conversation: await ConversationTestHelper.createTestConversation(
+        conversation: await ConversationMockHelper.createTestConversation(
           seed: 'seed2',
           remoteId: conversationRemoteId,
         ),
@@ -925,9 +925,9 @@ void main() {
     expect(await accountRepository.countAll(), 0);
 
     var dbItem1 =
-        await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed1');
+        await AccountDatabaseMockHelper.createTestDbAccount(seed: 'seed1');
     var dbItem1copy =
-        await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed1');
+        await AccountDatabaseMockHelper.createTestDbAccount(seed: 'seed1');
 
     await accountRepository.batch((batch) {
       accountRepository.insertInDbTypeBatch(
@@ -948,11 +948,11 @@ void main() {
   test('insertInRemoteTypeBatch duplicated', () async {
     expect(await accountRepository.countAll(), 0);
 
-    var account1 = await AccountTestHelper.createTestAccount(seed: 'seed1');
-    var account1Copy = await AccountTestHelper.createTestAccount(seed: 'seed1');
+    var account1 = await AccountMockHelper.createTestAccount(seed: 'seed1');
+    var account1Copy = await AccountMockHelper.createTestAccount(seed: 'seed1');
 
-    var remoteAccount1 = account1.toPleromaApiAccount();
-    var remoteAccount1Copy = account1Copy.toPleromaApiAccount();
+    var remoteAccount1 = account1.toUnifediApiAccount();
+    var remoteAccount1Copy = account1Copy.toUnifediApiAccount();
 
     await accountRepository.batch((batch) {
       accountRepository.insertInRemoteTypeBatch(
@@ -972,11 +972,11 @@ void main() {
   test('insertInRemoteTypeBatch duplicated', () async {
     expect(await accountRepository.countAll(), 0);
 
-    var account1 = await AccountTestHelper.createTestAccount(seed: 'seed1');
-    var account1Copy = await AccountTestHelper.createTestAccount(seed: 'seed1');
+    var account1 = await AccountMockHelper.createTestAccount(seed: 'seed1');
+    var account1Copy = await AccountMockHelper.createTestAccount(seed: 'seed1');
 
-    var remoteAccount1 = account1.toPleromaApiAccount();
-    var remoteAccount1Copy = account1Copy.toPleromaApiAccount();
+    var remoteAccount1 = account1.toUnifediApiAccount();
+    var remoteAccount1Copy = account1Copy.toUnifediApiAccount();
 
     await accountRepository.insertAllInRemoteType(
       [remoteAccount1, remoteAccount1Copy],

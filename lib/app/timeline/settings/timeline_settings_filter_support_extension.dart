@@ -1,9 +1,9 @@
 import 'package:fedi/app/timeline/type/timeline_type_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
   bool isOnlyWithMediaFilterSupportedOnInstance(
-    IPleromaApiInstance pleromaApiInstance,
+    IUnifediApiInstance unifediApiInstance,
   ) {
     switch (this) {
       case TimelineType.public:
@@ -20,7 +20,7 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
   }
 
   bool isExcludeRepliesFilterSupportedOnInstance(
-    IPleromaApiInstance pleromaApiInstance,
+    IUnifediApiInstance unifediApiInstance,
   ) {
     switch (this) {
       case TimelineType.public:
@@ -37,7 +37,7 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
   }
 
   bool isExcludeNsfwSensitiveFilterSupportedOnInstance(
-    IPleromaApiInstance pleromaApiInstance,
+    IUnifediApiInstance unifediApiInstance,
   ) {
     // actually we can filter on client-side but this will
     // require additional pagination handling
@@ -45,7 +45,7 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
   }
 
   bool isWebSocketsUpdatesFilterSupportedOnInstance(
-    IPleromaApiInstance? pleromaApiInstance,
+    IUnifediApiInstance? unifediApiInstance,
   ) {
     // actually we can filter on client-side but this will
     // require additional pagination handling
@@ -53,20 +53,20 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
   }
 
   bool isOnlyRemoteFilterSupportedOnInstance(
-    IPleromaApiInstance pleromaApiInstance,
+    IUnifediApiInstance unifediApiInstance,
   ) {
     switch (this) {
       case TimelineType.public:
         return true;
 
       case TimelineType.customList:
-        return pleromaApiInstance.isPleroma;
+        return unifediApiInstance.typeAsUnifediApi.isPleroma;
 
       case TimelineType.home:
-        return pleromaApiInstance.isPleroma;
+        return unifediApiInstance.typeAsUnifediApi.isPleroma;
 
       case TimelineType.hashtag:
-        return pleromaApiInstance.isPleroma;
+        return unifediApiInstance.typeAsUnifediApi.isPleroma;
 
       case TimelineType.account:
         return false;
@@ -74,58 +74,58 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
   }
 
   bool isOnlyLocalFilterSupportedOnInstance(
-    IPleromaApiInstance pleromaApiInstance,
+    IUnifediApiInstance unifediApiInstance,
   ) {
     switch (this) {
       case TimelineType.public:
         return true;
       case TimelineType.customList:
-        return pleromaApiInstance.isPleroma;
+        return unifediApiInstance.typeAsUnifediApi.isPleroma;
       case TimelineType.home:
         return true;
       case TimelineType.hashtag:
-        return pleromaApiInstance.isPleroma;
+        return unifediApiInstance.typeAsUnifediApi.isPleroma;
       case TimelineType.account:
         return false;
     }
   }
 
   bool isWithMutedFilterSupportedOnInstance(
-    IPleromaApiInstance pleromaApiInstance,
+    IUnifediApiInstance unifediApiInstance,
   ) {
     switch (this) {
       case TimelineType.public:
-        return pleromaApiInstance.isPleroma;
+        return unifediApiInstance.typeAsUnifediApi.isPleroma;
       case TimelineType.home:
-        return pleromaApiInstance.isPleroma;
+        return unifediApiInstance.typeAsUnifediApi.isPleroma;
       case TimelineType.customList:
-        return pleromaApiInstance.isPleroma;
+        return unifediApiInstance.typeAsUnifediApi.isPleroma;
       case TimelineType.hashtag:
-        return pleromaApiInstance.isPleroma;
+        return unifediApiInstance.typeAsUnifediApi.isPleroma;
       case TimelineType.account:
         return false;
     }
   }
 
   bool isExcludeVisibilitiesFilterSupportedOnInstance(
-    IPleromaApiInstance pleromaApiInstance,
+    IUnifediApiInstance unifediApiInstance,
   ) {
     switch (this) {
       case TimelineType.public:
-        return pleromaApiInstance.isPleroma;
+        return unifediApiInstance.typeAsUnifediApi.isPleroma;
       case TimelineType.home:
-        return pleromaApiInstance.isPleroma;
+        return unifediApiInstance.typeAsUnifediApi.isPleroma;
       case TimelineType.customList:
-        return pleromaApiInstance.isPleroma;
+        return unifediApiInstance.typeAsUnifediApi.isPleroma;
       case TimelineType.hashtag:
-        return pleromaApiInstance.isPleroma;
+        return unifediApiInstance.typeAsUnifediApi.isPleroma;
       case TimelineType.account:
         return false;
     }
   }
 
   bool isOnlyInListWithRemoteIdFilterSupportedOnInstance(
-    IPleromaApiInstance? pleromaApiInstance,
+    IUnifediApiInstance? unifediApiInstance,
   ) {
     switch (this) {
       case TimelineType.public:
@@ -142,7 +142,7 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
   }
 
   bool isOnlyFromAccountWithRemoteIdFilterSupportedOnInstance(
-    IPleromaApiInstance pleromaApiInstance,
+    IUnifediApiInstance unifediApiInstance,
   ) {
     switch (this) {
       case TimelineType.public:
@@ -159,7 +159,7 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
   }
 
   bool isWithHashtagFilterSupportedOnInstance(
-    IPleromaApiInstance pleromaApiInstance,
+    IUnifediApiInstance unifediApiInstance,
   ) {
     switch (this) {
       case TimelineType.public:
@@ -176,11 +176,11 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
   }
 
   bool isOnlyFromInstanceFilterSupportedOnInstance(
-    IPleromaApiInstance pleromaApiInstance,
+    IUnifediApiInstance unifediApiInstance,
   ) {
     switch (this) {
       case TimelineType.public:
-        return pleromaApiInstance.isPleroma;
+        return unifediApiInstance.typeAsUnifediApi.isPleroma;
       case TimelineType.customList:
         return false;
       case TimelineType.home:
@@ -193,13 +193,13 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
   }
 
   bool isReplyVisibilityFilterSupportedOnInstance(
-    IPleromaApiInstance pleromaApiInstance,
+    IUnifediApiInstance unifediApiInstance,
   ) {
     switch (this) {
       case TimelineType.public:
-        return pleromaApiInstance.isPleroma;
+        return unifediApiInstance.typeAsUnifediApi.isPleroma;
       case TimelineType.home:
-        return pleromaApiInstance.isPleroma;
+        return unifediApiInstance.typeAsUnifediApi.isPleroma;
       case TimelineType.customList:
         return false;
       case TimelineType.hashtag:
@@ -210,7 +210,7 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
   }
 
   bool isOnlyPinnedFilterSupportedOnInstance(
-    IPleromaApiInstance? pleromaApiInstance,
+    IUnifediApiInstance? unifediApiInstance,
   ) {
     switch (this) {
       case TimelineType.public:
@@ -227,7 +227,7 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
   }
 
   bool isExcludeReblogsSupportedOnInstance(
-    IPleromaApiInstance pleromaApiInstance,
+    IUnifediApiInstance unifediApiInstance,
   ) {
     switch (this) {
       case TimelineType.public:

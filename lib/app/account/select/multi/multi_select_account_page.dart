@@ -58,7 +58,7 @@ void goToMultiSelectAccountPage(
   required AccountsListCallback accountsListSelectedCallback,
   required bool excludeMyAccount,
   required bool followingsOnly,
-  required PleromaAccountListLoader customRemoteAccountListLoader,
+  required UnifediApiAccountListLoader customRemoteAccountListLoader,
   required AccountListLoader customLocalAccountListLoader,
 }) {
   Navigator.push(

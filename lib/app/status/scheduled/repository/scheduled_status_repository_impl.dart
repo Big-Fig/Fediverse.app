@@ -6,14 +6,14 @@ import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository_model.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_model.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_model_adapter.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:moor/moor.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class ScheduledStatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
         DbScheduledStatus,
         DbScheduledStatusPopulated,
         IScheduledStatus,
-        IPleromaApiScheduledStatus,
+        IUnifediApiScheduledStatus,
         int,
         String,
         $DbScheduledStatusesTable,
@@ -61,7 +61,7 @@ class ScheduledStatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       appItem.toDbScheduledStatus();
 
   @override
-  IPleromaApiScheduledStatus mapAppItemToRemoteItem(IScheduledStatus appItem) =>
+  IUnifediApiScheduledStatus mapAppItemToRemoteItem(IScheduledStatus appItem) =>
       appItem.toPleromaScheduledStatus();
 
   @override
@@ -77,7 +77,7 @@ class ScheduledStatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       dbPopulatedItem.toDbScheduledStatusPopulatedWrapper();
 
   @override
-  IPleromaApiScheduledStatus mapDbPopulatedItemToRemoteItem(
+  IUnifediApiScheduledStatus mapDbPopulatedItemToRemoteItem(
     DbScheduledStatusPopulated dbPopulatedItem,
   ) =>
       dbPopulatedItem
@@ -94,7 +94,7 @@ class ScheduledStatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   IScheduledStatus mapRemoteItemToAppItem(
-    IPleromaApiScheduledStatus remoteItem,
+    IUnifediApiScheduledStatus remoteItem,
   ) =>
       DbScheduledStatusPopulated(
         dbScheduledStatus: remoteItem.toDbScheduledStatus(
@@ -116,7 +116,7 @@ class ScheduledStatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   Future<int> insertInRemoteType(
-    IPleromaApiScheduledStatus remoteItem, {
+    IUnifediApiScheduledStatus remoteItem, {
     required InsertMode? mode,
   }) =>
       insertInDbType(
@@ -128,7 +128,7 @@ class ScheduledStatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   Future<void> insertInRemoteTypeBatch(
-    IPleromaApiScheduledStatus remoteItem, {
+    IUnifediApiScheduledStatus remoteItem, {
     required InsertMode? mode,
     required Batch? batchTransaction,
   }) {
@@ -143,7 +143,7 @@ class ScheduledStatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   @override
   Future<void> updateAppTypeByRemoteType({
     required IScheduledStatus appItem,
-    required IPleromaApiScheduledStatus remoteItem,
+    required IUnifediApiScheduledStatus remoteItem,
     required Batch? batchTransaction,
   }) =>
       updateByDbIdInDbType(

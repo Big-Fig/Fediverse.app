@@ -21,8 +21,8 @@ import 'package:fedi/media/player/media_player_model.dart';
 import 'package:fedi/media/player/video/video_media_player_bloc_impl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class UploadMediaAttachmentListMediaItemWidget extends StatefulWidget {
   final EdgeInsets contentPadding;
@@ -64,58 +64,63 @@ class _UploadMediaAttachmentListMediaItemWidgetState
     var bloc = IUploadMediaAttachmentBloc.of(context);
     const previewWidget = _UploadMediaAttachmentListMediaItemPreviewWidget();
 
-    return ClipRRect(
-      borderRadius: BorderRadius.all(
-        Radius.circular(FediSizes.borderRadiusBigSize),
-      ),
-      child: Stack(
-        alignment: Alignment.center,
-        children: <Widget>[
-          Positioned.fill(
-            child: StreamBuilder<UploadMediaAttachmentState>(
-              stream: bloc.uploadStateStream,
-              builder: (context, snapshot) {
-                var uploadState = snapshot.data;
+    return InkWell(
+      onTap: () {
+        bloc.startUploadIfPossible();
+      },
+      child: ClipRRect(
+        borderRadius: BorderRadius.all(
+          Radius.circular(FediSizes.borderRadiusBigSize),
+        ),
+        child: Stack(
+          alignment: Alignment.center,
+          children: <Widget>[
+            Positioned.fill(
+              child: StreamBuilder<UploadMediaAttachmentState>(
+                stream: bloc.uploadStateStream,
+                builder: (context, snapshot) {
+                  var uploadState = snapshot.data;
 
-                if (uploadState?.type ==
-                    UploadMediaAttachmentStateType.uploaded) {
-                  return previewWidget;
-                } else {
-                  return Opacity(
-                    // todo: refactor
-                    // ignore: no-magic-number
-                    opacity: 0.7,
-                    child: previewWidget,
-                  );
-                }
-              },
+                  if (uploadState?.type ==
+                      UploadMediaAttachmentStateType.uploaded) {
+                    return previewWidget;
+                  } else {
+                    return Opacity(
+                      // todo: refactor
+                      // ignore: no-magic-number
+                      opacity: 0.7,
+                      child: previewWidget,
+                    );
+                  }
+                },
+              ),
             ),
-          ),
-          Align(
-            alignment: Alignment.topRight,
-            child: Padding(
-              padding: widget.contentPadding,
-              child:
-                  const _UploadMediaAttachmentListMediaItemTopRightActionWidget(),
+            Align(
+              alignment: Alignment.topRight,
+              child: Padding(
+                padding: widget.contentPadding,
+                child:
+                    const _UploadMediaAttachmentListMediaItemTopRightActionWidget(),
+              ),
             ),
-          ),
-          Align(
-            alignment: Alignment.topLeft,
-            child: Padding(
-              padding: widget.contentPadding,
-              child:
-                  const _UploadMediaAttachmentListMediaItemTopLeftActionWidget(),
+            Align(
+              alignment: Alignment.topLeft,
+              child: Padding(
+                padding: widget.contentPadding,
+                child:
+                    const _UploadMediaAttachmentListMediaItemTopLeftActionWidget(),
+              ),
             ),
-          ),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: Padding(
-              padding: widget.contentPadding,
-              child:
-                  const _UploadMediaAttachmentListMediaItemBottomRightActionWidget(),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Padding(
+                padding: widget.contentPadding,
+                child:
+                    const _UploadMediaAttachmentListMediaItemBottomRightActionWidget(),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -150,7 +155,7 @@ class _UploadMediaAttachmentListMediaItemMediaPreviewWidget
           case MediaDeviceFileType.video:
             preview = VideoMediaPlayerBloc.provideToContext(
               context,
-              mediaPlayerSource: MediaPlayerSource.file(file: file),
+              mediaPlayerSource: MediaPlayerSource.localFile(file: file),
               desiredAspectRatio:
                   VideoMediaPlayerBloc.calculateDefaultAspectRatio(context),
               child: const FediVideoPlayerWidget(),
@@ -312,7 +317,7 @@ class _UploadMediaAttachmentListMediaItemErrorButtonWidget
           context,
           listen: false,
         );
-        uploadMediaAttachmentBloc.startUpload();
+        uploadMediaAttachmentBloc.startUploadIfPossible();
       },
       child: ClipRRect(
         // todo: refactor
@@ -363,9 +368,9 @@ class _UploadMediaAttachmentListMediaItemPreviewWidget extends StatelessWidget {
         mediaDeviceFile: bloc.mediaDeviceFile,
       );
     } else if (bloc is UploadedUploadMediaAttachmentBloc) {
-      var pleromaMediaAttachment = bloc.pleromaMediaAttachment;
-      mediaPreview = Provider<IPleromaApiMediaAttachment>.value(
-        value: pleromaMediaAttachment,
+      var unifediApiMediaAttachment = bloc.unifediApiMediaAttachment;
+      mediaPreview = Provider<IUnifediApiMediaAttachment>.value(
+        value: unifediApiMediaAttachment,
         child: const MediaAttachmentWidget(),
       );
     } else {

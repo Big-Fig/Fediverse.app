@@ -1,7 +1,7 @@
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
+import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
-import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/filter/repository/filter_repository.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/instance/public_timeline/instance_public_timeline_page_bloc.dart';
@@ -18,28 +18,30 @@ import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bl
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc_impl.dart';
 import 'package:fedi/app/timeline/status/timeline_status_cached_list_bloc_impl.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
+import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
-import 'package:base_fediverse_api/base_fediverse_api.dart';
+import 'package:fediverse_api/fediverse_api.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class LocalInstancePublicTimelinePageBloc extends InstancePublicTimelinePageBloc
     implements ILocalInstancePublicTimelinePageBloc {
   @override
-  final IPleromaApiTimelineService pleromaApiTimelineService;
+  final IUnifediApiTimelineService unifediApiTimelineService;
 
-  final IPleromaApiAuthTimelineService pleromaApiAuthTimelineService;
-  final IPleromaApiAccountService pleromaApiAccountService;
+  final IUnifediApiAccountService unifediApiAccountService;
   final IStatusRepository statusRepository;
   final IFilterRepository filterRepository;
-  final ICurrentAuthInstanceBloc currentAuthInstanceBloc;
+  final ICurrentUnifediApiAccessBloc currentUnifediApiAccessBloc;
   final IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc;
   final IMyAccountBloc myAccountBloc;
   final IPaginationSettingsBloc paginationSettingsBloc;
   final ILocalPreferencesService localPreferencesService;
+  final IConnectionService connectionService;
 
   @override
   // ignore: avoid-late-keyword
@@ -56,44 +58,48 @@ class LocalInstancePublicTimelinePageBloc extends InstancePublicTimelinePageBloc
 
   LocalInstancePublicTimelinePageBloc({
     required this.localPreferencesService,
-    required this.pleromaApiTimelineService,
-    required this.pleromaApiAuthTimelineService,
-    required this.pleromaApiAccountService,
+    required this.unifediApiTimelineService,
+    required this.unifediApiAccountService,
     required this.statusRepository,
     required this.filterRepository,
-    required this.currentAuthInstanceBloc,
+    required this.currentUnifediApiAccessBloc,
     required this.webSocketsHandlerManagerBloc,
     required this.paginationSettingsBloc,
     required this.myAccountBloc,
-    required IPleromaApiInstance pleromaApiInstance,
+    required this.connectionService,
+    required IUnifediApiInstance unifediApiInstance,
   }) : super(
-          instanceUri: pleromaApiTimelineService.restService.baseUri,
-          pleromaApiInstance: pleromaApiInstance,
+          instanceUri: unifediApiTimelineService.baseUri,
+          unifediApiInstance: unifediApiInstance,
         );
 
   @override
   // ignore: avoid-late-keyword
-  late ITimelineLocalPreferenceBloc timelineLocalPreferenceBloc;
+  late ITimelineLocalPreferenceBlocOld timelineLocalPreferenceBloc;
 
   static LocalInstancePublicTimelinePageBloc createFromContext(
     BuildContext context, {
-    required IPleromaApiInstance pleromaApiInstance,
+    required IUnifediApiInstance unifediApiInstance,
   }) {
-    var pleromaApiTimelineService =
-        Provider.of<IPleromaApiTimelineService>(context, listen: false);
+    var unifediApiTimelineService =
+        Provider.of<IUnifediApiTimelineService>(context, listen: false);
 
     return LocalInstancePublicTimelinePageBloc(
-      pleromaApiInstance: pleromaApiInstance,
-      pleromaApiTimelineService: pleromaApiTimelineService,
+      connectionService: Provider.of<IConnectionService>(
+        context,
+        listen: false,
+      ),
+      unifediApiInstance: unifediApiInstance,
+      unifediApiTimelineService: unifediApiTimelineService,
       localPreferencesService: ILocalPreferencesService.of(
         context,
         listen: false,
       ),
-      pleromaApiAccountService: Provider.of<IPleromaApiAccountService>(
+      unifediApiAccountService: Provider.of<IUnifediApiAccountService>(
         context,
         listen: false,
       ),
-      currentAuthInstanceBloc: ICurrentAuthInstanceBloc.of(
+      currentUnifediApiAccessBloc: ICurrentUnifediApiAccessBloc.of(
         context,
         listen: false,
       ),
@@ -106,11 +112,6 @@ class LocalInstancePublicTimelinePageBloc extends InstancePublicTimelinePageBloc
         listen: false,
       ),
       filterRepository: IFilterRepository.of(
-        context,
-        listen: false,
-      ),
-      pleromaApiAuthTimelineService:
-          Provider.of<IPleromaApiAuthTimelineService>(
         context,
         listen: false,
       ),
@@ -128,16 +129,16 @@ class LocalInstancePublicTimelinePageBloc extends InstancePublicTimelinePageBloc
   static Widget provideToContext(
     BuildContext context, {
     required Widget child,
-    required IPleromaApiInstance pleromaApiInstance,
+    required IUnifediApiInstance unifediApiInstance,
   }) {
-    return Provider<IPleromaApiInstance>.value(
-      value: pleromaApiInstance,
-      child: DisposableProxyProvider<IPleromaApiInstance,
+    return Provider<IUnifediApiInstance>.value(
+      value: unifediApiInstance,
+      child: DisposableProxyProvider<IUnifediApiInstance,
           ILocalInstancePublicTimelinePageBloc>(
-        update: (context, pleromaApiInstance, previous) =>
+        update: (context, unifediApiInstance, previous) =>
             LocalInstancePublicTimelinePageBloc.createFromContext(
           context,
-          pleromaApiInstance: pleromaApiInstance,
+          unifediApiInstance: unifediApiInstance,
         ),
         child: ProxyProvider<ILocalInstancePublicTimelinePageBloc,
             IInstancePublicTimelinePageBloc>(
@@ -161,28 +162,29 @@ class LocalInstancePublicTimelinePageBloc extends InstancePublicTimelinePageBloc
     timelineLocalPreferenceBloc =
         TimelineLocalPreferenceBloc.instancePublicTimeline(
       localPreferencesService,
-      pleromaApiInstance: pleromaApiInstance,
+      unifediApiInstance: unifediApiInstance,
     );
     await timelineLocalPreferenceBloc.performAsyncInit();
 
     addDisposable(timelineLocalPreferenceBloc);
 
     statusCachedListBloc = TimelineStatusCachedListBloc(
-      pleromaApiAccountService: pleromaApiAccountService,
-      pleromaApiAuthTimelineService: pleromaApiAuthTimelineService,
+      unifediApiAccountService: unifediApiAccountService,
+      unifediApiTimelineService: unifediApiTimelineService,
       statusRepository: statusRepository,
       filterRepository: filterRepository,
-      currentInstanceBloc: currentAuthInstanceBloc,
+      currentInstanceBloc: currentUnifediApiAccessBloc,
       timelineLocalPreferenceBloc: timelineLocalPreferenceBloc,
       webSocketsHandlerManagerBloc: webSocketsHandlerManagerBloc,
       myAccountBloc: myAccountBloc,
-      webSocketsListenType: WebSocketsListenType.foreground,
+      handlerType: WebSocketsChannelHandlerType.foregroundValue,
     );
     await statusCachedListBloc.performAsyncInit();
     addDisposable(statusCachedListBloc);
 
     statusCachedPaginationBloc = StatusCachedPaginationBloc(
       statusListService: statusCachedListBloc,
+      connectionService: connectionService,
       paginationSettingsBloc: paginationSettingsBloc,
       maximumCachedPagesCount: null,
     );
@@ -206,5 +208,6 @@ class LocalInstancePublicTimelinePageBloc extends InstancePublicTimelinePageBloc
   }
 
   @override
-  String get userAtHost => currentAuthInstanceBloc.currentInstance!.userAtHost;
+  String get userAtHost =>
+      currentUnifediApiAccessBloc.currentInstance!.userAtHost;
 }

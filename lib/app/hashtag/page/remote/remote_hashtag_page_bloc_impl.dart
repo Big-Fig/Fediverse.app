@@ -1,3 +1,4 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
 import 'package:fedi/app/hashtag/page/hashtag_page_bloc.dart';
@@ -14,39 +15,39 @@ import 'package:fedi/app/status/pagination/network_only/status_network_only_pagi
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc.dart';
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc_impl.dart';
+import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc_impl.dart';
 import 'package:fedi/pagination/pagination_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:easy_dispose/easy_dispose.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class RemoteHashtagPageBloc extends HashtagPageBloc
     implements IRemoteHashtagPageBloc {
   @override
   final IRemoteInstanceBloc remoteInstanceBloc;
   @override
-  final IPleromaApiTimelineService pleromaApiTimelineService;
+  final IUnifediApiTimelineService unifediApiTimelineService;
 
   final IPaginationSettingsBloc paginationSettingsBloc;
 
   // ignore: avoid-late-keyword
   late MemoryLocalPreferencesService memoryLocalPreferencesService;
-
+  final IConnectionService connectionService;
   RemoteHashtagPageBloc({
     required this.remoteInstanceBloc,
     required this.paginationSettingsBloc,
+    required this.connectionService,
     required IHashtag hashtag,
-  })  : pleromaApiTimelineService = PleromaApiTimelineService(
-          restService: remoteInstanceBloc.pleromaRestService,
-        ),
+  })  : unifediApiTimelineService =
+            remoteInstanceBloc.unifediApiManager.createTimelineService(),
         super(
           hashtag: hashtag,
           instanceUri: remoteInstanceBloc.instanceUri,
         ) {
-    addDisposable(pleromaApiTimelineService);
+    addDisposable(unifediApiTimelineService);
   }
 
   static RemoteHashtagPageBloc createFromContext(
@@ -55,6 +56,10 @@ class RemoteHashtagPageBloc extends HashtagPageBloc
     required IRemoteInstanceBloc remoteInstanceBloc,
   }) {
     return RemoteHashtagPageBloc(
+      connectionService: Provider.of<IConnectionService>(
+        context,
+        listen: false,
+      ),
       remoteInstanceBloc: remoteInstanceBloc,
       hashtag: hashtag,
       paginationSettingsBloc: IPaginationSettingsBloc.of(
@@ -109,13 +114,12 @@ class RemoteHashtagPageBloc extends HashtagPageBloc
 
     addDisposable(timelineLocalPreferenceBloc);
 
-    var pleromaApiTimelineService = PleromaApiTimelineService(
-      restService: remoteInstanceBloc.pleromaRestService,
-    );
-    addDisposable(pleromaApiTimelineService);
+    var unifediApiTimelineService =
+        remoteInstanceBloc.unifediApiManager.createTimelineService();
+    addDisposable(unifediApiTimelineService);
 
     statusNetworkOnlyListBloc = HashtagStatusListNetworkOnlyListBloc(
-      pleromaApiTimelineService: pleromaApiTimelineService,
+      unifediApiTimelineService: unifediApiTimelineService,
       instanceUri: instanceUri,
       timelineLocalPreferenceBloc: timelineLocalPreferenceBloc,
     );
@@ -125,6 +129,7 @@ class RemoteHashtagPageBloc extends HashtagPageBloc
       paginationSettingsBloc: paginationSettingsBloc,
       maximumCachedPagesCount: null,
       listService: statusNetworkOnlyListBloc,
+      connectionService: connectionService,
     );
     addDisposable(statusNetworkOnlyPaginationBloc);
 
@@ -155,7 +160,7 @@ class RemoteHashtagPageBloc extends HashtagPageBloc
 
   @override
   // ignore: avoid-late-keyword
-  late ITimelineLocalPreferenceBloc timelineLocalPreferenceBloc;
+  late ITimelineLocalPreferenceBlocOld timelineLocalPreferenceBloc;
 
   @override
   String get userAtHost => remoteInstanceBloc.instanceUri.host;

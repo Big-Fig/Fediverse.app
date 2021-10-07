@@ -1,3 +1,4 @@
+import 'package:easy_dispose/src/disposable.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
@@ -6,15 +7,15 @@ import 'package:fedi/app/instance/announcement/repository/instance_announcement_
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_impl.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
-import 'package:base_fediverse_api/base_fediverse_api.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class ConversationChatWebSocketsHandler extends WebSocketsChannelHandler {
   @override
   String get logTag => 'conversation_chat_websockets_handler_impl.dart';
 
   ConversationChatWebSocketsHandler({
-    required IPleromaApiWebSocketsService pleromaWebSocketsService,
+    required IUnifediApiWebSocketsService unifediApiWebSocketsService,
     required IStatusRepository statusRepository,
     required INotificationRepository notificationRepository,
     required IInstanceAnnouncementRepository instanceAnnouncementRepository,
@@ -22,14 +23,12 @@ class ConversationChatWebSocketsHandler extends WebSocketsChannelHandler {
     required IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc,
     required IConversationChatNewMessagesHandlerBloc
         conversationChatNewMessagesHandlerBloc,
-    required String? accountId,
-    required WebSocketsListenType listenType,
+    required this.accountId,
+    required WebSocketsChannelHandlerType handlerType,
     required IMyAccountBloc myAccountBloc,
   }) : super(
+          unifediApiWebSocketsService: unifediApiWebSocketsService,
           myAccountBloc: myAccountBloc,
-          webSocketsChannel: pleromaWebSocketsService.getDirectChannel(
-            accountId: accountId,
-          ),
           statusRepository: statusRepository,
           notificationRepository: notificationRepository,
           instanceAnnouncementRepository: instanceAnnouncementRepository,
@@ -40,6 +39,20 @@ class ConversationChatWebSocketsHandler extends WebSocketsChannelHandler {
           statusListRemoteId: null,
           statusConversationRemoteId: null,
           isFromHomeTimeline: false,
-          listenType: listenType,
+          handlerType: handlerType,
+        );
+
+  final String? accountId;
+
+  @override
+  IDisposable initListener() => accountId != null
+      ? unifediApiWebSocketsService.listenForAccountConversationEvents(
+          accountId: accountId!,
+          handlerType: handlerType,
+          onEvent: handleEvent,
+        )
+      : unifediApiWebSocketsService.listenForAllConversationEvents(
+          handlerType: handlerType,
+          onEvent: handleEvent,
         );
 }

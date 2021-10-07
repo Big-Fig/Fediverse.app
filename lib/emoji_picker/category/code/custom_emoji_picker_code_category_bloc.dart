@@ -7,5 +7,5 @@ abstract class ICustomEmojiPickerCodeCategoryBloc
   CustomEmojiPickerCodeCategoryType get type;
 
   @override
-  List<CustomEmojiPickerCodeItem> get items;
+  List<CustomEmojiPickerCodeItem>? get items;
 }

@@ -20,14 +20,6 @@ class KeyValuePairFormGroupBloc<K extends IValueFormFieldBloc,
   }
 
   @override
-  String toString() {
-    return 'FormKeyValuePairFieldBloc{'
-        'keyField: $keyField, '
-        'valueField: $valueField'
-        '}';
-  }
-
-  @override
   List<IFormItemBloc> get items => [keyField, valueField];
 
   @override

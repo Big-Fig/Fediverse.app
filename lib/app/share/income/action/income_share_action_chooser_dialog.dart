@@ -1,7 +1,7 @@
 import 'dart:io';
 
+import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
-import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/chat/conversation/share/conversation_chat_share_entity_page.dart';
 import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_entity_page.dart';
 import 'package:fedi/app/html/html_text_helper.dart';
@@ -19,8 +19,8 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/share/income/income_share_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:logging/logging.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 final _logger = Logger('income_share_action_chooser_dialog.dart');
 
@@ -31,11 +31,11 @@ Future showIncomeShareActionChooserDialog(
 }) async {
   _logger.finest(() => 'showIncomeShareInstanceChooserDialog');
 
-  var currentAuthInstanceBloc =
-      ICurrentAuthInstanceBloc.of(context, listen: false);
+  var currentUnifediApiAccessBloc =
+      ICurrentUnifediApiAccessBloc.of(context, listen: false);
   var types = IncomeShareActionType.values;
 
-  var isPleroma = currentAuthInstanceBloc.currentInstance!.isPleroma;
+  var isPleroma = currentUnifediApiAccessBloc.currentInstance!.isPleroma;
 
   if (!isPleroma) {
     types = types
@@ -146,19 +146,19 @@ ShareEntityItem _mapIncomeShareEventToShareEntity(
       isNeedReUploadMediaAttachments: false,
     );
 
-Future<List<IPleromaApiMediaAttachment>?> _uploadMediaIfNeed({
+Future<List<IUnifediApiMediaAttachment>?> _uploadMediaIfNeed({
   required BuildContext context,
   required List<IncomeShareEventMedia>? incomeShareEventMedias,
 }) async {
-  List<IPleromaApiMediaAttachment>? mediaAttachments;
+  List<IUnifediApiMediaAttachment>? mediaAttachments;
   if (incomeShareEventMedias?.isNotEmpty == true) {
     var dialogResult = await PleromaAsyncOperationHelper
-        .performPleromaAsyncOperation<List<IPleromaApiMediaAttachment>>(
+        .performPleromaAsyncOperation<List<IUnifediApiMediaAttachment>>(
       context: context,
       contentMessage: S.of(context).app_media_upload_progress,
       asyncCode: () async {
-        var pleromaApiMediaAttachmentService =
-            Provider.of<IPleromaApiMediaAttachmentService>(
+        var unifediApiMediaAttachmentService =
+            Provider.of<IUnifediApiMediaAttachmentService>(
           context,
           listen: false,
         );
@@ -166,21 +166,25 @@ Future<List<IPleromaApiMediaAttachment>?> _uploadMediaIfNeed({
         var futures = incomeShareEventMedias!.map(
           (incomeShareEventMedia) async {
             var file = File(incomeShareEventMedia.path);
-            var pleromaApiMediaAttachment =
-                await pleromaApiMediaAttachmentService.uploadMedia(
+            var unifediApiMediaAttachment =
+                await unifediApiMediaAttachmentService.uploadMedia(
               file: file,
+              thumbnail: null,
+              description: null,
+              focus: null,
+              processInBackground: null,
             );
 
             // shared filed was copied to temp folder
             await file.delete();
 
-            return pleromaApiMediaAttachment;
+            return unifediApiMediaAttachment;
           },
         );
 
-        var pleromaApiMediaAttachments = await Future.wait(futures);
+        var unifediApiMediaAttachments = await Future.wait(futures);
 
-        return pleromaApiMediaAttachments;
+        return unifediApiMediaAttachments;
       },
     );
 

@@ -5,7 +5,7 @@ import 'package:fedi/app/web_sockets/settings/local_preferences/instance/instanc
 import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc_impl.dart';
 import 'package:fedi/app/web_sockets/settings/web_sockets_settings_model.dart';
 import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
-import 'package:base_fediverse_api/base_fediverse_api.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../rxdart/rxdart_test_helper.dart';
@@ -61,17 +61,17 @@ void main() {
   });
 
   test('handlingType', () async {
-    WebSocketsHandlingType? listened;
+    WebSocketsMode? listened;
 
     StreamSubscription subscriptionListenedWebSocketsAgeLimitType =
-        webSocketsSettingsBloc.handlingTypeStream.listen(
+        webSocketsSettingsBloc.modeStream.listen(
       (data) {
         listened = data;
       },
     );
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     var defaultValue = GlobalWebSocketsSettingsLocalPreferenceBloc.defaultValue;
 
@@ -89,19 +89,19 @@ void main() {
       defaultValue.handlingType,
     );
     expect(
-      webSocketsSettingsBloc.handlingType,
+      webSocketsSettingsBloc.mode,
       defaultValue.handlingType,
     );
 
     var testHandlingType =
-        WebSocketsSettingsModelTestHelper.createTestWebSocketsSettings(
+        WebSocketsSettingsModelMockHelper.createTestWebSocketsSettings(
       seed: 'seed',
     ).handlingType;
 
-    await webSocketsSettingsBloc.changeHandlingType(testHandlingType);
+    await webSocketsSettingsBloc.changeMode(testHandlingType);
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(
       listenedSettingsData?.handlingType,
@@ -117,7 +117,7 @@ void main() {
       testHandlingType,
     );
     expect(
-      webSocketsSettingsBloc.handlingType,
+      webSocketsSettingsBloc.mode,
       testHandlingType,
     );
 

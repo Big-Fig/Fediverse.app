@@ -4,8 +4,9 @@ import 'package:fedi/app/chat/conversation/with_last_message/list/cached/convers
 import 'package:fedi/app/chat/conversation/with_last_message/pagination/conversation_chat_with_last_message_pagination_bloc.dart';
 import 'package:fedi/app/pagination/cached/cached_pleroma_pagination_bloc_impl.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
+import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class ConversationChatWithLastMessagePaginationBloc
     extends CachedPleromaPaginationBloc<IConversationChatWithLastMessage>
@@ -16,13 +17,15 @@ class ConversationChatWithLastMessagePaginationBloc
     required this.listService,
     required IPaginationSettingsBloc paginationSettingsBloc,
     required int? maximumCachedPagesCount,
+    required IConnectionService connectionService,
   }) : super(
+          connectionService: connectionService,
           maximumCachedPagesCount: maximumCachedPagesCount,
           paginationSettingsBloc: paginationSettingsBloc,
         );
 
   @override
-  IPleromaApi get pleromaApi => listService.pleromaApi;
+  IUnifediApiService get unifediApi => listService.unifediApi;
 
   @override
   Future<List<IConversationChatWithLastMessage>> loadLocalItems({

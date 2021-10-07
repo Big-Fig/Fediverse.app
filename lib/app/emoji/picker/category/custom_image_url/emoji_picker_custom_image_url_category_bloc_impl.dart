@@ -1,14 +1,13 @@
-import 'package:fedi/app/auth/instance/auth_instance_model.dart';
-import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/emoji/picker/category/custom_image_url/emoji_picker_custom_image_url_category_model.dart';
 import 'package:fedi/app/emoji/picker/category/custom_image_url/local_preferences/emoji_picker_custom_image_url_category_local_preference_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/emoji_picker/category/image_url/custom_emoji_picker_image_url_category_bloc.dart';
 import 'package:fedi/emoji_picker/item/image_url/custom_emoji_picker_image_url_item_model.dart';
-import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart' as path;
+import 'package:unifedi_api/unifedi_api.dart';
 
 var _urlPath = path.Context(style: path.Style.url);
 
@@ -16,23 +15,21 @@ var _logger = Logger('emoji_picker_custom_image_url_category_bloc_impl.dart');
 
 class EmojiPickerCustomImageUrlCategoryBloc extends AsyncInitLoadingBloc
     implements ICustomEmojiPickerImageUrlCategoryBloc {
-  final ICurrentAuthInstanceBloc currentAuthInstanceBloc;
-  final IPleromaApiEmojiService pleromaApiEmojiService;
-  final IMastodonApiEmojiService mastodonApiEmojiService;
+  final ICurrentUnifediApiAccessBloc currentUnifediApiAccessBloc;
+  final IUnifediApiInstanceService unifediApiInstanceService;
   final IEmojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc
       preferenceBloc;
 
   EmojiPickerCustomImageUrlCategoryBloc({
-    required this.pleromaApiEmojiService,
-    required this.mastodonApiEmojiService,
-    required this.currentAuthInstanceBloc,
+    required this.unifediApiInstanceService,
+    required this.currentUnifediApiAccessBloc,
     required this.preferenceBloc,
   });
 
   @override
   Future internalAsyncInit() async {
     await preferenceBloc.performAsyncInit();
-    var currentInstance = currentAuthInstanceBloc.currentInstance!;
+    var currentInstance = currentUnifediApiAccessBloc.currentInstance!;
     if (currentInstance.isPleroma) {
       // old instances may not have this API
       // ignore: unawaited_futures
@@ -44,13 +41,13 @@ class EmojiPickerCustomImageUrlCategoryBloc extends AsyncInitLoadingBloc
   }
 
   Future<void> _loadMastodon() async {
-    await mastodonApiEmojiService.getCustomEmojis().then(
+    await unifediApiInstanceService.getCustomEmojis().then(
       (customEmojis) async {
         var emojiItems = customEmojis.map(
           (customEmoji) {
             return CustomEmojiPickerImageUrlItem(
               imageUrl: customEmoji.staticUrl!,
-              name: customEmoji.shortcode!,
+              name: customEmoji.name,
             );
           },
         ).toList();
@@ -72,17 +69,17 @@ class EmojiPickerCustomImageUrlCategoryBloc extends AsyncInitLoadingBloc
     );
   }
 
-  Future<void> _loadPleroma(AuthInstance currentInstance) async {
+  Future<void> _loadPleroma(UnifediApiAccess currentInstance) async {
     // old instances may not have this API
     var urlHost = currentInstance.urlHost;
     var urlSchema = currentInstance.urlSchema;
 
-    await pleromaApiEmojiService.getCustomEmojis().then(
+    await unifediApiInstanceService.getCustomEmojis().then(
       (customEmojis) async {
         var emojiItems = customEmojis.map(
           (customEmoji) {
             var baseUrl = '$urlSchema://$urlHost';
-            var imageUrl = '${customEmoji.imageUrl}';
+            var imageUrl = '${customEmoji.url}';
 
             if (baseUrl.endsWith('/') && imageUrl.startsWith('/')) {
               baseUrl = baseUrl.substring(0, baseUrl.length - 1);
@@ -116,8 +113,7 @@ class EmojiPickerCustomImageUrlCategoryBloc extends AsyncInitLoadingBloc
   }
 
   @override
-  List<CustomEmojiPickerImageUrlItem> get items =>
-      preferenceBloc.value?.items ?? [];
+  List<CustomEmojiPickerImageUrlItem>? get items => preferenceBloc.value?.items;
 
   @override
   Stream<List<CustomEmojiPickerImageUrlItem>?> get itemsStream =>

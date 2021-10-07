@@ -2,10 +2,9 @@ import 'dart:async';
 
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
+import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
-import 'package:fedi/app/auth/instance/auth_instance_model.dart';
-import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/filter/edit/edit_filter_bloc.dart';
 import 'package:fedi/app/filter/edit/edit_filter_bloc_proxy_provider.dart';
 import 'package:fedi/app/filter/filter_model.dart';
@@ -15,10 +14,10 @@ import 'package:fedi/app/filter/form/filter_form_bloc_impl.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
-import 'package:flutter/widgets.dart';
 import 'package:fedi/form/form_item_bloc.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
   static EditFilterBloc createFromContext(
@@ -30,7 +29,7 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
     var editFilterBloc = EditFilterBloc(
       filter: initialValue,
       statusRepository: IStatusRepository.of(context, listen: false),
-      pleromaFilterService: Provider.of<IPleromaApiFilterService>(
+      unifediApiFilterService: Provider.of<IUnifediApiFilterService>(
         context,
         listen: false,
       ),
@@ -38,7 +37,7 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
         context,
         listen: false,
       ),
-      pleromaAccountService: Provider.of<IPleromaApiAccountService>(
+      unifediApiAccountService: Provider.of<IUnifediApiAccountService>(
         context,
         listen: false,
       ),
@@ -51,7 +50,7 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
         context,
         listen: false,
       ),
-      currentInstance: ICurrentAuthInstanceBloc.of(
+      currentInstance: ICurrentUnifediApiAccessBloc.of(
         context,
         listen: false,
       ).currentInstance!,
@@ -93,7 +92,7 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
 
   final IFilter? filter;
 
-  final IPleromaApiFilterService pleromaFilterService;
+  final IUnifediApiFilterService unifediApiFilterService;
 
   @override
   final IFilterFormBloc filterFormBloc;
@@ -104,17 +103,17 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
   @override
   final bool isPossibleToDelete;
 
-  final AuthInstance currentInstance;
+  final UnifediApiAccess currentInstance;
 
   EditFilterBloc({
     required this.filter,
-    required this.pleromaFilterService,
+    required this.unifediApiFilterService,
     required this.statusRepository,
     required this.isPossibleToDelete,
     required this.timelinesHomeTabStorageBloc,
     required IMyAccountBloc myAccountBloc,
     required IAccountRepository accountRepository,
-    required IPleromaApiAccountService pleromaAccountService,
+    required IUnifediApiAccountService unifediApiAccountService,
     required this.currentInstance,
   }) : filterFormBloc = FilterFormBloc(
           initialValue: filter,
@@ -135,9 +134,8 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
   @override
   Future<IFilter> submit() async {
     var filterRemoteId = filter?.remoteId;
-    var postPleromaFilter = filterFormBloc.calculateFormValue();
-    var remoteFilter =
-        await actuallySubmitFilter(filterRemoteId, postPleromaFilter);
+    var postFilter = filterFormBloc.calculateFormValue();
+    var remoteFilter = await actuallySubmitFilter(filterRemoteId, postFilter);
 
     var localFilter = remoteFilter.toDbFilterPopulatedWrapper();
 
@@ -146,13 +144,13 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
     return localFilter;
   }
 
-  Future<IPleromaApiFilter> actuallySubmitFilter(
+  Future<IUnifediApiFilter> actuallySubmitFilter(
     String? filterRemoteId,
-    IPostPleromaApiFilter postPleromaFilter,
+    IUnifediApiPostFilter postFilter,
   ) async {
-    var remoteFilter = await pleromaFilterService.updateFilter(
-      filterRemoteId: filterRemoteId!,
-      postPleromaFilter: postPleromaFilter,
+    var remoteFilter = await unifediApiFilterService.updateFilter(
+      filterId: filterRemoteId!,
+      postFilter: postFilter,
     );
 
     return remoteFilter;
@@ -160,7 +158,7 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
 
   @override
   Future deleteList() async {
-    await pleromaFilterService.deleteFilter(filterRemoteId: filter!.remoteId);
+    await unifediApiFilterService.deleteFilter(filterId: filter!.remoteId);
 
     deletedStreamController.add(null);
 

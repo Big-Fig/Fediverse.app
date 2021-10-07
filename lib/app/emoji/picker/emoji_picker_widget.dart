@@ -1,6 +1,6 @@
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/emoji/picker/category/custom_image_url/emoji_picker_custom_image_url_category_bloc_impl.dart';
 import 'package:fedi/app/emoji/picker/category/custom_image_url/local_preferences/emoji_picker_custom_image_url_category_local_preference_bloc.dart';
 import 'package:fedi/app/emoji/picker/category/recent/emoji_picker_recent_category_bloc_impl.dart';
@@ -14,11 +14,10 @@ import 'package:fedi/emoji_picker/custom_emoji_picker_bloc.dart';
 import 'package:fedi/emoji_picker/custom_emoji_picker_bloc_impl.dart';
 import 'package:fedi/emoji_picker/custom_emoji_picker_widget.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class EmojiPickerWidget extends StatelessWidget {
   final EmojiSelectedCallback onEmojiSelected;
@@ -44,18 +43,14 @@ class EmojiPickerWidget extends StatelessWidget {
         EmojiPickerCustomImageUrlCategoryBloc? customCategoryBloc;
         if (useImageEmoji) {
           customCategoryBloc = EmojiPickerCustomImageUrlCategoryBloc(
-            pleromaApiEmojiService:
-                Provider.of<IPleromaApiEmojiService>(context, listen: false),
+            unifediApiInstanceService:
+                Provider.of<IUnifediApiInstanceService>(context, listen: false),
             preferenceBloc:
                 IEmojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc.of(
               context,
               listen: false,
             ),
-            currentAuthInstanceBloc: ICurrentAuthInstanceBloc.of(
-              context,
-              listen: false,
-            ),
-            mastodonApiEmojiService: Provider.of<IMastodonApiEmojiService>(
+            currentUnifediApiAccessBloc: ICurrentUnifediApiAccessBloc.of(
               context,
               listen: false,
             ),

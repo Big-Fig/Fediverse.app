@@ -1,9 +1,9 @@
 import 'package:fedi/app/crash_reporting/settings/edit/edit_crash_reporting_settings_bloc.dart';
 import 'package:fedi/app/form/field/value/bool/bool_value_form_field_row_widget.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
-import 'package:fedi/generated/l10n.dart';
 
 class EditCrashReportingSettingsWidget extends StatelessWidget {
   final bool shrinkWrap;

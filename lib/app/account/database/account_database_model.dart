@@ -1,4 +1,5 @@
 import 'package:fedi/app/moor/moor_converters.dart';
+import 'package:fedi/moor/moor_json_type_converter.dart';
 import 'package:moor/moor.dart';
 
 // todo: add foreign keys
@@ -15,17 +16,17 @@ class DbAccounts extends Table {
 
   TextColumn get note => text().nullable()();
 
-  BoolColumn get locked => boolean()();
+  BoolColumn get locked => boolean().nullable()();
 
-  TextColumn get headerStatic => text()();
+  TextColumn get headerStatic => text().nullable()();
 
-  TextColumn get header => text()();
+  TextColumn get header => text().nullable()();
 
-  IntColumn get followingCount => integer()();
+  IntColumn get followingCount => integer().nullable()();
 
-  IntColumn get followersCount => integer()();
+  IntColumn get followersCount => integer().nullable()();
 
-  IntColumn get statusesCount => integer()();
+  IntColumn get statusesCount => integer().nullable()();
 
   TextColumn get displayName => text().nullable()();
 
@@ -43,45 +44,76 @@ class DbAccounts extends Table {
 
   TextColumn get fields => text()
       .nullable()
-      .map(PleromaApiFieldListDatabaseConverter())
+      .map(UnifediApiFieldListDatabaseConverter())
       .nullable()();
 
   TextColumn get emojis => text()
       .nullable()
-      .map(PleromaApiEmojiListDatabaseConverter())
+      .map(UnifediApiEmojiListDatabaseConverter())
       .nullable()();
 
-  TextColumn get pleromaBackgroundImage => text().nullable()();
+  TextColumn get backgroundImage =>
+      text().named('pleroma_background_image').nullable()();
 
-  TextColumn get pleromaTags =>
-      text().nullable().map(PleromaApiTagListDatabaseConverter()).nullable()();
-
-  TextColumn get pleromaRelationship => text()
+  TextColumn get tags => text()
+      .named('pleroma_tags')
       .nullable()
-      .map(PleromaApiAccountRelationshipDatabaseConverter())
+      .map(UnifediApiTagListDatabaseConverter())
       .nullable()();
 
-  BoolColumn get pleromaIsAdmin => boolean().nullable()();
+  TextColumn get relationship => text()
+      .named('pleroma_relationship')
+      .nullable()
+      .map(UnifediApiAccountRelationshipDatabaseConverter())
+      .nullable()();
 
-  BoolColumn get pleromaIsModerator => boolean().nullable()();
+  BoolColumn get isAdmin => boolean().named('pleroma_is_admin').nullable()();
 
-  BoolColumn get pleromaConfirmationPending => boolean().nullable()();
+  BoolColumn get isModerator =>
+      boolean().named('pleroma_is_moderator').nullable()();
 
-  BoolColumn get pleromaHideFavorites => boolean().nullable()();
+  BoolColumn get confirmationPending =>
+      boolean().named('pleroma_confirmation_pending').nullable()();
 
-  BoolColumn get pleromaHideFollowers => boolean().nullable()();
+  BoolColumn get hideFavorites =>
+      boolean().named('pleroma_hide_favorites').nullable()();
 
-  BoolColumn get pleromaHideFollows => boolean().nullable()();
+  BoolColumn get hideFollowers =>
+      boolean().named('pleroma_hide_followers').nullable()();
 
-  BoolColumn get pleromaHideFollowersCount => boolean().nullable()();
+  BoolColumn get hideFollows =>
+      boolean().named('pleroma_hide_follows').nullable()();
 
-  BoolColumn get pleromaHideFollowsCount => boolean().nullable()();
+  BoolColumn get hideFollowersCount =>
+      boolean().named('pleroma_hide_followers_count').nullable()();
 
-  BoolColumn get pleromaDeactivated => boolean().nullable()();
+  BoolColumn get hideFollowsCount =>
+      boolean().named('pleroma_hide_follows_count').nullable()();
 
-  BoolColumn get pleromaAllowFollowingMove => boolean().nullable()();
+  BoolColumn get deactivated =>
+      boolean().named('pleroma_deactivated').nullable()();
 
-  BoolColumn get pleromaSkipThreadContainment => boolean().nullable()();
+  BoolColumn get allowFollowingMove =>
+      boolean().named('pleroma_allow_following_move').nullable()();
 
-  BoolColumn get pleromaAcceptsChatMessages => boolean().nullable()();
+  BoolColumn get skipThreadContainment =>
+      boolean().named('pleroma_skip_thread_containment').nullable()();
+
+  BoolColumn get acceptsChatMessages =>
+      boolean().named('pleroma_accepts_chat_messages').nullable()();
+
+  BoolColumn get suspended => boolean().nullable()();
+
+  BoolColumn get isConfirmed => boolean().nullable()();
+
+  DateTimeColumn get muteExpiresAt => dateTime().nullable()();
+
+  TextColumn get fqn => text().nullable()();
+
+  TextColumn get favicon => text().nullable()();
+
+  TextColumn get apId => text().nullable()();
+
+  TextColumn get alsoKnownAs =>
+      text().nullable().map(StringListDatabaseConverter()).nullable()();
 }

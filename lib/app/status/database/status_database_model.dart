@@ -1,6 +1,6 @@
 import 'package:fedi/app/moor/moor_converters.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:moor/moor.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 // todo: add foreign keys
 @DataClassName('DbStatus')
@@ -21,7 +21,7 @@ class DbStatuses extends Table {
   TextColumn? get spoilerText => text().nullable()();
 
   TextColumn? get visibility =>
-      text().map(PleromaApiVisibilityMoorTypeConverter())();
+      text().map(UnifediApiVisibilityMoorTypeConverter())();
 
   TextColumn? get uri => text()();
 
@@ -53,20 +53,20 @@ class DbStatuses extends Table {
   TextColumn? get accountRemoteId => text()();
 
   TextColumn? get mediaAttachments =>
-      text().map(PleromaMediaAttachmentListDatabaseConverter()).nullable()();
+      text().map(UnifediApiMediaAttachmentListDatabaseConverter()).nullable()();
 
   TextColumn? get mentions =>
       text().map(PleromaMentionListDatabaseConverter()).nullable()();
 
   // TODO: rework with join
   TextColumn? get tags =>
-      text().map(PleromaApiTagListDatabaseConverter()).nullable()();
+      text().map(UnifediApiTagListDatabaseConverter()).nullable()();
 
   TextColumn? get emojis =>
-      text().map(PleromaApiEmojiListDatabaseConverter()).nullable()();
+      text().map(UnifediApiEmojiListDatabaseConverter()).nullable()();
 
   TextColumn? get poll =>
-      text().map(PleromaPollDatabaseConverter()).nullable()();
+      text().map(UnifediApiPollDatabaseConverter()).nullable()();
 
   TextColumn? get card =>
       text().map(PleromaCardDatabaseConverter()).nullable()();
@@ -74,26 +74,37 @@ class DbStatuses extends Table {
   TextColumn? get language => text().nullable()();
 
   //  expanded pleroma object fields
-  TextColumn? get pleromaContent =>
-      text().map(PleromaContentDatabaseConverter()).nullable()();
+  TextColumn? get contentVariants => text()
+      .named('pleroma_content')
+      .map(PleromaContentDatabaseConverter())
+      .nullable()();
 
-  IntColumn? get pleromaConversationId => integer().nullable()();
+  IntColumn? get conversationId =>
+      integer().named('pleroma_conversation_id').nullable()();
 
-  IntColumn? get pleromaDirectConversationId => integer().nullable()();
+  IntColumn? get directConversationId =>
+      integer().named('pleroma_direct_conversation_id').nullable()();
 
-  TextColumn? get pleromaInReplyToAccountAcct => text().nullable()();
+  TextColumn? get inReplyToAccountAcct =>
+      text().named('pleroma_in_reply_to_account_acct').nullable()();
 
-  BoolColumn? get pleromaLocal => boolean().nullable()();
+  BoolColumn? get local => boolean().named('pleroma_local').nullable()();
 
-  TextColumn? get pleromaSpoilerText =>
-      text().map(PleromaContentDatabaseConverter()).nullable()();
+  TextColumn? get spoilerTextVariants => text()
+      .named('pleroma_spoiler_text')
+      .map(PleromaContentDatabaseConverter())
+      .nullable()();
 
-  DateTimeColumn? get pleromaExpiresAt => dateTime().nullable()();
+  DateTimeColumn? get expiresAt =>
+      dateTime().named('pleroma_expires_at').nullable()();
 
-  BoolColumn? get pleromaThreadMuted => boolean().nullable()();
+  BoolColumn? get threadMuted =>
+      boolean().named('pleroma_thread_muted').nullable()();
 
-  TextColumn? get pleromaEmojiReactions =>
-      text().map(PleromaEmojiReactionsListDatabaseConverter()).nullable()();
+  TextColumn? get emojiReactions => text()
+      .named('pleroma_emoji_reactions')
+      .map(EmojiReactionsListDatabaseConverter())
+      .nullable()();
 
   BoolColumn? get deleted => boolean().nullable()();
 
@@ -107,19 +118,17 @@ class DbStatuses extends Table {
   TextColumn? get wasSentWithIdempotencyKey => text().nullable()();
 }
 
-class PleromaApiVisibilityMoorTypeConverter
-    implements TypeConverter<PleromaApiVisibility, String> {
-  const PleromaApiVisibilityMoorTypeConverter();
+class UnifediApiVisibilityMoorTypeConverter
+    implements TypeConverter<UnifediApiVisibility, String> {
+  const UnifediApiVisibilityMoorTypeConverter();
 
-  PleromaApiVisibility fromJson(String? value) =>
-      value?.toPleromaApiVisibility() ?? defaultPleromaApiVisibility;
+  UnifediApiVisibility fromJson(String value) => value.toUnifediApiVisibility();
 
-  String toJson(PleromaApiVisibility? value) =>
-      value?.toJsonValue() ?? defaultPleromaApiVisibility.toJsonValue();
+  String toJson(UnifediApiVisibility value) => value.stringValue;
 
   @override
-  PleromaApiVisibility? mapToDart(String? fromDb) => fromJson(fromDb);
+  UnifediApiVisibility mapToDart(String? fromDb) => fromJson(fromDb!);
 
   @override
-  String? mapToSql(PleromaApiVisibility? value) => toJson(value);
+  String mapToSql(UnifediApiVisibility? value) => toJson(value!);
 }

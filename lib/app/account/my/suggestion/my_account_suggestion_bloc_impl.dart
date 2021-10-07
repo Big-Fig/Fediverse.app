@@ -10,27 +10,32 @@ import 'package:fedi/app/account/pagination/network_only/account_network_only_pa
 import 'package:fedi/app/account/pagination/network_only/account_network_only_pagination_bloc_impl.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:fedi/connection/connection_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class MyAccountSuggestionBloc extends DisposableOwner
     implements IMyAccountSuggestionBloc {
   final IPaginationSettingsBloc paginationSettingsBloc;
 
+  final IUnifediApiMyAccountService unifediApiMyAccountService;
+
   MyAccountSuggestionBloc({
-    required this.pleromaApiSuggestionsService,
+    required this.unifediApiMyAccountService,
     required this.paginationSettingsBloc,
+    required IConnectionService connectionService,
   }) {
     myAccountSuggestionAccountListNetworkOnlyListBloc =
         MyAccountSuggestionAccountListNetworkOnlyListBloc(
-      pleromaApiSuggestionsService: pleromaApiSuggestionsService,
+      unifediApiMyAccountService: unifediApiMyAccountService,
       remoteInstanceUriOrNull: remoteInstanceUriOrNull,
       instanceLocation: instanceLocation,
     );
 
     myAccountSuggestionAccountListNetworkOnlyPaginationBloc =
         AccountNetworkOnlyPaginationBloc(
+      connectionService: connectionService,
       listBloc: myAccountSuggestionAccountListNetworkOnlyListBloc,
       maximumCachedPagesCount: null,
       paginationSettingsBloc: paginationSettingsBloc,
@@ -46,8 +51,6 @@ class MyAccountSuggestionBloc extends DisposableOwner
     // ignore: unawaited_futures
     accountPaginationListBloc.refreshWithoutController();
   }
-
-  final IPleromaApiSuggestionsService pleromaApiSuggestionsService;
 
   @override
   // ignore: avoid-late-keyword
@@ -70,11 +73,15 @@ class MyAccountSuggestionBloc extends DisposableOwner
   Uri? get remoteInstanceUriOrNull => null;
 
   static MyAccountSuggestionBloc createFromContext(BuildContext context) {
-    var pleromaApiSuggestionsService =
-        Provider.of<IPleromaApiSuggestionsService>(context, listen: false);
+    var unifediApiMyAccountService =
+        Provider.of<IUnifediApiMyAccountService>(context, listen: false);
 
     return MyAccountSuggestionBloc(
-      pleromaApiSuggestionsService: pleromaApiSuggestionsService,
+      connectionService: Provider.of<IConnectionService>(
+        context,
+        listen: false,
+      ),
+      unifediApiMyAccountService: unifediApiMyAccountService,
       paginationSettingsBloc: IPaginationSettingsBloc.of(
         context,
         listen: false,

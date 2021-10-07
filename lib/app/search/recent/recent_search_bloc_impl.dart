@@ -1,8 +1,8 @@
-import 'package:fedi/app/search/input/search_input_bloc.dart';
-import 'package:fedi/app/search/recent/recent_search_bloc.dart';
-import 'package:fedi/app/search/recent/local_preferences/recent_search_local_preference_bloc.dart';
-import 'package:fedi/app/search/recent/recent_search_model.dart';
 import 'package:easy_dispose/easy_dispose.dart';
+import 'package:fedi/app/search/input/search_input_bloc.dart';
+import 'package:fedi/app/search/recent/local_preferences/recent_search_local_preference_bloc.dart';
+import 'package:fedi/app/search/recent/recent_search_bloc.dart';
+import 'package:fedi/app/search/recent/recent_search_model.dart';
 
 class RecentSearchBloc extends DisposableOwner implements IRecentSearchBloc {
   final ISearchInputBloc searchInputBloc;

@@ -13,10 +13,10 @@ import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 var _logger = Logger('status_repository_impl.dart');
 
@@ -24,7 +24,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     DbStatus,
     DbStatusPopulated,
     IStatus,
-    IPleromaApiStatus,
+    IUnifediApiStatus,
     int,
     String,
     $DbStatusesTable,
@@ -107,7 +107,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   Future updateStatusTags({
     required String statusRemoteId,
-    required List<IPleromaApiTag>? tags,
+    required List<IUnifediApiTag>? tags,
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
@@ -315,8 +315,8 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   DbStatus mapAppItemToDbItem(IStatus appItem) => appItem.toDbStatus();
 
   @override
-  IPleromaApiStatus mapAppItemToRemoteItem(IStatus appItem) =>
-      appItem.toPleromaApiStatus();
+  IUnifediApiStatus mapAppItemToRemoteItem(IStatus appItem) =>
+      appItem.toUnifediApiStatus();
 
   @override
   DbStatusPopulated mapAppItemToDbPopulatedItem(IStatus appItem) =>
@@ -327,13 +327,13 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       dbPopulatedItem.toDbStatusPopulatedWrapper();
 
   @override
-  IPleromaApiStatus mapDbPopulatedItemToRemoteItem(
+  IUnifediApiStatus mapDbPopulatedItemToRemoteItem(
     DbStatusPopulated dbPopulatedItem,
   ) =>
-      dbPopulatedItem.toDbStatusPopulatedWrapper().toPleromaApiStatus();
+      dbPopulatedItem.toDbStatusPopulatedWrapper().toUnifediApiStatus();
 
   @override
-  IStatus mapRemoteItemToAppItem(IPleromaApiStatus remoteItem) =>
+  IStatus mapRemoteItemToAppItem(IUnifediApiStatus remoteItem) =>
       remoteItem.toDbStatusPopulatedWrapper();
 
   @override
@@ -357,7 +357,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   Future<int> insertInRemoteType(
-    IPleromaApiStatus remoteItem, {
+    IUnifediApiStatus remoteItem, {
     required InsertMode? mode,
   }) async {
     await _upsertStatusMetadata(
@@ -375,7 +375,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   Future<void> insertInRemoteTypeBatch(
-    IPleromaApiStatus remoteItem, {
+    IUnifediApiStatus remoteItem, {
     required InsertMode? mode,
     required Batch? batchTransaction,
   }) async {
@@ -411,7 +411,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   @override
   Future<void> updateAppTypeByRemoteType({
     required IStatus appItem,
-    required IPleromaApiStatus remoteItem,
+    required IUnifediApiStatus remoteItem,
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
@@ -462,7 +462,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   Future upsertRemoteStatusWithAllArguments(
-    IPleromaApiStatus remoteStatus, {
+    IUnifediApiStatus remoteStatus, {
     required bool? isFromHomeTimeline,
     required String? listRemoteId,
     required String? conversationRemoteId,
@@ -501,7 +501,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   Future upsertRemoteStatusForConversation(
-    IPleromaApiStatus remoteStatus, {
+    IUnifediApiStatus remoteStatus, {
     required String conversationRemoteId,
     required Batch? batchTransaction,
   }) =>
@@ -515,7 +515,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   Future upsertRemoteStatusForHomeTimeline(
-    IPleromaApiStatus remoteStatus, {
+    IUnifediApiStatus remoteStatus, {
     required bool isFromHomeTimeline,
     required Batch? batchTransaction,
   }) =>
@@ -529,7 +529,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   Future upsertRemoteStatusForList(
-    IPleromaApiStatus remoteStatus, {
+    IUnifediApiStatus remoteStatus, {
     required String listRemoteId,
     required Batch? batchTransaction,
   }) =>
@@ -543,7 +543,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   Future upsertRemoteStatusesForConversation(
-    List<IPleromaApiStatus> remoteStatuses, {
+    List<IUnifediApiStatus> remoteStatuses, {
     required String conversationRemoteId,
     required Batch? batchTransaction,
   }) =>
@@ -557,7 +557,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   Future upsertRemoteStatusesForHomeTimeline(
-    List<IPleromaApiStatus> remoteStatuses, {
+    List<IUnifediApiStatus> remoteStatuses, {
     required bool isFromHomeTimeline,
     required Batch? batchTransaction,
   }) =>
@@ -571,7 +571,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   Future upsertRemoteStatusesForList(
-    List<IPleromaApiStatus> remoteStatuses, {
+    List<IUnifediApiStatus> remoteStatuses, {
     required String listRemoteId,
     required Batch? batchTransaction,
   }) async =>
@@ -585,7 +585,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   Future insertAllInRemoteType(
-    List<IPleromaApiStatus> remoteItems, {
+    List<IUnifediApiStatus> remoteItems, {
     required InsertMode? mode,
     required Batch? batchTransaction,
   }) async {
@@ -611,7 +611,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   Future upsertRemoteStatusesWithAllArguments(
-    List<IPleromaApiStatus> remoteStatuses, {
+    List<IUnifediApiStatus> remoteStatuses, {
     required bool? isFromHomeTimeline,
     required String? listRemoteId,
     required String? conversationRemoteId,
@@ -643,7 +643,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   // ignore: long-method
   Future _upsertStatusMetadata(
-    IPleromaApiStatus remoteStatus, {
+    IUnifediApiStatus remoteStatus, {
     required String? listRemoteId,
     required String? conversationRemoteId,
     required bool? isFromHomeTimeline,
@@ -651,8 +651,8 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }) async {
     if (batchTransaction != null) {
       // if conversation not specified we try to fetch it from status
-      conversationRemoteId = conversationRemoteId ??
-          remoteStatus.pleroma?.directConversationId?.toString();
+      conversationRemoteId =
+          conversationRemoteId ?? remoteStatus.directConversationId?.toString();
 
       _logger.finer(() => 'upsertRemoteStatus $remoteStatus '
           'listRemoteId => $listRemoteId '
@@ -753,7 +753,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       pagination: RepositoryPagination(
         limit: 1,
       ),
-      filters: StatusRepositoryFilters(
+      filters: StatusRepositoryFilters.only(
         isFromHomeTimeline: true,
       ),
       orderingTerms: [
@@ -770,7 +770,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       pagination: RepositoryPagination(
         newerThanItem: lastSeenStatus,
       ),
-      filters: StatusRepositoryFilters(
+      filters: StatusRepositoryFilters.only(
         isFromHomeTimeline: true,
       ),
       orderingTerms: [

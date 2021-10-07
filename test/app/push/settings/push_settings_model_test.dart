@@ -8,38 +8,38 @@ import 'push_settings_model_test_helper.dart';
 
 void main() {
   test('equal & hashcode & toString', () async {
-    ObjTestHelper.testEqualsHashcodeToString(
+    ObjMockHelper.testEqualsHashcodeToString(
       ({required String seed}) =>
-          PushSettingsModelTestHelper.createTestPushSettings(
+          PushSettingsModelMockHelper.createTestPushSettings(
         seed: seed,
       ),
     );
   });
 
   test('toJson & fromJson', () async {
-    JsonTestHelper.testFromJsonToJson(
+    JsonMockHelper.testFromJsonToJson(
       ({required String seed}) =>
-          PushSettingsModelTestHelper.createTestPushSettings(
+          PushSettingsModelMockHelper.createTestPushSettings(
         seed: seed,
       ),
-      PushSettings.fromJson,
+      (json) => PushSettings.fromJson(json),
     );
   });
 
   test('hive save&load', () async {
-    await HiveTestHelper.testHiveSaveAndLoad(
+    await HiveMockHelper.testHiveSaveAndLoad(
       ({required String seed}) =>
-          PushSettingsModelTestHelper.createTestPushSettings(
+          PushSettingsModelMockHelper.createTestPushSettings(
         seed: seed,
       ),
     );
   });
 
   test('copyWith', () async {
-    var obj1 = PushSettingsModelTestHelper.createTestPushSettings(
+    var obj1 = PushSettingsModelMockHelper.createTestPushSettings(
       seed: 'seed1',
     );
-    var obj2 = PushSettingsModelTestHelper.createTestPushSettings(
+    var obj2 = PushSettingsModelMockHelper.createTestPushSettings(
       seed: 'seed2',
     );
 
@@ -48,8 +48,8 @@ void main() {
       mention: obj2.mention,
       reblog: obj2.reblog,
       poll: obj2.poll,
-      pleromaChatMention: obj2.pleromaChatMention,
-      pleromaEmojiReaction: obj2.pleromaEmojiReaction,
+      chatMention: obj2.chatMention,
+      emojiReaction: obj2.emojiReaction,
     );
 
     expect(obj1 == obj2, false);
@@ -58,7 +58,7 @@ void main() {
   });
 
   test('clone', () async {
-    var obj1 = PushSettingsModelTestHelper.createTestPushSettings(
+    var obj1 = PushSettingsModelMockHelper.createTestPushSettings(
       seed: 'seed1',
     );
 
@@ -68,7 +68,7 @@ void main() {
   });
 
   test('hive adapter', () async {
-    HiveTestHelper.testAdapter(
+    HiveMockHelper.testAdapter(
       () => PushSettingsAdapter(),
     );
   });

@@ -8,8 +8,8 @@ import 'status_sensitive_settings_model_test_helper.dart';
 
 void main() {
   test('equal & hashcode & toString', () async {
-    ObjTestHelper.testEqualsHashcodeToString(
-      ({required String seed}) => StatusSensitiveSettingsModelTestHelper
+    ObjMockHelper.testEqualsHashcodeToString(
+      ({required String seed}) => StatusSensitiveSettingsModelMockHelper
           .createTestStatusSensitiveSettings(
         seed: seed,
       ),
@@ -17,18 +17,18 @@ void main() {
   });
 
   test('toJson & fromJson', () async {
-    JsonTestHelper.testFromJsonToJson(
-      ({required String seed}) => StatusSensitiveSettingsModelTestHelper
+    JsonMockHelper.testFromJsonToJson(
+      ({required String seed}) => StatusSensitiveSettingsModelMockHelper
           .createTestStatusSensitiveSettings(
         seed: seed,
       ),
-      StatusSensitiveSettings.fromJson,
+      (json) => StatusSensitiveSettings.fromJson(json),
     );
   });
 
   test('hive save&load', () async {
-    await HiveTestHelper.testHiveSaveAndLoad(
-      ({required String seed}) => StatusSensitiveSettingsModelTestHelper
+    await HiveMockHelper.testHiveSaveAndLoad(
+      ({required String seed}) => StatusSensitiveSettingsModelMockHelper
           .createTestStatusSensitiveSettings(
         seed: seed,
       ),
@@ -36,11 +36,11 @@ void main() {
   });
 
   test('copyWith', () async {
-    var obj1 = StatusSensitiveSettingsModelTestHelper
+    var obj1 = StatusSensitiveSettingsModelMockHelper
         .createTestStatusSensitiveSettings(
       seed: 'seed1',
     );
-    var obj2 = StatusSensitiveSettingsModelTestHelper
+    var obj2 = StatusSensitiveSettingsModelMockHelper
         .createTestStatusSensitiveSettings(
       seed: 'seed2',
     );
@@ -58,7 +58,7 @@ void main() {
   });
 
   test('clone', () async {
-    var obj1 = StatusSensitiveSettingsModelTestHelper
+    var obj1 = StatusSensitiveSettingsModelMockHelper
         .createTestStatusSensitiveSettings(
       seed: 'seed1',
     );
@@ -69,7 +69,7 @@ void main() {
   });
 
   test('hive adapter', () async {
-    HiveTestHelper.testAdapter(
+    HiveMockHelper.testAdapter(
       () => StatusSensitiveSettingsAdapter(),
     );
   });

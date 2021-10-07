@@ -1,11 +1,11 @@
 import 'package:fedi/app/status/visibility/status_visibility_ui.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class StatusVisibilityIconWidget extends StatelessWidget {
-  final PleromaApiVisibility visibility;
+  final UnifediApiVisibility visibility;
   final bool isPossibleToChangeVisibility;
   final bool isSelectedVisibility;
 
@@ -25,7 +25,7 @@ class StatusVisibilityIconWidget extends StatelessWidget {
 
   static Icon buildVisibilityIcon({
     required BuildContext context,
-    required PleromaApiVisibility visibility,
+    required UnifediApiVisibility visibility,
     required isPossibleToChangeVisibility,
     required isSelectedVisibility,
   }) =>
@@ -38,20 +38,15 @@ class StatusVisibilityIconWidget extends StatelessWidget {
         ),
       );
 
-  static IconData mapVisibilityToIconData(PleromaApiVisibility visibility) {
-    switch (visibility) {
-      case PleromaApiVisibility.public:
-        return FediIcons.world;
-      case PleromaApiVisibility.local:
-        return FediIcons.instance;
-      case PleromaApiVisibility.unlisted:
-        return FediIcons.unlisted;
-      case PleromaApiVisibility.direct:
-        return FediIcons.message;
-      case PleromaApiVisibility.list:
-        return FediIcons.lists;
-      case PleromaApiVisibility.private:
-        return FediIcons.private;
-    }
+  static IconData mapVisibilityToIconData(UnifediApiVisibility visibility) {
+    return visibility.map(
+      public: (_) => FediIcons.world,
+      unlisted: (_) => FediIcons.unlisted,
+      direct: (_) => FediIcons.message,
+      private: (_) => FediIcons.private,
+      list: (_) => FediIcons.lists,
+      local: (_) => FediIcons.instance,
+      unknown: (_) => FediIcons.warning,
+    );
   }
 }

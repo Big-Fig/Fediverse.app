@@ -4,17 +4,17 @@ import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/status/emoji_reaction/status_emoji_reaction_bloc.dart';
 import 'package:fedi/app/status/emoji_reaction/status_emoji_reaction_model_adapter_proxy_provider.dart';
 import 'package:fedi/app/status/status_bloc.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class StatusEmojiReactionListItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var statusEmojiReactionBloc = IStatusEmojiReactionBloc.of(context);
 
-    return StreamBuilder<IPleromaApiStatusEmojiReaction>(
+    return StreamBuilder<IUnifediApiEmojiReaction>(
       stream: statusEmojiReactionBloc.emojiReactionStream,
       builder: (context, snapshot) {
         var emojiReaction = snapshot.data;
@@ -24,7 +24,7 @@ class StatusEmojiReactionListItemWidget extends StatelessWidget {
           return const SizedBox.shrink();
         }
 
-        return Provider<IPleromaApiStatusEmojiReaction>.value(
+        return Provider<IUnifediApiEmojiReaction>.value(
           value: emojiReaction,
           child: const _StatusEmojiReactionListItemBodyWidget(),
         );

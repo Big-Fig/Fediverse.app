@@ -1,7 +1,7 @@
 import 'package:fedi/push/push_model.dart';
 
 // ignore_for_file: no-magic-number
-class PushModelTestHelper {
+class PushModelMockHelper {
   static PushMessage createTestPushMessage({
     required String seed,
   }) =>

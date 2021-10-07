@@ -1174,10 +1174,10 @@ class S {
     );
   }
 
-  /// `Pleroma API error`
+  /// `API error`
   String get app_async_pleroma_error_common_dialog_title {
     return Intl.message(
-      'Pleroma API error',
+      'API error',
       name: 'app_async_pleroma_error_common_dialog_title',
       desc: '',
       args: [],
@@ -4062,6 +4062,16 @@ class S {
     return Intl.message(
       'Mark media as NSFW',
       name: 'app_status_post_settings_field_markMediaAsNsfwOnAttach_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Don't upload media during editing`
+  String get app_status_post_settings_field_dontUploadMediaDuringEditing_label {
+    return Intl.message(
+      'Don\'t upload media during editing',
+      name: 'app_status_post_settings_field_dontUploadMediaDuringEditing_label',
       desc: '',
       args: [],
     );

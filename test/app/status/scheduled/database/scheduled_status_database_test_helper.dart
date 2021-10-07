@@ -1,11 +1,10 @@
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_model.dart';
-import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 // ignore_for_file: no-magic-number
-class ScheduledStatusDatabaseTestHelper {
+class ScheduledStatusDatabaseMockHelper {
   static Future<DbScheduledStatus> createTestDbScheduledStatus({
     required String seed,
     String? remoteId,
@@ -18,24 +17,28 @@ class ScheduledStatusDatabaseTestHelper {
         remoteId: remoteId ?? seed + 'remoteId1',
         scheduledAt: scheduledAt ?? DateTime(seed.hashCode % 10),
         mediaAttachments: [
-          PleromaApiMediaAttachment.only(
+          UnifediApiMediaAttachment(
             remoteUrl: seed + 'remoteUrl1',
-            type: MastodonApiMediaAttachmentType.audio.toJsonValue(),
+            type: UnifediApiMediaAttachmentType.audioValue.stringValue,
             url: seed + 'url',
             id: seed + 'id',
+            blurhash: null,
+            textUrl: null,
+            meta: null,
+            description: null,
+            mimeType: null,
+            previewUrl: null,
           ),
         ],
-        params: PleromaApiScheduledStatusParams(
+        params: UnifediApiScheduledStatusParams(
           text: seed + 'text1',
           mediaIds: [seed + 'mediaIds1'],
           sensitive: seed.hashCode % 2 == 0,
           spoilerText: seed + 'spoilerText1',
-          visibility: PleromaApiVisibility.public.toJsonValue(),
+          visibility: UnifediApiVisibility.publicValue.stringValue,
           scheduledAt: DateTime(seed.hashCode % 10),
           poll: null,
-          idempotency: seed + 'idempotency1',
           inReplyToId: seed + 'inReplyToId1',
-          applicationId: seed + 'textId1',
           to: null,
           expiresInSeconds: null,
           language: null,

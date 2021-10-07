@@ -1,3 +1,5 @@
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/media/picker/media_picker_page_app_bar_title_widget.dart';
 import 'package:fedi/app/media/picker/media_picker_widget.dart';
 import 'package:fedi/app/media/picker/multi/multi_media_picker_bloc.dart';
@@ -15,7 +17,6 @@ import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/header/fedi_sub_header_text.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_custom_app_bar.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
 import 'package:fedi/media/device/gallery/media_device_gallery_bloc.dart';
@@ -23,7 +24,6 @@ import 'package:fedi/media/device/gallery/photo_manager/photo_manager_device_gal
 import 'package:fedi/permission/storage_permission_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:easy_dispose/easy_dispose.dart';
 
 class MultiMediaPickerPage extends StatelessWidget {
   const MultiMediaPickerPage();

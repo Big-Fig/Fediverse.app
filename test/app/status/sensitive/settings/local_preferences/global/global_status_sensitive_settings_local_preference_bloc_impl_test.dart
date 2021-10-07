@@ -9,7 +9,7 @@ import '../../status_sensitive_settings_model_test_helper.dart';
 
 void main() {
   test('save & load', () async {
-    await LocalPreferencesTestHelper.testSaveAndLoad<StatusSensitiveSettings,
+    await LocalPreferencesMockHelper.testSaveAndLoad<StatusSensitiveSettings,
         GlobalStatusSensitiveSettingsLocalPreferenceBloc>(
       defaultValue:
           GlobalStatusSensitiveSettingsLocalPreferenceBloc.defaultValue,
@@ -18,7 +18,7 @@ void main() {
         localPreferencesService,
       ),
       testObjectCreator: ({required String seed}) =>
-          StatusSensitiveSettingsModelTestHelper
+          StatusSensitiveSettingsModelMockHelper
               .createTestStatusSensitiveSettings(
         seed: seed,
       ),

@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import '../account_test_helper.dart';
 
-class AccountDatabaseTestHelper {
+class AccountDatabaseMockHelper {
 // ignore_for_file: no-magic-number
   static Future<DbAccount> createTestDbAccount({
     required String seed,
@@ -32,21 +32,21 @@ class AccountDatabaseTestHelper {
         bot: false,
         fields: null,
         emojis: null,
-        pleromaTags: null,
-        pleromaRelationship:
-            AccountTestHelper.createTestAccountRelationship(seed: seed),
-        pleromaIsAdmin: true,
-        pleromaIsModerator: false,
-        pleromaConfirmationPending: true,
-        pleromaHideFavorites: false,
-        pleromaHideFollowers: true,
-        pleromaHideFollows: false,
-        pleromaHideFollowersCount: true,
-        pleromaHideFollowsCount: false,
-        pleromaDeactivated: false,
-        pleromaAllowFollowingMove: true,
-        pleromaSkipThreadContainment: true,
-        pleromaBackgroundImage: '$seed pleromaBackgroundImage',
+        tags: null,
+        relationship:
+            AccountMockHelper.createTestAccountRelationship(seed: seed),
+        isAdmin: true,
+        isModerator: false,
+        confirmationPending: true,
+        hideFavorites: false,
+        hideFollowers: true,
+        hideFollows: false,
+        hideFollowersCount: true,
+        hideFollowsCount: false,
+        deactivated: false,
+        allowFollowingMove: true,
+        skipThreadContainment: true,
+        backgroundImage: '$seed backgroundImage',
       );
 
   static void expectDbAccount(IAccount? actual, DbAccount? expected) {
@@ -77,30 +77,30 @@ class AccountDatabaseTestHelper {
     expect(actual.fields, expected.fields);
     expect(actual.emojis, expected.emojis);
 
-    expect(actual.pleromaTags, expected.pleromaTags);
-    expect(actual.pleromaRelationship, expected.pleromaRelationship);
-    expect(actual.pleromaIsAdmin, expected.pleromaIsAdmin);
-    expect(actual.pleromaIsModerator, expected.pleromaIsModerator);
+    expect(actual.tags, expected.tags);
+    expect(actual.relationship, expected.relationship);
+    expect(actual.isAdmin, expected.isAdmin);
+    expect(actual.isModerator, expected.isModerator);
     expect(
-      actual.pleromaConfirmationPending,
-      expected.pleromaConfirmationPending,
+      actual.confirmationPending,
+      expected.confirmationPending,
     );
-    expect(actual.pleromaHideFavorites, expected.pleromaHideFavorites);
-    expect(actual.pleromaHideFollowers, expected.pleromaHideFollowers);
-    expect(actual.pleromaHideFollows, expected.pleromaHideFollows);
+    expect(actual.hideFavorites, expected.hideFavorites);
+    expect(actual.hideFollowers, expected.hideFollowers);
+    expect(actual.hideFollows, expected.hideFollows);
     expect(
-      actual.pleromaHideFollowersCount,
-      expected.pleromaHideFollowersCount,
+      actual.hideFollowersCount,
+      expected.hideFollowersCount,
     );
-    expect(actual.pleromaHideFollowsCount, expected.pleromaHideFollowsCount);
-    expect(actual.pleromaDeactivated, expected.pleromaDeactivated);
+    expect(actual.hideFollowsCount, expected.hideFollowsCount);
+    expect(actual.deactivated, expected.deactivated);
     expect(
-      actual.pleromaAllowFollowingMove,
-      expected.pleromaAllowFollowingMove,
+      actual.allowFollowingMove,
+      expected.allowFollowingMove,
     );
     expect(
-      actual.pleromaSkipThreadContainment,
-      expected.pleromaSkipThreadContainment,
+      actual.skipThreadContainment,
+      expected.skipThreadContainment,
     );
   }
 }

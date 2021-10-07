@@ -45,15 +45,14 @@ class InstanceAnnouncementSettingsAdapter
 // JsonSerializableGenerator
 // **************************************************************************
 
-InstanceAnnouncementSettings _$InstanceAnnouncementSettingsFromJson(
-    Map<String, dynamic> json) {
-  return InstanceAnnouncementSettings(
-    withDismissed: json['withDismissed'] as bool,
-  );
-}
+_$_InstanceAnnouncementSettings _$$_InstanceAnnouncementSettingsFromJson(
+        Map<String, dynamic> json) =>
+    _$_InstanceAnnouncementSettings(
+      withDismissed: json['withDismissed'] as bool,
+    );
 
-Map<String, dynamic> _$InstanceAnnouncementSettingsToJson(
-        InstanceAnnouncementSettings instance) =>
+Map<String, dynamic> _$$_InstanceAnnouncementSettingsToJson(
+        _$_InstanceAnnouncementSettings instance) =>
     <String, dynamic>{
       'withDismissed': instance.withDismissed,
     };

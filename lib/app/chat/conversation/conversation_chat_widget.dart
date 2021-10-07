@@ -1,3 +1,4 @@
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/chat/chat_body_wrapper_widget.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_bloc.dart';
 import 'package:fedi/app/chat/conversation/message/conversation_chat_message_bloc.dart';
@@ -9,8 +10,9 @@ import 'package:fedi/app/chat/conversation/message/pagination/cached/conversatio
 import 'package:fedi/app/chat/message/chat_message_bloc.dart';
 import 'package:fedi/app/chat/message/list/chat_message_list_item_widget.dart';
 import 'package:fedi/app/chat/message/list/chat_message_list_widget.dart';
+import 'package:fedi/app/status/post/post_status_widget.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
+import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -37,8 +39,12 @@ class ConversationChatWidget extends StatelessWidget {
                 .provideToContext(
               context,
               mergeNewItemsImmediately: true,
-              child: const ChatBodyWrapperWidget(
-                child: ChatMessageListWidget<IConversationChatMessage>(
+              child: ChatBodyWrapperWidget(
+                postWidget: PostStatusWidget(
+                  showActionsOnlyWhenFocused: false,
+                  hintText: S.of(context).app_chat_post_field_content_hint,
+                ),
+                child: const ChatMessageListWidget<IConversationChatMessage>(
                   itemBuilder: _itemBuilder,
                   itemContextBuilder: _itemContextBuilder,
                 ),

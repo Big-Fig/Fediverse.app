@@ -1,14 +1,14 @@
 import 'package:fedi/app/account/my/my_account_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
-class MyAccountTestHelper {
+class MyAccountMockHelper {
 // ignore_for_file: no-magic-number
-  static Future<PleromaMyAccountWrapper> createTestMyAccount({
+  static Future<UnifediApiMyAccountWrapper> createTestMyAccount({
     required String seed,
     String? remoteId,
   }) async {
-    return PleromaMyAccountWrapper(
-      pleromaAccount: PleromaApiMyAccount(
+    return UnifediApiMyAccountWrapper(
+      unifediApiAccount: UnifediApiMyAccount(
         id: remoteId ?? seed + 'remoteId1',
         username: seed + 'username1',
         url: seed + 'url1',
@@ -28,36 +28,41 @@ class MyAccountTestHelper {
         bot: false,
         fields: null,
         emojis: null,
-        pleroma: PleromaApiMyAccountPleromaPart(
-          tags: null,
-          relationship: null,
-          isAdmin: true,
-          isModerator: false,
-          confirmationPending: true,
-          hideFavorites: false,
-          hideFollowers: true,
-          hideFollows: false,
-          hideFollowersCount: true,
-          hideFollowsCount: false,
-          deactivated: false,
-          allowFollowingMove: true,
-          skipThreadContainment: true,
-          backgroundImage: null,
-          settingsStore: null,
-          notificationSettings: null,
-          alsoKnownAs: null,
-          isConfirmed: null,
-          favicon: null,
-          apId: null,
-          acceptsChatMessages: null,
-          chatToken: null,
-          unreadNotificationsCount: null,
-          unreadConversationCount: null,
-        ),
         discoverable: null,
-        source: null,
         followRequestsCount: null,
         fqn: null,
+        tags: null,
+        relationship: null,
+        isAdmin: true,
+        isModerator: false,
+        confirmationPending: true,
+        hideFavorites: false,
+        hideFollowers: true,
+        hideFollows: false,
+        hideFollowersCount: true,
+        hideFollowsCount: false,
+        deactivated: false,
+        allowFollowingMove: true,
+        skipThreadContainment: true,
+        backgroundImage: null,
+        settingsStore: null,
+        notificationSettings: null,
+        alsoKnownAs: null,
+        isConfirmed: null,
+        favicon: null,
+        apId: null,
+        acceptsChatMessages: null,
+        chatToken: null,
+        unreadNotificationsCount: null,
+        unreadConversationCount: null,
+        showRole: null,
+        muteExpiresAt: null,
+        actorType: null,
+        sensitive: null,
+        suspended: null,
+        noRichText: null,
+        language: null,
+        privacy: null,
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
@@ -12,15 +13,14 @@ import 'package:fedi/app/share/entity/share_entity_bloc.dart';
 import 'package:fedi/app/share/entity/share_entity_model.dart';
 import 'package:fedi/app/share/to_account/share_to_account_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class ConversationChatShareEntityBloc extends ConversationChatShareBloc
     implements IConversationChatShareBloc, IShareEntityBloc {
   final IMediaAttachmentReuploadService mediaAttachmentReuploadService;
-  final IPleromaApiMediaAttachmentService pleromaApiMediaAttachmentService;
+  final IUnifediApiMediaAttachmentService unifediApiMediaAttachmentService;
   final IShareEntitySettingsBloc shareEntitySettingsBloc;
   @override
   final ShareEntity shareEntity;
@@ -31,29 +31,29 @@ class ConversationChatShareEntityBloc extends ConversationChatShareBloc
     required this.shareEntity,
     required this.shareEntitySettingsBloc,
     required this.mediaAttachmentReuploadService,
-    required this.pleromaApiMediaAttachmentService,
+    required this.unifediApiMediaAttachmentService,
     this.isNeedReUploadMediaAttachments = true,
     required IConversationChatRepository conversationRepository,
     required IStatusRepository statusRepository,
-    required IPleromaApiConversationService pleromaConversationService,
-    required IPleromaApiAuthStatusService pleromaApiAuthStatusService,
+    required IUnifediApiConversationService pleromaConversationService,
+    required IUnifediApiStatusService unifediApiStatusService,
     required IMyAccountBloc myAccountBloc,
     required IAccountRepository accountRepository,
-    required IPleromaApiAccountService pleromaAccountService,
+    required IUnifediApiAccountService unifediApiAccountService,
   }) : super(
           conversationRepository: conversationRepository,
           statusRepository: statusRepository,
-          pleromaApiConversationService: pleromaConversationService,
-          pleromaApiAuthStatusService: pleromaApiAuthStatusService,
+          unifediApiConversationService: pleromaConversationService,
+          unifediApiStatusService: unifediApiStatusService,
           accountRepository: accountRepository,
           myAccountBloc: myAccountBloc,
-          pleromaAccountService: pleromaAccountService,
+          unifediApiAccountService: unifediApiAccountService,
         );
 
   @override
-  Future<List<IPleromaApiPostStatus>> createSendData({
+  Future<List<IUnifediApiPostStatus>> createSendData({
     required String to,
-    required PleromaApiVisibility visibility,
+    required UnifediApiVisibility visibility,
   }) async {
     var text = convertAllItemsToRawText(
       settings: shareEntitySettingsBloc.shareEntitySettings,
@@ -61,16 +61,17 @@ class ConversationChatShareEntityBloc extends ConversationChatShareBloc
 
     var mediaAttachments = await convertAllItemsToMediaAttachments(
       settings: shareEntitySettingsBloc.shareEntitySettings,
-      pleromaApiMediaAttachmentService: pleromaApiMediaAttachmentService,
+      unifediApiMediaAttachmentService: unifediApiMediaAttachmentService,
       mediaAttachmentReuploadService: mediaAttachmentReuploadService,
       reUploadRequired: true,
     );
 
-    var result = <IPleromaApiPostStatus>[];
+    var result = <IUnifediApiPostStatus>[];
 
-    var maximumMediaAttachmentCount =
-        IPleromaApiAuthStatusService.maximumMediaAttachmentCount;
+    var maximumMediaAttachmentCount = unifediApiStatusService.restService
+        .accessBloc.access.instance?.limits?.status?.maxMediaAttachmentsCount;
     if (mediaAttachments != null &&
+        maximumMediaAttachmentCount != null &&
         mediaAttachments.length > maximumMediaAttachmentCount) {
       var length = mediaAttachments.length;
       var currentIndex = 0;
@@ -79,7 +80,7 @@ class ConversationChatShareEntityBloc extends ConversationChatShareBloc
       do {
         minIndex = currentIndex * maximumMediaAttachmentCount;
         maxIndex = (currentIndex + 1) * maximumMediaAttachmentCount;
-        var messageSendData = _createPleromaApiPostStatus(
+        var messageSendData = _createPostStatus(
           text: text,
           to: to,
           visibility: visibility,
@@ -95,7 +96,7 @@ class ConversationChatShareEntityBloc extends ConversationChatShareBloc
         result.add(messageSendData);
       } while (maxIndex < length);
     } else {
-      var messageSendData = _createPleromaApiPostStatus(
+      var messageSendData = _createPostStatus(
         text: text,
         to: to,
         visibility: visibility,
@@ -108,18 +109,17 @@ class ConversationChatShareEntityBloc extends ConversationChatShareBloc
     return result;
   }
 
-  PleromaApiPostStatus _createPleromaApiPostStatus({
+  UnifediApiPostStatus _createPostStatus({
     required String? text,
     required String to,
-    required PleromaApiVisibility visibility,
-    required List<IPleromaApiMediaAttachment>? mediaAttachments,
+    required UnifediApiVisibility visibility,
+    required List<IUnifediApiMediaAttachment>? mediaAttachments,
   }) {
-    return PleromaApiPostStatus(
+    return UnifediApiPostStatus(
       status: '${text ?? ''} $to'.trim(),
-      visibility: visibility.toJsonValue(),
+      visibility: visibility.stringValue,
       contentType: null,
       expiresInSeconds: null,
-      idempotencyKey: null,
       inReplyToConversationId: null,
       inReplyToId: null,
       language: null,
@@ -171,16 +171,16 @@ class ConversationChatShareEntityBloc extends ConversationChatShareBloc
           context,
           listen: false,
         ),
-        pleromaApiAuthStatusService: Provider.of<IPleromaApiAuthStatusService>(
+        unifediApiStatusService: Provider.of<IUnifediApiStatusService>(
           context,
           listen: false,
         ),
         pleromaConversationService:
-            Provider.of<IPleromaApiConversationService>(context, listen: false),
+            Provider.of<IUnifediApiConversationService>(context, listen: false),
         statusRepository: IStatusRepository.of(context, listen: false),
         accountRepository: IAccountRepository.of(context, listen: false),
         myAccountBloc: IMyAccountBloc.of(context, listen: false),
-        pleromaAccountService: Provider.of<IPleromaApiAccountService>(
+        unifediApiAccountService: Provider.of<IUnifediApiAccountService>(
           context,
           listen: false,
         ),
@@ -192,8 +192,8 @@ class ConversationChatShareEntityBloc extends ConversationChatShareBloc
           context,
           listen: false,
         ),
-        pleromaApiMediaAttachmentService:
-            Provider.of<IPleromaApiMediaAttachmentService>(
+        unifediApiMediaAttachmentService:
+            Provider.of<IUnifediApiMediaAttachmentService>(
           context,
           listen: false,
         ),

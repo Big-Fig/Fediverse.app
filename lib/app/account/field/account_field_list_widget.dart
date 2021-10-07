@@ -1,9 +1,9 @@
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/field/account_field_list_item_widget.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class AccountFieldListWidget extends StatelessWidget {
   final Brightness brightness;
@@ -16,7 +16,7 @@ class AccountFieldListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var accountBloc = IAccountBloc.of(context);
 
-    return StreamBuilder<List<IPleromaApiField>>(
+    return StreamBuilder<List<IUnifediApiField>>(
       stream: accountBloc.fieldsStream,
       builder: (context, snapshot) {
         var fields = snapshot.data;

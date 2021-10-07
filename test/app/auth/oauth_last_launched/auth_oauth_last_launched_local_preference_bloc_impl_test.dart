@@ -7,7 +7,7 @@ import '../../../local_preferences/local_preferences_test_helper.dart';
 
 void main() {
   test('save & load', () async {
-    await LocalPreferencesTestHelper.testSaveAndLoad<String,
+    await LocalPreferencesMockHelper.testSaveAndLoad<String,
         AuthOAuthLastLaunchedHostToLoginLocalPreferenceBloc>(
       defaultValue: null,
       blocCreator: (localPreferencesService) =>

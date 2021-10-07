@@ -3,114 +3,89 @@ import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/repository/repository_model.dart';
-import 'package:moor/moor.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:moor/moor.dart' as moor;
 
-class AccountRepositoryFilters {
-  final IConversationChat? onlyInConversation;
-  final IPleromaChat? onlyInChat;
-  final IStatus? onlyInStatusRebloggedBy;
-  final IStatus? onlyInStatusFavouritedBy;
-  final IAccount? onlyInAccountFollowers;
-  final IAccount? onlyInAccountFollowing;
-  final String? searchQuery;
+part 'account_repository_model.freezed.dart';
 
-  static const AccountRepositoryFilters empty = AccountRepositoryFilters();
+@freezed
+class AccountRepositoryFilters with _$AccountRepositoryFilters {
+  static final AccountRepositoryFilters empty = AccountRepositoryFilters.only();
 
-  const AccountRepositoryFilters({
-    this.onlyInConversation,
-    this.onlyInChat,
-    this.onlyInStatusRebloggedBy,
-    this.onlyInStatusFavouritedBy,
-    this.onlyInAccountFollowers,
-    this.onlyInAccountFollowing,
-    this.searchQuery,
-  });
+  const AccountRepositoryFilters._();
+
+  const factory AccountRepositoryFilters({
+    required IConversationChat? onlyInConversation,
+    required IPleromaChat? onlyInChat,
+    required IStatus? onlyInStatusRebloggedBy,
+    required IStatus? onlyInStatusFavouritedBy,
+    required IAccount? onlyInAccountFollowers,
+    required IAccount? onlyInAccountFollowing,
+    required String? searchQuery,
+  }) = _AccountRepositoryFilters;
+
+  // ignore: long-parameter-list
+  static AccountRepositoryFilters only({
+    IConversationChat? onlyInConversation,
+    IPleromaChat? onlyInChat,
+    IStatus? onlyInStatusRebloggedBy,
+    IStatus? onlyInStatusFavouritedBy,
+    IAccount? onlyInAccountFollowers,
+    IAccount? onlyInAccountFollowing,
+    String? searchQuery,
+  }) =>
+      AccountRepositoryFilters(
+        onlyInConversation: onlyInConversation,
+        onlyInChat: onlyInChat,
+        onlyInStatusRebloggedBy: onlyInStatusRebloggedBy,
+        onlyInStatusFavouritedBy: onlyInStatusFavouritedBy,
+        onlyInAccountFollowers: onlyInAccountFollowers,
+        onlyInAccountFollowing: onlyInAccountFollowing,
+        searchQuery: searchQuery,
+      );
 
   static AccountRepositoryFilters createForOnlyInConversation({
     required IConversationChat conversation,
   }) =>
-      AccountRepositoryFilters(
+      AccountRepositoryFilters.only(
         onlyInConversation: conversation,
       );
 
   static AccountRepositoryFilters createForOnlyInChat({
     required IPleromaChat chat,
   }) =>
-      AccountRepositoryFilters(
+      AccountRepositoryFilters.only(
         onlyInChat: chat,
       );
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is AccountRepositoryFilters &&
-          runtimeType == other.runtimeType &&
-          onlyInConversation == other.onlyInConversation &&
-          onlyInChat == other.onlyInChat &&
-          onlyInStatusRebloggedBy == other.onlyInStatusRebloggedBy &&
-          onlyInStatusFavouritedBy == other.onlyInStatusFavouritedBy &&
-          onlyInAccountFollowers == other.onlyInAccountFollowers &&
-          onlyInAccountFollowing == other.onlyInAccountFollowing &&
-          searchQuery == other.searchQuery;
-
-  @override
-  int get hashCode =>
-      onlyInConversation.hashCode ^
-      onlyInChat.hashCode ^
-      onlyInStatusRebloggedBy.hashCode ^
-      onlyInStatusFavouritedBy.hashCode ^
-      onlyInAccountFollowers.hashCode ^
-      onlyInAccountFollowing.hashCode ^
-      searchQuery.hashCode;
-
-  @override
-  String toString() {
-    return 'AccountRepositoryFilters{'
-        'onlyInConversation: $onlyInConversation, '
-        'onlyInChat: $onlyInChat, '
-        'onlyInStatusRebloggedBy: $onlyInStatusRebloggedBy, '
-        'onlyInStatusFavouritedBy: $onlyInStatusFavouritedBy, '
-        'onlyInAccountFollowers: $onlyInAccountFollowers, '
-        'onlyInAccountFollowing: $onlyInAccountFollowing, '
-        'searchQuery: $searchQuery'
-        '}';
-  }
 }
 
 enum AccountOrderType {
   remoteId,
 }
 
-class AccountRepositoryOrderingTermData extends RepositoryOrderingTerm {
-  final AccountOrderType orderType;
-  @override
-  final OrderingMode orderingMode;
+@freezed
+class AccountRepositoryOrderingTermData
+    with _$AccountRepositoryOrderingTermData
+    implements RepositoryOrderingTerm {
+  const AccountRepositoryOrderingTermData._();
+
+  const factory AccountRepositoryOrderingTermData({
+    required AccountOrderType orderType,
+    required moor.OrderingMode orderingMode,
+  }) = _AccountRepositoryOrderingTermData;
 
   static const AccountRepositoryOrderingTermData remoteIdDesc =
       AccountRepositoryOrderingTermData(
-    orderingMode: OrderingMode.desc,
+    orderingMode: moor.OrderingMode.desc,
     orderType: AccountOrderType.remoteId,
   );
   static const AccountRepositoryOrderingTermData remoteIdAsc =
       AccountRepositoryOrderingTermData(
-    orderingMode: OrderingMode.asc,
+    orderingMode: moor.OrderingMode.asc,
     orderType: AccountOrderType.remoteId,
   );
 
   static const List<AccountRepositoryOrderingTermData> defaultTerms = [
     remoteIdDesc,
   ];
-
-  const AccountRepositoryOrderingTermData({
-    required this.orderType,
-    required this.orderingMode,
-  });
-
-  @override
-  String toString() {
-    return 'AccountOrderingTermData{'
-        'orderByType: $orderType, '
-        'orderingMode: $orderingMode'
-        '}';
-  }
 }

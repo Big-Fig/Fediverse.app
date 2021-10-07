@@ -1,11 +1,11 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/chat/message/chat_message_bloc.dart';
 import 'package:fedi/app/chat/message/chat_message_model.dart';
 import 'package:fedi/app/emoji/text/emoji_text_model.dart';
 import 'package:fedi/app/pending/pending_model.dart';
-import 'package:easy_dispose/easy_dispose.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 abstract class ChatMessageBloc extends DisposableOwner
     implements IChatMessageBloc {
@@ -46,20 +46,20 @@ abstract class ChatMessageBloc extends DisposableOwner
   }
 
   @override
-  List<IPleromaApiMediaAttachment>? get mediaAttachments =>
+  List<IUnifediApiMediaAttachment>? get mediaAttachments =>
       chatMessage.mediaAttachments;
 
   @override
-  Stream<List<IPleromaApiMediaAttachment>?> get mediaAttachmentsStream =>
+  Stream<List<IUnifediApiMediaAttachment>?> get mediaAttachmentsStream =>
       chatMessageStream.map(
         (chatMessage) => chatMessage.mediaAttachments,
       );
 
   @override
-  IPleromaApiCard? get card => chatMessage.card;
+  IUnifediApiCard? get card => chatMessage.card;
 
   @override
-  Stream<IPleromaApiCard?> get cardStream =>
+  Stream<IUnifediApiCard?> get cardStream =>
       chatMessageStream.map((chatMessage) => chatMessage.card);
 
   @override
@@ -187,5 +187,5 @@ abstract class ChatMessageBloc extends DisposableOwner
       );
 
   @override
-  List<IPleromaApiEmoji>? get emojis => chatMessage.emojis;
+  List<IUnifediApiEmoji>? get emojis => chatMessage.emojis;
 }

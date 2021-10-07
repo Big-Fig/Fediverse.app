@@ -1,6 +1,6 @@
-import 'package:fedi/app/auth/instance/auth_instance_model.dart';
-import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
-import 'package:fedi/app/auth/instance/list/auth_instance_list_bloc.dart';
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:fedi/app/access/current/current_access_bloc.dart';
+import 'package:fedi/app/access/list/access_list_bloc.dart';
 import 'package:fedi/app/chat/conversation/current/conversation_chat_current_bloc.dart';
 import 'package:fedi/app/chat/pleroma/current/pleroma_chat_current_bloc.dart';
 import 'package:fedi/app/notification/go_to_notification_extension.dart';
@@ -16,12 +16,12 @@ import 'package:fedi/app/toast/settings/local_preferences/instance/instance_toas
 import 'package:fedi/app/toast/settings/toast_settings_bloc.dart';
 import 'package:fedi/app/toast/settings/toast_settings_bloc_impl.dart';
 import 'package:fedi/app/toast/toast_service.dart';
-import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 final _logger = Logger('toast_handler_bloc_impl.dart');
 
@@ -33,9 +33,10 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
       ToastHandlerBloc(
         context: context,
         toastService: toastService,
-        authInstanceListBloc: IAuthInstanceListBloc.of(context, listen: false),
-        currentAuthInstanceBloc:
-            ICurrentAuthInstanceBloc.of(context, listen: false),
+        authInstanceListBloc:
+            IUnifediApiAccessListBloc.of(context, listen: false),
+        currentUnifediApiAccessBloc:
+            ICurrentUnifediApiAccessBloc.of(context, listen: false),
         notificationsPushHandlerBloc:
             INotificationsPushHandlerBloc.of(context, listen: false),
         localPreferencesService:
@@ -53,13 +54,14 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
         localizationContext: S.of(context),
       );
 
-  AuthInstance? get currentInstance => currentAuthInstanceBloc.currentInstance;
+  UnifediApiAccess? get currentInstance =>
+      currentUnifediApiAccessBloc.currentInstance;
 
   // TODO: remove context field?
   final BuildContext context;
   final IToastService toastService;
-  final IAuthInstanceListBloc authInstanceListBloc;
-  final ICurrentAuthInstanceBloc currentAuthInstanceBloc;
+  final IUnifediApiAccessListBloc authInstanceListBloc;
+  final ICurrentUnifediApiAccessBloc currentUnifediApiAccessBloc;
   final ILocalPreferencesService localPreferencesService;
   final IToastSettingsBloc currentInstanceToastSettingsBloc;
   final INotificationsPushHandlerBloc notificationsPushHandlerBloc;
@@ -73,7 +75,7 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
   ToastHandlerBloc({
     required this.context,
     required this.toastService,
-    required this.currentAuthInstanceBloc,
+    required this.currentUnifediApiAccessBloc,
     required this.authInstanceListBloc,
     required this.notificationsPushHandlerBloc,
     required this.localPreferencesService,
@@ -132,15 +134,15 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
 
     var notificationType = pleromaPushMessage.notificationType;
 
-    var pleromaNotificationType =
-        notificationType.toPleromaApiNotificationType();
+    var unifediApiNotificationType =
+        notificationType.toUnifediApiNotificationType();
     var enabled = currentInstanceToastSettingsBloc
-        .isNotificationTypeEnabled(pleromaNotificationType);
+        .isNotificationTypeEnabled(unifediApiNotificationType);
 
     var isEnabledWhenInstanceSelected = currentInstanceToastSettingsBloc
         .handlingType.isEnabledWhenInstanceSelected;
     _logger.finest(() => 'handleCurrentInstancePush '
-        'pleromaNotificationType $pleromaNotificationType \n'
+        'unifediApiNotificationType $unifediApiNotificationType \n'
         'isEnabledWhenInstanceSelected $isEnabledWhenInstanceSelected \n'
         'enabled $enabled');
 
@@ -154,12 +156,11 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
             currentInstancePleromaChatCurrentBloc.currentChat?.remoteId !=
                 notification.chatRemoteId;
       } else if (notification.isContainsStatus) {
-        var pleromaDirectConversationId =
-            notification.status!.pleromaDirectConversationId;
-        if (pleromaDirectConversationId != null) {
+        var directConversationId = notification.status!.directConversationId;
+        if (directConversationId != null) {
           isNeedShowToast = currentInstanceConversationChatCurrentBloc
                   .currentChat?.remoteId !=
-              pleromaDirectConversationId.toString();
+              directConversationId.toString();
         } else {
           isNeedShowToast = true;
         }
@@ -204,15 +205,15 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
         onClick: onClick,
       );
     } else {
-      var pleromaApiNotification =
-          pushHandlerMessage.body.pleromaApiNotification!;
-      var calculatedTitle = calculatePleromaApiNotificationPushTitle(
+      var unifediApiNotification =
+          pushHandlerMessage.body.unifediApiNotification!;
+      var calculatedTitle = calculateUnifediApiNotificationPushTitle(
         localizationContext: localizationContext,
-        pleromaApiNotification: pleromaApiNotification,
+        unifediApiNotification: unifediApiNotification,
       );
-      var calculatedBody = calculatePleromaApiNotificationPushBody(
+      var calculatedBody = calculateUnifediApiNotificationPushBody(
         localizationContext: localizationContext,
-        pleromaApiNotification: pleromaApiNotification,
+        unifediApiNotification: unifediApiNotification,
       );
       var title = '$acctAtHost $calculatedTitle';
       toastService.showInfoToast(
@@ -230,9 +231,8 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
     var pleromaPushMessage = notificationsPushHandlerMessage.body;
 
     var notificationType = pleromaPushMessage.notificationType;
-
-    var pleromaNotificationType =
-        notificationType.toPleromaApiNotificationType();
+    var unifediApiNotificationType =
+        UnifediApiNotificationType.fromStringValue(notificationType);
 
     var instanceLocalPreferencesBloc = InstanceToastSettingsLocalPreferenceBloc(
       localPreferencesService,
@@ -247,13 +247,13 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
     );
 
     var isEnabled =
-        toastSettingsBloc.isNotificationTypeEnabled(pleromaNotificationType);
+        toastSettingsBloc.isNotificationTypeEnabled(unifediApiNotificationType);
 
     var isEnabledWhenInstanceNotSelected = currentInstanceToastSettingsBloc
         .handlingType.isEnabledWhenInstanceNotSelected;
 
     _logger.finest(() => '_handleNonCurrentInstancePushMessage '
-        'pleromaNotificationType $pleromaNotificationType \n'
+        'unifediApiNotificationType $unifediApiNotificationType \n'
         'isEnabledWhenInstanceNotSelected $isEnabledWhenInstanceNotSelected \n'
         'isEnabled $isEnabled');
 
@@ -273,7 +273,7 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
           if (instanceByCredentials != null) {
             await notificationsPushHandlerBloc
                 .markAsLaunchMessage(notificationsPushHandlerMessage);
-            await currentAuthInstanceBloc
+            await currentUnifediApiAccessBloc
                 .changeCurrentInstance(instanceByCredentials);
           }
         },

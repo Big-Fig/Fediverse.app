@@ -1,3 +1,5 @@
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/list/cached/account_cached_list_bloc.dart';
 import 'package:fedi/app/account/list/cached/account_cached_list_bloc_proxy_provider.dart';
@@ -5,35 +7,33 @@ import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/account/repository/account_repository_model.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:easy_dispose/easy_dispose.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 var _logger = Logger('status_reblog_account_list_service_impl.dart');
 
 class StatusReblogAccountCachedListBloc extends DisposableOwner
     implements IAccountCachedListBloc {
-  final IPleromaApiAuthStatusService pleromaAuthStatusService;
+  final IUnifediApiStatusService unifediApiStatusService;
   final IAccountRepository accountRepository;
   final IStatus status;
 
   AccountRepositoryFilters get _accountRepositoryFilters =>
-      AccountRepositoryFilters(
+      AccountRepositoryFilters.only(
         onlyInStatusRebloggedBy: status,
       );
 
   StatusReblogAccountCachedListBloc({
-    required this.pleromaAuthStatusService,
+    required this.unifediApiStatusService,
     required this.accountRepository,
     required this.status,
   });
 
   @override
-  IPleromaApi get pleromaApi => pleromaAuthStatusService;
+  IUnifediApiService get unifediApi => unifediApiStatusService;
 
   @override
   Future refreshItemsFromRemoteForPage({
@@ -45,13 +45,13 @@ class StatusReblogAccountCachedListBloc extends DisposableOwner
         '\t newerThanAccount = $newerThan'
         '\t olderThanAccount = $olderThan');
 
-    List<IPleromaApiAccount> remoteAccounts;
+    List<IUnifediApiAccount> remoteAccounts;
 
-    remoteAccounts = await pleromaAuthStatusService.rebloggedBy(
-      statusRemoteId: status.remoteId!,
-      pagination: PleromaApiPaginationRequest(
+    remoteAccounts = await unifediApiStatusService.rebloggedBy(
+      statusId: status.remoteId!,
+      pagination: UnifediApiPagination(
         limit: limit,
-        sinceId: newerThan?.remoteId,
+        minId: newerThan?.remoteId,
         maxId: olderThan?.remoteId,
       ),
     );
@@ -64,7 +64,7 @@ class StatusReblogAccountCachedListBloc extends DisposableOwner
 
       accountRepository.updateStatusRebloggedBy(
         statusRemoteId: status.remoteId!,
-        rebloggedByAccounts: remoteAccounts.toPleromaApiAccounts(),
+        rebloggedByAccounts: remoteAccounts.toUnifediApiAccountList(),
         batchTransaction: batch,
       );
     });
@@ -102,8 +102,8 @@ class StatusReblogAccountCachedListBloc extends DisposableOwner
   }) =>
       StatusReblogAccountCachedListBloc(
         accountRepository: IAccountRepository.of(context, listen: false),
-        pleromaAuthStatusService:
-            Provider.of<IPleromaApiAuthStatusService>(context, listen: false),
+        unifediApiStatusService:
+            Provider.of<IUnifediApiStatusService>(context, listen: false),
         status: status,
       );
 

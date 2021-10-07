@@ -3,6 +3,7 @@ import 'package:fedi/app/media/attachment/upload/list/upload_media_attachment_li
 import 'package:fedi/app/message/action/post_message_attach_action_widget.dart';
 import 'package:fedi/app/message/action/post_message_emoji_action_widget.dart';
 import 'package:fedi/app/message/post_message_selected_action_widget.dart';
+import 'package:fedi/app/status/post/action/post_status_expire_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_mention_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_nsfw_action_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_poll_action_widget.dart';
@@ -19,8 +20,6 @@ import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import 'package:fedi/app/status/post/action/post_status_expire_action_widget.dart';
 
 class PostStatusComposeWidget extends StatelessWidget {
   final bool expanded;

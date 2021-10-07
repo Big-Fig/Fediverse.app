@@ -11,9 +11,10 @@ import 'package:fedi/app/custom_list/edit/edit_custom_list_bloc_proxy_provider.d
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:fedi/connection/connection_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class CreateCustomListBloc extends EditCustomListBloc
     implements ICreateCustomListBloc {
@@ -22,12 +23,16 @@ class CreateCustomListBloc extends EditCustomListBloc
     required Function(ICustomList)? onSubmit,
   }) {
     var createCustomListBloc = CreateCustomListBloc(
-      pleromaListService: Provider.of<IPleromaApiListService>(
+      connectionService: Provider.of<IConnectionService>(
+        context,
+        listen: false,
+      ),
+      pleromaListService: Provider.of<IUnifediApiListService>(
         context,
         listen: false,
       ),
       statusRepository: IStatusRepository.of(context, listen: false),
-      pleromaAuthAccountService: Provider.of<IPleromaApiAuthAccountService>(
+      pleromaAuthAccountService: Provider.of<IUnifediApiAccountService>(
         context,
         listen: false,
       ),
@@ -81,6 +86,7 @@ class CreateCustomListBloc extends EditCustomListBloc
   Future<ICustomList> submit() async {
     var pleromaList = await pleromaListService.createList(
       title: customListFormBloc.titleField.currentValue,
+      repliesPolicy: null,
     );
     var localCustomList = pleromaList.toCustomList();
     submittedStreamController.add(localCustomList);
@@ -89,14 +95,16 @@ class CreateCustomListBloc extends EditCustomListBloc
   }
 
   CreateCustomListBloc({
-    required IPleromaApiListService pleromaListService,
+    required IUnifediApiListService pleromaListService,
     required IStatusRepository statusRepository,
     required IMyAccountBloc myAccountBloc,
     required IAccountRepository accountRepository,
-    required IPleromaApiAuthAccountService pleromaAuthAccountService,
+    required IUnifediApiAccountService pleromaAuthAccountService,
     required ITimelinesHomeTabStorageBloc timelinesHomeTabStorageBloc,
     required IPaginationSettingsBloc paginationSettingsBloc,
+    required IConnectionService connectionService,
   }) : super(
+          connectionService: connectionService,
           isPossibleToDelete: false,
           pleromaListService: pleromaListService,
           statusRepository: statusRepository,

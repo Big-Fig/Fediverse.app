@@ -51,21 +51,29 @@ class StatusSensitiveSettingsAdapter
 // JsonSerializableGenerator
 // **************************************************************************
 
-StatusSensitiveSettings _$StatusSensitiveSettingsFromJson(
-    Map<String, dynamic> json) {
-  return StatusSensitiveSettings(
-    isAlwaysShowSpoiler: json['is_always_show_spoiler'] as bool,
-    isAlwaysShowNsfw: json['is_always_show_nsfw'] as bool,
-    nsfwDisplayDelayDurationMicrosecondsTotal:
-        json['nsfw_display_delay_duration_seconds_total'] as int?,
-  );
-}
+_$_StatusSensitiveSettings _$$_StatusSensitiveSettingsFromJson(
+        Map<String, dynamic> json) =>
+    _$_StatusSensitiveSettings(
+      isAlwaysShowSpoiler: json['is_always_show_spoiler'] as bool,
+      isAlwaysShowNsfw: json['is_always_show_nsfw'] as bool,
+      nsfwDisplayDelayDurationMicrosecondsTotal:
+          json['nsfw_display_delay_duration_seconds_total'] as int?,
+    );
 
-Map<String, dynamic> _$StatusSensitiveSettingsToJson(
-        StatusSensitiveSettings instance) =>
-    <String, dynamic>{
-      'is_always_show_spoiler': instance.isAlwaysShowSpoiler,
-      'is_always_show_nsfw': instance.isAlwaysShowNsfw,
-      'nsfw_display_delay_duration_seconds_total':
-          instance.nsfwDisplayDelayDurationMicrosecondsTotal,
-    };
+Map<String, dynamic> _$$_StatusSensitiveSettingsToJson(
+    _$_StatusSensitiveSettings instance) {
+  final val = <String, dynamic>{
+    'is_always_show_spoiler': instance.isAlwaysShowSpoiler,
+    'is_always_show_nsfw': instance.isAlwaysShowNsfw,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('nsfw_display_delay_duration_seconds_total',
+      instance.nsfwDisplayDelayDurationMicrosecondsTotal);
+  return val;
+}

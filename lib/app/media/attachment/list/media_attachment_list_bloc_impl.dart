@@ -1,15 +1,14 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/media/attachment/list/media_attachment_list_bloc.dart';
-import 'package:easy_dispose/easy_dispose.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
-import 'package:flutter/foundation.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class MediaAttachmentListBloc extends DisposableOwner
     implements IMediaAttachmentListBloc {
   @override
-  final List<IPleromaApiMediaAttachment> mediaAttachments;
+  final List<IUnifediApiMediaAttachment> mediaAttachments;
   @override
-  final IPleromaApiMediaAttachment? initialMediaAttachment;
+  final IUnifediApiMediaAttachment? initialMediaAttachment;
 
   // TODO: refactor
   @override
@@ -19,36 +18,11 @@ class MediaAttachmentListBloc extends DisposableOwner
   final Uri? remoteInstanceUriOrNull;
 
   MediaAttachmentListBloc({
-    required List<IPleromaApiMediaAttachment>? mediaAttachments,
+    required List<IUnifediApiMediaAttachment>? mediaAttachments,
     required this.initialMediaAttachment,
     required this.instanceLocation,
     required this.remoteInstanceUriOrNull,
   }) : mediaAttachments = mediaAttachments ?? [];
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is MediaAttachmentListBloc &&
-          runtimeType == other.runtimeType &&
-          listEquals(mediaAttachments, other.mediaAttachments) &&
-          initialMediaAttachment == other.initialMediaAttachment &&
-          instanceLocation == other.instanceLocation &&
-          remoteInstanceUriOrNull == other.remoteInstanceUriOrNull;
-
-  @override
-  int get hashCode =>
-      mediaAttachments.hashCode ^
-      instanceLocation.hashCode ^
-      remoteInstanceUriOrNull.hashCode ^
-      initialMediaAttachment.hashCode;
-
-  @override
-  String toString() {
-    return 'MediaAttachmentListBloc{'
-        'mediaAttachments: $mediaAttachments,'
-        'initialMediaAttachment: $initialMediaAttachment'
-        '}';
-  }
 
   @override
   int get currentIndex {

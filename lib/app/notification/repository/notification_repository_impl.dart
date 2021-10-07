@@ -10,14 +10,14 @@ import 'package:fedi/app/notification/notification_model_adapter.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/notification/repository/notification_repository_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:moor/moor.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     DbNotification,
     DbNotificationPopulated,
     INotification,
-    IPleromaApiNotification,
+    IUnifediApiNotification,
     int,
     String,
     $DbNotificationsTable,
@@ -80,7 +80,7 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }) =>
       dao.markAsDismissedWhere(
         accountRemoteId: account.remoteId,
-        type: PleromaApiNotificationType.followRequest,
+        type: UnifediApiNotificationType.followRequestValue,
       );
 
   @override
@@ -88,8 +88,8 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       appItem.toDbNotification();
 
   @override
-  IPleromaApiNotification mapAppItemToRemoteItem(INotification appItem) =>
-      appItem.toPleromaApiNotification();
+  IUnifediApiNotification mapAppItemToRemoteItem(INotification appItem) =>
+      appItem.toUnifediApiNotification();
 
   @override
   DbNotificationPopulated mapAppItemToDbPopulatedItem(INotification appItem) {
@@ -103,15 +103,15 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       dbPopulatedItem.toDbNotificationPopulatedWrapper();
 
   @override
-  IPleromaApiNotification mapDbPopulatedItemToRemoteItem(
+  IUnifediApiNotification mapDbPopulatedItemToRemoteItem(
     DbNotificationPopulated dbPopulatedItem,
   ) =>
       dbPopulatedItem
           .toDbNotificationPopulatedWrapper()
-          .toPleromaApiNotification();
+          .toUnifediApiNotification();
 
   @override
-  INotification mapRemoteItemToAppItem(IPleromaApiNotification remoteItem) =>
+  INotification mapRemoteItemToAppItem(IUnifediApiNotification remoteItem) =>
       remoteItem.toDbNotificationPopulatedWrapper(unread: null);
 
   @override
@@ -146,7 +146,7 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   Future<int> insertInRemoteType(
-    IPleromaApiNotification remoteItem, {
+    IUnifediApiNotification remoteItem, {
     required InsertMode? mode,
   }) async {
     await _upsertNotificationMetadata(
@@ -160,7 +160,7 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }
 
   Future _upsertNotificationMetadata(
-    IPleromaApiNotification remoteItem, {
+    IUnifediApiNotification remoteItem, {
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
@@ -215,7 +215,7 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   Future<void> insertInRemoteTypeBatch(
-    IPleromaApiNotification remoteItem, {
+    IUnifediApiNotification remoteItem, {
     required InsertMode? mode,
     required Batch? batchTransaction,
   }) async {
@@ -246,7 +246,7 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   @override
   Future<void> updateAppTypeByRemoteType({
     required INotification appItem,
-    required IPleromaApiNotification remoteItem,
+    required IUnifediApiNotification remoteItem,
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
@@ -295,7 +295,7 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   @override
   Future updateNotificationByRemoteType({
     required INotification appItem,
-    required IPleromaApiNotification remoteItem,
+    required IUnifediApiNotification remoteItem,
     required bool? unread,
     required Batch? batchTransaction,
   }) async {
@@ -333,7 +333,7 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   Future upsertRemoteNotification(
-    IPleromaApiNotification remoteItem, {
+    IUnifediApiNotification remoteItem, {
     required bool unread,
     required Batch? batchTransaction,
   }) async {
@@ -366,7 +366,7 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   Future upsertRemoteNotifications(
-    List<IPleromaApiNotification> pleromaNotifications, {
+    List<IUnifediApiNotification> pleromaNotifications, {
     required bool unread,
     required Batch? batchTransaction,
   }) async {

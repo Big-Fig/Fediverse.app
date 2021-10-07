@@ -2,9 +2,9 @@ import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/pending/pending_model.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
-extension PleromaStatusDbExtension on IPleromaApiStatus {
+extension UnifediApiStatusDbExtension on IUnifediApiStatus {
   DbStatusPopulatedWrapper toDbStatusPopulatedWrapper() {
     if (this is DbStatusPopulatedWrapper) {
       return this as DbStatusPopulatedWrapper;
@@ -44,7 +44,7 @@ extension PleromaStatusDbExtension on IPleromaApiStatus {
       inReplyToAccountRemoteId: remoteStatus.inReplyToAccountId,
       sensitive: remoteStatus.sensitive,
       spoilerText: remoteStatus.spoilerText,
-      visibility: remoteStatus.visibilityAsPleromaApi,
+      visibility: remoteStatus.visibilityAsUnifediApi,
       uri: remoteStatus.uri,
       url: remoteStatus.url,
       repliesCount: remoteStatus.repliesCount ?? 0,
@@ -58,24 +58,26 @@ extension PleromaStatusDbExtension on IPleromaApiStatus {
       language: remoteStatus.language,
       content: remoteStatus.content,
       reblogStatusRemoteId: remoteStatus.reblog?.id,
-      application: remoteStatus.application?.toPleromaApiApplication(),
+      application: remoteStatus.application?.toUnifediApiApplication(),
       mediaAttachments:
-          remoteStatus.mediaAttachments?.toPleromaApiMediaAttachments(),
-      mentions: remoteStatus.mentions?.toPleromaApiMentions(),
-      tags: remoteStatus.tags?.toPleromaApiTags(),
-      emojis: remoteStatus.emojis?.toPleromaApiEmojis(),
-      poll: remoteStatus.poll?.toPleromaApiPoll(),
-      card: remoteStatus.card?.toPleromaApiCard(),
-      pleromaContent: remoteStatus.pleroma?.content,
-      pleromaConversationId: remoteStatus.pleroma?.conversationId,
-      pleromaDirectConversationId: remoteStatus.pleroma?.directConversationId,
-      pleromaInReplyToAccountAcct: remoteStatus.pleroma?.inReplyToAccountAcct,
-      pleromaLocal: remoteStatus.pleroma?.local,
-      pleromaSpoilerText: remoteStatus.pleroma?.spoilerText,
-      pleromaExpiresAt: remoteStatus.pleroma?.expiresAt,
-      pleromaThreadMuted: remoteStatus.pleroma?.threadMuted,
-      pleromaEmojiReactions: remoteStatus.pleroma?.emojiReactions
-          ?.toPleromaApiStatusEmojiReactions(),
+          remoteStatus.mediaAttachments?.toUnifediApiMediaAttachmentList(),
+      mentions: remoteStatus.mentions?.toUnifediApiMentionList(),
+      tags: remoteStatus.tags?.toUnifediApiTagList(),
+      emojis: remoteStatus.emojis?.toUnifediApiEmojiList(),
+      poll: remoteStatus.poll?.toUnifediApiPoll(),
+      card: remoteStatus.card?.toUnifediApiCard(),
+      contentVariants:
+          remoteStatus.contentVariants?.toUnifediApiContentVariants(),
+      conversationId: remoteStatus.conversationId,
+      directConversationId: remoteStatus.directConversationId,
+      inReplyToAccountAcct: remoteStatus.inReplyToAccountAcct,
+      local: remoteStatus.local,
+      spoilerTextVariants:
+          remoteStatus.spoilerTextVariants?.toUnifediApiContentVariants(),
+      expiresAt: remoteStatus.expiresAt,
+      threadMuted: remoteStatus.threadMuted,
+      emojiReactions:
+          remoteStatus.emojiReactions?.toUnifediApiEmojiReactionList(),
       accountRemoteId: remoteStatus.account.id,
       // remote statuses always published
       pendingState: PendingState.published,
@@ -88,28 +90,15 @@ extension PleromaStatusDbExtension on IPleromaApiStatus {
 }
 
 extension IStatusPleromaExtension on IStatus {
-  PleromaApiStatusPleromaPart toPleromaApiStatusPleromaPart() =>
-      PleromaApiStatusPleromaPart(
-        content: pleromaContent,
-        conversationId: pleromaConversationId,
-        directConversationId: pleromaDirectConversationId,
-        inReplyToAccountAcct: pleromaInReplyToAccountAcct,
-        local: pleromaLocal,
-        spoilerText: pleromaSpoilerText,
-        expiresAt: pleromaExpiresAt,
-        threadMuted: pleromaThreadMuted,
-        emojiReactions: pleromaEmojiReactions,
-      );
-
-  PleromaApiStatus toPleromaApiStatus() {
-    return PleromaApiStatus(
+  UnifediApiStatus toUnifediApiStatus() {
+    return UnifediApiStatus(
       id: remoteId!,
       createdAt: createdAt,
       inReplyToId: inReplyToRemoteId,
       inReplyToAccountId: inReplyToAccountRemoteId,
       sensitive: nsfwSensitive,
       spoilerText: spoilerText,
-      visibility: visibility.toJsonValue(),
+      visibility: visibility.stringValue,
       uri: uri,
       url: url,
       repliesCount: repliesCount,
@@ -121,7 +110,7 @@ extension IStatusPleromaExtension on IStatus {
       bookmarked: bookmarked,
       pinned: pinned,
       content: content,
-      reblog: reblog?.toPleromaApiStatus(),
+      reblog: reblog?.toUnifediApiStatus(),
       language: language,
       application: application,
       mediaAttachments: mediaAttachments,
@@ -130,8 +119,16 @@ extension IStatusPleromaExtension on IStatus {
       emojis: emojis,
       poll: poll,
       card: card,
-      account: account.toPleromaApiAccount(),
-      pleroma: toPleromaApiStatusPleromaPart(),
+      account: account.toUnifediApiAccount(),
+      contentVariants: contentVariants,
+      conversationId: conversationId,
+      directConversationId: directConversationId,
+      inReplyToAccountAcct: inReplyToAccountAcct,
+      local: local,
+      spoilerTextVariants: spoilerTextVariants,
+      expiresAt: expiresAt,
+      threadMuted: threadMuted,
+      emojiReactions: emojiReactions,
     );
   }
 }

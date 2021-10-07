@@ -1,6 +1,6 @@
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/settings/global_or_instance/edit/edit_global_or_instance_settings_bloc.dart';
 import 'package:fedi/app/settings/global_or_instance/edit/edit_global_or_instance_settings_dialog.dart';
 import 'package:fedi/app/settings/global_or_instance/edit/switch/switch_edit_global_or_instance_settings_bool_value_form_field_bloc.dart';
@@ -11,17 +11,17 @@ import 'package:fedi/app/status/post/settings/edit/edit_post_status_settings_wid
 import 'package:fedi/app/status/post/settings/edit/global/edit_global_post_status_settings_dialog.dart';
 import 'package:fedi/app/status/post/settings/post_status_settings_bloc.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 // todo: refactor
 // ignore: long-method
 void showEditGlobalOrInstancePostStatusSettingsDialog({
   required BuildContext context,
 }) {
-  var isPleromaInstance = ICurrentAuthInstanceBloc.of(
+  var isPleromaInstance = ICurrentUnifediApiAccessBloc.of(
     context,
     listen: false,
   ).currentInstance!.isPleroma;
@@ -55,18 +55,18 @@ void showEditGlobalOrInstancePostStatusSettingsDialog({
           ),
           pleromaVisibilityPossibleValues: isPleromaInstance
               ? [
-                  PleromaApiVisibility.public,
-                  PleromaApiVisibility.unlisted,
-                  PleromaApiVisibility.direct,
-                  PleromaApiVisibility.private,
-                  PleromaApiVisibility.list,
-                  PleromaApiVisibility.local,
+                  UnifediApiVisibility.publicValue,
+                  UnifediApiVisibility.unlistedValue,
+                  UnifediApiVisibility.directValue,
+                  UnifediApiVisibility.privateValue,
+                  UnifediApiVisibility.listValue,
+                  UnifediApiVisibility.localValue,
                 ]
               : [
-                  PleromaApiVisibility.public,
-                  PleromaApiVisibility.unlisted,
-                  PleromaApiVisibility.direct,
-                  PleromaApiVisibility.private,
+                  UnifediApiVisibility.publicValue,
+                  UnifediApiVisibility.unlistedValue,
+                  UnifediApiVisibility.directValue,
+                  UnifediApiVisibility.privateValue,
                 ],
           globalOrInstanceSettingsType: globalOrInstanceType,
           isEnabled: isEnabled,

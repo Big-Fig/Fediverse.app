@@ -1,4 +1,6 @@
-import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
+import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/custom_list/custom_list_bloc.dart';
 import 'package:fedi/app/custom_list/custom_list_bloc_impl.dart';
 import 'package:fedi/app/custom_list/custom_list_model.dart';
@@ -26,18 +28,17 @@ import 'package:fedi/app/ui/page/app_bar/fedi_page_app_bar_text_action_widget.da
 import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/collapsible/owner/collapsible_owner_widget.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:fedi/ui/scroll/scroll_controller_bloc.dart';
 import 'package:fedi/ui/scroll/scroll_controller_bloc_impl.dart';
-import 'package:base_fediverse_api/base_fediverse_api.dart';
+import 'package:fediverse_api/fediverse_api.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:easy_dispose/easy_dispose.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class CustomListPage extends StatefulWidget {
   const CustomListPage();
@@ -184,7 +185,7 @@ class _CustomListPageAppBarSettingsActionWidget extends StatelessWidget {
         color: IFediUiColorTheme.of(context).darkGrey,
       ),
       onPressed: () {
-        var timeline = ITimelineLocalPreferenceBloc.of(
+        var timeline = ITimelineLocalPreferenceBlocOld.of(
           context,
           listen: false,
         ).value!;
@@ -202,7 +203,7 @@ class _CustomListPageAppBarSettingsActionWidget extends StatelessWidget {
             settings: timeline.settings,
           ),
           lockedSource: true,
-          pleromaApiInstance: ICurrentAuthInstanceBloc.of(
+          unifediApiInstance: ICurrentUnifediApiAccessBloc.of(
             context,
             listen: false,
           ).currentInstance!.info!,
@@ -236,18 +237,19 @@ MaterialPageRoute createCustomListPageRoute({
   required Function(ICustomList? customList)? onChanged,
   required VoidCallback? onDeleted,
 }) {
-  var currentAuthInstanceBloc =
-      ICurrentAuthInstanceBloc.of(context, listen: false);
+  var currentUnifediApiAccessBloc =
+      ICurrentUnifediApiAccessBloc.of(context, listen: false);
 
   return MaterialPageRoute(
     builder: (context) {
       return Provider<ICustomList>.value(
         value: customList,
-        child: DisposableProvider<ITimelineLocalPreferenceBloc>(
+        child: DisposableProvider<ITimelineLocalPreferenceBlocOld>(
           create: (context) {
             var bloc = TimelineLocalPreferenceBloc.customList(
               ILocalPreferencesService.of(context, listen: false),
-              userAtHost: currentAuthInstanceBloc.currentInstance!.userAtHost,
+              userAtHost:
+                  currentUnifediApiAccessBloc.currentInstance!.userAtHost,
               customList: customList,
             );
 
@@ -281,15 +283,15 @@ class _CustomListPageWrapper extends StatelessWidget {
 
     return FediAsyncInitLoadingWidget(
       asyncInitLoadingBloc:
-          ITimelineLocalPreferenceBloc.of(context, listen: false),
+          ITimelineLocalPreferenceBlocOld.of(context, listen: false),
       loadingFinishedBuilder: (BuildContext context) {
         return DisposableProvider<IStatusCachedListBloc>(
           create: (BuildContext context) {
             var customListTimelineStatusCachedListBloc =
                 TimelineStatusCachedListBloc.createFromContext(
               context,
-              webSocketsListenType: WebSocketsListenType.foreground,
-              timelineLocalPreferencesBloc: ITimelineLocalPreferenceBloc.of(
+              handlerType: WebSocketsChannelHandlerType.foregroundValue,
+              timelineLocalPreferencesBloc: ITimelineLocalPreferenceBlocOld.of(
                 context,
                 listen: false,
               ),
@@ -298,8 +300,8 @@ class _CustomListPageWrapper extends StatelessWidget {
             return customListTimelineStatusCachedListBloc;
           },
           child: StatusCachedListBlocProxyProvider(
-            child: ProxyProvider<IStatusCachedListBloc,
-                IPleromaCachedListBloc<IStatus>>(
+            child:
+                ProxyProvider<IStatusCachedListBloc, ICachedListBloc<IStatus>>(
               update: (context, value, previous) => value,
               child: StatusCachedListBlocLoadingWidget(
                 child: StatusCachedPaginationBloc.provideToContext(
@@ -337,7 +339,7 @@ class _CustomListPageWrapper extends StatelessWidget {
   ) {
     var customListBloc = CustomListBloc(
       customList: customList,
-      pleromaListService: Provider.of<IPleromaApiListService>(
+      pleromaListService: Provider.of<IUnifediApiListService>(
         context,
         listen: false,
       ),

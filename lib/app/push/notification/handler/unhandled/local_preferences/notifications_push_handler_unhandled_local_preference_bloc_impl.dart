@@ -1,10 +1,11 @@
-import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/push/notification/handler/notifications_push_handler_model.dart';
 import 'package:fedi/app/push/notification/handler/unhandled/local_preferences/notifications_push_handler_unhandled_local_preference_bloc.dart';
 import 'package:fedi/app/push/notification/handler/unhandled/notifications_push_handler_unhandled_model.dart';
 import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:logging/logging.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 var _logger = Logger('push_handler_unhandled_local_preferences_bloc_impl.dart');
 
@@ -45,7 +46,7 @@ class NotificationsPushHandlerUnhandledLocalPreferenceBloc
 
   @override
   List<NotificationsPushHandlerMessage> loadUnhandledMessagesForInstance(
-    AuthInstance instance,
+    UnifediApiAccess instance,
   ) {
     var pleromaUnhandledList = value;
 

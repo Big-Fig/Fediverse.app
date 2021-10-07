@@ -1,6 +1,6 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/app/ui/badge/bool/fedi_bool_badge_bloc.dart';
-import 'package:easy_dispose/easy_dispose.dart';
 
 class PleromaChatUnreadBadgeBloc extends DisposableOwner
     implements IFediBoolBadgeBloc {

@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../account/account_test_helper.dart';
 import 'database/chat_message_database_test_helper.dart';
 
-class ChatMessageTestHelper {
+class ChatMessageMockHelper {
   static Future<DbPleromaChatMessagePopulatedWrapper> createTestChatMessage({
     required String seed,
     String? remoteId,
@@ -14,13 +14,13 @@ class ChatMessageTestHelper {
     String? chatRemoteId,
     DbAccountPopulatedWrapper? account,
   }) async {
-    account = account ?? await AccountTestHelper.createTestAccount(seed: seed);
+    account = account ?? await AccountMockHelper.createTestAccount(seed: seed);
     var dbAccount = account.dbAccount;
 
     return DbPleromaChatMessagePopulatedWrapper(
       dbChatMessagePopulated: DbChatMessagePopulated(
         dbChatMessage:
-            await ChatMessageDatabaseTestHelper.createTestDbChatMessage(
+            await ChatMessageDatabaseMockHelper.createTestDbChatMessage(
           createdAt: createdAt,
           seed: seed,
           remoteId: remoteId,
@@ -59,7 +59,7 @@ class ChatMessageTestHelper {
       );
       expect(actual.chatRemoteId, expected.chatRemoteId);
 
-      AccountTestHelper.expectAccount(actual.account, expected.account);
+      AccountMockHelper.expectAccount(actual.account, expected.account);
     }
   }
 }

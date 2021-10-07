@@ -1,7 +1,7 @@
 import 'package:fedi/app/search/recent/recent_search_model.dart';
 
 // ignore_for_file: no-magic-number
-class RecentSearchModelTestHelper {
+class RecentSearchModelMockHelper {
   static RecentSearchList createTestRecentSearchList({
     required String seed,
   }) =>

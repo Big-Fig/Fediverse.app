@@ -8,9 +8,9 @@ import 'emoji_picker_recent_test_helper.dart';
 
 void main() {
   test('equal & hashcode & toString', () async {
-    ObjTestHelper.testEqualsHashcodeToString(
+    ObjMockHelper.testEqualsHashcodeToString(
       ({required String seed}) =>
-          EmojiPickerRecentCategoryItemsListModelTestHelper
+          EmojiPickerRecentCategoryItemsListModelMockHelper
               .createTestEmojiPickerRecentCategoryItemsList(
         seed: seed,
       ),
@@ -18,20 +18,20 @@ void main() {
   });
 
   test('toJson & fromJson', () async {
-    JsonTestHelper.testFromJsonToJson(
+    JsonMockHelper.testFromJsonToJson(
       ({required String seed}) =>
-          EmojiPickerRecentCategoryItemsListModelTestHelper
+          EmojiPickerRecentCategoryItemsListModelMockHelper
               .createTestEmojiPickerRecentCategoryItemsList(
         seed: seed,
       ),
-      EmojiPickerRecentCategoryItemsList.fromJson,
+      (json) => EmojiPickerRecentCategoryItemsList.fromJson(json),
     );
   });
 
   test('hive save&load', () async {
-    await HiveTestHelper.testHiveSaveAndLoad(
+    await HiveMockHelper.testHiveSaveAndLoad(
       ({required String seed}) =>
-          EmojiPickerRecentCategoryItemsListModelTestHelper
+          EmojiPickerRecentCategoryItemsListModelMockHelper
               .createTestEmojiPickerRecentCategoryItemsList(
         seed: seed,
       ),
@@ -39,7 +39,7 @@ void main() {
   });
 
   test('hive adapter', () async {
-    HiveTestHelper.testAdapter(
+    HiveMockHelper.testAdapter(
       () => EmojiPickerRecentCategoryItemsListAdapter(),
     );
   });

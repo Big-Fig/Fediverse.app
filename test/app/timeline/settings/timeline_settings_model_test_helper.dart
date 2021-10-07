@@ -1,10 +1,11 @@
 import 'package:fedi/app/timeline/settings/timeline_settings_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
+import 'package:unifedi_api/unifedi_api_mock_helper.dart';
 
 import '../../../enum/enum_test_helper.dart';
 
 // ignore_for_file: no-magic-number, no-equal-arguments
-class TimelineSettingsModelTestHelper {
+class TimelineSettingsModelMockHelper {
   static TimelineSettings createTestTimelineSettings({
     required String seed,
   }) =>
@@ -16,24 +17,22 @@ class TimelineSettingsModelTestHelper {
         onlyLocal: seed.hashCode % 2 == 0,
         withMuted: seed.hashCode % 2 == 1,
         excludeVisibilitiesStrings: [
-          EnumTestHelper.createTestEnum(
+          EnumMockHelper.createTestEnum(
             seed: seed + '1',
-            values: PleromaApiReplyVisibilityFilter.values,
-          ).toJsonValue(),
-          EnumTestHelper.createTestEnum(
+            values: UnifediApiReplyVisibilityFilter.values,
+          ).stringValue,
+          EnumMockHelper.createTestEnum(
             seed: seed + '2',
-            values: PleromaApiReplyVisibilityFilter.values,
-          ).toJsonValue(),
+            values: UnifediApiReplyVisibilityFilter.values,
+          ).stringValue,
         ],
-        onlyInRemoteList:
-            PleromaApiListTestHelper.createTestPleromaApiList(seed: seed),
+        onlyInRemoteList: UnifediApiListMockHelper.generate(seed: seed),
         withRemoteHashtag: seed + 'withRemoteHashtag',
-        replyVisibilityFilterString: EnumTestHelper.createTestEnum(
+        replyVisibilityFilterString: EnumMockHelper.createTestEnum(
           seed: seed,
-          values: PleromaApiReplyVisibilityFilter.values,
-        ).toJsonValue(),
-        onlyFromRemoteAccount:
-            PleromaApiAccountTestHelper.createTestPleromaApiAccount(seed: seed),
+          values: UnifediApiReplyVisibilityFilter.values,
+        ).stringValue,
+        onlyFromRemoteAccount: UnifediApiAccountMockHelper.generate(seed: seed),
         onlyPinned: seed.hashCode % 2 == 0,
         excludeReblogs: seed.hashCode % 2 == 1,
         webSocketsUpdates: seed.hashCode % 2 == 0,

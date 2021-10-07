@@ -20,7 +20,7 @@ class AccountFollowingAccountListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var account = Provider.of<IAccount>(context);
 
-    if (account.pleromaHideFollows == true) {
+    if (account.hideFollows == true) {
       return const _AccountFollowingAccountListEmptyWidget();
     } else {
       return const _AccountFollowingAccountListBodyWidget();

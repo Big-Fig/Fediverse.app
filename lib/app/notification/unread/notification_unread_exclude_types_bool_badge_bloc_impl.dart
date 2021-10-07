@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/filter/filter_model.dart';
 import 'package:fedi/app/filter/repository/filter_repository.dart';
 import 'package:fedi/app/filter/repository/filter_repository_model.dart';
@@ -8,15 +9,13 @@ import 'package:fedi/app/notification/repository/notification_repository_model.d
 import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:fedi/app/ui/badge/bool/fedi_bool_badge_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
-import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:easy_dispose/easy_dispose.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class NotificationUnreadExcludeTypesBoolBadgeBloc extends AsyncInitLoadingBloc
     implements IFediBoolBadgeBloc {
-  final List<PleromaApiNotificationType> excludeTypes;
+  final List<UnifediApiNotificationType> excludeTypes;
   final INotificationRepository notificationRepository;
   final IFilterRepository filterRepository;
 
@@ -42,7 +41,7 @@ class NotificationUnreadExcludeTypesBoolBadgeBloc extends AsyncInitLoadingBloc
   FilterRepositoryFilters get filterRepositoryFilters =>
       FilterRepositoryFilters(
         onlyWithContextTypes: [
-          MastodonApiFilterContextType.notifications,
+          UnifediApiFilterContextType.notificationsValue,
         ],
         notExpired: true,
       );
@@ -79,7 +78,7 @@ class NotificationUnreadExcludeTypesBoolBadgeBloc extends AsyncInitLoadingBloc
     if (!isDisposed) {
       countSubscription = notificationRepository
           .watchCalculateCount(
-            filters: NotificationRepositoryFilters(
+            filters: NotificationRepositoryFilters.only(
               onlyUnread: true,
               excludeTypes: excludeTypes,
               excludeStatusTextConditions: filters

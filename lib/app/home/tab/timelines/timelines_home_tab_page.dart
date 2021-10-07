@@ -43,7 +43,7 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc_proxy_provider.dart';
-import 'package:base_fediverse_api/base_fediverse_api.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -90,12 +90,12 @@ class TimelinesHomeTabPage extends StatelessWidget {
                     previous?.selectedTimelineTabBloc.timelineId,
                 timelineTabBlocCreator: (
                   String timelineId,
-                  WebSocketsListenType webSocketsListenType,
+                  WebSocketsChannelHandlerType handlerType,
                 ) =>
                     TimelineTabBloc.createFromContext(
                   context,
                   timelineId: timelineId,
-                  webSocketsListenType: webSocketsListenType,
+                  handlerType: handlerType,
                 ),
               );
 
@@ -222,7 +222,7 @@ class _TimelinesHomeTabPageBodyState extends State<_TimelinesHomeTabPageBody>
 
     return Provider<ITimelineTabBloc>.value(
       value: tabBloc,
-      child: ProxyProvider<ITimelineTabBloc, ITimelineLocalPreferenceBloc>(
+      child: ProxyProvider<ITimelineTabBloc, ITimelineLocalPreferenceBlocOld>(
         update: (context, value, previous) =>
             value.timelineLocalPreferencesBloc,
         // value: tabBloc.timelineLocalPreferencesBloc,

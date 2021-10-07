@@ -3,9 +3,9 @@ import 'package:fedi/app/form/field/value/select_from_list/multi/multi_select_fr
 import 'package:fedi/form/field/value/select_from_list/multi/multi_select_from_list_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/select_from_list/multi/multi_select_from_list_value_form_field_bloc_proxy_provider.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class FilterContextMultiSelectFromListValueFormFieldWidget
     extends StatelessWidget {
@@ -22,10 +22,10 @@ class FilterContextMultiSelectFromListValueFormFieldWidget
   @override
   Widget build(BuildContext context) {
     return ProxyProvider<IFilterContextMultiSelectFromListValueFormFieldBloc,
-        IMultiSelectFromListValueFormFieldBloc<MastodonApiFilterContextType>>(
+        IMultiSelectFromListValueFormFieldBloc<UnifediApiFilterContextType>>(
       update: (context, value, _) => value,
       child: MultiSelectFromListValueFormFieldBlocProxyProvider<
-          MastodonApiFilterContextType>(
+          UnifediApiFilterContextType>(
         child: MultiSelectFromListValueFormFieldRowWidget(
           label: label,
           description: description,
@@ -42,21 +42,15 @@ class FilterContextMultiSelectFromListValueFormFieldWidget
 
   String mapValueToTitle(
     BuildContext context,
-    MastodonApiFilterContextType contextType,
+    UnifediApiFilterContextType contextType,
   ) {
-    switch (contextType) {
-      case MastodonApiFilterContextType.homeAndCustomLists:
-        return S.of(context).app_filter_context_type_home_and_lists;
-      case MastodonApiFilterContextType.notifications:
-        return S.of(context).app_filter_context_type_notifications;
-      case MastodonApiFilterContextType.public:
-        return S.of(context).app_filter_context_type_public;
-      case MastodonApiFilterContextType.thread:
-        return S.of(context).app_filter_context_type_threads;
-      case MastodonApiFilterContextType.account:
-        return S.of(context).app_filter_context_type_account;
-      case MastodonApiFilterContextType.unknown:
-        return S.of(context).app_filter_context_type_unknown;
-    }
+    return contextType.map(
+      home: (_) => S.of(context).app_filter_context_type_home_and_lists,
+      notifications: (_) => S.of(context).app_filter_context_type_notifications,
+      public: (_) => S.of(context).app_filter_context_type_public,
+      thread: (_) => S.of(context).app_filter_context_type_threads,
+      account: (_) => S.of(context).app_filter_context_type_account,
+      unknown: (_) => S.of(context).app_filter_context_type_unknown,
+    );
   }
 }

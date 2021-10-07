@@ -60,21 +60,21 @@ class _EditPushSettingsWidgetState extends State<EditPushSettingsWidget> {
           const _EditPushSettingsMentionFieldWidget(),
           const _EditPushSettingsReblogFieldWidget(),
           const _EditPushSettingsPollFieldWidget(),
-          const _EditPushSettingsPleromaChatMentionFieldWidget(),
-          const _EditPushSettingsPleromaEmojiReactionFieldWidget(),
+          const _EditPushSettingsChatMentionFieldWidget(),
+          const _EditPushSettingsEmojiReactionFieldWidget(),
         ],
       );
 }
 
-class _EditPushSettingsPleromaEmojiReactionFieldWidget extends StatelessWidget {
-  const _EditPushSettingsPleromaEmojiReactionFieldWidget({
+class _EditPushSettingsEmojiReactionFieldWidget extends StatelessWidget {
+  const _EditPushSettingsEmojiReactionFieldWidget({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ProxyProvider<IEditPushSettingsBloc, IBoolValueFormFieldBloc>(
-      update: (context, value, previous) => value.pleromaEmojiReactionFieldBloc,
+      update: (context, value, previous) => value.emojiReactionFieldBloc,
       child: BoolValueFormFieldRowWidget(
         label:
             S.of(context).app_push_settings_field_pleroma_emojiReaction_label,
@@ -85,15 +85,15 @@ class _EditPushSettingsPleromaEmojiReactionFieldWidget extends StatelessWidget {
   }
 }
 
-class _EditPushSettingsPleromaChatMentionFieldWidget extends StatelessWidget {
-  const _EditPushSettingsPleromaChatMentionFieldWidget({
+class _EditPushSettingsChatMentionFieldWidget extends StatelessWidget {
+  const _EditPushSettingsChatMentionFieldWidget({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ProxyProvider<IEditPushSettingsBloc, IBoolValueFormFieldBloc>(
-      update: (context, value, previous) => value.pleromaChatMentionFieldBloc,
+      update: (context, value, previous) => value.chatMentionFieldBloc,
       child: BoolValueFormFieldRowWidget(
         label: S.of(context).app_push_settings_field_pleroma_chat_label,
         descriptionOnDisabled:

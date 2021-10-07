@@ -30,11 +30,11 @@ import 'package:fedi/app/ui/shader_mask/fedi_fade_shader_mask.dart';
 import 'package:fedi/app/ui/spacer/fedi_small_vertical_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 const _defaultPadding = FediPadding.horizontalBigPadding;
 
@@ -168,15 +168,15 @@ class _StatusBodyContentMediaAttachmentsWidget extends StatelessWidget {
     var statusBloc = IStatusBloc.of(context);
     var statusBodyBloc = IStatusBodyBloc.of(context);
 
-    return StreamBuilder<List<IPleromaApiMediaAttachment>?>(
+    return StreamBuilder<List<IUnifediApiMediaAttachment>?>(
       stream: statusBloc.reblogOrOriginalMediaAttachmentsStream,
       builder: (context, snapshot) {
         var mediaAttachments = snapshot.data;
 
         if (mediaAttachments?.isNotEmpty == true) {
-          return Provider<List<IPleromaApiMediaAttachment>>.value(
+          return Provider<List<IUnifediApiMediaAttachment>>.value(
             value: mediaAttachments!,
-            child: DisposableProxyProvider<List<IPleromaApiMediaAttachment>,
+            child: DisposableProxyProvider<List<IUnifediApiMediaAttachment>,
                 IMediaAttachmentListBloc>(
               update: (context, value, _) => MediaAttachmentListBloc(
                 mediaAttachments: value,
@@ -216,7 +216,7 @@ class _StatusBodyCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context);
 
-    return StreamBuilder<IPleromaApiCard?>(
+    return StreamBuilder<IUnifediApiCard?>(
       stream: statusBloc.reblogOrOriginalCardStream,
       builder: (context, snapshot) {
         var card = snapshot.data;
@@ -225,7 +225,7 @@ class _StatusBodyCardWidget extends StatelessWidget {
           return const SizedBox.shrink();
         }
 
-        return Provider<IPleromaApiCard?>.value(
+        return Provider<IUnifediApiCard?>.value(
           value: card,
           child: const CardWidget(),
         );

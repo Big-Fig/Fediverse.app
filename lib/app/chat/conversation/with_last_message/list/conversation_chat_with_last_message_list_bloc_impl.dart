@@ -1,3 +1,4 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
 import 'package:fedi/app/chat/conversation/with_last_message/conversation_chat_with_last_message_model.dart';
 import 'package:fedi/app/chat/conversation/with_last_message/conversation_chat_with_last_message_repository.dart';
@@ -10,14 +11,14 @@ import 'package:fedi/app/chat/conversation/with_last_message/pagination/list/con
 import 'package:fedi/app/chat/conversation/with_last_message/pagination/list/conversation_chat_with_last_message_pagination_list_with_new_items_bloc_impl.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
-import 'package:easy_dispose/easy_dispose.dart';
+import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
-import 'package:base_fediverse_api/base_fediverse_api.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class ConversationChatWithLastMessageListBloc extends DisposableOwner
     implements IConversationChatWithLastMessageListBloc {
@@ -47,10 +48,11 @@ class ConversationChatWithLastMessageListBloc extends DisposableOwner
   final IPaginationSettingsBloc paginationSettingsBloc;
 
   ConversationChatWithLastMessageListBloc({
-    required IPleromaApiConversationService conversationService,
+    required IUnifediApiConversationService conversationService,
     required this.conversationRepository,
     required this.paginationSettingsBloc,
     required this.conversationChatWithLastMessageRepository,
+    required IConnectionService connectionService,
     required IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc,
   }) : cachedListBloc = ConversationChatWithLastMessageCachedListBloc(
           conversationChatService: conversationService,
@@ -59,6 +61,7 @@ class ConversationChatWithLastMessageListBloc extends DisposableOwner
           conversationRepository: conversationRepository,
         ) {
     paginationBloc = ConversationChatWithLastMessagePaginationBloc(
+      connectionService: connectionService,
       paginationSettingsBloc: paginationSettingsBloc,
       listService: cachedListBloc,
       maximumCachedPagesCount: null,
@@ -76,7 +79,7 @@ class ConversationChatWithLastMessageListBloc extends DisposableOwner
     paginationListWithNewItemsBloc.disposeWith(this);
     webSocketsHandlerManagerBloc
         .listenConversationChannel(
-          listenType: WebSocketsListenType.foreground,
+          handlerType: WebSocketsChannelHandlerType.foregroundValue,
         )
         .disposeWith(this);
   }
@@ -85,11 +88,15 @@ class ConversationChatWithLastMessageListBloc extends DisposableOwner
     BuildContext context,
   ) =>
       ConversationChatWithLastMessageListBloc(
+        connectionService: Provider.of<IConnectionService>(
+          context,
+          listen: false,
+        ),
         conversationRepository: IConversationChatRepository.of(
           context,
           listen: false,
         ),
-        conversationService: Provider.of<IPleromaApiConversationService>(
+        conversationService: Provider.of<IUnifediApiConversationService>(
           context,
           listen: false,
         ),

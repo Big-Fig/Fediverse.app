@@ -27,7 +27,7 @@ void main() {
   });
 
   test(
-    'test dbMigration v9->v10 dbAccounts pleromaAcceptsChatMessages',
+    'test dbMigration v9->v10 dbAccounts acceptsChatMessages',
     () async {
       var accountDao = database.accountDao;
 
@@ -36,11 +36,11 @@ void main() {
       expect((await accountDao.getAll()).isNotEmpty, false);
 
       var dbAccount =
-          await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed');
+          await AccountDatabaseMockHelper.createTestDbAccount(seed: 'seed');
 
-      var pleromaAcceptsChatMessages = true;
+      var acceptsChatMessages = true;
       dbAccount = dbAccount.copyWith(
-        pleromaAcceptsChatMessages: pleromaAcceptsChatMessages,
+        acceptsChatMessages: acceptsChatMessages,
       );
 
       await accountDao.insert(entity: dbAccount, mode: null);
@@ -50,14 +50,14 @@ void main() {
       expect(
         (await accountDao.findByRemoteIdPopulated(dbAccount.remoteId))
             ?.dbAccount
-            .pleromaAcceptsChatMessages,
-        pleromaAcceptsChatMessages,
+            .acceptsChatMessages,
+        acceptsChatMessages,
       );
 
       await accountDao.updateByRemoteId(
         dbAccount.remoteId,
         dbAccount.copyWith(
-          pleromaAcceptsChatMessages: false,
+          acceptsChatMessages: false,
         ),
       );
 
@@ -66,7 +66,7 @@ void main() {
       expect(
         (await accountDao.findByRemoteIdPopulated(dbAccount.remoteId))
             ?.dbAccount
-            .pleromaAcceptsChatMessages,
+            .acceptsChatMessages,
         false,
       );
     },

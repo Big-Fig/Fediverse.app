@@ -10,7 +10,7 @@ import '../../localization_settings_model_test_helper.dart';
 
 void main() {
   test('save & load', () async {
-    await LocalPreferencesTestHelper.testSaveAndLoad<LocalizationSettings,
+    await LocalPreferencesMockHelper.testSaveAndLoad<LocalizationSettings,
         LocalizationSettingsLocalPreferenceBloc>(
       defaultValue: GlobalLocalizationSettingsLocalPreferenceBloc.defaultValue,
       blocCreator: (localPreferencesService) =>
@@ -18,7 +18,7 @@ void main() {
         localPreferencesService,
       ),
       testObjectCreator: ({required String seed}) =>
-          LocalizationSettingsModelTestHelper.createTestLocalizationSettings(
+          LocalizationSettingsModelMockHelper.createTestLocalizationSettings(
         seed: seed,
       ),
     );

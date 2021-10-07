@@ -8,8 +8,8 @@ import 'timelines_home_tab_storage_model_test_helper.dart';
 
 void main() {
   test('equal & hashcode & toString', () async {
-    ObjTestHelper.testEqualsHashcodeToString(
-      ({required String seed}) => TimelinesHomeTabStorageModelTestHelper
+    ObjMockHelper.testEqualsHashcodeToString(
+      ({required String seed}) => TimelinesHomeTabStorageModelMockHelper
           .createTestTimelinesHomeTabStorage(
         seed: seed,
       ),
@@ -17,18 +17,18 @@ void main() {
   });
 
   test('toJson & fromJson', () async {
-    JsonTestHelper.testFromJsonToJson(
-      ({required String seed}) => TimelinesHomeTabStorageModelTestHelper
+    JsonMockHelper.testFromJsonToJson(
+      ({required String seed}) => TimelinesHomeTabStorageModelMockHelper
           .createTestTimelinesHomeTabStorage(
         seed: seed,
       ),
-      TimelinesHomeTabStorage.fromJson,
+      (json) => TimelinesHomeTabStorage.fromJson(json),
     );
   });
 
   test('hive save&load', () async {
-    await HiveTestHelper.testHiveSaveAndLoad(
-      ({required String seed}) => TimelinesHomeTabStorageModelTestHelper
+    await HiveMockHelper.testHiveSaveAndLoad(
+      ({required String seed}) => TimelinesHomeTabStorageModelMockHelper
           .createTestTimelinesHomeTabStorage(
         seed: seed,
       ),
@@ -36,17 +36,17 @@ void main() {
   });
 
   test('hive adapter', () async {
-    HiveTestHelper.testAdapter(
+    HiveMockHelper.testAdapter(
       () => TimelinesHomeTabStorageAdapter(),
     );
   });
 
   test('TimelinesHomeTabStorage copyWith', () async {
-    var obj1 = TimelinesHomeTabStorageModelTestHelper
+    var obj1 = TimelinesHomeTabStorageModelMockHelper
         .createTestTimelinesHomeTabStorage(
       seed: 'seed1',
     );
-    var obj2 = TimelinesHomeTabStorageModelTestHelper
+    var obj2 = TimelinesHomeTabStorageModelMockHelper
         .createTestTimelinesHomeTabStorage(
       seed: 'seed2',
     );

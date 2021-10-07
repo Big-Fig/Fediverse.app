@@ -10,14 +10,16 @@ import 'package:flutter/widgets.dart';
 class ChatBodyWrapperWidget extends StatelessWidget {
   final Widget child;
 
+  final Widget postWidget;
+
   const ChatBodyWrapperWidget({
     required this.child,
+    this.postWidget = const _ChatPostMessageWidget(),
   });
 
   @override
   Widget build(BuildContext context) {
     var postMessageBloc = IPostMessageBloc.of(context, listen: false);
-    var postMessageWidget = const _ChatPostMessageWidget();
 
     var chatSelectionBloc = IChatSelectionBloc.of(context);
 
@@ -27,7 +29,7 @@ class ChatBodyWrapperWidget extends StatelessWidget {
       builder: (context, snapshot) {
         var isPostMessageExpanded = snapshot.data!;
         if (isPostMessageExpanded) {
-          return postMessageWidget;
+          return postWidget;
         } else {
           return Column(
             children: <Widget>[
@@ -46,7 +48,7 @@ class ChatBodyWrapperWidget extends StatelessWidget {
                   if (isSomethingSelected) {
                     return const ChatSelectionWidget();
                   } else {
-                    return postMessageWidget;
+                    return postWidget;
                   }
                 },
               ),

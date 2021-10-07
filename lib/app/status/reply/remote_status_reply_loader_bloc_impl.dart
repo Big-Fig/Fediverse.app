@@ -3,12 +3,12 @@ import 'package:fedi/app/status/reply/status_reply_loader_bloc.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class RemoteStatusReplyLoaderBloc extends AsyncInitLoadingBloc
     implements IStatusReplyLoaderBloc {
-  final IPleromaApiStatusService pleromaStatusService;
+  final IUnifediApiStatusService unifediApiStatusService;
   @override
   final IStatus originalStatus;
   @override
@@ -20,21 +20,20 @@ class RemoteStatusReplyLoaderBloc extends AsyncInitLoadingBloc
   ) {
     var remoteInstanceBloc = IRemoteInstanceBloc.of(context, listen: false);
 
-    var pleromaStatusService = PleromaApiStatusService(
-      restService: remoteInstanceBloc.pleromaRestService,
-    );
+    var unifediApiStatusService =
+        remoteInstanceBloc.unifediApiManager.createStatusService();
     var bloc = RemoteStatusReplyLoaderBloc(
-      pleromaStatusService: pleromaStatusService,
+      unifediApiStatusService: unifediApiStatusService,
       originalStatus: originalStatus,
     );
 
-    bloc.addDisposable(pleromaStatusService);
+    bloc.addDisposable(unifediApiStatusService);
 
     return bloc;
   }
 
   RemoteStatusReplyLoaderBloc({
-    required this.pleromaStatusService,
+    required this.unifediApiStatusService,
     required this.originalStatus,
   }) : assert(originalStatus.inReplyToRemoteId != null) {
     if (originalStatus.inReplyToStatus != null) {
@@ -50,8 +49,8 @@ class RemoteStatusReplyLoaderBloc extends AsyncInitLoadingBloc
     }
     var inReplyToRemoteId = originalStatus.inReplyToRemoteId!;
 
-    var replyToRemoteStatus = await pleromaStatusService.getStatus(
-      statusRemoteId: inReplyToRemoteId,
+    var replyToRemoteStatus = await unifediApiStatusService.getStatus(
+      statusId: inReplyToRemoteId,
     );
 
     inReplyToStatus = replyToRemoteStatus.toDbStatusPopulatedWrapper();

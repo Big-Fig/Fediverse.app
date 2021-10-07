@@ -3,7 +3,7 @@ import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository
 import 'package:flutter_test/flutter_test.dart';
 import 'package:moor/moor.dart';
 
-class ScheduledStatusRepositoryTestHelper {
+class ScheduledStatusRepositoryMockHelper {
   static Future<DbScheduledStatus> insertDbScheduledStatus(
     ScheduledStatusRepository scheduledStatusRepository,
     DbScheduledStatus scheduledStatusData, {

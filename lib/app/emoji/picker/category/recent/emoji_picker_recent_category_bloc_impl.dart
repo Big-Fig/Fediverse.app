@@ -1,5 +1,5 @@
-import 'package:fedi/app/emoji/picker/category/recent/local_preferences/emoji_picker_recent_category_local_preference_bloc.dart';
 import 'package:fedi/app/emoji/picker/category/recent/emoji_picker_recent_category_model.dart';
+import 'package:fedi/app/emoji/picker/category/recent/local_preferences/emoji_picker_recent_category_local_preference_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/emoji_picker/category/custom_emoji_picker_category_bloc.dart';
 import 'package:fedi/emoji_picker/item/code/custom_emoji_picker_code_item_model.dart';
@@ -23,15 +23,14 @@ class EmojiPickerRecentCategoryBloc extends AsyncInitLoadingBloc
   }
 
   @override
-  List<CustomEmojiPickerItem> get items =>
-      preferenceBloc.value?.recentItems ?? [];
+  List<CustomEmojiPickerItem>? get items => preferenceBloc.value?.recentItems;
 
   @override
-  Stream<List<CustomEmojiPickerItem>> get itemsStream =>
-      preferenceBloc.stream.map((list) => list?.recentItems ?? []);
+  Stream<List<CustomEmojiPickerItem>?> get itemsStream =>
+      preferenceBloc.stream.map((list) => list?.recentItems);
 
   void onEmojiSelected(CustomEmojiPickerItem emojiItem) {
-    var currentItems = items;
+    var currentItems = items ?? [];
     var alreadyExist = currentItems.contains(emojiItem);
     _logger.finest(() => 'onEmojiSelected $emojiItem \n'
         'alreadyExist $alreadyExist');
@@ -46,6 +45,6 @@ class EmojiPickerRecentCategoryBloc extends AsyncInitLoadingBloc
         ),
       );
     }
-    _logger.finest(() => 'onEmojiSelected items ${items.length} ');
+    _logger.finest(() => 'onEmojiSelected items ${items?.length} ');
   }
 }

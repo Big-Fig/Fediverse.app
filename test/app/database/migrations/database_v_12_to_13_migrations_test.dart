@@ -34,10 +34,10 @@ void main() {
     expect((await chatMessageDao.getAll()).isNotEmpty, false);
 
     var testDbChatMessage =
-        await ChatMessageDatabaseTestHelper.createTestDbChatMessage(
+        await ChatMessageDatabaseMockHelper.createTestDbChatMessage(
       seed: 'seed1',
       dbAccount:
-          await AccountDatabaseTestHelper.createTestDbAccount(seed: 'seed2'),
+          await AccountDatabaseMockHelper.createTestDbAccount(seed: 'seed2'),
     );
     await chatMessageDao.insert(
       entity: testDbChatMessage,

@@ -1,19 +1,18 @@
 import 'package:fedi/app/form/field/value/select_from_list/single/single_select_from_list_value_form_field_row_widget.dart';
 import 'package:fedi/app/web_sockets/handling_type/form/web_sockets_handling_type_single_from_list_value_form_field_bloc_proxy_provider.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:base_fediverse_api/base_fediverse_api.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:flutter/cupertino.dart';
 
-class WebSocketsHandlingTypeSingleFromListValueFormFieldRowWidget
+class WebSocketsModeSingleFromListValueFormFieldRowWidget
     extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
-      WebSocketsHandlingTypeSingleFromListValueFormFieldBlocProxyProvider(
-        child:
-            SingleSelectFromListValueFormFieldRowWidget<WebSocketsHandlingType>(
+      WebSocketsModeSingleFromListValueFormFieldBlocProxyProvider(
+        child: SingleSelectFromListValueFormFieldRowWidget<WebSocketsMode>(
           label: S.of(context).app_web_sockets_settings_field_type_label,
           valueTitleMapper: (context, value) =>
-              mapWebSocketsHandlingTypeToLabel(context, value!),
+              mapWebSocketsModeToLabel(context, value!),
           description:
               S.of(context).app_web_sockets_settings_field_type_description,
           descriptionOnDisabled: null,
@@ -23,21 +22,17 @@ class WebSocketsHandlingTypeSingleFromListValueFormFieldRowWidget
         ),
       );
 
-  const WebSocketsHandlingTypeSingleFromListValueFormFieldRowWidget();
+  const WebSocketsModeSingleFromListValueFormFieldRowWidget();
 }
 
-String mapWebSocketsHandlingTypeToLabel(
+String mapWebSocketsModeToLabel(
   BuildContext context,
-  WebSocketsHandlingType type,
-) {
-  switch (type) {
-    case WebSocketsHandlingType.disabled:
-      return S.of(context).app_web_sockets_settings_type_disabled;
-    case WebSocketsHandlingType.onlyForeground:
-      return S.of(context).app_web_sockets_settings_type_onlyForeground;
-    case WebSocketsHandlingType.foregroundAndBackground:
-      return S
-          .of(context)
-          .app_web_sockets_settings_type_foregroundAndBackground;
-  }
-}
+  WebSocketsMode mode,
+) =>
+    mode.map(
+      disabled: (_) => S.of(context).app_web_sockets_settings_type_disabled,
+      onlyForeground: (_) =>
+          S.of(context).app_web_sockets_settings_type_onlyForeground,
+      foregroundAndBackground: (_) =>
+          S.of(context).app_web_sockets_settings_type_foregroundAndBackground,
+    );

@@ -1,9 +1,9 @@
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:fedi/app/auth/instance/auth_instance_model.dart';
+
 import 'package:fedi/app/filter/context/filter_context_multi_select_from_list_value_form_field_bloc_impl.dart';
 import 'package:fedi/app/filter/filter_model.dart';
 import 'package:fedi/app/filter/form/filter_form_bloc.dart';
-import 'package:fedi/duration/duration_extension.dart';
+
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/field/value/duration/date_time/duration_date_time_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/field/value/duration/date_time/duration_date_time_value_form_field_model.dart';
@@ -12,8 +12,7 @@ import 'package:fedi/form/field/value/string/string_value_form_field_bloc_impl.d
 import 'package:fedi/form/field/value/string/validation/string_value_form_field_non_empty_validation.dart';
 import 'package:fedi/form/form_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
-import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 final _wholeWordRegex = RegExp(r'^[a-zA-Z0-9_]+$');
 
@@ -32,7 +31,7 @@ class FilterFormBloc extends FormBloc implements IFilterFormBloc {
   @override
   final FilterContextMultiSelectFromListValueFormFieldBloc contextField;
 
-  final AuthInstance currentInstance;
+  final UnifediApiAccess currentInstance;
 
   FilterFormBloc({
     required IFilter? initialValue,
@@ -51,8 +50,7 @@ class FilterFormBloc extends FormBloc implements IFilterFormBloc {
           originValue: initialValue?.wholeWord ?? false,
         ),
         contextField = FilterContextMultiSelectFromListValueFormFieldBloc(
-          originValue:
-              initialValue?.contextAsMastodonApiFilterContextType ?? [],
+          originValue: initialValue?.contextAsUnifediApiFilterContextType ?? [],
           validators: [
             MultiSelectFromListValueFormFieldNonNullAndNonEmptyValidationError
                 .createValidator(),
@@ -108,19 +106,21 @@ class FilterFormBloc extends FormBloc implements IFilterFormBloc {
       ];
 
   @override
-  IPostPleromaApiFilter calculateFormValue() {
-    return PostPleromaApiFilter(
+  IUnifediApiPostFilter calculateFormValue() {
+    return UnifediApiPostFilter(
       phrase: phraseField.currentValue,
       irreversible: irreversibleField.currentValue ?? false,
       wholeWord: wholeWordField.currentValue ?? false,
-      expiresInSeconds: expiresInField.currentValueDuration?.totalSeconds,
+      expiresIn: expiresInField.currentValueDuration,
       context: contextField.currentValue
           .where(
-            (contextType) =>
-                contextType != MastodonApiFilterContextType.unknown,
+            (UnifediApiFilterContextType contextType) => contextType.maybeMap(
+              unknown: (_) => false,
+              orElse: () => true,
+            ),
           )
           .map(
-            (contextType) => contextType.toJsonValue(),
+            (contextType) => contextType.stringValue,
           )
           .toList(),
     );

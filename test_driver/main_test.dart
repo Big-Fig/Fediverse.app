@@ -4,9 +4,9 @@
 // Selenium/WebDriver for web, Espresso for Android or UI Automation for iOS,
 // this is simply Flutter's version of that.
 
-import 'package:fedi/app/auth/instance/join/from_scratch/from_scratch_join_auth_instance_page_keys.dart';
-import 'package:fedi/app/auth/instance/join/join_auth_instance_widget_keys.dart';
-import 'package:fedi/app/auth/instance/register/register_auth_instance_page_keys.dart';
+import 'package:fedi/app/access/join/from_scratch/from_scratch_join_access_page_keys.dart';
+import 'package:fedi/app/access/join/join_access_widget_keys.dart';
+import 'package:fedi/app/access/register/register_access_page_keys.dart';
 import 'package:fedi/app/home/home_page_bottom_navigation_bar_widget_keys.dart';
 import 'package:fedi/app/home/home_page_keys.dart';
 import 'package:fedi/app/home/tab/account/account_home_tab_page_keys.dart';
@@ -59,7 +59,7 @@ void main() {
         await screenshot(driver, config, '1_Login');
 
         var hostTextField = find.byValueKey(
-          JoinAuthInstanceWidgetKeys.hostTextFieldKey,
+          JoinUnifediApiAccessWidgetKeys.hostTextFieldKey,
         );
         await driver.tap(hostTextField);
 
@@ -72,7 +72,7 @@ void main() {
         // }
 
         var exploreAsGuestButton = find.byValueKey(
-          JoinAuthInstanceWidgetKeys.exploreAsGuestButtonKey,
+          JoinUnifediApiAccessWidgetKeys.exploreAsGuestButtonKey,
         );
 
         await driver.waitFor(exploreAsGuestButton);
@@ -94,19 +94,20 @@ void main() {
 
         await driver.waitFor(
           find.byValueKey(
-            FromScratchJoinAuthInstancePageKeys.joinAuthInstanceWidgetKey,
+            FromScratchJoinUnifediApiAccessPageKeys
+                .joinUnifediApiAccessWidgetKey,
           ),
         );
 
         await driver.tap(
           find.byValueKey(
-            JoinAuthInstanceWidgetKeys.signUpButtonKey,
+            JoinUnifediApiAccessWidgetKeys.signUpButtonKey,
           ),
         );
 
         await driver.waitFor(
           find.byValueKey(
-            RegisterAuthInstancePageKeys.registerAuthInstanceWidgetKey,
+            RegisterUnifediApiAccessPageKeys.registerUnifediApiAccessWidgetKey,
           ),
         );
 
@@ -119,17 +120,18 @@ void main() {
         );
 
         hostTextField = find.byValueKey(
-          JoinAuthInstanceWidgetKeys.hostTextFieldKey,
+          JoinUnifediApiAccessWidgetKeys.hostTextFieldKey,
         );
         await driver.tap(hostTextField);
 
         await driver.enterText('mastodon.social');
 
-        print('before joinAuthInstanceWidgetKey');
+        print('before joinUnifediApiAccessWidgetKey');
 
         await driver.waitFor(
           find.byValueKey(
-            FromScratchJoinAuthInstancePageKeys.joinAuthInstanceWidgetKey,
+            FromScratchJoinUnifediApiAccessPageKeys
+                .joinUnifediApiAccessWidgetKey,
           ),
         );
 
@@ -137,7 +139,7 @@ void main() {
 
         await driver.tap(
           find.byValueKey(
-            JoinAuthInstanceWidgetKeys.loginButtonKey,
+            JoinUnifediApiAccessWidgetKeys.loginButtonKey,
           ),
         );
 

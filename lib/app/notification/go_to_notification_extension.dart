@@ -5,9 +5,9 @@ import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/app/notification/notification_model.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/thread/local_status_thread_page.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 extension GoToNotificationExtension on INotification {
   Future goToRelatedPage(BuildContext context) async {
@@ -15,7 +15,7 @@ extension GoToNotificationExtension on INotification {
         INotificationRepository.of(context, listen: false);
 
     var pleromaNotificationService =
-        Provider.of<IPleromaApiNotificationService>(context, listen: false);
+        Provider.of<IUnifediApiNotificationService>(context, listen: false);
 
     // ignore: unawaited_futures
     notificationRepository.markAsRead(
@@ -24,14 +24,14 @@ extension GoToNotificationExtension on INotification {
     if (pleromaNotificationService.isPleroma) {
       // ignore: unawaited_futures
       pleromaNotificationService.markAsReadSingle(
-        notificationRemoteId: remoteId,
+        notificationId: remoteId,
       );
     }
 
     var status = this.status;
     var account = this.account;
     var chatRemoteId = this.chatRemoteId;
-    if (typePleroma == PleromaApiNotificationType.followRequest) {
+    if (typeAsUnifediApi == UnifediApiNotificationType.followRequestValue) {
       await goToMyAccountFollowRequestListPage(context);
     } else if (status != null) {
       await goToLocalStatusThreadPage(

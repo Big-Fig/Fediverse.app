@@ -1,3 +1,4 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/hashtag/pagination/list/hashtag_pagination_list_bloc.dart';
 import 'package:fedi/app/hashtag/pagination/list/hashtag_pagination_list_bloc_impl.dart';
 import 'package:fedi/app/hashtag/pagination/network_only/hashtag_network_only_pagination_bloc.dart';
@@ -6,21 +7,21 @@ import 'package:fedi/app/instance/trends/hashtag_list/network_only/instance_tren
 import 'package:fedi/app/instance/trends/hashtag_list/network_only/instance_trends_hashtag_list_network_only_list_bloc_impl.dart';
 import 'package:fedi/app/instance/trends/instance_trends_bloc.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
-import 'package:easy_dispose/easy_dispose.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
-
+import 'package:fedi/connection/connection_service.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 abstract class InstanceTrendsBloc extends DisposableOwner
     implements IInstanceTrendsBloc {
   @override
   final Uri instanceUri;
 
-  final BehaviorSubject<IPleromaApiInstance?> instanceSubject;
+  final BehaviorSubject<IUnifediApiInstance?> instanceSubject;
   final IPaginationSettingsBloc paginationSettingsBloc;
-
+  final IConnectionService connectionService;
   InstanceTrendsBloc({
-    required IPleromaApiInstance? initialInstance,
+    required IUnifediApiInstance? initialInstance,
+    required this.connectionService,
     required this.instanceUri,
     required this.paginationSettingsBloc,
   }) : instanceSubject = BehaviorSubject.seeded(initialInstance) {
@@ -28,13 +29,14 @@ abstract class InstanceTrendsBloc extends DisposableOwner
 
     instanceTrendsHashtagListNetworkOnlyListBloc =
         InstanceTrendsHashtagListNetworkOnlyListBloc(
-      pleromaApiTrendsService: pleromaApiTrendsService,
+      unifediApiInstanceService: unifediApiInstanceService,
       remoteInstanceUriOrNull: instanceUri,
       instanceLocation: instanceLocation,
     );
 
     instanceTrendsHashtagListNetworkOnlyPaginationBloc =
         HashtagNetworkOnlyPaginationBloc(
+      connectionService: connectionService,
       listBloc: instanceTrendsHashtagListNetworkOnlyListBloc,
       maximumCachedPagesCount: null,
       paginationSettingsBloc: paginationSettingsBloc,
@@ -53,19 +55,19 @@ abstract class InstanceTrendsBloc extends DisposableOwner
     hashtagPaginationListBloc.refreshWithoutController();
   }
 
-  IPleromaApiTrendsService get pleromaApiTrendsService;
+  IUnifediApiInstanceService get unifediApiInstanceService;
 
   @override
-  IPleromaApiInstance? get instance => instanceSubject.value;
+  IUnifediApiInstance? get instance => instanceSubject.value;
 
   @override
-  Stream<IPleromaApiInstance?> get instanceStream => instanceSubject.stream;
+  Stream<IUnifediApiInstance?> get instanceStream => instanceSubject.stream;
 
   @override
-  bool get isPleroma => instance!.isPleroma;
+  bool get isPleroma => instance!.typeAsUnifediApi.isPleroma;
 
   @override
-  bool get isMastodon => instance!.isMastodon;
+  bool get isMastodon => instance!.typeAsUnifediApi.isMastodon;
 
   @override
   // ignore: avoid-late-keyword

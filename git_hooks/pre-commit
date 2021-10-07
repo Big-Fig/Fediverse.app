@@ -1,2 +1,2 @@
 #!/bin/sh
-./tools/dartfmt.sh
+./tools/checkDartFmt.sh

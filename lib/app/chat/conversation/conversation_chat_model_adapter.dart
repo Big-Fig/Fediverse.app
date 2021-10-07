@@ -4,9 +4,9 @@ import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
-extension IPleromaConversationDbExtension on IPleromaApiConversation {
+extension IPleromaConversationDbExtension on IUnifediApiConversation {
   DbConversation toDbConversation() {
     return DbConversation(
       id: null,
@@ -18,18 +18,18 @@ extension IPleromaConversationDbExtension on IPleromaApiConversation {
 }
 
 extension IConversationChatExtension on IConversationChat {
-  PleromaApiConversation toPleromaConversation({
+  UnifediApiConversation toPleromaConversation({
     required IStatus? lastStatus,
     required List<IAccount> accounts,
   }) {
     var unread = this.unread;
 
-    return PleromaApiConversation(
+    return UnifediApiConversation(
+      recipients: null,
       unread: (unread > 0) ? true : false,
-      lastStatus: lastStatus?.toPleromaApiStatus(),
+      lastStatus: lastStatus?.toUnifediApiStatus(),
       id: remoteId,
-      accounts: accounts.toPleromaApiAccounts(),
-      pleroma: pleroma?.toPleromaApiConversationPleromaPart(),
+      accounts: accounts.toUnifediApiAccountList(),
     );
   }
 }

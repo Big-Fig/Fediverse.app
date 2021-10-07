@@ -70,7 +70,7 @@ void main() {
       },
     );
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
 
     var defaultValue = GlobalToastSettingsLocalPreferenceBloc.defaultValue;
 
@@ -93,11 +93,11 @@ void main() {
     );
 
     var testPushSettings =
-        ToastSettingsModelTestHelper.createTestToastSettings(seed: 'seed')
+        ToastSettingsModelMockHelper.createTestToastSettings(seed: 'seed')
             .pushSettings;
 
     await toastSettingsBloc.changePushSettings(testPushSettings);
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
 
     expect(
       listenedSettingsData?.pushSettings,
@@ -130,7 +130,7 @@ void main() {
       },
     );
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
 
     var defaultValue = GlobalToastSettingsLocalPreferenceBloc.defaultValue;
 
@@ -153,11 +153,11 @@ void main() {
     );
 
     var testHandlingType =
-        ToastSettingsModelTestHelper.createTestToastSettings(seed: 'seed')
+        ToastSettingsModelMockHelper.createTestToastSettings(seed: 'seed')
             .handlingType;
 
     await toastSettingsBloc.changeHandlingType(testHandlingType);
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
 
     expect(
       listenedSettingsData?.handlingType,
@@ -190,7 +190,7 @@ void main() {
       },
     );
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
 
     var defaultValue = GlobalToastSettingsLocalPreferenceBloc.defaultValue;
 
@@ -215,7 +215,7 @@ void main() {
     var testFollow = true;
 
     await toastSettingsBloc.changeFollow(testFollow);
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
 
     expect(
       listenedSettingsData?.pushSettings.follow,
@@ -238,7 +238,7 @@ void main() {
     testFollow = false;
 
     await toastSettingsBloc.changeFollow(testFollow);
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
 
     expect(
       listenedSettingsData?.pushSettings.follow,
@@ -260,167 +260,165 @@ void main() {
 
     await subscriptionListenedFollow.cancel();
   });
-  test('changePleromaEmojiReaction', () async {
-    bool? listenedPleromaEmojiReaction;
+  test('changeEmojiReaction', () async {
+    bool? listenedEmojiReaction;
 
-    StreamSubscription subscriptionListenedPleromaEmojiReaction =
-        toastSettingsBloc.pleromaEmojiReactionStream.listen(
+    StreamSubscription subscriptionListenedEmojiReaction =
+        toastSettingsBloc.emojiReactionStream.listen(
       (data) {
-        listenedPleromaEmojiReaction = data;
+        listenedEmojiReaction = data;
       },
     );
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
 
     var defaultValue = GlobalToastSettingsLocalPreferenceBloc.defaultValue;
 
     expect(
-      listenedSettingsData?.pushSettings.pleromaEmojiReaction,
-      defaultValue.pushSettings.pleromaEmojiReaction,
+      listenedSettingsData?.pushSettings.emojiReaction,
+      defaultValue.pushSettings.emojiReaction,
     );
     expect(
-      toastSettingsBloc.settingsData.pushSettings.pleromaEmojiReaction,
-      defaultValue.pushSettings.pleromaEmojiReaction,
+      toastSettingsBloc.settingsData.pushSettings.emojiReaction,
+      defaultValue.pushSettings.emojiReaction,
     );
 
     expect(
-      listenedPleromaEmojiReaction,
-      defaultValue.pushSettings.pleromaEmojiReaction,
+      listenedEmojiReaction,
+      defaultValue.pushSettings.emojiReaction,
     );
     expect(
-      toastSettingsBloc.pleromaEmojiReaction,
-      defaultValue.pushSettings.pleromaEmojiReaction,
+      toastSettingsBloc.emojiReaction,
+      defaultValue.pushSettings.emojiReaction,
     );
 
-    var testPleromaEmojiReaction = true;
+    var testEmojiReaction = true;
 
-    await toastSettingsBloc
-        .changePleromaEmojiReaction(testPleromaEmojiReaction);
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await toastSettingsBloc.changeEmojiReaction(testEmojiReaction);
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
 
     expect(
-      listenedSettingsData?.pushSettings.pleromaEmojiReaction,
-      testPleromaEmojiReaction,
+      listenedSettingsData?.pushSettings.emojiReaction,
+      testEmojiReaction,
     );
     expect(
-      toastSettingsBloc.settingsData.pushSettings.pleromaEmojiReaction,
-      testPleromaEmojiReaction,
-    );
-
-    expect(
-      listenedPleromaEmojiReaction,
-      testPleromaEmojiReaction,
-    );
-    expect(
-      toastSettingsBloc.pleromaEmojiReaction,
-      testPleromaEmojiReaction,
-    );
-
-    testPleromaEmojiReaction = false;
-
-    await toastSettingsBloc
-        .changePleromaEmojiReaction(testPleromaEmojiReaction);
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
-
-    expect(
-      listenedSettingsData?.pushSettings.pleromaEmojiReaction,
-      testPleromaEmojiReaction,
-    );
-    expect(
-      toastSettingsBloc.settingsData.pushSettings.pleromaEmojiReaction,
-      testPleromaEmojiReaction,
+      toastSettingsBloc.settingsData.pushSettings.emojiReaction,
+      testEmojiReaction,
     );
 
     expect(
-      listenedPleromaEmojiReaction,
-      testPleromaEmojiReaction,
+      listenedEmojiReaction,
+      testEmojiReaction,
     );
     expect(
-      toastSettingsBloc.pleromaEmojiReaction,
-      testPleromaEmojiReaction,
+      toastSettingsBloc.emojiReaction,
+      testEmojiReaction,
     );
 
-    await subscriptionListenedPleromaEmojiReaction.cancel();
+    testEmojiReaction = false;
+
+    await toastSettingsBloc.changeEmojiReaction(testEmojiReaction);
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
+
+    expect(
+      listenedSettingsData?.pushSettings.emojiReaction,
+      testEmojiReaction,
+    );
+    expect(
+      toastSettingsBloc.settingsData.pushSettings.emojiReaction,
+      testEmojiReaction,
+    );
+
+    expect(
+      listenedEmojiReaction,
+      testEmojiReaction,
+    );
+    expect(
+      toastSettingsBloc.emojiReaction,
+      testEmojiReaction,
+    );
+
+    await subscriptionListenedEmojiReaction.cancel();
   });
-  test('changePleromaChatMention', () async {
-    bool? listenedPleromaChatMention;
+  test('changeChatMention', () async {
+    bool? listenedChatMention;
 
-    StreamSubscription subscriptionListenedPleromaChatMention =
-        toastSettingsBloc.pleromaChatMentionStream.listen(
+    StreamSubscription subscriptionListenedChatMention =
+        toastSettingsBloc.chatMentionStream.listen(
       (data) {
-        listenedPleromaChatMention = data;
+        listenedChatMention = data;
       },
     );
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
 
     var defaultValue = GlobalToastSettingsLocalPreferenceBloc.defaultValue;
 
     expect(
-      listenedSettingsData?.pushSettings.pleromaChatMention,
-      defaultValue.pushSettings.pleromaChatMention,
+      listenedSettingsData?.pushSettings.chatMention,
+      defaultValue.pushSettings.chatMention,
     );
     expect(
-      toastSettingsBloc.settingsData.pushSettings.pleromaChatMention,
-      defaultValue.pushSettings.pleromaChatMention,
+      toastSettingsBloc.settingsData.pushSettings.chatMention,
+      defaultValue.pushSettings.chatMention,
     );
 
     expect(
-      listenedPleromaChatMention,
-      defaultValue.pushSettings.pleromaChatMention,
+      listenedChatMention,
+      defaultValue.pushSettings.chatMention,
     );
     expect(
-      toastSettingsBloc.pleromaChatMention,
-      defaultValue.pushSettings.pleromaChatMention,
+      toastSettingsBloc.chatMention,
+      defaultValue.pushSettings.chatMention,
     );
 
-    var testPleromaChatMention = true;
+    var testChatMention = true;
 
-    await toastSettingsBloc.changePleromaChatMention(testPleromaChatMention);
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await toastSettingsBloc.changeChatMention(testChatMention);
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
 
     expect(
-      listenedSettingsData?.pushSettings.pleromaChatMention,
-      testPleromaChatMention,
+      listenedSettingsData?.pushSettings.chatMention,
+      testChatMention,
     );
     expect(
-      toastSettingsBloc.settingsData.pushSettings.pleromaChatMention,
-      testPleromaChatMention,
-    );
-
-    expect(
-      listenedPleromaChatMention,
-      testPleromaChatMention,
-    );
-    expect(
-      toastSettingsBloc.pleromaChatMention,
-      testPleromaChatMention,
-    );
-
-    testPleromaChatMention = false;
-
-    await toastSettingsBloc.changePleromaChatMention(testPleromaChatMention);
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
-
-    expect(
-      listenedSettingsData?.pushSettings.pleromaChatMention,
-      testPleromaChatMention,
-    );
-    expect(
-      toastSettingsBloc.settingsData.pushSettings.pleromaChatMention,
-      testPleromaChatMention,
+      toastSettingsBloc.settingsData.pushSettings.chatMention,
+      testChatMention,
     );
 
     expect(
-      listenedPleromaChatMention,
-      testPleromaChatMention,
+      listenedChatMention,
+      testChatMention,
     );
     expect(
-      toastSettingsBloc.pleromaChatMention,
-      testPleromaChatMention,
+      toastSettingsBloc.chatMention,
+      testChatMention,
     );
 
-    await subscriptionListenedPleromaChatMention.cancel();
+    testChatMention = false;
+
+    await toastSettingsBloc.changeChatMention(testChatMention);
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
+
+    expect(
+      listenedSettingsData?.pushSettings.chatMention,
+      testChatMention,
+    );
+    expect(
+      toastSettingsBloc.settingsData.pushSettings.chatMention,
+      testChatMention,
+    );
+
+    expect(
+      listenedChatMention,
+      testChatMention,
+    );
+    expect(
+      toastSettingsBloc.chatMention,
+      testChatMention,
+    );
+
+    await subscriptionListenedChatMention.cancel();
   });
   test('changePoll', () async {
     bool? listenedPoll;
@@ -432,7 +430,7 @@ void main() {
       },
     );
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
 
     var defaultValue = GlobalToastSettingsLocalPreferenceBloc.defaultValue;
 
@@ -457,7 +455,7 @@ void main() {
     var testPoll = true;
 
     await toastSettingsBloc.changePoll(testPoll);
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
 
     expect(
       listenedSettingsData?.pushSettings.poll,
@@ -480,7 +478,7 @@ void main() {
     testPoll = false;
 
     await toastSettingsBloc.changePoll(testPoll);
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
 
     expect(
       listenedSettingsData?.pushSettings.poll,
@@ -512,7 +510,7 @@ void main() {
       },
     );
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
 
     var defaultValue = GlobalToastSettingsLocalPreferenceBloc.defaultValue;
 
@@ -537,7 +535,7 @@ void main() {
     var testMention = true;
 
     await toastSettingsBloc.changeMention(testMention);
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
 
     expect(
       listenedSettingsData?.pushSettings.mention,
@@ -560,7 +558,7 @@ void main() {
     testMention = false;
 
     await toastSettingsBloc.changeMention(testMention);
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
 
     expect(
       listenedSettingsData?.pushSettings.mention,
@@ -593,7 +591,7 @@ void main() {
       },
     );
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
 
     var defaultValue = GlobalToastSettingsLocalPreferenceBloc.defaultValue;
 
@@ -618,7 +616,7 @@ void main() {
     var testFavourite = true;
 
     await toastSettingsBloc.changeFavourite(testFavourite);
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
 
     expect(
       listenedSettingsData?.pushSettings.favourite,
@@ -641,7 +639,7 @@ void main() {
     testFavourite = false;
 
     await toastSettingsBloc.changeFavourite(testFavourite);
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
 
     expect(
       listenedSettingsData?.pushSettings.favourite,
@@ -674,7 +672,7 @@ void main() {
       },
     );
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
 
     var defaultValue = GlobalToastSettingsLocalPreferenceBloc.defaultValue;
 
@@ -699,7 +697,7 @@ void main() {
     var testReblog = true;
 
     await toastSettingsBloc.changeReblog(testReblog);
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
 
     expect(
       listenedSettingsData?.pushSettings.reblog,
@@ -722,7 +720,7 @@ void main() {
     testReblog = false;
 
     await toastSettingsBloc.changeReblog(testReblog);
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
 
     expect(
       listenedSettingsData?.pushSettings.reblog,

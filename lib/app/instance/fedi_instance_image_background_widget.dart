@@ -1,14 +1,16 @@
+import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
-import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/cache/files/files_cache_service.dart';
 import 'package:fedi/app/instance/frontend_configurations/instance_frontend_configurations_bloc.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart' as path;
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 var urlPath = path.posix;
 
@@ -21,9 +23,9 @@ class FediInstanceImageBackgroundWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
+    var currentUnifediApiAccessBloc = ICurrentUnifediApiAccessBloc.of(context);
 
-    var currentInstance = currentAuthInstanceBloc.currentInstance;
+    var currentInstance = currentUnifediApiAccessBloc.currentInstance;
 
     var myAccountBloc = IMyAccountBloc.of(context);
 
@@ -31,7 +33,7 @@ class FediInstanceImageBackgroundWidget extends StatelessWidget {
         IInstanceFrontendConfigurationsBloc.of(context);
 
     return StreamBuilder<String?>(
-      stream: myAccountBloc.pleromaBackgroundImageStream,
+      stream: myAccountBloc.backgroundImageStream,
       builder: (context, snapshot) {
         var accountBackgroundImage = snapshot.data;
 

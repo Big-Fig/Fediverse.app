@@ -5,11 +5,10 @@ import 'package:fedi/app/filter/filter_model.dart';
 import 'package:fedi/app/filter/filter_model_adapter.dart';
 import 'package:fedi/app/filter/repository/filter_repository.dart';
 import 'package:fedi/app/filter/repository/filter_repository_impl.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
 import 'package:moor/ffi.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 import '../../rxdart/rxdart_test_helper.dart';
 import 'filter_bloc_impl_test.mocks.dart';
@@ -17,12 +16,12 @@ import 'filter_test_helper.dart';
 
 // ignore_for_file: no-magic-number, avoid-late-keyword
 @GenerateMocks([
-  IPleromaApiFilterService,
+  IUnifediApiFilterService,
 ])
 void main() {
   late IFilter filter;
   late IFilterBloc filterBloc;
-  late MockIPleromaApiFilterService pleromaFilterServiceMock;
+  late MockIUnifediApiFilterService unifediApiFilterServiceMock;
   late AppDatabase database;
   late IFilterRepository filterRepository;
 
@@ -32,19 +31,15 @@ void main() {
       appDatabase: database,
     );
 
-    pleromaFilterServiceMock = MockIPleromaApiFilterService();
+    unifediApiFilterServiceMock = MockIUnifediApiFilterService();
 
-    when(pleromaFilterServiceMock.isConnected).thenReturn(true);
-    when(pleromaFilterServiceMock.pleromaApiState)
-        .thenReturn(PleromaApiState.validAuth);
-
-    filter = await FilterTestHelper.createTestFilter(
+    filter = await FilterMockHelper.createTestFilter(
       seed: 'seed1',
     );
 
     filterBloc = FilterBloc(
       filter: filter,
-      pleromaFilterService: pleromaFilterServiceMock,
+      unifediApiFilterService: unifediApiFilterServiceMock,
       filterRepository: filterRepository,
       delayInit: false,
     );
@@ -61,13 +56,13 @@ void main() {
       filter.toPleromaFilter(),
     );
 
-    await RxDartTestHelper.waitToExecuteRxCallbacks();
+    await RxDartMockHelper.waitToExecuteRxCallbacks();
   }
 
   test('filter', () async {
-    FilterTestHelper.expectFilter(filterBloc.filter, filter);
+    FilterMockHelper.expectFilter(filterBloc.filter, filter);
 
-    var newValue = await FilterTestHelper.createTestFilter(
+    var newValue = await FilterMockHelper.createTestFilter(
       seed: 'seed2',
       remoteId: filter.remoteId,
     );
@@ -79,20 +74,20 @@ void main() {
     });
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
-    FilterTestHelper.expectFilter(
+    FilterMockHelper.expectFilter(
       listened,
       filter,
     );
 
     await _update(newValue);
 
-    FilterTestHelper.expectFilter(
+    FilterMockHelper.expectFilter(
       filterBloc.filter,
       newValue,
     );
-    FilterTestHelper.expectFilter(
+    FilterMockHelper.expectFilter(
       listened,
       newValue,
     );
@@ -116,13 +111,13 @@ void main() {
     });
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
     expect(
       listened,
       filter.isExpired,
     );
 
-    await _update(filter.copyWith(expiresAt: DateTime(3000)));
+    await _update(filter.copyWithTemp(expiresAt: DateTime(3000)));
 
     expect(
       filterBloc.isExpired,
@@ -140,10 +135,10 @@ void main() {
     });
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
     expect(listened, filter.isExpired);
 
-    await _update(filter.copyWith(expiresAt: DateTime(1990)));
+    await _update(filter.copyWithTemp(expiresAt: DateTime(1990)));
 
     expect(
       filterBloc.isExpired,

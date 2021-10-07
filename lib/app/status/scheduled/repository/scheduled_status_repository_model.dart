@@ -1,72 +1,45 @@
 import 'package:fedi/repository/repository_model.dart';
-import 'package:moor/moor.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:moor/moor.dart' as moor;
 
-class ScheduledStatusRepositoryFilters {
-  final bool? excludeCanceled;
-  final bool? excludeScheduleAtExpired;
+part 'scheduled_status_repository_model.freezed.dart';
 
+@freezed
+class ScheduledStatusRepositoryFilters with _$ScheduledStatusRepositoryFilters {
   static const ScheduledStatusRepositoryFilters empty =
       ScheduledStatusRepositoryFilters();
 
-  const ScheduledStatusRepositoryFilters({
-    this.excludeCanceled,
-    this.excludeScheduleAtExpired,
-  });
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is ScheduledStatusRepositoryFilters &&
-          runtimeType == other.runtimeType &&
-          excludeCanceled == other.excludeCanceled &&
-          excludeScheduleAtExpired == other.excludeScheduleAtExpired;
-
-  @override
-  int get hashCode =>
-      excludeCanceled.hashCode ^ excludeScheduleAtExpired.hashCode;
-
-  @override
-  String toString() {
-    return 'ScheduledStatusRepositoryFilters{'
-        'excludeCanceled: $excludeCanceled, '
-        'excludeScheduleAtExpired: $excludeScheduleAtExpired'
-        '}';
-  }
+  const factory ScheduledStatusRepositoryFilters({
+    bool? excludeCanceled,
+    bool? excludeScheduleAtExpired,
+  }) = _ScheduledStatusRepositoryFilters;
 }
 
 enum ScheduledStatusRepositoryOrderType {
   remoteId,
 }
 
-class ScheduledStatusRepositoryOrderingTermData extends RepositoryOrderingTerm {
-  final ScheduledStatusRepositoryOrderType orderType;
-  @override
-  final OrderingMode orderingMode;
-
-  const ScheduledStatusRepositoryOrderingTermData({
-    required this.orderType,
-    required this.orderingMode,
-  });
+@freezed
+class ScheduledStatusRepositoryOrderingTermData
+    with _$ScheduledStatusRepositoryOrderingTermData
+    implements RepositoryOrderingTerm {
+  const factory ScheduledStatusRepositoryOrderingTermData({
+    required ScheduledStatusRepositoryOrderType orderType,
+    required moor.OrderingMode orderingMode,
+  }) = _ScheduledStatusRepositoryOrderingTermData;
 
   static const ScheduledStatusRepositoryOrderingTermData remoteIdDesc =
       ScheduledStatusRepositoryOrderingTermData(
-    orderingMode: OrderingMode.desc,
+    orderingMode: moor.OrderingMode.desc,
     orderType: ScheduledStatusRepositoryOrderType.remoteId,
   );
   static const ScheduledStatusRepositoryOrderingTermData remoteIdAsc =
       ScheduledStatusRepositoryOrderingTermData(
-    orderingMode: OrderingMode.asc,
+    orderingMode: moor.OrderingMode.asc,
     orderType: ScheduledStatusRepositoryOrderType.remoteId,
   );
 
   static const List<ScheduledStatusRepositoryOrderingTermData> defaultTerms = [
     remoteIdDesc,
   ];
-
-  @override
-  String toString() {
-    return 'ScheduledStatusRepositoryOrderingTermData{'
-        'orderByType: $orderType, orderingMode: $orderingMode'
-        '}';
-  }
 }

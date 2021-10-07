@@ -1,30 +1,15 @@
 import 'package:fedi/app/database/app_database.dart';
-import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
-class FilterState {
-  final bool? dismissed;
-  final bool? unread;
+part 'filter_model.freezed.dart';
 
-  FilterState({
-    this.dismissed,
-    this.unread,
-  });
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is FilterState &&
-          runtimeType == other.runtimeType &&
-          dismissed == other.dismissed &&
-          unread == other.unread;
-
-  @override
-  int get hashCode => dismissed.hashCode ^ unread.hashCode;
-
-  @override
-  String toString() {
-    return 'FilterState{dismissed: $dismissed, unread: $unread}';
-  }
+@freezed
+class FilterState with _$FilterState {
+  const factory FilterState({
+    required bool? dismissed,
+    required bool? unread,
+  }) = _FilterState;
 }
 
 abstract class IFilter {
@@ -36,7 +21,7 @@ abstract class IFilter {
 
   List<String> get context;
 
-  List<MastodonApiFilterContextType> get contextAsMastodonApiFilterContextType;
+  List<UnifediApiFilterContextType> get contextAsUnifediApiFilterContextType;
 
   DateTime? get expiresAt;
 
@@ -44,7 +29,9 @@ abstract class IFilter {
 
   bool get wholeWord;
 
-  IFilter copyWith({
+  // TODO: remove old code
+  // ignore: long-parameter-list
+  IFilter copyWithTemp({
     int? localId,
     String? remoteId,
     List<String>? context,
@@ -55,16 +42,18 @@ abstract class IFilter {
   });
 }
 
-class DbFilterPopulatedWrapper implements IFilter {
-  final DbFilterPopulated dbFilterPopulated;
-
-  DbFilterPopulatedWrapper({
-    required this.dbFilterPopulated,
-  });
+@freezed
+class DbFilterPopulatedWrapper
+    with _$DbFilterPopulatedWrapper
+    implements IFilter {
+  const DbFilterPopulatedWrapper._();
+  const factory DbFilterPopulatedWrapper({
+    required DbFilterPopulated dbFilterPopulated,
+  }) = _DbFilterPopulatedWrapper;
 
   @override
   // ignore: long-parameter-list
-  DbFilterPopulatedWrapper copyWith({
+  DbFilterPopulatedWrapper copyWithTemp({
     List<String>? context,
     DateTime? expiresAt,
     int? localId,
@@ -88,17 +77,10 @@ class DbFilterPopulatedWrapper implements IFilter {
       );
 
   @override
-  String toString() {
-    return 'DbFilterPopulatedWrapper{'
-        'dbFilterPopulated: $dbFilterPopulated'
-        '}';
-  }
-
-  @override
-  List<MastodonApiFilterContextType>
-      get contextAsMastodonApiFilterContextType => context
+  List<UnifediApiFilterContextType> get contextAsUnifediApiFilterContextType =>
+      context
           .map(
-            (contextString) => contextString.toMastodonApiFilterContextType(),
+            (contextString) => contextString.toUnifediApiFilterContextType(),
           )
           .toList();
 
@@ -124,27 +106,12 @@ class DbFilterPopulatedWrapper implements IFilter {
   List<String> get context => dbFilterPopulated.dbFilter.context;
 }
 
-class DbFilterPopulated {
-  final DbFilter dbFilter;
-
-  DbFilterPopulated({
-    required this.dbFilter,
-  });
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is DbFilterPopulated &&
-          runtimeType == other.runtimeType &&
-          dbFilter == other.dbFilter;
-
-  @override
-  int get hashCode => dbFilter.hashCode;
-
-  @override
-  String toString() {
-    return 'DbFilterPopulated{dbFilter: $dbFilter}';
-  }
+@freezed
+class DbFilterPopulated with _$DbFilterPopulated {
+  const DbFilterPopulated._();
+  const factory DbFilterPopulated({
+    required DbFilter dbFilter,
+  }) = _DbFilterPopulated;
 }
 
 extension IFilterExtension on IFilter {

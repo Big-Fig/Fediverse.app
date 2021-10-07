@@ -1,96 +1,109 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
 import 'package:fedi/app/filter/filter_model.dart';
-import 'package:fedi/collection/collection_hash_utils.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:fedi/repository/repository_model.dart';
-import 'package:flutter/foundation.dart';
-import 'package:moor/moor.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:moor/moor.dart' as moor;
+import 'package:unifedi_api/unifedi_api.dart';
 
-class PleromaReplyVisibilityFilterCondition {
-  final String? myAccountRemoteId;
-  final PleromaApiReplyVisibilityFilter? replyVisibilityFilter;
+part 'status_repository_model.freezed.dart';
 
-  PleromaReplyVisibilityFilterCondition({
-    required this.myAccountRemoteId,
-    required this.replyVisibilityFilter,
-  });
-
-  @override
-  String toString() => 'PleromaReplyVisibilityFilterCondition{'
-      'myAccountRemoteId: $myAccountRemoteId, '
-      'replyVisibilityFilter: $replyVisibilityFilter'
-      '}';
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is PleromaReplyVisibilityFilterCondition &&
-          runtimeType == other.runtimeType &&
-          myAccountRemoteId == other.myAccountRemoteId &&
-          replyVisibilityFilter == other.replyVisibilityFilter;
-
-  @override
-  int get hashCode =>
-      myAccountRemoteId.hashCode ^ replyVisibilityFilter.hashCode;
+@freezed
+class UnifediApiReplyVisibilityFilterCondition
+    with _$UnifediApiReplyVisibilityFilterCondition {
+  const factory UnifediApiReplyVisibilityFilterCondition({
+    required String? myAccountRemoteId,
+    required UnifediApiReplyVisibilityFilter? replyVisibilityFilter,
+  }) = _UnifediApiReplyVisibilityFilterCondition;
 }
 
-class StatusRepositoryFilters {
-  final String? onlyInListWithRemoteId;
-  final String? onlyWithHashtag;
-  final IAccount? onlyFromAccountsFollowingByAccount;
-  final IAccount? onlyFromAccount;
-  final IConversationChat? onlyInConversation;
-  final StatusOnlyLocalCondition? onlyLocalCondition;
-  final bool? onlyWithMedia;
-  final bool? withMuted;
-  final List<PleromaApiVisibility>? excludeVisibilities;
-  final bool? onlyNoNsfwSensitive;
-  final bool? onlyNoReplies;
-  final bool? isFromHomeTimeline;
-  final bool? onlyFavourited;
-  final bool? onlyBookmarked;
-  final List<StatusTextCondition>? excludeTextConditions;
-  final bool onlyNotDeleted;
-  final bool onlyNotHiddenLocallyOnDevice;
-  final StatusOnlyRemoteCondition? onlyRemoteCondition;
-  final bool mustBeConversationItem;
-  final String? onlyFromInstance;
-  final PleromaReplyVisibilityFilterCondition? replyVisibilityFilterCondition;
-  final bool onlyPendingStatePublishedOrNull;
+@freezed
+class StatusRepositoryFilters with _$StatusRepositoryFilters {
+  static final StatusRepositoryFilters empty = StatusRepositoryFilters.only();
 
-  static const StatusRepositoryFilters empty = StatusRepositoryFilters();
+  const StatusRepositoryFilters._();
 
-  const StatusRepositoryFilters({
-    this.onlyInListWithRemoteId,
-    this.onlyWithHashtag,
-    this.onlyFromAccountsFollowingByAccount,
-    this.onlyFromAccount,
-    this.onlyInConversation,
-    this.onlyLocalCondition,
-    this.onlyWithMedia,
-    this.withMuted,
-    this.excludeVisibilities,
-    this.onlyNoNsfwSensitive,
-    this.onlyNoReplies,
-    this.isFromHomeTimeline,
-    this.onlyFavourited,
-    this.onlyBookmarked,
-    this.excludeTextConditions,
-    this.onlyFromInstance,
-    this.replyVisibilityFilterCondition,
-    this.onlyRemoteCondition,
-    this.onlyNotDeleted = true,
-    this.onlyNotHiddenLocallyOnDevice = true,
-    this.mustBeConversationItem = false,
-    this.onlyPendingStatePublishedOrNull = true,
-  });
+  const factory StatusRepositoryFilters({
+    required String? onlyInListWithRemoteId,
+    required String? onlyWithHashtag,
+    required IAccount? onlyFromAccountsFollowingByAccount,
+    required IAccount? onlyFromAccount,
+    required IConversationChat? onlyInConversation,
+    required StatusOnlyLocalCondition? onlyLocalCondition,
+    required bool? onlyWithMedia,
+    required bool? withMuted,
+    required List<UnifediApiVisibility>? excludeVisibilities,
+    required bool? onlyNoNsfwSensitive,
+    required bool? onlyNoReplies,
+    required bool? isFromHomeTimeline,
+    required bool? onlyFavourited,
+    required bool? onlyBookmarked,
+    required List<StatusTextCondition>? excludeTextConditions,
+    @Default(true) bool onlyNotDeleted,
+    @Default(true) bool onlyNotHiddenLocallyOnDevice,
+    required StatusOnlyRemoteCondition? onlyRemoteCondition,
+    @Default(false) bool mustBeConversationItem,
+    required String? onlyFromInstance,
+    required UnifediApiReplyVisibilityFilterCondition?
+        replyVisibilityFilterCondition,
+    @Default(true) bool onlyPendingStatePublishedOrNull,
+  }) = _StatusRepositoryFilters;
+
+  // ignore: long-parameter-list
+  static StatusRepositoryFilters only({
+    String? onlyInListWithRemoteId,
+    String? onlyWithHashtag,
+    IAccount? onlyFromAccountsFollowingByAccount,
+    IAccount? onlyFromAccount,
+    IConversationChat? onlyInConversation,
+    StatusOnlyLocalCondition? onlyLocalCondition,
+    bool? onlyWithMedia,
+    bool? withMuted,
+    List<UnifediApiVisibility>? excludeVisibilities,
+    bool? onlyNoNsfwSensitive,
+    bool? onlyNoReplies,
+    bool? isFromHomeTimeline,
+    bool? onlyFavourited,
+    bool? onlyBookmarked,
+    List<StatusTextCondition>? excludeTextConditions,
+    bool onlyNotDeleted = true,
+    bool onlyNotHiddenLocallyOnDevice = true,
+    StatusOnlyRemoteCondition? onlyRemoteCondition,
+    bool mustBeConversationItem = false,
+    String? onlyFromInstance,
+    UnifediApiReplyVisibilityFilterCondition? replyVisibilityFilterCondition,
+    bool onlyPendingStatePublishedOrNull = true,
+  }) =>
+      StatusRepositoryFilters(
+        onlyInListWithRemoteId: onlyInListWithRemoteId,
+        onlyWithHashtag: onlyWithHashtag,
+        onlyFromAccountsFollowingByAccount: onlyFromAccountsFollowingByAccount,
+        onlyFromAccount: onlyFromAccount,
+        onlyInConversation: onlyInConversation,
+        onlyLocalCondition: onlyLocalCondition,
+        onlyWithMedia: onlyWithMedia,
+        withMuted: withMuted,
+        excludeVisibilities: excludeVisibilities,
+        onlyNoNsfwSensitive: onlyNoNsfwSensitive,
+        onlyNoReplies: onlyNoReplies,
+        isFromHomeTimeline: isFromHomeTimeline,
+        onlyFavourited: onlyFavourited,
+        onlyBookmarked: onlyBookmarked,
+        excludeTextConditions: excludeTextConditions,
+        onlyRemoteCondition: onlyRemoteCondition,
+        onlyFromInstance: onlyFromInstance,
+        replyVisibilityFilterCondition: replyVisibilityFilterCondition,
+        onlyNotDeleted: onlyNotDeleted,
+        onlyNotHiddenLocallyOnDevice: onlyNotHiddenLocallyOnDevice,
+        mustBeConversationItem: mustBeConversationItem,
+        onlyPendingStatePublishedOrNull: onlyPendingStatePublishedOrNull,
+      );
 
   static StatusRepositoryFilters createForOnlyInConversation({
     required IConversationChat? conversation,
     bool onlyPendingStatePublishedOrNull = true,
   }) =>
-      StatusRepositoryFilters(
+      StatusRepositoryFilters.only(
         onlyInConversation: conversation,
         onlyPendingStatePublishedOrNull: onlyPendingStatePublishedOrNull,
       );
@@ -98,92 +111,10 @@ class StatusRepositoryFilters {
   static StatusRepositoryFilters createForMustBeConversationItem({
     bool onlyPendingStatePublishedOrNull = true,
   }) =>
-      StatusRepositoryFilters(
+      StatusRepositoryFilters.only(
         mustBeConversationItem: true,
         onlyPendingStatePublishedOrNull: onlyPendingStatePublishedOrNull,
       );
-
-  @override
-  // ignore: code-metrics
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is StatusRepositoryFilters &&
-          runtimeType == other.runtimeType &&
-          onlyInListWithRemoteId == other.onlyInListWithRemoteId &&
-          onlyWithHashtag == other.onlyWithHashtag &&
-          onlyFromAccountsFollowingByAccount ==
-              other.onlyFromAccountsFollowingByAccount &&
-          onlyFromAccount == other.onlyFromAccount &&
-          onlyInConversation == other.onlyInConversation &&
-          onlyLocalCondition == other.onlyLocalCondition &&
-          onlyWithMedia == other.onlyWithMedia &&
-          withMuted == other.withMuted &&
-          listEquals(excludeVisibilities, other.excludeVisibilities) &&
-          onlyNoNsfwSensitive == other.onlyNoNsfwSensitive &&
-          onlyNoReplies == other.onlyNoReplies &&
-          isFromHomeTimeline == other.isFromHomeTimeline &&
-          onlyFavourited == other.onlyFavourited &&
-          onlyBookmarked == other.onlyBookmarked &&
-          listEquals(excludeTextConditions, other.excludeTextConditions) &&
-          mustBeConversationItem == other.mustBeConversationItem &&
-          onlyFromInstance == other.onlyFromInstance &&
-          replyVisibilityFilterCondition ==
-              other.replyVisibilityFilterCondition &&
-          onlyRemoteCondition == other.onlyRemoteCondition &&
-          onlyNotHiddenLocallyOnDevice == other.onlyNotHiddenLocallyOnDevice &&
-          onlyNotDeleted == other.onlyNotDeleted;
-
-  @override
-  int get hashCode =>
-      onlyInListWithRemoteId.hashCode ^
-      onlyWithHashtag.hashCode ^
-      onlyFromAccountsFollowingByAccount.hashCode ^
-      onlyFromAccount.hashCode ^
-      onlyInConversation.hashCode ^
-      onlyLocalCondition.hashCode ^
-      onlyWithMedia.hashCode ^
-      withMuted.hashCode ^
-      listHash(excludeVisibilities) ^
-      onlyNoNsfwSensitive.hashCode ^
-      onlyNoReplies.hashCode ^
-      isFromHomeTimeline.hashCode ^
-      onlyFavourited.hashCode ^
-      onlyBookmarked.hashCode ^
-      listHash(excludeTextConditions) ^
-      onlyFromInstance.hashCode ^
-      replyVisibilityFilterCondition.hashCode ^
-      mustBeConversationItem.hashCode ^
-      onlyRemoteCondition.hashCode ^
-      onlyPendingStatePublishedOrNull.hashCode ^
-      onlyNotHiddenLocallyOnDevice.hashCode ^
-      onlyNotDeleted.hashCode;
-
-  @override
-  String toString() => 'StatusRepositoryFilters{'
-      'onlyInListWithRemoteId: $onlyInListWithRemoteId,'
-      ' onlyWithHashtag: $onlyWithHashtag,'
-      ' onlyFromAccountsFollowingByAccount:'
-      ' $onlyFromAccountsFollowingByAccount,'
-      ' onlyFromAccount: $onlyFromAccount,'
-      ' onlyInConversation: $onlyInConversation,'
-      ' onlyLocalCondition: $onlyLocalCondition,'
-      ' onlyWithMedia: $onlyWithMedia,'
-      ' withMuted: $withMuted,'
-      ' excludeVisibilities: $excludeVisibilities,'
-      ' onlyNoNsfwSensitive: $onlyNoNsfwSensitive,'
-      ' onlyNoReplies: $onlyNoReplies,'
-      ' isFromHomeTimeline: $isFromHomeTimeline,'
-      ' onlyFavourited: $onlyFavourited,'
-      ' onlyBookmarked: $onlyBookmarked,'
-      ' forceJoinConversation: $mustBeConversationItem,'
-      ' excludeTextConditions: $excludeTextConditions,'
-      ' onlyFromInstance: $onlyFromInstance,'
-      ' onlyRemoteCondition: $onlyRemoteCondition,'
-      ' replyVisibilityFilterCondition: $replyVisibilityFilterCondition,'
-      ' onlyNotDeleted: $onlyNotDeleted'
-      ' onlyNotHiddenLocallyOnDevice: $onlyNotHiddenLocallyOnDevice'
-      ' onlyPendingStatePublishedOrNull: $onlyPendingStatePublishedOrNull'
-      '}';
 }
 
 enum StatusRepositoryOrderType {
@@ -191,118 +122,62 @@ enum StatusRepositoryOrderType {
   createdAt,
 }
 
-class StatusRepositoryOrderingTermData extends RepositoryOrderingTerm {
-  final StatusRepositoryOrderType orderByType;
-  @override
-  final OrderingMode orderingMode;
-
-  static const StatusRepositoryOrderingTermData remoteIdDesc =
-      StatusRepositoryOrderingTermData(
-    orderingMode: OrderingMode.desc,
-    orderByType: StatusRepositoryOrderType.remoteId,
-  );
-  static const StatusRepositoryOrderingTermData remoteIdAsc =
-      StatusRepositoryOrderingTermData(
-    orderingMode: OrderingMode.asc,
-    orderByType: StatusRepositoryOrderType.remoteId,
-  );
-
-  static const StatusRepositoryOrderingTermData createdAtDesc =
-      StatusRepositoryOrderingTermData(
-    orderingMode: OrderingMode.desc,
-    orderByType: StatusRepositoryOrderType.createdAt,
-  );
-  static const StatusRepositoryOrderingTermData createdAtAsc =
-      StatusRepositoryOrderingTermData(
-    orderingMode: OrderingMode.asc,
-    orderByType: StatusRepositoryOrderType.createdAt,
-  );
+@freezed
+class StatusRepositoryOrderingTermData
+    with _$StatusRepositoryOrderingTermData
+    implements RepositoryOrderingTerm {
+  const factory StatusRepositoryOrderingTermData({
+    required StatusRepositoryOrderType orderByType,
+    required moor.OrderingMode orderingMode,
+  }) = _StatusRepositoryOrderingTermData;
 
   static const List<StatusRepositoryOrderingTermData> defaultTerms = [
     createdAtDesc,
   ];
 
-  const StatusRepositoryOrderingTermData({
-    required this.orderByType,
-    required this.orderingMode,
-  });
+  static const StatusRepositoryOrderingTermData remoteIdDesc =
+      StatusRepositoryOrderingTermData(
+    orderingMode: moor.OrderingMode.desc,
+    orderByType: StatusRepositoryOrderType.remoteId,
+  );
+  static const StatusRepositoryOrderingTermData remoteIdAsc =
+      StatusRepositoryOrderingTermData(
+    orderingMode: moor.OrderingMode.asc,
+    orderByType: StatusRepositoryOrderType.remoteId,
+  );
 
-  @override
-  String toString() {
-    return 'StatusRepositoryOrderingTermData{'
-        'orderType: $orderByType, '
-        'orderingMode: $orderingMode'
-        '}';
-  }
+  static const StatusRepositoryOrderingTermData createdAtDesc =
+      StatusRepositoryOrderingTermData(
+    orderingMode: moor.OrderingMode.desc,
+    orderByType: StatusRepositoryOrderType.createdAt,
+  );
+  static const StatusRepositoryOrderingTermData createdAtAsc =
+      StatusRepositoryOrderingTermData(
+    orderingMode: moor.OrderingMode.asc,
+    orderByType: StatusRepositoryOrderType.createdAt,
+  );
 }
 
-class StatusOnlyLocalCondition {
-  final String? localUrlHost;
-
-  StatusOnlyLocalCondition(this.localUrlHost);
-
-  @override
-  String toString() {
-    return 'StatusRepositoryOnlyLocalCondition{localUrlHost: $localUrlHost}';
-  }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is StatusOnlyLocalCondition &&
-          runtimeType == other.runtimeType &&
-          localUrlHost == other.localUrlHost;
-
-  @override
-  int get hashCode => localUrlHost.hashCode;
+@freezed
+class StatusOnlyLocalCondition with _$StatusOnlyLocalCondition {
+  const factory StatusOnlyLocalCondition({
+    required String? localUrlHost,
+  }) = _StatusOnlyLocalCondition;
 }
 
-class StatusOnlyRemoteCondition {
-  final String? localUrlHost;
-
-  StatusOnlyRemoteCondition(this.localUrlHost);
-
-  @override
-  String toString() {
-    return 'StatusOnlyRemoteCondition{localUrlHost: $localUrlHost}';
-  }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is StatusOnlyRemoteCondition &&
-          runtimeType == other.runtimeType &&
-          localUrlHost == other.localUrlHost;
-
-  @override
-  int get hashCode => localUrlHost.hashCode;
+@freezed
+class StatusOnlyRemoteCondition with _$StatusOnlyRemoteCondition {
+  const factory StatusOnlyRemoteCondition({
+    required String? localUrlHost,
+  }) = _StatusOnlyRemoteCondition;
 }
 
-class StatusTextCondition {
-  final String phrase;
-  final bool wholeWord;
-
-  StatusTextCondition({
-    required this.phrase,
-    required this.wholeWord,
-  });
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is StatusTextCondition &&
-          runtimeType == other.runtimeType &&
-          phrase == other.phrase &&
-          wholeWord == other.wholeWord;
-
-  @override
-  int get hashCode => phrase.hashCode ^ wholeWord.hashCode;
-
-  @override
-  String toString() {
-    return 'StatusRepositoryTextCondition{phrase: $phrase,'
-        ' wholeWord: $wholeWord}';
-  }
+@freezed
+class StatusTextCondition with _$StatusTextCondition {
+  const factory StatusTextCondition({
+    required String phrase,
+    required bool wholeWord,
+  }) = _StatusTextCondition;
 }
 
 extension FilterStatusTextConditionAdapterExtension on IFilter {

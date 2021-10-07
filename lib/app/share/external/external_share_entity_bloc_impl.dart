@@ -1,3 +1,4 @@
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/media/attachment/reupload/media_attachment_reupload_service.dart';
 import 'package:fedi/app/share/entity/settings/share_entity_settings_bloc.dart';
 import 'package:fedi/app/share/entity/share_entity_bloc.dart';
@@ -7,14 +8,13 @@ import 'package:fedi/app/share/external/external_share_bloc_impl.dart';
 import 'package:fedi/app/share/external/external_share_bloc_proxy_provider.dart';
 import 'package:fedi/app/share/external/external_share_model.dart';
 import 'package:fedi/app/share/external/external_share_service.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class ExternalShareEntityBloc extends ExternalShareBloc
     implements IShareEntityBloc {
-  final IPleromaApiMediaAttachmentService pleromaApiMediaAttachmentService;
+  final IUnifediApiMediaAttachmentService unifediApiMediaAttachmentService;
   final IMediaAttachmentReuploadService mediaAttachmentReuploadService;
   final IShareEntitySettingsBloc shareEntitySettingsBloc;
   final String popupTitle;
@@ -27,7 +27,7 @@ class ExternalShareEntityBloc extends ExternalShareBloc
     required this.shareEntity,
     required this.shareEntitySettingsBloc,
     required this.mediaAttachmentReuploadService,
-    required this.pleromaApiMediaAttachmentService,
+    required this.unifediApiMediaAttachmentService,
     required IExternalShareService externalShareService,
   }) : super(
           externalShareService: externalShareService,
@@ -46,7 +46,7 @@ class ExternalShareEntityBloc extends ExternalShareBloc
     );
     var mediaAttachments = await convertAllItemsToMediaAttachments(
       settings: shareEntitySettingsBloc.shareEntitySettings,
-      pleromaApiMediaAttachmentService: pleromaApiMediaAttachmentService,
+      unifediApiMediaAttachmentService: unifediApiMediaAttachmentService,
       mediaAttachmentReuploadService: mediaAttachmentReuploadService,
       reUploadRequired: false,
     );
@@ -57,7 +57,7 @@ class ExternalShareEntityBloc extends ExternalShareBloc
       urlFiles: mediaAttachments
           ?.map(
             (mediaAttachment) => ShareUrlFile.fromUrl(
-              url: mediaAttachment.url,
+              url: mediaAttachment.url!,
             ),
           )
           .toList(),
@@ -104,8 +104,8 @@ class ExternalShareEntityBloc extends ExternalShareBloc
           listen: false,
         ),
         popupTitle: popupTitle,
-        pleromaApiMediaAttachmentService:
-            Provider.of<IPleromaApiMediaAttachmentService>(
+        unifediApiMediaAttachmentService:
+            Provider.of<IUnifediApiMediaAttachmentService>(
           context,
           listen: false,
         ),

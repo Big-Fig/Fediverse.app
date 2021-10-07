@@ -1,12 +1,12 @@
 import 'package:fedi/app/status/visibility/status_visibility_ui.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class StatusVisibilityTitleWidget extends StatelessWidget {
-  final PleromaApiVisibility visibility;
+  final UnifediApiVisibility visibility;
   final bool isPossibleToChangeVisibility;
   final bool isSelectedVisibility;
 
@@ -26,7 +26,7 @@ class StatusVisibilityTitleWidget extends StatelessWidget {
 
   static Text buildVisibilityTitle({
     required BuildContext context,
-    required PleromaApiVisibility visibility,
+    required UnifediApiVisibility visibility,
     required isPossibleToChangeVisibility,
     required isSelectedVisibility,
   }) =>
@@ -43,25 +43,16 @@ class StatusVisibilityTitleWidget extends StatelessWidget {
 
   static String mapVisibilityToTitle(
     BuildContext context,
-    PleromaApiVisibility visibility,
-  ) {
-    switch (visibility) {
-      case PleromaApiVisibility.public:
-        return S.of(context).app_status_post_visibility_state_public;
-      case PleromaApiVisibility.unlisted:
-        return S.of(context).app_status_post_visibility_state_unlisted;
-
-      case PleromaApiVisibility.local:
-        return S.of(context).app_status_post_visibility_state_local;
-
-      case PleromaApiVisibility.direct:
-        return S.of(context).app_status_post_visibility_state_direct;
-
-      case PleromaApiVisibility.list:
-        return S.of(context).app_status_post_visibility_state_list;
-
-      case PleromaApiVisibility.private:
-        return S.of(context).app_status_post_visibility_state_private;
-    }
-  }
+    UnifediApiVisibility visibility,
+  ) =>
+      visibility.map(
+        public: (_) => S.of(context).app_status_post_visibility_state_public,
+        unlisted: (_) =>
+            S.of(context).app_status_post_visibility_state_unlisted,
+        direct: (_) => S.of(context).app_status_post_visibility_state_direct,
+        private: (_) => S.of(context).app_status_post_visibility_state_private,
+        list: (_) => S.of(context).app_status_post_visibility_state_list,
+        local: (_) => S.of(context).app_status_post_visibility_state_local,
+        unknown: (_) => throw UnimplementedError(),
+      );
 }

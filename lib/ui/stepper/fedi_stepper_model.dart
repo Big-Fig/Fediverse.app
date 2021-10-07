@@ -1,5 +1,7 @@
-import 'package:fedi/collection/collection_hash_utils.dart';
 import 'package:flutter/foundation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'fedi_stepper_model.freezed.dart';
 
 enum FediStepperItemState {
   editingNotStarted,
@@ -34,31 +36,14 @@ bool _calculateIsEditingStarted(FediStepperItemState itemState) =>
     itemState == FediStepperItemState.errors ||
     itemState == FediStepperItemState.editingFinished;
 
-class FediStepperState<T extends IFediStepperItem> {
-  final List<T> steps;
-  final int currentStepIndex;
+@freezed
+class FediStepperState<T extends IFediStepperItem> with _$FediStepperState<T> {
+  const FediStepperState._();
 
   T get currentStep => steps[currentStepIndex];
 
-  FediStepperState({
-    required this.steps,
-    required this.currentStepIndex,
-  });
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is FediStepperState &&
-          runtimeType == other.runtimeType &&
-          listEquals(steps, other.steps) &&
-          currentStepIndex == other.currentStepIndex;
-
-  @override
-  int get hashCode => listHash(steps) ^ currentStepIndex.hashCode;
-
-  @override
-  String toString() => 'FediStepperState{'
-      'steps: $steps, '
-      'currentStepIndex: $currentStepIndex'
-      '}';
+  const factory FediStepperState({
+    required List<T> steps,
+    required int currentStepIndex,
+  }) = _FediStepperState<T>;
 }

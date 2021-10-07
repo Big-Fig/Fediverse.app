@@ -8,9 +8,9 @@ import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/database/dao/populated_database_dao_mixin.dart';
 import 'package:fedi/app/database/dao/repository/remote/populated_app_remote_database_dao_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 var _singleConversationChatRepositoryPagination =
     RepositoryPagination<IConversationChat>(
@@ -25,7 +25,7 @@ class ConversationChatRepository
         DbConversation,
         DbConversationPopulated,
         IConversationChat,
-        IPleromaApiConversation,
+        IUnifediApiConversation,
         int,
         String,
         $DbConversationsTable,
@@ -181,7 +181,7 @@ class ConversationChatRepository
       appItem.toDbConversation();
 
   @override
-  IPleromaApiConversation mapAppItemToRemoteItem(IConversationChat appItem) {
+  IUnifediApiConversation mapAppItemToRemoteItem(IConversationChat appItem) {
     // todo: improve
     return appItem.toPleromaConversation(
       lastStatus: null,
@@ -191,7 +191,7 @@ class ConversationChatRepository
 
   @override
   IConversationChat mapRemoteItemToAppItem(
-    IPleromaApiConversation remoteItem,
+    IUnifediApiConversation remoteItem,
   ) =>
       DbConversationChatPopulatedWrapper(
         dbConversationPopulated: DbConversationPopulated(
@@ -212,7 +212,7 @@ class ConversationChatRepository
       dbPopulatedItem.toDbConversationChatPopulatedWrapper();
 
   @override
-  IPleromaApiConversation mapDbPopulatedItemToRemoteItem(
+  IUnifediApiConversation mapDbPopulatedItemToRemoteItem(
     DbConversationPopulated dbPopulatedItem,
   ) {
     // todo: improve
@@ -246,7 +246,7 @@ class ConversationChatRepository
 
   @override
   Future<int> insertInRemoteType(
-    IPleromaApiConversation remoteItem, {
+    IUnifediApiConversation remoteItem, {
     required InsertMode? mode,
   }) async {
     await _upsertConversationMetadata(
@@ -261,7 +261,7 @@ class ConversationChatRepository
   }
 
   Future _upsertConversationMetadata(
-    IPleromaApiConversation remoteItem, {
+    IUnifediApiConversation remoteItem, {
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
@@ -295,7 +295,7 @@ class ConversationChatRepository
 
   @override
   Future<void> insertInRemoteTypeBatch(
-    IPleromaApiConversation remoteItem, {
+    IUnifediApiConversation remoteItem, {
     required InsertMode? mode,
     required Batch? batchTransaction,
   }) async {
@@ -327,7 +327,7 @@ class ConversationChatRepository
 
   @override
   Future insertAllInRemoteType(
-    List<IPleromaApiConversation> remoteItems, {
+    List<IUnifediApiConversation> remoteItems, {
     required InsertMode? mode,
     required Batch? batchTransaction,
   }) async {
@@ -354,7 +354,7 @@ class ConversationChatRepository
   @override
   Future<void> updateAppTypeByRemoteType({
     required IConversationChat appItem,
-    required IPleromaApiConversation remoteItem,
+    required IUnifediApiConversation remoteItem,
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {

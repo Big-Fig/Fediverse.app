@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../account/database/account_database_test_helper.dart';
 import '../../status/database/status_database_test_helper.dart';
 
-class NotificationDatabaseTestHelper {
+class NotificationDatabaseMockHelper {
   static Future<DbNotification> createTestDbNotification({
     required String seed,
     String? remoteId,
@@ -36,13 +36,13 @@ class NotificationDatabaseTestHelper {
   ) {
     expect(actual.localId != null, true);
     var dbNotification = expected.dbNotification;
-    NotificationDatabaseTestHelper.expectDbNotification(actual, dbNotification);
+    NotificationDatabaseMockHelper.expectDbNotification(actual, dbNotification);
 
-    AccountDatabaseTestHelper.expectDbAccount(
+    AccountDatabaseMockHelper.expectDbAccount(
       actual.account,
       expected.dbAccount,
     );
-    StatusDatabaseTestHelper.expectDbStatusPopulated(
+    StatusDatabaseMockHelper.expectDbStatusPopulated(
       actual.status,
       expected.dbStatusPopulated,
     );

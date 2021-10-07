@@ -1,5 +1,5 @@
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/settings/settings_dialog.dart';
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc.dart';
@@ -15,16 +15,17 @@ import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 void showEditTimelineSettingsDialog({
   required BuildContext context,
   required Timeline timeline,
   required bool lockedSource,
-  required IPleromaApiInstance pleromaApiInstance,
+  required IUnifediApiInstance unifediApiInstance,
   required InstanceLocation instanceLocation,
 }) {
   showEditTimelineLocalPreferenceBlocSettingsDialog(
@@ -35,7 +36,7 @@ void showEditTimelineSettingsDialog({
       timeline,
     ),
     lockedSource: lockedSource,
-    pleromaApiInstance: pleromaApiInstance,
+    unifediApiInstance: unifediApiInstance,
     instanceLocation: instanceLocation,
   );
 }
@@ -44,8 +45,8 @@ void showEditTimelineLocalPreferenceBlocSettingsDialog({
   required BuildContext context,
   required Timeline timeline,
   required bool lockedSource,
-  required IPleromaApiInstance pleromaApiInstance,
-  required ITimelineLocalPreferenceBloc timelineLocalPreferenceBloc,
+  required IUnifediApiInstance unifediApiInstance,
+  required ITimelineLocalPreferenceBlocOld timelineLocalPreferenceBloc,
   required InstanceLocation instanceLocation,
 }) {
   showSettingsDialog(
@@ -56,14 +57,14 @@ void showEditTimelineLocalPreferenceBlocSettingsDialog({
         ),
     child: Provider<Timeline>.value(
       value: timeline,
-      child: Provider<ITimelineLocalPreferenceBloc>.value(
+      child: Provider<ITimelineLocalPreferenceBlocOld>.value(
         value: timelineLocalPreferenceBloc,
         child: Builder(
           builder: (context) => FediAsyncInitLoadingWidget(
             asyncInitLoadingBloc:
-                ITimelineLocalPreferenceBloc.of(context, listen: false),
+                ITimelineLocalPreferenceBlocOld.of(context, listen: false),
             loadingFinishedBuilder: (context) => DisposableProxyProvider<
-                ITimelineLocalPreferenceBloc, ITimelineSettingsBloc>(
+                ITimelineLocalPreferenceBlocOld, ITimelineSettingsBloc>(
               update: (context, timelineLocalPreferencesBloc, _) =>
                   TimelineSettingsBloc(
                 timelineLocalPreferencesBloc: timelineLocalPreferencesBloc,
@@ -76,7 +77,7 @@ void showEditTimelineLocalPreferenceBlocSettingsDialog({
                   timelineType: timeline.type,
                   isEnabled: true,
                   isNullableValuesPossible: false,
-                  pleromaApiInstance: pleromaApiInstance,
+                  unifediApiInstance: unifediApiInstance,
                   settingsBloc: timelineSettingsBloc,
                   webSocketsSettingsBloc: IWebSocketsSettingsBloc.of(
                     context,
@@ -104,9 +105,9 @@ TimelineLocalPreferenceBloc _createTimelinePreferencesBloc(
     context,
     listen: false,
   );
-  var currentAuthInstanceBloc =
-      ICurrentAuthInstanceBloc.of(context, listen: false);
-  var currentInstance = currentAuthInstanceBloc.currentInstance!;
+  var currentUnifediApiAccessBloc =
+      ICurrentUnifediApiAccessBloc.of(context, listen: false);
+  var currentInstance = currentUnifediApiAccessBloc.currentInstance!;
 
   return TimelineLocalPreferenceBloc.byId(
     localPreferencesService,

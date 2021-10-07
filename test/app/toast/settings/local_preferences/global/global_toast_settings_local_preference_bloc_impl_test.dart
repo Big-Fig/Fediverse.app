@@ -9,7 +9,7 @@ import '../../toast_settings_model_test_helper.dart';
 
 void main() {
   test('save & load', () async {
-    await LocalPreferencesTestHelper.testSaveAndLoad<ToastSettings,
+    await LocalPreferencesMockHelper.testSaveAndLoad<ToastSettings,
         GlobalToastSettingsLocalPreferenceBloc>(
       defaultValue: GlobalToastSettingsLocalPreferenceBloc.defaultValue,
       blocCreator: (localPreferencesService) =>
@@ -17,7 +17,7 @@ void main() {
         localPreferencesService,
       ),
       testObjectCreator: ({required String seed}) =>
-          ToastSettingsModelTestHelper.createTestToastSettings(
+          ToastSettingsModelMockHelper.createTestToastSettings(
         seed: seed,
       ),
     );

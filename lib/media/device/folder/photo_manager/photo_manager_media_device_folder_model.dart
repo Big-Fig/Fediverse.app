@@ -1,8 +1,18 @@
 import 'package:fedi/media/device/folder/media_device_folder_model.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:photo_manager/photo_manager.dart';
 
-class PhotoManagerMediaDeviceFolder implements IMediaDeviceFolder {
-  final AssetPathEntity assetPathEntity;
+part 'photo_manager_media_device_folder_model.freezed.dart';
+
+@freezed
+class PhotoManagerMediaDeviceFolder
+    with _$PhotoManagerMediaDeviceFolder
+    implements IMediaDeviceFolder {
+  const PhotoManagerMediaDeviceFolder._();
+
+  const factory PhotoManagerMediaDeviceFolder({
+    required AssetPathEntity assetPathEntity,
+  }) = _PhotoManagerMediaDeviceFolder;
 
   @override
   String get id => assetPathEntity.id;
@@ -12,21 +22,4 @@ class PhotoManagerMediaDeviceFolder implements IMediaDeviceFolder {
 
   @override
   int get assetCount => assetPathEntity.assetCount;
-
-  PhotoManagerMediaDeviceFolder({required this.assetPathEntity});
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is PhotoManagerMediaDeviceFolder &&
-          runtimeType == other.runtimeType &&
-          assetPathEntity == other.assetPathEntity;
-
-  @override
-  int get hashCode => assetPathEntity.hashCode;
-
-  @override
-  String toString() {
-    return 'PhotoManagerMediaDeviceFolder{assetPathEntity: $assetPathEntity}';
-  }
 }

@@ -9,10 +9,10 @@ import 'package:fedi/app/timeline/timeline_model.dart';
 import 'package:fedi/app/timeline/type/timeline_type_model.dart';
 import 'package:fedi/local_preferences/local_preference_bloc_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class TimelineLocalPreferenceBloc extends ObjectLocalPreferenceBloc<Timeline?>
-    implements ITimelineLocalPreferenceBloc {
+    implements ITimelineLocalPreferenceBlocOld {
   @override
   final Timeline? defaultPreferenceValue;
 
@@ -23,7 +23,7 @@ class TimelineLocalPreferenceBloc extends ObjectLocalPreferenceBloc<Timeline?>
     required this.defaultPreferenceValue,
   }) : super(
           preferencesService: preferencesService,
-          key: '$userAtHost.timeline.$timelineId',
+          key: '$userAtHost.timeline.new.$timelineId',
           schemaVersion: 1,
           jsonConverter: (json) => Timeline.fromJson(json),
         );
@@ -49,15 +49,15 @@ class TimelineLocalPreferenceBloc extends ObjectLocalPreferenceBloc<Timeline?>
 
   TimelineLocalPreferenceBloc.instancePublicTimeline(
     ILocalPreferencesService preferencesService, {
-    required IPleromaApiInstance pleromaApiInstance,
+    required IUnifediApiInstance unifediApiInstance,
   }) : this.byId(
           preferencesService,
-          userAtHost: pleromaApiInstance.uri!,
+          userAtHost: unifediApiInstance.uri,
           timelineId: 'public',
           defaultPreferenceValue: Timeline(
-            id: pleromaApiInstance.uri!,
+            id: unifediApiInstance.uri,
             // ignore: no-equal-arguments
-            label: pleromaApiInstance.uri!,
+            label: unifediApiInstance.uri,
             isPossibleToDelete: true,
             settings: TimelineSettings.createDefaultPublicSettings(),
             typeString: TimelineType.public.toJsonValue(),
@@ -96,7 +96,7 @@ class TimelineLocalPreferenceBloc extends ObjectLocalPreferenceBloc<Timeline?>
             label: account.acct,
             isPossibleToDelete: true,
             settings: TimelineSettings.createDefaultAccountSettings(
-              onlyFromRemoteAccount: account.toPleromaApiAccount(),
+              onlyFromRemoteAccount: account.toUnifediApiAccount(),
             ),
             typeString: TimelineType.account.toJsonValue(),
           ),

@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository_impl.dart';
 import 'package:fedi/app/database/app_database.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:moor/ffi.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 import '../../account/database/account_database_test_helper.dart';
 
@@ -35,14 +35,14 @@ void main() {
     var pleromaCardTitle = 'pleromaCardTitle';
     var chatMessageDao = database.chatMessageDao;
     var accountRepository = AccountRepository(appDatabase: database);
-    var pleromaChatMessageRepository = PleromaChatMessageRepository(
+    var chatMessageRepository = PleromaChatMessageRepository(
       accountRepository: accountRepository,
       appDatabase: database,
     );
     var accountDao = database.accountDao;
     var updatedRemoteId = 'updatedRemoteId1';
 
-    var dbAccount = await AccountDatabaseTestHelper.createTestDbAccount(
+    var dbAccount = await AccountDatabaseMockHelper.createTestDbAccount(
       seed: 'seed',
       remoteId: 'accountRemoteId',
     );
@@ -57,16 +57,19 @@ void main() {
         accountRemoteId: dbAccount.remoteId,
         createdAt: DateTime.now(),
         content: 'content',
-        card: PleromaApiCard.only(title: pleromaCardTitle),
+        card: UnifediApiCard.only(
+          title: pleromaCardTitle,
+          type: UnifediApiCardType.linkValue.stringValue,
+        ),
       ),
       mode: null,
     );
-    var found = await pleromaChatMessageRepository
-        .findByRemoteIdInAppType(updatedRemoteId);
+    var found =
+        await chatMessageRepository.findByRemoteIdInAppType(updatedRemoteId);
 
     expect(pleromaCardTitle, found!.card!.title);
 
     await accountRepository.dispose();
-    await pleromaChatMessageRepository.dispose();
+    await chatMessageRepository.dispose();
   });
 }

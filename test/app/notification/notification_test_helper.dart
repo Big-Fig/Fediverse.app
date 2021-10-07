@@ -7,7 +7,7 @@ import '../account/account_test_helper.dart';
 import '../status/status_test_helper.dart';
 import 'database/notification_database_test_helper.dart';
 
-class NotificationTestHelper {
+class NotificationMockHelper {
   static Future<DbNotificationPopulatedWrapper> createTestNotification({
     required String seed,
     String? remoteId,
@@ -15,13 +15,13 @@ class NotificationTestHelper {
     DbStatusPopulated? status,
     DateTime? createdAt,
   }) async {
-    account = account ?? await AccountTestHelper.createTestAccount(seed: seed);
+    account = account ?? await AccountMockHelper.createTestAccount(seed: seed);
     var dbAccount = account.dbAccount;
 
     return DbNotificationPopulatedWrapper(
       dbNotificationPopulated: DbNotificationPopulated.statusPopulated(
         dbNotification:
-            await NotificationDatabaseTestHelper.createTestDbNotification(
+            await NotificationDatabaseMockHelper.createTestDbNotification(
           seed: seed,
           remoteId: remoteId,
           dbAccount: dbAccount,
@@ -50,7 +50,7 @@ class NotificationTestHelper {
     expect(actual.unread, expected.unread);
     expect(actual.chatMessageRemoteId, expected.chatMessageRemoteId);
     expect(actual.chatRemoteId, expected.chatRemoteId);
-    AccountTestHelper.expectAccount(actual.account, expected.account);
-    StatusTestHelper.expectStatus(actual.status, expected.status);
+    AccountMockHelper.expectAccount(actual.account, expected.account);
+    StatusMockHelper.expectStatus(actual.status, expected.status);
   }
 }

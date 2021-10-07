@@ -1,5 +1,5 @@
+import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/async/async_operation_button_builder_widget.dart';
-import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/hashtag/hashtag_bloc.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
 import 'package:fedi/app/hashtag/page/hashtag_page_bloc.dart';
@@ -14,10 +14,10 @@ import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/app/url/url_helper.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class HashtagPageAppBarWidget extends StatelessWidget
     implements PreferredSizeWidget {
@@ -29,8 +29,8 @@ class HashtagPageAppBarWidget extends StatelessWidget
 
     String title;
 
-    var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
-    var currentInstance = currentAuthInstanceBloc.currentInstance;
+    var currentUnifediApiAccessBloc = ICurrentUnifediApiAccessBloc.of(context);
+    var currentInstance = currentUnifediApiAccessBloc.currentInstance;
 
     var hashtagPageBloc = IHashtagPageBloc.of(context);
     var isLocal = hashtagPageBloc.instanceLocation == InstanceLocation.local;
@@ -73,10 +73,13 @@ class _HashtagPageAppBarOpenInBrowserAction extends StatelessWidget {
       color: IFediUiColorTheme.of(context).darkGrey,
       icon: Icon(FediIcons.external_icon),
       onPressed: () {
-        UrlHelper.handleUrlClickOnLocalInstanceLocation(
-          context: context,
-          url: hashtag.url,
-        );
+        var url = hashtag.url;
+        if (url != null) {
+          UrlHelper.handleUrlClickOnLocalInstanceLocation(
+            context: context,
+            url: url,
+          );
+        }
       },
     );
   }
@@ -174,7 +177,7 @@ class _HashtagPageAppBarSettingsActionWidget extends StatelessWidget {
         color: IFediUiColorTheme.of(context).darkGrey,
       ),
       onPressed: () {
-        var timelineLocalPreferenceBloc = ITimelineLocalPreferenceBloc.of(
+        var timelineLocalPreferenceBloc = ITimelineLocalPreferenceBlocOld.of(
           context,
           listen: false,
         );
@@ -195,8 +198,8 @@ class _HashtagPageAppBarSettingsActionWidget extends StatelessWidget {
             settings: timeline.settings,
           ),
           lockedSource: true,
-          pleromaApiInstance:
-              Provider.of<IPleromaApiInstance>(context, listen: false),
+          unifediApiInstance:
+              Provider.of<IUnifediApiInstance>(context, listen: false),
         );
       },
     );

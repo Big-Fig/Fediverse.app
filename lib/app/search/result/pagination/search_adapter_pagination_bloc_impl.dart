@@ -1,5 +1,5 @@
-import 'package:fedi/app/search/result/search_result_model.dart';
 import 'package:easy_dispose/easy_dispose.dart';
+import 'package:fedi/app/search/result/search_result_model.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 

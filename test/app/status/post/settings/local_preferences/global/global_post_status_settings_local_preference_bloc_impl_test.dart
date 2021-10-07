@@ -9,7 +9,7 @@ import '../../post_status_settings_model_test_helper.dart';
 
 void main() {
   test('save & load', () async {
-    await LocalPreferencesTestHelper.testSaveAndLoad<PostStatusSettings,
+    await LocalPreferencesMockHelper.testSaveAndLoad<PostStatusSettings,
         GlobalPostStatusSettingsLocalPreferenceBloc>(
       defaultValue: GlobalPostStatusSettingsLocalPreferenceBloc.defaultValue,
       blocCreator: (localPreferencesService) =>
@@ -17,7 +17,7 @@ void main() {
         localPreferencesService,
       ),
       testObjectCreator: ({required String seed}) =>
-          PostStatusSettingsModelTestHelper.createTestPostStatusSettings(
+          PostStatusSettingsModelMockHelper.createTestPostStatusSettings(
         seed: seed,
       ),
     );

@@ -2,17 +2,18 @@ import 'dart:async';
 
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:fedi/app/auth/instance/auth_instance_model.dart';
-import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
-import 'package:fedi/app/auth/instance/list/auth_instance_list_bloc.dart';
+import 'package:fedi/app/access/current/current_access_bloc.dart';
+import 'package:fedi/app/access/list/access_list_bloc.dart';
 import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/share/income/handler/income_share_handler_bloc.dart';
 import 'package:fedi/app/share/income/handler/income_share_handler_model.dart';
 import 'package:fedi/app/share/income/handler/last_chosen_instance/last_chosen_instance_income_share_handler_local_preference_bloc.dart';
 import 'package:fedi/share/income/income_share_model.dart';
 import 'package:fedi/share/income/income_share_service.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 final _logger = Logger('income_share_handler_bloc_impl.dart');
 
@@ -20,14 +21,14 @@ class IncomeShareHandlerBloc extends DisposableOwner
     implements IIncomeShareHandlerBloc {
   final IConfigService configService;
   final IIncomeShareService incomeShareService;
-  final ICurrentAuthInstanceBloc currentAuthInstanceBloc;
-  final IAuthInstanceListBloc authInstanceListBloc;
+  final ICurrentUnifediApiAccessBloc currentUnifediApiAccessBloc;
+  final IUnifediApiAccessListBloc authInstanceListBloc;
   final ILastChosenInstanceIncomeIncomeShareHandlerLocalPreferenceBloc
       lastChosenInstanceIncomeIncomeShareHandlerLocalPreferenceBloc;
 
   final StreamController<IncomeShareEvent>
       needChooseActionForEventStreamController = StreamController.broadcast();
-  final StreamController<List<AuthInstance>>
+  final StreamController<List<UnifediApiAccess>>
       needChooseInstanceFromListStreamController = StreamController.broadcast();
   final StreamController<IncomeShareHandlerError>
       incomeShareHandlerErrorStreamController = StreamController.broadcast();
@@ -37,7 +38,7 @@ class IncomeShareHandlerBloc extends DisposableOwner
       needChooseActionForEventStreamController.stream;
 
   @override
-  Stream<List<AuthInstance>> get needChooseInstanceFromListStream =>
+  Stream<List<UnifediApiAccess>> get needChooseInstanceFromListStream =>
       needChooseInstanceFromListStreamController.stream;
 
   @override
@@ -46,7 +47,7 @@ class IncomeShareHandlerBloc extends DisposableOwner
 
   IncomeShareHandlerBloc({
     required this.configService,
-    required this.currentAuthInstanceBloc,
+    required this.currentUnifediApiAccessBloc,
     required this.authInstanceListBloc,
     required this.incomeShareService,
     required this.lastChosenInstanceIncomeIncomeShareHandlerLocalPreferenceBloc,
@@ -70,11 +71,11 @@ class IncomeShareHandlerBloc extends DisposableOwner
         context,
         listen: false,
       ),
-      currentAuthInstanceBloc: ICurrentAuthInstanceBloc.of(
+      currentUnifediApiAccessBloc: ICurrentUnifediApiAccessBloc.of(
         context,
         listen: false,
       ),
-      authInstanceListBloc: IAuthInstanceListBloc.of(
+      authInstanceListBloc: IUnifediApiAccessListBloc.of(
         context,
         listen: false,
       ),
@@ -141,7 +142,7 @@ class IncomeShareHandlerBloc extends DisposableOwner
       if (availableInstances.length == 1) {
         _showActionChooser(event);
       } else {
-        var currentInstance = currentAuthInstanceBloc.currentInstance;
+        var currentInstance = currentUnifediApiAccessBloc.currentInstance;
         var lastChosenInstance =
             lastChosenInstanceIncomeIncomeShareHandlerLocalPreferenceBloc.value;
         if (lastChosenInstance != null &&
@@ -162,7 +163,7 @@ class IncomeShareHandlerBloc extends DisposableOwner
     );
   }
 
-  void _showInstanceChooser(List<AuthInstance> availableInstances) {
+  void _showInstanceChooser(List<UnifediApiAccess> availableInstances) {
     needChooseInstanceFromListStreamController.add(availableInstances);
   }
 
@@ -174,15 +175,16 @@ class IncomeShareHandlerBloc extends DisposableOwner
   }
 
   @override
-  Future chooseInstance(AuthInstance instance) async {
-    var alreadySelected = currentAuthInstanceBloc.currentInstance?.userAtHost ==
-        instance.userAtHost;
+  Future chooseInstance(UnifediApiAccess instance) async {
+    var alreadySelected =
+        currentUnifediApiAccessBloc.currentInstance?.userAtHost ==
+            instance.userAtHost;
     if (alreadySelected) {
       _showActionChooser(lastHandledEvent!);
     } else {
       await lastChosenInstanceIncomeIncomeShareHandlerLocalPreferenceBloc
           .setValue(instance);
-      await currentAuthInstanceBloc.changeCurrentInstance(instance);
+      await currentUnifediApiAccessBloc.changeCurrentInstance(instance);
     }
   }
 

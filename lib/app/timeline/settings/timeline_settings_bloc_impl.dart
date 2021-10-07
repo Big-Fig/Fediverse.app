@@ -1,11 +1,11 @@
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_bloc.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_model.dart';
-import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc.dart';
-import 'package:easy_dispose/easy_dispose.dart';
 
 class TimelineSettingsBloc extends DisposableOwner
     implements ITimelineSettingsBloc {
-  final ITimelineLocalPreferenceBloc timelineLocalPreferencesBloc;
+  final ITimelineLocalPreferenceBlocOld timelineLocalPreferencesBloc;
 
   TimelineSettingsBloc({
     required this.timelineLocalPreferencesBloc,
@@ -23,7 +23,9 @@ class TimelineSettingsBloc extends DisposableOwner
   Future updateSettings(TimelineSettings? newSettings) async {
     var currentTimeline = timelineLocalPreferencesBloc.value;
     var currentTimelineSettings = currentTimeline?.settings;
-    if (currentTimelineSettings != newSettings && currentTimeline != null) {
+    if (currentTimelineSettings != newSettings &&
+        currentTimeline != null &&
+        newSettings != null) {
       await timelineLocalPreferencesBloc.setValue(
         currentTimeline.copyWith(settings: newSettings),
       );

@@ -1,4 +1,3 @@
-import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/push/settings/edit/edit_push_settings_bloc.dart';
 import 'package:fedi/app/push/settings/push_settings_bloc.dart';
 import 'package:fedi/app/push/settings/push_settings_model.dart';
@@ -6,11 +5,12 @@ import 'package:fedi/app/settings/instance/edit/edit_instance_settings_bloc_impl
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class EditPushSettingsBloc extends EditInstanceSettingsBloc<PushSettings?>
     implements IEditPushSettingsBloc {
   final IPushSettingsBloc pushSettingsBloc;
-  final AuthInstance? currentInstance;
+  final UnifediApiAccess? currentInstance;
 
   @override
   final IBoolValueFormFieldBloc favouriteFieldBloc;
@@ -23,9 +23,9 @@ class EditPushSettingsBloc extends EditInstanceSettingsBloc<PushSettings?>
   @override
   final IBoolValueFormFieldBloc pollFieldBloc;
   @override
-  final IBoolValueFormFieldBloc pleromaChatMentionFieldBloc;
+  final IBoolValueFormFieldBloc chatMentionFieldBloc;
   @override
-  final IBoolValueFormFieldBloc pleromaEmojiReactionFieldBloc;
+  final IBoolValueFormFieldBloc emojiReactionFieldBloc;
 
   @override
   List<IFormItemBloc> get currentItems => [
@@ -34,8 +34,8 @@ class EditPushSettingsBloc extends EditInstanceSettingsBloc<PushSettings?>
         mentionFieldBloc,
         reblogFieldBloc,
         pollFieldBloc,
-        pleromaChatMentionFieldBloc,
-        pleromaEmojiReactionFieldBloc,
+        chatMentionFieldBloc,
+        emojiReactionFieldBloc,
       ];
 
   EditPushSettingsBloc({
@@ -62,12 +62,12 @@ class EditPushSettingsBloc extends EditInstanceSettingsBloc<PushSettings?>
           originValue: pushSettingsBloc.poll,
           isEnabled: isEnabled && currentInstance!.isMastodon, // only mastodon
         ),
-        pleromaChatMentionFieldBloc = BoolValueFormFieldBloc(
-          originValue: pushSettingsBloc.pleromaChatMention,
+        chatMentionFieldBloc = BoolValueFormFieldBloc(
+          originValue: pushSettingsBloc.chatMention,
           isEnabled: isEnabled && currentInstance!.isPleroma,
         ),
-        pleromaEmojiReactionFieldBloc = BoolValueFormFieldBloc(
-          originValue: pushSettingsBloc.pleromaEmojiReaction,
+        emojiReactionFieldBloc = BoolValueFormFieldBloc(
+          originValue: pushSettingsBloc.emojiReaction,
           isEnabled: isEnabled && currentInstance!.isPleroma,
         ),
         super(
@@ -80,8 +80,8 @@ class EditPushSettingsBloc extends EditInstanceSettingsBloc<PushSettings?>
     addDisposable(mentionFieldBloc);
     addDisposable(reblogFieldBloc);
     addDisposable(pollFieldBloc);
-    addDisposable(pleromaChatMentionFieldBloc);
-    addDisposable(pleromaEmojiReactionFieldBloc);
+    addDisposable(chatMentionFieldBloc);
+    addDisposable(emojiReactionFieldBloc);
   }
 
   @override
@@ -91,8 +91,8 @@ class EditPushSettingsBloc extends EditInstanceSettingsBloc<PushSettings?>
         mention: mentionFieldBloc.currentValue,
         reblog: reblogFieldBloc.currentValue,
         poll: pollFieldBloc.currentValue,
-        pleromaChatMention: pleromaChatMentionFieldBloc.currentValue,
-        pleromaEmojiReaction: pleromaEmojiReactionFieldBloc.currentValue,
+        chatMention: chatMentionFieldBloc.currentValue,
+        emojiReaction: emojiReactionFieldBloc.currentValue,
       );
 
   @override
@@ -112,11 +112,11 @@ class EditPushSettingsBloc extends EditInstanceSettingsBloc<PushSettings?>
     pollFieldBloc.changeCurrentValue(
       settings.poll,
     );
-    pleromaChatMentionFieldBloc.changeCurrentValue(
-      settings.pleromaChatMention,
+    chatMentionFieldBloc.changeCurrentValue(
+      settings.chatMention,
     );
-    pleromaEmojiReactionFieldBloc.changeCurrentValue(
-      settings.pleromaEmojiReaction,
+    emojiReactionFieldBloc.changeCurrentValue(
+      settings.emojiReaction,
     );
   }
 }

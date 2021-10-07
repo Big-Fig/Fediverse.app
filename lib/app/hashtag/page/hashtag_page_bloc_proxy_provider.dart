@@ -15,7 +15,7 @@ class HashtagPageBlocProxyProvider extends StatelessWidget {
   Widget build(BuildContext context) =>
       ProxyProvider<IHashtagPageBloc, IInstanceLocationBloc>(
         update: (context, bloc, previous) => bloc,
-        child: ProxyProvider<IHashtagPageBloc, ITimelineLocalPreferenceBloc>(
+        child: ProxyProvider<IHashtagPageBloc, ITimelineLocalPreferenceBlocOld>(
           update: (context, bloc, previous) => bloc.timelineLocalPreferenceBloc,
           child: child,
         ),

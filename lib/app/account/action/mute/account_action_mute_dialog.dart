@@ -1,3 +1,4 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/action/mute/account_action_mute_bloc.dart';
 import 'package:fedi/app/account/action/mute/account_action_mute_bloc_impl.dart';
@@ -12,7 +13,6 @@ import 'package:fedi/form/field/value/duration/date_time/duration_date_time_valu
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
-import 'package:easy_dispose/easy_dispose.dart';
 
 Future<T?> showAccountActionMuteDialog<T>({
   required BuildContext context,

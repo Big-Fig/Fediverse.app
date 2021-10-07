@@ -1,3 +1,4 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/account/pagination/list/account_pagination_list_bloc.dart';
 import 'package:fedi/app/account/pagination/list/account_pagination_list_bloc_impl.dart';
 import 'package:fedi/app/account/pagination/network_only/account_network_only_pagination_bloc.dart';
@@ -6,35 +7,36 @@ import 'package:fedi/app/instance/directory/account_list/network_only/instance_d
 import 'package:fedi/app/instance/directory/account_list/network_only/instance_directory_account_list_network_only_list_bloc_impl.dart';
 import 'package:fedi/app/instance/directory/instance_directory_bloc.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
-import 'package:easy_dispose/easy_dispose.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
-
+import 'package:fedi/connection/connection_service.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 abstract class InstanceDirectoryBloc extends DisposableOwner
     implements IInstanceDirectoryBloc {
   @override
   final Uri instanceUri;
 
-  final BehaviorSubject<IPleromaApiInstance?> instanceSubject;
+  final BehaviorSubject<IUnifediApiInstance?> instanceSubject;
   final IPaginationSettingsBloc paginationSettingsBloc;
-
+  final IConnectionService connectionService;
   InstanceDirectoryBloc({
-    required IPleromaApiInstance? initialInstance,
+    required IUnifediApiInstance? initialInstance,
     required this.instanceUri,
+    required this.connectionService,
     required this.paginationSettingsBloc,
   }) : instanceSubject = BehaviorSubject.seeded(initialInstance) {
     instanceSubject.disposeWith(this);
 
     instanceDirectoryAccountListNetworkOnlyListBloc =
         InstanceDirectoryAccountListNetworkOnlyListBloc(
-      pleromaApiDirectoryService: pleromaApiDirectoryService,
+      unifediApiInstanceService: unifediApiInstanceService,
       remoteInstanceUriOrNull: instanceUri,
       instanceLocation: instanceLocation,
     );
 
     instanceDirectoryAccountListNetworkOnlyPaginationBloc =
         AccountNetworkOnlyPaginationBloc(
+      connectionService: connectionService,
       listBloc: instanceDirectoryAccountListNetworkOnlyListBloc,
       maximumCachedPagesCount: null,
       paginationSettingsBloc: paginationSettingsBloc,
@@ -53,19 +55,19 @@ abstract class InstanceDirectoryBloc extends DisposableOwner
     accountPaginationListBloc.refreshWithoutController();
   }
 
-  IPleromaApiDirectoryService get pleromaApiDirectoryService;
+  IUnifediApiInstanceService get unifediApiInstanceService;
 
   @override
-  IPleromaApiInstance? get instance => instanceSubject.value;
+  IUnifediApiInstance? get instance => instanceSubject.value;
 
   @override
-  Stream<IPleromaApiInstance?> get instanceStream => instanceSubject.stream;
+  Stream<IUnifediApiInstance?> get instanceStream => instanceSubject.stream;
 
   @override
-  bool get isPleroma => instance!.isPleroma;
+  bool get isPleroma => instance!.typeAsUnifediApi.isPleroma;
 
   @override
-  bool get isMastodon => instance!.isMastodon;
+  bool get isMastodon => instance!.typeAsUnifediApi.isMastodon;
 
   @override
   // ignore: avoid-late-keyword

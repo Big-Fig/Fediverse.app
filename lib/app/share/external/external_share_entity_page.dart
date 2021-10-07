@@ -1,3 +1,4 @@
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/share/entity/settings/share_entity_settings_bloc_impl.dart';
 import 'package:fedi/app/share/entity/settings/share_entity_settings_widget.dart';
@@ -9,7 +10,6 @@ import 'package:fedi/app/share/external/external_share_bloc_proxy_provider.dart'
 import 'package:fedi/app/share/external/external_share_entity_bloc_impl.dart';
 import 'package:fedi/app/share/page/share_page_app_bar_send_text_action_widget.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_title_app_bar.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

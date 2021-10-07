@@ -1,15 +1,15 @@
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
 import 'package:fedi/app/chat/conversation/message/conversation_chat_message_model.dart';
 import 'package:fedi/app/chat/conversation/message/list/cached/conversation_chat_message_cached_list_bloc.dart';
 import 'package:fedi/app/chat/conversation/status/context_api/conversation_chat_status_list_context_api_bloc_impl.dart';
 import 'package:fedi/app/chat/conversation/status/conversation_api/conversation_chat_status_list_conversation_api_bloc_impl.dart';
 import 'package:fedi/app/chat/conversation/status/list/cached/conversation_chat_status_list_bloc_impl.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 var _logger = Logger('pleroma_chat_message_cached_list_bloc_impl.dart');
 
@@ -26,7 +26,8 @@ class ConversationChatMessageCachedListBloc extends DisposableOwner
   });
 
   @override
-  IPleromaApi get pleromaApi => conversationChatStatusListBloc.pleromaApi;
+  IUnifediApiService get unifediApi =>
+      conversationChatStatusListBloc.unifediApi;
 
   @override
   Future<bool> refreshItemsFromRemoteForPage({
@@ -140,7 +141,8 @@ ConversationChatStatusListBloc _createStatusListBloc({
   required IConversationChat? conversation,
   required IConversationChatMessage? lastMessage,
 }) {
-  var currentInstanceBloc = ICurrentAuthInstanceBloc.of(context, listen: false);
+  var currentInstanceBloc =
+      ICurrentUnifediApiAccessBloc.of(context, listen: false);
 
   if (currentInstanceBloc.currentInstance!.isPleroma) {
     // pleroma instances support loading by conversation id

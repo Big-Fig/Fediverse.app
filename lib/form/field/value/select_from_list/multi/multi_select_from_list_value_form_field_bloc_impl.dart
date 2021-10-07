@@ -1,11 +1,11 @@
 import 'dart:async';
 
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
 import 'package:fedi/form/field/value/select_from_list/multi/multi_select_from_list_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/value_form_field_bloc_impl.dart';
 import 'package:fedi/form/field/value/value_form_field_validation.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:easy_dispose/easy_dispose.dart';
-import 'package:easy_dispose_rxdart/easy_dispose_rxdart.dart';
 
 abstract class MultiSelectFromListValueFormFieldBloc<T>
     extends ValueFormFieldBloc<List<T>>

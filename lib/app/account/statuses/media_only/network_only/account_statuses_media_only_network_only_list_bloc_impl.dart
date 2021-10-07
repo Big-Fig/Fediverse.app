@@ -2,17 +2,20 @@ import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/statuses/account_statuses_network_only_list_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 abstract class AccountStatusesMediaOnlyNetworkOnlyListBloc
     extends AccountStatusesNetworkOnlyListBloc {
   AccountStatusesMediaOnlyNetworkOnlyListBloc({
     required IAccount? account,
-    required IPleromaApiAccountService pleromaAccountService,
-  }) : super(account: account, pleromaAccountService: pleromaAccountService);
+    required IUnifediApiAccountService unifediApiAccountService,
+  }) : super(
+          account: account,
+          unifediApiAccountService: unifediApiAccountService,
+        );
 
   @override
-  IPleromaApi get pleromaApi => pleromaAccountService;
+  IUnifediApiService get unifediApi => unifediApiAccountService;
 
   @override
   Future<List<IStatus>> loadItemsFromRemoteForPage({
@@ -21,19 +24,25 @@ abstract class AccountStatusesMediaOnlyNetworkOnlyListBloc
     String? minId,
     String? maxId,
   }) async {
-    var pleromaStatuses = await pleromaAccountService.getAccountStatuses(
+    var unifediApiStatuses = await unifediApiAccountService.getAccountStatuses(
       onlyWithMedia: true,
-      accountRemoteId: account!.remoteId,
-      pagination: PleromaApiPaginationRequest(
-        sinceId: minId,
+      accountId: account!.remoteId,
+      pagination: UnifediApiPagination(
+        minId: minId,
         maxId: maxId,
         limit: itemsCountPerPage,
       ),
+      pinned: null,
+      tagged: null,
+      excludeReblogs: null,
+      excludeReplies: null,
+      excludeVisibilities: null,
+      withMuted: null,
     );
 
-    return pleromaStatuses
+    return unifediApiStatuses
         .map(
-          (pleromaStatus) => pleromaStatus.toDbStatusPopulatedWrapper(),
+          (unifediApiStatus) => unifediApiStatus.toDbStatusPopulatedWrapper(),
         )
         .toList();
   }

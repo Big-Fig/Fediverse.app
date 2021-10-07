@@ -3,7 +3,7 @@ import 'package:fedi/app/cache/database/limit/entries_count/database_cache_entri
 import 'package:fedi/app/cache/database/settings/database_cache_settings_model.dart';
 
 // ignore_for_file: no-magic-number
-class DatabaseCacheSettingsModelTestHelper {
+class DatabaseCacheSettingsModelMockHelper {
   static DatabaseCacheSettings createTestDatabaseCacheSettings({
     required String seed,
   }) =>

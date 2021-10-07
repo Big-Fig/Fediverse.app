@@ -1,14 +1,18 @@
 import 'dart:async';
 
-import 'package:fedi/app/account/repository/account_repository_impl.dart';
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:fedi/app/access/current/current_access_bloc.dart';
+import 'package:fedi/app/access/list/access_list_bloc.dart';
+import 'package:fedi/app/access/local_preferences/access_local_preference_bloc_impl.dart';
+import 'package:fedi/app/access/local_preferences_access_bloc_impl.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
-import 'package:fedi/app/auth/instance/auth_instance_model.dart';
-import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
-import 'package:fedi/app/auth/instance/list/auth_instance_list_bloc.dart';
+import 'package:fedi/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository_impl.dart';
 import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/database/app_database_service_impl.dart';
 import 'package:fedi/app/notification/repository/notification_repository_impl.dart';
+import 'package:fedi/app/push/fedi_push_notification_model.dart';
+import 'package:fedi/app/push/fedi_push_notification_model_impl.dart';
 import 'package:fedi/app/push/notification/handler/notifications_push_handler_bloc.dart';
 import 'package:fedi/app/push/notification/handler/notifications_push_handler_model.dart';
 import 'package:fedi/app/push/notification/handler/unhandled/local_preferences/notifications_push_handler_unhandled_local_preference_bloc.dart';
@@ -17,14 +21,16 @@ import 'package:fedi/app/push/notification/notification_model.dart';
 import 'package:fedi/app/push/notification/rich/rich_notifications_service.dart';
 import 'package:fedi/app/push/notification/rich/rich_notifications_service_background_message_impl.dart';
 import 'package:fedi/app/status/repository/status_repository_impl.dart';
-import 'package:base_fediverse_api/base_fediverse_api.dart';
-import 'package:easy_dispose/easy_dispose.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:fedi/connection/connection_service.dart';
+import 'package:fedi/local_preferences/local_preferences_service.dart';
 import 'package:fedi/push/fcm/fcm_push_service.dart';
 import 'package:fedi/push/push_model.dart';
+import 'package:fediverse_api/fediverse_api.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:logging/logging.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
-var _logger = Logger('push_handler_bloc_impl.dart');
+var _logger = Logger('notifications_push_handler_bloc_impl.dart');
 
 // todo: refactor all push notifications code
 class NotificationsPushHandlerBloc extends DisposableOwner
@@ -33,14 +39,16 @@ class NotificationsPushHandlerBloc extends DisposableOwner
       unhandledLocalPreferencesBloc;
   final IFcmPushService fcmPushService;
   final IRichNotificationsService richNotificationsService;
-  final IAuthInstanceListBloc instanceListBloc;
-  final ICurrentAuthInstanceBloc currentInstanceBloc;
+  final IUnifediApiAccessListBloc instanceListBloc;
+  final ICurrentUnifediApiAccessBloc currentInstanceBloc;
   final IConfigService configService;
   final IConnectionService connectionService;
+  final ILocalPreferencesService localPreferencesService;
 
   final List<IPushRealTimeHandler> realTimeHandlers = [];
 
   NotificationsPushHandlerBloc({
+    required this.localPreferencesService,
     required this.unhandledLocalPreferencesBloc,
     required this.currentInstanceBloc,
     required this.instanceListBloc,
@@ -90,23 +98,23 @@ class NotificationsPushHandlerBloc extends DisposableOwner
         await _handlePushMessage(pushMessage);
       } else {
         _logger.warning(() => '$pushMessage dont have notification_id');
-        var pleromaApiNotification = await loadNotificationForPushMessageData(
+        var unifediApiNotification = await loadNotificationForPushMessageData(
           data: data,
           createPushNotification: false,
         );
 
-        if (pleromaApiNotification != null) {
+        if (unifediApiNotification != null) {
           await _handlePushMessage(
             PushMessage(
               typeString: PushMessageType.foreground.toJsonValue(),
               notification: null,
-              data: PleromaApiPushMessageBody(
-                notificationId: pleromaApiNotification.id,
+              data: FediPushNotification(
+                notificationId: unifediApiNotification.id,
                 server: data['server'],
                 account: data['account'],
-                notificationType: pleromaApiNotification.type,
-                pleromaApiNotification:
-                    pleromaApiNotification.toPleromaApiNotification(),
+                notificationType: unifediApiNotification.type,
+                unifediApiNotification:
+                    unifediApiNotification.toUnifediApiNotification(),
                 notificationAction: null,
                 notificationActionInput: null,
               ).toJson(),
@@ -127,7 +135,7 @@ class NotificationsPushHandlerBloc extends DisposableOwner
 
     var data = pushMessage.data;
 
-    var body = PleromaApiPushMessageBody.fromJson(data!);
+    var body = FediPushNotification.fromJson(data!);
 
     var pushMessageHandler = NotificationsPushHandlerMessage(
       pushMessage: pushMessage,
@@ -164,9 +172,9 @@ class NotificationsPushHandlerBloc extends DisposableOwner
   // todo: refactor copy-pasted code
   Future<void> _handleNewAction({
     required PushMessage pushMessage,
-    required PleromaApiPushMessageBody body,
+    required FediPushNotification body,
   }) async {
-    var remoteNotification = body.pleromaApiNotification!;
+    var remoteNotification = body.unifediApiNotification!;
 
     var notificationActionType =
         body.notificationAction!.toNotificationActionType();
@@ -200,9 +208,9 @@ class NotificationsPushHandlerBloc extends DisposableOwner
 
   // ignore: long-method
   Future<void> _handleNewReplyAction({
-    required IPleromaApiNotification remoteNotification,
+    required IUnifediApiNotification remoteNotification,
     required PushMessage pushMessage,
-    required PleromaApiPushMessageBody body,
+    required FediPushNotification body,
   }) async {
     var notificationActionInput = body.notificationActionInput;
 
@@ -245,47 +253,61 @@ class NotificationsPushHandlerBloc extends DisposableOwner
       acct: body.account,
     )!;
 
-    var restService = RestService(baseUri: authInstance.uri);
-    addDisposable(restService);
-
-    var pleromaApiAuthRestService = PleromaApiAuthRestService(
-      restService: restService,
-      connectionService: connectionService,
-      accessToken: authInstance.token!.accessToken,
-      isPleroma: authInstance.isPleroma,
+    var unifediApiAccessLocalPreferenceBloc =
+        UnifediApiAccessLocalPreferenceBloc(
+      preferencesService: localPreferencesService,
+      userAtHost: authInstance.userAtHost,
     );
-    addDisposable(pleromaApiAuthRestService);
+    await unifediApiAccessLocalPreferenceBloc.performAsyncInit();
+    addDisposable(unifediApiAccessLocalPreferenceBloc);
 
-    var pleromaApiChatService = PleromaApiChatService(
-      restApiAuthService: pleromaApiAuthRestService,
+    var localPreferencesUnifediApiAccessBloc =
+        LocalPreferencesUnifediApiAccessBloc(
+      accessLocalPreferenceBloc: unifediApiAccessLocalPreferenceBloc,
     );
-    addDisposable(pleromaApiChatService);
 
-    var pleromaApiAuthStatusService = PleromaApiAuthStatusService(
-      authRestService: pleromaApiAuthRestService,
+    addDisposable(localPreferencesUnifediApiAccessBloc);
+
+    var webSocketsModeSettingsBloc = WebSocketsModeSettingsBloc(
+      mode: WebSocketsMode.disabledValue,
     );
-    addDisposable(pleromaApiChatService);
+    webSocketsModeSettingsBloc.disposeWith(this);
 
-    var pleromaApiNotificationType = remoteNotification.typeAsPleromaApi;
-    switch (pleromaApiNotificationType) {
-      case PleromaApiNotificationType.pleromaChatMention:
+    var apiManager = authInstance.info!.typeAsUnifediApi.createApiManager(
+      apiAccessBloc: localPreferencesUnifediApiAccessBloc,
+      computeImpl: null,
+      webSocketsModeSettingsBloc: webSocketsModeSettingsBloc,
+    );
+
+    addDisposable(apiManager);
+
+    var unifediApiChatService = apiManager.createChatService();
+    addDisposable(unifediApiChatService);
+
+    var unifediApiStatusService = apiManager.createStatusService();
+    addDisposable(unifediApiChatService);
+
+    var unifediApiNotificationType = remoteNotification.typeAsUnifediApi;
+
+    await unifediApiNotificationType.maybeMap<FutureOr>(
+      chatMention: (_) async {
         var chatMessage = remoteNotification.chatMessage!;
-        var pleromaApiChatMessage = await pleromaApiChatService.sendMessage(
+        var unifediApiChatMessage = await unifediApiChatService.sendMessage(
+          idempotencyKey: null,
           chatId: chatMessage.chatId,
-          data: PleromaApiChatMessageSendData(
+          postChatMessage: UnifediApiPostChatMessage(
             content: notificationActionInput,
-            idempotencyKey: null,
             mediaId: null,
           ),
         );
-        await chatMessageRepository.upsertInRemoteType(pleromaApiChatMessage);
-        break;
-
-      case PleromaApiNotificationType.mention:
+        await chatMessageRepository.upsertInRemoteType(unifediApiChatMessage);
+      },
+      mention: (_) async {
         var status = remoteNotification.status!;
-        var directConversationId = status.pleroma?.directConversationId;
-        var pleromaApiStatus = await pleromaApiAuthStatusService.postStatus(
-          data: PleromaApiPostStatus(
+        var directConversationId = status.directConversationId;
+        var unifediApiStatus = await unifediApiStatusService.postStatus(
+          idempotencyKey: null,
+          postStatus: UnifediApiPostStatus(
             contentType: null,
             expiresInSeconds: null,
             inReplyToConversationId: directConversationId?.toString(),
@@ -304,26 +326,25 @@ class NotificationsPushHandlerBloc extends DisposableOwner
             ],
           ),
         );
-        await statusRepository.upsertInRemoteType(pleromaApiStatus);
-        break;
-
-      default:
-        _logger.warning(() => 'cant _handleNewReplyAction '
-            'invalid pleromaApiNotificationType $pleromaApiNotificationType');
-        break;
-    }
+        await statusRepository.upsertInRemoteType(unifediApiStatus);
+      },
+      orElse: () async => _logger.warning(
+        () => 'cant _handleNewReplyAction '
+            'invalid unifediApiNotificationType $unifediApiNotificationType',
+      ),
+    );
   }
 
   // todo: refactor copy-pasted code
   // ignore: long-method
   Future<void> _handleNewFollowRequestAction({
-    required IPleromaApiNotification remoteNotification,
+    required IUnifediApiNotification remoteNotification,
     required PushMessage pushMessage,
-    required PleromaApiPushMessageBody body,
+    required FediPushNotification body,
     required bool accept,
   }) async {
-    var pleromaApiAccount = remoteNotification.account!;
-    var accountRemoteId = pleromaApiAccount.id;
+    var unifediApiAccount = remoteNotification.account!;
+    var accountRemoteId = unifediApiAccount.id;
 
     var disposableOwner = DisposableOwner();
 
@@ -346,17 +367,17 @@ class NotificationsPushHandlerBloc extends DisposableOwner
     );
     disposableOwner.addDisposable(statusRepository);
 
-    var pleromaChatMessageRepository = PleromaChatMessageRepository(
+    var chatMessageRepository = PleromaChatMessageRepository(
       appDatabase: appDatabaseService.appDatabase,
       accountRepository: accountRepository,
     );
-    disposableOwner.addDisposable(pleromaChatMessageRepository);
+    disposableOwner.addDisposable(chatMessageRepository);
 
     var notificationRepository = NotificationRepository(
       appDatabase: appDatabaseService.appDatabase,
       accountRepository: accountRepository,
       statusRepository: statusRepository,
-      chatMessageRepository: pleromaChatMessageRepository,
+      chatMessageRepository: chatMessageRepository,
     );
     disposableOwner.addDisposable(notificationRepository);
 
@@ -365,50 +386,66 @@ class NotificationsPushHandlerBloc extends DisposableOwner
       acct: body.account,
     )!;
 
-    var restService = RestService(baseUri: authInstance.uri);
-    addDisposable(restService);
-
-    var pleromaApiAuthRestService = PleromaApiAuthRestService(
-      restService: restService,
-      connectionService: connectionService,
-      accessToken: authInstance.token!.accessToken,
-      isPleroma: authInstance.isPleroma,
+    var unifediApiAccessLocalPreferenceBloc =
+        UnifediApiAccessLocalPreferenceBloc(
+      preferencesService: localPreferencesService,
+      userAtHost: authInstance.userAtHost,
     );
-    addDisposable(pleromaApiAuthRestService);
+    await unifediApiAccessLocalPreferenceBloc.performAsyncInit();
+    addDisposable(unifediApiAccessLocalPreferenceBloc);
 
-    var pleromaApiMyAccountService = PleromaApiMyAccountService(
-      restApiAuthService: pleromaApiAuthRestService,
+    var localPreferencesUnifediApiAccessBloc =
+        LocalPreferencesUnifediApiAccessBloc(
+      accessLocalPreferenceBloc: unifediApiAccessLocalPreferenceBloc,
     );
-    addDisposable(pleromaApiMyAccountService);
 
-    IPleromaApiAccountRelationship pleromaApiAccountRelationship;
+    addDisposable(localPreferencesUnifediApiAccessBloc);
+
+    var webSocketsModeSettingsBloc = WebSocketsModeSettingsBloc(
+      mode: WebSocketsMode.disabledValue,
+    );
+    webSocketsModeSettingsBloc.disposeWith(this);
+
+    var apiManager = authInstance.info!.typeAsUnifediApi.createApiManager(
+      apiAccessBloc: localPreferencesUnifediApiAccessBloc,
+      computeImpl: null,
+      webSocketsModeSettingsBloc: webSocketsModeSettingsBloc,
+    );
+
+    addDisposable(apiManager);
+
+    var unifediApiMyAccountService = apiManager.createMyAccountService();
+    addDisposable(unifediApiMyAccountService);
+
+    IUnifediApiAccountRelationship? unifediApiAccountRelationship;
     if (accept) {
-      pleromaApiAccountRelationship =
-          await pleromaApiMyAccountService.acceptFollowRequest(
-        accountRemoteId: accountRemoteId,
+      unifediApiAccountRelationship =
+          await unifediApiMyAccountService.acceptMyAccountFollowRequest(
+        accountId: accountRemoteId,
       );
     } else {
-      pleromaApiAccountRelationship =
-          await pleromaApiMyAccountService.rejectFollowRequest(
-        accountRemoteId: accountRemoteId,
+      unifediApiAccountRelationship =
+          await unifediApiMyAccountService.rejectMyAccountFollowRequest(
+        accountId: accountRemoteId,
       );
     }
+    if (unifediApiAccountRelationship != null) {
+      var localAccount = unifediApiAccount.toDbAccountWrapper().copyWithTemp(
+            relationship: unifediApiAccountRelationship,
+          );
+      unifediApiAccount = localAccount.toUnifediApiAccount();
 
-    var localAccount = pleromaApiAccount.toDbAccountWrapper().copyWith(
-          pleromaRelationship: pleromaApiAccountRelationship,
+      await notificationRepository.batch((batch) {
+        notificationRepository.dismissFollowRequestNotificationsFromAccount(
+          account: localAccount,
+          batchTransaction: batch,
         );
-    pleromaApiAccount = localAccount.toPleromaApiAccount();
-
-    await notificationRepository.batch((batch) {
-      notificationRepository.dismissFollowRequestNotificationsFromAccount(
-        account: localAccount,
-        batchTransaction: batch,
-      );
-      accountRepository.upsertInRemoteTypeBatch(
-        pleromaApiAccount,
-        batchTransaction: batch,
-      );
-    });
+        accountRepository.upsertInRemoteTypeBatch(
+          unifediApiAccount,
+          batchTransaction: batch,
+        );
+      });
+    }
 
     // await myAccountBloc.decreaseFollowingRequestCount();
 
@@ -417,7 +454,7 @@ class NotificationsPushHandlerBloc extends DisposableOwner
 
   Future<void> _handleNewMessage({
     required PushMessage pushMessage,
-    required PleromaApiPushMessageBody body,
+    required FediPushNotification body,
   }) async {
     var instanceForMessage = instanceListBloc.findInstanceByCredentials(
       host: body.server,
@@ -453,7 +490,7 @@ class NotificationsPushHandlerBloc extends DisposableOwner
 
   @override
   List<NotificationsPushHandlerMessage> loadUnhandledMessagesForInstance(
-    AuthInstance instance,
+    UnifediApiAccess instance,
   ) =>
       unhandledLocalPreferencesBloc.loadUnhandledMessagesForInstance(instance);
 

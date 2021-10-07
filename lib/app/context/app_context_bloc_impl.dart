@@ -5,16 +5,16 @@ import 'package:fedi/analytics/app/app_analytics_bloc.dart';
 import 'package:fedi/analytics/app/app_analytics_bloc_impl.dart';
 import 'package:fedi/analytics/app/local_preferences/app_analytics_local_preference_bloc.dart';
 import 'package:fedi/analytics/app/local_preferences/app_analytics_local_preference_bloc_impl.dart';
+import 'package:fedi/app/access/current/current_access_bloc.dart';
+import 'package:fedi/app/access/current/current_access_bloc_impl.dart';
+import 'package:fedi/app/access/current/local_preferences/current_access_local_preference_bloc.dart';
+import 'package:fedi/app/access/current/local_preferences/current_access_local_preference_bloc_impl.dart';
+import 'package:fedi/app/access/list/access_list_bloc.dart';
+import 'package:fedi/app/access/list/access_list_bloc_impl.dart';
+import 'package:fedi/app/access/list/local_preferences/access_list_local_preference_bloc.dart';
+import 'package:fedi/app/access/list/local_preferences/access_list_local_preference_bloc_impl.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/app_model.dart';
-import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
-import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc_impl.dart';
-import 'package:fedi/app/auth/instance/current/local_preferences/current_auth_instance_local_preference_bloc.dart';
-import 'package:fedi/app/auth/instance/current/local_preferences/current_auth_instance_local_preference_bloc_impl.dart';
-import 'package:fedi/app/auth/instance/list/auth_instance_list_bloc.dart';
-import 'package:fedi/app/auth/instance/list/auth_instance_list_bloc_impl.dart';
-import 'package:fedi/app/auth/instance/list/local_preferences/auth_instance_list_local_preference_bloc.dart';
-import 'package:fedi/app/auth/instance/list/local_preferences/auth_instance_list_local_preference_bloc_impl.dart';
 import 'package:fedi/app/auth/oauth_last_launched/local_preferences/auth_oauth_last_launched_host_to_login_local_preference_bloc.dart';
 import 'package:fedi/app/auth/oauth_last_launched/local_preferences/auth_oauth_last_launched_host_to_login_local_preference_bloc_impl.dart';
 import 'package:fedi/app/cache/database/settings/database_cache_settings_bloc.dart';
@@ -123,7 +123,8 @@ import 'package:fedi/app/web_sockets/settings/local_preferences/instance/instanc
 import 'package:fedi/app/web_sockets/settings/local_preferences/instance/instance_web_sockets_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc.dart';
 import 'package:fedi/app/web_sockets/settings/web_sockets_settings_bloc_impl.dart';
-import 'package:base_fediverse_api/base_fediverse_api.dart';
+import 'package:fedi/connection/connection_service.dart';
+import 'package:fedi/connection/connection_service_impl.dart';
 import 'package:fedi/date_time/timeago/date_time_timeago_init_helper.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/in_app_review/ask/local_preferences/ask_in_app_review_local_preference_bloc.dart';
@@ -153,6 +154,7 @@ import 'package:fedi/share/income/income_share_service.dart';
 import 'package:fedi/share/income/income_share_service_impl.dart';
 import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_bloc.dart';
 import 'package:fedi/ui/theme/system/brightness/ui_theme_system_brightness_bloc_impl.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
@@ -316,16 +318,18 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     );
 
     var instanceListLocalPreferenceBloc =
-        AuthInstanceListLocalPreferenceBloc(hiveLocalPreferencesService)
+        UnifediApiAccessListLocalPreferenceBloc(hiveLocalPreferencesService)
           ..disposeWith(this);
-    await globalProviderService.asyncInitAndRegister<
-        IAuthInstanceListLocalPreferenceBloc>(instanceListLocalPreferenceBloc);
+    await globalProviderService
+        .asyncInitAndRegister<IUnifediApiAccessListLocalPreferenceBloc>(
+      instanceListLocalPreferenceBloc,
+    );
 
-    var instanceListBloc = AuthInstanceListBloc(
+    var instanceListBloc = UnifediApiAccessListBloc(
       instanceListLocalPreferenceBloc: instanceListLocalPreferenceBloc,
     )..disposeWith(this);
     await globalProviderService
-        .asyncInitAndRegister<IAuthInstanceListBloc>(instanceListBloc);
+        .asyncInitAndRegister<IUnifediApiAccessListBloc>(instanceListBloc);
 
     instanceListBloc.instanceRemovedStream.listen(
       (removedInstance) {
@@ -364,19 +368,20 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     ).disposeWith(this);
 
     var currentInstanceLocalPreferenceBloc =
-        CurrentAuthInstanceLocalPreferenceBloc(hiveLocalPreferencesService)
+        CurrentUnifediApiAccessLocalPreferenceBloc(hiveLocalPreferencesService)
           ..disposeWith(this);
     await globalProviderService
-        .asyncInitAndRegister<ICurrentAuthInstanceLocalPreferenceBloc>(
+        .asyncInitAndRegister<ICurrentUnifediApiAccessLocalPreferenceBloc>(
       currentInstanceLocalPreferenceBloc,
     );
 
-    var currentInstanceBloc = CurrentAuthInstanceBloc(
+    var currentInstanceBloc = CurrentUnifediApiAccessBloc(
+      localPreferencesService: hiveLocalPreferencesService,
       instanceListBloc: instanceListBloc,
       currentLocalPreferenceBloc: currentInstanceLocalPreferenceBloc,
     )..disposeWith(this);
-    await globalProviderService
-        .asyncInitAndRegister<ICurrentAuthInstanceBloc>(currentInstanceBloc);
+    await globalProviderService.asyncInitAndRegister<
+        ICurrentUnifediApiAccessBloc>(currentInstanceBloc);
 
     var globalLocalizationSettingsLocalPreferencesBloc =
         GlobalLocalizationSettingsLocalPreferenceBloc(
@@ -440,6 +445,7 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         notificationsPushHandlerUnhandledLocalPreferencesBloc,
       );
       var notificationsPushHandlerBloc = NotificationsPushHandlerBloc(
+        localPreferencesService: hiveLocalPreferencesService,
         richNotificationsService: richNotificationsServiceBackgroundMessage,
         currentInstanceBloc: currentInstanceBloc,
         instanceListBloc: instanceListBloc,

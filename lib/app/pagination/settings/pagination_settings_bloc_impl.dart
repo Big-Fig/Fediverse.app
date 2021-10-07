@@ -20,7 +20,7 @@ class PaginationSettingsBloc
   @override
   Future changePageSize(PaginationPageSize value) => updateSettings(
         settingsData.copyWith(
-          pageSize: value,
+          pageSizeString: value.toJsonValue(),
         ),
       );
 

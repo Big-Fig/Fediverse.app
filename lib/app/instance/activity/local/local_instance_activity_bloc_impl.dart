@@ -1,35 +1,35 @@
-import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
+import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/instance/activity/instance_activity_bloc.dart';
 import 'package:fedi/app/instance/activity/instance_activity_bloc_impl.dart';
 import 'package:fedi/app/instance/activity/instance_activity_bloc_proxy_provider.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class LocalInstanceActivityBloc extends InstanceActivityBloc
     implements IInstanceActivityBloc {
   @override
-  final IPleromaApiInstanceService pleromaInstanceService;
+  final IUnifediApiInstanceService unifediApiInstanceService;
 
   LocalInstanceActivityBloc({
-    required IPleromaApiInstance instance,
-    required this.pleromaInstanceService,
+    required IUnifediApiInstance instance,
+    required this.unifediApiInstanceService,
   }) : super(
-          instanceUri: pleromaInstanceService.restService.baseUri,
+          instanceUri: unifediApiInstanceService.baseUri,
           instance: instance,
         );
 
   static LocalInstanceActivityBloc createFromContext(BuildContext context) {
-    var pleromaInstanceService =
-        Provider.of<IPleromaApiInstanceService>(context, listen: false);
-    var currentAuthInstanceBloc =
-        ICurrentAuthInstanceBloc.of(context, listen: false);
+    var unifediApiInstanceService =
+        Provider.of<IUnifediApiInstanceService>(context, listen: false);
+    var currentUnifediApiAccessBloc =
+        ICurrentUnifediApiAccessBloc.of(context, listen: false);
 
     return LocalInstanceActivityBloc(
-      pleromaInstanceService: pleromaInstanceService,
-      instance: currentAuthInstanceBloc.currentInstance!.info!,
+      unifediApiInstanceService: unifediApiInstanceService,
+      instance: currentUnifediApiAccessBloc.currentInstance!.info!,
     );
   }
 

@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository.dart';
@@ -11,10 +12,9 @@ import 'package:fedi/app/share/entity/settings/share_entity_settings_bloc.dart';
 import 'package:fedi/app/share/entity/share_entity_bloc.dart';
 import 'package:fedi/app/share/entity/share_entity_model.dart';
 import 'package:fedi/app/share/to_account/share_to_account_bloc.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class PleromaChatShareEntityBloc extends PleromaChatShareBloc
     implements IPleromaChatShareBloc, IShareEntityBloc {
@@ -22,50 +22,49 @@ class PleromaChatShareEntityBloc extends PleromaChatShareBloc
   @override
   final ShareEntity shareEntity;
   final IMediaAttachmentReuploadService mediaAttachmentReuploadService;
-  final IPleromaApiMediaAttachmentService pleromaApiMediaAttachmentService;
+  final IUnifediApiMediaAttachmentService unifediApiMediaAttachmentService;
   final bool isNeedReUploadMediaAttachments;
 
   PleromaChatShareEntityBloc({
     required this.shareEntity,
     required this.shareEntitySettingsBloc,
     required this.mediaAttachmentReuploadService,
-    required this.pleromaApiMediaAttachmentService,
+    required this.unifediApiMediaAttachmentService,
     this.isNeedReUploadMediaAttachments = true,
     required IPleromaChatRepository chatRepository,
     required IPleromaChatMessageRepository chatMessageRepository,
-    required IPleromaApiChatService pleromaChatService,
+    required IUnifediApiChatService pleromaApiChatService,
     required IMyAccountBloc myAccountBloc,
     required IAccountRepository accountRepository,
-    required IPleromaApiAccountService pleromaAccountService,
+    required IUnifediApiAccountService unifediApiAccountService,
   }) : super(
           chatRepository: chatRepository,
           chatMessageRepository: chatMessageRepository,
-          pleromaChatService: pleromaChatService,
+          pleromaApiChatService: pleromaApiChatService,
           myAccountBloc: myAccountBloc,
           accountRepository: accountRepository,
-          pleromaAccountService: pleromaAccountService,
+          unifediApiAccountService: unifediApiAccountService,
         );
 
   @override
-  Future<List<PleromaApiChatMessageSendData>>
-      createPleromaChatMessageSendDataList() async {
+  Future<List<UnifediApiPostChatMessage>>
+      createUnifediApiChatMessageSendDataList() async {
     var text = convertAllItemsToRawText(
       settings: shareEntitySettingsBloc.shareEntitySettings,
     );
     var mediaAttachments = await convertAllItemsToMediaAttachments(
       settings: shareEntitySettingsBloc.shareEntitySettings,
-      pleromaApiMediaAttachmentService: pleromaApiMediaAttachmentService,
+      unifediApiMediaAttachmentService: unifediApiMediaAttachmentService,
       mediaAttachmentReuploadService: mediaAttachmentReuploadService,
       reUploadRequired: true,
     );
 
-    var messageSendData = PleromaApiChatMessageSendData(
+    var messageSendData = UnifediApiPostChatMessage(
       content: text?.trim(),
       mediaId: mediaAttachments?.firstOrNull?.id,
-      idempotencyKey: null,
     );
 
-    var result = <PleromaApiChatMessageSendData>[];
+    var result = <UnifediApiPostChatMessage>[];
 
     result.add(messageSendData);
 
@@ -73,10 +72,9 @@ class PleromaChatShareEntityBloc extends PleromaChatShareBloc
       mediaAttachments.skip(1).forEach(
         (mediaAttachment) {
           result.add(
-            PleromaApiChatMessageSendData(
+            UnifediApiPostChatMessage(
               content: null,
               mediaId: mediaAttachment.id,
-              idempotencyKey: null,
             ),
           );
         },
@@ -127,7 +125,7 @@ class PleromaChatShareEntityBloc extends PleromaChatShareBloc
           context,
           listen: false,
         ),
-        pleromaChatService: Provider.of<IPleromaApiChatService>(
+        pleromaApiChatService: Provider.of<IUnifediApiChatService>(
           context,
           listen: false,
         ),
@@ -139,7 +137,7 @@ class PleromaChatShareEntityBloc extends PleromaChatShareBloc
           context,
           listen: false,
         ),
-        pleromaAccountService: Provider.of<IPleromaApiAccountService>(
+        unifediApiAccountService: Provider.of<IUnifediApiAccountService>(
           context,
           listen: false,
         ),
@@ -147,8 +145,8 @@ class PleromaChatShareEntityBloc extends PleromaChatShareBloc
           context,
           listen: false,
         ),
-        pleromaApiMediaAttachmentService:
-            Provider.of<IPleromaApiMediaAttachmentService>(
+        unifediApiMediaAttachmentService:
+            Provider.of<IUnifediApiMediaAttachmentService>(
           context,
           listen: false,
         ),

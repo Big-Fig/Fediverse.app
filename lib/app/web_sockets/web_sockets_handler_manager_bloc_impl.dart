@@ -1,3 +1,4 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/my/websockets/my_account_websockets_handler_impl.dart';
 import 'package:fedi/app/account/websockets/account_websockets_handler_impl.dart';
@@ -13,13 +14,12 @@ import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/timeline/public/public_timeline_websockets_handler_impl.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
-import 'package:easy_dispose/easy_dispose.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
-import 'package:base_fediverse_api/base_fediverse_api.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class WebSocketsHandlerManagerBloc extends DisposableOwner
     implements IWebSocketsHandlerManagerBloc {
-  final IPleromaApiWebSocketsService pleromaWebSocketsService;
+  final IUnifediApiWebSocketsService unifediApiWebSocketsService;
   final IConversationChatRepository conversationRepository;
   final INotificationRepository notificationRepository;
   final IInstanceAnnouncementRepository instanceAnnouncementRepository;
@@ -30,7 +30,7 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
   final IMyAccountBloc myAccountBloc;
 
   WebSocketsHandlerManagerBloc({
-    required this.pleromaWebSocketsService,
+    required this.unifediApiWebSocketsService,
     required this.conversationRepository,
     required this.notificationRepository,
     required this.instanceAnnouncementRepository,
@@ -42,16 +42,16 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
 
   @override
   IDisposable listenMyAccountChannel({
-    required WebSocketsListenType listenType,
+    required WebSocketsChannelHandlerType handlerType,
     required bool notification,
     required bool chat,
   }) =>
       MyAccountWebSocketsHandler(
         myAccountBloc: myAccountBloc,
-        listenType: listenType,
+        handlerType: handlerType,
         notification: notification,
         chat: chat,
-        pleromaWebSocketsService: pleromaWebSocketsService,
+        unifediApiWebSocketsService: unifediApiWebSocketsService,
         statusRepository: statusRepository,
         conversationRepository: conversationRepository,
         notificationRepository: notificationRepository,
@@ -63,13 +63,13 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
 
   @override
   IDisposable listenAccountChannel({
-    required WebSocketsListenType listenType,
+    required WebSocketsChannelHandlerType handlerType,
     required String accountId,
     required bool notification,
   }) =>
       AccountWebSocketsHandler(
-        listenType: listenType,
-        pleromaWebSocketsService: pleromaWebSocketsService,
+        handlerType: handlerType,
+        unifediApiWebSocketsService: unifediApiWebSocketsService,
         statusRepository: statusRepository,
         conversationRepository: conversationRepository,
         notificationRepository: notificationRepository,
@@ -84,15 +84,15 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
 
   @override
   IDisposable listenPleromaChatChannel({
-    required WebSocketsListenType listenType,
+    required WebSocketsChannelHandlerType handlerType,
   }) =>
       PleromaChatWebSocketsHandler(
-        listenType: listenType,
+        handlerType: handlerType,
         notificationRepository: notificationRepository,
         instanceAnnouncementRepository: instanceAnnouncementRepository,
         conversationRepository: conversationRepository,
         statusRepository: statusRepository,
-        pleromaWebSocketsService: pleromaWebSocketsService,
+        unifediApiWebSocketsService: unifediApiWebSocketsService,
         chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
         conversationChatNewMessagesHandlerBloc:
             conversationChatNewMessagesHandlerBloc,
@@ -101,10 +101,10 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
 
   @override
   IDisposable listenConversationChannel({
-    required WebSocketsListenType listenType,
+    required WebSocketsChannelHandlerType handlerType,
   }) =>
       ConversationChatWebSocketsHandler(
-        pleromaWebSocketsService: pleromaWebSocketsService,
+        unifediApiWebSocketsService: unifediApiWebSocketsService,
         statusRepository: statusRepository,
         conversationRepository: conversationRepository,
         notificationRepository: notificationRepository,
@@ -113,25 +113,25 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
         conversationChatNewMessagesHandlerBloc:
             conversationChatNewMessagesHandlerBloc,
         accountId: null,
-        listenType: listenType,
+        handlerType: handlerType,
         myAccountBloc: myAccountBloc,
       );
 
   @override
   IDisposable listenPublicChannel({
-    required WebSocketsListenType listenType,
+    required WebSocketsChannelHandlerType handlerType,
     required bool? onlyLocal,
     required bool? onlyMedia,
     required bool? onlyRemote,
     required String? onlyFromInstance,
   }) =>
       PublicTimelineWebSocketsHandler(
-        listenType: listenType,
+        handlerType: handlerType,
         onlyLocal: onlyLocal,
         onlyMedia: onlyMedia,
         onlyRemote: onlyRemote,
         onlyFromInstance: onlyFromInstance,
-        pleromaWebSocketsService: pleromaWebSocketsService,
+        unifediApiWebSocketsService: unifediApiWebSocketsService,
         statusRepository: statusRepository,
         conversationRepository: conversationRepository,
         notificationRepository: notificationRepository,
@@ -144,15 +144,15 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
 
   @override
   IDisposable listenHashtagChannel({
-    required WebSocketsListenType listenType,
+    required WebSocketsChannelHandlerType handlerType,
     required String hashtag,
     required bool? local,
   }) =>
       HashtagStatusListWebSocketsHandler(
-        listenType: listenType,
+        handlerType: handlerType,
         hashtag: hashtag,
         local: local,
-        pleromaWebSocketsService: pleromaWebSocketsService,
+        unifediApiWebSocketsService: unifediApiWebSocketsService,
         statusRepository: statusRepository,
         conversationRepository: conversationRepository,
         notificationRepository: notificationRepository,
@@ -165,13 +165,13 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
 
   @override
   IDisposable listenListChannel({
-    required WebSocketsListenType listenType,
+    required WebSocketsChannelHandlerType handlerType,
     required String listId,
   }) =>
       CustomListStatusListWebSocketsHandler(
-        listenType: listenType,
+        handlerType: handlerType,
         customListRemoteId: listId,
-        pleromaWebSocketsService: pleromaWebSocketsService,
+        unifediApiWebSocketsService: unifediApiWebSocketsService,
         statusRepository: statusRepository,
         conversationRepository: conversationRepository,
         notificationRepository: notificationRepository,

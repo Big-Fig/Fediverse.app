@@ -1,34 +1,46 @@
 import 'package:fedi/app/account/account_model.dart';
-import 'package:fedi/json/json_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:unifedi_api/unifedi_api.dart';
+
+part 'my_account_model.freezed.dart';
 
 // ignore_for_file: no-magic-number
 part 'my_account_model.g.dart';
 
-abstract class IMyAccount extends IAccount implements IJsonObject {
-  PleromaApiMyAccountPleromaPartNotificationsSettings?
-      get pleromaNotificationSettings;
-
-  Map<String, dynamic>? get pleromaSettingsStore;
-
-  int? get pleromaUnreadNotificationsCount;
-
-  int? get pleromaUnreadConversationCount;
-
-  String? get pleromaChatToken;
-
-  bool get discoverable;
-
+abstract class IMyAccount extends IAccount implements IJsonObj {
   int? get followRequestsCount;
 
-  IPleromaApiMyAccountSource? get source;
+  bool? get discoverable;
 
-  IPleromaApiMyAccountPleromaPart? get pleroma;
+  Map<String, dynamic>? get settingsStore;
+
+  int? get unreadConversationCount;
+
+  int? get unreadNotificationsCount;
+
+  String? get chatToken;
+
+  IUnifediApiMyAccountNotificationsSettings? get notificationSettings;
+
+  bool? get showRole;
+
+  bool? get noRichText;
+
+  String? get actorType;
+
+  String? get privacy;
+
+  bool? get sensitive;
+
+  String? get language;
 
   @override
-  IMyAccount copyWith({
+  // TODO: remove old code
+  // ignore: long-parameter-list
+  IMyAccount copyWithTemp({
     int? id,
     String? remoteId,
     String? username,
@@ -47,45 +59,66 @@ abstract class IMyAccount extends IAccount implements IJsonObject {
     String? avatar,
     String? acct,
     DateTime? lastStatusAt,
-    List<PleromaApiField>? fields,
-    List<PleromaApiEmoji>? emojis,
-    List<PleromaApiTag>? pleromaTags,
-    IPleromaApiAccountRelationship? pleromaRelationship,
-    bool? pleromaIsAdmin,
-    bool? pleromaIsModerator,
-    bool? pleromaConfirmationPending,
-    bool? pleromaHideFavorites,
-    bool? pleromaHideFollowers,
-    bool? pleromaHideFollows,
-    bool? pleromaHideFollowersCount,
-    bool? pleromaHideFollowsCount,
-    bool? pleromaDeactivated,
-    bool? pleromaAllowFollowingMove,
-    bool? pleromaSkipThreadContainment,
-    String? pleromaBackgroundImage,
-    bool? pleromaAcceptsChatMessages,
-    PleromaApiMyAccountPleromaPartNotificationsSettings?
-        pleromaNotificationSettings,
-    int? pleromaUnreadConversationCount,
-    String? pleromaChatToken,
-    bool? discoverable,
+    List<UnifediApiField>? fields,
+    List<UnifediApiEmoji>? emojis,
+    List<UnifediApiTag>? tags,
+    IUnifediApiAccountRelationship? relationship,
+    bool? isAdmin,
+    bool? isModerator,
+    bool? confirmationPending,
+    bool? hideFavorites,
+    bool? hideFollowers,
+    bool? hideFollows,
+    bool? hideFollowersCount,
+    bool? hideFollowsCount,
     int? followRequestsCount,
-    IPleromaApiMyAccountSource? source,
-    Map<String, dynamic>? pleromaSettingsStore,
-    int? pleromaUnreadNotificationsCount,
-    List<String>? pleromaAlsoKnownAs,
-    String? pleromaApId,
-    String? pleromaFavicon,
-    bool? pleromaIsConfirmed,
+    bool? deactivated,
+    bool? allowFollowingMove,
+    bool? skipThreadContainment,
+    String? backgroundImage,
+    bool? acceptsChatMessages,
   });
 }
 
 extension IMyAccountPleromaExtension on IMyAccount {
-  PleromaApiMyAccount toPleromaApiMyAccount() {
-    if (this is PleromaMyAccountWrapper) {
-      return (this as PleromaMyAccountWrapper).pleromaAccount;
+  UnifediApiMyAccount toUnifediApiMyAccount() {
+    if (this is UnifediApiMyAccountWrapper) {
+      return (this as UnifediApiMyAccountWrapper).unifediApiAccount;
     } else {
-      return PleromaApiMyAccount(
+      return UnifediApiMyAccount(
+        muteExpiresAt: muteExpiresAt,
+        acceptsChatMessages: acceptsChatMessages,
+        actorType: actorType,
+        language: language,
+        notificationSettings:
+            notificationSettings?.toUnifediApiMyAccountNotificationsSettings(),
+        privacy: privacy,
+        sensitive: sensitive,
+        settingsStore: settingsStore,
+        allowFollowingMove: allowFollowingMove,
+        alsoKnownAs: alsoKnownAs,
+        apId: apId,
+        backgroundImage: backgroundImage,
+        chatToken: chatToken,
+        confirmationPending: confirmationPending,
+        deactivated: deactivated,
+        favicon: favicon,
+        hideFavorites: hideFavorites,
+        hideFollows: hideFollows,
+        hideFollowsCount: hideFollowsCount,
+        hideFollowers: hideFollowers,
+        hideFollowersCount: hideFollowersCount,
+        isAdmin: isAdmin,
+        isConfirmed: isConfirmed,
+        isModerator: isModerator,
+        noRichText: noRichText,
+        relationship: relationship?.toUnifediApiAccountRelationship(),
+        showRole: showRole,
+        skipThreadContainment: skipThreadContainment,
+        tags: tags?.toUnifediApiTagList(),
+        unreadConversationCount: unreadConversationCount,
+        unreadNotificationsCount: unreadNotificationsCount,
+        suspended: suspended,
         header: header,
         headerStatic: headerStatic,
         username: username,
@@ -96,17 +129,15 @@ extension IMyAccountPleromaExtension on IMyAccount {
         id: remoteId,
         followingCount: followingCount,
         followersCount: followersCount,
-        fields: fields?.toPleromaApiFields(),
-        emojis: emojis?.toPleromaApiEmojis(),
+        fields: fields?.toUnifediApiFieldList(),
+        emojis: emojis?.toUnifediApiEmojiList(),
         displayName: displayName,
         createdAt: createdAt,
         bot: bot,
         avatarStatic: avatarStatic,
         avatar: avatar,
         acct: acct,
-        pleroma: pleroma?.toPleromaApiMyAccountPleromaPart(),
         lastStatusAt: lastStatusAt,
-        source: source?.toPleromaApiMyAccountSource(),
         discoverable: discoverable,
         followRequestsCount: followRequestsCount,
         fqn: fqn,
@@ -116,159 +147,204 @@ extension IMyAccountPleromaExtension on IMyAccount {
 }
 
 extension IMyAccountExtension on IMyAccount {
-  PleromaMyAccountWrapper toPleromaApiMyAccountWrapper() {
-    if (this is PleromaMyAccountWrapper) {
-      return this as PleromaMyAccountWrapper;
+  UnifediApiMyAccountWrapper toUnifediApiMyAccountWrapper() {
+    if (this is UnifediApiMyAccountWrapper) {
+      return this as UnifediApiMyAccountWrapper;
     } else {
-      return PleromaMyAccountWrapper(
-        pleromaAccount: toPleromaApiMyAccount(),
+      return UnifediApiMyAccountWrapper(
+        unifediApiAccount: toUnifediApiMyAccount(),
       );
     }
   }
 }
 
-// -32 is hack for hive 0.x backward ids compatibility
-// see reservedIds in Hive,
-// which not exist in Hive 0.x
-//@HiveType()
-@HiveType(typeId: -32 + 53)
-@JsonSerializable(explicitToJson: true)
-class PleromaMyAccountWrapper extends IMyAccount {
-  @HiveField(0)
-  @JsonKey(name: 'remote_account')
-  final PleromaApiMyAccount pleromaAccount;
+@HiveType(typeId: -32 + 114)
+@freezed
+class UnifediApiMyAccountWrapper
+    with _$UnifediApiMyAccountWrapper
+    implements IMyAccount {
+  const UnifediApiMyAccountWrapper._();
 
-  PleromaMyAccountWrapper({
-    required this.pleromaAccount,
-  });
+  const factory UnifediApiMyAccountWrapper({
+    @HiveField(0)
+    @JsonKey(name: 'remote_account')
+        required UnifediApiMyAccount unifediApiAccount,
+  }) = _UnifediApiMyAccountWrapper;
 
   @override
-  IPleromaApiMyAccountSource? get source => pleromaAccount.source;
+  bool? get discoverable => unifediApiAccount.discoverable;
 
   @override
-  IPleromaApiMyAccountPleromaPart? get pleroma => pleromaAccount.pleroma;
+  String get acct => unifediApiAccount.acct;
 
   @override
-  bool get discoverable =>
-      pleromaAccount.discoverable ?? source?.pleroma?.discoverable ?? false;
+  String get avatar => unifediApiAccount.avatar;
 
   @override
-  String get acct => pleromaAccount.acct;
+  String get avatarStatic => unifediApiAccount.avatarStatic;
 
   @override
-  String get avatar => pleromaAccount.avatar;
+  bool? get bot => unifediApiAccount.bot;
 
   @override
-  String get avatarStatic => pleromaAccount.avatarStatic;
+  DateTime get createdAt => unifediApiAccount.createdAt;
 
   @override
-  bool? get bot => pleromaAccount.bot;
+  String? get displayName => unifediApiAccount.displayName;
 
   @override
-  DateTime get createdAt => pleromaAccount.createdAt;
+  List<IUnifediApiEmoji>? get emojis => unifediApiAccount.emojis;
 
   @override
-  String? get displayName => pleromaAccount.displayName;
+  List<IUnifediApiField>? get fields => unifediApiAccount.fields;
 
   @override
-  List<IPleromaApiEmoji>? get emojis => pleromaAccount.emojis;
+  int? get followersCount => unifediApiAccount.followersCount;
 
   @override
-  List<IPleromaApiField>? get fields => pleromaAccount.fields;
+  int? get followingCount => unifediApiAccount.followingCount;
 
   @override
-  int get followersCount => pleromaAccount.followersCount;
+  String? get header => unifediApiAccount.header;
 
   @override
-  int get followingCount => pleromaAccount.followingCount;
+  String? get headerStatic => unifediApiAccount.headerStatic;
 
   @override
-  String get header => pleromaAccount.header;
-
-  @override
-  String get headerStatic => pleromaAccount.headerStatic;
-
-  @override
-  DateTime? get lastStatusAt => pleromaAccount.lastStatusAt;
+  DateTime? get lastStatusAt => unifediApiAccount.lastStatusAt;
 
   @override
   int? get localId => null;
 
   @override
-  bool get locked => pleromaAccount.locked;
+  bool? get locked => unifediApiAccount.locked;
 
   @override
-  String? get note => pleromaAccount.note;
+  String? get note => unifediApiAccount.note;
 
   @override
-  bool? get pleromaAllowFollowingMove =>
-      pleromaAccount.pleroma?.allowFollowingMove;
+  bool? get allowFollowingMove => unifediApiAccount.allowFollowingMove;
 
   @override
-  bool? get pleromaConfirmationPending =>
-      pleromaAccount.pleroma?.confirmationPending;
+  bool? get confirmationPending => unifediApiAccount.confirmationPending;
 
   @override
-  bool? get pleromaDeactivated => pleromaAccount.pleroma?.deactivated;
+  bool? get deactivated => unifediApiAccount.deactivated;
 
   @override
-  bool? get pleromaHideFavorites => pleromaAccount.pleroma?.hideFavorites;
+  bool? get hideFavorites => unifediApiAccount.hideFavorites;
 
   @override
-  bool? get pleromaHideFollowers => pleromaAccount.pleroma?.hideFollowers;
+  bool? get hideFollowers => unifediApiAccount.hideFollowers;
 
   @override
-  bool? get pleromaHideFollowersCount =>
-      pleromaAccount.pleroma?.hideFollowersCount;
+  bool? get hideFollowersCount => unifediApiAccount.hideFollowersCount;
 
   @override
-  bool? get pleromaHideFollows => pleromaAccount.pleroma?.hideFollows;
+  bool? get hideFollows => unifediApiAccount.hideFollows;
 
   @override
-  bool? get pleromaHideFollowsCount => pleromaAccount.pleroma?.hideFollowsCount;
+  bool? get hideFollowsCount => unifediApiAccount.hideFollowsCount;
 
   @override
-  bool? get pleromaIsAdmin => pleromaAccount.pleroma?.isAdmin;
+  bool? get isAdmin => unifediApiAccount.isAdmin;
 
   @override
-  bool? get pleromaIsModerator => pleromaAccount.pleroma?.isModerator;
+  bool? get isModerator => unifediApiAccount.isModerator;
 
   @override
-  PleromaApiAccountRelationship? get pleromaRelationship =>
-      pleromaAccount.pleroma?.relationship;
+  UnifediApiAccountRelationship? get relationship =>
+      unifediApiAccount.relationship;
 
   @override
-  bool? get pleromaSkipThreadContainment =>
-      pleromaAccount.pleroma?.skipThreadContainment;
+  bool? get skipThreadContainment => unifediApiAccount.skipThreadContainment;
 
   @override
-  List<PleromaApiTag>? get pleromaTags => pleromaAccount.pleroma?.tags;
+  List<UnifediApiTag>? get tags => unifediApiAccount.tags;
 
   @override
-  String get remoteId => pleromaAccount.id;
+  String get remoteId => unifediApiAccount.id;
 
   @override
-  int get statusesCount => pleromaAccount.statusesCount;
+  int? get statusesCount => unifediApiAccount.statusesCount;
 
   @override
-  String get url => pleromaAccount.url;
+  String get url => unifediApiAccount.url;
 
   @override
-  String get username => pleromaAccount.username;
+  String get username => unifediApiAccount.username;
 
   @override
-  int? get followRequestsCount =>
-      // pleroma
-      pleromaAccount.followRequestsCount ??
-      // mastodon
-      pleromaAccount.source?.followRequestsCount;
+  int? get followRequestsCount => unifediApiAccount.followRequestsCount;
 
   @override
-  String? get fqn => pleromaAccount.fqn;
+  String? get fqn => unifediApiAccount.fqn;
 
   @override
-  // ignore: long-parameter-list, code-metrics, long-method
-  IMyAccount copyWith({
+  String? get chatToken => unifediApiAccount.chatToken;
+
+  @override
+  UnifediApiMyAccountNotificationsSettings? get notificationSettings =>
+      unifediApiAccount.notificationSettings;
+
+  @override
+  Map<String, dynamic>? get settingsStore => unifediApiAccount.settingsStore;
+
+  @override
+  int? get unreadConversationCount => unifediApiAccount.unreadConversationCount;
+
+  @override
+  int? get unreadNotificationsCount =>
+      unifediApiAccount.unreadNotificationsCount;
+
+  @override
+  bool? get acceptsChatMessages => unifediApiAccount.acceptsChatMessages;
+
+  @override
+  List<String>? get alsoKnownAs => unifediApiAccount.alsoKnownAs;
+
+  @override
+  String? get apId => unifediApiAccount.apId;
+
+  @override
+  String? get favicon => unifediApiAccount.favicon;
+
+  @override
+  bool? get isConfirmed => unifediApiAccount.isConfirmed;
+
+  @override
+  String? get backgroundImage => unifediApiAccount.backgroundImage;
+
+  factory UnifediApiMyAccountWrapper.fromJson(Map<String, dynamic> json) =>
+      _$UnifediApiMyAccountWrapperFromJson(json);
+
+  @override
+  String? get actorType => unifediApiAccount.actorType;
+
+  @override
+  String? get language => unifediApiAccount.language;
+
+  @override
+  DateTime? get muteExpiresAt => unifediApiAccount.muteExpiresAt;
+
+  @override
+  bool? get noRichText => unifediApiAccount.noRichText;
+
+  @override
+  String? get privacy => unifediApiAccount.privacy;
+
+  @override
+  bool? get sensitive => unifediApiAccount.sensitive;
+
+  @override
+  bool? get showRole => unifediApiAccount.showRole;
+
+  @override
+  bool? get suspended => unifediApiAccount.suspended;
+
+  @override
+  // ignore: long-parameter-list, long-method
+  IMyAccount copyWithTemp({
     int? id,
     String? remoteId,
     String? username,
@@ -287,160 +363,95 @@ class PleromaMyAccountWrapper extends IMyAccount {
     String? avatar,
     String? acct,
     DateTime? lastStatusAt,
-    List<PleromaApiField>? fields,
-    List<PleromaApiEmoji>? emojis,
-    List<PleromaApiTag>? pleromaTags,
-    IPleromaApiAccountRelationship? pleromaRelationship,
-    bool? pleromaIsAdmin,
-    bool? pleromaIsModerator,
-    bool? pleromaConfirmationPending,
-    bool? pleromaHideFavorites,
-    bool? pleromaHideFollowers,
-    bool? pleromaHideFollows,
-    bool? pleromaHideFollowersCount,
-    bool? pleromaHideFollowsCount,
-    bool? pleromaDeactivated,
-    bool? pleromaAllowFollowingMove,
-    bool? pleromaSkipThreadContainment,
-    String? pleromaBackgroundImage,
-    bool? pleromaAcceptsChatMessages,
-    PleromaApiMyAccountPleromaPartNotificationsSettings?
-        pleromaNotificationSettings,
-    int? pleromaUnreadConversationCount,
-    String? pleromaChatToken,
-    bool? discoverable,
+    List<UnifediApiField>? fields,
+    List<UnifediApiEmoji>? emojis,
+    List<UnifediApiTag>? tags,
+    IUnifediApiAccountRelationship? relationship,
+    bool? isAdmin,
+    bool? isModerator,
+    bool? confirmationPending,
+    bool? hideFavorites,
+    bool? hideFollowers,
+    bool? hideFollows,
+    bool? hideFollowersCount,
+    bool? hideFollowsCount,
     int? followRequestsCount,
-    IPleromaApiMyAccountSource? source,
-    Map<String, dynamic>? pleromaSettingsStore,
-    int? pleromaUnreadNotificationsCount,
-    List<String>? pleromaAlsoKnownAs,
-    String? pleromaApId,
-    String? pleromaFavicon,
-    bool? pleromaIsConfirmed,
+    bool? deactivated,
+    bool? allowFollowingMove,
+    bool? skipThreadContainment,
+    String? backgroundImage,
+    bool? acceptsChatMessages,
   }) =>
-      PleromaMyAccountWrapper(
-        pleromaAccount: pleromaAccount.copyWith(
-          id: remoteId,
-          username: username,
-          url: url,
-          note: note,
-          locked: locked,
-          headerStatic: headerStatic,
-          header: header,
-          followingCount: followingCount,
-          followersCount: followersCount,
-          statusesCount: statusesCount,
-          displayName: displayName,
-          createdAt: createdAt,
-          bot: bot,
-          avatarStatic: avatarStatic,
-          avatar: avatar,
-          acct: acct,
-          lastStatusAt: lastStatusAt,
-          fields: fields,
-          emojis: emojis,
-          source: source?.toPleromaApiMyAccountSource(),
-          fqn: fqn,
-          discoverable: discoverable,
-          followRequestsCount: followRequestsCount,
-          pleroma: PleromaApiMyAccountPleromaPart(
-            tags: pleromaTags?.toPleromaApiTags() ?? this.pleromaTags,
-            relationship:
-                pleromaRelationship?.toPleromaApiAccountRelationship() ??
-                    this.pleromaRelationship,
-            isAdmin: pleromaIsAdmin ?? this.pleromaIsAdmin,
-            isModerator: pleromaIsModerator ?? this.pleromaIsModerator,
-            confirmationPending:
-                pleromaConfirmationPending ?? this.pleromaConfirmationPending,
-            hideFavorites: pleromaHideFavorites ?? this.pleromaHideFavorites,
-            hideFollowers: pleromaHideFollowers ?? this.pleromaHideFollowers,
-            hideFollows: pleromaHideFollows ?? this.pleromaHideFollows,
-            hideFollowersCount:
-                pleromaHideFollowersCount ?? this.pleromaHideFollowersCount,
-            hideFollowsCount:
-                pleromaHideFollowsCount ?? this.pleromaHideFollowsCount,
-            deactivated: pleromaDeactivated ?? this.pleromaDeactivated,
-            allowFollowingMove:
-                pleromaAllowFollowingMove ?? this.pleromaAllowFollowingMove,
-            skipThreadContainment: pleromaSkipThreadContainment ??
-                this.pleromaSkipThreadContainment,
-            unreadConversationCount: pleromaUnreadConversationCount ??
-                this.pleromaUnreadConversationCount,
-            unreadNotificationsCount: pleromaUnreadNotificationsCount ??
-                this.pleromaUnreadNotificationsCount,
-            notificationSettings:
-                pleromaNotificationSettings ?? this.pleromaNotificationSettings,
-            settingsStore: pleromaSettingsStore ?? this.pleromaSettingsStore,
-            alsoKnownAs: pleromaAlsoKnownAs ?? this.pleromaAlsoKnownAs,
-            backgroundImage:
-                pleromaBackgroundImage ?? this.pleromaBackgroundImage,
-            apId: pleromaApId ?? this.pleromaApId,
-            acceptsChatMessages:
-                pleromaAcceptsChatMessages ?? this.pleromaAcceptsChatMessages,
-            chatToken: pleromaChatToken ?? this.pleromaChatToken,
-            favicon: pleromaFavicon ?? this.pleromaFavicon,
-            isConfirmed: pleromaIsConfirmed ?? this.pleromaIsConfirmed,
-          ),
+      UnifediApiMyAccountWrapper(
+        unifediApiAccount: UnifediApiMyAccount(
+          header: header ?? unifediApiAccount.header,
+          headerStatic: headerStatic ?? unifediApiAccount.headerStatic,
+          username: username ?? unifediApiAccount.username,
+          url: url ?? unifediApiAccount.url,
+          statusesCount: statusesCount ?? unifediApiAccount.statusesCount,
+          note: note ?? unifediApiAccount.note,
+          locked: locked ?? unifediApiAccount.locked,
+          id: remoteId ?? unifediApiAccount.id,
+          followingCount: followingCount ?? unifediApiAccount.followingCount,
+          followersCount: followersCount ?? unifediApiAccount.followersCount,
+          fields: fields ?? unifediApiAccount.fields?.toUnifediApiFieldList(),
+          emojis: emojis ?? unifediApiAccount.emojis?.toUnifediApiEmojiList(),
+          displayName: displayName ?? unifediApiAccount.displayName,
+          createdAt: createdAt ?? unifediApiAccount.createdAt,
+          bot: bot ?? unifediApiAccount.bot,
+          avatarStatic: avatarStatic ?? unifediApiAccount.avatarStatic,
+          avatar: avatar ?? unifediApiAccount.avatar,
+          acct: acct ?? unifediApiAccount.acct,
+          suspended: suspended ?? unifediApiAccount.suspended,
+          muteExpiresAt: muteExpiresAt ?? unifediApiAccount.muteExpiresAt,
+          lastStatusAt: lastStatusAt ?? unifediApiAccount.lastStatusAt,
+          discoverable: discoverable ?? unifediApiAccount.discoverable,
+          followRequestsCount:
+              followRequestsCount ?? unifediApiAccount.followRequestsCount,
+          fqn: fqn ?? unifediApiAccount.fqn,
+          backgroundImage: backgroundImage ?? unifediApiAccount.backgroundImage,
+          tags: tags ?? unifediApiAccount.tags?.toUnifediApiTagList(),
+          relationship: (relationship ?? unifediApiAccount.relationship)
+              ?.toUnifediApiAccountRelationship(),
+          isAdmin: isAdmin ?? unifediApiAccount.isAdmin,
+          isModerator: isModerator ?? unifediApiAccount.isModerator,
+          confirmationPending:
+              confirmationPending ?? unifediApiAccount.confirmationPending,
+          hideFavorites: hideFavorites ?? unifediApiAccount.hideFavorites,
+          hideFollowers: hideFollowers ?? unifediApiAccount.hideFollowers,
+          hideFollows: hideFollows ?? unifediApiAccount.hideFollows,
+          hideFollowersCount:
+              hideFollowersCount ?? unifediApiAccount.hideFollowersCount,
+          hideFollowsCount:
+              hideFollowsCount ?? unifediApiAccount.hideFollowsCount,
+          settingsStore: settingsStore ?? unifediApiAccount.settingsStore,
+          chatToken: chatToken ?? unifediApiAccount.chatToken,
+          deactivated: deactivated ?? unifediApiAccount.deactivated,
+          allowFollowingMove:
+              allowFollowingMove ?? unifediApiAccount.allowFollowingMove,
+          unreadConversationCount: unreadConversationCount ??
+              unifediApiAccount.unreadConversationCount,
+          skipThreadContainment:
+              skipThreadContainment ?? unifediApiAccount.skipThreadContainment,
+          notificationSettings:
+              (notificationSettings ?? unifediApiAccount.notificationSettings)
+                  ?.toUnifediApiMyAccountNotificationsSettings(),
+          acceptsChatMessages:
+              acceptsChatMessages ?? unifediApiAccount.acceptsChatMessages,
+          isConfirmed: isConfirmed ?? unifediApiAccount.isConfirmed,
+          favicon: favicon ?? unifediApiAccount.favicon,
+          apId: apId ?? unifediApiAccount.apId,
+          alsoKnownAs: alsoKnownAs ?? unifediApiAccount.alsoKnownAs,
+          unreadNotificationsCount: unreadNotificationsCount ??
+              unifediApiAccount.unreadNotificationsCount,
+          noRichText: noRichText ?? unifediApiAccount.noRichText,
+          actorType: actorType ?? unifediApiAccount.actorType,
+          showRole: showRole ?? unifediApiAccount.showRole,
+          language: language ?? unifediApiAccount.language,
+          privacy: privacy ?? unifediApiAccount.privacy,
+          sensitive: sensitive ?? unifediApiAccount.sensitive,
         ),
       );
-
-  @override
-  String? get pleromaChatToken => pleromaAccount.pleroma?.chatToken;
-
-  @override
-  PleromaApiMyAccountPleromaPartNotificationsSettings?
-      get pleromaNotificationSettings =>
-          pleromaAccount.pleroma?.notificationSettings;
-
-  @override
-  Map<String, dynamic>? get pleromaSettingsStore =>
-      pleromaAccount.pleroma?.settingsStore;
-
-  @override
-  int? get pleromaUnreadConversationCount =>
-      pleromaAccount.pleroma?.unreadConversationCount;
-
-  @override
-  int? get pleromaUnreadNotificationsCount =>
-      pleromaAccount.pleroma?.unreadNotificationsCount;
-
-  @override
-  bool? get pleromaAcceptsChatMessages =>
-      pleromaAccount.pleroma?.acceptsChatMessages;
-
-  @override
-  List<String>? get pleromaAlsoKnownAs => pleromaAccount.pleroma?.alsoKnownAs;
-
-  @override
-  String? get pleromaApId => pleromaAccount.pleroma?.apId;
-
-  @override
-  String? get pleromaFavicon => pleromaAccount.pleroma?.favicon;
-
-  @override
-  bool? get pleromaIsConfirmed => pleromaAccount.pleroma?.isConfirmed;
-
-  @override
-  String toString() => 'MyAccountRemoteWrapper{remoteAccount: $pleromaAccount}';
-
-  @override
-  String? get pleromaBackgroundImage => pleromaAccount.pleroma?.backgroundImage;
-
-  static PleromaMyAccountWrapper fromJson(Map<String, dynamic> json) =>
-      _$PleromaMyAccountWrapperFromJson(json);
-
-  @override
-  Map<String, dynamic> toJson() => _$PleromaMyAccountWrapperToJson(this);
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is PleromaMyAccountWrapper &&
-          runtimeType == other.runtimeType &&
-          pleromaAccount == other.pleromaAccount;
-
-  @override
-  int get hashCode => pleromaAccount.hashCode;
 }
 
 class SelfActionNotPossibleException implements Exception {

@@ -1,14 +1,15 @@
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/chat/pleroma/pleroma_chat_bloc.dart';
 import 'package:fedi/app/chat/pleroma/post/pleroma_chat_post_message_bloc.dart';
 import 'package:fedi/app/chat/pleroma/post/pleroma_chat_post_message_bloc_proxy_provider.dart';
 import 'package:fedi/app/media/attachment/upload/upload_media_attachment_model.dart';
 import 'package:fedi/app/message/post_message_bloc_impl.dart';
+import 'package:fedi/app/status/post/settings/post_status_settings_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 var _logger = Logger('chat_post_message_bloc_impl.dart');
 
@@ -19,14 +20,16 @@ class PleromaChatPostMessageBloc extends PostMessageBloc
   PleromaChatPostMessageBloc({
     required this.pleromaChatBloc,
     required int? maximumMessageLength,
-    required IPleromaApiMediaAttachmentService pleromaMediaAttachmentService,
+    required IUnifediApiMediaAttachmentService unifediApiMediaAttachmentService,
     required int? maximumFileSizeInBytes,
+    required bool dontUploadMediaDuringEditing,
   }) : super(
           maximumMessageLength: maximumMessageLength,
           maximumMediaAttachmentCount: 1,
-          pleromaMediaAttachmentService: pleromaMediaAttachmentService,
+          unifediApiMediaAttachmentService: unifediApiMediaAttachmentService,
           maximumFileSizeInBytes: maximumFileSizeInBytes,
           unfocusOnClear: false,
+          dontUploadMediaDuringEditing: dontUploadMediaDuringEditing,
         );
 
   @override
@@ -40,21 +43,21 @@ class PleromaChatPostMessageBloc extends PostMessageBloc
     // todo: refactor
     // ignore: unawaited_futures
     pleromaChatBloc.postMessage(
-      pleromaApiChatMessageSendData: calculateSendData(),
-      pleromaApiChatMessageSendDataMediaAttachment: calculateMediaAttachment(),
+      idempotencyKey: idempotencyKey,
+      unifediApiPostChatMessage: calculateSendData(),
+      unifediApiPostChatMessageMediaAttachment: calculateMediaAttachment(),
       oldPendingFailedPleromaChatMessage: null,
     );
 
     clear();
   }
 
-  PleromaApiChatMessageSendData calculateSendData() {
+  UnifediApiPostChatMessage calculateSendData() {
     var mediaId = calculateMediaAttachmentId();
 
-    var data = PleromaApiChatMessageSendData(
+    var data = UnifediApiPostChatMessage(
       content: inputText,
       mediaId: mediaId,
-      idempotencyKey: idempotencyKey,
     );
     _logger.finest(() => 'calculateSendData data=$data');
 
@@ -65,15 +68,15 @@ class PleromaChatPostMessageBloc extends PostMessageBloc
     return calculateMediaAttachment()?.id;
   }
 
-  IPleromaApiMediaAttachment? calculateMediaAttachment() {
+  IUnifediApiMediaAttachment? calculateMediaAttachment() {
     var mediaAttachmentBlocs =
         uploadMediaAttachmentsBloc.uploadMediaAttachmentBlocs.where(
       (bloc) =>
           bloc.uploadState.type == UploadMediaAttachmentStateType.uploaded,
     );
-    IPleromaApiMediaAttachment? mediaAttachment;
+    IUnifediApiMediaAttachment? mediaAttachment;
     if (mediaAttachmentBlocs.isNotEmpty) {
-      mediaAttachment = mediaAttachmentBlocs.first.pleromaMediaAttachment;
+      mediaAttachment = mediaAttachmentBlocs.first.unifediApiMediaAttachment;
     }
 
     return mediaAttachment;
@@ -83,7 +86,7 @@ class PleromaChatPostMessageBloc extends PostMessageBloc
     BuildContext context, {
     required String? chatRemoteId,
   }) {
-    var info = ICurrentAuthInstanceBloc.of(context, listen: false)
+    var info = ICurrentUnifediApiAccessBloc.of(context, listen: false)
         .currentInstance!
         .info!;
 
@@ -92,13 +95,17 @@ class PleromaChatPostMessageBloc extends PostMessageBloc
         context,
         listen: false,
       ),
-      pleromaMediaAttachmentService:
-          Provider.of<IPleromaApiMediaAttachmentService>(
+      unifediApiMediaAttachmentService:
+          Provider.of<IUnifediApiMediaAttachmentService>(
         context,
         listen: false,
       ),
-      maximumMessageLength: info.chatLimit,
-      maximumFileSizeInBytes: info.uploadLimit,
+      dontUploadMediaDuringEditing: IPostStatusSettingsBloc.of(
+        context,
+        listen: false,
+      ).dontUploadMediaDuringEditing,
+      maximumMessageLength: info.limits?.chat?.messageLimit,
+      maximumFileSizeInBytes: info.limits?.media?.uploadLimit,
     );
   }
 

@@ -24,7 +24,6 @@ import 'package:fedi/app/ui/spacer/fedi_big_horizontal_spacer.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/dialog/dialog_model.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -357,54 +356,40 @@ class _NotificationListItemContentWidget extends StatelessWidget {
     BuildContext context,
     INotificationBloc notificationBloc,
   ) {
-    String rawText;
-
-    switch (notificationBloc.typePleroma) {
-      case PleromaApiNotificationType.follow:
-        rawText = S.of(context).app_notification_header_follow;
-        break;
-      case PleromaApiNotificationType.favourite:
-        rawText = S.of(context).app_notification_header_favourite;
-        break;
-      case PleromaApiNotificationType.reblog:
-        rawText = S.of(context).app_notification_header_reblog;
-        break;
-      case PleromaApiNotificationType.mention:
-        rawText =
+    return notificationBloc.typeAsUnifediApi.map(
+      follow: (_) => S.of(context).app_notification_header_follow,
+      favourite: (_) => S.of(context).app_notification_header_favourite,
+      reblog: (_) => S.of(context).app_notification_header_reblog,
+      mention: (_) {
+        var rawText =
             '<b>${S.of(context).app_notification_header_mention_prefix}</b>';
         rawText += S.of(context).app_notification_header_mention_postfix(
               _extractStatusRawContent(notificationBloc)!,
             );
-        break;
-      case PleromaApiNotificationType.poll:
-        rawText = S.of(context).app_notification_header_poll;
-        break;
-      case PleromaApiNotificationType.move:
-        rawText = S.of(context).app_notification_header_move;
-        break;
-      case PleromaApiNotificationType.followRequest:
-        rawText = S.of(context).app_notification_header_followRequest;
-        break;
-      case PleromaApiNotificationType.pleromaEmojiReaction:
-        rawText = S.of(context).app_notification_header_pleromaEmojiReaction(
-              notificationBloc.notification.emoji!,
-            );
-        break;
-      case PleromaApiNotificationType.pleromaChatMention:
-        rawText =
+
+        return rawText;
+      },
+      poll: (_) => S.of(context).app_notification_header_poll,
+      move: (_) => S.of(context).app_notification_header_move,
+      followRequest: (_) => S.of(context).app_notification_header_followRequest,
+      emojiReaction: (_) =>
+          S.of(context).app_notification_header_pleromaEmojiReaction(
+                notificationBloc.notification.emoji!,
+              ),
+      chatMention: (_) {
+        var rawText =
             '<b>${S.of(context).app_notification_header_pleromaChatMention_prefix}</b>';
         rawText +=
             S.of(context).app_notification_header_pleromaChatMention_postfix(
                   _extractChatMessageRawContent(notificationBloc)!,
                 );
 
-        break;
-      case PleromaApiNotificationType.pleromaReport:
-        rawText = S.of(context).app_notification_header_report(
-              notificationBloc.account?.acct ?? '',
-            );
-        break;
-      case PleromaApiNotificationType.unknown:
+        return rawText;
+      },
+      report: (_) => S.of(context).app_notification_header_report(
+            notificationBloc.account?.acct ?? '',
+          ),
+      unknown: (_) {
         var isHaveStatus = notificationBloc.status != null;
         String? statusText;
         if (isHaveStatus) {
@@ -420,13 +405,12 @@ class _NotificationListItemContentWidget extends StatelessWidget {
         } else {
           emojiText = '';
         }
-        rawText = S.of(context).app_notification_header_unknown(
-              '${notificationBloc.type}: $emojiText $statusText',
-            );
-        break;
-    }
 
-    return rawText;
+        return S.of(context).app_notification_header_unknown(
+              '${notificationBloc.typeAsUnifediApi.stringValue}: $emojiText $statusText',
+            );
+      },
+    );
   }
 
   String? _extractStatusRawContent(INotificationBloc notificationBloc) {
@@ -489,49 +473,52 @@ class _NotificationListItemIconWidget extends StatelessWidget {
     var notificationBloc = INotificationBloc.of(context);
     var iconColor = IFediUiColorTheme.of(context).primary;
 
-    switch (notificationBloc.typePleroma) {
-      case PleromaApiNotificationType.follow:
+    notificationBloc.typeAsUnifediApi.when(
+      follow: (_) {
         iconData = FediIcons.follow;
         iconColor = IFediUiColorTheme.of(context).primary;
-        break;
-      case PleromaApiNotificationType.favourite:
+      },
+      favourite: (_) {
         iconData = FediIcons.heart_active;
         iconColor = IFediUiColorTheme.of(context).secondary;
-        break;
-      case PleromaApiNotificationType.reblog:
+      },
+      reblog: (_) {
         iconData = FediIcons.reply;
         iconColor = IFediUiColorTheme.of(context).primary;
-        break;
-      case PleromaApiNotificationType.mention:
+      },
+      mention: (_) {
         iconData = null;
-        break;
-      case PleromaApiNotificationType.poll:
+      },
+      poll: (_) {
         iconData = FediIcons.poll;
         iconColor = IFediUiColorTheme.of(context).primary;
-        break;
-      case PleromaApiNotificationType.move:
+      },
+      move: (_) {
         iconData = FediIcons.forward;
         iconColor = IFediUiColorTheme.of(context).primary;
-        break;
-      case PleromaApiNotificationType.pleromaReport:
-        iconData = FediIcons.report;
-        iconColor = IFediUiColorTheme.of(context).error;
-        break;
-      case PleromaApiNotificationType.followRequest:
+      },
+      followRequest: (_) {
         iconData = FediIcons.add_user;
         iconColor = IFediUiColorTheme.of(context).primary;
-        break;
-      case PleromaApiNotificationType.pleromaEmojiReaction:
+      },
+      // ignore: no-equal-arguments
+      emojiReaction: (_) {
         iconData = null;
-        break;
-      case PleromaApiNotificationType.pleromaChatMention:
+      },
+      chatMention: (_) {
         iconData = FediIcons.chat;
         iconColor = IFediUiColorTheme.of(context).primary;
-        break;
-      case PleromaApiNotificationType.unknown:
+      },
+      report: (_) {
+        iconData = FediIcons.report;
+        iconColor = IFediUiColorTheme.of(context).error;
+      },
+
+      // ignore: no-equal-arguments
+      unknown: (_) {
         iconData = null;
-        break;
-    }
+      },
+    );
 
     if (iconData != null) {
       return Padding(

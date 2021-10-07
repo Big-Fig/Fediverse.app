@@ -105,7 +105,7 @@ Future<AsyncDialogResult<T?>> doAsyncOperationWithDialog<T>({
 
   AsyncDialogResult<T> dialogResult;
   if (progressDialog?.isCanceled == true) {
-    dialogResult = AsyncDialogResult<T>.canceled();
+    dialogResult = AsyncDialogResult.withCancel();
     _logger.fine(() => 'canceled doAsyncOperationWithFediDialog');
   } else if (error != null) {
     if (errorData != null) {
@@ -117,10 +117,10 @@ Future<AsyncDialogResult<T?>> doAsyncOperationWithDialog<T>({
     if (needRethrow) {
       throw error;
     }
-    dialogResult = AsyncDialogResult<T>.withError(error);
+    dialogResult = AsyncDialogResult.withError(error);
   } else {
     _logger.finest(() => 'success doAsyncOperationWithFediDialog =$result}');
-    dialogResult = AsyncDialogResult<T>.success(result);
+    dialogResult = AsyncDialogResult.withResult(result!);
   }
 
   return dialogResult;

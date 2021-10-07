@@ -1,8 +1,8 @@
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
-abstract class IPleromaCachedListBloc<T> extends DisposableOwner {
-  IPleromaApi get pleromaApi;
+abstract class ICachedListBloc<T> extends DisposableOwner {
+  IUnifediApiService get unifediApi;
 
   Future<List<T>> loadLocalItems({
     required int? limit,

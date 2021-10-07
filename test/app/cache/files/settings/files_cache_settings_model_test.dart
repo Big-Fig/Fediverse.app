@@ -8,35 +8,35 @@ import 'files_cache_settings_model_test_helper.dart';
 
 void main() {
   test('equal & hashcode & toString', () async {
-    ObjTestHelper.testEqualsHashcodeToString(
+    ObjMockHelper.testEqualsHashcodeToString(
       ({required String seed}) =>
-          FilesCacheSettingsModelTestHelper.createTestFilesCacheSettings(
+          FilesCacheSettingsModelMockHelper.createTestFilesCacheSettings(
         seed: seed,
       ),
     );
   });
 
   test('toJson & fromJson', () async {
-    JsonTestHelper.testFromJsonToJson(
+    JsonMockHelper.testFromJsonToJson(
       ({required String seed}) =>
-          FilesCacheSettingsModelTestHelper.createTestFilesCacheSettings(
+          FilesCacheSettingsModelMockHelper.createTestFilesCacheSettings(
         seed: seed,
       ),
-      FilesCacheSettings.fromJson,
+      (json) => FilesCacheSettings.fromJson(json),
     );
   });
 
   test('hive save&load', () async {
-    await HiveTestHelper.testHiveSaveAndLoad(
+    await HiveMockHelper.testHiveSaveAndLoad(
       ({required String seed}) =>
-          FilesCacheSettingsModelTestHelper.createTestFilesCacheSettings(
+          FilesCacheSettingsModelMockHelper.createTestFilesCacheSettings(
         seed: seed,
       ),
     );
   });
 
   test('clone', () async {
-    var obj1 = FilesCacheSettingsModelTestHelper.createTestFilesCacheSettings(
+    var obj1 = FilesCacheSettingsModelMockHelper.createTestFilesCacheSettings(
       seed: 'seed1',
     );
 
@@ -46,16 +46,16 @@ void main() {
   });
 
   test('copyWith', () async {
-    var obj1 = FilesCacheSettingsModelTestHelper.createTestFilesCacheSettings(
+    var obj1 = FilesCacheSettingsModelMockHelper.createTestFilesCacheSettings(
       seed: 'seed1',
     );
-    var obj2 = FilesCacheSettingsModelTestHelper.createTestFilesCacheSettings(
+    var obj2 = FilesCacheSettingsModelMockHelper.createTestFilesCacheSettings(
       seed: 'seed2',
     );
 
     var obj2Obj1CopyWith = obj1.copyWith(
-      sizeLimitCountType: obj2.sizeLimitCountType,
-      ageLimitType: obj2.ageLimitType,
+      sizeLimitCountTypeString: obj2.sizeLimitCountTypeString,
+      ageLimitTypeString: obj2.ageLimitTypeString,
     );
 
     expect(obj1 == obj2, false);
@@ -64,7 +64,7 @@ void main() {
   });
 
   test('hive adapter', () async {
-    HiveTestHelper.testAdapter(
+    HiveMockHelper.testAdapter(
       () => FilesCacheSettingsAdapter(),
     );
   });

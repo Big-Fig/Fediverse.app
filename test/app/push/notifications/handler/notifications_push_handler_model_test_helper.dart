@@ -1,18 +1,17 @@
+import 'package:fedi/app/push/fedi_push_notification_model_mock_helper.dart';
 import 'package:fedi/app/push/notification/handler/notifications_push_handler_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
-
 import '../../../../push/push_model_test_helper.dart';
 
 // ignore_for_file: no-magic-number
-class PushHandlerModelTestHelper {
+class PushHandlerModelMockHelper {
   static NotificationsPushHandlerMessage createTestPushHandlerMessage({
     required String seed,
   }) =>
       NotificationsPushHandlerMessage(
-        pushMessage: PushModelTestHelper.createTestPushMessage(
+        pushMessage: PushModelMockHelper.createTestPushMessage(
           seed: seed,
         ),
-        body: PleromaApiPushTestHelper.createTestPleromaApiPushMessageBody(
+        body: FediPushNotificationMockHelper.generate(
           seed: seed,
         ),
       );

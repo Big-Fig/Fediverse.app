@@ -18,7 +18,7 @@ class NotificationsPushHandlerMessageAdapter
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return NotificationsPushHandlerMessage(
-      body: fields[0] as PleromaApiPushMessageBody,
+      body: fields[0] as FediPushNotification,
       pushMessage: fields[1] as PushMessage,
     );
   }
@@ -48,18 +48,16 @@ class NotificationsPushHandlerMessageAdapter
 // JsonSerializableGenerator
 // **************************************************************************
 
-NotificationsPushHandlerMessage _$NotificationsPushHandlerMessageFromJson(
-    Map<String, dynamic> json) {
-  return NotificationsPushHandlerMessage(
-    body: PleromaApiPushMessageBody.fromJson(
-        json['body'] as Map<String, dynamic>),
-    pushMessage:
-        PushMessage.fromJson(json['push_message'] as Map<String, dynamic>),
-  );
-}
+_$_NotificationsPushHandlerMessage _$$_NotificationsPushHandlerMessageFromJson(
+        Map<String, dynamic> json) =>
+    _$_NotificationsPushHandlerMessage(
+      body: FediPushNotification.fromJson(json['body'] as Map<String, dynamic>),
+      pushMessage:
+          PushMessage.fromJson(json['push_message'] as Map<String, dynamic>),
+    );
 
-Map<String, dynamic> _$NotificationsPushHandlerMessageToJson(
-        NotificationsPushHandlerMessage instance) =>
+Map<String, dynamic> _$$_NotificationsPushHandlerMessageToJson(
+        _$_NotificationsPushHandlerMessage instance) =>
     <String, dynamic>{
       'body': instance.body.toJson(),
       'push_message': instance.pushMessage.toJson(),

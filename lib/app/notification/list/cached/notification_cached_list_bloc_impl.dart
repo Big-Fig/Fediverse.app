@@ -9,22 +9,21 @@ import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/notification/repository/notification_repository_model.dart';
 import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
-import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class NotificationCachedListBloc extends AsyncInitLoadingBloc
     implements INotificationCachedListBloc {
-  final IPleromaApiNotificationService pleromaNotificationService;
+  final IUnifediApiNotificationService pleromaNotificationService;
   final INotificationRepository notificationRepository;
   final IFilterRepository filterRepository;
-  final List<PleromaApiNotificationType> excludeTypes;
+  final List<UnifediApiNotificationType> excludeTypes;
 
   NotificationRepositoryFilters get _notificationRepositoryFilters =>
-      NotificationRepositoryFilters(
+      NotificationRepositoryFilters.only(
         excludeTypes: excludeTypes,
         excludeStatusTextConditions: filters
             .map(
@@ -34,7 +33,7 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
       );
 
   @override
-  IPleromaApi get pleromaApi => pleromaNotificationService;
+  IUnifediApiService get unifediApi => pleromaNotificationService;
 
   NotificationCachedListBloc({
     required this.pleromaNotificationService,
@@ -49,7 +48,7 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
   FilterRepositoryFilters get filterRepositoryFilters =>
       FilterRepositoryFilters(
         onlyWithContextTypes: [
-          MastodonApiFilterContextType.notifications,
+          UnifediApiFilterContextType.notificationsValue,
         ],
         notExpired: true,
       );
@@ -105,9 +104,12 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
   }) async {
     // todo: dont exclude pleroma types on mastodon instances
     var remoteNotifications = await pleromaNotificationService.getNotifications(
-      pagination: PleromaApiPaginationRequest(
+      includeTypes: null,
+      excludeVisibilities: null,
+      onlyFromAccountId: null,
+      pagination: UnifediApiPagination(
         limit: limit,
-        sinceId: newerThan?.remoteId,
+        minId: newerThan?.remoteId,
         maxId: olderThan?.remoteId,
       ),
       excludeTypes: excludeTypes,
@@ -121,10 +123,10 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
 
   static NotificationCachedListBloc createFromContext(
     BuildContext context, {
-    required List<PleromaApiNotificationType> excludeTypes,
+    required List<UnifediApiNotificationType> excludeTypes,
   }) =>
       NotificationCachedListBloc(
-        pleromaNotificationService: Provider.of<IPleromaApiNotificationService>(
+        pleromaNotificationService: Provider.of<IUnifediApiNotificationService>(
           context,
           listen: false,
         ),
@@ -141,7 +143,7 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
 
   static Widget provideToContext(
     BuildContext context, {
-    required List<PleromaApiNotificationType> excludeTypes,
+    required List<UnifediApiNotificationType> excludeTypes,
     required Widget child,
   }) {
     return DisposableProvider<INotificationCachedListBloc>(

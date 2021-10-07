@@ -6,8 +6,8 @@ import 'package:fedi/app/toast/handling_type/toast_handling_type_model.dart';
 import 'package:fedi/app/toast/settings/local_preferences/toast_settings_local_preference_bloc.dart';
 import 'package:fedi/app/toast/settings/toast_settings_bloc.dart';
 import 'package:fedi/app/toast/settings/toast_settings_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:logging/logging.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 final _logger = Logger('toast_settings_bloc_impl.dart');
 
@@ -127,33 +127,33 @@ class ToastSettingsBloc
   }
 
   @override
-  bool get pleromaChatMention => pushSettings.pleromaChatMention == true;
+  bool get chatMention => pushSettings.chatMention == true;
 
   @override
-  Stream<bool> get pleromaChatMentionStream =>
-      pushSettingsStream.map((settings) => settings.pleromaChatMention == true);
+  Stream<bool> get chatMentionStream =>
+      pushSettingsStream.map((settings) => settings.chatMention == true);
 
   @override
-  Future changePleromaChatMention(bool value) {
+  Future changeChatMention(bool value) {
     return changePushSettings(
       pushSettings.copyWith(
-        pleromaChatMention: value,
+        chatMention: value,
       ),
     );
   }
 
   @override
-  bool get pleromaEmojiReaction => pushSettings.pleromaEmojiReaction == true;
+  bool get emojiReaction => pushSettings.emojiReaction == true;
 
   @override
-  Stream<bool> get pleromaEmojiReactionStream => pushSettingsStream
-      .map((settings) => settings.pleromaEmojiReaction == true);
+  Stream<bool> get emojiReactionStream =>
+      pushSettingsStream.map((settings) => settings.emojiReaction == true);
 
   @override
-  Future changePleromaEmojiReaction(bool value) {
+  Future changeEmojiReaction(bool value) {
     return changePushSettings(
       pushSettings.copyWith(
-        pleromaEmojiReaction: value,
+        emojiReaction: value,
       ),
     );
   }
@@ -169,7 +169,7 @@ class ToastSettingsBloc
   Future changeHandlingType(ToastHandlingType value) {
     return updateSettings(
       settingsData.copyWith(
-        handlingType: value,
+        handlingTypeString: value.toJsonValue(),
       ),
     );
   }
@@ -189,45 +189,25 @@ class ToastSettingsBloc
 
   @override
   bool isNotificationTypeEnabled(
-    PleromaApiNotificationType pleromaNotificationType,
-  ) {
-    switch (pleromaNotificationType) {
-      case PleromaApiNotificationType.follow:
-        return follow;
-
-      case PleromaApiNotificationType.favourite:
-        return favourite;
-
-      case PleromaApiNotificationType.reblog:
-        return reblog;
-
-      case PleromaApiNotificationType.mention:
-        return mention;
-
-      case PleromaApiNotificationType.poll:
-        return poll;
-
-      case PleromaApiNotificationType.move:
+    UnifediApiNotificationType unifediApiNotificationType,
+  ) =>
+      unifediApiNotificationType.map(
+        follow: (_) => follow,
+        favourite: (_) => favourite,
+        reblog: (_) => reblog,
+        mention: (_) => mention,
+        poll: (_) => poll,
         // todo: handle move type?
-        return false;
-
-      case PleromaApiNotificationType.pleromaReport:
-        // todo: pleromaReport move type?
-        return false;
-
-      case PleromaApiNotificationType.followRequest:
-        // todo: handle followRequest type?
-        return false;
-
-      case PleromaApiNotificationType.pleromaEmojiReaction:
-        return pleromaEmojiReaction;
-
-      case PleromaApiNotificationType.pleromaChatMention:
-        return pleromaChatMention;
-
-      case PleromaApiNotificationType.unknown:
-        // todo: handle unknown type?
-        return true;
-    }
-  }
+        move: (_) => false,
+        // todo: handle move type?
+        // ignore:no-equal-arguments
+        followRequest: (_) => false,
+        emojiReaction: (_) => emojiReaction,
+        chatMention: (_) => chatMention,
+        // todo: handle report type?
+        // ignore:no-equal-arguments
+        report: (_) => false,
+        // display unknown by default
+        unknown: (_) => true,
+      );
 }

@@ -3,24 +3,24 @@ import 'package:fedi/app/chat/conversation/status/list/cached/conversation_chat_
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 var _logger =
     Logger('conversation_chat_status_list_context_api_bloc_impl.dart');
 
 class ConversationChatStatusListContextApiBloc
     extends ConversationChatStatusListBloc {
-  final IPleromaApiStatusService pleromaStatusService;
+  final IUnifediApiStatusService unifediApiStatusService;
   final IStatus? statusToFetchContext;
 
   @override
   InstanceLocation get instanceLocation => InstanceLocation.local;
 
   ConversationChatStatusListContextApiBloc({
-    required this.pleromaStatusService,
+    required this.unifediApiStatusService,
     required IConversationChat? conversation,
     required this.statusToFetchContext,
     required IStatusRepository statusRepository,
@@ -30,7 +30,7 @@ class ConversationChatStatusListContextApiBloc
         );
 
   @override
-  IPleromaApi get pleromaApi => pleromaStatusService;
+  IUnifediApiService get unifediApi => unifediApiStatusService;
 
   @override
   Future refreshItemsFromRemoteForPage({
@@ -49,11 +49,11 @@ class ConversationChatStatusListContextApiBloc
       // context dont support load more pagination
       return false;
     }
-    var remoteContext = await pleromaStatusService.getStatusContext(
-      statusRemoteId: statusToFetchContext!.remoteId!,
+    var remoteContext = await unifediApiStatusService.getStatusContext(
+      statusId: statusToFetchContext!.remoteId!,
     );
 
-    var remoteStatuses = <IPleromaApiStatus>[
+    var remoteStatuses = <IUnifediApiStatus>[
       ...remoteContext.descendants,
       ...remoteContext.ancestors,
     ];
@@ -72,8 +72,8 @@ class ConversationChatStatusListContextApiBloc
   }) =>
       ConversationChatStatusListContextApiBloc(
         conversation: conversation,
-        pleromaStatusService:
-            Provider.of<IPleromaApiStatusService>(context, listen: false),
+        unifediApiStatusService:
+            Provider.of<IUnifediApiStatusService>(context, listen: false),
         statusRepository: IStatusRepository.of(context, listen: false),
         statusToFetchContext: statusToFetchContext,
       );

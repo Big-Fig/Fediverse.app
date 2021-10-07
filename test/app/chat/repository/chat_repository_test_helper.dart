@@ -2,7 +2,7 @@ import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository_impl.da
 import 'package:fedi/app/database/app_database.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-class ChatRepositoryTestHelper {
+class ChatRepositoryMockHelper {
   static Future<DbChat> insertDbChat(
     PleromaChatRepository chatRepository,
     DbChat chatData,

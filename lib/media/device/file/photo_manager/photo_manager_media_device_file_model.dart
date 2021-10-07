@@ -3,39 +3,32 @@ import 'dart:io';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
 import 'package:fedi/media/device/photo_manager_media_device_adapter.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:photo_manager/photo_manager.dart';
+
+part 'photo_manager_media_device_file_model.freezed.dart';
 
 var _logger = Logger('photo_manager_media_device_file_model.dart');
 
 const _heicExtension = '.heic';
 const int _jpegQuality = 88;
 
-class PhotoManagerMediaDeviceFileMetadata implements IMediaDeviceFileMetadata {
-  final AssetEntity assetEntity;
+@freezed
+class PhotoManagerMediaDeviceFileMetadata
+    with _$PhotoManagerMediaDeviceFileMetadata
+    implements IMediaDeviceFileMetadata {
+  const PhotoManagerMediaDeviceFileMetadata._();
 
-  final bool isNeedDeleteAfterUsage;
+  const factory PhotoManagerMediaDeviceFileMetadata({
+    required AssetEntity assetEntity,
+    required bool isNeedDeleteAfterUsage,
+  }) = _PhotoManagerMediaDeviceFileMetadata;
 
   @override
   MediaDeviceFileType get type => assetEntity.type.mapToMediaDeviceFileType();
-
-  PhotoManagerMediaDeviceFileMetadata({
-    required this.assetEntity,
-    required this.isNeedDeleteAfterUsage,
-  });
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is PhotoManagerMediaDeviceFileMetadata &&
-          runtimeType == other.runtimeType &&
-          assetEntity == other.assetEntity &&
-          isNeedDeleteAfterUsage == other.isNeedDeleteAfterUsage;
-
-  @override
-  int get hashCode => assetEntity.hashCode ^ isNeedDeleteAfterUsage.hashCode;
 
   @override
   String get deviceId => assetEntity.id;
@@ -96,39 +89,18 @@ class PhotoManagerMediaDeviceFileMetadata implements IMediaDeviceFileMetadata {
 
     return result!;
   }
-
-  @override
-  String toString() {
-    return 'PhotoManagerMediaDeviceFileMetadata{'
-        'assetEntity: $assetEntity,'
-        ' isNeedDeleteAfterUsage: $isNeedDeleteAfterUsage}';
-  }
 }
 
-class PhotoManagerMediaDeviceFile implements IMediaDeviceFile {
-  @override
-  final PhotoManagerMediaDeviceFileMetadata metadata;
-  final File? reCompressedFile;
+@freezed
+class PhotoManagerMediaDeviceFile
+    with _$PhotoManagerMediaDeviceFile
+    implements IMediaDeviceFile {
+  const PhotoManagerMediaDeviceFile._();
 
-  PhotoManagerMediaDeviceFile({
-    required this.metadata,
-    required this.reCompressedFile,
-  });
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is PhotoManagerMediaDeviceFile &&
-          runtimeType == other.runtimeType &&
-          metadata == other.metadata;
-
-  @override
-  int get hashCode => metadata.hashCode;
-
-  @override
-  String toString() {
-    return 'PhotoManagerMediaDeviceFile{metadata: $metadata}';
-  }
+  const factory PhotoManagerMediaDeviceFile({
+    required PhotoManagerMediaDeviceFileMetadata metadata,
+    required File? reCompressedFile,
+  }) = _PhotoManagerMediaDeviceFile;
 
   @override
   Future<File> loadFile() async {

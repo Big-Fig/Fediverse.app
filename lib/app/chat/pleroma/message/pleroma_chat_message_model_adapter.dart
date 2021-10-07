@@ -1,9 +1,9 @@
 import 'package:collection/collection.dart';
 import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
 import 'package:fedi/app/database/app_database.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
-extension IPleromaApiChatMessageExtension on IPleromaApiChatMessage {
+extension IUnifediApiChatMessageExtension on IUnifediApiChatMessage {
   DbPleromaChatMessagePopulatedWrapper toDbChatMessagePopulatedWrapper({
     required DbAccount? dbAccount,
   }) {
@@ -29,9 +29,9 @@ extension IPleromaApiChatMessageExtension on IPleromaApiChatMessage {
       remoteId: id,
       createdAt: createdAt,
       content: content,
-      emojis: emojis?.toPleromaApiEmojis(),
-      card: card?.toPleromaApiCard(),
-      mediaAttachment: mediaAttachment?.toPleromaApiMediaAttachment(),
+      emojis: emojis?.toUnifediApiEmojiList(),
+      card: card?.toUnifediApiCard(),
+      mediaAttachment: mediaAttachment?.toUnifediApiMediaAttachment(),
       accountRemoteId: accountId,
       chatRemoteId: chatId,
       hiddenLocallyOnDevice: false,
@@ -44,17 +44,17 @@ extension IPleromaApiChatMessageExtension on IPleromaApiChatMessage {
 }
 
 extension IPleromaChatMessagePleromaExtension on IPleromaChatMessage {
-  PleromaApiChatMessage toPleromaApiChatMessage() {
-    return PleromaApiChatMessage(
+  UnifediApiChatMessage toUnifediApiChatMessage() {
+    return UnifediApiChatMessage(
       id: remoteId,
       createdAt: createdAt,
       content: content,
-      emojis: emojis?.toPleromaApiEmojis(),
+      emojis: emojis?.toUnifediApiEmojiList(),
       mediaAttachment:
-          mediaAttachments?.singleOrNull?.toPleromaApiMediaAttachment(),
+          mediaAttachments?.singleOrNull?.toUnifediApiMediaAttachment(),
       accountId: accountRemoteId,
       chatId: chatRemoteId,
-      card: card?.toPleromaApiCard(),
+      card: card?.toUnifediApiCard(),
     );
   }
 }

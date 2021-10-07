@@ -8,38 +8,38 @@ import 'post_status_settings_model_test_helper.dart';
 
 void main() {
   test('equal & hashcode & toString', () async {
-    ObjTestHelper.testEqualsHashcodeToString(
+    ObjMockHelper.testEqualsHashcodeToString(
       ({required String seed}) =>
-          PostStatusSettingsModelTestHelper.createTestPostStatusSettings(
+          PostStatusSettingsModelMockHelper.createTestPostStatusSettings(
         seed: seed,
       ),
     );
   });
 
   test('toJson & fromJson', () async {
-    JsonTestHelper.testFromJsonToJson(
+    JsonMockHelper.testFromJsonToJson(
       ({required String seed}) =>
-          PostStatusSettingsModelTestHelper.createTestPostStatusSettings(
+          PostStatusSettingsModelMockHelper.createTestPostStatusSettings(
         seed: seed,
       ),
-      PostStatusSettings.fromJson,
+      (json) => PostStatusSettings.fromJson(json),
     );
   });
 
   test('hive save&load', () async {
-    await HiveTestHelper.testHiveSaveAndLoad(
+    await HiveMockHelper.testHiveSaveAndLoad(
       ({required String seed}) =>
-          PostStatusSettingsModelTestHelper.createTestPostStatusSettings(
+          PostStatusSettingsModelMockHelper.createTestPostStatusSettings(
         seed: seed,
       ),
     );
   });
 
   test('copyWith', () async {
-    var obj1 = PostStatusSettingsModelTestHelper.createTestPostStatusSettings(
+    var obj1 = PostStatusSettingsModelMockHelper.createTestPostStatusSettings(
       seed: 'seed1',
     );
-    var obj2 = PostStatusSettingsModelTestHelper.createTestPostStatusSettings(
+    var obj2 = PostStatusSettingsModelMockHelper.createTestPostStatusSettings(
       seed: 'seed2',
     );
 
@@ -55,7 +55,7 @@ void main() {
   });
 
   test('clone', () async {
-    var obj1 = PostStatusSettingsModelTestHelper.createTestPostStatusSettings(
+    var obj1 = PostStatusSettingsModelMockHelper.createTestPostStatusSettings(
       seed: 'seed1',
     );
 
@@ -65,7 +65,7 @@ void main() {
   });
 
   test('hive adapter', () async {
-    HiveTestHelper.testAdapter(
+    HiveMockHelper.testAdapter(
       () => PostStatusSettingsAdapter(),
     );
   });

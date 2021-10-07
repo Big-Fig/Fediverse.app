@@ -2,11 +2,10 @@ import 'package:fedi/app/media/attachment/media_attachment_audio_widget.dart';
 import 'package:fedi/app/media/attachment/media_attachment_image_widget.dart';
 import 'package:fedi/app/media/attachment/media_attachment_unknown_widget.dart';
 import 'package:fedi/app/media/attachment/media_attachment_video_widget.dart';
-import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 const _maxHeight = 350.0;
 
@@ -15,20 +14,19 @@ class MediaAttachmentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var mediaAttachment = Provider.of<IPleromaApiMediaAttachment>(context);
-    switch (mediaAttachment.typeAsMastodonApi) {
-      case MastodonApiMediaAttachmentType.image:
-        return const MediaAttachmentImageWidget(
-          maxHeight: _maxHeight,
-        );
-      case MastodonApiMediaAttachmentType.video:
-      case MastodonApiMediaAttachmentType.gifv:
-        return const MediaAttachmentVideoWidget();
-      case MastodonApiMediaAttachmentType.audio:
-        return const MediaAttachmentAudioWidget();
-      case MastodonApiMediaAttachmentType.unknown:
-      default:
-        return const MediaAttachmentUnknownWidget();
-    }
+    var mediaAttachment = Provider.of<IUnifediApiMediaAttachment>(context);
+
+    return mediaAttachment.typeAsUnifediApi.map(
+      image: (_) => const MediaAttachmentImageWidget(
+        maxHeight: _maxHeight,
+      ),
+      // ignore: no-equal-arguments
+      gifv: (_) => const MediaAttachmentImageWidget(
+        maxHeight: _maxHeight,
+      ),
+      video: (_) => const MediaAttachmentVideoWidget(),
+      audio: (_) => const MediaAttachmentAudioWidget(),
+      unknown: (_) => const MediaAttachmentUnknownWidget(),
+    );
   }
 }

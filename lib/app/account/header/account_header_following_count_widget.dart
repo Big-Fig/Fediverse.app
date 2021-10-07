@@ -25,11 +25,11 @@ class AccountHeaderFollowingCountWidget extends StatelessWidget {
             }
           : null,
       child: StreamBuilder<bool?>(
-        stream: accountBloc.pleromaHideFollowsCountStream,
-        initialData: accountBloc.pleromaHideFollowsCount,
+        stream: accountBloc.hideFollowsCountStream,
+        initialData: accountBloc.hideFollowsCount,
         builder: (context, snapshot) {
-          var pleromaHideFollowsCount = snapshot.data ?? false;
-          if (pleromaHideFollowsCount) {
+          var hideFollowsCount = snapshot.data ?? false;
+          if (hideFollowsCount) {
             return AccountHeaderStatisticBodyWidget(
               valueString: S.of(context).app_account_info_value_hidden,
               label: S.of(context).app_account_info_following,

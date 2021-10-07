@@ -1,16 +1,17 @@
 import 'dart:async';
 
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/push/settings/local_preferences/push_settings_local_preference_bloc.dart';
 import 'package:fedi/app/push/settings/push_settings_bloc.dart';
 import 'package:fedi/app/push/settings/push_settings_model.dart';
 import 'package:fedi/app/push/settings/relay/local_preferences/push_relay_settings_local_preference_bloc.dart';
 import 'package:fedi/app/push/settings/relay/push_relay_settings_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/push/fcm/fcm_push_service.dart';
 import 'package:fedi/push/relay/push_relay_service.dart';
+import 'package:fediverse_api/fediverse_api.dart';
 import 'package:logging/logging.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 final _logger = Logger('push_settings_bloc_impl.dart');
 
@@ -19,13 +20,16 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
       instancePushSettingsLocalPreferenceBloc;
   final IPushRelaySettingsLocalPreferenceBloc<PushRelaySettings?>
       instancePushRelaySettingsLocalPreferenceBloc;
-  final IPleromaApiPushService pleromaPushService;
+  final IUnifediApiPushSubscriptionService pleromaPushService;
   final IPushRelayService pushRelayService;
-  final AuthInstance currentInstance;
+  final UnifediApiAccess currentInstance;
   final IFcmPushService fcmPushService;
   final StreamController<Exception> failedToUpdateStreamController =
       StreamController.broadcast();
+  final IConnectionService connectionService;
 
+  final String pushSubscriptionKeysAuth;
+  final String pushSubscriptionKeysP256dh;
   PushRelaySettings? get pushRelaySettings =>
       instancePushRelaySettingsLocalPreferenceBloc.value;
 
@@ -34,11 +38,14 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
       failedToUpdateStreamController.stream;
 
   PushSettingsBloc({
+    required this.pushSubscriptionKeysAuth,
+    required this.pushSubscriptionKeysP256dh,
     required this.instancePushSettingsLocalPreferenceBloc,
     required this.instancePushRelaySettingsLocalPreferenceBloc,
     required this.pleromaPushService,
     required this.pushRelayService,
     required this.currentInstance,
+    required this.connectionService,
     required this.fcmPushService,
   }) {
     failedToUpdateStreamController.disposeWith(this);
@@ -73,7 +80,7 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
           '_checkResubscribe pushRelayBaseUrlChanged $pushRelayBaseUrlChanged');
       if (pushRelayBaseUrlChanged) {
         var deviceToken = fcmPushService.deviceToken;
-        var isApiReadyToUse = pleromaPushService.isApiReadyToUse;
+        var isApiReadyToUse = connectionService.isConnected;
         var isReady = deviceToken != null && isApiReadyToUse;
 
         _logger.finest(() => '_checkResubscribe isReady $isReady');
@@ -95,9 +102,9 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
             },
           ).disposeWith(resubscribeDisposable!);
 
-          pleromaPushService.isApiReadyToUseStream.listen(
-            (isApiReadyToUse) {
-              if (isApiReadyToUse) {
+          connectionService.isConnectedStream.listen(
+            (isConnected) {
+              if (isConnected) {
                 _checkResubscribe(listenChangedIsNotReady: false);
               }
             },
@@ -191,31 +198,31 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
       );
 
   @override
-  bool get pleromaChatMention => settingsData.pleromaChatMention == true;
+  bool get chatMention => settingsData.chatMention == true;
 
   @override
-  Stream<bool> get pleromaChatMentionStream => settingsDataStream.map(
-        (settings) => settings.pleromaChatMention == true,
+  Stream<bool> get chatMentionStream => settingsDataStream.map(
+        (settings) => settings.chatMention == true,
       );
 
   @override
-  Future changePleromaChatMention(bool value) => updateSettings(
+  Future changeChatMention(bool value) => updateSettings(
         settingsData.copyWith(
-          pleromaChatMention: value,
+          chatMention: value,
         ),
       );
 
   @override
-  bool get pleromaEmojiReaction => settingsData.pleromaEmojiReaction == true;
+  bool get emojiReaction => settingsData.emojiReaction == true;
 
   @override
-  Stream<bool> get pleromaEmojiReactionStream => settingsDataStream
-      .map((settings) => settings.pleromaEmojiReaction == true);
+  Stream<bool> get emojiReactionStream =>
+      settingsDataStream.map((settings) => settings.emojiReaction == true);
 
   @override
-  Future changePleromaEmojiReaction(bool value) => updateSettings(
+  Future changeEmojiReaction(bool value) => updateSettings(
         settingsData.copyWith(
-          pleromaEmojiReaction: value,
+          emojiReaction: value,
         ),
       );
 
@@ -268,7 +275,7 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
     PushSettings? newSettings,
   ) async {
     bool success;
-    PleromaApiPushSubscription? subscription;
+    IUnifediApiPushSubscription? subscription;
     try {
       var pushRelayEndPointUrl = pushRelayService.createPushRelayEndPointUrl(
         account: currentInstance.acct,
@@ -276,29 +283,32 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
         fcmDeviceToken: deviceToken,
       );
       subscription = await pleromaPushService.subscribe(
-        endpointCallbackUrl: pushRelayEndPointUrl,
-        data: PleromaApiPushSubscribeData(
-          alerts: PleromaApiPushSubscribeRequestDataAlerts(
-            favourite: newSettings!.favourite,
-            follow: newSettings.follow,
-            mention: newSettings.mention,
-            reblog: newSettings.reblog,
-            poll: newSettings.poll,
-            pleromaChatMention: newSettings.pleromaChatMention,
-            pleromaEmojiReaction: newSettings.pleromaEmojiReaction,
+        metadata: UnifediApiPushSubscriptionMetadata(
+          endpoint: pushRelayEndPointUrl,
+          keys: UnifediApiPushSubscriptionKeys(
+            auth: pushSubscriptionKeysAuth,
+            p256dh: pushSubscriptionKeysP256dh,
           ),
+        ),
+        alerts: UnifediApiPushSubscriptionAlerts(
+          favourite: newSettings!.favourite,
+          follow: newSettings.follow,
+          mention: newSettings.mention,
+          reblog: newSettings.reblog,
+          poll: newSettings.poll,
+          chatMention: newSettings.chatMention,
+          emojiReaction: newSettings.emojiReaction,
         ),
       );
       await instancePushSettingsLocalPreferenceBloc.setValue(
         PushSettings(
-          favourite: subscription.alerts?.favourite ?? false,
-          follow: subscription.alerts?.follow ?? false,
-          mention: subscription.alerts?.mention ?? false,
-          reblog: subscription.alerts?.reblog ?? false,
-          poll: subscription.alerts?.poll ?? false,
-          pleromaChatMention: subscription.alerts?.pleromaChatMention ?? false,
-          pleromaEmojiReaction:
-              subscription.alerts?.pleromaEmojiReaction ?? false,
+          favourite: subscription.alerts.favourite ?? false,
+          follow: subscription.alerts.follow ?? false,
+          mention: subscription.alerts.mention ?? false,
+          reblog: subscription.alerts.reblog ?? false,
+          poll: subscription.alerts.poll ?? false,
+          chatMention: subscription.alerts.chatMention ?? false,
+          emojiReaction: subscription.alerts.emojiReaction ?? false,
         ),
       );
 

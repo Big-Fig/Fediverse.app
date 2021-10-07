@@ -8,7 +8,6 @@ import 'package:fedi/app/account/my/follow_request/badge/my_account_follow_reque
 import 'package:fedi/app/account/my/follow_request/my_account_follow_request_list_page.dart';
 import 'package:fedi/app/account/my/statuses/favourited/my_account_favourited_statuses_page.dart';
 import 'package:fedi/app/account/my/suggestion/my_account_suggestion_page.dart';
-import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/filter/list/filter_list_page.dart';
 import 'package:fedi/app/status/draft/list/draft_status_list_page.dart';
 import 'package:fedi/app/status/scheduled/list/scheduled_status_list_page.dart';
@@ -19,6 +18,8 @@ import 'package:fedi/app/ui/selection/fedi_selection_item_row_widget.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class AccountHomeTabMenuActionsPage extends StatelessWidget {
   @override
@@ -135,10 +136,12 @@ class _MyAccountSettingsFeaturedTagsButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
-    var authInstance = currentAuthInstanceBloc.currentInstance!;
-
-    if (authInstance.isFeaturedTagsSupported) {
+    var unifediApiMyAccountService =
+        Provider.of<IUnifediApiMyAccountService>(context);
+    var featureSupported = unifediApiMyAccountService.isFeatureSupported(
+      unifediApiMyAccountService.getMyAccountFeaturedTagsFeature,
+    );
+    if (featureSupported) {
       return SimpleFediSelectionItemRowWidget(
         title: S.of(context).app_account_my_action_featuredTags,
         onClick: () {
@@ -158,10 +161,12 @@ class _MyAccountSettingsEndorsementsButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
-    var authInstance = currentAuthInstanceBloc.currentInstance!;
-
-    if (authInstance.isEndorsementSupported) {
+    var unifediApiMyAccountService =
+        Provider.of<IUnifediApiMyAccountService>(context);
+    var featureSupported = unifediApiMyAccountService.isFeatureSupported(
+      unifediApiMyAccountService.getMyEndorsementsFeature,
+    );
+    if (featureSupported) {
       return SimpleFediSelectionItemRowWidget(
         title: S.of(context).app_account_my_action_endorsement,
         onClick: () {
@@ -181,10 +186,12 @@ class _MyAccountSettingsSuggestionsButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
-    var authInstance = currentAuthInstanceBloc.currentInstance!;
-
-    if (authInstance.isSuggestionSupported) {
+    var unifediApiMyAccountService =
+        Provider.of<IUnifediApiMyAccountService>(context);
+    var featureSupported = unifediApiMyAccountService.isFeatureSupported(
+      unifediApiMyAccountService.getMySuggestionsFeature,
+    );
+    if (featureSupported) {
       return SimpleFediSelectionItemRowWidget(
         title: S.of(context).app_account_my_action_suggestion,
         onClick: () {

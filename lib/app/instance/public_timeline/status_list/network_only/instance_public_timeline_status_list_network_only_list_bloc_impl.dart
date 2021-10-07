@@ -1,3 +1,4 @@
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/instance/remote/remote_instance_bloc.dart';
 import 'package:fedi/app/list/network_only/network_only_list_bloc.dart';
@@ -6,47 +7,45 @@ import 'package:fedi/app/status/list/network_only/status_network_only_list_bloc_
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/app/timeline/local_preferences/timeline_local_preference_bloc.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class InstancePublicTimelineStatusListNetworkOnlyListBloc
     extends IStatusNetworkOnlyListBloc {
   final Uri instanceUri;
-  final IPleromaApiTimelineService pleromaApiTimelineService;
-  final ITimelineLocalPreferenceBloc timelineLocalPreferenceBloc;
+  final IUnifediApiTimelineService unifediApiTimelineService;
+  final ITimelineLocalPreferenceBlocOld timelineLocalPreferenceBloc;
 
   InstancePublicTimelineStatusListNetworkOnlyListBloc({
     required this.instanceUri,
-    required this.pleromaApiTimelineService,
+    required this.unifediApiTimelineService,
     required this.timelineLocalPreferenceBloc,
   });
 
   static InstancePublicTimelineStatusListNetworkOnlyListBloc createFromContext(
     BuildContext context, {
-    required ITimelineLocalPreferenceBloc timelineLocalPreferenceBloc,
+    required ITimelineLocalPreferenceBlocOld timelineLocalPreferenceBloc,
     required Uri instanceUri,
   }) {
     var remoteInstanceBloc = IRemoteInstanceBloc.of(context, listen: false);
-    var pleromaApiTimelineService = PleromaApiTimelineService(
-      restService: remoteInstanceBloc.pleromaRestService,
-    );
+    var unifediApiTimelineService =
+        remoteInstanceBloc.unifediApiManager.createTimelineService();
 
     var bloc = InstancePublicTimelineStatusListNetworkOnlyListBloc(
       timelineLocalPreferenceBloc: timelineLocalPreferenceBloc,
       instanceUri: instanceUri,
-      pleromaApiTimelineService: pleromaApiTimelineService,
+      unifediApiTimelineService: unifediApiTimelineService,
     );
 
-    bloc.addDisposable(pleromaApiTimelineService);
+    bloc.addDisposable(unifediApiTimelineService);
 
     return bloc;
   }
 
   static Widget provideToContext(
     BuildContext context, {
-    required ITimelineLocalPreferenceBloc timelineLocalPreferenceBloc,
+    required ITimelineLocalPreferenceBlocOld timelineLocalPreferenceBloc,
     required Widget child,
     required Uri instanceUri,
   }) {
@@ -84,28 +83,55 @@ class InstancePublicTimelineStatusListNetworkOnlyListBloc
     required String? maxId,
   }) async {
     var timeline = timelineLocalPreferenceBloc.value!;
-    var pleromaStatuses = await pleromaApiTimelineService.getPublicTimeline(
-      onlyLocal: timeline.onlyLocal == true,
-      onlyRemote: timeline.onlyRemote == true,
-      onlyWithMedia: timeline.onlyWithMedia == true,
-      withMuted: timeline.withMuted == true,
-      onlyFromInstance: timeline.onlyFromInstance,
-      excludeVisibilities: timeline.excludeVisibilities,
-      pleromaReplyVisibilityFilter: timeline.replyVisibilityFilter,
-      pagination: PleromaApiPaginationRequest(
+    var onlyFromInstanceSupported =
+        unifediApiTimelineService.isFeatureSupported(
+      unifediApiTimelineService.getPublicTimelineOnlyFromInstanceFeature,
+    );
+    var onlyRemoteInstanceSupported =
+        unifediApiTimelineService.isFeatureSupported(
+      unifediApiTimelineService.getPublicTimelineOnlyRemoteFeature,
+    );
+    var excludeVisibilitiesSupported =
+        unifediApiTimelineService.isFeatureSupported(
+      unifediApiTimelineService.getPublicTimelineExcludeVisibilitiesFeature,
+    );
+    var onlyMediaSupported = unifediApiTimelineService.isFeatureSupported(
+      unifediApiTimelineService.getPublicTimelineOnlyMediaFeature,
+    );
+    var replyVisibilityFilterSupported =
+        unifediApiTimelineService.isFeatureSupported(
+      unifediApiTimelineService.getPublicTimelineReplyVisibilityFilterFeature,
+    );
+    var withMutedSupported = unifediApiTimelineService.isFeatureSupported(
+      unifediApiTimelineService.getPublicTimelineWithMutedFeature,
+    );
+
+    var unifediApiStatuses = await unifediApiTimelineService.getPublicTimeline(
+      onlyLocal: timeline.onlyLocal,
+      onlyRemote: onlyRemoteInstanceSupported ? timeline.onlyRemote : null,
+      onlyWithMedia: onlyMediaSupported ? timeline.onlyWithMedia : null,
+      withMuted: withMutedSupported ? timeline.withMuted : null,
+      onlyFromInstance:
+          onlyFromInstanceSupported ? timeline.onlyFromInstance : null,
+      excludeVisibilities:
+          excludeVisibilitiesSupported ? timeline.excludeVisibilities : null,
+      replyVisibilityFilter: replyVisibilityFilterSupported
+          ? timeline.replyVisibilityFilter
+          : null,
+      pagination: UnifediApiPagination(
         limit: itemsCountPerPage,
-        sinceId: minId,
+        minId: minId,
         maxId: maxId,
       ),
     );
 
-    return pleromaStatuses
+    return unifediApiStatuses
         .map(
-          (pleromaStatus) => pleromaStatus.toDbStatusPopulatedWrapper(),
+          (unifediApiStatus) => unifediApiStatus.toDbStatusPopulatedWrapper(),
         )
         .toList();
   }
 
   @override
-  IPleromaApi get pleromaApi => pleromaApiTimelineService;
+  IUnifediApiService get unifediApi => unifediApiTimelineService;
 }

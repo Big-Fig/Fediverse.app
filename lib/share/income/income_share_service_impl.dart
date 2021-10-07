@@ -1,11 +1,11 @@
 import 'dart:async';
 
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/share/income/income_share_model.dart';
 import 'package:fedi/share/income/income_share_service.dart';
 import 'package:logging/logging.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
-import 'package:easy_dispose/easy_dispose.dart';
 
 final _logger = Logger('income_share_service_impl.dart');
 

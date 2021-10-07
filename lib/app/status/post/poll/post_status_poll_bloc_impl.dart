@@ -11,50 +11,42 @@ import 'package:fedi/form/form_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:fedi/form/group/one_type/one_type_form_group_bloc.dart';
 import 'package:fedi/form/group/one_type/one_type_form_group_bloc_impl.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
   static DurationDateTimeValueFormFieldBloc createDurationDateTimeLengthBloc(
-    PleromaApiInstancePollLimits pollLimit,
-  ) {
-    var pollMinimumExpiration = pollLimit.minExpirationDurationOrDefault;
+    IUnifediApiInstancePollLimits? pollLimit,
+  ) =>
+      DurationDateTimeValueFormFieldBloc(
+        originValue: DurationDateTime(
+          duration: Duration(days: 1),
+          dateTime: null,
+        ),
+        minDuration: pollLimit?.minExpirationDuration,
+        maxDuration: pollLimit?.maxExpirationDuration,
+        isNullValuePossible: false,
+        isEnabled: true,
+      );
 
-    var pollMaximumExpiration = pollLimit.maxExpirationDurationOrDefault;
+  final IUnifediApiInstancePollLimits? pollLimits;
 
-    return DurationDateTimeValueFormFieldBloc(
-      originValue: DurationDateTime(
-        duration: PleromaApiInstancePollLimits.defaultPollExpiration,
-        dateTime: null,
-      ),
-      minDuration: pollMinimumExpiration,
-      maxDuration: pollMaximumExpiration,
-      isNullValuePossible: false,
-      isEnabled: true,
-    );
-  }
+  int? get pollMaximumOptionsCount => pollLimits?.maxOptions;
 
-  final PleromaApiInstancePollLimits pollLimits;
+  int? get pollMaximumOptionLength => pollLimits?.maxOptionChars;
 
-  int get pollMaximumOptionsCount => pollLimits.maxOptionsOrDefault;
+  Duration? get pollMinimumExpiration => pollLimits?.minExpirationDuration;
 
-  int? get pollMaximumOptionLength => pollLimits.maxOptionCharsOrDefault;
-
-  Duration get pollMinimumExpiration =>
-      pollLimits.minExpirationDurationOrDefault;
-
-  Duration get pollMaximumExpiration =>
-      pollLimits.maxExpirationDurationOrDefault;
+  Duration? get pollMaximumExpiration => pollLimits?.maxExpirationDuration;
 
   PostStatusPollBloc({
     required this.pollLimits,
   })  : pollOptionsGroupBloc = OneTypeFormGroupBloc<IStringValueFormFieldBloc>(
-          originalItems:
-              createDefaultPollOptions(pollLimits.maxOptionCharsOrDefault),
+          originalItems: createDefaultPollOptions(pollLimits?.maxOptionChars),
           // ignore: no-magic-number
           minimumFieldsCount: 2,
-          maximumFieldsCount: pollLimits.maxOptionsOrDefault,
+          maximumFieldsCount: pollLimits?.maxOptions,
           newEmptyFieldCreator: () =>
-              createPollOptionBloc(pollLimits.maxOptionCharsOrDefault),
+              createPollOptionBloc(pollLimits?.maxOptionChars),
         ),
         durationDateTimeLengthFieldBloc =
             createDurationDateTimeLengthBloc(pollLimits),
@@ -143,7 +135,7 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
     // super.clear();
 
     pollOptionsGroupBloc.changeFields(
-      createDefaultPollOptions(pollLimits.maxOptionChars),
+      createDefaultPollOptions(pollLimits?.maxOptionChars),
     );
 
     multiplyFieldBloc.clear();

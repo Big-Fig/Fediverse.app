@@ -1,5 +1,5 @@
+import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
-import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/draft/list/draft_status_list_page.dart';
 import 'package:fedi/app/status/draft/repository/draft_status_repository.dart';
@@ -9,8 +9,8 @@ import 'package:fedi/app/status/status_bloc.dart';
 import 'package:fedi/app/ui/dialog/alert/fedi_base_alert_dialog.dart';
 import 'package:fedi/dialog/dialog_model.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 Future<T?> showStatusActionDeleteDialog<T>({
   required BuildContext context,
@@ -34,11 +34,10 @@ DialogAction buildDeleteAndSaveToDrafts(
   BuildContext context,
   IStatusBloc statusBloc,
 ) {
-  var pollLimits = ICurrentAuthInstanceBloc.of(
-        context,
-        listen: false,
-      ).currentInstance?.info?.pollLimits ??
-      PleromaApiInstancePollLimits.defaultLimits;
+  var pollLimits = ICurrentUnifediApiAccessBloc.of(
+    context,
+    listen: false,
+  ).currentInstance?.info?.limits?.poll;
 
   return DialogAction(
     label: S.of(context).app_status_delete_dialog_action_deleteAndSaveToDrafts,
@@ -87,11 +86,10 @@ DialogAction buildDeleteAndStartNewAction(
   BuildContext context,
   IStatusBloc statusBloc,
 ) {
-  var pollLimits = ICurrentAuthInstanceBloc.of(
-        context,
-        listen: false,
-      ).currentInstance?.info?.pollLimits ??
-      PleromaApiInstancePollLimits.defaultLimits;
+  var pollLimits = ICurrentUnifediApiAccessBloc.of(
+    context,
+    listen: false,
+  ).currentInstance?.info?.limits?.poll;
 
   return DialogAction(
     label: S.of(context).app_status_delete_dialog_action_deleteAndStartNew,

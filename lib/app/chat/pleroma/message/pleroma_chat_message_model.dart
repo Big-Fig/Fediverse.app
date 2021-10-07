@@ -4,28 +4,13 @@ import 'package:fedi/app/chat/message/chat_message_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/pending/pending_model.dart';
 import 'package:fedi/obj/equal_comparable_obj.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:unifedi_api/unifedi_api.dart';
+
+part 'pleroma_chat_message_model.freezed.dart';
 
 abstract class IPleromaChatMessage extends IChatMessage
     implements IEqualComparableObj<IPleromaChatMessage> {
-  @override
-  IPleromaChatMessage copyWith({
-    int? localId,
-    String? remoteId,
-    String? chatRemoteId,
-    IAccount? account,
-    String? content,
-    DateTime? createdAt,
-    List<IPleromaApiMediaAttachment>? mediaAttachments,
-    List<PleromaApiEmoji>? emojis,
-    IPleromaApiCard? card,
-    PendingState? pendingState,
-    String? oldPendingRemoteId,
-    bool? deleted,
-    bool? hiddenLocallyOnDevice,
-    String? wasSentWithIdempotencyKey,
-  });
-
   static int compareItemsToSort(
     IPleromaChatMessage? a,
     IPleromaChatMessage? b,
@@ -80,10 +65,10 @@ extension IPleromaChatDbMessage on IPleromaChatMessage {
         chatRemoteId: chatRemoteId,
         content: content,
         createdAt: createdAt,
-        emojis: emojis?.toPleromaApiEmojis(),
-        card: card?.toPleromaApiCard(),
+        emojis: emojis?.toUnifediApiEmojiList(),
+        card: card?.toUnifediApiCard(),
         mediaAttachment:
-            mediaAttachments?.singleOrNull?.toPleromaApiMediaAttachment(),
+            mediaAttachments?.singleOrNull?.toUnifediApiMediaAttachment(),
         accountRemoteId: accountRemoteId,
         pendingState: pendingState,
         oldPendingRemoteId: oldPendingRemoteId,
@@ -105,19 +90,15 @@ extension IPleromaChatDbMessage on IPleromaChatMessage {
   }
 }
 
-class DbPleromaChatMessagePopulatedWrapper extends IPleromaChatMessage {
-  final DbChatMessagePopulated dbChatMessagePopulated;
+@freezed
+class DbPleromaChatMessagePopulatedWrapper
+    with _$DbPleromaChatMessagePopulatedWrapper
+    implements IPleromaChatMessage {
+  const DbPleromaChatMessagePopulatedWrapper._();
 
-  @override
-  String toString() {
-    return 'DbPleromaChatMessagePopulatedWrapper{'
-        'dbChatMessagePopulated: $dbChatMessagePopulated'
-        '}';
-  }
-
-  DbPleromaChatMessagePopulatedWrapper({
-    required this.dbChatMessagePopulated,
-  });
+  const factory DbPleromaChatMessagePopulatedWrapper({
+    required DbChatMessagePopulated dbChatMessagePopulated,
+  }) = _DbPleromaChatMessagePopulatedWrapper;
 
   @override
   int? get localId => dbChatMessagePopulated.dbChatMessage.id;
@@ -138,20 +119,20 @@ class DbPleromaChatMessagePopulatedWrapper extends IPleromaChatMessage {
   String? get content => dbChatMessagePopulated.dbChatMessage.content;
 
   @override
-  IPleromaApiCard? get card => dbChatMessagePopulated.dbChatMessage.card;
+  IUnifediApiCard? get card => dbChatMessagePopulated.dbChatMessage.card;
 
   @override
   DateTime get createdAt => dbChatMessagePopulated.dbChatMessage.createdAt;
 
   @override
-  List<IPleromaApiEmoji>? get emojis =>
+  List<IUnifediApiEmoji>? get emojis =>
       dbChatMessagePopulated.dbChatMessage.emojis;
 
   @override
   String get remoteId => dbChatMessagePopulated.dbChatMessage.remoteId;
 
   @override
-  List<IPleromaApiMediaAttachment>? get mediaAttachments {
+  List<IUnifediApiMediaAttachment>? get mediaAttachments {
     var mediaAttachment = dbChatMessagePopulated.dbChatMessage.mediaAttachment;
 
     return mediaAttachment != null
@@ -174,53 +155,6 @@ class DbPleromaChatMessagePopulatedWrapper extends IPleromaChatMessage {
       dbChatMessagePopulated.dbChatMessage.wasSentWithIdempotencyKey;
 
   @override
-  // ignore: long-parameter-list
-  DbPleromaChatMessagePopulatedWrapper copyWith({
-    int? localId,
-    String? remoteId,
-    String? chatRemoteId,
-    IAccount? account,
-    String? content,
-    DateTime? createdAt,
-    List<IPleromaApiMediaAttachment>? mediaAttachments,
-    List<PleromaApiEmoji>? emojis,
-    IPleromaApiCard? card,
-    PendingState? pendingState,
-    String? oldPendingRemoteId,
-    bool? deleted,
-    bool? hiddenLocallyOnDevice,
-    String? wasSentWithIdempotencyKey,
-  }) =>
-      DbPleromaChatMessagePopulatedWrapper(
-        dbChatMessagePopulated: dbChatMessagePopulated.copyWith(
-          localId: localId,
-          remoteId: remoteId,
-          chatRemoteId: chatRemoteId,
-          account: account,
-          content: content,
-          createdAt: createdAt,
-          mediaAttachment: mediaAttachments?.firstOrNull,
-          emojis: emojis,
-          card: card,
-          pendingState: pendingState,
-          oldPendingRemoteId: oldPendingRemoteId,
-          deleted: deleted,
-          hiddenLocallyOnDevice: hiddenLocallyOnDevice,
-          wasSentWithIdempotencyKey: wasSentWithIdempotencyKey,
-        ),
-      );
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is DbPleromaChatMessagePopulatedWrapper &&
-          runtimeType == other.runtimeType &&
-          dbChatMessagePopulated == other.dbChatMessagePopulated;
-
-  @override
-  int get hashCode => dbChatMessagePopulated.hashCode;
-
-  @override
   bool get deleted => dbChatMessagePopulated.dbChatMessage.deleted == true;
 
   @override
@@ -240,69 +174,11 @@ class DbPleromaChatMessagePopulatedWrapper extends IPleromaChatMessage {
       IPleromaChatMessage.isItemsEqual(this, b);
 }
 
-class DbChatMessagePopulated {
-  final DbChatMessage dbChatMessage;
-  final DbAccount? dbAccount;
-
-  DbChatMessagePopulated({
-    required this.dbChatMessage,
-    required this.dbAccount,
-  });
-
-  // ignore: long-parameter-list, code-metrics
-  DbChatMessagePopulated copyWith({
-    int? localId,
-    String? remoteId,
-    String? chatRemoteId,
-    IAccount? account,
-    String? content,
-    DateTime? createdAt,
-    IPleromaApiMediaAttachment? mediaAttachment,
-    List<IPleromaApiEmoji>? emojis,
-    IPleromaApiCard? card,
-    PendingState? pendingState,
-    String? oldPendingRemoteId,
-    bool? deleted,
-    bool? hiddenLocallyOnDevice,
-    String? wasSentWithIdempotencyKey,
-  }) =>
-      DbChatMessagePopulated(
-        dbChatMessage: DbChatMessage(
-          id: localId ?? dbChatMessage.id,
-          remoteId: remoteId ?? dbChatMessage.remoteId,
-          chatRemoteId: chatRemoteId ?? dbChatMessage.chatRemoteId,
-          content: content ?? dbChatMessage.content,
-          createdAt: createdAt ?? dbChatMessage.createdAt,
-          emojis: emojis?.toPleromaApiEmojis() ?? dbChatMessage.emojis,
-          card: card?.toPleromaApiCard() ?? dbChatMessage.card,
-          mediaAttachment: mediaAttachment?.toPleromaApiMediaAttachment() ??
-              dbChatMessage.mediaAttachment,
-          accountRemoteId: account?.remoteId ?? dbChatMessage.accountRemoteId,
-          pendingState: pendingState ?? dbChatMessage.pendingState,
-          oldPendingRemoteId:
-              oldPendingRemoteId ?? dbChatMessage.oldPendingRemoteId,
-          deleted: deleted ?? dbChatMessage.deleted,
-          hiddenLocallyOnDevice:
-              hiddenLocallyOnDevice ?? dbChatMessage.hiddenLocallyOnDevice,
-          wasSentWithIdempotencyKey: wasSentWithIdempotencyKey ??
-              dbChatMessage.wasSentWithIdempotencyKey,
-        ),
-        dbAccount: account?.toDbAccount() ?? dbAccount,
-      );
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is DbChatMessagePopulated &&
-          runtimeType == other.runtimeType &&
-          dbChatMessage == other.dbChatMessage &&
-          dbAccount == other.dbAccount;
-
-  @override
-  int get hashCode => dbChatMessage.hashCode ^ dbAccount.hashCode;
-
-  @override
-  String toString() {
-    return 'DbStatusPopulated{dbStatus: $dbChatMessage, dbAccount: $dbAccount}';
-  }
+@freezed
+class DbChatMessagePopulated with _$DbChatMessagePopulated {
+  const DbChatMessagePopulated._();
+  const factory DbChatMessagePopulated({
+    required DbChatMessage dbChatMessage,
+    required DbAccount? dbAccount,
+  }) = _DbChatMessagePopulated;
 }

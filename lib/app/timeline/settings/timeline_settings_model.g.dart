@@ -8,7 +8,7 @@ part of 'timeline_settings_model.dart';
 
 class TimelineSettingsAdapter extends TypeAdapter<TimelineSettings> {
   @override
-  final int typeId = 47;
+  final int typeId = 85;
 
   @override
   TimelineSettings read(BinaryReader reader) {
@@ -24,10 +24,10 @@ class TimelineSettingsAdapter extends TypeAdapter<TimelineSettings> {
       onlyLocal: fields[5] as bool?,
       withMuted: fields[6] as bool?,
       excludeVisibilitiesStrings: (fields[7] as List?)?.cast<String>(),
-      onlyInRemoteList: fields[9] as PleromaApiList?,
+      onlyInRemoteList: fields[9] as UnifediApiList?,
       withRemoteHashtag: fields[10] as String?,
       replyVisibilityFilterString: fields[11] as String?,
-      onlyFromRemoteAccount: fields[13] as PleromaApiAccount?,
+      onlyFromRemoteAccount: fields[13] as UnifediApiAccount?,
       onlyPinned: fields[14] as bool?,
       excludeReblogs: fields[15] as bool?,
       webSocketsUpdates: fields[16] as bool?,
@@ -86,50 +86,61 @@ class TimelineSettingsAdapter extends TypeAdapter<TimelineSettings> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-TimelineSettings _$TimelineSettingsFromJson(Map<String, dynamic> json) {
-  return TimelineSettings(
-    onlyWithMedia: json['only_with_media'] as bool?,
-    excludeReplies: json['exclude_replies'] as bool?,
-    excludeNsfwSensitive: json['exclude_nsfw_sensitive'] as bool?,
-    onlyRemote: json['only_remote'] as bool?,
-    onlyLocal: json['only_local'] as bool?,
-    withMuted: json['with_muted'] as bool?,
-    excludeVisibilitiesStrings:
-        (json['exclude_visibilities_strings'] as List<dynamic>?)
-            ?.map((e) => e as String)
-            .toList(),
-    onlyInRemoteList: json['only_in_list'] == null
-        ? null
-        : PleromaApiList.fromJson(json['only_in_list'] as Map<String, dynamic>),
-    withRemoteHashtag: json['with_remote_hashtag'] as String?,
-    replyVisibilityFilterString:
-        json['reply_visibility_filter_string'] as String?,
-    onlyFromRemoteAccount: json['only_from_remote_account'] == null
-        ? null
-        : PleromaApiAccount.fromJson(
-            json['only_from_remote_account'] as Map<String, dynamic>),
-    onlyPinned: json['only_pinned'] as bool?,
-    excludeReblogs: json['exclude_reblogs'] as bool?,
-    webSocketsUpdates: json['web_sockets_updates'] as bool?,
-    onlyFromInstance: json['instance'] as String?,
-  );
-}
+_$_TimelineSettings _$$_TimelineSettingsFromJson(Map<String, dynamic> json) =>
+    _$_TimelineSettings(
+      onlyWithMedia: json['only_with_media'] as bool?,
+      excludeReplies: json['exclude_replies'] as bool?,
+      excludeNsfwSensitive: json['exclude_nsfw_sensitive'] as bool?,
+      onlyRemote: json['only_remote'] as bool?,
+      onlyLocal: json['only_local'] as bool?,
+      withMuted: json['with_muted'] as bool?,
+      excludeVisibilitiesStrings:
+          (json['exclude_visibilities_strings'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList(),
+      onlyInRemoteList: json['only_in_list'] == null
+          ? null
+          : UnifediApiList.fromJson(
+              json['only_in_list'] as Map<String, dynamic>),
+      withRemoteHashtag: json['with_remote_hashtag'] as String?,
+      replyVisibilityFilterString:
+          json['reply_visibility_filter_string'] as String?,
+      onlyFromRemoteAccount: json['only_from_remote_account'] == null
+          ? null
+          : UnifediApiAccount.fromJson(
+              json['only_from_remote_account'] as Map<String, dynamic>),
+      onlyPinned: json['only_pinned'] as bool?,
+      excludeReblogs: json['exclude_reblogs'] as bool?,
+      webSocketsUpdates: json['web_sockets_updates'] as bool?,
+      onlyFromInstance: json['instance'] as String?,
+    );
 
-Map<String, dynamic> _$TimelineSettingsToJson(TimelineSettings instance) =>
-    <String, dynamic>{
-      'only_with_media': instance.onlyWithMedia,
-      'exclude_replies': instance.excludeReplies,
-      'exclude_nsfw_sensitive': instance.excludeNsfwSensitive,
-      'only_remote': instance.onlyRemote,
-      'only_local': instance.onlyLocal,
-      'with_muted': instance.withMuted,
-      'exclude_visibilities_strings': instance.excludeVisibilitiesStrings,
-      'only_in_list': instance.onlyInRemoteList?.toJson(),
-      'with_remote_hashtag': instance.withRemoteHashtag,
-      'reply_visibility_filter_string': instance.replyVisibilityFilterString,
-      'only_from_remote_account': instance.onlyFromRemoteAccount?.toJson(),
-      'only_pinned': instance.onlyPinned,
-      'exclude_reblogs': instance.excludeReblogs,
-      'web_sockets_updates': instance.webSocketsUpdates,
-      'instance': instance.onlyFromInstance,
-    };
+Map<String, dynamic> _$$_TimelineSettingsToJson(_$_TimelineSettings instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('only_with_media', instance.onlyWithMedia);
+  writeNotNull('exclude_replies', instance.excludeReplies);
+  writeNotNull('exclude_nsfw_sensitive', instance.excludeNsfwSensitive);
+  writeNotNull('only_remote', instance.onlyRemote);
+  writeNotNull('only_local', instance.onlyLocal);
+  writeNotNull('with_muted', instance.withMuted);
+  writeNotNull(
+      'exclude_visibilities_strings', instance.excludeVisibilitiesStrings);
+  writeNotNull('only_in_list', instance.onlyInRemoteList?.toJson());
+  writeNotNull('with_remote_hashtag', instance.withRemoteHashtag);
+  writeNotNull(
+      'reply_visibility_filter_string', instance.replyVisibilityFilterString);
+  writeNotNull(
+      'only_from_remote_account', instance.onlyFromRemoteAccount?.toJson());
+  writeNotNull('only_pinned', instance.onlyPinned);
+  writeNotNull('exclude_reblogs', instance.excludeReblogs);
+  writeNotNull('web_sockets_updates', instance.webSocketsUpdates);
+  writeNotNull('instance', instance.onlyFromInstance);
+  return val;
+}

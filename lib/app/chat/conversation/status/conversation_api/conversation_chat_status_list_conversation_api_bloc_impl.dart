@@ -3,17 +3,17 @@ import 'package:fedi/app/chat/conversation/status/list/cached/conversation_chat_
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 var _logger =
     Logger('conversation_chat_status_list_conversation_api_bloc_impl.dart');
 
 class ConversationChatStatusListConversationApiBloc
     extends ConversationChatStatusListBloc {
-  final IPleromaApiConversationService pleromaConversationService;
+  final IUnifediApiConversationService pleromaConversationService;
 
   ConversationChatStatusListConversationApiBloc({
     required IConversationChat? conversation,
@@ -22,7 +22,7 @@ class ConversationChatStatusListConversationApiBloc
   }) : super(conversation: conversation, statusRepository: statusRepository);
 
   @override
-  IPleromaApi get pleromaApi => pleromaConversationService;
+  IUnifediApiService get unifediApi => pleromaConversationService;
 
   @override
   Future refreshItemsFromRemoteForPage({
@@ -37,10 +37,10 @@ class ConversationChatStatusListConversationApiBloc
 
     var remoteStatuses =
         await pleromaConversationService.getConversationStatuses(
-      conversationRemoteId: conversation!.remoteId,
-      pagination: PleromaApiPaginationRequest(
+      conversationId: conversation!.remoteId,
+      pagination: UnifediApiPagination(
         limit: limit,
-        sinceId: newerThan?.remoteId,
+        minId: newerThan?.remoteId,
         maxId: olderThan?.remoteId,
       ),
     );
@@ -59,7 +59,7 @@ class ConversationChatStatusListConversationApiBloc
       ConversationChatStatusListConversationApiBloc(
         conversation: conversation,
         pleromaConversationService:
-            Provider.of<IPleromaApiConversationService>(context, listen: false),
+            Provider.of<IUnifediApiConversationService>(context, listen: false),
         statusRepository: IStatusRepository.of(
           context,
           listen: false,

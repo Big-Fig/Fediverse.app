@@ -1,9 +1,9 @@
 import 'dart:async';
 
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/instance/announcement/settings/instance_announcement_settings_bloc.dart';
 import 'package:fedi/app/instance/announcement/settings/instance_announcement_settings_model.dart';
 import 'package:fedi/app/instance/announcement/settings/local_preferences/instance_announcement_settings_local_preference_bloc.dart';
-import 'package:easy_dispose/easy_dispose.dart';
 import 'package:logging/logging.dart';
 
 final _logger = Logger('instanceAnnouncement_settings_bloc_impl.dart');

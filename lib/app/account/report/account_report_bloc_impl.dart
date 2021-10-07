@@ -9,16 +9,13 @@ import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/string/string_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/form_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
-import 'package:logging/logging.dart';
-
-final _logger = Logger('account_report_bloc_impl.dart');
+import 'package:unifedi_api/unifedi_api.dart';
 
 class AccountReportBloc extends FormBloc implements IAccountReportBloc {
   @override
   final IAccount account;
 
-  final IPleromaApiAuthAccountService pleromaAuthAccountService;
+  final IUnifediApiAccountService pleromaAuthAccountService;
 
   @override
   final IBoolValueFormFieldBloc forwardBoolValueFormFieldBloc =
@@ -60,7 +57,7 @@ class AccountReportBloc extends FormBloc implements IAccountReportBloc {
 
   @override
   Future<bool> send() async {
-    var accountReportRequest = PleromaApiAccountReportRequest(
+    var success = await pleromaAuthAccountService.reportAccount(
       accountId: account.remoteId,
       statusIds: statuses.isNotEmpty
           ? statuses.map((status) => status.remoteId!).toList()
@@ -69,12 +66,6 @@ class AccountReportBloc extends FormBloc implements IAccountReportBloc {
       forward: isAccountOnRemoteHost
           ? forwardBoolValueFormFieldBloc.currentValue
           : null,
-    );
-
-    _logger.finest(() => 'send accountReportRequest $accountReportRequest');
-
-    var success = await pleromaAuthAccountService.reportAccount(
-      reportRequest: accountReportRequest,
     );
 
     return success;

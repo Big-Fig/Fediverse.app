@@ -1,7 +1,8 @@
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/my/edit/edit_my_account_bloc.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
-import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
 import 'package:fedi/form/field/file_picker_or_url/image/image_file_picker_or_url_form_field_bloc.dart';
 import 'package:fedi/form/field/file_picker_or_url/image/image_file_picker_or_url_form_field_bloc_impl.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc_impl.dart';
@@ -13,16 +14,15 @@ import 'package:fedi/form/group/one_type/one_type_form_group_bloc.dart';
 import 'package:fedi/form/group/one_type/one_type_form_group_bloc_impl.dart';
 import 'package:fedi/form/group/pair/link_pair_form_group_bloc.dart';
 import 'package:fedi/form/group/pair/link_pair_form_group_bloc_impl.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:fedi/unifedi/api/field/unifedi_api_field_extension.dart';
 import 'package:flutter/widgets.dart';
-import 'package:easy_dispose/easy_dispose.dart';
 import 'package:provider/provider.dart';
-import 'package:fedi/mastodon/api/field/mastodon_api_field_extension.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
-  final ICurrentAuthInstanceBloc currentAuthInstanceBloc;
+  final ICurrentUnifediApiAccessBloc currentUnifediApiAccessBloc;
   final IMyAccountBloc myAccountBloc;
-  final IPleromaApiMyAccountService pleromaMyAccountService;
+  final IUnifediApiMyAccountService unifediApiMyAccountService;
 
   @override
   final StringValueFormFieldBloc displayNameField;
@@ -94,14 +94,13 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
   // ignore: long-method
   EditMyAccountBloc({
     required this.myAccountBloc,
-    required this.currentAuthInstanceBloc,
-    required this.pleromaMyAccountService,
+    required this.currentUnifediApiAccessBloc,
+    required this.unifediApiMyAccountService,
     required int? noteMaxLength,
     required int? avatarUploadSizeInBytes,
     required int? headerUploadSizeInBytes,
     required int? backgroundUploadSizeInBytes,
-    required PleromaApiInstancePleromaPartMetadataFieldLimits?
-        customFieldLimits,
+    required UnifediApiInstanceFieldLimits? customFieldLimits,
   })  : displayNameField = StringValueFormFieldBloc(
           originValue: myAccountBloc.displayNameEmojiText?.text ?? '',
           validators: [
@@ -128,7 +127,7 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
           isPossibleToDeleteOriginal: false,
         ),
         backgroundField = ImageFilePickerOrUrlFormFieldBloc(
-          originalUrl: myAccountBloc.account.pleromaBackgroundImage,
+          originalUrl: myAccountBloc.account.backgroundImage,
           maxFileSizeInBytes: backgroundUploadSizeInBytes,
           isPossibleToDeleteOriginal: true,
         ),
@@ -157,41 +156,34 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
           originValue: myAccountBloc.myAccount?.discoverable ?? false,
         ),
         hideFavouritesField = BoolValueFormFieldBloc(
-          originValue: myAccountBloc.myAccount?.pleroma?.hideFavorites ?? true,
+          originValue: myAccountBloc.myAccount?.hideFavorites ?? true,
         ),
         hideFollowersCountField = BoolValueFormFieldBloc(
-          originValue:
-              myAccountBloc.myAccount?.pleroma?.hideFollowersCount ?? false,
+          originValue: myAccountBloc.myAccount?.hideFollowersCount ?? false,
         ),
         hideFollowersField = BoolValueFormFieldBloc(
-          originValue: myAccountBloc.myAccount?.pleroma?.hideFollowers ?? false,
+          originValue: myAccountBloc.myAccount?.hideFollowers ?? false,
         ),
         hideFollowsCountField = BoolValueFormFieldBloc(
-          originValue:
-              myAccountBloc.myAccount?.pleroma?.hideFollowsCount ?? false,
+          originValue: myAccountBloc.myAccount?.hideFollowsCount ?? false,
         ),
         hideFollowsField = BoolValueFormFieldBloc(
-          originValue: myAccountBloc.myAccount?.pleroma?.hideFollows ?? false,
+          originValue: myAccountBloc.myAccount?.hideFollows ?? false,
         ),
         noRichTextField = BoolValueFormFieldBloc(
-          originValue:
-              myAccountBloc.myAccount?.source?.pleroma?.noRichText ?? false,
+          originValue: myAccountBloc.myAccount?.noRichText ?? false,
         ),
         showRoleField = BoolValueFormFieldBloc(
-          originValue:
-              myAccountBloc.myAccount?.source?.pleroma?.showRole ?? false,
+          originValue: myAccountBloc.myAccount?.showRole ?? false,
         ),
         allowFollowingMoveField = BoolValueFormFieldBloc(
-          originValue:
-              myAccountBloc.myAccount?.pleroma?.allowFollowingMove ?? true,
+          originValue: myAccountBloc.myAccount?.allowFollowingMove ?? true,
         ),
         skipThreadContainmentField = BoolValueFormFieldBloc(
-          originValue:
-              myAccountBloc.myAccount?.pleroma?.skipThreadContainment ?? false,
+          originValue: myAccountBloc.myAccount?.skipThreadContainment ?? false,
         ),
         acceptsChatMessagesField = BoolValueFormFieldBloc(
-          originValue:
-              myAccountBloc.myAccount?.pleroma?.acceptsChatMessages ?? true,
+          originValue: myAccountBloc.myAccount?.acceptsChatMessages ?? true,
         ),
         botField = BoolValueFormFieldBloc(
           originValue: myAccountBloc.myAccount?.bot ?? false,
@@ -243,20 +235,10 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
 
   @override
   Future submitChanges() async {
-    await _updateFiles();
-
     await _updateData();
   }
 
   Future _updateData() async {
-    var remoteMyAccount = await pleromaMyAccountService.updateCredentials(
-      _calculatePleromaMyAccountEdit(),
-    );
-
-    await myAccountBloc.updateMyAccountByMyPleromaAccount(remoteMyAccount);
-  }
-
-  Future _updateFiles() async {
     var avatarPickedFile = avatarField.isSomethingChanged
         ? avatarField.currentMediaDeviceFile
         : null;
@@ -267,115 +249,123 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
     var backgroundPickedFile = backgroundField.isSomethingChanged
         ? backgroundField.currentMediaDeviceFile
         : null;
-    var isAnyFileExist = avatarPickedFile != null ||
-        headerPickedFile != null ||
-        backgroundPickedFile != null;
-    if (isAnyFileExist) {
-      var request = PleromaApiMyAccountFilesRequest(
-        avatar: await avatarPickedFile?.loadFile(),
-        header: await headerPickedFile?.loadFile(),
-        pleromaBackgroundImage: await backgroundPickedFile?.loadFile(),
-      );
 
-      await _sendPleromaMyAccountFilesRequest(request);
+    var fieldsAttributes = <UnifediApiField>[];
 
-      if (avatarPickedFile?.isNeedDeleteAfterUsage == true) {
-        await avatarPickedFile!.delete();
-      }
-      if (headerPickedFile?.isNeedDeleteAfterUsage == true) {
-        await headerPickedFile!.delete();
-      }
-      if (backgroundPickedFile?.isNeedDeleteAfterUsage == true) {
-        await backgroundPickedFile!.delete();
-      }
-    }
-  }
-
-  PleromaApiMyAccountEdit _calculatePleromaMyAccountEdit() {
-    var fieldsAttributes = <int, PleromaApiField>{};
-
-    customFieldsGroupBloc.items.asMap().entries.forEach(
-      (entry) {
-        var index = entry.key;
-        var field = entry.value;
-        fieldsAttributes[index] = PleromaApiField(
-          name: field.keyField.currentValue,
-          value: field.valueField.currentValue,
-          verifiedAt: null,
+    customFieldsGroupBloc.items.forEach(
+      (field) {
+        fieldsAttributes.add(
+          UnifediApiField(
+            name: field.keyField.currentValue,
+            value: field.valueField.currentValue,
+            verifiedAt: null,
+          ),
         );
       },
     );
 
-    var backgroundImageOriginalDeleted = backgroundField.isOriginalDeleted!;
-    String? pleromaBackgroundImage;
-    if (backgroundImageOriginalDeleted) {
-      // API logic
-      // We should set pleromaBackgroundImage to empty string to delete it
-      pleromaBackgroundImage = '';
-    }
+    var isPleromaInstance =
+        currentUnifediApiAccessBloc.currentInstance!.isPleroma;
 
-    var isPleromaInstance = currentAuthInstanceBloc.currentInstance!.isPleroma;
-
-    return PleromaApiMyAccountEdit(
-      displayName: displayNameField.currentValue,
-      note: noteField.currentValue,
-      fieldsAttributes: fieldsAttributes,
-      locked: lockedField.currentValue,
-      discoverable: discoverableField.currentValue,
-      bot: botField.currentValue,
-      acceptsChatMessages:
-          isPleromaInstance ? acceptsChatMessagesField.currentValue : null,
-      allowFollowingMove:
-          isPleromaInstance ? allowFollowingMoveField.currentValue : null,
-      pleromaBackgroundImage: pleromaBackgroundImage,
-      hideFavorites:
-          isPleromaInstance ? hideFavouritesField.currentValue : null,
-      hideFollowers: isPleromaInstance ? hideFollowersField.currentValue : null,
-      hideFollowersCount:
-          isPleromaInstance ? hideFollowersCountField.currentValue : null,
-      hideFollows: isPleromaInstance ? hideFollowsField.currentValue : null,
-      hideFollowsCount:
-          isPleromaInstance ? hideFollowsCountField.currentValue : null,
-      noRichText: isPleromaInstance ? noRichTextField.currentValue : null,
-      showRole: isPleromaInstance ? showRoleField.currentValue : null,
-      skipThreadContainment:
-          isPleromaInstance ? skipThreadContainmentField.currentValue : null,
-      // todo: check
-      alsoKnownAs: null,
-      defaultScope: null,
-      source: null,
-      actorType: null,
-      pleromaSettingsStore: null,
+    var remoteMyAccount = await unifediApiMyAccountService.updateMyCredentials(
+      editMyAccount: await _calculateUnifediApiEditMyAccount(
+        isPleromaInstance: isPleromaInstance,
+        fieldsAttributes: fieldsAttributes,
+      ),
     );
+
+    await myAccountBloc.updateMyAccountByMyUnifediApiAccount(remoteMyAccount);
+
+    if (avatarPickedFile?.isNeedDeleteAfterUsage == true) {
+      await avatarPickedFile!.delete();
+    }
+    if (headerPickedFile?.isNeedDeleteAfterUsage == true) {
+      await headerPickedFile!.delete();
+    }
+    if (backgroundPickedFile?.isNeedDeleteAfterUsage == true) {
+      await backgroundPickedFile!.delete();
+    }
   }
 
-  Future _sendPleromaMyAccountFilesRequest(
-    PleromaApiMyAccountFilesRequest pleromaMyAccountFilesRequest,
-  ) async {
-    var remoteMyAccount =
-        await pleromaMyAccountService.updateFiles(pleromaMyAccountFilesRequest);
+  Future<UnifediApiEditMyAccount> _calculateUnifediApiEditMyAccount({
+    required bool isPleromaInstance,
+    required List<UnifediApiField> fieldsAttributes,
+  }) async =>
+      UnifediApiEditMyAccount(
+        displayName: displayNameField.currentValue,
+        note: noteField.currentValue,
+        fieldsAttributes: fieldsAttributes,
+        locked: lockedField.currentValue,
+        discoverable: discoverableField.currentValue,
+        bot: botField.currentValue,
+        acceptsChatMessages:
+            isPleromaInstance ? acceptsChatMessagesField.currentValue : null,
+        allowFollowingMove:
+            isPleromaInstance ? allowFollowingMoveField.currentValue : null,
 
-    await myAccountBloc.updateMyAccountByMyPleromaAccount(remoteMyAccount);
-  }
+        hideFavorites:
+            isPleromaInstance ? hideFavouritesField.currentValue : null,
+
+        hideFollowers:
+            isPleromaInstance ? hideFollowersField.currentValue : null,
+
+        hideFollowersCount:
+            isPleromaInstance ? hideFollowersCountField.currentValue : null,
+
+        hideFollows: isPleromaInstance ? hideFollowsField.currentValue : null,
+
+        hideFollowsCount:
+            isPleromaInstance ? hideFollowsCountField.currentValue : null,
+
+        noRichText: isPleromaInstance ? noRichTextField.currentValue : null,
+
+        showRole: isPleromaInstance ? showRoleField.currentValue : null,
+
+        skipThreadContainment:
+            isPleromaInstance ? skipThreadContainmentField.currentValue : null,
+        backgroundImageLocalFilePath:
+            await backgroundField.currentMediaDeviceFile?.calculateFilePath(),
+        avatarLocalFilePath:
+            await avatarField.currentMediaDeviceFile?.calculateFilePath(),
+        headerLocalFilePath:
+            await headerField.currentMediaDeviceFile?.calculateFilePath(),
+        deleteAvatar: avatarField.isOriginalDeleted,
+        deleteBackgroundImage: backgroundField.isOriginalDeleted,
+        deleteHeader: headerField.isOriginalDeleted,
+
+        // todo: check
+        alsoKnownAs: null,
+
+        defaultScope: null,
+
+        settingsStore: null,
+
+        sensitive: null,
+
+        language: null,
+
+        privacy: null,
+      );
 
   static EditMyAccountBloc createFromContext(BuildContext context) {
-    var info = ICurrentAuthInstanceBloc.of(context, listen: false)
+    var info = ICurrentUnifediApiAccessBloc.of(context, listen: false)
         .currentInstance!
         .info;
 
     return EditMyAccountBloc(
-      currentAuthInstanceBloc: ICurrentAuthInstanceBloc.of(
+      currentUnifediApiAccessBloc: ICurrentUnifediApiAccessBloc.of(
         context,
         listen: false,
       ),
       myAccountBloc: IMyAccountBloc.of(context, listen: false),
-      pleromaMyAccountService:
-          Provider.of<IPleromaApiMyAccountService>(context, listen: false),
-      customFieldLimits: info?.pleroma?.metadata?.fieldsLimits,
-      noteMaxLength: info?.descriptionLimit,
-      avatarUploadSizeInBytes: info?.avatarUploadLimit,
-      headerUploadSizeInBytes: info?.bannerUploadLimit,
-      backgroundUploadSizeInBytes: info?.backgroundUploadLimit,
+      unifediApiMyAccountService:
+          Provider.of<IUnifediApiMyAccountService>(context, listen: false),
+      customFieldLimits: info?.limits?.field?.toUnifediApiInstanceFieldLimits(),
+      // todo: check
+      noteMaxLength: null,
+      avatarUploadSizeInBytes: info?.limits?.media?.avatarUploadLimit,
+      headerUploadSizeInBytes: info?.limits?.media?.uploadLimit,
+      backgroundUploadSizeInBytes: info?.limits?.media?.backgroundUploadLimit,
     );
   }
 }

@@ -1,43 +1,28 @@
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:unifedi_api/unifedi_api.dart';
+
+part 'hashtag_model.freezed.dart';
 
 abstract class IHashtag {
   String get name;
 
-  String get url;
+  String? get url;
 
-  List<IPleromaApiTagHistory>? get history;
+  int? get statusesCount;
+
+  IUnifediApiTagHistory? get history;
 }
 
-class Hashtag extends IHashtag {
-  @override
-  final String name;
+@freezed
+class Hashtag with _$Hashtag implements IHashtag {
+  const Hashtag._();
+  const factory Hashtag({
+    @override required String name,
+    @override required IUnifediApiTagHistory? history,
+    @override required String? url,
+  }) = _Hashtag;
 
   @override
-  final List<IPleromaApiTagHistory>? history;
-
-  @override
-  final String url;
-
-  Hashtag({
-    required this.name,
-    required this.url,
-    required this.history,
-  });
-
-  @override
-  String toString() {
-    return 'Hashtag{name: $name, history: $history, url: $url}';
-  }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Hashtag &&
-          runtimeType == other.runtimeType &&
-          name == other.name &&
-          history == other.history &&
-          url == other.url;
-
-  @override
-  int get hashCode => name.hashCode ^ history.hashCode ^ url.hashCode;
+  // TODO: implement statusesCount
+  int? get statusesCount => null;
 }

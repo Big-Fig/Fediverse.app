@@ -19,18 +19,14 @@ class DbNotifications extends Table {
 
   TextColumn get emoji => text().nullable()();
 
-  TextColumn get pleroma => text()
-      .nullable()
-      .map(PleromaNotificationPleromaPartDatabaseConverter())();
-
   TextColumn get report =>
-      text().nullable().map(PleromaAccountReportDatabaseConverter())();
+      text().nullable().map(UnifediApiAccountReportDatabaseConverter())();
 
   TextColumn get chatMessage =>
-      text().nullable().map(PleromaChatMessageDatabaseConverter())();
+      text().nullable().map(UnifediApiChatMessageDatabaseConverter())();
 
   TextColumn get target =>
-      text().nullable().map(PleromaAccountDatabaseConverter())();
+      text().nullable().map(UnifediApiAccountDatabaseConverter())();
 
   BoolColumn get unread => boolean().nullable()();
 

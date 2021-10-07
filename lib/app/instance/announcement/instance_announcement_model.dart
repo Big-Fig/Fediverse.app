@@ -1,5 +1,8 @@
 import 'package:fedi/app/database/app_database.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:unifedi_api/unifedi_api.dart';
+
+part 'instance_announcement_model.freezed.dart';
 
 // ignore_for_file: no-magic-number
 
@@ -18,67 +21,37 @@ abstract class IInstanceAnnouncement {
 
   bool get read;
 
-  List<IPleromaApiAnnouncementReaction>? get reactions;
+  List<IUnifediApiEmojiReaction>? get reactions;
 
-  List<IPleromaApiStatus>? get statuses;
+  List<IUnifediApiStatus>? get statuses;
 
-  List<IPleromaApiMention>? get mentions;
+  List<IUnifediApiMention>? get mentions;
 
-  List<IPleromaApiTag>? get tags;
+  List<IUnifediApiTag>? get tags;
 
   DateTime? get scheduledAt;
 
   DateTime? get startsAt;
 
   DateTime? get endsAt;
-
-  IInstanceAnnouncement copyWith({
-    int? localId,
-    String? remoteId,
-    String? text,
-    bool? allDay,
-    DateTime? publishedAt,
-    DateTime? updatedAt,
-    bool? read,
-    List<IPleromaApiAnnouncementReaction>? reactions,
-    List<IPleromaApiMention>? mentions,
-    List<IPleromaApiStatus>? statuses,
-    List<IPleromaApiTag>? tags,
-    DateTime? scheduledAt,
-    DateTime? startsAt,
-    DateTime? endsAt,
-  });
 }
 
-class DbInstanceAnnouncementPopulated {
-  final DbInstanceAnnouncement dbInstanceAnnouncement;
-
-  DbInstanceAnnouncementPopulated({
-    required this.dbInstanceAnnouncement,
-  });
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is DbInstanceAnnouncementPopulated &&
-          runtimeType == other.runtimeType &&
-          dbInstanceAnnouncement == other.dbInstanceAnnouncement;
-
-  @override
-  int get hashCode => dbInstanceAnnouncement.hashCode;
-
-  @override
-  String toString() => 'DbInstanceAnnouncementPopulated{'
-      'dbInstanceAnnouncement: $dbInstanceAnnouncement'
-      '}';
+@freezed
+class DbInstanceAnnouncementPopulated with _$DbInstanceAnnouncementPopulated {
+  const factory DbInstanceAnnouncementPopulated({
+    required DbInstanceAnnouncement dbInstanceAnnouncement,
+  }) = _DbInstanceAnnouncementPopulated;
 }
 
-class DbInstanceAnnouncementPopulatedWrapper implements IInstanceAnnouncement {
-  final DbInstanceAnnouncementPopulated dbInstanceAnnouncementPopulated;
+@freezed
+class DbInstanceAnnouncementPopulatedWrapper
+    with _$DbInstanceAnnouncementPopulatedWrapper
+    implements IInstanceAnnouncement {
+  const DbInstanceAnnouncementPopulatedWrapper._();
 
-  DbInstanceAnnouncementPopulatedWrapper({
-    required this.dbInstanceAnnouncementPopulated,
-  });
+  const factory DbInstanceAnnouncementPopulatedWrapper({
+    required DbInstanceAnnouncementPopulated dbInstanceAnnouncementPopulated,
+  }) = _DbInstanceAnnouncementPopulatedWrapper;
 
   DbInstanceAnnouncement get dbInstanceAnnouncement =>
       dbInstanceAnnouncementPopulated.dbInstanceAnnouncement;
@@ -93,7 +66,7 @@ class DbInstanceAnnouncementPopulatedWrapper implements IInstanceAnnouncement {
   int? get localId => dbInstanceAnnouncement.id;
 
   @override
-  List<IPleromaApiAnnouncementReaction>? get reactions =>
+  List<IUnifediApiEmojiReaction>? get reactions =>
       dbInstanceAnnouncement.reactions;
 
   @override
@@ -115,55 +88,16 @@ class DbInstanceAnnouncementPopulatedWrapper implements IInstanceAnnouncement {
   DateTime get updatedAt => dbInstanceAnnouncement.updatedAt;
 
   @override
-  List<IPleromaApiMention>? get mentions => dbInstanceAnnouncement.mentions;
+  List<IUnifediApiMention>? get mentions => dbInstanceAnnouncement.mentions;
 
   @override
   DateTime get publishedAt => dbInstanceAnnouncement.publishedAt;
 
   @override
-  List<IPleromaApiStatus>? get statuses => dbInstanceAnnouncement.statuses;
+  List<IUnifediApiStatus>? get statuses => dbInstanceAnnouncement.statuses;
 
   @override
-  List<IPleromaApiTag>? get tags => dbInstanceAnnouncement.tags;
-
-  @override
-  // ignore: long-parameter-list
-  IInstanceAnnouncement copyWith({
-    int? localId,
-    String? remoteId,
-    String? text,
-    bool? allDay,
-    DateTime? publishedAt,
-    DateTime? updatedAt,
-    bool? read,
-    List<IPleromaApiAnnouncementReaction>? reactions,
-    List<IPleromaApiMention>? mentions,
-    List<IPleromaApiStatus>? statuses,
-    List<IPleromaApiTag>? tags,
-    DateTime? scheduledAt,
-    DateTime? startsAt,
-    DateTime? endsAt,
-  }) =>
-      DbInstanceAnnouncementPopulatedWrapper(
-        dbInstanceAnnouncementPopulated: DbInstanceAnnouncementPopulated(
-          dbInstanceAnnouncement: dbInstanceAnnouncement.copyWith(
-            id: localId,
-            remoteId: remoteId,
-            content: text,
-            allDay: allDay,
-            publishedAt: publishedAt,
-            updatedAt: updatedAt,
-            read: read,
-            reactions: reactions?.toPleromaApiAnnouncementReactions(),
-            tags: tags?.toPleromaApiTags(),
-            mentions: mentions?.toPleromaApiMentions(),
-            statuses: statuses?.toPleromaApiStatuses(),
-            scheduledAt: scheduledAt,
-            startsAt: startsAt,
-            endsAt: endsAt,
-          ),
-        ),
-      );
+  List<IUnifediApiTag>? get tags => dbInstanceAnnouncement.tags;
 }
 
 extension IInstanceAnnouncementExtension on IInstanceAnnouncement {
@@ -207,10 +141,10 @@ extension IInstanceAnnouncementExtension on IInstanceAnnouncement {
         updatedAt: updatedAt,
         read: read,
         content: content,
-        reactions: reactions?.toPleromaApiAnnouncementReactions(),
-        mentions: mentions?.toPleromaApiMentions(),
-        statuses: statuses?.toPleromaApiStatuses(),
-        tags: tags?.toPleromaApiTags(),
+        reactions: reactions?.toUnifediApiEmojiReactionList(),
+        mentions: mentions?.toUnifediApiMentionList(),
+        statuses: statuses?.toUnifediApiStatusList(),
+        tags: tags?.toUnifediApiTagList(),
       );
     }
   }

@@ -14,14 +14,14 @@ import 'package:fedi/app/database/dao/populated_database_dao_mixin.dart';
 import 'package:fedi/app/database/dao/repository/remote/populated_app_remote_database_dao_repository.dart';
 import 'package:fedi/app/status/database/status_favourited_accounts_database_dao.dart';
 import 'package:fedi/app/status/database/status_reblogged_accounts_database_dao.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:moor/moor.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     DbAccount,
     DbAccountPopulated,
     IAccount,
-    IPleromaApiAccount,
+    IUnifediApiAccount,
     int,
     String,
     $DbAccountsTable,
@@ -58,7 +58,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
         chatAccountsDao = appDatabase.chatAccountsDao;
 
   Future upsertRemoteAccount(
-    IPleromaApiAccount pleromaAccount, {
+    IUnifediApiAccount unifediApiAccount, {
     required String? conversationRemoteId,
     required String? chatRemoteId,
     required Batch? batchTransaction,
@@ -66,7 +66,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     if (batchTransaction != null) {
       // ignore: unawaited_futures
       _upsertRemoteAccountMetadata(
-        pleromaAccount,
+        unifediApiAccount,
         conversationRemoteId: conversationRemoteId,
         chatRemoteId: chatRemoteId,
         batchTransaction: batchTransaction,
@@ -74,13 +74,13 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
       // ignore: unawaited_futures
       upsertInDbTypeBatch(
-        pleromaAccount.toDbAccount(),
+        unifediApiAccount.toDbAccount(),
         batchTransaction: batchTransaction,
       );
     } else {
       await batch((batch) {
         upsertRemoteAccount(
-          pleromaAccount,
+          unifediApiAccount,
           conversationRemoteId: conversationRemoteId,
           chatRemoteId: chatRemoteId,
           batchTransaction: batch,
@@ -90,13 +90,13 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }
 
   Future _upsertRemoteAccountMetadata(
-    IPleromaApiAccount pleromaAccount, {
+    IUnifediApiAccount unifediApiAccount, {
     required String? conversationRemoteId,
     required String? chatRemoteId,
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
-      var accountRemoteId = pleromaAccount.id;
+      var accountRemoteId = unifediApiAccount.id;
       if (conversationRemoteId != null) {
         // ignore: unawaited_futures
         conversationAccountsDao.insertBatch(
@@ -124,7 +124,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     } else {
       return await batch((batch) {
         _upsertRemoteAccountMetadata(
-          pleromaAccount,
+          unifediApiAccount,
           conversationRemoteId: conversationRemoteId,
           chatRemoteId: chatRemoteId,
           batchTransaction: batch,
@@ -136,7 +136,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   @override
   Future addAccountFollowings({
     required String accountRemoteId,
-    required List<PleromaApiAccount> followings,
+    required List<UnifediApiAccount> followings,
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
@@ -174,7 +174,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   @override
   Future addAccountFollowers({
     required String accountRemoteId,
-    required List<IPleromaApiAccount> followers,
+    required List<IUnifediApiAccount> followers,
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
@@ -212,7 +212,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   @override
   Future updateStatusFavouritedBy({
     required String statusRemoteId,
-    required List<IPleromaApiAccount> favouritedByAccounts,
+    required List<IUnifediApiAccount> favouritedByAccounts,
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
@@ -251,7 +251,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   @override
   Future updateStatusRebloggedBy({
     required String statusRemoteId,
-    required List<IPleromaApiAccount> rebloggedByAccounts,
+    required List<IUnifediApiAccount> rebloggedByAccounts,
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
@@ -364,15 +364,15 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   DbAccount mapAppItemToDbItem(IAccount appItem) => appItem.toDbAccount();
 
   @override
-  IPleromaApiAccount mapAppItemToRemoteItem(IAccount appItem) =>
-      appItem.toPleromaApiAccount();
+  IUnifediApiAccount mapAppItemToRemoteItem(IAccount appItem) =>
+      appItem.toUnifediApiAccount();
 
   @override
-  DbAccount mapRemoteItemToDbItem(IPleromaApiAccount remoteItem) =>
+  DbAccount mapRemoteItemToDbItem(IUnifediApiAccount remoteItem) =>
       remoteItem.toDbAccount();
 
   @override
-  IAccount mapRemoteItemToAppItem(IPleromaApiAccount remoteItem) =>
+  IAccount mapRemoteItemToAppItem(IUnifediApiAccount remoteItem) =>
       remoteItem.toDbAccountWrapper();
 
   @override
@@ -384,10 +384,10 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       DbAccountPopulatedWrapper(dbAccountPopulated: dbPopulatedItem);
 
   @override
-  IPleromaApiAccount mapDbPopulatedItemToRemoteItem(
+  IUnifediApiAccount mapDbPopulatedItemToRemoteItem(
     DbAccountPopulated dbPopulatedItem,
   ) =>
-      mapDbPopulatedItemToAppItem(dbPopulatedItem).toPleromaApiAccount();
+      mapDbPopulatedItemToAppItem(dbPopulatedItem).toUnifediApiAccount();
 
   @override
   AccountRepositoryFilters get emptyFilters => AccountRepositoryFilters.empty;
@@ -410,7 +410,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   Future<int> insertInRemoteType(
-    IPleromaApiAccount remoteItem, {
+    IUnifediApiAccount remoteItem, {
     required InsertMode? mode,
   }) async {
     await _upsertRemoteAccountMetadata(
@@ -430,7 +430,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   Future<void> insertInRemoteTypeBatch(
-    IPleromaApiAccount remoteItem, {
+    IUnifediApiAccount remoteItem, {
     required InsertMode? mode,
     required Batch? batchTransaction,
   }) {
@@ -446,7 +446,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   @override
   Future<void> updateAppTypeByRemoteType({
     required IAccount appItem,
-    required IPleromaApiAccount remoteItem,
+    required IUnifediApiAccount remoteItem,
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
@@ -489,7 +489,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   Future upsertChatRemoteAccount(
-    IPleromaApiAccount remoteAccount, {
+    IUnifediApiAccount remoteAccount, {
     required String chatRemoteId,
     required Batch? batchTransaction,
   }) =>
@@ -502,7 +502,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   Future upsertChatRemoteAccounts(
-    List<IPleromaApiAccount> remoteAccounts, {
+    List<IUnifediApiAccount> remoteAccounts, {
     required String chatRemoteId,
     required Batch? batchTransaction,
   }) async {
@@ -528,7 +528,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   Future upsertConversationRemoteAccount(
-    IPleromaApiAccount remoteAccount, {
+    IUnifediApiAccount remoteAccount, {
     required String conversationRemoteId,
     required Batch? batchTransaction,
   }) =>
@@ -541,7 +541,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   Future upsertConversationRemoteAccounts(
-    List<IPleromaApiAccount> remoteAccounts, {
+    List<IUnifediApiAccount> remoteAccounts, {
     required String conversationRemoteId,
     required Batch? batchTransaction,
   }) async {

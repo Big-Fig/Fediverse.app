@@ -19,7 +19,7 @@ abstract class IEditPushSettingsBloc
 
   IBoolValueFormFieldBloc get pollFieldBloc;
 
-  IBoolValueFormFieldBloc get pleromaChatMentionFieldBloc;
+  IBoolValueFormFieldBloc get chatMentionFieldBloc;
 
-  IBoolValueFormFieldBloc get pleromaEmojiReactionFieldBloc;
+  IBoolValueFormFieldBloc get emojiReactionFieldBloc;
 }

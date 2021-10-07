@@ -3,11 +3,11 @@ import 'package:fedi/local_preferences/local_preference_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class ITimelineLocalPreferenceBloc
+abstract class ITimelineLocalPreferenceBlocOld
     implements ILocalPreferenceBloc<Timeline?> {
-  static ITimelineLocalPreferenceBloc of(
+  static ITimelineLocalPreferenceBlocOld of(
     BuildContext context, {
     bool listen = true,
   }) =>
-      Provider.of<ITimelineLocalPreferenceBloc>(context, listen: listen);
+      Provider.of<ITimelineLocalPreferenceBlocOld>(context, listen: listen);
 }

@@ -1,11 +1,11 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/chat/message/chat_message_model.dart';
 import 'package:fedi/app/emoji/text/emoji_text_model.dart';
 import 'package:fedi/app/pending/pending_model.dart';
-import 'package:easy_dispose/easy_dispose.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 abstract class IChatMessageBloc implements IDisposable {
   static IChatMessageBloc of(BuildContext context, {bool listen = true}) =>
@@ -19,13 +19,13 @@ abstract class IChatMessageBloc implements IDisposable {
 
   Stream<String?> get contentStream;
 
-  List<IPleromaApiMediaAttachment>? get mediaAttachments;
+  List<IUnifediApiMediaAttachment>? get mediaAttachments;
 
-  Stream<List<IPleromaApiMediaAttachment>?> get mediaAttachmentsStream;
+  Stream<List<IUnifediApiMediaAttachment>?> get mediaAttachmentsStream;
 
-  IPleromaApiCard? get card;
+  IUnifediApiCard? get card;
 
-  Stream<IPleromaApiCard?> get cardStream;
+  Stream<IUnifediApiCard?> get cardStream;
 
   EmojiText? get contentWithEmojis;
 
@@ -77,7 +77,7 @@ abstract class IChatMessageBloc implements IDisposable {
 
   Stream<bool> get isPendingFailedStream;
 
-  List<IPleromaApiEmoji>? get emojis;
+  List<IUnifediApiEmoji>? get emojis;
 
   Future refreshFromNetwork();
 

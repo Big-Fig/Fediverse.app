@@ -1,4 +1,3 @@
-import 'package:fedi/app/auth/instance/auth_instance_model.dart';
 import 'package:fedi/app/push/settings/push_settings_model.dart';
 import 'package:fedi/app/settings/global_or_instance/edit/edit_global_or_instance_settings_bloc_impl.dart';
 import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_model.dart';
@@ -10,13 +9,14 @@ import 'package:fedi/app/toast/settings/toast_settings_model.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class EditToastSettingsBloc
     extends EditGlobalOrInstanceSettingsBloc<ToastSettings>
     implements IEditToastSettingsBloc {
   final IToastSettingsBloc toastSettingsBloc;
 
-  final AuthInstance? currentInstance;
+  final UnifediApiAccess? currentInstance;
 
   @override
   // ignore: avoid-late-keyword
@@ -35,10 +35,10 @@ class EditToastSettingsBloc
   late IBoolValueFormFieldBloc pollFieldBloc;
   @override
   // ignore: avoid-late-keyword
-  late IBoolValueFormFieldBloc pleromaChatMentionFieldBloc;
+  late IBoolValueFormFieldBloc chatMentionFieldBloc;
   @override
   // ignore: avoid-late-keyword
-  late IBoolValueFormFieldBloc pleromaEmojiReactionFieldBloc;
+  late IBoolValueFormFieldBloc emojiReactionFieldBloc;
 
   @override
   // ignore: avoid-late-keyword
@@ -52,8 +52,8 @@ class EditToastSettingsBloc
         mentionFieldBloc,
         reblogFieldBloc,
         pollFieldBloc,
-        pleromaChatMentionFieldBloc,
-        pleromaEmojiReactionFieldBloc,
+        chatMentionFieldBloc,
+        emojiReactionFieldBloc,
         toastHandlingTypeSingleFromListValueFormFieldBloc,
       ];
 
@@ -99,14 +99,12 @@ class EditToastSettingsBloc
       originValue: currentPushSettings!.poll! && isMastodonOrGlobal,
       isEnabled: isEnabled && isMastodonOrGlobal,
     );
-    pleromaChatMentionFieldBloc = BoolValueFormFieldBloc(
-      originValue:
-          currentPushSettings!.pleromaChatMention! && isPleromaOrGlobal,
+    chatMentionFieldBloc = BoolValueFormFieldBloc(
+      originValue: currentPushSettings!.chatMention! && isPleromaOrGlobal,
       isEnabled: isEnabled && isPleromaOrGlobal,
     );
-    pleromaEmojiReactionFieldBloc = BoolValueFormFieldBloc(
-      originValue:
-          currentPushSettings!.pleromaEmojiReaction! && isPleromaOrGlobal,
+    emojiReactionFieldBloc = BoolValueFormFieldBloc(
+      originValue: currentPushSettings!.emojiReaction! && isPleromaOrGlobal,
       isEnabled: isEnabled && isPleromaOrGlobal,
     );
 
@@ -123,8 +121,8 @@ class EditToastSettingsBloc
     addDisposable(mentionFieldBloc);
     addDisposable(reblogFieldBloc);
     addDisposable(pollFieldBloc);
-    addDisposable(pleromaChatMentionFieldBloc);
-    addDisposable(pleromaEmojiReactionFieldBloc);
+    addDisposable(chatMentionFieldBloc);
+    addDisposable(emojiReactionFieldBloc);
     addDisposable(
       toastHandlingTypeSingleFromListValueFormFieldBloc,
     );
@@ -139,8 +137,8 @@ class EditToastSettingsBloc
         mention: mentionFieldBloc.currentValue,
         reblog: reblogFieldBloc.currentValue,
         poll: pollFieldBloc.currentValue,
-        pleromaChatMention: pleromaChatMentionFieldBloc.currentValue,
-        pleromaEmojiReaction: pleromaEmojiReactionFieldBloc.currentValue,
+        chatMention: chatMentionFieldBloc.currentValue,
+        emojiReaction: emojiReactionFieldBloc.currentValue,
       ),
       handlingType:
           toastHandlingTypeSingleFromListValueFormFieldBloc.currentValue,
@@ -168,12 +166,11 @@ class EditToastSettingsBloc
     pollFieldBloc.changeCurrentValue(
       pushSettings.poll! && (currentInstance!.isMastodon || isNotGlobal),
     );
-    pleromaChatMentionFieldBloc.changeCurrentValue(
-      pushSettings.pleromaChatMention! &&
-          (currentInstance!.isPleroma || isNotGlobal),
+    chatMentionFieldBloc.changeCurrentValue(
+      pushSettings.chatMention! && (currentInstance!.isPleroma || isNotGlobal),
     );
-    pleromaEmojiReactionFieldBloc.changeCurrentValue(
-      pushSettings.pleromaEmojiReaction! &&
+    emojiReactionFieldBloc.changeCurrentValue(
+      pushSettings.emojiReaction! &&
           (currentInstance!.isPleroma || isNotGlobal),
     );
 

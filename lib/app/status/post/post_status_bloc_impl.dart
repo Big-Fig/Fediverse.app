@@ -18,8 +18,8 @@ import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/duration/duration_extension.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 var _logger = Logger('post_status_bloc_impl.dart');
 
@@ -39,30 +39,31 @@ abstract class PostStatusBloc extends PostMessageBloc
   }
 
   final bool markMediaAsNsfwOnAttach;
+
   bool alreadyMarkMediaNsfwByDefault = false;
-  final PleromaApiInstancePollLimits? pleromaInstancePollLimits;
+  final IUnifediApiInstancePollLimits? pollLimits;
 
   // todo: refactor arguments in class
   // ignore: long-method
   PostStatusBloc({
-    required this.pleromaAuthStatusService,
+    required this.unifediApiStatusService,
     required this.statusRepository,
     required this.scheduledStatusRepository,
-    required IPleromaApiMediaAttachmentService pleromaMediaAttachmentService,
-    // ignore: no-magic-number
-    int maximumMediaAttachmentCount =
-        IPleromaApiAuthStatusService.maximumMediaAttachmentCount,
+    required IUnifediApiMediaAttachmentService unifediApiMediaAttachmentService,
+    required int? maximumMediaAttachmentCount,
     required int? maximumMessageLength,
     required IPostStatusData? initialData,
     List<IAccount>? initialAccountsToMention = const [],
-    required this.pleromaInstancePollLimits,
+    required this.pollLimits,
     required int? maximumFileSizeInBytes,
     required this.markMediaAsNsfwOnAttach,
+    required bool dontUploadMediaDuringEditing,
     required this.isExpirePossible,
     required bool unfocusOnClear,
   }) : super(
+          dontUploadMediaDuringEditing: dontUploadMediaDuringEditing,
           maximumMessageLength: maximumMessageLength,
-          pleromaMediaAttachmentService: pleromaMediaAttachmentService,
+          unifediApiMediaAttachmentService: unifediApiMediaAttachmentService,
           maximumMediaAttachmentCount: maximumMediaAttachmentCount,
           maximumFileSizeInBytes: maximumFileSizeInBytes,
           unfocusOnClear: unfocusOnClear,
@@ -70,15 +71,14 @@ abstract class PostStatusBloc extends PostMessageBloc
     initialData = initialData ?? defaultInitData;
     this.initialData = initialData;
     visibilitySubject = BehaviorSubject.seeded(
-      initialData.visibilityString.toPleromaApiVisibility(),
+      initialData.visibilityString.toUnifediApiVisibility(),
     );
     nsfwSensitiveSubject = BehaviorSubject.seeded(
       initialData.isNsfwSensitiveEnabled,
     );
 
     pollBloc = PostStatusPollBloc(
-      pollLimits: pleromaInstancePollLimits ??
-          PleromaApiInstancePollLimits.defaultLimits,
+      pollLimits: pollLimits,
     );
 
     selectedActionSubject.disposeWith(this);
@@ -213,13 +213,13 @@ abstract class PostStatusBloc extends PostMessageBloc
     }
   }
 
-  final IPleromaApiAuthStatusService pleromaAuthStatusService;
+  final IUnifediApiStatusService unifediApiStatusService;
   final IStatusRepository statusRepository;
   final IScheduledStatusRepository scheduledStatusRepository;
 
   @override
   IStatus? get originInReplyToStatus =>
-      initialData.inReplyToPleromaStatus?.toDbStatusPopulatedWrapper();
+      initialData.inReplyToUnifediApiStatus?.toDbStatusPopulatedWrapper();
 
   String? get inReplyToStatusRemoteId => originInReplyToStatus?.remoteId;
 
@@ -230,14 +230,14 @@ abstract class PostStatusBloc extends PostMessageBloc
   // ignore: avoid-late-keyword
   late IPostStatusData initialData;
 
-  static final defaultInitData = PostStatusData(
+  static final PostStatusData defaultInitData = PostStatusData(
     subject: null,
     text: null,
     scheduledAt: null,
-    visibilityString: PleromaApiVisibility.public.toJsonValue(),
+    visibilityString: UnifediApiVisibility.publicValue.stringValue,
     mediaAttachments: null,
     poll: null,
-    inReplyToPleromaStatus: null,
+    inReplyToUnifediApiStatus: null,
     inReplyToConversationId: null,
     isNsfwSensitiveEnabled: false,
     to: null,
@@ -284,13 +284,13 @@ abstract class PostStatusBloc extends PostMessageBloc
   Stream<DateTime?> get scheduledAtStream => scheduledAtSubject.stream;
 
   // ignore: close_sinks, avoid-late-keyword
-  late BehaviorSubject<PleromaApiVisibility> visibilitySubject;
+  late BehaviorSubject<UnifediApiVisibility> visibilitySubject;
 
   @override
-  PleromaApiVisibility get visibility => visibilitySubject.value;
+  UnifediApiVisibility get visibility => visibilitySubject.value;
 
   @override
-  Stream<PleromaApiVisibility> get visibilityStream => visibilitySubject.stream;
+  Stream<UnifediApiVisibility> get visibilityStream => visibilitySubject.stream;
 
   // ignore: close_sinks, avoid-late-keyword
   late BehaviorSubject<bool> nsfwSensitiveSubject;
@@ -459,7 +459,7 @@ abstract class PostStatusBloc extends PostMessageBloc
   }
 
   @override
-  void changeVisibility(PleromaApiVisibility visibility) {
+  void changeVisibility(UnifediApiVisibility visibility) {
     visibilitySubject.add(visibility);
   }
 
@@ -497,21 +497,21 @@ abstract class PostStatusBloc extends PostMessageBloc
     clear();
   }
 
-  String calculateVisibilityField() => visibility.toJsonValue();
+  String calculateVisibilityField() => visibility.stringValue;
 
   List<String>? _calculateMediaIdsField() => _calculateMediaAttachmentsField()
       ?.map((mediaAttachment) => mediaAttachment.id)
       .toList();
 
-  List<IPleromaApiMediaAttachment>? _calculateMediaAttachmentsField() {
-    List<IPleromaApiMediaAttachment>? mediaAttachments =
+  List<IUnifediApiMediaAttachment>? _calculateMediaAttachmentsField() {
+    List<IUnifediApiMediaAttachment>? mediaAttachments =
         uploadMediaAttachmentsBloc.uploadMediaAttachmentBlocs
             .where(
               (bloc) =>
                   bloc.uploadState.type ==
                   UploadMediaAttachmentStateType.uploaded,
             )
-            .map((bloc) => bloc.pleromaMediaAttachment!)
+            .map((bloc) => bloc.unifediApiMediaAttachment!)
             .toList();
     // media ids shouldnt be empty (should be null in this case)
     if (mediaAttachments.isEmpty) {
@@ -526,7 +526,7 @@ abstract class PostStatusBloc extends PostMessageBloc
     super.clear();
 
     visibilitySubject
-        .add(initialData.visibilityString.toPleromaApiVisibility());
+        .add(initialData.visibilityString.toUnifediApiVisibility());
     alreadyMarkMediaNsfwByDefault = false;
     nsfwSensitiveSubject.add(false);
 
@@ -568,12 +568,12 @@ abstract class PostStatusBloc extends PostMessageBloc
   }
 
   // ignore: no-empty-block
-  Future onStatusPosted(IPleromaApiStatus remoteStatus) async {
+  Future onStatusPosted(IUnifediApiStatus remoteStatus) async {
     // nothing by default
   }
 
   List<String>? calculateToField() {
-    if (pleromaAuthStatusService.isPleroma) {
+    if (unifediApiStatusService.isPleroma) {
       return mentionedAccts;
     } else {
       return null;
@@ -581,7 +581,7 @@ abstract class PostStatusBloc extends PostMessageBloc
   }
 
   String? calculateStatusTextField() {
-    if (pleromaAuthStatusService.isPleroma) {
+    if (unifediApiStatusService.isPleroma) {
       return inputText;
     } else {
       if (originInReplyToStatus != null) {
@@ -595,7 +595,7 @@ abstract class PostStatusBloc extends PostMessageBloc
   }
 
   IStatus? calculateInReplyToStatusField() =>
-      initialData.inReplyToPleromaStatus?.toDbStatusPopulatedWrapper();
+      initialData.inReplyToUnifediApiStatus?.toDbStatusPopulatedWrapper();
 
   IPostStatusPoll? _calculatePostStatusPoll() {
     IPostStatusPoll? poll;
@@ -615,13 +615,13 @@ abstract class PostStatusBloc extends PostMessageBloc
     return poll;
   }
 
-  PleromaApiPostStatusPoll? _calculatePleromaPostStatusPollField() {
+  UnifediApiPostStatusPoll? _calculatepostStatusPollField() {
     var poll;
     if (pollBloc.isSomethingChanged) {
       var expiresInSeconds = pollBloc
           .durationDateTimeLengthFieldBloc.currentValueDuration!.totalSeconds;
 
-      poll = PleromaApiPostStatusPoll(
+      poll = UnifediApiPostStatusPoll(
         expiresInSeconds: expiresInSeconds,
         multiple: pollBloc.multiplyFieldBloc.currentValue,
         options: pollBloc.pollOptionsGroupBloc.items
@@ -702,8 +702,9 @@ abstract class PostStatusBloc extends PostMessageBloc
   }
 
   Future actualPostStatus() async {
-    var remoteStatus = await pleromaAuthStatusService.postStatus(
-      data: calculatePleromaPostStatus(),
+    var remoteStatus = await unifediApiStatusService.postStatus(
+      idempotencyKey: idempotencyKey,
+      postStatus: calculatepostStatus(),
     );
 
     await statusRepository.upsertRemoteStatusWithAllArguments(
@@ -731,8 +732,9 @@ abstract class PostStatusBloc extends PostMessageBloc
   }
 
   Future actualScheduleStatus() async {
-    var scheduledStatus = await pleromaAuthStatusService.scheduleStatus(
-      data: calculateScheduleStatus(),
+    var scheduledStatus = await unifediApiStatusService.scheduleStatus(
+      idempotencyKey: idempotencyKey,
+      postStatus: calculateScheduleStatus(),
     );
     await scheduledStatusRepository.upsertInRemoteType(scheduledStatus);
   }
@@ -742,10 +744,10 @@ abstract class PostStatusBloc extends PostMessageBloc
         subject: _calculateSpoilerTextField(),
         text: calculateStatusTextField(),
         scheduledAt: scheduledAt,
-        visibilityString: visibility.toJsonValue(),
+        visibilityString: visibility.stringValue,
         mediaAttachments: _calculateMediaAttachmentsField()
             ?.map(
-              (mediaAttachment) => PleromaApiMediaAttachment(
+              (mediaAttachment) => UnifediApiMediaAttachment(
                 description: mediaAttachment.description,
                 id: mediaAttachment.id,
                 previewUrl: mediaAttachment.previewUrl,
@@ -753,13 +755,15 @@ abstract class PostStatusBloc extends PostMessageBloc
                 textUrl: mediaAttachment.textUrl,
                 type: mediaAttachment.type,
                 url: mediaAttachment.url,
-                pleroma: mediaAttachment.pleroma,
+                blurhash: null,
+                meta: null,
+                mimeType: null,
               ),
             )
             .toList(),
         poll: _calculatePostStatusPoll()?.toPostStatusPoll(),
-        inReplyToPleromaStatus:
-            calculateInReplyToStatusField()?.toPleromaApiStatus(),
+        inReplyToUnifediApiStatus:
+            calculateInReplyToStatusField()?.toUnifediApiStatus(),
         inReplyToConversationId: initialData.inReplyToConversationId,
         isNsfwSensitiveEnabled: isNsfwSensitiveEnabled,
         language: initialData.language,
@@ -767,18 +771,17 @@ abstract class PostStatusBloc extends PostMessageBloc
         expiresInSeconds: expireAtSubject.valueOrNull?.totalSeconds,
       );
 
-  PleromaApiScheduleStatus calculateScheduleStatus() {
-    return PleromaApiScheduleStatus(
+  UnifediApiSchedulePostStatus calculateScheduleStatus() {
+    return UnifediApiSchedulePostStatus(
       mediaIds: _calculateMediaIdsField(),
       status: calculateStatusTextField(),
       sensitive: isNsfwSensitiveEnabled,
       visibility: calculateVisibilityField(),
       inReplyToId: calculateInReplyToStatusField()?.remoteId,
       inReplyToConversationId: initialData.inReplyToConversationId,
-      idempotencyKey: idempotencyKey,
       scheduledAt: scheduledAt!,
       to: calculateToField(),
-      poll: _calculatePleromaPostStatusPollField(),
+      poll: _calculatepostStatusPollField(),
       spoilerText: _calculateSpoilerTextField(),
       expiresInSeconds: expireAtSubject.valueOrNull?.totalSeconds,
       language: initialData.language,
@@ -787,17 +790,16 @@ abstract class PostStatusBloc extends PostMessageBloc
     );
   }
 
-  PleromaApiPostStatus calculatePleromaPostStatus() {
-    return PleromaApiPostStatus(
+  UnifediApiPostStatus calculatepostStatus() {
+    return UnifediApiPostStatus(
       mediaIds: _calculateMediaIdsField(),
       status: calculateStatusTextField(),
       sensitive: isNsfwSensitiveEnabled,
       visibility: calculateVisibilityField(),
       inReplyToId: calculateInReplyToStatusField()?.remoteId,
       inReplyToConversationId: initialData.inReplyToConversationId,
-      idempotencyKey: idempotencyKey,
       to: calculateToField(),
-      poll: _calculatePleromaPostStatusPollField(),
+      poll: _calculatepostStatusPollField(),
       spoilerText: _calculateSpoilerTextField(),
       language: initialData.language,
       expiresInSeconds: expireAtSubject.valueOrNull?.totalSeconds,

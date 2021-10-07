@@ -2,11 +2,10 @@ import 'package:fedi/app/hashtag/hashtag_url_helper.dart';
 import 'package:fedi/app/instance/instance_bloc.dart';
 import 'package:fedi/app/instance/location/instance_location_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc.dart';
-import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 abstract class IInstanceDetailsBloc
     implements IInstanceBloc, IAsyncInitLoadingBloc, IInstanceLocationBloc {
@@ -18,7 +17,7 @@ abstract class IInstanceDetailsBloc
 
   RefreshController get refreshController;
 
-  Future<IPleromaApiInstance> refresh();
+  Future<IUnifediApiInstance> refresh();
 }
 
 extension IInstanceDetailsBlocExtension on IInstanceDetailsBloc {
@@ -67,24 +66,24 @@ extension IInstanceDetailsBlocExtension on IInstanceDetailsBloc {
   Stream<String?> get emailStream =>
       instanceStream.map((instance) => instance?.email);
 
-  String? get version => instance?.version;
+  String? get version => instance?.versionString;
 
   Stream<String?> get versionStream =>
-      instanceStream.map((instance) => instance?.version);
+      instanceStream.map((instance) => instance?.versionString);
 
-  PleromaApiInstanceVersionType? get versionType => instance?.versionType;
+  UnifediApiInstanceType get instanceType => instance!.typeAsUnifediApi;
 
-  Stream<PleromaApiInstanceVersionType?> get versionTypeStream =>
-      instanceStream.map((instance) => instance?.versionType);
+  Stream<UnifediApiInstanceType> get instanceTypeStream =>
+      instanceStream.map((instance) => instance!.typeAsUnifediApi);
 
-  MastodonApiUrls? get urls => instance?.urls;
+  IUnifediApiInstanceUrls? get urls => instance?.urls;
 
-  Stream<MastodonApiUrls?> get urlsStream =>
+  Stream<IUnifediApiInstanceUrls?> get urlsStream =>
       instanceStream.map((instance) => instance?.urls);
 
-  MastodonApiInstanceStats? get stats => instance?.stats;
+  IUnifediApiInstanceStats? get stats => instance?.stats;
 
-  Stream<MastodonApiInstanceStats?> get statsStream =>
+  Stream<IUnifediApiInstanceStats?> get statsStream =>
       instanceStream.map((instance) => instance?.stats);
 
   String? get thumbnail => instance?.thumbnail;
@@ -113,97 +112,84 @@ extension IInstanceDetailsBlocExtension on IInstanceDetailsBloc {
       instanceStream.map((instance) => instance?.invitesEnabled);
 
   int? get maxTootChars {
-    var maxTootChars = instance?.maxTootChars;
+    var maxTootChars = instance?.limits?.status?.maxTootChars;
 
     return maxTootChars != null ? int.parse(maxTootChars.toString()) : null;
   }
 
   Stream<int?> get maxTootCharsStream => instanceStream.map((instance) {
-        var maxTootChars = instance?.maxTootChars;
+        var maxTootChars = instance?.limits?.status?.maxTootChars;
 
         return maxTootChars != null ? int.parse(maxTootChars.toString()) : null;
       });
 
-  PleromaApiInstancePollLimits? get pollLimits => instance?.pollLimits;
+  IUnifediApiInstancePollLimits? get pollLimits => instance?.limits?.poll;
 
-  Stream<PleromaApiInstancePollLimits?> get pollLimitsStream =>
-      instanceStream.map((instance) => instance?.pollLimits);
+  Stream<IUnifediApiInstancePollLimits?> get pollLimitsStream =>
+      instanceStream.map((instance) => instance?.limits?.poll);
 
-  int? get uploadLimit => instance?.uploadLimit;
+  int? get uploadLimit => instance?.limits?.media?.uploadLimit;
 
   Stream<int?> get uploadLimitStream =>
-      instanceStream.map((instance) => instance?.uploadLimit);
+      instanceStream.map((instance) => instance?.limits?.media?.uploadLimit);
 
-  int? get avatarUploadLimit => instance?.avatarUploadLimit;
+  int? get avatarUploadLimit => instance?.limits?.media?.avatarUploadLimit;
 
-  Stream<int?> get avatarUploadLimitStream =>
-      instanceStream.map((instance) => instance?.avatarUploadLimit);
+  Stream<int?> get avatarUploadLimitStream => instanceStream
+      .map((instance) => instance?.limits?.media?.avatarUploadLimit);
 
-  int? get backgroundUploadLimit => instance?.backgroundUploadLimit;
+  int? get backgroundUploadLimit =>
+      instance?.limits?.media?.backgroundUploadLimit;
 
-  Stream<int?> get backgroundUploadLimitStream =>
-      instanceStream.map((instance) => instance?.backgroundUploadLimit);
+  Stream<int?> get backgroundUploadLimitStream => instanceStream
+      .map((instance) => instance?.limits?.media?.backgroundUploadLimit);
 
-  int? get bannerUploadLimit => instance?.bannerUploadLimit;
+  int? get bannerUploadLimit => instance?.limits?.media?.bannerUploadLimit;
 
-  Stream<int?> get bannerUploadLimitStream =>
-      instanceStream.map((instance) => instance?.bannerUploadLimit);
+  Stream<int?> get bannerUploadLimitStream => instanceStream
+      .map((instance) => instance?.limits?.media?.backgroundUploadLimit);
 
-  int? get descriptionLimit => instance?.descriptionLimit;
+  int? get descriptionLimit => instance?.limits?.media?.descriptionLimit;
 
-  Stream<int?> get descriptionLimitStream =>
-      instanceStream.map((instance) => instance?.descriptionLimit);
+  Stream<int?> get descriptionLimitStream => instanceStream
+      .map((instance) => instance?.limits?.media?.descriptionLimit);
 
-  int? get chatLimit => instance?.chatLimit;
+  int? get chatLimit => instance?.limits?.chat?.messageLimit;
 
   Stream<int?> get chatLimitStream =>
-      instanceStream.map((instance) => instance?.chatLimit);
+      instanceStream.map((instance) => instance?.limits?.chat?.messageLimit);
 
-  PleromaApiInstancePleromaPart? get pleroma => instance?.pleroma;
-
-  Stream<PleromaApiInstancePleromaPart?> get pleromaStream =>
-      instanceStream.map((instance) => instance?.pleroma);
-
-  PleromaApiInstancePleromaPartMetadata? get pleromaMetadata =>
-      instance?.pleroma?.metadata;
-
-  Stream<PleromaApiInstancePleromaPartMetadata?> get pleromaMetadataStream =>
-      instanceStream.map((instance) => instance?.pleroma?.metadata);
-
-  List<String>? get pleromaMetadataFeatures =>
-      instance?.pleroma?.metadata?.features;
+  List<String>? get pleromaMetadataFeatures => instance?.features;
 
   Stream<List<String>?> get pleromaMetadataFeaturesStream =>
-      instanceStream.map((instance) => instance?.pleroma?.metadata?.features);
+      instanceStream.map((instance) => instance?.features);
 
-  PleromaApiInstancePleromaPartMetadataFederation?
-      get pleromaMetadataFederation => instance?.pleroma?.metadata?.federation;
+  IUnifediApiInstanceFederation? get unifediApiInstanceFederation =>
+      instance?.federation;
 
-  Stream<PleromaApiInstancePleromaPartMetadataFederation?>
-      get pleromaMetadataFederationStream => instanceStream
-          .map((instance) => instance?.pleroma?.metadata?.federation);
+  Stream<IUnifediApiInstanceFederation?>
+      get unifediApiInstanceFederationStream =>
+          instanceStream.map((instance) => instance?.federation);
 
-  List<String>? get pleromaMetadataPostFormats =>
-      instance?.pleroma?.metadata?.postFormats;
+  List<String>? get pleromaMetadataPostFormats => instance?.postFormats;
 
-  Stream<List<String>?> get pleromaMetadataPostFormatsStream => instanceStream
-      .map((instance) => instance?.pleroma?.metadata?.postFormats);
+  Stream<List<String>?> get pleromaMetadataPostFormatsStream =>
+      instanceStream.map((instance) => instance?.postFormats);
 
   bool? get pleromaMetadataAccountActivationRequired =>
-      instance?.pleroma?.metadata?.accountActivationRequired;
+      instance?.accountActivationRequired;
 
   Stream<bool?> get pleromaMetadataAccountActivationRequiredStream =>
       instanceStream.map(
-        (instance) => instance?.pleroma?.metadata?.accountActivationRequired,
+        (instance) => instance?.accountActivationRequired,
       );
 
-  PleromaApiInstancePleromaPartMetadataFieldLimits?
-      get pleromaMetadataFieldsLimits =>
-          instance?.pleroma?.metadata?.fieldsLimits;
+  IUnifediApiInstanceFieldLimits? get pleromaMetadataFieldsLimits =>
+      instance?.limits?.field;
 
-  Stream<PleromaApiInstancePleromaPartMetadataFieldLimits?>
-      get pleromaMetadataFieldsLimitsStream => instanceStream
-          .map((instance) => instance?.pleroma?.metadata?.fieldsLimits);
+  Stream<IUnifediApiInstanceFieldLimits?>
+      get pleromaMetadataFieldsLimitsStream =>
+          instanceStream.map((instance) => instance?.limits?.field);
 
   String? get vapidPublicKey => instance?.vapidPublicKey;
 
@@ -215,9 +201,9 @@ extension IInstanceDetailsBlocExtension on IInstanceDetailsBloc {
   Stream<String?> get backgroundImageStream =>
       instanceStream.map((instance) => instance?.backgroundImage);
 
-  IPleromaApiAccount? get contactAccount => instance?.contactAccount;
+  IUnifediApiAccount? get contactAccount => instance?.contactAccount;
 
-  Stream<IPleromaApiAccount?> get contactAccountStream =>
+  Stream<IUnifediApiAccount?> get contactAccountStream =>
       instanceStream.map((instance) => instance?.contactAccount);
 
   bool get isHaveDetailsFields => _calculateIsHaveDetailsFields(instance);
@@ -282,7 +268,7 @@ extension IInstanceDetailsBlocExtension on IInstanceDetailsBloc {
 final _hashtagRegex = RegExp(r'#\w+');
 
 String? _calculateDescriptionOrShortDescriptionWithParsedHashtags(
-  IPleromaApiInstance? instance,
+  IUnifediApiInstance? instance,
 ) {
   var descriptionOrShortDescription = _calculateDescriptionOrShortDescription(
     instance,
@@ -296,10 +282,10 @@ String? _calculateDescriptionOrShortDescriptionWithParsedHashtags(
     // remove duplicated
     var hashtags = allMatches.map((match) => match.group(0)!).toSet();
 
-    var isMastodon = instance!.isMastodon;
-    var isPleroma = instance.isPleroma;
+    var isMastodon = instance!.typeAsUnifediApi.isMastodon;
+    var isPleroma = instance.typeAsUnifediApi.isPleroma;
 
-    var host = instance.uri!;
+    var host = instance.uri;
     // todo: check
     var scheme = 'https';
     hashtags.forEach(
@@ -332,59 +318,59 @@ String? _calculateDescriptionOrShortDescriptionWithParsedHashtags(
 }
 
 String? _calculateDescriptionOrShortDescription(
-  IPleromaApiInstance? instance,
+  IUnifediApiInstance? instance,
 ) =>
     instance?.description?.isNotEmpty == true
         ? instance!.description
         : instance!.shortDescription;
 
-bool _calculateIsHaveDetailsFields(IPleromaApiInstance? instance) =>
+bool _calculateIsHaveDetailsFields(IUnifediApiInstance? instance) =>
     instance?.email != null ||
-    instance?.version != null ||
+    instance?.versionString != null ||
     instance?.languages != null ||
     instance?.vapidPublicKey != null;
 
-bool _calculateIsHaveRegistrationsFields(IPleromaApiInstance? instance) =>
+bool _calculateIsHaveRegistrationsFields(IUnifediApiInstance? instance) =>
     instance?.registrations != null ||
     instance?.approvalRequired != null ||
     instance?.invitesEnabled != null;
 
-bool _calculateIsHaveStatsFields(IPleromaApiInstance? instance) =>
+bool _calculateIsHaveStatsFields(IUnifediApiInstance? instance) =>
     instance?.stats?.domainCount != null ||
     instance?.stats?.statusCount != null ||
     instance?.stats?.userCount != null;
 
-bool _calculateIsHaveUploadLimitsFields(IPleromaApiInstance? instance) =>
-    instance?.uploadLimit != null ||
-    instance?.avatarUploadLimit != null ||
-    instance?.bannerUploadLimit != null ||
-    instance?.backgroundUploadLimit != null;
+bool _calculateIsHaveUploadLimitsFields(IUnifediApiInstance? instance) =>
+    instance?.limits?.media?.uploadLimit != null ||
+    instance?.limits?.media?.avatarUploadLimit != null ||
+    instance?.limits?.media?.bannerUploadLimit != null ||
+    instance?.limits?.media?.backgroundUploadLimit != null;
 
-bool _calculateIsHaveMessagesLimitsFields(IPleromaApiInstance? instance) =>
-    instance?.maxTootChars != null ||
-    instance?.chatLimit != null ||
-    instance?.descriptionLimit != null;
+bool _calculateIsHaveMessagesLimitsFields(IUnifediApiInstance? instance) =>
+    instance?.limits?.status?.maxTootChars != null ||
+    instance?.limits?.chat?.messageLimit != null ||
+    instance?.limits?.media?.descriptionLimit != null;
 
-bool _calculateIsHavePollLimitsFields(IPleromaApiInstance? instance) =>
-    instance?.pollLimits?.maxOptions != null ||
-    instance?.pollLimits?.maxOptionChars != null ||
-    instance?.pollLimits?.maxExpiration != null ||
-    instance?.pollLimits?.minExpiration != null;
+bool _calculateIsHavePollLimitsFields(IUnifediApiInstance? instance) =>
+    instance?.limits?.poll?.maxOptions != null ||
+    instance?.limits?.poll?.maxOptionChars != null ||
+    instance?.limits?.poll?.maxExpiration != null ||
+    instance?.limits?.poll?.minExpiration != null;
 
-bool _calculateIsHaveFieldsLimitsFields(IPleromaApiInstance? instance) =>
-    instance?.pleroma?.metadata?.fieldsLimits?.valueLength != null ||
-    instance?.pleroma?.metadata?.fieldsLimits?.nameLength != null ||
-    instance?.pleroma?.metadata?.fieldsLimits?.maxRemoteFields != null ||
-    instance?.pleroma?.metadata?.fieldsLimits?.maxFields != null;
+bool _calculateIsHaveFieldsLimitsFields(IUnifediApiInstance? instance) =>
+    instance?.limits?.field?.valueLength != null ||
+    instance?.limits?.field?.nameLength != null ||
+    instance?.limits?.field?.maxRemoteFields != null ||
+    instance?.limits?.field?.maxFields != null;
 
-bool _calculateIsHaveMetadataFields(IPleromaApiInstance? instance) =>
-    instance?.pleroma?.metadata?.features?.isNotEmpty == true ||
-    instance?.pleroma?.metadata?.postFormats?.isNotEmpty == true;
+bool _calculateIsHaveMetadataFields(IUnifediApiInstance? instance) =>
+    instance?.features?.isNotEmpty == true ||
+    instance?.postFormats?.isNotEmpty == true;
 
 // ignore: code-metrics
-bool _calculateIsHaveFederationFields(IPleromaApiInstance? instance) =>
-    instance?.pleroma?.metadata?.federation?.enabled != null ||
-    instance?.pleroma?.metadata?.federation?.exclusions != null ||
-    instance?.pleroma?.metadata?.federation?.mrfObjectAge != null ||
-    instance?.pleroma?.metadata?.federation?.mrfPolicies != null ||
-    instance?.pleroma?.metadata?.federation?.quarantinedInstances != null;
+bool _calculateIsHaveFederationFields(IUnifediApiInstance? instance) =>
+    instance?.federation?.enabled != null ||
+    instance?.federation?.exclusions != null ||
+    instance?.federation?.mrfObjectAge != null ||
+    instance?.federation?.mrfPolicies != null ||
+    instance?.federation?.quarantinedInstances != null;

@@ -3,17 +3,17 @@ import 'package:fedi/app/push/notification/handler/unhandled/notifications_push_
 import '../notifications_push_handler_model_test_helper.dart';
 
 // ignore_for_file: no-magic-number
-class NotificationsPushHandlerUnhandledModelTestHelper {
+class NotificationsPushHandlerUnhandledModelMockHelper {
   static NotificationsPushHandlerUnhandledList
       createTestPushHandlerUnhandledList({
     required String seed,
   }) =>
           NotificationsPushHandlerUnhandledList(
             messages: [
-              PushHandlerModelTestHelper.createTestPushHandlerMessage(
+              PushHandlerModelMockHelper.createTestPushHandlerMessage(
                 seed: seed + '1',
               ),
-              PushHandlerModelTestHelper.createTestPushHandlerMessage(
+              PushHandlerModelMockHelper.createTestPushHandlerMessage(
                 seed: seed + '2',
               ),
             ],

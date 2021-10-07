@@ -1,17 +1,15 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/notification/notification_bloc.dart';
 import 'package:fedi/app/notification/notification_model.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:easy_dispose/easy_dispose.dart';
-import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:moor/moor.dart';
 import 'package:provider/provider.dart';
-
 import 'package:rxdart/rxdart.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 var _logger = Logger('notification_bloc_impl.dart');
 
@@ -29,7 +27,7 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
     bool isNeedWatchLocalRepositoryForUpdates = true,
   }) =>
       NotificationBloc(
-        pleromaNotificationService: Provider.of<IPleromaApiNotificationService>(
+        pleromaNotificationService: Provider.of<IUnifediApiNotificationService>(
           context,
           listen: false,
         ),
@@ -45,7 +43,7 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
 
   final BehaviorSubject<INotification> _notificationSubject;
 
-  final IPleromaApiNotificationService pleromaNotificationService;
+  final IUnifediApiNotificationService pleromaNotificationService;
   final INotificationRepository notificationRepository;
   final bool isNeedWatchLocalRepositoryForUpdates;
 
@@ -136,10 +134,10 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
       notificationStream.map((notification) => notification.chatRemoteId);
 
   @override
-  IPleromaApiChatMessage? get chatMessage => notification.chatMessage;
+  IUnifediApiChatMessage? get chatMessage => notification.chatMessage;
 
   @override
-  Stream<IPleromaApiChatMessage?> get chatMessageStream =>
+  Stream<IUnifediApiChatMessage?> get chatMessageStream =>
       notificationStream.map((notification) => notification.chatMessage);
 
   @override
@@ -162,7 +160,7 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
 
   Future refreshFromNetwork() async {
     var remoteNotification = await pleromaNotificationService.getNotification(
-      notificationRemoteId: remoteId,
+      notificationId: remoteId,
     );
 
     await _updateByRemoteNotification(
@@ -172,7 +170,7 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
   }
 
   Future _updateByRemoteNotification(
-    IPleromaApiNotification remoteNotification, {
+    IUnifediApiNotification remoteNotification, {
     required Batch? batchTransaction,
   }) {
     return notificationRepository.updateNotificationByRemoteType(
@@ -197,16 +195,13 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
   String get type => notification.type;
 
   @override
-  MastodonApiNotificationType get typeMastodon =>
-      notification.typeAsMastodonApi;
-
-  @override
-  PleromaApiNotificationType get typePleroma => notification.typePleroma;
+  UnifediApiNotificationType get typeAsUnifediApi =>
+      notification.typeAsUnifediApi;
 
   @override
   Future dismiss() async {
     await pleromaNotificationService.dismissNotification(
-      notificationRemoteId: notification.remoteId,
+      notificationId: notification.remoteId,
     );
 
     await notificationRepository.dismiss(
@@ -222,7 +217,7 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
     if (pleromaNotificationService.isPleroma) {
       // ignore: unawaited_futures
       pleromaNotificationService.markAsReadSingle(
-        notificationRemoteId: notification.remoteId,
+        notificationId: notification.remoteId,
       );
     }
   }

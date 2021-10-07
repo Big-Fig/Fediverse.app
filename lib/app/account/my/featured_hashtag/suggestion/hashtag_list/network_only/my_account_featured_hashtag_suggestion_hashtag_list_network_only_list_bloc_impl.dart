@@ -1,10 +1,10 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/account/my/featured_hashtag/suggestion/hashtag_list/network_only/my_account_featured_hashtag_suggestion_hashtag_list_network_only_list_bloc.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
 import 'package:fedi/app/hashtag/hashtag_model_adapter.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
-import 'package:easy_dispose/easy_dispose.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:logging/logging.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 final _logger = Logger(
   'my_account_featured_hashtag_suggestion_hashtag_list_network_only_list_bloc_impl.dart',
@@ -14,13 +14,13 @@ class MyAccountFeaturedHashtagSuggestionHashtagListNetworkOnlyListBloc
     extends DisposableOwner
     implements
         IMyAccountFeaturedHashtagSuggestionHashtagListNetworkOnlyListBloc {
-  final IPleromaApiFeaturedTagsService pleromaApiFeaturedTagsService;
+  final IUnifediApiMyAccountService unifediApiMyAccountService;
 
   @override
-  IPleromaApi get pleromaApi => pleromaApiFeaturedTagsService;
+  IUnifediApiService get unifediApi => unifediApiMyAccountService;
 
   MyAccountFeaturedHashtagSuggestionHashtagListNetworkOnlyListBloc({
-    required this.pleromaApiFeaturedTagsService,
+    required this.unifediApiMyAccountService,
   });
 
   @override
@@ -35,8 +35,7 @@ class MyAccountFeaturedHashtagSuggestionHashtagListNetworkOnlyListBloc
       return [];
     }
 
-    var pleromaHashtags =
-        await pleromaApiFeaturedTagsService.getSuggestedTags();
+    var pleromaHashtags = await unifediApiMyAccountService.getMySuggestedTags();
     List<IHashtag> result = pleromaHashtags
         .map(
           (pleromaHashtag) => pleromaHashtag.toHashtag(),

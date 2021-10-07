@@ -15,7 +15,7 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
   final String? inReplyToAccountRemoteId;
   final bool sensitive;
   final String? spoilerText;
-  final PleromaApiVisibility visibility;
+  final UnifediApiVisibility visibility;
   final String uri;
   final String? url;
   final int repliesCount;
@@ -28,24 +28,24 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
   final bool? pinned;
   final String? content;
   final String? reblogStatusRemoteId;
-  final PleromaApiApplication? application;
+  final UnifediApiApplication? application;
   final String accountRemoteId;
-  final List<PleromaApiMediaAttachment>? mediaAttachments;
-  final List<PleromaApiMention>? mentions;
-  final List<PleromaApiTag>? tags;
-  final List<PleromaApiEmoji>? emojis;
-  final PleromaApiPoll? poll;
-  final PleromaApiCard? card;
+  final List<UnifediApiMediaAttachment>? mediaAttachments;
+  final List<UnifediApiMention>? mentions;
+  final List<UnifediApiTag>? tags;
+  final List<UnifediApiEmoji>? emojis;
+  final UnifediApiPoll? poll;
+  final UnifediApiCard? card;
   final String? language;
-  final PleromaApiContent? pleromaContent;
-  final int? pleromaConversationId;
-  final int? pleromaDirectConversationId;
-  final String? pleromaInReplyToAccountAcct;
-  final bool? pleromaLocal;
-  final PleromaApiContent? pleromaSpoilerText;
-  final DateTime? pleromaExpiresAt;
-  final bool? pleromaThreadMuted;
-  final List<PleromaApiStatusEmojiReaction>? pleromaEmojiReactions;
+  final UnifediApiContentVariants? contentVariants;
+  final int? conversationId;
+  final int? directConversationId;
+  final String? inReplyToAccountAcct;
+  final bool? local;
+  final UnifediApiContentVariants? spoilerTextVariants;
+  final DateTime? expiresAt;
+  final bool? threadMuted;
+  final List<UnifediApiEmojiReaction>? emojiReactions;
   final bool? deleted;
   final bool? hiddenLocallyOnDevice;
   final PendingState? pendingState;
@@ -81,15 +81,15 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
       this.poll,
       this.card,
       this.language,
-      this.pleromaContent,
-      this.pleromaConversationId,
-      this.pleromaDirectConversationId,
-      this.pleromaInReplyToAccountAcct,
-      this.pleromaLocal,
-      this.pleromaSpoilerText,
-      this.pleromaExpiresAt,
-      this.pleromaThreadMuted,
-      this.pleromaEmojiReactions,
+      this.contentVariants,
+      this.conversationId,
+      this.directConversationId,
+      this.inReplyToAccountAcct,
+      this.local,
+      this.spoilerTextVariants,
+      this.expiresAt,
+      this.threadMuted,
+      this.emojiReactions,
       this.deleted,
       this.hiddenLocallyOnDevice,
       this.pendingState,
@@ -157,25 +157,25 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
           .mapFromDatabaseResponse(data['${effectivePrefix}card'])),
       language: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}language']),
-      pleromaContent: $DbStatusesTable.$converter8.mapToDart(const StringType()
+      contentVariants: $DbStatusesTable.$converter8.mapToDart(const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}pleroma_content'])),
-      pleromaConversationId: const IntType().mapFromDatabaseResponse(
+      conversationId: const IntType().mapFromDatabaseResponse(
           data['${effectivePrefix}pleroma_conversation_id']),
-      pleromaDirectConversationId: const IntType().mapFromDatabaseResponse(
+      directConversationId: const IntType().mapFromDatabaseResponse(
           data['${effectivePrefix}pleroma_direct_conversation_id']),
-      pleromaInReplyToAccountAcct: const StringType().mapFromDatabaseResponse(
+      inReplyToAccountAcct: const StringType().mapFromDatabaseResponse(
           data['${effectivePrefix}pleroma_in_reply_to_account_acct']),
-      pleromaLocal: const BoolType()
+      local: const BoolType()
           .mapFromDatabaseResponse(data['${effectivePrefix}pleroma_local']),
-      pleromaSpoilerText: $DbStatusesTable.$converter9.mapToDart(
+      spoilerTextVariants: $DbStatusesTable.$converter9.mapToDart(
           const StringType().mapFromDatabaseResponse(
               data['${effectivePrefix}pleroma_spoiler_text'])),
-      pleromaExpiresAt: const DateTimeType().mapFromDatabaseResponse(
+      expiresAt: const DateTimeType().mapFromDatabaseResponse(
           data['${effectivePrefix}pleroma_expires_at']),
-      pleromaThreadMuted: const BoolType().mapFromDatabaseResponse(
+      threadMuted: const BoolType().mapFromDatabaseResponse(
           data['${effectivePrefix}pleroma_thread_muted']),
-      pleromaEmojiReactions: $DbStatusesTable.$converter10.mapToDart(
-          const StringType().mapFromDatabaseResponse(
+      emojiReactions: $DbStatusesTable.$converter10.mapToDart(const StringType()
+          .mapFromDatabaseResponse(
               data['${effectivePrefix}pleroma_emoji_reactions'])),
       deleted: const BoolType()
           .mapFromDatabaseResponse(data['${effectivePrefix}deleted']),
@@ -267,40 +267,40 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
     if (!nullToAbsent || language != null) {
       map['language'] = Variable<String?>(language);
     }
-    if (!nullToAbsent || pleromaContent != null) {
+    if (!nullToAbsent || contentVariants != null) {
       final converter = $DbStatusesTable.$converter8;
       map['pleroma_content'] =
-          Variable<String?>(converter.mapToSql(pleromaContent));
+          Variable<String?>(converter.mapToSql(contentVariants));
     }
-    if (!nullToAbsent || pleromaConversationId != null) {
-      map['pleroma_conversation_id'] = Variable<int?>(pleromaConversationId);
+    if (!nullToAbsent || conversationId != null) {
+      map['pleroma_conversation_id'] = Variable<int?>(conversationId);
     }
-    if (!nullToAbsent || pleromaDirectConversationId != null) {
+    if (!nullToAbsent || directConversationId != null) {
       map['pleroma_direct_conversation_id'] =
-          Variable<int?>(pleromaDirectConversationId);
+          Variable<int?>(directConversationId);
     }
-    if (!nullToAbsent || pleromaInReplyToAccountAcct != null) {
+    if (!nullToAbsent || inReplyToAccountAcct != null) {
       map['pleroma_in_reply_to_account_acct'] =
-          Variable<String?>(pleromaInReplyToAccountAcct);
+          Variable<String?>(inReplyToAccountAcct);
     }
-    if (!nullToAbsent || pleromaLocal != null) {
-      map['pleroma_local'] = Variable<bool?>(pleromaLocal);
+    if (!nullToAbsent || local != null) {
+      map['pleroma_local'] = Variable<bool?>(local);
     }
-    if (!nullToAbsent || pleromaSpoilerText != null) {
+    if (!nullToAbsent || spoilerTextVariants != null) {
       final converter = $DbStatusesTable.$converter9;
       map['pleroma_spoiler_text'] =
-          Variable<String?>(converter.mapToSql(pleromaSpoilerText));
+          Variable<String?>(converter.mapToSql(spoilerTextVariants));
     }
-    if (!nullToAbsent || pleromaExpiresAt != null) {
-      map['pleroma_expires_at'] = Variable<DateTime?>(pleromaExpiresAt);
+    if (!nullToAbsent || expiresAt != null) {
+      map['pleroma_expires_at'] = Variable<DateTime?>(expiresAt);
     }
-    if (!nullToAbsent || pleromaThreadMuted != null) {
-      map['pleroma_thread_muted'] = Variable<bool?>(pleromaThreadMuted);
+    if (!nullToAbsent || threadMuted != null) {
+      map['pleroma_thread_muted'] = Variable<bool?>(threadMuted);
     }
-    if (!nullToAbsent || pleromaEmojiReactions != null) {
+    if (!nullToAbsent || emojiReactions != null) {
       final converter = $DbStatusesTable.$converter10;
       map['pleroma_emoji_reactions'] =
-          Variable<String?>(converter.mapToSql(pleromaEmojiReactions));
+          Variable<String?>(converter.mapToSql(emojiReactions));
     }
     if (!nullToAbsent || deleted != null) {
       map['deleted'] = Variable<bool?>(deleted);
@@ -376,35 +376,32 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
       language: language == null && nullToAbsent
           ? const Value.absent()
           : Value(language),
-      pleromaContent: pleromaContent == null && nullToAbsent
+      contentVariants: contentVariants == null && nullToAbsent
           ? const Value.absent()
-          : Value(pleromaContent),
-      pleromaConversationId: pleromaConversationId == null && nullToAbsent
+          : Value(contentVariants),
+      conversationId: conversationId == null && nullToAbsent
           ? const Value.absent()
-          : Value(pleromaConversationId),
-      pleromaDirectConversationId:
-          pleromaDirectConversationId == null && nullToAbsent
-              ? const Value.absent()
-              : Value(pleromaDirectConversationId),
-      pleromaInReplyToAccountAcct:
-          pleromaInReplyToAccountAcct == null && nullToAbsent
-              ? const Value.absent()
-              : Value(pleromaInReplyToAccountAcct),
-      pleromaLocal: pleromaLocal == null && nullToAbsent
+          : Value(conversationId),
+      directConversationId: directConversationId == null && nullToAbsent
           ? const Value.absent()
-          : Value(pleromaLocal),
-      pleromaSpoilerText: pleromaSpoilerText == null && nullToAbsent
+          : Value(directConversationId),
+      inReplyToAccountAcct: inReplyToAccountAcct == null && nullToAbsent
           ? const Value.absent()
-          : Value(pleromaSpoilerText),
-      pleromaExpiresAt: pleromaExpiresAt == null && nullToAbsent
+          : Value(inReplyToAccountAcct),
+      local:
+          local == null && nullToAbsent ? const Value.absent() : Value(local),
+      spoilerTextVariants: spoilerTextVariants == null && nullToAbsent
           ? const Value.absent()
-          : Value(pleromaExpiresAt),
-      pleromaThreadMuted: pleromaThreadMuted == null && nullToAbsent
+          : Value(spoilerTextVariants),
+      expiresAt: expiresAt == null && nullToAbsent
           ? const Value.absent()
-          : Value(pleromaThreadMuted),
-      pleromaEmojiReactions: pleromaEmojiReactions == null && nullToAbsent
+          : Value(expiresAt),
+      threadMuted: threadMuted == null && nullToAbsent
           ? const Value.absent()
-          : Value(pleromaEmojiReactions),
+          : Value(threadMuted),
+      emojiReactions: emojiReactions == null && nullToAbsent
+          ? const Value.absent()
+          : Value(emojiReactions),
       deleted: deleted == null && nullToAbsent
           ? const Value.absent()
           : Value(deleted),
@@ -437,7 +434,7 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
           serializer.fromJson<String?>(json['inReplyToAccountRemoteId']),
       sensitive: serializer.fromJson<bool>(json['sensitive']),
       spoilerText: serializer.fromJson<String?>(json['spoilerText']),
-      visibility: serializer.fromJson<PleromaApiVisibility>(json['visibility']),
+      visibility: serializer.fromJson<UnifediApiVisibility>(json['visibility']),
       uri: serializer.fromJson<String>(json['uri']),
       url: serializer.fromJson<String?>(json['url']),
       repliesCount: serializer.fromJson<int>(json['repliesCount']),
@@ -452,34 +449,30 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
       reblogStatusRemoteId:
           serializer.fromJson<String?>(json['reblogStatusRemoteId']),
       application:
-          serializer.fromJson<PleromaApiApplication?>(json['application']),
+          serializer.fromJson<UnifediApiApplication?>(json['application']),
       accountRemoteId: serializer.fromJson<String>(json['accountRemoteId']),
       mediaAttachments: serializer
-          .fromJson<List<PleromaApiMediaAttachment>?>(json['mediaAttachments']),
-      mentions: serializer.fromJson<List<PleromaApiMention>?>(json['mentions']),
-      tags: serializer.fromJson<List<PleromaApiTag>?>(json['tags']),
-      emojis: serializer.fromJson<List<PleromaApiEmoji>?>(json['emojis']),
-      poll: serializer.fromJson<PleromaApiPoll?>(json['poll']),
-      card: serializer.fromJson<PleromaApiCard?>(json['card']),
+          .fromJson<List<UnifediApiMediaAttachment>?>(json['mediaAttachments']),
+      mentions: serializer.fromJson<List<UnifediApiMention>?>(json['mentions']),
+      tags: serializer.fromJson<List<UnifediApiTag>?>(json['tags']),
+      emojis: serializer.fromJson<List<UnifediApiEmoji>?>(json['emojis']),
+      poll: serializer.fromJson<UnifediApiPoll?>(json['poll']),
+      card: serializer.fromJson<UnifediApiCard?>(json['card']),
       language: serializer.fromJson<String?>(json['language']),
-      pleromaContent:
-          serializer.fromJson<PleromaApiContent?>(json['pleromaContent']),
-      pleromaConversationId:
-          serializer.fromJson<int?>(json['pleromaConversationId']),
-      pleromaDirectConversationId:
-          serializer.fromJson<int?>(json['pleromaDirectConversationId']),
-      pleromaInReplyToAccountAcct:
-          serializer.fromJson<String?>(json['pleromaInReplyToAccountAcct']),
-      pleromaLocal: serializer.fromJson<bool?>(json['pleromaLocal']),
-      pleromaSpoilerText:
-          serializer.fromJson<PleromaApiContent?>(json['pleromaSpoilerText']),
-      pleromaExpiresAt:
-          serializer.fromJson<DateTime?>(json['pleromaExpiresAt']),
-      pleromaThreadMuted:
-          serializer.fromJson<bool?>(json['pleromaThreadMuted']),
-      pleromaEmojiReactions:
-          serializer.fromJson<List<PleromaApiStatusEmojiReaction>?>(
-              json['pleromaEmojiReactions']),
+      contentVariants: serializer
+          .fromJson<UnifediApiContentVariants?>(json['contentVariants']),
+      conversationId: serializer.fromJson<int?>(json['conversationId']),
+      directConversationId:
+          serializer.fromJson<int?>(json['directConversationId']),
+      inReplyToAccountAcct:
+          serializer.fromJson<String?>(json['inReplyToAccountAcct']),
+      local: serializer.fromJson<bool?>(json['local']),
+      spoilerTextVariants: serializer
+          .fromJson<UnifediApiContentVariants?>(json['spoilerTextVariants']),
+      expiresAt: serializer.fromJson<DateTime?>(json['expiresAt']),
+      threadMuted: serializer.fromJson<bool?>(json['threadMuted']),
+      emojiReactions: serializer
+          .fromJson<List<UnifediApiEmojiReaction>?>(json['emojiReactions']),
       deleted: serializer.fromJson<bool?>(json['deleted']),
       hiddenLocallyOnDevice:
           serializer.fromJson<bool?>(json['hiddenLocallyOnDevice']),
@@ -502,7 +495,7 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
           serializer.toJson<String?>(inReplyToAccountRemoteId),
       'sensitive': serializer.toJson<bool>(sensitive),
       'spoilerText': serializer.toJson<String?>(spoilerText),
-      'visibility': serializer.toJson<PleromaApiVisibility>(visibility),
+      'visibility': serializer.toJson<UnifediApiVisibility>(visibility),
       'uri': serializer.toJson<String>(uri),
       'url': serializer.toJson<String?>(url),
       'repliesCount': serializer.toJson<int>(repliesCount),
@@ -515,29 +508,28 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
       'pinned': serializer.toJson<bool?>(pinned),
       'content': serializer.toJson<String?>(content),
       'reblogStatusRemoteId': serializer.toJson<String?>(reblogStatusRemoteId),
-      'application': serializer.toJson<PleromaApiApplication?>(application),
+      'application': serializer.toJson<UnifediApiApplication?>(application),
       'accountRemoteId': serializer.toJson<String>(accountRemoteId),
       'mediaAttachments':
-          serializer.toJson<List<PleromaApiMediaAttachment>?>(mediaAttachments),
-      'mentions': serializer.toJson<List<PleromaApiMention>?>(mentions),
-      'tags': serializer.toJson<List<PleromaApiTag>?>(tags),
-      'emojis': serializer.toJson<List<PleromaApiEmoji>?>(emojis),
-      'poll': serializer.toJson<PleromaApiPoll?>(poll),
-      'card': serializer.toJson<PleromaApiCard?>(card),
+          serializer.toJson<List<UnifediApiMediaAttachment>?>(mediaAttachments),
+      'mentions': serializer.toJson<List<UnifediApiMention>?>(mentions),
+      'tags': serializer.toJson<List<UnifediApiTag>?>(tags),
+      'emojis': serializer.toJson<List<UnifediApiEmoji>?>(emojis),
+      'poll': serializer.toJson<UnifediApiPoll?>(poll),
+      'card': serializer.toJson<UnifediApiCard?>(card),
       'language': serializer.toJson<String?>(language),
-      'pleromaContent': serializer.toJson<PleromaApiContent?>(pleromaContent),
-      'pleromaConversationId': serializer.toJson<int?>(pleromaConversationId),
-      'pleromaDirectConversationId':
-          serializer.toJson<int?>(pleromaDirectConversationId),
-      'pleromaInReplyToAccountAcct':
-          serializer.toJson<String?>(pleromaInReplyToAccountAcct),
-      'pleromaLocal': serializer.toJson<bool?>(pleromaLocal),
-      'pleromaSpoilerText':
-          serializer.toJson<PleromaApiContent?>(pleromaSpoilerText),
-      'pleromaExpiresAt': serializer.toJson<DateTime?>(pleromaExpiresAt),
-      'pleromaThreadMuted': serializer.toJson<bool?>(pleromaThreadMuted),
-      'pleromaEmojiReactions': serializer
-          .toJson<List<PleromaApiStatusEmojiReaction>?>(pleromaEmojiReactions),
+      'contentVariants':
+          serializer.toJson<UnifediApiContentVariants?>(contentVariants),
+      'conversationId': serializer.toJson<int?>(conversationId),
+      'directConversationId': serializer.toJson<int?>(directConversationId),
+      'inReplyToAccountAcct': serializer.toJson<String?>(inReplyToAccountAcct),
+      'local': serializer.toJson<bool?>(local),
+      'spoilerTextVariants':
+          serializer.toJson<UnifediApiContentVariants?>(spoilerTextVariants),
+      'expiresAt': serializer.toJson<DateTime?>(expiresAt),
+      'threadMuted': serializer.toJson<bool?>(threadMuted),
+      'emojiReactions':
+          serializer.toJson<List<UnifediApiEmojiReaction>?>(emojiReactions),
       'deleted': serializer.toJson<bool?>(deleted),
       'hiddenLocallyOnDevice': serializer.toJson<bool?>(hiddenLocallyOnDevice),
       'pendingState': serializer.toJson<PendingState?>(pendingState),
@@ -555,7 +547,7 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
           String? inReplyToAccountRemoteId,
           bool? sensitive,
           String? spoilerText,
-          PleromaApiVisibility? visibility,
+          UnifediApiVisibility? visibility,
           String? uri,
           String? url,
           int? repliesCount,
@@ -568,24 +560,24 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
           bool? pinned,
           String? content,
           String? reblogStatusRemoteId,
-          PleromaApiApplication? application,
+          UnifediApiApplication? application,
           String? accountRemoteId,
-          List<PleromaApiMediaAttachment>? mediaAttachments,
-          List<PleromaApiMention>? mentions,
-          List<PleromaApiTag>? tags,
-          List<PleromaApiEmoji>? emojis,
-          PleromaApiPoll? poll,
-          PleromaApiCard? card,
+          List<UnifediApiMediaAttachment>? mediaAttachments,
+          List<UnifediApiMention>? mentions,
+          List<UnifediApiTag>? tags,
+          List<UnifediApiEmoji>? emojis,
+          UnifediApiPoll? poll,
+          UnifediApiCard? card,
           String? language,
-          PleromaApiContent? pleromaContent,
-          int? pleromaConversationId,
-          int? pleromaDirectConversationId,
-          String? pleromaInReplyToAccountAcct,
-          bool? pleromaLocal,
-          PleromaApiContent? pleromaSpoilerText,
-          DateTime? pleromaExpiresAt,
-          bool? pleromaThreadMuted,
-          List<PleromaApiStatusEmojiReaction>? pleromaEmojiReactions,
+          UnifediApiContentVariants? contentVariants,
+          int? conversationId,
+          int? directConversationId,
+          String? inReplyToAccountAcct,
+          bool? local,
+          UnifediApiContentVariants? spoilerTextVariants,
+          DateTime? expiresAt,
+          bool? threadMuted,
+          List<UnifediApiEmojiReaction>? emojiReactions,
           bool? deleted,
           bool? hiddenLocallyOnDevice,
           PendingState? pendingState,
@@ -622,19 +614,15 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
         poll: poll ?? this.poll,
         card: card ?? this.card,
         language: language ?? this.language,
-        pleromaContent: pleromaContent ?? this.pleromaContent,
-        pleromaConversationId:
-            pleromaConversationId ?? this.pleromaConversationId,
-        pleromaDirectConversationId:
-            pleromaDirectConversationId ?? this.pleromaDirectConversationId,
-        pleromaInReplyToAccountAcct:
-            pleromaInReplyToAccountAcct ?? this.pleromaInReplyToAccountAcct,
-        pleromaLocal: pleromaLocal ?? this.pleromaLocal,
-        pleromaSpoilerText: pleromaSpoilerText ?? this.pleromaSpoilerText,
-        pleromaExpiresAt: pleromaExpiresAt ?? this.pleromaExpiresAt,
-        pleromaThreadMuted: pleromaThreadMuted ?? this.pleromaThreadMuted,
-        pleromaEmojiReactions:
-            pleromaEmojiReactions ?? this.pleromaEmojiReactions,
+        contentVariants: contentVariants ?? this.contentVariants,
+        conversationId: conversationId ?? this.conversationId,
+        directConversationId: directConversationId ?? this.directConversationId,
+        inReplyToAccountAcct: inReplyToAccountAcct ?? this.inReplyToAccountAcct,
+        local: local ?? this.local,
+        spoilerTextVariants: spoilerTextVariants ?? this.spoilerTextVariants,
+        expiresAt: expiresAt ?? this.expiresAt,
+        threadMuted: threadMuted ?? this.threadMuted,
+        emojiReactions: emojiReactions ?? this.emojiReactions,
         deleted: deleted ?? this.deleted,
         hiddenLocallyOnDevice:
             hiddenLocallyOnDevice ?? this.hiddenLocallyOnDevice,
@@ -675,15 +663,15 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
           ..write('poll: $poll, ')
           ..write('card: $card, ')
           ..write('language: $language, ')
-          ..write('pleromaContent: $pleromaContent, ')
-          ..write('pleromaConversationId: $pleromaConversationId, ')
-          ..write('pleromaDirectConversationId: $pleromaDirectConversationId, ')
-          ..write('pleromaInReplyToAccountAcct: $pleromaInReplyToAccountAcct, ')
-          ..write('pleromaLocal: $pleromaLocal, ')
-          ..write('pleromaSpoilerText: $pleromaSpoilerText, ')
-          ..write('pleromaExpiresAt: $pleromaExpiresAt, ')
-          ..write('pleromaThreadMuted: $pleromaThreadMuted, ')
-          ..write('pleromaEmojiReactions: $pleromaEmojiReactions, ')
+          ..write('contentVariants: $contentVariants, ')
+          ..write('conversationId: $conversationId, ')
+          ..write('directConversationId: $directConversationId, ')
+          ..write('inReplyToAccountAcct: $inReplyToAccountAcct, ')
+          ..write('local: $local, ')
+          ..write('spoilerTextVariants: $spoilerTextVariants, ')
+          ..write('expiresAt: $expiresAt, ')
+          ..write('threadMuted: $threadMuted, ')
+          ..write('emojiReactions: $emojiReactions, ')
           ..write('deleted: $deleted, ')
           ..write('hiddenLocallyOnDevice: $hiddenLocallyOnDevice, ')
           ..write('pendingState: $pendingState, ')
@@ -736,7 +724,7 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
                                                                               .hashCode,
                                                                           $mrjc(
                                                                               content.hashCode,
-                                                                              $mrjc(reblogStatusRemoteId.hashCode, $mrjc(application.hashCode, $mrjc(accountRemoteId.hashCode, $mrjc(mediaAttachments.hashCode, $mrjc(mentions.hashCode, $mrjc(tags.hashCode, $mrjc(emojis.hashCode, $mrjc(poll.hashCode, $mrjc(card.hashCode, $mrjc(language.hashCode, $mrjc(pleromaContent.hashCode, $mrjc(pleromaConversationId.hashCode, $mrjc(pleromaDirectConversationId.hashCode, $mrjc(pleromaInReplyToAccountAcct.hashCode, $mrjc(pleromaLocal.hashCode, $mrjc(pleromaSpoilerText.hashCode, $mrjc(pleromaExpiresAt.hashCode, $mrjc(pleromaThreadMuted.hashCode, $mrjc(pleromaEmojiReactions.hashCode, $mrjc(deleted.hashCode, $mrjc(hiddenLocallyOnDevice.hashCode, $mrjc(pendingState.hashCode, $mrjc(oldPendingRemoteId.hashCode, wasSentWithIdempotencyKey.hashCode)))))))))))))))))))))))))))))))))))))))))));
+                                                                              $mrjc(reblogStatusRemoteId.hashCode, $mrjc(application.hashCode, $mrjc(accountRemoteId.hashCode, $mrjc(mediaAttachments.hashCode, $mrjc(mentions.hashCode, $mrjc(tags.hashCode, $mrjc(emojis.hashCode, $mrjc(poll.hashCode, $mrjc(card.hashCode, $mrjc(language.hashCode, $mrjc(contentVariants.hashCode, $mrjc(conversationId.hashCode, $mrjc(directConversationId.hashCode, $mrjc(inReplyToAccountAcct.hashCode, $mrjc(local.hashCode, $mrjc(spoilerTextVariants.hashCode, $mrjc(expiresAt.hashCode, $mrjc(threadMuted.hashCode, $mrjc(emojiReactions.hashCode, $mrjc(deleted.hashCode, $mrjc(hiddenLocallyOnDevice.hashCode, $mrjc(pendingState.hashCode, $mrjc(oldPendingRemoteId.hashCode, wasSentWithIdempotencyKey.hashCode)))))))))))))))))))))))))))))))))))))))))));
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -770,17 +758,15 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
           other.poll == this.poll &&
           other.card == this.card &&
           other.language == this.language &&
-          other.pleromaContent == this.pleromaContent &&
-          other.pleromaConversationId == this.pleromaConversationId &&
-          other.pleromaDirectConversationId ==
-              this.pleromaDirectConversationId &&
-          other.pleromaInReplyToAccountAcct ==
-              this.pleromaInReplyToAccountAcct &&
-          other.pleromaLocal == this.pleromaLocal &&
-          other.pleromaSpoilerText == this.pleromaSpoilerText &&
-          other.pleromaExpiresAt == this.pleromaExpiresAt &&
-          other.pleromaThreadMuted == this.pleromaThreadMuted &&
-          other.pleromaEmojiReactions == this.pleromaEmojiReactions &&
+          other.contentVariants == this.contentVariants &&
+          other.conversationId == this.conversationId &&
+          other.directConversationId == this.directConversationId &&
+          other.inReplyToAccountAcct == this.inReplyToAccountAcct &&
+          other.local == this.local &&
+          other.spoilerTextVariants == this.spoilerTextVariants &&
+          other.expiresAt == this.expiresAt &&
+          other.threadMuted == this.threadMuted &&
+          other.emojiReactions == this.emojiReactions &&
           other.deleted == this.deleted &&
           other.hiddenLocallyOnDevice == this.hiddenLocallyOnDevice &&
           other.pendingState == this.pendingState &&
@@ -796,7 +782,7 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
   final Value<String?> inReplyToAccountRemoteId;
   final Value<bool> sensitive;
   final Value<String?> spoilerText;
-  final Value<PleromaApiVisibility> visibility;
+  final Value<UnifediApiVisibility> visibility;
   final Value<String> uri;
   final Value<String?> url;
   final Value<int> repliesCount;
@@ -809,24 +795,24 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
   final Value<bool?> pinned;
   final Value<String?> content;
   final Value<String?> reblogStatusRemoteId;
-  final Value<PleromaApiApplication?> application;
+  final Value<UnifediApiApplication?> application;
   final Value<String> accountRemoteId;
-  final Value<List<PleromaApiMediaAttachment>?> mediaAttachments;
-  final Value<List<PleromaApiMention>?> mentions;
-  final Value<List<PleromaApiTag>?> tags;
-  final Value<List<PleromaApiEmoji>?> emojis;
-  final Value<PleromaApiPoll?> poll;
-  final Value<PleromaApiCard?> card;
+  final Value<List<UnifediApiMediaAttachment>?> mediaAttachments;
+  final Value<List<UnifediApiMention>?> mentions;
+  final Value<List<UnifediApiTag>?> tags;
+  final Value<List<UnifediApiEmoji>?> emojis;
+  final Value<UnifediApiPoll?> poll;
+  final Value<UnifediApiCard?> card;
   final Value<String?> language;
-  final Value<PleromaApiContent?> pleromaContent;
-  final Value<int?> pleromaConversationId;
-  final Value<int?> pleromaDirectConversationId;
-  final Value<String?> pleromaInReplyToAccountAcct;
-  final Value<bool?> pleromaLocal;
-  final Value<PleromaApiContent?> pleromaSpoilerText;
-  final Value<DateTime?> pleromaExpiresAt;
-  final Value<bool?> pleromaThreadMuted;
-  final Value<List<PleromaApiStatusEmojiReaction>?> pleromaEmojiReactions;
+  final Value<UnifediApiContentVariants?> contentVariants;
+  final Value<int?> conversationId;
+  final Value<int?> directConversationId;
+  final Value<String?> inReplyToAccountAcct;
+  final Value<bool?> local;
+  final Value<UnifediApiContentVariants?> spoilerTextVariants;
+  final Value<DateTime?> expiresAt;
+  final Value<bool?> threadMuted;
+  final Value<List<UnifediApiEmojiReaction>?> emojiReactions;
   final Value<bool?> deleted;
   final Value<bool?> hiddenLocallyOnDevice;
   final Value<PendingState?> pendingState;
@@ -862,15 +848,15 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
     this.poll = const Value.absent(),
     this.card = const Value.absent(),
     this.language = const Value.absent(),
-    this.pleromaContent = const Value.absent(),
-    this.pleromaConversationId = const Value.absent(),
-    this.pleromaDirectConversationId = const Value.absent(),
-    this.pleromaInReplyToAccountAcct = const Value.absent(),
-    this.pleromaLocal = const Value.absent(),
-    this.pleromaSpoilerText = const Value.absent(),
-    this.pleromaExpiresAt = const Value.absent(),
-    this.pleromaThreadMuted = const Value.absent(),
-    this.pleromaEmojiReactions = const Value.absent(),
+    this.contentVariants = const Value.absent(),
+    this.conversationId = const Value.absent(),
+    this.directConversationId = const Value.absent(),
+    this.inReplyToAccountAcct = const Value.absent(),
+    this.local = const Value.absent(),
+    this.spoilerTextVariants = const Value.absent(),
+    this.expiresAt = const Value.absent(),
+    this.threadMuted = const Value.absent(),
+    this.emojiReactions = const Value.absent(),
     this.deleted = const Value.absent(),
     this.hiddenLocallyOnDevice = const Value.absent(),
     this.pendingState = const Value.absent(),
@@ -885,7 +871,7 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
     this.inReplyToAccountRemoteId = const Value.absent(),
     required bool sensitive,
     this.spoilerText = const Value.absent(),
-    required PleromaApiVisibility visibility,
+    required UnifediApiVisibility visibility,
     required String uri,
     this.url = const Value.absent(),
     required int repliesCount,
@@ -907,15 +893,15 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
     this.poll = const Value.absent(),
     this.card = const Value.absent(),
     this.language = const Value.absent(),
-    this.pleromaContent = const Value.absent(),
-    this.pleromaConversationId = const Value.absent(),
-    this.pleromaDirectConversationId = const Value.absent(),
-    this.pleromaInReplyToAccountAcct = const Value.absent(),
-    this.pleromaLocal = const Value.absent(),
-    this.pleromaSpoilerText = const Value.absent(),
-    this.pleromaExpiresAt = const Value.absent(),
-    this.pleromaThreadMuted = const Value.absent(),
-    this.pleromaEmojiReactions = const Value.absent(),
+    this.contentVariants = const Value.absent(),
+    this.conversationId = const Value.absent(),
+    this.directConversationId = const Value.absent(),
+    this.inReplyToAccountAcct = const Value.absent(),
+    this.local = const Value.absent(),
+    this.spoilerTextVariants = const Value.absent(),
+    this.expiresAt = const Value.absent(),
+    this.threadMuted = const Value.absent(),
+    this.emojiReactions = const Value.absent(),
     this.deleted = const Value.absent(),
     this.hiddenLocallyOnDevice = const Value.absent(),
     this.pendingState = const Value.absent(),
@@ -938,7 +924,7 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
     Expression<String?>? inReplyToAccountRemoteId,
     Expression<bool>? sensitive,
     Expression<String?>? spoilerText,
-    Expression<PleromaApiVisibility>? visibility,
+    Expression<UnifediApiVisibility>? visibility,
     Expression<String>? uri,
     Expression<String?>? url,
     Expression<int>? repliesCount,
@@ -951,24 +937,24 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
     Expression<bool?>? pinned,
     Expression<String?>? content,
     Expression<String?>? reblogStatusRemoteId,
-    Expression<PleromaApiApplication?>? application,
+    Expression<UnifediApiApplication?>? application,
     Expression<String>? accountRemoteId,
-    Expression<List<PleromaApiMediaAttachment>?>? mediaAttachments,
-    Expression<List<PleromaApiMention>?>? mentions,
-    Expression<List<PleromaApiTag>?>? tags,
-    Expression<List<PleromaApiEmoji>?>? emojis,
-    Expression<PleromaApiPoll?>? poll,
-    Expression<PleromaApiCard?>? card,
+    Expression<List<UnifediApiMediaAttachment>?>? mediaAttachments,
+    Expression<List<UnifediApiMention>?>? mentions,
+    Expression<List<UnifediApiTag>?>? tags,
+    Expression<List<UnifediApiEmoji>?>? emojis,
+    Expression<UnifediApiPoll?>? poll,
+    Expression<UnifediApiCard?>? card,
     Expression<String?>? language,
-    Expression<PleromaApiContent?>? pleromaContent,
-    Expression<int?>? pleromaConversationId,
-    Expression<int?>? pleromaDirectConversationId,
-    Expression<String?>? pleromaInReplyToAccountAcct,
-    Expression<bool?>? pleromaLocal,
-    Expression<PleromaApiContent?>? pleromaSpoilerText,
-    Expression<DateTime?>? pleromaExpiresAt,
-    Expression<bool?>? pleromaThreadMuted,
-    Expression<List<PleromaApiStatusEmojiReaction>?>? pleromaEmojiReactions,
+    Expression<UnifediApiContentVariants?>? contentVariants,
+    Expression<int?>? conversationId,
+    Expression<int?>? directConversationId,
+    Expression<String?>? inReplyToAccountAcct,
+    Expression<bool?>? local,
+    Expression<UnifediApiContentVariants?>? spoilerTextVariants,
+    Expression<DateTime?>? expiresAt,
+    Expression<bool?>? threadMuted,
+    Expression<List<UnifediApiEmojiReaction>?>? emojiReactions,
     Expression<bool?>? deleted,
     Expression<bool?>? hiddenLocallyOnDevice,
     Expression<PendingState?>? pendingState,
@@ -1007,21 +993,18 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
       if (poll != null) 'poll': poll,
       if (card != null) 'card': card,
       if (language != null) 'language': language,
-      if (pleromaContent != null) 'pleroma_content': pleromaContent,
-      if (pleromaConversationId != null)
-        'pleroma_conversation_id': pleromaConversationId,
-      if (pleromaDirectConversationId != null)
-        'pleroma_direct_conversation_id': pleromaDirectConversationId,
-      if (pleromaInReplyToAccountAcct != null)
-        'pleroma_in_reply_to_account_acct': pleromaInReplyToAccountAcct,
-      if (pleromaLocal != null) 'pleroma_local': pleromaLocal,
-      if (pleromaSpoilerText != null)
-        'pleroma_spoiler_text': pleromaSpoilerText,
-      if (pleromaExpiresAt != null) 'pleroma_expires_at': pleromaExpiresAt,
-      if (pleromaThreadMuted != null)
-        'pleroma_thread_muted': pleromaThreadMuted,
-      if (pleromaEmojiReactions != null)
-        'pleroma_emoji_reactions': pleromaEmojiReactions,
+      if (contentVariants != null) 'pleroma_content': contentVariants,
+      if (conversationId != null) 'pleroma_conversation_id': conversationId,
+      if (directConversationId != null)
+        'pleroma_direct_conversation_id': directConversationId,
+      if (inReplyToAccountAcct != null)
+        'pleroma_in_reply_to_account_acct': inReplyToAccountAcct,
+      if (local != null) 'pleroma_local': local,
+      if (spoilerTextVariants != null)
+        'pleroma_spoiler_text': spoilerTextVariants,
+      if (expiresAt != null) 'pleroma_expires_at': expiresAt,
+      if (threadMuted != null) 'pleroma_thread_muted': threadMuted,
+      if (emojiReactions != null) 'pleroma_emoji_reactions': emojiReactions,
       if (deleted != null) 'deleted': deleted,
       if (hiddenLocallyOnDevice != null)
         'hidden_locally_on_device': hiddenLocallyOnDevice,
@@ -1041,7 +1024,7 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
       Value<String?>? inReplyToAccountRemoteId,
       Value<bool>? sensitive,
       Value<String?>? spoilerText,
-      Value<PleromaApiVisibility>? visibility,
+      Value<UnifediApiVisibility>? visibility,
       Value<String>? uri,
       Value<String?>? url,
       Value<int>? repliesCount,
@@ -1054,24 +1037,24 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
       Value<bool?>? pinned,
       Value<String?>? content,
       Value<String?>? reblogStatusRemoteId,
-      Value<PleromaApiApplication?>? application,
+      Value<UnifediApiApplication?>? application,
       Value<String>? accountRemoteId,
-      Value<List<PleromaApiMediaAttachment>?>? mediaAttachments,
-      Value<List<PleromaApiMention>?>? mentions,
-      Value<List<PleromaApiTag>?>? tags,
-      Value<List<PleromaApiEmoji>?>? emojis,
-      Value<PleromaApiPoll?>? poll,
-      Value<PleromaApiCard?>? card,
+      Value<List<UnifediApiMediaAttachment>?>? mediaAttachments,
+      Value<List<UnifediApiMention>?>? mentions,
+      Value<List<UnifediApiTag>?>? tags,
+      Value<List<UnifediApiEmoji>?>? emojis,
+      Value<UnifediApiPoll?>? poll,
+      Value<UnifediApiCard?>? card,
       Value<String?>? language,
-      Value<PleromaApiContent?>? pleromaContent,
-      Value<int?>? pleromaConversationId,
-      Value<int?>? pleromaDirectConversationId,
-      Value<String?>? pleromaInReplyToAccountAcct,
-      Value<bool?>? pleromaLocal,
-      Value<PleromaApiContent?>? pleromaSpoilerText,
-      Value<DateTime?>? pleromaExpiresAt,
-      Value<bool?>? pleromaThreadMuted,
-      Value<List<PleromaApiStatusEmojiReaction>?>? pleromaEmojiReactions,
+      Value<UnifediApiContentVariants?>? contentVariants,
+      Value<int?>? conversationId,
+      Value<int?>? directConversationId,
+      Value<String?>? inReplyToAccountAcct,
+      Value<bool?>? local,
+      Value<UnifediApiContentVariants?>? spoilerTextVariants,
+      Value<DateTime?>? expiresAt,
+      Value<bool?>? threadMuted,
+      Value<List<UnifediApiEmojiReaction>?>? emojiReactions,
       Value<bool?>? deleted,
       Value<bool?>? hiddenLocallyOnDevice,
       Value<PendingState?>? pendingState,
@@ -1108,19 +1091,15 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
       poll: poll ?? this.poll,
       card: card ?? this.card,
       language: language ?? this.language,
-      pleromaContent: pleromaContent ?? this.pleromaContent,
-      pleromaConversationId:
-          pleromaConversationId ?? this.pleromaConversationId,
-      pleromaDirectConversationId:
-          pleromaDirectConversationId ?? this.pleromaDirectConversationId,
-      pleromaInReplyToAccountAcct:
-          pleromaInReplyToAccountAcct ?? this.pleromaInReplyToAccountAcct,
-      pleromaLocal: pleromaLocal ?? this.pleromaLocal,
-      pleromaSpoilerText: pleromaSpoilerText ?? this.pleromaSpoilerText,
-      pleromaExpiresAt: pleromaExpiresAt ?? this.pleromaExpiresAt,
-      pleromaThreadMuted: pleromaThreadMuted ?? this.pleromaThreadMuted,
-      pleromaEmojiReactions:
-          pleromaEmojiReactions ?? this.pleromaEmojiReactions,
+      contentVariants: contentVariants ?? this.contentVariants,
+      conversationId: conversationId ?? this.conversationId,
+      directConversationId: directConversationId ?? this.directConversationId,
+      inReplyToAccountAcct: inReplyToAccountAcct ?? this.inReplyToAccountAcct,
+      local: local ?? this.local,
+      spoilerTextVariants: spoilerTextVariants ?? this.spoilerTextVariants,
+      expiresAt: expiresAt ?? this.expiresAt,
+      threadMuted: threadMuted ?? this.threadMuted,
+      emojiReactions: emojiReactions ?? this.emojiReactions,
       deleted: deleted ?? this.deleted,
       hiddenLocallyOnDevice:
           hiddenLocallyOnDevice ?? this.hiddenLocallyOnDevice,
@@ -1234,41 +1213,40 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
     if (language.present) {
       map['language'] = Variable<String?>(language.value);
     }
-    if (pleromaContent.present) {
+    if (contentVariants.present) {
       final converter = $DbStatusesTable.$converter8;
       map['pleroma_content'] =
-          Variable<String?>(converter.mapToSql(pleromaContent.value));
+          Variable<String?>(converter.mapToSql(contentVariants.value));
     }
-    if (pleromaConversationId.present) {
-      map['pleroma_conversation_id'] =
-          Variable<int?>(pleromaConversationId.value);
+    if (conversationId.present) {
+      map['pleroma_conversation_id'] = Variable<int?>(conversationId.value);
     }
-    if (pleromaDirectConversationId.present) {
+    if (directConversationId.present) {
       map['pleroma_direct_conversation_id'] =
-          Variable<int?>(pleromaDirectConversationId.value);
+          Variable<int?>(directConversationId.value);
     }
-    if (pleromaInReplyToAccountAcct.present) {
+    if (inReplyToAccountAcct.present) {
       map['pleroma_in_reply_to_account_acct'] =
-          Variable<String?>(pleromaInReplyToAccountAcct.value);
+          Variable<String?>(inReplyToAccountAcct.value);
     }
-    if (pleromaLocal.present) {
-      map['pleroma_local'] = Variable<bool?>(pleromaLocal.value);
+    if (local.present) {
+      map['pleroma_local'] = Variable<bool?>(local.value);
     }
-    if (pleromaSpoilerText.present) {
+    if (spoilerTextVariants.present) {
       final converter = $DbStatusesTable.$converter9;
       map['pleroma_spoiler_text'] =
-          Variable<String?>(converter.mapToSql(pleromaSpoilerText.value));
+          Variable<String?>(converter.mapToSql(spoilerTextVariants.value));
     }
-    if (pleromaExpiresAt.present) {
-      map['pleroma_expires_at'] = Variable<DateTime?>(pleromaExpiresAt.value);
+    if (expiresAt.present) {
+      map['pleroma_expires_at'] = Variable<DateTime?>(expiresAt.value);
     }
-    if (pleromaThreadMuted.present) {
-      map['pleroma_thread_muted'] = Variable<bool?>(pleromaThreadMuted.value);
+    if (threadMuted.present) {
+      map['pleroma_thread_muted'] = Variable<bool?>(threadMuted.value);
     }
-    if (pleromaEmojiReactions.present) {
+    if (emojiReactions.present) {
       final converter = $DbStatusesTable.$converter10;
       map['pleroma_emoji_reactions'] =
-          Variable<String?>(converter.mapToSql(pleromaEmojiReactions.value));
+          Variable<String?>(converter.mapToSql(emojiReactions.value));
     }
     if (deleted.present) {
       map['deleted'] = Variable<bool?>(deleted.value);
@@ -1325,15 +1303,15 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
           ..write('poll: $poll, ')
           ..write('card: $card, ')
           ..write('language: $language, ')
-          ..write('pleromaContent: $pleromaContent, ')
-          ..write('pleromaConversationId: $pleromaConversationId, ')
-          ..write('pleromaDirectConversationId: $pleromaDirectConversationId, ')
-          ..write('pleromaInReplyToAccountAcct: $pleromaInReplyToAccountAcct, ')
-          ..write('pleromaLocal: $pleromaLocal, ')
-          ..write('pleromaSpoilerText: $pleromaSpoilerText, ')
-          ..write('pleromaExpiresAt: $pleromaExpiresAt, ')
-          ..write('pleromaThreadMuted: $pleromaThreadMuted, ')
-          ..write('pleromaEmojiReactions: $pleromaEmojiReactions, ')
+          ..write('contentVariants: $contentVariants, ')
+          ..write('conversationId: $conversationId, ')
+          ..write('directConversationId: $directConversationId, ')
+          ..write('inReplyToAccountAcct: $inReplyToAccountAcct, ')
+          ..write('local: $local, ')
+          ..write('spoilerTextVariants: $spoilerTextVariants, ')
+          ..write('expiresAt: $expiresAt, ')
+          ..write('threadMuted: $threadMuted, ')
+          ..write('emojiReactions: $emojiReactions, ')
           ..write('deleted: $deleted, ')
           ..write('hiddenLocallyOnDevice: $hiddenLocallyOnDevice, ')
           ..write('pendingState: $pendingState, ')
@@ -1388,10 +1366,10 @@ class $DbStatusesTable extends DbStatuses
       'spoiler_text', aliasedName, true,
       typeName: 'TEXT', requiredDuringInsert: false);
   final VerificationMeta _visibilityMeta = const VerificationMeta('visibility');
-  late final GeneratedColumnWithTypeConverter<PleromaApiVisibility, String?>
+  late final GeneratedColumnWithTypeConverter<UnifediApiVisibility, String?>
       visibility = GeneratedColumn<String?>('visibility', aliasedName, false,
               typeName: 'TEXT', requiredDuringInsert: true)
-          .withConverter<PleromaApiVisibility>($DbStatusesTable.$converter0);
+          .withConverter<UnifediApiVisibility>($DbStatusesTable.$converter0);
   final VerificationMeta _uriMeta = const VerificationMeta('uri');
   late final GeneratedColumn<String?> uri = GeneratedColumn<String?>(
       'uri', aliasedName, false,
@@ -1459,10 +1437,10 @@ class $DbStatusesTable extends DbStatuses
           typeName: 'TEXT', requiredDuringInsert: false);
   final VerificationMeta _applicationMeta =
       const VerificationMeta('application');
-  late final GeneratedColumnWithTypeConverter<PleromaApiApplication, String?>
+  late final GeneratedColumnWithTypeConverter<UnifediApiApplication, String?>
       application = GeneratedColumn<String?>('application', aliasedName, true,
               typeName: 'TEXT', requiredDuringInsert: false)
-          .withConverter<PleromaApiApplication>($DbStatusesTable.$converter1);
+          .withConverter<UnifediApiApplication>($DbStatusesTable.$converter1);
   final VerificationMeta _accountRemoteIdMeta =
       const VerificationMeta('accountRemoteId');
   late final GeneratedColumn<String?> accountRemoteId =
@@ -1470,98 +1448,96 @@ class $DbStatusesTable extends DbStatuses
           typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _mediaAttachmentsMeta =
       const VerificationMeta('mediaAttachments');
-  late final GeneratedColumnWithTypeConverter<List<PleromaApiMediaAttachment>,
+  late final GeneratedColumnWithTypeConverter<List<UnifediApiMediaAttachment>,
       String?> mediaAttachments = GeneratedColumn<String?>(
           'media_attachments', aliasedName, true,
           typeName: 'TEXT', requiredDuringInsert: false)
-      .withConverter<List<PleromaApiMediaAttachment>>(
+      .withConverter<List<UnifediApiMediaAttachment>>(
           $DbStatusesTable.$converter2);
   final VerificationMeta _mentionsMeta = const VerificationMeta('mentions');
-  late final GeneratedColumnWithTypeConverter<List<PleromaApiMention>, String?>
+  late final GeneratedColumnWithTypeConverter<List<UnifediApiMention>, String?>
       mentions = GeneratedColumn<String?>('mentions', aliasedName, true,
               typeName: 'TEXT', requiredDuringInsert: false)
-          .withConverter<List<PleromaApiMention>>($DbStatusesTable.$converter3);
+          .withConverter<List<UnifediApiMention>>($DbStatusesTable.$converter3);
   final VerificationMeta _tagsMeta = const VerificationMeta('tags');
-  late final GeneratedColumnWithTypeConverter<List<PleromaApiTag>, String?>
+  late final GeneratedColumnWithTypeConverter<List<UnifediApiTag>, String?>
       tags = GeneratedColumn<String?>('tags', aliasedName, true,
               typeName: 'TEXT', requiredDuringInsert: false)
-          .withConverter<List<PleromaApiTag>>($DbStatusesTable.$converter4);
+          .withConverter<List<UnifediApiTag>>($DbStatusesTable.$converter4);
   final VerificationMeta _emojisMeta = const VerificationMeta('emojis');
-  late final GeneratedColumnWithTypeConverter<List<PleromaApiEmoji>, String?>
+  late final GeneratedColumnWithTypeConverter<List<UnifediApiEmoji>, String?>
       emojis = GeneratedColumn<String?>('emojis', aliasedName, true,
               typeName: 'TEXT', requiredDuringInsert: false)
-          .withConverter<List<PleromaApiEmoji>>($DbStatusesTable.$converter5);
+          .withConverter<List<UnifediApiEmoji>>($DbStatusesTable.$converter5);
   final VerificationMeta _pollMeta = const VerificationMeta('poll');
-  late final GeneratedColumnWithTypeConverter<PleromaApiPoll, String?> poll =
+  late final GeneratedColumnWithTypeConverter<UnifediApiPoll, String?> poll =
       GeneratedColumn<String?>('poll', aliasedName, true,
               typeName: 'TEXT', requiredDuringInsert: false)
-          .withConverter<PleromaApiPoll>($DbStatusesTable.$converter6);
+          .withConverter<UnifediApiPoll>($DbStatusesTable.$converter6);
   final VerificationMeta _cardMeta = const VerificationMeta('card');
-  late final GeneratedColumnWithTypeConverter<PleromaApiCard, String?> card =
+  late final GeneratedColumnWithTypeConverter<UnifediApiCard, String?> card =
       GeneratedColumn<String?>('card', aliasedName, true,
               typeName: 'TEXT', requiredDuringInsert: false)
-          .withConverter<PleromaApiCard>($DbStatusesTable.$converter7);
+          .withConverter<UnifediApiCard>($DbStatusesTable.$converter7);
   final VerificationMeta _languageMeta = const VerificationMeta('language');
   late final GeneratedColumn<String?> language = GeneratedColumn<String?>(
       'language', aliasedName, true,
       typeName: 'TEXT', requiredDuringInsert: false);
-  final VerificationMeta _pleromaContentMeta =
-      const VerificationMeta('pleromaContent');
-  late final GeneratedColumnWithTypeConverter<PleromaApiContent, String?>
-      pleromaContent = GeneratedColumn<String?>(
-              'pleroma_content', aliasedName, true,
-              typeName: 'TEXT', requiredDuringInsert: false)
-          .withConverter<PleromaApiContent>($DbStatusesTable.$converter8);
-  final VerificationMeta _pleromaConversationIdMeta =
-      const VerificationMeta('pleromaConversationId');
-  late final GeneratedColumn<int?> pleromaConversationId =
-      GeneratedColumn<int?>('pleroma_conversation_id', aliasedName, true,
-          typeName: 'INTEGER', requiredDuringInsert: false);
-  final VerificationMeta _pleromaDirectConversationIdMeta =
-      const VerificationMeta('pleromaDirectConversationId');
-  late final GeneratedColumn<int?> pleromaDirectConversationId =
-      GeneratedColumn<int?>('pleroma_direct_conversation_id', aliasedName, true,
-          typeName: 'INTEGER', requiredDuringInsert: false);
-  final VerificationMeta _pleromaInReplyToAccountAcctMeta =
-      const VerificationMeta('pleromaInReplyToAccountAcct');
-  late final GeneratedColumn<String?> pleromaInReplyToAccountAcct =
+  final VerificationMeta _contentVariantsMeta =
+      const VerificationMeta('contentVariants');
+  late final GeneratedColumnWithTypeConverter<UnifediApiContentVariants,
+      String?> contentVariants = GeneratedColumn<String?>(
+          'pleroma_content', aliasedName, true,
+          typeName: 'TEXT', requiredDuringInsert: false)
+      .withConverter<UnifediApiContentVariants>($DbStatusesTable.$converter8);
+  final VerificationMeta _conversationIdMeta =
+      const VerificationMeta('conversationId');
+  late final GeneratedColumn<int?> conversationId = GeneratedColumn<int?>(
+      'pleroma_conversation_id', aliasedName, true,
+      typeName: 'INTEGER', requiredDuringInsert: false);
+  final VerificationMeta _directConversationIdMeta =
+      const VerificationMeta('directConversationId');
+  late final GeneratedColumn<int?> directConversationId = GeneratedColumn<int?>(
+      'pleroma_direct_conversation_id', aliasedName, true,
+      typeName: 'INTEGER', requiredDuringInsert: false);
+  final VerificationMeta _inReplyToAccountAcctMeta =
+      const VerificationMeta('inReplyToAccountAcct');
+  late final GeneratedColumn<String?> inReplyToAccountAcct =
       GeneratedColumn<String?>(
           'pleroma_in_reply_to_account_acct', aliasedName, true,
           typeName: 'TEXT', requiredDuringInsert: false);
-  final VerificationMeta _pleromaLocalMeta =
-      const VerificationMeta('pleromaLocal');
-  late final GeneratedColumn<bool?> pleromaLocal = GeneratedColumn<bool?>(
+  final VerificationMeta _localMeta = const VerificationMeta('local');
+  late final GeneratedColumn<bool?> local = GeneratedColumn<bool?>(
       'pleroma_local', aliasedName, true,
       typeName: 'INTEGER',
       requiredDuringInsert: false,
       defaultConstraints: 'CHECK (pleroma_local IN (0, 1))');
-  final VerificationMeta _pleromaSpoilerTextMeta =
-      const VerificationMeta('pleromaSpoilerText');
-  late final GeneratedColumnWithTypeConverter<PleromaApiContent, String?>
-      pleromaSpoilerText = GeneratedColumn<String?>(
-              'pleroma_spoiler_text', aliasedName, true,
-              typeName: 'TEXT', requiredDuringInsert: false)
-          .withConverter<PleromaApiContent>($DbStatusesTable.$converter9);
-  final VerificationMeta _pleromaExpiresAtMeta =
-      const VerificationMeta('pleromaExpiresAt');
-  late final GeneratedColumn<DateTime?> pleromaExpiresAt =
-      GeneratedColumn<DateTime?>('pleroma_expires_at', aliasedName, true,
-          typeName: 'INTEGER', requiredDuringInsert: false);
-  final VerificationMeta _pleromaThreadMutedMeta =
-      const VerificationMeta('pleromaThreadMuted');
-  late final GeneratedColumn<bool?> pleromaThreadMuted = GeneratedColumn<bool?>(
+  final VerificationMeta _spoilerTextVariantsMeta =
+      const VerificationMeta('spoilerTextVariants');
+  late final GeneratedColumnWithTypeConverter<UnifediApiContentVariants,
+      String?> spoilerTextVariants = GeneratedColumn<String?>(
+          'pleroma_spoiler_text', aliasedName, true,
+          typeName: 'TEXT', requiredDuringInsert: false)
+      .withConverter<UnifediApiContentVariants>($DbStatusesTable.$converter9);
+  final VerificationMeta _expiresAtMeta = const VerificationMeta('expiresAt');
+  late final GeneratedColumn<DateTime?> expiresAt = GeneratedColumn<DateTime?>(
+      'pleroma_expires_at', aliasedName, true,
+      typeName: 'INTEGER', requiredDuringInsert: false);
+  final VerificationMeta _threadMutedMeta =
+      const VerificationMeta('threadMuted');
+  late final GeneratedColumn<bool?> threadMuted = GeneratedColumn<bool?>(
       'pleroma_thread_muted', aliasedName, true,
       typeName: 'INTEGER',
       requiredDuringInsert: false,
       defaultConstraints: 'CHECK (pleroma_thread_muted IN (0, 1))');
-  final VerificationMeta _pleromaEmojiReactionsMeta =
-      const VerificationMeta('pleromaEmojiReactions');
-  late final GeneratedColumnWithTypeConverter<
-          List<PleromaApiStatusEmojiReaction>, String?> pleromaEmojiReactions =
-      GeneratedColumn<String?>('pleroma_emoji_reactions', aliasedName, true,
-              typeName: 'TEXT', requiredDuringInsert: false)
-          .withConverter<List<PleromaApiStatusEmojiReaction>>(
-              $DbStatusesTable.$converter10);
+  final VerificationMeta _emojiReactionsMeta =
+      const VerificationMeta('emojiReactions');
+  late final GeneratedColumnWithTypeConverter<List<UnifediApiEmojiReaction>,
+      String?> emojiReactions = GeneratedColumn<String?>(
+          'pleroma_emoji_reactions', aliasedName, true,
+          typeName: 'TEXT', requiredDuringInsert: false)
+      .withConverter<List<UnifediApiEmojiReaction>>(
+          $DbStatusesTable.$converter10);
   final VerificationMeta _deletedMeta = const VerificationMeta('deleted');
   late final GeneratedColumn<bool?> deleted = GeneratedColumn<bool?>(
       'deleted', aliasedName, true,
@@ -1624,15 +1600,15 @@ class $DbStatusesTable extends DbStatuses
         poll,
         card,
         language,
-        pleromaContent,
-        pleromaConversationId,
-        pleromaDirectConversationId,
-        pleromaInReplyToAccountAcct,
-        pleromaLocal,
-        pleromaSpoilerText,
-        pleromaExpiresAt,
-        pleromaThreadMuted,
-        pleromaEmojiReactions,
+        contentVariants,
+        conversationId,
+        directConversationId,
+        inReplyToAccountAcct,
+        local,
+        spoilerTextVariants,
+        expiresAt,
+        threadMuted,
+        emojiReactions,
         deleted,
         hiddenLocallyOnDevice,
         pendingState,
@@ -1776,48 +1752,46 @@ class $DbStatusesTable extends DbStatuses
       context.handle(_languageMeta,
           language.isAcceptableOrUnknown(data['language']!, _languageMeta));
     }
-    context.handle(_pleromaContentMeta, const VerificationResult.success());
+    context.handle(_contentVariantsMeta, const VerificationResult.success());
     if (data.containsKey('pleroma_conversation_id')) {
       context.handle(
-          _pleromaConversationIdMeta,
-          pleromaConversationId.isAcceptableOrUnknown(
-              data['pleroma_conversation_id']!, _pleromaConversationIdMeta));
+          _conversationIdMeta,
+          conversationId.isAcceptableOrUnknown(
+              data['pleroma_conversation_id']!, _conversationIdMeta));
     }
     if (data.containsKey('pleroma_direct_conversation_id')) {
       context.handle(
-          _pleromaDirectConversationIdMeta,
-          pleromaDirectConversationId.isAcceptableOrUnknown(
+          _directConversationIdMeta,
+          directConversationId.isAcceptableOrUnknown(
               data['pleroma_direct_conversation_id']!,
-              _pleromaDirectConversationIdMeta));
+              _directConversationIdMeta));
     }
     if (data.containsKey('pleroma_in_reply_to_account_acct')) {
       context.handle(
-          _pleromaInReplyToAccountAcctMeta,
-          pleromaInReplyToAccountAcct.isAcceptableOrUnknown(
+          _inReplyToAccountAcctMeta,
+          inReplyToAccountAcct.isAcceptableOrUnknown(
               data['pleroma_in_reply_to_account_acct']!,
-              _pleromaInReplyToAccountAcctMeta));
+              _inReplyToAccountAcctMeta));
     }
     if (data.containsKey('pleroma_local')) {
-      context.handle(
-          _pleromaLocalMeta,
-          pleromaLocal.isAcceptableOrUnknown(
-              data['pleroma_local']!, _pleromaLocalMeta));
+      context.handle(_localMeta,
+          local.isAcceptableOrUnknown(data['pleroma_local']!, _localMeta));
     }
-    context.handle(_pleromaSpoilerTextMeta, const VerificationResult.success());
+    context.handle(
+        _spoilerTextVariantsMeta, const VerificationResult.success());
     if (data.containsKey('pleroma_expires_at')) {
       context.handle(
-          _pleromaExpiresAtMeta,
-          pleromaExpiresAt.isAcceptableOrUnknown(
-              data['pleroma_expires_at']!, _pleromaExpiresAtMeta));
+          _expiresAtMeta,
+          expiresAt.isAcceptableOrUnknown(
+              data['pleroma_expires_at']!, _expiresAtMeta));
     }
     if (data.containsKey('pleroma_thread_muted')) {
       context.handle(
-          _pleromaThreadMutedMeta,
-          pleromaThreadMuted.isAcceptableOrUnknown(
-              data['pleroma_thread_muted']!, _pleromaThreadMutedMeta));
+          _threadMutedMeta,
+          threadMuted.isAcceptableOrUnknown(
+              data['pleroma_thread_muted']!, _threadMutedMeta));
     }
-    context.handle(
-        _pleromaEmojiReactionsMeta, const VerificationResult.success());
+    context.handle(_emojiReactionsMeta, const VerificationResult.success());
     if (data.containsKey('deleted')) {
       context.handle(_deletedMeta,
           deleted.isAcceptableOrUnknown(data['deleted']!, _deletedMeta));
@@ -1858,28 +1832,28 @@ class $DbStatusesTable extends DbStatuses
     return $DbStatusesTable(_db, alias);
   }
 
-  static TypeConverter<PleromaApiVisibility, String> $converter0 =
-      PleromaApiVisibilityMoorTypeConverter();
-  static TypeConverter<PleromaApiApplication, String> $converter1 =
+  static TypeConverter<UnifediApiVisibility, String> $converter0 =
+      UnifediApiVisibilityMoorTypeConverter();
+  static TypeConverter<UnifediApiApplication, String> $converter1 =
       PleromaApplicationDatabaseConverter();
-  static TypeConverter<List<PleromaApiMediaAttachment>, String> $converter2 =
-      PleromaMediaAttachmentListDatabaseConverter();
-  static TypeConverter<List<PleromaApiMention>, String> $converter3 =
+  static TypeConverter<List<UnifediApiMediaAttachment>, String> $converter2 =
+      UnifediApiMediaAttachmentListDatabaseConverter();
+  static TypeConverter<List<UnifediApiMention>, String> $converter3 =
       PleromaMentionListDatabaseConverter();
-  static TypeConverter<List<PleromaApiTag>, String> $converter4 =
-      PleromaApiTagListDatabaseConverter();
-  static TypeConverter<List<PleromaApiEmoji>, String> $converter5 =
-      PleromaApiEmojiListDatabaseConverter();
-  static TypeConverter<PleromaApiPoll, String> $converter6 =
-      PleromaPollDatabaseConverter();
-  static TypeConverter<PleromaApiCard, String> $converter7 =
+  static TypeConverter<List<UnifediApiTag>, String> $converter4 =
+      UnifediApiTagListDatabaseConverter();
+  static TypeConverter<List<UnifediApiEmoji>, String> $converter5 =
+      UnifediApiEmojiListDatabaseConverter();
+  static TypeConverter<UnifediApiPoll, String> $converter6 =
+      UnifediApiPollDatabaseConverter();
+  static TypeConverter<UnifediApiCard, String> $converter7 =
       PleromaCardDatabaseConverter();
-  static TypeConverter<PleromaApiContent, String> $converter8 =
+  static TypeConverter<UnifediApiContentVariants, String> $converter8 =
       PleromaContentDatabaseConverter();
-  static TypeConverter<PleromaApiContent, String> $converter9 =
+  static TypeConverter<UnifediApiContentVariants, String> $converter9 =
       PleromaContentDatabaseConverter();
-  static TypeConverter<List<PleromaApiStatusEmojiReaction>, String>
-      $converter10 = PleromaEmojiReactionsListDatabaseConverter();
+  static TypeConverter<List<UnifediApiEmojiReaction>, String> $converter10 =
+      EmojiReactionsListDatabaseConverter();
   static TypeConverter<PendingState, String> $converter11 =
       PendingStateDatabaseConverter();
 }
@@ -1890,12 +1864,12 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
   final String username;
   final String url;
   final String? note;
-  final bool locked;
-  final String headerStatic;
-  final String header;
-  final int followingCount;
-  final int followersCount;
-  final int statusesCount;
+  final bool? locked;
+  final String? headerStatic;
+  final String? header;
+  final int? followingCount;
+  final int? followersCount;
+  final int? statusesCount;
   final String? displayName;
   final DateTime createdAt;
   final bool? bot;
@@ -1903,35 +1877,42 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
   final String avatar;
   final String acct;
   final DateTime? lastStatusAt;
-  final List<PleromaApiField>? fields;
-  final List<PleromaApiEmoji>? emojis;
-  final String? pleromaBackgroundImage;
-  final List<PleromaApiTag>? pleromaTags;
-  final PleromaApiAccountRelationship? pleromaRelationship;
-  final bool? pleromaIsAdmin;
-  final bool? pleromaIsModerator;
-  final bool? pleromaConfirmationPending;
-  final bool? pleromaHideFavorites;
-  final bool? pleromaHideFollowers;
-  final bool? pleromaHideFollows;
-  final bool? pleromaHideFollowersCount;
-  final bool? pleromaHideFollowsCount;
-  final bool? pleromaDeactivated;
-  final bool? pleromaAllowFollowingMove;
-  final bool? pleromaSkipThreadContainment;
-  final bool? pleromaAcceptsChatMessages;
+  final List<UnifediApiField>? fields;
+  final List<UnifediApiEmoji>? emojis;
+  final String? backgroundImage;
+  final List<UnifediApiTag>? tags;
+  final UnifediApiAccountRelationship? relationship;
+  final bool? isAdmin;
+  final bool? isModerator;
+  final bool? confirmationPending;
+  final bool? hideFavorites;
+  final bool? hideFollowers;
+  final bool? hideFollows;
+  final bool? hideFollowersCount;
+  final bool? hideFollowsCount;
+  final bool? deactivated;
+  final bool? allowFollowingMove;
+  final bool? skipThreadContainment;
+  final bool? acceptsChatMessages;
+  final bool? suspended;
+  final bool? isConfirmed;
+  final DateTime? muteExpiresAt;
+  final String? fqn;
+  final String? favicon;
+  final String? apId;
+  final List<String>? alsoKnownAs;
   DbAccount(
       {this.id,
       required this.remoteId,
       required this.username,
       required this.url,
       this.note,
-      required this.locked,
-      required this.headerStatic,
-      required this.header,
-      required this.followingCount,
-      required this.followersCount,
-      required this.statusesCount,
+      this.locked,
+      this.headerStatic,
+      this.header,
+      this.followingCount,
+      this.followersCount,
+      this.statusesCount,
       this.displayName,
       required this.createdAt,
       this.bot,
@@ -1941,21 +1922,28 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
       this.lastStatusAt,
       this.fields,
       this.emojis,
-      this.pleromaBackgroundImage,
-      this.pleromaTags,
-      this.pleromaRelationship,
-      this.pleromaIsAdmin,
-      this.pleromaIsModerator,
-      this.pleromaConfirmationPending,
-      this.pleromaHideFavorites,
-      this.pleromaHideFollowers,
-      this.pleromaHideFollows,
-      this.pleromaHideFollowersCount,
-      this.pleromaHideFollowsCount,
-      this.pleromaDeactivated,
-      this.pleromaAllowFollowingMove,
-      this.pleromaSkipThreadContainment,
-      this.pleromaAcceptsChatMessages});
+      this.backgroundImage,
+      this.tags,
+      this.relationship,
+      this.isAdmin,
+      this.isModerator,
+      this.confirmationPending,
+      this.hideFavorites,
+      this.hideFollowers,
+      this.hideFollows,
+      this.hideFollowersCount,
+      this.hideFollowsCount,
+      this.deactivated,
+      this.allowFollowingMove,
+      this.skipThreadContainment,
+      this.acceptsChatMessages,
+      this.suspended,
+      this.isConfirmed,
+      this.muteExpiresAt,
+      this.fqn,
+      this.favicon,
+      this.apId,
+      this.alsoKnownAs});
   factory DbAccount.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -1970,17 +1958,17 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
       note: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}note']),
       locked: const BoolType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}locked'])!,
+          .mapFromDatabaseResponse(data['${effectivePrefix}locked']),
       headerStatic: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}header_static'])!,
+          .mapFromDatabaseResponse(data['${effectivePrefix}header_static']),
       header: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}header'])!,
+          .mapFromDatabaseResponse(data['${effectivePrefix}header']),
       followingCount: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}following_count'])!,
+          .mapFromDatabaseResponse(data['${effectivePrefix}following_count']),
       followersCount: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}followers_count'])!,
+          .mapFromDatabaseResponse(data['${effectivePrefix}followers_count']),
       statusesCount: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}statuses_count'])!,
+          .mapFromDatabaseResponse(data['${effectivePrefix}statuses_count']),
       displayName: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}display_name']),
       createdAt: const DateTimeType()
@@ -1999,37 +1987,51 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
           .mapFromDatabaseResponse(data['${effectivePrefix}fields'])),
       emojis: $DbAccountsTable.$converter1.mapToDart(const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}emojis'])),
-      pleromaBackgroundImage: const StringType().mapFromDatabaseResponse(
+      backgroundImage: const StringType().mapFromDatabaseResponse(
           data['${effectivePrefix}pleroma_background_image']),
-      pleromaTags: $DbAccountsTable.$converter2.mapToDart(const StringType()
+      tags: $DbAccountsTable.$converter2.mapToDart(const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}pleroma_tags'])),
-      pleromaRelationship: $DbAccountsTable.$converter3.mapToDart(
-          const StringType().mapFromDatabaseResponse(
+      relationship: $DbAccountsTable.$converter3.mapToDart(const StringType()
+          .mapFromDatabaseResponse(
               data['${effectivePrefix}pleroma_relationship'])),
-      pleromaIsAdmin: const BoolType()
+      isAdmin: const BoolType()
           .mapFromDatabaseResponse(data['${effectivePrefix}pleroma_is_admin']),
-      pleromaIsModerator: const BoolType().mapFromDatabaseResponse(
+      isModerator: const BoolType().mapFromDatabaseResponse(
           data['${effectivePrefix}pleroma_is_moderator']),
-      pleromaConfirmationPending: const BoolType().mapFromDatabaseResponse(
+      confirmationPending: const BoolType().mapFromDatabaseResponse(
           data['${effectivePrefix}pleroma_confirmation_pending']),
-      pleromaHideFavorites: const BoolType().mapFromDatabaseResponse(
+      hideFavorites: const BoolType().mapFromDatabaseResponse(
           data['${effectivePrefix}pleroma_hide_favorites']),
-      pleromaHideFollowers: const BoolType().mapFromDatabaseResponse(
+      hideFollowers: const BoolType().mapFromDatabaseResponse(
           data['${effectivePrefix}pleroma_hide_followers']),
-      pleromaHideFollows: const BoolType().mapFromDatabaseResponse(
+      hideFollows: const BoolType().mapFromDatabaseResponse(
           data['${effectivePrefix}pleroma_hide_follows']),
-      pleromaHideFollowersCount: const BoolType().mapFromDatabaseResponse(
+      hideFollowersCount: const BoolType().mapFromDatabaseResponse(
           data['${effectivePrefix}pleroma_hide_followers_count']),
-      pleromaHideFollowsCount: const BoolType().mapFromDatabaseResponse(
+      hideFollowsCount: const BoolType().mapFromDatabaseResponse(
           data['${effectivePrefix}pleroma_hide_follows_count']),
-      pleromaDeactivated: const BoolType().mapFromDatabaseResponse(
+      deactivated: const BoolType().mapFromDatabaseResponse(
           data['${effectivePrefix}pleroma_deactivated']),
-      pleromaAllowFollowingMove: const BoolType().mapFromDatabaseResponse(
+      allowFollowingMove: const BoolType().mapFromDatabaseResponse(
           data['${effectivePrefix}pleroma_allow_following_move']),
-      pleromaSkipThreadContainment: const BoolType().mapFromDatabaseResponse(
+      skipThreadContainment: const BoolType().mapFromDatabaseResponse(
           data['${effectivePrefix}pleroma_skip_thread_containment']),
-      pleromaAcceptsChatMessages: const BoolType().mapFromDatabaseResponse(
+      acceptsChatMessages: const BoolType().mapFromDatabaseResponse(
           data['${effectivePrefix}pleroma_accepts_chat_messages']),
+      suspended: const BoolType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}suspended']),
+      isConfirmed: const BoolType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}is_confirmed']),
+      muteExpiresAt: const DateTimeType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}mute_expires_at']),
+      fqn: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}fqn']),
+      favicon: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}favicon']),
+      apId: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}ap_id']),
+      alsoKnownAs: $DbAccountsTable.$converter4.mapToDart(const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}also_known_as'])),
     );
   }
   @override
@@ -2044,12 +2046,24 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
     if (!nullToAbsent || note != null) {
       map['note'] = Variable<String?>(note);
     }
-    map['locked'] = Variable<bool>(locked);
-    map['header_static'] = Variable<String>(headerStatic);
-    map['header'] = Variable<String>(header);
-    map['following_count'] = Variable<int>(followingCount);
-    map['followers_count'] = Variable<int>(followersCount);
-    map['statuses_count'] = Variable<int>(statusesCount);
+    if (!nullToAbsent || locked != null) {
+      map['locked'] = Variable<bool?>(locked);
+    }
+    if (!nullToAbsent || headerStatic != null) {
+      map['header_static'] = Variable<String?>(headerStatic);
+    }
+    if (!nullToAbsent || header != null) {
+      map['header'] = Variable<String?>(header);
+    }
+    if (!nullToAbsent || followingCount != null) {
+      map['following_count'] = Variable<int?>(followingCount);
+    }
+    if (!nullToAbsent || followersCount != null) {
+      map['followers_count'] = Variable<int?>(followersCount);
+    }
+    if (!nullToAbsent || statusesCount != null) {
+      map['statuses_count'] = Variable<int?>(statusesCount);
+    }
     if (!nullToAbsent || displayName != null) {
       map['display_name'] = Variable<String?>(displayName);
     }
@@ -2071,60 +2085,78 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
       final converter = $DbAccountsTable.$converter1;
       map['emojis'] = Variable<String?>(converter.mapToSql(emojis));
     }
-    if (!nullToAbsent || pleromaBackgroundImage != null) {
-      map['pleroma_background_image'] =
-          Variable<String?>(pleromaBackgroundImage);
+    if (!nullToAbsent || backgroundImage != null) {
+      map['pleroma_background_image'] = Variable<String?>(backgroundImage);
     }
-    if (!nullToAbsent || pleromaTags != null) {
+    if (!nullToAbsent || tags != null) {
       final converter = $DbAccountsTable.$converter2;
-      map['pleroma_tags'] = Variable<String?>(converter.mapToSql(pleromaTags));
+      map['pleroma_tags'] = Variable<String?>(converter.mapToSql(tags));
     }
-    if (!nullToAbsent || pleromaRelationship != null) {
+    if (!nullToAbsent || relationship != null) {
       final converter = $DbAccountsTable.$converter3;
       map['pleroma_relationship'] =
-          Variable<String?>(converter.mapToSql(pleromaRelationship));
+          Variable<String?>(converter.mapToSql(relationship));
     }
-    if (!nullToAbsent || pleromaIsAdmin != null) {
-      map['pleroma_is_admin'] = Variable<bool?>(pleromaIsAdmin);
+    if (!nullToAbsent || isAdmin != null) {
+      map['pleroma_is_admin'] = Variable<bool?>(isAdmin);
     }
-    if (!nullToAbsent || pleromaIsModerator != null) {
-      map['pleroma_is_moderator'] = Variable<bool?>(pleromaIsModerator);
+    if (!nullToAbsent || isModerator != null) {
+      map['pleroma_is_moderator'] = Variable<bool?>(isModerator);
     }
-    if (!nullToAbsent || pleromaConfirmationPending != null) {
+    if (!nullToAbsent || confirmationPending != null) {
       map['pleroma_confirmation_pending'] =
-          Variable<bool?>(pleromaConfirmationPending);
+          Variable<bool?>(confirmationPending);
     }
-    if (!nullToAbsent || pleromaHideFavorites != null) {
-      map['pleroma_hide_favorites'] = Variable<bool?>(pleromaHideFavorites);
+    if (!nullToAbsent || hideFavorites != null) {
+      map['pleroma_hide_favorites'] = Variable<bool?>(hideFavorites);
     }
-    if (!nullToAbsent || pleromaHideFollowers != null) {
-      map['pleroma_hide_followers'] = Variable<bool?>(pleromaHideFollowers);
+    if (!nullToAbsent || hideFollowers != null) {
+      map['pleroma_hide_followers'] = Variable<bool?>(hideFollowers);
     }
-    if (!nullToAbsent || pleromaHideFollows != null) {
-      map['pleroma_hide_follows'] = Variable<bool?>(pleromaHideFollows);
+    if (!nullToAbsent || hideFollows != null) {
+      map['pleroma_hide_follows'] = Variable<bool?>(hideFollows);
     }
-    if (!nullToAbsent || pleromaHideFollowersCount != null) {
-      map['pleroma_hide_followers_count'] =
-          Variable<bool?>(pleromaHideFollowersCount);
+    if (!nullToAbsent || hideFollowersCount != null) {
+      map['pleroma_hide_followers_count'] = Variable<bool?>(hideFollowersCount);
     }
-    if (!nullToAbsent || pleromaHideFollowsCount != null) {
-      map['pleroma_hide_follows_count'] =
-          Variable<bool?>(pleromaHideFollowsCount);
+    if (!nullToAbsent || hideFollowsCount != null) {
+      map['pleroma_hide_follows_count'] = Variable<bool?>(hideFollowsCount);
     }
-    if (!nullToAbsent || pleromaDeactivated != null) {
-      map['pleroma_deactivated'] = Variable<bool?>(pleromaDeactivated);
+    if (!nullToAbsent || deactivated != null) {
+      map['pleroma_deactivated'] = Variable<bool?>(deactivated);
     }
-    if (!nullToAbsent || pleromaAllowFollowingMove != null) {
-      map['pleroma_allow_following_move'] =
-          Variable<bool?>(pleromaAllowFollowingMove);
+    if (!nullToAbsent || allowFollowingMove != null) {
+      map['pleroma_allow_following_move'] = Variable<bool?>(allowFollowingMove);
     }
-    if (!nullToAbsent || pleromaSkipThreadContainment != null) {
+    if (!nullToAbsent || skipThreadContainment != null) {
       map['pleroma_skip_thread_containment'] =
-          Variable<bool?>(pleromaSkipThreadContainment);
+          Variable<bool?>(skipThreadContainment);
     }
-    if (!nullToAbsent || pleromaAcceptsChatMessages != null) {
+    if (!nullToAbsent || acceptsChatMessages != null) {
       map['pleroma_accepts_chat_messages'] =
-          Variable<bool?>(pleromaAcceptsChatMessages);
+          Variable<bool?>(acceptsChatMessages);
+    }
+    if (!nullToAbsent || suspended != null) {
+      map['suspended'] = Variable<bool?>(suspended);
+    }
+    if (!nullToAbsent || isConfirmed != null) {
+      map['is_confirmed'] = Variable<bool?>(isConfirmed);
+    }
+    if (!nullToAbsent || muteExpiresAt != null) {
+      map['mute_expires_at'] = Variable<DateTime?>(muteExpiresAt);
+    }
+    if (!nullToAbsent || fqn != null) {
+      map['fqn'] = Variable<String?>(fqn);
+    }
+    if (!nullToAbsent || favicon != null) {
+      map['favicon'] = Variable<String?>(favicon);
+    }
+    if (!nullToAbsent || apId != null) {
+      map['ap_id'] = Variable<String?>(apId);
+    }
+    if (!nullToAbsent || alsoKnownAs != null) {
+      final converter = $DbAccountsTable.$converter4;
+      map['also_known_as'] = Variable<String?>(converter.mapToSql(alsoKnownAs));
     }
     return map;
   }
@@ -2136,12 +2168,22 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
       username: Value(username),
       url: Value(url),
       note: note == null && nullToAbsent ? const Value.absent() : Value(note),
-      locked: Value(locked),
-      headerStatic: Value(headerStatic),
-      header: Value(header),
-      followingCount: Value(followingCount),
-      followersCount: Value(followersCount),
-      statusesCount: Value(statusesCount),
+      locked:
+          locked == null && nullToAbsent ? const Value.absent() : Value(locked),
+      headerStatic: headerStatic == null && nullToAbsent
+          ? const Value.absent()
+          : Value(headerStatic),
+      header:
+          header == null && nullToAbsent ? const Value.absent() : Value(header),
+      followingCount: followingCount == null && nullToAbsent
+          ? const Value.absent()
+          : Value(followingCount),
+      followersCount: followersCount == null && nullToAbsent
+          ? const Value.absent()
+          : Value(followersCount),
+      statusesCount: statusesCount == null && nullToAbsent
+          ? const Value.absent()
+          : Value(statusesCount),
       displayName: displayName == null && nullToAbsent
           ? const Value.absent()
           : Value(displayName),
@@ -2157,56 +2199,66 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
           fields == null && nullToAbsent ? const Value.absent() : Value(fields),
       emojis:
           emojis == null && nullToAbsent ? const Value.absent() : Value(emojis),
-      pleromaBackgroundImage: pleromaBackgroundImage == null && nullToAbsent
+      backgroundImage: backgroundImage == null && nullToAbsent
           ? const Value.absent()
-          : Value(pleromaBackgroundImage),
-      pleromaTags: pleromaTags == null && nullToAbsent
+          : Value(backgroundImage),
+      tags: tags == null && nullToAbsent ? const Value.absent() : Value(tags),
+      relationship: relationship == null && nullToAbsent
           ? const Value.absent()
-          : Value(pleromaTags),
-      pleromaRelationship: pleromaRelationship == null && nullToAbsent
+          : Value(relationship),
+      isAdmin: isAdmin == null && nullToAbsent
           ? const Value.absent()
-          : Value(pleromaRelationship),
-      pleromaIsAdmin: pleromaIsAdmin == null && nullToAbsent
+          : Value(isAdmin),
+      isModerator: isModerator == null && nullToAbsent
           ? const Value.absent()
-          : Value(pleromaIsAdmin),
-      pleromaIsModerator: pleromaIsModerator == null && nullToAbsent
+          : Value(isModerator),
+      confirmationPending: confirmationPending == null && nullToAbsent
           ? const Value.absent()
-          : Value(pleromaIsModerator),
-      pleromaConfirmationPending:
-          pleromaConfirmationPending == null && nullToAbsent
-              ? const Value.absent()
-              : Value(pleromaConfirmationPending),
-      pleromaHideFavorites: pleromaHideFavorites == null && nullToAbsent
+          : Value(confirmationPending),
+      hideFavorites: hideFavorites == null && nullToAbsent
           ? const Value.absent()
-          : Value(pleromaHideFavorites),
-      pleromaHideFollowers: pleromaHideFollowers == null && nullToAbsent
+          : Value(hideFavorites),
+      hideFollowers: hideFollowers == null && nullToAbsent
           ? const Value.absent()
-          : Value(pleromaHideFollowers),
-      pleromaHideFollows: pleromaHideFollows == null && nullToAbsent
+          : Value(hideFollowers),
+      hideFollows: hideFollows == null && nullToAbsent
           ? const Value.absent()
-          : Value(pleromaHideFollows),
-      pleromaHideFollowersCount:
-          pleromaHideFollowersCount == null && nullToAbsent
-              ? const Value.absent()
-              : Value(pleromaHideFollowersCount),
-      pleromaHideFollowsCount: pleromaHideFollowsCount == null && nullToAbsent
+          : Value(hideFollows),
+      hideFollowersCount: hideFollowersCount == null && nullToAbsent
           ? const Value.absent()
-          : Value(pleromaHideFollowsCount),
-      pleromaDeactivated: pleromaDeactivated == null && nullToAbsent
+          : Value(hideFollowersCount),
+      hideFollowsCount: hideFollowsCount == null && nullToAbsent
           ? const Value.absent()
-          : Value(pleromaDeactivated),
-      pleromaAllowFollowingMove:
-          pleromaAllowFollowingMove == null && nullToAbsent
-              ? const Value.absent()
-              : Value(pleromaAllowFollowingMove),
-      pleromaSkipThreadContainment:
-          pleromaSkipThreadContainment == null && nullToAbsent
-              ? const Value.absent()
-              : Value(pleromaSkipThreadContainment),
-      pleromaAcceptsChatMessages:
-          pleromaAcceptsChatMessages == null && nullToAbsent
-              ? const Value.absent()
-              : Value(pleromaAcceptsChatMessages),
+          : Value(hideFollowsCount),
+      deactivated: deactivated == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deactivated),
+      allowFollowingMove: allowFollowingMove == null && nullToAbsent
+          ? const Value.absent()
+          : Value(allowFollowingMove),
+      skipThreadContainment: skipThreadContainment == null && nullToAbsent
+          ? const Value.absent()
+          : Value(skipThreadContainment),
+      acceptsChatMessages: acceptsChatMessages == null && nullToAbsent
+          ? const Value.absent()
+          : Value(acceptsChatMessages),
+      suspended: suspended == null && nullToAbsent
+          ? const Value.absent()
+          : Value(suspended),
+      isConfirmed: isConfirmed == null && nullToAbsent
+          ? const Value.absent()
+          : Value(isConfirmed),
+      muteExpiresAt: muteExpiresAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(muteExpiresAt),
+      fqn: fqn == null && nullToAbsent ? const Value.absent() : Value(fqn),
+      favicon: favicon == null && nullToAbsent
+          ? const Value.absent()
+          : Value(favicon),
+      apId: apId == null && nullToAbsent ? const Value.absent() : Value(apId),
+      alsoKnownAs: alsoKnownAs == null && nullToAbsent
+          ? const Value.absent()
+          : Value(alsoKnownAs),
     );
   }
 
@@ -2219,12 +2271,12 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
       username: serializer.fromJson<String>(json['username']),
       url: serializer.fromJson<String>(json['url']),
       note: serializer.fromJson<String?>(json['note']),
-      locked: serializer.fromJson<bool>(json['locked']),
-      headerStatic: serializer.fromJson<String>(json['headerStatic']),
-      header: serializer.fromJson<String>(json['header']),
-      followingCount: serializer.fromJson<int>(json['followingCount']),
-      followersCount: serializer.fromJson<int>(json['followersCount']),
-      statusesCount: serializer.fromJson<int>(json['statusesCount']),
+      locked: serializer.fromJson<bool?>(json['locked']),
+      headerStatic: serializer.fromJson<String?>(json['headerStatic']),
+      header: serializer.fromJson<String?>(json['header']),
+      followingCount: serializer.fromJson<int?>(json['followingCount']),
+      followersCount: serializer.fromJson<int?>(json['followersCount']),
+      statusesCount: serializer.fromJson<int?>(json['statusesCount']),
       displayName: serializer.fromJson<String?>(json['displayName']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       bot: serializer.fromJson<bool?>(json['bot']),
@@ -2232,37 +2284,36 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
       avatar: serializer.fromJson<String>(json['avatar']),
       acct: serializer.fromJson<String>(json['acct']),
       lastStatusAt: serializer.fromJson<DateTime?>(json['lastStatusAt']),
-      fields: serializer.fromJson<List<PleromaApiField>?>(json['fields']),
-      emojis: serializer.fromJson<List<PleromaApiEmoji>?>(json['emojis']),
-      pleromaBackgroundImage:
-          serializer.fromJson<String?>(json['pleromaBackgroundImage']),
-      pleromaTags:
-          serializer.fromJson<List<PleromaApiTag>?>(json['pleromaTags']),
-      pleromaRelationship: serializer.fromJson<PleromaApiAccountRelationship?>(
-          json['pleromaRelationship']),
-      pleromaIsAdmin: serializer.fromJson<bool?>(json['pleromaIsAdmin']),
-      pleromaIsModerator:
-          serializer.fromJson<bool?>(json['pleromaIsModerator']),
-      pleromaConfirmationPending:
-          serializer.fromJson<bool?>(json['pleromaConfirmationPending']),
-      pleromaHideFavorites:
-          serializer.fromJson<bool?>(json['pleromaHideFavorites']),
-      pleromaHideFollowers:
-          serializer.fromJson<bool?>(json['pleromaHideFollowers']),
-      pleromaHideFollows:
-          serializer.fromJson<bool?>(json['pleromaHideFollows']),
-      pleromaHideFollowersCount:
-          serializer.fromJson<bool?>(json['pleromaHideFollowersCount']),
-      pleromaHideFollowsCount:
-          serializer.fromJson<bool?>(json['pleromaHideFollowsCount']),
-      pleromaDeactivated:
-          serializer.fromJson<bool?>(json['pleromaDeactivated']),
-      pleromaAllowFollowingMove:
-          serializer.fromJson<bool?>(json['pleromaAllowFollowingMove']),
-      pleromaSkipThreadContainment:
-          serializer.fromJson<bool?>(json['pleromaSkipThreadContainment']),
-      pleromaAcceptsChatMessages:
-          serializer.fromJson<bool?>(json['pleromaAcceptsChatMessages']),
+      fields: serializer.fromJson<List<UnifediApiField>?>(json['fields']),
+      emojis: serializer.fromJson<List<UnifediApiEmoji>?>(json['emojis']),
+      backgroundImage: serializer.fromJson<String?>(json['backgroundImage']),
+      tags: serializer.fromJson<List<UnifediApiTag>?>(json['tags']),
+      relationship: serializer
+          .fromJson<UnifediApiAccountRelationship?>(json['relationship']),
+      isAdmin: serializer.fromJson<bool?>(json['isAdmin']),
+      isModerator: serializer.fromJson<bool?>(json['isModerator']),
+      confirmationPending:
+          serializer.fromJson<bool?>(json['confirmationPending']),
+      hideFavorites: serializer.fromJson<bool?>(json['hideFavorites']),
+      hideFollowers: serializer.fromJson<bool?>(json['hideFollowers']),
+      hideFollows: serializer.fromJson<bool?>(json['hideFollows']),
+      hideFollowersCount:
+          serializer.fromJson<bool?>(json['hideFollowersCount']),
+      hideFollowsCount: serializer.fromJson<bool?>(json['hideFollowsCount']),
+      deactivated: serializer.fromJson<bool?>(json['deactivated']),
+      allowFollowingMove:
+          serializer.fromJson<bool?>(json['allowFollowingMove']),
+      skipThreadContainment:
+          serializer.fromJson<bool?>(json['skipThreadContainment']),
+      acceptsChatMessages:
+          serializer.fromJson<bool?>(json['acceptsChatMessages']),
+      suspended: serializer.fromJson<bool?>(json['suspended']),
+      isConfirmed: serializer.fromJson<bool?>(json['isConfirmed']),
+      muteExpiresAt: serializer.fromJson<DateTime?>(json['muteExpiresAt']),
+      fqn: serializer.fromJson<String?>(json['fqn']),
+      favicon: serializer.fromJson<String?>(json['favicon']),
+      apId: serializer.fromJson<String?>(json['apId']),
+      alsoKnownAs: serializer.fromJson<List<String>?>(json['alsoKnownAs']),
     );
   }
   @override
@@ -2274,12 +2325,12 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
       'username': serializer.toJson<String>(username),
       'url': serializer.toJson<String>(url),
       'note': serializer.toJson<String?>(note),
-      'locked': serializer.toJson<bool>(locked),
-      'headerStatic': serializer.toJson<String>(headerStatic),
-      'header': serializer.toJson<String>(header),
-      'followingCount': serializer.toJson<int>(followingCount),
-      'followersCount': serializer.toJson<int>(followersCount),
-      'statusesCount': serializer.toJson<int>(statusesCount),
+      'locked': serializer.toJson<bool?>(locked),
+      'headerStatic': serializer.toJson<String?>(headerStatic),
+      'header': serializer.toJson<String?>(header),
+      'followingCount': serializer.toJson<int?>(followingCount),
+      'followersCount': serializer.toJson<int?>(followersCount),
+      'statusesCount': serializer.toJson<int?>(statusesCount),
       'displayName': serializer.toJson<String?>(displayName),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'bot': serializer.toJson<bool?>(bot),
@@ -2287,31 +2338,31 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
       'avatar': serializer.toJson<String>(avatar),
       'acct': serializer.toJson<String>(acct),
       'lastStatusAt': serializer.toJson<DateTime?>(lastStatusAt),
-      'fields': serializer.toJson<List<PleromaApiField>?>(fields),
-      'emojis': serializer.toJson<List<PleromaApiEmoji>?>(emojis),
-      'pleromaBackgroundImage':
-          serializer.toJson<String?>(pleromaBackgroundImage),
-      'pleromaTags': serializer.toJson<List<PleromaApiTag>?>(pleromaTags),
-      'pleromaRelationship': serializer
-          .toJson<PleromaApiAccountRelationship?>(pleromaRelationship),
-      'pleromaIsAdmin': serializer.toJson<bool?>(pleromaIsAdmin),
-      'pleromaIsModerator': serializer.toJson<bool?>(pleromaIsModerator),
-      'pleromaConfirmationPending':
-          serializer.toJson<bool?>(pleromaConfirmationPending),
-      'pleromaHideFavorites': serializer.toJson<bool?>(pleromaHideFavorites),
-      'pleromaHideFollowers': serializer.toJson<bool?>(pleromaHideFollowers),
-      'pleromaHideFollows': serializer.toJson<bool?>(pleromaHideFollows),
-      'pleromaHideFollowersCount':
-          serializer.toJson<bool?>(pleromaHideFollowersCount),
-      'pleromaHideFollowsCount':
-          serializer.toJson<bool?>(pleromaHideFollowsCount),
-      'pleromaDeactivated': serializer.toJson<bool?>(pleromaDeactivated),
-      'pleromaAllowFollowingMove':
-          serializer.toJson<bool?>(pleromaAllowFollowingMove),
-      'pleromaSkipThreadContainment':
-          serializer.toJson<bool?>(pleromaSkipThreadContainment),
-      'pleromaAcceptsChatMessages':
-          serializer.toJson<bool?>(pleromaAcceptsChatMessages),
+      'fields': serializer.toJson<List<UnifediApiField>?>(fields),
+      'emojis': serializer.toJson<List<UnifediApiEmoji>?>(emojis),
+      'backgroundImage': serializer.toJson<String?>(backgroundImage),
+      'tags': serializer.toJson<List<UnifediApiTag>?>(tags),
+      'relationship':
+          serializer.toJson<UnifediApiAccountRelationship?>(relationship),
+      'isAdmin': serializer.toJson<bool?>(isAdmin),
+      'isModerator': serializer.toJson<bool?>(isModerator),
+      'confirmationPending': serializer.toJson<bool?>(confirmationPending),
+      'hideFavorites': serializer.toJson<bool?>(hideFavorites),
+      'hideFollowers': serializer.toJson<bool?>(hideFollowers),
+      'hideFollows': serializer.toJson<bool?>(hideFollows),
+      'hideFollowersCount': serializer.toJson<bool?>(hideFollowersCount),
+      'hideFollowsCount': serializer.toJson<bool?>(hideFollowsCount),
+      'deactivated': serializer.toJson<bool?>(deactivated),
+      'allowFollowingMove': serializer.toJson<bool?>(allowFollowingMove),
+      'skipThreadContainment': serializer.toJson<bool?>(skipThreadContainment),
+      'acceptsChatMessages': serializer.toJson<bool?>(acceptsChatMessages),
+      'suspended': serializer.toJson<bool?>(suspended),
+      'isConfirmed': serializer.toJson<bool?>(isConfirmed),
+      'muteExpiresAt': serializer.toJson<DateTime?>(muteExpiresAt),
+      'fqn': serializer.toJson<String?>(fqn),
+      'favicon': serializer.toJson<String?>(favicon),
+      'apId': serializer.toJson<String?>(apId),
+      'alsoKnownAs': serializer.toJson<List<String>?>(alsoKnownAs),
     };
   }
 
@@ -2334,23 +2385,30 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
           String? avatar,
           String? acct,
           DateTime? lastStatusAt,
-          List<PleromaApiField>? fields,
-          List<PleromaApiEmoji>? emojis,
-          String? pleromaBackgroundImage,
-          List<PleromaApiTag>? pleromaTags,
-          PleromaApiAccountRelationship? pleromaRelationship,
-          bool? pleromaIsAdmin,
-          bool? pleromaIsModerator,
-          bool? pleromaConfirmationPending,
-          bool? pleromaHideFavorites,
-          bool? pleromaHideFollowers,
-          bool? pleromaHideFollows,
-          bool? pleromaHideFollowersCount,
-          bool? pleromaHideFollowsCount,
-          bool? pleromaDeactivated,
-          bool? pleromaAllowFollowingMove,
-          bool? pleromaSkipThreadContainment,
-          bool? pleromaAcceptsChatMessages}) =>
+          List<UnifediApiField>? fields,
+          List<UnifediApiEmoji>? emojis,
+          String? backgroundImage,
+          List<UnifediApiTag>? tags,
+          UnifediApiAccountRelationship? relationship,
+          bool? isAdmin,
+          bool? isModerator,
+          bool? confirmationPending,
+          bool? hideFavorites,
+          bool? hideFollowers,
+          bool? hideFollows,
+          bool? hideFollowersCount,
+          bool? hideFollowsCount,
+          bool? deactivated,
+          bool? allowFollowingMove,
+          bool? skipThreadContainment,
+          bool? acceptsChatMessages,
+          bool? suspended,
+          bool? isConfirmed,
+          DateTime? muteExpiresAt,
+          String? fqn,
+          String? favicon,
+          String? apId,
+          List<String>? alsoKnownAs}) =>
       DbAccount(
         id: id ?? this.id,
         remoteId: remoteId ?? this.remoteId,
@@ -2372,28 +2430,29 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
         lastStatusAt: lastStatusAt ?? this.lastStatusAt,
         fields: fields ?? this.fields,
         emojis: emojis ?? this.emojis,
-        pleromaBackgroundImage:
-            pleromaBackgroundImage ?? this.pleromaBackgroundImage,
-        pleromaTags: pleromaTags ?? this.pleromaTags,
-        pleromaRelationship: pleromaRelationship ?? this.pleromaRelationship,
-        pleromaIsAdmin: pleromaIsAdmin ?? this.pleromaIsAdmin,
-        pleromaIsModerator: pleromaIsModerator ?? this.pleromaIsModerator,
-        pleromaConfirmationPending:
-            pleromaConfirmationPending ?? this.pleromaConfirmationPending,
-        pleromaHideFavorites: pleromaHideFavorites ?? this.pleromaHideFavorites,
-        pleromaHideFollowers: pleromaHideFollowers ?? this.pleromaHideFollowers,
-        pleromaHideFollows: pleromaHideFollows ?? this.pleromaHideFollows,
-        pleromaHideFollowersCount:
-            pleromaHideFollowersCount ?? this.pleromaHideFollowersCount,
-        pleromaHideFollowsCount:
-            pleromaHideFollowsCount ?? this.pleromaHideFollowsCount,
-        pleromaDeactivated: pleromaDeactivated ?? this.pleromaDeactivated,
-        pleromaAllowFollowingMove:
-            pleromaAllowFollowingMove ?? this.pleromaAllowFollowingMove,
-        pleromaSkipThreadContainment:
-            pleromaSkipThreadContainment ?? this.pleromaSkipThreadContainment,
-        pleromaAcceptsChatMessages:
-            pleromaAcceptsChatMessages ?? this.pleromaAcceptsChatMessages,
+        backgroundImage: backgroundImage ?? this.backgroundImage,
+        tags: tags ?? this.tags,
+        relationship: relationship ?? this.relationship,
+        isAdmin: isAdmin ?? this.isAdmin,
+        isModerator: isModerator ?? this.isModerator,
+        confirmationPending: confirmationPending ?? this.confirmationPending,
+        hideFavorites: hideFavorites ?? this.hideFavorites,
+        hideFollowers: hideFollowers ?? this.hideFollowers,
+        hideFollows: hideFollows ?? this.hideFollows,
+        hideFollowersCount: hideFollowersCount ?? this.hideFollowersCount,
+        hideFollowsCount: hideFollowsCount ?? this.hideFollowsCount,
+        deactivated: deactivated ?? this.deactivated,
+        allowFollowingMove: allowFollowingMove ?? this.allowFollowingMove,
+        skipThreadContainment:
+            skipThreadContainment ?? this.skipThreadContainment,
+        acceptsChatMessages: acceptsChatMessages ?? this.acceptsChatMessages,
+        suspended: suspended ?? this.suspended,
+        isConfirmed: isConfirmed ?? this.isConfirmed,
+        muteExpiresAt: muteExpiresAt ?? this.muteExpiresAt,
+        fqn: fqn ?? this.fqn,
+        favicon: favicon ?? this.favicon,
+        apId: apId ?? this.apId,
+        alsoKnownAs: alsoKnownAs ?? this.alsoKnownAs,
       );
   @override
   String toString() {
@@ -2418,22 +2477,28 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
           ..write('lastStatusAt: $lastStatusAt, ')
           ..write('fields: $fields, ')
           ..write('emojis: $emojis, ')
-          ..write('pleromaBackgroundImage: $pleromaBackgroundImage, ')
-          ..write('pleromaTags: $pleromaTags, ')
-          ..write('pleromaRelationship: $pleromaRelationship, ')
-          ..write('pleromaIsAdmin: $pleromaIsAdmin, ')
-          ..write('pleromaIsModerator: $pleromaIsModerator, ')
-          ..write('pleromaConfirmationPending: $pleromaConfirmationPending, ')
-          ..write('pleromaHideFavorites: $pleromaHideFavorites, ')
-          ..write('pleromaHideFollowers: $pleromaHideFollowers, ')
-          ..write('pleromaHideFollows: $pleromaHideFollows, ')
-          ..write('pleromaHideFollowersCount: $pleromaHideFollowersCount, ')
-          ..write('pleromaHideFollowsCount: $pleromaHideFollowsCount, ')
-          ..write('pleromaDeactivated: $pleromaDeactivated, ')
-          ..write('pleromaAllowFollowingMove: $pleromaAllowFollowingMove, ')
-          ..write(
-              'pleromaSkipThreadContainment: $pleromaSkipThreadContainment, ')
-          ..write('pleromaAcceptsChatMessages: $pleromaAcceptsChatMessages')
+          ..write('backgroundImage: $backgroundImage, ')
+          ..write('tags: $tags, ')
+          ..write('relationship: $relationship, ')
+          ..write('isAdmin: $isAdmin, ')
+          ..write('isModerator: $isModerator, ')
+          ..write('confirmationPending: $confirmationPending, ')
+          ..write('hideFavorites: $hideFavorites, ')
+          ..write('hideFollowers: $hideFollowers, ')
+          ..write('hideFollows: $hideFollows, ')
+          ..write('hideFollowersCount: $hideFollowersCount, ')
+          ..write('hideFollowsCount: $hideFollowsCount, ')
+          ..write('deactivated: $deactivated, ')
+          ..write('allowFollowingMove: $allowFollowingMove, ')
+          ..write('skipThreadContainment: $skipThreadContainment, ')
+          ..write('acceptsChatMessages: $acceptsChatMessages, ')
+          ..write('suspended: $suspended, ')
+          ..write('isConfirmed: $isConfirmed, ')
+          ..write('muteExpiresAt: $muteExpiresAt, ')
+          ..write('fqn: $fqn, ')
+          ..write('favicon: $favicon, ')
+          ..write('apId: $apId, ')
+          ..write('alsoKnownAs: $alsoKnownAs')
           ..write(')'))
         .toString();
   }
@@ -2481,7 +2546,7 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
                                                                               .hashCode,
                                                                           $mrjc(
                                                                               fields.hashCode,
-                                                                              $mrjc(emojis.hashCode, $mrjc(pleromaBackgroundImage.hashCode, $mrjc(pleromaTags.hashCode, $mrjc(pleromaRelationship.hashCode, $mrjc(pleromaIsAdmin.hashCode, $mrjc(pleromaIsModerator.hashCode, $mrjc(pleromaConfirmationPending.hashCode, $mrjc(pleromaHideFavorites.hashCode, $mrjc(pleromaHideFollowers.hashCode, $mrjc(pleromaHideFollows.hashCode, $mrjc(pleromaHideFollowersCount.hashCode, $mrjc(pleromaHideFollowsCount.hashCode, $mrjc(pleromaDeactivated.hashCode, $mrjc(pleromaAllowFollowingMove.hashCode, $mrjc(pleromaSkipThreadContainment.hashCode, pleromaAcceptsChatMessages.hashCode)))))))))))))))))))))))))))))))))));
+                                                                              $mrjc(emojis.hashCode, $mrjc(backgroundImage.hashCode, $mrjc(tags.hashCode, $mrjc(relationship.hashCode, $mrjc(isAdmin.hashCode, $mrjc(isModerator.hashCode, $mrjc(confirmationPending.hashCode, $mrjc(hideFavorites.hashCode, $mrjc(hideFollowers.hashCode, $mrjc(hideFollows.hashCode, $mrjc(hideFollowersCount.hashCode, $mrjc(hideFollowsCount.hashCode, $mrjc(deactivated.hashCode, $mrjc(allowFollowingMove.hashCode, $mrjc(skipThreadContainment.hashCode, $mrjc(acceptsChatMessages.hashCode, $mrjc(suspended.hashCode, $mrjc(isConfirmed.hashCode, $mrjc(muteExpiresAt.hashCode, $mrjc(fqn.hashCode, $mrjc(favicon.hashCode, $mrjc(apId.hashCode, alsoKnownAs.hashCode))))))))))))))))))))))))))))))))))))))))));
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -2506,22 +2571,28 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
           other.lastStatusAt == this.lastStatusAt &&
           other.fields == this.fields &&
           other.emojis == this.emojis &&
-          other.pleromaBackgroundImage == this.pleromaBackgroundImage &&
-          other.pleromaTags == this.pleromaTags &&
-          other.pleromaRelationship == this.pleromaRelationship &&
-          other.pleromaIsAdmin == this.pleromaIsAdmin &&
-          other.pleromaIsModerator == this.pleromaIsModerator &&
-          other.pleromaConfirmationPending == this.pleromaConfirmationPending &&
-          other.pleromaHideFavorites == this.pleromaHideFavorites &&
-          other.pleromaHideFollowers == this.pleromaHideFollowers &&
-          other.pleromaHideFollows == this.pleromaHideFollows &&
-          other.pleromaHideFollowersCount == this.pleromaHideFollowersCount &&
-          other.pleromaHideFollowsCount == this.pleromaHideFollowsCount &&
-          other.pleromaDeactivated == this.pleromaDeactivated &&
-          other.pleromaAllowFollowingMove == this.pleromaAllowFollowingMove &&
-          other.pleromaSkipThreadContainment ==
-              this.pleromaSkipThreadContainment &&
-          other.pleromaAcceptsChatMessages == this.pleromaAcceptsChatMessages);
+          other.backgroundImage == this.backgroundImage &&
+          other.tags == this.tags &&
+          other.relationship == this.relationship &&
+          other.isAdmin == this.isAdmin &&
+          other.isModerator == this.isModerator &&
+          other.confirmationPending == this.confirmationPending &&
+          other.hideFavorites == this.hideFavorites &&
+          other.hideFollowers == this.hideFollowers &&
+          other.hideFollows == this.hideFollows &&
+          other.hideFollowersCount == this.hideFollowersCount &&
+          other.hideFollowsCount == this.hideFollowsCount &&
+          other.deactivated == this.deactivated &&
+          other.allowFollowingMove == this.allowFollowingMove &&
+          other.skipThreadContainment == this.skipThreadContainment &&
+          other.acceptsChatMessages == this.acceptsChatMessages &&
+          other.suspended == this.suspended &&
+          other.isConfirmed == this.isConfirmed &&
+          other.muteExpiresAt == this.muteExpiresAt &&
+          other.fqn == this.fqn &&
+          other.favicon == this.favicon &&
+          other.apId == this.apId &&
+          other.alsoKnownAs == this.alsoKnownAs);
 }
 
 class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
@@ -2530,12 +2601,12 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
   final Value<String> username;
   final Value<String> url;
   final Value<String?> note;
-  final Value<bool> locked;
-  final Value<String> headerStatic;
-  final Value<String> header;
-  final Value<int> followingCount;
-  final Value<int> followersCount;
-  final Value<int> statusesCount;
+  final Value<bool?> locked;
+  final Value<String?> headerStatic;
+  final Value<String?> header;
+  final Value<int?> followingCount;
+  final Value<int?> followersCount;
+  final Value<int?> statusesCount;
   final Value<String?> displayName;
   final Value<DateTime> createdAt;
   final Value<bool?> bot;
@@ -2543,23 +2614,30 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
   final Value<String> avatar;
   final Value<String> acct;
   final Value<DateTime?> lastStatusAt;
-  final Value<List<PleromaApiField>?> fields;
-  final Value<List<PleromaApiEmoji>?> emojis;
-  final Value<String?> pleromaBackgroundImage;
-  final Value<List<PleromaApiTag>?> pleromaTags;
-  final Value<PleromaApiAccountRelationship?> pleromaRelationship;
-  final Value<bool?> pleromaIsAdmin;
-  final Value<bool?> pleromaIsModerator;
-  final Value<bool?> pleromaConfirmationPending;
-  final Value<bool?> pleromaHideFavorites;
-  final Value<bool?> pleromaHideFollowers;
-  final Value<bool?> pleromaHideFollows;
-  final Value<bool?> pleromaHideFollowersCount;
-  final Value<bool?> pleromaHideFollowsCount;
-  final Value<bool?> pleromaDeactivated;
-  final Value<bool?> pleromaAllowFollowingMove;
-  final Value<bool?> pleromaSkipThreadContainment;
-  final Value<bool?> pleromaAcceptsChatMessages;
+  final Value<List<UnifediApiField>?> fields;
+  final Value<List<UnifediApiEmoji>?> emojis;
+  final Value<String?> backgroundImage;
+  final Value<List<UnifediApiTag>?> tags;
+  final Value<UnifediApiAccountRelationship?> relationship;
+  final Value<bool?> isAdmin;
+  final Value<bool?> isModerator;
+  final Value<bool?> confirmationPending;
+  final Value<bool?> hideFavorites;
+  final Value<bool?> hideFollowers;
+  final Value<bool?> hideFollows;
+  final Value<bool?> hideFollowersCount;
+  final Value<bool?> hideFollowsCount;
+  final Value<bool?> deactivated;
+  final Value<bool?> allowFollowingMove;
+  final Value<bool?> skipThreadContainment;
+  final Value<bool?> acceptsChatMessages;
+  final Value<bool?> suspended;
+  final Value<bool?> isConfirmed;
+  final Value<DateTime?> muteExpiresAt;
+  final Value<String?> fqn;
+  final Value<String?> favicon;
+  final Value<String?> apId;
+  final Value<List<String>?> alsoKnownAs;
   const DbAccountsCompanion({
     this.id = const Value.absent(),
     this.remoteId = const Value.absent(),
@@ -2581,21 +2659,28 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
     this.lastStatusAt = const Value.absent(),
     this.fields = const Value.absent(),
     this.emojis = const Value.absent(),
-    this.pleromaBackgroundImage = const Value.absent(),
-    this.pleromaTags = const Value.absent(),
-    this.pleromaRelationship = const Value.absent(),
-    this.pleromaIsAdmin = const Value.absent(),
-    this.pleromaIsModerator = const Value.absent(),
-    this.pleromaConfirmationPending = const Value.absent(),
-    this.pleromaHideFavorites = const Value.absent(),
-    this.pleromaHideFollowers = const Value.absent(),
-    this.pleromaHideFollows = const Value.absent(),
-    this.pleromaHideFollowersCount = const Value.absent(),
-    this.pleromaHideFollowsCount = const Value.absent(),
-    this.pleromaDeactivated = const Value.absent(),
-    this.pleromaAllowFollowingMove = const Value.absent(),
-    this.pleromaSkipThreadContainment = const Value.absent(),
-    this.pleromaAcceptsChatMessages = const Value.absent(),
+    this.backgroundImage = const Value.absent(),
+    this.tags = const Value.absent(),
+    this.relationship = const Value.absent(),
+    this.isAdmin = const Value.absent(),
+    this.isModerator = const Value.absent(),
+    this.confirmationPending = const Value.absent(),
+    this.hideFavorites = const Value.absent(),
+    this.hideFollowers = const Value.absent(),
+    this.hideFollows = const Value.absent(),
+    this.hideFollowersCount = const Value.absent(),
+    this.hideFollowsCount = const Value.absent(),
+    this.deactivated = const Value.absent(),
+    this.allowFollowingMove = const Value.absent(),
+    this.skipThreadContainment = const Value.absent(),
+    this.acceptsChatMessages = const Value.absent(),
+    this.suspended = const Value.absent(),
+    this.isConfirmed = const Value.absent(),
+    this.muteExpiresAt = const Value.absent(),
+    this.fqn = const Value.absent(),
+    this.favicon = const Value.absent(),
+    this.apId = const Value.absent(),
+    this.alsoKnownAs = const Value.absent(),
   });
   DbAccountsCompanion.insert({
     this.id = const Value.absent(),
@@ -2603,12 +2688,12 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
     required String username,
     required String url,
     this.note = const Value.absent(),
-    required bool locked,
-    required String headerStatic,
-    required String header,
-    required int followingCount,
-    required int followersCount,
-    required int statusesCount,
+    this.locked = const Value.absent(),
+    this.headerStatic = const Value.absent(),
+    this.header = const Value.absent(),
+    this.followingCount = const Value.absent(),
+    this.followersCount = const Value.absent(),
+    this.statusesCount = const Value.absent(),
     this.displayName = const Value.absent(),
     required DateTime createdAt,
     this.bot = const Value.absent(),
@@ -2618,30 +2703,31 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
     this.lastStatusAt = const Value.absent(),
     this.fields = const Value.absent(),
     this.emojis = const Value.absent(),
-    this.pleromaBackgroundImage = const Value.absent(),
-    this.pleromaTags = const Value.absent(),
-    this.pleromaRelationship = const Value.absent(),
-    this.pleromaIsAdmin = const Value.absent(),
-    this.pleromaIsModerator = const Value.absent(),
-    this.pleromaConfirmationPending = const Value.absent(),
-    this.pleromaHideFavorites = const Value.absent(),
-    this.pleromaHideFollowers = const Value.absent(),
-    this.pleromaHideFollows = const Value.absent(),
-    this.pleromaHideFollowersCount = const Value.absent(),
-    this.pleromaHideFollowsCount = const Value.absent(),
-    this.pleromaDeactivated = const Value.absent(),
-    this.pleromaAllowFollowingMove = const Value.absent(),
-    this.pleromaSkipThreadContainment = const Value.absent(),
-    this.pleromaAcceptsChatMessages = const Value.absent(),
+    this.backgroundImage = const Value.absent(),
+    this.tags = const Value.absent(),
+    this.relationship = const Value.absent(),
+    this.isAdmin = const Value.absent(),
+    this.isModerator = const Value.absent(),
+    this.confirmationPending = const Value.absent(),
+    this.hideFavorites = const Value.absent(),
+    this.hideFollowers = const Value.absent(),
+    this.hideFollows = const Value.absent(),
+    this.hideFollowersCount = const Value.absent(),
+    this.hideFollowsCount = const Value.absent(),
+    this.deactivated = const Value.absent(),
+    this.allowFollowingMove = const Value.absent(),
+    this.skipThreadContainment = const Value.absent(),
+    this.acceptsChatMessages = const Value.absent(),
+    this.suspended = const Value.absent(),
+    this.isConfirmed = const Value.absent(),
+    this.muteExpiresAt = const Value.absent(),
+    this.fqn = const Value.absent(),
+    this.favicon = const Value.absent(),
+    this.apId = const Value.absent(),
+    this.alsoKnownAs = const Value.absent(),
   })  : remoteId = Value(remoteId),
         username = Value(username),
         url = Value(url),
-        locked = Value(locked),
-        headerStatic = Value(headerStatic),
-        header = Value(header),
-        followingCount = Value(followingCount),
-        followersCount = Value(followersCount),
-        statusesCount = Value(statusesCount),
         createdAt = Value(createdAt),
         avatarStatic = Value(avatarStatic),
         avatar = Value(avatar),
@@ -2652,12 +2738,12 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
     Expression<String>? username,
     Expression<String>? url,
     Expression<String?>? note,
-    Expression<bool>? locked,
-    Expression<String>? headerStatic,
-    Expression<String>? header,
-    Expression<int>? followingCount,
-    Expression<int>? followersCount,
-    Expression<int>? statusesCount,
+    Expression<bool?>? locked,
+    Expression<String?>? headerStatic,
+    Expression<String?>? header,
+    Expression<int?>? followingCount,
+    Expression<int?>? followersCount,
+    Expression<int?>? statusesCount,
     Expression<String?>? displayName,
     Expression<DateTime>? createdAt,
     Expression<bool?>? bot,
@@ -2665,23 +2751,30 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
     Expression<String>? avatar,
     Expression<String>? acct,
     Expression<DateTime?>? lastStatusAt,
-    Expression<List<PleromaApiField>?>? fields,
-    Expression<List<PleromaApiEmoji>?>? emojis,
-    Expression<String?>? pleromaBackgroundImage,
-    Expression<List<PleromaApiTag>?>? pleromaTags,
-    Expression<PleromaApiAccountRelationship?>? pleromaRelationship,
-    Expression<bool?>? pleromaIsAdmin,
-    Expression<bool?>? pleromaIsModerator,
-    Expression<bool?>? pleromaConfirmationPending,
-    Expression<bool?>? pleromaHideFavorites,
-    Expression<bool?>? pleromaHideFollowers,
-    Expression<bool?>? pleromaHideFollows,
-    Expression<bool?>? pleromaHideFollowersCount,
-    Expression<bool?>? pleromaHideFollowsCount,
-    Expression<bool?>? pleromaDeactivated,
-    Expression<bool?>? pleromaAllowFollowingMove,
-    Expression<bool?>? pleromaSkipThreadContainment,
-    Expression<bool?>? pleromaAcceptsChatMessages,
+    Expression<List<UnifediApiField>?>? fields,
+    Expression<List<UnifediApiEmoji>?>? emojis,
+    Expression<String?>? backgroundImage,
+    Expression<List<UnifediApiTag>?>? tags,
+    Expression<UnifediApiAccountRelationship?>? relationship,
+    Expression<bool?>? isAdmin,
+    Expression<bool?>? isModerator,
+    Expression<bool?>? confirmationPending,
+    Expression<bool?>? hideFavorites,
+    Expression<bool?>? hideFollowers,
+    Expression<bool?>? hideFollows,
+    Expression<bool?>? hideFollowersCount,
+    Expression<bool?>? hideFollowsCount,
+    Expression<bool?>? deactivated,
+    Expression<bool?>? allowFollowingMove,
+    Expression<bool?>? skipThreadContainment,
+    Expression<bool?>? acceptsChatMessages,
+    Expression<bool?>? suspended,
+    Expression<bool?>? isConfirmed,
+    Expression<DateTime?>? muteExpiresAt,
+    Expression<String?>? fqn,
+    Expression<String?>? favicon,
+    Expression<String?>? apId,
+    Expression<List<String>?>? alsoKnownAs,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -2704,33 +2797,34 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
       if (lastStatusAt != null) 'last_status_at': lastStatusAt,
       if (fields != null) 'fields': fields,
       if (emojis != null) 'emojis': emojis,
-      if (pleromaBackgroundImage != null)
-        'pleroma_background_image': pleromaBackgroundImage,
-      if (pleromaTags != null) 'pleroma_tags': pleromaTags,
-      if (pleromaRelationship != null)
-        'pleroma_relationship': pleromaRelationship,
-      if (pleromaIsAdmin != null) 'pleroma_is_admin': pleromaIsAdmin,
-      if (pleromaIsModerator != null)
-        'pleroma_is_moderator': pleromaIsModerator,
-      if (pleromaConfirmationPending != null)
-        'pleroma_confirmation_pending': pleromaConfirmationPending,
-      if (pleromaHideFavorites != null)
-        'pleroma_hide_favorites': pleromaHideFavorites,
-      if (pleromaHideFollowers != null)
-        'pleroma_hide_followers': pleromaHideFollowers,
-      if (pleromaHideFollows != null)
-        'pleroma_hide_follows': pleromaHideFollows,
-      if (pleromaHideFollowersCount != null)
-        'pleroma_hide_followers_count': pleromaHideFollowersCount,
-      if (pleromaHideFollowsCount != null)
-        'pleroma_hide_follows_count': pleromaHideFollowsCount,
-      if (pleromaDeactivated != null) 'pleroma_deactivated': pleromaDeactivated,
-      if (pleromaAllowFollowingMove != null)
-        'pleroma_allow_following_move': pleromaAllowFollowingMove,
-      if (pleromaSkipThreadContainment != null)
-        'pleroma_skip_thread_containment': pleromaSkipThreadContainment,
-      if (pleromaAcceptsChatMessages != null)
-        'pleroma_accepts_chat_messages': pleromaAcceptsChatMessages,
+      if (backgroundImage != null) 'pleroma_background_image': backgroundImage,
+      if (tags != null) 'pleroma_tags': tags,
+      if (relationship != null) 'pleroma_relationship': relationship,
+      if (isAdmin != null) 'pleroma_is_admin': isAdmin,
+      if (isModerator != null) 'pleroma_is_moderator': isModerator,
+      if (confirmationPending != null)
+        'pleroma_confirmation_pending': confirmationPending,
+      if (hideFavorites != null) 'pleroma_hide_favorites': hideFavorites,
+      if (hideFollowers != null) 'pleroma_hide_followers': hideFollowers,
+      if (hideFollows != null) 'pleroma_hide_follows': hideFollows,
+      if (hideFollowersCount != null)
+        'pleroma_hide_followers_count': hideFollowersCount,
+      if (hideFollowsCount != null)
+        'pleroma_hide_follows_count': hideFollowsCount,
+      if (deactivated != null) 'pleroma_deactivated': deactivated,
+      if (allowFollowingMove != null)
+        'pleroma_allow_following_move': allowFollowingMove,
+      if (skipThreadContainment != null)
+        'pleroma_skip_thread_containment': skipThreadContainment,
+      if (acceptsChatMessages != null)
+        'pleroma_accepts_chat_messages': acceptsChatMessages,
+      if (suspended != null) 'suspended': suspended,
+      if (isConfirmed != null) 'is_confirmed': isConfirmed,
+      if (muteExpiresAt != null) 'mute_expires_at': muteExpiresAt,
+      if (fqn != null) 'fqn': fqn,
+      if (favicon != null) 'favicon': favicon,
+      if (apId != null) 'ap_id': apId,
+      if (alsoKnownAs != null) 'also_known_as': alsoKnownAs,
     });
   }
 
@@ -2740,12 +2834,12 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
       Value<String>? username,
       Value<String>? url,
       Value<String?>? note,
-      Value<bool>? locked,
-      Value<String>? headerStatic,
-      Value<String>? header,
-      Value<int>? followingCount,
-      Value<int>? followersCount,
-      Value<int>? statusesCount,
+      Value<bool?>? locked,
+      Value<String?>? headerStatic,
+      Value<String?>? header,
+      Value<int?>? followingCount,
+      Value<int?>? followersCount,
+      Value<int?>? statusesCount,
       Value<String?>? displayName,
       Value<DateTime>? createdAt,
       Value<bool?>? bot,
@@ -2753,23 +2847,30 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
       Value<String>? avatar,
       Value<String>? acct,
       Value<DateTime?>? lastStatusAt,
-      Value<List<PleromaApiField>?>? fields,
-      Value<List<PleromaApiEmoji>?>? emojis,
-      Value<String?>? pleromaBackgroundImage,
-      Value<List<PleromaApiTag>?>? pleromaTags,
-      Value<PleromaApiAccountRelationship?>? pleromaRelationship,
-      Value<bool?>? pleromaIsAdmin,
-      Value<bool?>? pleromaIsModerator,
-      Value<bool?>? pleromaConfirmationPending,
-      Value<bool?>? pleromaHideFavorites,
-      Value<bool?>? pleromaHideFollowers,
-      Value<bool?>? pleromaHideFollows,
-      Value<bool?>? pleromaHideFollowersCount,
-      Value<bool?>? pleromaHideFollowsCount,
-      Value<bool?>? pleromaDeactivated,
-      Value<bool?>? pleromaAllowFollowingMove,
-      Value<bool?>? pleromaSkipThreadContainment,
-      Value<bool?>? pleromaAcceptsChatMessages}) {
+      Value<List<UnifediApiField>?>? fields,
+      Value<List<UnifediApiEmoji>?>? emojis,
+      Value<String?>? backgroundImage,
+      Value<List<UnifediApiTag>?>? tags,
+      Value<UnifediApiAccountRelationship?>? relationship,
+      Value<bool?>? isAdmin,
+      Value<bool?>? isModerator,
+      Value<bool?>? confirmationPending,
+      Value<bool?>? hideFavorites,
+      Value<bool?>? hideFollowers,
+      Value<bool?>? hideFollows,
+      Value<bool?>? hideFollowersCount,
+      Value<bool?>? hideFollowsCount,
+      Value<bool?>? deactivated,
+      Value<bool?>? allowFollowingMove,
+      Value<bool?>? skipThreadContainment,
+      Value<bool?>? acceptsChatMessages,
+      Value<bool?>? suspended,
+      Value<bool?>? isConfirmed,
+      Value<DateTime?>? muteExpiresAt,
+      Value<String?>? fqn,
+      Value<String?>? favicon,
+      Value<String?>? apId,
+      Value<List<String>?>? alsoKnownAs}) {
     return DbAccountsCompanion(
       id: id ?? this.id,
       remoteId: remoteId ?? this.remoteId,
@@ -2791,28 +2892,29 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
       lastStatusAt: lastStatusAt ?? this.lastStatusAt,
       fields: fields ?? this.fields,
       emojis: emojis ?? this.emojis,
-      pleromaBackgroundImage:
-          pleromaBackgroundImage ?? this.pleromaBackgroundImage,
-      pleromaTags: pleromaTags ?? this.pleromaTags,
-      pleromaRelationship: pleromaRelationship ?? this.pleromaRelationship,
-      pleromaIsAdmin: pleromaIsAdmin ?? this.pleromaIsAdmin,
-      pleromaIsModerator: pleromaIsModerator ?? this.pleromaIsModerator,
-      pleromaConfirmationPending:
-          pleromaConfirmationPending ?? this.pleromaConfirmationPending,
-      pleromaHideFavorites: pleromaHideFavorites ?? this.pleromaHideFavorites,
-      pleromaHideFollowers: pleromaHideFollowers ?? this.pleromaHideFollowers,
-      pleromaHideFollows: pleromaHideFollows ?? this.pleromaHideFollows,
-      pleromaHideFollowersCount:
-          pleromaHideFollowersCount ?? this.pleromaHideFollowersCount,
-      pleromaHideFollowsCount:
-          pleromaHideFollowsCount ?? this.pleromaHideFollowsCount,
-      pleromaDeactivated: pleromaDeactivated ?? this.pleromaDeactivated,
-      pleromaAllowFollowingMove:
-          pleromaAllowFollowingMove ?? this.pleromaAllowFollowingMove,
-      pleromaSkipThreadContainment:
-          pleromaSkipThreadContainment ?? this.pleromaSkipThreadContainment,
-      pleromaAcceptsChatMessages:
-          pleromaAcceptsChatMessages ?? this.pleromaAcceptsChatMessages,
+      backgroundImage: backgroundImage ?? this.backgroundImage,
+      tags: tags ?? this.tags,
+      relationship: relationship ?? this.relationship,
+      isAdmin: isAdmin ?? this.isAdmin,
+      isModerator: isModerator ?? this.isModerator,
+      confirmationPending: confirmationPending ?? this.confirmationPending,
+      hideFavorites: hideFavorites ?? this.hideFavorites,
+      hideFollowers: hideFollowers ?? this.hideFollowers,
+      hideFollows: hideFollows ?? this.hideFollows,
+      hideFollowersCount: hideFollowersCount ?? this.hideFollowersCount,
+      hideFollowsCount: hideFollowsCount ?? this.hideFollowsCount,
+      deactivated: deactivated ?? this.deactivated,
+      allowFollowingMove: allowFollowingMove ?? this.allowFollowingMove,
+      skipThreadContainment:
+          skipThreadContainment ?? this.skipThreadContainment,
+      acceptsChatMessages: acceptsChatMessages ?? this.acceptsChatMessages,
+      suspended: suspended ?? this.suspended,
+      isConfirmed: isConfirmed ?? this.isConfirmed,
+      muteExpiresAt: muteExpiresAt ?? this.muteExpiresAt,
+      fqn: fqn ?? this.fqn,
+      favicon: favicon ?? this.favicon,
+      apId: apId ?? this.apId,
+      alsoKnownAs: alsoKnownAs ?? this.alsoKnownAs,
     );
   }
 
@@ -2835,22 +2937,22 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
       map['note'] = Variable<String?>(note.value);
     }
     if (locked.present) {
-      map['locked'] = Variable<bool>(locked.value);
+      map['locked'] = Variable<bool?>(locked.value);
     }
     if (headerStatic.present) {
-      map['header_static'] = Variable<String>(headerStatic.value);
+      map['header_static'] = Variable<String?>(headerStatic.value);
     }
     if (header.present) {
-      map['header'] = Variable<String>(header.value);
+      map['header'] = Variable<String?>(header.value);
     }
     if (followingCount.present) {
-      map['following_count'] = Variable<int>(followingCount.value);
+      map['following_count'] = Variable<int?>(followingCount.value);
     }
     if (followersCount.present) {
-      map['followers_count'] = Variable<int>(followersCount.value);
+      map['followers_count'] = Variable<int?>(followersCount.value);
     }
     if (statusesCount.present) {
-      map['statuses_count'] = Variable<int>(statusesCount.value);
+      map['statuses_count'] = Variable<int?>(statusesCount.value);
     }
     if (displayName.present) {
       map['display_name'] = Variable<String?>(displayName.value);
@@ -2881,63 +2983,83 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
       final converter = $DbAccountsTable.$converter1;
       map['emojis'] = Variable<String?>(converter.mapToSql(emojis.value));
     }
-    if (pleromaBackgroundImage.present) {
+    if (backgroundImage.present) {
       map['pleroma_background_image'] =
-          Variable<String?>(pleromaBackgroundImage.value);
+          Variable<String?>(backgroundImage.value);
     }
-    if (pleromaTags.present) {
+    if (tags.present) {
       final converter = $DbAccountsTable.$converter2;
-      map['pleroma_tags'] =
-          Variable<String?>(converter.mapToSql(pleromaTags.value));
+      map['pleroma_tags'] = Variable<String?>(converter.mapToSql(tags.value));
     }
-    if (pleromaRelationship.present) {
+    if (relationship.present) {
       final converter = $DbAccountsTable.$converter3;
       map['pleroma_relationship'] =
-          Variable<String?>(converter.mapToSql(pleromaRelationship.value));
+          Variable<String?>(converter.mapToSql(relationship.value));
     }
-    if (pleromaIsAdmin.present) {
-      map['pleroma_is_admin'] = Variable<bool?>(pleromaIsAdmin.value);
+    if (isAdmin.present) {
+      map['pleroma_is_admin'] = Variable<bool?>(isAdmin.value);
     }
-    if (pleromaIsModerator.present) {
-      map['pleroma_is_moderator'] = Variable<bool?>(pleromaIsModerator.value);
+    if (isModerator.present) {
+      map['pleroma_is_moderator'] = Variable<bool?>(isModerator.value);
     }
-    if (pleromaConfirmationPending.present) {
+    if (confirmationPending.present) {
       map['pleroma_confirmation_pending'] =
-          Variable<bool?>(pleromaConfirmationPending.value);
+          Variable<bool?>(confirmationPending.value);
     }
-    if (pleromaHideFavorites.present) {
-      map['pleroma_hide_favorites'] =
-          Variable<bool?>(pleromaHideFavorites.value);
+    if (hideFavorites.present) {
+      map['pleroma_hide_favorites'] = Variable<bool?>(hideFavorites.value);
     }
-    if (pleromaHideFollowers.present) {
-      map['pleroma_hide_followers'] =
-          Variable<bool?>(pleromaHideFollowers.value);
+    if (hideFollowers.present) {
+      map['pleroma_hide_followers'] = Variable<bool?>(hideFollowers.value);
     }
-    if (pleromaHideFollows.present) {
-      map['pleroma_hide_follows'] = Variable<bool?>(pleromaHideFollows.value);
+    if (hideFollows.present) {
+      map['pleroma_hide_follows'] = Variable<bool?>(hideFollows.value);
     }
-    if (pleromaHideFollowersCount.present) {
+    if (hideFollowersCount.present) {
       map['pleroma_hide_followers_count'] =
-          Variable<bool?>(pleromaHideFollowersCount.value);
+          Variable<bool?>(hideFollowersCount.value);
     }
-    if (pleromaHideFollowsCount.present) {
+    if (hideFollowsCount.present) {
       map['pleroma_hide_follows_count'] =
-          Variable<bool?>(pleromaHideFollowsCount.value);
+          Variable<bool?>(hideFollowsCount.value);
     }
-    if (pleromaDeactivated.present) {
-      map['pleroma_deactivated'] = Variable<bool?>(pleromaDeactivated.value);
+    if (deactivated.present) {
+      map['pleroma_deactivated'] = Variable<bool?>(deactivated.value);
     }
-    if (pleromaAllowFollowingMove.present) {
+    if (allowFollowingMove.present) {
       map['pleroma_allow_following_move'] =
-          Variable<bool?>(pleromaAllowFollowingMove.value);
+          Variable<bool?>(allowFollowingMove.value);
     }
-    if (pleromaSkipThreadContainment.present) {
+    if (skipThreadContainment.present) {
       map['pleroma_skip_thread_containment'] =
-          Variable<bool?>(pleromaSkipThreadContainment.value);
+          Variable<bool?>(skipThreadContainment.value);
     }
-    if (pleromaAcceptsChatMessages.present) {
+    if (acceptsChatMessages.present) {
       map['pleroma_accepts_chat_messages'] =
-          Variable<bool?>(pleromaAcceptsChatMessages.value);
+          Variable<bool?>(acceptsChatMessages.value);
+    }
+    if (suspended.present) {
+      map['suspended'] = Variable<bool?>(suspended.value);
+    }
+    if (isConfirmed.present) {
+      map['is_confirmed'] = Variable<bool?>(isConfirmed.value);
+    }
+    if (muteExpiresAt.present) {
+      map['mute_expires_at'] = Variable<DateTime?>(muteExpiresAt.value);
+    }
+    if (fqn.present) {
+      map['fqn'] = Variable<String?>(fqn.value);
+    }
+    if (favicon.present) {
+      map['favicon'] = Variable<String?>(favicon.value);
+    }
+    if (apId.present) {
+      map['ap_id'] = Variable<String?>(apId.value);
+    }
+    if (alsoKnownAs.present) {
+      final converter = $DbAccountsTable.$converter4;
+      map['also_known_as'] =
+          Variable<String?>(converter.mapToSql(alsoKnownAs.value));
     }
     return map;
   }
@@ -2965,22 +3087,28 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
           ..write('lastStatusAt: $lastStatusAt, ')
           ..write('fields: $fields, ')
           ..write('emojis: $emojis, ')
-          ..write('pleromaBackgroundImage: $pleromaBackgroundImage, ')
-          ..write('pleromaTags: $pleromaTags, ')
-          ..write('pleromaRelationship: $pleromaRelationship, ')
-          ..write('pleromaIsAdmin: $pleromaIsAdmin, ')
-          ..write('pleromaIsModerator: $pleromaIsModerator, ')
-          ..write('pleromaConfirmationPending: $pleromaConfirmationPending, ')
-          ..write('pleromaHideFavorites: $pleromaHideFavorites, ')
-          ..write('pleromaHideFollowers: $pleromaHideFollowers, ')
-          ..write('pleromaHideFollows: $pleromaHideFollows, ')
-          ..write('pleromaHideFollowersCount: $pleromaHideFollowersCount, ')
-          ..write('pleromaHideFollowsCount: $pleromaHideFollowsCount, ')
-          ..write('pleromaDeactivated: $pleromaDeactivated, ')
-          ..write('pleromaAllowFollowingMove: $pleromaAllowFollowingMove, ')
-          ..write(
-              'pleromaSkipThreadContainment: $pleromaSkipThreadContainment, ')
-          ..write('pleromaAcceptsChatMessages: $pleromaAcceptsChatMessages')
+          ..write('backgroundImage: $backgroundImage, ')
+          ..write('tags: $tags, ')
+          ..write('relationship: $relationship, ')
+          ..write('isAdmin: $isAdmin, ')
+          ..write('isModerator: $isModerator, ')
+          ..write('confirmationPending: $confirmationPending, ')
+          ..write('hideFavorites: $hideFavorites, ')
+          ..write('hideFollowers: $hideFollowers, ')
+          ..write('hideFollows: $hideFollows, ')
+          ..write('hideFollowersCount: $hideFollowersCount, ')
+          ..write('hideFollowsCount: $hideFollowsCount, ')
+          ..write('deactivated: $deactivated, ')
+          ..write('allowFollowingMove: $allowFollowingMove, ')
+          ..write('skipThreadContainment: $skipThreadContainment, ')
+          ..write('acceptsChatMessages: $acceptsChatMessages, ')
+          ..write('suspended: $suspended, ')
+          ..write('isConfirmed: $isConfirmed, ')
+          ..write('muteExpiresAt: $muteExpiresAt, ')
+          ..write('fqn: $fqn, ')
+          ..write('favicon: $favicon, ')
+          ..write('apId: $apId, ')
+          ..write('alsoKnownAs: $alsoKnownAs')
           ..write(')'))
         .toString();
   }
@@ -3017,34 +3145,34 @@ class $DbAccountsTable extends DbAccounts
       typeName: 'TEXT', requiredDuringInsert: false);
   final VerificationMeta _lockedMeta = const VerificationMeta('locked');
   late final GeneratedColumn<bool?> locked = GeneratedColumn<bool?>(
-      'locked', aliasedName, false,
+      'locked', aliasedName, true,
       typeName: 'INTEGER',
-      requiredDuringInsert: true,
+      requiredDuringInsert: false,
       defaultConstraints: 'CHECK (locked IN (0, 1))');
   final VerificationMeta _headerStaticMeta =
       const VerificationMeta('headerStatic');
   late final GeneratedColumn<String?> headerStatic = GeneratedColumn<String?>(
-      'header_static', aliasedName, false,
-      typeName: 'TEXT', requiredDuringInsert: true);
+      'header_static', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false);
   final VerificationMeta _headerMeta = const VerificationMeta('header');
   late final GeneratedColumn<String?> header = GeneratedColumn<String?>(
-      'header', aliasedName, false,
-      typeName: 'TEXT', requiredDuringInsert: true);
+      'header', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false);
   final VerificationMeta _followingCountMeta =
       const VerificationMeta('followingCount');
   late final GeneratedColumn<int?> followingCount = GeneratedColumn<int?>(
-      'following_count', aliasedName, false,
-      typeName: 'INTEGER', requiredDuringInsert: true);
+      'following_count', aliasedName, true,
+      typeName: 'INTEGER', requiredDuringInsert: false);
   final VerificationMeta _followersCountMeta =
       const VerificationMeta('followersCount');
   late final GeneratedColumn<int?> followersCount = GeneratedColumn<int?>(
-      'followers_count', aliasedName, false,
-      typeName: 'INTEGER', requiredDuringInsert: true);
+      'followers_count', aliasedName, true,
+      typeName: 'INTEGER', requiredDuringInsert: false);
   final VerificationMeta _statusesCountMeta =
       const VerificationMeta('statusesCount');
   late final GeneratedColumn<int?> statusesCount = GeneratedColumn<int?>(
-      'statuses_count', aliasedName, false,
-      typeName: 'INTEGER', requiredDuringInsert: true);
+      'statuses_count', aliasedName, true,
+      typeName: 'INTEGER', requiredDuringInsert: false);
   final VerificationMeta _displayNameMeta =
       const VerificationMeta('displayName');
   late final GeneratedColumn<String?> displayName = GeneratedColumn<String?>(
@@ -3079,121 +3207,156 @@ class $DbAccountsTable extends DbAccounts
       GeneratedColumn<DateTime?>('last_status_at', aliasedName, true,
           typeName: 'INTEGER', requiredDuringInsert: false);
   final VerificationMeta _fieldsMeta = const VerificationMeta('fields');
-  late final GeneratedColumnWithTypeConverter<List<PleromaApiField>, String?>
+  late final GeneratedColumnWithTypeConverter<List<UnifediApiField>, String?>
       fields = GeneratedColumn<String?>('fields', aliasedName, true,
               typeName: 'TEXT', requiredDuringInsert: false)
-          .withConverter<List<PleromaApiField>>($DbAccountsTable.$converter0);
+          .withConverter<List<UnifediApiField>>($DbAccountsTable.$converter0);
   final VerificationMeta _emojisMeta = const VerificationMeta('emojis');
-  late final GeneratedColumnWithTypeConverter<List<PleromaApiEmoji>, String?>
+  late final GeneratedColumnWithTypeConverter<List<UnifediApiEmoji>, String?>
       emojis = GeneratedColumn<String?>('emojis', aliasedName, true,
               typeName: 'TEXT', requiredDuringInsert: false)
-          .withConverter<List<PleromaApiEmoji>>($DbAccountsTable.$converter1);
-  final VerificationMeta _pleromaBackgroundImageMeta =
-      const VerificationMeta('pleromaBackgroundImage');
-  late final GeneratedColumn<String?> pleromaBackgroundImage =
+          .withConverter<List<UnifediApiEmoji>>($DbAccountsTable.$converter1);
+  final VerificationMeta _backgroundImageMeta =
+      const VerificationMeta('backgroundImage');
+  late final GeneratedColumn<String?> backgroundImage =
       GeneratedColumn<String?>('pleroma_background_image', aliasedName, true,
           typeName: 'TEXT', requiredDuringInsert: false);
-  final VerificationMeta _pleromaTagsMeta =
-      const VerificationMeta('pleromaTags');
-  late final GeneratedColumnWithTypeConverter<List<PleromaApiTag>, String?>
-      pleromaTags = GeneratedColumn<String?>('pleroma_tags', aliasedName, true,
+  final VerificationMeta _tagsMeta = const VerificationMeta('tags');
+  late final GeneratedColumnWithTypeConverter<List<UnifediApiTag>, String?>
+      tags = GeneratedColumn<String?>('pleroma_tags', aliasedName, true,
               typeName: 'TEXT', requiredDuringInsert: false)
-          .withConverter<List<PleromaApiTag>>($DbAccountsTable.$converter2);
-  final VerificationMeta _pleromaRelationshipMeta =
-      const VerificationMeta('pleromaRelationship');
-  late final GeneratedColumnWithTypeConverter<PleromaApiAccountRelationship,
-      String?> pleromaRelationship = GeneratedColumn<String?>(
+          .withConverter<List<UnifediApiTag>>($DbAccountsTable.$converter2);
+  final VerificationMeta _relationshipMeta =
+      const VerificationMeta('relationship');
+  late final GeneratedColumnWithTypeConverter<UnifediApiAccountRelationship,
+      String?> relationship = GeneratedColumn<String?>(
           'pleroma_relationship', aliasedName, true,
           typeName: 'TEXT', requiredDuringInsert: false)
-      .withConverter<PleromaApiAccountRelationship>(
+      .withConverter<UnifediApiAccountRelationship>(
           $DbAccountsTable.$converter3);
-  final VerificationMeta _pleromaIsAdminMeta =
-      const VerificationMeta('pleromaIsAdmin');
-  late final GeneratedColumn<bool?> pleromaIsAdmin = GeneratedColumn<bool?>(
+  final VerificationMeta _isAdminMeta = const VerificationMeta('isAdmin');
+  late final GeneratedColumn<bool?> isAdmin = GeneratedColumn<bool?>(
       'pleroma_is_admin', aliasedName, true,
       typeName: 'INTEGER',
       requiredDuringInsert: false,
       defaultConstraints: 'CHECK (pleroma_is_admin IN (0, 1))');
-  final VerificationMeta _pleromaIsModeratorMeta =
-      const VerificationMeta('pleromaIsModerator');
-  late final GeneratedColumn<bool?> pleromaIsModerator = GeneratedColumn<bool?>(
+  final VerificationMeta _isModeratorMeta =
+      const VerificationMeta('isModerator');
+  late final GeneratedColumn<bool?> isModerator = GeneratedColumn<bool?>(
       'pleroma_is_moderator', aliasedName, true,
       typeName: 'INTEGER',
       requiredDuringInsert: false,
       defaultConstraints: 'CHECK (pleroma_is_moderator IN (0, 1))');
-  final VerificationMeta _pleromaConfirmationPendingMeta =
-      const VerificationMeta('pleromaConfirmationPending');
-  late final GeneratedColumn<bool?> pleromaConfirmationPending =
+  final VerificationMeta _confirmationPendingMeta =
+      const VerificationMeta('confirmationPending');
+  late final GeneratedColumn<bool?> confirmationPending =
       GeneratedColumn<bool?>('pleroma_confirmation_pending', aliasedName, true,
           typeName: 'INTEGER',
           requiredDuringInsert: false,
           defaultConstraints: 'CHECK (pleroma_confirmation_pending IN (0, 1))');
-  final VerificationMeta _pleromaHideFavoritesMeta =
-      const VerificationMeta('pleromaHideFavorites');
-  late final GeneratedColumn<bool?> pleromaHideFavorites =
-      GeneratedColumn<bool?>('pleroma_hide_favorites', aliasedName, true,
-          typeName: 'INTEGER',
-          requiredDuringInsert: false,
-          defaultConstraints: 'CHECK (pleroma_hide_favorites IN (0, 1))');
-  final VerificationMeta _pleromaHideFollowersMeta =
-      const VerificationMeta('pleromaHideFollowers');
-  late final GeneratedColumn<bool?> pleromaHideFollowers =
-      GeneratedColumn<bool?>('pleroma_hide_followers', aliasedName, true,
-          typeName: 'INTEGER',
-          requiredDuringInsert: false,
-          defaultConstraints: 'CHECK (pleroma_hide_followers IN (0, 1))');
-  final VerificationMeta _pleromaHideFollowsMeta =
-      const VerificationMeta('pleromaHideFollows');
-  late final GeneratedColumn<bool?> pleromaHideFollows = GeneratedColumn<bool?>(
+  final VerificationMeta _hideFavoritesMeta =
+      const VerificationMeta('hideFavorites');
+  late final GeneratedColumn<bool?> hideFavorites = GeneratedColumn<bool?>(
+      'pleroma_hide_favorites', aliasedName, true,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      defaultConstraints: 'CHECK (pleroma_hide_favorites IN (0, 1))');
+  final VerificationMeta _hideFollowersMeta =
+      const VerificationMeta('hideFollowers');
+  late final GeneratedColumn<bool?> hideFollowers = GeneratedColumn<bool?>(
+      'pleroma_hide_followers', aliasedName, true,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      defaultConstraints: 'CHECK (pleroma_hide_followers IN (0, 1))');
+  final VerificationMeta _hideFollowsMeta =
+      const VerificationMeta('hideFollows');
+  late final GeneratedColumn<bool?> hideFollows = GeneratedColumn<bool?>(
       'pleroma_hide_follows', aliasedName, true,
       typeName: 'INTEGER',
       requiredDuringInsert: false,
       defaultConstraints: 'CHECK (pleroma_hide_follows IN (0, 1))');
-  final VerificationMeta _pleromaHideFollowersCountMeta =
-      const VerificationMeta('pleromaHideFollowersCount');
-  late final GeneratedColumn<bool?> pleromaHideFollowersCount =
-      GeneratedColumn<bool?>('pleroma_hide_followers_count', aliasedName, true,
-          typeName: 'INTEGER',
-          requiredDuringInsert: false,
-          defaultConstraints: 'CHECK (pleroma_hide_followers_count IN (0, 1))');
-  final VerificationMeta _pleromaHideFollowsCountMeta =
-      const VerificationMeta('pleromaHideFollowsCount');
-  late final GeneratedColumn<bool?> pleromaHideFollowsCount =
-      GeneratedColumn<bool?>('pleroma_hide_follows_count', aliasedName, true,
-          typeName: 'INTEGER',
-          requiredDuringInsert: false,
-          defaultConstraints: 'CHECK (pleroma_hide_follows_count IN (0, 1))');
-  final VerificationMeta _pleromaDeactivatedMeta =
-      const VerificationMeta('pleromaDeactivated');
-  late final GeneratedColumn<bool?> pleromaDeactivated = GeneratedColumn<bool?>(
+  final VerificationMeta _hideFollowersCountMeta =
+      const VerificationMeta('hideFollowersCount');
+  late final GeneratedColumn<bool?> hideFollowersCount = GeneratedColumn<bool?>(
+      'pleroma_hide_followers_count', aliasedName, true,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      defaultConstraints: 'CHECK (pleroma_hide_followers_count IN (0, 1))');
+  final VerificationMeta _hideFollowsCountMeta =
+      const VerificationMeta('hideFollowsCount');
+  late final GeneratedColumn<bool?> hideFollowsCount = GeneratedColumn<bool?>(
+      'pleroma_hide_follows_count', aliasedName, true,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      defaultConstraints: 'CHECK (pleroma_hide_follows_count IN (0, 1))');
+  final VerificationMeta _deactivatedMeta =
+      const VerificationMeta('deactivated');
+  late final GeneratedColumn<bool?> deactivated = GeneratedColumn<bool?>(
       'pleroma_deactivated', aliasedName, true,
       typeName: 'INTEGER',
       requiredDuringInsert: false,
       defaultConstraints: 'CHECK (pleroma_deactivated IN (0, 1))');
-  final VerificationMeta _pleromaAllowFollowingMoveMeta =
-      const VerificationMeta('pleromaAllowFollowingMove');
-  late final GeneratedColumn<bool?> pleromaAllowFollowingMove =
-      GeneratedColumn<bool?>('pleroma_allow_following_move', aliasedName, true,
-          typeName: 'INTEGER',
-          requiredDuringInsert: false,
-          defaultConstraints: 'CHECK (pleroma_allow_following_move IN (0, 1))');
-  final VerificationMeta _pleromaSkipThreadContainmentMeta =
-      const VerificationMeta('pleromaSkipThreadContainment');
-  late final GeneratedColumn<bool?> pleromaSkipThreadContainment =
+  final VerificationMeta _allowFollowingMoveMeta =
+      const VerificationMeta('allowFollowingMove');
+  late final GeneratedColumn<bool?> allowFollowingMove = GeneratedColumn<bool?>(
+      'pleroma_allow_following_move', aliasedName, true,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      defaultConstraints: 'CHECK (pleroma_allow_following_move IN (0, 1))');
+  final VerificationMeta _skipThreadContainmentMeta =
+      const VerificationMeta('skipThreadContainment');
+  late final GeneratedColumn<bool?> skipThreadContainment =
       GeneratedColumn<bool?>(
           'pleroma_skip_thread_containment', aliasedName, true,
           typeName: 'INTEGER',
           requiredDuringInsert: false,
           defaultConstraints:
               'CHECK (pleroma_skip_thread_containment IN (0, 1))');
-  final VerificationMeta _pleromaAcceptsChatMessagesMeta =
-      const VerificationMeta('pleromaAcceptsChatMessages');
-  late final GeneratedColumn<bool?> pleromaAcceptsChatMessages =
-      GeneratedColumn<bool?>('pleroma_accepts_chat_messages', aliasedName, true,
+  final VerificationMeta _acceptsChatMessagesMeta =
+      const VerificationMeta('acceptsChatMessages');
+  late final GeneratedColumn<bool?> acceptsChatMessages =
+      GeneratedColumn<bool?>(
+          'pleroma_accepts_chat_messages', aliasedName, true,
           typeName: 'INTEGER',
           requiredDuringInsert: false,
           defaultConstraints:
               'CHECK (pleroma_accepts_chat_messages IN (0, 1))');
+  final VerificationMeta _suspendedMeta = const VerificationMeta('suspended');
+  late final GeneratedColumn<bool?> suspended = GeneratedColumn<bool?>(
+      'suspended', aliasedName, true,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      defaultConstraints: 'CHECK (suspended IN (0, 1))');
+  final VerificationMeta _isConfirmedMeta =
+      const VerificationMeta('isConfirmed');
+  late final GeneratedColumn<bool?> isConfirmed = GeneratedColumn<bool?>(
+      'is_confirmed', aliasedName, true,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      defaultConstraints: 'CHECK (is_confirmed IN (0, 1))');
+  final VerificationMeta _muteExpiresAtMeta =
+      const VerificationMeta('muteExpiresAt');
+  late final GeneratedColumn<DateTime?> muteExpiresAt =
+      GeneratedColumn<DateTime?>('mute_expires_at', aliasedName, true,
+          typeName: 'INTEGER', requiredDuringInsert: false);
+  final VerificationMeta _fqnMeta = const VerificationMeta('fqn');
+  late final GeneratedColumn<String?> fqn = GeneratedColumn<String?>(
+      'fqn', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false);
+  final VerificationMeta _faviconMeta = const VerificationMeta('favicon');
+  late final GeneratedColumn<String?> favicon = GeneratedColumn<String?>(
+      'favicon', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false);
+  final VerificationMeta _apIdMeta = const VerificationMeta('apId');
+  late final GeneratedColumn<String?> apId = GeneratedColumn<String?>(
+      'ap_id', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false);
+  final VerificationMeta _alsoKnownAsMeta =
+      const VerificationMeta('alsoKnownAs');
+  late final GeneratedColumnWithTypeConverter<List<String>, String?>
+      alsoKnownAs = GeneratedColumn<String?>('also_known_as', aliasedName, true,
+              typeName: 'TEXT', requiredDuringInsert: false)
+          .withConverter<List<String>>($DbAccountsTable.$converter4);
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -3216,21 +3379,28 @@ class $DbAccountsTable extends DbAccounts
         lastStatusAt,
         fields,
         emojis,
-        pleromaBackgroundImage,
-        pleromaTags,
-        pleromaRelationship,
-        pleromaIsAdmin,
-        pleromaIsModerator,
-        pleromaConfirmationPending,
-        pleromaHideFavorites,
-        pleromaHideFollowers,
-        pleromaHideFollows,
-        pleromaHideFollowersCount,
-        pleromaHideFollowsCount,
-        pleromaDeactivated,
-        pleromaAllowFollowingMove,
-        pleromaSkipThreadContainment,
-        pleromaAcceptsChatMessages
+        backgroundImage,
+        tags,
+        relationship,
+        isAdmin,
+        isModerator,
+        confirmationPending,
+        hideFavorites,
+        hideFollowers,
+        hideFollows,
+        hideFollowersCount,
+        hideFollowsCount,
+        deactivated,
+        allowFollowingMove,
+        skipThreadContainment,
+        acceptsChatMessages,
+        suspended,
+        isConfirmed,
+        muteExpiresAt,
+        fqn,
+        favicon,
+        apId,
+        alsoKnownAs
       ];
   @override
   String get aliasedName => _alias ?? 'db_accounts';
@@ -3269,46 +3439,34 @@ class $DbAccountsTable extends DbAccounts
     if (data.containsKey('locked')) {
       context.handle(_lockedMeta,
           locked.isAcceptableOrUnknown(data['locked']!, _lockedMeta));
-    } else if (isInserting) {
-      context.missing(_lockedMeta);
     }
     if (data.containsKey('header_static')) {
       context.handle(
           _headerStaticMeta,
           headerStatic.isAcceptableOrUnknown(
               data['header_static']!, _headerStaticMeta));
-    } else if (isInserting) {
-      context.missing(_headerStaticMeta);
     }
     if (data.containsKey('header')) {
       context.handle(_headerMeta,
           header.isAcceptableOrUnknown(data['header']!, _headerMeta));
-    } else if (isInserting) {
-      context.missing(_headerMeta);
     }
     if (data.containsKey('following_count')) {
       context.handle(
           _followingCountMeta,
           followingCount.isAcceptableOrUnknown(
               data['following_count']!, _followingCountMeta));
-    } else if (isInserting) {
-      context.missing(_followingCountMeta);
     }
     if (data.containsKey('followers_count')) {
       context.handle(
           _followersCountMeta,
           followersCount.isAcceptableOrUnknown(
               data['followers_count']!, _followersCountMeta));
-    } else if (isInserting) {
-      context.missing(_followersCountMeta);
     }
     if (data.containsKey('statuses_count')) {
       context.handle(
           _statusesCountMeta,
           statusesCount.isAcceptableOrUnknown(
               data['statuses_count']!, _statusesCountMeta));
-    } else if (isInserting) {
-      context.missing(_statusesCountMeta);
     }
     if (data.containsKey('display_name')) {
       context.handle(
@@ -3356,91 +3514,115 @@ class $DbAccountsTable extends DbAccounts
     context.handle(_emojisMeta, const VerificationResult.success());
     if (data.containsKey('pleroma_background_image')) {
       context.handle(
-          _pleromaBackgroundImageMeta,
-          pleromaBackgroundImage.isAcceptableOrUnknown(
-              data['pleroma_background_image']!, _pleromaBackgroundImageMeta));
+          _backgroundImageMeta,
+          backgroundImage.isAcceptableOrUnknown(
+              data['pleroma_background_image']!, _backgroundImageMeta));
     }
-    context.handle(_pleromaTagsMeta, const VerificationResult.success());
-    context.handle(
-        _pleromaRelationshipMeta, const VerificationResult.success());
+    context.handle(_tagsMeta, const VerificationResult.success());
+    context.handle(_relationshipMeta, const VerificationResult.success());
     if (data.containsKey('pleroma_is_admin')) {
       context.handle(
-          _pleromaIsAdminMeta,
-          pleromaIsAdmin.isAcceptableOrUnknown(
-              data['pleroma_is_admin']!, _pleromaIsAdminMeta));
+          _isAdminMeta,
+          isAdmin.isAcceptableOrUnknown(
+              data['pleroma_is_admin']!, _isAdminMeta));
     }
     if (data.containsKey('pleroma_is_moderator')) {
       context.handle(
-          _pleromaIsModeratorMeta,
-          pleromaIsModerator.isAcceptableOrUnknown(
-              data['pleroma_is_moderator']!, _pleromaIsModeratorMeta));
+          _isModeratorMeta,
+          isModerator.isAcceptableOrUnknown(
+              data['pleroma_is_moderator']!, _isModeratorMeta));
     }
     if (data.containsKey('pleroma_confirmation_pending')) {
       context.handle(
-          _pleromaConfirmationPendingMeta,
-          pleromaConfirmationPending.isAcceptableOrUnknown(
-              data['pleroma_confirmation_pending']!,
-              _pleromaConfirmationPendingMeta));
+          _confirmationPendingMeta,
+          confirmationPending.isAcceptableOrUnknown(
+              data['pleroma_confirmation_pending']!, _confirmationPendingMeta));
     }
     if (data.containsKey('pleroma_hide_favorites')) {
       context.handle(
-          _pleromaHideFavoritesMeta,
-          pleromaHideFavorites.isAcceptableOrUnknown(
-              data['pleroma_hide_favorites']!, _pleromaHideFavoritesMeta));
+          _hideFavoritesMeta,
+          hideFavorites.isAcceptableOrUnknown(
+              data['pleroma_hide_favorites']!, _hideFavoritesMeta));
     }
     if (data.containsKey('pleroma_hide_followers')) {
       context.handle(
-          _pleromaHideFollowersMeta,
-          pleromaHideFollowers.isAcceptableOrUnknown(
-              data['pleroma_hide_followers']!, _pleromaHideFollowersMeta));
+          _hideFollowersMeta,
+          hideFollowers.isAcceptableOrUnknown(
+              data['pleroma_hide_followers']!, _hideFollowersMeta));
     }
     if (data.containsKey('pleroma_hide_follows')) {
       context.handle(
-          _pleromaHideFollowsMeta,
-          pleromaHideFollows.isAcceptableOrUnknown(
-              data['pleroma_hide_follows']!, _pleromaHideFollowsMeta));
+          _hideFollowsMeta,
+          hideFollows.isAcceptableOrUnknown(
+              data['pleroma_hide_follows']!, _hideFollowsMeta));
     }
     if (data.containsKey('pleroma_hide_followers_count')) {
       context.handle(
-          _pleromaHideFollowersCountMeta,
-          pleromaHideFollowersCount.isAcceptableOrUnknown(
-              data['pleroma_hide_followers_count']!,
-              _pleromaHideFollowersCountMeta));
+          _hideFollowersCountMeta,
+          hideFollowersCount.isAcceptableOrUnknown(
+              data['pleroma_hide_followers_count']!, _hideFollowersCountMeta));
     }
     if (data.containsKey('pleroma_hide_follows_count')) {
       context.handle(
-          _pleromaHideFollowsCountMeta,
-          pleromaHideFollowsCount.isAcceptableOrUnknown(
-              data['pleroma_hide_follows_count']!,
-              _pleromaHideFollowsCountMeta));
+          _hideFollowsCountMeta,
+          hideFollowsCount.isAcceptableOrUnknown(
+              data['pleroma_hide_follows_count']!, _hideFollowsCountMeta));
     }
     if (data.containsKey('pleroma_deactivated')) {
       context.handle(
-          _pleromaDeactivatedMeta,
-          pleromaDeactivated.isAcceptableOrUnknown(
-              data['pleroma_deactivated']!, _pleromaDeactivatedMeta));
+          _deactivatedMeta,
+          deactivated.isAcceptableOrUnknown(
+              data['pleroma_deactivated']!, _deactivatedMeta));
     }
     if (data.containsKey('pleroma_allow_following_move')) {
       context.handle(
-          _pleromaAllowFollowingMoveMeta,
-          pleromaAllowFollowingMove.isAcceptableOrUnknown(
-              data['pleroma_allow_following_move']!,
-              _pleromaAllowFollowingMoveMeta));
+          _allowFollowingMoveMeta,
+          allowFollowingMove.isAcceptableOrUnknown(
+              data['pleroma_allow_following_move']!, _allowFollowingMoveMeta));
     }
     if (data.containsKey('pleroma_skip_thread_containment')) {
       context.handle(
-          _pleromaSkipThreadContainmentMeta,
-          pleromaSkipThreadContainment.isAcceptableOrUnknown(
+          _skipThreadContainmentMeta,
+          skipThreadContainment.isAcceptableOrUnknown(
               data['pleroma_skip_thread_containment']!,
-              _pleromaSkipThreadContainmentMeta));
+              _skipThreadContainmentMeta));
     }
     if (data.containsKey('pleroma_accepts_chat_messages')) {
       context.handle(
-          _pleromaAcceptsChatMessagesMeta,
-          pleromaAcceptsChatMessages.isAcceptableOrUnknown(
+          _acceptsChatMessagesMeta,
+          acceptsChatMessages.isAcceptableOrUnknown(
               data['pleroma_accepts_chat_messages']!,
-              _pleromaAcceptsChatMessagesMeta));
+              _acceptsChatMessagesMeta));
     }
+    if (data.containsKey('suspended')) {
+      context.handle(_suspendedMeta,
+          suspended.isAcceptableOrUnknown(data['suspended']!, _suspendedMeta));
+    }
+    if (data.containsKey('is_confirmed')) {
+      context.handle(
+          _isConfirmedMeta,
+          isConfirmed.isAcceptableOrUnknown(
+              data['is_confirmed']!, _isConfirmedMeta));
+    }
+    if (data.containsKey('mute_expires_at')) {
+      context.handle(
+          _muteExpiresAtMeta,
+          muteExpiresAt.isAcceptableOrUnknown(
+              data['mute_expires_at']!, _muteExpiresAtMeta));
+    }
+    if (data.containsKey('fqn')) {
+      context.handle(
+          _fqnMeta, fqn.isAcceptableOrUnknown(data['fqn']!, _fqnMeta));
+    }
+    if (data.containsKey('favicon')) {
+      context.handle(_faviconMeta,
+          favicon.isAcceptableOrUnknown(data['favicon']!, _faviconMeta));
+    }
+    if (data.containsKey('ap_id')) {
+      context.handle(
+          _apIdMeta, apId.isAcceptableOrUnknown(data['ap_id']!, _apIdMeta));
+    }
+    context.handle(_alsoKnownAsMeta, const VerificationResult.success());
     return context;
   }
 
@@ -3457,14 +3639,16 @@ class $DbAccountsTable extends DbAccounts
     return $DbAccountsTable(_db, alias);
   }
 
-  static TypeConverter<List<PleromaApiField>, String> $converter0 =
-      PleromaApiFieldListDatabaseConverter();
-  static TypeConverter<List<PleromaApiEmoji>, String> $converter1 =
-      PleromaApiEmojiListDatabaseConverter();
-  static TypeConverter<List<PleromaApiTag>, String> $converter2 =
-      PleromaApiTagListDatabaseConverter();
-  static TypeConverter<PleromaApiAccountRelationship, String> $converter3 =
-      PleromaApiAccountRelationshipDatabaseConverter();
+  static TypeConverter<List<UnifediApiField>, String> $converter0 =
+      UnifediApiFieldListDatabaseConverter();
+  static TypeConverter<List<UnifediApiEmoji>, String> $converter1 =
+      UnifediApiEmojiListDatabaseConverter();
+  static TypeConverter<List<UnifediApiTag>, String> $converter2 =
+      UnifediApiTagListDatabaseConverter();
+  static TypeConverter<UnifediApiAccountRelationship, String> $converter3 =
+      UnifediApiAccountRelationshipDatabaseConverter();
+  static TypeConverter<List<String>, String> $converter4 =
+      StringListDatabaseConverter();
 }
 
 class DbConversation extends DataClass implements Insertable<DbConversation> {
@@ -3723,10 +3907,9 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
   final String? chatRemoteId;
   final String? chatMessageRemoteId;
   final String? emoji;
-  final PleromaApiNotificationPleromaPart? pleroma;
-  final PleromaApiAccountReport? report;
-  final PleromaApiChatMessage? chatMessage;
-  final PleromaApiAccount? target;
+  final UnifediApiAccountReport? report;
+  final UnifediApiChatMessage? chatMessage;
+  final UnifediApiAccount? target;
   final bool? unread;
   final String type;
   final DateTime createdAt;
@@ -3739,7 +3922,6 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
       this.chatRemoteId,
       this.chatMessageRemoteId,
       this.emoji,
-      this.pleroma,
       this.report,
       this.chatMessage,
       this.target,
@@ -3765,14 +3947,12 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
           data['${effectivePrefix}chat_message_remote_id']),
       emoji: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}emoji']),
-      pleroma: $DbNotificationsTable.$converter0.mapToDart(const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}pleroma'])),
-      report: $DbNotificationsTable.$converter1.mapToDart(const StringType()
+      report: $DbNotificationsTable.$converter0.mapToDart(const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}report'])),
-      chatMessage: $DbNotificationsTable.$converter2.mapToDart(
+      chatMessage: $DbNotificationsTable.$converter1.mapToDart(
           const StringType()
               .mapFromDatabaseResponse(data['${effectivePrefix}chat_message'])),
-      target: $DbNotificationsTable.$converter3.mapToDart(const StringType()
+      target: $DbNotificationsTable.$converter2.mapToDart(const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}target'])),
       unread: const BoolType()
           .mapFromDatabaseResponse(data['${effectivePrefix}unread']),
@@ -3806,20 +3986,16 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
     if (!nullToAbsent || emoji != null) {
       map['emoji'] = Variable<String?>(emoji);
     }
-    if (!nullToAbsent || pleroma != null) {
-      final converter = $DbNotificationsTable.$converter0;
-      map['pleroma'] = Variable<String?>(converter.mapToSql(pleroma));
-    }
     if (!nullToAbsent || report != null) {
-      final converter = $DbNotificationsTable.$converter1;
+      final converter = $DbNotificationsTable.$converter0;
       map['report'] = Variable<String?>(converter.mapToSql(report));
     }
     if (!nullToAbsent || chatMessage != null) {
-      final converter = $DbNotificationsTable.$converter2;
+      final converter = $DbNotificationsTable.$converter1;
       map['chat_message'] = Variable<String?>(converter.mapToSql(chatMessage));
     }
     if (!nullToAbsent || target != null) {
-      final converter = $DbNotificationsTable.$converter3;
+      final converter = $DbNotificationsTable.$converter2;
       map['target'] = Variable<String?>(converter.mapToSql(target));
     }
     if (!nullToAbsent || unread != null) {
@@ -3851,9 +4027,6 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
           : Value(chatMessageRemoteId),
       emoji:
           emoji == null && nullToAbsent ? const Value.absent() : Value(emoji),
-      pleroma: pleroma == null && nullToAbsent
-          ? const Value.absent()
-          : Value(pleroma),
       report:
           report == null && nullToAbsent ? const Value.absent() : Value(report),
       chatMessage: chatMessage == null && nullToAbsent
@@ -3883,12 +4056,10 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
       chatMessageRemoteId:
           serializer.fromJson<String?>(json['chatMessageRemoteId']),
       emoji: serializer.fromJson<String?>(json['emoji']),
-      pleroma: serializer
-          .fromJson<PleromaApiNotificationPleromaPart?>(json['pleroma']),
-      report: serializer.fromJson<PleromaApiAccountReport?>(json['report']),
+      report: serializer.fromJson<UnifediApiAccountReport?>(json['report']),
       chatMessage:
-          serializer.fromJson<PleromaApiChatMessage?>(json['chatMessage']),
-      target: serializer.fromJson<PleromaApiAccount?>(json['target']),
+          serializer.fromJson<UnifediApiChatMessage?>(json['chatMessage']),
+      target: serializer.fromJson<UnifediApiAccount?>(json['target']),
       unread: serializer.fromJson<bool?>(json['unread']),
       type: serializer.fromJson<String>(json['type']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
@@ -3906,10 +4077,9 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
       'chatRemoteId': serializer.toJson<String?>(chatRemoteId),
       'chatMessageRemoteId': serializer.toJson<String?>(chatMessageRemoteId),
       'emoji': serializer.toJson<String?>(emoji),
-      'pleroma': serializer.toJson<PleromaApiNotificationPleromaPart?>(pleroma),
-      'report': serializer.toJson<PleromaApiAccountReport?>(report),
-      'chatMessage': serializer.toJson<PleromaApiChatMessage?>(chatMessage),
-      'target': serializer.toJson<PleromaApiAccount?>(target),
+      'report': serializer.toJson<UnifediApiAccountReport?>(report),
+      'chatMessage': serializer.toJson<UnifediApiChatMessage?>(chatMessage),
+      'target': serializer.toJson<UnifediApiAccount?>(target),
       'unread': serializer.toJson<bool?>(unread),
       'type': serializer.toJson<String>(type),
       'createdAt': serializer.toJson<DateTime>(createdAt),
@@ -3925,10 +4095,9 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
           String? chatRemoteId,
           String? chatMessageRemoteId,
           String? emoji,
-          PleromaApiNotificationPleromaPart? pleroma,
-          PleromaApiAccountReport? report,
-          PleromaApiChatMessage? chatMessage,
-          PleromaApiAccount? target,
+          UnifediApiAccountReport? report,
+          UnifediApiChatMessage? chatMessage,
+          UnifediApiAccount? target,
           bool? unread,
           String? type,
           DateTime? createdAt,
@@ -3941,7 +4110,6 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
         chatRemoteId: chatRemoteId ?? this.chatRemoteId,
         chatMessageRemoteId: chatMessageRemoteId ?? this.chatMessageRemoteId,
         emoji: emoji ?? this.emoji,
-        pleroma: pleroma ?? this.pleroma,
         report: report ?? this.report,
         chatMessage: chatMessage ?? this.chatMessage,
         target: target ?? this.target,
@@ -3960,7 +4128,6 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
           ..write('chatRemoteId: $chatRemoteId, ')
           ..write('chatMessageRemoteId: $chatMessageRemoteId, ')
           ..write('emoji: $emoji, ')
-          ..write('pleroma: $pleroma, ')
           ..write('report: $report, ')
           ..write('chatMessage: $chatMessage, ')
           ..write('target: $target, ')
@@ -3988,21 +4155,19 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
                           $mrjc(
                               emoji.hashCode,
                               $mrjc(
-                                  pleroma.hashCode,
+                                  report.hashCode,
                                   $mrjc(
-                                      report.hashCode,
+                                      chatMessage.hashCode,
                                       $mrjc(
-                                          chatMessage.hashCode,
+                                          target.hashCode,
                                           $mrjc(
-                                              target.hashCode,
+                                              unread.hashCode,
                                               $mrjc(
-                                                  unread.hashCode,
+                                                  type.hashCode,
                                                   $mrjc(
-                                                      type.hashCode,
-                                                      $mrjc(
-                                                          createdAt.hashCode,
-                                                          dismissed
-                                                              .hashCode)))))))))))))));
+                                                      createdAt.hashCode,
+                                                      dismissed
+                                                          .hashCode))))))))))))));
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -4014,7 +4179,6 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
           other.chatRemoteId == this.chatRemoteId &&
           other.chatMessageRemoteId == this.chatMessageRemoteId &&
           other.emoji == this.emoji &&
-          other.pleroma == this.pleroma &&
           other.report == this.report &&
           other.chatMessage == this.chatMessage &&
           other.target == this.target &&
@@ -4032,10 +4196,9 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
   final Value<String?> chatRemoteId;
   final Value<String?> chatMessageRemoteId;
   final Value<String?> emoji;
-  final Value<PleromaApiNotificationPleromaPart?> pleroma;
-  final Value<PleromaApiAccountReport?> report;
-  final Value<PleromaApiChatMessage?> chatMessage;
-  final Value<PleromaApiAccount?> target;
+  final Value<UnifediApiAccountReport?> report;
+  final Value<UnifediApiChatMessage?> chatMessage;
+  final Value<UnifediApiAccount?> target;
   final Value<bool?> unread;
   final Value<String> type;
   final Value<DateTime> createdAt;
@@ -4048,7 +4211,6 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
     this.chatRemoteId = const Value.absent(),
     this.chatMessageRemoteId = const Value.absent(),
     this.emoji = const Value.absent(),
-    this.pleroma = const Value.absent(),
     this.report = const Value.absent(),
     this.chatMessage = const Value.absent(),
     this.target = const Value.absent(),
@@ -4065,7 +4227,6 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
     this.chatRemoteId = const Value.absent(),
     this.chatMessageRemoteId = const Value.absent(),
     this.emoji = const Value.absent(),
-    this.pleroma = const Value.absent(),
     this.report = const Value.absent(),
     this.chatMessage = const Value.absent(),
     this.target = const Value.absent(),
@@ -4084,10 +4245,9 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
     Expression<String?>? chatRemoteId,
     Expression<String?>? chatMessageRemoteId,
     Expression<String?>? emoji,
-    Expression<PleromaApiNotificationPleromaPart?>? pleroma,
-    Expression<PleromaApiAccountReport?>? report,
-    Expression<PleromaApiChatMessage?>? chatMessage,
-    Expression<PleromaApiAccount?>? target,
+    Expression<UnifediApiAccountReport?>? report,
+    Expression<UnifediApiChatMessage?>? chatMessage,
+    Expression<UnifediApiAccount?>? target,
     Expression<bool?>? unread,
     Expression<String>? type,
     Expression<DateTime>? createdAt,
@@ -4102,7 +4262,6 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
       if (chatMessageRemoteId != null)
         'chat_message_remote_id': chatMessageRemoteId,
       if (emoji != null) 'emoji': emoji,
-      if (pleroma != null) 'pleroma': pleroma,
       if (report != null) 'report': report,
       if (chatMessage != null) 'chat_message': chatMessage,
       if (target != null) 'target': target,
@@ -4121,10 +4280,9 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
       Value<String?>? chatRemoteId,
       Value<String?>? chatMessageRemoteId,
       Value<String?>? emoji,
-      Value<PleromaApiNotificationPleromaPart?>? pleroma,
-      Value<PleromaApiAccountReport?>? report,
-      Value<PleromaApiChatMessage?>? chatMessage,
-      Value<PleromaApiAccount?>? target,
+      Value<UnifediApiAccountReport?>? report,
+      Value<UnifediApiChatMessage?>? chatMessage,
+      Value<UnifediApiAccount?>? target,
       Value<bool?>? unread,
       Value<String>? type,
       Value<DateTime>? createdAt,
@@ -4137,7 +4295,6 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
       chatRemoteId: chatRemoteId ?? this.chatRemoteId,
       chatMessageRemoteId: chatMessageRemoteId ?? this.chatMessageRemoteId,
       emoji: emoji ?? this.emoji,
-      pleroma: pleroma ?? this.pleroma,
       report: report ?? this.report,
       chatMessage: chatMessage ?? this.chatMessage,
       target: target ?? this.target,
@@ -4173,21 +4330,17 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
     if (emoji.present) {
       map['emoji'] = Variable<String?>(emoji.value);
     }
-    if (pleroma.present) {
-      final converter = $DbNotificationsTable.$converter0;
-      map['pleroma'] = Variable<String?>(converter.mapToSql(pleroma.value));
-    }
     if (report.present) {
-      final converter = $DbNotificationsTable.$converter1;
+      final converter = $DbNotificationsTable.$converter0;
       map['report'] = Variable<String?>(converter.mapToSql(report.value));
     }
     if (chatMessage.present) {
-      final converter = $DbNotificationsTable.$converter2;
+      final converter = $DbNotificationsTable.$converter1;
       map['chat_message'] =
           Variable<String?>(converter.mapToSql(chatMessage.value));
     }
     if (target.present) {
-      final converter = $DbNotificationsTable.$converter3;
+      final converter = $DbNotificationsTable.$converter2;
       map['target'] = Variable<String?>(converter.mapToSql(target.value));
     }
     if (unread.present) {
@@ -4215,7 +4368,6 @@ class DbNotificationsCompanion extends UpdateCompanion<DbNotification> {
           ..write('chatRemoteId: $chatRemoteId, ')
           ..write('chatMessageRemoteId: $chatMessageRemoteId, ')
           ..write('emoji: $emoji, ')
-          ..write('pleroma: $pleroma, ')
           ..write('report: $report, ')
           ..write('chatMessage: $chatMessage, ')
           ..write('target: $target, ')
@@ -4269,30 +4421,24 @@ class $DbNotificationsTable extends DbNotifications
   late final GeneratedColumn<String?> emoji = GeneratedColumn<String?>(
       'emoji', aliasedName, true,
       typeName: 'TEXT', requiredDuringInsert: false);
-  final VerificationMeta _pleromaMeta = const VerificationMeta('pleroma');
-  late final GeneratedColumnWithTypeConverter<PleromaApiNotificationPleromaPart,
-      String?> pleroma = GeneratedColumn<String?>('pleroma', aliasedName, true,
-          typeName: 'TEXT', requiredDuringInsert: false)
-      .withConverter<PleromaApiNotificationPleromaPart>(
-          $DbNotificationsTable.$converter0);
   final VerificationMeta _reportMeta = const VerificationMeta('report');
-  late final GeneratedColumnWithTypeConverter<PleromaApiAccountReport, String?>
+  late final GeneratedColumnWithTypeConverter<UnifediApiAccountReport, String?>
       report = GeneratedColumn<String?>('report', aliasedName, true,
               typeName: 'TEXT', requiredDuringInsert: false)
-          .withConverter<PleromaApiAccountReport>(
-              $DbNotificationsTable.$converter1);
+          .withConverter<UnifediApiAccountReport>(
+              $DbNotificationsTable.$converter0);
   final VerificationMeta _chatMessageMeta =
       const VerificationMeta('chatMessage');
-  late final GeneratedColumnWithTypeConverter<PleromaApiChatMessage, String?>
+  late final GeneratedColumnWithTypeConverter<UnifediApiChatMessage, String?>
       chatMessage = GeneratedColumn<String?>('chat_message', aliasedName, true,
               typeName: 'TEXT', requiredDuringInsert: false)
-          .withConverter<PleromaApiChatMessage>(
-              $DbNotificationsTable.$converter2);
+          .withConverter<UnifediApiChatMessage>(
+              $DbNotificationsTable.$converter1);
   final VerificationMeta _targetMeta = const VerificationMeta('target');
-  late final GeneratedColumnWithTypeConverter<PleromaApiAccount, String?>
+  late final GeneratedColumnWithTypeConverter<UnifediApiAccount, String?>
       target = GeneratedColumn<String?>('target', aliasedName, true,
               typeName: 'TEXT', requiredDuringInsert: false)
-          .withConverter<PleromaApiAccount>($DbNotificationsTable.$converter3);
+          .withConverter<UnifediApiAccount>($DbNotificationsTable.$converter2);
   final VerificationMeta _unreadMeta = const VerificationMeta('unread');
   late final GeneratedColumn<bool?> unread = GeneratedColumn<bool?>(
       'unread', aliasedName, true,
@@ -4322,7 +4468,6 @@ class $DbNotificationsTable extends DbNotifications
         chatRemoteId,
         chatMessageRemoteId,
         emoji,
-        pleroma,
         report,
         chatMessage,
         target,
@@ -4377,7 +4522,6 @@ class $DbNotificationsTable extends DbNotifications
       context.handle(
           _emojiMeta, emoji.isAcceptableOrUnknown(data['emoji']!, _emojiMeta));
     }
-    context.handle(_pleromaMeta, const VerificationResult.success());
     context.handle(_reportMeta, const VerificationResult.success());
     context.handle(_chatMessageMeta, const VerificationResult.success());
     context.handle(_targetMeta, const VerificationResult.success());
@@ -4417,14 +4561,12 @@ class $DbNotificationsTable extends DbNotifications
     return $DbNotificationsTable(_db, alias);
   }
 
-  static TypeConverter<PleromaApiNotificationPleromaPart, String> $converter0 =
-      PleromaNotificationPleromaPartDatabaseConverter();
-  static TypeConverter<PleromaApiAccountReport, String> $converter1 =
-      PleromaAccountReportDatabaseConverter();
-  static TypeConverter<PleromaApiChatMessage, String> $converter2 =
-      PleromaChatMessageDatabaseConverter();
-  static TypeConverter<PleromaApiAccount, String> $converter3 =
-      PleromaAccountDatabaseConverter();
+  static TypeConverter<UnifediApiAccountReport, String> $converter0 =
+      UnifediApiAccountReportDatabaseConverter();
+  static TypeConverter<UnifediApiChatMessage, String> $converter1 =
+      UnifediApiChatMessageDatabaseConverter();
+  static TypeConverter<UnifediApiAccount, String> $converter2 =
+      UnifediApiAccountDatabaseConverter();
 }
 
 class DbConversationStatus extends DataClass
@@ -6221,8 +6363,8 @@ class DbScheduledStatus extends DataClass
   final String remoteId;
   final DateTime scheduledAt;
   final bool canceled;
-  final PleromaApiScheduledStatusParams params;
-  final List<PleromaApiMediaAttachment>? mediaAttachments;
+  final UnifediApiScheduledStatusParams params;
+  final List<UnifediApiMediaAttachment>? mediaAttachments;
   DbScheduledStatus(
       {this.id,
       required this.remoteId,
@@ -6292,9 +6434,9 @@ class DbScheduledStatus extends DataClass
       scheduledAt: serializer.fromJson<DateTime>(json['scheduledAt']),
       canceled: serializer.fromJson<bool>(json['canceled']),
       params:
-          serializer.fromJson<PleromaApiScheduledStatusParams>(json['params']),
+          serializer.fromJson<UnifediApiScheduledStatusParams>(json['params']),
       mediaAttachments: serializer
-          .fromJson<List<PleromaApiMediaAttachment>?>(json['mediaAttachments']),
+          .fromJson<List<UnifediApiMediaAttachment>?>(json['mediaAttachments']),
     );
   }
   @override
@@ -6305,9 +6447,9 @@ class DbScheduledStatus extends DataClass
       'remoteId': serializer.toJson<String>(remoteId),
       'scheduledAt': serializer.toJson<DateTime>(scheduledAt),
       'canceled': serializer.toJson<bool>(canceled),
-      'params': serializer.toJson<PleromaApiScheduledStatusParams>(params),
+      'params': serializer.toJson<UnifediApiScheduledStatusParams>(params),
       'mediaAttachments':
-          serializer.toJson<List<PleromaApiMediaAttachment>?>(mediaAttachments),
+          serializer.toJson<List<UnifediApiMediaAttachment>?>(mediaAttachments),
     };
   }
 
@@ -6316,8 +6458,8 @@ class DbScheduledStatus extends DataClass
           String? remoteId,
           DateTime? scheduledAt,
           bool? canceled,
-          PleromaApiScheduledStatusParams? params,
-          List<PleromaApiMediaAttachment>? mediaAttachments}) =>
+          UnifediApiScheduledStatusParams? params,
+          List<UnifediApiMediaAttachment>? mediaAttachments}) =>
       DbScheduledStatus(
         id: id ?? this.id,
         remoteId: remoteId ?? this.remoteId,
@@ -6365,8 +6507,8 @@ class DbScheduledStatusesCompanion extends UpdateCompanion<DbScheduledStatus> {
   final Value<String> remoteId;
   final Value<DateTime> scheduledAt;
   final Value<bool> canceled;
-  final Value<PleromaApiScheduledStatusParams> params;
-  final Value<List<PleromaApiMediaAttachment>?> mediaAttachments;
+  final Value<UnifediApiScheduledStatusParams> params;
+  final Value<List<UnifediApiMediaAttachment>?> mediaAttachments;
   const DbScheduledStatusesCompanion({
     this.id = const Value.absent(),
     this.remoteId = const Value.absent(),
@@ -6380,7 +6522,7 @@ class DbScheduledStatusesCompanion extends UpdateCompanion<DbScheduledStatus> {
     required String remoteId,
     required DateTime scheduledAt,
     required bool canceled,
-    required PleromaApiScheduledStatusParams params,
+    required UnifediApiScheduledStatusParams params,
     this.mediaAttachments = const Value.absent(),
   })  : remoteId = Value(remoteId),
         scheduledAt = Value(scheduledAt),
@@ -6391,8 +6533,8 @@ class DbScheduledStatusesCompanion extends UpdateCompanion<DbScheduledStatus> {
     Expression<String>? remoteId,
     Expression<DateTime>? scheduledAt,
     Expression<bool>? canceled,
-    Expression<PleromaApiScheduledStatusParams>? params,
-    Expression<List<PleromaApiMediaAttachment>?>? mediaAttachments,
+    Expression<UnifediApiScheduledStatusParams>? params,
+    Expression<List<UnifediApiMediaAttachment>?>? mediaAttachments,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -6409,8 +6551,8 @@ class DbScheduledStatusesCompanion extends UpdateCompanion<DbScheduledStatus> {
       Value<String>? remoteId,
       Value<DateTime>? scheduledAt,
       Value<bool>? canceled,
-      Value<PleromaApiScheduledStatusParams>? params,
-      Value<List<PleromaApiMediaAttachment>?>? mediaAttachments}) {
+      Value<UnifediApiScheduledStatusParams>? params,
+      Value<List<UnifediApiMediaAttachment>?>? mediaAttachments}) {
     return DbScheduledStatusesCompanion(
       id: id ?? this.id,
       remoteId: remoteId ?? this.remoteId,
@@ -6491,18 +6633,18 @@ class $DbScheduledStatusesTable extends DbScheduledStatuses
       requiredDuringInsert: true,
       defaultConstraints: 'CHECK (canceled IN (0, 1))');
   final VerificationMeta _paramsMeta = const VerificationMeta('params');
-  late final GeneratedColumnWithTypeConverter<PleromaApiScheduledStatusParams,
+  late final GeneratedColumnWithTypeConverter<UnifediApiScheduledStatusParams,
       String?> params = GeneratedColumn<String?>('params', aliasedName, false,
           typeName: 'TEXT', requiredDuringInsert: true)
-      .withConverter<PleromaApiScheduledStatusParams>(
+      .withConverter<UnifediApiScheduledStatusParams>(
           $DbScheduledStatusesTable.$converter0);
   final VerificationMeta _mediaAttachmentsMeta =
       const VerificationMeta('mediaAttachments');
-  late final GeneratedColumnWithTypeConverter<List<PleromaApiMediaAttachment>,
+  late final GeneratedColumnWithTypeConverter<List<UnifediApiMediaAttachment>,
       String?> mediaAttachments = GeneratedColumn<String?>(
           'media_attachments', aliasedName, true,
           typeName: 'TEXT', requiredDuringInsert: false)
-      .withConverter<List<PleromaApiMediaAttachment>>(
+      .withConverter<List<UnifediApiMediaAttachment>>(
           $DbScheduledStatusesTable.$converter1);
   @override
   List<GeneratedColumn> get $columns =>
@@ -6557,10 +6699,10 @@ class $DbScheduledStatusesTable extends DbScheduledStatuses
     return $DbScheduledStatusesTable(_db, alias);
   }
 
-  static TypeConverter<PleromaApiScheduledStatusParams, String> $converter0 =
+  static TypeConverter<UnifediApiScheduledStatusParams, String> $converter0 =
       PleromaScheduledStatusParamsDatabaseConverter();
-  static TypeConverter<List<PleromaApiMediaAttachment>, String> $converter1 =
-      PleromaMediaAttachmentListDatabaseConverter();
+  static TypeConverter<List<UnifediApiMediaAttachment>, String> $converter1 =
+      UnifediApiMediaAttachmentListDatabaseConverter();
 }
 
 class DbChat extends DataClass implements Insertable<DbChat> {
@@ -6862,9 +7004,9 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
   final String accountRemoteId;
   final String? content;
   final DateTime createdAt;
-  final List<PleromaApiEmoji>? emojis;
-  final PleromaApiMediaAttachment? mediaAttachment;
-  final PleromaApiCard? card;
+  final List<UnifediApiEmoji>? emojis;
+  final UnifediApiMediaAttachment? mediaAttachment;
+  final UnifediApiCard? card;
   final PendingState? pendingState;
   final bool? deleted;
   final bool? hiddenLocallyOnDevice;
@@ -7013,10 +7155,10 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
       accountRemoteId: serializer.fromJson<String>(json['accountRemoteId']),
       content: serializer.fromJson<String?>(json['content']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
-      emojis: serializer.fromJson<List<PleromaApiEmoji>?>(json['emojis']),
+      emojis: serializer.fromJson<List<UnifediApiEmoji>?>(json['emojis']),
       mediaAttachment: serializer
-          .fromJson<PleromaApiMediaAttachment?>(json['mediaAttachment']),
-      card: serializer.fromJson<PleromaApiCard?>(json['card']),
+          .fromJson<UnifediApiMediaAttachment?>(json['mediaAttachment']),
+      card: serializer.fromJson<UnifediApiCard?>(json['card']),
       pendingState: serializer.fromJson<PendingState?>(json['pendingState']),
       deleted: serializer.fromJson<bool?>(json['deleted']),
       hiddenLocallyOnDevice:
@@ -7037,10 +7179,10 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
       'accountRemoteId': serializer.toJson<String>(accountRemoteId),
       'content': serializer.toJson<String?>(content),
       'createdAt': serializer.toJson<DateTime>(createdAt),
-      'emojis': serializer.toJson<List<PleromaApiEmoji>?>(emojis),
+      'emojis': serializer.toJson<List<UnifediApiEmoji>?>(emojis),
       'mediaAttachment':
-          serializer.toJson<PleromaApiMediaAttachment?>(mediaAttachment),
-      'card': serializer.toJson<PleromaApiCard?>(card),
+          serializer.toJson<UnifediApiMediaAttachment?>(mediaAttachment),
+      'card': serializer.toJson<UnifediApiCard?>(card),
       'pendingState': serializer.toJson<PendingState?>(pendingState),
       'deleted': serializer.toJson<bool?>(deleted),
       'hiddenLocallyOnDevice': serializer.toJson<bool?>(hiddenLocallyOnDevice),
@@ -7057,9 +7199,9 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
           String? accountRemoteId,
           String? content,
           DateTime? createdAt,
-          List<PleromaApiEmoji>? emojis,
-          PleromaApiMediaAttachment? mediaAttachment,
-          PleromaApiCard? card,
+          List<UnifediApiEmoji>? emojis,
+          UnifediApiMediaAttachment? mediaAttachment,
+          UnifediApiCard? card,
           PendingState? pendingState,
           bool? deleted,
           bool? hiddenLocallyOnDevice,
@@ -7162,9 +7304,9 @@ class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
   final Value<String> accountRemoteId;
   final Value<String?> content;
   final Value<DateTime> createdAt;
-  final Value<List<PleromaApiEmoji>?> emojis;
-  final Value<PleromaApiMediaAttachment?> mediaAttachment;
-  final Value<PleromaApiCard?> card;
+  final Value<List<UnifediApiEmoji>?> emojis;
+  final Value<UnifediApiMediaAttachment?> mediaAttachment;
+  final Value<UnifediApiCard?> card;
   final Value<PendingState?> pendingState;
   final Value<bool?> deleted;
   final Value<bool?> hiddenLocallyOnDevice;
@@ -7212,9 +7354,9 @@ class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
     Expression<String>? accountRemoteId,
     Expression<String?>? content,
     Expression<DateTime>? createdAt,
-    Expression<List<PleromaApiEmoji>?>? emojis,
-    Expression<PleromaApiMediaAttachment?>? mediaAttachment,
-    Expression<PleromaApiCard?>? card,
+    Expression<List<UnifediApiEmoji>?>? emojis,
+    Expression<UnifediApiMediaAttachment?>? mediaAttachment,
+    Expression<UnifediApiCard?>? card,
     Expression<PendingState?>? pendingState,
     Expression<bool?>? deleted,
     Expression<bool?>? hiddenLocallyOnDevice,
@@ -7249,9 +7391,9 @@ class DbChatMessagesCompanion extends UpdateCompanion<DbChatMessage> {
       Value<String>? accountRemoteId,
       Value<String?>? content,
       Value<DateTime>? createdAt,
-      Value<List<PleromaApiEmoji>?>? emojis,
-      Value<PleromaApiMediaAttachment?>? mediaAttachment,
-      Value<PleromaApiCard?>? card,
+      Value<List<UnifediApiEmoji>?>? emojis,
+      Value<UnifediApiMediaAttachment?>? mediaAttachment,
+      Value<UnifediApiCard?>? card,
       Value<PendingState?>? pendingState,
       Value<bool?>? deleted,
       Value<bool?>? hiddenLocallyOnDevice,
@@ -7392,24 +7534,24 @@ class $DbChatMessagesTable extends DbChatMessages
       'created_at', aliasedName, false,
       typeName: 'INTEGER', requiredDuringInsert: true);
   final VerificationMeta _emojisMeta = const VerificationMeta('emojis');
-  late final GeneratedColumnWithTypeConverter<List<PleromaApiEmoji>, String?>
+  late final GeneratedColumnWithTypeConverter<List<UnifediApiEmoji>, String?>
       emojis = GeneratedColumn<String?>('emojis', aliasedName, true,
               typeName: 'TEXT', requiredDuringInsert: false)
-          .withConverter<List<PleromaApiEmoji>>(
+          .withConverter<List<UnifediApiEmoji>>(
               $DbChatMessagesTable.$converter0);
   final VerificationMeta _mediaAttachmentMeta =
       const VerificationMeta('mediaAttachment');
-  late final GeneratedColumnWithTypeConverter<PleromaApiMediaAttachment,
+  late final GeneratedColumnWithTypeConverter<UnifediApiMediaAttachment,
       String?> mediaAttachment = GeneratedColumn<String?>(
           'media_attachment', aliasedName, true,
           typeName: 'TEXT', requiredDuringInsert: false)
-      .withConverter<PleromaApiMediaAttachment>(
+      .withConverter<UnifediApiMediaAttachment>(
           $DbChatMessagesTable.$converter1);
   final VerificationMeta _cardMeta = const VerificationMeta('card');
-  late final GeneratedColumnWithTypeConverter<PleromaApiCard, String?> card =
+  late final GeneratedColumnWithTypeConverter<UnifediApiCard, String?> card =
       GeneratedColumn<String?>('card', aliasedName, true,
               typeName: 'TEXT', requiredDuringInsert: false)
-          .withConverter<PleromaApiCard>($DbChatMessagesTable.$converter2);
+          .withConverter<UnifediApiCard>($DbChatMessagesTable.$converter2);
   final VerificationMeta _pendingStateMeta =
       const VerificationMeta('pendingState');
   late final GeneratedColumnWithTypeConverter<PendingState, String?>
@@ -7545,11 +7687,11 @@ class $DbChatMessagesTable extends DbChatMessages
     return $DbChatMessagesTable(_db, alias);
   }
 
-  static TypeConverter<List<PleromaApiEmoji>, String> $converter0 =
-      PleromaApiEmojiListDatabaseConverter();
-  static TypeConverter<PleromaApiMediaAttachment, String> $converter1 =
-      PleromaMediaAttachmentDatabaseConverter();
-  static TypeConverter<PleromaApiCard, String> $converter2 =
+  static TypeConverter<List<UnifediApiEmoji>, String> $converter0 =
+      UnifediApiEmojiListDatabaseConverter();
+  static TypeConverter<UnifediApiMediaAttachment, String> $converter1 =
+      UnifediApiMediaAttachmentDatabaseConverter();
+  static TypeConverter<UnifediApiCard, String> $converter2 =
       PleromaCardDatabaseConverter();
   static TypeConverter<PendingState, String> $converter3 =
       PendingStateDatabaseConverter();
@@ -8153,10 +8295,10 @@ class DbInstanceAnnouncement extends DataClass
   final DateTime updatedAt;
   final bool read;
   final String content;
-  final List<PleromaApiAnnouncementReaction>? reactions;
-  final List<PleromaApiMention>? mentions;
-  final List<PleromaApiTag>? tags;
-  final List<PleromaApiStatus>? statuses;
+  final List<UnifediApiEmojiReaction>? reactions;
+  final List<UnifediApiMention>? mentions;
+  final List<UnifediApiTag>? tags;
+  final List<UnifediApiStatus>? statuses;
   final DateTime? scheduledAt;
   final DateTime? startsAt;
   final DateTime? endsAt;
@@ -8295,10 +8437,10 @@ class DbInstanceAnnouncement extends DataClass
       read: serializer.fromJson<bool>(json['read']),
       content: serializer.fromJson<String>(json['content']),
       reactions: serializer
-          .fromJson<List<PleromaApiAnnouncementReaction>?>(json['reactions']),
-      mentions: serializer.fromJson<List<PleromaApiMention>?>(json['mentions']),
-      tags: serializer.fromJson<List<PleromaApiTag>?>(json['tags']),
-      statuses: serializer.fromJson<List<PleromaApiStatus>?>(json['statuses']),
+          .fromJson<List<UnifediApiEmojiReaction>?>(json['reactions']),
+      mentions: serializer.fromJson<List<UnifediApiMention>?>(json['mentions']),
+      tags: serializer.fromJson<List<UnifediApiTag>?>(json['tags']),
+      statuses: serializer.fromJson<List<UnifediApiStatus>?>(json['statuses']),
       scheduledAt: serializer.fromJson<DateTime?>(json['scheduledAt']),
       startsAt: serializer.fromJson<DateTime?>(json['startsAt']),
       endsAt: serializer.fromJson<DateTime?>(json['endsAt']),
@@ -8315,11 +8457,10 @@ class DbInstanceAnnouncement extends DataClass
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
       'read': serializer.toJson<bool>(read),
       'content': serializer.toJson<String>(content),
-      'reactions':
-          serializer.toJson<List<PleromaApiAnnouncementReaction>?>(reactions),
-      'mentions': serializer.toJson<List<PleromaApiMention>?>(mentions),
-      'tags': serializer.toJson<List<PleromaApiTag>?>(tags),
-      'statuses': serializer.toJson<List<PleromaApiStatus>?>(statuses),
+      'reactions': serializer.toJson<List<UnifediApiEmojiReaction>?>(reactions),
+      'mentions': serializer.toJson<List<UnifediApiMention>?>(mentions),
+      'tags': serializer.toJson<List<UnifediApiTag>?>(tags),
+      'statuses': serializer.toJson<List<UnifediApiStatus>?>(statuses),
       'scheduledAt': serializer.toJson<DateTime?>(scheduledAt),
       'startsAt': serializer.toJson<DateTime?>(startsAt),
       'endsAt': serializer.toJson<DateTime?>(endsAt),
@@ -8334,10 +8475,10 @@ class DbInstanceAnnouncement extends DataClass
           DateTime? updatedAt,
           bool? read,
           String? content,
-          List<PleromaApiAnnouncementReaction>? reactions,
-          List<PleromaApiMention>? mentions,
-          List<PleromaApiTag>? tags,
-          List<PleromaApiStatus>? statuses,
+          List<UnifediApiEmojiReaction>? reactions,
+          List<UnifediApiMention>? mentions,
+          List<UnifediApiTag>? tags,
+          List<UnifediApiStatus>? statuses,
           DateTime? scheduledAt,
           DateTime? startsAt,
           DateTime? endsAt}) =>
@@ -8436,10 +8577,10 @@ class DbInstanceAnnouncementsCompanion
   final Value<DateTime> updatedAt;
   final Value<bool> read;
   final Value<String> content;
-  final Value<List<PleromaApiAnnouncementReaction>?> reactions;
-  final Value<List<PleromaApiMention>?> mentions;
-  final Value<List<PleromaApiTag>?> tags;
-  final Value<List<PleromaApiStatus>?> statuses;
+  final Value<List<UnifediApiEmojiReaction>?> reactions;
+  final Value<List<UnifediApiMention>?> mentions;
+  final Value<List<UnifediApiTag>?> tags;
+  final Value<List<UnifediApiStatus>?> statuses;
   final Value<DateTime?> scheduledAt;
   final Value<DateTime?> startsAt;
   final Value<DateTime?> endsAt;
@@ -8488,10 +8629,10 @@ class DbInstanceAnnouncementsCompanion
     Expression<DateTime>? updatedAt,
     Expression<bool>? read,
     Expression<String>? content,
-    Expression<List<PleromaApiAnnouncementReaction>?>? reactions,
-    Expression<List<PleromaApiMention>?>? mentions,
-    Expression<List<PleromaApiTag>?>? tags,
-    Expression<List<PleromaApiStatus>?>? statuses,
+    Expression<List<UnifediApiEmojiReaction>?>? reactions,
+    Expression<List<UnifediApiMention>?>? mentions,
+    Expression<List<UnifediApiTag>?>? tags,
+    Expression<List<UnifediApiStatus>?>? statuses,
     Expression<DateTime?>? scheduledAt,
     Expression<DateTime?>? startsAt,
     Expression<DateTime?>? endsAt,
@@ -8522,10 +8663,10 @@ class DbInstanceAnnouncementsCompanion
       Value<DateTime>? updatedAt,
       Value<bool>? read,
       Value<String>? content,
-      Value<List<PleromaApiAnnouncementReaction>?>? reactions,
-      Value<List<PleromaApiMention>?>? mentions,
-      Value<List<PleromaApiTag>?>? tags,
-      Value<List<PleromaApiStatus>?>? statuses,
+      Value<List<UnifediApiEmojiReaction>?>? reactions,
+      Value<List<UnifediApiMention>?>? mentions,
+      Value<List<UnifediApiTag>?>? tags,
+      Value<List<UnifediApiStatus>?>? statuses,
       Value<DateTime?>? scheduledAt,
       Value<DateTime?>? startsAt,
       Value<DateTime?>? endsAt}) {
@@ -8664,29 +8805,29 @@ class $DbInstanceAnnouncementsTable extends DbInstanceAnnouncements
       'content', aliasedName, false,
       typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _reactionsMeta = const VerificationMeta('reactions');
-  late final GeneratedColumnWithTypeConverter<
-          List<PleromaApiAnnouncementReaction>, String?> reactions =
-      GeneratedColumn<String?>('reactions', aliasedName, true,
-              typeName: 'TEXT', requiredDuringInsert: false)
-          .withConverter<List<PleromaApiAnnouncementReaction>>(
-              $DbInstanceAnnouncementsTable.$converter0);
+  late final GeneratedColumnWithTypeConverter<List<UnifediApiEmojiReaction>,
+      String?> reactions = GeneratedColumn<String?>(
+          'reactions', aliasedName, true,
+          typeName: 'TEXT', requiredDuringInsert: false)
+      .withConverter<List<UnifediApiEmojiReaction>>(
+          $DbInstanceAnnouncementsTable.$converter0);
   final VerificationMeta _mentionsMeta = const VerificationMeta('mentions');
-  late final GeneratedColumnWithTypeConverter<List<PleromaApiMention>, String?>
+  late final GeneratedColumnWithTypeConverter<List<UnifediApiMention>, String?>
       mentions = GeneratedColumn<String?>('mentions', aliasedName, true,
               typeName: 'TEXT', requiredDuringInsert: false)
-          .withConverter<List<PleromaApiMention>>(
+          .withConverter<List<UnifediApiMention>>(
               $DbInstanceAnnouncementsTable.$converter1);
   final VerificationMeta _tagsMeta = const VerificationMeta('tags');
-  late final GeneratedColumnWithTypeConverter<List<PleromaApiTag>, String?>
+  late final GeneratedColumnWithTypeConverter<List<UnifediApiTag>, String?>
       tags = GeneratedColumn<String?>('tags', aliasedName, true,
               typeName: 'TEXT', requiredDuringInsert: false)
-          .withConverter<List<PleromaApiTag>>(
+          .withConverter<List<UnifediApiTag>>(
               $DbInstanceAnnouncementsTable.$converter2);
   final VerificationMeta _statusesMeta = const VerificationMeta('statuses');
-  late final GeneratedColumnWithTypeConverter<List<PleromaApiStatus>, String?>
+  late final GeneratedColumnWithTypeConverter<List<UnifediApiStatus>, String?>
       statuses = GeneratedColumn<String?>('statuses', aliasedName, true,
               typeName: 'TEXT', requiredDuringInsert: false)
-          .withConverter<List<PleromaApiStatus>>(
+          .withConverter<List<UnifediApiStatus>>(
               $DbInstanceAnnouncementsTable.$converter3);
   final VerificationMeta _scheduledAtMeta =
       const VerificationMeta('scheduledAt');
@@ -8803,14 +8944,14 @@ class $DbInstanceAnnouncementsTable extends DbInstanceAnnouncements
     return $DbInstanceAnnouncementsTable(_db, alias);
   }
 
-  static TypeConverter<List<PleromaApiAnnouncementReaction>, String>
-      $converter0 = PleromaApiAnnouncementReactionListDatabaseConverter();
-  static TypeConverter<List<PleromaApiMention>, String> $converter1 =
-      PleromaApiMentionListDatabaseConverter();
-  static TypeConverter<List<PleromaApiTag>, String> $converter2 =
-      PleromaApiTagListDatabaseConverter();
-  static TypeConverter<List<PleromaApiStatus>, String> $converter3 =
-      PleromaApiStatusListDatabaseConverter();
+  static TypeConverter<List<UnifediApiEmojiReaction>, String> $converter0 =
+      UnifediApiEmojiReactionListDatabaseConverter();
+  static TypeConverter<List<UnifediApiMention>, String> $converter1 =
+      UnifediApiMentionListDatabaseConverter();
+  static TypeConverter<List<UnifediApiTag>, String> $converter2 =
+      UnifediApiTagListDatabaseConverter();
+  static TypeConverter<List<UnifediApiStatus>, String> $converter3 =
+      UnifediApiStatusListDatabaseConverter();
 }
 
 class DbHomeTimelineStatus extends DataClass

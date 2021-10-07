@@ -6,8 +6,8 @@ import 'package:fedi/app/status/post/settings/post_status_settings_bloc_impl.dar
 import 'package:fedi/app/status/post/settings/post_status_settings_model.dart';
 import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
 import 'package:fedi/localization/localization_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 import '../../../../rxdart/rxdart_test_helper.dart';
 import 'post_status_settings_model_test_helper.dart';
@@ -72,7 +72,7 @@ void main() {
     );
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     var defaultValue = GlobalPostStatusSettingsLocalPreferenceBloc.defaultValue;
 
@@ -95,7 +95,7 @@ void main() {
     );
 
     var testMarkMediaAsNsfwOnAttach =
-        PostStatusSettingsModelTestHelper.createTestPostStatusSettings(
+        PostStatusSettingsModelMockHelper.createTestPostStatusSettings(
       seed: 'seed',
     ).markMediaAsNsfwOnAttach;
 
@@ -103,7 +103,7 @@ void main() {
         .changeMarkMediaAsNsfwOnAttach(testMarkMediaAsNsfwOnAttach);
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(
       listened?.markMediaAsNsfwOnAttach,
@@ -126,55 +126,55 @@ void main() {
     await subscriptionListenedPostStatusAgeLimitType.cancel();
   });
   test('defaultVisibilityPleroma', () async {
-    PleromaApiVisibility? listenedDefaultVisibilityPleroma;
+    UnifediApiVisibility? listenedDefaultVisibilityPleroma;
 
     StreamSubscription subscriptionListenedPostStatusAgeLimitType =
-        postStatusSettingsBloc.defaultVisibilityAsPleromaApiStream.listen(
+        postStatusSettingsBloc.defaultVisibilityAsUnifediApiStream.listen(
       (data) {
         listenedDefaultVisibilityPleroma = data;
       },
     );
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     var defaultValue = GlobalPostStatusSettingsLocalPreferenceBloc.defaultValue;
 
     expect(
-      listened?.defaultVisibilityAsPleromaApi,
-      defaultValue.defaultVisibilityAsPleromaApi,
+      listened?.defaultVisibilityAsUnifediApi,
+      defaultValue.defaultVisibilityAsUnifediApi,
     );
     expect(
-      postStatusSettingsBloc.settingsData.defaultVisibilityAsPleromaApi,
-      defaultValue.defaultVisibilityAsPleromaApi,
+      postStatusSettingsBloc.settingsData.defaultVisibilityAsUnifediApi,
+      defaultValue.defaultVisibilityAsUnifediApi,
     );
 
     expect(
       listenedDefaultVisibilityPleroma,
-      defaultValue.defaultVisibilityAsPleromaApi,
+      defaultValue.defaultVisibilityAsUnifediApi,
     );
     expect(
-      postStatusSettingsBloc.defaultVisibilityAsPleromaApi,
-      defaultValue.defaultVisibilityAsPleromaApi,
+      postStatusSettingsBloc.defaultVisibilityAsUnifediApi,
+      defaultValue.defaultVisibilityAsUnifediApi,
     );
 
     var testDefaultVisibilityPleroma =
-        PostStatusSettingsModelTestHelper.createTestPostStatusSettings(
+        PostStatusSettingsModelMockHelper.createTestPostStatusSettings(
       seed: 'seed',
-    ).defaultVisibilityAsPleromaApi;
+    ).defaultVisibilityAsUnifediApi;
 
     await postStatusSettingsBloc
-        .changeDefaultVisibilityAsPleromaApi(testDefaultVisibilityPleroma);
+        .changeDefaultVisibilityAsUnifediApi(testDefaultVisibilityPleroma);
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(
-      listened?.defaultVisibilityAsPleromaApi,
+      listened?.defaultVisibilityAsUnifediApi,
       testDefaultVisibilityPleroma,
     );
     expect(
-      postStatusSettingsBloc.settingsData.defaultVisibilityAsPleromaApi,
+      postStatusSettingsBloc.settingsData.defaultVisibilityAsUnifediApi,
       testDefaultVisibilityPleroma,
     );
 
@@ -183,7 +183,7 @@ void main() {
       testDefaultVisibilityPleroma,
     );
     expect(
-      postStatusSettingsBloc.defaultVisibilityAsPleromaApi,
+      postStatusSettingsBloc.defaultVisibilityAsUnifediApi,
       testDefaultVisibilityPleroma,
     );
 
@@ -201,7 +201,7 @@ void main() {
     );
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     var defaultValue = GlobalPostStatusSettingsLocalPreferenceBloc.defaultValue;
 
@@ -224,7 +224,7 @@ void main() {
     );
 
     var testDefaultStatusLocale =
-        PostStatusSettingsModelTestHelper.createTestPostStatusSettings(
+        PostStatusSettingsModelMockHelper.createTestPostStatusSettings(
       seed: 'seed',
     ).defaultStatusLocale;
 
@@ -232,7 +232,7 @@ void main() {
         .changeDefaultStatusLocale(testDefaultStatusLocale);
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(
       listened?.defaultStatusLocale,
@@ -258,7 +258,7 @@ void main() {
         .changeDefaultStatusLocale(testDefaultStatusLocale);
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(
       listened?.defaultStatusLocale,

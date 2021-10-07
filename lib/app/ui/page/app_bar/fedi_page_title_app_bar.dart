@@ -4,6 +4,7 @@ import 'package:fedi/app/ui/header/fedi_sub_header_text.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class FediPageTitleAppBar extends StatelessWidget
     implements PreferredSizeWidget {
@@ -37,7 +38,10 @@ class FediPageTitleAppBar extends StatelessWidget
           elevation: 0.0,
           centerTitle: centerTitle,
           actions: actions,
-          brightness: fediUiColorTheme.brightness,
+          // todo: refactor
+          systemOverlayStyle: fediUiColorTheme.brightness == Brightness.light
+              ? SystemUiOverlayStyle.light
+              : SystemUiOverlayStyle.dark,
           backgroundColor: fediUiColorTheme.white,
           title: title != null ? FediSubHeaderText(title!) : null,
           leading: leading,

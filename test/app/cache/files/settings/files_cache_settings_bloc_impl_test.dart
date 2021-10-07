@@ -72,7 +72,7 @@ void main() {
     );
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     var defaultValue = GlobalFilesCacheSettingsLocalPreferenceBloc.defaultValue;
 
@@ -95,7 +95,7 @@ void main() {
     );
 
     var testFilesCacheAgeLimitType =
-        FilesCacheSettingsModelTestHelper.createTestFilesCacheSettings(
+        FilesCacheSettingsModelMockHelper.createTestFilesCacheSettings(
       seed: 'seed',
     ).ageLimitType;
 
@@ -133,7 +133,7 @@ void main() {
     );
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     var defaultValue = GlobalFilesCacheSettingsLocalPreferenceBloc.defaultValue;
 
@@ -156,7 +156,7 @@ void main() {
     );
 
     var testFilesCacheSizeLimitCountType =
-        FilesCacheSettingsModelTestHelper.createTestFilesCacheSettings(
+        FilesCacheSettingsModelMockHelper.createTestFilesCacheSettings(
       seed: 'seed',
     ).sizeLimitCountType;
 
@@ -164,7 +164,7 @@ void main() {
         .changeSizeLimitCountType(testFilesCacheSizeLimitCountType);
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(
       listenedSettingsData?.sizeLimitCountType,

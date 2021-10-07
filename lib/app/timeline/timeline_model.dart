@@ -3,10 +3,13 @@ import 'package:fedi/app/custom_list/custom_list_model.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
 import 'package:fedi/app/timeline/settings/timeline_settings_model.dart';
 import 'package:fedi/app/timeline/type/timeline_type_model.dart';
-import 'package:fedi/json/json_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:unifedi_api/unifedi_api.dart';
+
+part 'timeline_model.freezed.dart';
 
 // ignore_for_file: no-magic-number
 part 'timeline_model.g.dart';
@@ -15,141 +18,107 @@ part 'timeline_model.g.dart';
 // see reservedIds in Hive,
 // which not exist in Hive 0.x
 //@HiveType()
-@HiveType(typeId: -32 + 78)
-@JsonSerializable(explicitToJson: true)
-class Timeline implements IJsonObject {
-  @HiveField(0)
-  final String id;
-  @HiveField(1)
-  final String? label;
-  @HiveField(2)
-  @JsonKey(name: 'is_possible_to_delete')
-  final bool isPossibleToDelete;
-
-  @HiveField(3)
-  @JsonKey(name: 'type_string')
-  final String typeString;
-
+@HiveType(typeId: -32 + 116)
+@freezed
+class Timeline with _$Timeline implements IJsonObj {
   TimelineType get type => typeString.toTimelineType();
 
-  @HiveField(4)
-  final TimelineSettings settings;
+  const Timeline._();
 
-  Timeline({
-    required this.id,
-    required this.typeString,
-    required this.settings,
-    required this.label,
-    required this.isPossibleToDelete,
-  });
+  const factory Timeline({
+    @HiveField(0) required String id,
+    @HiveField(1) required String? label,
+    @HiveField(2)
+    @JsonKey(name: 'is_possible_to_delete')
+        required bool isPossibleToDelete,
+    @HiveField(3) @JsonKey(name: 'type_string') required String typeString,
+    @HiveField(4) required TimelineSettings settings,
+  }) = _Timeline;
 
-  Timeline.byType({
+  static Timeline byType({
     required String id,
     required TimelineType type,
     required TimelineSettings settings,
     required String? label,
     required bool isPossibleToDelete,
-  }) : this(
-          id: id,
-          typeString: type.toJsonValue(),
-          settings: settings,
-          label: label,
-          isPossibleToDelete: isPossibleToDelete,
-        );
+  }) =>
+      Timeline(
+        id: id,
+        typeString: type.toJsonValue(),
+        settings: settings,
+        label: label,
+        isPossibleToDelete: isPossibleToDelete,
+      );
 
-  Timeline.home({
+  static Timeline home({
     required String id,
     required String? label,
     required TimelineSettings settings,
     bool isPossibleToDelete = true,
-  }) : this.byType(
-          id: id,
-          type: TimelineType.home,
-          settings: settings,
-          label: label,
-          isPossibleToDelete: isPossibleToDelete,
-        );
+  }) =>
+      Timeline.byType(
+        id: id,
+        type: TimelineType.home,
+        settings: settings,
+        label: label,
+        isPossibleToDelete: isPossibleToDelete,
+      );
 
-  Timeline.public({
+  static Timeline public({
     required String id,
     required TimelineSettings settings,
     required String? label,
     bool isPossibleToDelete = true,
-  }) : this.byType(
-          id: id,
-          type: TimelineType.public,
-          settings: settings,
-          label: label,
-          isPossibleToDelete: isPossibleToDelete,
-        );
+  }) =>
+      Timeline.byType(
+        id: id,
+        type: TimelineType.public,
+        settings: settings,
+        label: label,
+        isPossibleToDelete: isPossibleToDelete,
+      );
 
-  Timeline.hashtag({
-    required IPleromaApiTag remoteTag,
+  static Timeline hashtag({
+    required IUnifediApiTag remoteTag,
     required TimelineSettings settings,
     bool isPossibleToDelete = true,
-  }) : this.byType(
-          id: remoteTag.calculateTimelineId(),
-          type: TimelineType.hashtag,
-          settings: settings,
-          label: remoteTag.name,
-          isPossibleToDelete: isPossibleToDelete,
-        );
+  }) =>
+      Timeline.byType(
+        id: remoteTag.calculateTimelineId(),
+        type: TimelineType.hashtag,
+        settings: settings,
+        label: remoteTag.name,
+        isPossibleToDelete: isPossibleToDelete,
+      );
 
-  Timeline.customList({
-    required IPleromaApiList remoteList,
+  static Timeline customList({
+    required IUnifediApiList remoteList,
     required TimelineSettings settings,
     bool isPossibleToDelete = true,
-  }) : this.byType(
-          id: remoteList.calculateTimelineId(),
-          type: TimelineType.customList,
-          settings: settings,
-          label: remoteList.title,
-          isPossibleToDelete: isPossibleToDelete,
-        );
+  }) =>
+      Timeline.byType(
+        id: remoteList.calculateTimelineId(),
+        type: TimelineType.customList,
+        settings: settings,
+        label: remoteList.title,
+        isPossibleToDelete: isPossibleToDelete,
+      );
 
-  Timeline.account({
-    required IPleromaApiAccount account,
+  static Timeline account({
+    required IUnifediApiAccount account,
     required TimelineSettings settings,
     bool isPossibleToDelete = true,
-  }) : this.byType(
-          id: account.calculateTimelineId(),
-          type: TimelineType.account,
-          settings: settings,
-          label: account.acct,
-          isPossibleToDelete: isPossibleToDelete,
-        );
+  }) =>
+      Timeline.byType(
+        id: account.calculateTimelineId(),
+        type: TimelineType.account,
+        settings: settings,
+        label: account.acct,
+        isPossibleToDelete: isPossibleToDelete,
+      );
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Timeline &&
-          runtimeType == other.runtimeType &&
-          id == other.id &&
-          label == other.label &&
-          isPossibleToDelete == other.isPossibleToDelete &&
-          typeString == other.typeString &&
-          settings == other.settings;
-
-  @override
-  int get hashCode =>
-      id.hashCode ^
-      label.hashCode ^
-      isPossibleToDelete.hashCode ^
-      typeString.hashCode ^
-      settings.hashCode;
-
-  @override
-  String toString() {
-    return 'Timeline{id: $id, label: $label,'
-        ' isPossibleToDelete: $isPossibleToDelete,'
-        ' typeString: $typeString, settings: $settings}';
-  }
-
-  static Timeline fromJson(Map<String, dynamic> json) =>
+  factory Timeline.fromJson(Map<String, dynamic> json) =>
       _$TimelineFromJson(json);
-
-  @override
-  Map<String, dynamic> toJson() => _$TimelineToJson(this);
 
   bool? get onlyWithMedia => settings.onlyWithMedia;
 
@@ -168,20 +137,20 @@ class Timeline implements IJsonObject {
   List<String?>? get excludeVisibilitiesStrings =>
       settings.excludeVisibilitiesStrings;
 
-  List<PleromaApiVisibility>? get excludeVisibilities =>
+  List<UnifediApiVisibility>? get excludeVisibilities =>
       settings.excludeVisibilities;
 
-  PleromaApiList? get onlyInRemoteList => settings.onlyInRemoteList;
+  UnifediApiList? get onlyInRemoteList => settings.onlyInRemoteList;
 
   String? get withRemoteHashtag => settings.withRemoteHashtag;
 
-  String? get pleromaReplyVisibilityFilterString =>
+  String? get unifediApiReplyVisibilityFilterString =>
       settings.replyVisibilityFilterString;
 
-  PleromaApiReplyVisibilityFilter? get replyVisibilityFilter =>
+  UnifediApiReplyVisibilityFilter? get replyVisibilityFilter =>
       settings.replyVisibilityFilter;
 
-  PleromaApiAccount? get onlyFromRemoteAccount =>
+  UnifediApiAccount? get onlyFromRemoteAccount =>
       settings.onlyFromRemoteAccount;
 
   String? get onlyFromInstance => settings.onlyFromInstance;
@@ -189,32 +158,17 @@ class Timeline implements IJsonObject {
   bool? get onlyPinned => settings.onlyPinned;
 
   bool? get excludeReblogs => settings.excludeReblogs;
-
-  Timeline copyWith({
-    String? id,
-    TimelineType? type,
-    TimelineSettings? settings,
-    String? label,
-    bool? isPossibleToDelete,
-  }) =>
-      Timeline(
-        id: id ?? this.id,
-        typeString: type?.toJsonValue() ?? typeString,
-        settings: settings ?? this.settings,
-        label: label ?? this.label,
-        isPossibleToDelete: isPossibleToDelete ?? this.isPossibleToDelete,
-      );
 }
 
-extension TimelineIdPleromaListExtension on IPleromaApiList {
+extension TimelineIdPleromaListExtension on IUnifediApiList {
   String calculateTimelineId() => 'list.$id';
 }
 
-extension TimelineIdPleromaTagExtension on IPleromaApiTag {
+extension TimelineIdPleromaTagExtension on IUnifediApiTag {
   String calculateTimelineId() => 'hashtag.$name';
 }
 
-extension TimelineIdPleromaAccountExtension on IPleromaApiAccount {
+extension TimelineIdUnifediApiAccountExtension on IUnifediApiAccount {
   String calculateTimelineId() => 'account.$id';
 }
 

@@ -1,16 +1,16 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/database/app_database.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
-extension IPleromaAccountListDbExtension on List<IPleromaApiAccount> {
+extension IUnifediApiAccountListDbExtension on List<IUnifediApiAccount> {
   List<DbAccountPopulatedWrapper> toDbAccountPopulatedWrappers() => map(
-        (pleromaAccount) => pleromaAccount.toDbAccountWrapper(),
+        (unifediApiAccount) => unifediApiAccount.toDbAccountWrapper(),
       ).toList();
 }
 
 extension IAccountListExtension on List<IAccount> {
-  List<PleromaApiAccount> toPleromaApiAccounts() => map(
-        (pleromaAccount) => pleromaAccount.toPleromaApiAccount(),
+  List<UnifediApiAccount> toUnifediApiAccountList() => map(
+        (unifediApiAccount) => unifediApiAccount.toUnifediApiAccount(),
       ).toList();
 }
 
@@ -22,7 +22,7 @@ extension DbAccountExtension on DbAccount {
       );
 }
 
-extension IPleromaAccountDbExtension on IPleromaApiAccount {
+extension IUnifediApiAccountDbExtension on IUnifediApiAccount {
   DbAccountPopulatedWrapper toDbAccountWrapper() => DbAccountPopulatedWrapper(
         dbAccountPopulated: DbAccountPopulated(
           dbAccount: toDbAccount(),
@@ -48,57 +48,36 @@ extension IPleromaAccountDbExtension on IPleromaApiAccount {
         avatar: avatar,
         acct: acct,
         lastStatusAt: lastStatusAt,
-        fields: fields?.toPleromaApiFields(),
-        emojis: emojis?.toPleromaApiEmojis(),
-        pleromaTags: pleroma?.tags?.toPleromaApiTags(),
-        pleromaRelationship: pleroma?.relationship,
-        pleromaIsAdmin: pleroma?.isAdmin,
-        pleromaIsModerator: pleroma?.isModerator,
-        pleromaConfirmationPending: pleroma?.confirmationPending,
-        pleromaHideFavorites: pleroma?.hideFavorites,
-        pleromaHideFollows: pleroma?.hideFollows,
-        pleromaHideFollowers: pleroma?.hideFollowers,
-        pleromaHideFollowersCount: pleroma?.hideFollowersCount,
-        pleromaHideFollowsCount: pleroma?.hideFollowsCount,
-        pleromaDeactivated: pleroma?.deactivated,
-        pleromaAllowFollowingMove: pleroma?.allowFollowingMove,
-        pleromaSkipThreadContainment: pleroma?.skipThreadContainment,
-        pleromaBackgroundImage: pleroma?.backgroundImage,
-        pleromaAcceptsChatMessages: pleroma?.acceptsChatMessages,
+        fields: fields?.toUnifediApiFieldList(),
+        emojis: emojis?.toUnifediApiEmojiList(),
+        tags: tags?.toUnifediApiTagList(),
+        relationship: relationship?.toUnifediApiAccountRelationship(),
+        isAdmin: isAdmin,
+        isModerator: isModerator,
+        confirmationPending: confirmationPending,
+        hideFavorites: hideFavorites,
+        hideFollows: hideFollows,
+        hideFollowers: hideFollowers,
+        hideFollowersCount: hideFollowersCount,
+        hideFollowsCount: hideFollowsCount,
+        deactivated: deactivated,
+        allowFollowingMove: allowFollowingMove,
+        skipThreadContainment: skipThreadContainment,
+        backgroundImage: backgroundImage,
+        acceptsChatMessages: acceptsChatMessages,
+        // todo: should be implemented
+        // apId: null,
+        // alsoKnownAs: null,
+        // isConfirmed: null,
+        // favicon: null,
       );
 }
 
-extension IAccountPleromaAccountExtension on IAccount {
-  PleromaApiAccountPleromaPart toPleromaApiAccountPleromaPart() {
-    return PleromaApiAccountPleromaPart(
-      backgroundImage: pleromaBackgroundImage,
-      tags: pleromaTags,
-      relationship: pleromaRelationship,
-      isAdmin: pleromaIsAdmin,
-      isModerator: pleromaIsModerator,
-      confirmationPending: pleromaConfirmationPending,
-      hideFavorites: pleromaHideFavorites,
-      hideFollowers: pleromaHideFollowers,
-      hideFollows: pleromaHideFollows,
-      hideFollowersCount: pleromaHideFollowersCount,
-      hideFollowsCount: pleromaHideFollowsCount,
-      deactivated: pleromaDeactivated,
-      allowFollowingMove: pleromaAllowFollowingMove,
-      skipThreadContainment: pleromaSkipThreadContainment,
-      acceptsChatMessages: pleromaAcceptsChatMessages,
-      // todo: should be implemented
-      apId: null,
-      alsoKnownAs: null,
-      isConfirmed: null,
-      favicon: null,
-    );
-  }
-
-  PleromaApiAccount toPleromaApiAccount() {
+extension IAccountUnifediApiAccountExtension on IAccount {
+  UnifediApiAccount toUnifediApiAccount() {
     var localAccount = this;
 
-    return PleromaApiAccount(
-      pleroma: localAccount.toPleromaApiAccountPleromaPart(),
+    return UnifediApiAccount(
       id: localAccount.remoteId,
       username: localAccount.username,
       url: localAccount.url,
@@ -116,9 +95,30 @@ extension IAccountPleromaAccountExtension on IAccount {
       avatar: localAccount.avatar,
       acct: localAccount.acct,
       lastStatusAt: localAccount.lastStatusAt,
-      fields: localAccount.fields?.toPleromaApiFields(),
-      emojis: localAccount.emojis?.toPleromaApiEmojis(),
+      fields: localAccount.fields?.toUnifediApiFieldList(),
+      emojis: localAccount.emojis?.toUnifediApiEmojiList(),
       fqn: localAccount.fqn,
+      backgroundImage: backgroundImage,
+      tags: tags?.toUnifediApiTagList(),
+      relationship: relationship?.toUnifediApiAccountRelationship(),
+      isAdmin: isAdmin,
+      isModerator: isModerator,
+      confirmationPending: confirmationPending,
+      hideFavorites: hideFavorites,
+      hideFollowers: hideFollowers,
+      hideFollows: hideFollows,
+      hideFollowersCount: hideFollowersCount,
+      hideFollowsCount: hideFollowsCount,
+      deactivated: deactivated,
+      allowFollowingMove: allowFollowingMove,
+      skipThreadContainment: skipThreadContainment,
+      acceptsChatMessages: acceptsChatMessages,
+      isConfirmed: isConfirmed,
+      favicon: favicon,
+      apId: apId,
+      suspended: suspended,
+      alsoKnownAs: alsoKnownAs,
+      muteExpiresAt: muteExpiresAt,
     );
   }
 }

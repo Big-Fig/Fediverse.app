@@ -1,10 +1,11 @@
+import 'package:fedi/app/access/memory_access_bloc_impl.dart';
 import 'package:fedi/app/instance/remote/remote_instance_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
-import 'package:base_fediverse_api/base_fediverse_api.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:fedi/connection/connection_service.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class RemoteInstanceBloc extends AsyncInitLoadingBloc
     implements IRemoteInstanceBloc {
@@ -13,26 +14,15 @@ class RemoteInstanceBloc extends AsyncInitLoadingBloc
 
   final IConnectionService connectionService;
 
-  final RestService restService;
   @override
   // ignore: avoid-late-keyword
-  late PleromaApiRestService pleromaRestService;
+  late IUnifediApiManager unifediApiManager;
 
   RemoteInstanceBloc({
     required this.instanceUri,
     required this.connectionService,
-    required this.pleromaApiInstance,
-  }) : restService = RestService(
-          baseUri: instanceUri,
-        ) {
-    pleromaRestService = PleromaApiRestService(
-      connectionService: connectionService,
-      restService: restService,
-    );
-
-    addDisposable(restService);
-    addDisposable(pleromaRestService);
-  }
+    required this.unifediApiInstance,
+  });
 
   static RemoteInstanceBloc createFromContext(
     BuildContext context, {
@@ -44,34 +34,47 @@ class RemoteInstanceBloc extends AsyncInitLoadingBloc
           context,
           listen: false,
         ),
-        pleromaApiInstance: null,
-      );
-
-  static Widget provideToContext(
-    BuildContext context, {
-    required Widget child,
-    required Uri instanceUri,
-  }) =>
-      DisposableProvider<IRemoteInstanceBloc>(
-        create: (context) => createFromContext(
-          context,
-          instanceUri: instanceUri,
-        ),
-        child: child,
+        unifediApiInstance: null,
       );
 
   @override
-  IPleromaApiInstance? pleromaApiInstance;
+  IUnifediApiInstance? unifediApiInstance;
 
   @override
   Future internalAsyncInit() async {
-    if (pleromaApiInstance == null) {
-      var pleromaApiInstanceService =
-          PleromaApiInstanceService(restService: pleromaRestService);
+    var typeDetectorBloc = UnifediApiInstanceTypeDetectorBloc();
 
-      pleromaApiInstance = await pleromaApiInstanceService.getInstance();
+    var instanceType = await typeDetectorBloc.detectInstanceType(
+      url: instanceUri.toString(),
+    );
 
-      await pleromaApiInstanceService.dispose();
-    }
+    var unifediApiAccessBloc = MemoryUnifediApiAccessBloc(
+      access: UnifediApiAccess(
+        url: instanceUri.toString(),
+        instance: null,
+        userAccessToken: null,
+        applicationAccessToken: null,
+      ),
+    );
+
+    var webSocketsModeSettingsBloc = WebSocketsModeSettingsBloc(
+      mode: WebSocketsMode.disabledValue,
+    );
+
+    unifediApiManager = instanceType.createApiManager(
+      apiAccessBloc: unifediApiAccessBloc,
+      computeImpl: null,
+      webSocketsModeSettingsBloc: webSocketsModeSettingsBloc,
+    );
+    unifediApiManager.addDisposable(
+      unifediApiAccessBloc,
+    );
+
+    var apiInstanceService = unifediApiManager.createInstanceService();
+    unifediApiInstance = await apiInstanceService.getInstance();
+
+    await typeDetectorBloc.dispose();
+    await webSocketsModeSettingsBloc.dispose();
+    await apiInstanceService.dispose();
   }
 }

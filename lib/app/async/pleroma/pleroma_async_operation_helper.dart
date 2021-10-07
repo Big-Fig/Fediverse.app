@@ -3,8 +3,9 @@ import 'package:fedi/dialog/async/async_dialog.dart';
 import 'package:fedi/dialog/async/async_dialog_model.dart';
 import 'package:fedi/error/error_data_model.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:flutter/widgets.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class PleromaAsyncOperationHelper {
   static const List<ErrorDataBuilder> pleromaErrorDataBuilders = [
@@ -49,15 +50,22 @@ class PleromaAsyncOperationHelper {
     dynamic error,
     StackTrace stackTrace,
   ) {
-    if (error is PleromaApiUnprocessableOrThrottledRestException) {
-      return ErrorData(
-        error: error,
-        stackTrace: stackTrace,
-        titleCreator: (context) =>
-            S.of(context).app_async_pleroma_error_throttled_dialog_title,
-        contentCreator: (context) =>
-            S.of(context).app_async_pleroma_error_throttled_dialog_content,
-      );
+    if (error is IUnifediApiRestErrorException) {
+      var statusCode = error.unifediError.restResponseError.statusCode;
+
+      if (statusCode ==
+          RestResponseClientErrorCodeType.tooManyRequestsValue.intValue) {
+        return ErrorData(
+          error: error,
+          stackTrace: stackTrace,
+          titleCreator: (context) =>
+              S.of(context).app_async_pleroma_error_throttled_dialog_title,
+          contentCreator: (context) =>
+              S.of(context).app_async_pleroma_error_throttled_dialog_content,
+        );
+      } else {
+        return null;
+      }
     } else {
       return null;
     }
@@ -68,19 +76,27 @@ class PleromaAsyncOperationHelper {
     dynamic error,
     StackTrace stackTrace,
   ) {
-    if (error is PleromaApiForbiddenRestException) {
-      return ErrorData(
-        error: error,
-        stackTrace: stackTrace,
-        titleCreator: (context) =>
-            S.of(context).app_async_pleroma_error_forbidden_dialog_title,
-        contentCreator: (context) =>
-            S.of(context).app_async_pleroma_error_forbidden_dialog_content(
-                  error.decodedErrorDescriptionOrBody,
-                ),
-      );
-    } else {
-      return null;
+    if (error is IUnifediApiRestErrorException) {
+      var statusCode = error.unifediError.restResponseError.statusCode;
+      var descriptionOrContent = error.unifediError.descriptionOrContent;
+      if (statusCode ==
+          RestResponseClientErrorCodeType.forbiddenValue.intValue) {
+        return ErrorData(
+          error: error,
+          stackTrace: stackTrace,
+          titleCreator: (context) =>
+              S.of(context).app_async_pleroma_error_forbidden_dialog_title,
+          contentCreator: descriptionOrContent != null
+              ? (context) => S
+                  .of(context)
+                  .app_async_pleroma_error_forbidden_dialog_content(
+                    descriptionOrContent,
+                  )
+              : null,
+        );
+      } else {
+        return null;
+      }
     }
   }
 
@@ -89,16 +105,20 @@ class PleromaAsyncOperationHelper {
     dynamic error,
     StackTrace stackTrace,
   ) {
-    if (error is PleromaApiRestException) {
+    if (error is IUnifediApiRestErrorException) {
+      var descriptionOrContent = error.unifediError.descriptionOrContent;
+
       return ErrorData(
         error: error,
         stackTrace: stackTrace,
         titleCreator: (context) =>
             S.of(context).app_async_pleroma_error_common_dialog_title,
-        contentCreator: (context) =>
-            S.of(context).app_async_pleroma_error_common_dialog_content(
-                  error.decodedErrorDescriptionOrBody,
-                ),
+        contentCreator: descriptionOrContent != null
+            ? (context) =>
+                S.of(context).app_async_pleroma_error_common_dialog_content(
+                      descriptionOrContent,
+                    )
+            : null,
       );
     } else {
       return null;

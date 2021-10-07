@@ -1,7 +1,7 @@
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 abstract class IStatusEmojiReactionBloc implements IDisposable {
   static IStatusEmojiReactionBloc of(
@@ -13,9 +13,9 @@ abstract class IStatusEmojiReactionBloc implements IDisposable {
         listen: listen,
       );
 
-  IPleromaApiStatusEmojiReaction get emojiReaction;
+  IUnifediApiEmojiReaction get emojiReaction;
 
-  Stream<IPleromaApiStatusEmojiReaction> get emojiReactionStream;
+  Stream<IUnifediApiEmojiReaction> get emojiReactionStream;
 
-  Future<IPleromaApiStatus> toggleEmojiReaction();
+  Future<IUnifediApiStatus> toggleEmojiReaction();
 }

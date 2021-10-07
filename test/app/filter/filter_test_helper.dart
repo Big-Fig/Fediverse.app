@@ -3,14 +3,14 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'database/filter_database_test_helper.dart';
 
-class FilterTestHelper {
+class FilterMockHelper {
   static Future<DbFilterPopulatedWrapper> createTestFilter({
     required String seed,
     String? remoteId,
   }) async {
     return DbFilterPopulatedWrapper(
       dbFilterPopulated: DbFilterPopulated(
-        dbFilter: await FilterDatabaseTestHelper.createTestDbFilter(
+        dbFilter: await FilterDatabaseMockHelper.createTestDbFilter(
           seed: seed,
           remoteId: remoteId,
         ),

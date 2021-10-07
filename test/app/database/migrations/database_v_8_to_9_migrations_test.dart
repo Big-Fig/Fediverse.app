@@ -37,13 +37,13 @@ void main() {
       expect((await filterDao.getAll()).isNotEmpty, false);
 
       var dbFilter =
-          await FilterDatabaseTestHelper.createTestDbFilter(seed: 'seed');
+          await FilterDatabaseMockHelper.createTestDbFilter(seed: 'seed');
 
       await filterDao.insert(entity: dbFilter, mode: null);
 
       expect((await filterDao.getAll()).length, 1);
 
-      FilterDatabaseTestHelper.expectDbFilter(
+      FilterDatabaseMockHelper.expectDbFilter(
         DbFilterPopulatedWrapper(
           dbFilterPopulated: (await filterDao.findByRemoteIdPopulated(
             dbFilter.remoteId,

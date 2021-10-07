@@ -608,7 +608,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Wpisy"),
         "app_async_pleroma_error_common_dialog_content": m10,
         "app_async_pleroma_error_common_dialog_title":
-            MessageLookupByLibrary.simpleMessage("Błąd API Pleromy"),
+            MessageLookupByLibrary.simpleMessage("Błąd API"),
         "app_async_pleroma_error_forbidden_dialog_content": m11,
         "app_async_pleroma_error_forbidden_dialog_title":
             MessageLookupByLibrary.simpleMessage(

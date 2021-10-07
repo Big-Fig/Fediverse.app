@@ -5,29 +5,14 @@ import 'package:fedi/app/pending/pending_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:fedi/obj/equal_comparable_obj.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:unifedi_api/unifedi_api.dart';
+
+part 'conversation_chat_message_model.freezed.dart';
 
 abstract class IConversationChatMessage extends IChatMessage
     implements IEqualComparableObj<IConversationChatMessage> {
   IStatus get status;
-
-  @override
-  IConversationChatMessage copyWith({
-    int? localId,
-    String? remoteId,
-    String? chatRemoteId,
-    IAccount? account,
-    String? content,
-    DateTime? createdAt,
-    List<IPleromaApiMediaAttachment>? mediaAttachments,
-    List<PleromaApiEmoji>? emojis,
-    IPleromaApiCard? card,
-    PendingState? pendingState,
-    String? oldPendingRemoteId,
-    bool? deleted,
-    bool? hiddenLocallyOnDevice,
-    String? wasSentWithIdempotencyKey,
-  });
 }
 
 extension IStatusConversationChatMessageExtension on IStatus {
@@ -36,7 +21,8 @@ extension IStatusConversationChatMessageExtension on IStatus {
           ConversationChatMessageStatusAdapter(status: this);
 }
 
-extension IPleromaStatusConversationChatMessageExtension on IPleromaApiStatus {
+extension IUnifediApiStatusConversationChatMessageExtension
+    on IUnifediApiStatus {
   ConversationChatMessageStatusAdapter
       toConversationChatMessageStatusAdapter() =>
           ConversationChatMessageStatusAdapter(
@@ -55,13 +41,15 @@ extension IPleromaStatusConversationChatMessageExtension on IPleromaApiStatus {
           );
 }
 
-class ConversationChatMessageStatusAdapter extends IConversationChatMessage {
-  @override
-  final IStatus status;
+@freezed
+class ConversationChatMessageStatusAdapter
+    with _$ConversationChatMessageStatusAdapter
+    implements IConversationChatMessage {
+  const ConversationChatMessageStatusAdapter._();
 
-  ConversationChatMessageStatusAdapter({
-    required this.status,
-  });
+  const factory ConversationChatMessageStatusAdapter({
+    required IStatus status,
+  }) = _ConversationChatMessageStatusAdapter;
 
   @override
   int? get localId => status.localId;
@@ -70,25 +58,25 @@ class ConversationChatMessageStatusAdapter extends IConversationChatMessage {
   IAccount get account => status.account;
 
   @override
-  String get chatRemoteId => status.pleromaDirectConversationId!.toString();
+  String get chatRemoteId => status.directConversationId!.toString();
 
   @override
   String? get content => status.content;
 
   @override
-  IPleromaApiCard? get card => status.card;
+  IUnifediApiCard? get card => status.card;
 
   @override
   DateTime get createdAt => status.createdAt;
 
   @override
-  List<IPleromaApiEmoji>? get emojis => status.emojis;
+  List<IUnifediApiEmoji>? get emojis => status.emojis;
 
   @override
   String get remoteId => status.remoteId!;
 
   @override
-  List<IPleromaApiMediaAttachment>? get mediaAttachments =>
+  List<IUnifediApiMediaAttachment>? get mediaAttachments =>
       status.mediaAttachments;
 
   @override
@@ -96,55 +84,6 @@ class ConversationChatMessageStatusAdapter extends IConversationChatMessage {
 
   @override
   String? get oldPendingRemoteId => status.oldPendingRemoteId;
-
-  @override
-  // ignore: long-parameter-list
-  IConversationChatMessage copyWith({
-    int? localId,
-    String? remoteId,
-    String? chatRemoteId,
-    IAccount? account,
-    String? content,
-    DateTime? createdAt,
-    List<IPleromaApiMediaAttachment>? mediaAttachments,
-    List<PleromaApiEmoji>? emojis,
-    IPleromaApiCard? card,
-    PendingState? pendingState,
-    String? oldPendingRemoteId,
-    bool? deleted,
-    bool? hiddenLocallyOnDevice,
-    String? wasSentWithIdempotencyKey,
-  }) {
-    return ConversationChatMessageStatusAdapter(
-      status: status.copyWith(
-        id: localId,
-        remoteId: remoteId,
-        pleromaDirectConversationId:
-            chatRemoteId != null ? int.tryParse(chatRemoteId) : null,
-        account: account,
-        content: content,
-        createdAt: createdAt,
-        mediaAttachments: mediaAttachments?.toPleromaApiMediaAttachments(),
-        emojis: emojis,
-        card: card?.toPleromaApiCard(),
-        pendingState: pendingState,
-        oldPendingRemoteId: oldPendingRemoteId,
-        deleted: deleted,
-        hiddenLocallyOnDevice: hiddenLocallyOnDevice,
-        wasSentWithIdempotencyKey: wasSentWithIdempotencyKey,
-      ),
-    );
-  }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is ConversationChatMessageStatusAdapter &&
-          runtimeType == other.runtimeType &&
-          status == other.status;
-
-  @override
-  int get hashCode => status.hashCode;
 
   @override
   bool get deleted => status.deleted;

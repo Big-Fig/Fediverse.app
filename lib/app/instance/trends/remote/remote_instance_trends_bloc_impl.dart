@@ -1,32 +1,35 @@
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
+import 'package:fedi/app/instance/location/instance_location_model.dart';
+import 'package:fedi/app/instance/remote/remote_instance_bloc.dart';
 import 'package:fedi/app/instance/trends/instance_trends_bloc.dart';
 import 'package:fedi/app/instance/trends/instance_trends_bloc_impl.dart';
 import 'package:fedi/app/instance/trends/instance_trends_bloc_proxy_provider.dart';
-import 'package:fedi/app/instance/location/instance_location_model.dart';
-import 'package:fedi/app/instance/remote/remote_instance_bloc.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:fedi/connection/connection_service.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class RemoteInstanceTrendsBloc extends InstanceTrendsBloc
     implements IInstanceTrendsBloc {
   final IRemoteInstanceBloc remoteInstanceBloc;
 
   @override
-  final IPleromaApiTrendsService pleromaApiTrendsService;
+  final IUnifediApiInstanceService unifediApiInstanceService;
 
   RemoteInstanceTrendsBloc({
     required this.remoteInstanceBloc,
     required IPaginationSettingsBloc paginationSettingsBloc,
-  })  : pleromaApiTrendsService = PleromaApiTrendsService(
-          restService: remoteInstanceBloc.pleromaRestService,
-        ),
+    required IConnectionService connectionService,
+  })  : unifediApiInstanceService =
+            remoteInstanceBloc.unifediApiManager.createInstanceService(),
         super(
+          connectionService: connectionService,
           initialInstance: null,
           instanceUri: remoteInstanceBloc.instanceUri,
           paginationSettingsBloc: paginationSettingsBloc,
         ) {
-    addDisposable(pleromaApiTrendsService);
+    addDisposable(unifediApiInstanceService);
   }
 
   static RemoteInstanceTrendsBloc createFromContext(BuildContext context) {
@@ -36,6 +39,10 @@ class RemoteInstanceTrendsBloc extends InstanceTrendsBloc
     );
 
     return RemoteInstanceTrendsBloc(
+      connectionService: Provider.of<IConnectionService>(
+        context,
+        listen: false,
+      ),
       remoteInstanceBloc: remoteInstanceBloc,
       paginationSettingsBloc: IPaginationSettingsBloc.of(
         context,
@@ -50,6 +57,10 @@ class RemoteInstanceTrendsBloc extends InstanceTrendsBloc
   }) =>
       DisposableProxyProvider<IRemoteInstanceBloc, IInstanceTrendsBloc>(
         update: (context, value, previous) => RemoteInstanceTrendsBloc(
+          connectionService: Provider.of<IConnectionService>(
+            context,
+            listen: false,
+          ),
           remoteInstanceBloc: value,
           paginationSettingsBloc: IPaginationSettingsBloc.of(
             context,

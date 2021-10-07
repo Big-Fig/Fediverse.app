@@ -19,7 +19,7 @@ void main() {
       label: 'label',
       isPossibleToDelete: false,
     );
-    await LocalPreferencesTestHelper.testSaveAndLoad<Timeline,
+    await LocalPreferencesMockHelper.testSaveAndLoad<Timeline,
         TimelineLocalPreferenceBloc>(
       defaultValue: defaultPreferenceValue,
       blocCreator: (localPreferencesService) =>
@@ -30,7 +30,7 @@ void main() {
         timelineId: timelineId,
       ),
       testObjectCreator: ({required String seed}) =>
-          TimelineModelTestHelper.createTestTimeline(
+          TimelineModelMockHelper.createTestTimeline(
         seed: seed,
       ),
     );

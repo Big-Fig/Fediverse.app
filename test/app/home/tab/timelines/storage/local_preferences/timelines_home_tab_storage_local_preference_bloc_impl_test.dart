@@ -8,7 +8,7 @@ import '../timelines_home_tab_storage_model_test_helper.dart';
 // ignore_for_file: no-magic-number
 void main() {
   test('save & load', () async {
-    await LocalPreferencesTestHelper.testSaveAndLoad<TimelinesHomeTabStorage,
+    await LocalPreferencesMockHelper.testSaveAndLoad<TimelinesHomeTabStorage,
         TimelinesHomeTabStorageLocalPreferenceBloc>(
       defaultValue: TimelinesHomeTabStorageLocalPreferenceBloc.defaultValue,
       blocCreator: (localPreferencesService) =>
@@ -17,7 +17,7 @@ void main() {
         userAtHost: 'user@host',
       ),
       testObjectCreator: ({required String seed}) =>
-          TimelinesHomeTabStorageModelTestHelper
+          TimelinesHomeTabStorageModelMockHelper
               .createTestTimelinesHomeTabStorage(
         seed: seed,
       ),

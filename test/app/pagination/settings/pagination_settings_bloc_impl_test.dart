@@ -71,7 +71,7 @@ void main() {
     );
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     var defaultValue = GlobalPaginationSettingsLocalPreferenceBloc.defaultValue;
 
@@ -94,14 +94,14 @@ void main() {
     );
 
     var testPageSize =
-        PaginationSettingsModelTestHelper.createTestPaginationSettings(
+        PaginationSettingsModelMockHelper.createTestPaginationSettings(
       seed: 'seed',
     ).pageSize;
 
     await paginationSettingsBloc.changePageSize(testPageSize);
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(
       listenedSettingsData?.pageSize,

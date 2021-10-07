@@ -1,5 +1,5 @@
-import 'package:fedi/media/player/video/video_media_player_bloc.dart';
 import 'package:fedi/media/player/media_player_bloc.dart';
+import 'package:fedi/media/player/video/video_media_player_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 

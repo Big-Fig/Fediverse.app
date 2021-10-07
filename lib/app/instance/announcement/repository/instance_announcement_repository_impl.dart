@@ -6,15 +6,15 @@ import 'package:fedi/app/instance/announcement/instance_announcement_model.dart'
 import 'package:fedi/app/instance/announcement/instance_announcement_model_adapter.dart';
 import 'package:fedi/app/instance/announcement/repository/instance_announcement_repository.dart';
 import 'package:fedi/app/instance/announcement/repository/instance_announcement_repository_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:moor/moor.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class InstanceAnnouncementRepository
     extends PopulatedAppRemoteDatabaseDaoRepository<
         DbInstanceAnnouncement,
         DbInstanceAnnouncementPopulated,
         IInstanceAnnouncement,
-        IPleromaApiAnnouncement,
+        IUnifediApiAnnouncement,
         int,
         String,
         $DbInstanceAnnouncementsTable,
@@ -44,7 +44,7 @@ class InstanceAnnouncementRepository
       appItem.toDbInstanceAnnouncement();
 
   @override
-  IPleromaApiAnnouncement mapAppItemToRemoteItem(
+  IUnifediApiAnnouncement mapAppItemToRemoteItem(
     IInstanceAnnouncement appItem,
   ) =>
       appItem.toPleromaInstanceAnnouncement();
@@ -62,7 +62,7 @@ class InstanceAnnouncementRepository
       dbPopulatedItem.toDbInstanceAnnouncementPopulatedWrapper();
 
   @override
-  IPleromaApiAnnouncement mapDbPopulatedItemToRemoteItem(
+  IUnifediApiAnnouncement mapDbPopulatedItemToRemoteItem(
     DbInstanceAnnouncementPopulated dbPopulatedItem,
   ) =>
       dbPopulatedItem
@@ -71,7 +71,7 @@ class InstanceAnnouncementRepository
 
   @override
   IInstanceAnnouncement mapRemoteItemToAppItem(
-    IPleromaApiAnnouncement remoteItem,
+    IUnifediApiAnnouncement remoteItem,
   ) =>
       remoteItem.toDbInstanceAnnouncementPopulatedWrapper();
 
@@ -97,7 +97,7 @@ class InstanceAnnouncementRepository
 
   @override
   Future<int> insertInRemoteType(
-    IPleromaApiAnnouncement remoteItem, {
+    IUnifediApiAnnouncement remoteItem, {
     required InsertMode? mode,
   }) =>
       insertInDbType(
@@ -109,7 +109,7 @@ class InstanceAnnouncementRepository
 
   @override
   Future<void> insertInRemoteTypeBatch(
-    IPleromaApiAnnouncement remoteItem, {
+    IUnifediApiAnnouncement remoteItem, {
     required InsertMode? mode,
     required Batch? batchTransaction,
   }) {
@@ -124,7 +124,7 @@ class InstanceAnnouncementRepository
   @override
   Future<void> updateAppTypeByRemoteType({
     required IInstanceAnnouncement appItem,
-    required IPleromaApiAnnouncement remoteItem,
+    required IUnifediApiAnnouncement remoteItem,
     required Batch? batchTransaction,
   }) =>
       updateByDbIdInDbType(

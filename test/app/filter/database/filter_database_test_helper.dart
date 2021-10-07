@@ -3,7 +3,7 @@ import 'package:fedi/app/filter/filter_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-class FilterDatabaseTestHelper {
+class FilterDatabaseMockHelper {
   static Future<DbFilter> createTestDbFilter({
     required String seed,
     String? remoteId,
@@ -35,7 +35,7 @@ class FilterDatabaseTestHelper {
   ) {
     expect(actual.localId != null, true);
     var dbFilter = expected.dbFilter;
-    FilterDatabaseTestHelper.expectDbFilter(actual, dbFilter);
+    FilterDatabaseMockHelper.expectDbFilter(actual, dbFilter);
   }
 
   static void expectDbFilter(IFilter actual, DbFilter dbFilter) {

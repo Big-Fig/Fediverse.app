@@ -1,38 +1,38 @@
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/list/cached/account_cached_list_bloc.dart';
 import 'package:fedi/app/account/list/cached/account_cached_list_bloc_proxy_provider.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/account/repository/account_repository_model.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
-import 'package:easy_dispose/easy_dispose.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 var _logger = Logger('account_following_account_cached_list_bloc_impl.dart');
 
 class AccountFollowingAccountCachedListBloc extends DisposableOwner
     implements IAccountCachedListBloc {
-  final IPleromaApiAccountService pleromaAccountService;
+  final IUnifediApiAccountService unifediApiAccountService;
   final IAccountRepository accountRepository;
   final IAccount account;
 
   AccountRepositoryFilters get _accountRepositoryFilters =>
-      AccountRepositoryFilters(
+      AccountRepositoryFilters.only(
         onlyInAccountFollowing: account,
       );
 
   AccountFollowingAccountCachedListBloc({
-    required this.pleromaAccountService,
+    required this.unifediApiAccountService,
     required this.accountRepository,
     required this.account,
   });
 
   @override
-  IPleromaApi get pleromaApi => pleromaAccountService;
+  IUnifediApiService get unifediApi => unifediApiAccountService;
 
   @override
   Future refreshItemsFromRemoteForPage({
@@ -44,16 +44,16 @@ class AccountFollowingAccountCachedListBloc extends DisposableOwner
         '\t newerThanAccount = $newerThan'
         '\t olderThanAccount = $olderThan');
 
-    List<IPleromaApiAccount> remoteAccounts;
+    List<IUnifediApiAccount> remoteAccounts;
 
-    remoteAccounts = await pleromaAccountService.getAccountFollowings(
-      accountRemoteId: account.remoteId,
-      pagination: PleromaApiPaginationRequest(
+    remoteAccounts = await unifediApiAccountService.getAccountFollowings(
+      accountId: account.remoteId,
+      pagination: UnifediApiPagination(
         maxId: olderThan?.remoteId,
-        sinceId: newerThan?.remoteId,
+        minId: newerThan?.remoteId,
         limit: limit,
       ),
-      withRelationship: false,
+      withRelationship: null,
     );
 
     await accountRepository.batch((batch) {
@@ -64,7 +64,7 @@ class AccountFollowingAccountCachedListBloc extends DisposableOwner
 
       accountRepository.addAccountFollowings(
         accountRemoteId: account.remoteId,
-        followings: remoteAccounts.toPleromaApiAccounts(),
+        followings: remoteAccounts.toUnifediApiAccountList(),
         batchTransaction: batch,
       );
     });
@@ -101,7 +101,7 @@ class AccountFollowingAccountCachedListBloc extends DisposableOwner
   }) =>
       AccountFollowingAccountCachedListBloc(
         accountRepository: IAccountRepository.of(context, listen: false),
-        pleromaAccountService: Provider.of<IPleromaApiAccountService>(
+        unifediApiAccountService: Provider.of<IUnifediApiAccountService>(
           context,
           listen: false,
         ),

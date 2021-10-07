@@ -42,8 +42,8 @@ import 'package:fedi/app/status/post/post_status_model.dart';
 import 'package:fedi/app/status/scheduled/database/scheduled_status_database_dao.dart';
 import 'package:fedi/app/status/scheduled/database/scheduled_status_database_model.dart';
 import 'package:fedi/moor/moor_json_type_converter.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:moor/moor.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 part 'app_database.g.dart';
 
@@ -103,7 +103,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase(QueryExecutor e) : super(e);
 
   @override
-  int get schemaVersion => 16;
+  int get schemaVersion => 17;
 
   int? migrationsFromExecuted;
   int? migrationsToExecuted;
@@ -163,6 +163,9 @@ class AppDatabase extends _$AppDatabase {
               case 15:
                 await _migrate15to16(m);
                 break;
+              case 16:
+                await _migrate16to17(m);
+                break;
               default:
                 throw 'invalid currentVersion $currentVersion';
             }
@@ -170,6 +173,16 @@ class AppDatabase extends _$AppDatabase {
           }
         },
       );
+
+  Future<void> _migrate16to17(Migrator m) async {
+    await m.addColumn(dbAccounts, dbAccounts.suspended);
+    await m.addColumn(dbAccounts, dbAccounts.isConfirmed);
+    await m.addColumn(dbAccounts, dbAccounts.muteExpiresAt);
+    await m.addColumn(dbAccounts, dbAccounts.fqn);
+    await m.addColumn(dbAccounts, dbAccounts.favicon);
+    await m.addColumn(dbAccounts, dbAccounts.apId);
+    await m.addColumn(dbAccounts, dbAccounts.alsoKnownAs);
+  }
 
   Future<void> _migrate15to16(Migrator m) async {
     await m.createTable(dbInstanceAnnouncements);
@@ -203,7 +216,7 @@ class AppDatabase extends _$AppDatabase {
   }
 
   Future<void> _migrate9to10(Migrator m) async {
-    await m.addColumn(dbAccounts, dbAccounts.pleromaAcceptsChatMessages);
+    await m.addColumn(dbAccounts, dbAccounts.acceptsChatMessages);
   }
 
   Future<void> _migrate8to9(Migrator m) async {
@@ -223,7 +236,7 @@ class AppDatabase extends _$AppDatabase {
       await m.addColumn(dbNotifications, dbNotifications.dismissed);
 
   Future<void> _migrate4to5(Migrator m) async =>
-      await m.addColumn(dbAccounts, dbAccounts.pleromaBackgroundImage);
+      await m.addColumn(dbAccounts, dbAccounts.backgroundImage);
 
   Future<void> _migrate3to4(Migrator m) async =>
       await m.addColumn(dbStatuses, dbStatuses.deleted);

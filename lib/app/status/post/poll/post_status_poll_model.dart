@@ -1,10 +1,12 @@
-import 'package:fedi/collection/collection_hash_utils.dart';
 import 'package:fedi/duration/duration_extension.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/foundation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 part 'post_status_poll_model.g.dart';
+
+part 'post_status_poll_model.freezed.dart';
 
 abstract class IPostStatusPoll {
   Duration? get durationLength;
@@ -16,71 +18,20 @@ abstract class IPostStatusPoll {
   List<String> get options;
 }
 
-@JsonSerializable()
-class PostStatusPoll implements IPostStatusPoll {
-  @override
-  @JsonKey(name: 'duration_length')
-  final Duration? durationLength;
+@freezed
+class PostStatusPoll with _$PostStatusPoll implements IPostStatusPoll {
+  const factory PostStatusPoll({
+    @JsonKey(name: 'duration_length') required Duration? durationLength,
+    @JsonKey(name: 'hide_totals') required bool hideTotals,
+    required bool multiple,
+    required List<String> options,
+  }) = _PostStatusPoll;
 
-  @override
-  @JsonKey(name: 'hide_totals')
-  final bool hideTotals;
-
-  @override
-  final bool multiple;
-
-  @override
-  final List<String> options;
-
-  PostStatusPoll({
-    required this.durationLength,
-    required this.hideTotals,
-    required this.multiple,
-    required this.options,
-  });
-
-  @override
-  String toString() {
-    return 'PostStatusPoll{'
-        'durationLength: $durationLength, '
-        'hideTotals: $hideTotals, '
-        'multiple: $multiple, '
-        'options: $options'
-        '}';
-  }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is PostStatusPoll &&
-          runtimeType == other.runtimeType &&
-          durationLength == other.durationLength &&
-          hideTotals == other.hideTotals &&
-          multiple == other.multiple &&
-          listEquals(options, other.options);
-
-  @override
-  int get hashCode =>
-      durationLength.hashCode ^
-      hideTotals.hashCode ^
-      multiple.hashCode ^
-      listHash(options);
-
-  static PostStatusPoll fromJson(Map<String, dynamic> json) =>
+  factory PostStatusPoll.fromJson(Map<String, dynamic> json) =>
       _$PostStatusPollFromJson(json);
-
-  Map<String, dynamic> toJson() => _$PostStatusPollToJson(this);
 }
 
 extension IPostStatusPollExtension on IPostStatusPoll {
-  PleromaApiPostStatusPoll toPleromaPostStatusPoll() =>
-      PleromaApiPostStatusPoll(
-        options: options,
-        multiple: multiple,
-        expiresInSeconds: durationLength!.totalSeconds,
-        hideTotals: hideTotals,
-      );
-
   PostStatusPoll toPostStatusPoll() {
     if (this is PostStatusPoll) {
       return this as PostStatusPoll;
@@ -94,13 +45,18 @@ extension IPostStatusPollExtension on IPostStatusPoll {
     }
   }
 
-  PleromaApiPoll toPleromaPoll() {
-    return PleromaApiPoll(
+  UnifediApiPoll toUnifediApiPoll() {
+    return UnifediApiPoll(
       id: null,
       expired: false,
       voted: true,
       multiple: multiple,
-      options: options.toPleromaApiPollOptions(),
+      options: options
+          .map((option) => UnifediApiPollOption(
+                title: option,
+                votesCount: null,
+              ))
+          .toList(),
       ownVotes: [],
       votersCount: 0,
       votesCount: 0,
@@ -110,7 +66,7 @@ extension IPostStatusPollExtension on IPostStatusPoll {
   }
 }
 
-extension PleromaPostStatusPollExtension on IPleromaApiPostStatusPoll {
+extension PostStatusPollExtension on IUnifediApiPostStatusPoll {
   PostStatusPoll toPostStatusPoll() {
     return PostStatusPoll(
       durationLength: expiresInSeconds.toDuration(),
@@ -119,33 +75,19 @@ extension PleromaPostStatusPollExtension on IPleromaApiPostStatusPoll {
       options: options,
     );
   }
-
-  PleromaApiPostStatusPoll toPleromaApiPostStatusPoll() {
-    if (this is PleromaApiPostStatusPoll) {
-      return this as PleromaApiPostStatusPoll;
-    } else {
-      return PleromaApiPostStatusPoll(
-        expiresInSeconds: expiresInSeconds,
-        hideTotals: hideTotals,
-        multiple: multiple,
-        options: options,
-      );
-    }
-  }
 }
 
-extension IPleromaApiPollExtension on IPleromaApiPoll {
-  PleromaApiPoll toPleromaApiPoll({bool forceNewObject = false}) {
-    if (this is PleromaApiPoll && !forceNewObject) {
-      return this as PleromaApiPoll;
+extension IUnifediApiPollExtension on IUnifediApiPoll {
+  UnifediApiPoll toUnifediApiPoll({bool forceNewObject = false}) {
+    if (this is UnifediApiPoll && !forceNewObject) {
+      return this as UnifediApiPoll;
     } else {
-      return PleromaApiPoll(
+      return UnifediApiPoll(
         expired: expired,
         expiresAt: expiresAt,
         id: id,
         multiple: multiple,
-        options:
-            options.toPleromaApiPollOptions(forceNewObject: forceNewObject),
+        options: options.toUnifediApiPollOptionList(),
         ownVotes: ownVotes,
         voted: voted,
         votesCount: votesCount,
@@ -155,23 +97,33 @@ extension IPleromaApiPollExtension on IPleromaApiPoll {
   }
 
   PostStatusPoll toPostStatusPoll({
-    required PleromaApiInstancePollLimits limits,
+    required IUnifediApiInstancePollLimits? limits,
   }) {
+    Duration? durationLength;
+    var expiresAt = this.expiresAt;
+    if (expiresAt != null) {
+      durationLength = DateTime.now().difference(expiresAt).abs();
+      var minExpirationDuration = limits?.minExpirationDuration;
+      if (minExpirationDuration != null) {
+        if (minExpirationDuration > durationLength) {
+          durationLength = minExpirationDuration;
+        }
+      }
+    }
+
     return PostStatusPoll(
-      durationLength: expiresAt?.calculatePostDurationLength(
-        limits: limits,
-      ),
+      durationLength: durationLength,
       // todo: implement  hideTotals
       hideTotals: false,
       multiple: multiple,
-      options: options.toPleromaApiPollOptionTitles(),
+      options: options.toUnifediApiPollOptionTitles(),
     );
   }
 }
 
-extension IPostStatusPollPleromaApiPostStatusPollExtension on IPostStatusPoll {
-  PleromaApiPostStatusPoll toPleromaApiPostStatusPoll() =>
-      PleromaApiPostStatusPoll(
+extension IPostStatusPollUnifediApiPostStatusPollExtension on IPostStatusPoll {
+  UnifediApiPostStatusPoll toUnifediApiPostStatusPoll() =>
+      UnifediApiPostStatusPoll(
         options: options,
         multiple: multiple,
         expiresInSeconds: durationLength!.totalSeconds,

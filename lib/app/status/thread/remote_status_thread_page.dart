@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart' show IterableExtension;
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
 import 'package:fedi/app/instance/remote/remote_instance_bloc.dart';
 import 'package:fedi/app/instance/remote/remote_instance_bloc_impl.dart';
@@ -10,18 +11,17 @@ import 'package:fedi/app/status/thread/remote_status_thread_bloc_impl.dart';
 import 'package:fedi/app/status/thread/status_thread_bloc.dart';
 import 'package:fedi/app/status/thread/status_thread_bloc_proxy_provider.dart';
 import 'package:fedi/app/status/thread/status_thread_page.dart';
-import 'package:base_fediverse_api/base_fediverse_api.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
+import 'package:fedi/connection/connection_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 Future goToRemoteStatusThreadPageBasedOnRemoteInstanceStatus(
   BuildContext context, {
   required IStatus remoteInstanceStatus,
-  required IPleromaApiMediaAttachment? remoteInstanceInitialMediaAttachment,
+  required IUnifediApiMediaAttachment? remoteInstanceInitialMediaAttachment,
 }) {
   return Navigator.push(
     context,
@@ -35,7 +35,7 @@ Future goToRemoteStatusThreadPageBasedOnRemoteInstanceStatus(
 Future goToRemoteStatusThreadPageBasedOnLocalInstanceRemoteStatus(
   BuildContext context, {
   required IStatus? localInstanceRemoteStatus,
-  required IMastodonApiMediaAttachment?
+  required IUnifediApiMediaAttachment?
       localInstanceRemoteInitialMediaAttachment,
 }) async {
   var remoteInstanceStatusDialogResult =
@@ -47,7 +47,7 @@ Future goToRemoteStatusThreadPageBasedOnLocalInstanceRemoteStatus(
     asyncCode: () async {
       IStatus? result;
       RemoteInstanceBloc? remoteInstanceBloc;
-      PleromaApiStatusService? pleromaStatusService;
+      IUnifediApiStatusService? unifediApiStatusService;
       try {
         var instanceUri = localInstanceRemoteStatus!.urlRemoteHostUri;
 
@@ -60,21 +60,23 @@ Future goToRemoteStatusThreadPageBasedOnLocalInstanceRemoteStatus(
             context,
             listen: false,
           ),
-          pleromaApiInstance: null,
+          unifediApiInstance: null,
         );
 
-        pleromaStatusService = PleromaApiStatusService(
-          restService: remoteInstanceBloc.pleromaRestService,
-        );
+        await remoteInstanceBloc.performAsyncInit();
 
-        var remoteInstanceRemoteStatus = await pleromaStatusService.getStatus(
-          statusRemoteId: remoteInstanceStatusRemoteId,
+        unifediApiStatusService =
+            remoteInstanceBloc.unifediApiManager.createStatusService();
+
+        var remoteInstanceRemoteStatus =
+            await unifediApiStatusService.getStatus(
+          statusId: remoteInstanceStatusRemoteId,
         );
 
         result = remoteInstanceRemoteStatus.toDbStatusPopulatedWrapper();
       } finally {
         // ignore: unawaited_futures
-        pleromaStatusService?.dispose();
+        unifediApiStatusService?.dispose();
         // ignore: unawaited_futures
         remoteInstanceBloc?.dispose();
       }
@@ -86,7 +88,7 @@ Future goToRemoteStatusThreadPageBasedOnLocalInstanceRemoteStatus(
   var remoteInstanceStatus = remoteInstanceStatusDialogResult.result;
 
   if (remoteInstanceStatus != null) {
-    IPleromaApiMediaAttachment? remoteInstanceInitialMediaAttachment;
+    IUnifediApiMediaAttachment? remoteInstanceInitialMediaAttachment;
 
     if (localInstanceRemoteInitialMediaAttachment != null) {
       remoteInstanceInitialMediaAttachment =
@@ -110,7 +112,7 @@ Future goToRemoteStatusThreadPageBasedOnLocalInstanceRemoteStatus(
 
 MaterialPageRoute createRemoteStatusThreadPageRouteBasedOnRemoteInstanceStatus({
   required IStatus status,
-  required IPleromaApiMediaAttachment? initialMediaAttachment,
+  required IUnifediApiMediaAttachment? initialMediaAttachment,
 }) {
   return MaterialPageRoute(
     builder: (context) => DisposableProvider<IRemoteInstanceBloc>(
@@ -123,20 +125,26 @@ MaterialPageRoute createRemoteStatusThreadPageRouteBasedOnRemoteInstanceStatus({
             context,
             listen: false,
           ),
-          pleromaApiInstance: null,
+          unifediApiInstance: null,
         );
       },
-      child: DisposableProvider<IStatusThreadBloc>(
-        create: (context) => RemoteStatusThreadBloc.createFromContext(
-          context,
-          initialStatusToFetchThread: status,
-          initialMediaAttachment: initialMediaAttachment,
-        ),
-        child: StatusThreadBlocProxyProvider(
-          child: ThreadPostStatusBloc.provideToContext(
-            context,
-            inReplyToStatus: status,
-            child: const StatusThreadPage(),
+      child: Builder(
+        builder: (context) => FediAsyncInitLoadingWidget(
+          asyncInitLoadingBloc: IRemoteInstanceBloc.of(context),
+          // todo: remove hack
+          loadingFinishedBuilder: (_) => DisposableProvider<IStatusThreadBloc>(
+            create: (context) => RemoteStatusThreadBloc.createFromContext(
+              context,
+              initialStatusToFetchThread: status,
+              initialMediaAttachment: initialMediaAttachment,
+            ),
+            child: StatusThreadBlocProxyProvider(
+              child: ThreadPostStatusBloc.provideToContext(
+                context,
+                inReplyToStatus: status,
+                child: const StatusThreadPage(),
+              ),
+            ),
           ),
         ),
       ),

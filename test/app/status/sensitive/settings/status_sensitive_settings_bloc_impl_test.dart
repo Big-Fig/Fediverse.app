@@ -72,7 +72,7 @@ void main() {
     );
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     var defaultValue =
         GlobalStatusSensitiveSettingsLocalPreferenceBloc.defaultValue;
@@ -95,7 +95,7 @@ void main() {
       defaultValue.isAlwaysShowNsfw,
     );
 
-    var testIsAlwaysShowNsfw = StatusSensitiveSettingsModelTestHelper
+    var testIsAlwaysShowNsfw = StatusSensitiveSettingsModelMockHelper
             .createTestStatusSensitiveSettings(seed: 'seed')
         .isAlwaysShowNsfw;
 
@@ -103,7 +103,7 @@ void main() {
         .changeIsAlwaysShowNsfw(testIsAlwaysShowNsfw);
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(
       listened?.isAlwaysShowNsfw,
@@ -137,7 +137,7 @@ void main() {
     );
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     var defaultValue =
         GlobalStatusSensitiveSettingsLocalPreferenceBloc.defaultValue;
@@ -160,7 +160,7 @@ void main() {
       defaultValue.isAlwaysShowSpoiler,
     );
 
-    var testIsAlwaysShowSpoiler = StatusSensitiveSettingsModelTestHelper
+    var testIsAlwaysShowSpoiler = StatusSensitiveSettingsModelMockHelper
             .createTestStatusSensitiveSettings(seed: 'seed')
         .isAlwaysShowSpoiler;
 
@@ -168,7 +168,7 @@ void main() {
         .changeIsAlwaysShowSpoiler(testIsAlwaysShowSpoiler);
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(
       listened?.isAlwaysShowSpoiler,
@@ -202,7 +202,7 @@ void main() {
     );
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     var defaultValue =
         GlobalStatusSensitiveSettingsLocalPreferenceBloc.defaultValue;
@@ -225,7 +225,7 @@ void main() {
       defaultValue.nsfwDisplayDelayDuration,
     );
 
-    var testNsfwDisplayDelayDuration = StatusSensitiveSettingsModelTestHelper
+    var testNsfwDisplayDelayDuration = StatusSensitiveSettingsModelMockHelper
             .createTestStatusSensitiveSettings(seed: 'seed')
         .nsfwDisplayDelayDuration;
 
@@ -233,7 +233,7 @@ void main() {
         .changeNsfwDisplayDelayDuration(testNsfwDisplayDelayDuration);
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(
       listened?.nsfwDisplayDelayDuration,
@@ -259,7 +259,7 @@ void main() {
         .changeNsfwDisplayDelayDuration(testNsfwDisplayDelayDuration);
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(
       listened?.nsfwDisplayDelayDuration,

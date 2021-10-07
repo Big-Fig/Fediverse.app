@@ -23,6 +23,7 @@ class EditPostStatusSettingsWidget extends StatelessWidget {
       children: [
         const _EditPostStatusSettingsDefaultVisibilityFieldWidget(),
         const _EditPostStatusSettingsMarkMediaAsNsfwOnAttachWidget(),
+        const _EditPostStatusSettingsDontUploadMediaDuringEditingWidget(),
         const _EditPostStatusSettingsDefaultStatusLocaleFieldWidget(),
       ],
     );
@@ -44,6 +45,26 @@ class _EditPostStatusSettingsMarkMediaAsNsfwOnAttachWidget
         label: S
             .of(context)
             .app_status_post_settings_field_markMediaAsNsfwOnAttach_label,
+      ),
+    );
+  }
+}
+
+class _EditPostStatusSettingsDontUploadMediaDuringEditingWidget
+    extends StatelessWidget {
+  const _EditPostStatusSettingsDontUploadMediaDuringEditingWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ProxyProvider<IEditPostStatusSettingsBloc, IBoolValueFormFieldBloc>(
+      update: (context, value, previous) =>
+          value.dontUploadMediaDuringEditingFormFieldBloc,
+      child: BoolValueFormFieldRowWidget(
+        label: S
+            .of(context)
+            .app_status_post_settings_field_dontUploadMediaDuringEditing_label,
       ),
     );
   }

@@ -1,6 +1,6 @@
-import 'package:fedi/app/instance/app_bar/instance_host_app_bar_widget.dart';
 import 'package:fedi/app/instance/activity/instance_activity_widget.dart';
 import 'package:fedi/app/instance/activity/local/local_instance_activity_bloc_impl.dart';
+import 'package:fedi/app/instance/app_bar/instance_host_app_bar_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

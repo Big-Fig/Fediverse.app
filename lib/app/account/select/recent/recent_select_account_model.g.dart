@@ -18,7 +18,7 @@ class RecentSelectAccountListAdapter
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return RecentSelectAccountList(
-      recentItems: (fields[0] as List?)?.cast<PleromaApiAccount>(),
+      recentItems: (fields[0] as List?)?.cast<UnifediApiAccount>(),
     );
   }
 
@@ -45,17 +45,25 @@ class RecentSelectAccountListAdapter
 // JsonSerializableGenerator
 // **************************************************************************
 
-RecentSelectAccountList _$RecentSelectAccountListFromJson(
-    Map<String, dynamic> json) {
-  return RecentSelectAccountList(
-    recentItems: (json['recentItems'] as List<dynamic>?)
-        ?.map((e) => PleromaApiAccount.fromJson(e as Map<String, dynamic>))
-        .toList(),
-  );
-}
+_$_RecentSelectAccountList _$$_RecentSelectAccountListFromJson(
+        Map<String, dynamic> json) =>
+    _$_RecentSelectAccountList(
+      recentItems: (json['recentItems'] as List<dynamic>?)
+          ?.map((e) => UnifediApiAccount.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
 
-Map<String, dynamic> _$RecentSelectAccountListToJson(
-        RecentSelectAccountList instance) =>
-    <String, dynamic>{
-      'recentItems': instance.recentItems?.map((e) => e.toJson()).toList(),
-    };
+Map<String, dynamic> _$$_RecentSelectAccountListToJson(
+    _$_RecentSelectAccountList instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull(
+      'recentItems', instance.recentItems?.map((e) => e.toJson()).toList());
+  return val;
+}

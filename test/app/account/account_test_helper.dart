@@ -1,28 +1,28 @@
 import 'package:fedi/app/account/account_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 import 'database/account_database_test_helper.dart';
 
 // ignore_for_file: no-magic-number, no-equal-arguments
-class AccountTestHelper {
+class AccountMockHelper {
   static Future<DbAccountPopulatedWrapper> createTestAccount({
     required String seed,
     String? remoteId,
   }) async =>
       DbAccountPopulatedWrapper(
         dbAccountPopulated: DbAccountPopulated(
-          dbAccount: await AccountDatabaseTestHelper.createTestDbAccount(
+          dbAccount: await AccountDatabaseMockHelper.createTestDbAccount(
             seed: seed,
             remoteId: remoteId,
           ),
         ),
       );
 
-  static PleromaApiAccountRelationship createTestAccountRelationship({
+  static UnifediApiAccountRelationship createTestAccountRelationship({
     required String seed,
   }) =>
-      PleromaApiAccountRelationship(
+      UnifediApiAccountRelationship(
         blocking: seed.hashCode % 2 == 0,
         domainBlocking: seed.hashCode % 3 == 0,
         endorsed: seed.hashCode % 4 == 0,
@@ -66,30 +66,30 @@ class AccountTestHelper {
     expect(actual.fields, expected.fields);
     expect(actual.emojis, expected.emojis);
 
-    expect(actual.pleromaTags, expected.pleromaTags);
-    expect(actual.pleromaRelationship, expected.pleromaRelationship);
-    expect(actual.pleromaIsAdmin, expected.pleromaIsAdmin);
-    expect(actual.pleromaIsModerator, expected.pleromaIsModerator);
+    expect(actual.tags, expected.tags);
+    expect(actual.relationship, expected.relationship);
+    expect(actual.isAdmin, expected.isAdmin);
+    expect(actual.isModerator, expected.isModerator);
     expect(
-      actual.pleromaConfirmationPending,
-      expected.pleromaConfirmationPending,
+      actual.confirmationPending,
+      expected.confirmationPending,
     );
-    expect(actual.pleromaHideFavorites, expected.pleromaHideFavorites);
-    expect(actual.pleromaHideFollowers, expected.pleromaHideFollowers);
-    expect(actual.pleromaHideFollows, expected.pleromaHideFollows);
+    expect(actual.hideFavorites, expected.hideFavorites);
+    expect(actual.hideFollowers, expected.hideFollowers);
+    expect(actual.hideFollows, expected.hideFollows);
     expect(
-      actual.pleromaHideFollowersCount,
-      expected.pleromaHideFollowersCount,
+      actual.hideFollowersCount,
+      expected.hideFollowersCount,
     );
-    expect(actual.pleromaHideFollowsCount, expected.pleromaHideFollowsCount);
-    expect(actual.pleromaDeactivated, expected.pleromaDeactivated);
+    expect(actual.hideFollowsCount, expected.hideFollowsCount);
+    expect(actual.deactivated, expected.deactivated);
     expect(
-      actual.pleromaAllowFollowingMove,
-      expected.pleromaAllowFollowingMove,
+      actual.allowFollowingMove,
+      expected.allowFollowingMove,
     );
     expect(
-      actual.pleromaSkipThreadContainment,
-      expected.pleromaSkipThreadContainment,
+      actual.skipThreadContainment,
+      expected.skipThreadContainment,
     );
   }
 }

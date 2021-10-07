@@ -2,20 +2,20 @@ import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/statuses/account_statuses_network_only_list_bloc_impl.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 abstract class AccountStatusesFavouritesNetworkOnlyListBloc
     extends AccountStatusesNetworkOnlyListBloc {
   AccountStatusesFavouritesNetworkOnlyListBloc({
     required IAccount? account,
-    required IPleromaApiAccountService pleromaAccountService,
+    required IUnifediApiAccountService unifediApiAccountService,
   }) : super(
           account: account,
-          pleromaAccountService: pleromaAccountService,
+          unifediApiAccountService: unifediApiAccountService,
         );
 
   @override
-  IPleromaApi get pleromaApi => pleromaAccountService;
+  IUnifediApiService get unifediApi => unifediApiAccountService;
 
   @override
   Future<List<IStatus>> loadItemsFromRemoteForPage({
@@ -24,19 +24,19 @@ abstract class AccountStatusesFavouritesNetworkOnlyListBloc
     String? minId,
     String? maxId,
   }) async {
-    var pleromaStatuses =
-        await pleromaAccountService.getAccountFavouritedStatuses(
-      accountRemoteId: account!.remoteId,
-      pagination: PleromaApiPaginationRequest(
+    var unifediApiStatuses =
+        await unifediApiAccountService.getAccountFavouritedStatuses(
+      accountId: account!.remoteId,
+      pagination: UnifediApiPagination(
         limit: itemsCountPerPage,
-        sinceId: minId,
+        minId: minId,
         maxId: maxId,
       ),
     );
 
-    return pleromaStatuses
+    return unifediApiStatuses
         .map(
-          (pleromaStatus) => pleromaStatus.toDbStatusPopulatedWrapper(),
+          (unifediApiStatus) => unifediApiStatus.toDbStatusPopulatedWrapper(),
         )
         .toList();
   }

@@ -10,14 +10,14 @@ import 'package:fedi/app/status/visibility/form/single_from_list/status_visibili
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc.dart';
 import 'package:fedi/form/field/value/bool/bool_value_form_field_bloc_impl.dart';
 import 'package:fedi/form/form_item_bloc.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class EditPostStatusSettingsBloc
     extends EditGlobalOrInstanceSettingsBloc<PostStatusSettings>
     implements IEditPostStatusSettingsBloc {
   final IPostStatusSettingsBloc postStatusSettingsBloc;
 
-  final List<PleromaApiVisibility> pleromaVisibilityPossibleValues;
+  final List<UnifediApiVisibility> pleromaVisibilityPossibleValues;
   @override
   // ignore: avoid-late-keyword
   late IStatusVisibilitySelectSingleFromListValueFormFieldBloc
@@ -29,6 +29,10 @@ class EditPostStatusSettingsBloc
 
   @override
   // ignore: avoid-late-keyword
+  late IBoolValueFormFieldBloc<bool> dontUploadMediaDuringEditingFormFieldBloc;
+
+  @override
+  // ignore: avoid-late-keyword
   late LocalizationLocaleSingleFromListValueFormFieldBloc
       defaultStatusLocaleFormFieldBloc;
 
@@ -36,6 +40,7 @@ class EditPostStatusSettingsBloc
   List<IFormItemBloc> get currentItems => [
         defaultVisibilityFormFieldBloc,
         markMediaAsNsfwOnAttachFormFieldBloc,
+        dontUploadMediaDuringEditingFormFieldBloc,
         defaultStatusLocaleFormFieldBloc,
       ];
 
@@ -54,12 +59,16 @@ class EditPostStatusSettingsBloc
         ) {
     defaultVisibilityFormFieldBloc =
         StatusVisibilitySelectSingleFromListValueFormFieldBloc(
-      originValue: currentSettings.defaultVisibilityAsPleromaApi,
+      originValue: currentSettings.defaultVisibilityAsUnifediApi,
       isEnabled: isEnabled,
       possibleValues: pleromaVisibilityPossibleValues,
     );
     markMediaAsNsfwOnAttachFormFieldBloc = BoolValueFormFieldBloc(
       originValue: currentSettings.markMediaAsNsfwOnAttach,
+      isEnabled: isEnabled,
+    );
+    dontUploadMediaDuringEditingFormFieldBloc = BoolValueFormFieldBloc(
+      originValue: currentSettings.dontUploadMediaDuringEditing,
       isEnabled: isEnabled,
     );
 
@@ -72,6 +81,7 @@ class EditPostStatusSettingsBloc
 
     addDisposable(defaultVisibilityFormFieldBloc);
     addDisposable(markMediaAsNsfwOnAttachFormFieldBloc);
+    addDisposable(dontUploadMediaDuringEditingFormFieldBloc);
     addDisposable(defaultStatusLocaleFormFieldBloc);
 
     onFormItemsChanged();
@@ -80,18 +90,22 @@ class EditPostStatusSettingsBloc
   @override
   PostStatusSettings calculateCurrentFormFieldsSettings() => PostStatusSettings(
         defaultVisibilityString:
-            defaultVisibilityFormFieldBloc.currentValue.toJsonValue(),
+            defaultVisibilityFormFieldBloc.currentValue.stringValue,
         markMediaAsNsfwOnAttach:
             markMediaAsNsfwOnAttachFormFieldBloc.currentValue,
+        dontUploadMediaDuringEditing:
+            dontUploadMediaDuringEditingFormFieldBloc.currentValue,
         defaultStatusLocale: defaultStatusLocaleFormFieldBloc.currentValue,
       );
 
   @override
   Future fillSettingsToFormFields(PostStatusSettings settings) async {
     defaultVisibilityFormFieldBloc
-        .changeCurrentValue(settings.defaultVisibilityAsPleromaApi);
+        .changeCurrentValue(settings.defaultVisibilityAsUnifediApi);
     markMediaAsNsfwOnAttachFormFieldBloc
         .changeCurrentValue(settings.markMediaAsNsfwOnAttach);
+    dontUploadMediaDuringEditingFormFieldBloc
+        .changeCurrentValue(settings.dontUploadMediaDuringEditing);
     defaultStatusLocaleFormFieldBloc
         .changeCurrentValue(settings.defaultStatusLocale);
   }

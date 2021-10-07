@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'database/conversation_database_test_helper.dart';
 
-class ConversationTestHelper {
+class ConversationMockHelper {
   static Future<DbConversationChatPopulatedWrapper> createTestConversation({
     required String seed,
     String? remoteId,
@@ -11,7 +11,7 @@ class ConversationTestHelper {
       DbConversationChatPopulatedWrapper(
         dbConversationPopulated: DbConversationPopulated(
           dbConversation:
-              await ConversationDatabaseTestHelper.createTestDbConversation(
+              await ConversationDatabaseMockHelper.createTestDbConversation(
             seed: seed,
             remoteId: remoteId,
           ),

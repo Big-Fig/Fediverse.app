@@ -15,6 +15,7 @@ abstract class IFilesCacheService implements IDisposable {
     required String imageUrl,
   });
 
+  // ignore: long-parameter-list
   Widget createCachedNetworkImageWidget({
     String? stringKey,
     required String imageUrl,
@@ -43,6 +44,5 @@ abstract class IFilesCacheService implements IDisposable {
     String? cacheKey,
     int? maxWidthDiskCache,
     int? maxHeightDiskCache,
-    ImageRenderMethodForWeb? imageRenderMethodForWeb,
   });
 }

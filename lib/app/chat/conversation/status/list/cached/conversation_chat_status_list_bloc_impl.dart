@@ -9,7 +9,7 @@ import 'package:fedi/repository/repository_model.dart';
 abstract class ConversationChatStatusListBloc extends AsyncInitLoadingBloc
     implements IConversationChatStatusCachedListBloc {
   StatusRepositoryFilters get _statusRepositoryFilters =>
-      StatusRepositoryFilters(
+      StatusRepositoryFilters.only(
         onlyInConversation: conversation,
         onlyPendingStatePublishedOrNull: false,
       );

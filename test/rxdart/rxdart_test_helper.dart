@@ -2,7 +2,7 @@ import 'dart:async';
 
 typedef DataChecker<T> = T Function();
 
-class RxDartTestHelper {
+class RxDartMockHelper {
   static Future<T> waitForData<T>(
     DataChecker<T?> dataChecker, {
     Duration reCheckInterval = const Duration(milliseconds: 10),

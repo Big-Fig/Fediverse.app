@@ -25,11 +25,12 @@ import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_b
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/timeline/timeline_model.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:fedi/connection/connection_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 final _logger = Logger('edit_custom_list_bloc_impl.dart');
 
@@ -42,9 +43,13 @@ class EditCustomListBloc extends DisposableOwner
     required VoidCallback? onDelete,
   }) {
     var editCustomListBloc = EditCustomListBloc(
+      connectionService: Provider.of<IConnectionService>(
+        context,
+        listen: false,
+      ),
       customList: initialValue,
       statusRepository: IStatusRepository.of(context, listen: false),
-      pleromaListService: Provider.of<IPleromaApiListService>(
+      pleromaListService: Provider.of<IUnifediApiListService>(
         context,
         listen: false,
       ),
@@ -52,7 +57,7 @@ class EditCustomListBloc extends DisposableOwner
         context,
         listen: false,
       ),
-      pleromaAuthAccountService: Provider.of<IPleromaApiAuthAccountService>(
+      pleromaAuthAccountService: Provider.of<IUnifediApiAccountService>(
         context,
         listen: false,
       ),
@@ -107,7 +112,7 @@ class EditCustomListBloc extends DisposableOwner
 
   final ICustomList? customList;
 
-  final IPleromaApiListService pleromaListService;
+  final IUnifediApiListService pleromaListService;
 
   @override
   // ignore: avoid-late-keyword
@@ -139,6 +144,7 @@ class EditCustomListBloc extends DisposableOwner
   @override
   final bool isPossibleToDelete;
   final IPaginationSettingsBloc paginationSettingsBloc;
+  final IConnectionService connectionService;
 
   EditCustomListBloc({
     required this.customList,
@@ -147,9 +153,10 @@ class EditCustomListBloc extends DisposableOwner
     required this.isPossibleToDelete,
     required this.timelinesHomeTabStorageBloc,
     required this.paginationSettingsBloc,
+    required this.connectionService,
     required IMyAccountBloc myAccountBloc,
     required IAccountRepository accountRepository,
-    required IPleromaApiAuthAccountService pleromaAuthAccountService,
+    required IUnifediApiAccountService pleromaAuthAccountService,
   })  : selectAccountListBloc = SelectAccountListBloc(
           pleromaAuthAccountService: pleromaAuthAccountService,
           accountRepository: accountRepository,
@@ -170,6 +177,7 @@ class EditCustomListBloc extends DisposableOwner
 
     customListAccountListNetworkOnlyPaginationBloc =
         AccountNetworkOnlyPaginationBloc(
+      connectionService: connectionService,
       listBloc: customListAccountListNetworkOnlyListBloc,
       maximumCachedPagesCount: null,
       paginationSettingsBloc: paginationSettingsBloc,
@@ -244,8 +252,9 @@ class EditCustomListBloc extends DisposableOwner
   Future<ICustomList> submit() async {
     var listRemoteId = customList!.remoteId;
     var pleromaList = await pleromaListService.updateList(
-      listRemoteId: listRemoteId,
+      listId: listRemoteId,
       title: customListFormBloc.titleField.currentValue,
+      repliesPolicy: null,
     );
 
     if (editCustomListAccountListPaginationListBloc.isSomethingChanged) {
@@ -257,7 +266,7 @@ class EditCustomListBloc extends DisposableOwner
       if (addedAccounts.isNotEmpty) {
         for (var addedAccount in addedAccounts) {
           await pleromaListService.addAccountsToList(
-            listRemoteId: listRemoteId,
+            listId: listRemoteId,
             accountIds: [
               addedAccount.remoteId,
             ],
@@ -273,7 +282,7 @@ class EditCustomListBloc extends DisposableOwner
         // Pleroma issue: it is only possible to remove one account in one request
         for (var removedAccount in removedAccounts) {
           await pleromaListService.removeAccountsFromList(
-            listRemoteId: listRemoteId,
+            listId: listRemoteId,
             accountIds: [
               removedAccount.remoteId,
             ],
@@ -294,7 +303,7 @@ class EditCustomListBloc extends DisposableOwner
 
   @override
   Future deleteList() async {
-    await pleromaListService.deleteList(listRemoteId: customList!.remoteId);
+    await pleromaListService.deleteList(listId: customList!.remoteId);
 
     deletedStreamController.add(null);
 

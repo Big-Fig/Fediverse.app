@@ -1,48 +1,21 @@
-import 'package:moor/moor.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:moor/moor.dart' as moor;
 
-class RepositoryPagination<T> {
-  final T? newerThanItem;
-  final T? olderThanItem;
-  final int? limit;
-  final int? offset;
+part 'repository_model.freezed.dart';
 
-  RepositoryPagination({
-    this.newerThanItem,
-    this.olderThanItem,
-    this.limit,
-    this.offset,
-  });
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is RepositoryPagination &&
-          runtimeType == other.runtimeType &&
-          newerThanItem == other.newerThanItem &&
-          olderThanItem == other.olderThanItem &&
-          limit == other.limit &&
-          offset == other.offset;
-
-  @override
-  int get hashCode =>
-      newerThanItem.hashCode ^
-      olderThanItem.hashCode ^
-      limit.hashCode ^
-      offset.hashCode;
-
-  @override
-  String toString() {
-    return 'RepositoryPagination{'
-        'newerThanItem: $newerThanItem,'
-        ' olderThanItem: $olderThanItem,'
-        ' limit: $limit,'
-        ' offset: $offset'
-        '}';
-  }
+@freezed
+class RepositoryPagination<T> with _$RepositoryPagination<T> {
+  const RepositoryPagination._();
+  const factory RepositoryPagination({
+    T? newerThanItem,
+    T? olderThanItem,
+    int? limit,
+    int? offset,
+  }) = _RepositoryPagination<T>;
 }
 
 abstract class RepositoryOrderingTerm {
-  OrderingMode get orderingMode;
+  moor.OrderingMode get orderingMode;
 
   const RepositoryOrderingTerm();
 }

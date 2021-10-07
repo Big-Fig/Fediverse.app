@@ -1,3 +1,5 @@
+import 'package:easy_dispose/easy_dispose.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/account/my/endorsement/account_list/network_only/my_account_endorsement_account_list_network_only_list_bloc.dart';
 import 'package:fedi/app/account/my/endorsement/account_list/network_only/my_account_endorsement_account_list_network_only_list_bloc_impl.dart';
 import 'package:fedi/app/account/my/endorsement/my_account_endorsement_bloc.dart';
@@ -8,29 +10,30 @@ import 'package:fedi/app/account/pagination/network_only/account_network_only_pa
 import 'package:fedi/app/account/pagination/network_only/account_network_only_pagination_bloc_impl.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
-import 'package:easy_dispose/easy_dispose.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
+import 'package:fedi/connection/connection_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class MyAccountEndorsementBloc extends DisposableOwner
     implements IMyAccountEndorsementBloc {
   final IPaginationSettingsBloc paginationSettingsBloc;
 
   MyAccountEndorsementBloc({
-    required this.pleromaApiEndorsementsService,
+    required this.unifediApiMyAccountService,
     required this.paginationSettingsBloc,
+    required IConnectionService connectionService,
   }) {
     myAccountEndorsementAccountListNetworkOnlyListBloc =
         MyAccountEndorsementAccountListNetworkOnlyListBloc(
-      pleromaApiEndorsementsService: pleromaApiEndorsementsService,
+      unifediApiMyAccountService: unifediApiMyAccountService,
       remoteInstanceUriOrNull: remoteInstanceUriOrNull,
       instanceLocation: instanceLocation,
     );
 
     myAccountEndorsementAccountListNetworkOnlyPaginationBloc =
         AccountNetworkOnlyPaginationBloc(
+      connectionService: connectionService,
       listBloc: myAccountEndorsementAccountListNetworkOnlyListBloc,
       maximumCachedPagesCount: null,
       paginationSettingsBloc: paginationSettingsBloc,
@@ -46,7 +49,7 @@ class MyAccountEndorsementBloc extends DisposableOwner
     accountPaginationListBloc.refreshWithoutController();
   }
 
-  final IPleromaApiEndorsementsService pleromaApiEndorsementsService;
+  final IUnifediApiMyAccountService unifediApiMyAccountService;
 
   @override
   // ignore: avoid-late-keyword
@@ -69,11 +72,15 @@ class MyAccountEndorsementBloc extends DisposableOwner
   Uri? get remoteInstanceUriOrNull => null;
 
   static MyAccountEndorsementBloc createFromContext(BuildContext context) {
-    var pleromaApiEndorsementsService =
-        Provider.of<IPleromaApiEndorsementsService>(context, listen: false);
+    var unifediApiMyAccountService =
+        Provider.of<IUnifediApiMyAccountService>(context, listen: false);
 
     return MyAccountEndorsementBloc(
-      pleromaApiEndorsementsService: pleromaApiEndorsementsService,
+      connectionService: Provider.of<IConnectionService>(
+        context,
+        listen: false,
+      ),
+      unifediApiMyAccountService: unifediApiMyAccountService,
       paginationSettingsBloc: IPaginationSettingsBloc.of(
         context,
         listen: false,

@@ -1,3 +1,4 @@
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
@@ -6,29 +7,26 @@ import 'package:fedi/app/instance/announcement/repository/instance_announcement_
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/web_sockets/web_sockets_handler_impl.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
-import 'package:base_fediverse_api/base_fediverse_api.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class HashtagStatusListWebSocketsHandler extends WebSocketsChannelHandler {
   HashtagStatusListWebSocketsHandler({
-    required String hashtag,
-    required IPleromaApiWebSocketsService pleromaWebSocketsService,
+    required IUnifediApiWebSocketsService unifediApiWebSocketsService,
     required IStatusRepository statusRepository,
     required INotificationRepository notificationRepository,
     required IInstanceAnnouncementRepository instanceAnnouncementRepository,
     required IConversationChatRepository conversationRepository,
     required IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc,
-    required bool? local,
+    required this.hashtag,
+    required this.local,
     required IConversationChatNewMessagesHandlerBloc
         conversationChatNewMessagesHandlerBloc,
-    required WebSocketsListenType listenType,
+    required WebSocketsChannelHandlerType handlerType,
     required IMyAccountBloc myAccountBloc,
   }) : super(
+          unifediApiWebSocketsService: unifediApiWebSocketsService,
           myAccountBloc: myAccountBloc,
-          webSocketsChannel: pleromaWebSocketsService.getHashtagChannel(
-            hashtag: hashtag,
-            local: local,
-          ),
           statusRepository: statusRepository,
           notificationRepository: notificationRepository,
           instanceAnnouncementRepository: instanceAnnouncementRepository,
@@ -39,8 +37,20 @@ class HashtagStatusListWebSocketsHandler extends WebSocketsChannelHandler {
           statusListRemoteId: null,
           statusConversationRemoteId: null,
           isFromHomeTimeline: false,
-          listenType: listenType,
+          handlerType: handlerType,
         );
+
+  final String hashtag;
+  final bool? local;
+
+  @override
+  IDisposable initListener() =>
+      unifediApiWebSocketsService.listenForHashtagEvents(
+        tag: hashtag,
+        localOnly: local == true,
+        handlerType: handlerType,
+        onEvent: handleEvent,
+      );
 
   @override
   String get logTag => 'hashtag_timeline_websockets_handler_impl.dart';

@@ -1,140 +1,48 @@
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_html/style.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
-class HtmlTextResultData {
-  final String? text;
-  final bool isActuallyHaveHtmlInData;
-  HtmlTextResultData({
-    required this.text,
-    required this.isActuallyHaveHtmlInData,
-  });
+part 'html_text_model.freezed.dart';
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is HtmlTextResultData &&
-          runtimeType == other.runtimeType &&
-          text == other.text &&
-          isActuallyHaveHtmlInData == other.isActuallyHaveHtmlInData;
-  @override
-  int get hashCode => text.hashCode ^ isActuallyHaveHtmlInData.hashCode;
-  @override
-  String toString() {
-    return 'HtmlTextResultData{text: $text,'
-        ' isActuallyHaveHtmlInData: $isActuallyHaveHtmlInData}';
-  }
+@freezed
+class HtmlTextResultData with _$HtmlTextResultData {
+  const factory HtmlTextResultData({
+    required String? text,
+    required bool isActuallyHaveHtmlInData,
+  }) = _HtmlTextResultData;
 }
 
-class HtmlTextInputData {
-  final String? input;
-
-  final List<IPleromaApiEmoji>? emojis;
-
+@freezed
+class HtmlTextInputData with _$HtmlTextInputData {
   bool get isHaveEmojis => emojis?.isNotEmpty == true;
 
-  HtmlTextInputData({
-    required this.input,
-    required this.emojis,
-  });
+  const HtmlTextInputData._();
 
-  @override
-  String toString() {
-    return 'HtmlTextInputData{input: $input, emojis: $emojis}';
-  }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is HtmlTextInputData &&
-          runtimeType == other.runtimeType &&
-          input == other.input &&
-          emojis == other.emojis;
-  @override
-  int get hashCode => input.hashCode ^ emojis.hashCode;
+  const factory HtmlTextInputData({
+    required String? input,
+    required List<IUnifediApiEmoji>? emojis,
+  }) = _HtmlTextInputData;
 }
 
-class HtmlTextSettings {
-  final double? fontSize;
-  final FontWeight? fontWeight;
-  final double? lineHeight;
-  final Color? color;
-  final Color linkColor;
-  final int? textMaxLines;
-  final TextOverflow? textOverflow;
-  final bool shrinkWrap;
-  final bool drawNewLines;
-  final TextAlign textAlign;
-  final double customEmojiImageSize;
-  final double imageSize;
-  final Display paragraphDisplay;
-  final double textScaleFactor;
-
-  HtmlTextSettings({
-    required this.fontSize,
-    required this.lineHeight,
-    required this.fontWeight,
+@freezed
+class HtmlTextSettings with _$HtmlTextSettings {
+  const factory HtmlTextSettings({
+    required double? fontSize,
+    required FontWeight? fontWeight,
+    required double? lineHeight,
+    required Color? color,
+    required Color linkColor,
+    required int? textMaxLines,
+    required TextOverflow? textOverflow,
+    @Default(false) bool shrinkWrap,
+    required bool drawNewLines,
+    @Default(TextAlign.start) TextAlign textAlign,
     // ignore: no-magic-number
-    this.customEmojiImageSize = 20.0,
+    @Default(20.0) double customEmojiImageSize,
     // ignore: no-magic-number
-    this.imageSize = 20.0,
-    required this.linkColor,
-    required this.color,
-    required this.textMaxLines,
-    this.paragraphDisplay = Display.INLINE,
-    required this.textOverflow,
-    required this.textScaleFactor,
-    this.shrinkWrap = false,
-    required this.drawNewLines,
-    this.textAlign = TextAlign.start,
-  });
-
-  @override
-  String toString() {
-    return 'HtmlTextSettings{fontSize: $fontSize, fontWeight: $fontWeight,'
-        ' lineHeight: $lineHeight, color: $color, linkColor: $linkColor,'
-        ' textMaxLines: $textMaxLines, textOverflow: $textOverflow,'
-        ' shrinkWrap: $shrinkWrap, drawNewLines: $drawNewLines,'
-        ' textAlign: $textAlign,'
-        ' customEmojiImageSize: $customEmojiImageSize,'
-        ' imageSize: $imageSize,'
-        ' textScaleFactor: $textScaleFactor,'
-        ' paragraphDisplay: $paragraphDisplay}';
-  }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is HtmlTextSettings &&
-          runtimeType == other.runtimeType &&
-          fontSize == other.fontSize &&
-          fontWeight == other.fontWeight &&
-          lineHeight == other.lineHeight &&
-          color == other.color &&
-          linkColor == other.linkColor &&
-          textMaxLines == other.textMaxLines &&
-          textOverflow == other.textOverflow &&
-          shrinkWrap == other.shrinkWrap &&
-          drawNewLines == other.drawNewLines &&
-          textAlign == other.textAlign &&
-          customEmojiImageSize == other.customEmojiImageSize &&
-          imageSize == other.imageSize &&
-          paragraphDisplay == other.paragraphDisplay &&
-          textScaleFactor == other.textScaleFactor;
-  @override
-  int get hashCode =>
-      fontSize.hashCode ^
-      fontWeight.hashCode ^
-      lineHeight.hashCode ^
-      color.hashCode ^
-      linkColor.hashCode ^
-      textMaxLines.hashCode ^
-      textOverflow.hashCode ^
-      shrinkWrap.hashCode ^
-      drawNewLines.hashCode ^
-      textAlign.hashCode ^
-      customEmojiImageSize.hashCode ^
-      imageSize.hashCode ^
-      paragraphDisplay.hashCode ^
-      textScaleFactor.hashCode;
+    @Default(20.0) double imageSize,
+    @Default(Display.INLINE) Display paragraphDisplay,
+    required double textScaleFactor,
+  }) = _HtmlTextSettings;
 }

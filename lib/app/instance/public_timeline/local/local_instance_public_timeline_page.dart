@@ -1,5 +1,8 @@
-import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
+import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/instance/public_timeline/instance_public_timeline_widget.dart';
+import 'package:fedi/app/instance/public_timeline/local/local_instance_public_timeline_page_bloc.dart';
+import 'package:fedi/app/instance/public_timeline/local/local_instance_public_timeline_page_bloc_impl.dart';
 import 'package:fedi/app/list/cached/pleroma_cached_list_bloc.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc_proxy_provider.dart';
@@ -10,18 +13,15 @@ import 'package:fedi/app/status/pagination/cached/status_cached_pagination_bloc_
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/ui/async/fedi_async_init_loading_widget.dart';
 import 'package:fedi/collapsible/owner/collapsible_owner_widget.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc_proxy_provider.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:fedi/ui/scroll/scroll_controller_bloc.dart';
 import 'package:fedi/ui/scroll/scroll_controller_bloc_impl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:fedi/app/instance/public_timeline/local/local_instance_public_timeline_page_bloc.dart';
-import 'package:fedi/app/instance/public_timeline/local/local_instance_public_timeline_page_bloc_impl.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class LocalInstancePublicTimelinePage extends StatelessWidget {
   const LocalInstancePublicTimelinePage();
@@ -38,14 +38,14 @@ class LocalInstancePublicTimelinePage extends StatelessWidget {
 }
 
 MaterialPageRoute createLocalInstancePublicTimelinePageRoute({
-  required IPleromaApiInstance pleromaApiInstance,
+  required IUnifediApiInstance unifediApiInstance,
 }) =>
     MaterialPageRoute(
       builder: (context) =>
           LocalInstancePublicTimelinePageBloc.provideToContext(
         context,
-        pleromaApiInstance: pleromaApiInstance,
-        child: ProxyProvider<ICurrentAuthInstanceBloc, IPleromaApiInstance>(
+        unifediApiInstance: unifediApiInstance,
+        child: ProxyProvider<ICurrentUnifediApiAccessBloc, IUnifediApiInstance>(
           update: (context, value, previous) => value.currentInstance!.info!,
           child: const LocalInstancePublicTimelinePage(),
         ),
@@ -54,12 +54,12 @@ MaterialPageRoute createLocalInstancePublicTimelinePageRoute({
 
 void goToLocalInstancePublicTimelinePage({
   required BuildContext context,
-  required IPleromaApiInstance pleromaApiInstance,
+  required IUnifediApiInstance unifediApiInstance,
 }) {
   Navigator.push(
     context,
     createLocalInstancePublicTimelinePageRoute(
-      pleromaApiInstance: pleromaApiInstance,
+      unifediApiInstance: unifediApiInstance,
     ),
   );
 }
@@ -85,8 +85,8 @@ class LocalInstancePublicTimelinePageBodyWidget extends StatelessWidget {
           update: (context, instancePublicTimelinePageBloc, _) =>
               instancePublicTimelinePageBloc.statusCachedListBloc,
           child: StatusCachedListBlocProxyProvider(
-            child: ProxyProvider<IStatusCachedListBloc,
-                IPleromaCachedListBloc<IStatus>>(
+            child:
+                ProxyProvider<IStatusCachedListBloc, ICachedListBloc<IStatus>>(
               update: (context, value, previous) => value,
               child: ProxyProvider<ILocalInstancePublicTimelinePageBloc,
                   IStatusCachedPaginationBloc>(

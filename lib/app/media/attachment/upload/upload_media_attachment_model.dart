@@ -1,34 +1,14 @@
-class UploadMediaAttachmentState {
-  final UploadMediaAttachmentStateType type;
-  final dynamic error;
-  final StackTrace? stackTrace;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  UploadMediaAttachmentState({
-    required this.type,
-    this.error,
-    this.stackTrace,
-  });
+part 'upload_media_attachment_model.freezed.dart';
 
-  @override
-  String toString() {
-    return 'UploadMediaAttachmentState{'
-        'type: $type, '
-        'error: $error, '
-        'stackTrace: $stackTrace'
-        '}';
-  }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is UploadMediaAttachmentState &&
-          runtimeType == other.runtimeType &&
-          type == other.type &&
-          error == other.error &&
-          stackTrace == other.stackTrace;
-
-  @override
-  int get hashCode => type.hashCode ^ error.hashCode ^ stackTrace.hashCode;
+@freezed
+class UploadMediaAttachmentState with _$UploadMediaAttachmentState {
+  const factory UploadMediaAttachmentState({
+    required UploadMediaAttachmentStateType type,
+    dynamic error,
+    StackTrace? stackTrace,
+  }) = _UploadMediaAttachmentState;
 }
 
 enum UploadMediaAttachmentStateType {

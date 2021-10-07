@@ -1,5 +1,5 @@
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
 import 'package:fedi/app/chat/conversation/unread/conversation_chat_unread_badge_bloc_impl.dart';
 import 'package:fedi/app/chat/pleroma/list/pleroma_chat_list_tap_to_load_overlay_widget.dart';
@@ -31,11 +31,12 @@ import 'package:fedi/pagination/cached/cached_pagination_model.dart';
 import 'package:fedi/pagination/cached/with_new_items/cached_pagination_list_with_new_items_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
-import 'package:base_fediverse_api/base_fediverse_api.dart';
+import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 var _logger = Logger('chat_messages_home_tab_page.dart');
 
@@ -74,7 +75,7 @@ class PleromaChatHomeTabPage extends StatelessWidget {
     return DisposableProvider<IPleromaChatWithLastMessageListBloc>(
       create: (context) => PleromaChatWithLastMessageListBloc.createFromContext(
         context,
-        webSocketsListenType: WebSocketsListenType.foreground,
+        handlerType: WebSocketsChannelHandlerType.foregroundValue,
       ),
       child: Builder(builder: (context) {
         var chatsListBloc =
@@ -125,12 +126,13 @@ class _ChatMessagesHomeTabPageContentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
+    var currentUnifediApiAccessBloc = ICurrentUnifediApiAccessBloc.of(context);
 
-    var currentInstance = currentAuthInstanceBloc.currentInstance!;
+    var currentInstance = currentUnifediApiAccessBloc.currentInstance!;
     var isPleromaInstance = currentInstance.isPleroma;
 
-    var isSupportChats = currentInstance.isSupportChats;
+    // todo: remove hack
+    var isSupportChats = isPleromaInstance;
 
     var fediUiColorTheme = IFediUiColorTheme.of(context);
 
@@ -186,12 +188,13 @@ class _ChatMessagesHomeTabPageHeaderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var currentAuthInstanceBloc = ICurrentAuthInstanceBloc.of(context);
+    var currentUnifediApiAccessBloc = ICurrentUnifediApiAccessBloc.of(context);
 
-    var currentInstance = currentAuthInstanceBloc.currentInstance!;
+    var currentInstance = currentUnifediApiAccessBloc.currentInstance!;
     var isPleromaInstance = currentInstance.isPleroma;
 
-    var isSupportChats = currentInstance.isSupportChats;
+    // todo: remove hack
+    var isSupportChats = isPleromaInstance;
 
     return FediTabMainHeaderBarWidget(
       leadingWidgets: [

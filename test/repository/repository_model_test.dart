@@ -6,7 +6,7 @@ import '../obj/obj_test_helper.dart';
 // ignore_for_file: no-magic-number
 void main() {
   test('equal & hashcode & toString', () async {
-    ObjTestHelper.testEqualsHashcodeToString(
+    ObjMockHelper.testEqualsHashcodeToString(
       ({required String seed}) => RepositoryPagination(
         newerThanItem: seed + '1',
         olderThanItem: seed + '2',

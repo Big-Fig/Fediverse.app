@@ -1,6 +1,6 @@
-import 'package:mastodon_fediverse_api/mastodon_fediverse_api.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 class MediaAttachmentCantAddToGalleryException implements Exception {
-  final IMastodonApiMediaAttachment? mediaAttachment;
+  final IUnifediApiMediaAttachment? mediaAttachment;
   MediaAttachmentCantAddToGalleryException(this.mediaAttachment);
 }

@@ -1,10 +1,10 @@
+import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/account/statuses/account_statuses_tab_model.dart';
 import 'package:fedi/app/ui/tab/indicator/fedi_tab_indicator_bloc.dart';
 import 'package:fedi/app/ui/tab/indicator/fedi_tab_indicator_bloc_impl.dart';
 import 'package:fedi/app/ui/tab/indicator/fedi_tab_indicator_model.dart';
 import 'package:fedi/app/ui/tab/indicator/text/fedi_text_tab_indicator_widget.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
-import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

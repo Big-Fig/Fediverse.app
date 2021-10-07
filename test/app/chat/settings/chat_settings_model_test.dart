@@ -8,9 +8,9 @@ import 'chat_settings_model_test_helper.dart';
 
 void main() {
   test('equal & hashcode & toString', () async {
-    ObjTestHelper.testEqualsHashcodeToString(
+    ObjMockHelper.testEqualsHashcodeToString(
       ({required String seed}) =>
-          ChatSettingsModelTestHelper.createTestChatSettings(
+          ChatSettingsModelMockHelper.createTestChatSettings(
         seed: seed,
       ),
       skipHashCodeDiffTest: true,
@@ -18,29 +18,29 @@ void main() {
   });
 
   test('toJson & fromJson', () async {
-    JsonTestHelper.testFromJsonToJson(
+    JsonMockHelper.testFromJsonToJson(
       ({required String seed}) =>
-          ChatSettingsModelTestHelper.createTestChatSettings(
+          ChatSettingsModelMockHelper.createTestChatSettings(
         seed: seed,
       ),
-      ChatSettings.fromJson,
+      (json) => ChatSettings.fromJson(json),
     );
   });
 
   test('hive save&load', () async {
-    await HiveTestHelper.testHiveSaveAndLoad(
+    await HiveMockHelper.testHiveSaveAndLoad(
       ({required String seed}) =>
-          ChatSettingsModelTestHelper.createTestChatSettings(
+          ChatSettingsModelMockHelper.createTestChatSettings(
         seed: seed,
       ),
     );
   });
 
   test('copyWith', () async {
-    var obj1 = ChatSettingsModelTestHelper.createTestChatSettings(
+    var obj1 = ChatSettingsModelMockHelper.createTestChatSettings(
       seed: 'seed1',
     );
-    var obj2 = ChatSettingsModelTestHelper.createTestChatSettings(
+    var obj2 = ChatSettingsModelMockHelper.createTestChatSettings(
       seed: 'seed2',
     );
 
@@ -57,7 +57,7 @@ void main() {
   });
 
   test('clone', () async {
-    var obj1 = ChatSettingsModelTestHelper.createTestChatSettings(
+    var obj1 = ChatSettingsModelMockHelper.createTestChatSettings(
       seed: 'seed1',
     );
 
@@ -67,7 +67,7 @@ void main() {
   });
 
   test('hive adapter', () async {
-    HiveTestHelper.testAdapter(
+    HiveMockHelper.testAdapter(
       () => ChatSettingsAdapter(),
     );
   });

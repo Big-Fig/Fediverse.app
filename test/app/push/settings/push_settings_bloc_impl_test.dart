@@ -4,23 +4,25 @@ import 'package:fedi/app/push/settings/local_preferences/instance/instance_push_
 import 'package:fedi/app/push/settings/push_settings_bloc_impl.dart';
 import 'package:fedi/app/push/settings/push_settings_model.dart';
 import 'package:fedi/app/push/settings/relay/local_preferences/instance/instance_push_relay_settings_local_preference_bloc_impl.dart';
+import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dart';
-import 'package:pleroma_fediverse_api/pleroma_fediverse_api.dart';
 import 'package:fedi/push/fcm/fcm_push_service.dart';
 import 'package:fedi/push/relay/push_relay_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:unifedi_api/unifedi_api.dart';
+import 'package:unifedi_api/unifedi_api_mock_helper.dart';
 
-import '../../../rxdart/rxdart_test_helper.dart';
-import '../../auth/instance/auth_instance_model_test_helper.dart';
 import './push_settings_bloc_impl_test.mocks.dart';
+import '../../../rxdart/rxdart_test_helper.dart';
 
 // ignore_for_file: no-magic-number, avoid-late-keyword
 @GenerateMocks([
-  IPleromaApiPushService,
+  IUnifediApiPushSubscriptionService,
   IPushRelayService,
   IFcmPushService,
+  IConnectionService,
 ])
 void main() {
   late MemoryLocalPreferencesService memoryLocalPreferencesService;
@@ -51,7 +53,7 @@ void main() {
     await instancePushRelaySettingsLocalPreferenceBloc.performAsyncInit();
 
     var fcmPushService = MockIFcmPushService();
-    var pleromaPushService = MockIPleromaApiPushService();
+    var pleromaPushService = MockIUnifediApiPushSubscriptionService();
     var pushRelayService = MockIPushRelayService();
 
     when(fcmPushService.deviceToken).thenReturn('testDeviceToken');
@@ -62,21 +64,21 @@ void main() {
     )).thenReturn('testUrl');
     when(fcmPushService.askPermissions()).thenAnswer((_) async => true);
     when(pleromaPushService.subscribe(
-      endpointCallbackUrl: anyNamed('endpointCallbackUrl'),
-      data: anyNamed('data'),
+      metadata: anyNamed('metadata'),
+      alerts: anyNamed('alerts'),
     )).thenAnswer((invocation) async {
-      return PleromaApiPushSubscription(
-        alerts: (invocation.namedArguments[Symbol('data')]
-                as PleromaApiPushSubscribeData)
-            .alerts!,
+      return UnifediApiPushSubscription(
+        alerts: invocation.namedArguments[Symbol('alerts')],
         endpoint: 'endpoint',
         serverKey: 'serverKey',
-        id: null,
-        subscription: null,
+        id: 'id',
       );
     });
 
     pushSettingsBloc = PushSettingsBloc(
+      connectionService: MockIConnectionService(),
+      pushSubscriptionKeysAuth: 'pushSubscriptionKeysAuth',
+      pushSubscriptionKeysP256dh: 'pushSubscriptionKeysP256dh',
       instancePushRelaySettingsLocalPreferenceBloc:
           instancePushRelaySettingsLocalPreferenceBloc,
       instancePushSettingsLocalPreferenceBloc:
@@ -84,7 +86,7 @@ void main() {
       pleromaPushService: pleromaPushService,
       pushRelayService: pushRelayService,
       fcmPushService: fcmPushService,
-      currentInstance: AuthInstanceModelTestHelper.createTestAuthInstance(
+      currentInstance: UnifediApiAccessMockHelper.generate(
         seed: 'seed',
       ),
     );
@@ -113,7 +115,7 @@ void main() {
     );
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     var defaultValue = InstancePushSettingsLocalPreferenceBloc.defaultValue;
 
@@ -140,7 +142,7 @@ void main() {
     await pushSettingsBloc.changeFollow(testFollow);
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(
       listened?.follow,
@@ -165,7 +167,7 @@ void main() {
     await pushSettingsBloc.changeFollow(testFollow);
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(
       listened?.follow,
@@ -187,175 +189,175 @@ void main() {
 
     await subscriptionListenedFollow.cancel();
   });
-  test('changePleromaEmojiReaction', () async {
-    bool? listenedPleromaEmojiReaction;
+  test('changeEmojiReaction', () async {
+    bool? listenedEmojiReaction;
 
-    StreamSubscription subscriptionListenedPleromaEmojiReaction =
-        pushSettingsBloc.pleromaEmojiReactionStream.listen(
+    StreamSubscription subscriptionListenedEmojiReaction =
+        pushSettingsBloc.emojiReactionStream.listen(
       (data) {
-        listenedPleromaEmojiReaction = data;
+        listenedEmojiReaction = data;
       },
     );
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     var defaultValue = InstancePushSettingsLocalPreferenceBloc.defaultValue;
 
     expect(
-      listened?.pleromaEmojiReaction,
-      defaultValue.pleromaEmojiReaction,
+      listened?.emojiReaction,
+      defaultValue.emojiReaction,
     );
     expect(
-      pushSettingsBloc.settingsData.pleromaEmojiReaction,
-      defaultValue.pleromaEmojiReaction,
+      pushSettingsBloc.settingsData.emojiReaction,
+      defaultValue.emojiReaction,
     );
 
     expect(
-      listenedPleromaEmojiReaction,
-      defaultValue.pleromaEmojiReaction,
+      listenedEmojiReaction,
+      defaultValue.emojiReaction,
     );
     expect(
-      pushSettingsBloc.pleromaEmojiReaction,
-      defaultValue.pleromaEmojiReaction,
+      pushSettingsBloc.emojiReaction,
+      defaultValue.emojiReaction,
     );
 
-    var testPleromaEmojiReaction = true;
+    var testEmojiReaction = true;
 
-    await pushSettingsBloc.changePleromaEmojiReaction(testPleromaEmojiReaction);
+    await pushSettingsBloc.changeEmojiReaction(testEmojiReaction);
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(
-      listened?.pleromaEmojiReaction,
-      testPleromaEmojiReaction,
+      listened?.emojiReaction,
+      testEmojiReaction,
     );
     expect(
-      pushSettingsBloc.settingsData.pleromaEmojiReaction,
-      testPleromaEmojiReaction,
+      pushSettingsBloc.settingsData.emojiReaction,
+      testEmojiReaction,
     );
 
     expect(
-      listenedPleromaEmojiReaction,
-      testPleromaEmojiReaction,
+      listenedEmojiReaction,
+      testEmojiReaction,
     );
     expect(
-      pushSettingsBloc.pleromaEmojiReaction,
-      testPleromaEmojiReaction,
+      pushSettingsBloc.emojiReaction,
+      testEmojiReaction,
     );
 
-    testPleromaEmojiReaction = false;
+    testEmojiReaction = false;
 
-    await pushSettingsBloc.changePleromaEmojiReaction(testPleromaEmojiReaction);
+    await pushSettingsBloc.changeEmojiReaction(testEmojiReaction);
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(
-      listened?.pleromaEmojiReaction,
-      testPleromaEmojiReaction,
+      listened?.emojiReaction,
+      testEmojiReaction,
     );
     expect(
-      pushSettingsBloc.settingsData.pleromaEmojiReaction,
-      testPleromaEmojiReaction,
+      pushSettingsBloc.settingsData.emojiReaction,
+      testEmojiReaction,
     );
 
     expect(
-      listenedPleromaEmojiReaction,
-      testPleromaEmojiReaction,
+      listenedEmojiReaction,
+      testEmojiReaction,
     );
     expect(
-      pushSettingsBloc.pleromaEmojiReaction,
-      testPleromaEmojiReaction,
+      pushSettingsBloc.emojiReaction,
+      testEmojiReaction,
     );
 
-    await subscriptionListenedPleromaEmojiReaction.cancel();
+    await subscriptionListenedEmojiReaction.cancel();
   });
-  test('changePleromaChatMention', () async {
-    bool? listenedPleromaChatMention;
+  test('changeChatMention', () async {
+    bool? listenedChatMention;
 
-    StreamSubscription subscriptionListenedPleromaChatMention =
-        pushSettingsBloc.pleromaChatMentionStream.listen(
+    StreamSubscription subscriptionListenedChatMention =
+        pushSettingsBloc.chatMentionStream.listen(
       (data) {
-        listenedPleromaChatMention = data;
+        listenedChatMention = data;
       },
     );
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     var defaultValue = InstancePushSettingsLocalPreferenceBloc.defaultValue;
 
     expect(
-      listened?.pleromaChatMention,
-      defaultValue.pleromaChatMention,
+      listened?.chatMention,
+      defaultValue.chatMention,
     );
     expect(
-      pushSettingsBloc.settingsData.pleromaChatMention,
-      defaultValue.pleromaChatMention,
+      pushSettingsBloc.settingsData.chatMention,
+      defaultValue.chatMention,
     );
 
     expect(
-      listenedPleromaChatMention,
-      defaultValue.pleromaChatMention,
+      listenedChatMention,
+      defaultValue.chatMention,
     );
     expect(
-      pushSettingsBloc.pleromaChatMention,
-      defaultValue.pleromaChatMention,
+      pushSettingsBloc.chatMention,
+      defaultValue.chatMention,
     );
 
-    var testPleromaChatMention = true;
+    var testChatMention = true;
 
-    await pushSettingsBloc.changePleromaChatMention(testPleromaChatMention);
+    await pushSettingsBloc.changeChatMention(testChatMention);
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(
-      listened?.pleromaChatMention,
-      testPleromaChatMention,
+      listened?.chatMention,
+      testChatMention,
     );
     expect(
-      pushSettingsBloc.settingsData.pleromaChatMention,
-      testPleromaChatMention,
+      pushSettingsBloc.settingsData.chatMention,
+      testChatMention,
     );
 
     expect(
-      listenedPleromaChatMention,
-      testPleromaChatMention,
+      listenedChatMention,
+      testChatMention,
     );
     expect(
-      pushSettingsBloc.pleromaChatMention,
-      testPleromaChatMention,
+      pushSettingsBloc.chatMention,
+      testChatMention,
     );
 
-    testPleromaChatMention = false;
+    testChatMention = false;
 
-    await pushSettingsBloc.changePleromaChatMention(testPleromaChatMention);
+    await pushSettingsBloc.changeChatMention(testChatMention);
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(
-      listened?.pleromaChatMention,
-      testPleromaChatMention,
+      listened?.chatMention,
+      testChatMention,
     );
     expect(
-      pushSettingsBloc.settingsData.pleromaChatMention,
-      testPleromaChatMention,
+      pushSettingsBloc.settingsData.chatMention,
+      testChatMention,
     );
 
     expect(
-      listenedPleromaChatMention,
-      testPleromaChatMention,
+      listenedChatMention,
+      testChatMention,
     );
     expect(
-      pushSettingsBloc.pleromaChatMention,
-      testPleromaChatMention,
+      pushSettingsBloc.chatMention,
+      testChatMention,
     );
 
-    await subscriptionListenedPleromaChatMention.cancel();
+    await subscriptionListenedChatMention.cancel();
   });
   test('changePoll', () async {
     bool? listenedPoll;
@@ -368,7 +370,7 @@ void main() {
     );
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     var defaultValue = InstancePushSettingsLocalPreferenceBloc.defaultValue;
 
@@ -395,7 +397,7 @@ void main() {
     await pushSettingsBloc.changePoll(testPoll);
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(
       listened?.poll,
@@ -420,7 +422,7 @@ void main() {
     await pushSettingsBloc.changePoll(testPoll);
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(
       listened?.poll,
@@ -453,7 +455,7 @@ void main() {
     );
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     var defaultValue = InstancePushSettingsLocalPreferenceBloc.defaultValue;
 
@@ -480,7 +482,7 @@ void main() {
     await pushSettingsBloc.changeMention(testMention);
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(
       listened?.mention,
@@ -505,7 +507,7 @@ void main() {
     await pushSettingsBloc.changeMention(testMention);
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(
       listened?.mention,
@@ -539,7 +541,7 @@ void main() {
     );
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     var defaultValue = InstancePushSettingsLocalPreferenceBloc.defaultValue;
 
@@ -566,7 +568,7 @@ void main() {
     await pushSettingsBloc.changeFavourite(testFavourite);
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(
       listened?.favourite,
@@ -591,7 +593,7 @@ void main() {
     await pushSettingsBloc.changeFavourite(testFavourite);
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(
       listened?.favourite,
@@ -625,7 +627,7 @@ void main() {
     );
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     var defaultValue = InstancePushSettingsLocalPreferenceBloc.defaultValue;
 
@@ -652,7 +654,7 @@ void main() {
     await pushSettingsBloc.changeReblog(testReblog);
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(
       listened?.reblog,
@@ -677,7 +679,7 @@ void main() {
     await pushSettingsBloc.changeReblog(testReblog);
 
     listened = null;
-    await RxDartTestHelper.waitForData(() => listened);
+    await RxDartMockHelper.waitForData(() => listened);
 
     expect(
       listened?.reblog,

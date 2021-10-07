@@ -46,15 +46,15 @@ abstract class IPushSettingsBloc
 
   Future changePoll(bool value);
 
-  bool get pleromaChatMention;
+  bool get chatMention;
 
-  Stream<bool> get pleromaChatMentionStream;
+  Stream<bool> get chatMentionStream;
 
-  Future changePleromaChatMention(bool value);
+  Future changeChatMention(bool value);
 
-  bool get pleromaEmojiReaction;
+  bool get emojiReaction;
 
-  Stream<bool> get pleromaEmojiReactionStream;
+  Stream<bool> get emojiReactionStream;
 
-  Future changePleromaEmojiReaction(bool value);
+  Future changeEmojiReaction(bool value);
 }

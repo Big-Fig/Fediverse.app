@@ -1,4 +1,4 @@
-import 'package:fedi/app/auth/instance/current/current_auth_instance_bloc.dart';
+import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_bloc.dart';
 import 'package:fedi/app/home/tab/timelines/storage/timelines_home_tab_storage_model.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
@@ -22,6 +22,7 @@ import 'package:flutter_reorderable_list/flutter_reorderable_list.dart'
     as flutter_reorderable_list;
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 var _logger = Logger('timelines_home_tab_storage_widget.dart');
 
@@ -203,7 +204,7 @@ class _TimelinesHomeTabStorageListItemWidget extends StatelessWidget {
             context: context,
             timeline: timeline,
             lockedSource: false,
-            pleromaApiInstance: ICurrentAuthInstanceBloc.of(
+            unifediApiInstance: ICurrentUnifediApiAccessBloc.of(
               context,
               listen: false,
             ).currentInstance!.info!,
@@ -240,7 +241,7 @@ class _TimelinesHomeTabStorageListItemTitleWidget extends StatelessWidget {
           instanceLocation: InstanceLocation.local,
           timeline: timeline,
           lockedSource: false,
-          pleromaApiInstance: ICurrentAuthInstanceBloc.of(
+          unifediApiInstance: ICurrentUnifediApiAccessBloc.of(
             context,
             listen: false,
           ).currentInstance!.info!,
@@ -296,7 +297,7 @@ class _TimelinesHomeTabStorageListItemEndingWidget extends StatelessWidget {
                   instanceLocation: InstanceLocation.local,
                   timeline: Provider.of(context, listen: false),
                   lockedSource: false,
-                  pleromaApiInstance: ICurrentAuthInstanceBloc.of(
+                  unifediApiInstance: ICurrentUnifediApiAccessBloc.of(
                     context,
                     listen: false,
                   ).currentInstance!.info!,
