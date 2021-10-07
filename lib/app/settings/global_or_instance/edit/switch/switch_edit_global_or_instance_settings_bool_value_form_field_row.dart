@@ -28,9 +28,11 @@ class ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldRowWidget
       initialData:
           switchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc.currentValue,
       builder: (context, snapshot) {
-        var currentValue = snapshot.data;
+        var currentValue = snapshot.data == true;
 
         // _logger.finest(() => 'currentValue $currentValue');
+        var overrideGlobal = !currentValue;
+
         return FediFormRow(
           child: Row(
             mainAxisSize: MainAxisSize.max,
@@ -43,15 +45,17 @@ class ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldRowWidget
                 child: Text(
                   S
                       .of(context)
-                      .app_settings_global_or_instance_use_global_label,
+                      .app_settings_global_or_instance_override_global_label,
                   style: IFediUiTextTheme.of(context).bigTallPrimary,
                 ),
               ),
               FediSwitch(
-                onChanged:
+                onChanged: (newValue) =>
                     switchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc
-                        .changeCurrentValue,
-                value: currentValue == true,
+                        .changeCurrentValue(
+                  !newValue,
+                ),
+                value: overrideGlobal,
                 enabled: true,
               ),
             ],

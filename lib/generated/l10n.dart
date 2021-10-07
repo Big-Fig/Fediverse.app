@@ -803,11 +803,11 @@ class S {
     );
   }
 
-  /// `Settings: global`
-  String get app_account_home_tab_menu_action_global_settings {
+  /// `Settings`
+  String get app_account_home_tab_menu_action_settings {
     return Intl.message(
-      'Settings: global',
-      name: 'app_account_home_tab_menu_action_global_settings',
+      'Settings',
+      name: 'app_account_home_tab_menu_action_settings',
       desc: '',
       args: [],
     );
@@ -3936,16 +3936,6 @@ class S {
   }
 
   /// `Settings: {userAtHost}`
-  String app_account_home_tab_menu_action_instance_settings(Object userAtHost) {
-    return Intl.message(
-      'Settings: $userAtHost',
-      name: 'app_account_home_tab_menu_action_instance_settings',
-      desc: '',
-      args: [userAtHost],
-    );
-  }
-
-  /// `Settings: {userAtHost}`
   String app_settings_instance_title(Object userAtHost) {
     return Intl.message(
       'Settings: $userAtHost',
@@ -4025,11 +4015,11 @@ class S {
     );
   }
 
-  /// `Global settings`
-  String get app_settings_global_or_instance_use_global_label {
+  /// `Override global settings`
+  String get app_settings_global_or_instance_override_global_label {
     return Intl.message(
-      'Global settings',
-      name: 'app_settings_global_or_instance_use_global_label',
+      'Override global settings',
+      name: 'app_settings_global_or_instance_override_global_label',
       desc: '',
       args: [],
     );

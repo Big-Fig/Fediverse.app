@@ -37,7 +37,7 @@ void showEditGlobalOrInstanceSettingsDialog({
 
   showSettingsDialog(
     context: context,
-    title: S.of(context).app_account_home_tab_menu_action_instance_settings(
+    title: S.of(context).app_settings_instance_title(
           currentInstance.userAtHost,
         ),
     subTitle: subTitle,

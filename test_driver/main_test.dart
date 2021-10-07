@@ -13,7 +13,7 @@ import 'package:fedi/app/home/tab/account/account_home_tab_page_keys.dart';
 import 'package:fedi/app/home/tab/account/menu/account_home_tab_menu_dialog_keys.dart';
 import 'package:fedi/app/home/tab/chat/pleroma_chat_home_tab_page_keys.dart';
 import 'package:fedi/app/instance/details/remote/remote_instance_details_page_keys.dart';
-import 'package:fedi/app/settings/global/list/global_settings_list_widget_keys.dart';
+import 'package:fedi/app/settings/instance/list/instance_settings_list_widget_keys.dart';
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button_keys.dart';
 import 'package:fedi/app/ui/button/icon/fedi_dismiss_icon_button_keys.dart';
 import 'package:fedi/app/ui/modal_bottom_sheet/fedi_modal_bottom_sheet_keys.dart';
@@ -226,13 +226,13 @@ void main() {
         await driver.tap(
           find.byValueKey(
             AccountHomeTabMenuDialogKeys
-                .globalSettingsHomeTabMenuDialogBodySettingsItemWidget,
+                .settingsHomeTabMenuDialogBodySettingsItemWidget,
           ),
         );
 
         await driver.tap(
           find.byValueKey(
-            GlobalSettingsListWidgetKeys.globalSettingsUiRowWidget,
+            InstanceSettingsListWidgetKeys.instanceSettingsUiRowWidget,
           ),
         );
 

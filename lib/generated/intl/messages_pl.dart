@@ -31,163 +31,161 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m5(accountAcct) => "obserwowani przez ${accountAcct}";
 
-  static String m6(userAtHost) => "Ustawienia: ${userAtHost}";
+  static String m6(number) => "Pole odnośnika #${number}";
 
-  static String m7(number) => "Pole odnośnika #${number}";
+  static String m7(host) => "Przekaż do ${host}";
 
-  static String m8(host) => "Przekaż do ${host}";
+  static String m8(userAtHost) => "Zgłoś ${userAtHost}";
 
-  static String m9(userAtHost) => "Zgłoś ${userAtHost}";
+  static String m9(message) => "Wiadomość: ${message}";
 
-  static String m10(message) => "Wiadomość: ${message}";
+  static String m10(content) => "${content}";
 
-  static String m11(content) => "${content}";
-
-  static String m12(userAtHost) =>
+  static String m11(userAtHost) =>
       "Nie można załadować instancji ${userAtHost}.\nBłąd aplikacji lub wygasła sesja";
 
-  static String m13(userAtHost) => "${userAtHost}";
+  static String m12(userAtHost) => "${userAtHost}";
 
-  static String m14(error) => "Szczegóły: ${error}";
+  static String m13(error) => "Szczegóły: ${error}";
 
-  static String m15(userAtHost) => "Wyloguj się z ${userAtHost}";
+  static String m14(userAtHost) => "Wyloguj się z ${userAtHost}";
 
-  static String m16(errorDescription) =>
+  static String m15(errorDescription) =>
       "Błąd podczas logowania: ${errorDescription}";
 
-  static String m17(domain) => "${domain}";
+  static String m16(domain) => "${domain}";
 
-  static String m18(host) => "Utwórz konto na ${host}";
+  static String m17(host) => "Utwórz konto na ${host}";
 
-  static String m19(count) => "${count}";
+  static String m18(count) => "${count}";
 
-  static String m20(dateTime) => "${dateTime}";
+  static String m19(dateTime) => "${dateTime}";
 
-  static String m21(userAtHost) =>
+  static String m20(userAtHost) =>
       "Wyczyść całą pamięć podręczną (${userAtHost})";
 
-  static String m22(userAtHost) =>
+  static String m21(userAtHost) =>
       "Wyczyść pamięć podręczną według limitów (${userAtHost})";
 
-  static String m23(count) =>
+  static String m22(count) =>
       "${Intl.plural(count, one: '1 nowa konwersacja. Naciśnij, aby załadować.', few: '${count} nowe konwersacje. Naciśnij, aby załadować', other: '${count} nowych konwersacji. Naciśnij, aby załadować')}";
 
-  static String m24(count) =>
+  static String m23(count) =>
       "${Intl.plural(count, one: '1 nowa wiadomość. Naciśnij, aby załadować.', few: '${count} nowe wiadomości. Naciśnij, aby załadować.', other: '${count} nowych wiadomości. Naciśnij, aby załadować.')}";
 
-  static String m25(message) => "Ty: ${message}";
+  static String m24(message) => "Ty: ${message}";
 
-  static String m26(count) => "Zaznaczono (${count})";
+  static String m25(count) => "Zaznaczono (${count})";
 
-  static String m27(localDomain) => "Otwórz na ${localDomain}";
+  static String m26(localDomain) => "Otwórz na ${localDomain}";
 
-  static String m28(remoteDomain) => "Otwórz na ${remoteDomain}";
+  static String m27(remoteDomain) => "Otwórz na ${remoteDomain}";
 
-  static String m29(hashtag) => "#${hashtag}";
+  static String m28(hashtag) => "#${hashtag}";
 
-  static String m30(instanceDomain) => "Instancja: ${instanceDomain}";
+  static String m29(instanceDomain) => "Instancja: ${instanceDomain}";
 
-  static String m31(sizeInMb) => "${sizeInMb} MB";
+  static String m30(sizeInMb) => "${sizeInMb} MB";
 
-  static String m32(mediaType) => "Nieobsługiwany rodzaj ${mediaType}";
+  static String m31(mediaType) => "Nieobsługiwany rodzaj ${mediaType}";
 
-  static String m33(formattedFileSize, formattedMaxFileSize) =>
+  static String m32(formattedFileSize, formattedMaxFileSize) =>
       "Rozmiar pliku to ${formattedFileSize} MB, ale maksymalny dozwolony wynosi ${formattedMaxFileSize} MB";
+
+  static String m33(status) => "${status}.";
 
   static String m34(status) => "${status}.";
 
-  static String m35(status) => "${status}.";
+  static String m35(emoji) => "${emoji} na twój wpis.";
 
-  static String m36(emoji) => "${emoji} na twój wpis.";
+  static String m36(acct) => "Zgłoszenie od ${acct}";
 
-  static String m37(acct) => "Zgłoszenie od ${acct}";
+  static String m37(status) => "Nieznane: ${status}";
 
-  static String m38(status) => "Nieznane: ${status}";
-
-  static String m39(count) =>
+  static String m38(count) =>
       "${Intl.plural(count, one: '1 nowe powiadomienie. Naciśnij, aby załadować.', few: '${count} nowe powiadomienia. Naciśnij, aby załadować.', other: '${count} nowych powiadomień. Naciśnij, aby załadować.')}";
 
-  static String m40(dayCount) => " pozostało ${dayCount}";
+  static String m39(dayCount) => " pozostało ${dayCount}";
 
-  static String m41(count) =>
+  static String m40(count) =>
       "${Intl.plural(count, zero: 'Brak głosów', one: '1 głos', few: '${count} głosy', many: '${count} głosów', other: '${count} głosów')}";
 
-  static String m42(acct) => "${acct} polubił(a) twój wpis";
+  static String m41(acct) => "${acct} polubił(a) twój wpis";
 
-  static String m43(acct) => "${acct} chce cię zaobserwować";
+  static String m42(acct) => "${acct} chce cię zaobserwować";
 
-  static String m44(acct) => "${acct} obserwuje cię";
+  static String m43(acct) => "${acct} obserwuje cię";
 
-  static String m45(acct) => "${acct} wspomniał(a) o tobie";
+  static String m44(acct) => "${acct} wspomniał(a) o tobie";
 
-  static String m46(acct) => "${acct} przeniósł(-osła) się";
+  static String m45(acct) => "${acct} przeniósł(-osła) się";
 
-  static String m47(acct) => "Czat z ${acct}";
+  static String m46(acct) => "Czat z ${acct}";
 
-  static String m48(acct, emoji) => "${acct} zareagował(a) ${emoji}";
+  static String m47(acct, emoji) => "${acct} zareagował(a) ${emoji}";
 
-  static String m49(acct) => "${acct} zgłosił(a) twój wpis";
+  static String m48(acct) => "${acct} zgłosił(a) twój wpis";
 
-  static String m50(acct) => "${acct} udostępnił(a) twój wpis";
+  static String m49(acct) => "${acct} udostępnił(a) twój wpis";
 
-  static String m51(userAtHost) => "Ustawienia: ${userAtHost}";
+  static String m50(userAtHost) => "Ustawienia: ${userAtHost}";
 
-  static String m52(remoteInstanceDomain) =>
+  static String m51(remoteInstanceDomain) =>
       "Otwórz na ${remoteInstanceDomain}";
 
-  static String m53(errorMessage) => "Błąd: ${errorMessage}";
+  static String m52(errorMessage) => "Błąd: ${errorMessage}";
 
-  static String m54(count) =>
+  static String m53(count) =>
       "${Intl.plural(count, one: '1 nowy wpis. Naciśnij, aby załadować.', few: '${count} nowe wpisy. Naciśnij, aby załadować.', other: '${count} nowych wpisów. Naciśnij, aby załadować.')}";
 
-  static String m55(errorMessage) => "Błąd: ${errorMessage}";
+  static String m54(errorMessage) => "Błąd: ${errorMessage}";
 
-  static String m56(optionNumber) => "Opcja ${optionNumber}";
+  static String m55(optionNumber) => "Opcja ${optionNumber}";
 
-  static String m57(accountAcct) => "Odpowiedź do ${accountAcct}";
+  static String m56(accountAcct) => "Odpowiedź do ${accountAcct}";
 
-  static String m58(accountAcct) => "Odpowiedz @${accountAcct}";
+  static String m57(accountAcct) => "Odpowiedz @${accountAcct}";
 
-  static String m59(timeline) => "Oś czasu ${timeline}";
+  static String m58(timeline) => "Oś czasu ${timeline}";
 
-  static String m60(timeline) =>
+  static String m59(timeline) =>
       "Czy na pewno chcesz usunąć oś czasu ${timeline}?";
 
-  static String m61(errorMessage) =>
+  static String m60(errorMessage) =>
       "Nie udało się zainicjalizować ${errorMessage}";
 
-  static String m62(errorMessage) => "Wystąpił błąd.\n${errorMessage}";
+  static String m61(errorMessage) => "Wystąpił błąd.\n${errorMessage}";
 
-  static String m63(count) =>
+  static String m62(count) =>
       "${Intl.plural(count, one: '1 dzień', other: '${count} dni')}";
 
-  static String m64(count) =>
+  static String m63(count) =>
       "${Intl.plural(count, one: '1 godzina', few: '${count} godziny', other: '${count} godzin')}";
 
-  static String m65(count) =>
+  static String m64(count) =>
       "${Intl.plural(count, one: '1 minuta', few: '${count} minuty', other: '${count} minut')}";
 
-  static String m66(selectionCountLimit) =>
+  static String m65(selectionCountLimit) =>
       "Maksymalnie ${selectionCountLimit}";
 
-  static String m67(selectionCount) => "${selectionCount} zaznaczone media";
+  static String m66(selectionCount) => "${selectionCount} zaznaczone media";
 
-  static String m68(max) => "Nie powinno przekraczać ${max}";
+  static String m67(max) => "Nie powinno przekraczać ${max}";
 
-  static String m69(min, max) => "Powinno wynosic między ${min} a ${max}";
+  static String m68(min, max) => "Powinno wynosic między ${min} a ${max}";
 
-  static String m70(min) => "Powinno wynosić przynajmniej ${min}";
+  static String m69(min) => "Powinno wynosić przynajmniej ${min}";
 
-  static String m71(maxCharactersCount) =>
+  static String m70(maxCharactersCount) =>
       "Maksymalna długość: ${maxCharactersCount}";
 
-  static String m72(minCharactersCount, maxCharactersCount) =>
+  static String m71(minCharactersCount, maxCharactersCount) =>
       "Długość powinna wynosić między ${minCharactersCount} a ${maxCharactersCount}";
 
-  static String m73(minCharactersCount) =>
+  static String m72(minCharactersCount) =>
       "Minimalna długość: ${minCharactersCount}";
 
-  static String m74(url) => "URL ${url} ma nieprawidłowy format";
+  static String m73(url) => "URL ${url} ma nieprawidłowy format";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -293,17 +291,16 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Konto"),
         "app_account_home_tab_menu_action_bookmarks":
             MessageLookupByLibrary.simpleMessage("Zakładki"),
-        "app_account_home_tab_menu_action_global_settings":
-            MessageLookupByLibrary.simpleMessage("Ustawienia: globalne"),
         "app_account_home_tab_menu_action_instance_aboutApp":
             MessageLookupByLibrary.simpleMessage("O Fedi"),
         "app_account_home_tab_menu_action_instance_announcements":
             MessageLookupByLibrary.simpleMessage("Ogłoszenia"),
-        "app_account_home_tab_menu_action_instance_settings": m6,
         "app_account_home_tab_menu_action_lists":
             MessageLookupByLibrary.simpleMessage("Listy"),
         "app_account_home_tab_menu_action_rateApp":
             MessageLookupByLibrary.simpleMessage("Oceń aplikację"),
+        "app_account_home_tab_menu_action_settings":
+            MessageLookupByLibrary.simpleMessage("Ustawienia"),
         "app_account_info_followers":
             MessageLookupByLibrary.simpleMessage("Obserwujący"),
         "app_account_info_following":
@@ -412,7 +409,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Bot"),
         "app_account_my_edit_field_customField_action_addNew":
             MessageLookupByLibrary.simpleMessage("Dodaj pole odnośnika"),
-        "app_account_my_edit_field_customField_label": m7,
+        "app_account_my_edit_field_customField_label": m6,
         "app_account_my_edit_field_customField_name_label":
             MessageLookupByLibrary.simpleMessage("Nazwa*"),
         "app_account_my_edit_field_customField_value_label":
@@ -579,12 +576,12 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Wyślij"),
         "app_account_report_description": MessageLookupByLibrary.simpleMessage(
             "Zgłoszenie zostanie wysłane moderatorom serwera"),
-        "app_account_report_forward_label": m8,
+        "app_account_report_forward_label": m7,
         "app_account_report_message_hint":
             MessageLookupByLibrary.simpleMessage("Dodatkowe komentarze"),
         "app_account_report_message_label":
             MessageLookupByLibrary.simpleMessage("Wiadomość"),
-        "app_account_report_title": m9,
+        "app_account_report_title": m8,
         "app_account_report_toast_fail":
             MessageLookupByLibrary.simpleMessage("Nie udało się zgłosić"),
         "app_account_report_toast_success":
@@ -606,10 +603,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Z odpowiedziami"),
         "app_account_statuses_tab_withoutReplies":
             MessageLookupByLibrary.simpleMessage("Wpisy"),
-        "app_async_pleroma_error_common_dialog_content": m10,
+        "app_async_pleroma_error_common_dialog_content": m9,
         "app_async_pleroma_error_common_dialog_title":
             MessageLookupByLibrary.simpleMessage("Błąd API"),
-        "app_async_pleroma_error_forbidden_dialog_content": m11,
+        "app_async_pleroma_error_forbidden_dialog_content": m10,
         "app_async_pleroma_error_forbidden_dialog_title":
             MessageLookupByLibrary.simpleMessage(
                 "Zabroniono. Nieprawidłowe działanie lub wyczerpana sesja"),
@@ -638,8 +635,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Wyloguj się"),
         "app_auth_instance_current_context_loading_cantLoad_action_refresh":
             MessageLookupByLibrary.simpleMessage("Odśwież"),
-        "app_auth_instance_current_context_loading_cantLoad_content": m12,
-        "app_auth_instance_current_context_loading_loading_content": m13,
+        "app_auth_instance_current_context_loading_cantLoad_content": m11,
+        "app_auth_instance_current_context_loading_loading_content": m12,
         "app_auth_instance_current_context_loading_loading_title":
             MessageLookupByLibrary.simpleMessage("Ładowanie instancji"),
         "app_auth_instance_join_action_about":
@@ -659,7 +656,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Korzystając z Fedi, akceptujesz nasze"),
         "app_auth_instance_join_action_tos_terms":
             MessageLookupByLibrary.simpleMessage("Zasady"),
-        "app_auth_instance_join_fail_dialog_content": m14,
+        "app_auth_instance_join_fail_dialog_content": m13,
         "app_auth_instance_join_fail_dialog_title":
             MessageLookupByLibrary.simpleMessage(
                 "Nie udało się połączyć z instancją"),
@@ -679,7 +676,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_auth_instance_join_registrationDisabled_dialog_title":
             MessageLookupByLibrary.simpleMessage(
                 "Właściciel instancji wyłączył rejestrację"),
-        "app_auth_instance_logout_dialog_content": m15,
+        "app_auth_instance_logout_dialog_content": m14,
         "app_auth_instance_logout_dialog_title":
             MessageLookupByLibrary.simpleMessage("Wyloguj się"),
         "app_auth_instance_register_action_createAccount":
@@ -695,7 +692,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Możesz zalogować się, gdy moderatorzy zatwierdzą Twoje konto"),
         "app_auth_instance_register_approvalRequired_notification_title":
             MessageLookupByLibrary.simpleMessage("Pomyślnie zarejestrowano"),
-        "app_auth_instance_register_cantLogin_notification_content": m16,
+        "app_auth_instance_register_cantLogin_notification_content": m15,
         "app_auth_instance_register_cantLogin_notification_title":
             MessageLookupByLibrary.simpleMessage("Pomyślnie zarejestrowano"),
         "app_auth_instance_register_emailConfirmationRequired_notification_content":
@@ -704,7 +701,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_auth_instance_register_emailConfirmationRequired_notification_title":
             MessageLookupByLibrary.simpleMessage("Pomyślnie zarejestrowano"),
         "app_auth_instance_register_field_acceptTermsOfService_description":
-            m17,
+            m16,
         "app_auth_instance_register_field_acceptTermsOfService_label":
             MessageLookupByLibrary.simpleMessage("Akceptuj Zasady użytkowania"),
         "app_auth_instance_register_field_captcha_description":
@@ -754,14 +751,14 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Ręczne zatwierdzanie kont"),
         "app_auth_instance_register_step_submit_title":
             MessageLookupByLibrary.simpleMessage("Wyślij"),
-        "app_auth_instance_register_title": m18,
+        "app_auth_instance_register_title": m17,
         "app_cache_database_settings_currentEntriesCountByType_label":
             MessageLookupByLibrary.simpleMessage(
                 "Bieżąca maksymalna liczba wpisów jest liczona według typu"),
-        "app_cache_database_settings_currentEntriesCountByType_value": m19,
+        "app_cache_database_settings_currentEntriesCountByType_value": m18,
         "app_cache_database_settings_currentMaxAge_label":
             MessageLookupByLibrary.simpleMessage("Obecny maksymalny wiek"),
-        "app_cache_database_settings_currentMaxAge_value": m20,
+        "app_cache_database_settings_currentMaxAge_value": m19,
         "app_cache_database_settings_description":
             MessageLookupByLibrary.simpleMessage(
                 "Konta, statusy, konwersacje, powiadomienia i czaty. Ogromne limity mogą powodować słabą wydajność z powodu skomplikowanych obliczeń dla dużej ilości danych.\nDane o przekroczeniu limitów zostaną usunięte przy każdym uruchomieniu aplikacji."),
@@ -831,8 +828,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("500"),
         "app_cache_files_settings_title":
             MessageLookupByLibrary.simpleMessage("Pamięć podręczna plików"),
-        "app_cache_settings_action_clear_all_now": m21,
-        "app_cache_settings_action_clear_by_limits_now": m22,
+        "app_cache_settings_action_clear_all_now": m20,
+        "app_cache_settings_action_clear_by_limits_now": m21,
         "app_chat_action_delete": MessageLookupByLibrary.simpleMessage("Usuń"),
         "app_chat_action_delete_dialog_content":
             MessageLookupByLibrary.simpleMessage("Czy na pewno?"),
@@ -840,12 +837,12 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Usuń konwersację"),
         "app_chat_conversation_accounts_title":
             MessageLookupByLibrary.simpleMessage("Konta konwersacji"),
-        "app_chat_conversation_list_newItems_action_tapToLoadNew": m23,
+        "app_chat_conversation_list_newItems_action_tapToLoadNew": m22,
         "app_chat_conversation_share_title":
             MessageLookupByLibrary.simpleMessage("Udostępnij w konwersacji"),
         "app_chat_conversation_start_title":
             MessageLookupByLibrary.simpleMessage("Rozpocznij konwersację"),
-        "app_chat_list_newItems_action_tapToLoadNew": m24,
+        "app_chat_list_newItems_action_tapToLoadNew": m23,
         "app_chat_message_deleted_desc":
             MessageLookupByLibrary.simpleMessage("Wiadomość usunięta"),
         "app_chat_message_pending_actions_dialog_action_delete":
@@ -874,7 +871,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Nie można wysłać pustej wiadomości"),
         "app_chat_post_field_content_hint":
             MessageLookupByLibrary.simpleMessage("Rozpocznij wiadomość"),
-        "app_chat_preview_you": m25,
+        "app_chat_preview_you": m24,
         "app_chat_selection_action_cancel":
             MessageLookupByLibrary.simpleMessage("Anuluj"),
         "app_chat_selection_action_copyAsRawText_toast_success":
@@ -885,7 +882,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Czy na pewno?"),
         "app_chat_selection_action_delete_confirm_dialog_title":
             MessageLookupByLibrary.simpleMessage("Usuń wiadomości"),
-        "app_chat_selection_count": m26,
+        "app_chat_selection_count": m25,
         "app_chat_settings_field_countConversationsInChatsUnreadBadges_label":
             MessageLookupByLibrary.simpleMessage(
                 "Licz konwersacje w nieprzeczytanych"),
@@ -998,9 +995,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Konta"),
         "app_hashtag_history_statuses":
             MessageLookupByLibrary.simpleMessage("Wpisy"),
-        "app_hashtag_remoteInstance_dialog_action_openOnLocal": m27,
-        "app_hashtag_remoteInstance_dialog_action_openOnRemote": m28,
-        "app_hashtag_remoteInstance_dialog_title": m29,
+        "app_hashtag_remoteInstance_dialog_action_openOnLocal": m26,
+        "app_hashtag_remoteInstance_dialog_action_openOnRemote": m27,
+        "app_hashtag_remoteInstance_dialog_title": m28,
         "app_home_tab_chat_conversation_action_switchToChats":
             MessageLookupByLibrary.simpleMessage("Do czatów"),
         "app_home_tab_chat_conversation_title":
@@ -1146,12 +1143,12 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Klucz publiczny vapid"),
         "app_instance_details_field_version_label":
             MessageLookupByLibrary.simpleMessage("Wersja"),
-        "app_instance_details_title": m30,
+        "app_instance_details_title": m29,
         "app_instance_details_value_bool_false":
             MessageLookupByLibrary.simpleMessage("Fałsz"),
         "app_instance_details_value_bool_true":
             MessageLookupByLibrary.simpleMessage("Prawda"),
-        "app_instance_details_value_sizeInMb": m31,
+        "app_instance_details_value_sizeInMb": m30,
         "app_instance_remote_error_failed_dialog_content":
             MessageLookupByLibrary.simpleMessage(
                 "Zdalny host nie obsługuje tej funkcji, lub wystąpił błąd sieci"),
@@ -1187,7 +1184,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Nie można zapisać mediów"),
         "app_media_attachment_addToGallery_progress_content":
             MessageLookupByLibrary.simpleMessage("Zapisywanie…"),
-        "app_media_attachment_details_notSupported_type": m32,
+        "app_media_attachment_details_notSupported_type": m31,
         "app_media_attachment_details_title":
             MessageLookupByLibrary.simpleMessage("Załącznik multimedialny"),
         "app_media_attachment_type_audio":
@@ -1219,7 +1216,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Autoodtwarzanie"),
         "app_media_settings_title":
             MessageLookupByLibrary.simpleMessage("Media"),
-        "app_media_upload_failed_notification_exceedSize_content": m33,
+        "app_media_upload_failed_notification_exceedSize_content": m32,
         "app_media_upload_failed_notification_title":
             MessageLookupByLibrary.simpleMessage("Nie udało się wysłać"),
         "app_media_upload_metadata_dialog_action_delete":
@@ -1255,34 +1252,34 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Zaobserwował(a) cię."),
         "app_notification_header_followRequest":
             MessageLookupByLibrary.simpleMessage("Prośba o obserwację."),
-        "app_notification_header_mention_postfix": m34,
+        "app_notification_header_mention_postfix": m33,
         "app_notification_header_mention_prefix":
             MessageLookupByLibrary.simpleMessage("Wspomniał(a) o tobie: "),
         "app_notification_header_move":
             MessageLookupByLibrary.simpleMessage("Przeniósł(-osła) się."),
-        "app_notification_header_pleromaChatMention_postfix": m35,
+        "app_notification_header_pleromaChatMention_postfix": m34,
         "app_notification_header_pleromaChatMention_prefix":
             MessageLookupByLibrary.simpleMessage("Czat: "),
-        "app_notification_header_pleromaEmojiReaction": m36,
+        "app_notification_header_pleromaEmojiReaction": m35,
         "app_notification_header_poll": MessageLookupByLibrary.simpleMessage(
             "Ankieta w której głosowałeś(-aś) zakończyła się."),
         "app_notification_header_reblog":
             MessageLookupByLibrary.simpleMessage("Udostępnił(a) twój wpis."),
-        "app_notification_header_report": m37,
-        "app_notification_header_unknown": m38,
-        "app_notification_list_newItems_action_tapToLoadNew": m39,
+        "app_notification_header_report": m36,
+        "app_notification_header_unknown": m37,
+        "app_notification_list_newItems_action_tapToLoadNew": m38,
         "app_pagination_settings_pageSize_label":
             MessageLookupByLibrary.simpleMessage("Rozmiar stron"),
         "app_pagination_settings_title":
             MessageLookupByLibrary.simpleMessage("Stronnicowanie"),
         "app_poll_metadata_expires_expired":
             MessageLookupByLibrary.simpleMessage("Ankieta zakończona"),
-        "app_poll_metadata_expires_notExpired": m40,
+        "app_poll_metadata_expires_notExpired": m39,
         "app_poll_metadata_hideResults":
             MessageLookupByLibrary.simpleMessage("Ukryj wyniki"),
         "app_poll_metadata_showResults":
             MessageLookupByLibrary.simpleMessage("Zobacz wyniki"),
-        "app_poll_metadata_totalVotes": m41,
+        "app_poll_metadata_totalVotes": m40,
         "app_poll_vote": MessageLookupByLibrary.simpleMessage("Głosuj"),
         "app_push_channel_favourite_description":
             MessageLookupByLibrary.simpleMessage("Kiedy ktoś polubi twój wpis"),
@@ -1361,35 +1358,35 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Odpowiedz"),
         "app_push_richNotification_favourite_summary":
             MessageLookupByLibrary.simpleMessage("Ktoś polubił twój wpis"),
-        "app_push_richNotification_favourite_title": m42,
+        "app_push_richNotification_favourite_title": m41,
         "app_push_richNotification_followRequest_summary":
             MessageLookupByLibrary.simpleMessage("Ktoś chce cię zaobserwować"),
-        "app_push_richNotification_followRequest_title": m43,
+        "app_push_richNotification_followRequest_title": m42,
         "app_push_richNotification_follow_summary":
             MessageLookupByLibrary.simpleMessage("Ktoś cię zaobserwował"),
-        "app_push_richNotification_follow_title": m44,
+        "app_push_richNotification_follow_title": m43,
         "app_push_richNotification_mention_summary":
             MessageLookupByLibrary.simpleMessage("Ktoś wspomniał o tobie"),
-        "app_push_richNotification_mention_title": m45,
+        "app_push_richNotification_mention_title": m44,
         "app_push_richNotification_move_summary":
             MessageLookupByLibrary.simpleMessage("Ktoś przeniósł się"),
-        "app_push_richNotification_move_title": m46,
+        "app_push_richNotification_move_title": m45,
         "app_push_richNotification_pleromaChatMention_summary":
             MessageLookupByLibrary.simpleMessage("Masz nową wiadomość czatu"),
-        "app_push_richNotification_pleromaChatMention_title": m47,
+        "app_push_richNotification_pleromaChatMention_title": m46,
         "app_push_richNotification_pleromaEmojiReaction_summary":
             MessageLookupByLibrary.simpleMessage("Ktoś zareagował"),
-        "app_push_richNotification_pleromaEmojiReaction_title": m48,
+        "app_push_richNotification_pleromaEmojiReaction_title": m47,
         "app_push_richNotification_pleromaReport_summary":
             MessageLookupByLibrary.simpleMessage("Ktoś zgłosił twój wpis"),
-        "app_push_richNotification_pleromaReport_title": m49,
+        "app_push_richNotification_pleromaReport_title": m48,
         "app_push_richNotification_poll_summary":
             MessageLookupByLibrary.simpleMessage("Zmieniono ankietę"),
         "app_push_richNotification_poll_title":
             MessageLookupByLibrary.simpleMessage("Zmieniono ankietę"),
         "app_push_richNotification_reblog_summary":
             MessageLookupByLibrary.simpleMessage("Ktoś udostępnił twój wpis"),
-        "app_push_richNotification_reblog_title": m50,
+        "app_push_richNotification_reblog_title": m49,
         "app_push_richNotification_unknown_summary":
             MessageLookupByLibrary.simpleMessage("Coś wydarzyło się"),
         "app_push_richNotification_unknown_title":
@@ -1429,11 +1426,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_search_tab_statuses":
             MessageLookupByLibrary.simpleMessage("Wpisy"),
         "app_search_title": MessageLookupByLibrary.simpleMessage("Szukaj"),
-        "app_settings_global_or_instance_use_global_label":
-            MessageLookupByLibrary.simpleMessage("Globalne ustawienia"),
+        "app_settings_global_or_instance_override_global_label":
+            MessageLookupByLibrary.simpleMessage(
+                "Nadpisać ustawienia globalne"),
         "app_settings_global_title":
             MessageLookupByLibrary.simpleMessage("Ustawienia: globalne"),
-        "app_settings_instance_title": m51,
+        "app_settings_instance_title": m50,
         "app_settings_warning_notSupportedOnThisInstance_desc":
             MessageLookupByLibrary.simpleMessage(
                 "Nieobsługiwane przez tę instancję"),
@@ -1503,7 +1501,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Wycisz konwersację"),
         "app_status_action_openInBrowser":
             MessageLookupByLibrary.simpleMessage("Otwórz w przeglądarce"),
-        "app_status_action_openOnRemoteInstance": m52,
+        "app_status_action_openOnRemoteInstance": m51,
         "app_status_action_pin":
             MessageLookupByLibrary.simpleMessage("Przypnij"),
         "app_status_action_popup_title":
@@ -1538,14 +1536,14 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Już opyblikowano"),
         "app_status_draft_state_canceled":
             MessageLookupByLibrary.simpleMessage("Anulowano"),
-        "app_status_emoji_error_cantAdd_dialog_content": m53,
+        "app_status_emoji_error_cantAdd_dialog_content": m52,
         "app_status_emoji_error_cantAdd_dialog_title":
             MessageLookupByLibrary.simpleMessage("Nie można dodać emoji"),
         "app_status_expire_datetime_picker_title":
             MessageLookupByLibrary.simpleMessage("Wygasa"),
         "app_status_favouritedBy_title":
             MessageLookupByLibrary.simpleMessage("Polubiono przez"),
-        "app_status_list_newItems_action_tapToLoadNew": m54,
+        "app_status_list_newItems_action_tapToLoadNew": m53,
         "app_status_mute_dialog_action_clearDate":
             MessageLookupByLibrary.simpleMessage("Wyczyść datę"),
         "app_status_mute_dialog_action_mute":
@@ -1561,7 +1559,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Opublikuj"),
         "app_status_post_dialog_async_content":
             MessageLookupByLibrary.simpleMessage("Publikowanie…"),
-        "app_status_post_dialog_error_content": m55,
+        "app_status_post_dialog_error_content": m54,
         "app_status_post_dialog_error_title_post":
             MessageLookupByLibrary.simpleMessage(
                 "Nie udało się opublikować wpisu"),
@@ -1601,7 +1599,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Czas trwania ankiety"),
         "app_status_post_poll_field_multiply_label":
             MessageLookupByLibrary.simpleMessage("Wielokrotny wybór"),
-        "app_status_post_poll_field_option_hint": m56,
+        "app_status_post_poll_field_option_hint": m55,
         "app_status_post_schedule_error_notInFuture_dialog_content":
             MessageLookupByLibrary.simpleMessage(
                 "Zaplanowany czas nie może wystąpić wcześniej niż za 5 minut"),
@@ -1642,7 +1640,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Nie udało się załadować pierwszego wpisu"),
         "app_status_reply_loading_progress":
             MessageLookupByLibrary.simpleMessage("Ładowanie pierwszego wpisu"),
-        "app_status_reply_replyingTo": m57,
+        "app_status_reply_replyingTo": m56,
         "app_status_scheduled_datetime_picker_title":
             MessageLookupByLibrary.simpleMessage("Zaplanuj na"),
         "app_status_scheduled_edit_title":
@@ -1664,7 +1662,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Naciśnij, aby wyświetlić"),
         "app_status_spoiler_chip":
             MessageLookupByLibrary.simpleMessage("Spoliery!"),
-        "app_status_thread_post_hint": m58,
+        "app_status_thread_post_hint": m57,
         "app_status_thread_start_loading": MessageLookupByLibrary.simpleMessage(
             "Ładowanie początkowego wpisu"),
         "app_theme_chooser_label":
@@ -1683,7 +1681,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Utwórz nową oś czasu"),
         "app_timeline_loading":
             MessageLookupByLibrary.simpleMessage("Ładowanie osi czasu"),
-        "app_timeline_settings_content": m59,
+        "app_timeline_settings_content": m58,
         "app_timeline_settings_field_enableWebSockets_description":
             MessageLookupByLibrary.simpleMessage(
                 "Wyłącz, aby zmniejszyć zużycie baterii"),
@@ -1747,7 +1745,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Edytuj"),
         "app_timeline_storage_delete_dialog_action_delete":
             MessageLookupByLibrary.simpleMessage("Usuń"),
-        "app_timeline_storage_delete_dialog_content": m60,
+        "app_timeline_storage_delete_dialog_content": m59,
         "app_timeline_storage_delete_dialog_title":
             MessageLookupByLibrary.simpleMessage("Usuń"),
         "app_timeline_storage_empty":
@@ -1817,7 +1815,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Obecny ekran i w tle"),
         "app_web_sockets_settings_type_onlyForeground":
             MessageLookupByLibrary.simpleMessage("Tylko dla obecnego ekranu"),
-        "async_init_state_failed": m61,
+        "async_init_state_failed": m60,
         "async_init_state_notStarted": MessageLookupByLibrary.simpleMessage(
             "Asynchroniczna inicjalizacja nie rozpoczęła się"),
         "dialog_action_cancel": MessageLookupByLibrary.simpleMessage("Anuluj"),
@@ -1826,24 +1824,24 @@ class MessageLookup extends MessageLookupByLibrary {
         "dialog_action_no": MessageLookupByLibrary.simpleMessage("Nie"),
         "dialog_action_ok": MessageLookupByLibrary.simpleMessage("OK"),
         "dialog_action_yes": MessageLookupByLibrary.simpleMessage("Tak"),
-        "dialog_error_content": m62,
+        "dialog_error_content": m61,
         "dialog_error_title":
             MessageLookupByLibrary.simpleMessage("Coś poszło nie tak"),
         "dialog_progress_action_cancel":
             MessageLookupByLibrary.simpleMessage("Anuluj"),
         "dialog_progress_content":
             MessageLookupByLibrary.simpleMessage("Ładowanie…"),
-        "duration_day": m63,
-        "duration_hour": m64,
-        "duration_minute": m65,
+        "duration_day": m62,
+        "duration_hour": m63,
+        "duration_minute": m64,
         "file_picker_empty":
             MessageLookupByLibrary.simpleMessage("Nie masz żadnych mediów"),
         "file_picker_multi_selectionCountLimitReached_notification_content":
-            m66,
+            m65,
         "file_picker_multi_selectionCountLimitReached_notification_title":
             MessageLookupByLibrary.simpleMessage(
                 "Ograniczenie wyboru przekroczone"),
-        "file_picker_multi_selectionCount_selected": m67,
+        "file_picker_multi_selectionCount_selected": m66,
         "file_picker_multi_title":
             MessageLookupByLibrary.simpleMessage("Wybierz pliki mediów"),
         "file_picker_selectionFolder_title":
@@ -1852,21 +1850,21 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Wybierz media"),
         "form_field_bool_onlyTrue_error_desc":
             MessageLookupByLibrary.simpleMessage("Powinno być włączone"),
-        "form_field_int_error_length_maxOnlyValue_desc": m68,
-        "form_field_int_error_length_minAndMax_desc": m69,
-        "form_field_int_error_length_minOnlyValue_desc": m70,
+        "form_field_int_error_length_maxOnlyValue_desc": m67,
+        "form_field_int_error_length_minAndMax_desc": m68,
+        "form_field_int_error_length_minOnlyValue_desc": m69,
         "form_field_text_email_error_invalid_desc":
             MessageLookupByLibrary.simpleMessage("Nieprawidłowy adres e-mail"),
         "form_field_text_error_empty_desc":
             MessageLookupByLibrary.simpleMessage("Pusto"),
-        "form_field_text_error_length_maxOnly_desc": m71,
-        "form_field_text_error_length_minAndMax_desc": m72,
-        "form_field_text_error_length_minOnly_desc": m73,
+        "form_field_text_error_length_maxOnly_desc": m70,
+        "form_field_text_error_length_minAndMax_desc": m71,
+        "form_field_text_error_length_minOnly_desc": m72,
         "form_field_text_url_error_invalid_desc":
             MessageLookupByLibrary.simpleMessage("Nieprawidłowy adres URL"),
         "form_field_value_error_null_desc":
             MessageLookupByLibrary.simpleMessage("Wymagane"),
-        "link_error_dialog_content": m74,
+        "link_error_dialog_content": m73,
         "link_error_dialog_title": MessageLookupByLibrary.simpleMessage(
             "Nie można uruchomić adresu URL"),
         "localization_locale_default":
