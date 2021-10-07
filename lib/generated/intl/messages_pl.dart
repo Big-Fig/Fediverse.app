@@ -1426,8 +1426,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_search_tab_statuses":
             MessageLookupByLibrary.simpleMessage("Wpisy"),
         "app_search_title": MessageLookupByLibrary.simpleMessage("Szukaj"),
-        "app_settings_global_or_instance_use_global_label":
-            MessageLookupByLibrary.simpleMessage("Globalne ustawienia"),
+        "app_settings_global_or_instance_override_global_label":
+            MessageLookupByLibrary.simpleMessage(
+                "Nadpisać ustawienia globalne"),
         "app_settings_global_title":
             MessageLookupByLibrary.simpleMessage("Ustawienia: globalne"),
         "app_settings_instance_title": m50,

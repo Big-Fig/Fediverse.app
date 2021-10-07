@@ -4015,11 +4015,11 @@ class S {
     );
   }
 
-  /// `Global settings`
-  String get app_settings_global_or_instance_use_global_label {
+  /// `Override global settings`
+  String get app_settings_global_or_instance_override_global_label {
     return Intl.message(
-      'Global settings',
-      name: 'app_settings_global_or_instance_use_global_label',
+      'Override global settings',
+      name: 'app_settings_global_or_instance_override_global_label',
       desc: '',
       args: [],
     );

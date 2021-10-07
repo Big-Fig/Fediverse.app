@@ -72,7 +72,7 @@ abstract class EditGlobalOrInstanceSettingsBloc<T extends ISettings>
   }) {
     switch (globalOrInstanceSettingsType) {
       case GlobalOrInstanceSettingsType.instance:
-        return instanceSettingsData!;
+        return instanceSettingsData ?? globalSettingsData;
       case GlobalOrInstanceSettingsType.global:
         return globalSettingsData;
       default:
