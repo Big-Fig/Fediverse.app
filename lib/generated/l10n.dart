@@ -803,11 +803,11 @@ class S {
     );
   }
 
-  /// `Settings: global`
-  String get app_account_home_tab_menu_action_global_settings {
+  /// `Settings`
+  String get app_account_home_tab_menu_action_settings {
     return Intl.message(
-      'Settings: global',
-      name: 'app_account_home_tab_menu_action_global_settings',
+      'Settings',
+      name: 'app_account_home_tab_menu_action_settings',
       desc: '',
       args: [],
     );
@@ -3932,16 +3932,6 @@ class S {
       name: 'duration_minute',
       desc: '',
       args: [count],
-    );
-  }
-
-  /// `Settings: {userAtHost}`
-  String app_account_home_tab_menu_action_instance_settings(Object userAtHost) {
-    return Intl.message(
-      'Settings: $userAtHost',
-      name: 'app_account_home_tab_menu_action_instance_settings',
-      desc: '',
-      args: [userAtHost],
     );
   }
 
