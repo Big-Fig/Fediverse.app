@@ -7,6 +7,7 @@ import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/app/filter/repository/filter_repository.dart';
+import 'package:fedi/app/instance/announcement/repository/instance_announcement_repository.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/notification/repository/notification_repository_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
@@ -28,10 +29,12 @@ class CurrentUnifediApiAccessContextInitBloc extends AsyncInitLoadingBloc
   final IUnifediApiChatService pleromaApiChatService;
   final IUnifediApiConversationService pleromaConversationService;
   final IUnifediApiFilterService unifediApiFilterService;
+  final IUnifediApiAnnouncementService unifediApiAnnouncementService;
   final IFilterRepository filterRepository;
   final INotificationRepository notificationRepository;
   final IConversationChatRepository conversationChatRepository;
   final IPleromaChatRepository pleromaChatRepository;
+  final IInstanceAnnouncementRepository announcementRepository;
   final ICurrentUnifediApiAccessBloc currentUnifediApiAccessBloc;
   final IConnectionService connectionService;
 
@@ -48,6 +51,8 @@ class CurrentUnifediApiAccessContextInitBloc extends AsyncInitLoadingBloc
     required this.conversationChatRepository,
     required this.pleromaChatRepository,
     required this.connectionService,
+    required this.announcementRepository,
+    required this.unifediApiAnnouncementService,
   }) {
     stateSubject.disposeWith(this);
 
@@ -175,6 +180,7 @@ class CurrentUnifediApiAccessContextInitBloc extends AsyncInitLoadingBloc
         await conversationChatRepository.getTotalUnreadCount();
     var actualPleromaChatUnreadCount =
         await pleromaChatRepository.getTotalUnreadCount();
+    var actualAnnouncementCount = await announcementRepository.countAll();
 
     var myAccountUnreadNotificationsCount = 0;
     var myAccountUnreadConversationCount = 0;
@@ -186,6 +192,7 @@ class CurrentUnifediApiAccessContextInitBloc extends AsyncInitLoadingBloc
           myAccountBloc.myAccount!.unreadNotificationsCount ?? 0;
     }
 
+    var isNeedUpdateAnnouncement = isMastodon && actualAnnouncementCount == 0;
     var isNeedUpdateChats = isPleroma && (actualPleromaChatUnreadCount == 0);
     var isNeedUpdateConversations =
         (isMastodon && actualConversationChatUnreadCount == 0) ||
@@ -197,6 +204,10 @@ class CurrentUnifediApiAccessContextInitBloc extends AsyncInitLoadingBloc
             (isPleroma &&
                 myAccountUnreadNotificationsCount > 0 &&
                 actualNotificationUnreadCount == 0);
+
+    if (isNeedUpdateAnnouncement) {
+      await updateAnnouncements();
+    }
 
     var futures = [
       updateFilters(),
@@ -263,6 +274,23 @@ class CurrentUnifediApiAccessContextInitBloc extends AsyncInitLoadingBloc
       remoteNotifications,
       batchTransaction: null,
     );
+  }
+
+  Future updateAnnouncements() async {
+    var featureSupported = unifediApiAnnouncementService.isFeatureSupported(
+      unifediApiAnnouncementService.getAnnouncementsFeature,
+    );
+
+    if (featureSupported) {
+      var remoteAnnouncements =
+          await unifediApiAnnouncementService.getAnnouncements(
+        withDismissed: null,
+      );
+      await announcementRepository.upsertAllInRemoteType(
+        remoteAnnouncements,
+        batchTransaction: null,
+      );
+    }
   }
 
   Future updateChats() async {
@@ -335,6 +363,15 @@ class CurrentUnifediApiAccessContextInitBloc extends AsyncInitLoadingBloc
           listen: false,
         ),
         unifediApiFilterService: Provider.of<IUnifediApiFilterService>(
+          context,
+          listen: false,
+        ),
+        announcementRepository: IInstanceAnnouncementRepository.of(
+          context,
+          listen: false,
+        ),
+        unifediApiAnnouncementService:
+            Provider.of<IUnifediApiAnnouncementService>(
           context,
           listen: false,
         ),
