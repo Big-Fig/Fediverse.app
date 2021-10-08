@@ -14,7 +14,7 @@ abstract class AsyncLoadingService extends DisposableOwner
   Stream<bool> get isLoadingStream => _isLoadingSubject.stream;
 
   @override
-  bool? get isLoading => _isLoadingSubject.value;
+  bool get isLoading => _isLoadingSubject.value;
 
   AsyncLoadingService() {
     _isLoadingSubject.disposeWith(this);
