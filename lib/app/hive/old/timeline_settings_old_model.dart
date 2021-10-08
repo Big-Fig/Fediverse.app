@@ -261,9 +261,6 @@ class TimelineSettingsOld
   PleromaApiReplyVisibilityFilter? get replyVisibilityFilter =>
       replyVisibilityFilterString?.toPleromaApiReplyVisibilityFilter();
 
-  @override
-  TimelineSettingsOld clone() => copyWith();
-
   static TimelineSettingsOld createDefaultSettings(TimelineType timelineType) {
     switch (timelineType) {
       case TimelineType.public:

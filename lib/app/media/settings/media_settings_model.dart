@@ -23,7 +23,4 @@ class MediaSettings
 
   factory MediaSettings.fromJson(Map<String, dynamic> json) =>
       _$MediaSettingsFromJson(json);
-
-  @override
-  MediaSettings clone() => copyWith();
 }

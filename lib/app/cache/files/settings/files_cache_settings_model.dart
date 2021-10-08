@@ -44,7 +44,4 @@ class FilesCacheSettings
 
   factory FilesCacheSettings.fromJson(Map<String, dynamic> json) =>
       _$FilesCacheSettingsFromJson(json);
-
-  @override
-  FilesCacheSettings clone() => copyWith();
 }

@@ -24,7 +24,4 @@ class InstanceAnnouncementSettings
 
   factory InstanceAnnouncementSettings.fromJson(Map<String, dynamic> json) =>
       _$InstanceAnnouncementSettingsFromJson(json);
-
-  @override
-  InstanceAnnouncementSettings clone() => copyWith();
 }

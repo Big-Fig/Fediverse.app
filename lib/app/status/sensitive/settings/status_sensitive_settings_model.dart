@@ -40,7 +40,4 @@ class StatusSensitiveSettings
 
   factory StatusSensitiveSettings.fromJson(Map<String, dynamic> json) =>
       _$StatusSensitiveSettingsFromJson(json);
-
-  @override
-  StatusSensitiveSettings clone() => copyWith();
 }

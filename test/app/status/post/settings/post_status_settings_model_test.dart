@@ -54,16 +54,6 @@ void main() {
     expect(obj1, obj1.copyWith());
   });
 
-  test('clone', () async {
-    var obj1 = PostStatusSettingsModelMockHelper.createTestPostStatusSettings(
-      seed: 'seed1',
-    );
-
-    var obj1Clone = obj1.clone();
-
-    expect(obj1, obj1Clone);
-  });
-
   test('hive adapter', () async {
     HiveMockHelper.testAdapter(
       () => PostStatusSettingsAdapter(),

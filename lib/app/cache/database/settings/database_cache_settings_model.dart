@@ -51,7 +51,4 @@ class DatabaseCacheSettings
 
   factory DatabaseCacheSettings.fromJson(Map<String, dynamic> json) =>
       _$DatabaseCacheSettingsFromJson(json);
-
-  @override
-  DatabaseCacheSettings clone() => copyWith();
 }

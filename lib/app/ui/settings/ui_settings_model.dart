@@ -37,7 +37,4 @@ class UiSettings with _$UiSettings implements IJsonObj, ISettings<UiSettings> {
 
   factory UiSettings.fromJson(Map<String, dynamic> json) =>
       _$UiSettingsFromJson(json);
-
-  @override
-  UiSettings clone() => copyWith();
 }

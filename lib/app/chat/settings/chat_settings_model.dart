@@ -26,7 +26,4 @@ class ChatSettings
 
   factory ChatSettings.fromJson(Map<String, dynamic> json) =>
       _$ChatSettingsFromJson(json);
-
-  @override
-  ChatSettings clone() => copyWith();
 }

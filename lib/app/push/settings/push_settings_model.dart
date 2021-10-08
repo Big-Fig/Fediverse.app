@@ -47,7 +47,4 @@ class PushSettings with _$PushSettings implements ISettings<PushSettings> {
 
   factory PushSettings.fromJson(Map<String, dynamic> json) =>
       _$PushSettingsFromJson(json);
-
-  @override
-  PushSettings clone() => copyWith();
 }

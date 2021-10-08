@@ -32,7 +32,4 @@ class PaginationSettings
 
   factory PaginationSettings.fromJson(Map<String, dynamic> json) =>
       _$PaginationSettingsFromJson(json);
-
-  @override
-  PaginationSettings clone() => copyWith();
 }
