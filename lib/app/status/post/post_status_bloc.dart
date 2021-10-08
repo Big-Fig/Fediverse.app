@@ -8,6 +8,10 @@ import 'package:provider/provider.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
 abstract class IPostStatusBloc implements IPostMessageBloc {
+  bool get isAnyTextEntered;
+
+  Stream<bool> get isAnyTextEnteredStream;
+
   bool get isAnyDataEntered;
 
   static IPostStatusBloc of(
@@ -46,7 +50,7 @@ abstract class IPostStatusBloc implements IPostMessageBloc {
 
   String? get subjectText;
 
-  Stream<String> get subjectTextStream;
+  Stream<String?> get subjectTextStream;
 
   void addAccountMentions(List<IAccount?> accounts);
 

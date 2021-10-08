@@ -124,11 +124,11 @@ class _PostStatusComposeActionsWidget extends StatelessWidget {
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
                   children: [
-                    StreamBuilder<String?>(
-                      stream: postStatusBloc.inputTextStream,
+                    StreamBuilder<bool>(
+                      stream: postStatusBloc.isAnyTextEnteredStream,
                       builder: (context, snapshot) {
-                        var inputText = snapshot.data;
-                        if (inputText?.trim().isNotEmpty == true) {
+                        var isAnyTextEntered = snapshot.data;
+                        if (isAnyTextEntered == true) {
                           return const PostMessageEmojiActionWidget();
                         } else {
                           return const PostMessageAttachActionWidget();

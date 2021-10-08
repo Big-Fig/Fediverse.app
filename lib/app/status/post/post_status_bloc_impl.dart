@@ -31,12 +31,22 @@ abstract class PostStatusBloc extends PostMessageBloc
   final bool isExpirePossible;
 
   @override
-  bool get isAnyDataEntered {
-    return inputText?.isNotEmpty == true ||
-        subjectText?.isNotEmpty == true ||
-        uploadMediaAttachmentsBloc.uploadMediaAttachmentBlocs.isNotEmpty ||
-        pollBloc.isSomethingChanged;
-  }
+  bool get isAnyTextEntered =>
+      inputText?.isNotEmpty == true || subjectText?.isNotEmpty == true;
+
+  @override
+  Stream<bool> get isAnyTextEnteredStream => Rx.combineLatest2(
+        inputTextStream,
+        subjectTextStream,
+        (String? inputText, String? subjectText) =>
+            inputText?.isNotEmpty == true || subjectText?.isNotEmpty == true,
+      );
+
+  @override
+  bool get isAnyDataEntered =>
+      isAnyTextEntered ||
+      uploadMediaAttachmentsBloc.uploadMediaAttachmentBlocs.isNotEmpty ||
+      pollBloc.isSomethingChanged;
 
   final bool markMediaAsNsfwOnAttach;
 
@@ -615,7 +625,7 @@ abstract class PostStatusBloc extends PostMessageBloc
     return poll;
   }
 
-  UnifediApiPostStatusPoll? _calculatepostStatusPollField() {
+  UnifediApiPostStatusPoll? _calculatePostStatusPollField() {
     var poll;
     if (pollBloc.isSomethingChanged) {
       var expiresInSeconds = pollBloc
@@ -652,12 +662,12 @@ abstract class PostStatusBloc extends PostMessageBloc
   String? get subjectText => subjectTextSubject.valueOrNull;
 
   @override
-  Stream<String> get subjectTextStream => subjectTextSubject.stream;
+  Stream<String?> get subjectTextStream => subjectTextSubject.stream;
 
   @override
   final TextEditingController subjectTextController = TextEditingController();
 
-  final BehaviorSubject<String> subjectTextSubject = BehaviorSubject();
+  final BehaviorSubject<String?> subjectTextSubject = BehaviorSubject();
 
   void onSubjectTextChanged() {
     var text = subjectTextController.text;
@@ -704,7 +714,7 @@ abstract class PostStatusBloc extends PostMessageBloc
   Future actualPostStatus() async {
     var remoteStatus = await unifediApiStatusService.postStatus(
       idempotencyKey: idempotencyKey,
-      postStatus: calculatepostStatus(),
+      postStatus: calculatePostStatus(),
     );
 
     await statusRepository.upsertRemoteStatusWithAllArguments(
@@ -781,7 +791,7 @@ abstract class PostStatusBloc extends PostMessageBloc
       inReplyToConversationId: initialData.inReplyToConversationId,
       scheduledAt: scheduledAt!,
       to: calculateToField(),
-      poll: _calculatepostStatusPollField(),
+      poll: _calculatePostStatusPollField(),
       spoilerText: _calculateSpoilerTextField(),
       expiresInSeconds: expireAtSubject.valueOrNull?.totalSeconds,
       language: initialData.language,
@@ -790,7 +800,7 @@ abstract class PostStatusBloc extends PostMessageBloc
     );
   }
 
-  UnifediApiPostStatus calculatepostStatus() {
+  UnifediApiPostStatus calculatePostStatus() {
     return UnifediApiPostStatus(
       mediaIds: _calculateMediaIdsField(),
       status: calculateStatusTextField(),
@@ -799,12 +809,29 @@ abstract class PostStatusBloc extends PostMessageBloc
       inReplyToId: calculateInReplyToStatusField()?.remoteId,
       inReplyToConversationId: initialData.inReplyToConversationId,
       to: calculateToField(),
-      poll: _calculatepostStatusPollField(),
+      poll: _calculatePostStatusPollField(),
       spoilerText: _calculateSpoilerTextField(),
       language: initialData.language,
       expiresInSeconds: expireAtSubject.valueOrNull?.totalSeconds,
       contentType: null,
       preview: null,
     );
+  }
+
+  @override
+  void appendText(
+    String textToAppend, {
+    bool requestFocus = true,
+  }) {
+    var subjectFocused = subjectFocusNode.hasFocus;
+    if (subjectFocused) {
+      var originalText = subjectText;
+      subjectTextController.value = createAppendTextEditingValue(
+        originalText: originalText ?? '',
+        textToAppend: textToAppend,
+      );
+    } else {
+      super.appendText(textToAppend, requestFocus: requestFocus);
+    }
   }
 }
