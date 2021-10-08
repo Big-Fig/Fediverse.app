@@ -1168,8 +1168,10 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Тип файла не поддерживается, ошибка сети или недостаточно привелегий"),
         "app_media_attachment_addToGallery_error_dialog_title":
             MessageLookupByLibrary.simpleMessage("Не получилось сохранить"),
-        "app_media_attachment_addToGallery_progress_content":
+        "app_media_attachment_addToGallery_start_saving":
             MessageLookupByLibrary.simpleMessage("Сохранение…"),
+        "app_media_attachment_addToGallery_success":
+            MessageLookupByLibrary.simpleMessage("Успешно"),
         "app_media_attachment_details_notSupported_type": m31,
         "app_media_attachment_details_title":
             MessageLookupByLibrary.simpleMessage("Прикрепленные файлы"),

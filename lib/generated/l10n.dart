@@ -2836,11 +2836,21 @@ class S {
     );
   }
 
+  /// `Success`
+  String get app_media_attachment_addToGallery_success {
+    return Intl.message(
+      'Success',
+      name: 'app_media_attachment_addToGallery_success',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Saving…`
-  String get app_media_attachment_addToGallery_progress_content {
+  String get app_media_attachment_addToGallery_start_saving {
     return Intl.message(
       'Saving…',
-      name: 'app_media_attachment_addToGallery_progress_content',
+      name: 'app_media_attachment_addToGallery_start_saving',
       desc: '',
       args: [],
     );

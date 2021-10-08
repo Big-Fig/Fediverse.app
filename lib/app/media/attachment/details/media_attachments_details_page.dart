@@ -15,6 +15,7 @@ import 'package:fedi/app/share/entity/share_entity_model.dart';
 import 'package:fedi/app/share/external/external_share_entity_page.dart';
 import 'package:fedi/app/share/share_chooser_dialog.dart';
 import 'package:fedi/app/status/post/new/new_post_status_page.dart';
+import 'package:fedi/app/toast/toast_service.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
@@ -396,8 +397,7 @@ class _MediaAttachmentDetailsPageAddToGalleryAction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PleromaAsyncOperationButtonBuilderWidget(
-      progressContentMessage:
-          S.of(context).app_media_attachment_addToGallery_progress_content,
+      showProgressDialog: false,
       builder: (BuildContext context, VoidCallback? onPressed) =>
           FediIconButton(
         icon: Icon(
@@ -407,10 +407,15 @@ class _MediaAttachmentDetailsPageAddToGalleryAction extends StatelessWidget {
         ),
         onPressed: onPressed,
       ),
-      // todo: add localizaed message
-      // successToastMessage:
-      //     S.of(context).app_media_attachment_addToGallery_,
+      // todo: add localized message
+      successToastMessage:
+          S.of(context).app_media_attachment_addToGallery_success,
       asyncButtonAction: () async {
+        IToastService.of(context, listen: false).showInfoToast(
+          context: context,
+          title: S.of(context).app_media_attachment_addToGallery_start_saving,
+        );
+
         var saved = await addMediaAttachmentToGallery(
           context: context,
           mediaAttachment: mediaAttachment,
@@ -421,6 +426,8 @@ class _MediaAttachmentDetailsPageAddToGalleryAction extends StatelessWidget {
             mediaAttachment,
           );
         }
+
+        return mediaAttachment;
       },
       errorAlertDialogBuilders: [
         (BuildContext? context, dynamic error, StackTrace stackTrace) {
