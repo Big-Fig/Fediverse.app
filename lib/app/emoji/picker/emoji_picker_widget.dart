@@ -184,7 +184,7 @@ class _EmojiPickerSearchCategoryBlocBodyWidget extends StatelessWidget {
           hintText: S.of(context).app_emoji_search_hint,
           errorText: null,
           maxLines: 1,
-          onSubmitted: (_) {},
+          onSubmitted: null,
           textInputAction: TextInputAction.done,
           textEditingController:
               emojiPickerSearchCategoryBloc.searchTextEditingController,

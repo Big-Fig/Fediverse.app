@@ -712,17 +712,21 @@ abstract class PostStatusBloc extends PostMessageBloc
   }
 
   Future actualPostStatus() async {
+    var unifediApiPostStatus = calculatePostStatus();
     var remoteStatus = await unifediApiStatusService.postStatus(
       idempotencyKey: idempotencyKey,
-      postStatus: calculatePostStatus(),
+      postStatus: unifediApiPostStatus,
     );
+
+    var isFromHomeTimeline = unifediApiPostStatus.visibilityAsPleromaApi ==
+        UnifediApiVisibility.publicValue;
 
     await statusRepository.upsertRemoteStatusWithAllArguments(
       remoteStatus,
       conversationRemoteId: initialData.inReplyToConversationId,
       batchTransaction: null,
-      listRemoteId: '',
-      isFromHomeTimeline: null,
+      listRemoteId: null,
+      isFromHomeTimeline: isFromHomeTimeline,
     );
     await onStatusPosted(remoteStatus);
     var inReplyToStatusRemoteId = this.inReplyToStatusRemoteId;

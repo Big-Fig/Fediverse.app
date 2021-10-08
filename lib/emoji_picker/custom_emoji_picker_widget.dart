@@ -140,7 +140,8 @@ class _CustomEmojiPickerSelectedCategoryWidget extends StatelessWidget {
                   var items = snapshot.data;
 
                   _logger.finest(
-                      () => 'BUILD items $selectedCategoryBloc $items ');
+                    () => 'BUILD items $selectedCategoryBloc $items ',
+                  );
 
                   if (!useImageEmoji) {
                     items = items
@@ -239,9 +240,6 @@ class _CustomEmojiPickerSelectedCategoryItemsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var customEmojiPickerBloc = ICustomEmojiPickerBloc.of(context);
-    var items = Provider.of<List<CustomEmojiPickerItem>>(context);
-
     var customCategoryBodyBuilder = this.customCategoryBodyBuilder;
 
     if (customCategoryBodyBuilder != null) {
@@ -401,6 +399,7 @@ class _CustomEmojiPickerCategoryIndicatorWidget extends StatelessWidget {
         if (iconData == null) {
           if (customCategoryIconBuilder != null) {
             iconData = customCategoryIconBuilder!(category);
+            // ignore: no-magic-number
             size = 20.0;
           }
         }
