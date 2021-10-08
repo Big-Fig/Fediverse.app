@@ -172,10 +172,6 @@ dependencies:
   # unenscape account not field
   html_unescape: 2.0.0
 
-  # shared preferences support. temporary required by custom emoji picker
-  # Todo: refactor and remove
-  shared_preferences: 2.0.8
-
   # extended text fields with highlight mentions support
   extended_text_field: 8.0.0
 

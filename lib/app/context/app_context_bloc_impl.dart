@@ -135,7 +135,6 @@ import 'package:fedi/in_app_review/in_app_review_bloc.dart';
 import 'package:fedi/in_app_review/in_app_review_bloc_impl.dart';
 import 'package:fedi/local_preferences/hive_local_preferences_service_impl.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
-import 'package:fedi/local_preferences/shared_preferences_local_preferences_service_impl.dart';
 import 'package:fedi/localization/localization_model.dart';
 import 'package:fedi/permission/camera_permission_bloc.dart';
 import 'package:fedi/permission/camera_permission_bloc_impl.dart';
@@ -226,36 +225,6 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
 
     if (configService.appLaunchType == AppLaunchType.mock) {
       await hiveLocalPreferencesService.clearAllValues();
-    }
-
-    var hiveLocalPreferencesServiceExist =
-        await hiveLocalPreferencesService.isStorageExist();
-    if (!hiveLocalPreferencesServiceExist) {
-      var sharedPreferencesLocalPreferencesService =
-          SharedPreferencesLocalPreferencesService();
-
-      await sharedPreferencesLocalPreferencesService.performAsyncInit();
-
-      final sharedPreferencesStorageExist =
-          await sharedPreferencesLocalPreferencesService.isStorageExist();
-      _logger.finest(() =>
-          'sharedPreferencesStorageExist == $sharedPreferencesStorageExist}');
-
-      var sharedPreferencesLocalPreferencesServiceExist =
-          await sharedPreferencesLocalPreferencesService.isStorageExist();
-      _logger.finest(() => 'sharedPreferencesLocalPreferencesServiceExist =='
-          ' $sharedPreferencesLocalPreferencesServiceExist');
-      if (sharedPreferencesLocalPreferencesServiceExist) {
-        var migrationBloc = FediLocalPreferencesServiceMigrationBloc(
-          inputService: sharedPreferencesLocalPreferencesService,
-          outputService: hiveLocalPreferencesService,
-        );
-
-        await migrationBloc.migrateData();
-        await sharedPreferencesLocalPreferencesService
-            .clearAllValuesAndDeleteStorage();
-      }
-      await sharedPreferencesLocalPreferencesService.dispose();
     }
 
     await globalProviderService.asyncInitAndRegister<ILocalPreferencesService>(
