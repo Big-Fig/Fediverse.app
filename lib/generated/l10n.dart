@@ -240,6 +240,16 @@ class S {
     );
   }
 
+  /// `Start type to search`
+  String get app_emoji_search_hint {
+    return Intl.message(
+      'Start type to search',
+      name: 'app_emoji_search_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `This category don't have suitable emojis`
   String get app_emoji_category_empty {
     return Intl.message(

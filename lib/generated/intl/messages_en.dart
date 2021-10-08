@@ -910,6 +910,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "This instance don\'t have custom emojis"),
         "app_emoji_recent_empty":
             MessageLookupByLibrary.simpleMessage("No recent emojis"),
+        "app_emoji_search_hint":
+            MessageLookupByLibrary.simpleMessage("Start type to search"),
         "app_file_image_crop_title":
             MessageLookupByLibrary.simpleMessage("Crop as"),
         "app_filter_context_empty":

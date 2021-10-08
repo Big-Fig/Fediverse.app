@@ -5,6 +5,8 @@ import 'package:fedi/app/emoji/picker/category/custom_image_url/emoji_picker_cus
 import 'package:fedi/app/emoji/picker/category/custom_image_url/local_preferences/emoji_picker_custom_image_url_category_local_preference_bloc.dart';
 import 'package:fedi/app/emoji/picker/category/recent/emoji_picker_recent_category_bloc_impl.dart';
 import 'package:fedi/app/emoji/picker/category/recent/local_preferences/emoji_picker_recent_category_local_preference_bloc.dart';
+import 'package:fedi/app/emoji/picker/category/search/emoji_picker_search_category_bloc_impl.dart';
+import 'package:fedi/app/ui/edit_text/fedi_transparent_edit_text_field.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
@@ -64,9 +66,14 @@ class EmojiPickerWidget extends StatelessWidget {
           ),
         );
 
+        var emojiPickerSearchCategoryBloc = EmojiPickerSearchCategoryBloc(
+          allCategoryBlocs: CustomEmojiPickerCodeCategoryBloc.allCategories,
+        );
+
         var allCategoriesBlocs = <ICustomEmojiPickerCategoryBloc>[
           emojiPickerRecentCategoryBloc,
           if (useImageEmoji) customCategoryBloc!,
+          emojiPickerSearchCategoryBloc,
           ...CustomEmojiPickerCodeCategoryBloc.allCategories,
         ];
 
@@ -99,6 +106,8 @@ class EmojiPickerWidget extends StatelessWidget {
             text = S.of(context).app_emoji_custom_empty;
           } else if (categoryBloc is EmojiPickerRecentCategoryBloc) {
             text = S.of(context).app_emoji_recent_empty;
+          } else if (categoryBloc is EmojiPickerSearchCategoryBloc) {
+            return null;
           } else {
             text = S.of(context).app_emoji_category_empty;
           }
@@ -114,6 +123,27 @@ class EmojiPickerWidget extends StatelessWidget {
             return FediIcons.instance;
           } else if (category is EmojiPickerRecentCategoryBloc) {
             return FediIcons.refresh;
+          } else if (category is EmojiPickerSearchCategoryBloc) {
+            return FediIcons.search;
+          } else {
+            return null;
+          }
+        },
+        customCategoryBodyBuilder: (
+          BuildContext context,
+          int rowsCount,
+          double selectedCategoryItemsGridHeight,
+          EmojiSelectedCallback onEmojiSelected,
+        ) {
+          var categoryBloc =
+              Provider.of<ICustomEmojiPickerCategoryBloc>(context);
+
+          if (categoryBloc is EmojiPickerSearchCategoryBloc) {
+            return _EmojiPickerSearchCategoryBlocBodyWidget(
+              rowsCount: rowsCount,
+              selectedCategoryItemsGridHeight: selectedCategoryItemsGridHeight,
+              onEmojiSelected: onEmojiSelected,
+            );
           } else {
             return null;
           }
@@ -124,6 +154,52 @@ class EmojiPickerWidget extends StatelessWidget {
         separatorColor: IFediUiColorTheme.of(context).ultraLightGrey,
         onEmojiSelected: onEmojiSelected,
       ),
+    );
+  }
+}
+
+class _EmojiPickerSearchCategoryBlocBodyWidget extends StatelessWidget {
+  final int rowsCount;
+  final double selectedCategoryItemsGridHeight;
+  final EmojiSelectedCallback onEmojiSelected;
+
+  const _EmojiPickerSearchCategoryBlocBodyWidget({
+    Key? key,
+    required this.rowsCount,
+    required this.selectedCategoryItemsGridHeight,
+    required this.onEmojiSelected,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var categoryBloc = Provider.of<ICustomEmojiPickerCategoryBloc>(context);
+    var emojiPickerSearchCategoryBloc =
+        categoryBloc as EmojiPickerSearchCategoryBloc;
+
+    return Column(
+      children: [
+        FediTransparentEditTextField(
+          expanded: false,
+          autofocus: false,
+          hintText: S.of(context).app_emoji_search_hint,
+          errorText: null,
+          maxLines: 1,
+          onSubmitted: (_) {},
+          textInputAction: TextInputAction.done,
+          textEditingController:
+              emojiPickerSearchCategoryBloc.searchTextEditingController,
+          focusNode: null,
+          highlightMentions: false,
+          maxLength: null,
+        ),
+        Expanded(
+          child: CustomEmojiPickerSelectedCategoryItemsGridWidget(
+            rowsCount: rowsCount - 1,
+            selectedCategoryItemsGridHeight: selectedCategoryItemsGridHeight,
+            onEmojiSelected: onEmojiSelected,
+          ),
+        ),
+      ],
     );
   }
 }

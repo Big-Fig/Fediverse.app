@@ -39,6 +39,8 @@
   "@app_emoji_custom_empty": {},
   "app_emoji_recent_empty": "Вы еще не выбирали эмоджи",
   "@app_emoji_recent_empty": {},
+  "app_emoji_search_hint": "Начните писать для поиска",
+  "@app_emoji_search_hint": {},
   "app_emoji_category_empty": "Эта категория не содержит подходящих эмоджи",
   "@app_emoji_category_empty": {},
   "app_share_title": "Поделиться",
