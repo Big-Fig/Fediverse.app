@@ -175,13 +175,30 @@ abstract class PostMessageBloc extends DisposableOwner
   }
 
   @override
-  void appendText(String? textToAppend, {bool requestFocus = true}) {
-    var newText = '$inputText$textToAppend';
-    inputTextController.value = TextEditingValue(
+  void appendText(
+    String textToAppend, {
+    bool requestFocus = true,
+  }) {
+    var originalText = inputText;
+    inputTextController.value = createAppendTextEditingValue(
+      originalText: originalText ?? '',
+      textToAppend: textToAppend,
+    );
+    if (requestFocus) {
+      inputFocusNode.requestFocus();
+    }
+  }
+
+  TextEditingValue createAppendTextEditingValue({
+    required String originalText,
+    required String textToAppend,
+  }) {
+    var newText = '$originalText$textToAppend';
+
+    return TextEditingValue(
       text: newText,
       selection: TextSelection.collapsed(offset: newText.length),
     );
-    inputFocusNode.requestFocus();
   }
 
   @override

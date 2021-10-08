@@ -35,7 +35,10 @@ abstract class IPostMessageBloc implements IDisposable {
 
   Future post();
 
-  void appendText(String? textToAppend, {bool requestFocus = true});
+  void appendText(
+    String textToAppend, {
+    bool requestFocus = true,
+  });
 
   PostMessageSelectedAction? get selectedAction;
 
