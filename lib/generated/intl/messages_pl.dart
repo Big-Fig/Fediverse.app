@@ -1184,8 +1184,10 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Rodzaj mediów nie jest obsługiwany, sieć nie jest dostępna lub nie udzielono pozwolenia"),
         "app_media_attachment_addToGallery_error_dialog_title":
             MessageLookupByLibrary.simpleMessage("Nie można zapisać mediów"),
-        "app_media_attachment_addToGallery_progress_content":
+        "app_media_attachment_addToGallery_start_saving":
             MessageLookupByLibrary.simpleMessage("Zapisywanie…"),
+        "app_media_attachment_addToGallery_success":
+            MessageLookupByLibrary.simpleMessage("Powodzenie"),
         "app_media_attachment_details_notSupported_type": m31,
         "app_media_attachment_details_title":
             MessageLookupByLibrary.simpleMessage("Załącznik multimedialny"),
