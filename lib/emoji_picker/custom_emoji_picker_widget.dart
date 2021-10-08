@@ -11,7 +11,10 @@ import 'package:fedi/emoji_picker/item/image_url/custom_emoji_picker_image_url_i
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
+
+final _logger = Logger('custom_emoji_picker_widget.dart');
 
 typedef EmojiSelectedCallback = Function(CustomEmojiPickerItem item);
 typedef EmptyCategoryBuilder = Function(
@@ -123,50 +126,86 @@ class _CustomEmojiPickerSelectedCategoryWidget extends StatelessWidget {
             child: AsyncInitLoadingWidget(
               loadingWidget: loadingWidget,
               asyncInitLoadingBloc: selectedCategoryBloc,
-              loadingFinishedBuilder: (BuildContext context) {
-                return StreamBuilder<List<CustomEmojiPickerItem>?>(
-                  stream: selectedCategoryBloc.itemsStream,
-                  builder: (context, snapshot) {
-                    var items = snapshot.data;
+              loadingFinishedBuilder: (BuildContext context) =>
+                  StreamBuilder<List<CustomEmojiPickerItem>?>(
+                stream: selectedCategoryBloc.itemsStream,
+                initialData: selectedCategoryBloc.items,
+                builder: (context, snapshot) {
+                  var items = snapshot.data;
 
-                    if (items == null) {
-                      return loadingWidget;
-                    }
+                  _logger.finest(
+                      () => 'BUILD items $selectedCategoryBloc $items ');
 
-                    if (!useImageEmoji) {
-                      items = items.where((item) {
-                        if (item is! CustomEmojiPickerImageUrlItem) {
-                          return true;
-                        } else {
-                          return false;
-                        }
-                      }).toList();
-                    }
-                    if (items.isEmpty) {
-                      return Center(
-                        child: emptyCategoryBuilder!(
-                          context,
-                          selectedCategoryBloc,
-                        ),
-                      );
-                    }
+                  if (!useImageEmoji) {
+                    items = items
+                        ?.where(
+                          (item) => item is! CustomEmojiPickerImageUrlItem,
+                        )
+                        .toList();
+                  }
 
-                    return Provider<List<CustomEmojiPickerItem>>.value(
-                      value: items,
-                      child: _CustomEmojiPickerSelectedCategoryItemsWidget(
-                        rowsCount: rowsCount,
-                        selectedCategoryItemsGridHeight:
-                            selectedCategoryItemsGridHeight,
-                        onEmojiSelected: onEmojiSelected,
-                      ),
-                    );
-                  },
-                );
-              },
+                  return Provider<List<CustomEmojiPickerItem>?>.value(
+                    value: items,
+                    child: _CustomEmojiPickerSelectedCategoryBodyWidget(
+                      rowsCount: rowsCount,
+                      selectedCategoryItemsGridHeight:
+                          selectedCategoryItemsGridHeight,
+                      onEmojiSelected: onEmojiSelected,
+                      emptyCategoryBuilder: emptyCategoryBuilder,
+                      loadingWidget: loadingWidget,
+                    ),
+                  );
+                },
+              ),
             ),
           ),
         );
       },
+    );
+  }
+}
+
+class _CustomEmojiPickerSelectedCategoryBodyWidget extends StatelessWidget {
+  const _CustomEmojiPickerSelectedCategoryBodyWidget({
+    Key? key,
+    required this.rowsCount,
+    required this.selectedCategoryItemsGridHeight,
+    required this.onEmojiSelected,
+    required this.loadingWidget,
+    required this.emptyCategoryBuilder,
+  }) : super(key: key);
+
+  final EmptyCategoryBuilder? emptyCategoryBuilder;
+  final Widget loadingWidget;
+  final int rowsCount;
+  final double selectedCategoryItemsGridHeight;
+  final EmojiSelectedCallback onEmojiSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    var items = Provider.of<List<CustomEmojiPickerItem>?>(context);
+
+    if (items == null) {
+      return loadingWidget;
+    }
+
+    if (items.isEmpty) {
+      _logger.finest(() => 'isEmpty');
+
+      var selectedCategoryBloc =
+          Provider.of<ICustomEmojiPickerCategoryBloc>(context);
+      return Center(
+        child: emptyCategoryBuilder!(
+          context,
+          selectedCategoryBloc,
+        ),
+      );
+    }
+
+    return _CustomEmojiPickerSelectedCategoryItemsWidget(
+      rowsCount: rowsCount,
+      selectedCategoryItemsGridHeight: selectedCategoryItemsGridHeight,
+      onEmojiSelected: onEmojiSelected,
     );
   }
 }

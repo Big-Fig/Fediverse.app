@@ -6,6 +6,7 @@ import 'package:fedi/emoji_picker/item/code/custom_emoji_picker_code_item_model.
 import 'package:fedi/emoji_picker/item/custom_emoji_picker_item_model.dart';
 import 'package:fedi/emoji_picker/item/image_url/custom_emoji_picker_image_url_item_model.dart';
 import 'package:logging/logging.dart';
+import 'package:rxdart/rxdart.dart';
 
 final _logger = Logger('emoji_picker_recent_category_bloc_impl.dart');
 
@@ -23,11 +24,35 @@ class EmojiPickerRecentCategoryBloc extends AsyncInitLoadingBloc
   }
 
   @override
-  List<CustomEmojiPickerItem>? get items => preferenceBloc.value?.recentItems;
+  List<CustomEmojiPickerItem>? get items => _calculateRecentItems(
+        isLoading: isLoading,
+        list: preferenceBloc.value,
+      );
 
   @override
-  Stream<List<CustomEmojiPickerItem>?> get itemsStream =>
-      preferenceBloc.stream.map((list) => list?.recentItems);
+  Stream<List<CustomEmojiPickerItem>?> get itemsStream => Rx.combineLatest2(
+        preferenceBloc.stream,
+        isLoadingStream,
+        (EmojiPickerRecentCategoryItemsList? list, bool? isLoading) =>
+            _calculateRecentItems(
+          isLoading: isLoading,
+          list: list,
+        ),
+      );
+
+  static List<CustomEmojiPickerItem>? _calculateRecentItems({
+    required bool? isLoading,
+    required EmojiPickerRecentCategoryItemsList? list,
+  }) {
+    // null is loading
+    // empty is empty
+    // empty != null
+    if (isLoading == true) {
+      return null;
+    } else {
+      return list?.recentItems ?? [];
+    }
+  }
 
   void onEmojiSelected(CustomEmojiPickerItem emojiItem) {
     var currentItems = items ?? [];
