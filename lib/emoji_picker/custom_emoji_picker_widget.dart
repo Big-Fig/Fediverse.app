@@ -17,7 +17,7 @@ import 'package:provider/provider.dart';
 final _logger = Logger('custom_emoji_picker_widget.dart');
 
 typedef EmojiSelectedCallback = Function(CustomEmojiPickerItem item);
-typedef EmptyCategoryBuilder = Function(
+typedef EmptyCategoryBuilder = Widget? Function(
   BuildContext context,
   ICustomEmojiPickerCategoryBloc categoryBloc,
 );
@@ -25,8 +25,11 @@ typedef EmptyCategoryBuilder = Function(
 typedef CustomCategoryIconBuilder = IconData? Function(
   ICustomEmojiPickerCategoryBloc,
 );
-typedef CustomCategoryBodyBuilder = Widget Function(
-  ICustomEmojiPickerCategoryBloc,
+typedef CustomCategoryBodyBuilder = Widget? Function(
+  BuildContext context,
+  int rowsCount,
+  double selectedCategoryItemsGridHeight,
+  EmojiSelectedCallback onEmojiSelected,
 );
 
 class CustomEmojiPickerWidget extends StatelessWidget {
@@ -74,6 +77,7 @@ class CustomEmojiPickerWidget extends StatelessWidget {
             emptyCategoryBuilder: emptyCategoryBuilder,
             rowsCount: rowsCount,
             onEmojiSelected: onEmojiSelected,
+            customCategoryBodyBuilder: customCategoryBodyBuilder,
           ),
         ),
         _CustomEmojiPickerSeparatorWidget(separatorColor: separatorColor),
@@ -97,8 +101,10 @@ class _CustomEmojiPickerSelectedCategoryWidget extends StatelessWidget {
     required this.emptyCategoryBuilder,
     required this.rowsCount,
     required this.onEmojiSelected,
+    required this.customCategoryBodyBuilder,
   }) : super(key: key);
 
+  final CustomCategoryBodyBuilder? customCategoryBodyBuilder;
   final double selectedCategoryItemsGridHeight;
   final Widget loadingWidget;
   final bool useImageEmoji;
@@ -153,6 +159,7 @@ class _CustomEmojiPickerSelectedCategoryWidget extends StatelessWidget {
                       onEmojiSelected: onEmojiSelected,
                       emptyCategoryBuilder: emptyCategoryBuilder,
                       loadingWidget: loadingWidget,
+                      customCategoryBodyBuilder: customCategoryBodyBuilder,
                     ),
                   );
                 },
@@ -173,8 +180,10 @@ class _CustomEmojiPickerSelectedCategoryBodyWidget extends StatelessWidget {
     required this.onEmojiSelected,
     required this.loadingWidget,
     required this.emptyCategoryBuilder,
+    required this.customCategoryBodyBuilder,
   }) : super(key: key);
 
+  final CustomCategoryBodyBuilder? customCategoryBodyBuilder;
   final EmptyCategoryBuilder? emptyCategoryBuilder;
   final Widget loadingWidget;
   final int rowsCount;
@@ -189,20 +198,66 @@ class _CustomEmojiPickerSelectedCategoryBodyWidget extends StatelessWidget {
       return loadingWidget;
     }
 
-    if (items.isEmpty) {
+    if (items.isEmpty && emptyCategoryBuilder != null) {
       _logger.finest(() => 'isEmpty');
 
       var selectedCategoryBloc =
           Provider.of<ICustomEmojiPickerCategoryBloc>(context);
-      return Center(
-        child: emptyCategoryBuilder!(
-          context,
-          selectedCategoryBloc,
-        ),
+      var emptyWidget = emptyCategoryBuilder!(
+        context,
+        selectedCategoryBloc,
       );
+      if (emptyWidget != null) {
+        return Center(
+          child: emptyWidget,
+        );
+      }
     }
 
     return _CustomEmojiPickerSelectedCategoryItemsWidget(
+      rowsCount: rowsCount,
+      selectedCategoryItemsGridHeight: selectedCategoryItemsGridHeight,
+      onEmojiSelected: onEmojiSelected,
+      customCategoryBodyBuilder: customCategoryBodyBuilder,
+    );
+  }
+}
+
+class _CustomEmojiPickerSelectedCategoryItemsWidget extends StatelessWidget {
+  const _CustomEmojiPickerSelectedCategoryItemsWidget({
+    Key? key,
+    required this.rowsCount,
+    required this.selectedCategoryItemsGridHeight,
+    required this.onEmojiSelected,
+    required this.customCategoryBodyBuilder,
+  }) : super(key: key);
+
+  final CustomCategoryBodyBuilder? customCategoryBodyBuilder;
+  final int rowsCount;
+  final double selectedCategoryItemsGridHeight;
+  final EmojiSelectedCallback onEmojiSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    var customEmojiPickerBloc = ICustomEmojiPickerBloc.of(context);
+    var items = Provider.of<List<CustomEmojiPickerItem>>(context);
+
+    var customCategoryBodyBuilder = this.customCategoryBodyBuilder;
+
+    if (customCategoryBodyBuilder != null) {
+      var widget = customCategoryBodyBuilder(
+        context,
+        rowsCount,
+        selectedCategoryItemsGridHeight,
+        onEmojiSelected,
+      );
+
+      if (widget != null) {
+        return widget;
+      }
+    }
+
+    return CustomEmojiPickerSelectedCategoryItemsGridWidget(
       rowsCount: rowsCount,
       selectedCategoryItemsGridHeight: selectedCategoryItemsGridHeight,
       onEmojiSelected: onEmojiSelected,
@@ -210,8 +265,8 @@ class _CustomEmojiPickerSelectedCategoryBodyWidget extends StatelessWidget {
   }
 }
 
-class _CustomEmojiPickerSelectedCategoryItemsWidget extends StatelessWidget {
-  const _CustomEmojiPickerSelectedCategoryItemsWidget({
+class CustomEmojiPickerSelectedCategoryItemsGridWidget extends StatelessWidget {
+  const CustomEmojiPickerSelectedCategoryItemsGridWidget({
     Key? key,
     required this.rowsCount,
     required this.selectedCategoryItemsGridHeight,
@@ -337,6 +392,19 @@ class _CustomEmojiPickerCategoryIndicatorWidget extends StatelessWidget {
         var selectedCategory = snapshot.data;
         var isSelected = category == selectedCategory;
 
+        var size = 24.0;
+
+        var iconData = mapCategoryToIcon(
+          category: category,
+        );
+
+        if (iconData == null) {
+          if (customCategoryIconBuilder != null) {
+            iconData = customCategoryIconBuilder!(category);
+            size = 20.0;
+          }
+        }
+
         return InkWell(
           onTap: isSelected
               ? null
@@ -346,10 +414,8 @@ class _CustomEmojiPickerCategoryIndicatorWidget extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Icon(
-              mapCategoryToIcon(
-                category: category,
-                customCategoryIconBuilder: customCategoryIconBuilder,
-              ),
+              iconData,
+              size: size,
               color: isSelected
                   ? selectedIndicatorColor
                   : unselectedIndicatorColor,
@@ -361,16 +427,9 @@ class _CustomEmojiPickerCategoryIndicatorWidget extends StatelessWidget {
   }
 }
 
-IconData mapCategoryToIcon({
+IconData? mapCategoryToIcon({
   required ICustomEmojiPickerCategoryBloc category,
-  required CustomCategoryIconBuilder? customCategoryIconBuilder,
 }) {
-  if (customCategoryIconBuilder != null) {
-    var icon = customCategoryIconBuilder(category);
-    if (icon != null) {
-      return icon;
-    }
-  }
   if (category is CustomEmojiPickerCodeCategoryBloc) {
     var emojiPickerCodeCategoryType = category.type;
 
@@ -395,7 +454,7 @@ IconData mapCategoryToIcon({
         throw 'emojiPickerCodeCategoryType $emojiPickerCodeCategoryType not supported';
     }
   } else {
-    throw 'category $category not supported';
+    return null;
   }
 }
 

@@ -918,6 +918,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Данный сервер не имеет своих эмоджи"),
         "app_emoji_recent_empty":
             MessageLookupByLibrary.simpleMessage("Вы еще не выбирали эмоджи"),
+        "app_emoji_search_hint":
+            MessageLookupByLibrary.simpleMessage("Начните писать для поиска"),
         "app_file_image_crop_title":
             MessageLookupByLibrary.simpleMessage("Обрезать"),
         "app_filter_context_empty":

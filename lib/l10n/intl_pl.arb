@@ -25,6 +25,8 @@
   "@app_customList_form_field_title_hint": {},
   "app_emoji_custom_empty": "Ta instancja nie posiada niestandardowych emoji",
   "@app_emoji_custom_empty": {},
+  "app_emoji_search_hint": "Rozpocznij wyszukiwanie",
+  "@app_emoji_search_hint": {},
   "app_emoji_recent_empty": "Brak ostatnio używanych emoji",
   "@app_emoji_recent_empty": {},
   "app_share_title": "Udostępnij",

@@ -931,6 +931,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Ta instancja nie posiada niestandardowych emoji"),
         "app_emoji_recent_empty": MessageLookupByLibrary.simpleMessage(
             "Brak ostatnio używanych emoji"),
+        "app_emoji_search_hint":
+            MessageLookupByLibrary.simpleMessage("Rozpocznij wyszukiwanie"),
         "app_file_image_crop_title":
             MessageLookupByLibrary.simpleMessage("Przytnij jako"),
         "app_filter_context_empty":

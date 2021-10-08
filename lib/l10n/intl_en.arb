@@ -39,6 +39,8 @@
   "@app_emoji_custom_empty": {},
   "app_emoji_recent_empty": "No recent emojis",
   "@app_emoji_recent_empty": {},
+  "app_emoji_search_hint": "Start type to search",
+  "@app_emoji_search_hint": {},
   "app_emoji_category_empty": "This category don't have suitable emojis",
   "@app_emoji_category_empty": {},
   "app_share_title": "Share",
