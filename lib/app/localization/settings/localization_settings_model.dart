@@ -24,7 +24,4 @@ class LocalizationSettings
 
   factory LocalizationSettings.fromJson(Map<String, dynamic> json) =>
       _$LocalizationSettingsFromJson(json);
-
-  @override
-  LocalizationSettings clone() => copyWith();
 }

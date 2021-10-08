@@ -35,17 +35,6 @@ void main() {
     );
   });
 
-  test('clone', () async {
-    var obj1 =
-        DatabaseCacheSettingsModelMockHelper.createTestDatabaseCacheSettings(
-      seed: 'seed1',
-    );
-
-    var obj1Clone = obj1.clone();
-
-    expect(obj1, obj1Clone);
-  });
-
   test('copyWith', () async {
     var obj1 =
         DatabaseCacheSettingsModelMockHelper.createTestDatabaseCacheSettings(

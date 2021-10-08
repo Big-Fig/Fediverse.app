@@ -260,9 +260,6 @@ class TimelineSettings
   UnifediApiReplyVisibilityFilter? get replyVisibilityFilter =>
       replyVisibilityFilterString?.toUnifediApiReplyVisibilityFilter();
 
-  @override
-  TimelineSettings clone() => copyWith();
-
   static TimelineSettings createDefaultSettings(TimelineType timelineType) {
     switch (timelineType) {
       case TimelineType.public:

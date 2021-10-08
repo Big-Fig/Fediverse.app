@@ -41,7 +41,4 @@ class ToastSettings
 
   factory ToastSettings.fromJson(Map<String, dynamic> json) =>
       _$ToastSettingsFromJson(json);
-
-  @override
-  ToastSettings clone() => copyWith();
 }

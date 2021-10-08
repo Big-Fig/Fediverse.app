@@ -38,7 +38,4 @@ class PostStatusSettings
 
   factory PostStatusSettings.fromJson(Map<String, dynamic> json) =>
       _$PostStatusSettingsFromJson(json);
-
-  @override
-  PostStatusSettings clone() => copyWith();
 }

@@ -23,7 +23,4 @@ class CrashReportingSettings
 
   factory CrashReportingSettings.fromJson(Map<String, dynamic> json) =>
       _$CrashReportingSettingsFromJson(json);
-
-  @override
-  CrashReportingSettings clone() => copyWith();
 }

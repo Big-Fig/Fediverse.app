@@ -25,7 +25,4 @@ class PushRelaySettings
 
   factory PushRelaySettings.fromJson(Map<String, dynamic> json) =>
       _$PushRelaySettingsFromJson(json);
-
-  @override
-  PushRelaySettings clone() => copyWith();
 }

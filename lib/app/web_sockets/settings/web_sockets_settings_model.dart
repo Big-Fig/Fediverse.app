@@ -36,7 +36,4 @@ class WebSocketsSettings
 
   factory WebSocketsSettings.fromJson(Map<String, dynamic> json) =>
       _$WebSocketsSettingsFromJson(json);
-
-  @override
-  WebSocketsSettings clone() => copyWith();
 }

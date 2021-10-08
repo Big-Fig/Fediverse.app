@@ -53,16 +53,6 @@ void main() {
     expect(obj1, obj1.copyWith());
   });
 
-  test('clone', () async {
-    var obj1 = UiSettingsModelMockHelper.createTestUiSettings(
-      seed: 'seed1',
-    );
-
-    var obj1Clone = obj1.clone();
-
-    expect(obj1, obj1Clone);
-  });
-
   test('hive adapter', () async {
     HiveMockHelper.testAdapter(
       () => UiSettingsAdapter(),

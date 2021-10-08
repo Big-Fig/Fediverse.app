@@ -101,7 +101,7 @@ class GlobalOrInstanceSettingsLocalPreferenceBloc<T extends ISettings>
   @override
   Future cloneGlobalToInstanceSettings() async {
     await instanceLocalPreferencesBloc.setValue(
-      globalLocalPreferencesBloc.value.clone(),
+      globalLocalPreferencesBloc.value,
     );
   }
 
