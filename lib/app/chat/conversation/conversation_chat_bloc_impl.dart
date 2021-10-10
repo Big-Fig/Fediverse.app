@@ -410,9 +410,23 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
         wasSentWithIdempotencyKey: fakeUniqueRemoteRemoteId,
       );
 
-      dbStatus = postStatusDataStatusStatusAdapter.toDbStatus(
-        fakeUniqueRemoteRemoteId: fakeUniqueRemoteRemoteId,
-      );
+      // for pleroma
+      int? conversationIdInt;
+      try {
+        conversationIdInt = int.parse(chat.remoteId);
+      } catch (e, stackTrace) {
+        // nothing, not all backends use int for conversation id
+      }
+
+      dbStatus = postStatusDataStatusStatusAdapter
+          .toDbStatus(
+            fakeUniqueRemoteRemoteId: fakeUniqueRemoteRemoteId,
+          )
+          .copyWith(
+            directConversationId: conversationIdInt,
+            // ignore: no-equal-arguments
+            conversationId: conversationIdInt,
+          );
 
       localStatusId = await statusRepository.upsertInDbType(
         dbStatus,
