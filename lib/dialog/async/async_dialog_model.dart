@@ -11,7 +11,7 @@ class AsyncDialogResult<T> with _$AsyncDialogResult<T> {
     required dynamic handledError,
   }) = _AsyncDialogResult<T>;
 
-  static AsyncDialogResult<T> withResult<T>(T result) => AsyncDialogResult(
+  static AsyncDialogResult<T> withResult<T>(T? result) => AsyncDialogResult(
         result: result,
         success: true,
         canceled: false,
