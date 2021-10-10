@@ -95,13 +95,15 @@ Future<AsyncDialogResult<T?>> doAsyncOperationWithDialog<T>({
     progressDialog?.hide(context);
   }
 
-  // wait until progress dialog actually hides
-  await Future.delayed(
-    Duration(
-      // ignore: no-magic-number
-      milliseconds: 100,
-    ),
-  );
+  if (progressDialog != null) {
+    // wait until progress dialog actually hides
+    await Future.delayed(
+      Duration(
+        // ignore: no-magic-number
+        milliseconds: 100,
+      ),
+    );
+  }
 
   AsyncDialogResult<T> dialogResult;
   if (progressDialog?.isCanceled == true) {
@@ -120,7 +122,7 @@ Future<AsyncDialogResult<T?>> doAsyncOperationWithDialog<T>({
     dialogResult = AsyncDialogResult.withError(error);
   } else {
     _logger.finest(() => 'success doAsyncOperationWithFediDialog =$result}');
-    dialogResult = AsyncDialogResult.withResult(result!);
+    dialogResult = AsyncDialogResult.withResult(result);
   }
 
   return dialogResult;
