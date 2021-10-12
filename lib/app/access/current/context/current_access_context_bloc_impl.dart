@@ -93,6 +93,9 @@ import 'package:fedi/app/push/permission/ask/local_preferences/ask_push_permissi
 import 'package:fedi/app/push/permission/ask/local_preferences/ask_push_permission_local_preference_bloc_impl.dart';
 import 'package:fedi/app/push/permission/checker/push_permission_checker_bloc.dart';
 import 'package:fedi/app/push/permission/checker/push_permission_checker_bloc_impl.dart';
+import 'package:fedi/app/push/settings/filter/push_filter_settings_bloc.dart';
+import 'package:fedi/app/push/settings/filter/push_filter_settings_bloc.dart';
+import 'package:fedi/app/push/settings/filter/push_filter_settings_bloc_impl.dart';
 import 'package:fedi/app/push/settings/local_preferences/instance/instance_push_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/push/settings/local_preferences/push_settings_local_preference_bloc.dart';
 import 'package:fedi/app/push/settings/push_settings_bloc.dart';
@@ -569,7 +572,7 @@ class CurrentUnifediApiAccessContextBloc extends ProviderContextBloc
             instancePushSettingsLocalPreferenceBloc,
         instancePushRelaySettingsLocalPreferenceBloc:
             instancePushRelaySettingsLocalPreferenceBloc,
-        pleromaPushService: pleromaPushService,
+        unifediApiPushSubscriptionService: pleromaPushService,
         currentInstance: currentInstance,
         fcmPushService: fcmPushService,
       )..disposeWith(this);
@@ -580,6 +583,16 @@ class CurrentUnifediApiAccessContextBloc extends ProviderContextBloc
 
       await globalProviderService
           .asyncInitAndRegister<IPushSettingsBloc>(pushSettingsBloc);
+
+      var pushFilterSettingsBloc = PushFilterSettingsBloc(
+        myAccountBloc: myAccountBloc,
+        unifediApiMyAccountService:
+            globalProviderService.get<IUnifediApiMyAccountService>(),
+        currentInstance: currentInstance,
+      )..disposeWith(this);
+
+      await globalProviderService.asyncInitAndRegister<IPushFilterSettingsBloc>(
+          pushFilterSettingsBloc);
 
       var pushPermissionCheckerBloc = PushPermissionCheckerBloc(
         fcmPushService: fcmPushService,

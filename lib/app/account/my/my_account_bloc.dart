@@ -9,23 +9,6 @@ import 'package:provider/provider.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
 abstract class IMyAccountBloc extends IAccountBloc {
-  String? get noteUnescaped {
-    final _unescape = HtmlUnescape();
-    if (note != null) {
-      var unescaped = _unescape.convert(note!);
-      // todo: remove hack
-      // on Mastodon instances note wrapped in <p></p>
-      if (unescaped.startsWith('<p>') && unescaped.endsWith('</p>')) {
-        // ignore: no-magic-number
-        unescaped = unescaped.substring(3, unescaped.length - 4);
-      }
-
-      return unescaped;
-    } else {
-      return null;
-    }
-  }
-
   static IMyAccountBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IMyAccountBloc>(context, listen: listen);
 
@@ -53,6 +36,23 @@ abstract class IMyAccountBloc extends IAccountBloc {
 }
 
 extension IMyAccountBlocExtension on IMyAccountBloc {
+  String? get noteUnescaped {
+    final _unescape = HtmlUnescape();
+    if (note != null) {
+      var unescaped = _unescape.convert(note!);
+      // todo: remove hack
+      // on Mastodon instances note wrapped in <p></p>
+      if (unescaped.startsWith('<p>') && unescaped.endsWith('</p>')) {
+        // ignore: no-magic-number
+        unescaped = unescaped.substring(3, unescaped.length - 4);
+      }
+
+      return unescaped;
+    } else {
+      return null;
+    }
+  }
+
   int? get followRequestsCount => myAccount!.followRequestsCount;
 
   Stream<int?> get followRequestsCountStream => myAccountStream.map(

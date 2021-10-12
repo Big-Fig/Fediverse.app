@@ -20,7 +20,7 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
       instancePushSettingsLocalPreferenceBloc;
   final IPushRelaySettingsLocalPreferenceBloc<PushRelaySettings?>
       instancePushRelaySettingsLocalPreferenceBloc;
-  final IUnifediApiPushSubscriptionService pleromaPushService;
+  final IUnifediApiPushSubscriptionService unifediApiPushSubscriptionService;
   final IPushRelayService pushRelayService;
   final UnifediApiAccess currentInstance;
   final IFcmPushService fcmPushService;
@@ -42,7 +42,7 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
     required this.pushSubscriptionKeysP256dh,
     required this.instancePushSettingsLocalPreferenceBloc,
     required this.instancePushRelaySettingsLocalPreferenceBloc,
-    required this.pleromaPushService,
+    required this.unifediApiPushSubscriptionService,
     required this.pushRelayService,
     required this.currentInstance,
     required this.connectionService,
@@ -282,7 +282,7 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
         baseServerUrl: currentInstance.uri,
         fcmDeviceToken: deviceToken,
       );
-      subscription = await pleromaPushService.subscribe(
+      subscription = await unifediApiPushSubscriptionService.subscribe(
         metadata: UnifediApiPushSubscriptionMetadata(
           endpoint: pushRelayEndPointUrl,
           keys: UnifediApiPushSubscriptionKeys(

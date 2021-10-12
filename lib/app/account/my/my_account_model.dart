@@ -77,6 +77,7 @@ abstract class IMyAccount extends IAccount implements IJsonObj {
     bool? skipThreadContainment,
     String? backgroundImage,
     bool? acceptsChatMessages,
+    IUnifediApiMyAccountNotificationsSettings? notificationSettings,
   });
 }
 
@@ -381,6 +382,7 @@ class UnifediApiMyAccountWrapper
     bool? skipThreadContainment,
     String? backgroundImage,
     bool? acceptsChatMessages,
+    IUnifediApiMyAccountNotificationsSettings? notificationSettings,
   }) =>
       UnifediApiMyAccountWrapper(
         unifediApiAccount: UnifediApiMyAccount(

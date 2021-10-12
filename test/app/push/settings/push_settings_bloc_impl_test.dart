@@ -83,7 +83,7 @@ void main() {
           instancePushRelaySettingsLocalPreferenceBloc,
       instancePushSettingsLocalPreferenceBloc:
           instancePushSettingsLocalPreferenceBloc,
-      pleromaPushService: pleromaPushService,
+      unifediApiPushSubscriptionService: pleromaPushService,
       pushRelayService: pushRelayService,
       fcmPushService: fcmPushService,
       currentInstance: UnifediApiAccessMockHelper.generate(

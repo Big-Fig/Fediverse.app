@@ -111,10 +111,11 @@ class MyAccountBloc extends IMyAccountBloc {
 
   @override
   Future updateMyAccountByMyAccount(IMyAccount myAccount) async {
+    var unifediApiMyAccountWrapper = UnifediApiMyAccountWrapper(
+      unifediApiAccount: myAccount.toUnifediApiMyAccount(),
+    );
     await myAccountLocalPreferenceBloc.setValue(
-      UnifediApiMyAccountWrapper(
-        unifediApiAccount: myAccount.toUnifediApiMyAccount(),
-      ),
+      unifediApiMyAccountWrapper,
     );
   }
 

@@ -59,9 +59,6 @@ class GuestMyAccountBloc extends DisposableOwner implements IMyAccountBloc {
   Stream<IMyAccount?> get myAccountStream => Stream.value(myAccount);
 
   @override
-  String? get noteUnescaped => null;
-
-  @override
   Future refreshFromNetwork({
     required bool isNeedPreFetchRelationship,
   }) {

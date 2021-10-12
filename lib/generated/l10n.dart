@@ -2046,11 +2046,31 @@ class S {
     );
   }
 
+  /// `Push filters`
+  String get app_push_filter_settings_title {
+    return Intl.message(
+      'Push filters',
+      name: 'app_push_filter_settings_title',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `All messages will be forwarded through Fedi Relay Server`
   String get app_push_settings_desc {
     return Intl.message(
       'All messages will be forwarded through Fedi Relay Server',
       name: 'app_push_settings_desc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You can also specify additional filters`
+  String get app_push_settings_desc_filters {
+    return Intl.message(
+      'You can also specify additional filters',
+      name: 'app_push_settings_desc_filters',
       desc: '',
       args: [],
     );
@@ -2111,6 +2131,26 @@ class S {
     return Intl.message(
       'Chats',
       name: 'app_push_settings_field_pleroma_chat_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Hide notifications content`
+  String get app_push_filter_settings_field_hideNotificationContents_label {
+    return Intl.message(
+      'Hide notifications content',
+      name: 'app_push_filter_settings_field_hideNotificationContents_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Block from strangers`
+  String get app_push_filter_settings_field_blockFromStrangers_label {
+    return Intl.message(
+      'Block from strangers',
+      name: 'app_push_filter_settings_field_blockFromStrangers_label',
       desc: '',
       args: [],
     );
