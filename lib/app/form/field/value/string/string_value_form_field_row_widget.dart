@@ -29,11 +29,11 @@ class StringValueFormFieldRowWidget extends StatefulWidget {
   });
 
   @override
-  _StringValueFormFieldRowWidgetState createState() =>
-      _StringValueFormFieldRowWidgetState();
+  StringValueFormFieldRowWidgetState createState() =>
+      StringValueFormFieldRowWidgetState();
 }
 
-class _StringValueFormFieldRowWidgetState
+class StringValueFormFieldRowWidgetState
     extends State<StringValueFormFieldRowWidget> {
   // ignore: avoid-late-keyword
   late bool obscureText;

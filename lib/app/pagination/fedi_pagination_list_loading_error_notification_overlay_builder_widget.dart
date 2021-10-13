@@ -17,12 +17,12 @@ class FediPaginationListLoadingErrorNotificationOverlayBuilderWidget
   const FediPaginationListLoadingErrorNotificationOverlayBuilderWidget();
 
   @override
-  _FediPaginationListLoadingErrorNotificationOverlayBuilderWidgetState
+  FediPaginationListLoadingErrorNotificationOverlayBuilderWidgetState
       createState() =>
-          _FediPaginationListLoadingErrorNotificationOverlayBuilderWidgetState();
+          FediPaginationListLoadingErrorNotificationOverlayBuilderWidgetState();
 }
 
-class _FediPaginationListLoadingErrorNotificationOverlayBuilderWidgetState
+class FediPaginationListLoadingErrorNotificationOverlayBuilderWidgetState
     extends State<
         FediPaginationListLoadingErrorNotificationOverlayBuilderWidget> {
   DisposableOwner disposable = DisposableOwner();

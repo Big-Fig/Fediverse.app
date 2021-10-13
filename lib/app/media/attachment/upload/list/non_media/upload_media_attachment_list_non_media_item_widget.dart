@@ -20,13 +20,13 @@ import 'package:provider/provider.dart';
 
 class UploadMediaAttachmentListNonMediaItemWidget extends StatefulWidget {
   @override
-  _UploadMediaAttachmentListNonMediaItemWidgetState createState() =>
-      _UploadMediaAttachmentListNonMediaItemWidgetState();
+  UploadMediaAttachmentListNonMediaItemWidgetState createState() =>
+      UploadMediaAttachmentListNonMediaItemWidgetState();
 
   const UploadMediaAttachmentListNonMediaItemWidget();
 }
 
-class _UploadMediaAttachmentListNonMediaItemWidgetState
+class UploadMediaAttachmentListNonMediaItemWidgetState
     extends State<UploadMediaAttachmentListNonMediaItemWidget> {
   StreamSubscription? streamSubscription;
 

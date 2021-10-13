@@ -90,7 +90,7 @@ class StatusCachedPaginationListMediaWidget
 
         var statusWithMediaAttachment = statusesWithMediaAttachment[itemIndex];
 
-        return Provider<_StatusWithMediaAttachment>.value(
+        return Provider<StatusWithMediaAttachment>.value(
           value: statusWithMediaAttachment,
           child: _StatusCachedPaginationListMediaItemWidget(
             isLocal: isLocal,
@@ -103,10 +103,10 @@ class StatusCachedPaginationListMediaWidget
     );
   }
 
-  static List<_StatusWithMediaAttachment> mapToStatusesWithAttachments(
+  static List<StatusWithMediaAttachment> mapToStatusesWithAttachments(
     List<IStatus> items,
   ) {
-    var statusesWithMediaAttachment = <_StatusWithMediaAttachment>[];
+    var statusesWithMediaAttachment = <StatusWithMediaAttachment>[];
 
     items.forEach(
       (status) {
@@ -120,7 +120,7 @@ class StatusCachedPaginationListMediaWidget
         mediaAttachments.forEach(
           (mediaAttachment) {
             statusesWithMediaAttachment.add(
-              _StatusWithMediaAttachment(
+              StatusWithMediaAttachment(
                 status: status,
                 mediaAttachment: mediaAttachment,
               ),
@@ -175,7 +175,7 @@ class _StatusCachedPaginationListMediaItemWidget extends StatelessWidget {
           color: IFediUiColorTheme.of(context).offWhite,
           child: Padding(
             padding: const EdgeInsets.all(2.0),
-            child: ProxyProvider<_StatusWithMediaAttachment, IStatus>(
+            child: ProxyProvider<StatusWithMediaAttachment, IStatus>(
               update: (context, value, previous) => value.status,
               child: DisposableProxyProvider<IStatus, IStatusBloc>(
                 update: (context, status, oldValue) {
@@ -226,7 +226,7 @@ class _StatusCachedPaginationListMediaItemBodyWidget extends StatelessWidget {
   Widget build(BuildContext context) => InkWell(
         onTap: () {
           var statusWithMediaAttachment =
-              Provider.of<_StatusWithMediaAttachment>(
+              Provider.of<StatusWithMediaAttachment>(
             context,
             listen: false,
           );
@@ -248,7 +248,7 @@ class _StatusCachedPaginationListMediaItemBodyWidget extends StatelessWidget {
         child: Padding(
           padding: FediPadding.allSmallPadding,
           child: Center(
-            child: ProxyProvider<_StatusWithMediaAttachment,
+            child: ProxyProvider<StatusWithMediaAttachment,
                 IUnifediApiMediaAttachment>(
               update: (context, value, previous) => value.mediaAttachment,
               child: const StatusListItemMediaWidget(),
@@ -258,11 +258,11 @@ class _StatusCachedPaginationListMediaItemBodyWidget extends StatelessWidget {
       );
 }
 
-class _StatusWithMediaAttachment {
+class StatusWithMediaAttachment {
   final IStatus status;
   final IUnifediApiMediaAttachment mediaAttachment;
 
-  _StatusWithMediaAttachment({
+  StatusWithMediaAttachment({
     required this.status,
     required this.mediaAttachment,
   });

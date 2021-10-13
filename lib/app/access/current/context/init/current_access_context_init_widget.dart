@@ -28,11 +28,11 @@ class CurrentUnifediApiAccessContextInitWidget extends StatefulWidget {
   });
 
   @override
-  _CurrentUnifediApiAccessContextInitWidgetState createState() =>
-      _CurrentUnifediApiAccessContextInitWidgetState();
+  CurrentUnifediApiAccessContextInitWidgetState createState() =>
+      CurrentUnifediApiAccessContextInitWidgetState();
 }
 
-class _CurrentUnifediApiAccessContextInitWidgetState
+class CurrentUnifediApiAccessContextInitWidgetState
     extends State<CurrentUnifediApiAccessContextInitWidget> {
   FediIndeterminateProgressDialog? loadingInstanceProgressDialog;
   StreamSubscription? subscription;

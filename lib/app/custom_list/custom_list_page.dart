@@ -44,10 +44,10 @@ class CustomListPage extends StatefulWidget {
   const CustomListPage();
 
   @override
-  _CustomListPageState createState() => _CustomListPageState();
+  CustomListPageState createState() => CustomListPageState();
 }
 
-class _CustomListPageState extends State<CustomListPage> {
+class CustomListPageState extends State<CustomListPage> {
   final ScrollController scrollController = ScrollController();
 
   @override

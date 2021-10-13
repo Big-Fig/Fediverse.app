@@ -14,11 +14,11 @@ class PushPermissionCheckerWidget extends StatefulWidget {
   });
 
   @override
-  _PushPermissionCheckerWidgetState createState() =>
-      _PushPermissionCheckerWidgetState();
+  PushPermissionCheckerWidgetState createState() =>
+      PushPermissionCheckerWidgetState();
 }
 
-class _PushPermissionCheckerWidgetState
+class PushPermissionCheckerWidgetState
     extends State<PushPermissionCheckerWidget> {
   @override
   void didChangeDependencies() {

@@ -14,11 +14,11 @@ class InAppReviewCheckerWidget extends StatefulWidget {
   });
 
   @override
-  _InAppReviewCheckerWidgetState createState() =>
-      _InAppReviewCheckerWidgetState();
+  InAppReviewCheckerWidgetState createState() =>
+      InAppReviewCheckerWidgetState();
 }
 
-class _InAppReviewCheckerWidgetState extends State<InAppReviewCheckerWidget> {
+class InAppReviewCheckerWidgetState extends State<InAppReviewCheckerWidget> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();

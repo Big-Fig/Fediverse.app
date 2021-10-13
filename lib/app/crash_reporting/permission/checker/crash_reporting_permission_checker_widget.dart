@@ -14,11 +14,11 @@ class CrashReportingPermissionCheckerWidget extends StatefulWidget {
   });
 
   @override
-  _CrashReportingPermissionCheckerWidgetState createState() =>
-      _CrashReportingPermissionCheckerWidgetState();
+  CrashReportingPermissionCheckerWidgetState createState() =>
+      CrashReportingPermissionCheckerWidgetState();
 }
 
-class _CrashReportingPermissionCheckerWidgetState
+class CrashReportingPermissionCheckerWidgetState
     extends State<CrashReportingPermissionCheckerWidget> {
   @override
   void didChangeDependencies() {

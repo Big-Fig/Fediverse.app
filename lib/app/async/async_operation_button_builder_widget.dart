@@ -35,8 +35,8 @@ class AsyncOperationButtonBuilderWidget<T> extends StatefulWidget {
   });
 
   @override
-  _AsyncOperationButtonBuilderWidgetState createState() =>
-      _AsyncOperationButtonBuilderWidgetState();
+  AsyncOperationButtonBuilderWidgetState createState() =>
+      AsyncOperationButtonBuilderWidgetState();
 
   Future<AsyncDialogResult<T?>> performAsyncOperation({
     required BuildContext context,
@@ -51,7 +51,7 @@ class AsyncOperationButtonBuilderWidget<T> extends StatefulWidget {
       );
 }
 
-class _AsyncOperationButtonBuilderWidgetState
+class AsyncOperationButtonBuilderWidgetState
     extends State<AsyncOperationButtonBuilderWidget> {
   bool asyncOperationInProgress = false;
 

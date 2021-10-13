@@ -23,10 +23,10 @@ class EditPushSettingsWidget extends StatefulWidget {
   const EditPushSettingsWidget({required this.shrinkWrap});
 
   @override
-  _EditPushSettingsWidgetState createState() => _EditPushSettingsWidgetState();
+  EditPushSettingsWidgetState createState() => EditPushSettingsWidgetState();
 }
 
-class _EditPushSettingsWidgetState extends State<EditPushSettingsWidget> {
+class EditPushSettingsWidgetState extends State<EditPushSettingsWidget> {
   StreamSubscription? failedToUpdateSubscription;
 
   @override

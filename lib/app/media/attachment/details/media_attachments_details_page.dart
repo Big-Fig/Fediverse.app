@@ -62,11 +62,11 @@ class MediaAttachmentDetailsPage extends StatefulWidget {
         );
 
   @override
-  _MediaAttachmentDetailsPageState createState() =>
-      _MediaAttachmentDetailsPageState();
+  MediaAttachmentDetailsPageState createState() =>
+      MediaAttachmentDetailsPageState();
 }
 
-class _MediaAttachmentDetailsPageState
+class MediaAttachmentDetailsPageState
     extends State<MediaAttachmentDetailsPage> {
   IUnifediApiMediaAttachment get mediaAttachment =>
       selectedMediaAttachmentSubject.valueOrNull ??
@@ -88,7 +88,7 @@ class _MediaAttachmentDetailsPageState
   // ignore: avoid-late-keyword
   late VoidCallback listener;
 
-  _MediaAttachmentDetailsPageState();
+  MediaAttachmentDetailsPageState();
 
   @override
   void initState() {
