@@ -23,7 +23,7 @@ class StatusSensitiveBloc extends DisposableOwner
 
   bool get nsfwSensitive => statusBloc.nsfwSensitive;
 
-  Stream<bool?> get nsfwSensitiveStream => statusBloc.nsfwSensitiveStream;
+  Stream<bool> get nsfwSensitiveStream => statusBloc.nsfwSensitiveStream;
 
   bool get containsSpoiler => statusBloc.containsSpoiler;
 
@@ -83,7 +83,7 @@ class StatusSensitiveBloc extends DisposableOwner
       Rx.combineLatest2(
         containsSpoilerStream,
         displayEnabledStream,
-        (dynamic containsSpoiler, dynamic displayEnabled) {
+        (bool containsSpoiler, bool displayEnabled) {
           if (containsSpoiler) {
             return displayEnabled;
           } else {
@@ -107,7 +107,7 @@ class StatusSensitiveBloc extends DisposableOwner
       Rx.combineLatest2(
         nsfwSensitiveStream,
         displayEnabledStream,
-        (dynamic nsfwSensitive, dynamic displayEnabled) {
+        (bool nsfwSensitive, bool displayEnabled) {
           if (nsfwSensitive) {
             return displayEnabled;
           } else {

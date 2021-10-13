@@ -17,7 +17,7 @@ class InstanceFrontendConfigurationsLocalPreferenceBloc
               UnifediApiFrontendConfigurations.fromJson(json),
         );
 
-  static const defaultValue = null;
+  static const UnifediApiFrontendConfigurations? defaultValue = null;
 
   @override
   UnifediApiFrontendConfigurations? get defaultPreferenceValue => defaultValue;

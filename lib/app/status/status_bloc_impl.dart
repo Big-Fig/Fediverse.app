@@ -201,7 +201,7 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
   Stream<IUnifediApiCard?> get reblogOrOriginalCardStream => Rx.combineLatest2(
         cardStream,
         reblogCardStream,
-        (dynamic originalCard, dynamic reblogCard) =>
+        (IUnifediApiCard? originalCard, IUnifediApiCard? reblogCard) =>
             reblogCard ?? originalCard,
       );
 

@@ -66,6 +66,7 @@ class FediNestedScrollViewBloc extends DisposableOwner
           scrollController!.removeListener(listener);
         } catch (e) {
           _logger.warning(
+            // ignore: missing_whitespace_between_adjacent_strings
             () => 'failed to unsubscribe scrollController'
                 '.removeListener(listener);',
           );

@@ -94,7 +94,6 @@ import 'package:fedi/app/push/permission/ask/local_preferences/ask_push_permissi
 import 'package:fedi/app/push/permission/checker/push_permission_checker_bloc.dart';
 import 'package:fedi/app/push/permission/checker/push_permission_checker_bloc_impl.dart';
 import 'package:fedi/app/push/settings/filter/push_filter_settings_bloc.dart';
-import 'package:fedi/app/push/settings/filter/push_filter_settings_bloc.dart';
 import 'package:fedi/app/push/settings/filter/push_filter_settings_bloc_impl.dart';
 import 'package:fedi/app/push/settings/local_preferences/instance/instance_push_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/push/settings/local_preferences/push_settings_local_preference_bloc.dart';
@@ -592,7 +591,8 @@ class CurrentUnifediApiAccessContextBloc extends ProviderContextBloc
       )..disposeWith(this);
 
       await globalProviderService.asyncInitAndRegister<IPushFilterSettingsBloc>(
-          pushFilterSettingsBloc);
+        pushFilterSettingsBloc,
+      );
 
       var pushPermissionCheckerBloc = PushPermissionCheckerBloc(
         fcmPushService: fcmPushService,
