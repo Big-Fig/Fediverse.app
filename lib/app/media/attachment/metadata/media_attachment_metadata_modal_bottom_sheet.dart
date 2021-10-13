@@ -4,7 +4,7 @@ import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 
-Future showMediaAttachmentMetadataModalBottomSheet({
+Future<void> showMediaAttachmentMetadataModalBottomSheet({
   required BuildContext context,
   required String description,
 }) {
@@ -13,7 +13,7 @@ Future showMediaAttachmentMetadataModalBottomSheet({
     listen: false,
   );
 
-  return showFediModalBottomSheetDialog(
+  return showFediModalBottomSheetDialog<void>(
     context: context,
     child: Row(
       children: [

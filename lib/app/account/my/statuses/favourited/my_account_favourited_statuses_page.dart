@@ -61,8 +61,8 @@ void goToMyAccountFavouritedStatusesPage(BuildContext context) {
   );
 }
 
-MaterialPageRoute createMyAccountFavouritedStatusesPage() {
-  return MaterialPageRoute(
+MaterialPageRoute<void> createMyAccountFavouritedStatusesPage() {
+  return MaterialPageRoute<void>(
     builder: (context) =>
         DisposableProvider<IMyAccountFavouritedStatusesCachedListBloc>(
       create: (context) => MyAccountFavouritedStatusesCachedListBloc(

@@ -18,7 +18,8 @@ class LocalInstanceDirectoryPage extends StatelessWidget {
   }
 }
 
-MaterialPageRoute createLocalInstanceDirectoryPageRoute() => MaterialPageRoute(
+MaterialPageRoute<void> createLocalInstanceDirectoryPageRoute() =>
+    MaterialPageRoute<void>(
       builder: (context) => LocalInstanceDirectoryBloc.provideToContext(
         context,
         child: const LocalInstanceDirectoryPage(),

@@ -54,7 +54,7 @@ class TimelineSettingsOnlyInCustomListFormFieldRowWidget
             if (dialogResult.success) {
               var remoteLists = dialogResult.result!;
 
-              await showFediSingleSelectionChooserDialog(
+              await showFediSingleSelectionChooserDialog<void>(
                 context: context,
                 title: S
                     .of(context)

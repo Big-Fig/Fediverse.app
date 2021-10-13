@@ -126,6 +126,7 @@ void goToTimelinesHomeTabStoragePage(BuildContext context) {
   );
 }
 
-MaterialPageRoute createTimelinesHomeTabStoragePageRoute() => MaterialPageRoute(
+MaterialPageRoute<void> createTimelinesHomeTabStoragePageRoute() =>
+    MaterialPageRoute<void>(
       builder: (context) => const TimelinesHomeTabStoragePage(),
     );

@@ -37,7 +37,7 @@ class ChatSelectionShareActionButtonWidget extends StatelessWidget {
       onPressed: () async {
         var chatSelectionBloc = IChatSelectionBloc.of(context, listen: false);
         var currentSelection = chatSelectionBloc.currentSelection;
-        showShareChooserDialog(
+        await showShareChooserDialog(
           context,
           externalShareAction: (context) {
             Navigator.of(context).pop();

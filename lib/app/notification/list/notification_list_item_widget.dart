@@ -263,7 +263,7 @@ class _NotificationListItemBodyMainAreaWidget extends StatelessWidget {
   void _onNotificationLongPress(BuildContext context) {
     var notificationBloc = INotificationBloc.of(context, listen: false);
 
-    showFediModalBottomSheetDialog(
+    showFediModalBottomSheetDialog<void>(
       context: context,
       child: FediChooserDialogBody(
         title: S.of(context).app_notification_action_popup_title,

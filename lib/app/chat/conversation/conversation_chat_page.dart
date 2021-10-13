@@ -76,12 +76,12 @@ void goToConversationChatPage(
   );
 }
 
-MaterialPageRoute createConversationChatPageRoute({
+MaterialPageRoute<void> createConversationChatPageRoute({
   required IConversationChat chat,
   required IConversationChatMessage? lastChatMessage,
   required VoidCallback? onDeletedCallback,
 }) {
-  return MaterialPageRoute(
+  return MaterialPageRoute<void>(
     builder: (context) => DisposableProvider<IConversationChatBloc>(
       create: (context) {
         var chatBloc = ConversationChatBloc.createFromContext(

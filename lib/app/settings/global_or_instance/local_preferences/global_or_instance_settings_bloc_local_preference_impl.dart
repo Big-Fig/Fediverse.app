@@ -5,7 +5,7 @@ import 'package:fedi/app/settings/settings_model.dart';
 import 'package:fedi/local_preferences/local_preference_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
-class GlobalOrInstanceSettingsLocalPreferenceBloc<T extends ISettings>
+class GlobalOrInstanceSettingsLocalPreferenceBloc<T extends ISettings<dynamic>>
     extends DisposableOwner implements IGlobalOrInstanceSettingsBloc<T> {
   final ILocalPreferenceBloc<T> globalLocalPreferencesBloc;
   final ILocalPreferenceBloc<T?> instanceLocalPreferencesBloc;

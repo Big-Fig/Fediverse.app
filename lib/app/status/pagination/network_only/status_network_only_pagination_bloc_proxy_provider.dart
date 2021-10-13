@@ -16,7 +16,8 @@ class StatusNetworkOnlyPaginationBlocProxyProvider extends StatelessWidget {
     return ProxyProvider<IStatusNetworkOnlyPaginationBloc,
         INetworkOnlyPaginationBloc<PaginationPage<IStatus>, IStatus>>(
       update: (context, value, previous) => value,
-      child: NetworkOnlyPaginationBlocProxyProvider(
+      child: NetworkOnlyPaginationBlocProxyProvider<PaginationPage<IStatus>,
+          IStatus>(
         child: child,
       ),
     );

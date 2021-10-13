@@ -143,7 +143,7 @@ class UploadMediaAttachmentBlocDevice extends DisposableOwner
 
   Future<void> waitUntilUploadFinishes() async {
     _logger.finest(() => 'waitUntilUploadFinishes');
-    var completer = Completer();
+    var completer = Completer<void>();
 
     var started = DateTime.now();
     var timer = Timer.periodic(Duration(milliseconds: 1), (_) {

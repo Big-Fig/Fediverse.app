@@ -14,7 +14,7 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
-Future<T?> showAccountActionMuteDialog<T>({
+Future<void> showAccountActionMuteDialog({
   required BuildContext context,
   required IAccountBloc accountBloc,
 }) =>

@@ -23,11 +23,11 @@ Future goToLocalStatusThreadPage(
   );
 }
 
-MaterialPageRoute createLocalStatusThreadPageRoute({
+MaterialPageRoute<void> createLocalStatusThreadPageRoute({
   required IStatus status,
   required IUnifediApiMediaAttachment? initialMediaAttachment,
 }) {
-  return MaterialPageRoute(
+  return MaterialPageRoute<void>(
     builder: (context) => DisposableProvider<IStatusThreadBloc>(
       create: (context) => LocalStatusThreadBloc.createFromContext(
         context,

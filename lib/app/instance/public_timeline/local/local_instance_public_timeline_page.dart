@@ -37,10 +37,10 @@ class LocalInstancePublicTimelinePage extends StatelessWidget {
   }
 }
 
-MaterialPageRoute createLocalInstancePublicTimelinePageRoute({
+MaterialPageRoute<void> createLocalInstancePublicTimelinePageRoute({
   required IUnifediApiInstance unifediApiInstance,
 }) =>
-    MaterialPageRoute(
+    MaterialPageRoute<void>(
       builder: (context) =>
           LocalInstancePublicTimelinePageBloc.provideToContext(
         context,

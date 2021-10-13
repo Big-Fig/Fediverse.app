@@ -28,7 +28,7 @@ class AddMoreJoinUnifediApiAccessPage extends StatelessWidget {
 void goToAddMoreJoinUnifediApiAccessPage(BuildContext context) {
   Navigator.push(
     context,
-    MaterialPageRoute(
+    MaterialPageRoute<void>(
       builder: (context) => JoinUnifediApiAccessBloc.provideToContext(
         context,
         isFromScratch: false,

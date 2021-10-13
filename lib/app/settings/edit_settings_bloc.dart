@@ -4,7 +4,8 @@ import 'package:fedi/form/form_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IEditSettingsBloc<T extends ISettings?> extends IFormBloc {
+abstract class IEditSettingsBloc<T extends ISettings<dynamic>?>
+    extends IFormBloc {
   static IEditSettingsBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IEditSettingsBloc>(context, listen: listen);
 

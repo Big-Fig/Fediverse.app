@@ -7,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 // ignore_for_file: no-magic-number
 class LocalPreferencesMockHelper {
-  static Future testSaveAndLoad<T, K extends ILocalPreferenceBloc>({
+  static Future testSaveAndLoad<T, K extends ILocalPreferenceBloc<dynamic>>({
     required T? defaultValue,
     required K Function(ILocalPreferencesService localPreferencesService)
         blocCreator,

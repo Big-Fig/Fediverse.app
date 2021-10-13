@@ -41,7 +41,7 @@ Future _accountSelectedCallback(BuildContext context, IAccount account) async {
 void goToPleromaChatStartPage(BuildContext context) {
   Navigator.push(
     context,
-    MaterialPageRoute(
+    MaterialPageRoute<void>(
       builder: (context) {
         return SelectAccountListBloc.provideToContext(
           context,

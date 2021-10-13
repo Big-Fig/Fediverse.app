@@ -45,13 +45,13 @@ void goToPleromaChatShareEntityPage({
   );
 }
 
-MaterialPageRoute createPleromaChatShareEntityPageRoute({
+MaterialPageRoute<void> createPleromaChatShareEntityPageRoute({
   required BuildContext context,
   required ShareEntity shareEntity,
   required InstanceLocation instanceLocation,
   bool isNeedReUploadMediaAttachments = true,
 }) {
-  return MaterialPageRoute(
+  return MaterialPageRoute<void>(
     builder: (context) => ShareEntitySettingsBloc.provideToContext(
       context,
       shareEntity: shareEntity,

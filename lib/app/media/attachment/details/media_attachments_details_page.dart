@@ -454,7 +454,7 @@ void goToSingleMediaAttachmentDetailsPage(
 }) {
   Navigator.push(
     context,
-    MaterialPageRoute(
+    MaterialPageRoute<void>(
       builder: (context) => MediaAttachmentDetailsPage.single(
         instanceLocation: instanceLocation,
         mediaAttachment: mediaAttachment,
@@ -471,7 +471,7 @@ void goToMultiMediaAttachmentDetailsPage(
 }) {
   Navigator.push(
     context,
-    MaterialPageRoute(
+    MaterialPageRoute<void>(
       builder: (context) => MediaAttachmentDetailsPage.multi(
         instanceLocation: instanceLocation,
         mediaAttachments: mediaAttachments,

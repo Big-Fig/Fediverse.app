@@ -47,8 +47,8 @@ void goToInstanceSettingsPage(BuildContext context) {
   );
 }
 
-MaterialPageRoute createInstanceSettingsPageRoute() {
-  return MaterialPageRoute(
+MaterialPageRoute<void> createInstanceSettingsPageRoute() {
+  return MaterialPageRoute<void>(
     builder: (context) => const InstanceSettingsListPage(),
   );
 }

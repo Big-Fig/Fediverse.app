@@ -88,10 +88,10 @@ void goToInstanceAnnouncementListPage(
 }
 
 // ignore: long-method
-MaterialPageRoute createInstanceAnnouncementListPageRoute({
+MaterialPageRoute<void> createInstanceAnnouncementListPageRoute({
   required BuildContext context,
 }) =>
-    MaterialPageRoute(
+    MaterialPageRoute<void>(
       builder: (context) =>
           DisposableProvider<IInstanceAnnouncementCachedListBloc>(
         create: (context) {

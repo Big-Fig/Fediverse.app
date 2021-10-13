@@ -123,7 +123,7 @@ class _AccountActionListMoreWidget extends StatelessWidget {
       FediIcons.menu_vertical,
       onPressed: () async {
         var accountBloc = IAccountBloc.of(context, listen: false);
-        showAccountActionMoreDialog(
+        await showAccountActionMoreDialog(
           context: context,
           accountBloc: accountBloc,
         );

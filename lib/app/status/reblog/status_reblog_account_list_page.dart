@@ -80,7 +80,7 @@ class _StatusReblogAccountListPrivacyWarningWidget extends StatelessWidget {
 void goToStatusReblogAccountListPage(BuildContext context, IStatus? status) {
   Navigator.push(
     context,
-    MaterialPageRoute(
+    MaterialPageRoute<void>(
       builder: (context) => StatusReblogAccountCachedListBloc.provideToContext(
         context,
         status: status!.reblog ?? status,

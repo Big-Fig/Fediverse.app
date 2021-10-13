@@ -31,8 +31,8 @@ class AccountFeaturedHashtagListPage extends StatelessWidget {
   }
 }
 
-MaterialPageRoute createAccountFeaturedHashtagListPageRoute() =>
-    MaterialPageRoute(
+MaterialPageRoute<void> createAccountFeaturedHashtagListPageRoute() =>
+    MaterialPageRoute<void>(
       builder: (context) => AccountFeaturedHashtagListPageBloc.provideToContext(
         context,
         child: const AccountFeaturedHashtagListPage(),

@@ -86,7 +86,7 @@ class _PollBodyVoteButtonBuilderWidget extends StatelessWidget {
 
               return Padding(
                 padding: FediPadding.allSmallPadding,
-                child: AsyncOperationButtonBuilderWidget(
+                child: AsyncOperationButtonBuilderWidget<void>(
                   builder: (context, onPressed) =>
                       FediPrimaryFilledTextButtonWithBorder(
                     S.of(context).app_poll_vote,

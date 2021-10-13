@@ -116,8 +116,8 @@ void goToMyAccountAccountMuteListPage(BuildContext context) {
   );
 }
 
-MaterialPageRoute createMyAccountAccountMuteListPage() {
-  return MaterialPageRoute(
+MaterialPageRoute<void> createMyAccountAccountMuteListPage() {
+  return MaterialPageRoute<void>(
     builder: (context) =>
         MyAccountAccountMuteNetworkOnlyAccountListBloc.provideToContext(
       context,

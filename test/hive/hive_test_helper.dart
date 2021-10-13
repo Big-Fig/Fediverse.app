@@ -18,14 +18,14 @@ BoxImpl _getBox({
   CompactionStrategy? cStrategy,
   StorageBackend? backend,
 }) {
-  var box = BoxImpl(
+  var box = BoxImpl<dynamic>(
     hive ?? HiveImpl(),
     name ?? 'testBox',
     null,
     cStrategy ?? (total, deleted) => false,
     backend ?? MockStorageBackend(),
   );
-  box.keystore = keystore ?? Keystore(box, ChangeNotifier(), null);
+  box.keystore = keystore ?? Keystore<dynamic>(box, ChangeNotifier(), null);
 
   return box;
 }

@@ -43,7 +43,7 @@ class _FediPlayerControlToggleMuteButtonInitializedWidget
       builder: (context, snapshot) {
         var isMuted = snapshot.data ?? false;
 
-        return AsyncOperationButtonBuilderWidget(
+        return AsyncOperationButtonBuilderWidget<void>(
           builder: (BuildContext context, void Function()? onPressed) {
             return FediIconButton(
               icon: Icon(isMuted ? FediIcons.sound_off : FediIcons.sound_on),

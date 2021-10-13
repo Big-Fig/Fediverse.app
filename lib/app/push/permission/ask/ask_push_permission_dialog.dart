@@ -8,49 +8,48 @@ import 'package:fedi/dialog/dialog_model.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 
-Future showAskPushPermissionDialog({
+Future<void> showAskPushPermissionDialog({
   required BuildContext context,
   required IPushPermissionCheckerBloc pushPermissionCheckerBloc,
-}) {
-  return showFediChooserDialog(
-    context: context,
-    title: S.of(context).app_push_permission_ask_dialog_title,
-    content: S.of(context).app_push_permission_ask_dialog_content,
-    actions: [
-      DialogAction(
-        label: S.of(context).dialog_action_yes,
-        onAction: (BuildContext context) async {
-          Navigator.of(context).pop();
-          var success = await pushPermissionCheckerBloc.checkAndSubscribe();
-          if (!success) {
+}) =>
+    showFediChooserDialog(
+      context: context,
+      title: S.of(context).app_push_permission_ask_dialog_title,
+      content: S.of(context).app_push_permission_ask_dialog_content,
+      actions: [
+        DialogAction(
+          label: S.of(context).dialog_action_yes,
+          onAction: (BuildContext context) async {
+            Navigator.of(context).pop();
+            var success = await pushPermissionCheckerBloc.checkAndSubscribe();
+            if (!success) {
+              _showPermissionNotGrantedDialog(context);
+            }
+          },
+        ),
+        DialogAction(
+          label: S.of(context).dialog_action_learnMore,
+          onAction: (BuildContext context) async {
+            await UrlHelper.handleUrlClick(
+              context: context,
+              url: IConfigService.of(
+                context,
+                listen: false,
+              ).pushDetailsUrl!,
+            );
+          },
+        ),
+        DialogAction(
+          label: S.of(context).dialog_action_no,
+          onAction: (BuildContext context) async {
+            Navigator.of(context).pop();
+            await pushPermissionCheckerBloc.onCheckDismissed();
             _showPermissionNotGrantedDialog(context);
-          }
-        },
-      ),
-      DialogAction(
-        label: S.of(context).dialog_action_learnMore,
-        onAction: (BuildContext context) async {
-          await UrlHelper.handleUrlClick(
-            context: context,
-            url: IConfigService.of(
-              context,
-              listen: false,
-            ).pushDetailsUrl!,
-          );
-        },
-      ),
-      DialogAction(
-        label: S.of(context).dialog_action_no,
-        onAction: (BuildContext context) async {
-          Navigator.of(context).pop();
-          await pushPermissionCheckerBloc.onCheckDismissed();
-          _showPermissionNotGrantedDialog(context);
-        },
-      ),
-    ],
-    cancelable: false,
-  );
-}
+          },
+        ),
+      ],
+      cancelable: false,
+    );
 
 void _showPermissionNotGrantedDialog(BuildContext context) {
   Future.delayed(

@@ -50,13 +50,13 @@ void goToEditCustomListPage({
   );
 }
 
-MaterialPageRoute createEditCustomListPageRoute({
+MaterialPageRoute<void> createEditCustomListPageRoute({
   required BuildContext context,
   required ICustomList customList,
   required Function(ICustomList customList) onSubmit,
   required VoidCallback onDelete,
 }) {
-  return MaterialPageRoute(
+  return MaterialPageRoute<void>(
     builder: (context) => EditCustomListBloc.provideToContext(
       context,
       onSubmit: onSubmit,

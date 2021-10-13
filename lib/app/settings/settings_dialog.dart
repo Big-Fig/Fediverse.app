@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 
 typedef StringBuilderFromContext = String Function(BuildContext context);
 
-void showSettingsDialog({
+Future<void> showSettingsDialog({
   required BuildContext context,
   required String? title,
   StringBuilderFromContext? titleBuilder,
@@ -17,7 +17,7 @@ void showSettingsDialog({
   StringBuilderFromContext? subTitleBuilder,
   required Widget child,
 }) {
-  showFediModalBottomSheetDialog(
+  return showFediModalBottomSheetDialog<void>(
     context: context,
     child: Padding(
       padding: const EdgeInsets.symmetric(

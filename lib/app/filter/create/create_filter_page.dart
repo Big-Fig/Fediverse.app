@@ -43,11 +43,11 @@ void goToCreateFilterPage({
   );
 }
 
-MaterialPageRoute createCreateFilterPageRoute({
+MaterialPageRoute<void> createCreateFilterPageRoute({
   required BuildContext context,
   required Function(IFilter) onSubmit,
 }) {
-  return MaterialPageRoute(
+  return MaterialPageRoute<void>(
     builder: (context) => CreateFilterBloc.provideToContext(
       context,
       child: const CreateFilterPage(),

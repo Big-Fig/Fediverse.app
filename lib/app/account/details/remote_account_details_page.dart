@@ -188,10 +188,10 @@ Future<IStatus?> loadRemoteAccountAnyStatusOnLocalInstance(
   return firstUnifediApiStatus?.toDbStatusPopulatedWrapper();
 }
 
-MaterialPageRoute createRemoteAccountDetailsPageRoute({
+MaterialPageRoute<void> createRemoteAccountDetailsPageRoute({
   required IAccount account,
 }) {
-  return MaterialPageRoute(
+  return MaterialPageRoute<void>(
     builder: (context) {
       return DisposableProvider<IRemoteInstanceBloc>(
         create: (context) {

@@ -65,7 +65,7 @@ Future<dynamic> pushFullScreenPage(
   IVideoMediaPlayerBloc videoMediaPlayerBloc,
 ) async {
   final isAndroid = Theme.of(context).platform == TargetPlatform.android;
-  final TransitionRoute route = PageRouteBuilder(
+  final TransitionRoute route = PageRouteBuilder<void>(
     pageBuilder: (
       BuildContext context,
       Animation<double> animation,

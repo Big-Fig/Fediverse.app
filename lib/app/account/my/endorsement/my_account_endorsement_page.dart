@@ -21,7 +21,8 @@ class LocalMyAccountEndorsementPage extends StatelessWidget {
   }
 }
 
-MaterialPageRoute createMyAccountEndorsementPageRoute() => MaterialPageRoute(
+MaterialPageRoute<void> createMyAccountEndorsementPageRoute() =>
+    MaterialPageRoute<void>(
       builder: (context) => MyAccountEndorsementBloc.provideToContext(
         context,
         child: const LocalMyAccountEndorsementPage(),

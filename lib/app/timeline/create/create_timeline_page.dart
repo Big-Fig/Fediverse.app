@@ -74,7 +74,7 @@ class _CreateItemTimelinesHomeTabStoragePageSaveActionWidget
       builder: (context, snapshot) {
         var isReadyToSubmit = snapshot.data;
 
-        return AsyncOperationButtonBuilderWidget(
+        return AsyncOperationButtonBuilderWidget<void>(
           builder: (context, onPressed) => FediIconButton(
             icon: Icon(Icons.check),
             color: IFediUiColorTheme.of(context).darkGrey,
@@ -96,10 +96,10 @@ void goToCreateItemTimelinesHomeTabStoragePage(
   );
 }
 
-MaterialPageRoute createCreateItemTimelinesHomeTabStoragePageRoute(
+MaterialPageRoute<void> createCreateItemTimelinesHomeTabStoragePageRoute(
   BuildContext context,
 ) {
-  return MaterialPageRoute(
+  return MaterialPageRoute<void>(
     builder: (context) => DisposableProvider<ICreateTimelineBloc>(
       create: (context) => CreateTimelineBloc(
         timelineSavedCallback: (Timeline timeline) {

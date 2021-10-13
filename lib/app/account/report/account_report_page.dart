@@ -107,7 +107,7 @@ MaterialPageRoute createAccountReportPageRoute({
   required IAccount account,
   required List<IStatus> statuses,
 }) {
-  return MaterialPageRoute(
+  return MaterialPageRoute<void>(
     builder: (context) => DisposableProvider<IAccountReportBloc>(
       create: (context) => AccountReportBloc(
         account: account,

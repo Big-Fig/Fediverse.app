@@ -49,7 +49,7 @@ Future goToMyAccountFollowRequestListPage(BuildContext context) =>
     );
 
 MaterialPageRoute createMyAccountFollowRequestListPage() {
-  return MaterialPageRoute(
+  return MaterialPageRoute<void>(
     builder: (context) =>
         MyAccountFollowRequestNetworkOnlyAccountListBloc.provideToContext(
       context,

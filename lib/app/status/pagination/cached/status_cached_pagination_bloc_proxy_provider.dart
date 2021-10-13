@@ -16,7 +16,8 @@ class StatusCachedPaginationBlocProxyProvider extends StatelessWidget {
     return ProxyProvider<IStatusCachedPaginationBloc,
         ICachedPaginationBloc<CachedPaginationPage<IStatus>, IStatus>>(
       update: (context, value, previous) => value,
-      child: CachedPaginationBlocProxyProvider(
+      child: CachedPaginationBlocProxyProvider<CachedPaginationPage<IStatus>,
+          IStatus>(
         child: child,
       ),
     );

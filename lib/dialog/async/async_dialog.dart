@@ -97,7 +97,7 @@ Future<AsyncDialogResult<T?>> doAsyncOperationWithDialog<T>({
 
   if (progressDialog != null) {
     // wait until progress dialog actually hides
-    await Future.delayed(
+    await Future<void>.delayed(
       Duration(
         // ignore: no-magic-number
         milliseconds: 100,

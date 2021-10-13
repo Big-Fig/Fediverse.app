@@ -18,7 +18,8 @@ class LocalInstanceDetailsPage extends StatelessWidget {
   }
 }
 
-MaterialPageRoute createLocalInstanceDetailsPageRoute() => MaterialPageRoute(
+MaterialPageRoute<void> createLocalInstanceDetailsPageRoute() =>
+    MaterialPageRoute<void>(
       builder: (context) => LocalInstanceDetailsBloc.provideToContext(
         context,
         child: const LocalInstanceDetailsPage(),

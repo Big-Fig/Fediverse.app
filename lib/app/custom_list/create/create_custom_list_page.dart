@@ -46,11 +46,11 @@ void goToCreateCustomListPage({
   );
 }
 
-MaterialPageRoute createCreateCustomListPageRoute({
+MaterialPageRoute<void> createCreateCustomListPageRoute({
   required BuildContext context,
   required Function(ICustomList) onSubmit,
 }) {
-  return MaterialPageRoute(
+  return MaterialPageRoute<void>(
     builder: (context) => CreateCustomListBloc.provideToContext(
       context,
       child: ProxyProvider<IEditCustomListBloc,

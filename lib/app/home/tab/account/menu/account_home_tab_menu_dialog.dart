@@ -24,8 +24,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-void showAccountHomeTabMenuDialog(BuildContext context) {
-  showFediModalBottomSheetDialog(
+Future<void> showAccountHomeTabMenuDialog(BuildContext context) {
+  return showFediModalBottomSheetDialog<void>(
     context: context,
     child: const AccountHomeTabMenuDialogBodyWidget(),
   );

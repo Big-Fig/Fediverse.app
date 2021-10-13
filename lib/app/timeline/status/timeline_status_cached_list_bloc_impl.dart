@@ -97,7 +97,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
       );
 
   final StreamController settingsChangedStreamController =
-      StreamController.broadcast();
+      StreamController<dynamic>.broadcast();
 
   @override
   Stream get settingsChangedStream => settingsChangedStreamController.stream;

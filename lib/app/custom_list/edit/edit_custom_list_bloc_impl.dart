@@ -324,7 +324,8 @@ class EditCustomListBloc extends DisposableOwner
     }
   }
 
-  final StreamController deletedStreamController = StreamController.broadcast();
+  final StreamController deletedStreamController =
+      StreamController<dynamic>.broadcast();
 
   @override
   Stream get deletedStream => deletedStreamController.stream;

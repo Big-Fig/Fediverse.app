@@ -21,8 +21,8 @@ class MyAccountFeaturedHashtagSuggestionPage extends StatelessWidget {
   }
 }
 
-MaterialPageRoute createMyAccountFeaturedHashtagSuggestionPageRoute() =>
-    MaterialPageRoute(
+MaterialPageRoute<void> createMyAccountFeaturedHashtagSuggestionPageRoute() =>
+    MaterialPageRoute<void>(
       builder: (context) =>
           MyAccountFeaturedHashtagSuggestionBloc.provideToContext(
         context,

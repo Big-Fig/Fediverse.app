@@ -50,6 +50,8 @@ class _TosPageBodyWigdet extends StatelessWidget {
 void goToTosPage(BuildContext context) {
   Navigator.push(
     context,
-    MaterialPageRoute(builder: (context) => const TosPage()),
+    MaterialPageRoute<void>(
+      builder: (context) => const TosPage(),
+    ),
   );
 }

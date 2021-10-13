@@ -252,7 +252,7 @@ class FediDatePicker {
     required String barrierLabel,
     required BasePickerModel? pickerModel,
     required bool isDeletePossible,
-  }) {
+  }) async {
     var completer = Completer<DateTime?>();
     Widget widget = FediDatePickerComponent(
       onChanged: onChanged,
@@ -283,7 +283,10 @@ class FediDatePicker {
     var inheritTheme = Theme.of(context);
     widget = Theme(data: inheritTheme, child: widget);
 
-    showFediModalBottomSheetDialog(context: context, child: widget);
+    await showFediModalBottomSheetDialog<void>(
+      context: context,
+      child: widget,
+    );
 
     return completer.future;
   }
@@ -451,7 +454,7 @@ class _DatePickerState extends State<FediDatePickerComponent> {
         Container(
           child: widget.pickerModel!.layoutProportions()[0] > 0
               ? _renderColumnView(
-                  ValueKey(widget.pickerModel!.currentLeftIndex()),
+                  ValueKey<int>(widget.pickerModel!.currentLeftIndex()),
                   theme,
                   widget.pickerModel!.leftStringAtIndex,
                   leftScrollCtrl,
@@ -475,7 +478,7 @@ class _DatePickerState extends State<FediDatePickerComponent> {
         Container(
           child: widget.pickerModel!.layoutProportions()[1] > 0
               ? _renderColumnView(
-                  ValueKey(widget.pickerModel!.currentLeftIndex()),
+                  ValueKey<int>(widget.pickerModel!.currentLeftIndex()),
                   theme,
                   widget.pickerModel!.middleStringAtIndex,
                   middleScrollCtrl,
@@ -499,7 +502,7 @@ class _DatePickerState extends State<FediDatePickerComponent> {
         Container(
           child: widget.pickerModel!.layoutProportions()[2] > 0
               ? _renderColumnView(
-                  ValueKey(widget.pickerModel!.currentMiddleIndex() * 100 +
+                  ValueKey<int>(widget.pickerModel!.currentMiddleIndex() * 100 +
                       widget.pickerModel!.currentLeftIndex()),
                   theme,
                   widget.pickerModel!.rightStringAtIndex,

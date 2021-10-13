@@ -5,7 +5,7 @@ import 'package:fedi/app/settings/settings_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IEditGlobalOrInstanceSettingsBloc<T extends ISettings>
+abstract class IEditGlobalOrInstanceSettingsBloc<T extends ISettings<dynamic>>
     extends IEditSettingsBloc<T> {
   static IEditGlobalOrInstanceSettingsBloc of(
     BuildContext context, {

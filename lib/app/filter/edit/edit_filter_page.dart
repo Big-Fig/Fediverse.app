@@ -47,13 +47,13 @@ void goToEditFilterPage({
   );
 }
 
-MaterialPageRoute createEditFilterPageRoute({
+MaterialPageRoute<void> createEditFilterPageRoute({
   required BuildContext context,
   required IFilter filter,
   required Function(IFilter filter) onSubmit,
   required VoidCallback onDelete,
 }) {
-  return MaterialPageRoute(
+  return MaterialPageRoute<void>(
     builder: (context) => EditFilterBloc.provideToContext(
       context,
       onSubmit: onSubmit,

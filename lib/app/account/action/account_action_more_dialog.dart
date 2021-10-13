@@ -22,11 +22,11 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
-void showAccountActionMoreDialog({
+Future<void> showAccountActionMoreDialog({
   required BuildContext context,
   required IAccountBloc accountBloc,
 }) {
-  showFediModalBottomSheetDialog(
+  return showFediModalBottomSheetDialog<void>(
     context: context,
     child: Provider<IAccountBloc>.value(
       value: accountBloc,

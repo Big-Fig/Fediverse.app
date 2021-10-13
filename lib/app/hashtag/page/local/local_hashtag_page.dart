@@ -39,11 +39,11 @@ class LocalHashtagPage extends StatelessWidget {
   }
 }
 
-MaterialPageRoute createLocalHashtagPageRoute({
+MaterialPageRoute<void> createLocalHashtagPageRoute({
   required IHashtag hashtag,
   required IMyAccountFeaturedHashtag? myAccountFeaturedHashtag,
 }) =>
-    MaterialPageRoute(
+    MaterialPageRoute<void>(
       builder: (context) => LocalHashtagPageBloc.provideToContext(
         context,
         hashtag: hashtag,

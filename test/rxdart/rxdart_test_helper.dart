@@ -55,8 +55,8 @@ class RxDartMockHelper {
     );
   }
 
-  static Future waitToExecuteRxCallbacks({
+  static Future<void> waitToExecuteRxCallbacks({
     Duration duration = const Duration(milliseconds: 1),
   }) =>
-      Future.delayed(duration);
+      Future<void>.delayed(duration);
 }

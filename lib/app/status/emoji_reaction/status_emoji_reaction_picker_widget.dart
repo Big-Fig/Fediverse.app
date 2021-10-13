@@ -32,11 +32,11 @@ class StatusEmojiReactionPickerWidget extends StatelessWidget {
   }
 }
 
-void showEmojiPickerModalPopup(
+Future<void> showEmojiPickerModalPopup(
   BuildContext context, {
   EmojiReactionSelectedCallback? emojiReactionSelectedCallback,
 }) {
-  showFediModalBottomSheetDialog(
+  return showFediModalBottomSheetDialog<void>(
     context: context,
     child: Padding(
       padding: FediPadding.horizontalSmallPadding,

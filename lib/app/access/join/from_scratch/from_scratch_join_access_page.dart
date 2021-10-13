@@ -30,7 +30,7 @@ class FromScratchJoinUnifediApiAccessPage extends StatelessWidget {
 void goToJoinNewInstancePage(BuildContext context) {
   Navigator.push(
     context,
-    MaterialPageRoute(
+    MaterialPageRoute<void>(
       builder: (context) => JoinUnifediApiAccessBloc.provideToContext(
         context,
         isFromScratch: true,

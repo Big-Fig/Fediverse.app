@@ -63,7 +63,7 @@ void goToMultiSelectAccountPage(
 }) {
   Navigator.push(
     context,
-    MaterialPageRoute(builder: (context) {
+    MaterialPageRoute<void>(builder: (context) {
       return SelectAccountListBloc.provideToContext(
         context,
         excludeMyAccount: excludeMyAccount,

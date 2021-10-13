@@ -45,7 +45,7 @@ class _DraftStatusListPageEmptyWidget extends StatelessWidget {
 void goToDraftStatusListPage(BuildContext context) {
   Navigator.push(
     context,
-    MaterialPageRoute(
+    MaterialPageRoute<void>(
       builder: (context) {
         return DraftStatusLocalOnlyListBloc.provideToContext(
           context,

@@ -32,7 +32,7 @@ void goToPleromaChatAccountsPage(
 }) {
   Navigator.push(
     context,
-    MaterialPageRoute(
+    MaterialPageRoute<void>(
       builder: (context) => DisposableProvider<IPleromaChatBloc>(
         create: (context) => PleromaChatBloc.createFromContext(
           context,

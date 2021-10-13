@@ -76,7 +76,7 @@ Future goToPostStatusStartConversationPage(
 }) async {
   await Navigator.push(
     context,
-    MaterialPageRoute(builder: (context) {
+    MaterialPageRoute<void>(builder: (context) {
       return PostStatusStartConversationChatBloc.provideToContext(
         context,
         conversationAccountsWithoutMe: conversationAccountsWithoutMe,

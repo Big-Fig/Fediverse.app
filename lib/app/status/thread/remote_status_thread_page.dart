@@ -110,11 +110,12 @@ Future goToRemoteStatusThreadPageBasedOnLocalInstanceRemoteStatus(
   }
 }
 
-MaterialPageRoute createRemoteStatusThreadPageRouteBasedOnRemoteInstanceStatus({
+MaterialPageRoute<void>
+    createRemoteStatusThreadPageRouteBasedOnRemoteInstanceStatus({
   required IStatus status,
   required IUnifediApiMediaAttachment? initialMediaAttachment,
 }) {
-  return MaterialPageRoute(
+  return MaterialPageRoute<void>(
     builder: (context) => DisposableProvider<IRemoteInstanceBloc>(
       create: (context) {
         var instanceUri = status.urlRemoteHostUri;

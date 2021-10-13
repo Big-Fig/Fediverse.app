@@ -21,8 +21,8 @@ void goToLocalAccountDetailsPage(
   );
 }
 
-MaterialPageRoute createLocalAccountDetailsPageRoute(IAccount account) {
-  return MaterialPageRoute(
+MaterialPageRoute<void> createLocalAccountDetailsPageRoute(IAccount account) {
+  return MaterialPageRoute<void>(
     builder: (context) => DisposableProvider<IAccountDetailsBloc>(
       create: (context) => AccountDetailsBloc(
         unifediApiAccountService: Provider.of<IUnifediApiAccountService>(

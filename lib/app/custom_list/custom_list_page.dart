@@ -231,7 +231,7 @@ void goToCustomListPage({
   );
 }
 
-MaterialPageRoute createCustomListPageRoute({
+MaterialPageRoute<void> createCustomListPageRoute({
   required BuildContext context,
   required ICustomList customList,
   required Function(ICustomList? customList)? onChanged,
@@ -240,7 +240,7 @@ MaterialPageRoute createCustomListPageRoute({
   var currentUnifediApiAccessBloc =
       ICurrentUnifediApiAccessBloc.of(context, listen: false);
 
-  return MaterialPageRoute(
+  return MaterialPageRoute<void>(
     builder: (context) {
       return Provider<ICustomList>.value(
         value: customList,

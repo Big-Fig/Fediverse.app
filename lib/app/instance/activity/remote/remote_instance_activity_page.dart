@@ -22,10 +22,10 @@ class RemoteInstanceActivityPage extends StatelessWidget {
   }
 }
 
-MaterialPageRoute createRemoteInstanceActivityPageRoute({
+MaterialPageRoute<void> createRemoteInstanceActivityPageRoute({
   required IRemoteInstanceBloc remoteInstanceBloc,
 }) =>
-    MaterialPageRoute(
+    MaterialPageRoute<void>(
       builder: (context) => Provider.value(
         value: remoteInstanceBloc,
         child: RemoteInstanceActivityBloc.provideToContext(

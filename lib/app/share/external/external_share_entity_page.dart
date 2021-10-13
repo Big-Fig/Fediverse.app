@@ -49,12 +49,12 @@ void goToExternalShareEntityPage({
   );
 }
 
-MaterialPageRoute createExternalShareEntityPageRoute({
+MaterialPageRoute<void> createExternalShareEntityPageRoute({
   required BuildContext context,
   required ShareEntity shareEntity,
   required InstanceLocation instanceLocation,
 }) {
-  return MaterialPageRoute(
+  return MaterialPageRoute<void>(
     builder: (context) => ShareEntitySettingsBloc.provideToContext(
       context,
       shareEntity: shareEntity,

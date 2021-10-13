@@ -115,7 +115,7 @@ class _EditMyAccountPageAppBarSaveAction extends StatelessWidget {
 void goToEditMyAccountPage(BuildContext context) {
   Navigator.push(
     context,
-    MaterialPageRoute(
+    MaterialPageRoute<void>(
       builder: (context) => DisposableProvider<IEditMyAccountBloc>(
         create: (context) => EditMyAccountBloc.createFromContext(context),
         child: const EditMyAccountPage(),

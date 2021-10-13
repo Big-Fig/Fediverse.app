@@ -50,7 +50,7 @@ void goToSingleSelectAccountPage(
 }) {
   Navigator.push(
     context,
-    MaterialPageRoute(builder: (context) {
+    MaterialPageRoute<void>(builder: (context) {
       return SelectAccountListBloc.provideToContext(
         context,
         followingsOnly: followingsOnly,

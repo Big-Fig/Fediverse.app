@@ -38,12 +38,12 @@ class RemoteHashtagPage extends StatelessWidget {
   }
 }
 
-MaterialPageRoute createRemoteHashtagPageRoute({
+MaterialPageRoute<void> createRemoteHashtagPageRoute({
   required Uri remoteInstanceUri,
   required IHashtag hashtag,
   required IRemoteInstanceBloc remoteInstanceBloc,
 }) =>
-    MaterialPageRoute(
+    MaterialPageRoute<void>(
       builder: (context) => Provider.value(
         value: remoteInstanceBloc,
         child: ProxyProvider<IRemoteInstanceBloc, IUnifediApiInstance>(

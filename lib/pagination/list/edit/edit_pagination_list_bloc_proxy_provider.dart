@@ -22,7 +22,7 @@ class EditPaginationListBlocProxyProvider<TPage extends PaginationPage<TItem>,
         child: ProxyProvider<IEditPaginationListBloc<TPage, TItem>,
             IEditPaginationListBloc>(
           update: (context, value, previous) => value,
-          child: PaginationListBlocProxyProvider(
+          child: PaginationListBlocProxyProvider<TPage, TItem>(
             child: child,
           ),
         ),

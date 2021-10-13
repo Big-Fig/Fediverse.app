@@ -76,7 +76,7 @@ void main() {
 
     await myAccountLocalPreferenceBloc
         .setValue(myAccount as UnifediApiMyAccountWrapper?);
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future<void>.delayed(Duration(milliseconds: 1));
 
     myAccountBloc = MyAccountBloc(
       apiMyAccountService: unifediApiMyAccountServiceMock,
@@ -219,7 +219,7 @@ void main() {
       listened = newValue;
     });
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future<void>.delayed(Duration(milliseconds: 1));
     expect(listened, myAccount.displayName);
 
     await _update(myAccount.copyWithTemp(displayName: newValue));
@@ -245,7 +245,7 @@ void main() {
       listened = newValue;
     });
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future<void>.delayed(Duration(milliseconds: 1));
     expect(listened, myAccount.fields ?? []);
 
     await _update(myAccount.copyWithTemp(fields: newValue));
@@ -266,7 +266,7 @@ void main() {
       listened = newValue;
     });
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future<void>.delayed(Duration(milliseconds: 1));
     expect(listened, myAccount.statusesCount);
 
     await _update(myAccount.copyWithTemp(statusesCount: newValue));
@@ -286,7 +286,7 @@ void main() {
       listened = newValue;
     });
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future<void>.delayed(Duration(milliseconds: 1));
     expect(listened, myAccount.statusesCount);
 
     await _update(myAccount.copyWithTemp(statusesCount: newValue));
@@ -306,7 +306,7 @@ void main() {
       listened = newValue;
     });
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future<void>.delayed(Duration(milliseconds: 1));
     expect(listened, myAccount.followingCount);
 
     await _update(myAccount.copyWithTemp(followingCount: newValue));
@@ -326,7 +326,7 @@ void main() {
       listened = newValue;
     });
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future<void>.delayed(Duration(milliseconds: 1));
     expect(listened, myAccount.followersCount);
 
     await _update(myAccount.copyWithTemp(followersCount: newValue));
@@ -354,7 +354,7 @@ void main() {
       listened = newValue;
     });
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future<void>.delayed(Duration(milliseconds: 1));
     expect(
       listened,
       EmojiText(
@@ -399,7 +399,7 @@ void main() {
       listened = newValue;
     });
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future<void>.delayed(Duration(milliseconds: 1));
     expect(
       listened,
       EmojiText(text: newDisplayNameValue, emojis: myAccount.emojis),
@@ -446,7 +446,7 @@ void main() {
       listened = newValue;
     });
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future<void>.delayed(Duration(milliseconds: 1));
     AccountMockHelper.expectAccount(listened, myAccount);
 
     when(unifediApiMyAccountServiceMock.verifyMyCredentials()).thenAnswer(
@@ -455,7 +455,7 @@ void main() {
 
     await myAccountBloc.refreshFromNetwork(isNeedPreFetchRelationship: false);
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future<void>.delayed(Duration(milliseconds: 1));
 
     AccountMockHelper.expectAccount(myAccountBloc.account, newValue);
     await subscription.cancel();
@@ -499,7 +499,7 @@ void main() {
     expect(myAccountBloc.isLocalCacheExist, true);
     await myAccountLocalPreferenceBloc.setValue(null);
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future<void>.delayed(Duration(milliseconds: 1));
     expect(myAccountBloc.isLocalCacheExist, false);
   });
 
@@ -513,7 +513,7 @@ void main() {
     await myAccountBloc
         .updateMyAccountByMyUnifediApiAccount(newValue.unifediApiAccount);
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future<void>.delayed(Duration(milliseconds: 1));
     AccountMockHelper.expectAccount(myAccountBloc.account, newValue);
   });
 

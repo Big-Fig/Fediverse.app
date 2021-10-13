@@ -75,13 +75,13 @@ class MediaPickerPageAppBarTitle extends StatelessWidget {
   }
 }
 
-Future<T?> _showFolderChooserModalBottomSheet<T>(
+Future<void> _showFolderChooserModalBottomSheet(
   BuildContext context,
   IMediaDeviceGalleryBloc mediaDeviceGalleryBloc,
 ) {
   var fediUiTextTheme = IFediUiTextTheme.of(context, listen: false);
 
-  return showFediModalBottomSheetDialog<T>(
+  return showFediModalBottomSheetDialog<void>(
     context: context,
     child: Provider<IMediaDeviceGalleryBloc>.value(
       value: mediaDeviceGalleryBloc,

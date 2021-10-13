@@ -307,8 +307,8 @@ void goAccountHomeTabMenuActionsPage(BuildContext context) {
   );
 }
 
-MaterialPageRoute createAccountHomeTabMenuActionsPageRoute() {
-  return MaterialPageRoute(
+MaterialPageRoute<void> createAccountHomeTabMenuActionsPageRoute() {
+  return MaterialPageRoute<void>(
     builder: (context) => const AccountHomeTabMenuActionsPage(),
   );
 }

@@ -160,8 +160,8 @@ void goToMyAccountDomainBlockListPage(BuildContext context) {
   );
 }
 
-MaterialPageRoute createMyAccountDomainBlockListPage() {
-  return MaterialPageRoute(
+MaterialPageRoute<void> createMyAccountDomainBlockListPage() {
+  return MaterialPageRoute<void>(
     builder: (context) =>
         MyAccountDomainBlockNetworkOnlyDomainListBloc.provideToContext(
       context,

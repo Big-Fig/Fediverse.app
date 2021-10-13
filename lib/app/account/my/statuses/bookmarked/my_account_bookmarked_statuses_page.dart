@@ -61,8 +61,8 @@ void goToMyAccountBookmarkedStatusesPage(BuildContext context) {
   );
 }
 
-MaterialPageRoute createMyAccountBookmarkedStatusesPage() {
-  return MaterialPageRoute(
+MaterialPageRoute<void> createMyAccountBookmarkedStatusesPage() {
+  return MaterialPageRoute<void>(
     builder: (context) =>
         DisposableProvider<IMyAccountBookmarkedStatusesCachedListBloc>(
       create: (context) => MyAccountBookmarkedStatusesCachedListBloc(

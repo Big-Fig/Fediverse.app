@@ -45,12 +45,12 @@ void goToConversationChatShareEntityPage({
   );
 }
 
-MaterialPageRoute createConversationChatShareEntityPageRoute({
+MaterialPageRoute<void> createConversationChatShareEntityPageRoute({
   required BuildContext context,
   required ShareEntity shareEntity,
   required InstanceLocation instanceLocation,
 }) {
-  return MaterialPageRoute(
+  return MaterialPageRoute<void>(
     builder: (context) => ShareEntitySettingsBloc.provideToContext(
       context,
       shareEntity: shareEntity,

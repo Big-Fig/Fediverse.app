@@ -284,7 +284,7 @@ abstract class CachedPaginationListWithNewItemsBloc<
     Duration pollInterval = Duration.zero,
   }) async {
     if (isNewItemsAsyncCheckInProgress) {
-      final completer = Completer();
+      final completer = Completer<void>();
       final timer = Timer.periodic(pollInterval, (timer) {
         if (!isNewItemsAsyncCheckInProgress) {
           completer.complete();
@@ -298,7 +298,8 @@ abstract class CachedPaginationListWithNewItemsBloc<
   }
 
   StreamSubscription<List<TItem>> createWatchNewItemsSubscription(
-      TItem? newerItem) {
+    TItem? newerItem,
+  ) {
     return watchItemsNewerThanItem(newerItem)
         .skipWhile((newItems) => !newItems.isNotEmpty)
         .listen(

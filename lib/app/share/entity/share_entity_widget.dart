@@ -174,7 +174,7 @@ class _ShareEntityMediaWidget extends StatelessWidget {
             child: DisposableProxyProvider<List<_ShareEntityCarouselItem>,
                 IFediMediaCarouselBloc>(
               update: (context, value, previous) =>
-                  FediMediaCarouselBloc(items: value),
+                  FediMediaCarouselBloc<_ShareEntityCarouselItem>(items: value),
               child: FediMediaCarouselWidget(
                 builder: _shareEntityCarouselItemWidgetBuilder,
               ),

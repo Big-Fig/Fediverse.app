@@ -18,7 +18,8 @@ class LocalInstanceTrendsPage extends StatelessWidget {
   }
 }
 
-MaterialPageRoute createLocalInstanceTrendsPageRoute() => MaterialPageRoute(
+MaterialPageRoute<void> createLocalInstanceTrendsPageRoute() =>
+    MaterialPageRoute<void>(
       builder: (context) => LocalInstanceTrendsBloc.provideToContext(
         context,
         child: const LocalInstanceTrendsPage(),

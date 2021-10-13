@@ -133,7 +133,7 @@ class _FediFormSingleChooseFromListFieldRowBodyWidget<T>
         InkWell(
           onTap: isEnabled
               ? () {
-                  showFediSingleSelectionChooserDialog(
+                  showFediSingleSelectionChooserDialog<void>(
                     context: context,
                     title: chooserTitle,
                     actions: possibleValues

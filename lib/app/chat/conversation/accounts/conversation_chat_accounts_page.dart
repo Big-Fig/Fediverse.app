@@ -32,7 +32,7 @@ void goToConversationChatAccountsPage(
 ) {
   Navigator.push(
     context,
-    MaterialPageRoute(
+    MaterialPageRoute<void>(
       builder: (context) => DisposableProvider<IConversationChatBloc>(
         create: (context) => ConversationChatBloc.createFromContext(
           context,

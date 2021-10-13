@@ -20,7 +20,8 @@ class PleromaFormCaptchaStringFieldBloc extends StringValueFormFieldBloc
 
   final BehaviorSubject<bool> isLoadingSubject = BehaviorSubject.seeded(false);
   final BehaviorSubject<UnifediApiCaptcha?> captchaSubject = BehaviorSubject();
-  final BehaviorSubject<dynamic> captchaLoadingErrorSubject = BehaviorSubject();
+  final BehaviorSubject<dynamic> captchaLoadingErrorSubject =
+      BehaviorSubject<dynamic>();
   final BehaviorSubject<DateTime?> captchaLoadedDateTimeSubject =
       BehaviorSubject();
 

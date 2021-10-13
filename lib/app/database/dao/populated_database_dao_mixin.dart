@@ -58,7 +58,7 @@ mixin PopulatedDatabaseDaoMixin<
     query.orderBy(
       [
         (tbl) => moor.OrderingTerm.desc(
-              CustomExpression('$tableName.$idFieldName'),
+              CustomExpression<dynamic>('$tableName.$idFieldName'),
             ),
       ],
     );
@@ -90,7 +90,7 @@ mixin PopulatedDatabaseDaoMixin<
     query.orderBy(
       [
         (tbl) => moor.OrderingTerm.asc(
-              CustomExpression('$tableName.$idFieldName'),
+              CustomExpression<dynamic>('$tableName.$idFieldName'),
             ),
       ],
     );
@@ -122,7 +122,7 @@ mixin PopulatedDatabaseDaoMixin<
     query.orderBy(
       [
         (tbl) => moor.OrderingTerm.desc(
-              CustomExpression('$tableName.$idFieldName'),
+              CustomExpression<dynamic>('$tableName.$idFieldName'),
             ),
       ],
     );
@@ -155,7 +155,7 @@ mixin PopulatedDatabaseDaoMixin<
     query.orderBy(
       [
         (tbl) => moor.OrderingTerm.asc(
-              CustomExpression('$tableName.$idFieldName'),
+              CustomExpression<dynamic>('$tableName.$idFieldName'),
             ),
       ],
     );

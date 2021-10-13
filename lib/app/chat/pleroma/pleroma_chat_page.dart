@@ -76,8 +76,8 @@ void goToPleromaChatPage(
   );
 }
 
-MaterialPageRoute createPleromaChatPageRoute(IPleromaChat chat) {
-  return MaterialPageRoute(
+MaterialPageRoute<void> createPleromaChatPageRoute(IPleromaChat chat) {
+  return MaterialPageRoute<void>(
     builder: (context) => DisposableProvider<IPleromaChatBloc>(
       create: (context) {
         var chatBloc = PleromaChatBloc.createFromContext(

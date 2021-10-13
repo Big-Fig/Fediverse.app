@@ -21,7 +21,8 @@ class LocalMyAccountSuggestionPage extends StatelessWidget {
   }
 }
 
-MaterialPageRoute createMyAccountSuggestionPageRoute() => MaterialPageRoute(
+MaterialPageRoute<void> createMyAccountSuggestionPageRoute() =>
+    MaterialPageRoute<void>(
       builder: (context) => MyAccountSuggestionBloc.provideToContext(
         context,
         child: const LocalMyAccountSuggestionPage(),

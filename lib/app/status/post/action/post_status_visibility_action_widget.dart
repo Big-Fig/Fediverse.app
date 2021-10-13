@@ -37,7 +37,7 @@ class PostStatusVisibilityActionWidget extends StatelessWidget {
         return FediIconButton(
           icon: icon,
           onPressed: () {
-            showFediSingleSelectionChooserDialog(
+            showFediSingleSelectionChooserDialog<void>(
               context: context,
               title: S.of(context).app_status_post_visibility_title,
               actions: [

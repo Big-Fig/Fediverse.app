@@ -178,7 +178,8 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
     }
   }
 
-  final StreamController deletedStreamController = StreamController.broadcast();
+  final StreamController deletedStreamController =
+      StreamController<dynamic>.broadcast();
 
   @override
   Stream get deletedStream => deletedStreamController.stream;

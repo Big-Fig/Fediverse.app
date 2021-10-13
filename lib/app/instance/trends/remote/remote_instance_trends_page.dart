@@ -22,10 +22,10 @@ class RemoteInstanceTrendsPage extends StatelessWidget {
   }
 }
 
-MaterialPageRoute createRemoteInstanceTrendsPageRoute({
+MaterialPageRoute<void> createRemoteInstanceTrendsPageRoute({
   required IRemoteInstanceBloc remoteInstanceBloc,
 }) =>
-    MaterialPageRoute(
+    MaterialPageRoute<void>(
       builder: (context) => Provider.value(
         value: remoteInstanceBloc,
         child: RemoteInstanceTrendsBloc.provideToContext(

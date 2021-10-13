@@ -970,7 +970,8 @@ class _NotificationPayloadData {
     var notificationJson = jsonDecode(notificationJsonString)['value'];
 
     var unifediApiNotification = UnifediApiNotification.fromJson(
-        notificationJson as Map<String, dynamic>);
+      notificationJson as Map<String, dynamic>,
+    );
 
     return _NotificationPayloadData(
       acct: acct,

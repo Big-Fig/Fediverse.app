@@ -183,9 +183,9 @@ void goToAboutPage({
   );
 }
 
-MaterialPageRoute createAboutPageRoute({
+MaterialPageRoute<void> createAboutPageRoute({
   required BuildContext context,
 }) =>
-    MaterialPageRoute(
+    MaterialPageRoute<void>(
       builder: (context) => AboutPage(),
     );

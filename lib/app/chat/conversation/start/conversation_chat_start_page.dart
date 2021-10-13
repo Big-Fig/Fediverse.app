@@ -41,7 +41,7 @@ void _accountSelectedCallback(BuildContext context, IAccount account) {
 void goToStartConversationPage(BuildContext context) {
   Navigator.push(
     context,
-    MaterialPageRoute(
+    MaterialPageRoute<void>(
       builder: (context) => SelectAccountListBloc.provideToContext(
         context,
         excludeMyAccount: true,

@@ -60,7 +60,7 @@ void goToDraftEditPostStatusPage(
   var draftStatusBloc = IDraftStatusBloc.of(context, listen: false);
   Navigator.push(
     context,
-    MaterialPageRoute(
+    MaterialPageRoute<void>(
       builder: (context) => EditPostStatusBloc.provideToContext(
         context,
         postStatusDataCallback: (IPostStatusData postStatusData) async {

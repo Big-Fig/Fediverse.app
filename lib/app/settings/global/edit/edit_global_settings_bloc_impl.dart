@@ -3,7 +3,7 @@ import 'package:fedi/app/settings/global/edit/edit_global_settings_bloc.dart';
 import 'package:fedi/app/settings/settings_bloc.dart';
 import 'package:fedi/app/settings/settings_model.dart';
 
-abstract class EditGlobalSettingsBloc<T extends ISettings?>
+abstract class EditGlobalSettingsBloc<T extends ISettings<dynamic>?>
     extends EditSettingsBloc<T> implements IEditGlobalSettingsBloc<T> {
   EditGlobalSettingsBloc({
     required bool isEnabled,

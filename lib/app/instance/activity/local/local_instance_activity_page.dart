@@ -18,7 +18,8 @@ class LocalInstanceActivityPage extends StatelessWidget {
   }
 }
 
-MaterialPageRoute createLocalInstanceActivityPageRoute() => MaterialPageRoute(
+MaterialPageRoute<void> createLocalInstanceActivityPageRoute() =>
+    MaterialPageRoute(
       builder: (context) => LocalInstanceActivityBloc.provideToContext(
         context,
         child: const LocalInstanceActivityPage(),

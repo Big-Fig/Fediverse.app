@@ -64,10 +64,10 @@ void goToFilterListPage(
   );
 }
 
-MaterialPageRoute createFilterListPageRoute({
+MaterialPageRoute<void> createFilterListPageRoute({
   required BuildContext context,
 }) {
-  return MaterialPageRoute(
+  return MaterialPageRoute<void>(
     builder: (context) => FilterCachedListBloc.provideToContext(
       context,
       child: FilterCachedPaginationBloc.provideToContext(

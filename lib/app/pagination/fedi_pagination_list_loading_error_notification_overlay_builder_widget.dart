@@ -12,7 +12,7 @@ DateTime _lastLoadMoreErrorShowedDateTime = DateTime.now();
 // ignore: no-magic-number
 final Duration _throttleDuration = Duration(seconds: 2);
 
-class FediPaginationListLoadingErrorNotificationOverlayBuilderWidget<T>
+class FediPaginationListLoadingErrorNotificationOverlayBuilderWidget
     extends StatefulWidget {
   const FediPaginationListLoadingErrorNotificationOverlayBuilderWidget();
 

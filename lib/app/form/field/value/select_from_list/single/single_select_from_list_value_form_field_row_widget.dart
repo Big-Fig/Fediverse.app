@@ -268,7 +268,7 @@ void _showDialog<T>({
     ),
   ];
 
-  showFediSingleSelectionChooserDialog(
+  showFediSingleSelectionChooserDialog<void>(
     context: context,
     title: label,
     actions: actions,

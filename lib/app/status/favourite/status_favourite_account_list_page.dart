@@ -80,7 +80,7 @@ class _StatusFavouriteAccountListPrivacyWarningWidget extends StatelessWidget {
 void goToStatusFavouriteAccountListPage(BuildContext context, IStatus status) {
   Navigator.push(
     context,
-    MaterialPageRoute(
+    MaterialPageRoute<void>(
       builder: (context) =>
           StatusFavouriteAccountCachedListBloc.provideToContext(
         context,

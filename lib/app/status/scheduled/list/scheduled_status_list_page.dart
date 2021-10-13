@@ -54,7 +54,7 @@ class _ScheduledStatusListPageEmptyWidget extends StatelessWidget {
 void goToScheduledStatusListPage(BuildContext context) {
   Navigator.push(
     context,
-    MaterialPageRoute(
+    MaterialPageRoute<void>(
       builder: (context) => ScheduledStatusCachedListBloc.provideToContext(
         context,
         child: ScheduledStatusCachedPaginationBloc.provideToContext(

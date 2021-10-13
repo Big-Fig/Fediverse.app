@@ -37,12 +37,12 @@ class RemoteInstancePublicTimelinePage extends StatelessWidget {
   }
 }
 
-MaterialPageRoute createRemoteInstancePublicTimelinePageRoute({
+MaterialPageRoute<void> createRemoteInstancePublicTimelinePageRoute({
   required Uri remoteInstanceUri,
   required IUnifediApiInstance unifediApiInstance,
   required IRemoteInstanceBloc remoteInstanceBloc,
 }) =>
-    MaterialPageRoute(
+    MaterialPageRoute<void>(
       builder: (context) => Provider.value(
         value: remoteInstanceBloc,
         child: ProxyProvider<IRemoteInstanceBloc, IUnifediApiInstance>(

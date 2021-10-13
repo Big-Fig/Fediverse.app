@@ -35,7 +35,7 @@ void goToAccountFollowingAccountListPage({
 }) {
   Navigator.push(
     context,
-    MaterialPageRoute(
+    MaterialPageRoute<void>(
       builder: (context) {
         return AccountFollowingAccountCachedListBloc.provideToContext(
           context,

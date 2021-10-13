@@ -3,8 +3,8 @@ import 'package:fedi/form/form_item_bloc.dart';
 import 'package:fedi/form/group/form_group_bloc_impl.dart';
 import 'package:fedi/form/group/pair/key_value_pair_form_group_bloc.dart';
 
-class KeyValuePairFormGroupBloc<K extends IValueFormFieldBloc,
-        V extends IValueFormFieldBloc> extends FormGroupBloc
+class KeyValuePairFormGroupBloc<K extends IValueFormFieldBloc<dynamic>,
+        V extends IValueFormFieldBloc<dynamic>> extends FormGroupBloc
     implements IKeyValuePairFormGroupBloc<K, V> {
   @override
   final K keyField;

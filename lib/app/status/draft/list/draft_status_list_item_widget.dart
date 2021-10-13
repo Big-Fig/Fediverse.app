@@ -168,7 +168,7 @@ class _DraftStatusListItemCancelButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var draftStatusBloc = IDraftStatusBloc.of(context);
 
-    return PleromaAsyncOperationButtonBuilderWidget(
+    return PleromaAsyncOperationButtonBuilderWidget<void>(
       builder: (context, onPressed) => FediTextButton(
         text: S.of(context).app_account_my_statuses_draft_status_action_delete,
         color: IFediUiColorTheme.of(context).darkGrey,
