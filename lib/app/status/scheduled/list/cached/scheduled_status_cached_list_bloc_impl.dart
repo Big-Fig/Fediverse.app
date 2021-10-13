@@ -49,16 +49,15 @@ class ScheduledStatusCachedListBloc extends IScheduledStatusCachedListBloc {
   static Widget provideToContext(
     BuildContext context, {
     required Widget child,
-  }) {
-    return DisposableProvider<IScheduledStatusCachedListBloc>(
-      create: (context) =>
-          ScheduledStatusCachedListBloc.createFromContext(context),
-      child: ProxyProvider<IScheduledStatusCachedListBloc, IStatusListBloc>(
-        update: (context, value, previous) => value,
-        child: child,
-      ),
-    );
-  }
+  }) =>
+      DisposableProvider<IScheduledStatusCachedListBloc>(
+        create: (context) =>
+            ScheduledStatusCachedListBloc.createFromContext(context),
+        child: ProxyProvider<IScheduledStatusCachedListBloc, IStatusListBloc>(
+          update: (context, value, previous) => value,
+          child: child,
+        ),
+      );
 
   @override
   Future<List<IScheduledStatus>> loadLocalItems({

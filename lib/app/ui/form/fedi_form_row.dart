@@ -7,10 +7,8 @@ class FediFormRow extends StatelessWidget {
   FediFormRow({required this.child});
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: FediPadding.verticalBigPadding,
-      child: child,
-    );
-  }
+  Widget build(BuildContext context) => Padding(
+        padding: FediPadding.verticalBigPadding,
+        child: child,
+      );
 }

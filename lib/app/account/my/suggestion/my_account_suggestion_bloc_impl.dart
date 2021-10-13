@@ -92,10 +92,9 @@ class MyAccountSuggestionBloc extends DisposableOwner
   static Widget provideToContext(
     BuildContext context, {
     required Widget child,
-  }) {
-    return DisposableProvider<IMyAccountSuggestionBloc>(
-      create: (context) => MyAccountSuggestionBloc.createFromContext(context),
-      child: MyAccountSuggestionBlocProxyProvider(child: child),
-    );
-  }
+  }) =>
+      DisposableProvider<IMyAccountSuggestionBloc>(
+        create: (context) => MyAccountSuggestionBloc.createFromContext(context),
+        child: MyAccountSuggestionBlocProxyProvider(child: child),
+      );
 }

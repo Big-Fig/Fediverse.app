@@ -217,31 +217,30 @@ class _AccountHomeTabMyAccountWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IMyAccountBloc, IAccountBloc>(
-      update: (context, value, previous) => value,
-      child: FediDarkStatusBarStyleArea(
-        child: ClipRRect(
-          borderRadius: FediBorderRadius.topOnlyBigBorderRadius,
-          child: Container(
-            color: IFediUiColorTheme.of(context).offWhite,
-            child: FediListTile(
-              isFirstInList: true,
-              noPadding: true,
-              // special hack to avoid 1px horizontal line on some devices
-              oneSidePadding: FediSizes.bigPadding - 1,
-              child: MyAccountWidget(
-                onStatusesTapCallback: _onStatusesTapCallback,
-                footer: null,
-                brightness: Brightness.dark,
-              ),
+  Widget build(BuildContext context) =>
+      ProxyProvider<IMyAccountBloc, IAccountBloc>(
+        update: (context, value, previous) => value,
+        child: FediDarkStatusBarStyleArea(
+          child: ClipRRect(
+            borderRadius: FediBorderRadius.topOnlyBigBorderRadius,
+            child: Container(
+              color: IFediUiColorTheme.of(context).offWhite,
+              child: FediListTile(
+                isFirstInList: true,
+                noPadding: true,
+                // special hack to avoid 1px horizontal line on some devices
+                oneSidePadding: FediSizes.bigPadding - 1,
+                child: MyAccountWidget(
+                  onStatusesTapCallback: _onStatusesTapCallback,
+                  footer: null,
+                  brightness: Brightness.dark,
+                ),
 //                    oneSidePadding: FediSizes.smallPadding - 1,
+              ),
             ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }
 
 void _onStatusesTapCallback(BuildContext context) {
@@ -393,42 +392,41 @@ class _AccountHomeTabProviderFavouritedTabProviderWidget
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return DisposableProvider<IMyAccountFavouritedStatusesCachedListBloc>(
-      create: (context) => MyAccountFavouritedStatusesCachedListBloc(
-        unifediApiMyAccountService: Provider.of<IUnifediApiMyAccountService>(
-          context,
-          listen: false,
+  Widget build(BuildContext context) =>
+      DisposableProvider<IMyAccountFavouritedStatusesCachedListBloc>(
+        create: (context) => MyAccountFavouritedStatusesCachedListBloc(
+          unifediApiMyAccountService: Provider.of<IUnifediApiMyAccountService>(
+            context,
+            listen: false,
+          ),
+          statusRepository: IStatusRepository.of(
+            context,
+            listen: false,
+          ),
         ),
-        statusRepository: IStatusRepository.of(
-          context,
-          listen: false,
-        ),
-      ),
-      child: ProxyProvider<IMyAccountFavouritedStatusesCachedListBloc,
-          IStatusCachedListBloc>(
-        update: (context, value, previous) => value,
-        child: StatusCachedListBlocProxyProvider(
-          child: ProxyProvider<IMyAccountFavouritedStatusesCachedListBloc,
-              ICachedListBloc<IStatus?>>(
-            update: (context, value, previous) => value,
-            child: StatusCachedListBlocLoadingWidget(
-              child: StatusCachedPaginationBloc.provideToContext(
-                context,
-                child:
-                    StatusCachedPaginationListWithNewItemsBloc.provideToContext(
+        child: ProxyProvider<IMyAccountFavouritedStatusesCachedListBloc,
+            IStatusCachedListBloc>(
+          update: (context, value, previous) => value,
+          child: StatusCachedListBlocProxyProvider(
+            child: ProxyProvider<IMyAccountFavouritedStatusesCachedListBloc,
+                ICachedListBloc<IStatus?>>(
+              update: (context, value, previous) => value,
+              child: StatusCachedListBlocLoadingWidget(
+                child: StatusCachedPaginationBloc.provideToContext(
                   context,
-                  child: child,
-                  mergeNewItemsImmediately: false,
-                  mergeOwnStatusesImmediately: false,
+                  child: StatusCachedPaginationListWithNewItemsBloc
+                      .provideToContext(
+                    context,
+                    child: child,
+                    mergeNewItemsImmediately: false,
+                    mergeOwnStatusesImmediately: false,
+                  ),
                 ),
               ),
             ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }
 
 class _AccountHomeTabCurrentInstanceNameWidget extends StatelessWidget {
@@ -517,20 +515,18 @@ class _AccountHomeTabFediTabMainHeaderBarAccountMenuButtonWidget
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return FediIntBadgeWidget(
-      offset: 0.0,
-      child: FediIconInCircleBlurredButton(
-        FediIcons.settings,
-        // todo: refactor
-        // ignore: no-magic-number
-        iconSize: 15.0,
-        onPressed: () {
-          showAccountHomeTabMenuDialog(context);
-        },
-      ),
-    );
-  }
+  Widget build(BuildContext context) => FediIntBadgeWidget(
+        offset: 0.0,
+        child: FediIconInCircleBlurredButton(
+          FediIcons.settings,
+          // todo: refactor
+          // ignore: no-magic-number
+          iconSize: 15.0,
+          onPressed: () {
+            showAccountHomeTabMenuDialog(context);
+          },
+        ),
+      );
 }
 
 class _AccountHomeTabFediTabMainHeaderBarChooserButtonWidget
@@ -540,28 +536,26 @@ class _AccountHomeTabFediTabMainHeaderBarChooserButtonWidget
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        showMyAccountActionListBottomSheetDialog(context);
-      },
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Flexible(
-            child: const _AccountHomeTabCurrentInstanceNameWidget(),
-          ),
-          const FediSmallHorizontalSpacer(),
-          Icon(
-            FediIcons.chevron_down,
-            // todo: refactor
-            // ignore: no-magic-number
-            size: 18.0,
-            color: IFediUiColorTheme.of(context).white,
-          ),
-        ],
-      ),
-    );
-  }
+  Widget build(BuildContext context) => InkWell(
+        onTap: () {
+          showMyAccountActionListBottomSheetDialog(context);
+        },
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Flexible(
+              child: const _AccountHomeTabCurrentInstanceNameWidget(),
+            ),
+            const FediSmallHorizontalSpacer(),
+            Icon(
+              FediIcons.chevron_down,
+              // todo: refactor
+              // ignore: no-magic-number
+              size: 18.0,
+              color: IFediUiColorTheme.of(context).white,
+            ),
+          ],
+        ),
+      );
 }

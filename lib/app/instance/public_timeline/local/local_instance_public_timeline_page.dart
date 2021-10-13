@@ -27,14 +27,12 @@ class LocalInstancePublicTimelinePage extends StatelessWidget {
   const LocalInstancePublicTimelinePage();
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const InstancePublicTimelinePageAppBarWidget(),
-      body: const SafeArea(
-        child: LocalInstancePublicTimelinePageBodyWidget(),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Scaffold(
+        appBar: const InstancePublicTimelinePageAppBarWidget(),
+        body: const SafeArea(
+          child: LocalInstancePublicTimelinePageBodyWidget(),
+        ),
+      );
 }
 
 MaterialPageRoute<void> createLocalInstancePublicTimelinePageRoute({

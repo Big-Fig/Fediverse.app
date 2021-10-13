@@ -87,18 +87,17 @@ class InstanceAnnouncementCachedPaginationBloc
     BuildContext context, {
     required Widget child,
     int? maximumCachedPagesCount,
-  }) {
-    return DisposableProvider<
-        ICachedPaginationBloc<CachedPaginationPage<IInstanceAnnouncement>,
-            IInstanceAnnouncement>>(
-      create: (context) =>
-          InstanceAnnouncementCachedPaginationBloc.createFromContext(
-        context,
-        maximumCachedPagesCount: maximumCachedPagesCount,
-      ),
-      child: CachedPaginationBlocProxyProvider<
-          CachedPaginationPage<IInstanceAnnouncement>,
-          IInstanceAnnouncement>(child: child),
-    );
-  }
+  }) =>
+      DisposableProvider<
+          ICachedPaginationBloc<CachedPaginationPage<IInstanceAnnouncement>,
+              IInstanceAnnouncement>>(
+        create: (context) =>
+            InstanceAnnouncementCachedPaginationBloc.createFromContext(
+          context,
+          maximumCachedPagesCount: maximumCachedPagesCount,
+        ),
+        child: CachedPaginationBlocProxyProvider<
+            CachedPaginationPage<IInstanceAnnouncement>,
+            IInstanceAnnouncement>(child: child),
+      );
 }

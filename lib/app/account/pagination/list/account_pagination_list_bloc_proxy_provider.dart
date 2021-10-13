@@ -11,14 +11,13 @@ class AccountPaginationListBlocProxyProvider extends StatelessWidget {
   AccountPaginationListBlocProxyProvider({required this.child});
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IAccountPaginationListBloc,
-        IPaginationListBloc<PaginationPage<IAccount>, IAccount>>(
-      update: (context, value, previous) => value,
-      child: ProxyProvider<IAccountPaginationListBloc, IPaginationListBloc>(
+  Widget build(BuildContext context) => ProxyProvider<
+          IAccountPaginationListBloc,
+          IPaginationListBloc<PaginationPage<IAccount>, IAccount>>(
         update: (context, value, previous) => value,
-        child: child,
-      ),
-    );
-  }
+        child: ProxyProvider<IAccountPaginationListBloc, IPaginationListBloc>(
+          update: (context, value, previous) => value,
+          child: child,
+        ),
+      );
 }

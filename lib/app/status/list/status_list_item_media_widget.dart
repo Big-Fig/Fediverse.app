@@ -87,26 +87,25 @@ class StatusListItemMediaWidget extends StatelessWidget {
     required Widget child,
     required IStatusBloc statusBloc,
     required IStatusSensitiveBloc statusSensitiveBloc,
-  }) {
-    return StreamBuilder<StatusSensitiveWarningState>(
-      stream: statusSensitiveBloc.statusWarningStateStream.distinct(),
-      builder: (context, snapshot) {
-        var statusWarningState =
-            snapshot.data ?? statusSensitiveBloc.statusWarningState;
+  }) =>
+      StreamBuilder<StatusSensitiveWarningState>(
+        stream: statusSensitiveBloc.statusWarningStateStream.distinct(),
+        builder: (context, snapshot) {
+          var statusWarningState =
+              snapshot.data ?? statusSensitiveBloc.statusWarningState;
 
-        var nsfwSensitiveAndDisplayNsfwContentEnabled =
-            !statusWarningState.nsfwSensitive ||
-                statusWarningState.displayEnabled;
+          var nsfwSensitiveAndDisplayNsfwContentEnabled =
+              !statusWarningState.nsfwSensitive ||
+                  statusWarningState.displayEnabled;
 
-        if (nsfwSensitiveAndDisplayNsfwContentEnabled) {
-          // todo: display all medias in list
-          return child;
-        } else {
-          return StatusSensitiveNsfwWarningOverlayWidget(
-            child: child,
-          );
-        }
-      },
-    );
-  }
+          if (nsfwSensitiveAndDisplayNsfwContentEnabled) {
+            // todo: display all medias in list
+            return child;
+          } else {
+            return StatusSensitiveNsfwWarningOverlayWidget(
+              child: child,
+            );
+          }
+        },
+      );
 }

@@ -16,19 +16,13 @@ class GuestMyAccountBloc extends DisposableOwner implements IMyAccountBloc {
   Stream<IAccount> get accountStream => throw UnimplementedError();
 
   @override
-  bool checkAccountIsMe(IAccount account) {
-    return false;
-  }
+  bool checkAccountIsMe(IAccount account) => false;
 
   @override
-  bool checkIsChatMessageFromMe(IChatMessage chatMessage) {
-    return false;
-  }
+  bool checkIsChatMessageFromMe(IChatMessage chatMessage) => false;
 
   @override
-  bool checkIsStatusFromMe(IStatus status) {
-    return false;
-  }
+  bool checkIsStatusFromMe(IStatus status) => false;
 
   @override
   Future decreaseFollowingRequestCount() async {

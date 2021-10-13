@@ -52,26 +52,26 @@ class FediDatePicker {
     FediDatePickerTheme? theme,
     required DateDeletedCallback onDelete,
     required bool isDeletePossible,
-  }) async {
-    return _showDatePickerPopup(
-      onDelete: onDelete,
-      isDeletePossible: isDeletePossible,
-      showTitleActions: showTitleActions,
-      onChanged: onChanged,
-      onConfirm: onConfirm,
-      onCancel: onCancel,
-      locale: locale,
-      theme: theme,
-      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-      pickerModel: DatePickerModel(
-        currentTime: currentTime,
-        maxTime: maxTime,
-        minTime: minTime,
+  }) async =>
+      _showDatePickerPopup(
+        onDelete: onDelete,
+        isDeletePossible: isDeletePossible,
+        showTitleActions: showTitleActions,
+        onChanged: onChanged,
+        onConfirm: onConfirm,
+        onCancel: onCancel,
         locale: locale,
-      ),
-      context: context,
-    );
-  }
+        theme: theme,
+        barrierLabel:
+            MaterialLocalizations.of(context).modalBarrierDismissLabel,
+        pickerModel: DatePickerModel(
+          currentTime: currentTime,
+          maxTime: maxTime,
+          minTime: minTime,
+          locale: locale,
+        ),
+        context: context,
+      );
 
   ///
   /// Display time picker bottom sheet.
@@ -90,25 +90,25 @@ class FediDatePicker {
     FediDatePickerTheme? theme,
     required DateDeletedCallback onDelete,
     required bool isDeletePossible,
-  }) async {
-    return _showDatePickerPopup(
-      onDelete: onDelete,
-      isDeletePossible: isDeletePossible,
-      showTitleActions: showTitleActions,
-      onChanged: onChanged,
-      onConfirm: onConfirm,
-      onCancel: onCancel,
-      locale: locale,
-      theme: theme,
-      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-      pickerModel: TimePickerModel(
-        currentTime: currentTime,
+  }) async =>
+      _showDatePickerPopup(
+        onDelete: onDelete,
+        isDeletePossible: isDeletePossible,
+        showTitleActions: showTitleActions,
+        onChanged: onChanged,
+        onConfirm: onConfirm,
+        onCancel: onCancel,
         locale: locale,
-        showSecondsColumn: showSecondsColumn,
-      ),
-      context: context,
-    );
-  }
+        theme: theme,
+        barrierLabel:
+            MaterialLocalizations.of(context).modalBarrierDismissLabel,
+        pickerModel: TimePickerModel(
+          currentTime: currentTime,
+          locale: locale,
+          showSecondsColumn: showSecondsColumn,
+        ),
+        context: context,
+      );
 
   ///
   /// Display time picker bottom sheet with AM/PM.
@@ -126,21 +126,22 @@ class FediDatePicker {
     FediDatePickerTheme? theme,
     required DateDeletedCallback onDelete,
     required bool isDeletePossible,
-  }) async {
-    return _showDatePickerPopup(
-      onDelete: onDelete,
-      isDeletePossible: isDeletePossible,
-      showTitleActions: showTitleActions,
-      onChanged: onChanged,
-      onConfirm: onConfirm,
-      onCancel: onCancel,
-      locale: locale,
-      theme: theme,
-      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-      pickerModel: Time12hPickerModel(currentTime: currentTime, locale: locale),
-      context: context,
-    );
-  }
+  }) async =>
+      _showDatePickerPopup(
+        onDelete: onDelete,
+        isDeletePossible: isDeletePossible,
+        showTitleActions: showTitleActions,
+        onChanged: onChanged,
+        onConfirm: onConfirm,
+        onCancel: onCancel,
+        locale: locale,
+        theme: theme,
+        barrierLabel:
+            MaterialLocalizations.of(context).modalBarrierDismissLabel,
+        pickerModel:
+            Time12hPickerModel(currentTime: currentTime, locale: locale),
+        context: context,
+      );
 
   ///
   /// Display date&time picker bottom sheet.
@@ -226,21 +227,21 @@ class FediDatePicker {
     FediDatePickerTheme? theme,
     required DateDeletedCallback onDelete,
     required bool isDeletePossible,
-  }) async {
-    return _showDatePickerPopup(
-      onDelete: onDelete,
-      isDeletePossible: isDeletePossible,
-      showTitleActions: showTitleActions,
-      onChanged: onChanged,
-      onConfirm: onConfirm,
-      onCancel: onCancel,
-      locale: locale,
-      theme: theme,
-      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-      pickerModel: pickerModel,
-      context: context,
-    );
-  }
+  }) async =>
+      _showDatePickerPopup(
+        onDelete: onDelete,
+        isDeletePossible: isDeletePossible,
+        showTitleActions: showTitleActions,
+        onChanged: onChanged,
+        onConfirm: onConfirm,
+        onCancel: onCancel,
+        locale: locale,
+        theme: theme,
+        barrierLabel:
+            MaterialLocalizations.of(context).modalBarrierDismissLabel,
+        pickerModel: pickerModel,
+        context: context,
+      );
 
   // todo: refactor long-parameter-list
   // ignore: long-parameter-list
@@ -324,9 +325,7 @@ class FediDatePickerComponent extends StatefulWidget {
   final bool showTitleActions;
 
   @override
-  State<StatefulWidget> createState() {
-    return _DatePickerState();
-  }
+  State<StatefulWidget> createState() => _DatePickerState();
 }
 
 class _DatePickerState extends State<FediDatePickerComponent> {
@@ -398,133 +397,130 @@ class _DatePickerState extends State<FediDatePickerComponent> {
     int layoutProportion,
     ValueChanged<int> selectedChangedWhenScrolling,
     ValueChanged<int>? selectedChangedWhenScrollEnd,
-  ) {
-    return Expanded(
-      flex: layoutProportion,
-      child: Container(
-        padding: EdgeInsets.all(8.0),
-        height: theme.containerHeight,
-        child: NotificationListener(
-          onNotification: (ScrollNotification notification) {
-            if (notification.depth == 0 &&
-                selectedChangedWhenScrollEnd != null &&
-                notification is ScrollEndNotification &&
-                notification.metrics is FixedExtentMetrics) {
-              final metrics = notification.metrics as FixedExtentMetrics;
-              final currentItemIndex = metrics.itemIndex;
-              selectedChangedWhenScrollEnd(currentItemIndex);
-            }
-
-            return false;
-          },
-          child: CupertinoPicker.builder(
-            key: key,
-            scrollController:
-                // todo : check
-                scrollController as FixedExtentScrollController?,
-            itemExtent: theme.itemHeight,
-            onSelectedItemChanged: (int index) {
-              selectedChangedWhenScrolling(index);
-            },
-            useMagnifier: true,
-            itemBuilder: (BuildContext context, int index) {
-              final content = stringAtIndexCB(index);
-              if (content == null) {
-                return null;
+  ) =>
+      Expanded(
+        flex: layoutProportion,
+        child: Container(
+          padding: EdgeInsets.all(8.0),
+          height: theme.containerHeight,
+          child: NotificationListener(
+            onNotification: (ScrollNotification notification) {
+              if (notification.depth == 0 &&
+                  selectedChangedWhenScrollEnd != null &&
+                  notification is ScrollEndNotification &&
+                  notification.metrics is FixedExtentMetrics) {
+                final metrics = notification.metrics as FixedExtentMetrics;
+                final currentItemIndex = metrics.itemIndex;
+                selectedChangedWhenScrollEnd(currentItemIndex);
               }
 
-              return Container(
-                height: theme.itemHeight,
-                alignment: Alignment.center,
-                child: Text(
-                  content,
-                  style: theme.itemStyle,
-                  textAlign: TextAlign.start,
-                ),
-              );
+              return false;
             },
+            child: CupertinoPicker.builder(
+              key: key,
+              scrollController:
+                  // todo : check
+                  scrollController as FixedExtentScrollController?,
+              itemExtent: theme.itemHeight,
+              onSelectedItemChanged: (int index) {
+                selectedChangedWhenScrolling(index);
+              },
+              useMagnifier: true,
+              itemBuilder: (BuildContext context, int index) {
+                final content = stringAtIndexCB(index);
+                if (content == null) {
+                  return null;
+                }
+
+                return Container(
+                  height: theme.itemHeight,
+                  alignment: Alignment.center,
+                  child: Text(
+                    content,
+                    style: theme.itemStyle,
+                    textAlign: TextAlign.start,
+                  ),
+                );
+              },
+            ),
           ),
         ),
-      ),
-    );
-  }
+      );
 
   // todo: refactor
   // ignore: long-method
-  Widget _renderItemView(FediDatePickerTheme theme) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Container(
-          child: widget.pickerModel!.layoutProportions()[0] > 0
-              ? _renderColumnView(
-                  ValueKey<int>(widget.pickerModel!.currentLeftIndex()),
-                  theme,
-                  widget.pickerModel!.leftStringAtIndex,
-                  leftScrollCtrl,
-                  widget.pickerModel!.layoutProportions()[0],
-                  (index) {
-                    widget.pickerModel!.setLeftIndex(index);
-                  },
-                  (index) {
-                    setState(() {
-                      refreshScrollOffset();
+  Widget _renderItemView(FediDatePickerTheme theme) => Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Container(
+            child: widget.pickerModel!.layoutProportions()[0] > 0
+                ? _renderColumnView(
+                    ValueKey<int>(widget.pickerModel!.currentLeftIndex()),
+                    theme,
+                    widget.pickerModel!.leftStringAtIndex,
+                    leftScrollCtrl,
+                    widget.pickerModel!.layoutProportions()[0],
+                    (index) {
+                      widget.pickerModel!.setLeftIndex(index);
+                    },
+                    (index) {
+                      setState(() {
+                        refreshScrollOffset();
+                        _notifyDateChanged();
+                      });
+                    },
+                  )
+                : null,
+          ),
+          Text(
+            widget.pickerModel!.leftDivider(),
+            style: theme.itemStyle,
+          ),
+          Container(
+            child: widget.pickerModel!.layoutProportions()[1] > 0
+                ? _renderColumnView(
+                    ValueKey<int>(widget.pickerModel!.currentLeftIndex()),
+                    theme,
+                    widget.pickerModel!.middleStringAtIndex,
+                    middleScrollCtrl,
+                    widget.pickerModel!.layoutProportions()[1],
+                    (index) {
+                      widget.pickerModel!.setMiddleIndex(index);
+                    },
+                    (index) {
+                      setState(() {
+                        refreshScrollOffset();
+                        _notifyDateChanged();
+                      });
+                    },
+                  )
+                : null,
+          ),
+          Text(
+            widget.pickerModel!.rightDivider(),
+            style: theme.itemStyle,
+          ),
+          Container(
+            child: widget.pickerModel!.layoutProportions()[2] > 0
+                ? _renderColumnView(
+                    ValueKey<int>(
+                      widget.pickerModel!.currentMiddleIndex() * 100 +
+                          widget.pickerModel!.currentLeftIndex(),
+                    ),
+                    theme,
+                    widget.pickerModel!.rightStringAtIndex,
+                    rightScrollCtrl,
+                    widget.pickerModel!.layoutProportions()[2],
+                    (index) {
+                      widget.pickerModel!.setRightIndex(index);
                       _notifyDateChanged();
-                    });
-                  },
-                )
-              : null,
-        ),
-        Text(
-          widget.pickerModel!.leftDivider(),
-          style: theme.itemStyle,
-        ),
-        Container(
-          child: widget.pickerModel!.layoutProportions()[1] > 0
-              ? _renderColumnView(
-                  ValueKey<int>(widget.pickerModel!.currentLeftIndex()),
-                  theme,
-                  widget.pickerModel!.middleStringAtIndex,
-                  middleScrollCtrl,
-                  widget.pickerModel!.layoutProportions()[1],
-                  (index) {
-                    widget.pickerModel!.setMiddleIndex(index);
-                  },
-                  (index) {
-                    setState(() {
-                      refreshScrollOffset();
-                      _notifyDateChanged();
-                    });
-                  },
-                )
-              : null,
-        ),
-        Text(
-          widget.pickerModel!.rightDivider(),
-          style: theme.itemStyle,
-        ),
-        Container(
-          child: widget.pickerModel!.layoutProportions()[2] > 0
-              ? _renderColumnView(
-                  ValueKey<int>(
-                    widget.pickerModel!.currentMiddleIndex() * 100 +
-                        widget.pickerModel!.currentLeftIndex(),
-                  ),
-                  theme,
-                  widget.pickerModel!.rightStringAtIndex,
-                  rightScrollCtrl,
-                  widget.pickerModel!.layoutProportions()[2],
-                  (index) {
-                    widget.pickerModel!.setRightIndex(index);
-                    _notifyDateChanged();
-                  },
-                  null,
-                )
-              : null,
-        ),
-      ],
-    );
-  }
+                    },
+                    null,
+                  )
+                : null,
+          ),
+        ],
+      );
 
   // Title View
   Widget _renderTitleActionsView(FediDatePickerTheme theme) {
@@ -575,19 +571,14 @@ class _DatePickerState extends State<FediDatePickerComponent> {
     );
   }
 
-  String _localeDone() {
-    return widget.theme!.customDone ??
-        S.of(context).app_datetime_picker_action_done;
-  }
+  String _localeDone() =>
+      widget.theme!.customDone ?? S.of(context).app_datetime_picker_action_done;
 
-  String _localeCancel() {
-    return widget.theme!.customCancel ??
-        S.of(context).app_datetime_picker_action_cancel;
-  }
+  String _localeCancel() =>
+      widget.theme!.customCancel ??
+      S.of(context).app_datetime_picker_action_cancel;
 
-  String _localeDelete() {
-    return S.of(context).app_datetime_picker_action_delete;
-  }
+  String _localeDelete() => S.of(context).app_datetime_picker_action_delete;
 }
 
 class FediDatePickerTheme {

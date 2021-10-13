@@ -90,13 +90,13 @@ class MyAccountFeaturedHashtagSuggestionBloc extends DisposableOwner
   static Widget provideToContext(
     BuildContext context, {
     required Widget child,
-  }) {
-    return DisposableProvider<IMyAccountFeaturedHashtagSuggestionBloc>(
-      create: (context) =>
-          MyAccountFeaturedHashtagSuggestionBloc.createFromContext(context),
-      child: MyAccountFeaturedHashtagSuggestionBlocProxyProvider(child: child),
-    );
-  }
+  }) =>
+      DisposableProvider<IMyAccountFeaturedHashtagSuggestionBloc>(
+        create: (context) =>
+            MyAccountFeaturedHashtagSuggestionBloc.createFromContext(context),
+        child:
+            MyAccountFeaturedHashtagSuggestionBlocProxyProvider(child: child),
+      );
 
   @override
   InstanceLocation get instanceLocation => InstanceLocation.local;

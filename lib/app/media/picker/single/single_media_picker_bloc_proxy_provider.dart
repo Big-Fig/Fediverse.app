@@ -9,10 +9,9 @@ class SingleMediaPickerBlocProxyProvider extends StatelessWidget {
   SingleMediaPickerBlocProxyProvider({required this.child});
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<ISingleMediaPickerBloc, IMediaPickerBloc>(
-      update: (context, value, previous) => value,
-      child: child,
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<ISingleMediaPickerBloc, IMediaPickerBloc>(
+        update: (context, value, previous) => value,
+        child: child,
+      );
 }

@@ -55,14 +55,13 @@ class HashtagNetworkOnlyPaginationBloc
     required int? itemsCountPerPage,
     required PaginationPage<IHashtag>? olderPage,
     required PaginationPage<IHashtag>? newerPage,
-  }) {
-    return listBloc.loadItemsFromRemoteForPage(
-      itemsCountPerPage: itemsCountPerPage,
-      // todo: think about it
-      // hashtag don't have id and pagination?
-      maxId: newerPage?.items.lastOrNull?.name,
-      minId: olderPage?.items.firstOrNull?.name,
-      pageIndex: pageIndex,
-    );
-  }
+  }) =>
+      listBloc.loadItemsFromRemoteForPage(
+        itemsCountPerPage: itemsCountPerPage,
+        // todo: think about it
+        // hashtag don't have id and pagination?
+        maxId: newerPage?.items.lastOrNull?.name,
+        minId: olderPage?.items.firstOrNull?.name,
+        pageIndex: pageIndex,
+      );
 }

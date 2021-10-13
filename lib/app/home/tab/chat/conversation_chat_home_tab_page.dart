@@ -63,57 +63,57 @@ class ConversationChatHomeTabPage extends StatelessWidget {
     );
   }
 
-  DisposableProvider<IConversationChatWithLastMessageListBloc>
-      provideContentContext(Widget child) {
-    return DisposableProvider<IConversationChatWithLastMessageListBloc>(
-      create: (context) =>
-          ConversationChatWithLastMessageListBloc.createFromContext(context),
-      child: Builder(
-        builder: (context) {
-          var chatsListBloc = IConversationChatWithLastMessageListBloc.of(
-            context,
-            listen: false,
-          );
+  DisposableProvider<
+      IConversationChatWithLastMessageListBloc> provideContentContext(
+          Widget child) =>
+      DisposableProvider<IConversationChatWithLastMessageListBloc>(
+        create: (context) =>
+            ConversationChatWithLastMessageListBloc.createFromContext(context),
+        child: Builder(
+          builder: (context) {
+            var chatsListBloc = IConversationChatWithLastMessageListBloc.of(
+              context,
+              listen: false,
+            );
 
-          return MultiProvider(
-            providers: [
-              Provider<IConversationChatWithLastMessageCachedListBloc>.value(
-                value: chatsListBloc.cachedListBloc,
-              ),
-              Provider<IConversationChatWithLastMessagePaginationBloc>.value(
-                value: chatsListBloc.paginationBloc,
-              ),
-              Provider<
-                  IPaginationListBloc<
-                      PaginationPage<IConversationChatWithLastMessage>,
-                      IConversationChatWithLastMessage>>.value(
-                value: chatsListBloc.chatPaginationListBloc,
-              ),
-              Provider<
-                  IConversationChatWithLastMessagePaginationListWithNewItemsBloc<
-                      CachedPaginationPage<
-                          IConversationChatWithLastMessage>>>.value(
-                value: chatsListBloc.paginationListWithNewItemsBloc,
-              ),
-              Provider<
-                  ICachedPaginationListWithNewItemsBloc<
-                      CachedPaginationPage<IConversationChatWithLastMessage>,
-                      IConversationChatWithLastMessage>>.value(
-                value: chatsListBloc.paginationListWithNewItemsBloc,
-              ),
-              Provider<ICachedPaginationListWithNewItemsBloc>.value(
-                value: chatsListBloc.paginationListWithNewItemsBloc,
-              ),
-              Provider<IPaginationListBloc>.value(
-                value: chatsListBloc.paginationListWithNewItemsBloc,
-              ),
-            ],
-            child: child,
-          );
-        },
-      ),
-    );
-  }
+            return MultiProvider(
+              providers: [
+                Provider<IConversationChatWithLastMessageCachedListBloc>.value(
+                  value: chatsListBloc.cachedListBloc,
+                ),
+                Provider<IConversationChatWithLastMessagePaginationBloc>.value(
+                  value: chatsListBloc.paginationBloc,
+                ),
+                Provider<
+                    IPaginationListBloc<
+                        PaginationPage<IConversationChatWithLastMessage>,
+                        IConversationChatWithLastMessage>>.value(
+                  value: chatsListBloc.chatPaginationListBloc,
+                ),
+                Provider<
+                    IConversationChatWithLastMessagePaginationListWithNewItemsBloc<
+                        CachedPaginationPage<
+                            IConversationChatWithLastMessage>>>.value(
+                  value: chatsListBloc.paginationListWithNewItemsBloc,
+                ),
+                Provider<
+                    ICachedPaginationListWithNewItemsBloc<
+                        CachedPaginationPage<IConversationChatWithLastMessage>,
+                        IConversationChatWithLastMessage>>.value(
+                  value: chatsListBloc.paginationListWithNewItemsBloc,
+                ),
+                Provider<ICachedPaginationListWithNewItemsBloc>.value(
+                  value: chatsListBloc.paginationListWithNewItemsBloc,
+                ),
+                Provider<IPaginationListBloc>.value(
+                  value: chatsListBloc.paginationListWithNewItemsBloc,
+                ),
+              ],
+              child: child,
+            );
+          },
+        ),
+      );
 }
 
 class _ConversationMessagesHomeTabPageContentWidget extends StatelessWidget {
@@ -145,39 +145,37 @@ class _ConversationMessagesHomeTabPageHeaderWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return FediTabMainHeaderBarWidget(
-      leadingWidgets: [
-        FediHeaderText(
-          S.of(context).app_home_tab_chat_conversation_title,
-        ),
-      ],
-      content: null,
-      endingWidgets: [
-        buildSwitchToChatsActionButton(context),
-        const FediBigHorizontalSpacer(),
-        buildStartConversationActionButton(context),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => FediTabMainHeaderBarWidget(
+        leadingWidgets: [
+          FediHeaderText(
+            S.of(context).app_home_tab_chat_conversation_title,
+          ),
+        ],
+        content: null,
+        endingWidgets: [
+          buildSwitchToChatsActionButton(context),
+          const FediBigHorizontalSpacer(),
+          buildStartConversationActionButton(context),
+        ],
+      );
 
-  Widget buildSwitchToChatsActionButton(BuildContext context) {
-    return DisposableProxyProvider<IPleromaChatRepository, IFediBoolBadgeBloc>(
-      update: (context, pleromaChatRepository, _) => PleromaChatUnreadBadgeBloc(
-        pleromaChatRepository: pleromaChatRepository,
-      ),
-      child: FediBoolBadgeWidget(
-        child: FediBlurredTextButtonWithBorder(
-          S.of(context).app_home_tab_chat_conversation_action_switchToChats,
-          onPressed: () {
-            IChatSettingsBloc.of(context, listen: false)
-                .changeReplaceConversationsWithPleromaChats(true);
-          },
-          expanded: false,
+  Widget buildSwitchToChatsActionButton(BuildContext context) =>
+      DisposableProxyProvider<IPleromaChatRepository, IFediBoolBadgeBloc>(
+        update: (context, pleromaChatRepository, _) =>
+            PleromaChatUnreadBadgeBloc(
+          pleromaChatRepository: pleromaChatRepository,
         ),
-      ),
-    );
-  }
+        child: FediBoolBadgeWidget(
+          child: FediBlurredTextButtonWithBorder(
+            S.of(context).app_home_tab_chat_conversation_action_switchToChats,
+            onPressed: () {
+              IChatSettingsBloc.of(context, listen: false)
+                  .changeReplaceConversationsWithPleromaChats(true);
+            },
+            expanded: false,
+          ),
+        ),
+      );
 
   Widget buildStartConversationActionButton(BuildContext context) =>
       FediIconInCircleBlurredButton(

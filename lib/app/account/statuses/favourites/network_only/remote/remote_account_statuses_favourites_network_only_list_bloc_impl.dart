@@ -50,26 +50,26 @@ class RemoteAccountStatusesFavouritesNetworkOnlyListBloc
     required IAccount? account,
     required Widget child,
     required Uri instanceUri,
-  }) {
-    return DisposableProvider<IStatusNetworkOnlyListBloc>(
-      create: (context) =>
-          RemoteAccountStatusesFavouritesNetworkOnlyListBloc.createFromContext(
-        context,
-        account: account,
-        instanceUri: instanceUri,
-      ),
-      child: StatusNetworkOnlyListBlocProxyProvider(
-        child: ProxyProvider<IStatusNetworkOnlyListBloc, INetworkOnlyListBloc>(
-          update: (context, value, previous) => value,
-          child: ProxyProvider<IStatusNetworkOnlyListBloc,
-              INetworkOnlyListBloc<IStatus>>(
+  }) =>
+      DisposableProvider<IStatusNetworkOnlyListBloc>(
+        create: (context) => RemoteAccountStatusesFavouritesNetworkOnlyListBloc
+            .createFromContext(
+          context,
+          account: account,
+          instanceUri: instanceUri,
+        ),
+        child: StatusNetworkOnlyListBlocProxyProvider(
+          child:
+              ProxyProvider<IStatusNetworkOnlyListBloc, INetworkOnlyListBloc>(
             update: (context, value, previous) => value,
-            child: child,
+            child: ProxyProvider<IStatusNetworkOnlyListBloc,
+                INetworkOnlyListBloc<IStatus>>(
+              update: (context, value, previous) => value,
+              child: child,
+            ),
           ),
         ),
-      ),
-    );
-  }
+      );
 
   @override
   InstanceLocation get instanceLocation => InstanceLocation.remote;

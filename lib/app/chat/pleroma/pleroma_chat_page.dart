@@ -20,22 +20,20 @@ import 'package:provider/provider.dart';
 
 class PleromaChatPage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return FediDarkStatusBarStyleArea(
-      child: Scaffold(
-        body: SafeArea(
-          child: Column(
-            children: [
-              const _PleromaChatPageAppBarWidget(),
-              const Expanded(
-                child: PleromaChatWidget(),
-              ),
-            ],
+  Widget build(BuildContext context) => FediDarkStatusBarStyleArea(
+        child: Scaffold(
+          body: SafeArea(
+            child: Column(
+              children: [
+                const _PleromaChatPageAppBarWidget(),
+                const Expanded(
+                  child: PleromaChatWidget(),
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-    );
-  }
+      );
 
   const PleromaChatPage();
 }
@@ -46,24 +44,22 @@ class _PleromaChatPageAppBarWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return ChatPageSelectionAppBarWidget(
-      emptySelectionAppBar: FediPageCustomAppBar(
-        leading: FediBackIconButton(),
-        child: InkWell(
-          onTap: () {
-            var chatBloc = IPleromaChatBloc.of(context, listen: false);
+  Widget build(BuildContext context) => ChatPageSelectionAppBarWidget(
+        emptySelectionAppBar: FediPageCustomAppBar(
+          leading: FediBackIconButton(),
+          child: InkWell(
+            onTap: () {
+              var chatBloc = IPleromaChatBloc.of(context, listen: false);
 
-            goToPleromaChatAccountsPage(
-              context,
-              chat: chatBloc.chat,
-            );
-          },
-          child: const ChatPageAppBarBodyWidget(),
+              goToPleromaChatAccountsPage(
+                context,
+                chat: chatBloc.chat,
+              );
+            },
+            child: const ChatPageAppBarBodyWidget(),
+          ),
         ),
-      ),
-    );
-  }
+      );
 }
 
 void goToPleromaChatPage(
@@ -76,41 +72,41 @@ void goToPleromaChatPage(
   );
 }
 
-MaterialPageRoute<void> createPleromaChatPageRoute(IPleromaChat chat) {
-  return MaterialPageRoute<void>(
-    builder: (context) => DisposableProvider<IPleromaChatBloc>(
-      create: (context) {
-        var chatBloc = PleromaChatBloc.createFromContext(
-          context,
-          chat: chat,
-          lastChatMessage: null,
-        );
-
-        // we dont need to await
-        // ignore: cascade_invocations
-        chatBloc.markAsRead();
-
-        var currentChatBloc =
-            IPleromaChatCurrentBloc.of(context, listen: false);
-
-        // ignore: cascade_invocations
-        currentChatBloc.onChatOpened(chat);
-
-        chatBloc.addCustomDisposable(() => currentChatBloc.onChatClosed(chat));
-
-        return chatBloc;
-      },
-      child: PleromaChatPostMessageBloc.provideToContext(
-        context,
-        chatRemoteId: chat.remoteId,
-        child: ProxyProvider<IPleromaChatBloc, IChatBloc>(
-          update: (context, value, _) => value,
-          child: ChatSelectionBloc.provideToContext(
+MaterialPageRoute<void> createPleromaChatPageRoute(IPleromaChat chat) =>
+    MaterialPageRoute<void>(
+      builder: (context) => DisposableProvider<IPleromaChatBloc>(
+        create: (context) {
+          var chatBloc = PleromaChatBloc.createFromContext(
             context,
-            child: const PleromaChatPage(),
+            chat: chat,
+            lastChatMessage: null,
+          );
+
+          // we dont need to await
+          // ignore: cascade_invocations
+          chatBloc.markAsRead();
+
+          var currentChatBloc =
+              IPleromaChatCurrentBloc.of(context, listen: false);
+
+          // ignore: cascade_invocations
+          currentChatBloc.onChatOpened(chat);
+
+          chatBloc
+              .addCustomDisposable(() => currentChatBloc.onChatClosed(chat));
+
+          return chatBloc;
+        },
+        child: PleromaChatPostMessageBloc.provideToContext(
+          context,
+          chatRemoteId: chat.remoteId,
+          child: ProxyProvider<IPleromaChatBloc, IChatBloc>(
+            update: (context, value, _) => value,
+            child: ChatSelectionBloc.provideToContext(
+              context,
+              child: const PleromaChatPage(),
+            ),
           ),
         ),
       ),
-    ),
-  );
-}
+    );

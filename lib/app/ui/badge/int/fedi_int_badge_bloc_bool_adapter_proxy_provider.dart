@@ -10,13 +10,12 @@ class FediIntBadgeBlocBoolAdapterProxyProvider extends StatelessWidget {
   FediIntBadgeBlocBoolAdapterProxyProvider({required this.child});
 
   @override
-  Widget build(BuildContext context) {
-    return DisposableProxyProvider<IFediIntBadgeBloc, IFediBoolBadgeBloc>(
-      update: (context, fediIntBadgeBloc, previous) =>
-          FediIntBadgeBlocBoolAdapter(
-        fediIntBadgeBloc: fediIntBadgeBloc,
-      ),
-      child: child,
-    );
-  }
+  Widget build(BuildContext context) =>
+      DisposableProxyProvider<IFediIntBadgeBloc, IFediBoolBadgeBloc>(
+        update: (context, fediIntBadgeBloc, previous) =>
+            FediIntBadgeBlocBoolAdapter(
+          fediIntBadgeBloc: fediIntBadgeBloc,
+        ),
+        child: child,
+      );
 }

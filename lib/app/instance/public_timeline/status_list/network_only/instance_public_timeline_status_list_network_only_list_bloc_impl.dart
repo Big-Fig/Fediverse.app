@@ -41,31 +41,30 @@ class InstancePublicTimelineStatusListNetworkOnlyListBloc
     return bloc;
   }
 
-  static Widget provideToContext(
+  static Future<Widget> provideToContext(
     BuildContext context, {
     required ITimelineLocalPreferenceBlocOld timelineLocalPreferenceBloc,
     required Widget child,
     required Uri instanceUri,
-  }) {
-    return DisposableProvider<IStatusNetworkOnlyListBloc>(
-      create: (context) =>
-          InstancePublicTimelineStatusListNetworkOnlyListBloc.createFromContext(
-        context,
-        timelineLocalPreferenceBloc: timelineLocalPreferenceBloc,
-        instanceUri: instanceUri,
-      ),
-      child: ProxyProvider<IStatusNetworkOnlyListBloc, INetworkOnlyListBloc>(
-        update: (context, value, previous) => value,
-        child: StatusNetworkOnlyListBlocProxyProvider(
-          child: ProxyProvider<IStatusNetworkOnlyListBloc,
-              INetworkOnlyListBloc<IStatus>>(
-            update: (context, value, previous) => value,
-            child: child,
+  }) async =>
+      DisposableProvider<IStatusNetworkOnlyListBloc>(
+        create: (context) => InstancePublicTimelineStatusListNetworkOnlyListBloc
+            .createFromContext(
+          context,
+          timelineLocalPreferenceBloc: timelineLocalPreferenceBloc,
+          instanceUri: instanceUri,
+        ),
+        child: ProxyProvider<IStatusNetworkOnlyListBloc, INetworkOnlyListBloc>(
+          update: (context, value, previous) => value,
+          child: StatusNetworkOnlyListBlocProxyProvider(
+            child: ProxyProvider<IStatusNetworkOnlyListBloc,
+                INetworkOnlyListBloc<IStatus>>(
+              update: (context, value, previous) => value,
+              child: child,
+            ),
           ),
         ),
-      ),
-    );
-  }
+      );
 
   @override
   InstanceLocation get instanceLocation => InstanceLocation.remote;

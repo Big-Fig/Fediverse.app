@@ -13,15 +13,13 @@ class EditChatSettingsWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: shrinkWrap ? MainAxisSize.min : MainAxisSize.max,
-      children: [
-        const _EditChatSettingsReplaceConversationsWithPleromaChatsFieldWidget(),
-        const _EditChatSettingsCountConversationsInChatsUnreadBadgesFieldWidget(),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => Column(
+        mainAxisSize: shrinkWrap ? MainAxisSize.min : MainAxisSize.max,
+        children: [
+          const _EditChatSettingsReplaceConversationsWithPleromaChatsFieldWidget(),
+          const _EditChatSettingsCountConversationsInChatsUnreadBadgesFieldWidget(),
+        ],
+      );
 }
 
 class _EditChatSettingsCountConversationsInChatsUnreadBadgesFieldWidget

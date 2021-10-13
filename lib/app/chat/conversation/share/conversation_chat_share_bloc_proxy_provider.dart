@@ -9,10 +9,9 @@ class ConversationChatShareBlocProxyProvider extends StatelessWidget {
   ConversationChatShareBlocProxyProvider({required this.child});
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IConversationChatShareBloc, IShareToAccountBloc>(
-      update: (context, value, previous) => value,
-      child: child,
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IConversationChatShareBloc, IShareToAccountBloc>(
+        update: (context, value, previous) => value,
+        child: child,
+      );
 }

@@ -750,19 +750,17 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }
 
   @override
-  Future<IStatus?> findNewestForHomeTimeline() {
-    return findInAppType(
-      pagination: RepositoryPagination(
-        limit: 1,
-      ),
-      filters: StatusRepositoryFilters.only(
-        isFromHomeTimeline: true,
-      ),
-      orderingTerms: [
-        StatusRepositoryOrderingTermData.remoteIdDesc,
-      ],
-    );
-  }
+  Future<IStatus?> findNewestForHomeTimeline() => findInAppType(
+        pagination: RepositoryPagination(
+          limit: 1,
+        ),
+        filters: StatusRepositoryFilters.only(
+          isFromHomeTimeline: true,
+        ),
+        orderingTerms: [
+          StatusRepositoryOrderingTermData.remoteIdDesc,
+        ],
+      );
 
   @override
   Stream<int> watchNewestCountForHomeTimeline({

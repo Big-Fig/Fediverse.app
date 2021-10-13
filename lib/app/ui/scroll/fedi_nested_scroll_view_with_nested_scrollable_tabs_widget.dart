@@ -184,15 +184,13 @@ class _NestedBodyWidgetState extends State<_NestedBodyWidget>
       controller: tabController,
       children: List<Widget>.generate(
         tabController.length,
-        (int index) {
-          return _NestedBodyTabItemWidget(
-            tabKey: _calculateTabKey(widget.tabKeyPrefix, index),
-            tabBodyProviderBuilder: widget.tabBodyProviderBuilder,
-            tabBodyContentBuilder: widget.tabBodyContentBuilder,
-            tabBodyOverlayBuilder: widget.tabBodyOverlayBuilder,
-            index: index,
-          );
-        },
+        (int index) => _NestedBodyTabItemWidget(
+          tabKey: _calculateTabKey(widget.tabKeyPrefix, index),
+          tabBodyProviderBuilder: widget.tabBodyProviderBuilder,
+          tabBodyContentBuilder: widget.tabBodyContentBuilder,
+          tabBodyOverlayBuilder: widget.tabBodyOverlayBuilder,
+          index: index,
+        ),
       ),
     );
 
@@ -239,22 +237,20 @@ class _NestedBodyTabItemWidgetState extends State<_NestedBodyTabItemWidget>
       context,
       widget.index,
       Builder(
-        builder: (context) {
-          return Stack(
-            children: [
-              NestedScrollViewInnerScrollPositionKeyWidget(
-                widget.tabKey,
-                widget.tabBodyContentBuilder(context, widget.index),
+        builder: (context) => Stack(
+          children: [
+            NestedScrollViewInnerScrollPositionKeyWidget(
+              widget.tabKey,
+              widget.tabBodyContentBuilder(context, widget.index),
+            ),
+            if (widget.tabBodyOverlayBuilder != null)
+              FediNestedScrollViewWidget.buildOverlay(
+                context,
+                (context) =>
+                    widget.tabBodyOverlayBuilder!(context, widget.index),
               ),
-              if (widget.tabBodyOverlayBuilder != null)
-                FediNestedScrollViewWidget.buildOverlay(
-                  context,
-                  (context) =>
-                      widget.tabBodyOverlayBuilder!(context, widget.index),
-                ),
-            ],
-          );
-        },
+          ],
+        ),
       ),
     );
   }

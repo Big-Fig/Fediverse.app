@@ -133,17 +133,16 @@ class NewPostStatusBloc extends PostStatusBloc {
     required String? initialText,
     required String? initialSubject,
     required List<UnifediApiMediaAttachment>? initialMediaAttachments,
-  }) {
-    return DisposableProvider<IPostStatusBloc>(
-      create: (context) => NewPostStatusBloc.createFromContextWithInitial(
-        context,
-        initialText: initialText,
-        initialSubject: initialSubject,
-        initialMediaAttachments: initialMediaAttachments,
-      ),
-      child: PostStatusMessageBlocProxyProvider(child: child),
-    );
-  }
+  }) =>
+      DisposableProvider<IPostStatusBloc>(
+        create: (context) => NewPostStatusBloc.createFromContextWithInitial(
+          context,
+          initialText: initialText,
+          initialSubject: initialSubject,
+          initialMediaAttachments: initialMediaAttachments,
+        ),
+        child: PostStatusMessageBlocProxyProvider(child: child),
+      );
 
   static NewPostStatusBloc createFromContext(
     BuildContext context, {
@@ -191,15 +190,14 @@ class NewPostStatusBloc extends PostStatusBloc {
     BuildContext context, {
     required Widget child,
     required IPostStatusData initialData,
-  }) {
-    return DisposableProvider<IPostStatusBloc>(
-      create: (context) => NewPostStatusBloc.createFromContext(
-        context,
-        initialData: initialData,
-      ),
-      child: PostStatusMessageBlocProxyProvider(child: child),
-    );
-  }
+  }) =>
+      DisposableProvider<IPostStatusBloc>(
+        create: (context) => NewPostStatusBloc.createFromContext(
+          context,
+          initialData: initialData,
+        ),
+        child: PostStatusMessageBlocProxyProvider(child: child),
+      );
 
   @override
   bool get isPossibleToChangeVisibility => true;

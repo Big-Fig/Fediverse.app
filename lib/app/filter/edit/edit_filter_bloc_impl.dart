@@ -64,17 +64,16 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
     required IFilter initialValue,
     required Function(IFilter filter) onSubmit,
     required VoidCallback onDelete,
-  }) {
-    return DisposableProvider<IEditFilterBloc>(
-      create: (context) => EditFilterBloc.createFromContext(
-        context,
-        initialValue: initialValue,
-        onSubmit: onSubmit,
-        onDelete: onDelete,
-      ),
-      child: EditFilterBlocProxyProvider(child: child),
-    );
-  }
+  }) =>
+      DisposableProvider<IEditFilterBloc>(
+        create: (context) => EditFilterBloc.createFromContext(
+          context,
+          initialValue: initialValue,
+          onSubmit: onSubmit,
+          onDelete: onDelete,
+        ),
+        child: EditFilterBlocProxyProvider(child: child),
+      );
 
   final IFilter? filter;
 

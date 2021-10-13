@@ -31,9 +31,7 @@ class _FediVideoPlayerBufferingLoadingWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return FediCircularProgressIndicator(
-      color: IFediUiColorTheme.of(context).white,
-    );
-  }
+  Widget build(BuildContext context) => FediCircularProgressIndicator(
+        color: IFediUiColorTheme.of(context).white,
+      );
 }

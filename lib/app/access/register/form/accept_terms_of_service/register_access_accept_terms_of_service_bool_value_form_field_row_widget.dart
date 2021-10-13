@@ -48,22 +48,20 @@ class _RegisterUnifediApiAccessAcceptTermsOfServiceBoolValueFormFieldRowDescript
   final Uri instanceBaseUri;
 
   @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        UrlHelper.handleUrlClick(
-          context: context,
-          url: instanceBaseUri.toString(),
-        );
-      },
-      child: FediFormColumnDesc(
-        S
-            .of(context)
-            .app_auth_instance_register_field_acceptTermsOfService_description(
-              instanceBaseUri.host,
-            ),
-        textStyle: IFediUiTextTheme.of(context).bigTallPrimary,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => InkWell(
+        onTap: () {
+          UrlHelper.handleUrlClick(
+            context: context,
+            url: instanceBaseUri.toString(),
+          );
+        },
+        child: FediFormColumnDesc(
+          S
+              .of(context)
+              .app_auth_instance_register_field_acceptTermsOfService_description(
+                instanceBaseUri.host,
+              ),
+          textStyle: IFediUiTextTheme.of(context).bigTallPrimary,
+        ),
+      );
 }

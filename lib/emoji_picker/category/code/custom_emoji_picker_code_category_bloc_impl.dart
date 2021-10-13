@@ -73,17 +73,16 @@ class CustomEmojiPickerCodeCategoryBloc extends AsyncInitLoadingBloc
   static CustomEmojiPickerCodeCategoryBloc createCodeCategoryFromMap(
     CustomEmojiPickerCodeCategoryType type,
     Map<String, String> nameToCodeEmojiMap,
-  ) {
-    return CustomEmojiPickerCodeCategoryBloc(
-      type: type,
-      items: nameToCodeEmojiMap.entries
-          .map(
-            (entry) =>
-                CustomEmojiPickerCodeItem(name: entry.key, code: entry.value),
-          )
-          .toList(),
-    );
-  }
+  ) =>
+      CustomEmojiPickerCodeCategoryBloc(
+        type: type,
+        items: nameToCodeEmojiMap.entries
+            .map(
+              (entry) =>
+                  CustomEmojiPickerCodeItem(name: entry.key, code: entry.value),
+            )
+            .toList(),
+      );
 
   @override
   bool operator ==(Object other) =>
@@ -97,9 +96,8 @@ class CustomEmojiPickerCodeCategoryBloc extends AsyncInitLoadingBloc
   int get hashCode => type.hashCode ^ items.hashCode;
 
   @override
-  String toString() {
-    return 'CustomEmojiPickerCodeCategory{type: $type, items: $items}';
-  }
+  String toString() =>
+      'CustomEmojiPickerCodeCategory{type: $type, items: $items}';
 
   @override
   // ignore: no-empty-block

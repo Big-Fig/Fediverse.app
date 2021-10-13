@@ -20,18 +20,16 @@ final _logger = Logger('fedi_video_player_widget.dart');
 
 class FediVideoPlayerWidget extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        const _FediVideoPlayerBodyWidget(),
-        const FediVideoPlayerBufferingWidget(),
-        const FediVideoPlayerPlayPauseButtonWidget(),
-        const _FediVideoPlayerControlsWidget(),
-        const _FediVideoPlayerErrorWidget(),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => Stack(
+        alignment: Alignment.center,
+        children: [
+          const _FediVideoPlayerBodyWidget(),
+          const FediVideoPlayerBufferingWidget(),
+          const FediVideoPlayerPlayPauseButtonWidget(),
+          const _FediVideoPlayerControlsWidget(),
+          const _FediVideoPlayerErrorWidget(),
+        ],
+      );
 
   const FediVideoPlayerWidget();
 }
@@ -65,23 +63,21 @@ class _FediVideoPlayerErrorBodyWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Positioned.fill(
-      child: Container(
-        // ignore: no-magic-number
-        color: IFediUiColorTheme.of(context).error.withOpacity(0.8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const _FediVideoPlayerErrorReloadButtonWidget(),
-            const _FediVideoPlayerErrorDescWidget(),
-            const _FediVideoPlayerErrorDetailsButtonWidget(),
-          ],
+  Widget build(BuildContext context) => Positioned.fill(
+        child: Container(
+          // ignore: no-magic-number
+          color: IFediUiColorTheme.of(context).error.withOpacity(0.8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const _FediVideoPlayerErrorReloadButtonWidget(),
+              const _FediVideoPlayerErrorDescWidget(),
+              const _FediVideoPlayerErrorDetailsButtonWidget(),
+            ],
+          ),
         ),
-      ),
-    );
-  }
+      );
 }
 
 class _FediVideoPlayerErrorDetailsButtonWidget extends StatelessWidget {
@@ -90,21 +86,20 @@ class _FediVideoPlayerErrorDetailsButtonWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return FediTransparentTextButtonWithBorder(
-      S.of(context).app_media_player_error_action_moreDetails,
-      expanded: false,
-      color: IFediUiColorTheme.of(context).white,
-      onPressed: () {
-        var mediaPlayerBloc = IVideoMediaPlayerBloc.of(context, listen: false);
-        IToastService.of(context, listen: false).showErrorToast(
-          context: context,
-          title: mediaPlayerBloc.error.toString(),
-          content: null,
-        );
-      },
-    );
-  }
+  Widget build(BuildContext context) => FediTransparentTextButtonWithBorder(
+        S.of(context).app_media_player_error_action_moreDetails,
+        expanded: false,
+        color: IFediUiColorTheme.of(context).white,
+        onPressed: () {
+          var mediaPlayerBloc =
+              IVideoMediaPlayerBloc.of(context, listen: false);
+          IToastService.of(context, listen: false).showErrorToast(
+            context: context,
+            title: mediaPlayerBloc.error.toString(),
+            content: null,
+          );
+        },
+      );
 }
 
 class _FediVideoPlayerErrorDescWidget extends StatelessWidget {
@@ -113,15 +108,13 @@ class _FediVideoPlayerErrorDescWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Text(
-        S.of(context).app_media_player_error_desc,
-        style: IFediUiTextTheme.of(context).bigShortBoldWhite,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(
+          S.of(context).app_media_player_error_desc,
+          style: IFediUiTextTheme.of(context).bigShortBoldWhite,
+        ),
+      );
 }
 
 class _FediVideoPlayerErrorReloadButtonWidget extends StatelessWidget {

@@ -84,17 +84,16 @@ class RemoteStatusBloc extends StatusBloc {
     bool isNeedRefreshFromNetworkOnInit = false,
     bool delayInit = true,
     required Widget child,
-  }) {
-    return DisposableProvider<IStatusBloc>(
-      create: (context) => RemoteStatusBloc.createFromContext(
-        context,
-        status: status,
-        isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
-        delayInit: delayInit,
-      ),
-      child: child,
-    );
-  }
+  }) =>
+      DisposableProvider<IStatusBloc>(
+        create: (context) => RemoteStatusBloc.createFromContext(
+          context,
+          status: status,
+          isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
+          delayInit: delayInit,
+        ),
+        child: child,
+      );
 
   @override
   Future actualInit({
@@ -119,7 +118,7 @@ class RemoteStatusBloc extends StatusBloc {
   }
 
   Future _checkIsInReplyToAccountLoaded() async {
-    // todo: dont load account if inReplyToStatus already loaded
+    // todo: don't load account if inReplyToStatus already loaded
     var inReplyToAccountRemoteId = status.inReplyToAccountRemoteId;
     if (inReplyToAccountRemoteId != null) {
       var remoteAccount = await unifediApiAccountService.getAccount(

@@ -64,9 +64,7 @@ class PleromaChatPostMessageBloc extends PostMessageBloc
     return data;
   }
 
-  String? calculateMediaAttachmentId() {
-    return calculateMediaAttachment()?.id;
-  }
+  String? calculateMediaAttachmentId() => calculateMediaAttachment()?.id;
 
   IUnifediApiMediaAttachment? calculateMediaAttachment() {
     var mediaAttachmentBlocs =
@@ -113,13 +111,12 @@ class PleromaChatPostMessageBloc extends PostMessageBloc
     BuildContext context, {
     required String? chatRemoteId,
     required Widget child,
-  }) {
-    return DisposableProvider<IPleromaChatPostMessageBloc>(
-      create: (context) => PleromaChatPostMessageBloc.createFromContext(
-        context,
-        chatRemoteId: chatRemoteId,
-      ),
-      child: PleromaChatPostMessageBlocProxyProvider(child: child),
-    );
-  }
+  }) =>
+      DisposableProvider<IPleromaChatPostMessageBloc>(
+        create: (context) => PleromaChatPostMessageBloc.createFromContext(
+          context,
+          chatRemoteId: chatRemoteId,
+        ),
+        child: PleromaChatPostMessageBlocProxyProvider(child: child),
+      );
 }

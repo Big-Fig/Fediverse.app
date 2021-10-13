@@ -84,22 +84,20 @@ class _RecentSearchClearButtonWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return IconButton(
-      icon: Icon(
-        FediIcons.remove,
-        color: IFediUiColorTheme.of(context).darkGrey,
-      ),
-      onPressed: () {
-        var recentSearchBloc = IRecentSearchBloc.of(
-          context,
-          listen: false,
-        );
-        // ignore: cascade_invocations
-        recentSearchBloc.clearRecentSearch();
-      },
-    );
-  }
+  Widget build(BuildContext context) => IconButton(
+        icon: Icon(
+          FediIcons.remove,
+          color: IFediUiColorTheme.of(context).darkGrey,
+        ),
+        onPressed: () {
+          var recentSearchBloc = IRecentSearchBloc.of(
+            context,
+            listen: false,
+          );
+          // ignore: cascade_invocations
+          recentSearchBloc.clearRecentSearch();
+        },
+      );
 }
 
 class _RecentSearchListWidget extends StatelessWidget {
@@ -143,11 +141,9 @@ class _RecentSearchEmptyWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: FediEmptyWidget(
-        title: S.of(context).app_search_recent_empty,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Center(
+        child: FediEmptyWidget(
+          title: S.of(context).app_search_recent_empty,
+        ),
+      );
 }

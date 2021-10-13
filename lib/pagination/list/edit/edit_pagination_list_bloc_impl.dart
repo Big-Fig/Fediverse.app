@@ -90,14 +90,12 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       );
 
   @override
-  List<TItem> get items {
-    return _calculateCurrentItems(
-      originalItems: originalItems,
-      addedItems: addedItems,
-      removedItems: removedItems,
-      itemEquality: itemEquality,
-    );
-  }
+  List<TItem> get items => _calculateCurrentItems(
+        originalItems: originalItems,
+        addedItems: addedItems,
+        removedItems: removedItems,
+        itemEquality: itemEquality,
+      );
 
   static List<TItem> _calculateCurrentItems<TItem>({
     required List<TItem> originalItems,
@@ -323,9 +321,7 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       paginationListBloc.refreshStateStream;
 
   @override
-  Future refreshWithController() {
-    return paginationListBloc.refreshWithController();
-  }
+  Future refreshWithController() => paginationListBloc.refreshWithController();
 
   @override
   Future<FediListSmartRefresherLoadingState> refreshWithoutController() =>

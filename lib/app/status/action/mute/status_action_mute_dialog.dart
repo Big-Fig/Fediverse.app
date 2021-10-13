@@ -99,22 +99,19 @@ class StatusActionMuteDialog extends FediDialog {
   }
 
   @override
-  Widget buildDialogBody(BuildContext context) {
-    return Provider<IStatusActionMuteBloc>.value(
-      value: statusActionMuteBloc,
-      child: super.buildDialogBody(context),
-    );
-  }
+  Widget buildDialogBody(BuildContext context) =>
+      Provider<IStatusActionMuteBloc>.value(
+        value: statusActionMuteBloc,
+        child: super.buildDialogBody(context),
+      );
 
   @override
-  Widget buildContentWidget(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        const _StatusActionMuteDialogExpireField(),
-      ],
-    );
-  }
+  Widget buildContentWidget(BuildContext context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const _StatusActionMuteDialogExpireField(),
+        ],
+      );
 }
 
 class _StatusActionMuteDialogExpireField extends StatelessWidget {
@@ -123,14 +120,12 @@ class _StatusActionMuteDialogExpireField extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IStatusActionMuteBloc,
-        IDurationDateTimeValueFormFieldBloc>(
-      update: (context, value, _) => value.expireDurationFieldBloc,
-      child: DurationDateTimeValueFormFieldRowWidget(
-        label: S.of(context).app_status_mute_dialog_field_expire_label,
-        useDialogPickerForValueSelection: false,
-      ),
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IStatusActionMuteBloc, IDurationDateTimeValueFormFieldBloc>(
+        update: (context, value, _) => value.expireDurationFieldBloc,
+        child: DurationDateTimeValueFormFieldRowWidget(
+          label: S.of(context).app_status_mute_dialog_field_expire_label,
+          useDialogPickerForValueSelection: false,
+        ),
+      );
 }

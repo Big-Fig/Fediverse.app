@@ -28,14 +28,12 @@ class RemoteHashtagPage extends StatelessWidget {
   const RemoteHashtagPage();
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const HashtagPageAppBarWidget(),
-      body: const SafeArea(
-        child: RemoteHashtagPageBodyWidget(),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Scaffold(
+        appBar: const HashtagPageAppBarWidget(),
+        body: const SafeArea(
+          child: RemoteHashtagPageBodyWidget(),
+        ),
+      );
 }
 
 MaterialPageRoute<void> createRemoteHashtagPageRoute({

@@ -13,43 +13,38 @@ extension IPleromaScheduledStatusDbListExtension
     on List<IUnifediApiScheduledStatus> {
   List<DbScheduledStatus> toDbScheduledStatusList({
     required bool canceled,
-  }) {
-    return map(
-      (item) => item.toDbScheduledStatus(canceled: canceled),
-    ).toList();
-  }
+  }) =>
+      map(
+        (item) => item.toDbScheduledStatus(canceled: canceled),
+      ).toList();
 }
 
 extension IScheduledStatusbListExtension on List<IScheduledStatus> {
-  List<UnifediApiScheduledStatus> toPleromaScheduledStatusList() {
-    return map(
-      (item) => item.toPleromaScheduledStatus(),
-    ).toList();
-  }
+  List<UnifediApiScheduledStatus> toPleromaScheduledStatusList() => map(
+        (item) => item.toPleromaScheduledStatus(),
+      ).toList();
 }
 
 extension IPleromaScheduledStatusDbExtension on IUnifediApiScheduledStatus {
   DbScheduledStatus toDbScheduledStatus({
     required bool canceled,
-  }) {
-    return DbScheduledStatus(
-      id: null,
-      remoteId: id,
-      scheduledAt: scheduledAt,
-      params: params.toPleromaScheduledStatusParams(),
-      mediaAttachments: mediaAttachments?.toUnifediApiMediaAttachmentList(),
-      canceled: canceled,
-    );
-  }
+  }) =>
+      DbScheduledStatus(
+        id: null,
+        remoteId: id,
+        scheduledAt: scheduledAt,
+        params: params.toPleromaScheduledStatusParams(),
+        mediaAttachments: mediaAttachments?.toUnifediApiMediaAttachmentList(),
+        canceled: canceled,
+      );
 }
 
 extension IScheduledStatusExtension on IScheduledStatus {
-  UnifediApiScheduledStatus toPleromaScheduledStatus() {
-    return UnifediApiScheduledStatus(
-      id: remoteId!,
-      mediaAttachments: mediaAttachments,
-      params: params.toPleromaScheduledStatusParams(),
-      scheduledAt: scheduledAt,
-    );
-  }
+  UnifediApiScheduledStatus toPleromaScheduledStatus() =>
+      UnifediApiScheduledStatus(
+        id: remoteId!,
+        mediaAttachments: mediaAttachments,
+        params: params.toPleromaScheduledStatusParams(),
+        scheduledAt: scheduledAt,
+      );
 }

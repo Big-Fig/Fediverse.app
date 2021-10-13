@@ -82,12 +82,11 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
 
   static List<IStringValueFormFieldBloc> createDefaultPollOptions(
     int? maximumOptionLength,
-  ) {
-    return <IStringValueFormFieldBloc>[
-      createPollOptionBloc(maximumOptionLength),
-      createPollOptionBloc(maximumOptionLength),
-    ];
-  }
+  ) =>
+      <IStringValueFormFieldBloc>[
+        createPollOptionBloc(maximumOptionLength),
+        createPollOptionBloc(maximumOptionLength),
+      ];
 
   static StringValueFormFieldBloc createPollOptionBloc(
     int? maximumOptionLength,
@@ -97,15 +96,14 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
   static StringValueFormFieldBloc createPollOptionFieldBloc(
     String originValue,
     int? maximumOptionLength,
-  ) {
-    return StringValueFormFieldBloc(
-      originValue: originValue,
-      validators: [
-        StringValueFormFieldNonEmptyValidationError.createValidator(),
-      ],
-      maxLength: maximumOptionLength,
-    );
-  }
+  ) =>
+      StringValueFormFieldBloc(
+        originValue: originValue,
+        validators: [
+          StringValueFormFieldNonEmptyValidationError.createValidator(),
+        ],
+        maxLength: maximumOptionLength,
+      );
 
   @override
   void fillFormData(IPostStatusPoll poll) {

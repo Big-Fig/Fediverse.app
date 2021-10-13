@@ -11,16 +11,14 @@ class CustomListAccountListWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return AccountPaginationListWidget(
-      itemPadding: FediPadding.verticalMediumPadding,
-      accountActions: itemActions,
-      accountSelectedCallback: (context, account) =>
-          goToLocalAccountDetailsPage(
-        context,
-        account: account,
-      ),
-      key: PageStorageKey('CustomListAccountListWidget'),
-    );
-  }
+  Widget build(BuildContext context) => AccountPaginationListWidget(
+        itemPadding: FediPadding.verticalMediumPadding,
+        accountActions: itemActions,
+        accountSelectedCallback: (context, account) =>
+            goToLocalAccountDetailsPage(
+          context,
+          account: account,
+        ),
+        key: PageStorageKey('CustomListAccountListWidget'),
+      );
 }

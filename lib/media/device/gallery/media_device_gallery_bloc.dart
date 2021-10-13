@@ -41,9 +41,7 @@ class MediaDeviceGallerySelectedFolderData extends DisposableOwner
   int get hashCode => folder.hashCode;
 
   @override
-  String toString() {
-    return 'MediaDeviceGallerySelectedFolderData{folder: $folder}';
-  }
+  String toString() => 'MediaDeviceGallerySelectedFolderData{folder: $folder}';
 
   @override
   Future dispose() async {

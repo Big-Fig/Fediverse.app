@@ -57,7 +57,5 @@ class _UiThemeSystemBrightnessHandlerWidgetState
   }
 
   @override
-  Widget build(BuildContext context) {
-    return widget.child;
-  }
+  Widget build(BuildContext context) => widget.child;
 }

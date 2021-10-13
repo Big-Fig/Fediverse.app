@@ -96,23 +96,21 @@ class _MediaPickerFileGridItemWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return DisposableProxyProvider<IMediaDeviceFileMetadata,
-        IMediaDeviceFileBloc>(
-      update: (BuildContext context, fileMetadata, previous) {
-        if (fileMetadata is PhotoManagerMediaDeviceFileMetadata) {
-          var mediaDeviceFileBloc = PhotoManagerMediaDeviceFileBloc(
-            photoManagerMediaDeviceFileMetadata: fileMetadata,
-          );
-          // ignore: cascade_invocations
-          mediaDeviceFileBloc.performAsyncInit();
+  Widget build(BuildContext context) =>
+      DisposableProxyProvider<IMediaDeviceFileMetadata, IMediaDeviceFileBloc>(
+        update: (BuildContext context, fileMetadata, previous) {
+          if (fileMetadata is PhotoManagerMediaDeviceFileMetadata) {
+            var mediaDeviceFileBloc = PhotoManagerMediaDeviceFileBloc(
+              photoManagerMediaDeviceFileMetadata: fileMetadata,
+            );
+            // ignore: cascade_invocations
+            mediaDeviceFileBloc.performAsyncInit();
 
-          return mediaDeviceFileBloc;
-        } else {
-          throw 'IMediaDeviceFile file type not supported $fileMetadata';
-        }
-      },
-      child: const MediaPickerFileGridItemWidget(),
-    );
-  }
+            return mediaDeviceFileBloc;
+          } else {
+            throw 'IMediaDeviceFile file type not supported $fileMetadata';
+          }
+        },
+        child: const MediaPickerFileGridItemWidget(),
+      );
 }

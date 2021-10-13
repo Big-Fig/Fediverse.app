@@ -36,17 +36,16 @@ class _EditInstanceAnnouncementSettingsWithDismissedFieldWidget
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IEditInstanceAnnouncementSettingsBloc,
-        IBoolValueFormFieldBloc>(
-      update: (context, value, previous) => value.withDismissedFieldBloc,
-      child: BoolValueFormFieldRowWidget(
-        label: S
-            .of(context)
-            .app_instance_announcement_settings_field_withDismissed_label,
-        descriptionOnDisabled:
-            S.of(context).app_settings_warning_notSupportedOnThisInstance_desc,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => ProxyProvider<
+          IEditInstanceAnnouncementSettingsBloc, IBoolValueFormFieldBloc>(
+        update: (context, value, previous) => value.withDismissedFieldBloc,
+        child: BoolValueFormFieldRowWidget(
+          label: S
+              .of(context)
+              .app_instance_announcement_settings_field_withDismissed_label,
+          descriptionOnDisabled: S
+              .of(context)
+              .app_settings_warning_notSupportedOnThisInstance_desc,
+        ),
+      );
 }

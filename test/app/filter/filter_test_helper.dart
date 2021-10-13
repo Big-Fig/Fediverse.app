@@ -7,16 +7,15 @@ class FilterMockHelper {
   static Future<DbFilterPopulatedWrapper> createTestFilter({
     required String seed,
     String? remoteId,
-  }) async {
-    return DbFilterPopulatedWrapper(
-      dbFilterPopulated: DbFilterPopulated(
-        dbFilter: await FilterDatabaseMockHelper.createTestDbFilter(
-          seed: seed,
-          remoteId: remoteId,
+  }) async =>
+      DbFilterPopulatedWrapper(
+        dbFilterPopulated: DbFilterPopulated(
+          dbFilter: await FilterDatabaseMockHelper.createTestDbFilter(
+            seed: seed,
+            remoteId: remoteId,
+          ),
         ),
-      ),
-    );
-  }
+      );
 
   static void expectFilter(IFilter? actual, IFilter? expected) {
     if (actual == null && expected == null) {

@@ -136,27 +136,26 @@ class _StatusListItemTimelineOriginalWidget extends StatelessWidget {
   Widget buildDeletedStreamBuilderOverlay({
     required Widget child,
     required IStatusBloc statusBloc,
-  }) {
-    return StreamBuilder<bool?>(
-      stream: statusBloc.deletedStream.distinct(),
-      builder: (context, snapshot) {
-        var deleted = snapshot.data ?? false;
+  }) =>
+      StreamBuilder<bool?>(
+        stream: statusBloc.deletedStream.distinct(),
+        builder: (context, snapshot) {
+          var deleted = snapshot.data ?? false;
 
-        if (deleted) {
-          return Stack(
-            children: [
-              child,
-              Positioned.fill(
-                child: const StatusDeletedOverlayWidget(),
-              ),
-            ],
-          );
-        } else {
-          return child;
-        }
-      },
-    );
-  }
+          if (deleted) {
+            return Stack(
+              children: [
+                child,
+                Positioned.fill(
+                  child: const StatusDeletedOverlayWidget(),
+                ),
+              ],
+            );
+          } else {
+            return child;
+          }
+        },
+      );
 }
 
 class _StatusListItemTimelineOriginalBodyInnerBodyWidget

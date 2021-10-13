@@ -56,6 +56,7 @@ linter:
 
     # this package is not a library
     public_member_api_docs: false
+    prefer_relative_imports: false
 
     # prefer single quotes
     prefer_double_quotes: false
@@ -72,11 +73,24 @@ linter:
     # helper classes is OK
     avoid_classes_with_only_static_members: false
 
+    # grouping dependencies is better
+    sort_pub_dependencies: false
+
+    # sometimes is hard to move all todo's to issue tracker
+    flutter_style_todos: false
+
+    # sometimes interpolation better but sometimes not
+    prefer_interpolation_to_compose_strings: false
+
+    # double should be double
+    prefer_int_literals: false
+
     prefer_final_parameters: false
     avoid_types_on_closure_parameters: false
     parameter_assignments: false
     avoid_bool_literals_in_conditional_expressions: false
     avoid_catches_without_on_clauses: false
+    prefer_final_in_for_each: false
 
 
 
@@ -88,7 +102,7 @@ linter:
     library_private_types_in_public_api: false
 
 
-    prefer_relative_imports: false
+
     unnecessary_lambdas: false
 
     use_build_context_synchronously: false
@@ -108,19 +122,17 @@ linter:
     always_specify_types: false
     use_key_in_widget_constructors: false
     prefer_final_locals: false
-    prefer_expression_function_bodies: false
-    prefer_final_in_for_each: false
-    prefer_interpolation_to_compose_strings: false
-    prefer_int_literals: false
+
+
     use_is_even_rather_than_modulo: false
     prefer_typing_uninitialized_variables: false
     sized_box_for_whitespace: false
     sort_unnamed_constructors_first: false
     prefer_null_aware_method_calls: false
     type_annotate_public_apis: false
-    sort_pub_dependencies: false
 
-    flutter_style_todos: false
+
+
     use_if_null_to_convert_nulls_to_bools: false
 
     prefer_function_declarations_over_variables: false

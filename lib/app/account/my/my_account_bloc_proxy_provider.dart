@@ -11,10 +11,9 @@ class MyAccountBlocProxyProvider extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IMyAccountBloc, IAccountBloc>(
-      update: (context, value, previous) => value,
-      child: child,
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IMyAccountBloc, IAccountBloc>(
+        update: (context, value, previous) => value,
+        child: child,
+      );
 }

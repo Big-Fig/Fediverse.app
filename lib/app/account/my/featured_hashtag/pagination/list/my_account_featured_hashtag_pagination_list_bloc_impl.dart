@@ -24,31 +24,29 @@ class AccountFeaturedHashtagPaginationListBloc extends PaginationListBloc<
   static AccountFeaturedHashtagPaginationListBloc createFromContext(
     BuildContext context, {
     bool loadFromCacheDuringInit = true,
-  }) {
-    return AccountFeaturedHashtagPaginationListBloc(
-      paginationBloc: Provider.of<
-          IPaginationBloc<PaginationPage<IMyAccountFeaturedHashtag>,
-              IMyAccountFeaturedHashtag>>(
-        context,
-        listen: false,
-      ),
-      loadFromCacheDuringInit: loadFromCacheDuringInit,
-    );
-  }
+  }) =>
+      AccountFeaturedHashtagPaginationListBloc(
+        paginationBloc: Provider.of<
+            IPaginationBloc<PaginationPage<IMyAccountFeaturedHashtag>,
+                IMyAccountFeaturedHashtag>>(
+          context,
+          listen: false,
+        ),
+        loadFromCacheDuringInit: loadFromCacheDuringInit,
+      );
 
   static Widget provideToContext(
     BuildContext context, {
     required Widget child,
     bool loadFromCacheDuringInit = true,
-  }) {
-    return DisposableProvider<IAccountFeaturedHashtagPaginationListBloc>(
-      create: (context) =>
-          AccountFeaturedHashtagPaginationListBloc.createFromContext(
-        context,
-        loadFromCacheDuringInit: loadFromCacheDuringInit,
-      ),
-      child:
-          AccountFeaturedHashtagPaginationListBlocProxyProvider(child: child),
-    );
-  }
+  }) =>
+      DisposableProvider<IAccountFeaturedHashtagPaginationListBloc>(
+        create: (context) =>
+            AccountFeaturedHashtagPaginationListBloc.createFromContext(
+          context,
+          loadFromCacheDuringInit: loadFromCacheDuringInit,
+        ),
+        child:
+            AccountFeaturedHashtagPaginationListBlocProxyProvider(child: child),
+      );
 }

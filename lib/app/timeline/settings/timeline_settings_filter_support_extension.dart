@@ -38,19 +38,13 @@ extension TimelineRemoteTypeFilterSupportExtension on TimelineType {
 
   bool isExcludeNsfwSensitiveFilterSupportedOnInstance(
     IUnifediApiInstance unifediApiInstance,
-  ) {
-    // actually we can filter on client-side but this will
-    // require additional pagination handling
-    return false;
-  }
+  ) =>
+      false;
 
   bool isWebSocketsUpdatesFilterSupportedOnInstance(
     IUnifediApiInstance? unifediApiInstance,
-  ) {
-    // actually we can filter on client-side but this will
-    // require additional pagination handling
-    return true;
-  }
+  ) =>
+      true;
 
   bool isOnlyRemoteFilterSupportedOnInstance(
     IUnifediApiInstance unifediApiInstance,

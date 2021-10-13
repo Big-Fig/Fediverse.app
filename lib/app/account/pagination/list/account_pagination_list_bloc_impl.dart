@@ -22,28 +22,26 @@ class AccountPaginationListBloc
   static AccountPaginationListBloc createFromContext(
     BuildContext context, {
     bool loadFromCacheDuringInit = true,
-  }) {
-    return AccountPaginationListBloc(
-      paginationBloc:
-          Provider.of<IPaginationBloc<PaginationPage<IAccount>, IAccount>>(
-        context,
-        listen: false,
-      ),
-      loadFromCacheDuringInit: loadFromCacheDuringInit,
-    );
-  }
+  }) =>
+      AccountPaginationListBloc(
+        paginationBloc:
+            Provider.of<IPaginationBloc<PaginationPage<IAccount>, IAccount>>(
+          context,
+          listen: false,
+        ),
+        loadFromCacheDuringInit: loadFromCacheDuringInit,
+      );
 
   static Widget provideToContext(
     BuildContext context, {
     required Widget child,
     bool loadFromCacheDuringInit = true,
-  }) {
-    return DisposableProvider<IAccountPaginationListBloc>(
-      create: (context) => AccountPaginationListBloc.createFromContext(
-        context,
-        loadFromCacheDuringInit: loadFromCacheDuringInit,
-      ),
-      child: AccountPaginationListBlocProxyProvider(child: child),
-    );
-  }
+  }) =>
+      DisposableProvider<IAccountPaginationListBloc>(
+        create: (context) => AccountPaginationListBloc.createFromContext(
+          context,
+          loadFromCacheDuringInit: loadFromCacheDuringInit,
+        ),
+        child: AccountPaginationListBlocProxyProvider(child: child),
+      );
 }

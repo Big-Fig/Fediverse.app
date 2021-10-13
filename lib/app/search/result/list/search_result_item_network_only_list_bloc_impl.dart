@@ -109,25 +109,24 @@ class SearchResultItemNetworkOnlyListBloc
   static Widget provideToContext(
     BuildContext context, {
     required Widget child,
-  }) {
-    return DisposableProvider<ISearchResultItemNetworkOnlyListBloc>(
-      create: (context) =>
-          SearchResultItemNetworkOnlyListBloc.createFromContext(context),
-      child:
-          ProxyProvider<ISearchResultItemNetworkOnlyListBloc, IStatusListBloc>(
-        update: (context, value, _) => value,
+  }) =>
+      DisposableProvider<ISearchResultItemNetworkOnlyListBloc>(
+        create: (context) =>
+            SearchResultItemNetworkOnlyListBloc.createFromContext(context),
         child: ProxyProvider<ISearchResultItemNetworkOnlyListBloc,
-            IAccountListBloc>(
+            IStatusListBloc>(
           update: (context, value, _) => value,
           child: ProxyProvider<ISearchResultItemNetworkOnlyListBloc,
-              IHashtagListBloc>(
+              IAccountListBloc>(
             update: (context, value, _) => value,
-            child: child,
+            child: ProxyProvider<ISearchResultItemNetworkOnlyListBloc,
+                IHashtagListBloc>(
+              update: (context, value, _) => value,
+              child: child,
+            ),
           ),
         ),
-      ),
-    );
-  }
+      );
 
   @override
   InstanceLocation get instanceLocation => InstanceLocation.local;

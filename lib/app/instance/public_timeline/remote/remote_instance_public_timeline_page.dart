@@ -27,14 +27,12 @@ class RemoteInstancePublicTimelinePage extends StatelessWidget {
   const RemoteInstancePublicTimelinePage();
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const InstancePublicTimelinePageAppBarWidget(),
-      body: const SafeArea(
-        child: RemoteInstancePublicTimelinePageBodyWidget(),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Scaffold(
+        appBar: const InstancePublicTimelinePageAppBarWidget(),
+        body: const SafeArea(
+          child: RemoteInstancePublicTimelinePageBodyWidget(),
+        ),
+      );
 }
 
 MaterialPageRoute<void> createRemoteInstancePublicTimelinePageRoute({

@@ -97,11 +97,9 @@ class OneTypeFormGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
   bool checkIsSomethingChanged() {
     var isChanged = isGroupChanged ||
         items.map((field) => field.isSomethingChanged).fold(
-          false,
-          (previousValue, element) {
-            return previousValue | element;
-          },
-        );
+              false,
+              (previousValue, element) => previousValue | element,
+            );
     _isChangedSubject.add(isChanged);
 
     return isChanged;

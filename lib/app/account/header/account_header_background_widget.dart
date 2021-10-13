@@ -43,31 +43,28 @@ class _AccountHeaderBackgroundImageWidget extends StatelessWidget {
     var header = Provider.of<String>(context);
 
     return LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints constraints) {
-        return IFilesCacheService.of(context).createCachedNetworkImageWidget(
-          imageUrl: header,
-          width: constraints.maxWidth,
-          memCacheWidth: constraints.maxWidth.toInt(),
-          imageBuilder: (context, imageProvider) {
-            return Stack(
-              children: [
-                Image(
-                  width: double.infinity,
-                  // ignore: no-equal-arguments
-                  height: double.infinity,
-                  fit: BoxFit.cover,
-                  image: imageProvider,
-                ),
-                const _AccountHeaderBackgroundDarkOverlayWidget(child: null),
-              ],
-            );
-          },
-          progressIndicatorBuilder: (context, url, progress) =>
-              const _AccountHeaderBackgroundProgressWidget(),
-          errorWidget: (context, url, dynamic error) =>
-              const _AccountHeaderBackgroundErrorWidget(),
-        );
-      },
+      builder: (BuildContext context, BoxConstraints constraints) =>
+          IFilesCacheService.of(context).createCachedNetworkImageWidget(
+        imageUrl: header,
+        width: constraints.maxWidth,
+        memCacheWidth: constraints.maxWidth.toInt(),
+        imageBuilder: (context, imageProvider) => Stack(
+          children: [
+            Image(
+              width: double.infinity,
+              // ignore: no-equal-arguments
+              height: double.infinity,
+              fit: BoxFit.cover,
+              image: imageProvider,
+            ),
+            const _AccountHeaderBackgroundDarkOverlayWidget(child: null),
+          ],
+        ),
+        progressIndicatorBuilder: (context, url, progress) =>
+            const _AccountHeaderBackgroundProgressWidget(),
+        errorWidget: (context, url, dynamic error) =>
+            const _AccountHeaderBackgroundErrorWidget(),
+      ),
     );
   }
 }
@@ -78,16 +75,15 @@ class _AccountHeaderBackgroundErrorWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return _AccountHeaderBackgroundDarkOverlayWidget(
-      child: Center(
-        child: Icon(
-          FediIcons.warning,
-          color: IFediUiColorTheme.of(context).error,
+  Widget build(BuildContext context) =>
+      _AccountHeaderBackgroundDarkOverlayWidget(
+        child: Center(
+          child: Icon(
+            FediIcons.warning,
+            color: IFediUiColorTheme.of(context).error,
+          ),
         ),
-      ),
-    );
-  }
+      );
 }
 
 class _AccountHeaderBackgroundProgressWidget extends StatelessWidget {

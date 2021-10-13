@@ -10,10 +10,9 @@ class FilterCachedListBlocProxyProvider extends StatelessWidget {
   FilterCachedListBlocProxyProvider({required this.child});
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IFilterCachedListBloc, ICachedListBloc<IFilter>>(
-      update: (context, value, previous) => value,
-      child: child,
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IFilterCachedListBloc, ICachedListBloc<IFilter>>(
+        update: (context, value, previous) => value,
+        child: child,
+      );
 }

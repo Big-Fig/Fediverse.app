@@ -9,10 +9,9 @@ class AccountReportBlocProxyProvider extends StatelessWidget {
   AccountReportBlocProxyProvider({required this.child});
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IAccountReportBloc, IStatusListBloc>(
-      update: (context, value, previous) => value,
-      child: child,
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IAccountReportBloc, IStatusListBloc>(
+        update: (context, value, previous) => value,
+        child: child,
+      );
 }

@@ -17,33 +17,31 @@ class ScheduledEditPostStatusPage extends StatelessWidget {
   ScheduledEditPostStatusPage({required this.onBackPressed});
 
   @override
-  Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        // todo: refactor
-        // ignore: unawaited_futures
-        handleBackPressed(context);
+  Widget build(BuildContext context) => WillPopScope(
+        onWillPop: () async {
+          // todo: refactor
+          // ignore: unawaited_futures
+          handleBackPressed(context);
 
-        return true;
-      },
-      child: Scaffold(
-        appBar: FediPageTitleAppBar(
-          title: S.of(context).app_status_scheduled_edit_title,
-          leading: FediDismissIconButton(
-            customOnPressed: () {
-              handleBackPressed(context);
-            },
+          return true;
+        },
+        child: Scaffold(
+          appBar: FediPageTitleAppBar(
+            title: S.of(context).app_status_scheduled_edit_title,
+            leading: FediDismissIconButton(
+              customOnPressed: () {
+                handleBackPressed(context);
+              },
+            ),
+            actions: [
+              const PostStatusAppBarPostAction(),
+            ],
           ),
-          actions: [
-            const PostStatusAppBarPostAction(),
-          ],
+          body: const SafeArea(
+            child: EditPostStatusWidget(),
+          ),
         ),
-        body: const SafeArea(
-          child: EditPostStatusWidget(),
-        ),
-      ),
-    );
-  }
+      );
 
   Future handleBackPressed(BuildContext context) async {
     var postStatusBloc = IPostStatusBloc.of(context, listen: false);

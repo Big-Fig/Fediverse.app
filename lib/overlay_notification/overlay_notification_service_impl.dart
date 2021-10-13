@@ -23,10 +23,9 @@ class OverlayNotificationService extends DisposableOwner
     bool autoDismiss = true,
     DismissDirection dismissDirection = DismissDirection.horizontal,
     NotificationPosition position = NotificationPosition.top,
-  }) {
-    return showOverlayNotification(
-      (context) {
-        return SlideDismissible(
+  }) =>
+      showOverlayNotification(
+        (context) => SlideDismissible(
           direction: dismissDirection,
           key: ValueKey(key),
           child: FediLightStatusBarStyleArea(
@@ -53,13 +52,11 @@ class OverlayNotificationService extends DisposableOwner
               ),
             ),
           ),
-        );
-      },
-      duration: autoDismiss ? null : Duration.zero,
-      key: key,
-      position: position,
-    );
-  }
+        ),
+        duration: autoDismiss ? null : Duration.zero,
+        key: key,
+        position: position,
+      );
 
   @override
   void showNotification({
@@ -69,13 +66,11 @@ class OverlayNotificationService extends DisposableOwner
     required Duration duration,
   }) {
     showOverlayNotification(
-      (context) {
-        return SlideDismissible(
-          direction: dismissDirection,
-          key: ValueKey(key),
-          child: child,
-        );
-      },
+      (context) => SlideDismissible(
+        direction: dismissDirection,
+        key: ValueKey(key),
+        child: child,
+      ),
       duration: duration,
       key: key,
       position: NotificationPosition.top,

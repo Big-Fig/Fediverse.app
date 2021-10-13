@@ -72,21 +72,20 @@ class ChatMessageListWidget<T extends IChatMessage>
     RefreshController refreshController,
     ScrollController? scrollController,
     Widget Function(BuildContext context) smartRefresherBodyBuilder,
-  ) {
-    return FediListSmartRefresherWidget(
-      key: key,
-      isNeedToAddPaddingForUiTests: false,
-      enablePullDown: true,
-      enablePullUp: true,
+  ) =>
+      FediListSmartRefresherWidget(
+        key: key,
+        isNeedToAddPaddingForUiTests: false,
+        enablePullDown: true,
+        enablePullUp: true,
 // water drop header bugged (inverted with reverse)
-      header: const FediListSmartRefresherRefreshIndicator(),
-      footer: const ListLoadingFooterWidget(),
-      controller: refreshController,
-      reverse: true,
-      scrollController: scrollController,
-      primary: scrollController == null,
-      onRefresh: () {
-        return AsyncSmartRefresherHelper.doAsyncRefresh(
+        header: const FediListSmartRefresherRefreshIndicator(),
+        footer: const ListLoadingFooterWidget(),
+        controller: refreshController,
+        reverse: true,
+        scrollController: scrollController,
+        primary: scrollController == null,
+        onRefresh: () => AsyncSmartRefresherHelper.doAsyncRefresh(
           controller: refreshController,
           action: () async {
             bool success;
@@ -107,15 +106,13 @@ class ChatMessageListWidget<T extends IChatMessage>
 
             return state;
           },
-        );
-      },
-      onLoading: () => AsyncSmartRefresherHelper.doAsyncLoading(
-        controller: refreshController,
-        action: paginationListBloc.loadMoreWithoutController,
-      ),
-      child: smartRefresherBodyBuilder(context),
-    );
-  }
+        ),
+        onLoading: () => AsyncSmartRefresherHelper.doAsyncLoading(
+          controller: refreshController,
+          action: paginationListBloc.loadMoreWithoutController,
+        ),
+        child: smartRefresherBodyBuilder(context),
+      );
 
   @override
   // ignore: long-method

@@ -596,41 +596,45 @@ List<UnifediApiNotificationType>
     _calculateExcludePushNotificationTypesBaseOnPushSettings({
   required PushSettings pushSettings,
   required bool isPleroma,
-}) {
-  return [
-    if (pushSettings.favourite != true)
-      UnifediApiNotificationType.favouriteValue,
-    if (pushSettings.follow != true) UnifediApiNotificationType.followValue,
-    if (pushSettings.mention != true) UnifediApiNotificationType.mentionValue,
-    if (pushSettings.reblog != true) UnifediApiNotificationType.reblogValue,
-    if (pushSettings.poll != true) UnifediApiNotificationType.pollValue,
-    if (pushSettings.chatMention != true && isPleroma)
-      UnifediApiNotificationType.chatMentionValue,
-    if (pushSettings.emojiReaction != true && isPleroma)
-      UnifediApiNotificationType.emojiReactionValue,
-  ];
-}
+}) =>
+        [
+          if (pushSettings.favourite != true)
+            UnifediApiNotificationType.favouriteValue,
+          if (pushSettings.follow != true)
+            UnifediApiNotificationType.followValue,
+          if (pushSettings.mention != true)
+            UnifediApiNotificationType.mentionValue,
+          if (pushSettings.reblog != true)
+            UnifediApiNotificationType.reblogValue,
+          if (pushSettings.poll != true) UnifediApiNotificationType.pollValue,
+          if (pushSettings.chatMention != true && isPleroma)
+            UnifediApiNotificationType.chatMentionValue,
+          if (pushSettings.emojiReaction != true && isPleroma)
+            UnifediApiNotificationType.emojiReactionValue,
+        ];
 
 List<UnifediApiNotificationType>
     _calculateIncludePushNotificationTypesBaseOnPushSettings({
   required PushSettings pushSettings,
   required bool isPleroma,
-}) {
-  return [
-    if (pushSettings.favourite == true)
-      UnifediApiNotificationType.favouriteValue,
-    if (pushSettings.follow == true) UnifediApiNotificationType.followValue,
-    if (pushSettings.mention == true) UnifediApiNotificationType.mentionValue,
-    if (pushSettings.reblog == true) UnifediApiNotificationType.reblogValue,
-    if (pushSettings.poll == true) UnifediApiNotificationType.pollValue,
-    if (pushSettings.chatMention == true && isPleroma)
-      UnifediApiNotificationType.chatMentionValue,
-    if (pushSettings.emojiReaction == true && isPleroma)
-      UnifediApiNotificationType.emojiReactionValue,
-    if (isPleroma) UnifediApiNotificationType.reportValue,
-    UnifediApiNotificationType.followRequestValue,
-  ];
-}
+}) =>
+        [
+          if (pushSettings.favourite == true)
+            UnifediApiNotificationType.favouriteValue,
+          if (pushSettings.follow == true)
+            UnifediApiNotificationType.followValue,
+          if (pushSettings.mention == true)
+            UnifediApiNotificationType.mentionValue,
+          if (pushSettings.reblog == true)
+            UnifediApiNotificationType.reblogValue,
+          if (pushSettings.poll == true) UnifediApiNotificationType.pollValue,
+          if (pushSettings.chatMention == true && isPleroma)
+            UnifediApiNotificationType.chatMentionValue,
+          if (pushSettings.emojiReaction == true && isPleroma)
+            UnifediApiNotificationType.emojiReactionValue,
+          if (isPleroma) UnifediApiNotificationType.reportValue,
+          UnifediApiNotificationType.followRequestValue,
+        ];
 
 // ignore: long-method
 Future<void> _createPushNotification({

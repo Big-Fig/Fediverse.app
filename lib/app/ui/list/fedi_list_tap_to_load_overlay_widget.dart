@@ -9,15 +9,13 @@ class FediListTapToLoadOverlayWidget extends StatelessWidget {
   FediListTapToLoadOverlayWidget({required this.textBuilder});
 
   @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.topCenter,
-      child: Padding(
-        padding: EdgeInsets.only(top: _tapToLoadTopPadding),
-        child: CachedPaginationListWithNewItemsMergeOverlayButton(
-          textBuilder: textBuilder,
+  Widget build(BuildContext context) => Align(
+        alignment: Alignment.topCenter,
+        child: Padding(
+          padding: EdgeInsets.only(top: _tapToLoadTopPadding),
+          child: CachedPaginationListWithNewItemsMergeOverlayButton(
+            textBuilder: textBuilder,
+          ),
         ),
-      ),
-    );
-  }
+      );
 }

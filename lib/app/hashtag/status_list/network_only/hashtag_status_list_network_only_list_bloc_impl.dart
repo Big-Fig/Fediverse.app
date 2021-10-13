@@ -48,26 +48,25 @@ class HashtagStatusListNetworkOnlyListBloc extends IStatusNetworkOnlyListBloc {
     required ITimelineLocalPreferenceBlocOld timelineLocalPreferenceBloc,
     required Widget child,
     required Uri instanceUri,
-  }) {
-    return DisposableProvider<IStatusNetworkOnlyListBloc>(
-      create: (context) =>
-          HashtagStatusListNetworkOnlyListBloc.createFromContext(
-        context,
-        timelineLocalPreferenceBloc: timelineLocalPreferenceBloc,
-        instanceUri: instanceUri,
-      ),
-      child: ProxyProvider<IStatusNetworkOnlyListBloc, INetworkOnlyListBloc>(
-        update: (context, value, previous) => value,
-        child: StatusNetworkOnlyListBlocProxyProvider(
-          child: ProxyProvider<IStatusNetworkOnlyListBloc,
-              INetworkOnlyListBloc<IStatus>>(
-            update: (context, value, previous) => value,
-            child: child,
+  }) =>
+      DisposableProvider<IStatusNetworkOnlyListBloc>(
+        create: (context) =>
+            HashtagStatusListNetworkOnlyListBloc.createFromContext(
+          context,
+          timelineLocalPreferenceBloc: timelineLocalPreferenceBloc,
+          instanceUri: instanceUri,
+        ),
+        child: ProxyProvider<IStatusNetworkOnlyListBloc, INetworkOnlyListBloc>(
+          update: (context, value, previous) => value,
+          child: StatusNetworkOnlyListBlocProxyProvider(
+            child: ProxyProvider<IStatusNetworkOnlyListBloc,
+                INetworkOnlyListBloc<IStatus>>(
+              update: (context, value, previous) => value,
+              child: child,
+            ),
           ),
         ),
-      ),
-    );
-  }
+      );
 
   @override
   InstanceLocation get instanceLocation => InstanceLocation.remote;

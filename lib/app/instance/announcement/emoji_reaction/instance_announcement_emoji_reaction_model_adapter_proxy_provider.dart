@@ -13,13 +13,12 @@ class InstanceAnnouncementEmojiReactionAdapterProxyProvider
   });
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IUnifediApiEmojiReaction, IEmojiReaction>(
-      update: (context, value, previous) =>
-          InstanceAnnouncementEmojiReactionAdapter(
-        unifediApiEmojiReaction: value,
-      ),
-      child: child,
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IUnifediApiEmojiReaction, IEmojiReaction>(
+        update: (context, value, previous) =>
+            InstanceAnnouncementEmojiReactionAdapter(
+          unifediApiEmojiReaction: value,
+        ),
+        child: child,
+      );
 }

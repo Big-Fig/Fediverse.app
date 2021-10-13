@@ -48,22 +48,20 @@ class _StatusSensitiveSpoilerWarningOverlayBodyWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return FediBlurredOverlayWarningWidget(
-      buttonText: S.of(context).app_status_spoiler_action_view,
-      replaceBlurWithColor:
-          IStatusSensitiveSettingsBloc.of(context).isNeedReplaceBlurWithFill
-              ? IFediUiColorTheme.of(context).primaryDark
-              : null,
-      // ignore: no-magic-number
-      sigma: 10.0,
-      buttonAction: () {
-        var statusSensitiveBloc =
-            IStatusSensitiveBloc.of(context, listen: false);
+  Widget build(BuildContext context) => FediBlurredOverlayWarningWidget(
+        buttonText: S.of(context).app_status_spoiler_action_view,
+        replaceBlurWithColor:
+            IStatusSensitiveSettingsBloc.of(context).isNeedReplaceBlurWithFill
+                ? IFediUiColorTheme.of(context).primaryDark
+                : null,
+        // ignore: no-magic-number
+        sigma: 10.0,
+        buttonAction: () {
+          var statusSensitiveBloc =
+              IStatusSensitiveBloc.of(context, listen: false);
 
-        // ignore: cascade_invocations
-        statusSensitiveBloc.enableDisplay();
-      },
-    );
-  }
+          // ignore: cascade_invocations
+          statusSensitiveBloc.enableDisplay();
+        },
+      );
 }

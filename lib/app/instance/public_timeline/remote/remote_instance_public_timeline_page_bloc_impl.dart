@@ -55,20 +55,19 @@ class RemoteInstancePublicTimelinePageBloc
     BuildContext context, {
     required IUnifediApiInstance unifediApiInstance,
     required IRemoteInstanceBloc remoteInstanceBloc,
-  }) {
-    return RemoteInstancePublicTimelinePageBloc(
-      connectionService: Provider.of<IConnectionService>(
-        context,
-        listen: false,
-      ),
-      remoteInstanceBloc: remoteInstanceBloc,
-      unifediApiInstance: unifediApiInstance,
-      paginationSettingsBloc: IPaginationSettingsBloc.of(
-        context,
-        listen: false,
-      ),
-    );
-  }
+  }) =>
+      RemoteInstancePublicTimelinePageBloc(
+        connectionService: Provider.of<IConnectionService>(
+          context,
+          listen: false,
+        ),
+        remoteInstanceBloc: remoteInstanceBloc,
+        unifediApiInstance: unifediApiInstance,
+        paginationSettingsBloc: IPaginationSettingsBloc.of(
+          context,
+          listen: false,
+        ),
+      );
 
   static Widget provideToContext(
     BuildContext context, {

@@ -127,18 +127,17 @@ class AccountFollowerAccountCachedListBloc extends DisposableOwner
     BuildContext context, {
     required IAccount account,
     required Widget child,
-  }) {
-    return DisposableProvider<IAccountCachedListBloc>(
-      create: (context) =>
-          AccountFollowerAccountCachedListBloc.createFromContext(
-        context,
-        account: account,
-      ),
-      child: AccountCachedListBlocProxyProvider(
-        child: child,
-      ),
-    );
-  }
+  }) =>
+      DisposableProvider<IAccountCachedListBloc>(
+        create: (context) =>
+            AccountFollowerAccountCachedListBloc.createFromContext(
+          context,
+          account: account,
+        ),
+        child: AccountCachedListBlocProxyProvider(
+          child: child,
+        ),
+      );
 
   @override
   InstanceLocation get instanceLocation => InstanceLocation.local;

@@ -61,22 +61,21 @@ class FediStepperWidget<T extends IFediStepperItem> extends StatelessWidget {
             BuildContext context, {
             VoidCallback? onStepContinue,
             VoidCallback? onStepCancel,
-          }) {
-            return Row(
-              children: <Widget>[
-                if (!isLast)
-                  _FediStepperNextActionButtonWidget(
-                    onStepContinue: isHaveErrors ? null : onStepContinue,
-                  ),
-                if (isLast) _FediStepperSubmitActionButtonWidget<T>(),
-                const FediSmallHorizontalSpacer(),
-                if (!isFirst)
-                  _FediStepperBackActionButtonWidget(
-                    onStepCancel: onStepCancel,
-                  ),
-              ],
-            );
-          },
+          }) =>
+              Row(
+            children: <Widget>[
+              if (!isLast)
+                _FediStepperNextActionButtonWidget(
+                  onStepContinue: isHaveErrors ? null : onStepContinue,
+                ),
+              if (isLast) _FediStepperSubmitActionButtonWidget<T>(),
+              const FediSmallHorizontalSpacer(),
+              if (!isFirst)
+                _FediStepperBackActionButtonWidget(
+                  onStepCancel: onStepCancel,
+                ),
+            ],
+          ),
           steps: stepperState.steps.asMap().entries.map(
             (entry) {
               var index = entry.key;

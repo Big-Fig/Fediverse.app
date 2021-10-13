@@ -66,9 +66,8 @@ class FediTabBubbleStyleIndicator extends Decoration {
   }
 
   @override
-  _BubblePainter createBoxPainter([VoidCallback? onChanged]) {
-    return _BubblePainter(this, onChanged);
-  }
+  _BubblePainter createBoxPainter([VoidCallback? onChanged]) =>
+      _BubblePainter(this, onChanged);
 }
 
 class _BubblePainter extends BoxPainter {

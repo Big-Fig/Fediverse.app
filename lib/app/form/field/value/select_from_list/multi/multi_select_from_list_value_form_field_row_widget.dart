@@ -50,21 +50,19 @@ class MultiSelectFromListValueFormFieldRowWidget<T> extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return SimpleFediFormFieldRow(
-      label: label,
-      description: description,
-      descriptionOnDisabled: descriptionOnDisabled,
-      valueChild: _MultiSelectFromListValueFormFieldRowValueWidget<T>(
-        displayIconInRow: displayIconInRow,
-        displayIconInDialog: displayIconInDialog,
+  Widget build(BuildContext context) => SimpleFediFormFieldRow(
         label: label,
-        valueIconMapper: valueIconMapper,
-        valueTitleMapper: valueTitleMapper,
-        valueKeyMapper: valueKeyMapper,
-      ),
-    );
-  }
+        description: description,
+        descriptionOnDisabled: descriptionOnDisabled,
+        valueChild: _MultiSelectFromListValueFormFieldRowValueWidget<T>(
+          displayIconInRow: displayIconInRow,
+          displayIconInDialog: displayIconInDialog,
+          label: label,
+          valueIconMapper: valueIconMapper,
+          valueTitleMapper: valueTitleMapper,
+          valueKeyMapper: valueKeyMapper,
+        ),
+      );
 }
 
 class _MultiSelectFromListValueFormFieldRowValueWidget<T>
@@ -86,43 +84,41 @@ class _MultiSelectFromListValueFormFieldRowValueWidget<T>
   });
 
   @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        var fieldBloc = IMultiSelectFromListValueFormFieldBloc.of<T>(
-          context,
-          listen: false,
-        );
-        if (fieldBloc.isEnabled) {
-          _showDialog(
-            context: context,
-            fieldBloc: fieldBloc,
-            label: label,
-            valueIconMapper: valueIconMapper,
-            valueTitleMapper: valueTitleMapper,
-            valueKeyMapper: valueKeyMapper,
-            displayIconInDialog: displayIconInDialog,
+  Widget build(BuildContext context) => InkWell(
+        onTap: () {
+          var fieldBloc = IMultiSelectFromListValueFormFieldBloc.of<T>(
+            context,
+            listen: false,
           );
-        }
-      },
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (displayIconInRow)
-            _MultiSelectFromListValueFormFieldRowValueIconWidget<T>(
+          if (fieldBloc.isEnabled) {
+            _showDialog(
+              context: context,
+              fieldBloc: fieldBloc,
               label: label,
               valueIconMapper: valueIconMapper,
               valueTitleMapper: valueTitleMapper,
               valueKeyMapper: valueKeyMapper,
               displayIconInDialog: displayIconInDialog,
+            );
+          }
+        },
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (displayIconInRow)
+              _MultiSelectFromListValueFormFieldRowValueIconWidget<T>(
+                label: label,
+                valueIconMapper: valueIconMapper,
+                valueTitleMapper: valueTitleMapper,
+                valueKeyMapper: valueKeyMapper,
+                displayIconInDialog: displayIconInDialog,
+              ),
+            _MultiSelectFromListValueFormFieldRowValueTitleWidget<T>(
+              valueTitleMapper: valueTitleMapper,
             ),
-          _MultiSelectFromListValueFormFieldRowValueTitleWidget<T>(
-            valueTitleMapper: valueTitleMapper,
-          ),
-        ],
-      ),
-    );
-  }
+          ],
+        ),
+      );
 }
 
 class _MultiSelectFromListValueFormFieldRowValueTitleWidget<T>
@@ -329,14 +325,13 @@ SelectionDialogAction _buildDialogAction<T>({
   required MultiSelectFromListValueTitleMapper<T> valueTitleMapper,
   required MultiSelectFromListValueKeyMapper<T>? valueKeyMapper,
   required bool displayIconInDialog,
-}) {
-  return SelectionDialogAction(
-    key: valueKeyMapper != null ? valueKeyMapper(context, value) : null,
-    icon: displayIconInDialog ? valueIconMapper!(context, value) : null,
-    label: valueTitleMapper(context, value),
-    onAction: (context) {
-      fieldBloc.toggleValue(value);
-    },
-    isSelected: selectedValues?.contains(value) ?? false,
-  );
-}
+}) =>
+    SelectionDialogAction(
+      key: valueKeyMapper != null ? valueKeyMapper(context, value) : null,
+      icon: displayIconInDialog ? valueIconMapper!(context, value) : null,
+      label: valueTitleMapper(context, value),
+      onAction: (context) {
+        fieldBloc.toggleValue(value);
+      },
+      isSelected: selectedValues?.contains(value) ?? false,
+    );

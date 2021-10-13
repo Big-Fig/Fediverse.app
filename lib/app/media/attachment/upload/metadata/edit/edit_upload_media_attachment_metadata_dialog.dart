@@ -88,29 +88,29 @@ class EditUploadMediaAttachmentMetadataDialog extends FediDialog {
   static DialogAction createSaveAction({
     required BuildContext context,
     required SaveCallback saveCallback,
-  }) {
-    return DialogAction(
-      label: S.of(context).app_media_upload_metadata_dialog_action_save,
-      onAction: (context) async {
-        var editUploadMediaAttachmentMetadataBloc =
-            IEditUploadMediaAttachmentMetadataBloc.of(
-          context,
-          listen: false,
-        );
+  }) =>
+      DialogAction(
+        label: S.of(context).app_media_upload_metadata_dialog_action_save,
+        onAction: (context) async {
+          var editUploadMediaAttachmentMetadataBloc =
+              IEditUploadMediaAttachmentMetadataBloc.of(
+            context,
+            listen: false,
+          );
 
-        saveCallback(
-          editUploadMediaAttachmentMetadataBloc.extractCurrentEnteredMetadata(),
-        );
-        Navigator.of(context).pop();
-      },
-      isActionEnabledFetcher: (context) =>
-          IEditUploadMediaAttachmentMetadataBloc.of(context, listen: false)
-              .isHaveChangesAndNoErrors,
-      isActionEnabledStreamFetcher: (context) =>
-          IEditUploadMediaAttachmentMetadataBloc.of(context, listen: false)
-              .isHaveChangesAndNoErrorsStream,
-    );
-  }
+          saveCallback(
+            editUploadMediaAttachmentMetadataBloc
+                .extractCurrentEnteredMetadata(),
+          );
+          Navigator.of(context).pop();
+        },
+        isActionEnabledFetcher: (context) =>
+            IEditUploadMediaAttachmentMetadataBloc.of(context, listen: false)
+                .isHaveChangesAndNoErrors,
+        isActionEnabledStreamFetcher: (context) =>
+            IEditUploadMediaAttachmentMetadataBloc.of(context, listen: false)
+                .isHaveChangesAndNoErrorsStream,
+      );
 
   static DialogAction createDeleteAction({
     required BuildContext context,

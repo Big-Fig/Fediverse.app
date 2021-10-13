@@ -159,34 +159,32 @@ class _CurrentUnifediApiAccessContextInitSessionExpiredWidget
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return FediLightStatusBarStyleArea(
-      child: Scaffold(
-        backgroundColor: IFediUiColorTheme.of(context).primaryDark,
-        body: SafeArea(
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Padding(
-                  padding: FediPadding.allBigPadding,
-                  child:
-                      const _CurrentUnifediApiAccessContextInitSessionExpiredDescriptionWidget(),
-                ),
-                const FediSmallVerticalSpacer(),
-                const _CurrentUnifediApiAccessContextInitSessionExpiredRefreshButtonWidget(),
-                const FediSmallVerticalSpacer(),
-                const _CurrentUnifediApiAccessContextInitSessionExpiredChooseAccountButtonWidget(),
-                const FediSmallVerticalSpacer(),
-                const _CurrentUnifediApiAccessContextInitSessionExpiredLogoutButtonWidgetWidget(),
-              ],
+  Widget build(BuildContext context) => FediLightStatusBarStyleArea(
+        child: Scaffold(
+          backgroundColor: IFediUiColorTheme.of(context).primaryDark,
+          body: SafeArea(
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: FediPadding.allBigPadding,
+                    child:
+                        const _CurrentUnifediApiAccessContextInitSessionExpiredDescriptionWidget(),
+                  ),
+                  const FediSmallVerticalSpacer(),
+                  const _CurrentUnifediApiAccessContextInitSessionExpiredRefreshButtonWidget(),
+                  const FediSmallVerticalSpacer(),
+                  const _CurrentUnifediApiAccessContextInitSessionExpiredChooseAccountButtonWidget(),
+                  const FediSmallVerticalSpacer(),
+                  const _CurrentUnifediApiAccessContextInitSessionExpiredLogoutButtonWidgetWidget(),
+                ],
+              ),
             ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }
 
 class _CurrentUnifediApiAccessContextInitSessionExpiredLogoutButtonWidgetWidget
@@ -196,19 +194,17 @@ class _CurrentUnifediApiAccessContextInitSessionExpiredLogoutButtonWidgetWidget
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return FediTransparentTextButtonWithBorder(
-      S
-          .of(context)
-          .app_auth_instance_current_context_loading_cantLoad_action_logout,
-      onPressed: () {
-        ICurrentUnifediApiAccessBloc.of(context, listen: false)
-            .logoutCurrentInstance();
-      },
-      color: IFediUiColorTheme.of(context).white,
-      expanded: false,
-    );
-  }
+  Widget build(BuildContext context) => FediTransparentTextButtonWithBorder(
+        S
+            .of(context)
+            .app_auth_instance_current_context_loading_cantLoad_action_logout,
+        onPressed: () {
+          ICurrentUnifediApiAccessBloc.of(context, listen: false)
+              .logoutCurrentInstance();
+        },
+        color: IFediUiColorTheme.of(context).white,
+        expanded: false,
+      );
 }
 
 class _CurrentUnifediApiAccessContextInitSessionExpiredChooseAccountButtonWidget
@@ -218,18 +214,16 @@ class _CurrentUnifediApiAccessContextInitSessionExpiredChooseAccountButtonWidget
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return FediTransparentTextButtonWithBorder(
-      S
-          .of(context)
-          .app_auth_instance_current_context_loading_cantLoad_action_chooseDifferentAccount,
-      onPressed: () {
-        showMyAccountActionListBottomSheetDialog(context);
-      },
-      color: IFediUiColorTheme.of(context).white,
-      expanded: false,
-    );
-  }
+  Widget build(BuildContext context) => FediTransparentTextButtonWithBorder(
+        S
+            .of(context)
+            .app_auth_instance_current_context_loading_cantLoad_action_chooseDifferentAccount,
+        onPressed: () {
+          showMyAccountActionListBottomSheetDialog(context);
+        },
+        color: IFediUiColorTheme.of(context).white,
+        expanded: false,
+      );
 }
 
 class _CurrentUnifediApiAccessContextInitSessionExpiredRefreshButtonWidget

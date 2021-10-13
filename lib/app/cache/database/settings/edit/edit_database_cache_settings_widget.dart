@@ -56,11 +56,9 @@ class _EditDatabaseCacheSettingsDescriptionWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return FediNoteDescriptionWidget(
-      S.of(context).app_cache_database_settings_description,
-    );
-  }
+  Widget build(BuildContext context) => FediNoteDescriptionWidget(
+        S.of(context).app_cache_database_settings_description,
+      );
 }
 
 class _EditDatabaseCacheSettingsClearAllButtonWidget extends StatelessWidget {

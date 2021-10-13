@@ -16,9 +16,7 @@ class PaginationItemTest implements IEqualComparableObj<PaginationItemTest> {
   int get hashCode => index.hashCode;
 
   @override
-  String toString() {
-    return 'TestPaginationItem{index: $index}';
-  }
+  String toString() => 'TestPaginationItem{index: $index}';
 
   static int compareItems(PaginationItemTest? a, PaginationItemTest? b) {
     if (a == null && b == null) {

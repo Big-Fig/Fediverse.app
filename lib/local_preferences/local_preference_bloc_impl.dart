@@ -108,9 +108,8 @@ abstract class ObjectLocalPreferenceBloc<T extends IJsonObj?>
         );
 
   @override
-  Future<bool> setValueInternal(T? newValue) async {
-    return preferencesService.setObjectPreference(key, newValue);
-  }
+  Future<bool> setValueInternal(T? newValue) async =>
+      preferencesService.setObjectPreference(key, newValue);
 
   @override
   Future<T> getValueInternal() async =>

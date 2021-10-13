@@ -12,12 +12,11 @@ class StatusEmojiReactionAdapterProxyProvider extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IUnifediApiEmojiReaction, IEmojiReaction>(
-      update: (context, value, previous) => StatusEmojiReactionAdapter(
-        unifediApiEmojiReaction: value,
-      ),
-      child: child,
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IUnifediApiEmojiReaction, IEmojiReaction>(
+        update: (context, value, previous) => StatusEmojiReactionAdapter(
+          unifediApiEmojiReaction: value,
+        ),
+        child: child,
+      );
 }

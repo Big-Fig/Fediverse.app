@@ -20,10 +20,8 @@ class FediFadeShaderMask extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return ShaderMask(
-      shaderCallback: (rect) {
-        return LinearGradient(
+  Widget build(BuildContext context) => ShaderMask(
+        shaderCallback: (rect) => LinearGradient(
           begin: begin,
           end: end,
           colors: [
@@ -38,9 +36,7 @@ class FediFadeShaderMask extends StatelessWidget {
             1 - fadingPercent,
             1.0,
           ],
-        ).createShader(rect);
-      },
-      child: child,
-    );
-  }
+        ).createShader(rect),
+        child: child,
+      );
 }

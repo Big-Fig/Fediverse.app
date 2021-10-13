@@ -23,13 +23,13 @@ class AccountFollowingsDao extends DatabaseDao<
   @override
   $DbAccountFollowingsTable get table => dbAccountFollowings;
 
-  Selectable<DbAccountFollowing> findByAccountRemoteId(String accountRemoteId) {
-    return customSelect(
-      'SELECT * FROM $tableName WHERE account_remote_id = :accountRemoteId;',
-      variables: [Variable<String>(accountRemoteId)],
-      readsFrom: {dbAccountFollowings},
-    ).map(dbAccountFollowings.mapFromRow);
-  }
+  Selectable<DbAccountFollowing> findByAccountRemoteId(
+          String accountRemoteId) =>
+      customSelect(
+        'SELECT * FROM $tableName WHERE account_remote_id = :accountRemoteId;',
+        variables: [Variable<String>(accountRemoteId)],
+        readsFrom: {dbAccountFollowings},
+      ).map(dbAccountFollowings.mapFromRow);
 
   Future<int> deleteByAccountRemoteIdAndFollowingAccountRemoteId({
     required String followingAccountRemoteId,
@@ -88,12 +88,11 @@ class AccountFollowingsDao extends DatabaseDao<
 
   CustomExpression<bool> _createAccountRemoteIdEqualExpression(
     String accountRemoteId,
-  ) {
-    return createMainTableEqualWhereExpression(
-      fieldName: table.accountRemoteId.$name,
-      value: accountRemoteId,
-    );
-  }
+  ) =>
+      createMainTableEqualWhereExpression(
+        fieldName: table.accountRemoteId.$name,
+        value: accountRemoteId,
+      );
 
   Future<int> deleteByFollowingAccountRemoteId(
     String followingAccountRemoteId,
@@ -123,10 +122,9 @@ class AccountFollowingsDao extends DatabaseDao<
 
   CustomExpression<bool> _createFollowingAccountRemoteIdEqualExpression(
     String followingAccountRemoteId,
-  ) {
-    return createMainTableEqualWhereExpression(
-      fieldName: table.followingAccountRemoteId.$name,
-      value: followingAccountRemoteId,
-    );
-  }
+  ) =>
+      createMainTableEqualWhereExpression(
+        fieldName: table.followingAccountRemoteId.$name,
+        value: followingAccountRemoteId,
+      );
 }

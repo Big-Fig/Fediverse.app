@@ -145,9 +145,7 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
   int get hashCode => timelineId.hashCode;
 
   @override
-  String toString() {
-    return 'TimelineTabBloc{timelineId: $timelineId}';
-  }
+  String toString() => 'TimelineTabBloc{timelineId: $timelineId}';
 
   static TimelineTabBloc createFromContext(
     BuildContext context, {

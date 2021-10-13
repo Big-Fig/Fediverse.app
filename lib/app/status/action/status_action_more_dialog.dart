@@ -39,18 +39,17 @@ import 'package:unifedi_api/unifedi_api.dart';
 Future<void> showStatusActionMoreDialog({
   required BuildContext context,
   required IStatusBloc statusBloc,
-}) {
-  return showFediModalBottomSheetDialog(
-    context: context,
-    child: Provider<IStatusBloc>.value(
-      value: statusBloc,
-      child: Provider<IStatus>.value(
-        value: statusBloc.status,
-        child: const StatusActionMoreDialogBody(),
+}) =>
+    showFediModalBottomSheetDialog(
+      context: context,
+      child: Provider<IStatusBloc>.value(
+        value: statusBloc,
+        child: Provider<IStatus>.value(
+          value: statusBloc.status,
+          child: const StatusActionMoreDialogBody(),
+        ),
       ),
-    ),
-  );
-}
+    );
 
 class StatusActionMoreDialogBody extends StatelessWidget {
   const StatusActionMoreDialogBody();

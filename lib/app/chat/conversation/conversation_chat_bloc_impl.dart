@@ -265,26 +265,25 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
     required IConversationChat chat,
     required IConversationChatMessage? lastChatMessage,
     bool needRefreshFromNetworkOnInit = false,
-  }) {
-    return ConversationChatBloc(
-      connectionService:
-          Provider.of<IConnectionService>(context, listen: false),
-      pleromaConversationService:
-          Provider.of<IUnifediApiConversationService>(context, listen: false),
-      myAccountBloc: IMyAccountBloc.of(context, listen: false),
-      conversation: chat,
-      lastChatMessage: lastChatMessage,
-      needRefreshFromNetworkOnInit: needRefreshFromNetworkOnInit,
-      conversationRepository:
-          IConversationChatRepository.of(context, listen: false),
-      statusRepository: IStatusRepository.of(context, listen: false),
-      accountRepository: IAccountRepository.of(context, listen: false),
-      unifediApiStatusService: Provider.of<IUnifediApiStatusService>(
-        context,
-        listen: false,
-      ),
-    );
-  }
+  }) =>
+      ConversationChatBloc(
+        connectionService:
+            Provider.of<IConnectionService>(context, listen: false),
+        pleromaConversationService:
+            Provider.of<IUnifediApiConversationService>(context, listen: false),
+        myAccountBloc: IMyAccountBloc.of(context, listen: false),
+        conversation: chat,
+        lastChatMessage: lastChatMessage,
+        needRefreshFromNetworkOnInit: needRefreshFromNetworkOnInit,
+        conversationRepository:
+            IConversationChatRepository.of(context, listen: false),
+        statusRepository: IStatusRepository.of(context, listen: false),
+        accountRepository: IAccountRepository.of(context, listen: false),
+        unifediApiStatusService: Provider.of<IUnifediApiStatusService>(
+          context,
+          listen: false,
+        ),
+      );
 
   @override
   Future markAsRead() async {

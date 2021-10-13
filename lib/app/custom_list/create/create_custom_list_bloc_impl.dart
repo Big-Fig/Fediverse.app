@@ -67,20 +67,19 @@ class CreateCustomListBloc extends EditCustomListBloc
     BuildContext context, {
     required Widget child,
     required Function(ICustomList) onSubmit,
-  }) {
-    return DisposableProvider<ICreateCustomListBloc>(
-      create: (context) => CreateCustomListBloc.createFromContext(
-        context,
-        onSubmit: onSubmit,
-      ),
-      child: ProxyProvider<ICreateCustomListBloc, IEditCustomListBloc>(
-        update: (context, value, previous) => value,
-        child: EditCustomListBlocProxyProvider(
-          child: child,
+  }) =>
+      DisposableProvider<ICreateCustomListBloc>(
+        create: (context) => CreateCustomListBloc.createFromContext(
+          context,
+          onSubmit: onSubmit,
         ),
-      ),
-    );
-  }
+        child: ProxyProvider<ICreateCustomListBloc, IEditCustomListBloc>(
+          update: (context, value, previous) => value,
+          child: EditCustomListBlocProxyProvider(
+            child: child,
+          ),
+        ),
+      );
 
   @override
   Future<ICustomList> submit() async {

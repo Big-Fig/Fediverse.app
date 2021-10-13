@@ -25,21 +25,20 @@ class FilterCachedListBloc extends IFilterCachedListBloc {
     required int? limit,
     required IFilter? newerThan,
     required IFilter? olderThan,
-  }) {
-    return filterRepository.findAllInAppType(
-      pagination: RepositoryPagination(
-        olderThanItem: olderThan,
-        newerThanItem: newerThan,
-        limit: limit,
-      ),
-      filters: FilterRepositoryFilters(
-        notExpired: false,
-      ),
-      orderingTerms: [
-        FilterOrderingTermData.remoteIdDesc,
-      ],
-    );
-  }
+  }) =>
+      filterRepository.findAllInAppType(
+        pagination: RepositoryPagination(
+          olderThanItem: olderThan,
+          newerThanItem: newerThan,
+          limit: limit,
+        ),
+        filters: FilterRepositoryFilters(
+          notExpired: false,
+        ),
+        orderingTerms: [
+          FilterOrderingTermData.remoteIdDesc,
+        ],
+      );
 
   @override
   Future refreshItemsFromRemoteForPage({
@@ -77,12 +76,11 @@ class FilterCachedListBloc extends IFilterCachedListBloc {
   static Widget provideToContext(
     BuildContext context, {
     required Widget child,
-  }) {
-    return DisposableProvider<IFilterCachedListBloc>(
-      create: (context) => FilterCachedListBloc.createFromContext(
-        context,
-      ),
-      child: child,
-    );
-  }
+  }) =>
+      DisposableProvider<IFilterCachedListBloc>(
+        create: (context) => FilterCachedListBloc.createFromContext(
+          context,
+        ),
+        child: child,
+      );
 }

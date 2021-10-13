@@ -58,14 +58,13 @@ class CustomListNetworkOnlyPaginationBloc
     required int? itemsCountPerPage,
     required PaginationPage<ICustomList>? olderPage,
     required PaginationPage<ICustomList>? newerPage,
-  }) {
-    return listService.loadItemsFromRemoteForPage(
-      itemsCountPerPage: itemsCountPerPage,
-      pageIndex: pageIndex,
-      minId: newerPage?.items.lastOrNull?.remoteId,
-      maxId: olderPage?.items.firstOrNull?.remoteId,
-    );
-  }
+  }) =>
+      listService.loadItemsFromRemoteForPage(
+        itemsCountPerPage: itemsCountPerPage,
+        pageIndex: pageIndex,
+        minId: newerPage?.items.lastOrNull?.remoteId,
+        maxId: olderPage?.items.firstOrNull?.remoteId,
+      );
 
   static Widget provideToContext(
     BuildContext context, {

@@ -10,15 +10,14 @@ class PaginationListBlocProxyProvider<TPage extends PaginationPage<TItem>,
   PaginationListBlocProxyProvider({required this.child});
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IPaginationListBloc<TPage, TItem>,
-        IPaginationListBloc<PaginationPage<TItem>, TItem>>(
-      update: (context, value, previous) => value,
-      child:
-          ProxyProvider<IPaginationListBloc<TPage, TItem>, IPaginationListBloc>(
+  Widget build(BuildContext context) => ProxyProvider<
+          IPaginationListBloc<TPage, TItem>,
+          IPaginationListBloc<PaginationPage<TItem>, TItem>>(
         update: (context, value, previous) => value,
-        child: child,
-      ),
-    );
-  }
+        child: ProxyProvider<IPaginationListBloc<TPage, TItem>,
+            IPaginationListBloc>(
+          update: (context, value, previous) => value,
+          child: child,
+        ),
+      );
 }

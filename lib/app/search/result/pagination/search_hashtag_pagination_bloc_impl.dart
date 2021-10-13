@@ -44,12 +44,10 @@ class SearchHashtagPaginationBloc
   static Widget provideToContext(
     BuildContext context, {
     required Widget child,
-  }) {
-    return DisposableProvider<
-        IPaginationBloc<PaginationPage<IHashtag>, IHashtag>>(
-      create: (context) =>
-          SearchHashtagPaginationBloc.createFromContext(context),
-      child: child,
-    );
-  }
+  }) =>
+      DisposableProvider<IPaginationBloc<PaginationPage<IHashtag>, IHashtag>>(
+        create: (context) =>
+            SearchHashtagPaginationBloc.createFromContext(context),
+        child: child,
+      );
 }

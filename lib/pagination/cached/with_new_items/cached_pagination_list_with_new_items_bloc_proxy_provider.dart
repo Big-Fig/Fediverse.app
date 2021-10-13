@@ -12,29 +12,29 @@ class CachedPaginationListWithNewItemsBlocProxyProvider<
   CachedPaginationListWithNewItemsBlocProxyProvider({required this.child});
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<ICachedPaginationListWithNewItemsBloc<TPage, TItem>,
-        ICachedPaginationListBloc<TPage, TItem>>(
-      update: (context, value, previous) => value,
-      child: ProxyProvider<ICachedPaginationListWithNewItemsBloc<TPage, TItem>,
-          ICachedPaginationListBloc<CachedPaginationPage<TItem>, TItem>>(
+  Widget build(BuildContext context) => ProxyProvider<
+          ICachedPaginationListWithNewItemsBloc<TPage, TItem>,
+          ICachedPaginationListBloc<TPage, TItem>>(
         update: (context, value, previous) => value,
-        child: CachedPaginationListBlocProxyProvider<TPage, TItem>(
-          child: ProxyProvider<
-              ICachedPaginationListWithNewItemsBloc<TPage, TItem>,
-              ICachedPaginationListWithNewItemsBloc>(
-            update: (context, value, previous) => value,
+        child: ProxyProvider<
+            ICachedPaginationListWithNewItemsBloc<TPage, TItem>,
+            ICachedPaginationListBloc<CachedPaginationPage<TItem>, TItem>>(
+          update: (context, value, previous) => value,
+          child: CachedPaginationListBlocProxyProvider<TPage, TItem>(
             child: ProxyProvider<
                 ICachedPaginationListWithNewItemsBloc<TPage, TItem>,
-                ICachedPaginationListBloc>(
+                ICachedPaginationListWithNewItemsBloc>(
               update: (context, value, previous) => value,
-              child: CachedPaginationListBlocProxyProvider<TPage, TItem>(
-                child: child,
+              child: ProxyProvider<
+                  ICachedPaginationListWithNewItemsBloc<TPage, TItem>,
+                  ICachedPaginationListBloc>(
+                update: (context, value, previous) => value,
+                child: CachedPaginationListBlocProxyProvider<TPage, TItem>(
+                  child: child,
+                ),
               ),
             ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }

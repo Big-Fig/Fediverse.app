@@ -68,15 +68,14 @@ class MultiSelectAccountBloc extends DisposableOwner
     BuildContext context, {
     required Widget child,
     AccountsListCallback? accountsListSelectedCallback,
-  }) {
-    return DisposableProvider<IMultiSelectAccountBloc>(
-      create: (context) => MultiSelectAccountBloc.createFromContext(
-        context,
-        accountsListSelectedCallback: accountsListSelectedCallback,
-      ),
-      child: child,
-    );
-  }
+  }) =>
+      DisposableProvider<IMultiSelectAccountBloc>(
+        create: (context) => MultiSelectAccountBloc.createFromContext(
+          context,
+          accountsListSelectedCallback: accountsListSelectedCallback,
+        ),
+        child: child,
+      );
 
   bool _calculateIsAccountSelected(
     List<IAccount>? selectedAccounts,

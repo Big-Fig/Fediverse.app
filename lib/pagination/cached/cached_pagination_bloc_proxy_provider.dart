@@ -12,19 +12,17 @@ class CachedPaginationBlocProxyProvider<
   CachedPaginationBlocProxyProvider({required this.child});
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<ICachedPaginationBloc<TPage, TItem>,
-        IPaginationBloc<TPage, TItem>>(
-      update: (context, value, previous) => value,
-      child: ProxyProvider<ICachedPaginationBloc<TPage, TItem>,
-          IPaginationBloc<PaginationPage<TItem>, TItem>>(
+  Widget build(BuildContext context) => ProxyProvider<
+          ICachedPaginationBloc<TPage, TItem>, IPaginationBloc<TPage, TItem>>(
         update: (context, value, previous) => value,
-        child:
-            ProxyProvider<ICachedPaginationBloc<TPage, TItem>, IPaginationBloc>(
+        child: ProxyProvider<ICachedPaginationBloc<TPage, TItem>,
+            IPaginationBloc<PaginationPage<TItem>, TItem>>(
           update: (context, value, previous) => value,
-          child: child,
+          child: ProxyProvider<ICachedPaginationBloc<TPage, TItem>,
+              IPaginationBloc>(
+            update: (context, value, previous) => value,
+            child: child,
+          ),
         ),
-      ),
-    );
-  }
+      );
 }

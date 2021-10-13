@@ -15,18 +15,16 @@ class FilterFormWidget extends StatelessWidget {
   const FilterFormWidget();
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        const _FilterFormPhraseFieldWidget(),
-        const _FilterFormContextFieldWidget(),
-        const _FilterFormIrreversibleFieldWidget(),
-        const _FilterFormWholeWordFieldWidget(),
-        const _FilterFormExpiresInFieldWidget(),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const _FilterFormPhraseFieldWidget(),
+          const _FilterFormContextFieldWidget(),
+          const _FilterFormIrreversibleFieldWidget(),
+          const _FilterFormWholeWordFieldWidget(),
+          const _FilterFormExpiresInFieldWidget(),
+        ],
+      );
 }
 
 class _FilterFormExpiresInFieldWidget extends StatelessWidget {
@@ -35,19 +33,20 @@ class _FilterFormExpiresInFieldWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IFilterFormBloc, IDurationDateTimeValueFormFieldBloc>(
-      update: (context, value, previous) => value.expiresInField,
-      child: DurationDateTimeValueFormFieldRowWidget(
-        label: S.of(context).app_filter_edit_field_expiresIn_label,
-        description: S.of(context).app_filter_edit_field_expiresIn_description,
-        descriptionOnDisabled:
-            S.of(context).app_settings_warning_notSupportedOnThisInstance_desc,
-        negativeValue: S.of(context).app_filter_expired,
-        useDialogPickerForValueSelection: true,
-      ),
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IFilterFormBloc, IDurationDateTimeValueFormFieldBloc>(
+        update: (context, value, previous) => value.expiresInField,
+        child: DurationDateTimeValueFormFieldRowWidget(
+          label: S.of(context).app_filter_edit_field_expiresIn_label,
+          description:
+              S.of(context).app_filter_edit_field_expiresIn_description,
+          descriptionOnDisabled: S
+              .of(context)
+              .app_settings_warning_notSupportedOnThisInstance_desc,
+          negativeValue: S.of(context).app_filter_expired,
+          useDialogPickerForValueSelection: true,
+        ),
+      );
 }
 
 class _FilterFormContextFieldWidget extends StatelessWidget {
@@ -56,16 +55,14 @@ class _FilterFormContextFieldWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IFilterFormBloc,
-        IFilterContextMultiSelectFromListValueFormFieldBloc>(
-      update: (context, value, previous) => value.contextField,
-      child: FilterContextMultiSelectFromListValueFormFieldWidget(
-        label: S.of(context).app_filter_edit_field_context_label,
-        description: S.of(context).app_filter_edit_field_context_description,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => ProxyProvider<IFilterFormBloc,
+          IFilterContextMultiSelectFromListValueFormFieldBloc>(
+        update: (context, value, previous) => value.contextField,
+        child: FilterContextMultiSelectFromListValueFormFieldWidget(
+          label: S.of(context).app_filter_edit_field_context_label,
+          description: S.of(context).app_filter_edit_field_context_description,
+        ),
+      );
 }
 
 class _FilterFormIrreversibleFieldWidget extends StatelessWidget {
@@ -74,16 +71,15 @@ class _FilterFormIrreversibleFieldWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IFilterFormBloc, IBoolValueFormFieldBloc>(
-      update: (context, value, previous) => value.irreversibleField,
-      child: BoolValueFormFieldRowWidget(
-        label: S.of(context).app_filter_edit_field_irreversible_label,
-        description:
-            S.of(context).app_filter_edit_field_irreversible_description,
-      ),
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IFilterFormBloc, IBoolValueFormFieldBloc>(
+        update: (context, value, previous) => value.irreversibleField,
+        child: BoolValueFormFieldRowWidget(
+          label: S.of(context).app_filter_edit_field_irreversible_label,
+          description:
+              S.of(context).app_filter_edit_field_irreversible_description,
+        ),
+      );
 }
 
 class _FilterFormWholeWordFieldWidget extends StatelessWidget {
@@ -92,17 +88,18 @@ class _FilterFormWholeWordFieldWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IFilterFormBloc, IBoolValueFormFieldBloc>(
-      update: (context, value, previous) => value.wholeWordField,
-      child: BoolValueFormFieldRowWidget(
-        label: S.of(context).app_filter_edit_field_wholeWord_label,
-        description: S.of(context).app_filter_edit_field_wholeWord_description,
-        descriptionOnDisabled:
-            S.of(context).app_filter_edit_field_wholeWord_error_invalid_phrase,
-      ),
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IFilterFormBloc, IBoolValueFormFieldBloc>(
+        update: (context, value, previous) => value.wholeWordField,
+        child: BoolValueFormFieldRowWidget(
+          label: S.of(context).app_filter_edit_field_wholeWord_label,
+          description:
+              S.of(context).app_filter_edit_field_wholeWord_description,
+          descriptionOnDisabled: S
+              .of(context)
+              .app_filter_edit_field_wholeWord_error_invalid_phrase,
+        ),
+      );
 }
 
 class _FilterFormPhraseFieldWidget extends StatelessWidget {
@@ -111,16 +108,15 @@ class _FilterFormPhraseFieldWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IFilterFormBloc, IStringValueFormFieldBloc>(
-      update: (context, value, previous) => value.phraseField,
-      child: StringValueFormFieldRowWidget(
-        autocorrect: true,
-        label: S.of(context).app_filter_edit_field_phrase_label,
-        hint: S.of(context).app_filter_edit_field_phrase_hint,
-        onSubmitted: null,
-        textInputAction: TextInputAction.done,
-      ),
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IFilterFormBloc, IStringValueFormFieldBloc>(
+        update: (context, value, previous) => value.phraseField,
+        child: StringValueFormFieldRowWidget(
+          autocorrect: true,
+          label: S.of(context).app_filter_edit_field_phrase_label,
+          hint: S.of(context).app_filter_edit_field_phrase_hint,
+          onSubmitted: null,
+          textInputAction: TextInputAction.done,
+        ),
+      );
 }

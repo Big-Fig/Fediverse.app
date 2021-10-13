@@ -89,21 +89,23 @@ Future<void> _showFolderChooserModalBottomSheet(
         padding: FediPadding.allBigPadding,
         child: ListView(
           shrinkWrap: true,
-          children: mediaDeviceGalleryBloc.folders!.map((folder) {
-            return ListTile(
-              onTap: () {
-                mediaDeviceGalleryBloc.selectFolder(folder);
-                Navigator.of(context).pop();
-              },
-              title: Text(
-                _calculateFolderTitle(folder),
-                style:
-                    folder == mediaDeviceGalleryBloc.selectedFolderData?.folder
+          children: mediaDeviceGalleryBloc.folders!
+              .map(
+                (folder) => ListTile(
+                  onTap: () {
+                    mediaDeviceGalleryBloc.selectFolder(folder);
+                    Navigator.of(context).pop();
+                  },
+                  title: Text(
+                    _calculateFolderTitle(folder),
+                    style: folder ==
+                            mediaDeviceGalleryBloc.selectedFolderData?.folder
                         ? fediUiTextTheme.mediumShortBoldDarkGrey
                         : fediUiTextTheme.mediumShortDarkGrey,
-              ),
-            );
-          }).toList(),
+                  ),
+                ),
+              )
+              .toList(),
         ),
       ),
     ),

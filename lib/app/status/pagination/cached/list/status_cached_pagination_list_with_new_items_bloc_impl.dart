@@ -68,45 +68,42 @@ class StatusCachedPaginationListWithNewItemsBloc<
     required bool mergeNewItemsImmediately,
     required bool mergeOwnStatusesImmediately,
     required Widget child,
-  }) {
-    return DisposableProvider<
-        ICachedPaginationListWithNewItemsBloc<TPage, IStatus>>(
-      create: (context) =>
-          StatusCachedPaginationListWithNewItemsBloc.createFromContext<TPage>(
-        context,
-        mergeNewItemsImmediately: mergeNewItemsImmediately,
-        mergeOwnStatusesImmediately: mergeOwnStatusesImmediately,
-      ),
-      child: ProxyProvider<
-          ICachedPaginationListWithNewItemsBloc<TPage, IStatus>,
-          ICachedPaginationListWithNewItemsBloc>(
-        update: (context, value, previous) => value,
-        child:
-            CachedPaginationListWithNewItemsBlocProxyProvider<TPage, IStatus>(
-          child: child,
+  }) =>
+      DisposableProvider<ICachedPaginationListWithNewItemsBloc<TPage, IStatus>>(
+        create: (context) =>
+            StatusCachedPaginationListWithNewItemsBloc.createFromContext<TPage>(
+          context,
+          mergeNewItemsImmediately: mergeNewItemsImmediately,
+          mergeOwnStatusesImmediately: mergeOwnStatusesImmediately,
         ),
-      ),
-    );
-  }
+        child: ProxyProvider<
+            ICachedPaginationListWithNewItemsBloc<TPage, IStatus>,
+            ICachedPaginationListWithNewItemsBloc>(
+          update: (context, value, previous) => value,
+          child:
+              CachedPaginationListWithNewItemsBlocProxyProvider<TPage, IStatus>(
+            child: child,
+          ),
+        ),
+      );
 
   static StatusCachedPaginationListWithNewItemsBloc<TPage>
       createFromContext<TPage extends CachedPaginationPage<IStatus>>(
     BuildContext context, {
     required bool mergeNewItemsImmediately,
     required bool mergeOwnStatusesImmediately,
-  }) {
-    return StatusCachedPaginationListWithNewItemsBloc<TPage>(
-      mergeOwnStatusesImmediately: mergeOwnStatusesImmediately,
-      mergeNewItemsImmediately: mergeNewItemsImmediately,
-      myAccountBloc: IMyAccountBloc.of(context, listen: false),
-      paginationBloc: Provider.of<ICachedPaginationBloc<TPage, IStatus>>(
-        context,
-        listen: false,
-      ),
-      statusCachedListBloc: IStatusCachedListBloc.of(
-        context,
-        listen: false,
-      ),
-    );
-  }
+  }) =>
+          StatusCachedPaginationListWithNewItemsBloc<TPage>(
+            mergeOwnStatusesImmediately: mergeOwnStatusesImmediately,
+            mergeNewItemsImmediately: mergeNewItemsImmediately,
+            myAccountBloc: IMyAccountBloc.of(context, listen: false),
+            paginationBloc: Provider.of<ICachedPaginationBloc<TPage, IStatus>>(
+              context,
+              listen: false,
+            ),
+            statusCachedListBloc: IStatusCachedListBloc.of(
+              context,
+              listen: false,
+            ),
+          );
 }

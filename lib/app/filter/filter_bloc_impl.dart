@@ -98,13 +98,12 @@ class FilterBloc extends DisposableOwner implements IFilterBloc {
   Future _updateByRemoteFilter(
     IUnifediApiFilter remoteFilter, {
     required Batch? batchTransaction,
-  }) {
-    return filterRepository.updateAppTypeByRemoteType(
-      appItem: filter,
-      remoteItem: remoteFilter,
-      batchTransaction: batchTransaction,
-    );
-  }
+  }) =>
+      filterRepository.updateAppTypeByRemoteType(
+        appItem: filter,
+        remoteItem: remoteFilter,
+        batchTransaction: batchTransaction,
+      );
 
   @override
   Future dispose() {

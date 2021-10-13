@@ -11,14 +11,12 @@ class StatusNetworkOnlyListBlocProxyProvider extends StatelessWidget {
   StatusNetworkOnlyListBlocProxyProvider({required this.child});
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IStatusNetworkOnlyListBloc,
-        INetworkOnlyListBloc<IStatus>>(
-      update: (context, value, previous) => value,
-      child: ProxyProvider<IStatusNetworkOnlyListBloc, IStatusListBloc>(
+  Widget build(BuildContext context) =>
+      ProxyProvider<IStatusNetworkOnlyListBloc, INetworkOnlyListBloc<IStatus>>(
         update: (context, value, previous) => value,
-        child: child,
-      ),
-    );
-  }
+        child: ProxyProvider<IStatusNetworkOnlyListBloc, IStatusListBloc>(
+          update: (context, value, previous) => value,
+          child: child,
+        ),
+      );
 }

@@ -300,67 +300,66 @@ abstract class CachedPaginationListWithNewItemsBloc<
 
   StreamSubscription<List<TItem>> createWatchNewItemsSubscription(
     TItem? newerItem,
-  ) {
-    return watchItemsNewerThanItem(newerItem)
-        .skipWhile((newItems) => !newItems.isNotEmpty)
-        .listen(
-      (List<TItem> newItems) async {
-        isNewItemsAsyncCheckInProgress = true;
+  ) =>
+      watchItemsNewerThanItem(newerItem)
+          .skipWhile((newItems) => !newItems.isNotEmpty)
+          .listen(
+        (List<TItem> newItems) async {
+          isNewItemsAsyncCheckInProgress = true;
 
-        try {
-          var currentItems = items;
+          try {
+            var currentItems = items;
 
-          // changed during sql request execute time
-          // we need to filter again to be sure that newerItem is no
+            // changed during sql request execute time
+            // we need to filter again to be sure that newerItem is no
 
-          var actuallyNewRequest = CalculateActuallyNewRequest<TItem>(
-            newItems: newItems,
-            newerItem: newerItem,
-            currentItems: currentItems,
-          );
-
-          List<TItem> actuallyNew;
-          if (asyncCalculateActuallyNew) {
-            actuallyNew = await compute(
-              _calculateActuallyNew,
-              actuallyNewRequest,
-            );
-          } else {
-            actuallyNew = _calculateActuallyNew(
-              actuallyNewRequest,
-            );
-          }
-
-          // if newerItem already changed we shouldn't apply calculated changes
-          // because new changes coming
-          if (this.newerItem == newerItem) {
-            _logger.finest(
-              () => 'watchItemsNewerThanItem '
-                  '\n'
-                  '\t newItems ${newItems.length} \n'
-                  '\t actuallyNew = ${actuallyNew.length}',
+            var actuallyNewRequest = CalculateActuallyNewRequest<TItem>(
+              newItems: newItems,
+              newerItem: newerItem,
+              currentItems: currentItems,
             );
 
-            if (actuallyNew.isNotEmpty) {
-              if (!currentItems.isNotEmpty &&
-                  mergeNewItemsImmediatelyWhenItemsIsEmpty) {
-                // merge immediately
-                if (!mergedNewItemsSubject.isClosed) {
-                  mergedNewItemsSubject.add(actuallyNew);
-                }
-              } else {
-                if (!unmergedNewItemsSubject.isClosed) {
-                  unmergedNewItemsSubject.add(actuallyNew);
+            List<TItem> actuallyNew;
+            if (asyncCalculateActuallyNew) {
+              actuallyNew = await compute(
+                _calculateActuallyNew,
+                actuallyNewRequest,
+              );
+            } else {
+              actuallyNew = _calculateActuallyNew(
+                actuallyNewRequest,
+              );
+            }
+
+            // if newerItem already changed we shouldn't apply calculated changes
+            // because new changes coming
+            if (this.newerItem == newerItem) {
+              _logger.finest(
+                () => 'watchItemsNewerThanItem '
+                    '\n'
+                    '\t newItems ${newItems.length} \n'
+                    '\t actuallyNew = ${actuallyNew.length}',
+              );
+
+              if (actuallyNew.isNotEmpty) {
+                if (!currentItems.isNotEmpty &&
+                    mergeNewItemsImmediatelyWhenItemsIsEmpty) {
+                  // merge immediately
+                  if (!mergedNewItemsSubject.isClosed) {
+                    mergedNewItemsSubject.add(actuallyNew);
+                  }
+                } else {
+                  if (!unmergedNewItemsSubject.isClosed) {
+                    unmergedNewItemsSubject.add(actuallyNew);
+                  }
                 }
               }
             }
+          } finally {
+            isNewItemsAsyncCheckInProgress = false;
           }
-        } finally {
-          isNewItemsAsyncCheckInProgress = false;
-        }
-      },
-    );
-  }
+        },
+      );
 }
 
 class _CalculateNewItemsRequest<TItem extends IEqualComparableObj<TItem>> {

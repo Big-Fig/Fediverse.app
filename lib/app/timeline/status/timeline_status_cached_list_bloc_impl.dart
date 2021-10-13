@@ -275,19 +275,18 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
     }
   }
 
-  Future<List<IUnifediApiStatus>> _loadAccountTimeline() async {
-    return unifediApiAccountService.getAccountStatuses(
-      pagination: null,
-      accountId: timeline.onlyFromRemoteAccount!.id,
-      onlyWithMedia: onlyWithMedia,
-      pinned: null,
-      tagged: null,
-      excludeReblogs: null,
-      excludeReplies: null,
-      excludeVisibilities: null,
-      withMuted: null,
-    );
-  }
+  Future<List<IUnifediApiStatus>> _loadAccountTimeline() async =>
+      unifediApiAccountService.getAccountStatuses(
+        pagination: null,
+        accountId: timeline.onlyFromRemoteAccount!.id,
+        onlyWithMedia: onlyWithMedia,
+        pinned: null,
+        tagged: null,
+        excludeReblogs: null,
+        excludeReplies: null,
+        excludeVisibilities: null,
+        withMuted: null,
+      );
 
   Future<List<IUnifediApiStatus>> _loadHashtagTimeline(
     UnifediApiPagination pagination,
@@ -417,15 +416,14 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
   }
 
   @override
-  Stream<List<IStatus>> watchLocalItemsNewerThanItem(IStatus? item) {
-    return statusRepository.watchFindAllInAppType(
-      filters: _statusRepositoryFilters,
-      pagination: RepositoryPagination<IStatus>(
-        newerThanItem: item,
-      ),
-      orderingTerms: [StatusRepositoryOrderingTermData.remoteIdDesc],
-    );
-  }
+  Stream<List<IStatus>> watchLocalItemsNewerThanItem(IStatus? item) =>
+      statusRepository.watchFindAllInAppType(
+        filters: _statusRepositoryFilters,
+        pagination: RepositoryPagination<IStatus>(
+          newerThanItem: item,
+        ),
+        orderingTerms: [StatusRepositoryOrderingTermData.remoteIdDesc],
+      );
 
   static TimelineStatusCachedListBloc createFromContext(
     BuildContext context, {

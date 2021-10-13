@@ -148,14 +148,13 @@ class ConversationChatStatusListItemWidget extends StatelessWidget {
     BuildContext context,
     IStatusBloc statusBloc,
     bool isStatusFromMe,
-  ) {
-    return Column(
-      children: <Widget>[
-        buildTextContent(statusBloc, isStatusFromMe),
-        buildMediaContent(statusBloc),
-      ],
-    );
-  }
+  ) =>
+      Column(
+        children: <Widget>[
+          buildTextContent(statusBloc, isStatusFromMe),
+          buildMediaContent(statusBloc),
+        ],
+      );
 
   Widget buildMediaContent(IStatusBloc statusBloc) =>
       StreamBuilder<List<IUnifediApiMediaAttachment>?>(

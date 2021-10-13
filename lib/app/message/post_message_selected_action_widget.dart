@@ -40,20 +40,18 @@ class _PostMessageSelectedActionPollWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        const Padding(
-          padding: FediPadding.verticalBigPadding,
-          child: FediUltraLightGreyDivider(),
-        ),
-        const Padding(
-          padding: FediPadding.horizontalSmallPadding,
-          child: PostStatusPollWidget(),
-        ),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => Column(
+        children: <Widget>[
+          const Padding(
+            padding: FediPadding.verticalBigPadding,
+            child: FediUltraLightGreyDivider(),
+          ),
+          const Padding(
+            padding: FediPadding.horizontalSmallPadding,
+            child: PostStatusPollWidget(),
+          ),
+        ],
+      );
 }
 
 class _PostMessageSelectedActionEmojiWidget extends StatelessWidget {
@@ -90,15 +88,13 @@ class _PostMessageSelectedActionAttachWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        const Padding(
-          padding: FediPadding.verticalBigPadding,
-          child: FediUltraLightGreyDivider(),
-        ),
-        const PostMessageSelectMediaAttachmentTypeToPickWidget(),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => Column(
+        children: <Widget>[
+          const Padding(
+            padding: FediPadding.verticalBigPadding,
+            child: FediUltraLightGreyDivider(),
+          ),
+          const PostMessageSelectMediaAttachmentTypeToPickWidget(),
+        ],
+      );
 }

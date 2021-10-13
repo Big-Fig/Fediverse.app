@@ -126,68 +126,64 @@ class SearchResultItemPaginationListWidget
     );
   }
 
-  Widget buildHashtagListItem(ISearchResultItem item, int index) {
-    return Provider<IHashtag>.value(
-      value: item.hashtag!,
-      child: DisposableProxyProvider<IHashtag, IHashtagBloc>(
-        update: (context, value, previous) => HashtagBloc.createFromContext(
-          context,
-          hashtag: value,
-          myAccountFeaturedHashtag: null,
-          needLoadFeaturedState: false,
+  Widget buildHashtagListItem(ISearchResultItem item, int index) =>
+      Provider<IHashtag>.value(
+        value: item.hashtag!,
+        child: DisposableProxyProvider<IHashtag, IHashtagBloc>(
+          update: (context, value, previous) => HashtagBloc.createFromContext(
+            context,
+            hashtag: value,
+            myAccountFeaturedHashtag: null,
+            needLoadFeaturedState: false,
+          ),
+          child: FediListTile(
+            isFirstInList: index == 0, //                isFirstInList: false,
+            child: const HashtagListItemWidget(
+              displayHistory: false,
+            ),
+          ),
         ),
+      );
+
+  Provider<IStatus> buildStatusListItem(ISearchResultItem item, int index) =>
+      Provider<IStatus>.value(
+        value: item.status!,
         child: FediListTile(
           isFirstInList: index == 0, //                isFirstInList: false,
-          child: const HashtagListItemWidget(
-            displayHistory: false,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Provider<IStatus> buildStatusListItem(ISearchResultItem item, int index) {
-    return Provider<IStatus>.value(
-      value: item.status!,
-      child: FediListTile(
-        isFirstInList: index == 0, //                isFirstInList: false,
-        child: DisposableProxyProvider<IStatus, IStatusListItemTimelineBloc>(
-          update: (context, status, _) => StatusListItemTimelineBloc.list(
-            status: status,
-            collapsible: true,
-            statusCallback: _onStatusClick,
-            initialMediaAttachment: null,
-          ),
-          child: const StatusListItemTimelineWidget(),
-        ),
-      ),
-    );
-  }
-
-  Widget buildAccountListItem(IAccount account) {
-    return Provider<IAccount>.value(
-      value: account,
-      child: DisposableProxyProvider<IAccount, IAccountBloc>(
-        update: (context, account, oldValue) =>
-            LocalAccountBloc.createFromContext(
-          context,
-          isNeedWatchLocalRepositoryForUpdates: false,
-          account: account,
-          isNeedRefreshFromNetworkOnInit: false,
-          isNeedWatchWebSocketsEvents: false,
-          isNeedPreFetchRelationship: false,
-        ),
-        child: Column(
-          children: [
-            const AccountListItemWidget(
-              accountSelectedCallback: _accountSelectedCallback,
+          child: DisposableProxyProvider<IStatus, IStatusListItemTimelineBloc>(
+            update: (context, status, _) => StatusListItemTimelineBloc.list(
+              status: status,
+              collapsible: true,
+              statusCallback: _onStatusClick,
+              initialMediaAttachment: null,
             ),
-            const FediUltraLightGreyDivider(),
-          ],
+            child: const StatusListItemTimelineWidget(),
+          ),
         ),
-      ),
-    );
-  }
+      );
+
+  Widget buildAccountListItem(IAccount account) => Provider<IAccount>.value(
+        value: account,
+        child: DisposableProxyProvider<IAccount, IAccountBloc>(
+          update: (context, account, oldValue) =>
+              LocalAccountBloc.createFromContext(
+            context,
+            isNeedWatchLocalRepositoryForUpdates: false,
+            account: account,
+            isNeedRefreshFromNetworkOnInit: false,
+            isNeedWatchWebSocketsEvents: false,
+            isNeedPreFetchRelationship: false,
+          ),
+          child: Column(
+            children: [
+              const AccountListItemWidget(
+                accountSelectedCallback: _accountSelectedCallback,
+              ),
+              const FediUltraLightGreyDivider(),
+            ],
+          ),
+        ),
+      );
 
   @override
   IPaginationListBloc<PaginationPage<ISearchResultItem>, ISearchResultItem>

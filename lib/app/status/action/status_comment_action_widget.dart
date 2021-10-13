@@ -14,14 +14,12 @@ import 'package:provider/provider.dart';
 
 class StatusCommentActionWidget extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        const _StatusCommentActionButtonWidget(),
-        const _StatusCommentActionCounterWidget(),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => Row(
+        children: <Widget>[
+          const _StatusCommentActionButtonWidget(),
+          const _StatusCommentActionCounterWidget(),
+        ],
+      );
 
   const StatusCommentActionWidget();
 }

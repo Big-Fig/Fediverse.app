@@ -115,23 +115,21 @@ class _DraftStatusListItemAlreadyPostedWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: FediPadding.horizontalSmallPadding,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Padding(
-            padding: FediPadding.allSmallPadding,
-            child: Text(
-              S.of(context).app_status_draft_state_alreadyPosted,
-              style: IFediUiTextTheme.of(context).mediumShortBoldDarkGrey,
+  Widget build(BuildContext context) => Padding(
+        padding: FediPadding.horizontalSmallPadding,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: FediPadding.allSmallPadding,
+              child: Text(
+                S.of(context).app_status_draft_state_alreadyPosted,
+                style: IFediUiTextTheme.of(context).mediumShortBoldDarkGrey,
+              ),
             ),
-          ),
-        ],
-      ),
-    );
-  }
+          ],
+        ),
+      );
 }
 
 class _DraftStatusListItemCanceledWidget extends StatelessWidget {
@@ -140,23 +138,21 @@ class _DraftStatusListItemCanceledWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: FediPadding.horizontalSmallPadding,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Padding(
-            padding: FediPadding.allSmallPadding,
-            child: Text(
-              S.of(context).app_status_draft_state_canceled,
-              style: IFediUiTextTheme.of(context).mediumShortBoldDarkGrey,
+  Widget build(BuildContext context) => Padding(
+        padding: FediPadding.horizontalSmallPadding,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: FediPadding.allSmallPadding,
+              child: Text(
+                S.of(context).app_status_draft_state_canceled,
+                style: IFediUiTextTheme.of(context).mediumShortBoldDarkGrey,
+              ),
             ),
-          ),
-        ],
-      ),
-    );
-  }
+          ],
+        ),
+      );
 }
 
 class _DraftStatusListItemCancelButtonWidget extends StatelessWidget {

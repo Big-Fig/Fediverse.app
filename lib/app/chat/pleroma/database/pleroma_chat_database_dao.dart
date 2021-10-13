@@ -115,55 +115,49 @@ class ChatDao extends PopulatedAppRemoteDatabaseDao<
   SimpleSelectStatement<$DbChatsTable, DbChat> orderBy(
     SimpleSelectStatement<$DbChatsTable, DbChat> query,
     List<PleromaChatRepositoryOrderingTermData> orderTerms,
-  ) {
-    // ignore: curly_braces_in_flow_control_structures
-    return query
-      ..orderBy(
-        orderTerms
-            .map(
-              (orderTerm) => ($DbChatsTable item) {
-                GeneratedColumn<Object?> expression;
-                switch (orderTerm.orderType) {
-                  case PleromaChatOrderType.remoteId:
-                    expression = item.remoteId;
-                    break;
-                  case PleromaChatOrderType.updatedAt:
-                    expression = item.updatedAt;
-                    break;
-                }
+  ) =>
+      query
+        ..orderBy(
+          orderTerms
+              .map(
+                (orderTerm) => ($DbChatsTable item) {
+                  GeneratedColumn<Object?> expression;
+                  switch (orderTerm.orderType) {
+                    case PleromaChatOrderType.remoteId:
+                      expression = item.remoteId;
+                      break;
+                    case PleromaChatOrderType.updatedAt:
+                      expression = item.updatedAt;
+                      break;
+                  }
 
-                return OrderingTerm(
-                  expression: expression,
-                  mode: orderTerm.orderingMode,
-                );
-              },
-            )
-            .toList(),
-      );
-  }
+                  return OrderingTerm(
+                    expression: expression,
+                    mode: orderTerm.orderingMode,
+                  );
+                },
+              )
+              .toList(),
+        );
 
-  List<Join> populateChatJoin() {
-    return [
-      leftOuterJoin(
-        accountAlias,
-        accountAlias.remoteId.equalsExp(dbChats.accountRemoteId),
-      ),
-    ];
-  }
+  List<Join> populateChatJoin() => [
+        leftOuterJoin(
+          accountAlias,
+          accountAlias.remoteId.equalsExp(dbChats.accountRemoteId),
+        ),
+      ];
 
-  List<Join> chatLastMessageJoin() {
-    return [
-      leftOuterJoin(
-        chatMessageAlias,
-        chatMessageAlias.chatRemoteId.equalsExp(dbChats.remoteId),
-      ),
-      leftOuterJoin(
-        chatMessageAccountAlias,
-        chatMessageAccountAlias.remoteId
-            .equalsExp(chatMessageAlias.accountRemoteId),
-      ),
-    ];
-  }
+  List<Join> chatLastMessageJoin() => [
+        leftOuterJoin(
+          chatMessageAlias,
+          chatMessageAlias.chatRemoteId.equalsExp(dbChats.remoteId),
+        ),
+        leftOuterJoin(
+          chatMessageAccountAlias,
+          chatMessageAccountAlias.remoteId
+              .equalsExp(chatMessageAlias.accountRemoteId),
+        ),
+      ];
 
   @override
   $DbChatsTable get table => dbChats;
@@ -241,24 +235,22 @@ class ChatDao extends PopulatedAppRemoteDatabaseDao<
 extension DbPleromaChatPopulatedTypedResultListExtension on List<TypedResult> {
   List<DbPleromaChatPopulated> toDbPleromaChatPopulatedList({
     required ChatDao dao,
-  }) {
-    return map(
-      (item) => item.toDbPleromaChatPopulated(
-        dao: dao,
-      ),
-    ).toList();
-  }
+  }) =>
+      map(
+        (item) => item.toDbPleromaChatPopulated(
+          dao: dao,
+        ),
+      ).toList();
 }
 
 extension DbPleromaChatPopulatedTypedResultExtension on TypedResult {
   DbPleromaChatPopulated toDbPleromaChatPopulated({
     required ChatDao dao,
-  }) {
-    return DbPleromaChatPopulated(
-      dbChat: readTable(dao.db.dbChats),
-      dbAccount: readTable(dao.accountAlias),
-    );
-  }
+  }) =>
+      DbPleromaChatPopulated(
+        dbChat: readTable(dao.db.dbChats),
+        dbAccount: readTable(dao.accountAlias),
+      );
 }
 
 extension DbPleromaChatWithLastMessagePopulatedTypedResultListExtension
@@ -266,13 +258,12 @@ extension DbPleromaChatWithLastMessagePopulatedTypedResultListExtension
   List<DbPleromaChatWithLastMessagePopulated>
       toDbPleromaChatWithLastMessagePopulatedList({
     required ChatDao dao,
-  }) {
-    return map(
-      (item) => item.toDbPleromaChatWithLastMessagePopulated(
-        dao: dao,
-      ),
-    ).toList();
-  }
+  }) =>
+          map(
+            (item) => item.toDbPleromaChatWithLastMessagePopulated(
+              dao: dao,
+            ),
+          ).toList();
 }
 
 extension DbPleromaChatWithLastMessagePopulatedTypedResultExtension

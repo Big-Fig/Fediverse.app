@@ -26,17 +26,15 @@ class AccountReportWidget extends StatelessWidget {
   const AccountReportWidget();
 
   @override
-  Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        Padding(
-          padding: FediPadding.allBigPadding,
-          child: const _AccountReportFormWidget(),
-        ),
-        const _AccountReportStatusesWidget(),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => ListView(
+        children: [
+          Padding(
+            padding: FediPadding.allBigPadding,
+            child: const _AccountReportFormWidget(),
+          ),
+          const _AccountReportStatusesWidget(),
+        ],
+      );
 }
 
 class _AccountReportFormWidget extends StatelessWidget {
@@ -119,9 +117,8 @@ class _AccountReportDescriptionWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Text(S.of(context).app_account_report_description);
-  }
+  Widget build(BuildContext context) =>
+      Text(S.of(context).app_account_report_description);
 }
 
 class _AccountReportForwardWidget extends StatelessWidget {
@@ -152,18 +149,17 @@ class _AccountReportMessageWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IAccountReportBloc, IStringValueFormFieldBloc>(
-      update: (context, value, _) => value.messageStringValueFormFieldBloc,
-      child: StringValueFormFieldBlocProxyProvider(
-        child: StringValueFormFieldRowWidget(
-          label: S.of(context).app_account_report_message_label,
-          autocorrect: true,
-          hint: S.of(context).app_account_report_message_hint,
-          onSubmitted: null,
-          textInputAction: TextInputAction.done,
+  Widget build(BuildContext context) =>
+      ProxyProvider<IAccountReportBloc, IStringValueFormFieldBloc>(
+        update: (context, value, _) => value.messageStringValueFormFieldBloc,
+        child: StringValueFormFieldBlocProxyProvider(
+          child: StringValueFormFieldRowWidget(
+            label: S.of(context).app_account_report_message_label,
+            autocorrect: true,
+            hint: S.of(context).app_account_report_message_hint,
+            onSubmitted: null,
+            textInputAction: TextInputAction.done,
+          ),
         ),
-      ),
-    );
-  }
+      );
 }

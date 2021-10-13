@@ -64,27 +64,25 @@ void goToMultiSelectAccountPage(
   Navigator.push(
     context,
     MaterialPageRoute<void>(
-      builder: (context) {
-        return SelectAccountListBloc.provideToContext(
+      builder: (context) => SelectAccountListBloc.provideToContext(
+        context,
+        excludeMyAccount: excludeMyAccount,
+        child: AccountCachedPaginationBloc.provideToContext(
           context,
-          excludeMyAccount: excludeMyAccount,
-          child: AccountCachedPaginationBloc.provideToContext(
+          child: SelectAccountPaginationListBloc.provideToContext(
             context,
-            child: SelectAccountPaginationListBloc.provideToContext(
+            child: MultiSelectAccountBloc.provideToContext(
               context,
-              child: MultiSelectAccountBloc.provideToContext(
-                context,
-                child: MultiSelectAccountPage(
-                  accountsListSelectedCallback: accountsListSelectedCallback,
-                ),
+              child: MultiSelectAccountPage(
+                accountsListSelectedCallback: accountsListSelectedCallback,
               ),
             ),
           ),
-          customLocalAccountListLoader: customLocalAccountListLoader,
-          customRemoteAccountListLoader: customRemoteAccountListLoader,
-          followingsOnly: followingsOnly,
-        );
-      },
+        ),
+        customLocalAccountListLoader: customLocalAccountListLoader,
+        customRemoteAccountListLoader: customRemoteAccountListLoader,
+        followingsOnly: followingsOnly,
+      ),
     ),
   );
 }

@@ -19,14 +19,12 @@ class AccountReportPage extends StatelessWidget {
   const AccountReportPage();
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const _AccountReportPageAppBar(),
-      body: const SafeArea(
-        child: AccountReportWidget(),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Scaffold(
+        appBar: const _AccountReportPageAppBar(),
+        body: const SafeArea(
+          child: AccountReportWidget(),
+        ),
+      );
 }
 
 class _AccountReportPageAppBar extends StatelessWidget
@@ -107,20 +105,19 @@ void goToAccountReportPage(
 MaterialPageRoute createAccountReportPageRoute({
   required IAccount account,
   required List<IStatus> statuses,
-}) {
-  return MaterialPageRoute<void>(
-    builder: (context) => DisposableProvider<IAccountReportBloc>(
-      create: (context) => AccountReportBloc(
-        account: account,
-        statuses: statuses,
-        pleromaAuthAccountService: Provider.of<IUnifediApiAccountService>(
-          context,
-          listen: false,
+}) =>
+    MaterialPageRoute<void>(
+      builder: (context) => DisposableProvider<IAccountReportBloc>(
+        create: (context) => AccountReportBloc(
+          account: account,
+          statuses: statuses,
+          pleromaAuthAccountService: Provider.of<IUnifediApiAccountService>(
+            context,
+            listen: false,
+          ),
+        ),
+        child: AccountReportBlocProxyProvider(
+          child: const AccountReportPage(),
         ),
       ),
-      child: AccountReportBlocProxyProvider(
-        child: const AccountReportPage(),
-      ),
-    ),
-  );
-}
+    );

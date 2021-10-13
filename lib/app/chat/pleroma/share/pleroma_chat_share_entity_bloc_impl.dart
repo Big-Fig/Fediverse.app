@@ -81,24 +81,24 @@ class PleromaChatShareEntityBloc extends PleromaChatShareBloc
     BuildContext context, {
     required Widget child,
     required ShareEntity shareEntity,
-  }) {
-    return DisposableProvider<PleromaChatShareEntityBloc>(
-      create: (context) => createFromContext(
-        context,
-        shareEntity: shareEntity,
-      ),
-      child: ProxyProvider<PleromaChatShareEntityBloc, IPleromaChatShareBloc>(
-        update: (context, value, previous) => value,
-        child: ProxyProvider<PleromaChatShareEntityBloc, IShareEntityBloc>(
+  }) =>
+      DisposableProvider<PleromaChatShareEntityBloc>(
+        create: (context) => createFromContext(
+          context,
+          shareEntity: shareEntity,
+        ),
+        child: ProxyProvider<PleromaChatShareEntityBloc, IPleromaChatShareBloc>(
           update: (context, value, previous) => value,
-          child: ProxyProvider<PleromaChatShareEntityBloc, IShareToAccountBloc>(
+          child: ProxyProvider<PleromaChatShareEntityBloc, IShareEntityBloc>(
             update: (context, value, previous) => value,
-            child: PleromaChatShareBlocProxyProvider(child: child),
+            child:
+                ProxyProvider<PleromaChatShareEntityBloc, IShareToAccountBloc>(
+              update: (context, value, previous) => value,
+              child: PleromaChatShareBlocProxyProvider(child: child),
+            ),
           ),
         ),
-      ),
-    );
-  }
+      );
 
   static PleromaChatShareEntityBloc createFromContext(
     BuildContext context, {

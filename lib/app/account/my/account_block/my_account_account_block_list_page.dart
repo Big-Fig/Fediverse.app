@@ -25,30 +25,28 @@ import 'package:provider/provider.dart';
 
 class MyAccountAccountBlockListPage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: FediPageTitleAppBar(
-        title: S.of(context).app_account_my_accountBlock_title,
-      ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            const _MyAccountAccountBlockListPageWarningWidget(),
-            const FediMediumVerticalSpacer(),
-            const _MyAccountAccountBlockListPageAddButton(),
-            const FediMediumVerticalSpacer(),
-            const FediBigVerticalSpacer(),
-            const FediUltraLightGreyDivider(),
-            Expanded(
-              child: const MyAccountAccountBlockAccountPaginationListWidget(
-                customEmptyWidget: SizedBox.shrink(),
-              ),
-            ),
-          ],
+  Widget build(BuildContext context) => Scaffold(
+        appBar: FediPageTitleAppBar(
+          title: S.of(context).app_account_my_accountBlock_title,
         ),
-      ),
-    );
-  }
+        body: SafeArea(
+          child: Column(
+            children: [
+              const _MyAccountAccountBlockListPageWarningWidget(),
+              const FediMediumVerticalSpacer(),
+              const _MyAccountAccountBlockListPageAddButton(),
+              const FediMediumVerticalSpacer(),
+              const FediBigVerticalSpacer(),
+              const FediUltraLightGreyDivider(),
+              Expanded(
+                child: const MyAccountAccountBlockAccountPaginationListWidget(
+                  customEmptyWidget: SizedBox.shrink(),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
 
   const MyAccountAccountBlockListPage();
 }
@@ -99,11 +97,9 @@ class _MyAccountAccountBlockListPageWarningWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return FediNoteDescriptionWidget(
-      S.of(context).app_account_block_description,
-    );
-  }
+  Widget build(BuildContext context) => FediNoteDescriptionWidget(
+        S.of(context).app_account_block_description,
+      );
 }
 
 void goToMyAccountAccountBlockListPage(BuildContext context) {
@@ -113,27 +109,26 @@ void goToMyAccountAccountBlockListPage(BuildContext context) {
   );
 }
 
-MaterialPageRoute<void> createMyAccountAccountBlockListPage() {
-  return MaterialPageRoute<void>(
-    builder: (context) =>
-        MyAccountAccountBlockNetworkOnlyAccountListBloc.provideToContext(
-      context,
-      child: DisposableProvider<IAccountNetworkOnlyPaginationBloc>(
-        create: (context) =>
-            AccountNetworkOnlyPaginationBloc.createFromContext(context),
-        child: ProxyProvider<IAccountNetworkOnlyPaginationBloc,
-            INetworkOnlyPaginationBloc<PaginationPage<IAccount>, IAccount>>(
-          update: (context, value, previous) => value,
-          child: NetworkOnlyPaginationBlocProxyProvider<
-              PaginationPage<IAccount>, IAccount>(
-            child: AccountPaginationListBloc.provideToContext(
-              context,
-              loadFromCacheDuringInit: false,
-              child: const MyAccountAccountBlockListPage(),
+MaterialPageRoute<void> createMyAccountAccountBlockListPage() =>
+    MaterialPageRoute<void>(
+      builder: (context) =>
+          MyAccountAccountBlockNetworkOnlyAccountListBloc.provideToContext(
+        context,
+        child: DisposableProvider<IAccountNetworkOnlyPaginationBloc>(
+          create: (context) =>
+              AccountNetworkOnlyPaginationBloc.createFromContext(context),
+          child: ProxyProvider<IAccountNetworkOnlyPaginationBloc,
+              INetworkOnlyPaginationBloc<PaginationPage<IAccount>, IAccount>>(
+            update: (context, value, previous) => value,
+            child: NetworkOnlyPaginationBlocProxyProvider<
+                PaginationPage<IAccount>, IAccount>(
+              child: AccountPaginationListBloc.provideToContext(
+                context,
+                loadFromCacheDuringInit: false,
+                child: const MyAccountAccountBlockListPage(),
+              ),
             ),
           ),
         ),
       ),
-    ),
-  );
-}
+    );

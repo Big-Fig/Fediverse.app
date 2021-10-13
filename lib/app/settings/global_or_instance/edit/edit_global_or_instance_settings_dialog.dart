@@ -97,16 +97,14 @@ class _EditGlobalOrInstanceSettingsDialogBodyWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldRowWidget(
-          showGlobalSettingsDialogCallback: showGlobalSettingsDialogCallback,
-        ),
-        const FediLightGreyDivider(),
-        child,
-      ],
-    );
-  }
+  Widget build(BuildContext context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldRowWidget(
+            showGlobalSettingsDialogCallback: showGlobalSettingsDialogCallback,
+          ),
+          const FediLightGreyDivider(),
+          child,
+        ],
+      );
 }

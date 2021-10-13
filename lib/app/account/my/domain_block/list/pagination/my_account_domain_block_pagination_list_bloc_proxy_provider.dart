@@ -12,15 +12,14 @@ class MyAccountDomainBlockPaginationListBlocProxyProvider
   MyAccountDomainBlockPaginationListBlocProxyProvider({required this.child});
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IMyAccountDomainBlockPaginationListBloc,
-        IPaginationListBloc<PaginationPage<DomainBlock>, DomainBlock>>(
-      update: (context, value, previous) => value,
-      child: ProxyProvider<IMyAccountDomainBlockPaginationListBloc,
-          IPaginationListBloc>(
+  Widget build(BuildContext context) => ProxyProvider<
+          IMyAccountDomainBlockPaginationListBloc,
+          IPaginationListBloc<PaginationPage<DomainBlock>, DomainBlock>>(
         update: (context, value, previous) => value,
-        child: child,
-      ),
-    );
-  }
+        child: ProxyProvider<IMyAccountDomainBlockPaginationListBloc,
+            IPaginationListBloc>(
+          update: (context, value, previous) => value,
+          child: child,
+        ),
+      );
 }

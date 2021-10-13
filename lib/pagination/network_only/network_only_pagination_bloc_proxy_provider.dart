@@ -11,19 +11,18 @@ class NetworkOnlyPaginationBlocProxyProvider<
   NetworkOnlyPaginationBlocProxyProvider({required this.child});
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<INetworkOnlyPaginationBloc<TPage, TItem>,
-        IPaginationBloc<TPage, TItem>>(
-      update: (context, value, previous) => value,
-      child: ProxyProvider<INetworkOnlyPaginationBloc<TPage, TItem>,
-          IPaginationBloc<PaginationPage<TItem>, TItem>>(
+  Widget build(BuildContext context) => ProxyProvider<
+          INetworkOnlyPaginationBloc<TPage, TItem>,
+          IPaginationBloc<TPage, TItem>>(
         update: (context, value, previous) => value,
         child: ProxyProvider<INetworkOnlyPaginationBloc<TPage, TItem>,
-            IPaginationBloc>(
+            IPaginationBloc<PaginationPage<TItem>, TItem>>(
           update: (context, value, previous) => value,
-          child: child,
+          child: ProxyProvider<INetworkOnlyPaginationBloc<TPage, TItem>,
+              IPaginationBloc>(
+            update: (context, value, previous) => value,
+            child: child,
+          ),
         ),
-      ),
-    );
-  }
+      );
 }

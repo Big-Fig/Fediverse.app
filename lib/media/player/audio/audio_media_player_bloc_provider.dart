@@ -11,10 +11,9 @@ class AudioMediaPlayerBlocProxyProvider extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IAudioMediaPlayerBloc, IMediaPlayerBloc>(
-      update: (context, value, _) => value,
-      child: child,
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IAudioMediaPlayerBloc, IMediaPlayerBloc>(
+        update: (context, value, _) => value,
+        child: child,
+      );
 }

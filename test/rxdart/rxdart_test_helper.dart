@@ -29,31 +29,30 @@ class RxDartMockHelper {
     required DateTime start,
     required DataChecker<T?> dataChecker,
     required Duration timeout,
-  }) {
-    return Future.delayed(
-      reCheckInterval,
-      () {
-        var currentDiff = DateTime.now().difference(start).abs();
+  }) =>
+      Future.delayed(
+        reCheckInterval,
+        () {
+          var currentDiff = DateTime.now().difference(start).abs();
 
-        final currentData = dataChecker();
+          final currentData = dataChecker();
 
-        if (currentData != null) {
-          return currentData;
-        }
+          if (currentData != null) {
+            return currentData;
+          }
 
-        if (currentDiff > timeout) {
-          throw TimeoutException('Required data not found after $timeout');
-        } else {
-          return _wait(
-            reCheckInterval: reCheckInterval,
-            start: start,
-            dataChecker: dataChecker,
-            timeout: timeout,
-          );
-        }
-      },
-    );
-  }
+          if (currentDiff > timeout) {
+            throw TimeoutException('Required data not found after $timeout');
+          } else {
+            return _wait(
+              reCheckInterval: reCheckInterval,
+              start: start,
+              dataChecker: dataChecker,
+              timeout: timeout,
+            );
+          }
+        },
+      );
 
   static Future<void> waitToExecuteRxCallbacks({
     Duration duration = const Duration(milliseconds: 1),

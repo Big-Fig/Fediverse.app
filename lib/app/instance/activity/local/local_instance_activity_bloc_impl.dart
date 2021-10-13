@@ -36,12 +36,12 @@ class LocalInstanceActivityBloc extends InstanceActivityBloc
   static Widget provideToContext(
     BuildContext context, {
     required Widget child,
-  }) {
-    return DisposableProvider<IInstanceActivityBloc>(
-      create: (context) => LocalInstanceActivityBloc.createFromContext(context),
-      child: InstanceActivityBlocProxyProvider(child: child),
-    );
-  }
+  }) =>
+      DisposableProvider<IInstanceActivityBloc>(
+        create: (context) =>
+            LocalInstanceActivityBloc.createFromContext(context),
+        child: InstanceActivityBlocProxyProvider(child: child),
+      );
 
   @override
   InstanceLocation get instanceLocation => InstanceLocation.local;

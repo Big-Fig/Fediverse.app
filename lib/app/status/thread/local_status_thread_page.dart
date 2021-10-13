@@ -13,34 +13,32 @@ Future goToLocalStatusThreadPage(
   BuildContext context, {
   required IStatus status,
   required IUnifediApiMediaAttachment? initialMediaAttachment,
-}) {
-  return Navigator.push(
-    context,
-    createLocalStatusThreadPageRoute(
-      status: status,
-      initialMediaAttachment: initialMediaAttachment,
-    ),
-  );
-}
+}) =>
+    Navigator.push(
+      context,
+      createLocalStatusThreadPageRoute(
+        status: status,
+        initialMediaAttachment: initialMediaAttachment,
+      ),
+    );
 
 MaterialPageRoute<void> createLocalStatusThreadPageRoute({
   required IStatus status,
   required IUnifediApiMediaAttachment? initialMediaAttachment,
-}) {
-  return MaterialPageRoute<void>(
-    builder: (context) => DisposableProvider<IStatusThreadBloc>(
-      create: (context) => LocalStatusThreadBloc.createFromContext(
-        context,
-        initialStatusToFetchThread: status,
-        initialMediaAttachment: initialMediaAttachment,
-      ),
-      child: StatusThreadBlocProxyProvider(
-        child: ThreadPostStatusBloc.provideToContext(
+}) =>
+    MaterialPageRoute<void>(
+      builder: (context) => DisposableProvider<IStatusThreadBloc>(
+        create: (context) => LocalStatusThreadBloc.createFromContext(
           context,
-          inReplyToStatus: status,
-          child: const StatusThreadPage(),
+          initialStatusToFetchThread: status,
+          initialMediaAttachment: initialMediaAttachment,
+        ),
+        child: StatusThreadBlocProxyProvider(
+          child: ThreadPostStatusBloc.provideToContext(
+            context,
+            inReplyToStatus: status,
+            child: const StatusThreadPage(),
+          ),
         ),
       ),
-    ),
-  );
-}
+    );

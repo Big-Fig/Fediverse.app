@@ -33,12 +33,10 @@ class InstanceAnnouncementEmojiReactionListItemBodyWidget
       asyncButtonAction: () => instanceAnnouncementBloc.toggleEmojiReaction(
         emojiName: unifediApiEmojiReaction.name,
       ),
-      builder: (BuildContext context, void Function()? onPressed) {
-        return InkWell(
-          onTap: onPressed,
-          child: const EmojiReactionWidget(),
-        );
-      },
+      builder: (BuildContext context, void Function()? onPressed) => InkWell(
+        onTap: onPressed,
+        child: const EmojiReactionWidget(),
+      ),
     );
   }
 }

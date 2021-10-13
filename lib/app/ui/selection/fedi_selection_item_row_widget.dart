@@ -15,20 +15,18 @@ class SimpleFediSelectionItemRowWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onClick,
-      child: FediSelectionItemRowWidget(
-        leading: null,
-        ending: FediSelectionItemIconWidget(
-          onClick: onClick,
+  Widget build(BuildContext context) => InkWell(
+        onTap: onClick,
+        child: FediSelectionItemRowWidget(
+          leading: null,
+          ending: FediSelectionItemIconWidget(
+            onClick: onClick,
+          ),
+          title: SimpleFediSelectionItemRowTitleWidget(
+            title: title,
+          ),
         ),
-        title: SimpleFediSelectionItemRowTitleWidget(
-          title: title,
-        ),
-      ),
-    );
-  }
+      );
 }
 
 class SimpleFediSelectionItemRowTitleWidget extends StatelessWidget {
@@ -40,15 +38,13 @@ class SimpleFediSelectionItemRowTitleWidget extends StatelessWidget {
   final String title;
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: FediPadding.allSmallPadding,
-      child: Text(
-        title,
-        style: IFediUiTextTheme.of(context).bigTallMediumGrey,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Padding(
+        padding: FediPadding.allSmallPadding,
+        child: Text(
+          title,
+          style: IFediUiTextTheme.of(context).bigTallMediumGrey,
+        ),
+      );
 }
 
 class FediSelectionItemRowWidget extends StatelessWidget {
@@ -64,31 +60,29 @@ class FediSelectionItemRowWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      // todo: refactor
-      // ignore: no-magic-number
-      height: 24.0 + 16.0 + 16.0,
-      child: Padding(
-        padding: FediPadding.horizontalBigPadding,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (leading != null) leading!,
-                title,
-              ],
-            ),
-            if (ending != null) ending!,
-          ],
+  Widget build(BuildContext context) => Container(
+        // todo: refactor
+        // ignore: no-magic-number
+        height: 24.0 + 16.0 + 16.0,
+        child: Padding(
+          padding: FediPadding.horizontalBigPadding,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (leading != null) leading!,
+                  title,
+                ],
+              ),
+              if (ending != null) ending!,
+            ],
+          ),
         ),
-      ),
-    );
-  }
+      );
 }
 
 class FediSelectionItemIconWidget extends StatelessWidget {
@@ -100,15 +94,13 @@ class FediSelectionItemIconWidget extends StatelessWidget {
   final VoidCallback onClick;
 
   @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onClick,
-      child: Icon(
-        FediIcons.chevron_right,
-        color: IFediUiColorTheme.of(context).darkGrey,
-        // ignore: no-magic-number
-        size: 14.0,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => InkWell(
+        onTap: onClick,
+        child: Icon(
+          FediIcons.chevron_right,
+          color: IFediUiColorTheme.of(context).darkGrey,
+          // ignore: no-magic-number
+          size: 14.0,
+        ),
+      );
 }

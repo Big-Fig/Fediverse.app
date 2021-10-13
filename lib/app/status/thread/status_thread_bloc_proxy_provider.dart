@@ -9,10 +9,9 @@ class StatusThreadBlocProxyProvider extends StatelessWidget {
   StatusThreadBlocProxyProvider({required this.child});
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IStatusThreadBloc, IStatusListBloc>(
-      update: (context, value, previous) => value,
-      child: child,
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IStatusThreadBloc, IStatusListBloc>(
+        update: (context, value, previous) => value,
+        child: child,
+      );
 }

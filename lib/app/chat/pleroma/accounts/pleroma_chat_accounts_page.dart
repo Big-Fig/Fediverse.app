@@ -12,16 +12,14 @@ import 'package:provider/provider.dart';
 
 class PleromaChatAccountsPage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: FediPageTitleAppBar(
-        title: S.of(context).app_chat_pleroma_accounts_title,
-      ),
-      body: const SafeArea(
-        child: ChatAccountsWidget(),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Scaffold(
+        appBar: FediPageTitleAppBar(
+          title: S.of(context).app_chat_pleroma_accounts_title,
+        ),
+        body: const SafeArea(
+          child: ChatAccountsWidget(),
+        ),
+      );
 
   const PleromaChatAccountsPage();
 }

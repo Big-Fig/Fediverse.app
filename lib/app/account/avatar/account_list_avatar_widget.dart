@@ -14,14 +14,12 @@ class AccountListAvatarWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: baseAvatarSize,
-      // ignore: no-equal-arguments
-      height: baseAvatarSize,
-      child: _AccountListAvatarBodyWidget(baseAvatarSize: baseAvatarSize),
-    );
-  }
+  Widget build(BuildContext context) => SizedBox(
+        width: baseAvatarSize,
+        // ignore: no-equal-arguments
+        height: baseAvatarSize,
+        child: _AccountListAvatarBodyWidget(baseAvatarSize: baseAvatarSize),
+      );
 }
 
 class _AccountListAvatarBodyWidget extends StatelessWidget {
@@ -65,20 +63,18 @@ class _AccountListAvatarSingleAccountWidget extends StatelessWidget {
   final double baseAvatarSize;
 
   @override
-  Widget build(BuildContext context) {
-    return ClipRRect(
-      // ignore: no-magic-number
-      borderRadius: BorderRadius.circular(baseAvatarSize / 2),
-      child: ProxyProvider<IAccount, String?>(
-        update: (context, account, _) => account.avatar,
-        child: AccountAvatarUrlWidget(
-          // ignore: no-magic-number
-          progressSize: baseAvatarSize / 2,
-          imageSize: baseAvatarSize,
+  Widget build(BuildContext context) => ClipRRect(
+        // ignore: no-magic-number
+        borderRadius: BorderRadius.circular(baseAvatarSize / 2),
+        child: ProxyProvider<IAccount, String?>(
+          update: (context, account, _) => account.avatar,
+          child: AccountAvatarUrlWidget(
+            // ignore: no-magic-number
+            progressSize: baseAvatarSize / 2,
+            imageSize: baseAvatarSize,
+          ),
         ),
-      ),
-    );
-  }
+      );
 }
 
 class _AccountListAvatarMultiAccountWidget extends StatelessWidget {
@@ -353,37 +349,35 @@ class _AccountListAvatarMultiAccountImageWidget extends StatelessWidget {
   final double sizeMultiplier;
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: baseAvatarSize * sizeMultiplier,
-      // ignore: no-equal-arguments
-      height: baseAvatarSize * sizeMultiplier,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(
-          // todo: refactor
-          // ignore: no-magic-number
-          Radius.circular(baseAvatarSize * sizeMultiplier / 2),
-        ),
-        border: Border.all(
-          // ignore: no-magic-number
-          color: IFediUiColorTheme.of(context).white.withOpacity(0.5),
-          // ignore: no-magic-number
-          width: 2.0,
-        ),
-      ),
-      child: ClipRRect(
-        borderRadius:
+  Widget build(BuildContext context) => Container(
+        width: baseAvatarSize * sizeMultiplier,
+        // ignore: no-equal-arguments
+        height: baseAvatarSize * sizeMultiplier,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(
+            // todo: refactor
             // ignore: no-magic-number
-            BorderRadius.circular(baseAvatarSize / 2 * sizeMultiplier),
-        child: ProxyProvider<IAccount, String?>(
-          update: (context, account, _) => account.avatar,
-          child: AccountAvatarUrlWidget(
+            Radius.circular(baseAvatarSize * sizeMultiplier / 2),
+          ),
+          border: Border.all(
             // ignore: no-magic-number
-            progressSize: baseAvatarSize / 2 * sizeMultiplier,
-            imageSize: baseAvatarSize * sizeMultiplier,
+            color: IFediUiColorTheme.of(context).white.withOpacity(0.5),
+            // ignore: no-magic-number
+            width: 2.0,
           ),
         ),
-      ),
-    );
-  }
+        child: ClipRRect(
+          borderRadius:
+              // ignore: no-magic-number
+              BorderRadius.circular(baseAvatarSize / 2 * sizeMultiplier),
+          child: ProxyProvider<IAccount, String?>(
+            update: (context, account, _) => account.avatar,
+            child: AccountAvatarUrlWidget(
+              // ignore: no-magic-number
+              progressSize: baseAvatarSize / 2 * sizeMultiplier,
+              imageSize: baseAvatarSize * sizeMultiplier,
+            ),
+          ),
+        ),
+      );
 }

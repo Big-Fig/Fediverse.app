@@ -14,25 +14,23 @@ class FediRemoveIconInCircleButton extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onPressed,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(size),
-        child: Container(
-          width: size,
-          // ignore: no-equal-arguments
-          height: size,
-          // ignore: no-magic-number
-          color: IFediUiColorTheme.of(context).darkGrey.withOpacity(0.8),
-          child: Icon(
-            FediIcons.remove,
-            color: IFediUiColorTheme.of(context).white,
+  Widget build(BuildContext context) => InkWell(
+        onTap: onPressed,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(size),
+          child: Container(
+            width: size,
+            // ignore: no-equal-arguments
+            height: size,
             // ignore: no-magic-number
-            size: size * 0.6,
+            color: IFediUiColorTheme.of(context).darkGrey.withOpacity(0.8),
+            child: Icon(
+              FediIcons.remove,
+              color: IFediUiColorTheme.of(context).white,
+              // ignore: no-magic-number
+              size: size * 0.6,
+            ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }

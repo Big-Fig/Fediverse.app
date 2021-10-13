@@ -38,17 +38,16 @@ class InstanceAnnouncementDao extends PopulatedAppRemoteDatabaseDao<
 
     return query
       ..where(
-        (instanceAnnouncement) {
-          return instanceAnnouncement.endsAt.isNull() |
-              (instanceAnnouncement.allDay.equals(false) &
-                  instanceAnnouncement.endsAt.isBiggerThanValue(
-                    now,
-                  )) |
-              (instanceAnnouncement.allDay.equals(true) &
-                  instanceAnnouncement.endsAt.isBiggerThanValue(
-                    startOfCurrentDay,
-                  ));
-        },
+        (instanceAnnouncement) =>
+            instanceAnnouncement.endsAt.isNull() |
+            (instanceAnnouncement.allDay.equals(false) &
+                instanceAnnouncement.endsAt.isBiggerThanValue(
+                  now,
+                )) |
+            (instanceAnnouncement.allDay.equals(true) &
+                instanceAnnouncement.endsAt.isBiggerThanValue(
+                  startOfCurrentDay,
+                )),
       );
   }
 
@@ -63,17 +62,16 @@ class InstanceAnnouncementDao extends PopulatedAppRemoteDatabaseDao<
 
     return query
       ..where(
-        (instanceAnnouncement) {
-          return instanceAnnouncement.startsAt.isNull() |
-              (instanceAnnouncement.allDay.equals(false) &
-                  instanceAnnouncement.startsAt.isSmallerThanValue(
-                    now,
-                  )) |
-              (instanceAnnouncement.allDay.equals(true) &
-                  instanceAnnouncement.startsAt.isSmallerThanValue(
-                    startOfNextDay,
-                  ));
-        },
+        (instanceAnnouncement) =>
+            instanceAnnouncement.startsAt.isNull() |
+            (instanceAnnouncement.allDay.equals(false) &
+                instanceAnnouncement.startsAt.isSmallerThanValue(
+                  now,
+                )) |
+            (instanceAnnouncement.allDay.equals(true) &
+                instanceAnnouncement.startsAt.isSmallerThanValue(
+                  startOfNextDay,
+                )),
       );
   }
 
@@ -120,9 +118,7 @@ class InstanceAnnouncementDao extends PopulatedAppRemoteDatabaseDao<
             );
 
   List<Join<$DbInstanceAnnouncementsTable, DbInstanceAnnouncement>>
-      populateInstanceAnnouncementJoin() {
-    return [];
-  }
+      populateInstanceAnnouncementJoin() => [];
 
   @override
   $DbInstanceAnnouncementsTable get table => dbInstanceAnnouncements;
@@ -220,19 +216,17 @@ extension DbInstanceAnnouncementPopulatedTypedResultListExtension
     on List<TypedResult> {
   List<DbInstanceAnnouncementPopulated> toDbInstanceAnnouncementPopulatedList({
     required InstanceAnnouncementDao dao,
-  }) {
-    return map(
-      (item) => item.toDbInstanceAnnouncementPopulated(dao: dao),
-    ).toList();
-  }
+  }) =>
+      map(
+        (item) => item.toDbInstanceAnnouncementPopulated(dao: dao),
+      ).toList();
 }
 
 extension DbInstanceAnnouncementPopulatedTypedResultExtension on TypedResult {
   DbInstanceAnnouncementPopulated toDbInstanceAnnouncementPopulated({
     required InstanceAnnouncementDao dao,
-  }) {
-    return DbInstanceAnnouncementPopulated(
-      dbInstanceAnnouncement: readTable(dao.db.dbInstanceAnnouncements),
-    );
-  }
+  }) =>
+      DbInstanceAnnouncementPopulated(
+        dbInstanceAnnouncement: readTable(dao.db.dbInstanceAnnouncements),
+      );
 }

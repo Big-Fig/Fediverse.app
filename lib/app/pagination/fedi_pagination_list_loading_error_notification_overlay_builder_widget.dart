@@ -84,7 +84,5 @@ class _FediPaginationListLoadingErrorNotificationOverlayBuilderWidgetState
   }
 
   @override
-  Widget build(BuildContext context) {
-    return SizedBox.shrink();
-  }
+  Widget build(BuildContext context) => SizedBox.shrink();
 }

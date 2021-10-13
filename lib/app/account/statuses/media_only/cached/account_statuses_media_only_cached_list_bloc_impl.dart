@@ -49,25 +49,24 @@ class AccountStatusesMediaOnlyCachedListBloc
   static AccountStatusesMediaOnlyCachedListBloc createFromContext(
     BuildContext context, {
     required IAccount account,
-  }) {
-    return AccountStatusesMediaOnlyCachedListBloc(
-      account: account,
-      unifediApiAccountService:
-          Provider.of<IUnifediApiAccountService>(context, listen: false),
-      statusRepository: IStatusRepository.of(
-        context,
-        listen: false,
-      ),
-      filterRepository: IFilterRepository.of(
-        context,
-        listen: false,
-      ),
-      myAccountBloc: IMyAccountBloc.of(
-        context,
-        listen: false,
-      ),
-    );
-  }
+  }) =>
+      AccountStatusesMediaOnlyCachedListBloc(
+        account: account,
+        unifediApiAccountService:
+            Provider.of<IUnifediApiAccountService>(context, listen: false),
+        statusRepository: IStatusRepository.of(
+          context,
+          listen: false,
+        ),
+        filterRepository: IFilterRepository.of(
+          context,
+          listen: false,
+        ),
+        myAccountBloc: IMyAccountBloc.of(
+          context,
+          listen: false,
+        ),
+      );
 
   @override
   Future<List<IStatus>> loadLocalItems({
@@ -91,17 +90,16 @@ class AccountStatusesMediaOnlyCachedListBloc
   }
 
   @override
-  Stream<List<IStatus>> watchLocalItemsNewerThanItem(IStatus? item) {
-    return statusRepository.watchFindAllInAppType(
-      filters: _statusRepositoryFilters,
-      pagination: RepositoryPagination<IStatus>(
-        newerThanItem: item,
-      ),
-      orderingTerms: [
-        StatusRepositoryOrderingTermData.remoteIdDesc,
-      ],
-    );
-  }
+  Stream<List<IStatus>> watchLocalItemsNewerThanItem(IStatus? item) =>
+      statusRepository.watchFindAllInAppType(
+        filters: _statusRepositoryFilters,
+        pagination: RepositoryPagination<IStatus>(
+          newerThanItem: item,
+        ),
+        orderingTerms: [
+          StatusRepositoryOrderingTermData.remoteIdDesc,
+        ],
+      );
 
   @override
   Future refreshItemsFromRemoteForPage({
@@ -145,18 +143,17 @@ class AccountStatusesMediaOnlyCachedListBloc
     BuildContext context, {
     required IAccount account,
     required Widget child,
-  }) {
-    return DisposableProvider<IStatusCachedListBloc>(
-      create: (context) =>
-          AccountStatusesMediaOnlyCachedListBloc.createFromContext(
-        context,
-        account: account,
-      ),
-      child: StatusCachedListBlocProxyProvider(
-        child: child,
-      ),
-    );
-  }
+  }) =>
+      DisposableProvider<IStatusCachedListBloc>(
+        create: (context) =>
+            AccountStatusesMediaOnlyCachedListBloc.createFromContext(
+          context,
+          account: account,
+        ),
+        child: StatusCachedListBlocProxyProvider(
+          child: child,
+        ),
+      );
 
   @override
   InstanceLocation get instanceLocation => InstanceLocation.local;

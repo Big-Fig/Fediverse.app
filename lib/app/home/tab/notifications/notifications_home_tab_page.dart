@@ -45,22 +45,21 @@ var _logger = Logger('notifications_home_tab_page.dart');
 
 class NotificationsHomeTabPage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return DisposableProvider<INotificationTabsBloc>(
-      create: (context) => NotificationsTabsBloc.createFromContext(context),
-      child: NotificationTabsBlocLoadingWidget(
-        child: TabControllerProvider(
-          tabControllerCreator:
-              (BuildContext context, TickerProvider tickerProvider) =>
-                  TabController(
-            vsync: tickerProvider,
-            length: _notificationTabs.length,
+  Widget build(BuildContext context) =>
+      DisposableProvider<INotificationTabsBloc>(
+        create: (context) => NotificationsTabsBloc.createFromContext(context),
+        child: NotificationTabsBlocLoadingWidget(
+          child: TabControllerProvider(
+            tabControllerCreator:
+                (BuildContext context, TickerProvider tickerProvider) =>
+                    TabController(
+              vsync: tickerProvider,
+              length: _notificationTabs.length,
+            ),
+            child: const _NotificationsHomeTabPageBody(),
           ),
-          child: const _NotificationsHomeTabPageBody(),
         ),
-      ),
-    );
-  }
+      );
 }
 
 class _NotificationsHomeTabPageBody extends StatefulWidget {
@@ -281,16 +280,16 @@ class _NotificationsHomeTabPageBodyHeaderMenuButtonWidget
         },
       );
 
-  DialogAction _buildPushNotificationsAction(BuildContext context) {
-    return DialogAction(
-      label: S.of(context).app_notification_all_dialog_action_pushNotifications,
-      icon: FediIcons.filter,
-      onAction: (context) async {
-        Navigator.of(context).pop();
-        showEditInstancePushSettingsDialog(
-          context: context,
-        );
-      },
-    );
-  }
+  DialogAction _buildPushNotificationsAction(BuildContext context) =>
+      DialogAction(
+        label:
+            S.of(context).app_notification_all_dialog_action_pushNotifications,
+        icon: FediIcons.filter,
+        onAction: (context) async {
+          Navigator.of(context).pop();
+          showEditInstancePushSettingsDialog(
+            context: context,
+          );
+        },
+      );
 }

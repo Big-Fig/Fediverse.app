@@ -19,32 +19,30 @@ class UnifediApiAccessChooserInstanceListItemWidget extends StatelessWidget {
   const UnifediApiAccessChooserInstanceListItemWidget();
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: FediSizes.bigPadding),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Flexible(
-            child: Row(
-              children: <Widget>[
-                const _UnifediApiAccessChooserInstanceListItemLogoutButtonWidget(),
-                Flexible(
-                  child:
-                      const _UnifediApiAccessChooserInstanceListItemAccountInfoWidget(),
-                ),
-              ],
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.only(bottom: FediSizes.bigPadding),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Flexible(
+              child: Row(
+                children: <Widget>[
+                  const _UnifediApiAccessChooserInstanceListItemLogoutButtonWidget(),
+                  Flexible(
+                    child:
+                        const _UnifediApiAccessChooserInstanceListItemAccountInfoWidget(),
+                  ),
+                ],
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: FediSizes.bigPadding),
-            child:
-                const _UnifediApiAccessChooserInstanceListItemSelectedIconWidget(),
-          ),
-        ],
-      ),
-    );
-  }
+            Padding(
+              padding: const EdgeInsets.only(left: FediSizes.bigPadding),
+              child:
+                  const _UnifediApiAccessChooserInstanceListItemSelectedIconWidget(),
+            ),
+          ],
+        ),
+      );
 }
 
 class _UnifediApiAccessChooserInstanceListItemAccountInfoWidget

@@ -9,16 +9,14 @@ class LocalMyAccountSuggestionPage extends StatelessWidget {
   const LocalMyAccountSuggestionPage();
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: FediPageTitleAppBar(
-        title: S.of(context).app_account_my_suggestion_title,
-      ),
-      body: const SafeArea(
-        child: MyAccountSuggestionWidget(),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Scaffold(
+        appBar: FediPageTitleAppBar(
+          title: S.of(context).app_account_my_suggestion_title,
+        ),
+        body: const SafeArea(
+          child: MyAccountSuggestionWidget(),
+        ),
+      );
 }
 
 MaterialPageRoute<void> createMyAccountSuggestionPageRoute() =>

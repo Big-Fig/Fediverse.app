@@ -14,14 +14,12 @@ class FediNoteDescriptionWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: padding,
-      child: Text(
-        text,
-        textAlign: TextAlign.center,
-        style: style ?? IFediUiTextTheme.of(context).mediumTallMediumGrey,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Padding(
+        padding: padding,
+        child: Text(
+          text,
+          textAlign: TextAlign.center,
+          style: style ?? IFediUiTextTheme.of(context).mediumTallMediumGrey,
+        ),
+      );
 }

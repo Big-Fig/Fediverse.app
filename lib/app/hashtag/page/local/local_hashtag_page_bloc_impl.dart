@@ -140,33 +140,32 @@ class LocalHashtagPageBloc extends HashtagPageBloc
     required Widget child,
     required IHashtag hashtag,
     required IMyAccountFeaturedHashtag? myAccountFeaturedHashtag,
-  }) {
-    return Provider<IHashtag>.value(
-      value: hashtag,
-      child: DisposableProxyProvider<IHashtag, IHashtagBloc>(
-        update: (context, hashtag, previous) => HashtagBloc.createFromContext(
-          context,
-          hashtag: hashtag,
-          myAccountFeaturedHashtag: myAccountFeaturedHashtag,
-          needLoadFeaturedState: true,
-        ),
-        child: DisposableProxyProvider<IHashtag, ILocalHashtagPageBloc>(
-          update: (context, hashtag, previous) =>
-              LocalHashtagPageBloc.createFromContext(
+  }) =>
+      Provider<IHashtag>.value(
+        value: hashtag,
+        child: DisposableProxyProvider<IHashtag, IHashtagBloc>(
+          update: (context, hashtag, previous) => HashtagBloc.createFromContext(
             context,
             hashtag: hashtag,
             myAccountFeaturedHashtag: myAccountFeaturedHashtag,
+            needLoadFeaturedState: true,
           ),
-          child: ProxyProvider<ILocalHashtagPageBloc, IHashtagPageBloc>(
-            update: (context, value, previous) => value,
-            child: HashtagPageBlocProxyProvider(
-              child: child,
+          child: DisposableProxyProvider<IHashtag, ILocalHashtagPageBloc>(
+            update: (context, hashtag, previous) =>
+                LocalHashtagPageBloc.createFromContext(
+              context,
+              hashtag: hashtag,
+              myAccountFeaturedHashtag: myAccountFeaturedHashtag,
+            ),
+            child: ProxyProvider<ILocalHashtagPageBloc, IHashtagPageBloc>(
+              update: (context, value, previous) => value,
+              child: HashtagPageBlocProxyProvider(
+                child: child,
+              ),
             ),
           ),
         ),
-      ),
-    );
-  }
+      );
 
   @override
   InstanceLocation get instanceLocation => InstanceLocation.local;

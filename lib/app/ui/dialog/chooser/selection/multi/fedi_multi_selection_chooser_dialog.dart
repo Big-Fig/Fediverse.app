@@ -15,17 +15,16 @@ Future<T?> showFediMultiSelectionChooserDialog<T>({
   String? content,
   required Stream<List<SelectionDialogAction>> isNeedRebuildActionsStream,
   bool cancelable = true,
-}) {
-  return showFediModalBottomSheetDialog(
-    context: context,
-    child: FediMultiSelectChooserDialogBody(
-      title: title,
-      cancelable: cancelable,
-      content: content,
-      isNeedRebuildActionsStream: isNeedRebuildActionsStream,
-    ),
-  );
-}
+}) =>
+    showFediModalBottomSheetDialog(
+      context: context,
+      child: FediMultiSelectChooserDialogBody(
+        title: title,
+        cancelable: cancelable,
+        content: content,
+        isNeedRebuildActionsStream: isNeedRebuildActionsStream,
+      ),
+    );
 
 class FediMultiSelectChooserDialogBody extends StatelessWidget {
   final String? title;
@@ -42,56 +41,54 @@ class FediMultiSelectChooserDialogBody extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        if (title != null)
-          _FediMultiSelectChooserDialogBodyTitleWidget(title: title),
-        if (content != null)
-          _FediMultiSelectChooserDialogBodyContentWidget(content: content),
-        Align(
-          alignment: Alignment.centerLeft,
-          child: StreamBuilder<List<SelectionDialogAction>?>(
-            stream: isNeedRebuildActionsStream,
-            initialData: [],
-            builder: (context, snapshot) {
-              var actions = snapshot.data;
-              if (actions == null) {
-                return const SizedBox.shrink();
-              }
+  Widget build(BuildContext context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          if (title != null)
+            _FediMultiSelectChooserDialogBodyTitleWidget(title: title),
+          if (content != null)
+            _FediMultiSelectChooserDialogBodyContentWidget(content: content),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: StreamBuilder<List<SelectionDialogAction>?>(
+              stream: isNeedRebuildActionsStream,
+              initialData: [],
+              builder: (context, snapshot) {
+                var actions = snapshot.data;
+                if (actions == null) {
+                  return const SizedBox.shrink();
+                }
 
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  ...actions
-                      .map(
-                        (action) =>
-                            _FediMultiSelectChooserDialogBodyActionWidget(
-                          action: action,
-                          isSelected: action.isSelected,
-                          isCancelAction: false,
-                        ),
-                      )
-                      .toList(),
-                ],
-              );
-            },
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    ...actions
+                        .map(
+                          (action) =>
+                              _FediMultiSelectChooserDialogBodyActionWidget(
+                            action: action,
+                            isSelected: action.isSelected,
+                            isCancelAction: false,
+                          ),
+                        )
+                        .toList(),
+                  ],
+                );
+              },
+            ),
           ),
-        ),
-        _FediMultiSelectChooserDialogBodyActionWidget(
-          action: BaseDialog.createDefaultOkAction(
-            context: context,
-            action: null,
+          _FediMultiSelectChooserDialogBodyActionWidget(
+            action: BaseDialog.createDefaultOkAction(
+              context: context,
+              action: null,
+            ),
+            isSelected: true,
+            isCancelAction: true,
           ),
-          isSelected: true,
-          isCancelAction: true,
-        ),
-      ],
-    );
-  }
+        ],
+      );
 }
 
 class _FediMultiSelectChooserDialogBodyContentWidget extends StatelessWidget {
@@ -103,15 +100,13 @@ class _FediMultiSelectChooserDialogBodyContentWidget extends StatelessWidget {
   final String? content;
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: FediSizes.smallPadding),
-      child: Text(
-        content!,
-        style: IFediUiTextTheme.of(context).dialogContentDarkGrey,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.only(bottom: FediSizes.smallPadding),
+        child: Text(
+          content!,
+          style: IFediUiTextTheme.of(context).dialogContentDarkGrey,
+        ),
+      );
 }
 
 class _FediMultiSelectChooserDialogBodyTitleWidget extends StatelessWidget {
@@ -123,15 +118,13 @@ class _FediMultiSelectChooserDialogBodyTitleWidget extends StatelessWidget {
   final String? title;
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: FediSizes.smallPadding),
-      child: Text(
-        title!,
-        style: IFediUiTextTheme.of(context).dialogTitleBoldDarkGrey,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.only(bottom: FediSizes.smallPadding),
+        child: Text(
+          title!,
+          style: IFediUiTextTheme.of(context).dialogTitleBoldDarkGrey,
+        ),
+      );
 }
 
 class _FediMultiSelectChooserDialogBodyActionWidget extends StatelessWidget {

@@ -7,14 +7,12 @@ import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
 extension IPleromaConversationDbExtension on IUnifediApiConversation {
-  DbConversation toDbConversation() {
-    return DbConversation(
-      id: null,
-      remoteId: id,
-      unread: unread == true,
-      updatedAt: lastStatus?.createdAt,
-    );
-  }
+  DbConversation toDbConversation() => DbConversation(
+        id: null,
+        remoteId: id,
+        unread: unread == true,
+        updatedAt: lastStatus?.createdAt,
+      );
 }
 
 extension IConversationChatExtension on IConversationChat {

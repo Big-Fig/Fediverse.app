@@ -15,20 +15,19 @@ import 'package:unifedi_api/unifedi_api.dart';
 Future<T?> showStatusActionDeleteDialog<T>({
   required BuildContext context,
   required IStatusBloc statusBloc,
-}) {
-  return StatusActionDeleteDialog(
-    actionsBorderVisible: false,
-    title: S.of(context).app_status_delete_dialog_title,
-    actionsAxis: Axis.vertical,
-    cancelable: true,
-    actions: [
-      buildDeleteAction(context, statusBloc),
-      buildDeleteAndSaveToDrafts(context, statusBloc),
-      buildDeleteAndStartNewAction(context, statusBloc),
-    ],
-    contentText: null,
-  ).show(context);
-}
+}) =>
+    StatusActionDeleteDialog(
+      actionsBorderVisible: false,
+      title: S.of(context).app_status_delete_dialog_title,
+      actionsAxis: Axis.vertical,
+      cancelable: true,
+      actions: [
+        buildDeleteAction(context, statusBloc),
+        buildDeleteAndSaveToDrafts(context, statusBloc),
+        buildDeleteAndStartNewAction(context, statusBloc),
+      ],
+      contentText: null,
+    ).show(context);
 
 DialogAction buildDeleteAndSaveToDrafts(
   BuildContext context,

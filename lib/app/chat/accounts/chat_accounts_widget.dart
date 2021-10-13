@@ -58,9 +58,8 @@ class _ChatAccountsLoadingWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return const Center(child: FediCircularProgressIndicator());
-  }
+  Widget build(BuildContext context) =>
+      const Center(child: FediCircularProgressIndicator());
 }
 
 void _accountSelectedCallback(BuildContext context, IAccount account) {

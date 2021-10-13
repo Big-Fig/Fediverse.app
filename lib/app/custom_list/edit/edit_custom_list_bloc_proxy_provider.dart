@@ -9,10 +9,9 @@ class EditCustomListBlocProxyProvider extends StatelessWidget {
   EditCustomListBlocProxyProvider({required this.child});
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IEditCustomListBloc, ICustomListFormBloc>(
-      update: (context, value, previous) => value.customListFormBloc,
-      child: child,
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IEditCustomListBloc, ICustomListFormBloc>(
+        update: (context, value, previous) => value.customListFormBloc,
+        child: child,
+      );
 }

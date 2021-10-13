@@ -7,7 +7,5 @@ class FediTransparentIcon extends StatelessWidget {
   const FediTransparentIcon(this.iconData, {this.color});
 
   @override
-  Widget build(BuildContext context) {
-    return Icon(iconData, color: color);
-  }
+  Widget build(BuildContext context) => Icon(iconData, color: color);
 }

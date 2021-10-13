@@ -103,15 +103,13 @@ class _MultiMediaPickerPageAppBar extends StatelessWidget
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return FediPageCustomAppBar(
-      centerTitle: true,
-      leading: const FediBackIconButton(),
-      child: const MediaPickerPageAppBarTitle(
-        emptyTitleWidget: _MultiMediaPickerPageAppBarEmptyTitleWidget(),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => FediPageCustomAppBar(
+        centerTitle: true,
+        leading: const FediBackIconButton(),
+        child: const MediaPickerPageAppBarTitle(
+          emptyTitleWidget: _MultiMediaPickerPageAppBarEmptyTitleWidget(),
+        ),
+      );
 
   @override
   Size get preferredSize => FediPageCustomAppBar.calculatePreferredSize();
@@ -123,11 +121,9 @@ class _MultiMediaPickerPageAppBarEmptyTitleWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return FediSubHeaderText(
-      S.of(context).file_picker_multi_title,
-    );
-  }
+  Widget build(BuildContext context) => FediSubHeaderText(
+        S.of(context).file_picker_multi_title,
+      );
 }
 
 Future<List<IMediaDeviceFile>?> goToMultiMediaPickerPage(
@@ -156,17 +152,15 @@ Future<List<IMediaDeviceFile>?> goToMultiMediaPickerPage(
     context,
     NavigationSlideBottomRouteBuilder(
       page: DisposableProvider<IMediaDeviceGalleryBloc>(
-        create: (context) {
-          return PhotoManagerMediaDeviceGalleryBloc(
-            typesToPick: typesToPick,
-            storagePermissionBloc:
-                IStoragePermissionBloc.of(context, listen: false),
-            paginationSettingsBloc: IPaginationSettingsBloc.of(
-              context,
-              listen: false,
-            ),
-          );
-        }, // provide parent abstract implementation by type
+        create: (context) => PhotoManagerMediaDeviceGalleryBloc(
+          typesToPick: typesToPick,
+          storagePermissionBloc:
+              IStoragePermissionBloc.of(context, listen: false),
+          paginationSettingsBloc: IPaginationSettingsBloc.of(
+            context,
+            listen: false,
+          ),
+        ), // provide parent abstract implementation by type
         child: DisposableProvider<IMultiMediaPickerBloc>(
           create: (context) => _createMultiMediaPickerBloc(
             context,

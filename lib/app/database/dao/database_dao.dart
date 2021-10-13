@@ -121,14 +121,12 @@ abstract class DatabaseDao<
 
   Stream<int> watchCountAll() => countAllSelectable().watchSingle();
 
-  Selectable<int> countAllSelectable() {
-    return customSelect(
-      'SELECT COUNT(*) FROM $tableName',
-      readsFrom: {table},
-    ).map(
-      (QueryRow row) => row.read<int>('COUNT(*)'),
-    );
-  }
+  Selectable<int> countAllSelectable() => customSelect(
+        'SELECT COUNT(*) FROM $tableName',
+        readsFrom: {table},
+      ).map(
+        (QueryRow row) => row.read<int>('COUNT(*)'),
+      );
 
   Future<List<DbItem>> getAll() => getAllSelectable().get();
 

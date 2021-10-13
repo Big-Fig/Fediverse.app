@@ -19,11 +19,10 @@ class MediaDeviceFilePaginationListBloc extends PaginationListBloc<
 
   static MediaDeviceFilePaginationListBloc createFromContext(
     BuildContext context,
-  ) {
-    return MediaDeviceFilePaginationListBloc(
-      paginationBloc: Provider.of<IMediaDeviceFilePaginationBloc>(context),
-    );
-  }
+  ) =>
+      MediaDeviceFilePaginationListBloc(
+        paginationBloc: Provider.of<IMediaDeviceFilePaginationBloc>(context),
+      );
 
   static Widget provideToContext(
     BuildContext context, {

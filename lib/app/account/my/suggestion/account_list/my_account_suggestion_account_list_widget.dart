@@ -8,18 +8,16 @@ class MyAccountSuggestionAccountListWidget extends StatelessWidget {
   const MyAccountSuggestionAccountListWidget();
 
   @override
-  Widget build(BuildContext context) {
-    return AccountPaginationListWidget(
-      itemPadding: FediPadding.verticalMediumPadding,
-      accountSelectedCallback: (context, account) =>
-          goToLocalAccountDetailsPage(
-        context,
-        account: account,
-      ),
-      accountActions: [
-        const MyAccountSuggestionAccountRemoveSuggestionActionButtonWidget(),
-      ],
-      key: PageStorageKey('MyAccountSuggestionAccountListWidget'),
-    );
-  }
+  Widget build(BuildContext context) => AccountPaginationListWidget(
+        itemPadding: FediPadding.verticalMediumPadding,
+        accountSelectedCallback: (context, account) =>
+            goToLocalAccountDetailsPage(
+          context,
+          account: account,
+        ),
+        accountActions: [
+          const MyAccountSuggestionAccountRemoveSuggestionActionButtonWidget(),
+        ],
+        key: PageStorageKey('MyAccountSuggestionAccountListWidget'),
+      );
 }

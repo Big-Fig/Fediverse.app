@@ -58,28 +58,26 @@ class StatusNetworkOnlyPaginationBloc
     required int? itemsCountPerPage,
     required PaginationPage<IStatus>? olderPage,
     required PaginationPage<IStatus>? newerPage,
-  }) {
-    return listService.loadItemsFromRemoteForPage(
-      itemsCountPerPage: itemsCountPerPage,
-      pageIndex: pageIndex,
-      minId: newerPage?.items.lastOrNull?.remoteId,
-      maxId: olderPage?.items.firstOrNull?.remoteId,
-    );
-  }
+  }) =>
+      listService.loadItemsFromRemoteForPage(
+        itemsCountPerPage: itemsCountPerPage,
+        pageIndex: pageIndex,
+        minId: newerPage?.items.lastOrNull?.remoteId,
+        maxId: olderPage?.items.firstOrNull?.remoteId,
+      );
 
   static Widget provideToContext(
     BuildContext context, {
     required Widget child,
     int? maximumCachedPagesCount,
-  }) {
-    return DisposableProvider<
-        INetworkOnlyPaginationBloc<PaginationPage<IStatus>, IStatus>>(
-      create: (context) => StatusNetworkOnlyPaginationBloc.createFromContext(
-        context,
-        maximumCachedPagesCount: maximumCachedPagesCount,
-      ),
-      child: NetworkOnlyPaginationBlocProxyProvider<PaginationPage<IStatus>,
-          IStatus>(child: child),
-    );
-  }
+  }) =>
+      DisposableProvider<
+          INetworkOnlyPaginationBloc<PaginationPage<IStatus>, IStatus>>(
+        create: (context) => StatusNetworkOnlyPaginationBloc.createFromContext(
+          context,
+          maximumCachedPagesCount: maximumCachedPagesCount,
+        ),
+        child: NetworkOnlyPaginationBlocProxyProvider<PaginationPage<IStatus>,
+            IStatus>(child: child),
+      );
 }

@@ -46,31 +46,31 @@ class FilterPaginationListWidget extends FediPaginationListWidget<IFilter> {
     required List<IFilter> items,
     Widget? header,
     Widget? footer,
-  }) {
-    return PaginationListWidget.buildItemsListView(
-      context: context,
-      keyboardDismissBehavior: keyboardDismissBehavior,
-      items: items,
-      header: header,
-      footer: footer,
-      itemBuilder: (context, index) {
-        var item = items[index];
+  }) =>
+      PaginationListWidget.buildItemsListView(
+        context: context,
+        keyboardDismissBehavior: keyboardDismissBehavior,
+        items: items,
+        header: header,
+        footer: footer,
+        itemBuilder: (context, index) {
+          var item = items[index];
 
-        return Provider<IFilter>.value(
-          value: item,
-          child: DisposableProxyProvider<IFilter, IFilterBloc>(
-            update: (context, value, previous) => FilterBloc.createFromContext(
-              context,
-              value,
+          return Provider<IFilter>.value(
+            value: item,
+            child: DisposableProxyProvider<IFilter, IFilterBloc>(
+              update: (context, value, previous) =>
+                  FilterBloc.createFromContext(
+                context,
+                value,
+              ),
+              child: const FediListTile(
+                child: FilterListItemWidget(),
+              ),
             ),
-            child: const FediListTile(
-              child: FilterListItemWidget(),
-            ),
-          ),
-        );
-      },
-    );
-  }
+          );
+        },
+      );
 
   @override
   IPaginationListBloc<PaginationPage<IFilter>, IFilter>

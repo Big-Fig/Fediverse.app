@@ -57,29 +57,27 @@ class ConversationChatWidget extends StatelessWidget {
   }
 }
 
-Widget _itemBuilder(BuildContext context) {
-  return const ChatMessageListItemWidget<IConversationChatMessage>();
-}
+Widget _itemBuilder(BuildContext context) =>
+    const ChatMessageListItemWidget<IConversationChatMessage>();
 
 Widget _itemContextBuilder(
   BuildContext context, {
   required Widget child,
-}) {
-  return DisposableProxyProvider<IConversationChatMessage,
-      IConversationChatMessageBloc>(
-    update: (context, chatMessage, previous) {
-      if (previous != null && chatMessage.remoteId == previous.remoteId) {
-        return previous;
-      } else {
-        return ConversationChatMessageBloc.createFromContext(
-          context,
-          chatMessage,
-        );
-      }
-    },
-    child: ProxyProvider<IConversationChatMessageBloc, IChatMessageBloc>(
-      update: (context, value, _) => value,
-      child: child,
-    ),
-  );
-}
+}) =>
+    DisposableProxyProvider<IConversationChatMessage,
+        IConversationChatMessageBloc>(
+      update: (context, chatMessage, previous) {
+        if (previous != null && chatMessage.remoteId == previous.remoteId) {
+          return previous;
+        } else {
+          return ConversationChatMessageBloc.createFromContext(
+            context,
+            chatMessage,
+          );
+        }
+      },
+      child: ProxyProvider<IConversationChatMessageBloc, IChatMessageBloc>(
+        update: (context, value, _) => value,
+        child: child,
+      ),
+    );

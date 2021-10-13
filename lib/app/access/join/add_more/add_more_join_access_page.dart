@@ -9,18 +9,16 @@ import 'package:flutter/material.dart';
 
 class AddMoreJoinUnifediApiAccessPage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: IFediUiColorTheme.of(context).primaryDark,
-      appBar: FediPageTitleAppBar(
-        title: S.of(context).app_auth_instance_join_new_title,
-        leading: const FediDismissIconButton(),
-      ),
-      body: const SafeArea(
-        child: JoinUnifediApiAccessWidget(),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Scaffold(
+        backgroundColor: IFediUiColorTheme.of(context).primaryDark,
+        appBar: FediPageTitleAppBar(
+          title: S.of(context).app_auth_instance_join_new_title,
+          leading: const FediDismissIconButton(),
+        ),
+        body: const SafeArea(
+          child: JoinUnifediApiAccessWidget(),
+        ),
+      );
 
   const AddMoreJoinUnifediApiAccessPage();
 }

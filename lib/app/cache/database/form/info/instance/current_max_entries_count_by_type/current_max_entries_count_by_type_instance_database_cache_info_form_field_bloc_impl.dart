@@ -13,7 +13,6 @@ class CurrentMaxEntriesCountByTypeInstanceDatabaseCacheInfoFormFieldBloc
   });
 
   @override
-  Future<int> calculateCurrentValue() async {
-    return databaseService.calculateMaxCountByType();
-  }
+  Future<int> calculateCurrentValue() async =>
+      databaseService.calculateMaxCountByType();
 }

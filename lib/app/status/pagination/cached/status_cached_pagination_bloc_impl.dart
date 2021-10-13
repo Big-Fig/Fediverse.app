@@ -83,15 +83,14 @@ class StatusCachedPaginationBloc extends CachedPleromaPaginationBloc<IStatus>
     BuildContext context, {
     required Widget child,
     int? maximumCachedPagesCount,
-  }) {
-    return DisposableProvider<IStatusCachedPaginationBloc>(
-      create: (context) => StatusCachedPaginationBloc.createFromContext(
-        context,
-        maximumCachedPagesCount: maximumCachedPagesCount,
-      ),
-      child: StatusCachedPaginationBlocProxyProvider(
-        child: child,
-      ),
-    );
-  }
+  }) =>
+      DisposableProvider<IStatusCachedPaginationBloc>(
+        create: (context) => StatusCachedPaginationBloc.createFromContext(
+          context,
+          maximumCachedPagesCount: maximumCachedPagesCount,
+        ),
+        child: StatusCachedPaginationBlocProxyProvider(
+          child: child,
+        ),
+      );
 }

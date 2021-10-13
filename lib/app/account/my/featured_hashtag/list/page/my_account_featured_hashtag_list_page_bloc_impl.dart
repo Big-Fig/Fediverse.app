@@ -86,13 +86,12 @@ class AccountFeaturedHashtagListPageBloc extends DisposableOwner
   static Widget provideToContext(
     BuildContext context, {
     required Widget child,
-  }) {
-    return DisposableProvider<IAccountFeaturedHashtagListPageBloc>(
-      create: (context) =>
-          AccountFeaturedHashtagListPageBloc.createFromContext(context),
-      child: AccountFeaturedBlocProxyProvider(child: child),
-    );
-  }
+  }) =>
+      DisposableProvider<IAccountFeaturedHashtagListPageBloc>(
+        create: (context) =>
+            AccountFeaturedHashtagListPageBloc.createFromContext(context),
+        child: AccountFeaturedBlocProxyProvider(child: child),
+      );
 
   @override
   InstanceLocation get instanceLocation => InstanceLocation.local;

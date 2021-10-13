@@ -47,14 +47,12 @@ abstract class FediPaginationListWidget<T> extends PaginationListWidget<T> {
   @override
   Widget buildPaginationListBody(
     IPaginationListBloc<PaginationPage<T>, T> paginationListBloc,
-  ) {
-    return FediAsyncInitLoadingWidget(
-      asyncInitLoadingBloc: paginationListBloc,
-      loadingFinishedBuilder: (BuildContext context) {
-        return buildPaginationInitializedBody(context, paginationListBloc);
-      },
-    );
-  }
+  ) =>
+      FediAsyncInitLoadingWidget(
+        asyncInitLoadingBloc: paginationListBloc,
+        loadingFinishedBuilder: (BuildContext context) =>
+            buildPaginationInitializedBody(context, paginationListBloc),
+      );
 
   @override
   Widget buildSmartRefresher(

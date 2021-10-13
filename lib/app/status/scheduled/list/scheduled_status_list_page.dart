@@ -11,16 +11,14 @@ import 'package:flutter/material.dart';
 
 class ScheduledStatusListPage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: FediPageTitleAppBar(
-        title: S.of(context).app_account_my_statuses_scheduled_title,
-      ),
-      body: SafeArea(
-        child: buildBody(context),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Scaffold(
+        appBar: FediPageTitleAppBar(
+          title: S.of(context).app_account_my_statuses_scheduled_title,
+        ),
+        body: SafeArea(
+          child: buildBody(context),
+        ),
+      );
 
   Widget buildBody(BuildContext context) =>
       ScheduledStatusPaginationListTimelineWidget(

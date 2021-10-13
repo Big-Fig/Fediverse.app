@@ -130,26 +130,25 @@ class LocalInstancePublicTimelinePageBloc extends InstancePublicTimelinePageBloc
     BuildContext context, {
     required Widget child,
     required IUnifediApiInstance unifediApiInstance,
-  }) {
-    return Provider<IUnifediApiInstance>.value(
-      value: unifediApiInstance,
-      child: DisposableProxyProvider<IUnifediApiInstance,
-          ILocalInstancePublicTimelinePageBloc>(
-        update: (context, unifediApiInstance, previous) =>
-            LocalInstancePublicTimelinePageBloc.createFromContext(
-          context,
-          unifediApiInstance: unifediApiInstance,
-        ),
-        child: ProxyProvider<ILocalInstancePublicTimelinePageBloc,
-            IInstancePublicTimelinePageBloc>(
-          update: (context, value, previous) => value,
-          child: InstancePublicTimelinePageBlocProxyProvider(
-            child: child,
+  }) =>
+      Provider<IUnifediApiInstance>.value(
+        value: unifediApiInstance,
+        child: DisposableProxyProvider<IUnifediApiInstance,
+            ILocalInstancePublicTimelinePageBloc>(
+          update: (context, unifediApiInstance, previous) =>
+              LocalInstancePublicTimelinePageBloc.createFromContext(
+            context,
+            unifediApiInstance: unifediApiInstance,
+          ),
+          child: ProxyProvider<ILocalInstancePublicTimelinePageBloc,
+              IInstancePublicTimelinePageBloc>(
+            update: (context, value, previous) => value,
+            child: InstancePublicTimelinePageBlocProxyProvider(
+              child: child,
+            ),
           ),
         ),
-      ),
-    );
-  }
+      );
 
   @override
   InstanceLocation get instanceLocation => InstanceLocation.local;

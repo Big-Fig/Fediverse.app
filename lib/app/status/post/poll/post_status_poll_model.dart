@@ -45,38 +45,34 @@ extension IPostStatusPollExtension on IPostStatusPoll {
     }
   }
 
-  UnifediApiPoll toUnifediApiPoll() {
-    return UnifediApiPoll(
-      id: null,
-      expired: false,
-      voted: true,
-      multiple: multiple,
-      options: options
-          .map(
-            (option) => UnifediApiPollOption(
-              title: option,
-              votesCount: null,
-            ),
-          )
-          .toList(),
-      ownVotes: [],
-      votersCount: 0,
-      votesCount: 0,
-      expiresAt:
-          durationLength != null ? DateTime.now().add(durationLength!) : null,
-    );
-  }
+  UnifediApiPoll toUnifediApiPoll() => UnifediApiPoll(
+        id: null,
+        expired: false,
+        voted: true,
+        multiple: multiple,
+        options: options
+            .map(
+              (option) => UnifediApiPollOption(
+                title: option,
+                votesCount: null,
+              ),
+            )
+            .toList(),
+        ownVotes: [],
+        votersCount: 0,
+        votesCount: 0,
+        expiresAt:
+            durationLength != null ? DateTime.now().add(durationLength!) : null,
+      );
 }
 
 extension PostStatusPollExtension on IUnifediApiPostStatusPoll {
-  PostStatusPoll toPostStatusPoll() {
-    return PostStatusPoll(
-      durationLength: expiresInSeconds.toDuration(),
-      hideTotals: hideTotals,
-      multiple: multiple,
-      options: options,
-    );
-  }
+  PostStatusPoll toPostStatusPoll() => PostStatusPoll(
+        durationLength: expiresInSeconds.toDuration(),
+        hideTotals: hideTotals,
+        multiple: multiple,
+        options: options,
+      );
 }
 
 extension IUnifediApiPollExtension on IUnifediApiPoll {

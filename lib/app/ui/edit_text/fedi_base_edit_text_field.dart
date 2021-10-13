@@ -75,96 +75,94 @@ class FediBaseEditTextField extends StatelessWidget {
   TextField buildTextField(
     TextInputAction actualTextInputAction,
     BuildContext context,
-  ) {
-    return TextField(
-      enabled: enabled,
-      maxLength: maxLength,
-      autocorrect: autocorrect,
-      obscureText: obscureText,
-      focusNode: focusNode,
-      textInputAction: actualTextInputAction,
-      onSubmitted: (value) {
-        if (onSubmitted != null) {
-          onSubmitted!(value);
-        }
-      },
-      decoration: InputDecoration(
-        border: displayBorder ? border : InputBorder.none,
-        // ignore: no-equal-arguments
-        enabledBorder: displayBorder ? border : InputBorder.none,
-        focusedBorder: displayBorder ? focusedBorder : InputBorder.none,
-        errorBorder: displayBorder ? errorBorder : InputBorder.none,
-        // ignore: no-equal-arguments
-        focusedErrorBorder: displayBorder ? errorBorder : InputBorder.none,
-        errorStyle: textStyle.copyWith(
-          color: IFediUiColorTheme.of(context).error,
+  ) =>
+      TextField(
+        enabled: enabled,
+        maxLength: maxLength,
+        autocorrect: autocorrect,
+        obscureText: obscureText,
+        focusNode: focusNode,
+        textInputAction: actualTextInputAction,
+        onSubmitted: (value) {
+          if (onSubmitted != null) {
+            onSubmitted!(value);
+          }
+        },
+        decoration: InputDecoration(
+          border: displayBorder ? border : InputBorder.none,
+          // ignore: no-equal-arguments
+          enabledBorder: displayBorder ? border : InputBorder.none,
+          focusedBorder: displayBorder ? focusedBorder : InputBorder.none,
+          errorBorder: displayBorder ? errorBorder : InputBorder.none,
+          // ignore: no-equal-arguments
+          focusedErrorBorder: displayBorder ? errorBorder : InputBorder.none,
+          errorStyle: textStyle.copyWith(
+            color: IFediUiColorTheme.of(context).error,
+          ),
+          hintText: hintText,
+          errorText: errorText,
+          contentPadding: contentPadding,
+          hintStyle: hintStyle,
         ),
-        hintText: hintText,
-        errorText: errorText,
-        contentPadding: contentPadding,
-        hintStyle: hintStyle,
-      ),
-      style: textStyle,
-      autofocus: autofocus,
-      controller: textEditingController,
-      minLines: minLines,
-      maxLines: maxLines,
-      expands: expanded,
-      keyboardType: keyboardType,
-      buildCounter: (
-        BuildContext context, {
-        int? currentLength,
-        int? maxLength,
-        bool? isFocused,
-      }) =>
-          null,
-    );
-  }
+        style: textStyle,
+        autofocus: autofocus,
+        controller: textEditingController,
+        minLines: minLines,
+        maxLines: maxLines,
+        expands: expanded,
+        keyboardType: keyboardType,
+        buildCounter: (
+          BuildContext context, {
+          int? currentLength,
+          int? maxLength,
+          bool? isFocused,
+        }) =>
+            null,
+      );
 
   ExtendedTextField buildExtendedTextField(
     BuildContext context,
     TextInputAction actualTextInputAction,
-  ) {
-    return ExtendedTextField(
-      enabled: enabled,
-      specialTextSpanBuilder: _SpecialTextSpanBuilder(
-        color: IFediUiColorTheme.of(context).primary,
-      ),
-      maxLength: maxLength,
-      autocorrect: autocorrect,
-      obscureText: obscureText,
-      focusNode: focusNode,
-      textInputAction: actualTextInputAction,
-      onSubmitted: (value) {
-        onSubmitted!(value);
-      },
-      decoration: InputDecoration(
-        border: displayBorder ? border : InputBorder.none,
-        // ignore: no-equal-arguments
-        enabledBorder: displayBorder ? border : InputBorder.none,
-        focusedBorder: displayBorder ? focusedBorder : InputBorder.none,
-        errorBorder: displayBorder ? errorBorder : InputBorder.none,
-        // ignore: no-equal-arguments
-        focusedErrorBorder: displayBorder ? errorBorder : InputBorder.none,
-        errorStyle: textStyle.copyWith(
-          color: IFediUiColorTheme.of(context).error,
+  ) =>
+      ExtendedTextField(
+        enabled: enabled,
+        specialTextSpanBuilder: _SpecialTextSpanBuilder(
+          color: IFediUiColorTheme.of(context).primary,
         ),
-        counterText: hideCounter ? '' : null,
-        hintText: hintText,
-        errorText: errorText,
-        contentPadding: contentPadding,
-        hintStyle: hintStyle,
-      ),
-      style: textStyle,
-      autofocus: autofocus,
-      controller: textEditingController,
-      minLines: minLines,
-      maxLines: maxLines,
-      expands: expanded,
-      keyboardType: keyboardType,
-      buildCounter: null,
-    );
-  }
+        maxLength: maxLength,
+        autocorrect: autocorrect,
+        obscureText: obscureText,
+        focusNode: focusNode,
+        textInputAction: actualTextInputAction,
+        onSubmitted: (value) {
+          onSubmitted!(value);
+        },
+        decoration: InputDecoration(
+          border: displayBorder ? border : InputBorder.none,
+          // ignore: no-equal-arguments
+          enabledBorder: displayBorder ? border : InputBorder.none,
+          focusedBorder: displayBorder ? focusedBorder : InputBorder.none,
+          errorBorder: displayBorder ? errorBorder : InputBorder.none,
+          // ignore: no-equal-arguments
+          focusedErrorBorder: displayBorder ? errorBorder : InputBorder.none,
+          errorStyle: textStyle.copyWith(
+            color: IFediUiColorTheme.of(context).error,
+          ),
+          counterText: hideCounter ? '' : null,
+          hintText: hintText,
+          errorText: errorText,
+          contentPadding: contentPadding,
+          hintStyle: hintStyle,
+        ),
+        style: textStyle,
+        autofocus: autofocus,
+        controller: textEditingController,
+        minLines: minLines,
+        maxLines: maxLines,
+        expands: expanded,
+        keyboardType: keyboardType,
+        buildCounter: null,
+      );
 }
 
 class _MentionSpecialText extends SpecialText {

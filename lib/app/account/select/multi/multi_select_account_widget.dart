@@ -22,22 +22,20 @@ class MultiSelectAccountWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return AccountPaginationListWidget(
-      header: header,
-      footer: footer,
-      alwaysShowHeader: alwaysShowHeader,
-      alwaysShowFooter: alwaysShowFooter,
-      // ignore: no-empty-block
-      accountSelectedCallback: (_, __) {
-        // nothing
-      },
-      accountActions: <Widget>[
-        const _MultiSelectAccountItemActionWidget(),
-      ],
-      key: PageStorageKey('MultiSelectAccountWidget'),
-    );
-  }
+  Widget build(BuildContext context) => AccountPaginationListWidget(
+        header: header,
+        footer: footer,
+        alwaysShowHeader: alwaysShowHeader,
+        alwaysShowFooter: alwaysShowFooter,
+        // ignore: no-empty-block
+        accountSelectedCallback: (_, __) {
+          // nothing
+        },
+        accountActions: <Widget>[
+          const _MultiSelectAccountItemActionWidget(),
+        ],
+        key: PageStorageKey('MultiSelectAccountWidget'),
+      );
 }
 
 class _MultiSelectAccountItemActionWidget extends StatelessWidget {

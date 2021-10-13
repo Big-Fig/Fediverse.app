@@ -94,11 +94,9 @@ class _ChatMessageListItemDeletedOverlayWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return FediBlurredOverlayWarningWidget(
-      descriptionText: S.of(context).app_chat_message_deleted_desc,
-    );
-  }
+  Widget build(BuildContext context) => FediBlurredOverlayWarningWidget(
+        descriptionText: S.of(context).app_chat_message_deleted_desc,
+      );
 }
 
 class _ChatMessageListItemBodyWidget<T extends IChatMessage>

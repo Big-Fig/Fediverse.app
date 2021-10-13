@@ -91,10 +91,10 @@ class MyAccountEndorsementBloc extends DisposableOwner
   static Widget provideToContext(
     BuildContext context, {
     required Widget child,
-  }) {
-    return DisposableProvider<IMyAccountEndorsementBloc>(
-      create: (context) => MyAccountEndorsementBloc.createFromContext(context),
-      child: MyAccountEndorsementBlocProxyProvider(child: child),
-    );
-  }
+  }) =>
+      DisposableProvider<IMyAccountEndorsementBloc>(
+        create: (context) =>
+            MyAccountEndorsementBloc.createFromContext(context),
+        child: MyAccountEndorsementBlocProxyProvider(child: child),
+      );
 }

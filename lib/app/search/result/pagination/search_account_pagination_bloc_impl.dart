@@ -45,12 +45,10 @@ class SearchAccountPaginationBloc
   static Widget provideToContext(
     BuildContext context, {
     required Widget child,
-  }) {
-    return DisposableProvider<
-        IPaginationBloc<PaginationPage<IAccount>, IAccount>>(
-      create: (context) =>
-          SearchAccountPaginationBloc.createFromContext(context),
-      child: child,
-    );
-  }
+  }) =>
+      DisposableProvider<IPaginationBloc<PaginationPage<IAccount>, IAccount>>(
+        create: (context) =>
+            SearchAccountPaginationBloc.createFromContext(context),
+        child: child,
+      );
 }

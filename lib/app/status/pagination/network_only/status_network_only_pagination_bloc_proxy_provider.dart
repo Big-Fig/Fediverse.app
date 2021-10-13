@@ -12,14 +12,13 @@ class StatusNetworkOnlyPaginationBlocProxyProvider extends StatelessWidget {
   StatusNetworkOnlyPaginationBlocProxyProvider({required this.child});
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IStatusNetworkOnlyPaginationBloc,
-        INetworkOnlyPaginationBloc<PaginationPage<IStatus>, IStatus>>(
-      update: (context, value, previous) => value,
-      child: NetworkOnlyPaginationBlocProxyProvider<PaginationPage<IStatus>,
-          IStatus>(
-        child: child,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => ProxyProvider<
+          IStatusNetworkOnlyPaginationBloc,
+          INetworkOnlyPaginationBloc<PaginationPage<IStatus>, IStatus>>(
+        update: (context, value, previous) => value,
+        child: NetworkOnlyPaginationBlocProxyProvider<PaginationPage<IStatus>,
+            IStatus>(
+          child: child,
+        ),
+      );
 }

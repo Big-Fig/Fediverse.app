@@ -12,18 +12,16 @@ class MyAccountAccountMuteAccountPaginationListWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return AccountPaginationListWidget(
-      customEmptyWidget: customEmptyWidget,
-      customLoadingWidget: customLoadingWidget,
-      isNeedPreFetchRelationship: true,
-      accountActions: <Widget>[
-        _MyAccountAccountMuteAccountPaginationListRemoveActionWidget(),
-      ],
-      accountSelectedCallback: null,
-      key: PageStorageKey('MyAccountAccountMuteAccountPaginationListWidget'),
-    );
-  }
+  Widget build(BuildContext context) => AccountPaginationListWidget(
+        customEmptyWidget: customEmptyWidget,
+        customLoadingWidget: customLoadingWidget,
+        isNeedPreFetchRelationship: true,
+        accountActions: <Widget>[
+          _MyAccountAccountMuteAccountPaginationListRemoveActionWidget(),
+        ],
+        accountSelectedCallback: null,
+        key: PageStorageKey('MyAccountAccountMuteAccountPaginationListWidget'),
+      );
 }
 
 class _MyAccountAccountMuteAccountPaginationListRemoveActionWidget
@@ -33,9 +31,8 @@ class _MyAccountAccountMuteAccountPaginationListRemoveActionWidget
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return const MyAccountAccountMuteActionListWidget(
-      defaultMuting: true,
-    );
-  }
+  Widget build(BuildContext context) =>
+      const MyAccountAccountMuteActionListWidget(
+        defaultMuting: true,
+      );
 }

@@ -55,12 +55,11 @@ class AccountNetworkOnlyPaginationBloc
     required int? itemsCountPerPage,
     required PaginationPage<IAccount>? olderPage,
     required PaginationPage<IAccount>? newerPage,
-  }) {
-    return listBloc.loadItemsFromRemoteForPage(
-      itemsCountPerPage: itemsCountPerPage,
-      maxId: newerPage?.items.lastOrNull?.remoteId,
-      minId: olderPage?.items.firstOrNull?.remoteId,
-      pageIndex: pageIndex,
-    );
-  }
+  }) =>
+      listBloc.loadItemsFromRemoteForPage(
+        itemsCountPerPage: itemsCountPerPage,
+        maxId: newerPage?.items.lastOrNull?.remoteId,
+        minId: olderPage?.items.firstOrNull?.remoteId,
+        pageIndex: pageIndex,
+      );
 }

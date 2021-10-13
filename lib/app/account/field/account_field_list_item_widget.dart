@@ -84,14 +84,12 @@ class AccountFieldListItemWidget extends StatelessWidget {
     }
   }
 
-  bool _isFacebookLink(String valueAsRawUrlWithoutSchema) {
-    return valueAsRawUrlWithoutSchema.startsWith('facebook.com') ||
-        valueAsRawUrlWithoutSchema.startsWith('fb.me');
-  }
+  bool _isFacebookLink(String valueAsRawUrlWithoutSchema) =>
+      valueAsRawUrlWithoutSchema.startsWith('facebook.com') ||
+      valueAsRawUrlWithoutSchema.startsWith('fb.me');
 
-  bool _isInstagramLink(String valueAsRawUrlWithoutSchema) {
-    return valueAsRawUrlWithoutSchema.startsWith('instagram.com') ||
-        valueAsRawUrlWithoutSchema.startsWith('instagr.am') ||
-        valueAsRawUrlWithoutSchema.startsWith('instagr.com');
-  }
+  bool _isInstagramLink(String valueAsRawUrlWithoutSchema) =>
+      valueAsRawUrlWithoutSchema.startsWith('instagram.com') ||
+      valueAsRawUrlWithoutSchema.startsWith('instagr.am') ||
+      valueAsRawUrlWithoutSchema.startsWith('instagr.com');
 }

@@ -10,12 +10,10 @@ class OverlayNotificationServiceProvider extends StatelessWidget {
   const OverlayNotificationServiceProvider({required this.child});
 
   @override
-  Widget build(BuildContext context) {
-    return OverlaySupport(
-      child: DisposableProvider<IOverlayNotificationService>(
-        create: (context) => OverlayNotificationService(),
-        child: child,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => OverlaySupport(
+        child: DisposableProvider<IOverlayNotificationService>(
+          create: (context) => OverlayNotificationService(),
+          child: child,
+        ),
+      );
 }

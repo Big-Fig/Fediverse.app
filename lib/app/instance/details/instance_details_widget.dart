@@ -56,29 +56,27 @@ class InstanceDetailsWidget extends StatelessWidget {
 
     return FediAsyncInitLoadingWidget(
       asyncInitLoadingBloc: instanceDetailsBloc,
-      loadingFinishedBuilder: (context) {
-        return FediListSmartRefresherWidget(
-          isNeedToAddPaddingForUiTests: false,
-          controller: instanceDetailsBloc.refreshController,
-          onRefresh: () async {
-            try {
-              await instanceDetailsBloc.refresh();
+      loadingFinishedBuilder: (context) => FediListSmartRefresherWidget(
+        isNeedToAddPaddingForUiTests: false,
+        controller: instanceDetailsBloc.refreshController,
+        onRefresh: () async {
+          try {
+            await instanceDetailsBloc.refresh();
 
-              return FediListSmartRefresherLoadingState.loaded;
-            } catch (e, stackTrace) {
-              _logger.warning(
-                () => 'instanceDetailsBloc.refresh',
-                e,
-                stackTrace,
-              );
+            return FediListSmartRefresherLoadingState.loaded;
+          } catch (e, stackTrace) {
+            _logger.warning(
+              () => 'instanceDetailsBloc.refresh',
+              e,
+              stackTrace,
+            );
 
-              return FediListSmartRefresherLoadingState.failed;
-            }
-          },
-          onLoading: null,
-          child: const _InstanceDetailsBodyWidget(),
-        );
-      },
+            return FediListSmartRefresherLoadingState.failed;
+          }
+        },
+        onLoading: null,
+        child: const _InstanceDetailsBodyWidget(),
+      ),
     );
   }
 }
@@ -89,50 +87,48 @@ class _InstanceDetailsBodyWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: FediPadding.verticalMediumPadding,
-      child: ListView(
-        children: [
-          Padding(
-            padding: FediPadding.allSmallPadding,
-            child: Center(
-              child: const _InstanceDetailsTitleWidget(),
-            ),
-          ),
-          Center(
-            child: Padding(
+  Widget build(BuildContext context) => Padding(
+        padding: FediPadding.verticalMediumPadding,
+        child: ListView(
+          children: [
+            Padding(
               padding: FediPadding.allSmallPadding,
-              child: const _InstanceDetailsVersionTypeWidget(),
+              child: Center(
+                child: const _InstanceDetailsTitleWidget(),
+              ),
             ),
-          ),
-          const _InstanceDetailsThumbnailWidget(),
-          Padding(
-            padding: FediPadding.allSmallPadding,
-            child: Center(
-              child: const _InstanceDetailsDescriptionWidget(),
+            Center(
+              child: Padding(
+                padding: FediPadding.allSmallPadding,
+                child: const _InstanceDetailsVersionTypeWidget(),
+              ),
             ),
-          ),
-          const _InstanceDetailsContactAccountWidget(),
-          const _InstanceDetailsDirectoryWidget(),
-          const _InstanceDetailsTrendsWidget(),
-          const _InstanceDetailsActivityWidget(),
-          const _InstanceDetailsPublicTimelineWidget(),
-          const _InstanceDetailsBodyDetailsWidget(),
-          const _InstanceDetailsBodyRegistrationsWidget(),
-          const _InstanceDetailsStatsWidget(
-            key: Key(InstanceDetailsWidgetKeys.statsKey),
-          ),
-          const _InstanceDetailsBodyMessagesLimitsWidget(),
-          const _InstanceDetailsUnifediApiPollLimitsWidget(),
-          const _InstanceDetailsPleromaUploadLimitsWidget(),
-          const _InstanceDetailsBodyMetadataWidget(),
-          const _InstanceDetailsunifediApiInstanceFederationWidget(),
-          const _InstanceDetailsPleromaMetadataFieldsLimitsWidget(),
-        ],
-      ),
-    );
-  }
+            const _InstanceDetailsThumbnailWidget(),
+            Padding(
+              padding: FediPadding.allSmallPadding,
+              child: Center(
+                child: const _InstanceDetailsDescriptionWidget(),
+              ),
+            ),
+            const _InstanceDetailsContactAccountWidget(),
+            const _InstanceDetailsDirectoryWidget(),
+            const _InstanceDetailsTrendsWidget(),
+            const _InstanceDetailsActivityWidget(),
+            const _InstanceDetailsPublicTimelineWidget(),
+            const _InstanceDetailsBodyDetailsWidget(),
+            const _InstanceDetailsBodyRegistrationsWidget(),
+            const _InstanceDetailsStatsWidget(
+              key: Key(InstanceDetailsWidgetKeys.statsKey),
+            ),
+            const _InstanceDetailsBodyMessagesLimitsWidget(),
+            const _InstanceDetailsUnifediApiPollLimitsWidget(),
+            const _InstanceDetailsPleromaUploadLimitsWidget(),
+            const _InstanceDetailsBodyMetadataWidget(),
+            const _InstanceDetailsunifediApiInstanceFederationWidget(),
+            const _InstanceDetailsPleromaMetadataFieldsLimitsWidget(),
+          ],
+        ),
+      );
 }
 
 class _InstanceDetailsBodyMetadataWidget extends StatelessWidget {
@@ -514,14 +510,12 @@ class _SimpleInstanceDetailsRowWidget extends StatelessWidget {
   final String value;
 
   @override
-  Widget build(BuildContext context) {
-    return _BaseInstanceDetailsRowWidget(
-      label: label,
-      value: value,
-      valueIcon: null,
-      valueOnClick: null,
-    );
-  }
+  Widget build(BuildContext context) => _BaseInstanceDetailsRowWidget(
+        label: label,
+        value: value,
+        valueIcon: null,
+        valueOnClick: null,
+      );
 }
 
 class _BaseInstanceDetailsRowWidget extends StatelessWidget {
@@ -541,40 +535,38 @@ class _BaseInstanceDetailsRowWidget extends StatelessWidget {
   static const padding = FediPadding.allBigPadding;
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: FediPadding.allBigPadding,
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          _InstanceDetailsRowLabelWidget(label: label),
-          Flexible(
-            child: InkWell(
-              onTap: () {
-                if (valueOnClick != null) {
-                  valueOnClick!(context);
-                }
-              },
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Flexible(
-                    child: _InstanceDetailsRowValueWidget(value: value),
-                  ),
-                  if (valueIcon != null)
-                    Padding(
-                      padding: FediPadding.horizontalSmallPadding,
-                      child: valueIcon,
+  Widget build(BuildContext context) => Padding(
+        padding: FediPadding.allBigPadding,
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _InstanceDetailsRowLabelWidget(label: label),
+            Flexible(
+              child: InkWell(
+                onTap: () {
+                  if (valueOnClick != null) {
+                    valueOnClick!(context);
+                  }
+                },
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Flexible(
+                      child: _InstanceDetailsRowValueWidget(value: value),
                     ),
-                ],
+                    if (valueIcon != null)
+                      Padding(
+                        padding: FediPadding.horizontalSmallPadding,
+                        child: valueIcon,
+                      ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
-      ),
-    );
-  }
+          ],
+        ),
+      );
 }
 
 class _InstanceDetailsRowValueWidget extends StatelessWidget {
@@ -588,16 +580,14 @@ class _InstanceDetailsRowValueWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Text(
-      value,
-      textAlign: TextAlign.end,
-      style: IFediUiTextTheme.of(context)
-          .bigTallMediumGrey
-          .copyWith(color: customColor),
-      overflow: TextOverflow.visible,
-    );
-  }
+  Widget build(BuildContext context) => Text(
+        value,
+        textAlign: TextAlign.end,
+        style: IFediUiTextTheme.of(context)
+            .bigTallMediumGrey
+            .copyWith(color: customColor),
+        overflow: TextOverflow.visible,
+      );
 }
 
 class _InstanceDetailsRowLabelWidget extends StatelessWidget {
@@ -609,19 +599,17 @@ class _InstanceDetailsRowLabelWidget extends StatelessWidget {
   final String label;
 
   @override
-  Widget build(BuildContext context) {
-    return ConstrainedBox(
-      constraints: BoxConstraints(
-        // todo: refactor
-        // ignore: no-magic-number
-        minWidth: 100,
-      ),
-      child: Text(
-        label,
-        style: IFediUiTextTheme.of(context).bigTallDarkGrey,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => ConstrainedBox(
+        constraints: BoxConstraints(
+          // todo: refactor
+          // ignore: no-magic-number
+          minWidth: 100,
+        ),
+        child: Text(
+          label,
+          style: IFediUiTextTheme.of(context).bigTallDarkGrey,
+        ),
+      );
 }
 
 class _InstanceDetailsVersionWidget extends StatelessWidget {
@@ -722,25 +710,23 @@ class _InstanceDetailsGroupTitleWidget extends StatelessWidget {
   final String title;
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: FediPadding.horizontalBigPadding,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        // crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const FediSmallVerticalSpacer(),
-          Text(
-            title,
-            style: IFediUiTextTheme.of(context).bigBoldDarkGrey,
-          ),
-          const FediSmallVerticalSpacer(),
-          const FediUltraLightGreyDivider(),
-        ],
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Padding(
+        padding: FediPadding.horizontalBigPadding,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          // crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const FediSmallVerticalSpacer(),
+            Text(
+              title,
+              style: IFediUiTextTheme.of(context).bigBoldDarkGrey,
+            ),
+            const FediSmallVerticalSpacer(),
+            const FediUltraLightGreyDivider(),
+          ],
+        ),
+      );
 }
 
 class _InstanceDetailsThumbnailWidget extends StatelessWidget {
@@ -1296,50 +1282,48 @@ class _InstanceDetailsUnifediApiPollLimitsBodyWidget extends StatelessWidget {
   final IUnifediApiInstancePollLimits pollLimits;
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        _InstanceDetailsGroupTitleWidget(
-          title: S.of(context).app_instance_details_field_pollLimit_title,
-        ),
-        if (pollLimits.minExpiration != null)
-          _SimpleInstanceDetailsRowWidget(
-            label: S
-                .of(context)
-                .app_instance_details_field_pollLimit_minExpiration_label,
-            value: formatDuration(
-              context: context,
-              duration: Duration(seconds: pollLimits.minExpiration!),
+  Widget build(BuildContext context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _InstanceDetailsGroupTitleWidget(
+            title: S.of(context).app_instance_details_field_pollLimit_title,
+          ),
+          if (pollLimits.minExpiration != null)
+            _SimpleInstanceDetailsRowWidget(
+              label: S
+                  .of(context)
+                  .app_instance_details_field_pollLimit_minExpiration_label,
+              value: formatDuration(
+                context: context,
+                duration: Duration(seconds: pollLimits.minExpiration!),
+              ),
             ),
-          ),
-        if (pollLimits.maxExpiration != null)
-          _SimpleInstanceDetailsRowWidget(
-            label: S
-                .of(context)
-                .app_instance_details_field_pollLimit_maxExpiration_label,
-            value: formatDuration(
-              context: context,
-              duration: Duration(seconds: pollLimits.maxExpiration!),
+          if (pollLimits.maxExpiration != null)
+            _SimpleInstanceDetailsRowWidget(
+              label: S
+                  .of(context)
+                  .app_instance_details_field_pollLimit_maxExpiration_label,
+              value: formatDuration(
+                context: context,
+                duration: Duration(seconds: pollLimits.maxExpiration!),
+              ),
             ),
-          ),
-        if (pollLimits.maxOptionChars != null)
-          _SimpleInstanceDetailsRowWidget(
-            label: S
-                .of(context)
-                .app_instance_details_field_pollLimit_maxOptionsChars_label,
-            value: pollLimits.maxOptionChars!.toString(),
-          ),
-        if (pollLimits.maxOptions != null)
-          _SimpleInstanceDetailsRowWidget(
-            label: S
-                .of(context)
-                .app_instance_details_field_pollLimit_maxOptions_label,
-            value: pollLimits.maxOptions!.toString(),
-          ),
-      ],
-    );
-  }
+          if (pollLimits.maxOptionChars != null)
+            _SimpleInstanceDetailsRowWidget(
+              label: S
+                  .of(context)
+                  .app_instance_details_field_pollLimit_maxOptionsChars_label,
+              value: pollLimits.maxOptionChars!.toString(),
+            ),
+          if (pollLimits.maxOptions != null)
+            _SimpleInstanceDetailsRowWidget(
+              label: S
+                  .of(context)
+                  .app_instance_details_field_pollLimit_maxOptions_label,
+              value: pollLimits.maxOptions!.toString(),
+            ),
+        ],
+      );
 }
 
 class _InstanceDetailsPleromaUploadMediaLimitWidget extends StatelessWidget {
@@ -1594,14 +1578,12 @@ class _InstanceDetailsUnifediApiInstanceFederationMfrObjectAgeActionsWidget
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return _SimpleInstanceDetailsRowWidget(
-      label: S
-          .of(context)
-          .app_instance_details_field_federation_mrfObjectAge_actions_label,
-      value: unifediApiInstanceFederation.mrfObjectAge!.actions!.join('\n'),
-    );
-  }
+  Widget build(BuildContext context) => _SimpleInstanceDetailsRowWidget(
+        label: S
+            .of(context)
+            .app_instance_details_field_federation_mrfObjectAge_actions_label,
+        value: unifediApiInstanceFederation.mrfObjectAge!.actions!.join('\n'),
+      );
 }
 
 class _InstanceDetailsunifediApiInstanceFederationQuarantinedInstancesWidget
@@ -1614,14 +1596,12 @@ class _InstanceDetailsunifediApiInstanceFederationQuarantinedInstancesWidget
   final IUnifediApiInstanceFederation unifediApiInstanceFederation;
 
   @override
-  Widget build(BuildContext context) {
-    return _SimpleInstanceDetailsRowWidget(
-      label: S
-          .of(context)
-          .app_instance_details_field_federation_quarantinedInstances_label,
-      value: unifediApiInstanceFederation.quarantinedInstances!.join('\n'),
-    );
-  }
+  Widget build(BuildContext context) => _SimpleInstanceDetailsRowWidget(
+        label: S
+            .of(context)
+            .app_instance_details_field_federation_quarantinedInstances_label,
+        value: unifediApiInstanceFederation.quarantinedInstances!.join('\n'),
+      );
 }
 
 class _InstanceDetailsUnifediApiInstanceFederationMfrObjectAgeThresholdWidget
@@ -1634,19 +1614,17 @@ class _InstanceDetailsUnifediApiInstanceFederationMfrObjectAgeThresholdWidget
   final IUnifediApiInstanceFederation unifediApiInstanceFederation;
 
   @override
-  Widget build(BuildContext context) {
-    return _SimpleInstanceDetailsRowWidget(
-      label: S
-          .of(context)
-          .app_instance_details_field_federation_mrfObjectAge_threshold_label,
-      value: formatDuration(
-        context: context,
-        duration: Duration(
-          seconds: unifediApiInstanceFederation.mrfObjectAge!.threshold!,
+  Widget build(BuildContext context) => _SimpleInstanceDetailsRowWidget(
+        label: S
+            .of(context)
+            .app_instance_details_field_federation_mrfObjectAge_threshold_label,
+        value: formatDuration(
+          context: context,
+          duration: Duration(
+            seconds: unifediApiInstanceFederation.mrfObjectAge!.threshold!,
+          ),
         ),
-      ),
-    );
-  }
+      );
 }
 
 class _InstanceDetailsUnifediApiInstanceFederationMfrPoliciesWidget
@@ -1659,13 +1637,12 @@ class _InstanceDetailsUnifediApiInstanceFederationMfrPoliciesWidget
   final IUnifediApiInstanceFederation unifediApiInstanceFederation;
 
   @override
-  Widget build(BuildContext context) {
-    return _SimpleInstanceDetailsRowWidget(
-      label:
-          S.of(context).app_instance_details_field_federation_mrfPolicies_label,
-      value: unifediApiInstanceFederation.mrfPolicies!.join('\n'),
-    );
-  }
+  Widget build(BuildContext context) => _SimpleInstanceDetailsRowWidget(
+        label: S
+            .of(context)
+            .app_instance_details_field_federation_mrfPolicies_label,
+        value: unifediApiInstanceFederation.mrfPolicies!.join('\n'),
+      );
 }
 
 class _InstanceDetailsUnifediApiInstanceFederationExclusionsWidget
@@ -1678,15 +1655,14 @@ class _InstanceDetailsUnifediApiInstanceFederationExclusionsWidget
   final IUnifediApiInstanceFederation unifediApiInstanceFederation;
 
   @override
-  Widget build(BuildContext context) {
-    return _SimpleInstanceDetailsRowWidget(
-      label:
-          S.of(context).app_instance_details_field_federation_exclusions_label,
-      value: unifediApiInstanceFederation.enabled!
-          ? S.of(context).app_instance_details_value_bool_true
-          : S.of(context).app_instance_details_value_bool_false,
-    );
-  }
+  Widget build(BuildContext context) => _SimpleInstanceDetailsRowWidget(
+        label: S
+            .of(context)
+            .app_instance_details_field_federation_exclusions_label,
+        value: unifediApiInstanceFederation.enabled!
+            ? S.of(context).app_instance_details_value_bool_true
+            : S.of(context).app_instance_details_value_bool_false,
+      );
 }
 
 class _InstanceDetailsUnifediApiInstanceFederationEnabledFieldWidget
@@ -1699,14 +1675,13 @@ class _InstanceDetailsUnifediApiInstanceFederationEnabledFieldWidget
   final IUnifediApiInstanceFederation unifediApiInstanceFederation;
 
   @override
-  Widget build(BuildContext context) {
-    return _SimpleInstanceDetailsRowWidget(
-      label: S.of(context).app_instance_details_field_federation_enabled_label,
-      value: unifediApiInstanceFederation.enabled!
-          ? S.of(context).app_instance_details_value_bool_true
-          : S.of(context).app_instance_details_value_bool_false,
-    );
-  }
+  Widget build(BuildContext context) => _SimpleInstanceDetailsRowWidget(
+        label:
+            S.of(context).app_instance_details_field_federation_enabled_label,
+        value: unifediApiInstanceFederation.enabled!
+            ? S.of(context).app_instance_details_value_bool_true
+            : S.of(context).app_instance_details_value_bool_false,
+      );
 }
 
 class __InstanceDetailsUnifediApiInstanceFederationTitleWidget
@@ -1716,11 +1691,9 @@ class __InstanceDetailsUnifediApiInstanceFederationTitleWidget
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return _InstanceDetailsGroupTitleWidget(
-      title: S.of(context).app_instance_details_field_federation_title,
-    );
-  }
+  Widget build(BuildContext context) => _InstanceDetailsGroupTitleWidget(
+        title: S.of(context).app_instance_details_field_federation_title,
+      );
 }
 
 class _InstanceDetailsPleromaMetadataFieldsLimitsWidget

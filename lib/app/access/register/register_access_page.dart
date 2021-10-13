@@ -61,59 +61,57 @@ Future<RegisterResponse?> goToRegisterUnifediApiAccessPage(
     Navigator.push<RegisterResponse>(
       context,
       MaterialPageRoute(
-        builder: (context) {
-          return DisposableProvider<IRegisterUnifediApiAccessBloc>(
-            create: (context) {
-              var localizationSettingsLocalPreferenceBloc =
-                  ILocalizationSettingsLocalPreferenceBloc.of(
+        builder: (context) => DisposableProvider<IRegisterUnifediApiAccessBloc>(
+          create: (context) {
+            var localizationSettingsLocalPreferenceBloc =
+                ILocalizationSettingsLocalPreferenceBloc.of(
+              context,
+              listen: false,
+            );
+
+            // var platformLocaleName = Platform.localeName;
+            // var localeName = .languageCode ??
+            //     platformLocaleName;
+            //
+            var localeName = LocalizationLocale
+                .calculateLocaleBaseOnLocalizationLocaleOrPlatformLocale(
+              localizationLocale: localizationSettingsLocalPreferenceBloc
+                  .value?.localizationLocale,
+            ).languageCode;
+
+            var registerUnifediApiAccessBloc = RegisterUnifediApiAccessBloc(
+              localeName: localeName,
+              instanceBaseUri: instanceBaseUri,
+              localPreferencesService: ILocalPreferencesService.of(
                 context,
                 listen: false,
-              );
+              ),
+              connectionService: Provider.of<IConnectionService>(
+                context,
+                listen: false,
+              ),
+              currentInstanceBloc: ICurrentUnifediApiAccessBloc.of(
+                context,
+                listen: false,
+              ),
+              pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc:
+                  IAuthApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc.of(
+                context,
+                listen: false,
+              ),
+              localizationSettingsBloc: ILocalizationSettingsBloc.of(
+                context,
+                listen: false,
+              ),
+              configService: IConfigService.of(
+                context,
+                listen: false,
+              ),
+            );
 
-              // var platformLocaleName = Platform.localeName;
-              // var localeName = .languageCode ??
-              //     platformLocaleName;
-              //
-              var localeName = LocalizationLocale
-                  .calculateLocaleBaseOnLocalizationLocaleOrPlatformLocale(
-                localizationLocale: localizationSettingsLocalPreferenceBloc
-                    .value?.localizationLocale,
-              ).languageCode;
-
-              var registerUnifediApiAccessBloc = RegisterUnifediApiAccessBloc(
-                localeName: localeName,
-                instanceBaseUri: instanceBaseUri,
-                localPreferencesService: ILocalPreferencesService.of(
-                  context,
-                  listen: false,
-                ),
-                connectionService: Provider.of<IConnectionService>(
-                  context,
-                  listen: false,
-                ),
-                currentInstanceBloc: ICurrentUnifediApiAccessBloc.of(
-                  context,
-                  listen: false,
-                ),
-                pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc:
-                    IAuthApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc.of(
-                  context,
-                  listen: false,
-                ),
-                localizationSettingsBloc: ILocalizationSettingsBloc.of(
-                  context,
-                  listen: false,
-                ),
-                configService: IConfigService.of(
-                  context,
-                  listen: false,
-                ),
-              );
-
-              return registerUnifediApiAccessBloc;
-            },
-            child: const RegisterUnifediApiAccessPage(),
-          );
-        },
+            return registerUnifediApiAccessBloc;
+          },
+          child: const RegisterUnifediApiAccessPage(),
+        ),
       ),
     );

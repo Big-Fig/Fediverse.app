@@ -232,7 +232,7 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
     int? maxIndex;
 
     // todo: improve
-    for (var index in loadedPageIndexesSortedByIndex) {
+    for (final index in loadedPageIndexesSortedByIndex) {
       if (maxIndex == null || index > maxIndex) {
         maxIndex = index;
       }

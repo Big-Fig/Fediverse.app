@@ -133,9 +133,8 @@ class MyAccountBloc extends IMyAccountBloc {
   }
 
   @override
-  bool checkIsChatMessageFromMe(IChatMessage? chatMessage) {
-    return myAccount!.remoteId == chatMessage!.accountRemoteId;
-  }
+  bool checkIsChatMessageFromMe(IChatMessage? chatMessage) =>
+      myAccount!.remoteId == chatMessage!.accountRemoteId;
 
   @override
   Future<IUnifediApiAccountRelationship> mute({

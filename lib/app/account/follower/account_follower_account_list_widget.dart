@@ -33,13 +33,11 @@ class _AccountFollowerAccountListEmptyWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: FediEmptyWidget(
-        title: S.of(context).app_account_info_value_hidden,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Center(
+        child: FediEmptyWidget(
+          title: S.of(context).app_account_info_value_hidden,
+        ),
+      );
 }
 
 class _AccountFollowerAccountListBodyWidget extends StatelessWidget {
@@ -48,26 +46,24 @@ class _AccountFollowerAccountListBodyWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: FediPadding.allBigPadding,
-          child: Text(
-            S.of(context).app_account_list_privacy,
-            textAlign: TextAlign.center,
-            style: IFediUiTextTheme.of(context).mediumShortBoldGrey,
+  Widget build(BuildContext context) => Column(
+        children: [
+          Padding(
+            padding: FediPadding.allBigPadding,
+            child: Text(
+              S.of(context).app_account_list_privacy,
+              textAlign: TextAlign.center,
+              style: IFediUiTextTheme.of(context).mediumShortBoldGrey,
+            ),
           ),
-        ),
-        const Expanded(
-          child: AccountPaginationListWidget(
-            accountSelectedCallback: _goToAccountFollowerAccountListPage,
-            key: PageStorageKey('AccountFollowerAccountListPage'),
+          const Expanded(
+            child: AccountPaginationListWidget(
+              accountSelectedCallback: _goToAccountFollowerAccountListPage,
+              key: PageStorageKey('AccountFollowerAccountListPage'),
+            ),
           ),
-        ),
-      ],
-    );
-  }
+        ],
+      );
 }
 
 void _goToAccountFollowerAccountListPage(

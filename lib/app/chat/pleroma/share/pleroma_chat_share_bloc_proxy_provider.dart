@@ -9,10 +9,9 @@ class PleromaChatShareBlocProxyProvider extends StatelessWidget {
   PleromaChatShareBlocProxyProvider({required this.child});
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IPleromaChatShareBloc, IShareToAccountBloc>(
-      update: (context, value, previous) => value,
-      child: child,
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IPleromaChatShareBloc, IShareToAccountBloc>(
+        update: (context, value, previous) => value,
+        child: child,
+      );
 }

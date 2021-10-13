@@ -279,43 +279,41 @@ class _TimelinesHomeTabPageBodyHeaderFirstRowWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return FediTabMainHeaderBarWidget(
-      leadingWidgets: null,
-      content: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: FediPadding.horizontalSmallPadding,
-            child: Row(
-              children: [
-                Expanded(
-                  child: FediTransparentIconTextButtonWithBorder(
-                    S.of(context).app_search_title,
-                    FediIcons.search,
-                    onPressed: () {
-                      goToSearchPage(context);
-                    },
-                    height: FediSizes.iconInCircleDefaultSize,
+  Widget build(BuildContext context) => FediTabMainHeaderBarWidget(
+        leadingWidgets: null,
+        content: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: FediPadding.horizontalSmallPadding,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: FediTransparentIconTextButtonWithBorder(
+                      S.of(context).app_search_title,
+                      FediIcons.search,
+                      onPressed: () {
+                        goToSearchPage(context);
+                      },
+                      height: FediSizes.iconInCircleDefaultSize,
+                    ),
                   ),
-                ),
-                const FediBigHorizontalSpacer(),
-                FediIconInCircleBlurredButton(
-                  FediIcons.filter,
-                  onPressed: () {
-                    goToTimelinesHomeTabStoragePage(context);
-                  },
-                ),
-              ],
+                  const FediBigHorizontalSpacer(),
+                  FediIconInCircleBlurredButton(
+                    FediIcons.filter,
+                    onPressed: () {
+                      goToTimelinesHomeTabStoragePage(context);
+                    },
+                  ),
+                ],
+              ),
             ),
-          ),
-          const FediBigVerticalSpacer(),
-          _TimelinesHomeTabIndicatorWidget(),
-        ],
-      ),
-      endingWidgets: null,
-    );
-  }
+            const FediBigVerticalSpacer(),
+            _TimelinesHomeTabIndicatorWidget(),
+          ],
+        ),
+        endingWidgets: null,
+      );
 }
 
 class _TimelinesHomeTabIndicatorWidget extends StatelessWidget {
@@ -324,17 +322,15 @@ class _TimelinesHomeTabIndicatorWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      // ignore: no-magic-number
-      padding: EdgeInsets.only(
+  Widget build(BuildContext context) => Padding(
         // ignore: no-magic-number
-        top: 3.0,
-        right: FediSizes.bigPadding,
-      ),
-      child: TimelineTabListTextTabIndicatorItemWidget(),
-    );
-  }
+        padding: EdgeInsets.only(
+          // ignore: no-magic-number
+          top: 3.0,
+          right: FediSizes.bigPadding,
+        ),
+        child: TimelineTabListTextTabIndicatorItemWidget(),
+      );
 }
 
 class _TimelinesHomeTabPageTabLoadingWidget extends StatelessWidget {
@@ -343,22 +339,20 @@ class _TimelinesHomeTabPageTabLoadingWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      color: IFediUiColorTheme.of(context).white,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const FediCircularProgressIndicator(),
-          const FediSmallVerticalSpacer(),
-          Text(
-            S.of(context).app_timeline_loading,
-            style: IFediUiTextTheme.of(context).bigShortBoldDarkGrey,
-          ),
-        ],
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Container(
+        width: double.infinity,
+        color: IFediUiColorTheme.of(context).white,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const FediCircularProgressIndicator(),
+            const FediSmallVerticalSpacer(),
+            Text(
+              S.of(context).app_timeline_loading,
+              style: IFediUiTextTheme.of(context).bigShortBoldDarkGrey,
+            ),
+          ],
+        ),
+      );
 }

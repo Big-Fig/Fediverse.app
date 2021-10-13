@@ -59,15 +59,14 @@ class CustomListBloc extends DisposableOwner implements ICustomListBloc {
     BuildContext context, {
     required Widget child,
     required ICustomList customList,
-  }) {
-    return DisposableProvider<ICustomListBloc>(
-      create: (context) => CustomListBloc.createFromContext(
-        context,
-        customList: customList,
-      ),
-      child: child,
-    );
-  }
+  }) =>
+      DisposableProvider<ICustomListBloc>(
+        create: (context) => CustomListBloc.createFromContext(
+          context,
+          customList: customList,
+        ),
+        child: child,
+      );
 
   @override
   bool operator ==(Object other) =>

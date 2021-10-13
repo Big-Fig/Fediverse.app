@@ -55,14 +55,13 @@ class AccountFeaturedHashtagNetworkOnlyPaginationBloc
     required int? itemsCountPerPage,
     required PaginationPage<IMyAccountFeaturedHashtag>? olderPage,
     required PaginationPage<IMyAccountFeaturedHashtag>? newerPage,
-  }) {
-    return listBloc.loadItemsFromRemoteForPage(
-      itemsCountPerPage: itemsCountPerPage,
-      // todo: think about it
-      // accountFeaturedHashtag don't have id and pagination?
-      maxId: newerPage?.items.lastOrNull?.name,
-      minId: olderPage?.items.firstOrNull?.name,
-      pageIndex: pageIndex,
-    );
-  }
+  }) =>
+      listBloc.loadItemsFromRemoteForPage(
+        itemsCountPerPage: itemsCountPerPage,
+        // todo: think about it
+        // accountFeaturedHashtag don't have id and pagination?
+        maxId: newerPage?.items.lastOrNull?.name,
+        minId: olderPage?.items.firstOrNull?.name,
+        pageIndex: pageIndex,
+      );
 }

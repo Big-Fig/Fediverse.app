@@ -20,13 +20,12 @@ class StatusListsDao extends DatabaseDao<DbStatusList, int, $DbStatusListsTable,
   @override
   $DbStatusListsTable get table => dbStatusLists;
 
-  Selectable<DbStatusList> findByListRemoteId(String listRemoteId) {
-    return customSelect(
-      'SELECT * FROM $tableName WHERE list_remote_id = :listRemoteId;',
-      variables: [Variable<String>(listRemoteId)],
-      readsFrom: {dbStatusLists},
-    ).map(dbStatusLists.mapFromRow);
-  }
+  Selectable<DbStatusList> findByListRemoteId(String listRemoteId) =>
+      customSelect(
+        'SELECT * FROM $tableName WHERE list_remote_id = :listRemoteId;',
+        variables: [Variable<String>(listRemoteId)],
+        readsFrom: {dbStatusLists},
+      ).map(dbStatusLists.mapFromRow);
 
   Future<int> deleteByListRemoteId(String listRemoteId) => customUpdate(
         'DELETE FROM $tableName '
@@ -51,10 +50,9 @@ class StatusListsDao extends DatabaseDao<DbStatusList, int, $DbStatusListsTable,
 
   CustomExpression<bool> _createListRemoteIdEqualExpression(
     String listRemoteId,
-  ) {
-    return createMainTableEqualWhereExpression(
-      fieldName: table.listRemoteId.$name,
-      value: listRemoteId,
-    );
-  }
+  ) =>
+      createMainTableEqualWhereExpression(
+        fieldName: table.listRemoteId.$name,
+        value: listRemoteId,
+      );
 }

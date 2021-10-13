@@ -38,13 +38,12 @@ class NotificationCachedPaginationBloc
     required int? itemsCountPerPage,
     required CachedPaginationPage<INotification>? olderPage,
     required CachedPaginationPage<INotification>? newerPage,
-  }) {
-    return notificationListService.loadLocalItems(
-      limit: itemsCountPerPage,
-      newerThan: olderPage?.items.firstOrNull,
-      olderThan: newerPage?.items.lastOrNull,
-    );
-  }
+  }) =>
+      notificationListService.loadLocalItems(
+        limit: itemsCountPerPage,
+        newerThan: olderPage?.items.firstOrNull,
+        olderThan: newerPage?.items.lastOrNull,
+      );
 
   @override
   Future refreshItemsFromRemoteForPage({
@@ -85,16 +84,15 @@ class NotificationCachedPaginationBloc
     BuildContext context, {
     required Widget child,
     int? maximumCachedPagesCount,
-  }) {
-    return DisposableProvider<
-        ICachedPaginationBloc<CachedPaginationPage<INotification>,
-            INotification>>(
-      create: (context) => NotificationCachedPaginationBloc.createFromContext(
-        context,
-        maximumCachedPagesCount: maximumCachedPagesCount,
-      ),
-      child: CachedPaginationBlocProxyProvider<
-          CachedPaginationPage<INotification>, INotification>(child: child),
-    );
-  }
+  }) =>
+      DisposableProvider<
+          ICachedPaginationBloc<CachedPaginationPage<INotification>,
+              INotification>>(
+        create: (context) => NotificationCachedPaginationBloc.createFromContext(
+          context,
+          maximumCachedPagesCount: maximumCachedPagesCount,
+        ),
+        child: CachedPaginationBlocProxyProvider<
+            CachedPaginationPage<INotification>, INotification>(child: child),
+      );
 }

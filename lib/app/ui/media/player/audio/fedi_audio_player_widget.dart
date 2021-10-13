@@ -11,24 +11,22 @@ import 'package:flutter/cupertino.dart';
 
 class FediAudioPlayerWidget extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: IFediUiColorTheme.of(context).darkGrey,
-      child: Stack(
-        children: [
-          Row(
-            children: [
-              const FediAudioPlayerControlsPausePlayButtonWidget(),
-              const Expanded(
-                child: FediPlayerControlPanelWidget(),
-              ),
-            ],
-          ),
-          const _FediAudioPlayerErrorWidget(),
-        ],
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Container(
+        color: IFediUiColorTheme.of(context).darkGrey,
+        child: Stack(
+          children: [
+            Row(
+              children: [
+                const FediAudioPlayerControlsPausePlayButtonWidget(),
+                const Expanded(
+                  child: FediPlayerControlPanelWidget(),
+                ),
+              ],
+            ),
+            const _FediAudioPlayerErrorWidget(),
+          ],
+        ),
+      );
 
   Widget buildErrorWidget(IMediaPlayerBloc mediaPlayerBloc) =>
       _FediAudioPlayerErrorWidget();
@@ -74,17 +72,15 @@ class _FediAudioPlayerErrorBodyWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        const _FediAudioPlayerErrorReloadButtonWidget(),
-        const _FediAudioPlayerErrorBodyContentWidget(),
-        const _FediAudioPlayerShowErrorButtonWidget(),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const _FediAudioPlayerErrorReloadButtonWidget(),
+          const _FediAudioPlayerErrorBodyContentWidget(),
+          const _FediAudioPlayerShowErrorButtonWidget(),
+        ],
+      );
 }
 
 class _FediAudioPlayerErrorBodyContentWidget extends StatelessWidget {
@@ -93,15 +89,13 @@ class _FediAudioPlayerErrorBodyContentWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Text(
-        S.of(context).app_media_player_error_desc,
-        style: IFediUiTextTheme.of(context).bigShortBoldWhite,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(
+          S.of(context).app_media_player_error_desc,
+          style: IFediUiTextTheme.of(context).bigShortBoldWhite,
+        ),
+      );
 }
 
 class _FediAudioPlayerShowErrorButtonWidget extends StatelessWidget {

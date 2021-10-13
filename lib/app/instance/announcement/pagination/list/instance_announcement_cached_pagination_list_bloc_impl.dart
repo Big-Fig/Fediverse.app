@@ -21,40 +21,38 @@ class InstanceAnnouncementCachedPaginationListBloc<
   }) : super(cachedPaginationBloc: cachedPaginationBloc);
 
   static Widget provideToContext<
-      TPage extends CachedPaginationPage<IInstanceAnnouncement>>(
+          TPage extends CachedPaginationPage<IInstanceAnnouncement>>(
     BuildContext context, {
     required Widget child,
-  }) {
-    return DisposableProvider<
-        ICachedPaginationListBloc<TPage, IInstanceAnnouncement>>(
-      create: (context) =>
-          InstanceAnnouncementCachedPaginationListBloc.createFromContext<TPage>(
-        context,
-      ),
-      child: ProxyProvider<
-          ICachedPaginationListBloc<TPage, IInstanceAnnouncement>,
-          ICachedPaginationListBloc>(
-        update: (context, value, previous) => value,
-        child:
-            CachedPaginationListBlocProxyProvider<TPage, IInstanceAnnouncement>(
-          child: child,
+  }) =>
+      DisposableProvider<
+          ICachedPaginationListBloc<TPage, IInstanceAnnouncement>>(
+        create: (context) => InstanceAnnouncementCachedPaginationListBloc
+            .createFromContext<TPage>(
+          context,
         ),
-      ),
-    );
-  }
+        child: ProxyProvider<
+            ICachedPaginationListBloc<TPage, IInstanceAnnouncement>,
+            ICachedPaginationListBloc>(
+          update: (context, value, previous) => value,
+          child: CachedPaginationListBlocProxyProvider<TPage,
+              IInstanceAnnouncement>(
+            child: child,
+          ),
+        ),
+      );
 
   static InstanceAnnouncementCachedPaginationListBloc<TPage> createFromContext<
-      TPage extends CachedPaginationPage<IInstanceAnnouncement>>(
+          TPage extends CachedPaginationPage<IInstanceAnnouncement>>(
     BuildContext context,
-  ) {
-    return InstanceAnnouncementCachedPaginationListBloc<TPage>(
-      cachedPaginationBloc:
-          Provider.of<ICachedPaginationBloc<TPage, IInstanceAnnouncement>>(
-        context,
-        listen: false,
-      ),
-      cachedListBloc:
-          IInstanceAnnouncementCachedListBloc.of(context, listen: false),
-    );
-  }
+  ) =>
+      InstanceAnnouncementCachedPaginationListBloc<TPage>(
+        cachedPaginationBloc:
+            Provider.of<ICachedPaginationBloc<TPage, IInstanceAnnouncement>>(
+          context,
+          listen: false,
+        ),
+        cachedListBloc:
+            IInstanceAnnouncementCachedListBloc.of(context, listen: false),
+      );
 }

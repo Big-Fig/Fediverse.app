@@ -110,13 +110,12 @@ abstract class AppDatabaseDaoRepository<
   Future<void> upsertInDbTypeBatch(
     Insertable<DbItem> dbItem, {
     required Batch? batchTransaction,
-  }) {
-    return insertInDbTypeBatch(
-      dbItem,
-      mode: InsertMode.insertOrReplace,
-      batchTransaction: batchTransaction,
-    );
-  }
+  }) =>
+      insertInDbTypeBatch(
+        dbItem,
+        mode: InsertMode.insertOrReplace,
+        batchTransaction: batchTransaction,
+      );
 
   @override
   Future<List<DbItem>> findAllInDbType({
@@ -213,15 +212,14 @@ abstract class AppDatabaseDaoRepository<
     RepositoryPagination<AppItem>? pagination,
     Filters? filters,
     OrderingTerm? orderingTermData,
-  }) {
-    return createFindInAppTypeSelectable(
-      pagination: pagination,
-      filters: filters,
-      orderingTerms: orderingTermData != null
-          ? [
-              orderingTermData,
-            ]
-          : null,
-    );
-  }
+  }) =>
+      createFindInAppTypeSelectable(
+        pagination: pagination,
+        filters: filters,
+        orderingTerms: orderingTermData != null
+            ? [
+                orderingTermData,
+              ]
+            : null,
+      );
 }

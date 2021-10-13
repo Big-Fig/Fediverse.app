@@ -10,20 +10,18 @@ import 'package:flutter/material.dart';
 
 class DraftStatusListPage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: FediPageTitleAppBar(
-        title: S.of(context).app_account_my_statuses_draft_title,
-      ),
-      body: SafeArea(
-        child: const DraftStatusPaginationListTimelineWidget(
-          customEmptyWidget: _DraftStatusListPageEmptyWidget(),
-          key: PageStorageKey('DraftStatusPaginationListTimelineWidget'),
-          needWatchLocalRepositoryForUpdates: true,
+  Widget build(BuildContext context) => Scaffold(
+        appBar: FediPageTitleAppBar(
+          title: S.of(context).app_account_my_statuses_draft_title,
         ),
-      ),
-    );
-  }
+        body: SafeArea(
+          child: const DraftStatusPaginationListTimelineWidget(
+            customEmptyWidget: _DraftStatusListPageEmptyWidget(),
+            key: PageStorageKey('DraftStatusPaginationListTimelineWidget'),
+            needWatchLocalRepositoryForUpdates: true,
+          ),
+        ),
+      );
 
   const DraftStatusListPage({Key? key}) : super(key: key);
 }
@@ -46,21 +44,19 @@ void goToDraftStatusListPage(BuildContext context) {
   Navigator.push(
     context,
     MaterialPageRoute<void>(
-      builder: (context) {
-        return DraftStatusLocalOnlyListBloc.provideToContext(
+      builder: (context) => DraftStatusLocalOnlyListBloc.provideToContext(
+        context,
+        child: DraftStatusLocalOnlyPaginationBloc.provideToContext(
           context,
-          child: DraftStatusLocalOnlyPaginationBloc.provideToContext(
+          maximumCachedPagesCount: null,
+          child: DraftStatusPaginationListBloc.provideToContext(
             context,
-            maximumCachedPagesCount: null,
-            child: DraftStatusPaginationListBloc.provideToContext(
-              context,
-              child: const DraftStatusListPage(
-                key: PageStorageKey('DraftStatusListPage'),
-              ),
+            child: const DraftStatusListPage(
+              key: PageStorageKey('DraftStatusListPage'),
             ),
           ),
-        );
-      },
+        ),
+      ),
     ),
   );
 }

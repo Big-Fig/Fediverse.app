@@ -26,21 +26,20 @@ extension IPleromaInstanceAnnouncementExtension on IUnifediApiAnnouncement {
 }
 
 extension IInstanceAnnouncementExtension on IInstanceAnnouncement {
-  UnifediApiAnnouncement toPleromaInstanceAnnouncement() {
-    return UnifediApiAnnouncement(
-      id: remoteId,
-      content: content,
-      allDay: allDay,
-      publishedAt: publishedAt,
-      updatedAt: updatedAt,
-      read: read,
-      reactions: reactions?.toUnifediApiEmojiReactionList(),
-      statuses: statuses?.toUnifediApiStatusList(),
-      mentions: mentions?.toUnifediApiMentionList(),
-      tags: tags?.toUnifediApiTagList(),
-      scheduledAt: scheduledAt,
-      startsAt: startsAt,
-      endsAt: endsAt,
-    );
-  }
+  UnifediApiAnnouncement toPleromaInstanceAnnouncement() =>
+      UnifediApiAnnouncement(
+        id: remoteId,
+        content: content,
+        allDay: allDay,
+        publishedAt: publishedAt,
+        updatedAt: updatedAt,
+        read: read,
+        reactions: reactions?.toUnifediApiEmojiReactionList(),
+        statuses: statuses?.toUnifediApiStatusList(),
+        mentions: mentions?.toUnifediApiMentionList(),
+        tags: tags?.toUnifediApiTagList(),
+        scheduledAt: scheduledAt,
+        startsAt: startsAt,
+        endsAt: endsAt,
+      );
 }

@@ -12,14 +12,12 @@ class RemoteInstanceDirectoryPage extends StatelessWidget {
   const RemoteInstanceDirectoryPage();
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: InstanceHostAppBarWidget(),
-      body: const SafeArea(
-        child: InstanceDirectoryWidget(),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Scaffold(
+        appBar: InstanceHostAppBarWidget(),
+        body: const SafeArea(
+          child: InstanceDirectoryWidget(),
+        ),
+      );
 }
 
 MaterialPageRoute<void> createRemoteInstanceDirectoryPageRoute({

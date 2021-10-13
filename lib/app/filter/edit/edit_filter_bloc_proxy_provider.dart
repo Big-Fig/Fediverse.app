@@ -9,10 +9,9 @@ class EditFilterBlocProxyProvider extends StatelessWidget {
   EditFilterBlocProxyProvider({required this.child});
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IEditFilterBloc, IFilterFormBloc>(
-      update: (context, value, previous) => value.filterFormBloc,
-      child: child,
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IEditFilterBloc, IFilterFormBloc>(
+        update: (context, value, previous) => value.filterFormBloc,
+        child: child,
+      );
 }

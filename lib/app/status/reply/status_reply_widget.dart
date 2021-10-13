@@ -63,18 +63,17 @@ class StatusReplyWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildStatusListItemTimelineWidget() {
-    return DisposableProxyProvider<IStatus, IStatusListItemTimelineBloc>(
-      update: (context, status, _) => StatusListItemTimelineBloc.list(
-        status: status,
-        collapsible: collapsible,
-        isFirstReplyInThread: false,
-        statusCallback: _onStatusClick,
-        initialMediaAttachment: null,
-      ),
-      child: const StatusListItemTimelineWidget(),
-    );
-  }
+  Widget _buildStatusListItemTimelineWidget() =>
+      DisposableProxyProvider<IStatus, IStatusListItemTimelineBloc>(
+        update: (context, status, _) => StatusListItemTimelineBloc.list(
+          status: status,
+          collapsible: collapsible,
+          isFirstReplyInThread: false,
+          statusCallback: _onStatusClick,
+          initialMediaAttachment: null,
+        ),
+        child: const StatusListItemTimelineWidget(),
+      );
 }
 
 class _StatusReplyFailedWidget extends StatelessWidget {
@@ -83,14 +82,12 @@ class _StatusReplyFailedWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: FediPadding.allSmallPadding,
-      child: Text(
-        S.of(context).app_status_reply_loading_failed,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Padding(
+        padding: FediPadding.allSmallPadding,
+        child: Text(
+          S.of(context).app_status_reply_loading_failed,
+        ),
+      );
 }
 
 class _StatusReplyLoadingWidget extends StatelessWidget {
@@ -99,25 +96,23 @@ class _StatusReplyLoadingWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: FediPadding.allSmallPadding,
-      child: Column(
-        children: [
-          Padding(
-            padding: FediPadding.allSmallPadding,
-            child: Text(
-              S.of(context).app_status_reply_loading_progress,
+  Widget build(BuildContext context) => Padding(
+        padding: FediPadding.allSmallPadding,
+        child: Column(
+          children: [
+            Padding(
+              padding: FediPadding.allSmallPadding,
+              child: Text(
+                S.of(context).app_status_reply_loading_progress,
+              ),
             ),
-          ),
-          const Padding(
-            padding: FediPadding.allSmallPadding,
-            child: FediCircularProgressIndicator(),
-          ),
-        ],
-      ),
-    );
-  }
+            const Padding(
+              padding: FediPadding.allSmallPadding,
+              child: FediCircularProgressIndicator(),
+            ),
+          ],
+        ),
+      );
 }
 
 void _onStatusClick(BuildContext context, IStatus status) {

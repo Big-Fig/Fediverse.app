@@ -202,35 +202,34 @@ class _AccountDetailsPageBodyContent extends StatelessWidget {
     required BuildContext context,
     required AccountStatusesTab tab,
     required Widget child,
-  }) {
-    return Builder(
-      builder: (context) {
-        switch (tab) {
-          case AccountStatusesTab.favourites:
-            return _AccountDetailsPageBodyTabFavouritesProvider(
-              child: child,
-            );
-          case AccountStatusesTab.withReplies:
-            return _AccountDetailsPageBodyTabWithRepliesProvider(
-              child: child,
-            );
+  }) =>
+      Builder(
+        builder: (context) {
+          switch (tab) {
+            case AccountStatusesTab.favourites:
+              return _AccountDetailsPageBodyTabFavouritesProvider(
+                child: child,
+              );
+            case AccountStatusesTab.withReplies:
+              return _AccountDetailsPageBodyTabWithRepliesProvider(
+                child: child,
+              );
 
-          case AccountStatusesTab.withoutReplies:
-            return _AccountDetailsPageBodyTabWithoutRepliesProvider(
-              child: child,
-            );
-          case AccountStatusesTab.media:
-            return _AccountDetailsPageBodyTabMediaProvider(
-              child: child,
-            );
-          case AccountStatusesTab.pinned:
-            return _AccountDetailsPageBodyTabPinnedProvider(
-              child: child,
-            );
-        }
-      },
-    );
-  }
+            case AccountStatusesTab.withoutReplies:
+              return _AccountDetailsPageBodyTabWithoutRepliesProvider(
+                child: child,
+              );
+            case AccountStatusesTab.media:
+              return _AccountDetailsPageBodyTabMediaProvider(
+                child: child,
+              );
+            case AccountStatusesTab.pinned:
+              return _AccountDetailsPageBodyTabPinnedProvider(
+                child: child,
+              );
+          }
+        },
+      );
 
   Widget buildTabBodyContent(
     BuildContext context,

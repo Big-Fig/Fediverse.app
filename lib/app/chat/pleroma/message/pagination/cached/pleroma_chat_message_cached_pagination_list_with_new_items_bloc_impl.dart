@@ -86,9 +86,8 @@ class PleromaChatMessageCachedPaginationListWithNewItemsBloc<
   }
 
   @override
-  List<IPleromaChatMessage> get items {
-    return excludeHiddenItems(super.items, hiddenItems);
-  }
+  List<IPleromaChatMessage> get items =>
+      excludeHiddenItems(super.items, hiddenItems);
 
   @override
   Stream<List<IPleromaChatMessage>> get itemsStream => Rx.combineLatest2(
@@ -129,44 +128,42 @@ class PleromaChatMessageCachedPaginationListWithNewItemsBloc<
       createFromContext(
     BuildContext context, {
     required bool mergeNewItemsImmediately,
-  }) {
-    return PleromaChatMessageCachedPaginationListWithNewItemsBloc(
-      mergeNewItemsImmediately: true,
-      chatMessageCachedListService: IPleromaChatMessageCachedListBloc.of(
-        context,
-        listen: false,
-      ),
-      cachedPaginationBloc: Provider.of<
-          ICachedPaginationBloc<CachedPaginationPage<IPleromaChatMessage>,
-              IPleromaChatMessage>>(
-        context,
-        listen: false,
-      ),
-      pleromaChatBloc: IPleromaChatBloc.of(
-        context,
-        listen: false,
-      ),
-    );
-  }
+  }) =>
+          PleromaChatMessageCachedPaginationListWithNewItemsBloc(
+            mergeNewItemsImmediately: true,
+            chatMessageCachedListService: IPleromaChatMessageCachedListBloc.of(
+              context,
+              listen: false,
+            ),
+            cachedPaginationBloc: Provider.of<
+                ICachedPaginationBloc<CachedPaginationPage<IPleromaChatMessage>,
+                    IPleromaChatMessage>>(
+              context,
+              listen: false,
+            ),
+            pleromaChatBloc: IPleromaChatBloc.of(
+              context,
+              listen: false,
+            ),
+          );
 
   static Widget provideToContext(
     BuildContext context, {
     required bool mergeNewItemsImmediately,
     required Widget child,
-  }) {
-    return DisposableProvider<
-        ICachedPaginationListWithNewItemsBloc<
-            CachedPaginationPage<IPleromaChatMessage>, IPleromaChatMessage>>(
-      create: (context) =>
-          PleromaChatMessageCachedPaginationListWithNewItemsBloc
-              .createFromContext(
-        context,
-        mergeNewItemsImmediately: mergeNewItemsImmediately,
-      ),
-      child: CachedPaginationListWithNewItemsBlocProxyProvider<
-          CachedPaginationPage<IPleromaChatMessage>, IPleromaChatMessage>(
-        child: child,
-      ),
-    );
-  }
+  }) =>
+      DisposableProvider<
+          ICachedPaginationListWithNewItemsBloc<
+              CachedPaginationPage<IPleromaChatMessage>, IPleromaChatMessage>>(
+        create: (context) =>
+            PleromaChatMessageCachedPaginationListWithNewItemsBloc
+                .createFromContext(
+          context,
+          mergeNewItemsImmediately: mergeNewItemsImmediately,
+        ),
+        child: CachedPaginationListWithNewItemsBlocProxyProvider<
+            CachedPaginationPage<IPleromaChatMessage>, IPleromaChatMessage>(
+          child: child,
+        ),
+      );
 }

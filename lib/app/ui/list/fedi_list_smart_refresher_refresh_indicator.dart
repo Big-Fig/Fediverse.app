@@ -101,23 +101,20 @@ class _FediListSmartRefresherRefreshIndicatorState
   }
 
   @override
-  Widget buildContent(BuildContext context, RefreshStatus? mode) {
-    return _buildIndicator(widget.backgroundColor ?? Colors.white);
-  }
+  Widget buildContent(BuildContext context, RefreshStatus? mode) =>
+      _buildIndicator(widget.backgroundColor ?? Colors.white);
 
-  Widget _buildIndicator(Color outerColor) {
-    return SlideTransition(
-      position: _positionFactor!,
-      child: ScaleTransition(
-        scale: _scaleFactor,
-        child: Align(
-          alignment: Alignment.topCenter,
-          child:
-              FediCircularProgressIndicator.buildForRefreshIndicator(context),
+  Widget _buildIndicator(Color outerColor) => SlideTransition(
+        position: _positionFactor!,
+        child: ScaleTransition(
+          scale: _scaleFactor,
+          child: Align(
+            alignment: Alignment.topCenter,
+            child:
+                FediCircularProgressIndicator.buildForRefreshIndicator(context),
+          ),
         ),
-      ),
-    );
-  }
+      );
 
   @override
   void onOffsetChange(double offset) {
@@ -146,14 +143,11 @@ class _FediListSmartRefresherRefreshIndicatorState
   }
 
   @override
-  Future<void> readyToRefresh() {
-    return _positionController.animateTo(widget.distance / widget.height);
-  }
+  Future<void> readyToRefresh() =>
+      _positionController.animateTo(widget.distance / widget.height);
 
   @override
-  Future<void> endRefresh() {
-    return _scaleFactor.animateTo(0.0);
-  }
+  Future<void> endRefresh() => _scaleFactor.animateTo(0.0);
 
   @override
   void dispose() {

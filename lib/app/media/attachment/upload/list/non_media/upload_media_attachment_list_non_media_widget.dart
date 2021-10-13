@@ -28,18 +28,21 @@ class UploadMediaAttachmentListNonMediaWidget extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  ...mediaItemBlocs!.map((mediaItemBloc) {
-                    return Provider<IUploadMediaAttachmentBloc>.value(
-                      value: mediaItemBloc,
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                          bottom: FediSizes.smallPadding,
+                  ...mediaItemBlocs!
+                      .map(
+                        (mediaItemBloc) =>
+                            Provider<IUploadMediaAttachmentBloc>.value(
+                          value: mediaItemBloc,
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              bottom: FediSizes.smallPadding,
+                            ),
+                            child:
+                                const UploadMediaAttachmentListNonMediaItemWidget(),
+                          ),
                         ),
-                        child:
-                            const UploadMediaAttachmentListNonMediaItemWidget(),
-                      ),
-                    );
-                  }).toList(),
+                      )
+                      .toList(),
                 ],
               ),
             ),

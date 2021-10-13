@@ -493,9 +493,8 @@ abstract class PostStatusBloc extends PostMessageBloc
   bool isMaximumAttachmentReached({
     required List<IUploadMediaAttachmentBloc> mediaAttachmentBlocs,
     required int maximumMediaAttachmentCount,
-  }) {
-    return mediaAttachmentBlocs.length >= maximumMediaAttachmentCount;
-  }
+  }) =>
+      mediaAttachmentBlocs.length >= maximumMediaAttachmentCount;
 
   @override
   Future post() async {
@@ -797,42 +796,39 @@ abstract class PostStatusBloc extends PostMessageBloc
         expiresInSeconds: expireAtSubject.valueOrNull?.totalSeconds,
       );
 
-  UnifediApiSchedulePostStatus calculateScheduleStatus() {
-    return UnifediApiSchedulePostStatus(
-      mediaIds: _calculateMediaIdsField(),
-      status: calculateStatusTextField(),
-      sensitive: isNsfwSensitiveEnabled,
-      visibility: calculateVisibilityField(),
-      inReplyToId: calculateInReplyToStatusField()?.remoteId,
-      inReplyToConversationId: initialData.inReplyToConversationId,
-      scheduledAt: scheduledAt!,
-      to: calculateToField(),
-      poll: _calculatePostStatusPollField(),
-      spoilerText: _calculateSpoilerTextField(),
-      expiresInSeconds: expireAtSubject.valueOrNull?.totalSeconds,
-      language: initialData.language,
-      preview: null,
-      contentType: null,
-    );
-  }
+  UnifediApiSchedulePostStatus calculateScheduleStatus() =>
+      UnifediApiSchedulePostStatus(
+        mediaIds: _calculateMediaIdsField(),
+        status: calculateStatusTextField(),
+        sensitive: isNsfwSensitiveEnabled,
+        visibility: calculateVisibilityField(),
+        inReplyToId: calculateInReplyToStatusField()?.remoteId,
+        inReplyToConversationId: initialData.inReplyToConversationId,
+        scheduledAt: scheduledAt!,
+        to: calculateToField(),
+        poll: _calculatePostStatusPollField(),
+        spoilerText: _calculateSpoilerTextField(),
+        expiresInSeconds: expireAtSubject.valueOrNull?.totalSeconds,
+        language: initialData.language,
+        preview: null,
+        contentType: null,
+      );
 
-  UnifediApiPostStatus calculatePostStatus() {
-    return UnifediApiPostStatus(
-      mediaIds: _calculateMediaIdsField(),
-      status: calculateStatusTextField(),
-      sensitive: isNsfwSensitiveEnabled,
-      visibility: calculateVisibilityField(),
-      inReplyToId: calculateInReplyToStatusField()?.remoteId,
-      inReplyToConversationId: initialData.inReplyToConversationId,
-      to: calculateToField(),
-      poll: _calculatePostStatusPollField(),
-      spoilerText: _calculateSpoilerTextField(),
-      language: initialData.language,
-      expiresInSeconds: expireAtSubject.valueOrNull?.totalSeconds,
-      contentType: null,
-      preview: null,
-    );
-  }
+  UnifediApiPostStatus calculatePostStatus() => UnifediApiPostStatus(
+        mediaIds: _calculateMediaIdsField(),
+        status: calculateStatusTextField(),
+        sensitive: isNsfwSensitiveEnabled,
+        visibility: calculateVisibilityField(),
+        inReplyToId: calculateInReplyToStatusField()?.remoteId,
+        inReplyToConversationId: initialData.inReplyToConversationId,
+        to: calculateToField(),
+        poll: _calculatePostStatusPollField(),
+        spoilerText: _calculateSpoilerTextField(),
+        language: initialData.language,
+        expiresInSeconds: expireAtSubject.valueOrNull?.totalSeconds,
+        contentType: null,
+        preview: null,
+      );
 
   @override
   void appendText(

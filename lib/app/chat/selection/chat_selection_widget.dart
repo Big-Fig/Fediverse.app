@@ -7,16 +7,14 @@ class ChatSelectionWidget extends StatelessWidget {
   const ChatSelectionWidget();
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Padding(
-          padding: FediPadding.horizontalBigPadding,
-          child: const ChatSelectionActionListWidget(),
-        ),
-        const FediUltraLightGreyDivider(),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: FediPadding.horizontalBigPadding,
+            child: const ChatSelectionActionListWidget(),
+          ),
+          const FediUltraLightGreyDivider(),
+        ],
+      );
 }

@@ -13,17 +13,16 @@ Future<T?> showFediSingleSelectionChooserDialog<T>({
   String? content,
   required List<SelectionDialogAction> actions,
   bool cancelable = true,
-}) {
-  return showFediModalBottomSheetDialog<T>(
-    context: context,
-    child: FediSingleSelectionChooserDialogBody(
-      title: title,
-      cancelable: cancelable,
-      content: content,
-      actions: actions,
-    ),
-  );
-}
+}) =>
+    showFediModalBottomSheetDialog<T>(
+      context: context,
+      child: FediSingleSelectionChooserDialogBody(
+        title: title,
+        cancelable: cancelable,
+        content: content,
+        actions: actions,
+      ),
+    );
 
 // todo: unify code with fedi_multi_selection_chooser_dialog.dart
 // remove copy-pasted code
@@ -41,43 +40,41 @@ class FediSingleSelectionChooserDialogBody extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        if (title != null)
-          _FediSingleSelectionChooserDialogBodyTitle(title: title),
-        if (content != null)
-          FediSingleSelectionChooserDialogBodyContent(content: content),
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              ...actions
-                  .map(
-                    (action) =>
-                        _FediSingleSelectionChooserDialogBodyContentAction(
-                      action: action,
-                      isSelected: action.isSelected,
-                    ),
-                  )
-                  .toList(),
-            ],
-          ),
-        ),
-        if (cancelable)
-          _FediSingleSelectionChooserDialogBodyContentAction(
-            action: BaseDialog.createDefaultCancelAction(
-              context: context,
+  Widget build(BuildContext context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          if (title != null)
+            _FediSingleSelectionChooserDialogBodyTitle(title: title),
+          if (content != null)
+            FediSingleSelectionChooserDialogBodyContent(content: content),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                ...actions
+                    .map(
+                      (action) =>
+                          _FediSingleSelectionChooserDialogBodyContentAction(
+                        action: action,
+                        isSelected: action.isSelected,
+                      ),
+                    )
+                    .toList(),
+              ],
             ),
-            isSelected: true,
           ),
-      ],
-    );
-  }
+          if (cancelable)
+            _FediSingleSelectionChooserDialogBodyContentAction(
+              action: BaseDialog.createDefaultCancelAction(
+                context: context,
+              ),
+              isSelected: true,
+            ),
+        ],
+      );
 }
 
 class FediSingleSelectionChooserDialogBodyContent extends StatelessWidget {
@@ -89,15 +86,13 @@ class FediSingleSelectionChooserDialogBodyContent extends StatelessWidget {
   final String? content;
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: FediSizes.smallPadding),
-      child: Text(
-        content!,
-        style: IFediUiTextTheme.of(context).dialogContentDarkGrey,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.only(bottom: FediSizes.smallPadding),
+        child: Text(
+          content!,
+          style: IFediUiTextTheme.of(context).dialogContentDarkGrey,
+        ),
+      );
 }
 
 class _FediSingleSelectionChooserDialogBodyTitle extends StatelessWidget {
@@ -109,15 +104,13 @@ class _FediSingleSelectionChooserDialogBodyTitle extends StatelessWidget {
   final String? title;
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: FediSizes.smallPadding),
-      child: Text(
-        title!,
-        style: IFediUiTextTheme.of(context).dialogTitleBoldDarkGrey,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.only(bottom: FediSizes.smallPadding),
+        child: Text(
+          title!,
+          style: IFediUiTextTheme.of(context).dialogTitleBoldDarkGrey,
+        ),
+      );
 }
 
 class _FediSingleSelectionChooserDialogBodyContentAction

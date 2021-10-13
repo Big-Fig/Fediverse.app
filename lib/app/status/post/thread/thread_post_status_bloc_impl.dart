@@ -121,20 +121,19 @@ class ThreadPostStatusBloc extends PostStatusBloc
     BuildContext context, {
     required IStatus inReplyToStatus,
     required Widget child,
-  }) {
-    return DisposableProvider<IThreadPostStatusBloc>(
-      create: (context) => ThreadPostStatusBloc.createFromContext(
-        context,
-        inReplyToStatus: inReplyToStatus,
-      ),
-      child: ProxyProvider<IThreadPostStatusBloc, IPostStatusBloc>(
-        update: (context, value, previous) => value,
-        child: PostStatusMessageBlocProxyProvider(
-          child: child,
+  }) =>
+      DisposableProvider<IThreadPostStatusBloc>(
+        create: (context) => ThreadPostStatusBloc.createFromContext(
+          context,
+          inReplyToStatus: inReplyToStatus,
         ),
-      ),
-    );
-  }
+        child: ProxyProvider<IThreadPostStatusBloc, IPostStatusBloc>(
+          update: (context, value, previous) => value,
+          child: PostStatusMessageBlocProxyProvider(
+            child: child,
+          ),
+        ),
+      );
 
   @override
   bool get isPossibleToChangeVisibility => true;

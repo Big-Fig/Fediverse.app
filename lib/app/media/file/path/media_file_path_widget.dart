@@ -22,49 +22,47 @@ class MediaFilePathWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          height: _rowHeight,
-          child: Stack(
-            children: [
-              Opacity(
-                opacity: opacity,
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: FediBorderRadius.allSmallBorderRadius,
-                    border: Border.all(
-                      color: IFediUiColorTheme.of(context).ultraLightGrey,
+  Widget build(BuildContext context) => Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            height: _rowHeight,
+            child: Stack(
+              children: [
+                Opacity(
+                  opacity: opacity,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: FediBorderRadius.allSmallBorderRadius,
+                      border: Border.all(
+                        color: IFediUiColorTheme.of(context).ultraLightGrey,
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        const _MediaFilePathIconWidget(),
+                        const _MediaFilePathBodyWidget(),
+                      ],
                     ),
                   ),
-                  child: Row(
-                    children: [
-                      const _MediaFilePathIconWidget(),
-                      const _MediaFilePathBodyWidget(),
-                    ],
-                  ),
                 ),
-              ),
-              if (actionsWidget != null)
-                Positioned(
-                  top: 0.0,
-                  bottom: 0.0,
-                  right: FediSizes.bigPadding,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      actionsWidget!,
-                    ],
+                if (actionsWidget != null)
+                  Positioned(
+                    top: 0.0,
+                    bottom: 0.0,
+                    right: FediSizes.bigPadding,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        actionsWidget!,
+                      ],
+                    ),
                   ),
-                ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ],
-    );
-  }
+        ],
+      );
 }
 
 class _MediaFilePathBodyWidget extends StatelessWidget {

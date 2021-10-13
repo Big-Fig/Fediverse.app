@@ -46,20 +46,19 @@ class CreateFilterBloc extends EditFilterBloc implements ICreateFilterBloc {
     BuildContext context, {
     required Widget child,
     required Function(IFilter) onSubmit,
-  }) {
-    return DisposableProvider<ICreateFilterBloc>(
-      create: (context) => CreateFilterBloc.createFromContext(
-        context,
-        onSubmit: onSubmit,
-      ),
-      child: ProxyProvider<ICreateFilterBloc, IEditFilterBloc>(
-        update: (context, value, previous) => value,
-        child: EditFilterBlocProxyProvider(
-          child: child,
+  }) =>
+      DisposableProvider<ICreateFilterBloc>(
+        create: (context) => CreateFilterBloc.createFromContext(
+          context,
+          onSubmit: onSubmit,
         ),
-      ),
-    );
-  }
+        child: ProxyProvider<ICreateFilterBloc, IEditFilterBloc>(
+          update: (context, value, previous) => value,
+          child: EditFilterBlocProxyProvider(
+            child: child,
+          ),
+        ),
+      );
 
   @override
   Future<IUnifediApiFilter> actuallySubmitFilter(

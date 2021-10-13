@@ -7,10 +7,9 @@ Color calculateVisibilityColor({
   required BuildContext context,
   required bool isSelectedVisibility,
   required bool isPossibleToChangeVisibility,
-}) {
-  return isSelectedVisibility
-      ? IFediUiColorTheme.of(context).primary
-      : isPossibleToChangeVisibility
-          ? IFediUiColorTheme.of(context).darkGrey
-          : IFediUiColorTheme.of(context).lightGrey;
-}
+}) =>
+    isSelectedVisibility
+        ? IFediUiColorTheme.of(context).primary
+        : isPossibleToChangeVisibility
+            ? IFediUiColorTheme.of(context).darkGrey
+            : IFediUiColorTheme.of(context).lightGrey;

@@ -23,24 +23,22 @@ class EditMyAccountHeaderFieldWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Container(
-          width: double.infinity,
-          // ignore: no-equal-arguments
-          height: double.infinity,
-          child: const EditMyAccountHeaderFieldImageWidget(),
-        ),
-        Positioned(
-          bottom: FediSizes.bigPadding,
-          // ignore: no-equal-arguments
-          right: FediSizes.bigPadding,
-          child: const EditMyAccountHeaderFieldEditButtonWidget(),
-        ),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => Stack(
+        children: <Widget>[
+          Container(
+            width: double.infinity,
+            // ignore: no-equal-arguments
+            height: double.infinity,
+            child: const EditMyAccountHeaderFieldImageWidget(),
+          ),
+          Positioned(
+            bottom: FediSizes.bigPadding,
+            // ignore: no-equal-arguments
+            right: FediSizes.bigPadding,
+            child: const EditMyAccountHeaderFieldEditButtonWidget(),
+          ),
+        ],
+      );
 }
 
 class EditMyAccountHeaderFieldImageWidget extends StatelessWidget {

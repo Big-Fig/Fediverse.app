@@ -193,24 +193,23 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
     required IPleromaChat chat,
     required IPleromaChatMessage? lastChatMessage,
     bool needRefreshFromNetworkOnInit = false,
-  }) {
-    return PleromaChatBloc(
-      connectionService: Provider.of<IConnectionService>(
-        context,
-        listen: false,
-      ),
-      unifediApiChatService:
-          Provider.of<IUnifediApiChatService>(context, listen: false),
-      myAccountBloc: IMyAccountBloc.of(context, listen: false),
-      chat: chat,
-      lastChatMessage: lastChatMessage,
-      needRefreshFromNetworkOnInit: needRefreshFromNetworkOnInit,
-      chatRepository: IPleromaChatRepository.of(context, listen: false),
-      chatMessageRepository:
-          IPleromaChatMessageRepository.of(context, listen: false),
-      accountRepository: IAccountRepository.of(context, listen: false),
-    );
-  }
+  }) =>
+      PleromaChatBloc(
+        connectionService: Provider.of<IConnectionService>(
+          context,
+          listen: false,
+        ),
+        unifediApiChatService:
+            Provider.of<IUnifediApiChatService>(context, listen: false),
+        myAccountBloc: IMyAccountBloc.of(context, listen: false),
+        chat: chat,
+        lastChatMessage: lastChatMessage,
+        needRefreshFromNetworkOnInit: needRefreshFromNetworkOnInit,
+        chatRepository: IPleromaChatRepository.of(context, listen: false),
+        chatMessageRepository:
+            IPleromaChatMessageRepository.of(context, listen: false),
+        accountRepository: IAccountRepository.of(context, listen: false),
+      );
 
   @override
   Future markAsRead() async {

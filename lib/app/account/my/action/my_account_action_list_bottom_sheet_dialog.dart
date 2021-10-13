@@ -8,16 +8,15 @@ import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/modal_bottom_sheet/fedi_modal_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 
-Future<void> showMyAccountActionListBottomSheetDialog(BuildContext context) {
-  return showFediModalBottomSheetDialog<void>(
-    context: context,
-    child: DisposableProvider<IUnifediApiAccessChooserBloc>(
-      create: (context) =>
-          UnifediApiAccessChooserBloc.createFromContext(context),
-      child: Padding(
-        padding: FediPadding.allBigPadding,
-        child: const UnifediApiAccessChooserWidget(),
+Future<void> showMyAccountActionListBottomSheetDialog(BuildContext context) =>
+    showFediModalBottomSheetDialog<void>(
+      context: context,
+      child: DisposableProvider<IUnifediApiAccessChooserBloc>(
+        create: (context) =>
+            UnifediApiAccessChooserBloc.createFromContext(context),
+        child: Padding(
+          padding: FediPadding.allBigPadding,
+          child: const UnifediApiAccessChooserWidget(),
+        ),
       ),
-    ),
-  );
-}
+    );

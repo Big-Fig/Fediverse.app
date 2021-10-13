@@ -38,15 +38,14 @@ class StatusVisibilityIconWidget extends StatelessWidget {
         ),
       );
 
-  static IconData mapVisibilityToIconData(UnifediApiVisibility visibility) {
-    return visibility.map(
-      public: (_) => FediIcons.world,
-      unlisted: (_) => FediIcons.unlisted,
-      direct: (_) => FediIcons.message,
-      private: (_) => FediIcons.private,
-      list: (_) => FediIcons.lists,
-      local: (_) => FediIcons.instance,
-      unknown: (_) => FediIcons.warning,
-    );
-  }
+  static IconData mapVisibilityToIconData(UnifediApiVisibility visibility) =>
+      visibility.map(
+        public: (_) => FediIcons.world,
+        unlisted: (_) => FediIcons.unlisted,
+        direct: (_) => FediIcons.message,
+        private: (_) => FediIcons.private,
+        list: (_) => FediIcons.lists,
+        local: (_) => FediIcons.instance,
+        unknown: (_) => FediIcons.warning,
+      );
 }

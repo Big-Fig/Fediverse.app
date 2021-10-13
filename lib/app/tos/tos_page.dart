@@ -6,14 +6,12 @@ import 'package:flutter/material.dart';
 
 class TosPage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: FediPageTitleAppBar(
-        title: S.of(context).app_tos_title,
-      ),
-      body: _TosPageBodyWigdet(),
-    );
-  }
+  Widget build(BuildContext context) => Scaffold(
+        appBar: FediPageTitleAppBar(
+          title: S.of(context).app_tos_title,
+        ),
+        body: _TosPageBodyWigdet(),
+      );
 
   const TosPage();
 }
@@ -24,27 +22,23 @@ class _TosPageBodyWigdet extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: Padding(
-        padding: FediPadding.allBigPadding,
-        child: SingleChildScrollView(
-          child: FutureBuilder<String>(
-            // TODO: Should be localized
-            future: DefaultAssetBundle.of(context)
-                .loadString('assets/terms/terms.rtf'),
-            builder: (context, snapshot) {
-              return Text(
+  Widget build(BuildContext context) => SafeArea(
+        child: Padding(
+          padding: FediPadding.allBigPadding,
+          child: SingleChildScrollView(
+            child: FutureBuilder<String>(
+              // TODO: Should be localized
+              future: DefaultAssetBundle.of(context)
+                  .loadString('assets/terms/terms.rtf'),
+              builder: (context, snapshot) => Text(
                 snapshot.data ?? '',
                 style: IFediUiTextTheme.of(context).mediumShortDarkGrey,
                 softWrap: true,
-              );
-            },
+              ),
+            ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }
 
 void goToTosPage(BuildContext context) {

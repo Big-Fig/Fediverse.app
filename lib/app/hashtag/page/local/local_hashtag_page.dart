@@ -29,14 +29,12 @@ class LocalHashtagPage extends StatelessWidget {
   const LocalHashtagPage();
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const HashtagPageAppBarWidget(),
-      body: const SafeArea(
-        child: LocalHashtagPageBodyWidget(),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Scaffold(
+        appBar: const HashtagPageAppBarWidget(),
+        body: const SafeArea(
+          child: LocalHashtagPageBodyWidget(),
+        ),
+      );
 }
 
 MaterialPageRoute<void> createLocalHashtagPageRoute({

@@ -54,15 +54,14 @@ mixin PopulatedDatabaseDaoRepositoryMixin<
     RepositoryPagination<AppItem>? pagination,
     Filters? filters,
     List<OrderingTerm>? orderingTerms,
-  }) {
-    return createFindInTypedResultSelectable(
-      pagination: pagination,
-      filters: filters,
-      orderingTerms: orderingTerms,
-    )
-        .map(populatedDao.mapTypedResultToDbPopulatedItem)
-        .map(mapDbPopulatedItemToAppItem);
-  }
+  }) =>
+      createFindInTypedResultSelectable(
+        pagination: pagination,
+        filters: filters,
+        orderingTerms: orderingTerms,
+      )
+          .map(populatedDao.mapTypedResultToDbPopulatedItem)
+          .map(mapDbPopulatedItemToAppItem);
 
   Selectable<TypedResult> createFindInTypedResultSelectable({
     RepositoryPagination<AppItem>? pagination,

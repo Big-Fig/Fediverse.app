@@ -95,19 +95,18 @@ class LocalStatusBloc extends StatusBloc {
     bool delayInit = true,
     bool isNeedWatchLocalRepositoryForUpdates = true,
     required Widget child,
-  }) {
-    return DisposableProvider<IStatusBloc>(
-      create: (context) => LocalStatusBloc.createFromContext(
-        context,
-        status: status,
-        isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
-        delayInit: delayInit,
-        isNeedWatchLocalRepositoryForUpdates:
-            isNeedWatchLocalRepositoryForUpdates,
-      ),
-      child: child,
-    );
-  }
+  }) =>
+      DisposableProvider<IStatusBloc>(
+        create: (context) => LocalStatusBloc.createFromContext(
+          context,
+          status: status,
+          isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
+          delayInit: delayInit,
+          isNeedWatchLocalRepositoryForUpdates:
+              isNeedWatchLocalRepositoryForUpdates,
+        ),
+        child: child,
+      );
 
   @override
   Future<IAccount?> loadAccountByMentionUrl({
@@ -305,11 +304,10 @@ class LocalStatusBloc extends StatusBloc {
   @override
   Future<IStatus> toggleMute({
     required Duration? duration,
-  }) async {
-    return _actualMuteUnmute(
-      expiresIn: duration,
-    );
-  }
+  }) async =>
+      _actualMuteUnmute(
+        expiresIn: duration,
+      );
 
   Future<IStatus> _actualMuteUnmute({
     required Duration? expiresIn,

@@ -31,13 +31,11 @@ class _InstanceSettingsBody extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        const InstanceSettingsListWidget(),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => ListView(
+        children: [
+          const InstanceSettingsListWidget(),
+        ],
+      );
 }
 
 void goToInstanceSettingsPage(BuildContext context) {
@@ -47,8 +45,7 @@ void goToInstanceSettingsPage(BuildContext context) {
   );
 }
 
-MaterialPageRoute<void> createInstanceSettingsPageRoute() {
-  return MaterialPageRoute<void>(
-    builder: (context) => const InstanceSettingsListPage(),
-  );
-}
+MaterialPageRoute<void> createInstanceSettingsPageRoute() =>
+    MaterialPageRoute<void>(
+      builder: (context) => const InstanceSettingsListPage(),
+    );

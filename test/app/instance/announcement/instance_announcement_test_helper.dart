@@ -9,17 +9,16 @@ class InstanceAnnouncementMockHelper {
       createTestInstanceAnnouncement({
     required String seed,
     String? remoteId,
-  }) async {
-    return DbInstanceAnnouncementPopulatedWrapper(
-      dbInstanceAnnouncementPopulated: DbInstanceAnnouncementPopulated(
-        dbInstanceAnnouncement: InstanceAnnouncementDatabaseMockHelper
-            .createTestDbInstanceAnnouncement(
-          seed: seed,
-          remoteId: remoteId,
-        ),
-      ),
-    );
-  }
+  }) async =>
+          DbInstanceAnnouncementPopulatedWrapper(
+            dbInstanceAnnouncementPopulated: DbInstanceAnnouncementPopulated(
+              dbInstanceAnnouncement: InstanceAnnouncementDatabaseMockHelper
+                  .createTestDbInstanceAnnouncement(
+                seed: seed,
+                remoteId: remoteId,
+              ),
+            ),
+          );
 
   static void expectInstanceAnnouncement(
     IInstanceAnnouncement? actual,

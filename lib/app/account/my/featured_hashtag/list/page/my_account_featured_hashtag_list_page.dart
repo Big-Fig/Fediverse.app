@@ -11,24 +11,23 @@ class AccountFeaturedHashtagListPage extends StatelessWidget {
   const AccountFeaturedHashtagListPage();
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: FediPageTitleAppBar(
-        title: S.of(context).app_account_my_featuredTags_title,
-        actions: [
-          FediPageAppBarTextActionWidget(
-            text: S.of(context).app_account_my_featuredTags_action_suggestions,
-            onPressed: () {
-              goToMyAccountFeaturedHashtagSuggestionPage(context);
-            },
-          ),
-        ],
-      ),
-      body: const SafeArea(
-        child: AccountFeaturedHashtagListWidget(),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Scaffold(
+        appBar: FediPageTitleAppBar(
+          title: S.of(context).app_account_my_featuredTags_title,
+          actions: [
+            FediPageAppBarTextActionWidget(
+              text:
+                  S.of(context).app_account_my_featuredTags_action_suggestions,
+              onPressed: () {
+                goToMyAccountFeaturedHashtagSuggestionPage(context);
+              },
+            ),
+          ],
+        ),
+        body: const SafeArea(
+          child: AccountFeaturedHashtagListWidget(),
+        ),
+      );
 }
 
 MaterialPageRoute<void> createAccountFeaturedHashtagListPageRoute() =>

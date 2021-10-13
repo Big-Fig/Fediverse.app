@@ -12,21 +12,20 @@ class EditPaginationListBlocProxyProvider<TPage extends PaginationPage<TItem>,
   EditPaginationListBlocProxyProvider({required this.child});
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IEditPaginationListBloc<TPage, TItem>,
-        IPaginationListBloc<TPage, TItem>>(
-      update: (context, value, _) => value,
-      child: ProxyProvider<IEditPaginationListBloc<TPage, TItem>,
-          IEditPaginationListBloc<PaginationPage<TItem>, TItem>>(
-        update: (context, value, previous) => value,
+  Widget build(BuildContext context) => ProxyProvider<
+          IEditPaginationListBloc<TPage, TItem>,
+          IPaginationListBloc<TPage, TItem>>(
+        update: (context, value, _) => value,
         child: ProxyProvider<IEditPaginationListBloc<TPage, TItem>,
-            IEditPaginationListBloc>(
+            IEditPaginationListBloc<PaginationPage<TItem>, TItem>>(
           update: (context, value, previous) => value,
-          child: PaginationListBlocProxyProvider<TPage, TItem>(
-            child: child,
+          child: ProxyProvider<IEditPaginationListBloc<TPage, TItem>,
+              IEditPaginationListBloc>(
+            update: (context, value, previous) => value,
+            child: PaginationListBlocProxyProvider<TPage, TItem>(
+              child: child,
+            ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }

@@ -69,13 +69,12 @@ class MyAccountFeaturedHashtagBloc extends DisposableOwner
     BuildContext context, {
     required Widget child,
     required IMyAccountFeaturedHashtag featuredHashtag,
-  }) {
-    return DisposableProvider<IMyAccountFeaturedHashtagBloc>(
-      create: (context) => MyAccountFeaturedHashtagBloc.createFromContext(
-        context,
-        featuredHashtag: featuredHashtag,
-      ),
-      child: child,
-    );
-  }
+  }) =>
+      DisposableProvider<IMyAccountFeaturedHashtagBloc>(
+        create: (context) => MyAccountFeaturedHashtagBloc.createFromContext(
+          context,
+          featuredHashtag: featuredHashtag,
+        ),
+        child: child,
+      );
 }

@@ -14,17 +14,15 @@ class AccountFeaturedHashtagPaginationListBlocProxyProvider
   });
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<
-        IAccountFeaturedHashtagPaginationListBloc,
-        IPaginationListBloc<PaginationPage<IMyAccountFeaturedHashtag>,
-            IMyAccountFeaturedHashtag>>(
-      update: (context, value, previous) => value,
-      child: ProxyProvider<IAccountFeaturedHashtagPaginationListBloc,
-          IPaginationListBloc>(
+  Widget build(BuildContext context) => ProxyProvider<
+          IAccountFeaturedHashtagPaginationListBloc,
+          IPaginationListBloc<PaginationPage<IMyAccountFeaturedHashtag>,
+              IMyAccountFeaturedHashtag>>(
         update: (context, value, previous) => value,
-        child: child,
-      ),
-    );
-  }
+        child: ProxyProvider<IAccountFeaturedHashtagPaginationListBloc,
+            IPaginationListBloc>(
+          update: (context, value, previous) => value,
+          child: child,
+        ),
+      );
 }

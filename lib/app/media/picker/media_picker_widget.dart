@@ -29,18 +29,16 @@ class MediaPickerWidget extends StatelessWidget {
     var mediaDeviceGalleryBloc = IMediaDeviceGalleryBloc.of(context);
 
     return FediGrantPermissionWidget(
-      grantedBuilder: (BuildContext context) {
-        return FediAsyncInitLoadingWidget(
-          loadingFinishedBuilder: (BuildContext context) {
-            if (mediaDeviceGalleryBloc.folders?.isNotEmpty != true) {
-              return const _MediaPickerPageNoFoldersWidget();
-            } else {
-              return const _MediaPickerPageFoldersWidget();
-            }
-          },
-          asyncInitLoadingBloc: mediaDeviceGalleryBloc,
-        );
-      },
+      grantedBuilder: (BuildContext context) => FediAsyncInitLoadingWidget(
+        loadingFinishedBuilder: (BuildContext context) {
+          if (mediaDeviceGalleryBloc.folders?.isNotEmpty != true) {
+            return const _MediaPickerPageNoFoldersWidget();
+          } else {
+            return const _MediaPickerPageFoldersWidget();
+          }
+        },
+        asyncInitLoadingBloc: mediaDeviceGalleryBloc,
+      ),
       permissionBloc: IStoragePermissionBloc.of(context, listen: false),
     );
   }
@@ -54,13 +52,11 @@ class _MediaPickerPageNoFoldersWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        S.of(context).file_picker_empty,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Center(
+        child: Text(
+          S.of(context).file_picker_empty,
+        ),
+      );
 }
 
 class _MediaPickerPageFolderLoadingWidget extends StatelessWidget {
@@ -144,15 +140,13 @@ class _MediaPickerPageGalleryFolderWidget extends StatelessWidget {
     var storagePermissionBloc = IStoragePermissionBloc.of(context);
 
     return FileGalleryFolderWidget(
-      headerItemBuilder: (BuildContext context) {
-        return const _FileGalleryFolderPickFromCameraHeaderItemWidget();
-      },
-      permissionButtonBuilder: (context, grantedBuilder) {
-        return FediGrantPermissionWidget(
-          grantedBuilder: grantedBuilder,
-          permissionBloc: storagePermissionBloc,
-        );
-      },
+      headerItemBuilder: (BuildContext context) =>
+          const _FileGalleryFolderPickFromCameraHeaderItemWidget(),
+      permissionButtonBuilder: (context, grantedBuilder) =>
+          FediGrantPermissionWidget(
+        grantedBuilder: grantedBuilder,
+        permissionBloc: storagePermissionBloc,
+      ),
     );
   }
 }

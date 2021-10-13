@@ -47,10 +47,9 @@ class StatusFavouritedAccountsDao extends DatabaseDao<
 
   CustomExpression<bool> _createStatusRemoteIdEqualExpression(
     String statusRemoteId,
-  ) {
-    return createMainTableEqualWhereExpression(
-      fieldName: table.statusRemoteId.$name,
-      value: statusRemoteId,
-    );
-  }
+  ) =>
+      createMainTableEqualWhereExpression(
+        fieldName: table.statusRemoteId.$name,
+        value: statusRemoteId,
+      );
 }

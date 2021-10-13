@@ -114,20 +114,19 @@ class LocalAccountBloc extends AccountBloc {
     required bool isNeedPreFetchRelationship,
     required bool isNeedWatchLocalRepositoryForUpdates,
     required Widget child,
-  }) {
-    return DisposableProvider<IAccountBloc>(
-      create: (context) => LocalAccountBloc.createFromContext(
-        context,
-        account: account,
-        isNeedWatchWebSocketsEvents: isNeedWatchWebSocketsEvents,
-        isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
-        isNeedPreFetchRelationship: isNeedPreFetchRelationship,
-        isNeedWatchLocalRepositoryForUpdates:
-            isNeedWatchLocalRepositoryForUpdates,
-      ),
-      child: child,
-    );
-  }
+  }) =>
+      DisposableProvider<IAccountBloc>(
+        create: (context) => LocalAccountBloc.createFromContext(
+          context,
+          account: account,
+          isNeedWatchWebSocketsEvents: isNeedWatchWebSocketsEvents,
+          isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
+          isNeedPreFetchRelationship: isNeedPreFetchRelationship,
+          isNeedWatchLocalRepositoryForUpdates:
+              isNeedWatchLocalRepositoryForUpdates,
+        ),
+        child: child,
+      );
 
   @override
   InstanceLocation get instanceLocation => InstanceLocation.local;

@@ -112,14 +112,13 @@ class InstanceAnnouncementRepository
     IUnifediApiAnnouncement remoteItem, {
     required InsertMode? mode,
     required Batch? batchTransaction,
-  }) {
-    return upsertInDbTypeBatch(
-      mapRemoteItemToDbItem(
-        remoteItem,
-      ),
-      batchTransaction: batchTransaction,
-    );
-  }
+  }) =>
+      upsertInDbTypeBatch(
+        mapRemoteItemToDbItem(
+          remoteItem,
+        ),
+        batchTransaction: batchTransaction,
+      );
 
   @override
   Future<void> updateAppTypeByRemoteType({

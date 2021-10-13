@@ -36,12 +36,12 @@ class LocalInstanceDetailsBloc extends InstanceDetailsBloc
   static Widget provideToContext(
     BuildContext context, {
     required Widget child,
-  }) {
-    return DisposableProvider<IInstanceDetailsBloc>(
-      create: (context) => LocalInstanceDetailsBloc.createFromContext(context),
-      child: InstanceDetailsBlocProxyProvider(child: child),
-    );
-  }
+  }) =>
+      DisposableProvider<IInstanceDetailsBloc>(
+        create: (context) =>
+            LocalInstanceDetailsBloc.createFromContext(context),
+        child: InstanceDetailsBlocProxyProvider(child: child),
+      );
 
   @override
   // ignore: no-empty-block

@@ -88,9 +88,7 @@ class FilterDao extends PopulatedAppRemoteDatabaseDao<
               .toList(),
         );
 
-  List<Join<Table, DataClass>> populateFilterJoin() {
-    return [];
-  }
+  List<Join<Table, DataClass>> populateFilterJoin() => [];
 
   @override
   $DbFiltersTable get table => dbFilters;
@@ -161,19 +159,17 @@ class FilterDao extends PopulatedAppRemoteDatabaseDao<
 extension DbFilterPopulatedTypedResultListExtension on List<TypedResult> {
   List<DbFilterPopulated> toDbFilterPopulatedList({
     required FilterDao dao,
-  }) {
-    return map(
-      (item) => item.toDbFilterPopulated(dao: dao),
-    ).toList();
-  }
+  }) =>
+      map(
+        (item) => item.toDbFilterPopulated(dao: dao),
+      ).toList();
 }
 
 extension DbFilterPopulatedTypedResultExtension on TypedResult {
   DbFilterPopulated toDbFilterPopulated({
     required FilterDao dao,
-  }) {
-    return DbFilterPopulated(
-      dbFilter: readTable(dao.db.dbFilters),
-    );
-  }
+  }) =>
+      DbFilterPopulated(
+        dbFilter: readTable(dao.db.dbFilters),
+      );
 }

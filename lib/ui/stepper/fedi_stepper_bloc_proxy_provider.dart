@@ -12,14 +12,13 @@ class FediStepperBlocProxyProvider<T extends IFediStepperItem>
   });
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IFediStepperBloc<T>, IFediStepperBloc>(
-      update: (context, value, previous) => value,
-      child: ProxyProvider<IFediStepperBloc<T>,
-          IFediStepperBloc<IFediStepperItem>>(
+  Widget build(BuildContext context) =>
+      ProxyProvider<IFediStepperBloc<T>, IFediStepperBloc>(
         update: (context, value, previous) => value,
-        child: child,
-      ),
-    );
-  }
+        child: ProxyProvider<IFediStepperBloc<T>,
+            IFediStepperBloc<IFediStepperItem>>(
+          update: (context, value, previous) => value,
+          child: child,
+        ),
+      );
 }

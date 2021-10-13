@@ -27,19 +27,18 @@ class MediaDeviceFileLocalOnlyListBloc extends DisposableOwner
     BuildContext context, {
     required Widget child,
     required IMediaDeviceFolderBloc folderBloc,
-  }) {
-    return DisposableProvider<IMediaDeviceFileLocalOnlyListBloc>(
-      create: (context) => MediaDeviceFileLocalOnlyListBloc.createFromContext(
-        context,
-        folderBloc: folderBloc,
-      ),
-      child: ProxyProvider<IMediaDeviceFileLocalOnlyListBloc,
-          ILocalOnlyListBloc<IMediaDeviceFileMetadata?>>(
-        update: (context, value, previous) => value,
-        child: child,
-      ),
-    );
-  }
+  }) =>
+      DisposableProvider<IMediaDeviceFileLocalOnlyListBloc>(
+        create: (context) => MediaDeviceFileLocalOnlyListBloc.createFromContext(
+          context,
+          folderBloc: folderBloc,
+        ),
+        child: ProxyProvider<IMediaDeviceFileLocalOnlyListBloc,
+            ILocalOnlyListBloc<IMediaDeviceFileMetadata?>>(
+          update: (context, value, previous) => value,
+          child: child,
+        ),
+      );
 
   @override
   Future<List<IMediaDeviceFileMetadata>> loadItemsFromLocalForPage({

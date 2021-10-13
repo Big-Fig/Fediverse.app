@@ -56,14 +56,12 @@ class _GlobalSettingsLocalizationRowWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return SimpleFediSelectionItemRowWidget(
-      title: S.of(context).app_localization_settings_title,
-      onClick: () {
-        showEditGlobalLocalizationSettingsDialog(context: context);
-      },
-    );
-  }
+  Widget build(BuildContext context) => SimpleFediSelectionItemRowWidget(
+        title: S.of(context).app_localization_settings_title,
+        onClick: () {
+          showEditGlobalLocalizationSettingsDialog(context: context);
+        },
+      );
 }
 
 class _GlobalSettingsUiRowWidget extends StatelessWidget {
@@ -72,14 +70,12 @@ class _GlobalSettingsUiRowWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return SimpleFediSelectionItemRowWidget(
-      title: S.of(context).app_ui_settings_title,
-      onClick: () {
-        showEditGlobalUiSettingsDialog(context: context);
-      },
-    );
-  }
+  Widget build(BuildContext context) => SimpleFediSelectionItemRowWidget(
+        title: S.of(context).app_ui_settings_title,
+        onClick: () {
+          showEditGlobalUiSettingsDialog(context: context);
+        },
+      );
 }
 
 class _GlobalSettingsCrashReportingRowWidget extends StatelessWidget {
@@ -88,14 +84,12 @@ class _GlobalSettingsCrashReportingRowWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return SimpleFediSelectionItemRowWidget(
-      title: S.of(context).app_crashReporting_settings_title,
-      onClick: () {
-        showEditGlobalCrashReportingSettingsDialog(context: context);
-      },
-    );
-  }
+  Widget build(BuildContext context) => SimpleFediSelectionItemRowWidget(
+        title: S.of(context).app_crashReporting_settings_title,
+        onClick: () {
+          showEditGlobalCrashReportingSettingsDialog(context: context);
+        },
+      );
 }
 
 class _InstanceSettingsMediaRowWidget extends StatelessWidget {
@@ -104,14 +98,12 @@ class _InstanceSettingsMediaRowWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return SimpleFediSelectionItemRowWidget(
-      title: S.of(context).app_media_settings_title,
-      onClick: () {
-        showEditGlobalOrInstanceMediaSettingsDialog(context: context);
-      },
-    );
-  }
+  Widget build(BuildContext context) => SimpleFediSelectionItemRowWidget(
+        title: S.of(context).app_media_settings_title,
+        onClick: () {
+          showEditGlobalOrInstanceMediaSettingsDialog(context: context);
+        },
+      );
 }
 
 class _InstanceSettingsCacheAndPaginationRowWidget extends StatelessWidget {
@@ -120,14 +112,12 @@ class _InstanceSettingsCacheAndPaginationRowWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return SimpleFediSelectionItemRowWidget(
-      title: S.of(context).app_pagination_settings_title,
-      onClick: () {
-        showEditGlobalOrInstancePaginationSettingsDialog(context: context);
-      },
-    );
-  }
+  Widget build(BuildContext context) => SimpleFediSelectionItemRowWidget(
+        title: S.of(context).app_pagination_settings_title,
+        onClick: () {
+          showEditGlobalOrInstancePaginationSettingsDialog(context: context);
+        },
+      );
 }
 
 class _InstanceSettingsPushRowWidget extends StatelessWidget {
@@ -136,14 +126,12 @@ class _InstanceSettingsPushRowWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return SimpleFediSelectionItemRowWidget(
-      title: S.of(context).app_push_settings_title,
-      onClick: () {
-        showEditInstancePushSettingsDialog(context: context);
-      },
-    );
-  }
+  Widget build(BuildContext context) => SimpleFediSelectionItemRowWidget(
+        title: S.of(context).app_push_settings_title,
+        onClick: () {
+          showEditInstancePushSettingsDialog(context: context);
+        },
+      );
 }
 
 class _InstanceSettingsToastRowWidget extends StatelessWidget {
@@ -152,14 +140,12 @@ class _InstanceSettingsToastRowWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return SimpleFediSelectionItemRowWidget(
-      title: S.of(context).app_toast_settings_title,
-      onClick: () {
-        showEditGlobalOrInstanceToastSettingsDialog(context: context);
-      },
-    );
-  }
+  Widget build(BuildContext context) => SimpleFediSelectionItemRowWidget(
+        title: S.of(context).app_toast_settings_title,
+        onClick: () {
+          showEditGlobalOrInstanceToastSettingsDialog(context: context);
+        },
+      );
 }
 
 class _InstanceSettingsStatusSensitiveRowWidget extends StatelessWidget {
@@ -168,14 +154,13 @@ class _InstanceSettingsStatusSensitiveRowWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return SimpleFediSelectionItemRowWidget(
-      title: S.of(context).app_status_sensitive_settings_title,
-      onClick: () {
-        showEditGlobalOrInstanceStatusSensitiveSettingsDialog(context: context);
-      },
-    );
-  }
+  Widget build(BuildContext context) => SimpleFediSelectionItemRowWidget(
+        title: S.of(context).app_status_sensitive_settings_title,
+        onClick: () {
+          showEditGlobalOrInstanceStatusSensitiveSettingsDialog(
+              context: context);
+        },
+      );
 }
 
 class _InstanceStatusPostSensitiveRowWidget extends StatelessWidget {
@@ -184,14 +169,12 @@ class _InstanceStatusPostSensitiveRowWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return SimpleFediSelectionItemRowWidget(
-      title: S.of(context).app_status_post_settings_title,
-      onClick: () {
-        showEditGlobalOrInstancePostStatusSettingsDialog(context: context);
-      },
-    );
-  }
+  Widget build(BuildContext context) => SimpleFediSelectionItemRowWidget(
+        title: S.of(context).app_status_post_settings_title,
+        onClick: () {
+          showEditGlobalOrInstancePostStatusSettingsDialog(context: context);
+        },
+      );
 }
 
 class _InstanceSettingsChatRowWidget extends StatelessWidget {
@@ -200,14 +183,12 @@ class _InstanceSettingsChatRowWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return SimpleFediSelectionItemRowWidget(
-      title: S.of(context).app_chat_settings_title,
-      onClick: () {
-        showEditGlobalOrInstanceChatSettingsDialog(context: context);
-      },
-    );
-  }
+  Widget build(BuildContext context) => SimpleFediSelectionItemRowWidget(
+        title: S.of(context).app_chat_settings_title,
+        onClick: () {
+          showEditGlobalOrInstanceChatSettingsDialog(context: context);
+        },
+      );
 }
 
 class _InstanceSettingsWebSocketsRowWidget extends StatelessWidget {
@@ -216,14 +197,12 @@ class _InstanceSettingsWebSocketsRowWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return SimpleFediSelectionItemRowWidget(
-      title: S.of(context).app_web_sockets_settings_title,
-      onClick: () {
-        showEditGlobalOrInstanceWebSocketsSettingsDialog(context: context);
-      },
-    );
-  }
+  Widget build(BuildContext context) => SimpleFediSelectionItemRowWidget(
+        title: S.of(context).app_web_sockets_settings_title,
+        onClick: () {
+          showEditGlobalOrInstanceWebSocketsSettingsDialog(context: context);
+        },
+      );
 }
 
 class _InstanceSettingsDatabaseCacheRowWidget extends StatelessWidget {
@@ -232,14 +211,12 @@ class _InstanceSettingsDatabaseCacheRowWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return SimpleFediSelectionItemRowWidget(
-      title: S.of(context).app_cache_database_settings_title,
-      onClick: () {
-        showEditGlobalOrInstanceDatabaseCacheSettingsDialog(context: context);
-      },
-    );
-  }
+  Widget build(BuildContext context) => SimpleFediSelectionItemRowWidget(
+        title: S.of(context).app_cache_database_settings_title,
+        onClick: () {
+          showEditGlobalOrInstanceDatabaseCacheSettingsDialog(context: context);
+        },
+      );
 }
 
 class _InstanceSettingsFilesCacheRowWidget extends StatelessWidget {
@@ -248,12 +225,10 @@ class _InstanceSettingsFilesCacheRowWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return SimpleFediSelectionItemRowWidget(
-      title: S.of(context).app_cache_files_settings_title,
-      onClick: () {
-        showEditGlobalOrInstanceFilesCacheSettingsDialog(context: context);
-      },
-    );
-  }
+  Widget build(BuildContext context) => SimpleFediSelectionItemRowWidget(
+        title: S.of(context).app_cache_files_settings_title,
+        onClick: () {
+          showEditGlobalOrInstanceFilesCacheSettingsDialog(context: context);
+        },
+      );
 }

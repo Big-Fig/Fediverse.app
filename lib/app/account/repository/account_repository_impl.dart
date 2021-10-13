@@ -433,15 +433,13 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     IUnifediApiAccount remoteItem, {
     required InsertMode? mode,
     required Batch? batchTransaction,
-  }) {
-    // todo: mode
-    return upsertRemoteAccount(
-      remoteItem,
-      conversationRemoteId: null,
-      chatRemoteId: null,
-      batchTransaction: batchTransaction,
-    );
-  }
+  }) =>
+      upsertRemoteAccount(
+        remoteItem,
+        conversationRemoteId: null,
+        chatRemoteId: null,
+        batchTransaction: batchTransaction,
+      );
 
   @override
   Future<void> updateAppTypeByRemoteType({

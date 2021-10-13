@@ -70,15 +70,15 @@ void main() {
         metadata: anyNamed('metadata'),
         alerts: anyNamed('alerts'),
       ),
-    ).thenAnswer((Invocation invocation) async {
-      return UnifediApiPushSubscription(
+    ).thenAnswer(
+      (Invocation invocation) async => UnifediApiPushSubscription(
         alerts: invocation.namedArguments[Symbol('alerts')]
             as UnifediApiPushSubscriptionAlerts,
         endpoint: 'endpoint',
         serverKey: 'serverKey',
         id: 'id',
-      );
-    });
+      ),
+    );
 
     pushSettingsBloc = PushSettingsBloc(
       connectionService: MockIConnectionService(),

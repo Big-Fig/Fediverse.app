@@ -382,9 +382,8 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
   T? getObjectPreference<T>(
     String key,
     T Function(Map<String, dynamic> jsonData) jsonConverter,
-  ) {
-    return _box.get(key) as T?;
-  }
+  ) =>
+      _box.get(key) as T?;
 
   @override
   Future<bool> clearAllValuesAndDeleteStorage() async {

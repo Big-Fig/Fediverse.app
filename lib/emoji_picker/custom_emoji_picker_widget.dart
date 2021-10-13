@@ -64,32 +64,30 @@ class CustomEmojiPickerWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4.0),
-          child: _CustomEmojiPickerSelectedCategoryWidget(
-            selectedCategoryItemsGridHeight: selectedCategoryItemsGridHeight,
-            loadingWidget: loadingWidget,
-            useImageEmoji: useImageEmoji,
-            emptyCategoryBuilder: emptyCategoryBuilder,
-            rowsCount: rowsCount,
-            onEmojiSelected: onEmojiSelected,
-            customCategoryBodyBuilder: customCategoryBodyBuilder,
+  Widget build(BuildContext context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4.0),
+            child: _CustomEmojiPickerSelectedCategoryWidget(
+              selectedCategoryItemsGridHeight: selectedCategoryItemsGridHeight,
+              loadingWidget: loadingWidget,
+              useImageEmoji: useImageEmoji,
+              emptyCategoryBuilder: emptyCategoryBuilder,
+              rowsCount: rowsCount,
+              onEmojiSelected: onEmojiSelected,
+              customCategoryBodyBuilder: customCategoryBodyBuilder,
+            ),
           ),
-        ),
-        _CustomEmojiPickerSeparatorWidget(separatorColor: separatorColor),
-        _CustomEmojiPickerIndicatorListWidget(
-          indicatorHeight: indicatorHeight,
-          selectedIndicatorColor: selectedIndicatorColor,
-          unselectedIndicatorColor: unselectedIndicatorColor,
-          customCategoryIconBuilder: customCategoryIconBuilder,
-        ),
-      ],
-    );
-  }
+          _CustomEmojiPickerSeparatorWidget(separatorColor: separatorColor),
+          _CustomEmojiPickerIndicatorListWidget(
+            indicatorHeight: indicatorHeight,
+            selectedIndicatorColor: selectedIndicatorColor,
+            unselectedIndicatorColor: unselectedIndicatorColor,
+            customCategoryIconBuilder: customCategoryIconBuilder,
+          ),
+        ],
+      );
 }
 
 class _CustomEmojiPickerSelectedCategoryWidget extends StatelessWidget {
@@ -466,13 +464,11 @@ class _CustomEmojiPickerSeparatorWidget extends StatelessWidget {
   final Color separatorColor;
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
-      child: Container(
-        height: 1,
-        color: separatorColor,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4.0),
+        child: Container(
+          height: 1,
+          color: separatorColor,
+        ),
+      );
 }

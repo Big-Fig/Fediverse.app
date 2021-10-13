@@ -23,37 +23,35 @@ class LocalAccountStatusesPinnedOnlyNetworkOnlyListBloc
   static LocalAccountStatusesPinnedOnlyNetworkOnlyListBloc createFromContext(
     BuildContext context, {
     required IAccount? account,
-  }) {
-    return LocalAccountStatusesPinnedOnlyNetworkOnlyListBloc(
-      account: account,
-      unifediApiAccountService:
-          Provider.of<IUnifediApiAccountService>(context, listen: false),
-    );
-  }
+  }) =>
+      LocalAccountStatusesPinnedOnlyNetworkOnlyListBloc(
+        account: account,
+        unifediApiAccountService:
+            Provider.of<IUnifediApiAccountService>(context, listen: false),
+      );
 
   static Widget provideToContext(
     BuildContext context, {
     required IAccount? account,
     required Widget child,
-  }) {
-    return DisposableProvider<IStatusNetworkOnlyListBloc>(
-      create: (context) =>
-          LocalAccountStatusesPinnedOnlyNetworkOnlyListBloc.createFromContext(
-        context,
-        account: account,
-      ),
-      child: ProxyProvider<IStatusNetworkOnlyListBloc, INetworkOnlyListBloc>(
-        update: (context, value, previous) => value,
-        child: StatusNetworkOnlyListBlocProxyProvider(
-          child: ProxyProvider<IStatusNetworkOnlyListBloc,
-              INetworkOnlyListBloc<IStatus>>(
-            update: (context, value, previous) => value,
-            child: child,
+  }) =>
+      DisposableProvider<IStatusNetworkOnlyListBloc>(
+        create: (context) =>
+            LocalAccountStatusesPinnedOnlyNetworkOnlyListBloc.createFromContext(
+          context,
+          account: account,
+        ),
+        child: ProxyProvider<IStatusNetworkOnlyListBloc, INetworkOnlyListBloc>(
+          update: (context, value, previous) => value,
+          child: StatusNetworkOnlyListBlocProxyProvider(
+            child: ProxyProvider<IStatusNetworkOnlyListBloc,
+                INetworkOnlyListBloc<IStatus>>(
+              update: (context, value, previous) => value,
+              child: child,
+            ),
           ),
         ),
-      ),
-    );
-  }
+      );
 
   @override
   InstanceLocation get instanceLocation => InstanceLocation.local;

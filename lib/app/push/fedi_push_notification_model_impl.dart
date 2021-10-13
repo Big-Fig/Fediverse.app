@@ -43,17 +43,15 @@ class FediPushNotification implements IFediPushNotification {
   });
 
   @override
-  String toString() {
-    return 'FediPushNotification{'
-        'account: $account, '
-        'notificationAction: $notificationAction, '
-        'notificationActionInput: $notificationActionInput, '
-        'notificationId: $notificationId, '
-        'notificationType: $notificationType, '
-        'server: $server, '
-        'unifediApiNotification: $unifediApiNotification'
-        '}';
-  }
+  String toString() => 'FediPushNotification{'
+      'account: $account, '
+      'notificationAction: $notificationAction, '
+      'notificationActionInput: $notificationActionInput, '
+      'notificationId: $notificationId, '
+      'notificationType: $notificationType, '
+      'server: $server, '
+      'unifediApiNotification: $unifediApiNotification'
+      '}';
 
   @override
   bool operator ==(Object other) =>

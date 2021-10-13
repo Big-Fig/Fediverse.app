@@ -190,10 +190,9 @@ Future<IStatus?> loadRemoteAccountAnyStatusOnLocalInstance(
 
 MaterialPageRoute<void> createRemoteAccountDetailsPageRoute({
   required IAccount account,
-}) {
-  return MaterialPageRoute<void>(
-    builder: (context) {
-      return DisposableProvider<IRemoteInstanceBloc>(
+}) =>
+    MaterialPageRoute<void>(
+      builder: (context) => DisposableProvider<IRemoteInstanceBloc>(
         create: (context) {
           var instanceUri = account.urlRemoteHostUri;
 
@@ -238,7 +237,5 @@ MaterialPageRoute<void> createRemoteAccountDetailsPageRoute({
             ),
           ),
         ),
-      );
-    },
-  );
-}
+      ),
+    );

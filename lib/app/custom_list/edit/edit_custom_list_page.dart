@@ -13,22 +13,20 @@ import 'package:provider/provider.dart';
 
 class EditCustomListPage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: FediPageTitleAppBar(
-        title: S.of(context).app_customList_edit_title,
-        actions: <Widget>[
-          const EditCustomListAppBarSaveActionWidget(),
-        ],
-      ),
-      body: const SafeArea(
-        child: Padding(
-          padding: FediPadding.allBigPadding,
-          child: EditCustomListWidget(),
+  Widget build(BuildContext context) => Scaffold(
+        appBar: FediPageTitleAppBar(
+          title: S.of(context).app_customList_edit_title,
+          actions: <Widget>[
+            const EditCustomListAppBarSaveActionWidget(),
+          ],
         ),
-      ),
-    );
-  }
+        body: const SafeArea(
+          child: Padding(
+            padding: FediPadding.allBigPadding,
+            child: EditCustomListWidget(),
+          ),
+        ),
+      );
 
   const EditCustomListPage();
 }
@@ -55,19 +53,18 @@ MaterialPageRoute<void> createEditCustomListPageRoute({
   required ICustomList customList,
   required Function(ICustomList customList) onSubmit,
   required VoidCallback onDelete,
-}) {
-  return MaterialPageRoute<void>(
-    builder: (context) => EditCustomListBloc.provideToContext(
-      context,
-      onSubmit: onSubmit,
-      onDelete: onDelete,
-      child: ProxyProvider<IEditCustomListBloc,
-          IEditCustomListAccountListPaginationListBloc>(
-        update: (context, value, _) =>
-            value.editCustomListAccountListPaginationListBloc,
-        child: const EditCustomListPage(),
+}) =>
+    MaterialPageRoute<void>(
+      builder: (context) => EditCustomListBloc.provideToContext(
+        context,
+        onSubmit: onSubmit,
+        onDelete: onDelete,
+        child: ProxyProvider<IEditCustomListBloc,
+            IEditCustomListAccountListPaginationListBloc>(
+          update: (context, value, _) =>
+              value.editCustomListAccountListPaginationListBloc,
+          child: const EditCustomListPage(),
+        ),
+        initialValue: customList,
       ),
-      initialValue: customList,
-    ),
-  );
-}
+    );

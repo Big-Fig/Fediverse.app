@@ -51,26 +51,24 @@ void goToSingleSelectAccountPage(
   Navigator.push(
     context,
     MaterialPageRoute<void>(
-      builder: (context) {
-        return SelectAccountListBloc.provideToContext(
+      builder: (context) => SelectAccountListBloc.provideToContext(
+        context,
+        followingsOnly: followingsOnly,
+        excludeMyAccount: excludeMyAccount,
+        child: AccountCachedPaginationBloc.provideToContext(
           context,
-          followingsOnly: followingsOnly,
-          excludeMyAccount: excludeMyAccount,
-          child: AccountCachedPaginationBloc.provideToContext(
+          child: SelectAccountPaginationListBloc.provideToContext(
             context,
-            child: SelectAccountPaginationListBloc.provideToContext(
-              context,
-              child: SingleSelectAccountPage(
-                accountSelectedCallback: accountSelectedCallback,
-                accountActions: accountActions,
-                isNeedPreFetchRelationship: isNeedPreFetchRelationship,
-              ),
+            child: SingleSelectAccountPage(
+              accountSelectedCallback: accountSelectedCallback,
+              accountActions: accountActions,
+              isNeedPreFetchRelationship: isNeedPreFetchRelationship,
             ),
           ),
-          customLocalAccountListLoader: customLocalAccountListLoader,
-          customRemoteAccountListLoader: customRemoteAccountListLoader,
-        );
-      },
+        ),
+        customLocalAccountListLoader: customLocalAccountListLoader,
+        customRemoteAccountListLoader: customRemoteAccountListLoader,
+      ),
     ),
   );
 }

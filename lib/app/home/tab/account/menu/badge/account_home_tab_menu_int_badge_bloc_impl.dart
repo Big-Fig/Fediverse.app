@@ -47,25 +47,23 @@ class AccountHomeTabMenuIntBadgeBloc extends DisposableOwner
 
   static AccountHomeTabMenuIntBadgeBloc createFromContext(
     BuildContext context,
-  ) {
-    return AccountHomeTabMenuIntBadgeBloc(
-      myAccountBloc: IMyAccountBloc.of(context, listen: false),
-      instanceAnnouncementRepository: IInstanceAnnouncementRepository.of(
-        context,
-        listen: false,
-      ),
-    );
-  }
+  ) =>
+      AccountHomeTabMenuIntBadgeBloc(
+        myAccountBloc: IMyAccountBloc.of(context, listen: false),
+        instanceAnnouncementRepository: IInstanceAnnouncementRepository.of(
+          context,
+          listen: false,
+        ),
+      );
 
   static Widget provideToContext(
     BuildContext context, {
     required Widget child,
-  }) {
-    return DisposableProvider<IFediIntBadgeBloc>(
-      create: (context) => AccountHomeTabMenuIntBadgeBloc.createFromContext(
-        context,
-      ),
-      child: child,
-    );
-  }
+  }) =>
+      DisposableProvider<IFediIntBadgeBloc>(
+        create: (context) => AccountHomeTabMenuIntBadgeBloc.createFromContext(
+          context,
+        ),
+        child: child,
+      );
 }

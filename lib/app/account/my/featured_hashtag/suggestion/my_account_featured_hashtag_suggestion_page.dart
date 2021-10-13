@@ -9,16 +9,14 @@ class MyAccountFeaturedHashtagSuggestionPage extends StatelessWidget {
   const MyAccountFeaturedHashtagSuggestionPage();
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: FediPageTitleAppBar(
-        title: S.of(context).app_account_my_featuredTags_suggestions_title,
-      ),
-      body: const SafeArea(
-        child: MyAccountFeaturedHashtagSuggestionWidget(),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Scaffold(
+        appBar: FediPageTitleAppBar(
+          title: S.of(context).app_account_my_featuredTags_suggestions_title,
+        ),
+        body: const SafeArea(
+          child: MyAccountFeaturedHashtagSuggestionWidget(),
+        ),
+      );
 }
 
 MaterialPageRoute<void> createMyAccountFeaturedHashtagSuggestionPageRoute() =>

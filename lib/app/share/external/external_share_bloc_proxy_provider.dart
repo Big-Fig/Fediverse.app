@@ -9,10 +9,9 @@ class ExternalShareBlocProxyProvider extends StatelessWidget {
   ExternalShareBlocProxyProvider({required this.child});
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IExternalShareBloc, IShareBloc>(
-      update: (context, value, previous) => value,
-      child: child,
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IExternalShareBloc, IShareBloc>(
+        update: (context, value, previous) => value,
+        child: child,
+      );
 }

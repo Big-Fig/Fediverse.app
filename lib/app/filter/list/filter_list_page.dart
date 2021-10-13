@@ -12,23 +12,21 @@ import 'package:flutter/material.dart';
 
 class FilterListPage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: FediPageTitleAppBar(
-        title: S.of(context).app_filter_list_title,
-      ),
-      body: const SafeArea(
-        child: FilterPaginationListWidget(
-          customEmptyWidget: _FilterListPagePageEmptyWidget(),
-          footer: Padding(
-            padding: FediPadding.allBigPadding,
-            child: FilterListCreateButtonWidget(),
-          ),
-          alwaysShowFooter: false,
+  Widget build(BuildContext context) => Scaffold(
+        appBar: FediPageTitleAppBar(
+          title: S.of(context).app_filter_list_title,
         ),
-      ),
-    );
-  }
+        body: const SafeArea(
+          child: FilterPaginationListWidget(
+            customEmptyWidget: _FilterListPagePageEmptyWidget(),
+            footer: Padding(
+              padding: FediPadding.allBigPadding,
+              child: FilterListCreateButtonWidget(),
+            ),
+            alwaysShowFooter: false,
+          ),
+        ),
+      );
 
   const FilterListPage();
 }
@@ -66,17 +64,16 @@ void goToFilterListPage(
 
 MaterialPageRoute<void> createFilterListPageRoute({
   required BuildContext context,
-}) {
-  return MaterialPageRoute<void>(
-    builder: (context) => FilterCachedListBloc.provideToContext(
-      context,
-      child: FilterCachedPaginationBloc.provideToContext(
+}) =>
+    MaterialPageRoute<void>(
+      builder: (context) => FilterCachedListBloc.provideToContext(
         context,
-        child: FilterCachedPaginationListBloc.provideToContext(
+        child: FilterCachedPaginationBloc.provideToContext(
           context,
-          child: const FilterListPage(),
+          child: FilterCachedPaginationListBloc.provideToContext(
+            context,
+            child: const FilterListPage(),
+          ),
         ),
       ),
-    ),
-  );
-}
+    );

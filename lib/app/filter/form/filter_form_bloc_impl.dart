@@ -106,23 +106,21 @@ class FilterFormBloc extends FormBloc implements IFilterFormBloc {
       ];
 
   @override
-  IUnifediApiPostFilter calculateFormValue() {
-    return UnifediApiPostFilter(
-      phrase: phraseField.currentValue,
-      irreversible: irreversibleField.currentValue ?? false,
-      wholeWord: wholeWordField.currentValue ?? false,
-      expiresIn: expiresInField.currentValueDuration,
-      context: contextField.currentValue
-          .where(
-            (UnifediApiFilterContextType contextType) => contextType.maybeMap(
-              unknown: (_) => false,
-              orElse: () => true,
-            ),
-          )
-          .map(
-            (contextType) => contextType.stringValue,
-          )
-          .toList(),
-    );
-  }
+  IUnifediApiPostFilter calculateFormValue() => UnifediApiPostFilter(
+        phrase: phraseField.currentValue,
+        irreversible: irreversibleField.currentValue ?? false,
+        wholeWord: wholeWordField.currentValue ?? false,
+        expiresIn: expiresInField.currentValueDuration,
+        context: contextField.currentValue
+            .where(
+              (UnifediApiFilterContextType contextType) => contextType.maybeMap(
+                unknown: (_) => false,
+                orElse: () => true,
+              ),
+            )
+            .map(
+              (contextType) => contextType.stringValue,
+            )
+            .toList(),
+      );
 }

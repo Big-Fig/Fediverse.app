@@ -93,39 +93,35 @@ class _EditTimelineSettingsChildrenHomeTypeWidget extends StatelessWidget {
   const _EditTimelineSettingsChildrenHomeTypeWidget();
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const _EditTimelineSettingsFieldOnlyLocalWidget(),
-        const _EditTimelineSettingsFieldOnlyRemoteWidget(),
-        const _EditTimelineSettingsFieldWebsocketsUpdatesWidget(),
-        const _EditTimelineSettingsFieldWithMutedWidget(),
-        const _EditTimelineSettingsFieldOnlyLocalWidget(),
-        const _EditTimelineSettingsFieldReplyVisibilityFilterWidget(),
-        const _EditTimelineSettingsFieldExcludeVisibilitiesWidget(),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => Column(
+        children: [
+          const _EditTimelineSettingsFieldOnlyLocalWidget(),
+          const _EditTimelineSettingsFieldOnlyRemoteWidget(),
+          const _EditTimelineSettingsFieldWebsocketsUpdatesWidget(),
+          const _EditTimelineSettingsFieldWithMutedWidget(),
+          const _EditTimelineSettingsFieldOnlyLocalWidget(),
+          const _EditTimelineSettingsFieldReplyVisibilityFilterWidget(),
+          const _EditTimelineSettingsFieldExcludeVisibilitiesWidget(),
+        ],
+      );
 }
 
 class _EditTimelineSettingsChildrenPublicTypeWidget extends StatelessWidget {
   const _EditTimelineSettingsChildrenPublicTypeWidget();
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const _EditTimelineSettingsFieldOnlyLocalWidget(),
-        const _EditTimelineSettingsFieldOnlyRemoteWidget(),
-        const _EditTimelineSettingsFieldOnlyFromInstanceWidget(),
-        const _EditTimelineSettingsFieldWebsocketsUpdatesWidget(),
-        const _EditTimelineSettingsFieldOnlyMediaWidget(),
-        const _EditTimelineSettingsFieldWithMutedWidget(),
-        const _EditTimelineSettingsFieldReplyVisibilityFilterWidget(),
-        const _EditTimelineSettingsFieldExcludeVisibilitiesWidget(),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => Column(
+        children: [
+          const _EditTimelineSettingsFieldOnlyLocalWidget(),
+          const _EditTimelineSettingsFieldOnlyRemoteWidget(),
+          const _EditTimelineSettingsFieldOnlyFromInstanceWidget(),
+          const _EditTimelineSettingsFieldWebsocketsUpdatesWidget(),
+          const _EditTimelineSettingsFieldOnlyMediaWidget(),
+          const _EditTimelineSettingsFieldWithMutedWidget(),
+          const _EditTimelineSettingsFieldReplyVisibilityFilterWidget(),
+          const _EditTimelineSettingsFieldExcludeVisibilitiesWidget(),
+        ],
+      );
 }
 
 class _EditTimelineSettingsChildrenHashtagTypeWidget extends StatelessWidget {
@@ -136,19 +132,17 @@ class _EditTimelineSettingsChildrenHashtagTypeWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const _EditTimelineSettingsFieldOnlyLocalWidget(),
-        const _EditTimelineSettingsFieldOnlyRemoteWidget(),
-        if (!lockedSource) const _EditTimelineSettingsFieldHashtagWidget(),
-        const _EditTimelineSettingsFieldWebsocketsUpdatesWidget(),
-        const _EditTimelineSettingsFieldOnlyMediaWidget(),
-        const _EditTimelineSettingsFieldWithMutedWidget(),
-        const _EditTimelineSettingsFieldExcludeVisibilitiesWidget(),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => Column(
+        children: [
+          const _EditTimelineSettingsFieldOnlyLocalWidget(),
+          const _EditTimelineSettingsFieldOnlyRemoteWidget(),
+          if (!lockedSource) const _EditTimelineSettingsFieldHashtagWidget(),
+          const _EditTimelineSettingsFieldWebsocketsUpdatesWidget(),
+          const _EditTimelineSettingsFieldOnlyMediaWidget(),
+          const _EditTimelineSettingsFieldWithMutedWidget(),
+          const _EditTimelineSettingsFieldExcludeVisibilitiesWidget(),
+        ],
+      );
 }
 
 class _EditTimelineSettingsChildrenCustomListTypeWidget
@@ -160,19 +154,17 @@ class _EditTimelineSettingsChildrenCustomListTypeWidget
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const _EditTimelineSettingsFieldOnlyLocalWidget(),
-        const _EditTimelineSettingsFieldOnlyRemoteWidget(),
-        if (!lockedSource) const _EditTimelineSettingsFieldCustomListWidget(),
-        const _EditTimelineSettingsFieldWebsocketsUpdatesWidget(),
-        const _EditTimelineSettingsFieldOnlyMediaWidget(),
-        const _EditTimelineSettingsFieldWithMutedWidget(),
-        const _EditTimelineSettingsFieldExcludeVisibilitiesWidget(),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => Column(
+        children: [
+          const _EditTimelineSettingsFieldOnlyLocalWidget(),
+          const _EditTimelineSettingsFieldOnlyRemoteWidget(),
+          if (!lockedSource) const _EditTimelineSettingsFieldCustomListWidget(),
+          const _EditTimelineSettingsFieldWebsocketsUpdatesWidget(),
+          const _EditTimelineSettingsFieldOnlyMediaWidget(),
+          const _EditTimelineSettingsFieldWithMutedWidget(),
+          const _EditTimelineSettingsFieldExcludeVisibilitiesWidget(),
+        ],
+      );
 }
 
 class _EditTimelineSettingsChildrenAccountTypeWidget extends StatelessWidget {
@@ -183,20 +175,18 @@ class _EditTimelineSettingsChildrenAccountTypeWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        if (!lockedSource) const _EditTimelineSettingsFieldAccountWidget(),
-        const _EditTimelineSettingsFieldWebsocketsUpdatesWidget(),
-        const _EditTimelineSettingsFieldOnlyMediaWidget(),
-        const _EditTimelineSettingsFieldHashtagWidget(),
-        const _EditTimelineSettingsFieldExcludeReblogsWidget(),
-        const _EditTimelineSettingsFieldExcludeRepliesWidget(),
-        const _EditTimelineSettingsFieldOnlyPinnedWidget(),
-        const _EditTimelineSettingsFieldExcludeVisibilitiesWidget(),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => Column(
+        children: [
+          if (!lockedSource) const _EditTimelineSettingsFieldAccountWidget(),
+          const _EditTimelineSettingsFieldWebsocketsUpdatesWidget(),
+          const _EditTimelineSettingsFieldOnlyMediaWidget(),
+          const _EditTimelineSettingsFieldHashtagWidget(),
+          const _EditTimelineSettingsFieldExcludeReblogsWidget(),
+          const _EditTimelineSettingsFieldExcludeRepliesWidget(),
+          const _EditTimelineSettingsFieldOnlyPinnedWidget(),
+          const _EditTimelineSettingsFieldExcludeVisibilitiesWidget(),
+        ],
+      );
 }
 
 class _EditTimelineSettingsFieldWithMutedWidget extends StatelessWidget {
@@ -207,17 +197,18 @@ class _EditTimelineSettingsFieldWithMutedWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IEditTimelineSettingsBloc, IBoolValueFormFieldBloc>(
-      update: (context, value, previous) => value.withMutedFieldBloc,
-      child: BoolValueFormFieldRowWidget(
-        label: S.of(context).app_timeline_settings_field_withMuted_label,
-        description: null,
-        descriptionOnDisabled: descriptionOnDisabled ??
-            S.of(context).app_settings_warning_notSupportedOnThisInstance_desc,
-      ),
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IEditTimelineSettingsBloc, IBoolValueFormFieldBloc>(
+        update: (context, value, previous) => value.withMutedFieldBloc,
+        child: BoolValueFormFieldRowWidget(
+          label: S.of(context).app_timeline_settings_field_withMuted_label,
+          description: null,
+          descriptionOnDisabled: descriptionOnDisabled ??
+              S
+                  .of(context)
+                  .app_settings_warning_notSupportedOnThisInstance_desc,
+        ),
+      );
 }
 
 class _EditTimelineSettingsFieldOnlyMediaWidget extends StatelessWidget {
@@ -228,17 +219,18 @@ class _EditTimelineSettingsFieldOnlyMediaWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IEditTimelineSettingsBloc, IBoolValueFormFieldBloc>(
-      update: (context, value, previous) => value.onlyWithMediaFieldBloc,
-      child: BoolValueFormFieldRowWidget(
-        label: S.of(context).app_timeline_settings_field_onlyWithMedia_label,
-        description: null,
-        descriptionOnDisabled: descriptionOnDisabled ??
-            S.of(context).app_settings_warning_notSupportedOnThisInstance_desc,
-      ),
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IEditTimelineSettingsBloc, IBoolValueFormFieldBloc>(
+        update: (context, value, previous) => value.onlyWithMediaFieldBloc,
+        child: BoolValueFormFieldRowWidget(
+          label: S.of(context).app_timeline_settings_field_onlyWithMedia_label,
+          description: null,
+          descriptionOnDisabled: descriptionOnDisabled ??
+              S
+                  .of(context)
+                  .app_settings_warning_notSupportedOnThisInstance_desc,
+        ),
+      );
 }
 
 class _EditTimelineSettingsFieldOnlyLocalWidget extends StatelessWidget {
@@ -249,17 +241,18 @@ class _EditTimelineSettingsFieldOnlyLocalWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IEditTimelineSettingsBloc, IBoolValueFormFieldBloc>(
-      update: (context, value, previous) => value.onlyLocalFieldBloc,
-      child: BoolValueFormFieldRowWidget(
-        label: S.of(context).app_timeline_settings_field_onlyLocal_label,
-        description: null,
-        descriptionOnDisabled: descriptionOnDisabled ??
-            S.of(context).app_settings_warning_notSupportedOnThisInstance_desc,
-      ),
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IEditTimelineSettingsBloc, IBoolValueFormFieldBloc>(
+        update: (context, value, previous) => value.onlyLocalFieldBloc,
+        child: BoolValueFormFieldRowWidget(
+          label: S.of(context).app_timeline_settings_field_onlyLocal_label,
+          description: null,
+          descriptionOnDisabled: descriptionOnDisabled ??
+              S
+                  .of(context)
+                  .app_settings_warning_notSupportedOnThisInstance_desc,
+        ),
+      );
 }
 
 class _EditTimelineSettingsFieldOnlyRemoteWidget extends StatelessWidget {
@@ -270,17 +263,18 @@ class _EditTimelineSettingsFieldOnlyRemoteWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IEditTimelineSettingsBloc, IBoolValueFormFieldBloc>(
-      update: (context, value, previous) => value.onlyRemoteFieldBloc,
-      child: BoolValueFormFieldRowWidget(
-        label: S.of(context).app_timeline_settings_field_onlyRemote_label,
-        description: null,
-        descriptionOnDisabled: descriptionOnDisabled ??
-            S.of(context).app_settings_warning_notSupportedOnThisInstance_desc,
-      ),
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IEditTimelineSettingsBloc, IBoolValueFormFieldBloc>(
+        update: (context, value, previous) => value.onlyRemoteFieldBloc,
+        child: BoolValueFormFieldRowWidget(
+          label: S.of(context).app_timeline_settings_field_onlyRemote_label,
+          description: null,
+          descriptionOnDisabled: descriptionOnDisabled ??
+              S
+                  .of(context)
+                  .app_settings_warning_notSupportedOnThisInstance_desc,
+        ),
+      );
 }
 
 class _EditTimelineSettingsFieldOnlyPinnedWidget extends StatelessWidget {
@@ -291,17 +285,18 @@ class _EditTimelineSettingsFieldOnlyPinnedWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IEditTimelineSettingsBloc, IBoolValueFormFieldBloc>(
-      update: (context, value, previous) => value.onlyPinnedFieldBloc,
-      child: BoolValueFormFieldRowWidget(
-        label: S.of(context).app_timeline_settings_field_onlyPinned_label,
-        description: null,
-        descriptionOnDisabled: descriptionOnDisabled ??
-            S.of(context).app_settings_warning_notSupportedOnThisInstance_desc,
-      ),
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IEditTimelineSettingsBloc, IBoolValueFormFieldBloc>(
+        update: (context, value, previous) => value.onlyPinnedFieldBloc,
+        child: BoolValueFormFieldRowWidget(
+          label: S.of(context).app_timeline_settings_field_onlyPinned_label,
+          description: null,
+          descriptionOnDisabled: descriptionOnDisabled ??
+              S
+                  .of(context)
+                  .app_settings_warning_notSupportedOnThisInstance_desc,
+        ),
+      );
 }
 
 class _EditTimelineSettingsFieldExcludeReblogsWidget extends StatelessWidget {
@@ -312,17 +307,18 @@ class _EditTimelineSettingsFieldExcludeReblogsWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IEditTimelineSettingsBloc, IBoolValueFormFieldBloc>(
-      update: (context, value, previous) => value.excludeReblogsFieldBloc,
-      child: BoolValueFormFieldRowWidget(
-        label: S.of(context).app_timeline_settings_field_excludeReblogs_label,
-        description: null,
-        descriptionOnDisabled: descriptionOnDisabled ??
-            S.of(context).app_settings_warning_notSupportedOnThisInstance_desc,
-      ),
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IEditTimelineSettingsBloc, IBoolValueFormFieldBloc>(
+        update: (context, value, previous) => value.excludeReblogsFieldBloc,
+        child: BoolValueFormFieldRowWidget(
+          label: S.of(context).app_timeline_settings_field_excludeReblogs_label,
+          description: null,
+          descriptionOnDisabled: descriptionOnDisabled ??
+              S
+                  .of(context)
+                  .app_settings_warning_notSupportedOnThisInstance_desc,
+        ),
+      );
 }
 
 class _EditTimelineSettingsFieldExcludeRepliesWidget extends StatelessWidget {
@@ -333,17 +329,18 @@ class _EditTimelineSettingsFieldExcludeRepliesWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IEditTimelineSettingsBloc, IBoolValueFormFieldBloc>(
-      update: (context, value, previous) => value.excludeRepliesFieldBloc,
-      child: BoolValueFormFieldRowWidget(
-        label: S.of(context).app_timeline_settings_field_excludeReplies_label,
-        description: null,
-        descriptionOnDisabled: descriptionOnDisabled ??
-            S.of(context).app_settings_warning_notSupportedOnThisInstance_desc,
-      ),
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IEditTimelineSettingsBloc, IBoolValueFormFieldBloc>(
+        update: (context, value, previous) => value.excludeRepliesFieldBloc,
+        child: BoolValueFormFieldRowWidget(
+          label: S.of(context).app_timeline_settings_field_excludeReplies_label,
+          description: null,
+          descriptionOnDisabled: descriptionOnDisabled ??
+              S
+                  .of(context)
+                  .app_settings_warning_notSupportedOnThisInstance_desc,
+        ),
+      );
 }
 
 class _EditTimelineSettingsFieldWebsocketsUpdatesWidget
@@ -391,19 +388,19 @@ class _EditTimelineSettingsFieldReplyVisibilityFilterWidget
   });
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IEditTimelineSettingsBloc,
-        ITimelineReplyVisibilityFilterSelectSingleFromListValueFormFieldBloc>(
-      update: (context, value, previous) =>
-          value.replyVisibilityFilterFieldBloc,
-      child:
-          TimelineReplyVisibilityFilterSelectSingleFromListValueFormFieldWidget(
-        description: null,
-        descriptionOnDisabled: descriptionOnDisabled ??
-            S.of(context).app_settings_warning_notSupportedOnThisInstance_desc,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => ProxyProvider<IEditTimelineSettingsBloc,
+          ITimelineReplyVisibilityFilterSelectSingleFromListValueFormFieldBloc>(
+        update: (context, value, previous) =>
+            value.replyVisibilityFilterFieldBloc,
+        child:
+            TimelineReplyVisibilityFilterSelectSingleFromListValueFormFieldWidget(
+          description: null,
+          descriptionOnDisabled: descriptionOnDisabled ??
+              S
+                  .of(context)
+                  .app_settings_warning_notSupportedOnThisInstance_desc,
+        ),
+      );
 }
 
 class _EditTimelineSettingsFieldExcludeVisibilitiesWidget
@@ -415,19 +412,21 @@ class _EditTimelineSettingsFieldExcludeVisibilitiesWidget
   });
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IEditTimelineSettingsBloc,
-        IStatusVisibilityMultiSelectFromListFormFieldBloc>(
-      update: (context, value, previous) => value.excludeVisibilitiesFieldBloc,
-      child: StatusVisibilityMultiSelectFromListFormFieldWidget(
-        label:
-            S.of(context).app_timeline_settings_field_excludeVisibilites_label,
-        description: null,
-        descriptionOnDisabled: descriptionOnDisabled ??
-            S.of(context).app_settings_warning_notSupportedOnThisInstance_desc,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => ProxyProvider<IEditTimelineSettingsBloc,
+          IStatusVisibilityMultiSelectFromListFormFieldBloc>(
+        update: (context, value, previous) =>
+            value.excludeVisibilitiesFieldBloc,
+        child: StatusVisibilityMultiSelectFromListFormFieldWidget(
+          label: S
+              .of(context)
+              .app_timeline_settings_field_excludeVisibilites_label,
+          description: null,
+          descriptionOnDisabled: descriptionOnDisabled ??
+              S
+                  .of(context)
+                  .app_settings_warning_notSupportedOnThisInstance_desc,
+        ),
+      );
 }
 
 class _EditTimelineSettingsFieldAccountWidget extends StatelessWidget {
@@ -438,17 +437,17 @@ class _EditTimelineSettingsFieldAccountWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IEditTimelineSettingsBloc,
-        ITimelineSettingsOnlyFromAccountFormFieldBloc>(
-      update: (context, value, previous) => value.onlyFromAccountFieldBloc,
-      child: TimelineSettingsOnlyFromAccountFormFieldRowWidget(
-        description: null,
-        descriptionOnDisabled: descriptionOnDisabled ??
-            S.of(context).app_settings_warning_notSupportedOnThisInstance_desc,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => ProxyProvider<IEditTimelineSettingsBloc,
+          ITimelineSettingsOnlyFromAccountFormFieldBloc>(
+        update: (context, value, previous) => value.onlyFromAccountFieldBloc,
+        child: TimelineSettingsOnlyFromAccountFormFieldRowWidget(
+          description: null,
+          descriptionOnDisabled: descriptionOnDisabled ??
+              S
+                  .of(context)
+                  .app_settings_warning_notSupportedOnThisInstance_desc,
+        ),
+      );
 }
 
 class _EditTimelineSettingsFieldHashtagWidget extends StatelessWidget {
@@ -459,19 +458,19 @@ class _EditTimelineSettingsFieldHashtagWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IEditTimelineSettingsBloc, IStringValueFormFieldBloc>(
-      update: (context, value, previous) => value.withRemoteHashtagFieldBloc,
-      child: StringValueFormFieldRowWidget(
-        label:
-            S.of(context).app_timeline_settings_withRemoteHashtag_field_label,
-        autocorrect: false,
-        hint: S.of(context).app_timeline_settings_withRemoteHashtag_field_hint,
-        onSubmitted: null,
-        textInputAction: TextInputAction.done,
-      ),
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IEditTimelineSettingsBloc, IStringValueFormFieldBloc>(
+        update: (context, value, previous) => value.withRemoteHashtagFieldBloc,
+        child: StringValueFormFieldRowWidget(
+          label:
+              S.of(context).app_timeline_settings_withRemoteHashtag_field_label,
+          autocorrect: false,
+          hint:
+              S.of(context).app_timeline_settings_withRemoteHashtag_field_hint,
+          onSubmitted: null,
+          textInputAction: TextInputAction.done,
+        ),
+      );
 }
 
 class _EditTimelineSettingsFieldOnlyFromInstanceWidget extends StatelessWidget {
@@ -482,18 +481,18 @@ class _EditTimelineSettingsFieldOnlyFromInstanceWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IEditTimelineSettingsBloc, IStringValueFormFieldBloc>(
-      update: (context, value, previous) => value.onlyFromInstanceFieldBloc,
-      child: StringValueFormFieldRowWidget(
-        label: S.of(context).app_timeline_settings_onlyFromInstance_field_label,
-        autocorrect: false,
-        hint: S.of(context).app_timeline_settings_onlyFromInstance_field_hint,
-        onSubmitted: null,
-        textInputAction: TextInputAction.done,
-      ),
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IEditTimelineSettingsBloc, IStringValueFormFieldBloc>(
+        update: (context, value, previous) => value.onlyFromInstanceFieldBloc,
+        child: StringValueFormFieldRowWidget(
+          label:
+              S.of(context).app_timeline_settings_onlyFromInstance_field_label,
+          autocorrect: false,
+          hint: S.of(context).app_timeline_settings_onlyFromInstance_field_hint,
+          onSubmitted: null,
+          textInputAction: TextInputAction.done,
+        ),
+      );
 }
 
 class _EditTimelineSettingsFieldCustomListWidget extends StatelessWidget {
@@ -504,15 +503,15 @@ class _EditTimelineSettingsFieldCustomListWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IEditTimelineSettingsBloc,
-        ITimelineSettingsOnlyInCustomListFormFieldBloc>(
-      update: (context, value, previous) => value.onlyInCustomListFieldBloc,
-      child: TimelineSettingsOnlyInCustomListFormFieldRowWidget(
-        description: null,
-        descriptionOnDisabled: descriptionOnDisabled ??
-            S.of(context).app_settings_warning_notSupportedOnThisInstance_desc,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => ProxyProvider<IEditTimelineSettingsBloc,
+          ITimelineSettingsOnlyInCustomListFormFieldBloc>(
+        update: (context, value, previous) => value.onlyInCustomListFieldBloc,
+        child: TimelineSettingsOnlyInCustomListFormFieldRowWidget(
+          description: null,
+          descriptionOnDisabled: descriptionOnDisabled ??
+              S
+                  .of(context)
+                  .app_settings_warning_notSupportedOnThisInstance_desc,
+        ),
+      );
 }

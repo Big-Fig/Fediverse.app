@@ -13,14 +13,12 @@ class FediBackgroundBlur extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return BackdropFilter(
-      filter: ImageFilter.blur(
-        sigmaX: sigma,
-        // ignore: no-equal-arguments
-        sigmaY: sigma,
-      ),
-      child: child,
-    );
-  }
+  Widget build(BuildContext context) => BackdropFilter(
+        filter: ImageFilter.blur(
+          sigmaX: sigma,
+          // ignore: no-equal-arguments
+          sigmaY: sigma,
+        ),
+        child: child,
+      );
 }

@@ -53,31 +53,30 @@ MaterialPageRoute<void> createExternalShareEntityPageRoute({
   required BuildContext context,
   required ShareEntity shareEntity,
   required InstanceLocation instanceLocation,
-}) {
-  return MaterialPageRoute<void>(
-    builder: (context) => ShareEntitySettingsBloc.provideToContext(
-      context,
-      shareEntity: shareEntity,
-      child: Provider<ShareEntity>.value(
-        value: shareEntity,
-        child: DisposableProxyProvider<ShareEntity, ExternalShareEntityBloc>(
-          update: (context, value, previous) =>
-              ExternalShareEntityBloc.createFromContext(
-            context,
-            shareEntity: value,
-            popupTitle: S.of(context).app_share_external_title,
-          ),
-          child: ProxyProvider<ExternalShareEntityBloc, IShareEntityBloc>(
-            update: (context, value, previous) => value,
-            child: ProxyProvider<ExternalShareEntityBloc, IExternalShareBloc>(
+}) =>
+    MaterialPageRoute<void>(
+      builder: (context) => ShareEntitySettingsBloc.provideToContext(
+        context,
+        shareEntity: shareEntity,
+        child: Provider<ShareEntity>.value(
+          value: shareEntity,
+          child: DisposableProxyProvider<ShareEntity, ExternalShareEntityBloc>(
+            update: (context, value, previous) =>
+                ExternalShareEntityBloc.createFromContext(
+              context,
+              shareEntity: value,
+              popupTitle: S.of(context).app_share_external_title,
+            ),
+            child: ProxyProvider<ExternalShareEntityBloc, IShareEntityBloc>(
               update: (context, value, previous) => value,
-              child: ExternalShareBlocProxyProvider(
-                child: ExternalShareEntityPage(),
+              child: ProxyProvider<ExternalShareEntityBloc, IExternalShareBloc>(
+                update: (context, value, previous) => value,
+                child: ExternalShareBlocProxyProvider(
+                  child: ExternalShareEntityPage(),
+                ),
               ),
             ),
           ),
         ),
       ),
-    ),
-  );
-}
+    );

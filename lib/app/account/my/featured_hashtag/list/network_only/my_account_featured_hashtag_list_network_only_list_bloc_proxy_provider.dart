@@ -14,13 +14,12 @@ class AccountFeaturedHashtagListNetworkOnlyListBlocProxyProvider
   });
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IAccountFeaturedHashtagListNetworkOnlyListBloc,
-        INetworkOnlyListBloc<IMyAccountFeaturedHashtag>>(
-      update: (context, value, previous) => value,
-      child: AccountFeaturedHashtagPaginationListBlocProxyProvider(
-        child: child,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => ProxyProvider<
+          IAccountFeaturedHashtagListNetworkOnlyListBloc,
+          INetworkOnlyListBloc<IMyAccountFeaturedHashtag>>(
+        update: (context, value, previous) => value,
+        child: AccountFeaturedHashtagPaginationListBlocProxyProvider(
+          child: child,
+        ),
+      );
 }

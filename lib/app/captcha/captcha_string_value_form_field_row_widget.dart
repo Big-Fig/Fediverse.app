@@ -274,31 +274,29 @@ class _FormCaptchaStringFormFieldRowImageWidget extends StatelessWidget {
   final VoidCallback onNeedCaptchaReloadCallback;
 
   @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<Image?>(
-      stream: captchaImageStream,
-      builder: (context, snapshot) {
-        var image = snapshot.data;
-        Widget result;
-        if (image == null) {
-          result = const FediCircularProgressIndicator();
-        } else {
-          result = InkWell(
-            onTap: () {
-              onNeedCaptchaReloadCallback();
-            },
-            child: image,
-          );
-        }
+  Widget build(BuildContext context) => StreamBuilder<Image?>(
+        stream: captchaImageStream,
+        builder: (context, snapshot) {
+          var image = snapshot.data;
+          Widget result;
+          if (image == null) {
+            result = const FediCircularProgressIndicator();
+          } else {
+            result = InkWell(
+              onTap: () {
+                onNeedCaptchaReloadCallback();
+              },
+              child: image,
+            );
+          }
 
-        return ConstrainedBox(
-          constraints: BoxConstraints(
-            // ignore: no-magic-number
-            minHeight: 100,
-          ),
-          child: result,
-        );
-      },
-    );
-  }
+          return ConstrainedBox(
+            constraints: BoxConstraints(
+              // ignore: no-magic-number
+              minHeight: 100,
+            ),
+            child: result,
+          );
+        },
+      );
 }

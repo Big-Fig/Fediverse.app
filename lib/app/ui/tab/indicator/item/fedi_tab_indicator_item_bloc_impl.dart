@@ -37,11 +37,9 @@ class FediTabIndicatorItemBloc<T> extends DisposableOwner
       fediTabIndicatorBloc.hashCode ^ item.hashCode ^ index.hashCode;
 
   @override
-  String toString() {
-    return 'FediTabIndicatorItemBloc{'
-        'fediTabIndicatorBloc: $fediTabIndicatorBloc,'
-        ' item: $item, index: $index}';
-  }
+  String toString() => 'FediTabIndicatorItemBloc{'
+      'fediTabIndicatorBloc: $fediTabIndicatorBloc,'
+      ' item: $item, index: $index}';
 
   @override
   void select() {

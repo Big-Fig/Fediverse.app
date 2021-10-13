@@ -219,35 +219,34 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
     return query;
   }
 
-  List<Join> populateNotificationJoin() {
-    return [
-      // todo: think about leftOuterJoin and nullable account field
-      // or foreign keys
-      // in some cases status may already exist in local database,
-      // but account still not added
-      innerJoin(
-        accountAlias,
-        accountAlias.remoteId.equalsExp(dbNotifications.accountRemoteId),
-      ),
-      leftOuterJoin(
-        statusAlias,
-        statusAlias.remoteId.equalsExp(dbNotifications.statusRemoteId),
-      ),
-      leftOuterJoin(
-        statusAccountAlias,
-        statusAccountAlias.remoteId.equalsExp(statusAlias.accountRemoteId),
-      ),
-      leftOuterJoin(
-        statusReblogAlias,
-        statusReblogAlias.remoteId.equalsExp(statusAlias.reblogStatusRemoteId),
-      ),
-      leftOuterJoin(
-        statusReblogAccountAlias,
-        statusReblogAccountAlias.remoteId
-            .equalsExp(statusReblogAlias.accountRemoteId),
-      ),
-    ];
-  }
+  List<Join> populateNotificationJoin() => [
+        // todo: think about leftOuterJoin and nullable account field
+        // or foreign keys
+        // in some cases status may already exist in local database,
+        // but account still not added
+        innerJoin(
+          accountAlias,
+          accountAlias.remoteId.equalsExp(dbNotifications.accountRemoteId),
+        ),
+        leftOuterJoin(
+          statusAlias,
+          statusAlias.remoteId.equalsExp(dbNotifications.statusRemoteId),
+        ),
+        leftOuterJoin(
+          statusAccountAlias,
+          statusAccountAlias.remoteId.equalsExp(statusAlias.accountRemoteId),
+        ),
+        leftOuterJoin(
+          statusReblogAlias,
+          statusReblogAlias.remoteId
+              .equalsExp(statusAlias.reblogStatusRemoteId),
+        ),
+        leftOuterJoin(
+          statusReblogAccountAlias,
+          statusReblogAccountAlias.remoteId
+              .equalsExp(statusReblogAlias.accountRemoteId),
+        ),
+      ];
 
   SimpleSelectStatement<$DbNotificationsTable, DbNotification>
       addOnlyNotDismissedWhere(
@@ -376,13 +375,12 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
 extension DbNotificationPopulatedTypedResultListExtension on List<TypedResult> {
   List<DbNotificationPopulated> toDbNotificationPopulatedList({
     required NotificationDao dao,
-  }) {
-    return map(
-      (item) => item.toDbNotificationPopulated(
-        dao: dao,
-      ),
-    ).toList();
-  }
+  }) =>
+      map(
+        (item) => item.toDbNotificationPopulated(
+          dao: dao,
+        ),
+      ).toList();
 }
 
 extension DbNotificationPopulatedTypedResultExtension on TypedResult {

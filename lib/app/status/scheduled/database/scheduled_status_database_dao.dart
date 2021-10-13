@@ -124,9 +124,7 @@ class ScheduledStatusDao extends PopulatedAppRemoteDatabaseDao<
     );
   }
 
-  List<Join<Table, DataClass>> populateJoin() {
-    return [];
-  }
+  List<Join<Table, DataClass>> populateJoin() => [];
 
   @override
   JoinedSelectStatement convertSimpleSelectStatementToJoinedSelectStatement({

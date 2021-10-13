@@ -40,13 +40,12 @@ class ChatSelectionBloc extends DisposableOwner implements IChatSelectionBloc {
   static bool _calculateIsAllSelectedItemsFromMe({
     required List<IChatMessage> currentSelection,
     required IMyAccountBloc myAccountBloc,
-  }) {
-    return currentSelection.fold(
-      true,
-      (previousValue, element) =>
-          previousValue && myAccountBloc.checkIsChatMessageFromMe(element),
-    );
-  }
+  }) =>
+      currentSelection.fold(
+        true,
+        (previousValue, element) =>
+            previousValue && myAccountBloc.checkIsChatMessageFromMe(element),
+      );
 
   @override
   List<IChatMessage> get currentSelection =>

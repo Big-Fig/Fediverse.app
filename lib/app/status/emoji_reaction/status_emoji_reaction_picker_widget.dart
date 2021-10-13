@@ -18,40 +18,37 @@ class StatusEmojiReactionPickerWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return EmojiPickerWidget(
-      // ignore: no-magic-number
-      selectedCategoryItemsGridHeight: 200,
-      // ignore: no-magic-number
-      rowsCount: 5,
-      onEmojiSelected: (emoji) {
-        emojiReactionSelectedCallback(context, emoji.name, emoji.code);
-      },
-      useImageEmoji: false,
-    );
-  }
+  Widget build(BuildContext context) => EmojiPickerWidget(
+        // ignore: no-magic-number
+        selectedCategoryItemsGridHeight: 200,
+        // ignore: no-magic-number
+        rowsCount: 5,
+        onEmojiSelected: (emoji) {
+          emojiReactionSelectedCallback(context, emoji.name, emoji.code);
+        },
+        useImageEmoji: false,
+      );
 }
 
 Future<void> showEmojiPickerModalPopup(
   BuildContext context, {
   EmojiReactionSelectedCallback? emojiReactionSelectedCallback,
-}) {
-  return showFediModalBottomSheetDialog<void>(
-    context: context,
-    child: Padding(
-      padding: FediPadding.horizontalSmallPadding,
-      child: StatusEmojiReactionPickerWidget(
-        emojiReactionSelectedCallback: (
-          BuildContext context,
-          String emojiName,
-          String emoji,
-        ) {
-          if (emojiReactionSelectedCallback != null) {
-            emojiReactionSelectedCallback(context, emojiName, emoji);
-          }
-          Navigator.of(context).pop();
-        },
+}) =>
+    showFediModalBottomSheetDialog<void>(
+      context: context,
+      child: Padding(
+        padding: FediPadding.horizontalSmallPadding,
+        child: StatusEmojiReactionPickerWidget(
+          emojiReactionSelectedCallback: (
+            BuildContext context,
+            String emojiName,
+            String emoji,
+          ) {
+            if (emojiReactionSelectedCallback != null) {
+              emojiReactionSelectedCallback(context, emojiName, emoji);
+            }
+            Navigator.of(context).pop();
+          },
+        ),
       ),
-    ),
-  );
-}
+    );

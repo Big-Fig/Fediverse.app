@@ -92,12 +92,11 @@ class PushPermissionCheckerBloc extends DisposableOwner
   static Widget provideToContext(
     BuildContext context, {
     required Widget child,
-  }) {
-    return DisposableProvider<IPushPermissionCheckerBloc>(
-      create: (context) => PushPermissionCheckerBloc.createFromContext(
-        context,
-      ),
-      child: child,
-    );
-  }
+  }) =>
+      DisposableProvider<IPushPermissionCheckerBloc>(
+        create: (context) => PushPermissionCheckerBloc.createFromContext(
+          context,
+        ),
+        child: child,
+      );
 }

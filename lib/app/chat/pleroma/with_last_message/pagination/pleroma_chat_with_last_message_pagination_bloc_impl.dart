@@ -33,13 +33,12 @@ class PleromaChatWithLastMessagePaginationBloc
     required int? itemsCountPerPage,
     required CachedPaginationPage<IPleromaChatWithLastMessage>? olderPage,
     required CachedPaginationPage<IPleromaChatWithLastMessage>? newerPage,
-  }) {
-    return cachedListBloc.loadLocalItems(
-      limit: itemsCountPerPage,
-      newerThan: olderPage?.items.firstOrNull,
-      olderThan: newerPage?.items.lastOrNull,
-    );
-  }
+  }) =>
+      cachedListBloc.loadLocalItems(
+        limit: itemsCountPerPage,
+        newerThan: olderPage?.items.firstOrNull,
+        olderThan: newerPage?.items.lastOrNull,
+      );
 
   @override
   Future refreshItemsFromRemoteForPage({

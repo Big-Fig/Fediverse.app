@@ -53,21 +53,19 @@ class _MediaAttachmentImageLoadingWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: FediPadding.allBigPadding,
-      child: Center(
-        child: Container(
-          // todo: refactor
-          // ignore: no-magic-number
-          width: 30,
-          // ignore: no-magic-number
-          height: 30,
-          child: const FediCircularProgressIndicator(),
+  Widget build(BuildContext context) => Padding(
+        padding: FediPadding.allBigPadding,
+        child: Center(
+          child: Container(
+            // todo: refactor
+            // ignore: no-magic-number
+            width: 30,
+            // ignore: no-magic-number
+            height: 30,
+            child: const FediCircularProgressIndicator(),
+          ),
         ),
-      ),
-    );
-  }
+      );
 }
 
 class _MediaAttachmentImageErrorWidget extends StatelessWidget {
@@ -76,10 +74,8 @@ class _MediaAttachmentImageErrorWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: FediPadding.allBigPadding,
-      child: Icon(FediIcons.warning),
-    );
-  }
+  Widget build(BuildContext context) => Padding(
+        padding: FediPadding.allBigPadding,
+        child: Icon(FediIcons.warning),
+      );
 }

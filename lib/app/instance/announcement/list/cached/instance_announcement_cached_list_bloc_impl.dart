@@ -44,21 +44,20 @@ class InstanceAnnouncementCachedListBloc
     required int? limit,
     required IInstanceAnnouncement? newerThan,
     required IInstanceAnnouncement? olderThan,
-  }) {
-    return instanceAnnouncementRepository.findAllInAppType(
-      pagination: RepositoryPagination(
-        olderThanItem: olderThan,
-        newerThanItem: newerThan,
-        limit: limit,
-      ),
-      filters: InstanceAnnouncementRepositoryFilters.only(
-        withDismissed: instanceAnnouncementSettings.withDismissed,
-      ),
-      orderingTerms: [
-        InstanceAnnouncementOrderingTermData.updatedAtDesc,
-      ],
-    );
-  }
+  }) =>
+      instanceAnnouncementRepository.findAllInAppType(
+        pagination: RepositoryPagination(
+          olderThanItem: olderThan,
+          newerThanItem: newerThan,
+          limit: limit,
+        ),
+        filters: InstanceAnnouncementRepositoryFilters.only(
+          withDismissed: instanceAnnouncementSettings.withDismissed,
+        ),
+        orderingTerms: [
+          InstanceAnnouncementOrderingTermData.updatedAtDesc,
+        ],
+      );
 
   @override
   Future refreshItemsFromRemoteForPage({
@@ -103,15 +102,15 @@ class InstanceAnnouncementCachedListBloc
     BuildContext context, {
     required Widget child,
     required InstanceAnnouncementSettings instanceAnnouncementSettings,
-  }) {
-    return DisposableProvider<IInstanceAnnouncementCachedListBloc>(
-      create: (context) => InstanceAnnouncementCachedListBloc.createFromContext(
-        context,
-        instanceAnnouncementSettings: instanceAnnouncementSettings,
-      ),
-      child: child,
-    );
-  }
+  }) =>
+      DisposableProvider<IInstanceAnnouncementCachedListBloc>(
+        create: (context) =>
+            InstanceAnnouncementCachedListBloc.createFromContext(
+          context,
+          instanceAnnouncementSettings: instanceAnnouncementSettings,
+        ),
+        child: child,
+      );
 
   @override
   InstanceLocation get instanceLocation => InstanceLocation.local;

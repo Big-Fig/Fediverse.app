@@ -39,40 +39,39 @@ class NotificationCachedPaginationListWithNewItemsBloc<
     BuildContext context, {
     required bool mergeNewItemsImmediately,
     required Widget child,
-  }) {
-    return DisposableProvider<
-        ICachedPaginationListWithNewItemsBloc<TPage, INotification>>(
-      create: (context) => NotificationCachedPaginationListWithNewItemsBloc
-          .createFromContext<TPage>(
-        context,
-        mergeNewItemsImmediately: mergeNewItemsImmediately,
-      ),
-      child: ProxyProvider<
-          ICachedPaginationListWithNewItemsBloc<TPage, INotification>,
-          ICachedPaginationListWithNewItemsBloc>(
-        update: (context, value, previous) => value,
-        child: CachedPaginationListWithNewItemsBlocProxyProvider<TPage,
-            INotification>(child: child),
-      ),
-    );
-  }
+  }) =>
+          DisposableProvider<
+              ICachedPaginationListWithNewItemsBloc<TPage, INotification>>(
+            create: (context) =>
+                NotificationCachedPaginationListWithNewItemsBloc
+                    .createFromContext<TPage>(
+              context,
+              mergeNewItemsImmediately: mergeNewItemsImmediately,
+            ),
+            child: ProxyProvider<
+                ICachedPaginationListWithNewItemsBloc<TPage, INotification>,
+                ICachedPaginationListWithNewItemsBloc>(
+              update: (context, value, previous) => value,
+              child: CachedPaginationListWithNewItemsBlocProxyProvider<TPage,
+                  INotification>(child: child),
+            ),
+          );
 
   static NotificationCachedPaginationListWithNewItemsBloc<TPage>
       createFromContext<TPage extends CachedPaginationPage<INotification>>(
     BuildContext context, {
     required bool mergeNewItemsImmediately,
-  }) {
-    return NotificationCachedPaginationListWithNewItemsBloc<TPage>(
-      mergeNewItemsImmediately: mergeNewItemsImmediately,
-      cachedPaginationBloc:
-          Provider.of<ICachedPaginationBloc<TPage, INotification>>(
-        context,
-        listen: false,
-      ),
-      cachedListBloc: INotificationCachedListBloc.of(
-        context,
-        listen: false,
-      ),
-    );
-  }
+  }) =>
+          NotificationCachedPaginationListWithNewItemsBloc<TPage>(
+            mergeNewItemsImmediately: mergeNewItemsImmediately,
+            cachedPaginationBloc:
+                Provider.of<ICachedPaginationBloc<TPage, INotification>>(
+              context,
+              listen: false,
+            ),
+            cachedListBloc: INotificationCachedListBloc.of(
+              context,
+              listen: false,
+            ),
+          );
 }

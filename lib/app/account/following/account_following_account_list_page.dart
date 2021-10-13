@@ -36,22 +36,21 @@ void goToAccountFollowingAccountListPage({
   Navigator.push(
     context,
     MaterialPageRoute<void>(
-      builder: (context) {
-        return AccountFollowingAccountCachedListBloc.provideToContext(
+      builder: (context) =>
+          AccountFollowingAccountCachedListBloc.provideToContext(
+        context,
+        account: account,
+        child: AccountCachedPaginationBloc.provideToContext(
           context,
-          account: account,
-          child: AccountCachedPaginationBloc.provideToContext(
+          child: AccountPaginationListBloc.provideToContext(
             context,
-            child: AccountPaginationListBloc.provideToContext(
-              context,
-              child: Provider<IAccount>.value(
-                value: account,
-                child: const AccountFollowingAccountListPage(),
-              ),
+            child: Provider<IAccount>.value(
+              value: account,
+              child: const AccountFollowingAccountListPage(),
             ),
           ),
-        );
-      },
+        ),
+      ),
     ),
   );
 }

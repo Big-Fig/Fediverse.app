@@ -21,30 +21,29 @@ void goToLocalAccountDetailsPage(
   );
 }
 
-MaterialPageRoute<void> createLocalAccountDetailsPageRoute(IAccount account) {
-  return MaterialPageRoute<void>(
-    builder: (context) => DisposableProvider<IAccountDetailsBloc>(
-      create: (context) => AccountDetailsBloc(
-        unifediApiAccountService: Provider.of<IUnifediApiAccountService>(
-          context,
-          listen: false,
+MaterialPageRoute<void> createLocalAccountDetailsPageRoute(IAccount account) =>
+    MaterialPageRoute<void>(
+      builder: (context) => DisposableProvider<IAccountDetailsBloc>(
+        create: (context) => AccountDetailsBloc(
+          unifediApiAccountService: Provider.of<IUnifediApiAccountService>(
+            context,
+            listen: false,
+          ),
+          currentUnifediApiAccessBloc: ICurrentUnifediApiAccessBloc.of(
+            context,
+            listen: false,
+          ),
         ),
-        currentUnifediApiAccessBloc: ICurrentUnifediApiAccessBloc.of(
-          context,
-          listen: false,
+        child: DisposableProvider<IAccountBloc>(
+          create: (context) => LocalAccountBloc.createFromContext(
+            context,
+            isNeedWatchLocalRepositoryForUpdates: true,
+            account: account,
+            isNeedRefreshFromNetworkOnInit: false,
+            isNeedWatchWebSocketsEvents: false,
+            isNeedPreFetchRelationship: true,
+          ),
+          child: const AccountDetailsPage(),
         ),
       ),
-      child: DisposableProvider<IAccountBloc>(
-        create: (context) => LocalAccountBloc.createFromContext(
-          context,
-          isNeedWatchLocalRepositoryForUpdates: true,
-          account: account,
-          isNeedRefreshFromNetworkOnInit: false,
-          isNeedWatchWebSocketsEvents: false,
-          isNeedPreFetchRelationship: true,
-        ),
-        child: const AccountDetailsPage(),
-      ),
-    ),
-  );
-}
+    );

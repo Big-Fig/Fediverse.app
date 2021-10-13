@@ -92,19 +92,18 @@ class CachedPaginationListWithNewItemsMergeOverlayButton
     required ICachedPaginationListWithNewItemsBloc
         paginationWithUpdatesListBloc,
     required int updateItemsCount,
-  }) {
-    return FediPrimaryFilledTextButtonWithBorder(
-      textBuilder(context, updateItemsCount),
-      onPressed: () {
-        paginationWithUpdatesListBloc.mergeNewItems();
+  }) =>
+      FediPrimaryFilledTextButtonWithBorder(
+        textBuilder(context, updateItemsCount),
+        onPressed: () {
+          paginationWithUpdatesListBloc.mergeNewItems();
 
-        var scrollControllerBloc =
-            IScrollControllerBloc.of(context, listen: false);
-        // ignore: cascade_invocations
-        scrollControllerBloc.scrollToTop();
-      },
-      height: FediSizes.smallFilledButtonHeight,
-      expanded: false,
-    );
-  }
+          var scrollControllerBloc =
+              IScrollControllerBloc.of(context, listen: false);
+          // ignore: cascade_invocations
+          scrollControllerBloc.scrollToTop();
+        },
+        height: FediSizes.smallFilledButtonHeight,
+        expanded: false,
+      );
 }

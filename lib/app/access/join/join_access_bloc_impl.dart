@@ -73,15 +73,14 @@ class JoinUnifediApiAccessBloc extends DisposableOwner
     BuildContext context, {
     required Widget child,
     required bool isFromScratch,
-  }) {
-    return DisposableProvider<IJoinUnifediApiAccessBloc>(
-      create: (context) => JoinUnifediApiAccessBloc.createFromContext(
-        context,
-        isFromScratch: isFromScratch,
-      ),
-      child: JoinUnifediApiAccessBlocProxyProvider(
-        child: child,
-      ),
-    );
-  }
+  }) =>
+      DisposableProvider<IJoinUnifediApiAccessBloc>(
+        create: (context) => JoinUnifediApiAccessBloc.createFromContext(
+          context,
+          isFromScratch: isFromScratch,
+        ),
+        child: JoinUnifediApiAccessBlocProxyProvider(
+          child: child,
+        ),
+      );
 }

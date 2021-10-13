@@ -24,12 +24,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-Future<void> showAccountHomeTabMenuDialog(BuildContext context) {
-  return showFediModalBottomSheetDialog<void>(
-    context: context,
-    child: const AccountHomeTabMenuDialogBodyWidget(),
-  );
-}
+Future<void> showAccountHomeTabMenuDialog(BuildContext context) =>
+    showFediModalBottomSheetDialog<void>(
+      context: context,
+      child: const AccountHomeTabMenuDialogBodyWidget(),
+    );
 
 class AccountHomeTabMenuDialogBodyWidget extends StatelessWidget {
   const AccountHomeTabMenuDialogBodyWidget();
@@ -71,27 +70,25 @@ class _AccountHomeTabMenuDialogBodyAccountItemWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        goAccountHomeTabMenuActionsPage(context);
-      },
-      child: AccountHomeTabMenuActionsIntBadgeBloc.provideToContext(
-        context,
-        child: _AccountHomeTabMenuDialogBodyItem(
-          iconWidget: FediIntBadgeWidget(
-            offset: 0.0,
-            child: _AccountHomeTabMenuDialogBodyItemIcon(
-              iconData: FediIcons.account,
+  Widget build(BuildContext context) => InkWell(
+        onTap: () {
+          goAccountHomeTabMenuActionsPage(context);
+        },
+        child: AccountHomeTabMenuActionsIntBadgeBloc.provideToContext(
+          context,
+          child: _AccountHomeTabMenuDialogBodyItem(
+            iconWidget: FediIntBadgeWidget(
+              offset: 0.0,
+              child: _AccountHomeTabMenuDialogBodyItemIcon(
+                iconData: FediIcons.account,
+              ),
+            ),
+            textWidget: _AccountHomeTabMenuDialogBodyItemText(
+              text: S.of(context).app_account_home_tab_menu_action_account,
             ),
           ),
-          textWidget: _AccountHomeTabMenuDialogBodyItemText(
-            text: S.of(context).app_account_home_tab_menu_action_account,
-          ),
         ),
-      ),
-    );
-  }
+      );
 }
 
 class _AccountHomeTabMenuDialogBodyInstanceItemWidget extends StatelessWidget {
@@ -126,17 +123,15 @@ class _SettingsHomeTabMenuDialogBodySettingsItemWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        goToInstanceSettingsPage(context);
-      },
-      child: _SimpleAccountHomeTabMenuDialogBodyItem(
-        iconData: FediIcons.settings,
-        text: S.of(context).app_account_home_tab_menu_action_settings,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => InkWell(
+        onTap: () {
+          goToInstanceSettingsPage(context);
+        },
+        child: _SimpleAccountHomeTabMenuDialogBodyItem(
+          iconData: FediIcons.settings,
+          text: S.of(context).app_account_home_tab_menu_action_settings,
+        ),
+      );
 }
 
 class _BookmarksHomeTabMenuDialogBodyBookmarksItemWidget
@@ -146,17 +141,15 @@ class _BookmarksHomeTabMenuDialogBodyBookmarksItemWidget
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        goToMyAccountBookmarkedStatusesPage(context);
-      },
-      child: _SimpleAccountHomeTabMenuDialogBodyItem(
-        iconData: FediIcons.unbookmark,
-        text: S.of(context).app_account_home_tab_menu_action_bookmarks,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => InkWell(
+        onTap: () {
+          goToMyAccountBookmarkedStatusesPage(context);
+        },
+        child: _SimpleAccountHomeTabMenuDialogBodyItem(
+          iconData: FediIcons.unbookmark,
+          text: S.of(context).app_account_home_tab_menu_action_bookmarks,
+        ),
+      );
 }
 
 class _ListsHomeTabMenuDialogBodyListsItemWidget extends StatelessWidget {
@@ -165,17 +158,15 @@ class _ListsHomeTabMenuDialogBodyListsItemWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        goToCustomListListPage(context);
-      },
-      child: _SimpleAccountHomeTabMenuDialogBodyItem(
-        iconData: FediIcons.lists,
-        text: S.of(context).app_account_home_tab_menu_action_lists,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => InkWell(
+        onTap: () {
+          goToCustomListListPage(context);
+        },
+        child: _SimpleAccountHomeTabMenuDialogBodyItem(
+          iconData: FediIcons.lists,
+          text: S.of(context).app_account_home_tab_menu_action_lists,
+        ),
+      );
 }
 
 class _AnnouncementsHomeTabMenuDialogBodyListsItemWidget
@@ -185,29 +176,27 @@ class _AnnouncementsHomeTabMenuDialogBodyListsItemWidget
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        goToInstanceAnnouncementListPage(context);
-      },
-      child: InstanceAnnouncementCountIntBadgeBloc.provideToContext(
-        context,
-        child: _AccountHomeTabMenuDialogBodyItem(
-          iconWidget: FediIntBadgeWidget(
-            offset: 0.0,
-            child: _AccountHomeTabMenuDialogBodyItemIcon(
-              iconData: FediIcons.message,
+  Widget build(BuildContext context) => InkWell(
+        onTap: () {
+          goToInstanceAnnouncementListPage(context);
+        },
+        child: InstanceAnnouncementCountIntBadgeBloc.provideToContext(
+          context,
+          child: _AccountHomeTabMenuDialogBodyItem(
+            iconWidget: FediIntBadgeWidget(
+              offset: 0.0,
+              child: _AccountHomeTabMenuDialogBodyItemIcon(
+                iconData: FediIcons.message,
+              ),
+            ),
+            textWidget: _AccountHomeTabMenuDialogBodyItemText(
+              text: S
+                  .of(context)
+                  .app_account_home_tab_menu_action_instance_announcements,
             ),
           ),
-          textWidget: _AccountHomeTabMenuDialogBodyItemText(
-            text: S
-                .of(context)
-                .app_account_home_tab_menu_action_instance_announcements,
-          ),
         ),
-      ),
-    );
-  }
+      );
 }
 
 class _AboutHomeTabMenuDialogBodyListsItemWidget extends StatelessWidget {
@@ -216,22 +205,21 @@ class _AboutHomeTabMenuDialogBodyListsItemWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        goToAboutPage(context: context);
-      },
-      child: _AccountHomeTabMenuDialogBodyItem(
-        iconWidget: _AccountHomeTabMenuDialogBodyItemIcon(
-          iconData: FediIcons.info,
+  Widget build(BuildContext context) => InkWell(
+        onTap: () {
+          goToAboutPage(context: context);
+        },
+        child: _AccountHomeTabMenuDialogBodyItem(
+          iconWidget: _AccountHomeTabMenuDialogBodyItemIcon(
+            iconData: FediIcons.info,
+          ),
+          textWidget: _AccountHomeTabMenuDialogBodyItemText(
+            text: S
+                .of(context)
+                .app_account_home_tab_menu_action_instance_aboutApp,
+          ),
         ),
-        textWidget: _AccountHomeTabMenuDialogBodyItemText(
-          text:
-              S.of(context).app_account_home_tab_menu_action_instance_aboutApp,
-        ),
-      ),
-    );
-  }
+      );
 }
 
 class _RateAppHomeTabMenuDialogBodyListsItemWidget extends StatelessWidget {
@@ -279,16 +267,14 @@ class _SimpleAccountHomeTabMenuDialogBodyItem extends StatelessWidget {
   final String text;
 
   @override
-  Widget build(BuildContext context) {
-    return _AccountHomeTabMenuDialogBodyItem(
-      iconWidget: _AccountHomeTabMenuDialogBodyItemIcon(
-        iconData: iconData,
-      ),
-      textWidget: _AccountHomeTabMenuDialogBodyItemText(
-        text: text,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => _AccountHomeTabMenuDialogBodyItem(
+        iconWidget: _AccountHomeTabMenuDialogBodyItemIcon(
+          iconData: iconData,
+        ),
+        textWidget: _AccountHomeTabMenuDialogBodyItemText(
+          text: text,
+        ),
+      );
 }
 
 class _AccountHomeTabMenuDialogBodyItem extends StatelessWidget {
@@ -302,20 +288,18 @@ class _AccountHomeTabMenuDialogBodyItem extends StatelessWidget {
   final Widget textWidget;
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: FediPadding.allSmallPadding,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          iconWidget,
-          const FediBigHorizontalSpacer(),
-          textWidget,
-        ],
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Padding(
+        padding: FediPadding.allSmallPadding,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            iconWidget,
+            const FediBigHorizontalSpacer(),
+            textWidget,
+          ],
+        ),
+      );
 }
 
 class _AccountHomeTabMenuDialogBodyItemText extends StatelessWidget {
@@ -327,12 +311,10 @@ class _AccountHomeTabMenuDialogBodyItemText extends StatelessWidget {
   final String text;
 
   @override
-  Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: IFediUiTextTheme.of(context).bigPrimary,
-    );
-  }
+  Widget build(BuildContext context) => Text(
+        text,
+        style: IFediUiTextTheme.of(context).bigPrimary,
+      );
 }
 
 class _AccountHomeTabMenuDialogBodyItemIcon extends StatelessWidget {
@@ -344,13 +326,11 @@ class _AccountHomeTabMenuDialogBodyItemIcon extends StatelessWidget {
   final IconData iconData;
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: FediPadding.allSmallPadding,
-      child: Icon(
-        iconData,
-        color: IFediUiColorTheme.of(context).darkGrey,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Padding(
+        padding: FediPadding.allSmallPadding,
+        child: Icon(
+          iconData,
+          color: IFediUiColorTheme.of(context).darkGrey,
+        ),
+      );
 }

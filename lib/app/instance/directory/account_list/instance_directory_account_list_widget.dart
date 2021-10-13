@@ -10,27 +10,25 @@ class InstanceDirectoryAccountListWidget extends StatelessWidget {
   const InstanceDirectoryAccountListWidget();
 
   @override
-  Widget build(BuildContext context) {
-    return AccountPaginationListWidget(
-      itemPadding: FediPadding.verticalMediumPadding,
-      accountSelectedCallback: (context, account) {
-        var accountListBloc = IAccountListBloc.of(context, listen: false);
+  Widget build(BuildContext context) => AccountPaginationListWidget(
+        itemPadding: FediPadding.verticalMediumPadding,
+        accountSelectedCallback: (context, account) {
+          var accountListBloc = IAccountListBloc.of(context, listen: false);
 
-        var isLocal =
-            accountListBloc.instanceLocation == InstanceLocation.local;
-        if (isLocal) {
-          goToLocalAccountDetailsPage(
-            context,
-            account: account,
-          );
-        } else {
-          goToRemoteAccountDetailsPageBasedOnRemoteInstanceAccount(
-            context,
-            remoteInstanceAccount: account,
-          );
-        }
-      },
-      key: PageStorageKey('InstanceDirectoryAccountListWidget'),
-    );
-  }
+          var isLocal =
+              accountListBloc.instanceLocation == InstanceLocation.local;
+          if (isLocal) {
+            goToLocalAccountDetailsPage(
+              context,
+              account: account,
+            );
+          } else {
+            goToRemoteAccountDetailsPageBasedOnRemoteInstanceAccount(
+              context,
+              remoteInstanceAccount: account,
+            );
+          }
+        },
+        key: PageStorageKey('InstanceDirectoryAccountListWidget'),
+      );
 }

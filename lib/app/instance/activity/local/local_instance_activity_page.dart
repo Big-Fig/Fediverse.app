@@ -8,14 +8,12 @@ class LocalInstanceActivityPage extends StatelessWidget {
   const LocalInstanceActivityPage();
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: InstanceHostAppBarWidget(),
-      body: const SafeArea(
-        child: InstanceActivityWidget(),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Scaffold(
+        appBar: InstanceHostAppBarWidget(),
+        body: const SafeArea(
+          child: InstanceActivityWidget(),
+        ),
+      );
 }
 
 MaterialPageRoute<void> createLocalInstanceActivityPageRoute() =>

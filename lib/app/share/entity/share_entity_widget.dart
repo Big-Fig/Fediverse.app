@@ -72,30 +72,28 @@ class _ShareEntityContentWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(FediSizes.smallPadding),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topRight: Radius.circular(FediSizes.smallPadding),
-            // ignore: no-equal-arguments
-            bottomRight: Radius.circular(FediSizes.smallPadding),
+  Widget build(BuildContext context) => ClipRRect(
+        borderRadius: BorderRadius.circular(FediSizes.smallPadding),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topRight: Radius.circular(FediSizes.smallPadding),
+              // ignore: no-equal-arguments
+              bottomRight: Radius.circular(FediSizes.smallPadding),
+            ),
+            border:
+                Border.all(color: IFediUiColorTheme.of(context).ultraLightGrey),
           ),
-          border:
-              Border.all(color: IFediUiColorTheme.of(context).ultraLightGrey),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const _ShareEntityTextWidget(),
+              const _ShareEntityMediaWidget(),
+            ],
+          ),
         ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const _ShareEntityTextWidget(),
-            const _ShareEntityMediaWidget(),
-          ],
-        ),
-      ),
-    );
-  }
+      );
 }
 
 class _ShareEntityTextWidget extends StatelessWidget {
@@ -274,27 +272,23 @@ class _ShareEntityCarouselItemLocalFileWidget extends StatelessWidget {
       // ignore: no-equal-arguments
       gifv: (_) => Image.file(file),
       video: (_) => DisposableProvider<IVideoMediaPlayerBloc>(
-        create: (context) {
-          return VideoMediaPlayerBloc(
-            mediaPlayerSource: MediaPlayerSource.localFile(file: file),
-            autoInit: true,
-            autoPlay: false,
-            desiredAspectRatio:
-                VideoMediaPlayerBloc.calculateDefaultAspectRatio(context),
-            isFullScreenSupportEnabled: false,
-            isFullscreen: false,
-          );
-        },
+        create: (context) => VideoMediaPlayerBloc(
+          mediaPlayerSource: MediaPlayerSource.localFile(file: file),
+          autoInit: true,
+          autoPlay: false,
+          desiredAspectRatio:
+              VideoMediaPlayerBloc.calculateDefaultAspectRatio(context),
+          isFullScreenSupportEnabled: false,
+          isFullscreen: false,
+        ),
         child: FediVideoPlayerWidget(),
       ),
       audio: (_) => DisposableProvider<IAudioMediaPlayerBloc>(
-        create: (context) {
-          return AudioMediaPlayerBloc(
-            mediaPlayerSource: MediaPlayerSource.localFile(file: file),
-            autoInit: true,
-            autoPlay: false,
-          );
-        },
+        create: (context) => AudioMediaPlayerBloc(
+          mediaPlayerSource: MediaPlayerSource.localFile(file: file),
+          autoInit: true,
+          autoPlay: false,
+        ),
         child: FediAudioPlayerWidget(),
       ),
       unknown: (_) => DisposableProxyProvider<ShareEntityItemLocalMediaFile,

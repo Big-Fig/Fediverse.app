@@ -25,21 +25,20 @@ import 'package:unifedi_api/unifedi_api.dart';
 Future<void> showAccountActionMoreDialog({
   required BuildContext context,
   required IAccountBloc accountBloc,
-}) {
-  return showFediModalBottomSheetDialog<void>(
-    context: context,
-    child: Provider<IAccountBloc>.value(
-      value: accountBloc,
-      child: Provider<IAccount>.value(
-        value: accountBloc.account,
-        child: const AccountActionMoreDialog(
-          cancelable: true,
-          showReportAction: false,
+}) =>
+    showFediModalBottomSheetDialog<void>(
+      context: context,
+      child: Provider<IAccountBloc>.value(
+        value: accountBloc,
+        child: Provider<IAccount>.value(
+          value: accountBloc.account,
+          child: const AccountActionMoreDialog(
+            cancelable: true,
+            showReportAction: false,
+          ),
         ),
       ),
-    ),
-  );
-}
+    );
 
 class AccountActionMoreDialog extends StatelessWidget {
   final bool cancelable;
@@ -215,7 +214,7 @@ class AccountActionMoreDialog extends StatelessWidget {
         if (isLocal) {
           goToLocalInstanceDetailsPage(context);
         } else {
-          // todo: https shouldnt be hardcoded
+          // todo: https shouldn't be hardcoded
           var remoteInstanceUri = Uri.parse(
             'https://$remoteDomainOrNull',
           );
@@ -296,15 +295,14 @@ class AccountActionMoreDialog extends StatelessWidget {
     );
   }
 
-  static DialogAction buildAccountMessageAction(BuildContext context) {
-    return DialogAction(
-      icon: FediIcons.message,
-      label: S.of(context).app_account_action_message,
-      onAction: (context) {
-        goToMessagesPageAccountAction(context);
-      },
-    );
-  }
+  static DialogAction buildAccountMessageAction(BuildContext context) =>
+      DialogAction(
+        icon: FediIcons.message,
+        label: S.of(context).app_account_action_message,
+        onAction: (context) {
+          goToMessagesPageAccountAction(context);
+        },
+      );
 
   static DialogAction buildAccountOpenInBrowserAction(BuildContext context) {
     var accountBloc = IAccountBloc.of(context, listen: false);

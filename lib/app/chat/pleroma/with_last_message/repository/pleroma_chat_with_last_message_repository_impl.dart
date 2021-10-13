@@ -45,11 +45,10 @@ class PleromaChatWithLastMessageRepository extends AsyncInitLoadingBloc
     required RepositoryPagination<IPleromaChat> pagination,
     PleromaChatRepositoryOrderingTermData orderingTermData =
         PleromaChatRepositoryOrderingTermData.updatedAtDesc,
-  }) {
-    return chatRepository.watchChatsWithLastMessage(
-      filters: filters,
-      pagination: pagination,
-      orderingTermData: orderingTermData,
-    );
-  }
+  }) =>
+      chatRepository.watchChatsWithLastMessage(
+        filters: filters,
+        pagination: pagination,
+        orderingTermData: orderingTermData,
+      );
 }

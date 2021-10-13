@@ -141,84 +141,79 @@ class _MediaAttachmentDetailsPageState
   Widget buildMediaAttachmentBody(
     BuildContext context,
     IUnifediApiMediaAttachment mediaAttachment,
-  ) {
-    return Provider<IUnifediApiMediaAttachment>.value(
-      value: mediaAttachment,
-      child: Stack(
-        children: [
-          buildMediaAttachmentItemBodyContent(mediaAttachment, context),
-          Positioned(
-            top: 8.0,
-            right: 8.0,
-            child: const MediaAttachmentMetadataButtonWidget(),
-          ),
-        ],
-      ),
-    );
-  }
+  ) =>
+      Provider<IUnifediApiMediaAttachment>.value(
+        value: mediaAttachment,
+        child: Stack(
+          children: [
+            buildMediaAttachmentItemBodyContent(mediaAttachment, context),
+            Positioned(
+              top: 8.0,
+              right: 8.0,
+              child: const MediaAttachmentMetadataButtonWidget(),
+            ),
+          ],
+        ),
+      );
 
   Widget buildMediaAttachmentItemBodyContent(
     IUnifediApiMediaAttachment mediaAttachment,
     BuildContext context,
-  ) {
-    return mediaAttachment.typeAsUnifediApi.map(
-      image: (_) => _buildCached(context, mediaAttachment),
-      // ignore: no-equal-arguments
-      gifv: (_) => _buildCached(context, mediaAttachment),
-      video: (_) {
-        var mediaSettingsBloc = IMediaSettingsBloc.of(context, listen: false);
+  ) =>
+      mediaAttachment.typeAsUnifediApi.map(
+        image: (_) => _buildCached(context, mediaAttachment),
+        // ignore: no-equal-arguments
+        gifv: (_) => _buildCached(context, mediaAttachment),
+        video: (_) {
+          var mediaSettingsBloc = IMediaSettingsBloc.of(context, listen: false);
 
-        return VideoMediaPlayerBloc.provideToContext(
-          context,
-          autoInit: mediaSettingsBloc.autoInit,
-          autoPlay: mediaSettingsBloc.autoPlay,
-          mediaPlayerSource:
-              MediaPlayerSource.network(networkUrl: mediaAttachment.url),
-          child: FediVideoPlayerWidget(),
-          desiredAspectRatio:
-              VideoMediaPlayerBloc.calculateDefaultAspectRatio(context),
-          isFullscreen: false,
-        );
-      },
-      audio: (_) {
-        var mediaSettingsBloc = IMediaSettingsBloc.of(context, listen: false);
+          return VideoMediaPlayerBloc.provideToContext(
+            context,
+            autoInit: mediaSettingsBloc.autoInit,
+            autoPlay: mediaSettingsBloc.autoPlay,
+            mediaPlayerSource:
+                MediaPlayerSource.network(networkUrl: mediaAttachment.url),
+            child: FediVideoPlayerWidget(),
+            desiredAspectRatio:
+                VideoMediaPlayerBloc.calculateDefaultAspectRatio(context),
+            isFullscreen: false,
+          );
+        },
+        audio: (_) {
+          var mediaSettingsBloc = IMediaSettingsBloc.of(context, listen: false);
 
-        return AudioMediaPlayerBloc.provideToContext(
-          context,
-          autoInit: mediaSettingsBloc.autoInit,
-          autoPlay: mediaSettingsBloc.autoPlay,
-          mediaPlayerSource:
-              MediaPlayerSource.network(networkUrl: mediaAttachment.url),
-          child: const FediAudioPlayerWidget(),
-        );
-      },
-      unknown: (_) => Padding(
-        padding: FediPadding.allBigPadding,
-        child: Center(
-          child: MediaAttachmentUnknownWidget(),
+          return AudioMediaPlayerBloc.provideToContext(
+            context,
+            autoInit: mediaSettingsBloc.autoInit,
+            autoPlay: mediaSettingsBloc.autoPlay,
+            mediaPlayerSource:
+                MediaPlayerSource.network(networkUrl: mediaAttachment.url),
+            child: const FediAudioPlayerWidget(),
+          );
+        },
+        unknown: (_) => Padding(
+          padding: FediPadding.allBigPadding,
+          child: Center(
+            child: MediaAttachmentUnknownWidget(),
+          ),
         ),
-      ),
-    );
-  }
+      );
 
   Widget _buildCached(
     BuildContext context,
     IUnifediApiMediaAttachment mediaAttachment,
-  ) {
-    return IFilesCacheService.of(context).createCachedNetworkImageWidget(
-      imageBuilder: (context, imageProvider) {
-        return PhotoView(
+  ) =>
+      IFilesCacheService.of(context).createCachedNetworkImageWidget(
+        imageBuilder: (context, imageProvider) => PhotoView(
           backgroundDecoration: BoxDecoration(
             color: IFediUiColorTheme.of(context).ultraLightGrey,
           ),
           imageProvider: imageProvider,
-        );
-      },
-      placeholder: (context, url) => buildDetails(),
-      errorWidget: (context, url, dynamic error) => buildDetails(),
-      imageUrl: mediaAttachment.url!,
-    );
-  }
+        ),
+        placeholder: (context, url) => buildDetails(),
+        errorWidget: (context, url, dynamic error) => buildDetails(),
+        imageUrl: mediaAttachment.url!,
+      );
 
   Widget buildBody(BuildContext context) {
     if (widget.mediaAttachments.length == 1) {
@@ -270,14 +265,12 @@ class _MediaAttachmentDetailsPageState
   Widget buildDetails() =>
       IFilesCacheService.of(context).createCachedNetworkImageWidget(
         imageUrl: mediaAttachment.url!,
-        imageBuilder: (context, imageProvider) {
-          return PhotoView(
-            backgroundDecoration: BoxDecoration(
-              color: IFediUiColorTheme.of(context).ultraLightGrey,
-            ),
-            imageProvider: imageProvider,
-          );
-        },
+        imageBuilder: (context, imageProvider) => PhotoView(
+          backgroundDecoration: BoxDecoration(
+            color: IFediUiColorTheme.of(context).ultraLightGrey,
+          ),
+          imageProvider: imageProvider,
+        ),
         placeholder: (context, url) =>
             Center(child: FediCircularProgressIndicator()),
         errorWidget: (context, url, dynamic error) => Center(
@@ -395,56 +388,54 @@ class _MediaAttachmentDetailsPageAddToGalleryAction extends StatelessWidget {
   final IUnifediApiMediaAttachment mediaAttachment;
 
   @override
-  Widget build(BuildContext context) {
-    return PleromaAsyncOperationButtonBuilderWidget(
-      showProgressDialog: false,
-      builder: (BuildContext context, VoidCallback? onPressed) =>
-          FediIconButton(
-        icon: Icon(
-          FediIcons.download,
-          color: IFediUiColorTheme.of(context).darkGrey,
-          size: FediSizes.appBarIconSize,
+  Widget build(BuildContext context) =>
+      PleromaAsyncOperationButtonBuilderWidget(
+        showProgressDialog: false,
+        builder: (BuildContext context, VoidCallback? onPressed) =>
+            FediIconButton(
+          icon: Icon(
+            FediIcons.download,
+            color: IFediUiColorTheme.of(context).darkGrey,
+            size: FediSizes.appBarIconSize,
+          ),
+          onPressed: onPressed,
         ),
-        onPressed: onPressed,
-      ),
-      // todo: add localized message
-      successToastMessage:
-          S.of(context).app_media_attachment_addToGallery_success,
-      asyncButtonAction: () async {
-        IToastService.of(context, listen: false).showInfoToast(
-          context: context,
-          title: S.of(context).app_media_attachment_addToGallery_start_saving,
-        );
-
-        var saved = await addMediaAttachmentToGallery(
-          context: context,
-          mediaAttachment: mediaAttachment,
-        );
-
-        if (!saved) {
-          throw MediaAttachmentCantAddToGalleryException(
-            mediaAttachment,
+        // todo: add localized message
+        successToastMessage:
+            S.of(context).app_media_attachment_addToGallery_success,
+        asyncButtonAction: () async {
+          IToastService.of(context, listen: false).showInfoToast(
+            context: context,
+            title: S.of(context).app_media_attachment_addToGallery_start_saving,
           );
-        }
 
-        return mediaAttachment;
-      },
-      errorAlertDialogBuilders: [
-        (BuildContext? context, dynamic error, StackTrace stackTrace) {
-          return ErrorData(
-            error: error,
-            stackTrace: stackTrace,
-            titleCreator: (context) => S
-                .of(context)
-                .app_media_attachment_addToGallery_error_dialog_title,
-            contentCreator: (context) => S
-                .of(context)
-                .app_media_attachment_addToGallery_error_dialog_content,
+          var saved = await addMediaAttachmentToGallery(
+            context: context,
+            mediaAttachment: mediaAttachment,
           );
+
+          if (!saved) {
+            throw MediaAttachmentCantAddToGalleryException(
+              mediaAttachment,
+            );
+          }
+
+          return mediaAttachment;
         },
-      ],
-    );
-  }
+        errorAlertDialogBuilders: [
+          (BuildContext? context, dynamic error, StackTrace stackTrace) =>
+              ErrorData(
+                error: error,
+                stackTrace: stackTrace,
+                titleCreator: (context) => S
+                    .of(context)
+                    .app_media_attachment_addToGallery_error_dialog_title,
+                contentCreator: (context) => S
+                    .of(context)
+                    .app_media_attachment_addToGallery_error_dialog_content,
+              ),
+        ],
+      );
 }
 
 void goToSingleMediaAttachmentDetailsPage(

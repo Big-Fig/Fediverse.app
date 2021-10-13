@@ -101,17 +101,16 @@ class PleromaChatMessageCachedListBloc extends DisposableOwner
   @override
   Stream<List<IPleromaChatMessage>> watchLocalItemsNewerThanItem(
     IPleromaChatMessage? item,
-  ) {
-    return chatMessageRepository.watchFindAllInAppType(
-      filters: _pleromaChatMessageRepositoryFilters,
-      pagination: RepositoryPagination(
-        newerThanItem: item,
-      ),
-      orderingTerms: [
-        PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
-      ],
-    );
-  }
+  ) =>
+      chatMessageRepository.watchFindAllInAppType(
+        filters: _pleromaChatMessageRepositoryFilters,
+        pagination: RepositoryPagination(
+          newerThanItem: item,
+        ),
+        orderingTerms: [
+          PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
+        ],
+      );
 
   static PleromaChatMessageCachedListBloc createFromContext(
     BuildContext context, {
@@ -129,13 +128,12 @@ class PleromaChatMessageCachedListBloc extends DisposableOwner
     BuildContext context, {
     required IPleromaChat chat,
     required Widget child,
-  }) {
-    return DisposableProvider<IPleromaChatMessageCachedListBloc>(
-      create: (context) => PleromaChatMessageCachedListBloc.createFromContext(
-        context,
-        chat: chat,
-      ),
-      child: child,
-    );
-  }
+  }) =>
+      DisposableProvider<IPleromaChatMessageCachedListBloc>(
+        create: (context) => PleromaChatMessageCachedListBloc.createFromContext(
+          context,
+          chat: chat,
+        ),
+        child: child,
+      );
 }

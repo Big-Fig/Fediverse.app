@@ -10,10 +10,9 @@ class PleromaChatPostMessageBlocProxyProvider extends StatelessWidget {
   PleromaChatPostMessageBlocProxyProvider({required this.child});
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IPleromaChatPostMessageBloc, IPostMessageBloc>(
-      update: (context, value, previous) => value,
-      child: PostMessageBlocProxyProvider(child: child),
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IPleromaChatPostMessageBloc, IPostMessageBloc>(
+        update: (context, value, previous) => value,
+        child: PostMessageBlocProxyProvider(child: child),
+      );
 }

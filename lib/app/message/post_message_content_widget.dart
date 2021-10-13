@@ -50,9 +50,7 @@ class PostMessageContentWidget extends StatelessWidget {
               await PleromaAsyncOperationHelper.performPleromaAsyncOperation<
                   void>(
                 context: context,
-                asyncCode: () {
-                  return postMessageBloc.post();
-                },
+                asyncCode: () => postMessageBloc.post(),
               );
             } else {
               await FediSimpleAlertDialog(

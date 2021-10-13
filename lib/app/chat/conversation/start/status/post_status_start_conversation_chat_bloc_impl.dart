@@ -110,17 +110,16 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
     required List<IAccount> conversationAccountsWithoutMe,
     required Widget child,
     required StatusCallback successCallback,
-  }) {
-    return DisposableProvider<IPostStatusBloc>(
-      create: (context) =>
-          PostStatusStartConversationChatBloc.createFromContext(
-        context,
-        successCallback: successCallback,
-        conversationAccountsWithoutMe: conversationAccountsWithoutMe,
-      ),
-      child: PostStatusMessageBlocProxyProvider(child: child),
-    );
-  }
+  }) =>
+      DisposableProvider<IPostStatusBloc>(
+        create: (context) =>
+            PostStatusStartConversationChatBloc.createFromContext(
+          context,
+          successCallback: successCallback,
+          conversationAccountsWithoutMe: conversationAccountsWithoutMe,
+        ),
+        child: PostStatusMessageBlocProxyProvider(child: child),
+      );
 
   @override
   bool get isPossibleToChangeVisibility => false;

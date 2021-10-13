@@ -168,12 +168,10 @@ class _PollMetadataDotSeparatorWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Text(
-      ' · ',
-      style: IFediUiTextTheme.of(context).mediumShortGrey,
-    );
-  }
+  Widget build(BuildContext context) => Text(
+        ' · ',
+        style: IFediUiTextTheme.of(context).mediumShortGrey,
+      );
 }
 
 class PollMetadataTotalVotesCountWidget extends StatelessWidget {
@@ -242,12 +240,10 @@ class _PollMetadataExpiresAtExpiredWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Text(
-      S.of(context).app_poll_metadata_expires_expired,
-      style: IFediUiTextTheme.of(context).mediumShortGrey,
-    );
-  }
+  Widget build(BuildContext context) => Text(
+        S.of(context).app_poll_metadata_expires_expired,
+        style: IFediUiTextTheme.of(context).mediumShortGrey,
+      );
 }
 
 class _PollMetadataExpiresAtNotExpiredWidget extends StatelessWidget {
@@ -355,15 +351,13 @@ class _PollOptionBodyFillerWidget extends StatelessWidget {
     var votesPercent = poll.votesPercent(pollOption);
 
     return LayoutBuilder(
-      builder: (context, constraints) {
-        return Container(
-          width: constraints.maxWidth * votesPercent,
-          decoration: BoxDecoration(
-            borderRadius: borderRadius,
-            color: fillColor,
-          ),
-        );
-      },
+      builder: (context, constraints) => Container(
+        width: constraints.maxWidth * votesPercent,
+        decoration: BoxDecoration(
+          borderRadius: borderRadius,
+          color: fillColor,
+        ),
+      ),
     );
   }
 }

@@ -128,16 +128,14 @@ class _ChatListItemPreviewWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: <Widget>[
-        const ChatTitleWidget(),
-        const _ChatListItemLastMessageWidget(),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          const ChatTitleWidget(),
+          const _ChatListItemLastMessageWidget(),
+        ],
+      );
 }
 
 class _ChatListItemLastMessageWidgetPendingStateWidget extends StatelessWidget {

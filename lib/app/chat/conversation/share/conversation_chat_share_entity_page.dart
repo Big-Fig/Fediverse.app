@@ -15,19 +15,17 @@ class ConversationChatShareEntityPage extends StatelessWidget {
   const ConversationChatShareEntityPage();
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: FediPageTitleAppBar(
-        title: S.of(context).app_chat_conversation_share_title,
-      ),
-      body: const ShareSelectAccountWidget(
-        header: ShareEntityWidget(
-          footer: ShareEntitySettingsWidget(),
+  Widget build(BuildContext context) => Scaffold(
+        appBar: FediPageTitleAppBar(
+          title: S.of(context).app_chat_conversation_share_title,
         ),
-        alwaysShowHeader: true,
-      ),
-    );
-  }
+        body: const ShareSelectAccountWidget(
+          header: ShareEntityWidget(
+            footer: ShareEntitySettingsWidget(),
+          ),
+          alwaysShowHeader: true,
+        ),
+      );
 }
 
 void goToConversationChatShareEntityPage({
@@ -49,19 +47,18 @@ MaterialPageRoute<void> createConversationChatShareEntityPageRoute({
   required BuildContext context,
   required ShareEntity shareEntity,
   required InstanceLocation instanceLocation,
-}) {
-  return MaterialPageRoute<void>(
-    builder: (context) => ShareEntitySettingsBloc.provideToContext(
-      context,
-      shareEntity: shareEntity,
-      child: ConversationChatShareEntityBloc.provideToContext(
+}) =>
+    MaterialPageRoute<void>(
+      builder: (context) => ShareEntitySettingsBloc.provideToContext(
         context,
         shareEntity: shareEntity,
-        child: Provider<ShareEntity>.value(
-          value: shareEntity,
-          child: const ConversationChatShareEntityPage(),
+        child: ConversationChatShareEntityBloc.provideToContext(
+          context,
+          shareEntity: shareEntity,
+          child: Provider<ShareEntity>.value(
+            value: shareEntity,
+            child: const ConversationChatShareEntityPage(),
+          ),
         ),
       ),
-    ),
-  );
-}
+    );

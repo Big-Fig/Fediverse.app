@@ -16,16 +16,14 @@ class BoolValueFormFieldRowWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return BoolValueFormFieldBlocProxyProvider(
-      child: SimpleFediFormFieldRow(
-        label: label,
-        description: description,
-        descriptionOnDisabled: descriptionOnDisabled,
-        valueChild: const BoolValueFormFieldRowValueWidget(),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => BoolValueFormFieldBlocProxyProvider(
+        child: SimpleFediFormFieldRow(
+          label: label,
+          description: description,
+          descriptionOnDisabled: descriptionOnDisabled,
+          valueChild: const BoolValueFormFieldRowValueWidget(),
+        ),
+      );
 }
 
 class BoolValueFormFieldRowValueWidget extends StatelessWidget {

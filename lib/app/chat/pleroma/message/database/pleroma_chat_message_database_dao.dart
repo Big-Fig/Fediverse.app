@@ -24,6 +24,7 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
     PleromaChatMessageRepositoryFilters,
     PleromaChatMessageRepositoryOrderingTermData> with _$ChatMessageDaoMixin {
   final AppDatabase db;
+
   // ignore: avoid-late-keyword
   late $DbAccountsTable accountAlias;
 
@@ -68,11 +69,11 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
   ) =>
       _findByOldPendingRemoteIdQuery(oldPendingRemoteId)
           .watchSingleOrNull()
-          .map((typedResult) {
-        return typedResult?.toDbChatMessagePopulated(
-          dao: this,
-        );
-      });
+          .map(
+            (typedResult) => typedResult?.toDbChatMessagePopulated(
+              dao: this,
+            ),
+          );
 
   JoinedSelectStatement _findAllQuery() {
     var sqlQuery = select(db.dbChatMessages).join(
@@ -185,14 +186,12 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
               .toList(),
         );
 
-  List<Join> populateChatMessageJoin() {
-    return [
-      leftOuterJoin(
-        accountAlias,
-        accountAlias.remoteId.equalsExp(dbChatMessages.accountRemoteId),
-      ),
-    ];
-  }
+  List<Join> populateChatMessageJoin() => [
+        leftOuterJoin(
+          accountAlias,
+          accountAlias.remoteId.equalsExp(dbChatMessages.accountRemoteId),
+        ),
+      ];
 
   void addGroupByChatId(JoinedSelectStatement query) {
     query.groupBy(
@@ -345,22 +344,20 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
 extension ListTypedResultDbChatMessagePopulatedExtension on List<TypedResult> {
   List<DbChatMessagePopulated> toDbChatMessagePopulatedList({
     required ChatMessageDao dao,
-  }) {
-    return map(
-      (typedResult) => typedResult.toDbChatMessagePopulated(
-        dao: dao,
-      ),
-    ).toList();
-  }
+  }) =>
+      map(
+        (typedResult) => typedResult.toDbChatMessagePopulated(
+          dao: dao,
+        ),
+      ).toList();
 }
 
 extension TypedResultDbChatMessagePopulatedExtension on TypedResult {
   DbChatMessagePopulated toDbChatMessagePopulated({
     required ChatMessageDao dao,
-  }) {
-    return DbChatMessagePopulated(
-      dbChatMessage: readTable(dao.db.dbChatMessages),
-      dbAccount: readTable(dao.accountAlias),
-    );
-  }
+  }) =>
+      DbChatMessagePopulated(
+        dbChatMessage: readTable(dao.db.dbChatMessages),
+        dbAccount: readTable(dao.accountAlias),
+      );
 }

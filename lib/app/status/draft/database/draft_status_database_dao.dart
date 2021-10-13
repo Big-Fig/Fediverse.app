@@ -56,13 +56,11 @@ class DraftStatusDao extends PopulatedAppLocalDatabaseDao<
 
   List<DbDraftStatus> typedResultListToPopulated(
     List<TypedResult> typedResult,
-  ) {
-    return typedResult.map(typedResultToPopulated).toList();
-  }
+  ) =>
+      typedResult.map(typedResultToPopulated).toList();
 
-  DbDraftStatus typedResultToPopulated(TypedResult typedResult) {
-    return typedResult.readTable(db.dbDraftStatuses);
-  }
+  DbDraftStatus typedResultToPopulated(TypedResult typedResult) =>
+      typedResult.readTable(db.dbDraftStatuses);
 
   SimpleSelectStatement<$DbDraftStatusesTable, DbDraftStatus>
       addUpdatedAtBoundsWhere(
@@ -142,10 +140,8 @@ class DraftStatusDao extends PopulatedAppLocalDatabaseDao<
   JoinedSelectStatement convertSimpleSelectStatementToJoinedSelectStatement({
     required SimpleSelectStatement<$DbDraftStatusesTable, DbDraftStatus> query,
     required DraftStatusRepositoryFilters? filters,
-  }) {
-    // nothing
-    return query.join([]);
-  }
+  }) =>
+      query.join([]);
 
   @override
   DbDraftStatusPopulated mapTypedResultToDbPopulatedItem(

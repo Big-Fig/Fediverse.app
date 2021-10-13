@@ -109,25 +109,25 @@ class MyAccountAccountMuteNetworkOnlyAccountListBloc extends DisposableOwner
   static Widget provideToContext(
     BuildContext context, {
     required Widget child,
-  }) {
-    return DisposableProvider<IMyAccountAccountMuteNetworkOnlyAccountListBloc>(
-      create: (context) =>
-          MyAccountAccountMuteNetworkOnlyAccountListBloc.createFromContext(
-        context,
-      ),
-      child: ProxyProvider<IMyAccountAccountMuteNetworkOnlyAccountListBloc,
-          IAccountNetworkOnlyListBloc>(
-        update: (context, value, previous) => value,
-        child: AccountNetworkOnlyListBlocProxyProvider(
-          child: ProxyProvider<IMyAccountAccountMuteNetworkOnlyAccountListBloc,
-              INetworkOnlyListBloc<IAccount>>(
-            update: (context, value, previous) => value,
-            child: child,
+  }) =>
+      DisposableProvider<IMyAccountAccountMuteNetworkOnlyAccountListBloc>(
+        create: (context) =>
+            MyAccountAccountMuteNetworkOnlyAccountListBloc.createFromContext(
+          context,
+        ),
+        child: ProxyProvider<IMyAccountAccountMuteNetworkOnlyAccountListBloc,
+            IAccountNetworkOnlyListBloc>(
+          update: (context, value, previous) => value,
+          child: AccountNetworkOnlyListBlocProxyProvider(
+            child: ProxyProvider<
+                IMyAccountAccountMuteNetworkOnlyAccountListBloc,
+                INetworkOnlyListBloc<IAccount>>(
+              update: (context, value, previous) => value,
+              child: child,
+            ),
           ),
         ),
-      ),
-    );
-  }
+      );
 
   @override
   Future changeAccountMute({

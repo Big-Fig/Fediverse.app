@@ -72,16 +72,15 @@ class VideoMediaPlayerBloc extends MediaPlayerBloc
     required bool? autoInit,
     required bool? autoPlay,
     required bool isFullscreen,
-  }) {
-    return VideoMediaPlayerBloc(
-      mediaPlayerSource: mediaPlayerSource,
-      desiredAspectRatio: desiredAspectRatio,
-      isFullScreenSupportEnabled: isFullScreenSupportEnabled,
-      autoInit: autoInit,
-      autoPlay: autoPlay,
-      isFullscreen: isFullscreen,
-    );
-  }
+  }) =>
+      VideoMediaPlayerBloc(
+        mediaPlayerSource: mediaPlayerSource,
+        desiredAspectRatio: desiredAspectRatio,
+        isFullScreenSupportEnabled: isFullScreenSupportEnabled,
+        autoInit: autoInit,
+        autoPlay: autoPlay,
+        isFullscreen: isFullscreen,
+      );
 
   // todo: refactor long-parameter-list
   // ignore: long-parameter-list
@@ -94,22 +93,21 @@ class VideoMediaPlayerBloc extends MediaPlayerBloc
     required bool? autoInit,
     required bool? autoPlay,
     required bool isFullscreen,
-  }) {
-    return DisposableProvider<IVideoMediaPlayerBloc>(
-      create: (context) => VideoMediaPlayerBloc.createFromContext(
-        context,
-        mediaPlayerSource: mediaPlayerSource,
-        desiredAspectRatio: desiredAspectRatio,
-        isFullScreenSupportEnabled: isFullScreenSupportEnabled,
-        autoInit: autoInit,
-        autoPlay: autoPlay,
-        isFullscreen: isFullscreen,
-      ),
-      child: VideoMediaPlayerBlocProxyProvider(
-        child: child,
-      ),
-    );
-  }
+  }) =>
+      DisposableProvider<IVideoMediaPlayerBloc>(
+        create: (context) => VideoMediaPlayerBloc.createFromContext(
+          context,
+          mediaPlayerSource: mediaPlayerSource,
+          desiredAspectRatio: desiredAspectRatio,
+          isFullScreenSupportEnabled: isFullScreenSupportEnabled,
+          autoInit: autoInit,
+          autoPlay: autoPlay,
+          isFullscreen: isFullscreen,
+        ),
+        child: VideoMediaPlayerBlocProxyProvider(
+          child: child,
+        ),
+      );
 
   static double calculateDefaultAspectRatio(BuildContext context) {
     final size = MediaQuery.of(context).size;

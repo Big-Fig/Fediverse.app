@@ -96,12 +96,10 @@ class MyAccountSuggestionAccountListNetworkOnlyListBloc extends DisposableOwner
     required IAccount account,
   }) =>
       removedAccountSuggestionsStream.map(
-        (removedAccountSuggestions) {
-          return _calculateIsSuggestionForAccountRemoved(
-            removedAccountSuggestions,
-            account,
-          );
-        },
+        (removedAccountSuggestions) => _calculateIsSuggestionForAccountRemoved(
+          removedAccountSuggestions,
+          account,
+        ),
       );
 
   static bool _calculateIsSuggestionForAccountRemoved(

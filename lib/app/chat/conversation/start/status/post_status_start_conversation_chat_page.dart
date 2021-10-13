@@ -11,12 +11,10 @@ import 'package:flutter/material.dart';
 
 class PostStatusStartConversationChatPage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const PostStatusStartConversationChatPageAppBar(),
-      body: _PostStatusStartConversationChatPageBodyWidget(),
-    );
-  }
+  Widget build(BuildContext context) => Scaffold(
+        appBar: const PostStatusStartConversationChatPageAppBar(),
+        body: _PostStatusStartConversationChatPageBodyWidget(),
+      );
 
   const PostStatusStartConversationChatPage();
 }
@@ -28,15 +26,13 @@ class PostStatusStartConversationChatPageAppBar extends StatelessWidget
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return FediPageTitleAppBar(
-      title: S.of(context).app_chat_conversation_start_title,
-      leading: FediDismissIconButton(),
-      actions: [
-        const PostStatusAppBarPostAction(),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => FediPageTitleAppBar(
+        title: S.of(context).app_chat_conversation_start_title,
+        leading: FediDismissIconButton(),
+        actions: [
+          const PostStatusAppBarPostAction(),
+        ],
+      );
 
   @override
   Size get preferredSize => FediPageTitleAppBar.calculatePreferredSize();
@@ -48,26 +44,24 @@ class _PostStatusStartConversationChatPageBodyWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: CustomScrollView(
-        slivers: [
-          SliverFillRemaining(
-            hasScrollBody: false,
-            child: PostStatusComposeWidget(
-              autofocus: true,
-              goBackOnSuccess: true,
-              expanded: true,
-              maxLines: null,
-              displayAccountAvatar: false,
-              showPostAction: false,
-              displaySubjectField: false,
+  Widget build(BuildContext context) => SafeArea(
+        child: CustomScrollView(
+          slivers: [
+            SliverFillRemaining(
+              hasScrollBody: false,
+              child: PostStatusComposeWidget(
+                autofocus: true,
+                goBackOnSuccess: true,
+                expanded: true,
+                maxLines: null,
+                displayAccountAvatar: false,
+                showPostAction: false,
+                displaySubjectField: false,
+              ),
             ),
-          ),
-        ],
-      ),
-    );
-  }
+          ],
+        ),
+      );
 }
 
 Future goToPostStatusStartConversationPage(
@@ -77,17 +71,16 @@ Future goToPostStatusStartConversationPage(
   await Navigator.push(
     context,
     MaterialPageRoute<void>(
-      builder: (context) {
-        return PostStatusStartConversationChatBloc.provideToContext(
-          context,
-          conversationAccountsWithoutMe: conversationAccountsWithoutMe,
-          child: const PostStatusStartConversationChatPage(),
-          successCallback: (IStatus? status) {
-            // todo: rework with pop until
-            Navigator.of(context).pop();
-          },
-        );
-      },
+      builder: (context) =>
+          PostStatusStartConversationChatBloc.provideToContext(
+        context,
+        conversationAccountsWithoutMe: conversationAccountsWithoutMe,
+        child: const PostStatusStartConversationChatPage(),
+        successCallback: (IStatus? status) {
+          // todo: rework with pop until
+          Navigator.of(context).pop();
+        },
+      ),
     ),
   );
 }

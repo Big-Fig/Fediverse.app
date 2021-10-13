@@ -269,15 +269,14 @@ class FediListRefreshIndicatorState extends State<FediListRefreshIndicator>
     super.dispose();
   }
 
-  bool _shouldStart(ScrollNotification notification) {
-    return (notification is ScrollStartNotification ||
-            (notification is ScrollUpdateNotification &&
-                notification.dragDetails != null &&
-                widget.triggerMode == RefreshIndicatorTriggerMode.anywhere)) &&
-        notification.metrics.extentBefore == 0.0 &&
-        _mode == null &&
-        _start(notification.metrics.axisDirection);
-  }
+  bool _shouldStart(ScrollNotification notification) =>
+      (notification is ScrollStartNotification ||
+          (notification is ScrollUpdateNotification &&
+              notification.dragDetails != null &&
+              widget.triggerMode == RefreshIndicatorTriggerMode.anywhere)) &&
+      notification.metrics.extentBefore == 0.0 &&
+      _mode == null &&
+      _start(notification.metrics.axisDirection);
 
   // ignore: code-metrics
   bool _handleScrollNotification(ScrollNotification notification) {

@@ -114,25 +114,25 @@ class MyAccountAccountBlockNetworkOnlyAccountListBloc extends DisposableOwner
   static Widget provideToContext(
     BuildContext context, {
     required Widget child,
-  }) {
-    return DisposableProvider<IMyAccountAccountBlockNetworkOnlyAccountListBloc>(
-      create: (context) =>
-          MyAccountAccountBlockNetworkOnlyAccountListBloc.createFromContext(
-        context,
-      ),
-      child: ProxyProvider<IMyAccountAccountBlockNetworkOnlyAccountListBloc,
-          IAccountNetworkOnlyListBloc>(
-        update: (context, value, previous) => value,
-        child: AccountNetworkOnlyListBlocProxyProvider(
-          child: ProxyProvider<IMyAccountAccountBlockNetworkOnlyAccountListBloc,
-              INetworkOnlyListBloc<IAccount>>(
-            update: (context, value, previous) => value,
-            child: child,
+  }) =>
+      DisposableProvider<IMyAccountAccountBlockNetworkOnlyAccountListBloc>(
+        create: (context) =>
+            MyAccountAccountBlockNetworkOnlyAccountListBloc.createFromContext(
+          context,
+        ),
+        child: ProxyProvider<IMyAccountAccountBlockNetworkOnlyAccountListBloc,
+            IAccountNetworkOnlyListBloc>(
+          update: (context, value, previous) => value,
+          child: AccountNetworkOnlyListBlocProxyProvider(
+            child: ProxyProvider<
+                IMyAccountAccountBlockNetworkOnlyAccountListBloc,
+                INetworkOnlyListBloc<IAccount>>(
+              update: (context, value, previous) => value,
+              child: child,
+            ),
           ),
         ),
-      ),
-    );
-  }
+      );
 
   @override
   InstanceLocation get instanceLocation => InstanceLocation.local;

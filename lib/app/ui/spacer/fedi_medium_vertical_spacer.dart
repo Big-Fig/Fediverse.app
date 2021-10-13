@@ -3,11 +3,9 @@ import 'package:flutter/cupertino.dart';
 
 class FediMediumVerticalSpacer extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: FediSizes.mediumPadding,
-    );
-  }
+  Widget build(BuildContext context) => SizedBox(
+        height: FediSizes.mediumPadding,
+      );
 
   const FediMediumVerticalSpacer();
 }

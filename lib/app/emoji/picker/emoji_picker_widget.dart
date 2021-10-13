@@ -39,124 +39,125 @@ class EmojiPickerWidget extends StatelessWidget {
   @override
   // todo: refactor
   // ignore: long-method
-  Widget build(BuildContext context) {
-    return DisposableProvider<ICustomEmojiPickerBloc>(
-      create: (context) {
-        EmojiPickerCustomImageUrlCategoryBloc? customCategoryBloc;
-        if (useImageEmoji) {
-          customCategoryBloc = EmojiPickerCustomImageUrlCategoryBloc(
-            unifediApiInstanceService:
-                Provider.of<IUnifediApiInstanceService>(context, listen: false),
-            preferenceBloc:
-                IEmojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc.of(
-              context,
-              listen: false,
-            ),
-            currentUnifediApiAccessBloc: ICurrentUnifediApiAccessBloc.of(
-              context,
-              listen: false,
-            ),
-          );
-        }
-
-        var emojiPickerRecentCategoryBloc = EmojiPickerRecentCategoryBloc(
-          preferenceBloc: IEmojiPickerRecentCategoryLocalPreferenceBloc.of(
-            context,
-            listen: false,
-          ),
-        );
-
-        var emojiPickerSearchCategoryBloc = EmojiPickerSearchCategoryBloc(
-          allCategoryBlocs: CustomEmojiPickerCodeCategoryBloc.allCategories,
-        );
-
-        var allCategoriesBlocs = <ICustomEmojiPickerCategoryBloc>[
-          emojiPickerRecentCategoryBloc,
-          if (useImageEmoji) customCategoryBloc!,
-          emojiPickerSearchCategoryBloc,
-          ...CustomEmojiPickerCodeCategoryBloc.allCategories,
-        ];
-
-        // ignore: cascade_invocations
-        allCategoriesBlocs.forEach((bloc) {
-          bloc.performAsyncInit();
-        });
-        var customEmojiPickerBloc = CustomEmojiPickerBloc(
-          selectedCategory: allCategoriesBlocs.first,
-          availableCategories: allCategoriesBlocs,
-        );
-
-        customEmojiPickerBloc.selectedEmojiStream.listen((emojiItem) {
-          emojiPickerRecentCategoryBloc.onEmojiSelected(emojiItem);
-        }).disposeWith(customEmojiPickerBloc);
-
-        customEmojiPickerBloc.addCustomDisposable(
-          () => allCategoriesBlocs.forEach(
-            (categoryBloc) => categoryBloc.dispose(),
-          ),
-        );
-
-        return customEmojiPickerBloc;
-      },
-      child: CustomEmojiPickerWidget(
-        selectedCategoryItemsGridHeight: selectedCategoryItemsGridHeight,
-        rowsCount: rowsCount,
-        emptyCategoryBuilder: (context, categoryBloc) {
-          String text;
-          if (categoryBloc is EmojiPickerCustomImageUrlCategoryBloc) {
-            text = S.of(context).app_emoji_custom_empty;
-          } else if (categoryBloc is EmojiPickerRecentCategoryBloc) {
-            text = S.of(context).app_emoji_recent_empty;
-          } else if (categoryBloc is EmojiPickerSearchCategoryBloc) {
-            return null;
-          } else {
-            text = S.of(context).app_emoji_category_empty;
-          }
-
-          return Text(
-            text,
-            style: IFediUiTextTheme.of(context).mediumTallDarkGrey,
-          );
-        },
-        useImageEmoji: useImageEmoji,
-        customCategoryIconBuilder: (category) {
-          if (category is EmojiPickerCustomImageUrlCategoryBloc) {
-            return FediIcons.instance;
-          } else if (category is EmojiPickerRecentCategoryBloc) {
-            return FediIcons.refresh;
-          } else if (category is EmojiPickerSearchCategoryBloc) {
-            return FediIcons.search;
-          } else {
-            return null;
-          }
-        },
-        customCategoryBodyBuilder: (
-          BuildContext context,
-          int rowsCount,
-          double selectedCategoryItemsGridHeight,
-          EmojiSelectedCallback onEmojiSelected,
-        ) {
-          var categoryBloc =
-              Provider.of<ICustomEmojiPickerCategoryBloc>(context);
-
-          if (categoryBloc is EmojiPickerSearchCategoryBloc) {
-            return _EmojiPickerSearchCategoryBlocBodyWidget(
-              rowsCount: rowsCount,
-              selectedCategoryItemsGridHeight: selectedCategoryItemsGridHeight,
-              onEmojiSelected: onEmojiSelected,
+  Widget build(BuildContext context) =>
+      DisposableProvider<ICustomEmojiPickerBloc>(
+        create: (context) {
+          EmojiPickerCustomImageUrlCategoryBloc? customCategoryBloc;
+          if (useImageEmoji) {
+            customCategoryBloc = EmojiPickerCustomImageUrlCategoryBloc(
+              unifediApiInstanceService:
+                  Provider.of<IUnifediApiInstanceService>(context,
+                      listen: false),
+              preferenceBloc:
+                  IEmojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc.of(
+                context,
+                listen: false,
+              ),
+              currentUnifediApiAccessBloc: ICurrentUnifediApiAccessBloc.of(
+                context,
+                listen: false,
+              ),
             );
-          } else {
-            return null;
           }
+
+          var emojiPickerRecentCategoryBloc = EmojiPickerRecentCategoryBloc(
+            preferenceBloc: IEmojiPickerRecentCategoryLocalPreferenceBloc.of(
+              context,
+              listen: false,
+            ),
+          );
+
+          var emojiPickerSearchCategoryBloc = EmojiPickerSearchCategoryBloc(
+            allCategoryBlocs: CustomEmojiPickerCodeCategoryBloc.allCategories,
+          );
+
+          var allCategoriesBlocs = <ICustomEmojiPickerCategoryBloc>[
+            emojiPickerRecentCategoryBloc,
+            if (useImageEmoji) customCategoryBloc!,
+            emojiPickerSearchCategoryBloc,
+            ...CustomEmojiPickerCodeCategoryBloc.allCategories,
+          ];
+
+          // ignore: cascade_invocations
+          allCategoriesBlocs.forEach((bloc) {
+            bloc.performAsyncInit();
+          });
+          var customEmojiPickerBloc = CustomEmojiPickerBloc(
+            selectedCategory: allCategoriesBlocs.first,
+            availableCategories: allCategoriesBlocs,
+          );
+
+          customEmojiPickerBloc.selectedEmojiStream.listen((emojiItem) {
+            emojiPickerRecentCategoryBloc.onEmojiSelected(emojiItem);
+          }).disposeWith(customEmojiPickerBloc);
+
+          customEmojiPickerBloc.addCustomDisposable(
+            () => allCategoriesBlocs.forEach(
+              (categoryBloc) => categoryBloc.dispose(),
+            ),
+          );
+
+          return customEmojiPickerBloc;
         },
-        loadingWidget: const FediCircularProgressIndicator(),
-        selectedIndicatorColor: IFediUiColorTheme.of(context).primary,
-        unselectedIndicatorColor: IFediUiColorTheme.of(context).darkGrey,
-        separatorColor: IFediUiColorTheme.of(context).ultraLightGrey,
-        onEmojiSelected: onEmojiSelected,
-      ),
-    );
-  }
+        child: CustomEmojiPickerWidget(
+          selectedCategoryItemsGridHeight: selectedCategoryItemsGridHeight,
+          rowsCount: rowsCount,
+          emptyCategoryBuilder: (context, categoryBloc) {
+            String text;
+            if (categoryBloc is EmojiPickerCustomImageUrlCategoryBloc) {
+              text = S.of(context).app_emoji_custom_empty;
+            } else if (categoryBloc is EmojiPickerRecentCategoryBloc) {
+              text = S.of(context).app_emoji_recent_empty;
+            } else if (categoryBloc is EmojiPickerSearchCategoryBloc) {
+              return null;
+            } else {
+              text = S.of(context).app_emoji_category_empty;
+            }
+
+            return Text(
+              text,
+              style: IFediUiTextTheme.of(context).mediumTallDarkGrey,
+            );
+          },
+          useImageEmoji: useImageEmoji,
+          customCategoryIconBuilder: (category) {
+            if (category is EmojiPickerCustomImageUrlCategoryBloc) {
+              return FediIcons.instance;
+            } else if (category is EmojiPickerRecentCategoryBloc) {
+              return FediIcons.refresh;
+            } else if (category is EmojiPickerSearchCategoryBloc) {
+              return FediIcons.search;
+            } else {
+              return null;
+            }
+          },
+          customCategoryBodyBuilder: (
+            BuildContext context,
+            int rowsCount,
+            double selectedCategoryItemsGridHeight,
+            EmojiSelectedCallback onEmojiSelected,
+          ) {
+            var categoryBloc =
+                Provider.of<ICustomEmojiPickerCategoryBloc>(context);
+
+            if (categoryBloc is EmojiPickerSearchCategoryBloc) {
+              return _EmojiPickerSearchCategoryBlocBodyWidget(
+                rowsCount: rowsCount,
+                selectedCategoryItemsGridHeight:
+                    selectedCategoryItemsGridHeight,
+                onEmojiSelected: onEmojiSelected,
+              );
+            } else {
+              return null;
+            }
+          },
+          loadingWidget: const FediCircularProgressIndicator(),
+          selectedIndicatorColor: IFediUiColorTheme.of(context).primary,
+          unselectedIndicatorColor: IFediUiColorTheme.of(context).darkGrey,
+          separatorColor: IFediUiColorTheme.of(context).ultraLightGrey,
+          onEmojiSelected: onEmojiSelected,
+        ),
+      );
 }
 
 class _EmojiPickerSearchCategoryBlocBodyWidget extends StatelessWidget {

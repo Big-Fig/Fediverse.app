@@ -12,21 +12,19 @@ class FediDismissIconButton extends StatelessWidget {
   final VoidCallback? customOnPressed;
 
   @override
-  Widget build(BuildContext context) {
-    return FediIconButton(
-      key: Key(FediDismissIconButtonKeys.button),
-      onPressed: () {
-        if (customOnPressed != null) {
-          customOnPressed!();
-        } else {
-          Navigator.of(context).pop();
-        }
-      },
-      icon: Icon(
-        FediIcons.close,
-        color: IFediUiColorTheme.of(context, listen: true).darkGrey,
-        size: FediSizes.appBarIconSize,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => FediIconButton(
+        key: Key(FediDismissIconButtonKeys.button),
+        onPressed: () {
+          if (customOnPressed != null) {
+            customOnPressed!();
+          } else {
+            Navigator.of(context).pop();
+          }
+        },
+        icon: Icon(
+          FediIcons.close,
+          color: IFediUiColorTheme.of(context, listen: true).darkGrey,
+          size: FediSizes.appBarIconSize,
+        ),
+      );
 }

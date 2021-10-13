@@ -117,17 +117,16 @@ class ConversationChatMessageCachedListBloc extends DisposableOwner
     required IConversationChat? conversation,
     required IConversationChatMessage? lastMessage,
     required Widget child,
-  }) {
-    return DisposableProvider<IConversationChatMessageCachedListBloc>(
-      create: (context) =>
-          ConversationChatMessageCachedListBloc.createFromContext(
-        context,
-        conversation: conversation,
-        lastMessage: lastMessage,
-      ),
-      child: child,
-    );
-  }
+  }) =>
+      DisposableProvider<IConversationChatMessageCachedListBloc>(
+        create: (context) =>
+            ConversationChatMessageCachedListBloc.createFromContext(
+          context,
+          conversation: conversation,
+          lastMessage: lastMessage,
+        ),
+        child: child,
+      );
 }
 
 ConversationChatStatusListBloc _createStatusListBloc({

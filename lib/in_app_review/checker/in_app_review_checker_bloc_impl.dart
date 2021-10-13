@@ -70,12 +70,11 @@ class InAppReviewCheckerBloc extends DisposableOwner
   static Widget provideToContext(
     BuildContext context, {
     required Widget child,
-  }) {
-    return DisposableProvider<IInAppReviewCheckerBloc>(
-      create: (context) => InAppReviewCheckerBloc.createFromContext(
-        context,
-      ),
-      child: child,
-    );
-  }
+  }) =>
+      DisposableProvider<IInAppReviewCheckerBloc>(
+        create: (context) => InAppReviewCheckerBloc.createFromContext(
+          context,
+        ),
+        child: child,
+      );
 }

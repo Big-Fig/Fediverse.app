@@ -38,13 +38,12 @@ class PleromaChatMessageCachedPaginationBloc
     required int? itemsCountPerPage,
     required CachedPaginationPage<IPleromaChatMessage>? olderPage,
     required CachedPaginationPage<IPleromaChatMessage>? newerPage,
-  }) {
-    return chatMessageListService.loadLocalItems(
-      limit: itemsCountPerPage,
-      newerThan: olderPage?.items.firstOrNull,
-      olderThan: newerPage?.items.lastOrNull,
-    );
-  }
+  }) =>
+      chatMessageListService.loadLocalItems(
+        limit: itemsCountPerPage,
+        newerThan: olderPage?.items.firstOrNull,
+        olderThan: newerPage?.items.lastOrNull,
+      );
 
   @override
   Future refreshItemsFromRemoteForPage({
@@ -89,19 +88,18 @@ class PleromaChatMessageCachedPaginationBloc
     int itemsCountPerPage = 20,
     int? maximumCachedPagesCount,
     required Widget child,
-  }) {
-    return DisposableProvider<
-        ICachedPaginationBloc<CachedPaginationPage<IPleromaChatMessage>,
-            IPleromaChatMessage>>(
-      create: (context) =>
-          PleromaChatMessageCachedPaginationBloc.createFromContext(
-        context,
-        maximumCachedPagesCount: maximumCachedPagesCount,
-      ),
-      child: CachedPaginationBlocProxyProvider<
-          CachedPaginationPage<IPleromaChatMessage>, IPleromaChatMessage>(
-        child: child,
-      ),
-    );
-  }
+  }) =>
+      DisposableProvider<
+          ICachedPaginationBloc<CachedPaginationPage<IPleromaChatMessage>,
+              IPleromaChatMessage>>(
+        create: (context) =>
+            PleromaChatMessageCachedPaginationBloc.createFromContext(
+          context,
+          maximumCachedPagesCount: maximumCachedPagesCount,
+        ),
+        child: CachedPaginationBlocProxyProvider<
+            CachedPaginationPage<IPleromaChatMessage>, IPleromaChatMessage>(
+          child: child,
+        ),
+      );
 }
