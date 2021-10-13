@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class FediGreyChip extends StatelessWidget {
   final String label;
 
-  FediGreyChip({
+  const FediGreyChip({
     required this.label,
   });
 

@@ -10,7 +10,7 @@ class FediFadeShaderMask extends StatelessWidget {
   final Alignment begin;
   final Alignment end;
 
-  FediFadeShaderMask({
+  const FediFadeShaderMask({
     required this.fadingPercent,
     required this.fadingColor,
     required this.child,

@@ -29,7 +29,7 @@ class FediListSmartRefresherWidget extends StatelessWidget {
   final DragStartBehavior? dragStartBehavior;
   final bool isNeedToAddPaddingForUiTests;
 
-  FediListSmartRefresherWidget({
+  const FediListSmartRefresherWidget({
     Key? key,
     required this.controller,
     required this.child,

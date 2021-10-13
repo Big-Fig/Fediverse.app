@@ -22,7 +22,7 @@ final _logger = Logger('status_reply_widget.dart');
 class StatusReplyWidget extends StatelessWidget {
   final bool collapsible;
 
-  StatusReplyWidget({required this.collapsible});
+  const StatusReplyWidget({required this.collapsible});
 
   @override
   Widget build(BuildContext context) {

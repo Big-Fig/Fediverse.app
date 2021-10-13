@@ -57,7 +57,8 @@ class SearchResultItemNetworkOnlyPaginationBloc
       DisposableProvider<ISearchResultItemNetworkOnlyPaginationBloc>(
         create: (context) =>
             SearchResultItemNetworkOnlyPaginationBloc.createFromContext(
-                context),
+          context,
+        ),
         child: ProxyProvider<
             ISearchResultItemNetworkOnlyPaginationBloc,
             IPaginationBloc<PaginationPage<ISearchResultItem>,

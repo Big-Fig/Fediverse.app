@@ -27,7 +27,7 @@ class EmojiPickerWidget extends StatelessWidget {
   final double selectedCategoryItemsGridHeight;
   final int rowsCount;
 
-  EmojiPickerWidget({
+  const EmojiPickerWidget({
     required this.onEmojiSelected,
     required this.useImageEmoji,
     // ignore: no-magic-number
@@ -46,8 +46,10 @@ class EmojiPickerWidget extends StatelessWidget {
           if (useImageEmoji) {
             customCategoryBloc = EmojiPickerCustomImageUrlCategoryBloc(
               unifediApiInstanceService:
-                  Provider.of<IUnifediApiInstanceService>(context,
-                      listen: false),
+                  Provider.of<IUnifediApiInstanceService>(
+                context,
+                listen: false,
+              ),
               preferenceBloc:
                   IEmojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc.of(
                 context,

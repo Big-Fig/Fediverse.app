@@ -14,7 +14,7 @@ class CachedPaginationListWithNewItemsMergeOverlayButton
     extends StatelessWidget {
   final String Function(BuildContext context, int updateItemsCount) textBuilder;
 
-  CachedPaginationListWithNewItemsMergeOverlayButton({
+  const CachedPaginationListWithNewItemsMergeOverlayButton({
     required this.textBuilder,
   });
 

@@ -9,7 +9,7 @@ class StatusVisibilityIconWidget extends StatelessWidget {
   final bool isPossibleToChangeVisibility;
   final bool isSelectedVisibility;
 
-  StatusVisibilityIconWidget({
+  const StatusVisibilityIconWidget({
     required this.visibility,
     required this.isPossibleToChangeVisibility,
     required this.isSelectedVisibility,

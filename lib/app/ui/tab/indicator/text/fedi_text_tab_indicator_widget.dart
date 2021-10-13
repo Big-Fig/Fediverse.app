@@ -22,7 +22,7 @@ class FediTextTabIndicatorWidget<T> extends StatelessWidget {
 
   final FediTabStyle style;
 
-  FediTextTabIndicatorWidget({
+  const FediTextTabIndicatorWidget({
     required this.tabToTextMapper,
     required this.isTransparent,
     required this.style,

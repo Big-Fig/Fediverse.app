@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class UiThemeSystemBrightnessHandlerWidget extends StatefulWidget {
   final Widget child;
 
-  UiThemeSystemBrightnessHandlerWidget({
+  const UiThemeSystemBrightnessHandlerWidget({
     required this.child,
   });
 

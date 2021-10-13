@@ -46,7 +46,7 @@ class CustomEmojiPickerWidget extends StatelessWidget {
   final Widget loadingWidget;
   final bool useImageEmoji;
 
-  CustomEmojiPickerWidget({
+  const CustomEmojiPickerWidget({
     required this.rowsCount,
     required this.onEmojiSelected,
     this.unselectedIndicatorColor = Colors.black,

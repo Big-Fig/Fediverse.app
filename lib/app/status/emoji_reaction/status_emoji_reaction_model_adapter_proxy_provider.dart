@@ -7,7 +7,7 @@ import 'package:unifedi_api/unifedi_api.dart';
 class StatusEmojiReactionAdapterProxyProvider extends StatelessWidget {
   final Widget child;
 
-  StatusEmojiReactionAdapterProxyProvider({
+  const StatusEmojiReactionAdapterProxyProvider({
     required this.child,
   });
 

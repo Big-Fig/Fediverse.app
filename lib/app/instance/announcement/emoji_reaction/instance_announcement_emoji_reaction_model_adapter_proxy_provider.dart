@@ -8,7 +8,7 @@ class InstanceAnnouncementEmojiReactionAdapterProxyProvider
     extends StatelessWidget {
   final Widget child;
 
-  InstanceAnnouncementEmojiReactionAdapterProxyProvider({
+  const InstanceAnnouncementEmojiReactionAdapterProxyProvider({
     required this.child,
   });
 

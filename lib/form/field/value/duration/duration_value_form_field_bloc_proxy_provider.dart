@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 class DurationValueFormFieldBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  DurationValueFormFieldBlocProxyProvider({
+  const DurationValueFormFieldBlocProxyProvider({
     required this.child,
   });
 

@@ -30,7 +30,7 @@ class FediBaseEditTextField extends StatelessWidget {
   final bool? enabled;
   final bool hideCounter;
 
-  FediBaseEditTextField({
+  const FediBaseEditTextField({
     required this.textEditingController,
     required this.hintText,
     required this.errorText,

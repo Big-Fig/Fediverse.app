@@ -6,7 +6,7 @@ class FediTabMainHeaderBarWidget extends StatelessWidget {
   final Widget? content;
   final List<Widget>? endingWidgets;
 
-  FediTabMainHeaderBarWidget({
+  const FediTabMainHeaderBarWidget({
     required this.leadingWidgets,
     required this.content,
     required this.endingWidgets,

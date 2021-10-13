@@ -10,7 +10,7 @@ class StatusVisibilityTitleWidget extends StatelessWidget {
   final bool isPossibleToChangeVisibility;
   final bool isSelectedVisibility;
 
-  StatusVisibilityTitleWidget({
+  const StatusVisibilityTitleWidget({
     required this.visibility,
     required this.isPossibleToChangeVisibility,
     required this.isSelectedVisibility,

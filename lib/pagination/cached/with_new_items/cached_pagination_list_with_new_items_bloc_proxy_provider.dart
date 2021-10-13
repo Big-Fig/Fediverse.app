@@ -9,7 +9,8 @@ class CachedPaginationListWithNewItemsBlocProxyProvider<
     TPage extends CachedPaginationPage<TItem>, TItem> extends StatelessWidget {
   final Widget child;
 
-  CachedPaginationListWithNewItemsBlocProxyProvider({required this.child});
+  const CachedPaginationListWithNewItemsBlocProxyProvider(
+      {required this.child});
 
   @override
   Widget build(BuildContext context) => ProxyProvider<

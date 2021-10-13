@@ -19,7 +19,7 @@ class MediaPickerFileGridWidget
     extends FediPaginationListWidget<IMediaDeviceFileMetadata> {
   final WidgetBuilder? headerItemBuilder;
 
-  MediaPickerFileGridWidget({
+  const MediaPickerFileGridWidget({
     Key? key,
     ScrollController? scrollController,
     required this.headerItemBuilder,

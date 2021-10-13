@@ -9,7 +9,7 @@ class InstanceTrendsHashtagListNetworkOnlyListBlocProxyProvider
     extends StatelessWidget {
   final Widget child;
 
-  InstanceTrendsHashtagListNetworkOnlyListBlocProxyProvider({
+  const InstanceTrendsHashtagListNetworkOnlyListBlocProxyProvider({
     required this.child,
   });
 

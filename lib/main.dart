@@ -419,7 +419,7 @@ class FediApp extends StatelessWidget {
   final Widget child;
   final bool instanceInitialized;
 
-  FediApp({
+  const FediApp({
     required this.child,
     required this.instanceInitialized,
   });

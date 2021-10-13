@@ -9,7 +9,7 @@ class EditPaginationListBlocProxyProvider<TPage extends PaginationPage<TItem>,
     TItem> extends StatelessWidget {
   final Widget child;
 
-  EditPaginationListBlocProxyProvider({required this.child});
+  const EditPaginationListBlocProxyProvider({required this.child});
 
   @override
   Widget build(BuildContext context) => ProxyProvider<

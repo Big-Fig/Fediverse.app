@@ -37,7 +37,7 @@ class FediChooserDialogBody extends StatelessWidget {
   final bool cancelable;
   final OnClickUiCallback? customCancelCallback;
 
-  FediChooserDialogBody({
+  const FediChooserDialogBody({
     required this.title,
     this.content,
     this.customCancelCallback,

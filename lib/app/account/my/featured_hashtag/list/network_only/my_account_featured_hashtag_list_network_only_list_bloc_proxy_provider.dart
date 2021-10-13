@@ -9,7 +9,7 @@ class AccountFeaturedHashtagListNetworkOnlyListBlocProxyProvider
     extends StatelessWidget {
   final Widget child;
 
-  AccountFeaturedHashtagListNetworkOnlyListBlocProxyProvider({
+  const AccountFeaturedHashtagListNetworkOnlyListBlocProxyProvider({
     required this.child,
   });
 

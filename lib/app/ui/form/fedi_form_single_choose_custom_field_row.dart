@@ -25,7 +25,7 @@ class FediFormSingleChooseCustomFromListFieldRow<T> extends StatelessWidget {
   final VoidCallback startCustomSelectCallback;
   final VoidCallback clearCallback;
 
-  FediFormSingleChooseCustomFromListFieldRow({
+  const FediFormSingleChooseCustomFromListFieldRow({
     required this.isEnabled,
     required this.isNullValuePossible,
     required this.label,

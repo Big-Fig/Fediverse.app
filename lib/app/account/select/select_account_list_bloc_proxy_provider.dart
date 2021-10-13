@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 class SelectAccountListBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  SelectAccountListBlocProxyProvider({required this.child});
+  const SelectAccountListBlocProxyProvider({required this.child});
 
   @override
   Widget build(BuildContext context) =>

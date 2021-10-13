@@ -9,7 +9,7 @@ class CachedPaginationListBlocProxyProvider<
     TPage extends CachedPaginationPage<TItem>, TItem> extends StatelessWidget {
   final Widget child;
 
-  CachedPaginationListBlocProxyProvider({required this.child});
+  const CachedPaginationListBlocProxyProvider({required this.child});
 
   @override
   Widget build(BuildContext context) => ProxyProvider<

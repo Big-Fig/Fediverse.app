@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 class ConversationChatShareBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  ConversationChatShareBlocProxyProvider({required this.child});
+  const ConversationChatShareBlocProxyProvider({required this.child});
 
   @override
   Widget build(BuildContext context) =>

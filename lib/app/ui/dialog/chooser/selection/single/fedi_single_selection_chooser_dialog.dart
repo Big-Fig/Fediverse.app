@@ -32,7 +32,7 @@ class FediSingleSelectionChooserDialogBody extends StatelessWidget {
   final List<SelectionDialogAction> actions;
   final bool cancelable;
 
-  FediSingleSelectionChooserDialogBody({
+  const FediSingleSelectionChooserDialogBody({
     required this.title,
     required this.content,
     required this.actions,

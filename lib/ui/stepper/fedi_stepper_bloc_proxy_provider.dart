@@ -7,7 +7,7 @@ class FediStepperBlocProxyProvider<T extends IFediStepperItem>
     extends StatelessWidget {
   final Widget child;
 
-  FediStepperBlocProxyProvider({
+  const FediStepperBlocProxyProvider({
     required this.child,
   });
 

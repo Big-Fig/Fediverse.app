@@ -9,7 +9,7 @@ class InstanceDirectoryAccountListNetworkOnlyListBlocProxyProvider
     extends StatelessWidget {
   final Widget child;
 
-  InstanceDirectoryAccountListNetworkOnlyListBlocProxyProvider({
+  const InstanceDirectoryAccountListNetworkOnlyListBlocProxyProvider({
     required this.child,
   });
 

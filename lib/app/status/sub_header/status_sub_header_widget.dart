@@ -15,7 +15,7 @@ class StatusSubHeaderWidget extends StatelessWidget {
   final IAccount account;
   final AccountCallback? accountCallback;
 
-  StatusSubHeaderWidget({
+  const StatusSubHeaderWidget({
     required this.account,
     required this.descText,
     required this.icon,

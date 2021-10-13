@@ -15,7 +15,7 @@ class ScheduledStatusPaginationListTimelineWidget
   final VoidCallback successCallback;
   final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
 
-  ScheduledStatusPaginationListTimelineWidget({
+  const ScheduledStatusPaginationListTimelineWidget({
     required Key key,
     required this.needWatchLocalRepositoryForUpdates,
     required this.successCallback,

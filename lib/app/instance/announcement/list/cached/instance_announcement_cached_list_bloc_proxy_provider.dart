@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 class InstanceAnnouncementCachedListBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  InstanceAnnouncementCachedListBlocProxyProvider({
+  const InstanceAnnouncementCachedListBlocProxyProvider({
     required this.child,
   });
 

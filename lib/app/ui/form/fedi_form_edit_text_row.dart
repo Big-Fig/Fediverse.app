@@ -19,7 +19,7 @@ class FediFormEditTextRow extends StatelessWidget {
   final TextInputType? keyboardType;
   final Axis axis;
 
-  FediFormEditTextRow({
+  const FediFormEditTextRow({
     required this.label,
     required this.autocorrect,
     this.obscureText = false,

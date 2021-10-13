@@ -7,7 +7,7 @@ class FediRemoveIconInCircleButton extends StatelessWidget {
   final VoidCallback onPressed;
   final double size;
 
-  FediRemoveIconInCircleButton({
+  const FediRemoveIconInCircleButton({
     required this.onPressed,
     // ignore: no-magic-number
     this.size = 24.0,

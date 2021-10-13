@@ -24,7 +24,7 @@ class ConversationChatStatusListItemWidget extends StatelessWidget {
   final bool isFirstInMinuteGroup;
   final bool isLastInMinuteGroup;
 
-  ConversationChatStatusListItemWidget({
+  const ConversationChatStatusListItemWidget({
     required this.isFirstInMinuteGroup,
     required this.isLastInMinuteGroup,
   });

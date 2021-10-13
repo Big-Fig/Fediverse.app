@@ -8,7 +8,7 @@ class FediAsyncInitLoadingWidget extends StatelessWidget {
   final IAsyncInitLoadingBloc asyncInitLoadingBloc;
   final WidgetBuilder loadingFinishedBuilder;
 
-  FediAsyncInitLoadingWidget({
+  const FediAsyncInitLoadingWidget({
     required this.asyncInitLoadingBloc,
     required this.loadingFinishedBuilder,
   });

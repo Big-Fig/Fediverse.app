@@ -43,7 +43,7 @@ class FediNestedScrollViewWithNestedScrollableTabsWidget
   final TabBarViewContainerBuilder? tabBarViewContainerBuilder;
   final TabsEmptyBuilder? tabsEmptyBuilder;
 
-  FediNestedScrollViewWithNestedScrollableTabsWidget({
+  const FediNestedScrollViewWithNestedScrollableTabsWidget({
     required Widget? onLongScrollUpTopOverlayWidget,
     required List<Widget> topSliverWidgets,
     required double? topSliverScrollOffsetToShowWhiteStatusBar,

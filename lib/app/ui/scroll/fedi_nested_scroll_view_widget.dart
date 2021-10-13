@@ -17,7 +17,7 @@ abstract class FediNestedScrollViewWidget extends StatelessWidget {
   final List<Widget> topSliverWidgets;
   final double? topSliverScrollOffsetToShowWhiteStatusBar;
 
-  FediNestedScrollViewWidget({
+  const FediNestedScrollViewWidget({
     required this.onLongScrollUpTopOverlayWidget,
     required this.topSliverWidgets,
     required this.topSliverScrollOffsetToShowWhiteStatusBar,

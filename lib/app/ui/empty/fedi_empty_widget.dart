@@ -6,7 +6,7 @@ class FediEmptyWidget extends StatelessWidget {
   final String title;
   final String? subTitle;
 
-  FediEmptyWidget({
+  const FediEmptyWidget({
     required this.title,
     this.subTitle,
   });

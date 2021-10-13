@@ -39,7 +39,8 @@ class UnifediApiAccessChooserBloc extends DisposableOwner
     var selectedInstance = this.selectedInstance;
     var filtered = availableInstances
         .where(
-            (instance) => instance.userAtHost != selectedInstance!.userAtHost)
+          (instance) => instance.userAtHost != selectedInstance!.userAtHost,
+        )
         .toList();
     _logger.finest(
       () => 'filterNotSelected \n'

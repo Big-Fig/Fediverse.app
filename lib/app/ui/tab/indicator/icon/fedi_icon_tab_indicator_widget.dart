@@ -20,7 +20,7 @@ class FediIconTabIndicatorWidget<T> extends StatelessWidget {
   final CustomTabBuilder<T>? customTabBuilder;
   final FediTabStyle style;
 
-  FediIconTabIndicatorWidget({
+  const FediIconTabIndicatorWidget({
     required this.expand,
     required this.tabToIconMapper,
     required this.style,

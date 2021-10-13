@@ -10,7 +10,7 @@ class FediIconButton extends StatelessWidget {
   final String? tooltip;
   final EdgeInsets padding;
 
-  FediIconButton({
+  const FediIconButton({
     Key? key,
     required this.icon,
     required this.onPressed,

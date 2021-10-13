@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 class ImageFilePickerOrUrlFormFieldBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  ImageFilePickerOrUrlFormFieldBlocProxyProvider({
+  const ImageFilePickerOrUrlFormFieldBlocProxyProvider({
     required this.child,
   });
 

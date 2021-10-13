@@ -13,7 +13,7 @@ typedef EmojiReactionSelectedCallback = Function(
 class StatusEmojiReactionPickerWidget extends StatelessWidget {
   final EmojiReactionSelectedCallback emojiReactionSelectedCallback;
 
-  StatusEmojiReactionPickerWidget({
+  const StatusEmojiReactionPickerWidget({
     required this.emojiReactionSelectedCallback,
   });
 

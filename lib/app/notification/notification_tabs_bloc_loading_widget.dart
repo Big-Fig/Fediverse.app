@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 class NotificationTabsBlocLoadingWidget extends StatelessWidget {
   final Widget child;
 
-  NotificationTabsBlocLoadingWidget({
+  const NotificationTabsBlocLoadingWidget({
     required this.child,
   });
 

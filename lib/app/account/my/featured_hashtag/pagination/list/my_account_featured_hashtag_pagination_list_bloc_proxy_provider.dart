@@ -9,7 +9,7 @@ class AccountFeaturedHashtagPaginationListBlocProxyProvider
     extends StatelessWidget {
   final Widget child;
 
-  AccountFeaturedHashtagPaginationListBlocProxyProvider({
+  const AccountFeaturedHashtagPaginationListBlocProxyProvider({
     required this.child,
   });
 

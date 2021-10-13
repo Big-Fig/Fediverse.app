@@ -73,7 +73,7 @@ class _SingleSelectFromListValueFormFieldRowValueWidget<T>
   final SingleSelectFromListValueKeyMapper<T?>? valueKeyMapper;
   final bool displayIconInDialog;
 
-  _SingleSelectFromListValueFormFieldRowValueWidget({
+  const _SingleSelectFromListValueFormFieldRowValueWidget({
     required this.label,
     required this.valueTitleMapper,
     required this.displayIconInRow,

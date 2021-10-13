@@ -7,7 +7,7 @@ class FediNoteDescriptionWidget extends StatelessWidget {
   final EdgeInsets padding;
   final TextStyle? style;
 
-  FediNoteDescriptionWidget(
+  const FediNoteDescriptionWidget(
     this.text, {
     this.padding = FediPadding.allBigPadding,
     this.style,

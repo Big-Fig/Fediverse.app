@@ -14,7 +14,7 @@ import 'package:flutter/material.dart';
 class DraftEditPostStatusPage extends StatelessWidget {
   final PostStatusDataCallback onBackPressed;
 
-  DraftEditPostStatusPage({required this.onBackPressed});
+  const DraftEditPostStatusPage({required this.onBackPressed});
 
   @override
   Widget build(BuildContext context) => WillPopScope(

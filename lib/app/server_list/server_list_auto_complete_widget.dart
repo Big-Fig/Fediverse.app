@@ -8,7 +8,7 @@ class ServerListAutoCompleteWidget extends StatelessWidget {
   final TextEditingController textEditingController;
   final FocusNode focusNode;
 
-  ServerListAutoCompleteWidget({
+  const ServerListAutoCompleteWidget({
     required this.fieldViewBuilder,
     required this.textEditingController,
     required this.focusNode,

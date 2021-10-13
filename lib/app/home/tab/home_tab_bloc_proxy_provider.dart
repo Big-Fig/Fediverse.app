@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 class HomeTabBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  HomeTabBlocProxyProvider({required this.child});
+  const HomeTabBlocProxyProvider({required this.child});
 
   @override
   Widget build(BuildContext context) =>

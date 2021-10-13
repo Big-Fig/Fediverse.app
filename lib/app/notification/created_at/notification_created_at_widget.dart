@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 class NotificationCreatedAtWidget extends StatelessWidget {
   final TextStyle? textStyle;
 
-  NotificationCreatedAtWidget({
+  const NotificationCreatedAtWidget({
     this.textStyle,
   });
 

@@ -8,7 +8,7 @@ class SingleSelectFromListValueFormFieldBlocProxyProvider<T>
     extends StatelessWidget {
   final Widget child;
 
-  SingleSelectFromListValueFormFieldBlocProxyProvider({
+  const SingleSelectFromListValueFormFieldBlocProxyProvider({
     required this.child,
   });
 

@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 class PostMessageBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  PostMessageBlocProxyProvider({required this.child});
+  const PostMessageBlocProxyProvider({required this.child});
 
   @override
   Widget build(BuildContext context) =>

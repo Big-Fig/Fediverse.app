@@ -10,7 +10,7 @@ class TimelineReplyVisibilityFilterSelectSingleFromListValueFormFieldWidget
   final String? description;
   final String descriptionOnDisabled;
 
-  TimelineReplyVisibilityFilterSelectSingleFromListValueFormFieldWidget({
+  const TimelineReplyVisibilityFilterSelectSingleFromListValueFormFieldWidget({
     this.label,
     required this.description,
     required this.descriptionOnDisabled,

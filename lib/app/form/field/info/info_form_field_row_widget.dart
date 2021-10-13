@@ -12,7 +12,7 @@ class InfoFormFieldRowWidget<T> extends StatelessWidget {
   final String? description;
   final ValueToTextMapper<T> valueToTextMapper;
 
-  InfoFormFieldRowWidget({
+  const InfoFormFieldRowWidget({
     required this.label,
     required this.description,
     required this.valueToTextMapper,

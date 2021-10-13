@@ -79,8 +79,10 @@ class _PostMessageSelectMediaAttachmentTypeToPickGalleryAudioActionWidget
             var mediaDeviceFile =
                 await mediaDeviceFileMetadata.loadMediaDeviceFile();
             var attachmentsCollectionBloc =
-                IUploadMediaAttachmentsCollectionBloc.of(context,
-                    listen: false);
+                IUploadMediaAttachmentsCollectionBloc.of(
+              context,
+              listen: false,
+            );
             await attachmentsCollectionBloc.attachMedia(mediaDeviceFile);
           }
         },
@@ -115,8 +117,10 @@ class _PostMessageSelectMediaAttachmentTypeToPickGalleryFileActionWidget
                 await mediaDeviceFileMetadata.loadMediaDeviceFile();
 
             var attachmentsCollectionBloc =
-                IUploadMediaAttachmentsCollectionBloc.of(context,
-                    listen: false);
+                IUploadMediaAttachmentsCollectionBloc.of(
+              context,
+              listen: false,
+            );
             await attachmentsCollectionBloc.attachMedia(mediaDeviceFile);
           }
         },
@@ -150,8 +154,10 @@ class _PostMessageSelectMediaAttachmentTypeToPickGalleryVideoActionWidget
                 await mediaDeviceFileMetadata.loadMediaDeviceFile();
 
             var attachmentsCollectionBloc =
-                IUploadMediaAttachmentsCollectionBloc.of(context,
-                    listen: false);
+                IUploadMediaAttachmentsCollectionBloc.of(
+              context,
+              listen: false,
+            );
             await attachmentsCollectionBloc.attachMedia(mediaDeviceFile);
           }
         },
@@ -185,8 +191,10 @@ class _PostMessageSelectMediaAttachmentTypeToPickGalleryPhotoActionWidget
                 await mediaDeviceFileMetadata.loadMediaDeviceFile();
 
             var attachmentsCollectionBloc =
-                IUploadMediaAttachmentsCollectionBloc.of(context,
-                    listen: false);
+                IUploadMediaAttachmentsCollectionBloc.of(
+              context,
+              listen: false,
+            );
             await attachmentsCollectionBloc.attachMedia(mediaDeviceFile);
           }
         },
@@ -252,8 +260,10 @@ class _PostMessageSelectMediaAttachmentTypeToPickActionWidget
                 borderRadius: BorderRadius.circular(_typeContainerSize),
               ),
               child: Center(
-                child: Icon(iconData,
-                    color: IFediUiColorTheme.of(context).darkGrey),
+                child: Icon(
+                  iconData,
+                  color: IFediUiColorTheme.of(context).darkGrey,
+                ),
               ),
             ),
             const SizedBox(

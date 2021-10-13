@@ -22,7 +22,7 @@ class FormCaptchaStringFormFieldRowWidget extends StatelessWidget {
   final ValueChanged<String>? onSubmitted;
   final TextInputAction textInputAction;
 
-  FormCaptchaStringFormFieldRowWidget({
+  const FormCaptchaStringFormFieldRowWidget({
     required this.label,
     required this.autocorrect,
     this.obscureText = false,
@@ -111,7 +111,7 @@ class _FormCaptchaStringFormFieldRowBodyWidget extends StatelessWidget {
   final Stream<Image?> captchaImageStream;
   final VoidCallback onNeedCaptchaReloadCallback;
 
-  _FormCaptchaStringFormFieldRowBodyWidget({
+  const _FormCaptchaStringFormFieldRowBodyWidget({
     required this.label,
     required this.autocorrect,
     this.obscureText = false,

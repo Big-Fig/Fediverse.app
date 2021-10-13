@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 class JoinUnifediApiAccessBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  JoinUnifediApiAccessBlocProxyProvider({required this.child});
+  const JoinUnifediApiAccessBlocProxyProvider({required this.child});
 
   @override
   Widget build(BuildContext context) =>

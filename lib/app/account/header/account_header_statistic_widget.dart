@@ -11,7 +11,7 @@ final _numberFormat = NumberFormat('#,###');
 class AccountHeaderStatisticWidget extends StatelessWidget {
   final String label;
 
-  AccountHeaderStatisticWidget({
+  const AccountHeaderStatisticWidget({
     required this.label,
   });
 

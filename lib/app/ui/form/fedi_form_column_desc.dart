@@ -5,7 +5,7 @@ class FediFormColumnDesc extends StatelessWidget {
   final String? text;
   final TextStyle? textStyle;
 
-  FediFormColumnDesc(
+  const FediFormColumnDesc(
     this.text, {
     this.textStyle,
   });

@@ -27,8 +27,10 @@ DisposableProvider<IToastSettingsBloc> _buildBody() =>
     DisposableProvider<IToastSettingsBloc>(
       create: (context) => ToastSettingsBloc(
         instanceLocalPreferencesBloc:
-            IInstanceToastSettingsLocalPreferenceBloc.of(context,
-                listen: false),
+            IInstanceToastSettingsLocalPreferenceBloc.of(
+          context,
+          listen: false,
+        ),
         globalLocalPreferencesBloc:
             IGlobalToastSettingsLocalPreferenceBloc.of(context, listen: false),
       ),

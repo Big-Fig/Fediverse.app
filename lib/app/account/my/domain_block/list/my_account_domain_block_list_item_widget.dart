@@ -8,7 +8,7 @@ class MyAccountDomainBlockListItemWidget extends StatelessWidget {
   final DomainBlockCallback? domainBlockSelectedCallback;
   final List<Widget>? domainBlockActions;
 
-  MyAccountDomainBlockListItemWidget({
+  const MyAccountDomainBlockListItemWidget({
     required this.domainBlockSelectedCallback,
     this.domainBlockActions,
   });

@@ -8,7 +8,7 @@ class CurrentMaxAgeInstanceDatabaseCacheInfoFormFieldBlocProxyProvider
     extends StatelessWidget {
   final Widget child;
 
-  CurrentMaxAgeInstanceDatabaseCacheInfoFormFieldBlocProxyProvider({
+  const CurrentMaxAgeInstanceDatabaseCacheInfoFormFieldBlocProxyProvider({
     required this.child,
   });
 

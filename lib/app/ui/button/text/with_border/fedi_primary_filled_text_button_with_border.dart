@@ -22,7 +22,7 @@ class FediPrimaryFilledTextButtonWithBorder extends StatelessWidget {
 
   final TextStyle? textStyle;
 
-  FediPrimaryFilledTextButtonWithBorder(
+  const FediPrimaryFilledTextButtonWithBorder(
     this.text, {
     required this.onPressed,
     this.enabledBackgroundColor,

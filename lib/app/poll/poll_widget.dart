@@ -274,7 +274,7 @@ class _PollMetadataExpiresAtNotExpiredWidget extends StatelessWidget {
 final borderRadius = BorderRadius.circular(8.0);
 
 class PollOptionWidget extends StatelessWidget {
-  PollOptionWidget();
+  const PollOptionWidget();
 
   @override
   Widget build(BuildContext context) {
@@ -363,7 +363,7 @@ class _PollOptionBodyFillerWidget extends StatelessWidget {
 }
 
 class _PollOptionResultsWidget extends StatelessWidget {
-  _PollOptionResultsWidget({
+  const _PollOptionResultsWidget({
     Key? key,
   }) : super(key: key);
 

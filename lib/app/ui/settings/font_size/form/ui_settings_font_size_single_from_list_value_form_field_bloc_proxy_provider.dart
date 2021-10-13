@@ -9,7 +9,7 @@ class UiSettingsFontSizeSingleFromListValueFormFieldBlocProxyProvider
     extends StatelessWidget {
   final Widget child;
 
-  UiSettingsFontSizeSingleFromListValueFormFieldBlocProxyProvider({
+  const UiSettingsFontSizeSingleFromListValueFormFieldBlocProxyProvider({
     required this.child,
   });
 

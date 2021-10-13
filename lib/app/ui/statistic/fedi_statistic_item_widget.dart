@@ -6,7 +6,7 @@ class FediStatisticItemWidget extends StatelessWidget {
   final String valueString;
   final Color color;
 
-  FediStatisticItemWidget({
+  const FediStatisticItemWidget({
     required this.label,
     required this.valueString,
     required this.color,

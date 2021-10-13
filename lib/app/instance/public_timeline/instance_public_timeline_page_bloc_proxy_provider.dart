@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 class InstancePublicTimelinePageBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  InstancePublicTimelinePageBlocProxyProvider({
+  const InstancePublicTimelinePageBlocProxyProvider({
     required this.child,
   });
 

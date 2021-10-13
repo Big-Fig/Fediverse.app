@@ -63,7 +63,7 @@ class _DurationPickerBody extends StatefulWidget {
   final VoidCallback deleteCallback;
   final bool isDeletePossible;
 
-  _DurationPickerBody({
+  const _DurationPickerBody({
     required this.initialDuration,
     required this.cancelCallback,
     required this.deleteCallback,

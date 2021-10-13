@@ -24,7 +24,7 @@ class AsyncOperationButtonBuilderWidget<T> extends StatefulWidget {
 
   final List<ErrorDataBuilder> errorDataBuilders;
 
-  AsyncOperationButtonBuilderWidget({
+  const AsyncOperationButtonBuilderWidget({
     required this.builder,
     required this.asyncButtonAction,
     this.showProgressDialog = true,

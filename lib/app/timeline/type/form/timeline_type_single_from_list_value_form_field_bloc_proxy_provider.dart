@@ -9,7 +9,7 @@ class TimelineTypeSingleFromListValueFormFieldBlocProxyProvider
     extends StatelessWidget {
   final Widget child;
 
-  TimelineTypeSingleFromListValueFormFieldBlocProxyProvider({
+  const TimelineTypeSingleFromListValueFormFieldBlocProxyProvider({
     required this.child,
   });
 

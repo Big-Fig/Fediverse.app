@@ -9,7 +9,7 @@ class FediTextButton extends StatelessWidget {
   final Color? color;
   final EdgeInsets padding;
 
-  FediTextButton({
+  const FediTextButton({
     required this.text,
     required this.onPressed,
     this.color,

@@ -16,7 +16,7 @@ class StringValueFormFieldRowWidget extends StatefulWidget {
   final TextInputAction textInputAction;
   final int maxLines;
 
-  StringValueFormFieldRowWidget({
+  const StringValueFormFieldRowWidget({
     required this.label,
     required this.autocorrect,
     this.obscureText = false,

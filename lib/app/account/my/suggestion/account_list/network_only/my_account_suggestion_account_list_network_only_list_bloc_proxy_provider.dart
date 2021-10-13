@@ -9,7 +9,7 @@ class MyAccountSuggestionAccountListNetworkOnlyListBlocProxyProvider
     extends StatelessWidget {
   final Widget child;
 
-  MyAccountSuggestionAccountListNetworkOnlyListBlocProxyProvider({
+  const MyAccountSuggestionAccountListNetworkOnlyListBlocProxyProvider({
     required this.child,
   });
 

@@ -24,7 +24,7 @@ final dateFormat = DateFormat('dd MMM, HH:mm a');
 class ScheduledStatusListItemWidget extends StatelessWidget {
   final VoidCallback successCallback;
 
-  ScheduledStatusListItemWidget({
+  const ScheduledStatusListItemWidget({
     required this.successCallback,
   });
 

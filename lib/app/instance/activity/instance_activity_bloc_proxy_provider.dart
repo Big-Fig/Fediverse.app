@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 class InstanceActivityBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  InstanceActivityBlocProxyProvider({
+  const InstanceActivityBlocProxyProvider({
     required this.child,
   });
 

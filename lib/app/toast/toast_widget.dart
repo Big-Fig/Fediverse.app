@@ -13,7 +13,7 @@ class ToastWidget extends StatelessWidget {
   final bool titleAutoFontSize;
   final VoidCallback? onClick;
 
-  ToastWidget({
+  const ToastWidget({
     required this.toastType,
     required this.title,
     required this.content,

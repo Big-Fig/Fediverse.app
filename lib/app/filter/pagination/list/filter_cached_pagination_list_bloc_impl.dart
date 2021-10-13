@@ -30,7 +30,8 @@ class FilterCachedPaginationListBloc<
             ICachedPaginationListBloc>(
           update: (context, value, previous) => value,
           child: CachedPaginationListBlocProxyProvider<TPage, IFilter>(
-              child: child),
+            child: child,
+          ),
         ),
       );
 

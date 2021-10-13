@@ -17,7 +17,8 @@ class CustomListNetworkOnlyListBloc extends INetworkOnlyListBloc<ICustomList> {
   IUnifediApiService get unifediApi => pleromaListService;
 
   static CustomListNetworkOnlyListBloc createFromContext(
-          BuildContext context) =>
+    BuildContext context,
+  ) =>
       CustomListNetworkOnlyListBloc(
         pleromaListService:
             Provider.of<IUnifediApiListService>(context, listen: false),

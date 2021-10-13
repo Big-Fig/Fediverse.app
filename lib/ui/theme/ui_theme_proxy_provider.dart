@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 class UiThemeProxyProvider extends StatelessWidget {
   final Widget child;
 
-  UiThemeProxyProvider({
+  const UiThemeProxyProvider({
     required this.child,
   });
 

@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 class ConversationChatHomeTabBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  ConversationChatHomeTabBlocProxyProvider({required this.child});
+  const ConversationChatHomeTabBlocProxyProvider({required this.child});
 
   @override
   Widget build(BuildContext context) =>

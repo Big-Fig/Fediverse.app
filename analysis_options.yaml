@@ -85,6 +85,13 @@ linter:
     # double should be double
     prefer_int_literals: false
 
+    # module is OK
+    use_is_even_rather_than_modulo: false
+
+    # code metrics have better rules for member ordering
+    sort_constructors_first: false
+    sort_unnamed_constructors_first: false
+
     prefer_final_parameters: false
     avoid_types_on_closure_parameters: false
     parameter_assignments: false
@@ -116,18 +123,17 @@ linter:
     prefer_const_literals_to_create_immutables: false
     prefer_const_constructors: false
     prefer_constructors_over_static_methods: false
-    prefer_const_constructors_in_immutables: false
-    sort_constructors_first: false
+
 
     always_specify_types: false
     use_key_in_widget_constructors: false
     prefer_final_locals: false
 
 
-    use_is_even_rather_than_modulo: false
+
     prefer_typing_uninitialized_variables: false
     sized_box_for_whitespace: false
-    sort_unnamed_constructors_first: false
+
     prefer_null_aware_method_calls: false
     type_annotate_public_apis: false
 

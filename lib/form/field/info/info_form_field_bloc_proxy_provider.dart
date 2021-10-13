@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 class InfoFormFieldBlocProxyProvider<T> extends StatelessWidget {
   final Widget child;
 
-  InfoFormFieldBlocProxyProvider({
+  const InfoFormFieldBlocProxyProvider({
     required this.child,
   });
 

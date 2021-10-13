@@ -24,7 +24,8 @@ class AccountFollowingsDao extends DatabaseDao<
   $DbAccountFollowingsTable get table => dbAccountFollowings;
 
   Selectable<DbAccountFollowing> findByAccountRemoteId(
-          String accountRemoteId) =>
+    String accountRemoteId,
+  ) =>
       customSelect(
         'SELECT * FROM $tableName WHERE account_remote_id = :accountRemoteId;',
         variables: [Variable<String>(accountRemoteId)],

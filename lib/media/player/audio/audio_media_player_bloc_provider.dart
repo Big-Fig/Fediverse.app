@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 class AudioMediaPlayerBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  AudioMediaPlayerBlocProxyProvider({
+  const AudioMediaPlayerBlocProxyProvider({
     required this.child,
   });
 

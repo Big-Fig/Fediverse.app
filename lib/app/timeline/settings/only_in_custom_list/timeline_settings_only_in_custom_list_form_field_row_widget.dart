@@ -13,7 +13,7 @@ class TimelineSettingsOnlyInCustomListFormFieldRowWidget
   final String? description;
   final String descriptionOnDisabled;
 
-  TimelineSettingsOnlyInCustomListFormFieldRowWidget({
+  const TimelineSettingsOnlyInCustomListFormFieldRowWidget({
     required this.description,
     required this.descriptionOnDisabled,
   });

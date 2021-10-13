@@ -9,7 +9,7 @@ class BoolValueFormFieldRowWidget extends StatelessWidget {
   final String? description;
   final String? descriptionOnDisabled;
 
-  BoolValueFormFieldRowWidget({
+  const BoolValueFormFieldRowWidget({
     required this.label,
     this.description,
     this.descriptionOnDisabled,

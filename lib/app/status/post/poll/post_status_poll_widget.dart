@@ -75,7 +75,7 @@ class _PostStatusPollOptionsFieldWidget extends StatelessWidget {
 }
 
 class _PostStatusPollOptionsFieldItemsWidget extends StatelessWidget {
-  _PostStatusPollOptionsFieldItemsWidget({
+  const _PostStatusPollOptionsFieldItemsWidget({
     Key? key,
   }) : super(key: key);
 
@@ -99,7 +99,7 @@ class _PostStatusPollOptionsFieldItemsWidget extends StatelessWidget {
 }
 
 class _PostStatusPollOptionsFieldItemWidget extends StatelessWidget {
-  _PostStatusPollOptionsFieldItemWidget({
+  const _PostStatusPollOptionsFieldItemWidget({
     Key? key,
   }) : super(key: key);
 
@@ -139,7 +139,7 @@ class _PostStatusPollOptionsFieldItemWidget extends StatelessWidget {
 }
 
 class _PostStatusPollOptionsFieldItemFieldWidget extends StatelessWidget {
-  _PostStatusPollOptionsFieldItemFieldWidget({
+  const _PostStatusPollOptionsFieldItemFieldWidget({
     Key? key,
   }) : super(key: key);
 

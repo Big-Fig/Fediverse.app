@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 class MyAccountBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  MyAccountBlocProxyProvider({
+  const MyAccountBlocProxyProvider({
     required this.child,
   });
 

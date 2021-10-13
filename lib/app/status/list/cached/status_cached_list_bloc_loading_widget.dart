@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 class StatusCachedListBlocLoadingWidget extends StatelessWidget {
   final Widget child;
 
-  StatusCachedListBlocLoadingWidget({
+  const StatusCachedListBlocLoadingWidget({
     required this.child,
   });
 

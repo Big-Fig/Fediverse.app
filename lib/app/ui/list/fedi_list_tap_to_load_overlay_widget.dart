@@ -6,7 +6,7 @@ const _tapToLoadTopPadding = 24.0;
 class FediListTapToLoadOverlayWidget extends StatelessWidget {
   final String Function(BuildContext context, int updateItemsCount) textBuilder;
 
-  FediListTapToLoadOverlayWidget({required this.textBuilder});
+  const FediListTapToLoadOverlayWidget({required this.textBuilder});
 
   @override
   Widget build(BuildContext context) => Align(

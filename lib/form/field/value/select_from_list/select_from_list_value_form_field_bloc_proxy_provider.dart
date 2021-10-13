@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 class SelectFromListValueFormFieldBlocProxyProvider<T> extends StatelessWidget {
   final Widget child;
 
-  SelectFromListValueFormFieldBlocProxyProvider({
+  const SelectFromListValueFormFieldBlocProxyProvider({
     required this.child,
   });
 

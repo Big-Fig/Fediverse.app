@@ -15,7 +15,7 @@ class FediFormPairEditTextRow extends StatelessWidget {
   final Widget ending;
   final FocusNode? nextFocusNode;
 
-  FediFormPairEditTextRow({
+  const FediFormPairEditTextRow({
     required this.label,
     required this.nameHint,
     required this.valueHint,

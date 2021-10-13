@@ -18,7 +18,7 @@ class MyAccountInfoWidget extends StatelessWidget {
   final OnClickUiCallback? onStatusesTapCallback;
   final Brightness brightness;
 
-  MyAccountInfoWidget({
+  const MyAccountInfoWidget({
     required this.onStatusesTapCallback,
     required this.brightness,
   });

@@ -22,7 +22,7 @@ class NotificationTabTextTabIndicatorItemWidget extends StatelessWidget {
   final List<NotificationTab> notificationTabs;
   final TabController tabController;
 
-  NotificationTabTextTabIndicatorItemWidget({
+  const NotificationTabTextTabIndicatorItemWidget({
     required this.notificationTabs,
     required this.tabController,
   });

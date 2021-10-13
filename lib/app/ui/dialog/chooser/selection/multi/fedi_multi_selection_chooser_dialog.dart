@@ -33,7 +33,7 @@ class FediMultiSelectChooserDialogBody extends StatelessWidget {
 
   final Stream<List<SelectionDialogAction>> isNeedRebuildActionsStream;
 
-  FediMultiSelectChooserDialogBody({
+  const FediMultiSelectChooserDialogBody({
     required this.title,
     required this.content,
     required this.cancelable,

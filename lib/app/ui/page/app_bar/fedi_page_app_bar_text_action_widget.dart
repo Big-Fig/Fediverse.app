@@ -8,7 +8,7 @@ class FediPageAppBarTextActionWidget extends StatelessWidget {
   final VoidCallback? onPressed;
   final Color? color;
 
-  FediPageAppBarTextActionWidget({
+  const FediPageAppBarTextActionWidget({
     required this.text,
     required this.onPressed,
     this.color,

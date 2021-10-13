@@ -298,7 +298,7 @@ class FediDatePicker {
 }
 
 class FediDatePickerComponent extends StatefulWidget {
-  FediDatePickerComponent({
+  const FediDatePickerComponent({
     Key? key,
     required this.theme,
     required this.locale,

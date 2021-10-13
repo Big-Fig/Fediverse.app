@@ -46,7 +46,7 @@ class MediaAttachmentDetailsPage extends StatefulWidget {
       ? mediaAttachments.indexOf(initialMediaAttachment!)
       : 0;
 
-  MediaAttachmentDetailsPage.multi({
+  const MediaAttachmentDetailsPage.multi({
     required this.mediaAttachments,
     required this.initialMediaAttachment,
     required this.instanceLocation,

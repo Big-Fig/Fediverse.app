@@ -74,7 +74,7 @@ class _MultiSelectFromListValueFormFieldRowValueWidget<T>
   final MultiSelectFromListValueTitleMapper<T> valueTitleMapper;
   final bool displayIconInDialog;
 
-  _MultiSelectFromListValueFormFieldRowValueWidget({
+  const _MultiSelectFromListValueFormFieldRowValueWidget({
     required this.label,
     required this.valueTitleMapper,
     required this.displayIconInRow,

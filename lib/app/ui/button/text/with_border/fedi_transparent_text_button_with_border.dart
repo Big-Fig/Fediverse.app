@@ -25,7 +25,7 @@ class FediTransparentTextButtonWithBorder extends StatelessWidget {
   final bool limitMinWidth;
   final bool borderVisible;
 
-  FediTransparentTextButtonWithBorder(
+  const FediTransparentTextButtonWithBorder(
     this.text, {
     Key? key,
     required this.onPressed,

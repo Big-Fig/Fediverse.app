@@ -158,7 +158,8 @@ class _InstanceSettingsStatusSensitiveRowWidget extends StatelessWidget {
         title: S.of(context).app_status_sensitive_settings_title,
         onClick: () {
           showEditGlobalOrInstanceStatusSensitiveSettingsDialog(
-              context: context);
+            context: context,
+          );
         },
       );
 }

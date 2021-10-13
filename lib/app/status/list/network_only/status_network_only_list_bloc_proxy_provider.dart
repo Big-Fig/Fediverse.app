@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 class StatusNetworkOnlyListBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  StatusNetworkOnlyListBlocProxyProvider({required this.child});
+  const StatusNetworkOnlyListBlocProxyProvider({required this.child});
 
   @override
   Widget build(BuildContext context) =>

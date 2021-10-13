@@ -30,7 +30,7 @@ class FediFormSingleChooseFromListFieldRow<T> extends StatelessWidget {
   final ValueToKeyMapper<T>? valueToKeyMapper;
   final ValueChangedCallback<T?> onChanged;
 
-  FediFormSingleChooseFromListFieldRow({
+  const FediFormSingleChooseFromListFieldRow({
     required this.isEnabled,
     required this.nullable,
     required this.label,

@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 class ToastServiceProvider extends StatelessWidget {
   final Widget child;
 
-  ToastServiceProvider({
+  const ToastServiceProvider({
     required this.child,
   });
 

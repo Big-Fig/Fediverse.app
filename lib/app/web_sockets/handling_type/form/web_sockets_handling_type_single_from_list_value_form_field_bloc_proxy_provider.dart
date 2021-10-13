@@ -9,7 +9,7 @@ class WebSocketsModeSingleFromListValueFormFieldBlocProxyProvider
     extends StatelessWidget {
   final Widget child;
 
-  WebSocketsModeSingleFromListValueFormFieldBlocProxyProvider({
+  const WebSocketsModeSingleFromListValueFormFieldBlocProxyProvider({
     required this.child,
   });
 

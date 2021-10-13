@@ -14,7 +14,7 @@ class PostStatusComposeInputWidget extends StatelessWidget {
   final int? maxLines;
   final String? hintText;
 
-  PostStatusComposeInputWidget({
+  const PostStatusComposeInputWidget({
     required this.expanded,
     required this.autofocus,
     required this.maxLines,

@@ -12,7 +12,7 @@ class DateTimeDynamicTimeagoWidget extends StatefulWidget {
   final TextStyle textStyle;
   final DateTimeAgoTextBuilder? customTextBuilder;
 
-  DateTimeDynamicTimeagoWidget({
+  const DateTimeDynamicTimeagoWidget({
     required this.dateTime,
     required this.textStyle,
     this.customTextBuilder,

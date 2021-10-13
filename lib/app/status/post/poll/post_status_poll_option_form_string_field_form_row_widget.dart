@@ -12,7 +12,7 @@ class PostStatusPollOptionFormStringFieldFormRowWidget extends StatelessWidget {
   final TextInputAction textInputAction;
   final ValueChanged<String> onSubmitted;
 
-  PostStatusPollOptionFormStringFieldFormRowWidget({
+  const PostStatusPollOptionFormStringFieldFormRowWidget({
     required this.hint,
     required this.formStringFieldBloc,
     required this.onSubmitted,

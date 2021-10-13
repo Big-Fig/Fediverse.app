@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 
 abstract class ScheduledStatusPaginationListBaseWidget
     extends FediPaginationListWidget<IScheduledStatus> {
-  ScheduledStatusPaginationListBaseWidget({
+  const ScheduledStatusPaginationListBaseWidget({
     required Key key,
     Widget? header,
     Widget? footer,
