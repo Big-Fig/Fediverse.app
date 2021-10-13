@@ -37,13 +37,12 @@ class AccountCachedPaginationBloc extends CachedPleromaPaginationBloc<IAccount>
     required int? itemsCountPerPage,
     required CachedPaginationPage<IAccount>? olderPage,
     required CachedPaginationPage<IAccount>? newerPage,
-  }) {
-    return listService.loadLocalItems(
-      limit: itemsCountPerPage,
-      newerThan: olderPage?.items.firstOrNull,
-      olderThan: newerPage?.items.lastOrNull,
-    );
-  }
+  }) =>
+      listService.loadLocalItems(
+        limit: itemsCountPerPage,
+        newerThan: olderPage?.items.firstOrNull,
+        olderThan: newerPage?.items.lastOrNull,
+      );
 
   @override
   Future refreshItemsFromRemoteForPage({
@@ -86,15 +85,14 @@ class AccountCachedPaginationBloc extends CachedPleromaPaginationBloc<IAccount>
     BuildContext context, {
     required Widget child,
     int? maximumCachedPagesCount,
-  }) {
-    return DisposableProvider<
-        ICachedPaginationBloc<CachedPaginationPage<IAccount>, IAccount>>(
-      create: (context) => AccountCachedPaginationBloc.createFromContext(
-        context,
-        maximumCachedPagesCount: maximumCachedPagesCount,
-      ),
-      child: CachedPaginationBlocProxyProvider<CachedPaginationPage<IAccount>,
-          IAccount>(child: child),
-    );
-  }
+  }) =>
+      DisposableProvider<
+          ICachedPaginationBloc<CachedPaginationPage<IAccount>, IAccount>>(
+        create: (context) => AccountCachedPaginationBloc.createFromContext(
+          context,
+          maximumCachedPagesCount: maximumCachedPagesCount,
+        ),
+        child: CachedPaginationBlocProxyProvider<CachedPaginationPage<IAccount>,
+            IAccount>(child: child),
+      );
 }

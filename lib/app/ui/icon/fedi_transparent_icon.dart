@@ -1,4 +1,3 @@
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
 
 class FediTransparentIcon extends StatelessWidget {
@@ -8,7 +7,5 @@ class FediTransparentIcon extends StatelessWidget {
   const FediTransparentIcon(this.iconData, {this.color});
 
   @override
-  Widget build(BuildContext context) {
-    return Icon(iconData, color: color);
-  }
+  Widget build(BuildContext context) => Icon(iconData, color: color);
 }

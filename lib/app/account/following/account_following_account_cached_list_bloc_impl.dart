@@ -40,9 +40,11 @@ class AccountFollowingAccountCachedListBloc extends DisposableOwner
     required IAccount? newerThan,
     required IAccount? olderThan,
   }) async {
-    _logger.fine(() => 'start refreshItemsFromRemoteForPage \n'
-        '\t newerThanAccount = $newerThan'
-        '\t olderThanAccount = $olderThan');
+    _logger.fine(
+      () => 'start refreshItemsFromRemoteForPage \n'
+          '\t newerThanAccount = $newerThan'
+          '\t olderThanAccount = $olderThan',
+    );
 
     List<IUnifediApiAccount> remoteAccounts;
 
@@ -57,16 +59,16 @@ class AccountFollowingAccountCachedListBloc extends DisposableOwner
     );
 
     await accountRepository.batch((batch) {
-      accountRepository.upsertAllInRemoteType(
-        remoteAccounts,
-        batchTransaction: batch,
-      );
-
-      accountRepository.addAccountFollowings(
-        accountRemoteId: account.remoteId,
-        followings: remoteAccounts.toUnifediApiAccountList(),
-        batchTransaction: batch,
-      );
+      accountRepository
+        ..upsertAllInRemoteType(
+          remoteAccounts,
+          batchTransaction: batch,
+        )
+        ..addAccountFollowings(
+          accountRemoteId: account.remoteId,
+          followings: remoteAccounts.toUnifediApiAccountList(),
+          batchTransaction: batch,
+        );
     });
   }
 
@@ -76,9 +78,11 @@ class AccountFollowingAccountCachedListBloc extends DisposableOwner
     required IAccount? newerThan,
     required IAccount? olderThan,
   }) async {
-    _logger.finest(() => 'start loadLocalItems \n'
-        '\t newerThanAccount=$newerThan'
-        '\t olderThanAccount=$olderThan');
+    _logger.finest(
+      () => 'start loadLocalItems \n'
+          '\t newerThanAccount=$newerThan'
+          '\t olderThanAccount=$olderThan',
+    );
 
     var accounts = await accountRepository.findAllInAppType(
       pagination: RepositoryPagination<IAccount>(
@@ -112,18 +116,17 @@ class AccountFollowingAccountCachedListBloc extends DisposableOwner
     BuildContext context, {
     required IAccount account,
     required Widget child,
-  }) {
-    return DisposableProvider<IAccountCachedListBloc>(
-      create: (context) =>
-          AccountFollowingAccountCachedListBloc.createFromContext(
-        context,
-        account: account,
-      ),
-      child: AccountCachedListBlocProxyProvider(
-        child: child,
-      ),
-    );
-  }
+  }) =>
+      DisposableProvider<IAccountCachedListBloc>(
+        create: (context) =>
+            AccountFollowingAccountCachedListBloc.createFromContext(
+          context,
+          account: account,
+        ),
+        child: AccountCachedListBlocProxyProvider(
+          child: child,
+        ),
+      );
 
   @override
   InstanceLocation get instanceLocation => InstanceLocation.local;

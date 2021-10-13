@@ -114,20 +114,19 @@ class LocalAccountBloc extends AccountBloc {
     required bool isNeedPreFetchRelationship,
     required bool isNeedWatchLocalRepositoryForUpdates,
     required Widget child,
-  }) {
-    return DisposableProvider<IAccountBloc>(
-      create: (context) => LocalAccountBloc.createFromContext(
-        context,
-        account: account,
-        isNeedWatchWebSocketsEvents: isNeedWatchWebSocketsEvents,
-        isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
-        isNeedPreFetchRelationship: isNeedPreFetchRelationship,
-        isNeedWatchLocalRepositoryForUpdates:
-            isNeedWatchLocalRepositoryForUpdates,
-      ),
-      child: child,
-    );
-  }
+  }) =>
+      DisposableProvider<IAccountBloc>(
+        create: (context) => LocalAccountBloc.createFromContext(
+          context,
+          account: account,
+          isNeedWatchWebSocketsEvents: isNeedWatchWebSocketsEvents,
+          isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
+          isNeedPreFetchRelationship: isNeedPreFetchRelationship,
+          isNeedWatchLocalRepositoryForUpdates:
+              isNeedWatchLocalRepositoryForUpdates,
+        ),
+        child: child,
+      );
 
   @override
   InstanceLocation get instanceLocation => InstanceLocation.local;
@@ -161,7 +160,7 @@ class LocalAccountBloc extends AccountBloc {
   @override
   Future<IUnifediApiAccountRelationship> toggleBlock() async {
     assert(relationship != null);
-    var newRelationship;
+    IUnifediApiAccountRelationship? newRelationship;
     if (relationship!.blocking!) {
       newRelationship = await pleromaAuthAccountService.unBlockAccount(
         accountId: account.remoteId,
@@ -179,7 +178,7 @@ class LocalAccountBloc extends AccountBloc {
   @override
   Future<IUnifediApiAccountRelationship> toggleSubscribe() async {
     assert(relationship != null);
-    var newRelationship;
+    IUnifediApiAccountRelationship? newRelationship;
     if (relationship!.subscribing!) {
       newRelationship = await pleromaAuthAccountService.unSubscribeAccount(
         accountId: account.remoteId,
@@ -197,7 +196,7 @@ class LocalAccountBloc extends AccountBloc {
   @override
   Future<IUnifediApiAccountRelationship> toggleMute() async {
     assert(relationship != null);
-    var newRelationship;
+    IUnifediApiAccountRelationship? newRelationship;
     if (relationship!.muting!) {
       newRelationship = await pleromaAuthAccountService.unMuteAccount(
         accountId: account.remoteId,
@@ -217,7 +216,7 @@ class LocalAccountBloc extends AccountBloc {
   @override
   Future<IUnifediApiAccountRelationship> toggleFollow() async {
     assert(relationship != null);
-    var newRelationship;
+    IUnifediApiAccountRelationship? newRelationship;
     if (relationship!.requested == true || relationship!.following == true) {
       newRelationship = await pleromaAuthAccountService.unFollowAccount(
         accountId: account.remoteId,
@@ -236,17 +235,17 @@ class LocalAccountBloc extends AccountBloc {
         );
 
         if (myAccount != null) {
-          accountRepository.removeAccountFollower(
-            accountRemoteId: account.remoteId,
-            followerAccountId: myAccount!.remoteId,
-            batchTransaction: batch,
-          );
-
-          accountRepository.removeAccountFollowing(
-            accountRemoteId: myAccount!.remoteId,
-            followingAccountId: account.remoteId,
-            batchTransaction: batch,
-          );
+          accountRepository
+            ..removeAccountFollower(
+              accountRemoteId: account.remoteId,
+              followerAccountId: myAccount!.remoteId,
+              batchTransaction: batch,
+            )
+            ..removeAccountFollowing(
+              accountRemoteId: myAccount!.remoteId,
+              followingAccountId: account.remoteId,
+              batchTransaction: batch,
+            );
         }
 
         statusRepository.removeAccountStatusesFromHome(
@@ -346,7 +345,7 @@ class LocalAccountBloc extends AccountBloc {
   @override
   Future<IUnifediApiAccountRelationship> togglePin() async {
     assert(relationship != null);
-    var newRelationship;
+    IUnifediApiAccountRelationship? newRelationship;
     // todo: fix
     if (relationship!.muting == true) {
       newRelationship = await pleromaAuthAccountService.unPinAccount(
@@ -368,7 +367,7 @@ class LocalAccountBloc extends AccountBloc {
   @override
   Future<IUnifediApiAccountRelationship> toggleBlockDomain() async {
     assert(relationship != null);
-    var newRelationship;
+    IUnifediApiAccountRelationship? newRelationship;
     var domainBlocking = relationship!.domainBlocking == true;
     var domain = acctRemoteDomainOrNull!;
     if (domainBlocking) {
@@ -401,10 +400,10 @@ class LocalAccountBloc extends AccountBloc {
     var newAccount = account.copyWithTemp(relationship: newRelationship);
     var newRemoteAccount = newAccount.toUnifediApiAccount();
 
-    _logger.finest(() => '_updateRelationship '
-        'newRelationship=$newRelationship');
-    _logger.finest(() => '_updateRelationship newRemoteAccount.relationship'
-        '${newRemoteAccount.relationship}');
+    _logger.finest(
+      () => '_updateRelationship '
+          'newRelationship=$newRelationship',
+    );
     if (account.localId != null) {
       await accountRepository.updateAppTypeByRemoteType(
         appItem: account,
@@ -422,9 +421,11 @@ class LocalAccountBloc extends AccountBloc {
   }
 
   Future _refreshAccountRelationship(IAccount account) async {
-    _logger.finest(() => 'refreshAccountRelationship '
-        'refreshAccountRelationshipInProgress='
-        '$_refreshAccountRelationshipInProgress');
+    _logger.finest(
+      () => 'refreshAccountRelationship '
+          'refreshAccountRelationshipInProgress='
+          '$_refreshAccountRelationshipInProgress',
+    );
     if (!_refreshAccountRelationshipInProgress) {
       _refreshAccountRelationshipInProgress = true;
       var relationships =

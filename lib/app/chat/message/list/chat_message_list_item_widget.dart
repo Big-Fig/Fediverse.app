@@ -94,11 +94,9 @@ class _ChatMessageListItemDeletedOverlayWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return FediBlurredOverlayWarningWidget(
-      descriptionText: S.of(context).app_chat_message_deleted_desc,
-    );
-  }
+  Widget build(BuildContext context) => FediBlurredOverlayWarningWidget(
+        descriptionText: S.of(context).app_chat_message_deleted_desc,
+      );
 }
 
 class _ChatMessageListItemBodyWidget<T extends IChatMessage>
@@ -430,12 +428,12 @@ class _ChatMessageListItemMediaContentWidget extends StatelessWidget {
         }
 
         return Provider<List<IUnifediApiMediaAttachment>?>.value(
-          value: mediaAttachments!,
+          value: mediaAttachments,
           child: InkWell(
             onTap: () {
               goToMultiMediaAttachmentDetailsPage(
                 context,
-                mediaAttachments: mediaAttachments,
+                mediaAttachments: mediaAttachments!,
                 initialMediaAttachment: null,
                 instanceLocation: InstanceLocation.local,
               );
@@ -446,7 +444,7 @@ class _ChatMessageListItemMediaContentWidget extends StatelessWidget {
                 if (previous != null &&
                     listEquals(
                       previous.mediaAttachments,
-                      mediaAttachments ?? [],
+                      mediaAttachments ?? <IUnifediApiMediaAttachment>[],
                     )) {
                   return previous;
                 } else {

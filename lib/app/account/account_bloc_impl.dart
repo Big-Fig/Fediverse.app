@@ -57,10 +57,9 @@ abstract class AccountBloc extends IAccountBloc {
   @override
   Stream<IAccount> get accountStream => accountSubject.stream.distinct();
 
-  Future<IUnifediApiAccount> loadRemoteAccount() async {
-    return unifediApiAccountService!.getAccount(
-      accountId: account.remoteId,
-      withRelationship: false,
-    );
-  }
+  Future<IUnifediApiAccount> loadRemoteAccount() async =>
+      unifediApiAccountService!.getAccount(
+        accountId: account.remoteId,
+        withRelationship: false,
+      );
 }

@@ -43,16 +43,15 @@ class _FediPlayerControlToggleMuteButtonInitializedWidget
       builder: (context, snapshot) {
         var isMuted = snapshot.data ?? false;
 
-        return AsyncOperationButtonBuilderWidget(
-          builder: (BuildContext context, void Function()? onPressed) {
-            return FediIconButton(
-              icon: Icon(isMuted ? FediIcons.sound_off : FediIcons.sound_on),
-              color: IFediUiColorTheme.of(context).white,
-              // ignore: no-magic-number
-              iconSize: 16.0,
-              onPressed: onPressed,
-            );
-          },
+        return AsyncOperationButtonBuilderWidget<void>(
+          builder: (BuildContext context, void Function()? onPressed) =>
+              FediIconButton(
+            icon: Icon(isMuted ? FediIcons.sound_off : FediIcons.sound_on),
+            color: IFediUiColorTheme.of(context).white,
+            // ignore: no-magic-number
+            iconSize: 16.0,
+            onPressed: onPressed,
+          ),
           asyncButtonAction: () => mediaPlayerBloc.toggleMute(),
         );
       },
@@ -67,14 +66,12 @@ class _FediPlayerControlToggleMuteButtonNotInitializedWidget
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return FediIconButton(
-      icon: Icon(FediIcons.sound_on),
-      color: IFediUiColorTheme.of(context).grey,
-      // todo: refactor
-      // ignore: no-magic-number
-      iconSize: 16.0,
-      onPressed: null,
-    );
-  }
+  Widget build(BuildContext context) => FediIconButton(
+        icon: Icon(FediIcons.sound_on),
+        color: IFediUiColorTheme.of(context).grey,
+        // todo: refactor
+        // ignore: no-magic-number
+        iconSize: 16.0,
+        onPressed: null,
+      );
 }

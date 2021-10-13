@@ -39,7 +39,7 @@ void goToSearchPage(
 }) {
   Navigator.push(
     context,
-    MaterialPageRoute(
+    MaterialPageRoute<void>(
       builder: (context) => DisposableProvider<ISearchBloc>(
         create: (context) => SearchBloc.createFromContext(
           context,

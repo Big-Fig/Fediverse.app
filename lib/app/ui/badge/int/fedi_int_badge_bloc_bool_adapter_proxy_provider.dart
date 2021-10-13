@@ -7,16 +7,15 @@ import 'package:flutter/cupertino.dart';
 class FediIntBadgeBlocBoolAdapterProxyProvider extends StatelessWidget {
   final Widget child;
 
-  FediIntBadgeBlocBoolAdapterProxyProvider({required this.child});
+  const FediIntBadgeBlocBoolAdapterProxyProvider({required this.child});
 
   @override
-  Widget build(BuildContext context) {
-    return DisposableProxyProvider<IFediIntBadgeBloc, IFediBoolBadgeBloc>(
-      update: (context, fediIntBadgeBloc, previous) =>
-          FediIntBadgeBlocBoolAdapter(
-        fediIntBadgeBloc: fediIntBadgeBloc,
-      ),
-      child: child,
-    );
-  }
+  Widget build(BuildContext context) =>
+      DisposableProxyProvider<IFediIntBadgeBloc, IFediBoolBadgeBloc>(
+        update: (context, fediIntBadgeBloc, previous) =>
+            FediIntBadgeBlocBoolAdapter(
+          fediIntBadgeBloc: fediIntBadgeBloc,
+        ),
+        child: child,
+      );
 }

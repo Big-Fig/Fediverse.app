@@ -33,9 +33,10 @@ class FilePickerOrUrlFormFieldBloc extends FormFieldBloc
       originalUrl?.isNotEmpty == true && !isOriginalDeleted!;
 
   @override
-  Stream<bool> get isOriginalExistStream =>
-      isOriginalDeletedStream.map((isOriginalDeleted) =>
-          originalUrl?.isNotEmpty == true && !isOriginalDeleted);
+  Stream<bool> get isOriginalExistStream => isOriginalDeletedStream.map(
+        (isOriginalDeleted) =>
+            originalUrl?.isNotEmpty == true && !isOriginalDeleted,
+      );
 
   final BehaviorSubject<IMediaDeviceFile?> _currentMediaDeviceFileSubject =
       BehaviorSubject.seeded(null);

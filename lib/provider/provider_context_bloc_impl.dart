@@ -28,14 +28,12 @@ abstract class ProviderContextBloc extends AsyncInitLoadingBloc
       throw 'Cant register $IDisposable because {$type} already registred';
     }
 
-    var providerCreator = () {
-//      _logger.d(() => 'providerCreator for $type context $context');
-      return provider_lib.Provider<T>.value(value: disposable);
-    };
+    var providerCreator =
+        () => provider_lib.Provider<T>.value(value: disposable);
 
     _storage[type] = DisposableEntry<T>(disposable, providerCreator);
 
-    return CustomDisposable(() async => await unregister<T>(disposable));
+    return CustomDisposable(() async => unregister<T>(disposable));
   }
 
   @override

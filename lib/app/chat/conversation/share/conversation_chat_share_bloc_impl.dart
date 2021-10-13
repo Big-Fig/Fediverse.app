@@ -24,14 +24,9 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
     required this.statusRepository,
     required this.unifediApiConversationService,
     required this.unifediApiStatusService,
-    required IUnifediApiAccountService unifediApiAccountService,
     required this.myAccountBloc,
     required this.accountRepository,
-  }) : super(
-          myAccountBloc: myAccountBloc,
-          accountRepository: accountRepository,
-          unifediApiAccountService: unifediApiAccountService,
-        );
+  });
 
   @override
   Future<bool> actuallyShareToAccount(IAccount account) async {
@@ -39,7 +34,7 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
 
     var targetAccounts = [account];
     var sendDataList = await createSendData(
-      to: '${targetAccounts.map((account) => '@${account.acct}').join(', ')}',
+      to: targetAccounts.map((account) => '@${account.acct}').join(', '),
       visibility: pleromaVisibility,
     );
 
@@ -98,8 +93,9 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
         conversationAccounts.where(
           (account) {
             var notOwn = account.remoteId != myAccountBloc.account.remoteId;
-            var alreadyExist = accounts.firstWhereOrNull((accountsItem) =>
-                    accountsItem.remoteId == account.remoteId) !=
+            var alreadyExist = accounts.firstWhereOrNull(
+                  (accountsItem) => accountsItem.remoteId == account.remoteId,
+                ) !=
                 null;
 
             return notOwn && !alreadyExist;

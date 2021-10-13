@@ -80,12 +80,11 @@ class DraftStatusLocalOnlyPaginationBloc
     required int? itemsCountPerPage,
     required PaginationPage<IDraftStatus>? olderPage,
     required PaginationPage<IDraftStatus>? newerPage,
-  }) {
-    return listService.loadItemsFromLocalForPage(
-      itemsCountPerPage: itemsCountPerPage,
-      pageIndex: pageIndex,
-      newerThan: newerPage?.items.lastOrNull,
-      olderThan: olderPage?.items.firstOrNull,
-    );
-  }
+  }) =>
+      listService.loadItemsFromLocalForPage(
+        itemsCountPerPage: itemsCountPerPage,
+        pageIndex: pageIndex,
+        newerThan: newerPage?.items.lastOrNull,
+        olderThan: olderPage?.items.firstOrNull,
+      );
 }

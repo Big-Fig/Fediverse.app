@@ -40,13 +40,12 @@ class ChatSelectionBloc extends DisposableOwner implements IChatSelectionBloc {
   static bool _calculateIsAllSelectedItemsFromMe({
     required List<IChatMessage> currentSelection,
     required IMyAccountBloc myAccountBloc,
-  }) {
-    return currentSelection.fold(
-      true,
-      (previousValue, element) =>
-          previousValue && myAccountBloc.checkIsChatMessageFromMe(element),
-    );
-  }
+  }) =>
+      currentSelection.fold(
+        true,
+        (previousValue, element) =>
+            previousValue && myAccountBloc.checkIsChatMessageFromMe(element),
+      );
 
   @override
   List<IChatMessage> get currentSelection =>
@@ -115,7 +114,7 @@ class ChatSelectionBloc extends DisposableOwner implements IChatSelectionBloc {
       chatMessageText += ' ';
       chatMessageText += '(${chatMessage.account?.displayName ?? ''})';
       chatMessageText += ' ';
-      chatMessageText += '${_dateFormat.format(chatMessage.createdAt)}';
+      chatMessageText += _dateFormat.format(chatMessage.createdAt);
       if (chatMessage.content?.isNotEmpty == true) {
         chatMessageText += '\n';
         chatMessageText += chatMessage.content!;
@@ -157,8 +156,10 @@ class ChatSelectionBloc extends DisposableOwner implements IChatSelectionBloc {
   void removeItemFromSelection(IChatMessage chatMessage) {
     currentChatMessagesSelectionSubject.add(
       currentSelection
-          .where((currentChatMessage) =>
-              currentChatMessage.remoteId != chatMessage.remoteId)
+          .where(
+            (currentChatMessage) =>
+                currentChatMessage.remoteId != chatMessage.remoteId,
+          )
           .toList(),
     );
   }

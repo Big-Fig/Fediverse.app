@@ -23,26 +23,30 @@ void showEditGlobalToastSettingsDialog({
   );
 }
 
-DisposableProvider<IToastSettingsBloc> _buildBody() {
-  return DisposableProvider<IToastSettingsBloc>(
-    create: (context) => ToastSettingsBloc(
-      instanceLocalPreferencesBloc:
-          IInstanceToastSettingsLocalPreferenceBloc.of(context, listen: false),
-      globalLocalPreferencesBloc:
-          IGlobalToastSettingsLocalPreferenceBloc.of(context, listen: false),
-    ),
-    child: DisposableProxyProvider<IToastSettingsBloc, IEditToastSettingsBloc>(
-      update: (context, value, previous) => EditToastSettingsBloc(
-        isGlobalForced: true,
-        toastSettingsBloc: value,
-        globalOrInstanceSettingsType: GlobalOrInstanceSettingsType.global,
-        isEnabled: true,
-        currentInstance: ICurrentUnifediApiAccessBloc.of(context, listen: false)
-            .currentInstance,
+DisposableProvider<IToastSettingsBloc> _buildBody() =>
+    DisposableProvider<IToastSettingsBloc>(
+      create: (context) => ToastSettingsBloc(
+        instanceLocalPreferencesBloc:
+            IInstanceToastSettingsLocalPreferenceBloc.of(
+          context,
+          listen: false,
+        ),
+        globalLocalPreferencesBloc:
+            IGlobalToastSettingsLocalPreferenceBloc.of(context, listen: false),
       ),
-      child: const EditToastSettingsWidget(
-        shrinkWrap: true,
+      child:
+          DisposableProxyProvider<IToastSettingsBloc, IEditToastSettingsBloc>(
+        update: (context, value, previous) => EditToastSettingsBloc(
+          isGlobalForced: true,
+          toastSettingsBloc: value,
+          globalOrInstanceSettingsType: GlobalOrInstanceSettingsType.global,
+          isEnabled: true,
+          currentInstance:
+              ICurrentUnifediApiAccessBloc.of(context, listen: false)
+                  .currentInstance,
+        ),
+        child: const EditToastSettingsWidget(
+          shrinkWrap: true,
+        ),
       ),
-    ),
-  );
-}
+    );

@@ -10,7 +10,7 @@ class FediIconButton extends StatelessWidget {
   final String? tooltip;
   final EdgeInsets padding;
 
-  FediIconButton({
+  const FediIconButton({
     Key? key,
     required this.icon,
     required this.onPressed,
@@ -22,14 +22,12 @@ class FediIconButton extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return IconButton(
-      onPressed: onPressed,
-      padding: padding,
-      icon: icon,
-      color: color,
-      iconSize: iconSize,
-      tooltip: tooltip,
-    );
-  }
+  Widget build(BuildContext context) => IconButton(
+        onPressed: onPressed,
+        padding: padding,
+        icon: icon,
+        color: color,
+        iconSize: iconSize,
+        tooltip: tooltip,
+      );
 }

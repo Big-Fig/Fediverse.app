@@ -104,18 +104,16 @@ class _InstanceAnnouncementListItemAddEmojiButtonWidget
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return FediIconButton(
-      padding: EdgeInsets.zero,
-      icon: Icon(
-        FediIcons.emoji,
-        color: IFediUiColorTheme.of(context).darkGrey,
-      ),
-      onPressed: () {
-        _showEmojiPicker(context);
-      },
-    );
-  }
+  Widget build(BuildContext context) => FediIconButton(
+        padding: EdgeInsets.zero,
+        icon: Icon(
+          FediIcons.emoji,
+          color: IFediUiColorTheme.of(context).darkGrey,
+        ),
+        onPressed: () {
+          _showEmojiPicker(context);
+        },
+      );
 }
 
 void _showEmojiPicker(BuildContext context) {

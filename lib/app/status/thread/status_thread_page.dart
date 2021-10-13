@@ -168,37 +168,35 @@ class _StatusThreadStarterAccountBodyWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Flexible(
-          child: Row(
-            children: [
-              const AccountAvatarWidget(
-                imageSize: FediSizes.appBarAvatarSize,
-                progressSize: FediSizes.appBarAvatarSize * 0.8,
-              ),
-              const FediBigHorizontalSpacer(),
-              Flexible(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const AccountDisplayNameWidget(),
-                    const AccountAcctWidget(),
-                  ],
+  Widget build(BuildContext context) => Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Flexible(
+            child: Row(
+              children: [
+                const AccountAvatarWidget(
+                  imageSize: FediSizes.appBarAvatarSize,
+                  progressSize: FediSizes.appBarAvatarSize * 0.8,
                 ),
-              ),
-            ],
+                const FediBigHorizontalSpacer(),
+                Flexible(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const AccountDisplayNameWidget(),
+                      const AccountAcctWidget(),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-        const Padding(
-          padding: FediPadding.horizontalBigPadding,
-          child: StatusCreatedAtWidget(),
-        ),
-      ],
-    );
-  }
+          const Padding(
+            padding: FediPadding.horizontalBigPadding,
+            child: StatusCreatedAtWidget(),
+          ),
+        ],
+      );
 }

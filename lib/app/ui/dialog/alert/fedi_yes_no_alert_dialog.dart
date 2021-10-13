@@ -21,7 +21,7 @@ class FediYesNoAlertDialog extends FediBaseAlertDialog {
               onAction: yesAction,
             ),
             DialogAction(
-              label: yesActionLabel ?? S.of(context).dialog_action_no,
+              label: noActionLabel ?? S.of(context).dialog_action_no,
               onAction: noAction,
             ),
           ],

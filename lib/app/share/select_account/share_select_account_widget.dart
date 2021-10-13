@@ -32,36 +32,33 @@ class ShareSelectAccountWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return SelectAccountListBloc.provideToContext(
-      context,
-      child: SelectAccountListBlocProxyProvider(
-        child: DisposableProxyProvider<ISelectAccountListBloc,
-            IRecentSelectAccountBloc>(
-          update: (context, selectAccountListBloc, _) {
-            return RecentSelectAccountBloc(
+  Widget build(BuildContext context) => SelectAccountListBloc.provideToContext(
+        context,
+        child: SelectAccountListBlocProxyProvider(
+          child: DisposableProxyProvider<ISelectAccountListBloc,
+              IRecentSelectAccountBloc>(
+            update: (context, selectAccountListBloc, _) =>
+                RecentSelectAccountBloc(
               selectAccountListBloc: selectAccountListBloc,
               recentSelectAccountLocalPreferenceBloc:
                   IRecentShareSelectAccountLocalPreferenceBloc.of(
                 context,
                 listen: false,
               ),
-            );
-          },
-          child: _ShareSelectAccountBodyWidget(
-            header: header,
-            footer: footer,
-            alwaysShowHeader: alwaysShowHeader,
-            alwaysShowFooter: alwaysShowFooter,
+            ),
+            child: _ShareSelectAccountBodyWidget(
+              header: header,
+              footer: footer,
+              alwaysShowHeader: alwaysShowHeader,
+              alwaysShowFooter: alwaysShowFooter,
+            ),
           ),
         ),
-      ),
-      followingsOnly: false,
-      excludeMyAccount: true,
-      customRemoteAccountListLoader: null,
-      customLocalAccountListLoader: null,
-    );
-  }
+        followingsOnly: false,
+        excludeMyAccount: true,
+        customRemoteAccountListLoader: null,
+        customLocalAccountListLoader: null,
+      );
 }
 
 class _ShareSelectAccountBodyWidget extends StatelessWidget {
@@ -165,26 +162,25 @@ class _ShareSelectAccountSearchResultsWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return AccountCachedPaginationBloc.provideToContext(
-      context,
-      child: SelectAccountPaginationListBloc.provideToContext(
+  Widget build(BuildContext context) =>
+      AccountCachedPaginationBloc.provideToContext(
         context,
-        child: SingleSelectAccountWidget(
-          accountActions: [
-            const ShareSelectAccountItemSendActionWidget(),
-          ],
-          header: _ShareSelectAccountSearchHeaderWithSearchInputWidget(
-            header: header,
+        child: SelectAccountPaginationListBloc.provideToContext(
+          context,
+          child: SingleSelectAccountWidget(
+            accountActions: [
+              const ShareSelectAccountItemSendActionWidget(),
+            ],
+            header: _ShareSelectAccountSearchHeaderWithSearchInputWidget(
+              header: header,
+            ),
+            footer: footer,
+            alwaysShowHeader: alwaysShowHeader,
+            alwaysShowFooter: alwaysShowFooter,
+            accountSelectedCallback: null,
           ),
-          footer: footer,
-          alwaysShowHeader: alwaysShowHeader,
-          alwaysShowFooter: alwaysShowFooter,
-          accountSelectedCallback: null,
         ),
-      ),
-    );
-  }
+      );
 }
 
 class _ShareSelectAccountSearchHeaderWithSearchInputWidget
@@ -197,15 +193,13 @@ class _ShareSelectAccountSearchHeaderWithSearchInputWidget
   final Widget? header;
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        header!,
-        const Padding(
-          padding: EdgeInsets.only(left: 8.0),
-          child: SearchInputWidget(),
-        ),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => Column(
+        children: [
+          header!,
+          const Padding(
+            padding: EdgeInsets.only(left: 8.0),
+            child: SearchInputWidget(),
+          ),
+        ],
+      );
 }

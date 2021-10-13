@@ -37,7 +37,7 @@ class FilterDao extends PopulatedAppRemoteDatabaseDao<
 
     var contextTypesStrings = contextTypes
         .map(
-          (visibility) => '${visibility.stringValue}',
+          (visibility) => visibility.stringValue,
         )
         .toList();
 
@@ -68,9 +68,11 @@ class FilterDao extends PopulatedAppRemoteDatabaseDao<
     List<FilterOrderingTermData> orderTerms,
   ) =>
       query
-        ..orderBy(orderTerms
-            .map((orderTerm) => (item) {
-                  var expression;
+        ..orderBy(
+          orderTerms
+              .map(
+                (orderTerm) => ($DbFiltersTable item) {
+                  GeneratedColumn<String?> expression;
                   switch (orderTerm.orderType) {
                     case FilterOrderType.remoteId:
                       expression = item.remoteId;
@@ -81,12 +83,12 @@ class FilterDao extends PopulatedAppRemoteDatabaseDao<
                     expression: expression,
                     mode: orderTerm.orderingMode,
                   );
-                })
-            .toList());
+                },
+              )
+              .toList(),
+        );
 
-  List<Join<Table, DataClass>> populateFilterJoin() {
-    return [];
-  }
+  List<Join<Table, DataClass>> populateFilterJoin() => [];
 
   @override
   $DbFiltersTable get table => dbFilters;
@@ -157,19 +159,17 @@ class FilterDao extends PopulatedAppRemoteDatabaseDao<
 extension DbFilterPopulatedTypedResultListExtension on List<TypedResult> {
   List<DbFilterPopulated> toDbFilterPopulatedList({
     required FilterDao dao,
-  }) {
-    return map(
-      (item) => item.toDbFilterPopulated(dao: dao),
-    ).toList();
-  }
+  }) =>
+      map(
+        (item) => item.toDbFilterPopulated(dao: dao),
+      ).toList();
 }
 
 extension DbFilterPopulatedTypedResultExtension on TypedResult {
   DbFilterPopulated toDbFilterPopulated({
     required FilterDao dao,
-  }) {
-    return DbFilterPopulated(
-      dbFilter: readTable(dao.db.dbFilters),
-    );
-  }
+  }) =>
+      DbFilterPopulated(
+        dbFilter: readTable(dao.db.dbFilters),
+      );
 }

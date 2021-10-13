@@ -58,22 +58,21 @@ class SearchWidget extends StatelessWidget {
   DefaultTabController buildNonEmptyInputBody(
     ISearchBloc searchBloc,
     BuildContext context,
-  ) {
-    return DefaultTabController(
-      length: tabs.length,
-      initialIndex: tabs.indexOf(searchBloc.selectedTab),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          const _SearchTabBarWidget(),
-          const FediUltraLightGreyDivider(),
-          Expanded(
-            child: const _SearchBodyWidget(),
-          ),
-        ],
-      ),
-    );
-  }
+  ) =>
+      DefaultTabController(
+        length: tabs.length,
+        initialIndex: tabs.indexOf(searchBloc.selectedTab),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            const _SearchTabBarWidget(),
+            const FediUltraLightGreyDivider(),
+            Expanded(
+              child: const _SearchBodyWidget(),
+            ),
+          ],
+        ),
+      );
 
   const SearchWidget();
 }
@@ -115,44 +114,41 @@ class _SearchTabBodyWidget extends StatelessWidget {
     );
   }
 
-  Widget buildStatusesTab(BuildContext context) {
-    return SearchStatusPaginationBloc.provideToContext(
-      context,
-      child: DisposableProvider<
-          IPaginationListBloc<PaginationPage<IStatus>, IStatus>>(
-        create: (context) =>
-            SearchStatusesPaginationListBloc.createFromContext(context),
-        child: const SearchStatusesListWidget(),
-      ),
-    );
-  }
-
-  Widget buildHashtagsTab(BuildContext context) {
-    return SearchHashtagPaginationBloc.provideToContext(
-      context,
-      child: DisposableProvider<
-          IPaginationListBloc<PaginationPage<IHashtag>, IHashtag>>(
-        create: (context) =>
-            SearchHashtagsPaginationListBloc.createFromContext(context),
-        child: const SearchHashtagsListWidget(),
-      ),
-    );
-  }
-
-  Widget buildAccountsTab(BuildContext context) {
-    return SearchAccountPaginationBloc.provideToContext(
-      context,
-      child: DisposableProvider<IAccountPaginationListBloc>(
-        create: (context) =>
-            SearchAccountsPaginationListBloc.createFromContext(context),
-        child: ProxyProvider<IAccountPaginationListBloc,
-            IPaginationListBloc<PaginationPage<IAccount>, IAccount>>(
-          update: (context, value, previous) => value,
-          child: const SearchAccountsListWidget(),
+  Widget buildStatusesTab(BuildContext context) =>
+      SearchStatusPaginationBloc.provideToContext(
+        context,
+        child: DisposableProvider<
+            IPaginationListBloc<PaginationPage<IStatus>, IStatus>>(
+          create: (context) =>
+              SearchStatusesPaginationListBloc.createFromContext(context),
+          child: const SearchStatusesListWidget(),
         ),
-      ),
-    );
-  }
+      );
+
+  Widget buildHashtagsTab(BuildContext context) =>
+      SearchHashtagPaginationBloc.provideToContext(
+        context,
+        child: DisposableProvider<
+            IPaginationListBloc<PaginationPage<IHashtag>, IHashtag>>(
+          create: (context) =>
+              SearchHashtagsPaginationListBloc.createFromContext(context),
+          child: const SearchHashtagsListWidget(),
+        ),
+      );
+
+  Widget buildAccountsTab(BuildContext context) =>
+      SearchAccountPaginationBloc.provideToContext(
+        context,
+        child: DisposableProvider<IAccountPaginationListBloc>(
+          create: (context) =>
+              SearchAccountsPaginationListBloc.createFromContext(context),
+          child: ProxyProvider<IAccountPaginationListBloc,
+              IPaginationListBloc<PaginationPage<IAccount>, IAccount>>(
+            update: (context, value, previous) => value,
+            child: const SearchAccountsListWidget(),
+          ),
+        ),
+      );
 
   Widget buildTabBody(
     BuildContext context,
@@ -179,28 +175,26 @@ class _SearchTabBarWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: FediPadding.allBigPadding,
-      child: Builder(
-        builder: (context) {
-          var tabController = DefaultTabController.of(context);
+  Widget build(BuildContext context) => Padding(
+        padding: FediPadding.allBigPadding,
+        child: Builder(
+          builder: (context) {
+            var tabController = DefaultTabController.of(context);
 
-          return DisposableProvider<IFediTabIndicatorBloc<SearchTab>>(
-            create: (context) => FediTabIndicatorBloc<SearchTab>(
-              items: tabs,
-              tabController: tabController!,
-            ),
-            child: FediTextTabIndicatorWidget(
-              style: FediTabStyle.bubble,
-              isTransparent: false,
-              tabToTextMapper: mapTabToTitle,
-            ),
-          );
-        },
-      ),
-    );
-  }
+            return DisposableProvider<IFediTabIndicatorBloc<SearchTab>>(
+              create: (context) => FediTabIndicatorBloc<SearchTab>(
+                items: tabs,
+                tabController: tabController!,
+              ),
+              child: FediTextTabIndicatorWidget(
+                style: FediTabStyle.bubble,
+                isTransparent: false,
+                tabToTextMapper: mapTabToTitle,
+              ),
+            );
+          },
+        ),
+      );
 }
 
 String mapTabToTitle(BuildContext context, SearchTab? tab) {

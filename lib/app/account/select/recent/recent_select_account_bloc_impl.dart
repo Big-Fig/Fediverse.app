@@ -41,6 +41,7 @@ class RecentSelectAccountBloc extends DisposableOwner
             (account) => account.id == selectedAccount.remoteId,
           );
 
+          // ignore: cascade_invocations
           recentItems.add(selectedAccount.toUnifediApiAccount());
         }
 

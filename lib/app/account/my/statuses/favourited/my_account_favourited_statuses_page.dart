@@ -21,21 +21,19 @@ import 'package:unifedi_api/unifedi_api.dart';
 
 class MyAccountFavouritedStatusesPage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: FediPageTitleAppBar(
-        title: S.of(context).app_account_my_statuses_favourited_title,
-      ),
-      body: const SafeArea(
-        child: CollapsibleOwnerWidget(
-          child: StatusCachedPaginationListTimelineWidget(
-            customEmptyWidget: _MyAccountFavouritedStatusesPageEmptyWidget(),
-            needWatchLocalRepositoryForUpdates: true,
+  Widget build(BuildContext context) => Scaffold(
+        appBar: FediPageTitleAppBar(
+          title: S.of(context).app_account_my_statuses_favourited_title,
+        ),
+        body: const SafeArea(
+          child: CollapsibleOwnerWidget(
+            child: StatusCachedPaginationListTimelineWidget(
+              customEmptyWidget: _MyAccountFavouritedStatusesPageEmptyWidget(),
+              needWatchLocalRepositoryForUpdates: true,
+            ),
           ),
         ),
-      ),
-    );
-  }
+      );
 
   const MyAccountFavouritedStatusesPage();
 }
@@ -61,42 +59,41 @@ void goToMyAccountFavouritedStatusesPage(BuildContext context) {
   );
 }
 
-MaterialPageRoute createMyAccountFavouritedStatusesPage() {
-  return MaterialPageRoute(
-    builder: (context) =>
-        DisposableProvider<IMyAccountFavouritedStatusesCachedListBloc>(
-      create: (context) => MyAccountFavouritedStatusesCachedListBloc(
-        unifediApiMyAccountService: Provider.of<IUnifediApiMyAccountService>(
-          context,
-          listen: false,
+MaterialPageRoute<void> createMyAccountFavouritedStatusesPage() =>
+    MaterialPageRoute<void>(
+      builder: (context) =>
+          DisposableProvider<IMyAccountFavouritedStatusesCachedListBloc>(
+        create: (context) => MyAccountFavouritedStatusesCachedListBloc(
+          unifediApiMyAccountService: Provider.of<IUnifediApiMyAccountService>(
+            context,
+            listen: false,
+          ),
+          statusRepository: IStatusRepository.of(
+            context,
+            listen: false,
+          ),
         ),
-        statusRepository: IStatusRepository.of(
-          context,
-          listen: false,
-        ),
-      ),
-      child: ProxyProvider<IMyAccountFavouritedStatusesCachedListBloc,
-          IStatusCachedListBloc>(
-        update: (context, value, previous) => value,
-        child: StatusCachedListBlocProxyProvider(
-          child: ProxyProvider<IMyAccountFavouritedStatusesCachedListBloc,
-              ICachedListBloc<IStatus?>>(
-            update: (context, value, previous) => value,
-            child: StatusCachedListBlocLoadingWidget(
-              child: StatusCachedPaginationBloc.provideToContext(
-                context,
-                child:
-                    StatusCachedPaginationListWithNewItemsBloc.provideToContext(
+        child: ProxyProvider<IMyAccountFavouritedStatusesCachedListBloc,
+            IStatusCachedListBloc>(
+          update: (context, value, previous) => value,
+          child: StatusCachedListBlocProxyProvider(
+            child: ProxyProvider<IMyAccountFavouritedStatusesCachedListBloc,
+                ICachedListBloc<IStatus?>>(
+              update: (context, value, previous) => value,
+              child: StatusCachedListBlocLoadingWidget(
+                child: StatusCachedPaginationBloc.provideToContext(
                   context,
-                  child: const MyAccountFavouritedStatusesPage(),
-                  mergeNewItemsImmediately: false,
-                  mergeOwnStatusesImmediately: false,
+                  child: StatusCachedPaginationListWithNewItemsBloc
+                      .provideToContext(
+                    context,
+                    child: const MyAccountFavouritedStatusesPage(),
+                    mergeNewItemsImmediately: false,
+                    mergeOwnStatusesImmediately: false,
+                  ),
                 ),
               ),
             ),
           ),
         ),
       ),
-    ),
-  );
-}
+    );

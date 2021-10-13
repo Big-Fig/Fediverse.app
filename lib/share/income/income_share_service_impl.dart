@@ -68,7 +68,7 @@ class IncomeShareService extends AsyncInitLoadingBloc
           lastReceivedShareEvent!,
         );
       },
-      onError: (err) {
+      onError: (dynamic err) {
         _logger.shout(() => 'getTextStream error $err');
       },
     ).disposeWith(this);
@@ -92,7 +92,7 @@ class IncomeShareService extends AsyncInitLoadingBloc
           );
         }
       },
-      onError: (err) {
+      onError: (dynamic err) {
         _logger.shout(() => 'getMediaStream error $err');
       },
     ).disposeWith(this);
@@ -106,7 +106,7 @@ class IncomeShareService extends AsyncInitLoadingBloc
 }
 
 IncomeShareEventMedia _mapMedia(SharedMediaFile media) {
-  var type;
+  IncomeShareEventMediaType type;
 
   switch (media.type) {
     case SharedMediaType.IMAGE:

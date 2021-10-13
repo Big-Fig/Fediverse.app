@@ -22,6 +22,7 @@ class RemoteStatusBloc extends StatusBloc {
   final BehaviorSubject<IAccount> inReplyToAccountSubject = BehaviorSubject();
   final BehaviorSubject<IStatus?> inReplyToStatusSubject = BehaviorSubject();
   final IConnectionService connectionService;
+
   RemoteStatusBloc({
     required this.instanceUri,
     required IUnifediApiStatusService unifediApiStatusService,
@@ -69,8 +70,10 @@ class RemoteStatusBloc extends StatusBloc {
       instanceUri: remoteInstanceBloc.instanceUri,
     );
 
-    remoteStatusBloc.addDisposable(unifediApiAccountService);
-    remoteStatusBloc.addDisposable(unifediApiStatusService);
+    // ignore: cascade_invocations
+    remoteStatusBloc
+      ..addDisposable(unifediApiAccountService)
+      ..addDisposable(unifediApiStatusService);
 
     return remoteStatusBloc;
   }
@@ -81,17 +84,16 @@ class RemoteStatusBloc extends StatusBloc {
     bool isNeedRefreshFromNetworkOnInit = false,
     bool delayInit = true,
     required Widget child,
-  }) {
-    return DisposableProvider<IStatusBloc>(
-      create: (context) => RemoteStatusBloc.createFromContext(
-        context,
-        status: status,
-        isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
-        delayInit: delayInit,
-      ),
-      child: child,
-    );
-  }
+  }) =>
+      DisposableProvider<IStatusBloc>(
+        create: (context) => RemoteStatusBloc.createFromContext(
+          context,
+          status: status,
+          isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
+          delayInit: delayInit,
+        ),
+        child: child,
+      );
 
   @override
   Future actualInit({
@@ -116,7 +118,7 @@ class RemoteStatusBloc extends StatusBloc {
   }
 
   Future _checkIsInReplyToAccountLoaded() async {
-    // todo: dont load account if inReplyToStatus already loaded
+    // todo: don't load account if inReplyToStatus already loaded
     var inReplyToAccountRemoteId = status.inReplyToAccountRemoteId;
     if (inReplyToAccountRemoteId != null) {
       var remoteAccount = await unifediApiAccountService.getAccount(
@@ -181,7 +183,7 @@ class RemoteStatusBloc extends StatusBloc {
       (mention) => mention.url == url,
     );
 
-    var account;
+    IAccount? account;
     if (foundMention != null) {
       var accountRemoteId = foundMention.id;
 

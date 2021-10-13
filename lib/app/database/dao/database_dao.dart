@@ -15,7 +15,7 @@ abstract class DatabaseDao<
 
   DatabaseDao(AppDatabase db) : super(db);
 
-  SimpleSelectStatement<TableDsl, DbItem> startSelectQuery() => (select(table));
+  SimpleSelectStatement<TableDsl, DbItem> startSelectQuery() => select(table);
 
   Future<int> upsert({
     required Insertable<DbItem> entity,
@@ -121,14 +121,12 @@ abstract class DatabaseDao<
 
   Stream<int> watchCountAll() => countAllSelectable().watchSingle();
 
-  Selectable<int> countAllSelectable() {
-    return customSelect(
-      'SELECT COUNT(*) FROM $tableName',
-      readsFrom: {table},
-    ).map(
-      (QueryRow row) => row.read<int>('COUNT(*)'),
-    );
-  }
+  Selectable<int> countAllSelectable() => customSelect(
+        'SELECT COUNT(*) FROM $tableName',
+        readsFrom: {table},
+      ).map(
+        (QueryRow row) => row.read<int>('COUNT(*)'),
+      );
 
   Future<List<DbItem>> getAll() => getAllSelectable().get();
 
@@ -170,7 +168,7 @@ abstract class DatabaseDao<
       ).map(table.mapFromRow);
 
   String createOffsetContent(int? offset) =>
-      (offset != null ? ' OFFSET :offset' : '');
+      offset != null ? ' OFFSET :offset' : '';
 
   Future<DbItem?> findById(DbId id) => findByIdSelectable(id).getSingleOrNull();
 
@@ -218,7 +216,7 @@ abstract class DatabaseDao<
         (tbl) => createFindByDbIdWhereExpression(id),
       );
     } else {
-      return await deleteById(id);
+      return deleteById(id);
     }
   }
 
@@ -236,7 +234,7 @@ abstract class DatabaseDao<
         ),
       );
     } else {
-      return await batch(
+      return batch(
         (batch) => deleteOlderThanDateTime(
           dateTime,
           fieldName: fieldName,
@@ -260,7 +258,7 @@ abstract class DatabaseDao<
         ),
       );
     } else {
-      return await batch(
+      return batch(
         (batch) => deleteOlderThanString(
           string,
           fieldName: fieldName,
@@ -284,7 +282,7 @@ abstract class DatabaseDao<
         ),
       );
     } else {
-      return await batch(
+      return batch(
         (batch) => deleteOlderThanInt(
           intValue,
           fieldName: fieldName,
@@ -303,7 +301,7 @@ abstract class DatabaseDao<
         (tbl) => const Constant(true),
       );
     } else {
-      return await customUpdate(
+      return customUpdate(
         'DELETE FROM $tableName',
         updates: {table},
         updateKind: UpdateKind.delete,

@@ -1,4 +1,4 @@
-import 'package:fedi/app/account/my/edit/field/image/edit_my_acccount_image_confirm_dialog.dart';
+import 'package:fedi/app/account/my/edit/field/image/edit_my_account_image_confirm_dialog.dart';
 import 'package:fedi/app/file/image/crop/file_image_crop_helper.dart';
 import 'package:fedi/dialog/dialog_model.dart';
 import 'package:fedi/generated/l10n.dart';
@@ -10,35 +10,35 @@ import 'package:flutter/widgets.dart';
 Future<IMediaDeviceFile?> showEditMyAccountHeaderFieldPicker(
   BuildContext context,
   IMediaDeviceFile mediaDeviceFile,
-) {
-  return showEditMyAccountImageConfirmDialog(
-    title: S.of(context).app_account_my_edit_field_header_dialog_title,
-    context: context,
-    mediaDeviceFile: mediaDeviceFile,
-    actions: [
-      DialogAction(
-        label:
-            S.of(context).app_account_my_edit_field_header_dialog_action_select,
-        onAction: (context) {
-          _select(
-            context,
-            mediaDeviceFile,
-          );
-        },
-      ),
-      DialogAction(
-        label:
-            S.of(context).app_account_my_edit_field_header_dialog_action_crop,
-        onAction: (context) async {
-          await _cropAndSelect(
-            context,
-            mediaDeviceFile,
-          );
-        },
-      ),
-    ],
-  );
-}
+) =>
+    showEditMyAccountImageConfirmDialog(
+      title: S.of(context).app_account_my_edit_field_header_dialog_title,
+      context: context,
+      mediaDeviceFile: mediaDeviceFile,
+      actions: [
+        DialogAction(
+          label: S
+              .of(context)
+              .app_account_my_edit_field_header_dialog_action_select,
+          onAction: (context) {
+            _select(
+              context,
+              mediaDeviceFile,
+            );
+          },
+        ),
+        DialogAction(
+          label:
+              S.of(context).app_account_my_edit_field_header_dialog_action_crop,
+          onAction: (context) async {
+            await _cropAndSelect(
+              context,
+              mediaDeviceFile,
+            );
+          },
+        ),
+      ],
+    );
 
 Future _cropAndSelect(
   BuildContext context,

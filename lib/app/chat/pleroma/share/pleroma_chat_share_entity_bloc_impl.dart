@@ -1,7 +1,5 @@
 import 'package:collection/collection.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:fedi/app/account/my/my_account_bloc.dart';
-import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_bloc.dart';
@@ -34,16 +32,10 @@ class PleromaChatShareEntityBloc extends PleromaChatShareBloc
     required IPleromaChatRepository chatRepository,
     required IPleromaChatMessageRepository chatMessageRepository,
     required IUnifediApiChatService pleromaApiChatService,
-    required IMyAccountBloc myAccountBloc,
-    required IAccountRepository accountRepository,
-    required IUnifediApiAccountService unifediApiAccountService,
   }) : super(
           chatRepository: chatRepository,
           chatMessageRepository: chatMessageRepository,
           pleromaApiChatService: pleromaApiChatService,
-          myAccountBloc: myAccountBloc,
-          accountRepository: accountRepository,
-          unifediApiAccountService: unifediApiAccountService,
         );
 
   @override
@@ -66,6 +58,7 @@ class PleromaChatShareEntityBloc extends PleromaChatShareBloc
 
     var result = <UnifediApiPostChatMessage>[];
 
+    // ignore: cascade_invocations
     result.add(messageSendData);
 
     if (mediaAttachments != null && mediaAttachments.length > 1) {
@@ -88,24 +81,24 @@ class PleromaChatShareEntityBloc extends PleromaChatShareBloc
     BuildContext context, {
     required Widget child,
     required ShareEntity shareEntity,
-  }) {
-    return DisposableProvider<PleromaChatShareEntityBloc>(
-      create: (context) => createFromContext(
-        context,
-        shareEntity: shareEntity,
-      ),
-      child: ProxyProvider<PleromaChatShareEntityBloc, IPleromaChatShareBloc>(
-        update: (context, value, previous) => value,
-        child: ProxyProvider<PleromaChatShareEntityBloc, IShareEntityBloc>(
+  }) =>
+      DisposableProvider<PleromaChatShareEntityBloc>(
+        create: (context) => createFromContext(
+          context,
+          shareEntity: shareEntity,
+        ),
+        child: ProxyProvider<PleromaChatShareEntityBloc, IPleromaChatShareBloc>(
           update: (context, value, previous) => value,
-          child: ProxyProvider<PleromaChatShareEntityBloc, IShareToAccountBloc>(
+          child: ProxyProvider<PleromaChatShareEntityBloc, IShareEntityBloc>(
             update: (context, value, previous) => value,
-            child: PleromaChatShareBlocProxyProvider(child: child),
+            child:
+                ProxyProvider<PleromaChatShareEntityBloc, IShareToAccountBloc>(
+              update: (context, value, previous) => value,
+              child: PleromaChatShareBlocProxyProvider(child: child),
+            ),
           ),
         ),
-      ),
-    );
-  }
+      );
 
   static PleromaChatShareEntityBloc createFromContext(
     BuildContext context, {
@@ -126,18 +119,6 @@ class PleromaChatShareEntityBloc extends PleromaChatShareBloc
           listen: false,
         ),
         pleromaApiChatService: Provider.of<IUnifediApiChatService>(
-          context,
-          listen: false,
-        ),
-        accountRepository: IAccountRepository.of(
-          context,
-          listen: false,
-        ),
-        myAccountBloc: IMyAccountBloc.of(
-          context,
-          listen: false,
-        ),
-        unifediApiAccountService: Provider.of<IUnifediApiAccountService>(
           context,
           listen: false,
         ),

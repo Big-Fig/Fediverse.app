@@ -19,12 +19,10 @@ class SharePageAppBarSendTextActionWidget extends StatelessWidget {
 
         return PleromaAsyncOperationButtonBuilderWidget(
           showProgressDialog: true,
-          builder: (context, onPressed) {
-            return FediTextButton(
-              text: S.of(context).app_share_action_send,
-              onPressed: isPossibleToShare! ? onPressed : null,
-            );
-          },
+          builder: (context, onPressed) => FediTextButton(
+            text: S.of(context).app_share_action_send,
+            onPressed: isPossibleToShare! ? onPressed : null,
+          ),
           successToastMessage: S.of(context).app_share_toast_success,
           asyncButtonAction: () async {
             await shareBloc.share();

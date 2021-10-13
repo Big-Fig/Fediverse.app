@@ -25,16 +25,15 @@ class DraftStatusLocalOnlyListBloc extends IDraftStatusLocalOnlyListBloc {
   static Widget provideToContext(
     BuildContext context, {
     required Widget child,
-  }) {
-    return DisposableProvider<IDraftStatusLocalOnlyListBloc>(
-      create: (context) =>
-          DraftStatusLocalOnlyListBloc.createFromContext(context),
-      child: ProxyProvider<IDraftStatusLocalOnlyListBloc, IStatusListBloc>(
-        update: (context, value, previous) => value,
-        child: child,
-      ),
-    );
-  }
+  }) =>
+      DisposableProvider<IDraftStatusLocalOnlyListBloc>(
+        create: (context) =>
+            DraftStatusLocalOnlyListBloc.createFromContext(context),
+        child: ProxyProvider<IDraftStatusLocalOnlyListBloc, IStatusListBloc>(
+          update: (context, value, previous) => value,
+          child: child,
+        ),
+      );
 
   @override
   Future<List<IDraftStatus>> loadItemsFromLocalForPage({

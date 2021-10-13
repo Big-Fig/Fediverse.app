@@ -8,22 +8,21 @@ class LocalOnlyPaginationBlocProxyProvider<TPage extends PaginationPage<TItem>,
     TItem> extends StatelessWidget {
   final Widget child;
 
-  LocalOnlyPaginationBlocProxyProvider({required this.child});
+  const LocalOnlyPaginationBlocProxyProvider({required this.child});
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<ILocalOnlyPaginationBloc<TPage, TItem>,
-        IPaginationBloc<TPage, TItem>>(
-      update: (context, value, previous) => value,
-      child: ProxyProvider<ILocalOnlyPaginationBloc<TPage, TItem>,
-          IPaginationBloc<PaginationPage<TItem>, TItem>>(
+  Widget build(BuildContext context) => ProxyProvider<
+          ILocalOnlyPaginationBloc<TPage, TItem>,
+          IPaginationBloc<TPage, TItem>>(
         update: (context, value, previous) => value,
         child: ProxyProvider<ILocalOnlyPaginationBloc<TPage, TItem>,
-            IPaginationBloc>(
+            IPaginationBloc<PaginationPage<TItem>, TItem>>(
           update: (context, value, previous) => value,
-          child: child,
+          child: ProxyProvider<ILocalOnlyPaginationBloc<TPage, TItem>,
+              IPaginationBloc>(
+            update: (context, value, previous) => value,
+            child: child,
+          ),
         ),
-      ),
-    );
-  }
+      );
 }

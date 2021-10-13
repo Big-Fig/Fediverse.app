@@ -118,8 +118,8 @@ class RegisterUnifediApiAccessBloc extends AsyncInitLoadingBloc
     );
     var webSocketsModeSettingsBloc = WebSocketsModeSettingsBloc(
       mode: WebSocketsMode.disabledValue,
-    );
-    webSocketsModeSettingsBloc.disposeWith(this);
+    )..disposeWith(this);
+
     if (instanceType.isPleroma) {
       apiManager = createPleromaApiManager(
         apiAccessBloc: memoryUnifediApiAccessBloc,

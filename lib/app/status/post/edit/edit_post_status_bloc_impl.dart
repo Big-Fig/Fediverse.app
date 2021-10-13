@@ -94,16 +94,15 @@ class EditPostStatusBloc extends PostStatusBloc implements IEditPostStatusBloc {
     required Widget child,
     required IPostStatusData? initialData,
     required PostStatusDataCallback postStatusDataCallback,
-  }) {
-    return DisposableProvider<IPostStatusBloc>(
-      create: (context) => EditPostStatusBloc.createFromContext(
-        context,
-        initialData: initialData!,
-        postStatusDataCallback: postStatusDataCallback,
-      ),
-      child: PostStatusMessageBlocProxyProvider(child: child),
-    );
-  }
+  }) =>
+      DisposableProvider<IPostStatusBloc>(
+        create: (context) => EditPostStatusBloc.createFromContext(
+          context,
+          initialData: initialData!,
+          postStatusDataCallback: postStatusDataCallback,
+        ),
+        child: PostStatusMessageBlocProxyProvider(child: child),
+      );
 
   @override
   bool get isPossibleToChangeVisibility => true;

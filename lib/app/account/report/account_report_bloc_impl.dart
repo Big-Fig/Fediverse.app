@@ -56,20 +56,16 @@ class AccountReportBloc extends FormBloc implements IAccountReportBloc {
   bool get isAccountOnRemoteHost => account.isAcctOnRemoteHost;
 
   @override
-  Future<bool> send() async {
-    var success = await pleromaAuthAccountService.reportAccount(
-      accountId: account.remoteId,
-      statusIds: statuses.isNotEmpty
-          ? statuses.map((status) => status.remoteId!).toList()
-          : null,
-      comment: messageStringValueFormFieldBloc.currentValue,
-      forward: isAccountOnRemoteHost
-          ? forwardBoolValueFormFieldBloc.currentValue
-          : null,
-    );
-
-    return success;
-  }
+  Future send() => pleromaAuthAccountService.reportAccount(
+        accountId: account.remoteId,
+        statusIds: statuses.isNotEmpty
+            ? statuses.map((status) => status.remoteId!).toList()
+            : null,
+        comment: messageStringValueFormFieldBloc.currentValue,
+        forward: isAccountOnRemoteHost
+            ? forwardBoolValueFormFieldBloc.currentValue
+            : null,
+      );
 
   @override
   Uri? get remoteInstanceUriOrNull => null;

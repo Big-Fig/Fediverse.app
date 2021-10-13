@@ -109,7 +109,7 @@ void main() {
       testLocalizationLocale,
     );
 
-    var nullLocalizationLocale;
+    LocalizationLocale? nullLocalizationLocale;
 
     await localizationSettingsBloc
         .changeLocalizationLocale(nullLocalizationLocale);

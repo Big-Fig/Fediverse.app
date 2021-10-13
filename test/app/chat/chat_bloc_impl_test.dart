@@ -151,10 +151,12 @@ void main() {
       chatRemoteId: chat.remoteId,
       batchTransaction: null,
     );
-    await chatRepository.upsertInRemoteType(chat.toUnifediApiChat(
-      lastChatMessage: lastChatMessage,
-      accounts: accounts,
-    ));
+    await chatRepository.upsertInRemoteType(
+      chat.toUnifediApiChat(
+        lastChatMessage: lastChatMessage,
+        accounts: accounts,
+      ),
+    );
 
     await RxDartMockHelper.waitToExecuteRxCallbacks();
   }
@@ -167,7 +169,7 @@ void main() {
       remoteId: chat.remoteId,
     );
 
-    var listened;
+    IPleromaChat? listened;
 
     var subscription = chatBloc.chatStream.listen((newValue) {
       listened = newValue;
@@ -192,7 +194,7 @@ void main() {
 
     var newValue = DateTime(1990);
 
-    var listened;
+    DateTime? listened;
 
     var subscription = chatBloc.updatedAtStream.listen((newValue) {
       listened = newValue;
@@ -247,7 +249,7 @@ void main() {
       account: account2,
     );
 
-    var listened;
+    IPleromaChatMessage? listened;
 
     var subscription = chatBloc.lastChatMessageStream.listen((newValue) {
       listened = newValue;
@@ -298,7 +300,7 @@ void main() {
       remoteId: chat.remoteId,
     );
 
-    late var listened;
+    late List<IAccount> listened;
 
     var subscription = chatBloc.accountsStream.listen((newValue) {
       listened = newValue;
@@ -311,9 +313,12 @@ void main() {
     AccountMockHelper.expectAccount(chatBloc.accounts[0], account1);
     AccountMockHelper.expectAccount(listened[0], account1);
 
-    await _update(newValue, accounts: [
-      account2, //      account3
-    ]);
+    await _update(
+      newValue,
+      accounts: [
+        account2, //      account3
+      ],
+    );
 
     await RxDartMockHelper.waitToExecuteRxCallbacks();
 

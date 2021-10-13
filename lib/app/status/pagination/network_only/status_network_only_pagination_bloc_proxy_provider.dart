@@ -9,16 +9,16 @@ import 'package:provider/provider.dart';
 class StatusNetworkOnlyPaginationBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  StatusNetworkOnlyPaginationBlocProxyProvider({required this.child});
+  const StatusNetworkOnlyPaginationBlocProxyProvider({required this.child});
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IStatusNetworkOnlyPaginationBloc,
-        INetworkOnlyPaginationBloc<PaginationPage<IStatus>, IStatus>>(
-      update: (context, value, previous) => value,
-      child: NetworkOnlyPaginationBlocProxyProvider(
-        child: child,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => ProxyProvider<
+          IStatusNetworkOnlyPaginationBloc,
+          INetworkOnlyPaginationBloc<PaginationPage<IStatus>, IStatus>>(
+        update: (context, value, previous) => value,
+        child: NetworkOnlyPaginationBlocProxyProvider<PaginationPage<IStatus>,
+            IStatus>(
+          child: child,
+        ),
+      );
 }

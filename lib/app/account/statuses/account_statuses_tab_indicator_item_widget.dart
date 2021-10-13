@@ -18,33 +18,31 @@ class AccountTabTextTabIndicatorItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-          return Container(
-            color: IFediUiColorTheme.of(context).white,
-            child: DisposableProxyProvider<TabController,
-                IFediTabIndicatorBloc<AccountStatusesTab>>(
-              update: (context, tabController, _) =>
-                  FediTabIndicatorBloc<AccountStatusesTab>(
-                items: accountTabs,
-                tabController: tabController,
-              ),
-              child: FediTextTabIndicatorWidget<AccountStatusesTab>(
-                style: FediTabStyle.underline,
-                customTabBuilder: (
-                  BuildContext context,
-                  Widget child,
-                  AccountStatusesTab tab,
-                ) {
-                  return child;
-                },
-                isTransparent: true,
-                tabToTextMapper:
-                    (BuildContext context, AccountStatusesTab? tab) =>
-                        mapTabToTitle(context, tab!),
-              ),
+        builder: (BuildContext context, BoxConstraints constraints) =>
+            Container(
+          color: IFediUiColorTheme.of(context).white,
+          child: DisposableProxyProvider<TabController,
+              IFediTabIndicatorBloc<AccountStatusesTab>>(
+            update: (context, tabController, _) =>
+                FediTabIndicatorBloc<AccountStatusesTab>(
+              items: accountTabs,
+              tabController: tabController,
             ),
-          );
-        },
+            child: FediTextTabIndicatorWidget<AccountStatusesTab>(
+              style: FediTabStyle.underline,
+              customTabBuilder: (
+                BuildContext context,
+                Widget child,
+                AccountStatusesTab tab,
+              ) =>
+                  child,
+              isTransparent: true,
+              tabToTextMapper:
+                  (BuildContext context, AccountStatusesTab? tab) =>
+                      mapTabToTitle(context, tab!),
+            ),
+          ),
+        ),
       );
 
   static String mapTabToTitle(BuildContext context, AccountStatusesTab tab) {

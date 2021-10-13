@@ -12,21 +12,19 @@ import 'package:flutter/material.dart';
 
 class PleromaChatStartPage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: FediPageCustomAppBar(
-        leading: const FediBackIconButton(),
-        child: const SearchInputWidget(
-          autofocus: true,
+  Widget build(BuildContext context) => Scaffold(
+        appBar: FediPageCustomAppBar(
+          leading: const FediBackIconButton(),
+          child: const SearchInputWidget(
+            autofocus: true,
+          ),
         ),
-      ),
-      body: const SafeArea(
-        child: SingleSelectAccountWidget(
-          accountSelectedCallback: _accountSelectedCallback,
+        body: const SafeArea(
+          child: SingleSelectAccountWidget(
+            accountSelectedCallback: _accountSelectedCallback,
+          ),
         ),
-      ),
-    );
-  }
+      );
 
   const PleromaChatStartPage();
 }
@@ -41,23 +39,21 @@ Future _accountSelectedCallback(BuildContext context, IAccount account) async {
 void goToPleromaChatStartPage(BuildContext context) {
   Navigator.push(
     context,
-    MaterialPageRoute(
-      builder: (context) {
-        return SelectAccountListBloc.provideToContext(
+    MaterialPageRoute<void>(
+      builder: (context) => SelectAccountListBloc.provideToContext(
+        context,
+        excludeMyAccount: true,
+        child: AccountCachedPaginationBloc.provideToContext(
           context,
-          excludeMyAccount: true,
-          child: AccountCachedPaginationBloc.provideToContext(
+          child: SelectAccountPaginationListBloc.provideToContext(
             context,
-            child: SelectAccountPaginationListBloc.provideToContext(
-              context,
-              child: const PleromaChatStartPage(),
-            ),
+            child: const PleromaChatStartPage(),
           ),
-          customLocalAccountListLoader: null,
-          customRemoteAccountListLoader: null,
-          followingsOnly: false,
-        );
-      },
+        ),
+        customLocalAccountListLoader: null,
+        customRemoteAccountListLoader: null,
+        followingsOnly: false,
+      ),
     ),
   );
 }

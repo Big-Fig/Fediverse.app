@@ -8,17 +8,16 @@ class LocalInstanceDetailsPage extends StatelessWidget {
   const LocalInstanceDetailsPage();
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: InstanceHostAppBarWidget(),
-      body: const SafeArea(
-        child: InstanceDetailsWidget(),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Scaffold(
+        appBar: InstanceHostAppBarWidget(),
+        body: const SafeArea(
+          child: InstanceDetailsWidget(),
+        ),
+      );
 }
 
-MaterialPageRoute createLocalInstanceDetailsPageRoute() => MaterialPageRoute(
+MaterialPageRoute<void> createLocalInstanceDetailsPageRoute() =>
+    MaterialPageRoute<void>(
       builder: (context) => LocalInstanceDetailsBloc.provideToContext(
         context,
         child: const LocalInstanceDetailsPage(),

@@ -50,8 +50,8 @@ void goToSingleSelectAccountPage(
 }) {
   Navigator.push(
     context,
-    MaterialPageRoute(builder: (context) {
-      return SelectAccountListBloc.provideToContext(
+    MaterialPageRoute<void>(
+      builder: (context) => SelectAccountListBloc.provideToContext(
         context,
         followingsOnly: followingsOnly,
         excludeMyAccount: excludeMyAccount,
@@ -68,7 +68,7 @@ void goToSingleSelectAccountPage(
         ),
         customLocalAccountListLoader: customLocalAccountListLoader,
         customRemoteAccountListLoader: customRemoteAccountListLoader,
-      );
-    }),
+      ),
+    ),
   );
 }

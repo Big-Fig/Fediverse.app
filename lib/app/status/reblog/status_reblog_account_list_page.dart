@@ -17,26 +17,24 @@ import 'package:flutter/material.dart';
 
 class StatusReblogAccountListPage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: FediPageTitleAppBar(
-        title: S.of(context).app_status_rebloggedBy_title,
-      ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            const _StatusReblogAccountListPrivacyWarningWidget(),
-            const Expanded(
-              child: AccountPaginationListWidget(
-                accountSelectedCallback: _goToAccountDetailsPage,
-                key: PageStorageKey('StatusReblogAccountListPage'),
-              ),
-            ),
-          ],
+  Widget build(BuildContext context) => Scaffold(
+        appBar: FediPageTitleAppBar(
+          title: S.of(context).app_status_rebloggedBy_title,
         ),
-      ),
-    );
-  }
+        body: SafeArea(
+          child: Column(
+            children: [
+              const _StatusReblogAccountListPrivacyWarningWidget(),
+              const Expanded(
+                child: AccountPaginationListWidget(
+                  accountSelectedCallback: _goToAccountDetailsPage,
+                  key: PageStorageKey('StatusReblogAccountListPage'),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
 
   const StatusReblogAccountListPage();
 }
@@ -65,22 +63,20 @@ class _StatusReblogAccountListPrivacyWarningWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: FediPadding.allBigPadding,
-      child: Text(
-        S.of(context).app_account_list_privacy,
-        textAlign: TextAlign.center,
-        style: IFediUiTextTheme.of(context).mediumShortBoldGrey,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Padding(
+        padding: FediPadding.allBigPadding,
+        child: Text(
+          S.of(context).app_account_list_privacy,
+          textAlign: TextAlign.center,
+          style: IFediUiTextTheme.of(context).mediumShortBoldGrey,
+        ),
+      );
 }
 
 void goToStatusReblogAccountListPage(BuildContext context, IStatus? status) {
   Navigator.push(
     context,
-    MaterialPageRoute(
+    MaterialPageRoute<void>(
       builder: (context) => StatusReblogAccountCachedListBloc.provideToContext(
         context,
         status: status!.reblog ?? status,

@@ -17,7 +17,7 @@ import 'package:provider/provider.dart';
 class AccountNoteWidget extends StatelessWidget {
   final TextStyle textStyle;
 
-  AccountNoteWidget({required this.textStyle});
+  const AccountNoteWidget({required this.textStyle});
 
   @override
   Widget build(BuildContext context) {

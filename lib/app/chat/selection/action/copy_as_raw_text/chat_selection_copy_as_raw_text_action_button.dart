@@ -13,28 +13,26 @@ class ChatSelectionCopyAsRawTextActionButtonWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return FediIconButton(
-      icon: Icon(FediIcons.copy),
-      color: IFediUiColorTheme.of(context).darkGrey,
-      onPressed: () async {
-        var chatSelectionBloc = IChatSelectionBloc.of(context, listen: false);
+  Widget build(BuildContext context) => FediIconButton(
+        icon: Icon(FediIcons.copy),
+        color: IFediUiColorTheme.of(context).darkGrey,
+        onPressed: () async {
+          var chatSelectionBloc = IChatSelectionBloc.of(context, listen: false);
 
-        var rawText = chatSelectionBloc.calculateSelectionAsRawText();
-        await Clipboard.setData(
-          ClipboardData(text: rawText),
-        );
+          var rawText = chatSelectionBloc.calculateSelectionAsRawText();
+          await Clipboard.setData(
+            ClipboardData(text: rawText),
+          );
 
-        chatSelectionBloc.clearSelection();
+          chatSelectionBloc.clearSelection();
 
-        IToastService.of(context, listen: false).showInfoToast(
-          context: context,
-          title: S
-              .of(context)
-              .app_chat_selection_action_copyAsRawText_toast_success,
-          content: null,
-        );
-      },
-    );
-  }
+          IToastService.of(context, listen: false).showInfoToast(
+            context: context,
+            title: S
+                .of(context)
+                .app_chat_selection_action_copyAsRawText_toast_success,
+            content: null,
+          );
+        },
+      );
 }

@@ -47,17 +47,15 @@ class PostMessageContentWidget extends StatelessWidget {
           textInputAction: TextInputAction.send,
           onSubmitted: (String value) async {
             if (postMessageBloc.isReadyToPost) {
-              await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+              await PleromaAsyncOperationHelper.performPleromaAsyncOperation<
+                  void>(
                 context: context,
-                asyncCode: () {
-                  return postMessageBloc.post();
-                },
+                asyncCode: () => postMessageBloc.post(),
               );
             } else {
               await FediSimpleAlertDialog(
-                context: context,
                 title: S.of(context).app_chat_post_error_empty_dialog_title,
-              ).show(context);
+              ).show<void>(context);
             }
           },
           maxLines: null,

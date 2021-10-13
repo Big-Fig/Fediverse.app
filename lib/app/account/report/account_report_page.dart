@@ -19,14 +19,12 @@ class AccountReportPage extends StatelessWidget {
   const AccountReportPage();
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const _AccountReportPageAppBar(),
-      body: const SafeArea(
-        child: AccountReportWidget(),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Scaffold(
+        appBar: const _AccountReportPageAppBar(),
+        body: const SafeArea(
+          child: AccountReportWidget(),
+        ),
+      );
 }
 
 class _AccountReportPageAppBar extends StatelessWidget
@@ -73,22 +71,16 @@ class _AccountReportSendButton extends StatelessWidget {
             onPressed: isHaveAtLeastOneError! ? null : onPressed,
           ),
           asyncButtonAction: () async {
-            var success = await accountReportBloc.send();
+            await accountReportBloc.send();
 
             var toastService = IToastService.of(context, listen: false);
 
-            if (success) {
-              toastService.showInfoToast(
-                context: context,
-                title: S.of(context).app_account_report_toast_success,
-              );
-              Navigator.of(context).pop();
-            } else {
-              toastService.showErrorToast(
-                context: context,
-                title: S.of(context).app_account_report_toast_fail,
-              );
-            }
+            // ignore: cascade_invocations
+            toastService.showInfoToast(
+              context: context,
+              title: S.of(context).app_account_report_toast_success,
+            );
+            Navigator.of(context).pop();
           },
         );
       },
@@ -101,7 +93,7 @@ void goToAccountReportPage(
   required IAccount account,
   required List<IStatus> statuses,
 }) {
-  Navigator.push(
+  Navigator.push<void>(
     context,
     createAccountReportPageRoute(
       account: account,
@@ -113,20 +105,19 @@ void goToAccountReportPage(
 MaterialPageRoute createAccountReportPageRoute({
   required IAccount account,
   required List<IStatus> statuses,
-}) {
-  return MaterialPageRoute(
-    builder: (context) => DisposableProvider<IAccountReportBloc>(
-      create: (context) => AccountReportBloc(
-        account: account,
-        statuses: statuses,
-        pleromaAuthAccountService: Provider.of<IUnifediApiAccountService>(
-          context,
-          listen: false,
+}) =>
+    MaterialPageRoute<void>(
+      builder: (context) => DisposableProvider<IAccountReportBloc>(
+        create: (context) => AccountReportBloc(
+          account: account,
+          statuses: statuses,
+          pleromaAuthAccountService: Provider.of<IUnifediApiAccountService>(
+            context,
+            listen: false,
+          ),
+        ),
+        child: AccountReportBlocProxyProvider(
+          child: const AccountReportPage(),
         ),
       ),
-      child: AccountReportBlocProxyProvider(
-        child: const AccountReportPage(),
-      ),
-    ),
-  );
-}
+    );

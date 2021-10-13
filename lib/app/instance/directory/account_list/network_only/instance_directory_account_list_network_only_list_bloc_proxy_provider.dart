@@ -9,18 +9,17 @@ class InstanceDirectoryAccountListNetworkOnlyListBlocProxyProvider
     extends StatelessWidget {
   final Widget child;
 
-  InstanceDirectoryAccountListNetworkOnlyListBlocProxyProvider({
+  const InstanceDirectoryAccountListNetworkOnlyListBlocProxyProvider({
     required this.child,
   });
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IInstanceDirectoryAccountListNetworkOnlyListBloc,
-        INetworkOnlyListBloc<IAccount>>(
-      update: (context, value, previous) => value,
-      child: AccountPaginationListBlocProxyProvider(
-        child: child,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => ProxyProvider<
+          IInstanceDirectoryAccountListNetworkOnlyListBloc,
+          INetworkOnlyListBloc<IAccount>>(
+        update: (context, value, previous) => value,
+        child: AccountPaginationListBlocProxyProvider(
+          child: child,
+        ),
+      );
 }

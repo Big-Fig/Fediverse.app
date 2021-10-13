@@ -126,34 +126,32 @@ class _JoinUnifediApiAccessActionsWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: FediPadding.horizontalSmallPadding,
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Expanded(
-                flex: 1,
-                child: const _JoinUnifediApiAccessSignUpButtonWidget(
-                  key: Key(JoinUnifediApiAccessWidgetKeys.signUpButtonKey),
+  Widget build(BuildContext context) => Padding(
+        padding: FediPadding.horizontalSmallPadding,
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Expanded(
+                  flex: 1,
+                  child: const _JoinUnifediApiAccessSignUpButtonWidget(
+                    key: Key(JoinUnifediApiAccessWidgetKeys.signUpButtonKey),
+                  ),
                 ),
-              ),
-              Expanded(
-                flex: 1,
-                child: const _JoinUnifediApiAccessLoginButtonWidget(
-                  key: Key(JoinUnifediApiAccessWidgetKeys.loginButtonKey),
+                Expanded(
+                  flex: 1,
+                  child: const _JoinUnifediApiAccessLoginButtonWidget(
+                    key: Key(JoinUnifediApiAccessWidgetKeys.loginButtonKey),
+                  ),
                 ),
-              ),
-            ],
-          ),
-          const FediBigVerticalSpacer(),
-          const _JoinUnifediApiAccessExploreAsGuestButtonWidget(),
-        ],
-      ),
-    );
-  }
+              ],
+            ),
+            const FediBigVerticalSpacer(),
+            const _JoinUnifediApiAccessExploreAsGuestButtonWidget(),
+          ],
+        ),
+      );
 }
 
 class _JoinUnifediApiAccessLoginButtonWidget extends StatelessWidget {
@@ -162,23 +160,21 @@ class _JoinUnifediApiAccessLoginButtonWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(
-        left: FediSizes.smallPadding,
-        // ignore: no-equal-arguments
-        right: FediSizes.smallPadding,
-      ),
-      child: FediTransparentTextButtonWithBorder(
-        S.of(context).app_auth_instance_join_action_login,
-        onPressed: () {
-          logInToInstance(context);
-        },
-        color: IFediUiColorTheme.of(context).white,
-        expanded: true,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Padding(
+        padding: EdgeInsets.only(
+          left: FediSizes.smallPadding,
+          // ignore: no-equal-arguments
+          right: FediSizes.smallPadding,
+        ),
+        child: FediTransparentTextButtonWithBorder(
+          S.of(context).app_auth_instance_join_action_login,
+          onPressed: () {
+            logInToInstance(context);
+          },
+          color: IFediUiColorTheme.of(context).white,
+          expanded: true,
+        ),
+      );
 }
 
 class _JoinUnifediApiAccessExploreAsGuestButtonWidget extends StatelessWidget {
@@ -219,23 +215,21 @@ class _JoinUnifediApiAccessSignUpButtonWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(
-        left: FediSizes.smallPadding,
-        // ignore: no-equal-arguments
-        right: FediSizes.smallPadding,
-      ),
-      child: FediTransparentTextButtonWithBorder(
-        S.of(context).app_auth_instance_join_action_signUp,
-        onPressed: () {
-          signUpToInstance(context);
-        },
-        color: IFediUiColorTheme.of(context).white,
-        expanded: true,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Padding(
+        padding: EdgeInsets.only(
+          left: FediSizes.smallPadding,
+          // ignore: no-equal-arguments
+          right: FediSizes.smallPadding,
+        ),
+        child: FediTransparentTextButtonWithBorder(
+          S.of(context).app_auth_instance_join_action_signUp,
+          onPressed: () {
+            signUpToInstance(context);
+          },
+          color: IFediUiColorTheme.of(context).white,
+          expanded: true,
+        ),
+      );
 }
 
 class _JoinUnifediApiAccessHostTextFieldWidget extends StatelessWidget {
@@ -303,27 +297,25 @@ class _JoinUnifediApiAccessLogoWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return KeyboardVisibilityBuilder(
-      builder: (context, isKeyboardVisible) {
-        double width;
-        if (isKeyboardVisible) {
-          // todo: refactor
-          // ignore: no-magic-number
-          width = 75.0;
-        } else {
-          // todo: refactor
-          // ignore: no-magic-number
-          width = 175.0;
-        }
+  Widget build(BuildContext context) => KeyboardVisibilityBuilder(
+        builder: (context, isKeyboardVisible) {
+          double width;
+          if (isKeyboardVisible) {
+            // todo: refactor
+            // ignore: no-magic-number
+            width = 75.0;
+          } else {
+            // todo: refactor
+            // ignore: no-magic-number
+            width = 175.0;
+          }
 
-        return Image(
-          image: AssetImage('assets/images/theme/logo.png'),
-          width: width,
-        );
-      },
-    );
-  }
+          return Image(
+            image: AssetImage('assets/images/theme/logo.png'),
+            width: width,
+          );
+        },
+      );
 }
 
 class _JoinUnifediApiAccessTermsOfServiceButtonWidget extends StatelessWidget {
@@ -416,8 +408,8 @@ Future signUpToInstance(BuildContext context) async {
   );
   var unifediApiInstance = asyncDialogResult.result;
   if (unifediApiInstance != null) {
+    var toastService = IToastService.of(context, listen: false);
     if (unifediApiInstance.invitesEnabled == true) {
-      var toastService = IToastService.of(context, listen: false);
       toastService.showErrorToast(
         context: context,
         title: S.of(context).app_auth_instance_join_invitesOnly_dialog_title,
@@ -425,7 +417,6 @@ Future signUpToInstance(BuildContext context) async {
             S.of(context).app_auth_instance_join_invitesOnly_dialog_content,
       );
     } else if (unifediApiInstance.registrations != true) {
-      var toastService = IToastService.of(context, listen: false);
       toastService.showErrorToast(
         context: context,
         title: S
@@ -545,7 +536,7 @@ Future logInToInstance(BuildContext context) async {
           }
 
         case AppLaunchType.mock:
-          var testUnifediApiAccessJsonString;
+          String testUnifediApiAccessJsonString;
           if (Platform.isAndroid) {
             testUnifediApiAccessJsonString =
                 configService.androidTestUnifediApiAccessJson!;
@@ -555,7 +546,8 @@ Future logInToInstance(BuildContext context) async {
           }
 
           var testUnifediApiAccessJson =
-              jsonDecode(testUnifediApiAccessJsonString);
+              jsonDecode(testUnifediApiAccessJsonString)
+                  as Map<String, dynamic>;
 
           return UnifediApiAccess.fromJson(testUnifediApiAccessJson);
       }

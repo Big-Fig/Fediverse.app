@@ -131,9 +131,9 @@ class StatusSensitiveBloc extends DisposableOwner
         containsSpoilerStream,
         displayEnabledStream,
         (
-          dynamic nsfwSensitive,
-          dynamic containsSpoiler,
-          dynamic displayEnabled,
+          bool nsfwSensitive,
+          bool containsSpoiler,
+          bool displayEnabled,
         ) =>
             StatusSensitiveWarningState(
           nsfwSensitive: nsfwSensitive,

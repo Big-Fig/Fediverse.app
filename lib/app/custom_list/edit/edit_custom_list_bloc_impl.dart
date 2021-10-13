@@ -84,7 +84,7 @@ class EditCustomListBloc extends DisposableOwner
     if (onDelete != null) {
       editCustomListBloc.deletedStream
           .listen(
-            (_) => onDelete(),
+            (dynamic data) => onDelete(),
           )
           .disposeWith(editCustomListBloc);
     }
@@ -98,17 +98,16 @@ class EditCustomListBloc extends DisposableOwner
     required ICustomList initialValue,
     required Function(ICustomList customList) onSubmit,
     required VoidCallback onDelete,
-  }) {
-    return DisposableProvider<IEditCustomListBloc>(
-      create: (context) => EditCustomListBloc.createFromContext(
-        context,
-        initialValue: initialValue,
-        onSubmit: onSubmit,
-        onDelete: onDelete,
-      ),
-      child: EditCustomListBlocProxyProvider(child: child),
-    );
-  }
+  }) =>
+      DisposableProvider<IEditCustomListBloc>(
+        create: (context) => EditCustomListBloc.createFromContext(
+          context,
+          initialValue: initialValue,
+          onSubmit: onSubmit,
+          onDelete: onDelete,
+        ),
+        child: EditCustomListBlocProxyProvider(child: child),
+      );
 
   final ICustomList? customList;
 
@@ -224,9 +223,9 @@ class EditCustomListBloc extends DisposableOwner
         customListFormBloc.isSomethingChangedStream,
         editCustomListAccountListPaginationListBloc.isSomethingChangedStream,
         (
-          dynamic customListFormBlocIsHaveAtLeastOneError,
-          dynamic customListFormBlocIsSomethingChanged,
-          dynamic editCustomListAccountListPaginationListBlocIsSomethingChanged,
+          bool customListFormBlocIsHaveAtLeastOneError,
+          bool customListFormBlocIsSomethingChanged,
+          bool editCustomListAccountListPaginationListBlocIsSomethingChanged,
         ) =>
             _calculateIsReadyToSubmit(
           customListFormBlocIsHaveAtLeastOneError:
@@ -242,11 +241,10 @@ class EditCustomListBloc extends DisposableOwner
     required bool customListFormBlocIsHaveAtLeastOneError,
     required bool customListFormBlocIsSomethingChanged,
     required bool editCustomListAccountListPaginationListBlocIsSomethingChanged,
-  }) {
-    return !customListFormBlocIsHaveAtLeastOneError &&
-        (customListFormBlocIsSomethingChanged ||
-            editCustomListAccountListPaginationListBlocIsSomethingChanged);
-  }
+  }) =>
+      !customListFormBlocIsHaveAtLeastOneError &&
+      (customListFormBlocIsSomethingChanged ||
+          editCustomListAccountListPaginationListBlocIsSomethingChanged);
 
   @override
   Future<ICustomList> submit() async {
@@ -324,7 +322,8 @@ class EditCustomListBloc extends DisposableOwner
     }
   }
 
-  final StreamController deletedStreamController = StreamController.broadcast();
+  final StreamController deletedStreamController =
+      StreamController<dynamic>.broadcast();
 
   @override
   Stream get deletedStream => deletedStreamController.stream;

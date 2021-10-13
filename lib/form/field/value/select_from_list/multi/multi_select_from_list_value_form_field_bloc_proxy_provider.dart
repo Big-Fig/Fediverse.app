@@ -8,7 +8,7 @@ class MultiSelectFromListValueFormFieldBlocProxyProvider<T>
     extends StatelessWidget {
   final Widget child;
 
-  MultiSelectFromListValueFormFieldBlocProxyProvider({
+  const MultiSelectFromListValueFormFieldBlocProxyProvider({
     required this.child,
   });
 

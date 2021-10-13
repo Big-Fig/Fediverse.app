@@ -24,35 +24,33 @@ import 'package:provider/provider.dart';
 
 class InstanceAnnouncementListPage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: FediPageTitleAppBar(
-        title: S.of(context).app_instance_announcement_list_title,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: FediSizes.bigPadding),
-            child: FediIconButton(
-              icon: Icon(
-                FediIcons.settings,
-                color: IFediUiColorTheme.of(context).darkGrey,
+  Widget build(BuildContext context) => Scaffold(
+        appBar: FediPageTitleAppBar(
+          title: S.of(context).app_instance_announcement_list_title,
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: FediSizes.bigPadding),
+              child: FediIconButton(
+                icon: Icon(
+                  FediIcons.settings,
+                  color: IFediUiColorTheme.of(context).darkGrey,
+                ),
+                onPressed: () {
+                  showEditInstanceInstanceAnnouncementSettingsDialog(
+                    context: context,
+                  );
+                },
               ),
-              onPressed: () {
-                showEditInstanceInstanceAnnouncementSettingsDialog(
-                  context: context,
-                );
-              },
             ),
-          ),
-        ],
-      ),
-      body: const SafeArea(
-        child: InstanceAnnouncementPaginationListWidget(
-          customEmptyWidget: _InstanceAnnouncementListPagePageEmptyWidget(),
-          alwaysShowFooter: false,
+          ],
         ),
-      ),
-    );
-  }
+        body: const SafeArea(
+          child: InstanceAnnouncementPaginationListWidget(
+            customEmptyWidget: _InstanceAnnouncementListPagePageEmptyWidget(),
+            alwaysShowFooter: false,
+          ),
+        ),
+      );
 
   const InstanceAnnouncementListPage();
 }
@@ -88,10 +86,10 @@ void goToInstanceAnnouncementListPage(
 }
 
 // ignore: long-method
-MaterialPageRoute createInstanceAnnouncementListPageRoute({
+MaterialPageRoute<void> createInstanceAnnouncementListPageRoute({
   required BuildContext context,
 }) =>
-    MaterialPageRoute(
+    MaterialPageRoute<void>(
       builder: (context) =>
           DisposableProvider<IInstanceAnnouncementCachedListBloc>(
         create: (context) {

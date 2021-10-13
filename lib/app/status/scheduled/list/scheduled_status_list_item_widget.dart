@@ -24,7 +24,7 @@ final dateFormat = DateFormat('dd MMM, HH:mm a');
 class ScheduledStatusListItemWidget extends StatelessWidget {
   final VoidCallback successCallback;
 
-  ScheduledStatusListItemWidget({
+  const ScheduledStatusListItemWidget({
     required this.successCallback,
   });
 
@@ -99,25 +99,23 @@ class _ScheduledStatusListItemScheduledHeaderWidget extends StatelessWidget {
   final VoidCallback successCallback;
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: FediPadding.horizontalSmallPadding,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          const _ScheduledStatusListItemScheduledAtWidget(),
-          Row(
-            children: [
-              _ScheduledStatusListItemEditButtonWidget(
-                successCallback: successCallback,
-              ),
-              const _ScheduledStatusListItemCancelButtonWidget(),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Padding(
+        padding: FediPadding.horizontalSmallPadding,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            const _ScheduledStatusListItemScheduledAtWidget(),
+            Row(
+              children: [
+                _ScheduledStatusListItemEditButtonWidget(
+                  successCallback: successCallback,
+                ),
+                const _ScheduledStatusListItemCancelButtonWidget(),
+              ],
+            ),
+          ],
+        ),
+      );
 }
 
 class _ScheduledStatusListItemScheduledAtWidget extends StatelessWidget {
@@ -151,23 +149,21 @@ class _ScheduledStatusListItemAlreadyPostedHeaderWidget
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: FediPadding.horizontalSmallPadding,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Padding(
-            padding: FediPadding.allSmallPadding,
-            child: Text(
-              S.of(context).app_status_scheduled_state_alreadyPosted,
-              style: IFediUiTextTheme.of(context).mediumShortBoldDarkGrey,
+  Widget build(BuildContext context) => Padding(
+        padding: FediPadding.horizontalSmallPadding,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: FediPadding.allSmallPadding,
+              child: Text(
+                S.of(context).app_status_scheduled_state_alreadyPosted,
+                style: IFediUiTextTheme.of(context).mediumShortBoldDarkGrey,
+              ),
             ),
-          ),
-        ],
-      ),
-    );
-  }
+          ],
+        ),
+      );
 }
 
 class _ScheduledStatusListItemCanceledHeaderWidget extends StatelessWidget {
@@ -176,23 +172,21 @@ class _ScheduledStatusListItemCanceledHeaderWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: FediPadding.horizontalSmallPadding,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Padding(
-            padding: FediPadding.allSmallPadding,
-            child: Text(
-              S.of(context).app_status_scheduled_state_canceled,
-              style: IFediUiTextTheme.of(context).mediumShortBoldDarkGrey,
+  Widget build(BuildContext context) => Padding(
+        padding: FediPadding.horizontalSmallPadding,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: FediPadding.allSmallPadding,
+              child: Text(
+                S.of(context).app_status_scheduled_state_canceled,
+                style: IFediUiTextTheme.of(context).mediumShortBoldDarkGrey,
+              ),
             ),
-          ),
-        ],
-      ),
-    );
-  }
+          ],
+        ),
+      );
 }
 
 class _ScheduledStatusListItemCancelButtonWidget extends StatelessWidget {
@@ -204,7 +198,7 @@ class _ScheduledStatusListItemCancelButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var scheduledStatusBloc = IScheduledStatusBloc.of(context);
 
-    return PleromaAsyncOperationButtonBuilderWidget(
+    return PleromaAsyncOperationButtonBuilderWidget<void>(
       builder: (context, onPressed) => FediTextButton(
         text: S.of(context).app_account_my_statuses_draft_status_action_delete,
         color: IFediUiColorTheme.of(context).darkGrey,

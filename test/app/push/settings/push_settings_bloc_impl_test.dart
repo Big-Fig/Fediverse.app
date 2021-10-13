@@ -57,23 +57,28 @@ void main() {
     var pushRelayService = MockIPushRelayService();
 
     when(fcmPushService.deviceToken).thenReturn('testDeviceToken');
-    when(pushRelayService.createPushRelayEndPointUrl(
-      account: anyNamed('account'),
-      baseServerUrl: anyNamed('baseServerUrl'),
-      fcmDeviceToken: anyNamed('fcmDeviceToken'),
-    )).thenReturn('testUrl');
+    when(
+      pushRelayService.createPushRelayEndPointUrl(
+        account: anyNamed('account'),
+        baseServerUrl: anyNamed('baseServerUrl'),
+        fcmDeviceToken: anyNamed('fcmDeviceToken'),
+      ),
+    ).thenReturn('testUrl');
     when(fcmPushService.askPermissions()).thenAnswer((_) async => true);
-    when(pleromaPushService.subscribe(
-      metadata: anyNamed('metadata'),
-      alerts: anyNamed('alerts'),
-    )).thenAnswer((invocation) async {
-      return UnifediApiPushSubscription(
-        alerts: invocation.namedArguments[Symbol('alerts')],
+    when(
+      pleromaPushService.subscribe(
+        metadata: anyNamed('metadata'),
+        alerts: anyNamed('alerts'),
+      ),
+    ).thenAnswer(
+      (Invocation invocation) async => UnifediApiPushSubscription(
+        alerts: invocation.namedArguments[Symbol('alerts')]
+            as UnifediApiPushSubscriptionAlerts,
         endpoint: 'endpoint',
         serverKey: 'serverKey',
         id: 'id',
-      );
-    });
+      ),
+    );
 
     pushSettingsBloc = PushSettingsBloc(
       connectionService: MockIConnectionService(),

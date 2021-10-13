@@ -9,32 +9,34 @@ class CachedPaginationListWithNewItemsBlocProxyProvider<
     TPage extends CachedPaginationPage<TItem>, TItem> extends StatelessWidget {
   final Widget child;
 
-  CachedPaginationListWithNewItemsBlocProxyProvider({required this.child});
+  const CachedPaginationListWithNewItemsBlocProxyProvider({
+    required this.child,
+  });
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<ICachedPaginationListWithNewItemsBloc<TPage, TItem>,
-        ICachedPaginationListBloc<TPage, TItem>>(
-      update: (context, value, previous) => value,
-      child: ProxyProvider<ICachedPaginationListWithNewItemsBloc<TPage, TItem>,
-          ICachedPaginationListBloc<CachedPaginationPage<TItem>, TItem>>(
+  Widget build(BuildContext context) => ProxyProvider<
+          ICachedPaginationListWithNewItemsBloc<TPage, TItem>,
+          ICachedPaginationListBloc<TPage, TItem>>(
         update: (context, value, previous) => value,
-        child: CachedPaginationListBlocProxyProvider<TPage, TItem>(
-          child: ProxyProvider<
-              ICachedPaginationListWithNewItemsBloc<TPage, TItem>,
-              ICachedPaginationListWithNewItemsBloc>(
-            update: (context, value, previous) => value,
+        child: ProxyProvider<
+            ICachedPaginationListWithNewItemsBloc<TPage, TItem>,
+            ICachedPaginationListBloc<CachedPaginationPage<TItem>, TItem>>(
+          update: (context, value, previous) => value,
+          child: CachedPaginationListBlocProxyProvider<TPage, TItem>(
             child: ProxyProvider<
                 ICachedPaginationListWithNewItemsBloc<TPage, TItem>,
-                ICachedPaginationListBloc>(
+                ICachedPaginationListWithNewItemsBloc>(
               update: (context, value, previous) => value,
-              child: CachedPaginationListBlocProxyProvider(
-                child: child,
+              child: ProxyProvider<
+                  ICachedPaginationListWithNewItemsBloc<TPage, TItem>,
+                  ICachedPaginationListBloc>(
+                update: (context, value, previous) => value,
+                child: CachedPaginationListBlocProxyProvider<TPage, TItem>(
+                  child: child,
+                ),
               ),
             ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }

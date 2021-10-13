@@ -51,13 +51,12 @@ abstract class ConversationChatStatusListBloc extends AsyncInitLoadingBloc
   }
 
   @override
-  Stream<List<IStatus>> watchLocalItemsNewerThanItem(IStatus? item) {
-    return statusRepository.watchFindAllInAppType(
-      filters: _statusRepositoryFilters,
-      pagination: RepositoryPagination<IStatus>(
-        newerThanItem: item,
-      ),
-      orderingTerms: [orderingTermData],
-    );
-  }
+  Stream<List<IStatus>> watchLocalItemsNewerThanItem(IStatus? item) =>
+      statusRepository.watchFindAllInAppType(
+        filters: _statusRepositoryFilters,
+        pagination: RepositoryPagination<IStatus>(
+          newerThanItem: item,
+        ),
+        orderingTerms: [orderingTermData],
+      );
 }

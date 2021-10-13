@@ -6,7 +6,7 @@ class PushModelMockHelper {
     required String seed,
   }) =>
       PushMessage(
-        data: {
+        data: <String, String>{
           'seed1': seed + '1',
           'seed2': seed + '2',
         },

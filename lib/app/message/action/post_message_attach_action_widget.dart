@@ -21,7 +21,7 @@ class PostMessageAttachActionWidget extends StatelessWidget {
       builder: (context, snapshot) {
         var isPossibleToAttach = snapshot.data!;
 
-        var onPressed;
+        Future<void> Function()? onPressed;
         if (isPossibleToAttach) {
           onPressed = () async {
             postMessageBloc.toggleAttachActionSelection();

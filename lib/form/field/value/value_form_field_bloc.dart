@@ -21,5 +21,5 @@ extension IValueFormFieldBlocExtension on IValueFormFieldBloc {
   bool get isValueExist => currentValue != null;
 
   Stream<bool> get isValueExistStream =>
-      currentValueStream.map((currentValue) => currentValue != null);
+      currentValueStream.map((dynamic currentValue) => currentValue != null);
 }

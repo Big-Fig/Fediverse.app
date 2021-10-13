@@ -69,24 +69,23 @@ class ExternalShareEntityBloc extends ExternalShareBloc
     required ShareEntity shareEntity,
     required String popupTitle,
     required Widget child,
-  }) {
-    return DisposableProvider<ExternalShareEntityBloc>(
-      create: (context) => createFromContext(
-        context,
-        shareEntity: shareEntity,
-        popupTitle: popupTitle,
-      ),
-      child: ProxyProvider<ExternalShareEntityBloc, IExternalShareBloc>(
-        update: (context, value, previous) => value,
-        child: ProxyProvider<ExternalShareEntityBloc, IShareEntityBloc>(
+  }) =>
+      DisposableProvider<ExternalShareEntityBloc>(
+        create: (context) => createFromContext(
+          context,
+          shareEntity: shareEntity,
+          popupTitle: popupTitle,
+        ),
+        child: ProxyProvider<ExternalShareEntityBloc, IExternalShareBloc>(
           update: (context, value, previous) => value,
-          child: ExternalShareBlocProxyProvider(
-            child: child,
+          child: ProxyProvider<ExternalShareEntityBloc, IShareEntityBloc>(
+            update: (context, value, previous) => value,
+            child: ExternalShareBlocProxyProvider(
+              child: child,
+            ),
           ),
         ),
-      ),
-    );
-  }
+      );
 
   static ExternalShareEntityBloc createFromContext(
     BuildContext context, {

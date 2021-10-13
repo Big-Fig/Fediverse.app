@@ -6,13 +6,12 @@ import 'package:provider/provider.dart';
 class StatusThreadBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  StatusThreadBlocProxyProvider({required this.child});
+  const StatusThreadBlocProxyProvider({required this.child});
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IStatusThreadBloc, IStatusListBloc>(
-      update: (context, value, previous) => value,
-      child: child,
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IStatusThreadBloc, IStatusListBloc>(
+        update: (context, value, previous) => value,
+        child: child,
+      );
 }

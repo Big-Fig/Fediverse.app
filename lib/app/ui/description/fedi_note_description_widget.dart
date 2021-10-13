@@ -7,21 +7,19 @@ class FediNoteDescriptionWidget extends StatelessWidget {
   final EdgeInsets padding;
   final TextStyle? style;
 
-  FediNoteDescriptionWidget(
+  const FediNoteDescriptionWidget(
     this.text, {
     this.padding = FediPadding.allBigPadding,
     this.style,
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: padding,
-      child: Text(
-        text,
-        textAlign: TextAlign.center,
-        style: style ?? IFediUiTextTheme.of(context).mediumTallMediumGrey,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Padding(
+        padding: padding,
+        child: Text(
+          text,
+          textAlign: TextAlign.center,
+          style: style ?? IFediUiTextTheme.of(context).mediumTallMediumGrey,
+        ),
+      );
 }

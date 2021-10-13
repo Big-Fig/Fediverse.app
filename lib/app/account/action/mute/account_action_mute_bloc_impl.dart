@@ -44,25 +44,23 @@ class AccountActionMuteBloc extends DisposableOwner
   static AccountActionMuteBloc createFromContext(
     BuildContext context, {
     required IAccountBloc accountBloc,
-  }) {
-    return AccountActionMuteBloc(
-      accountBloc: accountBloc,
-    );
-  }
+  }) =>
+      AccountActionMuteBloc(
+        accountBloc: accountBloc,
+      );
 
   static Widget provideToContext(
     BuildContext context, {
     required Widget child,
     required IAccountBloc accountBloc,
-  }) {
-    return DisposableProvider<IAccountActionMuteBloc>(
-      create: (context) => AccountActionMuteBloc.createFromContext(
-        context,
-        accountBloc: accountBloc,
-      ),
-      child: child,
-    );
-  }
+  }) =>
+      DisposableProvider<IAccountActionMuteBloc>(
+        create: (context) => AccountActionMuteBloc.createFromContext(
+          context,
+          accountBloc: accountBloc,
+        ),
+        child: child,
+      );
 
   @override
   Future mute() => accountBloc.mute(

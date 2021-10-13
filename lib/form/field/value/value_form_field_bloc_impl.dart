@@ -73,14 +73,13 @@ class ValueFormFieldBloc<T> extends FormFieldBloc
   static List<ValueFormFieldValidationError> _validate<T>(
     T value,
     List<FormValueFieldValidation<T>> validators,
-  ) {
-    return validators
-        .map(
-          (validator) => validator(value),
-        )
-        .whereNotNull()
-        .toList();
-  }
+  ) =>
+      validators
+          .map(
+            (validator) => validator(value),
+          )
+          .whereNotNull()
+          .toList();
 
   void revalidate() {
     _currentErrorSubject.add(

@@ -8,7 +8,7 @@ class CurrentMaxEntriesCountByTypeInstanceDatabaseCacheInfoFormFieldBlocProxyPro
     extends StatelessWidget {
   final Widget child;
 
-  CurrentMaxEntriesCountByTypeInstanceDatabaseCacheInfoFormFieldBlocProxyProvider({
+  const CurrentMaxEntriesCountByTypeInstanceDatabaseCacheInfoFormFieldBlocProxyProvider({
     required this.child,
   });
 

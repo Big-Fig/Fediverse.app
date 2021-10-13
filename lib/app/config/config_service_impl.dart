@@ -305,12 +305,14 @@ class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
 
   @override
   void printConfigToLog() {
-    _logger.finest('config \n'
-        '${FlutterConfig.variables.entries.map(
-              (entry) => '${entry.key} => ${entry.value}',
-            ).join(
-              ' \n',
-            )}');
+    _logger.finest(
+      'config \n'
+      '${FlutterConfig.variables.entries.map(
+            (entry) => '${entry.key} => ${entry.value}',
+          ).join(
+            ' \n',
+          )}',
+    );
   }
 }
 
@@ -318,10 +320,12 @@ void _checkRequiredKey({
   required String key,
 }) {
   if (!FlutterConfig.variables.isNotEmpty) {
+    // ignore: avoid_print
     print('Config not initialized');
   }
 
   if (!FlutterConfig.variables.containsKey(key)) {
+    // ignore: avoid_print
     print('Key $key required but not exist');
   }
 }
@@ -334,7 +338,7 @@ bool? _getBool(
     _checkRequiredKey(key: key);
   }
 
-  var value = FlutterConfig.get(key);
+  dynamic value = FlutterConfig.get(key);
 
   if (value is String?) {
     if (value != null) {
@@ -365,7 +369,7 @@ int? _getInt(
     _checkRequiredKey(key: key);
   }
 
-  var value = FlutterConfig.get(key);
+  dynamic value = FlutterConfig.get(key);
 
   if (value is String?) {
     if (value != null) {

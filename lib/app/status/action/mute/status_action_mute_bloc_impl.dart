@@ -34,25 +34,23 @@ class StatusActionMuteBloc extends DisposableOwner
   static StatusActionMuteBloc createFromContext(
     BuildContext context, {
     required IStatusBloc statusBloc,
-  }) {
-    return StatusActionMuteBloc(
-      statusBloc: statusBloc,
-    );
-  }
+  }) =>
+      StatusActionMuteBloc(
+        statusBloc: statusBloc,
+      );
 
   static Widget provideToContext(
     BuildContext context, {
     required Widget child,
     required IStatusBloc statusBloc,
-  }) {
-    return DisposableProvider<IStatusActionMuteBloc>(
-      create: (context) => StatusActionMuteBloc.createFromContext(
-        context,
-        statusBloc: statusBloc,
-      ),
-      child: child,
-    );
-  }
+  }) =>
+      DisposableProvider<IStatusActionMuteBloc>(
+        create: (context) => StatusActionMuteBloc.createFromContext(
+          context,
+          statusBloc: statusBloc,
+        ),
+        child: child,
+      );
 
   @override
   Future mute() => statusBloc.mute(

@@ -55,12 +55,11 @@ class ScheduledStatusNetworkOnlyPaginationBloc
     required int? itemsCountPerPage,
     required PaginationPage<IScheduledStatus>? olderPage,
     required PaginationPage<IScheduledStatus>? newerPage,
-  }) {
-    return listService.loadItemsFromRemoteForPage(
-      itemsCountPerPage: itemsCountPerPage,
-      pageIndex: pageIndex,
-      minId: newerPage?.items.lastOrNull?.remoteId,
-      maxId: olderPage?.items.firstOrNull?.remoteId,
-    );
-  }
+  }) =>
+      listService.loadItemsFromRemoteForPage(
+        itemsCountPerPage: itemsCountPerPage,
+        pageIndex: pageIndex,
+        minId: newerPage?.items.lastOrNull?.remoteId,
+        maxId: olderPage?.items.firstOrNull?.remoteId,
+      );
 }

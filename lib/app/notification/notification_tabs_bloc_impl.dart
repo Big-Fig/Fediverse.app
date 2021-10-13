@@ -128,7 +128,7 @@ class NotificationsTabsBloc extends AsyncInitLoadingBloc
 
     addCustomDisposable(
       () async {
-        await Future.wait(
+        await Future.wait<void>(
           tabsMap.values.map(
             (bloc) => bloc.dispose(),
           ),

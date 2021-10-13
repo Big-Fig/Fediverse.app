@@ -34,8 +34,7 @@ Future goToPleromaChatWithAccount({
 
           await chatRepository.upsertInRemoteType(unifediApiChat);
 
-          return await chatRepository
-              .findByRemoteIdInAppType(unifediApiChat.id);
+          return chatRepository.findByRemoteIdInAppType(unifediApiChat.id);
         },
       );
       chat = dialogResult.result;
@@ -48,6 +47,7 @@ Future goToPleromaChatWithAccount({
         listen: false,
       );
 
+      // ignore: cascade_invocations
       toastService.showErrorToast(
         context: context,
         title:

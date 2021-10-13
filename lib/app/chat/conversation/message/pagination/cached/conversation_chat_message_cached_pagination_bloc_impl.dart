@@ -38,13 +38,12 @@ class ConversationChatMessageCachedPaginationBloc
     required int? itemsCountPerPage,
     required CachedPaginationPage<IConversationChatMessage>? olderPage,
     required CachedPaginationPage<IConversationChatMessage>? newerPage,
-  }) {
-    return chatMessageListService.loadLocalItems(
-      limit: itemsCountPerPage,
-      newerThan: olderPage?.items.firstOrNull,
-      olderThan: newerPage?.items.lastOrNull,
-    );
-  }
+  }) =>
+      chatMessageListService.loadLocalItems(
+        limit: itemsCountPerPage,
+        newerThan: olderPage?.items.firstOrNull,
+        olderThan: newerPage?.items.lastOrNull,
+      );
 
   @override
   Future refreshItemsFromRemoteForPage({
@@ -88,20 +87,19 @@ class ConversationChatMessageCachedPaginationBloc
     BuildContext context, {
     int? maximumCachedPagesCount,
     required Widget child,
-  }) {
-    return DisposableProvider<
-        ICachedPaginationBloc<CachedPaginationPage<IConversationChatMessage>,
-            IConversationChatMessage>>(
-      create: (context) =>
-          ConversationChatMessageCachedPaginationBloc.createFromContext(
-        context,
-        maximumCachedPagesCount: maximumCachedPagesCount,
-      ),
-      child: CachedPaginationBlocProxyProvider<
-          CachedPaginationPage<IConversationChatMessage>,
-          IConversationChatMessage>(
-        child: child,
-      ),
-    );
-  }
+  }) =>
+      DisposableProvider<
+          ICachedPaginationBloc<CachedPaginationPage<IConversationChatMessage>,
+              IConversationChatMessage>>(
+        create: (context) =>
+            ConversationChatMessageCachedPaginationBloc.createFromContext(
+          context,
+          maximumCachedPagesCount: maximumCachedPagesCount,
+        ),
+        child: CachedPaginationBlocProxyProvider<
+            CachedPaginationPage<IConversationChatMessage>,
+            IConversationChatMessage>(
+          child: child,
+        ),
+      );
 }

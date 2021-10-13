@@ -13,7 +13,7 @@ class FediBlurredOverlayWarningWidget extends StatelessWidget {
   final double sigma;
   final Color? replaceBlurWithColor;
 
-  FediBlurredOverlayWarningWidget({
+  const FediBlurredOverlayWarningWidget({
     this.descriptionText,
     this.buttonText,
     this.buttonAction,

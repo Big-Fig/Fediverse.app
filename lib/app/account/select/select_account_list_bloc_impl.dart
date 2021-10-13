@@ -78,9 +78,11 @@ class SelectAccountListBloc extends DisposableOwner
     required IAccount? newerThan,
     required IAccount? olderThan,
   }) async {
-    _logger.fine(() => 'start refreshItemsFromRemoteForPage \n'
-        '\t newerThan = $newerThan'
-        '\t olderThan = $olderThan');
+    _logger.fine(
+      () => 'start refreshItemsFromRemoteForPage \n'
+          '\t newerThan = $newerThan'
+          '\t olderThan = $olderThan',
+    );
 
     List<IUnifediApiAccount> remoteAccounts;
 
@@ -127,15 +129,16 @@ class SelectAccountListBloc extends DisposableOwner
         );
 
         await accountRepository.batch((batch) {
-          accountRepository.upsertAllInRemoteType(
-            remoteAccounts,
-            batchTransaction: batch,
-          );
-          accountRepository.addAccountFollowings(
-            accountRemoteId: myAccountBloc.account.remoteId,
-            followings: remoteAccounts.toUnifediApiAccountList(),
-            batchTransaction: batch,
-          );
+          accountRepository
+            ..upsertAllInRemoteType(
+              remoteAccounts,
+              batchTransaction: batch,
+            )
+            ..addAccountFollowings(
+              accountRemoteId: myAccountBloc.account.remoteId,
+              followings: remoteAccounts.toUnifediApiAccountList(),
+              batchTransaction: batch,
+            );
         });
       }
     }
@@ -145,18 +148,16 @@ class SelectAccountListBloc extends DisposableOwner
     required IAccount? olderThan,
     required IAccount? newerThan,
     required int? limit,
-  }) async {
-    // my account followings by default
-    return await pleromaAuthAccountService.getAccountFollowings(
-      pagination: UnifediApiPagination(
-        minId: newerThan?.remoteId,
-        maxId: olderThan?.remoteId,
-        limit: limit,
-      ),
-      withRelationship: null,
-      accountId: myAccountBloc.account.remoteId,
-    );
-  }
+  }) async =>
+      pleromaAuthAccountService.getAccountFollowings(
+        pagination: UnifediApiPagination(
+          minId: newerThan?.remoteId,
+          maxId: olderThan?.remoteId,
+          limit: limit,
+        ),
+        withRelationship: null,
+        accountId: myAccountBloc.account.remoteId,
+      );
 
   @override
   Future<List<IAccount>> loadLocalItems({
@@ -164,14 +165,16 @@ class SelectAccountListBloc extends DisposableOwner
     required IAccount? newerThan,
     required IAccount? olderThan,
   }) async {
-    _logger.finest(() => 'start loadLocalItems \n'
-        '\t newerThan=$newerThan'
-        '\t olderThan=$olderThan');
+    _logger.finest(
+      () => 'start loadLocalItems \n'
+          '\t newerThan=$newerThan'
+          '\t olderThan=$olderThan',
+    );
 
     List<IAccount> accounts;
     var searchTermExist = searchText?.isNotEmpty == true;
     if (searchTermExist) {
-      var onlyInAccountFollowing;
+      IAccount? onlyInAccountFollowing;
       if (followingsOnly) {
         onlyInAccountFollowing = myAccountBloc.account;
       }
@@ -231,19 +234,18 @@ class SelectAccountListBloc extends DisposableOwner
     required IAccount? olderThan,
     required IAccount? newerThan,
     required int? limit,
-  }) async {
-    return await accountRepository.findAllInAppType(
-      filters: AccountRepositoryFilters.only(
-        onlyInAccountFollowing: myAccountBloc.account,
-      ),
-      pagination: RepositoryPagination<IAccount>(
-        olderThanItem: olderThan,
-        newerThanItem: newerThan,
-        limit: limit,
-      ),
-      orderingTerms: [AccountRepositoryOrderingTermData.remoteIdDesc],
-    );
-  }
+  }) async =>
+      accountRepository.findAllInAppType(
+        filters: AccountRepositoryFilters.only(
+          onlyInAccountFollowing: myAccountBloc.account,
+        ),
+        pagination: RepositoryPagination<IAccount>(
+          olderThanItem: olderThan,
+          newerThanItem: newerThan,
+          limit: limit,
+        ),
+        orderingTerms: [AccountRepositoryOrderingTermData.remoteIdDesc],
+      );
 
   static SelectAccountListBloc createFromContext(
     BuildContext context, {
@@ -270,18 +272,17 @@ class SelectAccountListBloc extends DisposableOwner
     required Widget child,
     required UnifediApiAccountListLoader? customRemoteAccountListLoader,
     required AccountListLoader? customLocalAccountListLoader,
-  }) {
-    return DisposableProvider<ISelectAccountListBloc>(
-      create: (context) => SelectAccountListBloc.createFromContext(
-        context,
-        followingsOnly: followingsOnly,
-        excludeMyAccount: excludeMyAccount,
-        customRemoteAccountListLoader: customRemoteAccountListLoader,
-        customLocalAccountListLoader: customLocalAccountListLoader,
-      ),
-      child: SelectAccountListBlocProxyProvider(child: child),
-    );
-  }
+  }) =>
+      DisposableProvider<ISelectAccountListBloc>(
+        create: (context) => SelectAccountListBloc.createFromContext(
+          context,
+          followingsOnly: followingsOnly,
+          excludeMyAccount: excludeMyAccount,
+          customRemoteAccountListLoader: customRemoteAccountListLoader,
+          customLocalAccountListLoader: customLocalAccountListLoader,
+        ),
+        child: SelectAccountListBlocProxyProvider(child: child),
+      );
 
   @override
   void onAccountSelected(IAccount account) {

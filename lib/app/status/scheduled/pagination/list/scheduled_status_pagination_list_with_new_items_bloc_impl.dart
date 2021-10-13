@@ -39,24 +39,23 @@ class ScheduledStatusPaginationListWithNewItemsBloc<
   static Widget provideToContext(
     BuildContext context, {
     required Widget child,
-  }) {
-    return DisposableProvider<
-        ICachedPaginationListWithNewItemsBloc<
-            CachedPaginationPage<IScheduledStatus>, IScheduledStatus>>(
-      create: (context) => ScheduledStatusPaginationListWithNewItemsBloc(
-        scheduledStatusCachedListService:
-            IScheduledStatusCachedListBloc.of(context, listen: false),
-        mergeNewItemsImmediately: false,
-        paginationBloc: Provider.of<
-            ICachedPaginationBloc<CachedPaginationPage<IScheduledStatus>,
-                IScheduledStatus>>(
-          context,
-          listen: false,
+  }) =>
+      DisposableProvider<
+          ICachedPaginationListWithNewItemsBloc<
+              CachedPaginationPage<IScheduledStatus>, IScheduledStatus>>(
+        create: (context) => ScheduledStatusPaginationListWithNewItemsBloc(
+          scheduledStatusCachedListService:
+              IScheduledStatusCachedListBloc.of(context, listen: false),
+          mergeNewItemsImmediately: false,
+          paginationBloc: Provider.of<
+              ICachedPaginationBloc<CachedPaginationPage<IScheduledStatus>,
+                  IScheduledStatus>>(
+            context,
+            listen: false,
+          ),
         ),
-      ),
-      child: CachedPaginationListWithNewItemsBlocProxyProvider<
-          CachedPaginationPage<IScheduledStatus>,
-          IScheduledStatus>(child: child),
-    );
-  }
+        child: CachedPaginationListWithNewItemsBlocProxyProvider<
+            CachedPaginationPage<IScheduledStatus>,
+            IScheduledStatus>(child: child),
+      );
 }

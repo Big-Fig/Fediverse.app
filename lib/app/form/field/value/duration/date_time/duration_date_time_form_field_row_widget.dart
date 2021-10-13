@@ -25,7 +25,7 @@ class DurationDateTimeValueFormFieldRowWidget extends StatelessWidget {
   final String? negativeValue;
   final bool useDialogPickerForValueSelection;
 
-  DurationDateTimeValueFormFieldRowWidget({
+  const DurationDateTimeValueFormFieldRowWidget({
     required this.label,
     required this.useDialogPickerForValueSelection,
     this.description,

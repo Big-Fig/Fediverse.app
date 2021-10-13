@@ -71,6 +71,7 @@ class ChatSelectionItemWidget extends StatelessWidget {
                                   context,
                                   listen: false,
                                 );
+                                // ignore: cascade_invocations
                                 chatSelectionItemBloc.select();
                               }
                             }

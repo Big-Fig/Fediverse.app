@@ -82,15 +82,14 @@ class FilterCachedPaginationBloc extends CachedPleromaPaginationBloc<IFilter>
     BuildContext context, {
     required Widget child,
     int? maximumCachedPagesCount,
-  }) {
-    return DisposableProvider<
-        ICachedPaginationBloc<CachedPaginationPage<IFilter>, IFilter>>(
-      create: (context) => FilterCachedPaginationBloc.createFromContext(
-        context,
-        maximumCachedPagesCount: maximumCachedPagesCount,
-      ),
-      child: CachedPaginationBlocProxyProvider<CachedPaginationPage<IFilter>,
-          IFilter>(child: child),
-    );
-  }
+  }) =>
+      DisposableProvider<
+          ICachedPaginationBloc<CachedPaginationPage<IFilter>, IFilter>>(
+        create: (context) => FilterCachedPaginationBloc.createFromContext(
+          context,
+          maximumCachedPagesCount: maximumCachedPagesCount,
+        ),
+        child: CachedPaginationBlocProxyProvider<CachedPaginationPage<IFilter>,
+            IFilter>(child: child),
+      );
 }

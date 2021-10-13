@@ -17,7 +17,7 @@ class FileGalleryFolderWidget extends StatelessWidget {
   final WidgetBuilder headerItemBuilder;
   final PermissionButtonBuilder permissionButtonBuilder;
 
-  FileGalleryFolderWidget({
+  const FileGalleryFolderWidget({
     required this.headerItemBuilder,
     required this.permissionButtonBuilder,
   });

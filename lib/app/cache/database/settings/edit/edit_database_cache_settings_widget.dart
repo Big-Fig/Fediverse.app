@@ -56,11 +56,9 @@ class _EditDatabaseCacheSettingsDescriptionWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return FediNoteDescriptionWidget(
-      S.of(context).app_cache_database_settings_description,
-    );
-  }
+  Widget build(BuildContext context) => FediNoteDescriptionWidget(
+        S.of(context).app_cache_database_settings_description,
+      );
 }
 
 class _EditDatabaseCacheSettingsClearAllButtonWidget extends StatelessWidget {
@@ -74,7 +72,7 @@ class _EditDatabaseCacheSettingsClearAllButtonWidget extends StatelessWidget {
     var editDatabaseCacheSettingsBloc =
         IEditDatabaseCacheSettingsBloc.of(context);
 
-    return PleromaAsyncOperationButtonBuilderWidget(
+    return PleromaAsyncOperationButtonBuilderWidget<void>(
       asyncButtonAction: () => editDatabaseCacheSettingsBloc.clearAll(),
       builder: (context, onPressed) => FediPrimaryFilledTextButtonWithBorder(
         S.of(context).app_cache_settings_action_clear_all_now(
@@ -99,7 +97,7 @@ class _EditDatabaseCacheSettingsClearByLimitsButtonWidget
     var editDatabaseCacheSettingsBloc =
         IEditDatabaseCacheSettingsBloc.of(context);
 
-    return PleromaAsyncOperationButtonBuilderWidget(
+    return PleromaAsyncOperationButtonBuilderWidget<void>(
       asyncButtonAction: () => editDatabaseCacheSettingsBloc.clearByLimits(),
       builder: (context, onPressed) => FediPrimaryFilledTextButtonWithBorder(
         S.of(context).app_cache_settings_action_clear_by_limits_now(

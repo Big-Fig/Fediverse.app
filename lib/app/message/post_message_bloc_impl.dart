@@ -115,9 +115,9 @@ abstract class PostMessageBloc extends DisposableOwner
         uploadMediaAttachmentsBloc.uploadMediaAttachmentBlocsStream,
         uploadMediaAttachmentsBloc.isAllAttachedMediaUploadedStream,
         (
-          dynamic inputWithoutMentionedAcctsText,
-          dynamic mediaAttachmentBlocs,
-          dynamic isAllAttachedMediaUploaded,
+          String? inputWithoutMentionedAcctsText,
+          List<IUploadMediaAttachmentBloc> mediaAttachmentBlocs,
+          bool isAllAttachedMediaUploaded,
         ) =>
             calculateIsReadyToPost(
           inputText: inputWithoutMentionedAcctsText,
@@ -169,7 +169,7 @@ abstract class PostMessageBloc extends DisposableOwner
     var textIsNotEmpty = inputText?.trim().isEmpty != true;
     var mediaAttached = mediaAttachmentBlocs?.isEmpty != true;
 
-    return (textIsNotEmpty || mediaAttached)
+    return textIsNotEmpty || mediaAttached
         // && isAllAttachedMediaUploaded!
         ;
   }
@@ -306,7 +306,7 @@ abstract class PostMessageBloc extends DisposableOwner
               (bloc) => bloc.startUploadIfPossible(),
             );
 
-        await Future.wait(futures);
+        await Future.wait<void>(futures);
 
         var allUploaded = uploadMediaAttachmentBlocs.fold<bool>(
           true,

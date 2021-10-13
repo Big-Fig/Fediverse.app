@@ -4,7 +4,7 @@ import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
 import 'package:flutter/widgets.dart';
 
 class FediPrimaryFilledTextButtonWithBorder extends StatelessWidget {
@@ -22,7 +22,7 @@ class FediPrimaryFilledTextButtonWithBorder extends StatelessWidget {
 
   final TextStyle? textStyle;
 
-  FediPrimaryFilledTextButtonWithBorder(
+  const FediPrimaryFilledTextButtonWithBorder(
     this.text, {
     required this.onPressed,
     this.enabledBackgroundColor,

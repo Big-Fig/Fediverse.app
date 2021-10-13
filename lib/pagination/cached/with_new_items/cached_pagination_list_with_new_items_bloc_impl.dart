@@ -236,6 +236,7 @@ abstract class CachedPaginationListWithNewItemsBloc<
   @override
   void onItemUpdated(TItem item) {
     updatedItems.removeWhere((listItem) => listItem.isEqualTo(item));
+    // ignore: cascade_invocations
     updatedItems.add(item);
     updatedItemsSubject.add([...updatedItems]);
   }
@@ -284,7 +285,7 @@ abstract class CachedPaginationListWithNewItemsBloc<
     Duration pollInterval = Duration.zero,
   }) async {
     if (isNewItemsAsyncCheckInProgress) {
-      final completer = Completer();
+      final completer = Completer<void>();
       final timer = Timer.periodic(pollInterval, (timer) {
         if (!isNewItemsAsyncCheckInProgress) {
           completer.complete();
@@ -297,65 +298,68 @@ abstract class CachedPaginationListWithNewItemsBloc<
     }
   }
 
-  StreamSubscription<List<TItem>> createWatchNewItemsSubscription(newerItem) {
-    return watchItemsNewerThanItem(newerItem)
-        .skipWhile((newItems) => !newItems.isNotEmpty)
-        .listen(
-      (newItems) async {
-        isNewItemsAsyncCheckInProgress = true;
+  StreamSubscription<List<TItem>> createWatchNewItemsSubscription(
+    TItem? newerItem,
+  ) =>
+      watchItemsNewerThanItem(newerItem)
+          .skipWhile((newItems) => !newItems.isNotEmpty)
+          .listen(
+        (List<TItem> newItems) async {
+          isNewItemsAsyncCheckInProgress = true;
 
-        try {
-          var currentItems = items;
+          try {
+            var currentItems = items;
 
-          // changed during sql request execute time
-          // we need to filter again to be sure that newerItem is no
+            // changed during sql request execute time
+            // we need to filter again to be sure that newerItem is no
 
-          var actuallyNewRequest = CalculateActuallyNewRequest<TItem>(
-            newItems: newItems,
-            newerItem: newerItem,
-            currentItems: currentItems,
-          );
-
-          List<TItem> actuallyNew;
-          if (asyncCalculateActuallyNew) {
-            actuallyNew = await compute(
-              _calculateActuallyNew,
-              actuallyNewRequest,
+            var actuallyNewRequest = CalculateActuallyNewRequest<TItem>(
+              newItems: newItems,
+              newerItem: newerItem,
+              currentItems: currentItems,
             );
-          } else {
-            actuallyNew = _calculateActuallyNew(
-              actuallyNewRequest,
-            );
-          }
 
-          // if newerItem already changed we shouldn't apply calculated changes
-          // because new changes coming
-          if (this.newerItem == newerItem) {
-            _logger.finest(() => 'watchItemsNewerThanItem '
-                '\n'
-                '\t newItems ${newItems.length} \n'
-                '\t actuallyNew = ${actuallyNew.length}');
+            List<TItem> actuallyNew;
+            if (asyncCalculateActuallyNew) {
+              actuallyNew = await compute(
+                _calculateActuallyNew,
+                actuallyNewRequest,
+              );
+            } else {
+              actuallyNew = _calculateActuallyNew(
+                actuallyNewRequest,
+              );
+            }
 
-            if (actuallyNew.isNotEmpty) {
-              if (!currentItems.isNotEmpty &&
-                  mergeNewItemsImmediatelyWhenItemsIsEmpty) {
-                // merge immediately
-                if (!mergedNewItemsSubject.isClosed) {
-                  mergedNewItemsSubject.add(actuallyNew);
-                }
-              } else {
-                if (!unmergedNewItemsSubject.isClosed) {
-                  unmergedNewItemsSubject.add(actuallyNew);
+            // if newerItem already changed we shouldn't apply calculated changes
+            // because new changes coming
+            if (this.newerItem == newerItem) {
+              _logger.finest(
+                () => 'watchItemsNewerThanItem '
+                    '\n'
+                    '\t newItems ${newItems.length} \n'
+                    '\t actuallyNew = ${actuallyNew.length}',
+              );
+
+              if (actuallyNew.isNotEmpty) {
+                if (!currentItems.isNotEmpty &&
+                    mergeNewItemsImmediatelyWhenItemsIsEmpty) {
+                  // merge immediately
+                  if (!mergedNewItemsSubject.isClosed) {
+                    mergedNewItemsSubject.add(actuallyNew);
+                  }
+                } else {
+                  if (!unmergedNewItemsSubject.isClosed) {
+                    unmergedNewItemsSubject.add(actuallyNew);
+                  }
                 }
               }
             }
+          } finally {
+            isNewItemsAsyncCheckInProgress = false;
           }
-        } finally {
-          isNewItemsAsyncCheckInProgress = false;
-        }
-      },
-    );
-  }
+        },
+      );
 }
 
 class _CalculateNewItemsRequest<TItem extends IEqualComparableObj<TItem>> {
@@ -406,17 +410,19 @@ _CombinedItemsResult<TItem>
     }
   } else {
     resultList = [
-      ...(mergedNewItems ?? []),
+      ...mergedNewItems ?? [],
       ...items,
     ];
   }
 
-  _logger.finest(() => '_calculateNewItems'
-      ' \n'
-      '\t items = ${items?.length} \n'
-      '\t mergedNewItems = ${mergedNewItems?.length} \n'
-      '\t updatedItems = ${updatedItems.length} \n'
-      '\t resultList = ${resultList.length}');
+  _logger.finest(
+    () => '_calculateNewItems'
+        ' \n'
+        '\t items = ${items?.length} \n'
+        '\t mergedNewItems = ${mergedNewItems?.length} \n'
+        '\t updatedItems = ${updatedItems.length} \n'
+        '\t resultList = ${resultList.length}',
+  );
 
   if (updatedItems.isNotEmpty) {
     resultList = resultList.map((resultListItem) {
@@ -432,6 +438,7 @@ _CombinedItemsResult<TItem>
     }).toList();
 
     // -1 for inverse
+    // ignore: cascade_invocations
     resultList.sort((a, b) => a.compareTo(b) * -1);
   }
 
@@ -474,7 +481,7 @@ List<TItem> _calculateActuallyNew<TItem extends IEqualComparableObj<TItem>>(
   // sometimes local storage sqlite returns duplicated items
   // sometimes item is newer but already exist
   // for example chat updateAt updated
-  actuallyNew = actuallyNew.where(
+  return actuallyNew.where(
     (newItem) {
       bool isAlreadyExist;
       if (currentItems.isNotEmpty) {
@@ -491,8 +498,6 @@ List<TItem> _calculateActuallyNew<TItem extends IEqualComparableObj<TItem>>(
       return isNeedToAdd;
     },
   ).toList();
-
-  return actuallyNew;
 }
 
 class _CombinedItemsResult<TItem extends IEqualComparableObj<TItem>> {

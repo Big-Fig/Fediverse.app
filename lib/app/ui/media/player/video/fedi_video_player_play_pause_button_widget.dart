@@ -105,17 +105,16 @@ class _FediVideoPlayerPlayPauseControlsWidget extends StatelessWidget {
 
               return AsyncOperationButtonBuilderWidget(
                 showProgressDialog: false,
-                builder: (BuildContext context, void Function()? onPressed) {
-                  return FediIconButton(
-                    padding: EdgeInsets.zero,
-                    icon: Icon(
-                      isPlaying ? FediIcons.pause : FediIcons.play,
-                      size: iconSize,
-                      color: IFediUiColorTheme.of(context).white,
-                    ),
-                    onPressed: onPressed,
-                  );
-                },
+                builder: (BuildContext context, void Function()? onPressed) =>
+                    FediIconButton(
+                  padding: EdgeInsets.zero,
+                  icon: Icon(
+                    isPlaying ? FediIcons.pause : FediIcons.play,
+                    size: iconSize,
+                    color: IFediUiColorTheme.of(context).white,
+                  ),
+                  onPressed: onPressed,
+                ),
                 asyncButtonAction: () async {
                   await videoMediaPlayerBloc.togglePlay();
                 },
@@ -134,9 +133,7 @@ class _FediVideoPlayerPlayPauseButtonLoadingWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return FediCircularProgressIndicator(
-      color: IFediUiColorTheme.of(context).white,
-    );
-  }
+  Widget build(BuildContext context) => FediCircularProgressIndicator(
+        color: IFediUiColorTheme.of(context).white,
+      );
 }

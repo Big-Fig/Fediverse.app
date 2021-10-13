@@ -61,9 +61,11 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
           // update pollBloc after status poll data changed
           var isSame = pollBloc.poll == poll;
           if (!isSame) {
-            _logger.finest(() => 'update pollBloc poll data isSame $isSame \n'
-                'old ${pollBloc.poll} \n'
-                'new $poll');
+            _logger.finest(
+              () => 'update pollBloc poll data isSame $isSame \n'
+                  'old ${pollBloc.poll} \n'
+                  'new $poll',
+            );
             pollBloc.onPollUpdated(poll);
           }
         },

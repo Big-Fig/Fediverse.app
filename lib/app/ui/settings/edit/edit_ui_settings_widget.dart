@@ -15,15 +15,13 @@ class EditUiSettingsWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: shrinkWrap ? MainAxisSize.min : MainAxisSize.max,
-      children: [
-        _EditUiSettingsThemeFieldWidget(),
-        _EditUiSettingsStatusFontSizeFieldWidget(),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => Column(
+        mainAxisSize: shrinkWrap ? MainAxisSize.min : MainAxisSize.max,
+        children: [
+          _EditUiSettingsThemeFieldWidget(),
+          _EditUiSettingsStatusFontSizeFieldWidget(),
+        ],
+      );
 }
 
 class _EditUiSettingsStatusFontSizeFieldWidget extends StatelessWidget {
@@ -32,13 +30,11 @@ class _EditUiSettingsStatusFontSizeFieldWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IEditUiSettingsBloc,
-        IUiSettingsFontSizeSingleFromListValueFormFieldBloc>(
-      update: (context, value, previous) => value.statusFontSizeBloc,
-      child: const UiSettingsFontSizeSingleFromListValueFormFieldRowWidget(),
-    );
-  }
+  Widget build(BuildContext context) => ProxyProvider<IEditUiSettingsBloc,
+          IUiSettingsFontSizeSingleFromListValueFormFieldBloc>(
+        update: (context, value, previous) => value.statusFontSizeBloc,
+        child: const UiSettingsFontSizeSingleFromListValueFormFieldRowWidget(),
+      );
 }
 
 class _EditUiSettingsThemeFieldWidget extends StatelessWidget {
@@ -47,16 +43,14 @@ class _EditUiSettingsThemeFieldWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IEditUiSettingsBloc,
-        IFediUiThemeSingleFromListValueFormFieldBloc>(
-      update: (context, value, previous) => value.fediThemeFieldBloc,
-      child: const FediUiThemeSingleFromListValueFormFieldRowWidget(
-        key: Key(
-          EditUiSettingsWidgetKeys
-              .fediUiThemeSingleFromListValueFormFieldRowWidget,
+  Widget build(BuildContext context) => ProxyProvider<IEditUiSettingsBloc,
+          IFediUiThemeSingleFromListValueFormFieldBloc>(
+        update: (context, value, previous) => value.fediThemeFieldBloc,
+        child: const FediUiThemeSingleFromListValueFormFieldRowWidget(
+          key: Key(
+            EditUiSettingsWidgetKeys
+                .fediUiThemeSingleFromListValueFormFieldRowWidget,
+          ),
         ),
-      ),
-    );
-  }
+      );
 }

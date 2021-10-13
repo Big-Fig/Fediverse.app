@@ -42,64 +42,64 @@ void main() {
   });
 
   test('items', () async {
-    expect(paginationListBloc.items, []);
+    expect(paginationListBloc.items, <PaginationItemTest>[]);
 
-    var listened;
+    List<PaginationItemTest>? listened;
     var subscription = paginationListBloc.itemsStream.listen((newValue) {
       listened = newValue;
     });
-    await Future.delayed(Duration(milliseconds: 1));
-    expect(listened, []);
+    await Future<void>.delayed(Duration(milliseconds: 1));
+    expect(listened, <PaginationItemTest>[]);
 
     await paginationListBloc.refreshWithoutController();
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future<void>.delayed(Duration(milliseconds: 1));
 
     expect(paginationListBloc.items.length, itemsCountPerPage);
     expect(paginationListBloc.items.first.index, 0);
     expect(paginationListBloc.items.last.index, itemsCountPerPage - 1);
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future<void>.delayed(Duration(milliseconds: 1));
 
-    expect(listened.length, itemsCountPerPage);
-    expect(listened.first.index, 0);
-    expect(listened.last.index, itemsCountPerPage - 1);
+    expect(listened!.length, itemsCountPerPage);
+    expect(listened!.first.index, 0);
+    expect(listened!.last.index, itemsCountPerPage - 1);
 
     await paginationListBloc.loadMoreWithoutController();
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future<void>.delayed(Duration(milliseconds: 1));
 
     expect(paginationListBloc.items.length, itemsCountPerPage * 2);
     expect(paginationListBloc.items.first.index, 0);
     expect(paginationListBloc.items.last.index, itemsCountPerPage * 2 - 1);
-    await Future.delayed(Duration(milliseconds: 1));
-    expect(listened.length, itemsCountPerPage * 2);
-    expect(listened.first.index, 0);
-    expect(listened.last.index, itemsCountPerPage * 2 - 1);
+    await Future<void>.delayed(Duration(milliseconds: 1));
+    expect(listened!.length, itemsCountPerPage * 2);
+    expect(listened!.first.index, 0);
+    expect(listened!.last.index, itemsCountPerPage * 2 - 1);
 
     await paginationListBloc.loadMoreWithoutController();
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future<void>.delayed(Duration(milliseconds: 1));
 
     expect(paginationListBloc.items.length, itemsCountPerPage * 3);
     expect(paginationListBloc.items.first.index, 0);
     expect(paginationListBloc.items.last.index, itemsCountPerPage * 3 - 1);
-    await Future.delayed(Duration(milliseconds: 1));
-    expect(listened.length, itemsCountPerPage * 3);
-    expect(listened.first.index, 0);
-    expect(listened.last.index, itemsCountPerPage * 3 - 1);
+    await Future<void>.delayed(Duration(milliseconds: 1));
+    expect(listened!.length, itemsCountPerPage * 3);
+    expect(listened!.first.index, 0);
+    expect(listened!.last.index, itemsCountPerPage * 3 - 1);
 
     await paginationListBloc.refreshWithoutController();
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future<void>.delayed(Duration(milliseconds: 1));
 
     expect(paginationListBloc.items.length, itemsCountPerPage);
     expect(paginationListBloc.items.first.index, 0);
     expect(paginationListBloc.items.last.index, itemsCountPerPage - 1);
-    await Future.delayed(Duration(milliseconds: 1));
-    expect(listened.length, itemsCountPerPage);
-    expect(listened.first.index, 0);
-    expect(listened.last.index, itemsCountPerPage - 1);
+    await Future<void>.delayed(Duration(milliseconds: 1));
+    expect(listened!.length, itemsCountPerPage);
+    expect(listened!.first.index, 0);
+    expect(listened!.last.index, itemsCountPerPage - 1);
 
     var lastPageIndex = storageSize ~/ itemsCountPerPage;
 
@@ -107,27 +107,27 @@ void main() {
       await paginationListBloc.loadMoreWithoutController();
     }
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future<void>.delayed(Duration(milliseconds: 1));
 
     expect(paginationListBloc.items.length, storageSize);
     expect(paginationListBloc.items.first.index, 0);
     expect(paginationListBloc.items.last.index, storageSize - 1);
-    await Future.delayed(Duration(milliseconds: 1));
-    expect(listened.length, storageSize);
-    expect(listened.first.index, 0);
-    expect(listened.last.index, storageSize - 1);
+    await Future<void>.delayed(Duration(milliseconds: 1));
+    expect(listened!.length, storageSize);
+    expect(listened!.first.index, 0);
+    expect(listened!.last.index, storageSize - 1);
 
     await paginationListBloc.loadMoreWithoutController();
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future<void>.delayed(Duration(milliseconds: 1));
 
     expect(paginationListBloc.items.length, storageSize);
     expect(paginationListBloc.items.first.index, 0);
     expect(paginationListBloc.items.last.index, storageSize - 1);
-    await Future.delayed(Duration(milliseconds: 1));
-    expect(listened.length, storageSize);
-    expect(listened.first.index, 0);
-    expect(listened.last.index, storageSize - 1);
+    await Future<void>.delayed(Duration(milliseconds: 1));
+    expect(listened!.length, storageSize);
+    expect(listened!.first.index, 0);
+    expect(listened!.last.index, storageSize - 1);
 
     await subscription.cancel();
   });

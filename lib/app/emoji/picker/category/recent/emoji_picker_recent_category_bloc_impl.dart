@@ -57,8 +57,10 @@ class EmojiPickerRecentCategoryBloc extends AsyncInitLoadingBloc
   void onEmojiSelected(CustomEmojiPickerItem emojiItem) {
     var currentItems = items ?? [];
     var alreadyExist = currentItems.contains(emojiItem);
-    _logger.finest(() => 'onEmojiSelected $emojiItem \n'
-        'alreadyExist $alreadyExist');
+    _logger.finest(
+      () => 'onEmojiSelected $emojiItem \n'
+          'alreadyExist $alreadyExist',
+    );
     if (!alreadyExist) {
       currentItems.add(emojiItem);
       preferenceBloc.setValue(

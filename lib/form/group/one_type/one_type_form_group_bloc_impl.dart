@@ -53,16 +53,18 @@ class OneTypeFormGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
       minimumFieldsCount != null ? items.length <= minimumFieldsCount! : false;
 
   @override
-  Stream<bool> get isMaximumFieldsCountReachedStream =>
-      itemsStream.map((customFields) => maximumFieldsCount != null
-          ? items.length >= maximumFieldsCount!
-          : false);
+  Stream<bool> get isMaximumFieldsCountReachedStream => itemsStream.map(
+        (customFields) => maximumFieldsCount != null
+            ? items.length >= maximumFieldsCount!
+            : false,
+      );
 
   @override
-  Stream<bool> get isMinimumFieldsCountReachedStream =>
-      itemsStream.map((customFields) => minimumFieldsCount != null
-          ? items.length <= minimumFieldsCount!
-          : false);
+  Stream<bool> get isMinimumFieldsCountReachedStream => itemsStream.map(
+        (customFields) => minimumFieldsCount != null
+            ? items.length <= minimumFieldsCount!
+            : false,
+      );
 
   @override
   Stream<bool> get isPossibleToRemoveFieldsStream =>
@@ -95,11 +97,9 @@ class OneTypeFormGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
   bool checkIsSomethingChanged() {
     var isChanged = isGroupChanged ||
         items.map((field) => field.isSomethingChanged).fold(
-          false,
-          (previousValue, element) {
-            return previousValue | element;
-          },
-        );
+              false,
+              (previousValue, element) => previousValue | element,
+            );
     _isChangedSubject.add(isChanged);
 
     return isChanged;

@@ -42,12 +42,12 @@ Future<AsyncDialogResult<T?>> doAsyncOperationWithDialog<T>({
       cancelable: cancelable,
       contentMessage: contentMessage,
       cancelableOperation: cancelableOperation,
-    );
-    // ignore: unawaited_futures
-    progressDialog.show(context);
+    )
+      // ignore: unawaited_futures
+      ..show<void>(context);
   }
 
-  var error;
+  dynamic error;
   ErrorData? errorData;
 
   var needRethrow = true;
@@ -97,7 +97,7 @@ Future<AsyncDialogResult<T?>> doAsyncOperationWithDialog<T>({
 
   if (progressDialog != null) {
     // wait until progress dialog actually hides
-    await Future.delayed(
+    await Future<void>.delayed(
       Duration(
         // ignore: no-magic-number
         milliseconds: 100,
@@ -117,6 +117,7 @@ Future<AsyncDialogResult<T?>> doAsyncOperationWithDialog<T>({
     }
 
     if (needRethrow) {
+      // ignore: throw_of_invalid_type
       throw error;
     }
     dialogResult = AsyncDialogResult.withError(error);

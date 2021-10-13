@@ -48,29 +48,29 @@ class UploadMediaAttachmentListMediaWidget extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 //              shrinkWrap: true,
                 children: [
-                  ...mediaItemBlocs.map((mediaItemBloc) {
-                    // dont dispose media bloc here
-                    // it is disposed in parent Status bloc
-
-                    return Padding(
-                      padding: const EdgeInsets.only(
-                        left: FediSizes.smallPadding,
-                        // ignore: no-equal-arguments
-                        top: FediSizes.smallPadding,
-                      ),
-                      child: Container(
-                        width: _mediaAttachmentRowItemSize,
-                        // ignore: no-equal-arguments
-                        height: _mediaAttachmentRowItemSize,
-                        child: Provider<IUploadMediaAttachmentBloc>.value(
-                          value: mediaItemBloc,
-                          child: const UploadMediaAttachmentListMediaItemWidget(
-                            contentPadding: FediPadding.allSmallPadding,
+                  ...mediaItemBlocs
+                      .map(
+                        (mediaItemBloc) => Padding(
+                          padding: const EdgeInsets.only(
+                            left: FediSizes.smallPadding,
+                            // ignore: no-equal-arguments
+                            top: FediSizes.smallPadding,
+                          ),
+                          child: Container(
+                            width: _mediaAttachmentRowItemSize,
+                            // ignore: no-equal-arguments
+                            height: _mediaAttachmentRowItemSize,
+                            child: Provider<IUploadMediaAttachmentBloc>.value(
+                              value: mediaItemBloc,
+                              child:
+                                  const UploadMediaAttachmentListMediaItemWidget(
+                                contentPadding: FediPadding.allSmallPadding,
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  }).toList(), //                _buildGridItem(
+                      )
+                      .toList(), //                _buildGridItem(
                 ],
               ),
             );

@@ -18,22 +18,25 @@ BoxImpl _getBox({
   CompactionStrategy? cStrategy,
   StorageBackend? backend,
 }) {
-  var box = BoxImpl(
+  var box = BoxImpl<dynamic>(
     hive ?? HiveImpl(),
     name ?? 'testBox',
     null,
     cStrategy ?? (total, deleted) => false,
     backend ?? MockStorageBackend(),
   );
-  box.keystore = keystore ?? Keystore(box, ChangeNotifier(), null);
+  box.keystore = keystore ?? Keystore<dynamic>(box, ChangeNotifier(), null);
 
   return box;
 }
 
 // ignore_for_file: no-magic-number, avoid-late-keyword
-@GenerateMocks([], customMocks: [
-  MockSpec<StorageBackend>(returnNullOnMissingStub: true),
-])
+@GenerateMocks(
+  [],
+  customMocks: [
+    MockSpec<StorageBackend>(returnNullOnMissingStub: true),
+  ],
+)
 class HiveMockHelper {
   static void testAdapter<T>(T Function() adapterCreator) {
     var adapter1 = adapterCreator();
@@ -63,7 +66,7 @@ class HiveMockHelper {
     var box = _getBox(name: boxName);
     await box.put(key, obj);
 
-    var objFromHive = box.get(key);
+    dynamic objFromHive = box.get(key);
 
     expect(obj, objFromHive);
   }

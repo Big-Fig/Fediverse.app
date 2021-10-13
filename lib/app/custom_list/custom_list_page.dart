@@ -57,28 +57,27 @@ class _CustomListPageState extends State<CustomListPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return DisposableProvider<IScrollControllerBloc>(
-      create: (context) =>
-          ScrollControllerBloc(scrollController: scrollController),
-      child: Scaffold(
-        appBar: const _CustomListPageAppBar(),
-        body: SafeArea(
-          child: CollapsibleOwnerWidget(
-            child: Stack(
-              children: <Widget>[
-                StatusCachedPaginationListTimelineWidget(
-                  needWatchLocalRepositoryForUpdates: false,
-                  scrollController: scrollController,
-                ),
-                const StatusListTapToLoadOverlayWidget(),
-              ],
+  Widget build(BuildContext context) =>
+      DisposableProvider<IScrollControllerBloc>(
+        create: (context) =>
+            ScrollControllerBloc(scrollController: scrollController),
+        child: Scaffold(
+          appBar: const _CustomListPageAppBar(),
+          body: SafeArea(
+            child: CollapsibleOwnerWidget(
+              child: Stack(
+                children: <Widget>[
+                  StatusCachedPaginationListTimelineWidget(
+                    needWatchLocalRepositoryForUpdates: false,
+                    scrollController: scrollController,
+                  ),
+                  const StatusListTapToLoadOverlayWidget(),
+                ],
+              ),
             ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }
 
 class _CustomListPageAppBar extends StatelessWidget
@@ -88,25 +87,23 @@ class _CustomListPageAppBar extends StatelessWidget
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        FediPageTitleAppBar(
-          centerTitle: false,
-          title: '',
-          actions: [
-            const _CustomListPageAppBarEditActionWidget(),
-            const _CustomListPageAppBarSettingsActionWidget(),
-          ],
-        ),
-        Expanded(
-          child: const Center(
-            child: _CustomListPageAppBarTitleWidget(),
+  Widget build(BuildContext context) => Column(
+        children: [
+          FediPageTitleAppBar(
+            centerTitle: false,
+            title: '',
+            actions: [
+              const _CustomListPageAppBarEditActionWidget(),
+              const _CustomListPageAppBarSettingsActionWidget(),
+            ],
           ),
-        ),
-      ],
-    );
-  }
+          Expanded(
+            child: const Center(
+              child: _CustomListPageAppBarTitleWidget(),
+            ),
+          ),
+        ],
+      );
 
   @override
   Size get preferredSize =>
@@ -146,30 +143,31 @@ class _CustomListPageAppBarEditActionWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return FediPageAppBarTextActionWidget(
-      text: S.of(context).app_acccount_my_customList_list_action_edit,
-      onPressed: () {
-        goToEditCustomListPage(
-          context: context,
-          customList: Provider.of<ICustomList>(context, listen: false),
-          onSubmit: (customList) {
-            var paginationListBloc =
-                IPaginationListBloc.of(context, listen: false);
-            paginationListBloc.refreshWithController();
+  Widget build(BuildContext context) => FediPageAppBarTextActionWidget(
+        text: S.of(context).app_acccount_my_customList_list_action_edit,
+        onPressed: () {
+          goToEditCustomListPage(
+            context: context,
+            customList: Provider.of<ICustomList>(context, listen: false),
+            onSubmit: (customList) {
+              var paginationListBloc =
+                  IPaginationListBloc.of(context, listen: false);
+              // ignore: cascade_invocations
+              paginationListBloc.refreshWithController();
 
-            var customListBloc = ICustomListBloc.of(context, listen: false);
-            customListBloc.updateList(customList);
-          },
-          onDelete: () {
-            var customListBloc = ICustomListBloc.of(context, listen: false);
-            customListBloc.updateList(null);
-            Navigator.of(context).pop();
-          },
-        );
-      },
-    );
-  }
+              var customListBloc = ICustomListBloc.of(context, listen: false);
+              // ignore: cascade_invocations
+              customListBloc.updateList(customList);
+            },
+            onDelete: () {
+              var customListBloc = ICustomListBloc.of(context, listen: false);
+              // ignore: cascade_invocations
+              customListBloc.updateList(null);
+              Navigator.of(context).pop();
+            },
+          );
+        },
+      );
 }
 
 class _CustomListPageAppBarSettingsActionWidget extends StatelessWidget {
@@ -178,40 +176,38 @@ class _CustomListPageAppBarSettingsActionWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return FediIconButton(
-      icon: Icon(
-        FediIcons.settings,
-        color: IFediUiColorTheme.of(context).darkGrey,
-      ),
-      onPressed: () {
-        var timeline = ITimelineLocalPreferenceBlocOld.of(
-          context,
-          listen: false,
-        ).value!;
-        var customList = Provider.of<ICustomList>(
-          context,
-          listen: false,
-        );
-        showEditTimelineSettingsDialog(
-          context: context,
-          timeline: Timeline.byType(
-            id: timeline.id,
-            isPossibleToDelete: false,
-            label: customList.title,
-            type: TimelineType.customList,
-            settings: timeline.settings,
-          ),
-          lockedSource: true,
-          unifediApiInstance: ICurrentUnifediApiAccessBloc.of(
+  Widget build(BuildContext context) => FediIconButton(
+        icon: Icon(
+          FediIcons.settings,
+          color: IFediUiColorTheme.of(context).darkGrey,
+        ),
+        onPressed: () {
+          var timeline = ITimelineLocalPreferenceBlocOld.of(
             context,
             listen: false,
-          ).currentInstance!.info!,
-          instanceLocation: InstanceLocation.local,
-        );
-      },
-    );
-  }
+          ).value!;
+          var customList = Provider.of<ICustomList>(
+            context,
+            listen: false,
+          );
+          showEditTimelineSettingsDialog(
+            context: context,
+            timeline: Timeline.byType(
+              id: timeline.id,
+              isPossibleToDelete: false,
+              label: customList.title,
+              type: TimelineType.customList,
+              settings: timeline.settings,
+            ),
+            lockedSource: true,
+            unifediApiInstance: ICurrentUnifediApiAccessBloc.of(
+              context,
+              listen: false,
+            ).currentInstance!.info!,
+            instanceLocation: InstanceLocation.local,
+          );
+        },
+      );
 }
 
 void goToCustomListPage({
@@ -231,7 +227,7 @@ void goToCustomListPage({
   );
 }
 
-MaterialPageRoute createCustomListPageRoute({
+MaterialPageRoute<void> createCustomListPageRoute({
   required BuildContext context,
   required ICustomList customList,
   required Function(ICustomList? customList)? onChanged,
@@ -240,30 +236,28 @@ MaterialPageRoute createCustomListPageRoute({
   var currentUnifediApiAccessBloc =
       ICurrentUnifediApiAccessBloc.of(context, listen: false);
 
-  return MaterialPageRoute(
-    builder: (context) {
-      return Provider<ICustomList>.value(
-        value: customList,
-        child: DisposableProvider<ITimelineLocalPreferenceBlocOld>(
-          create: (context) {
-            var bloc = TimelineLocalPreferenceBloc.customList(
-              ILocalPreferencesService.of(context, listen: false),
-              userAtHost:
-                  currentUnifediApiAccessBloc.currentInstance!.userAtHost,
-              customList: customList,
-            );
+  return MaterialPageRoute<void>(
+    builder: (context) => Provider<ICustomList>.value(
+      value: customList,
+      child: DisposableProvider<ITimelineLocalPreferenceBlocOld>(
+        create: (context) {
+          var bloc = TimelineLocalPreferenceBloc.customList(
+            ILocalPreferencesService.of(context, listen: false),
+            userAtHost: currentUnifediApiAccessBloc.currentInstance!.userAtHost,
+            customList: customList,
+          );
 
-            bloc.performAsyncInit();
+          // ignore: cascade_invocations
+          bloc.performAsyncInit();
 
-            return bloc;
-          },
-          child: _CustomListPageWrapper(
-            onChanged: onChanged,
-            onDeleted: onDeleted,
-          ),
+          return bloc;
+        },
+        child: _CustomListPageWrapper(
+          onChanged: onChanged,
+          onDeleted: onDeleted,
         ),
-      );
-    },
+      ),
+    ),
   );
 }
 
@@ -284,52 +278,49 @@ class _CustomListPageWrapper extends StatelessWidget {
     return FediAsyncInitLoadingWidget(
       asyncInitLoadingBloc:
           ITimelineLocalPreferenceBlocOld.of(context, listen: false),
-      loadingFinishedBuilder: (BuildContext context) {
-        return DisposableProvider<IStatusCachedListBloc>(
-          create: (BuildContext context) {
-            var customListTimelineStatusCachedListBloc =
-                TimelineStatusCachedListBloc.createFromContext(
+      loadingFinishedBuilder: (BuildContext context) =>
+          DisposableProvider<IStatusCachedListBloc>(
+        create: (BuildContext context) {
+          var customListTimelineStatusCachedListBloc =
+              TimelineStatusCachedListBloc.createFromContext(
+            context,
+            handlerType: WebSocketsChannelHandlerType.foregroundValue,
+            timelineLocalPreferencesBloc: ITimelineLocalPreferenceBlocOld.of(
               context,
-              handlerType: WebSocketsChannelHandlerType.foregroundValue,
-              timelineLocalPreferencesBloc: ITimelineLocalPreferenceBlocOld.of(
-                context,
-                listen: false,
-              ),
-            );
+              listen: false,
+            ),
+          );
 
-            return customListTimelineStatusCachedListBloc;
-          },
-          child: StatusCachedListBlocProxyProvider(
-            child:
-                ProxyProvider<IStatusCachedListBloc, ICachedListBloc<IStatus>>(
-              update: (context, value, previous) => value,
-              child: StatusCachedListBlocLoadingWidget(
-                child: StatusCachedPaginationBloc.provideToContext(
+          return customListTimelineStatusCachedListBloc;
+        },
+        child: StatusCachedListBlocProxyProvider(
+          child: ProxyProvider<IStatusCachedListBloc, ICachedListBloc<IStatus>>(
+            update: (context, value, previous) => value,
+            child: StatusCachedListBlocLoadingWidget(
+              child: StatusCachedPaginationBloc.provideToContext(
+                context,
+                child:
+                    StatusCachedPaginationListWithNewItemsBloc.provideToContext(
                   context,
-                  child: StatusCachedPaginationListWithNewItemsBloc
-                      .provideToContext(
-                    context,
-                    mergeNewItemsImmediately: false,
-                    child: Provider<ICustomList>.value(
-                      value: customList,
-                      child:
-                          DisposableProxyProvider<ICustomList, ICustomListBloc>(
-                        update: (context, customList, _) =>
-                            createCustomListBloc(
-                          context,
-                          customList,
-                        ),
-                        child: const CustomListPage(),
+                  mergeNewItemsImmediately: false,
+                  child: Provider<ICustomList>.value(
+                    value: customList,
+                    child:
+                        DisposableProxyProvider<ICustomList, ICustomListBloc>(
+                      update: (context, customList, _) => createCustomListBloc(
+                        context,
+                        customList,
                       ),
+                      child: const CustomListPage(),
                     ),
-                    mergeOwnStatusesImmediately: false,
                   ),
+                  mergeOwnStatusesImmediately: false,
                 ),
               ),
             ),
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 
@@ -354,7 +345,7 @@ class _CustomListPageWrapper extends StatelessWidget {
     }
     if (onDeleted != null) {
       customListBloc.deletedStream.listen(
-        (_) {
+        (dynamic data) {
           onDeleted!();
         },
       ).disposeWith(customListBloc);

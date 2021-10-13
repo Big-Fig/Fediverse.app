@@ -25,8 +25,10 @@ Future<Duration?> showStatusExpireDurationPickerDialog({
     isDeletePossible: oldValue != null,
   );
 
-  _logger.finest(() => 'showStatusDateTimePickerDialog result '
-      '$pickerResult ');
+  _logger.finest(
+    () => 'showStatusDateTimePickerDialog result '
+        '$pickerResult ',
+  );
 
   if (pickerResult.deleted) {
     return null;

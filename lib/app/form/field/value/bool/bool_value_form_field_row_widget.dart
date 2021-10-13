@@ -9,23 +9,21 @@ class BoolValueFormFieldRowWidget extends StatelessWidget {
   final String? description;
   final String? descriptionOnDisabled;
 
-  BoolValueFormFieldRowWidget({
+  const BoolValueFormFieldRowWidget({
     required this.label,
     this.description,
     this.descriptionOnDisabled,
   });
 
   @override
-  Widget build(BuildContext context) {
-    return BoolValueFormFieldBlocProxyProvider(
-      child: SimpleFediFormFieldRow(
-        label: label,
-        description: description,
-        descriptionOnDisabled: descriptionOnDisabled,
-        valueChild: const BoolValueFormFieldRowValueWidget(),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => BoolValueFormFieldBlocProxyProvider(
+        child: SimpleFediFormFieldRow(
+          label: label,
+          description: description,
+          descriptionOnDisabled: descriptionOnDisabled,
+          valueChild: const BoolValueFormFieldRowValueWidget(),
+        ),
+      );
 }
 
 class BoolValueFormFieldRowValueWidget extends StatelessWidget {

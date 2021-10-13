@@ -35,7 +35,7 @@ class AboutPage extends StatelessWidget {
                 _AboutPageRowWidget(
                   label: S.of(context).app_about_field_website_label,
                   value: Uri.parse(configService.webSiteUrl!).host,
-                  valueUrl: configService.webSiteUrl!,
+                  valueUrl: configService.webSiteUrl,
                 ),
               if (configService.fediverseAccountAcct != null)
                 _AboutPageRowWidget(
@@ -183,9 +183,9 @@ void goToAboutPage({
   );
 }
 
-MaterialPageRoute createAboutPageRoute({
+MaterialPageRoute<void> createAboutPageRoute({
   required BuildContext context,
 }) =>
-    MaterialPageRoute(
+    MaterialPageRoute<void>(
       builder: (context) => AboutPage(),
     );

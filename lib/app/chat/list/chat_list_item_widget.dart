@@ -108,9 +108,11 @@ class _ChatListItemGoToChatButtonWidget extends StatelessWidget {
               ? IFediUiColorTheme.of(context).primary
               : IFediUiColorTheme.of(context).darkGrey,
           iconSize: FediSizes.mediumIconSize,
-          icon: Icon(isHaveUnread
-              ? FediIcons.chevron_light_highlight
-              : FediIcons.arrow_right),
+          icon: Icon(
+            isHaveUnread
+                ? FediIcons.chevron_light_highlight
+                : FediIcons.arrow_right,
+          ),
           onPressed: () {
             onClick(context);
           },
@@ -126,16 +128,14 @@ class _ChatListItemPreviewWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: <Widget>[
-        const ChatTitleWidget(),
-        const _ChatListItemLastMessageWidget(),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          const ChatTitleWidget(),
+          const _ChatListItemLastMessageWidget(),
+        ],
+      );
 }
 
 class _ChatListItemLastMessageWidgetPendingStateWidget extends StatelessWidget {
@@ -319,7 +319,6 @@ class _ChatListItemDeleteActionWidget extends StatelessWidget {
       color: IFediUiColorTheme.of(context).error,
       onTap: () async {
         var success = await FediActionsDialog(
-          context: context,
           title: S.of(context).app_chat_action_delete_dialog_title,
           contentText: S.of(context).app_chat_action_delete_dialog_content,
           actions: [
@@ -331,7 +330,7 @@ class _ChatListItemDeleteActionWidget extends StatelessWidget {
               ).error,
               onAction: (BuildContext context) async {
                 var dialogResult = await PleromaAsyncOperationHelper
-                    .performPleromaAsyncOperation(
+                    .performPleromaAsyncOperation<void>(
                   context: context,
                   asyncCode: () => chatBloc.delete(),
                 );
@@ -340,9 +339,9 @@ class _ChatListItemDeleteActionWidget extends StatelessWidget {
               },
             ),
           ],
-        ).show(context);
+        ).show<bool>(context);
 
-        if (success) {
+        if (success ?? false) {
           await paginationListBloc.refreshWithController();
         }
       },

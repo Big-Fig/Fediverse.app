@@ -20,8 +20,10 @@ class SearchAccountPaginationBloc
   PaginationPage<IAccount> mapPage(PaginationPage<ISearchResultItem> page) {
     // IterableExtension
     var items = page.items
-        .where((searchResultItem) =>
-            searchResultItem.type == SearchResultItemType.account)
+        .where(
+          (searchResultItem) =>
+              searchResultItem.type == SearchResultItemType.account,
+        )
         .map((searchResultItem) => searchResultItem.account)
         .whereNotNull()
         .toList();
@@ -43,12 +45,10 @@ class SearchAccountPaginationBloc
   static Widget provideToContext(
     BuildContext context, {
     required Widget child,
-  }) {
-    return DisposableProvider<
-        IPaginationBloc<PaginationPage<IAccount>, IAccount>>(
-      create: (context) =>
-          SearchAccountPaginationBloc.createFromContext(context),
-      child: child,
-    );
-  }
+  }) =>
+      DisposableProvider<IPaginationBloc<PaginationPage<IAccount>, IAccount>>(
+        create: (context) =>
+            SearchAccountPaginationBloc.createFromContext(context),
+        child: child,
+      );
 }

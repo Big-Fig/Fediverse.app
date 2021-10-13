@@ -14,7 +14,7 @@ class CachedPaginationListWithNewItemsMergeOverlayButton
     extends StatelessWidget {
   final String Function(BuildContext context, int updateItemsCount) textBuilder;
 
-  CachedPaginationListWithNewItemsMergeOverlayButton({
+  const CachedPaginationListWithNewItemsMergeOverlayButton({
     required this.textBuilder,
   });
 
@@ -39,7 +39,7 @@ class CachedPaginationListWithNewItemsMergeOverlayButton
           stream: Rx.combineLatest2(
             scrollControllerBloc.scrollDirectionStream.distinct(),
             scrollControllerBloc.scrolledToTopStream,
-            (dynamic scrollDirection, dynamic scrolledToTop) =>
+            (ScrollDirection? scrollDirection, bool scrolledToTop) =>
                 isNeedShowMergeItems(scrollDirection, scrolledToTop),
           ),
           initialData: isNeedShowMergeItems(
@@ -81,29 +81,29 @@ class CachedPaginationListWithNewItemsMergeOverlayButton
 
   bool isNeedShowMergeItems(
     ScrollDirection? scrollDirection,
-    bool? scrolledToTop,
+    bool scrolledToTop,
   ) =>
       scrollDirection == ScrollDirection.forward ||
       scrollDirection == null ||
-      scrolledToTop!;
+      scrolledToTop;
 
   Widget buildMergeNewItemsButton({
     required BuildContext context,
     required ICachedPaginationListWithNewItemsBloc
         paginationWithUpdatesListBloc,
     required int updateItemsCount,
-  }) {
-    return FediPrimaryFilledTextButtonWithBorder(
-      textBuilder(context, updateItemsCount),
-      onPressed: () {
-        paginationWithUpdatesListBloc.mergeNewItems();
+  }) =>
+      FediPrimaryFilledTextButtonWithBorder(
+        textBuilder(context, updateItemsCount),
+        onPressed: () {
+          paginationWithUpdatesListBloc.mergeNewItems();
 
-        var scrollControllerBloc =
-            IScrollControllerBloc.of(context, listen: false);
-        scrollControllerBloc.scrollToTop();
-      },
-      height: FediSizes.smallFilledButtonHeight,
-      expanded: false,
-    );
-  }
+          var scrollControllerBloc =
+              IScrollControllerBloc.of(context, listen: false);
+          // ignore: cascade_invocations
+          scrollControllerBloc.scrollToTop();
+        },
+        height: FediSizes.smallFilledButtonHeight,
+        expanded: false,
+      );
 }

@@ -15,7 +15,7 @@ class FediFormFieldRow extends StatelessWidget {
   final Widget valueChild;
   final bool displayErrors;
 
-  FediFormFieldRow({
+  const FediFormFieldRow({
     required this.label,
     required this.description,
     required this.descriptionOnDisabled,
@@ -126,7 +126,7 @@ class SimpleFediFormFieldRow extends StatelessWidget {
   final String? descriptionOnDisabled;
   final Widget valueChild;
 
-  SimpleFediFormFieldRow({
+  const SimpleFediFormFieldRow({
     required this.label,
     required this.description,
     required this.descriptionOnDisabled,

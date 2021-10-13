@@ -11,7 +11,7 @@ class TimelineSettingsOnlyFromAccountFormFieldRowWidget
   final String? description;
   final String descriptionOnDisabled;
 
-  TimelineSettingsOnlyFromAccountFormFieldRowWidget({
+  const TimelineSettingsOnlyFromAccountFormFieldRowWidget({
     required this.description,
     required this.descriptionOnDisabled,
   });

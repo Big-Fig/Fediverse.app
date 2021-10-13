@@ -44,14 +44,12 @@ class StatusBodyWidget extends StatelessWidget {
   const StatusBodyWidget();
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const _StatusBodyChipsWidget(),
-        const _StatusBodyChildWithWarningsWidget(),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => Column(
+        children: [
+          const _StatusBodyChipsWidget(),
+          const _StatusBodyChildWithWarningsWidget(),
+        ],
+      );
 }
 
 class _StatusBodyChildWithWarningsWidget extends StatelessWidget {
@@ -100,22 +98,20 @@ class _StatusBodyWithoutContentWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: _defaultPadding,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          const StatusSpoilerWidget(),
-          const StatusSensitiveSpoilerWarningOverlayWidget(
-            child: _StatusBodyContentWidget(
-              showSpoiler: false,
+  Widget build(BuildContext context) => Padding(
+        padding: _defaultPadding,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            const StatusSpoilerWidget(),
+            const StatusSensitiveSpoilerWarningOverlayWidget(
+              child: _StatusBodyContentWidget(
+                showSpoiler: false,
+              ),
             ),
-          ),
-        ],
-      ),
-    );
-  }
+          ],
+        ),
+      );
 }
 
 class _StatusBodyContentWidget extends StatelessWidget {
@@ -275,14 +271,12 @@ class _StatusBodySpoilerChipWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(right: FediSizes.smallPadding),
-      child: FediGreyChip(
-        label: S.of(context).app_status_spoiler_chip,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Padding(
+        padding: EdgeInsets.only(right: FediSizes.smallPadding),
+        child: FediGreyChip(
+          label: S.of(context).app_status_spoiler_chip,
+        ),
+      );
 }
 
 class _StatusBodyChipsWidget extends StatelessWidget {
@@ -318,14 +312,12 @@ class _StatusBodyNsfwChipWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(right: FediSizes.smallPadding),
-      child: FediGreyChip(
-        label: S.of(context).app_status_nsfw_chip,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Padding(
+        padding: EdgeInsets.only(right: FediSizes.smallPadding),
+        child: FediGreyChip(
+          label: S.of(context).app_status_nsfw_chip,
+        ),
+      );
 }
 
 Future _onLinkTap(
@@ -380,8 +372,10 @@ class _StatusBodyContentWithEmojisCollapsibleWidget extends StatelessWidget {
     var statusBodyBloc = IStatusBodyBloc.of(context);
     var collapsible = statusBodyBloc.collapsible;
 
-    _logger.finest(() => 'build collapsible $collapsible '
-        'statusBloc ${statusBloc.remoteId}');
+    _logger.finest(
+      () => 'build collapsible $collapsible '
+          'statusBloc ${statusBloc.remoteId}',
+    );
 
     var isNeedCollapse =
         collapsible && statusCollapsibleItemBloc.isPossibleToCollapse;

@@ -15,7 +15,7 @@ class FediFormPairEditTextRow extends StatelessWidget {
   final Widget ending;
   final FocusNode? nextFocusNode;
 
-  FediFormPairEditTextRow({
+  const FediFormPairEditTextRow({
     required this.label,
     required this.nameHint,
     required this.valueHint,
@@ -77,35 +77,34 @@ class _FediFormPairEditTextRowKeyWidget extends StatelessWidget {
   final IStringValueFormFieldBloc valueStringFieldBloc;
 
   @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<List<FormItemValidationError>>(
-      stream: nameStringFieldBloc.errorsStream,
-      initialData: nameStringFieldBloc.errors,
-      builder: (context, snapshot) {
-        var errors = snapshot.data;
+  Widget build(BuildContext context) =>
+      StreamBuilder<List<FormItemValidationError>>(
+        stream: nameStringFieldBloc.errorsStream,
+        initialData: nameStringFieldBloc.errors,
+        builder: (context, snapshot) {
+          var errors = snapshot.data;
 
-        var error = errors?.isNotEmpty == true ? errors!.first : null;
+          var error = errors?.isNotEmpty == true ? errors!.first : null;
 
-        return FediTransparentEditTextField(
-          maxLength: nameStringFieldBloc.maxLength,
-          expanded: false,
-          autofocus: false,
-          hintText: nameHint,
-          maxLines: 1,
-          onSubmitted: (_) {
-            nameStringFieldBloc.focusNode.unfocus();
-            valueStringFieldBloc.focusNode.requestFocus();
-          },
-          textInputAction: TextInputAction.next,
-          textEditingController: nameStringFieldBloc.textEditingController,
-          displayUnderlineBorder: true,
-          errorText: error?.createErrorDescription(context),
-          focusNode: nameStringFieldBloc.focusNode,
-          highlightMentions: false,
-        );
-      },
-    );
-  }
+          return FediTransparentEditTextField(
+            maxLength: nameStringFieldBloc.maxLength,
+            expanded: false,
+            autofocus: false,
+            hintText: nameHint,
+            maxLines: 1,
+            onSubmitted: (_) {
+              nameStringFieldBloc.focusNode.unfocus();
+              valueStringFieldBloc.focusNode.requestFocus();
+            },
+            textInputAction: TextInputAction.next,
+            textEditingController: nameStringFieldBloc.textEditingController,
+            displayUnderlineBorder: true,
+            errorText: error?.createErrorDescription(context),
+            focusNode: nameStringFieldBloc.focusNode,
+            highlightMentions: false,
+          );
+        },
+      );
 }
 
 class _FediFormPairEditTextRowValueWidget extends StatelessWidget {
@@ -123,36 +122,35 @@ class _FediFormPairEditTextRowValueWidget extends StatelessWidget {
   final FocusNode? nextFocusNode;
 
   @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<List<FormItemValidationError?>>(
-      stream: valueStringFieldBloc.errorsStream,
-      initialData: valueStringFieldBloc.errors,
-      builder: (context, snapshot) {
-        var errors = snapshot.data;
+  Widget build(BuildContext context) =>
+      StreamBuilder<List<FormItemValidationError?>>(
+        stream: valueStringFieldBloc.errorsStream,
+        initialData: valueStringFieldBloc.errors,
+        builder: (context, snapshot) {
+          var errors = snapshot.data;
 
-        var error = errors?.isNotEmpty == true ? errors!.first : null;
+          var error = errors?.isNotEmpty == true ? errors!.first : null;
 
-        return FediTransparentEditTextField(
-          maxLength: valueStringFieldBloc.maxLength,
-          expanded: false,
-          autofocus: false,
-          hintText: valueHint,
-          maxLines: 1,
-          onSubmitted: isHaveNext
-              ? (_) {
-                  valueStringFieldBloc.focusNode.unfocus();
-                  nextFocusNode!.requestFocus();
-                }
-              : null,
-          textInputAction:
-              isHaveNext ? TextInputAction.next : TextInputAction.done,
-          textEditingController: valueStringFieldBloc.textEditingController,
-          displayUnderlineBorder: true,
-          errorText: error?.createErrorDescription(context),
-          focusNode: valueStringFieldBloc.focusNode,
-          highlightMentions: false,
-        );
-      },
-    );
-  }
+          return FediTransparentEditTextField(
+            maxLength: valueStringFieldBloc.maxLength,
+            expanded: false,
+            autofocus: false,
+            hintText: valueHint,
+            maxLines: 1,
+            onSubmitted: isHaveNext
+                ? (_) {
+                    valueStringFieldBloc.focusNode.unfocus();
+                    nextFocusNode!.requestFocus();
+                  }
+                : null,
+            textInputAction:
+                isHaveNext ? TextInputAction.next : TextInputAction.done,
+            textEditingController: valueStringFieldBloc.textEditingController,
+            displayUnderlineBorder: true,
+            errorText: error?.createErrorDescription(context),
+            focusNode: valueStringFieldBloc.focusNode,
+            highlightMentions: false,
+          );
+        },
+      );
 }

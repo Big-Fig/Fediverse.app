@@ -37,17 +37,15 @@ class EditMyAccountImageConfirmDialog extends FediDialog {
         );
 
   @override
-  Widget buildContentWidget(BuildContext context) {
-    return FutureBuilder(
-      future: mediaDeviceFile.loadFile(),
-      builder: (BuildContext context, AsyncSnapshot<File?> snapshot) {
-        var file = snapshot.data;
-        if (file != null) {
-          return Image.file(file);
-        } else {
-          return const FediCircularProgressIndicator();
-        }
-      },
-    );
-  }
+  Widget buildContentWidget(BuildContext context) => FutureBuilder(
+        future: mediaDeviceFile.loadFile(),
+        builder: (BuildContext context, AsyncSnapshot<File?> snapshot) {
+          var file = snapshot.data;
+          if (file != null) {
+            return Image.file(file);
+          } else {
+            return const FediCircularProgressIndicator();
+          }
+        },
+      );
 }

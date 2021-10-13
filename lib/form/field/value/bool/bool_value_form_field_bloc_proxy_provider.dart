@@ -8,7 +8,7 @@ class BoolValueFormFieldBlocProxyProvider<T extends bool?>
     extends StatelessWidget {
   final Widget child;
 
-  BoolValueFormFieldBlocProxyProvider({
+  const BoolValueFormFieldBlocProxyProvider({
     required this.child,
   });
 

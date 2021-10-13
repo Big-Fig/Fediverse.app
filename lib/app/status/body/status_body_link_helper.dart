@@ -18,9 +18,11 @@ Future handleStatusBodyLinkClick({
 
   var mentionedAccount = await statusBloc.loadAccountByMentionUrl(url: url);
 
-  _logger.finest(() => 'handleStatusBodyLinkClick '
-      'isLocal $isLocal '
-      'mentionedAccount $mentionedAccount');
+  _logger.finest(
+    () => 'handleStatusBodyLinkClick '
+        'isLocal $isLocal '
+        'mentionedAccount $mentionedAccount',
+  );
 
   if (mentionedAccount != null) {
     if (isLocal) {

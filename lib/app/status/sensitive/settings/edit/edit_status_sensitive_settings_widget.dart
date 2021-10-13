@@ -15,17 +15,15 @@ class EditStatusSensitiveSettingsWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: shrinkWrap ? MainAxisSize.min : MainAxisSize.max,
-      children: [
-        const _EditStatusSensitiveSettingsAlwaysShowSpoilerFieldWidget(),
-        const _EditStatusSensitiveSettingsAlwaysShowNsfwFieldWidget(),
-        const _EditStatusSensitiveSettingsNsfwDisplayDurationWidget(),
-        const _EditStatusSensitiveSettingsReplaceBlurWithFillFieldWidget(),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => Column(
+        mainAxisSize: shrinkWrap ? MainAxisSize.min : MainAxisSize.max,
+        children: [
+          const _EditStatusSensitiveSettingsAlwaysShowSpoilerFieldWidget(),
+          const _EditStatusSensitiveSettingsAlwaysShowNsfwFieldWidget(),
+          const _EditStatusSensitiveSettingsNsfwDisplayDurationWidget(),
+          const _EditStatusSensitiveSettingsReplaceBlurWithFillFieldWidget(),
+        ],
+      );
 }
 
 class _EditStatusSensitiveSettingsNsfwDisplayDurationWidget
@@ -35,17 +33,15 @@ class _EditStatusSensitiveSettingsNsfwDisplayDurationWidget
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IEditStatusSensitiveSettingsBloc,
-        IDurationValueFormFieldBloc>(
-      update: (context, value, _) => value.nsfwDisplayDelayDurationFieldBloc,
-      child: DurationValueFormFieldRowWidget(
-        label: S
-            .of(context)
-            .app_status_sensitive_settings_field_nsfwDisplayDelayDuration_label,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => ProxyProvider<
+          IEditStatusSensitiveSettingsBloc, IDurationValueFormFieldBloc>(
+        update: (context, value, _) => value.nsfwDisplayDelayDurationFieldBloc,
+        child: DurationValueFormFieldRowWidget(
+          label: S
+              .of(context)
+              .app_status_sensitive_settings_field_nsfwDisplayDelayDuration_label,
+        ),
+      );
 }
 
 class _EditStatusSensitiveSettingsAlwaysShowNsfwFieldWidget
@@ -55,17 +51,15 @@ class _EditStatusSensitiveSettingsAlwaysShowNsfwFieldWidget
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IEditStatusSensitiveSettingsBloc,
-        IBoolValueFormFieldBloc>(
-      update: (context, value, previous) => value.isAlwaysShowNsfwFieldBloc,
-      child: BoolValueFormFieldRowWidget(
-        label: S
-            .of(context)
-            .app_status_sensitive_settings_field_isAlwaysShowNsfw_label,
-      ),
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IEditStatusSensitiveSettingsBloc, IBoolValueFormFieldBloc>(
+        update: (context, value, previous) => value.isAlwaysShowNsfwFieldBloc,
+        child: BoolValueFormFieldRowWidget(
+          label: S
+              .of(context)
+              .app_status_sensitive_settings_field_isAlwaysShowNsfw_label,
+        ),
+      );
 }
 
 class _EditStatusSensitiveSettingsAlwaysShowSpoilerFieldWidget
@@ -75,17 +69,16 @@ class _EditStatusSensitiveSettingsAlwaysShowSpoilerFieldWidget
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IEditStatusSensitiveSettingsBloc,
-        IBoolValueFormFieldBloc>(
-      update: (context, value, previous) => value.isAlwaysShowSpoilerFieldBloc,
-      child: BoolValueFormFieldRowWidget(
-        label: S
-            .of(context)
-            .app_status_sensitive_settings_field_isAlwaysShowSpoiler_label,
-      ),
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IEditStatusSensitiveSettingsBloc, IBoolValueFormFieldBloc>(
+        update: (context, value, previous) =>
+            value.isAlwaysShowSpoilerFieldBloc,
+        child: BoolValueFormFieldRowWidget(
+          label: S
+              .of(context)
+              .app_status_sensitive_settings_field_isAlwaysShowSpoiler_label,
+        ),
+      );
 }
 
 class _EditStatusSensitiveSettingsReplaceBlurWithFillFieldWidget
@@ -95,16 +88,14 @@ class _EditStatusSensitiveSettingsReplaceBlurWithFillFieldWidget
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IEditStatusSensitiveSettingsBloc,
-        IBoolValueFormFieldBloc>(
-      update: (context, value, previous) =>
-          value.isNeedReplaceBlurWithFillFieldBloc,
-      child: BoolValueFormFieldRowWidget(
-        label: S
-            .of(context)
-            .app_status_sensitive_settings_field_isNeedReplaceBlurWithFill_label,
-      ),
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IEditStatusSensitiveSettingsBloc, IBoolValueFormFieldBloc>(
+        update: (context, value, previous) =>
+            value.isNeedReplaceBlurWithFillFieldBloc,
+        child: BoolValueFormFieldRowWidget(
+          label: S
+              .of(context)
+              .app_status_sensitive_settings_field_isNeedReplaceBlurWithFill_label,
+        ),
+      );
 }

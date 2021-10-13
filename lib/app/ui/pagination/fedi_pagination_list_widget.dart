@@ -11,7 +11,7 @@ import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_widget.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -47,14 +47,12 @@ abstract class FediPaginationListWidget<T> extends PaginationListWidget<T> {
   @override
   Widget buildPaginationListBody(
     IPaginationListBloc<PaginationPage<T>, T> paginationListBloc,
-  ) {
-    return FediAsyncInitLoadingWidget(
-      asyncInitLoadingBloc: paginationListBloc,
-      loadingFinishedBuilder: (BuildContext context) {
-        return buildPaginationInitializedBody(context, paginationListBloc);
-      },
-    );
-  }
+  ) =>
+      FediAsyncInitLoadingWidget(
+        asyncInitLoadingBloc: paginationListBloc,
+        loadingFinishedBuilder: (BuildContext context) =>
+            buildPaginationInitializedBody(context, paginationListBloc),
+      );
 
   @override
   Widget buildSmartRefresher(
@@ -83,9 +81,10 @@ abstract class FediPaginationListWidget<T> extends PaginationListWidget<T> {
         return AsyncSmartRefresherHelper.doAsyncRefresh(
           controller: refreshController,
           action: () async {
-            var success;
+            bool success;
             try {
-              success = await additionalPreRefreshAction(context);
+              await additionalPreRefreshAction(context);
+              success = true;
             } catch (e, stackTrace) {
               success = false;
               _logger.severe(

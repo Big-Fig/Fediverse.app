@@ -3,8 +3,6 @@ import 'dart:async';
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/access/current/current_access_bloc.dart';
-import 'package:fedi/app/account/my/my_account_bloc.dart';
-import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/filter/edit/edit_filter_bloc.dart';
 import 'package:fedi/app/filter/edit/edit_filter_bloc_proxy_provider.dart';
 import 'package:fedi/app/filter/filter_model.dart';
@@ -33,18 +31,6 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
         context,
         listen: false,
       ),
-      myAccountBloc: IMyAccountBloc.of(
-        context,
-        listen: false,
-      ),
-      unifediApiAccountService: Provider.of<IUnifediApiAccountService>(
-        context,
-        listen: false,
-      ),
-      accountRepository: IAccountRepository.of(
-        context,
-        listen: false,
-      ),
       isPossibleToDelete: true,
       timelinesHomeTabStorageBloc: ITimelinesHomeTabStorageBloc.of(
         context,
@@ -64,7 +50,7 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
     if (onDelete != null) {
       editFilterBloc.deletedStream
           .listen(
-            (_) => onDelete(),
+            (dynamic data) => onDelete(),
           )
           .disposeWith(editFilterBloc);
     }
@@ -78,17 +64,16 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
     required IFilter initialValue,
     required Function(IFilter filter) onSubmit,
     required VoidCallback onDelete,
-  }) {
-    return DisposableProvider<IEditFilterBloc>(
-      create: (context) => EditFilterBloc.createFromContext(
-        context,
-        initialValue: initialValue,
-        onSubmit: onSubmit,
-        onDelete: onDelete,
-      ),
-      child: EditFilterBlocProxyProvider(child: child),
-    );
-  }
+  }) =>
+      DisposableProvider<IEditFilterBloc>(
+        create: (context) => EditFilterBloc.createFromContext(
+          context,
+          initialValue: initialValue,
+          onSubmit: onSubmit,
+          onDelete: onDelete,
+        ),
+        child: EditFilterBlocProxyProvider(child: child),
+      );
 
   final IFilter? filter;
 
@@ -111,9 +96,6 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
     required this.statusRepository,
     required this.isPossibleToDelete,
     required this.timelinesHomeTabStorageBloc,
-    required IMyAccountBloc myAccountBloc,
-    required IAccountRepository accountRepository,
-    required IUnifediApiAccountService unifediApiAccountService,
     required this.currentInstance,
   }) : filterFormBloc = FilterFormBloc(
           initialValue: filter,
@@ -178,7 +160,8 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
     }
   }
 
-  final StreamController deletedStreamController = StreamController.broadcast();
+  final StreamController deletedStreamController =
+      StreamController<dynamic>.broadcast();
 
   @override
   Stream get deletedStream => deletedStreamController.stream;

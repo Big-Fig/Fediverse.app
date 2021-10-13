@@ -43,45 +43,43 @@ class PostStatusComposeWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: FediPadding.allSmallPadding,
-      child: Column(
-        mainAxisSize: expanded ? MainAxisSize.max : MainAxisSize.min,
-        children: <Widget>[
-          if (displaySubjectField) ...[
-            const _PostStatusComposeSubjectFieldWidget(),
-            const FediUltraLightGreyDivider(),
-          ],
-          if (displayAccountAvatar)
-            _PostStatusComposeInputWithAvatarWidget(
-              autofocus: autofocus,
-              expanded: expanded,
-              hintText: hintText,
-              maxLines: maxLines,
-            )
-          else
-            Expanded(
-              child: PostStatusComposeInputWidget(
+  Widget build(BuildContext context) => Padding(
+        padding: FediPadding.allSmallPadding,
+        child: Column(
+          mainAxisSize: expanded ? MainAxisSize.max : MainAxisSize.min,
+          children: <Widget>[
+            if (displaySubjectField) ...[
+              const _PostStatusComposeSubjectFieldWidget(),
+              const FediUltraLightGreyDivider(),
+            ],
+            if (displayAccountAvatar)
+              _PostStatusComposeInputWithAvatarWidget(
                 autofocus: autofocus,
-                expanded: false,
+                expanded: expanded,
                 hintText: hintText,
                 maxLines: maxLines,
+              )
+            else
+              Expanded(
+                child: PostStatusComposeInputWidget(
+                  autofocus: autofocus,
+                  expanded: false,
+                  hintText: hintText,
+                  maxLines: maxLines,
+                ),
               ),
-            ),
 //          const FediBigVerticalSpacer(),
 
-          const UploadMediaAttachmentListAllWidget(
-            scrollable: false,
-            heightOnKeyboardOpen: null,
-          ),
-          if (!displayAccountAvatar && expanded) const FediLightGreyDivider(),
-          _buildActions(showPostAction),
-          const PostMessageSelectedActionWidget(),
-        ],
-      ),
-    );
-  }
+            const UploadMediaAttachmentListAllWidget(
+              scrollable: false,
+              heightOnKeyboardOpen: null,
+            ),
+            if (!displayAccountAvatar && expanded) const FediLightGreyDivider(),
+            _buildActions(showPostAction),
+            const PostMessageSelectedActionWidget(),
+          ],
+        ),
+      );
 
   Widget _buildActions(bool showPostAction) {
     if (showPostAction) {
@@ -173,28 +171,26 @@ class _PostStatusComposeInputWithAvatarWidget extends StatelessWidget {
   final int? maxLines;
 
   @override
-  Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        const Padding(
-          padding: FediPadding.allSmallPadding,
-          child: MyAccountAvatarWidget(
-            imageSize: FediSizes.accountAvatarBigSize,
-            progressSize: FediSizes.accountAvatarProgressBigSize,
+  Widget build(BuildContext context) => Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          const Padding(
+            padding: FediPadding.allSmallPadding,
+            child: MyAccountAvatarWidget(
+              imageSize: FediSizes.accountAvatarBigSize,
+              progressSize: FediSizes.accountAvatarProgressBigSize,
+            ),
           ),
-        ),
-        Flexible(
-          child: PostStatusComposeInputWidget(
-            autofocus: autofocus,
-            expanded: expanded,
-            hintText: hintText,
-            maxLines: maxLines,
+          Flexible(
+            child: PostStatusComposeInputWidget(
+              autofocus: autofocus,
+              expanded: expanded,
+              hintText: hintText,
+              maxLines: maxLines,
+            ),
           ),
-        ),
-      ],
-    );
-  }
+        ],
+      );
 }
 
 class _PostStatusComposeSubjectFieldWidget extends StatelessWidget {

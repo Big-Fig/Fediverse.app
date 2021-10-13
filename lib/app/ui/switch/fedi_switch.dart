@@ -15,7 +15,7 @@ class FediSwitch extends StatelessWidget {
   final ValueChanged<bool> onChanged;
   final bool enabled;
 
-  FediSwitch({
+  const FediSwitch({
     required this.value,
     required this.onChanged,
     this.enabled = true,

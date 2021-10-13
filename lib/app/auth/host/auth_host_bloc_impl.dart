@@ -153,7 +153,6 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     );
 
     _logger.finest(() => 'registerApplication application = $application');
-    _logger.finest(() => 'registerApplication appToken = $appToken');
     await hostApplicationLocalPreferenceBloc.setValue(
       application.toUnifediApiClientApplication(),
     );
@@ -227,7 +226,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
           ),
     );
 
-    return await _createInstanceFromToken(
+    return _createInstanceFromToken(
       token: token,
       authCode: authCode,
     );
@@ -485,6 +484,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     var webSocketsModeSettingsBloc = WebSocketsModeSettingsBloc(
       mode: WebSocketsMode.disabledValue,
     );
+    // ignore: cascade_invocations
     webSocketsModeSettingsBloc.disposeWith(this);
     if (instanceType.isPleroma) {
       unifediApiManager = createPleromaApiManager(
@@ -549,9 +549,11 @@ Future<String?> launchAuthorizeFormAndExtractAuthorizationCode({
   );
   var isCanLaunch = await canLaunch(url);
 
-  _logger.finest(() => 'launchAuthorizeFormAndExtractAuthorizationCode \n'
-      '\t url = $url\n'
-      '\t canLaunch=$isCanLaunch');
+  _logger.finest(
+    () => 'launchAuthorizeFormAndExtractAuthorizationCode \n'
+        '\t url = $url\n'
+        '\t canLaunch=$isCanLaunch',
+  );
 
   var completer = Completer<String>();
 
@@ -566,7 +568,7 @@ Future<String?> launchAuthorizeFormAndExtractAuthorizationCode({
       );
       completer.complete(code);
     },
-    onError: (e) {
+    onError: (Object e) {
       subscription.cancel();
       closeWebView();
       completer.completeError(e);

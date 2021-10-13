@@ -10,7 +10,7 @@ abstract class ICachedListBloc<T> extends DisposableOwner {
     required T? olderThan,
   });
 
-  Future refreshItemsFromRemoteForPage({
+  Future<void> refreshItemsFromRemoteForPage({
     required int? limit,
     required T? newerThan,
     required T? olderThan,

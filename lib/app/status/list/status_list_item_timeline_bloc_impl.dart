@@ -45,7 +45,7 @@ class StatusListItemTimelineBloc extends DisposableOwner
 
   @override
   bool get isFirstReplyAndDisplayReplyToStatus =>
-      (displayReplyToStatus && isFirstReplyInThread);
+      displayReplyToStatus && isFirstReplyInThread;
 
   @override
   bool get isReplyAndIsFirstReplyAndDisplayReplyToStatus =>

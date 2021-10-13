@@ -17,9 +17,11 @@ class PhotoManagerMediaDeviceGalleryBloc extends MediaDeviceGalleryBloc {
           typesToPick: typesToPick,
           paginationSettingsBloc: paginationSettingsBloc,
         ) {
-    addDisposable(CustomDisposable(() async {
-      await PhotoManager.releaseCache();
-    }));
+    addDisposable(
+      CustomDisposable(() async {
+        await PhotoManager.releaseCache();
+      }),
+    );
   }
 
   @override
@@ -27,8 +29,9 @@ class PhotoManagerMediaDeviceGalleryBloc extends MediaDeviceGalleryBloc {
     var assetPathEntities = await PhotoManager.getAssetPathList(
       type: mapFileTypesToPickToRequestType(typesToPick),
     );
-    assetPathEntities.sort(PhotoManagerMediaDeviceGalleryBloc
-        .compareAlbumsAlphabeticallyAndFeatured);
+    assetPathEntities.sort(
+      PhotoManagerMediaDeviceGalleryBloc.compareAlbumsAlphabeticallyAndFeatured,
+    );
 
     return assetPathEntities
         .map(

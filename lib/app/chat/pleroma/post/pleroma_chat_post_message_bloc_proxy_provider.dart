@@ -7,13 +7,12 @@ import 'package:provider/provider.dart';
 class PleromaChatPostMessageBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  PleromaChatPostMessageBlocProxyProvider({required this.child});
+  const PleromaChatPostMessageBlocProxyProvider({required this.child});
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IPleromaChatPostMessageBloc, IPostMessageBloc>(
-      update: (context, value, previous) => value,
-      child: PostMessageBlocProxyProvider(child: child),
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IPleromaChatPostMessageBloc, IPostMessageBloc>(
+        update: (context, value, previous) => value,
+        child: PostMessageBlocProxyProvider(child: child),
+      );
 }

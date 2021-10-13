@@ -84,12 +84,13 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
 
   @override
   Stream<List<IUploadMediaAttachmentBloc>> get onlyMediaAttachmentBlocsStream =>
-      uploadMediaAttachmentBlocsSubject.stream
-          .map((mediaAttachmentBlocs) => mediaAttachmentBlocs
-              .where(
-                (bloc) => bloc.isMedia,
-              )
-              .toList());
+      uploadMediaAttachmentBlocsSubject.stream.map(
+        (mediaAttachmentBlocs) => mediaAttachmentBlocs
+            .where(
+              (bloc) => bloc.isMedia,
+            )
+            .toList(),
+      );
 
   @override
   List<IUploadMediaAttachmentBloc> get onlyNonMediaAttachmentBlocs =>
@@ -189,7 +190,7 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
       (mediaDeviceFile) => attachMedia(mediaDeviceFile),
     );
 
-    await Future.wait(futures);
+    await Future.wait<void>(futures);
   }
 
   @override
@@ -261,7 +262,7 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
   void _recalculateIsAllAttachedMediaUploaded() {
     var allUploaded = uploadMediaAttachmentBlocs.fold(
       true,
-      (dynamic previousValue, element) =>
+      (bool previousValue, element) =>
           previousValue &&
           element.uploadState.type == UploadMediaAttachmentStateType.uploaded,
     );

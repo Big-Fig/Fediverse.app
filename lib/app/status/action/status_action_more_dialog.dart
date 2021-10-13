@@ -36,21 +36,20 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
-void showStatusActionMoreDialog({
+Future<void> showStatusActionMoreDialog({
   required BuildContext context,
   required IStatusBloc statusBloc,
-}) {
-  showFediModalBottomSheetDialog(
-    context: context,
-    child: Provider<IStatusBloc>.value(
-      value: statusBloc,
-      child: Provider<IStatus>.value(
-        value: statusBloc.status,
-        child: const StatusActionMoreDialogBody(),
+}) =>
+    showFediModalBottomSheetDialog(
+      context: context,
+      child: Provider<IStatusBloc>.value(
+        value: statusBloc,
+        child: Provider<IStatus>.value(
+          value: statusBloc.status,
+          child: const StatusActionMoreDialogBody(),
+        ),
       ),
-    ),
-  );
-}
+    );
 
 class StatusActionMoreDialogBody extends StatelessWidget {
   const StatusActionMoreDialogBody();
@@ -172,7 +171,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
       icon: FediIcons.delete,
       label: S.of(context).app_status_action_delete,
       onAction: (context) async {
-        await showStatusActionDeleteDialog(
+        await showStatusActionDeleteDialog<void>(
           context: context,
           statusBloc: statusBloc,
         );
@@ -221,7 +220,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
 
           Navigator.of(context).pop();
         } else {
-          await showStatusActionMuteDialog(
+          await showStatusActionMuteDialog<void>(
             context: context,
             statusBloc: statusBloc,
           );
@@ -264,7 +263,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
       icon: FediIcons.share,
       label: S.of(context).app_share_action_share,
       onAction: (context) async {
-        showShareChooserDialog(
+        await showShareChooserDialog(
           context,
           externalShareAction: (context) {
             Navigator.of(context).pop();
@@ -327,7 +326,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
               goToNewPostStatusPageWithInitial(
                 parentContext,
                 initialText:
-                    (status.content?.extractRawStringFromHtmlString() ?? ''),
+                    status.content?.extractRawStringFromHtmlString() ?? '',
                 initialSubject:
                     status.spoilerText?.extractRawStringFromHtmlString(),
                 initialMediaAttachments: reuploadedMediaAttachments

@@ -85,7 +85,6 @@ class FcmPushService extends AsyncInitLoadingBloc implements IFcmPushService {
   Future internalAsyncInit() async {
     _logger.finest(() => 'init');
 
-    _logger.finest(() => 'configure');
     FirebaseMessaging.onBackgroundMessage(
       richNotificationsFirebaseMessagingBackgroundHandler,
     );
@@ -138,10 +137,12 @@ class FcmPushService extends AsyncInitLoadingBloc implements IFcmPushService {
   }) {
     var data = message.data;
     var notification = message.notification;
-    _logger.finest(() => '_createPushMessage \n'
-        'type $type \n'
-        'notification $notification \n'
-        'data $data');
+    _logger.finest(
+      () => '_createPushMessage \n'
+          'type $type \n'
+          'notification $notification \n'
+          'data $data',
+    );
 
     var pushMessage = PushMessage(
       typeString: type.toJsonValue(),

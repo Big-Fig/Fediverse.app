@@ -9,7 +9,7 @@ class LocalizationLocaleSingleFromListValueFormFieldBlocProxyProvider
     extends StatelessWidget {
   final Widget child;
 
-  LocalizationLocaleSingleFromListValueFormFieldBlocProxyProvider({
+  const LocalizationLocaleSingleFromListValueFormFieldBlocProxyProvider({
     required this.child,
   });
 

@@ -9,7 +9,7 @@ class TimelineReplyVisibilityFilterSelectSingleFromListValueFormFieldBlocProxyPr
     extends StatelessWidget {
   final Widget child;
 
-  TimelineReplyVisibilityFilterSelectSingleFromListValueFormFieldBlocProxyProvider({
+  const TimelineReplyVisibilityFilterSelectSingleFromListValueFormFieldBlocProxyProvider({
     required this.child,
   });
 

@@ -11,15 +11,13 @@ class FediIntBadgeBlocSumAdapter extends DisposableOwner
   });
 
   @override
-  Stream<int> get badgeStream {
-    return Rx.combineLatest(
-      fediIntBadgeBlocs.map((bloc) => bloc.badgeStream),
-      (values) => values.fold(
-        0,
-        // todo improve code style
-        (int previousValue, Object? element) =>
-            previousValue + (element as int? ?? 0),
-      ),
-    );
-  }
+  Stream<int> get badgeStream => Rx.combineLatest(
+        fediIntBadgeBlocs.map((bloc) => bloc.badgeStream),
+        (values) => values.fold(
+          0,
+          // todo improve code style
+          (int previousValue, Object? element) =>
+              previousValue + (element as int? ?? 0),
+        ),
+      );
 }

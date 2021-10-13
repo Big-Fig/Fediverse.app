@@ -27,22 +27,20 @@ class RemoteInstancePublicTimelinePage extends StatelessWidget {
   const RemoteInstancePublicTimelinePage();
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const InstancePublicTimelinePageAppBarWidget(),
-      body: const SafeArea(
-        child: RemoteInstancePublicTimelinePageBodyWidget(),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Scaffold(
+        appBar: const InstancePublicTimelinePageAppBarWidget(),
+        body: const SafeArea(
+          child: RemoteInstancePublicTimelinePageBodyWidget(),
+        ),
+      );
 }
 
-MaterialPageRoute createRemoteInstancePublicTimelinePageRoute({
+MaterialPageRoute<void> createRemoteInstancePublicTimelinePageRoute({
   required Uri remoteInstanceUri,
   required IUnifediApiInstance unifediApiInstance,
   required IRemoteInstanceBloc remoteInstanceBloc,
 }) =>
-    MaterialPageRoute(
+    MaterialPageRoute<void>(
       builder: (context) => Provider.value(
         value: remoteInstanceBloc,
         child: ProxyProvider<IRemoteInstanceBloc, IUnifediApiInstance>(

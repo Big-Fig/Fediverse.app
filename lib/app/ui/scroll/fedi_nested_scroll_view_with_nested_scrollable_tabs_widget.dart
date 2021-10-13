@@ -43,7 +43,7 @@ class FediNestedScrollViewWithNestedScrollableTabsWidget
   final TabBarViewContainerBuilder? tabBarViewContainerBuilder;
   final TabsEmptyBuilder? tabsEmptyBuilder;
 
-  FediNestedScrollViewWithNestedScrollableTabsWidget({
+  const FediNestedScrollViewWithNestedScrollableTabsWidget({
     required Widget? onLongScrollUpTopOverlayWidget,
     required List<Widget> topSliverWidgets,
     required double? topSliverScrollOffsetToShowWhiteStatusBar,
@@ -184,15 +184,13 @@ class _NestedBodyWidgetState extends State<_NestedBodyWidget>
       controller: tabController,
       children: List<Widget>.generate(
         tabController.length,
-        (int index) {
-          return _NestedBodyTabItemWidget(
-            tabKey: _calculateTabKey(widget.tabKeyPrefix, index),
-            tabBodyProviderBuilder: widget.tabBodyProviderBuilder,
-            tabBodyContentBuilder: widget.tabBodyContentBuilder,
-            tabBodyOverlayBuilder: widget.tabBodyOverlayBuilder,
-            index: index,
-          );
-        },
+        (int index) => _NestedBodyTabItemWidget(
+          tabKey: _calculateTabKey(widget.tabKeyPrefix, index),
+          tabBodyProviderBuilder: widget.tabBodyProviderBuilder,
+          tabBodyContentBuilder: widget.tabBodyContentBuilder,
+          tabBodyOverlayBuilder: widget.tabBodyOverlayBuilder,
+          index: index,
+        ),
       ),
     );
 
@@ -239,22 +237,20 @@ class _NestedBodyTabItemWidgetState extends State<_NestedBodyTabItemWidget>
       context,
       widget.index,
       Builder(
-        builder: (context) {
-          return Stack(
-            children: [
-              NestedScrollViewInnerScrollPositionKeyWidget(
-                widget.tabKey,
-                widget.tabBodyContentBuilder(context, widget.index),
+        builder: (context) => Stack(
+          children: [
+            NestedScrollViewInnerScrollPositionKeyWidget(
+              widget.tabKey,
+              widget.tabBodyContentBuilder(context, widget.index),
+            ),
+            if (widget.tabBodyOverlayBuilder != null)
+              FediNestedScrollViewWidget.buildOverlay(
+                context,
+                (context) =>
+                    widget.tabBodyOverlayBuilder!(context, widget.index),
               ),
-              if (widget.tabBodyOverlayBuilder != null)
-                FediNestedScrollViewWidget.buildOverlay(
-                  context,
-                  (context) =>
-                      widget.tabBodyOverlayBuilder!(context, widget.index),
-                ),
-            ],
-          );
-        },
+          ],
+        ),
       ),
     );
   }
@@ -263,5 +259,7 @@ class _NestedBodyTabItemWidgetState extends State<_NestedBodyTabItemWidget>
   bool get wantKeepAlive => true;
 }
 
-Key _calculateTabKey(String tabKeyPrefix, int index) => Key('$tabKeyPrefix'
-    '.$index');
+Key _calculateTabKey(String tabKeyPrefix, int index) => Key(
+      '$tabKeyPrefix'
+      '.$index',
+    );

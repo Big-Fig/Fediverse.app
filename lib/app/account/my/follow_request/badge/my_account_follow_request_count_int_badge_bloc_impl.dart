@@ -18,22 +18,20 @@ class MyAccountFollowRequestCountIntBadgeBloc extends DisposableOwner
 
   static MyAccountFollowRequestCountIntBadgeBloc createFromContext(
     BuildContext context,
-  ) {
-    return MyAccountFollowRequestCountIntBadgeBloc(
-      myAccountBloc: IMyAccountBloc.of(context, listen: false),
-    );
-  }
+  ) =>
+      MyAccountFollowRequestCountIntBadgeBloc(
+        myAccountBloc: IMyAccountBloc.of(context, listen: false),
+      );
 
   static Widget provideToContext(
     BuildContext context, {
     required Widget child,
-  }) {
-    return DisposableProvider<IFediIntBadgeBloc>(
-      create: (context) =>
-          MyAccountFollowRequestCountIntBadgeBloc.createFromContext(
-        context,
-      ),
-      child: child,
-    );
-  }
+  }) =>
+      DisposableProvider<IFediIntBadgeBloc>(
+        create: (context) =>
+            MyAccountFollowRequestCountIntBadgeBloc.createFromContext(
+          context,
+        ),
+        child: child,
+      );
 }

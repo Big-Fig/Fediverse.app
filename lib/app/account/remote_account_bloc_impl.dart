@@ -57,16 +57,15 @@ class RemoteAccountBloc extends AccountBloc {
     required IAccount account,
     required bool isNeedRefreshFromNetworkOnInit,
     required Widget child,
-  }) {
-    return DisposableProvider<IAccountBloc>(
-      create: (context) => RemoteAccountBloc.createFromContext(
-        context,
-        account: account,
-        isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
-      ),
-      child: child,
-    );
-  }
+  }) =>
+      DisposableProvider<IAccountBloc>(
+        create: (context) => RemoteAccountBloc.createFromContext(
+          context,
+          account: account,
+          isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
+        ),
+        child: child,
+      );
 
   @override
   InstanceLocation get instanceLocation => InstanceLocation.remote;

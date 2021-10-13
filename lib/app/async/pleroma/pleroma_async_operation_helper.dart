@@ -26,24 +26,23 @@ class PleromaAsyncOperationHelper {
     bool showProgressDialog = true,
     ErrorCallback? errorCallback,
     bool cancelable = false,
-  }) {
-    return AsyncOperationHelper.performAsyncOperation(
-      context: context,
-      asyncCode: asyncCode,
-      contentMessage: contentMessage,
-      errorDataBuilders: errorDataBuilders,
-      createDefaultErrorDataUnhandledError:
-          createDefaultErrorDataUnhandledError,
-      showNotificationOnError: showNotificationOnError,
-      showProgressDialog: showProgressDialog,
-      errorCallback: (context, errorData) {
-        if (errorCallback != null) {
-          errorCallback(context, errorData);
-        }
-      },
-      cancelable: cancelable,
-    );
-  }
+  }) =>
+      AsyncOperationHelper.performAsyncOperation(
+        context: context,
+        asyncCode: asyncCode,
+        contentMessage: contentMessage,
+        errorDataBuilders: errorDataBuilders,
+        createDefaultErrorDataUnhandledError:
+            createDefaultErrorDataUnhandledError,
+        showNotificationOnError: showNotificationOnError,
+        showProgressDialog: showProgressDialog,
+        errorCallback: (context, errorData) {
+          if (errorCallback != null) {
+            errorCallback(context, errorData);
+          }
+        },
+        cancelable: cancelable,
+      );
 
   static ErrorData? pleromaThrottledErrorAlertDialogBuilder(
     BuildContext context,

@@ -70,12 +70,10 @@ class _FediCircularProgressIndicatorState
 
     return AnimatedBuilder(
       animation: _controller,
-      builder: (_, child) {
-        return Transform.rotate(
-          angle: _controller.value,
-          child: child,
-        );
-      },
+      builder: (_, child) => Transform.rotate(
+        angle: _controller.value,
+        child: child,
+      ),
       child: Container(
         width: size,
         // ignore: no-equal-arguments

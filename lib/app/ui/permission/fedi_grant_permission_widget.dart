@@ -18,34 +18,32 @@ class FediGrantPermissionWidget extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<bool?>(
-      stream: permissionBloc.permissionGrantedStream.distinct(),
-      initialData: permissionBloc.permissionGranted,
-      builder: (context, snapshot) {
-        var permissionGranted = snapshot.data;
+  Widget build(BuildContext context) => StreamBuilder<bool?>(
+        stream: permissionBloc.permissionGrantedStream.distinct(),
+        initialData: permissionBloc.permissionGranted,
+        builder: (context, snapshot) {
+          var permissionGranted = snapshot.data;
 
-        if (permissionGranted == null) {
-          return Center(child: FediCircularProgressIndicator());
-        }
+          if (permissionGranted == null) {
+            return Center(child: FediCircularProgressIndicator());
+          }
 
-        if (!permissionGranted) {
-          return Center(
-            child: Padding(
-              padding: FediPadding.allBigPadding,
-              child: FediPrimaryFilledTextButtonWithBorder(
-                S.of(context).permission_grant_action_grant,
-                expanded: false,
-                onPressed: () {
-                  permissionBloc.requestPermission();
-                },
+          if (!permissionGranted) {
+            return Center(
+              child: Padding(
+                padding: FediPadding.allBigPadding,
+                child: FediPrimaryFilledTextButtonWithBorder(
+                  S.of(context).permission_grant_action_grant,
+                  expanded: false,
+                  onPressed: () {
+                    permissionBloc.requestPermission();
+                  },
+                ),
               ),
-            ),
-          );
-        } else {
-          return grantedBuilder(context);
-        }
-      },
-    );
-  }
+            );
+          } else {
+            return grantedBuilder(context);
+          }
+        },
+      );
 }

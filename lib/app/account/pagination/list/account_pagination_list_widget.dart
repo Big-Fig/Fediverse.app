@@ -148,11 +148,9 @@ class _AccountPaginationListBodyWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return AccountListItemWidget(
-      padding: itemPadding,
-      accountSelectedCallback: accountSelectedCallback,
-      accountActions: accountActions,
-    );
-  }
+  Widget build(BuildContext context) => AccountListItemWidget(
+        padding: itemPadding,
+        accountSelectedCallback: accountSelectedCallback,
+        accountActions: accountActions,
+      );
 }

@@ -60,8 +60,8 @@ class EditMediaSettingsBloc
     var oldMediaAutoInit = oldPreferences.autoInit;
     var oldMediaAutoPlay = oldPreferences.autoPlay;
 
-    bool? newMediaAutoInit = autoInitFieldBloc.currentValue!;
-    bool? newMediaAutoPlay = autoPlayFieldBloc.currentValue!;
+    var newMediaAutoInit = autoInitFieldBloc.currentValue == true;
+    var newMediaAutoPlay = autoPlayFieldBloc.currentValue == true;
 
     if (newMediaAutoPlay && !oldMediaAutoPlay) {
       newMediaAutoInit = true;

@@ -206,22 +206,21 @@ abstract class AppRemoteDatabaseDaoRepository<
     required RepositoryPagination<RemoteItem>? pagination,
     required Filters? filters,
     required List<OrderingTerm>? orderingTerms,
-  }) {
-    return createFindInAppTypeSelectable(
-      pagination: pagination != null
-          ? RepositoryPagination(
-              newerThanItem:
-                  mapRemoteItemToAppItemNullable(pagination.newerThanItem),
-              olderThanItem:
-                  mapRemoteItemToAppItemNullable(pagination.olderThanItem),
-              limit: pagination.limit,
-              offset: pagination.offset,
-            )
-          : null,
-      filters: filters,
-      orderingTerms: orderingTerms,
-    ).map(mapAppItemToRemoteItem);
-  }
+  }) =>
+      createFindInAppTypeSelectable(
+        pagination: pagination != null
+            ? RepositoryPagination(
+                newerThanItem:
+                    mapRemoteItemToAppItemNullable(pagination.newerThanItem),
+                olderThanItem:
+                    mapRemoteItemToAppItemNullable(pagination.olderThanItem),
+                limit: pagination.limit,
+                offset: pagination.offset,
+              )
+            : null,
+        filters: filters,
+        orderingTerms: orderingTerms,
+      ).map(mapAppItemToRemoteItem);
 
   void addRemoteItemPagination({
     required SimpleSelectStatement<TableDsl, DbItem> query,

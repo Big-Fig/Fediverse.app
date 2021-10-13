@@ -68,23 +68,22 @@ class AccountAvatarUrlWidget extends StatelessWidget {
       height: imageSize,
       child: Center(
         child: IFilesCacheService.of(context).createCachedNetworkImageWidget(
-          imageBuilder: (context, imageProvider) {
-            return ClipRRect(
-              // ignore: no-magic-number
-              borderRadius: BorderRadius.circular(imageSize / 2),
-              child: Image(
-                width: imageSize,
-                // ignore: no-equal-arguments
-                height: imageSize,
-                image: imageProvider,
-              ),
-            );
-          },
+          imageBuilder: (context, imageProvider) => ClipRRect(
+            // ignore: no-magic-number
+            borderRadius: BorderRadius.circular(imageSize / 2),
+            child: Image(
+              width: imageSize,
+              // ignore: no-equal-arguments
+              height: imageSize,
+              image: imageProvider,
+            ),
+          ),
           imageUrl: avatarUrl,
           placeholder: (context, url) => _AccountAvatarLoadingWidget(
             progressSize: progressSize,
           ),
-          errorWidget: (context, url, error) => _AccountAvatarFailedWidget(),
+          errorWidget: (context, url, dynamic error) =>
+              _AccountAvatarFailedWidget(),
           height: imageSize,
           // ignore: no-equal-arguments
           width: imageSize,
@@ -100,9 +99,7 @@ class _AccountAvatarFailedWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Icon(FediIcons.warning);
-  }
+  Widget build(BuildContext context) => Icon(FediIcons.warning);
 }
 
 class _AccountAvatarLoadingWidget extends StatelessWidget {
@@ -113,9 +110,7 @@ class _AccountAvatarLoadingWidget extends StatelessWidget {
   final double progressSize;
 
   @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: FediCircularProgressIndicator(size: progressSize),
-    );
-  }
+  Widget build(BuildContext context) => Center(
+        child: FediCircularProgressIndicator(size: progressSize),
+      );
 }

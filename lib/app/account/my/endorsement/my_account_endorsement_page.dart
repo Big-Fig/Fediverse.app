@@ -9,19 +9,18 @@ class LocalMyAccountEndorsementPage extends StatelessWidget {
   const LocalMyAccountEndorsementPage();
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: FediPageTitleAppBar(
-        title: S.of(context).app_account_my_endorsement_title,
-      ),
-      body: const SafeArea(
-        child: MyAccountEndorsementWidget(),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Scaffold(
+        appBar: FediPageTitleAppBar(
+          title: S.of(context).app_account_my_endorsement_title,
+        ),
+        body: const SafeArea(
+          child: MyAccountEndorsementWidget(),
+        ),
+      );
 }
 
-MaterialPageRoute createMyAccountEndorsementPageRoute() => MaterialPageRoute(
+MaterialPageRoute<void> createMyAccountEndorsementPageRoute() =>
+    MaterialPageRoute<void>(
       builder: (context) => MyAccountEndorsementBloc.provideToContext(
         context,
         child: const LocalMyAccountEndorsementPage(),

@@ -87,35 +87,37 @@ Future launchApp({
   runNotInitializedSplashApp();
 
   IInitBloc initBloc = InitBloc(appLaunchType: appLaunchType);
-  // ignore: unawaited_futures
-  initBloc.performAsyncInit();
-
-  initBloc.initLoadingStateStream.listen(
-    (newState) async {
-      _logger.fine(() => 'appContextBloc.initLoadingStateStream.newState '
-          '$newState');
-
-      if (newState == AsyncInitLoadingState.finished) {
-        var currentInstanceBloc =
-            initBloc.appContextBloc.get<ICurrentUnifediApiAccessBloc>();
-
-        currentInstanceBloc.currentInstanceStream
-            .distinct(
-          (previous, next) => previous?.userAtHost == next?.userAtHost,
-        )
-            .listen(
-          (currentInstance) {
-            runInitializedApp(
-              appContextBloc: initBloc.appContextBloc,
-              currentInstance: currentInstance,
-            );
-          },
+  initBloc
+    // ignore: unawaited_futures
+    ..performAsyncInit()
+    ..initLoadingStateStream.listen(
+      (newState) async {
+        _logger.fine(
+          () => 'appContextBloc.initLoadingStateStream.newState '
+              '$newState',
         );
-      } else if (newState == AsyncInitLoadingState.failed) {
-        runInitFailedApp();
-      }
-    },
-  );
+
+        if (newState == AsyncInitLoadingState.finished) {
+          var currentInstanceBloc =
+              initBloc.appContextBloc.get<ICurrentUnifediApiAccessBloc>();
+
+          currentInstanceBloc.currentInstanceStream
+              .distinct(
+            (previous, next) => previous?.userAtHost == next?.userAtHost,
+          )
+              .listen(
+            (currentInstance) {
+              runInitializedApp(
+                appContextBloc: initBloc.appContextBloc,
+                currentInstance: currentInstance,
+              );
+            },
+          );
+        } else if (newState == AsyncInitLoadingState.failed) {
+          runInitFailedApp();
+        }
+      },
+    );
 }
 
 void runNotInitializedSplashApp() {
@@ -244,6 +246,7 @@ CurrentUnifediApiAccessContextInitBloc createCurrentInstanceContextBloc({
   _logger.finest(() => 'createCurrentInstanceContextBloc');
   var currentUnifediApiAccessContextLoadingBloc =
       CurrentUnifediApiAccessContextInitBloc.createFromContext(context);
+  // ignore: cascade_invocations
   currentUnifediApiAccessContextLoadingBloc.performAsyncInit();
 
   currentUnifediApiAccessContextLoadingBloc.stateStream.distinct().listen(
@@ -416,7 +419,7 @@ class FediApp extends StatelessWidget {
   final Widget child;
   final bool instanceInitialized;
 
-  FediApp({
+  const FediApp({
     required this.child,
     required this.instanceInitialized,
   });
@@ -445,8 +448,10 @@ class FediApp extends StatelessWidget {
                   ? ThemeMode.dark
                   : ThemeMode.light;
 
-          _logger.finest(() => 'currentTheme $currentTheme '
-              'themeMode $themeMode');
+          _logger.finest(
+            () => 'currentTheme $currentTheme '
+                'themeMode $themeMode',
+          );
 
           var actualTheme = currentTheme ?? lightFediUiTheme;
           // todo: refactor hack

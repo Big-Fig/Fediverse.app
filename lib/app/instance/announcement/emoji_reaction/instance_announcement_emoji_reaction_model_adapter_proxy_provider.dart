@@ -8,18 +8,17 @@ class InstanceAnnouncementEmojiReactionAdapterProxyProvider
     extends StatelessWidget {
   final Widget child;
 
-  InstanceAnnouncementEmojiReactionAdapterProxyProvider({
+  const InstanceAnnouncementEmojiReactionAdapterProxyProvider({
     required this.child,
   });
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IUnifediApiEmojiReaction, IEmojiReaction>(
-      update: (context, value, previous) =>
-          InstanceAnnouncementEmojiReactionAdapter(
-        unifediApiEmojiReaction: value,
-      ),
-      child: child,
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IUnifediApiEmojiReaction, IEmojiReaction>(
+        update: (context, value, previous) =>
+            InstanceAnnouncementEmojiReactionAdapter(
+          unifediApiEmojiReaction: value,
+        ),
+        child: child,
+      );
 }

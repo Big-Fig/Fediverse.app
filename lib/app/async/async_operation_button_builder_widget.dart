@@ -24,7 +24,7 @@ class AsyncOperationButtonBuilderWidget<T> extends StatefulWidget {
 
   final List<ErrorDataBuilder> errorDataBuilders;
 
-  AsyncOperationButtonBuilderWidget({
+  const AsyncOperationButtonBuilderWidget({
     required this.builder,
     required this.asyncButtonAction,
     this.showProgressDialog = true,
@@ -40,16 +40,15 @@ class AsyncOperationButtonBuilderWidget<T> extends StatefulWidget {
 
   Future<AsyncDialogResult<T?>> performAsyncOperation({
     required BuildContext context,
-  }) {
-    return AsyncOperationHelper.performAsyncOperation(
-      context: context,
-      errorCallback: errorCallback,
-      contentMessage: progressContentMessage,
-      errorDataBuilders: errorDataBuilders,
-      showProgressDialog: showProgressDialog,
-      asyncCode: asyncButtonAction,
-    );
-  }
+  }) =>
+      AsyncOperationHelper.performAsyncOperation(
+        context: context,
+        errorCallback: errorCallback,
+        contentMessage: progressContentMessage,
+        errorDataBuilders: errorDataBuilders,
+        showProgressDialog: showProgressDialog,
+        asyncCode: asyncButtonAction,
+      );
 }
 
 class _AsyncOperationButtonBuilderWidgetState
@@ -66,46 +65,44 @@ class _AsyncOperationButtonBuilderWidgetState
   }
 
   @override
-  Widget build(BuildContext context) {
-    return widget.builder(
-      context,
-      asyncOperationInProgress
-          ? null
-          : () {
-              setState(() {
-                asyncOperationInProgress = true;
-              });
-              widget.performAsyncOperation(context: context).then((_) async {
-                if (!disposed) {
-                  setState(() {
-                    asyncOperationInProgress = false;
-                  });
-                }
-                var successToastMessage = widget.successToastMessage;
-                if (successToastMessage != null) {
-                  IToastService.of(context, listen: false).showInfoToast(
-                    context: context,
-                    content: null,
-                    title: successToastMessage,
-                  );
-                }
-              }).catchError(
-                (error, stacktrace) {
-                  _logger.severe(
-                    () => 'Fail to execute async operation',
-                    error,
-                    stacktrace,
-                  );
+  Widget build(BuildContext context) => widget.builder(
+        context,
+        asyncOperationInProgress
+            ? null
+            : () {
+                setState(() {
+                  asyncOperationInProgress = true;
+                });
+                widget.performAsyncOperation(context: context).then((_) async {
                   if (!disposed) {
-                    setState(
-                      () {
-                        asyncOperationInProgress = false;
-                      },
+                    setState(() {
+                      asyncOperationInProgress = false;
+                    });
+                  }
+                  var successToastMessage = widget.successToastMessage;
+                  if (successToastMessage != null) {
+                    IToastService.of(context, listen: false).showInfoToast(
+                      context: context,
+                      content: null,
+                      title: successToastMessage,
                     );
                   }
-                },
-              );
-            },
-    );
-  }
+                }).catchError(
+                  (dynamic error, StackTrace? stacktrace) {
+                    _logger.severe(
+                      () => 'Fail to execute async operation',
+                      error,
+                      stacktrace,
+                    );
+                    if (!disposed) {
+                      setState(
+                        () {
+                          asyncOperationInProgress = false;
+                        },
+                      );
+                    }
+                  },
+                );
+              },
+      );
 }

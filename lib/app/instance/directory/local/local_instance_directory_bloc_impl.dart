@@ -50,13 +50,12 @@ class LocalInstanceDirectoryBloc extends InstanceDirectoryBloc
   static Widget provideToContext(
     BuildContext context, {
     required Widget child,
-  }) {
-    return DisposableProvider<IInstanceDirectoryBloc>(
-      create: (context) =>
-          LocalInstanceDirectoryBloc.createFromContext(context),
-      child: InstanceDirectoryBlocProxyProvider(child: child),
-    );
-  }
+  }) =>
+      DisposableProvider<IInstanceDirectoryBloc>(
+        create: (context) =>
+            LocalInstanceDirectoryBloc.createFromContext(context),
+        child: InstanceDirectoryBlocProxyProvider(child: child),
+      );
 
   @override
   InstanceLocation get instanceLocation => InstanceLocation.local;

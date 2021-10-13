@@ -8,7 +8,7 @@ import 'package:image_cropper/image_cropper.dart';
 Future<File?> goToCropImagePage({
   required BuildContext context,
   required File file,
-  required isForceCropToSquare,
+  required bool isForceCropToSquare,
 }) {
   var fediUiColorTheme = IFediUiColorTheme.of(
     context,

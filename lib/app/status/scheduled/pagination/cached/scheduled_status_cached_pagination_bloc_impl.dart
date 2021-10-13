@@ -86,18 +86,17 @@ class ScheduledStatusCachedPaginationBloc
     int itemsCountPerPage = 20,
     int? maximumCachedPagesCount,
     required Widget child,
-  }) {
-    return DisposableProvider<
-        ICachedPaginationBloc<CachedPaginationPage<IScheduledStatus>,
-            IScheduledStatus>>(
-      create: (context) =>
-          ScheduledStatusCachedPaginationBloc.createFromContext(
-        context,
-        maximumCachedPagesCount: maximumCachedPagesCount,
-      ),
-      child: CachedPaginationBlocProxyProvider<
-          CachedPaginationPage<IScheduledStatus>,
-          IScheduledStatus>(child: child),
-    );
-  }
+  }) =>
+      DisposableProvider<
+          ICachedPaginationBloc<CachedPaginationPage<IScheduledStatus>,
+              IScheduledStatus>>(
+        create: (context) =>
+            ScheduledStatusCachedPaginationBloc.createFromContext(
+          context,
+          maximumCachedPagesCount: maximumCachedPagesCount,
+        ),
+        child: CachedPaginationBlocProxyProvider<
+            CachedPaginationPage<IScheduledStatus>,
+            IScheduledStatus>(child: child),
+      );
 }

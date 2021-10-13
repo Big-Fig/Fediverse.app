@@ -9,7 +9,8 @@ class StringValueFormFieldNonEmptyValidationError
   String createErrorDescription(BuildContext context) =>
       S.of(context).form_field_text_error_empty_desc;
 
-  static FormValueFieldValidation createValidator() => (currentValue) {
+  static FormValueFieldValidation<String> createValidator() =>
+      (String? currentValue) {
         if (currentValue?.isNotEmpty == true) {
           return null;
         } else {

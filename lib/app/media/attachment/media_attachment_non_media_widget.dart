@@ -17,19 +17,15 @@ class MediaAttachmentNonMediaWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return DisposableProxyProvider<IUnifediApiMediaAttachment,
-        IMediaFilePathBloc>(
-      update: (context, value, _) {
-        return MediaFilePathBloc(
+  Widget build(BuildContext context) =>
+      DisposableProxyProvider<IUnifediApiMediaAttachment, IMediaFilePathBloc>(
+        update: (context, value, _) => MediaFilePathBloc(
           path: value.remoteUrl,
           customName: value.description,
-        );
-      },
-      child: MediaFilePathWidget(
-        opacity: opacity,
-        actionsWidget: actionsWidget,
-      ),
-    );
-  }
+        ),
+        child: MediaFilePathWidget(
+          opacity: opacity,
+          actionsWidget: actionsWidget,
+        ),
+      );
 }

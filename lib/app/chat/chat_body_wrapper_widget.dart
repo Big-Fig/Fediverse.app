@@ -66,10 +66,8 @@ class _ChatPostMessageWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return PostMessageWidget(
-      hintText: S.of(context).app_chat_post_field_content_hint,
-      showActionsOnlyWhenFocused: false,
-    );
-  }
+  Widget build(BuildContext context) => PostMessageWidget(
+        hintText: S.of(context).app_chat_post_field_content_hint,
+        showActionsOnlyWhenFocused: false,
+      );
 }

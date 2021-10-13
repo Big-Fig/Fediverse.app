@@ -10,7 +10,7 @@ class StatusVisibilityTitleWidget extends StatelessWidget {
   final bool isPossibleToChangeVisibility;
   final bool isSelectedVisibility;
 
-  StatusVisibilityTitleWidget({
+  const StatusVisibilityTitleWidget({
     required this.visibility,
     required this.isPossibleToChangeVisibility,
     required this.isSelectedVisibility,
@@ -27,8 +27,8 @@ class StatusVisibilityTitleWidget extends StatelessWidget {
   static Text buildVisibilityTitle({
     required BuildContext context,
     required UnifediApiVisibility visibility,
-    required isPossibleToChangeVisibility,
-    required isSelectedVisibility,
+    required bool isPossibleToChangeVisibility,
+    required bool isSelectedVisibility,
   }) =>
       Text(
         mapVisibilityToTitle(context, visibility),

@@ -329,7 +329,7 @@ class _TimelinesHomeTabStorageListItemLeadingWidget extends StatelessWidget {
       builder: (context, snapshot) {
         var uiState = snapshot.data ?? TimelinesHomeTabStorageUiState.view;
 
-        var child;
+        Widget child;
 
         switch (uiState) {
           case TimelinesHomeTabStorageUiState.edit:
@@ -403,7 +403,7 @@ class _TimelinesHomeTabStorageListItemRemoveButtonWidget
                     timelinesHomeTabStorageBloc.remove(timeline);
                     Navigator.of(context).pop();
                   },
-                ).show(context);
+                ).show<void>(context);
               },
               child: Padding(
                 padding: EdgeInsets.only(

@@ -50,25 +50,21 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   @override
   Future markAsRead({
     required INotification notification,
-  }) {
-    return dao.markAsRead(
-      remoteId: notification.remoteId,
-    );
-  }
+  }) =>
+      dao.markAsRead(
+        remoteId: notification.remoteId,
+      );
 
   @override
   Future dismiss({
     required INotification notification,
-  }) {
-    return dao.markAsDismissed(
-      remoteId: notification.remoteId,
-    );
-  }
+  }) =>
+      dao.markAsDismissed(
+        remoteId: notification.remoteId,
+      );
 
   @override
-  Future dismissAll() {
-    return dao.markAllAsDismissed();
-  }
+  Future dismissAll() => dao.markAllAsDismissed();
 
   @override
   Future markAllAsRead() => dao.markAllAsRead();
@@ -92,9 +88,8 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       appItem.toUnifediApiNotification();
 
   @override
-  DbNotificationPopulated mapAppItemToDbPopulatedItem(INotification appItem) {
-    return appItem.toDbNotificationPopulated();
-  }
+  DbNotificationPopulated mapAppItemToDbPopulatedItem(INotification appItem) =>
+      appItem.toDbNotificationPopulated();
 
   @override
   INotification mapDbPopulatedItemToAppItem(
@@ -154,7 +149,7 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       batchTransaction: null,
     );
 
-    return await dao.upsert(
+    return dao.upsert(
       entity: remoteItem.toDbNotification(unread: null),
     );
   }

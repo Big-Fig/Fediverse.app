@@ -33,13 +33,12 @@ class ConversationChatWithLastMessagePaginationBloc
     required int? itemsCountPerPage,
     required CachedPaginationPage<IConversationChatWithLastMessage?>? olderPage,
     required CachedPaginationPage<IConversationChatWithLastMessage?>? newerPage,
-  }) {
-    return listService.loadLocalItems(
-      limit: itemsCountPerPage,
-      newerThan: olderPage?.items.firstOrNull,
-      olderThan: newerPage?.items.lastOrNull,
-    );
-  }
+  }) =>
+      listService.loadLocalItems(
+        limit: itemsCountPerPage,
+        newerThan: olderPage?.items.firstOrNull,
+        olderThan: newerPage?.items.lastOrNull,
+      );
 
   @override
   Future refreshItemsFromRemoteForPage({

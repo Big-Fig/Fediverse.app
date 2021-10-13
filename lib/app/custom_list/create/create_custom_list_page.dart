@@ -13,22 +13,20 @@ import 'package:provider/provider.dart';
 
 class CreateCustomListPage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: FediPageTitleAppBar(
-        title: S.of(context).app_customList_create_title,
-        actions: <Widget>[
-          EditCustomListAppBarSaveActionWidget(),
-        ],
-      ),
-      body: const SafeArea(
-        child: Padding(
-          padding: FediPadding.allBigPadding,
-          child: EditCustomListWidget(),
+  Widget build(BuildContext context) => Scaffold(
+        appBar: FediPageTitleAppBar(
+          title: S.of(context).app_customList_create_title,
+          actions: <Widget>[
+            EditCustomListAppBarSaveActionWidget(),
+          ],
         ),
-      ),
-    );
-  }
+        body: const SafeArea(
+          child: Padding(
+            padding: FediPadding.allBigPadding,
+            child: EditCustomListWidget(),
+          ),
+        ),
+      );
 
   const CreateCustomListPage();
 }
@@ -46,20 +44,19 @@ void goToCreateCustomListPage({
   );
 }
 
-MaterialPageRoute createCreateCustomListPageRoute({
+MaterialPageRoute<void> createCreateCustomListPageRoute({
   required BuildContext context,
   required Function(ICustomList) onSubmit,
-}) {
-  return MaterialPageRoute(
-    builder: (context) => CreateCustomListBloc.provideToContext(
-      context,
-      child: ProxyProvider<IEditCustomListBloc,
-          IEditCustomListAccountListPaginationListBloc>(
-        update: (context, value, _) =>
-            value.editCustomListAccountListPaginationListBloc,
-        child: const CreateCustomListPage(),
+}) =>
+    MaterialPageRoute<void>(
+      builder: (context) => CreateCustomListBloc.provideToContext(
+        context,
+        child: ProxyProvider<IEditCustomListBloc,
+            IEditCustomListAccountListPaginationListBloc>(
+          update: (context, value, _) =>
+              value.editCustomListAccountListPaginationListBloc,
+          child: const CreateCustomListPage(),
+        ),
+        onSubmit: onSubmit,
       ),
-      onSubmit: onSubmit,
-    ),
-  );
-}
+    );

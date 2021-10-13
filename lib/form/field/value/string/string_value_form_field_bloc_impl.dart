@@ -20,13 +20,14 @@ class StringValueFormFieldBloc extends ValueFormFieldBloc<String>
     required String originValue,
     required List<FormValueFieldValidation<String>> validators,
     required this.maxLength,
-    bool? isEnabled = true,
+    bool isEnabled = true,
     bool isNullValuePossible = true,
   })  : textEditingController = TextEditingController(text: originValue),
         super(
           originValue: originValue,
           validators: validators,
           isNullValuePossible: isNullValuePossible,
+          isEnabled: isEnabled,
         ) {
     var listener = () {
       var currentValue = textEditingController.text;
@@ -36,6 +37,7 @@ class StringValueFormFieldBloc extends ValueFormFieldBloc<String>
     focusNode.disposeWith(this);
     textEditingController.disposeWith(this);
 
+    // ignore: cascade_invocations
     textEditingController.addListener(listener);
 
     addCustomDisposable(

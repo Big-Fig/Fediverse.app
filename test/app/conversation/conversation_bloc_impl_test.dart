@@ -168,7 +168,7 @@ void main() {
       remoteId: conversation.remoteId,
     );
 
-    var listened;
+    IConversationChat? listened;
 
     var subscription = conversationBloc.conversationStream.listen((newValue) {
       listened = newValue;
@@ -209,7 +209,7 @@ void main() {
       remoteId: conversation.remoteId,
     );
 
-    var listened;
+    IStatus? listened;
 
     var subscription = conversationBloc.lastStatusStream.listen((newValue) {
       listened = newValue;
@@ -258,13 +258,12 @@ void main() {
       remoteId: conversation.remoteId,
     );
 
-    late var listened;
+    List<IAccount>? listened;
 
     var subscription = conversationBloc.accountsStream.listen((newValue) {
       listened = newValue;
     });
 
-    listened = null;
     await RxDartMockHelper.waitForData(() => listened);
 
     await _update(
@@ -277,7 +276,7 @@ void main() {
       account1,
     );
     AccountMockHelper.expectAccount(
-      listened[0],
+      listened![0],
       account1,
     );
 
@@ -299,15 +298,15 @@ void main() {
       account3,
     );
     AccountMockHelper.expectAccount(
-      listened[0],
+      listened![0],
       account1,
     );
     AccountMockHelper.expectAccount(
-      listened[1],
+      listened![1],
       account2,
     );
     AccountMockHelper.expectAccount(
-      listened[2],
+      listened![2],
       account3,
     );
 
@@ -327,14 +326,13 @@ void main() {
       remoteId: conversation.remoteId,
     );
 
-    late var listened;
+    List<IAccount>? listened;
 
     var subscription =
         conversationBloc.accountsWithoutMeStream.listen((newValue) {
       listened = newValue;
     });
 
-    listened = null;
     await RxDartMockHelper.waitForData(() => listened);
 
     await _update(
@@ -347,7 +345,7 @@ void main() {
       account1,
     );
     AccountMockHelper.expectAccount(
-      listened[0],
+      listened![0],
       account1,
     );
 
@@ -365,11 +363,11 @@ void main() {
       account3,
     );
     AccountMockHelper.expectAccount(
-      listened[0],
+      listened![0],
       account1,
     );
     AccountMockHelper.expectAccount(
-      listened[1],
+      listened![1],
       account3,
     );
 
@@ -387,7 +385,7 @@ void main() {
       remoteId: conversation.remoteId,
     );
 
-    var listened;
+    IConversationChat? listened;
 
     var subscription = conversationBloc.conversationStream.listen((newValue) {
       listened = newValue;
@@ -400,9 +398,11 @@ void main() {
       conversation,
     );
 
-    when(pleromaConversationServiceMock.getConversation(
-      conversationId: conversation.remoteId,
-    )).thenAnswer(
+    when(
+      pleromaConversationServiceMock.getConversation(
+        conversationId: conversation.remoteId,
+      ),
+    ).thenAnswer(
       (_) async => newValue.toPleromaConversation(
         accounts: [],
         lastStatus: null,

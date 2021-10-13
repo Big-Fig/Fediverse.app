@@ -77,6 +77,6 @@ class EmojiPickerSearchCategoryBloc extends AsyncInitLoadingBloc
       (bloc) => bloc.performAsyncInit(),
     );
 
-    await Future.wait(futures);
+    await Future.wait<void>(futures);
   }
 }

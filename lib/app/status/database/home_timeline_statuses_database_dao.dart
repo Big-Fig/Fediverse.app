@@ -40,16 +40,15 @@ class HomeTimelineStatusesDao extends DatabaseDao<
         (tbl) => _createAccountRemoteIdEqualExpression(accountRemoteId),
       );
     } else {
-      return await deleteByAccountRemoteId(accountRemoteId);
+      return deleteByAccountRemoteId(accountRemoteId);
     }
   }
 
   CustomExpression<bool> _createAccountRemoteIdEqualExpression(
     String accountRemoteId,
-  ) {
-    return createMainTableEqualWhereExpression(
-      fieldName: table.accountRemoteId.$name,
-      value: accountRemoteId,
-    );
-  }
+  ) =>
+      createMainTableEqualWhereExpression(
+        fieldName: table.accountRemoteId.$name,
+        value: accountRemoteId,
+      );
 }

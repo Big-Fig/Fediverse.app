@@ -110,13 +110,12 @@ abstract class AppDatabaseDaoRepository<
   Future<void> upsertInDbTypeBatch(
     Insertable<DbItem> dbItem, {
     required Batch? batchTransaction,
-  }) {
-    return insertInDbTypeBatch(
-      dbItem,
-      mode: InsertMode.insertOrReplace,
-      batchTransaction: batchTransaction,
-    );
-  }
+  }) =>
+      insertInDbTypeBatch(
+        dbItem,
+        mode: InsertMode.insertOrReplace,
+        batchTransaction: batchTransaction,
+      );
 
   @override
   Future<List<DbItem>> findAllInDbType({
@@ -173,8 +172,9 @@ abstract class AppDatabaseDaoRepository<
   }) {
     var query = dao.startSelectQuery();
 
-    dao.addFiltersToQuery(query: query, filters: filters);
-    dao.addOrderingToQuery(query: query, orderingTerms: orderingTerms);
+    dao
+      ..addFiltersToQuery(query: query, filters: filters)
+      ..addOrderingToQuery(query: query, orderingTerms: orderingTerms);
     addDbItemPagination(
       query: query,
       pagination: pagination,
@@ -212,15 +212,14 @@ abstract class AppDatabaseDaoRepository<
     RepositoryPagination<AppItem>? pagination,
     Filters? filters,
     OrderingTerm? orderingTermData,
-  }) {
-    return createFindInAppTypeSelectable(
-      pagination: pagination,
-      filters: filters,
-      orderingTerms: orderingTermData != null
-          ? [
-              orderingTermData,
-            ]
-          : null,
-    );
-  }
+  }) =>
+      createFindInAppTypeSelectable(
+        pagination: pagination,
+        filters: filters,
+        orderingTerms: orderingTermData != null
+            ? [
+                orderingTermData,
+              ]
+            : null,
+      );
 }

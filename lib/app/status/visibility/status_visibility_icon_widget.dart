@@ -9,7 +9,7 @@ class StatusVisibilityIconWidget extends StatelessWidget {
   final bool isPossibleToChangeVisibility;
   final bool isSelectedVisibility;
 
-  StatusVisibilityIconWidget({
+  const StatusVisibilityIconWidget({
     required this.visibility,
     required this.isPossibleToChangeVisibility,
     required this.isSelectedVisibility,
@@ -26,8 +26,8 @@ class StatusVisibilityIconWidget extends StatelessWidget {
   static Icon buildVisibilityIcon({
     required BuildContext context,
     required UnifediApiVisibility visibility,
-    required isPossibleToChangeVisibility,
-    required isSelectedVisibility,
+    required bool isPossibleToChangeVisibility,
+    required bool isSelectedVisibility,
   }) =>
       Icon(
         mapVisibilityToIconData(visibility),
@@ -38,15 +38,14 @@ class StatusVisibilityIconWidget extends StatelessWidget {
         ),
       );
 
-  static IconData mapVisibilityToIconData(UnifediApiVisibility visibility) {
-    return visibility.map(
-      public: (_) => FediIcons.world,
-      unlisted: (_) => FediIcons.unlisted,
-      direct: (_) => FediIcons.message,
-      private: (_) => FediIcons.private,
-      list: (_) => FediIcons.lists,
-      local: (_) => FediIcons.instance,
-      unknown: (_) => FediIcons.warning,
-    );
-  }
+  static IconData mapVisibilityToIconData(UnifediApiVisibility visibility) =>
+      visibility.map(
+        public: (_) => FediIcons.world,
+        unlisted: (_) => FediIcons.unlisted,
+        direct: (_) => FediIcons.message,
+        private: (_) => FediIcons.private,
+        list: (_) => FediIcons.lists,
+        local: (_) => FediIcons.instance,
+        unknown: (_) => FediIcons.warning,
+      );
 }

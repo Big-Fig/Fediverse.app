@@ -30,33 +30,32 @@ class SuggestionSelectAccountWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return SuggestionSelectAccountBlocProxyProvider(
-      child: AccountCachedPaginationBloc.provideToContext(
-        context,
-        child: AccountPaginationListBloc.provideToContext(
+  Widget build(BuildContext context) =>
+      SuggestionSelectAccountBlocProxyProvider(
+        child: AccountCachedPaginationBloc.provideToContext(
           context,
-          child: AccountPaginationListWidget(
-            header: Column(
-              children: [
-                if (header != null) header!,
-                Padding(
-                  padding: headerPadding,
-                  child: const SuggestionSelectAccountHeaderWidget(),
-                ),
-              ],
+          child: AccountPaginationListBloc.provideToContext(
+            context,
+            child: AccountPaginationListWidget(
+              header: Column(
+                children: [
+                  if (header != null) header!,
+                  Padding(
+                    padding: headerPadding,
+                    child: const SuggestionSelectAccountHeaderWidget(),
+                  ),
+                ],
+              ),
+              footer: footer,
+              alwaysShowHeader: alwaysShowHeader,
+              alwaysShowFooter: alwaysShowFooter,
+              itemPadding: itemPadding,
+              accountActions: itemActions,
+              accountSelectedCallback: accountSelectedCallback,
             ),
-            footer: footer,
-            alwaysShowHeader: alwaysShowHeader,
-            alwaysShowFooter: alwaysShowFooter,
-            itemPadding: itemPadding,
-            accountActions: itemActions,
-            accountSelectedCallback: accountSelectedCallback,
           ),
         ),
-      ),
-    );
-  }
+      );
 }
 
 class SuggestionSelectAccountHeaderWidget extends StatelessWidget {

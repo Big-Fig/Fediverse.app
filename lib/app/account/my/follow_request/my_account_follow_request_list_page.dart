@@ -17,18 +17,16 @@ import 'package:provider/provider.dart';
 
 class MyAccountFollowRequestListPage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: FediPageTitleAppBar(
-        title: S.of(context).app_account_my_followRequest_title,
-      ),
-      body: const SafeArea(
-        child: MyAccountFollowRequestAccountPaginationListWidget(
-          customEmptyWidget: _MyAccountFollowRequestListPageEmptyWidget(),
+  Widget build(BuildContext context) => Scaffold(
+        appBar: FediPageTitleAppBar(
+          title: S.of(context).app_account_my_followRequest_title,
         ),
-      ),
-    );
-  }
+        body: const SafeArea(
+          child: MyAccountFollowRequestAccountPaginationListWidget(
+            customEmptyWidget: _MyAccountFollowRequestListPageEmptyWidget(),
+          ),
+        ),
+      );
 
   const MyAccountFollowRequestListPage();
 }
@@ -48,27 +46,26 @@ Future goToMyAccountFollowRequestListPage(BuildContext context) =>
       createMyAccountFollowRequestListPage(),
     );
 
-MaterialPageRoute createMyAccountFollowRequestListPage() {
-  return MaterialPageRoute(
-    builder: (context) =>
-        MyAccountFollowRequestNetworkOnlyAccountListBloc.provideToContext(
-      context,
-      child: DisposableProvider<IAccountNetworkOnlyPaginationBloc>(
-        create: (context) =>
-            AccountNetworkOnlyPaginationBloc.createFromContext(context),
-        child: ProxyProvider<IAccountNetworkOnlyPaginationBloc,
-            INetworkOnlyPaginationBloc<PaginationPage<IAccount>, IAccount>>(
-          update: (context, value, previous) => value,
-          child: NetworkOnlyPaginationBlocProxyProvider<
-              PaginationPage<IAccount>, IAccount>(
-            child: AccountPaginationListBloc.provideToContext(
-              context,
-              loadFromCacheDuringInit: false,
-              child: const MyAccountFollowRequestListPage(),
+MaterialPageRoute createMyAccountFollowRequestListPage() =>
+    MaterialPageRoute<void>(
+      builder: (context) =>
+          MyAccountFollowRequestNetworkOnlyAccountListBloc.provideToContext(
+        context,
+        child: DisposableProvider<IAccountNetworkOnlyPaginationBloc>(
+          create: (context) =>
+              AccountNetworkOnlyPaginationBloc.createFromContext(context),
+          child: ProxyProvider<IAccountNetworkOnlyPaginationBloc,
+              INetworkOnlyPaginationBloc<PaginationPage<IAccount>, IAccount>>(
+            update: (context, value, previous) => value,
+            child: NetworkOnlyPaginationBlocProxyProvider<
+                PaginationPage<IAccount>, IAccount>(
+              child: AccountPaginationListBloc.provideToContext(
+                context,
+                loadFromCacheDuringInit: false,
+                child: const MyAccountFollowRequestListPage(),
+              ),
             ),
           ),
         ),
       ),
-    ),
-  );
-}
+    );

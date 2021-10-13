@@ -52,6 +52,7 @@ void showPostStatusUnsavedDialog(
             Navigator.pop(context);
           } else {
             var toastService = IToastService.of(context, listen: false);
+            // ignore: cascade_invocations
             toastService.showErrorToast(
               context: context,
               title:
@@ -79,5 +80,5 @@ void showPostStatusUnsavedDialog(
         },
       ),
     ],
-  ).show(context);
+  ).show<void>(context);
 }

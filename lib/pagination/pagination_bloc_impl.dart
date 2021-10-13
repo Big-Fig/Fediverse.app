@@ -80,7 +80,7 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
   @override
   Stream<List<int>> get loadedPageIndexesSortedByIndexStream =>
       pagesSubject.stream
-          .map((list) => list.map(((page) => page.pageIndex)).toList());
+          .map((list) => list.map((page) => page.pageIndex).toList());
 
   @override
   List<TPage> get loadedPagesSortedByIndex => pagesSubject.value;
@@ -109,16 +109,18 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
     required int pageIndex,
     required bool forceToSkipCache,
   }) async {
-    _logger.finest(() =>
-        'requestPage $pageIndex, forceToUpdateFromNetwork $forceToSkipCache');
+    _logger.finest(
+      () =>
+          'requestPage $pageIndex, forceToUpdateFromNetwork $forceToSkipCache',
+    );
 
     TPage page;
     if (isPageCacheEnabled) {
       if (indexToCachedPageMap.containsKey(pageIndex)) {
         page = indexToCachedPageMap[pageIndex]!;
       } else {
-        var previousPage;
-        var nextPage;
+        TPage? previousPage;
+        TPage? nextPage;
         var previousIndex = pageIndex - 1;
         var nextIndex = pageIndex + 1;
         if (indexToCachedPageMap.containsKey(previousIndex)) {
@@ -171,8 +173,9 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
   void onPagesChanged(List<TPage> pages) {
     _logger.finer(() => 'onPagesChanged pages ${pages.length}');
     pages.sort((a, b) => a.pageIndex.compareTo(b.pageIndex));
-    _logger.finest(() =>
-        'onPagesChanged pagesSubject.isClosed = ${pagesSubject.isClosed}');
+    _logger.finest(
+      () => 'onPagesChanged pagesSubject.isClosed = ${pagesSubject.isClosed}',
+    );
     if (!pagesSubject.isClosed) {
       pagesSubject.add(pages);
     }
@@ -229,7 +232,7 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
     int? maxIndex;
 
     // todo: improve
-    for (var index in loadedPageIndexesSortedByIndex) {
+    for (final index in loadedPageIndexesSortedByIndex) {
       if (maxIndex == null || index > maxIndex) {
         maxIndex = index;
       }

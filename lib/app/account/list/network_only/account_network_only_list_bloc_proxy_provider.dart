@@ -8,17 +8,15 @@ import 'package:provider/provider.dart';
 class AccountNetworkOnlyListBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  AccountNetworkOnlyListBlocProxyProvider({required this.child});
+  const AccountNetworkOnlyListBlocProxyProvider({required this.child});
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IAccountNetworkOnlyListBloc,
-        INetworkOnlyListBloc<IAccount>>(
-      update: (context, value, previous) => value,
-      child: ProxyProvider<IAccountNetworkOnlyListBloc, IAccountListBloc>(
+  Widget build(BuildContext context) => ProxyProvider<
+          IAccountNetworkOnlyListBloc, INetworkOnlyListBloc<IAccount>>(
         update: (context, value, previous) => value,
-        child: child,
-      ),
-    );
-  }
+        child: ProxyProvider<IAccountNetworkOnlyListBloc, IAccountListBloc>(
+          update: (context, value, previous) => value,
+          child: child,
+        ),
+      );
 }

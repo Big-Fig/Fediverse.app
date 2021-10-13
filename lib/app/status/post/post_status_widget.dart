@@ -16,13 +16,11 @@ class PostStatusWidget extends PostMessageWidget {
         );
 
   @override
-  List<Widget> buildActions() {
-    return [
-      const PostMessageAttachActionWidget(),
-      const PostMessageEmojiActionWidget(),
-      const PostStatusMentionActionWidget(),
-      const PostStatusVisibilityActionWidget(),
-      const PostStatusNsfwActionWidget(),
-    ];
-  }
+  List<Widget> buildActions() => [
+        const PostMessageAttachActionWidget(),
+        const PostMessageEmojiActionWidget(),
+        const PostStatusMentionActionWidget(),
+        const PostStatusVisibilityActionWidget(),
+        const PostStatusNsfwActionWidget(),
+      ];
 }

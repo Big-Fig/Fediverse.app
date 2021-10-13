@@ -23,7 +23,7 @@ class PleromaAsyncOperationButtonBuilderWidget<T>
           errorCallback: errorCallback,
           errorDataBuilders: [
             // top priority for passed to constructor handlers
-            ...(errorAlertDialogBuilders),
+            ...errorAlertDialogBuilders,
             // low priority for base Pleroma handler
             ...PleromaAsyncOperationHelper.pleromaErrorDataBuilders,
           ],
@@ -32,14 +32,13 @@ class PleromaAsyncOperationButtonBuilderWidget<T>
   @override
   Future<AsyncDialogResult<T?>> performAsyncOperation({
     required BuildContext context,
-  }) {
-    return PleromaAsyncOperationHelper.performPleromaAsyncOperation(
-      context: context,
-      errorCallback: errorCallback,
-      contentMessage: progressContentMessage,
-      errorDataBuilders: errorDataBuilders,
-      showProgressDialog: showProgressDialog,
-      asyncCode: asyncButtonAction,
-    );
-  }
+  }) =>
+      PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+        context: context,
+        errorCallback: errorCallback,
+        contentMessage: progressContentMessage,
+        errorDataBuilders: errorDataBuilders,
+        showProgressDialog: showProgressDialog,
+        asyncCode: asyncButtonAction,
+      );
 }

@@ -1,7 +1,6 @@
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/my/websockets/my_account_websockets_handler_impl.dart';
-import 'package:fedi/app/account/websockets/account_websockets_handler_impl.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
 import 'package:fedi/app/chat/conversation/websockets/conversation_chat_websockets_handler_impl.dart';
@@ -59,27 +58,6 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
         chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
         conversationChatNewMessagesHandlerBloc:
             conversationChatNewMessagesHandlerBloc,
-      );
-
-  @override
-  IDisposable listenAccountChannel({
-    required WebSocketsChannelHandlerType handlerType,
-    required String accountId,
-    required bool notification,
-  }) =>
-      AccountWebSocketsHandler(
-        handlerType: handlerType,
-        unifediApiWebSocketsService: unifediApiWebSocketsService,
-        statusRepository: statusRepository,
-        conversationRepository: conversationRepository,
-        notificationRepository: notificationRepository,
-        instanceAnnouncementRepository: instanceAnnouncementRepository,
-        chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
-        conversationChatNewMessagesHandlerBloc:
-            conversationChatNewMessagesHandlerBloc,
-        accountId: accountId,
-        notification: notification,
-        myAccountBloc: myAccountBloc,
       );
 
   @override

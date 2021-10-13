@@ -577,7 +577,7 @@ class CurrentUnifediApiAccessContextBloc extends ProviderContextBloc
       )..disposeWith(this);
 
       // check is push config changed after app update and resubscribes in the background
-      // ignore: unawaited_futures
+      // ignore: unawaited_futures, cascade_invocations
       pushSettingsBloc.reSubscribeIfNeeded();
 
       await globalProviderService

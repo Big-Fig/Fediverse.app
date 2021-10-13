@@ -17,24 +17,22 @@ class EditMyAccountCustomFieldsListFieldWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IEditMyAccountBloc,
-        IOneTypeFormGroupBloc<ILinkPairFormGroupBloc>>(
-      update: (context, value, _) => value.customFieldsGroupBloc,
-      child: ProxyProvider<IEditMyAccountBloc,
-          IOneTypeFormGroupBloc<IKeyValuePairFormGroupBloc>>(
+  Widget build(BuildContext context) => ProxyProvider<IEditMyAccountBloc,
+          IOneTypeFormGroupBloc<ILinkPairFormGroupBloc>>(
         update: (context, value, _) => value.customFieldsGroupBloc,
-        child: ProxyProvider<
-            IEditMyAccountBloc,
-            IOneTypeFormGroupBloc<
-                IKeyValuePairFormGroupBloc<IStringValueFormFieldBloc,
-                    IStringValueFormFieldBloc>>>(
+        child: ProxyProvider<IEditMyAccountBloc,
+            IOneTypeFormGroupBloc<IKeyValuePairFormGroupBloc>>(
           update: (context, value, _) => value.customFieldsGroupBloc,
-          child: const _EditMyAccountCustomFieldsListFieldBodyWidget(),
+          child: ProxyProvider<
+              IEditMyAccountBloc,
+              IOneTypeFormGroupBloc<
+                  IKeyValuePairFormGroupBloc<IStringValueFormFieldBloc,
+                      IStringValueFormFieldBloc>>>(
+            update: (context, value, _) => value.customFieldsGroupBloc,
+            child: const _EditMyAccountCustomFieldsListFieldBodyWidget(),
+          ),
         ),
-      ),
-    );
-  }
+      );
 }
 
 class _EditMyAccountCustomFieldsListFieldBodyWidget extends StatelessWidget {

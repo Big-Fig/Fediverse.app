@@ -33,7 +33,7 @@ class PushPermissionCheckerBloc extends DisposableOwner
 
     _logger.finest(() => 'checkAndSubscribe success $success');
 
-    var result;
+    bool result;
     if (success) {
       try {
         _logger.finest(() => 'checkAndSubscribe subscribeAllEnabled');
@@ -92,12 +92,11 @@ class PushPermissionCheckerBloc extends DisposableOwner
   static Widget provideToContext(
     BuildContext context, {
     required Widget child,
-  }) {
-    return DisposableProvider<IPushPermissionCheckerBloc>(
-      create: (context) => PushPermissionCheckerBloc.createFromContext(
-        context,
-      ),
-      child: child,
-    );
-  }
+  }) =>
+      DisposableProvider<IPushPermissionCheckerBloc>(
+        create: (context) => PushPermissionCheckerBloc.createFromContext(
+          context,
+        ),
+        child: child,
+      );
 }

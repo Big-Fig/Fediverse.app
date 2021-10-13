@@ -15,19 +15,17 @@ class PleromaChatShareEntityPage extends StatelessWidget {
   const PleromaChatShareEntityPage();
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: FediPageTitleAppBar(
-        title: S.of(context).app_chat_pleroma_share_title,
-      ),
-      body: const ShareSelectAccountWidget(
-        header: ShareEntityWidget(
-          footer: ShareEntitySettingsWidget(),
+  Widget build(BuildContext context) => Scaffold(
+        appBar: FediPageTitleAppBar(
+          title: S.of(context).app_chat_pleroma_share_title,
         ),
-        alwaysShowHeader: true,
-      ),
-    );
-  }
+        body: const ShareSelectAccountWidget(
+          header: ShareEntityWidget(
+            footer: ShareEntitySettingsWidget(),
+          ),
+          alwaysShowHeader: true,
+        ),
+      );
 }
 
 void goToPleromaChatShareEntityPage({
@@ -45,24 +43,23 @@ void goToPleromaChatShareEntityPage({
   );
 }
 
-MaterialPageRoute createPleromaChatShareEntityPageRoute({
+MaterialPageRoute<void> createPleromaChatShareEntityPageRoute({
   required BuildContext context,
   required ShareEntity shareEntity,
   required InstanceLocation instanceLocation,
   bool isNeedReUploadMediaAttachments = true,
-}) {
-  return MaterialPageRoute(
-    builder: (context) => ShareEntitySettingsBloc.provideToContext(
-      context,
-      shareEntity: shareEntity,
-      child: PleromaChatShareEntityBloc.provideToContext(
+}) =>
+    MaterialPageRoute<void>(
+      builder: (context) => ShareEntitySettingsBloc.provideToContext(
         context,
         shareEntity: shareEntity,
-        child: Provider<ShareEntity>.value(
-          value: shareEntity,
-          child: const PleromaChatShareEntityPage(),
+        child: PleromaChatShareEntityBloc.provideToContext(
+          context,
+          shareEntity: shareEntity,
+          child: Provider<ShareEntity>.value(
+            value: shareEntity,
+            child: const PleromaChatShareEntityPage(),
+          ),
         ),
       ),
-    ),
-  );
-}
+    );

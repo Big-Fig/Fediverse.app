@@ -8,16 +8,15 @@ import 'package:provider/provider.dart';
 class PostStatusMessageBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  PostStatusMessageBlocProxyProvider({required this.child});
+  const PostStatusMessageBlocProxyProvider({required this.child});
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IPostStatusBloc, IPostMessageBloc>(
-      update: (context, value, previous) => value,
-      child: ProxyProvider<IPostStatusBloc, IPostStatusPollBloc>(
-        update: (context, value, previous) => value.pollBloc,
-        child: PostMessageBlocProxyProvider(child: child),
-      ),
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IPostStatusBloc, IPostMessageBloc>(
+        update: (context, value, previous) => value,
+        child: ProxyProvider<IPostStatusBloc, IPostStatusPollBloc>(
+          update: (context, value, previous) => value.pollBloc,
+          child: PostMessageBlocProxyProvider(child: child),
+        ),
+      );
 }

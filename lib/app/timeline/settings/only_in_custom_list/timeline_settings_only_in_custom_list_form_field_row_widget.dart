@@ -13,7 +13,7 @@ class TimelineSettingsOnlyInCustomListFormFieldRowWidget
   final String? description;
   final String descriptionOnDisabled;
 
-  TimelineSettingsOnlyInCustomListFormFieldRowWidget({
+  const TimelineSettingsOnlyInCustomListFormFieldRowWidget({
     required this.description,
     required this.descriptionOnDisabled,
   });
@@ -46,15 +46,13 @@ class TimelineSettingsOnlyInCustomListFormFieldRowWidget
             var dialogResult =
                 await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
               context: context,
-              asyncCode: () async {
-                return await pleromaListService.getLists();
-              },
+              asyncCode: () async => pleromaListService.getLists(),
             );
 
             if (dialogResult.success) {
               var remoteLists = dialogResult.result!;
 
-              await showFediSingleSelectionChooserDialog(
+              await showFediSingleSelectionChooserDialog<void>(
                 context: context,
                 title: S
                     .of(context)

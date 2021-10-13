@@ -26,10 +26,11 @@ class InstanceAnnouncementSettingsBloc extends DisposableOwner
       instanceLocalPreferencesBloc.stream;
 
   @override
-  Future changeWithDismissed(bool value) =>
-      updateSettings(settingsData.copyWith(
-        withDismissed: value,
-      ));
+  Future changeWithDismissed(bool value) => updateSettings(
+        settingsData.copyWith(
+          withDismissed: value,
+        ),
+      );
 
   @override
   bool get withDismissed => settingsData.withDismissed;

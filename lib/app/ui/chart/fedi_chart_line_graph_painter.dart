@@ -1,3 +1,5 @@
+// ignore_for_file: cascade_invocations
+
 import 'package:flutter/material.dart';
 
 // ignore_for_file: no-magic-number, binary-expression-operand-order
@@ -62,9 +64,7 @@ class FediChartLineGraphPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return true;
-  }
+  bool shouldRepaint(CustomPainter oldDelegate) => true;
 
   void _drawGraph(
     FediChartLineGraphPainterFeature feature,

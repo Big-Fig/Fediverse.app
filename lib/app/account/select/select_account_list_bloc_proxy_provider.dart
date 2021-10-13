@@ -10,19 +10,18 @@ import 'package:provider/provider.dart';
 class SelectAccountListBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  SelectAccountListBlocProxyProvider({required this.child});
+  const SelectAccountListBlocProxyProvider({required this.child});
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<ISelectAccountListBloc, ICachedListBloc<IAccount>>(
-      update: (context, value, previous) => value,
-      child: ProxyProvider<ISelectAccountListBloc, IAccountCachedListBloc>(
+  Widget build(BuildContext context) =>
+      ProxyProvider<ISelectAccountListBloc, ICachedListBloc<IAccount>>(
         update: (context, value, previous) => value,
-        child: ProxyProvider<ISelectAccountListBloc, ISearchInputBloc>(
-          update: (context, value, previous) => value.searchInputBloc,
-          child: AccountCachedListBlocProxyProvider(child: child),
+        child: ProxyProvider<ISelectAccountListBloc, IAccountCachedListBloc>(
+          update: (context, value, previous) => value,
+          child: ProxyProvider<ISelectAccountListBloc, ISearchInputBloc>(
+            update: (context, value, previous) => value.searchInputBloc,
+            child: AccountCachedListBlocProxyProvider(child: child),
+          ),
         ),
-      ),
-    );
-  }
+      );
 }

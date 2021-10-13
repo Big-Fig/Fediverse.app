@@ -6,13 +6,12 @@ import 'package:provider/provider.dart';
 class EditFilterBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  EditFilterBlocProxyProvider({required this.child});
+  const EditFilterBlocProxyProvider({required this.child});
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IEditFilterBloc, IFilterFormBloc>(
-      update: (context, value, previous) => value.filterFormBloc,
-      child: child,
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IEditFilterBloc, IFilterFormBloc>(
+        update: (context, value, previous) => value.filterFormBloc,
+        child: child,
+      );
 }

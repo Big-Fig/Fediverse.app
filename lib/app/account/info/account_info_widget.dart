@@ -16,7 +16,7 @@ import 'package:flutter/material.dart';
 class AccountInfoWidget extends StatelessWidget {
   final OnClickUiCallback onStatusesTapCallback;
 
-  AccountInfoWidget({
+  const AccountInfoWidget({
     required this.onStatusesTapCallback,
   });
 

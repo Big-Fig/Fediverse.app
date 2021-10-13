@@ -61,55 +61,54 @@ class StatusHeaderWidget extends StatelessWidget {
     );
   }
 
-  Row buildHeader(IAccount account, BuildContext context) {
-    return Row(
-      children: <Widget>[
-        ClipRRect(
-          // todo: refactor
-          // ignore: no-magic-number
-          borderRadius: BorderRadius.circular(12.0),
-          child: IFilesCacheService.of(context).createCachedNetworkImageWidget(
-            imageUrl: account.avatar,
-            placeholder: (context, url) => Container(
-              width: FediSizes.accountAvatarSmallSize,
-              // ignore: no-equal-arguments
-              height: FediSizes.accountAvatarSmallSize,
-              child: const FediCircularProgressIndicator(
-                size: FediSizes.accountAvatarSmallSize,
+  Row buildHeader(IAccount account, BuildContext context) => Row(
+        children: <Widget>[
+          ClipRRect(
+            // todo: refactor
+            // ignore: no-magic-number
+            borderRadius: BorderRadius.circular(12.0),
+            child:
+                IFilesCacheService.of(context).createCachedNetworkImageWidget(
+              imageUrl: account.avatar,
+              placeholder: (context, url) => Container(
+                width: FediSizes.accountAvatarSmallSize,
+                // ignore: no-equal-arguments
+                height: FediSizes.accountAvatarSmallSize,
+                child: const FediCircularProgressIndicator(
+                  size: FediSizes.accountAvatarSmallSize,
+                ),
               ),
+              errorWidget: (context, url, dynamic error) => Icon(
+                FediIcons.warning,
+              ),
+              height: FediSizes.accountAvatarProgressSmallSize,
+              // ignore: no-equal-arguments
+              width: FediSizes.accountAvatarProgressSmallSize,
             ),
-            errorWidget: (context, url, error) => Icon(
-              FediIcons.warning,
+          ),
+          const FediSmallHorizontalSpacer(),
+          Text(
+            account.acct,
+            style: IFediUiTextTheme.of(context).mediumShortDarkGrey,
+          ),
+          const FediMediumHorizontalSpacer(),
+          Icon(
+            icon,
+            // todo: refactor
+            // ignore: no-magic-number
+            size: 16,
+            color: IFediUiColorTheme.of(context).grey,
+          ),
+          const FediMediumHorizontalSpacer(),
+          Flexible(
+            child: Text(
+              descText,
+              overflow: TextOverflow.ellipsis,
+              style: IFediUiTextTheme.of(context).smallShortDarkGrey,
             ),
-            height: FediSizes.accountAvatarProgressSmallSize,
-            // ignore: no-equal-arguments
-            width: FediSizes.accountAvatarProgressSmallSize,
           ),
-        ),
-        const FediSmallHorizontalSpacer(),
-        Text(
-          account.acct,
-          style: IFediUiTextTheme.of(context).mediumShortDarkGrey,
-        ),
-        const FediMediumHorizontalSpacer(),
-        Icon(
-          icon,
-          // todo: refactor
-          // ignore: no-magic-number
-          size: 16,
-          color: IFediUiColorTheme.of(context).grey,
-        ),
-        const FediMediumHorizontalSpacer(),
-        Flexible(
-          child: Text(
-            descText,
-            overflow: TextOverflow.ellipsis,
-            style: IFediUiTextTheme.of(context).smallShortDarkGrey,
-          ),
-        ),
-      ],
-    );
-  }
+        ],
+      );
 
   const StatusHeaderWidget({
     required this.descText,

@@ -26,31 +26,30 @@ class AccountFeaturedHashtagPaginationListWidget
     required List<IMyAccountFeaturedHashtag> items,
     Widget? header,
     Widget? footer,
-  }) {
-    return PaginationListWidget.buildItemsListView(
-      context: context,
-      keyboardDismissBehavior: keyboardDismissBehavior,
-      items: items,
-      header: header,
-      footer: footer,
-      itemBuilder: (context, index) {
-        var item = items[index];
+  }) =>
+      PaginationListWidget.buildItemsListView(
+        context: context,
+        keyboardDismissBehavior: keyboardDismissBehavior,
+        items: items,
+        header: header,
+        footer: footer,
+        itemBuilder: (context, index) {
+          var item = items[index];
 
-        return Provider<IMyAccountFeaturedHashtag>.value(
-          value: item,
-          child: DisposableProxyProvider<IMyAccountFeaturedHashtag,
-              IMyAccountFeaturedHashtagBloc>(
-            update: (context, value, previous) =>
-                MyAccountFeaturedHashtagBloc.createFromContext(
-              context,
-              featuredHashtag: value,
+          return Provider<IMyAccountFeaturedHashtag>.value(
+            value: item,
+            child: DisposableProxyProvider<IMyAccountFeaturedHashtag,
+                IMyAccountFeaturedHashtagBloc>(
+              update: (context, value, previous) =>
+                  MyAccountFeaturedHashtagBloc.createFromContext(
+                context,
+                featuredHashtag: value,
+              ),
+              child: const AccountFeaturedHashtagListItemWidget(),
             ),
-            child: const AccountFeaturedHashtagListItemWidget(),
-          ),
-        );
-      },
-    );
-  }
+          );
+        },
+      );
 
   @override
   IPaginationListBloc<PaginationPage<IMyAccountFeaturedHashtag>,

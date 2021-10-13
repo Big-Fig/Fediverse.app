@@ -9,14 +9,4 @@ class AccountHeaderBloc extends DisposableOwner implements IAccountHeaderBloc {
   AccountHeaderBloc({
     required this.brightness,
   });
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is AccountHeaderBloc &&
-          runtimeType == other.runtimeType &&
-          brightness == other.brightness;
-
-  @override
-  int get hashCode => brightness.hashCode;
 }

@@ -25,33 +25,33 @@ class HashtagPaginationListWidget extends FediPaginationListWidget<IHashtag> {
     required List<IHashtag> items,
     Widget? header,
     Widget? footer,
-  }) {
-    return PaginationListWidget.buildItemsListView(
-      context: context,
-      keyboardDismissBehavior: keyboardDismissBehavior,
-      items: items,
-      header: header,
-      footer: footer,
-      itemBuilder: (context, index) {
-        var item = items[index];
+  }) =>
+      PaginationListWidget.buildItemsListView(
+        context: context,
+        keyboardDismissBehavior: keyboardDismissBehavior,
+        items: items,
+        header: header,
+        footer: footer,
+        itemBuilder: (context, index) {
+          var item = items[index];
 
-        return Provider<IHashtag>.value(
-          value: item,
-          child: DisposableProxyProvider<IHashtag, IHashtagBloc>(
-            update: (context, value, previous) => HashtagBloc.createFromContext(
-              context,
-              hashtag: value,
-              myAccountFeaturedHashtag: null,
-              needLoadFeaturedState: false,
+          return Provider<IHashtag>.value(
+            value: item,
+            child: DisposableProxyProvider<IHashtag, IHashtagBloc>(
+              update: (context, value, previous) =>
+                  HashtagBloc.createFromContext(
+                context,
+                hashtag: value,
+                myAccountFeaturedHashtag: null,
+                needLoadFeaturedState: false,
+              ),
+              child: const HashtagListItemWidget(
+                displayHistory: true,
+              ),
             ),
-            child: const HashtagListItemWidget(
-              displayHistory: true,
-            ),
-          ),
-        );
-      },
-    );
-  }
+          );
+        },
+      );
 
   @override
   IPaginationListBloc<PaginationPage<IHashtag>, IHashtag>

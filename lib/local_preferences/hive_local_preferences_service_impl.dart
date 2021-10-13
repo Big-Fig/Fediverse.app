@@ -50,10 +50,12 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
     var isV2BoxExist = await Hive.boxExists(
       v2Name,
     );
-    _logger.fine(() => 'internalAsyncInit'
-        'isV2BoxExist = $isV2BoxExist');
+    _logger.fine(
+      () => 'internalAsyncInit'
+          'isV2BoxExist = $isV2BoxExist',
+    );
 
-    _box = await Hive.openBox(
+    _box = await Hive.openBox<dynamic>(
       boxName,
       path: path,
     );
@@ -284,8 +286,8 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
       await currentInstanceBlocOld.dispose();
 
       for (var i = 0; i < hiveLocalPreferencesService._box.length; i++) {
-        var keyAt = hiveLocalPreferencesService._box.keyAt(i);
-        var at = hiveLocalPreferencesService._box.getAt(i);
+        dynamic keyAt = hiveLocalPreferencesService._box.keyAt(i);
+        dynamic at = hiveLocalPreferencesService._box.getAt(i);
         await _box.put(keyAt, at);
       }
 
@@ -368,21 +370,20 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
   bool? getBoolPreference(
     String key,
   ) =>
-      _box.get(key);
+      _box.get(key) as bool?;
 
   @override
-  String? getStringPreference(String key) => _box.get(key);
+  String? getStringPreference(String key) => _box.get(key) as String?;
 
   @override
-  int? getIntPreference(String key) => _box.get(key);
+  int? getIntPreference(String key) => _box.get(key) as int?;
 
   @override
   T? getObjectPreference<T>(
     String key,
     T Function(Map<String, dynamic> jsonData) jsonConverter,
-  ) {
-    return _box.get(key);
-  }
+  ) =>
+      _box.get(key) as T?;
 
   @override
   Future<bool> clearAllValuesAndDeleteStorage() async {
@@ -401,8 +402,8 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
   ) =>
       StreamSubscriptionDisposable(
         _box.watch(key: key).listen(
-          (boxEvent) {
-            onChanged(boxEvent.value);
+          (BoxEvent boxEvent) {
+            onChanged(boxEvent.value as T);
           },
         ),
       );

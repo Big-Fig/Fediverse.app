@@ -30,7 +30,7 @@ class FediTransparentEditTextField extends StatelessWidget {
 
   final Color? customBorderColor;
 
-  FediTransparentEditTextField({
+  const FediTransparentEditTextField({
     Key? key,
     required this.expanded,
     required this.autofocus,

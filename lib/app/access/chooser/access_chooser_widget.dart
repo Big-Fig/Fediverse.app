@@ -52,8 +52,10 @@ class UnifediApiAccessChooserWidget extends StatelessWidget {
                 if (instancesAvailableToChoose == null) {
                   return const SizedBox.shrink();
                 }
-                _logger.finest(() => 'build instancesAvailableToChoose '
-                    '${instancesAvailableToChoose.length}');
+                _logger.finest(
+                  () => 'build instancesAvailableToChoose '
+                      '${instancesAvailableToChoose.length}',
+                );
 
                 return Provider<List<UnifediApiAccess>>.value(
                   value: instancesAvailableToChoose,
@@ -223,13 +225,11 @@ class _UnifediApiAccessChooserInstanceListItemAddAccountRowWidget
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return FediPrimaryFilledTextButtonWithBorder(
-      S.of(context).app_auth_instance_chooser_action_addInstance,
-      expanded: false,
-      onPressed: () {
-        goToAddMoreJoinUnifediApiAccessPage(context);
-      },
-    );
-  }
+  Widget build(BuildContext context) => FediPrimaryFilledTextButtonWithBorder(
+        S.of(context).app_auth_instance_chooser_action_addInstance,
+        expanded: false,
+        onPressed: () {
+          goToAddMoreJoinUnifediApiAccessPage(context);
+        },
+      );
 }

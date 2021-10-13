@@ -18,23 +18,21 @@ import 'package:provider/provider.dart';
 
 class CustomListListPage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: FediPageTitleAppBar(
-        title: S.of(context).app_account_my_customList_list_title,
-      ),
-      body: const SafeArea(
-        child: CustomListPaginationListWidget(
-          customEmptyWidget: _CustomListListPageEmptyWidget(),
-          footer: Padding(
-            padding: FediPadding.allBigPadding,
-            child: CustomListListCreateButtonWidget(),
-          ),
-          alwaysShowFooter: false,
+  Widget build(BuildContext context) => Scaffold(
+        appBar: FediPageTitleAppBar(
+          title: S.of(context).app_account_my_customList_list_title,
         ),
-      ),
-    );
-  }
+        body: const SafeArea(
+          child: CustomListPaginationListWidget(
+            customEmptyWidget: _CustomListListPageEmptyWidget(),
+            footer: Padding(
+              padding: FediPadding.allBigPadding,
+              child: CustomListListCreateButtonWidget(),
+            ),
+            alwaysShowFooter: false,
+          ),
+        ),
+      );
 
   const CustomListListPage();
 }
@@ -71,31 +69,30 @@ void goToCustomListListPage(
   );
 }
 
-MaterialPageRoute createCustomListListPageRoute({
+MaterialPageRoute<void> createCustomListListPageRoute({
   required BuildContext context,
-}) {
-  return MaterialPageRoute(
-    builder: (context) => CustomListNetworkOnlyListBloc.provideToContext(
-      context,
-      child: CustomListNetworkOnlyPaginationBloc.provideToContext(
+}) =>
+    MaterialPageRoute<void>(
+      builder: (context) => CustomListNetworkOnlyListBloc.provideToContext(
         context,
-        child: DisposableProvider<
-            IPaginationListBloc<PaginationPage<ICustomList>, ICustomList>>(
-          create: (context) => PaginationListBloc(
-            paginationBloc: Provider.of<
-                IPaginationBloc<PaginationPage<ICustomList>, ICustomList>>(
-              context,
-              listen: false,
+        child: CustomListNetworkOnlyPaginationBloc.provideToContext(
+          context,
+          child: DisposableProvider<
+              IPaginationListBloc<PaginationPage<ICustomList>, ICustomList>>(
+            create: (context) => PaginationListBloc(
+              paginationBloc: Provider.of<
+                  IPaginationBloc<PaginationPage<ICustomList>, ICustomList>>(
+                context,
+                listen: false,
+              ),
             ),
-          ),
-          child: ProxyProvider<
-              IPaginationListBloc<PaginationPage<ICustomList>, ICustomList>,
-              IPaginationListBloc>(
-            update: (context, value, previous) => value,
-            child: const CustomListListPage(),
+            child: ProxyProvider<
+                IPaginationListBloc<PaginationPage<ICustomList>, ICustomList>,
+                IPaginationListBloc>(
+              update: (context, value, previous) => value,
+              child: const CustomListListPage(),
+            ),
           ),
         ),
       ),
-    ),
-  );
-}
+    );

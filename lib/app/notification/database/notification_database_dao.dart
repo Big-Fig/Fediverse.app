@@ -129,13 +129,17 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
 
     if (minimumExist) {
       query = query
-        ..where((notification) =>
-            notification.createdAt.isBiggerThanValue(minimumCreatedAt));
+        ..where(
+          (notification) =>
+              notification.createdAt.isBiggerThanValue(minimumCreatedAt),
+        );
     }
     if (maximumExist) {
       query = query
-        ..where((notification) =>
-            notification.createdAt.isSmallerThanValue(maximumCreatedAt));
+        ..where(
+          (notification) =>
+              notification.createdAt.isSmallerThanValue(maximumCreatedAt),
+        );
     }
 
     return query;
@@ -146,9 +150,11 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
     List<NotificationRepositoryOrderingTermData> orderTerms,
   ) =>
       query
-        ..orderBy(orderTerms
-            .map((orderTerm) => (item) {
-                  var expression;
+        ..orderBy(
+          orderTerms
+              .map(
+                (orderTerm) => ($DbNotificationsTable item) {
+                  GeneratedColumn<Object?> expression;
                   switch (orderTerm.orderType) {
                     case NotificationOrderType.remoteId:
                       expression = item.remoteId;
@@ -162,8 +168,10 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
                     expression: expression,
                     mode: orderTerm.orderingMode,
                   );
-                })
-            .toList());
+                },
+              )
+              .toList(),
+        );
 
   Future markAsRead({required String remoteId}) {
     var update = 'UPDATE db_notifications '
@@ -211,35 +219,34 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
     return query;
   }
 
-  List<Join> populateNotificationJoin() {
-    return [
-      // todo: think about leftOuterJoin and nullable account field
-      // or foreign keys
-      // in some cases status may already exist in local database,
-      // but account still not added
-      innerJoin(
-        accountAlias,
-        accountAlias.remoteId.equalsExp(dbNotifications.accountRemoteId),
-      ),
-      leftOuterJoin(
-        statusAlias,
-        statusAlias.remoteId.equalsExp(dbNotifications.statusRemoteId),
-      ),
-      leftOuterJoin(
-        statusAccountAlias,
-        statusAccountAlias.remoteId.equalsExp(statusAlias.accountRemoteId),
-      ),
-      leftOuterJoin(
-        statusReblogAlias,
-        statusReblogAlias.remoteId.equalsExp(statusAlias.reblogStatusRemoteId),
-      ),
-      leftOuterJoin(
-        statusReblogAccountAlias,
-        statusReblogAccountAlias.remoteId
-            .equalsExp(statusReblogAlias.accountRemoteId),
-      ),
-    ];
-  }
+  List<Join> populateNotificationJoin() => [
+        // todo: think about leftOuterJoin and nullable account field
+        // or foreign keys
+        // in some cases status may already exist in local database,
+        // but account still not added
+        innerJoin(
+          accountAlias,
+          accountAlias.remoteId.equalsExp(dbNotifications.accountRemoteId),
+        ),
+        leftOuterJoin(
+          statusAlias,
+          statusAlias.remoteId.equalsExp(dbNotifications.statusRemoteId),
+        ),
+        leftOuterJoin(
+          statusAccountAlias,
+          statusAccountAlias.remoteId.equalsExp(statusAlias.accountRemoteId),
+        ),
+        leftOuterJoin(
+          statusReblogAlias,
+          statusReblogAlias.remoteId
+              .equalsExp(statusAlias.reblogStatusRemoteId),
+        ),
+        leftOuterJoin(
+          statusReblogAccountAlias,
+          statusReblogAccountAlias.remoteId
+              .equalsExp(statusReblogAlias.accountRemoteId),
+        ),
+      ];
 
   SimpleSelectStatement<$DbNotificationsTable, DbNotification>
       addOnlyNotDismissedWhere(
@@ -368,13 +375,12 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
 extension DbNotificationPopulatedTypedResultListExtension on List<TypedResult> {
   List<DbNotificationPopulated> toDbNotificationPopulatedList({
     required NotificationDao dao,
-  }) {
-    return map(
-      (item) => item.toDbNotificationPopulated(
-        dao: dao,
-      ),
-    ).toList();
-  }
+  }) =>
+      map(
+        (item) => item.toDbNotificationPopulated(
+          dao: dao,
+        ),
+      ).toList();
 }
 
 extension DbNotificationPopulatedTypedResultExtension on TypedResult {

@@ -21,14 +21,12 @@ extension IPleromaFilterExtension on IUnifediApiFilter {
 }
 
 extension IFilterExtension on IFilter {
-  UnifediApiFilter toPleromaFilter() {
-    return UnifediApiFilter(
-      id: remoteId,
-      phrase: phrase,
-      context: context,
-      irreversible: irreversible,
-      wholeWord: wholeWord,
-      expiresAt: expiresAt,
-    );
-  }
+  UnifediApiFilter toPleromaFilter() => UnifediApiFilter(
+        id: remoteId,
+        phrase: phrase,
+        context: context,
+        irreversible: irreversible,
+        wholeWord: wholeWord,
+        expiresAt: expiresAt,
+      );
 }

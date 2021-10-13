@@ -47,13 +47,11 @@ class ToastSettingsBloc
   }
 
   @override
-  Future changeFavourite(bool value) {
-    return changePushSettings(
-      pushSettings.copyWith(
-        favourite: value,
-      ),
-    );
-  }
+  Future changeFavourite(bool value) => changePushSettings(
+        pushSettings.copyWith(
+          favourite: value,
+        ),
+      );
 
   @override
   bool get favourite => pushSettings.favourite == true;
@@ -63,13 +61,11 @@ class ToastSettingsBloc
       pushSettingsStream.map((settings) => settings.favourite == true);
 
   @override
-  Future changeFollow(bool value) {
-    return changePushSettings(
-      pushSettings.copyWith(
-        follow: value,
-      ),
-    );
-  }
+  Future changeFollow(bool value) => changePushSettings(
+        pushSettings.copyWith(
+          follow: value,
+        ),
+      );
 
   @override
   bool get follow => pushSettings.follow == true;
@@ -86,13 +82,11 @@ class ToastSettingsBloc
       pushSettingsStream.map((settings) => settings.mention == true);
 
   @override
-  Future changeMention(bool value) {
-    return changePushSettings(
-      pushSettings.copyWith(
-        mention: value,
-      ),
-    );
-  }
+  Future changeMention(bool value) => changePushSettings(
+        pushSettings.copyWith(
+          mention: value,
+        ),
+      );
 
   @override
   bool get reblog => pushSettings.reblog == true;
@@ -102,13 +96,11 @@ class ToastSettingsBloc
       pushSettingsStream.map((settings) => settings.reblog == true);
 
   @override
-  Future changeReblog(bool value) {
-    return changePushSettings(
-      pushSettings.copyWith(
-        reblog: value,
-      ),
-    );
-  }
+  Future changeReblog(bool value) => changePushSettings(
+        pushSettings.copyWith(
+          reblog: value,
+        ),
+      );
 
   @override
   bool get poll => pushSettings.poll == true;
@@ -118,13 +110,11 @@ class ToastSettingsBloc
       pushSettingsStream.map((settings) => settings.poll == true);
 
   @override
-  Future changePoll(bool value) {
-    return changePushSettings(
-      pushSettings.copyWith(
-        poll: value,
-      ),
-    );
-  }
+  Future changePoll(bool value) => changePushSettings(
+        pushSettings.copyWith(
+          poll: value,
+        ),
+      );
 
   @override
   bool get chatMention => pushSettings.chatMention == true;
@@ -134,13 +124,11 @@ class ToastSettingsBloc
       pushSettingsStream.map((settings) => settings.chatMention == true);
 
   @override
-  Future changeChatMention(bool value) {
-    return changePushSettings(
-      pushSettings.copyWith(
-        chatMention: value,
-      ),
-    );
-  }
+  Future changeChatMention(bool value) => changePushSettings(
+        pushSettings.copyWith(
+          chatMention: value,
+        ),
+      );
 
   @override
   bool get emojiReaction => pushSettings.emojiReaction == true;
@@ -150,13 +138,11 @@ class ToastSettingsBloc
       pushSettingsStream.map((settings) => settings.emojiReaction == true);
 
   @override
-  Future changeEmojiReaction(bool value) {
-    return changePushSettings(
-      pushSettings.copyWith(
-        emojiReaction: value,
-      ),
-    );
-  }
+  Future changeEmojiReaction(bool value) => changePushSettings(
+        pushSettings.copyWith(
+          emojiReaction: value,
+        ),
+      );
 
   @override
   ToastHandlingType get handlingType => settingsData.handlingType;
@@ -166,13 +152,11 @@ class ToastSettingsBloc
       settingsDataStream.map((settings) => settings.handlingType);
 
   @override
-  Future changeHandlingType(ToastHandlingType value) {
-    return updateSettings(
-      settingsData.copyWith(
-        handlingTypeString: value.toJsonValue(),
-      ),
-    );
-  }
+  Future changeHandlingType(ToastHandlingType value) => updateSettings(
+        settingsData.copyWith(
+          handlingTypeString: value.toJsonValue(),
+        ),
+      );
 
   @override
   Future updateSettings(ToastSettings? newSettings) async {

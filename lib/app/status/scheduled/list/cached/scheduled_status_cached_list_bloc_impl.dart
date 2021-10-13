@@ -49,16 +49,15 @@ class ScheduledStatusCachedListBloc extends IScheduledStatusCachedListBloc {
   static Widget provideToContext(
     BuildContext context, {
     required Widget child,
-  }) {
-    return DisposableProvider<IScheduledStatusCachedListBloc>(
-      create: (context) =>
-          ScheduledStatusCachedListBloc.createFromContext(context),
-      child: ProxyProvider<IScheduledStatusCachedListBloc, IStatusListBloc>(
-        update: (context, value, previous) => value,
-        child: child,
-      ),
-    );
-  }
+  }) =>
+      DisposableProvider<IScheduledStatusCachedListBloc>(
+        create: (context) =>
+            ScheduledStatusCachedListBloc.createFromContext(context),
+        child: ProxyProvider<IScheduledStatusCachedListBloc, IStatusListBloc>(
+          update: (context, value, previous) => value,
+          child: child,
+        ),
+      );
 
   @override
   Future<List<IScheduledStatus>> loadLocalItems({
@@ -101,10 +100,12 @@ class ScheduledStatusCachedListBloc extends IScheduledStatusCachedListBloc {
     required IScheduledStatus? newerThan,
     required IScheduledStatus? olderThan,
   }) async {
-    _logger.finest(() => 'refreshItemsFromRemoteForPage \n'
-        '\t limit=$limit'
-        '\t newerThan=$newerThan'
-        '\t olderThan=$olderThan');
+    _logger.finest(
+      () => 'refreshItemsFromRemoteForPage \n'
+          '\t limit=$limit'
+          '\t newerThan=$newerThan'
+          '\t olderThan=$olderThan',
+    );
 
     var remoteStatuses =
         await pleromaScheduledStatusService.getScheduledStatuses(

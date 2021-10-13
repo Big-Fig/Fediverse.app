@@ -7,20 +7,18 @@ import 'package:provider/provider.dart';
 class ToastServiceProvider extends StatelessWidget {
   final Widget child;
 
-  ToastServiceProvider({
+  const ToastServiceProvider({
     required this.child,
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Provider<IToastService>(
-      create: (context) => ToastService(
-        overlayNotificationService: IOverlayNotificationService.of(
-          context,
-          listen: false,
+  Widget build(BuildContext context) => Provider<IToastService>(
+        create: (context) => ToastService(
+          overlayNotificationService: IOverlayNotificationService.of(
+            context,
+            listen: false,
+          ),
         ),
-      ),
-      child: child,
-    );
-  }
+        child: child,
+      );
 }

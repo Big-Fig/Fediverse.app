@@ -48,7 +48,7 @@ class MyAccountSuggestionBloc extends DisposableOwner
     myAccountSuggestionAccountListNetworkOnlyPaginationBloc.disposeWith(this);
     accountPaginationListBloc.disposeWith(this);
 
-    // ignore: unawaited_futures
+    // ignore: unawaited_futures, cascade_invocations
     accountPaginationListBloc.refreshWithoutController();
   }
 
@@ -92,10 +92,9 @@ class MyAccountSuggestionBloc extends DisposableOwner
   static Widget provideToContext(
     BuildContext context, {
     required Widget child,
-  }) {
-    return DisposableProvider<IMyAccountSuggestionBloc>(
-      create: (context) => MyAccountSuggestionBloc.createFromContext(context),
-      child: MyAccountSuggestionBlocProxyProvider(child: child),
-    );
-  }
+  }) =>
+      DisposableProvider<IMyAccountSuggestionBloc>(
+        create: (context) => MyAccountSuggestionBloc.createFromContext(context),
+        child: MyAccountSuggestionBlocProxyProvider(child: child),
+      );
 }

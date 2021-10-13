@@ -254,8 +254,10 @@ class TimelineSettingsOld
 
   List<PleromaApiVisibility>? get excludeVisibilities =>
       excludeVisibilitiesStrings
-          ?.map((excludeVisibilityString) =>
-              excludeVisibilityString.toPleromaApiVisibility())
+          ?.map(
+            (excludeVisibilityString) =>
+                excludeVisibilityString.toPleromaApiVisibility(),
+          )
           .toList();
 
   PleromaApiReplyVisibilityFilter? get replyVisibilityFilter =>

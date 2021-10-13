@@ -10,7 +10,6 @@ import 'package:fedi/form/field/value/string/string_value_form_field_bloc.dart';
 import 'package:fedi/form/form_item_bloc.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -35,7 +34,7 @@ Future<UploadMediaAttachmentMetadata?>
     },
   );
 
-  await dialog.show(context);
+  await dialog.show<void>(context);
 
   if (deleted) {
     return null;
@@ -89,28 +88,29 @@ class EditUploadMediaAttachmentMetadataDialog extends FediDialog {
   static DialogAction createSaveAction({
     required BuildContext context,
     required SaveCallback saveCallback,
-  }) {
-    return DialogAction(
-      label: S.of(context).app_media_upload_metadata_dialog_action_save,
-      onAction: (context) async {
-        var editUploadMediaAttachmentMetadataBloc =
-            IEditUploadMediaAttachmentMetadataBloc.of(
-          context,
-          listen: false,
-        );
+  }) =>
+      DialogAction(
+        label: S.of(context).app_media_upload_metadata_dialog_action_save,
+        onAction: (context) async {
+          var editUploadMediaAttachmentMetadataBloc =
+              IEditUploadMediaAttachmentMetadataBloc.of(
+            context,
+            listen: false,
+          );
 
-        saveCallback(editUploadMediaAttachmentMetadataBloc
-            .extractCurrentEnteredMetadata());
-        Navigator.of(context).pop();
-      },
-      isActionEnabledFetcher: (context) =>
-          IEditUploadMediaAttachmentMetadataBloc.of(context, listen: false)
-              .isHaveChangesAndNoErrors,
-      isActionEnabledStreamFetcher: (context) =>
-          IEditUploadMediaAttachmentMetadataBloc.of(context, listen: false)
-              .isHaveChangesAndNoErrorsStream,
-    );
-  }
+          saveCallback(
+            editUploadMediaAttachmentMetadataBloc
+                .extractCurrentEnteredMetadata(),
+          );
+          Navigator.of(context).pop();
+        },
+        isActionEnabledFetcher: (context) =>
+            IEditUploadMediaAttachmentMetadataBloc.of(context, listen: false)
+                .isHaveChangesAndNoErrors,
+        isActionEnabledStreamFetcher: (context) =>
+            IEditUploadMediaAttachmentMetadataBloc.of(context, listen: false)
+                .isHaveChangesAndNoErrorsStream,
+      );
 
   static DialogAction createDeleteAction({
     required BuildContext context,

@@ -12,15 +12,4 @@ class StatusBodyBloc extends DisposableOwner implements IStatusBodyBloc {
     required this.collapsible,
     required this.initialMediaAttachment,
   });
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is StatusBodyBloc &&
-          runtimeType == other.runtimeType &&
-          collapsible == other.collapsible &&
-          initialMediaAttachment == other.initialMediaAttachment;
-
-  @override
-  int get hashCode => collapsible.hashCode ^ initialMediaAttachment.hashCode;
 }

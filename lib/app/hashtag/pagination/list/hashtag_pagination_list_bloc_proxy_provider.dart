@@ -8,17 +8,16 @@ import 'package:provider/provider.dart';
 class HashtagPaginationListBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  HashtagPaginationListBlocProxyProvider({required this.child});
+  const HashtagPaginationListBlocProxyProvider({required this.child});
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IHashtagPaginationListBloc,
-        IPaginationListBloc<PaginationPage<IHashtag>, IHashtag>>(
-      update: (context, value, previous) => value,
-      child: ProxyProvider<IHashtagPaginationListBloc, IPaginationListBloc>(
+  Widget build(BuildContext context) => ProxyProvider<
+          IHashtagPaginationListBloc,
+          IPaginationListBloc<PaginationPage<IHashtag>, IHashtag>>(
         update: (context, value, previous) => value,
-        child: child,
-      ),
-    );
-  }
+        child: ProxyProvider<IHashtagPaginationListBloc, IPaginationListBloc>(
+          update: (context, value, previous) => value,
+          child: child,
+        ),
+      );
 }

@@ -63,7 +63,7 @@ class HtmlTextWidget extends StatelessWidget {
     var htmlData = htmlTextBloc.htmlData;
 
     return Html(
-      data: htmlData.text!,
+      data: htmlData.text,
       shrinkWrap: htmlTextBloc.settings.shrinkWrap,
       customImageRenders: {
         networkSourceMatcher(): networkImageRender(

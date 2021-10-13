@@ -65,32 +65,30 @@ Future<dynamic> pushFullScreenPage(
   IVideoMediaPlayerBloc videoMediaPlayerBloc,
 ) async {
   final isAndroid = Theme.of(context).platform == TargetPlatform.android;
-  final TransitionRoute route = PageRouteBuilder(
+  final TransitionRoute route = PageRouteBuilder<void>(
     pageBuilder: (
       BuildContext context,
       Animation<double> animation,
       Animation<double> secondaryAnimation,
-    ) {
-      return AnimatedBuilder(
-        animation: animation,
-        builder: (BuildContext context, Widget? child) {
-          return DisposableProvider<IVideoMediaPlayerBloc>(
-            create: (context) => VideoMediaPlayerBloc(
-              mediaPlayerSource: videoMediaPlayerBloc.mediaPlayerSource,
-              desiredAspectRatio: videoMediaPlayerBloc.desiredAspectRatio,
-              isFullScreenSupportEnabled:
-                  videoMediaPlayerBloc.isFullScreenSupportEnabled,
-              autoInit: videoMediaPlayerBloc.autoInit,
-              autoPlay: videoMediaPlayerBloc.autoPlay,
-              isFullscreen: true,
-            ),
-            child: VideoMediaPlayerBlocProxyProvider(
-              child: const _FediVideoPlayerToggleControlFullscreenPage(),
-            ),
-          );
-        },
-      );
-    },
+    ) =>
+        AnimatedBuilder(
+      animation: animation,
+      builder: (BuildContext context, Widget? child) =>
+          DisposableProvider<IVideoMediaPlayerBloc>(
+        create: (context) => VideoMediaPlayerBloc(
+          mediaPlayerSource: videoMediaPlayerBloc.mediaPlayerSource,
+          desiredAspectRatio: videoMediaPlayerBloc.desiredAspectRatio,
+          isFullScreenSupportEnabled:
+              videoMediaPlayerBloc.isFullScreenSupportEnabled,
+          autoInit: videoMediaPlayerBloc.autoInit,
+          autoPlay: videoMediaPlayerBloc.autoPlay,
+          isFullscreen: true,
+        ),
+        child: VideoMediaPlayerBlocProxyProvider(
+          child: const _FediVideoPlayerToggleControlFullscreenPage(),
+        ),
+      ),
+    ),
   );
 
   await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
@@ -105,7 +103,7 @@ Future<dynamic> pushFullScreenPage(
     await Wakelock.enable();
   }
 
-  await Navigator.of(context, rootNavigator: true).push(route);
+  await Navigator.of(context, rootNavigator: true).push<void>(route);
 
   // The wakelock plugins checks whether it needs to perform an action internally,
   // so we do not need to check Wakelock.isEnabled.
@@ -127,13 +125,11 @@ class _FediVideoPlayerToggleControlFullscreenButtonDisabledWidget
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return FediIconButton(
-      icon: Icon(FediIcons.maximize),
-      color: IFediUiColorTheme.of(context).grey,
-      onPressed: null,
-    );
-  }
+  Widget build(BuildContext context) => FediIconButton(
+        icon: Icon(FediIcons.maximize),
+        color: IFediUiColorTheme.of(context).grey,
+        onPressed: null,
+      );
 }
 
 class _FediVideoPlayerToggleControlFullscreenPage extends StatelessWidget {

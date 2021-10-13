@@ -13,15 +13,13 @@ class EditMediaSettingsWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: shrinkWrap ? MainAxisSize.min : MainAxisSize.max,
-      children: [
-        const _EditMediaSettingsAutoInitFieldWidget(),
-        const _EditMediaSettingsAutoPlayFieldWidget(),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => Column(
+        mainAxisSize: shrinkWrap ? MainAxisSize.min : MainAxisSize.max,
+        children: [
+          const _EditMediaSettingsAutoInitFieldWidget(),
+          const _EditMediaSettingsAutoPlayFieldWidget(),
+        ],
+      );
 }
 
 class _EditMediaSettingsAutoPlayFieldWidget extends StatelessWidget {
@@ -30,14 +28,13 @@ class _EditMediaSettingsAutoPlayFieldWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IEditMediaSettingsBloc, IBoolValueFormFieldBloc>(
-      update: (context, value, previous) => value.autoPlayFieldBloc,
-      child: BoolValueFormFieldRowWidget(
-        label: S.of(context).app_media_settings_field_autoPlay_label,
-      ),
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IEditMediaSettingsBloc, IBoolValueFormFieldBloc>(
+        update: (context, value, previous) => value.autoPlayFieldBloc,
+        child: BoolValueFormFieldRowWidget(
+          label: S.of(context).app_media_settings_field_autoPlay_label,
+        ),
+      );
 }
 
 class _EditMediaSettingsAutoInitFieldWidget extends StatelessWidget {
@@ -46,12 +43,11 @@ class _EditMediaSettingsAutoInitFieldWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IEditMediaSettingsBloc, IBoolValueFormFieldBloc>(
-      update: (context, value, previous) => value.autoInitFieldBloc,
-      child: BoolValueFormFieldRowWidget(
-        label: S.of(context).app_media_settings_field_autoInit_label,
-      ),
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IEditMediaSettingsBloc, IBoolValueFormFieldBloc>(
+        update: (context, value, previous) => value.autoInitFieldBloc,
+        child: BoolValueFormFieldRowWidget(
+          label: S.of(context).app_media_settings_field_autoInit_label,
+        ),
+      );
 }

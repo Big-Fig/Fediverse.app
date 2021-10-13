@@ -84,9 +84,11 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
               isNeedWatchLocalRepositoryForUpdates,
           delayInit: delayInit,
         ) {
-    _logger.finest(() => 'PleromaChatBloc \n'
-        ' chat ${chat.remoteId} \n'
-        ' lastMessage $lastChatMessage');
+    _logger.finest(
+      () => 'PleromaChatBloc \n'
+          ' chat ${chat.remoteId} \n'
+          ' lastMessage $lastChatMessage',
+    );
 
     _chatSubject.disposeWith(this);
     _lastMessageSubject.disposeWith(this);
@@ -106,9 +108,11 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
 
     chatMessageRepository.watchChatLastChatMessage(chat: chat).listen(
       (lastMessage) {
-        _logger.finest(() => 'watchChatLastChatMessage \n'
-            ' chat ${chat.remoteId} \n'
-            ' lastMessage $lastMessage');
+        _logger.finest(
+          () => 'watchChatLastChatMessage \n'
+              ' chat ${chat.remoteId} \n'
+              ' lastMessage $lastMessage',
+        );
         if (lastMessage != null) {
           _lastMessageSubject.add(lastMessage);
 
@@ -189,24 +193,23 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
     required IPleromaChat chat,
     required IPleromaChatMessage? lastChatMessage,
     bool needRefreshFromNetworkOnInit = false,
-  }) {
-    return PleromaChatBloc(
-      connectionService: Provider.of<IConnectionService>(
-        context,
-        listen: false,
-      ),
-      unifediApiChatService:
-          Provider.of<IUnifediApiChatService>(context, listen: false),
-      myAccountBloc: IMyAccountBloc.of(context, listen: false),
-      chat: chat,
-      lastChatMessage: lastChatMessage,
-      needRefreshFromNetworkOnInit: needRefreshFromNetworkOnInit,
-      chatRepository: IPleromaChatRepository.of(context, listen: false),
-      chatMessageRepository:
-          IPleromaChatMessageRepository.of(context, listen: false),
-      accountRepository: IAccountRepository.of(context, listen: false),
-    );
-  }
+  }) =>
+      PleromaChatBloc(
+        connectionService: Provider.of<IConnectionService>(
+          context,
+          listen: false,
+        ),
+        unifediApiChatService:
+            Provider.of<IUnifediApiChatService>(context, listen: false),
+        myAccountBloc: IMyAccountBloc.of(context, listen: false),
+        chat: chat,
+        lastChatMessage: lastChatMessage,
+        needRefreshFromNetworkOnInit: needRefreshFromNetworkOnInit,
+        chatRepository: IPleromaChatRepository.of(context, listen: false),
+        chatMessageRepository:
+            IPleromaChatMessageRepository.of(context, listen: false),
+        accountRepository: IAccountRepository.of(context, listen: false),
+      );
 
   @override
   Future markAsRead() async {
@@ -347,6 +350,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
           batchTransaction: batch,
         );
 
+        // ignore: cascade_invocations
         chatMessageRepository.upsertInRemoteTypeBatch(
           unifediApiChatMessage,
           batchTransaction: batch,

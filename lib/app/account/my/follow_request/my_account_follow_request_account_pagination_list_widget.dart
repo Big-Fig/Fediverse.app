@@ -23,31 +23,29 @@ class MyAccountFollowRequestAccountPaginationListWidget
   });
 
   @override
-  Widget build(BuildContext context) {
-    return AccountPaginationListWidget(
-      customEmptyWidget: customEmptyWidget,
-      customLoadingWidget: customLoadingWidget,
-      customItemBodyBuilder: (
-        BuildContext context,
-        AccountCallback? accountSelectedCallback,
-        List<Widget>? accountActions,
-      ) {
-        return FediListTile(
+  Widget build(BuildContext context) => AccountPaginationListWidget(
+        customEmptyWidget: customEmptyWidget,
+        customLoadingWidget: customLoadingWidget,
+        customItemBodyBuilder: (
+          BuildContext context,
+          AccountCallback? accountSelectedCallback,
+          List<Widget>? accountActions,
+        ) =>
+            FediListTile(
           child: AccountBigListItemWidget(
             accountSelectedCallback: accountSelectedCallback,
             accountActions: accountActions,
           ),
-        );
-      },
-      accountActions: <Widget>[
-        const _MyAccountFollowRequestAccountPaginationListAcceptButtonWidget(),
-        const FediMediumHorizontalSpacer(),
-        const _MyAccountFollowRequestAccountPaginationListRejectButtonWidget(),
-      ],
-      accountSelectedCallback: null,
-      key: PageStorageKey('MyAccountFollowRequestAccountPaginationListWidget'),
-    );
-  }
+        ),
+        accountActions: <Widget>[
+          const _MyAccountFollowRequestAccountPaginationListAcceptButtonWidget(),
+          const FediMediumHorizontalSpacer(),
+          const _MyAccountFollowRequestAccountPaginationListRejectButtonWidget(),
+        ],
+        accountSelectedCallback: null,
+        key:
+            PageStorageKey('MyAccountFollowRequestAccountPaginationListWidget'),
+      );
 }
 
 class _MyAccountFollowRequestAccountPaginationListRejectButtonWidget
@@ -71,14 +69,13 @@ class _MyAccountFollowRequestAccountPaginationListRejectButtonWidget
             .rejectFollowRequest(account: account);
         await paginationListBloc.refreshWithController();
       },
-      builder: (BuildContext context, void Function()? onPressed) {
-        return FediTransparentTextButtonWithBorder(
-          S.of(context).app_account_my_followRequest_action_ignore,
-          onPressed: onPressed,
-          color: fediUiColorTheme.mediumGrey,
-          expanded: false,
-        );
-      },
+      builder: (BuildContext context, void Function()? onPressed) =>
+          FediTransparentTextButtonWithBorder(
+        S.of(context).app_account_my_followRequest_action_ignore,
+        onPressed: onPressed,
+        color: fediUiColorTheme.mediumGrey,
+        expanded: false,
+      ),
     );
   }
 }
@@ -104,14 +101,13 @@ class _MyAccountFollowRequestAccountPaginationListAcceptButtonWidget
             .acceptFollowRequest(account: account);
         await paginationListBloc.refreshWithController();
       },
-      builder: (BuildContext context, void Function()? onPressed) {
-        return FediTransparentTextButtonWithBorder(
-          S.of(context).app_account_my_followRequest_action_add,
-          onPressed: onPressed,
-          color: fediUiColorTheme.primary,
-          expanded: false,
-        );
-      },
+      builder: (BuildContext context, void Function()? onPressed) =>
+          FediTransparentTextButtonWithBorder(
+        S.of(context).app_account_my_followRequest_action_add,
+        onPressed: onPressed,
+        color: fediUiColorTheme.primary,
+        expanded: false,
+      ),
     );
   }
 }

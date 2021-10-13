@@ -32,34 +32,32 @@ class MyAccountBookmarkedStatusesCachedListBloc extends AsyncInitLoadingBloc
     int? limit,
     IStatus? newerThan,
     IStatus? olderThan,
-  }) {
-    return statusRepository.findAllInAppType(
-      filters: _statusRepositoryFilters,
-      pagination: RepositoryPagination<IStatus>(
-        olderThanItem: olderThan,
-        newerThanItem: newerThan,
-        limit: limit,
-      ),
-      orderingTerms: [
-        StatusRepositoryOrderingTermData.remoteIdDesc,
-      ],
-    );
-  }
+  }) =>
+      statusRepository.findAllInAppType(
+        filters: _statusRepositoryFilters,
+        pagination: RepositoryPagination<IStatus>(
+          olderThanItem: olderThan,
+          newerThanItem: newerThan,
+          limit: limit,
+        ),
+        orderingTerms: [
+          StatusRepositoryOrderingTermData.remoteIdDesc,
+        ],
+      );
 
   @override
   Stream<List<IStatus>> watchLocalItemsNewerThanItem(
     IStatus? item,
-  ) {
-    return statusRepository.watchFindAllInAppType(
-      filters: _statusRepositoryFilters,
-      pagination: RepositoryPagination<IStatus>(
-        newerThanItem: item,
-      ),
-      orderingTerms: [
-        StatusRepositoryOrderingTermData.remoteIdDesc,
-      ],
-    );
-  }
+  ) =>
+      statusRepository.watchFindAllInAppType(
+        filters: _statusRepositoryFilters,
+        pagination: RepositoryPagination<IStatus>(
+          newerThanItem: item,
+        ),
+        orderingTerms: [
+          StatusRepositoryOrderingTermData.remoteIdDesc,
+        ],
+      );
 
   @override
   Future refreshItemsFromRemoteForPage({

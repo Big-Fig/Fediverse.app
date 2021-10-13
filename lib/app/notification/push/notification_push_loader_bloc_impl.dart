@@ -94,22 +94,24 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
       acct: pleromaPushMessage.account,
     );
 
-    _logger.finest(() => 'handlePush \n'
-        '\t isForCurrentInstance = $isForCurrentInstance'
-        '\t pleromaPushMessage = $pleromaPushMessage');
+    _logger.finest(
+      () => 'handlePush \n'
+          '\t isForCurrentInstance = $isForCurrentInstance'
+          '\t pleromaPushMessage = $pleromaPushMessage',
+    );
     bool handled;
     if (isForCurrentInstance) {
       var remoteNotificationId = pleromaPushMessage.notificationId;
 
-      IUnifediApiNotification? remoteNotification =
-          pleromaPushMessage.unifediApiNotification;
+      var remoteNotification = pleromaPushMessage.unifediApiNotification;
 
       // if we have only remoteNotificationId
       // in case we have decrypted push notifications
       // via old PushRelay server or on Flutter side(not implemented yet)
-      remoteNotification ??= await pleromaNotificationService.getNotification(
+      remoteNotification ??= (await pleromaNotificationService.getNotification(
         notificationId: remoteNotificationId,
-      );
+      ))
+          .toUnifediApiNotification();
 
       handled = true;
 
@@ -171,8 +173,10 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
         notificationsPushHandlerMessage.body.notificationActionInput;
 
     if (notificationActionInput?.isNotEmpty != true) {
-      _logger.warning(() =>
-          'cant _handleNewReplyAction notificationActionInput empty or null');
+      _logger.warning(
+        () =>
+            'cant _handleNewReplyAction notificationActionInput empty or null',
+      );
 
       return;
     }
@@ -289,12 +293,11 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
     var alreadyExistNotification = await notificationRepository
         .findByRemoteIdInAppType(remoteNotificationId);
 
-    _logger.finest(() => 'handlePush \n'
-        '\t remoteNotification = $remoteNotification');
-
-    _logger.finest(() => 'handlePush \n'
-        '\t remoteNotificationId = $remoteNotificationId \n'
-        '\t alreadyExistNotification = $alreadyExistNotification');
+    _logger.finest(
+      () => 'handlePush \n'
+          '\t remoteNotificationId = $remoteNotificationId \n'
+          '\t alreadyExistNotification = $alreadyExistNotification',
+    );
 
     var unread = alreadyExistNotification?.unread ?? true;
 

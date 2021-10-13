@@ -22,64 +22,62 @@ class TimelineTabListTextTabIndicatorItemWidget extends StatelessWidget {
   const TimelineTabListTextTabIndicatorItemWidget();
 
   @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints constraints) {
-        var fadingPercent = FediSizes.smallPadding / constraints.maxWidth;
+  Widget build(BuildContext context) => LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          var fadingPercent = FediSizes.smallPadding / constraints.maxWidth;
 
-        return FediFadeShaderMask(
-          fadingPercent: fadingPercent,
-          fadingColor: IFediUiColorTheme.of(context).darkGrey,
-          child: DisposableProxyProvider<ITimelineListTabControllerBloc,
-              IFediTabIndicatorBloc<ITimelineTabBloc>>(
-            update: (context, ITimelineListTabControllerBloc value, previous) {
-              return FediTabIndicatorBloc<ITimelineTabBloc>(
+          return FediFadeShaderMask(
+            fadingPercent: fadingPercent,
+            fadingColor: IFediUiColorTheme.of(context).darkGrey,
+            child: DisposableProxyProvider<ITimelineListTabControllerBloc,
+                IFediTabIndicatorBloc<ITimelineTabBloc>>(
+              update:
+                  (context, ITimelineListTabControllerBloc value, previous) =>
+                      FediTabIndicatorBloc<ITimelineTabBloc>(
                 items: value.timelineTabListBloc.timelineTabBlocs,
                 tabController: value.tabController,
-              );
-            },
-            child: FediTextTabIndicatorWidget<ITimelineTabBloc>(
-              style: FediTabStyle.bubble,
-              customTabBuilder: (
-                BuildContext context,
-                Widget child,
-                ITimelineTabBloc timelineTabBloc,
-              ) {
-                var tabPaginationListBloc =
-                    timelineTabBloc.paginationListWithNewItemsBloc;
+              ),
+              child: FediTextTabIndicatorWidget<ITimelineTabBloc>(
+                style: FediTabStyle.bubble,
+                customTabBuilder: (
+                  BuildContext context,
+                  Widget child,
+                  ITimelineTabBloc timelineTabBloc,
+                ) {
+                  var tabPaginationListBloc =
+                      timelineTabBloc.paginationListWithNewItemsBloc;
 
-                return Provider<ICachedPaginationListWithNewItemsBloc>.value(
-                  value: tabPaginationListBloc,
-                  child: DisposableProxyProvider<
-                      ICachedPaginationListWithNewItemsBloc,
-                      IFediBoolBadgeBloc>(
-                    update:
-                        (context, cachedPaginationListWithNewItemsBloc, _) =>
-                            CachedPaginationListWithNewItemsUnreadBadgeBloc(
-                      cachedPaginationListWithNewItemsBloc:
-                          cachedPaginationListWithNewItemsBloc,
+                  return Provider<ICachedPaginationListWithNewItemsBloc>.value(
+                    value: tabPaginationListBloc,
+                    child: DisposableProxyProvider<
+                        ICachedPaginationListWithNewItemsBloc,
+                        IFediBoolBadgeBloc>(
+                      update:
+                          (context, cachedPaginationListWithNewItemsBloc, _) =>
+                              CachedPaginationListWithNewItemsUnreadBadgeBloc(
+                        cachedPaginationListWithNewItemsBloc:
+                            cachedPaginationListWithNewItemsBloc,
+                      ),
+                      child: FediBoolBadgeWidget(
+                        child: child,
+                      ),
                     ),
-                    child: FediBoolBadgeWidget(
-                      child: child,
-                    ),
-                  ),
-                );
-              },
-              isTransparent: true,
-              tabToTextMapper: (
-                BuildContext context,
-                ITimelineTabBloc? timelineTabBloc,
-              ) =>
-                  mapTabToTitle(
-                context,
-                timelineTabBloc!.timeline,
+                  );
+                },
+                isTransparent: true,
+                tabToTextMapper: (
+                  BuildContext context,
+                  ITimelineTabBloc? timelineTabBloc,
+                ) =>
+                    mapTabToTitle(
+                  context,
+                  timelineTabBloc!.timeline,
+                ),
               ),
             ),
-          ),
-        );
-      },
-    );
-  }
+          );
+        },
+      );
 
   static String mapTabToTitle(BuildContext context, Timeline tab) =>
       tab.calculateLabel(context);

@@ -31,9 +31,11 @@ class DraftStatusDao extends PopulatedAppLocalDatabaseDao<
     List<DraftStatusRepositoryOrderingTermData> orderTerms,
   ) =>
       query
-        ..orderBy(orderTerms
-            .map((orderTerm) => (item) {
-                  var expression;
+        ..orderBy(
+          orderTerms
+              .map(
+                (orderTerm) => ($DbDraftStatusesTable item) {
+                  GeneratedColumn<Object?> expression;
                   switch (orderTerm.orderType) {
                     case DraftStatusRepositoryOrderType.updatedAt:
                       expression = item.updatedAt;
@@ -47,18 +49,18 @@ class DraftStatusDao extends PopulatedAppLocalDatabaseDao<
                     expression: expression,
                     mode: orderTerm.orderingMode,
                   );
-                })
-            .toList());
+                },
+              )
+              .toList(),
+        );
 
   List<DbDraftStatus> typedResultListToPopulated(
     List<TypedResult> typedResult,
-  ) {
-    return typedResult.map(typedResultToPopulated).toList();
-  }
+  ) =>
+      typedResult.map(typedResultToPopulated).toList();
 
-  DbDraftStatus typedResultToPopulated(TypedResult typedResult) {
-    return typedResult.readTable(db.dbDraftStatuses);
-  }
+  DbDraftStatus typedResultToPopulated(TypedResult typedResult) =>
+      typedResult.readTable(db.dbDraftStatuses);
 
   SimpleSelectStatement<$DbDraftStatusesTable, DbDraftStatus>
       addUpdatedAtBoundsWhere(
@@ -72,13 +74,18 @@ class DraftStatusDao extends PopulatedAppLocalDatabaseDao<
 
     if (minimumExist) {
       query = query
-        ..where((notification) =>
-            notification.updatedAt.isBiggerThanValue(minimumUpdatedAt));
+        ..where(
+          (notification) => notification.updatedAt.isBiggerThanValue(
+            minimumUpdatedAt,
+          ),
+        );
     }
     if (maximumExist) {
       query = query
-        ..where((notification) =>
-            notification.updatedAt.isSmallerThanValue(maximumUpdatedAt));
+        ..where(
+          (notification) =>
+              notification.updatedAt.isSmallerThanValue(maximumUpdatedAt),
+        );
     }
 
     return query;
@@ -133,10 +140,8 @@ class DraftStatusDao extends PopulatedAppLocalDatabaseDao<
   JoinedSelectStatement convertSimpleSelectStatementToJoinedSelectStatement({
     required SimpleSelectStatement<$DbDraftStatusesTable, DbDraftStatus> query,
     required DraftStatusRepositoryFilters? filters,
-  }) {
-    // nothing
-    return query.join([]);
-  }
+  }) =>
+      query.join([]);
 
   @override
   DbDraftStatusPopulated mapTypedResultToDbPopulatedItem(

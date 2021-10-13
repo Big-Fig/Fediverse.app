@@ -67,7 +67,7 @@ void main() {
       remoteId: filter.remoteId,
     );
 
-    var listened;
+    IFilter? listened;
 
     var subscription = filterBloc.filterStream.listen((newValue) {
       listened = newValue;
@@ -104,7 +104,7 @@ void main() {
       filter.isExpired,
     );
 
-    var listened;
+    bool? listened;
 
     var subscription = filterBloc.isExpiredStream.listen((newValue) {
       listened = newValue;

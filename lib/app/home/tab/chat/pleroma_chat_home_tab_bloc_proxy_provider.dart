@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 class PleromaChatHomeTabBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  PleromaChatHomeTabBlocProxyProvider({required this.child});
+  const PleromaChatHomeTabBlocProxyProvider({required this.child});
 
   @override
   Widget build(BuildContext context) =>

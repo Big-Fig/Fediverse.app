@@ -184,9 +184,11 @@ class MediaPlayerBloc extends AsyncInitLoadingBloc implements IMediaPlayerBloc {
       case MediaPlayerSourceType.asset:
         var assetPath = mediaPlayerSource.assetPath!;
         var assetPackage = mediaPlayerSource.assetPackage;
-        _logger.finest(() => 'createVideoPlayerController asset\n'
-            'assetPath $assetPath\n'
-            'assetPackage $assetPackage');
+        _logger.finest(
+          () => 'createVideoPlayerController asset\n'
+              'assetPath $assetPath\n'
+              'assetPackage $assetPackage',
+        );
         videoPlayerController = VideoPlayerController.asset(
           assetPath,
           package: assetPackage,
@@ -194,16 +196,20 @@ class MediaPlayerBloc extends AsyncInitLoadingBloc implements IMediaPlayerBloc {
         break;
       case MediaPlayerSourceType.file:
         var file = mediaPlayerSource.file!;
-        _logger.finest(() => 'createVideoPlayerController asset\n'
-            'file $file\n');
+        _logger.finest(
+          () => 'createVideoPlayerController asset\n'
+              'file $file\n',
+        );
         videoPlayerController = VideoPlayerController.file(
           file,
         );
         break;
       case MediaPlayerSourceType.network:
         var networkUrl = mediaPlayerSource.networkUrl!;
-        _logger.finest(() => 'createVideoPlayerController network\n'
-            'networkUrl $networkUrl\n');
+        _logger.finest(
+          () => 'createVideoPlayerController network\n'
+              'networkUrl $networkUrl\n',
+        );
         videoPlayerController = VideoPlayerController.network(
           networkUrl,
         );
@@ -241,10 +247,11 @@ class MediaPlayerBloc extends AsyncInitLoadingBloc implements IMediaPlayerBloc {
   }
 
   @override
-  Stream<double> get currentPlaybackPercentStream =>
-      positionDurationStream.map((currentPlaybackPercent) =>
-          currentPlaybackPercent.inMicroseconds /
-          lengthDuration!.inMicroseconds);
+  Stream<double> get currentPlaybackPercentStream => positionDurationStream.map(
+        (currentPlaybackPercent) =>
+            currentPlaybackPercent.inMicroseconds /
+            lengthDuration!.inMicroseconds,
+      );
 
   @override
   Future play() async {

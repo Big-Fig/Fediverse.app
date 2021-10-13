@@ -28,24 +28,22 @@ class EditMyAccountAvatarFieldWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTap: () {
-        _startChoosingFileToUploadAvatar(context);
-      },
-      child: Stack(
-        alignment: Alignment.bottomRight,
-        children: <Widget>[
-          _EditMyAccountAvatarFieldImageWidget(
-            avatarSize: avatarSize,
-            avatarCircleBorderWidth: avatarCircleBorderWidth,
-          ),
-          const _EditMyAccountAvatarFieldEditButtonWidget(),
-        ],
-      ),
-    );
-  }
+  Widget build(BuildContext context) => GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () {
+          _startChoosingFileToUploadAvatar(context);
+        },
+        child: Stack(
+          alignment: Alignment.bottomRight,
+          children: <Widget>[
+            _EditMyAccountAvatarFieldImageWidget(
+              avatarSize: avatarSize,
+              avatarCircleBorderWidth: avatarCircleBorderWidth,
+            ),
+            const _EditMyAccountAvatarFieldEditButtonWidget(),
+          ],
+        ),
+      );
 }
 
 Future _startChoosingFileToUploadAvatar(BuildContext context) async {
@@ -81,19 +79,17 @@ class _EditMyAccountAvatarFieldEditButtonWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return FediIconInCircleBlurredButton(
-      FediIcons.camera,
-      iconSize: FediSizes.mediumIconSize,
-      // todo: refactor
-      // ignore: no-magic-number
-      borderWidth: 2.0,
-      size: FediSizes.smallFilledButtonHeight,
-      onPressed: () {
-        _startChoosingFileToUploadAvatar(context);
-      },
-    );
-  }
+  Widget build(BuildContext context) => FediIconInCircleBlurredButton(
+        FediIcons.camera,
+        iconSize: FediSizes.mediumIconSize,
+        // todo: refactor
+        // ignore: no-magic-number
+        borderWidth: 2.0,
+        size: FediSizes.smallFilledButtonHeight,
+        onPressed: () {
+          _startChoosingFileToUploadAvatar(context);
+        },
+      );
 }
 
 class _EditMyAccountAvatarFieldImageWidget extends StatelessWidget {
@@ -109,23 +105,21 @@ class _EditMyAccountAvatarFieldImageWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        // ignore: no-magic-number
-        borderRadius: BorderRadius.circular(avatarAndBorderSize / 2),
-        border: Border.all(
-          color: IFediUiColorTheme.of(context).white,
-          style: BorderStyle.solid,
+  Widget build(BuildContext context) => Container(
+        decoration: BoxDecoration(
+          // ignore: no-magic-number
+          borderRadius: BorderRadius.circular(avatarAndBorderSize / 2),
+          border: Border.all(
+            color: IFediUiColorTheme.of(context).white,
+            style: BorderStyle.solid,
+          ),
         ),
-      ),
-      child: _EditMyAccountAvatarFieldImageMediaSourceWidget(
-        avatarSize: avatarSize,
-        avatarCircleBorderWidth: avatarCircleBorderWidth,
-      ),
-      // child: FediCircularProgressIndicator(),
-    );
-  }
+        child: _EditMyAccountAvatarFieldImageMediaSourceWidget(
+          avatarSize: avatarSize,
+          avatarCircleBorderWidth: avatarCircleBorderWidth,
+        ),
+        // child: FediCircularProgressIndicator(),
+      );
 }
 
 class _EditMyAccountAvatarFieldImageMediaSourceWidget extends StatelessWidget {
@@ -162,7 +156,7 @@ class _EditMyAccountAvatarFieldImageMediaSourceWidget extends StatelessWidget {
               avatarSize: avatarSize,
               avatarCircleBorderWidth: avatarCircleBorderWidth,
             ),
-            errorWidget: (context, url, error) => Icon(
+            errorWidget: (context, url, dynamic error) => Icon(
               FediIcons.warning,
               color: IFediUiColorTheme.of(context).error,
             ),
@@ -195,19 +189,17 @@ class _EditMyAccountAvatarFieldImageContainerWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: avatarSize,
-      // ignore: no-equal-arguments
-      width: avatarSize,
-      child: ClipRRect(
-        borderRadius:
-            // ignore: no-magic-number
-            BorderRadius.circular(avatarSize / 2 - avatarCircleBorderWidth),
-        child: Image(
-          image: imageProvider,
+  Widget build(BuildContext context) => Container(
+        height: avatarSize,
+        // ignore: no-equal-arguments
+        width: avatarSize,
+        child: ClipRRect(
+          borderRadius:
+              // ignore: no-magic-number
+              BorderRadius.circular(avatarSize / 2 - avatarCircleBorderWidth),
+          child: Image(
+            image: imageProvider,
+          ),
         ),
-      ),
-    );
-  }
+      );
 }

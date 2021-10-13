@@ -8,48 +8,47 @@ import 'package:flutter/material.dart';
 class AgeLimitDatabaseCacheSingleSelectFromListValueFormFieldRowWidget
     extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return AgeLimitDatabaseSelectCacheSingleSelectValueFormFieldBlocProxyProvider(
-      child: SingleSelectFromListValueFormFieldRowWidget<
-          DatabaseCacheAgeLimitType>(
-        label: S.of(context).app_cache_database_settings_limitAge_label,
-        description: null,
-        descriptionOnDisabled: null,
-        valueIconMapper: null,
-        displayIconInDialog: false,
-        displayIconInRow: false,
-        valueTitleMapper:
-            (BuildContext context, DatabaseCacheAgeLimitType? value) {
-          switch (value!) {
-            case DatabaseCacheAgeLimitType.notSet:
-              return S
-                  .of(context)
-                  .app_cache_database_settings_limitAge_value_notSet;
-            case DatabaseCacheAgeLimitType.days7:
-              return S
-                  .of(context)
-                  .app_cache_database_settings_limitAge_value_days7;
-            case DatabaseCacheAgeLimitType.days30:
-              return S
-                  .of(context)
-                  .app_cache_database_settings_limitAge_value_days30;
-            case DatabaseCacheAgeLimitType.days90:
-              return S
-                  .of(context)
-                  .app_cache_database_settings_limitAge_value_days90;
-            case DatabaseCacheAgeLimitType.days180:
-              return S
-                  .of(context)
-                  .app_cache_database_settings_limitAge_value_days180;
-            case DatabaseCacheAgeLimitType.days365:
-              return S
-                  .of(context)
-                  .app_cache_database_settings_limitAge_value_days365;
-          }
-        },
-      ),
-    );
-  }
+  Widget build(BuildContext context) =>
+      AgeLimitDatabaseSelectCacheSingleSelectValueFormFieldBlocProxyProvider(
+        child: SingleSelectFromListValueFormFieldRowWidget<
+            DatabaseCacheAgeLimitType>(
+          label: S.of(context).app_cache_database_settings_limitAge_label,
+          description: null,
+          descriptionOnDisabled: null,
+          valueIconMapper: null,
+          displayIconInDialog: false,
+          displayIconInRow: false,
+          valueTitleMapper:
+              (BuildContext context, DatabaseCacheAgeLimitType? value) {
+            switch (value!) {
+              case DatabaseCacheAgeLimitType.notSet:
+                return S
+                    .of(context)
+                    .app_cache_database_settings_limitAge_value_notSet;
+              case DatabaseCacheAgeLimitType.days7:
+                return S
+                    .of(context)
+                    .app_cache_database_settings_limitAge_value_days7;
+              case DatabaseCacheAgeLimitType.days30:
+                return S
+                    .of(context)
+                    .app_cache_database_settings_limitAge_value_days30;
+              case DatabaseCacheAgeLimitType.days90:
+                return S
+                    .of(context)
+                    .app_cache_database_settings_limitAge_value_days90;
+              case DatabaseCacheAgeLimitType.days180:
+                return S
+                    .of(context)
+                    .app_cache_database_settings_limitAge_value_days180;
+              case DatabaseCacheAgeLimitType.days365:
+                return S
+                    .of(context)
+                    .app_cache_database_settings_limitAge_value_days365;
+            }
+          },
+        ),
+      );
 
   const AgeLimitDatabaseCacheSingleSelectFromListValueFormFieldRowWidget();
 }

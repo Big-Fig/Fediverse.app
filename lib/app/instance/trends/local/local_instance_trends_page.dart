@@ -8,17 +8,16 @@ class LocalInstanceTrendsPage extends StatelessWidget {
   const LocalInstanceTrendsPage();
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: InstanceHostAppBarWidget(),
-      body: const SafeArea(
-        child: InstanceTrendsWidget(),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Scaffold(
+        appBar: InstanceHostAppBarWidget(),
+        body: const SafeArea(
+          child: InstanceTrendsWidget(),
+        ),
+      );
 }
 
-MaterialPageRoute createLocalInstanceTrendsPageRoute() => MaterialPageRoute(
+MaterialPageRoute<void> createLocalInstanceTrendsPageRoute() =>
+    MaterialPageRoute<void>(
       builder: (context) => LocalInstanceTrendsBloc.provideToContext(
         context,
         child: const LocalInstanceTrendsPage(),

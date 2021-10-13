@@ -6,7 +6,7 @@ import 'package:fedi/app/settings/settings_model.dart';
 import 'package:fedi/form/form_bloc_impl.dart';
 import 'package:rxdart/rxdart.dart';
 
-abstract class EditSettingsBloc<T extends ISettings?> extends FormBloc
+abstract class EditSettingsBloc<T extends ISettings<dynamic>?> extends FormBloc
     implements IEditSettingsBloc<T> {
   @override
   bool get isEnabled => isEnabledSubject.value;

@@ -13,7 +13,8 @@ class UrlStringValueFormFieldValidationError
   String createErrorDescription(BuildContext context) =>
       S.of(context).form_field_text_url_error_invalid_desc;
 
-  static FormValueFieldValidation createValidator() => (currentValue) {
+  static FormValueFieldValidation<String> createValidator() =>
+      (String? currentValue) {
         var emailValid = urlRegex.hasMatch(currentValue ?? '');
         if (emailValid) {
           return null;

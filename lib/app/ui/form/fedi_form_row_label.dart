@@ -5,7 +5,7 @@ class FediFormRowLabel extends StatelessWidget {
   final String text;
   final TextStyle? textStyle;
 
-  FediFormRowLabel(
+  const FediFormRowLabel(
     this.text, {
     this.textStyle,
   });

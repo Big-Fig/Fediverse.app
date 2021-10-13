@@ -41,9 +41,11 @@ class StatusFavouriteAccountCachedListBloc extends DisposableOwner
     required IAccount? newerThan,
     required IAccount? olderThan,
   }) async {
-    _logger.fine(() => 'start refreshItemsFromRemoteForPage \n'
-        '\t newerThanAccount = $newerThan'
-        '\t olderThanAccount = $olderThan');
+    _logger.fine(
+      () => 'start refreshItemsFromRemoteForPage \n'
+          '\t newerThanAccount = $newerThan'
+          '\t olderThanAccount = $olderThan',
+    );
 
     List<IUnifediApiAccount> remoteAccounts;
 
@@ -62,6 +64,7 @@ class StatusFavouriteAccountCachedListBloc extends DisposableOwner
         batchTransaction: batch,
       );
 
+      // ignore: cascade_invocations
       accountRepository.updateStatusFavouritedBy(
         statusRemoteId: status.remoteId!,
         favouritedByAccounts: remoteAccounts,
@@ -76,9 +79,11 @@ class StatusFavouriteAccountCachedListBloc extends DisposableOwner
     required IAccount? newerThan,
     required IAccount? olderThan,
   }) async {
-    _logger.finest(() => 'start loadLocalItems \n'
-        '\t newerThanAccount=$newerThan'
-        '\t olderThanAccount=$olderThan');
+    _logger.finest(
+      () => 'start loadLocalItems \n'
+          '\t newerThanAccount=$newerThan'
+          '\t olderThanAccount=$olderThan',
+    );
 
     var accounts = await accountRepository.findAllInAppType(
       filters: _accountRepositoryFilters,

@@ -6,6 +6,7 @@ import 'package:logging/logging.dart';
 
 final _logger = Logger('date_time_duration_picker.dart');
 
+// ignore: long-method
 Future<DurationPickerResult> showDateTimeDurationPicker({
   required BuildContext context,
   required String? popupTitle,
@@ -74,7 +75,7 @@ Future<DurationPickerResult> showDateTimeDurationPicker({
       if (maxDuration != null && diffDuration > maxDuration) {
         resultDuration = maxDuration;
       } else {
-        resultDuration = minDuration!;
+        resultDuration = minDuration;
       }
     }
   } else {
@@ -87,8 +88,10 @@ Future<DurationPickerResult> showDateTimeDurationPicker({
     duration: resultDuration,
   );
 
-  _logger.finest(() =>
-      'showDateTimeDurationPicker durationPickerResult $durationPickerResult');
+  _logger.finest(
+    () =>
+        'showDateTimeDurationPicker durationPickerResult $durationPickerResult',
+  );
 
   return durationPickerResult;
 }

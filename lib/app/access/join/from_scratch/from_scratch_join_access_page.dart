@@ -8,21 +8,19 @@ import 'package:flutter/material.dart';
 
 class FromScratchJoinUnifediApiAccessPage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return FediLightStatusBarStyleArea(
-      child: Scaffold(
-        backgroundColor: IFediUiColorTheme.of(context).primaryDark,
-        body: const SafeArea(
-          child: JoinUnifediApiAccessWidget(
-            key: Key(
-              FromScratchJoinUnifediApiAccessPageKeys
-                  .joinUnifediApiAccessWidgetKey,
+  Widget build(BuildContext context) => FediLightStatusBarStyleArea(
+        child: Scaffold(
+          backgroundColor: IFediUiColorTheme.of(context).primaryDark,
+          body: const SafeArea(
+            child: JoinUnifediApiAccessWidget(
+              key: Key(
+                FromScratchJoinUnifediApiAccessPageKeys
+                    .joinUnifediApiAccessWidgetKey,
+              ),
             ),
           ),
         ),
-      ),
-    );
-  }
+      );
 
   const FromScratchJoinUnifediApiAccessPage();
 }
@@ -30,7 +28,7 @@ class FromScratchJoinUnifediApiAccessPage extends StatelessWidget {
 void goToJoinNewInstancePage(BuildContext context) {
   Navigator.push(
     context,
-    MaterialPageRoute(
+    MaterialPageRoute<void>(
       builder: (context) => JoinUnifediApiAccessBloc.provideToContext(
         context,
         isFromScratch: true,

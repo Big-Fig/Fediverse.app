@@ -9,7 +9,7 @@ class AgeLimitFilesSelectCacheSingleSelectValueFormFieldBlocProxyProvider
     extends StatelessWidget {
   final Widget child;
 
-  AgeLimitFilesSelectCacheSingleSelectValueFormFieldBlocProxyProvider({
+  const AgeLimitFilesSelectCacheSingleSelectValueFormFieldBlocProxyProvider({
     required this.child,
   });
 

@@ -172,14 +172,13 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
   Future _updateByRemoteNotification(
     IUnifediApiNotification remoteNotification, {
     required Batch? batchTransaction,
-  }) {
-    return notificationRepository.updateNotificationByRemoteType(
-      appItem: notification,
-      remoteItem: remoteNotification,
-      unread: notification.unread,
-      batchTransaction: batchTransaction,
-    );
-  }
+  }) =>
+      notificationRepository.updateNotificationByRemoteType(
+        appItem: notification,
+        remoteItem: remoteNotification,
+        unread: notification.unread,
+        batchTransaction: batchTransaction,
+      );
 
   @override
   Future dispose() {
@@ -240,7 +239,7 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
   Stream<NotificationState> get stateStream => Rx.combineLatest2(
         dismissedStream,
         unreadStream,
-        (dynamic dismissed, dynamic unread) => NotificationState(
+        (bool? dismissed, bool unread) => NotificationState(
           dismissed: dismissed,
           unread: unread,
         ),

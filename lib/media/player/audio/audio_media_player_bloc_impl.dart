@@ -35,17 +35,16 @@ class AudioMediaPlayerBloc extends MediaPlayerBloc
     required Widget child,
     required bool? autoInit,
     required bool? autoPlay,
-  }) {
-    return DisposableProvider<IAudioMediaPlayerBloc>(
-      create: (context) => AudioMediaPlayerBloc.createFromContext(
-        context,
-        mediaPlayerSource: mediaPlayerSource,
-        autoInit: autoInit,
-        autoPlay: autoPlay,
-      ),
-      child: AudioMediaPlayerBlocProxyProvider(
-        child: child,
-      ),
-    );
-  }
+  }) =>
+      DisposableProvider<IAudioMediaPlayerBloc>(
+        create: (context) => AudioMediaPlayerBloc.createFromContext(
+          context,
+          mediaPlayerSource: mediaPlayerSource,
+          autoInit: autoInit,
+          autoPlay: autoPlay,
+        ),
+        child: AudioMediaPlayerBlocProxyProvider(
+          child: child,
+        ),
+      );
 }

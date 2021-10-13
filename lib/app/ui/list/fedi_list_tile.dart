@@ -20,7 +20,7 @@ class FediListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var edgeInsets;
+    EdgeInsets edgeInsets;
     if (!noPadding) {
       if (isFirstInList) {
         edgeInsets = EdgeInsets.only(bottom: oneSidePadding);

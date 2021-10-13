@@ -18,7 +18,7 @@ class CustomSwitch extends StatelessWidget {
   final Color borderColor;
   final bool enabled;
 
-  CustomSwitch({
+  const CustomSwitch({
     Key? key,
     this.backgroundActiveColor = Colors.transparent,
     this.backgroundInactiveColor = Colors.transparent,

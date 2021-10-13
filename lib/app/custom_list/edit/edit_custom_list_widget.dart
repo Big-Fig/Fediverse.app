@@ -157,39 +157,37 @@ class _EditCustomListBodyAlreadyAddedAccountsWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IEditCustomListBloc,
-        ICustomListAccountListNetworkOnlyListBloc>(
-      update: (context, editCustomListBloc, previous) =>
-          editCustomListBloc.customListAccountListNetworkOnlyListBloc,
-      child:
-          ProxyProvider<IEditCustomListBloc, IAccountNetworkOnlyPaginationBloc>(
+  Widget build(BuildContext context) => ProxyProvider<IEditCustomListBloc,
+          ICustomListAccountListNetworkOnlyListBloc>(
         update: (context, editCustomListBloc, previous) =>
-            editCustomListBloc.customListAccountListNetworkOnlyPaginationBloc,
+            editCustomListBloc.customListAccountListNetworkOnlyListBloc,
         child: ProxyProvider<IEditCustomListBloc,
-            IEditCustomListAccountListPaginationListBloc>(
+            IAccountNetworkOnlyPaginationBloc>(
           update: (context, editCustomListBloc, previous) =>
-              editCustomListBloc.editCustomListAccountListPaginationListBloc,
-          child: EditCustomListAccountListPaginationListBlocProxyProvider(
-            child: CustomListAccountListNetworkOnlyListBlocProxyProvider(
-              child: Column(
-                children: [
-                  const _EditCustomListBodyAddedHeaderWidget(),
-                  Expanded(
-                    child: const CustomListAccountListWidget(
-                      itemActions: [
-                        CustomListAccountListItemAddRemoveActionWidget(),
-                      ],
+              editCustomListBloc.customListAccountListNetworkOnlyPaginationBloc,
+          child: ProxyProvider<IEditCustomListBloc,
+              IEditCustomListAccountListPaginationListBloc>(
+            update: (context, editCustomListBloc, previous) =>
+                editCustomListBloc.editCustomListAccountListPaginationListBloc,
+            child: EditCustomListAccountListPaginationListBlocProxyProvider(
+              child: CustomListAccountListNetworkOnlyListBlocProxyProvider(
+                child: Column(
+                  children: [
+                    const _EditCustomListBodyAddedHeaderWidget(),
+                    Expanded(
+                      child: const CustomListAccountListWidget(
+                        itemActions: [
+                          CustomListAccountListItemAddRemoveActionWidget(),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }
 
 class _EditCustomListBodyAddedHeaderWidget extends StatelessWidget {
@@ -213,33 +211,32 @@ class _EditCustomListBodySearchToAddAccountsWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IEditCustomListBloc, ISelectAccountListBloc>(
-      update: (context, editCustomListBloc, _) =>
-          editCustomListBloc.selectAccountListBloc,
-      child: SelectAccountListBlocProxyProvider(
-        child: ProxyProvider<ISelectAccountListBloc, ISearchInputBloc>(
-          update: (context, selectAccountListBloc, _) =>
-              selectAccountListBloc.searchInputBloc,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const _EditCustomListBodySearchHeader(),
-              const SearchInputWidget(
-                padding: EdgeInsets.zero,
-              ),
-              const FediBigVerticalSpacer(),
-              Expanded(
-                child: _EditCustomListBodySearchToAddAccountsBodyWidget(
-                  emptySearchChild: emptySearchChild,
+  Widget build(BuildContext context) =>
+      ProxyProvider<IEditCustomListBloc, ISelectAccountListBloc>(
+        update: (context, editCustomListBloc, _) =>
+            editCustomListBloc.selectAccountListBloc,
+        child: SelectAccountListBlocProxyProvider(
+          child: ProxyProvider<ISelectAccountListBloc, ISearchInputBloc>(
+            update: (context, selectAccountListBloc, _) =>
+                selectAccountListBloc.searchInputBloc,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const _EditCustomListBodySearchHeader(),
+                const SearchInputWidget(
+                  padding: EdgeInsets.zero,
                 ),
-              ),
-            ],
+                const FediBigVerticalSpacer(),
+                Expanded(
+                  child: _EditCustomListBodySearchToAddAccountsBodyWidget(
+                    emptySearchChild: emptySearchChild,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }
 
 class _EditCustomListBodySearchToAddAccountsBodyWidget extends StatelessWidget {

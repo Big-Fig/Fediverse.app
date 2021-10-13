@@ -82,19 +82,18 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
     required int? limit,
     required INotification? newerThan,
     required INotification? olderThan,
-  }) {
-    return notificationRepository.findAllInAppType(
-      filters: _notificationRepositoryFilters,
-      pagination: RepositoryPagination<INotification>(
-        olderThanItem: olderThan,
-        newerThanItem: newerThan,
-        limit: limit,
-      ),
-      orderingTerms: [
-        NotificationRepositoryOrderingTermData.createdAtDesc,
-      ],
-    );
-  }
+  }) =>
+      notificationRepository.findAllInAppType(
+        filters: _notificationRepositoryFilters,
+        pagination: RepositoryPagination<INotification>(
+          olderThanItem: olderThan,
+          newerThanItem: newerThan,
+          limit: limit,
+        ),
+        orderingTerms: [
+          NotificationRepositoryOrderingTermData.createdAtDesc,
+        ],
+      );
 
   @override
   Future refreshItemsFromRemoteForPage({
@@ -145,15 +144,14 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
     BuildContext context, {
     required List<UnifediApiNotificationType> excludeTypes,
     required Widget child,
-  }) {
-    return DisposableProvider<INotificationCachedListBloc>(
-      create: (context) => NotificationCachedListBloc.createFromContext(
-        context,
-        excludeTypes: excludeTypes,
-      ),
-      child: child,
-    );
-  }
+  }) =>
+      DisposableProvider<INotificationCachedListBloc>(
+        create: (context) => NotificationCachedListBloc.createFromContext(
+          context,
+          excludeTypes: excludeTypes,
+        ),
+        child: child,
+      );
 
   @override
   Stream<List<INotification>> watchLocalItemsNewerThanItem(

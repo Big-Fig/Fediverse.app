@@ -9,19 +9,17 @@ class MyAccountFeaturedHashtagSuggestionHashtagListNetworkOnlyListBlocProxyProvi
     extends StatelessWidget {
   final Widget child;
 
-  MyAccountFeaturedHashtagSuggestionHashtagListNetworkOnlyListBlocProxyProvider({
+  const MyAccountFeaturedHashtagSuggestionHashtagListNetworkOnlyListBlocProxyProvider({
     required this.child,
   });
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<
-        IMyAccountFeaturedHashtagSuggestionHashtagListNetworkOnlyListBloc,
-        INetworkOnlyListBloc<IHashtag>>(
-      update: (context, value, previous) => value,
-      child: HashtagPaginationListBlocProxyProvider(
-        child: child,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => ProxyProvider<
+          IMyAccountFeaturedHashtagSuggestionHashtagListNetworkOnlyListBloc,
+          INetworkOnlyListBloc<IHashtag>>(
+        update: (context, value, previous) => value,
+        child: HashtagPaginationListBlocProxyProvider(
+          child: child,
+        ),
+      );
 }

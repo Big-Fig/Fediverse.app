@@ -89,22 +89,24 @@ class ConversationDao extends PopulatedAppRemoteDatabaseDao<
       query
         ..orderBy(
           orderTerms
-              .map((orderTerm) => (item) {
-                    var expression;
-                    switch (orderTerm.orderType) {
-                      case ConversationChatOrderType.remoteId:
-                        expression = item.remoteId;
-                        break;
-                      case ConversationChatOrderType.updatedAt:
-                        expression = item.updatedAt;
-                        break;
-                    }
+              .map(
+                (orderTerm) => ($DbConversationsTable item) {
+                  GeneratedColumn<Object?> expression;
+                  switch (orderTerm.orderType) {
+                    case ConversationChatOrderType.remoteId:
+                      expression = item.remoteId;
+                      break;
+                    case ConversationChatOrderType.updatedAt:
+                      expression = item.updatedAt;
+                      break;
+                  }
 
-                    return OrderingTerm(
-                      expression: expression,
-                      mode: orderTerm.orderingMode,
-                    );
-                  })
+                  return OrderingTerm(
+                    expression: expression,
+                    mode: orderTerm.orderingMode,
+                  );
+                },
+              )
               .toList(),
         );
 
@@ -112,78 +114,75 @@ class ConversationDao extends PopulatedAppRemoteDatabaseDao<
     SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
   ) =>
       query
-        ..where((status) =>
-            status.mediaAttachments.isNotNull() |
-            status.mediaAttachments.equals(''));
+        ..where(
+          (status) =>
+              status.mediaAttachments.isNotNull() |
+              status.mediaAttachments.equals(''),
+        );
 
   Future<int> getTotalAmountUnread() => totalAmountUnreadQuery().getSingle();
 
   Stream<int> watchTotalAmountUnread() =>
       totalAmountUnreadQuery().watchSingle();
 
-  Selectable<int> totalAmountUnreadQuery() {
-    return customSelect(
-      'SELECT COUNT(*) FROM db_conversations WHERE unread=1;',
-      readsFrom: {dbConversations},
-    ).map((QueryRow row) => row.read<int>('COUNT(*)'));
-  }
+  Selectable<int> totalAmountUnreadQuery() => customSelect(
+        'SELECT COUNT(*) FROM db_conversations WHERE unread=1;',
+        readsFrom: {dbConversations},
+      ).map((QueryRow row) => row.read<int>('COUNT(*)'));
 
-  List<Join<Table, DataClass>> populateChatJoin() {
-    return [
-      // todo: accounts join
-    ];
-  }
+  List<Join<Table, DataClass>> populateChatJoin() => [
+        // todo: accounts join
+      ];
 
-  List<Join> conversationLastMessageJoin() {
-    return [
-      // leftOuterJoin(
-      //   chatMessageAlias,
-      //   chatMessageAlias.chatRemoteId.equalsExp(dbChats.remoteId),
-      // ),
-      leftOuterJoin(
-        conversationStatusesAlias,
-        conversationStatusesAlias.conversationRemoteId
-            .equalsExp(dbConversations.remoteId),
-      ),
-      leftOuterJoin(
-        statusAlias,
-        statusAlias.remoteId
-            .equalsExp(conversationStatusesAlias.statusRemoteId),
-      ),
-      innerJoin(
-        statusAccountAlias,
-        statusAccountAlias.remoteId.equalsExp(statusAlias.accountRemoteId),
-      ),
-      leftOuterJoin(
-        statusReblogAlias,
-        statusReblogAlias.remoteId.equalsExp(statusAlias.reblogStatusRemoteId),
-      ),
-      leftOuterJoin(
-        statusReblogAccountAlias,
-        statusReblogAccountAlias.remoteId
-            .equalsExp(statusReblogAlias.accountRemoteId),
-      ),
-      leftOuterJoin(
-        statusReplyAlias,
-        statusReplyAlias.remoteId.equalsExp(statusAlias.inReplyToRemoteId),
-      ),
-      leftOuterJoin(
-        statusReplyAccountAlias,
-        statusReplyAccountAlias.remoteId
-            .equalsExp(statusReplyAlias.accountRemoteId),
-      ),
-      leftOuterJoin(
-        statusReplyReblogAlias,
-        statusReplyReblogAlias.remoteId
-            .equalsExp(statusReplyAlias.reblogStatusRemoteId),
-      ),
-      leftOuterJoin(
-        statusReplyReblogAccountAlias,
-        statusReplyReblogAccountAlias.remoteId
-            .equalsExp(statusReplyReblogAlias.accountRemoteId),
-      ),
-    ];
-  }
+  List<Join> conversationLastMessageJoin() => [
+        // leftOuterJoin(
+        //   chatMessageAlias,
+        //   chatMessageAlias.chatRemoteId.equalsExp(dbChats.remoteId),
+        // ),
+        leftOuterJoin(
+          conversationStatusesAlias,
+          conversationStatusesAlias.conversationRemoteId
+              .equalsExp(dbConversations.remoteId),
+        ),
+        leftOuterJoin(
+          statusAlias,
+          statusAlias.remoteId
+              .equalsExp(conversationStatusesAlias.statusRemoteId),
+        ),
+        innerJoin(
+          statusAccountAlias,
+          statusAccountAlias.remoteId.equalsExp(statusAlias.accountRemoteId),
+        ),
+        leftOuterJoin(
+          statusReblogAlias,
+          statusReblogAlias.remoteId
+              .equalsExp(statusAlias.reblogStatusRemoteId),
+        ),
+        leftOuterJoin(
+          statusReblogAccountAlias,
+          statusReblogAccountAlias.remoteId
+              .equalsExp(statusReblogAlias.accountRemoteId),
+        ),
+        leftOuterJoin(
+          statusReplyAlias,
+          statusReplyAlias.remoteId.equalsExp(statusAlias.inReplyToRemoteId),
+        ),
+        leftOuterJoin(
+          statusReplyAccountAlias,
+          statusReplyAccountAlias.remoteId
+              .equalsExp(statusReplyAlias.accountRemoteId),
+        ),
+        leftOuterJoin(
+          statusReplyReblogAlias,
+          statusReplyReblogAlias.remoteId
+              .equalsExp(statusReplyAlias.reblogStatusRemoteId),
+        ),
+        leftOuterJoin(
+          statusReplyReblogAccountAlias,
+          statusReplyReblogAccountAlias.remoteId
+              .equalsExp(statusReplyReblogAlias.accountRemoteId),
+        ),
+      ];
 
   @override
   $DbConversationsTable get table => dbConversations;
@@ -263,23 +262,21 @@ extension DbConversationChatPopulatedTypedResultListExtension
     on List<TypedResult> {
   List<DbConversationPopulated> toDbConversationChatPopulatedList({
     required ConversationDao dao,
-  }) {
-    return map(
-      (item) => item.toDbConversationPopulated(
-        dao: dao,
-      ),
-    ).toList();
-  }
+  }) =>
+      map(
+        (item) => item.toDbConversationPopulated(
+          dao: dao,
+        ),
+      ).toList();
 }
 
 extension DbConversationChatPopulatedTypedResultExtension on TypedResult {
   DbConversationPopulated toDbConversationPopulated({
     required ConversationDao dao,
-  }) {
-    return DbConversationPopulated(
-      dbConversation: readTable(dao.dbConversations),
-    );
-  }
+  }) =>
+      DbConversationPopulated(
+        dbConversation: readTable(dao.dbConversations),
+      );
 }
 
 extension DbConversationChatWithLastMessagePopulatedTypedResultListExtension
@@ -287,13 +284,12 @@ extension DbConversationChatWithLastMessagePopulatedTypedResultListExtension
   List<DbConversationChatWithLastMessagePopulated>
       toDbConversationChatWithLastMessagePopulatedList({
     required ConversationDao dao,
-  }) {
-    return map(
-      (item) => item.toDbConversationChatWithLastMessagePopulated(
-        dao: dao,
-      ),
-    ).toList();
-  }
+  }) =>
+          map(
+            (item) => item.toDbConversationChatWithLastMessagePopulated(
+              dao: dao,
+            ),
+          ).toList();
 }
 
 extension DbConversationChatWithLastMessagePopulatedTypedResultExtension

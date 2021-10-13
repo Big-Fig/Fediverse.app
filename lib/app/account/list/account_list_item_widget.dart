@@ -57,35 +57,33 @@ class _AccountListItemBodyWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: <Widget>[
-        const AccountAvatarWidget(
-          imageSize: FediSizes.accountAvatarDefaultSize,
-          progressSize: FediSizes.accountAvatarProgressDefaultSize,
-        ),
-        const FediSmallHorizontalSpacer(),
-        Flexible(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              AccountDisplayNameWidget(
-                textStyle: IFediUiTextTheme.of(context).bigBoldDarkGrey,
-              ),
-              const SizedBox(
-                // todo: refactor
-                // ignore: no-magic-number
-                height: 4.0,
-              ),
-              AccountAcctWidget(
-                textStyle: IFediUiTextTheme.of(context).mediumShortDarkGrey,
-              ),
-            ],
+  Widget build(BuildContext context) => Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          const AccountAvatarWidget(
+            imageSize: FediSizes.accountAvatarDefaultSize,
+            progressSize: FediSizes.accountAvatarProgressDefaultSize,
           ),
-        ),
-      ],
-    );
-  }
+          const FediSmallHorizontalSpacer(),
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AccountDisplayNameWidget(
+                  textStyle: IFediUiTextTheme.of(context).bigBoldDarkGrey,
+                ),
+                const SizedBox(
+                  // todo: refactor
+                  // ignore: no-magic-number
+                  height: 4.0,
+                ),
+                AccountAcctWidget(
+                  textStyle: IFediUiTextTheme.of(context).mediumShortDarkGrey,
+                ),
+              ],
+            ),
+          ),
+        ],
+      );
 }

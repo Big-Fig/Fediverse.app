@@ -6,15 +6,14 @@ import 'package:provider/provider.dart';
 class VideoMediaPlayerBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  VideoMediaPlayerBlocProxyProvider({
+  const VideoMediaPlayerBlocProxyProvider({
     required this.child,
   });
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IVideoMediaPlayerBloc, IMediaPlayerBloc>(
-      update: (context, value, _) => value,
-      child: child,
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IVideoMediaPlayerBloc, IMediaPlayerBloc>(
+        update: (context, value, _) => value,
+        child: child,
+      );
 }

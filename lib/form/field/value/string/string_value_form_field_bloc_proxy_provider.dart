@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 class StringValueFormFieldBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  StringValueFormFieldBlocProxyProvider({
+  const StringValueFormFieldBlocProxyProvider({
     required this.child,
   });
 

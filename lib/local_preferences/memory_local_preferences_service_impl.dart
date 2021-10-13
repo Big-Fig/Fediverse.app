@@ -10,7 +10,7 @@ var _logger = Logger('memory_local_preferences_service_impl.dart');
 
 class MemoryLocalPreferencesService extends AsyncInitLoadingBloc
     implements ILocalPreferencesService {
-  final Map<String, dynamic> preferences = {};
+  final Map<String, dynamic> preferences = <String, dynamic>{};
 
   final Map<String, List<ValueCallback>> listeners = {};
 
@@ -97,13 +97,13 @@ class MemoryLocalPreferencesService extends AsyncInitLoadingBloc
   bool? getBoolPreference(
     String key,
   ) =>
-      preferences[key];
+      preferences[key] as bool?;
 
   @override
-  String? getStringPreference(String key) => preferences[key];
+  String? getStringPreference(String key) => preferences[key] as String?;
 
   @override
-  int? getIntPreference(String key) => preferences[key];
+  int? getIntPreference(String key) => preferences[key] as int?;
 
   @override
   T? getObjectPreference<T>(
@@ -112,7 +112,7 @@ class MemoryLocalPreferencesService extends AsyncInitLoadingBloc
   ) {
     var str = getStringPreference(key);
     if (str?.isNotEmpty == true) {
-      return jsonConverter(jsonDecode(str!));
+      return jsonConverter(jsonDecode(str!) as Map<String, dynamic>);
     } else {
       return null;
     }

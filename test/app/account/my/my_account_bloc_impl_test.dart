@@ -1,4 +1,5 @@
 import 'package:fedi/app/account/account_bloc.dart';
+import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/my/local_preferences/my_account_local_preference_bloc_impl.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/my/my_account_bloc_impl.dart';
@@ -75,7 +76,7 @@ void main() {
 
     await myAccountLocalPreferenceBloc
         .setValue(myAccount as UnifediApiMyAccountWrapper?);
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future<void>.delayed(Duration(milliseconds: 1));
 
     myAccountBloc = MyAccountBloc(
       apiMyAccountService: unifediApiMyAccountServiceMock,
@@ -111,7 +112,7 @@ void main() {
       remoteId: myAccount.remoteId,
     );
 
-    var listened;
+    IAccount? listened;
 
     var subscription = myAccountBloc.accountStream.listen((newValue) {
       listened = newValue;
@@ -132,7 +133,7 @@ void main() {
 
     var newValue = 'newAcct';
 
-    var listened;
+    String? listened;
 
     var subscription = myAccountBloc.acctStream.listen((newValue) {
       listened = newValue;
@@ -152,7 +153,7 @@ void main() {
 
     var newValue = 'newNote';
 
-    var listened;
+    String? listened;
 
     var subscription = myAccountBloc.noteStream.listen((newValue) {
       listened = newValue;
@@ -172,7 +173,7 @@ void main() {
 
     var newValue = 'newHeader';
 
-    var listened;
+    String? listened;
 
     var subscription = myAccountBloc.headerStream.listen((newValue) {
       listened = newValue;
@@ -192,7 +193,7 @@ void main() {
 
     var newValue = 'newAvatar';
 
-    var listened;
+    String? listened;
 
     var subscription = myAccountBloc.avatarStream.listen((newValue) {
       listened = newValue;
@@ -212,13 +213,13 @@ void main() {
 
     var newValue = 'newDisplayName';
 
-    var listened;
+    String? listened;
 
     var subscription = myAccountBloc.displayNameStream.listen((newValue) {
       listened = newValue;
     });
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future<void>.delayed(Duration(milliseconds: 1));
     expect(listened, myAccount.displayName);
 
     await _update(myAccount.copyWithTemp(displayName: newValue));
@@ -238,13 +239,13 @@ void main() {
       ),
     ];
 
-    var listened;
+    List<IUnifediApiField>? listened;
 
     var subscription = myAccountBloc.fieldsStream.listen((newValue) {
       listened = newValue;
     });
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future<void>.delayed(Duration(milliseconds: 1));
     expect(listened, myAccount.fields ?? []);
 
     await _update(myAccount.copyWithTemp(fields: newValue));
@@ -259,13 +260,13 @@ void main() {
 
     var newValue = myAccount.statusesCount! + 1;
 
-    var listened;
+    int? listened;
 
     var subscription = myAccountBloc.statusesCountStream.listen((newValue) {
       listened = newValue;
     });
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future<void>.delayed(Duration(milliseconds: 1));
     expect(listened, myAccount.statusesCount);
 
     await _update(myAccount.copyWithTemp(statusesCount: newValue));
@@ -279,13 +280,13 @@ void main() {
 
     var newValue = myAccount.statusesCount! + 1;
 
-    var listened;
+    int? listened;
 
     var subscription = myAccountBloc.statusesCountStream.listen((newValue) {
       listened = newValue;
     });
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future<void>.delayed(Duration(milliseconds: 1));
     expect(listened, myAccount.statusesCount);
 
     await _update(myAccount.copyWithTemp(statusesCount: newValue));
@@ -299,13 +300,13 @@ void main() {
 
     var newValue = myAccount.followingCount! + 1;
 
-    var listened;
+    int? listened;
 
     var subscription = myAccountBloc.followingCountStream.listen((newValue) {
       listened = newValue;
     });
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future<void>.delayed(Duration(milliseconds: 1));
     expect(listened, myAccount.followingCount);
 
     await _update(myAccount.copyWithTemp(followingCount: newValue));
@@ -319,13 +320,13 @@ void main() {
 
     var newValue = myAccount.followersCount! + 1;
 
-    var listened;
+    int? listened;
 
     var subscription = myAccountBloc.followersCountStream.listen((newValue) {
       listened = newValue;
     });
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future<void>.delayed(Duration(milliseconds: 1));
     expect(listened, myAccount.followersCount);
 
     await _update(myAccount.copyWithTemp(followersCount: newValue));
@@ -346,14 +347,14 @@ void main() {
 
     var newDisplayNameValue = 'newDisplayName';
 
-    var listened;
+    EmojiText? listened;
 
     var subscription =
         myAccountBloc.displayNameEmojiTextStream.listen((newValue) {
       listened = newValue;
     });
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future<void>.delayed(Duration(milliseconds: 1));
     expect(
       listened,
       EmojiText(
@@ -398,16 +399,18 @@ void main() {
       listened = newValue;
     });
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future<void>.delayed(Duration(milliseconds: 1));
     expect(
       listened,
       EmojiText(text: newDisplayNameValue, emojis: myAccount.emojis),
     );
 
-    await _update(myAccount.copyWithTemp(
-      displayName: newDisplayNameValue,
-      emojis: newEmojis,
-    ));
+    await _update(
+      myAccount.copyWithTemp(
+        displayName: newDisplayNameValue,
+        emojis: newEmojis,
+      ),
+    );
 
     expect(
       myAccountBloc.displayNameEmojiText,
@@ -439,13 +442,13 @@ void main() {
       remoteId: myAccount.remoteId,
     );
 
-    var listened;
+    IAccount? listened;
 
     var subscription = myAccountBloc.accountStream.listen((newValue) {
       listened = newValue;
     });
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future<void>.delayed(Duration(milliseconds: 1));
     AccountMockHelper.expectAccount(listened, myAccount);
 
     when(unifediApiMyAccountServiceMock.verifyMyCredentials()).thenAnswer(
@@ -454,7 +457,7 @@ void main() {
 
     await myAccountBloc.refreshFromNetwork(isNeedPreFetchRelationship: false);
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future<void>.delayed(Duration(milliseconds: 1));
 
     AccountMockHelper.expectAccount(myAccountBloc.account, newValue);
     await subscription.cancel();
@@ -498,7 +501,7 @@ void main() {
     expect(myAccountBloc.isLocalCacheExist, true);
     await myAccountLocalPreferenceBloc.setValue(null);
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future<void>.delayed(Duration(milliseconds: 1));
     expect(myAccountBloc.isLocalCacheExist, false);
   });
 
@@ -512,7 +515,7 @@ void main() {
     await myAccountBloc
         .updateMyAccountByMyUnifediApiAccount(newValue.unifediApiAccount);
 
-    await Future.delayed(Duration(milliseconds: 1));
+    await Future<void>.delayed(Duration(milliseconds: 1));
     AccountMockHelper.expectAccount(myAccountBloc.account, newValue);
   });
 
@@ -527,10 +530,12 @@ void main() {
       false,
     );
     expect(
-      myAccountBloc.checkAccountIsMe((await AccountMockHelper.createTestAccount(
-        seed: 'seed3',
-        remoteId: myAccount.remoteId,
-      ))),
+      myAccountBloc.checkAccountIsMe(
+        await AccountMockHelper.createTestAccount(
+          seed: 'seed3',
+          remoteId: myAccount.remoteId,
+        ),
+      ),
       true,
     );
   });
@@ -562,18 +567,20 @@ void main() {
     );
 
     expect(
-      myAccountBloc.checkIsStatusFromMe(DbStatusPopulatedWrapper(
-        dbStatusPopulated: DbStatusPopulated(
-          dbStatus: dbStatus,
-          dbAccount: dbAccount.copyWith(remoteId: 'invalidRemoteId'),
-          reblogDbStatus: null,
-          reblogDbStatusAccount: null,
-          replyReblogDbStatusAccount: null,
-          replyDbStatusAccount: null,
-          replyDbStatus: null,
-          replyReblogDbStatus: null,
+      myAccountBloc.checkIsStatusFromMe(
+        DbStatusPopulatedWrapper(
+          dbStatusPopulated: DbStatusPopulated(
+            dbStatus: dbStatus,
+            dbAccount: dbAccount.copyWith(remoteId: 'invalidRemoteId'),
+            reblogDbStatus: null,
+            reblogDbStatusAccount: null,
+            replyReblogDbStatusAccount: null,
+            replyDbStatusAccount: null,
+            replyDbStatus: null,
+            replyReblogDbStatus: null,
+          ),
         ),
-      )),
+      ),
       false,
     );
   });

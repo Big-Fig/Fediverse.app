@@ -8,7 +8,7 @@ class ServerListAutoCompleteWidget extends StatelessWidget {
   final TextEditingController textEditingController;
   final FocusNode focusNode;
 
-  ServerListAutoCompleteWidget({
+  const ServerListAutoCompleteWidget({
     required this.fieldViewBuilder,
     required this.textEditingController,
     required this.focusNode,
@@ -23,39 +23,38 @@ class ServerListAutoCompleteWidget extends StatelessWidget {
         BuildContext context,
         AutocompleteOnSelected<String> onSelected,
         Iterable<String> options,
-      ) {
-        return Align(
-          alignment: Alignment.topLeft,
-          child: Material(
-            child: Container(
-              color: IFediUiColorTheme.of(context).white,
-              child: SizedBox(
-                // ignore: no-magic-number
-                height: 200,
-                child: ListView.builder(
-                  padding: FediPadding.allMediumPadding,
-                  itemCount: options.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final option = options.elementAt(index);
+      ) =>
+          Align(
+        alignment: Alignment.topLeft,
+        child: Material(
+          child: Container(
+            color: IFediUiColorTheme.of(context).white,
+            child: SizedBox(
+              // ignore: no-magic-number
+              height: 200,
+              child: ListView.builder(
+                padding: FediPadding.allMediumPadding,
+                itemCount: options.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final option = options.elementAt(index);
 
-                    return GestureDetector(
-                      onTap: () {
-                        onSelected(option);
-                      },
-                      child: ListTile(
-                        title: Text(
-                          option,
-                          style: IFediUiTextTheme.of(context).bigTallDarkGrey,
-                        ),
+                  return GestureDetector(
+                    onTap: () {
+                      onSelected(option);
+                    },
+                    child: ListTile(
+                      title: Text(
+                        option,
+                        style: IFediUiTextTheme.of(context).bigTallDarkGrey,
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  );
+                },
               ),
             ),
           ),
-        );
-      },
+        ),
+      ),
       optionsBuilder: (TextEditingValue textEditingValue) =>
           serverListAutoCompleteBloc.calculateServersSuggestionForTextInput(
         textEditingValue.text,

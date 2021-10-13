@@ -75,13 +75,13 @@ class MediaPickerPageAppBarTitle extends StatelessWidget {
   }
 }
 
-Future<T?> _showFolderChooserModalBottomSheet<T>(
+Future<void> _showFolderChooserModalBottomSheet(
   BuildContext context,
   IMediaDeviceGalleryBloc mediaDeviceGalleryBloc,
 ) {
   var fediUiTextTheme = IFediUiTextTheme.of(context, listen: false);
 
-  return showFediModalBottomSheetDialog<T>(
+  return showFediModalBottomSheetDialog<void>(
     context: context,
     child: Provider<IMediaDeviceGalleryBloc>.value(
       value: mediaDeviceGalleryBloc,
@@ -89,21 +89,23 @@ Future<T?> _showFolderChooserModalBottomSheet<T>(
         padding: FediPadding.allBigPadding,
         child: ListView(
           shrinkWrap: true,
-          children: mediaDeviceGalleryBloc.folders!.map((folder) {
-            return ListTile(
-              onTap: () {
-                mediaDeviceGalleryBloc.selectFolder(folder);
-                Navigator.of(context).pop();
-              },
-              title: Text(
-                _calculateFolderTitle(folder),
-                style:
-                    folder == mediaDeviceGalleryBloc.selectedFolderData?.folder
+          children: mediaDeviceGalleryBloc.folders!
+              .map(
+                (folder) => ListTile(
+                  onTap: () {
+                    mediaDeviceGalleryBloc.selectFolder(folder);
+                    Navigator.of(context).pop();
+                  },
+                  title: Text(
+                    _calculateFolderTitle(folder),
+                    style: folder ==
+                            mediaDeviceGalleryBloc.selectedFolderData?.folder
                         ? fediUiTextTheme.mediumShortBoldDarkGrey
                         : fediUiTextTheme.mediumShortDarkGrey,
-              ),
-            );
-          }).toList(),
+                  ),
+                ),
+              )
+              .toList(),
         ),
       ),
     ),

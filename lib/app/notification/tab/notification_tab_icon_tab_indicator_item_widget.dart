@@ -22,7 +22,7 @@ class NotificationTabTextTabIndicatorItemWidget extends StatelessWidget {
   final List<NotificationTab> notificationTabs;
   final TabController tabController;
 
-  NotificationTabTextTabIndicatorItemWidget({
+  const NotificationTabTextTabIndicatorItemWidget({
     required this.notificationTabs,
     required this.tabController,
   });
@@ -56,39 +56,37 @@ class _NotificationTabTextTabIndicatorItemBodyWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return FediIconTabIndicatorWidget(
-      style: FediTabStyle.bubble,
-      customTabBuilder:
-          (BuildContext context, Widget child, NotificationTab tab) {
-        var notificationTabsBloc = INotificationTabsBloc.of(
-          context,
-          listen: false,
-        );
+  Widget build(BuildContext context) => FediIconTabIndicatorWidget(
+        style: FediTabStyle.bubble,
+        customTabBuilder:
+            (BuildContext context, Widget child, NotificationTab tab) {
+          var notificationTabsBloc = INotificationTabsBloc.of(
+            context,
+            listen: false,
+          );
 
-        var paginationListBloc =
-            notificationTabsBloc.retrieveTimelineTabPaginationListBloc(tab);
+          var paginationListBloc =
+              notificationTabsBloc.retrieveTimelineTabPaginationListBloc(tab);
 
-        return Provider<ICachedPaginationListWithNewItemsBloc>.value(
-          value: paginationListBloc,
-          child: DisposableProxyProvider<ICachedPaginationListWithNewItemsBloc,
-              IFediBoolBadgeBloc>(
-            update: (context, cachedPaginationListWithNewItemsBloc, _) =>
-                CachedPaginationListWithNewItemsUnreadBadgeBloc(
-              cachedPaginationListWithNewItemsBloc:
-                  cachedPaginationListWithNewItemsBloc,
+          return Provider<ICachedPaginationListWithNewItemsBloc>.value(
+            value: paginationListBloc,
+            child: DisposableProxyProvider<
+                ICachedPaginationListWithNewItemsBloc, IFediBoolBadgeBloc>(
+              update: (context, cachedPaginationListWithNewItemsBloc, _) =>
+                  CachedPaginationListWithNewItemsUnreadBadgeBloc(
+                cachedPaginationListWithNewItemsBloc:
+                    cachedPaginationListWithNewItemsBloc,
+              ),
+              child: FediBoolBadgeWidget(
+                child: child,
+              ),
             ),
-            child: FediBoolBadgeWidget(
-              child: child,
-            ),
-          ),
-        );
-      },
-      tabToIconMapper: (BuildContext context, NotificationTab? tab) =>
-          mapTabToIconData(context, tab!),
-      expand: true,
-    );
-  }
+          );
+        },
+        tabToIconMapper: (BuildContext context, NotificationTab? tab) =>
+            mapTabToIconData(context, tab!),
+        expand: true,
+      );
 }
 
 IconData mapTabToIconData(BuildContext context, NotificationTab tab) {

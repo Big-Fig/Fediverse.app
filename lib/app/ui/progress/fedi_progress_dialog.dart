@@ -34,29 +34,25 @@ abstract class FediProgressDialog extends BaseDialog {
 
   Widget buildDialogTitle(BuildContext context);
 
-  Widget buildDialogTitleMessage(BuildContext context) {
-    return Padding(
-      padding: FediPadding.allSmallPadding,
-      child: Text(
-        titleMessage ?? S.of(context).dialog_progress_content,
-        textAlign: TextAlign.center,
-        style: IFediUiTextTheme.of(context).subHeaderShortBoldDarkGrey,
-      ),
-    );
-  }
+  Widget buildDialogTitleMessage(BuildContext context) => Padding(
+        padding: FediPadding.allSmallPadding,
+        child: Text(
+          titleMessage ?? S.of(context).dialog_progress_content,
+          textAlign: TextAlign.center,
+          style: IFediUiTextTheme.of(context).subHeaderShortBoldDarkGrey,
+        ),
+      );
 
-  Widget buildDialogContent(BuildContext context) {
-    return Padding(
-      padding: FediPadding.allSmallPadding,
-      child: Text(
-        contentMessage!,
-        textAlign: TextAlign.center,
-        style: IFediUiTextTheme.of(context).bigShortDarkGrey.copyWith(
-              height: 1,
-            ),
-      ),
-    );
-  }
+  Widget buildDialogContent(BuildContext context) => Padding(
+        padding: FediPadding.allSmallPadding,
+        child: Text(
+          contentMessage!,
+          textAlign: TextAlign.center,
+          style: IFediUiTextTheme.of(context).bigShortDarkGrey.copyWith(
+                height: 1,
+              ),
+        ),
+      );
 
   @override
   Widget buildDialogBody(BuildContext context) => Dialog(
@@ -76,52 +72,50 @@ abstract class FediProgressDialog extends BaseDialog {
         child: buildDialogContainer(context),
       );
 
-  Widget buildDialogContainer(BuildContext context) {
-    return Padding(
-      padding: FediPadding.allBigPadding,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(2.0),
-            child: FediCircularProgressIndicator(
-              // ignore: no-magic-number
-              size: 35.0,
-              color: IFediUiColorTheme.of(context).primary,
+  Widget buildDialogContainer(BuildContext context) => Padding(
+        padding: FediPadding.allBigPadding,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: FediCircularProgressIndicator(
+                // ignore: no-magic-number
+                size: 35.0,
+                color: IFediUiColorTheme.of(context).primary,
+              ),
             ),
-          ),
-          buildDialogTitle(context),
-          if (contentMessage != null) buildDialogContent(context),
-          if (cancelable)
-            StreamBuilder<bool>(
-              stream: isCanceledStream,
-              initialData: isCanceled,
-              builder: (context, snapshot) {
-                var canceled = snapshot.data!;
-                Future Function()? onPressed;
+            buildDialogTitle(context),
+            if (contentMessage != null) buildDialogContent(context),
+            if (cancelable)
+              StreamBuilder<bool>(
+                stream: isCanceledStream,
+                initialData: isCanceled,
+                builder: (context, snapshot) {
+                  var canceled = snapshot.data!;
+                  Future Function()? onPressed;
 
-                if (!canceled) {
-                  onPressed = () async {
-                    _isCanceledSubject.add(true);
-                    await cancelableOperation!.cancel();
-                    if (isShowing) {
-                      await hide(context);
-                    }
-                  };
-                }
+                  if (!canceled) {
+                    onPressed = () async {
+                      _isCanceledSubject.add(true);
+                      await cancelableOperation!.cancel();
+                      if (isShowing) {
+                        await hide(context);
+                      }
+                    };
+                  }
 
-                return InkWell(
-                  onTap: onPressed,
-                  child: Text(
-                    S.of(context).dialog_progress_action_cancel,
-                    style: IFediUiTextTheme.of(context).mediumShortPrimary,
-                  ),
-                );
-              },
-            ),
-        ],
-      ),
-    );
-  }
+                  return InkWell(
+                    onTap: onPressed,
+                    child: Text(
+                      S.of(context).dialog_progress_action_cancel,
+                      style: IFediUiTextTheme.of(context).mediumShortPrimary,
+                    ),
+                  );
+                },
+              ),
+          ],
+        ),
+      );
 }

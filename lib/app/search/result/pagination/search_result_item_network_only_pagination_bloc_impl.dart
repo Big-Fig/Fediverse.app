@@ -53,23 +53,24 @@ class SearchResultItemNetworkOnlyPaginationBloc
   static Widget provideToContext(
     BuildContext context, {
     required Widget child,
-  }) {
-    return DisposableProvider<ISearchResultItemNetworkOnlyPaginationBloc>(
-      create: (context) =>
-          SearchResultItemNetworkOnlyPaginationBloc.createFromContext(context),
-      child: ProxyProvider<
-          ISearchResultItemNetworkOnlyPaginationBloc,
-          IPaginationBloc<PaginationPage<ISearchResultItem>,
-              ISearchResultItem>>(
-        update: (context, value, previous) => value,
-        child: ProxyProvider<ISearchResultItemNetworkOnlyPaginationBloc,
-            IPaginationBloc>(
-          update: (context, value, previous) => value,
-          child: child,
+  }) =>
+      DisposableProvider<ISearchResultItemNetworkOnlyPaginationBloc>(
+        create: (context) =>
+            SearchResultItemNetworkOnlyPaginationBloc.createFromContext(
+          context,
         ),
-      ),
-    );
-  }
+        child: ProxyProvider<
+            ISearchResultItemNetworkOnlyPaginationBloc,
+            IPaginationBloc<PaginationPage<ISearchResultItem>,
+                ISearchResultItem>>(
+          update: (context, value, previous) => value,
+          child: ProxyProvider<ISearchResultItemNetworkOnlyPaginationBloc,
+              IPaginationBloc>(
+            update: (context, value, previous) => value,
+            child: child,
+          ),
+        ),
+      );
 
   @override
   Future<List<ISearchResultItem>> loadItemsFromRemoteForPage({

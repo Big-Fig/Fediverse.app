@@ -9,7 +9,7 @@ class EntriesCountByTypeLimitDatabaseCacheSingleSelectValueFormFieldBlocProxyPro
     extends StatelessWidget {
   final Widget child;
 
-  EntriesCountByTypeLimitDatabaseCacheSingleSelectValueFormFieldBlocProxyProvider({
+  const EntriesCountByTypeLimitDatabaseCacheSingleSelectValueFormFieldBlocProxyProvider({
     required this.child,
   });
 

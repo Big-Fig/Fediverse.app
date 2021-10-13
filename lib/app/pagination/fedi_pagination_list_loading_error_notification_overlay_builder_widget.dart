@@ -12,7 +12,7 @@ DateTime _lastLoadMoreErrorShowedDateTime = DateTime.now();
 // ignore: no-magic-number
 final Duration _throttleDuration = Duration(seconds: 2);
 
-class FediPaginationListLoadingErrorNotificationOverlayBuilderWidget<T>
+class FediPaginationListLoadingErrorNotificationOverlayBuilderWidget
     extends StatefulWidget {
   const FediPaginationListLoadingErrorNotificationOverlayBuilderWidget();
 
@@ -41,7 +41,7 @@ class _FediPaginationListLoadingErrorNotificationOverlayBuilderWidgetState
           _lastRefreshErrorShowedDateTime = now;
           IToastService.of(context, listen: false).showErrorToast(
             context: context,
-            content: '${_errorToString(paginationListLoadingError)}',
+            content: _errorToString(paginationListLoadingError),
             title: S.of(context).app_list_refresh_unableToFetch,
           );
         }
@@ -55,7 +55,7 @@ class _FediPaginationListLoadingErrorNotificationOverlayBuilderWidgetState
           _lastLoadMoreErrorShowedDateTime = now;
           IToastService.of(context, listen: false).showErrorToast(
             context: context,
-            content: '${_errorToString(paginationListLoadingError)}',
+            content: _errorToString(paginationListLoadingError),
             title: S.of(context).app_list_loading_state_failed,
           );
         }
@@ -64,7 +64,7 @@ class _FediPaginationListLoadingErrorNotificationOverlayBuilderWidgetState
   }
 
   String _errorToString(PaginationListLoadingError paginationListLoadingError) {
-    var error = paginationListLoadingError.error;
+    dynamic error = paginationListLoadingError.error;
     if (error is CantUpdateFromNetworkException) {
       return S.of(context).app_list_cantUpdateFromNetwork;
     } else {
@@ -84,7 +84,5 @@ class _FediPaginationListLoadingErrorNotificationOverlayBuilderWidgetState
   }
 
   @override
-  Widget build(BuildContext context) {
-    return SizedBox.shrink();
-  }
+  Widget build(BuildContext context) => SizedBox.shrink();
 }

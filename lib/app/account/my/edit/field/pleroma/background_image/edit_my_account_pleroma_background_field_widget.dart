@@ -30,18 +30,16 @@ class EditMyAccountPleromaBackgroundFieldWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        const EditMyAccountPleromaBackgroundLabelWidget(),
-        const FediSmallVerticalSpacer(),
-        EditMyAccountPleromaBackgroundFieldValueWidget(
-          backgroundHeight: backgroundHeight,
-        ),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          const EditMyAccountPleromaBackgroundLabelWidget(),
+          const FediSmallVerticalSpacer(),
+          EditMyAccountPleromaBackgroundFieldValueWidget(
+            backgroundHeight: backgroundHeight,
+          ),
+        ],
+      );
 }
 
 class EditMyAccountPleromaBackgroundFieldImageWidget extends StatelessWidget {
@@ -62,7 +60,7 @@ class EditMyAccountPleromaBackgroundFieldImageWidget extends StatelessWidget {
         placeholder: (context, url) => const Center(
           child: FediCircularProgressIndicator(),
         ),
-        errorWidget: (context, url, error) => Icon(
+        errorWidget: (context, url, dynamic error) => Icon(
           FediIcons.warning,
           color: IFediUiColorTheme.of(context).error,
         ),
@@ -160,11 +158,9 @@ class EditMyAccountPleromaBackgroundLabelWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return FediFormColumnLabel(
-      S.of(context).app_account_my_edit_field_backgroundImage_label,
-    );
-  }
+  Widget build(BuildContext context) => FediFormColumnLabel(
+        S.of(context).app_account_my_edit_field_backgroundImage_label,
+      );
 }
 
 class EditMyAccountPleromaBackgroundFieldEditButtonWidget
@@ -174,44 +170,42 @@ class EditMyAccountPleromaBackgroundFieldEditButtonWidget
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return FediIconInCircleBlurredButton(
-      FediIcons.camera,
-      iconSize: FediSizes.mediumIconSize,
-      size: FediSizes.smallFilledButtonHeight,
-      onPressed: () async {
-        var editMyAccountBloc = IEditMyAccountBloc.of(context, listen: false);
-        var mediaDeviceFile = await goToSingleMediaPickerPage(
-          context,
-          typesToPick: [
-            MediaDeviceFileType.image,
-          ],
-        );
-
-        if (mediaDeviceFile != null) {
-          var filePickerFile =
-              await showEditMyAccountPleromaBackgroundFieldPicker(
+  Widget build(BuildContext context) => FediIconInCircleBlurredButton(
+        FediIcons.camera,
+        iconSize: FediSizes.mediumIconSize,
+        size: FediSizes.smallFilledButtonHeight,
+        onPressed: () async {
+          var editMyAccountBloc = IEditMyAccountBloc.of(context, listen: false);
+          var mediaDeviceFile = await goToSingleMediaPickerPage(
             context,
-            mediaDeviceFile,
+            typesToPick: [
+              MediaDeviceFileType.image,
+            ],
           );
 
-          if (filePickerFile != null) {
-            try {
-              await editMyAccountBloc.backgroundField
-                  .pickNewFile(filePickerFile);
-            } catch (e, stackTrace) {
-              _logger.warning(
-                'startChoosingFileToUploadBackground error',
-                e,
-                stackTrace,
-              );
-              showMediaAttachmentFailedNotificationOverlay(context, e);
+          if (mediaDeviceFile != null) {
+            var filePickerFile =
+                await showEditMyAccountPleromaBackgroundFieldPicker(
+              context,
+              mediaDeviceFile,
+            );
+
+            if (filePickerFile != null) {
+              try {
+                await editMyAccountBloc.backgroundField
+                    .pickNewFile(filePickerFile);
+              } catch (e, stackTrace) {
+                _logger.warning(
+                  'startChoosingFileToUploadBackground error',
+                  e,
+                  stackTrace,
+                );
+                showMediaAttachmentFailedNotificationOverlay(context, e);
+              }
             }
           }
-        }
-      },
-    );
-  }
+        },
+      );
 }
 
 class EditMyAccountPleromaBackgroundFieldDeleteButtonWidget
@@ -221,17 +215,15 @@ class EditMyAccountPleromaBackgroundFieldDeleteButtonWidget
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return FediIconInCircleBlurredButton(
-      FediIcons.remove,
-      iconSize: FediSizes.mediumIconSize,
-      size: FediSizes.smallFilledButtonHeight,
-      onPressed: () {
-        var editMyAccountBloc = IEditMyAccountBloc.of(context, listen: false);
-        editMyAccountBloc.backgroundField.deleteOriginal();
-      },
-    );
-  }
+  Widget build(BuildContext context) => FediIconInCircleBlurredButton(
+        FediIcons.remove,
+        iconSize: FediSizes.mediumIconSize,
+        size: FediSizes.smallFilledButtonHeight,
+        onPressed: () {
+          var editMyAccountBloc = IEditMyAccountBloc.of(context, listen: false);
+          editMyAccountBloc.backgroundField.deleteOriginal();
+        },
+      );
 }
 
 Future startChoosingFileToUploadBackground(

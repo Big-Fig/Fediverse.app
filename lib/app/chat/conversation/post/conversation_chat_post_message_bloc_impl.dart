@@ -104,15 +104,14 @@ class ConversationChatPostMessageBloc extends PostStatusBloc {
     BuildContext context, {
     required IConversationChat? conversation,
     required Widget child,
-  }) {
-    return DisposableProvider<IPostStatusBloc>(
-      create: (context) => ConversationChatPostMessageBloc.createFromContext(
-        context,
-        conversation: conversation,
-      ),
-      child: PostStatusMessageBlocProxyProvider(child: child),
-    );
-  }
+  }) =>
+      DisposableProvider<IPostStatusBloc>(
+        create: (context) => ConversationChatPostMessageBloc.createFromContext(
+          context,
+          conversation: conversation,
+        ),
+        child: PostStatusMessageBlocProxyProvider(child: child),
+      );
 
   @override
   bool get isPossibleToChangeVisibility => true;

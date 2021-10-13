@@ -45,10 +45,12 @@ class PleromaChatMessageCachedListBloc extends DisposableOwner
     required IPleromaChatMessage? newerThan,
     required IPleromaChatMessage? olderThan,
   }) async {
-    _logger.fine(() => 'start refreshItemsFromRemoteForPage \n'
-        '\t chat = $chat'
-        '\t newerThan = $newerThan'
-        '\t olderThan = $olderThan');
+    _logger.fine(
+      () => 'start refreshItemsFromRemoteForPage \n'
+          '\t chat = $chat'
+          '\t newerThan = $newerThan'
+          '\t olderThan = $olderThan',
+    );
 
     var remoteMessages = await pleromaApiChatService.getChatMessages(
       chatId: chat.remoteId,
@@ -71,9 +73,11 @@ class PleromaChatMessageCachedListBloc extends DisposableOwner
     required IPleromaChatMessage? newerThan,
     required IPleromaChatMessage? olderThan,
   }) async {
-    _logger.finest(() => 'start loadLocalItems \n'
-        '\t newerThan=$newerThan'
-        '\t olderThan=$olderThan');
+    _logger.finest(
+      () => 'start loadLocalItems \n'
+          '\t newerThan=$newerThan'
+          '\t olderThan=$olderThan',
+    );
 
     var messages = await chatMessageRepository.findAllInAppType(
       filters: _pleromaChatMessageRepositoryFilters,
@@ -97,17 +101,16 @@ class PleromaChatMessageCachedListBloc extends DisposableOwner
   @override
   Stream<List<IPleromaChatMessage>> watchLocalItemsNewerThanItem(
     IPleromaChatMessage? item,
-  ) {
-    return chatMessageRepository.watchFindAllInAppType(
-      filters: _pleromaChatMessageRepositoryFilters,
-      pagination: RepositoryPagination(
-        newerThanItem: item,
-      ),
-      orderingTerms: [
-        PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
-      ],
-    );
-  }
+  ) =>
+      chatMessageRepository.watchFindAllInAppType(
+        filters: _pleromaChatMessageRepositoryFilters,
+        pagination: RepositoryPagination(
+          newerThanItem: item,
+        ),
+        orderingTerms: [
+          PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
+        ],
+      );
 
   static PleromaChatMessageCachedListBloc createFromContext(
     BuildContext context, {
@@ -125,13 +128,12 @@ class PleromaChatMessageCachedListBloc extends DisposableOwner
     BuildContext context, {
     required IPleromaChat chat,
     required Widget child,
-  }) {
-    return DisposableProvider<IPleromaChatMessageCachedListBloc>(
-      create: (context) => PleromaChatMessageCachedListBloc.createFromContext(
-        context,
-        chat: chat,
-      ),
-      child: child,
-    );
-  }
+  }) =>
+      DisposableProvider<IPleromaChatMessageCachedListBloc>(
+        create: (context) => PleromaChatMessageCachedListBloc.createFromContext(
+          context,
+          chat: chat,
+        ),
+        child: child,
+      );
 }

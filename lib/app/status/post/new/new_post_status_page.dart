@@ -115,7 +115,7 @@ void goToNewPostStatusPageWithInitial(
 }) {
   Navigator.push(
     context,
-    MaterialPageRoute(
+    MaterialPageRoute<void>(
       builder: (context) => NewPostStatusBloc.provideToContextWithInitial(
         context,
         initialText: initialText,
@@ -133,7 +133,7 @@ void goToNewPostStatusPage(
 }) {
   Navigator.push(
     context,
-    MaterialPageRoute(
+    MaterialPageRoute<void>(
       builder: (context) => NewPostStatusBloc.provideToContext(
         context,
         initialData: initialData,

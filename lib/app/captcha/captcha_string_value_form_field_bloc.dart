@@ -40,7 +40,7 @@ extension ICaptchaStringValueFormFieldBlocExtension
 
   Stream<bool> get isHaveCaptchaLoadingErrorStream =>
       captchaLoadingErrorStream.map(
-        (captchaLoadingError) => captchaLoadingError != null,
+        (dynamic captchaLoadingError) => captchaLoadingError != null,
       );
 
   UnifediApiCaptchaType? get captchaType => captcha?.typeAsUnifediApi;

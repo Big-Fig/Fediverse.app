@@ -40,9 +40,11 @@ class AccountFollowerAccountCachedListBloc extends DisposableOwner
     required IAccount? newerThan,
     required IAccount? olderThan,
   }) async {
-    _logger.fine(() => 'start refreshItemsFromRemoteForPage \n'
-        '\t newerThanAccount = $newerThan'
-        '\t olderThanAccount = $olderThan');
+    _logger.fine(
+      () => 'start refreshItemsFromRemoteForPage \n'
+          '\t newerThanAccount = $newerThan'
+          '\t olderThanAccount = $olderThan',
+    );
 
     List<IUnifediApiAccount> remoteAccounts;
 
@@ -58,22 +60,24 @@ class AccountFollowerAccountCachedListBloc extends DisposableOwner
 
     if (remoteAccounts.isNotEmpty) {
       await accountRepository.batch((batch) {
-        accountRepository.upsertAllInRemoteType(
-          remoteAccounts,
-          batchTransaction: batch,
-        );
-
-        accountRepository.addAccountFollowers(
-          accountRemoteId: account.remoteId,
-          followers: remoteAccounts,
-          batchTransaction: batch,
-        );
+        accountRepository
+          ..upsertAllInRemoteType(
+            remoteAccounts,
+            batchTransaction: batch,
+          )
+          ..addAccountFollowers(
+            accountRemoteId: account.remoteId,
+            followers: remoteAccounts,
+            batchTransaction: batch,
+          );
       });
 
       return true;
     } else {
-      _logger.severe(() => 'error during refreshItemsFromRemoteForPage: '
-          'accounts is null');
+      _logger.severe(
+        () => 'error during refreshItemsFromRemoteForPage: '
+            'accounts is null',
+      );
 
       return false;
     }
@@ -85,9 +89,11 @@ class AccountFollowerAccountCachedListBloc extends DisposableOwner
     required IAccount? newerThan,
     required IAccount? olderThan,
   }) async {
-    _logger.finest(() => 'start loadLocalItems \n'
-        '\t newerThanAccount=$newerThan'
-        '\t olderThanAccount=$olderThan');
+    _logger.finest(
+      () => 'start loadLocalItems \n'
+          '\t newerThanAccount=$newerThan'
+          '\t olderThanAccount=$olderThan',
+    );
 
     var accounts = await accountRepository.findAllInAppType(
       pagination: RepositoryPagination<IAccount>(
@@ -121,18 +127,17 @@ class AccountFollowerAccountCachedListBloc extends DisposableOwner
     BuildContext context, {
     required IAccount account,
     required Widget child,
-  }) {
-    return DisposableProvider<IAccountCachedListBloc>(
-      create: (context) =>
-          AccountFollowerAccountCachedListBloc.createFromContext(
-        context,
-        account: account,
-      ),
-      child: AccountCachedListBlocProxyProvider(
-        child: child,
-      ),
-    );
-  }
+  }) =>
+      DisposableProvider<IAccountCachedListBloc>(
+        create: (context) =>
+            AccountFollowerAccountCachedListBloc.createFromContext(
+          context,
+          account: account,
+        ),
+        child: AccountCachedListBlocProxyProvider(
+          child: child,
+        ),
+      );
 
   @override
   InstanceLocation get instanceLocation => InstanceLocation.local;

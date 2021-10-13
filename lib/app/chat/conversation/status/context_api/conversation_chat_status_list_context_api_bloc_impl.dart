@@ -38,10 +38,12 @@ class ConversationChatStatusListContextApiBloc
     required IStatus? newerThan,
     required IStatus? olderThan,
   }) async {
-    _logger.fine(() => 'start refreshItemsFromRemoteForPage \n'
-        '\t conversation = $conversation'
-        '\t newerThan = $newerThan'
-        '\t olderThan = $olderThan');
+    _logger.fine(
+      () => 'start refreshItemsFromRemoteForPage \n'
+          '\t conversation = $conversation'
+          '\t newerThan = $newerThan'
+          '\t olderThan = $olderThan',
+    );
     // newer pagination not supported
     assert(newerThan == null);
 

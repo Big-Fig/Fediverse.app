@@ -10,12 +10,10 @@ class EmojiReactionWidget extends StatelessWidget {
   const EmojiReactionWidget();
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: FediSizes.smallPadding),
-      child: const _StatusEmojiReactionListItemContentWidget(),
-    );
-  }
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: FediSizes.smallPadding),
+        child: const _StatusEmojiReactionListItemContentWidget(),
+      );
 }
 
 class _StatusEmojiReactionListItemContentWidget extends StatelessWidget {

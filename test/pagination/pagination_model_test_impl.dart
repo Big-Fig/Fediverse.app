@@ -1,24 +1,15 @@
 import 'package:fedi/obj/equal_comparable_obj.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class PaginationItemTest implements IEqualComparableObj<PaginationItemTest> {
-  final int index;
+part 'pagination_model_test_impl.freezed.dart';
 
-  PaginationItemTest(this.index);
+@freezed
+class PaginationItemTest
+    with _$PaginationItemTest
+    implements IEqualComparableObj<PaginationItemTest> {
+  const PaginationItemTest._();
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is PaginationItemTest &&
-          runtimeType == other.runtimeType &&
-          index == other.index;
-
-  @override
-  int get hashCode => index.hashCode;
-
-  @override
-  String toString() {
-    return 'TestPaginationItem{index: $index}';
-  }
+  const factory PaginationItemTest(int index) = _PaginationItemTest;
 
   static int compareItems(PaginationItemTest? a, PaginationItemTest? b) {
     if (a == null && b == null) {

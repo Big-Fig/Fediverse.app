@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 class StatusSensitiveNsfwWarningOverlayWidget extends StatelessWidget {
   final Widget child;
 
-  StatusSensitiveNsfwWarningOverlayWidget({
+  const StatusSensitiveNsfwWarningOverlayWidget({
     required this.child,
   });
 
@@ -60,6 +60,7 @@ class _StatusSensitiveNsfwWarningOverlayBodyWidget extends StatelessWidget {
           var statusSensitiveBloc =
               IStatusSensitiveBloc.of(context, listen: false);
 
+          // ignore: cascade_invocations
           statusSensitiveBloc.enableDisplay();
         },
       );

@@ -43,14 +43,14 @@ class EmojiPickerCustomImageUrlCategoryBloc extends AsyncInitLoadingBloc
   Future<void> _loadMastodon() async {
     await unifediApiInstanceService.getCustomEmojis().then(
       (customEmojis) async {
-        var emojiItems = customEmojis.map(
-          (customEmoji) {
-            return CustomEmojiPickerImageUrlItem(
-              imageUrl: customEmoji.staticUrl!,
-              name: customEmoji.name,
-            );
-          },
-        ).toList();
+        var emojiItems = customEmojis
+            .map(
+              (customEmoji) => CustomEmojiPickerImageUrlItem(
+                imageUrl: customEmoji.staticUrl!,
+                name: customEmoji.name,
+              ),
+            )
+            .toList();
         await preferenceBloc.setValue(
           EmojiPickerCustomImageUrlCategoryItems(
             items: emojiItems,
@@ -58,7 +58,7 @@ class EmojiPickerCustomImageUrlCategoryBloc extends AsyncInitLoadingBloc
         );
       },
     ).catchError(
-      (e, stackTrace) {
+      (Object? e, StackTrace? stackTrace) {
         _logger.warning(
           () => 'internalAsyncInit error: fetch remote emoji '
               'list',
@@ -101,7 +101,7 @@ class EmojiPickerCustomImageUrlCategoryBloc extends AsyncInitLoadingBloc
         );
       },
     ).catchError(
-      (e, stackTrace) {
+      (Object? e, StackTrace? stackTrace) {
         _logger.warning(
           () => 'internalAsyncInit error: fetch remote emoji '
               'list',

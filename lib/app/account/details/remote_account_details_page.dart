@@ -188,12 +188,11 @@ Future<IStatus?> loadRemoteAccountAnyStatusOnLocalInstance(
   return firstUnifediApiStatus?.toDbStatusPopulatedWrapper();
 }
 
-MaterialPageRoute createRemoteAccountDetailsPageRoute({
+MaterialPageRoute<void> createRemoteAccountDetailsPageRoute({
   required IAccount account,
-}) {
-  return MaterialPageRoute(
-    builder: (context) {
-      return DisposableProvider<IRemoteInstanceBloc>(
+}) =>
+    MaterialPageRoute<void>(
+      builder: (context) => DisposableProvider<IRemoteInstanceBloc>(
         create: (context) {
           var instanceUri = account.urlRemoteHostUri;
 
@@ -238,7 +237,5 @@ MaterialPageRoute createRemoteAccountDetailsPageRoute({
             ),
           ),
         ),
-      );
-    },
-  );
-}
+      ),
+    );

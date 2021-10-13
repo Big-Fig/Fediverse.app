@@ -17,18 +17,17 @@ Future<T?> showFediChooserDialog<T>({
   required List<DialogAction> actions,
   bool cancelable = true,
   OnClickUiCallback? customCancelCallback,
-}) {
-  return showFediModalBottomSheetDialog<T>(
-    context: context,
-    child: FediChooserDialogBody(
-      title: title,
-      content: content,
-      actions: actions,
-      cancelable: cancelable,
-      customCancelCallback: customCancelCallback,
-    ),
-  );
-}
+}) =>
+    showFediModalBottomSheetDialog<T>(
+      context: context,
+      child: FediChooserDialogBody(
+        title: title,
+        content: content,
+        actions: actions,
+        cancelable: cancelable,
+        customCancelCallback: customCancelCallback,
+      ),
+    );
 
 class FediChooserDialogBody extends StatelessWidget {
   final String? title;
@@ -38,7 +37,7 @@ class FediChooserDialogBody extends StatelessWidget {
   final bool cancelable;
   final OnClickUiCallback? customCancelCallback;
 
-  FediChooserDialogBody({
+  const FediChooserDialogBody({
     required this.title,
     this.content,
     this.customCancelCallback,
@@ -48,74 +47,72 @@ class FediChooserDialogBody extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        if (title != null)
-          Padding(
-            padding: const EdgeInsets.only(
-              bottom: FediSizes.smallPadding,
-              // ignore: no-equal-arguments
-              left: FediSizes.smallPadding,
-              // ignore: no-equal-arguments
-              right: FediSizes.smallPadding,
+  Widget build(BuildContext context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (title != null)
+            Padding(
+              padding: const EdgeInsets.only(
+                bottom: FediSizes.smallPadding,
+                // ignore: no-equal-arguments
+                left: FediSizes.smallPadding,
+                // ignore: no-equal-arguments
+                right: FediSizes.smallPadding,
+              ),
+              child: Text(
+                title!,
+                textAlign: TextAlign.center,
+                style: IFediUiTextTheme.of(context).dialogTitleBoldDarkGrey,
+              ),
             ),
-            child: Text(
-              title!,
-              textAlign: TextAlign.center,
-              style: IFediUiTextTheme.of(context).dialogTitleBoldDarkGrey,
+          if (content != null)
+            Padding(
+              padding: const EdgeInsets.only(
+                bottom: FediSizes.smallPadding,
+                // ignore: no-equal-arguments
+                left: FediSizes.smallPadding,
+                // ignore: no-equal-arguments
+                right: FediSizes.smallPadding,
+              ),
+              child: Text(
+                content!,
+                textAlign: TextAlign.center,
+                style: IFediUiTextTheme.of(context).dialogContentDarkGrey,
+              ),
             ),
-          ),
-        if (content != null)
-          Padding(
-            padding: const EdgeInsets.only(
-              bottom: FediSizes.smallPadding,
-              // ignore: no-equal-arguments
-              left: FediSizes.smallPadding,
-              // ignore: no-equal-arguments
-              right: FediSizes.smallPadding,
+          const FediUltraLightGreyDivider(),
+          if (loadingActions)
+            const Padding(
+              padding: FediPadding.allBigPadding,
+              child: FediCircularProgressIndicator(),
             ),
-            child: Text(
-              content!,
-              textAlign: TextAlign.center,
-              style: IFediUiTextTheme.of(context).dialogContentDarkGrey,
+          if (!loadingActions)
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  ...actions
+                      .map(
+                        (action) => _buildAction(
+                          context: context,
+                          action: action,
+                        ),
+                      )
+                      .toList(),
+                ],
+              ),
             ),
-          ),
-        const FediUltraLightGreyDivider(),
-        if (loadingActions)
-          const Padding(
-            padding: FediPadding.allBigPadding,
-            child: FediCircularProgressIndicator(),
-          ),
-        if (!loadingActions)
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                ...actions
-                    .map(
-                      (action) => _buildAction(
-                        context: context,
-                        action: action,
-                      ),
-                    )
-                    .toList(),
-              ],
-            ),
-          ),
-        if (cancelable)
-          _buildAction(
-            context: context,
-            action: BaseDialog.createDefaultCancelAction(
+          if (cancelable)
+            _buildAction(
               context: context,
-              customCallback: customCancelCallback,
+              action: BaseDialog.createDefaultCancelAction(
+                context: context,
+                customCallback: customCancelCallback,
+              ),
             ),
-          ),
-      ],
-    );
-  }
+        ],
+      );
 
   Widget _buildAction({
     required BuildContext context,

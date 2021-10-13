@@ -68,9 +68,11 @@ class AccountDao extends PopulatedAppRemoteDatabaseDao<
     List<AccountRepositoryOrderingTermData> orderTerms,
   ) =>
       query
-        ..orderBy(orderTerms
-            .map((orderTerm) => (item) {
-                  var expression;
+        ..orderBy(
+          orderTerms
+              .map(
+                (orderTerm) => ($DbAccountsTable item) {
+                  GeneratedColumn<String?> expression;
                   switch (orderTerm.orderType) {
                     case AccountOrderType.remoteId:
                       expression = item.remoteId;
@@ -81,19 +83,21 @@ class AccountDao extends PopulatedAppRemoteDatabaseDao<
                     expression: expression,
                     mode: orderTerm.orderingMode,
                   );
-                })
-            .toList());
+                },
+              )
+              .toList(),
+        );
 
   List<Join> populateAccountJoin({
-    required includeAccountFollowings,
-    required includeAccountFollowers,
-    required includeStatusFavouritedAccounts,
-    required includeStatusRebloggedAccounts,
-    required includeConversationAccounts,
-    required includeChatAccounts,
+    required bool includeAccountFollowings,
+    required bool includeAccountFollowers,
+    required bool includeStatusFavouritedAccounts,
+    required bool includeStatusRebloggedAccounts,
+    required bool includeConversationAccounts,
+    required bool includeChatAccounts,
   }) {
     var allJoins = <Join>[
-      ...(includeAccountFollowings
+      ...includeAccountFollowings
           ? [
               innerJoin(
                 accountFollowingsAlias,
@@ -101,8 +105,8 @@ class AccountDao extends PopulatedAppRemoteDatabaseDao<
                     .equalsExp(dbAccounts.remoteId),
               ),
             ]
-          : []),
-      ...(includeAccountFollowers
+          : [],
+      ...includeAccountFollowers
           ? [
               innerJoin(
                 accountFollowersAlias,
@@ -110,8 +114,8 @@ class AccountDao extends PopulatedAppRemoteDatabaseDao<
                     .equalsExp(dbAccounts.remoteId),
               ),
             ]
-          : []),
-      ...(includeStatusFavouritedAccounts
+          : [],
+      ...includeStatusFavouritedAccounts
           ? [
               innerJoin(
                 statusFavouritedAccountsAlias,
@@ -119,8 +123,8 @@ class AccountDao extends PopulatedAppRemoteDatabaseDao<
                     .equalsExp(dbAccounts.remoteId),
               ),
             ]
-          : []),
-      ...(includeStatusRebloggedAccounts
+          : [],
+      ...includeStatusRebloggedAccounts
           ? [
               innerJoin(
                 statusRebloggedAccountsAlias,
@@ -128,8 +132,8 @@ class AccountDao extends PopulatedAppRemoteDatabaseDao<
                     .equalsExp(dbAccounts.remoteId),
               ),
             ]
-          : []),
-      ...(includeConversationAccounts
+          : [],
+      ...includeConversationAccounts
           ? [
               leftOuterJoin(
                 conversationAccountsAlias,
@@ -137,8 +141,8 @@ class AccountDao extends PopulatedAppRemoteDatabaseDao<
                     .equalsExp(dbAccounts.remoteId),
               ),
             ]
-          : []),
-      ...(includeChatAccounts
+          : [],
+      ...includeChatAccounts
           ? [
               leftOuterJoin(
                 chatAccountsAlias,
@@ -146,7 +150,7 @@ class AccountDao extends PopulatedAppRemoteDatabaseDao<
                     .equalsExp(dbAccounts.remoteId),
               ),
             ]
-          : []),
+          : [],
     ];
 
     return allJoins;
@@ -163,18 +167,24 @@ class AccountDao extends PopulatedAppRemoteDatabaseDao<
     String? conversationRemoteId,
   ) =>
       query
-        ..where(CustomExpression<bool>(
-          '$_conversationAccountsAliasId.conversation_remote_id'
-          " = '$conversationRemoteId'",
-        ));
+        ..where(
+          CustomExpression<bool>(
+            '$_conversationAccountsAliasId.conversation_remote_id'
+            " = '$conversationRemoteId'",
+          ),
+        );
 
   JoinedSelectStatement addChatWhere(
     JoinedSelectStatement query,
     String? chatRemoteId,
   ) =>
       query
-        ..where(CustomExpression<bool>('$_chatAccountsAliasId.chat_remote_id'
-            " = '$chatRemoteId'"));
+        ..where(
+          CustomExpression<bool>(
+            '$_chatAccountsAliasId.chat_remote_id'
+            " = '$chatRemoteId'",
+          ),
+        );
 
   JoinedSelectStatement addStatusFavouritedByWhere(
     JoinedSelectStatement query,
@@ -182,8 +192,10 @@ class AccountDao extends PopulatedAppRemoteDatabaseDao<
   ) =>
       query
         ..where(
-          CustomExpression<bool>('$_statusFavouritedAccounts.status_remote_id'
-              " = '$statusRemoteId'"),
+          CustomExpression<bool>(
+            '$_statusFavouritedAccounts.status_remote_id'
+            " = '$statusRemoteId'",
+          ),
         );
 
   JoinedSelectStatement addStatusRebloggedByWhere(
@@ -192,8 +204,10 @@ class AccountDao extends PopulatedAppRemoteDatabaseDao<
   ) =>
       query
         ..where(
-          CustomExpression<bool>('$_statusRebloggedAccounts.status_remote_id'
-              " = '$statusRemoteId'"),
+          CustomExpression<bool>(
+            '$_statusRebloggedAccounts.status_remote_id'
+            " = '$statusRemoteId'",
+          ),
         );
 
   // todo: rework with single relationship table
@@ -202,10 +216,12 @@ class AccountDao extends PopulatedAppRemoteDatabaseDao<
     String? followingAccountRemoteId,
   ) =>
       query
-        ..where(CustomExpression<bool>(
-          '$_accountFollowingsAliasId.account_remote_id'
-          " = '$followingAccountRemoteId'",
-        ));
+        ..where(
+          CustomExpression<bool>(
+            '$_accountFollowingsAliasId.account_remote_id'
+            " = '$followingAccountRemoteId'",
+          ),
+        );
 
   // todo: rework with single relationship table
   JoinedSelectStatement addFollowersWhere(
@@ -214,8 +230,10 @@ class AccountDao extends PopulatedAppRemoteDatabaseDao<
   ) =>
       query
         ..where(
-          CustomExpression<bool>('$_accountFollowersAliasId.account_remote_id'
-              " = '$followerAccountRemoteId'"),
+          CustomExpression<bool>(
+            '$_accountFollowersAliasId.account_remote_id'
+            " = '$followerAccountRemoteId'",
+          ),
         );
 
   @override

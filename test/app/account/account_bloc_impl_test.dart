@@ -86,7 +86,7 @@ void main() {
       remoteId: account.remoteId,
     );
 
-    var listened;
+    IAccount? listened;
 
     var subscription = accountBloc.accountStream.listen((newValue) {
       listened = newValue;
@@ -109,7 +109,7 @@ void main() {
 
     var newValue = 'newAcct';
 
-    var listened;
+    String? listened;
 
     var subscription = accountBloc.acctStream.listen((newValue) {
       listened = newValue;
@@ -135,7 +135,7 @@ void main() {
 
     var newValue = 'newNote';
 
-    var listened;
+    String? listened;
 
     var subscription = accountBloc.noteStream.listen((newValue) {
       listened = newValue;
@@ -157,7 +157,7 @@ void main() {
 
     var newValue = 'newHeader';
 
-    var listened;
+    String? listened;
 
     var subscription = accountBloc.headerStream.listen((newValue) {
       listened = newValue;
@@ -179,7 +179,7 @@ void main() {
 
     var newValue = 'newAvatar';
 
-    var listened;
+    String? listened;
 
     var subscription = accountBloc.avatarStream.listen((newValue) {
       listened = newValue;
@@ -201,7 +201,7 @@ void main() {
 
     var newValue = 'newDisplayName';
 
-    var listened;
+    String? listened;
 
     var subscription = accountBloc.displayNameStream.listen((newValue) {
       listened = newValue;
@@ -229,7 +229,7 @@ void main() {
       ),
     ];
 
-    var listened;
+    List<IUnifediApiField>? listened;
 
     var subscription = accountBloc.fieldsStream.listen((newValue) {
       listened = newValue;
@@ -252,7 +252,7 @@ void main() {
 
     var newValue = account.statusesCount! + 1;
 
-    var listened;
+    int? listened;
 
     var subscription = accountBloc.statusesCountStream.listen((newValue) {
       listened = newValue;
@@ -274,7 +274,7 @@ void main() {
 
     var newValue = account.statusesCount! + 1;
 
-    var listened;
+    int? listened;
 
     var subscription = accountBloc.statusesCountStream.listen((newValue) {
       listened = newValue;
@@ -296,7 +296,7 @@ void main() {
 
     var newValue = account.followingCount! + 1;
 
-    var listened;
+    int? listened;
 
     var subscription = accountBloc.followingCountStream.listen((newValue) {
       listened = newValue;
@@ -318,7 +318,7 @@ void main() {
 
     var newValue = account.followersCount! + 1;
 
-    var listened;
+    int? listened;
 
     var subscription = accountBloc.followersCountStream.listen((newValue) {
       listened = newValue;
@@ -347,7 +347,7 @@ void main() {
 
     var newDisplayNameValue = 'newDisplayName';
 
-    var listened;
+    EmojiText? listened;
 
     var subscription =
         accountBloc.displayNameEmojiTextStream.listen((newValue) {
@@ -440,7 +440,7 @@ void main() {
     var newValue =
         AccountMockHelper.createTestAccountRelationship(seed: 'seed0');
 
-    var listened;
+    IUnifediApiAccountRelationship? listened;
 
     var subscription = accountBloc.relationshipStream!.listen((newValue) {
       listened = newValue;
@@ -466,7 +466,7 @@ void main() {
       remoteId: account.remoteId,
     );
 
-    var listened;
+    IAccount? listened;
 
     var subscription = accountBloc.accountStream.listen((newValue) {
       listened = newValue;
@@ -479,10 +479,12 @@ void main() {
 
     var newRelationship =
         AccountMockHelper.createTestAccountRelationship(seed: 'seed11');
-    when(pleromaAuthAccountServiceMock.getAccount(
-      accountId: account.remoteId,
-      withRelationship: false,
-    )).thenAnswer((_) async => newValue.toUnifediApiAccount());
+    when(
+      pleromaAuthAccountServiceMock.getAccount(
+        accountId: account.remoteId,
+        withRelationship: false,
+      ),
+    ).thenAnswer((_) async => newValue.toUnifediApiAccount());
 
     when(
       pleromaAuthAccountServiceMock.getRelationshipWithAccounts(
@@ -578,21 +580,27 @@ void main() {
 
     expect(accountBloc.relationship, account.relationship);
 
-    when(pleromaAuthAccountServiceMock.followAccount(
-      accountId: account.remoteId,
-    )).thenAnswer(
+    when(
+      pleromaAuthAccountServiceMock.followAccount(
+        accountId: account.remoteId,
+      ),
+    ).thenAnswer(
       (_) async => account.relationship!
           .toUnifediApiAccountRelationship()
           .copyWith(following: true),
     );
 
-    when(pleromaAuthAccountServiceMock.unFollowAccount(
-      accountId: account.remoteId,
-    )).thenAnswer((_) async =>
-        account.relationship!.toUnifediApiAccountRelationship().copyWith(
-              following: false,
-              requested: false,
-            ));
+    when(
+      pleromaAuthAccountServiceMock.unFollowAccount(
+        accountId: account.remoteId,
+      ),
+    ).thenAnswer(
+      (_) async =>
+          account.relationship!.toUnifediApiAccountRelationship().copyWith(
+                following: false,
+                requested: false,
+              ),
+    );
 
     var initialValue = account.relationship!.following!;
 
@@ -628,29 +636,39 @@ void main() {
 
     expect(accountBloc.relationship, account.relationship);
 
-    when(pleromaAuthAccountServiceMock.muteAccount(
-      accountId: account.remoteId,
-      notifications: true,
-      expireIn: null,
-    )).thenAnswer((_) async =>
-        account.relationship!.toUnifediApiAccountRelationship().copyWith(
-              muting: true,
-              mutingNotifications: true,
-            ));
+    when(
+      pleromaAuthAccountServiceMock.muteAccount(
+        accountId: account.remoteId,
+        notifications: true,
+        expireIn: null,
+      ),
+    ).thenAnswer(
+      (_) async =>
+          account.relationship!.toUnifediApiAccountRelationship().copyWith(
+                muting: true,
+                mutingNotifications: true,
+              ),
+    );
 
-    when(pleromaAuthAccountServiceMock.muteAccount(
-      accountId: account.remoteId,
-      notifications: false,
-      expireIn: null,
-    )).thenAnswer((_) async =>
-        account.relationship!.toUnifediApiAccountRelationship().copyWith(
-              muting: true,
-              mutingNotifications: false,
-            ));
+    when(
+      pleromaAuthAccountServiceMock.muteAccount(
+        accountId: account.remoteId,
+        notifications: false,
+        expireIn: null,
+      ),
+    ).thenAnswer(
+      (_) async =>
+          account.relationship!.toUnifediApiAccountRelationship().copyWith(
+                muting: true,
+                mutingNotifications: false,
+              ),
+    );
 
-    when(pleromaAuthAccountServiceMock.unMuteAccount(
-      accountId: account.remoteId,
-    )).thenAnswer(
+    when(
+      pleromaAuthAccountServiceMock.unMuteAccount(
+        accountId: account.remoteId,
+      ),
+    ).thenAnswer(
       (_) async => account.relationship!
           .toUnifediApiAccountRelationship()
           .copyWith(muting: false),
@@ -697,17 +715,21 @@ void main() {
 
     expect(accountBloc.relationship, account.relationship);
 
-    when(pleromaAuthAccountServiceMock.pinAccount(
-      accountId: account.remoteId,
-    )).thenAnswer(
+    when(
+      pleromaAuthAccountServiceMock.pinAccount(
+        accountId: account.remoteId,
+      ),
+    ).thenAnswer(
       (_) async => account.relationship!
           .toUnifediApiAccountRelationship()
           .copyWith(muting: true),
     );
 
-    when(pleromaAuthAccountServiceMock.unPinAccount(
-      accountId: account.remoteId,
-    )).thenAnswer(
+    when(
+      pleromaAuthAccountServiceMock.unPinAccount(
+        accountId: account.remoteId,
+      ),
+    ).thenAnswer(
       (_) async => account.relationship!
           .toUnifediApiAccountRelationship()
           .copyWith(muting: false),

@@ -20,7 +20,7 @@ class FediIconTabIndicatorWidget<T> extends StatelessWidget {
   final CustomTabBuilder<T>? customTabBuilder;
   final FediTabStyle style;
 
-  FediIconTabIndicatorWidget({
+  const FediIconTabIndicatorWidget({
     required this.expand,
     required this.tabToIconMapper,
     required this.style,
@@ -42,7 +42,7 @@ class FediIconTabIndicatorWidget<T> extends StatelessWidget {
       tabs: fediTabIndicatorBloc.items.asMap().entries.map(
         (entry) {
           var index = entry.key;
-          var tab = entry.value;
+          var tab = entry.value as T;
 
           Widget tabWidget = DisposableProxyProvider<IFediTabIndicatorBloc<T>,
               IFediTabIndicatorItemBloc<T>>(

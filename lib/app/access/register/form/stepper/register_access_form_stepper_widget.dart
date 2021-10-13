@@ -34,59 +34,59 @@ class RegisterUnifediApiAccessFormStepperWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IRegisterUnifediApiAccessFormBloc,
-        IFediStepperBloc<IRegisterUnifediApiAccessFormStepperItemBloc>>(
-      update: (context, registerUnifediApiAccessFormBloc, _) {
-        var steps = <IRegisterUnifediApiAccessFormStepperItemBloc>[
-          if (registerUnifediApiAccessFormBloc.manualApproveStepperItemBloc !=
-              null)
-            registerUnifediApiAccessFormBloc.manualApproveStepperItemBloc!,
-          registerUnifediApiAccessFormBloc.accountStepperItemBloc,
-          if (registerUnifediApiAccessFormBloc.captchaStepperItemBloc != null)
-            registerUnifediApiAccessFormBloc.captchaStepperItemBloc!,
-          registerUnifediApiAccessFormBloc.submitStepperItemBloc,
-        ];
+  Widget build(BuildContext context) => ProxyProvider<
+          IRegisterUnifediApiAccessFormBloc,
+          IFediStepperBloc<IRegisterUnifediApiAccessFormStepperItemBloc>>(
+        update: (context, registerUnifediApiAccessFormBloc, _) {
+          var steps = <IRegisterUnifediApiAccessFormStepperItemBloc>[
+            if (registerUnifediApiAccessFormBloc.manualApproveStepperItemBloc !=
+                null)
+              registerUnifediApiAccessFormBloc.manualApproveStepperItemBloc!,
+            registerUnifediApiAccessFormBloc.accountStepperItemBloc,
+            if (registerUnifediApiAccessFormBloc.captchaStepperItemBloc != null)
+              registerUnifediApiAccessFormBloc.captchaStepperItemBloc!,
+            registerUnifediApiAccessFormBloc.submitStepperItemBloc,
+          ];
 
-        return FediStepperBloc<IRegisterUnifediApiAccessFormStepperItemBloc>(
-          steps: steps,
-          submitCallback: () async {
-            var dialogResult =
-                await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
-              context: context,
-              asyncCode: () =>
-                  IRegisterUnifediApiAccessBloc.of(context, listen: false)
-                      .register(),
-            );
-            var registrationResponse = dialogResult.result;
-            if (registrationResponse != null) {
-              onRegister(context, registrationResponse);
-            }
-          },
-        );
-      },
-      child: FediStepperBlocProxyProvider(
-        child: FediStepperWidget<IRegisterUnifediApiAccessFormStepperItemBloc>(
-          titleBuilder: (
-            BuildContext context,
-            IRegisterUnifediApiAccessFormStepperItemBloc stepperItem,
-          ) =>
-              Provider<IRegisterUnifediApiAccessFormStepperItemBloc>.value(
-            value: stepperItem,
-            child: const _RegisterUnifediApiAccessFormStepperTitleWidget(),
-          ),
-          contentBuilder: (
-            BuildContext context,
-            IRegisterUnifediApiAccessFormStepperItemBloc stepperItem,
-          ) =>
-              Provider<IRegisterUnifediApiAccessFormStepperItemBloc>.value(
-            value: stepperItem,
-            child: const _RegisterUnifediApiAccessFormStepperContentWidget(),
+          return FediStepperBloc<IRegisterUnifediApiAccessFormStepperItemBloc>(
+            steps: steps,
+            submitCallback: () async {
+              var dialogResult = await PleromaAsyncOperationHelper
+                  .performPleromaAsyncOperation(
+                context: context,
+                asyncCode: () =>
+                    IRegisterUnifediApiAccessBloc.of(context, listen: false)
+                        .register(),
+              );
+              var registrationResponse = dialogResult.result;
+              if (registrationResponse != null) {
+                onRegister(context, registrationResponse);
+              }
+            },
+          );
+        },
+        child: FediStepperBlocProxyProvider(
+          child:
+              FediStepperWidget<IRegisterUnifediApiAccessFormStepperItemBloc>(
+            titleBuilder: (
+              BuildContext context,
+              IRegisterUnifediApiAccessFormStepperItemBloc stepperItem,
+            ) =>
+                Provider<IRegisterUnifediApiAccessFormStepperItemBloc>.value(
+              value: stepperItem,
+              child: const _RegisterUnifediApiAccessFormStepperTitleWidget(),
+            ),
+            contentBuilder: (
+              BuildContext context,
+              IRegisterUnifediApiAccessFormStepperItemBloc stepperItem,
+            ) =>
+                Provider<IRegisterUnifediApiAccessFormStepperItemBloc>.value(
+              value: stepperItem,
+              child: const _RegisterUnifediApiAccessFormStepperContentWidget(),
+            ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }
 
 class _RegisterUnifediApiAccessFormStepperTitleWidget extends StatelessWidget {

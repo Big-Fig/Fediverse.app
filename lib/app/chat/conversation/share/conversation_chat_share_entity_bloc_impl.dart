@@ -39,7 +39,6 @@ class ConversationChatShareEntityBloc extends ConversationChatShareBloc
     required IUnifediApiStatusService unifediApiStatusService,
     required IMyAccountBloc myAccountBloc,
     required IAccountRepository accountRepository,
-    required IUnifediApiAccountService unifediApiAccountService,
   }) : super(
           conversationRepository: conversationRepository,
           statusRepository: statusRepository,
@@ -47,7 +46,6 @@ class ConversationChatShareEntityBloc extends ConversationChatShareBloc
           unifediApiStatusService: unifediApiStatusService,
           accountRepository: accountRepository,
           myAccountBloc: myAccountBloc,
-          unifediApiAccountService: unifediApiAccountService,
         );
 
   @override
@@ -114,52 +112,51 @@ class ConversationChatShareEntityBloc extends ConversationChatShareBloc
     required String to,
     required UnifediApiVisibility visibility,
     required List<IUnifediApiMediaAttachment>? mediaAttachments,
-  }) {
-    return UnifediApiPostStatus(
-      status: '${text ?? ''} $to'.trim(),
-      visibility: visibility.stringValue,
-      contentType: null,
-      expiresInSeconds: null,
-      inReplyToConversationId: null,
-      inReplyToId: null,
-      language: null,
-      mediaIds: mediaAttachments
-          ?.map((mediaAttachment) => mediaAttachment.id)
-          .toList(),
-      poll: null,
-      preview: null,
-      sensitive: false,
-      spoilerText: null,
-      to: null,
-    );
-  }
+  }) =>
+      UnifediApiPostStatus(
+        status: '${text ?? ''} $to'.trim(),
+        visibility: visibility.stringValue,
+        contentType: null,
+        expiresInSeconds: null,
+        inReplyToConversationId: null,
+        inReplyToId: null,
+        language: null,
+        mediaIds: mediaAttachments
+            ?.map((mediaAttachment) => mediaAttachment.id)
+            .toList(),
+        poll: null,
+        preview: null,
+        sensitive: false,
+        spoilerText: null,
+        to: null,
+      );
 
   static Widget provideToContext(
     BuildContext context, {
     required ShareEntity shareEntity,
     required Widget child,
-  }) {
-    return DisposableProvider<ConversationChatShareEntityBloc>(
-      create: (context) => createFromContext(
-        context,
-        shareEntity: shareEntity,
-      ),
-      child: ProxyProvider<ConversationChatShareEntityBloc,
-          IConversationChatShareBloc>(
-        update: (context, value, previous) => value,
-        child: ProxyProvider<ConversationChatShareEntityBloc, IShareEntityBloc>(
+  }) =>
+      DisposableProvider<ConversationChatShareEntityBloc>(
+        create: (context) => createFromContext(
+          context,
+          shareEntity: shareEntity,
+        ),
+        child: ProxyProvider<ConversationChatShareEntityBloc,
+            IConversationChatShareBloc>(
           update: (context, value, previous) => value,
-          child: ProxyProvider<ConversationChatShareEntityBloc,
-              IShareToAccountBloc>(
+          child:
+              ProxyProvider<ConversationChatShareEntityBloc, IShareEntityBloc>(
             update: (context, value, previous) => value,
-            child: ConversationChatShareBlocProxyProvider(
-              child: child,
+            child: ProxyProvider<ConversationChatShareEntityBloc,
+                IShareToAccountBloc>(
+              update: (context, value, previous) => value,
+              child: ConversationChatShareBlocProxyProvider(
+                child: child,
+              ),
             ),
           ),
         ),
-      ),
-    );
-  }
+      );
 
   static ConversationChatShareEntityBloc createFromContext(
     BuildContext context, {
@@ -180,10 +177,6 @@ class ConversationChatShareEntityBloc extends ConversationChatShareBloc
         statusRepository: IStatusRepository.of(context, listen: false),
         accountRepository: IAccountRepository.of(context, listen: false),
         myAccountBloc: IMyAccountBloc.of(context, listen: false),
-        unifediApiAccountService: Provider.of<IUnifediApiAccountService>(
-          context,
-          listen: false,
-        ),
         mediaAttachmentReuploadService: IMediaAttachmentReuploadService.of(
           context,
           listen: false,

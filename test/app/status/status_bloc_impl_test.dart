@@ -94,7 +94,7 @@ Future<void> main() async {
       remoteId: status.remoteId,
     );
 
-    var listened;
+    IStatus? listened;
 
     var subscription = statusBloc.statusStream.listen((newValue) {
       listened = newValue;
@@ -133,7 +133,7 @@ Future<void> main() async {
       reblog: reblog,
     );
 
-    var listened;
+    IStatus? listened;
 
     var subscription = statusBloc.reblogStream.listen((newValue) {
       listened = newValue;
@@ -171,7 +171,7 @@ Future<void> main() async {
       reblog: reblog,
     );
 
-    var listened;
+    IStatus? listened;
 
     var subscription = statusBloc.reblogOrOriginalStream.listen((newValue) {
       listened = newValue;
@@ -203,7 +203,7 @@ Future<void> main() async {
 
     var newValue = 'newContent';
 
-    var listened;
+    String? listened;
 
     var subscription = statusBloc.contentStream.listen((newValue) {
       listened = newValue;
@@ -242,7 +242,7 @@ Future<void> main() async {
   test('contentHtmlWithEmojis', () async {
     var newValue = 'newContent :emoji: :emoji1: :emoji2:';
 
-    var listened;
+    EmojiText? listened;
 
     var subscription = statusBloc.contentWithEmojisStream.listen((newValue) {
       listened = newValue;
@@ -365,7 +365,7 @@ Future<void> main() async {
       type: UnifediApiCardType.linkValue.stringValue,
     );
 
-    var listened;
+    IUnifediApiCard? listened;
 
     var subscription = statusBloc.cardStream.listen((newValue) {
       listened = newValue;

@@ -460,8 +460,6 @@ class SelfActionNotPossibleException implements Exception {
   const SelfActionNotPossibleException();
 
   @override
-  String toString() {
-    return 'SelfActionNotPossibleException: '
-        'You cant retrieve or perform actions with yourself';
-  }
+  String toString() => 'SelfActionNotPossibleException: '
+      'You cant retrieve or perform actions with yourself';
 }

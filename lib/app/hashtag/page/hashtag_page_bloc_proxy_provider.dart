@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 class HashtagPageBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  HashtagPageBlocProxyProvider({
+  const HashtagPageBlocProxyProvider({
     required this.child,
   });
 

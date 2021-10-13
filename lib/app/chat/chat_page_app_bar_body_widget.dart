@@ -11,16 +11,14 @@ class ChatPageAppBarBodyWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        const ChatAvatarWidget(baseAvatarSize: 36),
-        const FediBigHorizontalSpacer(),
-        ChatTitleWidget(
-          textStyle: IFediUiTextTheme.of(context).bigShortBoldDarkGrey,
-        ),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          const ChatAvatarWidget(baseAvatarSize: 36),
+          const FediBigHorizontalSpacer(),
+          ChatTitleWidget(
+            textStyle: IFediUiTextTheme.of(context).bigShortBoldDarkGrey,
+          ),
+        ],
+      );
 }

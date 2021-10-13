@@ -11,23 +11,21 @@ class SplashWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        const Center(
-          child: _SplashLogoWidget(),
-        ),
-        if (displayVersionInfo)
-          Positioned(
-            // ignore: no-magic-number
-            right: 20.0,
-            // ignore: no-magic-number
-            bottom: 20.0,
-            child: const _SplashVersionInfoWidget(),
+  Widget build(BuildContext context) => Stack(
+        children: <Widget>[
+          const Center(
+            child: _SplashLogoWidget(),
           ),
-      ],
-    );
-  }
+          if (displayVersionInfo)
+            Positioned(
+              // ignore: no-magic-number
+              right: 20.0,
+              // ignore: no-magic-number
+              bottom: 20.0,
+              child: const _SplashVersionInfoWidget(),
+            ),
+        ],
+      );
 }
 
 class _SplashVersionInfoWidget extends StatelessWidget {
@@ -36,11 +34,9 @@ class _SplashVersionInfoWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return VersionPackageInfoWidget(
-      textStyle: lightFediUiTheme.textTheme.mediumShortBoldWhite,
-    );
-  }
+  Widget build(BuildContext context) => VersionPackageInfoWidget(
+        textStyle: lightFediUiTheme.textTheme.mediumShortBoldWhite,
+      );
 }
 
 class _SplashLogoWidget extends StatelessWidget {
@@ -49,11 +45,9 @@ class _SplashLogoWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Image(
-      image: AssetImage('assets/images/theme/logo.png'),
-      // ignore: no-magic-number
-      width: 200,
-    );
-  }
+  Widget build(BuildContext context) => Image(
+        image: AssetImage('assets/images/theme/logo.png'),
+        // ignore: no-magic-number
+        width: 200,
+      );
 }

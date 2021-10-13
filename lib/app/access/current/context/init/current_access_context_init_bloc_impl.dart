@@ -13,7 +13,7 @@ import 'package:fedi/app/notification/repository/notification_repository_model.d
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fediverse_api/fediverse_api_utils.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
@@ -68,8 +68,10 @@ class CurrentUnifediApiAccessContextInitBloc extends AsyncInitLoadingBloc
 
         if (clientErrorCodeType ==
             RestResponseClientErrorCodeType.unauthorizedValue) {
-          _logger.finest(() =>
-              ' stateSubject.add(CurrentUnifediApiAccessContextInitState.invalidCredentials)');
+          _logger.finest(
+            () =>
+                ' stateSubject.add(CurrentUnifediApiAccessContextInitState.invalidCredentials)',
+          );
           stateSubject
               .add(CurrentUnifediApiAccessContextInitState.invalidCredentials);
         }
@@ -218,7 +220,7 @@ class CurrentUnifediApiAccessContextInitBloc extends AsyncInitLoadingBloc
         updateInstanceInformation(),
     ];
 
-    return Future.wait(futures);
+    return Future.wait<void>(futures);
   }
 
   Future updateFilters() async {
@@ -227,11 +229,12 @@ class CurrentUnifediApiAccessContextInitBloc extends AsyncInitLoadingBloc
     );
 
     await filterRepository.batch((batch) {
-      filterRepository.clear(batchTransaction: batch);
-      filterRepository.upsertAllInRemoteType(
-        remoteFilters,
-        batchTransaction: batch,
-      );
+      filterRepository
+        ..clear(batchTransaction: batch)
+        ..upsertAllInRemoteType(
+          remoteFilters,
+          batchTransaction: batch,
+        );
     });
   }
 

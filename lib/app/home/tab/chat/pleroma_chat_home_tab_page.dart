@@ -71,52 +71,56 @@ class PleromaChatHomeTabPage extends StatelessWidget {
 
   DisposableProvider<IPleromaChatWithLastMessageListBloc> provideContentContext(
     Widget child,
-  ) {
-    return DisposableProvider<IPleromaChatWithLastMessageListBloc>(
-      create: (context) => PleromaChatWithLastMessageListBloc.createFromContext(
-        context,
-        handlerType: WebSocketsChannelHandlerType.foregroundValue,
-      ),
-      child: Builder(builder: (context) {
-        var chatsListBloc =
-            IPleromaChatWithLastMessageListBloc.of(context, listen: false);
+  ) =>
+      DisposableProvider<IPleromaChatWithLastMessageListBloc>(
+        create: (context) =>
+            PleromaChatWithLastMessageListBloc.createFromContext(
+          context,
+          handlerType: WebSocketsChannelHandlerType.foregroundValue,
+        ),
+        child: Builder(
+          builder: (context) {
+            var chatsListBloc =
+                IPleromaChatWithLastMessageListBloc.of(context, listen: false);
 
-        return MultiProvider(
-          providers: [
-            Provider<IPleromaChatWithLastMessageCachedListBloc>.value(
-              value: chatsListBloc.chatListBloc,
-            ),
-            Provider<IPleromaChatWithLastMessagePaginationBloc>.value(
-              value: chatsListBloc.chatPaginationBloc,
-            ),
-            Provider<
-                IPaginationListBloc<PaginationPage<IPleromaChatWithLastMessage>,
-                    IPleromaChatWithLastMessage>>.value(
-              value: chatsListBloc.chatPaginationListBloc,
-            ),
-            Provider<
-                ICachedPaginationListWithNewItemsBloc<
-                    CachedPaginationPage<IPleromaChatWithLastMessage>,
-                    IPleromaChatWithLastMessage>>.value(
-              value: chatsListBloc.chatPaginationListWithNewItemsBloc,
-            ),
-            Provider<
-                IPleromaChatWithLastMessagePaginationListWithNewItemsBloc<
-                    CachedPaginationPage<IPleromaChatWithLastMessage>>>.value(
-              value: chatsListBloc.chatPaginationListWithNewItemsBloc,
-            ),
-            Provider<ICachedPaginationListWithNewItemsBloc>.value(
-              value: chatsListBloc.chatPaginationListWithNewItemsBloc,
-            ),
-            Provider<IPaginationListBloc>.value(
-              value: chatsListBloc.chatPaginationListWithNewItemsBloc,
-            ),
-          ],
-          child: child,
-        );
-      }),
-    );
-  }
+            return MultiProvider(
+              providers: [
+                Provider<IPleromaChatWithLastMessageCachedListBloc>.value(
+                  value: chatsListBloc.chatListBloc,
+                ),
+                Provider<IPleromaChatWithLastMessagePaginationBloc>.value(
+                  value: chatsListBloc.chatPaginationBloc,
+                ),
+                Provider<
+                    IPaginationListBloc<
+                        PaginationPage<IPleromaChatWithLastMessage>,
+                        IPleromaChatWithLastMessage>>.value(
+                  value: chatsListBloc.chatPaginationListBloc,
+                ),
+                Provider<
+                    ICachedPaginationListWithNewItemsBloc<
+                        CachedPaginationPage<IPleromaChatWithLastMessage>,
+                        IPleromaChatWithLastMessage>>.value(
+                  value: chatsListBloc.chatPaginationListWithNewItemsBloc,
+                ),
+                Provider<
+                    IPleromaChatWithLastMessagePaginationListWithNewItemsBloc<
+                        CachedPaginationPage<
+                            IPleromaChatWithLastMessage>>>.value(
+                  value: chatsListBloc.chatPaginationListWithNewItemsBloc,
+                ),
+                Provider<ICachedPaginationListWithNewItemsBloc>.value(
+                  value: chatsListBloc.chatPaginationListWithNewItemsBloc,
+                ),
+                Provider<IPaginationListBloc>.value(
+                  value: chatsListBloc.chatPaginationListWithNewItemsBloc,
+                ),
+              ],
+              child: child,
+            );
+          },
+        ),
+      );
 }
 
 class _ChatMessagesHomeTabPageContentWidget extends StatelessWidget {
@@ -219,14 +223,12 @@ class _ChatMessagesHomeTabPageHeaderAddActionWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return FediIconInCircleBlurredButton(
-      FediIcons.plus,
-      onPressed: () {
-        goToPleromaChatStartPage(context);
-      },
-    );
-  }
+  Widget build(BuildContext context) => FediIconInCircleBlurredButton(
+        FediIcons.plus,
+        onPressed: () {
+          goToPleromaChatStartPage(context);
+        },
+      );
 }
 
 class _ChatMessagesHomeTabPageHeaderSwitchToDmActionWidget
@@ -236,23 +238,21 @@ class _ChatMessagesHomeTabPageHeaderSwitchToDmActionWidget
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return DisposableProxyProvider<IConversationChatRepository,
-        IFediBoolBadgeBloc>(
-      update: (context, conversationChatRepository, _) =>
-          ConversationChatUnreadBadgeBloc(
-        conversationChatRepository: conversationChatRepository,
-      ),
-      child: FediBoolBadgeWidget(
-        child: FediBlurredTextButtonWithBorder(
-          S.of(context).app_home_tab_chat_pleroma_action_switch_to_dms,
-          onPressed: () {
-            IChatSettingsBloc.of(context, listen: false)
-                .changeReplaceConversationsWithPleromaChats(false);
-          },
-          expanded: false,
+  Widget build(BuildContext context) =>
+      DisposableProxyProvider<IConversationChatRepository, IFediBoolBadgeBloc>(
+        update: (context, conversationChatRepository, _) =>
+            ConversationChatUnreadBadgeBloc(
+          conversationChatRepository: conversationChatRepository,
         ),
-      ),
-    );
-  }
+        child: FediBoolBadgeWidget(
+          child: FediBlurredTextButtonWithBorder(
+            S.of(context).app_home_tab_chat_pleroma_action_switch_to_dms,
+            onPressed: () {
+              IChatSettingsBloc.of(context, listen: false)
+                  .changeReplaceConversationsWithPleromaChats(false);
+            },
+            expanded: false,
+          ),
+        ),
+      );
 }

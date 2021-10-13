@@ -48,14 +48,14 @@ Future showIncomeShareActionChooserDialog(
       await showFediChooserDialog<IncomeShareActionType>(
     context: context,
     title: S.of(context).app_share_income_action_choose_title,
-    actions: types.map(
-      (type) {
-        return _createAction(
-          context: context,
-          type: type,
-        );
-      },
-    ).toList(),
+    actions: types
+        .map(
+          (type) => _createAction(
+            context: context,
+            type: type,
+          ),
+        )
+        .toList(),
   );
 
   if (incomeShareActionType != null) {
@@ -133,16 +133,16 @@ ShareEntityItem _mapIncomeShareEventToShareEntity(
       text: incomeShareEvent.text?.extractRawStringFromHtmlString(),
       linkToOriginal: null,
       mediaAttachments: null,
-      mediaLocalFiles: incomeShareEvent.medias?.map(
-        (incomeShareEventMedia) {
-          return ShareEntityItemLocalMediaFile(
-            file: File(
-              incomeShareEventMedia.path,
+      mediaLocalFiles: incomeShareEvent.medias
+          ?.map(
+            (incomeShareEventMedia) => ShareEntityItemLocalMediaFile(
+              file: File(
+                incomeShareEventMedia.path,
+              ),
+              isNeedDeleteAfterUsage: true,
             ),
-            isNeedDeleteAfterUsage: true,
-          );
-        },
-      ).toList(),
+          )
+          .toList(),
       isNeedReUploadMediaAttachments: false,
     );
 

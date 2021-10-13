@@ -118,17 +118,16 @@ class HashtagBloc extends DisposableOwner implements IHashtagBloc {
     required IHashtag hashtag,
     required IMyAccountFeaturedHashtag? myAccountFeaturedHashtag,
     required bool needLoadFeaturedState,
-  }) {
-    return DisposableProvider<IHashtagBloc>(
-      create: (context) => HashtagBloc.createFromContext(
-        context,
-        hashtag: hashtag,
-        myAccountFeaturedHashtag: myAccountFeaturedHashtag,
-        needLoadFeaturedState: needLoadFeaturedState,
-      ),
-      child: child,
-    );
-  }
+  }) =>
+      DisposableProvider<IHashtagBloc>(
+        create: (context) => HashtagBloc.createFromContext(
+          context,
+          hashtag: hashtag,
+          myAccountFeaturedHashtag: myAccountFeaturedHashtag,
+          needLoadFeaturedState: needLoadFeaturedState,
+        ),
+        child: child,
+      );
 
   Future loadFeaturedState() async {
     if (!isInstanceSupportFeaturedTags) {

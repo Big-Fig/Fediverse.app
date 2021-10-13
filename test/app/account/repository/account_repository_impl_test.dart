@@ -771,7 +771,7 @@ void main() {
           .copyWith(remoteId: 'remoteId3'),
     );
 
-    var actualList = (await query.get());
+    var actualList = await query.get();
 
     expect(actualList.length, 3);
 
@@ -803,7 +803,7 @@ void main() {
           .copyWith(remoteId: 'remoteId3'),
     );
 
-    var actualList = (await query.get());
+    var actualList = await query.get();
     expect(actualList.length, 3);
 
     AccountDatabaseMockHelper.expectDbAccount(actualList[0], account3);
@@ -837,7 +837,7 @@ void main() {
           .copyWith(remoteId: 'remoteId3'),
     );
 
-    var actualList = (await query.get());
+    var actualList = await query.get();
     expect(actualList.length, 1);
 
     AccountDatabaseMockHelper.expectDbAccount(actualList[0], account2);
@@ -890,9 +890,9 @@ void main() {
       1,
     );
 
-    var accounts = (await accountRepository.getConversationAccounts(
+    var accounts = await accountRepository.getConversationAccounts(
       conversation: conversation,
-    ));
+    );
     expect(accounts.length, 1);
 
     await accountRepository.upsertConversationRemoteAccount(
@@ -935,6 +935,7 @@ void main() {
         mode: InsertMode.insertOrReplace,
         batchTransaction: batch,
       );
+      // ignore: cascade_invocations
       accountRepository.insertInDbTypeBatch(
         dbItem1copy,
         mode: InsertMode.insertOrReplace,
@@ -955,16 +956,17 @@ void main() {
     var remoteAccount1Copy = account1Copy.toUnifediApiAccount();
 
     await accountRepository.batch((batch) {
-      accountRepository.insertInRemoteTypeBatch(
-        remoteAccount1,
-        mode: InsertMode.insertOrReplace,
-        batchTransaction: batch,
-      );
-      accountRepository.insertInRemoteTypeBatch(
-        remoteAccount1Copy,
-        mode: InsertMode.insertOrReplace,
-        batchTransaction: batch,
-      );
+      accountRepository
+        ..insertInRemoteTypeBatch(
+          remoteAccount1,
+          mode: InsertMode.insertOrReplace,
+          batchTransaction: batch,
+        )
+        ..insertInRemoteTypeBatch(
+          remoteAccount1Copy,
+          mode: InsertMode.insertOrReplace,
+          batchTransaction: batch,
+        );
     });
 
     expect(await accountRepository.countAll(), 1);

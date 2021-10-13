@@ -10,14 +10,13 @@ class FediNestedScrollViewWithoutNestedScrollableTabsWidget
   final NestedScrollViewContentBuilder contentBuilder;
   final NestedScrollViewOverlayBuilder? overlayBuilder;
 
-  FediNestedScrollViewWithoutNestedScrollableTabsWidget({
+  const FediNestedScrollViewWithoutNestedScrollableTabsWidget({
     required Widget? onLongScrollUpTopOverlayWidget,
     required List<Widget> topSliverWidgets,
     required double? topSliverScrollOffsetToShowWhiteStatusBar,
     required this.providerBuilder,
     required this.contentBuilder,
     required this.overlayBuilder,
-    bool unfocusOnScroll = true,
   }) : super(
           onLongScrollUpTopOverlayWidget: onLongScrollUpTopOverlayWidget,
           topSliverWidgets: topSliverWidgets,
@@ -61,24 +60,22 @@ class FediNestedScrollViewWithoutNestedScrollableTabsWidget
   Widget _buildBody(BuildContext context) => providerBuilder(
         context,
         Builder(
-          builder: (context) {
-            return Stack(
-              children: [
-                Positioned(
-                  top: 0.0,
-                  bottom: 0.0,
-                  left: 0.0,
-                  right: 0.0,
-                  child: contentBuilder(context),
+          builder: (context) => Stack(
+            children: [
+              Positioned(
+                top: 0.0,
+                bottom: 0.0,
+                left: 0.0,
+                right: 0.0,
+                child: contentBuilder(context),
+              ),
+              if (overlayBuilder != null)
+                FediNestedScrollViewWidget.buildOverlay(
+                  context,
+                  overlayBuilder!,
                 ),
-                if (overlayBuilder != null)
-                  FediNestedScrollViewWidget.buildOverlay(
-                    context,
-                    overlayBuilder!,
-                  ),
-              ],
-            );
-          },
+            ],
+          ),
         ),
       );
 }

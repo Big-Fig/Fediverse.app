@@ -20,10 +20,7 @@ abstract class DatabaseDaoRepository<
   List<OrderingTerm> get defaultOrderingTerms;
 
   @override
-  Future internalAsyncInit() async {
-    // nothing to init by default
-    return null;
-  }
+  Future internalAsyncInit() async => null;
 
   @override
   Future<int> countAll() => dao.countAllSelectable().getSingle();
@@ -108,11 +105,10 @@ abstract class DatabaseDaoRepository<
   Future<void> upsertInDbTypeBatch(
     Insertable<DbItem> dbItem, {
     required Batch? batchTransaction,
-  }) {
-    return insertInDbTypeBatch(
-      dbItem,
-      mode: InsertMode.insertOrReplace,
-      batchTransaction: batchTransaction,
-    );
-  }
+  }) =>
+      insertInDbTypeBatch(
+        dbItem,
+        mode: InsertMode.insertOrReplace,
+        batchTransaction: batchTransaction,
+      );
 }

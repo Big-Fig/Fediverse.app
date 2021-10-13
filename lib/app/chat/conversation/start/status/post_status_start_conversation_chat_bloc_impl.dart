@@ -1,6 +1,7 @@
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/account/account_model.dart';
+import 'package:fedi/app/media/attachment/upload/upload_media_attachment_bloc.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/status/post/post_status_bloc_impl.dart';
 import 'package:fedi/app/status/post/post_status_bloc_proxy_provider.dart';
@@ -109,17 +110,16 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
     required List<IAccount> conversationAccountsWithoutMe,
     required Widget child,
     required StatusCallback successCallback,
-  }) {
-    return DisposableProvider<IPostStatusBloc>(
-      create: (context) =>
-          PostStatusStartConversationChatBloc.createFromContext(
-        context,
-        successCallback: successCallback,
-        conversationAccountsWithoutMe: conversationAccountsWithoutMe,
-      ),
-      child: PostStatusMessageBlocProxyProvider(child: child),
-    );
-  }
+  }) =>
+      DisposableProvider<IPostStatusBloc>(
+        create: (context) =>
+            PostStatusStartConversationChatBloc.createFromContext(
+          context,
+          successCallback: successCallback,
+          conversationAccountsWithoutMe: conversationAccountsWithoutMe,
+        ),
+        child: PostStatusMessageBlocProxyProvider(child: child),
+      );
 
   @override
   bool get isPossibleToChangeVisibility => false;
@@ -136,12 +136,12 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
         pollBloc.isSomethingChangedStream,
         mentionedAcctsStream,
         (
-          dynamic inputWithoutMentionedAcctsText,
-          dynamic mediaAttachmentBlocs,
-          dynamic isAllAttachedMediaUploaded,
-          dynamic isHaveAtLeastOneError,
-          dynamic isPollBlocChanged,
-          dynamic mentionedAccts,
+          String? inputWithoutMentionedAcctsText,
+          List<IUploadMediaAttachmentBloc> mediaAttachmentBlocs,
+          bool isAllAttachedMediaUploaded,
+          bool isHaveAtLeastOneError,
+          bool isPollBlocChanged,
+          List<String> mentionedAccts,
         ) =>
             calculateStatusBlocIsReadyToPost(
               inputText: inputWithoutMentionedAcctsText,
@@ -150,6 +150,6 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
               isPollBlocHaveErrors: isHaveAtLeastOneError,
               isPollBlocChanged: isPollBlocChanged,
             ) &&
-            mentionedAccts?.isNotEmpty == true,
+            mentionedAccts.isNotEmpty,
       );
 }

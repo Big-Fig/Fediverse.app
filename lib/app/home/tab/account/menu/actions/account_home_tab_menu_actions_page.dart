@@ -23,17 +23,15 @@ import 'package:unifedi_api/unifedi_api.dart';
 
 class AccountHomeTabMenuActionsPage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: FediPageTitleAppBar(
-        title: S.of(context).app_account_my_menu_account_subpage_title,
-      ),
-      body: Padding(
-        padding: FediPadding.verticalSmallPadding,
-        child: const _AccountHomeTabMenuActionsBody(),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Scaffold(
+        appBar: FediPageTitleAppBar(
+          title: S.of(context).app_account_my_menu_account_subpage_title,
+        ),
+        body: Padding(
+          padding: FediPadding.verticalSmallPadding,
+          child: const _AccountHomeTabMenuActionsBody(),
+        ),
+      );
 
   const AccountHomeTabMenuActionsPage();
 }
@@ -44,25 +42,23 @@ class _AccountHomeTabMenuActionsBody extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return ListView(
-      padding: EdgeInsets.zero,
-      children: [
-        const _MyAccountSettingsEditButton(),
-        const _MyAccountSettingsFiltersButton(),
-        const _MyAccountSettingsScheduledButton(),
-        const _MyAccountSettingsDraftsButton(),
-        const _MyAccountSettingsFavouritedButton(),
-        const _MyAccountSettingsFollowRequestsButton(),
-        const _MyAccountSettingsAccountBlocksButton(),
-        const _MyAccountSettingsAccountMutesButton(),
-        const _MyAccountSettingsDomainBlocksButton(),
-        const _MyAccountSettingsFeaturedTagsButton(),
-        const _MyAccountSettingsEndorsementsButton(),
-        const _MyAccountSettingsSuggestionsButton(),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          const _MyAccountSettingsEditButton(),
+          const _MyAccountSettingsFiltersButton(),
+          const _MyAccountSettingsScheduledButton(),
+          const _MyAccountSettingsDraftsButton(),
+          const _MyAccountSettingsFavouritedButton(),
+          const _MyAccountSettingsFollowRequestsButton(),
+          const _MyAccountSettingsAccountBlocksButton(),
+          const _MyAccountSettingsAccountMutesButton(),
+          const _MyAccountSettingsDomainBlocksButton(),
+          const _MyAccountSettingsFeaturedTagsButton(),
+          const _MyAccountSettingsEndorsementsButton(),
+          const _MyAccountSettingsSuggestionsButton(),
+        ],
+      );
 }
 
 class _MyAccountSettingsEditButton extends StatelessWidget {
@@ -71,14 +67,12 @@ class _MyAccountSettingsEditButton extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return SimpleFediSelectionItemRowWidget(
-      title: S.of(context).app_account_my_action_edit,
-      onClick: () {
-        goToEditMyAccountPage(context);
-      },
-    );
-  }
+  Widget build(BuildContext context) => SimpleFediSelectionItemRowWidget(
+        title: S.of(context).app_account_my_action_edit,
+        onClick: () {
+          goToEditMyAccountPage(context);
+        },
+      );
 }
 
 class _MyAccountSettingsScheduledButton extends StatelessWidget {
@@ -87,14 +81,12 @@ class _MyAccountSettingsScheduledButton extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return SimpleFediSelectionItemRowWidget(
-      title: S.of(context).app_account_my_action_scheduledPosts,
-      onClick: () {
-        goToScheduledStatusListPage(context);
-      },
-    );
-  }
+  Widget build(BuildContext context) => SimpleFediSelectionItemRowWidget(
+        title: S.of(context).app_account_my_action_scheduledPosts,
+        onClick: () {
+          goToScheduledStatusListPage(context);
+        },
+      );
 }
 
 class _MyAccountSettingsDraftsButton extends StatelessWidget {
@@ -103,14 +95,12 @@ class _MyAccountSettingsDraftsButton extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return SimpleFediSelectionItemRowWidget(
-      title: S.of(context).app_account_my_action_draftPosts,
-      onClick: () {
-        goToDraftStatusListPage(context);
-      },
-    );
-  }
+  Widget build(BuildContext context) => SimpleFediSelectionItemRowWidget(
+        title: S.of(context).app_account_my_action_draftPosts,
+        onClick: () {
+          goToDraftStatusListPage(context);
+        },
+      );
 }
 
 class _MyAccountSettingsFavouritedButton extends StatelessWidget {
@@ -119,14 +109,12 @@ class _MyAccountSettingsFavouritedButton extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return SimpleFediSelectionItemRowWidget(
-      title: S.of(context).app_account_my_action_favourited,
-      onClick: () {
-        goToMyAccountFavouritedStatusesPage(context);
-      },
-    );
-  }
+  Widget build(BuildContext context) => SimpleFediSelectionItemRowWidget(
+        title: S.of(context).app_account_my_action_favourited,
+        onClick: () {
+          goToMyAccountFavouritedStatusesPage(context);
+        },
+      );
 }
 
 class _MyAccountSettingsFeaturedTagsButton extends StatelessWidget {
@@ -242,14 +230,12 @@ class _MyAccountSettingsAccountBlocksButton extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return SimpleFediSelectionItemRowWidget(
-      title: S.of(context).app_account_my_action_accountBlocks,
-      onClick: () {
-        goToMyAccountAccountBlockListPage(context);
-      },
-    );
-  }
+  Widget build(BuildContext context) => SimpleFediSelectionItemRowWidget(
+        title: S.of(context).app_account_my_action_accountBlocks,
+        onClick: () {
+          goToMyAccountAccountBlockListPage(context);
+        },
+      );
 }
 
 class _MyAccountSettingsAccountMutesButton extends StatelessWidget {
@@ -258,14 +244,12 @@ class _MyAccountSettingsAccountMutesButton extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return SimpleFediSelectionItemRowWidget(
-      title: S.of(context).app_account_my_action_accountMutes,
-      onClick: () {
-        goToMyAccountAccountMuteListPage(context);
-      },
-    );
-  }
+  Widget build(BuildContext context) => SimpleFediSelectionItemRowWidget(
+        title: S.of(context).app_account_my_action_accountMutes,
+        onClick: () {
+          goToMyAccountAccountMuteListPage(context);
+        },
+      );
 }
 
 class _MyAccountSettingsDomainBlocksButton extends StatelessWidget {
@@ -274,14 +258,12 @@ class _MyAccountSettingsDomainBlocksButton extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return SimpleFediSelectionItemRowWidget(
-      title: S.of(context).app_account_my_action_domainBlocks,
-      onClick: () {
-        goToMyAccountDomainBlockListPage(context);
-      },
-    );
-  }
+  Widget build(BuildContext context) => SimpleFediSelectionItemRowWidget(
+        title: S.of(context).app_account_my_action_domainBlocks,
+        onClick: () {
+          goToMyAccountDomainBlockListPage(context);
+        },
+      );
 }
 
 class _MyAccountSettingsFiltersButton extends StatelessWidget {
@@ -290,14 +272,12 @@ class _MyAccountSettingsFiltersButton extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return SimpleFediSelectionItemRowWidget(
-      title: S.of(context).app_account_my_action_filters,
-      onClick: () {
-        goToFilterListPage(context);
-      },
-    );
-  }
+  Widget build(BuildContext context) => SimpleFediSelectionItemRowWidget(
+        title: S.of(context).app_account_my_action_filters,
+        onClick: () {
+          goToFilterListPage(context);
+        },
+      );
 }
 
 void goAccountHomeTabMenuActionsPage(BuildContext context) {
@@ -307,8 +287,7 @@ void goAccountHomeTabMenuActionsPage(BuildContext context) {
   );
 }
 
-MaterialPageRoute createAccountHomeTabMenuActionsPageRoute() {
-  return MaterialPageRoute(
-    builder: (context) => const AccountHomeTabMenuActionsPage(),
-  );
-}
+MaterialPageRoute<void> createAccountHomeTabMenuActionsPageRoute() =>
+    MaterialPageRoute<void>(
+      builder: (context) => const AccountHomeTabMenuActionsPage(),
+    );

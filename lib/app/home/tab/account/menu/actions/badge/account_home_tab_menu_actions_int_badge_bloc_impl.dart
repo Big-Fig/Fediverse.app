@@ -33,22 +33,20 @@ class AccountHomeTabMenuActionsIntBadgeBloc extends DisposableOwner
 
   static AccountHomeTabMenuActionsIntBadgeBloc createFromContext(
     BuildContext context,
-  ) {
-    return AccountHomeTabMenuActionsIntBadgeBloc(
-      myAccountBloc: IMyAccountBloc.of(context, listen: false),
-    );
-  }
+  ) =>
+      AccountHomeTabMenuActionsIntBadgeBloc(
+        myAccountBloc: IMyAccountBloc.of(context, listen: false),
+      );
 
   static Widget provideToContext(
     BuildContext context, {
     required Widget child,
-  }) {
-    return DisposableProvider<IFediIntBadgeBloc>(
-      create: (context) =>
-          AccountHomeTabMenuActionsIntBadgeBloc.createFromContext(
-        context,
-      ),
-      child: child,
-    );
-  }
+  }) =>
+      DisposableProvider<IFediIntBadgeBloc>(
+        create: (context) =>
+            AccountHomeTabMenuActionsIntBadgeBloc.createFromContext(
+          context,
+        ),
+        child: child,
+      );
 }

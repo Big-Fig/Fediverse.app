@@ -121,7 +121,7 @@ class StatusSpoilerWidget extends StatelessWidget {
   const StatusSpoilerWidget();
 }
 
-Future _handleLinkTap(context, url) async {
+Future _handleLinkTap(BuildContext context, String url) async {
   await handleStatusBodyLinkClick(
     statusBloc: IStatusBloc.of(
       context,

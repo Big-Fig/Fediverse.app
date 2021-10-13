@@ -135,15 +135,14 @@ class ShareEntitySettingsBloc extends FormBloc
     BuildContext context, {
     required Widget child,
     required ShareEntity shareEntity,
-  }) {
-    return DisposableProvider<IShareEntitySettingsBloc>(
-      create: (context) => createFromContext(
-        context,
-        shareEntity: shareEntity,
-      ),
-      child: child,
-    );
-  }
+  }) =>
+      DisposableProvider<IShareEntitySettingsBloc>(
+        create: (context) => createFromContext(
+          context,
+          shareEntity: shareEntity,
+        ),
+        child: child,
+      );
 
   static ShareEntitySettingsBloc createFromContext(
     BuildContext context, {

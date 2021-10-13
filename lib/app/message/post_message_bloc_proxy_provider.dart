@@ -6,14 +6,12 @@ import 'package:provider/provider.dart';
 class PostMessageBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  PostMessageBlocProxyProvider({required this.child});
+  const PostMessageBlocProxyProvider({required this.child});
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IPostMessageBloc,
-        IUploadMediaAttachmentsCollectionBloc>(
-      update: (context, value, previous) => value.uploadMediaAttachmentsBloc,
-      child: child,
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IPostMessageBloc, IUploadMediaAttachmentsCollectionBloc>(
+        update: (context, value, previous) => value.uploadMediaAttachmentsBloc,
+        child: child,
+      );
 }

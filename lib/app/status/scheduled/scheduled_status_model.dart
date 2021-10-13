@@ -51,17 +51,15 @@ abstract class IScheduledStatus
 }
 
 extension DbScheduledStatusPopulatedExtension on DbScheduledStatusPopulated {
-  DbScheduledStatusPopulatedWrapper toDbScheduledStatusPopulatedWrapper() {
-    return DbScheduledStatusPopulatedWrapper(dbScheduledStatusPopulated: this);
-  }
+  DbScheduledStatusPopulatedWrapper toDbScheduledStatusPopulatedWrapper() =>
+      DbScheduledStatusPopulatedWrapper(dbScheduledStatusPopulated: this);
 }
 
 extension DbScheduledStatusPopulatedListExtension
     on List<DbScheduledStatusPopulated> {
   List<DbScheduledStatusPopulatedWrapper>
-      toDbScheduledStatusPopulatedWrappers() {
-    return map((item) => item.toDbScheduledStatusPopulatedWrapper()).toList();
-  }
+      toDbScheduledStatusPopulatedWrappers() =>
+          map((item) => item.toDbScheduledStatusPopulatedWrapper()).toList();
 }
 
 @freezed

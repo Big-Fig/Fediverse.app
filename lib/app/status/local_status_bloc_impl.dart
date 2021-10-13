@@ -95,19 +95,18 @@ class LocalStatusBloc extends StatusBloc {
     bool delayInit = true,
     bool isNeedWatchLocalRepositoryForUpdates = true,
     required Widget child,
-  }) {
-    return DisposableProvider<IStatusBloc>(
-      create: (context) => LocalStatusBloc.createFromContext(
-        context,
-        status: status,
-        isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
-        delayInit: delayInit,
-        isNeedWatchLocalRepositoryForUpdates:
-            isNeedWatchLocalRepositoryForUpdates,
-      ),
-      child: child,
-    );
-  }
+  }) =>
+      DisposableProvider<IStatusBloc>(
+        create: (context) => LocalStatusBloc.createFromContext(
+          context,
+          status: status,
+          isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
+          delayInit: delayInit,
+          isNeedWatchLocalRepositoryForUpdates:
+              isNeedWatchLocalRepositoryForUpdates,
+        ),
+        child: child,
+      );
 
   @override
   Future<IAccount?> loadAccountByMentionUrl({
@@ -117,7 +116,7 @@ class LocalStatusBloc extends StatusBloc {
       (mention) => mention.url == url,
     );
 
-    var account;
+    IAccount? account;
     if (foundMention != null) {
       var accountRemoteId = foundMention.id;
 
@@ -147,7 +146,7 @@ class LocalStatusBloc extends StatusBloc {
   Future<IAccount?> getInReplyToAccount() async {
     var inReplyToAccountRemoteId = status.inReplyToAccountRemoteId;
     if (inReplyToAccountRemoteId != null) {
-      return await accountRepository.findByRemoteIdInAppType(
+      return accountRepository.findByRemoteIdInAppType(
         inReplyToAccountRemoteId,
       );
     } else {
@@ -175,7 +174,7 @@ class LocalStatusBloc extends StatusBloc {
     } else {
       var inReplyToRemoteId = status.inReplyToRemoteId;
       if (inReplyToRemoteId != null) {
-        return await statusRepository.findByRemoteIdInAppType(
+        return statusRepository.findByRemoteIdInAppType(
           inReplyToRemoteId,
         );
       } else {
@@ -259,8 +258,10 @@ class LocalStatusBloc extends StatusBloc {
 
   @override
   Future<IStatus> toggleReblog() async {
-    _logger.finest(() =>
-        'requestToggleReblog status.reblogged=${reblogOrOriginal.reblogged}');
+    _logger.finest(
+      () =>
+          'requestToggleReblog status.reblogged=${reblogOrOriginal.reblogged}',
+    );
     IUnifediApiStatus remoteStatus;
     if (reblogOrOriginal.reblogged) {
       remoteStatus = await unifediApiStatusService.unReblogStatus(
@@ -295,7 +296,7 @@ class LocalStatusBloc extends StatusBloc {
       );
     }
 
-    return await _actualMuteUnmute(
+    return _actualMuteUnmute(
       expiresIn: duration,
     );
   }
@@ -303,11 +304,10 @@ class LocalStatusBloc extends StatusBloc {
   @override
   Future<IStatus> toggleMute({
     required Duration? duration,
-  }) async {
-    return await _actualMuteUnmute(
-      expiresIn: duration,
-    );
-  }
+  }) async =>
+      _actualMuteUnmute(
+        expiresIn: duration,
+      );
 
   Future<IStatus> _actualMuteUnmute({
     required Duration? expiresIn,
@@ -412,7 +412,7 @@ class LocalStatusBloc extends StatusBloc {
   Future<IUnifediApiStatus> toggleEmojiReaction({
     required String emoji,
   }) async {
-    var alreadyAdded;
+    bool alreadyAdded;
     var foundEmojiReaction = emojiReactions?.firstWhereOrNull(
       (emojiReaction) => emojiReaction.name == emoji,
     );
@@ -457,7 +457,7 @@ class LocalStatusBloc extends StatusBloc {
   Future refreshFromNetwork() async {
     var remoteStatus = await loadRemoteStatus();
 
-    return await _updateByRemoteStatus(remoteStatus);
+    return _updateByRemoteStatus(remoteStatus);
   }
 
   @override

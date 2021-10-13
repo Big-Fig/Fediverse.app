@@ -38,15 +38,13 @@ class _SingleMediaPickerPageAppBar extends StatelessWidget
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return FediPageCustomAppBar(
-      centerTitle: true,
-      leading: const FediBackIconButton(),
-      child: const MediaPickerPageAppBarTitle(
-        emptyTitleWidget: _SingleMediaPickerPageAppBarEmptyTitleWidget(),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => FediPageCustomAppBar(
+        centerTitle: true,
+        leading: const FediBackIconButton(),
+        child: const MediaPickerPageAppBarTitle(
+          emptyTitleWidget: _SingleMediaPickerPageAppBarEmptyTitleWidget(),
+        ),
+      );
 
   @override
   Size get preferredSize => FediPageCustomAppBar.calculatePreferredSize();
@@ -58,11 +56,9 @@ class _SingleMediaPickerPageAppBarEmptyTitleWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return FediSubHeaderText(
-      S.of(context).file_picker_single_title,
-    );
-  }
+  Widget build(BuildContext context) => FediSubHeaderText(
+        S.of(context).file_picker_single_title,
+      );
 }
 
 Future<IMediaDeviceFile?> goToSingleMediaPickerPage(
@@ -76,17 +72,15 @@ Future<IMediaDeviceFile?> goToSingleMediaPickerPage(
       context,
       NavigationSlideBottomRouteBuilder(
         page: DisposableProvider<IMediaDeviceGalleryBloc>(
-          create: (context) {
-            return PhotoManagerMediaDeviceGalleryBloc(
-              typesToPick: typesToPick,
-              storagePermissionBloc:
-                  IStoragePermissionBloc.of(context, listen: false),
-              paginationSettingsBloc: IPaginationSettingsBloc.of(
-                context,
-                listen: false,
-              ),
-            );
-          }, // provide parent abstract implementation by type
+          create: (context) => PhotoManagerMediaDeviceGalleryBloc(
+            typesToPick: typesToPick,
+            storagePermissionBloc:
+                IStoragePermissionBloc.of(context, listen: false),
+            paginationSettingsBloc: IPaginationSettingsBloc.of(
+              context,
+              listen: false,
+            ),
+          ), // provide parent abstract implementation by type
           child: DisposableProvider<ISingleMediaPickerBloc>(
             create: (context) {
               var singleMediaPickerBloc = SingleMediaPickerBloc();

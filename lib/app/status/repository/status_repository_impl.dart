@@ -368,7 +368,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       isFromHomeTimeline: null,
     );
 
-    return await dao.upsert(
+    return dao.upsert(
       entity: remoteItem.toDbStatus(),
     );
   }
@@ -654,10 +654,12 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       conversationRemoteId =
           conversationRemoteId ?? remoteStatus.directConversationId?.toString();
 
-      _logger.finer(() => 'upsertRemoteStatus $remoteStatus '
-          'listRemoteId => $listRemoteId '
-          'conversationRemoteId => $conversationRemoteId '
-          'isFromHomeTimeline => $isFromHomeTimeline ');
+      _logger.finer(
+        () => 'upsertRemoteStatus $remoteStatus '
+            'listRemoteId => $listRemoteId '
+            'conversationRemoteId => $conversationRemoteId '
+            'isFromHomeTimeline => $isFromHomeTimeline ',
+      );
 
       var remoteAccount = remoteStatus.account;
 
@@ -717,7 +719,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
         // ignore: unawaited_futures
         updateStatusTags(
           statusRemoteId: statusRemoteId,
-          tags: tags!,
+          tags: tags,
           batchTransaction: batchTransaction,
         );
       }
@@ -748,19 +750,17 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }
 
   @override
-  Future<IStatus?> findNewestForHomeTimeline() {
-    return findInAppType(
-      pagination: RepositoryPagination(
-        limit: 1,
-      ),
-      filters: StatusRepositoryFilters.only(
-        isFromHomeTimeline: true,
-      ),
-      orderingTerms: [
-        StatusRepositoryOrderingTermData.remoteIdDesc,
-      ],
-    );
-  }
+  Future<IStatus?> findNewestForHomeTimeline() => findInAppType(
+        pagination: RepositoryPagination(
+          limit: 1,
+        ),
+        filters: StatusRepositoryFilters.only(
+          isFromHomeTimeline: true,
+        ),
+        orderingTerms: [
+          StatusRepositoryOrderingTermData.remoteIdDesc,
+        ],
+      );
 
   @override
   Stream<int> watchNewestCountForHomeTimeline({

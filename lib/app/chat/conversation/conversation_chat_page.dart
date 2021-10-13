@@ -21,14 +21,12 @@ import 'package:provider/provider.dart';
 
 class ConversationChatPage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return FediDarkStatusBarStyleArea(
-      child: Scaffold(
-        appBar: _ConversationChatPageAppBarWidget(),
-        body: const ConversationChatWidget(),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => FediDarkStatusBarStyleArea(
+        child: Scaffold(
+          appBar: _ConversationChatPageAppBarWidget(),
+          body: const ConversationChatWidget(),
+        ),
+      );
 
   const ConversationChatPage();
 }
@@ -40,21 +38,19 @@ class _ConversationChatPageAppBarWidget extends StatelessWidget
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return ChatPageSelectionAppBarWidget(
-      emptySelectionAppBar: FediPageCustomAppBar(
-        leading: const FediBackIconButton(),
-        child: InkWell(
-          onTap: () {
-            var chatBloc = IConversationChatBloc.of(context, listen: false);
+  Widget build(BuildContext context) => ChatPageSelectionAppBarWidget(
+        emptySelectionAppBar: FediPageCustomAppBar(
+          leading: const FediBackIconButton(),
+          child: InkWell(
+            onTap: () {
+              var chatBloc = IConversationChatBloc.of(context, listen: false);
 
-            goToConversationChatAccountsPage(context, chatBloc.chat);
-          },
-          child: const ChatPageAppBarBodyWidget(),
+              goToConversationChatAccountsPage(context, chatBloc.chat);
+            },
+            child: const ChatPageAppBarBodyWidget(),
+          ),
         ),
-      ),
-    );
-  }
+      );
 
   @override
   Size get preferredSize => FediPageCustomAppBar.calculatePreferredSize();
@@ -76,53 +72,54 @@ void goToConversationChatPage(
   );
 }
 
-MaterialPageRoute createConversationChatPageRoute({
+MaterialPageRoute<void> createConversationChatPageRoute({
   required IConversationChat chat,
   required IConversationChatMessage? lastChatMessage,
   required VoidCallback? onDeletedCallback,
-}) {
-  return MaterialPageRoute(
-    builder: (context) => DisposableProvider<IConversationChatBloc>(
-      create: (context) {
-        var chatBloc = ConversationChatBloc.createFromContext(
-          context,
-          chat: chat,
-          lastChatMessage: lastChatMessage,
-        );
-
-        // we dont need to await
-        chatBloc.markAsRead();
-
-        chatBloc.chatDeletedStream.listen(
-          (_) {
-            if (onDeletedCallback != null) {
-              onDeletedCallback();
-            }
-          },
-        ).disposeWith(chatBloc);
-
-        var currentChatBloc =
-            IConversationChatCurrentBloc.of(context, listen: false);
-
-        currentChatBloc.onChatOpened(chat);
-
-        chatBloc.addCustomDisposable(
-          () => currentChatBloc.onChatClosed(chat),
-        );
-
-        return chatBloc;
-      },
-      child: ConversationChatPostMessageBloc.provideToContext(
-        context,
-        conversation: chat,
-        child: ProxyProvider<IConversationChatBloc, IChatBloc>(
-          update: (context, value, _) => value,
-          child: ChatSelectionBloc.provideToContext(
+}) =>
+    MaterialPageRoute<void>(
+      builder: (context) => DisposableProvider<IConversationChatBloc>(
+        create: (context) {
+          var chatBloc = ConversationChatBloc.createFromContext(
             context,
-            child: const ConversationChatPage(),
+            chat: chat,
+            lastChatMessage: lastChatMessage,
+          );
+
+          // we dont need to await
+          // ignore: cascade_invocations
+          chatBloc.markAsRead();
+
+          chatBloc.chatDeletedStream.listen(
+            (_) {
+              if (onDeletedCallback != null) {
+                onDeletedCallback();
+              }
+            },
+          ).disposeWith(chatBloc);
+
+          var currentChatBloc =
+              IConversationChatCurrentBloc.of(context, listen: false);
+
+          // ignore: cascade_invocations
+          currentChatBloc.onChatOpened(chat);
+
+          chatBloc.addCustomDisposable(
+            () => currentChatBloc.onChatClosed(chat),
+          );
+
+          return chatBloc;
+        },
+        child: ConversationChatPostMessageBloc.provideToContext(
+          context,
+          conversation: chat,
+          child: ProxyProvider<IConversationChatBloc, IChatBloc>(
+            update: (context, value, _) => value,
+            child: ChatSelectionBloc.provideToContext(
+              context,
+              child: const ConversationChatPage(),
+            ),
           ),
         ),
       ),
-    ),
-  );
-}
+    );

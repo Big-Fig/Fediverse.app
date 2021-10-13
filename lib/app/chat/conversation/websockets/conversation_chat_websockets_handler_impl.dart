@@ -1,4 +1,4 @@
-import 'package:easy_dispose/src/disposable.dart';
+import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';

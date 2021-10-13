@@ -41,16 +41,17 @@ abstract class AsyncInitLoadingBloc extends AsyncLoadingService
         _isInitLoadingSubject.add(AsyncInitLoadingState.loading);
       }
 
-      return performLoading(internalAsyncInit).then((_) {
+      return performLoading(internalAsyncInit).then((dynamic data) {
         if (!_isInitLoadingSubject.isClosed) {
           _isInitLoadingSubject.add(AsyncInitLoadingState.finished);
         }
-      }).catchError((err) {
+      }).catchError((dynamic err) {
         _logger.shout(() => 'Error during init $err');
         initLoadingException = err;
         if (!_isInitLoadingSubject.isClosed) {
           _isInitLoadingSubject.add(AsyncInitLoadingState.failed);
         }
+        // ignore: throw_of_invalid_type
         throw err;
       });
     }

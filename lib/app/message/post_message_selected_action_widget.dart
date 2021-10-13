@@ -40,20 +40,18 @@ class _PostMessageSelectedActionPollWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        const Padding(
-          padding: FediPadding.verticalBigPadding,
-          child: FediUltraLightGreyDivider(),
-        ),
-        const Padding(
-          padding: FediPadding.horizontalSmallPadding,
-          child: PostStatusPollWidget(),
-        ),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => Column(
+        children: <Widget>[
+          const Padding(
+            padding: FediPadding.verticalBigPadding,
+            child: FediUltraLightGreyDivider(),
+          ),
+          const Padding(
+            padding: FediPadding.horizontalSmallPadding,
+            child: PostStatusPollWidget(),
+          ),
+        ],
+      );
 }
 
 class _PostMessageSelectedActionEmojiWidget extends StatelessWidget {
@@ -74,6 +72,7 @@ class _PostMessageSelectedActionEmojiWidget extends StatelessWidget {
         EmojiPickerWidget(
           onEmojiSelected: (emoji) {
             postMessageBloc.appendText(emoji.code);
+            // ignore: cascade_invocations
             postMessageBloc.clearSelectedAction();
           },
           useImageEmoji: true,
@@ -89,15 +88,13 @@ class _PostMessageSelectedActionAttachWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        const Padding(
-          padding: FediPadding.verticalBigPadding,
-          child: FediUltraLightGreyDivider(),
-        ),
-        const PostMessageSelectMediaAttachmentTypeToPickWidget(),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => Column(
+        children: <Widget>[
+          const Padding(
+            padding: FediPadding.verticalBigPadding,
+            child: FediUltraLightGreyDivider(),
+          ),
+          const PostMessageSelectMediaAttachmentTypeToPickWidget(),
+        ],
+      );
 }

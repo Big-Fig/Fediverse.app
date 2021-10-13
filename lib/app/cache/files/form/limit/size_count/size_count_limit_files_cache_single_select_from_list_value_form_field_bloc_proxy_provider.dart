@@ -9,7 +9,7 @@ class SizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBlocProxyProvide
     extends StatelessWidget {
   final Widget child;
 
-  SizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBlocProxyProvider({
+  const SizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBlocProxyProvider({
     required this.child,
   });
 

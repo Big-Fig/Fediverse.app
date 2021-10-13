@@ -122,7 +122,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
         );
       }
     } else {
-      return await batch((batch) {
+      return batch((batch) {
         _upsertRemoteAccountMetadata(
           unifediApiAccount,
           conversationRemoteId: conversationRemoteId,
@@ -223,7 +223,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       );
       // ignore: unawaited_futures
       statusFavouritedAccountsDao.deleteByStatusRemoteId(statusRemoteId);
-      // ignore: unawaited_futures
+      // ignore: unawaited_futures, cascade_invocations
       statusFavouritedAccountsDao.insertAll(
         entities: favouritedByAccounts
             .map(
@@ -265,7 +265,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
         statusRemoteId,
         batchTransaction: batchTransaction,
       );
-      // ignore: unawaited_futures
+      // ignore: unawaited_futures, cascade_invocations
       statusRebloggedAccountsDao.insertAll(
         entities: rebloggedByAccounts
             .map(
@@ -433,15 +433,13 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     IUnifediApiAccount remoteItem, {
     required InsertMode? mode,
     required Batch? batchTransaction,
-  }) {
-    // todo: mode
-    return upsertRemoteAccount(
-      remoteItem,
-      conversationRemoteId: null,
-      chatRemoteId: null,
-      batchTransaction: batchTransaction,
-    );
-  }
+  }) =>
+      upsertRemoteAccount(
+        remoteItem,
+        conversationRemoteId: null,
+        chatRemoteId: null,
+        batchTransaction: batchTransaction,
+      );
 
   @override
   Future<void> updateAppTypeByRemoteType({

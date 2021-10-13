@@ -63,9 +63,8 @@ class ConversationChatMessageCachedPaginationListWithNewItemsBloc<
 
   // todo: rework copy-paste
   @override
-  List<IConversationChatMessage> get items {
-    return excludeHiddenItems(super.items, hiddenItems);
-  }
+  List<IConversationChatMessage> get items =>
+      excludeHiddenItems(super.items, hiddenItems);
 
   @override
   Future<TPage> loadFirstPageOnInit() async {
@@ -110,12 +109,11 @@ class ConversationChatMessageCachedPaginationListWithNewItemsBloc<
     }
 
     superItems.removeWhere(
-      (currentItem) {
-        return hiddenItems.firstWhereOrNull(
-              (hiddenItem) => hiddenItem.isEqualTo(currentItem),
-            ) !=
-            null;
-      },
+      (currentItem) =>
+          hiddenItems.firstWhereOrNull(
+            (hiddenItem) => hiddenItem.isEqualTo(currentItem),
+          ) !=
+          null,
     );
 
     return superItems;
@@ -134,44 +132,44 @@ class ConversationChatMessageCachedPaginationListWithNewItemsBloc<
       createFromContext(
     BuildContext context, {
     required bool mergeNewItemsImmediately,
-  }) {
-    return ConversationChatMessageCachedPaginationListWithNewItemsBloc(
-      mergeNewItemsImmediately: true,
-      chatMessageCachedListService: IConversationChatMessageCachedListBloc.of(
-        context,
-        listen: false,
-      ),
-      cachedPaginationBloc: Provider.of<
-          ICachedPaginationBloc<CachedPaginationPage<IConversationChatMessage>,
-              IConversationChatMessage>>(
-        context,
-        listen: false,
-      ),
-      conversationChatBloc: IConversationChatBloc.of(
-        context,
-        listen: false,
-      ),
-    );
-  }
+  }) =>
+          ConversationChatMessageCachedPaginationListWithNewItemsBloc(
+            mergeNewItemsImmediately: true,
+            chatMessageCachedListService:
+                IConversationChatMessageCachedListBloc.of(
+              context,
+              listen: false,
+            ),
+            cachedPaginationBloc: Provider.of<
+                ICachedPaginationBloc<
+                    CachedPaginationPage<IConversationChatMessage>,
+                    IConversationChatMessage>>(
+              context,
+              listen: false,
+            ),
+            conversationChatBloc: IConversationChatBloc.of(
+              context,
+              listen: false,
+            ),
+          );
 
   static Widget provideToContext(
     BuildContext context, {
     required bool mergeNewItemsImmediately,
     required Widget child,
-  }) {
-    return DisposableProvider<
-        ICachedPaginationListWithNewItemsBloc<
+  }) =>
+      DisposableProvider<
+          ICachedPaginationListWithNewItemsBloc<
+              CachedPaginationPage<IConversationChatMessage>,
+              IConversationChatMessage>>(
+        create: (context) =>
+            ConversationChatMessageCachedPaginationListWithNewItemsBloc
+                .createFromContext(
+          context,
+          mergeNewItemsImmediately: mergeNewItemsImmediately,
+        ),
+        child: CachedPaginationListWithNewItemsBlocProxyProvider<
             CachedPaginationPage<IConversationChatMessage>,
-            IConversationChatMessage>>(
-      create: (context) =>
-          ConversationChatMessageCachedPaginationListWithNewItemsBloc
-              .createFromContext(
-        context,
-        mergeNewItemsImmediately: mergeNewItemsImmediately,
-      ),
-      child: CachedPaginationListWithNewItemsBlocProxyProvider<
-          CachedPaginationPage<IConversationChatMessage>,
-          IConversationChatMessage>(child: child),
-    );
-  }
+            IConversationChatMessage>(child: child),
+      );
 }

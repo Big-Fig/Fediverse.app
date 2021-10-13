@@ -30,7 +30,7 @@ class FediFormSingleChooseFromListFieldRow<T> extends StatelessWidget {
   final ValueToKeyMapper<T>? valueToKeyMapper;
   final ValueChangedCallback<T?> onChanged;
 
-  FediFormSingleChooseFromListFieldRow({
+  const FediFormSingleChooseFromListFieldRow({
     required this.isEnabled,
     required this.nullable,
     required this.label,
@@ -47,35 +47,33 @@ class FediFormSingleChooseFromListFieldRow<T> extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return FediFormRow(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              FediFormRowLabel(label),
-              _FediFormSingleChooseFromListFieldRowBodyWidget(
-                isEnabled: isEnabled,
-                chooserTitle: chooserTitle,
-                possibleValues: possibleValues,
-                value: value,
-                valueToTextMapper: valueToTextMapper,
-                valueToIconMapper: valueToIconMapper,
-                valueToKeyMapper: valueToKeyMapper,
-                onChanged: onChanged,
-                nullable: nullable,
-              ),
-            ],
-          ),
-          if (description != null) _buildDescription(),
-          if (error != null) FediFormColumnError(error),
-        ],
-      ),
-    );
-  }
+  Widget build(BuildContext context) => FediFormRow(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                FediFormRowLabel(label),
+                _FediFormSingleChooseFromListFieldRowBodyWidget(
+                  isEnabled: isEnabled,
+                  chooserTitle: chooserTitle,
+                  possibleValues: possibleValues,
+                  value: value,
+                  valueToTextMapper: valueToTextMapper,
+                  valueToIconMapper: valueToIconMapper,
+                  valueToKeyMapper: valueToKeyMapper,
+                  onChanged: onChanged,
+                  nullable: nullable,
+                ),
+              ],
+            ),
+            if (description != null) _buildDescription(),
+            if (error != null) FediFormColumnError(error),
+          ],
+        ),
+      );
 
   Widget _buildDescription() {
     // todo: refactor
@@ -116,7 +114,7 @@ class _FediFormSingleChooseFromListFieldRowBodyWidget<T>
 
   final bool isEnabled;
   final String chooserTitle;
-  final List possibleValues;
+  final List<T> possibleValues;
 
   final T value;
   final ValueToKeyMapper<T>? valueToKeyMapper;
@@ -126,55 +124,53 @@ class _FediFormSingleChooseFromListFieldRowBodyWidget<T>
   final bool nullable;
 
   @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        InkWell(
-          onTap: isEnabled
-              ? () {
-                  showFediSingleSelectionChooserDialog(
-                    context: context,
-                    title: chooserTitle,
-                    actions: possibleValues
-                        .map(
-                          (possibleValue) => SelectionDialogAction(
-                            key: valueToKeyMapper != null
-                                ? valueToKeyMapper!(possibleValue)
-                                : null,
-                            isSelected: value == possibleValue,
-                            label: valueToTextMapper != null
-                                ? valueToTextMapper!(possibleValue)
-                                : null,
-                            icon: valueToIconMapper != null
-                                ? valueToIconMapper!(possibleValue)
-                                : null,
-                            onAction: (context) {
-                              onChanged(value, possibleValue);
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        )
-                        .toList(),
-                  );
-                }
-              : null,
-          child: _FediFormSingleChooseFromListFieldRowContentWidget(
-            valueToIconMapper: valueToIconMapper,
-            value: value,
-            isEnabled: isEnabled,
-            valueToTextMapper: valueToTextMapper,
+  Widget build(BuildContext context) => Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          InkWell(
+            onTap: isEnabled
+                ? () {
+                    showFediSingleSelectionChooserDialog<void>(
+                      context: context,
+                      title: chooserTitle,
+                      actions: possibleValues
+                          .map(
+                            (possibleValue) => SelectionDialogAction(
+                              key: valueToKeyMapper != null
+                                  ? valueToKeyMapper!(possibleValue)
+                                  : null,
+                              isSelected: value == possibleValue,
+                              label: valueToTextMapper != null
+                                  ? valueToTextMapper!(possibleValue)
+                                  : null,
+                              icon: valueToIconMapper != null
+                                  ? valueToIconMapper!(possibleValue)
+                                  : null,
+                              onAction: (context) {
+                                onChanged(value, possibleValue);
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          )
+                          .toList(),
+                    );
+                  }
+                : null,
+            child: _FediFormSingleChooseFromListFieldRowContentWidget(
+              valueToIconMapper: valueToIconMapper,
+              value: value,
+              isEnabled: isEnabled,
+              valueToTextMapper: valueToTextMapper,
+            ),
           ),
-        ),
-        if (nullable && value != null)
-          _FediFormSingleChooseFromListFieldRowDeleteWidget(
-            onChanged: onChanged,
-            value: value,
-            isEnabled: isEnabled,
-          ),
-      ],
-    );
-  }
+          if (nullable && value != null)
+            _FediFormSingleChooseFromListFieldRowDeleteWidget(
+              onChanged: onChanged,
+              value: value,
+              isEnabled: isEnabled,
+            ),
+        ],
+      );
 }
 
 class _FediFormSingleChooseFromListFieldRowContentWidget<T>
@@ -193,42 +189,40 @@ class _FediFormSingleChooseFromListFieldRowContentWidget<T>
   final ValueToTextMapper<T>? valueToTextMapper;
 
   @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        if (valueToIconMapper != null)
+  Widget build(BuildContext context) => Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (valueToIconMapper != null)
+            Padding(
+              padding: FediPadding.horizontalSmallPadding,
+              child: Icon(
+                valueToIconMapper!(value),
+                color: isEnabled
+                    ? IFediUiColorTheme.of(context).darkGrey
+                    : IFediUiColorTheme.of(context).lightGrey,
+              ),
+            ),
+          if (valueToTextMapper != null)
+            Padding(
+              padding: FediPadding.horizontalSmallPadding,
+              child: Text(
+                valueToTextMapper!(value),
+                style: isEnabled
+                    ? IFediUiTextTheme.of(context).mediumShortDarkGrey
+                    : IFediUiTextTheme.of(context).mediumShortLightGrey,
+              ),
+            ),
           Padding(
             padding: FediPadding.horizontalSmallPadding,
             child: Icon(
-              valueToIconMapper!(value),
+              FediIcons.pen,
               color: isEnabled
                   ? IFediUiColorTheme.of(context).darkGrey
                   : IFediUiColorTheme.of(context).lightGrey,
             ),
           ),
-        if (valueToTextMapper != null)
-          Padding(
-            padding: FediPadding.horizontalSmallPadding,
-            child: Text(
-              valueToTextMapper!(value),
-              style: isEnabled
-                  ? IFediUiTextTheme.of(context).mediumShortDarkGrey
-                  : IFediUiTextTheme.of(context).mediumShortLightGrey,
-            ),
-          ),
-        Padding(
-          padding: FediPadding.horizontalSmallPadding,
-          child: Icon(
-            FediIcons.pen,
-            color: isEnabled
-                ? IFediUiColorTheme.of(context).darkGrey
-                : IFediUiColorTheme.of(context).lightGrey,
-          ),
-        ),
-      ],
-    );
-  }
+        ],
+      );
 }
 
 class _FediFormSingleChooseFromListFieldRowDeleteWidget<T>
@@ -246,20 +240,18 @@ class _FediFormSingleChooseFromListFieldRowDeleteWidget<T>
   final bool isEnabled;
 
   @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        onChanged(value, null);
-      },
-      child: Padding(
-        padding: FediPadding.horizontalSmallPadding,
-        child: Icon(
-          FediIcons.delete,
-          color: isEnabled
-              ? IFediUiColorTheme.of(context).darkGrey
-              : IFediUiColorTheme.of(context).lightGrey,
+  Widget build(BuildContext context) => InkWell(
+        onTap: () {
+          onChanged(value, null);
+        },
+        child: Padding(
+          padding: FediPadding.horizontalSmallPadding,
+          child: Icon(
+            FediIcons.delete,
+            color: isEnabled
+                ? IFediUiColorTheme.of(context).darkGrey
+                : IFediUiColorTheme.of(context).lightGrey,
+          ),
         ),
-      ),
-    );
-  }
+      );
 }

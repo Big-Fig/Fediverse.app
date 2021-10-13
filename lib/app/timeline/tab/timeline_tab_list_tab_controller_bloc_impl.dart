@@ -49,26 +49,4 @@ class TimelineListTabControllerBloc extends DisposableOwner
       },
     );
   }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is TimelineListTabControllerBloc &&
-          runtimeType == other.runtimeType &&
-          tabController == other.tabController &&
-          timelineTabListBloc == other.timelineTabListBloc &&
-          tabControllerListener == other.tabControllerListener;
-
-  @override
-  int get hashCode =>
-      tabController.hashCode ^
-      timelineTabListBloc.hashCode ^
-      tabControllerListener.hashCode;
-
-  @override
-  String toString() => 'TimelineListTabControllerBloc{'
-      'tabController: $tabController, '
-      'timelineTabListBloc: $timelineTabListBloc, '
-      'tabControllerListener: $tabControllerListener'
-      '}';
 }

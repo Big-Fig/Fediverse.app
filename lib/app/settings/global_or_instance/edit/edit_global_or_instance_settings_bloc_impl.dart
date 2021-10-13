@@ -5,7 +5,7 @@ import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings
 import 'package:fedi/app/settings/settings_model.dart';
 import 'package:rxdart/rxdart.dart';
 
-abstract class EditGlobalOrInstanceSettingsBloc<T extends ISettings>
+abstract class EditGlobalOrInstanceSettingsBloc<T extends ISettings<dynamic>>
     extends EditSettingsBloc<T>
     implements IEditGlobalOrInstanceSettingsBloc<T> {
   @override

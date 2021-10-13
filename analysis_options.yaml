@@ -26,89 +26,14 @@ analyzer:
     # We explicitly enabled even conflicting rules and are fixing the conflicts in this file.
     included_file_warning: ignore
     # Treat missing required parameters as an error.
-    #missing_required_param: error
+    missing_required_param: error
     # Treat missing returns as an error, not as a hint or a warning.
-   # missing_return: error
+    missing_return: error
     # Don't assign new values to parameters of methods or functions.
     # Treat assigning new values to a parameter as a warning. We would almost like to set this
-    #parameter_assignments: warning
+    parameter_assignments: warning
     # Allow having TODOs in the code.
     todo: ignore
-
-
-    implicit_dynamic_variable: ignore
-    implicit_dynamic_method: ignore
-    implicit_dynamic_parameter: ignore
-    implicit_dynamic_type: ignore
-    return_of_invalid_type: ignore
-    non_bool_condition: ignore
-    non_bool_operand: ignore
-    implicit_dynamic_function: ignore
-    implicit_dynamic_list_literal: ignore
-    implicit_dynamic_map_literal: ignore
-    throw_of_invalid_type: ignore
-    argument_type_not_assignable: ignore
-    parameter_assignments: ignore
-    avoid_print: ignore
-    avoid_annotating_with_dynamic: ignore
-    avoid_bool_literals_in_conditional_expressions: ignore
-    avoid_catches_without_on_clauses: ignore
-    avoid_classes_with_only_static_members: ignore
-    avoid_unused_constructor_parameters: ignore
-    lines_longer_than_80_chars: ignore
-    avoid_dynamic_calls: ignore
-    avoid_equals_and_hash_code_on_mutable_classes: ignore
-    avoid_positional_boolean_parameters: ignore
-    avoid_redundant_argument_values: ignore
-    avoid_field_initializers_in_const_classes: ignore
-    avoid_function_literals_in_foreach_calls: ignore
-    library_private_types_in_public_api: ignore
-    cascade_invocations: ignore
-    diagnostic_describe_all_properties: ignore
-    prefer_relative_imports: ignore
-    unnecessary_lambdas: ignore
-    depend_on_referenced_packages: ignore
-    use_build_context_synchronously: ignore
-    avoid_multiple_declarations_per_line: ignore
-    implementation_imports: ignore
-    unnecessary_final: ignore
-    no_default_cases: ignore
-    noop_primitive_operations: ignore
-    only_throw_errors: ignore
-    prefer_asserts_with_message: ignore
-    prefer_const_literals_to_create_immutables: ignore
-    prefer_const_constructors: ignore
-    require_trailing_commas: ignore
-    join_return_with_assignment: ignore
-    prefer_constructors_over_static_methods: ignore
-    prefer_const_constructors_in_immutables: ignore
-    sort_constructors_first: ignore
-    prefer_double_quotes: ignore
-    always_specify_types: ignore
-    use_key_in_widget_constructors: ignore
-    prefer_final_locals: ignore
-    prefer_expression_function_bodies: ignore
-    prefer_final_in_for_each: ignore
-    unnecessary_parenthesis: ignore
-    unnecessary_string_interpolations: ignore
-    prefer_interpolation_to_compose_strings: ignore
-    prefer_int_literals: ignore
-    use_is_even_rather_than_modulo: ignore
-    prefer_typing_uninitialized_variables: ignore
-    sized_box_for_whitespace: ignore
-    sort_unnamed_constructors_first: ignore
-    prefer_null_aware_method_calls: ignore
-    type_annotate_public_apis: ignore
-    sort_pub_dependencies: ignore
-    unnecessary_await_in_return: ignore
-    flutter_style_todos: ignore
-    use_if_null_to_convert_nulls_to_bools: ignore
-    unnecessary_null_checks: ignore
-    prefer_function_declarations_over_variables: ignore
-    null_check_on_nullable_type_parameter: ignore
-    prefer_initializing_formals: ignore
-    use_late_for_private_fields_and_variables: ignore
-
 
 # LINTER Preferences
 #
@@ -128,22 +53,97 @@ linter:
     # Followed by more turned OFF lint rules as preferred/needed/desired and always
     # turning off at least conflicting rules.
 
+
+    # this package is not a library
     public_member_api_docs: false
+    prefer_relative_imports: false
+
+    # prefer single quotes
+    prefer_double_quotes: false
+
+    # always declare type, even dynamic
+    avoid_annotating_with_dynamic: false
+
+    # code metrics have better long line rules
+    lines_longer_than_80_chars: false
+
+    # diagnostic properties are not necessary
+    diagnostic_describe_all_properties: false
+
+    # helper classes is OK
+    avoid_classes_with_only_static_members: false
+
+    # grouping dependencies is better
+    sort_pub_dependencies: false
+
+    # sometimes is hard to move all todo's to issue tracker
+    flutter_style_todos: false
+
+    # sometimes interpolation better but sometimes not
+    prefer_interpolation_to_compose_strings: false
+
+    # double should be double
+    prefer_int_literals: false
+
+    # module is OK
+    use_is_even_rather_than_modulo: false
+
+    # code metrics have better rules for member ordering
+    sort_constructors_first: false
+    sort_unnamed_constructors_first: false
+
     prefer_final_parameters: false
     avoid_types_on_closure_parameters: false
+    parameter_assignments: false
+    avoid_bool_literals_in_conditional_expressions: false
+    avoid_catches_without_on_clauses: false
+    prefer_final_in_for_each: false
 
-    implicit_dynamic_variable: false
-    implicit_dynamic_method: false
-    implicit_dynamic_parameter: false
-    implicit_dynamic_type: false
-    return_of_invalid_type: false
-    non_bool_condition: false
-    non_bool_operand: false
-    implicit_dynamic_function: false
-    implicit_dynamic_list_literal: false
-    implicit_dynamic_map_literal: false
-    throw_of_invalid_type: false
-    argument_type_not_assignable: false
+
+
+    avoid_positional_boolean_parameters: false
+    avoid_redundant_argument_values: false
+    avoid_field_initializers_in_const_classes: false
+    avoid_function_literals_in_foreach_calls: false
+    library_private_types_in_public_api: false
+
+
+
+    unnecessary_lambdas: false
+
+    use_build_context_synchronously: false
+
+
+    unnecessary_final: false
+    no_default_cases: false
+    noop_primitive_operations: false
+    only_throw_errors: false
+    prefer_asserts_with_message: false
+    prefer_const_literals_to_create_immutables: false
+    prefer_const_constructors: false
+    prefer_constructors_over_static_methods: false
+
+
+    always_specify_types: false
+    use_key_in_widget_constructors: false
+    prefer_final_locals: false
+
+
+
+    prefer_typing_uninitialized_variables: false
+    sized_box_for_whitespace: false
+
+    prefer_null_aware_method_calls: false
+    type_annotate_public_apis: false
+
+
+
+    use_if_null_to_convert_nulls_to_bools: false
+
+    prefer_function_declarations_over_variables: false
+    null_check_on_nullable_type_parameter: false
+    prefer_initializing_formals: false
+    use_late_for_private_fields_and_variables: false
 
 dart_code_metrics:
   anti-patterns:
@@ -156,8 +156,8 @@ dart_code_metrics:
     halstead-volume: 150
     maintainability-index: 50
     source-lines-of-code: 65
-#   should be
-#   source-lines-of-code: 50
+    #   should be
+    #   source-lines-of-code: 50
     weight-of-class: 0.33
     number-of-arguments: 6
     number-of-parameters: 6
@@ -166,14 +166,18 @@ dart_code_metrics:
     - test/**
     - test_driver/**
   rules:
-#    - avoid-ignoring-return-values
+    # useful but require a lot of refactoring
+    # - avoid-ignoring-return-values
     - avoid-late-keyword
-#    - avoid-non-null-assertion
-#    - avoid-unused-parameters
+    # useful but require a lot of refactoring
+    # - avoid-non-null-assertion
+    # useful but require a lot of refactoring
+    # - avoid-unused-parameters
     - binary-expression-operand-order
     - double-literal-format
-#    - member-ordering
-#    - member-ordering-extended
+    # useful but require a lot of refactoring
+    # - member-ordering
+    # - member-ordering-extended
     - newline-before-return
     - no-boolean-literal-compare
     - no-empty-block
@@ -181,16 +185,23 @@ dart_code_metrics:
     - no-equal-then-else
     - no-magic-number
     - no-object-declaration
-#    - prefer-conditional-expressions
+    # useful but require a lot of refactoring
+    # - prefer-conditional-expressions
     - prefer-correct-identifier-length
-#    - prefer-match-file-name
+    # useful but require a lot of refactoring
+    # - prefer-match-file-name
     - prefer-trailing-comma
     - always-remove-listener
-#    - avoid-returning-widgets
+    # useful but require a lot of refactoring
+    # - avoid-returning-widgets
     - avoid-unnecessary-setstate
-#    - avoid-wrapping-in-padding
-#    - prefer-const-border-radius
-#    - prefer-extracting-callbacks
-#    - prefer-single-widget-per-file
+    # looks not necessary
+    # - avoid-wrapping-in-padding
+    # useful but require a lot of refactoring
+    # - prefer-const-border-radius
+    # useful but require a lot of refactoring
+    # - prefer-extracting-callbacks
+    # useful but require a lot of refactoring
+    # - prefer-single-widget-per-file
     - prefer-intl-name
     - provide-correct-intl-args

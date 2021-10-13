@@ -13,24 +13,22 @@ class RemoteInstanceDetailsPage extends StatelessWidget {
   const RemoteInstanceDetailsPage();
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: InstanceHostAppBarWidget(),
-      body: const SafeArea(
-        child: InstanceDetailsWidget(
-          key: Key(
-            RemoteInstanceDetailsPageKeys.instanceDetailsWidgetKey,
+  Widget build(BuildContext context) => Scaffold(
+        appBar: InstanceHostAppBarWidget(),
+        body: const SafeArea(
+          child: InstanceDetailsWidget(
+            key: Key(
+              RemoteInstanceDetailsPageKeys.instanceDetailsWidgetKey,
+            ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }
 
-MaterialPageRoute createRemoteInstanceDetailsPageRoute({
+MaterialPageRoute<void> createRemoteInstanceDetailsPageRoute({
   required IRemoteInstanceBloc remoteInstanceBloc,
 }) =>
-    MaterialPageRoute(
+    MaterialPageRoute<void>(
       builder: (context) => Provider.value(
         value: remoteInstanceBloc,
         child: RemoteInstanceDetailsBloc.provideToContext(

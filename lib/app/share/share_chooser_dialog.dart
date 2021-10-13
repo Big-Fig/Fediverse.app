@@ -5,18 +5,18 @@ import 'package:fedi/dialog/dialog_model.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 
-void showShareChooserDialog(
+Future<void> showShareChooserDialog(
   BuildContext context, {
   required Function(BuildContext context) externalShareAction,
   required Function(BuildContext context) conversationsShareAction,
   required Function(BuildContext context) chatsShareAction,
   required Function(BuildContext context) newStatusShareAction,
-}) {
+}) async {
   var currentUnifediApiAccessBloc =
       ICurrentUnifediApiAccessBloc.of(context, listen: false);
 
   var currentInstance = currentUnifediApiAccessBloc.currentInstance;
-  showFediChooserDialog(
+  await showFediChooserDialog<void>(
     context: context,
     title: S.of(context).app_share_title,
     actions: [

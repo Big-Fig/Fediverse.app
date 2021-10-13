@@ -136,43 +136,41 @@ class _UploadMediaAttachmentListMediaItemMediaPreviewWidget
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: mediaDeviceFile.loadFile(),
-      builder: (BuildContext context, AsyncSnapshot<File?> snapshot) {
-        var file = snapshot.data;
-        if (file == null) {
-          return const FediCircularProgressIndicator();
-        }
-        Widget preview;
-        switch (mediaDeviceFile.metadata.type) {
-          case MediaDeviceFileType.image:
-            preview = Image.file(
-              file,
-              fit: BoxFit.cover,
-            );
-            break;
-          case MediaDeviceFileType.video:
-            preview = VideoMediaPlayerBloc.provideToContext(
-              context,
-              mediaPlayerSource: MediaPlayerSource.localFile(file: file),
-              desiredAspectRatio:
-                  VideoMediaPlayerBloc.calculateDefaultAspectRatio(context),
-              child: const FediVideoPlayerWidget(),
-              autoInit: true,
-              autoPlay: false,
-              isFullscreen: false,
-            );
-            break;
-          case MediaDeviceFileType.other:
-          default:
-            throw 'Non-media not supported';
-        }
+  Widget build(BuildContext context) => FutureBuilder(
+        future: mediaDeviceFile.loadFile(),
+        builder: (BuildContext context, AsyncSnapshot<File?> snapshot) {
+          var file = snapshot.data;
+          if (file == null) {
+            return const FediCircularProgressIndicator();
+          }
+          Widget preview;
+          switch (mediaDeviceFile.metadata.type) {
+            case MediaDeviceFileType.image:
+              preview = Image.file(
+                file,
+                fit: BoxFit.cover,
+              );
+              break;
+            case MediaDeviceFileType.video:
+              preview = VideoMediaPlayerBloc.provideToContext(
+                context,
+                mediaPlayerSource: MediaPlayerSource.localFile(file: file),
+                desiredAspectRatio:
+                    VideoMediaPlayerBloc.calculateDefaultAspectRatio(context),
+                child: const FediVideoPlayerWidget(),
+                autoInit: true,
+                autoPlay: false,
+                isFullscreen: false,
+              );
+              break;
+            case MediaDeviceFileType.other:
+            default:
+              throw 'Non-media not supported';
+          }
 
-        return preview;
-      },
-    );
-  }
+          return preview;
+        },
+      );
 }
 
 class _UploadMediaAttachmentListMediaItemTopLeftActionWidget
@@ -279,26 +277,24 @@ class _UploadMediaAttachmentListMediaItemLoadingWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return ClipRRect(
-      // todo: refactor
-      // ignore: no-magic-number
-      borderRadius: BorderRadius.circular(24.0),
-      child: Container(
+  Widget build(BuildContext context) => ClipRRect(
+        // todo: refactor
         // ignore: no-magic-number
-        width: 24,
-        // ignore: no-magic-number
-        height: 24,
-        // ignore: no-magic-number
-        color: IFediUiColorTheme.of(context).darkGrey.withOpacity(0.8),
-        child: FediCircularProgressIndicator(
+        borderRadius: BorderRadius.circular(24.0),
+        child: Container(
           // ignore: no-magic-number
-          size: 20,
-          color: IFediUiColorTheme.of(context).white,
+          width: 24,
+          // ignore: no-magic-number
+          height: 24,
+          // ignore: no-magic-number
+          color: IFediUiColorTheme.of(context).darkGrey.withOpacity(0.8),
+          child: FediCircularProgressIndicator(
+            // ignore: no-magic-number
+            size: 20,
+            color: IFediUiColorTheme.of(context).white,
+          ),
         ),
-      ),
-    );
-  }
+      );
 }
 
 class _UploadMediaAttachmentListMediaItemErrorButtonWidget
@@ -317,6 +313,7 @@ class _UploadMediaAttachmentListMediaItemErrorButtonWidget
           context,
           listen: false,
         );
+        // ignore: cascade_invocations
         uploadMediaAttachmentBloc.startUploadIfPossible();
       },
       child: ClipRRect(
@@ -349,13 +346,11 @@ class _UploadMediaAttachmentListMediaItemRemoveButtonWidget
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return FediRemoveIconInCircleButton(
-      onPressed: () {
-        showConfirmRemoveAssetDialog(context);
-      },
-    );
-  }
+  Widget build(BuildContext context) => FediRemoveIconInCircleButton(
+        onPressed: () {
+          showConfirmRemoveAssetDialog(context);
+        },
+      );
 }
 
 class _UploadMediaAttachmentListMediaItemPreviewWidget extends StatelessWidget {

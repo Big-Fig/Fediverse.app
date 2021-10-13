@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 class FediUiThemeProxyProvider extends StatelessWidget {
   final Widget child;
 
-  FediUiThemeProxyProvider({
+  const FediUiThemeProxyProvider({
     required this.child,
   });
 

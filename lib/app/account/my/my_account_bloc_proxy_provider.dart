@@ -6,15 +6,14 @@ import 'package:provider/provider.dart';
 class MyAccountBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  MyAccountBlocProxyProvider({
+  const MyAccountBlocProxyProvider({
     required this.child,
   });
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IMyAccountBloc, IAccountBloc>(
-      update: (context, value, previous) => value,
-      child: child,
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IMyAccountBloc, IAccountBloc>(
+        update: (context, value, previous) => value,
+        child: child,
+      );
 }

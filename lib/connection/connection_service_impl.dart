@@ -24,7 +24,7 @@ class ConnectionService extends DisposableOwner implements IConnectionService {
   Stream<bool> get isConnectedStream =>
       connectionStateStream.map(_mapConnectivityResult).distinct();
 
-  bool _mapConnectivityResult(connectivityResult) =>
+  bool _mapConnectivityResult(ConnectivityResult? connectivityResult) =>
       connectivityResult == ConnectivityResult.wifi ||
       connectivityResult == ConnectivityResult.mobile;
 

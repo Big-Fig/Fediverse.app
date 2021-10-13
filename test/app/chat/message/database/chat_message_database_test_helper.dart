@@ -12,9 +12,9 @@ class ChatMessageDatabaseMockHelper {
   ) async {
     var dbChatMessagePopulated = DbChatMessagePopulated(
       dbChatMessage: dbChatMessage,
-      dbAccount: (await accountRepository.findByRemoteIdInDbType(
+      dbAccount: await accountRepository.findByRemoteIdInDbType(
         dbChatMessage.accountRemoteId,
-      ))!,
+      ),
     );
 
     return dbChatMessagePopulated;

@@ -22,28 +22,26 @@ class HashtagPaginationListBloc
   static HashtagPaginationListBloc createFromContext(
     BuildContext context, {
     bool loadFromCacheDuringInit = true,
-  }) {
-    return HashtagPaginationListBloc(
-      paginationBloc:
-          Provider.of<IPaginationBloc<PaginationPage<IHashtag>, IHashtag>>(
-        context,
-        listen: false,
-      ),
-      loadFromCacheDuringInit: loadFromCacheDuringInit,
-    );
-  }
+  }) =>
+      HashtagPaginationListBloc(
+        paginationBloc:
+            Provider.of<IPaginationBloc<PaginationPage<IHashtag>, IHashtag>>(
+          context,
+          listen: false,
+        ),
+        loadFromCacheDuringInit: loadFromCacheDuringInit,
+      );
 
   static Widget provideToContext(
     BuildContext context, {
     required Widget child,
     bool loadFromCacheDuringInit = true,
-  }) {
-    return DisposableProvider<IHashtagPaginationListBloc>(
-      create: (context) => HashtagPaginationListBloc.createFromContext(
-        context,
-        loadFromCacheDuringInit: loadFromCacheDuringInit,
-      ),
-      child: HashtagPaginationListBlocProxyProvider(child: child),
-    );
-  }
+  }) =>
+      DisposableProvider<IHashtagPaginationListBloc>(
+        create: (context) => HashtagPaginationListBloc.createFromContext(
+          context,
+          loadFromCacheDuringInit: loadFromCacheDuringInit,
+        ),
+        child: HashtagPaginationListBlocProxyProvider(child: child),
+      );
 }

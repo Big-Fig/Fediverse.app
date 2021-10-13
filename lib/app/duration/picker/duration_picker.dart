@@ -40,7 +40,7 @@ Future<DurationPickerResult> showDurationPicker({
         (minDuration == null || pickedDuration > minDuration)) {
       resultDuration = pickedDuration;
     } else {
-      if ((maxDuration == null || pickedDuration > maxDuration)) {
+      if (maxDuration == null || pickedDuration > maxDuration) {
         resultDuration = maxDuration;
       } else {
         resultDuration = minDuration;
@@ -63,7 +63,7 @@ class _DurationPickerBody extends StatefulWidget {
   final VoidCallback deleteCallback;
   final bool isDeletePossible;
 
-  _DurationPickerBody({
+  const _DurationPickerBody({
     required this.initialDuration,
     required this.cancelCallback,
     required this.deleteCallback,
@@ -86,64 +86,62 @@ class _DurationPickerBodyState extends State<_DurationPickerBody> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        // DurationPickerDialogBody(
-        //   initialTime: currentDuration ?? Duration(minutes: 1),),
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: AspectRatio(
-            aspectRatio: 1.0,
-            child: DialogPickerDial(
-              duration: currentSelectedDuration ?? Duration(minutes: 1),
-              onChanged: (newSelectedDuration) {
-                setState(() {
-                  currentSelectedDuration = newSelectedDuration;
-                });
-              },
-              snapToMins: 1.0,
+  Widget build(BuildContext context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // DurationPickerDialogBody(
+          //   initialTime: currentDuration ?? Duration(minutes: 1),),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: AspectRatio(
+              aspectRatio: 1.0,
+              child: DialogPickerDial(
+                duration: currentSelectedDuration ?? Duration(minutes: 1),
+                onChanged: (newSelectedDuration) {
+                  setState(() {
+                    currentSelectedDuration = newSelectedDuration;
+                  });
+                },
+                snapToMins: 1.0,
+              ),
             ),
           ),
-        ),
-        Container(
-          // todo: refactor
-          // ignore: no-magic-number
-          height: 56,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              FediPrimaryFilledTextButtonWithBorder(
-                S.of(context).app_duration_picker_action_done,
-                onPressed: () {
-                  Navigator.pop(context, currentSelectedDuration);
-                },
-                expanded: false,
-              ),
-              if (widget.isDeletePossible)
-                FediTransparentTextButtonWithBorder(
-                  S.of(context).app_duration_picker_action_delete,
-                  color: IFediUiColorTheme.of(context).primary,
+          Container(
+            // todo: refactor
+            // ignore: no-magic-number
+            height: 56,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                FediPrimaryFilledTextButtonWithBorder(
+                  S.of(context).app_duration_picker_action_done,
                   onPressed: () {
-                    widget.deleteCallback();
-                    Navigator.pop(context, null);
+                    Navigator.pop(context, currentSelectedDuration);
                   },
                   expanded: false,
                 ),
-              FediTransparentTextButtonWithBorder(
-                S.of(context).app_duration_picker_action_cancel,
-                color: IFediUiColorTheme.of(context).darkGrey,
-                onPressed: () {
-                  widget.cancelCallback();
-                  Navigator.pop(context, currentSelectedDuration);
-                },
-                expanded: false,
-              ),
-            ],
+                if (widget.isDeletePossible)
+                  FediTransparentTextButtonWithBorder(
+                    S.of(context).app_duration_picker_action_delete,
+                    color: IFediUiColorTheme.of(context).primary,
+                    onPressed: () {
+                      widget.deleteCallback();
+                      Navigator.pop(context, null);
+                    },
+                    expanded: false,
+                  ),
+                FediTransparentTextButtonWithBorder(
+                  S.of(context).app_duration_picker_action_cancel,
+                  color: IFediUiColorTheme.of(context).darkGrey,
+                  onPressed: () {
+                    widget.cancelCallback();
+                    Navigator.pop(context, currentSelectedDuration);
+                  },
+                  expanded: false,
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
-    );
-  }
+        ],
+      );
 }

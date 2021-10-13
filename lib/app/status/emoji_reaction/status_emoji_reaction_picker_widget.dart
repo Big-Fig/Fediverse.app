@@ -13,45 +13,42 @@ typedef EmojiReactionSelectedCallback = Function(
 class StatusEmojiReactionPickerWidget extends StatelessWidget {
   final EmojiReactionSelectedCallback emojiReactionSelectedCallback;
 
-  StatusEmojiReactionPickerWidget({
+  const StatusEmojiReactionPickerWidget({
     required this.emojiReactionSelectedCallback,
   });
 
   @override
-  Widget build(BuildContext context) {
-    return EmojiPickerWidget(
-      // ignore: no-magic-number
-      selectedCategoryItemsGridHeight: 200,
-      // ignore: no-magic-number
-      rowsCount: 5,
-      onEmojiSelected: (emoji) {
-        emojiReactionSelectedCallback(context, emoji.name, emoji.code);
-      },
-      useImageEmoji: false,
-    );
-  }
+  Widget build(BuildContext context) => EmojiPickerWidget(
+        // ignore: no-magic-number
+        selectedCategoryItemsGridHeight: 200,
+        // ignore: no-magic-number
+        rowsCount: 5,
+        onEmojiSelected: (emoji) {
+          emojiReactionSelectedCallback(context, emoji.name, emoji.code);
+        },
+        useImageEmoji: false,
+      );
 }
 
-void showEmojiPickerModalPopup(
+Future<void> showEmojiPickerModalPopup(
   BuildContext context, {
   EmojiReactionSelectedCallback? emojiReactionSelectedCallback,
-}) {
-  showFediModalBottomSheetDialog(
-    context: context,
-    child: Padding(
-      padding: FediPadding.horizontalSmallPadding,
-      child: StatusEmojiReactionPickerWidget(
-        emojiReactionSelectedCallback: (
-          BuildContext context,
-          String emojiName,
-          String emoji,
-        ) {
-          if (emojiReactionSelectedCallback != null) {
-            emojiReactionSelectedCallback(context, emojiName, emoji);
-          }
-          Navigator.of(context).pop();
-        },
+}) =>
+    showFediModalBottomSheetDialog<void>(
+      context: context,
+      child: Padding(
+        padding: FediPadding.horizontalSmallPadding,
+        child: StatusEmojiReactionPickerWidget(
+          emojiReactionSelectedCallback: (
+            BuildContext context,
+            String emojiName,
+            String emoji,
+          ) {
+            if (emojiReactionSelectedCallback != null) {
+              emojiReactionSelectedCallback(context, emojiName, emoji);
+            }
+            Navigator.of(context).pop();
+          },
+        ),
       ),
-    ),
-  );
-}
+    );

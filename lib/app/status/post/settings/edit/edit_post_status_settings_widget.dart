@@ -17,17 +17,15 @@ class EditPostStatusSettingsWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: shrinkWrap ? MainAxisSize.min : MainAxisSize.max,
-      children: [
-        const _EditPostStatusSettingsDefaultVisibilityFieldWidget(),
-        const _EditPostStatusSettingsMarkMediaAsNsfwOnAttachWidget(),
-        const _EditPostStatusSettingsDontUploadMediaDuringEditingWidget(),
-        const _EditPostStatusSettingsDefaultStatusLocaleFieldWidget(),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => Column(
+        mainAxisSize: shrinkWrap ? MainAxisSize.min : MainAxisSize.max,
+        children: [
+          const _EditPostStatusSettingsDefaultVisibilityFieldWidget(),
+          const _EditPostStatusSettingsMarkMediaAsNsfwOnAttachWidget(),
+          const _EditPostStatusSettingsDontUploadMediaDuringEditingWidget(),
+          const _EditPostStatusSettingsDefaultStatusLocaleFieldWidget(),
+        ],
+      );
 }
 
 class _EditPostStatusSettingsMarkMediaAsNsfwOnAttachWidget
@@ -37,17 +35,16 @@ class _EditPostStatusSettingsMarkMediaAsNsfwOnAttachWidget
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IEditPostStatusSettingsBloc, IBoolValueFormFieldBloc>(
-      update: (context, value, previous) =>
-          value.markMediaAsNsfwOnAttachFormFieldBloc,
-      child: BoolValueFormFieldRowWidget(
-        label: S
-            .of(context)
-            .app_status_post_settings_field_markMediaAsNsfwOnAttach_label,
-      ),
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IEditPostStatusSettingsBloc, IBoolValueFormFieldBloc>(
+        update: (context, value, previous) =>
+            value.markMediaAsNsfwOnAttachFormFieldBloc,
+        child: BoolValueFormFieldRowWidget(
+          label: S
+              .of(context)
+              .app_status_post_settings_field_markMediaAsNsfwOnAttach_label,
+        ),
+      );
 }
 
 class _EditPostStatusSettingsDontUploadMediaDuringEditingWidget
@@ -57,17 +54,16 @@ class _EditPostStatusSettingsDontUploadMediaDuringEditingWidget
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IEditPostStatusSettingsBloc, IBoolValueFormFieldBloc>(
-      update: (context, value, previous) =>
-          value.dontUploadMediaDuringEditingFormFieldBloc,
-      child: BoolValueFormFieldRowWidget(
-        label: S
-            .of(context)
-            .app_status_post_settings_field_dontUploadMediaDuringEditing_label,
-      ),
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IEditPostStatusSettingsBloc, IBoolValueFormFieldBloc>(
+        update: (context, value, previous) =>
+            value.dontUploadMediaDuringEditingFormFieldBloc,
+        child: BoolValueFormFieldRowWidget(
+          label: S
+              .of(context)
+              .app_status_post_settings_field_dontUploadMediaDuringEditing_label,
+        ),
+      );
 }
 
 class _EditPostStatusSettingsDefaultStatusLocaleFieldWidget
@@ -77,14 +73,13 @@ class _EditPostStatusSettingsDefaultStatusLocaleFieldWidget
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IEditPostStatusSettingsBloc,
-        ILocalizationLocaleSingleFromListValueFormFieldBloc>(
-      update: (context, value, previous) =>
-          value.defaultStatusLocaleFormFieldBloc,
-      child: const LocalizationLocaleSingleFromListValueFormFieldRowWidget(),
-    );
-  }
+  Widget build(BuildContext context) => ProxyProvider<
+          IEditPostStatusSettingsBloc,
+          ILocalizationLocaleSingleFromListValueFormFieldBloc>(
+        update: (context, value, previous) =>
+            value.defaultStatusLocaleFormFieldBloc,
+        child: const LocalizationLocaleSingleFromListValueFormFieldRowWidget(),
+      );
 }
 
 class _EditPostStatusSettingsDefaultVisibilityFieldWidget
@@ -94,13 +89,12 @@ class _EditPostStatusSettingsDefaultVisibilityFieldWidget
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IEditPostStatusSettingsBloc,
-        IStatusVisibilitySelectSingleFromListValueFormFieldBloc>(
-      update: (context, value, previous) =>
-          value.defaultVisibilityFormFieldBloc,
-      child:
-          const StatusVisibilitySelectSingleFromListValueFormFieldRowWidget(),
-    );
-  }
+  Widget build(BuildContext context) => ProxyProvider<
+          IEditPostStatusSettingsBloc,
+          IStatusVisibilitySelectSingleFromListValueFormFieldBloc>(
+        update: (context, value, previous) =>
+            value.defaultVisibilityFormFieldBloc,
+        child:
+            const StatusVisibilitySelectSingleFromListValueFormFieldRowWidget(),
+      );
 }

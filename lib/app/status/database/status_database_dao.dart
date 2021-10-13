@@ -114,9 +114,9 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
   Stream<DbStatusPopulated?> watchByOldPendingRemoteId(
     String oldPendingRemoteId,
   ) =>
-      (_findByOldPendingRemoteId(oldPendingRemoteId).watchSingleOrNull().map(
+      _findByOldPendingRemoteId(oldPendingRemoteId).watchSingleOrNull().map(
             (typedResult) => typedResult?.toDbStatusPopulated(dao: this),
-          ));
+          );
 
   JoinedSelectStatement _findByOldPendingRemoteId(
     String? oldPendingRemoteId,
@@ -155,8 +155,10 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
     String? localDomain,
   ) =>
       query
-        ..where((status) =>
-            status.local.equals(true) | status.url.like('%$localDomain%'));
+        ..where(
+          (status) =>
+              status.local.equals(true) | status.url.like('%$localDomain%'),
+        );
 
   // todo: improve performance: remove url.like filter. Add local flag on insert
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyRemoteWhere(
@@ -164,8 +166,10 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
     String? localDomain,
   ) =>
       query
-        ..where((status) => (status.local.equals(true).not() &
-            status.url.like('%$localDomain%').not()));
+        ..where(
+          (status) => (status.local.equals(true).not() &
+              status.url.like('%$localDomain%').not()),
+        );
 
   // todo: improve performance: remove url.like filter. Add local flag on insert
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyFromInstanceWhere(
@@ -238,37 +242,45 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
     String? accountRemoteId,
   ) =>
       query
-        ..where(CustomExpression<bool>(
-          "$_accountFollowingsAliasId.account_remote_id = '$accountRemoteId'",
-        ));
+        ..where(
+          CustomExpression<bool>(
+            "$_accountFollowingsAliasId.account_remote_id = '$accountRemoteId'",
+          ),
+        );
 
   JoinedSelectStatement addHashtagWhere(
     JoinedSelectStatement query,
     String? hashtag,
   ) =>
       query
-        ..where(CustomExpression<bool>(
-          "$_statusHashtagsAliasId.hashtag = '$hashtag'",
-        ));
+        ..where(
+          CustomExpression<bool>(
+            "$_statusHashtagsAliasId.hashtag = '$hashtag'",
+          ),
+        );
 
   JoinedSelectStatement addListWhere(
     JoinedSelectStatement query,
     String? listRemoteId,
   ) =>
       query
-        ..where(CustomExpression<bool>(
-          "$_statusListsAliasId.list_remote_id = '$listRemoteId'",
-        ));
+        ..where(
+          CustomExpression<bool>(
+            "$_statusListsAliasId.list_remote_id = '$listRemoteId'",
+          ),
+        );
 
   JoinedSelectStatement addConversationWhere(
     JoinedSelectStatement query,
     String? conversationRemoteId,
   ) =>
       query
-        ..where(CustomExpression<bool>(
-          '$_conversationStatusesAliasId.conversation_remote_id'
-          " = '$conversationRemoteId'",
-        ));
+        ..where(
+          CustomExpression<bool>(
+            '$_conversationStatusesAliasId.conversation_remote_id'
+            " = '$conversationRemoteId'",
+          ),
+        );
 
   JoinedSelectStatement addReplyToAccountSelfOrFollowingWhere(
     JoinedSelectStatement query,
@@ -371,9 +383,11 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
     String? accountRemoteId,
   ) =>
           query
-            ..where((status) =>
-                status.inReplyToAccountRemoteId.isNull() |
-                status.inReplyToAccountRemoteId.equals(accountRemoteId));
+            ..where(
+              (status) =>
+                  status.inReplyToAccountRemoteId.isNull() |
+                  status.inReplyToAccountRemoteId.equals(accountRemoteId),
+            );
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyNoRepliesWhere(
     SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
@@ -402,9 +416,11 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
     List<StatusRepositoryOrderingTermData> orderTerms,
   ) =>
       query
-        ..orderBy(orderTerms
-            .map((orderTerm) => (item) {
-                  var expression;
+        ..orderBy(
+          orderTerms
+              .map(
+                (orderTerm) => ($DbStatusesTable item) {
+                  GeneratedColumn<Object?> expression;
                   switch (orderTerm.orderByType) {
                     case StatusRepositoryOrderType.remoteId:
                       expression = item.remoteId;
@@ -418,108 +434,110 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
                     expression: expression,
                     mode: orderTerm.orderingMode,
                   );
-                })
-            .toList());
+                },
+              )
+              .toList(),
+        );
 
   // ignore: long-method
   List<Join> populateStatusJoin({
-    required includeAccountFollowing,
-    required includeReplyToAccountFollowing,
-    required includeStatusHashtags,
-    required includeStatusLists,
-    required includeConversations,
-    required includeHomeTimeline,
-  }) {
-    return [
-      ...(includeHomeTimeline
-          ? [
-              innerJoin(
-                homeTimelineStatusesAlias,
-                homeTimelineStatusesAlias.statusRemoteId
-                    .equalsExp(dbStatuses.remoteId),
-              ),
-            ]
-          : []),
-      // todo: think about leftOuterJoin and nullable account field
-      // or foreign keys
-      // in some cases status may already exist in local database,
-      // but account still not added
-      // leftOuterJoin(
-      innerJoin(
-        accountAlias,
-        accountAlias.remoteId.equalsExp(dbStatuses.accountRemoteId),
-      ),
-      leftOuterJoin(
-        reblogAlias,
-        reblogAlias.remoteId.equalsExp(dbStatuses.reblogStatusRemoteId),
-      ),
-      leftOuterJoin(
-        reblogAccountAlias,
-        reblogAccountAlias.remoteId.equalsExp(reblogAlias.accountRemoteId),
-      ),
-      leftOuterJoin(
-        replyAlias,
-        replyAlias.remoteId.equalsExp(dbStatuses.inReplyToRemoteId),
-      ),
-      leftOuterJoin(
-        replyAccountAlias,
-        replyAccountAlias.remoteId.equalsExp(replyAlias.accountRemoteId),
-      ),
-      leftOuterJoin(
-        replyReblogAlias,
-        replyReblogAlias.remoteId.equalsExp(replyAlias.reblogStatusRemoteId),
-      ),
-      leftOuterJoin(
-        replyReblogAccountAlias,
-        replyReblogAccountAlias.remoteId
-            .equalsExp(replyReblogAlias.accountRemoteId),
-      ),
-      ...(includeAccountFollowing
-          ? [
-              innerJoin(
-                accountFollowingsAlias,
-                accountFollowingsAlias.followingAccountRemoteId
-                    .equalsExp(dbStatuses.accountRemoteId),
-              ),
-            ]
-          : []),
-      ...(includeReplyToAccountFollowing
-          ? [
-              leftOuterJoin(
-                replyToAccountFollowingsAlias,
-                replyToAccountFollowingsAlias.followingAccountRemoteId
-                    .equalsExp(dbStatuses.inReplyToAccountRemoteId),
-              ),
-            ]
-          : []),
-      ...(includeStatusHashtags
-          ? [
-              innerJoin(
-                statusHashtagsAlias,
-                statusHashtagsAlias.statusRemoteId
-                    .equalsExp(dbStatuses.remoteId),
-              ),
-            ]
-          : []),
-      ...(includeStatusLists
-          ? [
-              innerJoin(
-                statusListsAlias,
-                statusListsAlias.statusRemoteId.equalsExp(dbStatuses.remoteId),
-              ),
-            ]
-          : []),
-      ...(includeConversations
-          ? [
-              innerJoin(
-                conversationStatusesAlias,
-                conversationStatusesAlias.statusRemoteId
-                    .equalsExp(dbStatuses.remoteId),
-              ),
-            ]
-          : []),
-    ];
-  }
+    required bool includeAccountFollowing,
+    required bool includeReplyToAccountFollowing,
+    required bool includeStatusHashtags,
+    required bool includeStatusLists,
+    required bool includeConversations,
+    required bool includeHomeTimeline,
+  }) =>
+      [
+        ...includeHomeTimeline
+            ? [
+                innerJoin(
+                  homeTimelineStatusesAlias,
+                  homeTimelineStatusesAlias.statusRemoteId
+                      .equalsExp(dbStatuses.remoteId),
+                ),
+              ]
+            : [],
+        // todo: think about leftOuterJoin and nullable account field
+        // or foreign keys
+        // in some cases status may already exist in local database,
+        // but account still not added
+        // leftOuterJoin(
+        innerJoin(
+          accountAlias,
+          accountAlias.remoteId.equalsExp(dbStatuses.accountRemoteId),
+        ),
+        leftOuterJoin(
+          reblogAlias,
+          reblogAlias.remoteId.equalsExp(dbStatuses.reblogStatusRemoteId),
+        ),
+        leftOuterJoin(
+          reblogAccountAlias,
+          reblogAccountAlias.remoteId.equalsExp(reblogAlias.accountRemoteId),
+        ),
+        leftOuterJoin(
+          replyAlias,
+          replyAlias.remoteId.equalsExp(dbStatuses.inReplyToRemoteId),
+        ),
+        leftOuterJoin(
+          replyAccountAlias,
+          replyAccountAlias.remoteId.equalsExp(replyAlias.accountRemoteId),
+        ),
+        leftOuterJoin(
+          replyReblogAlias,
+          replyReblogAlias.remoteId.equalsExp(replyAlias.reblogStatusRemoteId),
+        ),
+        leftOuterJoin(
+          replyReblogAccountAlias,
+          replyReblogAccountAlias.remoteId
+              .equalsExp(replyReblogAlias.accountRemoteId),
+        ),
+        ...includeAccountFollowing
+            ? [
+                innerJoin(
+                  accountFollowingsAlias,
+                  accountFollowingsAlias.followingAccountRemoteId
+                      .equalsExp(dbStatuses.accountRemoteId),
+                ),
+              ]
+            : [],
+        ...includeReplyToAccountFollowing
+            ? [
+                leftOuterJoin(
+                  replyToAccountFollowingsAlias,
+                  replyToAccountFollowingsAlias.followingAccountRemoteId
+                      .equalsExp(dbStatuses.inReplyToAccountRemoteId),
+                ),
+              ]
+            : [],
+        ...includeStatusHashtags
+            ? [
+                innerJoin(
+                  statusHashtagsAlias,
+                  statusHashtagsAlias.statusRemoteId
+                      .equalsExp(dbStatuses.remoteId),
+                ),
+              ]
+            : [],
+        ...includeStatusLists
+            ? [
+                innerJoin(
+                  statusListsAlias,
+                  statusListsAlias.statusRemoteId
+                      .equalsExp(dbStatuses.remoteId),
+                ),
+              ]
+            : [],
+        ...includeConversations
+            ? [
+                innerJoin(
+                  conversationStatusesAlias,
+                  conversationStatusesAlias.statusRemoteId
+                      .equalsExp(dbStatuses.remoteId),
+                ),
+              ]
+            : [],
+      ];
 
   Future incrementRepliesCount({required String? remoteId}) {
     var update = 'UPDATE db_statuses '
@@ -572,13 +590,16 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
     required StatusRepositoryFilters? filters,
   }) {
     assert(
-        !(filters?.onlyLocalCondition != null &&
-            filters?.onlyRemoteCondition != null),
-        "onlyLocalCondition && onlyRemoteCondition  can't be set both");
+      !(filters?.onlyLocalCondition != null &&
+          filters?.onlyRemoteCondition != null),
+      "onlyLocalCondition && onlyRemoteCondition  can't be set both",
+    );
 
     if (filters?.onlyFromInstance?.isNotEmpty == true) {
-      assert(filters?.onlyRemoteCondition != null,
-          'onlyRemoteCondition should be notNull if onlyFromInstance was set');
+      assert(
+        filters?.onlyRemoteCondition != null,
+        'onlyRemoteCondition should be notNull if onlyFromInstance was set',
+      );
 
       addOnlyFromInstanceWhere(
         query,
@@ -819,9 +840,8 @@ extension TypedResultDbStatusPopulatedExtension on TypedResult {
 extension TypedResultListDbStatusPopulatedExtension on List<TypedResult> {
   List<DbStatusPopulated> toDbStatusPopulatedList({
     required StatusDao dao,
-  }) {
-    return map(
-      (typedResult) => typedResult.toDbStatusPopulated(dao: dao),
-    ).toList();
-  }
+  }) =>
+      map(
+        (typedResult) => typedResult.toDbStatusPopulated(dao: dao),
+      ).toList();
 }

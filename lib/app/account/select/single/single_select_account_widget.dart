@@ -28,25 +28,24 @@ class SingleSelectAccountWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return AccountPaginationListWidget(
-      accountActions: accountActions,
-      accountSelectedCallback: (context, account) {
-        if (accountSelectedCallback != null) {
-          var selectAccountListBloc =
-              ISelectAccountListBloc.of(context, listen: false);
+  Widget build(BuildContext context) => AccountPaginationListWidget(
+        accountActions: accountActions,
+        accountSelectedCallback: (context, account) {
+          if (accountSelectedCallback != null) {
+            var selectAccountListBloc =
+                ISelectAccountListBloc.of(context, listen: false);
 
-          selectAccountListBloc.onAccountSelected(account);
-          accountSelectedCallback!(context, account);
-        }
-      },
-      itemPadding: itemPadding,
-      key: PageStorageKey('SingleSelectAccountWidget'),
-      isNeedPreFetchRelationship: isNeedPreFetchRelationship,
-      header: header,
-      footer: footer,
-      alwaysShowHeader: alwaysShowHeader,
-      alwaysShowFooter: alwaysShowFooter,
-    );
-  }
+            // ignore: cascade_invocations
+            selectAccountListBloc.onAccountSelected(account);
+            accountSelectedCallback!(context, account);
+          }
+        },
+        itemPadding: itemPadding,
+        key: PageStorageKey('SingleSelectAccountWidget'),
+        isNeedPreFetchRelationship: isNeedPreFetchRelationship,
+        header: header,
+        footer: footer,
+        alwaysShowHeader: alwaysShowHeader,
+        alwaysShowFooter: alwaysShowFooter,
+      );
 }

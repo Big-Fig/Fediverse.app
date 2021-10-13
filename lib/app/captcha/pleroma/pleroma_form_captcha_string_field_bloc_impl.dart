@@ -20,7 +20,8 @@ class PleromaFormCaptchaStringFieldBloc extends StringValueFormFieldBloc
 
   final BehaviorSubject<bool> isLoadingSubject = BehaviorSubject.seeded(false);
   final BehaviorSubject<UnifediApiCaptcha?> captchaSubject = BehaviorSubject();
-  final BehaviorSubject<dynamic> captchaLoadingErrorSubject = BehaviorSubject();
+  final BehaviorSubject<dynamic> captchaLoadingErrorSubject =
+      BehaviorSubject<dynamic>();
   final BehaviorSubject<DateTime?> captchaLoadedDateTimeSubject =
       BehaviorSubject();
 
@@ -39,10 +40,10 @@ class PleromaFormCaptchaStringFieldBloc extends StringValueFormFieldBloc
         isHaveCaptchaLoadingErrorStream,
         isDisabledOnServerSideStream,
         (
-          dynamic superIsHaveAtLeastOneError,
-          dynamic isLoading,
-          dynamic isHaveCaptchaLoadingError,
-          dynamic isDisabledOnServerSide,
+          bool superIsHaveAtLeastOneError,
+          bool isLoading,
+          bool isHaveCaptchaLoadingError,
+          bool? isDisabledOnServerSide,
         ) =>
             _calculateIsHaveAtLeastOneError(
           isLoading: isLoading,
@@ -182,10 +183,12 @@ class PleromaFormCaptchaStringFieldBloc extends StringValueFormFieldBloc
             differenceAbsInSeconds + checkCaptchaExpiredDurationInSeconds;
         var secondsValid = captcha?.secondsValid;
         var isNeedReload = secondsValid == null || totalSeconds > secondsValid;
-        _logger.finest(() => '_checkForReload '
-            'isNeedReload $isNeedReload '
-            'totalSeconds $totalSeconds '
-            'secondsValid $secondsValid');
+        _logger.finest(
+          () => '_checkForReload '
+              'isNeedReload $isNeedReload '
+              'totalSeconds $totalSeconds '
+              'secondsValid $secondsValid',
+        );
         if (isNeedReload) {
           reloadCaptcha();
         }

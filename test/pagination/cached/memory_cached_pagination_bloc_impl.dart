@@ -137,20 +137,19 @@ class MemoryCachedPaginationBloc<TItem>
     required int size,
     required PaginationPageSize paginationPageSize,
     required int? maximumCachedPagesCount,
-  }) {
-    return MemoryCachedPaginationBloc(
-      maximumCachedPagesCount: maximumCachedPagesCount,
-      paginationSettingsBloc: MemoryPaginationSettingsBloc(
-        paginationPageSize: paginationPageSize,
-      ),
-      items: List.generate(
-        size,
-        (index) => PaginationItemTest(
-          index,
+  }) =>
+      MemoryCachedPaginationBloc(
+        maximumCachedPagesCount: maximumCachedPagesCount,
+        paginationSettingsBloc: MemoryPaginationSettingsBloc(
+          paginationPageSize: paginationPageSize,
         ),
-      ),
-    );
-  }
+        items: List.generate(
+          size,
+          (index) => PaginationItemTest(
+            index,
+          ),
+        ),
+      );
 
   @override
   CachedPaginationPage<TItem> createPage({
@@ -198,7 +197,6 @@ class MemoryCachedPaginationBloc<TItem>
     int? itemsCountPerPage,
     CachedPaginationPage<TItem>? olderPage,
     CachedPaginationPage<TItem>? newerPage,
-  }) async {
-    return true;
-  }
+  }) async =>
+      true;
 }

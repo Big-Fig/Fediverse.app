@@ -31,8 +31,9 @@ class JoinUnifediApiAccessBloc extends DisposableOwner
     hostFocusNode.disposeWith(this);
 
     // don't need to await we start init but don't need wait to finish
-    serverListAutoCompleteBloc.performAsyncInit();
-    serverListAutoCompleteBloc.disposeWith(this);
+    serverListAutoCompleteBloc
+      ..performAsyncInit()
+      ..disposeWith(this);
   }
 
   @override
@@ -72,15 +73,14 @@ class JoinUnifediApiAccessBloc extends DisposableOwner
     BuildContext context, {
     required Widget child,
     required bool isFromScratch,
-  }) {
-    return DisposableProvider<IJoinUnifediApiAccessBloc>(
-      create: (context) => JoinUnifediApiAccessBloc.createFromContext(
-        context,
-        isFromScratch: isFromScratch,
-      ),
-      child: JoinUnifediApiAccessBlocProxyProvider(
-        child: child,
-      ),
-    );
-  }
+  }) =>
+      DisposableProvider<IJoinUnifediApiAccessBloc>(
+        create: (context) => JoinUnifediApiAccessBloc.createFromContext(
+          context,
+          isFromScratch: isFromScratch,
+        ),
+        child: JoinUnifediApiAccessBlocProxyProvider(
+          child: child,
+        ),
+      );
 }

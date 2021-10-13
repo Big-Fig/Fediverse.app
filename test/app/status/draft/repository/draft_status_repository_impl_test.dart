@@ -174,7 +174,7 @@ void main() {
           .copyWith(updatedAt: DateTime(2006)),
     );
 
-    var all = (await draftStatusRepository.getAllInDbType());
+    var all = await draftStatusRepository.getAllInDbType();
     expect(all.length, 3);
     expect((await query.get()).length, 1);
     await DraftStatusRepositoryMockHelper.insertDbDraftStatus(

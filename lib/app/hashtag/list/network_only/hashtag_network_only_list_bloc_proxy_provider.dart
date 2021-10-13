@@ -8,17 +8,15 @@ import 'package:provider/provider.dart';
 class HashtagNetworkOnlyListBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  HashtagNetworkOnlyListBlocProxyProvider({required this.child});
+  const HashtagNetworkOnlyListBlocProxyProvider({required this.child});
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IHashtagNetworkOnlyListBloc,
-        INetworkOnlyListBloc<IHashtag>>(
-      update: (context, value, previous) => value,
-      child: ProxyProvider<IHashtagNetworkOnlyListBloc, IHashtagListBloc>(
+  Widget build(BuildContext context) => ProxyProvider<
+          IHashtagNetworkOnlyListBloc, INetworkOnlyListBloc<IHashtag>>(
         update: (context, value, previous) => value,
-        child: child,
-      ),
-    );
-  }
+        child: ProxyProvider<IHashtagNetworkOnlyListBloc, IHashtagListBloc>(
+          update: (context, value, previous) => value,
+          child: child,
+        ),
+      );
 }

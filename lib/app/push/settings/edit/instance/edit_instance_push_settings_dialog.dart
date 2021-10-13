@@ -40,6 +40,7 @@ void showEditInstancePushSettingsDialog({
   } else {
     var toastService = IToastService.of(context, listen: false);
 
+    // ignore: cascade_invocations
     toastService.showErrorToast(
       context: context,
       title: S.of(context).app_push_disabled_notification_title,

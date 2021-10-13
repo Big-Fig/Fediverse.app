@@ -63,8 +63,8 @@ void goToMultiSelectAccountPage(
 }) {
   Navigator.push(
     context,
-    MaterialPageRoute(builder: (context) {
-      return SelectAccountListBloc.provideToContext(
+    MaterialPageRoute<void>(
+      builder: (context) => SelectAccountListBloc.provideToContext(
         context,
         excludeMyAccount: excludeMyAccount,
         child: AccountCachedPaginationBloc.provideToContext(
@@ -82,7 +82,7 @@ void goToMultiSelectAccountPage(
         customLocalAccountListLoader: customLocalAccountListLoader,
         customRemoteAccountListLoader: customRemoteAccountListLoader,
         followingsOnly: followingsOnly,
-      );
-    }),
+      ),
+    ),
   );
 }

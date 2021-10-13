@@ -70,11 +70,9 @@ class _NotificationListItemBodyDismissedWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return FediBlurredOverlayWarningWidget(
-      descriptionText: S.of(context).app_notification_dismissed,
-    );
-  }
+  Widget build(BuildContext context) => FediBlurredOverlayWarningWidget(
+        descriptionText: S.of(context).app_notification_dismissed,
+      );
 }
 
 class _NotificationListItemBodyWidget extends StatelessWidget {
@@ -132,7 +130,7 @@ class _NotificationListItemBodyDismissActionWidget extends StatelessWidget {
       caption: S.of(context).app_notification_action_dismiss,
       color: IFediUiColorTheme.of(context).white,
       onTap: () {
-        PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+        PleromaAsyncOperationHelper.performPleromaAsyncOperation<void>(
           context: context,
           showProgressDialog: false,
           asyncCode: () => notificationBloc.dismiss(),
@@ -156,7 +154,7 @@ class _NotificationListItemBodyMarkAsReadActionWidget extends StatelessWidget {
       caption: S.of(context).app_notification_action_markAsRead,
       color: IFediUiColorTheme.of(context).white,
       onTap: () {
-        PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+        PleromaAsyncOperationHelper.performPleromaAsyncOperation<void>(
           context: context,
           showProgressDialog: false,
           asyncCode: () => notificationBloc.markAsRead(),
@@ -197,29 +195,27 @@ class _NotificationListItemBodySlidableChildContentWidget
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: FediSizes.bigPadding,
-        vertical: FediSizes.bigPadding + FediSizes.smallPadding,
-      ),
-      child: Column(
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              const _NotificationListItemAvatarWidget(),
-              const FediBigHorizontalSpacer(),
-              const Expanded(
-                child: _NotificationListItemBodyMainAreaWidget(),
-              ),
-              const FediBigHorizontalSpacer(),
-              const _NotificationListItemCreatedAtWidget(),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: FediSizes.bigPadding,
+          vertical: FediSizes.bigPadding + FediSizes.smallPadding,
+        ),
+        child: Column(
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                const _NotificationListItemAvatarWidget(),
+                const FediBigHorizontalSpacer(),
+                const Expanded(
+                  child: _NotificationListItemBodyMainAreaWidget(),
+                ),
+                const FediBigHorizontalSpacer(),
+                const _NotificationListItemCreatedAtWidget(),
+              ],
+            ),
+          ],
+        ),
+      );
 }
 
 class _NotificationListItemBodyMainAreaWidget extends StatelessWidget {
@@ -228,31 +224,29 @@ class _NotificationListItemBodyMainAreaWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        _onNotificationClick(context);
-      },
-      onLongPress: () {
-        _onNotificationLongPress(context);
-      },
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          const _NotificationListItemAccountDisplayNameWidget(),
-          Row(
-            children: [
-              const _NotificationListItemIconWidget(),
-              const Expanded(
-                child: _NotificationListItemContentWidget(),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
+  Widget build(BuildContext context) => InkWell(
+        onTap: () {
+          _onNotificationClick(context);
+        },
+        onLongPress: () {
+          _onNotificationLongPress(context);
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            const _NotificationListItemAccountDisplayNameWidget(),
+            Row(
+              children: [
+                const _NotificationListItemIconWidget(),
+                const Expanded(
+                  child: _NotificationListItemContentWidget(),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
 
   Future _onNotificationClick(BuildContext context) async {
     var notificationBloc = INotificationBloc.of(context, listen: false);
@@ -263,7 +257,7 @@ class _NotificationListItemBodyMainAreaWidget extends StatelessWidget {
   void _onNotificationLongPress(BuildContext context) {
     var notificationBloc = INotificationBloc.of(context, listen: false);
 
-    showFediModalBottomSheetDialog(
+    showFediModalBottomSheetDialog<void>(
       context: context,
       child: FediChooserDialogBody(
         title: S.of(context).app_notification_action_popup_title,
@@ -355,63 +349,62 @@ class _NotificationListItemContentWidget extends StatelessWidget {
   String _mapToRawText(
     BuildContext context,
     INotificationBloc notificationBloc,
-  ) {
-    return notificationBloc.typeAsUnifediApi.map(
-      follow: (_) => S.of(context).app_notification_header_follow,
-      favourite: (_) => S.of(context).app_notification_header_favourite,
-      reblog: (_) => S.of(context).app_notification_header_reblog,
-      mention: (_) {
-        var rawText =
-            '<b>${S.of(context).app_notification_header_mention_prefix}</b>';
-        rawText += S.of(context).app_notification_header_mention_postfix(
-              _extractStatusRawContent(notificationBloc)!,
-            );
+  ) =>
+      notificationBloc.typeAsUnifediApi.map(
+        follow: (_) => S.of(context).app_notification_header_follow,
+        favourite: (_) => S.of(context).app_notification_header_favourite,
+        reblog: (_) => S.of(context).app_notification_header_reblog,
+        mention: (_) {
+          var rawText =
+              '<b>${S.of(context).app_notification_header_mention_prefix}</b>';
 
-        return rawText;
-      },
-      poll: (_) => S.of(context).app_notification_header_poll,
-      move: (_) => S.of(context).app_notification_header_move,
-      followRequest: (_) => S.of(context).app_notification_header_followRequest,
-      emojiReaction: (_) =>
-          S.of(context).app_notification_header_pleromaEmojiReaction(
-                notificationBloc.notification.emoji!,
-              ),
-      chatMention: (_) {
-        var rawText =
-            '<b>${S.of(context).app_notification_header_pleromaChatMention_prefix}</b>';
-        rawText +=
-            S.of(context).app_notification_header_pleromaChatMention_postfix(
-                  _extractChatMessageRawContent(notificationBloc)!,
-                );
+          return rawText +
+              S.of(context).app_notification_header_mention_postfix(
+                    _extractStatusRawContent(notificationBloc)!,
+                  );
+        },
+        poll: (_) => S.of(context).app_notification_header_poll,
+        move: (_) => S.of(context).app_notification_header_move,
+        followRequest: (_) =>
+            S.of(context).app_notification_header_followRequest,
+        emojiReaction: (_) =>
+            S.of(context).app_notification_header_pleromaEmojiReaction(
+                  notificationBloc.notification.emoji!,
+                ),
+        chatMention: (_) {
+          var rawText =
+              '<b>${S.of(context).app_notification_header_pleromaChatMention_prefix}</b>';
 
-        return rawText;
-      },
-      report: (_) => S.of(context).app_notification_header_report(
-            notificationBloc.account?.acct ?? '',
-          ),
-      unknown: (_) {
-        var isHaveStatus = notificationBloc.status != null;
-        String? statusText;
-        if (isHaveStatus) {
-          statusText = _extractStatusRawContent(notificationBloc);
-        } else {
-          statusText = '';
-        }
+          return rawText +
+              S.of(context).app_notification_header_pleromaChatMention_postfix(
+                    _extractChatMessageRawContent(notificationBloc)!,
+                  );
+        },
+        report: (_) => S.of(context).app_notification_header_report(
+              notificationBloc.account?.acct ?? '',
+            ),
+        unknown: (_) {
+          var isHaveStatus = notificationBloc.status != null;
+          String? statusText;
+          if (isHaveStatus) {
+            statusText = _extractStatusRawContent(notificationBloc);
+          } else {
+            statusText = '';
+          }
 
-        var isHaveEmoji = notificationBloc.notification.emoji != null;
-        String? emojiText;
-        if (isHaveEmoji) {
-          emojiText = notificationBloc.notification.emoji;
-        } else {
-          emojiText = '';
-        }
+          var isHaveEmoji = notificationBloc.notification.emoji != null;
+          String? emojiText;
+          if (isHaveEmoji) {
+            emojiText = notificationBloc.notification.emoji;
+          } else {
+            emojiText = '';
+          }
 
-        return S.of(context).app_notification_header_unknown(
-              '${notificationBloc.typeAsUnifediApi.stringValue}: $emojiText $statusText',
-            );
-      },
-    );
-  }
+          return S.of(context).app_notification_header_unknown(
+                '${notificationBloc.typeAsUnifediApi.stringValue}: $emojiText $statusText',
+              );
+        },
+      );
 
   String? _extractStatusRawContent(INotificationBloc notificationBloc) {
     var content = notificationBloc.status?.content;
@@ -455,11 +448,9 @@ class _NotificationListItemAccountDisplayNameWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return AccountDisplayNameWidget(
-      textStyle: IFediUiTextTheme.of(context).bigTallDarkGrey,
-    );
-  }
+  Widget build(BuildContext context) => AccountDisplayNameWidget(
+        textStyle: IFediUiTextTheme.of(context).bigTallDarkGrey,
+      );
 }
 
 class _NotificationListItemIconWidget extends StatelessWidget {

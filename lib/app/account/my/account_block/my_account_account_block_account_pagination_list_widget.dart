@@ -14,17 +14,15 @@ class MyAccountAccountBlockAccountPaginationListWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return AccountPaginationListWidget(
-      customLoadingWidget: customLoadingWidget,
-      customEmptyWidget: customEmptyWidget,
-      accountActions: <Widget>[
-        _MyAccountAccountBlockAccountPaginationListRemoteAccountBlockActionWidget(),
-      ],
-      accountSelectedCallback: null,
-      key: PageStorageKey('MyAccountAccountBlockAccountPaginationListWidget'),
-    );
-  }
+  Widget build(BuildContext context) => AccountPaginationListWidget(
+        customLoadingWidget: customLoadingWidget,
+        customEmptyWidget: customEmptyWidget,
+        accountActions: <Widget>[
+          _MyAccountAccountBlockAccountPaginationListRemoteAccountBlockActionWidget(),
+        ],
+        accountSelectedCallback: null,
+        key: PageStorageKey('MyAccountAccountBlockAccountPaginationListWidget'),
+      );
 }
 
 class _MyAccountAccountBlockAccountPaginationListRemoteAccountBlockActionWidget

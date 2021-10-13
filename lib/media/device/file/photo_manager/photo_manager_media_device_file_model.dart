@@ -39,8 +39,10 @@ class PhotoManagerMediaDeviceFileMetadata
 
     if (type == MediaDeviceFileType.image) {
       var filePath = file!.absolute.path;
-      _logger.fine(() => 'retrieveFile \n'
-          '\t file $filePath');
+      _logger.fine(
+        () => 'retrieveFile \n'
+            '\t file $filePath',
+      );
       var extension = path.extension(filePath);
       if (extension == _heicExtension || Platform.isIOS) {
         // gallery may return photos in HEIC format
@@ -77,9 +79,11 @@ class PhotoManagerMediaDeviceFileMetadata
         path.basenameWithoutExtension(file.path);
     final resultPath =
         path.join(dirPath, '$originalFileNameWithoutExtension.jpg');
-    _logger.fine(() => '_compressToJpeg \n'
-        '\t originPath $originPath'
-        '\t resultPath $resultPath');
+    _logger.fine(
+      () => '_compressToJpeg \n'
+          '\t originPath $originPath'
+          '\t resultPath $resultPath',
+    );
     var result = await FlutterImageCompress.compressAndGetFile(
       originPath,
       resultPath,

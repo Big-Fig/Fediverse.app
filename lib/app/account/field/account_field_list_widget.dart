@@ -21,8 +21,10 @@ class AccountFieldListWidget extends StatelessWidget {
       builder: (context, snapshot) {
         var fields = snapshot.data;
 
-        var nonEmptyFields = fields?.where((field) =>
-            field.name?.isNotEmpty == true || field.value?.isNotEmpty == true);
+        var nonEmptyFields = fields?.where(
+          (field) =>
+              field.name?.isNotEmpty == true || field.value?.isNotEmpty == true,
+        );
 
         if (nonEmptyFields?.isNotEmpty == true) {
           return Padding(

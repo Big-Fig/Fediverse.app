@@ -17,8 +17,10 @@ class SearchStatusPaginationBloc extends SearchAdapterPaginationBloc<IStatus> {
   @override
   PaginationPage<IStatus> mapPage(PaginationPage<ISearchResultItem> page) {
     var items = page.items
-        .where((searchResultItem) =>
-            searchResultItem.type == SearchResultItemType.status)
+        .where(
+          (searchResultItem) =>
+              searchResultItem.type == SearchResultItemType.status,
+        )
         .map((searchResultItem) => searchResultItem.status!)
         .toList();
 
@@ -39,12 +41,10 @@ class SearchStatusPaginationBloc extends SearchAdapterPaginationBloc<IStatus> {
   static Widget provideToContext(
     BuildContext context, {
     required Widget child,
-  }) {
-    return DisposableProvider<
-        IPaginationBloc<PaginationPage<IStatus>, IStatus>>(
-      create: (context) =>
-          SearchStatusPaginationBloc.createFromContext(context),
-      child: child,
-    );
-  }
+  }) =>
+      DisposableProvider<IPaginationBloc<PaginationPage<IStatus>, IStatus>>(
+        create: (context) =>
+            SearchStatusPaginationBloc.createFromContext(context),
+        child: child,
+      );
 }

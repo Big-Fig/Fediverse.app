@@ -9,7 +9,7 @@ class PaginationPageSizeSingleFromListValueFormFieldBlocProxyProvider
     extends StatelessWidget {
   final Widget child;
 
-  PaginationPageSizeSingleFromListValueFormFieldBlocProxyProvider({
+  const PaginationPageSizeSingleFromListValueFormFieldBlocProxyProvider({
     required this.child,
   });
 

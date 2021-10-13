@@ -1,6 +1,6 @@
 import 'package:fedi/form/form_item_validation.dart';
 import 'package:fedi/generated/l10n.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/widgets.dart';
 
 enum PostMessageSelectedAction {
   attach,

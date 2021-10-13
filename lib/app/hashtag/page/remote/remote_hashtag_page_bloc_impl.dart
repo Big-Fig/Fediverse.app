@@ -54,20 +54,19 @@ class RemoteHashtagPageBloc extends HashtagPageBloc
     BuildContext context, {
     required IHashtag hashtag,
     required IRemoteInstanceBloc remoteInstanceBloc,
-  }) {
-    return RemoteHashtagPageBloc(
-      connectionService: Provider.of<IConnectionService>(
-        context,
-        listen: false,
-      ),
-      remoteInstanceBloc: remoteInstanceBloc,
-      hashtag: hashtag,
-      paginationSettingsBloc: IPaginationSettingsBloc.of(
-        context,
-        listen: false,
-      ),
-    );
-  }
+  }) =>
+      RemoteHashtagPageBloc(
+        connectionService: Provider.of<IConnectionService>(
+          context,
+          listen: false,
+        ),
+        remoteInstanceBloc: remoteInstanceBloc,
+        hashtag: hashtag,
+        paginationSettingsBloc: IPaginationSettingsBloc.of(
+          context,
+          listen: false,
+        ),
+      );
 
   static Widget provideToContext(
     BuildContext context, {

@@ -27,6 +27,7 @@ class RemoteStatusReplyLoaderBloc extends AsyncInitLoadingBloc
       originalStatus: originalStatus,
     );
 
+    // ignore: cascade_invocations
     bloc.addDisposable(unifediApiStatusService);
 
     return bloc;

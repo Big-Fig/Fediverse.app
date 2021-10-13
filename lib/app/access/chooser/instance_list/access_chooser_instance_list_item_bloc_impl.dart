@@ -14,15 +14,4 @@ class UnifediApiAccessChooserInstanceListItemBloc extends DisposableOwner
     required this.isSelected,
     required this.instance,
   });
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is UnifediApiAccessChooserInstanceListItemBloc &&
-          runtimeType == other.runtimeType &&
-          isSelected == other.isSelected &&
-          instance == other.instance;
-
-  @override
-  int get hashCode => isSelected.hashCode ^ instance.hashCode;
 }

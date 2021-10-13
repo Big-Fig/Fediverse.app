@@ -14,36 +14,34 @@ import 'package:flutter/material.dart';
 class DraftEditPostStatusPage extends StatelessWidget {
   final PostStatusDataCallback onBackPressed;
 
-  DraftEditPostStatusPage({required this.onBackPressed});
+  const DraftEditPostStatusPage({required this.onBackPressed});
 
   @override
-  Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        // todo: refactor
-        // ignore: unawaited_futures
-        handleBackPressed(context);
+  Widget build(BuildContext context) => WillPopScope(
+        onWillPop: () async {
+          // todo: refactor
+          // ignore: unawaited_futures
+          handleBackPressed(context);
 
-        return true;
-      },
-      child: Scaffold(
-        appBar: FediPageTitleAppBar(
-          title: S.of(context).app_status_draft_edit_title,
-          leading: FediDismissIconButton(
-            customOnPressed: () {
-              handleBackPressed(context);
-            },
+          return true;
+        },
+        child: Scaffold(
+          appBar: FediPageTitleAppBar(
+            title: S.of(context).app_status_draft_edit_title,
+            leading: FediDismissIconButton(
+              customOnPressed: () {
+                handleBackPressed(context);
+              },
+            ),
+            actions: [
+              const PostStatusAppBarPostAction(),
+            ],
           ),
-          actions: [
-            const PostStatusAppBarPostAction(),
-          ],
+          body: const SafeArea(
+            child: EditPostStatusWidget(),
+          ),
         ),
-        body: const SafeArea(
-          child: EditPostStatusWidget(),
-        ),
-      ),
-    );
-  }
+      );
 
   Future handleBackPressed(BuildContext context) async {
     var postStatusBloc = IPostStatusBloc.of(context, listen: false);
@@ -60,7 +58,7 @@ void goToDraftEditPostStatusPage(
   var draftStatusBloc = IDraftStatusBloc.of(context, listen: false);
   Navigator.push(
     context,
-    MaterialPageRoute(
+    MaterialPageRoute<void>(
       builder: (context) => EditPostStatusBloc.provideToContext(
         context,
         postStatusDataCallback: (IPostStatusData postStatusData) async {

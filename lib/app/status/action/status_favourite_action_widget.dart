@@ -16,14 +16,12 @@ class StatusFavouriteActionWidget extends StatelessWidget {
   const StatusFavouriteActionWidget({this.displayCounter = true});
 
   @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        const _StatusFavouriteActionButtonWidget(),
-        if (displayCounter) const _StatusFavouriteActionCounterWidget(),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => Row(
+        children: <Widget>[
+          const _StatusFavouriteActionButtonWidget(),
+          if (displayCounter) const _StatusFavouriteActionCounterWidget(),
+        ],
+      );
 }
 
 class _StatusFavouriteActionButtonWidget extends StatelessWidget {

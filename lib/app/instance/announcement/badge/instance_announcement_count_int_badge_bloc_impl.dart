@@ -25,25 +25,23 @@ class InstanceAnnouncementCountIntBadgeBloc extends DisposableOwner
 
   static InstanceAnnouncementCountIntBadgeBloc createFromContext(
     BuildContext context,
-  ) {
-    return InstanceAnnouncementCountIntBadgeBloc(
-      instanceAnnouncementRepository: IInstanceAnnouncementRepository.of(
-        context,
-        listen: false,
-      ),
-    );
-  }
+  ) =>
+      InstanceAnnouncementCountIntBadgeBloc(
+        instanceAnnouncementRepository: IInstanceAnnouncementRepository.of(
+          context,
+          listen: false,
+        ),
+      );
 
   static Widget provideToContext(
     BuildContext context, {
     required Widget child,
-  }) {
-    return DisposableProvider<IFediIntBadgeBloc>(
-      create: (context) =>
-          InstanceAnnouncementCountIntBadgeBloc.createFromContext(
-        context,
-      ),
-      child: child,
-    );
-  }
+  }) =>
+      DisposableProvider<IFediIntBadgeBloc>(
+        create: (context) =>
+            InstanceAnnouncementCountIntBadgeBloc.createFromContext(
+          context,
+        ),
+        child: child,
+      );
 }

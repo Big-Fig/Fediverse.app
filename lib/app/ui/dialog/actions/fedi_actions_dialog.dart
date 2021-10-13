@@ -3,13 +3,11 @@ import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/dialog/dialog_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class FediActionsDialog extends FediDialog {
   final String? contentText;
 
   FediActionsDialog({
-    required BuildContext context,
     required List<DialogAction> actions,
     required String title,
     this.contentText,

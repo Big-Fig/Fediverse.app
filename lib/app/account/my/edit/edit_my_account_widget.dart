@@ -52,36 +52,35 @@ class _EditMyAccountTopHeaderAndAvatarWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: _editAccountAvatarTopPadding +
-          _editAccountAvatarSize +
-          // ignore: no-magic-number
-          _editAccountAvatarCircleBorderWidth * 2,
-      child: Stack(
-        children: [
-          Container(
-            height: _editAccountHeaderHeight,
-            child: const EditMyAccountHeaderFieldWidget(),
-          ),
-          Positioned(
-            left: 0,
-            right: 0,
-            top: _editAccountAvatarTopPadding,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const EditMyAccountAvatarFieldWidget(
-                  avatarSize: _editAccountAvatarSize,
-                  avatarCircleBorderWidth: _editAccountAvatarCircleBorderWidth,
-                ),
-              ],
+  Widget build(BuildContext context) => Container(
+        height: _editAccountAvatarTopPadding +
+            _editAccountAvatarSize +
+            // ignore: no-magic-number
+            _editAccountAvatarCircleBorderWidth * 2,
+        child: Stack(
+          children: [
+            Container(
+              height: _editAccountHeaderHeight,
+              child: const EditMyAccountHeaderFieldWidget(),
             ),
-          ),
-        ],
-      ),
-    );
-  }
+            Positioned(
+              left: 0,
+              right: 0,
+              top: _editAccountAvatarTopPadding,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const EditMyAccountAvatarFieldWidget(
+                    avatarSize: _editAccountAvatarSize,
+                    avatarCircleBorderWidth:
+                        _editAccountAvatarCircleBorderWidth,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
 }
 
 class _EditMyAccountBodyWidget extends StatelessWidget {

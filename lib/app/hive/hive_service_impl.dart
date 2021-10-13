@@ -38,7 +38,7 @@ import 'package:fedi/localization/localization_model.dart';
 import 'package:fedi/push/push_model.dart';
 import 'package:fediverse_api/fediverse_api.dart';
 import 'package:hive/hive.dart';
-
+// ignore: implementation_imports
 import 'package:hive/src/registry/nested_type_registry_adapter_impl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pleroma_api/pleroma_api.dart';
@@ -63,44 +63,45 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
       return;
     }
 
-    Hive.registerAdapter(PushSettingsAdapter());
-
-    Hive.registerAdapter(NotificationsPushHandlerUnhandledListAdapter());
-    Hive.registerAdapter(RecentSearchListAdapter());
-    Hive.registerAdapter(NotificationsPushHandlerMessageAdapter());
-    Hive.registerAdapter(PushMessageAdapter());
-    Hive.registerAdapter(EmojiPickerCustomImageUrlCategoryItemsAdapter());
-    Hive.registerAdapter(CustomEmojiPickerImageUrlItemAdapter());
-    Hive.registerAdapter(EmojiPickerRecentCategoryItemsListAdapter());
-    Hive.registerAdapter(CustomEmojiPickerCodeItemAdapter());
-    Hive.registerAdapter(PushNotificationAdapter());
-
-    Hive.registerAdapter(TimelinesHomeTabStorageAdapter());
-    Hive.registerAdapter(LocalizationLocaleAdapter());
-    Hive.registerAdapter(PostStatusSettingsAdapter());
-    Hive.registerAdapter(StatusSensitiveSettingsAdapter());
-    Hive.registerAdapter(ToastSettingsAdapter());
-    Hive.registerAdapter(MediaSettingsAdapter());
-    Hive.registerAdapter(WebSocketsSettingsAdapter());
-    Hive.registerAdapter(LocalizationSettingsAdapter());
-    Hive.registerAdapter(UiSettingsAdapter());
-    Hive.registerAdapter(ChatSettingsAdapter());
-    Hive.registerAdapter(RecentSelectAccountListAdapter());
-    Hive.registerAdapter(AppAnalyticsDataAdapter());
-    Hive.registerAdapter(PaginationSettingsAdapter());
-    Hive.registerAdapter(DatabaseCacheSettingsAdapter());
-    Hive.registerAdapter(FilesCacheSettingsAdapter());
-    Hive.registerAdapter(InstanceAnnouncementSettingsAdapter());
-    Hive.registerAdapter(CrashReportingSettingsAdapter());
-    Hive.registerAdapter(PushRelaySettingsAdapter());
+    Hive
+      ..registerAdapter(PushSettingsAdapter())
+      ..registerAdapter(NotificationsPushHandlerUnhandledListAdapter())
+      ..registerAdapter(RecentSearchListAdapter())
+      ..registerAdapter(NotificationsPushHandlerMessageAdapter())
+      ..registerAdapter(PushMessageAdapter())
+      ..registerAdapter(EmojiPickerCustomImageUrlCategoryItemsAdapter())
+      ..registerAdapter(CustomEmojiPickerImageUrlItemAdapter())
+      ..registerAdapter(EmojiPickerRecentCategoryItemsListAdapter())
+      ..registerAdapter(CustomEmojiPickerCodeItemAdapter())
+      ..registerAdapter(PushNotificationAdapter())
+      ..registerAdapter(TimelinesHomeTabStorageAdapter())
+      ..registerAdapter(LocalizationLocaleAdapter())
+      ..registerAdapter(PostStatusSettingsAdapter())
+      ..registerAdapter(StatusSensitiveSettingsAdapter())
+      ..registerAdapter(ToastSettingsAdapter())
+      ..registerAdapter(MediaSettingsAdapter())
+      ..registerAdapter(WebSocketsSettingsAdapter())
+      ..registerAdapter(LocalizationSettingsAdapter())
+      ..registerAdapter(UiSettingsAdapter())
+      ..registerAdapter(ChatSettingsAdapter())
+      ..registerAdapter(RecentSelectAccountListAdapter())
+      ..registerAdapter(AppAnalyticsDataAdapter())
+      ..registerAdapter(PaginationSettingsAdapter())
+      ..registerAdapter(DatabaseCacheSettingsAdapter())
+      ..registerAdapter(FilesCacheSettingsAdapter())
+      ..registerAdapter(InstanceAnnouncementSettingsAdapter())
+      ..registerAdapter(CrashReportingSettingsAdapter())
+      ..registerAdapter(PushRelaySettingsAdapter());
 
     // updated ids
-    Hive.registerAdapter(UnifediApiMyAccountWrapperAdapter());
-    Hive.registerAdapter(UnifediApiAccessListAdapter());
-    Hive.registerAdapter(TimelineAdapter());
-    Hive.registerAdapter(TimelineSettingsAdapter());
+    // ignore: cascade_invocations
+    Hive
+      ..registerAdapter(UnifediApiMyAccountWrapperAdapter())
+      ..registerAdapter(UnifediApiAccessListAdapter())
+      ..registerAdapter(TimelineAdapter())
+      ..registerAdapter(TimelineSettingsAdapter());
     // registered inside unifedi api package
-    // Hive.registerAdapter(UnifediApiAccessAdapter());
+    // ..registerAdapter(UnifediApiAccessAdapter())
 
     var fediverseAdapter = NestedTypeRegistryAdapterImpl(typeId: 150 + 0);
     FediverseHiveHelper.registerFediverseAdapters(fediverseAdapter);
@@ -137,7 +138,7 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
     _registerOverrideAdapter(PleromaMyAccountWrapperOldAdapter(), 21);
     //
     // replaced with new adapter
-    // _registerOverrideAdapter(PleromaApiPushMessageBodyAdapter());
+    // _registerOverrideAdapter(PleromaApiPushMessageBodyAdapter())
 
     _registerOverrideAdapter(PleromaApiFieldAdapter(), 5);
     _registerOverrideAdapter(PleromaApiEmojiAdapter(), 6);

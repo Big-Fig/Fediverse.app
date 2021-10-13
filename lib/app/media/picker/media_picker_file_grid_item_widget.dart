@@ -148,11 +148,9 @@ class _MediaPickerFileGridItemLoadingWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: FediCircularProgressIndicator(
-        color: IFediUiColorTheme.of(context).white,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Center(
+        child: FediCircularProgressIndicator(
+          color: IFediUiColorTheme.of(context).white,
+        ),
+      );
 }

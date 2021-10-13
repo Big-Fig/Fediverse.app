@@ -40,11 +40,10 @@ class SelectAccountPaginationListBloc extends AccountPaginationListBloc {
   static Widget provideToContext(
     BuildContext context, {
     required Widget child,
-  }) {
-    return DisposableProvider<IAccountPaginationListBloc>(
-      create: (context) =>
-          SelectAccountPaginationListBloc.createFromContext(context),
-      child: AccountPaginationListBlocProxyProvider(child: child),
-    );
-  }
+  }) =>
+      DisposableProvider<IAccountPaginationListBloc>(
+        create: (context) =>
+            SelectAccountPaginationListBloc.createFromContext(context),
+        child: AccountPaginationListBlocProxyProvider(child: child),
+      );
 }

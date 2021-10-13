@@ -44,7 +44,7 @@ extension NotificationActionTypeStringExtension on String {
         break;
       // cant parse
       default:
-        throw ('Unknown NotificationActionType $this');
+        throw 'Unknown NotificationActionType $this';
     }
 
     return result;

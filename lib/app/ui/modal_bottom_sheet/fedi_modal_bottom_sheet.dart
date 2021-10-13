@@ -80,27 +80,25 @@ class _FediModalBottomSheetHandlerBar extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        Navigator.of(context).pop();
-      },
-      child: Padding(
-        padding: const EdgeInsets.all(11.0),
-        child: Container(
-          // ignore: no-magic-number
-          width: 42.0,
-          // ignore: no-magic-number
-          height: 6.0,
-          decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(
-              // ignore: no-magic-number
-              Radius.circular(6.0),
+  Widget build(BuildContext context) => InkWell(
+        onTap: () {
+          Navigator.of(context).pop();
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(11.0),
+          child: Container(
+            // ignore: no-magic-number
+            width: 42.0,
+            // ignore: no-magic-number
+            height: 6.0,
+            decoration: BoxDecoration(
+              borderRadius: const BorderRadius.all(
+                // ignore: no-magic-number
+                Radius.circular(6.0),
+              ),
+              color: IFediUiColorTheme.of(context).lightGrey,
             ),
-            color: IFediUiColorTheme.of(context).lightGrey,
           ),
         ),
-      ),
-    );
-  }
+      );
 }

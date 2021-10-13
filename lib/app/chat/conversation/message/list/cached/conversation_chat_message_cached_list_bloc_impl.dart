@@ -30,31 +30,23 @@ class ConversationChatMessageCachedListBloc extends DisposableOwner
       conversationChatStatusListBloc.unifediApi;
 
   @override
-  Future<bool> refreshItemsFromRemoteForPage({
+  Future<void> refreshItemsFromRemoteForPage({
     required int? limit,
     required IConversationChatMessage? newerThan,
     required IConversationChatMessage? olderThan,
   }) async {
-    _logger.fine(() => 'start refreshItemsFromRemoteForPage \n'
-        '\t chat = $chat'
-        '\t newerThan = $newerThan'
-        '\t olderThan = $olderThan');
+    _logger.fine(
+      () => 'start refreshItemsFromRemoteForPage \n'
+          '\t chat = $chat'
+          '\t newerThan = $newerThan'
+          '\t olderThan = $olderThan',
+    );
 
-    var remoteMessages =
-        await conversationChatStatusListBloc.refreshItemsFromRemoteForPage(
+    await conversationChatStatusListBloc.refreshItemsFromRemoteForPage(
       olderThan: olderThan?.status,
       newerThan: newerThan?.status,
       limit: limit,
     );
-
-    if (remoteMessages != null) {
-      return true;
-    } else {
-      _logger.severe(() => 'error during refreshItemsFromRemoteForPage: '
-          'messages is null');
-
-      return false;
-    }
   }
 
   @override
@@ -63,9 +55,11 @@ class ConversationChatMessageCachedListBloc extends DisposableOwner
     required IConversationChatMessage? newerThan,
     required IConversationChatMessage? olderThan,
   }) async {
-    _logger.finest(() => 'start loadLocalItems \n'
-        '\t newerThan=$newerThan'
-        '\t olderThan=$olderThan');
+    _logger.finest(
+      () => 'start loadLocalItems \n'
+          '\t newerThan=$newerThan'
+          '\t olderThan=$olderThan',
+    );
 
     var statuses = await conversationChatStatusListBloc.loadLocalItems(
       olderThan: olderThan?.status,
@@ -123,17 +117,16 @@ class ConversationChatMessageCachedListBloc extends DisposableOwner
     required IConversationChat? conversation,
     required IConversationChatMessage? lastMessage,
     required Widget child,
-  }) {
-    return DisposableProvider<IConversationChatMessageCachedListBloc>(
-      create: (context) =>
-          ConversationChatMessageCachedListBloc.createFromContext(
-        context,
-        conversation: conversation,
-        lastMessage: lastMessage,
-      ),
-      child: child,
-    );
-  }
+  }) =>
+      DisposableProvider<IConversationChatMessageCachedListBloc>(
+        create: (context) =>
+            ConversationChatMessageCachedListBloc.createFromContext(
+          context,
+          conversation: conversation,
+          lastMessage: lastMessage,
+        ),
+        child: child,
+      );
 }
 
 ConversationChatStatusListBloc _createStatusListBloc({

@@ -67,16 +67,15 @@ class _EditShareEntitySettingsAppendFromAccountBoolFieldFieldWidget
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IShareEntitySettingsBloc, IBoolValueFormFieldBloc>(
-      update: (context, value, previous) => value.appendFromAccountBoolField,
-      child: BoolValueFormFieldRowWidget(
-        label: S
-            .of(context)
-            .app_share_entity_settings_field_appendFromAccount_label,
-      ),
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IShareEntitySettingsBloc, IBoolValueFormFieldBloc>(
+        update: (context, value, previous) => value.appendFromAccountBoolField,
+        child: BoolValueFormFieldRowWidget(
+          label: S
+              .of(context)
+              .app_share_entity_settings_field_appendFromAccount_label,
+        ),
+      );
 }
 
 class _EditShareEntitySettingsCreatedAtBoolFieldFieldWidget
@@ -86,15 +85,14 @@ class _EditShareEntitySettingsCreatedAtBoolFieldFieldWidget
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IShareEntitySettingsBloc, IBoolValueFormFieldBloc>(
-      update: (context, value, previous) => value.withCreatedAtBoolField,
-      child: BoolValueFormFieldRowWidget(
-        label:
-            S.of(context).app_share_entity_settings_field_withCreatedAt_label,
-      ),
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IShareEntitySettingsBloc, IBoolValueFormFieldBloc>(
+        update: (context, value, previous) => value.withCreatedAtBoolField,
+        child: BoolValueFormFieldRowWidget(
+          label:
+              S.of(context).app_share_entity_settings_field_withCreatedAt_label,
+        ),
+      );
 }
 
 class _EditShareEntitySettingsMediaBoolFieldFieldWidget
@@ -104,14 +102,13 @@ class _EditShareEntitySettingsMediaBoolFieldFieldWidget
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IShareEntitySettingsBloc, IBoolValueFormFieldBloc>(
-      update: (context, value, previous) => value.withMediaBoolField,
-      child: BoolValueFormFieldRowWidget(
-        label: S.of(context).app_share_entity_settings_field_withMedia_label,
-      ),
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IShareEntitySettingsBloc, IBoolValueFormFieldBloc>(
+        update: (context, value, previous) => value.withMediaBoolField,
+        child: BoolValueFormFieldRowWidget(
+          label: S.of(context).app_share_entity_settings_field_withMedia_label,
+        ),
+      );
 }
 
 class _EditShareEntitySettingsTextBoolFieldFieldWidget extends StatelessWidget {
@@ -120,14 +117,13 @@ class _EditShareEntitySettingsTextBoolFieldFieldWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IShareEntitySettingsBloc, IBoolValueFormFieldBloc>(
-      update: (context, value, previous) => value.withTextBoolField,
-      child: BoolValueFormFieldRowWidget(
-        label: S.of(context).app_share_entity_settings_field_withText_label,
-      ),
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IShareEntitySettingsBloc, IBoolValueFormFieldBloc>(
+        update: (context, value, previous) => value.withTextBoolField,
+        child: BoolValueFormFieldRowWidget(
+          label: S.of(context).app_share_entity_settings_field_withText_label,
+        ),
+      );
 }
 
 class _EditShareEntitySettingsLinkBoolFieldFieldWidget extends StatelessWidget {
@@ -136,14 +132,13 @@ class _EditShareEntitySettingsLinkBoolFieldFieldWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IShareEntitySettingsBloc, IBoolValueFormFieldBloc>(
-      update: (context, value, previous) => value.withLinkBoolField,
-      child: BoolValueFormFieldRowWidget(
-        label: S.of(context).app_share_entity_settings_field_withLink_label,
-      ),
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IShareEntitySettingsBloc, IBoolValueFormFieldBloc>(
+        update: (context, value, previous) => value.withLinkBoolField,
+        child: BoolValueFormFieldRowWidget(
+          label: S.of(context).app_share_entity_settings_field_withLink_label,
+        ),
+      );
 }
 
 class _EditShareEntitySettingsWholeAsLinkBoolFieldFieldWidget
@@ -153,14 +148,14 @@ class _EditShareEntitySettingsWholeAsLinkBoolFieldFieldWidget
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IShareEntitySettingsBloc, IBoolValueFormFieldBloc>(
-      update: (context, value, previous) => value.wholeAsLinkBoolField,
-      child: BoolValueFormFieldRowWidget(
-        label: S.of(context).app_share_entity_settings_field_wholeAsLink_label,
-      ),
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IShareEntitySettingsBloc, IBoolValueFormFieldBloc>(
+        update: (context, value, previous) => value.wholeAsLinkBoolField,
+        child: BoolValueFormFieldRowWidget(
+          label:
+              S.of(context).app_share_entity_settings_field_wholeAsLink_label,
+        ),
+      );
 }
 
 class _EditShareEntitySettingsMediaAsLinkBoolFieldFieldWidget
@@ -170,14 +165,14 @@ class _EditShareEntitySettingsMediaAsLinkBoolFieldFieldWidget
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IShareEntitySettingsBloc, IBoolValueFormFieldBloc>(
-      update: (context, value, previous) => value.mediaAsLinkBoolField,
-      child: BoolValueFormFieldRowWidget(
-        label: S.of(context).app_share_entity_settings_field_mediaAsLink_label,
-      ),
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IShareEntitySettingsBloc, IBoolValueFormFieldBloc>(
+        update: (context, value, previous) => value.mediaAsLinkBoolField,
+        child: BoolValueFormFieldRowWidget(
+          label:
+              S.of(context).app_share_entity_settings_field_mediaAsLink_label,
+        ),
+      );
 }
 
 class _EditShareEntitySettingsWithMessageBoolFieldFieldWidget
@@ -187,16 +182,15 @@ class _EditShareEntitySettingsWithMessageBoolFieldFieldWidget
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IShareEntitySettingsBloc, IStringValueFormFieldBloc>(
-      update: (context, value, previous) => value.withMessageStringField,
-      child: StringValueFormFieldRowWidget(
-        label: null,
-        hint: S.of(context).app_share_entity_settings_field_withMessage_hint,
-        autocorrect: true,
-        textInputAction: TextInputAction.done,
-        onSubmitted: null,
-      ),
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IShareEntitySettingsBloc, IStringValueFormFieldBloc>(
+        update: (context, value, previous) => value.withMessageStringField,
+        child: StringValueFormFieldRowWidget(
+          label: null,
+          hint: S.of(context).app_share_entity_settings_field_withMessage_hint,
+          autocorrect: true,
+          textInputAction: TextInputAction.done,
+          onSubmitted: null,
+        ),
+      );
 }

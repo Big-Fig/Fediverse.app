@@ -208,11 +208,10 @@ class PleromaChatMessageRepository
   @override
   IPleromaChatMessage mapRemoteItemToAppItem(
     IUnifediApiChatMessage remoteItem,
-  ) {
-    return remoteItem.toDbChatMessagePopulatedWrapper(
-      dbAccount: null,
-    );
-  }
+  ) =>
+      remoteItem.toDbChatMessagePopulatedWrapper(
+        dbAccount: null,
+      );
 
   @override
   PleromaChatMessageRepositoryFilters get emptyFilters =>
@@ -251,14 +250,13 @@ class PleromaChatMessageRepository
     IUnifediApiChatMessage remoteItem, {
     required InsertMode? mode,
     required Batch? batchTransaction,
-  }) {
-    return upsertInDbTypeBatch(
-      mapRemoteItemToDbItem(
-        remoteItem,
-      ),
-      batchTransaction: batchTransaction,
-    );
-  }
+  }) =>
+      upsertInDbTypeBatch(
+        mapRemoteItemToDbItem(
+          remoteItem,
+        ),
+        batchTransaction: batchTransaction,
+      );
 
   @override
   Future<void> updateAppTypeByRemoteType({

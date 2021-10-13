@@ -7,14 +7,12 @@ import 'package:provider/provider.dart';
 class NotificationCachedListBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  NotificationCachedListBlocProxyProvider({required this.child});
+  const NotificationCachedListBlocProxyProvider({required this.child});
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<INotificationCachedListBloc,
-        ICachedListBloc<INotification>>(
-      update: (context, value, previous) => value,
-      child: child,
-    );
-  }
+  Widget build(BuildContext context) => ProxyProvider<
+          INotificationCachedListBloc, ICachedListBloc<INotification>>(
+        update: (context, value, previous) => value,
+        child: child,
+      );
 }

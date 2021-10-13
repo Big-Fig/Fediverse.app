@@ -49,21 +49,19 @@ class SingleSelectFromListValueFormFieldRowWidget<T> extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return SimpleFediFormFieldRow(
-      label: label,
-      description: description,
-      descriptionOnDisabled: descriptionOnDisabled,
-      valueChild: _SingleSelectFromListValueFormFieldRowValueWidget<T>(
-        displayIconInRow: displayIconInRow,
-        displayIconInDialog: displayIconInDialog,
+  Widget build(BuildContext context) => SimpleFediFormFieldRow(
         label: label,
-        valueIconMapper: valueIconMapper,
-        valueTitleMapper: valueTitleMapper,
-        valueKeyMapper: valueKeyMapper,
-      ),
-    );
-  }
+        description: description,
+        descriptionOnDisabled: descriptionOnDisabled,
+        valueChild: _SingleSelectFromListValueFormFieldRowValueWidget<T>(
+          displayIconInRow: displayIconInRow,
+          displayIconInDialog: displayIconInDialog,
+          label: label,
+          valueIconMapper: valueIconMapper,
+          valueTitleMapper: valueTitleMapper,
+          valueKeyMapper: valueKeyMapper,
+        ),
+      );
 }
 
 class _SingleSelectFromListValueFormFieldRowValueWidget<T>
@@ -75,7 +73,7 @@ class _SingleSelectFromListValueFormFieldRowValueWidget<T>
   final SingleSelectFromListValueKeyMapper<T?>? valueKeyMapper;
   final bool displayIconInDialog;
 
-  _SingleSelectFromListValueFormFieldRowValueWidget({
+  const _SingleSelectFromListValueFormFieldRowValueWidget({
     required this.label,
     required this.valueTitleMapper,
     required this.displayIconInRow,
@@ -85,50 +83,48 @@ class _SingleSelectFromListValueFormFieldRowValueWidget<T>
   });
 
   @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        var fieldBloc = ISingleSelectFromListValueFormFieldBloc.of<T>(
-          context,
-          listen: false,
-        );
-        if (fieldBloc.isEnabled) {
-          _showDialog(
-            context: context,
-            fieldBloc: fieldBloc,
-            label: label,
-            valueIconMapper: valueIconMapper,
-            valueTitleMapper: valueTitleMapper,
-            valueKeyMapper: valueKeyMapper,
-            displayIconInDialog: displayIconInDialog,
+  Widget build(BuildContext context) => InkWell(
+        onTap: () {
+          var fieldBloc = ISingleSelectFromListValueFormFieldBloc.of<T>(
+            context,
+            listen: false,
           );
-        }
-      },
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-          // ignore: no-magic-number
-          vertical: FediSizes.smallPadding / 2,
-          horizontal: FediSizes.mediumPadding,
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (displayIconInRow)
-              _SingleSelectFromListValueFormFieldRowValueIconWidget<T>(
-                label: label,
-                valueIconMapper: valueIconMapper,
-                valueTitleMapper: valueTitleMapper,
-                valueKeyMapper: valueKeyMapper,
-                displayIconInDialog: displayIconInDialog,
-              ),
-            _SingleSelectFromListValueFormFieldRowValueTitleWidget<T>(
+          if (fieldBloc.isEnabled) {
+            _showDialog(
+              context: context,
+              fieldBloc: fieldBloc,
+              label: label,
+              valueIconMapper: valueIconMapper,
               valueTitleMapper: valueTitleMapper,
-            ),
-          ],
+              valueKeyMapper: valueKeyMapper,
+              displayIconInDialog: displayIconInDialog,
+            );
+          }
+        },
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            // ignore: no-magic-number
+            vertical: FediSizes.smallPadding / 2,
+            horizontal: FediSizes.mediumPadding,
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (displayIconInRow)
+                _SingleSelectFromListValueFormFieldRowValueIconWidget<T>(
+                  label: label,
+                  valueIconMapper: valueIconMapper,
+                  valueTitleMapper: valueTitleMapper,
+                  valueKeyMapper: valueKeyMapper,
+                  displayIconInDialog: displayIconInDialog,
+                ),
+              _SingleSelectFromListValueFormFieldRowValueTitleWidget<T>(
+                valueTitleMapper: valueTitleMapper,
+              ),
+            ],
+          ),
         ),
-      ),
-    );
-  }
+      );
 }
 
 class _SingleSelectFromListValueFormFieldRowValueTitleWidget<T>
@@ -222,7 +218,7 @@ class _SingleSelectFromListValueFormFieldRowValueIconWidget<T>
                 );
               },
               icon: Icon(
-                valueIconMapper!(context, currentValue!),
+                valueIconMapper!(context, currentValue),
               ),
             );
           },
@@ -268,7 +264,7 @@ void _showDialog<T>({
     ),
   ];
 
-  showFediSingleSelectionChooserDialog(
+  showFediSingleSelectionChooserDialog<void>(
     context: context,
     title: label,
     actions: actions,
@@ -286,15 +282,14 @@ SelectionDialogAction _buildDialogAction<T>({
   required SingleSelectFromListValueTitleMapper<T?> valueTitleMapper,
   required SingleSelectFromListValueKeyMapper<T?>? valueKeyMapper,
   required bool displayIconInDialog,
-}) {
-  return SelectionDialogAction(
-    key: valueKeyMapper != null ? valueKeyMapper(context, value) : null,
-    icon: displayIconInDialog ? valueIconMapper!(context, value) : null,
-    label: valueTitleMapper(context, value),
-    onAction: (context) {
-      fieldBloc.changeCurrentValue(value!);
-      Navigator.of(context).pop();
-    },
-    isSelected: value == selectedValue,
-  );
-}
+}) =>
+    SelectionDialogAction(
+      key: valueKeyMapper != null ? valueKeyMapper(context, value) : null,
+      icon: displayIconInDialog ? valueIconMapper!(context, value) : null,
+      label: valueTitleMapper(context, value),
+      onAction: (context) {
+        fieldBloc.changeCurrentValue(value!);
+        Navigator.of(context).pop();
+      },
+      isSelected: value == selectedValue,
+    );

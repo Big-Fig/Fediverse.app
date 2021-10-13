@@ -96,14 +96,13 @@ class IncomeShareHandlerBloc extends DisposableOwner
   static Widget provideToContext(
     BuildContext context, {
     required Widget child,
-  }) {
-    return DisposableProvider<IIncomeShareHandlerBloc>(
-      create: (context) => IncomeShareHandlerBloc.createFromContext(
-        context,
-      ),
-      child: child,
-    );
-  }
+  }) =>
+      DisposableProvider<IIncomeShareHandlerBloc>(
+        create: (context) => IncomeShareHandlerBloc.createFromContext(
+          context,
+        ),
+        child: child,
+      );
 
   @override
   Future checkForInitialEvent() async {

@@ -17,22 +17,18 @@ class MediaSettingsBloc
         );
 
   @override
-  Future changeAutoPlay(bool value) {
-    return updateInstanceSettings(
-      settingsData.copyWith(
-        autoPlay: value,
-      ),
-    );
-  }
+  Future changeAutoPlay(bool value) => updateInstanceSettings(
+        settingsData.copyWith(
+          autoPlay: value,
+        ),
+      );
 
   @override
-  Future changeAutoInit(bool value) {
-    return updateInstanceSettings(
-      settingsData.copyWith(
-        autoInit: value,
-      ),
-    );
-  }
+  Future changeAutoInit(bool value) => updateInstanceSettings(
+        settingsData.copyWith(
+          autoInit: value,
+        ),
+      );
 
   @override
   bool get autoPlay => settingsData.autoPlay;

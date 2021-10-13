@@ -9,7 +9,7 @@ class ToastHandlingTypeSingleSelectFromListValueFormFieldBlocProxyProvider
     extends StatelessWidget {
   final Widget child;
 
-  ToastHandlingTypeSingleSelectFromListValueFormFieldBlocProxyProvider({
+  const ToastHandlingTypeSingleSelectFromListValueFormFieldBlocProxyProvider({
     required this.child,
   });
 

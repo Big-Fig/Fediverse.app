@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_parenthesis
+
 import 'package:fedi/app/push/settings/push_settings_model.dart';
 import 'package:fedi/app/settings/global_or_instance/edit/edit_global_or_instance_settings_bloc_impl.dart';
 import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings_model.dart';
@@ -76,7 +78,7 @@ class EditToastSettingsBloc
         globalOrInstanceSettingsType == GlobalOrInstanceSettingsType.global;
     var isPleromaOrGlobal = (currentInstance!.isPleroma || isGlobal);
 
-    var isMastodonOrGlobal = (currentInstance!.isMastodon || isGlobal);
+    var isMastodonOrGlobal = currentInstance!.isMastodon || isGlobal;
 
     favouriteFieldBloc = BoolValueFormFieldBloc(
       originValue: currentPushSettings!.favourite,
@@ -129,21 +131,19 @@ class EditToastSettingsBloc
   }
 
   @override
-  ToastSettings calculateCurrentFormFieldsSettings() {
-    return ToastSettings.fromEnum(
-      pushSettings: PushSettings(
-        favourite: favouriteFieldBloc.currentValue,
-        follow: followFieldBloc.currentValue,
-        mention: mentionFieldBloc.currentValue,
-        reblog: reblogFieldBloc.currentValue,
-        poll: pollFieldBloc.currentValue,
-        chatMention: chatMentionFieldBloc.currentValue,
-        emojiReaction: emojiReactionFieldBloc.currentValue,
-      ),
-      handlingType:
-          toastHandlingTypeSingleFromListValueFormFieldBloc.currentValue,
-    );
-  }
+  ToastSettings calculateCurrentFormFieldsSettings() => ToastSettings.fromEnum(
+        pushSettings: PushSettings(
+          favourite: favouriteFieldBloc.currentValue,
+          follow: followFieldBloc.currentValue,
+          mention: mentionFieldBloc.currentValue,
+          reblog: reblogFieldBloc.currentValue,
+          poll: pollFieldBloc.currentValue,
+          chatMention: chatMentionFieldBloc.currentValue,
+          emojiReaction: emojiReactionFieldBloc.currentValue,
+        ),
+        handlingType:
+            toastHandlingTypeSingleFromListValueFormFieldBloc.currentValue,
+      );
 
   @override
   Future fillSettingsToFormFields(ToastSettings settings) async {

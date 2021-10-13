@@ -12,20 +12,18 @@ class RemoteInstanceTrendsPage extends StatelessWidget {
   const RemoteInstanceTrendsPage();
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: InstanceHostAppBarWidget(),
-      body: const SafeArea(
-        child: InstanceTrendsWidget(),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Scaffold(
+        appBar: InstanceHostAppBarWidget(),
+        body: const SafeArea(
+          child: InstanceTrendsWidget(),
+        ),
+      );
 }
 
-MaterialPageRoute createRemoteInstanceTrendsPageRoute({
+MaterialPageRoute<void> createRemoteInstanceTrendsPageRoute({
   required IRemoteInstanceBloc remoteInstanceBloc,
 }) =>
-    MaterialPageRoute(
+    MaterialPageRoute<void>(
       builder: (context) => Provider.value(
         value: remoteInstanceBloc,
         child: RemoteInstanceTrendsBloc.provideToContext(

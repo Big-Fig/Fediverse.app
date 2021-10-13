@@ -12,14 +12,12 @@ import 'package:provider/provider.dart';
 
 class StatusReblogActionWidget extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        const _StatusReblogActionButtonWidget(),
-        const _StatusReblogActionCounterWidget(),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => Row(
+        children: <Widget>[
+          const _StatusReblogActionButtonWidget(),
+          const _StatusReblogActionCounterWidget(),
+        ],
+      );
 
   const StatusReblogActionWidget();
 }

@@ -9,16 +9,16 @@ import 'package:provider/provider.dart';
 class StatusCachedPaginationBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  StatusCachedPaginationBlocProxyProvider({required this.child});
+  const StatusCachedPaginationBlocProxyProvider({required this.child});
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IStatusCachedPaginationBloc,
-        ICachedPaginationBloc<CachedPaginationPage<IStatus>, IStatus>>(
-      update: (context, value, previous) => value,
-      child: CachedPaginationBlocProxyProvider(
-        child: child,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => ProxyProvider<
+          IStatusCachedPaginationBloc,
+          ICachedPaginationBloc<CachedPaginationPage<IStatus>, IStatus>>(
+        update: (context, value, previous) => value,
+        child: CachedPaginationBlocProxyProvider<CachedPaginationPage<IStatus>,
+            IStatus>(
+          child: child,
+        ),
+      );
 }

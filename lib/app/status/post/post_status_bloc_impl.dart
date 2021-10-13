@@ -203,8 +203,10 @@ abstract class PostStatusBloc extends PostMessageBloc
     var currentInputTextErrors = inputTextErrors;
     if (isSomethingChangedPollBloc) {
       var textIsNotEmpty = inputText?.isNotEmpty == true;
-      _logger.finest(() => '_checkPollEmptyInputError '
-          'textIsNotEmpty $textIsNotEmpty');
+      _logger.finest(
+        () => '_checkPollEmptyInputError '
+            'textIsNotEmpty $textIsNotEmpty',
+      );
       if (textIsNotEmpty) {
         currentInputTextErrors!.remove(postMessagePollEmptyInputTextError);
         inputTextErrorsSubject.add([...currentInputTextErrors]);
@@ -214,8 +216,10 @@ abstract class PostStatusBloc extends PostMessageBloc
           currentInputTextErrors.add(postMessagePollEmptyInputTextError);
           inputTextErrorsSubject.add([...currentInputTextErrors]);
         }
-        _logger.finest(() => '_checkPollEmptyInputError '
-            'add inputTextErrors $currentInputTextErrors');
+        _logger.finest(
+          () => '_checkPollEmptyInputError '
+              'add inputTextErrors $currentInputTextErrors',
+        );
       }
     } else {
       currentInputTextErrors!.remove(postMessagePollEmptyInputTextError);
@@ -330,11 +334,11 @@ abstract class PostStatusBloc extends PostMessageBloc
         pollBloc.isHaveAtLeastOneErrorStream,
         pollBloc.isSomethingChangedStream,
         (
-          dynamic inputWithoutMentionedAcctsText,
-          dynamic mediaAttachmentBlocs,
-          dynamic isAllAttachedMediaUploaded,
-          dynamic isHaveAtLeastOneError,
-          dynamic isPollBlocChanged,
+          String? inputWithoutMentionedAcctsText,
+          List<IUploadMediaAttachmentBloc> mediaAttachmentBlocs,
+          bool isAllAttachedMediaUploaded,
+          bool isHaveAtLeastOneError,
+          bool isPollBlocChanged,
         ) =>
             calculateStatusBlocIsReadyToPost(
           inputText: inputWithoutMentionedAcctsText,
@@ -369,8 +373,14 @@ abstract class PostStatusBloc extends PostMessageBloc
   Stream<String?> get inputWithoutMentionedAcctsTextStream => Rx.combineLatest2(
         inputTextStream,
         mentionedAcctsStream,
-        (dynamic inputText, dynamic mentionedAccts) =>
-            removeAcctsFromText(inputText, mentionedAccts),
+        (
+          String? inputText,
+          List<String> mentionedAccts,
+        ) =>
+            removeAcctsFromText(
+          inputText,
+          mentionedAccts,
+        ),
       );
 
   void onMentionedAccountsChanged() {
@@ -408,9 +418,11 @@ abstract class PostStatusBloc extends PostMessageBloc
       var acctsToRemove =
           mentionedAccts.where((acct) => !textAccts.contains(acct)).toList();
       if (acctsToAdd.isNotEmpty || acctsToRemove.isNotEmpty) {
-        _logger.finest(() => 'onInputTextChanged \n'
-            '\t acctsToAdd=$acctsToAdd'
-            '\t acctsToRemove=$acctsToRemove');
+        _logger.finest(
+          () => 'onInputTextChanged \n'
+              '\t acctsToAdd=$acctsToAdd'
+              '\t acctsToRemove=$acctsToRemove,',
+        );
         mentionedAccts.addAll(acctsToAdd);
         acctsToRemove.forEach((acct) => mentionedAccts.remove(acct));
         mentionedAcctsSubject.add(mentionedAccts);
@@ -481,9 +493,8 @@ abstract class PostStatusBloc extends PostMessageBloc
   bool isMaximumAttachmentReached({
     required List<IUploadMediaAttachmentBloc> mediaAttachmentBlocs,
     required int maximumMediaAttachmentCount,
-  }) {
-    return mediaAttachmentBlocs.length >= maximumMediaAttachmentCount;
-  }
+  }) =>
+      mediaAttachmentBlocs.length >= maximumMediaAttachmentCount;
 
   @override
   Future post() async {
@@ -612,7 +623,7 @@ abstract class PostStatusBloc extends PostMessageBloc
     if (pollBloc.isSomethingChanged) {
       poll = PostStatusPoll(
         durationLength:
-            pollBloc.durationDateTimeLengthFieldBloc.currentValueDuration!,
+            pollBloc.durationDateTimeLengthFieldBloc.currentValueDuration,
         multiple: pollBloc.multiplyFieldBloc.currentValue,
         options: pollBloc.pollOptionsGroupBloc.items
             .map((item) => item.currentValue)
@@ -626,7 +637,7 @@ abstract class PostStatusBloc extends PostMessageBloc
   }
 
   UnifediApiPostStatusPoll? _calculatePostStatusPollField() {
-    var poll;
+    UnifediApiPostStatusPoll? poll;
     if (pollBloc.isSomethingChanged) {
       var expiresInSeconds = pollBloc
           .durationDateTimeLengthFieldBloc.currentValueDuration!.totalSeconds;
@@ -785,42 +796,39 @@ abstract class PostStatusBloc extends PostMessageBloc
         expiresInSeconds: expireAtSubject.valueOrNull?.totalSeconds,
       );
 
-  UnifediApiSchedulePostStatus calculateScheduleStatus() {
-    return UnifediApiSchedulePostStatus(
-      mediaIds: _calculateMediaIdsField(),
-      status: calculateStatusTextField(),
-      sensitive: isNsfwSensitiveEnabled,
-      visibility: calculateVisibilityField(),
-      inReplyToId: calculateInReplyToStatusField()?.remoteId,
-      inReplyToConversationId: initialData.inReplyToConversationId,
-      scheduledAt: scheduledAt!,
-      to: calculateToField(),
-      poll: _calculatePostStatusPollField(),
-      spoilerText: _calculateSpoilerTextField(),
-      expiresInSeconds: expireAtSubject.valueOrNull?.totalSeconds,
-      language: initialData.language,
-      preview: null,
-      contentType: null,
-    );
-  }
+  UnifediApiSchedulePostStatus calculateScheduleStatus() =>
+      UnifediApiSchedulePostStatus(
+        mediaIds: _calculateMediaIdsField(),
+        status: calculateStatusTextField(),
+        sensitive: isNsfwSensitiveEnabled,
+        visibility: calculateVisibilityField(),
+        inReplyToId: calculateInReplyToStatusField()?.remoteId,
+        inReplyToConversationId: initialData.inReplyToConversationId,
+        scheduledAt: scheduledAt!,
+        to: calculateToField(),
+        poll: _calculatePostStatusPollField(),
+        spoilerText: _calculateSpoilerTextField(),
+        expiresInSeconds: expireAtSubject.valueOrNull?.totalSeconds,
+        language: initialData.language,
+        preview: null,
+        contentType: null,
+      );
 
-  UnifediApiPostStatus calculatePostStatus() {
-    return UnifediApiPostStatus(
-      mediaIds: _calculateMediaIdsField(),
-      status: calculateStatusTextField(),
-      sensitive: isNsfwSensitiveEnabled,
-      visibility: calculateVisibilityField(),
-      inReplyToId: calculateInReplyToStatusField()?.remoteId,
-      inReplyToConversationId: initialData.inReplyToConversationId,
-      to: calculateToField(),
-      poll: _calculatePostStatusPollField(),
-      spoilerText: _calculateSpoilerTextField(),
-      language: initialData.language,
-      expiresInSeconds: expireAtSubject.valueOrNull?.totalSeconds,
-      contentType: null,
-      preview: null,
-    );
-  }
+  UnifediApiPostStatus calculatePostStatus() => UnifediApiPostStatus(
+        mediaIds: _calculateMediaIdsField(),
+        status: calculateStatusTextField(),
+        sensitive: isNsfwSensitiveEnabled,
+        visibility: calculateVisibilityField(),
+        inReplyToId: calculateInReplyToStatusField()?.remoteId,
+        inReplyToConversationId: initialData.inReplyToConversationId,
+        to: calculateToField(),
+        poll: _calculatePostStatusPollField(),
+        spoilerText: _calculateSpoilerTextField(),
+        language: initialData.language,
+        expiresInSeconds: expireAtSubject.valueOrNull?.totalSeconds,
+        contentType: null,
+        preview: null,
+      );
 
   @override
   void appendText(

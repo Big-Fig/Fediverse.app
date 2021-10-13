@@ -51,10 +51,12 @@ class _PollBodyWidget extends StatelessWidget {
     return Column(
       children: [
         ...poll.options
-            .map((pollOption) => Provider<IUnifediApiPollOption>.value(
-                  value: pollOption,
-                  child: const _PollBodyOptionWidget(),
-                ))
+            .map(
+              (pollOption) => Provider<IUnifediApiPollOption>.value(
+                value: pollOption,
+                child: const _PollBodyOptionWidget(),
+              ),
+            )
             .toList(),
         const FediSmallVerticalSpacer(),
         if (pollBloc.multiple) const _PollBodyVoteButtonBuilderWidget(),
@@ -86,7 +88,7 @@ class _PollBodyVoteButtonBuilderWidget extends StatelessWidget {
 
               return Padding(
                 padding: FediPadding.allSmallPadding,
-                child: AsyncOperationButtonBuilderWidget(
+                child: AsyncOperationButtonBuilderWidget<void>(
                   builder: (context, onPressed) =>
                       FediPrimaryFilledTextButtonWithBorder(
                     S.of(context).app_poll_vote,
@@ -166,12 +168,10 @@ class _PollMetadataDotSeparatorWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Text(
-      ' · ',
-      style: IFediUiTextTheme.of(context).mediumShortGrey,
-    );
-  }
+  Widget build(BuildContext context) => Text(
+        ' · ',
+        style: IFediUiTextTheme.of(context).mediumShortGrey,
+      );
 }
 
 class PollMetadataTotalVotesCountWidget extends StatelessWidget {
@@ -240,12 +240,10 @@ class _PollMetadataExpiresAtExpiredWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Text(
-      S.of(context).app_poll_metadata_expires_expired,
-      style: IFediUiTextTheme.of(context).mediumShortGrey,
-    );
-  }
+  Widget build(BuildContext context) => Text(
+        S.of(context).app_poll_metadata_expires_expired,
+        style: IFediUiTextTheme.of(context).mediumShortGrey,
+      );
 }
 
 class _PollMetadataExpiresAtNotExpiredWidget extends StatelessWidget {
@@ -276,7 +274,7 @@ class _PollMetadataExpiresAtNotExpiredWidget extends StatelessWidget {
 final borderRadius = BorderRadius.circular(8.0);
 
 class PollOptionWidget extends StatelessWidget {
-  PollOptionWidget();
+  const PollOptionWidget();
 
   @override
   Widget build(BuildContext context) {
@@ -353,21 +351,19 @@ class _PollOptionBodyFillerWidget extends StatelessWidget {
     var votesPercent = poll.votesPercent(pollOption);
 
     return LayoutBuilder(
-      builder: (context, constraints) {
-        return Container(
-          width: constraints.maxWidth * votesPercent,
-          decoration: BoxDecoration(
-            borderRadius: borderRadius,
-            color: fillColor,
-          ),
-        );
-      },
+      builder: (context, constraints) => Container(
+        width: constraints.maxWidth * votesPercent,
+        decoration: BoxDecoration(
+          borderRadius: borderRadius,
+          color: fillColor,
+        ),
+      ),
     );
   }
 }
 
 class _PollOptionResultsWidget extends StatelessWidget {
-  _PollOptionResultsWidget({
+  const _PollOptionResultsWidget({
     Key? key,
   }) : super(key: key);
 

@@ -102,14 +102,12 @@ class _HomePageBackgroundWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return FediLightStatusBarStyleArea(
-      child: Container(
-        color: IFediUiColorTheme.of(context).primary,
-        child: const FediInstanceImageBackgroundWidget(),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => FediLightStatusBarStyleArea(
+        child: Container(
+          color: IFediUiColorTheme.of(context).primary,
+          child: const FediInstanceImageBackgroundWidget(),
+        ),
+      );
 }
 
 class _HomePageAccountTabWidget extends StatelessWidget {
@@ -118,30 +116,28 @@ class _HomePageAccountTabWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return DisposableProvider<IAccountHomeTabBloc>(
-      create: (context) {
-        var homeBloc = IHomeBloc.of(context, listen: false);
+  Widget build(BuildContext context) => DisposableProvider<IAccountHomeTabBloc>(
+        create: (context) {
+          var homeBloc = IHomeBloc.of(context, listen: false);
 
-        var accountHomeTabBloc = AccountHomeTabBloc();
+          var accountHomeTabBloc = AccountHomeTabBloc();
 
-        homeBloc.reselectedTabStream.listen(
-          (reselectedTab) {
-            if (reselectedTab == HomeTab.account) {
-              accountHomeTabBloc.scrollToTop();
-            }
-          },
-        ).disposeWith(accountHomeTabBloc);
+          homeBloc.reselectedTabStream.listen(
+            (reselectedTab) {
+              if (reselectedTab == HomeTab.account) {
+                accountHomeTabBloc.scrollToTop();
+              }
+            },
+          ).disposeWith(accountHomeTabBloc);
 
-        return accountHomeTabBloc;
-      },
-      child: AccountHomeTabBlocProxyProvider(
-        child: const AccountHomeTabPage(
-          key: PageStorageKey<String>('AccountHomeTabPage'),
+          return accountHomeTabBloc;
+        },
+        child: AccountHomeTabBlocProxyProvider(
+          child: const AccountHomeTabPage(
+            key: PageStorageKey<String>('AccountHomeTabPage'),
+          ),
         ),
-      ),
-    );
-  }
+      );
 }
 
 class _HomePageMessagesTabConversationWidget extends StatelessWidget {
@@ -150,30 +146,29 @@ class _HomePageMessagesTabConversationWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return DisposableProvider<IConversationChatHomeTabBloc>(
-      create: (context) {
-        var homeBloc = IHomeBloc.of(context, listen: false);
+  Widget build(BuildContext context) =>
+      DisposableProvider<IConversationChatHomeTabBloc>(
+        create: (context) {
+          var homeBloc = IHomeBloc.of(context, listen: false);
 
-        var conversationMessagesHomeTabBloc = ConversationChatHomeTabBloc(
-            //              deviceHeight: MediaQuery.of(context).size.height,
-            );
+          var conversationMessagesHomeTabBloc = ConversationChatHomeTabBloc(
+              //              deviceHeight: MediaQuery.of(context).size.height,
+              );
 
-        homeBloc.reselectedTabStream.listen(
-          (reselectedTab) {
-            if (reselectedTab == HomeTab.chat) {
-              conversationMessagesHomeTabBloc.scrollToTop();
-            }
-          },
-        ).disposeWith(conversationMessagesHomeTabBloc);
+          homeBloc.reselectedTabStream.listen(
+            (reselectedTab) {
+              if (reselectedTab == HomeTab.chat) {
+                conversationMessagesHomeTabBloc.scrollToTop();
+              }
+            },
+          ).disposeWith(conversationMessagesHomeTabBloc);
 
-        return conversationMessagesHomeTabBloc;
-      },
-      child: ConversationChatHomeTabBlocProxyProvider(
-        child: const ConversationChatHomeTabPage(),
-      ),
-    );
-  }
+          return conversationMessagesHomeTabBloc;
+        },
+        child: ConversationChatHomeTabBlocProxyProvider(
+          child: const ConversationChatHomeTabPage(),
+        ),
+      );
 }
 
 class _HomePageMessagesTabChatWidget extends StatelessWidget {
@@ -182,28 +177,27 @@ class _HomePageMessagesTabChatWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return DisposableProvider<IPleromaChatHomeTabBloc>(
-      create: (context) {
-        var homeBloc = IHomeBloc.of(context, listen: false);
+  Widget build(BuildContext context) =>
+      DisposableProvider<IPleromaChatHomeTabBloc>(
+        create: (context) {
+          var homeBloc = IHomeBloc.of(context, listen: false);
 
-        var chatMessagesHomeTabBloc = PleromaChatHomeTabBloc();
+          var chatMessagesHomeTabBloc = PleromaChatHomeTabBloc();
 
-        homeBloc.reselectedTabStream.listen((reselectedTab) {
-          if (reselectedTab == HomeTab.chat) {
-            chatMessagesHomeTabBloc.scrollToTop();
-          }
-        }).disposeWith(chatMessagesHomeTabBloc);
+          homeBloc.reselectedTabStream.listen((reselectedTab) {
+            if (reselectedTab == HomeTab.chat) {
+              chatMessagesHomeTabBloc.scrollToTop();
+            }
+          }).disposeWith(chatMessagesHomeTabBloc);
 
-        return chatMessagesHomeTabBloc;
-      },
-      child: PleromaChatHomeTabBlocProxyProvider(
-        child: const PleromaChatHomeTabPage(
-          key: PageStorageKey<String>('ChatMessagesHomeTabPage'),
+          return chatMessagesHomeTabBloc;
+        },
+        child: PleromaChatHomeTabBlocProxyProvider(
+          child: const PleromaChatHomeTabPage(
+            key: PageStorageKey<String>('ChatMessagesHomeTabPage'),
+          ),
         ),
-      ),
-    );
-  }
+      );
 }
 
 class _HomePageNotificationTabWidget extends StatelessWidget {
@@ -212,38 +206,37 @@ class _HomePageNotificationTabWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return DisposableProvider<INotificationsHomeTabBloc>(
-      create: (context) {
-        var homeBloc = IHomeBloc.of(context, listen: false);
+  Widget build(BuildContext context) =>
+      DisposableProvider<INotificationsHomeTabBloc>(
+        create: (context) {
+          var homeBloc = IHomeBloc.of(context, listen: false);
 
-        var notificationsHomeTabBloc = NotificationsHomeTabBloc(
-          pleromaNotificationService:
-              Provider.of<IUnifediApiNotificationService>(
-            context,
-            listen: false,
-          ),
-          notificationRepository: INotificationRepository.of(
-            context,
-            listen: false,
-          ),
-        );
+          var notificationsHomeTabBloc = NotificationsHomeTabBloc(
+            pleromaNotificationService:
+                Provider.of<IUnifediApiNotificationService>(
+              context,
+              listen: false,
+            ),
+            notificationRepository: INotificationRepository.of(
+              context,
+              listen: false,
+            ),
+          );
 
-        homeBloc.reselectedTabStream.listen(
-          (reselectedTab) {
-            if (reselectedTab == HomeTab.notifications) {
-              notificationsHomeTabBloc.scrollToTop();
-            }
-          },
-        ).disposeWith(notificationsHomeTabBloc);
+          homeBloc.reselectedTabStream.listen(
+            (reselectedTab) {
+              if (reselectedTab == HomeTab.notifications) {
+                notificationsHomeTabBloc.scrollToTop();
+              }
+            },
+          ).disposeWith(notificationsHomeTabBloc);
 
-        return notificationsHomeTabBloc;
-      },
-      child: NotificationsHomeTabBlocProxyProvider(
-        child: NotificationsHomeTabPage(),
-      ),
-    );
-  }
+          return notificationsHomeTabBloc;
+        },
+        child: NotificationsHomeTabBlocProxyProvider(
+          child: NotificationsHomeTabPage(),
+        ),
+      );
 }
 
 class _HomePageMessagesTabWidget extends StatelessWidget {
@@ -277,38 +270,37 @@ class _HomePageTimelineTabWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return DisposableProvider<ITimelinesHomeTabBloc>(
-      create: (context) {
-        var homeBloc = IHomeBloc.of(context, listen: false);
-        var timelinesHomeTabBloc = TimelinesHomeTabBloc();
+  Widget build(BuildContext context) =>
+      DisposableProvider<ITimelinesHomeTabBloc>(
+        create: (context) {
+          var homeBloc = IHomeBloc.of(context, listen: false);
+          var timelinesHomeTabBloc = TimelinesHomeTabBloc();
 
-        _logger.finest(() => 'create timelinesHomeTabBloc');
+          _logger.finest(() => 'create timelinesHomeTabBloc');
 
-        homeBloc.reselectedTabStream.listen(
-          (reselectedTab) {
-            if (reselectedTab == HomeTab.timelines) {
-              timelinesHomeTabBloc.scrollToTop();
-            }
-          },
-        ).disposeWith(timelinesHomeTabBloc);
+          homeBloc.reselectedTabStream.listen(
+            (reselectedTab) {
+              if (reselectedTab == HomeTab.timelines) {
+                timelinesHomeTabBloc.scrollToTop();
+              }
+            },
+          ).disposeWith(timelinesHomeTabBloc);
 
-        return timelinesHomeTabBloc;
-      },
-      child: TimelinesHomeTabBlocProxyProvider(
-        // post status timeline header widget
-        // we should provide it here to avoid disposing
-        // when navigating to pick image page
-        child: NewPostStatusBloc.provideToContextWithInitial(
-          context,
-          child: TimelinesHomeTabPage(),
-          initialMediaAttachments: null,
-          initialText: null,
-          initialSubject: null,
+          return timelinesHomeTabBloc;
+        },
+        child: TimelinesHomeTabBlocProxyProvider(
+          // post status timeline header widget
+          // we should provide it here to avoid disposing
+          // when navigating to pick image page
+          child: NewPostStatusBloc.provideToContextWithInitial(
+            context,
+            child: TimelinesHomeTabPage(),
+            initialMediaAttachments: null,
+            initialText: null,
+            initialSubject: null,
+          ),
         ),
-      ),
-    );
-  }
+      );
 }
 
 class _HomePageBottomNavBar extends StatelessWidget {

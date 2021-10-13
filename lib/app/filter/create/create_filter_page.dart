@@ -10,22 +10,20 @@ import 'package:flutter/material.dart';
 
 class CreateFilterPage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: FediPageTitleAppBar(
-        title: S.of(context).app_filter_create_title,
-        actions: [
-          const EditFilterAppBarSaveActionWidget(),
-        ],
-      ),
-      body: const SafeArea(
-        child: Padding(
-          padding: FediPadding.allBigPadding,
-          child: EditFilterWidget(),
+  Widget build(BuildContext context) => Scaffold(
+        appBar: FediPageTitleAppBar(
+          title: S.of(context).app_filter_create_title,
+          actions: [
+            const EditFilterAppBarSaveActionWidget(),
+          ],
         ),
-      ),
-    );
-  }
+        body: const SafeArea(
+          child: Padding(
+            padding: FediPadding.allBigPadding,
+            child: EditFilterWidget(),
+          ),
+        ),
+      );
 
   const CreateFilterPage();
 }
@@ -43,15 +41,14 @@ void goToCreateFilterPage({
   );
 }
 
-MaterialPageRoute createCreateFilterPageRoute({
+MaterialPageRoute<void> createCreateFilterPageRoute({
   required BuildContext context,
   required Function(IFilter) onSubmit,
-}) {
-  return MaterialPageRoute(
-    builder: (context) => CreateFilterBloc.provideToContext(
-      context,
-      child: const CreateFilterPage(),
-      onSubmit: onSubmit,
-    ),
-  );
-}
+}) =>
+    MaterialPageRoute<void>(
+      builder: (context) => CreateFilterBloc.provideToContext(
+        context,
+        child: const CreateFilterPage(),
+        onSubmit: onSubmit,
+      ),
+    );

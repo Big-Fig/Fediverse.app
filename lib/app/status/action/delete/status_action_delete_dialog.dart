@@ -15,20 +15,19 @@ import 'package:unifedi_api/unifedi_api.dart';
 Future<T?> showStatusActionDeleteDialog<T>({
   required BuildContext context,
   required IStatusBloc statusBloc,
-}) {
-  return StatusActionDeleteDialog(
-    actionsBorderVisible: false,
-    title: S.of(context).app_status_delete_dialog_title,
-    actionsAxis: Axis.vertical,
-    cancelable: true,
-    actions: [
-      buildDeleteAction(context, statusBloc),
-      buildDeleteAndSaveToDrafts(context, statusBloc),
-      buildDeleteAndStartNewAction(context, statusBloc),
-    ],
-    contentText: null,
-  ).show(context);
-}
+}) =>
+    StatusActionDeleteDialog(
+      actionsBorderVisible: false,
+      title: S.of(context).app_status_delete_dialog_title,
+      actionsAxis: Axis.vertical,
+      cancelable: true,
+      actions: [
+        buildDeleteAction(context, statusBloc),
+        buildDeleteAndSaveToDrafts(context, statusBloc),
+        buildDeleteAndStartNewAction(context, statusBloc),
+      ],
+      contentText: null,
+    ).show(context);
 
 DialogAction buildDeleteAndSaveToDrafts(
   BuildContext context,
@@ -43,7 +42,7 @@ DialogAction buildDeleteAndSaveToDrafts(
     label: S.of(context).app_status_delete_dialog_action_deleteAndSaveToDrafts,
     onAction: (context) async {
       var dialogResult =
-          await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+          await PleromaAsyncOperationHelper.performPleromaAsyncOperation<void>(
         context: context,
         asyncCode: () => statusBloc.delete(),
       );
@@ -95,7 +94,7 @@ DialogAction buildDeleteAndStartNewAction(
     label: S.of(context).app_status_delete_dialog_action_deleteAndStartNew,
     onAction: (context) async {
       var dialogResult =
-          await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+          await PleromaAsyncOperationHelper.performPleromaAsyncOperation<void>(
         context: context,
         asyncCode: () => statusBloc.delete(),
       );
@@ -131,7 +130,7 @@ DialogAction buildDeleteAction(
     DialogAction(
       label: S.of(context).app_status_delete_dialog_action_delete,
       onAction: (context) async {
-        await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+        await PleromaAsyncOperationHelper.performPleromaAsyncOperation<void>(
           context: context,
           asyncCode: () => statusBloc.delete(),
         );

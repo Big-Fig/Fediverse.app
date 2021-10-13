@@ -146,7 +146,7 @@ class AppDatabaseService extends AsyncInitLoadingBloc
       oldestChatMessage?.createdAt,
     ].where((datetime) => datetime != null).toList();
 
-    var oldestDateTime;
+    DateTime? oldestDateTime;
     if (dateTimes.isNotEmpty) {
       oldestDateTime = dateTimes.reduce(
         (value, element) => value!.isBefore(element!) ? value : element,
@@ -159,7 +159,9 @@ class AppDatabaseService extends AsyncInitLoadingBloc
   @override
   Future clearAll() async {
     for (var table in appDatabase.allTables) {
-      // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+      // ignore: invalid_use_of_visible_for_testing_member,
+      // ignore: implicit_dynamic_method
+      // ignore: implicit_dynamic_method,
       await appDatabase.delete(table).go();
     }
   }
@@ -171,9 +173,11 @@ class AppDatabaseService extends AsyncInitLoadingBloc
     required Duration? ageLimit,
     required int? entriesCountByTypeLimit,
   }) async {
-    _logger.finest(() => 'clearByLimits \n'
-        'ageLimit $ageLimit \n'
-        'entriesCountByTypeLimit $entriesCountByTypeLimit \n');
+    _logger.finest(
+      () => 'clearByLimits \n'
+          'ageLimit $ageLimit \n'
+          'entriesCountByTypeLimit $entriesCountByTypeLimit \n',
+    );
 
     // todo: clear related tables too
 

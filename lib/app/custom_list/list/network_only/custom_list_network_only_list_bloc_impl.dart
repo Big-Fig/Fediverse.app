@@ -16,27 +16,27 @@ class CustomListNetworkOnlyListBloc extends INetworkOnlyListBloc<ICustomList> {
   @override
   IUnifediApiService get unifediApi => pleromaListService;
 
-  static CustomListNetworkOnlyListBloc createFromContext(BuildContext context) {
-    return CustomListNetworkOnlyListBloc(
-      pleromaListService:
-          Provider.of<IUnifediApiListService>(context, listen: false),
-    );
-  }
+  static CustomListNetworkOnlyListBloc createFromContext(
+    BuildContext context,
+  ) =>
+      CustomListNetworkOnlyListBloc(
+        pleromaListService:
+            Provider.of<IUnifediApiListService>(context, listen: false),
+      );
 
   static Widget provideToContext(
     BuildContext context, {
     required Widget child,
-  }) {
-    return DisposableProvider<INetworkOnlyListBloc<ICustomList>>(
-      create: (context) =>
-          CustomListNetworkOnlyListBloc.createFromContext(context),
-      child: ProxyProvider<INetworkOnlyListBloc<ICustomList>,
-          INetworkOnlyListBloc>(
-        update: (context, value, previous) => value,
-        child: child,
-      ),
-    );
-  }
+  }) =>
+      DisposableProvider<INetworkOnlyListBloc<ICustomList>>(
+        create: (context) =>
+            CustomListNetworkOnlyListBloc.createFromContext(context),
+        child: ProxyProvider<INetworkOnlyListBloc<ICustomList>,
+            INetworkOnlyListBloc>(
+          update: (context, value, previous) => value,
+          child: child,
+        ),
+      );
 
   @override
   Future<List<ICustomList>> loadItemsFromRemoteForPage({

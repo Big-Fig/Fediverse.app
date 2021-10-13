@@ -49,17 +49,17 @@ abstract class IInstanceAnnouncementBloc implements IDisposable {
 
   DateTime? get endsAt;
 
-  Future toggleEmojiReaction({
+  Future<void> toggleEmojiReaction({
     required String emojiName,
   });
 
-  Future addEmojiReaction({
+  Future<void> addEmojiReaction({
     required String emojiName,
   });
 
-  Future removeEmojiReaction({
+  Future<void> removeEmojiReaction({
     required String emojiName,
   });
 
-  Future dismiss();
+  Future<void> dismiss();
 }

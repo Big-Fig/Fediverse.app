@@ -82,8 +82,10 @@ class UploadMediaAttachmentBlocDevice extends DisposableOwner
       return;
     }
 
-    assert(type == UploadMediaAttachmentStateType.notUploaded ||
-        type == UploadMediaAttachmentStateType.failed);
+    assert(
+      type == UploadMediaAttachmentStateType.notUploaded ||
+          type == UploadMediaAttachmentStateType.failed,
+    );
 
     var file = await mediaDeviceFile.loadFile();
     var fileLength = await file.length();
@@ -129,7 +131,7 @@ class UploadMediaAttachmentBlocDevice extends DisposableOwner
         ),
       );
       _logger.finest(() => 'startUpload uploaded');
-    }).catchError((error, stackTrace) {
+    }).catchError((dynamic error, StackTrace? stackTrace) {
       _logger.severe(() => 'error during uploading', error, stackTrace);
       uploadStateSubject.add(
         UploadMediaAttachmentState(
@@ -143,7 +145,7 @@ class UploadMediaAttachmentBlocDevice extends DisposableOwner
 
   Future<void> waitUntilUploadFinishes() async {
     _logger.finest(() => 'waitUntilUploadFinishes');
-    var completer = Completer();
+    var completer = Completer<void>();
 
     var started = DateTime.now();
     var timer = Timer.periodic(Duration(milliseconds: 1), (_) {

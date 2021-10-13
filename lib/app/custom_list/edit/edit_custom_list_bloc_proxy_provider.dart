@@ -6,13 +6,12 @@ import 'package:provider/provider.dart';
 class EditCustomListBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  EditCustomListBlocProxyProvider({required this.child});
+  const EditCustomListBlocProxyProvider({required this.child});
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IEditCustomListBloc, ICustomListFormBloc>(
-      update: (context, value, previous) => value.customListFormBloc,
-      child: child,
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IEditCustomListBloc, ICustomListFormBloc>(
+        update: (context, value, previous) => value.customListFormBloc,
+        child: child,
+      );
 }

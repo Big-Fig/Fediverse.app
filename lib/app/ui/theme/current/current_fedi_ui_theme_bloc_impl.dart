@@ -17,8 +17,6 @@ class CurrentFediUiThemeBloc extends DisposableOwner
 
   CurrentFediUiThemeBloc({
     required this.uiSettingsBloc,
-    required IFediUiTheme lightTheme,
-    required IFediUiTheme darkTheme,
     required this.systemBrightnessHandlerBloc,
     required this.availableThemes,
   });
@@ -31,17 +29,19 @@ class CurrentFediUiThemeBloc extends DisposableOwner
       );
 
   @override
-  Stream<IFediUiTheme?> get adaptiveBrightnessCurrentThemeStream {
-    return Rx.combineLatest2(
-      currentThemeStream,
-      systemBrightnessHandlerBloc.systemBrightnessStream,
-      (dynamic currentTheme, dynamic systemBrightness) =>
-          _calculateAdaptiveBrightnessCurrentThemeStream(
-        currentTheme,
-        systemBrightness,
-      ),
-    ).distinct();
-  }
+  Stream<IFediUiTheme?> get adaptiveBrightnessCurrentThemeStream =>
+      Rx.combineLatest2(
+        currentThemeStream,
+        systemBrightnessHandlerBloc.systemBrightnessStream,
+        (
+          IFediUiTheme? currentTheme,
+          Brightness systemBrightness,
+        ) =>
+            _calculateAdaptiveBrightnessCurrentThemeStream(
+          currentTheme,
+          systemBrightness,
+        ),
+      ).distinct();
 
   IFediUiTheme? _calculateAdaptiveBrightnessCurrentThemeStream(
     IFediUiTheme? currentTheme,

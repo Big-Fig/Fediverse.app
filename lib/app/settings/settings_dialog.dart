@@ -9,53 +9,48 @@ import 'package:flutter/material.dart';
 
 typedef StringBuilderFromContext = String Function(BuildContext context);
 
-void showSettingsDialog({
+Future<void> showSettingsDialog({
   required BuildContext context,
   required String? title,
   StringBuilderFromContext? titleBuilder,
   required String? subTitle,
   StringBuilderFromContext? subTitleBuilder,
   required Widget child,
-}) {
-  showFediModalBottomSheetDialog(
-    context: context,
-    child: Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: FediSizes.smallPadding,
-        horizontal: FediSizes.bigPadding,
-      ),
-      child: ListView(
-        shrinkWrap: true,
-        children: [
-          Center(
-            child: Builder(
-              builder: (context) {
-                return _SettingsDialogTitle(
+}) =>
+    showFediModalBottomSheetDialog<void>(
+      context: context,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          vertical: FediSizes.smallPadding,
+          horizontal: FediSizes.bigPadding,
+        ),
+        child: ListView(
+          shrinkWrap: true,
+          children: [
+            Center(
+              child: Builder(
+                builder: (context) => _SettingsDialogTitle(
                   title: titleBuilder != null ? titleBuilder(context) : title,
-                );
-              },
+                ),
+              ),
             ),
-          ),
-          Center(
-            child: Builder(
-              builder: (context) {
-                return _SettingsDialogSubTitle(
+            Center(
+              child: Builder(
+                builder: (context) => _SettingsDialogSubTitle(
                   subTitle: subTitleBuilder != null
                       ? subTitleBuilder(context)
                       : subTitle,
-                );
-              },
+                ),
+              ),
             ),
-          ),
-          const FediBigVerticalSpacer(),
-          const FediUltraLightGreyDivider(),
-          const FediSmallVerticalSpacer(),
-          child,
-        ],
+            const FediBigVerticalSpacer(),
+            const FediUltraLightGreyDivider(),
+            const FediSmallVerticalSpacer(),
+            child,
+          ],
+        ),
       ),
-    ),
-  );
-}
+    );
 
 class _SettingsDialogSubTitle extends StatelessWidget {
   final String? subTitle;
@@ -66,12 +61,10 @@ class _SettingsDialogSubTitle extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Text(
-      subTitle!,
-      style: IFediUiTextTheme.of(context).bigTallDarkGrey,
-    );
-  }
+  Widget build(BuildContext context) => Text(
+        subTitle!,
+        style: IFediUiTextTheme.of(context).bigTallDarkGrey,
+      );
 }
 
 class _SettingsDialogTitle extends StatelessWidget {
@@ -83,10 +76,8 @@ class _SettingsDialogTitle extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Text(
-      title!,
-      style: IFediUiTextTheme.of(context).subHeaderTallBoldDarkGrey,
-    );
-  }
+  Widget build(BuildContext context) => Text(
+        title!,
+        style: IFediUiTextTheme.of(context).subHeaderTallBoldDarkGrey,
+      );
 }

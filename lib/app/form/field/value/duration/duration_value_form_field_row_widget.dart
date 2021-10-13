@@ -15,7 +15,7 @@ class DurationValueFormFieldRowWidget extends StatelessWidget {
   final String? description;
   final String? descriptionOnDisabled;
 
-  DurationValueFormFieldRowWidget({
+  const DurationValueFormFieldRowWidget({
     required this.label,
     this.description,
     this.descriptionOnDisabled,

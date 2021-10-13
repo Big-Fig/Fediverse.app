@@ -1,3 +1,5 @@
+// ignore_for_file: cascade_invocations
+
 import 'package:fedi/app/database/dao/app_database_dao.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
@@ -58,7 +60,7 @@ mixin PopulatedDatabaseDaoMixin<
     query.orderBy(
       [
         (tbl) => moor.OrderingTerm.desc(
-              CustomExpression('$tableName.$idFieldName'),
+              CustomExpression<dynamic>('$tableName.$idFieldName'),
             ),
       ],
     );
@@ -90,7 +92,7 @@ mixin PopulatedDatabaseDaoMixin<
     query.orderBy(
       [
         (tbl) => moor.OrderingTerm.asc(
-              CustomExpression('$tableName.$idFieldName'),
+              CustomExpression<dynamic>('$tableName.$idFieldName'),
             ),
       ],
     );
@@ -122,7 +124,7 @@ mixin PopulatedDatabaseDaoMixin<
     query.orderBy(
       [
         (tbl) => moor.OrderingTerm.desc(
-              CustomExpression('$tableName.$idFieldName'),
+              CustomExpression<dynamic>('$tableName.$idFieldName'),
             ),
       ],
     );
@@ -155,7 +157,7 @@ mixin PopulatedDatabaseDaoMixin<
     query.orderBy(
       [
         (tbl) => moor.OrderingTerm.asc(
-              CustomExpression('$tableName.$idFieldName'),
+              CustomExpression<dynamic>('$tableName.$idFieldName'),
             ),
       ],
     );

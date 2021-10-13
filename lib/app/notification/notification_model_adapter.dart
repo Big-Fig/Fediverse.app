@@ -36,22 +36,21 @@ extension IPleromaNotificationExtension on IUnifediApiNotification {
 
   DbNotificationPopulated toDbNotificationPopulated({
     required bool? unread,
-  }) {
-    return DbNotificationPopulated(
-      dbNotification: toDbNotification(
-        unread: unread,
-      ),
-      dbAccount: account?.toDbAccount(),
-      dbStatus: status?.toDbStatus(),
-      reblogDbStatus: status?.reblog?.toDbStatus(),
-      reblogDbStatusAccount: status?.reblog?.account.toDbAccount(),
-      dbStatusAccount: status?.account.toDbAccount(),
-      replyDbStatus: null,
-      replyDbStatusAccount: null,
-      replyReblogDbStatus: null,
-      replyReblogDbStatusAccount: null,
-    );
-  }
+  }) =>
+      DbNotificationPopulated(
+        dbNotification: toDbNotification(
+          unread: unread,
+        ),
+        dbAccount: account?.toDbAccount(),
+        dbStatus: status?.toDbStatus(),
+        reblogDbStatus: status?.reblog?.toDbStatus(),
+        reblogDbStatusAccount: status?.reblog?.account.toDbAccount(),
+        dbStatusAccount: status?.account.toDbAccount(),
+        replyDbStatus: null,
+        replyDbStatusAccount: null,
+        replyReblogDbStatus: null,
+        replyReblogDbStatusAccount: null,
+      );
 
   DbNotificationPopulatedWrapper toDbNotificationPopulatedWrapper({
     required bool? unread,

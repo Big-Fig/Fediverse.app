@@ -52,12 +52,11 @@ class LocalInstanceTrendsBloc extends InstanceTrendsBloc
   static Widget provideToContext(
     BuildContext context, {
     required Widget child,
-  }) {
-    return DisposableProvider<IInstanceTrendsBloc>(
-      create: (context) => LocalInstanceTrendsBloc.createFromContext(context),
-      child: InstanceTrendsBlocProxyProvider(child: child),
-    );
-  }
+  }) =>
+      DisposableProvider<IInstanceTrendsBloc>(
+        create: (context) => LocalInstanceTrendsBloc.createFromContext(context),
+        child: InstanceTrendsBlocProxyProvider(child: child),
+      );
 
   @override
   InstanceLocation get instanceLocation => InstanceLocation.local;

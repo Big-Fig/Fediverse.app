@@ -62,8 +62,10 @@ void showEditGlobalOrInstanceSettingsDialog({
             builder: (context, snapshot) {
               var globalOrInstanceSettingsType =
                   snapshot.data ?? GlobalOrInstanceSettingsType.global;
-              _logger.finest(() =>
-                  'globalOrInstanceSettingsType $globalOrInstanceSettingsType');
+              _logger.finest(
+                () =>
+                    'globalOrInstanceSettingsType $globalOrInstanceSettingsType',
+              );
 
               return Provider<GlobalOrInstanceSettingsType>.value(
                 value: globalOrInstanceSettingsType,
@@ -95,16 +97,14 @@ class _EditGlobalOrInstanceSettingsDialogBodyWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldRowWidget(
-          showGlobalSettingsDialogCallback: showGlobalSettingsDialogCallback,
-        ),
-        const FediLightGreyDivider(),
-        child,
-      ],
-    );
-  }
+  Widget build(BuildContext context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldRowWidget(
+            showGlobalSettingsDialogCallback: showGlobalSettingsDialogCallback,
+          ),
+          const FediLightGreyDivider(),
+          child,
+        ],
+      );
 }

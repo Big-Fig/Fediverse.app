@@ -50,17 +50,6 @@ class HtmlTextBloc extends DisposableOwner implements IHtmlTextBloc {
       linkClickedStreamController.add(url);
     }
   }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is HtmlTextBloc &&
-          runtimeType == other.runtimeType &&
-          inputData == other.inputData &&
-          settings == other.settings;
-
-  @override
-  int get hashCode => inputData.hashCode ^ settings.hashCode;
 }
 
 final RegExp findHtmlFragmentsRegex = RegExp(r'</?\s*[a-z-][^>]*\s*>');
@@ -121,9 +110,11 @@ HtmlTextResultData _calculateHtmlData({
     );
   }
 
-  _logger.finest(() => '_calculateHtmlData \n'
-      'inputData $inputData \n'
-      'resultData $resultData');
+  _logger.finest(
+    () => '_calculateHtmlData \n'
+        'inputData $inputData \n'
+        'resultData $resultData',
+  );
 
   return resultData;
 }

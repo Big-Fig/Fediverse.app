@@ -19,46 +19,39 @@ class StatusSensitiveSettingsBloc
         );
 
   @override
-  Future changeIsAlwaysShowNsfw(bool value) {
-    return updateInstanceSettings(
-      settingsData.copyWith(
-        isAlwaysShowNsfw: value,
-      ),
-    );
-  }
+  Future changeIsAlwaysShowNsfw(bool value) => updateInstanceSettings(
+        settingsData.copyWith(
+          isAlwaysShowNsfw: value,
+        ),
+      );
 
   @override
-  Future changeIsAlwaysShowSpoiler(bool value) {
-    return updateInstanceSettings(
-      settingsData.copyWith(
-        isAlwaysShowSpoiler: value,
-      ),
-    );
-  }
+  Future changeIsAlwaysShowSpoiler(bool value) => updateInstanceSettings(
+        settingsData.copyWith(
+          isAlwaysShowSpoiler: value,
+        ),
+      );
 
   @override
-  Future changeIsNeedReplaceBlurWithFill(bool value) {
-    return updateInstanceSettings(
-      settingsData.copyWith(
-        isNeedReplaceBlurWithFill: value,
-      ),
-    );
-  }
+  Future changeIsNeedReplaceBlurWithFill(bool value) => updateInstanceSettings(
+        settingsData.copyWith(
+          isNeedReplaceBlurWithFill: value,
+        ),
+      );
 
   @override
-  Future changeNsfwDisplayDelayDuration(Duration? value) {
-    return updateInstanceSettings(
-      StatusSensitiveSettings(
-        isAlwaysShowNsfw: isAlwaysShowNsfw,
-        isAlwaysShowSpoiler: isAlwaysShowSpoiler,
-        isNeedReplaceBlurWithFill: isNeedReplaceBlurWithFill,
-        nsfwDisplayDelayDurationMicrosecondsTotal: value?.inMicroseconds,
-      ),
-      // settingsData.copyWith(
-      //   nsfwDisplayDelayDurationMicrosecondsTotal: value.inMicroseconds,
-      // ),
-    );
-  }
+  Future changeNsfwDisplayDelayDuration(Duration? value) =>
+      updateInstanceSettings(
+        StatusSensitiveSettings(
+          isAlwaysShowNsfw: isAlwaysShowNsfw,
+          isAlwaysShowSpoiler: isAlwaysShowSpoiler,
+          isNeedReplaceBlurWithFill: isNeedReplaceBlurWithFill,
+          nsfwDisplayDelayDurationMicrosecondsTotal: value?.inMicroseconds,
+        ),
+        // settingsData.copyWith(
+        //   nsfwDisplayDelayDurationMicrosecondsTotal: value.inMicroseconds,
+        // ),
+      );
 
   @override
   bool get isAlwaysShowNsfw => settingsData.isAlwaysShowNsfw;

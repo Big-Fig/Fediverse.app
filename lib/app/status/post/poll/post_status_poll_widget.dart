@@ -22,30 +22,29 @@ class PostStatusPollWidget extends StatelessWidget {
   const PostStatusPollWidget();
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        ProxyProvider<IPostStatusPollBloc,
-            IOneTypeFormGroupBloc<IStringValueFormFieldBloc>>(
-          update: (context, pollBloc, _) => pollBloc.pollOptionsGroupBloc,
-          child: const _PostStatusPollOptionsFieldWidget(),
-        ),
-        ProxyProvider<IPostStatusPollBloc, IBoolValueFormFieldBloc>(
-          update: (context, pollBloc, _) => pollBloc.multiplyFieldBloc,
-          child: const _PostStatusPollMultiplyFieldWidget(),
-        ),
-        ProxyProvider<IPostStatusPollBloc, IBoolValueFormFieldBloc>(
-          update: (context, pollBloc, _) => pollBloc.hideTotalsFieldBloc,
-          child: const _PostStatusPollHideTotalsFieldWidget(),
-        ),
-        ProxyProvider<IPostStatusPollBloc, IDurationDateTimeValueFormFieldBloc>(
-          update: (context, pollBloc, _) =>
-              pollBloc.durationDateTimeLengthFieldBloc,
-          child: const _PostStatusPollLengthFieldWidget(),
-        ),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => Column(
+        children: <Widget>[
+          ProxyProvider<IPostStatusPollBloc,
+              IOneTypeFormGroupBloc<IStringValueFormFieldBloc>>(
+            update: (context, pollBloc, _) => pollBloc.pollOptionsGroupBloc,
+            child: const _PostStatusPollOptionsFieldWidget(),
+          ),
+          ProxyProvider<IPostStatusPollBloc, IBoolValueFormFieldBloc>(
+            update: (context, pollBloc, _) => pollBloc.multiplyFieldBloc,
+            child: const _PostStatusPollMultiplyFieldWidget(),
+          ),
+          ProxyProvider<IPostStatusPollBloc, IBoolValueFormFieldBloc>(
+            update: (context, pollBloc, _) => pollBloc.hideTotalsFieldBloc,
+            child: const _PostStatusPollHideTotalsFieldWidget(),
+          ),
+          ProxyProvider<IPostStatusPollBloc,
+              IDurationDateTimeValueFormFieldBloc>(
+            update: (context, pollBloc, _) =>
+                pollBloc.durationDateTimeLengthFieldBloc,
+            child: const _PostStatusPollLengthFieldWidget(),
+          ),
+        ],
+      );
 }
 
 class _PostStatusPollOptionsFieldWidget extends StatelessWidget {
@@ -76,7 +75,7 @@ class _PostStatusPollOptionsFieldWidget extends StatelessWidget {
 }
 
 class _PostStatusPollOptionsFieldItemsWidget extends StatelessWidget {
-  _PostStatusPollOptionsFieldItemsWidget({
+  const _PostStatusPollOptionsFieldItemsWidget({
     Key? key,
   }) : super(key: key);
 
@@ -87,10 +86,12 @@ class _PostStatusPollOptionsFieldItemsWidget extends StatelessWidget {
     return Column(
       children: [
         ...items
-            .map((pollItemBloc) => Provider<IStringValueFormFieldBloc>.value(
-                  value: pollItemBloc,
-                  child: _PostStatusPollOptionsFieldItemWidget(),
-                ))
+            .map(
+              (pollItemBloc) => Provider<IStringValueFormFieldBloc>.value(
+                value: pollItemBloc,
+                child: _PostStatusPollOptionsFieldItemWidget(),
+              ),
+            )
             .toList(),
       ],
     );
@@ -98,7 +99,7 @@ class _PostStatusPollOptionsFieldItemsWidget extends StatelessWidget {
 }
 
 class _PostStatusPollOptionsFieldItemWidget extends StatelessWidget {
-  _PostStatusPollOptionsFieldItemWidget({
+  const _PostStatusPollOptionsFieldItemWidget({
     Key? key,
   }) : super(key: key);
 
@@ -138,7 +139,7 @@ class _PostStatusPollOptionsFieldItemWidget extends StatelessWidget {
 }
 
 class _PostStatusPollOptionsFieldItemFieldWidget extends StatelessWidget {
-  _PostStatusPollOptionsFieldItemFieldWidget({
+  const _PostStatusPollOptionsFieldItemFieldWidget({
     Key? key,
   }) : super(key: key);
 
@@ -210,21 +211,20 @@ class _PostStatusPollOptionsAddItemButtonWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return FediIconButton(
-      icon: Icon(FediIcons.plus),
-      color: IFediUiColorTheme.of(context).primary,
-      onPressed: () {
-        var pollOptionsGroupBloc =
-            IOneTypeFormGroupBloc.of<IStringValueFormFieldBloc>(
-          context,
-          listen: false,
-        );
+  Widget build(BuildContext context) => FediIconButton(
+        icon: Icon(FediIcons.plus),
+        color: IFediUiColorTheme.of(context).primary,
+        onPressed: () {
+          var pollOptionsGroupBloc =
+              IOneTypeFormGroupBloc.of<IStringValueFormFieldBloc>(
+            context,
+            listen: false,
+          );
 
-        pollOptionsGroupBloc.addNewEmptyField();
-      },
-    );
-  }
+          // ignore: cascade_invocations
+          pollOptionsGroupBloc.addNewEmptyField();
+        },
+      );
 }
 
 class _PostStatusPollMultiplyFieldWidget extends StatelessWidget {
@@ -233,11 +233,9 @@ class _PostStatusPollMultiplyFieldWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return BoolValueFormFieldRowWidget(
-      label: S.of(context).app_status_post_poll_field_multiply_label,
-    );
-  }
+  Widget build(BuildContext context) => BoolValueFormFieldRowWidget(
+        label: S.of(context).app_status_post_poll_field_multiply_label,
+      );
 }
 
 class _PostStatusPollHideTotalsFieldWidget extends StatelessWidget {
@@ -246,11 +244,9 @@ class _PostStatusPollHideTotalsFieldWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return BoolValueFormFieldRowWidget(
-      label: S.of(context).app_status_post_poll_field_hideTotals_label,
-    );
-  }
+  Widget build(BuildContext context) => BoolValueFormFieldRowWidget(
+        label: S.of(context).app_status_post_poll_field_hideTotals_label,
+      );
 }
 
 class _PostStatusPollLengthFieldWidget extends StatelessWidget {

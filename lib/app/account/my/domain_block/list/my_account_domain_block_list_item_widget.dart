@@ -8,38 +8,37 @@ class MyAccountDomainBlockListItemWidget extends StatelessWidget {
   final DomainBlockCallback? domainBlockSelectedCallback;
   final List<Widget>? domainBlockActions;
 
-  MyAccountDomainBlockListItemWidget({
+  const MyAccountDomainBlockListItemWidget({
     required this.domainBlockSelectedCallback,
     this.domainBlockActions,
   });
 
   @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTap: () {
-        if (domainBlockSelectedCallback != null) {
-          var domain = Provider.of<DomainBlock>(
-            context,
-            listen: false,
-          );
-          domainBlockSelectedCallback!(context, domain);
-        }
-      },
-      child: Padding(
-        padding: FediPadding.allBigPadding,
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            const Expanded(
-              child: _MyAccountDomainBlockListItemBodyWidget(),
-            ),
-            if (domainBlockActions?.isNotEmpty == true) ...domainBlockActions!,
-          ],
+  Widget build(BuildContext context) => GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () {
+          if (domainBlockSelectedCallback != null) {
+            var domain = Provider.of<DomainBlock>(
+              context,
+              listen: false,
+            );
+            domainBlockSelectedCallback!(context, domain);
+          }
+        },
+        child: Padding(
+          padding: FediPadding.allBigPadding,
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+              const Expanded(
+                child: _MyAccountDomainBlockListItemBodyWidget(),
+              ),
+              if (domainBlockActions?.isNotEmpty == true)
+                ...domainBlockActions!,
+            ],
+          ),
         ),
-      ),
-    );
-  }
+      );
 }
 
 class _MyAccountDomainBlockListItemBodyWidget extends StatelessWidget {

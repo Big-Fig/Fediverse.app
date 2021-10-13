@@ -6,13 +6,12 @@ import 'package:provider/provider.dart';
 class SingleMediaPickerBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  SingleMediaPickerBlocProxyProvider({required this.child});
+  const SingleMediaPickerBlocProxyProvider({required this.child});
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<ISingleMediaPickerBloc, IMediaPickerBloc>(
-      update: (context, value, previous) => value,
-      child: child,
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<ISingleMediaPickerBloc, IMediaPickerBloc>(
+        update: (context, value, previous) => value,
+        child: child,
+      );
 }

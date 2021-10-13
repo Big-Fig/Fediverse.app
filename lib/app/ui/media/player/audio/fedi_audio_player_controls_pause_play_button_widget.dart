@@ -46,15 +46,14 @@ class _FediAudioPlayerControlsPausePlayButtonBodyWidget
 
         return AsyncOperationButtonBuilderWidget(
           showProgressDialog: false,
-          builder: (BuildContext context, void Function()? onPressed) {
-            return FediIconButton(
-              icon: Icon(isPlaying ? FediIcons.pause : FediIcons.play),
-              // ignore: no-magic-number
-              iconSize: 16.0,
-              color: IFediUiColorTheme.of(context).white,
-              onPressed: onPressed,
-            );
-          },
+          builder: (BuildContext context, void Function()? onPressed) =>
+              FediIconButton(
+            icon: Icon(isPlaying ? FediIcons.pause : FediIcons.play),
+            // ignore: no-magic-number
+            iconSize: 16.0,
+            color: IFediUiColorTheme.of(context).white,
+            onPressed: onPressed,
+          ),
           asyncButtonAction: () async {
             await mediaPlayerBloc.togglePlay();
           },
@@ -71,14 +70,12 @@ class _FediAudioPlayerControlsPausePlayButtonLoadingWidget
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: FediPadding.horizontalBigPadding,
-      child: FediCircularProgressIndicator(
-        color: IFediUiColorTheme.of(context).white,
-        // ignore: no-magic-number
-        size: 22.0,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Padding(
+        padding: FediPadding.horizontalBigPadding,
+        child: FediCircularProgressIndicator(
+          color: IFediUiColorTheme.of(context).white,
+          // ignore: no-magic-number
+          size: 22.0,
+        ),
+      );
 }

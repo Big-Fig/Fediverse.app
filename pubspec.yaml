@@ -25,6 +25,9 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
+  # locales & localization
+  intl: ^0.17.0
+
   # enhanced reorderable list
   flutter_reorderable_list: 1.1.0
 
@@ -87,6 +90,7 @@ dependencies:
   flutter_cache_manager: 3.1.2
   # reactive programming
   rxdart: 0.27.2
+  async: 2.8.1
   # text size to fit constraints
   auto_size_text: 3.0.0-nullsafety.0
 
@@ -168,6 +172,7 @@ dependencies:
 
   # file picker for media attachment
   file_picker: 4.1.3
+  file: 6.1.2
 
   # unenscape account not field
   html_unescape: 2.0.0
@@ -219,6 +224,9 @@ dependencies:
   easy_dispose_flutter: 1.0.1
   easy_dispose_rxdart: 1.0.1
   easy_dispose_provider: 1.0.2
+
+  # work with path/url parts
+  path: 1.8.0
 
   # code generator: unions, strings, equals & hash, etc
   freezed_annotation: ^0.14.3

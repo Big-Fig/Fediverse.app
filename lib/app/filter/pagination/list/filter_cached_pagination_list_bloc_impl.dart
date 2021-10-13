@@ -22,29 +22,29 @@ class FilterCachedPaginationListBloc<
   static Widget provideToContext<TPage extends CachedPaginationPage<IFilter>>(
     BuildContext context, {
     required Widget child,
-  }) {
-    return DisposableProvider<ICachedPaginationListBloc<TPage, IFilter>>(
-      create: (context) =>
-          FilterCachedPaginationListBloc.createFromContext<TPage>(context),
-      child: ProxyProvider<ICachedPaginationListBloc<TPage, IFilter>,
-          ICachedPaginationListBloc>(
-        update: (context, value, previous) => value,
-        child:
-            CachedPaginationListBlocProxyProvider<TPage, IFilter>(child: child),
-      ),
-    );
-  }
+  }) =>
+      DisposableProvider<ICachedPaginationListBloc<TPage, IFilter>>(
+        create: (context) =>
+            FilterCachedPaginationListBloc.createFromContext<TPage>(context),
+        child: ProxyProvider<ICachedPaginationListBloc<TPage, IFilter>,
+            ICachedPaginationListBloc>(
+          update: (context, value, previous) => value,
+          child: CachedPaginationListBlocProxyProvider<TPage, IFilter>(
+            child: child,
+          ),
+        ),
+      );
 
   static FilterCachedPaginationListBloc<TPage>
       createFromContext<TPage extends CachedPaginationPage<IFilter>>(
     BuildContext context,
-  ) {
-    return FilterCachedPaginationListBloc<TPage>(
-      cachedPaginationBloc: Provider.of<ICachedPaginationBloc<TPage, IFilter>>(
-        context,
-        listen: false,
-      ),
-      cachedListBloc: IFilterCachedListBloc.of(context, listen: false),
-    );
-  }
+  ) =>
+          FilterCachedPaginationListBloc<TPage>(
+            cachedPaginationBloc:
+                Provider.of<ICachedPaginationBloc<TPage, IFilter>>(
+              context,
+              listen: false,
+            ),
+            cachedListBloc: IFilterCachedListBloc.of(context, listen: false),
+          );
 }

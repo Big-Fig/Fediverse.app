@@ -28,30 +28,28 @@ import 'package:provider/provider.dart';
 
 class MyAccountDomainBlockListPage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: FediPageTitleAppBar(
-        title: S.of(context).app_account_my_domainBlock_title,
-      ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            const _MyAccountDomainBlockListPageWarningWidget(),
-            const FediMediumVerticalSpacer(),
-            const _MyAccountDomainBlockListPageAddButton(),
-            const FediMediumVerticalSpacer(),
-            const FediBigVerticalSpacer(),
-            const FediUltraLightGreyDivider(),
-            Expanded(
-              child: const _MyAccountDomainBlockListPageBody(
-                customEmptyWidget: SizedBox.shrink(),
-              ),
-            ),
-          ],
+  Widget build(BuildContext context) => Scaffold(
+        appBar: FediPageTitleAppBar(
+          title: S.of(context).app_account_my_domainBlock_title,
         ),
-      ),
-    );
-  }
+        body: SafeArea(
+          child: Column(
+            children: [
+              const _MyAccountDomainBlockListPageWarningWidget(),
+              const FediMediumVerticalSpacer(),
+              const _MyAccountDomainBlockListPageAddButton(),
+              const FediMediumVerticalSpacer(),
+              const FediBigVerticalSpacer(),
+              const FediUltraLightGreyDivider(),
+              Expanded(
+                child: const _MyAccountDomainBlockListPageBody(
+                  customEmptyWidget: SizedBox.shrink(),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
 }
 
 class _MyAccountDomainBlockListPageBody extends StatelessWidget {
@@ -65,19 +63,17 @@ class _MyAccountDomainBlockListPageBody extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: MyAccountDomainBlockPaginationListWidget(
-        customEmptyWidget: customEmptyWidget,
-        customLoadingWidget: customLoadingWidget,
-        key: PageStorageKey('MyAccountDomainBlockListPage'),
-        domainBlockSelectedCallback: null,
-        domainBlockActions: <Widget>[
-          const _MyAccountDomainBlockListPageRemoveItemAction(),
-        ],
-      ),
-    );
-  }
+  Widget build(BuildContext context) => SafeArea(
+        child: MyAccountDomainBlockPaginationListWidget(
+          customEmptyWidget: customEmptyWidget,
+          customLoadingWidget: customLoadingWidget,
+          key: PageStorageKey('MyAccountDomainBlockListPage'),
+          domainBlockSelectedCallback: null,
+          domainBlockActions: <Widget>[
+            const _MyAccountDomainBlockListPageRemoveItemAction(),
+          ],
+        ),
+      );
 }
 
 class _MyAccountDomainBlockListPageAddButton extends StatelessWidget {
@@ -86,21 +82,19 @@ class _MyAccountDomainBlockListPageAddButton extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return FediPrimaryFilledTextButtonWithBorder(
-      S.of(context).app_account_my_domainBlock_action_add,
-      expanded: false,
-      onPressed: () {
-        AddMyAccountDomainBlockDialog.createFromContext(
-          context: context,
-          successCallback: () {
-            IPaginationListBloc.of(context, listen: false)
-                .refreshWithController();
-          },
-        ).show(context);
-      },
-    );
-  }
+  Widget build(BuildContext context) => FediPrimaryFilledTextButtonWithBorder(
+        S.of(context).app_account_my_domainBlock_action_add,
+        expanded: false,
+        onPressed: () {
+          AddMyAccountDomainBlockDialog.createFromContext(
+            context: context,
+            successCallback: () {
+              IPaginationListBloc.of(context, listen: false)
+                  .refreshWithController();
+            },
+          ).show<void>(context);
+        },
+      );
 }
 
 class _MyAccountDomainBlockListPageWarningWidget extends StatelessWidget {
@@ -109,11 +103,9 @@ class _MyAccountDomainBlockListPageWarningWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return FediNoteDescriptionWidget(
-      S.of(context).app_account_domainBlock_description,
-    );
-  }
+  Widget build(BuildContext context) => FediNoteDescriptionWidget(
+        S.of(context).app_account_domainBlock_description,
+      );
 }
 
 class _MyAccountDomainBlockListPageRemoveItemAction extends StatelessWidget {
@@ -160,35 +152,35 @@ void goToMyAccountDomainBlockListPage(BuildContext context) {
   );
 }
 
-MaterialPageRoute createMyAccountDomainBlockListPage() {
-  return MaterialPageRoute(
-    builder: (context) =>
-        MyAccountDomainBlockNetworkOnlyDomainListBloc.provideToContext(
-      context,
-      child: DisposableProvider<IMyAccountDomainBlockNetworkOnlyPaginationBloc>(
-        create: (context) =>
-            MyAccountDomainBlockNetworkOnlyPaginationBloc.createFromContext(
-          context,
-        ),
-        child: ProxyProvider<IMyAccountDomainBlockNetworkOnlyPaginationBloc,
-            INetworkOnlyPleromaPaginationBloc<DomainBlock>>(
-          update: (context, value, previous) => value,
-          child: ProxyProvider<
-              INetworkOnlyPleromaPaginationBloc<DomainBlock>,
-              INetworkOnlyPaginationBloc<PaginationPage<DomainBlock>,
-                  DomainBlock>>(
+MaterialPageRoute<void> createMyAccountDomainBlockListPage() =>
+    MaterialPageRoute<void>(
+      builder: (context) =>
+          MyAccountDomainBlockNetworkOnlyDomainListBloc.provideToContext(
+        context,
+        child:
+            DisposableProvider<IMyAccountDomainBlockNetworkOnlyPaginationBloc>(
+          create: (context) =>
+              MyAccountDomainBlockNetworkOnlyPaginationBloc.createFromContext(
+            context,
+          ),
+          child: ProxyProvider<IMyAccountDomainBlockNetworkOnlyPaginationBloc,
+              INetworkOnlyPleromaPaginationBloc<DomainBlock>>(
             update: (context, value, previous) => value,
-            child: NetworkOnlyPaginationBlocProxyProvider<
-                PaginationPage<DomainBlock>, DomainBlock>(
-              child: MyAccountDomainBlockPaginationListBloc.provideToContext(
-                context,
-                loadFromCacheDuringInit: false,
-                child: MyAccountDomainBlockListPage(),
+            child: ProxyProvider<
+                INetworkOnlyPleromaPaginationBloc<DomainBlock>,
+                INetworkOnlyPaginationBloc<PaginationPage<DomainBlock>,
+                    DomainBlock>>(
+              update: (context, value, previous) => value,
+              child: NetworkOnlyPaginationBlocProxyProvider<
+                  PaginationPage<DomainBlock>, DomainBlock>(
+                child: MyAccountDomainBlockPaginationListBloc.provideToContext(
+                  context,
+                  loadFromCacheDuringInit: false,
+                  child: MyAccountDomainBlockListPage(),
+                ),
               ),
             ),
           ),
         ),
       ),
-    ),
-  );
-}
+    );

@@ -16,12 +16,6 @@ abstract class IWebSocketsHandlerManagerBloc implements IDisposable {
     required bool chat,
   });
 
-  IDisposable listenAccountChannel({
-    required WebSocketsChannelHandlerType handlerType,
-    required String accountId,
-    required bool notification,
-  });
-
   IDisposable listenConversationChannel({
     required WebSocketsChannelHandlerType handlerType,
   });

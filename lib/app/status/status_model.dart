@@ -579,12 +579,10 @@ class CantExtractStatusRemoteIdFromStatusUrlException implements Exception {
   });
 
   @override
-  String toString() {
-    return 'CantExtractStatusRemoteIdFromStatusUrlException{'
-        'status: $status, '
-        'e: $e'
-        '}';
-  }
+  String toString() => 'CantExtractStatusRemoteIdFromStatusUrlException{'
+      'status: $status, '
+      'e: $e'
+      '}';
 }
 
 extension IUnifediApiMentionStatusListExtension on List<IStatus> {

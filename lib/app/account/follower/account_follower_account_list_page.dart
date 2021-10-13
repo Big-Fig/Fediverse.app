@@ -35,8 +35,9 @@ void goToAccountFollowerAccountListPage({
 }) {
   Navigator.push(
     context,
-    MaterialPageRoute(builder: (context) {
-      return AccountFollowerAccountCachedListBloc.provideToContext(
+    MaterialPageRoute<void>(
+      builder: (context) =>
+          AccountFollowerAccountCachedListBloc.provideToContext(
         context,
         account: account,
         child: AccountCachedPaginationBloc.provideToContext(
@@ -49,7 +50,7 @@ void goToAccountFollowerAccountListPage({
             ),
           ),
         ),
-      );
-    }),
+      ),
+    ),
   );
 }

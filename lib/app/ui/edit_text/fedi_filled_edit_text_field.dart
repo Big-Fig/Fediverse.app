@@ -27,7 +27,7 @@ class FediFilledEditTextField extends StatelessWidget {
   // todo: refactor to own widget
   final bool filled;
 
-  FediFilledEditTextField({
+  const FediFilledEditTextField({
     required this.textEditingController,
     required this.hintText,
     required this.errorText,

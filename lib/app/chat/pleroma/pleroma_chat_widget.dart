@@ -24,26 +24,25 @@ class PleromaChatWidget extends StatelessWidget {
 
     return FediAsyncInitLoadingWidget(
       asyncInitLoadingBloc: chatBloc,
-      loadingFinishedBuilder: (context) {
-        return PleromaChatMessageCachedListBloc.provideToContext(
+      loadingFinishedBuilder: (context) =>
+          PleromaChatMessageCachedListBloc.provideToContext(
+        context,
+        chat: chatBloc.chat,
+        child: PleromaChatMessageCachedPaginationBloc.provideToContext(
           context,
-          chat: chatBloc.chat,
-          child: PleromaChatMessageCachedPaginationBloc.provideToContext(
+          child: PleromaChatMessageCachedPaginationListWithNewItemsBloc
+              .provideToContext(
             context,
-            child: PleromaChatMessageCachedPaginationListWithNewItemsBloc
-                .provideToContext(
-              context,
-              mergeNewItemsImmediately: true,
-              child: const ChatBodyWrapperWidget(
-                child: ChatMessageListWidget<IPleromaChatMessage>(
-                  itemBuilder: _itemBuilder,
-                  itemContextBuilder: _itemContextBuilder,
-                ),
+            mergeNewItemsImmediately: true,
+            child: const ChatBodyWrapperWidget(
+              child: ChatMessageListWidget<IPleromaChatMessage>(
+                itemBuilder: _itemBuilder,
+                itemContextBuilder: _itemContextBuilder,
               ),
             ),
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }
@@ -54,21 +53,20 @@ Widget _itemBuilder(BuildContext context) =>
 Widget _itemContextBuilder(
   BuildContext context, {
   required Widget child,
-}) {
-  return DisposableProxyProvider<IPleromaChatMessage, IPleromaChatMessageBloc>(
-    update: (context, chatMessage, previous) {
-      if (previous != null && previous.remoteId == chatMessage.remoteId) {
-        return previous;
-      } else {
-        return PleromaChatMessageBloc.createFromContext(
-          context,
-          chatMessage,
-        );
-      }
-    },
-    child: ProxyProvider<IPleromaChatMessageBloc, IChatMessageBloc>(
-      update: (context, value, _) => value,
-      child: child,
-    ),
-  );
-}
+}) =>
+    DisposableProxyProvider<IPleromaChatMessage, IPleromaChatMessageBloc>(
+      update: (context, chatMessage, previous) {
+        if (previous != null && previous.remoteId == chatMessage.remoteId) {
+          return previous;
+        } else {
+          return PleromaChatMessageBloc.createFromContext(
+            context,
+            chatMessage,
+          );
+        }
+      },
+      child: ProxyProvider<IPleromaChatMessageBloc, IChatMessageBloc>(
+        update: (context, value, _) => value,
+        child: child,
+      ),
+    );

@@ -53,7 +53,7 @@ void main() {
 
     await statusDao.insert(entity: dbStatus, mode: null);
 
-    var all = (await statusDao.getAll());
+    var all = await statusDao.getAll();
     expect(all.length, 1);
 
     var findByRemoteId =
@@ -101,7 +101,7 @@ void main() {
 
     await statusDao.insert(entity: dbStatus, mode: null);
 
-    var all = (await statusDao.getAll());
+    var all = await statusDao.getAll();
     expect(all.length, 1);
 
     var findByRemoteId =
@@ -150,7 +150,7 @@ void main() {
 
     await chatMessageDao.insert(entity: dbChatMessage, mode: null);
 
-    var all = (await chatMessageDao.getAll());
+    var all = await chatMessageDao.getAll();
     expect(all.length, 1);
 
     var findByRemoteId =
@@ -199,7 +199,7 @@ void main() {
 
     await chatMessageDao.insert(entity: dbChatMessage, mode: null);
 
-    var all = (await chatMessageDao.getAll());
+    var all = await chatMessageDao.getAll();
     expect(all.length, 1);
 
     var findByRemoteId =

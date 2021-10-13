@@ -11,7 +11,7 @@ class TabControllerProvider extends StatefulWidget {
   final TabControllerCreator tabControllerCreator;
   final Widget child;
 
-  TabControllerProvider({
+  const TabControllerProvider({
     required this.tabControllerCreator,
     required this.child,
   });
@@ -23,16 +23,14 @@ class TabControllerProvider extends StatefulWidget {
 class _TabControllerProviderState extends State<TabControllerProvider>
     with TickerProviderStateMixin {
   @override
-  Widget build(BuildContext context) {
-    return ListenableProvider<TabController>(
-      create: (context) => widget.tabControllerCreator(
-        context,
-        this,
-      ),
-      dispose: (context, tabController) {
-        tabController.dispose();
-      },
-      child: widget.child,
-    );
-  }
+  Widget build(BuildContext context) => ListenableProvider<TabController>(
+        create: (context) => widget.tabControllerCreator(
+          context,
+          this,
+        ),
+        dispose: (context, tabController) {
+          tabController.dispose();
+        },
+        child: widget.child,
+      );
 }

@@ -65,10 +65,15 @@ void main() {
   test('items', () async {
     expect(
       paginationListBloc.items,
-      [],
+      <PaginationItemTest>[],
     );
 
-    await expectLater(paginationListBloc.itemsStream, emits([]));
+    await expectLater(
+      paginationListBloc.itemsStream,
+      emits(
+        <PaginationItemTest>[],
+      ),
+    );
 
     await paginationListBloc.refreshWithoutController();
     await memoryPaginationListWithNewItemsBloc.waitForNewerItemsAsyncCheck();
@@ -249,12 +254,12 @@ void main() {
     );
     expect(
       paginationListWithNewItemsBloc.items,
-      [],
+      <PaginationItemTest>[],
     );
 
     await expectLater(
       paginationListWithNewItemsBloc.unmergedNewItemsStream,
-      emits([]),
+      emits(<PaginationItemTest>[]),
     );
 
     memoryPaginationListWithNewItemsBloc.addNewItems([testPaginationItem1]);
@@ -262,7 +267,7 @@ void main() {
 
     expect(
       paginationListWithNewItemsBloc.items,
-      [],
+      <PaginationItemTest>[],
     );
     expect(
       paginationListWithNewItemsBloc.unmergedNewItems.length,
@@ -293,7 +298,7 @@ void main() {
 
     expect(
       paginationListWithNewItemsBloc.items,
-      [],
+      <PaginationItemTest>[],
     );
     expect(
       paginationListWithNewItemsBloc.unmergedNewItems.length,
@@ -320,7 +325,7 @@ void main() {
     );
     expect(
       paginationListWithNewItemsBloc.items,
-      [],
+      <PaginationItemTest>[],
     );
 
     await expectLater(
@@ -333,7 +338,7 @@ void main() {
 
     expect(
       paginationListWithNewItemsBloc.items,
-      [],
+      <PaginationItemTest>[],
     );
     expect(
       paginationListWithNewItemsBloc.unmergedNewItemsCount,
@@ -351,7 +356,7 @@ void main() {
 
     expect(
       paginationListWithNewItemsBloc.items,
-      [],
+      <PaginationItemTest>[],
     );
     expect(
       paginationListWithNewItemsBloc.unmergedNewItemsCount,
@@ -375,7 +380,7 @@ void main() {
     );
     expect(
       paginationListWithNewItemsBloc.items,
-      [],
+      <PaginationItemTest>[],
     );
 
     await expectLater(
@@ -388,7 +393,7 @@ void main() {
 
     expect(
       paginationListWithNewItemsBloc.items,
-      [],
+      <PaginationItemTest>[],
     );
     expect(
       paginationListWithNewItemsBloc.unmergedNewItems.length,
@@ -406,7 +411,7 @@ void main() {
 
     expect(
       paginationListWithNewItemsBloc.items,
-      [],
+      <PaginationItemTest>[],
     );
     expect(
       paginationListWithNewItemsBloc.unmergedNewItems.length,
@@ -458,7 +463,7 @@ void main() {
     );
     expect(
       paginationListWithNewItemsBloc.items,
-      [],
+      <PaginationItemTest>[],
     );
 
     expect(paginationListWithNewItemsBloc.itemsCount, 0);
@@ -572,7 +577,7 @@ void main() {
     );
     expect(
       paginationListWithNewItemsBloc.items,
-      [],
+      <PaginationItemTest>[],
     );
 
     await expectLater(
@@ -654,7 +659,7 @@ void main() {
     );
     expect(
       paginationListWithNewItemsBloc.items,
-      [],
+      <PaginationItemTest>[],
     );
 
     await expectLater(

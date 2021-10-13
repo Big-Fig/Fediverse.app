@@ -91,35 +91,34 @@ class _FediListSmartRefresherRefreshIndicatorState
       upperBound: 1.0,
       duration: Duration(milliseconds: 300),
     );
-    _positionFactor = _positionController.drive(Tween<Offset>(
-      begin: Offset(0.0, -1.0),
-      end: Offset(0.0, widget.height / 44.0),
-    ));
+    _positionFactor = _positionController.drive(
+      Tween<Offset>(
+        begin: Offset(0.0, -1.0),
+        end: Offset(0.0, widget.height / 44.0),
+      ),
+    );
     super.initState();
   }
 
   @override
-  Widget buildContent(BuildContext context, RefreshStatus? mode) {
-    return _buildIndicator(widget.backgroundColor ?? Colors.white);
-  }
+  Widget buildContent(BuildContext context, RefreshStatus? mode) =>
+      _buildIndicator(widget.backgroundColor ?? Colors.white);
 
-  Widget _buildIndicator(Color outerColor) {
-    return SlideTransition(
-      position: _positionFactor!,
-      child: ScaleTransition(
-        scale: _scaleFactor,
-        child: Align(
-          alignment: Alignment.topCenter,
-          child:
-              FediCircularProgressIndicator.buildForRefreshIndicator(context),
+  Widget _buildIndicator(Color outerColor) => SlideTransition(
+        position: _positionFactor!,
+        child: ScaleTransition(
+          scale: _scaleFactor,
+          child: Align(
+            alignment: Alignment.topCenter,
+            child:
+                FediCircularProgressIndicator.buildForRefreshIndicator(context),
+          ),
         ),
-      ),
-    );
-  }
+      );
 
   @override
   void onOffsetChange(double offset) {
-    // ignore: non_bool_negation_expression
+    // ignore: non_bool_negation_expression, avoid_dynamic_calls
     if (!floating) {
       _valueAni.value = offset / configuration!.headerTriggerDistance;
       _positionController.value = offset / configuration!.headerTriggerDistance;
@@ -144,14 +143,11 @@ class _FediListSmartRefresherRefreshIndicatorState
   }
 
   @override
-  Future<void> readyToRefresh() {
-    return _positionController.animateTo(widget.distance / widget.height);
-  }
+  Future<void> readyToRefresh() =>
+      _positionController.animateTo(widget.distance / widget.height);
 
   @override
-  Future<void> endRefresh() {
-    return _scaleFactor.animateTo(0.0);
-  }
+  Future<void> endRefresh() => _scaleFactor.animateTo(0.0);
 
   @override
   void dispose() {

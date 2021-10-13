@@ -45,7 +45,7 @@ class MyAccountEndorsementBloc extends DisposableOwner
     myAccountEndorsementAccountListNetworkOnlyPaginationBloc.disposeWith(this);
     accountPaginationListBloc.disposeWith(this);
 
-    // ignore: unawaited_futures
+    // ignore: unawaited_futures, cascade_invocations
     accountPaginationListBloc.refreshWithoutController();
   }
 
@@ -91,10 +91,10 @@ class MyAccountEndorsementBloc extends DisposableOwner
   static Widget provideToContext(
     BuildContext context, {
     required Widget child,
-  }) {
-    return DisposableProvider<IMyAccountEndorsementBloc>(
-      create: (context) => MyAccountEndorsementBloc.createFromContext(context),
-      child: MyAccountEndorsementBlocProxyProvider(child: child),
-    );
-  }
+  }) =>
+      DisposableProvider<IMyAccountEndorsementBloc>(
+        create: (context) =>
+            MyAccountEndorsementBloc.createFromContext(context),
+        child: MyAccountEndorsementBlocProxyProvider(child: child),
+      );
 }

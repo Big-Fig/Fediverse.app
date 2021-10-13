@@ -100,8 +100,10 @@ abstract class FormGroupBloc<T extends IFormItemBloc> extends FormItemBloc
   }
 
   void recalculateErrors() {
-    var errors =
-        items.fold(<FormItemValidationError>[], (dynamic errors, item) {
+    var errors = items.fold(<FormItemValidationError>[], (
+      List<FormItemValidationError> errors,
+      item,
+    ) {
       if (item.errors.isNotEmpty) {
         errors.addAll(item.errors);
       }
@@ -116,11 +118,9 @@ abstract class FormGroupBloc<T extends IFormItemBloc> extends FormItemBloc
 
   void recalculateIsSomethingChanged() {
     var isSomethingChanged = items.map((item) => item.isSomethingChanged).fold(
-      false,
-      (dynamic previousValue, element) {
-        return previousValue || element;
-      },
-    );
+          false,
+          (bool previousValue, element) => previousValue || element,
+        );
 
     if (!isSomethingChangedSubject.isClosed) {
       isSomethingChangedSubject.add(isSomethingChanged);

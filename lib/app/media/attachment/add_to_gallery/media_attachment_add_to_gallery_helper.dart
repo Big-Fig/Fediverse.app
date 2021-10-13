@@ -17,7 +17,7 @@ Future<bool> addMediaAttachmentToGallery({
 }) async {
   _logger.finest(() => 'addMediaAttachmentToGallery start');
 
-  var result;
+  bool result;
   if (Platform.isAndroid) {
     var storagePermissionBloc =
         IStoragePermissionBloc.of(context, listen: false);
@@ -35,7 +35,7 @@ Future<bool> addMediaAttachmentToGallery({
   return result;
 }
 
-Future<bool?> _save(IUnifediApiMediaAttachment mediaAttachment) async {
+Future<bool> _save(IUnifediApiMediaAttachment mediaAttachment) async {
   var typeAsUnifediApi = mediaAttachment.typeAsUnifediApi;
   var saved = await typeAsUnifediApi.maybeMap<FutureOr<bool?>>(
     image: (_) => _saveImage(mediaAttachment),
@@ -46,7 +46,7 @@ Future<bool?> _save(IUnifediApiMediaAttachment mediaAttachment) async {
   );
   _logger.finest(() => '_save saved =  $saved');
 
-  return saved;
+  return saved ?? false;
 }
 
 Future<bool?> _saveVideo(IUnifediApiMediaAttachment mediaAttachment) =>

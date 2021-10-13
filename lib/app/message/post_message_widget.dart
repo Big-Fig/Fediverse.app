@@ -70,12 +70,10 @@ class PostMessageWidget extends StatelessWidget {
         ],
       );
 
-  List<Widget> buildActions() {
-    return [
-      const PostMessageAttachActionWidget(),
-      const PostMessageEmojiActionWidget(),
-    ];
-  }
+  List<Widget> buildActions() => [
+        const PostMessageAttachActionWidget(),
+        const PostMessageEmojiActionWidget(),
+      ];
 }
 
 class _PostMessageMediaAttachmentsWidget extends StatelessWidget {

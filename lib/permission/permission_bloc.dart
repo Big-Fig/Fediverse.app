@@ -14,6 +14,6 @@ abstract class IPermissionBloc implements IDisposable {
 
   bool? get permissionGranted;
 
-  static bool? mapPermissionStatusToBool(status) =>
+  static bool? mapPermissionStatusToBool(PermissionStatus? status) =>
       status != null ? status == PermissionStatus.granted : null;
 }

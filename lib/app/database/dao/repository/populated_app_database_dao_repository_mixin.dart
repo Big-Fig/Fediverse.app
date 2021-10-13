@@ -54,15 +54,14 @@ mixin PopulatedDatabaseDaoRepositoryMixin<
     RepositoryPagination<AppItem>? pagination,
     Filters? filters,
     List<OrderingTerm>? orderingTerms,
-  }) {
-    return createFindInTypedResultSelectable(
-      pagination: pagination,
-      filters: filters,
-      orderingTerms: orderingTerms,
-    )
-        .map(populatedDao.mapTypedResultToDbPopulatedItem)
-        .map(mapDbPopulatedItemToAppItem);
-  }
+  }) =>
+      createFindInTypedResultSelectable(
+        pagination: pagination,
+        filters: filters,
+        orderingTerms: orderingTerms,
+      )
+          .map(populatedDao.mapTypedResultToDbPopulatedItem)
+          .map(mapDbPopulatedItemToAppItem);
 
   Selectable<TypedResult> createFindInTypedResultSelectable({
     RepositoryPagination<AppItem>? pagination,
@@ -71,8 +70,9 @@ mixin PopulatedDatabaseDaoRepositoryMixin<
   }) {
     var query = dao.startSelectQuery();
 
-    dao.addFiltersToQuery(query: query, filters: filters);
-    dao.addOrderingToQuery(query: query, orderingTerms: orderingTerms);
+    dao
+      ..addFiltersToQuery(query: query, filters: filters)
+      ..addOrderingToQuery(query: query, orderingTerms: orderingTerms);
     addAppItemPagination(
       query: query,
       pagination: pagination,

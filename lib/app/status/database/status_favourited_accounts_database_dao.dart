@@ -6,9 +6,11 @@ import 'package:moor/moor.dart';
 
 part 'status_favourited_accounts_database_dao.g.dart';
 
-@UseDao(tables: [
-  DbStatusFavouritedAccounts,
-])
+@UseDao(
+  tables: [
+    DbStatusFavouritedAccounts,
+  ],
+)
 class StatusFavouritedAccountsDao extends DatabaseDao<
     DbStatusFavouritedAccount,
     int,
@@ -39,16 +41,15 @@ class StatusFavouritedAccountsDao extends DatabaseDao<
         (tbl) => _createStatusRemoteIdEqualExpression(statusRemoteId),
       );
     } else {
-      return await deleteByStatusRemoteId(statusRemoteId);
+      return deleteByStatusRemoteId(statusRemoteId);
     }
   }
 
   CustomExpression<bool> _createStatusRemoteIdEqualExpression(
     String statusRemoteId,
-  ) {
-    return createMainTableEqualWhereExpression(
-      fieldName: table.statusRemoteId.$name,
-      value: statusRemoteId,
-    );
-  }
+  ) =>
+      createMainTableEqualWhereExpression(
+        fieldName: table.statusRemoteId.$name,
+        value: statusRemoteId,
+      );
 }

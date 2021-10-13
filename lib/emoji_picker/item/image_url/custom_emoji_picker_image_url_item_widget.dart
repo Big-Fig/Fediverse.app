@@ -9,13 +9,11 @@ class CustomEmojiPickerImageUrlItemWidget extends StatelessWidget {
       : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(1.0),
-      child: IFilesCacheService.of(context).createCachedNetworkImageWidget(
-        imageUrl: item!.imageUrl,
-        fit: BoxFit.fill,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.all(1.0),
+        child: IFilesCacheService.of(context).createCachedNetworkImageWidget(
+          imageUrl: item!.imageUrl,
+          fit: BoxFit.fill,
+        ),
+      );
 }

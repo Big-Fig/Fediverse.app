@@ -128,7 +128,7 @@ void main() {
       batchTransaction: null,
     );
 
-    var listened;
+    IPleromaChatMessage? listened;
 
     var subscription = chatMessageBloc.chatMessageStream.listen((newValue) {
       listened = newValue;
@@ -153,7 +153,7 @@ void main() {
 
     var newValue = 'newContent';
 
-    var listened;
+    String? listened;
 
     var subscription = chatMessageBloc.contentStream.listen((newValue) {
       listened = newValue;
@@ -186,7 +186,7 @@ void main() {
   test('contentHtmlWithEmojis', () async {
     var newValue = 'newContent :emoji: :emoji1: :emoji2:';
 
-    var listened;
+    EmojiText? listened;
 
     var subscription =
         chatMessageBloc.contentWithEmojisStream.listen((newValue) {
@@ -315,7 +315,7 @@ void main() {
 
     var newValue = DateTime(1990);
 
-    var listened;
+    DateTime? listened;
 
     var subscription = chatMessageBloc.createdAtStream.listen((newValue) {
       listened = newValue;

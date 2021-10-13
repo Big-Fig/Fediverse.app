@@ -8,17 +8,16 @@ class LocalInstanceDirectoryPage extends StatelessWidget {
   const LocalInstanceDirectoryPage();
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: InstanceHostAppBarWidget(),
-      body: const SafeArea(
-        child: InstanceDirectoryWidget(),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Scaffold(
+        appBar: InstanceHostAppBarWidget(),
+        body: const SafeArea(
+          child: InstanceDirectoryWidget(),
+        ),
+      );
 }
 
-MaterialPageRoute createLocalInstanceDirectoryPageRoute() => MaterialPageRoute(
+MaterialPageRoute<void> createLocalInstanceDirectoryPageRoute() =>
+    MaterialPageRoute<void>(
       builder: (context) => LocalInstanceDirectoryBloc.provideToContext(
         context,
         child: const LocalInstanceDirectoryPage(),

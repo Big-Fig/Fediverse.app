@@ -121,20 +121,19 @@ class ThreadPostStatusBloc extends PostStatusBloc
     BuildContext context, {
     required IStatus inReplyToStatus,
     required Widget child,
-  }) {
-    return DisposableProvider<IThreadPostStatusBloc>(
-      create: (context) => ThreadPostStatusBloc.createFromContext(
-        context,
-        inReplyToStatus: inReplyToStatus,
-      ),
-      child: ProxyProvider<IThreadPostStatusBloc, IPostStatusBloc>(
-        update: (context, value, previous) => value,
-        child: PostStatusMessageBlocProxyProvider(
-          child: child,
+  }) =>
+      DisposableProvider<IThreadPostStatusBloc>(
+        create: (context) => ThreadPostStatusBloc.createFromContext(
+          context,
+          inReplyToStatus: inReplyToStatus,
         ),
-      ),
-    );
-  }
+        child: ProxyProvider<IThreadPostStatusBloc, IPostStatusBloc>(
+          update: (context, value, previous) => value,
+          child: PostStatusMessageBlocProxyProvider(
+            child: child,
+          ),
+        ),
+      );
 
   @override
   bool get isPossibleToChangeVisibility => true;
@@ -177,26 +176,34 @@ class ThreadPostStatusBloc extends PostStatusBloc
             (status) => status.account.acct == acct,
           );
           if (statusToReply != null) {
-            _logger.finest(() => 'calculateInReplyToStatusRemoteId '
-                'statusToReply by acct $acct =>$result');
+            _logger.finest(
+              () => 'calculateInReplyToStatusRemoteId '
+                  'statusToReply by acct $acct =>$result',
+            );
             break;
           }
         }
         if (statusToReply != null) {
           result = statusToReply;
         } else {
-          _logger.finest(() => 'calculateInReplyToStatusRemoteId '
-              'statusToReply by acct not found => $result');
+          _logger.finest(
+            () => 'calculateInReplyToStatusRemoteId '
+                'statusToReply by acct not found => $result',
+          );
           result = statuses.last;
         }
       } else {
-        _logger.finest(() => 'calculateInReplyToStatusRemoteId '
-            'statusToReply last => $result');
+        _logger.finest(
+          () => 'calculateInReplyToStatusRemoteId '
+              'statusToReply last => $result',
+        );
         result = statuses.last;
       }
     } else {
-      _logger.finest(() => 'calculateInReplyToStatusRemoteId '
-          'statusToReply !originInReplyToStatusCanceled => $result');
+      _logger.finest(
+        () => 'calculateInReplyToStatusRemoteId '
+            'statusToReply !originInReplyToStatusCanceled => $result',
+      );
       result = super.calculateInReplyToStatusField();
     }
     _logger.finest(() => 'calculateInReplyToStatusRemoteId $result');

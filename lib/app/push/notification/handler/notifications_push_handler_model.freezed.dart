@@ -67,6 +67,7 @@ abstract class $NotificationsPushHandlerMessageCopyWith<$Res> {
       {@HiveField(0) FediPushNotification body,
       @HiveField(1) @JsonKey(name: 'push_message') PushMessage pushMessage});
 
+  $FediPushNotificationCopyWith<$Res> get body;
   $PushMessageCopyWith<$Res> get pushMessage;
 }
 
@@ -97,6 +98,13 @@ class _$NotificationsPushHandlerMessageCopyWithImpl<$Res>
   }
 
   @override
+  $FediPushNotificationCopyWith<$Res> get body {
+    return $FediPushNotificationCopyWith<$Res>(_value.body, (value) {
+      return _then(_value.copyWith(body: value));
+    });
+  }
+
+  @override
   $PushMessageCopyWith<$Res> get pushMessage {
     return $PushMessageCopyWith<$Res>(_value.pushMessage, (value) {
       return _then(_value.copyWith(pushMessage: value));
@@ -116,6 +124,8 @@ abstract class _$NotificationsPushHandlerMessageCopyWith<$Res>
       {@HiveField(0) FediPushNotification body,
       @HiveField(1) @JsonKey(name: 'push_message') PushMessage pushMessage});
 
+  @override
+  $FediPushNotificationCopyWith<$Res> get body;
   @override
   $PushMessageCopyWith<$Res> get pushMessage;
 }

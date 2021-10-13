@@ -7,7 +7,7 @@ import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_model.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:logging/logging.dart';
-import 'package:pull_to_refresh/src/smart_refresher.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:rxdart/rxdart.dart';
 
 typedef ItemEquality<TItem> = bool Function(TItem a, TItem b);
@@ -52,7 +52,10 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
   Stream<bool> get isSomethingChangedStream => Rx.combineLatest2(
         addedItemsStream,
         removedItemsStream,
-        (dynamic addedItems, dynamic removedItems) =>
+        (
+          List<TItem> addedItems,
+          List<TItem> removedItems,
+        ) =>
             _calculateIsSomethingChanged(
           addedItems: addedItems,
           removedItems: removedItems,
@@ -87,14 +90,12 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       );
 
   @override
-  List<TItem> get items {
-    return _calculateCurrentItems(
-      originalItems: originalItems,
-      addedItems: addedItems,
-      removedItems: removedItems,
-      itemEquality: itemEquality,
-    );
-  }
+  List<TItem> get items => _calculateCurrentItems(
+        originalItems: originalItems,
+        addedItems: addedItems,
+        removedItems: removedItems,
+        itemEquality: itemEquality,
+      );
 
   static List<TItem> _calculateCurrentItems<TItem>({
     required List<TItem> originalItems,
@@ -104,15 +105,18 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
   }) {
     List<TItem> result;
 
-    _logger.finest(() => '_calculateCurrentItems \n'
-        'originalItems ${originalItems.length} \n'
-        'addedItems ${addedItems.length} \n'
-        'removedItems ${removedItems.length}');
+    _logger.finest(
+      () => '_calculateCurrentItems \n'
+          'originalItems ${originalItems.length} \n'
+          'addedItems ${addedItems.length} \n'
+          'removedItems ${removedItems.length}',
+    );
     result = <TItem>[
       ...originalItems,
       ...addedItems,
     ];
 
+    // ignore: cascade_invocations
     result.removeWhere(
       (item) => _calculateIsItemAdded(
         items: removedItems,
@@ -121,11 +125,13 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       ),
     );
 
-    _logger.finest(() => '_calculateCurrentItems \n'
-        'originalItems ${originalItems.length}'
-        'addedItems ${addedItems.length}'
-        'removedItems ${removedItems.length}'
-        'result ${result.length}');
+    _logger.finest(
+      () => '_calculateCurrentItems \n'
+          'originalItems ${originalItems.length}'
+          'addedItems ${addedItems.length}'
+          'removedItems ${removedItems.length}'
+          'result ${result.length}',
+    );
 
     return result;
   }
@@ -157,6 +163,7 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
     );
     if (foundInRemoved != null) {
       var items = removedItemsSubject.value;
+      // ignore: cascade_invocations
       items.remove(foundInRemoved);
 
       removedItemsSubject.add(items);
@@ -197,6 +204,7 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
 
     if (foundInAdded != null) {
       var items = addedItemsSubject.value;
+      // ignore: cascade_invocations
       items.remove(foundInAdded);
 
       addedItemsSubject.add(items);
@@ -313,9 +321,7 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       paginationListBloc.refreshStateStream;
 
   @override
-  Future refreshWithController() {
-    return paginationListBloc.refreshWithController();
-  }
+  Future refreshWithController() => paginationListBloc.refreshWithController();
 
   @override
   Future<FediListSmartRefresherLoadingState> refreshWithoutController() =>

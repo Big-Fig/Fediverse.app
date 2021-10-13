@@ -53,12 +53,10 @@ class _StatusEmojiReactionListItemBodyWidget extends StatelessWidget {
       child = PleromaAsyncOperationButtonBuilderWidget(
         showProgressDialog: false,
         asyncButtonAction: () => statusEmojiReactionBloc.toggleEmojiReaction(),
-        builder: (BuildContext context, void Function()? onPressed) {
-          return InkWell(
-            onTap: onPressed,
-            child: const EmojiReactionWidget(),
-          );
-        },
+        builder: (BuildContext context, void Function()? onPressed) => InkWell(
+          onTap: onPressed,
+          child: const EmojiReactionWidget(),
+        ),
       );
     } else {
       child = const EmojiReactionWidget();

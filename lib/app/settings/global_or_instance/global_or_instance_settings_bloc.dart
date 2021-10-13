@@ -2,7 +2,7 @@ import 'package:fedi/app/settings/global_or_instance/global_or_instance_settings
 import 'package:fedi/app/settings/settings_bloc.dart';
 import 'package:fedi/app/settings/settings_model.dart';
 
-abstract class IGlobalOrInstanceSettingsBloc<T extends ISettings>
+abstract class IGlobalOrInstanceSettingsBloc<T extends ISettings<dynamic>>
     implements ISettingsBloc<T> {
   GlobalOrInstanceSettings<T> get globalOrInstanceSettings;
 

@@ -253,9 +253,11 @@ class FediListRefreshIndicatorState extends State<FediListRefreshIndicator>
         ColorTween(
           begin: (widget.color ?? theme.colorScheme.secondary).withOpacity(0.0),
           end: (widget.color ?? theme.colorScheme.secondary).withOpacity(1.0),
-        ).chain(CurveTween(
-          curve: const Interval(0.0, 1.0 / _kDragSizeFactorLimit),
-        )),
+        ).chain(
+          CurveTween(
+            curve: const Interval(0.0, 1.0 / _kDragSizeFactorLimit),
+          ),
+        ),
       );
     }
   }
@@ -267,15 +269,14 @@ class FediListRefreshIndicatorState extends State<FediListRefreshIndicator>
     super.dispose();
   }
 
-  bool _shouldStart(ScrollNotification notification) {
-    return (notification is ScrollStartNotification ||
-            (notification is ScrollUpdateNotification &&
-                notification.dragDetails != null &&
-                widget.triggerMode == RefreshIndicatorTriggerMode.anywhere)) &&
-        notification.metrics.extentBefore == 0.0 &&
-        _mode == null &&
-        _start(notification.metrics.axisDirection);
-  }
+  bool _shouldStart(ScrollNotification notification) =>
+      (notification is ScrollStartNotification ||
+          (notification is ScrollUpdateNotification &&
+              notification.dragDetails != null &&
+              widget.triggerMode == RefreshIndicatorTriggerMode.anywhere)) &&
+      notification.metrics.extentBefore == 0.0 &&
+      _mode == null &&
+      _start(notification.metrics.axisDirection);
 
   // ignore: code-metrics
   bool _handleScrollNotification(ScrollNotification notification) {
@@ -385,8 +386,10 @@ class FediListRefreshIndicatorState extends State<FediListRefreshIndicator>
   }
 
   void _checkDragOffset(double containerExtent) {
-    assert(_mode == _RefreshIndicatorMode.drag ||
-        _mode == _RefreshIndicatorMode.armed);
+    assert(
+      _mode == _RefreshIndicatorMode.drag ||
+          _mode == _RefreshIndicatorMode.armed,
+    );
     var newValue =
         _dragOffset! / (containerExtent * _kDragContainerExtentPercentage);
     if (_mode == _RefreshIndicatorMode.armed) {
@@ -407,8 +410,10 @@ class FediListRefreshIndicatorState extends State<FediListRefreshIndicator>
     // This can only be called from _show() when refreshing and
     // _handleScrollNotification in response to a ScrollEndNotification or
     // direction change.
-    assert(newMode == _RefreshIndicatorMode.canceled ||
-        newMode == _RefreshIndicatorMode.done);
+    assert(
+      newMode == _RefreshIndicatorMode.canceled ||
+          newMode == _RefreshIndicatorMode.done,
+    );
     setState(() {
       _mode = newMode;
     });
@@ -460,6 +465,7 @@ class FediListRefreshIndicatorState extends State<FediListRefreshIndicator>
         // running with weak checking, so we need to null check it anyway (and
         // ignore the warning that the null-handling logic is dead code).
 
+        // ignore: cascade_invocations
         refreshResult.whenComplete(() {
           if (mounted && _mode == _RefreshIndicatorMode.refresh) {
             completer.complete();
@@ -508,17 +514,19 @@ class FediListRefreshIndicatorState extends State<FediListRefreshIndicator>
         child: widget.child,
       ),
     );
-    assert(() {
-      if (_mode == null) {
-        assert(_dragOffset == null);
-        assert(_isIndicatorAtTop == null);
-      } else {
-        assert(_dragOffset != null);
-        assert(_isIndicatorAtTop != null);
-      }
+    assert(
+      () {
+        if (_mode == null) {
+          assert(_dragOffset == null);
+          assert(_isIndicatorAtTop == null);
+        } else {
+          assert(_dragOffset != null);
+          assert(_isIndicatorAtTop != null);
+        }
 
-      return true;
-    }());
+        return true;
+      }(),
+    );
 
     return Stack(
       children: <Widget>[

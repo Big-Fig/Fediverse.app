@@ -9,7 +9,7 @@ class FediUiThemeSingleFromListValueFormFieldBlocProxyProvider
     extends StatelessWidget {
   final Widget child;
 
-  FediUiThemeSingleFromListValueFormFieldBlocProxyProvider({
+  const FediUiThemeSingleFromListValueFormFieldBlocProxyProvider({
     required this.child,
   });
 

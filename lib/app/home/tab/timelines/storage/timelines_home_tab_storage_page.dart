@@ -13,14 +13,12 @@ class TimelinesHomeTabStoragePage extends StatelessWidget {
   const TimelinesHomeTabStoragePage();
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const _TimelinesHomeTabStoragePagePageAppBarWidget(),
-      body: SafeArea(
-        child: const TimelinesHomeTabStorageWidget(),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Scaffold(
+        appBar: const _TimelinesHomeTabStoragePagePageAppBarWidget(),
+        body: SafeArea(
+          child: const TimelinesHomeTabStorageWidget(),
+        ),
+      );
 }
 
 class _TimelinesHomeTabStoragePagePageAppBarWidget extends StatelessWidget
@@ -30,15 +28,13 @@ class _TimelinesHomeTabStoragePagePageAppBarWidget extends StatelessWidget
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return FediPageTitleAppBar(
-      title: S.of(context).app_timeline_storage_title,
-      leading: const FediBackIconButton(),
-      actions: [
-        const _TimelinesHomeTabStoragePagePageAppBarActionWidget(),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => FediPageTitleAppBar(
+        title: S.of(context).app_timeline_storage_title,
+        leading: const FediBackIconButton(),
+        actions: [
+          const _TimelinesHomeTabStoragePagePageAppBarActionWidget(),
+        ],
+      );
 
   @override
   Size get preferredSize => FediPageTitleAppBar.calculatePreferredSize();
@@ -126,6 +122,7 @@ void goToTimelinesHomeTabStoragePage(BuildContext context) {
   );
 }
 
-MaterialPageRoute createTimelinesHomeTabStoragePageRoute() => MaterialPageRoute(
+MaterialPageRoute<void> createTimelinesHomeTabStoragePageRoute() =>
+    MaterialPageRoute<void>(
       builder: (context) => const TimelinesHomeTabStoragePage(),
     );

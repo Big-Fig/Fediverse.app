@@ -10,22 +10,20 @@ import 'package:flutter/material.dart';
 
 class EditFilterPage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: FediPageTitleAppBar(
-        title: S.of(context).app_filter_edit_title,
-        actions: <Widget>[
-          const EditFilterAppBarSaveActionWidget(),
-        ],
-      ),
-      body: const SafeArea(
-        child: Padding(
-          padding: FediPadding.allBigPadding,
-          child: EditFilterWidget(),
+  Widget build(BuildContext context) => Scaffold(
+        appBar: FediPageTitleAppBar(
+          title: S.of(context).app_filter_edit_title,
+          actions: <Widget>[
+            const EditFilterAppBarSaveActionWidget(),
+          ],
         ),
-      ),
-    );
-  }
+        body: const SafeArea(
+          child: Padding(
+            padding: FediPadding.allBigPadding,
+            child: EditFilterWidget(),
+          ),
+        ),
+      );
 
   const EditFilterPage();
 }
@@ -47,19 +45,18 @@ void goToEditFilterPage({
   );
 }
 
-MaterialPageRoute createEditFilterPageRoute({
+MaterialPageRoute<void> createEditFilterPageRoute({
   required BuildContext context,
   required IFilter filter,
   required Function(IFilter filter) onSubmit,
   required VoidCallback onDelete,
-}) {
-  return MaterialPageRoute(
-    builder: (context) => EditFilterBloc.provideToContext(
-      context,
-      onSubmit: onSubmit,
-      onDelete: onDelete,
-      child: const EditFilterPage(),
-      initialValue: filter,
-    ),
-  );
-}
+}) =>
+    MaterialPageRoute<void>(
+      builder: (context) => EditFilterBloc.provideToContext(
+        context,
+        onSubmit: onSubmit,
+        onDelete: onDelete,
+        child: const EditFilterPage(),
+        initialValue: filter,
+      ),
+    );

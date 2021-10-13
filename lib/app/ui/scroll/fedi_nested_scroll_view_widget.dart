@@ -17,7 +17,7 @@ abstract class FediNestedScrollViewWidget extends StatelessWidget {
   final List<Widget> topSliverWidgets;
   final double? topSliverScrollOffsetToShowWhiteStatusBar;
 
-  FediNestedScrollViewWidget({
+  const FediNestedScrollViewWidget({
     required this.onLongScrollUpTopOverlayWidget,
     required this.topSliverWidgets,
     required this.topSliverScrollOffsetToShowWhiteStatusBar,
@@ -105,10 +105,8 @@ abstract class FediNestedScrollViewWidget extends StatelessWidget {
       stream: Rx.combineLatest2(
         scrollControllerBloc.longScrollDirectionStream,
         fediNestedScrollViewBloc.isNestedScrollViewBodyStartedScrollStream,
-        (dynamic scrollDirection, dynamic isAtLeastStartExpand) {
-          return scrollDirection == ScrollDirection.forward &&
-              isAtLeastStartExpand == false;
-        },
+        (ScrollDirection? scrollDirection, bool isAtLeastStartExpand) =>
+            scrollDirection == ScrollDirection.forward && !isAtLeastStartExpand,
       ).distinct(),
       builder: (context, snapshot) {
         var show = snapshot.data;

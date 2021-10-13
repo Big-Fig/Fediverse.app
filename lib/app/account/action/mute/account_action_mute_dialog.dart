@@ -14,7 +14,7 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
-Future<T?> showAccountActionMuteDialog<T>({
+Future<void> showAccountActionMuteDialog({
   required BuildContext context,
   required IAccountBloc accountBloc,
 }) =>
@@ -66,7 +66,8 @@ Future<T?> showAccountActionMuteDialog<T>({
             var accountActionMuteBloc =
                 IAccountActionMuteBloc.of(context, listen: false);
 
-            await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+            await PleromaAsyncOperationHelper.performPleromaAsyncOperation<
+                void>(
               context: context,
               asyncCode: () => accountActionMuteBloc.mute(),
             );
@@ -101,24 +102,21 @@ class AccountActionMuteDialog extends FediDialog {
   }
 
   @override
-  Widget buildDialogBody(BuildContext context) {
-    return Provider<IAccountActionMuteBloc>.value(
-      value: accountActionMuteBloc,
-      child: super.buildDialogBody(context),
-    );
-  }
+  Widget buildDialogBody(BuildContext context) =>
+      Provider<IAccountActionMuteBloc>.value(
+        value: accountActionMuteBloc,
+        child: super.buildDialogBody(context),
+      );
 
   @override
-  Widget buildContentWidget(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        const _AccountActionMuteDialogDescriptionWidget(),
-        const _AccountActionMuteDialogNotificationsField(),
-        const _AccountActionMuteDialogExpireField(),
-      ],
-    );
-  }
+  Widget buildContentWidget(BuildContext context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const _AccountActionMuteDialogDescriptionWidget(),
+          const _AccountActionMuteDialogNotificationsField(),
+          const _AccountActionMuteDialogExpireField(),
+        ],
+      );
 }
 
 class _AccountActionMuteDialogExpireField extends StatelessWidget {
@@ -127,16 +125,14 @@ class _AccountActionMuteDialogExpireField extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IAccountActionMuteBloc,
-        IDurationDateTimeValueFormFieldBloc>(
-      update: (context, value, _) => value.expireDurationFieldBloc,
-      child: DurationDateTimeValueFormFieldRowWidget(
-        label: S.of(context).app_account_mute_dialog_field_expire_label,
-        useDialogPickerForValueSelection: false,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => ProxyProvider<IAccountActionMuteBloc,
+          IDurationDateTimeValueFormFieldBloc>(
+        update: (context, value, _) => value.expireDurationFieldBloc,
+        child: DurationDateTimeValueFormFieldRowWidget(
+          label: S.of(context).app_account_mute_dialog_field_expire_label,
+          useDialogPickerForValueSelection: false,
+        ),
+      );
 }
 
 class _AccountActionMuteDialogDescriptionWidget extends StatelessWidget {

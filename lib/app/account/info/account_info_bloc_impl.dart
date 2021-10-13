@@ -13,15 +13,4 @@ class AccountInfoBloc extends DisposableOwner implements IAccountInfoBloc {
     required this.brightness,
     required this.onStatusesTapCallback,
   });
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is AccountInfoBloc &&
-          runtimeType == other.runtimeType &&
-          brightness == other.brightness &&
-          onStatusesTapCallback == other.onStatusesTapCallback;
-
-  @override
-  int get hashCode => brightness.hashCode ^ onStatusesTapCallback.hashCode;
 }

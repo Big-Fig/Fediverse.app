@@ -23,20 +23,19 @@ class MemoryPaginationBloc<TItem>
     required int size,
     required int maximumCachedPagesCount,
     required PaginationPageSize paginationPageSize,
-  }) {
-    return MemoryPaginationBloc(
-      maximumCachedPagesCount: maximumCachedPagesCount,
-      paginationSettingsBloc: MemoryPaginationSettingsBloc(
-        paginationPageSize: paginationPageSize,
-      ),
-      items: List.generate(
-        size,
-        (index) => PaginationItemTest(
-          index,
+  }) =>
+      MemoryPaginationBloc(
+        maximumCachedPagesCount: maximumCachedPagesCount,
+        paginationSettingsBloc: MemoryPaginationSettingsBloc(
+          paginationPageSize: paginationPageSize,
         ),
-      ),
-    );
-  }
+        items: List.generate(
+          size,
+          (index) => PaginationItemTest(
+            index,
+          ),
+        ),
+      );
 
   @override
   Future<CachedPaginationPage<TItem>> loadPage({

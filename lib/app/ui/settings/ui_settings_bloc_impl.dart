@@ -43,15 +43,13 @@ class UiSettingsBloc extends DisposableOwner implements IUiSettingsBloc {
       );
 
   @override
-  Future changeStatusFontSize(UiSettingsFontSize value) {
-    return updateSettings(
-      // copyWith dont set null values
-      UiSettings.fromEnum(
-        themeId: settingsData.themeId,
-        statusFontSize: value,
-      ),
-    );
-  }
+  Future changeStatusFontSize(UiSettingsFontSize value) => updateSettings(
+        // copyWith dont set null values
+        UiSettings.fromEnum(
+          themeId: settingsData.themeId,
+          statusFontSize: value,
+        ),
+      );
 
   @override
   Future updateSettings(UiSettings newSettings) async {

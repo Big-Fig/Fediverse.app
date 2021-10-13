@@ -30,18 +30,18 @@ class _EditPushFilterSettingsBlockFromStrangersFieldWidget
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IEditPushFilterSettingsBloc, IBoolValueFormFieldBloc>(
-      update: (context, value, previous) => value.blockFromStrangersFieldBloc,
-      child: BoolValueFormFieldRowWidget(
-        label: S
-            .of(context)
-            .app_push_filter_settings_field_blockFromStrangers_label,
-        descriptionOnDisabled:
-            S.of(context).app_settings_warning_notSupportedOnThisInstance_desc,
-      ),
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IEditPushFilterSettingsBloc, IBoolValueFormFieldBloc>(
+        update: (context, value, previous) => value.blockFromStrangersFieldBloc,
+        child: BoolValueFormFieldRowWidget(
+          label: S
+              .of(context)
+              .app_push_filter_settings_field_blockFromStrangers_label,
+          descriptionOnDisabled: S
+              .of(context)
+              .app_settings_warning_notSupportedOnThisInstance_desc,
+        ),
+      );
 }
 
 class _EditPushFilterSettingsHideNotificationContentsFieldWidget
@@ -51,17 +51,17 @@ class _EditPushFilterSettingsHideNotificationContentsFieldWidget
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IEditPushFilterSettingsBloc, IBoolValueFormFieldBloc>(
-      update: (context, value, previous) =>
-          value.hideNotificationContentsFieldBloc,
-      child: BoolValueFormFieldRowWidget(
-        label: S
-            .of(context)
-            .app_push_filter_settings_field_hideNotificationContents_label,
-        descriptionOnDisabled:
-            S.of(context).app_settings_warning_notSupportedOnThisInstance_desc,
-      ),
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IEditPushFilterSettingsBloc, IBoolValueFormFieldBloc>(
+        update: (context, value, previous) =>
+            value.hideNotificationContentsFieldBloc,
+        child: BoolValueFormFieldRowWidget(
+          label: S
+              .of(context)
+              .app_push_filter_settings_field_hideNotificationContents_label,
+          descriptionOnDisabled: S
+              .of(context)
+              .app_settings_warning_notSupportedOnThisInstance_desc,
+        ),
+      );
 }

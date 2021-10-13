@@ -22,7 +22,7 @@ class FediTextTabIndicatorWidget<T> extends StatelessWidget {
 
   final FediTabStyle style;
 
-  FediTextTabIndicatorWidget({
+  const FediTextTabIndicatorWidget({
     required this.tabToTextMapper,
     required this.isTransparent,
     required this.style,
@@ -49,9 +49,9 @@ class FediTextTabIndicatorWidget<T> extends StatelessWidget {
       indicator: buildFediTabIndicator(context),
       tabs: [
         ...fediTabIndicatorBloc.items.asMap().entries.map(
-          (entry) {
+          (MapEntry<int, dynamic> entry) {
             var index = entry.key;
-            var tab = entry.value;
+            var tab = entry.value as T;
 
             Widget tabWidget = DisposableProxyProvider<IFediTabIndicatorBloc<T>,
                 IFediTabIndicatorItemBloc<T>>(

@@ -7,15 +7,13 @@ class MyAccountEndorsementAccountListWidget extends StatelessWidget {
   const MyAccountEndorsementAccountListWidget();
 
   @override
-  Widget build(BuildContext context) {
-    return AccountPaginationListWidget(
-      itemPadding: FediPadding.verticalMediumPadding,
-      accountSelectedCallback: (context, account) =>
-          goToLocalAccountDetailsPage(
-        context,
-        account: account,
-      ),
-      key: PageStorageKey('MyAccountEndorsementAccountListWidget'),
-    );
-  }
+  Widget build(BuildContext context) => AccountPaginationListWidget(
+        itemPadding: FediPadding.verticalMediumPadding,
+        accountSelectedCallback: (context, account) =>
+            goToLocalAccountDetailsPage(
+          context,
+          account: account,
+        ),
+        key: PageStorageKey('MyAccountEndorsementAccountListWidget'),
+      );
 }

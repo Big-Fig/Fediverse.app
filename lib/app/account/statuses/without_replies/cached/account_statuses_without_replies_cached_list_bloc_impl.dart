@@ -9,7 +9,6 @@ import 'package:fedi/app/status/list/cached/status_cached_list_bloc_proxy_provid
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -37,11 +36,9 @@ class AccountStatusesWithoutRepliesListBloc
     required IStatusRepository statusRepository,
     required IFilterRepository filterRepository,
     required IMyAccountBloc myAccountBloc,
-    required IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc,
   }) : super(
           account: account,
           unifediApiAccountService: unifediApiAccountService,
-          webSocketsHandlerManagerBloc: webSocketsHandlerManagerBloc,
           statusRepository: statusRepository,
           filterRepository: filterRepository,
           myAccountBloc: myAccountBloc,
@@ -53,29 +50,24 @@ class AccountStatusesWithoutRepliesListBloc
   static AccountStatusesWithoutRepliesListBloc createFromContext(
     BuildContext context, {
     required IAccount account,
-  }) {
-    return AccountStatusesWithoutRepliesListBloc(
-      account: account,
-      unifediApiAccountService:
-          Provider.of<IUnifediApiAccountService>(context, listen: false),
-      webSocketsHandlerManagerBloc: IWebSocketsHandlerManagerBloc.of(
-        context,
-        listen: false,
-      ),
-      statusRepository: IStatusRepository.of(
-        context,
-        listen: false,
-      ),
-      filterRepository: IFilterRepository.of(
-        context,
-        listen: false,
-      ),
-      myAccountBloc: IMyAccountBloc.of(
-        context,
-        listen: false,
-      ),
-    );
-  }
+  }) =>
+      AccountStatusesWithoutRepliesListBloc(
+        account: account,
+        unifediApiAccountService:
+            Provider.of<IUnifediApiAccountService>(context, listen: false),
+        statusRepository: IStatusRepository.of(
+          context,
+          listen: false,
+        ),
+        filterRepository: IFilterRepository.of(
+          context,
+          listen: false,
+        ),
+        myAccountBloc: IMyAccountBloc.of(
+          context,
+          listen: false,
+        ),
+      );
 
   @override
   Future<List<IStatus>> loadLocalItems({
@@ -99,17 +91,16 @@ class AccountStatusesWithoutRepliesListBloc
   }
 
   @override
-  Stream<List<IStatus>> watchLocalItemsNewerThanItem(IStatus? item) {
-    return statusRepository.watchFindAllInAppType(
-      filters: _statusRepositoryFilters,
-      pagination: RepositoryPagination<IStatus>(
-        newerThanItem: item,
-      ),
-      orderingTerms: [
-        StatusRepositoryOrderingTermData.remoteIdDesc,
-      ],
-    );
-  }
+  Stream<List<IStatus>> watchLocalItemsNewerThanItem(IStatus? item) =>
+      statusRepository.watchFindAllInAppType(
+        filters: _statusRepositoryFilters,
+        pagination: RepositoryPagination<IStatus>(
+          newerThanItem: item,
+        ),
+        orderingTerms: [
+          StatusRepositoryOrderingTermData.remoteIdDesc,
+        ],
+      );
 
   @override
   Future refreshItemsFromRemoteForPage({
@@ -117,10 +108,12 @@ class AccountStatusesWithoutRepliesListBloc
     required IStatus? newerThan,
     required IStatus? olderThan,
   }) async {
-    _logger.finest(() => 'refreshItemsFromRemoteForPage \n'
-        '\t limit=$limit'
-        '\t newerThan=$newerThan'
-        '\t olderThan=$olderThan');
+    _logger.finest(
+      () => 'refreshItemsFromRemoteForPage \n'
+          '\t limit=$limit'
+          '\t newerThan=$newerThan'
+          '\t olderThan=$olderThan',
+    );
 
     var remoteStatuses = await unifediApiAccountService.getAccountStatuses(
       excludeReplies: true,
@@ -151,18 +144,17 @@ class AccountStatusesWithoutRepliesListBloc
     BuildContext context, {
     required IAccount account,
     required Widget child,
-  }) {
-    return DisposableProvider<IStatusCachedListBloc>(
-      create: (context) =>
-          AccountStatusesWithoutRepliesListBloc.createFromContext(
-        context,
-        account: account,
-      ),
-      child: StatusCachedListBlocProxyProvider(
-        child: child,
-      ),
-    );
-  }
+  }) =>
+      DisposableProvider<IStatusCachedListBloc>(
+        create: (context) =>
+            AccountStatusesWithoutRepliesListBloc.createFromContext(
+          context,
+          account: account,
+        ),
+        child: StatusCachedListBlocProxyProvider(
+          child: child,
+        ),
+      );
 
   @override
   InstanceLocation get instanceLocation => InstanceLocation.local;

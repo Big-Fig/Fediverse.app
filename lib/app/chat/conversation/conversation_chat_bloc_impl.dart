@@ -99,6 +99,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
           accounts,
           (account) => !myAccountBloc.checkAccountIsMe(account),
         );
+        // ignore: cascade_invocations
         accountsWithoutMe.sort(
           (a, b) => a.remoteId.compareTo(b.remoteId),
         );
@@ -264,26 +265,25 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
     required IConversationChat chat,
     required IConversationChatMessage? lastChatMessage,
     bool needRefreshFromNetworkOnInit = false,
-  }) {
-    return ConversationChatBloc(
-      connectionService:
-          Provider.of<IConnectionService>(context, listen: false),
-      pleromaConversationService:
-          Provider.of<IUnifediApiConversationService>(context, listen: false),
-      myAccountBloc: IMyAccountBloc.of(context, listen: false),
-      conversation: chat,
-      lastChatMessage: lastChatMessage,
-      needRefreshFromNetworkOnInit: needRefreshFromNetworkOnInit,
-      conversationRepository:
-          IConversationChatRepository.of(context, listen: false),
-      statusRepository: IStatusRepository.of(context, listen: false),
-      accountRepository: IAccountRepository.of(context, listen: false),
-      unifediApiStatusService: Provider.of<IUnifediApiStatusService>(
-        context,
-        listen: false,
-      ),
-    );
-  }
+  }) =>
+      ConversationChatBloc(
+        connectionService:
+            Provider.of<IConnectionService>(context, listen: false),
+        pleromaConversationService:
+            Provider.of<IUnifediApiConversationService>(context, listen: false),
+        myAccountBloc: IMyAccountBloc.of(context, listen: false),
+        conversation: chat,
+        lastChatMessage: lastChatMessage,
+        needRefreshFromNetworkOnInit: needRefreshFromNetworkOnInit,
+        conversationRepository:
+            IConversationChatRepository.of(context, listen: false),
+        statusRepository: IStatusRepository.of(context, listen: false),
+        accountRepository: IAccountRepository.of(context, listen: false),
+        unifediApiStatusService: Provider.of<IUnifediApiStatusService>(
+          context,
+          listen: false,
+        ),
+      );
 
   @override
   Future markAsRead() async {
@@ -363,7 +363,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
     String? idempotencyKey;
     var oldMessageExist = oldPendingFailedConversationChatMessage != null;
     if (oldMessageExist) {
-      localStatusId = oldPendingFailedConversationChatMessage!.status.localId!;
+      localStatusId = oldPendingFailedConversationChatMessage!.status.localId;
       dbStatus = oldPendingFailedConversationChatMessage.status
           .toDbStatus()
           .copyWith(id: localStatusId);
@@ -389,7 +389,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
       );
 
       await statusRepository.updateByDbIdInDbType(
-        dbId: localStatusId,
+        dbId: localStatusId!,
         dbItem: dbStatus.copyWith(
           pendingState: PendingState.pending,
         ),

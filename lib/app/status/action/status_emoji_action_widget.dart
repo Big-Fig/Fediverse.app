@@ -14,14 +14,12 @@ import 'package:provider/provider.dart';
 
 class StatusEmojiActionWidget extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        const _StatusEmojiActionButtonWidget(),
-        const _StatusEmojiActionCounterWidget(),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => Row(
+        children: [
+          const _StatusEmojiActionButtonWidget(),
+          const _StatusEmojiActionCounterWidget(),
+        ],
+      );
 
   const StatusEmojiActionWidget();
 }
@@ -60,16 +58,14 @@ class _StatusEmojiActionButtonWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return FediIconButton(
-      color: IFediUiColorTheme.of(context).darkGrey,
-      iconSize: FediSizes.bigIconSize,
-      icon: Icon(FediIcons.emoji),
-      onPressed: () {
-        _showEmojiPicker(context);
-      },
-    );
-  }
+  Widget build(BuildContext context) => FediIconButton(
+        color: IFediUiColorTheme.of(context).darkGrey,
+        iconSize: FediSizes.bigIconSize,
+        icon: Icon(FediIcons.emoji),
+        onPressed: () {
+          _showEmojiPicker(context);
+        },
+      );
 }
 
 void _showEmojiPicker(BuildContext context) {

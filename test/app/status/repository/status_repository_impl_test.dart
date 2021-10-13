@@ -875,7 +875,7 @@ void main() {
           .copyWith(remoteId: 'remoteId3'),
     );
 
-    var actualList = (await query.get());
+    var actualList = await query.get();
     expect(actualList.length, 3);
 
     expect(
@@ -927,7 +927,7 @@ void main() {
           .copyWith(remoteId: 'remoteId3'),
     );
 
-    var actualList = (await query.get());
+    var actualList = await query.get();
     expect(actualList.length, 3);
 
     expect(
@@ -982,7 +982,7 @@ void main() {
           .copyWith(remoteId: 'remoteId3'),
     );
 
-    var actualList = (await query.get());
+    var actualList = await query.get();
     expect(actualList.length, 1);
 
     expect(
@@ -1042,10 +1042,10 @@ void main() {
 
     expect((await query.get()).length, 0);
 
-    var status2 = (await StatusDatabaseMockHelper.createTestDbStatus(
+    var status2 = await StatusDatabaseMockHelper.createTestDbStatus(
       seed: 'seed2',
       dbAccount: dbAccount,
-    ));
+    );
 
     // because copyWith is not possible to use with null
     var status2Json = status2.toJson();
@@ -1167,9 +1167,11 @@ void main() {
       seed: 'seed3',
       dbAccount: dbAccount,
     ))
-        .copyWith(tags: [
-      UnifediApiTagMockHelper.generate(seed: '#dogs'),
-    ]);
+        .copyWith(
+      tags: [
+        UnifediApiTagMockHelper.generate(seed: '#dogs'),
+      ],
+    );
     await statusRepository.updateStatusTags(
       statusRemoteId: dbStatus3.remoteId,
       tags: dbStatus3.tags,
@@ -1186,9 +1188,11 @@ void main() {
       seed: 'seed4',
       dbAccount: dbAccount,
     ))
-        .copyWith(tags: [
-      UnifediApiTagMockHelper.generate(seed: '#cats'),
-    ]);
+        .copyWith(
+      tags: [
+        UnifediApiTagMockHelper.generate(seed: '#cats'),
+      ],
+    );
     await statusRepository.updateStatusTags(
       statusRemoteId: dbStatus4.remoteId,
       tags: dbStatus4.tags,
@@ -1205,10 +1209,12 @@ void main() {
       seed: 'seed5',
       dbAccount: dbAccount,
     ))
-        .copyWith(tags: [
-      UnifediApiTagMockHelper.generate(seed: '#dogs'),
-      UnifediApiTagMockHelper.generate(seed: '#cats'),
-    ]);
+        .copyWith(
+      tags: [
+        UnifediApiTagMockHelper.generate(seed: '#dogs'),
+        UnifediApiTagMockHelper.generate(seed: '#cats'),
+      ],
+    );
     await statusRepository.updateStatusTags(
       statusRemoteId: dbStatus5.remoteId,
       tags: dbStatus5.tags,
@@ -1225,9 +1231,11 @@ void main() {
       seed: 'seed6',
       dbAccount: dbAccount,
     ))
-        .copyWith(tags: [
-      UnifediApiTagMockHelper.generate(seed: '#ca'),
-    ]);
+        .copyWith(
+      tags: [
+        UnifediApiTagMockHelper.generate(seed: '#ca'),
+      ],
+    );
     await statusRepository.updateStatusTags(
       statusRemoteId: dbStatus6.remoteId,
       tags: dbStatus6.tags,
@@ -2080,11 +2088,11 @@ void main() {
     );
 
     await statusRepository.upsertRemoteStatusWithAllArguments(
-      (await StatusDatabaseMockHelper.createTestRemoteStatus(
+      await StatusDatabaseMockHelper.createTestRemoteStatus(
         seed: 'seed1',
         dbAccount: dbAccount,
         accountRepository: accountRepository,
-      )),
+      ),
       listRemoteId: null,
       conversationRemoteId: null,
       isFromHomeTimeline: false,
@@ -2094,11 +2102,11 @@ void main() {
     expect((await query.get()).length, 0);
 
     await statusRepository.upsertRemoteStatusWithAllArguments(
-      (await StatusDatabaseMockHelper.createTestRemoteStatus(
+      await StatusDatabaseMockHelper.createTestRemoteStatus(
         seed: 'seed2',
         dbAccount: dbAccount,
         accountRepository: accountRepository,
-      )),
+      ),
       listRemoteId: null,
       conversationRemoteId: null,
       isFromHomeTimeline: true,
@@ -2108,11 +2116,11 @@ void main() {
     expect((await query.get()).length, 1);
 
     await statusRepository.upsertRemoteStatusWithAllArguments(
-      (await StatusDatabaseMockHelper.createTestRemoteStatus(
+      await StatusDatabaseMockHelper.createTestRemoteStatus(
         seed: 'seed3',
         dbAccount: dbAccount,
         accountRepository: accountRepository,
-      )),
+      ),
       listRemoteId: null,
       conversationRemoteId: null,
       isFromHomeTimeline: true,
@@ -2122,11 +2130,11 @@ void main() {
     expect((await query.get()).length, 2);
 
     await statusRepository.upsertRemoteStatusWithAllArguments(
-      (await StatusDatabaseMockHelper.createTestRemoteStatus(
+      await StatusDatabaseMockHelper.createTestRemoteStatus(
         seed: 'seed3',
         dbAccount: dbAccount,
         accountRepository: accountRepository,
-      )),
+      ),
       listRemoteId: null,
       conversationRemoteId: null,
       isFromHomeTimeline: true,
@@ -2136,11 +2144,11 @@ void main() {
     expect((await query.get()).length, 2);
 
     await statusRepository.upsertRemoteStatusWithAllArguments(
-      (await StatusDatabaseMockHelper.createTestRemoteStatus(
+      await StatusDatabaseMockHelper.createTestRemoteStatus(
         seed: 'seed2',
         dbAccount: dbAccount,
         accountRepository: accountRepository,
-      )),
+      ),
       listRemoteId: null,
       conversationRemoteId: null,
       isFromHomeTimeline: true,
@@ -2435,11 +2443,11 @@ void main() {
       orderingTermData: null,
     );
 
-    var dbStatus1 = (await StatusDatabaseMockHelper.createTestDbStatus(
+    var dbStatus1 = await StatusDatabaseMockHelper.createTestDbStatus(
       seed: 'seed1',
       dbAccount: dbAccount,
       inReplyToAccountRemoteId: null,
-    ));
+    );
     await StatusRepositoryMockHelper.insertDbStatus(
       statusRepository,
       dbStatus1,
@@ -2449,22 +2457,22 @@ void main() {
 
     await StatusRepositoryMockHelper.insertDbStatus(
       statusRepository,
-      (await StatusDatabaseMockHelper.createTestDbStatus(
+      await StatusDatabaseMockHelper.createTestDbStatus(
         seed: 'seed2',
         dbAccount: dbAccount,
         inReplyToAccountRemoteId: myDbAccount.remoteId,
-      )),
+      ),
     );
 
     expect((await query.get()).length, 2);
 
     await StatusRepositoryMockHelper.insertDbStatus(
       statusRepository,
-      (await StatusDatabaseMockHelper.createTestDbStatus(
+      await StatusDatabaseMockHelper.createTestDbStatus(
         seed: 'seed3',
         dbAccount: dbAccount,
         inReplyToAccountRemoteId: dbAccount3.remoteId,
-      )),
+      ),
     );
 
     expect((await query.get()).length, 2);
@@ -2485,11 +2493,11 @@ void main() {
 
     await StatusRepositoryMockHelper.insertDbStatus(
       statusRepository,
-      (await StatusDatabaseMockHelper.createTestDbStatus(
+      await StatusDatabaseMockHelper.createTestDbStatus(
         seed: 'seed4',
         dbAccount: dbAccount,
         inReplyToAccountRemoteId: dbAccount3.remoteId,
-      )),
+      ),
     );
 
     expect((await query.get()).length, 2);
@@ -2515,11 +2523,11 @@ void main() {
       orderingTermData: null,
     );
 
-    var dbStatus1 = (await StatusDatabaseMockHelper.createTestDbStatus(
+    var dbStatus1 = await StatusDatabaseMockHelper.createTestDbStatus(
       seed: 'seed1',
       dbAccount: dbAccount,
       inReplyToAccountRemoteId: null,
-    ));
+    );
     await StatusRepositoryMockHelper.insertDbStatus(
       statusRepository,
       dbStatus1,
@@ -2529,22 +2537,22 @@ void main() {
 
     await StatusRepositoryMockHelper.insertDbStatus(
       statusRepository,
-      (await StatusDatabaseMockHelper.createTestDbStatus(
+      await StatusDatabaseMockHelper.createTestDbStatus(
         seed: 'seed2',
         dbAccount: dbAccount,
         inReplyToAccountRemoteId: myDbAccount.remoteId,
-      )),
+      ),
     );
 
     expect((await query.get()).length, 2);
 
     await StatusRepositoryMockHelper.insertDbStatus(
       statusRepository,
-      (await StatusDatabaseMockHelper.createTestDbStatus(
+      await StatusDatabaseMockHelper.createTestDbStatus(
         seed: 'seed3',
         dbAccount: dbAccount,
         inReplyToAccountRemoteId: dbAccount3.remoteId,
-      )),
+      ),
     );
 
     expect((await query.get()).length, 2);
@@ -2565,11 +2573,11 @@ void main() {
 
     await StatusRepositoryMockHelper.insertDbStatus(
       statusRepository,
-      (await StatusDatabaseMockHelper.createTestDbStatus(
+      await StatusDatabaseMockHelper.createTestDbStatus(
         seed: 'seed4',
         dbAccount: dbAccount,
         inReplyToAccountRemoteId: dbAccount4.remoteId,
-      )),
+      ),
     );
 
     expect((await query.get()).length, 3);
@@ -2615,10 +2623,10 @@ void main() {
       orderingTermData: null,
     );
 
-    var dbStatus1 = (await StatusDatabaseMockHelper.createTestDbStatus(
+    var dbStatus1 = await StatusDatabaseMockHelper.createTestDbStatus(
       seed: 'seed1',
       dbAccount: dbAccount,
-    ));
+    );
     await StatusRepositoryMockHelper.insertDbStatus(
       statusRepository,
       dbStatus1,
@@ -2653,6 +2661,7 @@ void main() {
         mode: InsertMode.insertOrReplace,
         batchTransaction: batch,
       );
+      // ignore: cascade_invocations
       statusRepository.insertInDbTypeBatch(
         dbItem1copy,
         mode: InsertMode.insertOrReplace,
@@ -2673,16 +2682,17 @@ void main() {
     var remoteStatus1Copy = status1Copy.toUnifediApiStatus();
 
     await statusRepository.batch((batch) {
-      statusRepository.insertInRemoteTypeBatch(
-        remoteStatus1,
-        mode: InsertMode.insertOrReplace,
-        batchTransaction: batch,
-      );
-      statusRepository.insertInRemoteTypeBatch(
-        remoteStatus1Copy,
-        mode: InsertMode.insertOrReplace,
-        batchTransaction: batch,
-      );
+      statusRepository
+        ..insertInRemoteTypeBatch(
+          remoteStatus1,
+          mode: InsertMode.insertOrReplace,
+          batchTransaction: batch,
+        )
+        ..insertInRemoteTypeBatch(
+          remoteStatus1Copy,
+          mode: InsertMode.insertOrReplace,
+          batchTransaction: batch,
+        );
     });
 
     expect(await statusRepository.countAll(), 1);

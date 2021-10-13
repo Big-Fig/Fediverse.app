@@ -9,18 +9,17 @@ class InstanceTrendsHashtagListNetworkOnlyListBlocProxyProvider
     extends StatelessWidget {
   final Widget child;
 
-  InstanceTrendsHashtagListNetworkOnlyListBlocProxyProvider({
+  const InstanceTrendsHashtagListNetworkOnlyListBlocProxyProvider({
     required this.child,
   });
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IInstanceTrendsHashtagListNetworkOnlyListBloc,
-        INetworkOnlyListBloc<IHashtag>>(
-      update: (context, value, previous) => value,
-      child: HashtagPaginationListBlocProxyProvider(
-        child: child,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => ProxyProvider<
+          IInstanceTrendsHashtagListNetworkOnlyListBloc,
+          INetworkOnlyListBloc<IHashtag>>(
+        update: (context, value, previous) => value,
+        child: HashtagPaginationListBlocProxyProvider(
+          child: child,
+        ),
+      );
 }

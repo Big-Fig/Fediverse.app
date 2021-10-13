@@ -25,7 +25,7 @@ class FediFormSingleChooseCustomFromListFieldRow<T> extends StatelessWidget {
   final VoidCallback startCustomSelectCallback;
   final VoidCallback clearCallback;
 
-  FediFormSingleChooseCustomFromListFieldRow({
+  const FediFormSingleChooseCustomFromListFieldRow({
     required this.isEnabled,
     required this.isNullValuePossible,
     required this.label,
@@ -41,85 +41,82 @@ class FediFormSingleChooseCustomFromListFieldRow<T> extends StatelessWidget {
 
   @override
   // ignore: long-method
-  Widget build(BuildContext context) {
-    // todo: copy-pasted code
-    return FediFormRow(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              FediFormRowLabel(label),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  InkWell(
-                    onTap: isEnabled! ? startCustomSelectCallback : null,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        if (valueToIconMapper != null)
+  Widget build(BuildContext context) => FediFormRow(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                FediFormRowLabel(label),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    InkWell(
+                      onTap: isEnabled! ? startCustomSelectCallback : null,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (valueToIconMapper != null)
+                            Padding(
+                              padding: FediPadding.horizontalSmallPadding,
+                              child: Icon(
+                                valueToIconMapper!(value),
+                                color: isEnabled!
+                                    ? IFediUiColorTheme.of(context).darkGrey
+                                    : IFediUiColorTheme.of(context).lightGrey,
+                              ),
+                            ),
+                          if (valueToTextMapper != null)
+                            Padding(
+                              padding: FediPadding.horizontalSmallPadding,
+                              child: Text(
+                                valueToTextMapper!(value),
+                                style: isEnabled!
+                                    ? IFediUiTextTheme.of(context)
+                                        .mediumShortDarkGrey
+                                    : IFediUiTextTheme.of(context)
+                                        .mediumShortLightGrey,
+                              ),
+                            ),
                           Padding(
                             padding: FediPadding.horizontalSmallPadding,
                             child: Icon(
-                              valueToIconMapper!(value),
+                              FediIcons.pen,
                               color: isEnabled!
                                   ? IFediUiColorTheme.of(context).darkGrey
                                   : IFediUiColorTheme.of(context).lightGrey,
                             ),
                           ),
-                        if (valueToTextMapper != null)
-                          Padding(
-                            padding: FediPadding.horizontalSmallPadding,
-                            child: Text(
-                              valueToTextMapper!(value),
-                              style: isEnabled!
-                                  ? IFediUiTextTheme.of(context)
-                                      .mediumShortDarkGrey
-                                  : IFediUiTextTheme.of(context)
-                                      .mediumShortLightGrey,
-                            ),
-                          ),
-                        Padding(
+                        ],
+                      ),
+                    ),
+                    if (isNullValuePossible && value != null)
+                      InkWell(
+                        onTap: () {
+                          clearCallback();
+                        },
+                        child: Padding(
                           padding: FediPadding.horizontalSmallPadding,
                           child: Icon(
-                            FediIcons.pen,
+                            FediIcons.delete,
                             color: isEnabled!
                                 ? IFediUiColorTheme.of(context).darkGrey
                                 : IFediUiColorTheme.of(context).lightGrey,
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                  if (isNullValuePossible && value != null)
-                    InkWell(
-                      onTap: () {
-                        clearCallback();
-                      },
-                      child: Padding(
-                        padding: FediPadding.horizontalSmallPadding,
-                        child: Icon(
-                          FediIcons.delete,
-                          color: isEnabled!
-                              ? IFediUiColorTheme.of(context).darkGrey
-                              : IFediUiColorTheme.of(context).lightGrey,
-                        ),
                       ),
-                    ),
-                ],
-              ),
-            ],
-          ),
-          _buildDescription(),
-          if (error != null) FediFormColumnError(error),
-        ],
-      ),
-    );
-  }
+                  ],
+                ),
+              ],
+            ),
+            _buildDescription(),
+            if (error != null) FediFormColumnError(error),
+          ],
+        ),
+      );
 
   Widget _buildDescription() {
     if (isEnabled!) {

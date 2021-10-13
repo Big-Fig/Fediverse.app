@@ -13,7 +13,7 @@ class ToastWidget extends StatelessWidget {
   final bool titleAutoFontSize;
   final VoidCallback? onClick;
 
-  ToastWidget({
+  const ToastWidget({
     required this.toastType,
     required this.title,
     required this.content,
@@ -26,9 +26,9 @@ class ToastWidget extends StatelessWidget {
     var fediUiTextTheme = IFediUiTextTheme.of(context);
     var fediUiColorTheme = IFediUiColorTheme.of(context);
 
-    var backgroundColor;
-    var iconColor;
-    var textColor;
+    Color backgroundColor;
+    Color iconColor;
+    Color textColor;
 
     switch (toastType) {
       case ToastType.error:

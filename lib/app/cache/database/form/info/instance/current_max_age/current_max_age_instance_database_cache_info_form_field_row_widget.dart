@@ -15,13 +15,10 @@ class CurrentMaxAgeInstanceDatabaseCacheInfoFormFieldRowWidget
         child: InfoFormFieldRowWidget<DateTime?>(
           label: S.of(context).app_cache_database_settings_currentMaxAge_label,
           description: null,
-          valueToTextMapper: (context, value) {
-            return S
-                .of(context)
-                .app_cache_database_settings_currentMaxAge_value(
-                  _dateFormat.format(value ?? DateTime.now()),
-                );
-          },
+          valueToTextMapper: (context, value) =>
+              S.of(context).app_cache_database_settings_currentMaxAge_value(
+                    _dateFormat.format(value ?? DateTime.now()),
+                  ),
         ),
       );
 

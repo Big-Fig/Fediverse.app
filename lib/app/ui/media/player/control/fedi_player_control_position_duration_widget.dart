@@ -57,11 +57,9 @@ class _FediPlayerControlPositionDurationLoadingWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return FediCircularProgressIndicator(
-      color: IFediUiColorTheme.of(context).white,
-      // ignore: no-magic-number
-      size: 22.0,
-    );
-  }
+  Widget build(BuildContext context) => FediCircularProgressIndicator(
+        color: IFediUiColorTheme.of(context).white,
+        // ignore: no-magic-number
+        size: 22.0,
+      );
 }

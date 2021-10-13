@@ -100,66 +100,60 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
 
   EditTimelineSettingsBloc _createEditTimelineSettingsBloc(
     TimelineType startType,
-  ) {
-    return EditTimelineSettingsBloc(
-      settingsBloc: timelineSettingsBloc,
-      timelineType: startType,
-      unifediApiInstance: authInstance.info!,
-      isNullableValuesPossible: true,
-      isEnabled: true,
-      webSocketsSettingsBloc: webSocketsSettingsBloc,
-      instanceLocation: InstanceLocation.local,
-    );
-  }
+  ) =>
+      EditTimelineSettingsBloc(
+        settingsBloc: timelineSettingsBloc,
+        timelineType: startType,
+        unifediApiInstance: authInstance.info!,
+        isNullableValuesPossible: true,
+        isEnabled: true,
+        webSocketsSettingsBloc: webSocketsSettingsBloc,
+        instanceLocation: InstanceLocation.local,
+      );
 
   TimelineLocalPreferenceBloc _createTimelineLocalPreferencesBloc({
     required ILocalPreferencesService localPreferencesService,
     required String timelineId,
     required TimelineType startType,
-  }) {
-    return TimelineLocalPreferenceBloc.byId(
-      localPreferencesService,
-      userAtHost: authInstance.userAtHost,
-      timelineId: timelineId,
-      defaultPreferenceValue: Timeline.byType(
-        id: timelineId,
-        type: startType,
-        settings: TimelineSettings.createDefaultSettings(startType),
-        label: null,
-        isPossibleToDelete: true,
-      ),
-    );
-  }
+  }) =>
+      TimelineLocalPreferenceBloc.byId(
+        localPreferencesService,
+        userAtHost: authInstance.userAtHost,
+        timelineId: timelineId,
+        defaultPreferenceValue: Timeline.byType(
+          id: timelineId,
+          type: startType,
+          settings: TimelineSettings.createDefaultSettings(startType),
+          label: null,
+          isPossibleToDelete: true,
+        ),
+      );
 
-  StringValueFormFieldBloc _createNameField() {
-    return StringValueFormFieldBloc(
-      originValue: '',
-      validators: [
-        StringValueFormFieldNonEmptyValidationError.createValidator(),
-      ],
-      // ignore: no-magic-number
-      maxLength: 50,
-    );
-  }
+  StringValueFormFieldBloc _createNameField() => StringValueFormFieldBloc(
+        originValue: '',
+        validators: [
+          StringValueFormFieldNonEmptyValidationError.createValidator(),
+        ],
+        // ignore: no-magic-number
+        maxLength: 50,
+      );
 
   TimelineTypeSingleFromListValueFormFieldBloc _createTypeField(
     TimelineType startType,
-  ) {
-    return TimelineTypeSingleFromListValueFormFieldBloc(
-      originValue: startType,
-      validators: [],
-      isNullValuePossible: false,
-    );
-  }
+  ) =>
+      TimelineTypeSingleFromListValueFormFieldBloc(
+        originValue: startType,
+        validators: [],
+        isNullValuePossible: false,
+      );
 
-  StringValueFormFieldBloc _createIdField(String timelineId) {
-    return StringValueFormFieldBloc(
-      isEnabled: false,
-      originValue: timelineId,
-      validators: [],
-      maxLength: null,
-    );
-  }
+  StringValueFormFieldBloc _createIdField(String timelineId) =>
+      StringValueFormFieldBloc(
+        isEnabled: false,
+        originValue: timelineId,
+        validators: [],
+        maxLength: null,
+      );
 
   void _onTypeChanged(TimelineType timelineType) {
     var oldEditTimelineSettingsBloc = editTimelineSettingsBloc;

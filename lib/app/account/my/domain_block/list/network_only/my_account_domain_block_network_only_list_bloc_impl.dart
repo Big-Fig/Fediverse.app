@@ -62,17 +62,16 @@ class MyAccountDomainBlockNetworkOnlyDomainListBloc extends DisposableOwner
   static Widget provideToContext(
     BuildContext context, {
     required Widget child,
-  }) {
-    return DisposableProvider<IMyAccountDomainBlockNetworkOnlyListBloc>(
-      create: (context) =>
-          MyAccountDomainBlockNetworkOnlyDomainListBloc.createFromContext(
-        context,
-      ),
-      child: ProxyProvider<IMyAccountDomainBlockNetworkOnlyListBloc,
-          INetworkOnlyListBloc<DomainBlock>>(
-        update: (context, value, previous) => value,
-        child: child,
-      ),
-    );
-  }
+  }) =>
+      DisposableProvider<IMyAccountDomainBlockNetworkOnlyListBloc>(
+        create: (context) =>
+            MyAccountDomainBlockNetworkOnlyDomainListBloc.createFromContext(
+          context,
+        ),
+        child: ProxyProvider<IMyAccountDomainBlockNetworkOnlyListBloc,
+            INetworkOnlyListBloc<DomainBlock>>(
+          update: (context, value, previous) => value,
+          child: child,
+        ),
+      );
 }

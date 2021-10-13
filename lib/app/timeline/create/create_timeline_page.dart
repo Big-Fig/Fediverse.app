@@ -67,24 +67,22 @@ class _CreateItemTimelinesHomeTabStoragePageSaveActionWidget
   final ICreateTimelineBloc createTimelineBloc;
 
   @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<bool>(
-      stream: createTimelineBloc.isHaveChangesAndNoErrorsStream,
-      initialData: createTimelineBloc.isHaveChangesAndNoErrors,
-      builder: (context, snapshot) {
-        var isReadyToSubmit = snapshot.data;
+  Widget build(BuildContext context) => StreamBuilder<bool>(
+        stream: createTimelineBloc.isHaveChangesAndNoErrorsStream,
+        initialData: createTimelineBloc.isHaveChangesAndNoErrors,
+        builder: (context, snapshot) {
+          var isReadyToSubmit = snapshot.data;
 
-        return AsyncOperationButtonBuilderWidget(
-          builder: (context, onPressed) => FediIconButton(
-            icon: Icon(Icons.check),
-            color: IFediUiColorTheme.of(context).darkGrey,
-            onPressed: isReadyToSubmit! ? onPressed : null,
-          ),
-          asyncButtonAction: createTimelineBloc.save,
-        );
-      },
-    );
-  }
+          return AsyncOperationButtonBuilderWidget<void>(
+            builder: (context, onPressed) => FediIconButton(
+              icon: Icon(Icons.check),
+              color: IFediUiColorTheme.of(context).darkGrey,
+              onPressed: isReadyToSubmit! ? onPressed : null,
+            ),
+            asyncButtonAction: createTimelineBloc.save,
+          );
+        },
+      );
 }
 
 void goToCreateItemTimelinesHomeTabStoragePage(
@@ -96,30 +94,30 @@ void goToCreateItemTimelinesHomeTabStoragePage(
   );
 }
 
-MaterialPageRoute createCreateItemTimelinesHomeTabStoragePageRoute(
+MaterialPageRoute<void> createCreateItemTimelinesHomeTabStoragePageRoute(
   BuildContext context,
-) {
-  return MaterialPageRoute(
-    builder: (context) => DisposableProvider<ICreateTimelineBloc>(
-      create: (context) => CreateTimelineBloc(
-        timelineSavedCallback: (Timeline timeline) {
-          var timelinesHomeTabStorageBloc =
-              ITimelinesHomeTabStorageBloc.of(context, listen: false);
-          timelinesHomeTabStorageBloc.add(timeline);
-          Navigator.of(context).pop();
-        },
-        authInstance: ICurrentUnifediApiAccessBloc.of(context, listen: false)
-            .currentInstance!,
-        localPreferencesService: ILocalPreferencesService.of(
-          context,
-          listen: false,
+) =>
+    MaterialPageRoute<void>(
+      builder: (context) => DisposableProvider<ICreateTimelineBloc>(
+        create: (context) => CreateTimelineBloc(
+          timelineSavedCallback: (Timeline timeline) {
+            var timelinesHomeTabStorageBloc =
+                ITimelinesHomeTabStorageBloc.of(context, listen: false);
+            // ignore: cascade_invocations
+            timelinesHomeTabStorageBloc.add(timeline);
+            Navigator.of(context).pop();
+          },
+          authInstance: ICurrentUnifediApiAccessBloc.of(context, listen: false)
+              .currentInstance!,
+          localPreferencesService: ILocalPreferencesService.of(
+            context,
+            listen: false,
+          ),
+          webSocketsSettingsBloc: IWebSocketsSettingsBloc.of(
+            context,
+            listen: false,
+          ),
         ),
-        webSocketsSettingsBloc: IWebSocketsSettingsBloc.of(
-          context,
-          listen: false,
-        ),
+        child: const CreateItemTimelinesHomeTabStoragePage(),
       ),
-      child: const CreateItemTimelinesHomeTabStoragePage(),
-    ),
-  );
-}
+    );

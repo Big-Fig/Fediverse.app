@@ -18,47 +18,45 @@ class AccountWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Stack(
-          children: <Widget>[
-            Positioned.fill(
-              child: Container(
-                color: IFediUiColorTheme.of(context).white,
-                child: const AccountHeaderBackgroundWidget(),
+  Widget build(BuildContext context) => Column(
+        children: [
+          Stack(
+            children: <Widget>[
+              Positioned.fill(
+                child: Container(
+                  color: IFediUiColorTheme.of(context).white,
+                  child: const AccountHeaderBackgroundWidget(),
+                ),
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                top: FediSizes.bigPadding,
-                bottom: FediSizes.smallPadding,
-                left: FediSizes.bigPadding,
-                // ignore: no-equal-arguments
-                right: FediSizes.bigPadding,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(bottom: FediSizes.smallPadding),
-                    child: AccountInfoWidget(
-                      onStatusesTapCallback: onStatusesTapCallback,
+              Padding(
+                padding: EdgeInsets.only(
+                  top: FediSizes.bigPadding,
+                  bottom: FediSizes.smallPadding,
+                  left: FediSizes.bigPadding,
+                  // ignore: no-equal-arguments
+                  right: FediSizes.bigPadding,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(bottom: FediSizes.smallPadding),
+                      child: AccountInfoWidget(
+                        onStatusesTapCallback: onStatusesTapCallback,
+                      ),
                     ),
-                  ),
-                  const AccountActionListWidget(),
-                  const _AccountNoteWidget(),
-                  const _AccountFieldListWidget(),
-                ],
+                    const AccountActionListWidget(),
+                    const _AccountNoteWidget(),
+                    const _AccountFieldListWidget(),
+                  ],
+                ),
               ),
-            ),
-          ],
-        ),
-        footer,
-      ],
-    );
-  }
+            ],
+          ),
+          footer,
+        ],
+      );
 }
 
 class _AccountFieldListWidget extends StatelessWidget {
@@ -84,9 +82,7 @@ class _AccountNoteWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return AccountNoteWidget(
-      textStyle: IFediUiTextTheme.of(context).bigTallBoldWhite,
-    );
-  }
+  Widget build(BuildContext context) => AccountNoteWidget(
+        textStyle: IFediUiTextTheme.of(context).bigTallBoldWhite,
+      );
 }

@@ -47,33 +47,32 @@ class InstanceAnnouncementPaginationListWidget
     required List<IInstanceAnnouncement> items,
     Widget? header,
     Widget? footer,
-  }) {
-    return PaginationListWidget.buildItemsListView(
-      context: context,
-      keyboardDismissBehavior: keyboardDismissBehavior,
-      items: items,
-      header: header,
-      footer: footer,
-      itemBuilder: (context, index) {
-        var item = items[index];
+  }) =>
+      PaginationListWidget.buildItemsListView(
+        context: context,
+        keyboardDismissBehavior: keyboardDismissBehavior,
+        items: items,
+        header: header,
+        footer: footer,
+        itemBuilder: (context, index) {
+          var item = items[index];
 
-        return Provider<IInstanceAnnouncement>.value(
-          value: item,
-          child: DisposableProxyProvider<IInstanceAnnouncement,
-              IInstanceAnnouncementBloc>(
-            update: (context, value, previous) =>
-                InstanceAnnouncementBloc.createFromContext(
-              context,
-              value,
+          return Provider<IInstanceAnnouncement>.value(
+            value: item,
+            child: DisposableProxyProvider<IInstanceAnnouncement,
+                IInstanceAnnouncementBloc>(
+              update: (context, value, previous) =>
+                  InstanceAnnouncementBloc.createFromContext(
+                context,
+                value,
+              ),
+              child: const FediListTile(
+                child: InstanceAnnouncementListItemWidget(),
+              ),
             ),
-            child: const FediListTile(
-              child: InstanceAnnouncementListItemWidget(),
-            ),
-          ),
-        );
-      },
-    );
-  }
+          );
+        },
+      );
 
   @override
   IPaginationListBloc<PaginationPage<IInstanceAnnouncement>,

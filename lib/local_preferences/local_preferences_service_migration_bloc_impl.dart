@@ -37,7 +37,7 @@ abstract class LocalPreferencesServiceMigrationBloc
     await inputBloc.performAsyncInit();
     await outputBloc.performAsyncInit();
 
-    var currentValue = inputBloc.value;
+    dynamic currentValue = inputBloc.value;
     if (currentValue != null) {
       _logger.finest(() => 'migrateData currentValue $currentValue');
       await outputBloc.setValue(currentValue);

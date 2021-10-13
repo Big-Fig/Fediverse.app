@@ -9,7 +9,7 @@ class StatusVisibilitySelectSingleFromListValueFormFieldBlocProxyProvider
     extends StatelessWidget {
   final Widget child;
 
-  StatusVisibilitySelectSingleFromListValueFormFieldBlocProxyProvider({
+  const StatusVisibilitySelectSingleFromListValueFormFieldBlocProxyProvider({
     required this.child,
   });
 

@@ -92,13 +92,12 @@ class CrashReportingPermissionCheckerBloc extends DisposableOwner
   static Widget provideToContext(
     BuildContext context, {
     required Widget child,
-  }) {
-    return DisposableProvider<ICrashReportingPermissionCheckerBloc>(
-      create: (context) =>
-          CrashReportingPermissionCheckerBloc.createFromContext(
-        context,
-      ),
-      child: child,
-    );
-  }
+  }) =>
+      DisposableProvider<ICrashReportingPermissionCheckerBloc>(
+        create: (context) =>
+            CrashReportingPermissionCheckerBloc.createFromContext(
+          context,
+        ),
+        child: child,
+      );
 }

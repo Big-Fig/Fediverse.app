@@ -181,13 +181,11 @@ class ConversationChatRepository
       appItem.toDbConversation();
 
   @override
-  IUnifediApiConversation mapAppItemToRemoteItem(IConversationChat appItem) {
-    // todo: improve
-    return appItem.toPleromaConversation(
-      lastStatus: null,
-      accounts: [],
-    );
-  }
+  IUnifediApiConversation mapAppItemToRemoteItem(IConversationChat appItem) =>
+      appItem.toPleromaConversation(
+        lastStatus: null,
+        accounts: [],
+      );
 
   @override
   IConversationChat mapRemoteItemToAppItem(
@@ -214,15 +212,13 @@ class ConversationChatRepository
   @override
   IUnifediApiConversation mapDbPopulatedItemToRemoteItem(
     DbConversationPopulated dbPopulatedItem,
-  ) {
-    // todo: improve
-    return dbPopulatedItem
-        .toDbConversationChatPopulatedWrapper()
-        .toPleromaConversation(
-      lastStatus: null,
-      accounts: [],
-    );
-  }
+  ) =>
+      dbPopulatedItem
+          .toDbConversationChatPopulatedWrapper()
+          .toPleromaConversation(
+        lastStatus: null,
+        accounts: [],
+      );
 
   @override
   ConversationChatRepositoryFilters get emptyFilters =>
@@ -254,7 +250,7 @@ class ConversationChatRepository
       batchTransaction: null,
     );
 
-    return await dao.insert(
+    return dao.insert(
       entity: remoteItem.toDbConversation(),
       mode: mode,
     );

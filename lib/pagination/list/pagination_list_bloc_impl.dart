@@ -111,8 +111,10 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
 
   @override
   Future internalAsyncInit() async {
-    _logger.finest(() =>
-        'internalAsyncInit loadFromCacheDuringInit $loadFromCacheDuringInit');
+    _logger.finest(
+      () =>
+          'internalAsyncInit loadFromCacheDuringInit $loadFromCacheDuringInit',
+    );
 
     if (loadFromCacheDuringInit) {
       try {
@@ -127,12 +129,10 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
     }
   }
 
-  Future<TPage> loadFirstPageOnInit() {
-    return paginationBloc.requestPage(
-      pageIndex: 0,
-      forceToSkipCache: false,
-    );
-  }
+  Future<TPage> loadFirstPageOnInit() => paginationBloc.requestPage(
+        pageIndex: 0,
+        forceToSkipCache: false,
+      );
 
   @override
   List<TPage> get sortedPages => paginationBloc.loadedPagesSortedByIndex;
@@ -249,7 +249,7 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       }
     } else {
       //otherwise refresh only bloc
-      return await refreshWithoutController();
+      return refreshWithoutController();
     }
   }
 }

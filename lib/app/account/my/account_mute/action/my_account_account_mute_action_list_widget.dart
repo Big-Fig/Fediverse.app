@@ -10,24 +10,22 @@ class MyAccountAccountMuteActionListWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      // todo: refactor
-      // ignore: no-magic-number
-      height: 48,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          MyAccountAccountMuteActionMuteButtonWidget(
-            defaultMuting: defaultMuting,
-          ),
-          MyAccountAccountMuteActionNotificationsButtonWidget(
-            defaultMuting: defaultMuting,
-          ),
-        ],
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Container(
+        // todo: refactor
+        // ignore: no-magic-number
+        height: 48,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            MyAccountAccountMuteActionMuteButtonWidget(
+              defaultMuting: defaultMuting,
+            ),
+            MyAccountAccountMuteActionNotificationsButtonWidget(
+              defaultMuting: defaultMuting,
+            ),
+          ],
+        ),
+      );
 }

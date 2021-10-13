@@ -88,17 +88,15 @@ class _RecentSelectAccountHeaderWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          S.of(context).app_account_select_recent_header,
-          style: IFediUiTextTheme.of(context).bigTallBoldDarkGrey,
-        ),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            S.of(context).app_account_select_recent_header,
+            style: IFediUiTextTheme.of(context).bigTallBoldDarkGrey,
+          ),
+        ],
+      );
 }
 
 class _RecentSelectAccountListWidget extends StatelessWidget {
@@ -172,11 +170,9 @@ class _RecentSelectAccountListEmptyWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: FediEmptyWidget(
-        title: S.of(context).app_account_select_recent_empty,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Center(
+        child: FediEmptyWidget(
+          title: S.of(context).app_account_select_recent_empty,
+        ),
+      );
 }

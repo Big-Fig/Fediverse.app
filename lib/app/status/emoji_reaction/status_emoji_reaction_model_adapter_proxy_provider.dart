@@ -7,17 +7,16 @@ import 'package:unifedi_api/unifedi_api.dart';
 class StatusEmojiReactionAdapterProxyProvider extends StatelessWidget {
   final Widget child;
 
-  StatusEmojiReactionAdapterProxyProvider({
+  const StatusEmojiReactionAdapterProxyProvider({
     required this.child,
   });
 
   @override
-  Widget build(BuildContext context) {
-    return ProxyProvider<IUnifediApiEmojiReaction, IEmojiReaction>(
-      update: (context, value, previous) => StatusEmojiReactionAdapter(
-        unifediApiEmojiReaction: value,
-      ),
-      child: child,
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProxyProvider<IUnifediApiEmojiReaction, IEmojiReaction>(
+        update: (context, value, previous) => StatusEmojiReactionAdapter(
+          unifediApiEmojiReaction: value,
+        ),
+        child: child,
+      );
 }

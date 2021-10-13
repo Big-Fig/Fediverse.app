@@ -45,32 +45,31 @@ class CustomListPaginationListWidget
     required List<ICustomList> items,
     Widget? header,
     Widget? footer,
-  }) {
-    return PaginationListWidget.buildItemsListView(
-      context: context,
-      keyboardDismissBehavior: keyboardDismissBehavior,
-      items: items,
-      header: header,
-      footer: footer,
-      itemBuilder: (context, index) {
-        var item = items[index];
+  }) =>
+      PaginationListWidget.buildItemsListView(
+        context: context,
+        keyboardDismissBehavior: keyboardDismissBehavior,
+        items: items,
+        header: header,
+        footer: footer,
+        itemBuilder: (context, index) {
+          var item = items[index];
 
-        return Provider<ICustomList>.value(
-          value: item,
-          child: DisposableProxyProvider<ICustomList, ICustomListBloc>(
-            update: (context, value, previous) =>
-                CustomListBloc.createFromContext(
-              context,
-              customList: value,
+          return Provider<ICustomList>.value(
+            value: item,
+            child: DisposableProxyProvider<ICustomList, ICustomListBloc>(
+              update: (context, value, previous) =>
+                  CustomListBloc.createFromContext(
+                context,
+                customList: value,
+              ),
+              child: const FediListTile(
+                child: CustomListListItemWidget(),
+              ),
             ),
-            child: const FediListTile(
-              child: CustomListListItemWidget(),
-            ),
-          ),
-        );
-      },
-    );
-  }
+          );
+        },
+      );
 
   @override
   IPaginationListBloc<PaginationPage<ICustomList>, ICustomList>

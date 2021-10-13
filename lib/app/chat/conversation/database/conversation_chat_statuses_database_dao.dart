@@ -23,15 +23,14 @@ class ConversationStatusesDao extends DatabaseDao<
 
   Selectable<DbConversationStatus> findByConversationRemoteId(
     String conversationRemoteId,
-  ) {
-    return customSelect(
-      'SELECT * FROM $tableName WHERE conversation_remote_id = :conversationRemoteId;',
-      variables: [
-        Variable<String>(conversationRemoteId),
-      ],
-      readsFrom: {dbConversationStatuses},
-    ).map(dbConversationStatuses.mapFromRow);
-  }
+  ) =>
+      customSelect(
+        'SELECT * FROM $tableName WHERE conversation_remote_id = :conversationRemoteId;',
+        variables: [
+          Variable<String>(conversationRemoteId),
+        ],
+        readsFrom: {dbConversationStatuses},
+      ).map(dbConversationStatuses.mapFromRow);
 
   Future<int> deleteByConversationRemoteId(String conversationRemoteId) =>
       customUpdate(
@@ -52,27 +51,25 @@ class ConversationStatusesDao extends DatabaseDao<
             _createConversationRemoteIdEqualExpression(conversationRemoteId),
       );
     } else {
-      return await deleteByConversationRemoteId(conversationRemoteId);
+      return deleteByConversationRemoteId(conversationRemoteId);
     }
   }
 
   CustomExpression<bool> _createConversationRemoteIdEqualExpression(
     String conversationRemoteId,
-  ) {
-    return createMainTableEqualWhereExpression(
-      fieldName: table.conversationRemoteId.$name,
-      value: conversationRemoteId,
-    );
-  }
+  ) =>
+      createMainTableEqualWhereExpression(
+        fieldName: table.conversationRemoteId.$name,
+        value: conversationRemoteId,
+      );
 
   CustomExpression<bool> _createStatusRemoteIdEqualExpression(
     String statusRemoteId,
-  ) {
-    return createMainTableEqualWhereExpression(
-      fieldName: table.statusRemoteId.$name,
-      value: statusRemoteId,
-    );
-  }
+  ) =>
+      createMainTableEqualWhereExpression(
+        fieldName: table.statusRemoteId.$name,
+        value: statusRemoteId,
+      );
 
   Future<int> deleteByConversationRemoteIdAndStatusRemoteId({
     required String conversationRemoteId,
@@ -99,7 +96,7 @@ class ConversationStatusesDao extends DatabaseDao<
             _createStatusRemoteIdEqualExpression(statusRemoteId),
       );
     } else {
-      return await deleteByConversationRemoteId(conversationRemoteId);
+      return deleteByConversationRemoteId(conversationRemoteId);
     }
   }
 }
