@@ -151,10 +151,13 @@ dart_code_metrics:
     - long-parameter-list
   metrics:
     cyclomatic-complexity: 20
+    maximum-nesting-level: 5
     lines-of-code: 100
+    halstead-volume: 150
+    maintainability-index: 50
     source-lines-of-code: 65
-#    source-lines-of-code: 50 should be 50
-    maximum-nesting: 5
+#   should be
+#   source-lines-of-code: 50
     weight-of-class: 0.33
     number-of-arguments: 6
     number-of-parameters: 6
@@ -163,30 +166,31 @@ dart_code_metrics:
     - test/**
     - test_driver/**
   rules:
-    - binary-expression-operand-order
-    - double-literal-format
-    - no-empty-block
-    - no-equal-then-else
-    - no-equal-arguments
-    - no-object-declaration
-#    - no-magic-number
-#    - prefer-trailing-comma
-    - no-boolean-literal-compare
-    - newline-before-return
-    - double-literal-format
-    - binary-expression-operand-order
-    - no-object-declaration
+#    - avoid-ignoring-return-values
     - avoid-late-keyword
+#    - avoid-non-null-assertion
+#    - avoid-unused-parameters
+    - binary-expression-operand-order
+    - double-literal-format
+#    - member-ordering
+#    - member-ordering-extended
+    - newline-before-return
+    - no-boolean-literal-compare
+    - no-empty-block
+    - no-equal-arguments
+    - no-equal-then-else
+    - no-magic-number
+    - no-object-declaration
+#    - prefer-conditional-expressions
+    - prefer-correct-identifier-length
+#    - prefer-match-file-name
+    - prefer-trailing-comma
     - always-remove-listener
 #    - avoid-returning-widgets
     - avoid-unnecessary-setstate
 #    - avoid-wrapping-in-padding
+#    - prefer-const-border-radius
+#    - prefer-extracting-callbacks
+#    - prefer-single-widget-per-file
     - prefer-intl-name
     - provide-correct-intl-args
-# should be enabled in the future
-#    - prefer-extracting-callbacks
-#    - avoid-unused-parameters
-#    - avoid-returning-widgets
-#    - avoid-non-null-assertion
-#    - member-ordering
-#    - member-ordering-extended
