@@ -4,7 +4,6 @@ import 'package:fedi/app/ui/theme/dark/dark_fedi_ui_theme_model_id.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/material/theme_data.dart';
 
 // ignore_for_file: no-magic-number
 // ignore_for_file: no-equal-arguments

@@ -7,7 +7,7 @@ import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_model.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:logging/logging.dart';
-import 'package:pull_to_refresh/src/smart_refresher.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:rxdart/rxdart.dart';
 
 typedef ItemEquality<TItem> = bool Function(TItem a, TItem b);

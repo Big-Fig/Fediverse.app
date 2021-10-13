@@ -14,7 +14,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+
+// ignore: implementation_imports
 import 'package:flutter_datetime_picker/src/date_model.dart';
+
+// ignore: implementation_imports
 import 'package:flutter_datetime_picker/src/i18n_model.dart';
 
 export 'package:flutter_datetime_picker/src/date_model.dart';
@@ -326,9 +330,9 @@ class FediDatePickerComponent extends StatefulWidget {
 }
 
 class _DatePickerState extends State<FediDatePickerComponent> {
-  FixedExtentScrollController? leftScrollCtrl,
-      middleScrollCtrl,
-      rightScrollCtrl;
+  FixedExtentScrollController? leftScrollCtrl;
+  FixedExtentScrollController? middleScrollCtrl;
+  FixedExtentScrollController? rightScrollCtrl;
 
   @override
   void initState() {

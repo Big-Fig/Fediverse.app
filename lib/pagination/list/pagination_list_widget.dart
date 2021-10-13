@@ -8,7 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
-import 'package:pull_to_refresh/src/smart_refresher.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 var _logger = Logger('pagination_list_dart');
 

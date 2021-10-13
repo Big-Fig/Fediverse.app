@@ -71,8 +71,9 @@ class ConversationChatHomeTabPage extends StatelessWidget {
       child: Builder(
         builder: (context) {
           var chatsListBloc = IConversationChatWithLastMessageListBloc.of(
-              context,
-              listen: false);
+            context,
+            listen: false,
+          );
 
           return MultiProvider(
             providers: [

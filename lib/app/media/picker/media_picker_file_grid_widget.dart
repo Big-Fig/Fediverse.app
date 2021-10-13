@@ -9,8 +9,6 @@ import 'package:fedi/media/device/file/photo_manager/photo_manager_media_device_
 import 'package:fedi/media/device/gallery/media_device_gallery_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/pagination_model.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/scroll_view.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';

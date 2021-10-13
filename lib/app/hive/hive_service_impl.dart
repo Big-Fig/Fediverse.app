@@ -38,6 +38,7 @@ import 'package:fedi/localization/localization_model.dart';
 import 'package:fedi/push/push_model.dart';
 import 'package:fediverse_api/fediverse_api.dart';
 import 'package:hive/hive.dart';
+// ignore: implementation_imports
 import 'package:hive/src/registry/nested_type_registry_adapter_impl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pleroma_api/pleroma_api.dart';

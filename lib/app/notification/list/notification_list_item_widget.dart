@@ -363,6 +363,7 @@ class _NotificationListItemContentWidget extends StatelessWidget {
       mention: (_) {
         var rawText =
             '<b>${S.of(context).app_notification_header_mention_prefix}</b>';
+
         return rawText +
             S.of(context).app_notification_header_mention_postfix(
                   _extractStatusRawContent(notificationBloc)!,
@@ -378,6 +379,7 @@ class _NotificationListItemContentWidget extends StatelessWidget {
       chatMention: (_) {
         var rawText =
             '<b>${S.of(context).app_notification_header_pleromaChatMention_prefix}</b>';
+
         return rawText +
             S.of(context).app_notification_header_pleromaChatMention_postfix(
                   _extractChatMessageRawContent(notificationBloc)!,

@@ -6,6 +6,7 @@ import 'package:logging/logging.dart';
 
 final _logger = Logger('date_time_duration_picker.dart');
 
+// ignore: long-method
 Future<DurationPickerResult> showDateTimeDurationPicker({
   required BuildContext context,
   required String? popupTitle,
