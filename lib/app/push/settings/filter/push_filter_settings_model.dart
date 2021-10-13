@@ -11,6 +11,7 @@ part 'push_filter_settings_model.g.dart';
 // see reservedIds in Hive,
 // which not exist in Hive 0.x
 //@HiveType()
+// ignore_for_file: no-magic-number
 @HiveType(typeId: -32 + 47)
 @freezed
 class PushFilterSettings
