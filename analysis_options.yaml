@@ -1,4 +1,4 @@
-#include: package:flutter_lints/flutter.yaml
+include: package:all_lint_rules_community/all.yaml
 
 analyzer:
   exclude:
@@ -11,187 +11,139 @@ analyzer:
     - test/coverage_helper_test.dart
     - "**/*.freezed.dart"
     - "**/*.mocks.dart"
-  errors:
-    invalid_annotation_target: ignore
   plugins:
     - dart_code_metrics
 
+
+  strong-mode:
+    implicit-casts: false
+    implicit-dynamic: false
+
+  errors:
+    # freezed related
+    invalid_annotation_target: ignore
+    # Without ignore here, we cause import of all_lint_rules to warn, because some rules conflict.
+    # We explicitly enabled even conflicting rules and are fixing the conflicts in this file.
+    included_file_warning: ignore
+    # Treat missing required parameters as an error.
+    #missing_required_param: error
+    # Treat missing returns as an error, not as a hint or a warning.
+   # missing_return: error
+    # Don't assign new values to parameters of methods or functions.
+    # Treat assigning new values to a parameter as a warning. We would almost like to set this
+    #parameter_assignments: warning
+    # Allow having TODOs in the code.
+    todo: ignore
+
+
+    implicit_dynamic_variable: ignore
+    implicit_dynamic_method: ignore
+    implicit_dynamic_parameter: ignore
+    implicit_dynamic_type: ignore
+    return_of_invalid_type: ignore
+    non_bool_condition: ignore
+    non_bool_operand: ignore
+    implicit_dynamic_function: ignore
+    implicit_dynamic_list_literal: ignore
+    implicit_dynamic_map_literal: ignore
+    throw_of_invalid_type: ignore
+    argument_type_not_assignable: ignore
+    parameter_assignments: ignore
+    avoid_print: ignore
+    avoid_annotating_with_dynamic: ignore
+    avoid_bool_literals_in_conditional_expressions: ignore
+    avoid_catches_without_on_clauses: ignore
+    avoid_classes_with_only_static_members: ignore
+    avoid_unused_constructor_parameters: ignore
+    lines_longer_than_80_chars: ignore
+    avoid_dynamic_calls: ignore
+    avoid_equals_and_hash_code_on_mutable_classes: ignore
+    avoid_positional_boolean_parameters: ignore
+    avoid_redundant_argument_values: ignore
+    avoid_field_initializers_in_const_classes: ignore
+    avoid_function_literals_in_foreach_calls: ignore
+    library_private_types_in_public_api: ignore
+    cascade_invocations: ignore
+    diagnostic_describe_all_properties: ignore
+    prefer_relative_imports: ignore
+    unnecessary_lambdas: ignore
+    depend_on_referenced_packages: ignore
+    use_build_context_synchronously: ignore
+    avoid_multiple_declarations_per_line: ignore
+    implementation_imports: ignore
+    unnecessary_final: ignore
+    no_default_cases: ignore
+    noop_primitive_operations: ignore
+    only_throw_errors: ignore
+    prefer_asserts_with_message: ignore
+    prefer_const_literals_to_create_immutables: ignore
+    prefer_const_constructors: ignore
+    require_trailing_commas: ignore
+    join_return_with_assignment: ignore
+    prefer_constructors_over_static_methods: ignore
+    prefer_const_constructors_in_immutables: ignore
+    sort_constructors_first: ignore
+    prefer_double_quotes: ignore
+    always_specify_types: ignore
+    use_key_in_widget_constructors: ignore
+    prefer_final_locals: ignore
+    prefer_expression_function_bodies: ignore
+    prefer_final_in_for_each: ignore
+    unnecessary_parenthesis: ignore
+    unnecessary_string_interpolations: ignore
+    prefer_interpolation_to_compose_strings: ignore
+    prefer_int_literals: ignore
+    use_is_even_rather_than_modulo: ignore
+    prefer_typing_uninitialized_variables: ignore
+    sized_box_for_whitespace: ignore
+    sort_unnamed_constructors_first: ignore
+    prefer_null_aware_method_calls: ignore
+    type_annotate_public_apis: ignore
+    sort_pub_dependencies: ignore
+    unnecessary_await_in_return: ignore
+    flutter_style_todos: ignore
+    use_if_null_to_convert_nulls_to_bools: ignore
+    unnecessary_null_checks: ignore
+    prefer_function_declarations_over_variables: ignore
+    null_check_on_nullable_type_parameter: ignore
+    prefer_initializing_formals: ignore
+    use_late_for_private_fields_and_variables: ignore
+
+
+# LINTER Preferences
+#
+# Explicitly disable only the rules we do not want.
 linter:
   rules:
-    # from include: package:lints/core.yaml
-    # dont include flutter.yaml now because want temporary exclude some things
-    - avoid_empty_else
-    - avoid_relative_lib_imports
-    - avoid_shadowing_type_parameters
-    - avoid_types_as_parameter_names
-    - await_only_futures
-    - camel_case_extensions
-    - camel_case_types
-    - curly_braces_in_flow_control_structures
-    - empty_catches
-    - file_names
-    - hash_and_equals
-    - iterable_contains_unrelated_type
-    - list_remove_unrelated_type
-    - no_duplicate_case_values
-    - non_constant_identifier_names
-    - package_prefixed_library_names
-    - prefer_generic_function_type_aliases
-    - prefer_is_empty
-    - prefer_is_not_empty
-    - prefer_iterable_whereType
-#    - prefer_typing_uninitialized_variables
-    - provide_deprecation_message
-    - unnecessary_overrides
-    - unrelated_type_equality_checks
-    - valid_regexps
-    - void_checks
-    # from include: package:lints/recommended.yaml
-    # dont include flutter.yaml now because want temporary exclude some things
-    - always_require_non_null_named_parameters
-    - annotate_overrides
-#    - avoid_function_literals_in_foreach_calls
-    - avoid_init_to_null
-    - avoid_null_checks_in_equality_operators
-    - avoid_renaming_method_parameters
-    - avoid_return_types_on_setters
-    - avoid_returning_null_for_void
-    - avoid_single_cascade_in_expression_statements
-    - constant_identifier_names
-    - control_flow_in_finally
-    - empty_constructor_bodies
-    - empty_statements
-    - exhaustive_cases
-#    - implementation_imports
-    - library_names
-    - library_prefixes
-    - null_closures
-    - overridden_fields
-    - package_names
-    - prefer_adjacent_string_concatenation
-    - prefer_collection_literals
-    - prefer_conditional_assignment
-    - prefer_contains
-    - prefer_equal_for_default_values
-    - prefer_final_fields
-    - prefer_for_elements_to_map_fromIterable
-#    - prefer_function_declarations_over_variables
-    - prefer_if_null_operators
-#    - prefer_initializing_formals
-    - prefer_inlined_adds
-    - prefer_is_not_operator
-    - prefer_null_aware_operators
-    - prefer_spread_collections
-    - prefer_void_to_null
-    - recursive_getters
-    - slash_for_doc_comments
-    - type_init_formals
-    - unnecessary_brace_in_string_interps
-    - unnecessary_const
-    - unnecessary_getters_setters
-    - unnecessary_new
-    - unnecessary_null_in_if_null_operators
-    - unnecessary_string_escapes
-#    - unnecessary_string_interpolations
-    - unnecessary_this
-    - use_function_type_syntax_for_parameters
-    - use_rethrow_when_possible
-    # from include: package:flutter_lints/flutter.yaml
-    # dont include flutter.yaml now because want temporary exclude some things
-#    - avoid_print
-    - avoid_unnecessary_containers
-    - avoid_web_libraries_in_flutter
-    - no_logic_in_create_state
-#    - prefer_const_constructors
-#    - prefer_const_constructors_in_immutables
-    - prefer_const_declarations
-#    - prefer_const_literals_to_create_immutables
-#    - sized_box_for_whitespace
-    - use_full_hex_values_for_flutter_colors
-#    - use_key_in_widget_constructors
-  # not enabled by default in flutter.yaml
-  # should be enabled in the future
-    - always_use_package_imports
-    - avoid_returning_null_for_future
-    - avoid_slow_async_io
-    - avoid_type_to_string
-    - cancel_subscriptions
-    - close_sinks
-    - comment_references
-#    - diagnostic_describe_all_properties
-    - invariant_booleans
-    - literal_only_boolean_expressions
-    - no_adjacent_strings_in_list
-    - test_types_in_equals
-    - throw_in_finally
-    - unnecessary_statements
-    - unsafe_html
-    - always_declare_return_types
-    - always_put_control_body_on_new_line
-#    - always_put_required_named_parameters_first
-#    - avoid_annotating_with_dynamic
-    - avoid_catching_errors
-#    - avoid_classes_with_only_static_members
-    - avoid_double_and_int_checks
-    - avoid_escaping_inner_quotes
-#    - avoid_field_initializers_in_const_classes
-    - avoid_implementing_value_types
-    - avoid_js_rounded_ints
-    - avoid_private_typedef_functions
-#    - avoid_redundant_argument_values
-#    - avoid_returning_null
-    - avoid_returning_this
-    - avoid_setters_without_getters
-#    - avoid_unused_constructor_parameters
-    - avoid_void_async
-#    - cascade_invocations
-    - cast_nullable_to_non_nullable
-    - directives_ordering
-    - do_not_use_environment
-    - leading_newlines_in_multiline_strings
-#    - missing_whitespace_between_adjacent_strings
-    - no_runtimeType_toString
-    - omit_local_variable_types
-#    - one_member_abstracts
-#    - only_throw_errors
-#    - package_api_docs
-#    - parameter_assignments
-    - prefer_asserts_in_initializer_lists
-#    - prefer_asserts_with_message
-#    - prefer_const_constructors
-#    - prefer_const_constructors_in_immutables
-#    - prefer_const_literals_to_create_immutables
-    - prefer_foreach
-    - prefer_if_elements_to_conditional_expressions
-#    - prefer_int_literals
-    - prefer_mixin
-    - prefer_single_quotes
-#    - type_annotate_public_apis
-    - unawaited_futures
-    - unnecessary_null_aware_assignments
-    - unnecessary_raw_strings
-#    - use_is_even_rather_than_modulo
-    - use_string_buffers
-    - use_to_and_as_if_applicable
-    - use_raw_strings
-#    - sort_pub_dependencies
-#    - public_member_api_docs
-#    - lines_longer_than_80_chars
-#    - avoid_equals_and_hash_code_on_mutable_classes
-#    - prefer_final_in_for_each
-#    - prefer_final_locals
-#    - flutter_style_todos
-#    - join_return_with_assignment
-#    - use_key_in_widget_constructors
-#    - avoid_print
-#    - avoid_types_on_closure_parameters
-#    - avoid_catches_without_on_clauses
-#    - avoid_dynamic_calls
-#    - avoid_positional_boolean_parameters
-#    - prefer_interpolation_to_compose_strings
-#    - prefer_expression_function_bodies
-#    - prefer_constructors_over_static_methods
-#    - unnecessary_parenthesis
+    # ALWAYS separate the control structure expression from its statement.
+    # This sometimes makes things more unclear when one line is enough.
+    # Also single line `if`s are fine as recommended in Effective Dart "DO format your code using dartfmt".
+    always_put_control_body_on_new_line: false
+
+    # ALWAYS specify @required on named parameter before other named parameters.
+    # Conflicts with the convention used by flutter, which puts `Key key`
+    # and `@required Widget child` last.
+    always_put_required_named_parameters_first: false
+
+    # Followed by more turned OFF lint rules as preferred/needed/desired and always
+    # turning off at least conflicting rules.
+
+    public_member_api_docs: false
+    prefer_final_parameters: false
+    avoid_types_on_closure_parameters: false
+
+    implicit_dynamic_variable: false
+    implicit_dynamic_method: false
+    implicit_dynamic_parameter: false
+    implicit_dynamic_type: false
+    return_of_invalid_type: false
+    non_bool_condition: false
+    non_bool_operand: false
+    implicit_dynamic_function: false
+    implicit_dynamic_list_literal: false
+    implicit_dynamic_map_literal: false
+    throw_of_invalid_type: false
+    argument_type_not_assignable: false
 
 dart_code_metrics:
   anti-patterns:
@@ -217,8 +169,8 @@ dart_code_metrics:
     - no-equal-then-else
     - no-equal-arguments
     - no-object-declaration
-    - no-magic-number
-    - prefer-trailing-comma
+#    - no-magic-number
+#    - prefer-trailing-comma
     - no-boolean-literal-compare
     - newline-before-return
     - double-literal-format

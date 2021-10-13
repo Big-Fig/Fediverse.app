@@ -277,10 +277,16 @@ dev_dependencies:
       ref: xal/nested_type_registry2
       path: hive_generator
 
-  # additional linters
-  dart_code_metrics: 4.3.3
+  # official linters
   lints: 1.0.1
   flutter_lints: 1.0.3
+
+  # helper to specify all rules in one line
+  all_lint_rules_community: ^0.0.4
+
+  # additional linters
+  dart_code_metrics: ^4.4.0
+
 
   # generate screenshots for stores during UI tests
   # also useful for golden tests
