@@ -32,7 +32,7 @@ class StatusCachedPaginationListWithNewItemsBloc<
           paginationBloc: paginationBloc,
         ) {
     statusCachedListBloc.settingsChangedStream.listen(
-      (_) async {
+      (dynamic data) async {
         _logger.finest(() => 'settingsChangedStream ');
         await refreshWithController();
       },

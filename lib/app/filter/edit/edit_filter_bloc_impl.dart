@@ -64,7 +64,7 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
     if (onDelete != null) {
       editFilterBloc.deletedStream
           .listen(
-            (_) => onDelete(),
+            (dynamic data) => onDelete(),
           )
           .disposeWith(editFilterBloc);
     }

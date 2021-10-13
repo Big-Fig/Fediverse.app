@@ -40,7 +40,7 @@ abstract class LocalPreferenceBloc<T> extends AsyncInitLoadingBloc
     keyPreferenceChangedDisposable =
         preferencesService.listenKeyPreferenceChanged(
       key,
-      (newValue) {
+      (dynamic newValue) {
         if (!_subject.isClosed) {
           // after clearValue newValue will be null
           // but T may be non-nullable

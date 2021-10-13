@@ -64,7 +64,7 @@ class _AccountHeaderBackgroundImageWidget extends StatelessWidget {
           },
           progressIndicatorBuilder: (context, url, progress) =>
               const _AccountHeaderBackgroundProgressWidget(),
-          errorWidget: (context, url, error) =>
+          errorWidget: (context, url, dynamic error) =>
               const _AccountHeaderBackgroundErrorWidget(),
         );
       },

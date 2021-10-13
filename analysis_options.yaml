@@ -40,7 +40,6 @@ analyzer:
     # it is not possible to disable via lint:rules
     implicit_dynamic_variable: ignore
     implicit_dynamic_method: ignore
-    implicit_dynamic_parameter: ignore
 
 # LINTER Preferences
 #

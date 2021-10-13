@@ -354,7 +354,7 @@ class _CustomListPageWrapper extends StatelessWidget {
     }
     if (onDeleted != null) {
       customListBloc.deletedStream.listen(
-        (_) {
+        (dynamic data) {
           onDeleted!();
         },
       ).disposeWith(customListBloc);

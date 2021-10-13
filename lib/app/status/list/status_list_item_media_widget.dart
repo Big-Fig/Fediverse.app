@@ -36,7 +36,7 @@ class StatusListItemMediaWidget extends StatelessWidget {
             child: FediCircularProgressIndicator(),
           ),
           width: MediaQuery.of(context).size.width,
-          errorWidget: (context, url, error) => Icon(FediIcons.warning),
+          errorWidget: (context, url, dynamic error) => Icon(FediIcons.warning),
         ),
       ),
     );

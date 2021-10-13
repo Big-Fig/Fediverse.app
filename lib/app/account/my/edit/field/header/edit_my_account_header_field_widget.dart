@@ -68,7 +68,7 @@ class EditMyAccountHeaderFieldImageWidget extends StatelessWidget {
             placeholder: (context, url) => const Center(
               child: FediCircularProgressIndicator(),
             ),
-            errorWidget: (context, url, error) => Icon(
+            errorWidget: (context, url, dynamic error) => Icon(
               FediIcons.warning,
               color: IUiColorTheme.of(context).error,
             ),

@@ -129,7 +129,7 @@ class UploadMediaAttachmentBlocDevice extends DisposableOwner
         ),
       );
       _logger.finest(() => 'startUpload uploaded');
-    }).catchError((error, StackTrace? stackTrace) {
+    }).catchError((dynamic error, StackTrace? stackTrace) {
       _logger.severe(() => 'error during uploading', error, stackTrace);
       uploadStateSubject.add(
         UploadMediaAttachmentState(

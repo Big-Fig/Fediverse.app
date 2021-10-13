@@ -78,7 +78,7 @@ class StatusHeaderWidget extends StatelessWidget {
                 size: FediSizes.accountAvatarSmallSize,
               ),
             ),
-            errorWidget: (context, url, error) => Icon(
+            errorWidget: (context, url, dynamic error) => Icon(
               FediIcons.warning,
             ),
             height: FediSizes.accountAvatarProgressSmallSize,

@@ -214,7 +214,7 @@ class _MediaAttachmentDetailsPageState
         );
       },
       placeholder: (context, url) => buildDetails(),
-      errorWidget: (context, url, error) => buildDetails(),
+      errorWidget: (context, url, dynamic error) => buildDetails(),
       imageUrl: mediaAttachment.url!,
     );
   }
@@ -279,7 +279,7 @@ class _MediaAttachmentDetailsPageState
         },
         placeholder: (context, url) =>
             Center(child: FediCircularProgressIndicator()),
-        errorWidget: (context, url, error) => Center(
+        errorWidget: (context, url, dynamic error) => Center(
           child: Icon(
             FediIcons.failed,
           ),

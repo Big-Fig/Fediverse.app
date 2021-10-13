@@ -566,10 +566,10 @@ Future<String?> launchAuthorizeFormAndExtractAuthorizationCode({
       );
       completer.complete(code);
     },
-    onError: (e) {
+    onError: (Object e) {
       subscription.cancel();
       closeWebView();
-      completer.completeError(e as Object);
+      completer.completeError(e);
     },
   );
   _logger.finest(() => 'launch url=$url');

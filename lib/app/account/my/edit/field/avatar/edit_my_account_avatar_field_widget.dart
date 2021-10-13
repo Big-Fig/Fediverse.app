@@ -162,7 +162,7 @@ class _EditMyAccountAvatarFieldImageMediaSourceWidget extends StatelessWidget {
               avatarSize: avatarSize,
               avatarCircleBorderWidth: avatarCircleBorderWidth,
             ),
-            errorWidget: (context, url, error) => Icon(
+            errorWidget: (context, url, dynamic error) => Icon(
               FediIcons.warning,
               color: IFediUiColorTheme.of(context).error,
             ),

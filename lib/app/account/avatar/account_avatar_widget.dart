@@ -84,7 +84,8 @@ class AccountAvatarUrlWidget extends StatelessWidget {
           placeholder: (context, url) => _AccountAvatarLoadingWidget(
             progressSize: progressSize,
           ),
-          errorWidget: (context, url, error) => _AccountAvatarFailedWidget(),
+          errorWidget: (context, url, dynamic error) =>
+              _AccountAvatarFailedWidget(),
           height: imageSize,
           // ignore: no-equal-arguments
           width: imageSize,

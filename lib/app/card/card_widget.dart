@@ -119,7 +119,7 @@ class _CardImageWidget extends StatelessWidget {
         padding: FediPadding.allBigPadding,
         child: FediCircularProgressIndicator(),
       ),
-      errorWidget: (context, url, error) => Icon(FediIcons.warning),
+      errorWidget: (context, url, dynamic error) => Icon(FediIcons.warning),
     );
   }
 }

@@ -68,7 +68,7 @@ class IncomeShareService extends AsyncInitLoadingBloc
           lastReceivedShareEvent!,
         );
       },
-      onError: (err) {
+      onError: (dynamic err) {
         _logger.shout(() => 'getTextStream error $err');
       },
     ).disposeWith(this);
@@ -92,7 +92,7 @@ class IncomeShareService extends AsyncInitLoadingBloc
           );
         }
       },
-      onError: (err) {
+      onError: (dynamic err) {
         _logger.shout(() => 'getMediaStream error $err');
       },
     ).disposeWith(this);

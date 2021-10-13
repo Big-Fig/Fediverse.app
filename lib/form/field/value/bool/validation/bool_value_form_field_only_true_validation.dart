@@ -9,7 +9,8 @@ class BoolValueFormFieldOnlyTrueValidationError
   String createErrorDescription(BuildContext context) =>
       S.of(context).form_field_bool_onlyTrue_error_desc;
 
-  static FormValueFieldValidation createValidator() => (currentValue) {
+  static FormValueFieldValidation<bool> createValidator() =>
+      (bool? currentValue) {
         if (currentValue == true) {
           return null;
         } else {

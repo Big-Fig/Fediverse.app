@@ -47,7 +47,8 @@ abstract class JsonListDatabaseConverter<T>
     var list = json.decode(fromDb) as List;
 
     return list
-        .map((jsonObject) => fromJson(jsonObject as Map<String, dynamic>))
+        .map((dynamic jsonObject) =>
+            fromJson(jsonObject as Map<String, dynamic>))
         .toList();
   }
 
@@ -72,7 +73,7 @@ class StringListDatabaseConverter extends TypeConverter<List<String>, String> {
     var list = json.decode(fromDb) as List;
     // todo: rework
 
-    return list.map((i) => i as String).toList();
+    return list.map((dynamic i) => i as String).toList();
   }
 
   @override

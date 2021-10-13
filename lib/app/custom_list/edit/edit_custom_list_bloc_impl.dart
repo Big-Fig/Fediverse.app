@@ -84,7 +84,7 @@ class EditCustomListBloc extends DisposableOwner
     if (onDelete != null) {
       editCustomListBloc.deletedStream
           .listen(
-            (_) => onDelete(),
+            (dynamic data) => onDelete(),
           )
           .disposeWith(editCustomListBloc);
     }

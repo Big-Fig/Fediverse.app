@@ -58,7 +58,7 @@ class EmojiPickerCustomImageUrlCategoryBloc extends AsyncInitLoadingBloc
         );
       },
     ).catchError(
-      (e, StackTrace? stackTrace) {
+      (Object? e, StackTrace? stackTrace) {
         _logger.warning(
           () => 'internalAsyncInit error: fetch remote emoji '
               'list',
@@ -101,7 +101,7 @@ class EmojiPickerCustomImageUrlCategoryBloc extends AsyncInitLoadingBloc
         );
       },
     ).catchError(
-      (e, StackTrace? stackTrace) {
+      (Object? e, StackTrace? stackTrace) {
         _logger.warning(
           () => 'internalAsyncInit error: fetch remote emoji '
               'list',

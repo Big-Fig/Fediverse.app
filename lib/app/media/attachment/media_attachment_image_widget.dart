@@ -40,7 +40,7 @@ class MediaAttachmentImageWidget extends StatelessWidget {
             );
           }
         },
-        errorWidget: (context, url, error) =>
+        errorWidget: (context, url, dynamic error) =>
             const _MediaAttachmentImageErrorWidget(),
       ),
     );
