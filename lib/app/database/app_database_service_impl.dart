@@ -146,7 +146,7 @@ class AppDatabaseService extends AsyncInitLoadingBloc
       oldestChatMessage?.createdAt,
     ].where((datetime) => datetime != null).toList();
 
-    var oldestDateTime;
+    DateTime? oldestDateTime;
     if (dateTimes.isNotEmpty) {
       oldestDateTime = dateTimes.reduce(
         (value, element) => value!.isBefore(element!) ? value : element,

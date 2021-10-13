@@ -42,11 +42,9 @@ analyzer:
     implicit_dynamic_method: ignore
     implicit_dynamic_parameter: ignore
     implicit_dynamic_type: ignore
-    return_of_invalid_type: ignore
     implicit_dynamic_function: ignore
     implicit_dynamic_list_literal: ignore
     implicit_dynamic_map_literal: ignore
-    throw_of_invalid_type: ignore
     argument_type_not_assignable: ignore
 
 # LINTER Preferences

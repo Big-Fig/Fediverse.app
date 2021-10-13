@@ -626,7 +626,7 @@ abstract class PostStatusBloc extends PostMessageBloc
   }
 
   UnifediApiPostStatusPoll? _calculatePostStatusPollField() {
-    var poll;
+    UnifediApiPostStatusPoll? poll;
     if (pollBloc.isSomethingChanged) {
       var expiresInSeconds = pollBloc
           .durationDateTimeLengthFieldBloc.currentValueDuration!.totalSeconds;

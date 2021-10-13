@@ -73,22 +73,15 @@ class _AccountReportSendButton extends StatelessWidget {
             onPressed: isHaveAtLeastOneError! ? null : onPressed,
           ),
           asyncButtonAction: () async {
-            var success = await accountReportBloc.send();
+            await accountReportBloc.send();
 
             var toastService = IToastService.of(context, listen: false);
 
-            if (success) {
-              toastService.showInfoToast(
-                context: context,
-                title: S.of(context).app_account_report_toast_success,
-              );
-              Navigator.of(context).pop();
-            } else {
-              toastService.showErrorToast(
-                context: context,
-                title: S.of(context).app_account_report_toast_fail,
-              );
-            }
+            toastService.showInfoToast(
+              context: context,
+              title: S.of(context).app_account_report_toast_success,
+            );
+            Navigator.of(context).pop();
           },
         );
       },

@@ -181,7 +181,7 @@ class RemoteStatusBloc extends StatusBloc {
       (mention) => mention.url == url,
     );
 
-    var account;
+    IAccount? account;
     if (foundMention != null) {
       var accountRemoteId = foundMention.id;
 

@@ -117,6 +117,7 @@ Future<AsyncDialogResult<T?>> doAsyncOperationWithDialog<T>({
     }
 
     if (needRethrow) {
+      // ignore: throw_of_invalid_type
       throw error;
     }
     dialogResult = AsyncDialogResult.withError(error);

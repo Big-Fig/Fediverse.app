@@ -51,6 +51,7 @@ abstract class AsyncInitLoadingBloc extends AsyncLoadingService
         if (!_isInitLoadingSubject.isClosed) {
           _isInitLoadingSubject.add(AsyncInitLoadingState.failed);
         }
+        // ignore: throw_of_invalid_type
         throw err;
       });
     }

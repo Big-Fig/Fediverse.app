@@ -25,5 +25,5 @@ abstract class IAccountReportBloc implements IFormBloc, IStatusListBloc {
 
   IBoolValueFormFieldBloc get forwardBoolValueFormFieldBloc;
 
-  Future<bool> send();
+  Future send();
 }

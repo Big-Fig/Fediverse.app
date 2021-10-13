@@ -33,7 +33,7 @@ class PushPermissionCheckerBloc extends DisposableOwner
 
     _logger.finest(() => 'checkAndSubscribe success $success');
 
-    var result;
+    bool result;
     if (success) {
       try {
         _logger.finest(() => 'checkAndSubscribe subscribeAllEnabled');

@@ -368,20 +368,20 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
   bool? getBoolPreference(
     String key,
   ) =>
-      _box.get(key);
+      _box.get(key) as bool?;
 
   @override
-  String? getStringPreference(String key) => _box.get(key);
+  String? getStringPreference(String key) => _box.get(key) as String?;
 
   @override
-  int? getIntPreference(String key) => _box.get(key);
+  int? getIntPreference(String key) => _box.get(key) as int?;
 
   @override
   T? getObjectPreference<T>(
     String key,
     T Function(Map<String, dynamic> jsonData) jsonConverter,
   ) {
-    return _box.get(key);
+    return _box.get(key) as T?;
   }
 
   @override

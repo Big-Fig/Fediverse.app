@@ -161,7 +161,7 @@ class LocalAccountBloc extends AccountBloc {
   @override
   Future<IUnifediApiAccountRelationship> toggleBlock() async {
     assert(relationship != null);
-    var newRelationship;
+    IUnifediApiAccountRelationship? newRelationship;
     if (relationship!.blocking!) {
       newRelationship = await pleromaAuthAccountService.unBlockAccount(
         accountId: account.remoteId,
@@ -179,7 +179,7 @@ class LocalAccountBloc extends AccountBloc {
   @override
   Future<IUnifediApiAccountRelationship> toggleSubscribe() async {
     assert(relationship != null);
-    var newRelationship;
+    IUnifediApiAccountRelationship? newRelationship;
     if (relationship!.subscribing!) {
       newRelationship = await pleromaAuthAccountService.unSubscribeAccount(
         accountId: account.remoteId,
@@ -197,7 +197,7 @@ class LocalAccountBloc extends AccountBloc {
   @override
   Future<IUnifediApiAccountRelationship> toggleMute() async {
     assert(relationship != null);
-    var newRelationship;
+    IUnifediApiAccountRelationship? newRelationship;
     if (relationship!.muting!) {
       newRelationship = await pleromaAuthAccountService.unMuteAccount(
         accountId: account.remoteId,
@@ -217,7 +217,7 @@ class LocalAccountBloc extends AccountBloc {
   @override
   Future<IUnifediApiAccountRelationship> toggleFollow() async {
     assert(relationship != null);
-    var newRelationship;
+    IUnifediApiAccountRelationship? newRelationship;
     if (relationship!.requested == true || relationship!.following == true) {
       newRelationship = await pleromaAuthAccountService.unFollowAccount(
         accountId: account.remoteId,
@@ -346,7 +346,7 @@ class LocalAccountBloc extends AccountBloc {
   @override
   Future<IUnifediApiAccountRelationship> togglePin() async {
     assert(relationship != null);
-    var newRelationship;
+    IUnifediApiAccountRelationship? newRelationship;
     // todo: fix
     if (relationship!.muting == true) {
       newRelationship = await pleromaAuthAccountService.unPinAccount(
@@ -368,7 +368,7 @@ class LocalAccountBloc extends AccountBloc {
   @override
   Future<IUnifediApiAccountRelationship> toggleBlockDomain() async {
     assert(relationship != null);
-    var newRelationship;
+    IUnifediApiAccountRelationship? newRelationship;
     var domainBlocking = relationship!.domainBlocking == true;
     var domain = acctRemoteDomainOrNull!;
     if (domainBlocking) {
