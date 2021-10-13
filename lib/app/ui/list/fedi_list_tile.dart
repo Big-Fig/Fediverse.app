@@ -9,7 +9,7 @@ class FediListTile extends StatelessWidget {
   final bool isFirstInList;
   final bool noPadding;
 
-  final oneSidePadding;
+  final double oneSidePadding;
 
   const FediListTile({
     required this.child,

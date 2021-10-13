@@ -6,8 +6,10 @@ import 'package:provider/provider.dart';
 
 abstract class IEditPushFilterSettingsBloc
     implements IEditInstanceSettingsBloc<PushFilterSettings?> {
-  static IEditPushFilterSettingsBloc of(BuildContext context,
-          {bool listen = true}) =>
+  static IEditPushFilterSettingsBloc of(
+    BuildContext context, {
+    bool listen = true,
+  }) =>
       Provider.of<IEditPushFilterSettingsBloc>(context, listen: listen);
 
   IBoolValueFormFieldBloc get blockFromStrangersFieldBloc;
