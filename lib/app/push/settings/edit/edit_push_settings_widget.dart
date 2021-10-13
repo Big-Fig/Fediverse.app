@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/form/field/value/bool/bool_value_form_field_row_widget.dart';
 import 'package:fedi/app/push/settings/edit/edit_push_settings_bloc.dart';
+import 'package:fedi/app/push/settings/filter/edit/instance/edit_instance_push_filter_settings_dialog.dart';
+import 'package:fedi/app/push/settings/filter/push_filter_settings_bloc.dart';
 import 'package:fedi/app/push/settings/push_settings_bloc.dart';
 import 'package:fedi/app/toast/toast_service.dart';
 import 'package:fedi/app/ui/description/fedi_note_description_widget.dart';
@@ -200,14 +202,13 @@ class _EditPushSettingsDescriptionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var pushSettingsBloc = IPushSettingsBloc.of(context);
+    var pushFilterSettingsBloc = IPushFilterSettingsBloc.of(context);
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        FediNoteDescriptionWidget(
-          S.of(context).app_push_settings_desc,
-          padding: FediPadding.allSmallPadding,
-        ),
         InkWell(
           onTap: () {
             UrlHelper.handleUrlClick(
@@ -219,11 +220,25 @@ class _EditPushSettingsDescriptionWidget extends StatelessWidget {
             );
           },
           child: FediNoteDescriptionWidget(
-            S.of(context).dialog_action_learnMore,
+            S.of(context).app_push_settings_desc,
             padding: FediPadding.allSmallPadding,
             style: IFediUiTextTheme.of(context).mediumTallPrimary,
           ),
         ),
+        if (pushFilterSettingsBloc.isMyAccountNotificationSettingsSupported &&
+            pushSettingsBloc.isHaveSubscription)
+          InkWell(
+            onTap: () {
+              showEditInstancePushFilterSettingsDialog(
+                context: context,
+              );
+            },
+            child: FediNoteDescriptionWidget(
+              S.of(context).app_push_settings_desc_filters,
+              padding: FediPadding.allSmallPadding,
+              style: IFediUiTextTheme.of(context).mediumTallPrimary,
+            ),
+          ),
       ],
     );
   }

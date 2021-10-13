@@ -1327,6 +1327,12 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Установите версию из магазина или включите поддержку оповещений при сборке приложения"),
         "app_push_disabled_notification_title":
             MessageLookupByLibrary.simpleMessage("Оповещения отключены"),
+        "app_push_filter_settings_field_blockFromStrangers_label":
+            MessageLookupByLibrary.simpleMessage("Блокировать от незнакомцев"),
+        "app_push_filter_settings_field_hideNotificationContents_label":
+            MessageLookupByLibrary.simpleMessage("Скрывать контент"),
+        "app_push_filter_settings_title":
+            MessageLookupByLibrary.simpleMessage("Push-фильтры"),
         "app_push_permission_ask_dialog_content":
             MessageLookupByLibrary.simpleMessage(
                 "Хотите ли вы включить push оповещения?\nОни буду пересланы через Fedi Push Relay сервер.\n Вы всегда можете изменить решение в настройках"),
@@ -1384,6 +1390,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Что-то случилось"),
         "app_push_settings_desc": MessageLookupByLibrary.simpleMessage(
             "Все сообщения буду пересланы через Fedi Push Relay сервер"),
+        "app_push_settings_desc_filters": MessageLookupByLibrary.simpleMessage(
+            "Вы также можете указать дополнительные фильтры"),
         "app_push_settings_field_favourites_label":
             MessageLookupByLibrary.simpleMessage("Лайки"),
         "app_push_settings_field_follows_label":
@@ -1525,6 +1533,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Запись удалена"),
         "app_status_draft_edit_title":
             MessageLookupByLibrary.simpleMessage("Рекдактировать"),
+        "app_status_draft_error_cantSaveNotUploadedMedia":
+            MessageLookupByLibrary.simpleMessage(
+                "Невозможно сохранить черновик с не загруженными на сервер файлами"),
         "app_status_draft_state_alreadyPosted":
             MessageLookupByLibrary.simpleMessage("Уже опубликовано"),
         "app_status_draft_state_canceled":

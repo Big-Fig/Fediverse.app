@@ -3,6 +3,7 @@ import 'package:fedi/app/status/draft/draft_status_model.dart';
 import 'package:fedi/app/status/draft/repository/draft_status_repository.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/status/post/post_status_model.dart';
+import 'package:fedi/app/toast/toast_service.dart';
 import 'package:fedi/app/ui/dialog/alert/fedi_base_alert_dialog.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/dialog/dialog_model.dart';
@@ -27,23 +28,36 @@ void showPostStatusUnsavedDialog(
         label:
             S.of(context).app_status_post_new_unsaved_dialog_action_saveAsDraft,
         onAction: (context) async {
-          var postStatusData = postStatusBloc.calculateCurrentPostStatusData();
+          var isAllAttachedMediaUploaded = postStatusBloc
+              .uploadMediaAttachmentsBloc.isAllAttachedMediaUploaded;
 
-          var draftStatusRepository =
-              IDraftStatusRepository.of(context, listen: false);
-          await draftStatusRepository.addDraftStatus(
-            draftStatus: DbDraftStatusPopulatedWrapper(
-              dbDraftStatusPopulated: DbDraftStatusPopulated(
-                dbDraftStatus: DbDraftStatus(
-                  id: null,
-                  updatedAt: DateTime.now(),
-                  data: postStatusData.toPostStatusData(),
+          if (isAllAttachedMediaUploaded) {
+            var postStatusData =
+                postStatusBloc.calculateCurrentPostStatusData();
+
+            var draftStatusRepository =
+                IDraftStatusRepository.of(context, listen: false);
+            await draftStatusRepository.addDraftStatus(
+              draftStatus: DbDraftStatusPopulatedWrapper(
+                dbDraftStatusPopulated: DbDraftStatusPopulated(
+                  dbDraftStatus: DbDraftStatus(
+                    id: null,
+                    updatedAt: DateTime.now(),
+                    data: postStatusData.toPostStatusData(),
+                  ),
                 ),
               ),
-            ),
-          );
-          Navigator.pop(context);
-          Navigator.pop(context);
+            );
+            Navigator.pop(context);
+            Navigator.pop(context);
+          } else {
+            var toastService = IToastService.of(context, listen: false);
+            toastService.showErrorToast(
+              context: context,
+              title:
+                  S.of(context).app_status_draft_error_cantSaveNotUploadedMedia,
+            );
+          }
         },
       ),
       DialogAction(

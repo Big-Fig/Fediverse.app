@@ -1344,6 +1344,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_push_disabled_notification_title":
             MessageLookupByLibrary.simpleMessage(
                 "Obsługa powiadomień push jest wyłączona"),
+        "app_push_filter_settings_field_blockFromStrangers_label":
+            MessageLookupByLibrary.simpleMessage("Blokuj przed nieznajomymi"),
+        "app_push_filter_settings_field_hideNotificationContents_label":
+            MessageLookupByLibrary.simpleMessage("Ukryj treść powiadomień"),
+        "app_push_filter_settings_title":
+            MessageLookupByLibrary.simpleMessage("Filtry push"),
         "app_push_permission_ask_dialog_content":
             MessageLookupByLibrary.simpleMessage(
                 "Czy chcesz włączyć powiadomienia push?\nBędą one przekazywane przez serwer przekaźnika Fedi.\nMożesz zmienić tę opcję w ustawieniach później"),
@@ -1397,6 +1403,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Coś wydarzyło się"),
         "app_push_settings_desc": MessageLookupByLibrary.simpleMessage(
             "Wszystkie wiadomości będą przekazywane przez serwer przekaźnika Fedi"),
+        "app_push_settings_desc_filters": MessageLookupByLibrary.simpleMessage(
+            "Możesz także określić dodatkowe filtry"),
         "app_push_settings_field_favourites_label":
             MessageLookupByLibrary.simpleMessage("Ulubione"),
         "app_push_settings_field_follows_label":
@@ -1536,6 +1544,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Usunięto wpis"),
         "app_status_draft_edit_title":
             MessageLookupByLibrary.simpleMessage("Edytuj szkic"),
+        "app_status_draft_error_cantSaveNotUploadedMedia":
+            MessageLookupByLibrary.simpleMessage(
+                "Nie można zapisać wersji roboczej z nieprzesłanymi multimediami"),
         "app_status_draft_state_alreadyPosted":
             MessageLookupByLibrary.simpleMessage("Już opyblikowano"),
         "app_status_draft_state_canceled":

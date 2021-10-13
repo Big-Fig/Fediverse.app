@@ -414,7 +414,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
       int? conversationIdInt;
       try {
         conversationIdInt = int.parse(chat.remoteId);
-      } catch (e, stackTrace) {
+      } catch (e) {
         // nothing, not all backends use int for conversation id
       }
 

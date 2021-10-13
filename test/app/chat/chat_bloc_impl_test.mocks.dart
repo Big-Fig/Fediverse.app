@@ -352,6 +352,10 @@ class MockIUnifediApiMyAccountService extends _i1.Mock
           Invocation.getter(#getMyAccountMutesWithRelationshipFeature),
           returnValue: _FakeIUnifediApiFeature_0()) as _i2.IUnifediApiFeature);
   @override
+  _i2.IUnifediApiFeature get editNotificationsSettingsFeature =>
+      (super.noSuchMethod(Invocation.getter(#editNotificationsSettingsFeature),
+          returnValue: _FakeIUnifediApiFeature_0()) as _i2.IUnifediApiFeature);
+  @override
   _i3.IUnifediApiRestService get restService =>
       (super.noSuchMethod(Invocation.getter(#restService),
               returnValue: _FakeIUnifediApiRestService_1())
@@ -487,6 +491,15 @@ class MockIUnifediApiMyAccountService extends _i1.Mock
       (super.noSuchMethod(
           Invocation.method(
               #removeMyAccountSuggestion, [], {#accountId: accountId}),
+          returnValue: Future<dynamic>.value()) as _i10.Future<dynamic>);
+  @override
+  _i10.Future<dynamic> editNotificationsSettings(
+          {bool? blockFromStrangers, bool? hideNotificationContents}) =>
+      (super.noSuchMethod(
+          Invocation.method(#editNotificationsSettings, [], {
+            #blockFromStrangers: blockFromStrangers,
+            #hideNotificationContents: hideNotificationContents
+          }),
           returnValue: Future<dynamic>.value()) as _i10.Future<dynamic>);
   @override
   _i6.FediverseApiFeatureRequirementState checkFeatureState(

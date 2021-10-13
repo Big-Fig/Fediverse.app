@@ -1315,6 +1315,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_push_disabled_notification_title":
             MessageLookupByLibrary.simpleMessage(
                 "Push notifications support disabled"),
+        "app_push_filter_settings_field_blockFromStrangers_label":
+            MessageLookupByLibrary.simpleMessage("Block from strangers"),
+        "app_push_filter_settings_field_hideNotificationContents_label":
+            MessageLookupByLibrary.simpleMessage("Hide notifications content"),
+        "app_push_filter_settings_title":
+            MessageLookupByLibrary.simpleMessage("Push filters"),
         "app_push_permission_ask_dialog_content":
             MessageLookupByLibrary.simpleMessage(
                 "Do you want to enable push notifications?\nThey will be forwarded through Fedi Push Relay Server.\n You can change this option in settings later"),
@@ -1371,6 +1377,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Something happened"),
         "app_push_settings_desc": MessageLookupByLibrary.simpleMessage(
             "All messages will be forwarded through Fedi Relay Server"),
+        "app_push_settings_desc_filters": MessageLookupByLibrary.simpleMessage(
+            "You can also specify additional filters"),
         "app_push_settings_field_favourites_label":
             MessageLookupByLibrary.simpleMessage("Favourites"),
         "app_push_settings_field_follows_label":
@@ -1503,6 +1511,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Status deleted"),
         "app_status_draft_edit_title":
             MessageLookupByLibrary.simpleMessage("Edit Draft"),
+        "app_status_draft_error_cantSaveNotUploadedMedia":
+            MessageLookupByLibrary.simpleMessage(
+                "Can\'t save draft with not uploaded media"),
         "app_status_draft_state_alreadyPosted":
             MessageLookupByLibrary.simpleMessage("Already posted"),
         "app_status_draft_state_canceled":
