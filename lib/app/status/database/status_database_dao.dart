@@ -423,12 +423,12 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
 
   // ignore: long-method
   List<Join> populateStatusJoin({
-    required includeAccountFollowing,
-    required includeReplyToAccountFollowing,
-    required includeStatusHashtags,
-    required includeStatusLists,
-    required includeConversations,
-    required includeHomeTimeline,
+    required bool includeAccountFollowing,
+    required bool includeReplyToAccountFollowing,
+    required bool includeStatusHashtags,
+    required bool includeStatusLists,
+    required bool includeConversations,
+    required bool includeHomeTimeline,
   }) {
     return [
       ...(includeHomeTimeline

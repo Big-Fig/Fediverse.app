@@ -261,7 +261,7 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
   void _recalculateIsAllAttachedMediaUploaded() {
     var allUploaded = uploadMediaAttachmentBlocs.fold(
       true,
-      (dynamic previousValue, element) =>
+      (bool previousValue, element) =>
           previousValue &&
           element.uploadState.type == UploadMediaAttachmentStateType.uploaded,
     );

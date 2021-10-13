@@ -85,12 +85,12 @@ class AccountDao extends PopulatedAppRemoteDatabaseDao<
             .toList());
 
   List<Join> populateAccountJoin({
-    required includeAccountFollowings,
-    required includeAccountFollowers,
-    required includeStatusFavouritedAccounts,
-    required includeStatusRebloggedAccounts,
-    required includeConversationAccounts,
-    required includeChatAccounts,
+    required bool includeAccountFollowings,
+    required bool includeAccountFollowers,
+    required bool includeStatusFavouritedAccounts,
+    required bool includeStatusRebloggedAccounts,
+    required bool includeConversationAccounts,
+    required bool includeChatAccounts,
   }) {
     var allJoins = <Join>[
       ...(includeAccountFollowings

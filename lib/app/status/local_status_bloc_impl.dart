@@ -412,7 +412,7 @@ class LocalStatusBloc extends StatusBloc {
   Future<IUnifediApiStatus> toggleEmojiReaction({
     required String emoji,
   }) async {
-    var alreadyAdded;
+    bool alreadyAdded;
     var foundEmojiReaction = emojiReactions?.firstWhereOrNull(
       (emojiReaction) => emojiReaction.name == emoji,
     );

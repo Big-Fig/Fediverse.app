@@ -340,9 +340,9 @@ class _ChatListItemDeleteActionWidget extends StatelessWidget {
               },
             ),
           ],
-        ).show(context);
+        ).show<bool>(context);
 
-        if (success) {
+        if (success ?? false) {
           await paginationListBloc.refreshWithController();
         }
       },

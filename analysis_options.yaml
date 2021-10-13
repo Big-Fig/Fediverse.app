@@ -26,12 +26,12 @@ analyzer:
     # We explicitly enabled even conflicting rules and are fixing the conflicts in this file.
     included_file_warning: ignore
     # Treat missing required parameters as an error.
-    #missing_required_param: error
+    missing_required_param: error
     # Treat missing returns as an error, not as a hint or a warning.
-    # missing_return: error
+    missing_return: error
     # Don't assign new values to parameters of methods or functions.
     # Treat assigning new values to a parameter as a warning. We would almost like to set this
-    #parameter_assignments: warning
+    parameter_assignments: warning
     # Allow having TODOs in the code.
     todo: ignore
 
@@ -43,8 +43,6 @@ analyzer:
     implicit_dynamic_parameter: ignore
     implicit_dynamic_type: ignore
     return_of_invalid_type: ignore
-    non_bool_condition: ignore
-    non_bool_operand: ignore
     implicit_dynamic_function: ignore
     implicit_dynamic_list_literal: ignore
     implicit_dynamic_map_literal: ignore

@@ -117,7 +117,7 @@ abstract class FormGroupBloc<T extends IFormItemBloc> extends FormItemBloc
   void recalculateIsSomethingChanged() {
     var isSomethingChanged = items.map((item) => item.isSomethingChanged).fold(
       false,
-      (dynamic previousValue, element) {
+      (bool previousValue, element) {
         return previousValue || element;
       },
     );

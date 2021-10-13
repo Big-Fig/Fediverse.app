@@ -73,7 +73,7 @@ class StatusCollapsibleItemBloc extends DisposableOwner
   Stream<bool> get isNeedShowFullContentStream => Rx.combineLatest2(
         isPossibleToCollapseStream,
         isCollapsedStream,
-        (dynamic isPossibleToCollapse, dynamic isCollapsed) =>
+        (bool isPossibleToCollapse, bool isCollapsed) =>
             !(isPossibleToCollapse && isCollapsed),
       );
 }
