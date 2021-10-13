@@ -2,6 +2,7 @@ import 'package:fedi/app/ui/scroll/fedi_nested_scroll_view_bloc.dart';
 import 'package:fedi/app/ui/status_bar/fedi_white_status_bar_widget.dart';
 import 'package:fedi/ui/scroll/scroll_controller_bloc.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -79,7 +80,7 @@ abstract class FediNestedScrollViewWidget extends StatelessWidget {
             [
               Padding(
                 padding: EdgeInsets.only(
-                  top: MediaQuery.of(context).padding.top,
+                  top: kToolbarHeight * 0.8,
                 ),
                 child: Column(
                   children: topSliverWidgets,
