@@ -14,11 +14,11 @@ class EditInstanceAnnouncementSettingsWidget extends StatefulWidget {
   });
 
   @override
-  _EditInstanceAnnouncementSettingsWidgetState createState() =>
-      _EditInstanceAnnouncementSettingsWidgetState();
+  EditInstanceAnnouncementSettingsWidgetState createState() =>
+      EditInstanceAnnouncementSettingsWidgetState();
 }
 
-class _EditInstanceAnnouncementSettingsWidgetState
+class EditInstanceAnnouncementSettingsWidgetState
     extends State<EditInstanceAnnouncementSettingsWidget> {
   @override
   Widget build(BuildContext context) => Column(

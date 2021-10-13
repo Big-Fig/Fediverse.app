@@ -9,11 +9,11 @@ class UiThemeSystemBrightnessHandlerWidget extends StatefulWidget {
   });
 
   @override
-  _UiThemeSystemBrightnessHandlerWidgetState createState() =>
-      _UiThemeSystemBrightnessHandlerWidgetState();
+  UiThemeSystemBrightnessHandlerWidgetState createState() =>
+      UiThemeSystemBrightnessHandlerWidgetState();
 }
 
-class _UiThemeSystemBrightnessHandlerWidgetState
+class UiThemeSystemBrightnessHandlerWidgetState
     extends State<UiThemeSystemBrightnessHandlerWidget> {
   VoidCallback? oldOnPlatformBrightnessChanged;
 

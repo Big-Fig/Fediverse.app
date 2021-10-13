@@ -32,11 +32,11 @@ class UploadMediaAttachmentListMediaItemWidget extends StatefulWidget {
   });
 
   @override
-  _UploadMediaAttachmentListMediaItemWidgetState createState() =>
-      _UploadMediaAttachmentListMediaItemWidgetState();
+  UploadMediaAttachmentListMediaItemWidgetState createState() =>
+      UploadMediaAttachmentListMediaItemWidgetState();
 }
 
-class _UploadMediaAttachmentListMediaItemWidgetState
+class UploadMediaAttachmentListMediaItemWidgetState
     extends State<UploadMediaAttachmentListMediaItemWidget> {
   StreamSubscription? streamSubscription;
 

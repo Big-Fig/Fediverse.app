@@ -32,11 +32,11 @@ class FediCircularProgressIndicator extends StatefulWidget {
       );
 
   @override
-  _FediCircularProgressIndicatorState createState() =>
-      _FediCircularProgressIndicatorState();
+  FediCircularProgressIndicatorState createState() =>
+      FediCircularProgressIndicatorState();
 }
 
-class _FediCircularProgressIndicatorState
+class FediCircularProgressIndicatorState
     extends State<FediCircularProgressIndicator>
     with SingleTickerProviderStateMixin {
   // ignore: avoid-late-keyword

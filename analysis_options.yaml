@@ -105,7 +105,6 @@ linter:
     avoid_redundant_argument_values: false
     avoid_field_initializers_in_const_classes: false
     avoid_function_literals_in_foreach_calls: false
-    library_private_types_in_public_api: false
 
 
 

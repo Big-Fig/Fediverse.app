@@ -19,11 +19,11 @@ class DateTimeDynamicTimeagoWidget extends StatefulWidget {
   });
 
   @override
-  _DateTimeDynamicTimeagoWidgetState createState() =>
-      _DateTimeDynamicTimeagoWidgetState();
+  DateTimeDynamicTimeagoWidgetState createState() =>
+      DateTimeDynamicTimeagoWidgetState();
 }
 
-class _DateTimeDynamicTimeagoWidgetState
+class DateTimeDynamicTimeagoWidgetState
     extends State<DateTimeDynamicTimeagoWidget> {
   Timer? timer;
   bool disposed = false;

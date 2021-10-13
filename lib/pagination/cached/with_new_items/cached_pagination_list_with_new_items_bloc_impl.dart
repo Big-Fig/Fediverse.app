@@ -27,7 +27,7 @@ abstract class CachedPaginationListWithNewItemsBloc<
       BehaviorSubject.seeded([]);
 
   // ignore: avoid-late-keyword
-  late BehaviorSubject<_CombinedItemsResult<TItem>> combinedItemsResultSubject;
+  late BehaviorSubject<CombinedItemsResult<TItem>> combinedItemsResultSubject;
 
   List<TItem> get updatedItems => updatedItemsSubject.value;
 
@@ -83,7 +83,7 @@ abstract class CachedPaginationListWithNewItemsBloc<
     required ICachedPaginationBloc<TPage, TItem> paginationBloc,
   }) : super(cachedPaginationBloc: paginationBloc) {
     combinedItemsResultSubject = BehaviorSubject.seeded(
-      _CombinedItemsResult<TItem>(
+      CombinedItemsResult<TItem>(
         request: CalculateNewItemsInputData<TItem>(
           superItems: null,
           mergedNewItems: null,
@@ -158,7 +158,7 @@ abstract class CachedPaginationListWithNewItemsBloc<
       result: oldResult,
     );
 
-    _CombinedItemsResult<TItem> newResult;
+    CombinedItemsResult<TItem> newResult;
     if (asyncCalculateNewItems) {
       newResult = await compute(
         _calculateNewItems,
@@ -364,7 +364,7 @@ abstract class CachedPaginationListWithNewItemsBloc<
 
 class _CalculateNewItemsRequest<TItem extends IEqualComparableObj<TItem>> {
   final CalculateNewItemsInputData<TItem> inputData;
-  final _CombinedItemsResult<TItem> result;
+  final CombinedItemsResult<TItem> result;
 
   _CalculateNewItemsRequest({
     required this.inputData,
@@ -382,7 +382,7 @@ class CalculateNewItemsInputData<TItem extends IEqualComparableObj<TItem>>
   }) = _CalculateNewItemsInputData<TItem>;
 }
 
-_CombinedItemsResult<TItem>
+CombinedItemsResult<TItem>
     _calculateNewItems<TItem extends IEqualComparableObj<TItem>>(
   _CalculateNewItemsRequest<TItem> request,
 ) {
@@ -442,7 +442,7 @@ _CombinedItemsResult<TItem>
     resultList.sort((a, b) => a.compareTo(b) * -1);
   }
 
-  return _CombinedItemsResult(
+  return CombinedItemsResult(
     request: inputData,
     resultItems: resultList,
   );
@@ -500,11 +500,11 @@ List<TItem> _calculateActuallyNew<TItem extends IEqualComparableObj<TItem>>(
   ).toList();
 }
 
-class _CombinedItemsResult<TItem extends IEqualComparableObj<TItem>> {
+class CombinedItemsResult<TItem extends IEqualComparableObj<TItem>> {
   final CalculateNewItemsInputData request;
   final List<TItem> resultItems;
 
-  _CombinedItemsResult({
+  CombinedItemsResult({
     required this.request,
     required this.resultItems,
   });

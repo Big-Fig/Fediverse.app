@@ -17,10 +17,10 @@ class TabControllerProvider extends StatefulWidget {
   });
 
   @override
-  _TabControllerProviderState createState() => _TabControllerProviderState();
+  TabControllerProviderState createState() => TabControllerProviderState();
 }
 
-class _TabControllerProviderState extends State<TabControllerProvider>
+class TabControllerProviderState extends State<TabControllerProvider>
     with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) => ListenableProvider<TabController>(
