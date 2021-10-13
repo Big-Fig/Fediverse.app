@@ -35,7 +35,7 @@ Future<UploadMediaAttachmentMetadata?>
     },
   );
 
-  await dialog.show(context);
+  await dialog.show<void>(context);
 
   if (deleted) {
     return null;

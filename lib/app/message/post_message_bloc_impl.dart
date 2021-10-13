@@ -306,7 +306,7 @@ abstract class PostMessageBloc extends DisposableOwner
               (bloc) => bloc.startUploadIfPossible(),
             );
 
-        await Future.wait(futures);
+        await Future.wait<void>(futures);
 
         var allUploaded = uploadMediaAttachmentBlocs.fold<bool>(
           true,

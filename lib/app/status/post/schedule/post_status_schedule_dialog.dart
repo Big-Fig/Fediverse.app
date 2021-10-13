@@ -65,7 +65,7 @@ Future showPostStatusScheduleDialog({
         contentText: S
             .of(context)
             .app_status_post_schedule_error_notInFuture_dialog_content,
-      ).show(context);
+      ).show<void>(context);
     } else {
       postStatusBloc.setScheduledAt(newTime);
     }

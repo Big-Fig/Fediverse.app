@@ -226,7 +226,7 @@ class _NotificationsHomeTabPageBodyHeaderMenuButtonWidget
             buildDismissAllAction(context, notificationsHomeTabBloc),
             buildMarkAllAsReadAction(context, notificationsHomeTabBloc),
           ],
-        ).show(context);
+        ).show<void>(context);
       },
     );
   }

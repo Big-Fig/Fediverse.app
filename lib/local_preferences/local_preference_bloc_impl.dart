@@ -38,7 +38,7 @@ abstract class LocalPreferenceBloc<T> extends AsyncInitLoadingBloc
 
     _subject.disposeWith(this);
     keyPreferenceChangedDisposable =
-        preferencesService.listenKeyPreferenceChanged(
+        preferencesService.listenKeyPreferenceChanged<dynamic>(
       key,
       (dynamic newValue) {
         if (!_subject.isClosed) {

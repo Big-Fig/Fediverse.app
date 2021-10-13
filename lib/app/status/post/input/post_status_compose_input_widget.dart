@@ -49,7 +49,7 @@ class PostStatusComposeInputWidget extends StatelessWidget {
             if (postStatusBloc.isReadyToPost) {
               var isScheduled = postStatusBloc.isScheduledAtExist;
               var dialogResult = await PleromaAsyncOperationHelper
-                  .performPleromaAsyncOperation(
+                  .performPleromaAsyncOperation<void>(
                 context: context,
                 asyncCode: () => postStatusBloc.post(),
               );
@@ -67,12 +67,12 @@ class PostStatusComposeInputWidget extends StatelessWidget {
                 await FediSimpleAlertDialog(
                   context: context,
                   title: S.of(context).app_status_post_error_poll_dialog_title,
-                ).show(context);
+                ).show<void>(context);
               } else {
                 await FediSimpleAlertDialog(
                   context: context,
                   title: S.of(context).app_status_post_error_empty_dialog_title,
-                ).show(context);
+                ).show<void>(context);
               }
             }
           },

@@ -132,7 +132,7 @@ class _NotificationListItemBodyDismissActionWidget extends StatelessWidget {
       caption: S.of(context).app_notification_action_dismiss,
       color: IFediUiColorTheme.of(context).white,
       onTap: () {
-        PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+        PleromaAsyncOperationHelper.performPleromaAsyncOperation<void>(
           context: context,
           showProgressDialog: false,
           asyncCode: () => notificationBloc.dismiss(),
@@ -156,7 +156,7 @@ class _NotificationListItemBodyMarkAsReadActionWidget extends StatelessWidget {
       caption: S.of(context).app_notification_action_markAsRead,
       color: IFediUiColorTheme.of(context).white,
       onTap: () {
-        PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+        PleromaAsyncOperationHelper.performPleromaAsyncOperation<void>(
           context: context,
           showProgressDialog: false,
           asyncCode: () => notificationBloc.markAsRead(),

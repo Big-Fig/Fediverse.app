@@ -62,7 +62,7 @@ class EditMyAccountPage extends StatelessWidget {
         Navigator.pop(context);
         Navigator.pop(context);
       },
-    ).show(context);
+    ).show<void>(context);
   }
 
   const EditMyAccountPage();

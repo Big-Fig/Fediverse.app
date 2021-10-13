@@ -13,7 +13,7 @@ class FediMediaCarouselWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var fediMediaCarouselBloc = IFediMediaCarouselBloc.of(context);
+    var fediMediaCarouselBloc = IFediMediaCarouselBloc.of<dynamic>(context);
 
     return StreamBuilder<int>(
       stream: fediMediaCarouselBloc.currentIndexStream,

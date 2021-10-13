@@ -218,7 +218,7 @@ class CurrentUnifediApiAccessContextInitBloc extends AsyncInitLoadingBloc
         updateInstanceInformation(),
     ];
 
-    return Future.wait(futures);
+    return Future.wait<void>(futures);
   }
 
   Future updateFilters() async {

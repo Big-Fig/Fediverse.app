@@ -105,7 +105,7 @@ Future<dynamic> pushFullScreenPage(
     await Wakelock.enable();
   }
 
-  await Navigator.of(context, rootNavigator: true).push(route);
+  await Navigator.of(context, rootNavigator: true).push<void>(route);
 
   // The wakelock plugins checks whether it needs to perform an action internally,
   // so we do not need to check Wakelock.isEnabled.

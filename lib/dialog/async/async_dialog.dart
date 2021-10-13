@@ -44,7 +44,7 @@ Future<AsyncDialogResult<T?>> doAsyncOperationWithDialog<T>({
       cancelableOperation: cancelableOperation,
     );
     // ignore: unawaited_futures
-    progressDialog.show(context);
+    progressDialog.show<void>(context);
   }
 
   var error;

@@ -181,7 +181,7 @@ class UrlHelper {
         context: context,
         title: S.of(context).link_error_dialog_title,
         contentText: S.of(context).link_error_dialog_content(url),
-      ).show(context);
+      ).show<void>(context);
     }
   }
 

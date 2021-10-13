@@ -82,7 +82,7 @@ class _CurrentUnifediApiAccessContextInitWidgetState
             ),
       );
 
-      loadingInstanceProgressDialog!.show(context);
+      loadingInstanceProgressDialog!.show<void>(context);
 
       subscription =
           currentInstanceContextLoadingBloc.stateStream.listen((state) {

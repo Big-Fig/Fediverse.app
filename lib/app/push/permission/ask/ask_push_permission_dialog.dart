@@ -60,7 +60,7 @@ void _showPermissionNotGrantedDialog(BuildContext context) {
       var declinedPushPermissionDialog =
           _createDeclinedPushPermissionDialog(context: context);
 
-      declinedPushPermissionDialog.show(context);
+      declinedPushPermissionDialog.show<void>(context);
     },
   );
 }

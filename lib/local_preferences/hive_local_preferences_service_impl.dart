@@ -53,7 +53,7 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
     _logger.fine(() => 'internalAsyncInit'
         'isV2BoxExist = $isV2BoxExist');
 
-    _box = await Hive.openBox(
+    _box = await Hive.openBox<dynamic>(
       boxName,
       path: path,
     );

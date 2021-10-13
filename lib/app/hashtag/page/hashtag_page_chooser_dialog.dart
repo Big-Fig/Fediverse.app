@@ -59,7 +59,7 @@ Future showHashtagPageChooserDialog({
           },
         ),
       ],
-    ).show(context);
+    ).show<void>(context);
   } else {
     await goToRemoteHashtagPage(
       context,

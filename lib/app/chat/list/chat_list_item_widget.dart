@@ -331,7 +331,7 @@ class _ChatListItemDeleteActionWidget extends StatelessWidget {
               ).error,
               onAction: (BuildContext context) async {
                 var dialogResult = await PleromaAsyncOperationHelper
-                    .performPleromaAsyncOperation(
+                    .performPleromaAsyncOperation<void>(
                   context: context,
                   asyncCode: () => chatBloc.delete(),
                 );

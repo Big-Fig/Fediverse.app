@@ -403,7 +403,7 @@ class _TimelinesHomeTabStorageListItemRemoveButtonWidget
                     timelinesHomeTabStorageBloc.remove(timeline);
                     Navigator.of(context).pop();
                   },
-                ).show(context);
+                ).show<void>(context);
               },
               child: Padding(
                 padding: EdgeInsets.only(

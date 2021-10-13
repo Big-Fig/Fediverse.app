@@ -66,7 +66,8 @@ Future<void> showAccountActionMuteDialog({
             var accountActionMuteBloc =
                 IAccountActionMuteBloc.of(context, listen: false);
 
-            await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+            await PleromaAsyncOperationHelper.performPleromaAsyncOperation<
+                void>(
               context: context,
               asyncCode: () => accountActionMuteBloc.mute(),
             );

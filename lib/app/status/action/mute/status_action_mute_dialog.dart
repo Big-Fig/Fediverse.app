@@ -63,7 +63,8 @@ Future<T?> showStatusActionMuteDialog<T>({
             var statusActionMuteBloc =
                 IStatusActionMuteBloc.of(context, listen: false);
 
-            await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+            await PleromaAsyncOperationHelper.performPleromaAsyncOperation<
+                void>(
               context: context,
               asyncCode: () => statusActionMuteBloc.mute(),
             );

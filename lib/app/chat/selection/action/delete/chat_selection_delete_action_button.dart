@@ -58,7 +58,7 @@ class ChatSelectionDeleteActionButtonWidget extends StatelessWidget {
 
                       Navigator.pop(context);
                     },
-                  ).show(context);
+                  ).show<void>(context);
                 }
               : null,
         );

@@ -97,7 +97,7 @@ class _MyAccountDomainBlockListPageAddButton extends StatelessWidget {
             IPaginationListBloc.of(context, listen: false)
                 .refreshWithController();
           },
-        ).show(context);
+        ).show<void>(context);
       },
     );
   }

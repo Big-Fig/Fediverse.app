@@ -20,5 +20,5 @@ void showConfirmRemoveAssetDialog(BuildContext context) {
       attachmentsBloc.detachMediaAttachmentBloc(mediaItemBloc);
       Navigator.of(context).pop();
     },
-  ).show(context);
+  ).show<void>(context);
 }

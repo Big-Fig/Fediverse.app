@@ -94,7 +94,7 @@ void goToAccountReportPage(
   required IAccount account,
   required List<IStatus> statuses,
 }) {
-  Navigator.push(
+  Navigator.push<void>(
     context,
     createAccountReportPageRoute(
       account: account,

@@ -180,7 +180,7 @@ class _UnifediApiAccessChooserInstanceListItemLogoutButtonWidget
               );
             }
           },
-        ).show(context);
+        ).show<void>(context);
       },
     );
   }

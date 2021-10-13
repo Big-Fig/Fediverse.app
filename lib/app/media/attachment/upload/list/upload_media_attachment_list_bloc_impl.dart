@@ -189,7 +189,7 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
       (mediaDeviceFile) => attachMedia(mediaDeviceFile),
     );
 
-    await Future.wait(futures);
+    await Future.wait<void>(futures);
   }
 
   @override

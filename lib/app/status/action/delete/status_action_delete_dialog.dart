@@ -43,7 +43,7 @@ DialogAction buildDeleteAndSaveToDrafts(
     label: S.of(context).app_status_delete_dialog_action_deleteAndSaveToDrafts,
     onAction: (context) async {
       var dialogResult =
-          await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+          await PleromaAsyncOperationHelper.performPleromaAsyncOperation<void>(
         context: context,
         asyncCode: () => statusBloc.delete(),
       );
@@ -95,7 +95,7 @@ DialogAction buildDeleteAndStartNewAction(
     label: S.of(context).app_status_delete_dialog_action_deleteAndStartNew,
     onAction: (context) async {
       var dialogResult =
-          await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+          await PleromaAsyncOperationHelper.performPleromaAsyncOperation<void>(
         context: context,
         asyncCode: () => statusBloc.delete(),
       );
@@ -131,7 +131,7 @@ DialogAction buildDeleteAction(
     DialogAction(
       label: S.of(context).app_status_delete_dialog_action_delete,
       onAction: (context) async {
-        await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+        await PleromaAsyncOperationHelper.performPleromaAsyncOperation<void>(
           context: context,
           asyncCode: () => statusBloc.delete(),
         );
