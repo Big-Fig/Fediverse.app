@@ -1,5 +1,6 @@
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/access/current/current_access_bloc.dart';
+import 'package:fedi/app/status/post/edit/edit_post_status_bloc.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/status/post/post_status_bloc_impl.dart';
 import 'package:fedi/app/status/post/post_status_bloc_proxy_provider.dart';
@@ -15,7 +16,7 @@ typedef PostStatusDataCallback = Future<bool> Function(
   IPostStatusData postStatusData,
 );
 
-class EditPostStatusBloc extends PostStatusBloc {
+class EditPostStatusBloc extends PostStatusBloc implements IEditPostStatusBloc {
   final PostStatusDataCallback postStatusDataCallback;
 
   EditPostStatusBloc({
