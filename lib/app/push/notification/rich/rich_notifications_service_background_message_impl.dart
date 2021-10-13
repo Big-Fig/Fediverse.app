@@ -29,9 +29,12 @@ import 'package:fedi/push/push_model.dart';
 import 'package:fediverse_api/fediverse_api.dart';
 import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:unifedi_api/unifedi_api.dart';
+
+part 'rich_notifications_service_background_message_impl.freezed.dart';
 
 var _logger = Logger('rich_notifications_service_background_message_impl.dart');
 
@@ -136,7 +139,7 @@ class RichNotificationsServiceBackgroundMessage extends AsyncInitLoadingBloc
   }) {
     var payload = receivedNotification.payload!;
 
-    var _notificationPayloadData = _NotificationPayloadData.fromPayload(
+    var _notificationPayloadData = NotificationPayloadData.fromPayload(
       payload,
     );
 
@@ -694,7 +697,7 @@ Future<void> _createPushNotification({
     layout = NotificationLayout.Default;
   }
 
-  var notificationPayloadData = _NotificationPayloadData(
+  var notificationPayloadData = NotificationPayloadData(
     acct: authInstance.acct,
     serverHost: authInstance.urlHost,
     unifediApiNotification: unifediApiNotification,
@@ -936,21 +939,19 @@ Future<UnifediApiAccess?> _findInstanceByUserAtHost({
   return foundInstance;
 }
 
-class _NotificationPayloadData {
+@freezed
+class NotificationPayloadData with _$NotificationPayloadData {
   static const _notificationContentPayloadAcctKey = 'acct';
   static const _notificationContentPayloadServerHostKey = 'host';
   static const _notificationContentPayloadNotificationJsonKey =
       'notificationJson';
 
-  final String acct;
-  final String serverHost;
-  final IUnifediApiNotification unifediApiNotification;
-
-  _NotificationPayloadData({
-    required this.acct,
-    required this.serverHost,
-    required this.unifediApiNotification,
-  });
+  const NotificationPayloadData._();
+  const factory NotificationPayloadData({
+    required String acct,
+    required String serverHost,
+    required IUnifediApiNotification unifediApiNotification,
+  }) = _NotificationPayloadData;
 
   // Payload is Map<String, String> not Map<String, dynamic>
   // so here custom serialization instead of json_annotations
@@ -962,7 +963,7 @@ class _NotificationPayloadData {
         ),
       };
 
-  static _NotificationPayloadData fromPayload(Map<String, String> payload) {
+  static NotificationPayloadData fromPayload(Map<String, String> payload) {
     var acct = payload[_notificationContentPayloadAcctKey]!;
     var serverHost = payload[_notificationContentPayloadServerHostKey]!;
     var notificationJsonString =
@@ -976,30 +977,10 @@ class _NotificationPayloadData {
       notificationJson as Map<String, dynamic>,
     );
 
-    return _NotificationPayloadData(
+    return NotificationPayloadData(
       acct: acct,
       serverHost: serverHost,
       unifediApiNotification: unifediApiNotification,
     );
   }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is _NotificationPayloadData &&
-          runtimeType == other.runtimeType &&
-          acct == other.acct &&
-          serverHost == other.serverHost &&
-          unifediApiNotification == other.unifediApiNotification;
-
-  @override
-  int get hashCode =>
-      acct.hashCode ^ serverHost.hashCode ^ unifediApiNotification.hashCode;
-
-  @override
-  String toString() => '_NotificationPayloadData{'
-      'acct: $acct, '
-      'serverHost: $serverHost, '
-      'unifediApiNotification: $unifediApiNotification'
-      '}';
 }

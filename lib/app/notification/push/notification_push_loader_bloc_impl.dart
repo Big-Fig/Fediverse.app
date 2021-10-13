@@ -103,15 +103,15 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
     if (isForCurrentInstance) {
       var remoteNotificationId = pleromaPushMessage.notificationId;
 
-      IUnifediApiNotification? remoteNotification =
-          pleromaPushMessage.unifediApiNotification;
+      var remoteNotification = pleromaPushMessage.unifediApiNotification;
 
       // if we have only remoteNotificationId
       // in case we have decrypted push notifications
       // via old PushRelay server or on Flutter side(not implemented yet)
-      remoteNotification ??= await pleromaNotificationService.getNotification(
+      remoteNotification ??= (await pleromaNotificationService.getNotification(
         notificationId: remoteNotificationId,
-      );
+      ))
+          .toUnifediApiNotification();
 
       handled = true;
 

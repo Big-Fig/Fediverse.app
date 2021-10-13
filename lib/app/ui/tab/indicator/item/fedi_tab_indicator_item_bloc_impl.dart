@@ -24,24 +24,6 @@ class FediTabIndicatorItemBloc<T> extends DisposableOwner
   });
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is FediTabIndicatorItemBloc &&
-          runtimeType == other.runtimeType &&
-          fediTabIndicatorBloc == other.fediTabIndicatorBloc &&
-          item == other.item &&
-          index == other.index;
-
-  @override
-  int get hashCode =>
-      fediTabIndicatorBloc.hashCode ^ item.hashCode ^ index.hashCode;
-
-  @override
-  String toString() => 'FediTabIndicatorItemBloc{'
-      'fediTabIndicatorBloc: $fediTabIndicatorBloc,'
-      ' item: $item, index: $index}';
-
-  @override
   void select() {
     fediTabIndicatorBloc.selectIndex(index);
   }

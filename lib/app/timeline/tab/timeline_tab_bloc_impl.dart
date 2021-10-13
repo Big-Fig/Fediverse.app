@@ -134,19 +134,6 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
     addDisposable(paginationListWithNewItemsBloc);
   }
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is TimelineTabBloc &&
-          runtimeType == other.runtimeType &&
-          timelineId == other.timelineId;
-
-  @override
-  int get hashCode => timelineId.hashCode;
-
-  @override
-  String toString() => 'TimelineTabBloc{timelineId: $timelineId}';
-
   static TimelineTabBloc createFromContext(
     BuildContext context, {
     required String timelineId,

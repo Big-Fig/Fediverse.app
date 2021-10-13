@@ -25,9 +25,12 @@ import 'package:fedi/media/player/video/video_media_player_bloc.dart';
 import 'package:fedi/media/player/video/video_media_player_bloc_impl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:mime_type/mime_type.dart';
 import 'package:provider/provider.dart';
 import 'package:unifedi_api/unifedi_api.dart';
+
+part 'share_entity_widget.freezed.dart';
 
 class ShareEntityWidget extends StatelessWidget {
   final Widget? footer;
@@ -143,13 +146,13 @@ class _ShareEntityMediaWidget extends StatelessWidget {
       if (isHaveMedia) {
         var allMediaAttachments = shareEntity.allMediaAttachments;
         var allMediaLocalFiles = shareEntity.allMediaLocalFiles;
-        var items = <_ShareEntityCarouselItem>[];
+        var items = <ShareEntityCarouselItem>[];
 
         // ignore: cascade_invocations
         items
           ..addAll(
             allMediaAttachments.map(
-              (mediaAttachment) => _ShareEntityCarouselItem(
+              (mediaAttachment) => ShareEntityCarouselItem(
                 unifediApiMediaAttachment: mediaAttachment,
                 localFile: null,
               ),
@@ -157,24 +160,24 @@ class _ShareEntityMediaWidget extends StatelessWidget {
           )
           ..addAll(
             allMediaLocalFiles.map(
-              (localFile) => _ShareEntityCarouselItem(
+              (localFile) => ShareEntityCarouselItem(
                 unifediApiMediaAttachment: null,
                 localFile: localFile,
               ),
             ),
           );
         if (items.length == 1) {
-          return Provider<_ShareEntityCarouselItem>.value(
+          return Provider<ShareEntityCarouselItem>.value(
             value: items.first,
             child: _ShareEntityCarouselItemWidget(),
           );
         } else {
-          return Provider<List<_ShareEntityCarouselItem>>.value(
+          return Provider<List<ShareEntityCarouselItem>>.value(
             value: items,
-            child: DisposableProxyProvider<List<_ShareEntityCarouselItem>,
+            child: DisposableProxyProvider<List<ShareEntityCarouselItem>,
                 IFediMediaCarouselBloc>(
               update: (context, value, previous) =>
-                  FediMediaCarouselBloc<_ShareEntityCarouselItem>(items: value),
+                  FediMediaCarouselBloc<ShareEntityCarouselItem>(items: value),
               child: FediMediaCarouselWidget(
                 builder: _shareEntityCarouselItemWidgetBuilder,
               ),
@@ -190,38 +193,19 @@ class _ShareEntityMediaWidget extends StatelessWidget {
   }
 }
 
-class _ShareEntityCarouselItem {
-  final IUnifediApiMediaAttachment? unifediApiMediaAttachment;
-  final ShareEntityItemLocalMediaFile? localFile;
-
-  _ShareEntityCarouselItem({
-    required this.unifediApiMediaAttachment,
-    required this.localFile,
-  });
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is _ShareEntityCarouselItem &&
-          runtimeType == other.runtimeType &&
-          unifediApiMediaAttachment == other.unifediApiMediaAttachment &&
-          localFile == other.localFile;
-
-  @override
-  int get hashCode => unifediApiMediaAttachment.hashCode ^ localFile.hashCode;
-
-  @override
-  String toString() => '_ShareEntityCarouselItem{'
-      'unifediApiMediaAttachment: $unifediApiMediaAttachment, '
-      'localFile: $localFile'
-      '}';
+@freezed
+class ShareEntityCarouselItem with _$ShareEntityCarouselItem {
+  const factory ShareEntityCarouselItem({
+    required IUnifediApiMediaAttachment? unifediApiMediaAttachment,
+    required ShareEntityItemLocalMediaFile? localFile,
+  }) = _ShareEntityCarouselItem;
 }
 
 Widget _shareEntityCarouselItemWidgetBuilder(BuildContext context, int index) {
-  var items = Provider.of<List<_ShareEntityCarouselItem>>(context);
+  var items = Provider.of<List<ShareEntityCarouselItem>>(context);
   var item = items[index];
 
-  return Provider<_ShareEntityCarouselItem>.value(
+  return Provider<ShareEntityCarouselItem>.value(
     value: item,
     child: _ShareEntityCarouselItemWidget(),
   );
@@ -234,16 +218,15 @@ class _ShareEntityCarouselItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var item = Provider.of<_ShareEntityCarouselItem>(context);
+    var item = Provider.of<ShareEntityCarouselItem>(context);
 
     if (item.unifediApiMediaAttachment != null) {
-      return ProxyProvider<_ShareEntityCarouselItem,
-          IUnifediApiMediaAttachment>(
+      return ProxyProvider<ShareEntityCarouselItem, IUnifediApiMediaAttachment>(
         update: (context, value, previous) => value.unifediApiMediaAttachment!,
         child: const MediaAttachmentWidget(),
       );
     } else {
-      return ProxyProvider<_ShareEntityCarouselItem,
+      return ProxyProvider<ShareEntityCarouselItem,
           ShareEntityItemLocalMediaFile>(
         update: (context, value, previous) => value.localFile!,
         child: const _ShareEntityCarouselItemLocalFileWidget(),

@@ -6,9 +6,9 @@ part of 'fedi_push_notification_model_impl.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-FediPushNotification _$FediPushNotificationFromJson(
+_$_FediPushNotification _$$_FediPushNotificationFromJson(
         Map<String, dynamic> json) =>
-    FediPushNotification(
+    _$_FediPushNotification(
       account: json['account'] as String,
       notificationAction: json['notification_action'] as String?,
       notificationActionInput: json['notification_action_input'] as String?,
@@ -21,8 +21,8 @@ FediPushNotification _$FediPushNotificationFromJson(
               json['notification'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$FediPushNotificationToJson(
-    FediPushNotification instance) {
+Map<String, dynamic> _$$_FediPushNotificationToJson(
+    _$_FediPushNotification instance) {
   final val = <String, dynamic>{
     'account': instance.account,
   };

@@ -67,14 +67,4 @@ class CustomListBloc extends DisposableOwner implements ICustomListBloc {
         ),
         child: child,
       );
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is CustomListBloc &&
-          runtimeType == other.runtimeType &&
-          customList == other.customList;
-
-  @override
-  int get hashCode => customList.hashCode;
 }

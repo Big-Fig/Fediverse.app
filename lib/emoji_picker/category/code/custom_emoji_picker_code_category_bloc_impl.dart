@@ -85,21 +85,6 @@ class CustomEmojiPickerCodeCategoryBloc extends AsyncInitLoadingBloc
       );
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is CustomEmojiPickerCodeCategoryBloc &&
-          runtimeType == other.runtimeType &&
-          type == other.type &&
-          items == other.items;
-
-  @override
-  int get hashCode => type.hashCode ^ items.hashCode;
-
-  @override
-  String toString() =>
-      'CustomEmojiPickerCodeCategory{type: $type, items: $items}';
-
-  @override
   // ignore: no-empty-block
   Future internalAsyncInit() async {
     // nothing

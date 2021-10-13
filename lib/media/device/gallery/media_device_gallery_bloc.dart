@@ -31,19 +31,6 @@ class MediaDeviceGallerySelectedFolderData extends DisposableOwner
   });
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is MediaDeviceGallerySelectedFolderData &&
-          runtimeType == other.runtimeType &&
-          folder == other.folder;
-
-  @override
-  int get hashCode => folder.hashCode;
-
-  @override
-  String toString() => 'MediaDeviceGallerySelectedFolderData{folder: $folder}';
-
-  @override
   Future dispose() async {
     await super.dispose();
     await folderBloc.dispose();

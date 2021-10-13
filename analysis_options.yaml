@@ -101,7 +101,6 @@ linter:
 
 
 
-    avoid_equals_and_hash_code_on_mutable_classes: false
     avoid_positional_boolean_parameters: false
     avoid_redundant_argument_values: false
     avoid_field_initializers_in_const_classes: false
