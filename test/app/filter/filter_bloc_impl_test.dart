@@ -67,7 +67,7 @@ void main() {
       remoteId: filter.remoteId,
     );
 
-    var listened;
+    IFilter? listened;
 
     var subscription = filterBloc.filterStream.listen((newValue) {
       listened = newValue;

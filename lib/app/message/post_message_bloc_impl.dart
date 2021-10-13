@@ -115,9 +115,9 @@ abstract class PostMessageBloc extends DisposableOwner
         uploadMediaAttachmentsBloc.uploadMediaAttachmentBlocsStream,
         uploadMediaAttachmentsBloc.isAllAttachedMediaUploadedStream,
         (
-          dynamic inputWithoutMentionedAcctsText,
-          dynamic mediaAttachmentBlocs,
-          dynamic isAllAttachedMediaUploaded,
+          String? inputWithoutMentionedAcctsText,
+          List<IUploadMediaAttachmentBloc> mediaAttachmentBlocs,
+          bool isAllAttachedMediaUploaded,
         ) =>
             calculateIsReadyToPost(
           inputText: inputWithoutMentionedAcctsText,

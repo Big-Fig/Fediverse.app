@@ -69,8 +69,8 @@ class FilterDao extends PopulatedAppRemoteDatabaseDao<
   ) =>
       query
         ..orderBy(orderTerms
-            .map((orderTerm) => (item) {
-                  var expression;
+            .map((orderTerm) => ($DbFiltersTable item) {
+                  GeneratedColumn<String?> expression;
                   switch (orderTerm.orderType) {
                     case FilterOrderType.remoteId:
                       expression = item.remoteId;

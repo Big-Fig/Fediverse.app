@@ -97,8 +97,8 @@ class InstanceAnnouncementDao extends PopulatedAppRemoteDatabaseDao<
   ) =>
           query
             ..orderBy(orderTerms
-                .map((orderTerm) => (item) {
-                      var expression;
+                .map((orderTerm) => ($DbInstanceAnnouncementsTable item) {
+                      Expression expression;
                       switch (orderTerm.orderType) {
                         case InstanceAnnouncementOrderType.remoteId:
                           expression = item.remoteId;

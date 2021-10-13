@@ -128,7 +128,7 @@ void main() {
       batchTransaction: null,
     );
 
-    var listened;
+    IPleromaChatMessage? listened;
 
     var subscription = chatMessageBloc.chatMessageStream.listen((newValue) {
       listened = newValue;

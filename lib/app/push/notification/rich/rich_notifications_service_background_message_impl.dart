@@ -410,8 +410,8 @@ Future<IUnifediApiNotification?> loadNotificationForPushMessageData({
 
   if (data.containsKey(_pushDataAccountKey) &&
       data.containsKey(_pushDataServerKey)) {
-    var account = data[_pushDataAccountKey];
-    var server = data[_pushDataServerKey];
+    var account = data[_pushDataAccountKey] as String;
+    var server = data[_pushDataServerKey] as String;
 
     _logger.finest(() => 'Background message for $account@$server');
 
@@ -969,8 +969,8 @@ class _NotificationPayloadData {
     // TODO: check. value? wtf
     var notificationJson = jsonDecode(notificationJsonString)['value'];
 
-    var unifediApiNotification =
-        UnifediApiNotification.fromJson(notificationJson);
+    var unifediApiNotification = UnifediApiNotification.fromJson(
+        notificationJson as Map<String, dynamic>);
 
     return _NotificationPayloadData(
       acct: acct,

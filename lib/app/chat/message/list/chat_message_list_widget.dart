@@ -33,8 +33,10 @@ class ChatMessageListWidget<T extends IChatMessage>
     extends FediPaginationListWidget<T> {
   final WidgetBuilder itemBuilder;
 
-  final Function(BuildContext context, {required Widget child})
-      itemContextBuilder;
+  final Widget Function(
+    BuildContext context, {
+    required Widget child,
+  }) itemContextBuilder;
 
   const ChatMessageListWidget({
     Key? key,

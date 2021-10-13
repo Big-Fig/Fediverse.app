@@ -171,7 +171,7 @@ class SelectAccountListBloc extends DisposableOwner
     List<IAccount> accounts;
     var searchTermExist = searchText?.isNotEmpty == true;
     if (searchTermExist) {
-      var onlyInAccountFollowing;
+      IAccount? onlyInAccountFollowing;
       if (followingsOnly) {
         onlyInAccountFollowing = myAccountBloc.account;
       }

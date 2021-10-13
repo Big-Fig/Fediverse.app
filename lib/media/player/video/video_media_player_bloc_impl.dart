@@ -8,6 +8,7 @@ import 'package:fedi/media/player/video/video_media_player_bloc_provider.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:video_player/video_player.dart';
 
 // ignore: no-magic-number
 final _durationToHideControlsDuringPlaying = Duration(seconds: 3);
@@ -186,9 +187,9 @@ class VideoMediaPlayerBloc extends MediaPlayerBloc
         // use videoPlayerValueStream just for regular updates
         // hack to avoid using Timer to update isControlsVisibleStream
         (
-          dynamic lastIterationDateTime,
-          dynamic isPlaying,
-          dynamic videoPlayerValue,
+          DateTime lastIterationDateTime,
+          bool isPlaying,
+          VideoPlayerValue videoPlayerValue,
         ) =>
             _calculateIsControlsVisible(lastIterationDateTime, isPlaying),
       );

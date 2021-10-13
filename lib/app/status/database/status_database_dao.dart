@@ -403,8 +403,8 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
   ) =>
       query
         ..orderBy(orderTerms
-            .map((orderTerm) => (item) {
-                  var expression;
+            .map((orderTerm) => ($DbStatusesTable item) {
+                  GeneratedColumn<Object?> expression;
                   switch (orderTerm.orderByType) {
                     case StatusRepositoryOrderType.remoteId:
                       expression = item.remoteId;

@@ -147,8 +147,8 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
   ) =>
       query
         ..orderBy(orderTerms
-            .map((orderTerm) => (item) {
-                  var expression;
+            .map((orderTerm) => ($DbNotificationsTable item) {
+                  GeneratedColumn<Object?> expression;
                   switch (orderTerm.orderType) {
                     case NotificationOrderType.remoteId:
                       expression = item.remoteId;

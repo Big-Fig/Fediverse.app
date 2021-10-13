@@ -110,8 +110,8 @@ class NotificationsPushHandlerBloc extends DisposableOwner
               notification: null,
               data: FediPushNotification(
                 notificationId: unifediApiNotification.id,
-                server: data['server'],
-                account: data['account'],
+                server: data['server'] as String,
+                account: data['account'] as String,
                 notificationType: unifediApiNotification.type,
                 unifediApiNotification:
                     unifediApiNotification.toUnifediApiNotification(),

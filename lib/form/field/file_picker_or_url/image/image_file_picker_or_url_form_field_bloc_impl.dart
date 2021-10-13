@@ -28,7 +28,10 @@ class ImageFilePickerOrUrlFormFieldBloc extends FilePickerOrUrlFormFieldBloc
     Rx.combineLatest2(
       currentFilePickerFileStream,
       isOriginalDeletedStream,
-      (dynamic currentFilePickerFile, dynamic isOriginalDeleted) =>
+      (
+        IMediaDeviceFile? currentFilePickerFile,
+        bool isOriginalDeleted,
+      ) =>
           createMediaSource(
         filePickerFile: currentFilePickerFile,
         url: originalUrl,

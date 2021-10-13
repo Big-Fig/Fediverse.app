@@ -89,8 +89,8 @@ class ConversationDao extends PopulatedAppRemoteDatabaseDao<
       query
         ..orderBy(
           orderTerms
-              .map((orderTerm) => (item) {
-                    var expression;
+              .map((orderTerm) => ($DbConversationsTable item) {
+                    GeneratedColumn<Object?> expression;
                     switch (orderTerm.orderType) {
                       case ConversationChatOrderType.remoteId:
                         expression = item.remoteId;

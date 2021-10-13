@@ -66,9 +66,10 @@ void main() {
     when(pleromaPushService.subscribe(
       metadata: anyNamed('metadata'),
       alerts: anyNamed('alerts'),
-    )).thenAnswer((invocation) async {
+    )).thenAnswer((Invocation invocation) async {
       return UnifediApiPushSubscription(
-        alerts: invocation.namedArguments[Symbol('alerts')],
+        alerts: invocation.namedArguments[Symbol('alerts')]
+            as UnifediApiPushSubscriptionAlerts,
         endpoint: 'endpoint',
         serverKey: 'serverKey',
         id: 'id',

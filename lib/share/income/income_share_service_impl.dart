@@ -106,7 +106,7 @@ class IncomeShareService extends AsyncInitLoadingBloc
 }
 
 IncomeShareEventMedia _mapMedia(SharedMediaFile media) {
-  var type;
+  IncomeShareEventMediaType type;
 
   switch (media.type) {
     case SharedMediaType.IMAGE:

@@ -116,8 +116,8 @@ class ChatDao extends PopulatedAppRemoteDatabaseDao<
       ..orderBy(
         orderTerms
             .map(
-              (orderTerm) => (item) {
-                var expression;
+              (orderTerm) => ($DbChatsTable item) {
+                GeneratedColumn<Object?> expression;
                 switch (orderTerm.orderType) {
                   case PleromaChatOrderType.remoteId:
                     expression = item.remoteId;

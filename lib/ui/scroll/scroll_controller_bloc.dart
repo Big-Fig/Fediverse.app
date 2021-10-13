@@ -10,7 +10,7 @@ abstract class IScrollControllerBloc extends IDisposable {
   // todo: refactor?
   ScrollController? get scrollController;
 
-  bool? get scrolledToTop;
+  bool get scrolledToTop;
 
   Stream<bool> get scrolledToTopStream;
 

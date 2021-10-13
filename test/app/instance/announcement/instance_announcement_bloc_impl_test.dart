@@ -72,7 +72,7 @@ void main() {
       remoteId: instanceAnnouncement.remoteId,
     );
 
-    var listened;
+    IInstanceAnnouncement? listened;
 
     var subscription =
         instanceAnnouncementBloc.instanceAnnouncementStream.listen((newValue) {

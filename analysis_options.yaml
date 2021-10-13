@@ -43,7 +43,6 @@ analyzer:
     implicit_dynamic_parameter: ignore
     implicit_dynamic_type: ignore
     implicit_dynamic_function: ignore
-    argument_type_not_assignable: ignore
 
 # LINTER Preferences
 #

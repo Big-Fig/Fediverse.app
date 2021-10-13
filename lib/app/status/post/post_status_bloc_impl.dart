@@ -330,11 +330,11 @@ abstract class PostStatusBloc extends PostMessageBloc
         pollBloc.isHaveAtLeastOneErrorStream,
         pollBloc.isSomethingChangedStream,
         (
-          dynamic inputWithoutMentionedAcctsText,
-          dynamic mediaAttachmentBlocs,
-          dynamic isAllAttachedMediaUploaded,
-          dynamic isHaveAtLeastOneError,
-          dynamic isPollBlocChanged,
+          String? inputWithoutMentionedAcctsText,
+          List<IUploadMediaAttachmentBloc> mediaAttachmentBlocs,
+          bool isAllAttachedMediaUploaded,
+          bool isHaveAtLeastOneError,
+          bool isPollBlocChanged,
         ) =>
             calculateStatusBlocIsReadyToPost(
           inputText: inputWithoutMentionedAcctsText,
@@ -369,8 +369,14 @@ abstract class PostStatusBloc extends PostMessageBloc
   Stream<String?> get inputWithoutMentionedAcctsTextStream => Rx.combineLatest2(
         inputTextStream,
         mentionedAcctsStream,
-        (dynamic inputText, dynamic mentionedAccts) =>
-            removeAcctsFromText(inputText, mentionedAccts),
+        (
+          String? inputText,
+          List<String> mentionedAccts,
+        ) =>
+            removeAcctsFromText(
+          inputText,
+          mentionedAccts,
+        ),
       );
 
   void onMentionedAccountsChanged() {

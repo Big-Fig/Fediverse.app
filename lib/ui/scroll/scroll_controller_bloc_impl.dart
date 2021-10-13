@@ -14,7 +14,7 @@ class ScrollControllerBloc extends DisposableOwner
   final ScrollController? scrollController;
 
   @override
-  bool? get scrolledToTop => scrolledToTopSubject.valueOrNull;
+  bool get scrolledToTop => scrolledToTopSubject.value;
 
   @override
   Stream<bool> get scrolledToTopStream => scrolledToTopSubject.stream;

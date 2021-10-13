@@ -90,7 +90,7 @@ class _AsyncOperationButtonBuilderWidgetState
                   );
                 }
               }).catchError(
-                (error, stacktrace) {
+                (error, StackTrace? stacktrace) {
                   _logger.severe(
                     () => 'Fail to execute async operation',
                     error,

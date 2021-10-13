@@ -39,10 +39,10 @@ class PleromaFormCaptchaStringFieldBloc extends StringValueFormFieldBloc
         isHaveCaptchaLoadingErrorStream,
         isDisabledOnServerSideStream,
         (
-          dynamic superIsHaveAtLeastOneError,
-          dynamic isLoading,
-          dynamic isHaveCaptchaLoadingError,
-          dynamic isDisabledOnServerSide,
+          bool superIsHaveAtLeastOneError,
+          bool isLoading,
+          bool isHaveCaptchaLoadingError,
+          bool? isDisabledOnServerSide,
         ) =>
             _calculateIsHaveAtLeastOneError(
           isLoading: isLoading,

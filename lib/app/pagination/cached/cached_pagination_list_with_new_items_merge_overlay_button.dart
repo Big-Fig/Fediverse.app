@@ -39,7 +39,7 @@ class CachedPaginationListWithNewItemsMergeOverlayButton
           stream: Rx.combineLatest2(
             scrollControllerBloc.scrollDirectionStream.distinct(),
             scrollControllerBloc.scrolledToTopStream,
-            (dynamic scrollDirection, dynamic scrolledToTop) =>
+            (ScrollDirection? scrollDirection, bool scrolledToTop) =>
                 isNeedShowMergeItems(scrollDirection, scrolledToTop),
           ),
           initialData: isNeedShowMergeItems(
@@ -81,11 +81,11 @@ class CachedPaginationListWithNewItemsMergeOverlayButton
 
   bool isNeedShowMergeItems(
     ScrollDirection? scrollDirection,
-    bool? scrolledToTop,
+    bool scrolledToTop,
   ) =>
       scrollDirection == ScrollDirection.forward ||
       scrollDirection == null ||
-      scrolledToTop!;
+      scrolledToTop;
 
   Widget buildMergeNewItemsButton({
     required BuildContext context,

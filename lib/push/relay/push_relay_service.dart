@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 abstract class IPushRelayService extends IDisposable {
   static IPushRelayService of(
     BuildContext context, {
-    listen = true,
+    bool listen = true,
   }) =>
       Provider.of<IPushRelayService>(
         context,

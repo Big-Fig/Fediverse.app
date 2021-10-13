@@ -49,8 +49,8 @@ class ScheduledStatusDao extends PopulatedAppRemoteDatabaseDao<
   ) =>
       query
         ..orderBy(orderTerms
-            .map((orderTerm) => (item) {
-                  var expression;
+            .map((orderTerm) => ($DbScheduledStatusesTable item) {
+                  GeneratedColumn<String?> expression;
                   switch (orderTerm.orderType) {
                     case ScheduledStatusRepositoryOrderType.remoteId:
                       expression = item.remoteId;

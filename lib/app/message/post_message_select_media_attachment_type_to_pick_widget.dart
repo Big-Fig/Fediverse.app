@@ -66,7 +66,7 @@ class _PostMessageSelectMediaAttachmentTypeToPickGalleryAudioActionWidget
       onTap: () async {
         var pickedFilesResult =
             await FilePicker.platform.pickFiles(type: FileType.audio);
-        var pickedFile;
+        File? pickedFile;
 
         if (pickedFilesResult?.files.isNotEmpty == true) {
           pickedFile = File(pickedFilesResult!.files.first.path!);
@@ -102,7 +102,7 @@ class _PostMessageSelectMediaAttachmentTypeToPickGalleryFileActionWidget
       label: S.of(context).app_media_attachment_type_file,
       onTap: () async {
         var pickedFilesResult = await FilePicker.platform.pickFiles();
-        var pickedFile;
+        File? pickedFile;
 
         if (pickedFilesResult?.files.isNotEmpty == true) {
           pickedFile = File(pickedFilesResult!.files.first.path!);

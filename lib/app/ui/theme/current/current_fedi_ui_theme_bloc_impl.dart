@@ -35,7 +35,10 @@ class CurrentFediUiThemeBloc extends DisposableOwner
     return Rx.combineLatest2(
       currentThemeStream,
       systemBrightnessHandlerBloc.systemBrightnessStream,
-      (dynamic currentTheme, dynamic systemBrightness) =>
+      (
+        IFediUiTheme? currentTheme,
+        Brightness systemBrightness,
+      ) =>
           _calculateAdaptiveBrightnessCurrentThemeStream(
         currentTheme,
         systemBrightness,

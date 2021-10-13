@@ -240,7 +240,7 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
   Stream<NotificationState> get stateStream => Rx.combineLatest2(
         dismissedStream,
         unreadStream,
-        (dynamic dismissed, dynamic unread) => NotificationState(
+        (bool? dismissed, bool unread) => NotificationState(
           dismissed: dismissed,
           unread: unread,
         ),

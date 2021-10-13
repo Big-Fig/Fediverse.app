@@ -26,8 +26,8 @@ class StatusVisibilityIconWidget extends StatelessWidget {
   static Icon buildVisibilityIcon({
     required BuildContext context,
     required UnifediApiVisibility visibility,
-    required isPossibleToChangeVisibility,
-    required isSelectedVisibility,
+    required bool isPossibleToChangeVisibility,
+    required bool isSelectedVisibility,
   }) =>
       Icon(
         mapVisibilityToIconData(visibility),

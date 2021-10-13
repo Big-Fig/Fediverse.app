@@ -401,8 +401,8 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
   ) =>
       StreamSubscriptionDisposable(
         _box.watch(key: key).listen(
-          (boxEvent) {
-            onChanged(boxEvent.value);
+          (BoxEvent boxEvent) {
+            onChanged(boxEvent.value as T);
           },
         ),
       );

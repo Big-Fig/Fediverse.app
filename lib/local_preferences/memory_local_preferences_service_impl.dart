@@ -112,7 +112,7 @@ class MemoryLocalPreferencesService extends AsyncInitLoadingBloc
   ) {
     var str = getStringPreference(key);
     if (str?.isNotEmpty == true) {
-      return jsonConverter(jsonDecode(str!));
+      return jsonConverter(jsonDecode(str!) as Map<String, dynamic>);
     } else {
       return null;
     }

@@ -224,9 +224,9 @@ class EditCustomListBloc extends DisposableOwner
         customListFormBloc.isSomethingChangedStream,
         editCustomListAccountListPaginationListBloc.isSomethingChangedStream,
         (
-          dynamic customListFormBlocIsHaveAtLeastOneError,
-          dynamic customListFormBlocIsSomethingChanged,
-          dynamic editCustomListAccountListPaginationListBlocIsSomethingChanged,
+          bool customListFormBlocIsHaveAtLeastOneError,
+          bool customListFormBlocIsSomethingChanged,
+          bool editCustomListAccountListPaginationListBlocIsSomethingChanged,
         ) =>
             _calculateIsReadyToSubmit(
           customListFormBlocIsHaveAtLeastOneError:

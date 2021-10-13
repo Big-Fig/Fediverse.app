@@ -32,8 +32,8 @@ class DraftStatusDao extends PopulatedAppLocalDatabaseDao<
   ) =>
       query
         ..orderBy(orderTerms
-            .map((orderTerm) => (item) {
-                  var expression;
+            .map((orderTerm) => ($DbDraftStatusesTable item) {
+                  GeneratedColumn<Object?> expression;
                   switch (orderTerm.orderType) {
                     case DraftStatusRepositoryOrderType.updatedAt:
                       expression = item.updatedAt;

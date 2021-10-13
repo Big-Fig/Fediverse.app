@@ -167,7 +167,7 @@ void main() {
       remoteId: chat.remoteId,
     );
 
-    var listened;
+    IPleromaChat? listened;
 
     var subscription = chatBloc.chatStream.listen((newValue) {
       listened = newValue;
@@ -247,7 +247,7 @@ void main() {
       account: account2,
     );
 
-    var listened;
+    IPleromaChatMessage? listened;
 
     var subscription = chatBloc.lastChatMessageStream.listen((newValue) {
       listened = newValue;
@@ -298,7 +298,7 @@ void main() {
       remoteId: chat.remoteId,
     );
 
-    late var listened;
+    late List<IAccount> listened;
 
     var subscription = chatBloc.accountsStream.listen((newValue) {
       listened = newValue;

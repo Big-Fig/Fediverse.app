@@ -116,7 +116,7 @@ class _FediFormSingleChooseFromListFieldRowBodyWidget<T>
 
   final bool isEnabled;
   final String chooserTitle;
-  final List possibleValues;
+  final List<T> possibleValues;
 
   final T value;
   final ValueToKeyMapper<T>? valueToKeyMapper;

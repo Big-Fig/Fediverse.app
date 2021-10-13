@@ -13,7 +13,8 @@ class EmailStringValueFormFieldValidationError
   String createErrorDescription(BuildContext context) =>
       S.of(context).form_field_text_email_error_invalid_desc;
 
-  static FormValueFieldValidation createValidator() => (currentValue) {
+  static FormValueFieldValidation<String> createValidator() =>
+      (String? currentValue) {
         var emailValid = emailRegex.hasMatch(currentValue ?? '');
         if (emailValid) {
           return null;

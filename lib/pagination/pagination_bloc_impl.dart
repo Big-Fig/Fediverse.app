@@ -117,8 +117,8 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
       if (indexToCachedPageMap.containsKey(pageIndex)) {
         page = indexToCachedPageMap[pageIndex]!;
       } else {
-        var previousPage;
-        var nextPage;
+        TPage? previousPage;
+        TPage? nextPage;
         var previousIndex = pageIndex - 1;
         var nextIndex = pageIndex + 1;
         if (indexToCachedPageMap.containsKey(previousIndex)) {

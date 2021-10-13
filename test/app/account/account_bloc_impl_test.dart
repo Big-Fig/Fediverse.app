@@ -86,7 +86,7 @@ void main() {
       remoteId: account.remoteId,
     );
 
-    var listened;
+    IAccount? listened;
 
     var subscription = accountBloc.accountStream.listen((newValue) {
       listened = newValue;
@@ -466,7 +466,7 @@ void main() {
       remoteId: account.remoteId,
     );
 
-    var listened;
+    IAccount? listened;
 
     var subscription = accountBloc.accountStream.listen((newValue) {
       listened = newValue;

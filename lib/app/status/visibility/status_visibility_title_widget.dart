@@ -27,8 +27,8 @@ class StatusVisibilityTitleWidget extends StatelessWidget {
   static Text buildVisibilityTitle({
     required BuildContext context,
     required UnifediApiVisibility visibility,
-    required isPossibleToChangeVisibility,
-    required isSelectedVisibility,
+    required bool isPossibleToChangeVisibility,
+    required bool isSelectedVisibility,
   }) =>
       Text(
         mapVisibilityToTitle(context, visibility),

@@ -27,7 +27,7 @@ class GlobalOrInstanceSettingsLocalPreferenceBloc<T extends ISettings>
       Rx.combineLatest2(
         globalLocalPreferencesBloc.stream,
         instanceLocalPreferencesBloc.stream,
-        (dynamic a, dynamic b) => _calculateGlobalOrInstanceSettings(
+        (T a, T? b) => _calculateGlobalOrInstanceSettings(
           globalSettings: a,
           instanceSettings: b,
         ),

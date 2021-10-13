@@ -545,7 +545,7 @@ Future logInToInstance(BuildContext context) async {
           }
 
         case AppLaunchType.mock:
-          var testUnifediApiAccessJsonString;
+          String testUnifediApiAccessJsonString;
           if (Platform.isAndroid) {
             testUnifediApiAccessJsonString =
                 configService.androidTestUnifediApiAccessJson!;
@@ -555,7 +555,8 @@ Future logInToInstance(BuildContext context) async {
           }
 
           var testUnifediApiAccessJson =
-              jsonDecode(testUnifediApiAccessJsonString);
+              jsonDecode(testUnifediApiAccessJsonString)
+                  as Map<String, dynamic>;
 
           return UnifediApiAccess.fromJson(testUnifediApiAccessJson);
       }

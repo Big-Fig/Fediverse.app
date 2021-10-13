@@ -94,7 +94,7 @@ Future<void> main() async {
       remoteId: status.remoteId,
     );
 
-    var listened;
+    IStatus? listened;
 
     var subscription = statusBloc.statusStream.listen((newValue) {
       listened = newValue;
@@ -133,7 +133,7 @@ Future<void> main() async {
       reblog: reblog,
     );
 
-    var listened;
+    IStatus? listened;
 
     var subscription = statusBloc.reblogStream.listen((newValue) {
       listened = newValue;
@@ -171,7 +171,7 @@ Future<void> main() async {
       reblog: reblog,
     );
 
-    var listened;
+    IStatus? listened;
 
     var subscription = statusBloc.reblogOrOriginalStream.listen((newValue) {
       listened = newValue;

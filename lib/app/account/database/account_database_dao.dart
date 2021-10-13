@@ -69,8 +69,8 @@ class AccountDao extends PopulatedAppRemoteDatabaseDao<
   ) =>
       query
         ..orderBy(orderTerms
-            .map((orderTerm) => (item) {
-                  var expression;
+            .map((orderTerm) => ($DbAccountsTable item) {
+                  GeneratedColumn<String?> expression;
                   switch (orderTerm.orderType) {
                     case AccountOrderType.remoteId:
                       expression = item.remoteId;

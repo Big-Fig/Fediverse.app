@@ -297,11 +297,12 @@ abstract class CachedPaginationListWithNewItemsBloc<
     }
   }
 
-  StreamSubscription<List<TItem>> createWatchNewItemsSubscription(newerItem) {
+  StreamSubscription<List<TItem>> createWatchNewItemsSubscription(
+      TItem? newerItem) {
     return watchItemsNewerThanItem(newerItem)
         .skipWhile((newItems) => !newItems.isNotEmpty)
         .listen(
-      (newItems) async {
+      (List<TItem> newItems) async {
         isNewItemsAsyncCheckInProgress = true;
 
         try {

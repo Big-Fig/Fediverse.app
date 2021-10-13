@@ -52,7 +52,10 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
   Stream<bool> get isSomethingChangedStream => Rx.combineLatest2(
         addedItemsStream,
         removedItemsStream,
-        (dynamic addedItems, dynamic removedItems) =>
+        (
+          List<TItem> addedItems,
+          List<TItem> removedItems,
+        ) =>
             _calculateIsSomethingChanged(
           addedItems: addedItems,
           removedItems: removedItems,

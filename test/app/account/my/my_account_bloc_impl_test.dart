@@ -1,4 +1,5 @@
 import 'package:fedi/app/account/account_bloc.dart';
+import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/my/local_preferences/my_account_local_preference_bloc_impl.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/my/my_account_bloc_impl.dart';
@@ -111,7 +112,7 @@ void main() {
       remoteId: myAccount.remoteId,
     );
 
-    var listened;
+    IAccount? listened;
 
     var subscription = myAccountBloc.accountStream.listen((newValue) {
       listened = newValue;
@@ -439,7 +440,7 @@ void main() {
       remoteId: myAccount.remoteId,
     );
 
-    var listened;
+    IAccount? listened;
 
     var subscription = myAccountBloc.accountStream.listen((newValue) {
       listened = newValue;

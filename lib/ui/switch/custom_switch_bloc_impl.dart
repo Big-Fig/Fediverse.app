@@ -5,7 +5,7 @@ import 'package:rxdart/rxdart.dart';
 class CustomSwitchBloc extends DisposableOwner implements ICustomSwitchBloc {
   final BehaviorSubject<bool> currentValueSubject;
 
-  CustomSwitchBloc({required startValue})
+  CustomSwitchBloc({required bool startValue})
       : currentValueSubject = BehaviorSubject.seeded(startValue) {
     currentValueSubject.disposeWith(this);
   }
