@@ -114,9 +114,9 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
   Stream<DbStatusPopulated?> watchByOldPendingRemoteId(
     String oldPendingRemoteId,
   ) =>
-      (_findByOldPendingRemoteId(oldPendingRemoteId).watchSingleOrNull().map(
+      _findByOldPendingRemoteId(oldPendingRemoteId).watchSingleOrNull().map(
             (typedResult) => typedResult?.toDbStatusPopulated(dao: this),
-          ));
+          );
 
   JoinedSelectStatement _findByOldPendingRemoteId(
     String? oldPendingRemoteId,
@@ -431,7 +431,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
     required bool includeHomeTimeline,
   }) {
     return [
-      ...(includeHomeTimeline
+      ...includeHomeTimeline
           ? [
               innerJoin(
                 homeTimelineStatusesAlias,
@@ -439,7 +439,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
                     .equalsExp(dbStatuses.remoteId),
               ),
             ]
-          : []),
+          : [],
       // todo: think about leftOuterJoin and nullable account field
       // or foreign keys
       // in some cases status may already exist in local database,
@@ -474,7 +474,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
         replyReblogAccountAlias.remoteId
             .equalsExp(replyReblogAlias.accountRemoteId),
       ),
-      ...(includeAccountFollowing
+      ...includeAccountFollowing
           ? [
               innerJoin(
                 accountFollowingsAlias,
@@ -482,8 +482,8 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
                     .equalsExp(dbStatuses.accountRemoteId),
               ),
             ]
-          : []),
-      ...(includeReplyToAccountFollowing
+          : [],
+      ...includeReplyToAccountFollowing
           ? [
               leftOuterJoin(
                 replyToAccountFollowingsAlias,
@@ -491,8 +491,8 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
                     .equalsExp(dbStatuses.inReplyToAccountRemoteId),
               ),
             ]
-          : []),
-      ...(includeStatusHashtags
+          : [],
+      ...includeStatusHashtags
           ? [
               innerJoin(
                 statusHashtagsAlias,
@@ -500,16 +500,16 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
                     .equalsExp(dbStatuses.remoteId),
               ),
             ]
-          : []),
-      ...(includeStatusLists
+          : [],
+      ...includeStatusLists
           ? [
               innerJoin(
                 statusListsAlias,
                 statusListsAlias.statusRemoteId.equalsExp(dbStatuses.remoteId),
               ),
             ]
-          : []),
-      ...(includeConversations
+          : [],
+      ...includeConversations
           ? [
               innerJoin(
                 conversationStatusesAlias,
@@ -517,7 +517,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
                     .equalsExp(dbStatuses.remoteId),
               ),
             ]
-          : []),
+          : [],
     ];
   }
 

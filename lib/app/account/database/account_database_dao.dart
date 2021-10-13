@@ -93,7 +93,7 @@ class AccountDao extends PopulatedAppRemoteDatabaseDao<
     required bool includeChatAccounts,
   }) {
     var allJoins = <Join>[
-      ...(includeAccountFollowings
+      ...includeAccountFollowings
           ? [
               innerJoin(
                 accountFollowingsAlias,
@@ -101,8 +101,8 @@ class AccountDao extends PopulatedAppRemoteDatabaseDao<
                     .equalsExp(dbAccounts.remoteId),
               ),
             ]
-          : []),
-      ...(includeAccountFollowers
+          : [],
+      ...includeAccountFollowers
           ? [
               innerJoin(
                 accountFollowersAlias,
@@ -110,8 +110,8 @@ class AccountDao extends PopulatedAppRemoteDatabaseDao<
                     .equalsExp(dbAccounts.remoteId),
               ),
             ]
-          : []),
-      ...(includeStatusFavouritedAccounts
+          : [],
+      ...includeStatusFavouritedAccounts
           ? [
               innerJoin(
                 statusFavouritedAccountsAlias,
@@ -119,8 +119,8 @@ class AccountDao extends PopulatedAppRemoteDatabaseDao<
                     .equalsExp(dbAccounts.remoteId),
               ),
             ]
-          : []),
-      ...(includeStatusRebloggedAccounts
+          : [],
+      ...includeStatusRebloggedAccounts
           ? [
               innerJoin(
                 statusRebloggedAccountsAlias,
@@ -128,8 +128,8 @@ class AccountDao extends PopulatedAppRemoteDatabaseDao<
                     .equalsExp(dbAccounts.remoteId),
               ),
             ]
-          : []),
-      ...(includeConversationAccounts
+          : [],
+      ...includeConversationAccounts
           ? [
               leftOuterJoin(
                 conversationAccountsAlias,
@@ -137,8 +137,8 @@ class AccountDao extends PopulatedAppRemoteDatabaseDao<
                     .equalsExp(dbAccounts.remoteId),
               ),
             ]
-          : []),
-      ...(includeChatAccounts
+          : [],
+      ...includeChatAccounts
           ? [
               leftOuterJoin(
                 chatAccountsAlias,
@@ -146,7 +146,7 @@ class AccountDao extends PopulatedAppRemoteDatabaseDao<
                     .equalsExp(dbAccounts.remoteId),
               ),
             ]
-          : []),
+          : [],
     ];
 
     return allJoins;

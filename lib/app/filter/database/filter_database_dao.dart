@@ -37,7 +37,7 @@ class FilterDao extends PopulatedAppRemoteDatabaseDao<
 
     var contextTypesStrings = contextTypes
         .map(
-          (visibility) => '${visibility.stringValue}',
+          (visibility) => visibility.stringValue,
         )
         .toList();
 

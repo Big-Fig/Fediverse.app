@@ -39,7 +39,7 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
 
     var targetAccounts = [account];
     var sendDataList = await createSendData(
-      to: '${targetAccounts.map((account) => '@${account.acct}').join(', ')}',
+      to: targetAccounts.map((account) => '@${account.acct}').join(', '),
       visibility: pleromaVisibility,
     );
 

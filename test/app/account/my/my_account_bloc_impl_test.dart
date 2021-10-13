@@ -528,10 +528,10 @@ void main() {
       false,
     );
     expect(
-      myAccountBloc.checkAccountIsMe((await AccountMockHelper.createTestAccount(
+      myAccountBloc.checkAccountIsMe(await AccountMockHelper.createTestAccount(
         seed: 'seed3',
         remoteId: myAccount.remoteId,
-      ))),
+      )),
       true,
     );
   });

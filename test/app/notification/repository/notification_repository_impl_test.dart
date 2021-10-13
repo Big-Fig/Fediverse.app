@@ -726,7 +726,7 @@ void main() {
           .copyWith(remoteId: 'remoteId3'),
     );
 
-    var actualList = (await query.get());
+    var actualList = await query.get();
     expect(actualList.length, 3);
 
     expect(
@@ -778,7 +778,7 @@ void main() {
           .copyWith(remoteId: 'remoteId3'),
     );
 
-    var actualList = (await query.get());
+    var actualList = await query.get();
     expect(actualList.length, 3);
 
     expect(
@@ -831,7 +831,7 @@ void main() {
           .copyWith(remoteId: 'remoteId3'),
     );
 
-    var actualList = (await query.get());
+    var actualList = await query.get();
     expect(actualList.length, 1);
 
     expect(
@@ -878,7 +878,7 @@ void main() {
             .copyWith(createdAt: DateTime(3)),
       );
 
-      var actualList = (await query.get());
+      var actualList = await query.get();
       expect(actualList.length, 1);
 
       expect(
@@ -890,11 +890,11 @@ void main() {
 
   test('countUnread', () async {
     expect(
-      (await notificationRepository.calculateCount(
+      await notificationRepository.calculateCount(
         filters: NotificationRepositoryFilters.only(
           onlyUnread: true,
         ),
-      )),
+      ),
       0,
     );
     await NotificationRepositoryMockHelper.insertDbNotification(
@@ -910,29 +910,29 @@ void main() {
     );
 
     expect(
-      (await notificationRepository.calculateCount(
+      await notificationRepository.calculateCount(
         filters: NotificationRepositoryFilters.only(
           onlyWithType: UnifediApiNotificationType.reblogValue,
           onlyUnread: true,
         ),
-      )),
+      ),
       0,
     );
     expect(
-      (await notificationRepository.calculateCount(
+      await notificationRepository.calculateCount(
         filters: NotificationRepositoryFilters.only(
           onlyWithType: UnifediApiNotificationType.followValue,
           onlyUnread: true,
         ),
-      )),
+      ),
       1,
     );
     expect(
-      (await notificationRepository.calculateCount(
+      await notificationRepository.calculateCount(
         filters: NotificationRepositoryFilters.only(
           onlyUnread: true,
         ),
-      )),
+      ),
       1,
     );
 
@@ -949,29 +949,29 @@ void main() {
     );
 
     expect(
-      (await notificationRepository.calculateCount(
+      await notificationRepository.calculateCount(
         filters: NotificationRepositoryFilters.only(
           onlyWithType: UnifediApiNotificationType.reblogValue,
           onlyUnread: true,
         ),
-      )),
+      ),
       0,
     );
     expect(
-      (await notificationRepository.calculateCount(
+      await notificationRepository.calculateCount(
         filters: NotificationRepositoryFilters.only(
           onlyWithType: UnifediApiNotificationType.followValue,
           onlyUnread: true,
         ),
-      )),
+      ),
       1,
     );
     expect(
-      (await notificationRepository.calculateCount(
+      await notificationRepository.calculateCount(
         filters: NotificationRepositoryFilters.only(
           onlyUnread: true,
         ),
-      )),
+      ),
       1,
     );
 
@@ -988,29 +988,29 @@ void main() {
     );
 
     expect(
-      (await notificationRepository.calculateCount(
+      await notificationRepository.calculateCount(
         filters: NotificationRepositoryFilters.only(
           onlyWithType: UnifediApiNotificationType.reblogValue,
           onlyUnread: true,
         ),
-      )),
+      ),
       1,
     );
     expect(
-      (await notificationRepository.calculateCount(
+      await notificationRepository.calculateCount(
         filters: NotificationRepositoryFilters.only(
           onlyWithType: UnifediApiNotificationType.followValue,
           onlyUnread: true,
         ),
-      )),
+      ),
       1,
     );
     expect(
-      (await notificationRepository.calculateCount(
+      await notificationRepository.calculateCount(
         filters: NotificationRepositoryFilters.only(
           onlyUnread: true,
         ),
-      )),
+      ),
       2,
     );
   });

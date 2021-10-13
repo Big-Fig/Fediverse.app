@@ -115,7 +115,7 @@ class ChatSelectionBloc extends DisposableOwner implements IChatSelectionBloc {
       chatMessageText += ' ';
       chatMessageText += '(${chatMessage.account?.displayName ?? ''})';
       chatMessageText += ' ';
-      chatMessageText += '${_dateFormat.format(chatMessage.createdAt)}';
+      chatMessageText += _dateFormat.format(chatMessage.createdAt);
       if (chatMessage.content?.isNotEmpty == true) {
         chatMessageText += '\n';
         chatMessageText += chatMessage.content!;

@@ -679,7 +679,7 @@ void main() {
           .copyWith(remoteId: 'remoteId3'),
     );
 
-    var actualList = (await query.get());
+    var actualList = await query.get();
     expect(actualList.length, 3);
 
     expect(actualList[0].toDbChat(), chat1);
@@ -719,7 +719,7 @@ void main() {
           .copyWith(remoteId: 'remoteId3'),
     );
 
-    var actualList = (await query.get());
+    var actualList = await query.get();
     expect(actualList.length, 3);
 
     expect(actualList[0].toDbChat(), chat3);
@@ -762,7 +762,7 @@ void main() {
           .copyWith(remoteId: 'remoteId3'),
     );
 
-    var actualList = (await query.get());
+    var actualList = await query.get();
     expect(actualList.length, 1);
 
     expect(actualList[0].toDbChat(), chat2);

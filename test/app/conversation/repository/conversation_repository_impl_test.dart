@@ -740,7 +740,7 @@ void main() {
       ),
     );
 
-    var actualList = (await query.get());
+    var actualList = await query.get();
     expect(
       actualList.length,
       3,
@@ -798,7 +798,7 @@ void main() {
       ),
     );
 
-    var actualList = (await query.get());
+    var actualList = await query.get();
     expect(actualList.length, 3);
 
     ConversationDatabaseMockHelper.expectDbConversation(
@@ -848,7 +848,7 @@ void main() {
           .copyWith(remoteId: 'remoteId3'),
     );
 
-    var actualList = (await query.get());
+    var actualList = await query.get();
     expect(actualList.length, 1);
 
     ConversationDatabaseMockHelper.expectDbConversation(

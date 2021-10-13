@@ -41,7 +41,7 @@ class _FediPaginationListLoadingErrorNotificationOverlayBuilderWidgetState
           _lastRefreshErrorShowedDateTime = now;
           IToastService.of(context, listen: false).showErrorToast(
             context: context,
-            content: '${_errorToString(paginationListLoadingError)}',
+            content: _errorToString(paginationListLoadingError),
             title: S.of(context).app_list_refresh_unableToFetch,
           );
         }
@@ -55,7 +55,7 @@ class _FediPaginationListLoadingErrorNotificationOverlayBuilderWidgetState
           _lastLoadMoreErrorShowedDateTime = now;
           IToastService.of(context, listen: false).showErrorToast(
             context: context,
-            content: '${_errorToString(paginationListLoadingError)}',
+            content: _errorToString(paginationListLoadingError),
             title: S.of(context).app_list_loading_state_failed,
           );
         }

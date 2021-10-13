@@ -408,7 +408,7 @@ _CombinedItemsResult<TItem>
     }
   } else {
     resultList = [
-      ...(mergedNewItems ?? []),
+      ...mergedNewItems ?? [],
       ...items,
     ];
   }

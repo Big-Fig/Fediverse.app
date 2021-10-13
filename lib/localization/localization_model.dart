@@ -23,7 +23,7 @@ class LocalizationLocale with _$LocalizationLocale implements IJsonObj {
   }) = _LocalizationLocale;
 
   String get localeString {
-    var result = '$languageCode';
+    var result = languageCode;
     if (scriptCode != null) {
       result += '_$scriptCode';
     }

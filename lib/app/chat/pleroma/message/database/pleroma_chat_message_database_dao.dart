@@ -75,9 +75,9 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
       });
 
   JoinedSelectStatement _findAllQuery() {
-    var sqlQuery = (select(db.dbChatMessages).join(
+    var sqlQuery = select(db.dbChatMessages).join(
       populateChatMessageJoin(),
-    ));
+    );
 
     return sqlQuery;
   }

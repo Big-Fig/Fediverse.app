@@ -59,7 +59,7 @@ void main() {
     );
 
     account1 =
-        (await AccountMockHelper.createTestAccount(seed: 'reportAccount1'));
+        await AccountMockHelper.createTestAccount(seed: 'reportAccount1');
     await accountRepository.upsertInRemoteType(account1.toUnifediApiAccount());
   });
 

@@ -53,12 +53,19 @@ linter:
     # Followed by more turned OFF lint rules as preferred/needed/desired and always
     # turning off at least conflicting rules.
 
+
     # Fedi not a library
     public_member_api_docs: false
+
+    # prefer single quotes
+    prefer_double_quotes: false
+
+    # always declare type, even dynamic
+    avoid_annotating_with_dynamic: false
+
     prefer_final_parameters: false
     avoid_types_on_closure_parameters: false
     parameter_assignments: false
-    avoid_annotating_with_dynamic: false
     avoid_bool_literals_in_conditional_expressions: false
     avoid_catches_without_on_clauses: false
     avoid_classes_with_only_static_members: false
@@ -91,14 +98,12 @@ linter:
     prefer_constructors_over_static_methods: false
     prefer_const_constructors_in_immutables: false
     sort_constructors_first: false
-    prefer_double_quotes: false
+
     always_specify_types: false
     use_key_in_widget_constructors: false
     prefer_final_locals: false
     prefer_expression_function_bodies: false
     prefer_final_in_for_each: false
-    unnecessary_parenthesis: false
-    unnecessary_string_interpolations: false
     prefer_interpolation_to_compose_strings: false
     prefer_int_literals: false
     use_is_even_rather_than_modulo: false

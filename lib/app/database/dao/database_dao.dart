@@ -15,7 +15,7 @@ abstract class DatabaseDao<
 
   DatabaseDao(AppDatabase db) : super(db);
 
-  SimpleSelectStatement<TableDsl, DbItem> startSelectQuery() => (select(table));
+  SimpleSelectStatement<TableDsl, DbItem> startSelectQuery() => select(table);
 
   Future<int> upsert({
     required Insertable<DbItem> entity,
@@ -170,7 +170,7 @@ abstract class DatabaseDao<
       ).map(table.mapFromRow);
 
   String createOffsetContent(int? offset) =>
-      (offset != null ? ' OFFSET :offset' : '');
+      offset != null ? ' OFFSET :offset' : '';
 
   Future<DbItem?> findById(DbId id) => findByIdSelectable(id).getSingleOrNull();
 

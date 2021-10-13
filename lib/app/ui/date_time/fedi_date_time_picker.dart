@@ -532,7 +532,7 @@ class _DatePickerState extends State<FediDatePickerComponent> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
           FediPrimaryFilledTextButtonWithBorder(
-            '$done',
+            done,
             onPressed: () {
               Navigator.pop(context, widget.pickerModel!.finalTime());
               if (widget.onConfirm != null) {
@@ -543,7 +543,7 @@ class _DatePickerState extends State<FediDatePickerComponent> {
           ),
           if (widget.isDeletePossible)
             FediTransparentTextButtonWithBorder(
-              '$delete',
+              delete,
               color: IFediUiColorTheme.of(context).primary,
               onPressed: () {
                 if (widget.onDelete != null) {
@@ -554,7 +554,7 @@ class _DatePickerState extends State<FediDatePickerComponent> {
               expanded: false,
             ),
           FediTransparentTextButtonWithBorder(
-            '$cancel',
+            cancel,
             color: IFediUiColorTheme.of(context).darkGrey,
             onPressed: () {
               Navigator.pop(context);

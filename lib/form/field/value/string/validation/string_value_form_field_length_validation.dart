@@ -41,7 +41,7 @@ class StringValueFormFieldLengthValidationError
         var length = currentValue?.length ?? 0;
         bool moreThanMin;
         if (minLength != null) {
-          moreThanMin = length >= (minLength);
+          moreThanMin = length >= minLength;
         } else {
           moreThanMin = true;
         }

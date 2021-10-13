@@ -169,7 +169,7 @@ abstract class PostMessageBloc extends DisposableOwner
     var textIsNotEmpty = inputText?.trim().isEmpty != true;
     var mediaAttached = mediaAttachmentBlocs?.isEmpty != true;
 
-    return (textIsNotEmpty || mediaAttached)
+    return textIsNotEmpty || mediaAttached
         // && isAllAttachedMediaUploaded!
         ;
   }

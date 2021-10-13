@@ -40,7 +40,7 @@ Future<DurationPickerResult> showDurationPicker({
         (minDuration == null || pickedDuration > minDuration)) {
       resultDuration = pickedDuration;
     } else {
-      if ((maxDuration == null || pickedDuration > maxDuration)) {
+      if (maxDuration == null || pickedDuration > maxDuration) {
         resultDuration = maxDuration;
       } else {
         resultDuration = minDuration;

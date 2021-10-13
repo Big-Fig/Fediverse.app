@@ -327,7 +327,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
               goToNewPostStatusPageWithInitial(
                 parentContext,
                 initialText:
-                    (status.content?.extractRawStringFromHtmlString() ?? ''),
+                    status.content?.extractRawStringFromHtmlString() ?? '',
                 initialSubject:
                     status.spoilerText?.extractRawStringFromHtmlString(),
                 initialMediaAttachments: reuploadedMediaAttachments

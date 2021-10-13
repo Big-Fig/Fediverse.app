@@ -80,7 +80,7 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
   @override
   Stream<List<int>> get loadedPageIndexesSortedByIndexStream =>
       pagesSubject.stream
-          .map((list) => list.map(((page) => page.pageIndex)).toList());
+          .map((list) => list.map((page) => page.pageIndex).toList());
 
   @override
   List<TPage> get loadedPagesSortedByIndex => pagesSubject.value;

@@ -342,29 +342,29 @@ void main() {
 
     await FilterRepositoryMockHelper.insertDbFilter(
       filterRepository,
-      (await FilterDatabaseMockHelper.createTestDbFilter(
+      await FilterDatabaseMockHelper.createTestDbFilter(
         seed: 'seed1',
         expiresAt: null,
-      )),
+      ),
     );
 
     expect((await query.get()).length, 1);
     await FilterRepositoryMockHelper.insertDbFilter(
       filterRepository,
-      (await FilterDatabaseMockHelper.createTestDbFilter(
+      await FilterDatabaseMockHelper.createTestDbFilter(
         seed: 'seed2',
         expiresAt: DateTime(3000),
-      )),
+      ),
     );
 
     expect((await query.get()).length, 2);
 
     await FilterRepositoryMockHelper.insertDbFilter(
       filterRepository,
-      (await FilterDatabaseMockHelper.createTestDbFilter(
+      await FilterDatabaseMockHelper.createTestDbFilter(
         seed: 'seed3',
         expiresAt: DateTime(1990),
-      )),
+      ),
     );
 
     expect((await query.get()).length, 2);
