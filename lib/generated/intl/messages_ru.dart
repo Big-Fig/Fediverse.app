@@ -1533,6 +1533,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Запись удалена"),
         "app_status_draft_edit_title":
             MessageLookupByLibrary.simpleMessage("Рекдактировать"),
+        "app_status_draft_error_cantSaveNotUploadedMedia":
+            MessageLookupByLibrary.simpleMessage(
+                "Невозможно сохранить черновик с не загруженными на сервер файлами"),
         "app_status_draft_state_alreadyPosted":
             MessageLookupByLibrary.simpleMessage("Уже опубликовано"),
         "app_status_draft_state_canceled":

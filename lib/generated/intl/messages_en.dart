@@ -1511,6 +1511,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Status deleted"),
         "app_status_draft_edit_title":
             MessageLookupByLibrary.simpleMessage("Edit Draft"),
+        "app_status_draft_error_cantSaveNotUploadedMedia":
+            MessageLookupByLibrary.simpleMessage(
+                "Can\'t save draft with not uploaded media"),
         "app_status_draft_state_alreadyPosted":
             MessageLookupByLibrary.simpleMessage("Already posted"),
         "app_status_draft_state_canceled":

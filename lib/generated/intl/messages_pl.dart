@@ -1544,6 +1544,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Usunięto wpis"),
         "app_status_draft_edit_title":
             MessageLookupByLibrary.simpleMessage("Edytuj szkic"),
+        "app_status_draft_error_cantSaveNotUploadedMedia":
+            MessageLookupByLibrary.simpleMessage(
+                "Nie można zapisać wersji roboczej z nieprzesłanymi multimediami"),
         "app_status_draft_state_alreadyPosted":
             MessageLookupByLibrary.simpleMessage("Już opyblikowano"),
         "app_status_draft_state_canceled":

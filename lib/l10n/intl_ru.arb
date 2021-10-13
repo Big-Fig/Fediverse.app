@@ -1677,5 +1677,7 @@
   "app_media_upload_metadata_dialog_field_description_hint": "Описание",
   "@app_media_upload_metadata_dialog_field_description_hint": {},
   "app_media_description_title": "Описание",
-  "@app_media_description_title": {}
+  "@app_media_description_title": {},
+  "app_status_draft_error_cantSaveNotUploadedMedia": "Невозможно сохранить черновик с не загруженными на сервер файлами",
+  "@app_status_draft_error_cantSaveNotUploadedMedia": {}
 }

@@ -1674,5 +1674,7 @@
   "app_media_upload_metadata_dialog_field_description_hint": "Opis",
   "@app_media_upload_metadata_dialog_field_description_hint": {},
   "app_media_description_title": "Opis",
-  "@app_media_description_title": {}
+  "@app_media_description_title": {},
+  "app_status_draft_error_cantSaveNotUploadedMedia": "Nie można zapisać wersji roboczej z nieprzesłanymi multimediami",
+  "@app_status_draft_error_cantSaveNotUploadedMedia": {}
 }

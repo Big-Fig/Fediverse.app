@@ -3046,6 +3046,16 @@ class S {
     );
   }
 
+  /// `Can't save draft with not uploaded media`
+  String get app_status_draft_error_cantSaveNotUploadedMedia {
+    return Intl.message(
+      'Can\'t save draft with not uploaded media',
+      name: 'app_status_draft_error_cantSaveNotUploadedMedia',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Canceled`
   String get app_status_draft_state_canceled {
     return Intl.message(

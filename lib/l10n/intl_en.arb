@@ -597,6 +597,8 @@
   "@app_search_field_input_hint": {},
   "app_account_my_statuses_draft_title": "Drafts",
   "@app_account_my_statuses_draft_title": {},
+  "app_status_draft_error_cantSaveNotUploadedMedia": "Can't save draft with not uploaded media",
+  "@app_status_draft_error_cantSaveNotUploadedMedia": {},
   "app_status_draft_state_canceled": "Canceled",
   "@app_status_draft_state_canceled": {},
   "app_status_draft_state_alreadyPosted": "Already posted",
