@@ -42,14 +42,14 @@ void main() {
   });
 
   test('items', () async {
-    expect(paginationListBloc.items, []);
+    expect(paginationListBloc.items, <PaginationItemTest>[]);
 
     var listened;
     var subscription = paginationListBloc.itemsStream.listen((newValue) {
       listened = newValue;
     });
     await Future.delayed(Duration(milliseconds: 1));
-    expect(listened, []);
+    expect(listened, <PaginationItemTest>[]);
 
     await paginationListBloc.refreshWithoutController();
 

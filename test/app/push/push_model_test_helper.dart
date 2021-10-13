@@ -12,7 +12,7 @@ class PushModelMockHelper {
         notification: createTestPushNotification(
           seed: seed,
         ),
-        data: {
+        data: <String, String>{
           'seed1': seed + '1',
           'seed2': seed + '2',
         },

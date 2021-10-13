@@ -10,7 +10,7 @@ var _logger = Logger('memory_local_preferences_service_impl.dart');
 
 class MemoryLocalPreferencesService extends AsyncInitLoadingBloc
     implements ILocalPreferencesService {
-  final Map<String, dynamic> preferences = {};
+  final Map<String, dynamic> preferences = <String, dynamic>{};
 
   final Map<String, List<ValueCallback>> listeners = {};
 

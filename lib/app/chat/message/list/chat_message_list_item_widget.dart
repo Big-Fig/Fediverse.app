@@ -446,7 +446,7 @@ class _ChatMessageListItemMediaContentWidget extends StatelessWidget {
                 if (previous != null &&
                     listEquals(
                       previous.mediaAttachments,
-                      mediaAttachments ?? [],
+                      mediaAttachments ?? <IUnifediApiMediaAttachment>[],
                     )) {
                   return previous;
                 } else {
