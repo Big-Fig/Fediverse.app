@@ -133,7 +133,7 @@ void main() {
 
     var newValue = 'newAcct';
 
-    var listened;
+    String? listened;
 
     var subscription = myAccountBloc.acctStream.listen((newValue) {
       listened = newValue;
@@ -153,7 +153,7 @@ void main() {
 
     var newValue = 'newNote';
 
-    var listened;
+    String? listened;
 
     var subscription = myAccountBloc.noteStream.listen((newValue) {
       listened = newValue;
@@ -173,7 +173,7 @@ void main() {
 
     var newValue = 'newHeader';
 
-    var listened;
+    String? listened;
 
     var subscription = myAccountBloc.headerStream.listen((newValue) {
       listened = newValue;
@@ -193,7 +193,7 @@ void main() {
 
     var newValue = 'newAvatar';
 
-    var listened;
+    String? listened;
 
     var subscription = myAccountBloc.avatarStream.listen((newValue) {
       listened = newValue;
@@ -213,7 +213,7 @@ void main() {
 
     var newValue = 'newDisplayName';
 
-    var listened;
+    String? listened;
 
     var subscription = myAccountBloc.displayNameStream.listen((newValue) {
       listened = newValue;
@@ -239,7 +239,7 @@ void main() {
       ),
     ];
 
-    var listened;
+    List<IUnifediApiField>? listened;
 
     var subscription = myAccountBloc.fieldsStream.listen((newValue) {
       listened = newValue;
@@ -260,7 +260,7 @@ void main() {
 
     var newValue = myAccount.statusesCount! + 1;
 
-    var listened;
+    int? listened;
 
     var subscription = myAccountBloc.statusesCountStream.listen((newValue) {
       listened = newValue;
@@ -280,7 +280,7 @@ void main() {
 
     var newValue = myAccount.statusesCount! + 1;
 
-    var listened;
+    int? listened;
 
     var subscription = myAccountBloc.statusesCountStream.listen((newValue) {
       listened = newValue;
@@ -300,7 +300,7 @@ void main() {
 
     var newValue = myAccount.followingCount! + 1;
 
-    var listened;
+    int? listened;
 
     var subscription = myAccountBloc.followingCountStream.listen((newValue) {
       listened = newValue;
@@ -320,7 +320,7 @@ void main() {
 
     var newValue = myAccount.followersCount! + 1;
 
-    var listened;
+    int? listened;
 
     var subscription = myAccountBloc.followersCountStream.listen((newValue) {
       listened = newValue;
@@ -347,7 +347,7 @@ void main() {
 
     var newDisplayNameValue = 'newDisplayName';
 
-    var listened;
+    EmojiText? listened;
 
     var subscription =
         myAccountBloc.displayNameEmojiTextStream.listen((newValue) {

@@ -30,7 +30,7 @@ class ConversationChatMessageCachedListBloc extends DisposableOwner
       conversationChatStatusListBloc.unifediApi;
 
   @override
-  Future<bool> refreshItemsFromRemoteForPage({
+  Future<void> refreshItemsFromRemoteForPage({
     required int? limit,
     required IConversationChatMessage? newerThan,
     required IConversationChatMessage? olderThan,
@@ -40,21 +40,11 @@ class ConversationChatMessageCachedListBloc extends DisposableOwner
         '\t newerThan = $newerThan'
         '\t olderThan = $olderThan');
 
-    var remoteMessages =
-        await conversationChatStatusListBloc.refreshItemsFromRemoteForPage(
+    await conversationChatStatusListBloc.refreshItemsFromRemoteForPage(
       olderThan: olderThan?.status,
       newerThan: newerThan?.status,
       limit: limit,
     );
-
-    if (remoteMessages != null) {
-      return true;
-    } else {
-      _logger.severe(() => 'error during refreshItemsFromRemoteForPage: '
-          'messages is null');
-
-      return false;
-    }
   }
 
   @override

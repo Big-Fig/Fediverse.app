@@ -39,6 +39,7 @@ void main() {
       driver = await FlutterDriver.connect();
       // get the localizations for the current locale
       instanceHost = await driver.requestData(null);
+      // ignore: avoid_print
       print('instanceHost=$instanceHost');
     });
 
@@ -125,7 +126,7 @@ void main() {
         await driver.tap(hostTextField);
 
         await driver.enterText('mastodon.social');
-
+        // ignore: avoid_print
         print('before joinUnifediApiAccessWidgetKey');
 
         await driver.waitFor(
@@ -134,7 +135,7 @@ void main() {
                 .joinUnifediApiAccessWidgetKey,
           ),
         );
-
+        // ignore: avoid_print
         print('before login');
 
         await driver.tap(
@@ -142,13 +143,14 @@ void main() {
             JoinUnifediApiAccessWidgetKeys.loginButtonKey,
           ),
         );
-
+        // ignore: avoid_print
         print('after login');
 
         await driver.waitFor(
           find.byType('HomePageBottomNavigationBarWidget'),
           // timeout: Duration(seconds: 5),
         );
+        // ignore: avoid_print
         print('after test');
 
         await driver.waitFor(
@@ -157,6 +159,7 @@ void main() {
           ),
         );
 
+        // ignore: avoid_print
         print('after wait navBarWidget');
 
         await screenshot(driver, config, '4_Timelines');

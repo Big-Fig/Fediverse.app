@@ -89,9 +89,10 @@ class ChatMessageListWidget<T extends IChatMessage>
         return AsyncSmartRefresherHelper.doAsyncRefresh(
           controller: refreshController,
           action: () async {
-            var success;
+            bool success;
             try {
-              success = await additionalPreRefreshAction(context);
+              await additionalPreRefreshAction(context);
+              success = true;
             } catch (e, stackTrace) {
               success = false;
               _logger.severe(

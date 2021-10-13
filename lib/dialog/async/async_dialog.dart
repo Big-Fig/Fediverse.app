@@ -47,7 +47,7 @@ Future<AsyncDialogResult<T?>> doAsyncOperationWithDialog<T>({
     progressDialog.show<void>(context);
   }
 
-  var error;
+  dynamic error;
   ErrorData? errorData;
 
   var needRethrow = true;

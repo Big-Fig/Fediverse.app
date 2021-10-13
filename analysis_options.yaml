@@ -35,11 +35,6 @@ analyzer:
     # Allow having TODOs in the code.
     todo: ignore
 
-
-    # those rules disables only here
-    # it is not possible to disable via lint:rules
-    implicit_dynamic_variable: ignore
-
 # LINTER Preferences
 #
 # Explicitly disable only the rules we do not want.
@@ -58,11 +53,11 @@ linter:
     # Followed by more turned OFF lint rules as preferred/needed/desired and always
     # turning off at least conflicting rules.
 
+    # Fedi not a library
     public_member_api_docs: false
     prefer_final_parameters: false
     avoid_types_on_closure_parameters: false
     parameter_assignments: false
-    avoid_print: false
     avoid_annotating_with_dynamic: false
     avoid_bool_literals_in_conditional_expressions: false
     avoid_catches_without_on_clauses: false

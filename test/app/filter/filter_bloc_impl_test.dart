@@ -104,7 +104,7 @@ void main() {
       filter.isExpired,
     );
 
-    var listened;
+    bool? listened;
 
     var subscription = filterBloc.isExpiredStream.listen((newValue) {
       listened = newValue;

@@ -386,8 +386,6 @@ class RichNotificationsServiceBackgroundMessage extends AsyncInitLoadingBloc
 Future richNotificationsFirebaseMessagingBackgroundHandler(
   RemoteMessage message,
 ) async {
-  print('richNotificationsFirebaseMessagingBackgroundHandler');
-
   var notification = message.notification;
   var data = message.data;
   _logger.finest(
@@ -967,7 +965,7 @@ class _NotificationPayloadData {
     var notificationJsonString =
         payload[_notificationContentPayloadNotificationJsonKey]!;
     // TODO: check. value? wtf
-    var notificationJson = jsonDecode(notificationJsonString)['value'];
+    dynamic notificationJson = jsonDecode(notificationJsonString)['value'];
 
     var unifediApiNotification = UnifediApiNotification.fromJson(
       notificationJson as Map<String, dynamic>,

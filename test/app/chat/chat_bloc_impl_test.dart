@@ -192,7 +192,7 @@ void main() {
 
     var newValue = DateTime(1990);
 
-    var listened;
+    DateTime? listened;
 
     var subscription = chatBloc.updatedAtStream.listen((newValue) {
       listened = newValue;

@@ -64,7 +64,7 @@ class _FediPaginationListLoadingErrorNotificationOverlayBuilderWidgetState
   }
 
   String _errorToString(PaginationListLoadingError paginationListLoadingError) {
-    var error = paginationListLoadingError.error;
+    dynamic error = paginationListLoadingError.error;
     if (error is CantUpdateFromNetworkException) {
       return S.of(context).app_list_cantUpdateFromNetwork;
     } else {

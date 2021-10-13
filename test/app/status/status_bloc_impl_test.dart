@@ -203,7 +203,7 @@ Future<void> main() async {
 
     var newValue = 'newContent';
 
-    var listened;
+    String? listened;
 
     var subscription = statusBloc.contentStream.listen((newValue) {
       listened = newValue;
@@ -242,7 +242,7 @@ Future<void> main() async {
   test('contentHtmlWithEmojis', () async {
     var newValue = 'newContent :emoji: :emoji1: :emoji2:';
 
-    var listened;
+    EmojiText? listened;
 
     var subscription = statusBloc.contentWithEmojisStream.listen((newValue) {
       listened = newValue;
@@ -365,7 +365,7 @@ Future<void> main() async {
       type: UnifediApiCardType.linkValue.stringValue,
     );
 
-    var listened;
+    IUnifediApiCard? listened;
 
     var subscription = statusBloc.cardStream.listen((newValue) {
       listened = newValue;

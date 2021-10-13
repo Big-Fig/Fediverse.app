@@ -15,12 +15,15 @@ class LoggingService extends AsyncInitLoadingBloc implements ILoggingService {
       // if (true) {
       Logger.root.level = Level.ALL; // defaults to Level.INFO
       Logger.root.onRecord.listen((record) {
+        // ignore: avoid_print
         print('${record.level.name}(${record.loggerName}): ${record.time}: '
             '${record.message}');
         if (record.error != null) {
+          // ignore: avoid_print
           print('\n${record.error}');
         }
         if (record.stackTrace != null) {
+          // ignore: avoid_print
           print('\n${record.stackTrace}');
         }
       });

@@ -63,7 +63,7 @@ class HiveMockHelper {
     var box = _getBox(name: boxName);
     await box.put(key, obj);
 
-    var objFromHive = box.get(key);
+    dynamic objFromHive = box.get(key);
 
     expect(obj, objFromHive);
   }

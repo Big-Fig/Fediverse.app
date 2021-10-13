@@ -284,8 +284,8 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
       await currentInstanceBlocOld.dispose();
 
       for (var i = 0; i < hiveLocalPreferencesService._box.length; i++) {
-        var keyAt = hiveLocalPreferencesService._box.keyAt(i);
-        var at = hiveLocalPreferencesService._box.getAt(i);
+        dynamic keyAt = hiveLocalPreferencesService._box.keyAt(i);
+        dynamic at = hiveLocalPreferencesService._box.getAt(i);
         await _box.put(keyAt, at);
       }
 
