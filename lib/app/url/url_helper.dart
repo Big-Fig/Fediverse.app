@@ -178,7 +178,6 @@ class UrlHelper {
       _logger.finest(() => 'handleUrlClick launched $launched $url');
     } else {
       await FediSimpleAlertDialog(
-        context: context,
         title: S.of(context).link_error_dialog_title,
         contentText: S.of(context).link_error_dialog_content(url),
       ).show<void>(context);

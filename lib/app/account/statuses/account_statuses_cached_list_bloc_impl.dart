@@ -7,9 +7,7 @@ import 'package:fedi/app/filter/repository/filter_repository_model.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_model.dart';
-import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc_impl.dart';
-import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
@@ -21,6 +19,7 @@ abstract class AccountStatusesCachedListBloc extends AsyncInitLoadingBloc
   final IStatusRepository statusRepository;
   final IFilterRepository filterRepository;
   final IMyAccountBloc myAccountBloc;
+
   // ignore: avoid-late-keyword
   late List<IFilter> filters;
 
@@ -36,16 +35,7 @@ abstract class AccountStatusesCachedListBloc extends AsyncInitLoadingBloc
     required this.statusRepository,
     required this.filterRepository,
     required this.myAccountBloc,
-    required IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc,
-  }) : super() {
-    webSocketsHandlerManagerBloc
-        .listenAccountChannel(
-          handlerType: WebSocketsChannelHandlerType.foregroundValue,
-          accountId: account.remoteId,
-          notification: false,
-        )
-        .disposeWith(this);
-  }
+  });
 
   @override
   IUnifediApiService get unifediApi => unifediApiAccountService;

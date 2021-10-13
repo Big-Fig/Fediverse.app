@@ -9,7 +9,6 @@ import 'package:fedi/app/status/list/cached/status_cached_list_bloc_proxy_provid
 import 'package:fedi/app/status/repository/status_repository.dart';
 import 'package:fedi/app/status/repository/status_repository_model.dart';
 import 'package:fedi/app/status/status_model.dart';
-import 'package:fedi/app/web_sockets/web_sockets_handler_manager_bloc.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -37,11 +36,9 @@ class AccountStatusesWithRepliesCachedListBloc
     required IStatusRepository statusRepository,
     required IFilterRepository filterRepository,
     required IMyAccountBloc myAccountBloc,
-    required IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc,
   }) : super(
           account: account,
           unifediApiAccountService: unifediApiAccountService,
-          webSocketsHandlerManagerBloc: webSocketsHandlerManagerBloc,
           statusRepository: statusRepository,
           filterRepository: filterRepository,
           myAccountBloc: myAccountBloc,
@@ -58,10 +55,6 @@ class AccountStatusesWithRepliesCachedListBloc
       account: account,
       unifediApiAccountService:
           Provider.of<IUnifediApiAccountService>(context, listen: false),
-      webSocketsHandlerManagerBloc: IWebSocketsHandlerManagerBloc.of(
-        context,
-        listen: false,
-      ),
       statusRepository: IStatusRepository.of(
         context,
         listen: false,

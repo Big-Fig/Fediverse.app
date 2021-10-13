@@ -63,22 +63,24 @@ linter:
     # always declare type, even dynamic
     avoid_annotating_with_dynamic: false
 
+    # code metrics have better long line rules
+    lines_longer_than_80_chars: false
+
     prefer_final_parameters: false
     avoid_types_on_closure_parameters: false
     parameter_assignments: false
     avoid_bool_literals_in_conditional_expressions: false
     avoid_catches_without_on_clauses: false
     avoid_classes_with_only_static_members: false
-    avoid_unused_constructor_parameters: false
-    lines_longer_than_80_chars: false
-    avoid_dynamic_calls: false
+
+
     avoid_equals_and_hash_code_on_mutable_classes: false
     avoid_positional_boolean_parameters: false
     avoid_redundant_argument_values: false
     avoid_field_initializers_in_const_classes: false
     avoid_function_literals_in_foreach_calls: false
     library_private_types_in_public_api: false
-    
+
     diagnostic_describe_all_properties: false
     prefer_relative_imports: false
     unnecessary_lambdas: false

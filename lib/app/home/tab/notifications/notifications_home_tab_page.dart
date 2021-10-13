@@ -218,7 +218,6 @@ class _NotificationsHomeTabPageBodyHeaderMenuButtonWidget
       FediIcons.menu_vertical,
       onPressed: () {
         FediActionsDialog(
-          context: context,
           title: S.of(context).app_notification_all_dialog_title,
           actions: [
             if (configService.pushFcmEnabled)

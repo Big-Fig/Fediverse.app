@@ -50,7 +50,7 @@ class FediListSmartRefresherWidget extends StatelessWidget {
     this.scrollDirection,
     this.scrollController,
     required this.isNeedToAddPaddingForUiTests,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -58,7 +58,6 @@ Future showPostStatusScheduleDialog({
         now.add(IPostStatusBloc.requiredDurationToScheduleDateTime);
     if (newTime != null && newTime.isBefore(minDateTimeToSchedule)) {
       await FediSimpleAlertDialog(
-        context: context,
         title: S
             .of(context)
             .app_status_post_schedule_error_notInFuture_dialog_title,

@@ -1,6 +1,4 @@
 import 'package:fedi/app/account/account_model.dart';
-import 'package:fedi/app/account/my/my_account_bloc.dart';
-import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository_model.dart';
@@ -19,14 +17,7 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
     required this.chatRepository,
     required this.chatMessageRepository,
     required this.pleromaApiChatService,
-    required IMyAccountBloc myAccountBloc,
-    required IAccountRepository accountRepository,
-    required IUnifediApiAccountService unifediApiAccountService,
-  }) : super(
-          myAccountBloc: myAccountBloc,
-          accountRepository: accountRepository,
-          unifediApiAccountService: unifediApiAccountService,
-        );
+  });
 
   @override
   Future<bool> actuallyShareToAccount(IAccount account) async {

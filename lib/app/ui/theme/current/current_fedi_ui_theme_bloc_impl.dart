@@ -17,8 +17,6 @@ class CurrentFediUiThemeBloc extends DisposableOwner
 
   CurrentFediUiThemeBloc({
     required this.uiSettingsBloc,
-    required IFediUiTheme lightTheme,
-    required IFediUiTheme darkTheme,
     required this.systemBrightnessHandlerBloc,
     required this.availableThemes,
   });

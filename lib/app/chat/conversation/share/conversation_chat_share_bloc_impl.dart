@@ -24,14 +24,9 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
     required this.statusRepository,
     required this.unifediApiConversationService,
     required this.unifediApiStatusService,
-    required IUnifediApiAccountService unifediApiAccountService,
     required this.myAccountBloc,
     required this.accountRepository,
-  }) : super(
-          myAccountBloc: myAccountBloc,
-          accountRepository: accountRepository,
-          unifediApiAccountService: unifediApiAccountService,
-        );
+  });
 
   @override
   Future<bool> actuallyShareToAccount(IAccount account) async {

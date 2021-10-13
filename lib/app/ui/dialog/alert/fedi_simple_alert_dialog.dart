@@ -8,7 +8,6 @@ class FediSimpleAlertDialog extends FediBaseAlertDialog {
   final DialogActionCallback? action;
 
   FediSimpleAlertDialog({
-    required BuildContext context,
     String? title,
     String? contentText,
     this.action,

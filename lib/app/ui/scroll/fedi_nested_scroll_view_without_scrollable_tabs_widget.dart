@@ -17,7 +17,6 @@ class FediNestedScrollViewWithoutNestedScrollableTabsWidget
     required this.providerBuilder,
     required this.contentBuilder,
     required this.overlayBuilder,
-    bool unfocusOnScroll = true,
   }) : super(
           onLongScrollUpTopOverlayWidget: onLongScrollUpTopOverlayWidget,
           topSliverWidgets: topSliverWidgets,

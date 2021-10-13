@@ -56,7 +56,6 @@ class PostMessageContentWidget extends StatelessWidget {
               );
             } else {
               await FediSimpleAlertDialog(
-                context: context,
                 title: S.of(context).app_chat_post_error_empty_dialog_title,
               ).show<void>(context);
             }

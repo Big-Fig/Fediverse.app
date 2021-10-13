@@ -179,6 +179,7 @@ class _MentionSpecialText extends SpecialText {
           flag,
           ' ',
           textStyle,
+          onTap: onTap,
         );
 
   @override

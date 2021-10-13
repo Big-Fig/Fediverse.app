@@ -528,8 +528,6 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
 
     var currentFediUiThemeBloc = CurrentFediUiThemeBloc(
       uiSettingsBloc: uiSettingsBloc,
-      lightTheme: lightFediUiTheme,
-      darkTheme: darkFediUiTheme,
       systemBrightnessHandlerBloc: uiThemeSystemBrightnessBloc,
       availableThemes: [
         lightFediUiTheme,

@@ -319,7 +319,6 @@ class _ChatListItemDeleteActionWidget extends StatelessWidget {
       color: IFediUiColorTheme.of(context).error,
       onTap: () async {
         var success = await FediActionsDialog(
-          context: context,
           title: S.of(context).app_chat_action_delete_dialog_title,
           contentText: S.of(context).app_chat_action_delete_dialog_content,
           actions: [

@@ -966,7 +966,9 @@ class _NotificationPayloadData {
     var notificationJsonString =
         payload[_notificationContentPayloadNotificationJsonKey]!;
     // TODO: check. value? wtf
-    dynamic notificationJson = jsonDecode(notificationJsonString)['value'];
+    var notificationJsonParsed =
+        jsonDecode(notificationJsonString) as Map<String, dynamic>;
+    dynamic notificationJson = notificationJsonParsed['value'];
 
     var unifediApiNotification = UnifediApiNotification.fromJson(
       notificationJson as Map<String, dynamic>,

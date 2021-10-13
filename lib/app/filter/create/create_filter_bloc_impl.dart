@@ -1,8 +1,6 @@
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/access/current/current_access_bloc.dart';
-import 'package:fedi/app/account/my/my_account_bloc.dart';
-import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/filter/create/create_filter_bloc.dart';
 import 'package:fedi/app/filter/edit/edit_filter_bloc.dart';
 import 'package:fedi/app/filter/edit/edit_filter_bloc_impl.dart';
@@ -25,18 +23,6 @@ class CreateFilterBloc extends EditFilterBloc implements ICreateFilterBloc {
         listen: false,
       ),
       statusRepository: IStatusRepository.of(context, listen: false),
-      unifediApiAccountService: Provider.of<IUnifediApiAccountService>(
-        context,
-        listen: false,
-      ),
-      myAccountBloc: IMyAccountBloc.of(
-        context,
-        listen: false,
-      ),
-      accountRepository: IAccountRepository.of(
-        context,
-        listen: false,
-      ),
       timelinesHomeTabStorageBloc: ITimelinesHomeTabStorageBloc.of(
         context,
         listen: false,
@@ -90,9 +76,6 @@ class CreateFilterBloc extends EditFilterBloc implements ICreateFilterBloc {
   CreateFilterBloc({
     required IUnifediApiFilterService unifediApiFilterService,
     required IStatusRepository statusRepository,
-    required IMyAccountBloc myAccountBloc,
-    required IAccountRepository accountRepository,
-    required IUnifediApiAccountService unifediApiAccountService,
     required ITimelinesHomeTabStorageBloc timelinesHomeTabStorageBloc,
     required UnifediApiAccess currentInstance,
   }) : super(
@@ -100,9 +83,6 @@ class CreateFilterBloc extends EditFilterBloc implements ICreateFilterBloc {
           unifediApiFilterService: unifediApiFilterService,
           statusRepository: statusRepository,
           filter: null,
-          myAccountBloc: myAccountBloc,
-          accountRepository: accountRepository,
-          unifediApiAccountService: unifediApiAccountService,
           timelinesHomeTabStorageBloc: timelinesHomeTabStorageBloc,
           currentInstance: currentInstance,
         );

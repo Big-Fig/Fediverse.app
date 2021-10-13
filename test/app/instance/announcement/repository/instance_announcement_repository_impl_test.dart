@@ -369,7 +369,8 @@ void main() {
   });
 
   test(
-    'createQuery notNewerThanInstanceAnnouncement & newerThanInstanceAnnouncement',
+    'createQuery notNewerThanInstanceAnnouncement '
+    '& newerThanInstanceAnnouncement',
     () async {
       var query = instanceAnnouncementRepository.createQuery(
         filters: null,

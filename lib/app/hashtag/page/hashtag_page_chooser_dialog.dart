@@ -23,7 +23,6 @@ Future showHashtagPageChooserDialog({
     var localInstanceDomain = currentInstance.urlHost;
 
     return FediActionsDialog(
-      context: context,
       title:
           S.of(context).app_hashtag_remoteInstance_dialog_title(hashtag.name),
       actions: [

@@ -11,7 +11,6 @@ Future showChatMessagePendingActionsDialog({
   required IChatMessageBloc chatMessageBloc,
 }) {
   return FediActionsDialog(
-    context: context,
     title: S.of(context).app_chat_message_pending_actions_dialog_title,
     actions: [
       DialogAction(

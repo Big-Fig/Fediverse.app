@@ -119,7 +119,7 @@ class _FediListSmartRefresherRefreshIndicatorState
 
   @override
   void onOffsetChange(double offset) {
-    // ignore: non_bool_negation_expression
+    // ignore: non_bool_negation_expression, avoid_dynamic_calls
     if (!floating) {
       _valueAni.value = offset / configuration!.headerTriggerDistance;
       _positionController.value = offset / configuration!.headerTriggerDistance;

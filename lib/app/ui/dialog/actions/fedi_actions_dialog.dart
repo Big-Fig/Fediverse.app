@@ -9,7 +9,6 @@ class FediActionsDialog extends FediDialog {
   final String? contentText;
 
   FediActionsDialog({
-    required BuildContext context,
     required List<DialogAction> actions,
     required String title,
     this.contentText,

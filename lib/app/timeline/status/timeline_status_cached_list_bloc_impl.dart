@@ -188,12 +188,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
           );
           break;
         case TimelineType.account:
-          webSocketsListenerDisposable =
-              webSocketsHandlerManagerBloc.listenAccountChannel(
-            handlerType: handlerType,
-            accountId: timeline.onlyFromRemoteAccount!.id,
-            notification: false,
-          );
+          // nothing
           break;
       }
     }

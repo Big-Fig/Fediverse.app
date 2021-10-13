@@ -65,12 +65,10 @@ class PostStatusComposeInputWidget extends StatelessWidget {
             } else {
               if (postStatusBloc.pollBloc.isHaveAtLeastOneError) {
                 await FediSimpleAlertDialog(
-                  context: context,
                   title: S.of(context).app_status_post_error_poll_dialog_title,
                 ).show<void>(context);
               } else {
                 await FediSimpleAlertDialog(
-                  context: context,
                   title: S.of(context).app_status_post_error_empty_dialog_title,
                 ).show<void>(context);
               }

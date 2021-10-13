@@ -136,7 +136,8 @@ void main() {
   //
   //   await subscription.cancel();
   //
-  //   subscription = instanceAnnouncementBloc.isExpiredStream.listen((newValue) {
+  //   subscription = instanceAnnouncementBloc
+  //   .isExpiredStream.listen((newValue) {
   //     listened = newValue;
   //   });
   //

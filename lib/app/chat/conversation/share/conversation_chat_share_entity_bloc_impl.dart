@@ -39,7 +39,6 @@ class ConversationChatShareEntityBloc extends ConversationChatShareBloc
     required IUnifediApiStatusService unifediApiStatusService,
     required IMyAccountBloc myAccountBloc,
     required IAccountRepository accountRepository,
-    required IUnifediApiAccountService unifediApiAccountService,
   }) : super(
           conversationRepository: conversationRepository,
           statusRepository: statusRepository,
@@ -47,7 +46,6 @@ class ConversationChatShareEntityBloc extends ConversationChatShareBloc
           unifediApiStatusService: unifediApiStatusService,
           accountRepository: accountRepository,
           myAccountBloc: myAccountBloc,
-          unifediApiAccountService: unifediApiAccountService,
         );
 
   @override
@@ -180,10 +178,6 @@ class ConversationChatShareEntityBloc extends ConversationChatShareBloc
         statusRepository: IStatusRepository.of(context, listen: false),
         accountRepository: IAccountRepository.of(context, listen: false),
         myAccountBloc: IMyAccountBloc.of(context, listen: false),
-        unifediApiAccountService: Provider.of<IUnifediApiAccountService>(
-          context,
-          listen: false,
-        ),
         mediaAttachmentReuploadService: IMediaAttachmentReuploadService.of(
           context,
           listen: false,
