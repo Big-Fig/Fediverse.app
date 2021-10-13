@@ -154,7 +154,7 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       batchTransaction: null,
     );
 
-    return await dao.upsert(
+    return dao.upsert(
       entity: remoteItem.toDbNotification(unread: null),
     );
   }

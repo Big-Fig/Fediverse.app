@@ -78,7 +78,7 @@ linter:
     avoid_field_initializers_in_const_classes: false
     avoid_function_literals_in_foreach_calls: false
     library_private_types_in_public_api: false
-    cascade_invocations: false
+    
     diagnostic_describe_all_properties: false
     prefer_relative_imports: false
     unnecessary_lambdas: false
@@ -113,10 +113,10 @@ linter:
     prefer_null_aware_method_calls: false
     type_annotate_public_apis: false
     sort_pub_dependencies: false
-    unnecessary_await_in_return: false
+
     flutter_style_todos: false
     use_if_null_to_convert_nulls_to_bools: false
-    unnecessary_null_checks: false
+
     prefer_function_declarations_over_variables: false
     null_check_on_nullable_type_parameter: false
     prefer_initializing_formals: false

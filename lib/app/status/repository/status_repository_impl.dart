@@ -368,7 +368,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       isFromHomeTimeline: null,
     );
 
-    return await dao.upsert(
+    return dao.upsert(
       entity: remoteItem.toDbStatus(),
     );
   }
@@ -717,7 +717,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
         // ignore: unawaited_futures
         updateStatusTags(
           statusRemoteId: statusRemoteId,
-          tags: tags!,
+          tags: tags,
           batchTransaction: batchTransaction,
         );
       }

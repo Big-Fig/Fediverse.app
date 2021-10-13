@@ -1,3 +1,5 @@
+// ignore_for_file: cascade_invocations
+
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';

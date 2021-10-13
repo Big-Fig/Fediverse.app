@@ -100,6 +100,7 @@ class CachedPaginationListWithNewItemsMergeOverlayButton
 
         var scrollControllerBloc =
             IScrollControllerBloc.of(context, listen: false);
+        // ignore: cascade_invocations
         scrollControllerBloc.scrollToTop();
       },
       height: FediSizes.smallFilledButtonHeight,

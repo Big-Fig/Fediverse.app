@@ -116,6 +116,7 @@ class StatusCachedPaginationListMediaWidget
             .where(
           (mediaAttachment) => mediaAttachment.typeAsUnifediApi.isImageOrGif,
         );
+        // ignore: cascade_invocations
         mediaAttachments.forEach(
           (mediaAttachment) {
             statusesWithMediaAttachment.add(

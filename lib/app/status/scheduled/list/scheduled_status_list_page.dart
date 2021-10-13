@@ -30,6 +30,7 @@ class ScheduledStatusListPage extends StatelessWidget {
         successCallback: () {
           var cachedPaginationListWithNewItemsBloc =
               ICachedPaginationListWithNewItemsBloc.of(context, listen: false);
+          // ignore: cascade_invocations
           cachedPaginationListWithNewItemsBloc.refreshWithController();
         },
       );

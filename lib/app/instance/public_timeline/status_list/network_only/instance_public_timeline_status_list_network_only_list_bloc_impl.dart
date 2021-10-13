@@ -36,9 +36,7 @@ class InstancePublicTimelineStatusListNetworkOnlyListBloc
       timelineLocalPreferenceBloc: timelineLocalPreferenceBloc,
       instanceUri: instanceUri,
       unifediApiTimelineService: unifediApiTimelineService,
-    );
-
-    bloc.addDisposable(unifediApiTimelineService);
+    )..addDisposable(unifediApiTimelineService);
 
     return bloc;
   }

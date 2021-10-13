@@ -91,6 +91,7 @@ MaterialPageRoute<void> createConversationChatPageRoute({
         );
 
         // we dont need to await
+        // ignore: cascade_invocations
         chatBloc.markAsRead();
 
         chatBloc.chatDeletedStream.listen(
@@ -104,6 +105,7 @@ MaterialPageRoute<void> createConversationChatPageRoute({
         var currentChatBloc =
             IConversationChatCurrentBloc.of(context, listen: false);
 
+        // ignore: cascade_invocations
         currentChatBloc.onChatOpened(chat);
 
         chatBloc.addCustomDisposable(

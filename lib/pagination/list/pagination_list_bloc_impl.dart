@@ -249,7 +249,7 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       }
     } else {
       //otherwise refresh only bloc
-      return await refreshWithoutController();
+      return refreshWithoutController();
     }
   }
 }

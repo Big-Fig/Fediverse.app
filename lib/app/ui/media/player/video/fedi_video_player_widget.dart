@@ -137,6 +137,7 @@ class _FediVideoPlayerErrorReloadButtonWidget extends StatelessWidget {
         onPressed: () {
           var mediaPlayerBloc =
               IVideoMediaPlayerBloc.of(context, listen: false);
+          // ignore: cascade_invocations
           mediaPlayerBloc.reloadAfterError();
         },
       );

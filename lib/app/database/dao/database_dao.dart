@@ -218,7 +218,7 @@ abstract class DatabaseDao<
         (tbl) => createFindByDbIdWhereExpression(id),
       );
     } else {
-      return await deleteById(id);
+      return deleteById(id);
     }
   }
 
@@ -236,7 +236,7 @@ abstract class DatabaseDao<
         ),
       );
     } else {
-      return await batch(
+      return batch(
         (batch) => deleteOlderThanDateTime(
           dateTime,
           fieldName: fieldName,
@@ -260,7 +260,7 @@ abstract class DatabaseDao<
         ),
       );
     } else {
-      return await batch(
+      return batch(
         (batch) => deleteOlderThanString(
           string,
           fieldName: fieldName,
@@ -284,7 +284,7 @@ abstract class DatabaseDao<
         ),
       );
     } else {
-      return await batch(
+      return batch(
         (batch) => deleteOlderThanInt(
           intValue,
           fieldName: fieldName,
@@ -303,7 +303,7 @@ abstract class DatabaseDao<
         (tbl) => const Constant(true),
       );
     } else {
-      return await customUpdate(
+      return customUpdate(
         'DELETE FROM $tableName',
         updates: {table},
         updateKind: UpdateKind.delete,

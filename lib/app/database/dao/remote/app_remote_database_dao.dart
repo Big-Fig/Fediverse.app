@@ -34,7 +34,7 @@ abstract class AppRemoteDatabaseDao<
         (tbl) => createFindByRemoteIdWhereExpression(remoteId),
       );
     } else {
-      return await deleteByRemoteId(remoteId);
+      return deleteByRemoteId(remoteId);
     }
   }
 

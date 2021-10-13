@@ -46,7 +46,7 @@ class AccountFeaturedHashtagListPageBloc extends DisposableOwner
     accountFeaturedHashtagListNetworkOnlyPaginationBloc.disposeWith(this);
     hashtagPaginationListBloc.disposeWith(this);
 
-    // ignore: unawaited_futures
+    // ignore: unawaited_futures, cascade_invocations
     hashtagPaginationListBloc.refreshWithoutController();
   }
 

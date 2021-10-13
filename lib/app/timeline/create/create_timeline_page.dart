@@ -105,6 +105,7 @@ MaterialPageRoute<void> createCreateItemTimelinesHomeTabStoragePageRoute(
         timelineSavedCallback: (Timeline timeline) {
           var timelinesHomeTabStorageBloc =
               ITimelinesHomeTabStorageBloc.of(context, listen: false);
+          // ignore: cascade_invocations
           timelinesHomeTabStorageBloc.add(timeline);
           Navigator.of(context).pop();
         },

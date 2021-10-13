@@ -34,7 +34,9 @@ abstract class PopulatedAppRemoteDatabaseDao<
       query: query,
       filters: null,
     );
+    // ignore: cascade_invocations
     joinedQuery.where(createFindByRemoteIdWhereExpression(remoteId));
+    // ignore: cascade_invocations
     joinedQuery.limit(1, offset: null);
 
     return joinedQuery.map(mapTypedResultToDbPopulatedItem);

@@ -62,6 +62,7 @@ class StatusReblogAccountCachedListBloc extends DisposableOwner
         batchTransaction: batch,
       );
 
+      // ignore: cascade_invocations
       accountRepository.updateStatusRebloggedBy(
         statusRemoteId: status.remoteId!,
         rebloggedByAccounts: remoteAccounts.toUnifediApiAccountList(),

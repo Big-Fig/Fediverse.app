@@ -34,6 +34,7 @@ abstract class MultiSelectFromListValueFormFieldBloc<T>
 
     isNeedRebuildActionsSubject.add(true);
 
+    // ignore: cascade_invocations
     isNeedRebuildActionsSubject.disposeWith(this);
   }
 

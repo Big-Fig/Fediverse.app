@@ -31,8 +31,9 @@ class JoinUnifediApiAccessBloc extends DisposableOwner
     hostFocusNode.disposeWith(this);
 
     // don't need to await we start init but don't need wait to finish
-    serverListAutoCompleteBloc.performAsyncInit();
-    serverListAutoCompleteBloc.disposeWith(this);
+    serverListAutoCompleteBloc
+      ..performAsyncInit()
+      ..disposeWith(this);
   }
 
   @override

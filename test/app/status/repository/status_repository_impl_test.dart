@@ -2653,6 +2653,7 @@ void main() {
         mode: InsertMode.insertOrReplace,
         batchTransaction: batch,
       );
+      // ignore: cascade_invocations
       statusRepository.insertInDbTypeBatch(
         dbItem1copy,
         mode: InsertMode.insertOrReplace,
@@ -2673,16 +2674,17 @@ void main() {
     var remoteStatus1Copy = status1Copy.toUnifediApiStatus();
 
     await statusRepository.batch((batch) {
-      statusRepository.insertInRemoteTypeBatch(
-        remoteStatus1,
-        mode: InsertMode.insertOrReplace,
-        batchTransaction: batch,
-      );
-      statusRepository.insertInRemoteTypeBatch(
-        remoteStatus1Copy,
-        mode: InsertMode.insertOrReplace,
-        batchTransaction: batch,
-      );
+      statusRepository
+        ..insertInRemoteTypeBatch(
+          remoteStatus1,
+          mode: InsertMode.insertOrReplace,
+          batchTransaction: batch,
+        )
+        ..insertInRemoteTypeBatch(
+          remoteStatus1Copy,
+          mode: InsertMode.insertOrReplace,
+          batchTransaction: batch,
+        );
     });
 
     expect(await statusRepository.countAll(), 1);

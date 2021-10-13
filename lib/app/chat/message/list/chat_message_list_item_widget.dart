@@ -430,12 +430,12 @@ class _ChatMessageListItemMediaContentWidget extends StatelessWidget {
         }
 
         return Provider<List<IUnifediApiMediaAttachment>?>.value(
-          value: mediaAttachments!,
+          value: mediaAttachments,
           child: InkWell(
             onTap: () {
               goToMultiMediaAttachmentDetailsPage(
                 context,
-                mediaAttachments: mediaAttachments,
+                mediaAttachments: mediaAttachments!,
                 initialMediaAttachment: null,
                 instanceLocation: InstanceLocation.local,
               );

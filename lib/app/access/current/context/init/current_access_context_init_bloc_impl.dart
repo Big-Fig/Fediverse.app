@@ -227,11 +227,12 @@ class CurrentUnifediApiAccessContextInitBloc extends AsyncInitLoadingBloc
     );
 
     await filterRepository.batch((batch) {
-      filterRepository.clear(batchTransaction: batch);
-      filterRepository.upsertAllInRemoteType(
-        remoteFilters,
-        batchTransaction: batch,
-      );
+      filterRepository
+        ..clear(batchTransaction: batch)
+        ..upsertAllInRemoteType(
+          remoteFilters,
+          batchTransaction: batch,
+        );
     });
   }
 

@@ -35,7 +35,6 @@ class TimelineWidget extends StatelessWidget {
           // var onlyWithMedia = timeline?.onlyWithMedia == true;
 
           _logger.finest(() => 'timeline $timeline');
-          _logger.finest(() => 'onlyWithMedia $onlyWithMedia');
           // _logger.finest(() => 'onlyWithMedia timeline $timeline');
 
           Widget bodyWidget;

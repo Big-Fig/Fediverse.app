@@ -77,6 +77,7 @@ class EmojiPickerWidget extends StatelessWidget {
           ...CustomEmojiPickerCodeCategoryBloc.allCategories,
         ];
 
+        // ignore: cascade_invocations
         allCategoriesBlocs.forEach((bloc) {
           bloc.performAsyncInit();
         });

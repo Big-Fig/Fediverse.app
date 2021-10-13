@@ -618,7 +618,7 @@ abstract class PostStatusBloc extends PostMessageBloc
     if (pollBloc.isSomethingChanged) {
       poll = PostStatusPoll(
         durationLength:
-            pollBloc.durationDateTimeLengthFieldBloc.currentValueDuration!,
+            pollBloc.durationDateTimeLengthFieldBloc.currentValueDuration,
         multiple: pollBloc.multiplyFieldBloc.currentValue,
         options: pollBloc.pollOptionsGroupBloc.items
             .map((item) => item.currentValue)

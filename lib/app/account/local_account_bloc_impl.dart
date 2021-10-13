@@ -236,17 +236,17 @@ class LocalAccountBloc extends AccountBloc {
         );
 
         if (myAccount != null) {
-          accountRepository.removeAccountFollower(
-            accountRemoteId: account.remoteId,
-            followerAccountId: myAccount!.remoteId,
-            batchTransaction: batch,
-          );
-
-          accountRepository.removeAccountFollowing(
-            accountRemoteId: myAccount!.remoteId,
-            followingAccountId: account.remoteId,
-            batchTransaction: batch,
-          );
+          accountRepository
+            ..removeAccountFollower(
+              accountRemoteId: account.remoteId,
+              followerAccountId: myAccount!.remoteId,
+              batchTransaction: batch,
+            )
+            ..removeAccountFollowing(
+              accountRemoteId: myAccount!.remoteId,
+              followingAccountId: account.remoteId,
+              batchTransaction: batch,
+            );
         }
 
         statusRepository.removeAccountStatusesFromHome(
@@ -403,8 +403,6 @@ class LocalAccountBloc extends AccountBloc {
 
     _logger.finest(() => '_updateRelationship '
         'newRelationship=$newRelationship');
-    _logger.finest(() => '_updateRelationship newRemoteAccount.relationship'
-        '${newRemoteAccount.relationship}');
     if (account.localId != null) {
       await accountRepository.updateAppTypeByRemoteType(
         appItem: account,

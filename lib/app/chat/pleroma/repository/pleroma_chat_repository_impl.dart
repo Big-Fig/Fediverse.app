@@ -285,7 +285,7 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       batchTransaction: null,
     );
 
-    return await dao.upsert(
+    return dao.upsert(
       entity: remoteItem.toDbChat(),
     );
   }

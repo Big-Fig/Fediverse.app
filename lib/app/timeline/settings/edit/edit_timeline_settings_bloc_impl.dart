@@ -313,7 +313,6 @@ class EditTimelineSettingsBloc
     onlyPinnedFieldBloc.changeCurrentValue(settings.onlyPinned);
 
     onlyFromAccountFieldBloc.changeCurrentValue(settings.onlyFromRemoteAccount);
-    onlyFromAccountFieldBloc.changeCurrentValue(settings.onlyFromRemoteAccount);
     withRemoteHashtagFieldBloc
         .changeCurrentValue(settings.withRemoteHashtag ?? '');
     onlyInCustomListFieldBloc.changeCurrentValue(settings.onlyInRemoteList);

@@ -416,8 +416,8 @@ Future signUpToInstance(BuildContext context) async {
   );
   var unifediApiInstance = asyncDialogResult.result;
   if (unifediApiInstance != null) {
+    var toastService = IToastService.of(context, listen: false);
     if (unifediApiInstance.invitesEnabled == true) {
-      var toastService = IToastService.of(context, listen: false);
       toastService.showErrorToast(
         context: context,
         title: S.of(context).app_auth_instance_join_invitesOnly_dialog_title,
@@ -425,7 +425,6 @@ Future signUpToInstance(BuildContext context) async {
             S.of(context).app_auth_instance_join_invitesOnly_dialog_content,
       );
     } else if (unifediApiInstance.registrations != true) {
-      var toastService = IToastService.of(context, listen: false);
       toastService.showErrorToast(
         context: context,
         title: S

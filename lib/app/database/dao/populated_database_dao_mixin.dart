@@ -1,3 +1,5 @@
+// ignore_for_file: cascade_invocations
+
 import 'package:fedi/app/database/dao/app_database_dao.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';

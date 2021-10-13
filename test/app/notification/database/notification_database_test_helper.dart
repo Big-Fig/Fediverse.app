@@ -104,9 +104,9 @@ class NotificationDatabaseMockHelper {
   ) async {
     var dbNotificationPopulated = DbNotificationPopulated(
       dbNotification: dbNotification,
-      dbAccount: (await accountRepository.findByRemoteIdInDbType(
+      dbAccount: await accountRepository.findByRemoteIdInDbType(
         dbNotification.accountRemoteId!,
-      ))!,
+      ),
       reblogDbStatus: null,
       replyReblogDbStatus: null,
       replyDbStatus: null,

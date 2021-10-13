@@ -35,9 +35,7 @@ class RemoteStatusThreadBloc extends StatusThreadBloc {
       initialMediaAttachment: initialMediaAttachment,
       unifediApiStatusService: unifediApiStatusService,
       instanceUri: remoteInstanceBloc.instanceUri,
-    );
-
-    remoteStatusThreadBloc.addDisposable(unifediApiStatusService);
+    )..addDisposable(unifediApiStatusService);
 
     return remoteStatusThreadBloc;
   }

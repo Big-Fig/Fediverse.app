@@ -29,6 +29,7 @@ void showMediaAttachmentFailedNotificationOverlay(
   }
   var toastService = IToastService.of(context, listen: false);
 
+  // ignore: cascade_invocations
   toastService.showErrorToast(
     context: context,
     content: contentText,

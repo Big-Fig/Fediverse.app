@@ -95,6 +95,7 @@ class _RecentSearchClearButtonWidget extends StatelessWidget {
           context,
           listen: false,
         );
+        // ignore: cascade_invocations
         recentSearchBloc.clearRecentSearch();
       },
     );
@@ -119,6 +120,7 @@ class _RecentSearchListWidget extends StatelessWidget {
                   context,
                   listen: false,
                 );
+                // ignore: cascade_invocations
                 recentSearchBloc.searchAgain(recentItem);
               },
               child: Padding(

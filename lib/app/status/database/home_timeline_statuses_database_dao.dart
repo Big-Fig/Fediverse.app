@@ -40,7 +40,7 @@ class HomeTimelineStatusesDao extends DatabaseDao<
         (tbl) => _createAccountRemoteIdEqualExpression(accountRemoteId),
       );
     } else {
-      return await deleteByAccountRemoteId(accountRemoteId);
+      return deleteByAccountRemoteId(accountRemoteId);
     }
   }
 

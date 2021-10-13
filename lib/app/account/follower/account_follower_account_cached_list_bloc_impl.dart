@@ -58,16 +58,16 @@ class AccountFollowerAccountCachedListBloc extends DisposableOwner
 
     if (remoteAccounts.isNotEmpty) {
       await accountRepository.batch((batch) {
-        accountRepository.upsertAllInRemoteType(
-          remoteAccounts,
-          batchTransaction: batch,
-        );
-
-        accountRepository.addAccountFollowers(
-          accountRemoteId: account.remoteId,
-          followers: remoteAccounts,
-          batchTransaction: batch,
-        );
+        accountRepository
+          ..upsertAllInRemoteType(
+            remoteAccounts,
+            batchTransaction: batch,
+          )
+          ..addAccountFollowers(
+            accountRemoteId: account.remoteId,
+            followers: remoteAccounts,
+            batchTransaction: batch,
+          );
       });
 
       return true;

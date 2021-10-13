@@ -147,22 +147,24 @@ class _ShareEntityMediaWidget extends StatelessWidget {
         var allMediaLocalFiles = shareEntity.allMediaLocalFiles;
         var items = <_ShareEntityCarouselItem>[];
 
-        items.addAll(
-          allMediaAttachments.map(
-            (mediaAttachment) => _ShareEntityCarouselItem(
-              unifediApiMediaAttachment: mediaAttachment,
-              localFile: null,
+        // ignore: cascade_invocations
+        items
+          ..addAll(
+            allMediaAttachments.map(
+              (mediaAttachment) => _ShareEntityCarouselItem(
+                unifediApiMediaAttachment: mediaAttachment,
+                localFile: null,
+              ),
             ),
-          ),
-        );
-        items.addAll(
-          allMediaLocalFiles.map(
-            (localFile) => _ShareEntityCarouselItem(
-              unifediApiMediaAttachment: null,
-              localFile: localFile,
+          )
+          ..addAll(
+            allMediaLocalFiles.map(
+              (localFile) => _ShareEntityCarouselItem(
+                unifediApiMediaAttachment: null,
+                localFile: localFile,
+              ),
             ),
-          ),
-        );
+          );
         if (items.length == 1) {
           return Provider<_ShareEntityCarouselItem>.value(
             value: items.first,

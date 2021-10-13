@@ -45,7 +45,7 @@ class StatusListsDao extends DatabaseDao<DbStatusList, int, $DbStatusListsTable,
         (tbl) => _createListRemoteIdEqualExpression(listRemoteId),
       );
     } else {
-      return await deleteByListRemoteId(listRemoteId);
+      return deleteByListRemoteId(listRemoteId);
     }
   }
 

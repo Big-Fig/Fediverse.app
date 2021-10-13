@@ -40,7 +40,7 @@ class StatusHashtagsDao extends DatabaseDao<
         (tbl) => _createStatusRemoteIdEqualExpression(statusRemoteId),
       );
     } else {
-      return await deleteByStatusRemoteId(statusRemoteId);
+      return deleteByStatusRemoteId(statusRemoteId);
     }
   }
 

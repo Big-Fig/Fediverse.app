@@ -1,3 +1,5 @@
+// ignore_for_file: cascade_invocations
+
 import 'package:flutter/material.dart';
 
 // ignore_for_file: no-magic-number, binary-expression-operand-order

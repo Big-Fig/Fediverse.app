@@ -136,9 +136,8 @@ class InstanceAnnouncementBloc extends DisposableOwner
               (reaction) => reaction.name != foundReaction!.name,
             )
             .toList() ??
-        [];
-
-    newReactionsList.add(foundReaction);
+        []
+      ..add(foundReaction);
 
     await updateReactions(newReactionsList);
   }
@@ -160,6 +159,7 @@ class InstanceAnnouncementBloc extends DisposableOwner
 
     var newReactionsList = reactions!.toList();
 
+    // ignore: cascade_invocations
     newReactionsList.remove(foundReaction);
 
     // ignore: no-magic-number

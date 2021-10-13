@@ -253,6 +253,7 @@ class _RateAppHomeTabMenuDialogBodyListsItemWidget extends StatelessWidget {
         return InkWell(
           onTap: () {
             var inAppReviewBloc = IInAppReviewBloc.of(context, listen: false);
+            // ignore: cascade_invocations
             inAppReviewBloc.openStoreListing();
           },
           child: _SimpleAccountHomeTabMenuDialogBodyItem(

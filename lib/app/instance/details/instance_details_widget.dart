@@ -565,7 +565,7 @@ class _BaseInstanceDetailsRowWidget extends StatelessWidget {
                   if (valueIcon != null)
                     Padding(
                       padding: FediPadding.horizontalSmallPadding,
-                      child: valueIcon!,
+                      child: valueIcon,
                     ),
                 ],
               ),

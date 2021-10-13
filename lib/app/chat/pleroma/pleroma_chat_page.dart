@@ -87,11 +87,13 @@ MaterialPageRoute<void> createPleromaChatPageRoute(IPleromaChat chat) {
         );
 
         // we dont need to await
+        // ignore: cascade_invocations
         chatBloc.markAsRead();
 
         var currentChatBloc =
             IPleromaChatCurrentBloc.of(context, listen: false);
 
+        // ignore: cascade_invocations
         currentChatBloc.onChatOpened(chat);
 
         chatBloc.addCustomDisposable(() => currentChatBloc.onChatClosed(chat));

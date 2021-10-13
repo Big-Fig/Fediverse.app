@@ -42,9 +42,9 @@ Future<AsyncDialogResult<T?>> doAsyncOperationWithDialog<T>({
       cancelable: cancelable,
       contentMessage: contentMessage,
       cancelableOperation: cancelableOperation,
-    );
-    // ignore: unawaited_futures
-    progressDialog.show<void>(context);
+    )
+      // ignore: unawaited_futures
+      ..show<void>(context);
   }
 
   dynamic error;

@@ -22,6 +22,7 @@ class RemoteStatusBloc extends StatusBloc {
   final BehaviorSubject<IAccount> inReplyToAccountSubject = BehaviorSubject();
   final BehaviorSubject<IStatus?> inReplyToStatusSubject = BehaviorSubject();
   final IConnectionService connectionService;
+
   RemoteStatusBloc({
     required this.instanceUri,
     required IUnifediApiStatusService unifediApiStatusService,
@@ -69,8 +70,10 @@ class RemoteStatusBloc extends StatusBloc {
       instanceUri: remoteInstanceBloc.instanceUri,
     );
 
-    remoteStatusBloc.addDisposable(unifediApiAccountService);
-    remoteStatusBloc.addDisposable(unifediApiStatusService);
+    // ignore: cascade_invocations
+    remoteStatusBloc
+      ..addDisposable(unifediApiAccountService)
+      ..addDisposable(unifediApiStatusService);
 
     return remoteStatusBloc;
   }

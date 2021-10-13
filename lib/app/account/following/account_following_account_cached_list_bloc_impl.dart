@@ -57,16 +57,16 @@ class AccountFollowingAccountCachedListBloc extends DisposableOwner
     );
 
     await accountRepository.batch((batch) {
-      accountRepository.upsertAllInRemoteType(
-        remoteAccounts,
-        batchTransaction: batch,
-      );
-
-      accountRepository.addAccountFollowings(
-        accountRemoteId: account.remoteId,
-        followings: remoteAccounts.toUnifediApiAccountList(),
-        batchTransaction: batch,
-      );
+      accountRepository
+        ..upsertAllInRemoteType(
+          remoteAccounts,
+          batchTransaction: batch,
+        )
+        ..addAccountFollowings(
+          accountRemoteId: account.remoteId,
+          followings: remoteAccounts.toUnifediApiAccountList(),
+          batchTransaction: batch,
+        );
     });
   }
 

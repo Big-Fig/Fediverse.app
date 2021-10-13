@@ -77,6 +77,7 @@ class _AccountReportSendButton extends StatelessWidget {
 
             var toastService = IToastService.of(context, listen: false);
 
+            // ignore: cascade_invocations
             toastService.showInfoToast(
               context: context,
               title: S.of(context).app_account_report_toast_success,

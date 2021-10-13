@@ -71,7 +71,7 @@ class ChatAccountsDao extends DatabaseDao<DbChatAccount, int,
         (tbl) => _createChatRemoteIdEqualExpression(chatRemoteId),
       );
     } else {
-      return await deleteByChatRemoteId(chatRemoteId);
+      return deleteByChatRemoteId(chatRemoteId);
     }
   }
 

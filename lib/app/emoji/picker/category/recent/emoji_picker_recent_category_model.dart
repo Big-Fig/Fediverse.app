@@ -23,8 +23,10 @@ class EmojiPickerRecentCategoryItemsList
     implements IJsonObj {
   List<CustomEmojiPickerItem> get recentItems {
     var result = <CustomEmojiPickerItem>[];
-    result.addAll(recentCodeItems);
-    result.addAll(recentImageItems);
+    // ignore: cascade_invocations
+    result
+      ..addAll(recentCodeItems)
+      ..addAll(recentImageItems);
 
     return result;
   }

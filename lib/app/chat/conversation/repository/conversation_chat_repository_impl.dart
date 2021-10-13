@@ -254,7 +254,7 @@ class ConversationChatRepository
       batchTransaction: null,
     );
 
-    return await dao.insert(
+    return dao.insert(
       entity: remoteItem.toDbConversation(),
       mode: mode,
     );

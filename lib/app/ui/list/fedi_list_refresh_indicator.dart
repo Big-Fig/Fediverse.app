@@ -460,6 +460,7 @@ class FediListRefreshIndicatorState extends State<FediListRefreshIndicator>
         // running with weak checking, so we need to null check it anyway (and
         // ignore the warning that the null-handling logic is dead code).
 
+        // ignore: cascade_invocations
         refreshResult.whenComplete(() {
           if (mounted && _mode == _RefreshIndicatorMode.refresh) {
             completer.complete();

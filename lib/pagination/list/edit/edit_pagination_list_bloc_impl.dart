@@ -116,6 +116,7 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       ...addedItems,
     ];
 
+    // ignore: cascade_invocations
     result.removeWhere(
       (item) => _calculateIsItemAdded(
         items: removedItems,
@@ -160,6 +161,7 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
     );
     if (foundInRemoved != null) {
       var items = removedItemsSubject.value;
+      // ignore: cascade_invocations
       items.remove(foundInRemoved);
 
       removedItemsSubject.add(items);
@@ -200,6 +202,7 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
 
     if (foundInAdded != null) {
       var items = addedItemsSubject.value;
+      // ignore: cascade_invocations
       items.remove(foundInAdded);
 
       addedItemsSubject.add(items);

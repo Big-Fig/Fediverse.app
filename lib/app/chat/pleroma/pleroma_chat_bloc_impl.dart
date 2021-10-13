@@ -347,6 +347,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
           batchTransaction: batch,
         );
 
+        // ignore: cascade_invocations
         chatMessageRepository.upsertInRemoteTypeBatch(
           unifediApiChatMessage,
           batchTransaction: batch,

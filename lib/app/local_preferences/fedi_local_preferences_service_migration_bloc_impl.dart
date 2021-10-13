@@ -65,6 +65,7 @@ class FediLocalPreferencesServiceMigrationBloc
         (lps) => AccessHostAccessTokenLocalPreferenceBloc(lps, host: host),
         (lps) => AccessHostApplicationLocalPreferenceBloc(lps, host: host),
       ]);
+      // ignore: cascade_invocations
       authInstancesBlocCreators
           .addAll(calculateUserAtHostLocalPreferencesBlocCreators(userAtHost));
 

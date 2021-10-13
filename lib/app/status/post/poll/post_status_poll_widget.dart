@@ -221,6 +221,7 @@ class _PostStatusPollOptionsAddItemButtonWidget extends StatelessWidget {
           listen: false,
         );
 
+        // ignore: cascade_invocations
         pollOptionsGroupBloc.addNewEmptyField();
       },
     );

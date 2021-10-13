@@ -127,15 +127,16 @@ class SelectAccountListBloc extends DisposableOwner
         );
 
         await accountRepository.batch((batch) {
-          accountRepository.upsertAllInRemoteType(
-            remoteAccounts,
-            batchTransaction: batch,
-          );
-          accountRepository.addAccountFollowings(
-            accountRemoteId: myAccountBloc.account.remoteId,
-            followings: remoteAccounts.toUnifediApiAccountList(),
-            batchTransaction: batch,
-          );
+          accountRepository
+            ..upsertAllInRemoteType(
+              remoteAccounts,
+              batchTransaction: batch,
+            )
+            ..addAccountFollowings(
+              accountRemoteId: myAccountBloc.account.remoteId,
+              followings: remoteAccounts.toUnifediApiAccountList(),
+              batchTransaction: batch,
+            );
         });
       }
     }
@@ -147,7 +148,7 @@ class SelectAccountListBloc extends DisposableOwner
     required int? limit,
   }) async {
     // my account followings by default
-    return await pleromaAuthAccountService.getAccountFollowings(
+    return pleromaAuthAccountService.getAccountFollowings(
       pagination: UnifediApiPagination(
         minId: newerThan?.remoteId,
         maxId: olderThan?.remoteId,
@@ -232,7 +233,7 @@ class SelectAccountListBloc extends DisposableOwner
     required IAccount? newerThan,
     required int? limit,
   }) async {
-    return await accountRepository.findAllInAppType(
+    return accountRepository.findAllInAppType(
       filters: AccountRepositoryFilters.only(
         onlyInAccountFollowing: myAccountBloc.account,
       ),

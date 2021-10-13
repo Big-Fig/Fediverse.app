@@ -152,7 +152,7 @@ Future<List<IMediaDeviceFile>?> goToMultiMediaPickerPage(
     }
   }
 
-  return await Navigator.push(
+  return Navigator.push(
     context,
     NavigationSlideBottomRouteBuilder(
       page: DisposableProvider<IMediaDeviceGalleryBloc>(
@@ -198,6 +198,7 @@ MultiMediaPickerBloc _createMultiMediaPickerBloc(
     (_) {
       var toastService = IToastService.of(context, listen: false);
 
+      // ignore: cascade_invocations
       toastService.showInfoToast(
         context: context,
         title: S

@@ -52,7 +52,7 @@ class ConversationStatusesDao extends DatabaseDao<
             _createConversationRemoteIdEqualExpression(conversationRemoteId),
       );
     } else {
-      return await deleteByConversationRemoteId(conversationRemoteId);
+      return deleteByConversationRemoteId(conversationRemoteId);
     }
   }
 
@@ -99,7 +99,7 @@ class ConversationStatusesDao extends DatabaseDao<
             _createStatusRemoteIdEqualExpression(statusRemoteId),
       );
     } else {
-      return await deleteByConversationRemoteId(conversationRemoteId);
+      return deleteByConversationRemoteId(conversationRemoteId);
     }
   }
 }

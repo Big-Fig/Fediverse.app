@@ -66,6 +66,7 @@ class PleromaChatShareEntityBloc extends PleromaChatShareBloc
 
     var result = <UnifediApiPostChatMessage>[];
 
+    // ignore: cascade_invocations
     result.add(messageSendData);
 
     if (mediaAttachments != null && mediaAttachments.length > 1) {

@@ -229,21 +229,20 @@ class AppDatabase extends _$AppDatabase {
     await m.createTable(dbFilters);
   }
 
-  Future<void> _migrate6to7(Migrator m) async =>
-      await m.addColumn(dbConversations, dbConversations.updatedAt);
+  Future<void> _migrate6to7(Migrator m) =>
+      m.addColumn(dbConversations, dbConversations.updatedAt);
 
-  Future<void> _migrate5to6(Migrator m) async =>
-      await m.addColumn(dbNotifications, dbNotifications.dismissed);
+  Future<void> _migrate5to6(Migrator m) =>
+      m.addColumn(dbNotifications, dbNotifications.dismissed);
 
-  Future<void> _migrate4to5(Migrator m) async =>
-      await m.addColumn(dbAccounts, dbAccounts.backgroundImage);
+  Future<void> _migrate4to5(Migrator m) =>
+      m.addColumn(dbAccounts, dbAccounts.backgroundImage);
 
-  Future<void> _migrate3to4(Migrator m) async =>
-      await m.addColumn(dbStatuses, dbStatuses.deleted);
+  Future<void> _migrate3to4(Migrator m) =>
+      m.addColumn(dbStatuses, dbStatuses.deleted);
 
-  Future<void> _migrate2to3(Migrator m) async =>
-      await m.createTable(dbDraftStatuses);
+  Future<void> _migrate2to3(Migrator m) => m.createTable(dbDraftStatuses);
 
   Future<void> _migrate1to2(Migrator m) async =>
-      await m.addColumn(dbChatMessages, dbChatMessages.card);
+      m.addColumn(dbChatMessages, dbChatMessages.card);
 }

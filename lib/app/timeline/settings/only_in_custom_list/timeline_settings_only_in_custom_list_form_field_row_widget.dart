@@ -47,7 +47,7 @@ class TimelineSettingsOnlyInCustomListFormFieldRowWidget
                 await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
               context: context,
               asyncCode: () async {
-                return await pleromaListService.getLists();
+                return pleromaListService.getLists();
               },
             );
 

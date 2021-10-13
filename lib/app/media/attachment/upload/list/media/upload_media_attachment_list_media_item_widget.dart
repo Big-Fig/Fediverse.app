@@ -317,6 +317,7 @@ class _UploadMediaAttachmentListMediaItemErrorButtonWidget
           context,
           listen: false,
         );
+        // ignore: cascade_invocations
         uploadMediaAttachmentBloc.startUploadIfPossible();
       },
       child: ClipRRect(

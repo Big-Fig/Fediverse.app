@@ -108,8 +108,9 @@ class _MediaAttachmentDetailsPageState
 
   @override
   void dispose() {
-    _controller.removeListener(listener);
-    _controller.dispose();
+    _controller
+      ..removeListener(listener)
+      ..dispose();
     selectedMediaAttachmentSubject.close();
     super.dispose();
   }
@@ -344,8 +345,7 @@ class _MediaAttachmentDetailsPageShareAction extends StatelessWidget {
                 var mediaAttachmentReuploadService =
                     IMediaAttachmentReuploadService.of(context, listen: false);
 
-                return await mediaAttachmentReuploadService
-                    .reuploadMediaAttachment(
+                return mediaAttachmentReuploadService.reuploadMediaAttachment(
                   originalMediaAttachment: mediaAttachment,
                 );
               },

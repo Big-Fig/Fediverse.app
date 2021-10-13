@@ -122,7 +122,7 @@ String? convertSingleItemToRawText({
   required ShareEntityItem item,
 }) {
   if (settings.wholeAsLink) {
-    return item.linkToOriginal!;
+    return item.linkToOriginal;
   }
 
   String? accountAcctAndDisplayName;

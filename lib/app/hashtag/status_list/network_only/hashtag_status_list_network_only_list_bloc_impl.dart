@@ -37,6 +37,7 @@ class HashtagStatusListNetworkOnlyListBloc extends IStatusNetworkOnlyListBloc {
       unifediApiTimelineService: unifediApiTimelineService,
     );
 
+    // ignore: cascade_invocations
     bloc.addDisposable(unifediApiTimelineService);
 
     return bloc;

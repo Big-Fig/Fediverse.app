@@ -45,7 +45,7 @@ class MyAccountEndorsementBloc extends DisposableOwner
     myAccountEndorsementAccountListNetworkOnlyPaginationBloc.disposeWith(this);
     accountPaginationListBloc.disposeWith(this);
 
-    // ignore: unawaited_futures
+    // ignore: unawaited_futures, cascade_invocations
     accountPaginationListBloc.refreshWithoutController();
   }
 

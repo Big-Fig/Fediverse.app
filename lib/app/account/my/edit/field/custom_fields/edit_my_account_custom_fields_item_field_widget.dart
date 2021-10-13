@@ -39,6 +39,7 @@ class EditMyAccountCustomFieldsItemFieldWidget extends StatelessWidget {
                   context,
                   listen: false,
                 );
+                // ignore: cascade_invocations
                 fieldGroupBloc.removeField(
                   itemData.customField,
                 );

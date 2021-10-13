@@ -290,9 +290,6 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
         .findByRemoteIdInAppType(remoteNotificationId);
 
     _logger.finest(() => 'handlePush \n'
-        '\t remoteNotification = $remoteNotification');
-
-    _logger.finest(() => 'handlePush \n'
         '\t remoteNotificationId = $remoteNotificationId \n'
         '\t alreadyExistNotification = $alreadyExistNotification');
 

@@ -874,6 +874,7 @@ void main() {
         mode: InsertMode.insertOrReplace,
         batchTransaction: batch,
       );
+      // ignore: cascade_invocations
       conversationRepository.insertInDbTypeBatch(
         dbItem1copy,
         mode: InsertMode.insertOrReplace,
@@ -910,16 +911,17 @@ void main() {
     );
 
     await conversationRepository.batch((batch) {
-      conversationRepository.insertInRemoteTypeBatch(
-        remoteConversation1,
-        mode: InsertMode.insertOrReplace,
-        batchTransaction: batch,
-      );
-      conversationRepository.insertInRemoteTypeBatch(
-        remoteConversation1Copy,
-        mode: InsertMode.insertOrReplace,
-        batchTransaction: batch,
-      );
+      conversationRepository
+        ..insertInRemoteTypeBatch(
+          remoteConversation1,
+          mode: InsertMode.insertOrReplace,
+          batchTransaction: batch,
+        )
+        ..insertInRemoteTypeBatch(
+          remoteConversation1Copy,
+          mode: InsertMode.insertOrReplace,
+          batchTransaction: batch,
+        );
     });
 
     expect(await conversationRepository.countAll(), 1);

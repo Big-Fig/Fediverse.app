@@ -36,6 +36,7 @@ class StringValueFormFieldBloc extends ValueFormFieldBloc<String>
     focusNode.disposeWith(this);
     textEditingController.disposeWith(this);
 
+    // ignore: cascade_invocations
     textEditingController.addListener(listener);
 
     addCustomDisposable(

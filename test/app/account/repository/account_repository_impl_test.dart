@@ -935,6 +935,7 @@ void main() {
         mode: InsertMode.insertOrReplace,
         batchTransaction: batch,
       );
+      // ignore: cascade_invocations
       accountRepository.insertInDbTypeBatch(
         dbItem1copy,
         mode: InsertMode.insertOrReplace,
@@ -955,16 +956,17 @@ void main() {
     var remoteAccount1Copy = account1Copy.toUnifediApiAccount();
 
     await accountRepository.batch((batch) {
-      accountRepository.insertInRemoteTypeBatch(
-        remoteAccount1,
-        mode: InsertMode.insertOrReplace,
-        batchTransaction: batch,
-      );
-      accountRepository.insertInRemoteTypeBatch(
-        remoteAccount1Copy,
-        mode: InsertMode.insertOrReplace,
-        batchTransaction: batch,
-      );
+      accountRepository
+        ..insertInRemoteTypeBatch(
+          remoteAccount1,
+          mode: InsertMode.insertOrReplace,
+          batchTransaction: batch,
+        )
+        ..insertInRemoteTypeBatch(
+          remoteAccount1Copy,
+          mode: InsertMode.insertOrReplace,
+          batchTransaction: batch,
+        );
     });
 
     expect(await accountRepository.countAll(), 1);

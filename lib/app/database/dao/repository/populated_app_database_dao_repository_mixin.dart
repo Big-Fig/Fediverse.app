@@ -71,8 +71,9 @@ mixin PopulatedDatabaseDaoRepositoryMixin<
   }) {
     var query = dao.startSelectQuery();
 
-    dao.addFiltersToQuery(query: query, filters: filters);
-    dao.addOrderingToQuery(query: query, orderingTerms: orderingTerms);
+    dao
+      ..addFiltersToQuery(query: query, filters: filters)
+      ..addOrderingToQuery(query: query, orderingTerms: orderingTerms);
     addAppItemPagination(
       query: query,
       pagination: pagination,

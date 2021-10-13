@@ -271,6 +271,7 @@ class NotificationsPushHandlerBloc extends DisposableOwner
     var webSocketsModeSettingsBloc = WebSocketsModeSettingsBloc(
       mode: WebSocketsMode.disabledValue,
     );
+    // ignore: cascade_invocations
     webSocketsModeSettingsBloc.disposeWith(this);
 
     var apiManager = authInstance.info!.typeAsUnifediApi.createApiManager(
@@ -403,8 +404,7 @@ class NotificationsPushHandlerBloc extends DisposableOwner
 
     var webSocketsModeSettingsBloc = WebSocketsModeSettingsBloc(
       mode: WebSocketsMode.disabledValue,
-    );
-    webSocketsModeSettingsBloc.disposeWith(this);
+    )..disposeWith(this);
 
     var apiManager = authInstance.info!.typeAsUnifediApi.createApiManager(
       apiAccessBloc: localPreferencesUnifediApiAccessBloc,

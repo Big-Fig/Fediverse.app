@@ -56,7 +56,7 @@ class AccountFollowersDao extends DatabaseDao<
             ),
       );
     } else {
-      return await deleteByAccountRemoteIdAndFollowerAccountRemoteId(
+      return deleteByAccountRemoteIdAndFollowerAccountRemoteId(
         accountRemoteId: accountRemoteId,
         followerAccountRemoteId: followerAccountRemoteId,
       );
@@ -80,7 +80,7 @@ class AccountFollowersDao extends DatabaseDao<
         (tbl) => _createAccountRemoteIdEqualExpression(accountRemoteId),
       );
     } else {
-      return await deleteByAccountRemoteId(accountRemoteId);
+      return deleteByAccountRemoteId(accountRemoteId);
     }
   }
 
@@ -113,7 +113,7 @@ class AccountFollowersDao extends DatabaseDao<
         ),
       );
     } else {
-      return await deleteByFollowerAccountRemoteId(followerAccountRemoteId);
+      return deleteByFollowerAccountRemoteId(followerAccountRemoteId);
     }
   }
 

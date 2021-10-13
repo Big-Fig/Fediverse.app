@@ -62,6 +62,7 @@ class StatusFavouriteAccountCachedListBloc extends DisposableOwner
         batchTransaction: batch,
       );
 
+      // ignore: cascade_invocations
       accountRepository.updateStatusFavouritedBy(
         statusRemoteId: status.remoteId!,
         favouritedByAccounts: remoteAccounts,

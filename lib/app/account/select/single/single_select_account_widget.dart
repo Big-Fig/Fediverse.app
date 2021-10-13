@@ -36,6 +36,7 @@ class SingleSelectAccountWidget extends StatelessWidget {
           var selectAccountListBloc =
               ISelectAccountListBloc.of(context, listen: false);
 
+          // ignore: cascade_invocations
           selectAccountListBloc.onAccountSelected(account);
           accountSelectedCallback!(context, account);
         }

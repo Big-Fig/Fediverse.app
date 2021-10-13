@@ -216,6 +216,7 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
           hideFollowersCountField.changeIsEnabled(true);
         } else {
           hideFollowersCountField.changeIsEnabled(false);
+          // ignore: cascade_invocations
           hideFollowersCountField.changeCurrentValue(false);
         }
       },
@@ -227,6 +228,7 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
           hideFollowsCountField.changeIsEnabled(true);
         } else {
           hideFollowsCountField.changeIsEnabled(false);
+          // ignore: cascade_invocations
           hideFollowsCountField.changeCurrentValue(false);
         }
       },

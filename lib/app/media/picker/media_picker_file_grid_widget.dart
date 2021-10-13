@@ -104,6 +104,7 @@ class _MediaPickerFileGridItemWidget extends StatelessWidget {
           var mediaDeviceFileBloc = PhotoManagerMediaDeviceFileBloc(
             photoManagerMediaDeviceFileMetadata: fileMetadata,
           );
+          // ignore: cascade_invocations
           mediaDeviceFileBloc.performAsyncInit();
 
           return mediaDeviceFileBloc;

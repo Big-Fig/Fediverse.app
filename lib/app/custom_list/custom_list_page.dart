@@ -156,13 +156,16 @@ class _CustomListPageAppBarEditActionWidget extends StatelessWidget {
           onSubmit: (customList) {
             var paginationListBloc =
                 IPaginationListBloc.of(context, listen: false);
+            // ignore: cascade_invocations
             paginationListBloc.refreshWithController();
 
             var customListBloc = ICustomListBloc.of(context, listen: false);
+            // ignore: cascade_invocations
             customListBloc.updateList(customList);
           },
           onDelete: () {
             var customListBloc = ICustomListBloc.of(context, listen: false);
+            // ignore: cascade_invocations
             customListBloc.updateList(null);
             Navigator.of(context).pop();
           },
@@ -253,6 +256,7 @@ MaterialPageRoute<void> createCustomListPageRoute({
               customList: customList,
             );
 
+            // ignore: cascade_invocations
             bloc.performAsyncInit();
 
             return bloc;

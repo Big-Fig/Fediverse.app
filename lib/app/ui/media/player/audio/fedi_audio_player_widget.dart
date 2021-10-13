@@ -135,6 +135,7 @@ class _FediAudioPlayerErrorReloadButtonWidget extends StatelessWidget {
         color: IFediUiColorTheme.of(context).white,
         onPressed: () {
           var mediaPlayerBloc = IMediaPlayerBloc.of(context, listen: false);
+          // ignore: cascade_invocations
           mediaPlayerBloc.reloadAfterError();
         },
       );

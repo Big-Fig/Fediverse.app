@@ -99,6 +99,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
           accounts,
           (account) => !myAccountBloc.checkAccountIsMe(account),
         );
+        // ignore: cascade_invocations
         accountsWithoutMe.sort(
           (a, b) => a.remoteId.compareTo(b.remoteId),
         );
@@ -363,7 +364,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
     String? idempotencyKey;
     var oldMessageExist = oldPendingFailedConversationChatMessage != null;
     if (oldMessageExist) {
-      localStatusId = oldPendingFailedConversationChatMessage!.status.localId!;
+      localStatusId = oldPendingFailedConversationChatMessage!.status.localId;
       dbStatus = oldPendingFailedConversationChatMessage.status
           .toDbStatus()
           .copyWith(id: localStatusId);
@@ -389,7 +390,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
       );
 
       await statusRepository.updateByDbIdInDbType(
-        dbId: localStatusId,
+        dbId: localStatusId!,
         dbItem: dbStatus.copyWith(
           pendingState: PendingState.pending,
         ),

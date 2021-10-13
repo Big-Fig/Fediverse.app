@@ -35,7 +35,7 @@ abstract class ProviderContextBloc extends AsyncInitLoadingBloc
 
     _storage[type] = DisposableEntry<T>(disposable, providerCreator);
 
-    return CustomDisposable(() async => await unregister<T>(disposable));
+    return CustomDisposable(() async => unregister<T>(disposable));
   }
 
   @override

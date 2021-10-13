@@ -222,7 +222,7 @@ class _SingleSelectFromListValueFormFieldRowValueIconWidget<T>
                 );
               },
               icon: Icon(
-                valueIconMapper!(context, currentValue!),
+                valueIconMapper!(context, currentValue),
               ),
             );
           },

@@ -147,7 +147,7 @@ class LocalStatusBloc extends StatusBloc {
   Future<IAccount?> getInReplyToAccount() async {
     var inReplyToAccountRemoteId = status.inReplyToAccountRemoteId;
     if (inReplyToAccountRemoteId != null) {
-      return await accountRepository.findByRemoteIdInAppType(
+      return accountRepository.findByRemoteIdInAppType(
         inReplyToAccountRemoteId,
       );
     } else {
@@ -175,7 +175,7 @@ class LocalStatusBloc extends StatusBloc {
     } else {
       var inReplyToRemoteId = status.inReplyToRemoteId;
       if (inReplyToRemoteId != null) {
-        return await statusRepository.findByRemoteIdInAppType(
+        return statusRepository.findByRemoteIdInAppType(
           inReplyToRemoteId,
         );
       } else {
@@ -295,7 +295,7 @@ class LocalStatusBloc extends StatusBloc {
       );
     }
 
-    return await _actualMuteUnmute(
+    return _actualMuteUnmute(
       expiresIn: duration,
     );
   }
@@ -304,7 +304,7 @@ class LocalStatusBloc extends StatusBloc {
   Future<IStatus> toggleMute({
     required Duration? duration,
   }) async {
-    return await _actualMuteUnmute(
+    return _actualMuteUnmute(
       expiresIn: duration,
     );
   }
@@ -457,7 +457,7 @@ class LocalStatusBloc extends StatusBloc {
   Future refreshFromNetwork() async {
     var remoteStatus = await loadRemoteStatus();
 
-    return await _updateByRemoteStatus(remoteStatus);
+    return _updateByRemoteStatus(remoteStatus);
   }
 
   @override

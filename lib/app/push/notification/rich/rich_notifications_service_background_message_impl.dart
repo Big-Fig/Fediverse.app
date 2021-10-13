@@ -413,7 +413,7 @@ Future<IUnifediApiNotification?> loadNotificationForPushMessageData({
 
     _logger.finest(() => 'Background message for $account@$server');
 
-    return await loadLastNotificationForAcctOnHost(
+    return loadLastNotificationForAcctOnHost(
       acct: account,
       host: server,
       createPushNotification: createPushNotification,
@@ -548,6 +548,7 @@ Future<IUnifediApiNotification?> _loadLastNotificationForInstance({
   var webSocketsModeSettingsBloc = WebSocketsModeSettingsBloc(
     mode: WebSocketsMode.disabledValue,
   );
+  // ignore: cascade_invocations
   webSocketsModeSettingsBloc.disposeWith(disposableOwner);
 
   var apiManager = authInstance.info!.typeAsUnifediApi.createApiManager(

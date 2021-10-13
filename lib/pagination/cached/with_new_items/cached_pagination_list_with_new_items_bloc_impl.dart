@@ -236,6 +236,7 @@ abstract class CachedPaginationListWithNewItemsBloc<
   @override
   void onItemUpdated(TItem item) {
     updatedItems.removeWhere((listItem) => listItem.isEqualTo(item));
+    // ignore: cascade_invocations
     updatedItems.add(item);
     updatedItemsSubject.add([...updatedItems]);
   }
@@ -434,6 +435,7 @@ _CombinedItemsResult<TItem>
     }).toList();
 
     // -1 for inverse
+    // ignore: cascade_invocations
     resultList.sort((a, b) => a.compareTo(b) * -1);
   }
 

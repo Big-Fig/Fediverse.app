@@ -74,6 +74,7 @@ class _PostMessageSelectedActionEmojiWidget extends StatelessWidget {
         EmojiPickerWidget(
           onEmojiSelected: (emoji) {
             postMessageBloc.appendText(emoji.code);
+            // ignore: cascade_invocations
             postMessageBloc.clearSelectedAction();
           },
           useImageEmoji: true,

@@ -275,7 +275,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
   }
 
   Future<List<IUnifediApiStatus>> _loadAccountTimeline() async {
-    return await unifediApiAccountService.getAccountStatuses(
+    return unifediApiAccountService.getAccountStatuses(
       pagination: null,
       accountId: timeline.onlyFromRemoteAccount!.id,
       onlyWithMedia: onlyWithMedia,
@@ -303,7 +303,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
       unifediApiTimelineService.getHashtagTimelineExcludeVisibilitiesFeature,
     );
 
-    return await unifediApiTimelineService.getHashtagTimeline(
+    return unifediApiTimelineService.getHashtagTimeline(
       hashtag: timeline.withRemoteHashtag!,
       pagination: pagination,
       onlyLocal: onlyLocal,
@@ -330,7 +330,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
       unifediApiTimelineService.getHomeTimelineExcludeVisibilitiesFeature,
     );
 
-    return await unifediApiTimelineService.getHomeTimeline(
+    return unifediApiTimelineService.getHomeTimeline(
       pagination: pagination,
       onlyLocal: onlyLocal,
       withMuted: withMutedSupported ? withMuted : null,
@@ -356,7 +356,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
       unifediApiTimelineService.getListTimelineOnlyLocalFilterFeature,
     );
 
-    return await unifediApiTimelineService.getListTimeline(
+    return unifediApiTimelineService.getListTimeline(
       listId: timeline.onlyInRemoteList!.id,
       pagination: pagination,
       onlyLocal: onlyLocalSupported ? onlyLocal : null,
@@ -382,7 +382,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
       unifediApiTimelineService.getHomeTimelineExcludeVisibilitiesFeature,
     );
 
-    return await unifediApiTimelineService.getPublicTimeline(
+    return unifediApiTimelineService.getPublicTimeline(
       pagination: pagination,
       onlyLocal: onlyLocal,
       onlyRemote: onlyRemote,

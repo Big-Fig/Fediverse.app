@@ -132,12 +132,15 @@ abstract class StatusThreadBloc extends AsyncInitLoadingBloc
       );
 
       var newStatuses = <IStatus>[];
+      // ignore: cascade_invocations
       newStatuses.addAll(
         ancestors.map(
           (remoteStatus) => remoteStatus.toDbStatusPopulatedWrapper(),
         ),
       );
+      // ignore: cascade_invocations
       newStatuses.add(initialStatusToFetchThread);
+      // ignore: cascade_invocations
       newStatuses.addAll(
         descendants.map(
           (remoteStatus) => remoteStatus.toDbStatusPopulatedWrapper(),

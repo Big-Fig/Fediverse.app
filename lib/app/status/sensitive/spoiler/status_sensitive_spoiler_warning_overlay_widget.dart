@@ -61,6 +61,7 @@ class _StatusSensitiveSpoilerWarningOverlayBodyWidget extends StatelessWidget {
         var statusSensitiveBloc =
             IStatusSensitiveBloc.of(context, listen: false);
 
+        // ignore: cascade_invocations
         statusSensitiveBloc.enableDisplay();
       },
     );
