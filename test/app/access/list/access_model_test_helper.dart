@@ -6,8 +6,10 @@ class UnifediApiAccessListModelMockHelper {
   static UnifediApiAccessList createTestUnifediApiAccessList({
     required String seed,
   }) =>
-      UnifediApiAccessList(instances: [
-        UnifediApiAccessMockHelper.generate(seed: seed + '1'),
-        UnifediApiAccessMockHelper.generate(seed: seed + '2'),
-      ]);
+      UnifediApiAccessList(
+        instances: [
+          UnifediApiAccessMockHelper.generate(seed: seed + '1'),
+          UnifediApiAccessMockHelper.generate(seed: seed + '2'),
+        ],
+      );
 }

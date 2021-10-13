@@ -217,8 +217,10 @@ class _TimelinesHomeTabPageBodyState extends State<_TimelinesHomeTabPageBody>
     var timelineTabListBloc = ITimelineTabListBloc.of(context, listen: false);
     var tabBloc = timelineTabListBloc.timelineTabBlocs[index];
 
-    _logger.finest(() => 'tabBodyProviderBuilder index $index '
-        'tabBloc ${tabBloc.timelineId}');
+    _logger.finest(
+      () => 'tabBodyProviderBuilder index $index '
+          'tabBloc ${tabBloc.timelineId}',
+    );
 
     return Provider<ITimelineTabBloc>.value(
       value: tabBloc,

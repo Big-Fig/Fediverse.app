@@ -263,5 +263,7 @@ class _NestedBodyTabItemWidgetState extends State<_NestedBodyTabItemWidget>
   bool get wantKeepAlive => true;
 }
 
-Key _calculateTabKey(String tabKeyPrefix, int index) => Key('$tabKeyPrefix'
-    '.$index');
+Key _calculateTabKey(String tabKeyPrefix, int index) => Key(
+      '$tabKeyPrefix'
+      '.$index',
+    );

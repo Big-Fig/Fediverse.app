@@ -151,10 +151,12 @@ void main() {
       chatRemoteId: chat.remoteId,
       batchTransaction: null,
     );
-    await chatRepository.upsertInRemoteType(chat.toUnifediApiChat(
-      lastChatMessage: lastChatMessage,
-      accounts: accounts,
-    ));
+    await chatRepository.upsertInRemoteType(
+      chat.toUnifediApiChat(
+        lastChatMessage: lastChatMessage,
+        accounts: accounts,
+      ),
+    );
 
     await RxDartMockHelper.waitToExecuteRxCallbacks();
   }
@@ -311,9 +313,12 @@ void main() {
     AccountMockHelper.expectAccount(chatBloc.accounts[0], account1);
     AccountMockHelper.expectAccount(listened[0], account1);
 
-    await _update(newValue, accounts: [
-      account2, //      account3
-    ]);
+    await _update(
+      newValue,
+      accounts: [
+        account2, //      account3
+      ],
+    );
 
     await RxDartMockHelper.waitToExecuteRxCallbacks();
 

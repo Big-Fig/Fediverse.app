@@ -134,18 +134,18 @@ class StatusCachedPaginationListMediaWidget
   }
 
   static List<IStatus> filterItemsWithMedia(List<IStatus> items) {
-    items = items
-        .where((IStatus status) =>
-            (status.reblog?.mediaAttachments ?? status.mediaAttachments)
-                ?.where(
-                  (mediaAttachment) =>
-                      mediaAttachment.typeAsUnifediApi.isImageOrGif,
-                )
-                .isNotEmpty ==
-            true)
+    return items
+        .where(
+          (IStatus status) =>
+              (status.reblog?.mediaAttachments ?? status.mediaAttachments)
+                  ?.where(
+                    (mediaAttachment) =>
+                        mediaAttachment.typeAsUnifediApi.isImageOrGif,
+                  )
+                  .isNotEmpty ==
+              true,
+        )
         .toList();
-
-    return items;
   }
 
   @override

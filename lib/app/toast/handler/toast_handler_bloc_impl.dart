@@ -141,10 +141,12 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
 
     var isEnabledWhenInstanceSelected = currentInstanceToastSettingsBloc
         .handlingType.isEnabledWhenInstanceSelected;
-    _logger.finest(() => 'handleCurrentInstancePush '
-        'unifediApiNotificationType $unifediApiNotificationType \n'
-        'isEnabledWhenInstanceSelected $isEnabledWhenInstanceSelected \n'
-        'enabled $enabled');
+    _logger.finest(
+      () => 'handleCurrentInstancePush '
+          'unifediApiNotificationType $unifediApiNotificationType \n'
+          'isEnabledWhenInstanceSelected $isEnabledWhenInstanceSelected \n'
+          'enabled $enabled',
+    );
 
     if (enabled && isEnabledWhenInstanceSelected) {
       bool isNeedShowToast;
@@ -168,8 +170,10 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
         isNeedShowToast = true;
       }
 
-      _logger.finest(() => 'handleCurrentInstancePush '
-          'isNeedShowToast $isNeedShowToast');
+      _logger.finest(
+        () => 'handleCurrentInstancePush '
+            'isNeedShowToast $isNeedShowToast',
+      );
 
       if (isNeedShowToast) {
         _showToast(
@@ -252,10 +256,12 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
     var isEnabledWhenInstanceNotSelected = currentInstanceToastSettingsBloc
         .handlingType.isEnabledWhenInstanceNotSelected;
 
-    _logger.finest(() => '_handleNonCurrentInstancePushMessage '
-        'unifediApiNotificationType $unifediApiNotificationType \n'
-        'isEnabledWhenInstanceNotSelected $isEnabledWhenInstanceNotSelected \n'
-        'isEnabled $isEnabled');
+    _logger.finest(
+      () => '_handleNonCurrentInstancePushMessage '
+          'unifediApiNotificationType $unifediApiNotificationType \n'
+          'isEnabledWhenInstanceNotSelected $isEnabledWhenInstanceNotSelected \n'
+          'isEnabled $isEnabled',
+    );
 
     if (isEnabled && isEnabledWhenInstanceNotSelected) {
       _showToast(
@@ -267,8 +273,10 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
             acct: pleromaPushMessage.account,
           );
 
-          _logger.finest(() => '_handleNonCurrentInstancePushMessage '
-              'instanceByCredentials $instanceByCredentials');
+          _logger.finest(
+            () => '_handleNonCurrentInstancePushMessage '
+                'instanceByCredentials $instanceByCredentials',
+          );
 
           if (instanceByCredentials != null) {
             await notificationsPushHandlerBloc

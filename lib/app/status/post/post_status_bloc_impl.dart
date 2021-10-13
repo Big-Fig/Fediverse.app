@@ -203,8 +203,10 @@ abstract class PostStatusBloc extends PostMessageBloc
     var currentInputTextErrors = inputTextErrors;
     if (isSomethingChangedPollBloc) {
       var textIsNotEmpty = inputText?.isNotEmpty == true;
-      _logger.finest(() => '_checkPollEmptyInputError '
-          'textIsNotEmpty $textIsNotEmpty');
+      _logger.finest(
+        () => '_checkPollEmptyInputError '
+            'textIsNotEmpty $textIsNotEmpty',
+      );
       if (textIsNotEmpty) {
         currentInputTextErrors!.remove(postMessagePollEmptyInputTextError);
         inputTextErrorsSubject.add([...currentInputTextErrors]);
@@ -214,8 +216,10 @@ abstract class PostStatusBloc extends PostMessageBloc
           currentInputTextErrors.add(postMessagePollEmptyInputTextError);
           inputTextErrorsSubject.add([...currentInputTextErrors]);
         }
-        _logger.finest(() => '_checkPollEmptyInputError '
-            'add inputTextErrors $currentInputTextErrors');
+        _logger.finest(
+          () => '_checkPollEmptyInputError '
+              'add inputTextErrors $currentInputTextErrors',
+        );
       }
     } else {
       currentInputTextErrors!.remove(postMessagePollEmptyInputTextError);
@@ -414,9 +418,11 @@ abstract class PostStatusBloc extends PostMessageBloc
       var acctsToRemove =
           mentionedAccts.where((acct) => !textAccts.contains(acct)).toList();
       if (acctsToAdd.isNotEmpty || acctsToRemove.isNotEmpty) {
-        _logger.finest(() => 'onInputTextChanged \n'
-            '\t acctsToAdd=$acctsToAdd'
-            '\t acctsToRemove=$acctsToRemove');
+        _logger.finest(
+          () => 'onInputTextChanged \n'
+              '\t acctsToAdd=$acctsToAdd'
+              '\t acctsToRemove=$acctsToRemove,',
+        );
         mentionedAccts.addAll(acctsToAdd);
         acctsToRemove.forEach((acct) => mentionedAccts.remove(acct));
         mentionedAcctsSubject.add(mentionedAccts);

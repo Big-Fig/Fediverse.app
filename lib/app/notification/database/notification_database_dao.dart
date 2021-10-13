@@ -129,13 +129,17 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
 
     if (minimumExist) {
       query = query
-        ..where((notification) =>
-            notification.createdAt.isBiggerThanValue(minimumCreatedAt));
+        ..where(
+          (notification) =>
+              notification.createdAt.isBiggerThanValue(minimumCreatedAt),
+        );
     }
     if (maximumExist) {
       query = query
-        ..where((notification) =>
-            notification.createdAt.isSmallerThanValue(maximumCreatedAt));
+        ..where(
+          (notification) =>
+              notification.createdAt.isSmallerThanValue(maximumCreatedAt),
+        );
     }
 
     return query;
@@ -146,8 +150,10 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
     List<NotificationRepositoryOrderingTermData> orderTerms,
   ) =>
       query
-        ..orderBy(orderTerms
-            .map((orderTerm) => ($DbNotificationsTable item) {
+        ..orderBy(
+          orderTerms
+              .map(
+                (orderTerm) => ($DbNotificationsTable item) {
                   GeneratedColumn<Object?> expression;
                   switch (orderTerm.orderType) {
                     case NotificationOrderType.remoteId:
@@ -162,8 +168,10 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
                     expression: expression,
                     mode: orderTerm.orderingMode,
                   );
-                })
-            .toList());
+                },
+              )
+              .toList(),
+        );
 
   Future markAsRead({required String remoteId}) {
     var update = 'UPDATE db_notifications '

@@ -129,9 +129,7 @@ class UrlHelper {
     var urlHost = remoteInstanceUriOrNull.host;
     var urlSchema = remoteInstanceUriOrNull.scheme;
 
-    url = '$urlSchema://$urlHost$url';
-
-    return url;
+    return '$urlSchema://$urlHost$url';
   }
 
   static String _calculateLocalInstanceAbsoluteUrl(
@@ -144,9 +142,7 @@ class UrlHelper {
     var urlHost = currentUnifediApiAccessBloc.currentInstance!.urlHost;
     var urlSchema = currentUnifediApiAccessBloc.currentInstance!.urlSchema;
 
-    url = '$urlSchema://$urlHost$url';
-
-    return url;
+    return '$urlSchema://$urlHost$url';
   }
 
   static Future handleUrlClickOnLocalInstanceLocation({

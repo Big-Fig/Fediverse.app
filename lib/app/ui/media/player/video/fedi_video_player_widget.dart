@@ -156,8 +156,10 @@ class _FediVideoPlayerBodyWidget extends StatelessWidget {
       stream: videoMediaPlayerBloc.isInitializedStream,
       builder: (context, snapshot) {
         var isInitialized = snapshot.data ?? false;
-        _logger.finest(() => 'isInitialized $isInitialized, '
-            'playerState  ${videoMediaPlayerBloc.playerState}');
+        _logger.finest(
+          () => 'isInitialized $isInitialized, '
+              'playerState  ${videoMediaPlayerBloc.playerState}',
+        );
         // todo: remove hack
         // sometimes  videoMediaPlayerBloc.isInitialized already false
         // but isInitialized contains old true value

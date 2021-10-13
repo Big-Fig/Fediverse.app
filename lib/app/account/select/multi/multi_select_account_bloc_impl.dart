@@ -97,8 +97,9 @@ class MultiSelectAccountBloc extends DisposableOwner
 
   void onSelectionChanged() {
     selectedAccountsSubject.add(selectedAccounts);
-    _logger.finest(() =>
-        'onSelectionChanged ${selectedAccounts.length} $selectedAccounts');
+    _logger.finest(
+      () => 'onSelectionChanged ${selectedAccounts.length} $selectedAccounts',
+    );
   }
 
   @override

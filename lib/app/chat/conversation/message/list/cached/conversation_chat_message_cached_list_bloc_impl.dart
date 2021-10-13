@@ -35,10 +35,12 @@ class ConversationChatMessageCachedListBloc extends DisposableOwner
     required IConversationChatMessage? newerThan,
     required IConversationChatMessage? olderThan,
   }) async {
-    _logger.fine(() => 'start refreshItemsFromRemoteForPage \n'
-        '\t chat = $chat'
-        '\t newerThan = $newerThan'
-        '\t olderThan = $olderThan');
+    _logger.fine(
+      () => 'start refreshItemsFromRemoteForPage \n'
+          '\t chat = $chat'
+          '\t newerThan = $newerThan'
+          '\t olderThan = $olderThan',
+    );
 
     await conversationChatStatusListBloc.refreshItemsFromRemoteForPage(
       olderThan: olderThan?.status,
@@ -53,9 +55,11 @@ class ConversationChatMessageCachedListBloc extends DisposableOwner
     required IConversationChatMessage? newerThan,
     required IConversationChatMessage? olderThan,
   }) async {
-    _logger.finest(() => 'start loadLocalItems \n'
-        '\t newerThan=$newerThan'
-        '\t olderThan=$olderThan');
+    _logger.finest(
+      () => 'start loadLocalItems \n'
+          '\t newerThan=$newerThan'
+          '\t olderThan=$olderThan',
+    );
 
     var statuses = await conversationChatStatusListBloc.loadLocalItems(
       olderThan: olderThan?.status,

@@ -305,12 +305,14 @@ class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
 
   @override
   void printConfigToLog() {
-    _logger.finest('config \n'
-        '${FlutterConfig.variables.entries.map(
-              (entry) => '${entry.key} => ${entry.value}',
-            ).join(
-              ' \n',
-            )}');
+    _logger.finest(
+      'config \n'
+      '${FlutterConfig.variables.entries.map(
+            (entry) => '${entry.key} => ${entry.value}',
+          ).join(
+            ' \n',
+          )}',
+    );
   }
 }
 

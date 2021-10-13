@@ -150,9 +150,11 @@ class NotificationsPushHandlerBloc extends DisposableOwner
       }
     }
 
-    _logger.finest(() => 'handlePushMessage \n'
-        '\t body =$body'
-        '\t handled =$handled');
+    _logger.finest(
+      () => 'handlePushMessage \n'
+          '\t body =$body'
+          '\t handled =$handled',
+    );
 
     if (!handled) {
       if (body.notificationAction?.toNotificationActionType() != null) {
@@ -215,8 +217,10 @@ class NotificationsPushHandlerBloc extends DisposableOwner
     var notificationActionInput = body.notificationActionInput;
 
     if (notificationActionInput?.isNotEmpty != true) {
-      _logger.warning(() =>
-          'cant _handleNewReplyAction notificationActionInput empty or null');
+      _logger.warning(
+        () =>
+            'cant _handleNewReplyAction notificationActionInput empty or null',
+      );
 
       return;
     }
@@ -462,8 +466,10 @@ class NotificationsPushHandlerBloc extends DisposableOwner
     );
 
     if (instanceForMessage != null) {
-      _logger.finest(() => 'body = $body by \n'
-          '\t instanceForMessage=$instanceForMessage');
+      _logger.finest(
+        () => 'body = $body by \n'
+            '\t instanceForMessage=$instanceForMessage',
+      );
 
       var isForCurrentInstance =
           currentInstanceBloc.isCurrentInstance(instanceForMessage);
@@ -483,8 +489,10 @@ class NotificationsPushHandlerBloc extends DisposableOwner
         }
       }
     } else {
-      _logger.severe(() => 'Cant handle body = '
-          '$body, because instance for message not found');
+      _logger.severe(
+        () => 'Cant handle body = '
+            '$body, because instance for message not found',
+      );
     }
   }
 

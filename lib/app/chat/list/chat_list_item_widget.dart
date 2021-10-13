@@ -108,9 +108,11 @@ class _ChatListItemGoToChatButtonWidget extends StatelessWidget {
               ? IFediUiColorTheme.of(context).primary
               : IFediUiColorTheme.of(context).darkGrey,
           iconSize: FediSizes.mediumIconSize,
-          icon: Icon(isHaveUnread
-              ? FediIcons.chevron_light_highlight
-              : FediIcons.arrow_right),
+          icon: Icon(
+            isHaveUnread
+                ? FediIcons.chevron_light_highlight
+                : FediIcons.arrow_right,
+          ),
           onPressed: () {
             onClick(context);
           },

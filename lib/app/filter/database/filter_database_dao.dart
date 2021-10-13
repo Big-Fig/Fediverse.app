@@ -68,8 +68,10 @@ class FilterDao extends PopulatedAppRemoteDatabaseDao<
     List<FilterOrderingTermData> orderTerms,
   ) =>
       query
-        ..orderBy(orderTerms
-            .map((orderTerm) => ($DbFiltersTable item) {
+        ..orderBy(
+          orderTerms
+              .map(
+                (orderTerm) => ($DbFiltersTable item) {
                   GeneratedColumn<String?> expression;
                   switch (orderTerm.orderType) {
                     case FilterOrderType.remoteId:
@@ -81,8 +83,10 @@ class FilterDao extends PopulatedAppRemoteDatabaseDao<
                     expression: expression,
                     mode: orderTerm.orderingMode,
                   );
-                })
-            .toList());
+                },
+              )
+              .toList(),
+        );
 
   List<Join<Table, DataClass>> populateFilterJoin() {
     return [];

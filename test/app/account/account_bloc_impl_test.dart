@@ -479,10 +479,12 @@ void main() {
 
     var newRelationship =
         AccountMockHelper.createTestAccountRelationship(seed: 'seed11');
-    when(pleromaAuthAccountServiceMock.getAccount(
-      accountId: account.remoteId,
-      withRelationship: false,
-    )).thenAnswer((_) async => newValue.toUnifediApiAccount());
+    when(
+      pleromaAuthAccountServiceMock.getAccount(
+        accountId: account.remoteId,
+        withRelationship: false,
+      ),
+    ).thenAnswer((_) async => newValue.toUnifediApiAccount());
 
     when(
       pleromaAuthAccountServiceMock.getRelationshipWithAccounts(
@@ -578,21 +580,27 @@ void main() {
 
     expect(accountBloc.relationship, account.relationship);
 
-    when(pleromaAuthAccountServiceMock.followAccount(
-      accountId: account.remoteId,
-    )).thenAnswer(
+    when(
+      pleromaAuthAccountServiceMock.followAccount(
+        accountId: account.remoteId,
+      ),
+    ).thenAnswer(
       (_) async => account.relationship!
           .toUnifediApiAccountRelationship()
           .copyWith(following: true),
     );
 
-    when(pleromaAuthAccountServiceMock.unFollowAccount(
-      accountId: account.remoteId,
-    )).thenAnswer((_) async =>
-        account.relationship!.toUnifediApiAccountRelationship().copyWith(
-              following: false,
-              requested: false,
-            ));
+    when(
+      pleromaAuthAccountServiceMock.unFollowAccount(
+        accountId: account.remoteId,
+      ),
+    ).thenAnswer(
+      (_) async =>
+          account.relationship!.toUnifediApiAccountRelationship().copyWith(
+                following: false,
+                requested: false,
+              ),
+    );
 
     var initialValue = account.relationship!.following!;
 
@@ -628,29 +636,39 @@ void main() {
 
     expect(accountBloc.relationship, account.relationship);
 
-    when(pleromaAuthAccountServiceMock.muteAccount(
-      accountId: account.remoteId,
-      notifications: true,
-      expireIn: null,
-    )).thenAnswer((_) async =>
-        account.relationship!.toUnifediApiAccountRelationship().copyWith(
-              muting: true,
-              mutingNotifications: true,
-            ));
+    when(
+      pleromaAuthAccountServiceMock.muteAccount(
+        accountId: account.remoteId,
+        notifications: true,
+        expireIn: null,
+      ),
+    ).thenAnswer(
+      (_) async =>
+          account.relationship!.toUnifediApiAccountRelationship().copyWith(
+                muting: true,
+                mutingNotifications: true,
+              ),
+    );
 
-    when(pleromaAuthAccountServiceMock.muteAccount(
-      accountId: account.remoteId,
-      notifications: false,
-      expireIn: null,
-    )).thenAnswer((_) async =>
-        account.relationship!.toUnifediApiAccountRelationship().copyWith(
-              muting: true,
-              mutingNotifications: false,
-            ));
+    when(
+      pleromaAuthAccountServiceMock.muteAccount(
+        accountId: account.remoteId,
+        notifications: false,
+        expireIn: null,
+      ),
+    ).thenAnswer(
+      (_) async =>
+          account.relationship!.toUnifediApiAccountRelationship().copyWith(
+                muting: true,
+                mutingNotifications: false,
+              ),
+    );
 
-    when(pleromaAuthAccountServiceMock.unMuteAccount(
-      accountId: account.remoteId,
-    )).thenAnswer(
+    when(
+      pleromaAuthAccountServiceMock.unMuteAccount(
+        accountId: account.remoteId,
+      ),
+    ).thenAnswer(
       (_) async => account.relationship!
           .toUnifediApiAccountRelationship()
           .copyWith(muting: false),
@@ -697,17 +715,21 @@ void main() {
 
     expect(accountBloc.relationship, account.relationship);
 
-    when(pleromaAuthAccountServiceMock.pinAccount(
-      accountId: account.remoteId,
-    )).thenAnswer(
+    when(
+      pleromaAuthAccountServiceMock.pinAccount(
+        accountId: account.remoteId,
+      ),
+    ).thenAnswer(
       (_) async => account.relationship!
           .toUnifediApiAccountRelationship()
           .copyWith(muting: true),
     );
 
-    when(pleromaAuthAccountServiceMock.unPinAccount(
-      accountId: account.remoteId,
-    )).thenAnswer(
+    when(
+      pleromaAuthAccountServiceMock.unPinAccount(
+        accountId: account.remoteId,
+      ),
+    ).thenAnswer(
       (_) async => account.relationship!
           .toUnifediApiAccountRelationship()
           .copyWith(muting: false),

@@ -89,22 +89,24 @@ class ConversationDao extends PopulatedAppRemoteDatabaseDao<
       query
         ..orderBy(
           orderTerms
-              .map((orderTerm) => ($DbConversationsTable item) {
-                    GeneratedColumn<Object?> expression;
-                    switch (orderTerm.orderType) {
-                      case ConversationChatOrderType.remoteId:
-                        expression = item.remoteId;
-                        break;
-                      case ConversationChatOrderType.updatedAt:
-                        expression = item.updatedAt;
-                        break;
-                    }
+              .map(
+                (orderTerm) => ($DbConversationsTable item) {
+                  GeneratedColumn<Object?> expression;
+                  switch (orderTerm.orderType) {
+                    case ConversationChatOrderType.remoteId:
+                      expression = item.remoteId;
+                      break;
+                    case ConversationChatOrderType.updatedAt:
+                      expression = item.updatedAt;
+                      break;
+                  }
 
-                    return OrderingTerm(
-                      expression: expression,
-                      mode: orderTerm.orderingMode,
-                    );
-                  })
+                  return OrderingTerm(
+                    expression: expression,
+                    mode: orderTerm.orderingMode,
+                  );
+                },
+              )
               .toList(),
         );
 
@@ -112,9 +114,11 @@ class ConversationDao extends PopulatedAppRemoteDatabaseDao<
     SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
   ) =>
       query
-        ..where((status) =>
-            status.mediaAttachments.isNotNull() |
-            status.mediaAttachments.equals(''));
+        ..where(
+          (status) =>
+              status.mediaAttachments.isNotNull() |
+              status.mediaAttachments.equals(''),
+        );
 
   Future<int> getTotalAmountUnread() => totalAmountUnreadQuery().getSingle();
 

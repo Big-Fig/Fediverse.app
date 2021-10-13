@@ -253,8 +253,10 @@ class TimelineSettings
 
   List<UnifediApiVisibility>? get excludeVisibilities =>
       excludeVisibilitiesStrings
-          ?.map((excludeVisibilityString) =>
-              excludeVisibilityString.toUnifediApiVisibility())
+          ?.map(
+            (excludeVisibilityString) =>
+                excludeVisibilityString.toUnifediApiVisibility(),
+          )
           .toList();
 
   UnifediApiReplyVisibilityFilter? get replyVisibilityFilter =>

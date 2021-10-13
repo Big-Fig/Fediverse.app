@@ -87,8 +87,10 @@ Future<DurationPickerResult> showDateTimeDurationPicker({
     duration: resultDuration,
   );
 
-  _logger.finest(() =>
-      'showDateTimeDurationPicker durationPickerResult $durationPickerResult');
+  _logger.finest(
+    () =>
+        'showDateTimeDurationPicker durationPickerResult $durationPickerResult',
+  );
 
   return durationPickerResult;
 }

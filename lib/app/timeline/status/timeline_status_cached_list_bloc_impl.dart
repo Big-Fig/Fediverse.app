@@ -146,10 +146,12 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
 
     var isWebSocketsUpdatesEnabled =
         timeline.isWebSocketsUpdatesEnabled ?? true;
-    _logger.finest(() => 'resubscribeWebSocketsUpdates '
-        'isWebSocketsUpdatesEnabled $isWebSocketsUpdatesEnabled '
-        'WebSocketsChannelHandlerType $WebSocketsChannelHandlerType '
-        'timelineType $timelineType ');
+    _logger.finest(
+      () => 'resubscribeWebSocketsUpdates '
+          'isWebSocketsUpdatesEnabled $isWebSocketsUpdatesEnabled '
+          'WebSocketsChannelHandlerType $WebSocketsChannelHandlerType '
+          'timelineType $timelineType ',
+    );
     if (isWebSocketsUpdatesEnabled) {
       switch (timelineType) {
         case TimelineType.public:
@@ -221,10 +223,12 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
     required IStatus? newerThan,
     required IStatus? olderThan,
   }) async {
-    _logger.fine(() => 'start refreshItemsFromRemoteForPage \n'
-        '\t _timeline = $timeline'
-        '\t newerThan = $newerThan'
-        '\t olderThan = $olderThan');
+    _logger.fine(
+      () => 'start refreshItemsFromRemoteForPage \n'
+          '\t _timeline = $timeline'
+          '\t newerThan = $newerThan'
+          '\t olderThan = $olderThan',
+    );
 
     List<IUnifediApiStatus>? remoteStatuses;
 
@@ -262,8 +266,10 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
 
       return true;
     } else {
-      _logger.severe(() => 'error during refreshItemsFromRemoteForPage: '
-          'statuses is null');
+      _logger.severe(
+        () => 'error during refreshItemsFromRemoteForPage: '
+            'statuses is null',
+      );
 
       return false;
     }

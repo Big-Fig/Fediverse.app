@@ -31,8 +31,10 @@ class DraftStatusDao extends PopulatedAppLocalDatabaseDao<
     List<DraftStatusRepositoryOrderingTermData> orderTerms,
   ) =>
       query
-        ..orderBy(orderTerms
-            .map((orderTerm) => ($DbDraftStatusesTable item) {
+        ..orderBy(
+          orderTerms
+              .map(
+                (orderTerm) => ($DbDraftStatusesTable item) {
                   GeneratedColumn<Object?> expression;
                   switch (orderTerm.orderType) {
                     case DraftStatusRepositoryOrderType.updatedAt:
@@ -47,8 +49,10 @@ class DraftStatusDao extends PopulatedAppLocalDatabaseDao<
                     expression: expression,
                     mode: orderTerm.orderingMode,
                   );
-                })
-            .toList());
+                },
+              )
+              .toList(),
+        );
 
   List<DbDraftStatus> typedResultListToPopulated(
     List<TypedResult> typedResult,
@@ -72,13 +76,18 @@ class DraftStatusDao extends PopulatedAppLocalDatabaseDao<
 
     if (minimumExist) {
       query = query
-        ..where((notification) =>
-            notification.updatedAt.isBiggerThanValue(minimumUpdatedAt));
+        ..where(
+          (notification) => notification.updatedAt.isBiggerThanValue(
+            minimumUpdatedAt,
+          ),
+        );
     }
     if (maximumExist) {
       query = query
-        ..where((notification) =>
-            notification.updatedAt.isSmallerThanValue(maximumUpdatedAt));
+        ..where(
+          (notification) =>
+              notification.updatedAt.isSmallerThanValue(maximumUpdatedAt),
+        );
     }
 
     return query;

@@ -49,8 +49,10 @@ class MediaPickerFileGridWidget
     required Widget? header,
     required Widget? footer,
   }) {
-    assert(header == null && footer == null,
-        'Grid view dont support header or footer');
+    assert(
+      header == null && footer == null,
+      'Grid view dont support header or footer',
+    );
 
     _logger.finest(() => 'buildItemsCollectionView');
 

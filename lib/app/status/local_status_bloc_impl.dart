@@ -259,8 +259,10 @@ class LocalStatusBloc extends StatusBloc {
 
   @override
   Future<IStatus> toggleReblog() async {
-    _logger.finest(() =>
-        'requestToggleReblog status.reblogged=${reblogOrOriginal.reblogged}');
+    _logger.finest(
+      () =>
+          'requestToggleReblog status.reblogged=${reblogOrOriginal.reblogged}',
+    );
     IUnifediApiStatus remoteStatus;
     if (reblogOrOriginal.reblogged) {
       remoteStatus = await unifediApiStatusService.unReblogStatus(

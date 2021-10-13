@@ -30,10 +30,12 @@ class ConversationChatStatusListConversationApiBloc
     required IStatus? newerThan,
     required IStatus? olderThan,
   }) async {
-    _logger.fine(() => 'start refreshItemsFromRemoteForPage \n'
-        '\t conversation = $conversation'
-        '\t newerThan = $newerThan'
-        '\t olderThan = $olderThan');
+    _logger.fine(
+      () => 'start refreshItemsFromRemoteForPage \n'
+          '\t conversation = $conversation'
+          '\t newerThan = $newerThan'
+          '\t olderThan = $olderThan',
+    );
 
     var remoteStatuses =
         await pleromaConversationService.getConversationStatuses(

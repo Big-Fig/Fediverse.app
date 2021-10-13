@@ -111,8 +111,10 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
 
   @override
   Future internalAsyncInit() async {
-    _logger.finest(() =>
-        'internalAsyncInit loadFromCacheDuringInit $loadFromCacheDuringInit');
+    _logger.finest(
+      () =>
+          'internalAsyncInit loadFromCacheDuringInit $loadFromCacheDuringInit',
+    );
 
     if (loadFromCacheDuringInit) {
       try {

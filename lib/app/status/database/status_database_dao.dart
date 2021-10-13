@@ -155,8 +155,10 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
     String? localDomain,
   ) =>
       query
-        ..where((status) =>
-            status.local.equals(true) | status.url.like('%$localDomain%'));
+        ..where(
+          (status) =>
+              status.local.equals(true) | status.url.like('%$localDomain%'),
+        );
 
   // todo: improve performance: remove url.like filter. Add local flag on insert
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyRemoteWhere(
@@ -164,8 +166,10 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
     String? localDomain,
   ) =>
       query
-        ..where((status) => (status.local.equals(true).not() &
-            status.url.like('%$localDomain%').not()));
+        ..where(
+          (status) => (status.local.equals(true).not() &
+              status.url.like('%$localDomain%').not()),
+        );
 
   // todo: improve performance: remove url.like filter. Add local flag on insert
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyFromInstanceWhere(
@@ -238,37 +242,45 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
     String? accountRemoteId,
   ) =>
       query
-        ..where(CustomExpression<bool>(
-          "$_accountFollowingsAliasId.account_remote_id = '$accountRemoteId'",
-        ));
+        ..where(
+          CustomExpression<bool>(
+            "$_accountFollowingsAliasId.account_remote_id = '$accountRemoteId'",
+          ),
+        );
 
   JoinedSelectStatement addHashtagWhere(
     JoinedSelectStatement query,
     String? hashtag,
   ) =>
       query
-        ..where(CustomExpression<bool>(
-          "$_statusHashtagsAliasId.hashtag = '$hashtag'",
-        ));
+        ..where(
+          CustomExpression<bool>(
+            "$_statusHashtagsAliasId.hashtag = '$hashtag'",
+          ),
+        );
 
   JoinedSelectStatement addListWhere(
     JoinedSelectStatement query,
     String? listRemoteId,
   ) =>
       query
-        ..where(CustomExpression<bool>(
-          "$_statusListsAliasId.list_remote_id = '$listRemoteId'",
-        ));
+        ..where(
+          CustomExpression<bool>(
+            "$_statusListsAliasId.list_remote_id = '$listRemoteId'",
+          ),
+        );
 
   JoinedSelectStatement addConversationWhere(
     JoinedSelectStatement query,
     String? conversationRemoteId,
   ) =>
       query
-        ..where(CustomExpression<bool>(
-          '$_conversationStatusesAliasId.conversation_remote_id'
-          " = '$conversationRemoteId'",
-        ));
+        ..where(
+          CustomExpression<bool>(
+            '$_conversationStatusesAliasId.conversation_remote_id'
+            " = '$conversationRemoteId'",
+          ),
+        );
 
   JoinedSelectStatement addReplyToAccountSelfOrFollowingWhere(
     JoinedSelectStatement query,
@@ -371,9 +383,11 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
     String? accountRemoteId,
   ) =>
           query
-            ..where((status) =>
-                status.inReplyToAccountRemoteId.isNull() |
-                status.inReplyToAccountRemoteId.equals(accountRemoteId));
+            ..where(
+              (status) =>
+                  status.inReplyToAccountRemoteId.isNull() |
+                  status.inReplyToAccountRemoteId.equals(accountRemoteId),
+            );
 
   SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyNoRepliesWhere(
     SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
@@ -402,8 +416,10 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
     List<StatusRepositoryOrderingTermData> orderTerms,
   ) =>
       query
-        ..orderBy(orderTerms
-            .map((orderTerm) => ($DbStatusesTable item) {
+        ..orderBy(
+          orderTerms
+              .map(
+                (orderTerm) => ($DbStatusesTable item) {
                   GeneratedColumn<Object?> expression;
                   switch (orderTerm.orderByType) {
                     case StatusRepositoryOrderType.remoteId:
@@ -418,8 +434,10 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
                     expression: expression,
                     mode: orderTerm.orderingMode,
                   );
-                })
-            .toList());
+                },
+              )
+              .toList(),
+        );
 
   // ignore: long-method
   List<Join> populateStatusJoin({
@@ -572,13 +590,16 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
     required StatusRepositoryFilters? filters,
   }) {
     assert(
-        !(filters?.onlyLocalCondition != null &&
-            filters?.onlyRemoteCondition != null),
-        "onlyLocalCondition && onlyRemoteCondition  can't be set both");
+      !(filters?.onlyLocalCondition != null &&
+          filters?.onlyRemoteCondition != null),
+      "onlyLocalCondition && onlyRemoteCondition  can't be set both",
+    );
 
     if (filters?.onlyFromInstance?.isNotEmpty == true) {
-      assert(filters?.onlyRemoteCondition != null,
-          'onlyRemoteCondition should be notNull if onlyFromInstance was set');
+      assert(
+        filters?.onlyRemoteCondition != null,
+        'onlyRemoteCondition should be notNull if onlyFromInstance was set',
+      );
 
       addOnlyFromInstanceWhere(
         query,

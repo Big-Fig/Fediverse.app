@@ -62,8 +62,10 @@ void showEditGlobalOrInstanceSettingsDialog({
             builder: (context, snapshot) {
               var globalOrInstanceSettingsType =
                   snapshot.data ?? GlobalOrInstanceSettingsType.global;
-              _logger.finest(() =>
-                  'globalOrInstanceSettingsType $globalOrInstanceSettingsType');
+              _logger.finest(
+                () =>
+                    'globalOrInstanceSettingsType $globalOrInstanceSettingsType',
+              );
 
               return Provider<GlobalOrInstanceSettingsType>.value(
                 value: globalOrInstanceSettingsType,

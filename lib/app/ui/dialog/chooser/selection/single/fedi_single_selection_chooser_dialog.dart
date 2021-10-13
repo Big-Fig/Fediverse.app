@@ -57,11 +57,13 @@ class FediSingleSelectionChooserDialogBody extends StatelessWidget {
             mainAxisSize: MainAxisSize.max,
             children: [
               ...actions
-                  .map((action) =>
-                      _FediSingleSelectionChooserDialogBodyContentAction(
-                        action: action,
-                        isSelected: action.isSelected,
-                      ))
+                  .map(
+                    (action) =>
+                        _FediSingleSelectionChooserDialogBodyContentAction(
+                      action: action,
+                      isSelected: action.isSelected,
+                    ),
+                  )
                   .toList(),
             ],
           ),

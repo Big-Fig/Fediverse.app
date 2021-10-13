@@ -26,10 +26,12 @@ abstract class NetworkOnlyPaginationBloc<TPage extends PaginationPage<TItem>,
     required TPage? previousPage,
     required TPage? nextPage,
   }) async {
-    _logger.finest(() => 'loadPage \n'
-        '\t pageIndex=$pageIndex'
-        '\t previousPage=$previousPage'
-        '\t nextPage=$nextPage');
+    _logger.finest(
+      () => 'loadPage \n'
+          '\t pageIndex=$pageIndex'
+          '\t previousPage=$previousPage'
+          '\t nextPage=$nextPage',
+    );
 
     var loadedItems = await loadItemsFromRemoteForPage(
       pageIndex: pageIndex,

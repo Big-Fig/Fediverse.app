@@ -93,8 +93,10 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var paginationListBloc = retrievePaginationListBloc(context, listen: true);
-    _logger.finest(() => 'build '
-        'paginationListBloc.isRefreshedAtLeastOnce=${paginationListBloc.refreshState}');
+    _logger.finest(
+      () => 'build '
+          'paginationListBloc.isRefreshedAtLeastOnce=${paginationListBloc.refreshState}',
+    );
 
     if (paginationListBloc.refreshState !=
             FediListSmartRefresherLoadingState.loaded &&
@@ -138,8 +140,10 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
       builder: (context, snapshot) {
         var items = snapshot.data;
 
-        _logger.finest(() => 'build paginationListBloc.itemsStream items '
-            '${items?.length}');
+        _logger.finest(
+          () => 'build paginationListBloc.itemsStream items '
+              '${items?.length}',
+        );
 
         return buildSmartRefresher(
           paginationListBloc,
@@ -181,9 +185,11 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
   }
 
   Widget buildNotListBody(Widget child) {
-    _logger.finest(() => 'buildNotListBody '
-        'alwaysShowHeader=$alwaysShowHeader '
-        'alwaysShowFooter=$alwaysShowFooter ');
+    _logger.finest(
+      () => 'buildNotListBody '
+          'alwaysShowHeader=$alwaysShowHeader '
+          'alwaysShowFooter=$alwaysShowFooter ',
+    );
     if (alwaysShowHeader != true && alwaysShowFooter != true) {
       return child;
     } else {

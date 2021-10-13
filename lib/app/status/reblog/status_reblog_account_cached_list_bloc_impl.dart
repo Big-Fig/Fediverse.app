@@ -41,9 +41,11 @@ class StatusReblogAccountCachedListBloc extends DisposableOwner
     required IAccount? newerThan,
     required IAccount? olderThan,
   }) async {
-    _logger.fine(() => 'start refreshItemsFromRemoteForPage \n'
-        '\t newerThanAccount = $newerThan'
-        '\t olderThanAccount = $olderThan');
+    _logger.fine(
+      () => 'start refreshItemsFromRemoteForPage \n'
+          '\t newerThanAccount = $newerThan'
+          '\t olderThanAccount = $olderThan',
+    );
 
     List<IUnifediApiAccount> remoteAccounts;
 
@@ -77,9 +79,11 @@ class StatusReblogAccountCachedListBloc extends DisposableOwner
     required IAccount? newerThan,
     required IAccount? olderThan,
   }) async {
-    _logger.finest(() => 'start loadLocalItems \n'
-        '\t newerThanAccount=$newerThan'
-        '\t olderThanAccount=$olderThan');
+    _logger.finest(
+      () => 'start loadLocalItems \n'
+          '\t newerThanAccount=$newerThan'
+          '\t olderThanAccount=$olderThan',
+    );
     var accounts = await accountRepository.findAllInAppType(
       filters: _accountRepositoryFilters,
       pagination: RepositoryPagination<IAccount>(

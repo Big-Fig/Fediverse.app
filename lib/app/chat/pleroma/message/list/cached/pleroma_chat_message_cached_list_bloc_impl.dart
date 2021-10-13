@@ -45,10 +45,12 @@ class PleromaChatMessageCachedListBloc extends DisposableOwner
     required IPleromaChatMessage? newerThan,
     required IPleromaChatMessage? olderThan,
   }) async {
-    _logger.fine(() => 'start refreshItemsFromRemoteForPage \n'
-        '\t chat = $chat'
-        '\t newerThan = $newerThan'
-        '\t olderThan = $olderThan');
+    _logger.fine(
+      () => 'start refreshItemsFromRemoteForPage \n'
+          '\t chat = $chat'
+          '\t newerThan = $newerThan'
+          '\t olderThan = $olderThan',
+    );
 
     var remoteMessages = await pleromaApiChatService.getChatMessages(
       chatId: chat.remoteId,
@@ -71,9 +73,11 @@ class PleromaChatMessageCachedListBloc extends DisposableOwner
     required IPleromaChatMessage? newerThan,
     required IPleromaChatMessage? olderThan,
   }) async {
-    _logger.finest(() => 'start loadLocalItems \n'
-        '\t newerThan=$newerThan'
-        '\t olderThan=$olderThan');
+    _logger.finest(
+      () => 'start loadLocalItems \n'
+          '\t newerThan=$newerThan'
+          '\t olderThan=$olderThan',
+    );
 
     var messages = await chatMessageRepository.findAllInAppType(
       filters: _pleromaChatMessageRepositoryFilters,

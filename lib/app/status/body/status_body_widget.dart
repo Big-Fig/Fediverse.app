@@ -380,8 +380,10 @@ class _StatusBodyContentWithEmojisCollapsibleWidget extends StatelessWidget {
     var statusBodyBloc = IStatusBodyBloc.of(context);
     var collapsible = statusBodyBloc.collapsible;
 
-    _logger.finest(() => 'build collapsible $collapsible '
-        'statusBloc ${statusBloc.remoteId}');
+    _logger.finest(
+      () => 'build collapsible $collapsible '
+          'statusBloc ${statusBloc.remoteId}',
+    );
 
     var isNeedCollapse =
         collapsible && statusCollapsibleItemBloc.isPossibleToCollapse;

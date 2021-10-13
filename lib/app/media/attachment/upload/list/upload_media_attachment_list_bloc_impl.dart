@@ -84,12 +84,13 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
 
   @override
   Stream<List<IUploadMediaAttachmentBloc>> get onlyMediaAttachmentBlocsStream =>
-      uploadMediaAttachmentBlocsSubject.stream
-          .map((mediaAttachmentBlocs) => mediaAttachmentBlocs
-              .where(
-                (bloc) => bloc.isMedia,
-              )
-              .toList());
+      uploadMediaAttachmentBlocsSubject.stream.map(
+        (mediaAttachmentBlocs) => mediaAttachmentBlocs
+            .where(
+              (bloc) => bloc.isMedia,
+            )
+            .toList(),
+      );
 
   @override
   List<IUploadMediaAttachmentBloc> get onlyNonMediaAttachmentBlocs =>

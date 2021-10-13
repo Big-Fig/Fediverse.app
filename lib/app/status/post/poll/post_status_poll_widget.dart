@@ -87,10 +87,12 @@ class _PostStatusPollOptionsFieldItemsWidget extends StatelessWidget {
     return Column(
       children: [
         ...items
-            .map((pollItemBloc) => Provider<IStringValueFormFieldBloc>.value(
-                  value: pollItemBloc,
-                  child: _PostStatusPollOptionsFieldItemWidget(),
-                ))
+            .map(
+              (pollItemBloc) => Provider<IStringValueFormFieldBloc>.value(
+                value: pollItemBloc,
+                child: _PostStatusPollOptionsFieldItemWidget(),
+              ),
+            )
             .toList(),
       ],
     );

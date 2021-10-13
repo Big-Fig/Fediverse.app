@@ -52,8 +52,10 @@ class UnifediApiAccessChooserWidget extends StatelessWidget {
                 if (instancesAvailableToChoose == null) {
                   return const SizedBox.shrink();
                 }
-                _logger.finest(() => 'build instancesAvailableToChoose '
-                    '${instancesAvailableToChoose.length}');
+                _logger.finest(
+                  () => 'build instancesAvailableToChoose '
+                      '${instancesAvailableToChoose.length}',
+                );
 
                 return Provider<List<UnifediApiAccess>>.value(
                   value: instancesAvailableToChoose,

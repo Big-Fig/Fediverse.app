@@ -37,9 +37,11 @@ class NotificationsPushHandlerUnhandledLocalPreferenceBloc
     var pleromaUnhandledList = value;
 
     pleromaUnhandledList.messages.add(notificationsPushHandlerMessage);
-    _logger.finest(() => 'loadUnhandledMessagesForInstance \n'
-        '\t notificationsPushHandlerMessage = $notificationsPushHandlerMessage'
-        '\t pleromaUnhandledList.messages = ${pleromaUnhandledList.messages.length}');
+    _logger.finest(
+      () => 'loadUnhandledMessagesForInstance \n'
+          '\t notificationsPushHandlerMessage = $notificationsPushHandlerMessage'
+          '\t pleromaUnhandledList.messages = ${pleromaUnhandledList.messages.length}',
+    );
 
     await setValue(pleromaUnhandledList);
   }
@@ -59,9 +61,11 @@ class NotificationsPushHandlerUnhandledLocalPreferenceBloc
         )
         .toList();
 
-    _logger.finest(() => 'loadUnhandledMessagesForInstance \n'
-        '\t instance = $instance'
-        '\t messagesForInstances = ${messagesForInstances.length}');
+    _logger.finest(
+      () => 'loadUnhandledMessagesForInstance \n'
+          '\t instance = $instance'
+          '\t messagesForInstances = ${messagesForInstances.length}',
+    );
 
     return messagesForInstances;
   }
@@ -80,8 +84,10 @@ class NotificationsPushHandlerUnhandledLocalPreferenceBloc
         )
         .toList();
 
-    _logger.finest(() => 'markAsHandled \n'
-        '\t messages = ${messages.length}');
+    _logger.finest(
+      () => 'markAsHandled \n'
+          '\t messages = ${messages.length}',
+    );
 
     return setValue(
       NotificationsPushHandlerUnhandledList(

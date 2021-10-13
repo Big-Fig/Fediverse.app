@@ -105,11 +105,13 @@ class PleromaChatMessageCachedPaginationListWithNewItemsBloc<
       return superItems;
     }
 
-    superItems.removeWhere((currentItem) =>
-        hiddenItems.firstWhereOrNull(
-          (hiddenItem) => hiddenItem.isEqualTo(currentItem),
-        ) !=
-        null);
+    superItems.removeWhere(
+      (currentItem) =>
+          hiddenItems.firstWhereOrNull(
+            (hiddenItem) => hiddenItem.isEqualTo(currentItem),
+          ) !=
+          null,
+    );
 
     return superItems;
   }

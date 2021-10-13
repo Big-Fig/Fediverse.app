@@ -91,10 +91,12 @@ class _FediListSmartRefresherRefreshIndicatorState
       upperBound: 1.0,
       duration: Duration(milliseconds: 300),
     );
-    _positionFactor = _positionController.drive(Tween<Offset>(
-      begin: Offset(0.0, -1.0),
-      end: Offset(0.0, widget.height / 44.0),
-    ));
+    _positionFactor = _positionController.drive(
+      Tween<Offset>(
+        begin: Offset(0.0, -1.0),
+        end: Offset(0.0, widget.height / 44.0),
+      ),
+    );
     super.initState();
   }
 

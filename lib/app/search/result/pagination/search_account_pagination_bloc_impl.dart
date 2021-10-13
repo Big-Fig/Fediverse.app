@@ -20,8 +20,10 @@ class SearchAccountPaginationBloc
   PaginationPage<IAccount> mapPage(PaginationPage<ISearchResultItem> page) {
     // IterableExtension
     var items = page.items
-        .where((searchResultItem) =>
-            searchResultItem.type == SearchResultItemType.account)
+        .where(
+          (searchResultItem) =>
+              searchResultItem.type == SearchResultItemType.account,
+        )
         .map((searchResultItem) => searchResultItem.account)
         .whereNotNull()
         .toList();

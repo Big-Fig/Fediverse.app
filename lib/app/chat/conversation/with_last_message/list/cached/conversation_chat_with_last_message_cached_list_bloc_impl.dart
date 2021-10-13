@@ -33,9 +33,11 @@ class ConversationChatWithLastMessageCachedListBloc
     required IConversationChatWithLastMessage? newerThan,
     required IConversationChatWithLastMessage? olderThan,
   }) async {
-    _logger.fine(() => 'start refreshItemsFromRemoteForPage \n'
-        '\t newerThan = $newerThan'
-        '\t olderThan = $olderThan');
+    _logger.fine(
+      () => 'start refreshItemsFromRemoteForPage \n'
+          '\t newerThan = $newerThan'
+          '\t olderThan = $olderThan',
+    );
 
     List<IUnifediApiConversation>? remoteConversations;
 
@@ -60,9 +62,11 @@ class ConversationChatWithLastMessageCachedListBloc
     required IConversationChatWithLastMessage? newerThan,
     required IConversationChatWithLastMessage? olderThan,
   }) async {
-    _logger.finest(() => 'start loadLocalItems \n'
-        '\t newerThan=$newerThan'
-        '\t olderThan=$olderThan');
+    _logger.finest(
+      () => 'start loadLocalItems \n'
+          '\t newerThan=$newerThan'
+          '\t olderThan=$olderThan',
+    );
 
     var chats =
         await chatWithLastMessageRepository.getConversationsWithLastMessage(

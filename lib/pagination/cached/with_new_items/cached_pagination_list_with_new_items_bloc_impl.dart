@@ -334,10 +334,12 @@ abstract class CachedPaginationListWithNewItemsBloc<
           // if newerItem already changed we shouldn't apply calculated changes
           // because new changes coming
           if (this.newerItem == newerItem) {
-            _logger.finest(() => 'watchItemsNewerThanItem '
-                '\n'
-                '\t newItems ${newItems.length} \n'
-                '\t actuallyNew = ${actuallyNew.length}');
+            _logger.finest(
+              () => 'watchItemsNewerThanItem '
+                  '\n'
+                  '\t newItems ${newItems.length} \n'
+                  '\t actuallyNew = ${actuallyNew.length}',
+            );
 
             if (actuallyNew.isNotEmpty) {
               if (!currentItems.isNotEmpty &&
@@ -414,12 +416,14 @@ _CombinedItemsResult<TItem>
     ];
   }
 
-  _logger.finest(() => '_calculateNewItems'
-      ' \n'
-      '\t items = ${items?.length} \n'
-      '\t mergedNewItems = ${mergedNewItems?.length} \n'
-      '\t updatedItems = ${updatedItems.length} \n'
-      '\t resultList = ${resultList.length}');
+  _logger.finest(
+    () => '_calculateNewItems'
+        ' \n'
+        '\t items = ${items?.length} \n'
+        '\t mergedNewItems = ${mergedNewItems?.length} \n'
+        '\t updatedItems = ${updatedItems.length} \n'
+        '\t resultList = ${resultList.length}',
+  );
 
   if (updatedItems.isNotEmpty) {
     resultList = resultList.map((resultListItem) {
@@ -478,7 +482,7 @@ List<TItem> _calculateActuallyNew<TItem extends IEqualComparableObj<TItem>>(
   // sometimes local storage sqlite returns duplicated items
   // sometimes item is newer but already exist
   // for example chat updateAt updated
-  actuallyNew = actuallyNew.where(
+  return actuallyNew.where(
     (newItem) {
       bool isAlreadyExist;
       if (currentItems.isNotEmpty) {
@@ -495,8 +499,6 @@ List<TItem> _calculateActuallyNew<TItem extends IEqualComparableObj<TItem>>(
       return isNeedToAdd;
     },
   ).toList();
-
-  return actuallyNew;
 }
 
 class _CombinedItemsResult<TItem extends IEqualComparableObj<TItem>> {

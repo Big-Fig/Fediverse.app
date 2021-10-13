@@ -76,8 +76,10 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
       var pushRelayBaseUrlChanged =
           pushRelayBaseUrl != currentUsedPushRelayBaseUrl;
 
-      _logger.finest(() =>
-          '_checkResubscribe pushRelayBaseUrlChanged $pushRelayBaseUrlChanged');
+      _logger.finest(
+        () =>
+            '_checkResubscribe pushRelayBaseUrlChanged $pushRelayBaseUrlChanged',
+      );
       if (pushRelayBaseUrlChanged) {
         var deviceToken = fcmPushService.deviceToken;
         var isApiReadyToUse = connectionService.isConnected;
@@ -247,8 +249,10 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
 
     bool success;
 
-    _logger.finest(() => 'updateSubscriptionPreferences '
-        'deviceToken $deviceToken permissionGranted $permissionGranted');
+    _logger.finest(
+      () => 'updateSubscriptionPreferences '
+          'deviceToken $deviceToken permissionGranted $permissionGranted',
+    );
     if (deviceToken != null && permissionGranted) {
       success = await _trySubscribe(deviceToken, newSettings);
     } else {
@@ -256,15 +260,19 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
     }
 
     if (success) {
-      _logger.finest(() => 'updateSubscriptionPreferences \n'
-          '\t newPreferences = $newSettings'
-          '\t deviceToken = $deviceToken'
-          '\t success = $success');
+      _logger.finest(
+        () => 'updateSubscriptionPreferences \n'
+            '\t newPreferences = $newSettings'
+            '\t deviceToken = $deviceToken'
+            '\t success = $success',
+      );
     } else {
-      _logger.severe(() => 'updateSubscriptionPreferences \n'
-          '\t newPreferences = $newSettings'
-          '\t deviceToken = $deviceToken'
-          '\t success = $success');
+      _logger.severe(
+        () => 'updateSubscriptionPreferences \n'
+            '\t newPreferences = $newSettings'
+            '\t deviceToken = $deviceToken'
+            '\t success = $success',
+      );
     }
 
     return success;

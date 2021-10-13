@@ -654,10 +654,12 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       conversationRemoteId =
           conversationRemoteId ?? remoteStatus.directConversationId?.toString();
 
-      _logger.finer(() => 'upsertRemoteStatus $remoteStatus '
-          'listRemoteId => $listRemoteId '
-          'conversationRemoteId => $conversationRemoteId '
-          'isFromHomeTimeline => $isFromHomeTimeline ');
+      _logger.finer(
+        () => 'upsertRemoteStatus $remoteStatus '
+            'listRemoteId => $listRemoteId '
+            'conversationRemoteId => $conversationRemoteId '
+            'isFromHomeTimeline => $isFromHomeTimeline ',
+      );
 
       var remoteAccount = remoteStatus.account;
 

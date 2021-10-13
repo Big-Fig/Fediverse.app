@@ -32,24 +32,29 @@ class ScheduledStatusDao extends PopulatedAppRemoteDatabaseDao<
     SimpleSelectStatement<$DbScheduledStatusesTable, DbScheduledStatus> query,
   ) =>
           query
-            ..where((scheduledStatus) =>
-                scheduledStatus.canceled.equals(true).not());
+            ..where(
+              (scheduledStatus) => scheduledStatus.canceled.equals(true).not(),
+            );
 
   SimpleSelectStatement<$DbScheduledStatusesTable, DbScheduledStatus>
       addExcludeScheduleAtExpiredWhere(
     SimpleSelectStatement<$DbScheduledStatusesTable, DbScheduledStatus> query,
   ) =>
           query
-            ..where((scheduledStatus) => scheduledStatus.scheduledAt
-                .isBiggerThanValue(DateTime.now().toUtc()));
+            ..where(
+              (scheduledStatus) => scheduledStatus.scheduledAt
+                  .isBiggerThanValue(DateTime.now().toUtc()),
+            );
 
   SimpleSelectStatement<$DbScheduledStatusesTable, DbScheduledStatus> orderBy(
     SimpleSelectStatement<$DbScheduledStatusesTable, DbScheduledStatus> query,
     List<ScheduledStatusRepositoryOrderingTermData> orderTerms,
   ) =>
       query
-        ..orderBy(orderTerms
-            .map((orderTerm) => ($DbScheduledStatusesTable item) {
+        ..orderBy(
+          orderTerms
+              .map(
+                (orderTerm) => ($DbScheduledStatusesTable item) {
                   GeneratedColumn<String?> expression;
                   switch (orderTerm.orderType) {
                     case ScheduledStatusRepositoryOrderType.remoteId:
@@ -61,8 +66,10 @@ class ScheduledStatusDao extends PopulatedAppRemoteDatabaseDao<
                     expression: expression,
                     mode: orderTerm.orderingMode,
                   );
-                })
-            .toList());
+                },
+              )
+              .toList(),
+        );
 
   @override
   $DbScheduledStatusesTable get table => dbScheduledStatuses;
@@ -93,8 +100,10 @@ class ScheduledStatusDao extends PopulatedAppRemoteDatabaseDao<
         pagination?.newerThanItem != null) {
       assert(orderingTerms?.length == 1);
       var orderingTermData = orderingTerms!.first;
-      assert(orderingTermData.orderType ==
-          ScheduledStatusRepositoryOrderType.remoteId);
+      assert(
+        orderingTermData.orderType ==
+            ScheduledStatusRepositoryOrderType.remoteId,
+      );
       query = addRemoteIdBoundsWhere(
         query,
         maximumRemoteIdExcluding: pagination?.olderThanItem?.remoteId,

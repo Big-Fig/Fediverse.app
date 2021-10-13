@@ -51,10 +51,12 @@ class _PollBodyWidget extends StatelessWidget {
     return Column(
       children: [
         ...poll.options
-            .map((pollOption) => Provider<IUnifediApiPollOption>.value(
-                  value: pollOption,
-                  child: const _PollBodyOptionWidget(),
-                ))
+            .map(
+              (pollOption) => Provider<IUnifediApiPollOption>.value(
+                value: pollOption,
+                child: const _PollBodyOptionWidget(),
+              ),
+            )
             .toList(),
         const FediSmallVerticalSpacer(),
         if (pollBloc.multiple) const _PollBodyVoteButtonBuilderWidget(),

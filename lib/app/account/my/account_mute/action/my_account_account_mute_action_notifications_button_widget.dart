@@ -86,9 +86,11 @@ class _MyAccountAccountMuteActionNotificationsButtonBodyWidget
             }
           },
           builder: (context, onPressed) => FediIconButton(
-            icon: Icon(relationshipMutingNotifications
-                ? FediIcons.mute
-                : FediIcons.unmute),
+            icon: Icon(
+              relationshipMutingNotifications
+                  ? FediIcons.mute
+                  : FediIcons.unmute,
+            ),
             onPressed: onPressed,
             color: relationshipMutingNotifications
                 ? fediUiColorTheme.darkGrey

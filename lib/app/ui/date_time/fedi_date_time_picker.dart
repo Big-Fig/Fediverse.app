@@ -502,8 +502,10 @@ class _DatePickerState extends State<FediDatePickerComponent> {
         Container(
           child: widget.pickerModel!.layoutProportions()[2] > 0
               ? _renderColumnView(
-                  ValueKey<int>(widget.pickerModel!.currentMiddleIndex() * 100 +
-                      widget.pickerModel!.currentLeftIndex()),
+                  ValueKey<int>(
+                    widget.pickerModel!.currentMiddleIndex() * 100 +
+                        widget.pickerModel!.currentLeftIndex(),
+                  ),
                   theme,
                   widget.pickerModel!.rightStringAtIndex,
                   rightScrollCtrl,

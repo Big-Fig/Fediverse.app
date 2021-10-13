@@ -63,13 +63,15 @@ class ChatDao extends PopulatedAppRemoteDatabaseDao<
 
     if (minimumExist) {
       query = query
-        ..where((chat) =>
-            chat.updatedAt.isBiggerThanValue(minimumDateTimeExcluding));
+        ..where(
+          (chat) => chat.updatedAt.isBiggerThanValue(minimumDateTimeExcluding),
+        );
     }
     if (maximumExist) {
       query = query
-        ..where((chat) =>
-            chat.updatedAt.isSmallerThanValue(maximumDateTimeExcluding));
+        ..where(
+          (chat) => chat.updatedAt.isSmallerThanValue(maximumDateTimeExcluding),
+        );
     }
 
     return query;
@@ -85,9 +87,12 @@ class ChatDao extends PopulatedAppRemoteDatabaseDao<
         "WHERE remote_id = '$chatRemoteId'";
 
     _logger.finest(() => 'incrementUnreadCount $update');
-    var query = db.customUpdate(update, updates: {
-      dbChats,
-    });
+    var query = db.customUpdate(
+      update,
+      updates: {
+        dbChats,
+      },
+    );
 
     return query;
   }

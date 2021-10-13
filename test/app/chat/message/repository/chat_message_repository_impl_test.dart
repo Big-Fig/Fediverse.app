@@ -770,19 +770,20 @@ void main() {
     );
 
     // 1 is not related to chat
-    await chatMessageRepository
-        .upsertInRemoteType(DbPleromaChatMessagePopulatedWrapper(
-      dbChatMessagePopulated:
-          await ChatMessageDatabaseMockHelper.createTestDbChatMessagePopulated(
-        dbChatMessage.copyWith(
-          remoteId: 'chatMessage1',
-          createdAt: DateTime(
-            2001,
+    await chatMessageRepository.upsertInRemoteType(
+      DbPleromaChatMessagePopulatedWrapper(
+        dbChatMessagePopulated: await ChatMessageDatabaseMockHelper
+            .createTestDbChatMessagePopulated(
+          dbChatMessage.copyWith(
+            remoteId: 'chatMessage1',
+            createdAt: DateTime(
+              2001,
+            ),
           ),
+          accountRepository,
         ),
-        accountRepository,
-      ),
-    ).toUnifediApiChatMessage());
+      ).toUnifediApiChatMessage(),
+    );
 
     expect(
       await chatMessageRepository.getChatLastChatMessage(chat: chat),
@@ -815,18 +816,19 @@ void main() {
     );
 
     // 4 is newer than 2
-    await chatMessageRepository
-        .upsertInRemoteType(DbPleromaChatMessagePopulatedWrapper(
-      dbChatMessagePopulated:
-          await ChatMessageDatabaseMockHelper.createTestDbChatMessagePopulated(
-        dbChatMessage.copyWith(
-          remoteId: 'chatMessage4',
-          chatRemoteId: chatRemoteId,
-          createdAt: DateTime(2004),
+    await chatMessageRepository.upsertInRemoteType(
+      DbPleromaChatMessagePopulatedWrapper(
+        dbChatMessagePopulated: await ChatMessageDatabaseMockHelper
+            .createTestDbChatMessagePopulated(
+          dbChatMessage.copyWith(
+            remoteId: 'chatMessage4',
+            chatRemoteId: chatRemoteId,
+            createdAt: DateTime(2004),
+          ),
+          accountRepository,
         ),
-        accountRepository,
-      ),
-    ).toUnifediApiChatMessage());
+      ).toUnifediApiChatMessage(),
+    );
     expect(
       (await chatMessageRepository.getChatLastChatMessage(chat: chat))!
           .remoteId,

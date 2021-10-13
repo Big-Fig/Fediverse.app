@@ -31,9 +31,12 @@ BoxImpl _getBox({
 }
 
 // ignore_for_file: no-magic-number, avoid-late-keyword
-@GenerateMocks([], customMocks: [
-  MockSpec<StorageBackend>(returnNullOnMissingStub: true),
-])
+@GenerateMocks(
+  [],
+  customMocks: [
+    MockSpec<StorageBackend>(returnNullOnMissingStub: true),
+  ],
+)
 class HiveMockHelper {
   static void testAdapter<T>(T Function() adapterCreator) {
     var adapter1 = adapterCreator();

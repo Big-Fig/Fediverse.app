@@ -52,10 +52,12 @@ extension IPostStatusPollExtension on IPostStatusPoll {
       voted: true,
       multiple: multiple,
       options: options
-          .map((option) => UnifediApiPollOption(
-                title: option,
-                votesCount: null,
-              ))
+          .map(
+            (option) => UnifediApiPollOption(
+              title: option,
+              votesCount: null,
+            ),
+          )
           .toList(),
       ownVotes: [],
       votersCount: 0,

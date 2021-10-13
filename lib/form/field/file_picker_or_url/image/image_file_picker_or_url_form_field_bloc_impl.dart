@@ -57,9 +57,11 @@ class ImageFilePickerOrUrlFormFieldBloc extends FilePickerOrUrlFormFieldBloc
     required String? url,
     required bool isOriginalDeleted,
   }) async {
-    _logger.finest(() => 'createMediaSource filePickerFile = $filePickerFile '
-        'url = $url '
-        'isOriginalDeleted = $isOriginalDeleted ');
+    _logger.finest(
+      () => 'createMediaSource filePickerFile = $filePickerFile '
+          'url = $url '
+          'isOriginalDeleted = $isOriginalDeleted ',
+    );
     MediaImageSource? result;
     if (filePickerFile != null) {
       result = MediaImageSource(file: await filePickerFile.loadFile());

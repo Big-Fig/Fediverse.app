@@ -77,8 +77,10 @@ class CustomEmojiPickerCodeCategoryBloc extends AsyncInitLoadingBloc
     return CustomEmojiPickerCodeCategoryBloc(
       type: type,
       items: nameToCodeEmojiMap.entries
-          .map((entry) =>
-              CustomEmojiPickerCodeItem(name: entry.key, code: entry.value))
+          .map(
+            (entry) =>
+                CustomEmojiPickerCodeItem(name: entry.key, code: entry.value),
+          )
           .toList(),
     );
   }

@@ -107,10 +107,12 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
   }) {
     List<TItem> result;
 
-    _logger.finest(() => '_calculateCurrentItems \n'
-        'originalItems ${originalItems.length} \n'
-        'addedItems ${addedItems.length} \n'
-        'removedItems ${removedItems.length}');
+    _logger.finest(
+      () => '_calculateCurrentItems \n'
+          'originalItems ${originalItems.length} \n'
+          'addedItems ${addedItems.length} \n'
+          'removedItems ${removedItems.length}',
+    );
     result = <TItem>[
       ...originalItems,
       ...addedItems,
@@ -125,11 +127,13 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       ),
     );
 
-    _logger.finest(() => '_calculateCurrentItems \n'
-        'originalItems ${originalItems.length}'
-        'addedItems ${addedItems.length}'
-        'removedItems ${removedItems.length}'
-        'result ${result.length}');
+    _logger.finest(
+      () => '_calculateCurrentItems \n'
+          'originalItems ${originalItems.length}'
+          'addedItems ${addedItems.length}'
+          'removedItems ${removedItems.length}'
+          'result ${result.length}',
+    );
 
     return result;
   }

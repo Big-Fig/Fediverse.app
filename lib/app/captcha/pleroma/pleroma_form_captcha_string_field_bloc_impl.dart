@@ -183,10 +183,12 @@ class PleromaFormCaptchaStringFieldBloc extends StringValueFormFieldBloc
             differenceAbsInSeconds + checkCaptchaExpiredDurationInSeconds;
         var secondsValid = captcha?.secondsValid;
         var isNeedReload = secondsValid == null || totalSeconds > secondsValid;
-        _logger.finest(() => '_checkForReload '
-            'isNeedReload $isNeedReload '
-            'totalSeconds $totalSeconds '
-            'secondsValid $secondsValid');
+        _logger.finest(
+          () => '_checkForReload '
+              'isNeedReload $isNeedReload '
+              'totalSeconds $totalSeconds '
+              'secondsValid $secondsValid',
+        );
         if (isNeedReload) {
           reloadCaptcha();
         }

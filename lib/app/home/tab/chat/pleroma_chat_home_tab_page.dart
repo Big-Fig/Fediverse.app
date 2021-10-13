@@ -77,44 +77,47 @@ class PleromaChatHomeTabPage extends StatelessWidget {
         context,
         handlerType: WebSocketsChannelHandlerType.foregroundValue,
       ),
-      child: Builder(builder: (context) {
-        var chatsListBloc =
-            IPleromaChatWithLastMessageListBloc.of(context, listen: false);
+      child: Builder(
+        builder: (context) {
+          var chatsListBloc =
+              IPleromaChatWithLastMessageListBloc.of(context, listen: false);
 
-        return MultiProvider(
-          providers: [
-            Provider<IPleromaChatWithLastMessageCachedListBloc>.value(
-              value: chatsListBloc.chatListBloc,
-            ),
-            Provider<IPleromaChatWithLastMessagePaginationBloc>.value(
-              value: chatsListBloc.chatPaginationBloc,
-            ),
-            Provider<
-                IPaginationListBloc<PaginationPage<IPleromaChatWithLastMessage>,
-                    IPleromaChatWithLastMessage>>.value(
-              value: chatsListBloc.chatPaginationListBloc,
-            ),
-            Provider<
-                ICachedPaginationListWithNewItemsBloc<
-                    CachedPaginationPage<IPleromaChatWithLastMessage>,
-                    IPleromaChatWithLastMessage>>.value(
-              value: chatsListBloc.chatPaginationListWithNewItemsBloc,
-            ),
-            Provider<
-                IPleromaChatWithLastMessagePaginationListWithNewItemsBloc<
-                    CachedPaginationPage<IPleromaChatWithLastMessage>>>.value(
-              value: chatsListBloc.chatPaginationListWithNewItemsBloc,
-            ),
-            Provider<ICachedPaginationListWithNewItemsBloc>.value(
-              value: chatsListBloc.chatPaginationListWithNewItemsBloc,
-            ),
-            Provider<IPaginationListBloc>.value(
-              value: chatsListBloc.chatPaginationListWithNewItemsBloc,
-            ),
-          ],
-          child: child,
-        );
-      }),
+          return MultiProvider(
+            providers: [
+              Provider<IPleromaChatWithLastMessageCachedListBloc>.value(
+                value: chatsListBloc.chatListBloc,
+              ),
+              Provider<IPleromaChatWithLastMessagePaginationBloc>.value(
+                value: chatsListBloc.chatPaginationBloc,
+              ),
+              Provider<
+                  IPaginationListBloc<
+                      PaginationPage<IPleromaChatWithLastMessage>,
+                      IPleromaChatWithLastMessage>>.value(
+                value: chatsListBloc.chatPaginationListBloc,
+              ),
+              Provider<
+                  ICachedPaginationListWithNewItemsBloc<
+                      CachedPaginationPage<IPleromaChatWithLastMessage>,
+                      IPleromaChatWithLastMessage>>.value(
+                value: chatsListBloc.chatPaginationListWithNewItemsBloc,
+              ),
+              Provider<
+                  IPleromaChatWithLastMessagePaginationListWithNewItemsBloc<
+                      CachedPaginationPage<IPleromaChatWithLastMessage>>>.value(
+                value: chatsListBloc.chatPaginationListWithNewItemsBloc,
+              ),
+              Provider<ICachedPaginationListWithNewItemsBloc>.value(
+                value: chatsListBloc.chatPaginationListWithNewItemsBloc,
+              ),
+              Provider<IPaginationListBloc>.value(
+                value: chatsListBloc.chatPaginationListWithNewItemsBloc,
+              ),
+            ],
+            child: child,
+          );
+        },
+      ),
     );
   }
 }

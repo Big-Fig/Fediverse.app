@@ -809,9 +809,7 @@ String? calculateUnifediApiNotificationPushBody({
     body = chatMessage.content;
   }
 
-  body = body?.extractRawStringFromHtmlString();
-
-  return body;
+  return body?.extractRawStringFromHtmlString();
 }
 
 IUnifediApiMediaAttachment? calculateUnifediApiNotificationPushMediaAttachment({

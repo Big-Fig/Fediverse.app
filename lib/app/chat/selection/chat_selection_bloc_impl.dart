@@ -157,8 +157,10 @@ class ChatSelectionBloc extends DisposableOwner implements IChatSelectionBloc {
   void removeItemFromSelection(IChatMessage chatMessage) {
     currentChatMessagesSelectionSubject.add(
       currentSelection
-          .where((currentChatMessage) =>
-              currentChatMessage.remoteId != chatMessage.remoteId)
+          .where(
+            (currentChatMessage) =>
+                currentChatMessage.remoteId != chatMessage.remoteId,
+          )
           .toList(),
     );
   }

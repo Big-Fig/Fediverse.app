@@ -17,8 +17,10 @@ class SearchStatusPaginationBloc extends SearchAdapterPaginationBloc<IStatus> {
   @override
   PaginationPage<IStatus> mapPage(PaginationPage<ISearchResultItem> page) {
     var items = page.items
-        .where((searchResultItem) =>
-            searchResultItem.type == SearchResultItemType.status)
+        .where(
+          (searchResultItem) =>
+              searchResultItem.type == SearchResultItemType.status,
+        )
         .map((searchResultItem) => searchResultItem.status!)
         .toList();
 

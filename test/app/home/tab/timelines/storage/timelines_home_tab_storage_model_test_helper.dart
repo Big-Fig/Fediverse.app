@@ -5,8 +5,10 @@ class TimelinesHomeTabStorageModelMockHelper {
   static TimelinesHomeTabStorage createTestTimelinesHomeTabStorage({
     required String seed,
   }) =>
-      TimelinesHomeTabStorage(timelineIds: [
-        seed + '1',
-        seed + '2',
-      ]);
+      TimelinesHomeTabStorage(
+        timelineIds: [
+          seed + '1',
+          seed + '2',
+        ],
+      );
 }

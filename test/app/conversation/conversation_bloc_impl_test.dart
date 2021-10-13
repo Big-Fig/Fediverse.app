@@ -398,9 +398,11 @@ void main() {
       conversation,
     );
 
-    when(pleromaConversationServiceMock.getConversation(
-      conversationId: conversation.remoteId,
-    )).thenAnswer(
+    when(
+      pleromaConversationServiceMock.getConversation(
+        conversationId: conversation.remoteId,
+      ),
+    ).thenAnswer(
       (_) async => newValue.toPleromaConversation(
         accounts: [],
         lastStatus: null,

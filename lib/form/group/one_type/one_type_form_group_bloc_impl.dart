@@ -53,16 +53,18 @@ class OneTypeFormGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
       minimumFieldsCount != null ? items.length <= minimumFieldsCount! : false;
 
   @override
-  Stream<bool> get isMaximumFieldsCountReachedStream =>
-      itemsStream.map((customFields) => maximumFieldsCount != null
-          ? items.length >= maximumFieldsCount!
-          : false);
+  Stream<bool> get isMaximumFieldsCountReachedStream => itemsStream.map(
+        (customFields) => maximumFieldsCount != null
+            ? items.length >= maximumFieldsCount!
+            : false,
+      );
 
   @override
-  Stream<bool> get isMinimumFieldsCountReachedStream =>
-      itemsStream.map((customFields) => minimumFieldsCount != null
-          ? items.length <= minimumFieldsCount!
-          : false);
+  Stream<bool> get isMinimumFieldsCountReachedStream => itemsStream.map(
+        (customFields) => minimumFieldsCount != null
+            ? items.length <= minimumFieldsCount!
+            : false,
+      );
 
   @override
   Stream<bool> get isPossibleToRemoveFieldsStream =>

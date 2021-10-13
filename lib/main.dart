@@ -92,8 +92,10 @@ Future launchApp({
     ..performAsyncInit()
     ..initLoadingStateStream.listen(
       (newState) async {
-        _logger.fine(() => 'appContextBloc.initLoadingStateStream.newState '
-            '$newState');
+        _logger.fine(
+          () => 'appContextBloc.initLoadingStateStream.newState '
+              '$newState',
+        );
 
         if (newState == AsyncInitLoadingState.finished) {
           var currentInstanceBloc =
@@ -446,8 +448,10 @@ class FediApp extends StatelessWidget {
                   ? ThemeMode.dark
                   : ThemeMode.light;
 
-          _logger.finest(() => 'currentTheme $currentTheme '
-              'themeMode $themeMode');
+          _logger.finest(
+            () => 'currentTheme $currentTheme '
+                'themeMode $themeMode',
+          );
 
           var actualTheme = currentTheme ?? lightFediUiTheme;
           // todo: refactor hack

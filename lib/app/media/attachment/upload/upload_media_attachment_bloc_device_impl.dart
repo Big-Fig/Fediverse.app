@@ -82,8 +82,10 @@ class UploadMediaAttachmentBlocDevice extends DisposableOwner
       return;
     }
 
-    assert(type == UploadMediaAttachmentStateType.notUploaded ||
-        type == UploadMediaAttachmentStateType.failed);
+    assert(
+      type == UploadMediaAttachmentStateType.notUploaded ||
+          type == UploadMediaAttachmentStateType.failed,
+    );
 
     var file = await mediaDeviceFile.loadFile();
     var fileLength = await file.length();

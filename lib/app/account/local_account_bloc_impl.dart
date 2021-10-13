@@ -401,8 +401,10 @@ class LocalAccountBloc extends AccountBloc {
     var newAccount = account.copyWithTemp(relationship: newRelationship);
     var newRemoteAccount = newAccount.toUnifediApiAccount();
 
-    _logger.finest(() => '_updateRelationship '
-        'newRelationship=$newRelationship');
+    _logger.finest(
+      () => '_updateRelationship '
+          'newRelationship=$newRelationship',
+    );
     if (account.localId != null) {
       await accountRepository.updateAppTypeByRemoteType(
         appItem: account,
@@ -420,9 +422,11 @@ class LocalAccountBloc extends AccountBloc {
   }
 
   Future _refreshAccountRelationship(IAccount account) async {
-    _logger.finest(() => 'refreshAccountRelationship '
-        'refreshAccountRelationshipInProgress='
-        '$_refreshAccountRelationshipInProgress');
+    _logger.finest(
+      () => 'refreshAccountRelationship '
+          'refreshAccountRelationshipInProgress='
+          '$_refreshAccountRelationshipInProgress',
+    );
     if (!_refreshAccountRelationshipInProgress) {
       _refreshAccountRelationshipInProgress = true;
       var relationships =

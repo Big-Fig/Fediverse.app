@@ -43,8 +43,10 @@ class DeepLinkInitBloc extends AsyncInitLoadingBloc
     var lastLaunchedHost =
         pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc.value;
 
-    _logger.finest(() => 'initialUri = $initialUri '
-        'lastLaunchedHost = $lastLaunchedHost');
+    _logger.finest(
+      () => 'initialUri = $initialUri '
+          'lastLaunchedHost = $lastLaunchedHost',
+    );
     if (lastLaunchedHost != null) {
       var authHostBloc = AuthHostBloc(
         configService: configService,

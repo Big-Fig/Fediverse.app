@@ -162,26 +162,28 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
     List<PleromaChatMessageRepositoryOrderingTermData> orderTerms,
   ) =>
       query
-        ..orderBy(orderTerms
-            .map(
-              (orderTerm) => ($DbChatMessagesTable item) {
-                GeneratedColumn<Object?> expression;
-                switch (orderTerm.orderType) {
-                  case PleromaChatMessageOrderType.remoteId:
-                    expression = item.remoteId;
-                    break;
-                  case PleromaChatMessageOrderType.createdAt:
-                    expression = item.createdAt;
-                    break;
-                }
+        ..orderBy(
+          orderTerms
+              .map(
+                (orderTerm) => ($DbChatMessagesTable item) {
+                  GeneratedColumn<Object?> expression;
+                  switch (orderTerm.orderType) {
+                    case PleromaChatMessageOrderType.remoteId:
+                      expression = item.remoteId;
+                      break;
+                    case PleromaChatMessageOrderType.createdAt:
+                      expression = item.createdAt;
+                      break;
+                  }
 
-                return OrderingTerm(
-                  expression: expression,
-                  mode: orderTerm.orderingMode,
-                );
-              },
-            )
-            .toList());
+                  return OrderingTerm(
+                    expression: expression,
+                    mode: orderTerm.orderingMode,
+                  );
+                },
+              )
+              .toList(),
+        );
 
   List<Join> populateChatMessageJoin() {
     return [
@@ -303,7 +305,8 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
       assert(orderingTerms?.length == 1);
       var orderingTermData = orderingTerms!.first;
       assert(
-          orderingTermData.orderType == PleromaChatMessageOrderType.createdAt);
+        orderingTermData.orderType == PleromaChatMessageOrderType.createdAt,
+      );
       addDateTimeBoundsWhere(
         query,
         column: dbChatMessages.createdAt,

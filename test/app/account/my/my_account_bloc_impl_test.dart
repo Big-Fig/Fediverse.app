@@ -405,10 +405,12 @@ void main() {
       EmojiText(text: newDisplayNameValue, emojis: myAccount.emojis),
     );
 
-    await _update(myAccount.copyWithTemp(
-      displayName: newDisplayNameValue,
-      emojis: newEmojis,
-    ));
+    await _update(
+      myAccount.copyWithTemp(
+        displayName: newDisplayNameValue,
+        emojis: newEmojis,
+      ),
+    );
 
     expect(
       myAccountBloc.displayNameEmojiText,
@@ -528,10 +530,12 @@ void main() {
       false,
     );
     expect(
-      myAccountBloc.checkAccountIsMe(await AccountMockHelper.createTestAccount(
-        seed: 'seed3',
-        remoteId: myAccount.remoteId,
-      )),
+      myAccountBloc.checkAccountIsMe(
+        await AccountMockHelper.createTestAccount(
+          seed: 'seed3',
+          remoteId: myAccount.remoteId,
+        ),
+      ),
       true,
     );
   });
@@ -563,18 +567,20 @@ void main() {
     );
 
     expect(
-      myAccountBloc.checkIsStatusFromMe(DbStatusPopulatedWrapper(
-        dbStatusPopulated: DbStatusPopulated(
-          dbStatus: dbStatus,
-          dbAccount: dbAccount.copyWith(remoteId: 'invalidRemoteId'),
-          reblogDbStatus: null,
-          reblogDbStatusAccount: null,
-          replyReblogDbStatusAccount: null,
-          replyDbStatusAccount: null,
-          replyDbStatus: null,
-          replyReblogDbStatus: null,
+      myAccountBloc.checkIsStatusFromMe(
+        DbStatusPopulatedWrapper(
+          dbStatusPopulated: DbStatusPopulated(
+            dbStatus: dbStatus,
+            dbAccount: dbAccount.copyWith(remoteId: 'invalidRemoteId'),
+            reblogDbStatus: null,
+            reblogDbStatusAccount: null,
+            replyReblogDbStatusAccount: null,
+            replyDbStatusAccount: null,
+            replyDbStatus: null,
+            replyReblogDbStatus: null,
+          ),
         ),
-      )),
+      ),
       false,
     );
   });

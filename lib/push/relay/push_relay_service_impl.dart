@@ -23,10 +23,12 @@ class PushRelayService extends DisposableOwner implements IPushRelayService {
     required Uri baseServerUrl,
     required String fcmDeviceToken,
   }) {
-    _logger.finest('createPushRelayEndPointUrl start \n'
-        '\t account=$account'
-        '\t webPushSubscriptionUrl=$baseServerUrl'
-        '\t accessToken=$fcmDeviceToken');
+    _logger.finest(
+      'createPushRelayEndPointUrl start \n'
+      '\t account=$account'
+      '\t webPushSubscriptionUrl=$baseServerUrl'
+      '\t accessToken=$fcmDeviceToken',
+    );
 
     var host = baseServerUrl.host;
 

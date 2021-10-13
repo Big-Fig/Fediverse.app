@@ -66,12 +66,18 @@ linter:
     # code metrics have better long line rules
     lines_longer_than_80_chars: false
 
+    # diagnostic properties are not necessary
+    diagnostic_describe_all_properties: false
+
+    # helper classes is OK
+    avoid_classes_with_only_static_members: false
+
     prefer_final_parameters: false
     avoid_types_on_closure_parameters: false
     parameter_assignments: false
     avoid_bool_literals_in_conditional_expressions: false
     avoid_catches_without_on_clauses: false
-    avoid_classes_with_only_static_members: false
+
 
 
     avoid_equals_and_hash_code_on_mutable_classes: false
@@ -81,7 +87,7 @@ linter:
     avoid_function_literals_in_foreach_calls: false
     library_private_types_in_public_api: false
 
-    diagnostic_describe_all_properties: false
+
     prefer_relative_imports: false
     unnecessary_lambdas: false
     depend_on_referenced_packages: false
@@ -95,8 +101,6 @@ linter:
     prefer_asserts_with_message: false
     prefer_const_literals_to_create_immutables: false
     prefer_const_constructors: false
-    require_trailing_commas: false
-    join_return_with_assignment: false
     prefer_constructors_over_static_methods: false
     prefer_const_constructors_in_immutables: false
     sort_constructors_first: false

@@ -62,8 +62,10 @@ class MultiMediaPickerBloc extends MediaPickerBloc
     IMediaDeviceFileMetadata mediaDeviceFileMetadata,
   ) async {
     var fileMetadataSelected = isFileMetadataSelected(mediaDeviceFileMetadata);
-    _logger.fine(() => 'toggleFileMetadataSelection $mediaDeviceFileMetadata '
-        'selected $fileMetadataSelected');
+    _logger.fine(
+      () => 'toggleFileMetadataSelection $mediaDeviceFileMetadata '
+          'selected $fileMetadataSelected',
+    );
     if (fileMetadataSelected) {
       currentFilesMetadataSelectionSubject.add(
         currentFilesMetadataSelection!
@@ -130,8 +132,10 @@ class MultiMediaPickerBloc extends MediaPickerBloc
       selectedFilesMetadata: currentFilesMetadataSelection!,
       mediaDeviceFileMetadata: mediaDeviceFileMetadata,
     );
-    _logger.fine(() => 'isFileMetadataSelected $selected '
-        'mediaDeviceFileMetadata = $mediaDeviceFileMetadata');
+    _logger.fine(
+      () => 'isFileMetadataSelected $selected '
+          'mediaDeviceFileMetadata = $mediaDeviceFileMetadata',
+    );
 
     return selected;
   }

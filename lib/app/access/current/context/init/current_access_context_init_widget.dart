@@ -48,8 +48,10 @@ class _CurrentUnifediApiAccessContextInitWidgetState
 
     var isLoading = currentInstanceContextLoadingBloc.state ==
         CurrentUnifediApiAccessContextInitState.loading;
-    _logger.finest(() => 'didChangeDependencies '
-        'isLoading $isLoading disposed $disposed');
+    _logger.finest(
+      () => 'didChangeDependencies '
+          'isLoading $isLoading disposed $disposed',
+    );
     Future.delayed(
       // todo: refactor
       // ignore: no-magic-number

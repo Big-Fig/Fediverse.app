@@ -93,8 +93,9 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
         conversationAccounts.where(
           (account) {
             var notOwn = account.remoteId != myAccountBloc.account.remoteId;
-            var alreadyExist = accounts.firstWhereOrNull((accountsItem) =>
-                    accountsItem.remoteId == account.remoteId) !=
+            var alreadyExist = accounts.firstWhereOrNull(
+                  (accountsItem) => accountsItem.remoteId == account.remoteId,
+                ) !=
                 null;
 
             return notOwn && !alreadyExist;

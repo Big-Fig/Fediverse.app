@@ -68,46 +68,49 @@ class ConversationChatHomeTabPage extends StatelessWidget {
     return DisposableProvider<IConversationChatWithLastMessageListBloc>(
       create: (context) =>
           ConversationChatWithLastMessageListBloc.createFromContext(context),
-      child: Builder(builder: (context) {
-        var chatsListBloc =
-            IConversationChatWithLastMessageListBloc.of(context, listen: false);
+      child: Builder(
+        builder: (context) {
+          var chatsListBloc = IConversationChatWithLastMessageListBloc.of(
+              context,
+              listen: false);
 
-        return MultiProvider(
-          providers: [
-            Provider<IConversationChatWithLastMessageCachedListBloc>.value(
-              value: chatsListBloc.cachedListBloc,
-            ),
-            Provider<IConversationChatWithLastMessagePaginationBloc>.value(
-              value: chatsListBloc.paginationBloc,
-            ),
-            Provider<
-                IPaginationListBloc<
-                    PaginationPage<IConversationChatWithLastMessage>,
-                    IConversationChatWithLastMessage>>.value(
-              value: chatsListBloc.chatPaginationListBloc,
-            ),
-            Provider<
-                IConversationChatWithLastMessagePaginationListWithNewItemsBloc<
-                    CachedPaginationPage<
-                        IConversationChatWithLastMessage>>>.value(
-              value: chatsListBloc.paginationListWithNewItemsBloc,
-            ),
-            Provider<
-                ICachedPaginationListWithNewItemsBloc<
-                    CachedPaginationPage<IConversationChatWithLastMessage>,
-                    IConversationChatWithLastMessage>>.value(
-              value: chatsListBloc.paginationListWithNewItemsBloc,
-            ),
-            Provider<ICachedPaginationListWithNewItemsBloc>.value(
-              value: chatsListBloc.paginationListWithNewItemsBloc,
-            ),
-            Provider<IPaginationListBloc>.value(
-              value: chatsListBloc.paginationListWithNewItemsBloc,
-            ),
-          ],
-          child: child,
-        );
-      }),
+          return MultiProvider(
+            providers: [
+              Provider<IConversationChatWithLastMessageCachedListBloc>.value(
+                value: chatsListBloc.cachedListBloc,
+              ),
+              Provider<IConversationChatWithLastMessagePaginationBloc>.value(
+                value: chatsListBloc.paginationBloc,
+              ),
+              Provider<
+                  IPaginationListBloc<
+                      PaginationPage<IConversationChatWithLastMessage>,
+                      IConversationChatWithLastMessage>>.value(
+                value: chatsListBloc.chatPaginationListBloc,
+              ),
+              Provider<
+                  IConversationChatWithLastMessagePaginationListWithNewItemsBloc<
+                      CachedPaginationPage<
+                          IConversationChatWithLastMessage>>>.value(
+                value: chatsListBloc.paginationListWithNewItemsBloc,
+              ),
+              Provider<
+                  ICachedPaginationListWithNewItemsBloc<
+                      CachedPaginationPage<IConversationChatWithLastMessage>,
+                      IConversationChatWithLastMessage>>.value(
+                value: chatsListBloc.paginationListWithNewItemsBloc,
+              ),
+              Provider<ICachedPaginationListWithNewItemsBloc>.value(
+                value: chatsListBloc.paginationListWithNewItemsBloc,
+              ),
+              Provider<IPaginationListBloc>.value(
+                value: chatsListBloc.paginationListWithNewItemsBloc,
+              ),
+            ],
+            child: child,
+          );
+        },
+      ),
     );
   }
 }

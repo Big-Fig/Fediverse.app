@@ -1167,9 +1167,11 @@ void main() {
       seed: 'seed3',
       dbAccount: dbAccount,
     ))
-        .copyWith(tags: [
-      UnifediApiTagMockHelper.generate(seed: '#dogs'),
-    ]);
+        .copyWith(
+      tags: [
+        UnifediApiTagMockHelper.generate(seed: '#dogs'),
+      ],
+    );
     await statusRepository.updateStatusTags(
       statusRemoteId: dbStatus3.remoteId,
       tags: dbStatus3.tags,
@@ -1186,9 +1188,11 @@ void main() {
       seed: 'seed4',
       dbAccount: dbAccount,
     ))
-        .copyWith(tags: [
-      UnifediApiTagMockHelper.generate(seed: '#cats'),
-    ]);
+        .copyWith(
+      tags: [
+        UnifediApiTagMockHelper.generate(seed: '#cats'),
+      ],
+    );
     await statusRepository.updateStatusTags(
       statusRemoteId: dbStatus4.remoteId,
       tags: dbStatus4.tags,
@@ -1205,10 +1209,12 @@ void main() {
       seed: 'seed5',
       dbAccount: dbAccount,
     ))
-        .copyWith(tags: [
-      UnifediApiTagMockHelper.generate(seed: '#dogs'),
-      UnifediApiTagMockHelper.generate(seed: '#cats'),
-    ]);
+        .copyWith(
+      tags: [
+        UnifediApiTagMockHelper.generate(seed: '#dogs'),
+        UnifediApiTagMockHelper.generate(seed: '#cats'),
+      ],
+    );
     await statusRepository.updateStatusTags(
       statusRemoteId: dbStatus5.remoteId,
       tags: dbStatus5.tags,
@@ -1225,9 +1231,11 @@ void main() {
       seed: 'seed6',
       dbAccount: dbAccount,
     ))
-        .copyWith(tags: [
-      UnifediApiTagMockHelper.generate(seed: '#ca'),
-    ]);
+        .copyWith(
+      tags: [
+        UnifediApiTagMockHelper.generate(seed: '#ca'),
+      ],
+    );
     await statusRepository.updateStatusTags(
       statusRemoteId: dbStatus6.remoteId,
       tags: dbStatus6.tags,

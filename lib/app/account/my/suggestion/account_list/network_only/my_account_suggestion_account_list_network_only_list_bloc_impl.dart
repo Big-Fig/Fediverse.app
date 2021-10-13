@@ -58,8 +58,10 @@ class MyAccountSuggestionAccountListNetworkOnlyListBloc extends DisposableOwner
         )
         .toList();
 
-    _logger.finest(() => 'loadItemsFromRemoteForPage \n'
-        'result ${result.length} ');
+    _logger.finest(
+      () => 'loadItemsFromRemoteForPage \n'
+          'result ${result.length} ',
+    );
 
     return result;
   }

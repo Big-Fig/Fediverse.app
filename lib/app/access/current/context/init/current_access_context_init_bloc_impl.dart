@@ -68,8 +68,10 @@ class CurrentUnifediApiAccessContextInitBloc extends AsyncInitLoadingBloc
 
         if (clientErrorCodeType ==
             RestResponseClientErrorCodeType.unauthorizedValue) {
-          _logger.finest(() =>
-              ' stateSubject.add(CurrentUnifediApiAccessContextInitState.invalidCredentials)');
+          _logger.finest(
+            () =>
+                ' stateSubject.add(CurrentUnifediApiAccessContextInitState.invalidCredentials)',
+          );
           stateSubject
               .add(CurrentUnifediApiAccessContextInitState.invalidCredentials);
         }

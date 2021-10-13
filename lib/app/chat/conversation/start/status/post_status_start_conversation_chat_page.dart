@@ -76,16 +76,18 @@ Future goToPostStatusStartConversationPage(
 }) async {
   await Navigator.push(
     context,
-    MaterialPageRoute<void>(builder: (context) {
-      return PostStatusStartConversationChatBloc.provideToContext(
-        context,
-        conversationAccountsWithoutMe: conversationAccountsWithoutMe,
-        child: const PostStatusStartConversationChatPage(),
-        successCallback: (IStatus? status) {
-          // todo: rework with pop until
-          Navigator.of(context).pop();
-        },
-      );
-    }),
+    MaterialPageRoute<void>(
+      builder: (context) {
+        return PostStatusStartConversationChatBloc.provideToContext(
+          context,
+          conversationAccountsWithoutMe: conversationAccountsWithoutMe,
+          child: const PostStatusStartConversationChatPage(),
+          successCallback: (IStatus? status) {
+            // todo: rework with pop until
+            Navigator.of(context).pop();
+          },
+        );
+      },
+    ),
   );
 }

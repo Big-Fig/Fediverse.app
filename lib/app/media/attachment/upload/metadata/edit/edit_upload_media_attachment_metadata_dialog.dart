@@ -99,8 +99,9 @@ class EditUploadMediaAttachmentMetadataDialog extends FediDialog {
           listen: false,
         );
 
-        saveCallback(editUploadMediaAttachmentMetadataBloc
-            .extractCurrentEnteredMetadata());
+        saveCallback(
+          editUploadMediaAttachmentMetadataBloc.extractCurrentEnteredMetadata(),
+        );
         Navigator.of(context).pop();
       },
       isActionEnabledFetcher: (context) =>

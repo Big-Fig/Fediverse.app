@@ -110,10 +110,12 @@ class AccountStatusesWithRepliesCachedListBloc
     required IStatus? newerThan,
     required IStatus? olderThan,
   }) async {
-    _logger.finest(() => 'refreshItemsFromRemoteForPage \n'
-        '\t limit=$limit'
-        '\t newerThan=$newerThan'
-        '\t olderThan=$olderThan');
+    _logger.finest(
+      () => 'refreshItemsFromRemoteForPage \n'
+          '\t limit=$limit'
+          '\t newerThan=$newerThan'
+          '\t olderThan=$olderThan',
+    );
 
     var remoteStatuses = await unifediApiAccountService.getAccountStatuses(
       accountId: account.remoteId,

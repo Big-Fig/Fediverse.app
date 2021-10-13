@@ -15,8 +15,10 @@ class CustomEmojiPickerImageUrlItemModelMockHelper {
       createTestEmojiPickerCustomImageUrlCategoryItems({
     required String seed,
   }) =>
-          EmojiPickerCustomImageUrlCategoryItems(items: [
-            createTestCustomEmojiPickerImageUrlItem(seed: seed + '1'),
-            createTestCustomEmojiPickerImageUrlItem(seed: seed + '2'),
-          ]);
+          EmojiPickerCustomImageUrlCategoryItems(
+            items: [
+              createTestCustomEmojiPickerImageUrlItem(seed: seed + '1'),
+              createTestCustomEmojiPickerImageUrlItem(seed: seed + '2'),
+            ],
+          );
 }

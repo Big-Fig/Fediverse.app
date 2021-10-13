@@ -96,8 +96,10 @@ class InstanceAnnouncementDao extends PopulatedAppRemoteDatabaseDao<
     List<InstanceAnnouncementOrderingTermData> orderTerms,
   ) =>
           query
-            ..orderBy(orderTerms
-                .map((orderTerm) => ($DbInstanceAnnouncementsTable item) {
+            ..orderBy(
+              orderTerms
+                  .map(
+                    (orderTerm) => ($DbInstanceAnnouncementsTable item) {
                       Expression expression;
                       switch (orderTerm.orderType) {
                         case InstanceAnnouncementOrderType.remoteId:
@@ -112,8 +114,10 @@ class InstanceAnnouncementDao extends PopulatedAppRemoteDatabaseDao<
                         expression: expression,
                         mode: orderTerm.orderingMode,
                       );
-                    })
-                .toList());
+                    },
+                  )
+                  .toList(),
+            );
 
   List<Join<$DbInstanceAnnouncementsTable, DbInstanceAnnouncement>>
       populateInstanceAnnouncementJoin() {

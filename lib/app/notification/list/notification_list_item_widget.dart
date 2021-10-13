@@ -363,11 +363,10 @@ class _NotificationListItemContentWidget extends StatelessWidget {
       mention: (_) {
         var rawText =
             '<b>${S.of(context).app_notification_header_mention_prefix}</b>';
-        rawText += S.of(context).app_notification_header_mention_postfix(
-              _extractStatusRawContent(notificationBloc)!,
-            );
-
-        return rawText;
+        return rawText +
+            S.of(context).app_notification_header_mention_postfix(
+                  _extractStatusRawContent(notificationBloc)!,
+                );
       },
       poll: (_) => S.of(context).app_notification_header_poll,
       move: (_) => S.of(context).app_notification_header_move,
@@ -379,12 +378,10 @@ class _NotificationListItemContentWidget extends StatelessWidget {
       chatMention: (_) {
         var rawText =
             '<b>${S.of(context).app_notification_header_pleromaChatMention_prefix}</b>';
-        rawText +=
+        return rawText +
             S.of(context).app_notification_header_pleromaChatMention_postfix(
                   _extractChatMessageRawContent(notificationBloc)!,
                 );
-
-        return rawText;
       },
       report: (_) => S.of(context).app_notification_header_report(
             notificationBloc.account?.acct ?? '',

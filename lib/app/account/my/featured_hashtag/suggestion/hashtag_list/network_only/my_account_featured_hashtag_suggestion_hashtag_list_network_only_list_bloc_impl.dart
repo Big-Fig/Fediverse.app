@@ -42,8 +42,10 @@ class MyAccountFeaturedHashtagSuggestionHashtagListNetworkOnlyListBloc
         )
         .toList();
 
-    _logger.finest(() => 'loadItemsFromRemoteForPage \n'
-        'result ${result.length} ');
+    _logger.finest(
+      () => 'loadItemsFromRemoteForPage \n'
+          'result ${result.length} ',
+    );
 
     return result;
   }

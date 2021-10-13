@@ -36,9 +36,11 @@ class PleromaChatWithLastMessageCachedListBloc
     required IPleromaChatWithLastMessage? newerThan,
     required IPleromaChatWithLastMessage? olderThan,
   }) async {
-    _logger.fine(() => 'start refreshItemsFromRemoteForPage \n'
-        '\t newerThan = $newerThan'
-        '\t olderThan = $olderThan');
+    _logger.fine(
+      () => 'start refreshItemsFromRemoteForPage \n'
+          '\t newerThan = $newerThan'
+          '\t olderThan = $olderThan',
+    );
 
     List<IUnifediApiChat> remoteChats;
 
@@ -62,9 +64,11 @@ class PleromaChatWithLastMessageCachedListBloc
     required IPleromaChatWithLastMessage? newerThan,
     required IPleromaChatWithLastMessage? olderThan,
   }) async {
-    _logger.finest(() => 'start loadLocalItems \n'
-        '\t newerThan=$newerThan'
-        '\t olderThan=$olderThan');
+    _logger.finest(
+      () => 'start loadLocalItems \n'
+          '\t newerThan=$newerThan'
+          '\t olderThan=$olderThan',
+    );
 
     var chats = await chatWithLastMessageRepository.getChatsWithLastMessage(
       filters: filters,

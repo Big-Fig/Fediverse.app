@@ -549,9 +549,11 @@ Future<String?> launchAuthorizeFormAndExtractAuthorizationCode({
   );
   var isCanLaunch = await canLaunch(url);
 
-  _logger.finest(() => 'launchAuthorizeFormAndExtractAuthorizationCode \n'
-      '\t url = $url\n'
-      '\t canLaunch=$isCanLaunch');
+  _logger.finest(
+    () => 'launchAuthorizeFormAndExtractAuthorizationCode \n'
+        '\t url = $url\n'
+        '\t canLaunch=$isCanLaunch',
+  );
 
   var completer = Completer<String>();
 

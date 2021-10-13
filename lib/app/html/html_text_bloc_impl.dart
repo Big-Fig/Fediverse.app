@@ -121,9 +121,11 @@ HtmlTextResultData _calculateHtmlData({
     );
   }
 
-  _logger.finest(() => '_calculateHtmlData \n'
-      'inputData $inputData \n'
-      'resultData $resultData');
+  _logger.finest(
+    () => '_calculateHtmlData \n'
+        'inputData $inputData \n'
+        'resultData $resultData',
+  );
 
   return resultData;
 }
