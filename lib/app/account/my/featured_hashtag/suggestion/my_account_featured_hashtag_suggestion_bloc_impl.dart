@@ -92,8 +92,7 @@ class MyAccountFeaturedHashtagSuggestionBloc extends DisposableOwner
     required Widget child,
   }) =>
       DisposableProvider<IMyAccountFeaturedHashtagSuggestionBloc>(
-        create: (context) =>
-            MyAccountFeaturedHashtagSuggestionBloc.createFromContext(context),
+        create: MyAccountFeaturedHashtagSuggestionBloc.createFromContext,
         child:
             MyAccountFeaturedHashtagSuggestionBlocProxyProvider(child: child),
       );

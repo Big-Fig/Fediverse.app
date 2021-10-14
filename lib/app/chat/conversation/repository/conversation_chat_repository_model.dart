@@ -7,7 +7,7 @@ part 'conversation_chat_repository_model.freezed.dart';
 @freezed
 class ConversationChatRepositoryFilters
     with _$ConversationChatRepositoryFilters {
-  static final ConversationChatRepositoryFilters empty =
+  static const ConversationChatRepositoryFilters empty =
       ConversationChatRepositoryFilters();
 
   const ConversationChatRepositoryFilters._();

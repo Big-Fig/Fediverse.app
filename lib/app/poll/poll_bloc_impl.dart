@@ -46,9 +46,7 @@ class PollBloc extends DisposableOwner implements IPollBloc {
 
       Timer(
         diff,
-        () {
-          refreshFromNetwork();
-        },
+        refreshFromNetwork,
       ).disposeWith(this);
     }
   }
@@ -110,15 +108,18 @@ class PollBloc extends DisposableOwner implements IPollBloc {
 
   @override
   Future vote() async {
-    assert(selectedVotes.isNotEmpty);
+    assert(
+      selectedVotes.isNotEmpty,
+      'you should select at least one option',
+    );
     var voteIndexes = <int>[];
 
-    selectedVotes.forEach((selectedVote) {
+    for (final selectedVote in selectedVotes) {
       var option = poll.options
           .firstWhere((option) => option.title == selectedVote.title);
       var index = poll.options.indexOf(option);
       voteIndexes.add(index);
-    });
+    }
 
     var updatedPoll = await unifediApiPollService!.vote(
       pollId: poll.id!,

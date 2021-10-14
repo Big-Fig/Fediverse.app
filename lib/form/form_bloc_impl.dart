@@ -31,7 +31,7 @@ abstract class FormBloc extends FormGroupBloc implements IFormBloc {
 
   @override
   void clear() {
-    for (var item in items) {
+    for (final item in items) {
       item.clear();
     }
   }

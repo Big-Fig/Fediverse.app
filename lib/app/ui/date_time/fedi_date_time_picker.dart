@@ -162,6 +162,7 @@ class FediDatePicker {
     FediDatePickerTheme? theme,
     required bool isDeletePossible,
   }) async {
+    LocaleType actualLocaleType;
     if (locale == null) {
       var localizationSettingsBloc = ILocalizationSettingsBloc.of(
         context,
@@ -178,17 +179,19 @@ class FediDatePicker {
       switch (localizationLocale.languageCode.toLowerCase()) {
         // todo: improve
         case 'ru':
-          locale = LocaleType.ru;
+          actualLocaleType = LocaleType.ru;
           break;
         case 'en':
-          locale = LocaleType.en;
+          actualLocaleType = LocaleType.en;
           break;
         case 'pl':
-          locale = LocaleType.pl;
+          actualLocaleType = LocaleType.pl;
           break;
         default:
-          throw 'Invalid locale $locale';
+          throw ArgumentError('Invalid locale $locale');
       }
+    } else {
+      actualLocaleType = locale;
     }
 
     return _showDatePickerPopup(
@@ -198,7 +201,7 @@ class FediDatePicker {
       onConfirm: onConfirm,
       onCancel: onCancel,
       onDelete: onDelete,
-      locale: locale,
+      locale: actualLocaleType,
       theme: theme,
       barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
       pickerModel: DateTimePickerModel(
@@ -360,9 +363,7 @@ class _DatePickerState extends State<FediDatePickerComponent> {
   }
 
   void _notifyDateChanged() {
-    if (widget.onChanged != null) {
-      widget.onChanged!(widget.pickerModel!.finalTime());
-    }
+    widget.onChanged?.call(widget.pickerModel!.finalTime());
   }
 
   Widget _renderPickerView(FediDatePickerTheme theme) {
@@ -401,7 +402,7 @@ class _DatePickerState extends State<FediDatePickerComponent> {
       Expanded(
         flex: layoutProportion,
         child: Container(
-          padding: EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8.0),
           height: theme.containerHeight,
           child: NotificationListener(
             onNotification: (ScrollNotification notification) {
@@ -528,7 +529,7 @@ class _DatePickerState extends State<FediDatePickerComponent> {
     var cancel = _localeCancel();
     var delete = _localeDelete();
 
-    return Container(
+    return SizedBox(
       height: theme.titleHeight,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -537,9 +538,7 @@ class _DatePickerState extends State<FediDatePickerComponent> {
             done,
             onPressed: () {
               Navigator.pop(context, widget.pickerModel!.finalTime());
-              if (widget.onConfirm != null) {
-                widget.onConfirm!(widget.pickerModel!.finalTime());
-              }
+              widget.onConfirm?.call(widget.pickerModel!.finalTime());
             },
             expanded: false,
           ),
@@ -548,9 +547,8 @@ class _DatePickerState extends State<FediDatePickerComponent> {
               delete,
               color: IFediUiColorTheme.of(context).primary,
               onPressed: () {
-                if (widget.onDelete != null) {
-                  widget.onDelete!();
-                }
+                widget.onDelete?.call();
+
                 Navigator.pop(context);
               },
               expanded: false,
@@ -560,9 +558,7 @@ class _DatePickerState extends State<FediDatePickerComponent> {
             color: IFediUiColorTheme.of(context).darkGrey,
             onPressed: () {
               Navigator.pop(context);
-              if (widget.onCancel != null) {
-                widget.onCancel!();
-              }
+              widget.onCancel?.call();
             },
             expanded: false,
           ),

@@ -34,15 +34,15 @@ class MyAccountDomainBlockListPage extends StatelessWidget {
         ),
         body: SafeArea(
           child: Column(
-            children: [
-              const _MyAccountDomainBlockListPageWarningWidget(),
-              const FediMediumVerticalSpacer(),
-              const _MyAccountDomainBlockListPageAddButton(),
-              const FediMediumVerticalSpacer(),
-              const FediBigVerticalSpacer(),
-              const FediUltraLightGreyDivider(),
+            children: const [
+              _MyAccountDomainBlockListPageWarningWidget(),
+              FediMediumVerticalSpacer(),
+              _MyAccountDomainBlockListPageAddButton(),
+              FediMediumVerticalSpacer(),
+              FediBigVerticalSpacer(),
+              FediUltraLightGreyDivider(),
               Expanded(
-                child: const _MyAccountDomainBlockListPageBody(
+                child: _MyAccountDomainBlockListPageBody(
                   customEmptyWidget: SizedBox.shrink(),
                 ),
               ),
@@ -67,10 +67,10 @@ class _MyAccountDomainBlockListPageBody extends StatelessWidget {
         child: MyAccountDomainBlockPaginationListWidget(
           customEmptyWidget: customEmptyWidget,
           customLoadingWidget: customLoadingWidget,
-          key: PageStorageKey('MyAccountDomainBlockListPage'),
+          key: const PageStorageKey('MyAccountDomainBlockListPage'),
           domainBlockSelectedCallback: null,
-          domainBlockActions: <Widget>[
-            const _MyAccountDomainBlockListPageRemoveItemAction(),
+          domainBlockActions: const <Widget>[
+            _MyAccountDomainBlockListPageRemoveItemAction(),
           ],
         ),
       );
@@ -159,10 +159,8 @@ MaterialPageRoute<void> createMyAccountDomainBlockListPage() =>
         context,
         child:
             DisposableProvider<IMyAccountDomainBlockNetworkOnlyPaginationBloc>(
-          create: (context) =>
-              MyAccountDomainBlockNetworkOnlyPaginationBloc.createFromContext(
-            context,
-          ),
+          create:
+              MyAccountDomainBlockNetworkOnlyPaginationBloc.createFromContext,
           child: ProxyProvider<IMyAccountDomainBlockNetworkOnlyPaginationBloc,
               INetworkOnlyPleromaPaginationBloc<DomainBlock>>(
             update: (context, value, previous) => value,

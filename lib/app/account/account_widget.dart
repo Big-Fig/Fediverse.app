@@ -29,7 +29,7 @@ class AccountWidget extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(
+                padding: const EdgeInsets.only(
                   top: FediSizes.bigPadding,
                   bottom: FediSizes.smallPadding,
                   left: FediSizes.bigPadding,

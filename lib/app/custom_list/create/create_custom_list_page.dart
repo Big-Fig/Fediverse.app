@@ -16,7 +16,7 @@ class CreateCustomListPage extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
         appBar: FediPageTitleAppBar(
           title: S.of(context).app_customList_create_title,
-          actions: <Widget>[
+          actions: const <Widget>[
             EditCustomListAppBarSaveActionWidget(),
           ],
         ),

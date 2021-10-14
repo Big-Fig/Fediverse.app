@@ -20,13 +20,13 @@ class DbNotifications extends Table {
   TextColumn get emoji => text().nullable()();
 
   TextColumn get report =>
-      text().nullable().map(UnifediApiAccountReportDatabaseConverter())();
+      text().nullable().map(const UnifediApiAccountReportDatabaseConverter())();
 
   TextColumn get chatMessage =>
-      text().nullable().map(UnifediApiChatMessageDatabaseConverter())();
+      text().nullable().map(const UnifediApiChatMessageDatabaseConverter())();
 
   TextColumn get target =>
-      text().nullable().map(UnifediApiAccountDatabaseConverter())();
+      text().nullable().map(const UnifediApiAccountDatabaseConverter())();
 
   BoolColumn get unread => boolean().nullable()();
 

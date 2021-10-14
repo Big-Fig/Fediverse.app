@@ -111,10 +111,10 @@ class AccountActionMuteDialog extends FediDialog {
   @override
   Widget buildContentWidget(BuildContext context) => Column(
         mainAxisSize: MainAxisSize.min,
-        children: [
-          const _AccountActionMuteDialogDescriptionWidget(),
-          const _AccountActionMuteDialogNotificationsField(),
-          const _AccountActionMuteDialogExpireField(),
+        children: const [
+          _AccountActionMuteDialogDescriptionWidget(),
+          _AccountActionMuteDialogNotificationsField(),
+          _AccountActionMuteDialogExpireField(),
         ],
       );
 }

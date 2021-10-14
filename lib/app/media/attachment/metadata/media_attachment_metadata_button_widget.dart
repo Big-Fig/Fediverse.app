@@ -21,7 +21,7 @@ class MediaAttachmentMetadataButtonWidget extends StatelessWidget {
 
     if (description != null && description.isNotEmpty) {
       return FediIconButton(
-        icon: Icon(FediIcons.info),
+        icon: const Icon(FediIcons.info),
         color: IFediUiColorTheme.of(context).darkGrey,
         onPressed: () {
           showMediaAttachmentMetadataModalBottomSheet(

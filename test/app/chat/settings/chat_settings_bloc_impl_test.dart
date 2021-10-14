@@ -96,7 +96,8 @@ void main() {
             .countConversationsInChatsUnreadBadges;
 
     await chatSettingsBloc.changeCountConversationsInChatsUnreadBadges(
-      testCountConversationsInChatsUnreadBadges,
+      appendConversationUnreadToUnreadBadge:
+          testCountConversationsInChatsUnreadBadges,
     );
 
     expect(
@@ -157,7 +158,7 @@ void main() {
             .replaceConversationsWithPleromaChats;
 
     await chatSettingsBloc.changeReplaceConversationsWithPleromaChats(
-      testCountConversationsInChatsUnreadBadges,
+      replaceConversationsWithChats: testCountConversationsInChatsUnreadBadges,
     );
 
     listened = null;

@@ -133,7 +133,7 @@ class _TimelinesHomeTabPageBodyState extends State<_TimelinesHomeTabPageBody>
         .paginationListWithNewItemsBloc.unmergedNewItemsCountStream
         .listen(
       (unreadCount) {
-        homeBloc.updateTimelinesUnread(unreadCount > 0);
+        homeBloc.updateIsAnyTimelinesUnread(anyTimelineUnread: unreadCount > 0);
       },
     ).disposeWith(timelineTabListBloc);
   }
@@ -182,17 +182,15 @@ class _TimelinesHomeTabPageBodyState extends State<_TimelinesHomeTabPageBody>
                   const _TimelinesHomeTabPageTabLoadingWidget(),
               onLongScrollUpTopOverlayWidget:
                   const TimelinesHomeTabOverlayOnLongScrollWidget(),
-              topSliverWidgets: [
-                const _TimelinesHomeTabPageBodyHeaderFirstRowWidget(),
-                const _TimelinesHomeTabPageBodyHeaderSecondRowWidget(),
+              topSliverWidgets: const [
+                _TimelinesHomeTabPageBodyHeaderFirstRowWidget(),
+                _TimelinesHomeTabPageBodyHeaderSecondRowWidget(),
               ],
               // white status bar over post status header
               // ignore: no-magic-number
               topSliverScrollOffsetToShowWhiteStatusBar: 100,
               tabKeyPrefix: 'TimelineTab',
-              tabBodyProviderBuilder:
-                  (BuildContext context, int index, Widget child) =>
-                      _provideTabBodyContext(context, index, child),
+              tabBodyProviderBuilder: _provideTabBodyContext,
               tabBodyContentBuilder: (BuildContext context, int index) =>
                   buildTabBodyContent(),
               tabBodyOverlayBuilder: (BuildContext context, int index) =>
@@ -205,8 +203,8 @@ class _TimelinesHomeTabPageBodyState extends State<_TimelinesHomeTabPageBody>
     );
   }
 
-  Widget buildTabBodyContent() => FediDarkStatusBarStyleArea(
-        child: const TimelineWidget(),
+  Widget buildTabBodyContent() => const FediDarkStatusBarStyleArea(
+        child: TimelineWidget(),
       );
 
   Widget _provideTabBodyContext(
@@ -309,7 +307,7 @@ class _TimelinesHomeTabPageBodyHeaderFirstRowWidget extends StatelessWidget {
               ),
             ),
             const FediBigVerticalSpacer(),
-            _TimelinesHomeTabIndicatorWidget(),
+            const _TimelinesHomeTabIndicatorWidget(),
           ],
         ),
         endingWidgets: null,
@@ -322,7 +320,7 @@ class _TimelinesHomeTabIndicatorWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Padding(
+  Widget build(BuildContext context) => const Padding(
         // ignore: no-magic-number
         padding: EdgeInsets.only(
           // ignore: no-magic-number

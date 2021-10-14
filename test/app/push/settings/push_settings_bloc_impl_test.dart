@@ -72,7 +72,7 @@ void main() {
       ),
     ).thenAnswer(
       (Invocation invocation) async => UnifediApiPushSubscription(
-        alerts: invocation.namedArguments[Symbol('alerts')]
+        alerts: invocation.namedArguments[const Symbol('alerts')]
             as UnifediApiPushSubscriptionAlerts,
         endpoint: 'endpoint',
         serverKey: 'serverKey',

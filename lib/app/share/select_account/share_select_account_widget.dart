@@ -114,8 +114,8 @@ class _ShareSelectAccountBodyWidget extends StatelessWidget {
                     footer: footer,
                     alwaysShowHeader: alwaysShowHeader,
                     alwaysShowFooter: alwaysShowFooter,
-                    itemActions: [
-                      const ShareSelectAccountItemSendActionWidget(),
+                    itemActions: const [
+                      ShareSelectAccountItemSendActionWidget(),
                     ],
                     accountSelectedCallback: null,
                   ),
@@ -128,8 +128,8 @@ class _ShareSelectAccountBodyWidget extends StatelessWidget {
                   footer: footer,
                   alwaysShowHeader: alwaysShowHeader,
                   alwaysShowFooter: alwaysShowFooter,
-                  itemActions: [
-                    const ShareSelectAccountItemSendActionWidget(),
+                  itemActions: const [
+                    ShareSelectAccountItemSendActionWidget(),
                   ],
                 );
               }
@@ -168,8 +168,8 @@ class _ShareSelectAccountSearchResultsWidget extends StatelessWidget {
         child: SelectAccountPaginationListBloc.provideToContext(
           context,
           child: SingleSelectAccountWidget(
-            accountActions: [
-              const ShareSelectAccountItemSendActionWidget(),
+            accountActions: const [
+              ShareSelectAccountItemSendActionWidget(),
             ],
             header: _ShareSelectAccountSearchHeaderWithSearchInputWidget(
               header: header,

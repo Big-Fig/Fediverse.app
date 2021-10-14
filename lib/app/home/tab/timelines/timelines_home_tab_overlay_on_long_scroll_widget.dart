@@ -25,11 +25,11 @@ class TimelinesHomeTabOverlayOnLongScrollWidget extends StatelessWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    MyAccountAvatarWidget(
+                    const MyAccountAvatarWidget(
                       imageSize: FediSizes.accountAvatarBigSize,
                       progressSize: FediSizes.accountAvatarProgressBigSize,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: FediSizes.bigPadding,
                     ),
                     Text(

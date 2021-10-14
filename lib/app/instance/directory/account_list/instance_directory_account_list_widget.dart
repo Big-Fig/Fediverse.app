@@ -29,6 +29,6 @@ class InstanceDirectoryAccountListWidget extends StatelessWidget {
             );
           }
         },
-        key: PageStorageKey('InstanceDirectoryAccountListWidget'),
+        key: const PageStorageKey('InstanceDirectoryAccountListWidget'),
       );
 }

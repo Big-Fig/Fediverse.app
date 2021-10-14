@@ -80,9 +80,6 @@ class _EditTimelineSettingsChildrenWidget extends StatelessWidget {
           lockedSource: lockedSource,
         );
         break;
-
-      default:
-        throw 'Invalid timelineType $timelineType';
     }
 
     return children;
@@ -94,14 +91,14 @@ class _EditTimelineSettingsChildrenHomeTypeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Column(
-        children: [
-          const _EditTimelineSettingsFieldOnlyLocalWidget(),
-          const _EditTimelineSettingsFieldOnlyRemoteWidget(),
-          const _EditTimelineSettingsFieldWebsocketsUpdatesWidget(),
-          const _EditTimelineSettingsFieldWithMutedWidget(),
-          const _EditTimelineSettingsFieldOnlyLocalWidget(),
-          const _EditTimelineSettingsFieldReplyVisibilityFilterWidget(),
-          const _EditTimelineSettingsFieldExcludeVisibilitiesWidget(),
+        children: const [
+          _EditTimelineSettingsFieldOnlyLocalWidget(),
+          _EditTimelineSettingsFieldOnlyRemoteWidget(),
+          _EditTimelineSettingsFieldWebsocketsUpdatesWidget(),
+          _EditTimelineSettingsFieldWithMutedWidget(),
+          _EditTimelineSettingsFieldOnlyLocalWidget(),
+          _EditTimelineSettingsFieldReplyVisibilityFilterWidget(),
+          _EditTimelineSettingsFieldExcludeVisibilitiesWidget(),
         ],
       );
 }
@@ -111,15 +108,15 @@ class _EditTimelineSettingsChildrenPublicTypeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Column(
-        children: [
-          const _EditTimelineSettingsFieldOnlyLocalWidget(),
-          const _EditTimelineSettingsFieldOnlyRemoteWidget(),
-          const _EditTimelineSettingsFieldOnlyFromInstanceWidget(),
-          const _EditTimelineSettingsFieldWebsocketsUpdatesWidget(),
-          const _EditTimelineSettingsFieldOnlyMediaWidget(),
-          const _EditTimelineSettingsFieldWithMutedWidget(),
-          const _EditTimelineSettingsFieldReplyVisibilityFilterWidget(),
-          const _EditTimelineSettingsFieldExcludeVisibilitiesWidget(),
+        children: const [
+          _EditTimelineSettingsFieldOnlyLocalWidget(),
+          _EditTimelineSettingsFieldOnlyRemoteWidget(),
+          _EditTimelineSettingsFieldOnlyFromInstanceWidget(),
+          _EditTimelineSettingsFieldWebsocketsUpdatesWidget(),
+          _EditTimelineSettingsFieldOnlyMediaWidget(),
+          _EditTimelineSettingsFieldWithMutedWidget(),
+          _EditTimelineSettingsFieldReplyVisibilityFilterWidget(),
+          _EditTimelineSettingsFieldExcludeVisibilitiesWidget(),
         ],
       );
 }

@@ -52,7 +52,7 @@ class AccountAvatarUrlWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var avatarUrl = Provider.of<String?>(context);
     if (avatarUrl == null) {
-      return Container(
+      return SizedBox(
         width: imageSize,
         // ignore: no-equal-arguments
         height: imageSize,
@@ -62,7 +62,7 @@ class AccountAvatarUrlWidget extends StatelessWidget {
       );
     }
 
-    return Container(
+    return SizedBox(
       width: imageSize,
       // ignore: no-equal-arguments
       height: imageSize,
@@ -83,7 +83,7 @@ class AccountAvatarUrlWidget extends StatelessWidget {
             progressSize: progressSize,
           ),
           errorWidget: (context, url, dynamic error) =>
-              _AccountAvatarFailedWidget(),
+              const _AccountAvatarFailedWidget(),
           height: imageSize,
           // ignore: no-equal-arguments
           width: imageSize,
@@ -99,7 +99,7 @@ class _AccountAvatarFailedWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Icon(FediIcons.warning);
+  Widget build(BuildContext context) => const Icon(FediIcons.warning);
 }
 
 class _AccountAvatarLoadingWidget extends StatelessWidget {

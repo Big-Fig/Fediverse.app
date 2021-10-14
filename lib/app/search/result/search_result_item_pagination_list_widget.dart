@@ -58,7 +58,7 @@ class SearchResultItemPaginationListWidget
     SearchResultItemType? previousType;
 
     var itemWithSeparators = <_ItemOrSeparator<ISearchResultItem>>[];
-    items.forEach((item) {
+    for (final item in items) {
       if (item.type != previousType) {
         switch (item.type) {
           case SearchResultItemType.status:
@@ -90,7 +90,7 @@ class SearchResultItemPaginationListWidget
       previousType = item.type;
 
       itemWithSeparators.add(_ItemOrSeparator(item: item, separator: null));
-    });
+    }
 
     return PaginationListWidget.buildItemsListView<
         _ItemOrSeparator<ISearchResultItem>>(
@@ -137,7 +137,8 @@ class SearchResultItemPaginationListWidget
             needLoadFeaturedState: false,
           ),
           child: FediListTile(
-            isFirstInList: index == 0, //                isFirstInList: false,
+            isFirstInList: index == 0,
+            //                isFirstInList: false,
             child: const HashtagListItemWidget(
               displayHistory: false,
             ),
@@ -175,11 +176,11 @@ class SearchResultItemPaginationListWidget
             isNeedPreFetchRelationship: false,
           ),
           child: Column(
-            children: [
-              const AccountListItemWidget(
+            children: const [
+              AccountListItemWidget(
                 accountSelectedCallback: _accountSelectedCallback,
               ),
-              const FediUltraLightGreyDivider(),
+              FediUltraLightGreyDivider(),
             ],
           ),
         ),
@@ -210,8 +211,14 @@ class _ItemOrSeparator<T> {
   _ItemOrSeparator({
     required this.item,
     required this.separator,
-  })  : assert(item != null || separator != null),
-        assert(!(item != null && separator != null));
+  })  : assert(
+          item != null || separator != null,
+          'item or separator cant be set both',
+        ),
+        assert(
+          !(item != null && separator != null),
+          'item or separator should exist',
+        );
 }
 
 void _onStatusClick(BuildContext context, IStatus status) {

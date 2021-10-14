@@ -85,9 +85,9 @@ class MediaPlayerBloc extends AsyncInitLoadingBloc implements IMediaPlayerBloc {
 
     var videoPlayerController = createVideoPlayerController();
 
-    var listener = () {
+    void listener() {
       _onVideoPlayerStateChanged(videoPlayerController);
-    };
+    }
 
     videoPlayerController.addListener(listener);
 
@@ -113,6 +113,7 @@ class MediaPlayerBloc extends AsyncInitLoadingBloc implements IMediaPlayerBloc {
       if (autoPlay == true || initAfterUserClick) {
         await play();
       }
+      // ignore: avoid_catches_without_on_clauses
     } catch (error, stackTrace) {
       this.error = error;
       this.stackTrace = stackTrace;
@@ -165,7 +166,7 @@ class MediaPlayerBloc extends AsyncInitLoadingBloc implements IMediaPlayerBloc {
         var now = DateTime.now();
         if (continuesPlaying &&
             now.difference(positionChangedLastDateTime).abs() >
-                Duration(seconds: 1)) {
+                const Duration(seconds: 1)) {
           isBufferingSubject.add(true);
         } else {
           isBufferingSubject.add(false);
@@ -214,8 +215,6 @@ class MediaPlayerBloc extends AsyncInitLoadingBloc implements IMediaPlayerBloc {
           networkUrl,
         );
         break;
-      default:
-        throw 'Not supported type $type';
     }
 
     return videoPlayerController;
@@ -258,19 +257,23 @@ class MediaPlayerBloc extends AsyncInitLoadingBloc implements IMediaPlayerBloc {
     if (!isInitialized) {
       await performAsyncInit();
     }
-    assert(isInitialized);
+    assert(
+      isInitialized,
+      'cant start playing when not initialized yet',
+    );
     try {
       if (playerState == MediaPlayerState.finished) {
-        await videoPlayerController!.seekTo(Duration(seconds: 0));
+        await videoPlayerController!.seekTo(Duration.zero);
       }
       await videoPlayerController!.play();
 
       playerStateSubject.add(MediaPlayerState.playing);
+      // ignore: avoid_catches_without_on_clauses
     } catch (error, stackTrace) {
       this.error = error;
       this.stackTrace = stackTrace;
       _logger.warning(
-        () => 'failed to init videoPlayerController',
+        () => 'failed to play videoPlayerController',
         error,
         stackTrace,
       );
@@ -283,17 +286,18 @@ class MediaPlayerBloc extends AsyncInitLoadingBloc implements IMediaPlayerBloc {
   Future pause() async {
     await videoPlayerController!.pause();
 
-    assert(isInitialized);
-    assert(isPlaying);
+    assert(isInitialized, 'cant pause when not initialized');
+    assert(isPlaying, 'cant pause when not playing');
     try {
       await videoPlayerController!.pause();
 
       playerStateSubject.add(MediaPlayerState.paused);
+      // ignore: avoid_catches_without_on_clauses
     } catch (error, stackTrace) {
       this.error = error;
       this.stackTrace = stackTrace;
       _logger.warning(
-        () => 'failed to init videoPlayerController',
+        () => 'failed to pause videoPlayerController',
         error,
         stackTrace,
       );
@@ -327,7 +331,7 @@ class MediaPlayerBloc extends AsyncInitLoadingBloc implements IMediaPlayerBloc {
 
   @override
   Future seekToPercent(double percent) async {
-    assert(percent >= 0.0 && percent <= 1.0);
+    assert(percent >= 0.0 && percent <= 1.0, 'seek bounds is [0, 1]');
     await seekToDuration(lengthDuration! * percent);
   }
 

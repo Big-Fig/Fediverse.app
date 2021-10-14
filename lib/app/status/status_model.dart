@@ -547,6 +547,7 @@ extension IStatusExtension on IStatus {
 
         return splitResult[middleIndex];
       }
+      // ignore: avoid_catches_without_on_clauses
     } catch (e, stackTrace) {
       var exception = CantExtractStatusRemoteIdFromStatusUrlException(
         e: e,
@@ -590,11 +591,9 @@ extension IUnifediApiMentionStatusListExtension on List<IStatus> {
     var statuses = this;
     var mentions = <IUnifediApiMention>{};
 
-    statuses.forEach(
-      (status) {
-        mentions.addAll(status.mentions ?? []);
-      },
-    );
+    for (final status in statuses) {
+      mentions.addAll(status.mentions ?? []);
+    }
 
     return mentions.toList();
   }

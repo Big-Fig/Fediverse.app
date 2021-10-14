@@ -20,7 +20,7 @@ void showEditGlobalOrInstanceChatSettingsDialog({
   showEditGlobalOrInstanceSettingsDialog(
     context: context,
     subTitle: S.of(context).app_chat_settings_title,
-    child: EditChatSettingsWidget(
+    child: const EditChatSettingsWidget(
       shrinkWrap: true,
     ),
     childContextBuilder: ({

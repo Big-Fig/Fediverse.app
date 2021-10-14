@@ -21,10 +21,10 @@ import 'package:provider/provider.dart';
 
 class ConversationChatPage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => FediDarkStatusBarStyleArea(
+  Widget build(BuildContext context) => const FediDarkStatusBarStyleArea(
         child: Scaffold(
           appBar: _ConversationChatPageAppBarWidget(),
-          body: const ConversationChatWidget(),
+          body: ConversationChatWidget(),
         ),
       );
 

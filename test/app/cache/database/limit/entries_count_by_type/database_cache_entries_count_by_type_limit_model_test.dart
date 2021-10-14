@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   test('toJsonValue & fromJsonValue', () async {
     var values = DatabaseCacheEntriesCountByTypeLimitType.values;
-    for (var value in values) {
+    for (final value in values) {
       var jsonValue = value.toJsonValue();
 
       var objFromJsonValue =
@@ -16,7 +16,7 @@ void main() {
   });
   test('toCountOrNull', () async {
     var values = DatabaseCacheEntriesCountByTypeLimitType.values;
-    for (var value in values) {
+    for (final value in values) {
       switch (value) {
         case DatabaseCacheEntriesCountByTypeLimitType.notSet:
           expect(value.toCountOrNull(), null);

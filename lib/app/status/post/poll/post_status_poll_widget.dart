@@ -67,7 +67,7 @@ class _PostStatusPollOptionsFieldWidget extends StatelessWidget {
 
         return Provider<List<IStringValueFormFieldBloc>>.value(
           value: items,
-          child: _PostStatusPollOptionsFieldItemsWidget(),
+          child: const _PostStatusPollOptionsFieldItemsWidget(),
         );
       },
     );
@@ -89,7 +89,7 @@ class _PostStatusPollOptionsFieldItemsWidget extends StatelessWidget {
             .map(
               (pollItemBloc) => Provider<IStringValueFormFieldBloc>.value(
                 value: pollItemBloc,
-                child: _PostStatusPollOptionsFieldItemWidget(),
+                child: const _PostStatusPollOptionsFieldItemWidget(),
               ),
             )
             .toList(),
@@ -113,10 +113,10 @@ class _PostStatusPollOptionsFieldItemWidget extends StatelessWidget {
     var isLast = pollOptionsGroupBloc.isLast(pollItemBloc);
 
     return Padding(
-      padding: EdgeInsets.only(top: FediSizes.mediumPadding),
+      padding: const EdgeInsets.only(top: FediSizes.mediumPadding),
       child: Row(
         children: <Widget>[
-          Expanded(
+          const Expanded(
             child: _PostStatusPollOptionsFieldItemFieldWidget(),
           ),
           if (!isLast) const _PostStatusPollOptionRemoteItemButtonWidget(),
@@ -185,7 +185,7 @@ class _PostStatusPollOptionRemoteItemButtonWidget extends StatelessWidget {
         var isPossibleToRemoveFields = snapshot.data ?? false;
 
         return FediIconButton(
-          icon: Icon(FediIcons.remove),
+          icon: const Icon(FediIcons.remove),
           color: isPossibleToRemoveFields
               ? IFediUiColorTheme.of(context).darkGrey
               : IFediUiColorTheme.of(context).lightGrey,
@@ -212,7 +212,7 @@ class _PostStatusPollOptionsAddItemButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => FediIconButton(
-        icon: Icon(FediIcons.plus),
+        icon: const Icon(FediIcons.plus),
         color: IFediUiColorTheme.of(context).primary,
         onPressed: () {
           var pollOptionsGroupBloc =

@@ -18,7 +18,7 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
     IUnifediApiInstancePollLimits? pollLimit,
   ) =>
       DurationDateTimeValueFormFieldBloc(
-        originValue: DurationDateTime(
+        originValue: const DurationDateTime(
           duration: Duration(days: 1),
           dateTime: null,
         ),
@@ -115,16 +115,14 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
     if (poll.options.isNotEmpty) {
       pollOptionsGroupBloc.removeAllFields();
 
-      poll.options.forEach(
-        (pollOption) {
-          pollOptionsGroupBloc.addNewField(
-            createPollOptionFieldBloc(
-              pollOption,
-              pollMaximumOptionLength,
-            ),
-          );
-        },
-      );
+      for (final pollOption in poll.options) {
+        pollOptionsGroupBloc.addNewField(
+          createPollOptionFieldBloc(
+            pollOption,
+            pollMaximumOptionLength,
+          ),
+        );
+      }
     }
   }
 

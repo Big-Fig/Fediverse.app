@@ -11,8 +11,8 @@ import 'package:flutter/material.dart';
 
 class PostStatusStartConversationChatPage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: const PostStatusStartConversationChatPageAppBar(),
+  Widget build(BuildContext context) => const Scaffold(
+        appBar: PostStatusStartConversationChatPageAppBar(),
         body: _PostStatusStartConversationChatPageBodyWidget(),
       );
 
@@ -28,9 +28,9 @@ class PostStatusStartConversationChatPageAppBar extends StatelessWidget
   @override
   Widget build(BuildContext context) => FediPageTitleAppBar(
         title: S.of(context).app_chat_conversation_start_title,
-        leading: FediDismissIconButton(),
-        actions: [
-          const PostStatusAppBarPostAction(),
+        leading: const FediDismissIconButton(),
+        actions: const [
+          PostStatusAppBarPostAction(),
         ],
       );
 
@@ -44,7 +44,7 @@ class _PostStatusStartConversationChatPageBodyWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => SafeArea(
+  Widget build(BuildContext context) => const SafeArea(
         child: CustomScrollView(
           slivers: [
             SliverFillRemaining(

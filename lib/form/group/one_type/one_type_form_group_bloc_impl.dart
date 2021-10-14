@@ -30,15 +30,13 @@ class OneTypeFormGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
     _itemsSubject.disposeWith(this);
     _isChangedSubject.disposeWith(this);
 
-    originalItems.forEach(
-      (field) {
-        field.isSomethingChangedStream.listen(
-          (_) {
-            checkIsSomethingChanged();
-          },
-        ).disposeWith(this);
-      },
-    );
+    for (final field in originalItems) {
+      field.isSomethingChangedStream.listen(
+        (_) {
+          checkIsSomethingChanged();
+        },
+      ).disposeWith(this);
+    }
   }
 
   final BehaviorSubject<bool> _isChangedSubject = BehaviorSubject.seeded(false);
@@ -46,14 +44,17 @@ class OneTypeFormGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
 
   @override
   bool get isMaximumFieldsCountReached =>
+      // ignore: avoid_bool_literals_in_conditional_expressions
       maximumFieldsCount != null ? items.length >= maximumFieldsCount! : false;
 
   @override
   bool get isMinimumFieldsCountReached =>
+      // ignore: avoid_bool_literals_in_conditional_expressions
       minimumFieldsCount != null ? items.length <= minimumFieldsCount! : false;
 
   @override
   Stream<bool> get isMaximumFieldsCountReachedStream => itemsStream.map(
+        // ignore: avoid_bool_literals_in_conditional_expressions
         (customFields) => maximumFieldsCount != null
             ? items.length >= maximumFieldsCount!
             : false,
@@ -61,6 +62,7 @@ class OneTypeFormGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
 
   @override
   Stream<bool> get isMinimumFieldsCountReachedStream => itemsStream.map(
+        // ignore: avoid_bool_literals_in_conditional_expressions
         (customFields) => minimumFieldsCount != null
             ? items.length <= minimumFieldsCount!
             : false,
@@ -107,7 +109,10 @@ class OneTypeFormGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
 
   @override
   T addNewEmptyField() {
-    assert(!isMaximumFieldsCountReached);
+    assert(
+      !isMaximumFieldsCountReached,
+      'cant add field when max is reached',
+    );
 
     var newField = newEmptyFieldCreator();
     items.add(newField);
@@ -126,7 +131,7 @@ class OneTypeFormGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
     isGroupChanged = true;
     checkIsSomethingChanged();
     recalculateErrors();
-    Future.delayed(Duration(seconds: 1), () {
+    Future.delayed(const Duration(seconds: 1), () {
       field!.dispose();
     });
   }
@@ -139,9 +144,9 @@ class OneTypeFormGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
     checkIsSomethingChanged();
     recalculateErrors();
     Future.delayed(
-      Duration(seconds: 1),
+      const Duration(seconds: 1),
       () {
-        for (var field in oldFields) {
+        for (final field in oldFields) {
           field.dispose();
         }
       },
@@ -150,7 +155,7 @@ class OneTypeFormGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
 
   @override
   void clear() {
-    for (var item in items) {
+    for (final item in items) {
       item.clear();
     }
     _itemsSubject.add(originalItems);
@@ -158,7 +163,10 @@ class OneTypeFormGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
 
   @override
   T addNewField(T newField) {
-    assert(!isMaximumFieldsCountReached);
+    assert(
+      !isMaximumFieldsCountReached,
+      'cant add field when max is reached',
+    );
 
     items.add(newField);
     _itemsSubject.add(items);

@@ -38,8 +38,7 @@ class LocalInstanceActivityBloc extends InstanceActivityBloc
     required Widget child,
   }) =>
       DisposableProvider<IInstanceActivityBloc>(
-        create: (context) =>
-            LocalInstanceActivityBloc.createFromContext(context),
+        create: LocalInstanceActivityBloc.createFromContext,
         child: InstanceActivityBlocProxyProvider(child: child),
       );
 

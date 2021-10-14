@@ -152,12 +152,12 @@ class _ChatMessageListItemBodyWidget<T extends IChatMessage>
                 crossAxisAlignment: isChatMessageFromMe
                     ? CrossAxisAlignment.end
                     : CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(
+                children: const [
+                  SizedBox(
                     height: 4.0,
                   ),
-                  const _ChatMessageListItemContentContainerWidget(),
-                  const _ChatMessageListItemCardWidget(),
+                  _ChatMessageListItemContentContainerWidget(),
+                  _ChatMessageListItemCardWidget(),
                 ],
               ),
             ),
@@ -233,7 +233,8 @@ class _ChatMessageListItemMetadataPendingStateWidget extends StatelessWidget {
                     style: IFediUiTextTheme.of(context).smallShortGrey,
                   ),
                   Padding(
-                    padding: EdgeInsets.only(left: FediSizes.smallPadding),
+                    padding:
+                        const EdgeInsets.only(left: FediSizes.smallPadding),
                     child: Icon(
                       FediIcons.warning,
                       // todo: refactor
@@ -304,7 +305,7 @@ class _ChatMessageListItemContentContainerWidget extends StatelessWidget {
           ),
           child: Padding(
             padding: isHaveTextContent
-                ? EdgeInsets.symmetric(
+                ? const EdgeInsets.symmetric(
                     vertical: FediSizes.mediumPadding,
                     horizontal: FediSizes.bigPadding,
                   )
@@ -401,9 +402,9 @@ class _ChatMessageListItemContentWidget extends StatelessWidget {
       crossAxisAlignment: isChatMessageFromMe
           ? CrossAxisAlignment.end
           : CrossAxisAlignment.start,
-      children: <Widget>[
-        const _ChatMessageListItemTextContentWidget(),
-        const _ChatMessageListItemMediaContentWidget(),
+      children: const <Widget>[
+        _ChatMessageListItemTextContentWidget(),
+        _ChatMessageListItemMediaContentWidget(),
       ],
     );
   }
@@ -456,9 +457,9 @@ class _ChatMessageListItemMediaContentWidget extends StatelessWidget {
                   );
                 }
               },
-              child: Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: const MediaAttachmentListCarouselWidget(),
+              child: const Padding(
+                padding: EdgeInsets.only(top: 8.0),
+                child: MediaAttachmentListCarouselWidget(),
               ),
             ),
           ),

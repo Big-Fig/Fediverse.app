@@ -31,8 +31,8 @@ class CustomListListItemWidget extends StatelessWidget {
         padding: FediPadding.allBigPadding,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            const _CustomListListItemTitleWidget(),
+          children: const <Widget>[
+            _CustomListListItemTitleWidget(),
           ],
         ),
       ),

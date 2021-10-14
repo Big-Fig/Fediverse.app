@@ -31,15 +31,15 @@ class MyAccountAccountMuteListPage extends StatelessWidget {
         ),
         body: SafeArea(
           child: Column(
-            children: [
-              const _MyAccountAccountMuteListPageWarningWidget(),
-              const FediMediumVerticalSpacer(),
-              const _MyAccountAccountMuteListPageAddButton(),
-              const FediMediumVerticalSpacer(),
-              const FediBigVerticalSpacer(),
-              const FediUltraLightGreyDivider(),
+            children: const [
+              _MyAccountAccountMuteListPageWarningWidget(),
+              FediMediumVerticalSpacer(),
+              _MyAccountAccountMuteListPageAddButton(),
+              FediMediumVerticalSpacer(),
+              FediBigVerticalSpacer(),
+              FediUltraLightGreyDivider(),
               Expanded(
-                child: const MyAccountAccountMuteAccountPaginationListWidget(
+                child: MyAccountAccountMuteAccountPaginationListWidget(
                   customEmptyWidget: SizedBox.shrink(),
                 ),
               ),
@@ -118,8 +118,7 @@ MaterialPageRoute<void> createMyAccountAccountMuteListPage() =>
           MyAccountAccountMuteNetworkOnlyAccountListBloc.provideToContext(
         context,
         child: DisposableProvider<IAccountNetworkOnlyPaginationBloc>(
-          create: (context) =>
-              AccountNetworkOnlyPaginationBloc.createFromContext(context),
+          create: AccountNetworkOnlyPaginationBloc.createFromContext,
           child: ProxyProvider<IAccountNetworkOnlyPaginationBloc,
               INetworkOnlyPaginationBloc<PaginationPage<IAccount>, IAccount>>(
             update: (context, value, previous) => value,

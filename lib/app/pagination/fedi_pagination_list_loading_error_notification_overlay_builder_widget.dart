@@ -10,7 +10,7 @@ DateTime _lastRefreshErrorShowedDateTime = DateTime.now();
 DateTime _lastLoadMoreErrorShowedDateTime = DateTime.now();
 
 // ignore: no-magic-number
-final Duration _throttleDuration = Duration(seconds: 2);
+const Duration _throttleDuration = Duration(seconds: 2);
 
 class FediPaginationListLoadingErrorNotificationOverlayBuilderWidget
     extends StatefulWidget {
@@ -84,5 +84,5 @@ class FediPaginationListLoadingErrorNotificationOverlayBuilderWidgetState
   }
 
   @override
-  Widget build(BuildContext context) => SizedBox.shrink();
+  Widget build(BuildContext context) => const SizedBox.shrink();
 }

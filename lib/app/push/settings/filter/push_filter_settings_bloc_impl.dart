@@ -50,7 +50,7 @@ class PushFilterSettingsBloc extends DisposableOwner
 
     var currentNotificationSettings =
         notificationSettings?.toUnifediApiMyAccountNotificationsSettings() ??
-            UnifediApiMyAccountNotificationsSettings(
+            const UnifediApiMyAccountNotificationsSettings(
               followers: null,
               follows: null,
               nonFollowers: null,

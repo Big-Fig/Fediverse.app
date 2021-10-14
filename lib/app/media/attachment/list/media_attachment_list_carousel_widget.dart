@@ -18,9 +18,9 @@ class MediaAttachmentListCarouselWidget extends StatelessWidget {
     var mediaAttachmentListBloc = IMediaAttachmentListBloc.of(context);
 
     if (mediaAttachmentListBloc.mediaAttachments.isNotEmpty) {
-      return SizedBox(
+      return const SizedBox(
         width: double.infinity,
-        child: const MediaAttachmentListCarouselBodyWidget(),
+        child: MediaAttachmentListCarouselBodyWidget(),
       );
     } else {
       return const SizedBox.shrink();
@@ -36,7 +36,10 @@ class MediaAttachmentListCarouselBodyWidget extends StatelessWidget {
     var mediaAttachmentListBloc = IMediaAttachmentListBloc.of(context);
     var mediaAttachments = mediaAttachmentListBloc.mediaAttachments;
 
-    assert(mediaAttachments.isNotEmpty);
+    assert(
+      mediaAttachments.isNotEmpty,
+      'items to show shouldnt be empty',
+    );
 
     if (mediaAttachments.length == 1) {
       return Provider<IUnifediApiMediaAttachment>.value(

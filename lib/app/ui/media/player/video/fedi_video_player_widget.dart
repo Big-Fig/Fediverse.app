@@ -22,12 +22,12 @@ class FediVideoPlayerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Stack(
         alignment: Alignment.center,
-        children: [
-          const _FediVideoPlayerBodyWidget(),
-          const FediVideoPlayerBufferingWidget(),
-          const FediVideoPlayerPlayPauseButtonWidget(),
-          const _FediVideoPlayerControlsWidget(),
-          const _FediVideoPlayerErrorWidget(),
+        children: const [
+          _FediVideoPlayerBodyWidget(),
+          FediVideoPlayerBufferingWidget(),
+          FediVideoPlayerPlayPauseButtonWidget(),
+          _FediVideoPlayerControlsWidget(),
+          _FediVideoPlayerErrorWidget(),
         ],
       );
 
@@ -70,10 +70,10 @@ class _FediVideoPlayerErrorBodyWidget extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const _FediVideoPlayerErrorReloadButtonWidget(),
-              const _FediVideoPlayerErrorDescWidget(),
-              const _FediVideoPlayerErrorDetailsButtonWidget(),
+            children: const [
+              _FediVideoPlayerErrorReloadButtonWidget(),
+              _FediVideoPlayerErrorDescWidget(),
+              _FediVideoPlayerErrorDetailsButtonWidget(),
             ],
           ),
         ),
@@ -285,7 +285,7 @@ class _FediVideoPlayerControlsBodyWidget extends StatelessWidget {
         ),
       ),
       child: Padding(
-        padding: EdgeInsets.only(left: FediSizes.mediumPadding),
+        padding: const EdgeInsets.only(left: FediSizes.mediumPadding),
         child: Row(
           children: [
             const Expanded(

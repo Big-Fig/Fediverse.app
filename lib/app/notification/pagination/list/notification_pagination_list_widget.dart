@@ -52,9 +52,9 @@ class NotificationPaginationListWidget
                   needWatchLocalRepositoryForUpdates,
             ),
             child: Column(
-              children: <Widget>[
-                const NotificationListItemWidget(),
-                const FediUltraLightGreyDivider(),
+              children: const <Widget>[
+                NotificationListItemWidget(),
+                FediUltraLightGreyDivider(),
               ],
             ),
           ),

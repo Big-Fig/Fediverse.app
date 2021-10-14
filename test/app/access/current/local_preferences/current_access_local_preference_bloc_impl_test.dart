@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_lambdas
+
 import 'package:fedi/app/access/current/local_preferences/current_access_local_preference_bloc_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:unifedi_api/unifedi_api.dart';

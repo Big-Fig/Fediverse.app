@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_lambdas
+
 import 'package:fedi/analytics/app/app_analytics_model.dart';
 import 'package:fedi/analytics/app/local_preferences/app_analytics_local_preference_bloc_impl.dart';
 import 'package:flutter_test/flutter_test.dart';

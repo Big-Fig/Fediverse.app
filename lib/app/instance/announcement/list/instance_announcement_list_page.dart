@@ -145,10 +145,10 @@ MaterialPageRoute<void> createInstanceAnnouncementListPageRoute({
                     IInstanceAnnouncement>,
                 ICachedPaginationListBloc>(
               update: (context, value, previous) => value,
-              child: CachedPaginationListBlocProxyProvider<
+              child: const CachedPaginationListBlocProxyProvider<
                   CachedPaginationPage<IInstanceAnnouncement>,
                   IInstanceAnnouncement>(
-                child: const InstanceAnnouncementListPage(),
+                child: InstanceAnnouncementListPage(),
               ),
             ),
           ),

@@ -99,10 +99,9 @@ class _EditMyAccountCustomFieldsListFieldFooterWidget extends StatelessWidget {
         var isMaximumCustomFieldsCountReached = snapshot.data;
 
         if (isMaximumCustomFieldsCountReached != true) {
-          return Padding(
+          return const Padding(
             padding: FediPadding.allBigPadding,
-            child:
-                const _EditMyAccountCustomFieldsListFieldAddNewButtonWidget(),
+            child: _EditMyAccountCustomFieldsListFieldAddNewButtonWidget(),
           );
         } else {
           return const SizedBox.shrink();

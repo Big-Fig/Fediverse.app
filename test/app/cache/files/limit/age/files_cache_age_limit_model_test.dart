@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:fedi/app/cache/files/limit/age/files_cache_age_limit_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -5,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   test('toJsonValue & fromJsonValue', () async {
     var values = FilesCacheAgeLimitType.values;
-    for (var value in values) {
+    for (final value in values) {
       var jsonValue = value.toJsonValue();
 
       var objFromJsonValue = jsonValue.toFilesCacheAgeLimitType();
@@ -15,7 +17,7 @@ void main() {
   });
   test('toDurationOrNull', () async {
     var values = FilesCacheAgeLimitType.values;
-    for (var value in values) {
+    for (final value in values) {
       switch (value) {
         case FilesCacheAgeLimitType.notSet:
           expect(value.toDurationOrNull(), null);

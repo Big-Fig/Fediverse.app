@@ -98,11 +98,11 @@ abstract class CachedPaginationListWithNewItemsBloc<
     updatedItemsSubject.disposeWith(this);
     combinedItemsResultSubject.disposeWith(this);
 
-    newerItemStream.listen(
-      (TItem? newerItem) {
-        checkWatchNewItemsSubscription(newerItem);
-      },
-    ).disposeWith(this);
+    newerItemStream
+        .listen(
+          checkWatchNewItemsSubscription,
+        )
+        .disposeWith(this);
 
     if (mergeNewItemsImmediately) {
       unmergedNewItemsStream.listen(

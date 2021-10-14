@@ -84,8 +84,8 @@ Future<dynamic> pushFullScreenPage(
           autoPlay: videoMediaPlayerBloc.autoPlay,
           isFullscreen: true,
         ),
-        child: VideoMediaPlayerBlocProxyProvider(
-          child: const _FediVideoPlayerToggleControlFullscreenPage(),
+        child: const VideoMediaPlayerBlocProxyProvider(
+          child: _FediVideoPlayerToggleControlFullscreenPage(),
         ),
       ),
     ),
@@ -126,7 +126,7 @@ class _FediVideoPlayerToggleControlFullscreenButtonDisabledWidget
 
   @override
   Widget build(BuildContext context) => FediIconButton(
-        icon: Icon(FediIcons.maximize),
+        icon: const Icon(FediIcons.maximize),
         color: IFediUiColorTheme.of(context).grey,
         onPressed: null,
       );

@@ -25,7 +25,7 @@ class PushSettings with _$PushSettings implements ISettings<PushSettings> {
     @HiveField(7) required bool? emojiReaction,
   }) = _PushSettings;
 
-  static PushSettings defaultAllEnabled() => PushSettings(
+  static PushSettings defaultAllEnabled() => const PushSettings(
         favourite: true,
         follow: true,
         mention: true,
@@ -35,7 +35,7 @@ class PushSettings with _$PushSettings implements ISettings<PushSettings> {
         emojiReaction: true,
       );
 
-  static PushSettings defaultAllDisabled() => PushSettings(
+  static PushSettings defaultAllDisabled() => const PushSettings(
         favourite: false,
         follow: false,
         mention: false,

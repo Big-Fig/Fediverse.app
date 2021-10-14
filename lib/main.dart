@@ -122,7 +122,7 @@ Future launchApp({
 
 void runNotInitializedSplashApp() {
   runApp(
-    MaterialApp(
+    const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: SplashPage(
         displayVersionInfo: false,
@@ -135,7 +135,7 @@ void runInitFailedApp() {
   _logger.severe(() => 'failed to init App');
   runApp(
     MaterialApp(
-      localizationsDelegates: [
+      localizationsDelegates: const [
         S.delegate,
       ],
       home: Scaffold(
@@ -320,7 +320,7 @@ Future handleLaunchPushLoaderNotification(
   var notificationRepository =
       currentInstanceContextBloc!.get<INotificationRepository>();
   Future.delayed(
-    Duration(seconds: 1),
+    const Duration(seconds: 1),
     () {
       notificationRepository.markAsRead(
         notification: notification,
@@ -381,10 +381,10 @@ void runInitializedLoginApp(IAppContextBloc appContextBloc) {
           isFromScratch: true,
           configService: appContextBloc.get<IConfigService>(),
         ),
-        child: FediApp(
+        child: const FediApp(
           instanceInitialized: false,
           child: JoinUnifediApiAccessBlocProxyProvider(
-            child: const FromScratchJoinUnifediApiAccessPage(),
+            child: FromScratchJoinUnifediApiAccessPage(),
           ),
         ),
       ),
@@ -486,6 +486,7 @@ class FediApp extends StatelessWidget {
                 id: actualTheme.id,
               );
             }
+            // ignore: avoid_catches_without_on_clauses
           } catch (e) {
             // todo: remove this hack. IInstanceFrontendConfigurationsBloc should init before this
             _logger.warning(
@@ -521,7 +522,7 @@ class FediApp extends StatelessWidget {
                         // checkerboardOffscreenLayers: true,
                         debugShowCheckedModeBanner: false,
                         title: IConfigService.of(context).appTitle,
-                        localizationsDelegates: [
+                        localizationsDelegates: const [
                           S.delegate,
                           GlobalMaterialLocalizations.delegate,
                           GlobalWidgetsLocalizations.delegate,
@@ -655,7 +656,7 @@ void _initIncomeShareHandler({
 
 // ignore: no-magic-number
 Color darken(Color color, [double amount = 0.1]) {
-  assert(amount >= 0 && amount <= 1);
+  assert(amount >= 0 && amount <= 1, 'amount should be in [0, 1]');
 
   final hsl = HSLColor.fromColor(color);
   final hslDark = hsl.withLightness((hsl.lightness - amount).clamp(0.0, 1.0));
@@ -665,7 +666,7 @@ Color darken(Color color, [double amount = 0.1]) {
 
 // ignore: no-magic-number
 Color lighten(Color color, [double amount = 0.1]) {
-  assert(amount >= 0 && amount <= 1);
+  assert(amount >= 0 && amount <= 1, 'amount should be in [0, 1]');
 
   final hsl = HSLColor.fromColor(color);
   final hslLight = hsl.withLightness((hsl.lightness + amount).clamp(0.0, 1.0));

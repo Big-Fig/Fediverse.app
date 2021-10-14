@@ -27,49 +27,44 @@ class ScheduledStatusDao extends PopulatedAppRemoteDatabaseDao<
   // Called by the AppDatabase class
   ScheduledStatusDao(this.db) : super(db);
 
-  SimpleSelectStatement<$DbScheduledStatusesTable, DbScheduledStatus>
-      addExcludeCanceledWhere(
+  void addExcludeCanceledWhere(
     SimpleSelectStatement<$DbScheduledStatusesTable, DbScheduledStatus> query,
   ) =>
-          query
-            ..where(
-              (scheduledStatus) => scheduledStatus.canceled.equals(true).not(),
-            );
+      query.where(
+        (scheduledStatus) => scheduledStatus.canceled.equals(true).not(),
+      );
 
-  SimpleSelectStatement<$DbScheduledStatusesTable, DbScheduledStatus>
-      addExcludeScheduleAtExpiredWhere(
+  void addExcludeScheduleAtExpiredWhere(
     SimpleSelectStatement<$DbScheduledStatusesTable, DbScheduledStatus> query,
   ) =>
-          query
-            ..where(
-              (scheduledStatus) => scheduledStatus.scheduledAt
-                  .isBiggerThanValue(DateTime.now().toUtc()),
-            );
+      query.where(
+        (scheduledStatus) => scheduledStatus.scheduledAt
+            .isBiggerThanValue(DateTime.now().toUtc()),
+      );
 
-  SimpleSelectStatement<$DbScheduledStatusesTable, DbScheduledStatus> orderBy(
+  void orderBy(
     SimpleSelectStatement<$DbScheduledStatusesTable, DbScheduledStatus> query,
     List<ScheduledStatusRepositoryOrderingTermData> orderTerms,
   ) =>
-      query
-        ..orderBy(
-          orderTerms
-              .map(
-                (orderTerm) => ($DbScheduledStatusesTable item) {
-                  GeneratedColumn<String?> expression;
-                  switch (orderTerm.orderType) {
-                    case ScheduledStatusRepositoryOrderType.remoteId:
-                      expression = item.remoteId;
-                      break;
-                  }
+      query.orderBy(
+        orderTerms
+            .map(
+              (orderTerm) => ($DbScheduledStatusesTable item) {
+                GeneratedColumn<String?> expression;
+                switch (orderTerm.orderType) {
+                  case ScheduledStatusRepositoryOrderType.remoteId:
+                    expression = item.remoteId;
+                    break;
+                }
 
-                  return OrderingTerm(
-                    expression: expression,
-                    mode: orderTerm.orderingMode,
-                  );
-                },
-              )
-              .toList(),
-        );
+                return OrderingTerm(
+                  expression: expression,
+                  mode: orderTerm.orderingMode,
+                );
+              },
+            )
+            .toList(),
+      );
 
   @override
   $DbScheduledStatusesTable get table => dbScheduledStatuses;
@@ -81,11 +76,11 @@ class ScheduledStatusDao extends PopulatedAppRemoteDatabaseDao<
     required ScheduledStatusRepositoryFilters? filters,
   }) {
     if (filters?.excludeCanceled == true) {
-      query = addExcludeCanceledWhere(query);
+      addExcludeCanceledWhere(query);
     }
 
     if (filters?.excludeScheduleAtExpired == true) {
-      query = addExcludeScheduleAtExpiredWhere(query);
+      addExcludeScheduleAtExpiredWhere(query);
     }
   }
 
@@ -98,13 +93,17 @@ class ScheduledStatusDao extends PopulatedAppRemoteDatabaseDao<
   }) {
     if (pagination?.olderThanItem != null ||
         pagination?.newerThanItem != null) {
-      assert(orderingTerms?.length == 1);
+      assert(
+        orderingTerms?.length == 1,
+        'only single term supported',
+      );
       var orderingTermData = orderingTerms!.first;
       assert(
         orderingTermData.orderType ==
             ScheduledStatusRepositoryOrderType.remoteId,
+        'only remoteId supported',
       );
-      query = addRemoteIdBoundsWhere(
+      addRemoteIdBoundsWhere(
         query,
         maximumRemoteIdExcluding: pagination?.olderThanItem?.remoteId,
         minimumRemoteIdExcluding: pagination?.newerThanItem?.remoteId,
@@ -118,7 +117,7 @@ class ScheduledStatusDao extends PopulatedAppRemoteDatabaseDao<
         query,
     required List<ScheduledStatusRepositoryOrderingTermData>? orderingTerms,
   }) {
-    query = orderBy(
+    orderBy(
       query,
       orderingTerms ?? [],
     );

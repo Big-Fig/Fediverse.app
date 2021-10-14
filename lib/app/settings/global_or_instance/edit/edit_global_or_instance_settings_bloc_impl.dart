@@ -60,9 +60,6 @@ abstract class EditGlobalOrInstanceSettingsBloc<T extends ISettings<dynamic>>
       case GlobalOrInstanceSettingsType.global:
         await globalOrInstanceSettingsBloc.updateGlobalSettings(settings);
         break;
-      default:
-        // nothing
-        break;
     }
   }
 
@@ -74,8 +71,6 @@ abstract class EditGlobalOrInstanceSettingsBloc<T extends ISettings<dynamic>>
       case GlobalOrInstanceSettingsType.instance:
         return instanceSettingsData ?? globalSettingsData;
       case GlobalOrInstanceSettingsType.global:
-        return globalSettingsData;
-      default:
         return globalSettingsData;
     }
   }

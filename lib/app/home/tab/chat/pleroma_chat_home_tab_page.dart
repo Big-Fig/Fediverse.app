@@ -57,8 +57,8 @@ class PleromaChatHomeTabPage extends StatelessWidget {
       body: FediNestedScrollViewWithoutNestedScrollableTabsWidget(
         onLongScrollUpTopOverlayWidget: null,
         topSliverScrollOffsetToShowWhiteStatusBar: null,
-        topSliverWidgets: [
-          const _ChatMessagesHomeTabPageHeaderWidget(),
+        topSliverWidgets: const [
+          _ChatMessagesHomeTabPageHeaderWidget(),
         ],
         providerBuilder: (context, child) => provideContentContext(child),
         contentBuilder: (context) =>
@@ -249,7 +249,9 @@ class _ChatMessagesHomeTabPageHeaderSwitchToDmActionWidget
             S.of(context).app_home_tab_chat_pleroma_action_switch_to_dms,
             onPressed: () {
               IChatSettingsBloc.of(context, listen: false)
-                  .changeReplaceConversationsWithPleromaChats(false);
+                  .changeReplaceConversationsWithPleromaChats(
+                replaceConversationsWithChats: false,
+              );
             },
             expanded: false,
           ),

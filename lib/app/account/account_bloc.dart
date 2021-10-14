@@ -69,7 +69,7 @@ extension IAccountBlocExtension on IAccountBloc {
       calculateAcctOnRemoteHost(acct);
 
   Stream<String?> get acctWithForcedRemoteInstanceHostStream => acctStream.map(
-        (acct) => calculateAcctOnRemoteHost(acct),
+        calculateAcctOnRemoteHost,
       );
 
   String? calculateAcctOnRemoteHost(String? acct) {

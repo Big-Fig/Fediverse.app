@@ -62,18 +62,7 @@ class ServerListAutoCompleteWidget extends StatelessWidget {
       displayStringForOption: (String option) => option,
       textEditingController: textEditingController,
       focusNode: focusNode,
-      fieldViewBuilder: (
-        BuildContext context,
-        TextEditingController fieldTextEditingController,
-        FocusNode fieldFocusNode,
-        VoidCallback onFieldSubmitted,
-      ) =>
-          fieldViewBuilder(
-        context,
-        fieldTextEditingController,
-        fieldFocusNode,
-        onFieldSubmitted,
-      ),
+      fieldViewBuilder: fieldViewBuilder,
     );
   }
 }

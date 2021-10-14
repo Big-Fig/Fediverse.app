@@ -46,7 +46,7 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
   late List<IFilter> filters;
 
   FilterRepositoryFilters get filterRepositoryFilters =>
-      FilterRepositoryFilters(
+      const FilterRepositoryFilters(
         onlyWithContextTypes: [
           UnifediApiFilterContextType.notificationsValue,
         ],

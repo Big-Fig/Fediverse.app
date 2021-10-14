@@ -139,10 +139,8 @@ class MyAccountFollowRequestNetworkOnlyAccountListBloc extends DisposableOwner
     required Widget child,
   }) =>
       DisposableProvider<IMyAccountFollowRequestNetworkOnlyAccountListBloc>(
-        create: (context) =>
-            MyAccountFollowRequestNetworkOnlyAccountListBloc.createFromContext(
-          context,
-        ),
+        create:
+            MyAccountFollowRequestNetworkOnlyAccountListBloc.createFromContext,
         child: ProxyProvider<IMyAccountFollowRequestNetworkOnlyAccountListBloc,
             IAccountNetworkOnlyListBloc>(
           update: (context, value, previous) => value,

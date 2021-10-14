@@ -30,11 +30,11 @@ class FediSwitch extends StatelessWidget {
       child: DisposableProxyProvider<bool, ICustomSwitchBloc>(
         update: (context, value, previous) {
           var switchBloc = CustomSwitchBloc(startValue: value);
-          switchBloc.currentValueStream.listen(
-            (newValue) {
-              onChanged(newValue);
-            },
-          ).disposeWith(switchBloc);
+          switchBloc.currentValueStream
+              .listen(
+                onChanged,
+              )
+              .disposeWith(switchBloc);
 
           return switchBloc;
         },

@@ -42,7 +42,7 @@ class NotificationTabTextTabIndicatorItemWidget extends StatelessWidget {
                   tabController: tabController,
                   items: notificationTabs,
                 ),
-                child: _NotificationTabTextTabIndicatorItemBodyWidget(),
+                child: const _NotificationTabTextTabIndicatorItemBodyWidget(),
               ),
             );
           },

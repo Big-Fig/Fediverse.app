@@ -71,7 +71,7 @@ class _HashtagPageAppBarOpenInBrowserAction extends StatelessWidget {
 
     return FediIconButton(
       color: IFediUiColorTheme.of(context).darkGrey,
-      icon: Icon(FediIcons.external_icon),
+      icon: const Icon(FediIcons.external_icon),
       onPressed: () {
         var url = hashtag.url;
         if (url != null) {
@@ -147,7 +147,7 @@ class _HashtagPageAppBarSearchOnLocalInstanceAction extends StatelessWidget {
 
     return FediIconButton(
       color: IFediUiColorTheme.of(context).darkGrey,
-      icon: Icon(
+      icon: const Icon(
         FediIcons.instance,
       ),
       onPressed: () {

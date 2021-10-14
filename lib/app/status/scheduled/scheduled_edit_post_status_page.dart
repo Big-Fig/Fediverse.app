@@ -33,8 +33,8 @@ class ScheduledEditPostStatusPage extends StatelessWidget {
                 handleBackPressed(context);
               },
             ),
-            actions: [
-              const PostStatusAppBarPostAction(),
+            actions: const [
+              PostStatusAppBarPostAction(),
             ],
           ),
           body: const SafeArea(

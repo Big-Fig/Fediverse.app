@@ -14,8 +14,9 @@ class StatusMockHelper {
     DbStatusPopulatedWrapper? reblog,
     DbStatusPopulatedWrapper? reply,
   }) async {
-    account = account ?? await AccountMockHelper.createTestAccount(seed: seed);
-    var dbAccount = account.toDbAccount();
+    var actualAccount =
+        account ?? await AccountMockHelper.createTestAccount(seed: seed);
+    var dbAccount = actualAccount.toDbAccount();
 
     return DbStatusPopulatedWrapper(
       dbStatusPopulated: DbStatusPopulated(

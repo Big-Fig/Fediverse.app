@@ -91,18 +91,18 @@ class _DraftStatusListItemHeaderWidget extends StatelessWidget {
                 children: <Widget>[
                   const _DraftStatusListItemDraftAtWidget(),
                   Row(
-                    children: [
-                      const _DraftStatusListItemEditButtonWidget(),
-                      const _DraftStatusListItemCancelButtonWidget(),
+                    children: const [
+                      _DraftStatusListItemEditButtonWidget(),
+                      _DraftStatusListItemCancelButtonWidget(),
                     ],
                   ),
                 ],
               ),
             );
           case DraftStatusState.canceled:
-            return _DraftStatusListItemCanceledWidget();
+            return const _DraftStatusListItemCanceledWidget();
           case DraftStatusState.alreadyPosted:
-            return _DraftStatusListItemAlreadyPostedWidget();
+            return const _DraftStatusListItemAlreadyPostedWidget();
         }
       },
     );

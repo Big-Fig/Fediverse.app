@@ -31,15 +31,15 @@ class MyAccountAccountBlockListPage extends StatelessWidget {
         ),
         body: SafeArea(
           child: Column(
-            children: [
-              const _MyAccountAccountBlockListPageWarningWidget(),
-              const FediMediumVerticalSpacer(),
-              const _MyAccountAccountBlockListPageAddButton(),
-              const FediMediumVerticalSpacer(),
-              const FediBigVerticalSpacer(),
-              const FediUltraLightGreyDivider(),
+            children: const [
+              _MyAccountAccountBlockListPageWarningWidget(),
+              FediMediumVerticalSpacer(),
+              _MyAccountAccountBlockListPageAddButton(),
+              FediMediumVerticalSpacer(),
+              FediBigVerticalSpacer(),
+              FediUltraLightGreyDivider(),
               Expanded(
-                child: const MyAccountAccountBlockAccountPaginationListWidget(
+                child: MyAccountAccountBlockAccountPaginationListWidget(
                   customEmptyWidget: SizedBox.shrink(),
                 ),
               ),
@@ -115,8 +115,7 @@ MaterialPageRoute<void> createMyAccountAccountBlockListPage() =>
           MyAccountAccountBlockNetworkOnlyAccountListBloc.provideToContext(
         context,
         child: DisposableProvider<IAccountNetworkOnlyPaginationBloc>(
-          create: (context) =>
-              AccountNetworkOnlyPaginationBloc.createFromContext(context),
+          create: AccountNetworkOnlyPaginationBloc.createFromContext,
           child: ProxyProvider<IAccountNetworkOnlyPaginationBloc,
               INetworkOnlyPaginationBloc<PaginationPage<IAccount>, IAccount>>(
             update: (context, value, previous) => value,

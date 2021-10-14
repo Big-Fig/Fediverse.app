@@ -28,12 +28,12 @@ abstract class BaseDialog extends DisposableOwner implements IDialog {
 
   @override
   Future<T?> show<T>(BuildContext context) async {
-    assert(!isShowing);
+    assert(!isShowing, 'cant show when already shown');
     _isShowing = true;
     var result = await showDialog<T>(
       barrierDismissible: cancelable,
       context: context,
-      builder: (BuildContext context) => buildDialogBody(context),
+      builder: buildDialogBody,
     );
     await dispose();
 
@@ -42,7 +42,7 @@ abstract class BaseDialog extends DisposableOwner implements IDialog {
 
   @override
   Future hide(BuildContext context) async {
-    assert(isShowing);
+    assert(isShowing, 'Cant hide not showed dialog');
     _isShowing = false;
     await dispose();
     Navigator.of(context).pop();

@@ -196,7 +196,7 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
   void addGroupByChatId(JoinedSelectStatement query) {
     query.groupBy(
       [dbChatMessages.chatRemoteId],
-      having: CustomExpression('MAX(db_chat_messages.created_at)'),
+      having: const CustomExpression('MAX(db_chat_messages.created_at)'),
     );
   }
 
@@ -301,11 +301,16 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
   }) {
     if (pagination?.olderThanItem != null ||
         pagination?.newerThanItem != null) {
-      assert(orderingTerms?.length == 1);
+      assert(
+        orderingTerms?.length == 1,
+        'only single order term is supported',
+      );
       var orderingTermData = orderingTerms!.first;
       assert(
         orderingTermData.orderType == PleromaChatMessageOrderType.createdAt,
+        'only createdAt term supported',
       );
+
       addDateTimeBoundsWhere(
         query,
         column: dbChatMessages.createdAt,

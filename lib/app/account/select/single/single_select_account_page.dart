@@ -22,9 +22,9 @@ class SingleSelectAccountPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: FediPageCustomAppBar(
-          leading: const FediBackIconButton(),
-          child: const SearchInputWidget(),
+        appBar: const FediPageCustomAppBar(
+          leading: FediBackIconButton(),
+          child: SearchInputWidget(),
         ),
         body: SafeArea(
           child: SingleSelectAccountWidget(

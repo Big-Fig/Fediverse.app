@@ -88,8 +88,7 @@ class AccountFeaturedHashtagListPageBloc extends DisposableOwner
     required Widget child,
   }) =>
       DisposableProvider<IAccountFeaturedHashtagListPageBloc>(
-        create: (context) =>
-            AccountFeaturedHashtagListPageBloc.createFromContext(context),
+        create: AccountFeaturedHashtagListPageBloc.createFromContext,
         child: AccountFeaturedBlocProxyProvider(child: child),
       );
 

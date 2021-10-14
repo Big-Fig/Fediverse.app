@@ -107,9 +107,7 @@ class FediStepperWidget<T extends IFediStepperItem> extends StatelessWidget {
                 state: stepState,
                 isActive: isActive,
                 title: titleBuilder(context, stepperItem),
-                subtitle: subTitleBuilder != null
-                    ? subTitleBuilder!(context, stepperItem)
-                    : null,
+                subtitle: subTitleBuilder?.call(context, stepperItem),
                 content: contentBuilder(context, stepperItem),
               );
             },

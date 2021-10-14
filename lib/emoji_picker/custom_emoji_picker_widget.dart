@@ -125,7 +125,7 @@ class _CustomEmojiPickerSelectedCategoryWidget extends StatelessWidget {
 
         return Provider<ICustomEmojiPickerCategoryBloc>.value(
           value: selectedCategoryBloc,
-          child: Container(
+          child: SizedBox(
             height: selectedCategoryItemsGridHeight,
             child: AsyncInitLoadingWidget(
               loadingWidget: loadingWidget,
@@ -293,7 +293,7 @@ class CustomEmojiPickerSelectedCategoryItemsGridWidget extends StatelessWidget {
             item: item,
           );
         } else {
-          throw 'Unsupported $item';
+          throw ArgumentError('Unsupported $item');
         }
 
         var size = selectedCategoryItemsGridHeight / rowsCount;
@@ -303,7 +303,7 @@ class CustomEmojiPickerSelectedCategoryItemsGridWidget extends StatelessWidget {
             customEmojiPickerBloc.onEmojiSelected(item);
             onEmojiSelected(item);
           },
-          child: Container(
+          child: SizedBox(
             width: size,
             // ignore: no-equal-arguments
             height: size,
@@ -430,26 +430,35 @@ IconData? mapCategoryToIcon({
   if (category is CustomEmojiPickerCodeCategoryBloc) {
     var emojiPickerCodeCategoryType = category.type;
 
+    IconData? iconData;
     switch (emojiPickerCodeCategoryType) {
       case CustomEmojiPickerCodeCategoryType.smiles:
-        return Icons.tag_faces;
+        iconData = Icons.tag_faces;
+        break;
       case CustomEmojiPickerCodeCategoryType.animals:
-        return Icons.pets;
+        iconData = Icons.pets;
+        break;
       case CustomEmojiPickerCodeCategoryType.foods:
-        return Icons.fastfood;
+        iconData = Icons.fastfood;
+        break;
       case CustomEmojiPickerCodeCategoryType.travel:
-        return Icons.location_city;
+        iconData = Icons.location_city;
+        break;
       case CustomEmojiPickerCodeCategoryType.activities:
-        return Icons.directions_run;
+        iconData = Icons.directions_run;
+        break;
       case CustomEmojiPickerCodeCategoryType.objects:
-        return Icons.lightbulb_outline;
+        iconData = Icons.lightbulb_outline;
+        break;
       case CustomEmojiPickerCodeCategoryType.symbols:
-        return Icons.euro_symbol;
+        iconData = Icons.euro_symbol;
+        break;
       case CustomEmojiPickerCodeCategoryType.flags:
-        return Icons.flag;
-      default:
-        throw 'emojiPickerCodeCategoryType $emojiPickerCodeCategoryType not supported';
+        iconData = Icons.flag;
+        break;
     }
+
+    return iconData;
   } else {
     return null;
   }

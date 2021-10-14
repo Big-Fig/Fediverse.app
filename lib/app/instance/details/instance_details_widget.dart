@@ -64,6 +64,7 @@ class InstanceDetailsWidget extends StatelessWidget {
             await instanceDetailsBloc.refresh();
 
             return FediListSmartRefresherLoadingState.loaded;
+            // ignore: avoid_catches_without_on_clauses
           } catch (e, stackTrace) {
             _logger.warning(
               () => 'instanceDetailsBloc.refresh',
@@ -90,42 +91,42 @@ class _InstanceDetailsBodyWidget extends StatelessWidget {
   Widget build(BuildContext context) => Padding(
         padding: FediPadding.verticalMediumPadding,
         child: ListView(
-          children: [
+          children: const [
             Padding(
               padding: FediPadding.allSmallPadding,
               child: Center(
-                child: const _InstanceDetailsTitleWidget(),
+                child: _InstanceDetailsTitleWidget(),
               ),
             ),
             Center(
               child: Padding(
                 padding: FediPadding.allSmallPadding,
-                child: const _InstanceDetailsVersionTypeWidget(),
+                child: _InstanceDetailsVersionTypeWidget(),
               ),
             ),
-            const _InstanceDetailsThumbnailWidget(),
+            _InstanceDetailsThumbnailWidget(),
             Padding(
               padding: FediPadding.allSmallPadding,
               child: Center(
-                child: const _InstanceDetailsDescriptionWidget(),
+                child: _InstanceDetailsDescriptionWidget(),
               ),
             ),
-            const _InstanceDetailsContactAccountWidget(),
-            const _InstanceDetailsDirectoryWidget(),
-            const _InstanceDetailsTrendsWidget(),
-            const _InstanceDetailsActivityWidget(),
-            const _InstanceDetailsPublicTimelineWidget(),
-            const _InstanceDetailsBodyDetailsWidget(),
-            const _InstanceDetailsBodyRegistrationsWidget(),
-            const _InstanceDetailsStatsWidget(
+            _InstanceDetailsContactAccountWidget(),
+            _InstanceDetailsDirectoryWidget(),
+            _InstanceDetailsTrendsWidget(),
+            _InstanceDetailsActivityWidget(),
+            _InstanceDetailsPublicTimelineWidget(),
+            _InstanceDetailsBodyDetailsWidget(),
+            _InstanceDetailsBodyRegistrationsWidget(),
+            _InstanceDetailsStatsWidget(
               key: Key(InstanceDetailsWidgetKeys.statsKey),
             ),
-            const _InstanceDetailsBodyMessagesLimitsWidget(),
-            const _InstanceDetailsUnifediApiPollLimitsWidget(),
-            const _InstanceDetailsPleromaUploadLimitsWidget(),
-            const _InstanceDetailsBodyMetadataWidget(),
-            const _InstanceDetailsunifediApiInstanceFederationWidget(),
-            const _InstanceDetailsPleromaMetadataFieldsLimitsWidget(),
+            _InstanceDetailsBodyMessagesLimitsWidget(),
+            _InstanceDetailsUnifediApiPollLimitsWidget(),
+            _InstanceDetailsPleromaUploadLimitsWidget(),
+            _InstanceDetailsBodyMetadataWidget(),
+            _InstanceDetailsunifediApiInstanceFederationWidget(),
+            _InstanceDetailsPleromaMetadataFieldsLimitsWidget(),
           ],
         ),
       );
@@ -545,9 +546,7 @@ class _BaseInstanceDetailsRowWidget extends StatelessWidget {
             Flexible(
               child: InkWell(
                 onTap: () {
-                  if (valueOnClick != null) {
-                    valueOnClick!(context);
-                  }
+                  valueOnClick?.call(context);
                 },
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -600,7 +599,7 @@ class _InstanceDetailsRowLabelWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ConstrainedBox(
-        constraints: BoxConstraints(
+        constraints: const BoxConstraints(
           // todo: refactor
           // ignore: no-magic-number
           minWidth: 100,
@@ -1538,7 +1537,7 @@ class _InstanceDetailsunifediApiInstanceFederationWidget
       Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          __InstanceDetailsUnifediApiInstanceFederationTitleWidget(),
+          const __InstanceDetailsUnifediApiInstanceFederationTitleWidget(),
           if (unifediApiInstanceFederation.enabled != null)
             _InstanceDetailsUnifediApiInstanceFederationEnabledFieldWidget(
               unifediApiInstanceFederation: unifediApiInstanceFederation,
@@ -1797,7 +1796,7 @@ class _InstanceDetailsPleromaMetadataPostFormatsWidget extends StatelessWidget {
             label: S
                 .of(context)
                 .app_instance_details_field_pleroma_metadata_fields_postFormats_label,
-            value: pleromaMetadataPostFormats?.join('\n').toString() ?? '',
+            value: pleromaMetadataPostFormats?.join('\n') ?? '',
           );
         } else {
           return const SizedBox.shrink();
@@ -1826,7 +1825,7 @@ class _InstanceDetailsVapidPublicKeyWidget extends StatelessWidget {
           return _SimpleInstanceDetailsRowWidget(
             label:
                 S.of(context).app_instance_details_field_vapidPublicKey_label,
-            value: vapidPublicKey!.toString(),
+            value: vapidPublicKey!,
           );
         } else {
           return const SizedBox.shrink();

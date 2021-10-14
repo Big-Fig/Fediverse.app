@@ -51,7 +51,8 @@ class DurationDateTimeValueFormFieldRowWidget extends StatelessWidget {
                     )
                   : Expanded(
                       child: Padding(
-                        padding: EdgeInsets.only(left: FediSizes.bigPadding),
+                        padding:
+                            const EdgeInsets.only(left: FediSizes.bigPadding),
                         child: _DurationDateTimeValueFormFieldRowValueWidget(
                           popupTitle: label,
                           negativeValue: negativeValue,
@@ -63,7 +64,7 @@ class DurationDateTimeValueFormFieldRowWidget extends StatelessWidget {
             ),
           ),
           if (!useDialogPickerForValueSelection)
-            _DurationDateTimeValueFormFieldRowPickerWidget(),
+            const _DurationDateTimeValueFormFieldRowPickerWidget(),
         ],
       );
 }
@@ -362,7 +363,7 @@ class DurationDateTimeValueFormFieldRowIconButtonWidget
         var isEnabled = snapshot.data!;
 
         return FediIconButton(
-          icon: Icon(FediIcons.chevron_down),
+          icon: const Icon(FediIcons.chevron_down),
           color: isEnabled
               ? fediUiColorTheme.darkGrey
               : fediUiColorTheme.lightGrey,

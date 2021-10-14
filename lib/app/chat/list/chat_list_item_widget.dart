@@ -55,7 +55,7 @@ class ChatListItemWidget extends StatelessWidget {
         onTap: () {
           onClick(context);
         },
-        child: Container(
+        child: SizedBox(
           height: FediSizes.chatListItemPreviewHeight,
           child: Padding(
             padding: FediPadding.allBigPadding,
@@ -65,11 +65,11 @@ class ChatListItemWidget extends StatelessWidget {
                 Expanded(
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      const ChatAvatarWidget(),
-                      const FediBigHorizontalSpacer(),
+                    children: const <Widget>[
+                      ChatAvatarWidget(),
+                      FediBigHorizontalSpacer(),
                       Flexible(
-                        child: const _ChatListItemPreviewWidget(),
+                        child: _ChatListItemPreviewWidget(),
                       ),
                     ],
                   ),
@@ -131,9 +131,9 @@ class _ChatListItemPreviewWidget extends StatelessWidget {
   Widget build(BuildContext context) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          const ChatTitleWidget(),
-          const _ChatListItemLastMessageWidget(),
+        children: const <Widget>[
+          ChatTitleWidget(),
+          _ChatListItemLastMessageWidget(),
         ],
       );
 }
@@ -152,7 +152,7 @@ class _ChatListItemLastMessageWidgetPendingStateWidget extends StatelessWidget {
       case PendingState.notSentYet:
       case PendingState.published:
       case null:
-        return SizedBox.shrink();
+        return const SizedBox.shrink();
 
       case PendingState.pending:
         return Row(
@@ -286,10 +286,11 @@ String _extractSingleLineContent({
   required IChatMessage chatMessage,
   required String? content,
 }) {
-  content = content?.replaceAll('\n', ' ');
-  content = content?.replaceAll('<br/>', ' ');
+  var actualContent = content;
+  actualContent = actualContent?.replaceAll('\n', ' ');
+  actualContent = actualContent?.replaceAll('<br/>', ' ');
 
-  var formattedText = content?.extractRawStringFromHtmlString() ?? '';
+  var formattedText = actualContent?.extractRawStringFromHtmlString() ?? '';
 
   var myAccountBloc = IMyAccountBloc.of(context, listen: true);
 

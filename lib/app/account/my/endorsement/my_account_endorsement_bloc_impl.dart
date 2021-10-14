@@ -93,8 +93,7 @@ class MyAccountEndorsementBloc extends DisposableOwner
     required Widget child,
   }) =>
       DisposableProvider<IMyAccountEndorsementBloc>(
-        create: (context) =>
-            MyAccountEndorsementBloc.createFromContext(context),
+        create: MyAccountEndorsementBloc.createFromContext,
         child: MyAccountEndorsementBlocProxyProvider(child: child),
       );
 }

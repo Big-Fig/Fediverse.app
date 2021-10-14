@@ -10,7 +10,7 @@ class MyAccountAccountMuteActionListWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) => Container(
+  Widget build(BuildContext context) => SizedBox(
         // todo: refactor
         // ignore: no-magic-number
         height: 48,

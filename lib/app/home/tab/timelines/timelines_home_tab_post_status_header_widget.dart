@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 
 class TimelinesHomeTabPostStatusHeaderWidget extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => PostStatusComposeWidget(
+  Widget build(BuildContext context) => const PostStatusComposeWidget(
         autofocus: false,
         expanded: false,
         goBackOnSuccess: false,

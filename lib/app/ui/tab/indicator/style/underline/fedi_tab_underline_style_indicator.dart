@@ -8,6 +8,6 @@ class FediTabUnderlineStyleIndicator extends UnderlineTabIndicator {
           // ignore: no-magic-number
           borderSide: BorderSide(width: 2.0, color: indicatorColor),
           // ignore: no-magic-number
-          insets: EdgeInsets.only(bottom: 2.0),
+          insets: const EdgeInsets.only(bottom: 2.0),
         );
 }

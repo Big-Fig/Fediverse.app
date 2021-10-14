@@ -71,7 +71,7 @@ DialogAction buildDeleteAndSaveToDrafts(
         Future.delayed(
           // todo: refactor
           // ignore: no-magic-number
-          Duration(milliseconds: 100),
+          const Duration(milliseconds: 100),
           () {
             goToDraftStatusListPage(context);
           },
@@ -110,7 +110,7 @@ DialogAction buildDeleteAndStartNewAction(
         Future.delayed(
           // todo: refactor
           // ignore: no-magic-number
-          Duration(milliseconds: 100),
+          const Duration(milliseconds: 100),
           () {
             goToNewPostStatusPage(
               context,

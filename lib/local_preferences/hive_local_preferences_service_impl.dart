@@ -81,7 +81,7 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
       var authList = authListBloc.value;
 
       var scopes = IPleromaApiAccessScopes.calculateAvailableScopes(
-        PleromaApiVersion(
+        const PleromaApiVersion(
           major: 2,
           minor: 4,
           patch: 51,
@@ -102,7 +102,7 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
       var myAccountMap = <String, UnifediApiMyAccount>{};
       if (authList != null) {
         var instances = <UnifediApiAccess>[];
-        for (var instance in authList.instances) {
+        for (final instance in authList.instances) {
           var userAtHost = instance.userAtHost;
           var host = instance.urlHost;
 
@@ -294,6 +294,7 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
       await hiveLocalPreferencesService.dispose();
 
       await Hive.deleteBoxFromDisk(v2Name);
+      // ignore: avoid_catches_without_on_clauses
     } catch (e, stackTrace) {
       _logger.warning(
         () => 'failed migration from v2 to v3 hive models',

@@ -40,11 +40,14 @@ class CachedPaginationListWithNewItemsMergeOverlayButton
             scrollControllerBloc.scrollDirectionStream.distinct(),
             scrollControllerBloc.scrolledToTopStream,
             (ScrollDirection? scrollDirection, bool scrolledToTop) =>
-                isNeedShowMergeItems(scrollDirection, scrolledToTop),
+                isNeedShowMergeItems(
+              scrollDirection: scrollDirection,
+              scrolledToTop: scrolledToTop,
+            ),
           ),
           initialData: isNeedShowMergeItems(
-            scrollControllerBloc.scrollDirection,
-            scrollControllerBloc.scrolledToTop,
+            scrollDirection: scrollControllerBloc.scrollDirection,
+            scrolledToTop: scrollControllerBloc.scrolledToTop,
           ),
           builder: (context, snapshot) {
             var isNeedShowMergeItems = snapshot.data!;
@@ -60,13 +63,13 @@ class CachedPaginationListWithNewItemsMergeOverlayButton
                 updateItemsCount: updateItemsCount,
               );
             } else {
-              child = SizedBox.shrink();
+              child = const SizedBox.shrink();
             }
 
             return AnimatedSwitcher(
               // todo: refactor magic number
               // ignore: no-magic-number
-              duration: Duration(milliseconds: 500),
+              duration: const Duration(milliseconds: 500),
               transitionBuilder: (child, animation) => ScaleTransition(
                 scale: animation,
                 child: child,
@@ -79,10 +82,10 @@ class CachedPaginationListWithNewItemsMergeOverlayButton
     );
   }
 
-  bool isNeedShowMergeItems(
-    ScrollDirection? scrollDirection,
-    bool scrolledToTop,
-  ) =>
+  bool isNeedShowMergeItems({
+    required ScrollDirection? scrollDirection,
+    required bool scrolledToTop,
+  }) =>
       scrollDirection == ScrollDirection.forward ||
       scrollDirection == null ||
       scrolledToTop;

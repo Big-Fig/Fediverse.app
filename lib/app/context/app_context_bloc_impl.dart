@@ -305,7 +305,7 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         _logger.finest(() => 'removedInstance $removedInstance');
 
         Future.delayed(
-          Duration(seconds: 1),
+          const Duration(seconds: 1),
           () async {
             var userAtHost = removedInstance.userAtHost;
             var databaseFilePath =
@@ -324,7 +324,7 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
               userAtHost,
             );
 
-            for (var blocCreator in localPreferencesBlocCreators) {
+            for (final blocCreator in localPreferencesBlocCreators) {
               var localPreferencesBloc =
                   blocCreator(hiveLocalPreferencesService);
 

@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:fedi/app/pagination/page_size/pagination_page_size_model.dart';
 import 'package:fedi/pagination/cached/cached_pagination_bloc.dart';
 import 'package:fedi/pagination/cached/cached_pagination_model.dart';
@@ -244,9 +246,9 @@ void main() {
   });
 
   test('unmergedNewItems', () async {
-    var testPaginationItem1 = PaginationItemTest(100);
-    var testPaginationItem2 = PaginationItemTest(200);
-    var testPaginationItem3 = PaginationItemTest(500);
+    var testPaginationItem1 = const PaginationItemTest(100);
+    var testPaginationItem2 = const PaginationItemTest(200);
+    var testPaginationItem3 = const PaginationItemTest(500);
 
     expect(
       paginationListWithNewItemsBloc.unmergedNewItems.length,

@@ -15,9 +15,9 @@ class EditChatSettingsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Column(
         mainAxisSize: shrinkWrap ? MainAxisSize.min : MainAxisSize.max,
-        children: [
-          const _EditChatSettingsReplaceConversationsWithPleromaChatsFieldWidget(),
-          const _EditChatSettingsCountConversationsInChatsUnreadBadgesFieldWidget(),
+        children: const [
+          _EditChatSettingsReplaceConversationsWithPleromaChatsFieldWidget(),
+          _EditChatSettingsCountConversationsInChatsUnreadBadgesFieldWidget(),
         ],
       );
 }

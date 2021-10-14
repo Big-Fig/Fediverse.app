@@ -69,8 +69,9 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
     paginationBloc.isLoadedPagesInSequenceStream.listen(
       (isLoadedInSequence) {
         if (!isLoadedInSequence) {
-          throw 'PaginationListBloc dont work with direct access '
-              'pagination blocs';
+          throw Exception(
+            'PaginationListBloc dont work with direct access pagination blocs',
+          );
         }
       },
     ).disposeWith(this);
@@ -104,7 +105,7 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
 
   @override
   Stream<List<TItem>> get itemsDistinctStream =>
-      itemsStream.distinct((a, b) => listEquals(a, b));
+      itemsStream.distinct(listEquals);
 
   @override
   int? get itemsCountPerPage => paginationBloc.itemsCountPerPage;
@@ -119,6 +120,7 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
     if (loadFromCacheDuringInit) {
       try {
         await loadFirstPageOnInit();
+        // ignore: avoid_catches_without_on_clauses
       } catch (e, stackTrace) {
         _logger.severe(
           () => 'failed to internalAsyncInit',
@@ -162,6 +164,7 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       loadMoreStateSubject.add(state);
 
       return state;
+      // ignore: avoid_catches_without_on_clauses
     } catch (e, stackTrace) {
       // todo: refactor copy-pasted code
       if (!loadMoreStateSubject.isClosed) {
@@ -202,6 +205,7 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       }
 
       return state;
+      // ignore: avoid_catches_without_on_clauses
     } catch (e, stackTrace) {
       if (!refreshStateSubject.isClosed) {
         refreshStateSubject.add(FediListSmartRefresherLoadingState.failed);
@@ -223,20 +227,21 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
     List<TPage> sortedPages,
   ) {
     var items = <TItem>[];
-    sortedPages.forEach((page) {
+    for (final page in sortedPages) {
       items.addAll(page.items);
-    });
+    }
 
     return items;
   }
 
   @override
-  Future refreshWithController() async {
+  Future<void> refreshWithController() async {
     _logger.finest(() => 'refreshWithController');
     // refresh controller if it attached
     if (refreshController.position != null) {
       try {
         return await refreshController.requestRefresh(needMove: false);
+        // ignore: avoid_catches_without_on_clauses
       } catch (e, stackTrace) {
         // ignore error, because it is related to refresh controller
         // internal wrong logic
@@ -249,7 +254,7 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       }
     } else {
       //otherwise refresh only bloc
-      return refreshWithoutController();
+      await refreshWithoutController();
     }
   }
 }

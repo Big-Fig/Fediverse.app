@@ -25,8 +25,7 @@ class TimelineReplyVisibilityFilterSelectSingleFromListValueFormFieldWidget
               S
                   .of(context)
                   .app_timeline_settings_replyVisibilityFilter_field_label,
-          valueTitleMapper: (context, value) =>
-              mapTimelineTypeToLabel(context, value),
+          valueTitleMapper: mapTimelineTypeToLabel,
           description: description,
           descriptionOnDisabled: descriptionOnDisabled,
           displayIconInRow: false,

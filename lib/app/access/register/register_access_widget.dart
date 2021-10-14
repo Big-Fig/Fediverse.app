@@ -32,7 +32,7 @@ class RegisterUnifediApiAccessWidget extends StatelessWidget {
               value.registerUnifediApiAccessFormBloc,
           child: RegisterUnifediApiAccessFormWidget(
             onRegister: onRegister,
-            key: Key(
+            key: const Key(
               RegisterUnifediApiAccessWidgetKeys
                   .registerUnifediApiAccessFormWidgetKey,
             ),

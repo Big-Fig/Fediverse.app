@@ -32,26 +32,24 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
     uploadMediaAttachmentBlocsSubject.disposeWith(this);
     isAllAttachedMediaUploadedSubject.disposeWith(this);
 
-    addCustomDisposable(() => clear());
+    addCustomDisposable(clear);
     addCustomDisposable(() => uploadedSubscriptionDisposable?.dispose());
 
     uploadMediaAttachmentBlocsStream.listen(
       (mediaAttachmentBlocs) {
         uploadedSubscriptionDisposable?.dispose();
         uploadedSubscriptionDisposable = DisposableOwner();
-        mediaAttachmentBlocs.forEach(
-          (bloc) {
-            uploadedSubscriptionDisposable!.addDisposable(
-              StreamSubscriptionDisposable(
-                bloc.uploadStateStream.listen(
-                  (_) {
-                    _recalculateIsAllAttachedMediaUploaded();
-                  },
-                ),
+        for (final bloc in mediaAttachmentBlocs) {
+          uploadedSubscriptionDisposable!.addDisposable(
+            StreamSubscriptionDisposable(
+              bloc.uploadStateStream.listen(
+                (_) {
+                  _recalculateIsAllAttachedMediaUploaded();
+                },
               ),
-            );
-          },
-        );
+            ),
+          );
+        }
       },
     ).disposeWith(this);
   }
@@ -187,7 +185,7 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
   @override
   Future attachMedias(List<IMediaDeviceFile> mediaDeviceFiles) async {
     var futures = mediaDeviceFiles.map(
-      (mediaDeviceFile) => attachMedia(mediaDeviceFile),
+      attachMedia,
     );
 
     await Future.wait<void>(futures);
@@ -254,7 +252,7 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
       uploadMediaAttachmentBlocsSubject.add([]);
     }
 
-    for (var mediaAttachmentBloc in uploadMediaAttachmentBlocs) {
+    for (final mediaAttachmentBloc in uploadMediaAttachmentBlocs) {
       await mediaAttachmentBloc.dispose();
     }
   }

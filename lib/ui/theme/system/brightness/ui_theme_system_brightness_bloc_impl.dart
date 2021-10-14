@@ -13,7 +13,7 @@ class UiThemeSystemBrightnessBloc extends DisposableOwner
   }
 
   @override
-  void onSystemBrightnessChanged(brightness) {
+  void onSystemBrightnessChanged(Brightness brightness) {
     systemBrightnessSubject.add(brightness);
   }
 

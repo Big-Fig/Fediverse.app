@@ -52,8 +52,7 @@ MaterialPageRoute createMyAccountFollowRequestListPage() =>
           MyAccountFollowRequestNetworkOnlyAccountListBloc.provideToContext(
         context,
         child: DisposableProvider<IAccountNetworkOnlyPaginationBloc>(
-          create: (context) =>
-              AccountNetworkOnlyPaginationBloc.createFromContext(context),
+          create: AccountNetworkOnlyPaginationBloc.createFromContext,
           child: ProxyProvider<IAccountNetworkOnlyPaginationBloc,
               INetworkOnlyPaginationBloc<PaginationPage<IAccount>, IAccount>>(
             update: (context, value, previous) => value,

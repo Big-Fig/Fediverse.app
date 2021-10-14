@@ -64,10 +64,7 @@ class MyAccountDomainBlockNetworkOnlyDomainListBloc extends DisposableOwner
     required Widget child,
   }) =>
       DisposableProvider<IMyAccountDomainBlockNetworkOnlyListBloc>(
-        create: (context) =>
-            MyAccountDomainBlockNetworkOnlyDomainListBloc.createFromContext(
-          context,
-        ),
+        create: MyAccountDomainBlockNetworkOnlyDomainListBloc.createFromContext,
         child: ProxyProvider<IMyAccountDomainBlockNetworkOnlyListBloc,
             INetworkOnlyListBloc<DomainBlock>>(
           update: (context, value, previous) => value,

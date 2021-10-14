@@ -28,7 +28,7 @@ class PostStatusNsfwActionWidget extends StatelessWidget {
               nsfwSensitive ? FediIcons.hide : FediIcons.show,
               color: calculateColor(
                 context,
-                nsfwSensitive,
+                sensitive: nsfwSensitive,
               ),
             ),
             onPressed: () {
@@ -42,9 +42,9 @@ class PostStatusNsfwActionWidget extends StatelessWidget {
   }
 
   Color calculateColor(
-    BuildContext context,
-    bool sensitive,
-  ) =>
+    BuildContext context, {
+    required bool sensitive,
+  }) =>
       sensitive
           ? IFediUiColorTheme.of(context).primary
           : IFediUiColorTheme.of(context).darkGrey;

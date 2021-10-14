@@ -93,11 +93,11 @@ class ChatSelectionBloc extends DisposableOwner implements IChatSelectionBloc {
   List<IUnifediApiMediaAttachment>? calculateSelectionAsMediaAttachments() {
     var mediaAttachments = <IUnifediApiMediaAttachment>[];
 
-    currentSelection.forEach((chatMessage) {
+    for (final chatMessage in currentSelection) {
       if (chatMessage.mediaAttachments?.isNotEmpty == true) {
         mediaAttachments.addAll(chatMessage.mediaAttachments!);
       }
-    });
+    }
 
     if (mediaAttachments.isEmpty) {
       return null;
@@ -230,9 +230,7 @@ class ChatSelectionBloc extends DisposableOwner implements IChatSelectionBloc {
     required Widget child,
   }) =>
       DisposableProvider<IChatSelectionBloc>(
-        create: (context) => ChatSelectionBloc.createFromContext(
-          context,
-        ),
+        create: ChatSelectionBloc.createFromContext,
         child: child,
       );
 }

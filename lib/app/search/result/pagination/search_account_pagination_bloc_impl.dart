@@ -47,8 +47,7 @@ class SearchAccountPaginationBloc
     required Widget child,
   }) =>
       DisposableProvider<IPaginationBloc<PaginationPage<IAccount>, IAccount>>(
-        create: (context) =>
-            SearchAccountPaginationBloc.createFromContext(context),
+        create: SearchAccountPaginationBloc.createFromContext,
         child: child,
       );
 }

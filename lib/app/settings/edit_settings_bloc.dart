@@ -21,5 +21,6 @@ abstract class IEditSettingsBloc<T extends ISettings<dynamic>?>
 
   Future updateSettings(T settings);
 
+  // ignore: avoid_positional_boolean_parameters
   Future changeEnabled(bool enabled);
 }

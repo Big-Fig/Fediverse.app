@@ -55,10 +55,7 @@ class SearchResultItemNetworkOnlyPaginationBloc
     required Widget child,
   }) =>
       DisposableProvider<ISearchResultItemNetworkOnlyPaginationBloc>(
-        create: (context) =>
-            SearchResultItemNetworkOnlyPaginationBloc.createFromContext(
-          context,
-        ),
+        create: SearchResultItemNetworkOnlyPaginationBloc.createFromContext,
         child: ProxyProvider<
             ISearchResultItemNetworkOnlyPaginationBloc,
             IPaginationBloc<PaginationPage<ISearchResultItem>,

@@ -14,16 +14,16 @@ class FediPlayerControlProgressWidget extends StatelessWidget {
         inactiveTrackColor: fediUiColorTheme.grey,
         disabledActiveTrackColor: fediUiColorTheme.mediumGrey,
         disabledInactiveTrackColor: fediUiColorTheme.mediumGrey,
-        trackShape: RoundedRectSliderTrackShape(),
+        trackShape: const RoundedRectSliderTrackShape(),
         trackHeight: 1.0,
         // ignore: no-magic-number
-        thumbShape: RoundSliderThumbShape(enabledThumbRadius: 4.0),
+        thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 4.0),
         // ignore: no-equal-arguments
         thumbColor: fediUiColorTheme.white,
         // ignore: no-equal-arguments
         disabledThumbColor: fediUiColorTheme.mediumGrey,
       ),
-      child: _FediPlayerControlProgressPlaybackWidget(),
+      child: const _FediPlayerControlProgressPlaybackWidget(),
     );
   }
 

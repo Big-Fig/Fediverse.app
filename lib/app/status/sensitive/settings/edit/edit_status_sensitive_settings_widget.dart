@@ -17,11 +17,11 @@ class EditStatusSensitiveSettingsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Column(
         mainAxisSize: shrinkWrap ? MainAxisSize.min : MainAxisSize.max,
-        children: [
-          const _EditStatusSensitiveSettingsAlwaysShowSpoilerFieldWidget(),
-          const _EditStatusSensitiveSettingsAlwaysShowNsfwFieldWidget(),
-          const _EditStatusSensitiveSettingsNsfwDisplayDurationWidget(),
-          const _EditStatusSensitiveSettingsReplaceBlurWithFillFieldWidget(),
+        children: const [
+          _EditStatusSensitiveSettingsAlwaysShowSpoilerFieldWidget(),
+          _EditStatusSensitiveSettingsAlwaysShowNsfwFieldWidget(),
+          _EditStatusSensitiveSettingsNsfwDisplayDurationWidget(),
+          _EditStatusSensitiveSettingsReplaceBlurWithFillFieldWidget(),
         ],
       );
 }

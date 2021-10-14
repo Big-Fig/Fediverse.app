@@ -444,7 +444,7 @@ void main() {
   test('createQuery orderingTermData remoteId desc & limit & offset', () async {
     var query = draftStatusRepository.createQuery(
       filters: null,
-      pagination: RepositoryPagination(
+      pagination: const RepositoryPagination(
         limit: 1,
         offset: 1,
       ),

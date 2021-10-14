@@ -30,8 +30,7 @@ class UnifediApiAccessChooserBloc extends DisposableOwner
 
   @override
   Stream<List<UnifediApiAccess>> get instancesAvailableToChooseStream =>
-      instanceListBloc.availableInstancesStream
-          .map((availableInstances) => filterNotSelected(availableInstances));
+      instanceListBloc.availableInstancesStream.map(filterNotSelected);
 
   List<UnifediApiAccess> filterNotSelected(
     List<UnifediApiAccess> availableInstances,

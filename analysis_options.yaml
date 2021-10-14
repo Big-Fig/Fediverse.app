@@ -76,7 +76,7 @@ linter:
     # grouping dependencies is better
     sort_pub_dependencies: false
 
-    # sometimes is hard to move all todo's to issue tracker
+    # sometimes is hard to move all todos to issue tracker
     flutter_style_todos: false
 
     # sometimes interpolation better but sometimes not
@@ -85,64 +85,45 @@ linter:
     # double should be double
     prefer_int_literals: false
 
-    # module is OK
+    # modulo is OK
     use_is_even_rather_than_modulo: false
+
+    # == is easier to use than ?? for nullable bool
+    use_if_null_to_convert_nulls_to_bools: false
+
+    # default value may changes
+    avoid_redundant_argument_values: false
+
+    # types is better for readability & static analyzing
+    avoid_types_on_closure_parameters: false
+
+    # prefer final over var if possible
+    unnecessary_final: false
+
+    # static methods is OK, some named constructors harder ot maintain
+    prefer_constructors_over_static_methods: false
+
+    # final is unnecessary because of parameter_assignments lint
+    prefer_final_parameters: false
+
+    # var/final with good naming is enough and easy to write
+    always_specify_types: false
+
+    # useful for new projects but it will take a lot of time to refactor old one
+    prefer_final_locals: false
+
+    # good lint, helps avoid memory leaks
+    # have a lot of false-positive cases and required deep refactoring
+    # especially for navigator
+    # https://github.com/dart-lang/linter/issues/2878
+    # https://github.com/flutter/flutter/issues/79605
+    use_build_context_synchronously: false
 
     # code metrics have better rules for member ordering
     sort_constructors_first: false
     sort_unnamed_constructors_first: false
 
-    prefer_final_parameters: false
-    avoid_types_on_closure_parameters: false
-    parameter_assignments: false
-    avoid_bool_literals_in_conditional_expressions: false
-    avoid_catches_without_on_clauses: false
-    prefer_final_in_for_each: false
-
-
-
-    avoid_positional_boolean_parameters: false
-    avoid_redundant_argument_values: false
-    avoid_field_initializers_in_const_classes: false
-    avoid_function_literals_in_foreach_calls: false
-
-
-
-    unnecessary_lambdas: false
-
-    use_build_context_synchronously: false
-
-
-    unnecessary_final: false
-    no_default_cases: false
-    noop_primitive_operations: false
-    only_throw_errors: false
-    prefer_asserts_with_message: false
-    prefer_const_literals_to_create_immutables: false
-    prefer_const_constructors: false
-    prefer_constructors_over_static_methods: false
-
-
-    always_specify_types: false
     use_key_in_widget_constructors: false
-    prefer_final_locals: false
-
-
-
-    prefer_typing_uninitialized_variables: false
-    sized_box_for_whitespace: false
-
-    prefer_null_aware_method_calls: false
-    type_annotate_public_apis: false
-
-
-
-    use_if_null_to_convert_nulls_to_bools: false
-
-    prefer_function_declarations_over_variables: false
-    null_check_on_nullable_type_parameter: false
-    prefer_initializing_formals: false
-    use_late_for_private_fields_and_variables: false
 
 dart_code_metrics:
   anti-patterns:

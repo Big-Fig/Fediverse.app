@@ -5,5 +5,5 @@ class InstanceTrendsHashtagListWidget extends StatelessWidget {
   const InstanceTrendsHashtagListWidget();
 
   @override
-  Widget build(BuildContext context) => HashtagPaginationListWidget();
+  Widget build(BuildContext context) => const HashtagPaginationListWidget();
 }

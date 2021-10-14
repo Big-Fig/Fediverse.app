@@ -104,7 +104,10 @@ class FilePickerOrUrlFormFieldBloc extends FormFieldBloc
     if (pickedFileExist) {
       _currentMediaDeviceFileSubject.add(null);
     } else {
-      assert(isPossibleToDeleteOriginal);
+      assert(
+        isPossibleToDeleteOriginal,
+        'cant delete something which not supported by API',
+      );
       isOriginalDeletedSubject.add(true);
     }
   }
@@ -113,7 +116,8 @@ class FilePickerOrUrlFormFieldBloc extends FormFieldBloc
   List<FormItemValidationError> get errors => [];
 
   @override
-  Stream<List<FormItemValidationError>> get errorsStream => Stream.empty();
+  Stream<List<FormItemValidationError>> get errorsStream =>
+      const Stream.empty();
 
   @override
   void clear() {

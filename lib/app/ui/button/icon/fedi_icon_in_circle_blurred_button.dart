@@ -23,7 +23,7 @@ class FediIconInCircleBlurredButton extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) => Container(
+  Widget build(BuildContext context) => SizedBox(
         // ignore: no-magic-number
         width: size + borderWidth * 2,
         // ignore: no-magic-number, no-equal-arguments

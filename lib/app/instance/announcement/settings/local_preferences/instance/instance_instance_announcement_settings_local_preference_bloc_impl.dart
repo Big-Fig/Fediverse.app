@@ -15,7 +15,7 @@ class InstanceInstanceAnnouncementSettingsLocalPreferenceBloc
           '$userAtHost.instance_announcement.settings',
         );
 
-  static final defaultValue = InstanceAnnouncementSettings(
+  static const defaultValue = InstanceAnnouncementSettings(
     withDismissed: true,
   );
 

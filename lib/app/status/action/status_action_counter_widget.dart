@@ -17,9 +17,7 @@ class StatusActionCounterWidget extends StatelessWidget {
 
     return InkWell(
       onTap: () {
-        if (onClick != null) {
-          onClick!(context);
-        }
+        onClick?.call(context);
       },
       child: Padding(
         padding: const EdgeInsets.only(
@@ -30,7 +28,7 @@ class StatusActionCounterWidget extends StatelessWidget {
         child: ConstrainedBox(
           // todo: refactor
           // ignore: no-magic-number
-          constraints: BoxConstraints(minWidth: 10),
+          constraints: const BoxConstraints(minWidth: 10),
           child: Text(
             value == 0 ? '' : value.toString(),
             style: onClick != null

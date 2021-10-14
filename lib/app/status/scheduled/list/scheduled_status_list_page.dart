@@ -22,7 +22,8 @@ class ScheduledStatusListPage extends StatelessWidget {
 
   Widget buildBody(BuildContext context) =>
       ScheduledStatusPaginationListTimelineWidget(
-        key: PageStorageKey('ScheduledStatusPaginationListTimelineWidget'),
+        key:
+            const PageStorageKey('ScheduledStatusPaginationListTimelineWidget'),
         customEmptyWidget: const _ScheduledStatusListPageEmptyWidget(),
         needWatchLocalRepositoryForUpdates: true,
         successCallback: () {

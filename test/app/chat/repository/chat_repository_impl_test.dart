@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
 import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
@@ -451,8 +453,7 @@ void main() {
       pagination: RepositoryPagination(
         newerThanItem: await ChatMockHelper.createTestChat(
           seed: 'remoteId5',
-          remoteId: 'remoteId5'
-              '',
+          remoteId: 'remoteId5',
           updatedAt: DateTime(2005),
         ),
       ),
@@ -509,8 +510,7 @@ void main() {
       pagination: RepositoryPagination(
         olderThanItem: await ChatMockHelper.createTestChat(
           seed: 'remoteId5',
-          remoteId: 'remoteId5'
-              '',
+          remoteId: 'remoteId5',
           updatedAt: DateTime(2005),
         ),
       ),
@@ -567,14 +567,12 @@ void main() {
       pagination: RepositoryPagination(
         newerThanItem: await ChatMockHelper.createTestChat(
           seed: 'remoteId2',
-          remoteId: 'remoteId2'
-              '',
+          remoteId: 'remoteId2',
           updatedAt: DateTime(2002),
         ),
         olderThanItem: await ChatMockHelper.createTestChat(
           seed: 'remoteId5',
-          remoteId: 'remoteId5'
-              '',
+          remoteId: 'remoteId5',
           updatedAt: DateTime(2005),
         ),
       ),

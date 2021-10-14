@@ -62,33 +62,31 @@ class DraftStatusDao extends PopulatedAppLocalDatabaseDao<
   DbDraftStatus typedResultToPopulated(TypedResult typedResult) =>
       typedResult.readTable(db.dbDraftStatuses);
 
-  SimpleSelectStatement<$DbDraftStatusesTable, DbDraftStatus>
-      addUpdatedAtBoundsWhere(
+  void addUpdatedAtBoundsWhere(
     SimpleSelectStatement<$DbDraftStatusesTable, DbDraftStatus> query, {
     required DateTime? minimumUpdatedAt,
     required DateTime? maximumUpdatedAt,
   }) {
     var minimumExist = minimumUpdatedAt != null;
     var maximumExist = maximumUpdatedAt != null;
-    assert(minimumExist || maximumExist);
+    assert(
+      minimumExist || maximumExist,
+      'at least one bound should exist',
+    );
 
     if (minimumExist) {
-      query = query
-        ..where(
-          (notification) => notification.updatedAt.isBiggerThanValue(
-            minimumUpdatedAt,
-          ),
-        );
+      query.where(
+        (notification) => notification.updatedAt.isBiggerThanValue(
+          minimumUpdatedAt,
+        ),
+      );
     }
     if (maximumExist) {
-      query = query
-        ..where(
-          (notification) =>
-              notification.updatedAt.isSmallerThanValue(maximumUpdatedAt),
-        );
+      query.where(
+        (notification) =>
+            notification.updatedAt.isSmallerThanValue(maximumUpdatedAt),
+      );
     }
-
-    return query;
   }
 
   @override
@@ -112,12 +110,16 @@ class DraftStatusDao extends PopulatedAppLocalDatabaseDao<
   }) {
     if (pagination?.olderThanItem != null ||
         pagination?.newerThanItem != null) {
-      assert(orderingTerms?.length == 1);
+      assert(
+        orderingTerms?.length == 1,
+        'only single order term is supported',
+      );
       var orderingTermData = orderingTerms!.first;
       assert(
         orderingTermData.orderType == DraftStatusRepositoryOrderType.updatedAt,
+        'only updatedAt term supported',
       );
-      query = addUpdatedAtBoundsWhere(
+      addUpdatedAtBoundsWhere(
         query,
         maximumUpdatedAt: pagination?.olderThanItem?.updatedAt,
         minimumUpdatedAt: pagination?.newerThanItem?.updatedAt,

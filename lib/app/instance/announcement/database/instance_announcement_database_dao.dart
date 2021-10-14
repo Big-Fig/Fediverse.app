@@ -58,7 +58,7 @@ class InstanceAnnouncementDao extends PopulatedAppRemoteDatabaseDao<
   ) {
     var now = DateTime.now();
     var startOfCurrentDay = CustomDateUtils.dayStartOf(now);
-    var startOfNextDay = startOfCurrentDay.add(Duration(days: 1));
+    var startOfNextDay = startOfCurrentDay.add(const Duration(days: 1));
 
     return query
       ..where(
@@ -133,12 +133,13 @@ class InstanceAnnouncementDao extends PopulatedAppRemoteDatabaseDao<
   }) {
     if (pagination?.olderThanItem != null ||
         pagination?.newerThanItem != null) {
-      assert(orderingTerms?.length == 1);
+      assert(orderingTerms?.length == 1, 'only single term supported');
       var orderingTermData = orderingTerms!.first;
       assert(
         orderingTermData.orderType == InstanceAnnouncementOrderType.remoteId ||
             orderingTermData.orderType ==
                 InstanceAnnouncementOrderType.updatedAt,
+        'only updatedAt || remoteId supported',
       );
 
       switch (orderingTermData.orderType) {

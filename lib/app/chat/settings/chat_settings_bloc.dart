@@ -15,11 +15,15 @@ abstract class IChatSettingsBloc
 
   Stream<bool> get replaceConversationsWithPleromaChatsStream;
 
-  Future changeReplaceConversationsWithPleromaChats(bool value);
+  Future changeReplaceConversationsWithPleromaChats({
+    required bool replaceConversationsWithChats,
+  });
 
   bool get countConversationsInChatsUnreadBadges;
 
   Stream<bool> get countConversationsInChatsUnreadBadgesStream;
 
-  Future changeCountConversationsInChatsUnreadBadges(bool value);
+  Future changeCountConversationsInChatsUnreadBadges({
+    required bool appendConversationUnreadToUnreadBadge,
+  });
 }

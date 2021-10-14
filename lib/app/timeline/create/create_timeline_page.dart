@@ -44,10 +44,10 @@ class CreateItemTimelinesHomeTabStoragePage extends StatelessWidget {
             ),
           ],
         ),
-        body: SafeArea(
+        body: const SafeArea(
           child: Padding(
             padding: FediPadding.allMediumPadding,
-            child: const CreateItemTimelinesHomeTabStorageWidget(),
+            child: CreateItemTimelinesHomeTabStorageWidget(),
           ),
         ),
       ),
@@ -75,7 +75,7 @@ class _CreateItemTimelinesHomeTabStoragePageSaveActionWidget
 
           return AsyncOperationButtonBuilderWidget<void>(
             builder: (context, onPressed) => FediIconButton(
-              icon: Icon(Icons.check),
+              icon: const Icon(Icons.check),
               color: IFediUiColorTheme.of(context).darkGrey,
               onPressed: isReadyToSubmit! ? onPressed : null,
             ),

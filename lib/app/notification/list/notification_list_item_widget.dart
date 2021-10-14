@@ -51,8 +51,8 @@ class NotificationListItemWidget extends StatelessWidget {
           return Stack(
             children: [
               bodyWidget,
-              Positioned.fill(
-                child: const _NotificationListItemBodyDismissedWidget(),
+              const Positioned.fill(
+                child: _NotificationListItemBodyDismissedWidget(),
               ),
             ],
           );
@@ -196,21 +196,21 @@ class _NotificationListItemBodySlidableChildContentWidget
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: EdgeInsets.symmetric(
+        padding: const EdgeInsets.symmetric(
           horizontal: FediSizes.bigPadding,
           vertical: FediSizes.bigPadding + FediSizes.smallPadding,
         ),
         child: Column(
           children: <Widget>[
             Row(
-              children: <Widget>[
-                const _NotificationListItemAvatarWidget(),
-                const FediBigHorizontalSpacer(),
-                const Expanded(
+              children: const <Widget>[
+                _NotificationListItemAvatarWidget(),
+                FediBigHorizontalSpacer(),
+                Expanded(
                   child: _NotificationListItemBodyMainAreaWidget(),
                 ),
-                const FediBigHorizontalSpacer(),
-                const _NotificationListItemCreatedAtWidget(),
+                FediBigHorizontalSpacer(),
+                _NotificationListItemCreatedAtWidget(),
               ],
             ),
           ],
@@ -237,9 +237,9 @@ class _NotificationListItemBodyMainAreaWidget extends StatelessWidget {
           children: <Widget>[
             const _NotificationListItemAccountDisplayNameWidget(),
             Row(
-              children: [
-                const _NotificationListItemIconWidget(),
-                const Expanded(
+              children: const [
+                _NotificationListItemIconWidget(),
+                Expanded(
                   child: _NotificationListItemContentWidget(),
                 ),
               ],

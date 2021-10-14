@@ -24,18 +24,18 @@ class EditMyAccountHeaderFieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Stack(
-        children: <Widget>[
-          Container(
+        children: const <Widget>[
+          SizedBox(
             width: double.infinity,
             // ignore: no-equal-arguments
             height: double.infinity,
-            child: const EditMyAccountHeaderFieldImageWidget(),
+            child: EditMyAccountHeaderFieldImageWidget(),
           ),
           Positioned(
             bottom: FediSizes.bigPadding,
             // ignore: no-equal-arguments
             right: FediSizes.bigPadding,
-            child: const EditMyAccountHeaderFieldEditButtonWidget(),
+            child: EditMyAccountHeaderFieldEditButtonWidget(),
           ),
         ],
       );
@@ -114,6 +114,7 @@ Future _startChoosingFileToUploadHeader(BuildContext context) async {
       var editMyAccountBloc = IEditMyAccountBloc.of(context, listen: false);
       try {
         await editMyAccountBloc.headerField.pickNewFile(filePickerFile);
+        // ignore: avoid_catches_without_on_clauses
       } catch (e, stackTrace) {
         _logger.warning('startChoosingFileToUploadHeader error', e, stackTrace);
         showMediaAttachmentFailedNotificationOverlay(context, e);

@@ -100,12 +100,12 @@ class _HashtagListItemHistoryWidget extends StatelessWidget {
     }
 
     return Row(
-      children: [
-        const _HashtagListItemStatusesWidget(),
-        const FediSmallHorizontalSpacer(),
-        const _HashtagListItemHistoryAccountsWidget(),
-        const FediSmallHorizontalSpacer(),
-        const _HashtagListItemHistoryGraphWidget(),
+      children: const [
+        _HashtagListItemStatusesWidget(),
+        FediSmallHorizontalSpacer(),
+        _HashtagListItemHistoryAccountsWidget(),
+        FediSmallHorizontalSpacer(),
+        _HashtagListItemHistoryGraphWidget(),
       ],
     );
   }
@@ -169,12 +169,12 @@ class _HashtagListItemHistoryGraphWidget extends StatelessWidget {
 
     var items = history?.items ?? [];
     if (items.isEmpty) {
-      return SizedBox.shrink();
+      return const SizedBox.shrink();
     }
 
     var maxUses = items.first.uses;
 
-    for (var item in items) {
+    for (final item in items) {
       maxUses = max(item.uses, maxUses);
     }
 
@@ -190,7 +190,7 @@ class _HashtagListItemHistoryGraphWidget extends StatelessWidget {
       padding: const EdgeInsets.all(4.0),
       child: CustomPaint(
         // ignore: no-magic-number
-        size: Size(90, 45),
+        size: const Size(90, 45),
         painter: FediChartLineGraphPainter(
           features: [featureUses],
           labelY: labels,

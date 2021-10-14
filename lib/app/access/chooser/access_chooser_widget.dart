@@ -79,7 +79,7 @@ class UnifediApiAccessChooserWidget extends StatelessWidget {
     List<UnifediApiAccess> instancesAvailableToChoose,
     IUnifediApiAccessChooserBloc instanceChooserBloc,
   ) =>
-      _UnifediApiAccessChooserItemsToChooseWidget();
+      const _UnifediApiAccessChooserItemsToChooseWidget();
 
   const UnifediApiAccessChooserWidget();
 }
@@ -121,6 +121,7 @@ class _UnifediApiAccessChooserItemsToChooseWidget extends StatelessWidget {
                   // during account switching
                   try {
                     Provider.of<IUnifediApiMyAccountService>(context);
+                    // ignore: avoid_catches_without_on_clauses
                   } catch (e) {
                     _logger.finest(
                       () => 'error fetching IUnifediApiMyAccountService',
@@ -180,6 +181,7 @@ class _UnifediApiAccessChooserSelectedInstanceRowWidget
     // sometimes IMyAccountBloc is not accessible during account switching
     try {
       Provider.of<IMyAccountBloc>(context);
+      // ignore: avoid_catches_without_on_clauses
     } catch (e) {
       _logger.finest(
         () => '_UnifediApiAccessChooserSelectedInstanceRowWidget '

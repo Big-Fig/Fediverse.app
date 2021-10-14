@@ -17,12 +17,12 @@ class FilterFormWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Column(
         mainAxisSize: MainAxisSize.min,
-        children: [
-          const _FilterFormPhraseFieldWidget(),
-          const _FilterFormContextFieldWidget(),
-          const _FilterFormIrreversibleFieldWidget(),
-          const _FilterFormWholeWordFieldWidget(),
-          const _FilterFormExpiresInFieldWidget(),
+        children: const [
+          _FilterFormPhraseFieldWidget(),
+          _FilterFormContextFieldWidget(),
+          _FilterFormIrreversibleFieldWidget(),
+          _FilterFormWholeWordFieldWidget(),
+          _FilterFormExpiresInFieldWidget(),
         ],
       );
 }

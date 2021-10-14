@@ -33,14 +33,7 @@ class CurrentFediUiThemeBloc extends DisposableOwner
       Rx.combineLatest2(
         currentThemeStream,
         systemBrightnessHandlerBloc.systemBrightnessStream,
-        (
-          IFediUiTheme? currentTheme,
-          Brightness systemBrightness,
-        ) =>
-            _calculateAdaptiveBrightnessCurrentThemeStream(
-          currentTheme,
-          systemBrightness,
-        ),
+        _calculateAdaptiveBrightnessCurrentThemeStream,
       ).distinct();
 
   IFediUiTheme? _calculateAdaptiveBrightnessCurrentThemeStream(
@@ -67,7 +60,7 @@ class CurrentFediUiThemeBloc extends DisposableOwner
   @override
   Stream<IFediUiTheme?> get currentThemeStream =>
       uiSettingsBloc.themeIdStream.map(
-        (currentUiThemeId) => mapIdToTheme(currentUiThemeId),
+        mapIdToTheme,
       );
 
   IFediUiTheme? mapIdToTheme(String? id) {

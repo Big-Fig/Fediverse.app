@@ -13,7 +13,7 @@ import 'package:moor/moor.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
 var _singleConversationChatRepositoryPagination =
-    RepositoryPagination<IConversationChat>(
+    const RepositoryPagination<IConversationChat>(
   limit: 1,
   newerThanItem: null,
   offset: null,
@@ -86,7 +86,7 @@ class ConversationChatRepository
   }) async {
     var query = createFindInTypedResultSelectable(
       filters: filters?.copyWith(withLastMessage: true) ??
-          ConversationChatRepositoryFilters(withLastMessage: true),
+          const ConversationChatRepositoryFilters(withLastMessage: true),
       pagination: pagination,
       orderingTerms: orderingTermData != null
           ? [
@@ -110,7 +110,7 @@ class ConversationChatRepository
   }) {
     var query = createFindInTypedResultSelectable(
       filters: filters?.copyWith(withLastMessage: true) ??
-          ConversationChatRepositoryFilters(withLastMessage: true),
+          const ConversationChatRepositoryFilters(withLastMessage: true),
       pagination: pagination,
       orderingTerms: orderingTermData != null
           ? [
@@ -135,7 +135,7 @@ class ConversationChatRepository
   }) async {
     var query = createFindInTypedResultSelectable(
       filters: filters?.copyWith(withLastMessage: true) ??
-          ConversationChatRepositoryFilters(withLastMessage: true),
+          const ConversationChatRepositoryFilters(withLastMessage: true),
       pagination: _singleConversationChatRepositoryPagination,
       orderingTerms: orderingTermData != null
           ? [
@@ -160,7 +160,7 @@ class ConversationChatRepository
   }) {
     var query = createFindInTypedResultSelectable(
       filters: filters?.copyWith(withLastMessage: true) ??
-          ConversationChatRepositoryFilters(withLastMessage: true),
+          const ConversationChatRepositoryFilters(withLastMessage: true),
       pagination: _singleConversationChatRepositoryPagination,
       orderingTerms: orderingTermData != null
           ? [
@@ -328,7 +328,7 @@ class ConversationChatRepository
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
-      for (var remoteItem in remoteItems) {
+      for (final remoteItem in remoteItems) {
         // ignore: unawaited_futures
         insertInRemoteTypeBatch(
           remoteItem,

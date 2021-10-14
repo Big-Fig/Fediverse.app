@@ -45,7 +45,10 @@ class MultiSelectFromListValueFormFieldRowWidget<T> extends StatelessWidget {
     required this.valueKeyMapper,
   }) {
     if (displayIconInRow || displayIconInDialog) {
-      assert(valueIconMapper != null);
+      assert(
+        valueIconMapper != null,
+        'icon mapper should exist if display icon  enabled',
+      );
     }
   }
 

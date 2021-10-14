@@ -31,7 +31,7 @@ class UploadMediaAttachmentListMediaWidget extends StatelessWidget {
                 // ignore: no-equal-arguments
                 bottom: FediSizes.bigPadding,
               ),
-              child: Container(
+              child: SizedBox(
                 height: mediaAttachmentSingleHeight,
                 child: Provider<IUploadMediaAttachmentBloc>.value(
                   value: mediaItemBlocs.first,
@@ -42,7 +42,7 @@ class UploadMediaAttachmentListMediaWidget extends StatelessWidget {
               ),
             );
           } else {
-            return Container(
+            return SizedBox(
               height: _mediaAttachmentRowItemSize,
               child: ListView(
                 scrollDirection: Axis.horizontal,
@@ -56,7 +56,7 @@ class UploadMediaAttachmentListMediaWidget extends StatelessWidget {
                             // ignore: no-equal-arguments
                             top: FediSizes.smallPadding,
                           ),
-                          child: Container(
+                          child: SizedBox(
                             width: _mediaAttachmentRowItemSize,
                             // ignore: no-equal-arguments
                             height: _mediaAttachmentRowItemSize,

@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   test('toJsonValue & fromJsonValue', () async {
     var values = ScheduledStatusState.values;
-    for (var value in values) {
+    for (final value in values) {
       var jsonValue = value.toJsonValue();
 
       var objFromJsonValue = jsonValue.toScheduledStatusState();

@@ -16,9 +16,10 @@ class FediTabIndicatorBloc<T> extends DisposableOwner
   }) : selectedIndexSubject = BehaviorSubject.seeded(tabController.index) {
     selectedIndexSubject.disposeWith(this);
 
-    var listener = () {
+    void listener() {
       selectedIndexSubject.add(tabController.index);
-    };
+    }
+
     tabController.addListener(listener);
 
     addCustomDisposable(

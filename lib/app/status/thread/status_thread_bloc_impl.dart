@@ -74,7 +74,7 @@ abstract class StatusThreadBloc extends AsyncInitLoadingBloc
 
   @override
   Stream<List<IStatus>> get statusesDistinctStream => statusesStream.distinct(
-        (a, b) => listEquals(a, b),
+        listEquals,
       );
 
   @override
@@ -153,6 +153,7 @@ abstract class StatusThreadBloc extends AsyncInitLoadingBloc
       firstStatusInThreadSubject.add(true);
 
       return true;
+      // ignore: avoid_catches_without_on_clauses
     } catch (error, stackTrace) {
       _logger.severe(() => 'refresh error ', error, stackTrace);
 
@@ -187,11 +188,7 @@ abstract class StatusThreadBloc extends AsyncInitLoadingBloc
   Stream<IStatus?> get firstStatusInThreadStream => Rx.combineLatest2(
         statusesStream,
         firstStatusInThreadLoadedStream,
-        (List<IStatus> statuses, bool threadContextLoaded) =>
-            _calculateFirstStatus(
-          statuses,
-          threadContextLoaded,
-        ),
+        _calculateFirstStatus,
       );
 
   @override
@@ -253,7 +250,7 @@ abstract class StatusThreadBloc extends AsyncInitLoadingBloc
     var content = remoteStatus.content;
 
     var filtered = false;
-    for (var filter in filters) {
+    for (final filter in filters) {
       var phrase = filter.phrase;
       if (filter.wholeWord) {
         var regex = RegExp('\b$phrase\b');

@@ -201,7 +201,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
           StatusRepositoryOrderingTermData.createdAtDesc,
         ],
         // pagination: null,
-        pagination: RepositoryPagination(limit: 1),
+        pagination: const RepositoryPagination(limit: 1),
       );
 
   @override
@@ -218,7 +218,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
           StatusRepositoryOrderingTermData.createdAtDesc,
         ],
         // pagination: null,
-        pagination: RepositoryPagination(limit: 1),
+        pagination: const RepositoryPagination(limit: 1),
       );
 
   @override
@@ -240,25 +240,23 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
     var result = <IConversationChat, IStatus?>{};
 
-    conversations.forEach(
-      (conversation) {
-        var typedResult = typedResultList.firstWhereOrNull(
-          (typedResult) {
-            var conversationStatuses =
-                typedResult.readTable(dao.conversationStatusesAlias);
+    for (final conversation in conversations) {
+      var typedResult = typedResultList.firstWhereOrNull(
+        (typedResult) {
+          var conversationStatuses =
+              typedResult.readTable(dao.conversationStatusesAlias);
 
-            return conversationStatuses.conversationRemoteId ==
-                conversation.remoteId;
-          },
-        );
+          return conversationStatuses.conversationRemoteId ==
+              conversation.remoteId;
+        },
+      );
 
-        IStatus? status = typedResult
-            ?.toDbStatusPopulated(dao: dao)
-            .toDbStatusPopulatedWrapper();
+      IStatus? status = typedResult
+          ?.toDbStatusPopulated(dao: dao)
+          .toDbStatusPopulatedWrapper();
 
-        result[conversation] = status;
-      },
-    );
+      result[conversation] = status;
+    }
 
     return result;
   }
@@ -590,7 +588,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
-      for (var remoteItem in remoteItems) {
+      for (final remoteItem in remoteItems) {
         // ignore: unawaited_futures
         insertInRemoteTypeBatch(
           remoteItem,
@@ -618,7 +616,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
-      for (var remoteStatus in remoteStatuses) {
+      for (final remoteStatus in remoteStatuses) {
         // ignore: unawaited_futures
         upsertRemoteStatusWithAllArguments(
           remoteStatus,
@@ -649,25 +647,25 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     required bool? isFromHomeTimeline,
     required Batch? batchTransaction,
   }) async {
+    // if conversation not specified we try to fetch it from status
+    var actualConversationRemoteId =
+        conversationRemoteId ?? remoteStatus.directConversationId?.toString();
+
+    _logger.finer(
+      () => 'upsertRemoteStatus $remoteStatus '
+          'listRemoteId => $listRemoteId '
+          'actualConversationRemoteId => $actualConversationRemoteId '
+          'isFromHomeTimeline => $isFromHomeTimeline ',
+    );
+
     if (batchTransaction != null) {
-      // if conversation not specified we try to fetch it from status
-      conversationRemoteId =
-          conversationRemoteId ?? remoteStatus.directConversationId?.toString();
-
-      _logger.finer(
-        () => 'upsertRemoteStatus $remoteStatus '
-            'listRemoteId => $listRemoteId '
-            'conversationRemoteId => $conversationRemoteId '
-            'isFromHomeTimeline => $isFromHomeTimeline ',
-      );
-
       var remoteAccount = remoteStatus.account;
 
-      if (conversationRemoteId != null) {
+      if (actualConversationRemoteId != null) {
         // ignore: unawaited_futures
         accountRepository.upsertConversationRemoteAccount(
           remoteAccount,
-          conversationRemoteId: conversationRemoteId,
+          conversationRemoteId: actualConversationRemoteId,
           batchTransaction: batchTransaction,
         );
       } else {
@@ -702,13 +700,13 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
           batchTransaction: batchTransaction,
         );
       }
-      if (conversationRemoteId != null) {
+      if (actualConversationRemoteId != null) {
         // ignore: unawaited_futures
         addStatusesToConversation(
           statusRemoteIds: [
             remoteStatus.id,
           ],
-          conversationRemoteId: conversationRemoteId,
+          conversationRemoteId: actualConversationRemoteId,
           batchTransaction: batchTransaction,
         );
       }
@@ -740,7 +738,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
           _upsertStatusMetadata(
             remoteStatus,
             listRemoteId: listRemoteId,
-            conversationRemoteId: conversationRemoteId,
+            conversationRemoteId: actualConversationRemoteId,
             isFromHomeTimeline: isFromHomeTimeline,
             batchTransaction: batch,
           );
@@ -751,7 +749,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   Future<IStatus?> findNewestForHomeTimeline() => findInAppType(
-        pagination: RepositoryPagination(
+        pagination: const RepositoryPagination(
           limit: 1,
         ),
         filters: StatusRepositoryFilters.only(

@@ -26,6 +26,7 @@ abstract class ILocalPreferencesService extends DisposableOwner
 
   Future<bool> setIntPreference(String key, int? value);
 
+  // ignore: avoid_positional_boolean_parameters
   Future<bool> setBoolPreference(String key, bool? value);
 
   Future<bool> setObjectPreference(

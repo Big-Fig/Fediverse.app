@@ -59,9 +59,9 @@ class StatusCachedPaginationListMediaWidget
     var isLocal = instanceLocation == InstanceLocation.local;
 
     // all statuses should be already with media attachments
-    items = filterItemsWithMedia(items);
+    var actualItems = filterItemsWithMedia(items);
 
-    var statusesWithMediaAttachment = mapToStatusesWithAttachments(items);
+    var statusesWithMediaAttachment = mapToStatusesWithAttachments(actualItems);
 
     var length = statusesWithMediaAttachment.length;
     if (header != null) {
@@ -108,27 +108,23 @@ class StatusCachedPaginationListMediaWidget
   ) {
     var statusesWithMediaAttachment = <StatusWithMediaAttachment>[];
 
-    items.forEach(
-      (status) {
-        var mediaAttachments = (status.reblog?.mediaAttachments ??
-                status.mediaAttachments ??
-                <UnifediApiMediaAttachment>[])
-            .where(
-          (mediaAttachment) => mediaAttachment.typeAsUnifediApi.isImageOrGif,
+    for (final status in items) {
+      var mediaAttachments = (status.reblog?.mediaAttachments ??
+              status.mediaAttachments ??
+              <UnifediApiMediaAttachment>[])
+          .where(
+        (mediaAttachment) => mediaAttachment.typeAsUnifediApi.isImageOrGif,
+      );
+
+      for (final mediaAttachment in mediaAttachments) {
+        statusesWithMediaAttachment.add(
+          StatusWithMediaAttachment(
+            status: status,
+            mediaAttachment: mediaAttachment,
+          ),
         );
-        // ignore: cascade_invocations
-        mediaAttachments.forEach(
-          (mediaAttachment) {
-            statusesWithMediaAttachment.add(
-              StatusWithMediaAttachment(
-                status: status,
-                mediaAttachment: mediaAttachment,
-              ),
-            );
-          },
-        );
-      },
-    );
+      }
+    }
 
     return statusesWithMediaAttachment;
   }

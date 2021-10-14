@@ -29,8 +29,7 @@ class CustomListNetworkOnlyListBloc extends INetworkOnlyListBloc<ICustomList> {
     required Widget child,
   }) =>
       DisposableProvider<INetworkOnlyListBloc<ICustomList>>(
-        create: (context) =>
-            CustomListNetworkOnlyListBloc.createFromContext(context),
+        create: CustomListNetworkOnlyListBloc.createFromContext,
         child: ProxyProvider<INetworkOnlyListBloc<ICustomList>,
             INetworkOnlyListBloc>(
           update: (context, value, previous) => value,

@@ -32,7 +32,7 @@ class FilterCachedListBloc extends IFilterCachedListBloc {
           newerThanItem: newerThan,
           limit: limit,
         ),
-        filters: FilterRepositoryFilters(
+        filters: const FilterRepositoryFilters(
           notExpired: false,
         ),
         orderingTerms: [
@@ -78,9 +78,7 @@ class FilterCachedListBloc extends IFilterCachedListBloc {
     required Widget child,
   }) =>
       DisposableProvider<IFilterCachedListBloc>(
-        create: (context) => FilterCachedListBloc.createFromContext(
-          context,
-        ),
+        create: FilterCachedListBloc.createFromContext,
         child: child,
       );
 }

@@ -14,8 +14,8 @@ class EditPaginationSettingsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Column(
         mainAxisSize: shrinkWrap ? MainAxisSize.min : MainAxisSize.max,
-        children: [
-          const _EditPaginationSettingsPageSizeFieldWidget(),
+        children: const [
+          _EditPaginationSettingsPageSizeFieldWidget(),
         ],
       );
 }

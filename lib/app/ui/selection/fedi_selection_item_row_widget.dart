@@ -60,7 +60,7 @@ class FediSelectionItemRowWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Container(
+  Widget build(BuildContext context) => SizedBox(
         // todo: refactor
         // ignore: no-magic-number
         height: 24.0 + 16.0 + 16.0,

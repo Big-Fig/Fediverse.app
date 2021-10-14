@@ -31,9 +31,7 @@ class AccountListItemWidget extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
-        if (accountSelectedCallback != null) {
-          accountSelectedCallback!(context, accountBloc.account);
-        }
+        accountSelectedCallback?.call(context, accountBloc.account);
       },
       child: Padding(
         padding: padding,

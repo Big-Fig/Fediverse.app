@@ -101,52 +101,52 @@ class RemoteAccountBloc extends AccountBloc {
     required bool notifications,
     required Duration? duration,
   }) {
-    throw UnsupportedOnRemoteInstanceLocationException();
+    throw const UnsupportedOnRemoteInstanceLocationException();
   }
 
   @override
   Future<IUnifediApiAccountRelationship> subscribe() {
-    throw UnsupportedOnRemoteInstanceLocationException();
+    throw const UnsupportedOnRemoteInstanceLocationException();
   }
 
   @override
   Future<IUnifediApiAccountRelationship> toggleBlock() {
-    throw UnsupportedOnRemoteInstanceLocationException();
+    throw const UnsupportedOnRemoteInstanceLocationException();
   }
 
   @override
   Future<IUnifediApiAccountRelationship> toggleBlockDomain() {
-    throw UnsupportedOnRemoteInstanceLocationException();
+    throw const UnsupportedOnRemoteInstanceLocationException();
   }
 
   @override
   Future<IUnifediApiAccountRelationship> toggleFollow() {
-    throw UnsupportedOnRemoteInstanceLocationException();
+    throw const UnsupportedOnRemoteInstanceLocationException();
   }
 
   @override
   Future<IUnifediApiAccountRelationship> toggleMute() {
-    throw UnsupportedOnRemoteInstanceLocationException();
+    throw const UnsupportedOnRemoteInstanceLocationException();
   }
 
   @override
   Future<IUnifediApiAccountRelationship> togglePin() {
-    throw UnsupportedOnRemoteInstanceLocationException();
+    throw const UnsupportedOnRemoteInstanceLocationException();
   }
 
   @override
   Future<IUnifediApiAccountRelationship> toggleSubscribe() {
-    throw UnsupportedOnRemoteInstanceLocationException();
+    throw const UnsupportedOnRemoteInstanceLocationException();
   }
 
   @override
   Future<IUnifediApiAccountRelationship> unMute() {
-    throw UnsupportedOnRemoteInstanceLocationException();
+    throw const UnsupportedOnRemoteInstanceLocationException();
   }
 
   @override
   Future<IUnifediApiAccountRelationship> unSubscribe() {
-    throw UnsupportedOnRemoteInstanceLocationException();
+    throw const UnsupportedOnRemoteInstanceLocationException();
   }
 
   @override

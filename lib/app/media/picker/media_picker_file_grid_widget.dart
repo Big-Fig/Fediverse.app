@@ -62,7 +62,7 @@ class MediaPickerFileGridWidget
     return GridView.builder(
       gridDelegate:
           // ignore: no-magic-number
-          SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
+          const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
       itemCount: itemCount,
       itemBuilder: (context, index) {
         if (headerItemBuilder != null) {
@@ -108,7 +108,10 @@ class _MediaPickerFileGridItemWidget extends StatelessWidget {
 
             return mediaDeviceFileBloc;
           } else {
-            throw 'IMediaDeviceFile file type not supported $fileMetadata';
+            throw ArgumentError(
+              'IMediaDeviceFile file type not supported '
+              '$fileMetadata',
+            );
           }
         },
         child: const MediaPickerFileGridItemWidget(),

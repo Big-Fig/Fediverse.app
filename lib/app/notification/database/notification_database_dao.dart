@@ -117,32 +117,30 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
     }
   }
 
-  SimpleSelectStatement<$DbNotificationsTable, DbNotification>
-      addCreatedAtBoundsWhere(
+  void addCreatedAtBoundsWhere(
     SimpleSelectStatement<$DbNotificationsTable, DbNotification> query, {
     required DateTime? minimumCreatedAt,
     required DateTime? maximumCreatedAt,
   }) {
     var minimumExist = minimumCreatedAt != null;
     var maximumExist = maximumCreatedAt != null;
-    assert(minimumExist || maximumExist);
+    assert(
+      minimumExist || maximumExist,
+      'at least one bound should exist',
+    );
 
     if (minimumExist) {
-      query = query
-        ..where(
-          (notification) =>
-              notification.createdAt.isBiggerThanValue(minimumCreatedAt),
-        );
+      query.where(
+        (notification) =>
+            notification.createdAt.isBiggerThanValue(minimumCreatedAt),
+      );
     }
     if (maximumExist) {
-      query = query
-        ..where(
-          (notification) =>
-              notification.createdAt.isSmallerThanValue(maximumCreatedAt),
-        );
+      query.where(
+        (notification) =>
+            notification.createdAt.isSmallerThanValue(maximumCreatedAt),
+      );
     }
-
-    return query;
   }
 
   SimpleSelectStatement<$DbNotificationsTable, DbNotification> orderBy(
@@ -309,7 +307,10 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
   }) {
     if (pagination?.olderThanItem != null ||
         pagination?.newerThanItem != null) {
-      assert(orderingTerms?.length == 1);
+      assert(
+        orderingTerms?.length == 1,
+        'only single term is supported',
+      );
       var orderingTermData = orderingTerms!.first;
       if (orderingTermData.orderType == NotificationOrderType.createdAt) {
         addDateTimeBoundsWhere(
@@ -325,7 +326,7 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
           minimumRemoteIdExcluding: pagination?.newerThanItem?.remoteId,
         );
       } else {
-        throw 'Unsupported orderingTermData $orderingTermData';
+        throw ArgumentError('Unsupported orderingTermData $orderingTermData');
       }
     }
   }
@@ -348,7 +349,7 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
     // move to filters
     var excludeStatusTextConditions = filters?.excludeStatusTextConditions;
     if (excludeStatusTextConditions != null) {
-      for (var condition in excludeStatusTextConditions) {
+      for (final condition in excludeStatusTextConditions) {
         addExcludeContentWhere(
           joinQuery,
           phrase: condition.phrase,

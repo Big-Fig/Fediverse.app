@@ -121,7 +121,10 @@ class MyAccountBloc extends IMyAccountBloc {
 
   @override
   Future decreaseFollowingRequestCount() async {
-    assert(followRequestsCount! > 0);
+    assert(
+      followRequestsCount! > 0,
+      'cant decrease following request when it is not positive',
+    );
     await myAccountLocalPreferenceBloc.setValue(
       myAccountLocalPreferenceBloc.value!
           .toUnifediApiMyAccountWrapper()

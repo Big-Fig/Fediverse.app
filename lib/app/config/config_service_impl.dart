@@ -253,7 +253,10 @@ class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
         'ASK_REVIEW_COUNT_APP_OPENED_TO_SHOW, APP_APPLE_ID should exist '
         'if ASK_REVIEW_ENABLED is true',
       );
-      assert(askReviewCountAppOpenedToShow! >= 0);
+      assert(
+        askReviewCountAppOpenedToShow! >= 0,
+        'askReviewCountAppOpenedToShow should be non=negative',
+      );
     }
 
     appAddNewInstanceCallbackUrl = '$appId://addNewInstance';
@@ -349,7 +352,7 @@ bool? _getBool(
       } else if (value == 'false') {
         return false;
       } else {
-        throw '$key => $value is not bool';
+        throw ArgumentError('$key => $value is not bool');
       }
     } else {
       return null;
@@ -357,7 +360,7 @@ bool? _getBool(
   } else if (value is bool) {
     return value;
   } else {
-    throw '$key => $value is not bool';
+    throw ArgumentError('$key => $value is not bool');
   }
 }
 
@@ -380,7 +383,7 @@ int? _getInt(
   } else if (value is int) {
     return value;
   } else {
-    throw '$key => $value is not int';
+    throw ArgumentError('$key => $value is not int');
   }
 }
 

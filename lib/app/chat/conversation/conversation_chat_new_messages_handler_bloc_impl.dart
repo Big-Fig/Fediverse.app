@@ -22,13 +22,14 @@ class ConversationChatNewMessagesHandlerBloc extends DisposableOwner
     var isMessageForOpenedChat =
         currentChatBloc.currentChat?.remoteId == conversationRemoteId;
 
+    var actualConversation = conversation;
     if (isMessageForOpenedChat) {
-      conversation = await conversationChatService.markConversationAsRead(
+      actualConversation = await conversationChatService.markConversationAsRead(
         conversationId: conversationRemoteId,
       );
     }
 
-    if (conversation.accounts.isEmpty) {
+    if (actualConversation.accounts.isEmpty) {
       // sometimes accounts is empty
       // but if we fetch conversation by ID it will have accounts
       // usually it happens when user just started new conversation
@@ -36,19 +37,20 @@ class ConversationChatNewMessagesHandlerBloc extends DisposableOwner
         await _updateConversationById(conversationRemoteId);
       } else {
         if (conversation.lastStatus != null) {
-          conversation = conversation.toUnifediApiConversation().copyWith(
+          actualConversation =
+              actualConversation.toUnifediApiConversation().copyWith(
             accounts: [
-              conversation.lastStatus!.account.toUnifediApiAccount(),
+              actualConversation.lastStatus!.account.toUnifediApiAccount(),
             ],
           );
         }
         await conversationRepository.upsertInRemoteType(
-          conversation,
+          actualConversation,
         );
       }
     } else {
       await conversationRepository.upsertInRemoteType(
-        conversation,
+        actualConversation,
       );
     }
   }

@@ -35,12 +35,12 @@ class EditMyAccountWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ListView(
-        children: <Widget>[
-          const _EditMyAccountTopHeaderAndAvatarWidget(),
-          const FediSmallVerticalSpacer(),
+        children: const <Widget>[
+          _EditMyAccountTopHeaderAndAvatarWidget(),
+          FediSmallVerticalSpacer(),
           Padding(
             padding: FediPadding.horizontalBigPadding,
-            child: const _EditMyAccountBodyWidget(),
+            child: _EditMyAccountBodyWidget(),
           ),
         ],
       );
@@ -52,16 +52,16 @@ class _EditMyAccountTopHeaderAndAvatarWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Container(
+  Widget build(BuildContext context) => SizedBox(
         height: _editAccountAvatarTopPadding +
             _editAccountAvatarSize +
             // ignore: no-magic-number
             _editAccountAvatarCircleBorderWidth * 2,
         child: Stack(
           children: [
-            Container(
+            const SizedBox(
               height: _editAccountHeaderHeight,
-              child: const EditMyAccountHeaderFieldWidget(),
+              child: EditMyAccountHeaderFieldWidget(),
             ),
             Positioned(
               left: 0,
@@ -69,8 +69,8 @@ class _EditMyAccountTopHeaderAndAvatarWidget extends StatelessWidget {
               top: _editAccountAvatarTopPadding,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const EditMyAccountAvatarFieldWidget(
+                children: const [
+                  EditMyAccountAvatarFieldWidget(
                     avatarSize: _editAccountAvatarSize,
                     avatarCircleBorderWidth:
                         _editAccountAvatarCircleBorderWidth,

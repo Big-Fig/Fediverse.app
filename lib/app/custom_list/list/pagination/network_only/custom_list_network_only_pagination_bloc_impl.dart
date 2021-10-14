@@ -71,8 +71,7 @@ class CustomListNetworkOnlyPaginationBloc
     required Widget child,
   }) =>
       DisposableProvider<ICustomListNetworkOnlyPaginationBloc>(
-        create: (context) =>
-            CustomListNetworkOnlyPaginationBloc.createFromContext(context),
+        create: CustomListNetworkOnlyPaginationBloc.createFromContext,
         child: ProxyProvider<ICustomListNetworkOnlyPaginationBloc,
             INetworkOnlyPleromaPaginationBloc<ICustomList>>(
           update: (context, value, previous) => value,

@@ -23,7 +23,7 @@ void showEditGlobalOrInstanceToastSettingsDialog({
   showEditGlobalOrInstanceSettingsDialog(
     context: context,
     subTitle: S.of(context).app_toast_settings_title,
-    child: EditToastSettingsWidget(
+    child: const EditToastSettingsWidget(
       shrinkWrap: true,
     ),
     childContextBuilder: ({

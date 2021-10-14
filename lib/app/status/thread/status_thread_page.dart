@@ -35,9 +35,9 @@ class StatusThreadPage extends StatelessWidget {
     var statusThreadBloc = IStatusThreadBloc.of(context);
 
     return Scaffold(
-      appBar: FediPageCustomAppBar(
-        leading: const FediBackIconButton(),
-        child: const _StatusThreadAppBarStarterAccountWidget(),
+      appBar: const FediPageCustomAppBar(
+        leading: FediBackIconButton(),
+        child: _StatusThreadAppBarStarterAccountWidget(),
       ),
       body: SafeArea(
         child: FediAsyncInitLoadingWidget(
@@ -184,9 +184,9 @@ class _StatusThreadStarterAccountBodyWidget extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const AccountDisplayNameWidget(),
-                      const AccountAcctWidget(),
+                    children: const [
+                      AccountDisplayNameWidget(),
+                      AccountAcctWidget(),
                     ],
                   ),
                 ),

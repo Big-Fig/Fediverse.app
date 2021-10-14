@@ -13,10 +13,12 @@ import 'package:fedi/app/ui/button/icon/fedi_remove_icon_in_circle_button.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/fedi_sizes.dart';
+import 'package:fedi/app/ui/media/player/audio/fedi_audio_player_widget.dart';
 import 'package:fedi/app/ui/media/player/video/fedi_video_player_widget.dart';
 import 'package:fedi/app/ui/progress/fedi_circular_progress_indicator.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/media/device/file/media_device_file_model.dart';
+import 'package:fedi/media/player/audio/audio_media_player_bloc_impl.dart';
 import 'package:fedi/media/player/media_player_model.dart';
 import 'package:fedi/media/player/video/video_media_player_bloc_impl.dart';
 import 'package:flutter/cupertino.dart';
@@ -69,7 +71,7 @@ class UploadMediaAttachmentListMediaItemWidgetState
         bloc.startUploadIfPossible();
       },
       child: ClipRRect(
-        borderRadius: BorderRadius.all(
+        borderRadius: const BorderRadius.all(
           Radius.circular(FediSizes.borderRadiusBigSize),
         ),
         child: Stack(
@@ -85,7 +87,7 @@ class UploadMediaAttachmentListMediaItemWidgetState
                       UploadMediaAttachmentStateType.uploaded) {
                     return previewWidget;
                   } else {
-                    return Opacity(
+                    return const Opacity(
                       // todo: refactor
                       // ignore: no-magic-number
                       opacity: 0.7,
@@ -163,9 +165,17 @@ class _UploadMediaAttachmentListMediaItemMediaPreviewWidget
                 isFullscreen: false,
               );
               break;
+            case MediaDeviceFileType.audio:
+              preview = AudioMediaPlayerBloc.provideToContext(
+                context,
+                mediaPlayerSource: MediaPlayerSource.localFile(file: file),
+                child: const FediAudioPlayerWidget(),
+                autoInit: true,
+                autoPlay: false,
+              );
+              break;
             case MediaDeviceFileType.other:
-            default:
-              throw 'Non-media not supported';
+              throw ArgumentError('Non-media not supported');
           }
 
           return preview;
@@ -369,7 +379,7 @@ class _UploadMediaAttachmentListMediaItemPreviewWidget extends StatelessWidget {
         child: const MediaAttachmentWidget(),
       );
     } else {
-      throw 'Unsupported bloc type $bloc';
+      throw ArgumentError('Unsupported bloc type $bloc');
     }
 
     return mediaPreview;

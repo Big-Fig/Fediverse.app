@@ -62,7 +62,7 @@ extension IShareEntityExtension on IShareEntityBloc {
 
     var mediaAttachments = <IUnifediApiMediaAttachment>[];
 
-    for (var item in shareEntity.items) {
+    for (final item in shareEntity.items) {
       var itemMediaAttachments = await convertSingleItemToMediaAttachments(
         item: item,
         mediaAttachmentReuploadService: mediaAttachmentReuploadService,
@@ -86,7 +86,7 @@ Future<List<IUnifediApiMediaAttachment>?> convertSingleItemToMediaAttachments({
   var itemMediaAttachments = item.mediaAttachments;
   if (itemMediaAttachments != null) {
     if (item.isNeedReUploadMediaAttachments && reUploadRequired) {
-      for (var mediaAttachment in itemMediaAttachments) {
+      for (final mediaAttachment in itemMediaAttachments) {
         var reuploadedMediaAttachment =
             await mediaAttachmentReuploadService.reuploadMediaAttachment(
           originalMediaAttachment: mediaAttachment,
@@ -102,7 +102,7 @@ Future<List<IUnifediApiMediaAttachment>?> convertSingleItemToMediaAttachments({
   var mediaLocalFiles = item.mediaLocalFiles;
 
   if (mediaLocalFiles != null) {
-    for (var mediaLocalFile in mediaLocalFiles) {
+    for (final mediaLocalFile in mediaLocalFiles) {
       var mediaAttachment = await unifediApiMediaAttachmentService.uploadMedia(
         file: mediaLocalFile.file,
         thumbnail: null,

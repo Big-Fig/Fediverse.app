@@ -65,6 +65,7 @@ Future _startChoosingFileToUploadAvatar(BuildContext context) async {
     if (filePickerFile != null) {
       try {
         await editMyAccountBloc.avatarField.pickNewFile(filePickerFile);
+        // ignore: avoid_catches_without_on_clauses
       } catch (e, stackTrace) {
         _logger.warning('startChoosingFileToUploadAvatar error', e, stackTrace);
         showMediaAttachmentFailedNotificationOverlay(context, e);
@@ -189,7 +190,7 @@ class _EditMyAccountAvatarFieldImageContainerWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Container(
+  Widget build(BuildContext context) => SizedBox(
         height: avatarSize,
         // ignore: no-equal-arguments
         width: avatarSize,

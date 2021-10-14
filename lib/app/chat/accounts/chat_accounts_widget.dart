@@ -36,11 +36,11 @@ class ChatAccountsWidget extends StatelessWidget {
               isNeedPreFetchRelationship: false,
             ),
             child: Column(
-              children: [
-                const AccountListItemWidget(
+              children: const [
+                AccountListItemWidget(
                   accountSelectedCallback: _accountSelectedCallback,
                 ),
-                const FediUltraLightGreyDivider(),
+                FediUltraLightGreyDivider(),
               ],
             ),
           ),

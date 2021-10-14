@@ -104,7 +104,7 @@ class PostStatusData with _$PostStatusData implements IPostStatusData {
 
 extension IPostStatusDataExtension on IPostStatusData {
   UnifediApiSchedulePostStatus toUnifediApiSchedulePostStatus() {
-    assert(isScheduled);
+    assert(isScheduled, 'cant convert non-scheduled status');
 
     return UnifediApiSchedulePostStatus(
       inReplyToConversationId: inReplyToConversationId,
@@ -151,7 +151,7 @@ extension IPostStatusDataExtension on IPostStatusData {
     required bool previewSupported,
     required bool expiresInSupported,
   }) {
-    assert(!isScheduled);
+    assert(!isScheduled, 'cant convert scheduled status');
 
     return UnifediApiPostStatus(
       expiresInSeconds: expiresInSupported ? expiresInSeconds : null,

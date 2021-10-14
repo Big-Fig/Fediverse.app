@@ -15,6 +15,7 @@ class AsyncSmartRefresherHelper {
     FediListSmartRefresherLoadingState state;
     try {
       state = await action();
+      // ignore: avoid_catches_without_on_clauses
     } catch (error, stackTrace) {
       _logger.severe(() => 'doAsyncRefresh fail', error, stackTrace);
       state = FediListSmartRefresherLoadingState.failed;
@@ -35,8 +36,7 @@ class AsyncSmartRefresherHelper {
 
       case FediListSmartRefresherLoadingState.loading:
       case FediListSmartRefresherLoadingState.initialized:
-      default:
-        throw 'invalid state $state';
+        throw Exception('invalid state $state');
     }
 
     return state;
@@ -50,6 +50,7 @@ class AsyncSmartRefresherHelper {
     FediListSmartRefresherLoadingState state;
     try {
       state = await action();
+      // ignore: avoid_catches_without_on_clauses
     } catch (error, stackTrace) {
       _logger.severe(() => 'doAsyncLoading fail', error, stackTrace);
       controller.loadFailed();
@@ -71,8 +72,7 @@ class AsyncSmartRefresherHelper {
 
       case FediListSmartRefresherLoadingState.loading:
       case FediListSmartRefresherLoadingState.initialized:
-      default:
-        throw 'invalid state $state';
+        throw Exception('invalid state $state');
     }
 
     return state;

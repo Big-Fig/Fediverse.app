@@ -104,7 +104,7 @@ abstract class AppRemoteDatabaseDao<
     );
   }
 
-  SimpleSelectStatement<TableDsl, DbItem> addDateTimeBoundsWhere(
+  void addDateTimeBoundsWhere(
     SimpleSelectStatement<TableDsl, DbItem> query, {
     required GeneratedColumn<DateTime?> column,
     required DateTime? minimumDateTimeExcluding,
@@ -112,45 +112,47 @@ abstract class AppRemoteDatabaseDao<
   }) {
     var minimumExist = minimumDateTimeExcluding != null;
     var maximumExist = maximumDateTimeExcluding != null;
-    assert(minimumExist || maximumExist);
+    assert(
+      minimumExist || maximumExist,
+      'at least one bound should exist',
+    );
 
     if (minimumExist) {
-      query = query
-        ..where((status) => column.isBiggerThanValue(minimumDateTimeExcluding));
+      query.where(
+        (status) => column.isBiggerThanValue(minimumDateTimeExcluding),
+      );
     }
     if (maximumExist) {
-      query = query
-        ..where(
-          (status) => column.isSmallerThanValue(maximumDateTimeExcluding),
-        );
+      query.where(
+        (status) => column.isSmallerThanValue(maximumDateTimeExcluding),
+      );
     }
-
-    return query;
   }
 
-  SimpleSelectStatement<TableDsl, DbItem> addRemoteIdBoundsWhere(
+  void addRemoteIdBoundsWhere(
     SimpleSelectStatement<TableDsl, DbItem> query, {
     required String? minimumRemoteIdExcluding,
     required String? maximumRemoteIdExcluding,
   }) {
     var minimumExist = minimumRemoteIdExcluding?.isNotEmpty == true;
     var maximumExist = maximumRemoteIdExcluding?.isNotEmpty == true;
-    assert(minimumExist || maximumExist);
+    assert(
+      minimumExist || maximumExist,
+      'at least one bound should exist',
+    );
 
     if (minimumExist) {
       var biggerExp = CustomExpression<bool>(
         "$tableName.$remoteIdFieldName > '$minimumRemoteIdExcluding'",
       );
-      query = query..where((filter) => biggerExp);
+      query.where((filter) => biggerExp);
     }
     if (maximumExist) {
       var smallerExp = CustomExpression<bool>(
         "$tableName.$remoteIdFieldName < '$maximumRemoteIdExcluding'",
       );
-      query = query..where((filter) => smallerExp);
+      query.where((filter) => smallerExp);
     }
-
-    return query;
   }
 
   Future<DbItem?> getNewestOrderByRemoteId({required int? offset}) =>

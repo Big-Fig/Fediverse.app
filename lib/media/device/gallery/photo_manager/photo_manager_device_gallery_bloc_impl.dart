@@ -103,6 +103,6 @@ class PhotoManagerMediaDeviceGalleryBloc extends MediaDeviceGalleryBloc {
       return RequestType.audio;
     }
 
-    throw 'fileTypesToPick should containe image or video type';
+    throw ArgumentError('fileTypesToPick should contains image or video type');
   }
 }

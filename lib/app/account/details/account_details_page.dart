@@ -95,9 +95,9 @@ class AccountDetailsPageBody extends StatelessWidget {
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const AccountDisplayNameWidget(),
-                const AccountAcctWidget(),
+              children: const [
+                AccountDisplayNameWidget(),
+                AccountAcctWidget(),
               ],
             ),
             if (isRemote && currentInstance != null)
@@ -106,12 +106,12 @@ class AccountDetailsPageBody extends StatelessWidget {
         ),
       ),
       body: Stack(
-        children: [
-          Container(
+        children: const [
+          SizedBox(
             height: _headerBackgroundHeight,
-            child: const AccountHeaderBackgroundWidget(),
+            child: AccountHeaderBackgroundWidget(),
           ),
-          const _AccountDetailsPageBodyContent(),
+          _AccountDetailsPageBodyContent(),
         ],
       ),
     );
@@ -130,7 +130,7 @@ class _AccountDetailsPageAppBarOpenOnLocalInstanceAction
 
     return FediIconButton(
       color: IFediUiColorTheme.of(context, listen: false).darkGrey,
-      icon: Icon(FediIcons.search),
+      icon: const Icon(FediIcons.search),
       onPressed: () {
         goToSearchPage(
           context,
@@ -170,8 +170,8 @@ class _AccountDetailsPageBodyContent extends StatelessWidget {
             // todo: refactor
             // ignore: no-magic-number
             topSliverScrollOffsetToShowWhiteStatusBar: 100,
-            topSliverWidgets: [
-              const _AccountDetailsNestedScrollViewHeader(),
+            topSliverWidgets: const [
+              _AccountDetailsNestedScrollViewHeader(),
             ],
             tabKeyPrefix: 'AccountDetailsPage',
             tabBodyProviderBuilder:
@@ -606,7 +606,7 @@ void _onStatusesTapCallback(BuildContext context) {
     MediaQuery.of(context).size.height / 2,
     // todo: refactor
     // ignore: no-magic-number
-    duration: Duration(milliseconds: 500),
+    duration: const Duration(milliseconds: 500),
     curve: Curves.easeOut,
   );
 }

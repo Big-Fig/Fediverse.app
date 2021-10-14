@@ -11,7 +11,6 @@ import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_widget.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -74,7 +73,7 @@ abstract class FediPaginationListWidget<T> extends PaginationListWidget<T> {
       footer: const ListLoadingFooterWidget(),
       controller: refreshController,
       scrollController: scrollController,
-      primary: scrollController != null ? false : true,
+      primary: scrollController == null,
       onRefresh: () {
         _logger.finest(() => 'refresh');
 
@@ -85,6 +84,7 @@ abstract class FediPaginationListWidget<T> extends PaginationListWidget<T> {
             try {
               await additionalPreRefreshAction(context);
               success = true;
+              // ignore: avoid_catches_without_on_clauses
             } catch (e, stackTrace) {
               success = false;
               _logger.severe(
@@ -155,7 +155,8 @@ abstract class FediPaginationListWidget<T> extends PaginationListWidget<T> {
                     );
               case FediListSmartRefresherLoadingState.failed:
               case FediListSmartRefresherLoadingState.loaded:
-              default:
+              case FediListSmartRefresherLoadingState.noData:
+              case null:
                 return customEmptyWidget ??
                     Center(
                       child: FediEmptyWidget(

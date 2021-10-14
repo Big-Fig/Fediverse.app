@@ -40,11 +40,11 @@ class ConversationChatMessageCachedPaginationListWithNewItemsBloc<
           asyncCalculateNewItems: false,
           asyncCalculateActuallyNew: false,
         ) {
-    conversationChatBloc.onMessageLocallyHiddenStream.listen(
-      (hiddenMessage) {
-        hideItem(hiddenMessage);
-      },
-    ).disposeWith(this);
+    conversationChatBloc.onMessageLocallyHiddenStream
+        .listen(
+          hideItem,
+        )
+        .disposeWith(this);
     hiddenItemsSubject.disposeWith(this);
   }
 
@@ -79,14 +79,12 @@ class ConversationChatMessageCachedPaginationListWithNewItemsBloc<
       // last message already fetched
       // ignore: unawaited_futures
       Future.delayed(
-        Duration(
+        const Duration(
           // todo: refactor
           // ignore: no-magic-number
           milliseconds: 100,
         ),
-        () {
-          refreshWithController();
-        },
+        refreshWithController,
       );
     }
 

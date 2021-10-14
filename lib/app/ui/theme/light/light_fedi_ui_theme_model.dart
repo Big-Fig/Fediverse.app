@@ -16,7 +16,7 @@ class LightFediUiTheme implements IFediUiTheme {
   @override
   String get id => 'light';
   @override
-  final IFediUiColorTheme colorTheme = _lightFediUiColorTheme;
+  IFediUiColorTheme get colorTheme => _lightFediUiColorTheme;
 
   @override
   IFediUiTextTheme get textTheme => _lightFediUiTextTheme;
@@ -35,41 +35,37 @@ class LightFediUiTheme implements IFediUiTheme {
         brightness: Brightness.light,
         primaryColor: _lightFediUiColorTheme.primary,
         primaryColorBrightness: Brightness.light,
-        primaryColorLight: Color(0xffffecb3),
+        primaryColorLight: const Color(0xffffecb3),
         primaryColorDark: _lightFediUiColorTheme.primary,
-        canvasColor: Color(0xfffafafa),
-        scaffoldBackgroundColor: Color(0xfffafafa),
-        bottomAppBarColor: Color(0xffffffff),
-        cardColor: Color(0xffffffff),
-        dividerColor: Color(0x1f000000),
-        highlightColor: Color(0x66bcbcbc),
-        splashColor: Color(0x66c8c8c8),
-        selectedRowColor: Color(0xfff5f5f5),
-        unselectedWidgetColor: Color(0x8a000000),
-        disabledColor: Color(0x61000000),
-        toggleableActiveColor: Color(0xff1e88e5),
-        secondaryHeaderColor: Color(0xffe3f2fd),
-        textSelectionTheme: TextSelectionThemeData(
+        canvasColor: const Color(0xfffafafa),
+        scaffoldBackgroundColor: const Color(0xfffafafa),
+        bottomAppBarColor: const Color(0xffffffff),
+        cardColor: const Color(0xffffffff),
+        dividerColor: const Color(0x1f000000),
+        highlightColor: const Color(0x66bcbcbc),
+        splashColor: const Color(0x66c8c8c8),
+        selectedRowColor: const Color(0xfff5f5f5),
+        unselectedWidgetColor: const Color(0x8a000000),
+        disabledColor: const Color(0x61000000),
+        toggleableActiveColor: const Color(0xff1e88e5),
+        secondaryHeaderColor: const Color(0xffe3f2fd),
+        textSelectionTheme: const TextSelectionThemeData(
           selectionColor: Color(0xff90caf9),
           cursorColor: Color(0xff4285f4),
           selectionHandleColor: Color(0xff64b5f6),
         ),
-        backgroundColor: Color(0xff90caf9),
-        dialogBackgroundColor: Color(0xffffffff),
-        indicatorColor: Color(0xff2196f3),
-        hintColor: Color(0x8a000000),
-        errorColor: Color(0xffd32f2f),
-        buttonTheme: ButtonThemeData(
+        backgroundColor: const Color(0xff90caf9),
+        dialogBackgroundColor: const Color(0xffffffff),
+        indicatorColor: const Color(0xff2196f3),
+        hintColor: const Color(0x8a000000),
+        errorColor: const Color(0xffd32f2f),
+        buttonTheme: const ButtonThemeData(
           textTheme: ButtonTextTheme.normal,
           minWidth: 88,
           height: 36,
           padding: EdgeInsets.only(top: 0, bottom: 0, left: 16, right: 16),
           shape: RoundedRectangleBorder(
-            side: BorderSide(
-              color: Color(0xff000000),
-              width: 0,
-              style: BorderStyle.none,
-            ),
+            side: BorderSide.none,
             borderRadius: BorderRadius.all(Radius.circular(2.0)),
           ),
           alignedDropdown: false,
@@ -95,7 +91,7 @@ class LightFediUiTheme implements IFediUiTheme {
             brightness: Brightness.light,
           ),
         ),
-        textTheme: TextTheme(
+        textTheme: const TextTheme(
           headline1: TextStyle(
             color: Color(0x8a000000),
             fontSize: null,
@@ -175,7 +171,7 @@ class LightFediUiTheme implements IFediUiTheme {
             fontStyle: FontStyle.normal,
           ),
         ),
-        primaryTextTheme: TextTheme(
+        primaryTextTheme: const TextTheme(
           headline1: TextStyle(
             color: Color(0xb3ffffff),
             fontSize: null,
@@ -255,7 +251,7 @@ class LightFediUiTheme implements IFediUiTheme {
             fontStyle: FontStyle.normal,
           ),
         ),
-        inputDecorationTheme: InputDecorationTheme(
+        inputDecorationTheme: const InputDecorationTheme(
           labelStyle: TextStyle(
             color: Color(0xdd000000),
             fontSize: null,
@@ -354,22 +350,22 @@ class LightFediUiTheme implements IFediUiTheme {
             borderRadius: BorderRadius.all(Radius.circular(4.0)),
           ),
         ),
-        iconTheme: IconThemeData(
+        iconTheme: const IconThemeData(
           color: Color(0xdd000000),
           opacity: 1,
           size: 24,
         ),
-        primaryIconTheme: IconThemeData(
+        primaryIconTheme: const IconThemeData(
           color: Color(0xffffffff),
           opacity: 1,
           size: 24,
         ),
-        tabBarTheme: TabBarTheme(
+        tabBarTheme: const TabBarTheme(
           indicatorSize: TabBarIndicatorSize.tab,
           labelColor: Color(0xffffffff),
           unselectedLabelColor: Color(0xb2ffffff),
         ),
-        chipTheme: ChipThemeData(
+        chipTheme: const ChipThemeData(
           backgroundColor: Color(0x1f000000),
           brightness: Brightness.light,
           deleteIconColor: Color(0xde000000),
@@ -391,27 +387,19 @@ class LightFediUiTheme implements IFediUiTheme {
           secondarySelectedColor: Color(0x3d2196f3),
           selectedColor: Color(0x3d000000),
           shape: StadiumBorder(
-            side: BorderSide(
-              color: Color(0xff000000),
-              width: 0,
-              style: BorderStyle.none,
-            ),
+            side: BorderSide.none,
           ),
         ),
-        dialogTheme: DialogTheme(
+        dialogTheme: const DialogTheme(
           shape: RoundedRectangleBorder(
-            side: BorderSide(
-              color: Color(0xff000000),
-              width: 0,
-              style: BorderStyle.none,
-            ),
-            borderRadius: BorderRadius.all(Radius.circular(0.0)),
+            side: BorderSide.none,
+            borderRadius: BorderRadius.zero,
           ),
         ),
         cupertinoOverrideTheme: CupertinoThemeData(
           primaryColor: _lightFediUiColorTheme.primary,
 //      textTheme: CupertinoTextThemeData(
-//        textStyle: TextStyle(color: Color(0xff1e88e5))
+//        textStyle: TextStyle(color: const Color(0xff1e88e5))
 //
 //      )
         ),

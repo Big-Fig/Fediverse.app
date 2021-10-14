@@ -21,7 +21,7 @@ class DbStatuses extends Table {
   TextColumn? get spoilerText => text().nullable()();
 
   TextColumn? get visibility =>
-      text().map(UnifediApiVisibilityMoorTypeConverter())();
+      text().map(const UnifediApiVisibilityMoorTypeConverter())();
 
   TextColumn? get uri => text()();
 
@@ -48,35 +48,36 @@ class DbStatuses extends Table {
   TextColumn? get reblogStatusRemoteId => text().nullable()();
 
   TextColumn? get application =>
-      text().map(PleromaApplicationDatabaseConverter()).nullable()();
+      text().map(const PleromaApplicationDatabaseConverter()).nullable()();
 
   TextColumn? get accountRemoteId => text()();
 
-  TextColumn? get mediaAttachments =>
-      text().map(UnifediApiMediaAttachmentListDatabaseConverter()).nullable()();
+  TextColumn? get mediaAttachments => text()
+      .map(const UnifediApiMediaAttachmentListDatabaseConverter())
+      .nullable()();
 
   TextColumn? get mentions =>
-      text().map(PleromaMentionListDatabaseConverter()).nullable()();
+      text().map(const PleromaMentionListDatabaseConverter()).nullable()();
 
   // TODO: rework with join
   TextColumn? get tags =>
-      text().map(UnifediApiTagListDatabaseConverter()).nullable()();
+      text().map(const UnifediApiTagListDatabaseConverter()).nullable()();
 
   TextColumn? get emojis =>
-      text().map(UnifediApiEmojiListDatabaseConverter()).nullable()();
+      text().map(const UnifediApiEmojiListDatabaseConverter()).nullable()();
 
   TextColumn? get poll =>
-      text().map(UnifediApiPollDatabaseConverter()).nullable()();
+      text().map(const UnifediApiPollDatabaseConverter()).nullable()();
 
   TextColumn? get card =>
-      text().map(PleromaCardDatabaseConverter()).nullable()();
+      text().map(const PleromaCardDatabaseConverter()).nullable()();
 
   TextColumn? get language => text().nullable()();
 
   //  expanded pleroma object fields
   TextColumn? get contentVariants => text()
       .named('pleroma_content')
-      .map(PleromaContentDatabaseConverter())
+      .map(const PleromaContentDatabaseConverter())
       .nullable()();
 
   IntColumn? get conversationId =>
@@ -92,7 +93,7 @@ class DbStatuses extends Table {
 
   TextColumn? get spoilerTextVariants => text()
       .named('pleroma_spoiler_text')
-      .map(PleromaContentDatabaseConverter())
+      .map(const PleromaContentDatabaseConverter())
       .nullable()();
 
   DateTimeColumn? get expiresAt =>
@@ -103,7 +104,7 @@ class DbStatuses extends Table {
 
   TextColumn? get emojiReactions => text()
       .named('pleroma_emoji_reactions')
-      .map(EmojiReactionsListDatabaseConverter())
+      .map(const EmojiReactionsListDatabaseConverter())
       .nullable()();
 
   BoolColumn? get deleted => boolean().nullable()();
@@ -111,7 +112,7 @@ class DbStatuses extends Table {
   BoolColumn? get hiddenLocallyOnDevice => boolean().nullable()();
 
   TextColumn? get pendingState =>
-      text().nullable().map(PendingStateDatabaseConverter())();
+      text().nullable().map(const PendingStateDatabaseConverter())();
 
   TextColumn? get oldPendingRemoteId => text().nullable()();
 

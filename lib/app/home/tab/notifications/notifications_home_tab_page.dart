@@ -47,7 +47,7 @@ class NotificationsHomeTabPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
       DisposableProvider<INotificationTabsBloc>(
-        create: (context) => NotificationsTabsBloc.createFromContext(context),
+        create: NotificationsTabsBloc.createFromContext,
         child: NotificationTabsBlocLoadingWidget(
           child: TabControllerProvider(
             tabControllerCreator:
@@ -78,7 +78,7 @@ class _NotificationsHomeTabPageBodyState
   void didChangeDependencies() {
     super.didChangeDependencies();
     var tabController = Provider.of<TabController>(context, listen: false);
-    var listener = () {
+    void listener() {
       var tab = _notificationTabs[tabController.index];
       var notificationTabsBloc =
           INotificationTabsBloc.of(context, listen: false);
@@ -88,7 +88,8 @@ class _NotificationsHomeTabPageBodyState
         paginationListBloc.mergeNewItems();
       }
       notificationTabsBloc.selectTab(tab);
-    };
+    }
+
     tabController.addListener(listener);
 
     disposable = CustomDisposable(() {
@@ -120,8 +121,8 @@ class _NotificationsHomeTabPageBodyState
         ),
         child: FediNestedScrollViewWithNestedScrollableTabsWidget(
           onLongScrollUpTopOverlayWidget: null,
-          topSliverWidgets: [
-            const _NotificationsHomeTabPageBodyHeaderWidget(),
+          topSliverWidgets: const [
+            _NotificationsHomeTabPageBodyHeaderWidget(),
           ],
           topSliverScrollOffsetToShowWhiteStatusBar: null,
           tabKeyPrefix: 'NotificationTab',
@@ -132,8 +133,8 @@ class _NotificationsHomeTabPageBodyState
             return _buildTabBodyProvider(context, tab, child);
           },
           tabBodyContentBuilder: (BuildContext context, int index) =>
-              FediDarkStatusBarStyleArea(
-            child: const NotificationPaginationListWidget(
+              const FediDarkStatusBarStyleArea(
+            child: NotificationPaginationListWidget(
               needWatchLocalRepositoryForUpdates: true,
             ),
           ),
@@ -194,8 +195,8 @@ class _NotificationsHomeTabPageBodyHeaderWidget extends StatelessWidget {
         tabController: tabController,
         notificationTabs: _notificationTabs,
       ),
-      endingWidgets: [
-        const _NotificationsHomeTabPageBodyHeaderMenuButtonWidget(),
+      endingWidgets: const [
+        _NotificationsHomeTabPageBodyHeaderMenuButtonWidget(),
       ],
     );
   }
@@ -241,7 +242,7 @@ class _NotificationsHomeTabPageBodyHeaderMenuButtonWidget
 
           Future.delayed(
             // ignore: no-magic-number
-            Duration(milliseconds: 100),
+            const Duration(milliseconds: 100),
             () async {
               await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
                 context: context,
@@ -267,7 +268,7 @@ class _NotificationsHomeTabPageBodyHeaderMenuButtonWidget
           Future.delayed(
             // todo: refactor
             // ignore: no-magic-number
-            Duration(milliseconds: 100),
+            const Duration(milliseconds: 100),
             () async {
               await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
                 context: context,

@@ -31,11 +31,11 @@ class EditMyAccountPage extends StatelessWidget {
               handleBackPressed(context, editMyAccountBloc);
             },
           ),
-          actions: <Widget>[
-            const _EditMyAccountPageAppBarSaveAction(),
+          actions: const <Widget>[
+            _EditMyAccountPageAppBarSaveAction(),
           ],
         ),
-        body: SafeArea(child: EditMyAccountWidget()),
+        body: const SafeArea(child: EditMyAccountWidget()),
       ),
     );
   }
@@ -91,7 +91,7 @@ class _EditMyAccountPageAppBarSaveAction extends StatelessWidget {
             await editMyAccountBloc.submitChanges();
             Navigator.pop(context);
           },
-          errorAlertDialogBuilders: [
+          errorAlertDialogBuilders: const [
             // todo: handle specific cases by error code
 //                          (context, error) => SimpleAlertDialog(
 //                          title: of(context)
@@ -117,7 +117,7 @@ void goToEditMyAccountPage(BuildContext context) {
     context,
     MaterialPageRoute<void>(
       builder: (context) => DisposableProvider<IEditMyAccountBloc>(
-        create: (context) => EditMyAccountBloc.createFromContext(context),
+        create: EditMyAccountBloc.createFromContext,
         child: const EditMyAccountPage(),
       ),
     ),

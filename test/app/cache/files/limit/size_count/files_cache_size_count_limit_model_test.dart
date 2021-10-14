@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   test('toJsonValue & fromJsonValue', () async {
     var values = FilesCacheSizeLimitCountType.values;
-    for (var value in values) {
+    for (final value in values) {
       var jsonValue = value.toJsonValue();
 
       var objFromJsonValue = jsonValue.toFilesCacheSizeLimitCountType();
@@ -15,7 +15,7 @@ void main() {
   });
   test('toCountOrNull', () async {
     var values = FilesCacheSizeLimitCountType.values;
-    for (var value in values) {
+    for (final value in values) {
       switch (value) {
         case FilesCacheSizeLimitCountType.notSet:
           expect(value.toCountOrNull(), null);

@@ -19,7 +19,7 @@ Widget _builder(BuildContext context, LoadStatus? mode) {
   switch (mode) {
     case null:
     case LoadStatus.idle:
-      body = Text('');
+      body = const Text('');
       break;
     case LoadStatus.canLoading:
       body = Text(
@@ -41,7 +41,7 @@ Widget _builder(BuildContext context, LoadStatus? mode) {
       break;
   }
 
-  return Container(
+  return SizedBox(
     // todo: refactor
     // ignore: no-magic-number
     height: 55.0,

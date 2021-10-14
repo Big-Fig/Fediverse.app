@@ -26,11 +26,11 @@ class EmojiPickerSearchCategoryBloc extends AsyncInitLoadingBloc
     itemsSubject.disposeWith(this);
     searchTextEditingController.disposeWith(this);
 
-    searchTextEditingController.listenAsDisposable(
-      () {
-        _performSearch();
-      },
-    ).disposeWith(this);
+    searchTextEditingController
+        .listenAsDisposable(
+          _performSearch,
+        )
+        .disposeWith(this);
   }
 
   void _performSearch() {

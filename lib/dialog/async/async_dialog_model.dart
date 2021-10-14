@@ -26,7 +26,7 @@ class AsyncDialogResult<T> with _$AsyncDialogResult<T> {
         handledError: handledError,
       );
 
-  static AsyncDialogResult<T> withCancel<T>() => AsyncDialogResult(
+  static AsyncDialogResult<T> withCancel<T>() => const AsyncDialogResult(
         result: null,
         success: false,
         canceled: true,

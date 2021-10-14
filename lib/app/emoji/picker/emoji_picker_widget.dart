@@ -81,9 +81,9 @@ class EmojiPickerWidget extends StatelessWidget {
           ];
 
           // ignore: cascade_invocations
-          allCategoriesBlocs.forEach((bloc) {
+          for (final bloc in allCategoriesBlocs) {
             bloc.performAsyncInit();
-          });
+          }
           var customEmojiPickerBloc = CustomEmojiPickerBloc(
             selectedCategory: allCategoriesBlocs.first,
             availableCategories: allCategoriesBlocs,
@@ -94,9 +94,11 @@ class EmojiPickerWidget extends StatelessWidget {
           }).disposeWith(customEmojiPickerBloc);
 
           customEmojiPickerBloc.addCustomDisposable(
-            () => allCategoriesBlocs.forEach(
-              (categoryBloc) => categoryBloc.dispose(),
-            ),
+            () async {
+              for (final categoryBloc in allCategoriesBlocs) {
+                await categoryBloc.dispose();
+              }
+            },
           );
 
           return customEmojiPickerBloc;

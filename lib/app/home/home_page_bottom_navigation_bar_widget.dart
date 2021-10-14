@@ -61,9 +61,9 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
         onTap: () {
           goToNewPostStatusPageWithInitial(context);
         },
-        child: Padding(
+        child: const Padding(
           padding: FediPadding.allBigPadding,
-          child: const FediTransparentIcon(FediIcons.plus),
+          child: FediTransparentIcon(FediIcons.plus),
         ),
       );
 
@@ -100,14 +100,22 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
               IHomeBloc.of(context, listen: false).selectTab(tab);
             },
             key: Key(keyStr),
-            child: mapTabToIcon(context, tab, selectedTab == tab),
+            child: mapTabToIcon(
+              context: context,
+              tab: tab,
+              isSelected: selectedTab == tab,
+            ),
           );
         },
       );
 
   // todo: refactor UI
   // ignore: long-method
-  Widget mapTabToIcon(BuildContext context, HomeTab tab, bool isSelected) {
+  Widget mapTabToIcon({
+    required BuildContext context,
+    required HomeTab tab,
+    required bool isSelected,
+  }) {
     var fediUiColorTheme = IFediUiColorTheme.of(context, listen: true);
     var color =
         isSelected ? fediUiColorTheme.primary : fediUiColorTheme.darkGrey;
@@ -193,9 +201,9 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
             child: FediIntBadgeBlocBoolAdapterProxyProvider(
               child: FediBoolBadgeWidget(
                 offset: badgeOffset,
-                child: Padding(
+                child: const Padding(
                   padding: insets,
-                  child: const MyAccountAvatarWidget(),
+                  child: MyAccountAvatarWidget(),
                 ),
               ),
             ),

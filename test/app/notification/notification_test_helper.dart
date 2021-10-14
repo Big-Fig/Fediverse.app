@@ -15,8 +15,9 @@ class NotificationMockHelper {
     DbStatusPopulated? status,
     DateTime? createdAt,
   }) async {
-    account = account ?? await AccountMockHelper.createTestAccount(seed: seed);
-    var dbAccount = account.dbAccount;
+    var actualAccount =
+        account ?? await AccountMockHelper.createTestAccount(seed: seed);
+    var dbAccount = actualAccount.dbAccount;
 
     return DbNotificationPopulatedWrapper(
       dbNotificationPopulated: DbNotificationPopulated.statusPopulated(

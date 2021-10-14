@@ -71,7 +71,9 @@ class EditMyAccountPleromaBackgroundFieldImageWidget extends StatelessWidget {
         fit: BoxFit.cover,
       );
     } else {
-      throw 'MediaImageSource imageSource is invalid $imageSource';
+      throw ArgumentError(
+        'MediaImageSource imageSource is invalid $imageSource',
+      );
     }
   }
 }
@@ -98,7 +100,7 @@ class EditMyAccountPleromaBackgroundFieldValueWidget extends StatelessWidget {
             children: <Widget>[
               ClipRRect(
                 borderRadius: FediBorderRadius.allBigBorderRadius,
-                child: Container(
+                child: SizedBox(
                   width: double.infinity,
                   height: backgroundHeight,
                   child: EditMyAccountPleromaBackgroundFieldImageWidget(
@@ -106,26 +108,24 @@ class EditMyAccountPleromaBackgroundFieldValueWidget extends StatelessWidget {
                   ),
                 ),
               ),
-              Positioned(
+              const Positioned(
                 bottom: FediSizes.bigPadding,
                 // ignore: no-equal-arguments
                 right: FediSizes.bigPadding,
-                child:
-                    const EditMyAccountPleromaBackgroundFieldEditButtonWidget(),
+                child: EditMyAccountPleromaBackgroundFieldEditButtonWidget(),
               ),
-              Positioned(
+              const Positioned(
                 top: FediSizes.bigPadding,
                 // ignore: no-equal-arguments
                 right: FediSizes.bigPadding,
-                child:
-                    const EditMyAccountPleromaBackgroundFieldDeleteButtonWidget(),
+                child: EditMyAccountPleromaBackgroundFieldDeleteButtonWidget(),
               ),
             ],
           );
         } else {
-          return Padding(
+          return const Padding(
             padding: FediPadding.allSmallPadding,
-            child: const _EditMyAccountPleromaBackgroundAddButtonWidget(),
+            child: _EditMyAccountPleromaBackgroundAddButtonWidget(),
           );
         }
       },
@@ -194,6 +194,7 @@ class EditMyAccountPleromaBackgroundFieldEditButtonWidget
               try {
                 await editMyAccountBloc.backgroundField
                     .pickNewFile(filePickerFile);
+                // ignore: avoid_catches_without_on_clauses
               } catch (e, stackTrace) {
                 _logger.warning(
                   'startChoosingFileToUploadBackground error',
@@ -246,6 +247,7 @@ Future startChoosingFileToUploadBackground(
     if (filePickerFile != null) {
       try {
         await editMyAccountBloc.backgroundField.pickNewFile(filePickerFile);
+        // ignore: avoid_catches_without_on_clauses
       } catch (e, stackTrace) {
         _logger.warning(
           'startChoosingFileToUploadBackground error',

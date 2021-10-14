@@ -13,8 +13,9 @@ class DbScheduledStatuses extends Table {
   BoolColumn? get canceled => boolean()();
 
   TextColumn? get params =>
-      text().map(PleromaScheduledStatusParamsDatabaseConverter())();
+      text().map(const PleromaScheduledStatusParamsDatabaseConverter())();
 
-  TextColumn? get mediaAttachments =>
-      text().map(UnifediApiMediaAttachmentListDatabaseConverter()).nullable()();
+  TextColumn? get mediaAttachments => text()
+      .map(const UnifediApiMediaAttachmentListDatabaseConverter())
+      .nullable()();
 }

@@ -15,9 +15,9 @@ import 'package:provider/provider.dart';
 class StatusCommentActionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Row(
-        children: <Widget>[
-          const _StatusCommentActionButtonWidget(),
-          const _StatusCommentActionCounterWidget(),
+        children: const <Widget>[
+          _StatusCommentActionButtonWidget(),
+          _StatusCommentActionCounterWidget(),
         ],
       );
 
@@ -89,7 +89,7 @@ class _StatusCommentActionButtonWidget extends StatelessWidget {
           ? IFediUiColorTheme.of(context).darkGrey
           : IFediUiColorTheme.of(context).lightGrey,
       iconSize: FediSizes.bigIconSize,
-      icon: Icon(FediIcons.message),
+      icon: const Icon(FediIcons.message),
       onPressed: statusListItemTimelineBloc.isCommentsActionEnabled
           ? () {
               _onActionClick(context);

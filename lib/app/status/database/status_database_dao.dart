@@ -288,7 +288,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
   ) =>
       query
         ..where(
-          CustomExpression<bool>(
+          const CustomExpression<bool>(
                 'db_statuses.in_reply_to_account_remote_id IS NULL',
               ) |
               CustomExpression<bool>(
@@ -401,7 +401,10 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
     SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
     List<UnifediApiVisibility> excludeVisibilities,
   ) {
-    assert(excludeVisibilities.isNotEmpty);
+    assert(
+      excludeVisibilities.isNotEmpty,
+      'at least one visibility should be specified',
+    );
 
     List<String?> excludeVisibilityStrings = excludeVisibilities
         .map((visibility) => visibility.stringValue)
@@ -615,7 +618,10 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
     }
 
     if (filters?.onlyLocalCondition != null) {
-      assert(filters?.onlyLocalCondition?.localUrlHost?.isNotEmpty == true);
+      assert(
+        filters?.onlyLocalCondition?.localUrlHost?.isNotEmpty == true,
+        'localUrlHost shoul be not empty',
+      );
 
       addOnlyLocalWhere(
         query,
@@ -691,13 +697,19 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
   }) {
     if (pagination?.olderThanItem != null ||
         pagination?.newerThanItem != null) {
-      assert(orderingTerms?.length == 1);
+      assert(
+        orderingTerms?.length == 1,
+        'only single order term is supported',
+      );
       var orderingTermData = orderingTerms!.first;
       var isRemoteIdOrdering =
           orderingTermData.orderByType == StatusRepositoryOrderType.remoteId;
       var isCreatedAtOrdering =
           orderingTermData.orderByType == StatusRepositoryOrderType.createdAt;
-      assert(isRemoteIdOrdering || isCreatedAtOrdering);
+      assert(
+        isRemoteIdOrdering || isCreatedAtOrdering,
+        'only remoteId or createdAt terms are supported',
+      );
       if (isRemoteIdOrdering) {
         addRemoteIdBoundsWhere(
           query,
@@ -773,7 +785,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
     }
 
     if (filters?.excludeTextConditions?.isNotEmpty == true) {
-      for (var textCondition in filters!.excludeTextConditions!) {
+      for (final textCondition in filters!.excludeTextConditions!) {
         addExcludeTextWhere(
           joinQuery,
           phrase: textCondition.phrase,

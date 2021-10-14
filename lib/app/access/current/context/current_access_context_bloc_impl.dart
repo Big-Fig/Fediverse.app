@@ -673,7 +673,7 @@ class CurrentUnifediApiAccessContextBloc extends ProviderContextBloc
             .toList(),
       );
 
-      for (var timeline in timelines) {
+      for (final timeline in timelines) {
         var timelineLocalPreferencesBloc = TimelineLocalPreferenceBloc.byId(
           preferencesService,
           userAtHost: currentInstance.userAtHost,

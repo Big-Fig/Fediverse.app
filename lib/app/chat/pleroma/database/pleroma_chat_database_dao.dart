@@ -32,12 +32,16 @@ class ChatDao extends PopulatedAppRemoteDatabaseDao<
     PleromaChatRepositoryFilters,
     PleromaChatRepositoryOrderingTermData> with _$ChatDaoMixin {
   final AppDatabase db;
+
   // ignore: avoid-late-keyword
   late $DbAccountsTable accountAlias;
+
   // ignore: avoid-late-keyword
   late $DbChatMessagesTable chatMessageAlias;
+
   // ignore: avoid-late-keyword
   late $DbAccountsTable chatMessageAccountAlias;
+
   // ignore: avoid-late-keyword
   late $DbChatAccountsTable chatAccountsAlias;
 
@@ -52,29 +56,25 @@ class ChatDao extends PopulatedAppRemoteDatabaseDao<
     );
   }
 
-  SimpleSelectStatement<$DbChatsTable, DbChat> addUpdatedAtBoundsWhere(
+  void addUpdatedAtBoundsWhere(
     SimpleSelectStatement<$DbChatsTable, DbChat> query, {
     required DateTime? minimumDateTimeExcluding,
     required DateTime? maximumDateTimeExcluding,
   }) {
     var minimumExist = minimumDateTimeExcluding != null;
     var maximumExist = maximumDateTimeExcluding != null;
-    assert(minimumExist || maximumExist);
+    assert(minimumExist || maximumExist, 'min or max should exist');
 
     if (minimumExist) {
-      query = query
-        ..where(
-          (chat) => chat.updatedAt.isBiggerThanValue(minimumDateTimeExcluding),
-        );
+      query.where(
+        (chat) => chat.updatedAt.isBiggerThanValue(minimumDateTimeExcluding),
+      );
     }
     if (maximumExist) {
-      query = query
-        ..where(
-          (chat) => chat.updatedAt.isSmallerThanValue(maximumDateTimeExcluding),
-        );
+      query.where(
+        (chat) => chat.updatedAt.isSmallerThanValue(maximumDateTimeExcluding),
+      );
     }
-
-    return query;
   }
 
   Future<int> incrementUnreadCount({
@@ -180,9 +180,15 @@ class ChatDao extends PopulatedAppRemoteDatabaseDao<
   }) {
     if (pagination?.olderThanItem != null ||
         pagination?.newerThanItem != null) {
-      assert(orderingTerms?.length == 1);
+      assert(
+        orderingTerms?.length == 1,
+        'only single order term is supported',
+      );
       var orderingTermData = orderingTerms!.first;
-      assert(orderingTermData.orderType == PleromaChatOrderType.updatedAt);
+      assert(
+        orderingTermData.orderType == PleromaChatOrderType.updatedAt,
+        'only updatedAt term supported',
+      );
       addDateTimeBoundsWhere(
         query,
         column: dbChats.updatedAt,
@@ -253,7 +259,7 @@ extension DbPleromaChatPopulatedTypedResultExtension on TypedResult {
       );
 }
 
-extension DbPleromaChatWithLastMessagePopulatedTypedResultListExtension
+extension DbPleromaChatWithLastMessagePopulatedTypedListExtension
     on List<TypedResult> {
   List<DbPleromaChatWithLastMessagePopulated>
       toDbPleromaChatWithLastMessagePopulatedList({
@@ -266,8 +272,7 @@ extension DbPleromaChatWithLastMessagePopulatedTypedResultListExtension
           ).toList();
 }
 
-extension DbPleromaChatWithLastMessagePopulatedTypedResultExtension
-    on TypedResult {
+extension DbPleromaChatWithLastMessagePopulatedTypedExtension on TypedResult {
   DbPleromaChatWithLastMessagePopulated
       toDbPleromaChatWithLastMessagePopulated({
     required ChatDao dao,

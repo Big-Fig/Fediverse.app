@@ -40,7 +40,7 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
 
     var unifediApiStatusList = <IUnifediApiStatus>[];
 
-    for (var postStatus in sendDataList) {
+    for (final postStatus in sendDataList) {
       // todo: send to conversation id
       var unifediApiStatus = await unifediApiStatusService.postStatus(
         idempotencyKey: null,
@@ -85,7 +85,7 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
 
     var accounts = <IAccount>[];
 
-    for (var conversation in conversations) {
+    for (final conversation in conversations) {
       var conversationAccounts = await accountRepository
           .getConversationAccounts(conversation: conversation);
 
@@ -134,7 +134,7 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
 
     var unifediApiAccounts = <IUnifediApiAccount>[];
 
-    for (var pleromaConversation in pleromaConversations) {
+    for (final pleromaConversation in pleromaConversations) {
       var pleromaConversationAccounts = pleromaConversation.accounts;
       unifediApiAccounts.addAll(
         pleromaConversationAccounts.where(

@@ -162,7 +162,7 @@ extension DraftStatusStateStringExtension on String {
         break;
       // cant parse
       default:
-        throw 'Invalid DraftStatusState $DraftStatusState';
+        throw ArgumentError('Invalid DraftStatusState $DraftStatusState');
     }
 
     return result;

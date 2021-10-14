@@ -39,8 +39,7 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
 
   @override
   Stream<bool> get isLoadedPagesInSequenceStream =>
-      loadedPagesSortedByIndexStream
-          .map((pages) => mapIsLoadedPagesInSequence(pages));
+      loadedPagesSortedByIndexStream.map(mapIsLoadedPagesInSequence);
 
   @override
   bool get isLoadedPagesInSequence =>
@@ -53,9 +52,7 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
   @override
   Stream<int?> get loadedPagesMaximumIndexStream =>
       loadedPageIndexesSortedByIndexStream.map(
-        (loadedPageIndexesSortedByIndex) => _calculateMaxIndex(
-          loadedPageIndexesSortedByIndex,
-        ),
+        _calculateMaxIndex,
       );
 
   @override
@@ -68,9 +65,7 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
   @override
   Stream<int?> get loadedPagesMinimumIndexStream =>
       loadedPageIndexesSortedByIndexStream.map(
-        (loadedPageIndexesSortedByIndex) => _calculateMinIndex(
-          loadedPageIndexesSortedByIndex,
-        ),
+        _calculateMinIndex,
       );
 
   @override
@@ -92,7 +87,10 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
     required this.maximumCachedPagesCount,
     required this.paginationSettingsBloc,
   }) {
-    assert(itemsCountPerPage != null && itemsCountPerPage! > 0);
+    assert(
+      itemsCountPerPage != null && itemsCountPerPage! > 0,
+      'itemsCountPerPage should exist and positive',
+    );
     pagesSubject.disposeWith(this);
     _logger.finest(() => 'constructor');
   }
@@ -139,16 +137,14 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
           var keys = indexToCachedPageMap.keys;
           var farIndex = keys.first;
 
-          keys.forEach(
-            (index) {
-              var diffWithCurrent = (pageIndex - index).abs();
-              var diffWithFar = (pageIndex - farIndex).abs();
+          for (final index in keys) {
+            var diffWithCurrent = (pageIndex - index).abs();
+            var diffWithFar = (pageIndex - farIndex).abs();
 
-              if (diffWithCurrent > diffWithFar) {
-                farIndex = index;
-              }
-            },
-          );
+            if (diffWithCurrent > diffWithFar) {
+              farIndex = index;
+            }
+          }
 
           indexToCachedPageMap.remove(farIndex);
         }
@@ -212,7 +208,7 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
         isLoadedInSequence = false;
       } else {
         int? previousIndex = firstIndex - 1;
-        for (var page in loadedPagesSortedByIndex) {
+        for (final page in loadedPagesSortedByIndex) {
           var currentIndex = page.pageIndex;
 
           if (currentIndex != previousIndex! + 1) {
@@ -245,7 +241,7 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
     int? minIndex;
 
     // todo: improve
-    for (var index in loadedPageIndexesSortedByIndex) {
+    for (final index in loadedPageIndexesSortedByIndex) {
       if (minIndex == null || index < minIndex) {
         minIndex = index;
       }

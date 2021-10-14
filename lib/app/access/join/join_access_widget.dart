@@ -46,39 +46,39 @@ class JoinUnifediApiAccessWidget extends StatelessWidget {
           padding: FediPadding.allBigPadding,
           child: Column(
             children: <Widget>[
-              Spacer(
+              const Spacer(
                 flex: 1,
               ),
-              Padding(
+              const Padding(
                 padding: FediPadding.allSmallPadding,
-                child: const _JoinUnifediApiAccessLogoWidget(),
+                child: _JoinUnifediApiAccessLogoWidget(),
               ),
-              Spacer(
+              const Spacer(
                 flex: 1,
               ),
-              Padding(
+              const Padding(
                 padding: EdgeInsets.only(
                   bottom: FediSizes.bigPadding,
                 ),
-                child: const _JoinUnifediApiAccessHostTextFieldWidget(),
+                child: _JoinUnifediApiAccessHostTextFieldWidget(),
               ),
-              Padding(
+              const Padding(
                 padding: FediPadding.verticalBigPadding,
-                child: const _JoinUnifediApiAccessActionsWidget(),
+                child: _JoinUnifediApiAccessActionsWidget(),
               ),
               const _JoinUnifediApiAccessHelpMeChooseWidget(),
-              Spacer(
+              const Spacer(
                 flex: 1,
               ),
               Padding(
-                padding: EdgeInsets.only(
+                padding: const EdgeInsets.only(
                   top: FediSizes.bigPadding,
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const _JoinUnifediApiAccessTermsOfServiceButtonWidget(),
-                    const _JoinUnifediApiAccessAboutButtonWidget(),
+                  children: const [
+                    _JoinUnifediApiAccessTermsOfServiceButtonWidget(),
+                    _JoinUnifediApiAccessAboutButtonWidget(),
                   ],
                 ),
               ),
@@ -132,16 +132,16 @@ class _JoinUnifediApiAccessActionsWidget extends StatelessWidget {
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
+              children: const <Widget>[
                 Expanded(
                   flex: 1,
-                  child: const _JoinUnifediApiAccessSignUpButtonWidget(
+                  child: _JoinUnifediApiAccessSignUpButtonWidget(
                     key: Key(JoinUnifediApiAccessWidgetKeys.signUpButtonKey),
                   ),
                 ),
                 Expanded(
                   flex: 1,
-                  child: const _JoinUnifediApiAccessLoginButtonWidget(
+                  child: _JoinUnifediApiAccessLoginButtonWidget(
                     key: Key(JoinUnifediApiAccessWidgetKeys.loginButtonKey),
                   ),
                 ),
@@ -161,7 +161,7 @@ class _JoinUnifediApiAccessLoginButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: EdgeInsets.only(
+        padding: const EdgeInsets.only(
           left: FediSizes.smallPadding,
           // ignore: no-equal-arguments
           right: FediSizes.smallPadding,
@@ -187,14 +187,14 @@ class _JoinUnifediApiAccessExploreAsGuestButtonWidget extends StatelessWidget {
     var joinInstanceBloc = IJoinUnifediApiAccessBloc.of(context);
 
     return Padding(
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         left: FediSizes.smallPadding,
         // ignore: no-equal-arguments
         right: FediSizes.smallPadding,
       ),
       child: FediTransparentTextButtonWithBorder(
         S.of(context).app_auth_instance_join_action_exploreAsGuest,
-        key: Key(JoinUnifediApiAccessWidgetKeys.exploreAsGuestButtonKey),
+        key: const Key(JoinUnifediApiAccessWidgetKeys.exploreAsGuestButtonKey),
         onPressed: () {
           var hostUri = joinInstanceBloc.extractCurrentUri();
           goToRemoteInstanceDetailsPage(
@@ -216,7 +216,7 @@ class _JoinUnifediApiAccessSignUpButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: EdgeInsets.only(
+        padding: const EdgeInsets.only(
           left: FediSizes.smallPadding,
           // ignore: no-equal-arguments
           right: FediSizes.smallPadding,
@@ -254,7 +254,7 @@ class _JoinUnifediApiAccessHostTextFieldWidget extends StatelessWidget {
             VoidCallback onFieldSubmitted,
           ) =>
               FediTransparentEditTextField(
-            key: Key(JoinUnifediApiAccessWidgetKeys.hostTextFieldKey),
+            key: const Key(JoinUnifediApiAccessWidgetKeys.hostTextFieldKey),
             autocorrect: false,
             expanded: false,
             hintText: IConfigService.of(context).appDefaultInstanceUrl,
@@ -311,7 +311,7 @@ class _JoinUnifediApiAccessLogoWidget extends StatelessWidget {
           }
 
           return Image(
-            image: AssetImage('assets/images/theme/logo.png'),
+            image: const AssetImage('assets/images/theme/logo.png'),
             width: width,
           );
         },

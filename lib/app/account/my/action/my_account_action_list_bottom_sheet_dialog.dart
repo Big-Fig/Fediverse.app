@@ -12,11 +12,10 @@ Future<void> showMyAccountActionListBottomSheetDialog(BuildContext context) =>
     showFediModalBottomSheetDialog<void>(
       context: context,
       child: DisposableProvider<IUnifediApiAccessChooserBloc>(
-        create: (context) =>
-            UnifediApiAccessChooserBloc.createFromContext(context),
-        child: Padding(
+        create: UnifediApiAccessChooserBloc.createFromContext,
+        child: const Padding(
           padding: FediPadding.allBigPadding,
-          child: const UnifediApiAccessChooserWidget(),
+          child: UnifediApiAccessChooserWidget(),
         ),
       ),
     );

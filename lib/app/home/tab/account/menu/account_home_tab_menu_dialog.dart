@@ -77,7 +77,7 @@ class _AccountHomeTabMenuDialogBodyAccountItemWidget extends StatelessWidget {
         child: AccountHomeTabMenuActionsIntBadgeBloc.provideToContext(
           context,
           child: _AccountHomeTabMenuDialogBodyItem(
-            iconWidget: FediIntBadgeWidget(
+            iconWidget: const FediIntBadgeWidget(
               offset: 0.0,
               child: _AccountHomeTabMenuDialogBodyItemIcon(
                 iconData: FediIcons.account,
@@ -183,7 +183,7 @@ class _AnnouncementsHomeTabMenuDialogBodyListsItemWidget
         child: InstanceAnnouncementCountIntBadgeBloc.provideToContext(
           context,
           child: _AccountHomeTabMenuDialogBodyItem(
-            iconWidget: FediIntBadgeWidget(
+            iconWidget: const FediIntBadgeWidget(
               offset: 0.0,
               child: _AccountHomeTabMenuDialogBodyItemIcon(
                 iconData: FediIcons.message,
@@ -210,7 +210,7 @@ class _AboutHomeTabMenuDialogBodyListsItemWidget extends StatelessWidget {
           goToAboutPage(context: context);
         },
         child: _AccountHomeTabMenuDialogBodyItem(
-          iconWidget: _AccountHomeTabMenuDialogBodyItemIcon(
+          iconWidget: const _AccountHomeTabMenuDialogBodyItemIcon(
             iconData: FediIcons.info,
           ),
           textWidget: _AccountHomeTabMenuDialogBodyItemText(

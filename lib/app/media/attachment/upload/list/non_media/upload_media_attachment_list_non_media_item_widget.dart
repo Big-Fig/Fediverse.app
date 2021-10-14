@@ -104,7 +104,7 @@ class UploadMediaAttachmentListNonMediaItemWidgetState
     IUploadMediaAttachmentBloc mediaItemBloc,
     IUploadMediaAttachmentsCollectionBloc mediaAttachmentsCollectionBloc,
   ) =>
-      _UploadMediaAttachmentListNonMediaItemActionsWidget();
+      const _UploadMediaAttachmentListNonMediaItemActionsWidget();
 }
 
 class _UploadMediaAttachmentListNonMediaItemActionsWidget
@@ -132,14 +132,12 @@ class _UploadMediaAttachmentListNonMediaItemActionsWidget
           case UploadMediaAttachmentStateType.failed:
             return Row(
               mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                const _UploadMediaAttachmentListNonMediaItemErrorWidget(),
-                const FediSmallHorizontalSpacer(),
-                const _UploadMediaAttachmentListNonMediaItemRemoveButtonWidget(),
+              children: const <Widget>[
+                _UploadMediaAttachmentListNonMediaItemErrorWidget(),
+                FediSmallHorizontalSpacer(),
+                _UploadMediaAttachmentListNonMediaItemRemoveButtonWidget(),
               ],
             );
-          default:
-            throw 'Invalid state uploadState $uploadState';
         }
       },
     );

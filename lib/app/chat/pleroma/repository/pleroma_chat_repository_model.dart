@@ -6,7 +6,7 @@ part 'pleroma_chat_repository_model.freezed.dart';
 
 @freezed
 class PleromaChatRepositoryFilters with _$PleromaChatRepositoryFilters {
-  static final PleromaChatRepositoryFilters empty =
+  static const PleromaChatRepositoryFilters empty =
       PleromaChatRepositoryFilters();
 
   const PleromaChatRepositoryFilters._();

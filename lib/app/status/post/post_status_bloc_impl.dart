@@ -79,6 +79,7 @@ abstract class PostStatusBloc extends PostMessageBloc
           unfocusOnClear: unfocusOnClear,
         ) {
     initialData = initialData ?? defaultInitData;
+    // ignore: prefer_initializing_formals
     this.initialData = initialData;
     visibilitySubject = BehaviorSubject.seeded(
       initialData.visibilityString.toUnifediApiVisibility(),
@@ -99,9 +100,9 @@ abstract class PostStatusBloc extends PostMessageBloc
 
     addDisposable(pollBloc);
 
-    var focusListener = () {
+    void focusListener() {
       onFocusChange(inputFocusNode.hasFocus);
-    };
+    }
 
     inputFocusNode.addListener(focusListener);
 
@@ -115,9 +116,10 @@ abstract class PostStatusBloc extends PostMessageBloc
     subjectTextController.disposeWith(this);
     subjectTextSubject.disposeWith(this);
 
-    var editTextListener = () {
+    void editTextListener() {
       onSubjectTextChanged();
-    };
+    }
+
     subjectTextController.addListener(editTextListener);
 
     addDisposable(
@@ -129,11 +131,9 @@ abstract class PostStatusBloc extends PostMessageBloc
     );
 
     if (initialAccountsToMention?.isNotEmpty == true) {
-      initialAccountsToMention!.forEach(
-        (account) {
-          mentionedAccts.add(account.acct);
-        },
-      );
+      for (final account in initialAccountsToMention!) {
+        mentionedAccts.add(account.acct);
+      }
 
       onMentionedAccountsChanged();
     }
@@ -162,11 +162,10 @@ abstract class PostStatusBloc extends PostMessageBloc
     }
     var initialDataMediaAttachments = initialData.mediaAttachments;
     if (initialDataMediaAttachments != null) {
-      initialDataMediaAttachments.forEach(
-        (attachment) {
-          uploadMediaAttachmentsBloc.addUploadedAttachment(attachment);
-        },
-      );
+      // ignore: prefer_foreach
+      for (final attachment in initialDataMediaAttachments) {
+        uploadMediaAttachmentsBloc.addUploadedAttachment(attachment);
+      }
     }
     if (markMediaAsNsfwOnAttach) {
       uploadMediaAttachmentsBloc.uploadMediaAttachmentBlocsStream.listen(
@@ -259,7 +258,7 @@ abstract class PostStatusBloc extends PostMessageBloc
     expiresInSeconds: null,
   );
 
-  // ignore: no-empty-block
+  // ignore: no-empty-block, avoid_positional_boolean_parameters
   void onFocusChange(bool hasFocus) {
     // nothing by default
   }
@@ -373,14 +372,7 @@ abstract class PostStatusBloc extends PostMessageBloc
   Stream<String?> get inputWithoutMentionedAcctsTextStream => Rx.combineLatest2(
         inputTextStream,
         mentionedAcctsStream,
-        (
-          String? inputText,
-          List<String> mentionedAccts,
-        ) =>
-            removeAcctsFromText(
-          inputText,
-          mentionedAccts,
-        ),
+        removeAcctsFromText,
       );
 
   void onMentionedAccountsChanged() {
@@ -424,7 +416,11 @@ abstract class PostStatusBloc extends PostMessageBloc
               '\t acctsToRemove=$acctsToRemove,',
         );
         mentionedAccts.addAll(acctsToAdd);
-        acctsToRemove.forEach((acct) => mentionedAccts.remove(acct));
+
+        // ignore: prefer_foreach
+        for (final acct in acctsToRemove) {
+          mentionedAccts.remove(acct);
+        }
         mentionedAcctsSubject.add(mentionedAccts);
       }
     }
@@ -746,6 +742,7 @@ abstract class PostStatusBloc extends PostMessageBloc
         await statusRepository.incrementRepliesCount(
           remoteId: inReplyToStatusRemoteId,
         );
+        // ignore: avoid_catches_without_on_clauses
       } catch (e, stackTrace) {
         _logger.warning(
           () => 'failed to incrementRepliesCount $inReplyToStatusRemoteId',

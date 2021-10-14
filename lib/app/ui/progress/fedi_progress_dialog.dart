@@ -58,10 +58,10 @@ abstract class FediProgressDialog extends BaseDialog {
   Widget buildDialogBody(BuildContext context) => Dialog(
         insetAnimationCurve: Curves.easeInOut,
         // ignore: no-magic-number
-        insetAnimationDuration: Duration(milliseconds: 100),
+        insetAnimationDuration: const Duration(milliseconds: 100),
         // ignore: no-magic-number
         elevation: 10.0,
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(
               // ignore: no-magic-number

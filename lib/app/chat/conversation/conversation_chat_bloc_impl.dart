@@ -47,7 +47,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
 
   @override
   Stream<List<IAccount>> get accountsStream =>
-      _accountsSubject.stream.distinct((a, b) => listEquals(a, b));
+      _accountsSubject.stream.distinct(listEquals);
 
   @override
   IConversationChat get chat => _chatSubject.value;
@@ -226,7 +226,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
 
     await accountRepository.batch((batch) {
       if (remoteConversation.accounts.isNotEmpty) {
-        for (var account in remoteConversation.accounts) {
+        for (final account in remoteConversation.accounts) {
           accountRepository.upsertConversationRemoteAccount(
             account,
             conversationRemoteId: remoteConversation.id,
@@ -320,7 +320,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
   @override
   Future deleteMessages(List<IChatMessage> chatMessages) async {
     // create queue instead of parallel requests to avoid throttle limit on server
-    for (var chatMessage in chatMessages) {
+    for (final chatMessage in chatMessages) {
       if (chatMessage.isPendingStatePublishedOrNull) {
         await unifediApiStatusService.deleteStatus(
           statusId: chatMessage.remoteId,
@@ -328,7 +328,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
       }
     }
 
-    for (var chatMessage in chatMessages) {
+    for (final chatMessage in chatMessages) {
       // todo: rework in one request
       await statusRepository.markStatusAsDeleted(
         statusRemoteId: chatMessage.remoteId,
@@ -414,6 +414,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
       int? conversationIdInt;
       try {
         conversationIdInt = int.parse(chat.remoteId);
+        // ignore: avoid_catches_without_on_clauses
       } catch (e) {
         // nothing, not all backends use int for conversation id
       }
@@ -498,6 +499,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
         conversationRemoteId: chat.remoteId,
         batchTransaction: null,
       );
+      // ignore: avoid_catches_without_on_clauses
     } catch (e, stackTrace) {
       _logger.warning(() => 'postMessage error', e, stackTrace);
       await statusRepository.updateByDbIdInDbType(

@@ -35,9 +35,9 @@ class NewPostStatusPage extends StatelessWidget {
 
         return true;
       },
-      child: Scaffold(
-        appBar: const NewPostStatusPageAppBar(),
-        body: const _NewPostStatusPageBodyWidget(),
+      child: const Scaffold(
+        appBar: NewPostStatusPageAppBar(),
+        body: _NewPostStatusPageBodyWidget(),
       ),
     );
   }
@@ -97,8 +97,8 @@ class NewPostStatusPageAppBar extends StatelessWidget
           _newPostStatusPageHandleBackPressed(context, postStatusBloc);
         },
       ),
-      actions: [
-        const PostStatusAppBarPostAction(),
+      actions: const [
+        PostStatusAppBarPostAction(),
       ],
     );
   }

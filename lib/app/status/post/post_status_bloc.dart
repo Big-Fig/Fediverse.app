@@ -24,9 +24,9 @@ abstract class IPostStatusBloc implements IPostMessageBloc {
       );
 
   // ignore: no-magic-number
-  static final Duration requiredDurationToScheduleDateTime =
+  static const Duration requiredDurationToScheduleDateTime =
       Duration(minutes: 5);
-  static final Duration minimumExpireDuration = Duration(hours: 1);
+  static const Duration minimumExpireDuration = Duration(hours: 1);
 
   bool get isExpirePossible;
 
@@ -60,6 +60,7 @@ abstract class IPostStatusBloc implements IPostMessageBloc {
 
   void changeVisibility(UnifediApiVisibility visibility);
 
+  // ignore: avoid_positional_boolean_parameters
   void changeNsfwSensitive(bool nsfwSensitive);
 
   void setScheduledAt(DateTime? dateTime);

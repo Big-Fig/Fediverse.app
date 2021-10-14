@@ -55,7 +55,7 @@ void _showPermissionNotGrantedDialog(BuildContext context) {
   Future.delayed(
     // todo: refactor
     // ignore: no-magic-number
-    Duration(milliseconds: 100),
+    const Duration(milliseconds: 100),
     () {
       var declinedPushPermissionDialog =
           _createDeclinedPushPermissionDialog(context: context);

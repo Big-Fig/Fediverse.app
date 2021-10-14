@@ -51,8 +51,8 @@ class ConversationChatHomeTabPage extends StatelessWidget {
       body: FediNestedScrollViewWithoutNestedScrollableTabsWidget(
         onLongScrollUpTopOverlayWidget: null,
         topSliverScrollOffsetToShowWhiteStatusBar: null,
-        topSliverWidgets: [
-          const _ConversationMessagesHomeTabPageHeaderWidget(),
+        topSliverWidgets: const [
+          _ConversationMessagesHomeTabPageHeaderWidget(),
         ],
         providerBuilder: (context, child) => provideContentContext(child),
         contentBuilder: (context) =>
@@ -68,8 +68,7 @@ class ConversationChatHomeTabPage extends StatelessWidget {
     Widget child,
   ) =>
       DisposableProvider<IConversationChatWithLastMessageListBloc>(
-        create: (context) =>
-            ConversationChatWithLastMessageListBloc.createFromContext(context),
+        create: ConversationChatWithLastMessageListBloc.createFromContext,
         child: Builder(
           builder: (context) {
             var chatsListBloc = IConversationChatWithLastMessageListBloc.of(
@@ -171,7 +170,9 @@ class _ConversationMessagesHomeTabPageHeaderWidget extends StatelessWidget {
             S.of(context).app_home_tab_chat_conversation_action_switchToChats,
             onPressed: () {
               IChatSettingsBloc.of(context, listen: false)
-                  .changeReplaceConversationsWithPleromaChats(true);
+                  .changeReplaceConversationsWithPleromaChats(
+                replaceConversationsWithChats: true,
+              );
             },
             expanded: false,
           ),

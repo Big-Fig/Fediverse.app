@@ -10,9 +10,9 @@ class EmojiReactionWidget extends StatelessWidget {
   const EmojiReactionWidget();
 
   @override
-  Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: FediSizes.smallPadding),
-        child: const _StatusEmojiReactionListItemContentWidget(),
+  Widget build(BuildContext context) => const Padding(
+        padding: EdgeInsets.symmetric(horizontal: FediSizes.smallPadding),
+        child: _StatusEmojiReactionListItemContentWidget(),
       );
 }
 
@@ -55,7 +55,7 @@ class _StatusEmojiReactionListItemContentWidget extends StatelessWidget {
               emojiReaction.name,
               // todo: refactor
               // ignore: no-magic-number
-              style: TextStyle(fontSize: 16, height: 14 / 16),
+              style: const TextStyle(fontSize: 16, height: 14 / 16),
             ),
             const FediSmallHorizontalSpacer(),
             Text(

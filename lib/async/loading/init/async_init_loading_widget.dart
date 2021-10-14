@@ -51,7 +51,7 @@ class AsyncInitLoadingWidget extends StatelessWidget {
           case AsyncInitLoadingState.loading:
             Widget? child;
             if (loadingWidget == null) {
-              child = CircularProgressIndicator();
+              child = const CircularProgressIndicator();
             } else {
               child = loadingWidget;
             }

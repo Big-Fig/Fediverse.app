@@ -107,7 +107,7 @@ class _MediaPickerFileGridItemIconWidget extends StatelessWidget {
               FediIcons.play,
               color: fediUiColorTheme.white,
             )
-          : SizedBox.shrink(),
+          : const SizedBox.shrink(),
     );
   }
 }

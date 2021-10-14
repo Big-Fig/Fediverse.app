@@ -64,11 +64,11 @@ class HomePage extends StatelessWidget {
         return Scaffold(
           body: Stack(
             children: [
-              RepaintBoundary(
-                child: Container(
+              const RepaintBoundary(
+                child: SizedBox(
                   // ignore: no-magic-number
                   height: 180,
-                  child: const _HomePageBackgroundWidget(),
+                  child: _HomePageBackgroundWidget(),
                 ),
               ),
               buildBody(context, selectedTab),
@@ -132,8 +132,8 @@ class _HomePageAccountTabWidget extends StatelessWidget {
 
           return accountHomeTabBloc;
         },
-        child: AccountHomeTabBlocProxyProvider(
-          child: const AccountHomeTabPage(
+        child: const AccountHomeTabBlocProxyProvider(
+          child: AccountHomeTabPage(
             key: PageStorageKey<String>('AccountHomeTabPage'),
           ),
         ),
@@ -165,8 +165,8 @@ class _HomePageMessagesTabConversationWidget extends StatelessWidget {
 
           return conversationMessagesHomeTabBloc;
         },
-        child: ConversationChatHomeTabBlocProxyProvider(
-          child: const ConversationChatHomeTabPage(),
+        child: const ConversationChatHomeTabBlocProxyProvider(
+          child: ConversationChatHomeTabPage(),
         ),
       );
 }
@@ -192,8 +192,8 @@ class _HomePageMessagesTabChatWidget extends StatelessWidget {
 
           return chatMessagesHomeTabBloc;
         },
-        child: PleromaChatHomeTabBlocProxyProvider(
-          child: const PleromaChatHomeTabPage(
+        child: const PleromaChatHomeTabBlocProxyProvider(
+          child: PleromaChatHomeTabPage(
             key: PageStorageKey<String>('ChatMessagesHomeTabPage'),
           ),
         ),
@@ -294,7 +294,7 @@ class _HomePageTimelineTabWidget extends StatelessWidget {
           // when navigating to pick image page
           child: NewPostStatusBloc.provideToContextWithInitial(
             context,
-            child: TimelinesHomeTabPage(),
+            child: const TimelinesHomeTabPage(),
             initialMediaAttachments: null,
             initialText: null,
             initialSubject: null,
@@ -311,13 +311,13 @@ class _HomePageBottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Padding(
         padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
-        child: Container(
+        child: SizedBox(
           // ignore: no-magic-number
           height: 58,
           child: Column(
-            children: [
-              const FediUltraLightGreyDivider(),
-              const HomePageBottomNavigationBarWidget(),
+            children: const [
+              FediUltraLightGreyDivider(),
+              HomePageBottomNavigationBarWidget(),
             ],
           ),
         ),

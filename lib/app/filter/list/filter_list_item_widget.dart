@@ -42,9 +42,9 @@ class FilterListItemWidget extends StatelessWidget {
         padding: FediPadding.allBigPadding,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const _FilterListItemPhraseWidget(),
-            const _FilterListItemExpiredWidget(),
+          children: const [
+            _FilterListItemPhraseWidget(),
+            _FilterListItemExpiredWidget(),
           ],
         ),
       ),

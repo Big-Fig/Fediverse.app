@@ -84,9 +84,7 @@ class FediBaseEditTextField extends StatelessWidget {
         focusNode: focusNode,
         textInputAction: actualTextInputAction,
         onSubmitted: (value) {
-          if (onSubmitted != null) {
-            onSubmitted!(value);
-          }
+          onSubmitted?.call(value);
         },
         decoration: InputDecoration(
           border: displayBorder ? border : InputBorder.none,
@@ -192,9 +190,7 @@ class _MentionSpecialText extends SpecialText {
       style: textStyle,
       recognizer: (TapGestureRecognizer()
         ..onTap = () {
-          if (onTap != null) {
-            onTap!(mentionText);
-          }
+          onTap?.call(mentionText);
         }),
     );
   }

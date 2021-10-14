@@ -136,7 +136,7 @@ class _PollBodyOptionWidget extends StatelessWidget {
                 }
               }
             : null,
-        child: PollOptionWidget(),
+        child: const PollOptionWidget(),
       ),
     );
   }
@@ -282,11 +282,11 @@ class PollOptionWidget extends StatelessWidget {
 
     return Row(
       children: <Widget>[
-        Expanded(
-          child: const _PollOptionBodyWidget(),
+        const Expanded(
+          child: _PollOptionBodyWidget(),
         ),
         if (pollBloc.multiple) const _PollOptionSelectionWidget(),
-        _PollOptionResultsWidget(),
+        const _PollOptionResultsWidget(),
       ],
     );
   }
@@ -322,9 +322,9 @@ class _PollOptionBodyWidget extends StatelessWidget {
       ),
       child: Stack(
         alignment: Alignment.centerLeft,
-        children: [
-          const _PollOptionBodyFillerWidget(),
-          const _PollOptionContentWidget(),
+        children: const [
+          _PollOptionBodyFillerWidget(),
+          _PollOptionContentWidget(),
         ],
       ),
     );
@@ -378,7 +378,7 @@ class _PollOptionResultsWidget extends StatelessWidget {
         var isNeedShowResultsWithoutVote = snapshot.data;
 
         if (!pollBloc.isPossibleToVote || isNeedShowResultsWithoutVote!) {
-          return PollOptionVotesPercentWidget();
+          return const PollOptionVotesPercentWidget();
         } else {
           return const SizedBox.shrink();
         }
@@ -478,8 +478,8 @@ class _PollOptionContentWidget extends StatelessWidget {
         mainAxisAlignment: poll.isPossibleToVote && !poll.multiple
             ? MainAxisAlignment.center
             : MainAxisAlignment.start,
-        children: <Widget>[
-          const PollOptionTitleWidget(),
+        children: const <Widget>[
+          PollOptionTitleWidget(),
         ],
       ),
     );
@@ -514,7 +514,7 @@ class PollOptionVotesPercentWidget extends StatelessWidget {
 
     var votesPercent = poll.votesPercent(pollOption);
 
-    return Container(
+    return SizedBox(
       // todo: refactor
       // ignore: no-magic-number
       width: 60,

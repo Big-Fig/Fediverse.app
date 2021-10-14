@@ -23,9 +23,9 @@ class StatusReblogAccountListPage extends StatelessWidget {
         ),
         body: SafeArea(
           child: Column(
-            children: [
-              const _StatusReblogAccountListPrivacyWarningWidget(),
-              const Expanded(
+            children: const [
+              _StatusReblogAccountListPrivacyWarningWidget(),
+              Expanded(
                 child: AccountPaginationListWidget(
                   accountSelectedCallback: _goToAccountDetailsPage,
                   key: PageStorageKey('StatusReblogAccountListPage'),

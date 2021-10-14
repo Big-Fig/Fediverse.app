@@ -24,7 +24,7 @@ extension IConversationChatExtension on IConversationChat {
 
     return UnifediApiConversation(
       recipients: null,
-      unread: (unread > 0) ? true : false,
+      unread: unread > 0,
       lastStatus: lastStatus?.toUnifediApiStatus(),
       id: remoteId,
       accounts: accounts.toUnifediApiAccountList(),

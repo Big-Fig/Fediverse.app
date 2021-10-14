@@ -54,6 +54,7 @@ class AccountDetailsBloc extends DisposableOwner
     addCustomDisposable(() {
       try {
         nestedScrollController.dispose();
+        // ignore: avoid_catches_without_on_clauses
       } catch (e) {
         _logger.warning(() => 'error during nestedScrollController.dispose()');
       }

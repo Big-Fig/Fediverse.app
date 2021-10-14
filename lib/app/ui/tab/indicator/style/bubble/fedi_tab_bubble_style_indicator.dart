@@ -104,6 +104,7 @@ class BubblePainter extends BoxPainter {
 
   @override
   void paint(Canvas canvas, Offset offset, ImageConfiguration configuration) {
+    // ignore: prefer_asserts_with_message
     assert(configuration.size != null);
     final rect = Offset(
           offset.dx,

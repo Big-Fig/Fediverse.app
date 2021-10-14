@@ -52,8 +52,7 @@ class LocalInstanceDirectoryBloc extends InstanceDirectoryBloc
     required Widget child,
   }) =>
       DisposableProvider<IInstanceDirectoryBloc>(
-        create: (context) =>
-            LocalInstanceDirectoryBloc.createFromContext(context),
+        create: LocalInstanceDirectoryBloc.createFromContext,
         child: InstanceDirectoryBlocProxyProvider(child: child),
       );
 

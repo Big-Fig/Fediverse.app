@@ -138,7 +138,7 @@ class AccountStatusesWithRepliesCachedListBloc
   }
 
   @override
-  Stream<bool> get settingsChangedStream => Stream.empty();
+  Stream<bool> get settingsChangedStream => const Stream.empty();
 
   static Widget provideToContext(
     BuildContext context, {

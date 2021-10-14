@@ -20,7 +20,7 @@ class FediPageAppBarTextActionWidget extends StatelessWidget {
           text: text,
           onPressed: onPressed,
           color: color,
-          padding: EdgeInsets.only(
+          padding: const EdgeInsets.only(
             right: FediSizes.bigPadding,
           ),
         ),

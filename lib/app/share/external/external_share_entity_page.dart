@@ -22,11 +22,11 @@ class ExternalShareEntityPage extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
         appBar: FediPageTitleAppBar(
           title: S.of(context).app_share_external_title,
-          actions: [
-            const SharePageAppBarSendTextActionWidget(),
+          actions: const [
+            SharePageAppBarSendTextActionWidget(),
           ],
         ),
-        body: SingleChildScrollView(
+        body: const SingleChildScrollView(
           child: ShareEntityWidget(
             footer: ShareEntitySettingsWidget(),
           ),
@@ -71,7 +71,7 @@ MaterialPageRoute<void> createExternalShareEntityPageRoute({
               update: (context, value, previous) => value,
               child: ProxyProvider<ExternalShareEntityBloc, IExternalShareBloc>(
                 update: (context, value, previous) => value,
-                child: ExternalShareBlocProxyProvider(
+                child: const ExternalShareBlocProxyProvider(
                   child: ExternalShareEntityPage(),
                 ),
               ),

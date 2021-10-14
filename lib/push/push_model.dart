@@ -105,7 +105,7 @@ extension PushMessageTypeStringExtension on String {
         result = PushMessageType.action;
         break;
       default:
-        throw 'Invalid PushMessageType $this';
+        throw ArgumentError('Invalid PushMessageType $this');
     }
 
     return result;

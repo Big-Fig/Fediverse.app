@@ -29,10 +29,7 @@ class MediaDeviceFilePaginationListBloc extends PaginationListBloc<
     required Widget child,
   }) =>
       DisposableProvider<IMediaDeviceFilePaginationListBloc>(
-        create: (context) =>
-            MediaDeviceFilePaginationListBloc.createFromContext(
-          context,
-        ),
+        create: MediaDeviceFilePaginationListBloc.createFromContext,
         child: ProxyProvider<
             IMediaDeviceFilePaginationListBloc,
             IPaginationListBloc<PaginationPage<IMediaDeviceFileMetadata>,

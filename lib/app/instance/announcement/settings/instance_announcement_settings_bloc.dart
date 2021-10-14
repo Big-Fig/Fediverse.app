@@ -15,5 +15,6 @@ abstract class IInstanceAnnouncementSettingsBloc
 
   Stream<bool> get withDismissedStream;
 
+  // ignore: avoid_positional_boolean_parameters
   Future changeWithDismissed(bool value);
 }

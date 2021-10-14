@@ -44,7 +44,10 @@ class SingleSelectFromListValueFormFieldRowWidget<T> extends StatelessWidget {
     required this.valueIconMapper,
   }) {
     if (displayIconInRow || displayIconInDialog) {
-      assert(valueIconMapper != null);
+      assert(
+        valueIconMapper != null,
+        'valueIconMapper required if display icon enabled',
+      );
     }
   }
 
@@ -102,7 +105,7 @@ class _SingleSelectFromListValueFormFieldRowValueWidget<T>
           }
         },
         child: Padding(
-          padding: EdgeInsets.symmetric(
+          padding: const EdgeInsets.symmetric(
             // ignore: no-magic-number
             vertical: FediSizes.smallPadding / 2,
             horizontal: FediSizes.mediumPadding,
@@ -288,6 +291,9 @@ SelectionDialogAction _buildDialogAction<T>({
       icon: displayIconInDialog ? valueIconMapper!(context, value) : null,
       label: valueTitleMapper(context, value),
       onAction: (context) {
+        // null cases dont execute onAction
+        // todo: refactoring
+        // ignore: null_check_on_nullable_type_parameter
         fieldBloc.changeCurrentValue(value!);
         Navigator.of(context).pop();
       },

@@ -473,6 +473,7 @@ Future<IUnifediApiNotification?> loadLastNotificationForAcctOnHost({
     } else {
       _logger.warning(() => 'instance for $acct@$host not found');
     }
+    // ignore: avoid_catches_without_on_clauses
   } catch (e, stackTrace) {
     _logger.severe(() => 'loadLastNotificationForAcctOnHost', e, stackTrace);
   } finally {
@@ -570,7 +571,7 @@ Future<IUnifediApiNotification?> _loadLastNotificationForInstance({
         await unifediApiNotificationService.getNotifications(
       excludeVisibilities: null,
       onlyFromAccountId: null,
-      pagination: UnifediApiPagination(
+      pagination: const UnifediApiPagination(
         limit: 1,
         minId: null,
         maxId: null,
@@ -586,6 +587,7 @@ Future<IUnifediApiNotification?> _loadLastNotificationForInstance({
     );
 
     return unifediApiNotifications.firstOrNull;
+    // ignore: avoid_catches_without_on_clauses
   } catch (e, stackTrace) {
     _logger.warning(() => 'failed to load notification', e, stackTrace);
 
@@ -899,6 +901,7 @@ int _extractNotificationId(IUnifediApiNotification unifediApiNotification) {
   try {
     // usually id is int type
     return int.parse(unifediApiNotification.id);
+    // ignore: avoid_catches_without_on_clauses
   } catch (_) {
     // if id is not it just use ms from epoch to make it unique
     return DateTime.now().millisecondsSinceEpoch;
@@ -923,7 +926,7 @@ Future<UnifediApiAccess?> _findInstanceByUserAtHost({
 
   UnifediApiAccess? foundInstance;
 
-  for (var authInstance in authInstanceList.instances) {
+  for (final authInstance in authInstanceList.instances) {
     var found = authInstance.isInstanceWithHostAndAcct(
       host: host,
       acct: acct,

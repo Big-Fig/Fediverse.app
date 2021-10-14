@@ -89,11 +89,11 @@ class FcmPushService extends AsyncInitLoadingBloc implements IFcmPushService {
       richNotificationsFirebaseMessagingBackgroundHandler,
     );
 
-    _fcm.onTokenRefresh.listen(
-      (newToken) {
-        _onNewToken(newToken);
-      },
-    ).disposeWith(this);
+    _fcm.onTokenRefresh
+        .listen(
+          _onNewToken,
+        )
+        .disposeWith(this);
 
     FirebaseMessaging.onMessageOpenedApp.listen(
       (RemoteMessage message) {
@@ -120,6 +120,7 @@ class FcmPushService extends AsyncInitLoadingBloc implements IFcmPushService {
 
     try {
       await _updateToken();
+      // ignore: avoid_catches_without_on_clauses
     } catch (e, stackTrace) {
       _logger.warning(
         () => 'failed to _updateToken on internalAsyncInit',

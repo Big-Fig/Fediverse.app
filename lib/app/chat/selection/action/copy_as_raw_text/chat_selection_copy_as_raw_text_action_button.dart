@@ -14,7 +14,7 @@ class ChatSelectionCopyAsRawTextActionButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => FediIconButton(
-        icon: Icon(FediIcons.copy),
+        icon: const Icon(FediIcons.copy),
         color: IFediUiColorTheme.of(context).darkGrey,
         onPressed: () async {
           var chatSelectionBloc = IChatSelectionBloc.of(context, listen: false);

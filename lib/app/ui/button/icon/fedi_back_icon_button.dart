@@ -14,7 +14,7 @@ class FediBackIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => FediIconButton(
-        key: Key(FediBackIconButtonKeys.button),
+        key: const Key(FediBackIconButtonKeys.button),
         icon: Icon(
           FediIcons.chevron_left,
           color: IFediUiColorTheme.of(context, listen: true).darkGrey,

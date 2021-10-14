@@ -18,7 +18,7 @@ class FediIndicatorWidget extends StatelessWidget {
       width: _size,
       // ignore: no-equal-arguments
       height: _size,
-      margin: EdgeInsets.symmetric(
+      margin: const EdgeInsets.symmetric(
         vertical: FediSizes.mediumPadding,
         // ignore: no-magic-number
         horizontal: 2.0,

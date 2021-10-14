@@ -262,7 +262,7 @@ class EditCustomListBloc extends DisposableOwner
       // TODO: remove hack
       // Pleroma issue: it is only possible to add one account in one request
       if (addedAccounts.isNotEmpty) {
-        for (var addedAccount in addedAccounts) {
+        for (final addedAccount in addedAccounts) {
           await pleromaListService.addAccountsToList(
             listId: listRemoteId,
             accountIds: [
@@ -278,7 +278,7 @@ class EditCustomListBloc extends DisposableOwner
       if (removedAccounts.isNotEmpty) {
         // TODO: remove hack
         // Pleroma issue: it is only possible to remove one account in one request
-        for (var removedAccount in removedAccounts) {
+        for (final removedAccount in removedAccounts) {
           await pleromaListService.removeAccountsFromList(
             listId: listRemoteId,
             accountIds: [
@@ -307,7 +307,7 @@ class EditCustomListBloc extends DisposableOwner
 
     var timelinesToRemove = <Timeline>[];
 
-    for (var timelineStorageItem
+    for (final timelineStorageItem
         in timelinesHomeTabStorageBloc.timelineStorageItems) {
       var timeline = timelineStorageItem.timeline;
       var onlyInRemoteList = timeline.onlyInRemoteList;
@@ -317,7 +317,7 @@ class EditCustomListBloc extends DisposableOwner
       }
     }
 
-    for (var timeline in timelinesToRemove) {
+    for (final timeline in timelinesToRemove) {
       await timelinesHomeTabStorageBloc.remove(timeline);
     }
   }
@@ -350,6 +350,6 @@ class EditCustomListBloc extends DisposableOwner
   @override
   Stream<bool> get isListContainsAccountsStream =>
       editCustomListAccountListPaginationListBloc.itemsStream.map(
-        (items) => _calculateIsListContainsAccounts(items),
+        _calculateIsListContainsAccounts,
       );
 }

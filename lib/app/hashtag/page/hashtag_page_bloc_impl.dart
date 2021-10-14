@@ -33,6 +33,6 @@ abstract class HashtagPageBloc extends AsyncInitLoadingBloc
     required this.hashtag,
   }) : refreshController = RefreshController() {
     scrollController.disposeWith(this);
-    addCustomDisposable(() => refreshController.dispose());
+    addCustomDisposable(refreshController.dispose);
   }
 }

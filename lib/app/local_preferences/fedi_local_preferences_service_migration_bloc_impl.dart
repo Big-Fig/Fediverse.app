@@ -57,7 +57,7 @@ class FediLocalPreferencesServiceMigrationBloc
 
     var authInstancesBlocCreators = <LocalPreferencesBlocCreator>[];
 
-    for (var authInstance in authInstanceList.instances) {
+    for (final authInstance in authInstanceList.instances) {
       var host = authInstance.urlHost;
       var userAtHost = authInstance.userAtHost;
 

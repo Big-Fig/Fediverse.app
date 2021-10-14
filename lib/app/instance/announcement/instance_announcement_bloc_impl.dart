@@ -50,7 +50,7 @@ class InstanceAnnouncementBloc extends DisposableOwner
             BehaviorSubject.seeded(instanceAnnouncement) {
     _instanceAnnouncementSubject.disposeWith(this);
     if (delayInit) {
-      Future.delayed(Duration(seconds: 1), () {
+      Future.delayed(const Duration(seconds: 1), () {
         _init(instanceAnnouncement);
       });
     } else {
@@ -110,7 +110,10 @@ class InstanceAnnouncementBloc extends DisposableOwner
       (reaction) => reaction.name == emojiName,
     );
 
-    assert(foundReaction == null || !foundReaction.me);
+    assert(
+      foundReaction == null || !foundReaction.me,
+      'cant add emoji if it is already added',
+    );
 
     await unifediApiAnnouncementService.addAnnouncementReaction(
       announcementId: instanceAnnouncement.remoteId,
@@ -150,7 +153,7 @@ class InstanceAnnouncementBloc extends DisposableOwner
       (reaction) => reaction.name == emojiName,
     );
 
-    assert(foundReaction?.me == true);
+    assert(foundReaction?.me == true, 'cant remove when not added yet');
 
     await unifediApiAnnouncementService.removeAnnouncementReaction(
       announcementId: instanceAnnouncement.remoteId,
@@ -220,6 +223,7 @@ class InstanceAnnouncementBloc extends DisposableOwner
     await _updateAnnouncement(updatedInstanceAnnouncements);
   }
 
+  // ignore: avoid_positional_boolean_parameters
   Future updateDismissed(bool dismissed) async {
     var dbInstanceAnnouncementPopulatedWrapper =
         instanceAnnouncement.toDbInstanceAnnouncementPopulatedWrapper();

@@ -92,6 +92,7 @@ class RegisterUnifediApiAccessBloc extends AsyncInitLoadingBloc
       return await authApplicationBloc.registerAccount(
         registerAccount: unifediApiAccountRegisterRequest,
       );
+      // ignore: avoid_catches_without_on_clauses
     } catch (e, stackTrace) {
       // todo: refactor
       _logger.warning(() => 'submit', e, stackTrace);

@@ -17,7 +17,7 @@ class FediEmptyWidget extends StatelessWidget {
 
     return Padding(
       // ignore: no-magic-number
-      padding: EdgeInsets.all(40.0),
+      padding: const EdgeInsets.all(40.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,

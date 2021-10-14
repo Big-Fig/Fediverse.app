@@ -5,7 +5,7 @@ import 'package:fedi/push/relay/push_relay_service.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart' as path;
 
-var urlPath = path.posix;
+var _urlPath = path.posix;
 
 var _logger = Logger('push_relay_service_impl.dart');
 
@@ -32,7 +32,7 @@ class PushRelayService extends DisposableOwner implements IPushRelayService {
 
     var host = baseServerUrl.host;
 
-    var endpoint = urlPath.join(
+    var endpoint = _urlPath.join(
       pushRelayBaseUrl,
       '$fcmDeviceToken'
       '?account=$account'
@@ -46,7 +46,7 @@ class PushRelayService extends DisposableOwner implements IPushRelayService {
 //      endpoint += '&device=android';
       // nothing
     } else {
-      throw 'Unsupported platform ${Platform.operatingSystem}';
+      throw Exception('Unsupported platform ${Platform.operatingSystem}');
     }
     _logger.finest('createPushRelayEndPointUrl endpoint=$endpoint');
 

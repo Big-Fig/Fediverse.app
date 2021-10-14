@@ -9,29 +9,20 @@ import 'web_sockets_settings_model_test_helper.dart';
 void main() {
   test('equal & hashcode & toString', () async {
     ObjMockHelper.testEqualsHashcodeToString(
-      ({required String seed}) =>
-          WebSocketsSettingsModelMockHelper.createTestWebSocketsSettings(
-        seed: seed,
-      ),
+      WebSocketsSettingsModelMockHelper.createTestWebSocketsSettings,
     );
   });
 
   test('toJson & fromJson', () async {
     JsonMockHelper.testFromJsonToJson(
-      ({required String seed}) =>
-          WebSocketsSettingsModelMockHelper.createTestWebSocketsSettings(
-        seed: seed,
-      ),
+      WebSocketsSettingsModelMockHelper.createTestWebSocketsSettings,
       (json) => WebSocketsSettings.fromJson(json),
     );
   });
 
   test('hive save&load', () async {
     await HiveMockHelper.testHiveSaveAndLoad(
-      ({required String seed}) =>
-          WebSocketsSettingsModelMockHelper.createTestWebSocketsSettings(
-        seed: seed,
-      ),
+      WebSocketsSettingsModelMockHelper.createTestWebSocketsSettings,
     );
   });
 

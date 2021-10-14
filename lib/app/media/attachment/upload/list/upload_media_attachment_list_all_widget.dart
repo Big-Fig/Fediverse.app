@@ -17,9 +17,9 @@ class UploadMediaAttachmentListAllWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var column = Column(
-      children: [
-        const UploadMediaAttachmentListMediaWidget(),
-        const UploadMediaAttachmentListNonMediaWidget(),
+      children: const [
+        UploadMediaAttachmentListMediaWidget(),
+        UploadMediaAttachmentListNonMediaWidget(),
       ],
     );
     Widget child;

@@ -284,7 +284,10 @@ extension ScheduledStatusStateStringExtension on String {
         break;
       // cant parse
       default:
-        throw 'Invalid ScheduledStatusState $ScheduledStatusState';
+        throw ArgumentError(
+          'Invalid ScheduledStatusState '
+          '$ScheduledStatusState',
+        );
     }
 
     return result;

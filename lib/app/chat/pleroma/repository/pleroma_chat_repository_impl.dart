@@ -15,7 +15,8 @@ import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
-var _singlePleromaChatRepositoryPagination = RepositoryPagination<IPleromaChat>(
+const _singlePleromaChatRepositoryPagination =
+    RepositoryPagination<IPleromaChat>(
   limit: 1,
   newerThanItem: null,
   offset: null,
@@ -125,7 +126,7 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }) async {
     var query = createFindInTypedResultSelectable(
       filters: filters?.copyWith(withLastMessage: true) ??
-          PleromaChatRepositoryFilters(withLastMessage: true),
+          const PleromaChatRepositoryFilters(withLastMessage: true),
       pagination: pagination,
       orderingTerms: orderingTermData != null
           ? [
@@ -149,7 +150,7 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }) {
     var query = createFindInTypedResultSelectable(
       filters: filters?.copyWith(withLastMessage: true) ??
-          PleromaChatRepositoryFilters(withLastMessage: true),
+          const PleromaChatRepositoryFilters(withLastMessage: true),
       pagination: pagination,
       orderingTerms: orderingTermData != null
           ? [
@@ -173,7 +174,7 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }) async {
     var query = createFindInTypedResultSelectable(
       filters: filters?.copyWith(withLastMessage: true) ??
-          PleromaChatRepositoryFilters(withLastMessage: true),
+          const PleromaChatRepositoryFilters(withLastMessage: true),
       pagination: _singlePleromaChatRepositoryPagination,
       orderingTerms: orderingTermData != null
           ? [
@@ -198,7 +199,7 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }) {
     var query = createFindInTypedResultSelectable(
       filters: filters?.copyWith(withLastMessage: true) ??
-          PleromaChatRepositoryFilters(withLastMessage: true),
+          const PleromaChatRepositoryFilters(withLastMessage: true),
       pagination: _singlePleromaChatRepositoryPagination,
       orderingTerms: orderingTermData != null
           ? [

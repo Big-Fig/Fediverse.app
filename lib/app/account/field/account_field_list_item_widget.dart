@@ -42,8 +42,7 @@ class AccountFieldListItemWidget extends StatelessWidget {
             ),
             color: brightness == Brightness.dark
                 ? IFediUiColorTheme.of(context).mediumGrey
-                : IFediUiColorTheme.of(context).white,
-            // todo: refactor
+                : IFediUiColorTheme.of(context).white, // todo: refactor
             // ignore: no-magic-number
             size: 16.0,
           ),
@@ -66,18 +65,20 @@ class AccountFieldListItemWidget extends StatelessWidget {
     );
   }
 
-  IconData _calculateIconData({required String valueAsRawUrlWithoutSchema}) {
-    valueAsRawUrlWithoutSchema = valueAsRawUrlWithoutSchema.toLowerCase();
+  IconData _calculateIconData({
+    required String valueAsRawUrlWithoutSchema,
+  }) {
+    var preparedUrl = valueAsRawUrlWithoutSchema.toLowerCase();
     if (valueAsRawUrlWithoutSchema.startsWith('www.')) {
-      valueAsRawUrlWithoutSchema = valueAsRawUrlWithoutSchema.replaceAll(
+      preparedUrl = preparedUrl.replaceAll(
         'www.',
         '',
       );
     }
-    if (_isFacebookLink(valueAsRawUrlWithoutSchema)) {
+    if (_isFacebookLink(preparedUrl)) {
       return FediIcons.fb;
     }
-    if (_isInstagramLink(valueAsRawUrlWithoutSchema)) {
+    if (_isInstagramLink(preparedUrl)) {
       return FediIcons.ig;
     } else {
       return FediIcons.link;

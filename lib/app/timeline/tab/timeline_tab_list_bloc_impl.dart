@@ -48,7 +48,7 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
     var selectedTimelineId = oldSelectedTimelineId ?? timelineIds.first;
 
     timelineTabBlocs = [];
-    for (var timelineId in timelineIds) {
+    for (final timelineId in timelineIds) {
       var timelineTabBloc = timelineTabBlocCreator(
         timelineId,
         selectedTimelineId == timelineId
@@ -74,7 +74,7 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
 
     addCustomDisposable(
       () async {
-        for (var bloc in timelineTabBlocs) {
+        for (final bloc in timelineTabBlocs) {
           await bloc.dispose();
         }
       },
@@ -83,7 +83,7 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
 
   @override
   Future internalAsyncInit() async {
-    for (var timelineTabBloc in timelineTabBlocs) {
+    for (final timelineTabBloc in timelineTabBlocs) {
       await timelineTabBloc.performAsyncInit();
     }
   }
@@ -101,7 +101,7 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
     if (paginationListBloc.unmergedNewItemsCount > 0) {
       paginationListBloc.mergeNewItems();
     }
-    for (var bloc in timelineTabBlocs) {
+    for (final bloc in timelineTabBlocs) {
       bloc.resubscribeWebSocketsUpdates(
         bloc == selectedTimelineTabBloc
             ? WebSocketsChannelHandlerType.foregroundValue

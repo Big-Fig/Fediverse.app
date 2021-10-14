@@ -44,13 +44,13 @@ class EditCustomListWidget extends StatelessWidget {
       children: <Widget>[
         const CustomListFormWidget(),
         if (editCustomListBloc.isPossibleToDelete)
-          Padding(
+          const Padding(
             padding: FediPadding.allBigPadding,
-            child: const _EditCustomListDeleteButton(),
+            child: _EditCustomListDeleteButton(),
           ),
         const _EditCustomListAccountDescriptionWidget(),
-        Expanded(
-          child: const _EditCustomListBodyWidget(),
+        const Expanded(
+          child: _EditCustomListBodyWidget(),
         ),
       ],
     );
@@ -131,8 +131,8 @@ class _EditCustomListEmptySearchChildWidget extends StatelessWidget {
               accountCachedListBloc: editCustomListBloc.selectAccountListBloc,
             ),
             child: SuggestionSelectAccountWidget(
-              itemActions: [
-                const CustomListAccountListItemAddRemoveActionWidget(),
+              itemActions: const [
+                CustomListAccountListItemAddRemoveActionWidget(),
               ],
               accountSelectedCallback:
                   (BuildContext context, IAccount account) {
@@ -172,10 +172,10 @@ class _EditCustomListBodyAlreadyAddedAccountsWidget extends StatelessWidget {
             child: EditCustomListAccountListPaginationListBlocProxyProvider(
               child: CustomListAccountListNetworkOnlyListBlocProxyProvider(
                 child: Column(
-                  children: [
-                    const _EditCustomListBodyAddedHeaderWidget(),
+                  children: const [
+                    _EditCustomListBodyAddedHeaderWidget(),
                     Expanded(
-                      child: const CustomListAccountListWidget(
+                      child: CustomListAccountListWidget(
                         itemActions: [
                           CustomListAccountListItemAddRemoveActionWidget(),
                         ],

@@ -7,8 +7,8 @@ class MyAccountSuggestionWidget extends StatelessWidget {
   const MyAccountSuggestionWidget();
 
   @override
-  Widget build(BuildContext context) => Padding(
+  Widget build(BuildContext context) => const Padding(
         padding: FediPadding.horizontalBigPadding,
-        child: const MyAccountSuggestionAccountListWidget(),
+        child: MyAccountSuggestionAccountListWidget(),
       );
 }

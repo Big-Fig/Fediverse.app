@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:fedi/app/cache/database/limit/age/database_cache_age_limit_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -5,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   test('toJsonValue & fromJsonValue', () async {
     var values = DatabaseCacheAgeLimitType.values;
-    for (var value in values) {
+    for (final value in values) {
       var jsonValue = value.toJsonValue();
 
       var objFromJsonValue = jsonValue.toDatabaseCacheAgeLimitType();
@@ -15,7 +17,7 @@ void main() {
   });
   test('toDurationOrNull', () async {
     var values = DatabaseCacheAgeLimitType.values;
-    for (var value in values) {
+    for (final value in values) {
       switch (value) {
         case DatabaseCacheAgeLimitType.notSet:
           expect(value.toDurationOrNull(), null);

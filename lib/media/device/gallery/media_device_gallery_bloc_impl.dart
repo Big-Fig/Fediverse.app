@@ -33,7 +33,7 @@ abstract class MediaDeviceGalleryBloc extends AsyncInitLoadingBloc
     galleryStateSubject.disposeWith(this);
 
     addCustomDisposable(
-      () => disposeSelectedFolderBlocs(),
+      disposeSelectedFolderBlocs,
     );
   }
 
@@ -52,8 +52,6 @@ abstract class MediaDeviceGalleryBloc extends AsyncInitLoadingBloc
 
   @override
   Future selectFolder(IMediaDeviceFolder folder) async {
-    // todo: rework
-    assert(folder is IMediaDeviceFolder);
     var oldFolderData = selectedFolderData;
     if (oldFolderData?.folder.id == folder.id) {
       return;
@@ -133,7 +131,10 @@ abstract class MediaDeviceGalleryBloc extends AsyncInitLoadingBloc
 
   @override
   Future refreshFoldersInformation() async {
-    assert(permissionGranted!);
+    assert(
+      permissionGranted!,
+      'cant load without permission',
+    );
     var oldSelectedFolder = selectedFolderData;
     galleryStateSubject.add(MediaDeviceGalleryState.loading);
     var folders = await loadFoldersInformation();

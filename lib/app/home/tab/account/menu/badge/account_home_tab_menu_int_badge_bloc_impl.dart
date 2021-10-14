@@ -61,9 +61,7 @@ class AccountHomeTabMenuIntBadgeBloc extends DisposableOwner
     required Widget child,
   }) =>
       DisposableProvider<IFediIntBadgeBloc>(
-        create: (context) => AccountHomeTabMenuIntBadgeBloc.createFromContext(
-          context,
-        ),
+        create: AccountHomeTabMenuIntBadgeBloc.createFromContext,
         child: child,
       );
 }

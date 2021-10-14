@@ -23,7 +23,7 @@ class UploadMediaAttachmentListNonMediaWidget extends StatelessWidget {
               horizontal: FediSizes.bigPadding,
               vertical: FediSizes.smallPadding,
             ),
-            child: Container(
+            child: SizedBox(
               width: double.infinity,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -33,12 +33,12 @@ class UploadMediaAttachmentListNonMediaWidget extends StatelessWidget {
                         (mediaItemBloc) =>
                             Provider<IUploadMediaAttachmentBloc>.value(
                           value: mediaItemBloc,
-                          child: Padding(
-                            padding: const EdgeInsets.only(
+                          child: const Padding(
+                            padding: EdgeInsets.only(
                               bottom: FediSizes.smallPadding,
                             ),
                             child:
-                                const UploadMediaAttachmentListNonMediaItemWidget(),
+                                UploadMediaAttachmentListNonMediaItemWidget(),
                           ),
                         ),
                       )

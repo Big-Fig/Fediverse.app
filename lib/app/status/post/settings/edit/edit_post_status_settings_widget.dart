@@ -19,11 +19,11 @@ class EditPostStatusSettingsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Column(
         mainAxisSize: shrinkWrap ? MainAxisSize.min : MainAxisSize.max,
-        children: [
-          const _EditPostStatusSettingsDefaultVisibilityFieldWidget(),
-          const _EditPostStatusSettingsMarkMediaAsNsfwOnAttachWidget(),
-          const _EditPostStatusSettingsDontUploadMediaDuringEditingWidget(),
-          const _EditPostStatusSettingsDefaultStatusLocaleFieldWidget(),
+        children: const [
+          _EditPostStatusSettingsDefaultVisibilityFieldWidget(),
+          _EditPostStatusSettingsMarkMediaAsNsfwOnAttachWidget(),
+          _EditPostStatusSettingsDontUploadMediaDuringEditingWidget(),
+          _EditPostStatusSettingsDefaultStatusLocaleFieldWidget(),
         ],
       );
 }

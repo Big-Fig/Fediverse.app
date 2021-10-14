@@ -37,7 +37,7 @@ class CurrentUnifediApiAccessContextInitWidgetState
   FediIndeterminateProgressDialog? loadingInstanceProgressDialog;
   StreamSubscription? subscription;
 
-  var disposed = false;
+  bool disposed = false;
 
   @override
   void didChangeDependencies() {
@@ -55,7 +55,7 @@ class CurrentUnifediApiAccessContextInitWidgetState
     Future.delayed(
       // todo: refactor
       // ignore: no-magic-number
-      Duration(milliseconds: 100),
+      const Duration(milliseconds: 100),
       () {
         if (isLoading && !disposed) {
           showProgressDialog(context, currentInstanceContextLoadingBloc);
@@ -167,18 +167,18 @@ class _CurrentUnifediApiAccessContextInitSessionExpiredWidget
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
+                children: const <Widget>[
                   Padding(
                     padding: FediPadding.allBigPadding,
                     child:
-                        const _CurrentUnifediApiAccessContextInitSessionExpiredDescriptionWidget(),
+                        _CurrentUnifediApiAccessContextInitSessionExpiredDescriptionWidget(),
                   ),
-                  const FediSmallVerticalSpacer(),
-                  const _CurrentUnifediApiAccessContextInitSessionExpiredRefreshButtonWidget(),
-                  const FediSmallVerticalSpacer(),
-                  const _CurrentUnifediApiAccessContextInitSessionExpiredChooseAccountButtonWidget(),
-                  const FediSmallVerticalSpacer(),
-                  const _CurrentUnifediApiAccessContextInitSessionExpiredLogoutButtonWidgetWidget(),
+                  FediSmallVerticalSpacer(),
+                  _CurrentUnifediApiAccessContextInitSessionExpiredRefreshButtonWidget(),
+                  FediSmallVerticalSpacer(),
+                  _CurrentUnifediApiAccessContextInitSessionExpiredChooseAccountButtonWidget(),
+                  FediSmallVerticalSpacer(),
+                  _CurrentUnifediApiAccessContextInitSessionExpiredLogoutButtonWidgetWidget(),
                 ],
               ),
             ),

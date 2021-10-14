@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   test('toJsonValue & fromJsonValue', () async {
     var values = PaginationPageSize.values;
-    for (var value in values) {
+    for (final value in values) {
       var jsonValue = value.toJsonValue();
 
       var objFromJsonValue = jsonValue.toPaginationPageSize();
@@ -15,7 +15,7 @@ void main() {
   });
   test('toCount', () async {
     var values = PaginationPageSize.values;
-    for (var value in values) {
+    for (final value in values) {
       switch (value) {
         case PaginationPageSize.size5:
           expect(value.toCount(), 5);

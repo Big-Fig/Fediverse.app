@@ -16,7 +16,7 @@ class InstanceAnnouncementCountIntBadgeBloc extends DisposableOwner
   @override
   Stream<int> get badgeStream =>
       instanceAnnouncementRepository.watchCalculateCount(
-        filters: InstanceAnnouncementRepositoryFilters(
+        filters: const InstanceAnnouncementRepositoryFilters(
           withDismissed: false,
           withExpired: false,
           withNotStartedYet: false,
@@ -38,10 +38,7 @@ class InstanceAnnouncementCountIntBadgeBloc extends DisposableOwner
     required Widget child,
   }) =>
       DisposableProvider<IFediIntBadgeBloc>(
-        create: (context) =>
-            InstanceAnnouncementCountIntBadgeBloc.createFromContext(
-          context,
-        ),
+        create: InstanceAnnouncementCountIntBadgeBloc.createFromContext,
         child: child,
       );
 }

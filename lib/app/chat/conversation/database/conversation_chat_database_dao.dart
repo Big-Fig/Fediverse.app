@@ -36,28 +36,37 @@ class ConversationDao extends PopulatedAppRemoteDatabaseDao<
     ConversationChatRepositoryFilters,
     ConversationRepositoryChatOrderingTermData> with _$ConversationDaoMixin {
   final AppDatabase db;
+
   // ignore: avoid-late-keyword
   late $DbAccountsTable accountAlias;
+
   // ignore: avoid-late-keyword
   late $DbConversationAccountsTable conversationAccountsAlias;
+
   // ignore: avoid-late-keyword
   late $DbConversationStatusesTable conversationStatusesAlias;
 
   // ignore: avoid-late-keyword
   late $DbStatusesTable statusAlias;
+
   // ignore: avoid-late-keyword
   late $DbAccountsTable statusAccountAlias;
 
   // ignore: avoid-late-keyword
   late $DbStatusesTable statusReblogAlias;
+
   // ignore: avoid-late-keyword
   late $DbAccountsTable statusReblogAccountAlias;
+
   // ignore: avoid-late-keyword
   late $DbStatusesTable statusReplyAlias;
+
   // ignore: avoid-late-keyword
   late $DbAccountsTable statusReplyAccountAlias;
+
   // ignore: avoid-late-keyword
   late $DbStatusesTable statusReplyReblogAlias;
+
   // ignore: avoid-late-keyword
   late $DbAccountsTable statusReplyReblogAccountAlias;
 
@@ -128,7 +137,11 @@ class ConversationDao extends PopulatedAppRemoteDatabaseDao<
   Selectable<int> totalAmountUnreadQuery() => customSelect(
         'SELECT COUNT(*) FROM db_conversations WHERE unread=1;',
         readsFrom: {dbConversations},
-      ).map((QueryRow row) => row.read<int>('COUNT(*)'));
+      ).map(
+        (QueryRow row) => row.read<int>(
+          'COUNT(*)',
+        ),
+      );
 
   List<Join<Table, DataClass>> populateChatJoin() => [
         // todo: accounts join
@@ -141,13 +154,15 @@ class ConversationDao extends PopulatedAppRemoteDatabaseDao<
         // ),
         leftOuterJoin(
           conversationStatusesAlias,
-          conversationStatusesAlias.conversationRemoteId
-              .equalsExp(dbConversations.remoteId),
+          conversationStatusesAlias.conversationRemoteId.equalsExp(
+            dbConversations.remoteId,
+          ),
         ),
         leftOuterJoin(
           statusAlias,
-          statusAlias.remoteId
-              .equalsExp(conversationStatusesAlias.statusRemoteId),
+          statusAlias.remoteId.equalsExp(
+            conversationStatusesAlias.statusRemoteId,
+          ),
         ),
         innerJoin(
           statusAccountAlias,
@@ -155,13 +170,15 @@ class ConversationDao extends PopulatedAppRemoteDatabaseDao<
         ),
         leftOuterJoin(
           statusReblogAlias,
-          statusReblogAlias.remoteId
-              .equalsExp(statusAlias.reblogStatusRemoteId),
+          statusReblogAlias.remoteId.equalsExp(
+            statusAlias.reblogStatusRemoteId,
+          ),
         ),
         leftOuterJoin(
           statusReblogAccountAlias,
-          statusReblogAccountAlias.remoteId
-              .equalsExp(statusReblogAlias.accountRemoteId),
+          statusReblogAccountAlias.remoteId.equalsExp(
+            statusReblogAlias.accountRemoteId,
+          ),
         ),
         leftOuterJoin(
           statusReplyAlias,
@@ -169,18 +186,21 @@ class ConversationDao extends PopulatedAppRemoteDatabaseDao<
         ),
         leftOuterJoin(
           statusReplyAccountAlias,
-          statusReplyAccountAlias.remoteId
-              .equalsExp(statusReplyAlias.accountRemoteId),
+          statusReplyAccountAlias.remoteId.equalsExp(
+            statusReplyAlias.accountRemoteId,
+          ),
         ),
         leftOuterJoin(
           statusReplyReblogAlias,
-          statusReplyReblogAlias.remoteId
-              .equalsExp(statusReplyAlias.reblogStatusRemoteId),
+          statusReplyReblogAlias.remoteId.equalsExp(
+            statusReplyAlias.reblogStatusRemoteId,
+          ),
         ),
         leftOuterJoin(
           statusReplyReblogAccountAlias,
-          statusReplyReblogAccountAlias.remoteId
-              .equalsExp(statusReplyReblogAlias.accountRemoteId),
+          statusReplyReblogAccountAlias.remoteId.equalsExp(
+            statusReplyReblogAlias.accountRemoteId,
+          ),
         ),
       ];
 
@@ -205,9 +225,12 @@ class ConversationDao extends PopulatedAppRemoteDatabaseDao<
   }) {
     if (pagination?.olderThanItem != null ||
         pagination?.newerThanItem != null) {
-      assert(orderingTerms?.length == 1);
+      assert(orderingTerms?.length == 1, 'only single term supported');
       var orderingTermData = orderingTerms!.first;
-      assert(orderingTermData.orderType == ConversationChatOrderType.updatedAt);
+      assert(
+        orderingTermData.orderType == ConversationChatOrderType.updatedAt,
+        'only updatedAt supported',
+      );
       addRemoteIdBoundsWhere(
         query,
         maximumRemoteIdExcluding: pagination?.olderThanItem?.remoteId,
@@ -308,15 +331,19 @@ extension DbConversationChatWithLastMessagePopulatedTypedResultExtension
         dbStatus: dbStatus,
         dbAccount: dbStatusAccount,
         reblogDbStatus: typedResult.readTableOrNull(dao.statusReblogAlias),
-        reblogDbStatusAccount:
-            typedResult.readTableOrNull(dao.statusReblogAccountAlias),
+        reblogDbStatusAccount: typedResult.readTableOrNull(
+          dao.statusReblogAccountAlias,
+        ),
         replyDbStatus: typedResult.readTableOrNull(dao.statusReplyAlias),
-        replyDbStatusAccount:
-            typedResult.readTableOrNull(dao.statusReplyAccountAlias),
-        replyReblogDbStatus:
-            typedResult.readTableOrNull(dao.statusReplyReblogAlias),
-        replyReblogDbStatusAccount:
-            typedResult.readTableOrNull(dao.statusReplyReblogAccountAlias),
+        replyDbStatusAccount: typedResult.readTableOrNull(
+          dao.statusReplyAccountAlias,
+        ),
+        replyReblogDbStatus: typedResult.readTableOrNull(
+          dao.statusReplyReblogAlias,
+        ),
+        replyReblogDbStatusAccount: typedResult.readTableOrNull(
+          dao.statusReplyReblogAccountAlias,
+        ),
       );
     }
 

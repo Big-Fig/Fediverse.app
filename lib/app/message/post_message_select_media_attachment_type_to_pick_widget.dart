@@ -25,7 +25,7 @@ class PostMessageSelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
           horizontal: FediSizes.smallPadding,
           vertical: FediSizes.bigPadding,
         ),
-        child: Container(
+        child: SizedBox(
           // todo: refactor
           // ignore: no-magic-number
           height: 87,
@@ -33,17 +33,17 @@ class PostMessageSelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             shrinkWrap: true,
 //                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const _PostMessageSelectMediaAttachmentTypeToPickGalleryActionWidget(),
-              const FediBigHorizontalSpacer(),
-              const _PostMessageSelectMediaAttachmentTypeToPickGalleryPhotoActionWidget(),
-              const FediBigHorizontalSpacer(),
-              const _PostMessageSelectMediaAttachmentTypeToPickGalleryVideoActionWidget(),
-              const FediBigHorizontalSpacer(),
-              const _PostMessageSelectMediaAttachmentTypeToPickGalleryFileActionWidget(),
-              const FediBigHorizontalSpacer(),
-              const _PostMessageSelectMediaAttachmentTypeToPickGalleryAudioActionWidget(),
-              const FediBigHorizontalSpacer(),
+            children: const [
+              _PostMessageSelectMediaAttachmentTypeToPickGalleryActionWidget(),
+              FediBigHorizontalSpacer(),
+              _PostMessageSelectMediaAttachmentTypeToPickGalleryPhotoActionWidget(),
+              FediBigHorizontalSpacer(),
+              _PostMessageSelectMediaAttachmentTypeToPickGalleryVideoActionWidget(),
+              FediBigHorizontalSpacer(),
+              _PostMessageSelectMediaAttachmentTypeToPickGalleryFileActionWidget(),
+              FediBigHorizontalSpacer(),
+              _PostMessageSelectMediaAttachmentTypeToPickGalleryAudioActionWidget(),
+              FediBigHorizontalSpacer(),
             ],
           ),
         ),
@@ -245,9 +245,7 @@ class _PostMessageSelectMediaAttachmentTypeToPickActionWidget
 
   @override
   Widget build(BuildContext context) => InkWell(
-        onTap: () {
-          onTap();
-        },
+        onTap: onTap,
         child: Column(
           children: [
             Container(

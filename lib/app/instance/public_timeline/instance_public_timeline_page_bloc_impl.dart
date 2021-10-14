@@ -32,7 +32,7 @@ abstract class InstancePublicTimelinePageBloc extends AsyncInitLoadingBloc
     required this.unifediApiInstance,
   }) : refreshController = RefreshController() {
     scrollController.disposeWith(this);
-    addCustomDisposable(() => refreshController.dispose());
+    addCustomDisposable(refreshController.dispose);
   }
 
   @override

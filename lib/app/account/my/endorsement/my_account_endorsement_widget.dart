@@ -7,8 +7,8 @@ class MyAccountEndorsementWidget extends StatelessWidget {
   const MyAccountEndorsementWidget();
 
   @override
-  Widget build(BuildContext context) => Padding(
+  Widget build(BuildContext context) => const Padding(
         padding: FediPadding.horizontalBigPadding,
-        child: const MyAccountEndorsementAccountListWidget(),
+        child: MyAccountEndorsementAccountListWidget(),
       );
 }

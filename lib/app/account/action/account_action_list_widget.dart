@@ -73,17 +73,17 @@ class _AccountActionListBodyWidget extends StatelessWidget {
         if (isLocal && !isMyAccount)
           Row(
             mainAxisSize: MainAxisSize.min,
-            children: [
-              const _AccountActionListFollowWidget(),
-              const FediBigHorizontalSpacer(),
+            children: const [
+              _AccountActionListFollowWidget(),
+              FediBigHorizontalSpacer(),
             ],
           ),
         if (isLocal && !isMyAccount)
           Row(
             mainAxisSize: MainAxisSize.min,
-            children: [
-              const _AccountActionListMessageWidget(),
-              const FediBigHorizontalSpacer(),
+            children: const [
+              _AccountActionListMessageWidget(),
+              FediBigHorizontalSpacer(),
             ],
           ),
         const _AccountActionListMoreWidget(),

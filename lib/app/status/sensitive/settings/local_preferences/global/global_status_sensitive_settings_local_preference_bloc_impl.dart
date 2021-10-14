@@ -16,7 +16,7 @@ class GlobalStatusSensitiveSettingsLocalPreferenceBloc
     isNeedReplaceBlurWithFill: false,
     nsfwDisplayDelayDurationMicrosecondsTotal:
         // ignore: no-magic-number
-        Duration(minutes: 5).inMicroseconds,
+        const Duration(minutes: 5).inMicroseconds,
   );
 
   @override

@@ -60,7 +60,7 @@ class FilterBloc extends DisposableOwner implements IFilterBloc {
     _filterSubject.disposeWith(this);
 
     if (delayInit) {
-      Future.delayed(Duration(seconds: 1), () {
+      Future.delayed(const Duration(seconds: 1), () {
         _init(filter, needRefreshFromNetworkOnInit);
       });
     } else {

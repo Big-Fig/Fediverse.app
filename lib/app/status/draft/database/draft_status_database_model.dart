@@ -8,5 +8,5 @@ class DbDraftStatuses extends Table {
 
   DateTimeColumn? get updatedAt => dateTime()();
 
-  TextColumn? get data => text().map(PostStatusDataDatabaseConverter())();
+  TextColumn? get data => text().map(const PostStatusDataDatabaseConverter())();
 }

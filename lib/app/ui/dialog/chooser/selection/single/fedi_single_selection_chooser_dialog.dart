@@ -133,26 +133,21 @@ class _FediSingleSelectionChooserDialogBodyContentAction
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         StreamBuilder<bool>(
-          initialData: action.isActionEnabledFetcher != null
-              ? action.isActionEnabledFetcher!(context)
-              : true,
-          stream: action.isActionEnabledStreamFetcher != null
-              ? action.isActionEnabledStreamFetcher!(context)
-              : Stream.value(true),
+          initialData: action.isActionEnabledFetcher?.call(context) ?? true,
+          stream: action.isActionEnabledStreamFetcher?.call(context) ??
+              Stream.value(true),
           builder: (context, snapshot) {
             var enabled = snapshot.data!;
 
             return StreamBuilder<bool>(
-              initialData: action.isActionVisibleFetcher != null
-                  ? action.isActionVisibleFetcher!(context)
-                  : true,
+              initialData: action.isActionVisibleFetcher?.call(context) ?? true,
               stream: action.isActionVisibleStreamFetcher != null
                   ? action.isActionVisibleStreamFetcher!(context)
                   : Stream.value(true),
               builder: (context, snapshot) {
                 var visible = snapshot.data!;
                 if (!visible) {
-                  return SizedBox.shrink();
+                  return const SizedBox.shrink();
                 }
 
                 return _FediSingleSelectionChooserDialogBodyContentActionBody(

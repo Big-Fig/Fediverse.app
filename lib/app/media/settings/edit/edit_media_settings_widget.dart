@@ -15,9 +15,9 @@ class EditMediaSettingsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Column(
         mainAxisSize: shrinkWrap ? MainAxisSize.min : MainAxisSize.max,
-        children: [
-          const _EditMediaSettingsAutoInitFieldWidget(),
-          const _EditMediaSettingsAutoPlayFieldWidget(),
+        children: const [
+          _EditMediaSettingsAutoInitFieldWidget(),
+          _EditMediaSettingsAutoPlayFieldWidget(),
         ],
       );
 }

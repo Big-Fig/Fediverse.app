@@ -42,9 +42,9 @@ class InAppReviewCheckerWidgetState extends State<InAppReviewCheckerWidget> {
         Future.delayed(
           // todo: refactor
           // ignore: no-magic-number
-          Duration(milliseconds: 100),
+          const Duration(milliseconds: 100),
           () async {
-            await inAppReviewCheckerBloc.onUserAnswer(true);
+            await inAppReviewCheckerBloc.onUserAnswer(userAgreeToReview: true);
             await IInAppReviewBloc.of(context, listen: false).requestReview();
           },
         );

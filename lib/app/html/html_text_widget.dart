@@ -95,7 +95,7 @@ class HtmlTextWidget extends StatelessWidget {
   }
 
   Alignment mapToAligment(HtmlTextSettings settings) {
-    Alignment alignment;
+    var alignment = Alignment.centerLeft;
     switch (settings.textAlign) {
       case TextAlign.left:
         alignment = Alignment.centerLeft;
@@ -115,8 +115,6 @@ class HtmlTextWidget extends StatelessWidget {
       case TextAlign.end:
         alignment = Alignment.centerRight;
         break;
-      default:
-        alignment = Alignment.centerLeft;
     }
 
     return alignment;

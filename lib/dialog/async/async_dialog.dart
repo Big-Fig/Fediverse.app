@@ -54,9 +54,10 @@ Future<AsyncDialogResult<T?>> doAsyncOperationWithDialog<T>({
 
   try {
     result = await cancelableOperation.valueOrCancellation(null);
+    // ignore: avoid_catches_without_on_clauses
   } catch (e, stackTrace) {
     error = e;
-    for (var builder in errorDataBuilders) {
+    for (final builder in errorDataBuilders) {
       errorData = builder(context, e, stackTrace);
       if (errorData != null) {
         needRethrow = false;
@@ -98,7 +99,7 @@ Future<AsyncDialogResult<T?>> doAsyncOperationWithDialog<T>({
   if (progressDialog != null) {
     // wait until progress dialog actually hides
     await Future<void>.delayed(
-      Duration(
+      const Duration(
         // ignore: no-magic-number
         milliseconds: 100,
       ),

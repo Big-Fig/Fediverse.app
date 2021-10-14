@@ -22,7 +22,9 @@ class InAppReviewCheckerBloc extends DisposableOwner
   });
 
   @override
-  Future onUserAnswer(bool result) async {
+  Future onUserAnswer({
+    required bool userAgreeToReview,
+  }) async {
     await askInAppReviewLocalPreferenceBloc.setValue(true);
   }
 
@@ -72,9 +74,7 @@ class InAppReviewCheckerBloc extends DisposableOwner
     required Widget child,
   }) =>
       DisposableProvider<IInAppReviewCheckerBloc>(
-        create: (context) => InAppReviewCheckerBloc.createFromContext(
-          context,
-        ),
+        create: InAppReviewCheckerBloc.createFromContext,
         child: child,
       );
 }

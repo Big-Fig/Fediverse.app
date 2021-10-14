@@ -8,11 +8,8 @@ import 'package:fediverse_api/fediverse_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
-import 'package:path/path.dart' as path;
 import 'package:provider/provider.dart';
 import 'package:unifedi_api/unifedi_api.dart';
-
-var urlPath = path.posix;
 
 final Image defaultImage =
     Image.asset('assets/images/default_timeline_header.png');

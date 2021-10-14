@@ -34,6 +34,7 @@ class InstanceActivityWidget extends StatelessWidget {
             await instanceActivityBloc.refresh();
 
             return FediListSmartRefresherLoadingState.loaded;
+            // ignore: avoid_catches_without_on_clauses
           } catch (e, stackTrace) {
             _logger.warning(
               () => 'instanceActivityBloc.refresh',
@@ -49,10 +50,10 @@ class InstanceActivityWidget extends StatelessWidget {
           padding: FediPadding.allBigPadding,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const _InstanceActivityHeaderWidget(),
-              const FediBigVerticalSpacer(),
-              const _InstanceActivityGraphWidget(),
+            children: const [
+              _InstanceActivityHeaderWidget(),
+              FediBigVerticalSpacer(),
+              _InstanceActivityGraphWidget(),
             ],
           ),
         ),
@@ -76,7 +77,7 @@ class _InstanceActivityGraphWidget extends StatelessWidget {
       builder: (context, snapshot) {
         var activity = snapshot.data;
         if (activity?.isNotEmpty != true) {
-          return SizedBox.shrink();
+          return const SizedBox.shrink();
         }
 
         var first = activity!.first;
@@ -85,7 +86,7 @@ class _InstanceActivityGraphWidget extends StatelessWidget {
         var maxLogins = first.logins;
         var maxRegistrations = first.registrations;
 
-        for (var item in activity) {
+        for (final item in activity) {
           maxStatuses = max(item.statuses, maxStatuses);
           maxLogins = max(item.logins, maxLogins);
           maxRegistrations = max(item.registrations, maxRegistrations);

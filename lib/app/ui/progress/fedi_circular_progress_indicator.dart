@@ -23,9 +23,9 @@ class FediCircularProgressIndicator extends StatefulWidget {
             color: IFediUiColorTheme.of(context).ultraLightGrey,
           ),
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: const FediCircularProgressIndicator(
+        child: const Padding(
+          padding: EdgeInsets.all(8.0),
+          child: FediCircularProgressIndicator(
             size: 26.0,
           ),
         ),
@@ -48,7 +48,7 @@ class FediCircularProgressIndicatorState
 
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(
+      duration: const Duration(
         // ignore: no-magic-number
         seconds: 2,
       ),
@@ -74,7 +74,7 @@ class FediCircularProgressIndicatorState
         angle: _controller.value,
         child: child,
       ),
-      child: Container(
+      child: SizedBox(
         width: size,
         // ignore: no-equal-arguments
         height: size,

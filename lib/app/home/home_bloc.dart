@@ -23,5 +23,7 @@ abstract class IHomeBloc implements IDisposable {
 
   void selectTab(HomeTab tab);
 
-  void updateTimelinesUnread(bool bool);
+  void updateIsAnyTimelinesUnread({
+    required bool anyTimelineUnread,
+  });
 }

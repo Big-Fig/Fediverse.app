@@ -53,19 +53,19 @@ extension FilesCacheAgeLimitTypeExtension on FilesCacheAgeLimitType {
         duration = null;
         break;
       case FilesCacheAgeLimitType.days7:
-        duration = Duration(days: 7);
+        duration = const Duration(days: 7);
         break;
       case FilesCacheAgeLimitType.days30:
-        duration = Duration(days: 30);
+        duration = const Duration(days: 30);
         break;
       case FilesCacheAgeLimitType.days90:
-        duration = Duration(days: 90);
+        duration = const Duration(days: 90);
         break;
       case FilesCacheAgeLimitType.days180:
-        duration = Duration(days: 180);
+        duration = const Duration(days: 180);
         break;
       case FilesCacheAgeLimitType.days365:
-        duration = Duration(days: 365);
+        duration = const Duration(days: 365);
         break;
     }
 

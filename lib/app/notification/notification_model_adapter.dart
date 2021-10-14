@@ -12,8 +12,9 @@ extension IPleromaNotificationExtension on IUnifediApiNotification {
   }) {
     var remoteNotification = this;
     var isSeen = remoteNotification.isSeen;
+    var actualUnread = unread;
     if (isSeen != null) {
-      unread = !isSeen;
+      actualUnread = !isSeen;
     }
 
     return DbNotification(
@@ -26,7 +27,7 @@ extension IPleromaNotificationExtension on IUnifediApiNotification {
       chatMessageRemoteId: remoteNotification.chatMessage?.id,
       emoji: remoteNotification.emoji,
       type: remoteNotification.type,
-      unread: unread == true,
+      unread: actualUnread == true,
       chatMessage: remoteNotification.chatMessage?.toUnifediApiChatMessage(),
       dismissed: null,
       report: remoteNotification.report?.toUnifediApiAccountReport(),

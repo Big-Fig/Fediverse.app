@@ -20,7 +20,7 @@ void showEditGlobalOrInstanceStatusSensitiveSettingsDialog({
   showEditGlobalOrInstanceSettingsDialog(
     context: context,
     subTitle: S.of(context).app_status_sensitive_settings_title,
-    child: EditStatusSensitiveSettingsWidget(
+    child: const EditStatusSensitiveSettingsWidget(
       shrinkWrap: true,
     ),
     childContextBuilder: ({

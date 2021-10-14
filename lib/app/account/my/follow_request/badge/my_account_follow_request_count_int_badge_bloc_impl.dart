@@ -28,10 +28,7 @@ class MyAccountFollowRequestCountIntBadgeBloc extends DisposableOwner
     required Widget child,
   }) =>
       DisposableProvider<IFediIntBadgeBloc>(
-        create: (context) =>
-            MyAccountFollowRequestCountIntBadgeBloc.createFromContext(
-          context,
-        ),
+        create: MyAccountFollowRequestCountIntBadgeBloc.createFromContext,
         child: child,
       );
 }

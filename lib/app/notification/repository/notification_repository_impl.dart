@@ -366,7 +366,7 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
-      for (var remoteNotification in pleromaNotifications) {
+      for (final remoteNotification in pleromaNotifications) {
         // ignore: unawaited_futures
         upsertRemoteNotification(
           remoteNotification,

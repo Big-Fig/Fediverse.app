@@ -9,9 +9,9 @@ class RegisterUnifediApiAccessFormStepperSubmitItemWidget
     extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Column(
-        children: [
+        children: const [
           // const _RegisterUnifediApiAccessFormLocaleFieldWidget(),
-          const _RegisterUnifediApiAccessFormAcceptTermsOfServiceFieldWidget(),
+          _RegisterUnifediApiAccessFormAcceptTermsOfServiceFieldWidget(),
         ],
       );
 }

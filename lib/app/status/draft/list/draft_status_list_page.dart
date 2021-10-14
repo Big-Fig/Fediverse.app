@@ -14,8 +14,8 @@ class DraftStatusListPage extends StatelessWidget {
         appBar: FediPageTitleAppBar(
           title: S.of(context).app_account_my_statuses_draft_title,
         ),
-        body: SafeArea(
-          child: const DraftStatusPaginationListTimelineWidget(
+        body: const SafeArea(
+          child: DraftStatusPaginationListTimelineWidget(
             customEmptyWidget: _DraftStatusListPageEmptyWidget(),
             key: PageStorageKey('DraftStatusPaginationListTimelineWidget'),
             needWatchLocalRepositoryForUpdates: true,

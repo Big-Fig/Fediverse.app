@@ -42,9 +42,11 @@ class CollapsibleOwnerBloc extends DisposableOwner
     visibleItemsSubject.disposeWith(this);
     isAtLeastOneVisibleItemExpandedSubject.disposeWith(this);
     addCustomDisposable(
-      () => itemCollapsibleSubscriptionMap.values.forEach(
-        (subscription) => subscription.cancel(),
-      ),
+      () {
+        for (final subscription in itemCollapsibleSubscriptionMap.values) {
+          subscription.cancel();
+        }
+      },
     );
   }
 
@@ -74,7 +76,9 @@ class CollapsibleOwnerBloc extends DisposableOwner
 
   @override
   void collapseAllVisibleItems() {
-    visibleItems!.forEach((item) => item.collapse());
+    for (final item in visibleItems!) {
+      item.collapse();
+    }
   }
 
   static CollapsibleOwnerBloc createFromContext(BuildContext context) =>

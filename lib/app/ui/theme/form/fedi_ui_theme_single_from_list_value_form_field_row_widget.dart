@@ -17,13 +17,12 @@ class FediUiThemeSingleFromListValueFormFieldRowWidget extends StatelessWidget {
       FediUiThemeSingleFromListValueFormFieldBlocProxyProvider(
         child: SingleSelectFromListValueFormFieldRowWidget<IFediUiTheme?>(
           label: S.of(context).app_theme_chooser_label,
-          valueTitleMapper: (context, IFediUiTheme? value) =>
-              _mapThemeToTitle(context, value),
+          valueTitleMapper: _mapThemeToTitle,
           description: null,
           descriptionOnDisabled: null,
           displayIconInRow: false,
           displayIconInDialog: false,
-          valueIconMapper: (context, value) => _mapThemeToIcon(context, value),
+          valueIconMapper: _mapThemeToIcon,
           valueKeyMapper: (context, IFediUiTheme? value) =>
               value != null ? Key(value.id) : null,
         ),
@@ -38,7 +37,7 @@ String _mapThemeToTitle(BuildContext context, IFediUiTheme? theme) {
   } else if (theme == darkFediUiTheme) {
     return S.of(context).app_theme_type_dark;
   } else {
-    throw 'unsupported theme $theme';
+    throw ArgumentError('unsupported theme $theme');
   }
 }
 
@@ -50,6 +49,6 @@ IconData _mapThemeToIcon(BuildContext context, IFediUiTheme? theme) {
   } else if (theme == darkFediUiTheme) {
     return FediIcons.appearance_dark;
   } else {
-    throw 'unsupported theme $theme';
+    throw ArgumentError('unsupported theme $theme');
   }
 }

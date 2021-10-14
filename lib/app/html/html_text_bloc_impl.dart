@@ -104,7 +104,7 @@ HtmlTextResultData _calculateHtmlData({
       isActuallyHaveHtmlInData: isActuallyHaveHtmlInData,
     );
   } else {
-    resultData = HtmlTextResultData(
+    resultData = const HtmlTextResultData(
       text: null,
       isActuallyHaveHtmlInData: false,
     );

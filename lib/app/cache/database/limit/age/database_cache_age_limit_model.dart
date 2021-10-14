@@ -53,19 +53,19 @@ extension DatabaseCacheAgeLimitTypeExtension on DatabaseCacheAgeLimitType {
         duration = null;
         break;
       case DatabaseCacheAgeLimitType.days7:
-        duration = Duration(days: 7);
+        duration = const Duration(days: 7);
         break;
       case DatabaseCacheAgeLimitType.days30:
-        duration = Duration(days: 30);
+        duration = const Duration(days: 30);
         break;
       case DatabaseCacheAgeLimitType.days90:
-        duration = Duration(days: 90);
+        duration = const Duration(days: 90);
         break;
       case DatabaseCacheAgeLimitType.days180:
-        duration = Duration(days: 180);
+        duration = const Duration(days: 180);
         break;
       case DatabaseCacheAgeLimitType.days365:
-        duration = Duration(days: 365);
+        duration = const Duration(days: 365);
         break;
     }
 

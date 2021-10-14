@@ -31,7 +31,8 @@ class PostStatusPollOptionFormStringFieldFormRowWidget extends StatelessWidget {
           border: Border.all(color: IFediUiColorTheme.of(context).lightGrey),
         ),
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: FediSizes.mediumPadding),
+          padding:
+              const EdgeInsets.symmetric(horizontal: FediSizes.mediumPadding),
           child: Stack(
             alignment: Alignment.center,
             children: [
@@ -42,9 +43,7 @@ class PostStatusPollOptionFormStringFieldFormRowWidget extends StatelessWidget {
                   autocorrect: true,
                   focusNode: formStringFieldBloc.focusNode,
                   textInputAction: textInputAction,
-                  onSubmitted: (_) {
-                    onSubmitted(_);
-                  },
+                  onSubmitted: onSubmitted,
                   textStyle: IFediUiTextTheme.of(context).bigTallMediumGrey,
                   obscureText: false,
                   autofocus: false,
@@ -98,7 +97,7 @@ class _PostStatusPollOptionFormStringFieldFormRowErrorBuilderWidget
         builder: (context, snapshot) {
           var isHaveAtLeastOneError = snapshot.data!;
           if (isHaveAtLeastOneError) {
-            return _PostStatusPollOptionFormStringFieldFormRowErrorWidget();
+            return const _PostStatusPollOptionFormStringFieldFormRowErrorWidget();
           } else {
             return const SizedBox.shrink();
           }

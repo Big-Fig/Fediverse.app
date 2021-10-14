@@ -187,5 +187,5 @@ MaterialPageRoute<void> createAboutPageRoute({
   required BuildContext context,
 }) =>
     MaterialPageRoute<void>(
-      builder: (context) => AboutPage(),
+      builder: (context) => const AboutPage(),
     );

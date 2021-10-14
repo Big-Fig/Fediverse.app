@@ -244,7 +244,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
   @override
   Future deleteMessages(List<IChatMessage> chatMessages) async {
     // create queue instead of parallel requests to avoid throttle limit on server
-    for (var chatMessage in chatMessages) {
+    for (final chatMessage in chatMessages) {
       var remoteId = chatMessage.remoteId;
       if (chatMessage.isPendingStatePublishedOrNull) {
         await unifediApiChatService.deleteChatMessage(
@@ -277,6 +277,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
     DbChatMessage dbChatMessage;
     int? localChatMessageId;
 
+    var actualIdempotencyKey = idempotencyKey;
     localChatMessageId = oldPendingFailedPleromaChatMessage?.localId;
     if (oldPendingFailedPleromaChatMessage != null &&
         localChatMessageId != null) {
@@ -285,7 +286,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
                 id: localChatMessageId,
               );
 
-      idempotencyKey = dbChatMessage.wasSentWithIdempotencyKey;
+      actualIdempotencyKey = dbChatMessage.wasSentWithIdempotencyKey;
 
       await chatMessageRepository.updateByDbIdInDbType(
         dbId: localChatMessageId,
@@ -321,12 +322,12 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
         mode: null,
       );
 
-      idempotencyKey = fakeUniqueRemoteRemoteId;
+      actualIdempotencyKey = fakeUniqueRemoteRemoteId;
     }
 
     try {
       var unifediApiChatMessage = await unifediApiChatService.sendMessage(
-        idempotencyKey: idempotencyKey,
+        idempotencyKey: actualIdempotencyKey,
         chatId: chat.remoteId,
         postChatMessage: unifediApiPostChatMessage,
       );
@@ -356,6 +357,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
           batchTransaction: batch,
         );
       });
+      // ignore: avoid_catches_without_on_clauses
     } catch (e, stackTrace) {
       _logger.warning(() => 'postMessage error', e, stackTrace);
       await chatMessageRepository.updateByDbIdInDbType(
