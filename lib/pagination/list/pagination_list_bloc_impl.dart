@@ -224,9 +224,9 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
     List<TPage> sortedPages,
   ) {
     var items = <TItem>[];
-    sortedPages.forEach((page) {
+    for (final page in sortedPages) {
       items.addAll(page.items);
-    });
+    }
 
     return items;
   }

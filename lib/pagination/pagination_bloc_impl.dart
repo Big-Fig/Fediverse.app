@@ -142,16 +142,14 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
           var keys = indexToCachedPageMap.keys;
           var farIndex = keys.first;
 
-          keys.forEach(
-            (index) {
-              var diffWithCurrent = (pageIndex - index).abs();
-              var diffWithFar = (pageIndex - farIndex).abs();
+          for (final index in keys) {
+            var diffWithCurrent = (pageIndex - index).abs();
+            var diffWithFar = (pageIndex - farIndex).abs();
 
-              if (diffWithCurrent > diffWithFar) {
-                farIndex = index;
-              }
-            },
-          );
+            if (diffWithCurrent > diffWithFar) {
+              farIndex = index;
+            }
+          }
 
           indexToCachedPageMap.remove(farIndex);
         }

@@ -288,28 +288,26 @@ String? _calculateDescriptionOrShortDescriptionWithParsedHashtags(
     var host = instance.uri;
     // todo: check
     var scheme = 'https';
-    hashtags.forEach(
-      (hashtag) {
-        var hashtagWithoutSign = hashtag.replaceAll('#', '');
-        var link = HashtagUrlHelper.calculateHashtagUrl(
-          isMastodon: isMastodon,
-          isPleroma: isPleroma,
-          urlSchema: scheme,
-          urlHost: host,
-          hashtag: hashtagWithoutSign,
-        );
+    for (final hashtag in hashtags) {
+      var hashtagWithoutSign = hashtag.replaceAll('#', '');
+      var link = HashtagUrlHelper.calculateHashtagUrl(
+        isMastodon: isMastodon,
+        isPleroma: isPleroma,
+        urlSchema: scheme,
+        urlHost: host,
+        hashtag: hashtagWithoutSign,
+      );
 
-        // don't replace if text already htmlized
-        if (!resultDescriptionOrShortDescription.contains(link)) {
-          var replace = '<a href="$link">$hashtag</a>';
-          resultDescriptionOrShortDescription =
-              resultDescriptionOrShortDescription.replaceAll(
-            hashtag,
-            replace,
-          );
-        }
-      },
-    );
+      // don't replace if text already htmlized
+      if (!resultDescriptionOrShortDescription.contains(link)) {
+        var replace = '<a href="$link">$hashtag</a>';
+        resultDescriptionOrShortDescription =
+            resultDescriptionOrShortDescription.replaceAll(
+          hashtag,
+          replace,
+        );
+      }
+    }
 
     return resultDescriptionOrShortDescription;
   } else {

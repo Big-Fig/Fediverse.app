@@ -67,15 +67,13 @@ abstract class FormGroupBloc<T extends IFormItemBloc> extends FormItemBloc
     }
 
     if (newItems?.isNotEmpty == true) {
-      newItems!.forEach(
-        (IFormItemBloc item) {
-          item.errorsStream.listen(
-            (_) {
-              recalculateErrors();
-            },
-          ).disposeWith(itemsErrorSubscription!);
-        },
-      );
+      for (final item in newItems!) {
+        item.errorsStream.listen(
+          (_) {
+            recalculateErrors();
+          },
+        ).disposeWith(itemsErrorSubscription!);
+      }
     }
   }
 
@@ -87,15 +85,13 @@ abstract class FormGroupBloc<T extends IFormItemBloc> extends FormItemBloc
     }
 
     if (newItems?.isNotEmpty == true) {
-      newItems!.forEach(
-        (IFormItemBloc item) {
-          item.isSomethingChangedStream.listen(
-            (_) {
-              recalculateIsSomethingChanged();
-            },
-          ).disposeWith(isSomethingChangedSubscription!);
-        },
-      );
+      for (final item in newItems!) {
+        item.isSomethingChangedStream.listen(
+          (_) {
+            recalculateIsSomethingChanged();
+          },
+        ).disposeWith(isSomethingChangedSubscription!);
+      }
     }
   }
 

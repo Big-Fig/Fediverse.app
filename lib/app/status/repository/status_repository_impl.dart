@@ -240,25 +240,23 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
     var result = <IConversationChat, IStatus?>{};
 
-    conversations.forEach(
-      (conversation) {
-        var typedResult = typedResultList.firstWhereOrNull(
-          (typedResult) {
-            var conversationStatuses =
-                typedResult.readTable(dao.conversationStatusesAlias);
+    for (final conversation in conversations) {
+      var typedResult = typedResultList.firstWhereOrNull(
+        (typedResult) {
+          var conversationStatuses =
+              typedResult.readTable(dao.conversationStatusesAlias);
 
-            return conversationStatuses.conversationRemoteId ==
-                conversation.remoteId;
-          },
-        );
+          return conversationStatuses.conversationRemoteId ==
+              conversation.remoteId;
+        },
+      );
 
-        IStatus? status = typedResult
-            ?.toDbStatusPopulated(dao: dao)
-            .toDbStatusPopulatedWrapper();
+      IStatus? status = typedResult
+          ?.toDbStatusPopulated(dao: dao)
+          .toDbStatusPopulatedWrapper();
 
-        result[conversation] = status;
-      },
-    );
+      result[conversation] = status;
+    }
 
     return result;
   }

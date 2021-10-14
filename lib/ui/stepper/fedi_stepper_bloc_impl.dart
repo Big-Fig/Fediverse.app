@@ -58,13 +58,13 @@ class FediStepperBloc<T extends IFediStepperItem> extends DisposableOwner
       _recalculateState();
     });
 
-    steps.forEach(
-      (step) => step.itemStateStream.listen(
+    for (final step in steps) {
+      step.itemStateStream.listen(
         (_) {
           _recalculateState();
         },
-      ).disposeWith(this),
-    );
+      ).disposeWith(this);
+    }
   }
 
   void _recalculateState() {
@@ -107,7 +107,9 @@ class FediStepperBloc<T extends IFediStepperItem> extends DisposableOwner
 
   @override
   Future submit() async {
-    steps.forEach((step) => step.onStepComplete());
+    for (final step in steps) {
+      step.onStepComplete();
+    }
 
     if (!isHaveAtLeastOneError) {
       submitCallback();

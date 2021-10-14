@@ -39,19 +39,17 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
       (mediaAttachmentBlocs) {
         uploadedSubscriptionDisposable?.dispose();
         uploadedSubscriptionDisposable = DisposableOwner();
-        mediaAttachmentBlocs.forEach(
-          (bloc) {
-            uploadedSubscriptionDisposable!.addDisposable(
-              StreamSubscriptionDisposable(
-                bloc.uploadStateStream.listen(
-                  (_) {
-                    _recalculateIsAllAttachedMediaUploaded();
-                  },
-                ),
+        for (final bloc in mediaAttachmentBlocs) {
+          uploadedSubscriptionDisposable!.addDisposable(
+            StreamSubscriptionDisposable(
+              bloc.uploadStateStream.listen(
+                (_) {
+                  _recalculateIsAllAttachedMediaUploaded();
+                },
               ),
-            );
-          },
-        );
+            ),
+          );
+        }
       },
     ).disposeWith(this);
   }

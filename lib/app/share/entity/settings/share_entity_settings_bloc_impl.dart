@@ -120,15 +120,13 @@ class ShareEntitySettingsBloc extends FormBloc
 
     onFormItemsChanged();
 
-    currentItems.forEach(
-      (field) {
-        field.isSomethingChangedStream.listen(
-          (_) {
-            _updateSettingsFromFields();
-          },
-        );
-      },
-    );
+    for (final field in currentItems) {
+      field.isSomethingChangedStream.listen(
+        (_) {
+          _updateSettingsFromFields();
+        },
+      );
+    }
   }
 
   static Widget provideToContext(

@@ -17,7 +17,7 @@ class DarkFediUiTheme implements IFediUiTheme {
   @override
   String get id => darkFediUiThemeId;
   @override
-  final IFediUiColorTheme colorTheme = _darkFediUiColorTheme;
+  IFediUiColorTheme get colorTheme => _darkFediUiColorTheme;
 
   @override
   IFediUiTextTheme get textTheme => _darkFediUiTextTheme;

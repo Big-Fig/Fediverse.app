@@ -27,9 +27,9 @@ class MemoryLocalPreferencesService extends AsyncInitLoadingBloc
     preferences.clear();
 
     listeners.forEach((key, value) {
-      value.forEach((listener) {
+      for (final listener in value) {
         listener(null);
-      });
+      }
     });
 
     return true;
@@ -143,9 +143,9 @@ class MemoryLocalPreferencesService extends AsyncInitLoadingBloc
 
   void notifyKeyValueChanged(String key, dynamic value) {
     if (listeners.containsKey(key)) {
-      listeners[key]!.forEach((listener) {
+      for (final listener in listeners[key]!) {
         listener(value);
-      });
+      }
     }
   }
 }

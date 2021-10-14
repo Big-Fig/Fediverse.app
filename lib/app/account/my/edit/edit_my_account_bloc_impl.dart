@@ -254,17 +254,15 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
 
     var fieldsAttributes = <UnifediApiField>[];
 
-    customFieldsGroupBloc.items.forEach(
-      (field) {
-        fieldsAttributes.add(
-          UnifediApiField(
-            name: field.keyField.currentValue,
-            value: field.valueField.currentValue,
-            verifiedAt: null,
-          ),
-        );
-      },
-    );
+    for (final field in customFieldsGroupBloc.items) {
+      fieldsAttributes.add(
+        UnifediApiField(
+          name: field.keyField.currentValue,
+          value: field.valueField.currentValue,
+          verifiedAt: null,
+        ),
+      );
+    }
 
     var isPleromaInstance =
         currentUnifediApiAccessBloc.currentInstance!.isPleroma;

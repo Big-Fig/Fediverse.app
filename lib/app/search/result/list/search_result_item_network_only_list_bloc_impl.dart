@@ -55,35 +55,29 @@ class SearchResultItemNetworkOnlyListBloc
         following: null,
       );
 
-      searchResult.statuses.forEach(
-        (status) {
-          resultItems.add(
-            SearchResultItem.status(
-              status.toDbStatusPopulatedWrapper(),
-            ),
-          );
-        },
-      );
+      for (final status in searchResult.statuses) {
+        resultItems.add(
+          SearchResultItem.status(
+            status.toDbStatusPopulatedWrapper(),
+          ),
+        );
+      }
 
-      searchResult.accounts.forEach(
-        (account) {
-          resultItems.add(
-            SearchResultItem.account(
-              account.toDbAccountWrapper(),
-            ),
-          );
-        },
-      );
+      for (final account in searchResult.accounts) {
+        resultItems.add(
+          SearchResultItem.account(
+            account.toDbAccountWrapper(),
+          ),
+        );
+      }
 
-      searchResult.hashtags.forEach(
-        (hashtag) {
-          resultItems.add(
-            SearchResultItem.hashtag(
-              hashtag.toHashtag(),
-            ),
-          );
-        },
-      );
+      for (final hashtag in searchResult.hashtags) {
+        resultItems.add(
+          SearchResultItem.hashtag(
+            hashtag.toHashtag(),
+          ),
+        );
+      }
     }
 
     return resultItems;

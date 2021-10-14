@@ -129,32 +129,30 @@ class PleromaChatMessageRepository
 
     var result = <IPleromaChat, IPleromaChatMessage?>{};
 
-    chats.forEach(
-      (chat) {
-        var currentChatMessages = chatMessages.where(
-          (chatMessage) => chatMessage.chatRemoteId == chat.remoteId,
-        );
+    for (final chat in chats) {
+      var currentChatMessages = chatMessages.where(
+        (chatMessage) => chatMessage.chatRemoteId == chat.remoteId,
+      );
 
-        var chatMessage = currentChatMessages.fold(
-          null,
-          (IPleromaChatMessage? previousValue, IPleromaChatMessage element) {
-            if (previousValue == null) {
+      var chatMessage = currentChatMessages.fold(
+        null,
+        (IPleromaChatMessage? previousValue, IPleromaChatMessage element) {
+          if (previousValue == null) {
+            return element;
+          } else {
+            if (previousValue.createdAt.isBefore(
+              element.createdAt,
+            )) {
               return element;
             } else {
-              if (previousValue.createdAt.isBefore(
-                element.createdAt,
-              )) {
-                return element;
-              } else {
-                return previousValue;
-              }
+              return previousValue;
             }
-          },
-        );
+          }
+        },
+      );
 
-        result[chat] = chatMessage;
-      },
-    );
+      result[chat] = chatMessage;
+    }
 
     return result;
   }

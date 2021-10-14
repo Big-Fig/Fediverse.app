@@ -58,7 +58,7 @@ class SearchResultItemPaginationListWidget
     SearchResultItemType? previousType;
 
     var itemWithSeparators = <_ItemOrSeparator<ISearchResultItem>>[];
-    items.forEach((item) {
+    for (final item in items) {
       if (item.type != previousType) {
         switch (item.type) {
           case SearchResultItemType.status:
@@ -90,7 +90,7 @@ class SearchResultItemPaginationListWidget
       previousType = item.type;
 
       itemWithSeparators.add(_ItemOrSeparator(item: item, separator: null));
-    });
+    }
 
     return PaginationListWidget.buildItemsListView<
         _ItemOrSeparator<ISearchResultItem>>(

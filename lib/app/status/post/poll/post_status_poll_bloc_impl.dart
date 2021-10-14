@@ -115,16 +115,14 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
     if (poll.options.isNotEmpty) {
       pollOptionsGroupBloc.removeAllFields();
 
-      poll.options.forEach(
-        (pollOption) {
-          pollOptionsGroupBloc.addNewField(
-            createPollOptionFieldBloc(
-              pollOption,
-              pollMaximumOptionLength,
-            ),
-          );
-        },
-      );
+      for (final pollOption in poll.options) {
+        pollOptionsGroupBloc.addNewField(
+          createPollOptionFieldBloc(
+            pollOption,
+            pollMaximumOptionLength,
+          ),
+        );
+      }
     }
   }
 

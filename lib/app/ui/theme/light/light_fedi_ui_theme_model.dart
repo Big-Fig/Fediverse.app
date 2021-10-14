@@ -16,7 +16,7 @@ class LightFediUiTheme implements IFediUiTheme {
   @override
   String get id => 'light';
   @override
-  final IFediUiColorTheme colorTheme = _lightFediUiColorTheme;
+  IFediUiColorTheme get colorTheme => _lightFediUiColorTheme;
 
   @override
   IFediUiTextTheme get textTheme => _lightFediUiTextTheme;

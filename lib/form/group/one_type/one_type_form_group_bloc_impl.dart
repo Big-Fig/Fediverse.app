@@ -30,15 +30,13 @@ class OneTypeFormGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
     _itemsSubject.disposeWith(this);
     _isChangedSubject.disposeWith(this);
 
-    originalItems.forEach(
-      (field) {
-        field.isSomethingChangedStream.listen(
-          (_) {
-            checkIsSomethingChanged();
-          },
-        ).disposeWith(this);
-      },
-    );
+    for (final field in originalItems) {
+      field.isSomethingChangedStream.listen(
+        (_) {
+          checkIsSomethingChanged();
+        },
+      ).disposeWith(this);
+    }
   }
 
   final BehaviorSubject<bool> _isChangedSubject = BehaviorSubject.seeded(false);

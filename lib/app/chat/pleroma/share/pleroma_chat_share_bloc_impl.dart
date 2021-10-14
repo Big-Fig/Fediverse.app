@@ -71,11 +71,10 @@ abstract class PleromaChatShareBloc extends ShareToAccountBloc
 
     var unifediApiChatMessages = <IUnifediApiChatMessage>[];
 
-    unifediApiChatMessagesList.forEach(
-      (List<IUnifediApiChatMessage> items) {
-        unifediApiChatMessages.addAll(items);
-      },
-    );
+    // ignore: prefer_foreach
+    for (final items in unifediApiChatMessagesList) {
+      unifediApiChatMessages.addAll(items);
+    }
 
     await chatMessageRepository.upsertAllInRemoteType(
       unifediApiChatMessages,

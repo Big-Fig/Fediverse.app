@@ -131,11 +131,9 @@ abstract class PostStatusBloc extends PostMessageBloc
     );
 
     if (initialAccountsToMention?.isNotEmpty == true) {
-      initialAccountsToMention!.forEach(
-        (account) {
-          mentionedAccts.add(account.acct);
-        },
-      );
+      for (final account in initialAccountsToMention!) {
+        mentionedAccts.add(account.acct);
+      }
 
       onMentionedAccountsChanged();
     }
@@ -164,11 +162,10 @@ abstract class PostStatusBloc extends PostMessageBloc
     }
     var initialDataMediaAttachments = initialData.mediaAttachments;
     if (initialDataMediaAttachments != null) {
-      initialDataMediaAttachments.forEach(
-        (attachment) {
-          uploadMediaAttachmentsBloc.addUploadedAttachment(attachment);
-        },
-      );
+      // ignore: prefer_foreach
+      for (final attachment in initialDataMediaAttachments) {
+        uploadMediaAttachmentsBloc.addUploadedAttachment(attachment);
+      }
     }
     if (markMediaAsNsfwOnAttach) {
       uploadMediaAttachmentsBloc.uploadMediaAttachmentBlocsStream.listen(
@@ -426,7 +423,11 @@ abstract class PostStatusBloc extends PostMessageBloc
               '\t acctsToRemove=$acctsToRemove,',
         );
         mentionedAccts.addAll(acctsToAdd);
-        acctsToRemove.forEach((acct) => mentionedAccts.remove(acct));
+
+        // ignore: prefer_foreach
+        for (final acct in acctsToRemove) {
+          mentionedAccts.remove(acct);
+        }
         mentionedAcctsSubject.add(mentionedAccts);
       }
     }

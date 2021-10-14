@@ -93,11 +93,11 @@ class ChatSelectionBloc extends DisposableOwner implements IChatSelectionBloc {
   List<IUnifediApiMediaAttachment>? calculateSelectionAsMediaAttachments() {
     var mediaAttachments = <IUnifediApiMediaAttachment>[];
 
-    currentSelection.forEach((chatMessage) {
+    for (final chatMessage in currentSelection) {
       if (chatMessage.mediaAttachments?.isNotEmpty == true) {
         mediaAttachments.addAll(chatMessage.mediaAttachments!);
       }
-    });
+    }
 
     if (mediaAttachments.isEmpty) {
       return null;

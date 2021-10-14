@@ -108,27 +108,23 @@ class StatusCachedPaginationListMediaWidget
   ) {
     var statusesWithMediaAttachment = <StatusWithMediaAttachment>[];
 
-    items.forEach(
-      (status) {
-        var mediaAttachments = (status.reblog?.mediaAttachments ??
-                status.mediaAttachments ??
-                <UnifediApiMediaAttachment>[])
-            .where(
-          (mediaAttachment) => mediaAttachment.typeAsUnifediApi.isImageOrGif,
+    for (final status in items) {
+      var mediaAttachments = (status.reblog?.mediaAttachments ??
+              status.mediaAttachments ??
+              <UnifediApiMediaAttachment>[])
+          .where(
+        (mediaAttachment) => mediaAttachment.typeAsUnifediApi.isImageOrGif,
+      );
+
+      for (final mediaAttachment in mediaAttachments) {
+        statusesWithMediaAttachment.add(
+          StatusWithMediaAttachment(
+            status: status,
+            mediaAttachment: mediaAttachment,
+          ),
         );
-        // ignore: cascade_invocations
-        mediaAttachments.forEach(
-          (mediaAttachment) {
-            statusesWithMediaAttachment.add(
-              StatusWithMediaAttachment(
-                status: status,
-                mediaAttachment: mediaAttachment,
-              ),
-            );
-          },
-        );
-      },
-    );
+      }
+    }
 
     return statusesWithMediaAttachment;
   }
