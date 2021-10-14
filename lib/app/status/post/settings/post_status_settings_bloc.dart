@@ -17,12 +17,14 @@ abstract class IPostStatusSettingsBloc
 
   Stream<bool> get markMediaAsNsfwOnAttachStream;
 
+  // ignore: avoid_positional_boolean_parameters
   Future changeMarkMediaAsNsfwOnAttach(bool value);
 
   bool get dontUploadMediaDuringEditing;
 
   Stream<bool> get dontUploadMediaDuringEditingStream;
 
+  // ignore: avoid_positional_boolean_parameters
   Future changeDontUploadMediaDuringEditing(bool value);
 
   UnifediApiVisibility get defaultVisibilityAsUnifediApi;

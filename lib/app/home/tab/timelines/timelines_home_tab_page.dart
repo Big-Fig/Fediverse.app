@@ -133,7 +133,7 @@ class _TimelinesHomeTabPageBodyState extends State<_TimelinesHomeTabPageBody>
         .paginationListWithNewItemsBloc.unmergedNewItemsCountStream
         .listen(
       (unreadCount) {
-        homeBloc.updateTimelinesUnread(unreadCount > 0);
+        homeBloc.updateIsAnyTimelinesUnread(anyTimelineUnread: unreadCount > 0);
       },
     ).disposeWith(timelineTabListBloc);
   }

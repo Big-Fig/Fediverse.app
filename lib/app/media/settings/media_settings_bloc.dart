@@ -15,11 +15,13 @@ abstract class IMediaSettingsBloc
 
   Stream<bool> get autoInitStream;
 
+  // ignore: avoid_positional_boolean_parameters
   Future changeAutoInit(bool value);
 
   bool get autoPlay;
 
   Stream<bool> get autoPlayStream;
 
+  // ignore: avoid_positional_boolean_parameters
   Future changeAutoPlay(bool value);
 }

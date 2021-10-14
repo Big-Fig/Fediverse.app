@@ -14,5 +14,7 @@ abstract class ICrashReportingPermissionCheckerBloc extends IDisposable {
 
   bool get isNeedAskPermission;
 
-  Future onUserAnswer(bool result);
+  Future onUserAnswer({
+    required bool reportingEnabled,
+  });
 }

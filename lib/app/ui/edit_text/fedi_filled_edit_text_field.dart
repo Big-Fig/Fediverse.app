@@ -58,14 +58,15 @@ class FediFilledEditTextField extends StatelessWidget {
     return Container(
       decoration: filled
           ? BoxDecoration(
-              color: backgroundColor,
-              border: border,
-              // ignore: no-magic-number
+              color: backgroundColor, border: border, // ignore: no-magic-number
               borderRadius: BorderRadius.circular(30.0),
             )
           : null,
       child: Padding(
-        padding: calculatePadding(containLeading, containEnding),
+        padding: calculatePadding(
+          containLeading: containLeading,
+          containEnding: containEnding,
+        ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -105,7 +106,10 @@ class FediFilledEditTextField extends StatelessWidget {
     );
   }
 
-  EdgeInsets calculatePadding(bool containLeading, bool containEnding) {
+  EdgeInsets calculatePadding({
+    required bool containLeading,
+    required bool containEnding,
+  }) {
     if (containLeading && containEnding) {
       return EdgeInsets.zero;
     } else {

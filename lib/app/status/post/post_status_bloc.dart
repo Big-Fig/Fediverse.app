@@ -60,6 +60,7 @@ abstract class IPostStatusBloc implements IPostMessageBloc {
 
   void changeVisibility(UnifediApiVisibility visibility);
 
+  // ignore: avoid_positional_boolean_parameters
   void changeNsfwSensitive(bool nsfwSensitive);
 
   void setScheduledAt(DateTime? dateTime);

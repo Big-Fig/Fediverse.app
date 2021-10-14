@@ -100,14 +100,22 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
               IHomeBloc.of(context, listen: false).selectTab(tab);
             },
             key: Key(keyStr),
-            child: mapTabToIcon(context, tab, selectedTab == tab),
+            child: mapTabToIcon(
+              context: context,
+              tab: tab,
+              isSelected: selectedTab == tab,
+            ),
           );
         },
       );
 
   // todo: refactor UI
   // ignore: long-method
-  Widget mapTabToIcon(BuildContext context, HomeTab tab, bool isSelected) {
+  Widget mapTabToIcon({
+    required BuildContext context,
+    required HomeTab tab,
+    required bool isSelected,
+  }) {
     var fediUiColorTheme = IFediUiColorTheme.of(context, listen: true);
     var color =
         isSelected ? fediUiColorTheme.primary : fediUiColorTheme.darkGrey;

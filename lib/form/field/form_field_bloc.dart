@@ -10,5 +10,6 @@ abstract class IFormFieldBloc extends IFormItemBloc {
 
   Stream<bool> get isEnabledStream;
 
+  // ignore: avoid_positional_boolean_parameters
   void changeIsEnabled(bool enabled);
 }

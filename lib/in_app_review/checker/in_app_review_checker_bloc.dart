@@ -11,5 +11,7 @@ abstract class IInAppReviewCheckerBloc extends IDisposable {
 
   bool get isNeedAskPermission;
 
-  Future onUserAnswer(bool result);
+  Future onUserAnswer({
+    required bool userAgreeToReview,
+  });
 }

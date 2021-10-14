@@ -40,11 +40,14 @@ class CachedPaginationListWithNewItemsMergeOverlayButton
             scrollControllerBloc.scrollDirectionStream.distinct(),
             scrollControllerBloc.scrolledToTopStream,
             (ScrollDirection? scrollDirection, bool scrolledToTop) =>
-                isNeedShowMergeItems(scrollDirection, scrolledToTop),
+                isNeedShowMergeItems(
+              scrollDirection: scrollDirection,
+              scrolledToTop: scrolledToTop,
+            ),
           ),
           initialData: isNeedShowMergeItems(
-            scrollControllerBloc.scrollDirection,
-            scrollControllerBloc.scrolledToTop,
+            scrollDirection: scrollControllerBloc.scrollDirection,
+            scrolledToTop: scrollControllerBloc.scrolledToTop,
           ),
           builder: (context, snapshot) {
             var isNeedShowMergeItems = snapshot.data!;
@@ -79,10 +82,10 @@ class CachedPaginationListWithNewItemsMergeOverlayButton
     );
   }
 
-  bool isNeedShowMergeItems(
-    ScrollDirection? scrollDirection,
-    bool scrolledToTop,
-  ) =>
+  bool isNeedShowMergeItems({
+    required ScrollDirection? scrollDirection,
+    required bool scrolledToTop,
+  }) =>
       scrollDirection == ScrollDirection.forward ||
       scrollDirection == null ||
       scrolledToTop;

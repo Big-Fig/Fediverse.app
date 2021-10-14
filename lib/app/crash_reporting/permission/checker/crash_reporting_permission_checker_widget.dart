@@ -48,8 +48,7 @@ class CrashReportingPermissionCheckerWidgetState
           () async {
             await showAskCrashReportingPermissionDialog(
               context: context,
-              crashReportingPermissionCheckerBloc:
-                  crashReportingPermissionCheckerBloc,
+              checkerBloc: crashReportingPermissionCheckerBloc,
             );
           },
         );

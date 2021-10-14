@@ -10,5 +10,6 @@ abstract class ICustomSwitchBloc extends IDisposable {
 
   Stream<bool> get currentValueStream;
 
+  // ignore: avoid_positional_boolean_parameters
   void changeValue(bool value);
 }

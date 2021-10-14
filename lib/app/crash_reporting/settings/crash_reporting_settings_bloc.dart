@@ -18,5 +18,6 @@ abstract class ICrashReportingSettingsBloc
 
   Stream<bool> get reportingEnabledStream;
 
+  // ignore: avoid_positional_boolean_parameters
   Future changeReportingEnabled(bool value);
 }

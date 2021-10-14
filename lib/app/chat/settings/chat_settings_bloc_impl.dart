@@ -17,18 +17,23 @@ class ChatSettingsBloc
         );
 
   @override
-  Future changeCountConversationsInChatsUnreadBadges(bool value) async =>
+  Future changeCountConversationsInChatsUnreadBadges({
+    required bool appendConversationUnreadToUnreadBadge,
+  }) async =>
       updateSettings(
         settingsData.copyWith(
-          countConversationsInChatsUnreadBadges: value,
+          countConversationsInChatsUnreadBadges:
+              appendConversationUnreadToUnreadBadge,
         ),
       );
 
   @override
-  Future changeReplaceConversationsWithPleromaChats(bool value) async =>
+  Future changeReplaceConversationsWithPleromaChats({
+    required bool replaceConversationsWithChats,
+  }) async =>
       updateSettings(
         settingsData.copyWith(
-          replaceConversationsWithPleromaChats: value,
+          replaceConversationsWithPleromaChats: replaceConversationsWithChats,
         ),
       );
 

@@ -8,8 +8,7 @@ import 'package:flutter/cupertino.dart';
 
 Future<void> showAskCrashReportingPermissionDialog({
   required BuildContext context,
-  required ICrashReportingPermissionCheckerBloc
-      crashReportingPermissionCheckerBloc,
+  required ICrashReportingPermissionCheckerBloc checkerBloc,
 }) =>
     showFediChooserDialog(
       context: context,
@@ -20,7 +19,9 @@ Future<void> showAskCrashReportingPermissionDialog({
           label: S.of(context).dialog_action_yes,
           onAction: (BuildContext context) async {
             Navigator.of(context).pop();
-            await crashReportingPermissionCheckerBloc.onUserAnswer(true);
+            await checkerBloc.onUserAnswer(
+              reportingEnabled: true,
+            );
           },
         ),
         DialogAction(
@@ -39,7 +40,9 @@ Future<void> showAskCrashReportingPermissionDialog({
           label: S.of(context).dialog_action_no,
           onAction: (BuildContext context) async {
             Navigator.of(context).pop();
-            await crashReportingPermissionCheckerBloc.onUserAnswer(false);
+            await checkerBloc.onUserAnswer(
+              reportingEnabled: false,
+            );
           },
         ),
       ],

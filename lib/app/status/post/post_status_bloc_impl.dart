@@ -259,7 +259,7 @@ abstract class PostStatusBloc extends PostMessageBloc
     expiresInSeconds: null,
   );
 
-  // ignore: no-empty-block
+  // ignore: no-empty-block, avoid_positional_boolean_parameters
   void onFocusChange(bool hasFocus) {
     // nothing by default
   }

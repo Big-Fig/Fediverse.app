@@ -17,11 +17,13 @@ abstract class IPushFilterSettingsBloc
 
   Stream<bool> get hideNotificationContentsStream;
 
+  // ignore: avoid_positional_boolean_parameters
   Future changeHideNotificationContents(bool value);
 
   bool get blockFromStrangers;
 
   Stream<bool> get blockFromStrangersStream;
 
+  // ignore: avoid_positional_boolean_parameters
   Future changeBlockFromStrangers(bool value);
 }

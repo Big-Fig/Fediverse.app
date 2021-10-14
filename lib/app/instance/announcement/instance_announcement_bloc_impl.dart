@@ -220,6 +220,7 @@ class InstanceAnnouncementBloc extends DisposableOwner
     await _updateAnnouncement(updatedInstanceAnnouncements);
   }
 
+  // ignore: avoid_positional_boolean_parameters
   Future updateDismissed(bool dismissed) async {
     var dbInstanceAnnouncementPopulatedWrapper =
         instanceAnnouncement.toDbInstanceAnnouncementPopulatedWrapper();

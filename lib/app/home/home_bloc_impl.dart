@@ -88,8 +88,10 @@ class HomeBloc extends DisposableOwner implements IHomeBloc {
   }
 
   @override
-  void updateTimelinesUnread(bool unread) {
-    _isTimelinesUnreadSubject.add(unread);
+  void updateIsAnyTimelinesUnread({
+    required bool anyTimelineUnread,
+  }) {
+    _isTimelinesUnreadSubject.add(anyTimelineUnread);
   }
 
   bool get isTimelinesTabSelected => selectedTab == HomeTab.timelines;
@@ -125,7 +127,7 @@ class HomeBloc extends DisposableOwner implements IHomeBloc {
             .listen(
           (count) {
             var unread = count > 0;
-            updateTimelinesUnread(unread);
+            updateIsAnyTimelinesUnread(anyTimelineUnread: unread);
           },
         );
       }
