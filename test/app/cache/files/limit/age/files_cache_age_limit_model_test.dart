@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   test('toJsonValue & fromJsonValue', () async {
     var values = FilesCacheAgeLimitType.values;
-    for (var value in values) {
+    for (final value in values) {
       var jsonValue = value.toJsonValue();
 
       var objFromJsonValue = jsonValue.toFilesCacheAgeLimitType();
@@ -15,7 +15,7 @@ void main() {
   });
   test('toDurationOrNull', () async {
     var values = FilesCacheAgeLimitType.values;
-    for (var value in values) {
+    for (final value in values) {
       switch (value) {
         case FilesCacheAgeLimitType.notSet:
           expect(value.toDurationOrNull(), null);

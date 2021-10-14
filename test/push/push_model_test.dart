@@ -9,7 +9,7 @@ import '../json/json_test_helper.dart';
 void main() {
   test('PushMessageType toJsonValue & fromJsonValue', () async {
     var values = PushMessageType.values;
-    for (var value in values) {
+    for (final value in values) {
       var jsonValue = value.toJsonValue();
 
       var objFromJsonValue = jsonValue.toPushMessageType();

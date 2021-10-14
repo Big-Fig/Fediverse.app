@@ -143,7 +143,7 @@ class NotificationsPushHandlerBloc extends DisposableOwner
     );
 
     var handled = false;
-    for (var handler in realTimeHandlers) {
+    for (final handler in realTimeHandlers) {
       handled = await handler(pushMessageHandler);
       if (handled) {
         break;

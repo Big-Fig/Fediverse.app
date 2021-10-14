@@ -349,7 +349,7 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
     // move to filters
     var excludeStatusTextConditions = filters?.excludeStatusTextConditions;
     if (excludeStatusTextConditions != null) {
-      for (var condition in excludeStatusTextConditions) {
+      for (final condition in excludeStatusTextConditions) {
         addExcludeContentWhere(
           joinQuery,
           phrase: condition.phrase,

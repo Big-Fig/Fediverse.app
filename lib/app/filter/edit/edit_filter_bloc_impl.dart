@@ -146,7 +146,7 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
 
     var timelinesToRemove = <Timeline>[];
 
-    for (var timelineStorageItem
+    for (final timelineStorageItem
         in timelinesHomeTabStorageBloc.timelineStorageItems) {
       var timeline = timelineStorageItem.timeline;
       var onlyInRemoteList = timeline.onlyInRemoteList;
@@ -155,7 +155,7 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
       }
     }
 
-    for (var timeline in timelinesToRemove) {
+    for (final timeline in timelinesToRemove) {
       await timelinesHomeTabStorageBloc.remove(timeline);
     }
   }

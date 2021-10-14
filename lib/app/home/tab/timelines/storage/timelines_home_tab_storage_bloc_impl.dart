@@ -50,7 +50,7 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
 
   Future updateTimelines() async {
     var timelines = <Timeline>[];
-    for (var timelineId in timelineIds) {
+    for (final timelineId in timelineIds) {
       var bloc = TimelineLocalPreferenceBloc.byId(
         preferencesService,
         userAtHost: authInstance.userAtHost,

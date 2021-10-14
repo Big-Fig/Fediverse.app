@@ -50,6 +50,7 @@ class FediListSmartRefresherRefreshIndicator extends RefreshIndicator {
 class _FediListSmartRefresherRefreshIndicatorState
     extends RefreshIndicatorState<FediListSmartRefresherRefreshIndicator>
     with TickerProviderStateMixin {
+  // ignore: use_late_for_private_fields_and_variables
   Animation<Offset>? _positionFactor;
 
   // ignore: avoid-late-keyword

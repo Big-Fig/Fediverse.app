@@ -324,7 +324,7 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
               userAtHost,
             );
 
-            for (var blocCreator in localPreferencesBlocCreators) {
+            for (final blocCreator in localPreferencesBlocCreators) {
               var localPreferencesBloc =
                   blocCreator(hiveLocalPreferencesService);
 

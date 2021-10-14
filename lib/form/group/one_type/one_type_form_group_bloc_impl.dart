@@ -144,7 +144,7 @@ class OneTypeFormGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
     Future.delayed(
       Duration(seconds: 1),
       () {
-        for (var field in oldFields) {
+        for (final field in oldFields) {
           field.dispose();
         }
       },
@@ -153,7 +153,7 @@ class OneTypeFormGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
 
   @override
   void clear() {
-    for (var item in items) {
+    for (final item in items) {
       item.clear();
     }
     _itemsSubject.add(originalItems);

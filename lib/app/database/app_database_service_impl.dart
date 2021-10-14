@@ -158,10 +158,9 @@ class AppDatabaseService extends AsyncInitLoadingBloc
 
   @override
   Future clearAll() async {
-    for (var table in appDatabase.allTables) {
+    for (final table in appDatabase.allTables) {
       // ignore: invalid_use_of_visible_for_testing_member,
       // ignore: implicit_dynamic_method
-      // ignore: implicit_dynamic_method,
       await appDatabase.delete(table).go();
     }
   }

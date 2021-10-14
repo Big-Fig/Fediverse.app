@@ -171,7 +171,7 @@ class ThreadPostStatusBloc extends PostStatusBloc
       var statuses = statusThreadBloc.statuses;
       if (mentionedAccts.isNotEmpty) {
         IStatus? statusToReply;
-        for (var acct in mentionedAccts) {
+        for (final acct in mentionedAccts) {
           statusToReply = statuses.reversed.firstWhereOrNull(
             (status) => status.account.acct == acct,
           );

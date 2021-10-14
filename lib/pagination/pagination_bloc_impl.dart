@@ -215,7 +215,7 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
         isLoadedInSequence = false;
       } else {
         int? previousIndex = firstIndex - 1;
-        for (var page in loadedPagesSortedByIndex) {
+        for (final page in loadedPagesSortedByIndex) {
           var currentIndex = page.pageIndex;
 
           if (currentIndex != previousIndex! + 1) {
@@ -248,7 +248,7 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
     int? minIndex;
 
     // todo: improve
-    for (var index in loadedPageIndexesSortedByIndex) {
+    for (final index in loadedPageIndexesSortedByIndex) {
       if (minIndex == null || index < minIndex) {
         minIndex = index;
       }

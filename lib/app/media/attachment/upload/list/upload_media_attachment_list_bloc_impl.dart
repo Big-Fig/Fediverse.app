@@ -254,7 +254,7 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
       uploadMediaAttachmentBlocsSubject.add([]);
     }
 
-    for (var mediaAttachmentBloc in uploadMediaAttachmentBlocs) {
+    for (final mediaAttachmentBloc in uploadMediaAttachmentBlocs) {
       await mediaAttachmentBloc.dispose();
     }
   }

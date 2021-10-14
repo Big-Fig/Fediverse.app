@@ -785,7 +785,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
     }
 
     if (filters?.excludeTextConditions?.isNotEmpty == true) {
-      for (var textCondition in filters!.excludeTextConditions!) {
+      for (final textCondition in filters!.excludeTextConditions!) {
         addExcludeTextWhere(
           joinQuery,
           phrase: textCondition.phrase,

@@ -923,7 +923,7 @@ Future<UnifediApiAccess?> _findInstanceByUserAtHost({
 
   UnifediApiAccess? foundInstance;
 
-  for (var authInstance in authInstanceList.instances) {
+  for (final authInstance in authInstanceList.instances) {
     var found = authInstance.isInstanceWithHostAndAcct(
       host: host,
       acct: acct,

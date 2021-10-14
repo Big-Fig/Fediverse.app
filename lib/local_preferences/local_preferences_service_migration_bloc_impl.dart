@@ -23,7 +23,7 @@ abstract class LocalPreferencesServiceMigrationBloc
       () => 'migrateData ${migrationLocalPreferencesBlocCreators.length}',
     );
 
-    for (var creator in migrationLocalPreferencesBlocCreators) {
+    for (final creator in migrationLocalPreferencesBlocCreators) {
       await migrateLocalPreferenceBloc(creator);
     }
   }

@@ -85,7 +85,7 @@ class _InstanceActivityGraphWidget extends StatelessWidget {
         var maxLogins = first.logins;
         var maxRegistrations = first.registrations;
 
-        for (var item in activity) {
+        for (final item in activity) {
           maxStatuses = max(item.statuses, maxStatuses);
           maxLogins = max(item.logins, maxLogins);
           maxRegistrations = max(item.registrations, maxRegistrations);

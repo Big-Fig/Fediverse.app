@@ -505,7 +505,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
-      for (var remoteAccount in remoteAccounts) {
+      for (final remoteAccount in remoteAccounts) {
         // ignore: unawaited_futures
         upsertChatRemoteAccount(
           remoteAccount,
@@ -544,7 +544,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
-      for (var remoteAccount in remoteAccounts) {
+      for (final remoteAccount in remoteAccounts) {
         // ignore: unawaited_futures
         upsertConversationRemoteAccount(
           remoteAccount,

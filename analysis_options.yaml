@@ -91,6 +91,9 @@ linter:
     # == is easier to use than ?? for nullable bool
     use_if_null_to_convert_nulls_to_bools: false
 
+    # default value may changes
+    avoid_redundant_argument_values: false
+
     # code metrics have better rules for member ordering
     sort_constructors_first: false
     sort_unnamed_constructors_first: false
@@ -99,14 +102,11 @@ linter:
     avoid_types_on_closure_parameters: false
     avoid_bool_literals_in_conditional_expressions: false
     avoid_catches_without_on_clauses: false
-    prefer_final_in_for_each: false
-    avoid_redundant_argument_values: false
     avoid_field_initializers_in_const_classes: false
     avoid_function_literals_in_foreach_calls: false
     unnecessary_lambdas: false
     use_build_context_synchronously: false
     unnecessary_final: false
-
     prefer_const_constructors: false
     prefer_constructors_over_static_methods: false
     always_specify_types: false
@@ -116,7 +116,7 @@ linter:
     prefer_function_declarations_over_variables: false
     null_check_on_nullable_type_parameter: false
     prefer_initializing_formals: false
-    use_late_for_private_fields_and_variables: false
+
 
 dart_code_metrics:
   anti-patterns:

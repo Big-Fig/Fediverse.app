@@ -102,7 +102,7 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
       var myAccountMap = <String, UnifediApiMyAccount>{};
       if (authList != null) {
         var instances = <UnifediApiAccess>[];
-        for (var instance in authList.instances) {
+        for (final instance in authList.instances) {
           var userAtHost = instance.userAtHost;
           var host = instance.urlHost;
 

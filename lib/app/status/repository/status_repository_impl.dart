@@ -590,7 +590,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
-      for (var remoteItem in remoteItems) {
+      for (final remoteItem in remoteItems) {
         // ignore: unawaited_futures
         insertInRemoteTypeBatch(
           remoteItem,
@@ -618,7 +618,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
-      for (var remoteStatus in remoteStatuses) {
+      for (final remoteStatus in remoteStatuses) {
         // ignore: unawaited_futures
         upsertRemoteStatusWithAllArguments(
           remoteStatus,

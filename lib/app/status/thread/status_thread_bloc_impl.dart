@@ -253,7 +253,7 @@ abstract class StatusThreadBloc extends AsyncInitLoadingBloc
     var content = remoteStatus.content;
 
     var filtered = false;
-    for (var filter in filters) {
+    for (final filter in filters) {
       var phrase = filter.phrase;
       if (filter.wholeWord) {
         var regex = RegExp('\b$phrase\b');

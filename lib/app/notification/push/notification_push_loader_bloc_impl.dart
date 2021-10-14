@@ -354,7 +354,7 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
 
     var handledMessages = <NotificationsPushHandlerMessage>[];
 
-    for (var message in unhandledMessages) {
+    for (final message in unhandledMessages) {
       var success = await handlePush(message);
       if (success) {
         handledMessages.add(message);

@@ -174,7 +174,7 @@ class _HashtagListItemHistoryGraphWidget extends StatelessWidget {
 
     var maxUses = items.first.uses;
 
-    for (var item in items) {
+    for (final item in items) {
       maxUses = max(item.uses, maxUses);
     }
 

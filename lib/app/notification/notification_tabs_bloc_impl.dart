@@ -111,7 +111,7 @@ class NotificationsTabsBloc extends AsyncInitLoadingBloc
   Future internalAsyncInit() async {
     _logger.finest(() => 'internalAsyncInit');
 
-    for (var tab in tabs) {
+    for (final tab in tabs) {
       var notificationTabBloc = NotificationTabBloc(
         tab: tab,
         notificationRepository: notificationRepository,

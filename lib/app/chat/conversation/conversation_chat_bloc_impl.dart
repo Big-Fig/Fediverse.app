@@ -226,7 +226,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
 
     await accountRepository.batch((batch) {
       if (remoteConversation.accounts.isNotEmpty) {
-        for (var account in remoteConversation.accounts) {
+        for (final account in remoteConversation.accounts) {
           accountRepository.upsertConversationRemoteAccount(
             account,
             conversationRemoteId: remoteConversation.id,
@@ -320,7 +320,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
   @override
   Future deleteMessages(List<IChatMessage> chatMessages) async {
     // create queue instead of parallel requests to avoid throttle limit on server
-    for (var chatMessage in chatMessages) {
+    for (final chatMessage in chatMessages) {
       if (chatMessage.isPendingStatePublishedOrNull) {
         await unifediApiStatusService.deleteStatus(
           statusId: chatMessage.remoteId,
@@ -328,7 +328,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
       }
     }
 
-    for (var chatMessage in chatMessages) {
+    for (final chatMessage in chatMessages) {
       // todo: rework in one request
       await statusRepository.markStatusAsDeleted(
         statusRemoteId: chatMessage.remoteId,

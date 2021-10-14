@@ -328,7 +328,7 @@ class ConversationChatRepository
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
-      for (var remoteItem in remoteItems) {
+      for (final remoteItem in remoteItems) {
         // ignore: unawaited_futures
         insertInRemoteTypeBatch(
           remoteItem,
