@@ -36,7 +36,7 @@ class UploadMediaAttachmentBlocDevice extends DisposableOwner
   // ignore: close_sinks
   BehaviorSubject<UploadMediaAttachmentState> uploadStateSubject =
       BehaviorSubject.seeded(
-    UploadMediaAttachmentState(
+    const UploadMediaAttachmentState(
       type: UploadMediaAttachmentStateType.notUploaded,
     ),
   );
@@ -111,7 +111,7 @@ class UploadMediaAttachmentBlocDevice extends DisposableOwner
     _logger.finest(() => 'startUpload uploading');
 
     uploadStateSubject.add(
-      UploadMediaAttachmentState(
+      const UploadMediaAttachmentState(
         type: UploadMediaAttachmentStateType.uploading,
       ),
     );
@@ -127,7 +127,7 @@ class UploadMediaAttachmentBlocDevice extends DisposableOwner
         .then((unifediApiMediaAttachment) {
       this.unifediApiMediaAttachment = unifediApiMediaAttachment;
       uploadStateSubject.add(
-        UploadMediaAttachmentState(
+        const UploadMediaAttachmentState(
           type: UploadMediaAttachmentStateType.uploaded,
         ),
       );
@@ -149,13 +149,13 @@ class UploadMediaAttachmentBlocDevice extends DisposableOwner
     var completer = Completer<void>();
 
     var started = DateTime.now();
-    var timer = Timer.periodic(Duration(milliseconds: 1), (_) {
+    var timer = Timer.periodic(const Duration(milliseconds: 1), (_) {
       if (uploadState.type != UploadMediaAttachmentStateType.uploading) {
         completer.complete();
       } else {
         var dateTime = DateTime.now();
         var diff = dateTime.difference(started).abs();
-        if (diff > Duration(seconds: 10)) {
+        if (diff > const Duration(seconds: 10)) {
           completer.complete();
         }
       }
@@ -180,7 +180,7 @@ class UploadMediaAttachmentBlocDevice extends DisposableOwner
     // change only metadata via API
     unifediApiMediaAttachment = null;
     uploadStateSubject.add(
-      UploadMediaAttachmentState(
+      const UploadMediaAttachmentState(
         type: UploadMediaAttachmentStateType.notUploaded,
       ),
     );

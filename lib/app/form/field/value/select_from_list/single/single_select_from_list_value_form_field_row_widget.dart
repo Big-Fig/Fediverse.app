@@ -105,7 +105,7 @@ class _SingleSelectFromListValueFormFieldRowValueWidget<T>
           }
         },
         child: Padding(
-          padding: EdgeInsets.symmetric(
+          padding: const EdgeInsets.symmetric(
             // ignore: no-magic-number
             vertical: FediSizes.smallPadding / 2,
             horizontal: FediSizes.mediumPadding,

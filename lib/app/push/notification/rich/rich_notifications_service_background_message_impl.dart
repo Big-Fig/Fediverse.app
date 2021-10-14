@@ -571,7 +571,7 @@ Future<IUnifediApiNotification?> _loadLastNotificationForInstance({
         await unifediApiNotificationService.getNotifications(
       excludeVisibilities: null,
       onlyFromAccountId: null,
-      pagination: UnifediApiPagination(
+      pagination: const UnifediApiPagination(
         limit: 1,
         minId: null,
         maxId: null,

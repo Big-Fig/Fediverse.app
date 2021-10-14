@@ -147,7 +147,7 @@ class _FediSingleSelectionChooserDialogBodyContentAction
               builder: (context, snapshot) {
                 var visible = snapshot.data!;
                 if (!visible) {
-                  return SizedBox.shrink();
+                  return const SizedBox.shrink();
                 }
 
                 return _FediSingleSelectionChooserDialogBodyContentActionBody(

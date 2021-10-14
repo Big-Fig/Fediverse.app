@@ -92,7 +92,7 @@ class FediFilledEditTextField extends StatelessWidget {
                 minLines: null,
                 hintStyle: IFediUiTextTheme.of(context).bigTallGrey,
                 // ignore: no-magic-number
-                contentPadding: EdgeInsets.symmetric(vertical: 10.0),
+                contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
                 border: InputBorder.none,
                 errorBorder: InputBorder.none,
                 // ignore: no-equal-arguments

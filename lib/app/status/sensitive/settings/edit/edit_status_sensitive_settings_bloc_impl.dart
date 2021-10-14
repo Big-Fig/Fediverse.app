@@ -52,8 +52,8 @@ class EditStatusSensitiveSettingsBloc
         ) {
     nsfwDisplayDelayDurationFieldBloc = DurationValueFormFieldBloc(
       originValue: currentSettings.nsfwDisplayDelayDuration,
-      minDuration: Duration(minutes: 1),
-      maxDuration: Duration(days: 1),
+      minDuration: const Duration(minutes: 1),
+      maxDuration: const Duration(days: 1),
       isNullValuePossible: true,
       isEnabled: isEnabled,
     );

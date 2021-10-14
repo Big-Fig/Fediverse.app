@@ -24,7 +24,7 @@ class ChatSelectionDeleteActionButtonWidget extends StatelessWidget {
         var isAllSelectedItemsFromMe = snapshot.data ?? true;
 
         return FediIconButton(
-          icon: Icon(FediIcons.delete),
+          icon: const Icon(FediIcons.delete),
           color: isAllSelectedItemsFromMe
               ? IFediUiColorTheme.of(context).darkGrey
               : IFediUiColorTheme.of(context).lightGrey,

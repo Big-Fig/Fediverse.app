@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_lambdas
+// ignore_for_file: unnecessary_lambdas, prefer_const_constructors
 
 import 'package:fedi/localization/localization_model.dart';
 import 'package:flutter_test/flutter_test.dart';

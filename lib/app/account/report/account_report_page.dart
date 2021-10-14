@@ -19,9 +19,9 @@ class AccountReportPage extends StatelessWidget {
   const AccountReportPage();
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: const _AccountReportPageAppBar(),
-        body: const SafeArea(
+  Widget build(BuildContext context) => const Scaffold(
+        appBar: _AccountReportPageAppBar(),
+        body: SafeArea(
           child: AccountReportWidget(),
         ),
       );
@@ -116,8 +116,8 @@ MaterialPageRoute createAccountReportPageRoute({
             listen: false,
           ),
         ),
-        child: AccountReportBlocProxyProvider(
-          child: const AccountReportPage(),
+        child: const AccountReportBlocProxyProvider(
+          child: AccountReportPage(),
         ),
       ),
     );

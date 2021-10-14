@@ -21,7 +21,7 @@ void showEditGlobalOrInstanceDatabaseCacheSettingsDialog({
   showEditGlobalOrInstanceSettingsDialog(
     context: context,
     subTitle: S.of(context).app_cache_database_settings_title,
-    child: EditDatabaseCacheSettingsWidget(
+    child: const EditDatabaseCacheSettingsWidget(
       shrinkWrap: true,
     ),
     childContextBuilder: ({

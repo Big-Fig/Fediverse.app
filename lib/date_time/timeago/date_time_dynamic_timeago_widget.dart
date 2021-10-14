@@ -41,7 +41,7 @@ class DateTimeDynamicTimeagoWidgetState
       () {
         if (!disposed) {
           timer = Timer.periodic(
-            Duration(seconds: secondsInMinute),
+            const Duration(seconds: secondsInMinute),
             (_) {
               // redraw timeago each minute
               // todo: rework with stateless widget

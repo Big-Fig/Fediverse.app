@@ -162,7 +162,7 @@ class DurationValueFormFieldRowIconButtonWidget extends StatelessWidget {
         var isEnabled = snapshot.data!;
 
         return FediIconButton(
-          icon: Icon(FediIcons.chevron_down),
+          icon: const Icon(FediIcons.chevron_down),
           color: isEnabled
               ? fediUiColorTheme.darkGrey
               : fediUiColorTheme.lightGrey,

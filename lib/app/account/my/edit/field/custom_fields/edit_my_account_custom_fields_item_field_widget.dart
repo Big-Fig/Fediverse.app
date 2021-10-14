@@ -32,7 +32,7 @@ class EditMyAccountCustomFieldsItemFieldWidget extends StatelessWidget {
             nameStringFieldBloc: itemData.customField.keyField,
             valueStringFieldBloc: itemData.customField.valueField,
             ending: FediIconButton(
-              icon: Icon(FediIcons.close),
+              icon: const Icon(FediIcons.close),
               onPressed: () {
                 var fieldGroupBloc = Provider.of<
                     IOneTypeFormGroupBloc<IKeyValuePairFormGroupBloc>>(

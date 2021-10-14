@@ -108,26 +108,24 @@ class EditMyAccountPleromaBackgroundFieldValueWidget extends StatelessWidget {
                   ),
                 ),
               ),
-              Positioned(
+              const Positioned(
                 bottom: FediSizes.bigPadding,
                 // ignore: no-equal-arguments
                 right: FediSizes.bigPadding,
-                child:
-                    const EditMyAccountPleromaBackgroundFieldEditButtonWidget(),
+                child: EditMyAccountPleromaBackgroundFieldEditButtonWidget(),
               ),
-              Positioned(
+              const Positioned(
                 top: FediSizes.bigPadding,
                 // ignore: no-equal-arguments
                 right: FediSizes.bigPadding,
-                child:
-                    const EditMyAccountPleromaBackgroundFieldDeleteButtonWidget(),
+                child: EditMyAccountPleromaBackgroundFieldDeleteButtonWidget(),
               ),
             ],
           );
         } else {
-          return Padding(
+          return const Padding(
             padding: FediPadding.allSmallPadding,
-            child: const _EditMyAccountPleromaBackgroundAddButtonWidget(),
+            child: _EditMyAccountPleromaBackgroundAddButtonWidget(),
           );
         }
       },

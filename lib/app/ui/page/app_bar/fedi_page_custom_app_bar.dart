@@ -13,11 +13,12 @@ class FediPageCustomAppBar extends StatelessWidget
 
   // AppBar size without bottom
   @override
-  final preferredSize = calculatePreferredSize();
+  Size get preferredSize => calculatePreferredSize();
 
-  static Size calculatePreferredSize() => Size.fromHeight(kToolbarHeight + 1);
+  static Size calculatePreferredSize() =>
+      const Size.fromHeight(kToolbarHeight + 1);
 
-  FediPageCustomAppBar({
+  const FediPageCustomAppBar({
     required this.child,
     required this.leading,
     this.centerTitle = false,

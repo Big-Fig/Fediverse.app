@@ -41,10 +41,10 @@ abstract class AccountStatusesCachedListBloc extends AsyncInitLoadingBloc
   IUnifediApiService get unifediApi => unifediApiAccountService;
 
   @override
-  Stream<bool> get settingsChangedStream => Stream.empty();
+  Stream<bool> get settingsChangedStream => const Stream.empty();
 
   FilterRepositoryFilters get filterRepositoryFilters =>
-      FilterRepositoryFilters(
+      const FilterRepositoryFilters(
         notExpired: true,
         onlyWithContextTypes: [
           UnifediApiFilterContextType.accountValue,

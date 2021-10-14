@@ -13,7 +13,7 @@ Future showPostStatusScheduleDialog({
   required IPostStatusBloc postStatusBloc,
 }) async {
   // ignore: no-magic-number
-  var approximateDurationForSelection = Duration(minutes: 2);
+  var approximateDurationForSelection = const Duration(minutes: 2);
   var now = DateTime.now();
 
   var pickerTitle = S.of(context).app_status_scheduled_datetime_picker_title;
@@ -31,7 +31,7 @@ Future showPostStatusScheduleDialog({
     minDateTime: now,
     maxDateTime: now.add(
       // ignore: no-magic-number
-      Duration(days: 365),
+      const Duration(days: 365),
     ),
     currentDateTime: postStatusBloc.scheduledAt ?? initialDate,
     theme: FediDatePickerTheme.byDefault(

@@ -24,7 +24,7 @@ abstract class ChatMessageBloc extends DisposableOwner
   }) {
     if (delayInit) {
       Future.delayed(
-        Duration(seconds: 1),
+        const Duration(seconds: 1),
         () {
           _init(needRefreshFromNetworkOnInit);
         },

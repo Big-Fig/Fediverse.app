@@ -196,7 +196,7 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
   void addGroupByChatId(JoinedSelectStatement query) {
     query.groupBy(
       [dbChatMessages.chatRemoteId],
-      having: CustomExpression('MAX(db_chat_messages.created_at)'),
+      having: const CustomExpression('MAX(db_chat_messages.created_at)'),
     );
   }
 

@@ -14,6 +14,6 @@ class CustomEmojiPickerCodeItemWidget extends StatelessWidget {
         item.code,
         // todo: refactor
         // ignore: no-magic-number
-        style: TextStyle(fontSize: 24),
+        style: const TextStyle(fontSize: 24),
       );
 }

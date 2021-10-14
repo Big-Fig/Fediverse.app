@@ -22,10 +22,10 @@ class SingleMediaPickerPage extends StatelessWidget {
   const SingleMediaPickerPage();
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: const _SingleMediaPickerPageAppBar(), //      body:
+  Widget build(BuildContext context) => const Scaffold(
+        appBar: _SingleMediaPickerPageAppBar(), //      body:
         // MultiFilePickerWidget(),
-        body: const SafeArea(
+        body: SafeArea(
           child: MediaPickerWidget(),
         ),
       );
@@ -38,10 +38,10 @@ class _SingleMediaPickerPageAppBar extends StatelessWidget
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => FediPageCustomAppBar(
+  Widget build(BuildContext context) => const FediPageCustomAppBar(
         centerTitle: true,
-        leading: const FediBackIconButton(),
-        child: const MediaPickerPageAppBarTitle(
+        leading: FediBackIconButton(),
+        child: MediaPickerPageAppBarTitle(
           emptyTitleWidget: _SingleMediaPickerPageAppBarEmptyTitleWidget(),
         ),
       );
@@ -93,8 +93,8 @@ Future<IMediaDeviceFile?> goToSingleMediaPickerPage(
 
               return singleMediaPickerBloc;
             },
-            child: SingleMediaPickerBlocProxyProvider(
-              child: const SingleMediaPickerPage(),
+            child: const SingleMediaPickerBlocProxyProvider(
+              child: SingleMediaPickerPage(),
             ),
           ),
         ),

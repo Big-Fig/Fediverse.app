@@ -35,7 +35,7 @@ class EditMyAccountPage extends StatelessWidget {
             _EditMyAccountPageAppBarSaveAction(),
           ],
         ),
-        body: SafeArea(child: EditMyAccountWidget()),
+        body: const SafeArea(child: EditMyAccountWidget()),
       ),
     );
   }

@@ -8,9 +8,9 @@ class LocalInstanceDetailsPage extends StatelessWidget {
   const LocalInstanceDetailsPage();
 
   @override
-  Widget build(BuildContext context) => Scaffold(
+  Widget build(BuildContext context) => const Scaffold(
         appBar: InstanceHostAppBarWidget(),
-        body: const SafeArea(
+        body: SafeArea(
           child: InstanceDetailsWidget(),
         ),
       );

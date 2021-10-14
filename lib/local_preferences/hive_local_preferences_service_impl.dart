@@ -81,7 +81,7 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
       var authList = authListBloc.value;
 
       var scopes = IPleromaApiAccessScopes.calculateAvailableScopes(
-        PleromaApiVersion(
+        const PleromaApiVersion(
           major: 2,
           minor: 4,
           patch: 51,

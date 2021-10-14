@@ -285,7 +285,7 @@ class _FediVideoPlayerControlsBodyWidget extends StatelessWidget {
         ),
       ),
       child: Padding(
-        padding: EdgeInsets.only(left: FediSizes.mediumPadding),
+        padding: const EdgeInsets.only(left: FediSizes.mediumPadding),
         child: Row(
           children: [
             const Expanded(

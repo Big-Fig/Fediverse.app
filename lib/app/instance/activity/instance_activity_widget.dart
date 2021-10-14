@@ -77,7 +77,7 @@ class _InstanceActivityGraphWidget extends StatelessWidget {
       builder: (context, snapshot) {
         var activity = snapshot.data;
         if (activity?.isNotEmpty != true) {
-          return SizedBox.shrink();
+          return const SizedBox.shrink();
         }
 
         var first = activity!.first;

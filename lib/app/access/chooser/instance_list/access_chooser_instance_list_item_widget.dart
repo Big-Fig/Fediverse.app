@@ -35,10 +35,10 @@ class UnifediApiAccessChooserInstanceListItemWidget extends StatelessWidget {
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: FediSizes.bigPadding),
+            const Padding(
+              padding: EdgeInsets.only(left: FediSizes.bigPadding),
               child:
-                  const _UnifediApiAccessChooserInstanceListItemSelectedIconWidget(),
+                  _UnifediApiAccessChooserInstanceListItemSelectedIconWidget(),
             ),
           ],
         ),
@@ -64,7 +64,7 @@ class _UnifediApiAccessChooserInstanceListItemAccountInfoWidget
         if (!instanceListItemBloc.isSelected) {
           Navigator.of(context).pop();
           Future.delayed(
-            Duration(milliseconds: msToWaitBeforeChangeInstance),
+            const Duration(milliseconds: msToWaitBeforeChangeInstance),
             () {
               instanceChooserBloc.chooseInstance(
                 instanceListItemBloc.instance,
@@ -75,7 +75,7 @@ class _UnifediApiAccessChooserInstanceListItemAccountInfoWidget
       },
       child: Row(
         children: [
-          AccountAvatarWidget(
+          const AccountAvatarWidget(
             imageSize: FediSizes.accountAvatarBigSize,
             progressSize: FediSizes.accountAvatarProgressBigSize,
           ),
@@ -132,7 +132,7 @@ class _UnifediApiAccessChooserInstanceListItemSelectedIconWidget
         color: IFediUiColorTheme.of(context).primary,
       );
     } else {
-      return SizedBox(width: FediSizes.smallFilledButtonHeight);
+      return const SizedBox(width: FediSizes.smallFilledButtonHeight);
     }
   }
 }
@@ -150,7 +150,7 @@ class _UnifediApiAccessChooserInstanceListItemLogoutButtonWidget
         IUnifediApiAccessChooserInstanceListItemBloc.of(context);
 
     return FediIconButton(
-      icon: Icon(FediIcons.remove_circle),
+      icon: const Icon(FediIcons.remove_circle),
       padding: EdgeInsets.zero,
       color: IFediUiColorTheme.of(context).darkGrey,
       onPressed: () async {

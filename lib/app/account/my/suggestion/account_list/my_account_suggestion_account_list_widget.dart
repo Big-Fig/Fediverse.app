@@ -18,6 +18,6 @@ class MyAccountSuggestionAccountListWidget extends StatelessWidget {
         accountActions: const [
           MyAccountSuggestionAccountRemoveSuggestionActionButtonWidget(),
         ],
-        key: PageStorageKey('MyAccountSuggestionAccountListWidget'),
+        key: const PageStorageKey('MyAccountSuggestionAccountListWidget'),
       );
 }

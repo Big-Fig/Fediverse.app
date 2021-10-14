@@ -79,7 +79,7 @@ class ConversationChatMessageCachedPaginationListWithNewItemsBloc<
       // last message already fetched
       // ignore: unawaited_futures
       Future.delayed(
-        Duration(
+        const Duration(
           // todo: refactor
           // ignore: no-magic-number
           milliseconds: 100,

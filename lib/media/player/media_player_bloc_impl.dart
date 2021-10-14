@@ -166,7 +166,7 @@ class MediaPlayerBloc extends AsyncInitLoadingBloc implements IMediaPlayerBloc {
         var now = DateTime.now();
         if (continuesPlaying &&
             now.difference(positionChangedLastDateTime).abs() >
-                Duration(seconds: 1)) {
+                const Duration(seconds: 1)) {
           isBufferingSubject.add(true);
         } else {
           isBufferingSubject.add(false);
@@ -263,7 +263,7 @@ class MediaPlayerBloc extends AsyncInitLoadingBloc implements IMediaPlayerBloc {
     );
     try {
       if (playerState == MediaPlayerState.finished) {
-        await videoPlayerController!.seekTo(Duration(seconds: 0));
+        await videoPlayerController!.seekTo(Duration.zero);
       }
       await videoPlayerController!.play();
 

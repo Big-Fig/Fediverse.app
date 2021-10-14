@@ -18,7 +18,7 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
     IUnifediApiInstancePollLimits? pollLimit,
   ) =>
       DurationDateTimeValueFormFieldBloc(
-        originValue: DurationDateTime(
+        originValue: const DurationDateTime(
           duration: Duration(days: 1),
           dateTime: null,
         ),

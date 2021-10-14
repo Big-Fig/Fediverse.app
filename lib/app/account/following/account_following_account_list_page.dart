@@ -22,8 +22,8 @@ class AccountFollowingAccountListPage extends StatelessWidget {
               account.acct,
             ),
       ),
-      body: SafeArea(
-        child: const AccountFollowingAccountListWidget(),
+      body: const SafeArea(
+        child: AccountFollowingAccountListWidget(),
       ),
     );
   }

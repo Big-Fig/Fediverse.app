@@ -13,9 +13,9 @@ class RemoteInstanceDetailsPage extends StatelessWidget {
   const RemoteInstanceDetailsPage();
 
   @override
-  Widget build(BuildContext context) => Scaffold(
+  Widget build(BuildContext context) => const Scaffold(
         appBar: InstanceHostAppBarWidget(),
-        body: const SafeArea(
+        body: SafeArea(
           child: InstanceDetailsWidget(
             key: Key(
               RemoteInstanceDetailsPageKeys.instanceDetailsWidgetKey,

@@ -10,7 +10,7 @@ class DbFilters extends Table {
 
   TextColumn? get phrase => text()();
 
-  TextColumn? get context => text().map(StringListDatabaseConverter())();
+  TextColumn? get context => text().map(const StringListDatabaseConverter())();
 
   BoolColumn? get irreversible => boolean()();
 

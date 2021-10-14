@@ -170,7 +170,7 @@ Future<IStatus?> loadRemoteAccountAnyStatusOnLocalInstance(
   var remoteStatuses =
       await localInstanceUnifediApiAccountService.getAccountStatuses(
     accountId: localInstanceRemoteAccount.remoteId,
-    pagination: UnifediApiPagination(
+    pagination: const UnifediApiPagination(
       limit: 1,
       maxId: null,
       minId: null,

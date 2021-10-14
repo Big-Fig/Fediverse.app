@@ -599,7 +599,7 @@ class _InstanceDetailsRowLabelWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ConstrainedBox(
-        constraints: BoxConstraints(
+        constraints: const BoxConstraints(
           // todo: refactor
           // ignore: no-magic-number
           minWidth: 100,
@@ -1537,7 +1537,7 @@ class _InstanceDetailsunifediApiInstanceFederationWidget
       Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          __InstanceDetailsUnifediApiInstanceFederationTitleWidget(),
+          const __InstanceDetailsUnifediApiInstanceFederationTitleWidget(),
           if (unifediApiInstanceFederation.enabled != null)
             _InstanceDetailsUnifediApiInstanceFederationEnabledFieldWidget(
               unifediApiInstanceFederation: unifediApiInstanceFederation,

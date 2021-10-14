@@ -24,13 +24,13 @@ class EditToastSettingsWidget extends StatelessWidget {
             child:
                 const ToastHandlingTypeSingleFromListValueFormFieldRowWidget(),
           ),
-          _EditToastSettingsFavouriteFieldWidget(),
-          _EditToastSettingsFollowFieldWidget(),
-          _EditToastSettingsMentionFieldWidget(),
-          _EditToastSettingsReblogFieldWidget(),
-          _EditToastSettingsPollFieldWidget(),
-          _EditToastSettingsPleromaMentionFieldWidget(),
-          _EditToastSettingsEmojiReactionFieldWidget(),
+          const _EditToastSettingsFavouriteFieldWidget(),
+          const _EditToastSettingsFollowFieldWidget(),
+          const _EditToastSettingsMentionFieldWidget(),
+          const _EditToastSettingsReblogFieldWidget(),
+          const _EditToastSettingsPollFieldWidget(),
+          const _EditToastSettingsPleromaMentionFieldWidget(),
+          const _EditToastSettingsEmojiReactionFieldWidget(),
         ],
       );
 }

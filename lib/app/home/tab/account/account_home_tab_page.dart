@@ -79,9 +79,9 @@ class AccountHomeTabPage extends StatelessWidget {
           children: [
             ProxyProvider<IMyAccountBloc, IAccountBloc>(
               update: (context, value, previous) => value,
-              child: SizedBox(
+              child: const SizedBox(
                 height: _headerBackgroundHeight,
-                child: const AccountHeaderBackgroundWidget(),
+                child: AccountHeaderBackgroundWidget(),
               ),
             ),
             const _AccountHomeTabPageBody(),
@@ -225,7 +225,7 @@ class _AccountHomeTabMyAccountWidget extends StatelessWidget {
             borderRadius: FediBorderRadius.topOnlyBigBorderRadius,
             child: Container(
               color: IFediUiColorTheme.of(context).offWhite,
-              child: FediListTile(
+              child: const FediListTile(
                 isFirstInList: true,
                 noPadding: true,
                 // special hack to avoid 1px horizontal line on some devices
@@ -251,7 +251,7 @@ void _onStatusesTapCallback(BuildContext context) {
     MediaQuery.of(context).size.height / 2,
     // todo: refactor
     // ignore: no-magic-number
-    duration: Duration(milliseconds: 500),
+    duration: const Duration(milliseconds: 500),
     curve: Curves.easeOut,
   );
 }
@@ -461,7 +461,7 @@ class _AccountHomeTabTextIndicatorWidget extends StatelessWidget {
 
     return Padding(
       // ignore: no-magic-number
-      padding: EdgeInsets.only(top: 3.0, right: FediSizes.bigPadding),
+      padding: const EdgeInsets.only(top: 3.0, right: FediSizes.bigPadding),
       child: AccountTabTextTabIndicatorItemWidget(
         accountTabs: accountHomeTabBloc.tabs,
       ),
@@ -481,7 +481,7 @@ class _AccountHomeTabFediTabMainHeaderBarWidget extends StatelessWidget {
           children: <Widget>[
             Row(
               children: [
-                Expanded(
+                const Expanded(
                   child: _AccountHomeTabFediTabMainHeaderBarChooserButtonWidget(
                     key: Key(
                       AccountHomeTabPageKeys
@@ -493,7 +493,7 @@ class _AccountHomeTabFediTabMainHeaderBarWidget extends StatelessWidget {
                 AccountHomeTabMenuIntBadgeBloc.provideToContext(
                   context,
                   child:
-                      _AccountHomeTabFediTabMainHeaderBarAccountMenuButtonWidget(
+                      const _AccountHomeTabFediTabMainHeaderBarAccountMenuButtonWidget(
                     key: Key(
                       AccountHomeTabPageKeys
                           .accountHomeTabFediTabMainHeaderBarAccountMenuButtonWidget,
@@ -544,8 +544,8 @@ class _AccountHomeTabFediTabMainHeaderBarChooserButtonWidget
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Flexible(
-              child: const _AccountHomeTabCurrentInstanceNameWidget(),
+            const Flexible(
+              child: _AccountHomeTabCurrentInstanceNameWidget(),
             ),
             const FediSmallHorizontalSpacer(),
             Icon(

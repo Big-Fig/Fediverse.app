@@ -20,7 +20,7 @@ void showEditGlobalOrInstancePaginationSettingsDialog({
   showEditGlobalOrInstanceSettingsDialog(
     context: context,
     subTitle: S.of(context).app_pagination_settings_title,
-    child: EditPaginationSettingsWidget(
+    child: const EditPaginationSettingsWidget(
       shrinkWrap: true,
     ),
     childContextBuilder: ({

@@ -32,7 +32,7 @@ class MultiSelectAccountPage extends StatelessWidget {
               var isSomethingSelected = snapshot.data ?? false;
 
               return FediIconButton(
-                icon: Icon(FediIcons.check),
+                icon: const Icon(FediIcons.check),
                 onPressed: isSomethingSelected
                     ? () {
                         var selectedAccounts =

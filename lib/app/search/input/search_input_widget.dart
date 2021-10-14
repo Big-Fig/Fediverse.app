@@ -98,7 +98,7 @@ class _SearchInputClearButtonWidget extends StatelessWidget {
             ),
           );
         } else {
-          return SizedBox.shrink();
+          return const SizedBox.shrink();
         }
       },
     );

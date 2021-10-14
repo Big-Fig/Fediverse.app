@@ -818,7 +818,7 @@ void main() {
   test('createQuery orderingTermData remoteId desc & limit & offset', () async {
     var query = conversationRepository.createQuery(
       filters: null,
-      pagination: RepositoryPagination<IConversationChat>(
+      pagination: const RepositoryPagination<IConversationChat>(
         limit: 1,
         offset: 1,
       ),

@@ -20,7 +20,7 @@ void showEditGlobalOrInstanceFilesCacheSettingsDialog({
   showEditGlobalOrInstanceSettingsDialog(
     context: context,
     subTitle: S.of(context).app_cache_files_settings_title,
-    child: EditFilesCacheSettingsWidget(
+    child: const EditFilesCacheSettingsWidget(
       shrinkWrap: true,
     ),
     childContextBuilder: ({

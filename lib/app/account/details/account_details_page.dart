@@ -130,7 +130,7 @@ class _AccountDetailsPageAppBarOpenOnLocalInstanceAction
 
     return FediIconButton(
       color: IFediUiColorTheme.of(context, listen: false).darkGrey,
-      icon: Icon(FediIcons.search),
+      icon: const Icon(FediIcons.search),
       onPressed: () {
         goToSearchPage(
           context,
@@ -606,7 +606,7 @@ void _onStatusesTapCallback(BuildContext context) {
     MediaQuery.of(context).size.height / 2,
     // todo: refactor
     // ignore: no-magic-number
-    duration: Duration(milliseconds: 500),
+    duration: const Duration(milliseconds: 500),
     curve: Curves.easeOut,
   );
 }

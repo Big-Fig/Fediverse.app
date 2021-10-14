@@ -185,9 +185,9 @@ class _FormCaptchaStringFormFieldRowBodyContentWidget extends StatelessWidget {
         final isLoading = snapshot.data!;
 
         if (isLoading) {
-          return Padding(
+          return const Padding(
             padding: FediPadding.allBigPadding,
-            child: const FediCircularProgressIndicator(),
+            child: FediCircularProgressIndicator(),
           );
         } else {
           return StreamBuilder<bool>(
@@ -201,7 +201,7 @@ class _FormCaptchaStringFormFieldRowBodyContentWidget extends StatelessWidget {
                   padding: FediPadding.allBigPadding,
                   child: FediIconButton(
                     color: IFediUiColorTheme.of(context).error,
-                    icon: Icon(FediIcons.warning),
+                    icon: const Icon(FediIcons.warning),
                     onPressed: () => captchaStringFieldBloc.reloadCaptcha(),
                   ),
                 );
@@ -289,7 +289,7 @@ class _FormCaptchaStringFormFieldRowImageWidget extends StatelessWidget {
           }
 
           return ConstrainedBox(
-            constraints: BoxConstraints(
+            constraints: const BoxConstraints(
               // ignore: no-magic-number
               minHeight: 100,
             ),

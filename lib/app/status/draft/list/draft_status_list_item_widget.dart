@@ -100,9 +100,9 @@ class _DraftStatusListItemHeaderWidget extends StatelessWidget {
               ),
             );
           case DraftStatusState.canceled:
-            return _DraftStatusListItemCanceledWidget();
+            return const _DraftStatusListItemCanceledWidget();
           case DraftStatusState.alreadyPosted:
-            return _DraftStatusListItemAlreadyPostedWidget();
+            return const _DraftStatusListItemAlreadyPostedWidget();
         }
       },
     );

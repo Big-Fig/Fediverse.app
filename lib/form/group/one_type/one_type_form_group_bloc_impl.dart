@@ -131,7 +131,7 @@ class OneTypeFormGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
     isGroupChanged = true;
     checkIsSomethingChanged();
     recalculateErrors();
-    Future.delayed(Duration(seconds: 1), () {
+    Future.delayed(const Duration(seconds: 1), () {
       field!.dispose();
     });
   }
@@ -144,7 +144,7 @@ class OneTypeFormGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
     checkIsSomethingChanged();
     recalculateErrors();
     Future.delayed(
-      Duration(seconds: 1),
+      const Duration(seconds: 1),
       () {
         for (final field in oldFields) {
           field.dispose();

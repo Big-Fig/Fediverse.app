@@ -69,7 +69,7 @@ class _FediListSmartRefresherRefreshIndicatorState
       value: 0.0,
       lowerBound: 0.0,
       upperBound: 1.0,
-      duration: Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 500),
     );
     _valueAni.addListener(() {
       try {
@@ -84,18 +84,18 @@ class _FediListSmartRefresherRefreshIndicatorState
         _logger.warning(() => '_valueAni.addListener', e, stackTrace);
       }
     });
-    _positionController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+    _positionController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 300));
     _scaleFactor = AnimationController(
       vsync: this,
       value: 1.0,
       lowerBound: 0.0,
       upperBound: 1.0,
-      duration: Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 300),
     );
     _positionFactor = _positionController.drive(
       Tween<Offset>(
-        begin: Offset(0.0, -1.0),
+        begin: const Offset(0.0, -1.0),
         end: Offset(0.0, widget.height / 44.0),
       ),
     );

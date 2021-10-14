@@ -44,9 +44,9 @@ class AccountFeaturedHashtagListItemWidget extends StatelessWidget {
                   myAccountFeaturedHashtag: accountFeaturedHashtag,
                 );
               },
-              child: Padding(
+              child: const Padding(
                 padding: FediPadding.allSmallPadding,
-                child: const _AccountFeaturedHashtagListItemNameWidget(),
+                child: _AccountFeaturedHashtagListItemNameWidget(),
               ),
             ),
             const _AccountFeaturedHashtagListItemRightWidget(),

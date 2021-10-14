@@ -12,9 +12,9 @@ class RemoteInstanceActivityPage extends StatelessWidget {
   const RemoteInstanceActivityPage();
 
   @override
-  Widget build(BuildContext context) => Scaffold(
+  Widget build(BuildContext context) => const Scaffold(
         appBar: InstanceHostAppBarWidget(),
-        body: const SafeArea(
+        body: SafeArea(
           child: InstanceActivityWidget(),
         ),
       );

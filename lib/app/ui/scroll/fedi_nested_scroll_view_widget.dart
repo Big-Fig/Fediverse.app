@@ -79,7 +79,7 @@ abstract class FediNestedScrollViewWidget extends StatelessWidget {
           delegate: SliverChildListDelegate(
             [
               Padding(
-                padding: EdgeInsets.only(
+                padding: const EdgeInsets.only(
                   top: kToolbarHeight * 0.8,
                 ),
                 child: Column(

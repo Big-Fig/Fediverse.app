@@ -136,7 +136,7 @@ class _PollBodyOptionWidget extends StatelessWidget {
                 }
               }
             : null,
-        child: PollOptionWidget(),
+        child: const PollOptionWidget(),
       ),
     );
   }
@@ -282,11 +282,11 @@ class PollOptionWidget extends StatelessWidget {
 
     return Row(
       children: <Widget>[
-        Expanded(
-          child: const _PollOptionBodyWidget(),
+        const Expanded(
+          child: _PollOptionBodyWidget(),
         ),
         if (pollBloc.multiple) const _PollOptionSelectionWidget(),
-        _PollOptionResultsWidget(),
+        const _PollOptionResultsWidget(),
       ],
     );
   }
@@ -378,7 +378,7 @@ class _PollOptionResultsWidget extends StatelessWidget {
         var isNeedShowResultsWithoutVote = snapshot.data;
 
         if (!pollBloc.isPossibleToVote || isNeedShowResultsWithoutVote!) {
-          return PollOptionVotesPercentWidget();
+          return const PollOptionVotesPercentWidget();
         } else {
           return const SizedBox.shrink();
         }

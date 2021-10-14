@@ -89,7 +89,7 @@ class _StatusCommentActionButtonWidget extends StatelessWidget {
           ? IFediUiColorTheme.of(context).darkGrey
           : IFediUiColorTheme.of(context).lightGrey,
       iconSize: FediSizes.bigIconSize,
-      icon: Icon(FediIcons.message),
+      icon: const Icon(FediIcons.message),
       onPressed: statusListItemTimelineBloc.isCommentsActionEnabled
           ? () {
               _onActionClick(context);

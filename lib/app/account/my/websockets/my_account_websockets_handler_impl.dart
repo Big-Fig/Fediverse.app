@@ -67,7 +67,7 @@ class MyAccountWebSocketsHandler extends WebSocketsChannelHandler {
     // we should be sure that handler with isHomeTimeline executes after all
     // other handlers
     // ignore: no-magic-number
-    await Future<void>.delayed(Duration(milliseconds: 500));
+    await Future<void>.delayed(const Duration(milliseconds: 500));
 
     return super.handleEvent(event);
   }

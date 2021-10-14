@@ -43,7 +43,7 @@ Future<File?> goToCropImagePage({
           : CropAspectRatioPreset.original,
       lockAspectRatio: isForceCropToSquare,
     ),
-    iosUiSettings: IOSUiSettings(
+    iosUiSettings: const IOSUiSettings(
       minimumAspectRatio: 1.0,
     ),
   );

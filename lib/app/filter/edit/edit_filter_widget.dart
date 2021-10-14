@@ -21,9 +21,9 @@ class EditFilterWidget extends StatelessWidget {
         const _EditFilterDescriptionWidget(),
         const FilterFormWidget(),
         if (editFilterBloc.isPossibleToDelete)
-          Padding(
+          const Padding(
             padding: FediPadding.allBigPadding,
-            child: const _EditFilterDeleteButton(),
+            child: _EditFilterDeleteButton(),
           ),
       ],
     );

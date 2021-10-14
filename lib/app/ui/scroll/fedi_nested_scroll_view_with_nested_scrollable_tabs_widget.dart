@@ -176,7 +176,7 @@ class _NestedBodyWidgetState extends State<_NestedBodyWidget>
       if (tabsEmptyBuilder != null) {
         return Expanded(child: tabsEmptyBuilder(context));
       } else {
-        return Expanded(child: FediCircularProgressIndicator());
+        return const Expanded(child: FediCircularProgressIndicator());
       }
     }
 

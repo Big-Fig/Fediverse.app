@@ -25,7 +25,7 @@ class MyAccountBookmarkedStatusesCachedListBloc extends AsyncInitLoadingBloc
   IUnifediApiService get unifediApi => unifediApiMyAccountService;
 
   @override
-  Stream<bool> get settingsChangedStream => Stream.empty();
+  Stream<bool> get settingsChangedStream => const Stream.empty();
 
   @override
   Future<List<IStatus>> loadLocalItems({

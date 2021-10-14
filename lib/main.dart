@@ -122,7 +122,7 @@ Future launchApp({
 
 void runNotInitializedSplashApp() {
   runApp(
-    MaterialApp(
+    const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: SplashPage(
         displayVersionInfo: false,
@@ -320,7 +320,7 @@ Future handleLaunchPushLoaderNotification(
   var notificationRepository =
       currentInstanceContextBloc!.get<INotificationRepository>();
   Future.delayed(
-    Duration(seconds: 1),
+    const Duration(seconds: 1),
     () {
       notificationRepository.markAsRead(
         notification: notification,
@@ -381,10 +381,10 @@ void runInitializedLoginApp(IAppContextBloc appContextBloc) {
           isFromScratch: true,
           configService: appContextBloc.get<IConfigService>(),
         ),
-        child: FediApp(
+        child: const FediApp(
           instanceInitialized: false,
           child: JoinUnifediApiAccessBlocProxyProvider(
-            child: const FromScratchJoinUnifediApiAccessPage(),
+            child: FromScratchJoinUnifediApiAccessPage(),
           ),
         ),
       ),

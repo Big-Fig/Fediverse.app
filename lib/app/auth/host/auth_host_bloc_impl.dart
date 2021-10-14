@@ -447,7 +447,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     var unifediApiOAuthToken = hostAccessTokenLocalPreferenceBloc.value;
     if (unifediApiClientApplication != null && unifediApiOAuthToken != null) {
       var scopes = IPleromaApiAccessScopes.calculateAvailableScopes(
-        PleromaApiVersion(
+        const PleromaApiVersion(
           major: 2,
           minor: 4,
           patch: 51,

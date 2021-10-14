@@ -50,7 +50,7 @@ class InstanceAnnouncementBloc extends DisposableOwner
             BehaviorSubject.seeded(instanceAnnouncement) {
     _instanceAnnouncementSubject.disposeWith(this);
     if (delayInit) {
-      Future.delayed(Duration(seconds: 1), () {
+      Future.delayed(const Duration(seconds: 1), () {
         _init(instanceAnnouncement);
       });
     } else {

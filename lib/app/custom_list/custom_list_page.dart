@@ -97,8 +97,8 @@ class _CustomListPageAppBar extends StatelessWidget
               _CustomListPageAppBarSettingsActionWidget(),
             ],
           ),
-          Expanded(
-            child: const Center(
+          const Expanded(
+            child: Center(
               child: _CustomListPageAppBarTitleWidget(),
             ),
           ),
@@ -109,7 +109,7 @@ class _CustomListPageAppBar extends StatelessWidget
   Size get preferredSize =>
       // todo: refactor
       // ignore: no-magic-number
-      FediPageTitleAppBar.calculatePreferredSize() + Offset(0, 48.0);
+      FediPageTitleAppBar.calculatePreferredSize() + const Offset(0, 48.0);
 }
 
 class _CustomListPageAppBarTitleWidget extends StatelessWidget {

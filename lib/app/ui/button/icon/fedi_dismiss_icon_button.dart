@@ -13,7 +13,7 @@ class FediDismissIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => FediIconButton(
-        key: Key(FediDismissIconButtonKeys.button),
+        key: const Key(FediDismissIconButtonKeys.button),
         onPressed: () {
           if (customOnPressed != null) {
             customOnPressed!();

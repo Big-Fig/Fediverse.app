@@ -39,7 +39,7 @@ class NotificationUnreadExcludeTypesBoolBadgeBloc extends AsyncInitLoadingBloc
   StreamSubscription? countSubscription;
 
   FilterRepositoryFilters get filterRepositoryFilters =>
-      FilterRepositoryFilters(
+      const FilterRepositoryFilters(
         onlyWithContextTypes: [
           UnifediApiFilterContextType.notificationsValue,
         ],

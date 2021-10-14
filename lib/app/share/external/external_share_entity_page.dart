@@ -26,7 +26,7 @@ class ExternalShareEntityPage extends StatelessWidget {
             SharePageAppBarSendTextActionWidget(),
           ],
         ),
-        body: SingleChildScrollView(
+        body: const SingleChildScrollView(
           child: ShareEntityWidget(
             footer: ShareEntitySettingsWidget(),
           ),
@@ -71,7 +71,7 @@ MaterialPageRoute<void> createExternalShareEntityPageRoute({
               update: (context, value, previous) => value,
               child: ProxyProvider<ExternalShareEntityBloc, IExternalShareBloc>(
                 update: (context, value, previous) => value,
-                child: ExternalShareBlocProxyProvider(
+                child: const ExternalShareBlocProxyProvider(
                   child: ExternalShareEntityPage(),
                 ),
               ),

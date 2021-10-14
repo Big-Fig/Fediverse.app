@@ -12,14 +12,14 @@ import 'package:flutter/material.dart';
 
 class StartConversationChatPage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => Scaffold(
+  Widget build(BuildContext context) => const Scaffold(
         appBar: FediPageCustomAppBar(
           leading: FediBackIconButton(),
           child: SearchInputWidget(
             autofocus: true,
           ),
         ),
-        body: const SafeArea(
+        body: SafeArea(
           child: SingleSelectAccountWidget(
             accountSelectedCallback: _accountSelectedCallback,
           ),

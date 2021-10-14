@@ -36,7 +36,8 @@ class StatusListItemMediaWidget extends StatelessWidget {
             child: FediCircularProgressIndicator(),
           ),
           width: MediaQuery.of(context).size.width,
-          errorWidget: (context, url, dynamic error) => Icon(FediIcons.warning),
+          errorWidget: (context, url, dynamic error) =>
+              const Icon(FediIcons.warning),
         ),
       ),
     );
@@ -71,8 +72,8 @@ class StatusListItemMediaWidget extends StatelessWidget {
           return Stack(
             children: [
               body,
-              Positioned.fill(
-                child: const StatusDeletedOverlayWidget(),
+              const Positioned.fill(
+                child: StatusDeletedOverlayWidget(),
               ),
             ],
           );

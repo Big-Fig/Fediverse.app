@@ -14,6 +14,6 @@ class MyAccountEndorsementAccountListWidget extends StatelessWidget {
           context,
           account: account,
         ),
-        key: PageStorageKey('MyAccountEndorsementAccountListWidget'),
+        key: const PageStorageKey('MyAccountEndorsementAccountListWidget'),
       );
 }

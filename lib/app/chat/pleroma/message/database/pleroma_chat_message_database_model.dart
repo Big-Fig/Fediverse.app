@@ -18,16 +18,17 @@ class DbChatMessages extends Table {
   DateTimeColumn? get createdAt => dateTime()();
 
   TextColumn? get emojis =>
-      text().map(UnifediApiEmojiListDatabaseConverter()).nullable()();
+      text().map(const UnifediApiEmojiListDatabaseConverter()).nullable()();
 
-  TextColumn? get mediaAttachment =>
-      text().map(UnifediApiMediaAttachmentDatabaseConverter()).nullable()();
+  TextColumn? get mediaAttachment => text()
+      .map(const UnifediApiMediaAttachmentDatabaseConverter())
+      .nullable()();
 
   TextColumn? get card =>
-      text().map(PleromaCardDatabaseConverter()).nullable()();
+      text().map(const PleromaCardDatabaseConverter()).nullable()();
 
   TextColumn? get pendingState =>
-      text().nullable().map(PendingStateDatabaseConverter())();
+      text().nullable().map(const PendingStateDatabaseConverter())();
 
   BoolColumn? get deleted => boolean().nullable()();
 

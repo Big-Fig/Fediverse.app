@@ -51,8 +51,8 @@ class NotificationListItemWidget extends StatelessWidget {
           return Stack(
             children: [
               bodyWidget,
-              Positioned.fill(
-                child: const _NotificationListItemBodyDismissedWidget(),
+              const Positioned.fill(
+                child: _NotificationListItemBodyDismissedWidget(),
               ),
             ],
           );
@@ -196,7 +196,7 @@ class _NotificationListItemBodySlidableChildContentWidget
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: EdgeInsets.symmetric(
+        padding: const EdgeInsets.symmetric(
           horizontal: FediSizes.bigPadding,
           vertical: FediSizes.bigPadding + FediSizes.smallPadding,
         ),

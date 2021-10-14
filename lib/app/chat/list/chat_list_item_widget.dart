@@ -152,7 +152,7 @@ class _ChatListItemLastMessageWidgetPendingStateWidget extends StatelessWidget {
       case PendingState.notSentYet:
       case PendingState.published:
       case null:
-        return SizedBox.shrink();
+        return const SizedBox.shrink();
 
       case PendingState.pending:
         return Row(

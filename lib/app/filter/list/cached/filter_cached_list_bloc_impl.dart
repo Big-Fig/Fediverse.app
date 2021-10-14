@@ -32,7 +32,7 @@ class FilterCachedListBloc extends IFilterCachedListBloc {
           newerThanItem: newerThan,
           limit: limit,
         ),
-        filters: FilterRepositoryFilters(
+        filters: const FilterRepositoryFilters(
           notExpired: false,
         ),
         orderingTerms: [

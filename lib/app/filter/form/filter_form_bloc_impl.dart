@@ -66,9 +66,9 @@ class FilterFormBloc extends FormBloc implements IFilterFormBloc {
       isEnabled: true,
       isNullValuePossible: isExpiresInNullValuePossible,
       // ignore: no-magic-number
-      minDuration: Duration(minutes: 30),
+      minDuration: const Duration(minutes: 30),
       // ignore: no-magic-number
-      maxDuration: Duration(days: 365),
+      maxDuration: const Duration(days: 365),
       originValue: DurationDateTime(
         dateTime: initialValue?.expiresAt,
         duration: null,

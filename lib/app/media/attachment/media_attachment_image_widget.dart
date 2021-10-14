@@ -53,7 +53,7 @@ class _MediaAttachmentImageLoadingWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Padding(
+  Widget build(BuildContext context) => const Padding(
         padding: FediPadding.allBigPadding,
         child: Center(
           child: SizedBox(
@@ -62,7 +62,7 @@ class _MediaAttachmentImageLoadingWidget extends StatelessWidget {
             width: 30,
             // ignore: no-magic-number
             height: 30,
-            child: const FediCircularProgressIndicator(),
+            child: FediCircularProgressIndicator(),
           ),
         ),
       );
@@ -74,7 +74,7 @@ class _MediaAttachmentImageErrorWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Padding(
+  Widget build(BuildContext context) => const Padding(
         padding: FediPadding.allBigPadding,
         child: Icon(FediIcons.warning),
       );

@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/my/local_preferences/my_account_local_preference_bloc.dart';
 import 'package:fedi/app/account/my/local_preferences/my_account_local_preference_bloc_impl.dart';

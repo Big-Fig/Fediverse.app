@@ -44,7 +44,7 @@ class CrashReportingPermissionCheckerWidgetState
         Future.delayed(
           // todo: refactor
           // ignore: no-magic-number
-          Duration(milliseconds: 100),
+          const Duration(milliseconds: 100),
           () async {
             await showAskCrashReportingPermissionDialog(
               context: context,

@@ -20,7 +20,7 @@ void showEditGlobalOrInstanceWebSocketsSettingsDialog({
   showEditGlobalOrInstanceSettingsDialog(
     context: context,
     subTitle: S.of(context).app_web_sockets_settings_title,
-    child: EditWebSocketsSettingsWidget(
+    child: const EditWebSocketsSettingsWidget(
       shrinkWrap: true,
     ),
     childContextBuilder: ({

@@ -79,7 +79,7 @@ class UnifediApiAccessChooserWidget extends StatelessWidget {
     List<UnifediApiAccess> instancesAvailableToChoose,
     IUnifediApiAccessChooserBloc instanceChooserBloc,
   ) =>
-      _UnifediApiAccessChooserItemsToChooseWidget();
+      const _UnifediApiAccessChooserItemsToChooseWidget();
 
   const UnifediApiAccessChooserWidget();
 }

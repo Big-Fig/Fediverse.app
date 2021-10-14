@@ -10,7 +10,7 @@ class TosPage extends StatelessWidget {
         appBar: FediPageTitleAppBar(
           title: S.of(context).app_tos_title,
         ),
-        body: _TosPageBodyWigdet(),
+        body: const _TosPageBodyWigdet(),
       );
 
   const TosPage();

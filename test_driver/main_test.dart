@@ -278,7 +278,7 @@ void main() {
 
         await screenshot(driver, config, '10_AccountActions');
       },
-      timeout: Timeout(
+      timeout: const Timeout(
         Duration(
           // ignore: no-magic-number
           seconds: 240,

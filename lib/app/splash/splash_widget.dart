@@ -17,12 +17,12 @@ class SplashWidget extends StatelessWidget {
             child: _SplashLogoWidget(),
           ),
           if (displayVersionInfo)
-            Positioned(
+            const Positioned(
               // ignore: no-magic-number
               right: 20.0,
               // ignore: no-magic-number
               bottom: 20.0,
-              child: const _SplashVersionInfoWidget(),
+              child: _SplashVersionInfoWidget(),
             ),
         ],
       );
@@ -45,7 +45,7 @@ class _SplashLogoWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Image(
+  Widget build(BuildContext context) => const Image(
         image: AssetImage('assets/images/theme/logo.png'),
         // ignore: no-magic-number
         width: 200,

@@ -29,9 +29,9 @@ class MultiMediaPickerPage extends StatelessWidget {
   const MultiMediaPickerPage();
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: const _MultiMediaPickerPageAppBar(),
-        body: const SafeArea(
+  Widget build(BuildContext context) => const Scaffold(
+        appBar: _MultiMediaPickerPageAppBar(),
+        body: SafeArea(
           child: _MultiMediaPickerPageBodyWidget(),
         ),
       );
@@ -49,8 +49,8 @@ class _MultiMediaPickerPageBodyWidget extends StatelessWidget {
 
     return Column(
       children: [
-        Expanded(
-          child: const MediaPickerWidget(),
+        const Expanded(
+          child: MediaPickerWidget(),
         ),
         const FediUltraLightGreyDivider(),
         StreamBuilder<int>(
@@ -63,7 +63,7 @@ class _MultiMediaPickerPageBodyWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   FediIconButton(
-                    icon: Icon(FediIcons.share_native),
+                    icon: const Icon(FediIcons.share_native),
                     color: fediUiColorTheme.primary,
                     onPressed: () {
                       multiMediaPickerBloc.acceptSelectedFilesMetadata();
@@ -78,7 +78,7 @@ class _MultiMediaPickerPageBodyWidget extends StatelessWidget {
                     ),
                   ),
                   FediIconButton(
-                    icon: Icon(FediIcons.delete),
+                    icon: const Icon(FediIcons.delete),
                     color: fediUiColorTheme.primary,
                     onPressed: () {
                       multiMediaPickerBloc.clearSelection();
@@ -103,10 +103,10 @@ class _MultiMediaPickerPageAppBar extends StatelessWidget
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => FediPageCustomAppBar(
+  Widget build(BuildContext context) => const FediPageCustomAppBar(
         centerTitle: true,
-        leading: const FediBackIconButton(),
-        child: const MediaPickerPageAppBarTitle(
+        leading: FediBackIconButton(),
+        child: MediaPickerPageAppBarTitle(
           emptyTitleWidget: _MultiMediaPickerPageAppBarEmptyTitleWidget(),
         ),
       );
@@ -166,8 +166,8 @@ Future<List<IMediaDeviceFile>?> goToMultiMediaPickerPage(
             context,
             selectionCountLimit,
           ),
-          child: MultiMediaPickerBlocProxyProvider(
-            child: const MultiMediaPickerPage(),
+          child: const MultiMediaPickerBlocProxyProvider(
+            child: MultiMediaPickerPage(),
           ),
         ),
       ),

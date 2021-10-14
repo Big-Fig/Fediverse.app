@@ -25,7 +25,7 @@ class FediGrantPermissionWidget extends StatelessWidget {
           var permissionGranted = snapshot.data;
 
           if (permissionGranted == null) {
-            return Center(child: FediCircularProgressIndicator());
+            return const Center(child: FediCircularProgressIndicator());
           }
 
           if (!permissionGranted) {

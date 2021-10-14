@@ -73,7 +73,7 @@ class _CardContentWidget extends StatelessWidget {
     return Expanded(
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
+          borderRadius: const BorderRadius.only(
             topRight: Radius.circular(FediSizes.smallPadding),
             // ignore: no-equal-arguments
             bottomRight: Radius.circular(FediSizes.smallPadding),
@@ -115,11 +115,12 @@ class _CardImageWidget extends StatelessWidget {
       height: _cardWithContentImageSize,
       imageUrl: card.image!,
       fit: BoxFit.cover,
-      placeholder: (context, url) => Padding(
+      placeholder: (context, url) => const Padding(
         padding: FediPadding.allBigPadding,
         child: FediCircularProgressIndicator(),
       ),
-      errorWidget: (context, url, dynamic error) => Icon(FediIcons.warning),
+      errorWidget: (context, url, dynamic error) =>
+          const Icon(FediIcons.warning),
     );
   }
 }
@@ -206,7 +207,7 @@ class _CardDescriptionWidget extends StatelessWidget {
               ),
             );
           },
-          child: Expanded(
+          child: const Expanded(
             child: HtmlTextWidget(),
           ),
         ),

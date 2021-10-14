@@ -22,7 +22,7 @@ class FilesCacheService extends DisposableOwner implements IFilesCacheService {
           Config(
             key,
             // ignore: no-magic-number
-            stalePeriod: stalePeriod ?? Duration(days: 30),
+            stalePeriod: stalePeriod ?? const Duration(days: 30),
             // ignore: no-magic-number
             maxNrOfCacheObjects: maxNrOfCacheObjects ?? 100,
           ),

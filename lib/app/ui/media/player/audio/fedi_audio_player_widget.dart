@@ -29,7 +29,7 @@ class FediAudioPlayerWidget extends StatelessWidget {
       );
 
   Widget buildErrorWidget(IMediaPlayerBloc mediaPlayerBloc) =>
-      _FediAudioPlayerErrorWidget();
+      const _FediAudioPlayerErrorWidget();
 
   const FediAudioPlayerWidget();
 }
@@ -52,9 +52,9 @@ class _FediAudioPlayerErrorWidget extends StatelessWidget {
             child: Container(
               // ignore: no-magic-number
               color: IFediUiColorTheme.of(context).error.withOpacity(0.8),
-              child: Padding(
+              child: const Padding(
                 padding: FediPadding.horizontalBigPadding,
-                child: const _FediAudioPlayerErrorBodyWidget(),
+                child: _FediAudioPlayerErrorBodyWidget(),
               ),
             ),
           );
@@ -105,7 +105,7 @@ class _FediAudioPlayerShowErrorButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => FediIconButton(
-        icon: Icon(FediIcons.warning),
+        icon: const Icon(FediIcons.warning),
         color: IFediUiColorTheme.of(context).white,
         onPressed: () {
           var mediaPlayerBloc = IMediaPlayerBloc.of(context, listen: false);
@@ -125,7 +125,7 @@ class _FediAudioPlayerErrorReloadButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => FediIconButton(
-        icon: Icon(FediIcons.refresh),
+        icon: const Icon(FediIcons.refresh),
         color: IFediUiColorTheme.of(context).white,
         onPressed: () {
           var mediaPlayerBloc = IMediaPlayerBloc.of(context, listen: false);

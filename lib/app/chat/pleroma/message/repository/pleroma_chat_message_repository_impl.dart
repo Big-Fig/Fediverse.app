@@ -85,7 +85,7 @@ class PleromaChatMessageRepository
         orderingTerms: [
           PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
         ],
-        pagination: RepositoryPagination(limit: 1),
+        pagination: const RepositoryPagination(limit: 1),
       );
 
   @override
@@ -105,7 +105,7 @@ class PleromaChatMessageRepository
         orderingTerms: [
           PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
         ],
-        pagination: RepositoryPagination(limit: 1),
+        pagination: const RepositoryPagination(limit: 1),
       );
 
   @override

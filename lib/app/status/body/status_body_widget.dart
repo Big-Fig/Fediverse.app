@@ -272,7 +272,7 @@ class _StatusBodySpoilerChipWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: EdgeInsets.only(right: FediSizes.smallPadding),
+        padding: const EdgeInsets.only(right: FediSizes.smallPadding),
         child: FediGreyChip(
           label: S.of(context).app_status_spoiler_chip,
         ),
@@ -313,7 +313,7 @@ class _StatusBodyNsfwChipWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: EdgeInsets.only(right: FediSizes.smallPadding),
+        padding: const EdgeInsets.only(right: FediSizes.smallPadding),
         child: FediGreyChip(
           label: S.of(context).app_status_nsfw_chip,
         ),
@@ -394,7 +394,7 @@ class _StatusBodyContentWithEmojisCollapsibleWidget extends StatelessWidget {
             // todo: refactor
             // ignore: no-magic-number
             fadingPercent: 0.2,
-            child: SizedBox(
+            child: const SizedBox(
               // todo: refactor
               // ignore: no-magic-number
               height: 200,

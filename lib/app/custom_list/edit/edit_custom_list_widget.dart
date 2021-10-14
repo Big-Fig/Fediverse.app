@@ -44,13 +44,13 @@ class EditCustomListWidget extends StatelessWidget {
       children: <Widget>[
         const CustomListFormWidget(),
         if (editCustomListBloc.isPossibleToDelete)
-          Padding(
+          const Padding(
             padding: FediPadding.allBigPadding,
-            child: const _EditCustomListDeleteButton(),
+            child: _EditCustomListDeleteButton(),
           ),
         const _EditCustomListAccountDescriptionWidget(),
-        Expanded(
-          child: const _EditCustomListBodyWidget(),
+        const Expanded(
+          child: _EditCustomListBodyWidget(),
         ),
       ],
     );

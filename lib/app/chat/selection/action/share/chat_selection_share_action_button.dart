@@ -32,7 +32,7 @@ class ChatSelectionShareActionButtonWidget extends StatelessWidget {
     );
 
     return FediIconButton(
-      icon: Icon(FediIcons.share),
+      icon: const Icon(FediIcons.share),
       color: IFediUiColorTheme.of(context).darkGrey,
       onPressed: () async {
         var chatSelectionBloc = IChatSelectionBloc.of(context, listen: false);

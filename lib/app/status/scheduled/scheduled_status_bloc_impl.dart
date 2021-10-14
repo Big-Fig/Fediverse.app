@@ -61,14 +61,14 @@ class ScheduledStatusBloc extends DisposableOwner
 
     // check expired
     Timer.periodic(
-      Duration(minutes: 1),
+      const Duration(minutes: 1),
       (_) {
         _updateState();
       },
     ).disposeWith(this);
 
     if (delayInit) {
-      Future.delayed(Duration(seconds: 1), () {
+      Future.delayed(const Duration(seconds: 1), () {
         _init(scheduledStatus, needRefreshFromNetworkOnInit);
       });
     } else {

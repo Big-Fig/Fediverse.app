@@ -6,7 +6,7 @@ part 'draft_status_repository_model.freezed.dart';
 
 @freezed
 class DraftStatusRepositoryFilters with _$DraftStatusRepositoryFilters {
-  static final DraftStatusRepositoryFilters empty =
+  static const DraftStatusRepositoryFilters empty =
       DraftStatusRepositoryFilters();
 
   const factory DraftStatusRepositoryFilters() = _DraftStatusRepositoryFilters;

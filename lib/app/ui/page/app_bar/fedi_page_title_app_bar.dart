@@ -17,7 +17,8 @@ class FediPageTitleAppBar extends StatelessWidget
   @override
   final preferredSize = calculatePreferredSize();
 
-  static Size calculatePreferredSize() => Size.fromHeight(kToolbarHeight + 1);
+  static Size calculatePreferredSize() =>
+      const Size.fromHeight(kToolbarHeight + 1);
 
   FediPageTitleAppBar({
     required this.title,

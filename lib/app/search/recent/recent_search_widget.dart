@@ -40,7 +40,7 @@ class RecentSearchWidget extends StatelessWidget {
                 const FediUltraLightGreyDivider(),
                 Expanded(
                   child: recentItemsIsNotEmpty
-                      ? _RecentSearchListWidget()
+                      ? const _RecentSearchListWidget()
                       : const _RecentSearchEmptyWidget(),
                 ),
               ],

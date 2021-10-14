@@ -71,7 +71,7 @@ class UploadMediaAttachmentListMediaItemWidgetState
         bloc.startUploadIfPossible();
       },
       child: ClipRRect(
-        borderRadius: BorderRadius.all(
+        borderRadius: const BorderRadius.all(
           Radius.circular(FediSizes.borderRadiusBigSize),
         ),
         child: Stack(
@@ -87,7 +87,7 @@ class UploadMediaAttachmentListMediaItemWidgetState
                       UploadMediaAttachmentStateType.uploaded) {
                     return previewWidget;
                   } else {
-                    return Opacity(
+                    return const Opacity(
                       // todo: refactor
                       // ignore: no-magic-number
                       opacity: 0.7,

@@ -109,6 +109,9 @@ linter:
     # var/final with good naming is enough and easy to write
     always_specify_types: false
 
+    # useful for new projects but it will take a lot of time to refactor old one
+    prefer_final_locals: false
+
     # good lint, helps avoid memory leaks
     # have a lot of false-positive cases and required deep refactoring
     # especially for navigator
@@ -120,10 +123,7 @@ linter:
     sort_constructors_first: false
     sort_unnamed_constructors_first: false
 
-    prefer_const_constructors: false
     use_key_in_widget_constructors: false
-    prefer_final_locals: false
-
 
 dart_code_metrics:
   anti-patterns:

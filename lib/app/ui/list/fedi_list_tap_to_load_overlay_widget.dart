@@ -12,7 +12,7 @@ class FediListTapToLoadOverlayWidget extends StatelessWidget {
   Widget build(BuildContext context) => Align(
         alignment: Alignment.topCenter,
         child: Padding(
-          padding: EdgeInsets.only(top: _tapToLoadTopPadding),
+          padding: const EdgeInsets.only(top: _tapToLoadTopPadding),
           child: CachedPaginationListWithNewItemsMergeOverlayButton(
             textBuilder: textBuilder,
           ),

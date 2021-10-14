@@ -27,9 +27,9 @@ class AccountHomeTabMenuActionsPage extends StatelessWidget {
         appBar: FediPageTitleAppBar(
           title: S.of(context).app_account_my_menu_account_subpage_title,
         ),
-        body: Padding(
+        body: const Padding(
           padding: FediPadding.verticalSmallPadding,
-          child: const _AccountHomeTabMenuActionsBody(),
+          child: _AccountHomeTabMenuActionsBody(),
         ),
       );
 

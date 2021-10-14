@@ -59,9 +59,9 @@ class _EditMyAccountTopHeaderAndAvatarWidget extends StatelessWidget {
             _editAccountAvatarCircleBorderWidth * 2,
         child: Stack(
           children: [
-            SizedBox(
+            const SizedBox(
               height: _editAccountHeaderHeight,
-              child: const EditMyAccountHeaderFieldWidget(),
+              child: EditMyAccountHeaderFieldWidget(),
             ),
             Positioned(
               left: 0,

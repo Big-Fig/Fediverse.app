@@ -348,8 +348,8 @@ class _TimelinesHomeTabStorageListItemLeadingWidget extends StatelessWidget {
           duration: FediAnimations.defaultAnimationSwitcherDuration,
           transitionBuilder: (Widget child, Animation<double> animation) {
             final offsetAnimation = Tween<Offset>(
-              begin: Offset(-1.0, 0.0),
-              end: Offset(0.0, 0.0),
+              begin: const Offset(-1.0, 0.0),
+              end: Offset.zero,
             ).animate(animation);
 
             return SizeTransition(
@@ -406,7 +406,7 @@ class _TimelinesHomeTabStorageListItemRemoveButtonWidget
                 ).show<void>(context);
               },
               child: Padding(
-                padding: EdgeInsets.only(
+                padding: const EdgeInsets.only(
                   left: FediSizes.smallPadding, right: FediSizes.bigPadding,
                   // top: FediSizes.smallPadding,
                   // bottom: FediSizes.smallPadding,

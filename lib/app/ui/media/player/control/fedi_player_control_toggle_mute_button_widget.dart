@@ -67,7 +67,7 @@ class _FediPlayerControlToggleMuteButtonNotInitializedWidget
 
   @override
   Widget build(BuildContext context) => FediIconButton(
-        icon: Icon(FediIcons.sound_on),
+        icon: const Icon(FediIcons.sound_on),
         color: IFediUiColorTheme.of(context).grey,
         // todo: refactor
         // ignore: no-magic-number

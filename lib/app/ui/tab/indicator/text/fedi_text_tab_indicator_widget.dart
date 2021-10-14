@@ -89,7 +89,7 @@ class FediTextTabIndicatorWidget<T> extends StatelessWidget {
           // ignore: no-magic-number
           indicatorRadius: (FediSizes.textButtonHeight + borderHeight) / 2,
           indicatorColor: IFediUiColorTheme.of(context).primary,
-          padding: EdgeInsets.only(top: borderHeight),
+          padding: const EdgeInsets.only(top: borderHeight),
           insets: EdgeInsets.zero,
           tabBarIndicatorSize: TabBarIndicatorSize.label,
         );

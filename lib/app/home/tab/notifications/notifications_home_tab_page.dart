@@ -133,8 +133,8 @@ class _NotificationsHomeTabPageBodyState
             return _buildTabBodyProvider(context, tab, child);
           },
           tabBodyContentBuilder: (BuildContext context, int index) =>
-              FediDarkStatusBarStyleArea(
-            child: const NotificationPaginationListWidget(
+              const FediDarkStatusBarStyleArea(
+            child: NotificationPaginationListWidget(
               needWatchLocalRepositoryForUpdates: true,
             ),
           ),
@@ -242,7 +242,7 @@ class _NotificationsHomeTabPageBodyHeaderMenuButtonWidget
 
           Future.delayed(
             // ignore: no-magic-number
-            Duration(milliseconds: 100),
+            const Duration(milliseconds: 100),
             () async {
               await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
                 context: context,
@@ -268,7 +268,7 @@ class _NotificationsHomeTabPageBodyHeaderMenuButtonWidget
           Future.delayed(
             // todo: refactor
             // ignore: no-magic-number
-            Duration(milliseconds: 100),
+            const Duration(milliseconds: 100),
             () async {
               await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
                 context: context,

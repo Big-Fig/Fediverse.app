@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:fedi/app/cache/files/limit/age/files_cache_age_limit_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 

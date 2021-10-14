@@ -47,7 +47,7 @@ abstract class FediDialog extends BaseDialog {
           ) {
             var visible = snapshot.data!;
             if (!visible) {
-              return SizedBox.shrink();
+              return const SizedBox.shrink();
             }
 
             return FediTransparentTextButtonWithBorder(
@@ -109,7 +109,7 @@ abstract class FediDialog extends BaseDialog {
                       const EdgeInsets.only(bottom: FediSizes.smallPadding),
                   child: content,
                 ),
-              FediBigVerticalSpacer(),
+              const FediBigVerticalSpacer(),
               buildActionWidgets(context),
             ],
           ),

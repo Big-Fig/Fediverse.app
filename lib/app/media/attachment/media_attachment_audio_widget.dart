@@ -25,8 +25,8 @@ class MediaAttachmentAudioWidget extends StatelessWidget {
         mediaPlayerSource:
             MediaPlayerSource.network(networkUrl: mediaAttachment.url),
       ),
-      child: AudioMediaPlayerBlocProxyProvider(
-        child: const FediAudioPlayerWidget(),
+      child: const AudioMediaPlayerBlocProxyProvider(
+        child: FediAudioPlayerWidget(),
       ),
     );
   }

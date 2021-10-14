@@ -305,7 +305,7 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         _logger.finest(() => 'removedInstance $removedInstance');
 
         Future.delayed(
-          Duration(seconds: 1),
+          const Duration(seconds: 1),
           () async {
             var userAtHost = removedInstance.userAtHost;
             var databaseFilePath =

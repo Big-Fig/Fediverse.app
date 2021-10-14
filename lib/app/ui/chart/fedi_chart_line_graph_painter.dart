@@ -42,7 +42,7 @@ class FediChartLineGraphPainter extends CustomPainter {
 
     _offsetX *= 7;
     _offsetX += size.width * 2 / 20;
-    var margin = Size(0, 0);
+    var margin = Size.zero;
     var graph = Size(
       size.width - 2 * margin.width,
       size.height - 2 * margin.height,

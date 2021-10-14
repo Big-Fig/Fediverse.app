@@ -63,13 +63,13 @@ class CachedPaginationListWithNewItemsMergeOverlayButton
                 updateItemsCount: updateItemsCount,
               );
             } else {
-              child = SizedBox.shrink();
+              child = const SizedBox.shrink();
             }
 
             return AnimatedSwitcher(
               // todo: refactor magic number
               // ignore: no-magic-number
-              duration: Duration(milliseconds: 500),
+              duration: const Duration(milliseconds: 500),
               transitionBuilder: (child, animation) => ScaleTransition(
                 scale: animation,
                 child: child,

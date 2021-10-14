@@ -47,8 +47,8 @@ class _StatusFavouriteActionButtonWidget extends StatelessWidget {
                 ? IFediUiColorTheme.of(context).secondary
                 : IFediUiColorTheme.of(context).darkGrey,
             icon: favourited
-                ? Icon(FediIcons.heart_active)
-                : Icon(FediIcons.heart),
+                ? const Icon(FediIcons.heart_active)
+                : const Icon(FediIcons.heart),
             onPressed: onPressed,
           ),
           asyncButtonAction: statusBloc.toggleFavourite,
@@ -77,7 +77,7 @@ class _StatusFavouriteActionCounterWidget extends StatelessWidget {
 
         return Provider<int>.value(
           value: favouritesCount,
-          child: StatusActionCounterWidget(
+          child: const StatusActionCounterWidget(
             onClick: _onCounterClick,
           ),
         );

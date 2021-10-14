@@ -43,7 +43,7 @@ class _StatusEmojiActionCounterWidget extends StatelessWidget {
 
         return Provider<int>.value(
           value: emojiCount,
-          child: StatusActionCounterWidget(
+          child: const StatusActionCounterWidget(
             onClick: _showEmojiPicker,
           ),
         );
@@ -61,7 +61,7 @@ class _StatusEmojiActionButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) => FediIconButton(
         color: IFediUiColorTheme.of(context).darkGrey,
         iconSize: FediSizes.bigIconSize,
-        icon: Icon(FediIcons.emoji),
+        icon: const Icon(FediIcons.emoji),
         onPressed: () {
           _showEmojiPicker(context);
         },

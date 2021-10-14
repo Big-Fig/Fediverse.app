@@ -104,7 +104,7 @@ class UploadMediaAttachmentListNonMediaItemWidgetState
     IUploadMediaAttachmentBloc mediaItemBloc,
     IUploadMediaAttachmentsCollectionBloc mediaAttachmentsCollectionBloc,
   ) =>
-      _UploadMediaAttachmentListNonMediaItemActionsWidget();
+      const _UploadMediaAttachmentListNonMediaItemActionsWidget();
 }
 
 class _UploadMediaAttachmentListNonMediaItemActionsWidget

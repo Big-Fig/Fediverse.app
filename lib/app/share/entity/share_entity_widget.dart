@@ -79,7 +79,7 @@ class _ShareEntityContentWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(FediSizes.smallPadding),
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
               topRight: Radius.circular(FediSizes.smallPadding),
               // ignore: no-equal-arguments
               bottomRight: Radius.circular(FediSizes.smallPadding),
@@ -169,7 +169,7 @@ class _ShareEntityMediaWidget extends StatelessWidget {
         if (items.length == 1) {
           return Provider<ShareEntityCarouselItem>.value(
             value: items.first,
-            child: _ShareEntityCarouselItemWidget(),
+            child: const _ShareEntityCarouselItemWidget(),
           );
         } else {
           return Provider<List<ShareEntityCarouselItem>>.value(
@@ -178,7 +178,7 @@ class _ShareEntityMediaWidget extends StatelessWidget {
                 IFediMediaCarouselBloc>(
               update: (context, value, previous) =>
                   FediMediaCarouselBloc<ShareEntityCarouselItem>(items: value),
-              child: FediMediaCarouselWidget(
+              child: const FediMediaCarouselWidget(
                 builder: _shareEntityCarouselItemWidgetBuilder,
               ),
             ),
@@ -207,7 +207,7 @@ Widget _shareEntityCarouselItemWidgetBuilder(BuildContext context, int index) {
 
   return Provider<ShareEntityCarouselItem>.value(
     value: item,
-    child: _ShareEntityCarouselItemWidget(),
+    child: const _ShareEntityCarouselItemWidget(),
   );
 }
 
@@ -264,7 +264,7 @@ class _ShareEntityCarouselItemLocalFileWidget extends StatelessWidget {
           isFullScreenSupportEnabled: false,
           isFullscreen: false,
         ),
-        child: FediVideoPlayerWidget(),
+        child: const FediVideoPlayerWidget(),
       ),
       audio: (_) => DisposableProvider<IAudioMediaPlayerBloc>(
         create: (context) => AudioMediaPlayerBloc(
@@ -272,12 +272,12 @@ class _ShareEntityCarouselItemLocalFileWidget extends StatelessWidget {
           autoInit: true,
           autoPlay: false,
         ),
-        child: FediAudioPlayerWidget(),
+        child: const FediAudioPlayerWidget(),
       ),
       unknown: (_) => DisposableProxyProvider<ShareEntityItemLocalMediaFile,
           IMediaFilePathBloc>(
         update: (context, value, _) => MediaFilePathBloc(path: value.file.path),
-        child: MediaFilePathWidget(
+        child: const MediaFilePathWidget(
           opacity: 1.0,
           actionsWidget: null,
         ),
@@ -302,7 +302,7 @@ class _ShareEntityCarouselItemLocalFileWidget extends StatelessWidget {
         break;
 
       default:
-        type = UnifediApiMediaAttachmentType.unknown(
+        type = const UnifediApiMediaAttachmentType.unknown(
           stringValue: 'mimeTypePrefix',
         );
         break;

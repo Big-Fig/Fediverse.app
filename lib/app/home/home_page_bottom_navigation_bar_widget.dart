@@ -61,9 +61,9 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
         onTap: () {
           goToNewPostStatusPageWithInitial(context);
         },
-        child: Padding(
+        child: const Padding(
           padding: FediPadding.allBigPadding,
-          child: const FediTransparentIcon(FediIcons.plus),
+          child: FediTransparentIcon(FediIcons.plus),
         ),
       );
 
@@ -201,9 +201,9 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
             child: FediIntBadgeBlocBoolAdapterProxyProvider(
               child: FediBoolBadgeWidget(
                 offset: badgeOffset,
-                child: Padding(
+                child: const Padding(
                   padding: insets,
-                  child: const MyAccountAvatarWidget(),
+                  child: MyAccountAvatarWidget(),
                 ),
               ),
             ),

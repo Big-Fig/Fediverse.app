@@ -116,7 +116,8 @@ class FilePickerOrUrlFormFieldBloc extends FormFieldBloc
   List<FormItemValidationError> get errors => [];
 
   @override
-  Stream<List<FormItemValidationError>> get errorsStream => Stream.empty();
+  Stream<List<FormItemValidationError>> get errorsStream =>
+      const Stream.empty();
 
   @override
   void clear() {

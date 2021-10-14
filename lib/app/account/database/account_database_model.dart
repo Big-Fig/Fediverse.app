@@ -44,12 +44,12 @@ class DbAccounts extends Table {
 
   TextColumn get fields => text()
       .nullable()
-      .map(UnifediApiFieldListDatabaseConverter())
+      .map(const UnifediApiFieldListDatabaseConverter())
       .nullable()();
 
   TextColumn get emojis => text()
       .nullable()
-      .map(UnifediApiEmojiListDatabaseConverter())
+      .map(const UnifediApiEmojiListDatabaseConverter())
       .nullable()();
 
   TextColumn get backgroundImage =>
@@ -58,13 +58,13 @@ class DbAccounts extends Table {
   TextColumn get tags => text()
       .named('pleroma_tags')
       .nullable()
-      .map(UnifediApiTagListDatabaseConverter())
+      .map(const UnifediApiTagListDatabaseConverter())
       .nullable()();
 
   TextColumn get relationship => text()
       .named('pleroma_relationship')
       .nullable()
-      .map(UnifediApiAccountRelationshipDatabaseConverter())
+      .map(const UnifediApiAccountRelationshipDatabaseConverter())
       .nullable()();
 
   BoolColumn get isAdmin => boolean().named('pleroma_is_admin').nullable()();
@@ -115,5 +115,5 @@ class DbAccounts extends Table {
   TextColumn get apId => text().nullable()();
 
   TextColumn get alsoKnownAs =>
-      text().nullable().map(StringListDatabaseConverter()).nullable()();
+      text().nullable().map(const StringListDatabaseConverter()).nullable()();
 }

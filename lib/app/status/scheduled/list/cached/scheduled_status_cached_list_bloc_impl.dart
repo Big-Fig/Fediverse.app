@@ -21,7 +21,7 @@ class ScheduledStatusCachedListBloc extends IScheduledStatusCachedListBloc {
   final IUnifediApiStatusService pleromaScheduledStatusService;
 
   ScheduledStatusRepositoryFilters get _scheduledStatusRepositoryFilters =>
-      ScheduledStatusRepositoryFilters(
+      const ScheduledStatusRepositoryFilters(
         excludeCanceled: _excludeCanceled,
         excludeScheduleAtExpired: _excludeScheduleAtExpired,
       );

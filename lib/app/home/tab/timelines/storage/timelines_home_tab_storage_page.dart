@@ -13,10 +13,10 @@ class TimelinesHomeTabStoragePage extends StatelessWidget {
   const TimelinesHomeTabStoragePage();
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: const _TimelinesHomeTabStoragePagePageAppBarWidget(),
+  Widget build(BuildContext context) => const Scaffold(
+        appBar: _TimelinesHomeTabStoragePagePageAppBarWidget(),
         body: SafeArea(
-          child: const TimelinesHomeTabStorageWidget(),
+          child: TimelinesHomeTabStorageWidget(),
         ),
       );
 }
@@ -61,10 +61,12 @@ class _TimelinesHomeTabStoragePagePageAppBarActionWidget
         Widget child;
         switch (uiState) {
           case TimelinesHomeTabStorageUiState.edit:
-            child = _TimelinesHomeTabStoragePagePageAppBarActionDoneWidget();
+            child =
+                const _TimelinesHomeTabStoragePagePageAppBarActionDoneWidget();
             break;
           case TimelinesHomeTabStorageUiState.view:
-            child = _TimelinesHomeTabStoragePagePageAppBarActionEditWidget();
+            child =
+                const _TimelinesHomeTabStoragePagePageAppBarActionEditWidget();
             break;
         }
 

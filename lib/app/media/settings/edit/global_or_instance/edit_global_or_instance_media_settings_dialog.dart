@@ -20,7 +20,7 @@ void showEditGlobalOrInstanceMediaSettingsDialog({
   showEditGlobalOrInstanceSettingsDialog(
     context: context,
     subTitle: S.of(context).app_media_settings_title,
-    child: EditMediaSettingsWidget(
+    child: const EditMediaSettingsWidget(
       shrinkWrap: true,
     ),
     childContextBuilder: ({

@@ -13,9 +13,9 @@ Future<void> showMyAccountActionListBottomSheetDialog(BuildContext context) =>
       context: context,
       child: DisposableProvider<IUnifediApiAccessChooserBloc>(
         create: UnifediApiAccessChooserBloc.createFromContext,
-        child: Padding(
+        child: const Padding(
           padding: FediPadding.allBigPadding,
-          child: const UnifediApiAccessChooserWidget(),
+          child: UnifediApiAccessChooserWidget(),
         ),
       ),
     );

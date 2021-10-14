@@ -79,7 +79,7 @@ class FediIconTabIndicatorWidget<T> extends StatelessWidget {
           indicatorRadius: (FediSizes.iconButtonHeight + borderHeight) / 2,
           // indicatorHeight: FediSizes.tabIndicatorIconHeight,
           indicatorColor: IFediUiColorTheme.of(context).primary,
-          padding: EdgeInsets.only(top: borderHeight),
+          padding: const EdgeInsets.only(top: borderHeight),
           insets: EdgeInsets.zero,
           tabBarIndicatorSize: TabBarIndicatorSize.label,
         );

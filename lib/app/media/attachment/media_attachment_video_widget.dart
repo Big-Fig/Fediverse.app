@@ -28,8 +28,8 @@ class MediaAttachmentVideoWidget extends StatelessWidget {
         mediaPlayerSource:
             MediaPlayerSource.network(networkUrl: mediaAttachment.url),
       ),
-      child: VideoMediaPlayerBlocProxyProvider(
-        child: const FediVideoPlayerWidget(),
+      child: const VideoMediaPlayerBlocProxyProvider(
+        child: FediVideoPlayerWidget(),
       ),
     );
   }

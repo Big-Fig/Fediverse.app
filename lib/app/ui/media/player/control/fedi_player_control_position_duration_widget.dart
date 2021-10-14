@@ -17,9 +17,9 @@ class FediPlayerControlPositionDurationWidget extends StatelessWidget {
         var isBuffering = snapshot.data!;
 
         if (isBuffering) {
-          return _FediPlayerControlPositionDurationLoadingWidget();
+          return const _FediPlayerControlPositionDurationLoadingWidget();
         } else {
-          return _FediPlayerControlPositionDurationBodyWidget();
+          return const _FediPlayerControlPositionDurationBodyWidget();
         }
       },
     );

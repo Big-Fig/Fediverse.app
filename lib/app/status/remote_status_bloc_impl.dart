@@ -202,41 +202,41 @@ class RemoteStatusBloc extends StatusBloc {
 
   @override
   Future delete() {
-    throw UnsupportedOnRemoteInstanceLocationException();
+    throw const UnsupportedOnRemoteInstanceLocationException();
   }
 
   @override
   Future<IStatus> toggleBookmark() {
-    throw UnsupportedOnRemoteInstanceLocationException();
+    throw const UnsupportedOnRemoteInstanceLocationException();
   }
 
   @override
   Future<IUnifediApiStatus> toggleEmojiReaction({
     required String? emoji,
   }) {
-    throw UnsupportedOnRemoteInstanceLocationException();
+    throw const UnsupportedOnRemoteInstanceLocationException();
   }
 
   @override
   Future<IStatus> toggleFavourite() {
-    throw UnsupportedOnRemoteInstanceLocationException();
+    throw const UnsupportedOnRemoteInstanceLocationException();
   }
 
   @override
   Future<IStatus> toggleMute({
     required Duration? duration,
   }) {
-    throw UnsupportedOnRemoteInstanceLocationException();
+    throw const UnsupportedOnRemoteInstanceLocationException();
   }
 
   @override
   Future<IStatus> togglePin() {
-    throw UnsupportedOnRemoteInstanceLocationException();
+    throw const UnsupportedOnRemoteInstanceLocationException();
   }
 
   @override
   Future<IStatus> toggleReblog() {
-    throw UnsupportedOnRemoteInstanceLocationException();
+    throw const UnsupportedOnRemoteInstanceLocationException();
   }
 
   @override
@@ -246,10 +246,11 @@ class RemoteStatusBloc extends StatusBloc {
   Future<IStatus> mute({
     required Duration? duration,
   }) {
-    throw UnsupportedOnRemoteInstanceLocationException();
+    throw const UnsupportedOnRemoteInstanceLocationException();
   }
 
   @override
   // todo: should be implemented
-  bool get isPleroma => throw UnsupportedOnRemoteInstanceLocationException();
+  bool get isPleroma =>
+      throw const UnsupportedOnRemoteInstanceLocationException();
 }

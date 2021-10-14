@@ -19,14 +19,14 @@ import 'package:provider/provider.dart';
 
 class SearchPage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => Scaffold(
+  Widget build(BuildContext context) => const Scaffold(
         appBar: FediPageCustomAppBar(
-          leading: const FediBackIconButton(),
-          child: const SearchInputWidget(
+          leading: FediBackIconButton(),
+          child: SearchInputWidget(
             autofocus: true,
           ),
         ),
-        body: const SearchWidget(),
+        body: SearchWidget(),
       );
 
   const SearchPage();

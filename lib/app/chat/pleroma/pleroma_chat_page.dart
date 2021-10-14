@@ -46,7 +46,7 @@ class _PleromaChatPageAppBarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ChatPageSelectionAppBarWidget(
         emptySelectionAppBar: FediPageCustomAppBar(
-          leading: FediBackIconButton(),
+          leading: const FediBackIconButton(),
           child: InkWell(
             onTap: () {
               var chatBloc = IPleromaChatBloc.of(context, listen: false);

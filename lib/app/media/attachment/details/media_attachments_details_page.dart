@@ -147,10 +147,10 @@ class MediaAttachmentDetailsPageState
         child: Stack(
           children: [
             buildMediaAttachmentItemBodyContent(mediaAttachment, context),
-            Positioned(
+            const Positioned(
               top: 8.0,
               right: 8.0,
-              child: const MediaAttachmentMetadataButtonWidget(),
+              child: MediaAttachmentMetadataButtonWidget(),
             ),
           ],
         ),
@@ -173,7 +173,7 @@ class MediaAttachmentDetailsPageState
             autoPlay: mediaSettingsBloc.autoPlay,
             mediaPlayerSource:
                 MediaPlayerSource.network(networkUrl: mediaAttachment.url),
-            child: FediVideoPlayerWidget(),
+            child: const FediVideoPlayerWidget(),
             desiredAspectRatio:
                 VideoMediaPlayerBloc.calculateDefaultAspectRatio(context),
             isFullscreen: false,
@@ -191,7 +191,7 @@ class MediaAttachmentDetailsPageState
             child: const FediAudioPlayerWidget(),
           );
         },
-        unknown: (_) => Padding(
+        unknown: (_) => const Padding(
           padding: FediPadding.allBigPadding,
           child: Center(
             child: MediaAttachmentUnknownWidget(),
@@ -272,8 +272,8 @@ class MediaAttachmentDetailsPageState
           imageProvider: imageProvider,
         ),
         placeholder: (context, url) =>
-            Center(child: FediCircularProgressIndicator()),
-        errorWidget: (context, url, dynamic error) => Center(
+            const Center(child: FediCircularProgressIndicator()),
+        errorWidget: (context, url, dynamic error) => const Center(
           child: Icon(
             FediIcons.failed,
           ),

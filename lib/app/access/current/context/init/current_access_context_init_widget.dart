@@ -55,7 +55,7 @@ class CurrentUnifediApiAccessContextInitWidgetState
     Future.delayed(
       // todo: refactor
       // ignore: no-magic-number
-      Duration(milliseconds: 100),
+      const Duration(milliseconds: 100),
       () {
         if (isLoading && !disposed) {
           showProgressDialog(context, currentInstanceContextLoadingBloc);

@@ -19,7 +19,8 @@ class UploadedUploadMediaAttachmentBloc extends DisposableOwner
   }
 
   @override
-  UploadMediaAttachmentState get uploadState => UploadMediaAttachmentState(
+  UploadMediaAttachmentState get uploadState =>
+      const UploadMediaAttachmentState(
         type: UploadMediaAttachmentStateType.uploaded,
       );
 

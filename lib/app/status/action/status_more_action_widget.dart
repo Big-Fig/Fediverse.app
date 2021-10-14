@@ -15,7 +15,7 @@ class StatusMoreActionWidget extends StatelessWidget {
     return FediIconButton(
       color: IFediUiColorTheme.of(context).darkGrey,
       iconSize: FediSizes.bigIconSize,
-      icon: Icon(FediIcons.menu),
+      icon: const Icon(FediIcons.menu),
       onPressed: () {
         showStatusActionMoreDialog(
           context: context,

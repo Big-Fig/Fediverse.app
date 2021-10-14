@@ -28,8 +28,8 @@ class RecentSelectAccountBloc extends DisposableOwner
   }) {
     selectAccountListBloc.accountSelectedStream.listen(
       (selectedAccount) {
-        var oldValue =
-            recentSelectAccountList ?? RecentSelectAccountList(recentItems: []);
+        var oldValue = recentSelectAccountList ??
+            const RecentSelectAccountList(recentItems: []);
 
         var recentItems = oldValue.recentItems!;
         if (recentItems.length > recentCountLimit) {
@@ -76,6 +76,6 @@ class RecentSelectAccountBloc extends DisposableOwner
   @override
   void clear() {
     recentSelectAccountLocalPreferenceBloc
-        .setValue(RecentSelectAccountList(recentItems: []));
+        .setValue(const RecentSelectAccountList(recentItems: []));
   }
 }

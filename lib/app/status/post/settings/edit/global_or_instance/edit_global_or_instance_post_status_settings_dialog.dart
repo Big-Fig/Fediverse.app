@@ -29,7 +29,7 @@ void showEditGlobalOrInstancePostStatusSettingsDialog({
   showEditGlobalOrInstanceSettingsDialog(
     context: context,
     subTitle: S.of(context).app_status_post_settings_title,
-    child: EditPostStatusSettingsWidget(
+    child: const EditPostStatusSettingsWidget(
       shrinkWrap: true,
     ),
     childContextBuilder: ({

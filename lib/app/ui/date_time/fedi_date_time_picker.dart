@@ -402,7 +402,7 @@ class _DatePickerState extends State<FediDatePickerComponent> {
       Expanded(
         flex: layoutProportion,
         child: Container(
-          padding: EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8.0),
           height: theme.containerHeight,
           child: NotificationListener(
             onNotification: (ScrollNotification notification) {

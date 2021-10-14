@@ -183,7 +183,7 @@ class _SearchTabBarWidget extends StatelessWidget {
                 items: tabs,
                 tabController: tabController!,
               ),
-              child: FediTextTabIndicatorWidget(
+              child: const FediTextTabIndicatorWidget(
                 style: FediTabStyle.bubble,
                 isTransparent: false,
                 tabToTextMapper: mapTabToTitle,

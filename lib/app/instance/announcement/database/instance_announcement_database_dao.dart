@@ -58,7 +58,7 @@ class InstanceAnnouncementDao extends PopulatedAppRemoteDatabaseDao<
   ) {
     var now = DateTime.now();
     var startOfCurrentDay = CustomDateUtils.dayStartOf(now);
-    var startOfNextDay = startOfCurrentDay.add(Duration(days: 1));
+    var startOfNextDay = startOfCurrentDay.add(const Duration(days: 1));
 
     return query
       ..where(

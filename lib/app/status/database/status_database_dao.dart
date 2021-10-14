@@ -288,7 +288,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
   ) =>
       query
         ..where(
-          CustomExpression<bool>(
+          const CustomExpression<bool>(
                 'db_statuses.in_reply_to_account_remote_id IS NULL',
               ) |
               CustomExpression<bool>(

@@ -10,8 +10,8 @@ import 'package:unifedi_api/unifedi_api.dart';
 class InstanceAnnouncementEmojiReactionListItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
-      InstanceAnnouncementEmojiReactionAdapterProxyProvider(
-        child: const InstanceAnnouncementEmojiReactionListItemBodyWidget(),
+      const InstanceAnnouncementEmojiReactionAdapterProxyProvider(
+        child: InstanceAnnouncementEmojiReactionListItemBodyWidget(),
       );
 
   const InstanceAnnouncementEmojiReactionListItemWidget();

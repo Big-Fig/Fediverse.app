@@ -42,7 +42,7 @@ class _StatusReblogActionCounterWidget extends StatelessWidget {
 
         return Provider<int>.value(
           value: reblogsCount,
-          child: StatusActionCounterWidget(
+          child: const StatusActionCounterWidget(
             onClick: _onCounterClick,
           ),
         );
@@ -78,7 +78,7 @@ class _StatusReblogActionButtonWidget extends StatelessWidget {
             color: reblogged!
                 ? IFediUiColorTheme.of(context).primary
                 : IFediUiColorTheme.of(context).darkGrey,
-            icon: Icon(FediIcons.reply),
+            icon: const Icon(FediIcons.reply),
             onPressed: onPressed,
           ),
           asyncButtonAction: statusBloc.toggleReblog,

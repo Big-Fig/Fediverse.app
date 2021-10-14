@@ -245,7 +245,7 @@ class _StatusThreadStatusesListWidgetState
         Future.delayed(
           // todo: refactor
           // ignore: no-magic-number
-          Duration(milliseconds: 1000),
+          const Duration(milliseconds: 1000),
           () {
             statusThreadBloc.jumpToStartIndex();
           },

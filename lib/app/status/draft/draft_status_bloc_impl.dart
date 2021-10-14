@@ -49,7 +49,7 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
     _stateSubject.disposeWith(this);
 
     if (delayInit) {
-      Future.delayed(Duration(seconds: 1), () {
+      Future.delayed(const Duration(seconds: 1), () {
         _init(draftStatus);
       });
     } else {

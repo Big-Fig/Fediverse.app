@@ -16,7 +16,7 @@ class InstanceAnnouncementCountIntBadgeBloc extends DisposableOwner
   @override
   Stream<int> get badgeStream =>
       instanceAnnouncementRepository.watchCalculateCount(
-        filters: InstanceAnnouncementRepositoryFilters(
+        filters: const InstanceAnnouncementRepositoryFilters(
           withDismissed: false,
           withExpired: false,
           withNotStartedYet: false,

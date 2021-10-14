@@ -203,8 +203,8 @@ class _TimelinesHomeTabPageBodyState extends State<_TimelinesHomeTabPageBody>
     );
   }
 
-  Widget buildTabBodyContent() => FediDarkStatusBarStyleArea(
-        child: const TimelineWidget(),
+  Widget buildTabBodyContent() => const FediDarkStatusBarStyleArea(
+        child: TimelineWidget(),
       );
 
   Widget _provideTabBodyContext(
@@ -307,7 +307,7 @@ class _TimelinesHomeTabPageBodyHeaderFirstRowWidget extends StatelessWidget {
               ),
             ),
             const FediBigVerticalSpacer(),
-            _TimelinesHomeTabIndicatorWidget(),
+            const _TimelinesHomeTabIndicatorWidget(),
           ],
         ),
         endingWidgets: null,
@@ -320,7 +320,7 @@ class _TimelinesHomeTabIndicatorWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Padding(
+  Widget build(BuildContext context) => const Padding(
         // ignore: no-magic-number
         padding: EdgeInsets.only(
           // ignore: no-magic-number

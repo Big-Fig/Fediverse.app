@@ -201,7 +201,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
           StatusRepositoryOrderingTermData.createdAtDesc,
         ],
         // pagination: null,
-        pagination: RepositoryPagination(limit: 1),
+        pagination: const RepositoryPagination(limit: 1),
       );
 
   @override
@@ -218,7 +218,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
           StatusRepositoryOrderingTermData.createdAtDesc,
         ],
         // pagination: null,
-        pagination: RepositoryPagination(limit: 1),
+        pagination: const RepositoryPagination(limit: 1),
       );
 
   @override
@@ -749,7 +749,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   Future<IStatus?> findNewestForHomeTimeline() => findInAppType(
-        pagination: RepositoryPagination(
+        pagination: const RepositoryPagination(
           limit: 1,
         ),
         filters: StatusRepositoryFilters.only(

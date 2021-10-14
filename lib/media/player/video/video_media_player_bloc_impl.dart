@@ -11,7 +11,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:video_player/video_player.dart';
 
 // ignore: no-magic-number
-final _durationToHideControlsDuringPlaying = Duration(seconds: 3);
+const _durationToHideControlsDuringPlaying = Duration(seconds: 3);
 
 class VideoMediaPlayerBloc extends MediaPlayerBloc
     implements IVideoMediaPlayerBloc {

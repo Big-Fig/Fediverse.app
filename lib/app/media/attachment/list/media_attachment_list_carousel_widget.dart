@@ -18,9 +18,9 @@ class MediaAttachmentListCarouselWidget extends StatelessWidget {
     var mediaAttachmentListBloc = IMediaAttachmentListBloc.of(context);
 
     if (mediaAttachmentListBloc.mediaAttachments.isNotEmpty) {
-      return SizedBox(
+      return const SizedBox(
         width: double.infinity,
-        child: const MediaAttachmentListCarouselBodyWidget(),
+        child: MediaAttachmentListCarouselBodyWidget(),
       );
     } else {
       return const SizedBox.shrink();

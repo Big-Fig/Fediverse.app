@@ -87,7 +87,7 @@ class ConversationChatStatusListItemWidget extends StatelessWidget {
               ),
               child: Padding(
                 padding: isHaveTextContent
-                    ? EdgeInsets.symmetric(
+                    ? const EdgeInsets.symmetric(
                         // todo: refactor
                         // ignore: no-magic-number
                         vertical: 12,
@@ -166,7 +166,7 @@ class ConversationChatStatusListItemWidget extends StatelessWidget {
           var mediaAttachments = snapshot.data;
 
           if (mediaAttachments == null) {
-            return SizedBox.shrink();
+            return const SizedBox.shrink();
           }
 
           return DisposableProvider<IMediaAttachmentListBloc>(
@@ -246,7 +246,7 @@ class ConversationChatStatusListItemWidget extends StatelessWidget {
               ),
             );
           } else {
-            return SizedBox.shrink();
+            return const SizedBox.shrink();
           }
         },
       );

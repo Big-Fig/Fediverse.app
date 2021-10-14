@@ -57,7 +57,7 @@ class StatusReplyWidget extends StatelessWidget {
             }
 
           case AsyncInitLoadingState.failed:
-            return _StatusReplyFailedWidget();
+            return const _StatusReplyFailedWidget();
         }
       },
     );

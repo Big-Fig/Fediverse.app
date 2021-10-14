@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository_impl.dart';
 import 'package:fedi/app/status/scheduled/repository/scheduled_status_repository_model.dart';

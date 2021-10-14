@@ -30,7 +30,8 @@ class RecentSearchBloc extends DisposableOwner implements IRecentSearchBloc {
   }) {
     searchInputBloc.confirmedSearchTermStream.listen(
       (confirmedSearchTerm) {
-        var oldValue = recentSearchList ?? RecentSearchList(recentItems: []);
+        var oldValue =
+            recentSearchList ?? const RecentSearchList(recentItems: []);
 
         var recentItems = oldValue.recentItems;
         if (recentItems.length > recentCountLimit) {
@@ -59,6 +60,7 @@ class RecentSearchBloc extends DisposableOwner implements IRecentSearchBloc {
 
   @override
   void clearRecentSearch() {
-    recentSearchLocalPreferenceBloc.setValue(RecentSearchList(recentItems: []));
+    recentSearchLocalPreferenceBloc
+        .setValue(const RecentSearchList(recentItems: []));
   }
 }
