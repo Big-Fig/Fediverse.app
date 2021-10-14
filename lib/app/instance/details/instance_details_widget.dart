@@ -1795,7 +1795,7 @@ class _InstanceDetailsPleromaMetadataPostFormatsWidget extends StatelessWidget {
             label: S
                 .of(context)
                 .app_instance_details_field_pleroma_metadata_fields_postFormats_label,
-            value: pleromaMetadataPostFormats?.join('\n').toString() ?? '',
+            value: pleromaMetadataPostFormats?.join('\n') ?? '',
           );
         } else {
           return const SizedBox.shrink();
@@ -1824,7 +1824,7 @@ class _InstanceDetailsVapidPublicKeyWidget extends StatelessWidget {
           return _SimpleInstanceDetailsRowWidget(
             label:
                 S.of(context).app_instance_details_field_vapidPublicKey_label,
-            value: vapidPublicKey!.toString(),
+            value: vapidPublicKey!,
           );
         } else {
           return const SizedBox.shrink();

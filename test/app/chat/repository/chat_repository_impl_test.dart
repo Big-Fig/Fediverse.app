@@ -451,8 +451,7 @@ void main() {
       pagination: RepositoryPagination(
         newerThanItem: await ChatMockHelper.createTestChat(
           seed: 'remoteId5',
-          remoteId: 'remoteId5'
-              '',
+          remoteId: 'remoteId5',
           updatedAt: DateTime(2005),
         ),
       ),
@@ -509,8 +508,7 @@ void main() {
       pagination: RepositoryPagination(
         olderThanItem: await ChatMockHelper.createTestChat(
           seed: 'remoteId5',
-          remoteId: 'remoteId5'
-              '',
+          remoteId: 'remoteId5',
           updatedAt: DateTime(2005),
         ),
       ),
@@ -567,14 +565,12 @@ void main() {
       pagination: RepositoryPagination(
         newerThanItem: await ChatMockHelper.createTestChat(
           seed: 'remoteId2',
-          remoteId: 'remoteId2'
-              '',
+          remoteId: 'remoteId2',
           updatedAt: DateTime(2002),
         ),
         olderThanItem: await ChatMockHelper.createTestChat(
           seed: 'remoteId5',
-          remoteId: 'remoteId5'
-              '',
+          remoteId: 'remoteId5',
           updatedAt: DateTime(2005),
         ),
       ),

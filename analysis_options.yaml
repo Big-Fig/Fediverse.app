@@ -76,7 +76,7 @@ linter:
     # grouping dependencies is better
     sort_pub_dependencies: false
 
-    # sometimes is hard to move all todo's to issue tracker
+    # sometimes is hard to move all todos to issue tracker
     flutter_style_todos: false
 
     # sometimes interpolation better but sometimes not
@@ -85,8 +85,11 @@ linter:
     # double should be double
     prefer_int_literals: false
 
-    # module is OK
+    # modulo is OK
     use_is_even_rather_than_modulo: false
+
+    # == is easier to use than ?? for nullable bool
+    use_if_null_to_convert_nulls_to_bools: false
 
     # code metrics have better rules for member ordering
     sort_constructors_first: false
@@ -115,7 +118,7 @@ linter:
 
     unnecessary_final: false
 
-    noop_primitive_operations: false
+
     only_throw_errors: false
     prefer_asserts_with_message: false
     prefer_const_literals_to_create_immutables: false
@@ -136,8 +139,6 @@ linter:
     type_annotate_public_apis: false
 
 
-
-    use_if_null_to_convert_nulls_to_bools: false
 
     prefer_function_declarations_over_variables: false
     null_check_on_nullable_type_parameter: false
