@@ -363,9 +363,7 @@ class _DatePickerState extends State<FediDatePickerComponent> {
   }
 
   void _notifyDateChanged() {
-    if (widget.onChanged != null) {
-      widget.onChanged!(widget.pickerModel!.finalTime());
-    }
+    widget.onChanged?.call(widget.pickerModel!.finalTime());
   }
 
   Widget _renderPickerView(FediDatePickerTheme theme) {
@@ -540,9 +538,7 @@ class _DatePickerState extends State<FediDatePickerComponent> {
             done,
             onPressed: () {
               Navigator.pop(context, widget.pickerModel!.finalTime());
-              if (widget.onConfirm != null) {
-                widget.onConfirm!(widget.pickerModel!.finalTime());
-              }
+              widget.onConfirm?.call(widget.pickerModel!.finalTime());
             },
             expanded: false,
           ),
@@ -551,9 +547,8 @@ class _DatePickerState extends State<FediDatePickerComponent> {
               delete,
               color: IFediUiColorTheme.of(context).primary,
               onPressed: () {
-                if (widget.onDelete != null) {
-                  widget.onDelete!();
-                }
+                widget.onDelete?.call();
+
                 Navigator.pop(context);
               },
               expanded: false,
@@ -563,9 +558,7 @@ class _DatePickerState extends State<FediDatePickerComponent> {
             color: IFediUiColorTheme.of(context).darkGrey,
             onPressed: () {
               Navigator.pop(context);
-              if (widget.onCancel != null) {
-                widget.onCancel!();
-              }
+              widget.onCancel?.call();
             },
             expanded: false,
           ),

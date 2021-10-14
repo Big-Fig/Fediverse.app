@@ -359,10 +359,8 @@ void _onStatusListItemClick(BuildContext context) {
   var statusListItemTimelineBloc =
       IStatusListItemTimelineBloc.of(context, listen: false);
 
-  if (statusListItemTimelineBloc.statusCallback != null) {
-    statusListItemTimelineBloc.statusCallback!(
-      context,
-      statusListItemTimelineBloc.status,
-    );
-  }
+  statusListItemTimelineBloc.statusCallback?.call(
+    context,
+    statusListItemTimelineBloc.status,
+  );
 }

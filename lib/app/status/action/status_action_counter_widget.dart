@@ -17,9 +17,7 @@ class StatusActionCounterWidget extends StatelessWidget {
 
     return InkWell(
       onTap: () {
-        if (onClick != null) {
-          onClick!(context);
-        }
+        onClick?.call(context);
       },
       child: Padding(
         padding: const EdgeInsets.only(

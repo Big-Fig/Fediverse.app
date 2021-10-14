@@ -34,9 +34,7 @@ class UiThemeSystemBrightnessHandlerWidgetState
       uiThemeSystemHandlerBloc
           .onSystemBrightnessChanged(window.platformBrightness);
 
-      if (oldOnPlatformBrightnessChanged != null) {
-        oldOnPlatformBrightnessChanged!();
-      }
+      oldOnPlatformBrightnessChanged?.call();
     };
 
     uiThemeSystemHandlerBloc

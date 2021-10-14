@@ -545,9 +545,7 @@ class _BaseInstanceDetailsRowWidget extends StatelessWidget {
             Flexible(
               child: InkWell(
                 onTap: () {
-                  if (valueOnClick != null) {
-                    valueOnClick!(context);
-                  }
+                  valueOnClick?.call(context);
                 },
                 child: Row(
                   mainAxisSize: MainAxisSize.min,

@@ -136,16 +136,10 @@ class _FediFormSingleChooseFromListFieldRowBodyWidget<T>
                       actions: possibleValues
                           .map(
                             (possibleValue) => SelectionDialogAction(
-                              key: valueToKeyMapper != null
-                                  ? valueToKeyMapper!(possibleValue)
-                                  : null,
+                              key: valueToKeyMapper?.call(possibleValue),
                               isSelected: value == possibleValue,
-                              label: valueToTextMapper != null
-                                  ? valueToTextMapper!(possibleValue)
-                                  : null,
-                              icon: valueToIconMapper != null
-                                  ? valueToIconMapper!(possibleValue)
-                                  : null,
+                              label: valueToTextMapper?.call(possibleValue),
+                              icon: valueToIconMapper?.call(possibleValue),
                               onAction: (context) {
                                 onChanged(value, possibleValue);
                                 Navigator.of(context).pop();

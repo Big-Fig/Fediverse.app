@@ -132,7 +132,7 @@ linter:
     prefer_typing_uninitialized_variables: false
 
 
-    prefer_null_aware_method_calls: false
+
     type_annotate_public_apis: false
 
 

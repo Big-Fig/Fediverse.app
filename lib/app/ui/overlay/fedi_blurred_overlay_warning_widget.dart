@@ -56,9 +56,7 @@ class FediBlurredOverlayWarningWidget extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
-        if (buttonAction != null) {
-          buttonAction!();
-        }
+        buttonAction?.call();
       },
       child: ClipRect(
         child: replaceBlurWithColor != null

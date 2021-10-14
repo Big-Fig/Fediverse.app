@@ -26,9 +26,7 @@ class AccountHeaderStatusesCountWidget extends StatelessWidget {
           value: count,
           child: InkWell(
             onTap: () {
-              if (onStatusesTapCallback != null) {
-                onStatusesTapCallback!(context);
-              }
+              onStatusesTapCallback?.call(context);
             },
             child: AccountHeaderStatisticWidget(
               label: S.of(context).app_account_info_statuses,
