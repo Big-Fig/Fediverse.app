@@ -26,11 +26,11 @@ class UnifediApiAccessChooserInstanceListItemWidget extends StatelessWidget {
           children: <Widget>[
             Flexible(
               child: Row(
-                children: <Widget>[
-                  const _UnifediApiAccessChooserInstanceListItemLogoutButtonWidget(),
+                children: const <Widget>[
+                  _UnifediApiAccessChooserInstanceListItemLogoutButtonWidget(),
                   Flexible(
                     child:
-                        const _UnifediApiAccessChooserInstanceListItemAccountInfoWidget(),
+                        _UnifediApiAccessChooserInstanceListItemAccountInfoWidget(),
                   ),
                 ],
               ),
@@ -83,9 +83,9 @@ class _UnifediApiAccessChooserInstanceListItemAccountInfoWidget
           Flexible(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const AccountDisplayNameWidget(),
-                const _UnifediApiAccessChooserInstanceListItemUserAtHostWidget(),
+              children: const [
+                AccountDisplayNameWidget(),
+                _UnifediApiAccessChooserInstanceListItemUserAtHostWidget(),
               ],
             ),
           ),

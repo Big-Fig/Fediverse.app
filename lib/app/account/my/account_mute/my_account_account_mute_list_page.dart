@@ -31,15 +31,15 @@ class MyAccountAccountMuteListPage extends StatelessWidget {
         ),
         body: SafeArea(
           child: Column(
-            children: [
-              const _MyAccountAccountMuteListPageWarningWidget(),
-              const FediMediumVerticalSpacer(),
-              const _MyAccountAccountMuteListPageAddButton(),
-              const FediMediumVerticalSpacer(),
-              const FediBigVerticalSpacer(),
-              const FediUltraLightGreyDivider(),
+            children: const [
+              _MyAccountAccountMuteListPageWarningWidget(),
+              FediMediumVerticalSpacer(),
+              _MyAccountAccountMuteListPageAddButton(),
+              FediMediumVerticalSpacer(),
+              FediBigVerticalSpacer(),
+              FediUltraLightGreyDivider(),
               Expanded(
-                child: const MyAccountAccountMuteAccountPaginationListWidget(
+                child: MyAccountAccountMuteAccountPaginationListWidget(
                   customEmptyWidget: SizedBox.shrink(),
                 ),
               ),

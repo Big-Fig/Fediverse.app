@@ -47,9 +47,9 @@ class InstanceAnnouncementListItemWidget extends StatelessWidget {
                   children: [
                     const _InstanceAnnouncementListItemUpdatedAtWidget(),
                     Row(
-                      children: [
-                        const _InstanceAnnouncementListItemDismissButtonWidget(),
-                        const _InstanceAnnouncementListItemAddEmojiButtonWidget(),
+                      children: const [
+                        _InstanceAnnouncementListItemDismissButtonWidget(),
+                        _InstanceAnnouncementListItemAddEmojiButtonWidget(),
                       ],
                     ),
                   ],
@@ -59,9 +59,9 @@ class InstanceAnnouncementListItemWidget extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(FediSizes.bigPadding),
                 child: Column(
-                  children: [
-                    const _InstanceAnnouncementListItemContentWidget(),
-                    const InstanceAnnouncementEmojiReactionListWidget(),
+                  children: const [
+                    _InstanceAnnouncementListItemContentWidget(),
+                    InstanceAnnouncementEmojiReactionListWidget(),
                   ],
                 ),
               ),

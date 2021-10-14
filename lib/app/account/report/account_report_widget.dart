@@ -27,12 +27,12 @@ class AccountReportWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ListView(
-        children: [
+        children: const [
           Padding(
             padding: FediPadding.allBigPadding,
-            child: const _AccountReportFormWidget(),
+            child: _AccountReportFormWidget(),
           ),
-          const _AccountReportStatusesWidget(),
+          _AccountReportStatusesWidget(),
         ],
       );
 }

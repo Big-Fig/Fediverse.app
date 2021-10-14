@@ -66,11 +66,11 @@ class _AccountFeaturedHashtagListItemRightWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Row(
         mainAxisSize: MainAxisSize.min,
-        children: [
+        children: const [
           // todo: can't test so disabled temporary
           // const _AccountFeaturedHashtagListItemLastStatusAtWidget(),
-          const _AccountFeaturedHashtagListItemStatusesCountWidget(),
-          const _AccountFeaturedHashtagListItemUnfeatureWidget(),
+          _AccountFeaturedHashtagListItemStatusesCountWidget(),
+          _AccountFeaturedHashtagListItemUnfeatureWidget(),
         ],
       );
 }

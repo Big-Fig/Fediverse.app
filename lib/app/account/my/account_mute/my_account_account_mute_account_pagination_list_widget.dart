@@ -16,7 +16,7 @@ class MyAccountAccountMuteAccountPaginationListWidget extends StatelessWidget {
         customEmptyWidget: customEmptyWidget,
         customLoadingWidget: customLoadingWidget,
         isNeedPreFetchRelationship: true,
-        accountActions: <Widget>[
+        accountActions: const <Widget>[
           _MyAccountAccountMuteAccountPaginationListRemoveActionWidget(),
         ],
         accountSelectedCallback: null,

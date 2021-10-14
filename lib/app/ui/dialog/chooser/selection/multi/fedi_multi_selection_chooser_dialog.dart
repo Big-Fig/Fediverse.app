@@ -53,7 +53,7 @@ class FediMultiSelectChooserDialogBody extends StatelessWidget {
             alignment: Alignment.centerLeft,
             child: StreamBuilder<List<SelectionDialogAction>?>(
               stream: isNeedRebuildActionsStream,
-              initialData: [],
+              initialData: const [],
               builder: (context, snapshot) {
                 var actions = snapshot.data;
                 if (actions == null) {

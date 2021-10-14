@@ -16,8 +16,8 @@ class EditCustomListPage extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
         appBar: FediPageTitleAppBar(
           title: S.of(context).app_customList_edit_title,
-          actions: <Widget>[
-            const EditCustomListAppBarSaveActionWidget(),
+          actions: const <Widget>[
+            EditCustomListAppBarSaveActionWidget(),
           ],
         ),
         body: const SafeArea(

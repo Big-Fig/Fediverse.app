@@ -108,8 +108,8 @@ class StatusActionMuteDialog extends FediDialog {
   @override
   Widget buildContentWidget(BuildContext context) => Column(
         mainAxisSize: MainAxisSize.min,
-        children: [
-          const _StatusActionMuteDialogExpireField(),
+        children: const [
+          _StatusActionMuteDialogExpireField(),
         ],
       );
 }

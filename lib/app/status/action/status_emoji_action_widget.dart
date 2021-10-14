@@ -15,9 +15,9 @@ import 'package:provider/provider.dart';
 class StatusEmojiActionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Row(
-        children: [
-          const _StatusEmojiActionButtonWidget(),
-          const _StatusEmojiActionCounterWidget(),
+        children: const [
+          _StatusEmojiActionButtonWidget(),
+          _StatusEmojiActionCounterWidget(),
         ],
       );
 

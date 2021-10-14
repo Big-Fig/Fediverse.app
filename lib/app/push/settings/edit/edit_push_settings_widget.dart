@@ -55,15 +55,15 @@ class EditPushSettingsWidgetState extends State<EditPushSettingsWidget> {
   @override
   Widget build(BuildContext context) => Column(
         mainAxisSize: widget.shrinkWrap ? MainAxisSize.min : MainAxisSize.max,
-        children: [
-          const _EditPushSettingsDescriptionWidget(),
-          const _EditPushSettingsFavouriteFieldWidget(),
-          const _EditPushSettingsFollowFieldWidget(),
-          const _EditPushSettingsMentionFieldWidget(),
-          const _EditPushSettingsReblogFieldWidget(),
-          const _EditPushSettingsPollFieldWidget(),
-          const _EditPushSettingsChatMentionFieldWidget(),
-          const _EditPushSettingsEmojiReactionFieldWidget(),
+        children: const [
+          _EditPushSettingsDescriptionWidget(),
+          _EditPushSettingsFavouriteFieldWidget(),
+          _EditPushSettingsFollowFieldWidget(),
+          _EditPushSettingsMentionFieldWidget(),
+          _EditPushSettingsReblogFieldWidget(),
+          _EditPushSettingsPollFieldWidget(),
+          _EditPushSettingsChatMentionFieldWidget(),
+          _EditPushSettingsEmojiReactionFieldWidget(),
         ],
       );
 }

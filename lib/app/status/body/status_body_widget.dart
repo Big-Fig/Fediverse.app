@@ -45,9 +45,9 @@ class StatusBodyWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Column(
-        children: [
-          const _StatusBodyChipsWidget(),
-          const _StatusBodyChildWithWarningsWidget(),
+        children: const [
+          _StatusBodyChipsWidget(),
+          _StatusBodyChildWithWarningsWidget(),
         ],
       );
 }
@@ -102,9 +102,9 @@ class _StatusBodyWithoutContentWidget extends StatelessWidget {
         padding: _defaultPadding,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            const StatusSpoilerWidget(),
-            const StatusSensitiveSpoilerWarningOverlayWidget(
+          children: const <Widget>[
+            StatusSpoilerWidget(),
+            StatusSensitiveSpoilerWarningOverlayWidget(
               child: _StatusBodyContentWidget(
                 showSpoiler: false,
               ),

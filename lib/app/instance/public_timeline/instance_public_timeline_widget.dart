@@ -27,8 +27,8 @@ class InstancePublicTimelinePageAppBarWidget extends StatelessWidget
       title: S.of(context).app_instance_details_title(
             instanceBloc.instanceUriDomain,
           ),
-      actions: <Widget>[
-        const _InstancePublicTimelinePageAppBarSettingsActionWidget(),
+      actions: const <Widget>[
+        _InstancePublicTimelinePageAppBarSettingsActionWidget(),
       ],
     );
   }

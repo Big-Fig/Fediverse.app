@@ -57,8 +57,8 @@ class PleromaChatHomeTabPage extends StatelessWidget {
       body: FediNestedScrollViewWithoutNestedScrollableTabsWidget(
         onLongScrollUpTopOverlayWidget: null,
         topSliverScrollOffsetToShowWhiteStatusBar: null,
-        topSliverWidgets: [
-          const _ChatMessagesHomeTabPageHeaderWidget(),
+        topSliverWidgets: const [
+          _ChatMessagesHomeTabPageHeaderWidget(),
         ],
         providerBuilder: (context, child) => provideContentContext(child),
         contentBuilder: (context) =>

@@ -31,8 +31,8 @@ class MultiSelectAccountWidget extends StatelessWidget {
         accountSelectedCallback: (_, __) {
           // nothing
         },
-        accountActions: <Widget>[
-          const _MultiSelectAccountItemActionWidget(),
+        accountActions: const <Widget>[
+          _MultiSelectAccountItemActionWidget(),
         ],
         key: PageStorageKey('MultiSelectAccountWidget'),
       );

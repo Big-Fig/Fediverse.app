@@ -17,7 +17,7 @@ class MyAccountAccountBlockAccountPaginationListWidget extends StatelessWidget {
   Widget build(BuildContext context) => AccountPaginationListWidget(
         customLoadingWidget: customLoadingWidget,
         customEmptyWidget: customEmptyWidget,
-        accountActions: <Widget>[
+        accountActions: const <Widget>[
           _MyAccountAccountBlockAccountPaginationListRemoteAccountBlockActionWidget(),
         ],
         accountSelectedCallback: null,

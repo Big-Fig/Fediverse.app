@@ -95,9 +95,9 @@ class AccountDetailsPageBody extends StatelessWidget {
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const AccountDisplayNameWidget(),
-                const AccountAcctWidget(),
+              children: const [
+                AccountDisplayNameWidget(),
+                AccountAcctWidget(),
               ],
             ),
             if (isRemote && currentInstance != null)
@@ -106,12 +106,12 @@ class AccountDetailsPageBody extends StatelessWidget {
         ),
       ),
       body: Stack(
-        children: [
+        children: const [
           SizedBox(
             height: _headerBackgroundHeight,
-            child: const AccountHeaderBackgroundWidget(),
+            child: AccountHeaderBackgroundWidget(),
           ),
-          const _AccountDetailsPageBodyContent(),
+          _AccountDetailsPageBodyContent(),
         ],
       ),
     );
@@ -170,8 +170,8 @@ class _AccountDetailsPageBodyContent extends StatelessWidget {
             // todo: refactor
             // ignore: no-magic-number
             topSliverScrollOffsetToShowWhiteStatusBar: 100,
-            topSliverWidgets: [
-              const _AccountDetailsNestedScrollViewHeader(),
+            topSliverWidgets: const [
+              _AccountDetailsNestedScrollViewHeader(),
             ],
             tabKeyPrefix: 'AccountDetailsPage',
             tabBodyProviderBuilder:

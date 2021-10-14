@@ -48,12 +48,12 @@ class _PostMessageSelectedActionPollWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Column(
-        children: <Widget>[
-          const Padding(
+        children: const <Widget>[
+          Padding(
             padding: FediPadding.verticalBigPadding,
             child: FediUltraLightGreyDivider(),
           ),
-          const Padding(
+          Padding(
             padding: FediPadding.horizontalSmallPadding,
             child: PostStatusPollWidget(),
           ),
@@ -96,12 +96,12 @@ class _PostMessageSelectedActionAttachWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Column(
-        children: <Widget>[
-          const Padding(
+        children: const <Widget>[
+          Padding(
             padding: FediPadding.verticalBigPadding,
             child: FediUltraLightGreyDivider(),
           ),
-          const PostMessageSelectMediaAttachmentTypeToPickWidget(),
+          PostMessageSelectMediaAttachmentTypeToPickWidget(),
         ],
       );
 }

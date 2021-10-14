@@ -100,12 +100,12 @@ class _HashtagListItemHistoryWidget extends StatelessWidget {
     }
 
     return Row(
-      children: [
-        const _HashtagListItemStatusesWidget(),
-        const FediSmallHorizontalSpacer(),
-        const _HashtagListItemHistoryAccountsWidget(),
-        const FediSmallHorizontalSpacer(),
-        const _HashtagListItemHistoryGraphWidget(),
+      children: const [
+        _HashtagListItemStatusesWidget(),
+        FediSmallHorizontalSpacer(),
+        _HashtagListItemHistoryAccountsWidget(),
+        FediSmallHorizontalSpacer(),
+        _HashtagListItemHistoryGraphWidget(),
       ],
     );
   }

@@ -16,9 +16,9 @@ class FediAudioPlayerWidget extends StatelessWidget {
         child: Stack(
           children: [
             Row(
-              children: [
-                const FediAudioPlayerControlsPausePlayButtonWidget(),
-                const Expanded(
+              children: const [
+                FediAudioPlayerControlsPausePlayButtonWidget(),
+                Expanded(
                   child: FediPlayerControlPanelWidget(),
                 ),
               ],
@@ -75,10 +75,10 @@ class _FediAudioPlayerErrorBodyWidget extends StatelessWidget {
   Widget build(BuildContext context) => Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const _FediAudioPlayerErrorReloadButtonWidget(),
-          const _FediAudioPlayerErrorBodyContentWidget(),
-          const _FediAudioPlayerShowErrorButtonWidget(),
+        children: const [
+          _FediAudioPlayerErrorReloadButtonWidget(),
+          _FediAudioPlayerErrorBodyContentWidget(),
+          _FediAudioPlayerShowErrorButtonWidget(),
         ],
       );
 }

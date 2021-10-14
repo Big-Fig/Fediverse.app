@@ -16,9 +16,9 @@ class EditPushFilterSettingsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Column(
         mainAxisSize: shrinkWrap ? MainAxisSize.min : MainAxisSize.max,
-        children: [
-          const _EditPushFilterSettingsHideNotificationContentsFieldWidget(),
-          const _EditPushFilterSettingsBlockFromStrangersFieldWidget(),
+        children: const [
+          _EditPushFilterSettingsHideNotificationContentsFieldWidget(),
+          _EditPushFilterSettingsBlockFromStrangersFieldWidget(),
         ],
       );
 }

@@ -56,10 +56,10 @@ class ShareEntityWidget extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const ShareEntitySettingsWidget(),
-                const FediBigVerticalSpacer(),
-                const _ShareEntityContentWidget(),
+              children: const [
+                ShareEntitySettingsWidget(),
+                FediBigVerticalSpacer(),
+                _ShareEntityContentWidget(),
               ],
             ),
           );
@@ -90,9 +90,9 @@ class _ShareEntityContentWidget extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const _ShareEntityTextWidget(),
-              const _ShareEntityMediaWidget(),
+            children: const [
+              _ShareEntityTextWidget(),
+              _ShareEntityMediaWidget(),
             ],
           ),
         ),

@@ -315,9 +315,9 @@ class _HomePageBottomNavBar extends StatelessWidget {
           // ignore: no-magic-number
           height: 58,
           child: Column(
-            children: [
-              const FediUltraLightGreyDivider(),
-              const HomePageBottomNavigationBarWidget(),
+            children: const [
+              FediUltraLightGreyDivider(),
+              HomePageBottomNavigationBarWidget(),
             ],
           ),
         ),

@@ -64,11 +64,11 @@ class SearchWidget extends StatelessWidget {
         initialIndex: tabs.indexOf(searchBloc.selectedTab),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            const _SearchTabBarWidget(),
-            const FediUltraLightGreyDivider(),
+          children: const <Widget>[
+            _SearchTabBarWidget(),
+            FediUltraLightGreyDivider(),
             Expanded(
-              child: const _SearchBodyWidget(),
+              child: _SearchBodyWidget(),
             ),
           ],
         ),

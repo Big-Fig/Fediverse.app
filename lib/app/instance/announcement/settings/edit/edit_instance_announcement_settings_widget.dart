@@ -23,8 +23,8 @@ class EditInstanceAnnouncementSettingsWidgetState
   @override
   Widget build(BuildContext context) => Column(
         mainAxisSize: widget.shrinkWrap ? MainAxisSize.min : MainAxisSize.max,
-        children: [
-          const _EditInstanceAnnouncementSettingsWithDismissedFieldWidget(),
+        children: const [
+          _EditInstanceAnnouncementSettingsWithDismissedFieldWidget(),
         ],
       );
 }

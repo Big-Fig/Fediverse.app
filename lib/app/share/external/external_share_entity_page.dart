@@ -22,8 +22,8 @@ class ExternalShareEntityPage extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
         appBar: FediPageTitleAppBar(
           title: S.of(context).app_share_external_title,
-          actions: [
-            const SharePageAppBarSendTextActionWidget(),
+          actions: const [
+            SharePageAppBarSendTextActionWidget(),
           ],
         ),
         body: SingleChildScrollView(

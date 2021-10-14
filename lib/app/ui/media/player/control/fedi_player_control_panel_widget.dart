@@ -7,13 +7,13 @@ import 'package:flutter/cupertino.dart';
 class FediPlayerControlPanelWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Row(
-        children: [
-          const FediPlayerControlPositionDurationWidget(),
-          const Expanded(
+        children: const [
+          FediPlayerControlPositionDurationWidget(),
+          Expanded(
             child: FediPlayerControlProgressWidget(),
           ),
-          const FediPlayerControlLengthDurationWidget(),
-          const FediPlayerControlToggleMuteButtonWidget(),
+          FediPlayerControlLengthDurationWidget(),
+          FediPlayerControlToggleMuteButtonWidget(),
         ],
       );
 

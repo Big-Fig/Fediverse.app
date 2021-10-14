@@ -15,8 +15,8 @@ class EditCrashReportingSettingsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Column(
         mainAxisSize: shrinkWrap ? MainAxisSize.min : MainAxisSize.max,
-        children: [
-          const _EditCrashReportingSettingsThemeFieldWidget(),
+        children: const [
+          _EditCrashReportingSettingsThemeFieldWidget(),
         ],
       );
 }

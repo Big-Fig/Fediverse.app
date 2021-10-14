@@ -184,9 +184,9 @@ class _StatusThreadStarterAccountBodyWidget extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const AccountDisplayNameWidget(),
-                      const AccountAcctWidget(),
+                    children: const [
+                      AccountDisplayNameWidget(),
+                      AccountAcctWidget(),
                     ],
                   ),
                 ),

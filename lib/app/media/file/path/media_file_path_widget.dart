@@ -39,9 +39,9 @@ class MediaFilePathWidget extends StatelessWidget {
                       ),
                     ),
                     child: Row(
-                      children: [
-                        const _MediaFilePathIconWidget(),
-                        const _MediaFilePathBodyWidget(),
+                      children: const [
+                        _MediaFilePathIconWidget(),
+                        _MediaFilePathBodyWidget(),
                       ],
                     ),
                   ),

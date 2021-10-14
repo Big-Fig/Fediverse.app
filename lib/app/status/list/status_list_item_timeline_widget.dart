@@ -47,10 +47,10 @@ class StatusListItemTimelineWidget extends StatelessWidget {
     if (statusListItemTimelineBloc
         .isReplyAndIsFirstReplyAndDisplayReplyToStatus) {
       child = Column(
-        children: [
-          const _StatusListItemTimelineReplyToStatusWidget(),
-          const FediUltraLightGreyDivider(),
-          const _StatusListItemTimelineOriginalWidget(),
+        children: const [
+          _StatusListItemTimelineReplyToStatusWidget(),
+          FediUltraLightGreyDivider(),
+          _StatusListItemTimelineOriginalWidget(),
         ],
       );
     } else {
@@ -233,9 +233,9 @@ class _StatusListItemTimelineOriginalBodyWidget extends StatelessWidget {
         if (!isNeedDisplayActions) const FediSmallVerticalSpacer(),
         if (statusListItemTimelineBloc.isReplyAndFirstReplyOrDisplayAllReplies)
           Column(
-            children: [
-              const FediUltraLightGreyDivider(),
-              const StatusShowThisThreadActionWidget(),
+            children: const [
+              FediUltraLightGreyDivider(),
+              StatusShowThisThreadActionWidget(),
             ],
           ),
       ],

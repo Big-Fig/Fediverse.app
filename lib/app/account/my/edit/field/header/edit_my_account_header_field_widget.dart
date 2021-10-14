@@ -24,18 +24,18 @@ class EditMyAccountHeaderFieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Stack(
-        children: <Widget>[
+        children: const <Widget>[
           SizedBox(
             width: double.infinity,
             // ignore: no-equal-arguments
             height: double.infinity,
-            child: const EditMyAccountHeaderFieldImageWidget(),
+            child: EditMyAccountHeaderFieldImageWidget(),
           ),
           Positioned(
             bottom: FediSizes.bigPadding,
             // ignore: no-equal-arguments
             right: FediSizes.bigPadding,
-            child: const EditMyAccountHeaderFieldEditButtonWidget(),
+            child: EditMyAccountHeaderFieldEditButtonWidget(),
           ),
         ],
       );

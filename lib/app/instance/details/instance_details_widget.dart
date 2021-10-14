@@ -90,42 +90,42 @@ class _InstanceDetailsBodyWidget extends StatelessWidget {
   Widget build(BuildContext context) => Padding(
         padding: FediPadding.verticalMediumPadding,
         child: ListView(
-          children: [
+          children: const [
             Padding(
               padding: FediPadding.allSmallPadding,
               child: Center(
-                child: const _InstanceDetailsTitleWidget(),
+                child: _InstanceDetailsTitleWidget(),
               ),
             ),
             Center(
               child: Padding(
                 padding: FediPadding.allSmallPadding,
-                child: const _InstanceDetailsVersionTypeWidget(),
+                child: _InstanceDetailsVersionTypeWidget(),
               ),
             ),
-            const _InstanceDetailsThumbnailWidget(),
+            _InstanceDetailsThumbnailWidget(),
             Padding(
               padding: FediPadding.allSmallPadding,
               child: Center(
-                child: const _InstanceDetailsDescriptionWidget(),
+                child: _InstanceDetailsDescriptionWidget(),
               ),
             ),
-            const _InstanceDetailsContactAccountWidget(),
-            const _InstanceDetailsDirectoryWidget(),
-            const _InstanceDetailsTrendsWidget(),
-            const _InstanceDetailsActivityWidget(),
-            const _InstanceDetailsPublicTimelineWidget(),
-            const _InstanceDetailsBodyDetailsWidget(),
-            const _InstanceDetailsBodyRegistrationsWidget(),
-            const _InstanceDetailsStatsWidget(
+            _InstanceDetailsContactAccountWidget(),
+            _InstanceDetailsDirectoryWidget(),
+            _InstanceDetailsTrendsWidget(),
+            _InstanceDetailsActivityWidget(),
+            _InstanceDetailsPublicTimelineWidget(),
+            _InstanceDetailsBodyDetailsWidget(),
+            _InstanceDetailsBodyRegistrationsWidget(),
+            _InstanceDetailsStatsWidget(
               key: Key(InstanceDetailsWidgetKeys.statsKey),
             ),
-            const _InstanceDetailsBodyMessagesLimitsWidget(),
-            const _InstanceDetailsUnifediApiPollLimitsWidget(),
-            const _InstanceDetailsPleromaUploadLimitsWidget(),
-            const _InstanceDetailsBodyMetadataWidget(),
-            const _InstanceDetailsunifediApiInstanceFederationWidget(),
-            const _InstanceDetailsPleromaMetadataFieldsLimitsWidget(),
+            _InstanceDetailsBodyMessagesLimitsWidget(),
+            _InstanceDetailsUnifediApiPollLimitsWidget(),
+            _InstanceDetailsPleromaUploadLimitsWidget(),
+            _InstanceDetailsBodyMetadataWidget(),
+            _InstanceDetailsunifediApiInstanceFederationWidget(),
+            _InstanceDetailsPleromaMetadataFieldsLimitsWidget(),
           ],
         ),
       );

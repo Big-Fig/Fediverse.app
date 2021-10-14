@@ -29,8 +29,8 @@ class PostStatusStartConversationChatPageAppBar extends StatelessWidget
   Widget build(BuildContext context) => FediPageTitleAppBar(
         title: S.of(context).app_chat_conversation_start_title,
         leading: FediDismissIconButton(),
-        actions: [
-          const PostStatusAppBarPostAction(),
+        actions: const [
+          PostStatusAppBarPostAction(),
         ],
       );
 
@@ -46,7 +46,7 @@ class _PostStatusStartConversationChatPageBodyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => SafeArea(
         child: CustomScrollView(
-          slivers: [
+          slivers: const [
             SliverFillRemaining(
               hasScrollBody: false,
               child: PostStatusComposeWidget(

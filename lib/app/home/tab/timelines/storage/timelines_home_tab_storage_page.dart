@@ -31,8 +31,8 @@ class _TimelinesHomeTabStoragePagePageAppBarWidget extends StatelessWidget
   Widget build(BuildContext context) => FediPageTitleAppBar(
         title: S.of(context).app_timeline_storage_title,
         leading: const FediBackIconButton(),
-        actions: [
-          const _TimelinesHomeTabStoragePagePageAppBarActionWidget(),
+        actions: const [
+          _TimelinesHomeTabStoragePagePageAppBarActionWidget(),
         ],
       );
 

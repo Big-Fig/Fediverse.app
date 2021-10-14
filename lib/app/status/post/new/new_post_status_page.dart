@@ -97,8 +97,8 @@ class NewPostStatusPageAppBar extends StatelessWidget
           _newPostStatusPageHandleBackPressed(context, postStatusBloc);
         },
       ),
-      actions: [
-        const PostStatusAppBarPostAction(),
+      actions: const [
+        PostStatusAppBarPostAction(),
       ],
     );
   }

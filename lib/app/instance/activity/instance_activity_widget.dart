@@ -49,10 +49,10 @@ class InstanceActivityWidget extends StatelessWidget {
           padding: FediPadding.allBigPadding,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const _InstanceActivityHeaderWidget(),
-              const FediBigVerticalSpacer(),
-              const _InstanceActivityGraphWidget(),
+            children: const [
+              _InstanceActivityHeaderWidget(),
+              FediBigVerticalSpacer(),
+              _InstanceActivityGraphWidget(),
             ],
           ),
         ),

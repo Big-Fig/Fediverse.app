@@ -15,9 +15,9 @@ import 'package:provider/provider.dart';
 class StatusCommentActionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Row(
-        children: <Widget>[
-          const _StatusCommentActionButtonWidget(),
-          const _StatusCommentActionCounterWidget(),
+        children: const <Widget>[
+          _StatusCommentActionButtonWidget(),
+          _StatusCommentActionCounterWidget(),
         ],
       );
 

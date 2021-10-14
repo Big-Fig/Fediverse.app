@@ -44,19 +44,19 @@ class _AccountHomeTabMenuActionsBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ListView(
         padding: EdgeInsets.zero,
-        children: [
-          const _MyAccountSettingsEditButton(),
-          const _MyAccountSettingsFiltersButton(),
-          const _MyAccountSettingsScheduledButton(),
-          const _MyAccountSettingsDraftsButton(),
-          const _MyAccountSettingsFavouritedButton(),
-          const _MyAccountSettingsFollowRequestsButton(),
-          const _MyAccountSettingsAccountBlocksButton(),
-          const _MyAccountSettingsAccountMutesButton(),
-          const _MyAccountSettingsDomainBlocksButton(),
-          const _MyAccountSettingsFeaturedTagsButton(),
-          const _MyAccountSettingsEndorsementsButton(),
-          const _MyAccountSettingsSuggestionsButton(),
+        children: const [
+          _MyAccountSettingsEditButton(),
+          _MyAccountSettingsFiltersButton(),
+          _MyAccountSettingsScheduledButton(),
+          _MyAccountSettingsDraftsButton(),
+          _MyAccountSettingsFavouritedButton(),
+          _MyAccountSettingsFollowRequestsButton(),
+          _MyAccountSettingsAccountBlocksButton(),
+          _MyAccountSettingsAccountMutesButton(),
+          _MyAccountSettingsDomainBlocksButton(),
+          _MyAccountSettingsFeaturedTagsButton(),
+          _MyAccountSettingsEndorsementsButton(),
+          _MyAccountSettingsSuggestionsButton(),
         ],
       );
 }

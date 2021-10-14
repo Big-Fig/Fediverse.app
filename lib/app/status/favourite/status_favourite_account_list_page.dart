@@ -23,9 +23,9 @@ class StatusFavouriteAccountListPage extends StatelessWidget {
         ),
         body: SafeArea(
           child: Column(
-            children: [
-              const _StatusFavouriteAccountListPrivacyWarningWidget(),
-              const Expanded(
+            children: const [
+              _StatusFavouriteAccountListPrivacyWarningWidget(),
+              Expanded(
                 child: AccountPaginationListWidget(
                   accountSelectedCallback: _goToAccountDetailsPage,
                   key: PageStorageKey('StatusFavouriteAccountListPage'),

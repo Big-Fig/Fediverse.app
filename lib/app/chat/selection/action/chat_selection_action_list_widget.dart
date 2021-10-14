@@ -11,10 +11,10 @@ class ChatSelectionActionListWidget extends StatelessWidget {
   Widget build(BuildContext context) => Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          const ChatSelectionShareActionButtonWidget(),
-          const ChatSelectionCopyAsRawTextActionButtonWidget(),
-          const ChatSelectionDeleteActionButtonWidget(),
+        children: const [
+          ChatSelectionShareActionButtonWidget(),
+          ChatSelectionCopyAsRawTextActionButtonWidget(),
+          ChatSelectionDeleteActionButtonWidget(),
         ],
       );
 }

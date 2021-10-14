@@ -113,10 +113,10 @@ class _AccountHomeTabPageBody extends StatelessWidget {
         // todo: refactor
         // ignore: no-magic-number
         topSliverScrollOffsetToShowWhiteStatusBar: 100,
-        topSliverWidgets: [
-          const _AccountHomeTabFediTabMainHeaderBarWidget(),
-          const _AccountHomeTabMyAccountWidget(),
-          const _AccountHomeTabTextIndicatorWidget(),
+        topSliverWidgets: const [
+          _AccountHomeTabFediTabMainHeaderBarWidget(),
+          _AccountHomeTabMyAccountWidget(),
+          _AccountHomeTabTextIndicatorWidget(),
         ],
         tabKeyPrefix: 'AccountHomeTabPage',
         tabBodyProviderBuilder:

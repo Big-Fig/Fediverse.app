@@ -32,8 +32,8 @@ class _InstanceSettingsBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ListView(
-        children: [
-          const InstanceSettingsListWidget(),
+        children: const [
+          InstanceSettingsListWidget(),
         ],
       );
 }

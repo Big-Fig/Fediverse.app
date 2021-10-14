@@ -65,11 +65,11 @@ class ChatListItemWidget extends StatelessWidget {
                 Expanded(
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      const ChatAvatarWidget(),
-                      const FediBigHorizontalSpacer(),
+                    children: const <Widget>[
+                      ChatAvatarWidget(),
+                      FediBigHorizontalSpacer(),
                       Flexible(
-                        child: const _ChatListItemPreviewWidget(),
+                        child: _ChatListItemPreviewWidget(),
                       ),
                     ],
                   ),
@@ -131,9 +131,9 @@ class _ChatListItemPreviewWidget extends StatelessWidget {
   Widget build(BuildContext context) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          const ChatTitleWidget(),
-          const _ChatListItemLastMessageWidget(),
+        children: const <Widget>[
+          ChatTitleWidget(),
+          _ChatListItemLastMessageWidget(),
         ],
       );
 }

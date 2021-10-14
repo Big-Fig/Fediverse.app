@@ -203,14 +203,14 @@ class _NotificationListItemBodySlidableChildContentWidget
         child: Column(
           children: <Widget>[
             Row(
-              children: <Widget>[
-                const _NotificationListItemAvatarWidget(),
-                const FediBigHorizontalSpacer(),
-                const Expanded(
+              children: const <Widget>[
+                _NotificationListItemAvatarWidget(),
+                FediBigHorizontalSpacer(),
+                Expanded(
                   child: _NotificationListItemBodyMainAreaWidget(),
                 ),
-                const FediBigHorizontalSpacer(),
-                const _NotificationListItemCreatedAtWidget(),
+                FediBigHorizontalSpacer(),
+                _NotificationListItemCreatedAtWidget(),
               ],
             ),
           ],
@@ -237,9 +237,9 @@ class _NotificationListItemBodyMainAreaWidget extends StatelessWidget {
           children: <Widget>[
             const _NotificationListItemAccountDisplayNameWidget(),
             Row(
-              children: [
-                const _NotificationListItemIconWidget(),
-                const Expanded(
+              children: const [
+                _NotificationListItemIconWidget(),
+                Expanded(
                   child: _NotificationListItemContentWidget(),
                 ),
               ],

@@ -13,9 +13,9 @@ import 'package:provider/provider.dart';
 class StatusReblogActionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Row(
-        children: <Widget>[
-          const _StatusReblogActionButtonWidget(),
-          const _StatusReblogActionCounterWidget(),
+        children: const <Widget>[
+          _StatusReblogActionButtonWidget(),
+          _StatusReblogActionCounterWidget(),
         ],
       );
 

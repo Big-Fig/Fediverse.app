@@ -13,8 +13,8 @@ class EditFilterPage extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
         appBar: FediPageTitleAppBar(
           title: S.of(context).app_filter_edit_title,
-          actions: <Widget>[
-            const EditFilterAppBarSaveActionWidget(),
+          actions: const <Widget>[
+            EditFilterAppBarSaveActionWidget(),
           ],
         ),
         body: const SafeArea(

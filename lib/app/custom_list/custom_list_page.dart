@@ -92,9 +92,9 @@ class _CustomListPageAppBar extends StatelessWidget
           FediPageTitleAppBar(
             centerTitle: false,
             title: '',
-            actions: [
-              const _CustomListPageAppBarEditActionWidget(),
-              const _CustomListPageAppBarSettingsActionWidget(),
+            actions: const [
+              _CustomListPageAppBarEditActionWidget(),
+              _CustomListPageAppBarSettingsActionWidget(),
             ],
           ),
           Expanded(

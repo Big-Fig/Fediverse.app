@@ -63,10 +63,10 @@ class RecentSelectAccountWidget extends StatelessWidget {
                   padding: FediPadding.allMediumPadding,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const _RecentSelectAccountHeaderWidget(),
-                      const FediSmallVerticalSpacer(),
-                      const FediUltraLightGreyDivider(),
+                    children: const [
+                      _RecentSelectAccountHeaderWidget(),
+                      FediSmallVerticalSpacer(),
+                      FediUltraLightGreyDivider(),
                     ],
                   ),
                 ),

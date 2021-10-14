@@ -76,9 +76,9 @@ class JoinUnifediApiAccessWidget extends StatelessWidget {
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const _JoinUnifediApiAccessTermsOfServiceButtonWidget(),
-                    const _JoinUnifediApiAccessAboutButtonWidget(),
+                  children: const [
+                    _JoinUnifediApiAccessTermsOfServiceButtonWidget(),
+                    _JoinUnifediApiAccessAboutButtonWidget(),
                   ],
                 ),
               ),
@@ -132,16 +132,16 @@ class _JoinUnifediApiAccessActionsWidget extends StatelessWidget {
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
+              children: const <Widget>[
                 Expanded(
                   flex: 1,
-                  child: const _JoinUnifediApiAccessSignUpButtonWidget(
+                  child: _JoinUnifediApiAccessSignUpButtonWidget(
                     key: Key(JoinUnifediApiAccessWidgetKeys.signUpButtonKey),
                   ),
                 ),
                 Expanded(
                   flex: 1,
-                  child: const _JoinUnifediApiAccessLoginButtonWidget(
+                  child: _JoinUnifediApiAccessLoginButtonWidget(
                     key: Key(JoinUnifediApiAccessWidgetKeys.loginButtonKey),
                   ),
                 ),

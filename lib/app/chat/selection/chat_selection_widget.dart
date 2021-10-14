@@ -9,12 +9,12 @@ class ChatSelectionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Column(
         mainAxisSize: MainAxisSize.min,
-        children: [
+        children: const [
           Padding(
             padding: FediPadding.horizontalBigPadding,
-            child: const ChatSelectionActionListWidget(),
+            child: ChatSelectionActionListWidget(),
           ),
-          const FediUltraLightGreyDivider(),
+          FediUltraLightGreyDivider(),
         ],
       );
 }

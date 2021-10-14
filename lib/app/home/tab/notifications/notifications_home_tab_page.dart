@@ -120,8 +120,8 @@ class _NotificationsHomeTabPageBodyState
         ),
         child: FediNestedScrollViewWithNestedScrollableTabsWidget(
           onLongScrollUpTopOverlayWidget: null,
-          topSliverWidgets: [
-            const _NotificationsHomeTabPageBodyHeaderWidget(),
+          topSliverWidgets: const [
+            _NotificationsHomeTabPageBodyHeaderWidget(),
           ],
           topSliverScrollOffsetToShowWhiteStatusBar: null,
           tabKeyPrefix: 'NotificationTab',
@@ -194,8 +194,8 @@ class _NotificationsHomeTabPageBodyHeaderWidget extends StatelessWidget {
         tabController: tabController,
         notificationTabs: _notificationTabs,
       ),
-      endingWidgets: [
-        const _NotificationsHomeTabPageBodyHeaderMenuButtonWidget(),
+      endingWidgets: const [
+        _NotificationsHomeTabPageBodyHeaderMenuButtonWidget(),
       ],
     );
   }

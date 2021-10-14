@@ -132,10 +132,10 @@ class _UploadMediaAttachmentListNonMediaItemActionsWidget
           case UploadMediaAttachmentStateType.failed:
             return Row(
               mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                const _UploadMediaAttachmentListNonMediaItemErrorWidget(),
-                const FediSmallHorizontalSpacer(),
-                const _UploadMediaAttachmentListNonMediaItemRemoveButtonWidget(),
+              children: const <Widget>[
+                _UploadMediaAttachmentListNonMediaItemErrorWidget(),
+                FediSmallHorizontalSpacer(),
+                _UploadMediaAttachmentListNonMediaItemRemoveButtonWidget(),
               ],
             );
         }

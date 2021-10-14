@@ -91,9 +91,9 @@ class _DraftStatusListItemHeaderWidget extends StatelessWidget {
                 children: <Widget>[
                   const _DraftStatusListItemDraftAtWidget(),
                   Row(
-                    children: [
-                      const _DraftStatusListItemEditButtonWidget(),
-                      const _DraftStatusListItemCancelButtonWidget(),
+                    children: const [
+                      _DraftStatusListItemEditButtonWidget(),
+                      _DraftStatusListItemCancelButtonWidget(),
                     ],
                   ),
                 ],

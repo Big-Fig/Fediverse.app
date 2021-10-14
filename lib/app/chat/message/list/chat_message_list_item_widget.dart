@@ -152,12 +152,12 @@ class _ChatMessageListItemBodyWidget<T extends IChatMessage>
                 crossAxisAlignment: isChatMessageFromMe
                     ? CrossAxisAlignment.end
                     : CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(
+                children: const [
+                  SizedBox(
                     height: 4.0,
                   ),
-                  const _ChatMessageListItemContentContainerWidget(),
-                  const _ChatMessageListItemCardWidget(),
+                  _ChatMessageListItemContentContainerWidget(),
+                  _ChatMessageListItemCardWidget(),
                 ],
               ),
             ),
@@ -401,9 +401,9 @@ class _ChatMessageListItemContentWidget extends StatelessWidget {
       crossAxisAlignment: isChatMessageFromMe
           ? CrossAxisAlignment.end
           : CrossAxisAlignment.start,
-      children: <Widget>[
-        const _ChatMessageListItemTextContentWidget(),
-        const _ChatMessageListItemMediaContentWidget(),
+      children: const <Widget>[
+        _ChatMessageListItemTextContentWidget(),
+        _ChatMessageListItemMediaContentWidget(),
       ],
     );
   }

@@ -17,7 +17,7 @@ class EditUiSettingsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Column(
         mainAxisSize: shrinkWrap ? MainAxisSize.min : MainAxisSize.max,
-        children: [
+        children: const [
           _EditUiSettingsThemeFieldWidget(),
           _EditUiSettingsStatusFontSizeFieldWidget(),
         ],

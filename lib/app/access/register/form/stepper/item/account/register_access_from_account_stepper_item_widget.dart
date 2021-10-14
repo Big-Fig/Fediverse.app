@@ -11,10 +11,10 @@ class RegisterUnifediApiAccessFormStepperAccountItemWidget
     extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Column(
-        children: [
-          const _RegisterUnifediApiAccessFormUsernameFieldWidget(),
-          const _RegisterUnifediApiAccessFormEmailFieldWidget(),
-          const _RegisterUnifediApiAccessFormPasswordFieldWidget(),
+        children: const [
+          _RegisterUnifediApiAccessFormUsernameFieldWidget(),
+          _RegisterUnifediApiAccessFormEmailFieldWidget(),
+          _RegisterUnifediApiAccessFormPasswordFieldWidget(),
         ],
       );
 }

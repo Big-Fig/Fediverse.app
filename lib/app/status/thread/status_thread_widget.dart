@@ -75,7 +75,9 @@ class StatusThreadWidget extends StatelessWidget {
                 Container(
                   decoration: BoxDecoration(
                     color: fediUiColorTheme.white,
-                    boxShadow: [FediShadows.forBottomBar],
+                    boxShadow: const [
+                      FediShadows.forBottomBar,
+                    ],
                   ),
                   child: const _StatusThreadPostStatusWidget(),
                 ),

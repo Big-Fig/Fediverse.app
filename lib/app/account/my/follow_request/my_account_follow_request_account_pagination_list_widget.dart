@@ -37,10 +37,10 @@ class MyAccountFollowRequestAccountPaginationListWidget
             accountActions: accountActions,
           ),
         ),
-        accountActions: <Widget>[
-          const _MyAccountFollowRequestAccountPaginationListAcceptButtonWidget(),
-          const FediMediumHorizontalSpacer(),
-          const _MyAccountFollowRequestAccountPaginationListRejectButtonWidget(),
+        accountActions: const <Widget>[
+          _MyAccountFollowRequestAccountPaginationListAcceptButtonWidget(),
+          FediMediumHorizontalSpacer(),
+          _MyAccountFollowRequestAccountPaginationListRejectButtonWidget(),
         ],
         accountSelectedCallback: null,
         key:

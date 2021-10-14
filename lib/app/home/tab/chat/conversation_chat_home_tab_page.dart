@@ -51,8 +51,8 @@ class ConversationChatHomeTabPage extends StatelessWidget {
       body: FediNestedScrollViewWithoutNestedScrollableTabsWidget(
         onLongScrollUpTopOverlayWidget: null,
         topSliverScrollOffsetToShowWhiteStatusBar: null,
-        topSliverWidgets: [
-          const _ConversationMessagesHomeTabPageHeaderWidget(),
+        topSliverWidgets: const [
+          _ConversationMessagesHomeTabPageHeaderWidget(),
         ],
         providerBuilder: (context, child) => provideContentContext(child),
         contentBuilder: (context) =>

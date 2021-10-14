@@ -38,7 +38,9 @@ class FediListTile extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             color: IFediUiColorTheme.of(context).white,
-            boxShadow: [FediShadows.forListTile],
+            boxShadow: const [
+              FediShadows.forListTile,
+            ],
           ),
           child: child,
         ),

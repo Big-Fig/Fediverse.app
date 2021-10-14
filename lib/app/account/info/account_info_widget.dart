@@ -45,12 +45,12 @@ class AccountInfoWidget extends StatelessWidget {
                   child: Expanded(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        const AccountHeaderStatusesCountWidget(
+                      children: const <Widget>[
+                        AccountHeaderStatusesCountWidget(
                           onStatusesTapCallback: _onStatusesTapCallback,
                         ),
-                        const AccountHeaderFollowingCountWidget(),
-                        const AccountHeaderFollowersCountWidget(),
+                        AccountHeaderFollowingCountWidget(),
+                        AccountHeaderFollowersCountWidget(),
                       ],
                     ),
                   ),

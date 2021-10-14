@@ -182,9 +182,9 @@ class _TimelinesHomeTabPageBodyState extends State<_TimelinesHomeTabPageBody>
                   const _TimelinesHomeTabPageTabLoadingWidget(),
               onLongScrollUpTopOverlayWidget:
                   const TimelinesHomeTabOverlayOnLongScrollWidget(),
-              topSliverWidgets: [
-                const _TimelinesHomeTabPageBodyHeaderFirstRowWidget(),
-                const _TimelinesHomeTabPageBodyHeaderSecondRowWidget(),
+              topSliverWidgets: const [
+                _TimelinesHomeTabPageBodyHeaderFirstRowWidget(),
+                _TimelinesHomeTabPageBodyHeaderSecondRowWidget(),
               ],
               // white status bar over post status header
               // ignore: no-magic-number

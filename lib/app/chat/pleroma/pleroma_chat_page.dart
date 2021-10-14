@@ -24,9 +24,9 @@ class PleromaChatPage extends StatelessWidget {
         child: Scaffold(
           body: SafeArea(
             child: Column(
-              children: [
-                const _PleromaChatPageAppBarWidget(),
-                const Expanded(
+              children: const [
+                _PleromaChatPageAppBarWidget(),
+                Expanded(
                   child: PleromaChatWidget(),
                 ),
               ],

@@ -322,9 +322,9 @@ class _PollOptionBodyWidget extends StatelessWidget {
       ),
       child: Stack(
         alignment: Alignment.centerLeft,
-        children: [
-          const _PollOptionBodyFillerWidget(),
-          const _PollOptionContentWidget(),
+        children: const [
+          _PollOptionBodyFillerWidget(),
+          _PollOptionContentWidget(),
         ],
       ),
     );
@@ -478,8 +478,8 @@ class _PollOptionContentWidget extends StatelessWidget {
         mainAxisAlignment: poll.isPossibleToVote && !poll.multiple
             ? MainAxisAlignment.center
             : MainAxisAlignment.start,
-        children: <Widget>[
-          const PollOptionTitleWidget(),
+        children: const <Widget>[
+          PollOptionTitleWidget(),
         ],
       ),
     );

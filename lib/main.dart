@@ -135,7 +135,7 @@ void runInitFailedApp() {
   _logger.severe(() => 'failed to init App');
   runApp(
     MaterialApp(
-      localizationsDelegates: [
+      localizationsDelegates: const [
         S.delegate,
       ],
       home: Scaffold(
@@ -521,7 +521,7 @@ class FediApp extends StatelessWidget {
                         // checkerboardOffscreenLayers: true,
                         debugShowCheckedModeBanner: false,
                         title: IConfigService.of(context).appTitle,
-                        localizationsDelegates: [
+                        localizationsDelegates: const [
                           S.delegate,
                           GlobalMaterialLocalizations.delegate,
                           GlobalWidgetsLocalizations.delegate,

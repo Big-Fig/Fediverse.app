@@ -40,8 +40,8 @@ class _AccountReportPageAppBar extends StatelessWidget
 
     return FediPageTitleAppBar(
       title: S.of(context).app_account_report_title(account.acct),
-      actions: [
-        const _AccountReportSendButton(),
+      actions: const [
+        _AccountReportSendButton(),
       ],
     );
   }
