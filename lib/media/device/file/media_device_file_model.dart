@@ -39,7 +39,6 @@ extension IMediaDeviceFileMetadataExtension on IMediaDeviceFileMetadata {
         return true;
       case MediaDeviceFileType.audio:
       case MediaDeviceFileType.other:
-      default:
         return false;
     }
   }

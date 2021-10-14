@@ -138,8 +138,6 @@ class _UploadMediaAttachmentListNonMediaItemActionsWidget
                 const _UploadMediaAttachmentListNonMediaItemRemoveButtonWidget(),
               ],
             );
-          default:
-            throw 'Invalid state uploadState $uploadState';
         }
       },
     );

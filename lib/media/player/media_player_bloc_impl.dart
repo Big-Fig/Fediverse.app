@@ -214,8 +214,6 @@ class MediaPlayerBloc extends AsyncInitLoadingBloc implements IMediaPlayerBloc {
           networkUrl,
         );
         break;
-      default:
-        throw 'Not supported type $type';
     }
 
     return videoPlayerController;

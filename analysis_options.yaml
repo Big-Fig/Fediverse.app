@@ -114,7 +114,7 @@ linter:
 
 
     unnecessary_final: false
-    no_default_cases: false
+
     noop_primitive_operations: false
     only_throw_errors: false
     prefer_asserts_with_message: false

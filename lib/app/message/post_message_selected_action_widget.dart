@@ -19,16 +19,23 @@ class PostMessageSelectedActionWidget extends StatelessWidget {
       builder: (context, snapshot) {
         var selectedAction = snapshot.data;
 
+        Widget? widget;
         switch (selectedAction) {
           case PostMessageSelectedAction.attach:
-            return const _PostMessageSelectedActionAttachWidget();
+            widget = const _PostMessageSelectedActionAttachWidget();
+            break;
           case PostMessageSelectedAction.emoji:
-            return const _PostMessageSelectedActionEmojiWidget();
+            widget = const _PostMessageSelectedActionEmojiWidget();
+            break;
           case PostMessageSelectedAction.poll:
-            return const _PostMessageSelectedActionPollWidget();
-          default:
-            return const SizedBox.shrink();
+            widget = const _PostMessageSelectedActionPollWidget();
+            break;
+          case null:
+            widget = null;
+            break;
         }
+
+        return widget ?? const SizedBox.shrink();
       },
     );
   }

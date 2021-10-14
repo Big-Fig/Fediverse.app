@@ -11,7 +11,6 @@ import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:fedi/pagination/list/pagination_list_widget.dart';
 import 'package:fedi/pagination/pagination_model.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -155,7 +154,8 @@ abstract class FediPaginationListWidget<T> extends PaginationListWidget<T> {
                     );
               case FediListSmartRefresherLoadingState.failed:
               case FediListSmartRefresherLoadingState.loaded:
-              default:
+              case FediListSmartRefresherLoadingState.noData:
+              case null:
                 return customEmptyWidget ??
                     Center(
                       child: FediEmptyWidget(

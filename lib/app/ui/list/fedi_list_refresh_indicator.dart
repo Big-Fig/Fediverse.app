@@ -339,6 +339,7 @@ class FediListRefreshIndicatorState extends State<FediListRefreshIndicator>
         case _RefreshIndicatorMode.drag:
           _dismiss(_RefreshIndicatorMode.canceled);
           break;
+        // ignore: no_default_cases
         default:
           // do nothing
           break;
@@ -430,6 +431,7 @@ class FediListRefreshIndicatorState extends State<FediListRefreshIndicator>
           duration: _kIndicatorScaleDuration,
         );
         break;
+      // ignore: no_default_cases
       default:
         assert(false);
     }

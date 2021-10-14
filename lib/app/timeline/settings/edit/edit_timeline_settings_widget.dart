@@ -80,9 +80,6 @@ class _EditTimelineSettingsChildrenWidget extends StatelessWidget {
           lockedSource: lockedSource,
         );
         break;
-
-      default:
-        throw 'Invalid timelineType $timelineType';
     }
 
     return children;
