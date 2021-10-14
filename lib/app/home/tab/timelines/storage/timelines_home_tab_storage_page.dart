@@ -10,7 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TimelinesHomeTabStoragePage extends StatelessWidget {
-  const TimelinesHomeTabStoragePage();
+  const TimelinesHomeTabStoragePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => const Scaffold(

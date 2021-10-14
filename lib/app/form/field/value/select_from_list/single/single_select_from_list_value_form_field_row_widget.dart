@@ -34,6 +34,7 @@ class SingleSelectFromListValueFormFieldRowWidget<T> extends StatelessWidget {
   final bool displayIconInDialog;
 
   SingleSelectFromListValueFormFieldRowWidget({
+    Key? key,
     required this.label,
     required this.valueTitleMapper,
     this.valueKeyMapper,
@@ -42,7 +43,8 @@ class SingleSelectFromListValueFormFieldRowWidget<T> extends StatelessWidget {
     required this.displayIconInRow,
     required this.displayIconInDialog,
     required this.valueIconMapper,
-  }) {
+  }) : super(key: key) {
+    // todo: refactor
     if (displayIconInRow || displayIconInDialog) {
       assert(
         valueIconMapper != null,

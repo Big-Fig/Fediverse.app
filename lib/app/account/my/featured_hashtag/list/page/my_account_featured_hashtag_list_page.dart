@@ -8,7 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AccountFeaturedHashtagListPage extends StatelessWidget {
-  const AccountFeaturedHashtagListPage();
+  const AccountFeaturedHashtagListPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Scaffold(

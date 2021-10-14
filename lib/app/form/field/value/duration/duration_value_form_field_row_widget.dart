@@ -16,10 +16,11 @@ class DurationValueFormFieldRowWidget extends StatelessWidget {
   final String? descriptionOnDisabled;
 
   const DurationValueFormFieldRowWidget({
+    Key? key,
     required this.label,
     this.description,
     this.descriptionOnDisabled,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => DurationValueFormFieldBlocProxyProvider(
@@ -75,7 +76,7 @@ class _DurationValueFormFieldRowValueWidget extends StatelessWidget {
 }
 
 class DurationValueFormFieldRowValueTextWidget extends StatelessWidget {
-  const DurationValueFormFieldRowValueTextWidget();
+  const DurationValueFormFieldRowValueTextWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -146,8 +147,9 @@ class DurationValueFormFieldRowIconButtonWidget extends StatelessWidget {
   final String popupTitle;
 
   const DurationValueFormFieldRowIconButtonWidget({
+    Key? key,
     required this.popupTitle,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

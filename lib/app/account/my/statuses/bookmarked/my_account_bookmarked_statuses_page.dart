@@ -20,6 +20,8 @@ import 'package:provider/provider.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
 class MyAccountBookmarkedStatusesPage extends StatelessWidget {
+  const MyAccountBookmarkedStatusesPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: FediPageTitleAppBar(
@@ -34,8 +36,6 @@ class MyAccountBookmarkedStatusesPage extends StatelessWidget {
           ),
         ),
       );
-
-  const MyAccountBookmarkedStatusesPage();
 }
 
 class _MyAccountBookmarkedStatusesPageEmptyWidget extends StatelessWidget {

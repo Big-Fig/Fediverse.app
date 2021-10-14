@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class ToggleCollapsibleOverlayWidget extends StatelessWidget {
+  const ToggleCollapsibleOverlayWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     var collapsibleBloc = ICollapsibleOwnerBloc.of(context, listen: true);
@@ -26,6 +28,4 @@ class ToggleCollapsibleOverlayWidget extends StatelessWidget {
       },
     );
   }
-
-  const ToggleCollapsibleOverlayWidget();
 }

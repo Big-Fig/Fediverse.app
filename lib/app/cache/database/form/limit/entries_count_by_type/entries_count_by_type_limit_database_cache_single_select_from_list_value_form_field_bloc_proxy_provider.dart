@@ -10,8 +10,9 @@ class EntriesCountByTypeLimitDatabaseCacheSingleSelectValueFormFieldBlocProxyPro
   final Widget child;
 
   const EntriesCountByTypeLimitDatabaseCacheSingleSelectValueFormFieldBlocProxyProvider({
+    Key? key,
     required this.child,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => ProxyProvider<

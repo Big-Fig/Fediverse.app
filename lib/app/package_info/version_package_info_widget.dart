@@ -5,7 +5,10 @@ import 'package:flutter/cupertino.dart';
 class VersionPackageInfoWidget extends StatelessWidget {
   final TextStyle? textStyle;
 
-  const VersionPackageInfoWidget({this.textStyle});
+  const VersionPackageInfoWidget({
+    Key? key,
+    this.textStyle,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -10,10 +10,11 @@ class FediCircularProgressIndicator extends StatefulWidget {
   final double size;
 
   const FediCircularProgressIndicator({
+    Key? key,
     this.color,
     // ignore: no-magic-number
     this.size = 30.0,
-  });
+  }) : super(key: key);
 
   static Widget buildForRefreshIndicator(BuildContext context) => Container(
         decoration: BoxDecoration(

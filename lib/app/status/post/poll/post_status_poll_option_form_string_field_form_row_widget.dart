@@ -13,11 +13,12 @@ class PostStatusPollOptionFormStringFieldFormRowWidget extends StatelessWidget {
   final ValueChanged<String> onSubmitted;
 
   const PostStatusPollOptionFormStringFieldFormRowWidget({
+    Key? key,
     required this.hint,
     required this.formStringFieldBloc,
     required this.onSubmitted,
     required this.textInputAction,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Container(
@@ -27,7 +28,7 @@ class PostStatusPollOptionFormStringFieldFormRowWidget extends StatelessWidget {
         decoration: BoxDecoration(
           // todo: refactor
           // ignore: no-magic-number
-          borderRadius: BorderRadius.circular(8.0),
+          borderRadius: const BorderRadius.all(Radius.circular(8.0)),
           border: Border.all(color: IFediUiColorTheme.of(context).lightGrey),
         ),
         child: Padding(

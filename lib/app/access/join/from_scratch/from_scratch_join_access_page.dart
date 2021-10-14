@@ -22,7 +22,9 @@ class FromScratchJoinUnifediApiAccessPage extends StatelessWidget {
         ),
       );
 
-  const FromScratchJoinUnifediApiAccessPage();
+  const FromScratchJoinUnifediApiAccessPage({
+    Key? key,
+  }) : super(key: key);
 }
 
 void goToJoinNewInstancePage(BuildContext context) {

@@ -14,7 +14,10 @@ import 'package:flutter/material.dart';
 class ScheduledEditPostStatusPage extends StatelessWidget {
   final PostStatusDataCallback onBackPressed;
 
-  const ScheduledEditPostStatusPage({required this.onBackPressed});
+  const ScheduledEditPostStatusPage({
+    Key? key,
+    required this.onBackPressed,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => WillPopScope(

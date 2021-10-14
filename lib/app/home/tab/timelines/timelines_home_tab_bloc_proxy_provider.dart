@@ -7,7 +7,10 @@ import 'package:provider/provider.dart';
 class TimelinesHomeTabBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  const TimelinesHomeTabBlocProxyProvider({required this.child});
+  const TimelinesHomeTabBlocProxyProvider({
+    Key? key,
+    required this.child,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) =>

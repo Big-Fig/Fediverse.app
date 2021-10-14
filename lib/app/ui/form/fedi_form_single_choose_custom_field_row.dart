@@ -26,6 +26,7 @@ class FediFormSingleChooseCustomFromListFieldRow<T> extends StatelessWidget {
   final VoidCallback clearCallback;
 
   const FediFormSingleChooseCustomFromListFieldRow({
+    Key? key,
     required this.isEnabled,
     required this.isNullValuePossible,
     required this.label,
@@ -37,7 +38,7 @@ class FediFormSingleChooseCustomFromListFieldRow<T> extends StatelessWidget {
     required this.valueToIconMapper,
     required this.startCustomSelectCallback,
     required this.clearCallback,
-  });
+  }) : super(key: key);
 
   @override
   // ignore: long-method

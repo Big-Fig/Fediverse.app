@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AccountFollowerAccountListPage extends StatelessWidget {
-  const AccountFollowerAccountListPage();
+  const AccountFollowerAccountListPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

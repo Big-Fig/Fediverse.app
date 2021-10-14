@@ -10,9 +10,10 @@ class UploadMediaAttachmentListAllWidget extends StatelessWidget {
   final double? heightOnKeyboardOpen;
 
   const UploadMediaAttachmentListAllWidget({
+    Key? key,
     required this.scrollable,
     required this.heightOnKeyboardOpen,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

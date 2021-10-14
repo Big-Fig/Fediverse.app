@@ -6,7 +6,10 @@ import 'package:provider/provider.dart';
 class AccountReportBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  const AccountReportBlocProxyProvider({required this.child});
+  const AccountReportBlocProxyProvider({
+    Key? key,
+    required this.child,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) =>

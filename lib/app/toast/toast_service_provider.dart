@@ -8,8 +8,9 @@ class ToastServiceProvider extends StatelessWidget {
   final Widget child;
 
   const ToastServiceProvider({
+    Key? key,
     required this.child,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Provider<IToastService>(

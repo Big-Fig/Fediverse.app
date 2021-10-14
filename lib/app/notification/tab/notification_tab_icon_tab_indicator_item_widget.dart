@@ -23,9 +23,10 @@ class NotificationTabTextTabIndicatorItemWidget extends StatelessWidget {
   final TabController tabController;
 
   const NotificationTabTextTabIndicatorItemWidget({
+    Key? key,
     required this.notificationTabs,
     required this.tabController,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Padding(

@@ -8,8 +8,9 @@ class ChatTitleWidget extends StatelessWidget {
   final TextStyle? textStyle;
 
   const ChatTitleWidget({
+    Key? key,
     this.textStyle,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

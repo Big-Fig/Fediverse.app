@@ -10,8 +10,9 @@ class PushPermissionCheckerWidget extends StatefulWidget {
   final Widget child;
 
   const PushPermissionCheckerWidget({
+    Key? key,
     required this.child,
-  });
+  }) : super(key: key);
 
   @override
   PushPermissionCheckerWidgetState createState() =>

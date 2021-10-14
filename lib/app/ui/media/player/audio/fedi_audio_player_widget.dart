@@ -10,6 +10,8 @@ import 'package:fedi/media/player/media_player_bloc.dart';
 import 'package:flutter/cupertino.dart';
 
 class FediAudioPlayerWidget extends StatelessWidget {
+  const FediAudioPlayerWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => Container(
         color: IFediUiColorTheme.of(context).darkGrey,
@@ -30,8 +32,6 @@ class FediAudioPlayerWidget extends StatelessWidget {
 
   Widget buildErrorWidget(IMediaPlayerBloc mediaPlayerBloc) =>
       const _FediAudioPlayerErrorWidget();
-
-  const FediAudioPlayerWidget();
 }
 
 class _FediAudioPlayerErrorWidget extends StatelessWidget {

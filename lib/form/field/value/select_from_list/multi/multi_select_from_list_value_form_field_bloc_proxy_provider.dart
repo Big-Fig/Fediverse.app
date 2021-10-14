@@ -9,8 +9,9 @@ class MultiSelectFromListValueFormFieldBlocProxyProvider<T>
   final Widget child;
 
   const MultiSelectFromListValueFormFieldBlocProxyProvider({
+    Key? key,
     required this.child,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => ProxyProvider<

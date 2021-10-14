@@ -81,7 +81,9 @@ class UnifediApiAccessChooserWidget extends StatelessWidget {
   ) =>
       const _UnifediApiAccessChooserItemsToChooseWidget();
 
-  const UnifediApiAccessChooserWidget();
+  const UnifediApiAccessChooserWidget({
+    Key? key,
+  }) : super(key: key);
 }
 
 class _UnifediApiAccessChooserItemsToChooseWidget extends StatelessWidget {

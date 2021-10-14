@@ -17,6 +17,9 @@ final _logger =
 
 class FediVideoPlayerToggleControlFullscreenButtonWidget
     extends StatelessWidget {
+  const FediVideoPlayerToggleControlFullscreenButtonWidget({Key? key})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     var videoMediaPlayerBloc = IVideoMediaPlayerBloc.of(context);
@@ -28,8 +31,6 @@ class FediVideoPlayerToggleControlFullscreenButtonWidget
       return const _FediVideoPlayerToggleControlFullscreenButtonDisabledWidget();
     }
   }
-
-  const FediVideoPlayerToggleControlFullscreenButtonWidget();
 }
 
 class _FediVideoPlayerToggleControlFullscreenButtonEnabledWidget

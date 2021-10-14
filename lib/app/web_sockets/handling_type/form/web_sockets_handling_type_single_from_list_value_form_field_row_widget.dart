@@ -6,6 +6,9 @@ import 'package:flutter/cupertino.dart';
 
 class WebSocketsModeSingleFromListValueFormFieldRowWidget
     extends StatelessWidget {
+  const WebSocketsModeSingleFromListValueFormFieldRowWidget({Key? key})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) =>
       WebSocketsModeSingleFromListValueFormFieldBlocProxyProvider(
@@ -21,8 +24,6 @@ class WebSocketsModeSingleFromListValueFormFieldRowWidget
           valueIconMapper: null,
         ),
       );
-
-  const WebSocketsModeSingleFromListValueFormFieldRowWidget();
 }
 
 String mapWebSocketsModeToLabel(

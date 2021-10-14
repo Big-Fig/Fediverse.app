@@ -5,7 +5,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class LocalInstanceTrendsPage extends StatelessWidget {
-  const LocalInstanceTrendsPage();
+  const LocalInstanceTrendsPage({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => const Scaffold(

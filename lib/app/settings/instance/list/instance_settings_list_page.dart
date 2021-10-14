@@ -7,6 +7,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class InstanceSettingsListPage extends StatelessWidget {
+  const InstanceSettingsListPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     var currentUnifediApiAccessBloc = ICurrentUnifediApiAccessBloc.of(context);
@@ -21,8 +23,6 @@ class InstanceSettingsListPage extends StatelessWidget {
       body: const _InstanceSettingsBody(),
     );
   }
-
-  const InstanceSettingsListPage();
 }
 
 class _InstanceSettingsBody extends StatelessWidget {

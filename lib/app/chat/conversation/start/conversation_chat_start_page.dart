@@ -11,6 +11,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class StartConversationChatPage extends StatelessWidget {
+  const StartConversationChatPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => const Scaffold(
         appBar: FediPageCustomAppBar(
@@ -25,8 +27,6 @@ class StartConversationChatPage extends StatelessWidget {
           ),
         ),
       );
-
-  const StartConversationChatPage();
 }
 
 void _accountSelectedCallback(BuildContext context, IAccount account) {

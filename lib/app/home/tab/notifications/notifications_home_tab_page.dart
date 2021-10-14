@@ -44,6 +44,8 @@ const _notificationTabs = [
 var _logger = Logger('notifications_home_tab_page.dart');
 
 class NotificationsHomeTabPage extends StatelessWidget {
+  const NotificationsHomeTabPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) =>
       DisposableProvider<INotificationTabsBloc>(

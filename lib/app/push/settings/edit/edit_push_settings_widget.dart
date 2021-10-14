@@ -20,7 +20,10 @@ import 'package:provider/provider.dart';
 class EditPushSettingsWidget extends StatefulWidget {
   final bool shrinkWrap;
 
-  const EditPushSettingsWidget({required this.shrinkWrap});
+  const EditPushSettingsWidget({
+    Key? key,
+    required this.shrinkWrap,
+  }) : super(key: key);
 
   @override
   EditPushSettingsWidgetState createState() => EditPushSettingsWidgetState();

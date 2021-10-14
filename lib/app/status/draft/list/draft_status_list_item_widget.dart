@@ -22,6 +22,8 @@ import 'package:provider/provider.dart';
 final _dateFormat = DateFormat('dd MMM, HH:mm a');
 
 class DraftStatusListItemWidget extends StatelessWidget {
+  const DraftStatusListItemWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     var draftStatusBloc = IDraftStatusBloc.of(context);
@@ -64,8 +66,6 @@ class DraftStatusListItemWidget extends StatelessWidget {
       ],
     );
   }
-
-  const DraftStatusListItemWidget();
 }
 
 class _DraftStatusListItemHeaderWidget extends StatelessWidget {

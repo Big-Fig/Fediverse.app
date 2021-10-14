@@ -19,7 +19,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SingleMediaPickerPage extends StatelessWidget {
-  const SingleMediaPickerPage();
+  const SingleMediaPickerPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => const Scaffold(
@@ -57,7 +57,7 @@ class _SingleMediaPickerPageAppBarEmptyTitleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => FediSubHeaderText(
-        S.of(context).file_picker_single_title,
+        text: S.of(context).file_picker_single_title,
       );
 }
 

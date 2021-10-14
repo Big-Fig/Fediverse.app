@@ -17,9 +17,10 @@ class MediaFilePathWidget extends StatelessWidget {
   // final String filePath;
 
   const MediaFilePathWidget({
-    this.opacity = 1.0,
+    Key? key,
     required this.actionsWidget, // @required this.filePath,
-  });
+    this.opacity = 1.0,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Column(

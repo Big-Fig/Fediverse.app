@@ -12,6 +12,8 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/material.dart';
 
 class EditMyAccountPage extends StatelessWidget {
+  const EditMyAccountPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     var editMyAccountBloc = IEditMyAccountBloc.of(context);
@@ -64,8 +66,6 @@ class EditMyAccountPage extends StatelessWidget {
       },
     ).show<void>(context);
   }
-
-  const EditMyAccountPage();
 }
 
 class _EditMyAccountPageAppBarSaveAction extends StatelessWidget {

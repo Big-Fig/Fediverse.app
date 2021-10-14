@@ -5,19 +5,19 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/material.dart';
 
 class TosPage extends StatelessWidget {
+  const TosPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: FediPageTitleAppBar(
           title: S.of(context).app_tos_title,
         ),
-        body: const _TosPageBodyWigdet(),
+        body: const _TosPageBodyWidget(),
       );
-
-  const TosPage();
 }
 
-class _TosPageBodyWigdet extends StatelessWidget {
-  const _TosPageBodyWigdet({
+class _TosPageBodyWidget extends StatelessWidget {
+  const _TosPageBodyWidget({
     Key? key,
   }) : super(key: key);
 

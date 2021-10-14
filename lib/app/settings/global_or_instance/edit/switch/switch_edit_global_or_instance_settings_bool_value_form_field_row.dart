@@ -13,8 +13,9 @@ class ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldRowWidget
   final ShowGlobalSettingsDialogCallback showGlobalSettingsDialogCallback;
 
   const ISwitchEditGlobalOrInstanceSettingsBoolValueFormFieldRowWidget({
+    Key? key,
     required this.showGlobalSettingsDialogCallback,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

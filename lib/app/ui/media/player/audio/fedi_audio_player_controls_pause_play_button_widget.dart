@@ -8,6 +8,9 @@ import 'package:fedi/media/player/media_player_bloc.dart';
 import 'package:flutter/cupertino.dart';
 
 class FediAudioPlayerControlsPausePlayButtonWidget extends StatelessWidget {
+  const FediAudioPlayerControlsPausePlayButtonWidget({Key? key})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     var mediaPlayerBloc = IMediaPlayerBloc.of(context);
@@ -25,8 +28,6 @@ class FediAudioPlayerControlsPausePlayButtonWidget extends StatelessWidget {
       },
     );
   }
-
-  const FediAudioPlayerControlsPausePlayButtonWidget();
 }
 
 class _FediAudioPlayerControlsPausePlayButtonBodyWidget

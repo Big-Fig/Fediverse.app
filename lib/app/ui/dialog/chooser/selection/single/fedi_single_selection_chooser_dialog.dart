@@ -33,11 +33,12 @@ class FediSingleSelectionChooserDialogBody extends StatelessWidget {
   final bool cancelable;
 
   const FediSingleSelectionChooserDialogBody({
+    Key? key,
     required this.title,
     required this.content,
     required this.actions,
     required this.cancelable,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Column(

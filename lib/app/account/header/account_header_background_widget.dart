@@ -9,7 +9,7 @@ import 'package:flutter/painting.dart';
 import 'package:provider/provider.dart';
 
 class AccountHeaderBackgroundWidget extends StatelessWidget {
-  const AccountHeaderBackgroundWidget();
+  const AccountHeaderBackgroundWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

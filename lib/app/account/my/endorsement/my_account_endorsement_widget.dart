@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MyAccountEndorsementWidget extends StatelessWidget {
-  const MyAccountEndorsementWidget();
+  const MyAccountEndorsementWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => const Padding(

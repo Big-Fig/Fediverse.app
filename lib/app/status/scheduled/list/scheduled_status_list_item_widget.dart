@@ -25,8 +25,9 @@ class ScheduledStatusListItemWidget extends StatelessWidget {
   final VoidCallback successCallback;
 
   const ScheduledStatusListItemWidget({
+    Key? key,
     required this.successCallback,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Column(

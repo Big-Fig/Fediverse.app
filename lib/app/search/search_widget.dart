@@ -37,6 +37,8 @@ const List<SearchTab> tabs = [
 ];
 
 class SearchWidget extends StatelessWidget {
+  const SearchWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     var searchBloc = ISearchBloc.of(context, listen: false);
@@ -73,8 +75,6 @@ class SearchWidget extends StatelessWidget {
           ],
         ),
       );
-
-  const SearchWidget();
 }
 
 class _SearchBodyWidget extends StatelessWidget {

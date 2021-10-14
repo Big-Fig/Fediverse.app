@@ -8,7 +8,10 @@ import 'package:provider/provider.dart';
 class PostStatusMessageBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  const PostStatusMessageBlocProxyProvider({required this.child});
+  const PostStatusMessageBlocProxyProvider({
+    Key? key,
+    required this.child,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) =>

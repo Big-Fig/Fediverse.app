@@ -14,12 +14,13 @@ class ToastWidget extends StatelessWidget {
   final VoidCallback? onClick;
 
   const ToastWidget({
+    Key? key,
     required this.toastType,
     required this.title,
     required this.content,
     required this.titleAutoFontSize,
     required this.onClick,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

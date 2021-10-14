@@ -8,8 +8,9 @@ class EditPaginationSettingsWidget extends StatelessWidget {
   final bool shrinkWrap;
 
   const EditPaginationSettingsWidget({
+    Key? key,
     required this.shrinkWrap,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Column(

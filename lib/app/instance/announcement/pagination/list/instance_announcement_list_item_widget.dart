@@ -20,7 +20,9 @@ import 'package:intl/intl.dart';
 final _dateFormat = DateFormat('dd MMM, HH:mm a');
 
 class InstanceAnnouncementListItemWidget extends StatelessWidget {
-  const InstanceAnnouncementListItemWidget();
+  const InstanceAnnouncementListItemWidget({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

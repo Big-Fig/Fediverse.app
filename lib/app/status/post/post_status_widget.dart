@@ -8,9 +8,11 @@ import 'package:flutter/widgets.dart';
 
 class PostStatusWidget extends PostMessageWidget {
   const PostStatusWidget({
+    Key? key,
     required String hintText,
     required bool showActionsOnlyWhenFocused,
   }) : super(
+          key: key,
           hintText: hintText,
           showActionsOnlyWhenFocused: showActionsOnlyWhenFocused,
         );

@@ -19,11 +19,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class UploadMediaAttachmentListNonMediaItemWidget extends StatefulWidget {
+  const UploadMediaAttachmentListNonMediaItemWidget({Key? key})
+      : super(key: key);
+
   @override
   UploadMediaAttachmentListNonMediaItemWidgetState createState() =>
       UploadMediaAttachmentListNonMediaItemWidgetState();
-
-  const UploadMediaAttachmentListNonMediaItemWidget();
 }
 
 class UploadMediaAttachmentListNonMediaItemWidgetState
@@ -168,7 +169,7 @@ class _UploadMediaAttachmentListNonMediaItemLoadingWidget
   Widget build(BuildContext context) => ClipRRect(
         // todo: refactor
         // ignore: no-magic-number
-        borderRadius: BorderRadius.circular(24.0),
+        borderRadius: const BorderRadius.all(Radius.circular(24.0)),
         child: Container(
           // ignore: no-magic-number
           width: 24,
@@ -202,7 +203,7 @@ class _UploadMediaAttachmentListNonMediaItemErrorWidget
       child: ClipRRect(
         // todo: refactor
         // ignore: no-magic-number
-        borderRadius: BorderRadius.circular(24.0),
+        borderRadius: const BorderRadius.all(Radius.circular(24.0)),
         child: Container(
           // ignore: no-magic-number
           width: 24,

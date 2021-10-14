@@ -9,9 +9,10 @@ class FediAsyncInitLoadingWidget extends StatelessWidget {
   final WidgetBuilder loadingFinishedBuilder;
 
   const FediAsyncInitLoadingWidget({
+    Key? key,
     required this.asyncInitLoadingBloc,
     required this.loadingFinishedBuilder,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => AsyncInitLoadingWidget(

@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ConversationChatShareEntityPage extends StatelessWidget {
-  const ConversationChatShareEntityPage();
+  const ConversationChatShareEntityPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Scaffold(

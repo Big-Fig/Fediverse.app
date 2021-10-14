@@ -18,6 +18,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class SearchPage extends StatelessWidget {
+  const SearchPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => const Scaffold(
         appBar: FediPageCustomAppBar(
@@ -28,8 +30,6 @@ class SearchPage extends StatelessWidget {
         ),
         body: SearchWidget(),
       );
-
-  const SearchPage();
 }
 
 void goToSearchPage(

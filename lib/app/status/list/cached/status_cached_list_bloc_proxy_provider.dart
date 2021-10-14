@@ -8,7 +8,10 @@ import 'package:provider/provider.dart';
 class StatusCachedListBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  const StatusCachedListBlocProxyProvider({required this.child});
+  const StatusCachedListBlocProxyProvider({
+    Key? key,
+    required this.child,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) =>

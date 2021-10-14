@@ -6,7 +6,10 @@ import 'package:provider/provider.dart';
 class NestedScrollControllerBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  const NestedScrollControllerBlocProxyProvider({required this.child});
+  const NestedScrollControllerBlocProxyProvider({
+    Key? key,
+    required this.child,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) =>

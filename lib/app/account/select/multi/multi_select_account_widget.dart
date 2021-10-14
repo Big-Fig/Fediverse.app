@@ -15,11 +15,12 @@ class MultiSelectAccountWidget extends StatelessWidget {
   final Widget? footer;
 
   const MultiSelectAccountWidget({
+    Key? key,
     this.header,
     this.footer,
     this.alwaysShowHeader,
     this.alwaysShowFooter,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => AccountPaginationListWidget(

@@ -17,6 +17,7 @@ class SingleSelectAccountWidget extends StatelessWidget {
   final Widget? footer;
 
   const SingleSelectAccountWidget({
+    Key? key,
     required this.accountSelectedCallback,
     this.accountActions,
     this.isNeedPreFetchRelationship = false,
@@ -25,7 +26,7 @@ class SingleSelectAccountWidget extends StatelessWidget {
     this.footer,
     this.alwaysShowHeader,
     this.alwaysShowFooter,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => AccountPaginationListWidget(

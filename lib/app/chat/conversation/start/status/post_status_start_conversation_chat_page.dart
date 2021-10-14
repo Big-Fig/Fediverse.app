@@ -10,13 +10,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PostStatusStartConversationChatPage extends StatelessWidget {
+  const PostStatusStartConversationChatPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => const Scaffold(
         appBar: PostStatusStartConversationChatPageAppBar(),
         body: _PostStatusStartConversationChatPageBodyWidget(),
       );
-
-  const PostStatusStartConversationChatPage();
 }
 
 class PostStatusStartConversationChatPageAppBar extends StatelessWidget

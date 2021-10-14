@@ -26,7 +26,7 @@ import 'package:provider/provider.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
 class LocalHashtagPage extends StatelessWidget {
-  const LocalHashtagPage();
+  const LocalHashtagPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => const Scaffold(
@@ -68,7 +68,7 @@ void goToLocalHashtagPage({
 }
 
 class LocalHashtagPageBodyWidget extends StatelessWidget {
-  const LocalHashtagPageBodyWidget();
+  const LocalHashtagPageBodyWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

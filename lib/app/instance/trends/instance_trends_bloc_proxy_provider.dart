@@ -13,7 +13,8 @@ import 'package:provider/provider.dart';
 class InstanceTrendsBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  const InstanceTrendsBlocProxyProvider({required this.child});
+  const InstanceTrendsBlocProxyProvider({Key? key, required this.child})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) =>

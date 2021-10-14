@@ -4,7 +4,7 @@ import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:flutter/cupertino.dart';
 
 class ChatSelectionWidget extends StatelessWidget {
-  const ChatSelectionWidget();
+  const ChatSelectionWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Column(

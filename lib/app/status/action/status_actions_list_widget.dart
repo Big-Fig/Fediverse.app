@@ -12,7 +12,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
 class StatusActionsListWidget extends StatelessWidget {
-  const StatusActionsListWidget();
+  const StatusActionsListWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 final secondsFormat = NumberFormat('00');
 
 class FediPlayerControlDurationWidget extends StatelessWidget {
-  const FediPlayerControlDurationWidget();
+  const FediPlayerControlDurationWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

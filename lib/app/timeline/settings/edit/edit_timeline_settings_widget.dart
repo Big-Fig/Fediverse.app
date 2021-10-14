@@ -23,9 +23,10 @@ class EditTimelineSettingsWidget extends StatelessWidget {
   final bool lockedSource;
 
   const EditTimelineSettingsWidget({
+    Key? key,
     required this.shrinkWrap,
     required this.lockedSource,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -10,8 +10,9 @@ class MyAccountSuggestionAccountListNetworkOnlyListBlocProxyProvider
   final Widget child;
 
   const MyAccountSuggestionAccountListNetworkOnlyListBlocProxyProvider({
+    Key? key,
     required this.child,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => ProxyProvider<

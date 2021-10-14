@@ -11,6 +11,7 @@ class FediNestedScrollViewWithoutNestedScrollableTabsWidget
   final NestedScrollViewOverlayBuilder? overlayBuilder;
 
   const FediNestedScrollViewWithoutNestedScrollableTabsWidget({
+    Key? key,
     required Widget? onLongScrollUpTopOverlayWidget,
     required List<Widget> topSliverWidgets,
     required double? topSliverScrollOffsetToShowWhiteStatusBar,
@@ -18,6 +19,7 @@ class FediNestedScrollViewWithoutNestedScrollableTabsWidget
     required this.contentBuilder,
     required this.overlayBuilder,
   }) : super(
+          key: key,
           onLongScrollUpTopOverlayWidget: onLongScrollUpTopOverlayWidget,
           topSliverWidgets: topSliverWidgets,
           topSliverScrollOffsetToShowWhiteStatusBar:

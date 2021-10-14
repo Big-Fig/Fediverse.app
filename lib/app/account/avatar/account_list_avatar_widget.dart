@@ -10,8 +10,9 @@ class AccountListAvatarWidget extends StatelessWidget {
   final double baseAvatarSize;
 
   const AccountListAvatarWidget({
+    Key? key,
     this.baseAvatarSize = FediSizes.appBarAvatarSize,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => SizedBox(

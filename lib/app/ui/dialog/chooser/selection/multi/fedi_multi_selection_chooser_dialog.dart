@@ -34,11 +34,12 @@ class FediMultiSelectChooserDialogBody extends StatelessWidget {
   final Stream<List<SelectionDialogAction>> isNeedRebuildActionsStream;
 
   const FediMultiSelectChooserDialogBody({
+    Key? key,
     required this.title,
     required this.content,
     required this.cancelable,
     required this.isNeedRebuildActionsStream,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Column(

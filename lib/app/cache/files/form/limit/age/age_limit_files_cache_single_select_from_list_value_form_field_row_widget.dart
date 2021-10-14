@@ -7,6 +7,10 @@ import 'package:flutter/material.dart';
 
 class AgeLimitFilesCacheSingleSelectFromListValueFormFieldRowWidget
     extends StatelessWidget {
+  const AgeLimitFilesCacheSingleSelectFromListValueFormFieldRowWidget({
+    Key? key,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) =>
       AgeLimitFilesSelectCacheSingleSelectValueFormFieldBlocProxyProvider(
@@ -49,6 +53,4 @@ class AgeLimitFilesCacheSingleSelectFromListValueFormFieldRowWidget
           },
         ),
       );
-
-  const AgeLimitFilesCacheSingleSelectFromListValueFormFieldRowWidget();
 }

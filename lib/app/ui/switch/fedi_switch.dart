@@ -16,10 +16,11 @@ class FediSwitch extends StatelessWidget {
   final bool enabled;
 
   const FediSwitch({
+    Key? key,
     required this.value,
     required this.onChanged,
     this.enabled = true,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

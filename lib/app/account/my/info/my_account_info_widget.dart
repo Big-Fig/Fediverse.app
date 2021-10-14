@@ -19,9 +19,10 @@ class MyAccountInfoWidget extends StatelessWidget {
   final Brightness brightness;
 
   const MyAccountInfoWidget({
+    Key? key,
     required this.onStatusesTapCallback,
     required this.brightness,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Padding(

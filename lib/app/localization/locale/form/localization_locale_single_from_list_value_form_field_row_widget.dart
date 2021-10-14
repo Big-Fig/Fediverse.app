@@ -11,9 +11,10 @@ class LocalizationLocaleSingleFromListValueFormFieldRowWidget
   final String? customNullLocalizationValue;
 
   const LocalizationLocaleSingleFromListValueFormFieldRowWidget({
+    Key? key,
     this.customLabel,
     this.customNullLocalizationValue,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) =>

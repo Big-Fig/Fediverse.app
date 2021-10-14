@@ -24,6 +24,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class MediaPickerWidget extends StatelessWidget {
+  const MediaPickerWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     var mediaDeviceGalleryBloc = IMediaDeviceGalleryBloc.of(context);
@@ -42,8 +44,6 @@ class MediaPickerWidget extends StatelessWidget {
       permissionBloc: IStoragePermissionBloc.of(context, listen: false),
     );
   }
-
-  const MediaPickerWidget();
 }
 
 class _MediaPickerPageNoFoldersWidget extends StatelessWidget {

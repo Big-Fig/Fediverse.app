@@ -7,7 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PostMessageEmojiActionWidget extends StatelessWidget {
-  const PostMessageEmojiActionWidget();
+  const PostMessageEmojiActionWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

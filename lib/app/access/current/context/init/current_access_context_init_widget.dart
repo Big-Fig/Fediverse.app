@@ -24,8 +24,9 @@ class CurrentUnifediApiAccessContextInitWidget extends StatefulWidget {
   final Widget child;
 
   const CurrentUnifediApiAccessContextInitWidget({
+    Key? key,
     required this.child,
-  });
+  }) : super(key: key);
 
   @override
   CurrentUnifediApiAccessContextInitWidgetState createState() =>

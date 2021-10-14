@@ -8,10 +8,11 @@ class FediRemoveIconInCircleButton extends StatelessWidget {
   final double size;
 
   const FediRemoveIconInCircleButton({
+    Key? key,
     required this.onPressed,
     // ignore: no-magic-number
     this.size = 24.0,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => InkWell(

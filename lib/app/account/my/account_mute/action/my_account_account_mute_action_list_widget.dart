@@ -6,8 +6,9 @@ class MyAccountAccountMuteActionListWidget extends StatelessWidget {
   final bool defaultMuting;
 
   const MyAccountAccountMuteActionListWidget({
+    Key? key,
     required this.defaultMuting,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => SizedBox(

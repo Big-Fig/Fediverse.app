@@ -11,9 +11,10 @@ class FediBoolBadgeWidget extends StatelessWidget {
   static const badgeDefaultOffset = 2.0;
 
   const FediBoolBadgeWidget({
+    Key? key,
     required this.child,
     this.offset = badgeDefaultOffset,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

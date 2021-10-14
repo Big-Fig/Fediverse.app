@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class StatusDeletedOverlayWidget extends StatelessWidget {
-  const StatusDeletedOverlayWidget();
+  const StatusDeletedOverlayWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => FediBlurredOverlayWarningWidget(

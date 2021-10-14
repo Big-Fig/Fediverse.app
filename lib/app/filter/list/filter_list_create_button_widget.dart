@@ -5,7 +5,7 @@ import 'package:fedi/pagination/list/pagination_list_bloc.dart';
 import 'package:flutter/cupertino.dart';
 
 class FilterListCreateButtonWidget extends StatelessWidget {
-  const FilterListCreateButtonWidget();
+  const FilterListCreateButtonWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -5,6 +5,8 @@ import 'package:fedi/app/ui/media/player/control/fedi_player_control_toggle_mute
 import 'package:flutter/cupertino.dart';
 
 class FediPlayerControlPanelWidget extends StatelessWidget {
+  const FediPlayerControlPanelWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => Row(
         children: const [
@@ -16,6 +18,4 @@ class FediPlayerControlPanelWidget extends StatelessWidget {
           FediPlayerControlToggleMuteButtonWidget(),
         ],
       );
-
-  const FediPlayerControlPanelWidget();
 }

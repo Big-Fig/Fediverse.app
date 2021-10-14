@@ -9,7 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
 class ShareSelectAccountItemSendActionWidget extends StatelessWidget {
-  const ShareSelectAccountItemSendActionWidget();
+  const ShareSelectAccountItemSendActionWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

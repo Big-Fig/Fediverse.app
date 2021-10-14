@@ -10,8 +10,9 @@ class SizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBlocProxyProvide
   final Widget child;
 
   const SizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBlocProxyProvider({
+    Key? key,
     required this.child,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => ProxyProvider<

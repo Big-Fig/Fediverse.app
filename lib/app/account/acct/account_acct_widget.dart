@@ -5,7 +5,10 @@ import 'package:flutter/cupertino.dart';
 class AccountAcctWidget extends StatelessWidget {
   final TextStyle? textStyle;
 
-  const AccountAcctWidget({this.textStyle});
+  const AccountAcctWidget({
+    Key? key,
+    this.textStyle,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -31,6 +31,7 @@ class FediBaseEditTextField extends StatelessWidget {
   final bool hideCounter;
 
   const FediBaseEditTextField({
+    Key? key,
     required this.textEditingController,
     required this.hintText,
     required this.errorText,
@@ -55,7 +56,7 @@ class FediBaseEditTextField extends StatelessWidget {
     required this.highlightMentions,
     required this.maxLength,
     this.enabled = true,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

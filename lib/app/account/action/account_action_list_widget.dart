@@ -20,11 +20,11 @@ var _topPadding = FediSizes.smallPadding;
 var _bottomPadding = FediSizes.bigPadding;
 
 class AccountActionListWidget extends StatelessWidget {
+  const AccountActionListWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) =>
       const _AccountActionListBodyLayoutBuilderWidget();
-
-  const AccountActionListWidget();
 }
 
 class _AccountActionListBodyLayoutBuilderWidget extends StatelessWidget {

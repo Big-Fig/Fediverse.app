@@ -10,8 +10,9 @@ class EditInstanceAnnouncementSettingsWidget extends StatefulWidget {
   final bool shrinkWrap;
 
   const EditInstanceAnnouncementSettingsWidget({
+    Key? key,
     required this.shrinkWrap,
-  });
+  }) : super(key: key);
 
   @override
   EditInstanceAnnouncementSettingsWidgetState createState() =>

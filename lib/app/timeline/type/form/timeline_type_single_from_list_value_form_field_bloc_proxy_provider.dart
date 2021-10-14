@@ -10,8 +10,9 @@ class TimelineTypeSingleFromListValueFormFieldBlocProxyProvider
   final Widget child;
 
   const TimelineTypeSingleFromListValueFormFieldBlocProxyProvider({
+    Key? key,
     required this.child,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => ProxyProvider<

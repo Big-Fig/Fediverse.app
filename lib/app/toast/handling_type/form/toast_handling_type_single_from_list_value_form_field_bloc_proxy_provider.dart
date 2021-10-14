@@ -10,8 +10,9 @@ class ToastHandlingTypeSingleSelectFromListValueFormFieldBlocProxyProvider
   final Widget child;
 
   const ToastHandlingTypeSingleSelectFromListValueFormFieldBlocProxyProvider({
+    Key? key,
     required this.child,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => ProxyProvider<

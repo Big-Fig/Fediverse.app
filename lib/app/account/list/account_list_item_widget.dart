@@ -18,10 +18,11 @@ class AccountListItemWidget extends StatelessWidget {
   final EdgeInsets padding;
 
   const AccountListItemWidget({
+    Key? key,
     required this.accountSelectedCallback,
     this.accountActions,
     this.padding = FediPadding.allMediumPadding,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

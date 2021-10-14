@@ -13,8 +13,9 @@ class AccountTabTextTabIndicatorItemWidget extends StatelessWidget {
   final List<AccountStatusesTab> accountTabs;
 
   const AccountTabTextTabIndicatorItemWidget({
+    Key? key,
     required this.accountTabs,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => LayoutBuilder(

@@ -6,7 +6,10 @@ import 'package:provider/provider.dart';
 class PleromaChatShareBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  const PleromaChatShareBlocProxyProvider({required this.child});
+  const PleromaChatShareBlocProxyProvider({
+    Key? key,
+    required this.child,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) =>

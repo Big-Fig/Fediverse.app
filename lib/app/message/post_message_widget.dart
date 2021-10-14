@@ -19,9 +19,10 @@ class PostMessageWidget extends StatelessWidget {
   final bool showActionsOnlyWhenFocused;
 
   const PostMessageWidget({
+    Key? key,
     required this.hintText,
     required this.showActionsOnlyWhenFocused,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -10,8 +10,9 @@ class StatusSensitiveNsfwWarningOverlayWidget extends StatelessWidget {
   final Widget child;
 
   const StatusSensitiveNsfwWarningOverlayWidget({
+    Key? key,
     required this.child,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -7,8 +7,9 @@ class NotificationCreatedAtWidget extends StatelessWidget {
   final TextStyle? textStyle;
 
   const NotificationCreatedAtWidget({
+    Key? key,
     this.textStyle,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

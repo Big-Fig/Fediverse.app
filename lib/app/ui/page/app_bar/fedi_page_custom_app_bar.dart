@@ -19,11 +19,12 @@ class FediPageCustomAppBar extends StatelessWidget
       const Size.fromHeight(kToolbarHeight + 1);
 
   const FediPageCustomAppBar({
+    Key? key,
     required this.child,
     required this.leading,
     this.centerTitle = false,
     this.actions,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

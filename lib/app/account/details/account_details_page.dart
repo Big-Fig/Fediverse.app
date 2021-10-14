@@ -75,7 +75,7 @@ class AccountDetailsPage extends StatelessWidget {
 }
 
 class AccountDetailsPageBody extends StatelessWidget {
-  const AccountDetailsPageBody();
+  const AccountDetailsPageBody({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -35,7 +35,7 @@ const _borderRadius = Radius.circular(FediSizes.borderRadiusBigSize);
 
 class ChatMessageListItemWidget<T extends IChatMessage>
     extends StatelessWidget {
-  const ChatMessageListItemWidget();
+  const ChatMessageListItemWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -8,7 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CustomListListItemWidget extends StatelessWidget {
-  const CustomListListItemWidget();
+  const CustomListListItemWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

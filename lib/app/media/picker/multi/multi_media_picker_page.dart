@@ -26,7 +26,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MultiMediaPickerPage extends StatelessWidget {
-  const MultiMediaPickerPage();
+  const MultiMediaPickerPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => const Scaffold(
@@ -72,7 +72,9 @@ class _MultiMediaPickerPageBodyWidget extends StatelessWidget {
                   Padding(
                     padding: FediPadding.allBigPadding,
                     child: FediSubHeaderText(
-                      S.of(context).file_picker_multi_selectionCount_selected(
+                      text: S
+                          .of(context)
+                          .file_picker_multi_selectionCount_selected(
                             currentFilesMetadataSelectionCount,
                           ),
                     ),
@@ -122,7 +124,7 @@ class _MultiMediaPickerPageAppBarEmptyTitleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => FediSubHeaderText(
-        S.of(context).file_picker_multi_title,
+        text: S.of(context).file_picker_multi_title,
       );
 }
 

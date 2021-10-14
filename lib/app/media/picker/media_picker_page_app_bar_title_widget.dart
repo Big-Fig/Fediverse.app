@@ -50,7 +50,7 @@ class MediaPickerPageAppBarTitle extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     FediSubHeaderText(
-                      _calculateFolderTitle(
+                      text: _calculateFolderTitle(
                         selectedFolder,
                       ),
                     ),

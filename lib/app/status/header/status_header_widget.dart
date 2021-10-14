@@ -66,7 +66,7 @@ class StatusHeaderWidget extends StatelessWidget {
           ClipRRect(
             // todo: refactor
             // ignore: no-magic-number
-            borderRadius: BorderRadius.circular(12.0),
+            borderRadius: const BorderRadius.all(Radius.circular(12.0)),
             child:
                 IFilesCacheService.of(context).createCachedNetworkImageWidget(
               imageUrl: account.avatar,
@@ -111,7 +111,8 @@ class StatusHeaderWidget extends StatelessWidget {
       );
 
   const StatusHeaderWidget({
+    Key? key,
     required this.descText,
     required this.icon,
-  });
+  }) : super(key: key);
 }

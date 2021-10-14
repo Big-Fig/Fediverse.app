@@ -23,6 +23,7 @@ class FormCaptchaStringFormFieldRowWidget extends StatelessWidget {
   final TextInputAction textInputAction;
 
   const FormCaptchaStringFormFieldRowWidget({
+    Key? key,
     required this.label,
     required this.autocorrect,
     this.obscureText = false,
@@ -30,7 +31,7 @@ class FormCaptchaStringFormFieldRowWidget extends StatelessWidget {
     required this.hint,
     required this.onSubmitted,
     required this.textInputAction,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) =>

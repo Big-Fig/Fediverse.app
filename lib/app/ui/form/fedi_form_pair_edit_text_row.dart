@@ -16,6 +16,7 @@ class FediFormPairEditTextRow extends StatelessWidget {
   final FocusNode? nextFocusNode;
 
   const FediFormPairEditTextRow({
+    Key? key,
     required this.label,
     required this.nameHint,
     required this.valueHint,
@@ -23,7 +24,7 @@ class FediFormPairEditTextRow extends StatelessWidget {
     required this.valueStringFieldBloc,
     required this.ending,
     required this.nextFocusNode,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

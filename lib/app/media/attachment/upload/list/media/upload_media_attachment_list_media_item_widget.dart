@@ -30,8 +30,9 @@ class UploadMediaAttachmentListMediaItemWidget extends StatefulWidget {
   final EdgeInsets contentPadding;
 
   const UploadMediaAttachmentListMediaItemWidget({
+    Key? key,
     this.contentPadding = FediPadding.allBigPadding,
-  });
+  }) : super(key: key);
 
   @override
   UploadMediaAttachmentListMediaItemWidgetState createState() =>
@@ -290,7 +291,7 @@ class _UploadMediaAttachmentListMediaItemLoadingWidget extends StatelessWidget {
   Widget build(BuildContext context) => ClipRRect(
         // todo: refactor
         // ignore: no-magic-number
-        borderRadius: BorderRadius.circular(24.0),
+        borderRadius: const BorderRadius.all(Radius.circular(24.0)),
         child: Container(
           // ignore: no-magic-number
           width: 24,
@@ -329,7 +330,7 @@ class _UploadMediaAttachmentListMediaItemErrorButtonWidget
       child: ClipRRect(
         // todo: refactor
         // ignore: no-magic-number
-        borderRadius: BorderRadius.circular(24.0),
+        borderRadius: const BorderRadius.all(Radius.circular(24.0)),
         child: Container(
           // ignore: no-magic-number
           width: 24,

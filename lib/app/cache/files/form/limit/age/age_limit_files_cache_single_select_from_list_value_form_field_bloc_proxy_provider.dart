@@ -10,8 +10,9 @@ class AgeLimitFilesSelectCacheSingleSelectValueFormFieldBlocProxyProvider
   final Widget child;
 
   const AgeLimitFilesSelectCacheSingleSelectValueFormFieldBlocProxyProvider({
+    Key? key,
     required this.child,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => ProxyProvider<

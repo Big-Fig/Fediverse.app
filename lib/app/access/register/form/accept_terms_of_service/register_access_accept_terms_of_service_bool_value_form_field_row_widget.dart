@@ -15,9 +15,10 @@ class RegisterUnifediApiAccessAcceptTermsOfServiceBoolValueFormFieldRowWidget
   final bool displayErrors;
 
   const RegisterUnifediApiAccessAcceptTermsOfServiceBoolValueFormFieldRowWidget({
+    Key? key,
     required this.instanceBaseUri,
     this.displayErrors = true,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => BoolValueFormFieldBlocProxyProvider(

@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
 class StatusEmojiReactionListWidget extends StatelessWidget {
-  const StatusEmojiReactionListWidget();
+  const StatusEmojiReactionListWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

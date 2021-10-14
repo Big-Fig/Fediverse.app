@@ -123,8 +123,6 @@ linter:
     sort_constructors_first: false
     sort_unnamed_constructors_first: false
 
-    use_key_in_widget_constructors: false
-
 dart_code_metrics:
   anti-patterns:
     - long-method
@@ -177,8 +175,7 @@ dart_code_metrics:
     - avoid-unnecessary-setstate
     # looks not necessary
     # - avoid-wrapping-in-padding
-    # useful but require a lot of refactoring
-    # - prefer-const-border-radius
+    - prefer-const-border-radius
     # useful but require a lot of refactoring
     # - prefer-extracting-callbacks
     # useful but require a lot of refactoring

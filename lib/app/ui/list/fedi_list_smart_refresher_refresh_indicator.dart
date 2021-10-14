@@ -85,7 +85,11 @@ class _FediListSmartRefresherRefreshIndicatorState
       }
     });
     _positionController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 300));
+      vsync: this,
+      duration: const Duration(
+        milliseconds: 300,
+      ),
+    );
     _scaleFactor = AnimationController(
       vsync: this,
       value: 1.0,

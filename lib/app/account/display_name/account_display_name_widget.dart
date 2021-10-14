@@ -15,10 +15,11 @@ class AccountDisplayNameWidget extends StatelessWidget {
   final TextAlign textAlign;
 
   const AccountDisplayNameWidget({
+    Key? key,
     this.textOverflow = TextOverflow.ellipsis,
     this.textStyle,
     this.textAlign = TextAlign.start,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

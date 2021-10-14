@@ -4,6 +4,8 @@ import 'package:fedi/date_time/timeago/date_time_dynamic_timeago_widget.dart';
 import 'package:flutter/cupertino.dart';
 
 class StatusCreatedAtWidget extends StatelessWidget {
+  const StatusCreatedAtWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context);
@@ -21,6 +23,4 @@ class StatusCreatedAtWidget extends StatelessWidget {
       },
     );
   }
-
-  const StatusCreatedAtWidget();
 }

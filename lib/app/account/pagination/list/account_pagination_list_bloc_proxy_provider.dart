@@ -8,7 +8,10 @@ import 'package:provider/provider.dart';
 class AccountPaginationListBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  const AccountPaginationListBlocProxyProvider({required this.child});
+  const AccountPaginationListBlocProxyProvider({
+    Key? key,
+    required this.child,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => ProxyProvider<

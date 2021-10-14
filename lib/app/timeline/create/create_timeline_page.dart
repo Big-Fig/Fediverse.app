@@ -19,6 +19,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CreateItemTimelinesHomeTabStoragePage extends StatelessWidget {
+  const CreateItemTimelinesHomeTabStoragePage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     var createTimelineBloc = ICreateTimelineBloc.of(context, listen: false);
@@ -53,8 +55,6 @@ class CreateItemTimelinesHomeTabStoragePage extends StatelessWidget {
       ),
     );
   }
-
-  const CreateItemTimelinesHomeTabStoragePage();
 }
 
 class _CreateItemTimelinesHomeTabStoragePageSaveActionWidget

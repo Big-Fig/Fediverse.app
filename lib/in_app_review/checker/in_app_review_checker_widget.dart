@@ -10,8 +10,9 @@ class InAppReviewCheckerWidget extends StatefulWidget {
   final Widget child;
 
   const InAppReviewCheckerWidget({
+    Key? key,
     required this.child,
-  });
+  }) : super(key: key);
 
   @override
   InAppReviewCheckerWidgetState createState() =>

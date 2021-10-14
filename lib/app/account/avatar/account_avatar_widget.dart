@@ -11,11 +11,12 @@ class AccountAvatarWidget extends StatelessWidget {
   final double progressSize;
 
   const AccountAvatarWidget({
+    Key? key,
     // ignore: no-magic-number
     this.imageSize = 80.0,
     // ignore: no-magic-number
     this.progressSize = 30.0,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

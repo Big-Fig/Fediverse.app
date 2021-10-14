@@ -10,8 +10,9 @@ class EditPushFilterSettingsWidget extends StatelessWidget {
   final bool shrinkWrap;
 
   const EditPushFilterSettingsWidget({
+    Key? key,
     required this.shrinkWrap,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Column(

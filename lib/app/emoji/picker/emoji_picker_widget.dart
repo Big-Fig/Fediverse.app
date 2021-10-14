@@ -28,13 +28,14 @@ class EmojiPickerWidget extends StatelessWidget {
   final int rowsCount;
 
   const EmojiPickerWidget({
+    Key? key,
     required this.onEmojiSelected,
     required this.useImageEmoji,
     // ignore: no-magic-number
     this.rowsCount = 3,
     // ignore: no-magic-number
     this.selectedCategoryItemsGridHeight = 108.0,
-  });
+  }) : super(key: key);
 
   @override
   // todo: refactor

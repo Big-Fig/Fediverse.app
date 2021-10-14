@@ -54,7 +54,7 @@ import 'package:provider/provider.dart';
 final _logger = Logger('timelines_home_tab_page.dart');
 
 class TimelinesHomeTabPage extends StatelessWidget {
-  const TimelinesHomeTabPage();
+  const TimelinesHomeTabPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

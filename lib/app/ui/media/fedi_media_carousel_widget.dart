@@ -8,8 +8,9 @@ class FediMediaCarouselWidget extends StatelessWidget {
   final IndexedWidgetBuilder builder;
 
   const FediMediaCarouselWidget({
+    Key? key,
     required this.builder,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

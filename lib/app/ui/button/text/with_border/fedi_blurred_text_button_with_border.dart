@@ -18,15 +18,17 @@ class FediBlurredTextButtonWithBorder extends StatelessWidget {
   final TextStyle? textStyle;
   final bool expanded;
 
+  // todo: refactor
   const FediBlurredTextButtonWithBorder(
     this.text, {
+    Key? key,
     required this.onPressed,
     required this.expanded,
     this.height = FediSizes.textButtonHeight,
     this.textStyle,
     this.borderWidth = 1,
     this.limitMinWidth = false,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -7,9 +7,10 @@ class MyAccountAccountMuteAccountPaginationListWidget extends StatelessWidget {
   final Widget? customEmptyWidget;
 
   const MyAccountAccountMuteAccountPaginationListWidget({
+    Key? key,
     this.customEmptyWidget,
     this.customLoadingWidget,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => AccountPaginationListWidget(
@@ -21,7 +22,8 @@ class MyAccountAccountMuteAccountPaginationListWidget extends StatelessWidget {
         ],
         accountSelectedCallback: null,
         key: const PageStorageKey(
-            'MyAccountAccountMuteAccountPaginationListWidget'),
+          'MyAccountAccountMuteAccountPaginationListWidget',
+        ),
       );
 }
 

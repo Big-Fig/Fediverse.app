@@ -18,6 +18,8 @@ const _cardWithContentImageSize = 114.0;
 const _cardWithoutContentImageSize = _cardWithContentImageSize * 3;
 
 class CardWidget extends StatelessWidget {
+  const CardWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     var card = Provider.of<IUnifediApiCard?>(context);
@@ -36,7 +38,8 @@ class CardWidget extends StatelessWidget {
             ? _cardWithContentImageSize
             : _cardWithoutContentImageSize,
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(FediSizes.smallPadding),
+          borderRadius:
+              const BorderRadius.all(Radius.circular(FediSizes.smallPadding)),
           child: InkWell(
             onTap: () async {
               var url = card.url!;
@@ -57,8 +60,6 @@ class CardWidget extends StatelessWidget {
       ),
     );
   }
-
-  const CardWidget();
 }
 
 class _CardContentWidget extends StatelessWidget {

@@ -16,12 +16,13 @@ class FediFormFieldRow extends StatelessWidget {
   final bool displayErrors;
 
   const FediFormFieldRow({
+    Key? key,
     required this.label,
     required this.description,
     required this.descriptionOnDisabled,
     required this.valueChild,
     this.displayErrors = true,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Column(
@@ -127,11 +128,12 @@ class SimpleFediFormFieldRow extends StatelessWidget {
   final Widget valueChild;
 
   const SimpleFediFormFieldRow({
+    Key? key,
     required this.label,
     required this.description,
     required this.descriptionOnDisabled,
     required this.valueChild,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => FediFormFieldRow(

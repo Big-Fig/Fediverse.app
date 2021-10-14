@@ -16,7 +16,9 @@ final Image defaultImage =
 var _logger = Logger('fedi_instance_image_background_widget.dart');
 
 class FediInstanceImageBackgroundWidget extends StatelessWidget {
-  const FediInstanceImageBackgroundWidget();
+  const FediInstanceImageBackgroundWidget({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

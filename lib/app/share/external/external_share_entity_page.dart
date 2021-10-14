@@ -16,7 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ExternalShareEntityPage extends StatelessWidget {
-  const ExternalShareEntityPage();
+  const ExternalShareEntityPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Scaffold(

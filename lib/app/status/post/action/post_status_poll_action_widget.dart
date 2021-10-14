@@ -12,6 +12,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PostStatusPollActionWidget extends StatelessWidget {
+  const PostStatusPollActionWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     var postMessageBloc = IPostMessageBloc.of(context, listen: false);
@@ -62,6 +64,4 @@ class PostStatusPollActionWidget extends StatelessWidget {
       },
     );
   }
-
-  const PostStatusPollActionWidget();
 }

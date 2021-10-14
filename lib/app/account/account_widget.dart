@@ -13,9 +13,10 @@ class AccountWidget extends StatelessWidget {
   final Widget footer;
 
   const AccountWidget({
+    Key? key,
     required this.onStatusesTapCallback,
     required this.footer,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Column(

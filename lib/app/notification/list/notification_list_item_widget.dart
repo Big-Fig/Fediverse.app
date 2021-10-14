@@ -33,7 +33,7 @@ import 'package:provider/provider.dart';
 var _logger = Logger('notification_list_item_widget.dart');
 
 class NotificationListItemWidget extends StatelessWidget {
-  const NotificationListItemWidget();
+  const NotificationListItemWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

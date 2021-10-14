@@ -9,8 +9,9 @@ class InstancePublicTimelinePageBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
   const InstancePublicTimelinePageBlocProxyProvider({
+    Key? key,
     required this.child,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) =>

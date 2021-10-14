@@ -7,6 +7,10 @@ import 'package:flutter/material.dart';
 
 class AgeLimitDatabaseCacheSingleSelectFromListValueFormFieldRowWidget
     extends StatelessWidget {
+  const AgeLimitDatabaseCacheSingleSelectFromListValueFormFieldRowWidget({
+    Key? key,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) =>
       AgeLimitDatabaseSelectCacheSingleSelectValueFormFieldBlocProxyProvider(
@@ -49,6 +53,4 @@ class AgeLimitDatabaseCacheSingleSelectFromListValueFormFieldRowWidget
           },
         ),
       );
-
-  const AgeLimitDatabaseCacheSingleSelectFromListValueFormFieldRowWidget();
 }

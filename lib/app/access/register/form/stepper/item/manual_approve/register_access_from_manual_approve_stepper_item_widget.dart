@@ -10,6 +10,9 @@ import 'package:provider/provider.dart';
 
 class RegisterUnifediApiAccessFormStepperManualApproveItemWidget
     extends StatelessWidget {
+  const RegisterUnifediApiAccessFormStepperManualApproveItemWidget({Key? key})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) => Column(
         children: [

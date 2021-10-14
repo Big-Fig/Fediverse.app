@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
 class CustomListFormWidget extends StatelessWidget {
-  const CustomListFormWidget();
+  const CustomListFormWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) =>

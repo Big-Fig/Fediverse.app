@@ -6,6 +6,9 @@ import 'package:flutter/cupertino.dart';
 
 class ToastHandlingTypeSingleFromListValueFormFieldRowWidget
     extends StatelessWidget {
+  const ToastHandlingTypeSingleFromListValueFormFieldRowWidget({Key? key})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) =>
       ToastHandlingTypeSingleSelectFromListValueFormFieldBlocProxyProvider(
@@ -20,8 +23,6 @@ class ToastHandlingTypeSingleFromListValueFormFieldRowWidget
           valueIconMapper: null,
         ),
       );
-
-  const ToastHandlingTypeSingleFromListValueFormFieldRowWidget();
 }
 
 String mapToastHandlingTypeToLabel(

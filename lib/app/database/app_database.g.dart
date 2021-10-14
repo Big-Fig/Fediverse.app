@@ -1833,29 +1833,29 @@ class $DbStatusesTable extends DbStatuses
   }
 
   static TypeConverter<UnifediApiVisibility, String> $converter0 =
-      UnifediApiVisibilityMoorTypeConverter();
+      const UnifediApiVisibilityMoorTypeConverter();
   static TypeConverter<UnifediApiApplication, String> $converter1 =
-      PleromaApplicationDatabaseConverter();
+      const PleromaApplicationDatabaseConverter();
   static TypeConverter<List<UnifediApiMediaAttachment>, String> $converter2 =
-      UnifediApiMediaAttachmentListDatabaseConverter();
+      const UnifediApiMediaAttachmentListDatabaseConverter();
   static TypeConverter<List<UnifediApiMention>, String> $converter3 =
-      PleromaMentionListDatabaseConverter();
+      const PleromaMentionListDatabaseConverter();
   static TypeConverter<List<UnifediApiTag>, String> $converter4 =
-      UnifediApiTagListDatabaseConverter();
+      const UnifediApiTagListDatabaseConverter();
   static TypeConverter<List<UnifediApiEmoji>, String> $converter5 =
-      UnifediApiEmojiListDatabaseConverter();
+      const UnifediApiEmojiListDatabaseConverter();
   static TypeConverter<UnifediApiPoll, String> $converter6 =
-      UnifediApiPollDatabaseConverter();
+      const UnifediApiPollDatabaseConverter();
   static TypeConverter<UnifediApiCard, String> $converter7 =
-      PleromaCardDatabaseConverter();
+      const PleromaCardDatabaseConverter();
   static TypeConverter<UnifediApiContentVariants, String> $converter8 =
-      PleromaContentDatabaseConverter();
+      const PleromaContentDatabaseConverter();
   static TypeConverter<UnifediApiContentVariants, String> $converter9 =
-      PleromaContentDatabaseConverter();
+      const PleromaContentDatabaseConverter();
   static TypeConverter<List<UnifediApiEmojiReaction>, String> $converter10 =
-      EmojiReactionsListDatabaseConverter();
+      const EmojiReactionsListDatabaseConverter();
   static TypeConverter<PendingState, String> $converter11 =
-      PendingStateDatabaseConverter();
+      const PendingStateDatabaseConverter();
 }
 
 class DbAccount extends DataClass implements Insertable<DbAccount> {
@@ -3640,15 +3640,15 @@ class $DbAccountsTable extends DbAccounts
   }
 
   static TypeConverter<List<UnifediApiField>, String> $converter0 =
-      UnifediApiFieldListDatabaseConverter();
+      const UnifediApiFieldListDatabaseConverter();
   static TypeConverter<List<UnifediApiEmoji>, String> $converter1 =
-      UnifediApiEmojiListDatabaseConverter();
+      const UnifediApiEmojiListDatabaseConverter();
   static TypeConverter<List<UnifediApiTag>, String> $converter2 =
-      UnifediApiTagListDatabaseConverter();
+      const UnifediApiTagListDatabaseConverter();
   static TypeConverter<UnifediApiAccountRelationship, String> $converter3 =
-      UnifediApiAccountRelationshipDatabaseConverter();
+      const UnifediApiAccountRelationshipDatabaseConverter();
   static TypeConverter<List<String>, String> $converter4 =
-      StringListDatabaseConverter();
+      const StringListDatabaseConverter();
 }
 
 class DbConversation extends DataClass implements Insertable<DbConversation> {
@@ -4562,11 +4562,11 @@ class $DbNotificationsTable extends DbNotifications
   }
 
   static TypeConverter<UnifediApiAccountReport, String> $converter0 =
-      UnifediApiAccountReportDatabaseConverter();
+      const UnifediApiAccountReportDatabaseConverter();
   static TypeConverter<UnifediApiChatMessage, String> $converter1 =
-      UnifediApiChatMessageDatabaseConverter();
+      const UnifediApiChatMessageDatabaseConverter();
   static TypeConverter<UnifediApiAccount, String> $converter2 =
-      UnifediApiAccountDatabaseConverter();
+      const UnifediApiAccountDatabaseConverter();
 }
 
 class DbConversationStatus extends DataClass
@@ -6700,9 +6700,9 @@ class $DbScheduledStatusesTable extends DbScheduledStatuses
   }
 
   static TypeConverter<UnifediApiScheduledStatusParams, String> $converter0 =
-      PleromaScheduledStatusParamsDatabaseConverter();
+      const PleromaScheduledStatusParamsDatabaseConverter();
   static TypeConverter<List<UnifediApiMediaAttachment>, String> $converter1 =
-      UnifediApiMediaAttachmentListDatabaseConverter();
+      const UnifediApiMediaAttachmentListDatabaseConverter();
 }
 
 class DbChat extends DataClass implements Insertable<DbChat> {
@@ -7688,13 +7688,13 @@ class $DbChatMessagesTable extends DbChatMessages
   }
 
   static TypeConverter<List<UnifediApiEmoji>, String> $converter0 =
-      UnifediApiEmojiListDatabaseConverter();
+      const UnifediApiEmojiListDatabaseConverter();
   static TypeConverter<UnifediApiMediaAttachment, String> $converter1 =
-      UnifediApiMediaAttachmentDatabaseConverter();
+      const UnifediApiMediaAttachmentDatabaseConverter();
   static TypeConverter<UnifediApiCard, String> $converter2 =
-      PleromaCardDatabaseConverter();
+      const PleromaCardDatabaseConverter();
   static TypeConverter<PendingState, String> $converter3 =
-      PendingStateDatabaseConverter();
+      const PendingStateDatabaseConverter();
 }
 
 class DbChatAccount extends DataClass implements Insertable<DbChatAccount> {
@@ -8283,7 +8283,7 @@ class $DbFiltersTable extends DbFilters
   }
 
   static TypeConverter<List<String>, String> $converter0 =
-      StringListDatabaseConverter();
+      const StringListDatabaseConverter();
 }
 
 class DbInstanceAnnouncement extends DataClass
@@ -8945,13 +8945,13 @@ class $DbInstanceAnnouncementsTable extends DbInstanceAnnouncements
   }
 
   static TypeConverter<List<UnifediApiEmojiReaction>, String> $converter0 =
-      UnifediApiEmojiReactionListDatabaseConverter();
+      const UnifediApiEmojiReactionListDatabaseConverter();
   static TypeConverter<List<UnifediApiMention>, String> $converter1 =
-      UnifediApiMentionListDatabaseConverter();
+      const UnifediApiMentionListDatabaseConverter();
   static TypeConverter<List<UnifediApiTag>, String> $converter2 =
-      UnifediApiTagListDatabaseConverter();
+      const UnifediApiTagListDatabaseConverter();
   static TypeConverter<List<UnifediApiStatus>, String> $converter3 =
-      UnifediApiStatusListDatabaseConverter();
+      const UnifediApiStatusListDatabaseConverter();
 }
 
 class DbHomeTimelineStatus extends DataClass
@@ -9388,7 +9388,7 @@ class $DbDraftStatusesTable extends DbDraftStatuses
   }
 
   static TypeConverter<PostStatusData, String> $converter0 =
-      PostStatusDataDatabaseConverter();
+      const PostStatusDataDatabaseConverter();
 }
 
 abstract class _$AppDatabase extends GeneratedDatabase {

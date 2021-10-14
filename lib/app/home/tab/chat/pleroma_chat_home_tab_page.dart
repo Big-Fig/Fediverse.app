@@ -203,7 +203,7 @@ class _ChatMessagesHomeTabPageHeaderWidget extends StatelessWidget {
     return FediTabMainHeaderBarWidget(
       leadingWidgets: [
         FediHeaderText(
-          S.of(context).app_home_tab_chat_pleroma_title,
+          text: S.of(context).app_home_tab_chat_pleroma_title,
         ),
       ],
       content: null,

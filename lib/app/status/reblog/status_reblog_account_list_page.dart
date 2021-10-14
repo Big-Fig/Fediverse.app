@@ -16,6 +16,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class StatusReblogAccountListPage extends StatelessWidget {
+  const StatusReblogAccountListPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: FediPageTitleAppBar(
@@ -35,8 +37,6 @@ class StatusReblogAccountListPage extends StatelessWidget {
           ),
         ),
       );
-
-  const StatusReblogAccountListPage();
 }
 
 void _goToAccountDetailsPage(BuildContext context, IAccount account) {

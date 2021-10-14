@@ -3,7 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class InstanceTrendsWidget extends StatelessWidget {
-  const InstanceTrendsWidget();
+  const InstanceTrendsWidget({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => const InstanceTrendsHashtagListWidget();

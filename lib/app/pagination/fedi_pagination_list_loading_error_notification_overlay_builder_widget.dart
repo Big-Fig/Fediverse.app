@@ -14,7 +14,9 @@ const Duration _throttleDuration = Duration(seconds: 2);
 
 class FediPaginationListLoadingErrorNotificationOverlayBuilderWidget
     extends StatefulWidget {
-  const FediPaginationListLoadingErrorNotificationOverlayBuilderWidget();
+  const FediPaginationListLoadingErrorNotificationOverlayBuilderWidget({
+    Key? key,
+  }) : super(key: key);
 
   @override
   FediPaginationListLoadingErrorNotificationOverlayBuilderWidgetState

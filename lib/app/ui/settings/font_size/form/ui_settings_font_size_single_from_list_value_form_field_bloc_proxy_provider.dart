@@ -10,8 +10,9 @@ class UiSettingsFontSizeSingleFromListValueFormFieldBlocProxyProvider
   final Widget child;
 
   const UiSettingsFontSizeSingleFromListValueFormFieldBlocProxyProvider({
+    Key? key,
     required this.child,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => ProxyProvider<

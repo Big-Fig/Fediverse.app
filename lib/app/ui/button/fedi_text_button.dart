@@ -10,11 +10,12 @@ class FediTextButton extends StatelessWidget {
   final EdgeInsets padding;
 
   const FediTextButton({
+    Key? key,
     required this.text,
     required this.onPressed,
     this.color,
     this.padding = FediPadding.allBigPadding,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

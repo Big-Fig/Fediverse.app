@@ -16,6 +16,8 @@ import 'package:provider/provider.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
 class PollWidget extends StatelessWidget {
+  const PollWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     var pollBloc = IPollBloc.of(context);
@@ -143,7 +145,7 @@ class _PollBodyOptionWidget extends StatelessWidget {
 }
 
 class PollMetadataWidget extends StatelessWidget {
-  const PollMetadataWidget();
+  const PollMetadataWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -175,7 +177,7 @@ class _PollMetadataDotSeparatorWidget extends StatelessWidget {
 }
 
 class PollMetadataTotalVotesCountWidget extends StatelessWidget {
-  const PollMetadataTotalVotesCountWidget();
+  const PollMetadataTotalVotesCountWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -189,7 +191,7 @@ class PollMetadataTotalVotesCountWidget extends StatelessWidget {
 }
 
 class PollMetadataShowHideResultsWidget extends StatelessWidget {
-  const PollMetadataShowHideResultsWidget();
+  const PollMetadataShowHideResultsWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -222,7 +224,7 @@ class PollMetadataShowHideResultsWidget extends StatelessWidget {
 }
 
 class PollMetadataExpiresAtWidget extends StatelessWidget {
-  const PollMetadataExpiresAtWidget();
+  const PollMetadataExpiresAtWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -271,10 +273,10 @@ class _PollMetadataExpiresAtNotExpiredWidget extends StatelessWidget {
 
 // todo: refactor
 // ignore: no-magic-number
-final borderRadius = BorderRadius.circular(8.0);
+const borderRadius = BorderRadius.all(Radius.circular(8.0));
 
 class PollOptionWidget extends StatelessWidget {
-  const PollOptionWidget();
+  const PollOptionWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -487,7 +489,7 @@ class _PollOptionContentWidget extends StatelessWidget {
 }
 
 class PollOptionVotesCountWidget extends StatelessWidget {
-  const PollOptionVotesCountWidget();
+  const PollOptionVotesCountWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -503,7 +505,7 @@ class PollOptionVotesCountWidget extends StatelessWidget {
 class PollOptionVotesPercentWidget extends StatelessWidget {
   static final NumberFormat _format = NumberFormat('#%');
 
-  const PollOptionVotesPercentWidget();
+  const PollOptionVotesPercentWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -531,7 +533,7 @@ class PollOptionVotesPercentWidget extends StatelessWidget {
 }
 
 class PollOptionTitleWidget extends StatelessWidget {
-  const PollOptionTitleWidget();
+  const PollOptionTitleWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

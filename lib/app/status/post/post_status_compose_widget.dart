@@ -32,6 +32,7 @@ class PostStatusComposeWidget extends StatelessWidget {
   final bool autofocus;
 
   const PostStatusComposeWidget({
+    Key? key,
     required this.displaySubjectField,
     required this.expanded,
     required this.displayAccountAvatar,
@@ -40,7 +41,7 @@ class PostStatusComposeWidget extends StatelessWidget {
     this.hintText,
     required this.goBackOnSuccess,
     required this.autofocus,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Padding(

@@ -10,6 +10,9 @@ import 'package:provider/provider.dart';
 
 class RegisterUnifediApiAccessFormStepperCaptchaItemWidget
     extends StatelessWidget {
+  const RegisterUnifediApiAccessFormStepperCaptchaItemWidget({Key? key})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     var itemBloc =
