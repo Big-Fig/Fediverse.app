@@ -50,7 +50,7 @@ class ExternalShareService extends DisposableOwner
     var urlFilesPossibleToShareAsBytes =
         urlFiles.where((urlFile) => isPossibleToShareAsBytes(urlFile.url));
 
-    text = text ?? '';
+    var actualText = text ?? '';
 
     // several files sharing not supported with text
     if (urlFilesPossibleToShareAsBytes.length == 1) {
@@ -59,7 +59,7 @@ class ExternalShareService extends DisposableOwner
       var nonFirstUrlFileToShareAsBytes = urlFiles
           .where((attachment) => attachment != firstUrlFileToShareAsFiles);
       if (nonFirstUrlFileToShareAsBytes.isNotEmpty) {
-        text += '[${nonFirstUrlFileToShareAsBytes.map(
+        actualText += '[${nonFirstUrlFileToShareAsBytes.map(
               (attachment) => attachment.url,
             ).join(', ')}]';
       }
@@ -77,17 +77,17 @@ class ExternalShareService extends DisposableOwner
           file.path,
         ],
         subject: popupTitle,
-        text: text,
+        text: actualText,
       );
 
       await file.delete();
     } else {
       // share everything as text
-      text +=
+      actualText +=
           '[${urlFilesPossibleToShareAsBytes.map((urlFile) => urlFile.url).join(', ')}]';
     }
 
-    return text;
+    return actualText;
   }
 
   void shareTextOnly(String popupTitle, String text) {

@@ -32,12 +32,16 @@ class ChatDao extends PopulatedAppRemoteDatabaseDao<
     PleromaChatRepositoryFilters,
     PleromaChatRepositoryOrderingTermData> with _$ChatDaoMixin {
   final AppDatabase db;
+
   // ignore: avoid-late-keyword
   late $DbAccountsTable accountAlias;
+
   // ignore: avoid-late-keyword
   late $DbChatMessagesTable chatMessageAlias;
+
   // ignore: avoid-late-keyword
   late $DbAccountsTable chatMessageAccountAlias;
+
   // ignore: avoid-late-keyword
   late $DbChatAccountsTable chatAccountsAlias;
 
@@ -52,7 +56,7 @@ class ChatDao extends PopulatedAppRemoteDatabaseDao<
     );
   }
 
-  SimpleSelectStatement<$DbChatsTable, DbChat> addUpdatedAtBoundsWhere(
+  void addUpdatedAtBoundsWhere(
     SimpleSelectStatement<$DbChatsTable, DbChat> query, {
     required DateTime? minimumDateTimeExcluding,
     required DateTime? maximumDateTimeExcluding,
@@ -62,19 +66,15 @@ class ChatDao extends PopulatedAppRemoteDatabaseDao<
     assert(minimumExist || maximumExist);
 
     if (minimumExist) {
-      query = query
-        ..where(
-          (chat) => chat.updatedAt.isBiggerThanValue(minimumDateTimeExcluding),
-        );
+      query.where(
+        (chat) => chat.updatedAt.isBiggerThanValue(minimumDateTimeExcluding),
+      );
     }
     if (maximumExist) {
-      query = query
-        ..where(
-          (chat) => chat.updatedAt.isSmallerThanValue(maximumDateTimeExcluding),
-        );
+      query.where(
+        (chat) => chat.updatedAt.isSmallerThanValue(maximumDateTimeExcluding),
+      );
     }
-
-    return query;
   }
 
   Future<int> incrementUnreadCount({
@@ -253,7 +253,7 @@ extension DbPleromaChatPopulatedTypedResultExtension on TypedResult {
       );
 }
 
-extension DbPleromaChatWithLastMessagePopulatedTypedResultListExtension
+extension DbPleromaChatWithLastMessagePopulatedTypedListExtension
     on List<TypedResult> {
   List<DbPleromaChatWithLastMessagePopulated>
       toDbPleromaChatWithLastMessagePopulatedList({
@@ -266,8 +266,7 @@ extension DbPleromaChatWithLastMessagePopulatedTypedResultListExtension
           ).toList();
 }
 
-extension DbPleromaChatWithLastMessagePopulatedTypedResultExtension
-    on TypedResult {
+extension DbPleromaChatWithLastMessagePopulatedTypedExtension on TypedResult {
   DbPleromaChatWithLastMessagePopulated
       toDbPleromaChatWithLastMessagePopulated({
     required ChatDao dao,

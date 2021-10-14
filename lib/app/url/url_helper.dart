@@ -31,16 +31,16 @@ class UrlHelper {
   static String? extractHashtagFromTagUrlIfExist(String url) {
     String? hashtag;
 
-    url = url.toLowerCase();
+    var actualUrl = url.toLowerCase();
 
     for (var tagUrlPart in _tagUrlParts) {
       tagUrlPart = tagUrlPart.toLowerCase();
 
-      var indexOf = url.indexOf(tagUrlPart);
+      var indexOf = actualUrl.indexOf(tagUrlPart);
 
       if (indexOf > 0) {
         var startIndex = indexOf + tagUrlPart.length;
-        hashtag = url.substring(startIndex);
+        hashtag = actualUrl.substring(startIndex);
         break;
       }
     }
@@ -59,27 +59,33 @@ class UrlHelper {
     var uri = Uri.parse(url);
 
     var host = uri.host;
+
+    var actualUrl = url;
+
     // check relative links
     if (!host.isNotEmpty) {
       if (isLocal) {
-        url = _calculateLocalInstanceAbsoluteUrl(context, url);
+        actualUrl = _calculateLocalInstanceAbsoluteUrl(context, actualUrl);
       } else {
-        url = _calculateRemoteInstanceAbsoluteUrl(instanceLocationBloc, url);
+        actualUrl = _calculateRemoteInstanceAbsoluteUrl(
+          instanceLocationBloc,
+          actualUrl,
+        );
       }
     }
 
-    var hashtagName = extractHashtagFromTagUrlIfExist(url);
+    var hashtagName = extractHashtagFromTagUrlIfExist(actualUrl);
 
     if (hashtagName != null) {
       var hashtag = Hashtag(
         name: hashtagName,
-        url: url,
+        url: actualUrl,
         history: null,
       );
       if (isLocal) {
         // status or account note with hashtag fetched from local instance
 
-        var uri = Uri.parse(url);
+        var uri = Uri.parse(actualUrl);
 
         var urlHost = uri.host;
 
@@ -116,7 +122,7 @@ class UrlHelper {
 
     return handleUrlClick(
       context: context,
-      url: url,
+      url: actualUrl,
     );
   }
 
@@ -152,14 +158,17 @@ class UrlHelper {
     var uri = Uri.parse(url);
 
     var host = uri.host;
+
+    var actualUrl = url;
+
     // check relative links
     if (host.isEmpty) {
-      url = _calculateLocalInstanceAbsoluteUrl(context, url);
+      actualUrl = _calculateLocalInstanceAbsoluteUrl(context, actualUrl);
     }
 
     return handleUrlClick(
       context: context,
-      url: url,
+      url: actualUrl,
     );
   }
 

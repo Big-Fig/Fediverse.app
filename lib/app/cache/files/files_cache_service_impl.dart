@@ -64,22 +64,23 @@ class FilesCacheService extends DisposableOwner implements IFilesCacheService {
   }) {
     assert(imageUrl?.isNotEmpty == true);
 
+    var actualImageUrl = imageUrl;
     // todo: apply only for mock launch type
     if (Platform.isAndroid) {
-      imageUrl = imageUrl!.replaceAll('localhost', '10.0.2.2');
-      imageUrl = imageUrl.replaceAll(
+      actualImageUrl = actualImageUrl!.replaceAll('localhost', '10.0.2.2');
+      actualImageUrl = actualImageUrl.replaceAll(
         'https://ops.pleroma.social',
         'http://10.0.2.2:4000',
       );
     } else if (Platform.isIOS) {
-      imageUrl = imageUrl!.replaceAll('10.0.2.2', 'localhost');
-      imageUrl = imageUrl.replaceAll(
+      actualImageUrl = actualImageUrl!.replaceAll('10.0.2.2', 'localhost');
+      actualImageUrl = actualImageUrl.replaceAll(
         'https://ops.pleroma.social',
         'http://localhost:4000',
       );
     }
 
-    stringKey ??= imageUrl;
+    stringKey ??= actualImageUrl;
 
     return StreamBuilder<bool>(
       stream: connectionService.isConnectedStream.distinct(),
@@ -88,7 +89,7 @@ class FilesCacheService extends DisposableOwner implements IFilesCacheService {
 
         return CachedNetworkImage(
           key: ValueKey(stringKey! + '+' + isConnected.toString()),
-          imageUrl: imageUrl!,
+          imageUrl: actualImageUrl!,
           httpHeaders: httpHeaders,
           imageBuilder: imageBuilder,
           placeholder: placeholder,

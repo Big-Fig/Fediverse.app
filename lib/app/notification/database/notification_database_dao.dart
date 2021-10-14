@@ -117,8 +117,7 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
     }
   }
 
-  SimpleSelectStatement<$DbNotificationsTable, DbNotification>
-      addCreatedAtBoundsWhere(
+  void addCreatedAtBoundsWhere(
     SimpleSelectStatement<$DbNotificationsTable, DbNotification> query, {
     required DateTime? minimumCreatedAt,
     required DateTime? maximumCreatedAt,
@@ -128,21 +127,17 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
     assert(minimumExist || maximumExist);
 
     if (minimumExist) {
-      query = query
-        ..where(
-          (notification) =>
-              notification.createdAt.isBiggerThanValue(minimumCreatedAt),
-        );
+      query.where(
+        (notification) =>
+            notification.createdAt.isBiggerThanValue(minimumCreatedAt),
+      );
     }
     if (maximumExist) {
-      query = query
-        ..where(
-          (notification) =>
-              notification.createdAt.isSmallerThanValue(maximumCreatedAt),
-        );
+      query.where(
+        (notification) =>
+            notification.createdAt.isSmallerThanValue(maximumCreatedAt),
+      );
     }
-
-    return query;
   }
 
   SimpleSelectStatement<$DbNotificationsTable, DbNotification> orderBy(

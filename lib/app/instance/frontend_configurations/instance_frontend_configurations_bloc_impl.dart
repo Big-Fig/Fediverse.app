@@ -98,10 +98,11 @@ extension IInstanceFrontendConfigurationsLocalPreferenceBlocExtension
 }
 
 int _hexStringToHexInt(String hex) {
-  hex = hex.replaceFirst('#', '');
+  var actualHex = hex;
+  actualHex = actualHex.replaceFirst('#', '');
   // ignore: no-magic-number
-  hex = hex.length == 6 ? 'ff' + hex : hex;
+  actualHex = actualHex.length == 6 ? 'ff' + actualHex : actualHex;
 
   // ignore: no-magic-number
-  return int.parse(hex, radix: 16);
+  return int.parse(actualHex, radix: 16);
 }

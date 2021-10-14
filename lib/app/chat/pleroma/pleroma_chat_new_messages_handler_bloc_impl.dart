@@ -68,22 +68,24 @@ class PleromaChatNewMessagesHandlerBloc extends DisposableOwner
 
   @override
   Future handleChatUpdate(IUnifediApiChat chat) async {
+    var actualChat = chat;
+
     // increase only if chat closed now
-    var chatId = chat.id;
+    var chatId = actualChat.id;
     var isMessageForOpenedChat =
         currentChatBloc.currentChat?.remoteId == chatId;
 
     if (isMessageForOpenedChat) {
-      var lastReadChatMessageId = chat.lastMessage?.id;
+      var lastReadChatMessageId = actualChat.lastMessage?.id;
 
       if (lastReadChatMessageId != null) {
-        chat = await pleromaApiChatService.markChatAsRead(
+        actualChat = await pleromaApiChatService.markChatAsRead(
           chatId: chatId,
           lastReadChatMessageId: lastReadChatMessageId,
         );
       }
     }
 
-    return chatRepository.upsertInRemoteType(chat);
+    return chatRepository.upsertInRemoteType(actualChat);
   }
 }

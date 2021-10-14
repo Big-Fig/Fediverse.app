@@ -94,7 +94,7 @@ linter:
 
     prefer_final_parameters: false
     avoid_types_on_closure_parameters: false
-    parameter_assignments: false
+
     avoid_bool_literals_in_conditional_expressions: false
     avoid_catches_without_on_clauses: false
     prefer_final_in_for_each: false

@@ -259,7 +259,7 @@ class AccountDao extends PopulatedAppRemoteDatabaseDao<
       assert(orderingTerms?.length == 1);
       var orderingTermData = orderingTerms!.first;
       assert(orderingTermData.orderType == AccountOrderType.remoteId);
-      query = addRemoteIdBoundsWhere(
+      addRemoteIdBoundsWhere(
         query,
         maximumRemoteIdExcluding: pagination?.olderThanItem?.remoteId,
         minimumRemoteIdExcluding: pagination?.newerThanItem?.remoteId,

@@ -59,9 +59,9 @@ class StatusCachedPaginationListMediaWidget
     var isLocal = instanceLocation == InstanceLocation.local;
 
     // all statuses should be already with media attachments
-    items = filterItemsWithMedia(items);
+    var actualItems = filterItemsWithMedia(items);
 
-    var statusesWithMediaAttachment = mapToStatusesWithAttachments(items);
+    var statusesWithMediaAttachment = mapToStatusesWithAttachments(actualItems);
 
     var length = statusesWithMediaAttachment.length;
     if (header != null) {

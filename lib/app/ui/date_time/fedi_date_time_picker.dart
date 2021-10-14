@@ -162,6 +162,7 @@ class FediDatePicker {
     FediDatePickerTheme? theme,
     required bool isDeletePossible,
   }) async {
+    LocaleType actualLocaleType;
     if (locale == null) {
       var localizationSettingsBloc = ILocalizationSettingsBloc.of(
         context,
@@ -178,17 +179,19 @@ class FediDatePicker {
       switch (localizationLocale.languageCode.toLowerCase()) {
         // todo: improve
         case 'ru':
-          locale = LocaleType.ru;
+          actualLocaleType = LocaleType.ru;
           break;
         case 'en':
-          locale = LocaleType.en;
+          actualLocaleType = LocaleType.en;
           break;
         case 'pl':
-          locale = LocaleType.pl;
+          actualLocaleType = LocaleType.pl;
           break;
         default:
           throw 'Invalid locale $locale';
       }
+    } else {
+      actualLocaleType = locale;
     }
 
     return _showDatePickerPopup(
@@ -198,7 +201,7 @@ class FediDatePicker {
       onConfirm: onConfirm,
       onCancel: onCancel,
       onDelete: onDelete,
-      locale: locale,
+      locale: actualLocaleType,
       theme: theme,
       barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
       pickerModel: DateTimePickerModel(

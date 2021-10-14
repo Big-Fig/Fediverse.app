@@ -286,10 +286,11 @@ String _extractSingleLineContent({
   required IChatMessage chatMessage,
   required String? content,
 }) {
-  content = content?.replaceAll('\n', ' ');
-  content = content?.replaceAll('<br/>', ' ');
+  var actualContent = content;
+  actualContent = actualContent?.replaceAll('\n', ' ');
+  actualContent = actualContent?.replaceAll('<br/>', ' ');
 
-  var formattedText = content?.extractRawStringFromHtmlString() ?? '';
+  var formattedText = actualContent?.extractRawStringFromHtmlString() ?? '';
 
   var myAccountBloc = IMyAccountBloc.of(context, listen: true);
 

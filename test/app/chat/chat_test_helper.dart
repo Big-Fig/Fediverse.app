@@ -13,8 +13,9 @@ class ChatMockHelper {
     DateTime? updatedAt,
     DbAccountPopulatedWrapper? account,
   }) async {
-    account = account ?? await AccountMockHelper.createTestAccount(seed: seed);
-    var dbAccount = account.dbAccount;
+    var actualAccount =
+        account ?? await AccountMockHelper.createTestAccount(seed: seed);
+    var dbAccount = actualAccount.dbAccount;
 
     return DbPleromaChatPopulatedWrapper(
       dbChatPopulated: DbPleromaChatPopulated(

@@ -649,25 +649,25 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     required bool? isFromHomeTimeline,
     required Batch? batchTransaction,
   }) async {
+    // if conversation not specified we try to fetch it from status
+    var actualConversationRemoteId =
+        conversationRemoteId ?? remoteStatus.directConversationId?.toString();
+
+    _logger.finer(
+      () => 'upsertRemoteStatus $remoteStatus '
+          'listRemoteId => $listRemoteId '
+          'actualConversationRemoteId => $actualConversationRemoteId '
+          'isFromHomeTimeline => $isFromHomeTimeline ',
+    );
+
     if (batchTransaction != null) {
-      // if conversation not specified we try to fetch it from status
-      conversationRemoteId =
-          conversationRemoteId ?? remoteStatus.directConversationId?.toString();
-
-      _logger.finer(
-        () => 'upsertRemoteStatus $remoteStatus '
-            'listRemoteId => $listRemoteId '
-            'conversationRemoteId => $conversationRemoteId '
-            'isFromHomeTimeline => $isFromHomeTimeline ',
-      );
-
       var remoteAccount = remoteStatus.account;
 
-      if (conversationRemoteId != null) {
+      if (actualConversationRemoteId != null) {
         // ignore: unawaited_futures
         accountRepository.upsertConversationRemoteAccount(
           remoteAccount,
-          conversationRemoteId: conversationRemoteId,
+          conversationRemoteId: actualConversationRemoteId,
           batchTransaction: batchTransaction,
         );
       } else {
@@ -702,13 +702,13 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
           batchTransaction: batchTransaction,
         );
       }
-      if (conversationRemoteId != null) {
+      if (actualConversationRemoteId != null) {
         // ignore: unawaited_futures
         addStatusesToConversation(
           statusRemoteIds: [
             remoteStatus.id,
           ],
-          conversationRemoteId: conversationRemoteId,
+          conversationRemoteId: actualConversationRemoteId,
           batchTransaction: batchTransaction,
         );
       }
@@ -740,7 +740,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
           _upsertStatusMetadata(
             remoteStatus,
             listRemoteId: listRemoteId,
-            conversationRemoteId: conversationRemoteId,
+            conversationRemoteId: actualConversationRemoteId,
             isFromHomeTimeline: isFromHomeTimeline,
             batchTransaction: batch,
           );

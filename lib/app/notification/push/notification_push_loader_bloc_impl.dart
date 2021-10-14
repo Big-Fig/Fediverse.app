@@ -265,7 +265,7 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
     var localAccount = unifediApiAccount.toDbAccountWrapper().copyWithTemp(
           relationship: accountRelationship,
         );
-    unifediApiAccount = localAccount.toUnifediApiAccount();
+    var actualUnifediApiAccount = localAccount.toUnifediApiAccount();
 
     await notificationRepository.batch((batch) {
       notificationRepository.dismissFollowRequestNotificationsFromAccount(
@@ -273,7 +273,7 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
         batchTransaction: batch,
       );
       accountRepository.upsertInRemoteTypeBatch(
-        unifediApiAccount,
+        actualUnifediApiAccount,
         batchTransaction: batch,
       );
     });

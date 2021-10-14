@@ -62,8 +62,7 @@ class DraftStatusDao extends PopulatedAppLocalDatabaseDao<
   DbDraftStatus typedResultToPopulated(TypedResult typedResult) =>
       typedResult.readTable(db.dbDraftStatuses);
 
-  SimpleSelectStatement<$DbDraftStatusesTable, DbDraftStatus>
-      addUpdatedAtBoundsWhere(
+  void addUpdatedAtBoundsWhere(
     SimpleSelectStatement<$DbDraftStatusesTable, DbDraftStatus> query, {
     required DateTime? minimumUpdatedAt,
     required DateTime? maximumUpdatedAt,
@@ -73,22 +72,18 @@ class DraftStatusDao extends PopulatedAppLocalDatabaseDao<
     assert(minimumExist || maximumExist);
 
     if (minimumExist) {
-      query = query
-        ..where(
-          (notification) => notification.updatedAt.isBiggerThanValue(
-            minimumUpdatedAt,
-          ),
-        );
+      query.where(
+        (notification) => notification.updatedAt.isBiggerThanValue(
+          minimumUpdatedAt,
+        ),
+      );
     }
     if (maximumExist) {
-      query = query
-        ..where(
-          (notification) =>
-              notification.updatedAt.isSmallerThanValue(maximumUpdatedAt),
-        );
+      query.where(
+        (notification) =>
+            notification.updatedAt.isSmallerThanValue(maximumUpdatedAt),
+      );
     }
-
-    return query;
   }
 
   @override
@@ -117,7 +112,7 @@ class DraftStatusDao extends PopulatedAppLocalDatabaseDao<
       assert(
         orderingTermData.orderType == DraftStatusRepositoryOrderType.updatedAt,
       );
-      query = addUpdatedAtBoundsWhere(
+      addUpdatedAtBoundsWhere(
         query,
         maximumUpdatedAt: pagination?.olderThanItem?.updatedAt,
         minimumUpdatedAt: pagination?.newerThanItem?.updatedAt,
