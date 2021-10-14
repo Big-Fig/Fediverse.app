@@ -46,9 +46,13 @@ class FediMultiSelectChooserDialogBody extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           if (title != null)
-            _FediMultiSelectChooserDialogBodyTitleWidget(title: title),
+            _FediMultiSelectChooserDialogBodyTitleWidget(
+              title: title,
+            ),
           if (content != null)
-            _FediMultiSelectChooserDialogBodyContentWidget(content: content),
+            _FediMultiSelectChooserDialogBodyContentWidget(
+              content: content,
+            ),
           Align(
             alignment: Alignment.centerLeft,
             child: StreamBuilder<List<SelectionDialogAction>?>(
@@ -146,12 +150,9 @@ class _FediMultiSelectChooserDialogBodyActionWidget extends StatelessWidget {
     return Padding(
       padding: FediPadding.horizontalBigPadding,
       child: StreamBuilder<bool>(
-        initialData: action.isActionEnabledFetcher != null
-            ? action.isActionEnabledFetcher!(context)
-            : true,
-        stream: action.isActionEnabledStreamFetcher != null
-            ? action.isActionEnabledStreamFetcher!(context)
-            : Stream.value(true),
+        initialData: action.isActionEnabledFetcher?.call(context) ?? true,
+        stream: action.isActionEnabledStreamFetcher?.call(context) ??
+            Stream.value(true),
         builder: (context, snapshot) {
           var enabled = snapshot.data!;
           var fediUiColorTheme = IFediUiColorTheme.of(context);
@@ -163,12 +164,9 @@ class _FediMultiSelectChooserDialogBodyActionWidget extends StatelessWidget {
                   : IFediUiColorTheme.of(context).lightGrey;
 
           return StreamBuilder<bool>(
-            initialData: action.isActionVisibleFetcher != null
-                ? action.isActionVisibleFetcher!(context)
-                : true,
-            stream: action.isActionVisibleStreamFetcher != null
-                ? action.isActionVisibleStreamFetcher!(context)
-                : Stream.value(true),
+            initialData: action.isActionVisibleFetcher?.call(context) ?? true,
+            stream: action.isActionVisibleStreamFetcher?.call(context) ??
+                Stream.value(true),
             builder: (context, snapshot) {
               var visible = snapshot.data!;
               if (!visible) {

@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_bool_literals_in_conditional_expressions
+
 import 'package:fedi/app/media/settings/media_settings_model.dart';
 
 // ignore_for_file: no-magic-number

@@ -94,13 +94,14 @@ linter:
     # default value may changes
     avoid_redundant_argument_values: false
 
+    # types is better for readability & static analyzing
+    avoid_types_on_closure_parameters: false
+
     # code metrics have better rules for member ordering
     sort_constructors_first: false
     sort_unnamed_constructors_first: false
 
     prefer_final_parameters: false
-    avoid_types_on_closure_parameters: false
-    avoid_bool_literals_in_conditional_expressions: false
     avoid_catches_without_on_clauses: false
     avoid_field_initializers_in_const_classes: false
     avoid_function_literals_in_foreach_calls: false

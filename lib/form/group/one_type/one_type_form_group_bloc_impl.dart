@@ -46,14 +46,17 @@ class OneTypeFormGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
 
   @override
   bool get isMaximumFieldsCountReached =>
+      // ignore: avoid_bool_literals_in_conditional_expressions
       maximumFieldsCount != null ? items.length >= maximumFieldsCount! : false;
 
   @override
   bool get isMinimumFieldsCountReached =>
+      // ignore: avoid_bool_literals_in_conditional_expressions
       minimumFieldsCount != null ? items.length <= minimumFieldsCount! : false;
 
   @override
   Stream<bool> get isMaximumFieldsCountReachedStream => itemsStream.map(
+        // ignore: avoid_bool_literals_in_conditional_expressions
         (customFields) => maximumFieldsCount != null
             ? items.length >= maximumFieldsCount!
             : false,
@@ -61,6 +64,7 @@ class OneTypeFormGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
 
   @override
   Stream<bool> get isMinimumFieldsCountReachedStream => itemsStream.map(
+        // ignore: avoid_bool_literals_in_conditional_expressions
         (customFields) => minimumFieldsCount != null
             ? items.length <= minimumFieldsCount!
             : false,

@@ -73,7 +73,7 @@ abstract class FediPaginationListWidget<T> extends PaginationListWidget<T> {
       footer: const ListLoadingFooterWidget(),
       controller: refreshController,
       scrollController: scrollController,
-      primary: scrollController != null ? false : true,
+      primary: scrollController == null,
       onRefresh: () {
         _logger.finest(() => 'refresh');
 
