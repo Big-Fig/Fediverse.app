@@ -16,7 +16,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class UnifediApiAccessChooserInstanceListItemWidget extends StatelessWidget {
-  const UnifediApiAccessChooserInstanceListItemWidget();
+  const UnifediApiAccessChooserInstanceListItemWidget({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Padding(

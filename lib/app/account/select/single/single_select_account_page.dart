@@ -15,10 +15,11 @@ class SingleSelectAccountPage extends StatelessWidget {
   final bool isNeedPreFetchRelationship;
 
   const SingleSelectAccountPage({
+    Key? key,
     required this.accountSelectedCallback,
     this.accountActions,
     this.isNeedPreFetchRelationship = false,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Scaffold(

@@ -52,7 +52,7 @@ Future<void> showStatusActionMoreDialog({
     );
 
 class StatusActionMoreDialogBody extends StatelessWidget {
-  const StatusActionMoreDialogBody();
+  const StatusActionMoreDialogBody({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

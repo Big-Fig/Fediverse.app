@@ -5,6 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class FediVideoPlayerBufferingWidget extends StatelessWidget {
+  const FediVideoPlayerBufferingWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     var videoMediaPlayerBloc = IVideoMediaPlayerBloc.of(context, listen: false);
@@ -21,8 +23,6 @@ class FediVideoPlayerBufferingWidget extends StatelessWidget {
       },
     );
   }
-
-  const FediVideoPlayerBufferingWidget();
 }
 
 class _FediVideoPlayerBufferingLoadingWidget extends StatelessWidget {

@@ -45,9 +45,10 @@ class AccountActionMoreDialog extends StatelessWidget {
   final bool showReportAction;
 
   const AccountActionMoreDialog({
+    Key? key,
     required this.cancelable,
     required this.showReportAction,
-  });
+  }) : super(key: key);
 
   @override
   // ignore: code-metrics

@@ -10,7 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class EditFilterWidget extends StatelessWidget {
-  const EditFilterWidget();
+  const EditFilterWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

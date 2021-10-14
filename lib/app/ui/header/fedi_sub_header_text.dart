@@ -4,7 +4,10 @@ import 'package:flutter/cupertino.dart';
 class FediSubHeaderText extends StatelessWidget {
   final String text;
 
-  const FediSubHeaderText(this.text);
+  const FediSubHeaderText({
+    Key? key,
+    required this.text,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Text(

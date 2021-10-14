@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AccountHeaderFollowingCountWidget extends StatelessWidget {
-  const AccountHeaderFollowingCountWidget();
+  const AccountHeaderFollowingCountWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

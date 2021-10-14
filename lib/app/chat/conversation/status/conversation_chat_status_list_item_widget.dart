@@ -25,9 +25,10 @@ class ConversationChatStatusListItemWidget extends StatelessWidget {
   final bool isLastInMinuteGroup;
 
   const ConversationChatStatusListItemWidget({
+    Key? key,
     required this.isFirstInMinuteGroup,
     required this.isLastInMinuteGroup,
-  });
+  }) : super(key: key);
 
   @override
   // todo: refactor. use common code with pleroma_chat_list_item_widget

@@ -6,7 +6,10 @@ import 'package:flutter/widgets.dart';
 class FediLightStatusBarStyleArea extends StatelessWidget {
   final Widget child;
 
-  const FediLightStatusBarStyleArea({required this.child});
+  const FediLightStatusBarStyleArea({
+    Key? key,
+    required this.child,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -12,9 +12,10 @@ class TimelineSettingsOnlyFromAccountFormFieldRowWidget
   final String descriptionOnDisabled;
 
   const TimelineSettingsOnlyFromAccountFormFieldRowWidget({
+    Key? key,
     required this.description,
     required this.descriptionOnDisabled,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

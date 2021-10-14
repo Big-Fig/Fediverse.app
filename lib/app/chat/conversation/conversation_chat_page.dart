@@ -20,6 +20,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ConversationChatPage extends StatelessWidget {
+  const ConversationChatPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => const FediDarkStatusBarStyleArea(
         child: Scaffold(
@@ -27,8 +29,6 @@ class ConversationChatPage extends StatelessWidget {
           body: ConversationChatWidget(),
         ),
       );
-
-  const ConversationChatPage();
 }
 
 class _ConversationChatPageAppBarWidget extends StatelessWidget

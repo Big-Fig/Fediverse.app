@@ -7,6 +7,7 @@ import 'package:flutter/widgets.dart';
 class PleromaAsyncOperationButtonBuilderWidget<T>
     extends AsyncOperationButtonBuilderWidget<T> {
   PleromaAsyncOperationButtonBuilderWidget({
+    Key? key,
     required ButtonBuilder builder,
     required AsyncButtonAction<T> asyncButtonAction,
     String? progressContentMessage,
@@ -15,6 +16,7 @@ class PleromaAsyncOperationButtonBuilderWidget<T>
     List<ErrorDataBuilder> errorAlertDialogBuilders = const [],
     ErrorCallback? errorCallback,
   }) : super(
+          key: key,
           builder: builder,
           asyncButtonAction: asyncButtonAction,
           showProgressDialog: showProgressDialog,

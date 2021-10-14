@@ -38,6 +38,7 @@ class StatusReplySubHeaderWidget extends StatelessWidget {
   }
 
   const StatusReplySubHeaderWidget({
+    Key? key,
     this.accountCallback,
-  });
+  }) : super(key: key);
 }

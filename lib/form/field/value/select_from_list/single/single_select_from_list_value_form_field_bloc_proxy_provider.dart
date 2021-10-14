@@ -9,8 +9,9 @@ class SingleSelectFromListValueFormFieldBlocProxyProvider<T>
   final Widget child;
 
   const SingleSelectFromListValueFormFieldBlocProxyProvider({
+    Key? key,
     required this.child,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => ProxyProvider<

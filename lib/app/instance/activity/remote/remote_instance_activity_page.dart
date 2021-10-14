@@ -9,7 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class RemoteInstanceActivityPage extends StatelessWidget {
-  const RemoteInstanceActivityPage();
+  const RemoteInstanceActivityPage({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => const Scaffold(

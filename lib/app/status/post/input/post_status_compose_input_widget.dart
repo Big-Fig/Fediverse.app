@@ -15,11 +15,12 @@ class PostStatusComposeInputWidget extends StatelessWidget {
   final String? hintText;
 
   const PostStatusComposeInputWidget({
+    Key? key,
     required this.expanded,
     required this.autofocus,
     required this.maxLines,
     this.hintText,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

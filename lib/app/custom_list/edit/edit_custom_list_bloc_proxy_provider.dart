@@ -6,7 +6,10 @@ import 'package:provider/provider.dart';
 class EditCustomListBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  const EditCustomListBlocProxyProvider({required this.child});
+  const EditCustomListBlocProxyProvider({
+    Key? key,
+    required this.child,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) =>

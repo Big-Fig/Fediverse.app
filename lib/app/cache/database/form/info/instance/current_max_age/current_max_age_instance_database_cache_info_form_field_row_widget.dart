@@ -9,6 +9,9 @@ var _dateFormat = DateFormat('MMMM dd, yyyy');
 
 class CurrentMaxAgeInstanceDatabaseCacheInfoFormFieldRowWidget
     extends StatelessWidget {
+  const CurrentMaxAgeInstanceDatabaseCacheInfoFormFieldRowWidget({Key? key})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) =>
       CurrentMaxAgeInstanceDatabaseCacheInfoFormFieldBlocProxyProvider(
@@ -21,6 +24,4 @@ class CurrentMaxAgeInstanceDatabaseCacheInfoFormFieldRowWidget
                   ),
         ),
       );
-
-  const CurrentMaxAgeInstanceDatabaseCacheInfoFormFieldRowWidget();
 }

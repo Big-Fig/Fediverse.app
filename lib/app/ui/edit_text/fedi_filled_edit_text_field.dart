@@ -28,6 +28,7 @@ class FediFilledEditTextField extends StatelessWidget {
   final bool filled;
 
   const FediFilledEditTextField({
+    Key? key,
     required this.textEditingController,
     required this.hintText,
     required this.errorText,
@@ -46,7 +47,7 @@ class FediFilledEditTextField extends StatelessWidget {
     required this.highlightMentions,
     required this.maxLength,
     this.filled = true,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +61,7 @@ class FediFilledEditTextField extends StatelessWidget {
           ? BoxDecoration(
               color: backgroundColor, border: border,
               // ignore: no-magic-number
-              borderRadius: BorderRadius.circular(30.0),
+              borderRadius: const BorderRadius.all(Radius.circular(30.0)),
             )
           : null,
       child: Padding(

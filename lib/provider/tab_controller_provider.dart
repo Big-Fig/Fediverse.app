@@ -12,9 +12,10 @@ class TabControllerProvider extends StatefulWidget {
   final Widget child;
 
   const TabControllerProvider({
+    Key? key,
     required this.tabControllerCreator,
     required this.child,
-  });
+  }) : super(key: key);
 
   @override
   TabControllerProviderState createState() => TabControllerProviderState();

@@ -8,8 +8,9 @@ class HashtagPageBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
   const HashtagPageBlocProxyProvider({
+    Key? key,
     required this.child,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) =>

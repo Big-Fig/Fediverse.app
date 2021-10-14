@@ -10,8 +10,9 @@ class CrashReportingPermissionCheckerWidget extends StatefulWidget {
   final Widget child;
 
   const CrashReportingPermissionCheckerWidget({
+    Key? key,
     required this.child,
-  });
+  }) : super(key: key);
 
   @override
   CrashReportingPermissionCheckerWidgetState createState() =>

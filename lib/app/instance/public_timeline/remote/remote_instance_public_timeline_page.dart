@@ -24,7 +24,9 @@ import 'package:provider/provider.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
 class RemoteInstancePublicTimelinePage extends StatelessWidget {
-  const RemoteInstancePublicTimelinePage();
+  const RemoteInstancePublicTimelinePage({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => const Scaffold(
@@ -88,7 +90,8 @@ Future goToRemoteInstancePublicTimelinePage({
 }
 
 class RemoteInstancePublicTimelinePageBodyWidget extends StatelessWidget {
-  const RemoteInstancePublicTimelinePageBodyWidget();
+  const RemoteInstancePublicTimelinePageBodyWidget({Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

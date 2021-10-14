@@ -12,6 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class EditCustomListPage extends StatelessWidget {
+  const EditCustomListPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: FediPageTitleAppBar(
@@ -27,8 +29,6 @@ class EditCustomListPage extends StatelessWidget {
           ),
         ),
       );
-
-  const EditCustomListPage();
 }
 
 void goToEditCustomListPage({

@@ -10,8 +10,9 @@ class FediUiThemeSingleFromListValueFormFieldBlocProxyProvider
   final Widget child;
 
   const FediUiThemeSingleFromListValueFormFieldBlocProxyProvider({
+    Key? key,
     required this.child,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => ProxyProvider<

@@ -3,6 +3,8 @@ import 'package:fedi/collapsible/owner/collapsible_owner_widget.dart';
 import 'package:flutter/widgets.dart';
 
 class SearchStatusesListWidget extends StatelessWidget {
+  const SearchStatusesListWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => const CollapsibleOwnerWidget(
         child: SearchStatusPaginationListTimelineWidget(
@@ -10,5 +12,4 @@ class SearchStatusesListWidget extends StatelessWidget {
           needWatchLocalRepositoryForUpdates: false,
         ),
       );
-  const SearchStatusesListWidget();
 }

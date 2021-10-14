@@ -10,7 +10,10 @@ import 'package:provider/provider.dart';
 class InstanceDirectoryBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  const InstanceDirectoryBlocProxyProvider({required this.child});
+  const InstanceDirectoryBlocProxyProvider({
+    Key? key,
+    required this.child,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) =>

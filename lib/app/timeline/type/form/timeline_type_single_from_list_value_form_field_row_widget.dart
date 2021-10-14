@@ -6,6 +6,9 @@ import 'package:flutter/cupertino.dart';
 
 class TimelineTypeSingleFromListValueFormFieldRowWidget
     extends StatelessWidget {
+  const TimelineTypeSingleFromListValueFormFieldRowWidget({Key? key})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) =>
       TimelineTypeSingleFromListValueFormFieldBlocProxyProvider(
@@ -20,8 +23,6 @@ class TimelineTypeSingleFromListValueFormFieldRowWidget
           valueIconMapper: null,
         ),
       );
-
-  const TimelineTypeSingleFromListValueFormFieldRowWidget();
 }
 
 String mapTimelineTypeToLabel(BuildContext context, TimelineType type) {

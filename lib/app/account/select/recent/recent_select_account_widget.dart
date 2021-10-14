@@ -26,13 +26,14 @@ class RecentSelectAccountWidget extends StatelessWidget {
   final Widget? footer;
 
   const RecentSelectAccountWidget({
+    Key? key,
     required this.itemActions,
     required this.itemPadding,
     this.header,
     this.footer,
     this.alwaysShowHeader,
     this.alwaysShowFooter,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

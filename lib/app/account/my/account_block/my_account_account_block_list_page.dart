@@ -24,6 +24,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class MyAccountAccountBlockListPage extends StatelessWidget {
+  const MyAccountAccountBlockListPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: FediPageTitleAppBar(
@@ -47,8 +49,6 @@ class MyAccountAccountBlockListPage extends StatelessWidget {
           ),
         ),
       );
-
-  const MyAccountAccountBlockListPage();
 }
 
 class _MyAccountAccountBlockListPageAddButton extends StatelessWidget {

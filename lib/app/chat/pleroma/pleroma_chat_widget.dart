@@ -16,7 +16,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class PleromaChatWidget extends StatelessWidget {
-  const PleromaChatWidget();
+  const PleromaChatWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

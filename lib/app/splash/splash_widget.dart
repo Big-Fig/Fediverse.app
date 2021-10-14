@@ -7,8 +7,9 @@ class SplashWidget extends StatelessWidget {
   final bool displayVersionInfo;
 
   const SplashWidget({
+    Key? key,
     required this.displayVersionInfo,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Stack(

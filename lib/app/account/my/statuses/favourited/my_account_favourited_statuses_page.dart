@@ -20,6 +20,8 @@ import 'package:provider/provider.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
 class MyAccountFavouritedStatusesPage extends StatelessWidget {
+  const MyAccountFavouritedStatusesPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: FediPageTitleAppBar(
@@ -34,8 +36,6 @@ class MyAccountFavouritedStatusesPage extends StatelessWidget {
           ),
         ),
       );
-
-  const MyAccountFavouritedStatusesPage();
 }
 
 class _MyAccountFavouritedStatusesPageEmptyWidget extends StatelessWidget {

@@ -9,10 +9,11 @@ class FediPageAppBarTextActionWidget extends StatelessWidget {
   final Color? color;
 
   const FediPageAppBarTextActionWidget({
+    Key? key,
     required this.text,
     required this.onPressed,
     this.color,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Center(

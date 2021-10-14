@@ -18,7 +18,9 @@ import 'package:unifedi_api/unifedi_api.dart';
 final _logger = Logger('instance_activity_widget.dart');
 
 class InstanceActivityWidget extends StatelessWidget {
-  const InstanceActivityWidget();
+  const InstanceActivityWidget({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

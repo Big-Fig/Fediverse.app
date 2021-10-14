@@ -16,7 +16,9 @@ import 'package:unifedi_api/unifedi_api.dart';
 
 class InstancePublicTimelinePageAppBarWidget extends StatelessWidget
     implements PreferredSizeWidget {
-  const InstancePublicTimelinePageAppBarWidget();
+  const InstancePublicTimelinePageAppBarWidget({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

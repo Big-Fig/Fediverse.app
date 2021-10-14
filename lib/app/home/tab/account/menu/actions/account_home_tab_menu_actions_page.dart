@@ -22,6 +22,8 @@ import 'package:provider/provider.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
 class AccountHomeTabMenuActionsPage extends StatelessWidget {
+  const AccountHomeTabMenuActionsPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: FediPageTitleAppBar(
@@ -32,8 +34,6 @@ class AccountHomeTabMenuActionsPage extends StatelessWidget {
           child: _AccountHomeTabMenuActionsBody(),
         ),
       );
-
-  const AccountHomeTabMenuActionsPage();
 }
 
 class _AccountHomeTabMenuActionsBody extends StatelessWidget {

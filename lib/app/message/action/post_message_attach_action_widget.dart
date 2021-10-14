@@ -7,7 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PostMessageAttachActionWidget extends StatelessWidget {
-  const PostMessageAttachActionWidget();
+  const PostMessageAttachActionWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

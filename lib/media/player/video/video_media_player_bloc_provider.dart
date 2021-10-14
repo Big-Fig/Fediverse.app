@@ -7,8 +7,9 @@ class VideoMediaPlayerBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
   const VideoMediaPlayerBlocProxyProvider({
+    Key? key,
     required this.child,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) =>

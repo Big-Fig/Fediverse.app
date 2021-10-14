@@ -19,7 +19,7 @@ import 'package:provider/provider.dart';
 final _logger = Logger('post_status_poll_widget.dart');
 
 class PostStatusPollWidget extends StatelessWidget {
-  const PostStatusPollWidget();
+  const PostStatusPollWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Column(

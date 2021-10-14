@@ -21,7 +21,7 @@ import 'package:unifedi_api/unifedi_api.dart';
 
 class HashtagPageAppBarWidget extends StatelessWidget
     implements PreferredSizeWidget {
-  const HashtagPageAppBarWidget();
+  const HashtagPageAppBarWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

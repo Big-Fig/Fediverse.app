@@ -27,6 +27,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class MyAccountDomainBlockListPage extends StatelessWidget {
+  const MyAccountDomainBlockListPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: FediPageTitleAppBar(
@@ -174,7 +176,7 @@ MaterialPageRoute<void> createMyAccountDomainBlockListPage() =>
                 child: MyAccountDomainBlockPaginationListBloc.provideToContext(
                   context,
                   loadFromCacheDuringInit: false,
-                  child: MyAccountDomainBlockListPage(),
+                  child: const MyAccountDomainBlockListPage(),
                 ),
               ),
             ),

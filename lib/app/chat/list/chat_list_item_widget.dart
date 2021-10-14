@@ -36,8 +36,9 @@ class ChatListItemWidget extends StatelessWidget {
   final OnClickUiCallback onClick;
 
   const ChatListItemWidget({
+    Key? key,
     required this.onClick,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

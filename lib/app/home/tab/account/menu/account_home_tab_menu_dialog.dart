@@ -31,7 +31,7 @@ Future<void> showAccountHomeTabMenuDialog(BuildContext context) =>
     );
 
 class AccountHomeTabMenuDialogBodyWidget extends StatelessWidget {
-  const AccountHomeTabMenuDialogBodyWidget();
+  const AccountHomeTabMenuDialogBodyWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

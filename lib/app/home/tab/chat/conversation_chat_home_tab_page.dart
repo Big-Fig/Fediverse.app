@@ -148,7 +148,7 @@ class _ConversationMessagesHomeTabPageHeaderWidget extends StatelessWidget {
   Widget build(BuildContext context) => FediTabMainHeaderBarWidget(
         leadingWidgets: [
           FediHeaderText(
-            S.of(context).app_home_tab_chat_conversation_title,
+            text: S.of(context).app_home_tab_chat_conversation_title,
           ),
         ],
         content: null,

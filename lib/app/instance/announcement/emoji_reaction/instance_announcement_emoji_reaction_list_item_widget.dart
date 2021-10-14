@@ -14,7 +14,9 @@ class InstanceAnnouncementEmojiReactionListItemWidget extends StatelessWidget {
         child: InstanceAnnouncementEmojiReactionListItemBodyWidget(),
       );
 
-  const InstanceAnnouncementEmojiReactionListItemWidget();
+  const InstanceAnnouncementEmojiReactionListItemWidget({
+    Key? key,
+  }) : super(key: key);
 }
 
 class InstanceAnnouncementEmojiReactionListItemBodyWidget

@@ -19,6 +19,8 @@ import 'package:logging/logging.dart';
 final _logger = Logger('fedi_video_player_widget.dart');
 
 class FediVideoPlayerWidget extends StatelessWidget {
+  const FediVideoPlayerWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => Stack(
         alignment: Alignment.center,
@@ -30,8 +32,6 @@ class FediVideoPlayerWidget extends StatelessWidget {
           _FediVideoPlayerErrorWidget(),
         ],
       );
-
-  const FediVideoPlayerWidget();
 }
 
 class _FediVideoPlayerErrorWidget extends StatelessWidget {

@@ -23,7 +23,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
 class AccountReportWidget extends StatelessWidget {
-  const AccountReportWidget();
+  const AccountReportWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => ListView(

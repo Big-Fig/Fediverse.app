@@ -41,7 +41,7 @@ import 'package:unifedi_api/unifedi_api.dart';
 var _logger = Logger('home_page.dart');
 
 class HomePage extends StatelessWidget {
-  const HomePage();
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -233,7 +233,7 @@ class _HomePageNotificationTabWidget extends StatelessWidget {
 
           return notificationsHomeTabBloc;
         },
-        child: NotificationsHomeTabBlocProxyProvider(
+        child: const NotificationsHomeTabBlocProxyProvider(
           child: NotificationsHomeTabPage(),
         ),
       );

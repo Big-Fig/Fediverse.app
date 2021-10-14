@@ -21,8 +21,9 @@ class EditDatabaseCacheSettingsWidget extends StatelessWidget {
   final bool shrinkWrap;
 
   const EditDatabaseCacheSettingsWidget({
+    Key? key,
     required this.shrinkWrap,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

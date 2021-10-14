@@ -3,7 +3,7 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 
 class StatusListTapToLoadOverlayWidget extends StatelessWidget {
-  const StatusListTapToLoadOverlayWidget();
+  const StatusListTapToLoadOverlayWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => FediListTapToLoadOverlayWidget(

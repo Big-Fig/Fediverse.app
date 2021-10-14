@@ -26,12 +26,13 @@ class DurationDateTimeValueFormFieldRowWidget extends StatelessWidget {
   final bool useDialogPickerForValueSelection;
 
   const DurationDateTimeValueFormFieldRowWidget({
+    Key? key,
     required this.label,
     required this.useDialogPickerForValueSelection,
     this.description,
     this.descriptionOnDisabled,
     this.negativeValue,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Column(
@@ -283,9 +284,10 @@ class DurationDateTimeValueFormFieldRowValueTextWidget extends StatelessWidget {
   final bool useDialogPickerForValueSelection;
 
   const DurationDateTimeValueFormFieldRowValueTextWidget({
+    Key? key,
     required this.negativeValue,
     required this.useDialogPickerForValueSelection,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -347,8 +349,9 @@ class DurationDateTimeValueFormFieldRowIconButtonWidget
   final String popupTitle;
 
   const DurationDateTimeValueFormFieldRowIconButtonWidget({
+    Key? key,
     required this.popupTitle,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

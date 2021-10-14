@@ -17,7 +17,8 @@ import 'package:flutter/material.dart';
 const _typeContainerSize = 60.0;
 
 class PostMessageSelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
-  const PostMessageSelectMediaAttachmentTypeToPickWidget();
+  const PostMessageSelectMediaAttachmentTypeToPickWidget({Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) => Padding(
@@ -255,7 +256,8 @@ class _PostMessageSelectMediaAttachmentTypeToPickActionWidget
               decoration: BoxDecoration(
                 border:
                     Border.all(color: IFediUiColorTheme.of(context).darkGrey),
-                borderRadius: BorderRadius.circular(_typeContainerSize),
+                borderRadius:
+                    const BorderRadius.all(Radius.circular(_typeContainerSize)),
               ),
               child: Center(
                 child: Icon(

@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class EmojiReactionWidget extends StatelessWidget {
-  const EmojiReactionWidget();
+  const EmojiReactionWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => const Padding(
@@ -35,7 +35,7 @@ class _StatusEmojiReactionListItemContentWidget extends StatelessWidget {
       decoration: BoxDecoration(
         // todo: refactor
         // ignore: no-magic-number
-        borderRadius: BorderRadius.circular(40.0),
+        borderRadius: const BorderRadius.all(Radius.circular(40.0)),
         border: Border.all(
           color: color,
           // todo: refactor

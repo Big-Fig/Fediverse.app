@@ -10,8 +10,9 @@ class CachedPaginationListWithNewItemsBlocProxyProvider<
   final Widget child;
 
   const CachedPaginationListWithNewItemsBlocProxyProvider({
+    Key? key,
     required this.child,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => ProxyProvider<

@@ -52,7 +52,9 @@ class InstanceAnnouncementListPage extends StatelessWidget {
         ),
       );
 
-  const InstanceAnnouncementListPage();
+  const InstanceAnnouncementListPage({
+    Key? key,
+  }) : super(key: key);
 }
 
 class _InstanceAnnouncementListPagePageEmptyWidget extends StatelessWidget {

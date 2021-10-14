@@ -8,6 +8,9 @@ import 'package:unifedi_api/unifedi_api.dart';
 
 class StatusVisibilitySelectSingleFromListValueFormFieldRowWidget
     extends StatelessWidget {
+  const StatusVisibilitySelectSingleFromListValueFormFieldRowWidget({Key? key})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) =>
       StatusVisibilitySelectSingleFromListValueFormFieldBlocProxyProvider(
@@ -26,6 +29,4 @@ class StatusVisibilitySelectSingleFromListValueFormFieldRowWidget
               StatusVisibilityIconWidget.mapVisibilityToIconData(value!),
         ),
       );
-
-  const StatusVisibilitySelectSingleFromListValueFormFieldRowWidget();
 }

@@ -20,6 +20,7 @@ class FediFormEditTextRow extends StatelessWidget {
   final Axis axis;
 
   const FediFormEditTextRow({
+    Key? key,
     required this.label,
     required this.autocorrect,
     this.obscureText = false,
@@ -34,7 +35,7 @@ class FediFormEditTextRow extends StatelessWidget {
     this.enabled = true,
     this.keyboardType,
     this.axis = Axis.vertical,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

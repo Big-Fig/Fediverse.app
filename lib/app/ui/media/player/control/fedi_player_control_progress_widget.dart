@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class FediPlayerControlProgressWidget extends StatelessWidget {
+  const FediPlayerControlProgressWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     var fediUiColorTheme = IFediUiColorTheme.of(context);
@@ -26,8 +28,6 @@ class FediPlayerControlProgressWidget extends StatelessWidget {
       child: const _FediPlayerControlProgressPlaybackWidget(),
     );
   }
-
-  const FediPlayerControlProgressWidget();
 }
 
 class _FediPlayerControlProgressPlaybackWidget extends StatelessWidget {

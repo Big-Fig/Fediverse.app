@@ -10,8 +10,9 @@ class WebSocketsModeSingleFromListValueFormFieldBlocProxyProvider
   final Widget child;
 
   const WebSocketsModeSingleFromListValueFormFieldBlocProxyProvider({
+    Key? key,
     required this.child,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => ProxyProvider<

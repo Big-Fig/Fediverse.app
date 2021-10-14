@@ -16,7 +16,7 @@ import 'package:provider/provider.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
 class AccountReportPage extends StatelessWidget {
-  const AccountReportPage();
+  const AccountReportPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => const Scaffold(

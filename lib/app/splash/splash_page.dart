@@ -7,8 +7,9 @@ class SplashPage extends StatelessWidget {
   final bool displayVersionInfo;
 
   const SplashPage({
+    Key? key,
     required this.displayVersionInfo,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Scaffold(

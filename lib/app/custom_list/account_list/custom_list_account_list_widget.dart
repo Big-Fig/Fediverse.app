@@ -7,8 +7,9 @@ class CustomListAccountListWidget extends StatelessWidget {
   final List<Widget> itemActions;
 
   const CustomListAccountListWidget({
+    Key? key,
     required this.itemActions,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => AccountPaginationListWidget(

@@ -9,8 +9,9 @@ class EditChatSettingsWidget extends StatelessWidget {
   final bool shrinkWrap;
 
   const EditChatSettingsWidget({
+    Key? key,
     required this.shrinkWrap,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Column(

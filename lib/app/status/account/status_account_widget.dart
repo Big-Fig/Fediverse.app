@@ -17,6 +17,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class StatusAccountWidget extends StatelessWidget {
+  const StatusAccountWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context, listen: true);
@@ -108,6 +110,4 @@ class StatusAccountWidget extends StatelessWidget {
       ),
     );
   }
-
-  const StatusAccountWidget();
 }

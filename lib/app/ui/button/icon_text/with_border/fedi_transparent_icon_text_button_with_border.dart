@@ -17,14 +17,16 @@ class FediTransparentIconTextButtonWithBorder extends StatelessWidget {
 
   final TextStyle? textStyle;
 
+  // todo: refactor
   const FediTransparentIconTextButtonWithBorder(
     this.text,
     this.icon, {
+    Key? key,
     required this.onPressed,
     this.height = FediSizes.textButtonHeight,
     this.borderWidth = 1,
     this.textStyle,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

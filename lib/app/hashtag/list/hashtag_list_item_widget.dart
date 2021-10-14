@@ -20,8 +20,9 @@ class HashtagListItemWidget extends StatelessWidget {
   final bool displayHistory;
 
   const HashtagListItemWidget({
+    Key? key,
     required this.displayHistory,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -16,7 +16,10 @@ import 'package:flutter/material.dart';
 class MultiSelectAccountPage extends StatelessWidget {
   final AccountsListCallback accountsListSelectedCallback;
 
-  const MultiSelectAccountPage({required this.accountsListSelectedCallback});
+  const MultiSelectAccountPage({
+    Key? key,
+    required this.accountsListSelectedCallback,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

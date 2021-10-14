@@ -26,10 +26,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
-const text = Text('');
-
 class HomePageBottomNavigationBarWidget extends StatelessWidget {
-  const HomePageBottomNavigationBarWidget();
+  const HomePageBottomNavigationBarWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

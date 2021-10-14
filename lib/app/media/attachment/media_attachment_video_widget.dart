@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
 class MediaAttachmentVideoWidget extends StatelessWidget {
-  const MediaAttachmentVideoWidget();
+  const MediaAttachmentVideoWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

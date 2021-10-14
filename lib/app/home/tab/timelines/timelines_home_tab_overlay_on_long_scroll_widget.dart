@@ -7,6 +7,8 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 
 class TimelinesHomeTabOverlayOnLongScrollWidget extends StatelessWidget {
+  const TimelinesHomeTabOverlayOnLongScrollWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => FediDarkStatusBarStyleArea(
         child: GestureDetector(
@@ -44,6 +46,4 @@ class TimelinesHomeTabOverlayOnLongScrollWidget extends StatelessWidget {
           ),
         ),
       );
-
-  const TimelinesHomeTabOverlayOnLongScrollWidget();
 }

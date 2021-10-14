@@ -20,8 +20,10 @@ class FediIconInCircleFilledButton extends StatelessWidget {
   final Color? enabledIconColor;
   final Color? disabledIconColor;
 
+  // todo: refactor
   const FediIconInCircleFilledButton(
     this.iconData, {
+    Key? key,
     required this.onPressed,
     this.enabledBackgroundColor,
     this.disabledBackgroundColor,
@@ -32,7 +34,7 @@ class FediIconInCircleFilledButton extends StatelessWidget {
     this.borderWidth = 1.0,
     this.iconSize = FediSizes.iconInCircleDefaultIconSize,
     this.size = FediSizes.iconInCircleDefaultSize,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ChatSelectionActionListWidget extends StatelessWidget {
-  const ChatSelectionActionListWidget();
+  const ChatSelectionActionListWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Row(

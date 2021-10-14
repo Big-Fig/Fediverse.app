@@ -9,8 +9,9 @@ class EditCrashReportingSettingsWidget extends StatelessWidget {
   final bool shrinkWrap;
 
   const EditCrashReportingSettingsWidget({
+    Key? key,
     required this.shrinkWrap,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Column(

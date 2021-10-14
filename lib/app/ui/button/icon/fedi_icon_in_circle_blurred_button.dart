@@ -14,13 +14,15 @@ class FediIconInCircleBlurredButton extends StatelessWidget {
   final double borderWidth;
   final double size;
 
+  // todo: refactor
   const FediIconInCircleBlurredButton(
     this.iconData, {
+    Key? key,
     required this.onPressed,
     this.borderWidth = 1.0,
     this.iconSize = FediSizes.iconInCircleDefaultIconSize,
     this.size = FediSizes.iconInCircleDefaultSize,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => SizedBox(

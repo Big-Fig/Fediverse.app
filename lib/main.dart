@@ -420,9 +420,10 @@ class FediApp extends StatelessWidget {
   final bool instanceInitialized;
 
   const FediApp({
+    Key? key,
     required this.child,
     required this.instanceInitialized,
-  });
+  }) : super(key: key);
 
   @override
   // todo: refactor

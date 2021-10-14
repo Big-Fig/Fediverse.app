@@ -31,6 +31,8 @@ import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class StatusThreadWidget extends StatelessWidget {
+  const StatusThreadWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     var fediUiColorTheme = IFediUiColorTheme.of(context);
@@ -88,8 +90,6 @@ class StatusThreadWidget extends StatelessWidget {
       },
     );
   }
-
-  const StatusThreadWidget();
 }
 
 class _StatusThreadStatusesWidget extends StatelessWidget {

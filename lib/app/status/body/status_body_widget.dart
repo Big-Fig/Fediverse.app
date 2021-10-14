@@ -41,7 +41,7 @@ const _defaultPadding = FediPadding.horizontalBigPadding;
 final _logger = Logger('status_body_widget.dart');
 
 class StatusBodyWidget extends StatelessWidget {
-  const StatusBodyWidget();
+  const StatusBodyWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Column(
@@ -199,7 +199,7 @@ class _StatusBodyPollWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ProxyProvider<IStatusBloc, IPollBloc>(
         update: (context, statusBloc, _) => statusBloc.pollBloc,
-        child: PollWidget(),
+        child: const PollWidget(),
       );
 }
 

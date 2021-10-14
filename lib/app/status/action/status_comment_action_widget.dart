@@ -13,6 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class StatusCommentActionWidget extends StatelessWidget {
+  const StatusCommentActionWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => Row(
         children: const <Widget>[
@@ -20,8 +22,6 @@ class StatusCommentActionWidget extends StatelessWidget {
           _StatusCommentActionCounterWidget(),
         ],
       );
-
-  const StatusCommentActionWidget();
 }
 
 class _StatusCommentActionCounterWidget extends StatelessWidget {

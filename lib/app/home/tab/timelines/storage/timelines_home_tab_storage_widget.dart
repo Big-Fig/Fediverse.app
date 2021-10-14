@@ -27,6 +27,8 @@ import 'package:unifedi_api/unifedi_api.dart';
 var _logger = Logger('timelines_home_tab_storage_widget.dart');
 
 class TimelinesHomeTabStorageWidget extends StatelessWidget {
+  const TimelinesHomeTabStorageWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     var timelinesHomeTabStorageBloc = ITimelinesHomeTabStorageBloc.of(context);
@@ -47,8 +49,6 @@ class TimelinesHomeTabStorageWidget extends StatelessWidget {
       },
     );
   }
-
-  const TimelinesHomeTabStorageWidget();
 }
 
 class _TimelinesHomeTabStorageListWidget extends StatelessWidget {

@@ -5,8 +5,9 @@ class FediGreyChip extends StatelessWidget {
   final String label;
 
   const FediGreyChip({
+    Key? key,
     required this.label,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Chip(

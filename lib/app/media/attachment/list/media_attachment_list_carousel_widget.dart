@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
 class MediaAttachmentListCarouselWidget extends StatelessWidget {
-  const MediaAttachmentListCarouselWidget();
+  const MediaAttachmentListCarouselWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class MediaAttachmentListCarouselWidget extends StatelessWidget {
 }
 
 class MediaAttachmentListCarouselBodyWidget extends StatelessWidget {
-  const MediaAttachmentListCarouselBodyWidget();
+  const MediaAttachmentListCarouselBodyWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -63,6 +63,8 @@ class MediaAttachmentListCarouselBodyWidget extends StatelessWidget {
 }
 
 class MediaAttachmentListItemWidget extends StatelessWidget {
+  const MediaAttachmentListItemWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     var mediaAttachment = Provider.of<IUnifediApiMediaAttachment>(context);
@@ -90,8 +92,6 @@ class MediaAttachmentListItemWidget extends StatelessWidget {
 
     return child;
   }
-
-  const MediaAttachmentListItemWidget();
 }
 
 Widget _carouselWidgetBuilder(BuildContext context, int index) {

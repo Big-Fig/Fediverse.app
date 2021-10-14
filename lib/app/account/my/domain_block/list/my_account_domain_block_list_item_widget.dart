@@ -9,9 +9,10 @@ class MyAccountDomainBlockListItemWidget extends StatelessWidget {
   final List<Widget>? domainBlockActions;
 
   const MyAccountDomainBlockListItemWidget({
+    Key? key,
     required this.domainBlockSelectedCallback,
     this.domainBlockActions,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => GestureDetector(

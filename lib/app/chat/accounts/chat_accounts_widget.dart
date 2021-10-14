@@ -11,6 +11,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ChatAccountsWidget extends StatelessWidget {
+  const ChatAccountsWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     var chatBloc = IChatBloc.of(context);
@@ -48,8 +50,6 @@ class ChatAccountsWidget extends StatelessWidget {
       },
     );
   }
-
-  const ChatAccountsWidget();
 }
 
 class _ChatAccountsLoadingWidget extends StatelessWidget {

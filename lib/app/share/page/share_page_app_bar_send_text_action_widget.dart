@@ -5,7 +5,7 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 
 class SharePageAppBarSendTextActionWidget extends StatelessWidget {
-  const SharePageAppBarSendTextActionWidget();
+  const SharePageAppBarSendTextActionWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -24,6 +24,8 @@ void _newPostStatusPageHandleBackPressed(
 }
 
 class NewPostStatusPage extends StatelessWidget {
+  const NewPostStatusPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     var postStatusBloc = IPostStatusBloc.of(context, listen: false);
@@ -41,8 +43,6 @@ class NewPostStatusPage extends StatelessWidget {
       ),
     );
   }
-
-  const NewPostStatusPage();
 }
 
 class _NewPostStatusPageBodyWidget extends StatelessWidget {

@@ -15,14 +15,16 @@ class FediIconInCircleTransparentButton extends StatelessWidget {
   final double size;
   final Color color;
 
+  // todo: refactor key
   const FediIconInCircleTransparentButton(
     this.iconData, {
+    Key? key,
     required this.onPressed,
     required this.color,
     this.borderWidth = 1.0,
     this.iconSize = FediSizes.iconInCircleDefaultIconSize,
     this.size = FediSizes.iconInCircleDefaultSize,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

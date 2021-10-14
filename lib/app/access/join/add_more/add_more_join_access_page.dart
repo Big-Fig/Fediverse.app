@@ -20,7 +20,9 @@ class AddMoreJoinUnifediApiAccessPage extends StatelessWidget {
         ),
       );
 
-  const AddMoreJoinUnifediApiAccessPage();
+  const AddMoreJoinUnifediApiAccessPage({
+    Key? key,
+  }) : super(key: key);
 }
 
 void goToAddMoreJoinUnifediApiAccessPage(BuildContext context) {

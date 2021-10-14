@@ -17,7 +17,10 @@ import 'package:provider/provider.dart';
 class AccountNoteWidget extends StatelessWidget {
   final TextStyle textStyle;
 
-  const AccountNoteWidget({required this.textStyle});
+  const AccountNoteWidget({
+    Key? key,
+    required this.textStyle,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

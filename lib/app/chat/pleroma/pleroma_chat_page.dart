@@ -19,6 +19,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class PleromaChatPage extends StatelessWidget {
+  const PleromaChatPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => FediDarkStatusBarStyleArea(
         child: Scaffold(
@@ -34,8 +36,6 @@ class PleromaChatPage extends StatelessWidget {
           ),
         ),
       );
-
-  const PleromaChatPage();
 }
 
 class _PleromaChatPageAppBarWidget extends StatelessWidget {

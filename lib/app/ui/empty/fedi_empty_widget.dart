@@ -7,9 +7,10 @@ class FediEmptyWidget extends StatelessWidget {
   final String? subTitle;
 
   const FediEmptyWidget({
+    Key? key,
     required this.title,
     this.subTitle,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

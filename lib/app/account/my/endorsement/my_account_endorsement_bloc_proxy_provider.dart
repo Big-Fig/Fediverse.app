@@ -9,7 +9,10 @@ import 'package:provider/provider.dart';
 class MyAccountEndorsementBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  const MyAccountEndorsementBlocProxyProvider({required this.child});
+  const MyAccountEndorsementBlocProxyProvider({
+    Key? key,
+    required this.child,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => ProxyProvider<IMyAccountEndorsementBloc,

@@ -15,6 +15,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class StatusSpoilerWidget extends StatelessWidget {
+  const StatusSpoilerWidget({Key? key}) : super(key: key);
+
   @override
   // todo: refactor
   // ignore: long-method, code-metrics
@@ -117,8 +119,6 @@ class StatusSpoilerWidget extends StatelessWidget {
 
     return textStyle;
   }
-
-  const StatusSpoilerWidget();
 }
 
 Future _handleLinkTap(BuildContext context, String url) async {

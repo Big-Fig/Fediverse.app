@@ -25,11 +25,12 @@ class ShareSelectAccountWidget extends StatelessWidget {
   final Widget? footer;
 
   const ShareSelectAccountWidget({
+    Key? key,
     this.header,
     this.footer,
     this.alwaysShowHeader,
     this.alwaysShowFooter,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => SelectAccountListBloc.provideToContext(

@@ -10,10 +10,11 @@ class BoolValueFormFieldRowWidget extends StatelessWidget {
   final String? descriptionOnDisabled;
 
   const BoolValueFormFieldRowWidget({
+    Key? key,
     required this.label,
     this.description,
     this.descriptionOnDisabled,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => BoolValueFormFieldBlocProxyProvider(

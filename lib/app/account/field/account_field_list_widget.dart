@@ -9,8 +9,9 @@ class AccountFieldListWidget extends StatelessWidget {
   final Brightness brightness;
 
   const AccountFieldListWidget({
+    Key? key,
     required this.brightness,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

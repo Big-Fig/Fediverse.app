@@ -25,6 +25,7 @@ class AsyncOperationButtonBuilderWidget<T> extends StatefulWidget {
   final List<ErrorDataBuilder> errorDataBuilders;
 
   const AsyncOperationButtonBuilderWidget({
+    Key? key,
     required this.builder,
     required this.asyncButtonAction,
     this.showProgressDialog = true,
@@ -32,7 +33,7 @@ class AsyncOperationButtonBuilderWidget<T> extends StatefulWidget {
     this.successToastMessage,
     this.errorCallback,
     this.errorDataBuilders = const [],
-  });
+  }) : super(key: key);
 
   @override
   AsyncOperationButtonBuilderWidgetState createState() =>

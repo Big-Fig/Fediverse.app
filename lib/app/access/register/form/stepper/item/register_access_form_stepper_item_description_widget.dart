@@ -6,8 +6,9 @@ class RegisterUnifediApiAccessFormStepperItemDescriptionWidget
   final String text;
 
   const RegisterUnifediApiAccessFormStepperItemDescriptionWidget({
+    Key? key,
     required this.text,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Text(

@@ -31,6 +31,7 @@ class FediFormSingleChooseFromListFieldRow<T> extends StatelessWidget {
   final ValueChangedCallback<T?> onChanged;
 
   const FediFormSingleChooseFromListFieldRow({
+    Key? key,
     required this.isEnabled,
     required this.nullable,
     required this.label,
@@ -44,7 +45,7 @@ class FediFormSingleChooseFromListFieldRow<T> extends StatelessWidget {
     required this.valueToIconMapper,
     required this.valueToKeyMapper,
     required this.onChanged,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => FediFormRow(

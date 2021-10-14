@@ -33,7 +33,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class EditCustomListWidget extends StatelessWidget {
-  const EditCustomListWidget();
+  const EditCustomListWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

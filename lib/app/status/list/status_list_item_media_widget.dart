@@ -16,7 +16,7 @@ import 'package:unifedi_api/unifedi_api.dart';
 var _logger = Logger('status_list_item_media_widget.dart');
 
 class StatusListItemMediaWidget extends StatelessWidget {
-  const StatusListItemMediaWidget() : super();
+  const StatusListItemMediaWidget({Key? key}) : super(key: key);
 
   Container mediaAttachmentPreviewUrlWidget(
     String previewUrl,

@@ -10,10 +10,11 @@ class StatusVisibilityIconWidget extends StatelessWidget {
   final bool isSelectedVisibility;
 
   const StatusVisibilityIconWidget({
+    Key? key,
     required this.visibility,
     required this.isPossibleToChangeVisibility,
     required this.isSelectedVisibility,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => buildVisibilityIcon(

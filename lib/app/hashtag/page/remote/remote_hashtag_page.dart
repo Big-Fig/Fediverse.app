@@ -25,7 +25,7 @@ import 'package:provider/provider.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
 class RemoteHashtagPage extends StatelessWidget {
-  const RemoteHashtagPage();
+  const RemoteHashtagPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => const Scaffold(
@@ -89,7 +89,7 @@ Future goToRemoteHashtagPage(
 }
 
 class RemoteHashtagPageBodyWidget extends StatelessWidget {
-  const RemoteHashtagPageBodyWidget();
+  const RemoteHashtagPageBodyWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

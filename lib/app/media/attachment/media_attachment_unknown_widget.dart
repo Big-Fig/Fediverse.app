@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
 class MediaAttachmentUnknownWidget extends StatelessWidget {
-  const MediaAttachmentUnknownWidget();
+  const MediaAttachmentUnknownWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

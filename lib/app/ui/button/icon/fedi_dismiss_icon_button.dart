@@ -7,7 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class FediDismissIconButton extends StatelessWidget {
-  const FediDismissIconButton({this.customOnPressed});
+  const FediDismissIconButton({
+    this.customOnPressed,
+    Key? key,
+  }) : super(key: key);
 
   final VoidCallback? customOnPressed;
 

@@ -14,10 +14,11 @@ class FilterContextMultiSelectFromListValueFormFieldWidget
   final String? descriptionOnDisabled;
 
   const FilterContextMultiSelectFromListValueFormFieldWidget({
+    Key? key,
     required this.label,
     this.description,
     this.descriptionOnDisabled,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => ProxyProvider<

@@ -38,13 +38,14 @@ class FediChooserDialogBody extends StatelessWidget {
   final OnClickUiCallback? customCancelCallback;
 
   const FediChooserDialogBody({
+    Key? key,
     required this.title,
     this.content,
     this.customCancelCallback,
     required this.actions,
     required this.cancelable,
     this.loadingActions = false,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Column(

@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class PleromaChatAccountsPage extends StatelessWidget {
+  const PleromaChatAccountsPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: FediPageTitleAppBar(
@@ -20,8 +22,6 @@ class PleromaChatAccountsPage extends StatelessWidget {
           child: ChatAccountsWidget(),
         ),
       );
-
-  const PleromaChatAccountsPage();
 }
 
 void goToPleromaChatAccountsPage(

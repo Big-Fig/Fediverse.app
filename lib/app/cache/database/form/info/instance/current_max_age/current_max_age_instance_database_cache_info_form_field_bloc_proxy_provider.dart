@@ -9,8 +9,9 @@ class CurrentMaxAgeInstanceDatabaseCacheInfoFormFieldBlocProxyProvider
   final Widget child;
 
   const CurrentMaxAgeInstanceDatabaseCacheInfoFormFieldBlocProxyProvider({
+    Key? key,
     required this.child,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => ProxyProvider<

@@ -13,10 +13,12 @@ class AsyncInitLoadingWidget extends StatelessWidget {
   final Widget? loadingWidget;
 
   AsyncInitLoadingWidget({
+    Key? key,
     required this.asyncInitLoadingBloc,
     required this.loadingFinishedBuilder,
     this.loadingWidget,
-  }) {
+  }) : super(key: key) {
+    // todo: refactor
     var state = asyncInitLoadingBloc.initLoadingState;
     _logger.finest(() => 'AsyncInitLoadingWidget state $state');
 

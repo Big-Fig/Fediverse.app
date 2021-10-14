@@ -9,10 +9,11 @@ class ServerListAutoCompleteWidget extends StatelessWidget {
   final FocusNode focusNode;
 
   const ServerListAutoCompleteWidget({
+    Key? key,
     required this.fieldViewBuilder,
     required this.textEditingController,
     required this.focusNode,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

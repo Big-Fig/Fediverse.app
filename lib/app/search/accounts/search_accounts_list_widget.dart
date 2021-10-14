@@ -4,14 +4,14 @@ import 'package:fedi/app/account/pagination/list/account_pagination_list_widget.
 import 'package:flutter/widgets.dart';
 
 class SearchAccountsListWidget extends StatelessWidget {
+  const SearchAccountsListWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => const AccountPaginationListWidget(
         needWatchLocalRepositoryForUpdates: false,
         accountSelectedCallback: _accountSelectedCallback,
         key: PageStorageKey('SearchAccountsListWidget'),
       );
-
-  const SearchAccountsListWidget();
 }
 
 void _accountSelectedCallback(BuildContext context, IAccount account) {

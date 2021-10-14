@@ -11,9 +11,11 @@ class FediGrantPermissionWidget extends StatelessWidget {
   final WidgetBuilder grantedBuilder;
 
   FediGrantPermissionWidget({
+    Key? key,
     required this.permissionBloc,
     required this.grantedBuilder,
-  }) {
+  }) : super(key: key) {
+    // todo: refactor
     permissionBloc.checkPermissionStatus();
   }
 

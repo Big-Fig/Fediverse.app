@@ -12,6 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class RecentSearchWidget extends StatelessWidget {
+  const RecentSearchWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     var recentSearchBloc = IRecentSearchBloc.of(context);
@@ -50,8 +52,6 @@ class RecentSearchWidget extends StatelessWidget {
       },
     );
   }
-
-  const RecentSearchWidget();
 }
 
 class _RecentSearchHeaderWidget extends StatelessWidget {

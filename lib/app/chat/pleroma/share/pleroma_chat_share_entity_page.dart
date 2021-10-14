@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class PleromaChatShareEntityPage extends StatelessWidget {
-  const PleromaChatShareEntityPage();
+  const PleromaChatShareEntityPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Scaffold(

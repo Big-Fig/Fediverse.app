@@ -6,7 +6,9 @@ import 'package:provider/provider.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
 class InstanceAnnouncementEmojiReactionListWidget extends StatelessWidget {
-  const InstanceAnnouncementEmojiReactionListWidget();
+  const InstanceAnnouncementEmojiReactionListWidget({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -7,6 +7,9 @@ import 'package:provider/provider.dart';
 
 class RegisterUnifediApiAccessFormStepperSubmitItemWidget
     extends StatelessWidget {
+  const RegisterUnifediApiAccessFormStepperSubmitItemWidget({Key? key})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) => Column(
         children: const [

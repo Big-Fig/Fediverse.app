@@ -7,6 +7,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PostStatusExpireActionWidget extends StatelessWidget {
+  const PostStatusExpireActionWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     var postStatusBloc = IPostStatusBloc.of(context, listen: false);
@@ -37,6 +39,4 @@ class PostStatusExpireActionWidget extends StatelessWidget {
       },
     );
   }
-
-  const PostStatusExpireActionWidget();
 }

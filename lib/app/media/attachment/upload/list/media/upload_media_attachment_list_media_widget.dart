@@ -11,6 +11,8 @@ const mediaAttachmentSingleHeight = 220.0;
 const _mediaAttachmentRowItemSize = 90.0;
 
 class UploadMediaAttachmentListMediaWidget extends StatelessWidget {
+  const UploadMediaAttachmentListMediaWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     var mediaAttachmentsCollectionBloc =
@@ -81,6 +83,4 @@ class UploadMediaAttachmentListMediaWidget extends StatelessWidget {
       },
     );
   }
-
-  const UploadMediaAttachmentListMediaWidget();
 }

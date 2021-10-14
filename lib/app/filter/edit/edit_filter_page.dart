@@ -9,6 +9,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class EditFilterPage extends StatelessWidget {
+  const EditFilterPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: FediPageTitleAppBar(
@@ -24,8 +26,6 @@ class EditFilterPage extends StatelessWidget {
           ),
         ),
       );
-
-  const EditFilterPage();
 }
 
 void goToEditFilterPage({

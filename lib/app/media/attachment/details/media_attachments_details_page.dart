@@ -47,15 +47,18 @@ class MediaAttachmentDetailsPage extends StatefulWidget {
       : 0;
 
   const MediaAttachmentDetailsPage.multi({
+    Key? key,
     required this.mediaAttachments,
     required this.initialMediaAttachment,
     required this.instanceLocation,
-  });
+  }) : super(key: key);
 
   MediaAttachmentDetailsPage.single({
+    Key? key,
     required IUnifediApiMediaAttachment mediaAttachment,
     required InstanceLocation instanceLocation,
   }) : this.multi(
+          key: key,
           mediaAttachments: [mediaAttachment],
           initialMediaAttachment: mediaAttachment,
           instanceLocation: instanceLocation,

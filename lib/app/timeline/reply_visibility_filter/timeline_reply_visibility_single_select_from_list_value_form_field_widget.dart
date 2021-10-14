@@ -11,10 +11,11 @@ class TimelineReplyVisibilityFilterSelectSingleFromListValueFormFieldWidget
   final String descriptionOnDisabled;
 
   const TimelineReplyVisibilityFilterSelectSingleFromListValueFormFieldWidget({
-    this.label,
+    Key? key,
     required this.description,
     required this.descriptionOnDisabled,
-  });
+    this.label,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) =>

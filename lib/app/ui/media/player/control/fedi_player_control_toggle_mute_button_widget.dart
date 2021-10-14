@@ -7,6 +7,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class FediPlayerControlToggleMuteButtonWidget extends StatelessWidget {
+  const FediPlayerControlToggleMuteButtonWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     var mediaPlayerBloc = IMediaPlayerBloc.of(context);
@@ -24,8 +26,6 @@ class FediPlayerControlToggleMuteButtonWidget extends StatelessWidget {
       },
     );
   }
-
-  const FediPlayerControlToggleMuteButtonWidget();
 }
 
 class _FediPlayerControlToggleMuteButtonInitializedWidget

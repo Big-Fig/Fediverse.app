@@ -11,6 +11,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PleromaChatStartPage extends StatelessWidget {
+  const PleromaChatStartPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => const Scaffold(
         appBar: FediPageCustomAppBar(
@@ -25,8 +27,6 @@ class PleromaChatStartPage extends StatelessWidget {
           ),
         ),
       );
-
-  const PleromaChatStartPage();
 }
 
 Future _accountSelectedCallback(BuildContext context, IAccount account) async {

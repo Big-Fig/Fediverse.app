@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
 class PostStatusVisibilityActionWidget extends StatelessWidget {
-  const PostStatusVisibilityActionWidget();
+  const PostStatusVisibilityActionWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

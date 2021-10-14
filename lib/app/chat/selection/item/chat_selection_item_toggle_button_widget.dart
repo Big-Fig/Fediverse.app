@@ -5,7 +5,7 @@ import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 
 class ChatSelectionItemToggleButtonWidget extends StatelessWidget {
-  const ChatSelectionItemToggleButtonWidget();
+  const ChatSelectionItemToggleButtonWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

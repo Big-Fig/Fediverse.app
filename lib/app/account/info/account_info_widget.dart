@@ -17,8 +17,9 @@ class AccountInfoWidget extends StatelessWidget {
   final OnClickUiCallback onStatusesTapCallback;
 
   const AccountInfoWidget({
+    Key? key,
     required this.onStatusesTapCallback,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Column(

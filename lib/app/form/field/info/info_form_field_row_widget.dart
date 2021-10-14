@@ -13,10 +13,11 @@ class InfoFormFieldRowWidget<T> extends StatelessWidget {
   final ValueToTextMapper<T> valueToTextMapper;
 
   const InfoFormFieldRowWidget({
+    Key? key,
     required this.label,
     required this.description,
     required this.valueToTextMapper,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => InfoFormFieldBlocProxyProvider<T>(

@@ -7,11 +7,13 @@ class FediNoteDescriptionWidget extends StatelessWidget {
   final EdgeInsets padding;
   final TextStyle? style;
 
+  // todo: refactor
   const FediNoteDescriptionWidget(
     this.text, {
+    Key? key,
     this.padding = FediPadding.allBigPadding,
     this.style,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Padding(

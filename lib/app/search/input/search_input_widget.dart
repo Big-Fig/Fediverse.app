@@ -14,9 +14,10 @@ class SearchInputWidget extends StatelessWidget {
   final EdgeInsets padding;
 
   const SearchInputWidget({
+    Key? key,
     this.autofocus = false,
     this.padding = const EdgeInsets.only(right: FediSizes.bigPadding),
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

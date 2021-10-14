@@ -6,6 +6,10 @@ import 'package:flutter/material.dart';
 
 class CurrentMaxEntriesCountByTypeInstanceDatabaseCacheInfoFormFieldRowWidget
     extends StatelessWidget {
+  const CurrentMaxEntriesCountByTypeInstanceDatabaseCacheInfoFormFieldRowWidget({
+    Key? key,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) =>
       CurrentMaxEntriesCountByTypeInstanceDatabaseCacheInfoFormFieldBlocProxyProvider(
@@ -21,6 +25,4 @@ class CurrentMaxEntriesCountByTypeInstanceDatabaseCacheInfoFormFieldRowWidget
               ),
         ),
       );
-
-  const CurrentMaxEntriesCountByTypeInstanceDatabaseCacheInfoFormFieldRowWidget();
 }

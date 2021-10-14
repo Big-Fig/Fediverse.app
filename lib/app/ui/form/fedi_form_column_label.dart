@@ -4,7 +4,11 @@ import 'package:flutter/cupertino.dart';
 class FediFormColumnLabel extends StatelessWidget {
   final String? text;
 
-  const FediFormColumnLabel(this.text);
+  // todo: refactor
+  const FediFormColumnLabel(
+    this.text, {
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Text(

@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class StatusReblogActionWidget extends StatelessWidget {
+  const StatusReblogActionWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => Row(
         children: const <Widget>[
@@ -18,8 +20,6 @@ class StatusReblogActionWidget extends StatelessWidget {
           _StatusReblogActionCounterWidget(),
         ],
       );
-
-  const StatusReblogActionWidget();
 }
 
 class _StatusReblogActionCounterWidget extends StatelessWidget {

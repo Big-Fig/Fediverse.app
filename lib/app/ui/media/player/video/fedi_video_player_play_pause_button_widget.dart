@@ -14,9 +14,10 @@ class FediVideoPlayerPlayPauseButtonWidget extends StatelessWidget {
   final double iconSize;
 
   const FediVideoPlayerPlayPauseButtonWidget({
+    Key? key,
     this.size = FediSizes.bigIconInCircleDefaultSize,
     this.iconSize = FediSizes.bigIconInCircleDefaultIconSize,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

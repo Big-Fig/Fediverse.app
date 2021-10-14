@@ -10,8 +10,9 @@ class AccountHeaderStatusesCountWidget extends StatelessWidget {
   final OnClickUiCallback? onStatusesTapCallback;
 
   const AccountHeaderStatusesCountWidget({
+    Key? key,
     required this.onStatusesTapCallback,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -4,7 +4,10 @@ import 'package:flutter/cupertino.dart';
 class FediUltraLightGreyDivider extends StatelessWidget {
   final double height;
 
-  const FediUltraLightGreyDivider({this.height = 1});
+  const FediUltraLightGreyDivider({
+    Key? key,
+    this.height = 1,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Container(

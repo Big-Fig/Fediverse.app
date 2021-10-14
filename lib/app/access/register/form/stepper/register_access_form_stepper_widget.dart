@@ -30,8 +30,9 @@ class RegisterUnifediApiAccessFormStepperWidget extends StatelessWidget {
   final RegisterCallback onRegister;
 
   const RegisterUnifediApiAccessFormStepperWidget({
+    Key? key,
     required this.onRegister,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => ProxyProvider<
@@ -147,7 +148,8 @@ class _RegisterUnifediApiAccessFormStepperContentWidget
             IRegisterUnifediApiAccessFormStepperManualApproveItemBloc>.value(
           value: registerUnifediApiAccessFormStepperItemBloc
               as IRegisterUnifediApiAccessFormStepperManualApproveItemBloc,
-          child: RegisterUnifediApiAccessFormStepperManualApproveItemWidget(),
+          child:
+              const RegisterUnifediApiAccessFormStepperManualApproveItemWidget(),
         );
         break;
       case RegisterUnifediApiAccessFormStepperItemType.account:
@@ -155,7 +157,7 @@ class _RegisterUnifediApiAccessFormStepperContentWidget
             Provider<IRegisterUnifediApiAccessFormStepperAccountItemBloc>.value(
           value: registerUnifediApiAccessFormStepperItemBloc
               as IRegisterUnifediApiAccessFormStepperAccountItemBloc,
-          child: RegisterUnifediApiAccessFormStepperAccountItemWidget(),
+          child: const RegisterUnifediApiAccessFormStepperAccountItemWidget(),
         );
         break;
       case RegisterUnifediApiAccessFormStepperItemType.captcha:
@@ -163,7 +165,7 @@ class _RegisterUnifediApiAccessFormStepperContentWidget
             Provider<IRegisterUnifediApiAccessFormStepperCaptchaItemBloc>.value(
           value: registerUnifediApiAccessFormStepperItemBloc
               as IRegisterUnifediApiAccessFormStepperCaptchaItemBloc,
-          child: RegisterUnifediApiAccessFormStepperCaptchaItemWidget(),
+          child: const RegisterUnifediApiAccessFormStepperCaptchaItemWidget(),
         );
         break;
       case RegisterUnifediApiAccessFormStepperItemType.submit:
@@ -171,7 +173,7 @@ class _RegisterUnifediApiAccessFormStepperContentWidget
             Provider<IRegisterUnifediApiAccessFormStepperSubmitItemBloc>.value(
           value: registerUnifediApiAccessFormStepperItemBloc
               as IRegisterUnifediApiAccessFormStepperSubmitItemBloc,
-          child: RegisterUnifediApiAccessFormStepperSubmitItemWidget(),
+          child: const RegisterUnifediApiAccessFormStepperSubmitItemWidget(),
         );
         break;
     }

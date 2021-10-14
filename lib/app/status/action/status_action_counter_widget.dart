@@ -8,8 +8,9 @@ class StatusActionCounterWidget extends StatelessWidget {
   final OnClickUiCallback? onClick;
 
   const StatusActionCounterWidget({
+    Key? key,
     required this.onClick,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

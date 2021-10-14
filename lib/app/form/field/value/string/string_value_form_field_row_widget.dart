@@ -17,6 +17,7 @@ class StringValueFormFieldRowWidget extends StatefulWidget {
   final int maxLines;
 
   const StringValueFormFieldRowWidget({
+    Key? key,
     required this.label,
     required this.autocorrect,
     this.obscureText = false,
@@ -26,7 +27,7 @@ class StringValueFormFieldRowWidget extends StatefulWidget {
     required this.hint,
     required this.onSubmitted,
     required this.textInputAction,
-  });
+  }) : super(key: key);
 
   @override
   StringValueFormFieldRowWidgetState createState() =>

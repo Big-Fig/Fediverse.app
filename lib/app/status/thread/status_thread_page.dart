@@ -30,6 +30,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class StatusThreadPage extends StatelessWidget {
+  const StatusThreadPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     var statusThreadBloc = IStatusThreadBloc.of(context);
@@ -47,8 +49,6 @@ class StatusThreadPage extends StatelessWidget {
       ),
     );
   }
-
-  const StatusThreadPage();
 }
 
 class _StatusThreadAppBarStarterAccountWidget extends StatelessWidget {

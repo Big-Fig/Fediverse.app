@@ -13,6 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class StatusEmojiActionWidget extends StatelessWidget {
+  const StatusEmojiActionWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => Row(
         children: const [
@@ -20,8 +22,6 @@ class StatusEmojiActionWidget extends StatelessWidget {
           _StatusEmojiActionCounterWidget(),
         ],
       );
-
-  const StatusEmojiActionWidget();
 }
 
 class _StatusEmojiActionCounterWidget extends StatelessWidget {

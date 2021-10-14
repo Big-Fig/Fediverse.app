@@ -9,8 +9,9 @@ class BoolValueFormFieldBlocProxyProvider<T extends bool?>
   final Widget child;
 
   const BoolValueFormFieldBlocProxyProvider({
+    Key? key,
     required this.child,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) =>

@@ -5,6 +5,8 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 
 class EditCustomListAppBarSaveActionWidget extends StatelessWidget {
+  const EditCustomListAppBarSaveActionWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     var editCustomListBloc = IEditCustomListBloc.of(context);
@@ -33,6 +35,4 @@ class EditCustomListAppBarSaveActionWidget extends StatelessWidget {
       },
     );
   }
-
-  const EditCustomListAppBarSaveActionWidget();
 }

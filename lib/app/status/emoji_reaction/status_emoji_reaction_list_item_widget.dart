@@ -10,6 +10,8 @@ import 'package:provider/provider.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
 class StatusEmojiReactionListItemWidget extends StatelessWidget {
+  const StatusEmojiReactionListItemWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     var statusEmojiReactionBloc = IStatusEmojiReactionBloc.of(context);
@@ -31,8 +33,6 @@ class StatusEmojiReactionListItemWidget extends StatelessWidget {
       },
     );
   }
-
-  const StatusEmojiReactionListItemWidget();
 }
 
 class _StatusEmojiReactionListItemBodyWidget extends StatelessWidget {

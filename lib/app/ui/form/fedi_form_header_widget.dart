@@ -8,9 +8,10 @@ class FediFormHeaderWidget extends StatelessWidget {
   final String text;
 
   const FediFormHeaderWidget({
+    Key? key,
     required this.text,
     required this.isNeedAddDivider,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Column(

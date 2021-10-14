@@ -10,7 +10,7 @@ import 'package:unifedi_api/unifedi_api.dart';
 const _maxHeight = 350.0;
 
 class MediaAttachmentWidget extends StatelessWidget {
-  const MediaAttachmentWidget();
+  const MediaAttachmentWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

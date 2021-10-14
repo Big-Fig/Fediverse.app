@@ -12,8 +12,9 @@ class ShareEntitySettingsWidget extends StatelessWidget {
   final bool shrinkWrap;
 
   const ShareEntitySettingsWidget({
+    Key? key,
     this.shrinkWrap = true,
-  });
+  }) : super(key: key);
 
   @override
   // ignore: code-metrics

@@ -35,6 +35,7 @@ class MultiSelectFromListValueFormFieldRowWidget<T> extends StatelessWidget {
   final bool displayIconInDialog;
 
   MultiSelectFromListValueFormFieldRowWidget({
+    Key? key,
     required this.label,
     required this.valueTitleMapper,
     required this.description,
@@ -43,7 +44,8 @@ class MultiSelectFromListValueFormFieldRowWidget<T> extends StatelessWidget {
     required this.displayIconInDialog,
     required this.valueIconMapper,
     required this.valueKeyMapper,
-  }) {
+  }) : super(key: key) {
+    // todo: refactor
     if (displayIconInRow || displayIconInDialog) {
       assert(
         valueIconMapper != null,

@@ -12,11 +12,12 @@ class FediListTile extends StatelessWidget {
   final double oneSidePadding;
 
   const FediListTile({
+    Key? key,
     required this.child,
     this.isFirstInList = false,
     this.noPadding = false,
     this.oneSidePadding = FediSizes.smallPadding,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

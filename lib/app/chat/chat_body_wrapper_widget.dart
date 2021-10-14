@@ -13,9 +13,10 @@ class ChatBodyWrapperWidget extends StatelessWidget {
   final Widget postWidget;
 
   const ChatBodyWrapperWidget({
+    Key? key,
     required this.child,
     this.postWidget = const _ChatPostMessageWidget(),
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

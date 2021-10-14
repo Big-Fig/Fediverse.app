@@ -19,10 +19,11 @@ class FediStepperWidget<T extends IFediStepperItem> extends StatelessWidget {
   final FediStepperWidgetBuilder<T> contentBuilder;
 
   const FediStepperWidget({
+    Key? key,
     required this.titleBuilder,
     this.subTitleBuilder,
     required this.contentBuilder,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

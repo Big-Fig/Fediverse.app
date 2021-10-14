@@ -41,7 +41,7 @@ import 'package:provider/provider.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
 class CustomListPage extends StatefulWidget {
-  const CustomListPage();
+  const CustomListPage({Key? key}) : super(key: key);
 
   @override
   CustomListPageState createState() => CustomListPageState();

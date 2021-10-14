@@ -18,9 +18,10 @@ class MyAccountFollowRequestAccountPaginationListWidget
   final Widget? customEmptyWidget;
 
   const MyAccountFollowRequestAccountPaginationListWidget({
+    Key? key,
     this.customLoadingWidget,
     this.customEmptyWidget,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => AccountPaginationListWidget(
@@ -44,7 +45,8 @@ class MyAccountFollowRequestAccountPaginationListWidget
         ],
         accountSelectedCallback: null,
         key: const PageStorageKey(
-            'MyAccountFollowRequestAccountPaginationListWidget'),
+          'MyAccountFollowRequestAccountPaginationListWidget',
+        ),
       );
 }
 

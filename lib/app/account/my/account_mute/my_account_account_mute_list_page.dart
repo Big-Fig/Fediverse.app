@@ -24,6 +24,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class MyAccountAccountMuteListPage extends StatelessWidget {
+  const MyAccountAccountMuteListPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: FediPageTitleAppBar(
@@ -47,8 +49,6 @@ class MyAccountAccountMuteListPage extends StatelessWidget {
           ),
         ),
       );
-
-  const MyAccountAccountMuteListPage();
 }
 
 class _MyAccountAccountMuteListPageAddButton extends StatelessWidget {

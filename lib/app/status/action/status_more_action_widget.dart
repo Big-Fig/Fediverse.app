@@ -8,6 +8,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class StatusMoreActionWidget extends StatelessWidget {
+  const StatusMoreActionWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context, listen: true);
@@ -24,6 +26,4 @@ class StatusMoreActionWidget extends StatelessWidget {
       },
     );
   }
-
-  const StatusMoreActionWidget();
 }

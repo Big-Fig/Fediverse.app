@@ -8,8 +8,9 @@ class StatusEmojiReactionAdapterProxyProvider extends StatelessWidget {
   final Widget child;
 
   const StatusEmojiReactionAdapterProxyProvider({
+    Key? key,
     required this.child,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) =>

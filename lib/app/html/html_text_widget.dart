@@ -12,7 +12,7 @@ import 'package:logging/logging.dart';
 var _logger = Logger('html_text_widget.dart');
 
 class HtmlTextWidget extends StatelessWidget {
-  const HtmlTextWidget();
+  const HtmlTextWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -9,7 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class RemoteInstanceTrendsPage extends StatelessWidget {
-  const RemoteInstanceTrendsPage();
+  const RemoteInstanceTrendsPage({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => const Scaffold(

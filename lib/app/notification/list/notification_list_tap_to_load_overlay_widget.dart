@@ -3,6 +3,8 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 
 class NotificationListTapToLoadOverlayWidget extends StatelessWidget {
+  const NotificationListTapToLoadOverlayWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => FediListTapToLoadOverlayWidget(
         textBuilder: (context, updateItemsCount) =>
@@ -10,6 +12,4 @@ class NotificationListTapToLoadOverlayWidget extends StatelessWidget {
                   updateItemsCount,
                 ),
       );
-
-  const NotificationListTapToLoadOverlayWidget();
 }

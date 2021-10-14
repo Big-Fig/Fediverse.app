@@ -6,6 +6,9 @@ import 'package:flutter/cupertino.dart';
 
 class UiSettingsFontSizeSingleFromListValueFormFieldRowWidget
     extends StatelessWidget {
+  const UiSettingsFontSizeSingleFromListValueFormFieldRowWidget({Key? key})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) =>
       UiSettingsFontSizeSingleFromListValueFormFieldBlocProxyProvider(
@@ -20,8 +23,6 @@ class UiSettingsFontSizeSingleFromListValueFormFieldRowWidget
           valueIconMapper: null,
         ),
       );
-
-  const UiSettingsFontSizeSingleFromListValueFormFieldRowWidget();
 }
 
 String mapUiSettingsFontSizeToLabel(

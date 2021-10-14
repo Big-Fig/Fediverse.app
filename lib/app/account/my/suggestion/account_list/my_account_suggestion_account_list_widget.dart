@@ -5,7 +5,7 @@ import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:flutter/cupertino.dart';
 
 class MyAccountSuggestionAccountListWidget extends StatelessWidget {
-  const MyAccountSuggestionAccountListWidget();
+  const MyAccountSuggestionAccountListWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => AccountPaginationListWidget(

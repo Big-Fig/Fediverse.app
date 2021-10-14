@@ -7,7 +7,10 @@ import 'package:overlay_support/overlay_support.dart';
 class OverlayNotificationServiceProvider extends StatelessWidget {
   final Widget child;
 
-  const OverlayNotificationServiceProvider({required this.child});
+  const OverlayNotificationServiceProvider({
+    Key? key,
+    required this.child,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => OverlaySupport(

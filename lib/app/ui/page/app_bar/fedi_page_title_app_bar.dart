@@ -21,11 +21,12 @@ class FediPageTitleAppBar extends StatelessWidget
       const Size.fromHeight(kToolbarHeight + 1);
 
   FediPageTitleAppBar({
+    Key? key,
     required this.title,
     this.actions,
     this.centerTitle = true,
     this.leading = const FediBackIconButton(),
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +45,7 @@ class FediPageTitleAppBar extends StatelessWidget
               ? SystemUiOverlayStyle.light
               : SystemUiOverlayStyle.dark,
           backgroundColor: fediUiColorTheme.white,
-          title: title != null ? FediSubHeaderText(title!) : null,
+          title: title != null ? FediSubHeaderText(text: title!) : null,
           leading: leading,
         ),
         const FediUltraLightGreyDivider(),

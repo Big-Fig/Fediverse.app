@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 typedef IPostChatMessageCallback = Function(BuildContext context);
 
 class PostMessagePostActionWidget extends StatelessWidget {
-  const PostMessagePostActionWidget();
+  const PostMessagePostActionWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

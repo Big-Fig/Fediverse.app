@@ -13,7 +13,10 @@ import 'package:provider/provider.dart';
 class StatusFavouriteActionWidget extends StatelessWidget {
   final bool displayCounter;
 
-  const StatusFavouriteActionWidget({this.displayCounter = true});
+  const StatusFavouriteActionWidget({
+    Key? key,
+    this.displayCounter = true,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Row(

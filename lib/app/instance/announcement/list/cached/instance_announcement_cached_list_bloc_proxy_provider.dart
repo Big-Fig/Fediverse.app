@@ -9,8 +9,9 @@ class InstanceAnnouncementCachedListBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
   const InstanceAnnouncementCachedListBlocProxyProvider({
+    Key? key,
     required this.child,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => ProxyProvider<

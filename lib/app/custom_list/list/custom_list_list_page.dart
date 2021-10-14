@@ -17,6 +17,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class CustomListListPage extends StatelessWidget {
+  const CustomListListPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: FediPageTitleAppBar(
@@ -33,8 +35,6 @@ class CustomListListPage extends StatelessWidget {
           ),
         ),
       );
-
-  const CustomListListPage();
 }
 
 class _CustomListListPageEmptyWidget extends StatelessWidget {

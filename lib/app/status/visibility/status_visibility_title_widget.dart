@@ -11,10 +11,11 @@ class StatusVisibilityTitleWidget extends StatelessWidget {
   final bool isSelectedVisibility;
 
   const StatusVisibilityTitleWidget({
+    Key? key,
     required this.visibility,
     required this.isPossibleToChangeVisibility,
     required this.isSelectedVisibility,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => buildVisibilityTitle(

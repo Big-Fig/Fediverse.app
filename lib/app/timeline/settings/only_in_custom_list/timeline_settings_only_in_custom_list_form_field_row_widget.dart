@@ -14,9 +14,10 @@ class TimelineSettingsOnlyInCustomListFormFieldRowWidget
   final String descriptionOnDisabled;
 
   const TimelineSettingsOnlyInCustomListFormFieldRowWidget({
+    Key? key,
     required this.description,
     required this.descriptionOnDisabled,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -8,8 +8,9 @@ class DurationValueFormFieldBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
   const DurationValueFormFieldBlocProxyProvider({
+    Key? key,
     required this.child,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => ProxyProvider<

@@ -36,8 +36,9 @@ class ShareEntityWidget extends StatelessWidget {
   final Widget? footer;
 
   const ShareEntityWidget({
+    Key? key,
     required this.footer,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +77,8 @@ class _ShareEntityContentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ClipRRect(
-        borderRadius: BorderRadius.circular(FediSizes.smallPadding),
+        borderRadius:
+            const BorderRadius.all(Radius.circular(FediSizes.smallPadding)),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.only(

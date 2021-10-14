@@ -14,8 +14,9 @@ class StatusEmojiReactionPickerWidget extends StatelessWidget {
   final EmojiReactionSelectedCallback emojiReactionSelectedCallback;
 
   const StatusEmojiReactionPickerWidget({
+    Key? key,
     required this.emojiReactionSelectedCallback,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => EmojiPickerWidget(

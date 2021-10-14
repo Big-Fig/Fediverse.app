@@ -31,7 +31,7 @@ const double _editAccountBackgroundHeight = 200.0;
 const double _editAccountAvatarTopPadding = 50.0;
 
 class EditMyAccountWidget extends StatelessWidget {
-  const EditMyAccountWidget();
+  const EditMyAccountWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => ListView(

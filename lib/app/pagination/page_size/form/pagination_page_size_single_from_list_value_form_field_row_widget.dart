@@ -6,6 +6,9 @@ import 'package:flutter/cupertino.dart';
 
 class PaginationPageSizeSingleFromListValueFormFieldRowWidget
     extends StatelessWidget {
+  const PaginationPageSizeSingleFromListValueFormFieldRowWidget({Key? key})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) =>
       PaginationPageSizeSingleFromListValueFormFieldBlocProxyProvider(
@@ -20,8 +23,6 @@ class PaginationPageSizeSingleFromListValueFormFieldRowWidget
           valueIconMapper: null,
         ),
       );
-
-  const PaginationPageSizeSingleFromListValueFormFieldRowWidget();
 }
 
 String mapPaginationPageSizeToLabel(

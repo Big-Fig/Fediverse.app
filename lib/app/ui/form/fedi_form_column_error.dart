@@ -4,7 +4,11 @@ import 'package:flutter/cupertino.dart';
 class FediFormColumnError extends StatelessWidget {
   final String? text;
 
-  const FediFormColumnError(this.text);
+  // todo: refactor
+  const FediFormColumnError(
+    this.text, {
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Text(

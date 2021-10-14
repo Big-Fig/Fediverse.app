@@ -2,7 +2,7 @@ import 'package:fedi/app/account/my/featured_hashtag/pagination/list/my_account_
 import 'package:flutter/cupertino.dart';
 
 class AccountFeaturedHashtagListWidget extends StatelessWidget {
-  const AccountFeaturedHashtagListWidget();
+  const AccountFeaturedHashtagListWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) =>

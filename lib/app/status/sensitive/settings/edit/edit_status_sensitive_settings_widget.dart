@@ -11,8 +11,9 @@ class EditStatusSensitiveSettingsWidget extends StatelessWidget {
   final bool shrinkWrap;
 
   const EditStatusSensitiveSettingsWidget({
+    Key? key,
     required this.shrinkWrap,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Column(

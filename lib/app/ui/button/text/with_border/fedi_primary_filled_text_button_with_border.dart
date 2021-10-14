@@ -22,8 +22,10 @@ class FediPrimaryFilledTextButtonWithBorder extends StatelessWidget {
 
   final TextStyle? textStyle;
 
+  // todo: refactor
   const FediPrimaryFilledTextButtonWithBorder(
     this.text, {
+    Key? key,
     required this.onPressed,
     this.enabledBackgroundColor,
     this.disabledBackgroundColor,
@@ -34,7 +36,7 @@ class FediPrimaryFilledTextButtonWithBorder extends StatelessWidget {
     this.borderWidth = 1,
     required this.expanded,
     this.limitMinWidth = false,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -11,13 +11,14 @@ class FediFadeShaderMask extends StatelessWidget {
   final Alignment end;
 
   const FediFadeShaderMask({
+    Key? key,
     required this.fadingPercent,
     required this.fadingColor,
     required this.child,
     this.onlyEnd = false,
     this.begin = Alignment.centerLeft,
     this.end = Alignment.centerRight,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => ShaderMask(

@@ -18,7 +18,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class ConversationChatWidget extends StatelessWidget {
-  const ConversationChatWidget();
+  const ConversationChatWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

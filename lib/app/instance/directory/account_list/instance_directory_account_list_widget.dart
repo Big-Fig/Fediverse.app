@@ -7,7 +7,9 @@ import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:flutter/cupertino.dart';
 
 class InstanceDirectoryAccountListWidget extends StatelessWidget {
-  const InstanceDirectoryAccountListWidget();
+  const InstanceDirectoryAccountListWidget({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => AccountPaginationListWidget(

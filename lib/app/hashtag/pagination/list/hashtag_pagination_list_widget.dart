@@ -14,8 +14,10 @@ class HashtagPaginationListWidget extends FediPaginationListWidget<IHashtag> {
   final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
 
   const HashtagPaginationListWidget({
+    Key? key,
     this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.onDrag,
   }) : super(
+          key: key,
           isNeedToAddPaddingForUiTests: false,
         );
 

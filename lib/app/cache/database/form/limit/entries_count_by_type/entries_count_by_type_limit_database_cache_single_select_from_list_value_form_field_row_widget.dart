@@ -7,6 +7,10 @@ import 'package:flutter/material.dart';
 
 class EntriesCountByTypeLimitDatabaseCacheSingleSelectValueFormFieldRowWidget
     extends StatelessWidget {
+  const EntriesCountByTypeLimitDatabaseCacheSingleSelectValueFormFieldRowWidget({
+    Key? key,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) =>
       EntriesCountByTypeLimitDatabaseCacheSingleSelectValueFormFieldBlocProxyProvider(
@@ -49,6 +53,4 @@ class EntriesCountByTypeLimitDatabaseCacheSingleSelectValueFormFieldRowWidget
           displayIconInRow: false,
         ),
       );
-
-  const EntriesCountByTypeLimitDatabaseCacheSingleSelectValueFormFieldRowWidget();
 }

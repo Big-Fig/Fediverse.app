@@ -47,6 +47,7 @@ class CustomEmojiPickerWidget extends StatelessWidget {
   final bool useImageEmoji;
 
   const CustomEmojiPickerWidget({
+    Key? key,
     required this.rowsCount,
     required this.onEmojiSelected,
     this.unselectedIndicatorColor = Colors.black,
@@ -61,7 +62,7 @@ class CustomEmojiPickerWidget extends StatelessWidget {
     this.selectedCategoryItemsGridHeight = 200.0,
     this.useImageEmoji = true,
     this.emptyCategoryBuilder,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Column(

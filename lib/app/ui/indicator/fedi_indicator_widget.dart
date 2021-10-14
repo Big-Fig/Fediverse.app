@@ -8,7 +8,10 @@ const _size = 12.0;
 class FediIndicatorWidget extends StatelessWidget {
   final bool active;
 
-  const FediIndicatorWidget({required this.active});
+  const FediIndicatorWidget({
+    Key? key,
+    required this.active,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +22,7 @@ class FediIndicatorWidget extends StatelessWidget {
       // ignore: no-equal-arguments
       height: _size,
       margin: const EdgeInsets.symmetric(
-        vertical: FediSizes.mediumPadding,
-        // ignore: no-magic-number
+        vertical: FediSizes.mediumPadding, // ignore: no-magic-number
         horizontal: 2.0,
       ),
       decoration: BoxDecoration(
@@ -30,8 +32,7 @@ class FediIndicatorWidget extends StatelessWidget {
             : Theme.of(context).backgroundColor,
         border: Border.all(
           // ignore: no-magic-number
-          width: 1.0,
-          color: fediUiColorTheme.white,
+          width: 1.0, color: fediUiColorTheme.white,
         ),
       ),
     );

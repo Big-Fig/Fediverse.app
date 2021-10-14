@@ -7,10 +7,11 @@ class FediTabMainHeaderBarWidget extends StatelessWidget {
   final List<Widget>? endingWidgets;
 
   const FediTabMainHeaderBarWidget({
+    Key? key,
     required this.leadingWidgets,
     required this.content,
     required this.endingWidgets,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Padding(

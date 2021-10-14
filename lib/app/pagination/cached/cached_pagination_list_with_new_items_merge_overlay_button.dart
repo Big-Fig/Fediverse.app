@@ -15,8 +15,9 @@ class CachedPaginationListWithNewItemsMergeOverlayButton
   final String Function(BuildContext context, int updateItemsCount) textBuilder;
 
   const CachedPaginationListWithNewItemsMergeOverlayButton({
+    Key? key,
     required this.textBuilder,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

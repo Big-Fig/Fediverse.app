@@ -3,12 +3,12 @@ import 'package:fedi/collapsible/owner/collapsible_owner_widget.dart';
 import 'package:flutter/widgets.dart';
 
 class SearchResultItemListWidget extends StatelessWidget {
+  const SearchResultItemListWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => const CollapsibleOwnerWidget(
         child: SearchResultItemPaginationListWidget(
           key: PageStorageKey('SearchResultItemListWidget'),
         ),
       );
-
-  const SearchResultItemListWidget();
 }

@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
 class FediPlayerControlLengthDurationWidget extends StatelessWidget {
+  const FediPlayerControlLengthDurationWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     var mediaPlayerBloc = IMediaPlayerBloc.of(context, listen: false);
@@ -20,6 +22,4 @@ class FediPlayerControlLengthDurationWidget extends StatelessWidget {
       },
     );
   }
-
-  const FediPlayerControlLengthDurationWidget();
 }

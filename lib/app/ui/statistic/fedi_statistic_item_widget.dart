@@ -7,10 +7,11 @@ class FediStatisticItemWidget extends StatelessWidget {
   final Color color;
 
   const FediStatisticItemWidget({
+    Key? key,
     required this.label,
     required this.valueString,
     required this.color,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -6,7 +6,10 @@ import 'package:provider/provider.dart';
 class StatusThreadBlocProxyProvider extends StatelessWidget {
   final Widget child;
 
-  const StatusThreadBlocProxyProvider({required this.child});
+  const StatusThreadBlocProxyProvider({
+    Key? key,
+    required this.child,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) =>

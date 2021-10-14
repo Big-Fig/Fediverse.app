@@ -13,10 +13,11 @@ class DateTimeDynamicTimeagoWidget extends StatefulWidget {
   final DateTimeAgoTextBuilder? customTextBuilder;
 
   const DateTimeDynamicTimeagoWidget({
+    Key? key,
     required this.dateTime,
     required this.textStyle,
     this.customTextBuilder,
-  });
+  }) : super(key: key);
 
   @override
   DateTimeDynamicTimeagoWidgetState createState() =>

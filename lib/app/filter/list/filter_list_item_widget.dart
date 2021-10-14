@@ -13,7 +13,7 @@ import 'package:logging/logging.dart';
 var _logger = Logger('filter_list_item_widget.dart');
 
 class FilterListItemWidget extends StatelessWidget {
-  const FilterListItemWidget();
+  const FilterListItemWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

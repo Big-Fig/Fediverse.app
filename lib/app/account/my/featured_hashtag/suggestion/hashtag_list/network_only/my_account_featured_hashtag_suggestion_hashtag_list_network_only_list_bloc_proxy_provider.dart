@@ -10,8 +10,9 @@ class MyAccountFeaturedHashtagSuggestionHashtagListNetworkOnlyListBlocProxyProvi
   final Widget child;
 
   const MyAccountFeaturedHashtagSuggestionHashtagListNetworkOnlyListBlocProxyProvider({
+    Key? key,
     required this.child,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => ProxyProvider<

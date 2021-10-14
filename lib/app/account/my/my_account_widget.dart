@@ -22,10 +22,11 @@ class MyAccountWidget extends StatelessWidget {
   final Brightness brightness;
 
   const MyAccountWidget({
+    Key? key,
     required this.onStatusesTapCallback,
     required this.footer,
     required this.brightness,
-  });
+  }) : super(key: key);
 
   static const EdgeInsets _bodyPadding = EdgeInsets.only(
     left: FediSizes.accountAvatarBigSize + FediSizes.bigPadding * 2,

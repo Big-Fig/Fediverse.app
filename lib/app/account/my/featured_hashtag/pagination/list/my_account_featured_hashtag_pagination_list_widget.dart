@@ -15,8 +15,10 @@ class AccountFeaturedHashtagPaginationListWidget
   final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
 
   const AccountFeaturedHashtagPaginationListWidget({
+    Key? key,
     this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.onDrag,
   }) : super(
+          key: key,
           isNeedToAddPaddingForUiTests: false,
         );
 

@@ -15,10 +15,11 @@ class FediTextTabIndicatorItemWidget<T> extends StatelessWidget {
   final FediTabStyle style;
 
   const FediTextTabIndicatorItemWidget({
+    Key? key,
     required this.isTransparent,
     required this.tabToTextMapper,
     required this.style,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

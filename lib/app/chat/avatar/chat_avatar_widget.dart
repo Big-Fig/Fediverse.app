@@ -10,8 +10,9 @@ class ChatAvatarWidget extends StatelessWidget {
   final double baseAvatarSize;
 
   const ChatAvatarWidget({
+    Key? key,
     this.baseAvatarSize = FediSizes.appBarAvatarSize,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

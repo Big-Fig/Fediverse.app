@@ -5,6 +5,8 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 
 class EditFilterAppBarSaveActionWidget extends StatelessWidget {
+  const EditFilterAppBarSaveActionWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     var editFilterBloc = IEditFilterBloc.of(context);
@@ -33,6 +35,4 @@ class EditFilterAppBarSaveActionWidget extends StatelessWidget {
       },
     );
   }
-
-  const EditFilterAppBarSaveActionWidget();
 }

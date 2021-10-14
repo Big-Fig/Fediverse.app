@@ -18,9 +18,10 @@ class AccountBigListItemWidget extends StatelessWidget {
   final List<Widget>? accountActions;
 
   const AccountBigListItemWidget({
+    Key? key,
     required this.accountSelectedCallback,
     this.accountActions,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

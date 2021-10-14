@@ -15,7 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AccountFeaturedHashtagListItemWidget extends StatelessWidget {
-  const AccountFeaturedHashtagListItemWidget();
+  const AccountFeaturedHashtagListItemWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -14,8 +14,9 @@ class EditLocalizationSettingsWidget extends StatelessWidget {
   final bool shrinkWrap;
 
   const EditLocalizationSettingsWidget({
+    Key? key,
     required this.shrinkWrap,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

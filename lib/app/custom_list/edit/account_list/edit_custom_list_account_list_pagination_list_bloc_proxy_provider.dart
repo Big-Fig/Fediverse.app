@@ -12,8 +12,9 @@ class EditCustomListAccountListPaginationListBlocProxyProvider
   final Widget child;
 
   const EditCustomListAccountListPaginationListBlocProxyProvider({
+    Key? key,
     required this.child,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => ProxyProvider<

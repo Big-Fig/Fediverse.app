@@ -14,13 +14,14 @@ class FediBlurredOverlayWarningWidget extends StatelessWidget {
   final Color? replaceBlurWithColor;
 
   const FediBlurredOverlayWarningWidget({
+    Key? key,
     this.descriptionText,
     this.buttonText,
     this.buttonAction,
     // ignore: no-magic-number
     this.sigma = 6.0,
     this.replaceBlurWithColor,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

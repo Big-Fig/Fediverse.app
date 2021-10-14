@@ -16,11 +16,12 @@ class StatusSubHeaderWidget extends StatelessWidget {
   final AccountCallback? accountCallback;
 
   const StatusSubHeaderWidget({
+    Key? key,
     required this.account,
     required this.descText,
     required this.icon,
     this.accountCallback,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => SizedBox(

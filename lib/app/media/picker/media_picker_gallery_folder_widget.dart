@@ -18,9 +18,10 @@ class FileGalleryFolderWidget extends StatelessWidget {
   final PermissionButtonBuilder permissionButtonBuilder;
 
   const FileGalleryFolderWidget({
+    Key? key,
     required this.headerItemBuilder,
     required this.permissionButtonBuilder,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

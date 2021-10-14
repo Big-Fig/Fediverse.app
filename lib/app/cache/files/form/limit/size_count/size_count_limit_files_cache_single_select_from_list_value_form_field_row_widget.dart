@@ -7,6 +7,10 @@ import 'package:flutter/material.dart';
 
 class SizeCountLimitFilesCacheSingleSelectFromListValueFormFieldRowWidget
     extends StatelessWidget {
+  const SizeCountLimitFilesCacheSingleSelectFromListValueFormFieldRowWidget({
+    Key? key,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) =>
       SizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBlocProxyProvider(
@@ -53,6 +57,4 @@ class SizeCountLimitFilesCacheSingleSelectFromListValueFormFieldRowWidget
           descriptionOnDisabled: null,
         ),
       );
-
-  const SizeCountLimitFilesCacheSingleSelectFromListValueFormFieldRowWidget();
 }

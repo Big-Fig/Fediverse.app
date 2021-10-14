@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MyAccountFeaturedHashtagSuggestionWidget extends StatelessWidget {
-  const MyAccountFeaturedHashtagSuggestionWidget();
+  const MyAccountFeaturedHashtagSuggestionWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) =>

@@ -14,11 +14,12 @@ class PostMessageContentWidget extends StatelessWidget {
   final bool filled;
 
   const PostMessageContentWidget({
+    Key? key,
     required this.hintText,
     this.expanded = false,
     this.ending,
     this.filled = true,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

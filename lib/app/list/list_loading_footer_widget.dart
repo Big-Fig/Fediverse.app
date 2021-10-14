@@ -5,12 +5,12 @@ import 'package:flutter/widgets.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class ListLoadingFooterWidget extends StatelessWidget {
+  const ListLoadingFooterWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => CustomFooter(
         builder: _builder,
       );
-
-  const ListLoadingFooterWidget();
 }
 
 Widget _builder(BuildContext context, LoadStatus? mode) {
