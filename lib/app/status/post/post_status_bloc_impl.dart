@@ -372,14 +372,7 @@ abstract class PostStatusBloc extends PostMessageBloc
   Stream<String?> get inputWithoutMentionedAcctsTextStream => Rx.combineLatest2(
         inputTextStream,
         mentionedAcctsStream,
-        (
-          String? inputText,
-          List<String> mentionedAccts,
-        ) =>
-            removeAcctsFromText(
-          inputText,
-          mentionedAccts,
-        ),
+        removeAcctsFromText,
       );
 
   void onMentionedAccountsChanged() {

@@ -43,8 +43,7 @@ class SearchResultItemPaginationListBloc extends PaginationListBloc<
       DisposableProvider<
           IPaginationListBloc<PaginationPage<ISearchResultItem>,
               ISearchResultItem>>(
-        create: (context) =>
-            SearchResultItemPaginationListBloc.createFromContext(context),
+        create: SearchResultItemPaginationListBloc.createFromContext,
         child: child,
       );
 }

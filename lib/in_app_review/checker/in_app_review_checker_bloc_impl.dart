@@ -74,9 +74,7 @@ class InAppReviewCheckerBloc extends DisposableOwner
     required Widget child,
   }) =>
       DisposableProvider<IInAppReviewCheckerBloc>(
-        create: (context) => InAppReviewCheckerBloc.createFromContext(
-          context,
-        ),
+        create: InAppReviewCheckerBloc.createFromContext,
         child: child,
       );
 }

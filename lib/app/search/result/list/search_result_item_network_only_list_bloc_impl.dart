@@ -105,8 +105,7 @@ class SearchResultItemNetworkOnlyListBloc
     required Widget child,
   }) =>
       DisposableProvider<ISearchResultItemNetworkOnlyListBloc>(
-        create: (context) =>
-            SearchResultItemNetworkOnlyListBloc.createFromContext(context),
+        create: SearchResultItemNetworkOnlyListBloc.createFromContext,
         child: ProxyProvider<ISearchResultItemNetworkOnlyListBloc,
             IStatusListBloc>(
           update: (context, value, _) => value,

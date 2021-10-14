@@ -350,6 +350,6 @@ class EditCustomListBloc extends DisposableOwner
   @override
   Stream<bool> get isListContainsAccountsStream =>
       editCustomListAccountListPaginationListBloc.itemsStream.map(
-        (items) => _calculateIsListContainsAccounts(items),
+        _calculateIsListContainsAccounts,
       );
 }

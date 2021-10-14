@@ -291,6 +291,9 @@ SelectionDialogAction _buildDialogAction<T>({
       icon: displayIconInDialog ? valueIconMapper!(context, value) : null,
       label: valueTitleMapper(context, value),
       onAction: (context) {
+        // null cases dont execute onAction
+        // todo: refactoring
+        // ignore: null_check_on_nullable_type_parameter
         fieldBloc.changeCurrentValue(value!);
         Navigator.of(context).pop();
       },

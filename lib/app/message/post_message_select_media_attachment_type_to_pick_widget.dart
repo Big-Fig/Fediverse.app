@@ -245,9 +245,7 @@ class _PostMessageSelectMediaAttachmentTypeToPickActionWidget
 
   @override
   Widget build(BuildContext context) => InkWell(
-        onTap: () {
-          onTap();
-        },
+        onTap: onTap,
         child: Column(
           children: [
             Container(

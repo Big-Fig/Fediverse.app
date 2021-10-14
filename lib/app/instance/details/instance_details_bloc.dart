@@ -44,9 +44,7 @@ extension IInstanceDetailsBlocExtension on IInstanceDetailsBloc {
       );
 
   Stream<String?> get descriptionOrShortDescriptionStream => instanceStream.map(
-        (instance) => _calculateDescriptionOrShortDescription(
-          instance,
-        ),
+        _calculateDescriptionOrShortDescription,
       );
 
   String? get descriptionOrShortDescriptionWithParsedHashtags =>
@@ -56,9 +54,7 @@ extension IInstanceDetailsBlocExtension on IInstanceDetailsBloc {
 
   Stream<String?> get descriptionOrShortDescriptionWithParsedHashtagsStream =>
       instanceStream.map(
-        (instance) => _calculateDescriptionOrShortDescriptionWithParsedHashtags(
-          instance,
-        ),
+        _calculateDescriptionOrShortDescriptionWithParsedHashtags,
       );
 
   String? get email => instance?.email;
@@ -209,59 +205,59 @@ extension IInstanceDetailsBlocExtension on IInstanceDetailsBloc {
   bool get isHaveDetailsFields => _calculateIsHaveDetailsFields(instance);
 
   Stream<bool> get isHaveDetailsFieldsStream => instanceStream.map(
-        (instance) => _calculateIsHaveDetailsFields(instance),
+        _calculateIsHaveDetailsFields,
       );
 
   bool get isHaveRegistrationsFields =>
       _calculateIsHaveRegistrationsFields(instance);
 
   Stream<bool> get isHaveRegistrationsFieldsStream => instanceStream.map(
-        (instance) => _calculateIsHaveRegistrationsFields(instance),
+        _calculateIsHaveRegistrationsFields,
       );
 
   bool get isHaveStatsFields => _calculateIsHaveRegistrationsFields(instance);
 
   Stream<bool> get isHaveStatsFieldsStream => instanceStream.map(
-        (instance) => _calculateIsHaveStatsFields(instance),
+        _calculateIsHaveStatsFields,
       );
 
   bool get isHaveUploadLimitsFields =>
       _calculateIsHaveUploadLimitsFields(instance);
 
   Stream<bool> get isHaveUploadLimitsFieldsStream => instanceStream.map(
-        (instance) => _calculateIsHaveUploadLimitsFields(instance),
+        _calculateIsHaveUploadLimitsFields,
       );
 
   bool get isHaveMessagesLimitsFields =>
       _calculateIsHaveMessagesLimitsFields(instance);
 
   Stream<bool> get isHaveMessagesLimitsFieldsStream => instanceStream.map(
-        (instance) => _calculateIsHaveMessagesLimitsFields(instance),
+        _calculateIsHaveMessagesLimitsFields,
       );
 
   bool get isHavePollLimitsFields => _calculateIsHavePollLimitsFields(instance);
 
   Stream<bool> get isHavePollLimitsFieldsStream => instanceStream.map(
-        (instance) => _calculateIsHavePollLimitsFields(instance),
+        _calculateIsHavePollLimitsFields,
       );
 
   bool get isHaveFieldsLimitsFields =>
       _calculateIsHaveFieldsLimitsFields(instance);
 
   Stream<bool> get isHaveFieldsLimitsFieldsStream => instanceStream.map(
-        (instance) => _calculateIsHaveFieldsLimitsFields(instance),
+        _calculateIsHaveFieldsLimitsFields,
       );
 
   bool get isHaveMetadataFields => _calculateIsHaveMetadataFields(instance);
 
   Stream<bool> get isHaveMetadataFieldsStream => instanceStream.map(
-        (instance) => _calculateIsHaveMetadataFields(instance),
+        _calculateIsHaveMetadataFields,
       );
 
   bool get isHaveFederationFields => _calculateIsHaveFederationFields(instance);
 
   Stream<bool> get isHaveFederationFieldsStream => instanceStream.map(
-        (instance) => _calculateIsHaveFederationFields(instance),
+        _calculateIsHaveFederationFields,
       );
 }
 

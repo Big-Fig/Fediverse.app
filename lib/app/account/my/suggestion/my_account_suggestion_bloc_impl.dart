@@ -94,7 +94,7 @@ class MyAccountSuggestionBloc extends DisposableOwner
     required Widget child,
   }) =>
       DisposableProvider<IMyAccountSuggestionBloc>(
-        create: (context) => MyAccountSuggestionBloc.createFromContext(context),
+        create: MyAccountSuggestionBloc.createFromContext,
         child: MyAccountSuggestionBlocProxyProvider(child: child),
       );
 }

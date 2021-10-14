@@ -33,7 +33,7 @@ abstract class BaseDialog extends DisposableOwner implements IDialog {
     var result = await showDialog<T>(
       barrierDismissible: cancelable,
       context: context,
-      builder: (BuildContext context) => buildDialogBody(context),
+      builder: buildDialogBody,
     );
     await dispose();
 

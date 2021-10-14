@@ -32,7 +32,7 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
     uploadMediaAttachmentBlocsSubject.disposeWith(this);
     isAllAttachedMediaUploadedSubject.disposeWith(this);
 
-    addCustomDisposable(() => clear());
+    addCustomDisposable(clear);
     addCustomDisposable(() => uploadedSubscriptionDisposable?.dispose());
 
     uploadMediaAttachmentBlocsStream.listen(
@@ -185,7 +185,7 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
   @override
   Future attachMedias(List<IMediaDeviceFile> mediaDeviceFiles) async {
     var futures = mediaDeviceFiles.map(
-      (mediaDeviceFile) => attachMedia(mediaDeviceFile),
+      attachMedia,
     );
 
     await Future.wait<void>(futures);

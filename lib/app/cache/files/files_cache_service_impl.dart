@@ -27,7 +27,7 @@ class FilesCacheService extends DisposableOwner implements IFilesCacheService {
             maxNrOfCacheObjects: maxNrOfCacheObjects ?? 100,
           ),
         ) {
-    addCustomDisposable(() => cacheManager.dispose());
+    addCustomDisposable(cacheManager.dispose);
   }
 
   @override

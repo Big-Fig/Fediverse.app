@@ -74,7 +74,7 @@ abstract class StatusThreadBloc extends AsyncInitLoadingBloc
 
   @override
   Stream<List<IStatus>> get statusesDistinctStream => statusesStream.distinct(
-        (a, b) => listEquals(a, b),
+        listEquals,
       );
 
   @override
@@ -187,11 +187,7 @@ abstract class StatusThreadBloc extends AsyncInitLoadingBloc
   Stream<IStatus?> get firstStatusInThreadStream => Rx.combineLatest2(
         statusesStream,
         firstStatusInThreadLoadedStream,
-        (List<IStatus> statuses, bool threadContextLoaded) =>
-            _calculateFirstStatus(
-          statuses,
-          threadContextLoaded,
-        ),
+        _calculateFirstStatus,
       );
 
   @override

@@ -283,9 +283,7 @@ class _FormCaptchaStringFormFieldRowImageWidget extends StatelessWidget {
             result = const FediCircularProgressIndicator();
           } else {
             result = InkWell(
-              onTap: () {
-                onNeedCaptchaReloadCallback();
-              },
+              onTap: onNeedCaptchaReloadCallback,
               child: image,
             );
           }

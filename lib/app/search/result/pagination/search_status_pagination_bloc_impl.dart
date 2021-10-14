@@ -43,8 +43,7 @@ class SearchStatusPaginationBloc extends SearchAdapterPaginationBloc<IStatus> {
     required Widget child,
   }) =>
       DisposableProvider<IPaginationBloc<PaginationPage<IStatus>, IStatus>>(
-        create: (context) =>
-            SearchStatusPaginationBloc.createFromContext(context),
+        create: SearchStatusPaginationBloc.createFromContext,
         child: child,
       );
 }

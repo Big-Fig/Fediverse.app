@@ -89,11 +89,11 @@ class FcmPushService extends AsyncInitLoadingBloc implements IFcmPushService {
       richNotificationsFirebaseMessagingBackgroundHandler,
     );
 
-    _fcm.onTokenRefresh.listen(
-      (newToken) {
-        _onNewToken(newToken);
-      },
-    ).disposeWith(this);
+    _fcm.onTokenRefresh
+        .listen(
+          _onNewToken,
+        )
+        .disposeWith(this);
 
     FirebaseMessaging.onMessageOpenedApp.listen(
       (RemoteMessage message) {

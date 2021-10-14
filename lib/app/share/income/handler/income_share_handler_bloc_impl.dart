@@ -56,11 +56,11 @@ class IncomeShareHandlerBloc extends DisposableOwner
     needChooseInstanceFromListStreamController.disposeWith(this);
     incomeShareHandlerErrorStreamController.disposeWith(this);
 
-    incomeShareService.incomeShareEventStream.listen(
-      (event) {
-        _handleEvent(event);
-      },
-    ).disposeWith(this);
+    incomeShareService.incomeShareEventStream
+        .listen(
+          _handleEvent,
+        )
+        .disposeWith(this);
   }
 
   static IncomeShareHandlerBloc createFromContext(
@@ -98,9 +98,7 @@ class IncomeShareHandlerBloc extends DisposableOwner
     required Widget child,
   }) =>
       DisposableProvider<IIncomeShareHandlerBloc>(
-        create: (context) => IncomeShareHandlerBloc.createFromContext(
-          context,
-        ),
+        create: IncomeShareHandlerBloc.createFromContext,
         child: child,
       );
 

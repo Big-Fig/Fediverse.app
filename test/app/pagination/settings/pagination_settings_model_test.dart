@@ -9,29 +9,20 @@ import 'pagination_settings_model_test_helper.dart';
 void main() {
   test('equal & hashcode & toString', () async {
     ObjMockHelper.testEqualsHashcodeToString(
-      ({required String seed}) =>
-          PaginationSettingsModelMockHelper.createTestPaginationSettings(
-        seed: seed,
-      ),
+      PaginationSettingsModelMockHelper.createTestPaginationSettings,
     );
   });
 
   test('toJson & fromJson', () async {
     JsonMockHelper.testFromJsonToJson(
-      ({required String seed}) =>
-          PaginationSettingsModelMockHelper.createTestPaginationSettings(
-        seed: seed,
-      ),
+      PaginationSettingsModelMockHelper.createTestPaginationSettings,
       (json) => PaginationSettings.fromJson(json),
     );
   });
 
   test('hive save&load', () async {
     await HiveMockHelper.testHiveSaveAndLoad(
-      ({required String seed}) =>
-          PaginationSettingsModelMockHelper.createTestPaginationSettings(
-        seed: seed,
-      ),
+      PaginationSettingsModelMockHelper.createTestPaginationSettings,
     );
   });
 

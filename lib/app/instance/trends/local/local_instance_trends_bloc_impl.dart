@@ -54,7 +54,7 @@ class LocalInstanceTrendsBloc extends InstanceTrendsBloc
     required Widget child,
   }) =>
       DisposableProvider<IInstanceTrendsBloc>(
-        create: (context) => LocalInstanceTrendsBloc.createFromContext(context),
+        create: LocalInstanceTrendsBloc.createFromContext,
         child: InstanceTrendsBlocProxyProvider(child: child),
       );
 

@@ -46,9 +46,7 @@ class PollBloc extends DisposableOwner implements IPollBloc {
 
       Timer(
         diff,
-        () {
-          refreshFromNetwork();
-        },
+        refreshFromNetwork,
       ).disposeWith(this);
     }
   }

@@ -105,7 +105,7 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
 
   @override
   Stream<List<TItem>> get itemsDistinctStream =>
-      itemsStream.distinct((a, b) => listEquals(a, b));
+      itemsStream.distinct(listEquals);
 
   @override
   int? get itemsCountPerPage => paginationBloc.itemsCountPerPage;
@@ -232,7 +232,7 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
   }
 
   @override
-  Future refreshWithController() async {
+  Future<void> refreshWithController() async {
     _logger.finest(() => 'refreshWithController');
     // refresh controller if it attached
     if (refreshController.position != null) {
@@ -250,7 +250,7 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       }
     } else {
       //otherwise refresh only bloc
-      return refreshWithoutController();
+      await refreshWithoutController();
     }
   }
 }

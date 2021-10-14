@@ -47,7 +47,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
 
   @override
   Stream<List<IAccount>> get accountsStream =>
-      _accountsSubject.stream.distinct((a, b) => listEquals(a, b));
+      _accountsSubject.stream.distinct(listEquals);
 
   @override
   IConversationChat get chat => _chatSubject.value;

@@ -117,7 +117,7 @@ void goToEditMyAccountPage(BuildContext context) {
     context,
     MaterialPageRoute<void>(
       builder: (context) => DisposableProvider<IEditMyAccountBloc>(
-        create: (context) => EditMyAccountBloc.createFromContext(context),
+        create: EditMyAccountBloc.createFromContext,
         child: const EditMyAccountPage(),
       ),
     ),

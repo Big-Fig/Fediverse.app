@@ -20,9 +20,7 @@ void main() {
 
   test('PushMessage toJson & fromJson', () async {
     JsonMockHelper.testFromJsonToJson(
-      ({required String seed}) => PushModelMockHelper.createTestPushMessage(
-        seed: seed,
-      ),
+      PushModelMockHelper.createTestPushMessage,
       (json) => PushMessage.fromJson(json),
     );
   });
@@ -48,19 +46,14 @@ void main() {
 
   test('PushNotification toJson & fromJson', () async {
     JsonMockHelper.testFromJsonToJson(
-      ({required String seed}) =>
-          PushModelMockHelper.createTestPushNotification(
-        seed: seed,
-      ),
+      PushModelMockHelper.createTestPushNotification,
       (json) => PushNotification.fromJson(json),
     );
   });
 
   test('PushMessage hive save&load', () async {
     await HiveMockHelper.testHiveSaveAndLoad(
-      ({required String seed}) => PushModelMockHelper.createTestPushMessage(
-        seed: seed,
-      ),
+      PushModelMockHelper.createTestPushMessage,
     );
   });
 

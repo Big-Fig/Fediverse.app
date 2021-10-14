@@ -42,9 +42,7 @@ class PostStatusPollOptionFormStringFieldFormRowWidget extends StatelessWidget {
                   autocorrect: true,
                   focusNode: formStringFieldBloc.focusNode,
                   textInputAction: textInputAction,
-                  onSubmitted: (_) {
-                    onSubmitted(_);
-                  },
+                  onSubmitted: onSubmitted,
                   textStyle: IFediUiTextTheme.of(context).bigTallMediumGrey,
                   obscureText: false,
                   autofocus: false,

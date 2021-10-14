@@ -95,9 +95,7 @@ class FediFormSingleChooseCustomFromListFieldRow<T> extends StatelessWidget {
                     ),
                     if (isNullValuePossible && value != null)
                       InkWell(
-                        onTap: () {
-                          clearCallback();
-                        },
+                        onTap: clearCallback,
                         child: Padding(
                           padding: FediPadding.horizontalSmallPadding,
                           child: Icon(

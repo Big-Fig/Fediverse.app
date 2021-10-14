@@ -32,11 +32,11 @@ class ConnectionService extends DisposableOwner implements IConnectionService {
   bool get isConnected => _mapConnectivityResult(connectionState);
 
   ConnectionService() {
-    connectivity.onConnectivityChanged.listen(
-      (connectivityResult) {
-        _updateConnectivity(connectivityResult);
-      },
-    ).disposeWith(this);
+    connectivity.onConnectivityChanged
+        .listen(
+          _updateConnectivity,
+        )
+        .disposeWith(this);
   }
 
   @override

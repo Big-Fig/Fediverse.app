@@ -86,7 +86,7 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
   @override
   Stream<List<Timeline>> get timelinesDistinctStream =>
       timelinesStream.distinct(
-        (a, b) => listEquals(a, b),
+        listEquals,
       );
 
   @override
@@ -115,7 +115,7 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
   Stream<List<TimelinesHomeTabStorageListItem>>
       get timelineStorageItemsDistinctStream =>
           timelineStorageItemsStream.distinct(
-            (a, b) => listEquals(a, b),
+            listEquals,
           );
 
   @override

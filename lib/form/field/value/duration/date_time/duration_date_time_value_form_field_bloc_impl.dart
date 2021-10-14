@@ -17,7 +17,7 @@ class DurationDateTimeValueFormFieldBloc
 
   @override
   Stream<Duration?> get currentValueDurationStream => currentValueStream.map(
-        (currentValue) => _calculateDuration(currentValue),
+        _calculateDuration,
       );
 
   DurationDateTimeValueFormFieldBloc({

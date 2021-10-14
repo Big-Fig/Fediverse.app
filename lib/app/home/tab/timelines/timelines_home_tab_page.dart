@@ -190,9 +190,7 @@ class _TimelinesHomeTabPageBodyState extends State<_TimelinesHomeTabPageBody>
               // ignore: no-magic-number
               topSliverScrollOffsetToShowWhiteStatusBar: 100,
               tabKeyPrefix: 'TimelineTab',
-              tabBodyProviderBuilder:
-                  (BuildContext context, int index, Widget child) =>
-                      _provideTabBodyContext(context, index, child),
+              tabBodyProviderBuilder: _provideTabBodyContext,
               tabBodyContentBuilder: (BuildContext context, int index) =>
                   buildTabBodyContent(),
               tabBodyOverlayBuilder: (BuildContext context, int index) =>

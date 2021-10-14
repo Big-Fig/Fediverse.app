@@ -12,7 +12,7 @@ class CollapsibleOwnerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
       DisposableProvider<ICollapsibleOwnerBloc>(
-        create: (context) => CollapsibleOwnerBloc.createFromContext(context),
+        create: CollapsibleOwnerBloc.createFromContext,
         child: Stack(
           children: <Widget>[
             child,

@@ -36,11 +36,11 @@ class PleromaChatMessageCachedPaginationListWithNewItemsBloc<
           asyncCalculateNewItems: false,
           asyncCalculateActuallyNew: false,
         ) {
-    pleromaChatBloc.onMessageLocallyHiddenStream.listen(
-      (hiddenMessage) {
-        hideItem(hiddenMessage);
-      },
-    ).disposeWith(this);
+    pleromaChatBloc.onMessageLocallyHiddenStream
+        .listen(
+          hideItem,
+        )
+        .disposeWith(this);
 
     hiddenItemsSubject.disposeWith(this);
   }
@@ -76,9 +76,7 @@ class PleromaChatMessageCachedPaginationListWithNewItemsBloc<
           // ignore: no-magic-number
           milliseconds: 100,
         ),
-        () {
-          refreshWithController();
-        },
+        refreshWithController,
       );
     }
 

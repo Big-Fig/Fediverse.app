@@ -68,8 +68,7 @@ class ConversationChatHomeTabPage extends StatelessWidget {
     Widget child,
   ) =>
       DisposableProvider<IConversationChatWithLastMessageListBloc>(
-        create: (context) =>
-            ConversationChatWithLastMessageListBloc.createFromContext(context),
+        create: ConversationChatWithLastMessageListBloc.createFromContext,
         child: Builder(
           builder: (context) {
             var chatsListBloc = IConversationChatWithLastMessageListBloc.of(

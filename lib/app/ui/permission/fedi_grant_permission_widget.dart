@@ -35,9 +35,7 @@ class FediGrantPermissionWidget extends StatelessWidget {
                 child: FediPrimaryFilledTextButtonWithBorder(
                   S.of(context).permission_grant_action_grant,
                   expanded: false,
-                  onPressed: () {
-                    permissionBloc.requestPermission();
-                  },
+                  onPressed: permissionBloc.requestPermission,
                 ),
               ),
             );

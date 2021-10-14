@@ -119,8 +119,7 @@ class _SearchTabBodyWidget extends StatelessWidget {
         context,
         child: DisposableProvider<
             IPaginationListBloc<PaginationPage<IStatus>, IStatus>>(
-          create: (context) =>
-              SearchStatusesPaginationListBloc.createFromContext(context),
+          create: SearchStatusesPaginationListBloc.createFromContext,
           child: const SearchStatusesListWidget(),
         ),
       );
@@ -130,8 +129,7 @@ class _SearchTabBodyWidget extends StatelessWidget {
         context,
         child: DisposableProvider<
             IPaginationListBloc<PaginationPage<IHashtag>, IHashtag>>(
-          create: (context) =>
-              SearchHashtagsPaginationListBloc.createFromContext(context),
+          create: SearchHashtagsPaginationListBloc.createFromContext,
           child: const SearchHashtagsListWidget(),
         ),
       );
@@ -140,8 +138,7 @@ class _SearchTabBodyWidget extends StatelessWidget {
       SearchAccountPaginationBloc.provideToContext(
         context,
         child: DisposableProvider<IAccountPaginationListBloc>(
-          create: (context) =>
-              SearchAccountsPaginationListBloc.createFromContext(context),
+          create: SearchAccountsPaginationListBloc.createFromContext,
           child: ProxyProvider<IAccountPaginationListBloc,
               IPaginationListBloc<PaginationPage<IAccount>, IAccount>>(
             update: (context, value, previous) => value,

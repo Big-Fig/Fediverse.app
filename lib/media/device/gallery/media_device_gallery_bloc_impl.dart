@@ -33,7 +33,7 @@ abstract class MediaDeviceGalleryBloc extends AsyncInitLoadingBloc
     galleryStateSubject.disposeWith(this);
 
     addCustomDisposable(
-      () => disposeSelectedFolderBlocs(),
+      disposeSelectedFolderBlocs,
     );
   }
 

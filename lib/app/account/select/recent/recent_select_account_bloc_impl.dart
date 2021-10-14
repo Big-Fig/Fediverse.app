@@ -61,8 +61,7 @@ class RecentSelectAccountBloc extends DisposableOwner
   @override
   Stream<bool> get isRecentSelectAccountListEmptyStream =>
       recentSelectAccountListStream.map(
-        (recentSelectAccountList) =>
-            _calculateIsRecentSelectAccountListEmpty(recentSelectAccountList),
+        _calculateIsRecentSelectAccountListEmpty,
       );
 
   static bool _calculateIsRecentSelectAccountListEmpty(

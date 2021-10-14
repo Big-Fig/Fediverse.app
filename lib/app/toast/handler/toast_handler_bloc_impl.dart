@@ -95,11 +95,11 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
       ),
     );
 
-    currentInstanceNotificationPushLoaderBloc.handledNotificationsStream.listen(
-      (handledNotification) {
-        _handleCurrentInstanceNotification(handledNotification);
-      },
-    ).disposeWith(this);
+    currentInstanceNotificationPushLoaderBloc.handledNotificationsStream
+        .listen(
+          _handleCurrentInstanceNotification,
+        )
+        .disposeWith(this);
   }
 
   Future<bool> handlePush(

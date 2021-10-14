@@ -9,32 +9,23 @@ import 'notifications_push_handler_unhandled_model_test_helper.dart';
 void main() {
   test('equal & hashcode & toString', () async {
     ObjMockHelper.testEqualsHashcodeToString(
-      ({required String seed}) =>
-          NotificationsPushHandlerUnhandledModelMockHelper
-              .createTestPushHandlerUnhandledList(
-        seed: seed,
-      ),
+      NotificationsPushHandlerUnhandledModelMockHelper
+          .createTestPushHandlerUnhandledList,
     );
   });
 
   test('toJson & fromJson', () async {
     JsonMockHelper.testFromJsonToJson(
-      ({required String seed}) =>
-          NotificationsPushHandlerUnhandledModelMockHelper
-              .createTestPushHandlerUnhandledList(
-        seed: seed,
-      ),
+      NotificationsPushHandlerUnhandledModelMockHelper
+          .createTestPushHandlerUnhandledList,
       (json) => NotificationsPushHandlerUnhandledList.fromJson(json),
     );
   });
 
   test('hive save&load', () async {
     await HiveMockHelper.testHiveSaveAndLoad(
-      ({required String seed}) =>
-          NotificationsPushHandlerUnhandledModelMockHelper
-              .createTestPushHandlerUnhandledList(
-        seed: seed,
-      ),
+      NotificationsPushHandlerUnhandledModelMockHelper
+          .createTestPushHandlerUnhandledList,
     );
   });
 

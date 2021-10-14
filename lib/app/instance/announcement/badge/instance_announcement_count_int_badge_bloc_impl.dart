@@ -38,10 +38,7 @@ class InstanceAnnouncementCountIntBadgeBloc extends DisposableOwner
     required Widget child,
   }) =>
       DisposableProvider<IFediIntBadgeBloc>(
-        create: (context) =>
-            InstanceAnnouncementCountIntBadgeBloc.createFromContext(
-          context,
-        ),
+        create: InstanceAnnouncementCountIntBadgeBloc.createFromContext,
         child: child,
       );
 }

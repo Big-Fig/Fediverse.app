@@ -39,8 +39,7 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
 
   @override
   Stream<bool> get isLoadedPagesInSequenceStream =>
-      loadedPagesSortedByIndexStream
-          .map((pages) => mapIsLoadedPagesInSequence(pages));
+      loadedPagesSortedByIndexStream.map(mapIsLoadedPagesInSequence);
 
   @override
   bool get isLoadedPagesInSequence =>
@@ -53,9 +52,7 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
   @override
   Stream<int?> get loadedPagesMaximumIndexStream =>
       loadedPageIndexesSortedByIndexStream.map(
-        (loadedPageIndexesSortedByIndex) => _calculateMaxIndex(
-          loadedPageIndexesSortedByIndex,
-        ),
+        _calculateMaxIndex,
       );
 
   @override
@@ -68,9 +65,7 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
   @override
   Stream<int?> get loadedPagesMinimumIndexStream =>
       loadedPageIndexesSortedByIndexStream.map(
-        (loadedPageIndexesSortedByIndex) => _calculateMinIndex(
-          loadedPageIndexesSortedByIndex,
-        ),
+        _calculateMinIndex,
       );
 
   @override

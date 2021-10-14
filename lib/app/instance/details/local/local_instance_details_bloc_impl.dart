@@ -38,8 +38,7 @@ class LocalInstanceDetailsBloc extends InstanceDetailsBloc
     required Widget child,
   }) =>
       DisposableProvider<IInstanceDetailsBloc>(
-        create: (context) =>
-            LocalInstanceDetailsBloc.createFromContext(context),
+        create: LocalInstanceDetailsBloc.createFromContext,
         child: InstanceDetailsBlocProxyProvider(child: child),
       );
 

@@ -122,10 +122,7 @@ class AppDatabaseService extends AsyncInitLoadingBloc
     ];
 
     var maxCount = counts.reduce(
-      (value, element) => max(
-        value,
-        element,
-      ),
+      max,
     );
 
     return maxCount;

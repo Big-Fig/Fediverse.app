@@ -84,11 +84,11 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
 
     _onFieldsChanged();
 
-    typeFieldBloc.currentValueStream.listen(
-      (timelineType) {
-        _onTypeChanged(timelineType);
-      },
-    ).disposeWith(this);
+    typeFieldBloc.currentValueStream
+        .listen(
+          _onTypeChanged,
+        )
+        .disposeWith(this);
 
     addDisposable(idFieldBloc);
     addDisposable(nameFieldBloc);

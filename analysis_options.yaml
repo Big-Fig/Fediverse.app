@@ -103,19 +103,20 @@ linter:
     # static methods is OK, some named constructors harder ot maintain
     prefer_constructors_over_static_methods: false
 
+    # final is unnecessary because of parameter_assignments lint
+    prefer_final_parameters: false
+
     # code metrics have better rules for member ordering
     sort_constructors_first: false
     sort_unnamed_constructors_first: false
 
-    prefer_final_parameters: false
+
     avoid_catches_without_on_clauses: false
-    unnecessary_lambdas: false
     use_build_context_synchronously: false
     prefer_const_constructors: false
     always_specify_types: false
     use_key_in_widget_constructors: false
     prefer_final_locals: false
-    null_check_on_nullable_type_parameter: false
 
 
 dart_code_metrics:

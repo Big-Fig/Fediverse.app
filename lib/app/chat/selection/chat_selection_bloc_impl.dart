@@ -230,9 +230,7 @@ class ChatSelectionBloc extends DisposableOwner implements IChatSelectionBloc {
     required Widget child,
   }) =>
       DisposableProvider<IChatSelectionBloc>(
-        create: (context) => ChatSelectionBloc.createFromContext(
-          context,
-        ),
+        create: ChatSelectionBloc.createFromContext,
         child: child,
       );
 }

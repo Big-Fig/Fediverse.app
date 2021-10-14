@@ -33,7 +33,7 @@ abstract class InstanceActivityBloc extends AsyncInitLoadingBloc
   })  : refreshController = RefreshController(),
         activitySubject = BehaviorSubject.seeded(null) {
     activitySubject.disposeWith(this);
-    addCustomDisposable(() => refreshController.dispose());
+    addCustomDisposable(refreshController.dispose);
   }
 
   IUnifediApiInstanceService get unifediApiInstanceService;

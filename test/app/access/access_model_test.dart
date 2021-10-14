@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_lambdas
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 import 'package:unifedi_api/unifedi_api_mock_helper.dart';

@@ -47,7 +47,7 @@ class NotificationsHomeTabPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
       DisposableProvider<INotificationTabsBloc>(
-        create: (context) => NotificationsTabsBloc.createFromContext(context),
+        create: NotificationsTabsBloc.createFromContext,
         child: NotificationTabsBlocLoadingWidget(
           child: TabControllerProvider(
             tabControllerCreator:

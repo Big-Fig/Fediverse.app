@@ -71,10 +71,7 @@ class MediaDeviceFileLocalOnlyPaginationBloc extends LocalOnlyPaginationBloc<
     required Widget child,
   }) =>
       DisposableProvider<IMediaDeviceFilePaginationBloc>(
-        create: (context) =>
-            MediaDeviceFileLocalOnlyPaginationBloc.createFromContext(
-          context,
-        ),
+        create: MediaDeviceFileLocalOnlyPaginationBloc.createFromContext,
         child: ProxyProvider<
             IMediaDeviceFilePaginationBloc,
             ILocalOnlyPaginationBloc<PaginationPage<IMediaDeviceFileMetadata>,

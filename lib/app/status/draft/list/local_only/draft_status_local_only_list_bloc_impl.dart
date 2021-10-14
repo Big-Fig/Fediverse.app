@@ -27,8 +27,7 @@ class DraftStatusLocalOnlyListBloc extends IDraftStatusLocalOnlyListBloc {
     required Widget child,
   }) =>
       DisposableProvider<IDraftStatusLocalOnlyListBloc>(
-        create: (context) =>
-            DraftStatusLocalOnlyListBloc.createFromContext(context),
+        create: DraftStatusLocalOnlyListBloc.createFromContext,
         child: ProxyProvider<IDraftStatusLocalOnlyListBloc, IStatusListBloc>(
           update: (context, value, previous) => value,
           child: child,

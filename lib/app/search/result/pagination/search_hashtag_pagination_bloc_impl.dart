@@ -46,8 +46,7 @@ class SearchHashtagPaginationBloc
     required Widget child,
   }) =>
       DisposableProvider<IPaginationBloc<PaginationPage<IHashtag>, IHashtag>>(
-        create: (context) =>
-            SearchHashtagPaginationBloc.createFromContext(context),
+        create: SearchHashtagPaginationBloc.createFromContext,
         child: child,
       );
 }

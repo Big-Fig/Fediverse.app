@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_lambdas
+
 import 'package:fedi/app/ui/settings/local_preference/global/global_ui_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/ui/settings/local_preference/ui_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/ui/settings/ui_settings_model.dart';

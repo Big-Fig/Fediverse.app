@@ -96,10 +96,7 @@ class CrashReportingPermissionCheckerBloc extends DisposableOwner
     required Widget child,
   }) =>
       DisposableProvider<ICrashReportingPermissionCheckerBloc>(
-        create: (context) =>
-            CrashReportingPermissionCheckerBloc.createFromContext(
-          context,
-        ),
+        create: CrashReportingPermissionCheckerBloc.createFromContext,
         child: child,
       );
 }
