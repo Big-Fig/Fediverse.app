@@ -8,7 +8,7 @@ import 'package:path_provider/path_provider.dart' as path_provider;
 
 final _logger = Logger('temp_file_helper.dart');
 
-var pathPosix = path.posix;
+var _pathPosix = path.posix;
 
 class TempFileHelper {
   static Future<Directory> getTemporaryDirectory() =>
@@ -22,7 +22,7 @@ class TempFileHelper {
     var millisecondsSinceEpoch = dateTime.millisecondsSinceEpoch;
 
     var uniqueDirectory = Directory(
-      pathPosix.join(
+      _pathPosix.join(
         temporaryDirectory.path,
         millisecondsSinceEpoch.toString(),
       ),
@@ -64,7 +64,7 @@ class TempFileHelper {
 
       var directory = await createUniqueTemporaryDirectory();
       var file = File(
-        pathPosix.join(
+        _pathPosix.join(
           directory.absolute.path,
           filename,
         ),

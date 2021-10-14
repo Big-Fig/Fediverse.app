@@ -133,8 +133,6 @@ linter:
 
 
 
-    type_annotate_public_apis: false
-
 
 
     prefer_function_declarations_over_variables: false

@@ -37,7 +37,7 @@ class CurrentUnifediApiAccessContextInitWidgetState
   FediIndeterminateProgressDialog? loadingInstanceProgressDialog;
   StreamSubscription? subscription;
 
-  var disposed = false;
+  bool disposed = false;
 
   @override
   void didChangeDependencies() {
