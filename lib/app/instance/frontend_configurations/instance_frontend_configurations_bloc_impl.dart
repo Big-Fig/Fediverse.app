@@ -32,6 +32,7 @@ class InstanceFrontendConfigurationsBloc extends AsyncInitLoadingBloc
         await instanceFrontendConfigurationsLocalPreferenceBloc
             .setValue(frontendConfigurations);
       }
+      // ignore: avoid_catches_without_on_clauses
     } catch (e, stackTrace) {
       _logger.warning(
         () => 'error during loading frontendConfigurations',
@@ -80,6 +81,7 @@ extension IInstanceFrontendConfigurationsLocalPreferenceBlocExtension
             brandColorString,
           ),
         );
+        // ignore: avoid_catches_without_on_clauses
       } catch (e, stackTrace) {
         _logger.warning(
           () => 'failed to parse color $brandColorString',

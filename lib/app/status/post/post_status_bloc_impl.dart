@@ -742,6 +742,7 @@ abstract class PostStatusBloc extends PostMessageBloc
         await statusRepository.incrementRepliesCount(
           remoteId: inReplyToStatusRemoteId,
         );
+        // ignore: avoid_catches_without_on_clauses
       } catch (e, stackTrace) {
         _logger.warning(
           () => 'failed to incrementRepliesCount $inReplyToStatusRemoteId',

@@ -196,6 +196,7 @@ class EditMyAccountPleromaBackgroundFieldEditButtonWidget
               try {
                 await editMyAccountBloc.backgroundField
                     .pickNewFile(filePickerFile);
+                // ignore: avoid_catches_without_on_clauses
               } catch (e, stackTrace) {
                 _logger.warning(
                   'startChoosingFileToUploadBackground error',
@@ -248,6 +249,7 @@ Future startChoosingFileToUploadBackground(
     if (filePickerFile != null) {
       try {
         await editMyAccountBloc.backgroundField.pickNewFile(filePickerFile);
+        // ignore: avoid_catches_without_on_clauses
       } catch (e, stackTrace) {
         _logger.warning(
           'startChoosingFileToUploadBackground error',

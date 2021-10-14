@@ -39,6 +39,7 @@ class PushPermissionCheckerBloc extends DisposableOwner
         _logger.finest(() => 'checkAndSubscribe subscribeAllEnabled');
         await pushSettingsBloc.subscribeAllEnabled();
         result = true;
+        // ignore: avoid_catches_without_on_clauses
       } catch (e, stackTrace) {
         _logger.warning(
           () => 'failed to subscribeWithDefaultPreferences',

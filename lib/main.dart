@@ -486,6 +486,7 @@ class FediApp extends StatelessWidget {
                 id: actualTheme.id,
               );
             }
+            // ignore: avoid_catches_without_on_clauses
           } catch (e) {
             // todo: remove this hack. IInstanceFrontendConfigurationsBloc should init before this
             _logger.warning(

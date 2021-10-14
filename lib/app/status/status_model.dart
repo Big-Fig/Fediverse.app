@@ -547,6 +547,7 @@ extension IStatusExtension on IStatus {
 
         return splitResult[middleIndex];
       }
+      // ignore: avoid_catches_without_on_clauses
     } catch (e, stackTrace) {
       var exception = CantExtractStatusRemoteIdFromStatusUrlException(
         e: e,

@@ -57,6 +57,7 @@ class ScrollControllerBloc extends DisposableOwner
       () {
         try {
           scrollController!.removeListener(listener);
+          // ignore: avoid_catches_without_on_clauses
         } catch (e) {
           _logger.warning(() => 'cant dispose scroll controller listener');
         }

@@ -15,6 +15,7 @@ extension IUnifediApiFieldExtension on IUnifediApiField {
         } else {
           return value;
         }
+        // ignore: avoid_catches_without_on_clauses
       } catch (e, stackTrace) {
         _logger.warning(() => 'failed to parse URL from $value', e, stackTrace);
 
@@ -34,9 +35,10 @@ extension IUnifediApiFieldExtension on IUnifediApiField {
       var uri = Uri.parse(rawUrl);
 
       return '${uri.host}${uri.path}';
+      // ignore: avoid_catches_without_on_clauses
     } catch (e, stackTrace) {
       _logger.warning(
-        () => 'valueAsRawUrlWithoutSchema $rawUrl',
+        () => 'valueAsRawUrlWithoutSchema parse $rawUrl',
         e,
         stackTrace,
       );

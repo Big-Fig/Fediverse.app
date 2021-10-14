@@ -113,6 +113,7 @@ class MediaPlayerBloc extends AsyncInitLoadingBloc implements IMediaPlayerBloc {
       if (autoPlay == true || initAfterUserClick) {
         await play();
       }
+      // ignore: avoid_catches_without_on_clauses
     } catch (error, stackTrace) {
       this.error = error;
       this.stackTrace = stackTrace;
@@ -267,11 +268,12 @@ class MediaPlayerBloc extends AsyncInitLoadingBloc implements IMediaPlayerBloc {
       await videoPlayerController!.play();
 
       playerStateSubject.add(MediaPlayerState.playing);
+      // ignore: avoid_catches_without_on_clauses
     } catch (error, stackTrace) {
       this.error = error;
       this.stackTrace = stackTrace;
       _logger.warning(
-        () => 'failed to init videoPlayerController',
+        () => 'failed to play videoPlayerController',
         error,
         stackTrace,
       );
@@ -290,11 +292,12 @@ class MediaPlayerBloc extends AsyncInitLoadingBloc implements IMediaPlayerBloc {
       await videoPlayerController!.pause();
 
       playerStateSubject.add(MediaPlayerState.paused);
+      // ignore: avoid_catches_without_on_clauses
     } catch (error, stackTrace) {
       this.error = error;
       this.stackTrace = stackTrace;
       _logger.warning(
-        () => 'failed to init videoPlayerController',
+        () => 'failed to pause videoPlayerController',
         error,
         stackTrace,
       );

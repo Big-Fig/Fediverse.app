@@ -73,6 +73,7 @@ class TempFileHelper {
       await file.writeAsBytes(bytes);
 
       return file;
+      // ignore: avoid_catches_without_on_clauses
     } catch (e, stackTrace) {
       _logger.warning(
         () => 'error during downloadFileToTempFolder',

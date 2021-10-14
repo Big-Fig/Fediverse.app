@@ -64,6 +64,7 @@ class InstanceDetailsWidget extends StatelessWidget {
             await instanceDetailsBloc.refresh();
 
             return FediListSmartRefresherLoadingState.loaded;
+            // ignore: avoid_catches_without_on_clauses
           } catch (e, stackTrace) {
             _logger.warning(
               () => 'instanceDetailsBloc.refresh',

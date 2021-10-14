@@ -104,6 +104,7 @@ Future goToRemoteAccountDetailsPageBasedOnLocalInstanceRemoteAccount(
             localInstanceRemoteAccount,
             unifediApiStatusService,
           );
+          // ignore: avoid_catches_without_on_clauses
         } catch (e) {
           // load in Pleroma way. Use username as id
           var unifediApiAccount = await unifediApiAccountService.getAccount(

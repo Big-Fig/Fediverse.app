@@ -65,6 +65,7 @@ Future _startChoosingFileToUploadAvatar(BuildContext context) async {
     if (filePickerFile != null) {
       try {
         await editMyAccountBloc.avatarField.pickNewFile(filePickerFile);
+        // ignore: avoid_catches_without_on_clauses
       } catch (e, stackTrace) {
         _logger.warning('startChoosingFileToUploadAvatar error', e, stackTrace);
         showMediaAttachmentFailedNotificationOverlay(context, e);

@@ -120,6 +120,7 @@ class FcmPushService extends AsyncInitLoadingBloc implements IFcmPushService {
 
     try {
       await _updateToken();
+      // ignore: avoid_catches_without_on_clauses
     } catch (e, stackTrace) {
       _logger.warning(
         () => 'failed to _updateToken on internalAsyncInit',

@@ -221,6 +221,7 @@ class PleromaFormCaptchaStringFieldBloc extends StringValueFormFieldBloc
         captchaSubject.add(captcha.toUnifediApiCaptcha());
       }
       _logger.finest(() => 'reloadCaptcha FINISH $captcha');
+      // ignore: avoid_catches_without_on_clauses
     } catch (e, stackTrace) {
       _logger.warning(() => 'reloadCaptcha ERROR', e, stackTrace);
       if (!captchaLoadingErrorSubject.isClosed) {

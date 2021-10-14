@@ -357,6 +357,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
           batchTransaction: batch,
         );
       });
+      // ignore: avoid_catches_without_on_clauses
     } catch (e, stackTrace) {
       _logger.warning(() => 'postMessage error', e, stackTrace);
       await chatMessageRepository.updateByDbIdInDbType(

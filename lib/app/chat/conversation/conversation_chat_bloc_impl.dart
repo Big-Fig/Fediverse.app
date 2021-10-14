@@ -414,6 +414,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
       int? conversationIdInt;
       try {
         conversationIdInt = int.parse(chat.remoteId);
+        // ignore: avoid_catches_without_on_clauses
       } catch (e) {
         // nothing, not all backends use int for conversation id
       }
@@ -498,6 +499,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
         conversationRemoteId: chat.remoteId,
         batchTransaction: null,
       );
+      // ignore: avoid_catches_without_on_clauses
     } catch (e, stackTrace) {
       _logger.warning(() => 'postMessage error', e, stackTrace);
       await statusRepository.updateByDbIdInDbType(

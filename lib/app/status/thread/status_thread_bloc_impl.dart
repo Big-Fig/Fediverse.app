@@ -153,6 +153,7 @@ abstract class StatusThreadBloc extends AsyncInitLoadingBloc
       firstStatusInThreadSubject.add(true);
 
       return true;
+      // ignore: avoid_catches_without_on_clauses
     } catch (error, stackTrace) {
       _logger.severe(() => 'refresh error ', error, stackTrace);
 

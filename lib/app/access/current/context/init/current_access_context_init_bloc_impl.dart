@@ -115,6 +115,7 @@ class CurrentUnifediApiAccessContextInitBloc extends AsyncInitLoadingBloc
           );
         }
         requiredDataRefreshSuccess = true;
+        // ignore: avoid_catches_without_on_clauses
       } catch (e, stackTrace) {
         _logger.warning(() => 'failed to update instance info', e, stackTrace);
         if (e is IUnifediApiRestErrorException) {

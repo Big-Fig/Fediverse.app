@@ -54,6 +54,7 @@ Future<AsyncDialogResult<T?>> doAsyncOperationWithDialog<T>({
 
   try {
     result = await cancelableOperation.valueOrCancellation(null);
+    // ignore: avoid_catches_without_on_clauses
   } catch (e, stackTrace) {
     error = e;
     for (final builder in errorDataBuilders) {

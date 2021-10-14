@@ -49,6 +49,7 @@ class CachedPaginationListBloc<TPage extends CachedPaginationPage<TItem>, TItem>
       }
 
       return state;
+      // ignore: avoid_catches_without_on_clauses
     } catch (e, stackTrace) {
       // todo: refactor copy-pasted code
       if (!loadMoreStateSubject.isClosed) {
@@ -112,6 +113,7 @@ class CachedPaginationListBloc<TPage extends CachedPaginationPage<TItem>, TItem>
       }
 
       return state;
+      // ignore: avoid_catches_without_on_clauses
     } catch (e, stackTrace) {
       // todo: refactor copy-pasted code
       if (!refreshStateSubject.isClosed) {

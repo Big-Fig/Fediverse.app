@@ -327,6 +327,7 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
       );
 
       success = true;
+      // ignore: avoid_catches_without_on_clauses
     } catch (error, stackTrace) {
       // todo: we dont need try catch at this level
       success = false;

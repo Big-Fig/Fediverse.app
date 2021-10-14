@@ -106,15 +106,21 @@ linter:
     # final is unnecessary because of parameter_assignments lint
     prefer_final_parameters: false
 
+    # var/final with good naming is enough and easy to write
+    always_specify_types: false
+
+    # good lint, helps avoid memory leaks
+    # have a lot of false-positive cases and required deep refactoring
+    # especially for navigator
+    # https://github.com/dart-lang/linter/issues/2878
+    # https://github.com/flutter/flutter/issues/79605
+    use_build_context_synchronously: false
+
     # code metrics have better rules for member ordering
     sort_constructors_first: false
     sort_unnamed_constructors_first: false
 
-
-    avoid_catches_without_on_clauses: false
-    use_build_context_synchronously: false
     prefer_const_constructors: false
-    always_specify_types: false
     use_key_in_widget_constructors: false
     prefer_final_locals: false
 

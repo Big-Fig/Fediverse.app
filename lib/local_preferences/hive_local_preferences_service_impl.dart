@@ -294,6 +294,7 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
       await hiveLocalPreferencesService.dispose();
 
       await Hive.deleteBoxFromDisk(v2Name);
+      // ignore: avoid_catches_without_on_clauses
     } catch (e, stackTrace) {
       _logger.warning(
         () => 'failed migration from v2 to v3 hive models',

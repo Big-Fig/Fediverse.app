@@ -54,6 +54,7 @@ class FediNestedScrollViewBloc extends DisposableOwner
     void listener() {
       try {
         onScroll();
+        // ignore: avoid_catches_without_on_clauses
       } catch (e, stackTrace) {
         _logger.warning(() => 'failed to onScroll', e, stackTrace);
       }
@@ -65,6 +66,7 @@ class FediNestedScrollViewBloc extends DisposableOwner
       () {
         try {
           scrollController!.removeListener(listener);
+          // ignore: avoid_catches_without_on_clauses
         } catch (e) {
           _logger.warning(
             // ignore: missing_whitespace_between_adjacent_strings

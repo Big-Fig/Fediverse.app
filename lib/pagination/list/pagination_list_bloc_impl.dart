@@ -120,6 +120,7 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
     if (loadFromCacheDuringInit) {
       try {
         await loadFirstPageOnInit();
+        // ignore: avoid_catches_without_on_clauses
       } catch (e, stackTrace) {
         _logger.severe(
           () => 'failed to internalAsyncInit',
@@ -163,6 +164,7 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       loadMoreStateSubject.add(state);
 
       return state;
+      // ignore: avoid_catches_without_on_clauses
     } catch (e, stackTrace) {
       // todo: refactor copy-pasted code
       if (!loadMoreStateSubject.isClosed) {
@@ -203,6 +205,7 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       }
 
       return state;
+      // ignore: avoid_catches_without_on_clauses
     } catch (e, stackTrace) {
       if (!refreshStateSubject.isClosed) {
         refreshStateSubject.add(FediListSmartRefresherLoadingState.failed);
@@ -238,6 +241,7 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
     if (refreshController.position != null) {
       try {
         return await refreshController.requestRefresh(needMove: false);
+        // ignore: avoid_catches_without_on_clauses
       } catch (e, stackTrace) {
         // ignore error, because it is related to refresh controller
         // internal wrong logic

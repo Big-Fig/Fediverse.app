@@ -92,6 +92,7 @@ class ChatMessageListWidget<T extends IChatMessage>
             try {
               await additionalPreRefreshAction(context);
               success = true;
+              // ignore: avoid_catches_without_on_clauses
             } catch (e, stackTrace) {
               success = false;
               _logger.severe(

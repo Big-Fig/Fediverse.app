@@ -15,6 +15,7 @@ class AsyncSmartRefresherHelper {
     FediListSmartRefresherLoadingState state;
     try {
       state = await action();
+      // ignore: avoid_catches_without_on_clauses
     } catch (error, stackTrace) {
       _logger.severe(() => 'doAsyncRefresh fail', error, stackTrace);
       state = FediListSmartRefresherLoadingState.failed;
@@ -49,6 +50,7 @@ class AsyncSmartRefresherHelper {
     FediListSmartRefresherLoadingState state;
     try {
       state = await action();
+      // ignore: avoid_catches_without_on_clauses
     } catch (error, stackTrace) {
       _logger.severe(() => 'doAsyncLoading fail', error, stackTrace);
       controller.loadFailed();

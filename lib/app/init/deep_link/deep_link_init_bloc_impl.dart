@@ -78,6 +78,7 @@ class DeepLinkInitBloc extends AsyncInitLoadingBloc
 
         await apiAccessLocalPreferenceBloc.dispose();
         await currentUnifediApiAccessBloc.changeCurrentInstance(authInstance);
+        // ignore: avoid_catches_without_on_clauses
       } catch (e, stackTrace) {
         _logger.warning(
           () => 'Failed to _handleLoginOnAndroidWithoutChrome ',

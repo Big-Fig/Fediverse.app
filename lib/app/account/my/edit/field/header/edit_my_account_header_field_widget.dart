@@ -114,6 +114,7 @@ Future _startChoosingFileToUploadHeader(BuildContext context) async {
       var editMyAccountBloc = IEditMyAccountBloc.of(context, listen: false);
       try {
         await editMyAccountBloc.headerField.pickNewFile(filePickerFile);
+        // ignore: avoid_catches_without_on_clauses
       } catch (e, stackTrace) {
         _logger.warning('startChoosingFileToUploadHeader error', e, stackTrace);
         showMediaAttachmentFailedNotificationOverlay(context, e);

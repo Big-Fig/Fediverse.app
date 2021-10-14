@@ -473,6 +473,7 @@ Future<IUnifediApiNotification?> loadLastNotificationForAcctOnHost({
     } else {
       _logger.warning(() => 'instance for $acct@$host not found');
     }
+    // ignore: avoid_catches_without_on_clauses
   } catch (e, stackTrace) {
     _logger.severe(() => 'loadLastNotificationForAcctOnHost', e, stackTrace);
   } finally {
@@ -586,6 +587,7 @@ Future<IUnifediApiNotification?> _loadLastNotificationForInstance({
     );
 
     return unifediApiNotifications.firstOrNull;
+    // ignore: avoid_catches_without_on_clauses
   } catch (e, stackTrace) {
     _logger.warning(() => 'failed to load notification', e, stackTrace);
 
@@ -899,6 +901,7 @@ int _extractNotificationId(IUnifediApiNotification unifediApiNotification) {
   try {
     // usually id is int type
     return int.parse(unifediApiNotification.id);
+    // ignore: avoid_catches_without_on_clauses
   } catch (_) {
     // if id is not it just use ms from epoch to make it unique
     return DateTime.now().millisecondsSinceEpoch;

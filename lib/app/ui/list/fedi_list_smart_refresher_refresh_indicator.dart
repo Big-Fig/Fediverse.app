@@ -79,6 +79,7 @@ class _FediListSmartRefresherRefreshIndicatorState
           // ignore: no-empty-block
           setState(() {});
         }
+        // ignore: avoid_catches_without_on_clauses
       } catch (e, stackTrace) {
         _logger.warning(() => '_valueAni.addListener', e, stackTrace);
       }
