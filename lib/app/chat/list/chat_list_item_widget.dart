@@ -55,7 +55,7 @@ class ChatListItemWidget extends StatelessWidget {
         onTap: () {
           onClick(context);
         },
-        child: Container(
+        child: SizedBox(
           height: FediSizes.chatListItemPreviewHeight,
           child: Padding(
             padding: FediPadding.allBigPadding,

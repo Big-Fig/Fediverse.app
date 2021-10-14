@@ -25,7 +25,7 @@ class EditMyAccountHeaderFieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Stack(
         children: <Widget>[
-          Container(
+          SizedBox(
             width: double.infinity,
             // ignore: no-equal-arguments
             height: double.infinity,

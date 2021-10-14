@@ -52,7 +52,7 @@ class AccountAvatarUrlWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var avatarUrl = Provider.of<String?>(context);
     if (avatarUrl == null) {
-      return Container(
+      return SizedBox(
         width: imageSize,
         // ignore: no-equal-arguments
         height: imageSize,
@@ -62,7 +62,7 @@ class AccountAvatarUrlWidget extends StatelessWidget {
       );
     }
 
-    return Container(
+    return SizedBox(
       width: imageSize,
       // ignore: no-equal-arguments
       height: imageSize,

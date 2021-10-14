@@ -112,7 +112,7 @@ class _PostStatusComposeActionsWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Flexible(
-            child: Container(
+            child: SizedBox(
               // todo: refactor
               // ignore: no-magic-number
               height: 35,

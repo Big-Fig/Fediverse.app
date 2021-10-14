@@ -79,7 +79,7 @@ class AccountHomeTabPage extends StatelessWidget {
           children: [
             ProxyProvider<IMyAccountBloc, IAccountBloc>(
               update: (context, value, previous) => value,
-              child: Container(
+              child: SizedBox(
                 height: _headerBackgroundHeight,
                 child: const AccountHeaderBackgroundWidget(),
               ),

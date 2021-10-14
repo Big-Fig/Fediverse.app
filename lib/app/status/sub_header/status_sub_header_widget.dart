@@ -23,7 +23,7 @@ class StatusSubHeaderWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) => Container(
+  Widget build(BuildContext context) => SizedBox(
         height: FediSizes.statusSubHeaderHeight,
         child: GestureDetector(
           onTap: () {

@@ -65,7 +65,7 @@ class HomePage extends StatelessWidget {
           body: Stack(
             children: [
               RepaintBoundary(
-                child: Container(
+                child: SizedBox(
                   // ignore: no-magic-number
                   height: 180,
                   child: const _HomePageBackgroundWidget(),
@@ -311,7 +311,7 @@ class _HomePageBottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Padding(
         padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
-        child: Container(
+        child: SizedBox(
           // ignore: no-magic-number
           height: 58,
           child: Column(

@@ -125,7 +125,7 @@ class _CustomEmojiPickerSelectedCategoryWidget extends StatelessWidget {
 
         return Provider<ICustomEmojiPickerCategoryBloc>.value(
           value: selectedCategoryBloc,
-          child: Container(
+          child: SizedBox(
             height: selectedCategoryItemsGridHeight,
             child: AsyncInitLoadingWidget(
               loadingWidget: loadingWidget,
@@ -303,7 +303,7 @@ class CustomEmojiPickerSelectedCategoryItemsGridWidget extends StatelessWidget {
             customEmojiPickerBloc.onEmojiSelected(item);
             onEmojiSelected(item);
           },
-          child: Container(
+          child: SizedBox(
             width: size,
             // ignore: no-equal-arguments
             height: size,

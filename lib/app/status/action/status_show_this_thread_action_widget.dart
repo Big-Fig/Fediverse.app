@@ -32,7 +32,7 @@ class StatusShowThisThreadActionWidget extends StatelessWidget {
           );
         }
       },
-      child: Container(
+      child: SizedBox(
         height: _showThisThreadContainerHeight,
         child: Center(
           child: Text(

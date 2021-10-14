@@ -74,7 +74,7 @@ class FediCircularProgressIndicatorState
         angle: _controller.value,
         child: child,
       ),
-      child: Container(
+      child: SizedBox(
         width: size,
         // ignore: no-equal-arguments
         height: size,

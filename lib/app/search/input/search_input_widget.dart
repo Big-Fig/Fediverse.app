@@ -27,7 +27,7 @@ class SearchInputWidget extends StatelessWidget {
       child: Row(
         children: [
           Flexible(
-            child: Container(
+            child: SizedBox(
               // todo: refactor
               // ignore: no-magic-number
               height: 40.0,

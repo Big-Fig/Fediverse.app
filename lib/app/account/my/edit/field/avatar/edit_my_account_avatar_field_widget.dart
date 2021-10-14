@@ -189,7 +189,7 @@ class _EditMyAccountAvatarFieldImageContainerWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Container(
+  Widget build(BuildContext context) => SizedBox(
         height: avatarSize,
         // ignore: no-equal-arguments
         width: avatarSize,

@@ -31,7 +31,7 @@ class CardWidget extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: FediSizes.mediumPadding),
-      child: Container(
+      child: SizedBox(
         height: isHaveContent
             ? _cardWithContentImageSize
             : _cardWithoutContentImageSize,

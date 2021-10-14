@@ -25,7 +25,7 @@ class PostMessageSelectMediaAttachmentTypeToPickWidget extends StatelessWidget {
           horizontal: FediSizes.smallPadding,
           vertical: FediSizes.bigPadding,
         ),
-        child: Container(
+        child: SizedBox(
           // todo: refactor
           // ignore: no-magic-number
           height: 87,

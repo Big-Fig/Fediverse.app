@@ -514,7 +514,7 @@ class PollOptionVotesPercentWidget extends StatelessWidget {
 
     var votesPercent = poll.votesPercent(pollOption);
 
-    return Container(
+    return SizedBox(
       // todo: refactor
       // ignore: no-magic-number
       width: 60,

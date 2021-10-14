@@ -52,14 +52,14 @@ class _EditMyAccountTopHeaderAndAvatarWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Container(
+  Widget build(BuildContext context) => SizedBox(
         height: _editAccountAvatarTopPadding +
             _editAccountAvatarSize +
             // ignore: no-magic-number
             _editAccountAvatarCircleBorderWidth * 2,
         child: Stack(
           children: [
-            Container(
+            SizedBox(
               height: _editAccountHeaderHeight,
               child: const EditMyAccountHeaderFieldWidget(),
             ),

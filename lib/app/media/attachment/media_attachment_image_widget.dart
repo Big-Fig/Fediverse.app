@@ -56,7 +56,7 @@ class _MediaAttachmentImageLoadingWidget extends StatelessWidget {
   Widget build(BuildContext context) => Padding(
         padding: FediPadding.allBigPadding,
         child: Center(
-          child: Container(
+          child: SizedBox(
             // todo: refactor
             // ignore: no-magic-number
             width: 30,

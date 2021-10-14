@@ -25,7 +25,7 @@ class MediaFilePathWidget extends StatelessWidget {
   Widget build(BuildContext context) => Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
+          SizedBox(
             height: _rowHeight,
             child: Stack(
               children: [

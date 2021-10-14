@@ -107,7 +107,7 @@ class AccountDetailsPageBody extends StatelessWidget {
       ),
       body: Stack(
         children: [
-          Container(
+          SizedBox(
             height: _headerBackgroundHeight,
             child: const AccountHeaderBackgroundWidget(),
           ),

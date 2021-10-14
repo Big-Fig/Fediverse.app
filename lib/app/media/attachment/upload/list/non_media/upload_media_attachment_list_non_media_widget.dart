@@ -23,7 +23,7 @@ class UploadMediaAttachmentListNonMediaWidget extends StatelessWidget {
               horizontal: FediSizes.bigPadding,
               vertical: FediSizes.smallPadding,
             ),
-            child: Container(
+            child: SizedBox(
               width: double.infinity,
               child: Column(
                 mainAxisSize: MainAxisSize.min,

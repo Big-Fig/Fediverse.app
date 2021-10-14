@@ -531,7 +531,7 @@ class _DatePickerState extends State<FediDatePickerComponent> {
     var cancel = _localeCancel();
     var delete = _localeDelete();
 
-    return Container(
+    return SizedBox(
       height: theme.titleHeight,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,

@@ -394,7 +394,7 @@ class _StatusBodyContentWithEmojisCollapsibleWidget extends StatelessWidget {
             // todo: refactor
             // ignore: no-magic-number
             fadingPercent: 0.2,
-            child: Container(
+            child: SizedBox(
               // todo: refactor
               // ignore: no-magic-number
               height: 200,

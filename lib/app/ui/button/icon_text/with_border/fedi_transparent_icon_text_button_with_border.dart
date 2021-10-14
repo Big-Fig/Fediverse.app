@@ -39,7 +39,7 @@ class FediTransparentIconTextButtonWithBorder extends StatelessWidget {
 
     return InkWell(
       onTap: onPressed,
-      child: Container(
+      child: SizedBox(
         height: calculatedHeight,
         child: ClipRRect(
           borderRadius: borderRadius,

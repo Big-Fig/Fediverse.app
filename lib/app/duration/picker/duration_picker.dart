@@ -106,7 +106,7 @@ class _DurationPickerBodyState extends State<_DurationPickerBody> {
               ),
             ),
           ),
-          Container(
+          SizedBox(
             // todo: refactor
             // ignore: no-magic-number
             height: 56,

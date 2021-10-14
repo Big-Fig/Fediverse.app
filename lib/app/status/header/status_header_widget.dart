@@ -25,7 +25,7 @@ class StatusHeaderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var account = Provider.of<IAccount>(context);
 
-    return Container(
+    return SizedBox(
       height: _statusHeaderHeight,
       child: GestureDetector(
         onTap: () {
@@ -70,7 +70,7 @@ class StatusHeaderWidget extends StatelessWidget {
             child:
                 IFilesCacheService.of(context).createCachedNetworkImageWidget(
               imageUrl: account.avatar,
-              placeholder: (context, url) => Container(
+              placeholder: (context, url) => SizedBox(
                 width: FediSizes.accountAvatarSmallSize,
                 // ignore: no-equal-arguments
                 height: FediSizes.accountAvatarSmallSize,

@@ -98,7 +98,7 @@ class EditMyAccountPleromaBackgroundFieldValueWidget extends StatelessWidget {
             children: <Widget>[
               ClipRRect(
                 borderRadius: FediBorderRadius.allBigBorderRadius,
-                child: Container(
+                child: SizedBox(
                   width: double.infinity,
                   height: backgroundHeight,
                   child: EditMyAccountPleromaBackgroundFieldImageWidget(
