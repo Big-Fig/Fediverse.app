@@ -655,7 +655,7 @@ void _initIncomeShareHandler({
 
 // ignore: no-magic-number
 Color darken(Color color, [double amount = 0.1]) {
-  assert(amount >= 0 && amount <= 1);
+  assert(amount >= 0 && amount <= 1, 'amount should be in [0, 1]');
 
   final hsl = HSLColor.fromColor(color);
   final hslDark = hsl.withLightness((hsl.lightness - amount).clamp(0.0, 1.0));
@@ -665,7 +665,7 @@ Color darken(Color color, [double amount = 0.1]) {
 
 // ignore: no-magic-number
 Color lighten(Color color, [double amount = 0.1]) {
-  assert(amount >= 0 && amount <= 1);
+  assert(amount >= 0 && amount <= 1, 'amount should be in [0, 1]');
 
   final hsl = HSLColor.fromColor(color);
   final hslLight = hsl.withLightness((hsl.lightness + amount).clamp(0.0, 1.0));

@@ -14,7 +14,10 @@ class ExternalShareService extends DisposableOwner
     required String? text,
     required List<ShareUrlFile>? urlFiles,
   }) async {
-    assert(text?.isNotEmpty == true || urlFiles?.isNotEmpty == true);
+    assert(
+      text?.isNotEmpty == true || urlFiles?.isNotEmpty == true,
+      'text or files should be specified',
+    );
 
     if (urlFiles?.isNotEmpty == true) {
       if (text?.isNotEmpty == true) {

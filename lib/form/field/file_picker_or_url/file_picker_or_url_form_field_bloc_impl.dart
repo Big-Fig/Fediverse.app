@@ -104,7 +104,10 @@ class FilePickerOrUrlFormFieldBloc extends FormFieldBloc
     if (pickedFileExist) {
       _currentMediaDeviceFileSubject.add(null);
     } else {
-      assert(isPossibleToDeleteOriginal);
+      assert(
+        isPossibleToDeleteOriginal,
+        'cant delete something which not supported by API',
+      );
       isOriginalDeletedSubject.add(true);
     }
   }

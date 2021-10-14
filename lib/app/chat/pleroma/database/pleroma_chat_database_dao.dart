@@ -63,7 +63,7 @@ class ChatDao extends PopulatedAppRemoteDatabaseDao<
   }) {
     var minimumExist = minimumDateTimeExcluding != null;
     var maximumExist = maximumDateTimeExcluding != null;
-    assert(minimumExist || maximumExist);
+    assert(minimumExist || maximumExist, 'min or max should exist');
 
     if (minimumExist) {
       query.where(
@@ -180,9 +180,15 @@ class ChatDao extends PopulatedAppRemoteDatabaseDao<
   }) {
     if (pagination?.olderThanItem != null ||
         pagination?.newerThanItem != null) {
-      assert(orderingTerms?.length == 1);
+      assert(
+        orderingTerms?.length == 1,
+        'only single order term is supported',
+      );
       var orderingTermData = orderingTerms!.first;
-      assert(orderingTermData.orderType == PleromaChatOrderType.updatedAt);
+      assert(
+        orderingTermData.orderType == PleromaChatOrderType.updatedAt,
+        'only updatedAt term supported',
+      );
       addDateTimeBoundsWhere(
         query,
         column: dbChats.updatedAt,

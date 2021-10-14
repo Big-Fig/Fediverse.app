@@ -47,8 +47,10 @@ class PleromaChatWithLastMessagePaginationBloc
     required CachedPaginationPage<IPleromaChatWithLastMessage>? olderPage,
     required CachedPaginationPage<IPleromaChatWithLastMessage>? newerPage,
   }) async {
-    // cant refresh not first page without actual items bounds
-    assert(!(pageIndex > 0 && olderPage == null && newerPage == null));
+    assert(
+      !(pageIndex > 0 && olderPage == null && newerPage == null),
+      'cant refresh not first page without actual items bounds',
+    );
 
     return cachedListBloc.refreshItemsFromRemoteForPage(
       limit: itemsCountPerPage,

@@ -69,7 +69,10 @@ class DraftStatusDao extends PopulatedAppLocalDatabaseDao<
   }) {
     var minimumExist = minimumUpdatedAt != null;
     var maximumExist = maximumUpdatedAt != null;
-    assert(minimumExist || maximumExist);
+    assert(
+      minimumExist || maximumExist,
+      'at least one bound should exist',
+    );
 
     if (minimumExist) {
       query.where(
@@ -107,10 +110,14 @@ class DraftStatusDao extends PopulatedAppLocalDatabaseDao<
   }) {
     if (pagination?.olderThanItem != null ||
         pagination?.newerThanItem != null) {
-      assert(orderingTerms?.length == 1);
+      assert(
+        orderingTerms?.length == 1,
+        'only single order term is supported',
+      );
       var orderingTermData = orderingTerms!.first;
       assert(
         orderingTermData.orderType == DraftStatusRepositoryOrderType.updatedAt,
+        'only updatedAt term supported',
       );
       addUpdatedAtBoundsWhere(
         query,

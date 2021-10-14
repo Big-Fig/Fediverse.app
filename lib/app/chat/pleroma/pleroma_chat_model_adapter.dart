@@ -28,7 +28,10 @@ extension IPleromaChatExtension on IPleromaChat {
     required IPleromaChatMessage? lastChatMessage,
     required List<IAccount> accounts,
   }) {
-    assert(accounts.isNotEmpty);
+    assert(
+      accounts.isNotEmpty,
+      'accounts should be not empty',
+    );
     // ignore: no-magic-number
     var isSingleAccount = accounts.length < 2;
     assert(isSingleAccount, 'only direct chats supported');

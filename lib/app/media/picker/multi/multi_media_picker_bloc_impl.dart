@@ -92,7 +92,10 @@ class MultiMediaPickerBloc extends MediaPickerBloc
 
   @override
   Future acceptSelectedFilesMetadata() async {
-    assert(isSomethingSelected);
+    assert(
+      isSomethingSelected,
+      'cant proceed when nothing selected',
+    );
     _logger.fine(
       () => 'acceptSelectedFiles ${currentFilesMetadataSelection!.length}',
     );

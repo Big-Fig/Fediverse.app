@@ -44,7 +44,10 @@ class SingleSelectFromListValueFormFieldRowWidget<T> extends StatelessWidget {
     required this.valueIconMapper,
   }) {
     if (displayIconInRow || displayIconInDialog) {
-      assert(valueIconMapper != null);
+      assert(
+        valueIconMapper != null,
+        'valueIconMapper required if display icon enabled',
+      );
     }
   }
 

@@ -3,7 +3,6 @@ import 'package:fedi/app/database/dao/remote/populated_app_remote_database_dao.d
 import 'package:fedi/app/filter/database/filter_database_model.dart';
 import 'package:fedi/app/filter/filter_model.dart';
 import 'package:fedi/app/filter/repository/filter_repository_model.dart';
-
 import 'package:fedi/repository/repository_model.dart';
 import 'package:moor/moor.dart';
 import 'package:unifedi_api/unifedi_api.dart';
@@ -33,7 +32,10 @@ class FilterDao extends PopulatedAppRemoteDatabaseDao<
     SimpleSelectStatement<$DbFiltersTable, DbFilter> query,
     List<UnifediApiFilterContextType> contextTypes,
   ) {
-    assert(contextTypes.isNotEmpty);
+    assert(
+      contextTypes.isNotEmpty,
+      'at least one context type should be specified',
+    );
 
     var contextTypesStrings = contextTypes
         .map(
@@ -118,10 +120,11 @@ class FilterDao extends PopulatedAppRemoteDatabaseDao<
   }) {
     if (pagination?.olderThanItem != null ||
         pagination?.newerThanItem != null) {
-      assert(orderingTerms?.length == 1);
+      assert(orderingTerms?.length == 1, 'only single term supported');
       var orderingTermData = orderingTerms!.first;
       assert(
         orderingTermData.orderType == FilterOrderType.remoteId,
+        'only remoteId supported',
       );
       addRemoteIdBoundsWhere(
         query,

@@ -112,7 +112,10 @@ abstract class AppRemoteDatabaseDao<
   }) {
     var minimumExist = minimumDateTimeExcluding != null;
     var maximumExist = maximumDateTimeExcluding != null;
-    assert(minimumExist || maximumExist);
+    assert(
+      minimumExist || maximumExist,
+      'at least one bound should exist',
+    );
 
     if (minimumExist) {
       query.where(
@@ -133,7 +136,10 @@ abstract class AppRemoteDatabaseDao<
   }) {
     var minimumExist = minimumRemoteIdExcluding?.isNotEmpty == true;
     var maximumExist = maximumRemoteIdExcluding?.isNotEmpty == true;
-    assert(minimumExist || maximumExist);
+    assert(
+      minimumExist || maximumExist,
+      'at least one bound should exist',
+    );
 
     if (minimumExist) {
       var biggerExp = CustomExpression<bool>(

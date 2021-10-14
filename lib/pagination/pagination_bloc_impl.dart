@@ -92,7 +92,10 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
     required this.maximumCachedPagesCount,
     required this.paginationSettingsBloc,
   }) {
-    assert(itemsCountPerPage != null && itemsCountPerPage! > 0);
+    assert(
+      itemsCountPerPage != null && itemsCountPerPage! > 0,
+      'itemsCountPerPage should exist and positive',
+    );
     pagesSubject.disposeWith(this);
     _logger.finest(() => 'constructor');
   }

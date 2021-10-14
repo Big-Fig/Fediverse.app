@@ -80,19 +80,28 @@ class FediStepperBloc<T extends IFediStepperItem> extends DisposableOwner
 
   @override
   void goToPreviousStep() {
-    assert(!isCurrentStepIndexFirst);
+    assert(
+      !isCurrentStepIndexFirst,
+      'cant go back if you on first step',
+    );
     currentStepIndexSubject.add(currentStepIndex - 1);
   }
 
   @override
   void goToNextStep() {
-    assert(!isCurrentStepIndexLast);
+    assert(
+      !isCurrentStepIndexLast,
+      'cant go forward if you on last step',
+    );
     currentStepIndexSubject.add(currentStepIndex + 1);
   }
 
   @override
   void goToStepAtIndex(int index) {
-    assert(index >= 0 && index < steps.length);
+    assert(
+      index >= 0 && index < steps.length,
+      'cant go to step outside of bounds',
+    );
     currentStepIndexSubject.add(index);
   }
 

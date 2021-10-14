@@ -44,8 +44,7 @@ class ConversationChatStatusListContextApiBloc
           '\t newerThan = $newerThan'
           '\t olderThan = $olderThan',
     );
-    // newer pagination not supported
-    assert(newerThan == null);
+    assert(newerThan == null, 'newerThan pagination not supported');
 
     if (olderThan != null) {
       // context dont support load more pagination

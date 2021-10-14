@@ -110,7 +110,10 @@ class PollBloc extends DisposableOwner implements IPollBloc {
 
   @override
   Future vote() async {
-    assert(selectedVotes.isNotEmpty);
+    assert(
+      selectedVotes.isNotEmpty,
+      'you should select at least one option',
+    );
     var voteIndexes = <int>[];
 
     selectedVotes.forEach((selectedVote) {

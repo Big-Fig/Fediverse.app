@@ -124,7 +124,10 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
   }) {
     var minimumExist = minimumCreatedAt != null;
     var maximumExist = maximumCreatedAt != null;
-    assert(minimumExist || maximumExist);
+    assert(
+      minimumExist || maximumExist,
+      'at least one bound should exist',
+    );
 
     if (minimumExist) {
       query.where(
@@ -304,7 +307,10 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
   }) {
     if (pagination?.olderThanItem != null ||
         pagination?.newerThanItem != null) {
-      assert(orderingTerms?.length == 1);
+      assert(
+        orderingTerms?.length == 1,
+        'only single term is supported',
+      );
       var orderingTermData = orderingTerms!.first;
       if (orderingTermData.orderType == NotificationOrderType.createdAt) {
         addDateTimeBoundsWhere(

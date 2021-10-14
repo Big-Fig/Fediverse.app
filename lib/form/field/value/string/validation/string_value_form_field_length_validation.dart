@@ -11,7 +11,10 @@ class StringValueFormFieldLengthValidationError
   StringValueFormFieldLengthValidationError({
     required this.minLength,
     required this.maxLength,
-  }) : assert(minLength != null || maxLength != null);
+  }) : assert(
+          minLength != null || maxLength != null,
+          'at least one bound should be specified',
+        );
 
   @override
   String createErrorDescription(BuildContext context) {
@@ -37,7 +40,10 @@ class StringValueFormFieldLengthValidationError
     required int? maxLength,
   }) =>
       (String? currentValue) {
-        assert(minLength != null || maxLength != null);
+        assert(
+          minLength != null || maxLength != null,
+          'at least one bound should be specified',
+        );
         var length = currentValue?.length ?? 0;
         bool moreThanMin;
         if (minLength != null) {

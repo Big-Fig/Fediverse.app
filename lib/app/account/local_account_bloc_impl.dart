@@ -159,7 +159,10 @@ class LocalAccountBloc extends AccountBloc {
 
   @override
   Future<IUnifediApiAccountRelationship> toggleBlock() async {
-    assert(relationship != null);
+    assert(
+      relationship != null,
+      'cant toggle action when relationship not loaded',
+    );
     IUnifediApiAccountRelationship? newRelationship;
     if (relationship!.blocking!) {
       newRelationship = await pleromaAuthAccountService.unBlockAccount(
@@ -177,7 +180,10 @@ class LocalAccountBloc extends AccountBloc {
 
   @override
   Future<IUnifediApiAccountRelationship> toggleSubscribe() async {
-    assert(relationship != null);
+    assert(
+      relationship != null,
+      'cant toggle action when relationship not loaded',
+    );
     IUnifediApiAccountRelationship? newRelationship;
     if (relationship!.subscribing!) {
       newRelationship = await pleromaAuthAccountService.unSubscribeAccount(
@@ -195,7 +201,10 @@ class LocalAccountBloc extends AccountBloc {
 
   @override
   Future<IUnifediApiAccountRelationship> toggleMute() async {
-    assert(relationship != null);
+    assert(
+      relationship != null,
+      'cant toggle action when relationship not loaded',
+    );
     IUnifediApiAccountRelationship? newRelationship;
     if (relationship!.muting!) {
       newRelationship = await pleromaAuthAccountService.unMuteAccount(
@@ -215,7 +224,10 @@ class LocalAccountBloc extends AccountBloc {
 
   @override
   Future<IUnifediApiAccountRelationship> toggleFollow() async {
-    assert(relationship != null);
+    assert(
+      relationship != null,
+      'cant toggle action when relationship not loaded',
+    );
     IUnifediApiAccountRelationship? newRelationship;
     if (relationship!.requested == true || relationship!.following == true) {
       newRelationship = await pleromaAuthAccountService.unFollowAccount(
@@ -280,8 +292,11 @@ class LocalAccountBloc extends AccountBloc {
     required bool notifications,
     required Duration? duration,
   }) async {
-    assert(relationship != null);
-    assert(relationship!.muting != true);
+    assert(
+      relationship != null,
+      'cant toggle action when relationship not loaded',
+    );
+    assert(relationship!.muting != true, 'cant mute if already muted');
 
     var newRelationship = await pleromaAuthAccountService.muteAccount(
       accountId: account.remoteId,
@@ -296,8 +311,11 @@ class LocalAccountBloc extends AccountBloc {
 
   @override
   Future<IUnifediApiAccountRelationship> unMute() async {
-    assert(relationship != null);
-    assert(relationship!.muting == true);
+    assert(
+      relationship != null,
+      'cant toggle action when relationship not loaded',
+    );
+    assert(relationship!.muting == true, 'cant unmute when not muted yet');
 
     var newRelationship = await pleromaAuthAccountService.unMuteAccount(
       accountId: account.remoteId,
@@ -310,8 +328,14 @@ class LocalAccountBloc extends AccountBloc {
 
   @override
   Future<IUnifediApiAccountRelationship> subscribe() async {
-    assert(relationship != null);
-    assert(relationship!.subscribing != true);
+    assert(
+      relationship != null,
+      'cant toggle action when relationship not loaded',
+    );
+    assert(
+      relationship!.subscribing != true,
+      'cant subscribe if already subscribed',
+    );
 
     var newRelationship = await pleromaAuthAccountService.subscribeAccount(
       accountId: account.remoteId,
@@ -327,8 +351,14 @@ class LocalAccountBloc extends AccountBloc {
 
   @override
   Future<IUnifediApiAccountRelationship> unSubscribe() async {
-    assert(relationship != null);
-    assert(relationship!.subscribing == true);
+    assert(
+      relationship != null,
+      'cant toggle action when relationship not loaded',
+    );
+    assert(
+      relationship!.subscribing == true,
+      'cant unsubscribe when not subcribed',
+    );
 
     var newRelationship = await pleromaAuthAccountService.unSubscribeAccount(
       accountId: account.remoteId,
@@ -344,7 +374,10 @@ class LocalAccountBloc extends AccountBloc {
 
   @override
   Future<IUnifediApiAccountRelationship> togglePin() async {
-    assert(relationship != null);
+    assert(
+      relationship != null,
+      'cant toggle action when relationship not loaded',
+    );
     IUnifediApiAccountRelationship? newRelationship;
     // todo: fix
     if (relationship!.muting == true) {
@@ -366,7 +399,10 @@ class LocalAccountBloc extends AccountBloc {
 
   @override
   Future<IUnifediApiAccountRelationship> toggleBlockDomain() async {
-    assert(relationship != null);
+    assert(
+      relationship != null,
+      'cant toggle action when relationship not loaded',
+    );
     IUnifediApiAccountRelationship? newRelationship;
     var domainBlocking = relationship!.domainBlocking == true;
     var domain = acctRemoteDomainOrNull!;

@@ -30,7 +30,10 @@ class MyAccountFeaturedHashtagBloc extends DisposableOwner
 
   @override
   Future unFeature() async {
-    assert(!unFeatured);
+    assert(
+      !unFeatured,
+      'cant unfeature when not featured',
+    );
 
     await unifediApiMyAccountService.unfeatureMyAccountTag(
       tagId: featuredHashtag.remoteId!,
@@ -41,7 +44,7 @@ class MyAccountFeaturedHashtagBloc extends DisposableOwner
 
   @override
   Future featureAgain() async {
-    assert(unFeatured);
+    assert(unFeatured, 'cant feature if already featured');
 
     await unifediApiMyAccountService.featureMyAccountTag(
       name: featuredHashtag.name,

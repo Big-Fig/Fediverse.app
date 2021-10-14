@@ -30,7 +30,10 @@ class LocalStatusReplyLoaderBloc extends AsyncInitLoadingBloc
     required this.unifediApiStatusService,
     required this.statusRepository,
     required this.originalStatus,
-  }) : assert(originalStatus.inReplyToRemoteId != null) {
+  }) : assert(
+          originalStatus.inReplyToRemoteId != null,
+          'original status should be reply to another status',
+        ) {
     if (originalStatus.inReplyToStatus != null) {
       inReplyToStatus = originalStatus.inReplyToStatus;
       markAsAlreadyInitialized();

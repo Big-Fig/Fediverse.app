@@ -36,7 +36,10 @@ class MediaAttachmentListCarouselBodyWidget extends StatelessWidget {
     var mediaAttachmentListBloc = IMediaAttachmentListBloc.of(context);
     var mediaAttachments = mediaAttachmentListBloc.mediaAttachments;
 
-    assert(mediaAttachments.isNotEmpty);
+    assert(
+      mediaAttachments.isNotEmpty,
+      'items to show shouldnt be empty',
+    );
 
     if (mediaAttachments.length == 1) {
       return Provider<IUnifediApiMediaAttachment>.value(

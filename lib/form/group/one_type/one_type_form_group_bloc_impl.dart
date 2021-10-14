@@ -107,7 +107,10 @@ class OneTypeFormGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
 
   @override
   T addNewEmptyField() {
-    assert(!isMaximumFieldsCountReached);
+    assert(
+      !isMaximumFieldsCountReached,
+      'cant add field when max is reached',
+    );
 
     var newField = newEmptyFieldCreator();
     items.add(newField);
@@ -158,7 +161,10 @@ class OneTypeFormGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
 
   @override
   T addNewField(T newField) {
-    assert(!isMaximumFieldsCountReached);
+    assert(
+      !isMaximumFieldsCountReached,
+      'cant add field when max is reached',
+    );
 
     items.add(newField);
     _itemsSubject.add(items);

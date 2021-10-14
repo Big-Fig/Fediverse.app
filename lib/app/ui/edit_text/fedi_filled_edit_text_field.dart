@@ -58,7 +58,8 @@ class FediFilledEditTextField extends StatelessWidget {
     return Container(
       decoration: filled
           ? BoxDecoration(
-              color: backgroundColor, border: border, // ignore: no-magic-number
+              color: backgroundColor, border: border,
+              // ignore: no-magic-number
               borderRadius: BorderRadius.circular(30.0),
             )
           : null,

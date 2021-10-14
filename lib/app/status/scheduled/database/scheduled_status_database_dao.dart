@@ -93,11 +93,15 @@ class ScheduledStatusDao extends PopulatedAppRemoteDatabaseDao<
   }) {
     if (pagination?.olderThanItem != null ||
         pagination?.newerThanItem != null) {
-      assert(orderingTerms?.length == 1);
+      assert(
+        orderingTerms?.length == 1,
+        'only single term supported',
+      );
       var orderingTermData = orderingTerms!.first;
       assert(
         orderingTermData.orderType ==
             ScheduledStatusRepositoryOrderType.remoteId,
+        'only remoteId supported',
       );
       addRemoteIdBoundsWhere(
         query,

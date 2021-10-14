@@ -62,8 +62,6 @@ class FilesCacheService extends DisposableOwner implements IFilesCacheService {
     int? maxWidthDiskCache,
     int? maxHeightDiskCache,
   }) {
-    assert(imageUrl?.isNotEmpty == true);
-
     var actualImageUrl = imageUrl;
     // todo: apply only for mock launch type
     if (Platform.isAndroid) {

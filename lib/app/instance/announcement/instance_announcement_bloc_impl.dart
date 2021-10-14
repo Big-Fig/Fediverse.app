@@ -110,7 +110,10 @@ class InstanceAnnouncementBloc extends DisposableOwner
       (reaction) => reaction.name == emojiName,
     );
 
-    assert(foundReaction == null || !foundReaction.me);
+    assert(
+      foundReaction == null || !foundReaction.me,
+      'cant add emoji if it is already added',
+    );
 
     await unifediApiAnnouncementService.addAnnouncementReaction(
       announcementId: instanceAnnouncement.remoteId,
@@ -150,7 +153,7 @@ class InstanceAnnouncementBloc extends DisposableOwner
       (reaction) => reaction.name == emojiName,
     );
 
-    assert(foundReaction?.me == true);
+    assert(foundReaction?.me == true, 'cant remove when not added yet');
 
     await unifediApiAnnouncementService.removeAnnouncementReaction(
       announcementId: instanceAnnouncement.remoteId,

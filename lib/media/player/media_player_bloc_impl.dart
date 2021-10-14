@@ -256,7 +256,10 @@ class MediaPlayerBloc extends AsyncInitLoadingBloc implements IMediaPlayerBloc {
     if (!isInitialized) {
       await performAsyncInit();
     }
-    assert(isInitialized);
+    assert(
+      isInitialized,
+      'cant start playing when not initialized yet',
+    );
     try {
       if (playerState == MediaPlayerState.finished) {
         await videoPlayerController!.seekTo(Duration(seconds: 0));
@@ -281,8 +284,8 @@ class MediaPlayerBloc extends AsyncInitLoadingBloc implements IMediaPlayerBloc {
   Future pause() async {
     await videoPlayerController!.pause();
 
-    assert(isInitialized);
-    assert(isPlaying);
+    assert(isInitialized, 'cant pause when not initialized');
+    assert(isPlaying, 'cant pause when not playing');
     try {
       await videoPlayerController!.pause();
 
@@ -325,7 +328,7 @@ class MediaPlayerBloc extends AsyncInitLoadingBloc implements IMediaPlayerBloc {
 
   @override
   Future seekToPercent(double percent) async {
-    assert(percent >= 0.0 && percent <= 1.0);
+    assert(percent >= 0.0 && percent <= 1.0, 'seek bounds is [0, 1]');
     await seekToDuration(lengthDuration! * percent);
   }
 

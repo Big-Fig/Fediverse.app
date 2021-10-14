@@ -137,7 +137,8 @@ class SearchResultItemPaginationListWidget
             needLoadFeaturedState: false,
           ),
           child: FediListTile(
-            isFirstInList: index == 0, //                isFirstInList: false,
+            isFirstInList: index == 0,
+            //                isFirstInList: false,
             child: const HashtagListItemWidget(
               displayHistory: false,
             ),
@@ -210,8 +211,14 @@ class _ItemOrSeparator<T> {
   _ItemOrSeparator({
     required this.item,
     required this.separator,
-  })  : assert(item != null || separator != null),
-        assert(!(item != null && separator != null));
+  })  : assert(
+          item != null || separator != null,
+          'item or separator cant be set both',
+        ),
+        assert(
+          !(item != null && separator != null),
+          'item or separator should exist',
+        );
 }
 
 void _onStatusClick(BuildContext context, IStatus status) {

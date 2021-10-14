@@ -85,6 +85,7 @@ class UploadMediaAttachmentBlocDevice extends DisposableOwner
     assert(
       type == UploadMediaAttachmentStateType.notUploaded ||
           type == UploadMediaAttachmentStateType.failed,
+      'state should be failed or notUploaded to start upload',
     );
 
     var file = await mediaDeviceFile.loadFile();

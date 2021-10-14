@@ -256,9 +256,15 @@ class AccountDao extends PopulatedAppRemoteDatabaseDao<
   }) {
     if (pagination?.olderThanItem != null ||
         pagination?.newerThanItem != null) {
-      assert(orderingTerms?.length == 1);
+      assert(
+        orderingTerms?.length == 1,
+        'only single order term is supported',
+      );
       var orderingTermData = orderingTerms!.first;
-      assert(orderingTermData.orderType == AccountOrderType.remoteId);
+      assert(
+        orderingTermData.orderType == AccountOrderType.remoteId,
+        'only remoteId term supported',
+      );
       addRemoteIdBoundsWhere(
         query,
         maximumRemoteIdExcluding: pagination?.olderThanItem?.remoteId,

@@ -253,7 +253,10 @@ class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
         'ASK_REVIEW_COUNT_APP_OPENED_TO_SHOW, APP_APPLE_ID should exist '
         'if ASK_REVIEW_ENABLED is true',
       );
-      assert(askReviewCountAppOpenedToShow! >= 0);
+      assert(
+        askReviewCountAppOpenedToShow! >= 0,
+        'askReviewCountAppOpenedToShow should be non=negative',
+      );
     }
 
     appAddNewInstanceCallbackUrl = '$appId://addNewInstance';

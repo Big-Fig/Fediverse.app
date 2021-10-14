@@ -117,7 +117,7 @@ linter:
 
 
     only_throw_errors: false
-    prefer_asserts_with_message: false
+
     prefer_const_literals_to_create_immutables: false
     prefer_const_constructors: false
     prefer_constructors_over_static_methods: false
