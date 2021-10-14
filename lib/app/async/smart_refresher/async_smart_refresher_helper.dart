@@ -35,7 +35,7 @@ class AsyncSmartRefresherHelper {
 
       case FediListSmartRefresherLoadingState.loading:
       case FediListSmartRefresherLoadingState.initialized:
-        throw 'invalid state $state';
+        throw Exception('invalid state $state');
     }
 
     return state;
@@ -70,7 +70,7 @@ class AsyncSmartRefresherHelper {
 
       case FediListSmartRefresherLoadingState.loading:
       case FediListSmartRefresherLoadingState.initialized:
-        throw 'invalid state $state';
+        throw Exception('invalid state $state');
     }
 
     return state;

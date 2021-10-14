@@ -70,7 +70,7 @@ extension ToastHandlingTypeStringExtension on String {
         break;
       // cant parse, default value
       default:
-        throw 'Invalid ToastHandlingType string ${this}';
+        throw ArgumentError('Invalid ToastHandlingType string ${this}');
     }
 
     return result;

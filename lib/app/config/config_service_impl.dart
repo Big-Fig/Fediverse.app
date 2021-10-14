@@ -352,7 +352,7 @@ bool? _getBool(
       } else if (value == 'false') {
         return false;
       } else {
-        throw '$key => $value is not bool';
+        throw ArgumentError('$key => $value is not bool');
       }
     } else {
       return null;
@@ -360,7 +360,7 @@ bool? _getBool(
   } else if (value is bool) {
     return value;
   } else {
-    throw '$key => $value is not bool';
+    throw ArgumentError('$key => $value is not bool');
   }
 }
 
@@ -383,7 +383,7 @@ int? _getInt(
   } else if (value is int) {
     return value;
   } else {
-    throw '$key => $value is not int';
+    throw ArgumentError('$key => $value is not int');
   }
 }
 

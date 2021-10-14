@@ -293,7 +293,7 @@ class CustomEmojiPickerSelectedCategoryItemsGridWidget extends StatelessWidget {
             item: item,
           );
         } else {
-          throw 'Unsupported $item';
+          throw ArgumentError('Unsupported $item');
         }
 
         var size = selectedCategoryItemsGridHeight / rowsCount;

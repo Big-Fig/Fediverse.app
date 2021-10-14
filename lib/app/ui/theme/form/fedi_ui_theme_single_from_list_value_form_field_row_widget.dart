@@ -38,7 +38,7 @@ String _mapThemeToTitle(BuildContext context, IFediUiTheme? theme) {
   } else if (theme == darkFediUiTheme) {
     return S.of(context).app_theme_type_dark;
   } else {
-    throw 'unsupported theme $theme';
+    throw ArgumentError('unsupported theme $theme');
   }
 }
 
@@ -50,6 +50,6 @@ IconData _mapThemeToIcon(BuildContext context, IFediUiTheme? theme) {
   } else if (theme == darkFediUiTheme) {
     return FediIcons.appearance_dark;
   } else {
-    throw 'unsupported theme $theme';
+    throw ArgumentError('unsupported theme $theme');
   }
 }

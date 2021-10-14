@@ -52,7 +52,7 @@ extension PendingStateStringExtension on String {
         break;
       // cant parse
       default:
-        throw 'Invalid PendingState $PendingState';
+        throw ArgumentError('Invalid PendingState $PendingState');
     }
 
     return result;

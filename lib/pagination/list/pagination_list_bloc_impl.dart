@@ -69,8 +69,9 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
     paginationBloc.isLoadedPagesInSequenceStream.listen(
       (isLoadedInSequence) {
         if (!isLoadedInSequence) {
-          throw 'PaginationListBloc dont work with direct access '
-              'pagination blocs';
+          throw Exception(
+            'PaginationListBloc dont work with direct access pagination blocs',
+          );
         }
       },
     ).disposeWith(this);

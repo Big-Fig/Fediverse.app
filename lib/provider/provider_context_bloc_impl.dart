@@ -25,7 +25,9 @@ abstract class ProviderContextBloc extends AsyncInitLoadingBloc
   IDisposable register<T extends IDisposable>(T disposable) {
     var type = T;
     if (_storage.containsKey(type)) {
-      throw 'Cant register $IDisposable because {$type} already registred';
+      throw ArgumentError(
+        'Cant register $IDisposable because {$type} already registered',
+      );
     }
 
     var providerCreator =
@@ -40,13 +42,17 @@ abstract class ProviderContextBloc extends AsyncInitLoadingBloc
   Future unregister<T extends IDisposable>(T object) async {
     var type = T;
     if (!_storage.containsKey(type)) {
-      throw 'Cant unregister $object because {$type} not registred';
+      throw ArgumentError(
+        'Cant unregister $object because {$type} not registered',
+      );
     }
 
     var objInStorage = _storage[type]!;
     if (objInStorage != object) {
-      throw 'Cant unregister $object because obj {$object} not equal to '
-          'registered $objInStorage';
+      throw ArgumentError(
+        'Cant unregister $object because obj {$object} not equal to '
+        'registered $objInStorage',
+      );
     }
 
     await objInStorage.disposable.dispose();

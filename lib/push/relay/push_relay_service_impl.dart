@@ -46,7 +46,7 @@ class PushRelayService extends DisposableOwner implements IPushRelayService {
 //      endpoint += '&device=android';
       // nothing
     } else {
-      throw 'Unsupported platform ${Platform.operatingSystem}';
+      throw Exception('Unsupported platform ${Platform.operatingSystem}');
     }
     _logger.finest('createPushRelayEndPointUrl endpoint=$endpoint');
 

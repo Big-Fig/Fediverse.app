@@ -326,7 +326,7 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
           minimumRemoteIdExcluding: pagination?.newerThanItem?.remoteId,
         );
       } else {
-        throw 'Unsupported orderingTermData $orderingTermData';
+        throw ArgumentError('Unsupported orderingTermData $orderingTermData');
       }
     }
   }

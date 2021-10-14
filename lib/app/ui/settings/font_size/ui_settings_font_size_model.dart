@@ -67,7 +67,7 @@ extension UiSettingsFontSizeStringExtension on String {
         result = UiSettingsFontSize.largest;
         break;
       default:
-        throw 'Invalid UiSettingsFontSize $this';
+        throw ArgumentError('Invalid UiSettingsFontSize $this');
     }
 
     return result;

@@ -107,7 +107,7 @@ class PleromaChatMessageBloc extends ChatMessageBloc
 
   @override
   Future refreshFromNetwork() async {
-    throw 'not supported by API yet';
+    throw Exception('not supported by API yet');
   }
 
   @override

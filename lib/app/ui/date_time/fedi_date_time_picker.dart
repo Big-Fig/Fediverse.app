@@ -188,7 +188,7 @@ class FediDatePicker {
           actualLocaleType = LocaleType.pl;
           break;
         default:
-          throw 'Invalid locale $locale';
+          throw ArgumentError('Invalid locale $locale');
       }
     } else {
       actualLocaleType = locale;

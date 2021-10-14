@@ -175,7 +175,7 @@ class _UploadMediaAttachmentListMediaItemMediaPreviewWidget
               );
               break;
             case MediaDeviceFileType.other:
-              throw 'Non-media not supported';
+              throw ArgumentError('Non-media not supported');
           }
 
           return preview;
@@ -379,7 +379,7 @@ class _UploadMediaAttachmentListMediaItemPreviewWidget extends StatelessWidget {
         child: const MediaAttachmentWidget(),
       );
     } else {
-      throw 'Unsupported bloc type $bloc';
+      throw ArgumentError('Unsupported bloc type $bloc');
     }
 
     return mediaPreview;

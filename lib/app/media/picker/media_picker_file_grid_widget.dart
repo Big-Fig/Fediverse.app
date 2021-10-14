@@ -108,7 +108,10 @@ class _MediaPickerFileGridItemWidget extends StatelessWidget {
 
             return mediaDeviceFileBloc;
           } else {
-            throw 'IMediaDeviceFile file type not supported $fileMetadata';
+            throw ArgumentError(
+              'IMediaDeviceFile file type not supported '
+              '$fileMetadata',
+            );
           }
         },
         child: const MediaPickerFileGridItemWidget(),

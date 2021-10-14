@@ -71,7 +71,9 @@ class EditMyAccountPleromaBackgroundFieldImageWidget extends StatelessWidget {
         fit: BoxFit.cover,
       );
     } else {
-      throw 'MediaImageSource imageSource is invalid $imageSource';
+      throw ArgumentError(
+        'MediaImageSource imageSource is invalid $imageSource',
+      );
     }
   }
 }
