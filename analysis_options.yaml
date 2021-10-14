@@ -97,6 +97,12 @@ linter:
     # types is better for readability & static analyzing
     avoid_types_on_closure_parameters: false
 
+    # prefer final over var if possible
+    unnecessary_final: false
+
+    # static methods is OK, some named constructors harder ot maintain
+    prefer_constructors_over_static_methods: false
+
     # code metrics have better rules for member ordering
     sort_constructors_first: false
     sort_unnamed_constructors_first: false
@@ -107,16 +113,11 @@ linter:
     avoid_function_literals_in_foreach_calls: false
     unnecessary_lambdas: false
     use_build_context_synchronously: false
-    unnecessary_final: false
     prefer_const_constructors: false
-    prefer_constructors_over_static_methods: false
     always_specify_types: false
     use_key_in_widget_constructors: false
     prefer_final_locals: false
-    prefer_typing_uninitialized_variables: false
-    prefer_function_declarations_over_variables: false
     null_check_on_nullable_type_parameter: false
-    prefer_initializing_formals: false
 
 
 dart_code_metrics:

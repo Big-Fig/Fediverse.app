@@ -78,7 +78,7 @@ class _NotificationsHomeTabPageBodyState
   void didChangeDependencies() {
     super.didChangeDependencies();
     var tabController = Provider.of<TabController>(context, listen: false);
-    var listener = () {
+    void listener() {
       var tab = _notificationTabs[tabController.index];
       var notificationTabsBloc =
           INotificationTabsBloc.of(context, listen: false);
@@ -88,7 +88,8 @@ class _NotificationsHomeTabPageBodyState
         paginationListBloc.mergeNewItems();
       }
       notificationTabsBloc.selectTab(tab);
-    };
+    }
+
     tabController.addListener(listener);
 
     disposable = CustomDisposable(() {

@@ -63,9 +63,10 @@ class SearchInputBloc extends DisposableOwner implements ISearchInputBloc {
     confirmedSearchTermSubject.disposeWith(this);
     searchTextEditingController.disposeWith(this);
 
-    var listener = () {
+    void listener() {
       currentInputSubject.add(searchTextEditingController.text);
-    };
+    }
+
     searchTextEditingController.addListener(listener);
     addCustomDisposable(() {
       searchTextEditingController.removeListener(listener);

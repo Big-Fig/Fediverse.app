@@ -48,9 +48,9 @@ class ScrollControllerBloc extends DisposableOwner
   }) : scrollDirectionSubject = BehaviorSubject.seeded(null) {
     scrollDirectionSubject.disposeWith(this);
     longScrollDirectionSubject.disposeWith(this);
-    var listener = () {
+    void listener() {
       _onScroll();
-    };
+    }
 
     scrollController!.addListener(listener);
     addCustomDisposable(

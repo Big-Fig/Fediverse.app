@@ -51,13 +51,14 @@ class FediNestedScrollViewBloc extends DisposableOwner
     isNestedScrollViewBodyStartedScrollSubject.disposeWith(this);
     scrollOffsetSubject.disposeWith(this);
 
-    var listener = () {
+    void listener() {
       try {
         onScroll();
       } catch (e, stackTrace) {
         _logger.warning(() => 'failed to onScroll', e, stackTrace);
       }
-    };
+    }
+
     scrollController!.addListener(listener);
 
     addCustomDisposable(

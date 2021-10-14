@@ -30,8 +30,10 @@ abstract class ProviderContextBloc extends AsyncInitLoadingBloc
       );
     }
 
-    var providerCreator =
-        () => provider_lib.Provider<T>.value(value: disposable);
+    provider_lib.Provider<T> providerCreator() =>
+        provider_lib.Provider<T>.value(
+          value: disposable,
+        );
 
     _storage[type] = DisposableEntry<T>(disposable, providerCreator);
 

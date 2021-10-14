@@ -29,10 +29,10 @@ class StringValueFormFieldBloc extends ValueFormFieldBloc<String>
           isNullValuePossible: isNullValuePossible,
           isEnabled: isEnabled,
         ) {
-    var listener = () {
+    void listener() {
       var currentValue = textEditingController.text;
       changeCurrentValue(currentValue);
-    };
+    }
 
     focusNode.disposeWith(this);
     textEditingController.disposeWith(this);

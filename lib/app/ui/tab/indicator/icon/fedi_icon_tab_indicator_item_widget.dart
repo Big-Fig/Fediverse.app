@@ -23,9 +23,9 @@ class FediIconTabIndicatorItemWidget<T> extends StatelessWidget {
 
     var fediUiColorTheme = IFediUiColorTheme.of(context);
 
-    var onPressed = () {
+    void onPressed() {
       fediTabIndicatorItemBloc.select();
-    };
+    }
 
     return StreamBuilder<bool>(
       stream: fediTabIndicatorItemBloc.isSelectedStream,

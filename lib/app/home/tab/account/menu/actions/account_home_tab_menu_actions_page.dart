@@ -199,9 +199,9 @@ class _MyAccountSettingsFollowRequestsButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var onClick = () {
+    void onClick() {
       goToMyAccountFollowRequestListPage(context);
-    };
+    }
 
     return InkWell(
       onTap: onClick,

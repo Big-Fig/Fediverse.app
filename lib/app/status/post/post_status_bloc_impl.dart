@@ -79,6 +79,7 @@ abstract class PostStatusBloc extends PostMessageBloc
           unfocusOnClear: unfocusOnClear,
         ) {
     initialData = initialData ?? defaultInitData;
+    // ignore: prefer_initializing_formals
     this.initialData = initialData;
     visibilitySubject = BehaviorSubject.seeded(
       initialData.visibilityString.toUnifediApiVisibility(),
@@ -99,9 +100,9 @@ abstract class PostStatusBloc extends PostMessageBloc
 
     addDisposable(pollBloc);
 
-    var focusListener = () {
+    void focusListener() {
       onFocusChange(inputFocusNode.hasFocus);
-    };
+    }
 
     inputFocusNode.addListener(focusListener);
 
@@ -115,9 +116,10 @@ abstract class PostStatusBloc extends PostMessageBloc
     subjectTextController.disposeWith(this);
     subjectTextSubject.disposeWith(this);
 
-    var editTextListener = () {
+    void editTextListener() {
       onSubjectTextChanged();
-    };
+    }
+
     subjectTextController.addListener(editTextListener);
 
     addDisposable(
