@@ -49,7 +49,18 @@ class StatusReplyWidget extends StatelessWidget {
             if (inReplyToStatus != null) {
               return Provider<IStatus>.value(
                 value: inReplyToStatus,
-                child: _buildStatusListItemTimelineWidget(),
+                child: DisposableProxyProvider<IStatus,
+                    IStatusListItemTimelineBloc>(
+                  update: (context, status, _) =>
+                      StatusListItemTimelineBloc.list(
+                    status: status,
+                    collapsible: collapsible,
+                    isFirstReplyInThread: false,
+                    statusCallback: _onStatusClick,
+                    initialMediaAttachment: null,
+                  ),
+                  child: const StatusListItemTimelineWidget(),
+                ),
               );
             } else {
               _logger.warning(
@@ -65,18 +76,6 @@ class StatusReplyWidget extends StatelessWidget {
       },
     );
   }
-
-  Widget _buildStatusListItemTimelineWidget() =>
-      DisposableProxyProvider<IStatus, IStatusListItemTimelineBloc>(
-        update: (context, status, _) => StatusListItemTimelineBloc.list(
-          status: status,
-          collapsible: collapsible,
-          isFirstReplyInThread: false,
-          statusCallback: _onStatusClick,
-          initialMediaAttachment: null,
-        ),
-        child: const StatusListItemTimelineWidget(),
-      );
 }
 
 class _StatusReplyFailedWidget extends StatelessWidget {

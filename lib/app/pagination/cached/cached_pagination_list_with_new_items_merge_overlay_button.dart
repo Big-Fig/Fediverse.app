@@ -58,10 +58,18 @@ class CachedPaginationListWithNewItemsMergeOverlayButton
             Widget child;
 
             if (isNeedShowMergeItems && updateItemsCount > 0) {
-              child = buildMergeNewItemsButton(
-                context: context,
-                paginationWithUpdatesListBloc: paginationWithUpdatesListBloc,
-                updateItemsCount: updateItemsCount,
+              child = FediPrimaryFilledTextButtonWithBorder(
+                textBuilder(context, updateItemsCount),
+                onPressed: () {
+                  paginationWithUpdatesListBloc.mergeNewItems();
+
+                  var scrollControllerBloc =
+                      IScrollControllerBloc.of(context, listen: false);
+                  // ignore: cascade_invocations
+                  scrollControllerBloc.scrollToTop();
+                },
+                height: FediSizes.smallFilledButtonHeight,
+                expanded: false,
               );
             } else {
               child = const SizedBox.shrink();
@@ -90,24 +98,4 @@ class CachedPaginationListWithNewItemsMergeOverlayButton
       scrollDirection == ScrollDirection.forward ||
       scrollDirection == null ||
       scrolledToTop;
-
-  Widget buildMergeNewItemsButton({
-    required BuildContext context,
-    required ICachedPaginationListWithNewItemsBloc
-        paginationWithUpdatesListBloc,
-    required int updateItemsCount,
-  }) =>
-      FediPrimaryFilledTextButtonWithBorder(
-        textBuilder(context, updateItemsCount),
-        onPressed: () {
-          paginationWithUpdatesListBloc.mergeNewItems();
-
-          var scrollControllerBloc =
-              IScrollControllerBloc.of(context, listen: false);
-          // ignore: cascade_invocations
-          scrollControllerBloc.scrollToTop();
-        },
-        height: FediSizes.smallFilledButtonHeight,
-        expanded: false,
-      );
 }

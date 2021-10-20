@@ -19,12 +19,7 @@ void showEditGlobalToastSettingsDialog({
   showEditGlobalSettingsDialog(
     context: context,
     subTitle: S.of(context).app_toast_settings_title,
-    child: _buildBody(),
-  );
-}
-
-DisposableProvider<IToastSettingsBloc> _buildBody() =>
-    DisposableProvider<IToastSettingsBloc>(
+    child: DisposableProvider<IToastSettingsBloc>(
       create: (context) => ToastSettingsBloc(
         instanceLocalPreferencesBloc:
             IInstanceToastSettingsLocalPreferenceBloc.of(
@@ -49,4 +44,6 @@ DisposableProvider<IToastSettingsBloc> _buildBody() =>
           shrinkWrap: true,
         ),
       ),
-    );
+    ),
+  );
+}

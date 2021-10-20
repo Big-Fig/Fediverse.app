@@ -51,33 +51,33 @@ class FediNestedScrollViewWithoutNestedScrollableTabsWidget
                   context,
                   onLongScrollUpTopOverlayWidget,
                 ),
-              Expanded(child: _buildBody(context)),
+              Expanded(
+                child: providerBuilder(
+                  context,
+                  Builder(
+                    builder: (context) => Stack(
+                      children: [
+                        Positioned(
+                          top: 0.0,
+                          bottom: 0.0,
+                          left: 0.0,
+                          right: 0.0,
+                          child: contentBuilder(context),
+                        ),
+                        if (overlayBuilder != null)
+                          FediNestedScrollViewWidget.buildOverlay(
+                            context,
+                            overlayBuilder!,
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
             ],
           );
         },
       ),
     );
   }
-
-  Widget _buildBody(BuildContext context) => providerBuilder(
-        context,
-        Builder(
-          builder: (context) => Stack(
-            children: [
-              Positioned(
-                top: 0.0,
-                bottom: 0.0,
-                left: 0.0,
-                right: 0.0,
-                child: contentBuilder(context),
-              ),
-              if (overlayBuilder != null)
-                FediNestedScrollViewWidget.buildOverlay(
-                  context,
-                  overlayBuilder!,
-                ),
-            ],
-          ),
-        ),
-      );
 }

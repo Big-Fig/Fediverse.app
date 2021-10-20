@@ -123,113 +123,26 @@ class MediaAttachmentDetailsPageState
     var currentUnifediApiAccessBloc = ICurrentUnifediApiAccessBloc.of(context);
     var currentInstance = currentUnifediApiAccessBloc.currentInstance;
 
-    return Scaffold(
-      appBar: FediPageTitleAppBar(
-        title: S.of(context).app_media_attachment_details_title,
-        actions: <Widget>[
-          _MediaAttachmentDetailsPageAddToGalleryAction(
-            mediaAttachment: mediaAttachment,
-          ),
-          if (currentInstance != null)
-            _MediaAttachmentDetailsPageShareAction(
-              mediaAttachment: mediaAttachment,
-              instanceLocation: widget.instanceLocation,
-            ),
-        ],
-      ),
-      body: buildBody(context),
-    );
-  }
+    var mediaAttachments = widget.mediaAttachments;
 
-  Widget buildMediaAttachmentBody(
-    BuildContext context,
-    IUnifediApiMediaAttachment mediaAttachment,
-  ) =>
-      Provider<IUnifediApiMediaAttachment>.value(
-        value: mediaAttachment,
-        child: Stack(
-          children: [
-            buildMediaAttachmentItemBodyContent(mediaAttachment, context),
-            const Positioned(
-              top: 8.0,
-              right: 8.0,
-              child: MediaAttachmentMetadataButtonWidget(),
-            ),
-          ],
-        ),
+    Widget child;
+
+    if (mediaAttachments.length == 1) {
+      child = Provider.value(
+        value: mediaAttachments.first,
+        child: const _MediaAttachmentDetailsPageItemBody(),
       );
-
-  Widget buildMediaAttachmentItemBodyContent(
-    IUnifediApiMediaAttachment mediaAttachment,
-    BuildContext context,
-  ) =>
-      mediaAttachment.typeAsUnifediApi.map(
-        image: (_) => _buildCached(context, mediaAttachment),
-        // ignore: no-equal-arguments
-        gifv: (_) => _buildCached(context, mediaAttachment),
-        video: (_) {
-          var mediaSettingsBloc = IMediaSettingsBloc.of(context, listen: false);
-
-          return VideoMediaPlayerBloc.provideToContext(
-            context,
-            autoInit: mediaSettingsBloc.autoInit,
-            autoPlay: mediaSettingsBloc.autoPlay,
-            mediaPlayerSource:
-                MediaPlayerSource.network(networkUrl: mediaAttachment.url),
-            child: const FediVideoPlayerWidget(),
-            desiredAspectRatio:
-                VideoMediaPlayerBloc.calculateDefaultAspectRatio(context),
-            isFullscreen: false,
-          );
-        },
-        audio: (_) {
-          var mediaSettingsBloc = IMediaSettingsBloc.of(context, listen: false);
-
-          return AudioMediaPlayerBloc.provideToContext(
-            context,
-            autoInit: mediaSettingsBloc.autoInit,
-            autoPlay: mediaSettingsBloc.autoPlay,
-            mediaPlayerSource:
-                MediaPlayerSource.network(networkUrl: mediaAttachment.url),
-            child: const FediAudioPlayerWidget(),
-          );
-        },
-        unknown: (_) => const Padding(
-          padding: FediPadding.allBigPadding,
-          child: Center(
-            child: MediaAttachmentUnknownWidget(),
-          ),
-        ),
-      );
-
-  Widget _buildCached(
-    BuildContext context,
-    IUnifediApiMediaAttachment mediaAttachment,
-  ) =>
-      IFilesCacheService.of(context).createCachedNetworkImageWidget(
-        imageBuilder: (context, imageProvider) => PhotoView(
-          backgroundDecoration: BoxDecoration(
-            color: IFediUiColorTheme.of(context).ultraLightGrey,
-          ),
-          imageProvider: imageProvider,
-        ),
-        placeholder: (context, url) => buildDetails(),
-        errorWidget: (context, url, dynamic error) => buildDetails(),
-        imageUrl: mediaAttachment.url!,
-      );
-
-  Widget buildBody(BuildContext context) {
-    if (widget.mediaAttachments.length == 1) {
-      return buildMediaAttachmentBody(context, mediaAttachment);
     } else {
-      return Stack(
+      child = Stack(
         children: <Widget>[
           PageView(
             controller: _controller,
-            children: widget.mediaAttachments
+            children: mediaAttachments
                 .map(
-                  (mediaAttachment) =>
-                      buildMediaAttachmentBody(context, mediaAttachment),
+                  (mediaAttachment) => Provider.value(
+                    value: mediaAttachment,
+                    child: const _MediaAttachmentDetailsPageItemBody(),
+                  ),
                 )
                 .toList(),
           ),
@@ -249,7 +162,7 @@ class MediaAttachmentDetailsPageState
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.end,
-                  children: widget.mediaAttachments
+                  children: mediaAttachments
                       .map(
                         (mediaAttachment) => FediIndicatorWidget(
                           active: selectedMediaAttachment == mediaAttachment,
@@ -263,25 +176,24 @@ class MediaAttachmentDetailsPageState
         ],
       );
     }
-  }
 
-  Widget buildDetails() =>
-      IFilesCacheService.of(context).createCachedNetworkImageWidget(
-        imageUrl: mediaAttachment.url!,
-        imageBuilder: (context, imageProvider) => PhotoView(
-          backgroundDecoration: BoxDecoration(
-            color: IFediUiColorTheme.of(context).ultraLightGrey,
+    return Scaffold(
+      appBar: FediPageTitleAppBar(
+        title: S.of(context).app_media_attachment_details_title,
+        actions: <Widget>[
+          _MediaAttachmentDetailsPageAddToGalleryAction(
+            mediaAttachment: mediaAttachment,
           ),
-          imageProvider: imageProvider,
-        ),
-        placeholder: (context, url) =>
-            const Center(child: FediCircularProgressIndicator()),
-        errorWidget: (context, url, dynamic error) => const Center(
-          child: Icon(
-            FediIcons.failed,
-          ),
-        ),
-      );
+          if (currentInstance != null)
+            _MediaAttachmentDetailsPageShareAction(
+              mediaAttachment: mediaAttachment,
+              instanceLocation: widget.instanceLocation,
+            ),
+        ],
+      ),
+      body: child,
+    );
+  }
 }
 
 class _MediaAttachmentDetailsPageShareAction extends StatelessWidget {
@@ -473,4 +385,126 @@ void goToMultiMediaAttachmentDetailsPage(
       ),
     ),
   );
+}
+
+class _MediaAttachmentDetailsPageItemBody extends StatelessWidget {
+  const _MediaAttachmentDetailsPageItemBody({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => Stack(
+        children: const [
+          _MediaAttachmentDetailsPageItemBodyContent(),
+          Positioned(
+            top: 8.0,
+            right: 8.0,
+            child: MediaAttachmentMetadataButtonWidget(),
+          ),
+        ],
+      );
+}
+
+class _MediaAttachmentDetailsPageItemBodyContent extends StatelessWidget {
+  const _MediaAttachmentDetailsPageItemBodyContent({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var mediaAttachment = Provider.of<IUnifediApiMediaAttachment>(context);
+
+    return mediaAttachment.typeAsUnifediApi.map(
+      image: (_) => const _MediaAttachmentDetailsPageItemBodyContentCached(),
+      // ignore: no-equal-arguments
+      gifv: (_) => const _MediaAttachmentDetailsPageItemBodyContentCached(),
+      video: (_) {
+        var mediaSettingsBloc = IMediaSettingsBloc.of(context, listen: false);
+
+        return VideoMediaPlayerBloc.provideToContext(
+          context,
+          autoInit: mediaSettingsBloc.autoInit,
+          autoPlay: mediaSettingsBloc.autoPlay,
+          mediaPlayerSource:
+              MediaPlayerSource.network(networkUrl: mediaAttachment.url),
+          child: const FediVideoPlayerWidget(),
+          desiredAspectRatio:
+              VideoMediaPlayerBloc.calculateDefaultAspectRatio(context),
+          isFullscreen: false,
+        );
+      },
+      audio: (_) {
+        var mediaSettingsBloc = IMediaSettingsBloc.of(context, listen: false);
+
+        return AudioMediaPlayerBloc.provideToContext(
+          context,
+          autoInit: mediaSettingsBloc.autoInit,
+          autoPlay: mediaSettingsBloc.autoPlay,
+          mediaPlayerSource:
+              MediaPlayerSource.network(networkUrl: mediaAttachment.url),
+          child: const FediAudioPlayerWidget(),
+        );
+      },
+      unknown: (_) => const Padding(
+        padding: FediPadding.allBigPadding,
+        child: Center(
+          child: MediaAttachmentUnknownWidget(),
+        ),
+      ),
+    );
+  }
+}
+
+class _MediaAttachmentDetailsPageItemBodyContentCached extends StatelessWidget {
+  const _MediaAttachmentDetailsPageItemBodyContentCached({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var mediaAttachment = Provider.of<IUnifediApiMediaAttachment>(context);
+
+    return IFilesCacheService.of(context).createCachedNetworkImageWidget(
+      imageBuilder: (context, imageProvider) => PhotoView(
+        backgroundDecoration: BoxDecoration(
+          color: IFediUiColorTheme.of(context).ultraLightGrey,
+        ),
+        imageProvider: imageProvider,
+      ),
+      placeholder: (context, url) =>
+          const _MediaAttachmentDetailsPageItemBodyContentCachedDetails(),
+      errorWidget: (context, url, dynamic error) =>
+          const _MediaAttachmentDetailsPageItemBodyContentCachedDetails(),
+      imageUrl: mediaAttachment.url!,
+    );
+  }
+}
+
+class _MediaAttachmentDetailsPageItemBodyContentCachedDetails
+    extends StatelessWidget {
+  const _MediaAttachmentDetailsPageItemBodyContentCachedDetails({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var mediaAttachment = Provider.of<IUnifediApiMediaAttachment>(context);
+
+    return IFilesCacheService.of(context).createCachedNetworkImageWidget(
+      imageUrl: mediaAttachment.url!,
+      imageBuilder: (context, imageProvider) => PhotoView(
+        backgroundDecoration: BoxDecoration(
+          color: IFediUiColorTheme.of(context).ultraLightGrey,
+        ),
+        imageProvider: imageProvider,
+      ),
+      placeholder: (context, url) =>
+          const Center(child: FediCircularProgressIndicator()),
+      errorWidget: (context, url, dynamic error) => const Center(
+        child: Icon(
+          FediIcons.failed,
+        ),
+      ),
+    );
+  }
 }

@@ -203,6 +203,7 @@ class ShareEntityCarouselItem with _$ShareEntityCarouselItem {
   }) = _ShareEntityCarouselItem;
 }
 
+// ignore: avoid-returning-widgets
 Widget _shareEntityCarouselItemWidgetBuilder(BuildContext context, int index) {
   var items = Provider.of<List<ShareEntityCarouselItem>>(context);
   var item = items[index];

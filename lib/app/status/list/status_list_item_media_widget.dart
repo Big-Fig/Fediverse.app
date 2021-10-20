@@ -18,31 +18,6 @@ var _logger = Logger('status_list_item_media_widget.dart');
 class StatusListItemMediaWidget extends StatelessWidget {
   const StatusListItemMediaWidget({Key? key}) : super(key: key);
 
-  Container mediaAttachmentPreviewUrlWidget(
-    String previewUrl,
-    BuildContext context,
-  ) {
-    var fediUiColorTheme = IFediUiColorTheme.of(context);
-
-    return Container(
-      // todo: refactor
-      // ignore: no-magic-number
-      color: fediUiColorTheme.black.withOpacity(0.2),
-      child: SizedBox.expand(
-        child: IFilesCacheService.of(context).createCachedNetworkImageWidget(
-          fit: BoxFit.cover,
-          imageUrl: previewUrl,
-          placeholder: (context, url) => const Center(
-            child: FediCircularProgressIndicator(),
-          ),
-          width: MediaQuery.of(context).size.width,
-          errorWidget: (context, url, dynamic error) =>
-              const Icon(FediIcons.warning),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     var statusBloc = IStatusBloc.of(context);
@@ -54,13 +29,31 @@ class StatusListItemMediaWidget extends StatelessWidget {
     );
 
     var mediaAttachment = Provider.of<IUnifediApiMediaAttachment>(context);
-    var previewUrl = mediaAttachment.previewUrl;
+    var previewUrl = mediaAttachment.previewUrl!;
 
-    var child = mediaAttachmentPreviewUrlWidget(previewUrl!, context);
-    var body = buildBody(
-      child: child,
-      statusBloc: statusBloc,
-      statusSensitiveBloc: statusSensitiveBloc,
+    var child = Provider<String>.value(
+      value: previewUrl,
+      child: const _StatusListItemMediaWidgetPreviewUrl(),
+    );
+    var body = StreamBuilder<StatusSensitiveWarningState>(
+      stream: statusSensitiveBloc.statusWarningStateStream.distinct(),
+      builder: (context, snapshot) {
+        var statusWarningState =
+            snapshot.data ?? statusSensitiveBloc.statusWarningState;
+
+        var nsfwSensitiveAndDisplayNsfwContentEnabled =
+            !statusWarningState.nsfwSensitive ||
+                statusWarningState.displayEnabled;
+
+        if (nsfwSensitiveAndDisplayNsfwContentEnabled) {
+          // todo: display all medias in list
+          return child;
+        } else {
+          return StatusSensitiveNsfwWarningOverlayWidget(
+            child: child,
+          );
+        }
+      },
     );
 
     return StreamBuilder<bool>(
@@ -83,30 +76,35 @@ class StatusListItemMediaWidget extends StatelessWidget {
       },
     );
   }
+}
 
-  Widget buildBody({
-    required Widget child,
-    required IStatusBloc statusBloc,
-    required IStatusSensitiveBloc statusSensitiveBloc,
-  }) =>
-      StreamBuilder<StatusSensitiveWarningState>(
-        stream: statusSensitiveBloc.statusWarningStateStream.distinct(),
-        builder: (context, snapshot) {
-          var statusWarningState =
-              snapshot.data ?? statusSensitiveBloc.statusWarningState;
+class _StatusListItemMediaWidgetPreviewUrl extends StatelessWidget {
+  const _StatusListItemMediaWidgetPreviewUrl({
+    Key? key,
+  }) : super(key: key);
 
-          var nsfwSensitiveAndDisplayNsfwContentEnabled =
-              !statusWarningState.nsfwSensitive ||
-                  statusWarningState.displayEnabled;
+  @override
+  Widget build(BuildContext context) {
+    var fediUiColorTheme = IFediUiColorTheme.of(context);
 
-          if (nsfwSensitiveAndDisplayNsfwContentEnabled) {
-            // todo: display all medias in list
-            return child;
-          } else {
-            return StatusSensitiveNsfwWarningOverlayWidget(
-              child: child,
-            );
-          }
-        },
-      );
+    var previewUrl = Provider.of<String>(context);
+
+    return Container(
+      // todo: refactor
+      // ignore: no-magic-number
+      color: fediUiColorTheme.black.withOpacity(0.2),
+      child: SizedBox.expand(
+        child: IFilesCacheService.of(context).createCachedNetworkImageWidget(
+          fit: BoxFit.cover,
+          imageUrl: previewUrl,
+          placeholder: (context, url) => const Center(
+            child: FediCircularProgressIndicator(),
+          ),
+          width: MediaQuery.of(context).size.width,
+          errorWidget: (context, url, dynamic error) =>
+              const Icon(FediIcons.warning),
+        ),
+      ),
+    );
+  }
 }

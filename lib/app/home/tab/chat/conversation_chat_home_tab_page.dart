@@ -54,6 +54,7 @@ class ConversationChatHomeTabPage extends StatelessWidget {
         topSliverWidgets: const [
           _ConversationMessagesHomeTabPageHeaderWidget(),
         ],
+        // ignore: avoid-returning-widgets
         providerBuilder: (context, child) => provideContentContext(child),
         contentBuilder: (context) =>
             const _ConversationMessagesHomeTabPageContentWidget(),
@@ -152,14 +153,37 @@ class _ConversationMessagesHomeTabPageHeaderWidget extends StatelessWidget {
           ),
         ],
         content: null,
-        endingWidgets: [
-          buildSwitchToChatsActionButton(context),
-          const FediBigHorizontalSpacer(),
-          buildStartConversationActionButton(context),
+        endingWidgets: const [
+          _ConversationMessagesHomeTabPageContentSwitchToChatsButtonWidget(),
+          FediBigHorizontalSpacer(),
+          _ConversationMessagesHomeTabPageContentSwitchToConversationButtonWidget(),
         ],
       );
+}
 
-  Widget buildSwitchToChatsActionButton(BuildContext context) =>
+class _ConversationMessagesHomeTabPageContentSwitchToConversationButtonWidget
+    extends StatelessWidget {
+  const _ConversationMessagesHomeTabPageContentSwitchToConversationButtonWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => FediIconInCircleBlurredButton(
+        FediIcons.plus,
+        onPressed: () {
+          goToStartConversationPage(context);
+        },
+      );
+}
+
+class _ConversationMessagesHomeTabPageContentSwitchToChatsButtonWidget
+    extends StatelessWidget {
+  const _ConversationMessagesHomeTabPageContentSwitchToChatsButtonWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) =>
       DisposableProxyProvider<IPleromaChatRepository, IFediBoolBadgeBloc>(
         update: (context, pleromaChatRepository, _) =>
             PleromaChatUnreadBadgeBloc(
@@ -177,13 +201,5 @@ class _ConversationMessagesHomeTabPageHeaderWidget extends StatelessWidget {
             expanded: false,
           ),
         ),
-      );
-
-  Widget buildStartConversationActionButton(BuildContext context) =>
-      FediIconInCircleBlurredButton(
-        FediIcons.plus,
-        onPressed: () {
-          goToStartConversationPage(context);
-        },
       );
 }

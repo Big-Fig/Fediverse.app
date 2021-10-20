@@ -111,6 +111,7 @@ class FediFormSingleChooseCustomFromListFieldRow<T> extends StatelessWidget {
                 ),
               ],
             ),
+            // ignore: avoid-returning-widgets
             _buildDescription(),
             if (error != null) FediFormColumnError(error),
           ],

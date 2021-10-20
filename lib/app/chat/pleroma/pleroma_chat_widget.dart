@@ -47,9 +47,11 @@ class PleromaChatWidget extends StatelessWidget {
   }
 }
 
+// ignore: avoid-returning-widgets
 Widget _itemBuilder(BuildContext context) =>
     const ChatMessageListItemWidget<IPleromaChatMessage>();
 
+// ignore: avoid-returning-widgets
 Widget _itemContextBuilder(
   BuildContext context, {
   required Widget child,

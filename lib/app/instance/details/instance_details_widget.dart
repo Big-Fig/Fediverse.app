@@ -125,7 +125,7 @@ class _InstanceDetailsBodyWidget extends StatelessWidget {
             _InstanceDetailsUnifediApiPollLimitsWidget(),
             _InstanceDetailsPleromaUploadLimitsWidget(),
             _InstanceDetailsBodyMetadataWidget(),
-            _InstanceDetailsunifediApiInstanceFederationWidget(),
+            _InstanceDetailsUnifediApiInstanceFederationWidget(),
             _InstanceDetailsPleromaMetadataFieldsLimitsWidget(),
           ],
         ),
@@ -224,7 +224,7 @@ class _InstanceDetailsBodyMessagesLimitsWidget extends StatelessWidget {
                     .app_instance_details_field_messagesLimits_title,
               ),
               const _InstanceDetailsPleromaMaxTootCharsLimitWidget(),
-              const _InstanceDetailsunifediApiChatMessageLimitWidget(),
+              const _InstanceDetailsUnifediApiChatMessageLimitWidget(),
               const _InstanceDetailsPleromaImageDescriptionLimitWidget(),
             ],
           );
@@ -1175,8 +1175,8 @@ class _InstanceDetailsPleromaMaxTootCharsLimitWidget extends StatelessWidget {
   }
 }
 
-class _InstanceDetailsunifediApiChatMessageLimitWidget extends StatelessWidget {
-  const _InstanceDetailsunifediApiChatMessageLimitWidget({
+class _InstanceDetailsUnifediApiChatMessageLimitWidget extends StatelessWidget {
+  const _InstanceDetailsUnifediApiChatMessageLimitWidget({
     Key? key,
   }) : super(key: key);
 
@@ -1491,9 +1491,9 @@ class _InstanceDetailsPleromaMetadataFeaturesWidget extends StatelessWidget {
   }
 }
 
-class _InstanceDetailsunifediApiInstanceFederationWidget
+class _InstanceDetailsUnifediApiInstanceFederationWidget
     extends StatelessWidget {
-  const _InstanceDetailsunifediApiInstanceFederationWidget({
+  const _InstanceDetailsUnifediApiInstanceFederationWidget({
     Key? key,
   }) : super(key: key);
 
@@ -1514,9 +1514,46 @@ class _InstanceDetailsunifediApiInstanceFederationWidget
               var unifediApiInstanceFederation = snapshot.data;
 
               if (unifediApiInstanceFederation != null) {
-                return _buildBody(
-                  context,
-                  unifediApiInstanceFederation,
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const __InstanceDetailsUnifediApiInstanceFederationTitleWidget(),
+                    if (unifediApiInstanceFederation.enabled != null)
+                      _InstanceDetailsUnifediApiInstanceFederationEnabledFieldWidget(
+                        unifediApiInstanceFederation:
+                            unifediApiInstanceFederation,
+                      ),
+                    if (unifediApiInstanceFederation.exclusions != null)
+                      _InstanceDetailsUnifediApiInstanceFederationExclusionsWidget(
+                        unifediApiInstanceFederation:
+                            unifediApiInstanceFederation,
+                      ),
+                    if (unifediApiInstanceFederation.mrfPolicies?.isNotEmpty ==
+                        true)
+                      _InstanceDetailsUnifediApiInstanceFederationMfrPoliciesWidget(
+                        unifediApiInstanceFederation:
+                            unifediApiInstanceFederation,
+                      ),
+                    if (unifediApiInstanceFederation.mrfObjectAge?.threshold !=
+                        null)
+                      _InstanceDetailsUnifediApiInstanceFederationMfrObjectAgeThresholdWidget(
+                        unifediApiInstanceFederation:
+                            unifediApiInstanceFederation,
+                      ),
+                    if (unifediApiInstanceFederation.mrfObjectAge?.actions !=
+                        null)
+                      _InstanceDetailsUnifediApiInstanceFederationMfrObjectAgeActionsWidget(
+                        unifediApiInstanceFederation:
+                            unifediApiInstanceFederation,
+                      ),
+                    if (unifediApiInstanceFederation
+                            .quarantinedInstances?.isNotEmpty ==
+                        true)
+                      _InstanceDetailsUnifediApiInstanceFederationQuarantinedInstancesWidget(
+                        unifediApiInstanceFederation:
+                            unifediApiInstanceFederation,
+                      ),
+                  ],
                 );
               } else {
                 return const SizedBox.shrink();
@@ -1529,42 +1566,6 @@ class _InstanceDetailsunifediApiInstanceFederationWidget
       },
     );
   }
-
-  Widget _buildBody(
-    BuildContext context,
-    IUnifediApiInstanceFederation unifediApiInstanceFederation,
-  ) =>
-      Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const __InstanceDetailsUnifediApiInstanceFederationTitleWidget(),
-          if (unifediApiInstanceFederation.enabled != null)
-            _InstanceDetailsUnifediApiInstanceFederationEnabledFieldWidget(
-              unifediApiInstanceFederation: unifediApiInstanceFederation,
-            ),
-          if (unifediApiInstanceFederation.exclusions != null)
-            _InstanceDetailsUnifediApiInstanceFederationExclusionsWidget(
-              unifediApiInstanceFederation: unifediApiInstanceFederation,
-            ),
-          if (unifediApiInstanceFederation.mrfPolicies?.isNotEmpty == true)
-            _InstanceDetailsUnifediApiInstanceFederationMfrPoliciesWidget(
-              unifediApiInstanceFederation: unifediApiInstanceFederation,
-            ),
-          if (unifediApiInstanceFederation.mrfObjectAge?.threshold != null)
-            _InstanceDetailsUnifediApiInstanceFederationMfrObjectAgeThresholdWidget(
-              unifediApiInstanceFederation: unifediApiInstanceFederation,
-            ),
-          if (unifediApiInstanceFederation.mrfObjectAge?.actions != null)
-            _InstanceDetailsUnifediApiInstanceFederationMfrObjectAgeActionsWidget(
-              unifediApiInstanceFederation: unifediApiInstanceFederation,
-            ),
-          if (unifediApiInstanceFederation.quarantinedInstances?.isNotEmpty ==
-              true)
-            _InstanceDetailsunifediApiInstanceFederationQuarantinedInstancesWidget(
-              unifediApiInstanceFederation: unifediApiInstanceFederation,
-            ),
-        ],
-      );
 }
 
 class _InstanceDetailsUnifediApiInstanceFederationMfrObjectAgeActionsWidget
@@ -1585,9 +1586,9 @@ class _InstanceDetailsUnifediApiInstanceFederationMfrObjectAgeActionsWidget
       );
 }
 
-class _InstanceDetailsunifediApiInstanceFederationQuarantinedInstancesWidget
+class _InstanceDetailsUnifediApiInstanceFederationQuarantinedInstancesWidget
     extends StatelessWidget {
-  const _InstanceDetailsunifediApiInstanceFederationQuarantinedInstancesWidget({
+  const _InstanceDetailsUnifediApiInstanceFederationQuarantinedInstancesWidget({
     Key? key,
     required this.unifediApiInstanceFederation,
   }) : super(key: key);

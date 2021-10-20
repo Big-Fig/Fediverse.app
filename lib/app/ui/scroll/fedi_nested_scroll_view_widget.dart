@@ -31,6 +31,7 @@ abstract class FediNestedScrollViewWidget extends StatelessWidget {
       listen: false,
     );
 
+    // ignore: avoid-returning-widgets
     var child = buildNestedScrollView(
       context,
     );
@@ -38,25 +39,20 @@ abstract class FediNestedScrollViewWidget extends StatelessWidget {
     return Stack(
       children: [
         child,
-        buildTopSliverOffsetWhiteStatusBar(fediNestedScrollViewBloc),
+        StreamBuilder<bool>(
+          stream: _calculateShowStatusBarStream(fediNestedScrollViewBloc),
+          builder: (context, snapshot) {
+            var isNeedShow = snapshot.data;
+            if (isNeedShow == true) {
+              return const FediWhiteStatusBarWidget();
+            } else {
+              return const SizedBox.shrink();
+            }
+          },
+        ),
       ],
     );
   }
-
-  Widget buildTopSliverOffsetWhiteStatusBar(
-    IFediNestedScrollViewBloc fediNestedScrollViewBloc,
-  ) =>
-      StreamBuilder<bool>(
-        stream: _calculateShowStatusBarStream(fediNestedScrollViewBloc),
-        builder: (context, snapshot) {
-          var isNeedShow = snapshot.data;
-          if (isNeedShow == true) {
-            return const FediWhiteStatusBarWidget();
-          } else {
-            return const SizedBox.shrink();
-          }
-        },
-      );
 
   Stream<bool> _calculateShowStatusBarStream(
     IFediNestedScrollViewBloc fediNestedScrollViewBloc,
@@ -92,6 +88,7 @@ abstract class FediNestedScrollViewWidget extends StatelessWidget {
         ),
       ];
 
+  // ignore: avoid-returning-widgets
   Widget buildNestedScrollView(BuildContext context);
 
   static Widget buildOnLongScrollUpTopOverlayWidget(

@@ -57,9 +57,11 @@ class ConversationChatWidget extends StatelessWidget {
   }
 }
 
+// ignore: avoid-returning-widgets
 Widget _itemBuilder(BuildContext context) =>
     const ChatMessageListItemWidget<IConversationChatMessage>();
 
+// ignore: avoid-returning-widgets
 Widget _itemContextBuilder(
   BuildContext context, {
   required Widget child,

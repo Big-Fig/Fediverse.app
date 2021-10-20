@@ -16,22 +16,23 @@ class ScheduledStatusListPage extends StatelessWidget {
           title: S.of(context).app_account_my_statuses_scheduled_title,
         ),
         body: SafeArea(
-          child: buildBody(context),
+          child: ScheduledStatusPaginationListTimelineWidget(
+            key: const PageStorageKey(
+              'ScheduledStatusPaginationListTimelineWidget',
+            ),
+            customEmptyWidget: const _ScheduledStatusListPageEmptyWidget(),
+            needWatchLocalRepositoryForUpdates: true,
+            successCallback: () {
+              var cachedPaginationListWithNewItemsBloc =
+                  ICachedPaginationListWithNewItemsBloc.of(
+                context,
+                listen: false,
+              );
+              // ignore: cascade_invocations
+              cachedPaginationListWithNewItemsBloc.refreshWithController();
+            },
+          ),
         ),
-      );
-
-  Widget buildBody(BuildContext context) =>
-      ScheduledStatusPaginationListTimelineWidget(
-        key:
-            const PageStorageKey('ScheduledStatusPaginationListTimelineWidget'),
-        customEmptyWidget: const _ScheduledStatusListPageEmptyWidget(),
-        needWatchLocalRepositoryForUpdates: true,
-        successCallback: () {
-          var cachedPaginationListWithNewItemsBloc =
-              ICachedPaginationListWithNewItemsBloc.of(context, listen: false);
-          // ignore: cascade_invocations
-          cachedPaginationListWithNewItemsBloc.refreshWithController();
-        },
       );
 
   const ScheduledStatusListPage({Key? key}) : super(key: key);

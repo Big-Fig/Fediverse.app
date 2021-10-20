@@ -170,8 +170,7 @@ dart_code_metrics:
     # - prefer-match-file-name
     - prefer-trailing-comma
     - always-remove-listener
-    # useful but require a lot of refactoring
-    # - avoid-returning-widgets
+    - avoid-returning-widgets
     - avoid-unnecessary-setstate
     # looks not necessary
     # - avoid-wrapping-in-padding

@@ -48,33 +48,31 @@ class StatusSubHeaderWidget extends StatelessWidget {
             }
           },
           behavior: HitTestBehavior.translucent,
-          child: buildHeader(account, context),
+          child: Row(
+            children: <Widget>[
+              Icon(
+                icon,
+                size: FediSizes.defaultIconSize,
+                color: IFediUiColorTheme.of(context).mediumGrey,
+              ),
+              const FediSmallHorizontalSpacer(),
+              Text(
+                '$descText ',
+                style: IFediUiTextTheme.of(context)
+                    .mediumShortMediumGrey
+                    .copyWith(height: 1),
+              ),
+              Flexible(
+                child: Text(
+                  account.acct,
+                  overflow: TextOverflow.ellipsis,
+                  style: IFediUiTextTheme.of(context)
+                      .mediumShortDarkGrey
+                      .copyWith(height: 1),
+                ),
+              ),
+            ],
+          ),
         ),
-      );
-
-  Row buildHeader(IAccount account, BuildContext context) => Row(
-        children: <Widget>[
-          Icon(
-            icon,
-            size: FediSizes.defaultIconSize,
-            color: IFediUiColorTheme.of(context).mediumGrey,
-          ),
-          const FediSmallHorizontalSpacer(),
-          Text(
-            '$descText ',
-            style: IFediUiTextTheme.of(context)
-                .mediumShortMediumGrey
-                .copyWith(height: 1),
-          ),
-          Flexible(
-            child: Text(
-              account.acct,
-              overflow: TextOverflow.ellipsis,
-              style: IFediUiTextTheme.of(context)
-                  .mediumShortDarkGrey
-                  .copyWith(height: 1),
-            ),
-          ),
-        ],
       );
 }

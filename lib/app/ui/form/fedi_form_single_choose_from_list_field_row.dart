@@ -70,12 +70,14 @@ class FediFormSingleChooseFromListFieldRow<T> extends StatelessWidget {
                 ),
               ],
             ),
+            // ignore: avoid-returning-widgets
             if (description != null) _buildDescription(),
             if (error != null) FediFormColumnError(error),
           ],
         ),
       );
 
+  // ignore: avoid-returning-widgets
   Widget _buildDescription() {
     // todo: refactor
     if (isEnabled) {

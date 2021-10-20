@@ -76,6 +76,7 @@ class PostStatusComposeWidget extends StatelessWidget {
               heightOnKeyboardOpen: null,
             ),
             if (!displayAccountAvatar && expanded) const FediLightGreyDivider(),
+            // ignore: avoid-returning-widgets
             _buildActions(showPostAction),
             const PostMessageSelectedActionWidget(),
           ],

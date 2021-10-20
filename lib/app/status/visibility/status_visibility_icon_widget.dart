@@ -17,6 +17,7 @@ class StatusVisibilityIconWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  // ignore: avoid-returning-widgets
   Widget build(BuildContext context) => buildVisibilityIcon(
         context: context,
         visibility: visibility,

@@ -149,6 +149,7 @@ class StatusCachedPaginationListMediaWidget
     required Widget? header,
     required Widget? footer,
   }) =>
+      // ignore: avoid-returning-widgets
       buildStaggeredMediaGridView(
         context: context,
         items: items,

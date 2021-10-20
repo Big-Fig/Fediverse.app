@@ -61,28 +61,40 @@ class HomePage extends StatelessWidget {
           return const SizedBox.shrink();
         }
 
-        return Scaffold(
-          body: Stack(
-            children: [
-              const RepaintBoundary(
-                child: SizedBox(
-                  // ignore: no-magic-number
-                  height: 180,
-                  child: _HomePageBackgroundWidget(),
+        return Provider<HomeTab>.value(
+          value: selectedTab,
+          child: Scaffold(
+            body: Stack(
+              children: const [
+                RepaintBoundary(
+                  child: SizedBox(
+                    // ignore: no-magic-number
+                    height: 180,
+                    child: _HomePageBackgroundWidget(),
+                  ),
                 ),
-              ),
-              buildBody(context, selectedTab),
-            ],
-          ),
-          bottomNavigationBar: const _HomePageBottomNavBar(
-            key: Key(HomePageKeys.bottomNavBarWidget),
+                _HomePageBodyWidget(),
+              ],
+            ),
+            bottomNavigationBar: const _HomePageBottomNavBar(
+              key: Key(HomePageKeys.bottomNavBarWidget),
+            ),
           ),
         );
       },
     );
   }
+}
 
-  Widget buildBody(BuildContext context, HomeTab selectedTab) {
+class _HomePageBodyWidget extends StatelessWidget {
+  const _HomePageBodyWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var selectedTab = Provider.of<HomeTab>(context);
+
     switch (selectedTab) {
       case HomeTab.timelines:
         return const _HomePageTimelineTabWidget();

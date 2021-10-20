@@ -32,6 +32,7 @@ typedef StringAtIndexCallBack = String? Function(int index);
 
 // todo: refactor
 // ignore_for_file: no-magic-number
+// ignore_for_file: avoid-returning-widgets
 
 class FediDatePicker {
   ///

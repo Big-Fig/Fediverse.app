@@ -105,6 +105,7 @@ class FediChooserDialogBody extends StatelessWidget {
               ),
             ),
           if (cancelable)
+            // ignore: avoid-returning-widgets
             _buildAction(
               context: context,
               action: BaseDialog.createDefaultCancelAction(

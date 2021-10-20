@@ -132,6 +132,7 @@ class _NotificationsHomeTabPageBodyState
               (BuildContext context, int index, Widget child) {
             var tab = _notificationTabs[index];
 
+            // ignore: avoid-returning-widgets
             return _buildTabBodyProvider(context, tab, child);
           },
           tabBodyContentBuilder: (BuildContext context, int index) =>

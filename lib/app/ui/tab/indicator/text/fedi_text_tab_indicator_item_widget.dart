@@ -25,14 +25,118 @@ class FediTextTabIndicatorItemWidget<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     switch (style) {
       case FediTabStyle.bubble:
-        return _buildBubbleStyleBody(context);
+        return _FediTextTabIndicatorItemWidgetBubbleStyle(
+          isTransparent: isTransparent,
+          tabToTextMapper: tabToTextMapper,
+        );
 
       case FediTabStyle.underline:
-        return _buildUnderlineStyleBody(context);
+        return _FediTextTabIndicatorItemWidgetUnderlineStyle(
+          isTransparent: isTransparent,
+          tabToTextMapper: tabToTextMapper,
+        );
     }
   }
+}
 
-  Widget _buildUnderlineStyleBody(BuildContext context) {
+class _FediTextTabIndicatorItemWidgetBubbleStyle<T> extends StatelessWidget {
+  final bool isTransparent;
+  final TabToTextMapper<T?> tabToTextMapper;
+
+  const _FediTextTabIndicatorItemWidgetBubbleStyle({
+    Key? key,
+    required this.isTransparent,
+    required this.tabToTextMapper,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var fediTabIndicatorItemBloc = IFediTabIndicatorItemBloc.of<T>(context);
+    // ignore: no-magic-number
+    const fontSize = 16.0;
+    // ignore: no-magic-number
+    const lineHeight = 1.5;
+
+    return StreamBuilder<bool>(
+      stream: fediTabIndicatorItemBloc.isSelectedStream,
+      initialData: fediTabIndicatorItemBloc.isSelected,
+      builder: (context, snapshot) {
+        var isSelected = snapshot.data!;
+
+        Widget text;
+
+        var label = tabToTextMapper(context, fediTabIndicatorItemBloc.item);
+
+        if (isSelected) {
+          return FediPrimaryFilledTextButtonWithBorder(
+            label,
+            onPressed: () {
+              fediTabIndicatorItemBloc.select();
+            },
+            textStyle:
+                IFediUiTextTheme.of(context).mediumShortBoldWhite.copyWith(
+                      fontSize: fontSize,
+                      fontWeight: FontWeight.w500,
+                      height: lineHeight,
+                    ),
+            expanded: false,
+            enabledBackgroundColor:
+                // ignore: no-magic-number
+                IFediUiColorTheme.of(context).primary.withOpacity(0.8),
+          );
+        } else {
+          var fontWeight = FontWeight.normal;
+          if (isTransparent) {
+            text = FediBlurredTextButtonWithBorder(
+              label,
+              onPressed: () {
+                fediTabIndicatorItemBloc.select();
+              },
+              textStyle:
+                  IFediUiTextTheme.of(context).mediumShortBoldWhite.copyWith(
+                        fontSize: fontSize,
+                        fontWeight: fontWeight,
+                        height: lineHeight,
+                      ),
+              expanded: false,
+            );
+          } else {
+            text = FediTransparentTextButtonWithBorder(
+              label,
+              onPressed: () {
+                fediTabIndicatorItemBloc.select();
+              },
+              textStyle: IFediUiTextTheme.of(context)
+                  .mediumShortBoldMediumGrey
+                  .copyWith(
+                    fontSize: fontSize,
+                    fontWeight: fontWeight,
+                    height: lineHeight,
+                  ),
+              color: IFediUiColorTheme.of(context).mediumGrey,
+              expanded: false,
+            );
+          }
+        }
+
+        return text;
+      },
+    );
+  }
+}
+
+class _FediTextTabIndicatorItemWidgetUnderlineStyle<T> extends StatelessWidget {
+  final bool isTransparent;
+  final TabToTextMapper<T?> tabToTextMapper;
+
+  const _FediTextTabIndicatorItemWidgetUnderlineStyle({
+    Key? key,
+    required this.isTransparent,
+    required this.tabToTextMapper,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     var fediTabIndicatorItemBloc = IFediTabIndicatorItemBloc.of<T>(context);
     var label = tabToTextMapper(context, fediTabIndicatorItemBloc.item);
 
@@ -58,83 +162,5 @@ class FediTextTabIndicatorItemWidget<T> extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Widget _buildBubbleStyleBody(BuildContext context) {
-    var fediTabIndicatorItemBloc = IFediTabIndicatorItemBloc.of<T>(context);
-    // ignore: no-magic-number
-    const fontSize = 16.0;
-    // ignore: no-magic-number
-    const lineHeight = 1.5;
-
-    return StreamBuilder<bool>(
-      stream: fediTabIndicatorItemBloc.isSelectedStream,
-      initialData: fediTabIndicatorItemBloc.isSelected,
-      builder: (context, snapshot) {
-        var isSelected = snapshot.data!;
-
-        Widget text;
-
-        var label = tabToTextMapper(context, fediTabIndicatorItemBloc.item);
-
-        if (isSelected) {
-          return FediPrimaryFilledTextButtonWithBorder(
-            label,
-            onPressed: () {
-              onSelect(fediTabIndicatorItemBloc);
-            },
-            textStyle:
-                IFediUiTextTheme.of(context).mediumShortBoldWhite.copyWith(
-                      fontSize: fontSize,
-                      fontWeight: FontWeight.w500,
-                      height: lineHeight,
-                    ),
-            expanded: false,
-            enabledBackgroundColor:
-                // ignore: no-magic-number
-                IFediUiColorTheme.of(context).primary.withOpacity(0.8),
-          );
-        } else {
-          var fontWeight = FontWeight.normal;
-          if (isTransparent) {
-            text = FediBlurredTextButtonWithBorder(
-              label,
-              onPressed: () {
-                onSelect(fediTabIndicatorItemBloc);
-              },
-              textStyle:
-                  IFediUiTextTheme.of(context).mediumShortBoldWhite.copyWith(
-                        fontSize: fontSize,
-                        fontWeight: fontWeight,
-                        height: lineHeight,
-                      ),
-              expanded: false,
-            );
-          } else {
-            text = FediTransparentTextButtonWithBorder(
-              label,
-              onPressed: () {
-                onSelect(fediTabIndicatorItemBloc);
-              },
-              textStyle: IFediUiTextTheme.of(context)
-                  .mediumShortBoldMediumGrey
-                  .copyWith(
-                    fontSize: fontSize,
-                    fontWeight: fontWeight,
-                    height: lineHeight,
-                  ),
-              color: IFediUiColorTheme.of(context).mediumGrey,
-              expanded: false,
-            );
-          }
-        }
-
-        return text;
-      },
-    );
-  }
-
-  void onSelect(IFediTabIndicatorItemBloc fediTabIndicatorItemBloc) {
-    fediTabIndicatorItemBloc.select();
   }
 }

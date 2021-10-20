@@ -35,6 +35,7 @@ class PostMessageWidget extends StatelessWidget {
         children: <Widget>[
           const _PostMessageMediaAttachmentsWidget(),
           _PostMessageTextContentWidget(hintText: hintText),
+          // ignore: avoid-returning-widgets
           if (!showActionsOnlyWhenFocused) buildActionsAndSendRow(),
           if (showActionsOnlyWhenFocused)
             StreamBuilder<bool>(
@@ -44,6 +45,7 @@ class PostMessageWidget extends StatelessWidget {
                 var isInputFocused = snapshot.data!;
 
                 if (isInputFocused) {
+                  // ignore: avoid-returning-widgets
                   return buildActionsAndSendRow();
                 } else {
                   return const SizedBox.shrink();
@@ -55,6 +57,7 @@ class PostMessageWidget extends StatelessWidget {
     );
   }
 
+  // ignore: avoid-returning-widgets
   Widget buildActionsAndSendRow() => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -62,6 +65,7 @@ class PostMessageWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Row(
+                // ignore: avoid-returning-widgets
                 children: buildActions(),
               ),
               const PostMessagePostActionWidget(),

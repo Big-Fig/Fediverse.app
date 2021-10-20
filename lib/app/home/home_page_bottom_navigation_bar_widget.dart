@@ -24,6 +24,7 @@ import 'package:fedi/app/ui/icon/fedi_transparent_icon.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
 class HomePageBottomNavigationBarWidget extends StatelessWidget {
@@ -31,7 +32,7 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var homeBloc = IHomeBloc.of(context, listen: false);
+    var homeBloc = IHomeBloc.of(context);
     var tabs = homeBloc.tabs;
 
     // ignore: no-magic-number
@@ -47,15 +48,25 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: tabsWithPlusButton.map((tab) {
         if (tab != null) {
-          return buildTabNavBarItem(context, homeBloc, tab);
+          return Provider.value(
+            value: tab,
+            child: const _HomePageBottomNavigationBarIconItemWidget(),
+          );
         } else {
-          return buildNewMessageNavBarItem(context);
+          return const _HomePageBottomNavigationBarNewMessageItemWidget();
         }
       }).toList(),
     );
   }
+}
 
-  Widget buildNewMessageNavBarItem(BuildContext context) => InkWell(
+class _HomePageBottomNavigationBarNewMessageItemWidget extends StatelessWidget {
+  const _HomePageBottomNavigationBarNewMessageItemWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => InkWell(
         onTap: () {
           goToNewPostStatusPageWithInitial(context);
         },
@@ -64,149 +75,154 @@ class HomePageBottomNavigationBarWidget extends StatelessWidget {
           child: FediTransparentIcon(FediIcons.plus),
         ),
       );
+}
 
-  Widget buildTabNavBarItem(
-    BuildContext context,
-    IHomeBloc homeBloc,
-    HomeTab tab,
-  ) =>
-      StreamBuilder<HomeTab?>(
-        stream: homeBloc.selectedTabStream,
-        builder: (context, snapshot) {
-          var selectedTab = snapshot.data;
+class _HomePageBottomNavigationBarIconItemWidget extends StatelessWidget {
+  const _HomePageBottomNavigationBarIconItemWidget({
+    Key? key,
+  }) : super(key: key);
 
-          String keyStr;
+  @override
+  Widget build(BuildContext context) {
+    String keyStr;
+    var tab = Provider.of<HomeTab>(context);
 
-          switch (tab) {
-            case HomeTab.timelines:
-              keyStr = HomePageBottomNavigationBarWidgetKeys.timelinesTabButton;
-              break;
-            case HomeTab.notifications:
-              keyStr =
-                  HomePageBottomNavigationBarWidgetKeys.notificationsTabButton;
-              break;
-            case HomeTab.chat:
-              keyStr = HomePageBottomNavigationBarWidgetKeys.chatTabButton;
-              break;
-            case HomeTab.account:
-              keyStr = HomePageBottomNavigationBarWidgetKeys.accountTabButton;
-              break;
-          }
-
-          return InkWell(
-            onTap: () {
-              IHomeBloc.of(context, listen: false).selectTab(tab);
-            },
-            key: Key(keyStr),
-            child: mapTabToIcon(
-              context: context,
-              tab: tab,
-              isSelected: selectedTab == tab,
-            ),
-          );
-        },
-      );
-
-  // todo: refactor UI
-  // ignore: long-method
-  Widget mapTabToIcon({
-    required BuildContext context,
-    required HomeTab tab,
-    required bool isSelected,
-  }) {
-    var fediUiColorTheme = IFediUiColorTheme.of(context, listen: true);
-    var color =
-        isSelected ? fediUiColorTheme.primary : fediUiColorTheme.darkGrey;
-
-    const insets = FediPadding.allBigPadding;
-    // ignore: no-magic-number
-    var additionalOffset = 2.0;
-    var badgeOffset = additionalOffset + FediSizes.smallPadding;
     switch (tab) {
       case HomeTab.timelines:
-        return DisposableProxyProvider<IHomeBloc, IFediBoolBadgeBloc>(
-          update: (context, homeBloc, _) => HomeTimelinesUnreadBadgeBloc(
-            homeBloc: homeBloc,
-          ),
-          child: FediBoolBadgeWidget(
-            offset: badgeOffset,
-            child: Padding(
-              padding: insets,
-              child: FediTransparentIcon(
-                FediIcons.home,
-                color: color,
-              ),
-            ),
-          ),
-        );
+        keyStr = HomePageBottomNavigationBarWidgetKeys.timelinesTabButton;
+        break;
       case HomeTab.notifications:
-        return DisposableProvider<IFediBoolBadgeBloc>(
-          create: (context) => NotificationUnreadExcludeTypesBoolBadgeBloc(
-            filterRepository: IFilterRepository.of(
-              context,
-              listen: false,
-            ),
-            notificationRepository: INotificationRepository.of(
-              context,
-              listen: false,
-            ),
-            excludeTypes: <UnifediApiNotificationType>[
-              UnifediApiNotificationType.chatMentionValue,
-            ],
-          ),
-          child: FediBoolBadgeWidget(
-            offset: badgeOffset,
-            child: Padding(
-              padding: insets,
-              child: FediTransparentIcon(
-                FediIcons.notification,
-                color: color,
-              ),
-            ),
-          ),
-        );
+        keyStr = HomePageBottomNavigationBarWidgetKeys.notificationsTabButton;
+        break;
       case HomeTab.chat:
-        return DisposableProvider<IFediBoolBadgeBloc>(
-          create: (context) => ChatUnreadBadgeBloc(
-            conversationChatRepository: IConversationChatRepository.of(
-              context,
-              listen: false,
-            ),
-            pleromaChatRepository: IPleromaChatRepository.of(
-              context,
-              listen: false,
-            ),
-            chatSettingsBloc: IChatSettingsBloc.of(
-              context,
-              listen: false,
-            ),
-          ),
-          child: FediBoolBadgeWidget(
-            offset: badgeOffset,
-            child: Padding(
-              padding: insets,
-              child: FediTransparentIcon(FediIcons.chat, color: color),
-            ),
-          ),
-        );
+        keyStr = HomePageBottomNavigationBarWidgetKeys.chatTabButton;
+        break;
       case HomeTab.account:
-        return GestureDetector(
-          onLongPress: () {
-            showMyAccountActionListBottomSheetDialog(context);
-          },
-          child: AccountHomeTabIntBadgeBloc.provideToContext(
-            context,
-            child: FediIntBadgeBlocBoolAdapterProxyProvider(
+        keyStr = HomePageBottomNavigationBarWidgetKeys.accountTabButton;
+        break;
+    }
+
+    return InkWell(
+      onTap: () {
+        IHomeBloc.of(context, listen: false).selectTab(tab);
+      },
+      key: Key(keyStr),
+      child: const _HomePageBottomNavigationBarIconWidget(),
+    );
+  }
+}
+
+class _HomePageBottomNavigationBarIconWidget extends StatelessWidget {
+  const _HomePageBottomNavigationBarIconWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var tab = Provider.of<HomeTab>(context);
+    var homeBloc = IHomeBloc.of(context);
+
+    return StreamBuilder<HomeTab?>(
+      stream: homeBloc.selectedTabStream,
+      builder: (context, snapshot) {
+        var selectedTab = snapshot.data;
+        var isSelected = selectedTab == tab;
+
+        var fediUiColorTheme = IFediUiColorTheme.of(context, listen: true);
+        var color =
+            isSelected ? fediUiColorTheme.primary : fediUiColorTheme.darkGrey;
+
+        const insets = FediPadding.allBigPadding;
+        // ignore: no-magic-number
+        var additionalOffset = 2.0;
+        var badgeOffset = additionalOffset + FediSizes.smallPadding;
+        switch (tab) {
+          case HomeTab.timelines:
+            return DisposableProxyProvider<IHomeBloc, IFediBoolBadgeBloc>(
+              update: (context, homeBloc, _) => HomeTimelinesUnreadBadgeBloc(
+                homeBloc: homeBloc,
+              ),
               child: FediBoolBadgeWidget(
                 offset: badgeOffset,
-                child: const Padding(
+                child: Padding(
                   padding: insets,
-                  child: MyAccountAvatarWidget(),
+                  child: FediTransparentIcon(
+                    FediIcons.home,
+                    color: color,
+                  ),
                 ),
               ),
-            ),
-          ),
-        );
-    }
+            );
+          case HomeTab.notifications:
+            return DisposableProvider<IFediBoolBadgeBloc>(
+              create: (context) => NotificationUnreadExcludeTypesBoolBadgeBloc(
+                filterRepository: IFilterRepository.of(
+                  context,
+                  listen: false,
+                ),
+                notificationRepository: INotificationRepository.of(
+                  context,
+                  listen: false,
+                ),
+                excludeTypes: <UnifediApiNotificationType>[
+                  UnifediApiNotificationType.chatMentionValue,
+                ],
+              ),
+              child: FediBoolBadgeWidget(
+                offset: badgeOffset,
+                child: Padding(
+                  padding: insets,
+                  child: FediTransparentIcon(
+                    FediIcons.notification,
+                    color: color,
+                  ),
+                ),
+              ),
+            );
+          case HomeTab.chat:
+            return DisposableProvider<IFediBoolBadgeBloc>(
+              create: (context) => ChatUnreadBadgeBloc(
+                conversationChatRepository: IConversationChatRepository.of(
+                  context,
+                  listen: false,
+                ),
+                pleromaChatRepository: IPleromaChatRepository.of(
+                  context,
+                  listen: false,
+                ),
+                chatSettingsBloc: IChatSettingsBloc.of(
+                  context,
+                  listen: false,
+                ),
+              ),
+              child: FediBoolBadgeWidget(
+                offset: badgeOffset,
+                child: Padding(
+                  padding: insets,
+                  child: FediTransparentIcon(FediIcons.chat, color: color),
+                ),
+              ),
+            );
+          case HomeTab.account:
+            return GestureDetector(
+              onLongPress: () {
+                showMyAccountActionListBottomSheetDialog(context);
+              },
+              child: AccountHomeTabIntBadgeBloc.provideToContext(
+                context,
+                child: FediIntBadgeBlocBoolAdapterProxyProvider(
+                  child: FediBoolBadgeWidget(
+                    offset: badgeOffset,
+                    child: const Padding(
+                      padding: insets,
+                      child: MyAccountAvatarWidget(),
+                    ),
+                  ),
+                ),
+              ),
+            );
+        }
+      },
+    );
   }
 }

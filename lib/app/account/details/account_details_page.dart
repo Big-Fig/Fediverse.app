@@ -143,13 +143,14 @@ class _AccountDetailsPageAppBarOpenOnLocalInstanceAction
 }
 
 class _AccountDetailsPageBodyContent extends StatelessWidget {
-  const _AccountDetailsPageBodyContent();
+  const _AccountDetailsPageBodyContent({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var tabController = Provider.of<TabController>(context);
     var accountDetailsBloc = IAccountDetailsBloc.of(context);
-    var tabs = accountDetailsBloc.tabs;
 
     return DisposableProvider<
         IFediNestedScrollViewWithNestedScrollableTabsBloc>(
@@ -165,32 +166,18 @@ class _AccountDetailsPageBodyContent extends StatelessWidget {
             IScrollControllerBloc>(
           update: (context, value, previous) =>
               value.nestedScrollControllerBloc,
-          child: FediNestedScrollViewWithNestedScrollableTabsWidget(
+          child: const FediNestedScrollViewWithNestedScrollableTabsWidget(
             onLongScrollUpTopOverlayWidget: null,
             // todo: refactor
             // ignore: no-magic-number
             topSliverScrollOffsetToShowWhiteStatusBar: 100,
-            topSliverWidgets: const [
+            topSliverWidgets: [
               _AccountDetailsNestedScrollViewHeader(),
             ],
             tabKeyPrefix: 'AccountDetailsPage',
-            tabBodyProviderBuilder:
-                (BuildContext context, int index, Widget child) =>
-                    buildBodyProvider(
-              context: context,
-              tab: tabs[index],
-              child: child,
-            ),
-            tabBodyContentBuilder: (BuildContext context, int index) =>
-                buildTabBodyContent(
-              context,
-              tabs[index],
-            ),
-            tabBodyOverlayBuilder: (BuildContext context, int index) =>
-                buildTabBodyOverlay(
-              context: context,
-              tab: tabs[index],
-            ),
+            tabBodyProviderBuilder: _buildBodyProvider,
+            tabBodyContentBuilder: _buildTabBodyContent,
+            tabBodyOverlayBuilder: _buildTabBodyOverlay,
             tabBarViewContainerBuilder: null,
           ),
         ),
@@ -198,43 +185,48 @@ class _AccountDetailsPageBodyContent extends StatelessWidget {
     );
   }
 
-  Widget buildBodyProvider({
-    required BuildContext context,
-    required AccountStatusesTab tab,
-    required Widget child,
-  }) =>
-      Builder(
-        builder: (context) {
-          switch (tab) {
-            case AccountStatusesTab.favourites:
-              return _AccountDetailsPageBodyTabFavouritesProvider(
-                child: child,
-              );
-            case AccountStatusesTab.withReplies:
-              return _AccountDetailsPageBodyTabWithRepliesProvider(
-                child: child,
-              );
-
-            case AccountStatusesTab.withoutReplies:
-              return _AccountDetailsPageBodyTabWithoutRepliesProvider(
-                child: child,
-              );
-            case AccountStatusesTab.media:
-              return _AccountDetailsPageBodyTabMediaProvider(
-                child: child,
-              );
-            case AccountStatusesTab.pinned:
-              return _AccountDetailsPageBodyTabPinnedProvider(
-                child: child,
-              );
-          }
-        },
-      );
-
-  Widget buildTabBodyContent(
+  static Widget _buildBodyProvider(
     BuildContext context,
-    AccountStatusesTab tab,
+    int index,
+    Widget child,
   ) {
+    var accountDetailsBloc = IAccountDetailsBloc.of(context);
+    var tabs = accountDetailsBloc.tabs;
+    var tab = tabs[index];
+
+    switch (tab) {
+      case AccountStatusesTab.favourites:
+        return _AccountDetailsPageBodyTabFavouritesProvider(
+          child: child,
+        );
+      case AccountStatusesTab.withReplies:
+        return _AccountDetailsPageBodyTabWithRepliesProvider(
+          child: child,
+        );
+
+      case AccountStatusesTab.withoutReplies:
+        return _AccountDetailsPageBodyTabWithoutRepliesProvider(
+          child: child,
+        );
+      case AccountStatusesTab.media:
+        return _AccountDetailsPageBodyTabMediaProvider(
+          child: child,
+        );
+      case AccountStatusesTab.pinned:
+        return _AccountDetailsPageBodyTabPinnedProvider(
+          child: child,
+        );
+    }
+  }
+
+  static Widget _buildTabBodyContent(
+    BuildContext context,
+    int index,
+  ) {
+    var accountDetailsBloc = IAccountDetailsBloc.of(context);
+    var tabs = accountDetailsBloc.tabs;
+    var tab = tabs[index];
+
     var fediUiColorTheme = IFediUiColorTheme.of(context);
 
     switch (tab) {
@@ -256,11 +248,15 @@ class _AccountDetailsPageBodyContent extends StatelessWidget {
     }
   }
 
-  Widget buildTabBodyOverlay({
-    required BuildContext context,
-    required AccountStatusesTab tab,
-  }) {
-    var accountBloc = IAccountBloc.of(context, listen: false);
+  static Widget _buildTabBodyOverlay(
+    BuildContext context,
+    int index,
+  ) {
+    var accountDetailsBloc = IAccountDetailsBloc.of(context);
+    var tabs = accountDetailsBloc.tabs;
+    var tab = tabs[index];
+
+    var accountBloc = IAccountBloc.of(context);
 
     var isLocal = accountBloc.instanceLocation == InstanceLocation.local;
 
