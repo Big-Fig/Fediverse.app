@@ -89,9 +89,7 @@ class _FediInstanceImageBackgroundCachedNetworkImageWidget
           width: constraints.maxWidth,
           memCacheWidth: constraints.maxWidth.toInt(),
           errorWidget: (BuildContext context, String url, Object? error) =>
-              buildDefault(
-            context: context,
-          ),
+              const _FediInstanceImageBackgroundWidgetDefault(),
           placeholder: (_, __) =>
               const _FediInstanceImageBackgroundPlaceholderWidget(),
           imageBuilder: (BuildContext context, ImageProvider imageProvider) =>
@@ -102,20 +100,22 @@ class _FediInstanceImageBackgroundCachedNetworkImageWidget
         ),
       );
     } else {
-      return buildDefault(
-        context: context,
-      );
+      return const _FediInstanceImageBackgroundWidgetDefault();
     }
   }
 }
 
-Widget buildDefault({
-  required BuildContext context,
-}) =>
-    Provider<ImageProvider>.value(
-      value: defaultImage.image,
-      child: const _FediInstanceImageBackgroundImageProviderWidget(),
-    );
+class _FediInstanceImageBackgroundWidgetDefault extends StatelessWidget {
+  const _FediInstanceImageBackgroundWidgetDefault({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => Provider<ImageProvider>.value(
+        value: defaultImage.image,
+        child: const _FediInstanceImageBackgroundImageProviderWidget(),
+      );
+}
 
 class _FediInstanceImageBackgroundPlaceholderWidget extends StatelessWidget {
   const _FediInstanceImageBackgroundPlaceholderWidget({

@@ -13,6 +13,7 @@ class ListLoadingFooterWidget extends StatelessWidget {
       );
 }
 
+// ignore: avoid-returning-widgets
 Widget _builder(BuildContext context, LoadStatus? mode) {
   Widget? body;
 

@@ -94,6 +94,7 @@ class MediaAttachmentListItemWidget extends StatelessWidget {
   }
 }
 
+// ignore: avoid-returning-widgets
 Widget _carouselWidgetBuilder(BuildContext context, int index) {
   var mediaAttachmentListBloc = IMediaAttachmentListBloc.of(context);
   var mediaAttachments = mediaAttachmentListBloc.mediaAttachments;

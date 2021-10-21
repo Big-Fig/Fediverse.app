@@ -121,10 +121,26 @@ class _StatusListItemTimelineOriginalWidget extends StatelessWidget {
           child: Builder(
             builder: (context) {
               var statusBloc = IStatusBloc.of(context);
+              const child = _StatusListItemTimelineOriginalBodyWidget();
 
-              return buildDeletedStreamBuilderOverlay(
-                statusBloc: statusBloc,
-                child: const _StatusListItemTimelineOriginalBodyWidget(),
+              return StreamBuilder<bool?>(
+                stream: statusBloc.deletedStream.distinct(),
+                builder: (context, snapshot) {
+                  var deleted = snapshot.data ?? false;
+
+                  if (deleted) {
+                    return Stack(
+                      children: const [
+                        child,
+                        Positioned.fill(
+                          child: StatusDeletedOverlayWidget(),
+                        ),
+                      ],
+                    );
+                  } else {
+                    return child;
+                  }
+                },
               );
             },
           ),
@@ -132,30 +148,6 @@ class _StatusListItemTimelineOriginalWidget extends StatelessWidget {
       ),
     );
   }
-
-  Widget buildDeletedStreamBuilderOverlay({
-    required Widget child,
-    required IStatusBloc statusBloc,
-  }) =>
-      StreamBuilder<bool?>(
-        stream: statusBloc.deletedStream.distinct(),
-        builder: (context, snapshot) {
-          var deleted = snapshot.data ?? false;
-
-          if (deleted) {
-            return Stack(
-              children: [
-                child,
-                const Positioned.fill(
-                  child: StatusDeletedOverlayWidget(),
-                ),
-              ],
-            );
-          } else {
-            return child;
-          }
-        },
-      );
 }
 
 class _StatusListItemTimelineOriginalBodyInnerBodyWidget

@@ -21,7 +21,7 @@ class StatusAccountWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var statusBloc = IStatusBloc.of(context, listen: true);
+    var statusBloc = IStatusBloc.of(context);
 
     return StreamBuilder<IAccount>(
       stream: statusBloc.reblogOrOriginalAccountStream,
@@ -29,83 +29,83 @@ class StatusAccountWidget extends StatelessWidget {
       builder: (context, snapshot) {
         var reblogOrOriginalAccount = snapshot.data!;
 
-        return buildBody(
-          context: context,
-          reblogOrOriginalAccount: reblogOrOriginalAccount,
-          statusBloc: statusBloc,
+        return Provider.value(
+          value: reblogOrOriginalAccount,
+          child: const _StatusAccountWidgetBody(),
         );
       },
     );
   }
+}
 
-  Widget buildBody({
-    required BuildContext context,
-    required IAccount reblogOrOriginalAccount,
-    required IStatusBloc statusBloc,
-  }) {
+class _StatusAccountWidgetBody extends StatelessWidget {
+  const _StatusAccountWidgetBody({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var reblogOrOriginalAccount = Provider.of<IAccount>(context);
+
+    var statusBloc = IStatusBloc.of(context);
     var isLocal = statusBloc.instanceLocation == InstanceLocation.local;
 
-    return Provider<IAccount>.value(
-      value: reblogOrOriginalAccount,
-      child: DisposableProxyProvider<IAccount, IAccountBloc>(
-        update: (context, account, oldValue) {
-          var isNeedWatchLocalRepositoryForUpdates = false;
-          var isNeedRefreshFromNetworkOnInit = false;
-          var isNeedWatchWebSocketsEvents = false;
-          var isNeedPreFetchRelationship = false;
+    return DisposableProxyProvider<IAccount, IAccountBloc>(
+      update: (context, account, oldValue) {
+        var isNeedWatchLocalRepositoryForUpdates = false;
+        var isNeedRefreshFromNetworkOnInit = false;
+        var isNeedWatchWebSocketsEvents = false;
+        var isNeedPreFetchRelationship = false;
 
+        if (isLocal) {
+          return LocalAccountBloc.createFromContext(
+            context,
+            account: account,
+            isNeedWatchLocalRepositoryForUpdates:
+                isNeedWatchLocalRepositoryForUpdates,
+            isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
+            isNeedWatchWebSocketsEvents: isNeedWatchWebSocketsEvents,
+            isNeedPreFetchRelationship: isNeedPreFetchRelationship,
+          );
+        } else {
+          return RemoteAccountBloc.createFromContext(
+            context,
+            account: account,
+            isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
+          );
+        }
+      },
+      child: GestureDetector(
+        onTap: () {
           if (isLocal) {
-            return LocalAccountBloc.createFromContext(
+            goToLocalAccountDetailsPage(
               context,
-              account: account,
-              isNeedWatchLocalRepositoryForUpdates:
-                  isNeedWatchLocalRepositoryForUpdates,
-              isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
-              isNeedWatchWebSocketsEvents: isNeedWatchWebSocketsEvents,
-              isNeedPreFetchRelationship: isNeedPreFetchRelationship,
+              account: reblogOrOriginalAccount,
             );
           } else {
-            return RemoteAccountBloc.createFromContext(
+            goToRemoteAccountDetailsPageBasedOnRemoteInstanceAccount(
               context,
-              account: account,
-              isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
+              remoteInstanceAccount: reblogOrOriginalAccount,
             );
           }
         },
-        child: GestureDetector(
-          onTap: () {
-            if (isLocal) {
-              goToLocalAccountDetailsPage(
-                context,
-                account: reblogOrOriginalAccount,
-              );
-            } else {
-              goToRemoteAccountDetailsPageBasedOnRemoteInstanceAccount(
-                context,
-                remoteInstanceAccount: reblogOrOriginalAccount,
-              );
-            }
-          },
-          behavior: HitTestBehavior.translucent,
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
-              const AccountAvatarWidget(
-                imageSize: FediSizes.accountAvatarBigSize,
-                progressSize: FediSizes.accountAvatarProgressBigSize,
+        behavior: HitTestBehavior.translucent,
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            const AccountAvatarWidget(
+              imageSize: FediSizes.accountAvatarBigSize,
+              progressSize: FediSizes.accountAvatarProgressBigSize,
+            ),
+            const FediSmallHorizontalSpacer(),
+            Flexible(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const <Widget>[
+                  AccountDisplayNameWidget(),
+                  AccountAcctWidget(),
+                ],
               ),
-              const FediSmallHorizontalSpacer(),
-              Flexible(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const <Widget>[
-                    AccountDisplayNameWidget(),
-                    AccountAcctWidget(),
-                  ],
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

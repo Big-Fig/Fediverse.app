@@ -37,14 +37,13 @@ class ConversationChatStatusListItemWidget extends StatelessWidget {
     var statusBloc = IStatusBloc.of(context, listen: false);
 
     var myAccountBloc = IMyAccountBloc.of(context, listen: false);
-
-    var deviceWidth = MediaQuery.of(context).size.width;
-
     var isStatusFromMe = myAccountBloc.checkIsStatusFromMe(statusBloc.status);
 
     var alignment =
         isStatusFromMe ? Alignment.centerRight : Alignment.centerLeft;
     var isHaveTextContent = statusBloc.isHaveTextContent;
+
+    var deviceWidth = MediaQuery.of(context).size.width;
 
     return Align(
       alignment: alignment,
@@ -97,11 +96,7 @@ class ConversationChatStatusListItemWidget extends StatelessWidget {
                       )
                     : EdgeInsets.zero,
                 child: isHaveTextContent
-                    ? buildContent(
-                        context: context,
-                        statusBloc: statusBloc,
-                        isStatusFromMe: isStatusFromMe,
-                      )
+                    ? const _ConversationChatStatusListItemBodyWidget()
                     : ClipRRect(
                         borderRadius: isStatusFromMe
                             ? BorderRadius.only(
@@ -120,11 +115,8 @@ class ConversationChatStatusListItemWidget extends StatelessWidget {
                                 // ignore: no-equal-arguments
                                 bottomRight: _borderRadius,
                               ),
-                        child: buildContent(
-                          context: context,
-                          statusBloc: statusBloc,
-                          isStatusFromMe: isStatusFromMe,
-                        ),
+                        child:
+                            const _ConversationChatStatusListItemBodyWidget(),
                       ),
               ),
             ),
@@ -144,111 +136,131 @@ class ConversationChatStatusListItemWidget extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget buildContent({
-    required BuildContext context,
-    required IStatusBloc statusBloc,
-    required bool isStatusFromMe,
-  }) =>
-      Column(
-        children: <Widget>[
-          buildTextContent(
-            statusBloc: statusBloc,
-            isStatusFromMe: isStatusFromMe,
-          ),
-          buildMediaContent(statusBloc),
+class _ConversationChatStatusListItemBodyWidget extends StatelessWidget {
+  const _ConversationChatStatusListItemBodyWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => Column(
+        children: const <Widget>[
+          _ConversationChatStatusListItemTextContentWidget(),
+          _ConversationChatStatusListItemMediaContentWidget(),
         ],
       );
+}
 
-  Widget buildMediaContent(IStatusBloc statusBloc) =>
-      StreamBuilder<List<IUnifediApiMediaAttachment>?>(
-        stream: statusBloc.mediaAttachmentsStream,
-        builder: (context, snapshot) {
-          var mediaAttachments = snapshot.data;
+class _ConversationChatStatusListItemMediaContentWidget
+    extends StatelessWidget {
+  const _ConversationChatStatusListItemMediaContentWidget({
+    Key? key,
+  }) : super(key: key);
 
-          if (mediaAttachments == null) {
-            return const SizedBox.shrink();
-          }
+  @override
+  Widget build(BuildContext context) {
+    var statusBloc = IStatusBloc.of(context);
 
-          return DisposableProvider<IMediaAttachmentListBloc>(
-            create: (context) => MediaAttachmentListBloc(
-              mediaAttachments: mediaAttachments,
-              initialMediaAttachment: null,
-              instanceLocation: InstanceLocation.local,
-              remoteInstanceUriOrNull: null,
+    return StreamBuilder<List<IUnifediApiMediaAttachment>?>(
+      stream: statusBloc.mediaAttachmentsStream,
+      builder: (context, snapshot) {
+        var mediaAttachments = snapshot.data;
+
+        if (mediaAttachments == null) {
+          return const SizedBox.shrink();
+        }
+
+        return DisposableProvider<IMediaAttachmentListBloc>(
+          create: (context) => MediaAttachmentListBloc(
+            mediaAttachments: mediaAttachments,
+            initialMediaAttachment: null,
+            instanceLocation: InstanceLocation.local,
+            remoteInstanceUriOrNull: null,
+          ),
+          child: const MediaAttachmentListCarouselWidget(),
+        );
+      },
+    );
+  }
+}
+
+class _ConversationChatStatusListItemTextContentWidget extends StatelessWidget {
+  const _ConversationChatStatusListItemTextContentWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var statusBloc = IStatusBloc.of(context, listen: false);
+
+    var myAccountBloc = IMyAccountBloc.of(context, listen: false);
+    var isStatusFromMe = myAccountBloc.checkIsStatusFromMe(statusBloc.status);
+
+    return StreamBuilder<EmojiText?>(
+      stream: statusBloc.contentWithEmojisStream,
+      initialData: statusBloc.contentWithEmojis,
+      builder: (context, snapshot) {
+        var contentWithEmojis = snapshot.data;
+
+        if (contentWithEmojis?.text.isNotEmpty == true) {
+          var fediUiColorTheme = IFediUiColorTheme.of(context);
+          var textScaleFactor = MediaQuery.of(context).textScaleFactor;
+
+          return Provider<EmojiText?>.value(
+            value: contentWithEmojis,
+            child: DisposableProxyProvider<EmojiText?, IHtmlTextBloc>(
+              update: (context, emojiText, previous) {
+                var htmlTextInputData = HtmlTextInputData(
+                  input: emojiText?.text ?? '',
+                  emojis: emojiText?.emojis,
+                );
+                if (previous?.inputData == htmlTextInputData) {
+                  return previous!;
+                }
+
+                var htmlTextBloc = HtmlTextBloc(
+                  inputData: htmlTextInputData,
+                  settings: HtmlTextSettings(
+                    shrinkWrap: true,
+                    color: isStatusFromMe
+                        ? fediUiColorTheme.white
+                        : fediUiColorTheme.darkGrey,
+                    linkColor: isStatusFromMe
+                        ? fediUiColorTheme.white
+                        : fediUiColorTheme.primary,
+                    // todo: refactor
+                    // ignore: no-magic-number
+                    fontSize: 16.0,
+                    // todo: refactor
+                    // ignore: no-magic-number
+                    lineHeight: 1.5,
+                    drawNewLines: false,
+                    textMaxLines: 1,
+                    textOverflow: TextOverflow.ellipsis,
+                    fontWeight: FontWeight.w300,
+                    textScaleFactor: textScaleFactor,
+                  ),
+                );
+                htmlTextBloc.linkClickedStream.listen(
+                  (url) {
+                    UrlHelper.handleUrlClickWithInstanceLocation(
+                      context: context,
+                      url: url,
+                      instanceLocationBloc: statusBloc,
+                    );
+                  },
+                ).disposeWith(htmlTextBloc);
+
+                return htmlTextBloc;
+              },
+              child: const HtmlTextWidget(),
             ),
-            child: const MediaAttachmentListCarouselWidget(),
           );
-        },
-      );
-
-  Widget buildTextContent({
-    required IStatusBloc statusBloc,
-    required bool isStatusFromMe,
-  }) =>
-      StreamBuilder<EmojiText?>(
-        stream: statusBloc.contentWithEmojisStream,
-        initialData: statusBloc.contentWithEmojis,
-        builder: (context, snapshot) {
-          var contentWithEmojis = snapshot.data;
-
-          if (contentWithEmojis?.text.isNotEmpty == true) {
-            var fediUiColorTheme = IFediUiColorTheme.of(context);
-            var textScaleFactor = MediaQuery.of(context).textScaleFactor;
-
-            return Provider<EmojiText?>.value(
-              value: contentWithEmojis,
-              child: DisposableProxyProvider<EmojiText?, IHtmlTextBloc>(
-                update: (context, emojiText, previous) {
-                  var htmlTextInputData = HtmlTextInputData(
-                    input: emojiText?.text ?? '',
-                    emojis: emojiText?.emojis,
-                  );
-                  if (previous?.inputData == htmlTextInputData) {
-                    return previous!;
-                  }
-
-                  var htmlTextBloc = HtmlTextBloc(
-                    inputData: htmlTextInputData,
-                    settings: HtmlTextSettings(
-                      shrinkWrap: true,
-                      color: isStatusFromMe
-                          ? fediUiColorTheme.white
-                          : fediUiColorTheme.darkGrey,
-                      linkColor: isStatusFromMe
-                          ? fediUiColorTheme.white
-                          : fediUiColorTheme.primary,
-                      // todo: refactor
-                      // ignore: no-magic-number
-                      fontSize: 16.0,
-                      // todo: refactor
-                      // ignore: no-magic-number
-                      lineHeight: 1.5,
-                      drawNewLines: false,
-                      textMaxLines: 1,
-                      textOverflow: TextOverflow.ellipsis,
-                      fontWeight: FontWeight.w300,
-                      textScaleFactor: textScaleFactor,
-                    ),
-                  );
-                  htmlTextBloc.linkClickedStream.listen(
-                    (url) {
-                      UrlHelper.handleUrlClickWithInstanceLocation(
-                        context: context,
-                        url: url,
-                        instanceLocationBloc: statusBloc,
-                      );
-                    },
-                  ).disposeWith(htmlTextBloc);
-
-                  return htmlTextBloc;
-                },
-                child: const HtmlTextWidget(),
-              ),
-            );
-          } else {
-            return const SizedBox.shrink();
-          }
-        },
-      );
+        } else {
+          return const SizedBox.shrink();
+        }
+      },
+    );
+  }
 }

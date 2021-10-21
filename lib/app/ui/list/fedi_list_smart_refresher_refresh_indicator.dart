@@ -108,9 +108,7 @@ class _FediListSmartRefresherRefreshIndicatorState
 
   @override
   Widget buildContent(BuildContext context, RefreshStatus? mode) =>
-      _buildIndicator(widget.backgroundColor ?? Colors.white);
-
-  Widget _buildIndicator(Color outerColor) => SlideTransition(
+      SlideTransition(
         position: _positionFactor!,
         child: ScaleTransition(
           scale: _scaleFactor,

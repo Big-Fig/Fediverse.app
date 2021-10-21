@@ -113,6 +113,7 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
           child:
               const FediPaginationListLoadingErrorNotificationOverlayBuilderWidget(),
         ),
+        // ignore: avoid-returning-widgets
         buildPaginationListBody(
           paginationListBloc,
         ),
@@ -126,6 +127,7 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
       AsyncInitLoadingWidget(
         asyncInitLoadingBloc: paginationListBloc,
         loadingFinishedBuilder: (BuildContext context) =>
+            // ignore: avoid-returning-widgets
             buildPaginationInitializedBody(context, paginationListBloc),
       );
 
@@ -143,6 +145,7 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
                 '${items?.length}',
           );
 
+          // ignore: avoid-returning-widgets
           return buildSmartRefresher(
             paginationListBloc,
             context,

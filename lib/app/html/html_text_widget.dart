@@ -27,39 +27,19 @@ class HtmlTextWidget extends StatelessWidget {
 
     // TODO: add linkify support
     if (htmlData.isActuallyHaveHtmlInData) {
-      return buildHtmlWidget(htmlTextBloc);
+      return const HtmlTextHtmlBodyWidget();
     } else {
-      return buildTextWidget(htmlTextBloc);
+      return const HtmlTextTextBodyWidget();
     }
   }
+}
 
-  Widget buildTextWidget(IHtmlTextBloc htmlTextBloc) {
-    var htmlData = htmlTextBloc.htmlData;
-    var settings = htmlTextBloc.settings;
-    var alignment = mapToAligment(settings);
-    var text = Text(
-      htmlData.text!,
-      style: TextStyle(
-        color: settings.color,
-        fontSize: settings.fontSize,
-        fontWeight: settings.fontWeight,
-        height: settings.lineHeight,
-      ),
-      textAlign: settings.textAlign,
-      overflow: settings.textOverflow,
-      maxLines: settings.textMaxLines,
-    );
-    if (settings.shrinkWrap) {
-      return text;
-    } else {
-      return Align(
-        alignment: alignment,
-        child: text,
-      );
-    }
-  }
+class HtmlTextHtmlBodyWidget extends StatelessWidget {
+  const HtmlTextHtmlBodyWidget({Key? key}) : super(key: key);
 
-  Widget buildHtmlWidget(IHtmlTextBloc htmlTextBloc) {
+  @override
+  Widget build(BuildContext context) {
+    var htmlTextBloc = IHtmlTextBloc.of(context);
     var htmlData = htmlTextBloc.htmlData;
 
     return Html(
@@ -93,30 +73,62 @@ class HtmlTextWidget extends StatelessWidget {
       },
     );
   }
+}
 
-  Alignment mapToAligment(HtmlTextSettings settings) {
-    var alignment = Alignment.centerLeft;
-    switch (settings.textAlign) {
-      case TextAlign.left:
-        alignment = Alignment.centerLeft;
-        break;
-      case TextAlign.right:
-        alignment = Alignment.centerRight;
-        break;
-      case TextAlign.center:
-        alignment = Alignment.center;
-        break;
-      case TextAlign.justify:
-        alignment = Alignment.center;
-        break;
-      case TextAlign.start:
-        alignment = Alignment.centerLeft;
-        break;
-      case TextAlign.end:
-        alignment = Alignment.centerRight;
-        break;
+class HtmlTextTextBodyWidget extends StatelessWidget {
+  const HtmlTextTextBodyWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var htmlTextBloc = IHtmlTextBloc.of(context);
+    var htmlData = htmlTextBloc.htmlData;
+    var settings = htmlTextBloc.settings;
+    var alignment = _mapToAlignment(settings);
+    var text = Text(
+      htmlData.text!,
+      style: TextStyle(
+        color: settings.color,
+        fontSize: settings.fontSize,
+        fontWeight: settings.fontWeight,
+        height: settings.lineHeight,
+      ),
+      textAlign: settings.textAlign,
+      overflow: settings.textOverflow,
+      maxLines: settings.textMaxLines,
+    );
+    if (settings.shrinkWrap) {
+      return text;
+    } else {
+      return Align(
+        alignment: alignment,
+        child: text,
+      );
     }
-
-    return alignment;
   }
+}
+
+Alignment _mapToAlignment(HtmlTextSettings settings) {
+  var alignment = Alignment.centerLeft;
+  switch (settings.textAlign) {
+    case TextAlign.left:
+      alignment = Alignment.centerLeft;
+      break;
+    case TextAlign.right:
+      alignment = Alignment.centerRight;
+      break;
+    case TextAlign.center:
+      alignment = Alignment.center;
+      break;
+    case TextAlign.justify:
+      alignment = Alignment.center;
+      break;
+    case TextAlign.start:
+      alignment = Alignment.centerLeft;
+      break;
+    case TextAlign.end:
+      alignment = Alignment.centerRight;
+      break;
+  }
+
+  return alignment;
 }

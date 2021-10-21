@@ -60,6 +60,7 @@ class PleromaChatHomeTabPage extends StatelessWidget {
         topSliverWidgets: const [
           _ChatMessagesHomeTabPageHeaderWidget(),
         ],
+        // ignore: avoid-returning-widgets
         providerBuilder: (context, child) => provideContentContext(child),
         contentBuilder: (context) =>
             const _ChatMessagesHomeTabPageContentWidget(),
@@ -145,42 +146,53 @@ class _ChatMessagesHomeTabPageContentWidget extends StatelessWidget {
         borderRadius: FediBorderRadius.topOnlyBigBorderRadius,
         child: Container(
           color: fediUiColorTheme.white,
-          child: buildBody(
-            context: context,
-            isPleromaInstance: isPleromaInstance,
-            isSupportChats: isSupportChats,
-          ),
+          child: isPleromaInstance
+              ? isSupportChats
+                  ? const PleromaChatHomeTabPagePleromaBody()
+                  : const PleromaChatHomeTabPagePleromaNotSupportedBody()
+              : const _PleromaChatHomeTabPageMastodonBody(),
         ),
       ),
     );
   }
+}
 
-  Widget buildBody({
-    required BuildContext context,
-    required bool isPleromaInstance,
-    required bool isSupportChats,
-  }) =>
-      isPleromaInstance
-          ? isSupportChats
-              ? buildPleromaBody()
-              : buildPleromaNotSupportedBody(context)
-          : buildMastodonBody(context);
+class PleromaChatHomeTabPagePleromaNotSupportedBody extends StatelessWidget {
+  const PleromaChatHomeTabPagePleromaNotSupportedBody({
+    Key? key,
+  }) : super(key: key);
 
-  Widget buildPleromaBody() => const PleromaChatWithLastMessageListWidget(
+  @override
+  Widget build(BuildContext context) => Center(
+        child: FediEmptyWidget(
+          title: S.of(context).app_home_tab_chat_pleroma_notSupported_pleroma,
+        ),
+      );
+}
+
+class PleromaChatHomeTabPagePleromaBody extends StatelessWidget {
+  const PleromaChatHomeTabPagePleromaBody({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) =>
+      const PleromaChatWithLastMessageListWidget(
         key: Key(
           PleromaChatHomeTabPageKeys.pleromaChatWithLastMessageListWidget,
         ),
       );
+}
 
-  Widget buildMastodonBody(BuildContext context) => Center(
+class _PleromaChatHomeTabPageMastodonBody extends StatelessWidget {
+  const _PleromaChatHomeTabPageMastodonBody({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => Center(
         child: FediEmptyWidget(
           title: S.of(context).app_home_tab_chat_pleroma_notSupported_mastodon,
-        ),
-      );
-
-  Widget buildPleromaNotSupportedBody(BuildContext context) => Center(
-        child: FediEmptyWidget(
-          title: S.of(context).app_home_tab_chat_pleroma_notSupported_pleroma,
         ),
       );
 }

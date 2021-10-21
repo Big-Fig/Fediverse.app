@@ -18,6 +18,7 @@ class StatusVisibilityTitleWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  // ignore: avoid-returning-widgets
   Widget build(BuildContext context) => buildVisibilityTitle(
         context: context,
         visibility: visibility,

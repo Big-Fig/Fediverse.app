@@ -154,6 +154,7 @@ class _NestedBodyWidgetState extends State<_NestedBodyWidget>
             context,
             widget.onLongScrollUpTopOverlayWidget,
           ),
+        // ignore: avoid-returning-widgets
         _buildTabBarView(context),
       ],
     );
@@ -163,7 +164,6 @@ class _NestedBodyWidgetState extends State<_NestedBodyWidget>
     var fediNestedScrollViewWithNestedScrollableTabsBloc =
         IFediNestedScrollViewWithNestedScrollableTabsBloc.of(
       context,
-      listen: false,
     );
 
     var tabController =

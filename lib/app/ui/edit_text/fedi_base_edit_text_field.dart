@@ -65,8 +65,10 @@ class FediBaseEditTextField extends StatelessWidget {
         maxLines == 1 ? textInputAction : TextInputAction.newline;
     Widget child;
     if (highlightMentions) {
+      // ignore: avoid-returning-widgets
       child = buildExtendedTextField(context, actualTextInputAction);
     } else {
+      // ignore: avoid-returning-widgets
       child = buildTextField(actualTextInputAction, context);
     }
 

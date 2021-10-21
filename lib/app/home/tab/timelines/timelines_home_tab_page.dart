@@ -192,7 +192,9 @@ class _TimelinesHomeTabPageBodyState extends State<_TimelinesHomeTabPageBody>
               tabKeyPrefix: 'TimelineTab',
               tabBodyProviderBuilder: _provideTabBodyContext,
               tabBodyContentBuilder: (BuildContext context, int index) =>
-                  buildTabBodyContent(),
+                  const FediDarkStatusBarStyleArea(
+                child: TimelineWidget(),
+              ),
               tabBodyOverlayBuilder: (BuildContext context, int index) =>
                   const StatusListTapToLoadOverlayWidget(),
               tabBarViewContainerBuilder: null,
@@ -202,10 +204,6 @@ class _TimelinesHomeTabPageBodyState extends State<_TimelinesHomeTabPageBody>
       ),
     );
   }
-
-  Widget buildTabBodyContent() => const FediDarkStatusBarStyleArea(
-        child: TimelineWidget(),
-      );
 
   Widget _provideTabBodyContext(
     BuildContext context,

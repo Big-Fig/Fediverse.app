@@ -329,6 +329,7 @@ Future handleLaunchPushLoaderNotification(
   );
 }
 
+// ignore: avoid-returning-widgets
 Widget buildUnifediApiAccessContextInitWidget({
   required INotificationPushLoaderBloc? pushLoaderBloc,
 }) =>
@@ -498,6 +499,7 @@ class FediApp extends StatelessWidget {
             );
           }
 
+          // ignore: avoid-returning-widgets
           return provideCurrentTheme(
             currentTheme: actualTheme,
             child: StreamBuilder<LocalizationLocale?>(
