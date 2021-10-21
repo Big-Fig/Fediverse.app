@@ -23,7 +23,7 @@ jobs:
 
       # Checkout code and get packages.
       - name: Checkout repository
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
       - name: Readm FVM config
       - uses: kuhnroyal/flutter-fvm-config-action@v1

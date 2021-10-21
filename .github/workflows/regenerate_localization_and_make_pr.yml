@@ -16,7 +16,7 @@ jobs:
       # Checkout code and get packages.
       # Checkout code and get packages.
       - name: Checkout repository
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
         with:
           ref: develop
 
