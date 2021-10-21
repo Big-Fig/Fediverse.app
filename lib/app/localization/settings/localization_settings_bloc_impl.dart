@@ -31,14 +31,15 @@ class LocalizationSettingsBloc extends DisposableOwner
       );
 
   @override
-  Future changeLocalizationLocale(LocalizationLocale? value) => updateSettings(
+  Future<void> changeLocalizationLocale(LocalizationLocale? value) =>
+      updateSettings(
         LocalizationSettings(localizationLocale: value),
         // copyWith dont set null values
         // settingsData.copyWith(localizationLocale: value),
       );
 
   @override
-  Future updateSettings(LocalizationSettings newSettings) async {
+  Future<void> updateSettings(LocalizationSettings newSettings) async {
     await localizationSettingsLocalPreferencesBloc.setValue(
       newSettings,
     );

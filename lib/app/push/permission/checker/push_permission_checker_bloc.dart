@@ -13,5 +13,5 @@ abstract class IPushPermissionCheckerBloc extends IDisposable {
 
   Future<bool> checkAndSubscribe();
 
-  Future onCheckDismissed();
+  Future<void> onCheckDismissed();
 }

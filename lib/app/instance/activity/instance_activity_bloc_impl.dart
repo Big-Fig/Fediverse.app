@@ -55,5 +55,5 @@ abstract class InstanceActivityBloc extends AsyncInitLoadingBloc
       activitySubject.stream;
 
   @override
-  Future internalAsyncInit() => refresh();
+  Future<void> internalAsyncInit() => refresh();
 }

@@ -47,7 +47,7 @@ class EditWebSocketsSettingsBloc
       );
 
   @override
-  Future fillSettingsToFormFields(WebSocketsSettings settings) async {
+  Future<void> fillSettingsToFormFields(WebSocketsSettings settings) async {
     typeFieldBloc.changeCurrentValue(
       settings.type,
     );

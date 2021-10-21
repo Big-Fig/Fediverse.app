@@ -2,7 +2,7 @@ import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/async/loading/async_loading_service.dart';
 import 'package:rxdart/rxdart.dart';
 
-typedef LoadingFunction = Future Function();
+typedef LoadingFunction = Future<void> Function();
 
 abstract class AsyncLoadingService extends DisposableOwner
     implements IAsyncLoadingService {
@@ -20,7 +20,7 @@ abstract class AsyncLoadingService extends DisposableOwner
     _isLoadingSubject.disposeWith(this);
   }
 
-  Future performLoading(LoadingFunction loadingFunction) async {
+  Future<void> performLoading(LoadingFunction loadingFunction) async {
     if (!_isLoadingSubject.isClosed) {
       _isLoadingSubject.add(true);
     }

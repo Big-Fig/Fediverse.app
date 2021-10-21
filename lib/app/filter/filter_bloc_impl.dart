@@ -85,7 +85,7 @@ class FilterBloc extends DisposableOwner implements IFilterBloc {
     }
   }
 
-  Future refreshFromNetwork() async {
+  Future<void> refreshFromNetwork() async {
     var remoteFilter =
         await unifediApiFilterService.getFilter(filterId: remoteId);
 
@@ -95,7 +95,7 @@ class FilterBloc extends DisposableOwner implements IFilterBloc {
     );
   }
 
-  Future _updateByRemoteFilter(
+  Future<void> _updateByRemoteFilter(
     IUnifediApiFilter remoteFilter, {
     required Batch? batchTransaction,
   }) =>
@@ -106,7 +106,7 @@ class FilterBloc extends DisposableOwner implements IFilterBloc {
       );
 
   @override
-  Future dispose() {
+  Future<void> dispose() {
     _logger.finest(() => 'dispose');
 
     return super.dispose();

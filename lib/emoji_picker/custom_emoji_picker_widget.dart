@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fedi/async/loading/init/async_init_loading_widget.dart';
 import 'package:fedi/emoji_picker/category/code/custom_emoji_picker_code_category_bloc_impl.dart';
 import 'package:fedi/emoji_picker/category/code/custom_emoji_picker_code_category_model.dart';
@@ -16,7 +18,9 @@ import 'package:provider/provider.dart';
 
 final _logger = Logger('custom_emoji_picker_widget.dart');
 
-typedef EmojiSelectedCallback = Function(CustomEmojiPickerItem item);
+typedef EmojiSelectedCallback = FutureOr<void> Function(
+  CustomEmojiPickerItem item,
+);
 typedef EmptyCategoryBuilder = Widget? Function(
   BuildContext context,
   ICustomEmojiPickerCategoryBloc categoryBloc,

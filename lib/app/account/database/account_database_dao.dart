@@ -63,30 +63,29 @@ class AccountDao extends PopulatedAppRemoteDatabaseDao<
     chatAccountsAlias = alias(db.dbChatAccounts, _chatAccountsAliasId);
   }
 
-  SimpleSelectStatement<$DbAccountsTable, DbAccount> orderBy(
+  void orderBy(
     SimpleSelectStatement<$DbAccountsTable, DbAccount> query,
     List<AccountRepositoryOrderingTermData> orderTerms,
   ) =>
-      query
-        ..orderBy(
-          orderTerms
-              .map(
-                (orderTerm) => ($DbAccountsTable item) {
-                  GeneratedColumn<String?> expression;
-                  switch (orderTerm.orderType) {
-                    case AccountOrderType.remoteId:
-                      expression = item.remoteId;
-                      break;
-                  }
+      query.orderBy(
+        orderTerms
+            .map(
+              (orderTerm) => ($DbAccountsTable item) {
+                GeneratedColumn<String?> expression;
+                switch (orderTerm.orderType) {
+                  case AccountOrderType.remoteId:
+                    expression = item.remoteId;
+                    break;
+                }
 
-                  return OrderingTerm(
-                    expression: expression,
-                    mode: orderTerm.orderingMode,
-                  );
-                },
-              )
-              .toList(),
-        );
+                return OrderingTerm(
+                  expression: expression,
+                  mode: orderTerm.orderingMode,
+                );
+              },
+            )
+            .toList(),
+      );
 
   List<Join> populateAccountJoin({
     required bool includeAccountFollowings,
@@ -156,11 +155,11 @@ class AccountDao extends PopulatedAppRemoteDatabaseDao<
     return allJoins;
   }
 
-  SimpleSelectStatement<$DbAccountsTable, DbAccount> addSearchWhere(
+  void addSearchWhere(
     SimpleSelectStatement<$DbAccountsTable, DbAccount> query,
     String? searchQuery,
   ) =>
-      query..where((account) => account.acct.like('%$searchQuery%'));
+      query.where((account) => account.acct.like('%$searchQuery%'));
 
   JoinedSelectStatement addConversationWhere(
     JoinedSelectStatement query,

@@ -24,7 +24,7 @@ abstract class AppRemoteDatabaseDao<
         updateKind: UpdateKind.delete,
       );
 
-  Future deleteByRemoteIdBatch(
+  Future<void> deleteByRemoteIdBatch(
     RemoteId remoteId, {
     required Batch? batchTransaction,
   }) async {
@@ -34,7 +34,8 @@ abstract class AppRemoteDatabaseDao<
         (tbl) => createFindByRemoteIdWhereExpression(remoteId),
       );
     } else {
-      return deleteByRemoteId(remoteId);
+      // ignore: avoid-ignoring-return-values
+      await deleteByRemoteId(remoteId);
     }
   }
 
@@ -66,6 +67,7 @@ abstract class AppRemoteDatabaseDao<
         .write(entity);
 
     if (rowsChanged == 0) {
+      // ignore: avoid-ignoring-return-values
       await upsert(entity: entity);
     }
   }

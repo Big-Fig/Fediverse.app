@@ -59,7 +59,7 @@ class EditChatSettingsBloc
       );
 
   @override
-  Future fillSettingsToFormFields(ChatSettings? settings) async {
+  Future<void> fillSettingsToFormFields(ChatSettings? settings) async {
     countConversationsInChatsUnreadBadgesFieldBloc.changeCurrentValue(
       settings?.countConversationsInChatsUnreadBadges,
     );

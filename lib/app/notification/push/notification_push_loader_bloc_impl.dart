@@ -183,7 +183,7 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
 
     var unifediApiNotificationType = remoteNotification.typeAsUnifediApi;
 
-    await unifediApiNotificationType.maybeMap<FutureOr>(
+    await unifediApiNotificationType.maybeWhen(
       chatMention: (_) async {
         var chatMessage = remoteNotification.chatMessage!;
         var unifediApiChatMessage = await unifediApiChatService.sendMessage(
@@ -194,6 +194,7 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
           ),
           idempotencyKey: null,
         );
+        // ignore: avoid-ignoring-return-values
         await chatMessageRepository.upsertInRemoteType(unifediApiChatMessage);
       },
       mention: (_) async {
@@ -220,6 +221,7 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
             ],
           ),
         );
+        // ignore: avoid-ignoring-return-values
         await statusRepository.upsertInRemoteType(unifediApiStatus);
       },
       orElse: () async => _logger.warning(
@@ -258,7 +260,7 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
   }
 
   // todo: refactor copy-pasted code
-  Future _processFollowRequestAction({
+  Future<void> _processFollowRequestAction({
     required IUnifediApiAccount unifediApiAccount,
     required IUnifediApiAccountRelationship accountRelationship,
   }) async {
@@ -348,7 +350,7 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
   }
 
   @override
-  Future internalAsyncInit() async {
+  Future<void> internalAsyncInit() async {
     var unhandledMessages = notificationsPushHandlerBloc
         .loadUnhandledMessagesForInstance(currentInstance);
 

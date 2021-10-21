@@ -44,7 +44,7 @@ class LocalInstanceDetailsBloc extends InstanceDetailsBloc
 
   @override
   // ignore: no-empty-block
-  Future internalAsyncInit() async {
+  Future<void> internalAsyncInit() async {
     // nothing here
   }
 

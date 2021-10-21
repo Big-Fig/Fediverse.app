@@ -23,7 +23,7 @@ abstract class IMyAccountSuggestionAccountListNetworkOnlyListBloc
     required IAccount account,
   });
 
-  Future removeSuggestion({
+  Future<void> removeSuggestion({
     required IAccount account,
   });
 }

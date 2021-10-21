@@ -25,7 +25,7 @@ class MyAccountAccountBlockNetworkOnlyAccountListBloc extends DisposableOwner
   });
 
   @override
-  Future removeAccountBlock({
+  Future<void> removeAccountBlock({
     required IAccount account,
   }) async {
     var accountRelationship = await pleromaAuthAccountService.unBlockAccount(
@@ -38,13 +38,14 @@ class MyAccountAccountBlockNetworkOnlyAccountListBloc extends DisposableOwner
         )
         .toUnifediApiAccount();
 
+    // ignore: avoid-ignoring-return-values
     await accountRepository.upsertInRemoteType(
       remoteAccount,
     );
   }
 
   @override
-  Future addAccountBlock({
+  Future<void> addAccountBlock({
     required IAccount account,
   }) async {
     var accountRelationship = await pleromaAuthAccountService.blockAccount(
@@ -57,6 +58,7 @@ class MyAccountAccountBlockNetworkOnlyAccountListBloc extends DisposableOwner
         )
         .toUnifediApiAccount();
 
+    // ignore: avoid-ignoring-return-values
     await accountRepository.upsertInRemoteType(
       remoteAccount,
     );

@@ -27,7 +27,7 @@ class EmojiPickerCustomImageUrlCategoryBloc extends AsyncInitLoadingBloc
   });
 
   @override
-  Future internalAsyncInit() async {
+  Future<void> internalAsyncInit() async {
     await preferenceBloc.performAsyncInit();
     var currentInstance = currentUnifediApiAccessBloc.currentInstance!;
     if (currentInstance.isPleroma) {

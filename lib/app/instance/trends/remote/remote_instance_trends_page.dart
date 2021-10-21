@@ -35,7 +35,7 @@ MaterialPageRoute<void> createRemoteInstanceTrendsPageRoute({
       ),
     );
 
-Future goToRemoteInstanceTrendsPage(
+Future<void> goToRemoteInstanceTrendsPage(
   BuildContext context, {
   required Uri remoteInstanceUri,
 }) async {

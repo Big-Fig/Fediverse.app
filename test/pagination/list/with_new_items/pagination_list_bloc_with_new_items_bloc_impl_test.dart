@@ -15,6 +15,7 @@ const int storageSize = 30;
 const int? maximumCachedPagesCount = null;
 const int itemsCountPerPage = 5;
 // ignore_for_file: no-magic-number, avoid-late-keyword
+// ignore_for_file: avoid-ignoring-return-values
 void main() {
   late ICachedPaginationBloc<CachedPaginationPage<PaginationItemTest>,
       PaginationItemTest> paginationBloc;

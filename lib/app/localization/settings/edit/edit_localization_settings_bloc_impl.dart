@@ -53,7 +53,7 @@ class EditLocalizationSettingsBloc
       );
 
   @override
-  Future fillSettingsToFormFields(LocalizationSettings? settings) async {
+  Future<void> fillSettingsToFormFields(LocalizationSettings? settings) async {
     localizationLocaleFieldBloc.changeCurrentValue(
       settings?.localizationLocale,
     );

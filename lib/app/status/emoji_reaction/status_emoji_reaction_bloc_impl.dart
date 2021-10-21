@@ -65,6 +65,7 @@ class AuthStatusEmojiReactionBloc extends StatusEmojiReactionBloc
       );
     }
 
+    // ignore: avoid-ignoring-return-values
     await statusRepository.upsertInRemoteType(
       remoteStatus,
     );

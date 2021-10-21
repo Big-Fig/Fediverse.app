@@ -20,7 +20,7 @@ class TimelineSettingsBloc extends DisposableOwner
       timelineLocalPreferencesBloc.stream.map((event) => null);
 
   @override
-  Future updateSettings(TimelineSettings? newSettings) async {
+  Future<void> updateSettings(TimelineSettings? newSettings) async {
     var currentTimeline = timelineLocalPreferencesBloc.value;
     var currentTimelineSettings = currentTimeline?.settings;
     if (currentTimelineSettings != newSettings &&

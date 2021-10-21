@@ -19,11 +19,11 @@ abstract class INotificationsPushHandlerBloc extends IDisposable {
     UnifediApiAccess instance,
   );
 
-  Future handleInitialMessage();
+  Future<void> handleInitialMessage();
 
-  Future<bool> markAsHandled(List<NotificationsPushHandlerMessage> messages);
+  Future<void> markAsHandled(List<NotificationsPushHandlerMessage> messages);
 
-  Future markAsLaunchMessage(NotificationsPushHandlerMessage message);
+  Future<void> markAsLaunchMessage(NotificationsPushHandlerMessage message);
 
   void addRealTimeHandler(IPushRealTimeHandler notificationsPushHandler);
 

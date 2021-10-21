@@ -24,7 +24,7 @@ import 'package:unifedi_api/unifedi_api.dart';
 
 final _logger = Logger('income_share_action_chooser_dialog.dart');
 
-Future showIncomeShareActionChooserDialog(
+Future<void> showIncomeShareActionChooserDialog(
   BuildContext context, {
   required IIncomeShareHandlerBloc incomeShareHandlerBloc,
   required IncomeShareEvent incomeShareEvent,
@@ -176,6 +176,7 @@ Future<List<IUnifediApiMediaAttachment>?> _uploadMediaIfNeed({
             );
 
             // shared filed was copied to temp folder
+            // ignore: avoid-ignoring-return-values
             await file.delete();
 
             return unifediApiMediaAttachment;

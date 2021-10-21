@@ -18,5 +18,5 @@ abstract class ICurrentFediUiThemeBloc implements IDisposable {
 
   Stream<IFediUiTheme?> get currentThemeStream;
 
-  Future changeTheme(IFediUiTheme theme);
+  Future<void> changeTheme(IFediUiTheme theme);
 }

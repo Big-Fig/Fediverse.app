@@ -6,7 +6,7 @@ import 'package:fedi/async/loading/init/async_init_loading_model.dart';
 abstract class IAsyncInitLoadingBloc extends IAsyncLoadingService {
   Stream<AsyncInitLoadingState> get initLoadingStateStream;
 
-  Future performAsyncInit();
+  Future<void> performAsyncInit();
 
   AsyncInitLoadingState? get initLoadingState;
 

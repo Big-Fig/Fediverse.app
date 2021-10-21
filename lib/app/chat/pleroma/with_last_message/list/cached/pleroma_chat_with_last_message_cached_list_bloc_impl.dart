@@ -31,7 +31,7 @@ class PleromaChatWithLastMessageCachedListBloc
       PleromaChatRepositoryOrderingTermData.updatedAtDesc;
 
   @override
-  Future refreshItemsFromRemoteForPage({
+  Future<void> refreshItemsFromRemoteForPage({
     required int? limit,
     required IPleromaChatWithLastMessage? newerThan,
     required IPleromaChatWithLastMessage? olderThan,

@@ -1,5 +1,5 @@
 // ignore_for_file: unnecessary_lambdas
-
+// ignore_for_file: avoid-ignoring-return-values
 import 'package:fedi/app/push/settings/push_settings_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 

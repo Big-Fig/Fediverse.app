@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/access/current/current_access_bloc.dart';
@@ -262,7 +264,7 @@ MaterialPageRoute<void> createCustomListPageRoute({
 }
 
 class _CustomListPageWrapper extends StatelessWidget {
-  final Function(ICustomList? customList)? onChanged;
+  final FutureOr<void> Function(ICustomList? customList)? onChanged;
   final VoidCallback? onDeleted;
 
   const _CustomListPageWrapper({

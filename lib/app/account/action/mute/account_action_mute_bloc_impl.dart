@@ -63,7 +63,7 @@ class AccountActionMuteBloc extends DisposableOwner
       );
 
   @override
-  Future mute() => accountBloc.mute(
+  Future<void> mute() => accountBloc.mute(
         notifications: notificationsBoolFieldBloc.currentValue ?? false,
         duration: expireDurationFieldBloc.currentValueDuration,
       );

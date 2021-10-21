@@ -12,7 +12,7 @@ abstract class IDialog {
 
   Future<T?> show<T>(BuildContext context);
 
-  Future hide(BuildContext context);
+  Future<void> hide(BuildContext context);
 }
 
 abstract class BaseDialog extends DisposableOwner implements IDialog {
@@ -41,7 +41,7 @@ abstract class BaseDialog extends DisposableOwner implements IDialog {
   }
 
   @override
-  Future hide(BuildContext context) async {
+  Future<void> hide(BuildContext context) async {
     assert(isShowing, 'Cant hide not showed dialog');
     _isShowing = false;
     await dispose();

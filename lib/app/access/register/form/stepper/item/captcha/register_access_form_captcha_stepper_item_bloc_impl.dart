@@ -45,5 +45,5 @@ class RegisterUnifediApiAccessFormStepperCaptchaItemBloc
       ];
 
   @override
-  Future reloadCaptcha() => captchaFieldBloc.reloadCaptcha();
+  Future<void> reloadCaptcha() => captchaFieldBloc.reloadCaptcha();
 }

@@ -28,7 +28,7 @@ class CrashReportingPermissionCheckerWidgetState
     checkCrashReportingPermission();
   }
 
-  Future checkCrashReportingPermission() async {
+  Future<void> checkCrashReportingPermission() async {
     var configService = IConfigService.of(context, listen: false);
 
     if (configService.crashlyticsEnabled) {

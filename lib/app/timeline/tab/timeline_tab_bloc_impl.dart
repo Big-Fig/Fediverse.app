@@ -107,7 +107,7 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
   }
 
   @override
-  Future internalAsyncInit() async {
+  Future<void> internalAsyncInit() async {
     await timelineLocalPreferencesBloc.performAsyncInit();
 
     statusCachedListBloc = createListService(handlerType: handlerType);

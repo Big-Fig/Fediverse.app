@@ -122,6 +122,7 @@ class _UnifediApiAccessChooserItemsToChooseWidget extends StatelessWidget {
                   // sometimes IUnifediApiMyAccountService is not accessible
                   // during account switching
                   try {
+                    // ignore: avoid-ignoring-return-values
                     Provider.of<IUnifediApiMyAccountService>(context);
                     // ignore: avoid_catches_without_on_clauses
                   } catch (e) {
@@ -182,6 +183,7 @@ class _UnifediApiAccessChooserSelectedInstanceRowWidget
     // todo: remove hack
     // sometimes IMyAccountBloc is not accessible during account switching
     try {
+      // ignore: avoid-ignoring-return-values
       Provider.of<IMyAccountBloc>(context);
       // ignore: avoid_catches_without_on_clauses
     } catch (e) {

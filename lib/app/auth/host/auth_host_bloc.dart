@@ -17,7 +17,7 @@ abstract class IAuthHostBloc extends IDisposable {
 
   Future<UnifediApiAccess> loginWithAuthCode(String authCode);
 
-  Future registerApplication();
+  Future<void> registerApplication();
 
   Future<UnifediApiAccess?> launchLoginToAccount();
 
@@ -25,5 +25,5 @@ abstract class IAuthHostBloc extends IDisposable {
     required IUnifediApiRegisterAccount registerAccount,
   });
 
-  Future logout();
+  Future<void> logout();
 }

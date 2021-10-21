@@ -55,13 +55,13 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
   }
 
   @override
-  Future reSubscribeIfNeeded() => _checkResubscribe(
+  Future<void> reSubscribeIfNeeded() => _checkResubscribe(
         listenChangedIsNotReady: true,
       );
 
   ICompositeDisposable? resubscribeDisposable;
 
-  Future _checkResubscribe({
+  Future<void> _checkResubscribe({
     required bool listenChangedIsNotReady,
   }) async {
     _logger.finest(
@@ -125,7 +125,7 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
       instancePushSettingsLocalPreferenceBloc.stream;
 
   @override
-  Future changeFavourite(bool value) => updateSettings(
+  Future<void> changeFavourite(bool value) => updateSettings(
         settingsData.copyWith(
           favourite: value,
         ),
@@ -140,7 +140,7 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
       );
 
   @override
-  Future changeFollow(bool value) => updateSettings(
+  Future<void> changeFollow(bool value) => updateSettings(
         settingsData.copyWith(
           follow: value,
         ),
@@ -163,7 +163,7 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
       );
 
   @override
-  Future changeMention(bool value) => updateSettings(
+  Future<void> changeMention(bool value) => updateSettings(
         settingsData.copyWith(
           mention: value,
         ),
@@ -178,7 +178,7 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
       );
 
   @override
-  Future changeReblog(bool value) => updateSettings(
+  Future<void> changeReblog(bool value) => updateSettings(
         settingsData.copyWith(
           reblog: value,
         ),
@@ -193,7 +193,7 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
       );
 
   @override
-  Future changePoll(bool value) => updateSettings(
+  Future<void> changePoll(bool value) => updateSettings(
         settingsData.copyWith(
           poll: value,
         ),
@@ -208,7 +208,7 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
       );
 
   @override
-  Future changeChatMention(bool value) => updateSettings(
+  Future<void> changeChatMention(bool value) => updateSettings(
         settingsData.copyWith(
           chatMention: value,
         ),
@@ -222,7 +222,7 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
       settingsDataStream.map((settings) => settings.emojiReaction == true);
 
   @override
-  Future changeEmojiReaction(bool value) => updateSettings(
+  Future<void> changeEmojiReaction(bool value) => updateSettings(
         settingsData.copyWith(
           emojiReaction: value,
         ),
@@ -233,12 +233,12 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
       instancePushSettingsLocalPreferenceBloc.isSavedPreferenceExist;
 
   @override
-  Future subscribeAllEnabled() => updateSettings(
+  Future<void> subscribeAllEnabled() => updateSettings(
         PushSettings.defaultAllEnabled(),
       );
 
   @override
-  Future updateSettings(PushSettings? newSettings) async {
+  Future<void> updateSettings(PushSettings? newSettings) async {
     if (settingsData == newSettings) {
       _logger.finest(() => 'Same settings');
 
@@ -274,8 +274,6 @@ class PushSettingsBloc extends DisposableOwner implements IPushSettingsBloc {
             '\t success = $success',
       );
     }
-
-    return success;
   }
 
   Future<bool> _trySubscribe(

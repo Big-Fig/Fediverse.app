@@ -45,19 +45,19 @@ abstract class IMediaPlayerBloc implements IDisposable, IAsyncInitLoadingBloc {
 
   StackTrace? get stackTrace;
 
-  Future seekToDuration(Duration position);
+  Future<void> seekToDuration(Duration position);
 
-  Future seekToPercent(double percent);
+  Future<void> seekToPercent(double percent);
 
-  Future play();
+  Future<void> play();
 
-  Future pause();
+  Future<void> pause();
 
-  Future mute();
+  Future<void> mute();
 
-  Future unMute();
+  Future<void> unMute();
 
-  Future reloadAfterError();
+  Future<void> reloadAfterError();
 }
 
 extension MediaPlayerStateExtensions on MediaPlayerState? {
@@ -89,7 +89,7 @@ extension MediaPlayerStateExtensions on MediaPlayerState? {
 }
 
 extension IMediaPlayerBlocExtension on IMediaPlayerBloc {
-  Future toggleMute() async {
+  Future<void> toggleMute() async {
     if (isMuted) {
       await unMute();
     } else {
@@ -97,7 +97,7 @@ extension IMediaPlayerBlocExtension on IMediaPlayerBloc {
     }
   }
 
-  Future togglePlay() async {
+  Future<void> togglePlay() async {
     if (isPlaying) {
       await pause();
     } else {

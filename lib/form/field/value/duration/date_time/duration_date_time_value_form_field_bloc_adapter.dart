@@ -42,7 +42,7 @@ class DurationDateTimeValueFormFieldBlocAdapter extends DisposableOwner
   }
 
   @override
-  Future dispose() async {
+  Future<void> dispose() async {
     await super.dispose();
 
     return durationDateTimeValueFormFieldBloc.dispose();

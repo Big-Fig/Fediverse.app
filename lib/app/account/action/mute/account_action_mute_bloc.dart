@@ -18,5 +18,5 @@ abstract class IAccountActionMuteBloc implements IDisposable {
 
   IDurationDateTimeValueFormFieldBloc get expireDurationFieldBloc;
 
-  Future mute();
+  Future<void> mute();
 }

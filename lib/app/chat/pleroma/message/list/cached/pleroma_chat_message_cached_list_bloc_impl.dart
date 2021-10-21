@@ -40,7 +40,7 @@ class PleromaChatMessageCachedListBloc extends DisposableOwner
   IUnifediApiService get unifediApi => pleromaApiChatService;
 
   @override
-  Future refreshItemsFromRemoteForPage({
+  Future<void> refreshItemsFromRemoteForPage({
     required int? limit,
     required IPleromaChatMessage? newerThan,
     required IPleromaChatMessage? olderThan,

@@ -46,8 +46,10 @@ class ScheduledEditPostStatusPage extends StatelessWidget {
         ),
       );
 
-  Future handleBackPressed(BuildContext context) async {
+  Future<void> handleBackPressed(BuildContext context) async {
     var postStatusBloc = IPostStatusBloc.of(context, listen: false);
+    // todo: refactor returning value
+    // ignore: avoid-ignoring-return-values
     await onBackPressed(
       postStatusBloc.calculateCurrentPostStatusData(),
     );

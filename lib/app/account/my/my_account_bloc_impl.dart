@@ -34,6 +34,7 @@ class MyAccountBloc extends IMyAccountBloc {
     myAccountStream.listen(
       (myAccount) {
         if (myAccount != null) {
+          // ignore: avoid-ignoring-return-values
           accountRepository.upsertInRemoteType(
             myAccount.toUnifediApiAccount(),
           );
@@ -68,7 +69,7 @@ class MyAccountBloc extends IMyAccountBloc {
   }
 
   @override
-  Future refreshFromNetwork({
+  Future<void> refreshFromNetwork({
     required bool isNeedPreFetchRelationship,
   }) async {
     var remoteMyAccount = await apiMyAccountService.verifyMyCredentials();
@@ -99,7 +100,7 @@ class MyAccountBloc extends IMyAccountBloc {
       throw selfActionError;
 
   @override
-  Future updateMyAccountByMyUnifediApiAccount(
+  Future<void> updateMyAccountByMyUnifediApiAccount(
     IUnifediApiMyAccount unifediApiMyAccount,
   ) async {
     await myAccountLocalPreferenceBloc.setValue(
@@ -110,7 +111,7 @@ class MyAccountBloc extends IMyAccountBloc {
   }
 
   @override
-  Future updateMyAccountByMyAccount(IMyAccount myAccount) async {
+  Future<void> updateMyAccountByMyAccount(IMyAccount myAccount) async {
     var unifediApiMyAccountWrapper = UnifediApiMyAccountWrapper(
       unifediApiAccount: myAccount.toUnifediApiMyAccount(),
     );
@@ -120,7 +121,7 @@ class MyAccountBloc extends IMyAccountBloc {
   }
 
   @override
-  Future decreaseFollowingRequestCount() async {
+  Future<void> decreaseFollowingRequestCount() async {
     assert(
       followRequestsCount! > 0,
       'cant decrease following request when it is not positive',

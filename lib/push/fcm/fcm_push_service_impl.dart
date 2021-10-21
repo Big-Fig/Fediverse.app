@@ -59,7 +59,7 @@ class FcmPushService extends AsyncInitLoadingBloc implements IFcmPushService {
     _messageSubject.add(cloudMessage);
   }
 
-  Future _updateToken() async {
+  Future<void> _updateToken() async {
     var token = await _fcm.getToken();
     if (token != null) {
       _onNewToken(token);
@@ -82,7 +82,7 @@ class FcmPushService extends AsyncInitLoadingBloc implements IFcmPushService {
   }
 
   @override
-  Future internalAsyncInit() async {
+  Future<void> internalAsyncInit() async {
     _logger.finest(() => 'init');
 
     FirebaseMessaging.onBackgroundMessage(
@@ -104,7 +104,7 @@ class FcmPushService extends AsyncInitLoadingBloc implements IFcmPushService {
           ),
         );
       },
-    );
+    ).disposeWith(this);
     FirebaseMessaging.onMessage.listen(
       (RemoteMessage message) {
         _onNewMessage(
@@ -114,7 +114,7 @@ class FcmPushService extends AsyncInitLoadingBloc implements IFcmPushService {
           ),
         );
       },
-    );
+    ).disposeWith(this);
 
     await _fcm.setAutoInitEnabled(true);
 

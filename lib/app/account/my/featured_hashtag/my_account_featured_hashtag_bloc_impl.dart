@@ -29,7 +29,7 @@ class MyAccountFeaturedHashtagBloc extends DisposableOwner
   Stream<bool> get unFeaturedStream => unFeaturedSubject.stream;
 
   @override
-  Future unFeature() async {
+  Future<void> unFeature() async {
     assert(
       !unFeatured,
       'cant unfeature when not featured',
@@ -43,9 +43,10 @@ class MyAccountFeaturedHashtagBloc extends DisposableOwner
   }
 
   @override
-  Future featureAgain() async {
+  Future<void> featureAgain() async {
     assert(unFeatured, 'cant feature if already featured');
 
+    // ignore: avoid-ignoring-return-values
     await unifediApiMyAccountService.featureMyAccountTag(
       name: featuredHashtag.name,
     );

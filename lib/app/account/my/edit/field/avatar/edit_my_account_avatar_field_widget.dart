@@ -46,7 +46,7 @@ class EditMyAccountAvatarFieldWidget extends StatelessWidget {
       );
 }
 
-Future _startChoosingFileToUploadAvatar(BuildContext context) async {
+Future<void> _startChoosingFileToUploadAvatar(BuildContext context) async {
   var editMyAccountBloc = IEditMyAccountBloc.of(context, listen: false);
 
   var mediaDeviceFile = await goToSingleMediaPickerPage(

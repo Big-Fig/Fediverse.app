@@ -6,14 +6,14 @@ abstract class IDatabaseService implements IDisposable {
   static IDatabaseService of(BuildContext context, {bool listen = true}) =>
       Provider.of<IDatabaseService>(context, listen: listen);
 
-  Future clearAll();
+  Future<void> clearAll();
 
-  Future clearByLimits({
+  Future<void> clearByLimits({
     required Duration? ageLimit,
     required int? entriesCountByTypeLimit,
   });
 
-  Future delete();
+  Future<void> delete();
 
   Future<int> calculateSizeInBytes();
 

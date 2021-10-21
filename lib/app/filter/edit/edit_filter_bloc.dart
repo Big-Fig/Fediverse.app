@@ -16,7 +16,7 @@ abstract class IEditFilterBloc extends IDisposable {
 
   Future<IFilter> submit();
 
-  Future deleteList();
+  Future<void> deleteList();
 
   Stream<IFilter> get submittedStream;
 

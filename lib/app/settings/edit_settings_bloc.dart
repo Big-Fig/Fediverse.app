@@ -19,8 +19,8 @@ abstract class IEditSettingsBloc<T extends ISettings<dynamic>?>
 
   Stream<T?> get currentSettingsStream;
 
-  Future updateSettings(T settings);
+  Future<void> updateSettings(T settings);
 
   // ignore: avoid_positional_boolean_parameters
-  Future changeEnabled(bool enabled);
+  Future<void> changeEnabled(bool enabled);
 }

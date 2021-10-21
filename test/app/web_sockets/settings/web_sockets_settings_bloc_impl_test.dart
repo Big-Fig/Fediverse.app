@@ -12,6 +12,7 @@ import '../../../rxdart/rxdart_test_helper.dart';
 import 'web_sockets_settings_model_test_helper.dart';
 
 // ignore_for_file: no-magic-number, avoid-late-keyword
+// ignore_for_file: avoid-ignoring-return-values
 void main() {
   late MemoryLocalPreferencesService memoryLocalPreferencesService;
   late GlobalWebSocketsSettingsLocalPreferenceBloc

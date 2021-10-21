@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
 extension GoToNotificationExtension on INotification {
-  Future goToRelatedPage(BuildContext context) async {
+  Future<void> goToRelatedPage(BuildContext context) async {
     var notificationRepository =
         INotificationRepository.of(context, listen: false);
 
@@ -22,7 +22,7 @@ extension GoToNotificationExtension on INotification {
       notification: this,
     );
     if (pleromaNotificationService.isPleroma) {
-      // ignore: unawaited_futures
+      // ignore: unawaited_futures, avoid-ignoring-return-values
       pleromaNotificationService.markAsReadSingle(
         notificationId: remoteId,
       );

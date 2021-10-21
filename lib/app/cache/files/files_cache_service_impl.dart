@@ -119,7 +119,7 @@ class FilesCacheService extends DisposableOwner implements IFilesCacheService {
   }
 
   @override
-  Future clear() => cacheManager.emptyCache();
+  Future<void> clear() => cacheManager.emptyCache();
 
   @override
   Future<File> getImageByUrl({

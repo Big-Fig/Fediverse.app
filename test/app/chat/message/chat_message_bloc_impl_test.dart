@@ -28,6 +28,7 @@ import 'chat_message_bloc_impl_test.mocks.dart';
 import 'chat_message_test_helper.dart';
 
 // ignore_for_file: no-magic-number, avoid-late-keyword
+// ignore_for_file: avoid-ignoring-return-values
 @GenerateMocks([
   IUnifediApiChatService,
   IUnifediApiAccountService,

@@ -44,7 +44,7 @@ class UnifediApiAccessListBloc extends DisposableOwner
       .map((availableInstances) => availableInstances.isNotEmpty);
 
   @override
-  Future addInstance(UnifediApiAccess instance) async {
+  Future<void> addInstance(UnifediApiAccess instance) async {
     _logger.finest(() => 'addInstance $instance');
     var instances = availableInstances;
     if (!instances.contains(instance)) {
@@ -62,7 +62,7 @@ class UnifediApiAccessListBloc extends DisposableOwner
   }
 
   @override
-  Future removeInstance(UnifediApiAccess instance) async {
+  Future<void> removeInstance(UnifediApiAccess instance) async {
     _logger.finest(() => 'removeInstance $instance');
     var instances = availableInstances.toList(growable: true);
 
@@ -71,6 +71,7 @@ class UnifediApiAccessListBloc extends DisposableOwner
       acct: instance.acct,
     );
     if (foundInstanceToRemove != null) {
+      // ignore: avoid-ignoring-return-values
       instances.remove(foundInstanceToRemove);
       await instanceListLocalPreferenceBloc.setValue(
         UnifediApiAccessList(

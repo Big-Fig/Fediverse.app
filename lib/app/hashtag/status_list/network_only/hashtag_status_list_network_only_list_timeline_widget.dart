@@ -84,7 +84,7 @@ class HashtagStatusListNetworkOnlyListTimelineWidget
   }
 }
 
-Future _onStatusClick(BuildContext context, IStatus status) async {
+Future<void> _onStatusClick(BuildContext context, IStatus status) async {
   var accountBloc = IAccountBloc.of(context, listen: false);
 
   var isLocal = accountBloc.instanceLocation == InstanceLocation.local;

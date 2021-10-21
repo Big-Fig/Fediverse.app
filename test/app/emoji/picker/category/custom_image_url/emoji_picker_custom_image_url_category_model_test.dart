@@ -9,6 +9,7 @@ import '../../../../../json/json_test_helper.dart';
 import '../../../../../obj/obj_test_helper.dart';
 import 'emoji_picker_custom_image_url_category_test_helper.dart';
 
+// ignore_for_file: avoid-ignoring-return-values
 void main() {
   test('equal & hashcode & toString', () async {
     ObjMockHelper.testEqualsHashcodeToString(

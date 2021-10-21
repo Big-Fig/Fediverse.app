@@ -49,7 +49,7 @@ class EditPaginationSettingsBloc
       );
 
   @override
-  Future fillSettingsToFormFields(PaginationSettings settings) async {
+  Future<void> fillSettingsToFormFields(PaginationSettings settings) async {
     pageSizeFieldBloc.changeCurrentValue(
       settings.pageSize,
     );

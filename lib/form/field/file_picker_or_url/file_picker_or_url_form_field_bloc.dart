@@ -18,7 +18,7 @@ abstract class IFilePickerOrUrlFormFieldBloc extends IFormFieldBloc {
 
   Stream<IMediaDeviceFile?> get currentFilePickerFileStream;
 
-  Future pickNewFile(IMediaDeviceFile filePickerFile);
+  Future<void> pickNewFile(IMediaDeviceFile filePickerFile);
 
   void deleteOriginal();
 }

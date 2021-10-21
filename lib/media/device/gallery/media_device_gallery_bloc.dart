@@ -31,7 +31,7 @@ class MediaDeviceGallerySelectedFolderData extends DisposableOwner
   });
 
   @override
-  Future dispose() async {
+  Future<void> dispose() async {
     await super.dispose();
     await folderBloc.dispose();
     await filesListBloc.dispose();
@@ -60,7 +60,7 @@ abstract class IMediaDeviceGalleryBloc
 
   Stream<MediaDeviceGallerySelectedFolderData?> get selectedFolderDataStream;
 
-  Future selectFolder(IMediaDeviceFolder folder);
+  Future<void> selectFolder(IMediaDeviceFolder folder);
 
-  Future refreshFoldersInformation();
+  Future<void> refreshFoldersInformation();
 }

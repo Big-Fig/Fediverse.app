@@ -20,12 +20,11 @@ class EditFilterAppBarSaveActionWidget extends StatelessWidget {
           text: S.of(context).app_filter_edit_action_save,
           onPressed: isReadyToSave
               ? () async {
+                  // ignore: avoid-ignoring-return-values
                   await PleromaAsyncOperationHelper
                       .performPleromaAsyncOperation(
                     context: context,
-                    asyncCode: () async {
-                      await editFilterBloc.submit();
-                    },
+                    asyncCode: () => editFilterBloc.submit(),
                   );
 
                   Navigator.of(context).pop();

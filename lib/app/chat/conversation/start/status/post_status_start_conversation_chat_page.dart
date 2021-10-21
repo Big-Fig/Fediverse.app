@@ -64,7 +64,7 @@ class _PostStatusStartConversationChatPageBodyWidget extends StatelessWidget {
       );
 }
 
-Future goToPostStatusStartConversationPage(
+Future<void> goToPostStatusStartConversationPage(
   BuildContext context, {
   required List<IAccount> conversationAccountsWithoutMe,
 }) async {

@@ -49,5 +49,5 @@ abstract class IEditMyAccountBloc implements IFormBloc {
 
   IBoolValueFormFieldBloc get botField;
 
-  Future submitChanges();
+  Future<void> submitChanges();
 }

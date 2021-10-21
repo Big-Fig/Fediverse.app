@@ -65,12 +65,12 @@ abstract class IPleromaChatRepository
     required IAccount account,
   });
 
-  Future markAsRead({
+  Future<void> markAsRead({
     required IPleromaChat chat,
     required Batch? batchTransaction,
   });
 
-  Future incrementUnreadCount({
+  Future<void> incrementUnreadCount({
     required String chatRemoteId,
     required DateTime updatedAt,
   });

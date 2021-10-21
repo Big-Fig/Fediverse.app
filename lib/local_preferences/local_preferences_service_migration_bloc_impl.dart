@@ -15,7 +15,7 @@ abstract class LocalPreferencesServiceMigrationBloc
   });
 
   @override
-  Future migrateData() async {
+  Future<void> migrateData() async {
     var migrationLocalPreferencesBlocCreators =
         await calculateAllMigrationLocalPreferencesBlocCreators(inputService);
 
@@ -28,7 +28,7 @@ abstract class LocalPreferencesServiceMigrationBloc
     }
   }
 
-  Future migrateLocalPreferenceBloc(
+  Future<void> migrateLocalPreferenceBloc(
     LocalPreferencesBlocCreator migrationBlocCreator,
   ) async {
     var inputBloc = migrationBlocCreator(inputService);

@@ -33,7 +33,7 @@ class PleromaChatPostMessageBloc extends PostMessageBloc
         );
 
   @override
-  Future post() async {
+  Future<void> post() async {
     var success = await tryUploadAllAttachments();
 
     if (!success) {

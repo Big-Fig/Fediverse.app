@@ -25,7 +25,7 @@ class MyAccountAccountMuteNetworkOnlyAccountListBloc extends DisposableOwner
   });
 
   @override
-  Future removeAccountMute({required IAccount? account}) async {
+  Future<void> removeAccountMute({required IAccount? account}) async {
     var accountRelationship = await pleromaAuthAccountService.unMuteAccount(
       accountId: account!.remoteId,
     );
@@ -36,13 +36,14 @@ class MyAccountAccountMuteNetworkOnlyAccountListBloc extends DisposableOwner
         )
         .toUnifediApiAccount();
 
+    // ignore: avoid-ignoring-return-values
     await accountRepository.upsertInRemoteType(
       unifediApiAccount,
     );
   }
 
   @override
-  Future addAccountMute({required IAccount account}) async {
+  Future<void> addAccountMute({required IAccount account}) async {
     var accountRelationship = await pleromaAuthAccountService.muteAccount(
       accountId: account.remoteId,
       notifications: false,
@@ -55,6 +56,7 @@ class MyAccountAccountMuteNetworkOnlyAccountListBloc extends DisposableOwner
         )
         .toUnifediApiAccount();
 
+    // ignore: avoid-ignoring-return-values
     await accountRepository.upsertInRemoteType(
       unifediApiAccount,
     );
@@ -128,11 +130,12 @@ class MyAccountAccountMuteNetworkOnlyAccountListBloc extends DisposableOwner
       );
 
   @override
-  Future changeAccountMute({
+  Future<void> changeAccountMute({
     required IAccount? account,
     required bool notifications,
     required Duration? duration,
   }) async {
+    // ignore: avoid-ignoring-return-values
     await pleromaAuthAccountService.unMuteAccount(
       accountId: account!.remoteId,
     );
@@ -149,6 +152,7 @@ class MyAccountAccountMuteNetworkOnlyAccountListBloc extends DisposableOwner
         )
         .toUnifediApiAccount();
 
+    // ignore: avoid-ignoring-return-values
     await accountRepository.upsertInRemoteType(
       unifediApiAccount,
     );

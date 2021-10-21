@@ -58,7 +58,7 @@ class MultiMediaPickerBloc extends MediaPickerBloc
           currentFilesMetadataSelectionSubject.stream;
 
   @override
-  Future toggleFileMetadataSelection(
+  Future<void> toggleFileMetadataSelection(
     IMediaDeviceFileMetadata mediaDeviceFileMetadata,
   ) async {
     var fileMetadataSelected = isFileMetadataSelected(mediaDeviceFileMetadata);
@@ -91,7 +91,7 @@ class MultiMediaPickerBloc extends MediaPickerBloc
   }
 
   @override
-  Future acceptSelectedFilesMetadata() async {
+  Future<void> acceptSelectedFilesMetadata() async {
     assert(
       isSomethingSelected,
       'cant proceed when nothing selected',
@@ -166,7 +166,7 @@ class MultiMediaPickerBloc extends MediaPickerBloc
       );
 
   @override
-  Future clearSelection() async {
+  Future<void> clearSelection() async {
     currentFilesMetadataSelectionSubject.add([]);
   }
 }

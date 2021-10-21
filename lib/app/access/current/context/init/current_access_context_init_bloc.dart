@@ -19,5 +19,5 @@ abstract class ICurrentUnifediApiAccessContextInitBloc
 
   Stream<CurrentUnifediApiAccessContextInitState> get stateStream;
 
-  Future refreshFromNetwork({required bool isNeedWaitForOptionalData});
+  Future<void> refreshFromNetwork({required bool isNeedWaitForOptionalData});
 }

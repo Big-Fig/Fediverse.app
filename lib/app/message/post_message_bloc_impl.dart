@@ -24,8 +24,8 @@ abstract class PostMessageBloc extends DisposableOwner
   final int? maximumMessageLength;
 
   @override
-  List<FormItemValidationError>? get inputTextErrors =>
-      inputTextErrorsSubject.valueOrNull;
+  List<FormItemValidationError> get inputTextErrors =>
+      inputTextErrorsSubject.value;
 
   @override
   Stream<List<FormItemValidationError>> get inputTextErrorsStream =>
@@ -306,7 +306,8 @@ abstract class PostMessageBloc extends DisposableOwner
               (bloc) => bloc.startUploadIfPossible(),
             );
 
-        await Future.wait<void>(futures);
+        // ignore: avoid-ignoring-return-values
+        await Future.wait<dynamic>(futures);
 
         var allUploaded = uploadMediaAttachmentBlocs.fold<bool>(
           true,

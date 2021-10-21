@@ -96,33 +96,33 @@ class GlobalOrInstanceSettingsLocalPreferenceBloc<T extends ISettings<dynamic>>
   }
 
   @override
-  Future clearInstanceSettings() async {
+  Future<void> clearInstanceSettings() async {
     await instanceLocalPreferencesBloc.clearValue();
   }
 
   @override
-  Future cloneGlobalToInstanceSettings() async {
+  Future<void> cloneGlobalToInstanceSettings() async {
     await instanceLocalPreferencesBloc.setValue(
       globalLocalPreferencesBloc.value,
     );
   }
 
   @override
-  Future updateInstanceSettings(T? newSettings) async {
+  Future<void> updateInstanceSettings(T? newSettings) async {
     if (instanceLocalPreferencesBloc.value != newSettings) {
       await instanceLocalPreferencesBloc.setValue(newSettings);
     }
   }
 
   @override
-  Future updateGlobalSettings(T newSettings) async {
+  Future<void> updateGlobalSettings(T newSettings) async {
     if (globalLocalPreferencesBloc.value != newSettings) {
       await globalLocalPreferencesBloc.setValue(newSettings);
     }
   }
 
   @override
-  Future updateSettings(T newSettings) async {
+  Future<void> updateSettings(T newSettings) async {
     if (isInstance) {
       return updateInstanceSettings(newSettings);
     } else {

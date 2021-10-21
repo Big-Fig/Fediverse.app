@@ -17,11 +17,11 @@ abstract class IFilesCacheSettingsBloc
 
   Stream<FilesCacheSizeLimitCountType> get sizeLimitCountTypeStream;
 
-  Future changeSizeLimitCountType(FilesCacheSizeLimitCountType value);
+  Future<void> changeSizeLimitCountType(FilesCacheSizeLimitCountType value);
 
   FilesCacheAgeLimitType get ageLimitType;
 
   Stream<FilesCacheAgeLimitType> get ageLimitTypeStream;
 
-  Future changeAgeLimitType(FilesCacheAgeLimitType value);
+  Future<void> changeAgeLimitType(FilesCacheAgeLimitType value);
 }

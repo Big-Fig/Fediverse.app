@@ -5,6 +5,7 @@ import '../app/push/push_model_test_helper.dart';
 import '../hive/hive_test_helper.dart';
 import '../json/json_test_helper.dart';
 
+// ignore_for_file: avoid-ignoring-return-values
 // ignore_for_file: no-magic-number
 void main() {
   test('PushMessageType toJsonValue & fromJsonValue', () async {

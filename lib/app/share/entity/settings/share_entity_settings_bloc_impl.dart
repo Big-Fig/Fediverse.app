@@ -125,7 +125,7 @@ class ShareEntitySettingsBloc extends FormBloc
         (_) {
           _updateSettingsFromFields();
         },
-      );
+      ).disposeWith(this);
     }
   }
 

@@ -120,7 +120,7 @@ class ConversationChatMessageBloc extends ChatMessageBloc
   IAccount get account => chatMessage.account!;
 
   @override
-  Future refreshFromNetwork() async {
+  Future<void> refreshFromNetwork() async {
     var remoteStatus = await authStatusService.getStatus(
       statusId: chatMessage.remoteId,
     );
@@ -133,12 +133,12 @@ class ConversationChatMessageBloc extends ChatMessageBloc
   }
 
   @override
-  Future delete() => conversationChatBloc.deleteMessage(
+  Future<void> delete() => conversationChatBloc.deleteMessage(
         conversationChatMessage: chatMessage,
       );
 
   @override
-  Future resendPendingFailed() => conversationChatBloc.postMessage(
+  Future<void> resendPendingFailed() => conversationChatBloc.postMessage(
         postStatusData: chatMessage.status.calculatePostStatusData(
           limits: pollLimits,
         ),

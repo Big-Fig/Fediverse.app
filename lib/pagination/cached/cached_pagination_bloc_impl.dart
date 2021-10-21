@@ -54,7 +54,7 @@ abstract class CachedPaginationBloc<TPage extends CachedPaginationPage<TItem>,
     );
   }
 
-  Future refreshItemsFromRemoteForPage({
+  Future<void> refreshItemsFromRemoteForPage({
     required int pageIndex,
     required int? itemsCountPerPage,
     required TPage? olderPage,

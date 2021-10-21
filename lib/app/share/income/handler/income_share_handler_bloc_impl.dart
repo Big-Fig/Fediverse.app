@@ -103,7 +103,7 @@ class IncomeShareHandlerBloc extends DisposableOwner
       );
 
   @override
-  Future checkForInitialEvent() async {
+  Future<void> checkForInitialEvent() async {
     var lastReceivedShareEvent = incomeShareService.lastReceivedShareEvent;
     _logger.finest(() => 'checkForInitialEvent $lastReceivedShareEvent');
     if (lastReceivedShareEvent != null) {
@@ -172,7 +172,7 @@ class IncomeShareHandlerBloc extends DisposableOwner
   }
 
   @override
-  Future chooseInstance(UnifediApiAccess instance) async {
+  Future<void> chooseInstance(UnifediApiAccess instance) async {
     var alreadySelected =
         currentUnifediApiAccessBloc.currentInstance?.userAtHost ==
             instance.userAtHost;
@@ -186,7 +186,7 @@ class IncomeShareHandlerBloc extends DisposableOwner
   }
 
   @override
-  Future reset() async {
+  Future<void> reset() async {
     await incomeShareService.reset();
   }
 }

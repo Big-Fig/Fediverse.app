@@ -28,7 +28,7 @@ abstract class INotificationCachedListBloc
   });
 
   @override
-  Future refreshItemsFromRemoteForPage({
+  Future<void> refreshItemsFromRemoteForPage({
     required int? limit,
     required INotification? newerThan,
     required INotification? olderThan,
@@ -36,5 +36,5 @@ abstract class INotificationCachedListBloc
 
   Stream<List<INotification>> watchLocalItemsNewerThanItem(INotification? item);
 
-  Future dismissAll();
+  Future<void> dismissAll();
 }

@@ -24,11 +24,11 @@ abstract class IGlobalOrInstanceSettingsBloc<T extends ISettings<dynamic>>
 
   Stream<T?> get instanceSettingsDataStream;
 
-  Future clearInstanceSettings();
+  Future<void> clearInstanceSettings();
 
-  Future cloneGlobalToInstanceSettings();
+  Future<void> cloneGlobalToInstanceSettings();
 
-  Future updateInstanceSettings(T newSettings);
+  Future<void> updateInstanceSettings(T newSettings);
 
-  Future updateGlobalSettings(T newSettings);
+  Future<void> updateGlobalSettings(T newSettings);
 }

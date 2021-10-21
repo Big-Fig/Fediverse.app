@@ -157,7 +157,7 @@ class LocalInstancePublicTimelinePageBloc extends InstancePublicTimelinePageBloc
   Uri? get remoteInstanceUriOrNull => null;
 
   @override
-  Future internalAsyncInit() async {
+  Future<void> internalAsyncInit() async {
     timelineLocalPreferenceBloc =
         TimelineLocalPreferenceBloc.instancePublicTimeline(
       localPreferencesService,

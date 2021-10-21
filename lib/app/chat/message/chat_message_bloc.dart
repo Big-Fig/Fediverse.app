@@ -79,9 +79,9 @@ abstract class IChatMessageBloc implements IDisposable {
 
   List<IUnifediApiEmoji>? get emojis;
 
-  Future refreshFromNetwork();
+  Future<void> refreshFromNetwork();
 
-  Future delete();
+  Future<void> delete();
 
-  Future resendPendingFailed();
+  Future<void> resendPendingFailed();
 }

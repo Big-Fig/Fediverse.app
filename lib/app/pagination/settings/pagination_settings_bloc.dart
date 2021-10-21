@@ -22,5 +22,5 @@ abstract class IPaginationSettingsBloc
 
   Stream<PaginationPageSize> get pageSizeStream;
 
-  Future changePageSize(PaginationPageSize value);
+  Future<void> changePageSize(PaginationPageSize value);
 }

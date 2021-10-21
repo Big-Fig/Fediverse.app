@@ -14,7 +14,7 @@ abstract class IAppAnalyticsBloc implements IDisposable {
 
   Stream<AppAnalyticsData> get dataStream;
 
-  Future onAppOpened();
+  Future<void> onAppOpened();
 }
 
 extension IAppAnalyticsBlocExtension on IAppAnalyticsBloc {

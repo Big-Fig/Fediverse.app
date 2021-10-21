@@ -158,7 +158,7 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
       )
       .distinct();
 
-  Future refreshFromNetwork() async {
+  Future<void> refreshFromNetwork() async {
     var remoteNotification = await pleromaNotificationService.getNotification(
       notificationId: remoteId,
     );
@@ -169,7 +169,7 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
     );
   }
 
-  Future _updateByRemoteNotification(
+  Future<void> _updateByRemoteNotification(
     IUnifediApiNotification remoteNotification, {
     required Batch? batchTransaction,
   }) =>
@@ -181,7 +181,7 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
       );
 
   @override
-  Future dispose() {
+  Future<void> dispose() {
     _logger.finest(() => 'dispose');
 
     return super.dispose();
@@ -198,7 +198,7 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
       notification.typeAsUnifediApi;
 
   @override
-  Future dismiss() async {
+  Future<void> dismiss() async {
     await pleromaNotificationService.dismissNotification(
       notificationId: notification.remoteId,
     );
@@ -209,12 +209,12 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
   }
 
   @override
-  Future markAsRead() async {
+  Future<void> markAsRead() async {
     await notificationRepository.markAsRead(
       notification: notification,
     );
     if (pleromaNotificationService.isPleroma) {
-      // ignore: unawaited_futures
+      // ignore: unawaited_futures, avoid-ignoring-return-values
       pleromaNotificationService.markAsReadSingle(
         notificationId: notification.remoteId,
       );

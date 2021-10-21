@@ -125,6 +125,7 @@ class _EditMyAccountCustomFieldsListFieldAddNewButtonWidget
     return FediPrimaryFilledTextButtonWithBorder(
       S.of(context).app_account_my_edit_field_customField_action_addNew,
       onPressed: () {
+        // ignore: avoid-ignoring-return-values
         customFieldsGroupBloc.addNewEmptyField();
       },
       expanded: false,

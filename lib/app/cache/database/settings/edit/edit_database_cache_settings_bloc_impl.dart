@@ -99,7 +99,7 @@ class EditDatabaseCacheSettingsBloc
       );
 
   @override
-  Future fillSettingsToFormFields(DatabaseCacheSettings settings) async {
+  Future<void> fillSettingsToFormFields(DatabaseCacheSettings settings) async {
     ageLimitDatabaseSelectCacheSingleSelectValueFormFieldBloc
         .changeCurrentValue(
       settings.ageLimitType,
@@ -112,14 +112,14 @@ class EditDatabaseCacheSettingsBloc
   }
 
   @override
-  Future clearAll() async {
+  Future<void> clearAll() async {
     await databaseService.clearAll();
 
     await _recalculateInfoFields();
   }
 
   @override
-  Future clearByLimits() async {
+  Future<void> clearByLimits() async {
     await databaseService.clearByLimits(
       ageLimit: databaseCacheSettingsBloc.ageLimitType.toDurationOrNull(),
       entriesCountByTypeLimit:
@@ -129,7 +129,7 @@ class EditDatabaseCacheSettingsBloc
     await _recalculateInfoFields();
   }
 
-  Future _recalculateInfoFields() async {
+  Future<void> _recalculateInfoFields() async {
     await currentMaxAgeDatabaseCacheInfoFormFieldBloc.recalculate();
     await currentMaxEntriesCountByTypeDatabaseCacheInfoFormFieldBloc
         .recalculate();

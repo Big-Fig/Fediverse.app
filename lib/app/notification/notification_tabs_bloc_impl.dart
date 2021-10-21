@@ -108,7 +108,7 @@ class NotificationsTabsBloc extends AsyncInitLoadingBloc
       );
 
   @override
-  Future internalAsyncInit() async {
+  Future<void> internalAsyncInit() async {
     _logger.finest(() => 'internalAsyncInit');
 
     for (final tab in tabs) {
@@ -128,7 +128,8 @@ class NotificationsTabsBloc extends AsyncInitLoadingBloc
 
     addCustomDisposable(
       () async {
-        await Future.wait<void>(
+        // ignore: avoid-ignoring-return-values
+        await Future.wait<dynamic>(
           tabsMap.values.map(
             (bloc) => bloc.dispose(),
           ),

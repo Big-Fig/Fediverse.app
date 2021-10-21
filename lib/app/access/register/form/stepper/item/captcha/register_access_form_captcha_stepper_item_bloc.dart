@@ -17,5 +17,5 @@ abstract class IRegisterUnifediApiAccessFormStepperCaptchaItemBloc
 
   IPleromaFormCaptchaStringFieldBloc get captchaFieldBloc;
 
-  Future reloadCaptcha();
+  Future<void> reloadCaptcha();
 }

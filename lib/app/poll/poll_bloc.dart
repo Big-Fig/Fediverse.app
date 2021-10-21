@@ -49,11 +49,11 @@ abstract class IPollBloc implements IDisposable {
 
   Stream<bool> get isVotedStream;
 
-  Future vote();
+  Future<void> vote();
 
   void onPollUpdated(IUnifediApiPoll? poll);
 
-  Future refreshFromNetwork();
+  Future<void> refreshFromNetwork();
 
   void showResultsWithoutVote();
 

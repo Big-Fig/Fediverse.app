@@ -58,7 +58,7 @@ void goToRemoteAccountDetailsPageBasedOnRemoteInstanceAccount(
   }
 }
 
-Future goToRemoteAccountDetailsPageBasedOnLocalInstanceRemoteAccount(
+Future<void> goToRemoteAccountDetailsPageBasedOnLocalInstanceRemoteAccount(
   BuildContext context, {
   required IAccount? localInstanceRemoteAccount,
 }) async {

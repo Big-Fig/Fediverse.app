@@ -5,7 +5,7 @@ import 'package:fedi/app/chat/conversation/start/status/post_status_start_conver
 import 'package:fedi/app/chat/pleroma/pleroma_chat_helper.dart';
 import 'package:flutter/cupertino.dart';
 
-Future goToMessagesPageAccountAction(BuildContext context) async {
+Future<void> goToMessagesPageAccountAction(BuildContext context) async {
   var accountBloc = IAccountBloc.of(context, listen: false);
   var account = accountBloc.account;
 

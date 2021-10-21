@@ -56,7 +56,7 @@ MaterialPageRoute<void> createRemoteInstancePublicTimelinePageRoute({
       ),
     );
 
-Future goToRemoteInstancePublicTimelinePage({
+Future<void> goToRemoteInstancePublicTimelinePage({
   required BuildContext context,
   required Uri remoteInstanceUri,
   required IUnifediApiInstance unifediApiInstance,

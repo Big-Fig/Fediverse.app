@@ -48,11 +48,11 @@ abstract class IPleromaChatMessageRepository
     bool onlyPendingStatePublishedOrNull = false,
   });
 
-  Future markChatMessageAsDeleted({
+  Future<void> markChatMessageAsDeleted({
     required String chatMessageRemoteId,
   });
 
-  Future markChatMessageAsHiddenLocallyOnDevice({
+  Future<void> markChatMessageAsHiddenLocallyOnDevice({
     required int chatMessageLocalId,
   });
 }

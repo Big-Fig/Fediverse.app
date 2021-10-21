@@ -27,7 +27,7 @@ abstract class IFilterCachedListBloc extends DisposableOwner
   });
 
   @override
-  Future refreshItemsFromRemoteForPage({
+  Future<void> refreshItemsFromRemoteForPage({
     required int? limit,
     required IFilter? newerThan,
     required IFilter? olderThan,

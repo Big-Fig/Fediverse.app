@@ -57,7 +57,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
         conversationAccountsDao = appDatabase.conversationAccountsDao,
         chatAccountsDao = appDatabase.chatAccountsDao;
 
-  Future upsertRemoteAccount(
+  Future<void> upsertRemoteAccount(
     IUnifediApiAccount unifediApiAccount, {
     required String? conversationRemoteId,
     required String? chatRemoteId,
@@ -89,7 +89,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     }
   }
 
-  Future _upsertRemoteAccountMetadata(
+  Future<void> _upsertRemoteAccountMetadata(
     IUnifediApiAccount unifediApiAccount, {
     required String? conversationRemoteId,
     required String? chatRemoteId,
@@ -134,7 +134,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }
 
   @override
-  Future addAccountFollowings({
+  Future<void> addAccountFollowings({
     required String accountRemoteId,
     required List<UnifediApiAccount> followings,
     required Batch? batchTransaction,
@@ -172,7 +172,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }
 
   @override
-  Future addAccountFollowers({
+  Future<void> addAccountFollowers({
     required String accountRemoteId,
     required List<IUnifediApiAccount> followers,
     required Batch? batchTransaction,
@@ -210,7 +210,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }
 
   @override
-  Future updateStatusFavouritedBy({
+  Future<void> updateStatusFavouritedBy({
     required String statusRemoteId,
     required List<IUnifediApiAccount> favouritedByAccounts,
     required Batch? batchTransaction,
@@ -221,7 +221,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
         favouritedByAccounts,
         batchTransaction: batchTransaction,
       );
-      // ignore: unawaited_futures
+      // ignore: unawaited_futures, avoid-ignoring-return-values
       statusFavouritedAccountsDao.deleteByStatusRemoteId(statusRemoteId);
       // ignore: unawaited_futures, cascade_invocations
       statusFavouritedAccountsDao.insertAll(
@@ -249,7 +249,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }
 
   @override
-  Future updateStatusRebloggedBy({
+  Future<void> updateStatusRebloggedBy({
     required String statusRemoteId,
     required List<IUnifediApiAccount> rebloggedByAccounts,
     required Batch? batchTransaction,
@@ -335,7 +335,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       );
 
   @override
-  Future removeAccountFollowing({
+  Future<void> removeAccountFollowing({
     required String accountRemoteId,
     required String followingAccountId,
     required Batch? batchTransaction,
@@ -348,7 +348,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       );
 
   @override
-  Future removeAccountFollower({
+  Future<void> removeAccountFollower({
     required String accountRemoteId,
     required String followerAccountId,
     required Batch? batchTransaction,
@@ -486,7 +486,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       );
 
   @override
-  Future upsertChatRemoteAccount(
+  Future<void> upsertChatRemoteAccount(
     IUnifediApiAccount remoteAccount, {
     required String chatRemoteId,
     required Batch? batchTransaction,
@@ -499,7 +499,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       );
 
   @override
-  Future upsertChatRemoteAccounts(
+  Future<void> upsertChatRemoteAccounts(
     List<IUnifediApiAccount> remoteAccounts, {
     required String chatRemoteId,
     required Batch? batchTransaction,
@@ -525,7 +525,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }
 
   @override
-  Future upsertConversationRemoteAccount(
+  Future<void> upsertConversationRemoteAccount(
     IUnifediApiAccount remoteAccount, {
     required String conversationRemoteId,
     required Batch? batchTransaction,
@@ -538,7 +538,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       );
 
   @override
-  Future upsertConversationRemoteAccounts(
+  Future<void> upsertConversationRemoteAccounts(
     List<IUnifediApiAccount> remoteAccounts, {
     required String conversationRemoteId,
     required Batch? batchTransaction,

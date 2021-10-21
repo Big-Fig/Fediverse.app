@@ -56,6 +56,8 @@ class MyAccountAccountMuteActionMuteButtonWidget extends StatelessWidget {
                 context: context,
                 accountBloc: accountBloc,
               );
+
+              // ignore: avoid-ignoring-return-values
               await paginationListBloc.refreshWithoutController();
             },
             color: fediUiColorTheme.error,

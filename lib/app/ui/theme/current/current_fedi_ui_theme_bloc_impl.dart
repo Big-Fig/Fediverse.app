@@ -74,7 +74,7 @@ class CurrentFediUiThemeBloc extends DisposableOwner
   }
 
   @override
-  Future changeTheme(IFediUiTheme theme) async {
+  Future<void> changeTheme(IFediUiTheme theme) async {
     var newThemeId = theme.id;
     if (uiSettingsBloc.themeId != newThemeId) {
       await uiSettingsBloc.changeThemeId(newThemeId);

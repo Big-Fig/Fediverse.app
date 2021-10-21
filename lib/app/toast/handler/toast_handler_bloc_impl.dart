@@ -229,7 +229,7 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
     }
   }
 
-  Future _handleNonCurrentInstancePushMessage(
+  Future<void> _handleNonCurrentInstancePushMessage(
     NotificationsPushHandlerMessage notificationsPushHandlerMessage,
   ) async {
     var pleromaPushMessage = notificationsPushHandlerMessage.body;

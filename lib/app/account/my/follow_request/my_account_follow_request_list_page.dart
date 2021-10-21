@@ -40,7 +40,7 @@ class _MyAccountFollowRequestListPageEmptyWidget extends StatelessWidget {
   const _MyAccountFollowRequestListPageEmptyWidget();
 }
 
-Future goToMyAccountFollowRequestListPage(BuildContext context) =>
+Future<void> goToMyAccountFollowRequestListPage(BuildContext context) =>
     Navigator.push(
       context,
       createMyAccountFollowRequestListPage(),

@@ -43,7 +43,7 @@ Future<IMediaDeviceFile?> showEditMyAccountPleromaBackgroundFieldPicker(
       ],
     );
 
-Future _cropAndSelect(
+Future<void> _cropAndSelect(
   BuildContext context,
   IMediaDeviceFile mediaDeviceFile,
 ) async {

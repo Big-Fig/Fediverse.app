@@ -16,25 +16,25 @@ abstract class IStatusSensitiveSettingsBloc
   Stream<bool> get isAlwaysShowSpoilerStream;
 
   // ignore: avoid_positional_boolean_parameters
-  Future changeIsAlwaysShowSpoiler(bool value);
+  Future<void> changeIsAlwaysShowSpoiler(bool value);
 
   bool get isNeedReplaceBlurWithFill;
 
   Stream<bool> get isNeedReplaceBlurWithFillStream;
 
   // ignore: avoid_positional_boolean_parameters
-  Future changeIsNeedReplaceBlurWithFill(bool value);
+  Future<void> changeIsNeedReplaceBlurWithFill(bool value);
 
   bool get isAlwaysShowNsfw;
 
   Stream<bool> get isAlwaysShowNsfwStream;
 
   // ignore: avoid_positional_boolean_parameters
-  Future changeIsAlwaysShowNsfw(bool value);
+  Future<void> changeIsAlwaysShowNsfw(bool value);
 
   Duration? get nsfwDisplayDelayDuration;
 
   Stream<Duration?> get nsfwDisplayDelayDurationStream;
 
-  Future changeNsfwDisplayDelayDuration(Duration? value);
+  Future<void> changeNsfwDisplayDelayDuration(Duration? value);
 }

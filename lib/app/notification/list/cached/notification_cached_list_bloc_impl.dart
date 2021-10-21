@@ -54,7 +54,7 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
       );
 
   @override
-  Future internalAsyncInit() async {
+  Future<void> internalAsyncInit() async {
     filters = await filterRepository.findAllInAppType(
       filters: filterRepositoryFilters,
       pagination: null,
@@ -96,7 +96,7 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
       );
 
   @override
-  Future refreshItemsFromRemoteForPage({
+  Future<void> refreshItemsFromRemoteForPage({
     required int? limit,
     required INotification? newerThan,
     required INotification? olderThan,
@@ -168,7 +168,7 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
       );
 
   @override
-  Future dismissAll() async {
+  Future<void> dismissAll() async {
     await pleromaNotificationService.dismissAll();
     await notificationRepository.dismissAll();
   }

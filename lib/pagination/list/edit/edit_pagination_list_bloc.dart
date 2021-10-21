@@ -11,9 +11,9 @@ abstract class IEditPaginationListBloc<TPage extends PaginationPage<TItem?>,
   }) =>
       Provider.of<IEditPaginationListBloc>(context, listen: listen);
 
-  Future addItem(TItem item);
+  Future<void> addItem(TItem item);
 
-  Future removeItem(TItem item);
+  Future<void> removeItem(TItem item);
 
   bool isItemAdded(TItem item);
 
@@ -23,7 +23,7 @@ abstract class IEditPaginationListBloc<TPage extends PaginationPage<TItem?>,
 
   Stream<bool> get isSomethingChangedStream;
 
-  Future clearChangesAndRefresh();
+  Future<void> clearChangesAndRefresh();
 
   List<TItem> get addedItems;
 

@@ -112,33 +112,32 @@ class ChatDao extends PopulatedAppRemoteDatabaseDao<
     return mapped.map((value) => value!.toInt());
   }
 
-  SimpleSelectStatement<$DbChatsTable, DbChat> orderBy(
+  void orderBy(
     SimpleSelectStatement<$DbChatsTable, DbChat> query,
     List<PleromaChatRepositoryOrderingTermData> orderTerms,
   ) =>
-      query
-        ..orderBy(
-          orderTerms
-              .map(
-                (orderTerm) => ($DbChatsTable item) {
-                  GeneratedColumn<Object?> expression;
-                  switch (orderTerm.orderType) {
-                    case PleromaChatOrderType.remoteId:
-                      expression = item.remoteId;
-                      break;
-                    case PleromaChatOrderType.updatedAt:
-                      expression = item.updatedAt;
-                      break;
-                  }
+      query.orderBy(
+        orderTerms
+            .map(
+              (orderTerm) => ($DbChatsTable item) {
+                GeneratedColumn<Object?> expression;
+                switch (orderTerm.orderType) {
+                  case PleromaChatOrderType.remoteId:
+                    expression = item.remoteId;
+                    break;
+                  case PleromaChatOrderType.updatedAt:
+                    expression = item.updatedAt;
+                    break;
+                }
 
-                  return OrderingTerm(
-                    expression: expression,
-                    mode: orderTerm.orderingMode,
-                  );
-                },
-              )
-              .toList(),
-        );
+                return OrderingTerm(
+                  expression: expression,
+                  mode: orderTerm.orderingMode,
+                );
+              },
+            )
+            .toList(),
+      );
 
   List<Join> populateChatJoin() => [
         leftOuterJoin(

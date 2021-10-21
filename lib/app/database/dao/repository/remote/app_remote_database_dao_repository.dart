@@ -24,7 +24,7 @@ abstract class AppRemoteDatabaseDaoRepository<
       OrderingTerm> get dao;
 
   @override
-  Future insertAllInRemoteType(
+  Future<void> insertAllInRemoteType(
     List<RemoteItem> remoteItems, {
     required InsertMode? mode,
     required Batch? batchTransaction,
@@ -50,7 +50,7 @@ abstract class AppRemoteDatabaseDaoRepository<
   }
 
   @override
-  Future upsertAllInRemoteType(
+  Future<void> upsertAllInRemoteType(
     List<RemoteItem> remoteItems, {
     required Batch? batchTransaction,
   }) =>
@@ -145,7 +145,7 @@ abstract class AppRemoteDatabaseDaoRepository<
   }
 
   @override
-  Future deleteByRemoteId(
+  Future<void> deleteByRemoteId(
     RemoteId remoteId, {
     required Batch? batchTransaction,
   }) =>

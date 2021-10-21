@@ -111,7 +111,7 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
   int? get itemsCountPerPage => paginationBloc.itemsCountPerPage;
 
   @override
-  Future internalAsyncInit() async {
+  Future<void> internalAsyncInit() async {
     _logger.finest(
       () =>
           'internalAsyncInit loadFromCacheDuringInit $loadFromCacheDuringInit',
@@ -119,6 +119,7 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
 
     if (loadFromCacheDuringInit) {
       try {
+        // ignore: avoid-ignoring-return-values
         await loadFirstPageOnInit();
         // ignore: avoid_catches_without_on_clauses
       } catch (e, stackTrace) {
@@ -253,7 +254,8 @@ class PaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
         );
       }
     } else {
-      //otherwise refresh only bloc
+      // otherwise refresh only bloc
+      // ignore: avoid-ignoring-return-values
       await refreshWithoutController();
     }
   }

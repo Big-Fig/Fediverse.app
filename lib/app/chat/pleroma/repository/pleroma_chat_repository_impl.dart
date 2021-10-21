@@ -84,7 +84,7 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }
 
   @override
-  Future markAsRead({
+  Future<void> markAsRead({
     required IPleromaChat chat,
     required Batch? batchTransaction,
   }) =>
@@ -107,7 +107,7 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   Stream<int> watchTotalUnreadCount() => dao.watchTotalAmountUnread();
 
   @override
-  Future incrementUnreadCount({
+  Future<void> incrementUnreadCount({
     required String chatRemoteId,
     required DateTime updatedAt,
   }) =>
@@ -291,7 +291,7 @@ class PleromaChatRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     );
   }
 
-  Future _upsertChatMessageMetadata(
+  Future<void> _upsertChatMessageMetadata(
     IUnifediApiChat remoteItem, {
     required Batch? batchTransaction,
   }) async {

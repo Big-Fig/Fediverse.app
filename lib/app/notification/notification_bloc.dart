@@ -56,7 +56,7 @@ abstract class INotificationBloc implements IDisposable {
 
   Stream<NotificationState> get stateStream;
 
-  Future dismiss();
+  Future<void> dismiss();
 
-  Future markAsRead();
+  Future<void> markAsRead();
 }

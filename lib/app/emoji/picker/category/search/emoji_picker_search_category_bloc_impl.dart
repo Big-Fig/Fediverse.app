@@ -72,11 +72,12 @@ class EmojiPickerSearchCategoryBloc extends AsyncInitLoadingBloc
   List<CustomEmojiPickerItem>? get items => itemsSubject.value;
 
   @override
-  Future internalAsyncInit() async {
+  Future<void> internalAsyncInit() async {
     var futures = allCategoryBlocs.map(
       (bloc) => bloc.performAsyncInit(),
     );
 
-    await Future.wait<void>(futures);
+    // ignore: avoid-ignoring-return-values
+    await Future.wait<dynamic>(futures);
   }
 }

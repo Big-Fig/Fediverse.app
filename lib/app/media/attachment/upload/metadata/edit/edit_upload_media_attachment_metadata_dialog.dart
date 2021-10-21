@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/form/field/value/string/string_value_form_field_row_widget.dart';
 import 'package:fedi/app/media/attachment/upload/metadata/edit/edit_upload_media_attachment_metadata_bloc.dart';
@@ -13,7 +15,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-typedef SaveCallback = Function(UploadMediaAttachmentMetadata metadata);
+typedef SaveCallback = FutureOr<void> Function(
+  UploadMediaAttachmentMetadata metadata,
+);
 
 Future<UploadMediaAttachmentMetadata?>
     showEditUploadMediaAttachmentMetadataDialog({

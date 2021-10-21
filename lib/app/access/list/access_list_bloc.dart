@@ -20,9 +20,9 @@ abstract class IUnifediApiAccessListBloc implements IDisposable {
 
   Stream<bool> get isHaveInstancesStream;
 
-  Future addInstance(UnifediApiAccess instance);
+  Future<void> addInstance(UnifediApiAccess instance);
 
-  Future removeInstance(UnifediApiAccess instance);
+  Future<void> removeInstance(UnifediApiAccess instance);
 
   UnifediApiAccess? findInstanceByCredentials({
     required String host,

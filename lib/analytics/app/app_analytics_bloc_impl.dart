@@ -18,7 +18,7 @@ class AppAnalyticsBloc extends DisposableOwner implements IAppAnalyticsBloc {
       appAnalyticsLocalPreferenceBloc.stream;
 
   @override
-  Future onAppOpened() => appAnalyticsLocalPreferenceBloc.setValue(
+  Future<void> onAppOpened() => appAnalyticsLocalPreferenceBloc.setValue(
         data.copyWith(
           appOpenedCount: data.appOpenedCount + 1,
         ),

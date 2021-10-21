@@ -15,62 +15,62 @@ abstract class IToastSettingsBloc
 
   Stream<PushSettings> get pushSettingsStream;
 
-  Future changePushSettings(PushSettings pushSettings);
+  Future<void> changePushSettings(PushSettings pushSettings);
 
   bool get favourite;
 
   Stream<bool> get favouriteStream;
 
   // ignore: avoid_positional_boolean_parameters
-  Future changeFavourite(bool value);
+  Future<void> changeFavourite(bool value);
 
   ToastHandlingType get handlingType;
 
   Stream<ToastHandlingType> get handlingTypeStream;
 
-  Future changeHandlingType(ToastHandlingType value);
+  Future<void> changeHandlingType(ToastHandlingType value);
 
   bool get follow;
 
   Stream<bool> get followStream;
 
   // ignore: avoid_positional_boolean_parameters
-  Future changeFollow(bool value);
+  Future<void> changeFollow(bool value);
 
   bool get mention;
 
   Stream<bool> get mentionStream;
 
   // ignore: avoid_positional_boolean_parameters
-  Future changeMention(bool value);
+  Future<void> changeMention(bool value);
 
   bool get reblog;
 
   Stream<bool> get reblogStream;
 
   // ignore: avoid_positional_boolean_parameters
-  Future changeReblog(bool value);
+  Future<void> changeReblog(bool value);
 
   bool get poll;
 
   Stream<bool> get pollStream;
 
   // ignore: avoid_positional_boolean_parameters
-  Future changePoll(bool value);
+  Future<void> changePoll(bool value);
 
   bool get chatMention;
 
   Stream<bool> get chatMentionStream;
 
   // ignore: avoid_positional_boolean_parameters
-  Future changeChatMention(bool value);
+  Future<void> changeChatMention(bool value);
 
   bool get emojiReaction;
 
   Stream<bool> get emojiReactionStream;
 
   // ignore: avoid_positional_boolean_parameters
-  Future changeEmojiReaction(bool value);
+  Future<void> changeEmojiReaction(bool value);
 
   bool isNotificationTypeEnabled(
     UnifediApiNotificationType unifediApiNotificationType,

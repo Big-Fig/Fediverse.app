@@ -8,7 +8,7 @@ import 'package:logging/logging.dart';
 
 final _logger = Logger('status_body_link_helper.dart');
 
-Future handleStatusBodyLinkClick({
+Future<void> handleStatusBodyLinkClick({
   required IStatusBloc statusBloc,
   required String url,
   required BuildContext context,

@@ -50,7 +50,7 @@ class MyAccountFeaturedHashtagSuggestionBloc extends DisposableOwner
         .disposeWith(this);
     hashtagPaginationListBloc.disposeWith(this);
 
-    // ignore: unawaited_futures, cascade_invocations
+    // ignore: unawaited_futures, cascade_invocations, avoid-ignoring-return-values
     hashtagPaginationListBloc.refreshWithoutController();
   }
 

@@ -102,7 +102,7 @@ class AccountStatusesMediaOnlyCachedListBloc
       );
 
   @override
-  Future refreshItemsFromRemoteForPage({
+  Future<void> refreshItemsFromRemoteForPage({
     required int? limit,
     required IStatus? newerThan,
     required IStatus? olderThan,

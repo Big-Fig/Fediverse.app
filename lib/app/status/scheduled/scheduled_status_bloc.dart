@@ -31,15 +31,15 @@ abstract class IScheduledStatusBloc implements IDisposable {
 
   Stream<List<IUnifediApiMediaAttachment>?> get mediaAttachmentsStream;
 
-  Future reSchedule({
+  Future<void> reSchedule({
     required DateTime scheduledAt,
   });
 
-  Future cancelSchedule();
+  Future<void> cancelSchedule();
 
-  Future refreshFromNetwork();
+  Future<void> refreshFromNetwork();
 
   IPostStatusData calculatePostStatusData();
 
-  Future postScheduledPost(PostStatusData postStatusData);
+  Future<void> postScheduledPost(PostStatusData postStatusData);
 }

@@ -28,7 +28,7 @@ Future<IMediaDeviceFile?> showEditMyAccountAvatarFieldPicker(
       ],
     );
 
-Future _selectAndCrop(
+Future<void> _selectAndCrop(
   BuildContext context,
   IMediaDeviceFile mediaDeviceFile,
 ) async {

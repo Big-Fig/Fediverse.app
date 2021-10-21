@@ -18,24 +18,24 @@ abstract class IPostStatusSettingsBloc
   Stream<bool> get markMediaAsNsfwOnAttachStream;
 
   // ignore: avoid_positional_boolean_parameters
-  Future changeMarkMediaAsNsfwOnAttach(bool value);
+  Future<void> changeMarkMediaAsNsfwOnAttach(bool value);
 
   bool get dontUploadMediaDuringEditing;
 
   Stream<bool> get dontUploadMediaDuringEditingStream;
 
   // ignore: avoid_positional_boolean_parameters
-  Future changeDontUploadMediaDuringEditing(bool value);
+  Future<void> changeDontUploadMediaDuringEditing(bool value);
 
   UnifediApiVisibility get defaultVisibilityAsUnifediApi;
 
   Stream<UnifediApiVisibility> get defaultVisibilityAsUnifediApiStream;
 
-  Future changeDefaultVisibilityAsUnifediApi(UnifediApiVisibility value);
+  Future<void> changeDefaultVisibilityAsUnifediApi(UnifediApiVisibility value);
 
   LocalizationLocale? get defaultStatusLocale;
 
   Stream<LocalizationLocale?> get defaultStatusLocaleStream;
 
-  Future changeDefaultStatusLocale(LocalizationLocale? value);
+  Future<void> changeDefaultStatusLocale(LocalizationLocale? value);
 }

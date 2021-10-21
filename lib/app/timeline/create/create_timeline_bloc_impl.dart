@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/timeline/create/create_timeline_bloc.dart';
@@ -23,7 +25,7 @@ import 'package:fediverse_api/fediverse_api.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
-typedef TimelineSavedCallback = Function(Timeline timeline);
+typedef TimelineSavedCallback = FutureOr<void> Function(Timeline timeline);
 
 class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
   final TimelineSavedCallback timelineSavedCallback;
@@ -214,7 +216,7 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
   Stream<bool> get isSomethingChangedStream => Stream.value(isSomethingChanged);
 
   @override
-  Future save() async {
+  Future<void> save() async {
     var timeline = Timeline(
       id: idFieldBloc.currentValue,
       label: nameFieldBloc.currentValue,

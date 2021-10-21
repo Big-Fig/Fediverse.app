@@ -207,10 +207,11 @@ abstract class PostStatusBloc extends PostMessageBloc
             'textIsNotEmpty $textIsNotEmpty',
       );
       if (textIsNotEmpty) {
-        currentInputTextErrors!.remove(postMessagePollEmptyInputTextError);
+        // ignore: avoid-ignoring-return-values
+        currentInputTextErrors.remove(postMessagePollEmptyInputTextError);
         inputTextErrorsSubject.add([...currentInputTextErrors]);
       } else {
-        if (!currentInputTextErrors!
+        if (!currentInputTextErrors
             .contains(postMessagePollEmptyInputTextError)) {
           currentInputTextErrors.add(postMessagePollEmptyInputTextError);
           inputTextErrorsSubject.add([...currentInputTextErrors]);
@@ -221,7 +222,8 @@ abstract class PostStatusBloc extends PostMessageBloc
         );
       }
     } else {
-      currentInputTextErrors!.remove(postMessagePollEmptyInputTextError);
+      // ignore: avoid-ignoring-return-values
+      currentInputTextErrors.remove(postMessagePollEmptyInputTextError);
       inputTextErrorsSubject.add([...currentInputTextErrors]);
     }
   }
@@ -419,6 +421,7 @@ abstract class PostStatusBloc extends PostMessageBloc
 
         // ignore: prefer_foreach
         for (final acct in acctsToRemove) {
+          // ignore: avoid-ignoring-return-values
           mentionedAccts.remove(acct);
         }
         mentionedAcctsSubject.add(mentionedAccts);
@@ -471,6 +474,7 @@ abstract class PostStatusBloc extends PostMessageBloc
   @override
   void removeMentionByAcct(String acct) {
     if (mentionedAccts.contains(acct)) {
+      // ignore: avoid-ignoring-return-values
       mentionedAccts.remove(acct);
       onMentionedAccountsChanged();
     }
@@ -493,7 +497,7 @@ abstract class PostStatusBloc extends PostMessageBloc
       mediaAttachmentBlocs.length >= maximumMediaAttachmentCount;
 
   @override
-  Future post() async {
+  Future<void> post() async {
     var success = await tryUploadAllAttachments();
 
     if (!success) {
@@ -505,7 +509,7 @@ abstract class PostStatusBloc extends PostMessageBloc
     await internalPostStatusData(postStatusData);
   }
 
-  Future internalPostStatusData(IPostStatusData postStatusData) async {
+  Future<void> internalPostStatusData(IPostStatusData postStatusData) async {
     if (isScheduledAtExist) {
       await actualScheduleStatus();
     } else {
@@ -585,7 +589,7 @@ abstract class PostStatusBloc extends PostMessageBloc
   }
 
   // ignore: no-empty-block
-  Future onStatusPosted(IUnifediApiStatus remoteStatus) async {
+  Future<void> onStatusPosted(IUnifediApiStatus remoteStatus) async {
     // nothing by default
   }
 
@@ -718,7 +722,7 @@ abstract class PostStatusBloc extends PostMessageBloc
     expireAtSubject.add(duration);
   }
 
-  Future actualPostStatus() async {
+  Future<void> actualPostStatus() async {
     var unifediApiPostStatus = calculatePostStatus();
     var remoteStatus = await unifediApiStatusService.postStatus(
       idempotencyKey: idempotencyKey,
@@ -753,11 +757,12 @@ abstract class PostStatusBloc extends PostMessageBloc
     }
   }
 
-  Future actualScheduleStatus() async {
+  Future<void> actualScheduleStatus() async {
     var scheduledStatus = await unifediApiStatusService.scheduleStatus(
       idempotencyKey: idempotencyKey,
       postStatus: calculateScheduleStatus(),
     );
+    // ignore: avoid-ignoring-return-values
     await scheduledStatusRepository.upsertInRemoteType(scheduledStatus);
   }
 

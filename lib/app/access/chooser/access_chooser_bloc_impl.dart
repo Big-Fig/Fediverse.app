@@ -21,7 +21,7 @@ class UnifediApiAccessChooserBloc extends DisposableOwner
   });
 
   @override
-  Future chooseInstance(UnifediApiAccess instance) =>
+  Future<void> chooseInstance(UnifediApiAccess instance) =>
       currentInstanceBloc.changeCurrentInstance(instance);
 
   @override
@@ -58,7 +58,7 @@ class UnifediApiAccessChooserBloc extends DisposableOwner
       currentInstanceBloc.currentInstanceStream;
 
   @override
-  Future removeInstance(UnifediApiAccess instance) =>
+  Future<void> removeInstance(UnifediApiAccess instance) =>
       instanceListBloc.removeInstance(instance);
 
   static UnifediApiAccessChooserBloc createFromContext(BuildContext context) =>

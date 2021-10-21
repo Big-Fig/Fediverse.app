@@ -48,7 +48,7 @@ class MyAccountSuggestionBloc extends DisposableOwner
     myAccountSuggestionAccountListNetworkOnlyPaginationBloc.disposeWith(this);
     accountPaginationListBloc.disposeWith(this);
 
-    // ignore: unawaited_futures, cascade_invocations
+    // ignore: unawaited_futures, cascade_invocations, avoid-ignoring-return-values
     accountPaginationListBloc.refreshWithoutController();
   }
 

@@ -130,6 +130,7 @@ class _NotificationListItemBodyDismissActionWidget extends StatelessWidget {
       caption: S.of(context).app_notification_action_dismiss,
       color: IFediUiColorTheme.of(context).white,
       onTap: () {
+        // ignore: avoid-ignoring-return-values
         PleromaAsyncOperationHelper.performPleromaAsyncOperation<void>(
           context: context,
           showProgressDialog: false,
@@ -154,6 +155,7 @@ class _NotificationListItemBodyMarkAsReadActionWidget extends StatelessWidget {
       caption: S.of(context).app_notification_action_markAsRead,
       color: IFediUiColorTheme.of(context).white,
       onTap: () {
+        // ignore: avoid-ignoring-return-values
         PleromaAsyncOperationHelper.performPleromaAsyncOperation<void>(
           context: context,
           showProgressDialog: false,
@@ -248,7 +250,7 @@ class _NotificationListItemBodyMainAreaWidget extends StatelessWidget {
         ),
       );
 
-  Future _onNotificationClick(BuildContext context) async {
+  Future<void> _onNotificationClick(BuildContext context) async {
     var notificationBloc = INotificationBloc.of(context, listen: false);
 
     await notificationBloc.notification.goToRelatedPage(context);

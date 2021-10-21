@@ -77,6 +77,7 @@ void _showEmojiPicker(BuildContext context) {
       String emojiName,
       String emoji,
     ) {
+      // ignore: avoid-ignoring-return-values
       PleromaAsyncOperationHelper.performPleromaAsyncOperation(
         context: context,
         asyncCode: () => statusBloc.toggleEmojiReaction(emoji: emoji),

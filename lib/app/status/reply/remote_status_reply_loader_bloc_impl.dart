@@ -47,7 +47,7 @@ class RemoteStatusReplyLoaderBloc extends AsyncInitLoadingBloc
   }
 
   @override
-  Future internalAsyncInit() async {
+  Future<void> internalAsyncInit() async {
     if (inReplyToStatus != null) {
       return;
     }

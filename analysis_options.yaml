@@ -144,8 +144,7 @@ dart_code_metrics:
     - test/**
     - test_driver/**
   rules:
-    # useful but require a lot of refactoring
-    # - avoid-ignoring-return-values
+    - avoid-ignoring-return-values
     - avoid-late-keyword
     # useful but require a lot of refactoring
     # - avoid-non-null-assertion

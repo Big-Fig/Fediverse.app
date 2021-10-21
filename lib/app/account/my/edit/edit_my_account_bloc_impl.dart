@@ -236,11 +236,11 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
   }
 
   @override
-  Future submitChanges() async {
+  Future<void> submitChanges() async {
     await _updateData();
   }
 
-  Future _updateData() async {
+  Future<void> _updateData() async {
     var avatarPickedFile = avatarField.isSomethingChanged
         ? avatarField.currentMediaDeviceFile
         : null;

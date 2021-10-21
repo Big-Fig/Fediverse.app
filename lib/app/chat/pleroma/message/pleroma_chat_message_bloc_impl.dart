@@ -106,17 +106,17 @@ class PleromaChatMessageBloc extends ChatMessageBloc
   IAccount? get account => chatMessage.account;
 
   @override
-  Future refreshFromNetwork() async {
+  Future<void> refreshFromNetwork() async {
     throw Exception('not supported by API yet');
   }
 
   @override
-  Future delete() => pleromaChatBloc.deleteMessage(
+  Future<void> delete() => pleromaChatBloc.deleteMessage(
         chatMessage: chatMessage,
       );
 
   @override
-  Future resendPendingFailed() {
+  Future<void> resendPendingFailed() {
     var mediaId = chatMessage.mediaAttachments?.singleOrNull?.id;
 
     var unifediApiPostChatMessage = UnifediApiPostChatMessage(

@@ -139,7 +139,7 @@ class ThreadPostStatusBloc extends PostStatusBloc
   bool get isPossibleToChangeVisibility => true;
 
   @override
-  Future onStatusPosted(IUnifediApiStatus remoteStatus) async {
+  Future<void> onStatusPosted(IUnifediApiStatus remoteStatus) async {
     _logger.finest(() => 'onStatusPosted $onStatusPosted');
     var status =
         await statusRepository.findByRemoteIdInAppType(remoteStatus.id);

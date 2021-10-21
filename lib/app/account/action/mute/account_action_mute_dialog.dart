@@ -66,6 +66,8 @@ Future<void> showAccountActionMuteDialog({
             var accountActionMuteBloc =
                 IAccountActionMuteBloc.of(context, listen: false);
 
+            // todo: check is actually changed
+            // ignore: avoid-ignoring-return-values
             await PleromaAsyncOperationHelper.performPleromaAsyncOperation<
                 void>(
               context: context,

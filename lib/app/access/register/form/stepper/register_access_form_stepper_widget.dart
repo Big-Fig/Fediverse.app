@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fedi/app/access/register/form/register_access_form_bloc.dart';
 import 'package:fedi/app/access/register/form/stepper/item/account/register_access_form_account_stepper_item_bloc.dart';
 import 'package:fedi/app/access/register/form/stepper/item/account/register_access_from_account_stepper_item_widget.dart';
@@ -21,7 +23,7 @@ import 'package:fedi/ui/stepper/fedi_stepper_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
-typedef RegisterCallback = Function(
+typedef RegisterCallback = FutureOr<void> Function(
   BuildContext context,
   RegisterResponse registerResponse,
 );

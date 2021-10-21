@@ -22,6 +22,7 @@ import 'status_bloc_impl_test.mocks.dart';
 import 'status_test_helper.dart';
 
 // ignore_for_file: no-magic-number, avoid-late-keyword
+// ignore_for_file: avoid-ignoring-return-values
 @GenerateMocks([
   IUnifediApiStatusService,
   IUnifediApiAccountService,

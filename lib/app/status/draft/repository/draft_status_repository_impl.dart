@@ -33,7 +33,7 @@ class DraftStatusRepository extends PopulatedAppLocalDatabaseDaoRepository<
       DraftStatusRepositoryOrderingTermData> get populatedDao => dao;
 
   @override
-  Future addDraftStatus({
+  Future<void> addDraftStatus({
     required IDraftStatus draftStatus,
   }) =>
       insertInDbType(

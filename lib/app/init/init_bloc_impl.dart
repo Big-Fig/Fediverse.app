@@ -18,7 +18,7 @@ class InitBloc extends AsyncInitLoadingBloc implements IInitBloc {
   }) : appContextBloc = AppContextBloc(appLaunchType: appLaunchType);
 
   @override
-  Future internalAsyncInit() async {
+  Future<void> internalAsyncInit() async {
     addDisposable(appContextBloc);
 
     await appContextBloc.performAsyncInit();

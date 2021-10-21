@@ -158,7 +158,7 @@ class PleromaChatMessageRepository
   }
 
   @override
-  Future markChatMessageAsDeleted({
+  Future<void> markChatMessageAsDeleted({
     required String chatMessageRemoteId,
   }) =>
       dao.markAsDeleted(
@@ -166,7 +166,7 @@ class PleromaChatMessageRepository
       );
 
   @override
-  Future markChatMessageAsHiddenLocallyOnDevice({
+  Future<void> markChatMessageAsHiddenLocallyOnDevice({
     required int chatMessageLocalId,
   }) =>
       dao.markAsHiddenLocallyOnDevice(

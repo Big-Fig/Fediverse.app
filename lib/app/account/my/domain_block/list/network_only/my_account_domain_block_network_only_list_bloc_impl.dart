@@ -18,7 +18,7 @@ class MyAccountDomainBlockNetworkOnlyDomainListBloc extends DisposableOwner
   });
 
   @override
-  Future removeDomainBlock({required String domain}) async {
+  Future<void> removeDomainBlock({required String domain}) async {
     await pleromaAuthAccountService.unBlockDomain(domain: domain);
   }
 

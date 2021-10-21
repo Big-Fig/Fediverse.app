@@ -59,7 +59,7 @@ abstract class ChatBloc extends AsyncInitLoadingBloc implements IChatBloc {
       chatStream.map((chat) => chat.updatedAt);
 
   @override
-  Future refreshFromNetwork();
+  Future<void> refreshFromNetwork();
 
   @override
   bool get isHaveUnread => unreadCount! > 0;
@@ -75,11 +75,11 @@ abstract class ChatBloc extends AsyncInitLoadingBloc implements IChatBloc {
   Stream<int?> get unreadCountStream => chatStream.map((chat) => chat.unread);
 
   @override
-  Future delete() async {
+  Future<void> delete() async {
     await performActualDelete();
 
     chatDeletedStreamController.add(true);
   }
 
-  Future performActualDelete();
+  Future<void> performActualDelete();
 }

@@ -96,7 +96,7 @@ class EditPushSettingsBloc extends EditInstanceSettingsBloc<PushSettings?>
       );
 
   @override
-  Future fillSettingsToFormFields(PushSettings? settings) async {
+  Future<void> fillSettingsToFormFields(PushSettings? settings) async {
     favouriteFieldBloc.changeCurrentValue(
       settings!.favourite,
     );

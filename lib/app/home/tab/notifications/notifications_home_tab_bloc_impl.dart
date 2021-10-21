@@ -14,19 +14,21 @@ class NotificationsHomeTabBloc extends HomeTabBloc
   });
 
   @override
-  Future dismissAll() async {
+  Future<void> dismissAll() async {
     await notificationRepository.dismissAll();
     await pleromaNotificationService.dismissAll();
   }
 
   @override
-  Future markAllAsRead() async {
+  Future<void> markAllAsRead() async {
     await notificationRepository.markAllAsRead();
 
     if (pleromaNotificationService.isPleroma) {
       var newestNotification =
           await notificationRepository.getNewestOrderByRemoteId();
       if (newestNotification != null) {
+        // todo: check which notifications actually read
+        // ignore: avoid-ignoring-return-values
         await pleromaNotificationService.markAsReadList(
           maxNotificationId: newestNotification.remoteId,
         );

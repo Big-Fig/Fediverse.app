@@ -139,7 +139,7 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
   }
 
   @override
-  Future deleteList() async {
+  Future<void> deleteList() async {
     await unifediApiFilterService.deleteFilter(filterId: filter!.remoteId);
 
     deletedStreamController.add(null);

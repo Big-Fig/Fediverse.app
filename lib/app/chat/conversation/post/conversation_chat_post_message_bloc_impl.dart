@@ -117,7 +117,7 @@ class ConversationChatPostMessageBloc extends PostStatusBloc {
   bool get isPossibleToChangeVisibility => true;
 
   @override
-  Future actualPostStatus() async {
+  Future<void> actualPostStatus() async {
     var currentPostStatusData = calculateCurrentPostStatusData();
 
     // ignore: unawaited_futures

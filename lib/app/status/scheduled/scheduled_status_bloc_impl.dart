@@ -134,7 +134,7 @@ class ScheduledStatusBloc extends DisposableOwner
           .map((scheduledStatus) => scheduledStatus.mediaAttachments);
 
   @override
-  Future cancelSchedule() async {
+  Future<void> cancelSchedule() async {
     await unifediApiStatusService.cancelScheduledStatus(
       scheduledStatusId: remoteId!,
     );
@@ -146,7 +146,7 @@ class ScheduledStatusBloc extends DisposableOwner
   }
 
   @override
-  Future reSchedule({
+  Future<void> reSchedule({
     required DateTime scheduledAt,
   }) async {
     var newScheduledStatus = await unifediApiStatusService.reScheduleStatus(
@@ -162,7 +162,7 @@ class ScheduledStatusBloc extends DisposableOwner
   }
 
   @override
-  Future refreshFromNetwork() async {
+  Future<void> refreshFromNetwork() async {
     var newScheduledStatus = await unifediApiStatusService.getScheduledStatus(
       scheduledStatusId: remoteId!,
     );
@@ -213,7 +213,7 @@ class ScheduledStatusBloc extends DisposableOwner
   }
 
   @override
-  Future postScheduledPost(PostStatusData postStatusData) async {
+  Future<void> postScheduledPost(PostStatusData postStatusData) async {
     await cancelSchedule();
 
     var pleromaScheduledStatus = await unifediApiStatusService.scheduleStatus(
@@ -237,6 +237,7 @@ class ScheduledStatusBloc extends DisposableOwner
       ),
     );
 
+    // ignore: avoid-ignoring-return-values
     await scheduledStatusRepository.upsertInRemoteType(pleromaScheduledStatus);
   }
 

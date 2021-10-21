@@ -17,7 +17,7 @@ class PleromaChatNewMessagesHandlerBloc extends DisposableOwner
   });
 
   @override
-  Future handleNewMessage(IUnifediApiChatMessage chatMessage) async {
+  Future<void> handleNewMessage(IUnifediApiChatMessage chatMessage) async {
     var chatId = chatMessage.chatId;
 
     // local chat message may not exist
@@ -29,6 +29,7 @@ class PleromaChatNewMessagesHandlerBloc extends DisposableOwner
       var remoteChat = await pleromaApiChatService.getChat(
         id: chatId,
       );
+      // ignore: avoid-ignoring-return-values
       await chatRepository.upsertInRemoteType(
         remoteChat,
       );
@@ -53,6 +54,7 @@ class PleromaChatNewMessagesHandlerBloc extends DisposableOwner
           chatId: chatId,
           lastReadChatMessageId: chatMessage.id,
         );
+        // ignore: avoid-ignoring-return-values
         await chatRepository.upsertInRemoteType(updatedChat);
         // updates updatedAt from backend
       } else {
@@ -67,7 +69,7 @@ class PleromaChatNewMessagesHandlerBloc extends DisposableOwner
   }
 
   @override
-  Future handleChatUpdate(IUnifediApiChat chat) async {
+  Future<void> handleChatUpdate(IUnifediApiChat chat) async {
     var actualChat = chat;
 
     // increase only if chat closed now
@@ -86,6 +88,7 @@ class PleromaChatNewMessagesHandlerBloc extends DisposableOwner
       }
     }
 
-    return chatRepository.upsertInRemoteType(actualChat);
+    // ignore: avoid-ignoring-return-values
+    await chatRepository.upsertInRemoteType(actualChat);
   }
 }

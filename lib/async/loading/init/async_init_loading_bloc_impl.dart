@@ -34,7 +34,7 @@ abstract class AsyncInitLoadingBloc extends AsyncLoadingService
   }
 
   @override
-  Future performAsyncInit() async {
+  Future<void> performAsyncInit() async {
     _logger.finest(() => 'performAsyncInit');
     if (initLoadingState == AsyncInitLoadingState.notStarted) {
       if (!_isInitLoadingSubject.isClosed) {
@@ -63,5 +63,5 @@ abstract class AsyncInitLoadingBloc extends AsyncLoadingService
 
   @protected
   @mustCallSuper
-  Future internalAsyncInit();
+  Future<void> internalAsyncInit();
 }

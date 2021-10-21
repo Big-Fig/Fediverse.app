@@ -51,7 +51,7 @@ abstract class InstanceDirectoryBloc extends DisposableOwner
     );
     addDisposable(accountPaginationListBloc);
 
-    // ignore: unawaited_futures
+    // ignore: unawaited_futures, avoid-ignoring-return-values
     accountPaginationListBloc.refreshWithoutController();
   }
 

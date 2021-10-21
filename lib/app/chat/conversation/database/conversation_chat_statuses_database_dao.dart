@@ -40,7 +40,7 @@ class ConversationStatusesDao extends DatabaseDao<
         updateKind: UpdateKind.delete,
       );
 
-  Future deleteByConversationRemoteIdBatch(
+  Future<void> deleteByConversationRemoteIdBatch(
     String conversationRemoteId, {
     required Batch? batchTransaction,
   }) async {
@@ -51,7 +51,8 @@ class ConversationStatusesDao extends DatabaseDao<
             _createConversationRemoteIdEqualExpression(conversationRemoteId),
       );
     } else {
-      return deleteByConversationRemoteId(conversationRemoteId);
+      // ignore: avoid-ignoring-return-values
+      await deleteByConversationRemoteId(conversationRemoteId);
     }
   }
 
@@ -83,7 +84,7 @@ class ConversationStatusesDao extends DatabaseDao<
         updateKind: UpdateKind.delete,
       );
 
-  Future deleteByConversationRemoteIdAndStatusRemoteIdBatch({
+  Future<void> deleteByConversationRemoteIdAndStatusRemoteIdBatch({
     required String conversationRemoteId,
     required String statusRemoteId,
     required Batch? batchTransaction,
@@ -96,7 +97,8 @@ class ConversationStatusesDao extends DatabaseDao<
             _createStatusRemoteIdEqualExpression(statusRemoteId),
       );
     } else {
-      return deleteByConversationRemoteId(conversationRemoteId);
+      // ignore: avoid-ignoring-return-values
+      await deleteByConversationRemoteId(conversationRemoteId);
     }
   }
 }

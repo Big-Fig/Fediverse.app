@@ -24,16 +24,19 @@ Future<DurationPickerResult> showDateTimeDurationPicker({
   DateTime? currentDateTime;
 
   if (minDuration != null) {
+    // ignore: avoid-ignoring-return-values
     minDateTimeJiffy.add(duration: minDuration);
     minDateTime = minDateTimeJiffy.dateTime;
   }
 
   if (maxDuration != null) {
+    // ignore: avoid-ignoring-return-values
     maxDateTimeJiffy.add(duration: maxDuration);
     maxDateTime = maxDateTimeJiffy.dateTime;
   }
 
   if (currentDuration != null) {
+    // ignore: avoid-ignoring-return-values
     currentDateTimeJiffy.add(duration: currentDuration);
     currentDateTime = currentDateTimeJiffy.dateTime;
   }

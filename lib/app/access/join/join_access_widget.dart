@@ -383,7 +383,7 @@ class _JoinUnifediApiAccessAboutButtonWidget extends StatelessWidget {
 }
 
 // ignore: long-method
-Future signUpToInstance(BuildContext context) async {
+Future<void> signUpToInstance(BuildContext context) async {
   var joinInstanceBloc = IJoinUnifediApiAccessBloc.of(context, listen: false);
   var hostUri = joinInstanceBloc.extractCurrentUri();
   var asyncDialogResult =
@@ -503,7 +503,7 @@ void _showCantLoginToast(
 }
 
 // ignore: long-method
-Future logInToInstance(BuildContext context) async {
+Future<void> logInToInstance(BuildContext context) async {
   var joinInstanceBloc = IJoinUnifediApiAccessBloc.of(context, listen: false);
 
   var configService = IConfigService.of(context, listen: false);

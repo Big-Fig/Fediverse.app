@@ -56,7 +56,7 @@ class _StatusCommentActionCounterWidget extends StatelessWidget {
   }
 }
 
-Future _onActionClick(BuildContext context) {
+Future<void> _onActionClick(BuildContext context) {
   var statusBloc = IStatusBloc.of(context, listen: false);
   var isLocal = statusBloc.instanceLocation == InstanceLocation.local;
 

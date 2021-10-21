@@ -129,11 +129,10 @@ class _PollBodyOptionWidget extends StatelessWidget {
             ? () {
                 pollBloc.onPollOptionSelected(pollOption);
                 if (!poll.multiple) {
+                  // ignore: avoid-ignoring-return-values
                   AsyncOperationHelper.performAsyncOperation(
                     context: context,
-                    asyncCode: () async {
-                      await pollBloc.vote();
-                    },
+                    asyncCode: () => pollBloc.vote(),
                   );
                 }
               }

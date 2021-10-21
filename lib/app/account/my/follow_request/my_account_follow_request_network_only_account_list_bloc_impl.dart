@@ -29,7 +29,7 @@ class MyAccountFollowRequestNetworkOnlyAccountListBloc extends DisposableOwner
   });
 
   @override
-  Future acceptFollowRequest({
+  Future<void> acceptFollowRequest({
     required IAccount account,
   }) async {
     var accountRelationship =
@@ -43,7 +43,7 @@ class MyAccountFollowRequestNetworkOnlyAccountListBloc extends DisposableOwner
     );
   }
 
-  Future _processFollowRequestAction(
+  Future<void> _processFollowRequestAction(
     IAccount account,
     IUnifediApiAccountRelationship accountRelationship,
   ) async {
@@ -68,7 +68,7 @@ class MyAccountFollowRequestNetworkOnlyAccountListBloc extends DisposableOwner
   }
 
   @override
-  Future rejectFollowRequest({
+  Future<void> rejectFollowRequest({
     required IAccount account,
   }) async {
     var accountRelationship =

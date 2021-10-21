@@ -11,5 +11,5 @@ abstract class ILocalPreferencesServiceMigrationBloc {
     ILocalPreferencesService inputService,
   );
 
-  Future migrateData();
+  Future<void> migrateData();
 }

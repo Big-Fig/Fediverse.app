@@ -49,7 +49,7 @@ abstract class IAccountBloc extends DisposableOwner
 
   Future<IUnifediApiAccountRelationship> toggleBlockDomain();
 
-  Future refreshFromNetwork({
+  Future<void> refreshFromNetwork({
     required bool isNeedPreFetchRelationship,
   });
 }

@@ -127,6 +127,7 @@ class AccountActionMoreDialog extends StatelessWidget {
           ? S.of(context).app_account_action_unblock
           : S.of(context).app_account_action_block,
       onAction: (context) async {
+        // ignore: avoid-ignoring-return-values
         await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
           context: context,
           asyncCode: () async => accountBloc.toggleBlock(),
@@ -148,6 +149,7 @@ class AccountActionMoreDialog extends StatelessWidget {
           ? S.of(context).app_account_action_unpin
           : S.of(context).app_account_action_pin,
       onAction: (context) async {
+        // ignore: avoid-ignoring-return-values
         await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
           context: context,
           asyncCode: () async => accountBloc.togglePin(),
@@ -173,6 +175,7 @@ class AccountActionMoreDialog extends StatelessWidget {
                 accountBloc.acctRemoteDomainOrNull!,
               ),
       onAction: (context) async {
+        // ignore: avoid-ignoring-return-values
         await accountBloc.toggleBlockDomain();
         Navigator.of(context).pop();
       },
@@ -239,6 +242,7 @@ class AccountActionMoreDialog extends StatelessWidget {
           : S.of(context).app_account_action_mute,
       onAction: (context) async {
         if (muting) {
+          // ignore: avoid-ignoring-return-values
           await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
             context: context,
             asyncCode: () => accountBloc.unMute(),
@@ -265,6 +269,7 @@ class AccountActionMoreDialog extends StatelessWidget {
           ? S.of(context).app_account_action_unsubscribe
           : S.of(context).app_account_action_subscribe,
       onAction: (context) async {
+        // ignore: avoid-ignoring-return-values
         await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
           context: context,
           asyncCode: () => accountBloc.toggleSubscribe(),
@@ -286,6 +291,7 @@ class AccountActionMoreDialog extends StatelessWidget {
           ? S.of(context).app_account_action_unfollow
           : S.of(context).app_account_action_follow,
       onAction: (context) async {
+        // ignore: avoid-ignoring-return-values
         await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
           context: context,
           asyncCode: () => accountBloc.toggleFollow(),

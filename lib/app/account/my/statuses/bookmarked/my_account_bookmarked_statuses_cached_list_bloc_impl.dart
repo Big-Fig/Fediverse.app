@@ -60,7 +60,7 @@ class MyAccountBookmarkedStatusesCachedListBloc extends AsyncInitLoadingBloc
       );
 
   @override
-  Future refreshItemsFromRemoteForPage({
+  Future<void> refreshItemsFromRemoteForPage({
     int? limit,
     IStatus? newerThan,
     IStatus? olderThan,
@@ -81,7 +81,7 @@ class MyAccountBookmarkedStatusesCachedListBloc extends AsyncInitLoadingBloc
 
   @override
   // ignore: no-empty-block
-  Future internalAsyncInit() async {
+  Future<void> internalAsyncInit() async {
     // nothing
   }
 

@@ -29,7 +29,7 @@ class FilesCacheSettingsBloc
       );
 
   @override
-  Future changeSizeLimitCountType(
+  Future<void> changeSizeLimitCountType(
     FilesCacheSizeLimitCountType value,
   ) =>
       updateSettings(
@@ -49,7 +49,8 @@ class FilesCacheSettingsBloc
       );
 
   @override
-  Future changeAgeLimitType(FilesCacheAgeLimitType value) => updateSettings(
+  Future<void> changeAgeLimitType(FilesCacheAgeLimitType value) =>
+      updateSettings(
         FilesCacheSettings.fromEnum(
           sizeLimitCountType: sizeLimitCountType,
           ageLimitType: value,

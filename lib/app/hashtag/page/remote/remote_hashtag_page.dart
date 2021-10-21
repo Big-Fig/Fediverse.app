@@ -55,7 +55,7 @@ MaterialPageRoute<void> createRemoteHashtagPageRoute({
       ),
     );
 
-Future goToRemoteHashtagPage(
+Future<void> goToRemoteHashtagPage(
   BuildContext context, {
   required Uri remoteInstanceUri,
   required IHashtag hashtag,

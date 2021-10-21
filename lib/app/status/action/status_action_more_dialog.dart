@@ -190,6 +190,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
           ? S.of(context).app_status_action_unpin
           : S.of(context).app_status_action_pin,
       onAction: (context) async {
+        // ignore: avoid-ignoring-return-values
         await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
           context: context,
           asyncCode: () => statusBloc.togglePin(),
@@ -211,6 +212,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
           : S.of(context).app_status_action_mute,
       onAction: (context) async {
         if (statusBloc.muted || !isPleromaInstance) {
+          // ignore: avoid-ignoring-return-values
           await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
             context: context,
             asyncCode: () => statusBloc.toggleMute(
@@ -241,6 +243,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
           ? S.of(context).app_status_action_unbookmark
           : S.of(context).app_status_action_bookmark,
       onAction: (context) async {
+        // ignore: avoid-ignoring-return-values
         await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
           context: context,
           asyncCode: () => statusBloc.toggleBookmark(),

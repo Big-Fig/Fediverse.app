@@ -31,7 +31,7 @@ class NotificationsPushHandlerUnhandledLocalPreferenceBloc
       defaultValue;
 
   @override
-  Future addUnhandledMessage(
+  Future<void> addUnhandledMessage(
     NotificationsPushHandlerMessage notificationsPushHandlerMessage,
   ) async {
     var pleromaUnhandledList = value;
@@ -71,7 +71,7 @@ class NotificationsPushHandlerUnhandledLocalPreferenceBloc
   }
 
   @override
-  Future<bool> markAsHandled(
+  Future<void> markAsHandled(
     List<NotificationsPushHandlerMessage> messages,
   ) async {
     var pleromaUnhandledList = value;
@@ -89,7 +89,7 @@ class NotificationsPushHandlerUnhandledLocalPreferenceBloc
           '\t messages = ${messages.length}',
     );
 
-    return setValue(
+    await setValue(
       NotificationsPushHandlerUnhandledList(
         messages: cleanedMessages,
       ),

@@ -25,7 +25,7 @@ class GuestMyAccountBloc extends DisposableOwner implements IMyAccountBloc {
   bool checkIsStatusFromMe(IStatus status) => false;
 
   @override
-  Future decreaseFollowingRequestCount() async {
+  Future<void> decreaseFollowingRequestCount() async {
     throw UnimplementedError();
   }
 
@@ -53,7 +53,7 @@ class GuestMyAccountBloc extends DisposableOwner implements IMyAccountBloc {
   Stream<IMyAccount?> get myAccountStream => Stream.value(myAccount);
 
   @override
-  Future refreshFromNetwork({
+  Future<void> refreshFromNetwork({
     required bool isNeedPreFetchRelationship,
   }) {
     throw UnimplementedError();
@@ -116,12 +116,12 @@ class GuestMyAccountBloc extends DisposableOwner implements IMyAccountBloc {
   }
 
   @override
-  Future updateMyAccountByMyAccount(IMyAccount myAccount) {
+  Future<void> updateMyAccountByMyAccount(IMyAccount myAccount) {
     throw UnimplementedError();
   }
 
   @override
-  Future updateMyAccountByMyUnifediApiAccount(
+  Future<void> updateMyAccountByMyUnifediApiAccount(
     IUnifediApiMyAccount unifediApiMyAccount,
   ) {
     throw UnimplementedError();

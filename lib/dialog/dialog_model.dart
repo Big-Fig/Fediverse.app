@@ -1,6 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 
-typedef DialogActionCallback = Function(BuildContext context);
+typedef DialogActionCallback = FutureOr<void> Function(BuildContext context);
 typedef DialogActionEnabledFetcher = bool Function(BuildContext context);
 typedef DialogActionEnabledStreamFetcher = Stream<bool> Function(
   BuildContext context,

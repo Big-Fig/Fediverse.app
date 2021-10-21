@@ -1,5 +1,5 @@
 // ignore_for_file: unnecessary_lambdas
-
+// ignore_for_file: avoid-ignoring-return-values
 import 'package:fedi/app/toast/settings/local_preferences/instance/instance_toast_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/toast/settings/toast_settings_model.dart';
 import 'package:flutter_test/flutter_test.dart';

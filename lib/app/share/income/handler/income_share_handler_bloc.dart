@@ -8,11 +8,11 @@ abstract class IIncomeShareHandlerBloc implements IDisposable {
 
   Stream<List<UnifediApiAccess>> get needChooseInstanceFromListStream;
 
-  Future chooseInstance(UnifediApiAccess instance);
+  Future<void> chooseInstance(UnifediApiAccess instance);
 
   Stream<IncomeShareEvent> get needChooseActionForEventStream;
 
-  Future checkForInitialEvent();
+  Future<void> checkForInitialEvent();
 
-  Future reset();
+  Future<void> reset();
 }

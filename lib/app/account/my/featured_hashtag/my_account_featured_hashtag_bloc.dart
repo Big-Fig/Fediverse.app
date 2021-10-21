@@ -19,7 +19,7 @@ abstract class IMyAccountFeaturedHashtagBloc implements IDisposable {
 
   Stream<bool> get unFeaturedStream;
 
-  Future unFeature();
+  Future<void> unFeature();
 
-  Future featureAgain();
+  Future<void> featureAgain();
 }

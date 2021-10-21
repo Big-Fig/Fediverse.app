@@ -70,7 +70,7 @@ class HashtagBloc extends DisposableOwner implements IHashtagBloc {
       featuredHashtagSubject.stream;
 
   @override
-  Future feature() async {
+  Future<void> feature() async {
     assert(!featured, 'cant feature if already featured');
 
     var unifediApiFeatureTag =
@@ -83,7 +83,7 @@ class HashtagBloc extends DisposableOwner implements IHashtagBloc {
   }
 
   @override
-  Future unFeature() async {
+  Future<void> unFeature() async {
     assert(
       featured,
       'cant unfeature if not featured yet',
@@ -132,7 +132,7 @@ class HashtagBloc extends DisposableOwner implements IHashtagBloc {
         child: child,
       );
 
-  Future loadFeaturedState() async {
+  Future<void> loadFeaturedState() async {
     if (!isInstanceSupportFeaturedTags) {
       return;
     }

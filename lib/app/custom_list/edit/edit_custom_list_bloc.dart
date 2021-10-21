@@ -35,7 +35,7 @@ abstract class IEditCustomListBloc extends IDisposable {
 
   Future<ICustomList> submit();
 
-  Future deleteList();
+  Future<void> deleteList();
 
   Stream<ICustomList> get submittedStream;
 

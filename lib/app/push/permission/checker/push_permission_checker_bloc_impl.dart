@@ -64,7 +64,7 @@ class PushPermissionCheckerBloc extends DisposableOwner
       !pushSettingsBloc.isHaveSubscription;
 
   @override
-  Future onCheckDismissed() =>
+  Future<void> onCheckDismissed() =>
       askPushPermissionLocalPreferenceBloc.setValue(true);
 
   static PushPermissionCheckerBloc createFromContext(

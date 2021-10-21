@@ -83,7 +83,7 @@ class CurrentUnifediApiAccessContextInitBloc extends AsyncInitLoadingBloc
 
   @override
   // ignore: long-method
-  Future refreshFromNetwork({
+  Future<void> refreshFromNetwork({
     required bool isNeedWaitForOptionalData,
   }) async {
     instanceInfoUpdatedDuringRequiredDataUpdate = false;
@@ -171,7 +171,7 @@ class CurrentUnifediApiAccessContextInitBloc extends AsyncInitLoadingBloc
     }
   }
 
-  Future refreshOptionalData() async {
+  Future<void> refreshOptionalData() async {
     var isPleroma = currentUnifediApiAccessBloc.currentInstance!.isPleroma;
     var isMastodon = currentUnifediApiAccessBloc.currentInstance!.isMastodon;
 
@@ -221,10 +221,11 @@ class CurrentUnifediApiAccessContextInitBloc extends AsyncInitLoadingBloc
         updateInstanceInformation(),
     ];
 
-    return Future.wait<void>(futures);
+    // ignore: avoid-ignoring-return-values
+    await Future.wait<dynamic>(futures);
   }
 
-  Future updateFilters() async {
+  Future<void> updateFilters() async {
     var remoteFilters = await unifediApiFilterService.getFilters(
       pagination: null,
     );
@@ -239,7 +240,7 @@ class CurrentUnifediApiAccessContextInitBloc extends AsyncInitLoadingBloc
     });
   }
 
-  Future updateInstanceInformation() async {
+  Future<void> updateInstanceInformation() async {
     var info = await unifediApiInstanceService.getInstance();
     var currentInstance = currentUnifediApiAccessBloc.currentInstance!;
     currentInstance =
@@ -260,13 +261,13 @@ class CurrentUnifediApiAccessContextInitBloc extends AsyncInitLoadingBloc
       stateSubject.stream;
 
   @override
-  Future internalAsyncInit() async {
+  Future<void> internalAsyncInit() async {
     await refreshFromNetwork(
       isNeedWaitForOptionalData: false,
     );
   }
 
-  Future updateNotifications() async {
+  Future<void> updateNotifications() async {
     var remoteNotifications = await pleromaNotificationService.getNotifications(
       pagination: null,
       excludeTypes: null,
@@ -280,7 +281,7 @@ class CurrentUnifediApiAccessContextInitBloc extends AsyncInitLoadingBloc
     );
   }
 
-  Future updateAnnouncements() async {
+  Future<void> updateAnnouncements() async {
     var featureSupported = unifediApiAnnouncementService.isFeatureSupported(
       unifediApiAnnouncementService.getAnnouncementsFeature,
     );
@@ -297,7 +298,7 @@ class CurrentUnifediApiAccessContextInitBloc extends AsyncInitLoadingBloc
     }
   }
 
-  Future updateChats() async {
+  Future<void> updateChats() async {
     var remoteChats = await pleromaApiChatService.getChats(
       pagination: null,
     );
@@ -307,7 +308,7 @@ class CurrentUnifediApiAccessContextInitBloc extends AsyncInitLoadingBloc
     );
   }
 
-  Future updateConversations() async {
+  Future<void> updateConversations() async {
     var remoteConversations = await pleromaConversationService.getConversations(
       pagination: null,
       recipientsIds: null,

@@ -26,7 +26,7 @@ class UiSettingsBloc extends DisposableOwner implements IUiSettingsBloc {
       settingsDataStream.map((settings) => settings.themeId);
 
   @override
-  Future changeThemeId(String? value) => updateSettings(
+  Future<void> changeThemeId(String? value) => updateSettings(
         // copyWith dont set null values
         UiSettings.fromEnum(
           themeId: value,
@@ -43,7 +43,7 @@ class UiSettingsBloc extends DisposableOwner implements IUiSettingsBloc {
       );
 
   @override
-  Future changeStatusFontSize(UiSettingsFontSize value) => updateSettings(
+  Future<void> changeStatusFontSize(UiSettingsFontSize value) => updateSettings(
         // copyWith dont set null values
         UiSettings.fromEnum(
           themeId: settingsData.themeId,
@@ -52,7 +52,7 @@ class UiSettingsBloc extends DisposableOwner implements IUiSettingsBloc {
       );
 
   @override
-  Future updateSettings(UiSettings newSettings) async {
+  Future<void> updateSettings(UiSettings newSettings) async {
     await uiSettingsLocalPreferencesBloc.setValue(
       newSettings,
     );

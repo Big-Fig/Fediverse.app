@@ -26,7 +26,7 @@ abstract class IPaginationListBloc<TPage extends PaginationPage<TItem?>?, TItem>
 
   Future<FediListSmartRefresherLoadingState> refreshWithoutController();
 
-  Future refreshWithController();
+  Future<void> refreshWithController();
 
   Future<FediListSmartRefresherLoadingState> loadMoreWithoutController();
 

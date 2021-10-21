@@ -56,7 +56,7 @@ class FediStepperBloc<T extends IFediStepperItem> extends DisposableOwner
 
     currentStepIndexSubject.stream.listen((_) {
       _recalculateState();
-    });
+    }).disposeWith(this);
 
     for (final step in steps) {
       step.itemStateStream.listen(
@@ -106,8 +106,9 @@ class FediStepperBloc<T extends IFediStepperItem> extends DisposableOwner
   }
 
   @override
-  Future submit() async {
+  Future<void> submit() async {
     for (final step in steps) {
+      // ignore: avoid-ignoring-return-values
       step.onStepComplete();
     }
 

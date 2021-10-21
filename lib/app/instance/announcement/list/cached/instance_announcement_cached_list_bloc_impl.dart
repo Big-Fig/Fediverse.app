@@ -60,7 +60,7 @@ class InstanceAnnouncementCachedListBloc
       );
 
   @override
-  Future refreshItemsFromRemoteForPage({
+  Future<void> refreshItemsFromRemoteForPage({
     required int? limit,
     required IInstanceAnnouncement? newerThan,
     required IInstanceAnnouncement? olderThan,
@@ -119,7 +119,7 @@ class InstanceAnnouncementCachedListBloc
   Uri? get remoteInstanceUriOrNull => null;
 
   @override
-  Future changeInstanceAnnouncementSettings(
+  Future<void> changeInstanceAnnouncementSettings(
     InstanceAnnouncementSettings settings,
   ) async {
     if (instanceAnnouncementSettings != settings) {

@@ -8,6 +8,7 @@ import '../../json/json_test_helper.dart';
 import '../../obj/obj_test_helper.dart';
 import 'app_analytics_model_test_helper.dart';
 
+// ignore_for_file: avoid-ignoring-return-values
 void main() {
   test('equal & hashcode & toString', () async {
     ObjMockHelper.testEqualsHashcodeToString(

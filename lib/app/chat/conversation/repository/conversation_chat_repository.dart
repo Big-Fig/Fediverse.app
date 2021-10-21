@@ -30,7 +30,7 @@ abstract class IConversationChatRepository
         listen: listen,
       );
 
-  Future markAsRead({
+  Future<void> markAsRead({
     required IConversationChat conversation,
     required Batch? batchTransaction,
   });

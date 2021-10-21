@@ -116,6 +116,7 @@ class PostStatusPollBloc extends FormBloc implements IPostStatusPollBloc {
       pollOptionsGroupBloc.removeAllFields();
 
       for (final pollOption in poll.options) {
+        // ignore: avoid-ignoring-return-values
         pollOptionsGroupBloc.addNewField(
           createPollOptionFieldBloc(
             pollOption,

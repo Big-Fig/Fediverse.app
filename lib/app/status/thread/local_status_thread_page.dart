@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
-Future goToLocalStatusThreadPage(
+Future<void> goToLocalStatusThreadPage(
   BuildContext context, {
   required IStatus status,
   required IUnifediApiMediaAttachment? initialMediaAttachment,

@@ -30,49 +30,49 @@ abstract class IAccountRepository
         listen: listen,
       );
 
-  Future upsertConversationRemoteAccounts(
+  Future<void> upsertConversationRemoteAccounts(
     List<IUnifediApiAccount> remoteAccounts, {
     required String conversationRemoteId,
     required Batch? batchTransaction,
   });
 
-  Future upsertConversationRemoteAccount(
+  Future<void> upsertConversationRemoteAccount(
     IUnifediApiAccount remoteAccount, {
     required String conversationRemoteId,
     required Batch? batchTransaction,
   });
 
-  Future upsertChatRemoteAccount(
+  Future<void> upsertChatRemoteAccount(
     IUnifediApiAccount remoteAccount, {
     required String chatRemoteId,
     required Batch? batchTransaction,
   });
 
-  Future upsertChatRemoteAccounts(
+  Future<void> upsertChatRemoteAccounts(
     List<IUnifediApiAccount> remoteAccounts, {
     required String chatRemoteId,
     required Batch? batchTransaction,
   });
 
-  Future addAccountFollowings({
+  Future<void> addAccountFollowings({
     required String accountRemoteId,
     required List<UnifediApiAccount> followings,
     required Batch? batchTransaction,
   });
 
-  Future addAccountFollowers({
+  Future<void> addAccountFollowers({
     required String accountRemoteId,
     required List<IUnifediApiAccount> followers,
     required Batch? batchTransaction,
   });
 
-  Future updateStatusRebloggedBy({
+  Future<void> updateStatusRebloggedBy({
     required String statusRemoteId,
     required List<IUnifediApiAccount> rebloggedByAccounts,
     required Batch? batchTransaction,
   });
 
-  Future updateStatusFavouritedBy({
+  Future<void> updateStatusFavouritedBy({
     required String statusRemoteId,
     required List<IUnifediApiAccount> favouritedByAccounts,
     required Batch? batchTransaction,
@@ -94,13 +94,13 @@ abstract class IAccountRepository
     required IPleromaChat chat,
   });
 
-  Future removeAccountFollowing({
+  Future<void> removeAccountFollowing({
     required String accountRemoteId,
     required String followingAccountId,
     required Batch? batchTransaction,
   });
 
-  Future removeAccountFollower({
+  Future<void> removeAccountFollower({
     required String accountRemoteId,
     required String followerAccountId,
     required Batch? batchTransaction,

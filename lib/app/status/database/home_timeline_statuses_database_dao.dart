@@ -30,7 +30,7 @@ class HomeTimelineStatusesDao extends DatabaseDao<
         updateKind: UpdateKind.delete,
       );
 
-  Future deleteByAccountRemoteIdBatch(
+  Future<void> deleteByAccountRemoteIdBatch(
     String accountRemoteId, {
     required Batch? batchTransaction,
   }) async {
@@ -40,7 +40,8 @@ class HomeTimelineStatusesDao extends DatabaseDao<
         (tbl) => _createAccountRemoteIdEqualExpression(accountRemoteId),
       );
     } else {
-      return deleteByAccountRemoteId(accountRemoteId);
+      // ignore: avoid-ignoring-return-values
+      await deleteByAccountRemoteId(accountRemoteId);
     }
   }
 

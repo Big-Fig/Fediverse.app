@@ -28,31 +28,28 @@ class InstanceAnnouncementDao extends PopulatedAppRemoteDatabaseDao<
   // Called by the AppDatabase class
   InstanceAnnouncementDao(this.db) : super(db);
 
-  SimpleSelectStatement<$DbInstanceAnnouncementsTable, DbInstanceAnnouncement>
-      addNotExpiredWhere(
+  void addNotExpiredWhere(
     SimpleSelectStatement<$DbInstanceAnnouncementsTable, DbInstanceAnnouncement>
         query,
   ) {
     var now = DateTime.now();
     var startOfCurrentDay = CustomDateUtils.dayStartOf(now);
 
-    return query
-      ..where(
-        (instanceAnnouncement) =>
-            instanceAnnouncement.endsAt.isNull() |
-            (instanceAnnouncement.allDay.equals(false) &
-                instanceAnnouncement.endsAt.isBiggerThanValue(
-                  now,
-                )) |
-            (instanceAnnouncement.allDay.equals(true) &
-                instanceAnnouncement.endsAt.isBiggerThanValue(
-                  startOfCurrentDay,
-                )),
-      );
+    query.where(
+      (instanceAnnouncement) =>
+          instanceAnnouncement.endsAt.isNull() |
+          (instanceAnnouncement.allDay.equals(false) &
+              instanceAnnouncement.endsAt.isBiggerThanValue(
+                now,
+              )) |
+          (instanceAnnouncement.allDay.equals(true) &
+              instanceAnnouncement.endsAt.isBiggerThanValue(
+                startOfCurrentDay,
+              )),
+    );
   }
 
-  SimpleSelectStatement<$DbInstanceAnnouncementsTable, DbInstanceAnnouncement>
-      addAlreadyStartedYetWhere(
+  void addAlreadyStartedYetWhere(
     SimpleSelectStatement<$DbInstanceAnnouncementsTable, DbInstanceAnnouncement>
         query,
   ) {
@@ -60,62 +57,57 @@ class InstanceAnnouncementDao extends PopulatedAppRemoteDatabaseDao<
     var startOfCurrentDay = CustomDateUtils.dayStartOf(now);
     var startOfNextDay = startOfCurrentDay.add(const Duration(days: 1));
 
-    return query
-      ..where(
-        (instanceAnnouncement) =>
-            instanceAnnouncement.startsAt.isNull() |
-            (instanceAnnouncement.allDay.equals(false) &
-                instanceAnnouncement.startsAt.isSmallerThanValue(
-                  now,
-                )) |
-            (instanceAnnouncement.allDay.equals(true) &
-                instanceAnnouncement.startsAt.isSmallerThanValue(
-                  startOfNextDay,
-                )),
-      );
+    query.where(
+      (instanceAnnouncement) =>
+          instanceAnnouncement.startsAt.isNull() |
+          (instanceAnnouncement.allDay.equals(false) &
+              instanceAnnouncement.startsAt.isSmallerThanValue(
+                now,
+              )) |
+          (instanceAnnouncement.allDay.equals(true) &
+              instanceAnnouncement.startsAt.isSmallerThanValue(
+                startOfNextDay,
+              )),
+    );
   }
 
-  SimpleSelectStatement<$DbInstanceAnnouncementsTable, DbInstanceAnnouncement>
-      addNotDismissedWhere(
+  void addNotDismissedWhere(
     SimpleSelectStatement<$DbInstanceAnnouncementsTable, DbInstanceAnnouncement>
         query,
   ) =>
-          query
-            ..where(
-              (instanceAnnouncement) =>
-                  instanceAnnouncement.read.isNull() |
-                  instanceAnnouncement.read.equals(false),
-            );
+      query.where(
+        (instanceAnnouncement) =>
+            instanceAnnouncement.read.isNull() |
+            instanceAnnouncement.read.equals(false),
+      );
 
-  SimpleSelectStatement<$DbInstanceAnnouncementsTable, DbInstanceAnnouncement>
-      orderBy(
+  void orderBy(
     SimpleSelectStatement<$DbInstanceAnnouncementsTable, DbInstanceAnnouncement>
         query,
     List<InstanceAnnouncementOrderingTermData> orderTerms,
   ) =>
-          query
-            ..orderBy(
-              orderTerms
-                  .map(
-                    (orderTerm) => ($DbInstanceAnnouncementsTable item) {
-                      Expression expression;
-                      switch (orderTerm.orderType) {
-                        case InstanceAnnouncementOrderType.remoteId:
-                          expression = item.remoteId;
-                          break;
-                        case InstanceAnnouncementOrderType.updatedAt:
-                          expression = item.updatedAt;
-                          break;
-                      }
+      query.orderBy(
+        orderTerms
+            .map(
+              (orderTerm) => ($DbInstanceAnnouncementsTable item) {
+                Expression expression;
+                switch (orderTerm.orderType) {
+                  case InstanceAnnouncementOrderType.remoteId:
+                    expression = item.remoteId;
+                    break;
+                  case InstanceAnnouncementOrderType.updatedAt:
+                    expression = item.updatedAt;
+                    break;
+                }
 
-                      return OrderingTerm(
-                        expression: expression,
-                        mode: orderTerm.orderingMode,
-                      );
-                    },
-                  )
-                  .toList(),
-            );
+                return OrderingTerm(
+                  expression: expression,
+                  mode: orderTerm.orderingMode,
+                );
+              },
+            )
+            .toList(),
+      );
 
   List<Join<$DbInstanceAnnouncementsTable, DbInstanceAnnouncement>>
       populateInstanceAnnouncementJoin() => [];

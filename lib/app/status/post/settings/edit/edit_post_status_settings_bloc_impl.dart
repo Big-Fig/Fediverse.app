@@ -99,7 +99,7 @@ class EditPostStatusSettingsBloc
       );
 
   @override
-  Future fillSettingsToFormFields(PostStatusSettings settings) async {
+  Future<void> fillSettingsToFormFields(PostStatusSettings settings) async {
     defaultVisibilityFormFieldBloc
         .changeCurrentValue(settings.defaultVisibilityAsUnifediApi);
     markMediaAsNsfwOnAttachFormFieldBloc

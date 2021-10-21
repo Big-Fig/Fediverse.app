@@ -78,11 +78,12 @@ class NotificationsPushHandlerBloc extends DisposableOwner
   void removeRealTimeHandler(
     IPushRealTimeHandler notificationsPushHandler,
   ) {
+    // ignore: avoid-ignoring-return-values
     realTimeHandlers.remove(notificationsPushHandler);
   }
 
   @override
-  Future handleInitialMessage() async {
+  Future<void> handleInitialMessage() async {
     var initialMessage = fcmPushService.initialMessage;
     if (initialMessage != null) {
       await handlePushMessage(initialMessage);
@@ -90,7 +91,7 @@ class NotificationsPushHandlerBloc extends DisposableOwner
     }
   }
 
-  Future handlePushMessage(PushMessage pushMessage) async {
+  Future<void> handlePushMessage(PushMessage pushMessage) async {
     var data = pushMessage.data;
     if (data != null) {
       var isHaveNotificationId = data.containsKey('notification_id');
@@ -294,7 +295,7 @@ class NotificationsPushHandlerBloc extends DisposableOwner
 
     var unifediApiNotificationType = remoteNotification.typeAsUnifediApi;
 
-    await unifediApiNotificationType.maybeMap<FutureOr>(
+    await unifediApiNotificationType.maybeWhen(
       chatMention: (_) async {
         var chatMessage = remoteNotification.chatMessage!;
         var unifediApiChatMessage = await unifediApiChatService.sendMessage(
@@ -305,6 +306,7 @@ class NotificationsPushHandlerBloc extends DisposableOwner
             mediaId: null,
           ),
         );
+        // ignore: avoid-ignoring-return-values
         await chatMessageRepository.upsertInRemoteType(unifediApiChatMessage);
       },
       mention: (_) async {
@@ -331,6 +333,7 @@ class NotificationsPushHandlerBloc extends DisposableOwner
             ],
           ),
         );
+        // ignore: avoid-ignoring-return-values
         await statusRepository.upsertInRemoteType(unifediApiStatus);
       },
       orElse: () async => _logger.warning(
@@ -503,17 +506,18 @@ class NotificationsPushHandlerBloc extends DisposableOwner
       unhandledLocalPreferencesBloc.loadUnhandledMessagesForInstance(instance);
 
   @override
-  Future<bool> markAsHandled(
+  Future<void> markAsHandled(
     List<NotificationsPushHandlerMessage> messages,
   ) =>
       unhandledLocalPreferencesBloc.markAsHandled(messages);
 
   @override
-  Future markAsLaunchMessage(
+  Future<void> markAsLaunchMessage(
     NotificationsPushHandlerMessage message,
   ) async {
     var unhandledList = unhandledLocalPreferencesBloc.value;
 
+    // ignore: avoid-ignoring-return-values
     unhandledList.messages.remove(message);
 
     unhandledList.messages.add(

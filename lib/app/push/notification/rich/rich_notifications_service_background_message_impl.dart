@@ -76,9 +76,9 @@ class RichNotificationsServiceBackgroundMessage extends AsyncInitLoadingBloc
   }
 
   @override
-  Future internalAsyncInit() async {
+  Future<void> internalAsyncInit() async {
     var awesomeNotifications = AwesomeNotifications();
-    await awesomeNotifications.initialize(
+    var successInit = await awesomeNotifications.initialize(
       // android only
       'resource://drawable/ic_stat_name',
       [
@@ -95,6 +95,10 @@ class RichNotificationsServiceBackgroundMessage extends AsyncInitLoadingBloc
         _createUnknownChannel(),
       ],
     );
+
+    if (!successInit) {
+      _logger.severe(() => 'failed to awesomeNotifications.initialize');
+    }
 
     awesomeNotifications.createdStream.listen(
       (ReceivedNotification receivedNotification) {
@@ -386,7 +390,7 @@ class RichNotificationsServiceBackgroundMessage extends AsyncInitLoadingBloc
       );
 }
 
-Future richNotificationsFirebaseMessagingBackgroundHandler(
+Future<void> richNotificationsFirebaseMessagingBackgroundHandler(
   RemoteMessage message,
 ) async {
   var notification = message.notification;
@@ -394,8 +398,9 @@ Future richNotificationsFirebaseMessagingBackgroundHandler(
   _logger.finest(
     () => 'Background message notification $notification data: $data',
   );
-  var isNotDisplaydViaFcmPLugin = notification == null;
-  if (isNotDisplaydViaFcmPLugin) {
+  var isNotDisplayedViaFcmPlugin = notification == null;
+  if (isNotDisplayedViaFcmPlugin) {
+    // ignore: avoid-ignoring-return-values
     await loadNotificationForPushMessageData(
       data: data,
       createPushNotification: true,
@@ -704,33 +709,34 @@ Future<void> _createPushNotification({
     serverHost: authInstance.urlHost,
     unifediApiNotification: unifediApiNotification,
   );
-  await AwesomeNotifications().createNotification(
-    content: NotificationContent(
-      id: _extractNotificationId(unifediApiNotification),
-      channelKey: _calculateChannelKey(unifediApiNotification),
-      title: calculateUnifediApiNotificationPushTitle(
-        localizationContext: localizationContext,
-        unifediApiNotification: unifediApiNotification,
-      ),
-      body: body,
-      summary: calculateSummary(
-        localizationContext: localizationContext,
-        unifediApiNotification: unifediApiNotification,
-      ),
-      showWhen: false,
-      icon: null,
-      largeIcon: unifediApiNotification.account?.avatar,
-      bigPicture: mediaAttachment?.url,
-      customSound: null,
-      autoCancel: true,
-      color: lightFediUiTheme.colorTheme.darkGrey,
-      backgroundColor: lightFediUiTheme.colorTheme.white,
-      payload: notificationPayloadData.toPayload(),
-      notificationLayout: layout,
-      hideLargeIconOnExpand: false,
-      ticker: null,
-      createdDate: unifediApiNotification.createdAt.toIso8601String(),
+  var notificationContent = NotificationContent(
+    id: _extractNotificationId(unifediApiNotification),
+    channelKey: _calculateChannelKey(unifediApiNotification),
+    title: calculateUnifediApiNotificationPushTitle(
+      localizationContext: localizationContext,
+      unifediApiNotification: unifediApiNotification,
     ),
+    body: body,
+    summary: calculateSummary(
+      localizationContext: localizationContext,
+      unifediApiNotification: unifediApiNotification,
+    ),
+    showWhen: false,
+    icon: null,
+    largeIcon: unifediApiNotification.account?.avatar,
+    bigPicture: mediaAttachment?.url,
+    customSound: null,
+    autoCancel: true,
+    color: lightFediUiTheme.colorTheme.darkGrey,
+    backgroundColor: lightFediUiTheme.colorTheme.white,
+    payload: notificationPayloadData.toPayload(),
+    notificationLayout: layout,
+    hideLargeIconOnExpand: false,
+    ticker: null,
+    createdDate: unifediApiNotification.createdAt.toIso8601String(),
+  );
+  var success = await AwesomeNotifications().createNotification(
+    content: notificationContent,
     actionButtons: [
       if (isFollowRequestType)
         NotificationActionButton(
@@ -760,6 +766,10 @@ Future<void> _createPushNotification({
         ),
     ],
   );
+
+  if (!success) {
+    _logger.severe(() => 'failed to create notification $notificationContent');
+  }
 
   await disposableOwner.dispose();
 }
@@ -950,6 +960,7 @@ class NotificationPayloadData with _$NotificationPayloadData {
       'notificationJson';
 
   const NotificationPayloadData._();
+
   const factory NotificationPayloadData({
     required String acct,
     required String serverHost,

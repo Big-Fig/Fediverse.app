@@ -15,13 +15,13 @@ abstract class IMyAccountAccountMuteNetworkOnlyAccountListBloc
         listen: listen,
       );
 
-  Future changeAccountMute({
+  Future<void> changeAccountMute({
     required IAccount? account,
     required bool notifications,
     required Duration? duration,
   });
 
-  Future removeAccountMute({required IAccount? account});
+  Future<void> removeAccountMute({required IAccount? account});
 
-  Future addAccountMute({required IAccount account});
+  Future<void> addAccountMute({required IAccount account});
 }

@@ -45,7 +45,7 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
   late Box _box;
 
   @override
-  Future internalAsyncInit() async {
+  Future<void> internalAsyncInit() async {
     var v2Name = 'local_preferences_v2';
     var isV2BoxExist = await Hive.boxExists(
       v2Name,
@@ -305,19 +305,16 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<bool> clearAllValues() async {
+  Future<void> clearAllValues() async {
     _logger.fine(() => 'clearAllValues');
-    var clearedKeysCount = await _box.clear();
-
-    return clearedKeysCount > 0;
+    // ignore: avoid-ignoring-return-values
+    await _box.clear();
   }
 
   @override
-  Future<bool> delete() async {
+  Future<void> delete() async {
     _logger.fine(() => 'delete');
     await _box.deleteFromDisk();
-
-    return true;
   }
 
   @override
@@ -329,42 +326,32 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<bool> clearValue(String key) async {
+  Future<void> clearValue(String key) async {
     await _box.delete(key);
-
-    return true;
   }
 
   @override
-  Future<bool> setString(String key, String? value) async {
+  Future<void> setString(String key, String? value) async {
     await _box.put(key, value);
-
-    return true;
   }
 
   @override
-  Future<bool> setIntPreference(String key, int? value) async {
+  Future<void> setIntPreference(String key, int? value) async {
     await _box.put(key, value);
-
-    return true;
   }
 
   @override
-  Future<bool> setBoolPreference(String key, bool? value) async {
+  Future<void> setBoolPreference(String key, bool? value) async {
     await _box.put(key, value);
-
-    return true;
   }
 
   @override
-  Future<bool> setObjectPreference(
+  Future<void> setObjectPreference(
     String key,
     IJsonObj? preferencesObject,
   ) async {
     // _logger.fine(() => 'setObjectPreference $key -> $preferencesObject');
     await _box.put(key, preferencesObject);
-
-    return true;
   }
 
   @override

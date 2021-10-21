@@ -79,7 +79,7 @@ class EditMediaSettingsBloc
   }
 
   @override
-  Future fillSettingsToFormFields(MediaSettings? settings) async {
+  Future<void> fillSettingsToFormFields(MediaSettings? settings) async {
     autoInitFieldBloc.changeCurrentValue(
       settings?.autoInit,
     );

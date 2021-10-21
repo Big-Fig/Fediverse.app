@@ -67,7 +67,7 @@ class MyAccountSuggestionAccountListNetworkOnlyListBloc extends DisposableOwner
   }
 
   @override
-  Future removeSuggestion({
+  Future<void> removeSuggestion({
     required IAccount account,
   }) async {
     await unifediApiMyAccountService.removeMyAccountSuggestion(

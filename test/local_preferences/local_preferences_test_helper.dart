@@ -6,6 +6,7 @@ import 'package:fedi/local_preferences/memory_local_preferences_service_impl.dar
 import 'package:flutter_test/flutter_test.dart';
 
 // ignore_for_file: no-magic-number
+// ignore_for_file: avoid-ignoring-return-values
 class LocalPreferencesMockHelper {
   static Future testSaveAndLoad<T, K extends ILocalPreferenceBloc<dynamic>>({
     required T? defaultValue,

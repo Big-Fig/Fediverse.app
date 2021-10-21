@@ -65,6 +65,7 @@ class OverlayNotificationService extends DisposableOwner
     required Key key,
     required Duration duration,
   }) {
+    // ignore: avoid-ignoring-return-values
     showOverlayNotification(
       (context) => SlideDismissible(
         direction: dismissDirection,

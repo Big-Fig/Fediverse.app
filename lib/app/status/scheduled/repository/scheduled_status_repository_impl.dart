@@ -38,7 +38,7 @@ class ScheduledStatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       : dao = appDatabase.scheduledStatusDao;
 
   @override
-  Future markAsCanceled({
+  Future<void> markAsCanceled({
     required IScheduledStatus scheduledStatus,
     required Batch? batchTransaction,
   }) async {

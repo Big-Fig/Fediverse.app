@@ -24,12 +24,12 @@ abstract class InfoFormFieldBloc<T> extends AsyncInitLoadingBloc
   }
 
   @override
-  Future internalAsyncInit() async {
+  Future<void> internalAsyncInit() async {
     await recalculate();
   }
 
   @override
-  Future recalculate() async {
+  Future<void> recalculate() async {
     var currentValue = await calculateCurrentValue();
     currentValueSubject.add(currentValue);
   }

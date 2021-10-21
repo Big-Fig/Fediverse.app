@@ -51,7 +51,7 @@ abstract class InstanceTrendsBloc extends DisposableOwner
     );
     addDisposable(hashtagPaginationListBloc);
 
-    // ignore: unawaited_futures
+    // ignore: unawaited_futures, avoid-ignoring-return-values
     hashtagPaginationListBloc.refreshWithoutController();
   }
 

@@ -7,5 +7,5 @@ abstract class ISettingsBloc<T extends ISettings<dynamic>?>
 
   Stream<T> get settingsDataStream;
 
-  Future updateSettings(T newSettings);
+  Future<void> updateSettings(T newSettings);
 }

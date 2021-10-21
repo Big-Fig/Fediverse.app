@@ -40,7 +40,7 @@ class ExternalShareEntityBloc extends ExternalShareBloc
   Stream<bool> get isPossibleToShareStream => Stream.value(true);
 
   @override
-  Future share() async {
+  Future<void> share() async {
     var text = convertAllItemsToRawText(
       settings: shareEntitySettingsBloc.shareEntitySettings,
     );

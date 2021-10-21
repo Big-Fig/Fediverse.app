@@ -90,7 +90,9 @@ class EditStatusSensitiveSettingsBloc
       );
 
   @override
-  Future fillSettingsToFormFields(StatusSensitiveSettings settings) async {
+  Future<void> fillSettingsToFormFields(
+    StatusSensitiveSettings settings,
+  ) async {
     isAlwaysShowNsfwFieldBloc.changeCurrentValue(settings.isAlwaysShowNsfw);
     isAlwaysShowSpoilerFieldBloc
         .changeCurrentValue(settings.isAlwaysShowSpoiler);

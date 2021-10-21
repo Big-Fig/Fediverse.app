@@ -74,7 +74,7 @@ class RemoteAccountBloc extends AccountBloc {
   Uri? get remoteInstanceUriOrNull => instanceUri;
 
   @override
-  Future actualInit({
+  Future<void> actualInit({
     required IAccount account,
     required bool isNeedRefreshFromNetworkOnInit,
   }) async {
@@ -84,7 +84,7 @@ class RemoteAccountBloc extends AccountBloc {
   }
 
   @override
-  Future refreshFromNetwork({
+  Future<void> refreshFromNetwork({
     required bool isNeedPreFetchRelationship,
   }) async {
     _logger.finest(() => 'requestRefreshFromNetwork start');

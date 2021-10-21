@@ -15,11 +15,11 @@ abstract class IMyAccountAccountBlockNetworkOnlyAccountListBloc
         listen: listen,
       );
 
-  Future addAccountBlock({
+  Future<void> addAccountBlock({
     required IAccount account,
   });
 
-  Future removeAccountBlock({
+  Future<void> removeAccountBlock({
     required IAccount account,
   });
 }

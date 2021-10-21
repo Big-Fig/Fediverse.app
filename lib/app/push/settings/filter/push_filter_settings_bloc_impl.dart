@@ -35,7 +35,7 @@ class PushFilterSettingsBloc extends DisposableOwner
       );
 
   @override
-  Future updateSettings(PushFilterSettings? newSettings) async {
+  Future<void> updateSettings(PushFilterSettings? newSettings) async {
     if (settingsData == newSettings) {
       _logger.finest(() => 'Same settings');
 
@@ -86,7 +86,7 @@ class PushFilterSettingsBloc extends DisposableOwner
       settingsDataStream.map((settings) => settings.blockFromStrangers == true);
 
   @override
-  Future changeBlockFromStrangers(bool value) => updateSettings(
+  Future<void> changeBlockFromStrangers(bool value) => updateSettings(
         settingsData.copyWith(
           blockFromStrangers: value,
         ),
@@ -101,7 +101,7 @@ class PushFilterSettingsBloc extends DisposableOwner
       .map((settings) => settings.hideNotificationContents == true);
 
   @override
-  Future changeHideNotificationContents(bool value) => updateSettings(
+  Future<void> changeHideNotificationContents(bool value) => updateSettings(
         settingsData.copyWith(
           hideNotificationContents: value,
         ),

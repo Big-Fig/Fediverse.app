@@ -33,7 +33,7 @@ abstract class IPostMessageBloc implements IDisposable {
 
   Stream<List<FormItemValidationError>> get inputTextErrorsStream;
 
-  Future post();
+  Future<void> post();
 
   void appendText(
     String textToAppend, {

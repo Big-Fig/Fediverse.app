@@ -19,7 +19,7 @@ class SingleMediaPickerBloc extends MediaPickerBloc
   }
 
   @override
-  Future toggleFileMetadataSelection(
+  Future<void> toggleFileMetadataSelection(
     IMediaDeviceFileMetadata mediaDeviceFileMetadata,
   ) async {
     var mediaDeviceFile = await mediaDeviceFileMetadata.loadMediaDeviceFile();

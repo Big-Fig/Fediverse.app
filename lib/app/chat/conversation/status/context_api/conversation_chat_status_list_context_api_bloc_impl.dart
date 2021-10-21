@@ -33,7 +33,7 @@ class ConversationChatStatusListContextApiBloc
   IUnifediApiService get unifediApi => unifediApiStatusService;
 
   @override
-  Future refreshItemsFromRemoteForPage({
+  Future<void> refreshItemsFromRemoteForPage({
     required int? limit,
     required IStatus? newerThan,
     required IStatus? olderThan,
@@ -48,7 +48,7 @@ class ConversationChatStatusListContextApiBloc
 
     if (olderThan != null) {
       // context dont support load more pagination
-      return false;
+      return;
     }
     var remoteContext = await unifediApiStatusService.getStatusContext(
       statusId: statusToFetchContext!.remoteId!,

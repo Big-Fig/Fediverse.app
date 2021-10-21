@@ -9,6 +9,7 @@ import '../../chat/message/database/chat_message_database_test_helper.dart';
 import '../../status/database/status_database_test_helper.dart';
 
 // ignore_for_file: no-magic-number, avoid-late-keyword
+// ignore_for_file: avoid-ignoring-return-values
 void main() {
   late AppDatabase database;
   late File dbFile;

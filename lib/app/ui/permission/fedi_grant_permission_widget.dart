@@ -16,6 +16,7 @@ class FediGrantPermissionWidget extends StatelessWidget {
     required this.grantedBuilder,
   }) : super(key: key) {
     // todo: refactor
+    // ignore: avoid-ignoring-return-values
     permissionBloc.checkPermissionStatus();
   }
 

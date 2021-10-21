@@ -1,5 +1,6 @@
 import 'package:logging/logging.dart';
 
+// ignore_for_file: avoid-ignoring-return-values
 class LoggingMockHelper {
   static void initTestLog() {
     Logger.root.level = Level.ALL; // defaults to Level.INFO

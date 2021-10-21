@@ -82,7 +82,7 @@ class TimelineTabListBloc extends AsyncInitLoadingBloc
   }
 
   @override
-  Future internalAsyncInit() async {
+  Future<void> internalAsyncInit() async {
     for (final timelineTabBloc in timelineTabBlocs) {
       await timelineTabBloc.performAsyncInit();
     }

@@ -40,7 +40,7 @@ MaterialPageRoute<void> createRemoteInstanceDetailsPageRoute({
       ),
     );
 
-Future goToRemoteInstanceDetailsPage(
+Future<void> goToRemoteInstanceDetailsPage(
   BuildContext context, {
   required Uri remoteInstanceUri,
 }) async {

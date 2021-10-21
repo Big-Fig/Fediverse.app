@@ -9,7 +9,7 @@ abstract class IFilesCacheService implements IDisposable {
   static IFilesCacheService of(BuildContext context, {bool listen = true}) =>
       Provider.of<IFilesCacheService>(context, listen: listen);
 
-  Future clear();
+  Future<void> clear();
 
   Future<File> getImageByUrl({
     required String imageUrl,
