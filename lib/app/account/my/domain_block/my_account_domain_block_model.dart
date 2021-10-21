@@ -1,6 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 
-typedef DomainBlockCallback = Function(
+typedef DomainBlockCallback = FutureOr<void> Function(
   BuildContext context,
   DomainBlock domain,
 );

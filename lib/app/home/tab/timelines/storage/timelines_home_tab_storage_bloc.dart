@@ -41,11 +41,11 @@ abstract class ITimelinesHomeTabStorageBloc
   Stream<List<TimelinesHomeTabStorageListItem>>
       get timelineStorageItemsDistinctStream;
 
-  Future onItemsUpdated(List<Timeline> timelines);
+  Future<void> onItemsUpdated(List<Timeline> timelines);
 
-  Future add(Timeline timeline);
+  Future<void> add(Timeline timeline);
 
-  Future remove(Timeline timeline);
+  Future<void> remove(Timeline timeline);
 
   void switchToEditUiState();
 

@@ -56,7 +56,7 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
 
   IDisposable initListener();
 
-  Future handleEvent(IUnifediApiWebSocketsEvent event) async {
+  Future<void> handleEvent(IUnifediApiWebSocketsEvent event) async {
     _logger.finest(() => 'event $event');
 
     await event.typeAsUnifediApi.when(
@@ -106,6 +106,7 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
       announcement: (_) async {
         var announcement = event.announcement!;
 
+        // ignore: avoid-ignoring-return-values
         await instanceAnnouncementRepository.upsertInRemoteType(
           announcement,
         );

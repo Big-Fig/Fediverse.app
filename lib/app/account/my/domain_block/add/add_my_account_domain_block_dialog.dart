@@ -29,14 +29,18 @@ class AddMyAccountDomainBlockDialog extends FediDialog {
               action: (context) async {
                 var addMyAccountDomainBlockBloc =
                     IAddMyAccountDomainBlockBloc.of(context, listen: false);
-                await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+
+                var dialogResult = await PleromaAsyncOperationHelper
+                    .performPleromaAsyncOperation(
                   context: context,
                   asyncCode: () async {
                     await addMyAccountDomainBlockBloc.submit();
                   },
                 );
 
-                successCallback();
+                if (dialogResult.success) {
+                  successCallback();
+                }
               },
               isActionEnabledFetcher: (context) =>
                   IAddMyAccountDomainBlockBloc.of(context, listen: false)

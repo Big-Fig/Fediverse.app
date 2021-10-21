@@ -66,7 +66,7 @@ class EditFilesCacheSettingsBloc
       );
 
   @override
-  Future fillSettingsToFormFields(FilesCacheSettings settings) async {
+  Future<void> fillSettingsToFormFields(FilesCacheSettings settings) async {
     sizeCountLimitFilesCacheSingleSelectFromListValueFormFieldBloc
         .changeCurrentValue(
       settings.sizeLimitCountType,

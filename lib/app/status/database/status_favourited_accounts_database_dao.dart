@@ -31,7 +31,7 @@ class StatusFavouritedAccountsDao extends DatabaseDao<
         updateKind: UpdateKind.delete,
       );
 
-  Future deleteByStatusRemoteIdBatch(
+  Future<void> deleteByStatusRemoteIdBatch(
     String statusRemoteId, {
     required Batch? batchTransaction,
   }) async {
@@ -41,7 +41,8 @@ class StatusFavouritedAccountsDao extends DatabaseDao<
         (tbl) => _createStatusRemoteIdEqualExpression(statusRemoteId),
       );
     } else {
-      return deleteByStatusRemoteId(statusRemoteId);
+      // ignore: avoid-ignoring-return-values
+      await deleteByStatusRemoteId(statusRemoteId);
     }
   }
 

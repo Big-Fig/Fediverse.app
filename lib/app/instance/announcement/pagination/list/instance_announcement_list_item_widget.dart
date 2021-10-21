@@ -130,6 +130,7 @@ void _showEmojiPicker(BuildContext context) {
       String emojiName,
       String emoji,
     ) {
+      // ignore: avoid-ignoring-return-values
       PleromaAsyncOperationHelper.performPleromaAsyncOperation(
         context: context,
         asyncCode: () => instanceAnnouncementBloc.toggleEmojiReaction(
@@ -165,6 +166,7 @@ class _InstanceAnnouncementListItemDismissButtonWidget extends StatelessWidget {
             ),
             padding: EdgeInsets.zero,
             onPressed: () {
+              // ignore: avoid-ignoring-return-values
               PleromaAsyncOperationHelper.performPleromaAsyncOperation(
                 context: context,
                 asyncCode: () async {

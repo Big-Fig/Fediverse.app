@@ -28,7 +28,8 @@ class DatabaseCacheSettingsBloc
       );
 
   @override
-  Future changeAgeLimitType(DatabaseCacheAgeLimitType value) => updateSettings(
+  Future<void> changeAgeLimitType(DatabaseCacheAgeLimitType value) =>
+      updateSettings(
         DatabaseCacheSettings.fromEnum(
           ageLimitType: value,
           entriesCountByTypeLimitType: entriesCountByTypeLimitType,
@@ -46,7 +47,7 @@ class DatabaseCacheSettingsBloc
           );
 
   @override
-  Future changeEntriesCountByTypeLimit(
+  Future<void> changeEntriesCountByTypeLimit(
     DatabaseCacheEntriesCountByTypeLimitType value,
   ) =>
       updateSettings(

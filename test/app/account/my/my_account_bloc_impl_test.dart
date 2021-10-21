@@ -26,8 +26,9 @@ import '../account_test_helper.dart';
 import '../database/account_database_test_helper.dart';
 import 'my_account_bloc_impl_test.mocks.dart';
 import 'my_account_test_helper.dart';
-// ignore_for_file: no-magic-number, avoid-late-keyword
 
+// ignore_for_file: no-magic-number, avoid-late-keyword
+// ignore_for_file: avoid-ignoring-return-values
 @GenerateMocks([
   IUnifediApiMyAccountService,
 ])

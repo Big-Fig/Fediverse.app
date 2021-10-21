@@ -163,7 +163,7 @@ abstract class IStatusBloc implements IDisposable, IInstanceLocationBloc {
 
   Stream<bool> get containsSpoilerStream;
 
-  Future refreshFromNetwork();
+  Future<void> refreshFromNetwork();
 
   Future<IAccount?> loadAccountByMentionUrl({
     required String url,
@@ -197,7 +197,7 @@ abstract class IStatusBloc implements IDisposable, IInstanceLocationBloc {
 
   Future<IStatus> togglePin();
 
-  Future delete();
+  Future<void> delete();
 
   Future<IUnifediApiStatus> toggleEmojiReaction({
     required String emoji,

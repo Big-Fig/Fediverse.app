@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fedi/app/database/app_database.dart';
 import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -5,8 +7,11 @@ import 'package:unifedi_api/unifedi_api.dart';
 
 part 'account_model.freezed.dart';
 
-typedef AccountCallback = Function(BuildContext context, IAccount account);
-typedef AccountsListCallback = Function(
+typedef AccountCallback = FutureOr<void> Function(
+  BuildContext context,
+  IAccount account,
+);
+typedef AccountsListCallback = FutureOr<void> Function(
   BuildContext context,
   List<IAccount>? accounts,
 );

@@ -21,7 +21,7 @@ abstract class IDraftStatusRepository
   }) =>
       Provider.of<IDraftStatusRepository>(context, listen: listen);
 
-  Future addDraftStatus({
+  Future<void> addDraftStatus({
     required IDraftStatus draftStatus,
   });
 }

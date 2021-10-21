@@ -15,7 +15,7 @@ abstract class IMyAccountFollowRequestNetworkOnlyAccountListBloc
         listen: listen,
       );
 
-  Future acceptFollowRequest({required IAccount account});
+  Future<void> acceptFollowRequest({required IAccount account});
 
-  Future rejectFollowRequest({required IAccount account});
+  Future<void> rejectFollowRequest({required IAccount account});
 }

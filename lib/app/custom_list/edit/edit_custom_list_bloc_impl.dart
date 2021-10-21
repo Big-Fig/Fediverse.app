@@ -185,6 +185,7 @@ class EditCustomListBloc extends DisposableOwner
       paginationBloc: customListAccountListNetworkOnlyPaginationBloc,
     );
 
+    // ignore: avoid-ignoring-return-values
     accountPaginationListBloc.refreshWithoutController();
 
     editCustomListAccountListPaginationListBloc =
@@ -300,7 +301,7 @@ class EditCustomListBloc extends DisposableOwner
   }
 
   @override
-  Future deleteList() async {
+  Future<void> deleteList() async {
     await pleromaListService.deleteList(listId: customList!.remoteId);
 
     deletedStreamController.add(null);

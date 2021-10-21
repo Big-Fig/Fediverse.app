@@ -125,7 +125,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
   }
 
   @override
-  Future internalAsyncInit() async {
+  Future<void> internalAsyncInit() async {
     var chatLastChatMessage =
         await chatMessageRepository.getChatLastChatMessage(chat: chat);
     if (chatLastChatMessage != null) {
@@ -153,7 +153,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
   }
 
   @override
-  Future refreshFromNetwork() async {
+  Future<void> refreshFromNetwork() async {
     var remoteChat = await unifediApiChatService.getChat(id: chat.remoteId);
 
     await accountRepository.batch((batch) {
@@ -178,7 +178,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
     });
   }
 
-  Future _updateByRemoteChat(
+  Future<void> _updateByRemoteChat(
     IUnifediApiChat unifediApiChat, {
     required Batch? batchTransaction,
   }) =>
@@ -212,7 +212,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
       );
 
   @override
-  Future markAsRead() async {
+  Future<void> markAsRead() async {
     if (chat.unread > 0) {
       if (connectionService.isConnected) {
         var lastReadChatMessageId = lastChatMessage?.remoteId;
@@ -229,6 +229,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
             lastReadChatMessageId: lastReadChatMessageId,
           );
 
+          // ignore: avoid-ignoring-return-values
           await chatRepository.upsertInRemoteType(updatedRemoteChat);
         }
       } else {
@@ -242,7 +243,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
   bool get isCountInUnreadSupported => true;
 
   @override
-  Future deleteMessages(List<IChatMessage> chatMessages) async {
+  Future<void> deleteMessages(List<IChatMessage> chatMessages) async {
     // create queue instead of parallel requests to avoid throttle limit on server
     for (final chatMessage in chatMessages) {
       var remoteId = chatMessage.remoteId;
@@ -260,14 +261,14 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
   }
 
   @override
-  Future performActualDelete() {
+  Future<void> performActualDelete() {
     throw UnsupportedError('It is not possible to delete pleroma chat');
   }
 
   @override
   // todo: refactor
   // ignore: long-method
-  Future postMessage({
+  Future<void> postMessage({
     required String? idempotencyKey,
     required IUnifediApiPostChatMessage unifediApiPostChatMessage,
     required IUnifediApiMediaAttachment?
@@ -372,7 +373,7 @@ class PleromaChatBloc extends ChatBloc implements IPleromaChatBloc {
   }
 
   @override
-  Future deleteMessage({
+  Future<void> deleteMessage({
     required IPleromaChatMessage chatMessage,
   }) async {
     if (chatMessage.isPendingStatePublishedOrNull) {

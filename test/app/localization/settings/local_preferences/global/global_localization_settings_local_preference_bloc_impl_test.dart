@@ -1,5 +1,5 @@
 // ignore_for_file: unnecessary_lambdas
-
+// ignore_for_file: avoid-ignoring-return-values
 import 'package:fedi/app/localization/settings/local_preferences/global/global_localization_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/localization/settings/local_preferences/localization_settings_local_preference_bloc_impl.dart';
 import 'package:fedi/app/localization/settings/localization_settings_model.dart';

@@ -15,5 +15,5 @@ abstract class IMyAccountDomainBlockNetworkOnlyListBloc
         listen: listen,
       );
 
-  Future removeDomainBlock({required String domain});
+  Future<void> removeDomainBlock({required String domain});
 }

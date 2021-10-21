@@ -139,44 +139,42 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
       );
 
   // TODO: separate media in own table & use join
-  SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyMediaWhere(
+  void addOnlyMediaWhere(
     SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
   ) =>
-      query
-        ..where(
-          (status) => status.mediaAttachments.isNotNull(),
+      query.where(
+        (status) => status.mediaAttachments.isNotNull(),
 //            |
 //            status.mediaAttachments.equals("").not()
-        );
+      );
 
   // todo: improve performance: remove url.like filter. Add local flag on insert
-  SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyLocalWhere(
+  void addOnlyLocalWhere(
     SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
     String? localDomain,
   ) =>
-      query
-        ..where(
-          (status) =>
-              status.local.equals(true) | status.url.like('%$localDomain%'),
-        );
+      query.where(
+        (status) =>
+            status.local.equals(true) | status.url.like('%$localDomain%'),
+      );
 
   // todo: improve performance: remove url.like filter. Add local flag on insert
-  SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyRemoteWhere(
+  void addOnlyRemoteWhere(
     SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
     String? localDomain,
   ) =>
-      query
-        ..where(
-          (status) => (status.local.equals(true).not() &
-              status.url.like('%$localDomain%').not()),
-        );
+      query.where(
+        (status) =>
+            status.local.equals(true).not() &
+            status.url.like('%$localDomain%').not(),
+      );
 
   // todo: improve performance: remove url.like filter. Add local flag on insert
-  SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyFromInstanceWhere(
+  void addOnlyFromInstanceWhere(
     SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
     String? instance,
   ) =>
-      query..where((status) => status.url.like('%$instance%'));
+      query.where((status) => status.url.like('%$instance%'));
 
   void addExcludeTextWhere(
     JoinedSelectStatement query, {
@@ -214,7 +212,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
   }
 
   // todo: improve performance: remove url.like filter. Add local flag on insert
-  JoinedSelectStatement addExcludeTextConditionWhere(
+  void addExcludeTextConditionWhere(
     JoinedSelectStatement query, {
     required String tableName,
     required String fieldName,
@@ -230,11 +228,10 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
     }
     var expressionContent = '$tableName.$fieldName $expressionCondition';
 
-    return query
-      ..where(
-        CustomExpression<bool>(expressionContent) |
-            CustomExpression<bool>('$tableName.$fieldName IS NULL'),
-      );
+    query.where(
+      CustomExpression<bool>(expressionContent) |
+          CustomExpression<bool>('$tableName.$fieldName IS NULL'),
+    );
   }
 
   JoinedSelectStatement addFollowingWhere(
@@ -307,97 +304,88 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
   // isNull(status.inReplyToAccountRemoteId) |
   // status.inReplyToAccountRemoteId.equals(accountRemoteId));
 
-  SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyNotMutedWhere(
+  void addOnlyNotMutedWhere(
     SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
   ) =>
-      query
-        ..where(
-          (status) => status.muted.equals(false),
-          // (status.muted.equals(false)) &
-          // (status.threadMuted.equals(false) |
-          //     isNull(status.threadMuted))
-        );
+      query.where(
+        (status) => status.muted.equals(false),
+        // (status.muted.equals(false)) &
+        // (status.threadMuted.equals(false) |
+        //     isNull(status.threadMuted))
+      );
 
-  SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyFromAccountWhere(
-    SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
-    String? accountRemoteId,
-  ) =>
-      query..where((status) => status.accountRemoteId.equals(accountRemoteId));
-
-  SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyNoNsfwSensitiveWhere(
-    SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
-  ) =>
-      query..where((status) => status.sensitive.equals(true).not());
-
-  SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyFavouritedWhere(
-    SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
-  ) =>
-      query..where((status) => status.favourited.equals(true));
-
-  SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyBookmarkedWhere(
-    SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
-  ) =>
-      query..where((status) => status.bookmarked.equals(true));
-
-  SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyNotDeletedWhere(
-    SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
-  ) =>
-      query
-        ..where(
-          (status) =>
-              status.deleted.isNull() |
-              status.deleted.equals(
-                false,
-              ),
-        );
-
-  SimpleSelectStatement<$DbStatusesTable, DbStatus>
-      addOnlyNotHiddenLocallyOnDeviceWhere(
-    SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
-  ) =>
-          query
-            ..where(
-              (status) =>
-                  status.hiddenLocallyOnDevice.isNull() |
-                  status.hiddenLocallyOnDevice.equals(
-                    false,
-                  ),
-            );
-
-  SimpleSelectStatement<$DbStatusesTable, DbStatus>
-      addOnlyPendingStatePublishedOrNull(
-    SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
-  ) =>
-          query
-            ..where(
-              (status) =>
-                  status.pendingState.isNull() |
-                  status.pendingState.equals(
-                    PendingState.published.toJsonValue(),
-                  ),
-            );
-
-  SimpleSelectStatement<$DbStatusesTable, DbStatus>
-      addOnlyInReplyToAccountRemoteIdOrNotReply(
+  void addOnlyFromAccountWhere(
     SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
     String? accountRemoteId,
   ) =>
-          query
-            ..where(
-              (status) =>
-                  status.inReplyToAccountRemoteId.isNull() |
-                  status.inReplyToAccountRemoteId.equals(accountRemoteId),
-            );
+      query.where((status) => status.accountRemoteId.equals(accountRemoteId));
 
-  SimpleSelectStatement<$DbStatusesTable, DbStatus> addOnlyNoRepliesWhere(
+  void addOnlyNoNsfwSensitiveWhere(
     SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
   ) =>
-      query
-        ..where(
-          (status) => status.inReplyToRemoteId.isNull(),
-        );
+      query.where((status) => status.sensitive.equals(true).not());
 
-  SimpleSelectStatement<$DbStatusesTable, DbStatus> addExcludeVisibilitiesWhere(
+  void addOnlyFavouritedWhere(
+    SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+  ) =>
+      query.where((status) => status.favourited.equals(true));
+
+  void addOnlyBookmarkedWhere(
+    SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+  ) =>
+      query.where((status) => status.bookmarked.equals(true));
+
+  void addOnlyNotDeletedWhere(
+    SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+  ) =>
+      query.where(
+        (status) =>
+            status.deleted.isNull() |
+            status.deleted.equals(
+              false,
+            ),
+      );
+
+  void addOnlyNotHiddenLocallyOnDeviceWhere(
+    SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+  ) =>
+      query.where(
+        (status) =>
+            status.hiddenLocallyOnDevice.isNull() |
+            status.hiddenLocallyOnDevice.equals(
+              false,
+            ),
+      );
+
+  void addOnlyPendingStatePublishedOrNull(
+    SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+  ) =>
+      query.where(
+        (status) =>
+            status.pendingState.isNull() |
+            status.pendingState.equals(
+              PendingState.published.toJsonValue(),
+            ),
+      );
+
+  void addOnlyInReplyToAccountRemoteIdOrNotReply(
+    SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+    String? accountRemoteId,
+  ) =>
+      query.where(
+        (status) =>
+            status.inReplyToAccountRemoteId.isNull() |
+            status.inReplyToAccountRemoteId.equals(accountRemoteId),
+      );
+
+  void addOnlyNoRepliesWhere(
+    SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
+  ) =>
+      query.where(
+        (status) => status.inReplyToRemoteId.isNull(),
+      );
+
+  void addExcludeVisibilitiesWhere(
     SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
     List<UnifediApiVisibility> excludeVisibilities,
   ) {
@@ -410,37 +398,36 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
         .map((visibility) => visibility.stringValue)
         .toList();
 
-    return query
-      ..where((status) => status.visibility.isNotIn(excludeVisibilityStrings));
+    query
+        .where((status) => status.visibility.isNotIn(excludeVisibilityStrings));
   }
 
-  SimpleSelectStatement<$DbStatusesTable, DbStatus> orderBy(
+  void orderBy(
     SimpleSelectStatement<$DbStatusesTable, DbStatus> query,
     List<StatusRepositoryOrderingTermData> orderTerms,
   ) =>
-      query
-        ..orderBy(
-          orderTerms
-              .map(
-                (orderTerm) => ($DbStatusesTable item) {
-                  GeneratedColumn<Object?> expression;
-                  switch (orderTerm.orderByType) {
-                    case StatusRepositoryOrderType.remoteId:
-                      expression = item.remoteId;
-                      break;
-                    case StatusRepositoryOrderType.createdAt:
-                      expression = item.createdAt;
-                      break;
-                  }
+      query.orderBy(
+        orderTerms
+            .map(
+              (orderTerm) => ($DbStatusesTable item) {
+                GeneratedColumn<Object?> expression;
+                switch (orderTerm.orderByType) {
+                  case StatusRepositoryOrderType.remoteId:
+                    expression = item.remoteId;
+                    break;
+                  case StatusRepositoryOrderType.createdAt:
+                    expression = item.createdAt;
+                    break;
+                }
 
-                  return OrderingTerm(
-                    expression: expression,
-                    mode: orderTerm.orderingMode,
-                  );
-                },
-              )
-              .toList(),
-        );
+                return OrderingTerm(
+                  expression: expression,
+                  mode: orderTerm.orderingMode,
+                );
+              },
+            )
+            .toList(),
+      );
 
   // ignore: long-method
   List<Join> populateStatusJoin({
@@ -542,7 +529,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
             : [],
       ];
 
-  Future incrementRepliesCount({required String? remoteId}) {
+  Future<void> incrementRepliesCount({required String? remoteId}) {
     var update = 'UPDATE db_statuses '
         'SET replies_count = replies_count + 1 '
         "WHERE remote_id = '$remoteId'";
@@ -551,7 +538,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
     return query;
   }
 
-  Future markAsDeleted({required String? remoteId}) {
+  Future<void> markAsDeleted({required String? remoteId}) {
     var update = 'UPDATE db_statuses '
         'SET deleted = 1 '
         "WHERE remote_id = '$remoteId'";
@@ -560,7 +547,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
     return query;
   }
 
-  Future markAsHiddenLocallyOnDevice({required int? localId}) {
+  Future<void> markAsHiddenLocallyOnDevice({required int? localId}) {
     var update = 'UPDATE db_statuses '
         'SET hidden_locally_on_device = 1 '
         "WHERE id = '$localId'";
@@ -572,7 +559,7 @@ class StatusDao extends PopulatedAppRemoteDatabaseDao<
   @override
   $DbStatusesTable get table => dbStatuses;
 
-  Future deleteOlderThanDate(
+  Future<void> deleteOlderThanDate(
     DateTime dateTimeToDelete, {
     required Batch? batchTransaction,
   }) =>

@@ -420,27 +420,31 @@ class MockIUnifediApiAccountService extends _i1.Mock
                   _FakeIUnifediApiAccountRelationship_3()))
           as _i11.Future<_i5.IUnifediApiAccountRelationship>);
   @override
-  _i11.Future<dynamic> blockDomain({String? domain}) => (super.noSuchMethod(
+  _i11.Future<void> blockDomain({String? domain}) => (super.noSuchMethod(
       Invocation.method(#blockDomain, [], {#domain: domain}),
-      returnValue: Future<dynamic>.value()) as _i11.Future<dynamic>);
+      returnValue: Future<void>.value(),
+      returnValueForMissingStub: Future<void>.value()) as _i11.Future<void>);
   @override
-  _i11.Future<dynamic> unBlockDomain({String? domain}) => (super.noSuchMethod(
+  _i11.Future<void> unBlockDomain({String? domain}) => (super.noSuchMethod(
       Invocation.method(#unBlockDomain, [], {#domain: domain}),
-      returnValue: Future<dynamic>.value()) as _i11.Future<dynamic>);
+      returnValue: Future<void>.value(),
+      returnValueForMissingStub: Future<void>.value()) as _i11.Future<void>);
   @override
-  _i11.Future<dynamic> reportAccount(
+  _i11.Future<void> reportAccount(
           {String? accountId,
           List<String>? statusIds,
           String? comment,
           bool? forward}) =>
       (super.noSuchMethod(
-          Invocation.method(#reportAccount, [], {
-            #accountId: accountId,
-            #statusIds: statusIds,
-            #comment: comment,
-            #forward: forward
-          }),
-          returnValue: Future<dynamic>.value()) as _i11.Future<dynamic>);
+              Invocation.method(#reportAccount, [], {
+                #accountId: accountId,
+                #statusIds: statusIds,
+                #comment: comment,
+                #forward: forward
+              }),
+              returnValue: Future<void>.value(),
+              returnValueForMissingStub: Future<void>.value())
+          as _i11.Future<void>);
   @override
   _i11.Future<List<_i4.IUnifediApiAccount>> getAccountFollowings(
           {String? accountId,
@@ -496,9 +500,10 @@ class MockIUnifediApiAccountService extends _i1.Mock
               returnValue: _FakeFediverseApiFeatureRequirementState_5())
           as _i7.FediverseApiFeatureRequirementState);
   @override
-  _i11.Future<dynamic> dispose() =>
-      (super.noSuchMethod(Invocation.method(#dispose, []),
-          returnValue: Future<dynamic>.value()) as _i11.Future<dynamic>);
+  _i11.Future<void> dispose() => (super.noSuchMethod(
+      Invocation.method(#dispose, []),
+      returnValue: Future<void>.value(),
+      returnValueForMissingStub: Future<void>.value()) as _i11.Future<void>);
 }
 
 /// A class which mocks [IUnifediApiWebSocketsService].
@@ -660,7 +665,8 @@ class MockIUnifediApiWebSocketsService extends _i1.Mock
               returnValue: _FakeFediverseApiFeatureRequirementState_5())
           as _i7.FediverseApiFeatureRequirementState);
   @override
-  _i11.Future<dynamic> dispose() =>
-      (super.noSuchMethod(Invocation.method(#dispose, []),
-          returnValue: Future<dynamic>.value()) as _i11.Future<dynamic>);
+  _i11.Future<void> dispose() => (super.noSuchMethod(
+      Invocation.method(#dispose, []),
+      returnValue: Future<void>.value(),
+      returnValueForMissingStub: Future<void>.value()) as _i11.Future<void>);
 }

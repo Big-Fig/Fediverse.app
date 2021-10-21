@@ -48,7 +48,7 @@ import 'package:unifedi_api/unifedi_api.dart';
 
 class HiveService extends AsyncInitLoadingBloc implements IHiveService {
   @override
-  Future internalAsyncInit() async {
+  Future<void> internalAsyncInit() async {
     final directory = await getApplicationDocumentsDirectory();
     registerAdapters();
     Hive.init(directory.path);

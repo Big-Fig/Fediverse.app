@@ -61,7 +61,7 @@ class _FediVideoPlayerToggleControlFullscreenButtonEnabledWidget
   }
 }
 
-Future<dynamic> pushFullScreenPage(
+Future<void> pushFullScreenPage(
   BuildContext context,
   IVideoMediaPlayerBloc videoMediaPlayerBloc,
 ) async {

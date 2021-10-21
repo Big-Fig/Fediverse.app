@@ -9,7 +9,7 @@ import 'package:share_plus/share_plus.dart';
 class ExternalShareService extends DisposableOwner
     implements IExternalShareService {
   @override
-  Future share({
+  Future<void> share({
     required String popupTitle,
     required String? text,
     required List<ShareUrlFile>? urlFiles,
@@ -45,7 +45,7 @@ class ExternalShareService extends DisposableOwner
     }
   }
 
-  Future<String?> shareSeveralUrlFilesAsBytesWithoutText(
+  Future<void> shareSeveralUrlFilesAsBytesWithoutText(
     List<ShareUrlFile> urlFiles,
     String? text,
     String popupTitle,
@@ -83,14 +83,15 @@ class ExternalShareService extends DisposableOwner
         text: actualText,
       );
 
+      // ignore: avoid-ignoring-return-values
       await file.delete();
     } else {
       // share everything as text
       actualText +=
           '[${urlFilesPossibleToShareAsBytes.map((urlFile) => urlFile.url).join(', ')}]';
-    }
 
-    return actualText;
+      shareTextOnly(popupTitle, actualText);
+    }
   }
 
   void shareTextOnly(String popupTitle, String text) {
@@ -99,7 +100,7 @@ class ExternalShareService extends DisposableOwner
     );
   }
 
-  Future shareSingleUrlFileAsBytesWithoutText({
+  Future<void> shareSingleUrlFileAsBytesWithoutText({
     required String popupTitle,
     required ShareUrlFile urlFile,
   }) async {
@@ -122,6 +123,7 @@ class ExternalShareService extends DisposableOwner
         subject: popupTitle,
       );
 
+      // ignore: avoid-ignoring-return-values
       await file.delete();
     } else {
       shareTextOnly(popupTitle, url);

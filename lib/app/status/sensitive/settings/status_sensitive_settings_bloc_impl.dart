@@ -19,28 +19,29 @@ class StatusSensitiveSettingsBloc
         );
 
   @override
-  Future changeIsAlwaysShowNsfw(bool value) => updateInstanceSettings(
+  Future<void> changeIsAlwaysShowNsfw(bool value) => updateInstanceSettings(
         settingsData.copyWith(
           isAlwaysShowNsfw: value,
         ),
       );
 
   @override
-  Future changeIsAlwaysShowSpoiler(bool value) => updateInstanceSettings(
+  Future<void> changeIsAlwaysShowSpoiler(bool value) => updateInstanceSettings(
         settingsData.copyWith(
           isAlwaysShowSpoiler: value,
         ),
       );
 
   @override
-  Future changeIsNeedReplaceBlurWithFill(bool value) => updateInstanceSettings(
+  Future<void> changeIsNeedReplaceBlurWithFill(bool value) =>
+      updateInstanceSettings(
         settingsData.copyWith(
           isNeedReplaceBlurWithFill: value,
         ),
       );
 
   @override
-  Future changeNsfwDisplayDelayDuration(Duration? value) =>
+  Future<void> changeNsfwDisplayDelayDuration(Duration? value) =>
       updateInstanceSettings(
         StatusSensitiveSettings(
           isAlwaysShowNsfw: isAlwaysShowNsfw,

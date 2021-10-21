@@ -132,7 +132,7 @@ class LocalAccountBloc extends AccountBloc {
   InstanceLocation get instanceLocation => InstanceLocation.local;
 
   @override
-  Future actualInit({
+  Future<void> actualInit({
     required IAccount account,
     required bool isNeedRefreshFromNetworkOnInit,
   }) async {
@@ -426,7 +426,7 @@ class LocalAccountBloc extends AccountBloc {
     return newRelationship;
   }
 
-  Future _updateRelationship(
+  Future<void> _updateRelationship(
     IAccount account,
     IUnifediApiAccountRelationship newRelationship,
   ) async {
@@ -450,13 +450,14 @@ class LocalAccountBloc extends AccountBloc {
     } else {
       // sometimes we dont have local account id, for example go from search
       // to account page
+      // ignore: avoid-ignoring-return-values
       await accountRepository.upsertInRemoteType(
         newRemoteAccount,
       );
     }
   }
 
-  Future _refreshAccountRelationship(IAccount account) async {
+  Future<void> _refreshAccountRelationship(IAccount account) async {
     _logger.finest(
       () => 'refreshAccountRelationship '
           'refreshAccountRelationshipInProgress='
@@ -481,7 +482,7 @@ class LocalAccountBloc extends AccountBloc {
   }
 
   @override
-  Future refreshFromNetwork({
+  Future<void> refreshFromNetwork({
     required bool isNeedPreFetchRelationship,
   }) async {
     _logger.finest(() => 'requestRefreshFromNetwork start');
@@ -513,6 +514,7 @@ class LocalAccountBloc extends AccountBloc {
       } else {
         // sometimes we dont have local account id, for example go from search
         // to account page
+        // ignore: avoid-ignoring-return-values
         await accountRepository.upsertInRemoteType(
           remoteAccount,
         );

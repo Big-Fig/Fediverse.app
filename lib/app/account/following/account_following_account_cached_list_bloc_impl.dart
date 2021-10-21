@@ -35,7 +35,7 @@ class AccountFollowingAccountCachedListBloc extends DisposableOwner
   IUnifediApiService get unifediApi => unifediApiAccountService;
 
   @override
-  Future refreshItemsFromRemoteForPage({
+  Future<void> refreshItemsFromRemoteForPage({
     required int? limit,
     required IAccount? newerThan,
     required IAccount? olderThan,

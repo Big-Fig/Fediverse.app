@@ -92,9 +92,10 @@ class MockIUnifediApiFilterService extends _i1.Mock
               _FakeIUnifediApiFilter_2())) as _i7
       .Future<_i4.IUnifediApiFilter>);
   @override
-  _i7.Future<dynamic> deleteFilter({String? filterId}) => (super.noSuchMethod(
+  _i7.Future<void> deleteFilter({String? filterId}) => (super.noSuchMethod(
       Invocation.method(#deleteFilter, [], {#filterId: filterId}),
-      returnValue: Future<dynamic>.value()) as _i7.Future<dynamic>);
+      returnValue: Future<void>.value(),
+      returnValueForMissingStub: Future<void>.value()) as _i7.Future<void>);
   @override
   _i7.Future<_i4.IUnifediApiFilter> createFilter(
           {_i9.IUnifediApiPostFilter? postFilter}) =>
@@ -121,7 +122,8 @@ class MockIUnifediApiFilterService extends _i1.Mock
   @override
   String toString() => super.toString();
   @override
-  _i7.Future<dynamic> dispose() =>
+  _i7.Future<void> dispose() =>
       (super.noSuchMethod(Invocation.method(#dispose, []),
-          returnValue: Future<dynamic>.value()) as _i7.Future<dynamic>);
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i7.Future<void>);
 }

@@ -10,7 +10,7 @@ import 'package:unifedi_api/unifedi_api.dart';
 
 final _logger = Logger('income_share_instance_chooser_dialog.dart');
 
-Future showIncomeShareInstanceChooserDialog(
+Future<void> showIncomeShareInstanceChooserDialog(
   BuildContext context, {
   required IIncomeShareHandlerBloc incomeShareHandlerBloc,
   required List<UnifediApiAccess> authInstanceList,

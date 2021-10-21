@@ -28,7 +28,7 @@ class ConversationChatWithLastMessageCachedListBloc
   IUnifediApiService get unifediApi => conversationChatService;
 
   @override
-  Future refreshItemsFromRemoteForPage({
+  Future<void> refreshItemsFromRemoteForPage({
     required int? limit,
     required IConversationChatWithLastMessage? newerThan,
     required IConversationChatWithLastMessage? olderThan,

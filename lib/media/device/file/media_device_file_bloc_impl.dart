@@ -18,7 +18,7 @@ abstract class MediaDeviceFileBloc extends AsyncInitLoadingBloc
   MediaDeviceFileBloc({required this.mediaDeviceFileMetadata});
 
   @override
-  Future internalAsyncInit() async {
+  Future<void> internalAsyncInit() async {
     thumbImageData = await loadThumbData(
       width: _thumbImageSize,
       // ignore: no-equal-arguments

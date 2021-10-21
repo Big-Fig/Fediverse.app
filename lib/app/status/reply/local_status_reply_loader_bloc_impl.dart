@@ -41,7 +41,7 @@ class LocalStatusReplyLoaderBloc extends AsyncInitLoadingBloc
   }
 
   @override
-  Future internalAsyncInit() async {
+  Future<void> internalAsyncInit() async {
     if (inReplyToStatus != null) {
       // already loaded
       return;
@@ -56,6 +56,7 @@ class LocalStatusReplyLoaderBloc extends AsyncInitLoadingBloc
         statusId: inReplyToRemoteId,
       );
 
+      // ignore: avoid-ignoring-return-values
       await statusRepository.upsertInRemoteType(
         replyToRemoteStatus,
       );

@@ -44,7 +44,7 @@ class AccountFollowingsDao extends DatabaseDao<
         updateKind: UpdateKind.delete,
       );
 
-  Future deleteByAccountRemoteIdAndFollowingAccountRemoteIdBatch({
+  Future<void> deleteByAccountRemoteIdAndFollowingAccountRemoteIdBatch({
     required String followingAccountRemoteId,
     required String accountRemoteId,
     required Batch? batchTransaction,
@@ -59,7 +59,8 @@ class AccountFollowingsDao extends DatabaseDao<
             ),
       );
     } else {
-      return deleteByAccountRemoteIdAndFollowingAccountRemoteId(
+      // ignore: avoid-ignoring-return-values
+      await deleteByAccountRemoteIdAndFollowingAccountRemoteId(
         accountRemoteId: accountRemoteId,
         followingAccountRemoteId: followingAccountRemoteId,
       );
@@ -73,7 +74,7 @@ class AccountFollowingsDao extends DatabaseDao<
         updateKind: UpdateKind.delete,
       );
 
-  Future deleteByAccountRemoteIdBatch(
+  Future<void> deleteByAccountRemoteIdBatch(
     String accountRemoteId, {
     required Batch? batchTransaction,
   }) async {
@@ -83,7 +84,8 @@ class AccountFollowingsDao extends DatabaseDao<
         (tbl) => _createAccountRemoteIdEqualExpression(accountRemoteId),
       );
     } else {
-      return deleteByAccountRemoteId(accountRemoteId);
+      // ignore: avoid-ignoring-return-values
+      await deleteByAccountRemoteId(accountRemoteId);
     }
   }
 
@@ -105,7 +107,7 @@ class AccountFollowingsDao extends DatabaseDao<
         updateKind: UpdateKind.delete,
       );
 
-  Future deleteByFollowingAccountRemoteIdBatch(
+  Future<void> deleteByFollowingAccountRemoteIdBatch(
     String followingAccountRemoteId, {
     required Batch? batchTransaction,
   }) async {
@@ -117,7 +119,8 @@ class AccountFollowingsDao extends DatabaseDao<
         ),
       );
     } else {
-      return deleteByFollowingAccountRemoteId(followingAccountRemoteId);
+      // ignore: avoid-ignoring-return-values
+      await deleteByFollowingAccountRemoteId(followingAccountRemoteId);
     }
   }
 

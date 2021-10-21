@@ -6,6 +6,7 @@ import 'package:fedi/main.dart' as main_app;
 import 'package:flutter/material.dart';
 import 'package:flutter_driver/driver_extension.dart';
 
+// ignore_for_file: avoid-ignoring-return-values
 Future main() async {
   DataHandler handler;
   handler = (String? message) async {

@@ -20,7 +20,7 @@ class InstanceFrontendConfigurationsBloc extends AsyncInitLoadingBloc
   });
 
   @override
-  Future internalAsyncInit() async {
+  Future<void> internalAsyncInit() async {
     try {
       var featureSupported = unifediApiInstanceService.isFeatureSupported(
         unifediApiInstanceService.getFrontendConfigurationsFeature,

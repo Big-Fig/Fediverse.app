@@ -28,7 +28,7 @@ abstract class IMediaDeviceFile {
 
   Future<String> calculateFilePath();
 
-  Future delete();
+  Future<void> delete();
 }
 
 extension IMediaDeviceFileMetadataExtension on IMediaDeviceFileMetadata {
@@ -45,7 +45,7 @@ extension IMediaDeviceFileMetadataExtension on IMediaDeviceFileMetadata {
 }
 
 extension IMediaDeviceFileExtension on IMediaDeviceFile {
-  Future deleteIfNeedAfterUsage() async {
+  Future<void> deleteIfNeedAfterUsage() async {
     if (isNeedDeleteAfterUsage) {
       await delete();
     }
@@ -88,7 +88,7 @@ class FileMediaDeviceFile
   }) = _FileMediaDeviceFile;
 
   @override
-  Future delete() => originalFile.delete();
+  Future<void> delete() => originalFile.delete();
 
   @override
   Future<File> loadFile() async => originalFile;

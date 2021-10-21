@@ -96,15 +96,13 @@ class OneTypeFormGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
   @override
   Stream<bool> get isSomethingChangedStream => _isChangedSubject.stream;
 
-  bool checkIsSomethingChanged() {
+  void checkIsSomethingChanged() {
     var isChanged = isGroupChanged ||
         items.map((field) => field.isSomethingChanged).fold(
               false,
               (previousValue, element) => previousValue | element,
             );
     _isChangedSubject.add(isChanged);
-
-    return isChanged;
   }
 
   @override
@@ -126,6 +124,7 @@ class OneTypeFormGroupBloc<T extends IFormItemBloc> extends FormGroupBloc<T>
 
   @override
   void removeField(T? field) {
+    // ignore: avoid-ignoring-return-values
     items.remove(field);
     _itemsSubject.add(items);
     isGroupChanged = true;

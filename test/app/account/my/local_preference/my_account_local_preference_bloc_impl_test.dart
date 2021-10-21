@@ -6,6 +6,7 @@ import 'package:unifedi_api/unifedi_api_mock_helper.dart';
 import '../../../../local_preferences/local_preferences_test_helper.dart';
 
 // ignore_for_file: no-magic-number
+// ignore_for_file: avoid-ignoring-return-values
 void main() {
   test('save & load', () async {
     await LocalPreferencesMockHelper.testSaveAndLoad<UnifediApiMyAccountWrapper,

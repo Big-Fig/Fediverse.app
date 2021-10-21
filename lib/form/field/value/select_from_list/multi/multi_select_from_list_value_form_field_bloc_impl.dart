@@ -42,6 +42,7 @@ abstract class MultiSelectFromListValueFormFieldBloc<T>
   void toggleValue(T value) {
     var currentValueList = currentValue;
     if (currentValueList.contains(value)) {
+      // ignore: avoid-ignoring-return-values
       currentValueList.remove(value);
     } else {
       currentValueList.add(value);

@@ -28,7 +28,7 @@ class FilterDao extends PopulatedAppRemoteDatabaseDao<
   // Called by the AppDatabase class
   FilterDao(this.db) : super(db);
 
-  SimpleSelectStatement<$DbFiltersTable, DbFilter> addContextTypesWhere(
+  void addContextTypesWhere(
     SimpleSelectStatement<$DbFiltersTable, DbFilter> query,
     List<UnifediApiFilterContextType> contextTypes,
   ) {
@@ -43,52 +43,49 @@ class FilterDao extends PopulatedAppRemoteDatabaseDao<
         )
         .toList();
 
-    return query
-      ..where(
-        (filter) => CustomExpression<bool>(
-          contextTypesStrings
-              .map((type) => "db_filters.context LIKE '%$type%'")
-              .join(' OR '),
-        ),
-      );
+    query.where(
+      (filter) => CustomExpression<bool>(
+        contextTypesStrings
+            .map((type) => "db_filters.context LIKE '%$type%'")
+            .join(' OR '),
+      ),
+    );
   }
 
-  SimpleSelectStatement<$DbFiltersTable, DbFilter> addNotExpiredWhere(
+  void addNotExpiredWhere(
     SimpleSelectStatement<$DbFiltersTable, DbFilter> query,
   ) =>
-      query
-        ..where(
-          (filter) =>
-              filter.expiresAt.isNull() |
-              filter.expiresAt.isBiggerThanValue(
-                DateTime.now(),
-              ),
-        );
+      query.where(
+        (filter) =>
+            filter.expiresAt.isNull() |
+            filter.expiresAt.isBiggerThanValue(
+              DateTime.now(),
+            ),
+      );
 
-  SimpleSelectStatement<$DbFiltersTable, DbFilter> orderBy(
+  void orderBy(
     SimpleSelectStatement<$DbFiltersTable, DbFilter> query,
     List<FilterOrderingTermData> orderTerms,
   ) =>
-      query
-        ..orderBy(
-          orderTerms
-              .map(
-                (orderTerm) => ($DbFiltersTable item) {
-                  GeneratedColumn<String?> expression;
-                  switch (orderTerm.orderType) {
-                    case FilterOrderType.remoteId:
-                      expression = item.remoteId;
-                      break;
-                  }
+      query.orderBy(
+        orderTerms
+            .map(
+              (orderTerm) => ($DbFiltersTable item) {
+                GeneratedColumn<String?> expression;
+                switch (orderTerm.orderType) {
+                  case FilterOrderType.remoteId:
+                    expression = item.remoteId;
+                    break;
+                }
 
-                  return OrderingTerm(
-                    expression: expression,
-                    mode: orderTerm.orderingMode,
-                  );
-                },
-              )
-              .toList(),
-        );
+                return OrderingTerm(
+                  expression: expression,
+                  mode: orderTerm.orderingMode,
+                );
+              },
+            )
+            .toList(),
+      );
 
   List<Join<Table, DataClass>> populateFilterJoin() => [];
 

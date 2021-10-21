@@ -51,7 +51,7 @@ class EditUiSettingsBloc extends EditGlobalSettingsBloc<UiSettings?>
       );
 
   @override
-  Future fillSettingsToFormFields(UiSettings? settings) async {
+  Future<void> fillSettingsToFormFields(UiSettings? settings) async {
     fediThemeFieldBloc.changeCurrentValue(
       _findThemeById(
         availableThemes,

@@ -19,7 +19,7 @@ class EmojiPickerRecentCategoryBloc extends AsyncInitLoadingBloc
   });
 
   @override
-  Future internalAsyncInit() async {
+  Future<void> internalAsyncInit() async {
     await preferenceBloc.performAsyncInit();
   }
 

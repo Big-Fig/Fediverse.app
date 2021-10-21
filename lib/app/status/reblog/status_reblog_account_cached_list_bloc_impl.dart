@@ -36,7 +36,7 @@ class StatusReblogAccountCachedListBloc extends DisposableOwner
   IUnifediApiService get unifediApi => unifediApiStatusService;
 
   @override
-  Future refreshItemsFromRemoteForPage({
+  Future<void> refreshItemsFromRemoteForPage({
     required int? limit,
     required IAccount? newerThan,
     required IAccount? olderThan,

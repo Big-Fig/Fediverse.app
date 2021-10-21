@@ -26,11 +26,13 @@ class PostStatusSettingsBloc
       settingsDataStream.map((settings) => settings.markMediaAsNsfwOnAttach);
 
   @override
-  Future changeMarkMediaAsNsfwOnAttach(bool value) => updateInstanceSettings(
+  Future<void> changeMarkMediaAsNsfwOnAttach(bool value) =>
+      updateInstanceSettings(
         settingsData.copyWith(
           markMediaAsNsfwOnAttach: value,
         ),
       );
+
   @override
   bool get dontUploadMediaDuringEditing =>
       settingsData.dontUploadMediaDuringEditing;
@@ -40,7 +42,7 @@ class PostStatusSettingsBloc
       .map((settings) => settings.dontUploadMediaDuringEditing);
 
   @override
-  Future changeDontUploadMediaDuringEditing(bool value) =>
+  Future<void> changeDontUploadMediaDuringEditing(bool value) =>
       updateInstanceSettings(
         settingsData.copyWith(
           dontUploadMediaDuringEditing: value,
@@ -57,7 +59,9 @@ class PostStatusSettingsBloc
           .map((settings) => settings.defaultVisibilityAsUnifediApi);
 
   @override
-  Future changeDefaultVisibilityAsUnifediApi(UnifediApiVisibility value) =>
+  Future<void> changeDefaultVisibilityAsUnifediApi(
+    UnifediApiVisibility value,
+  ) =>
       updateInstanceSettings(
         settingsData.copyWith(
           defaultVisibilityString: value.stringValue,
@@ -73,7 +77,7 @@ class PostStatusSettingsBloc
       settingsDataStream.map((settings) => settings.defaultStatusLocale);
 
   @override
-  Future changeDefaultStatusLocale(LocalizationLocale? value) =>
+  Future<void> changeDefaultStatusLocale(LocalizationLocale? value) =>
       updateInstanceSettings(
         PostStatusSettings(
           dontUploadMediaDuringEditing: dontUploadMediaDuringEditing,

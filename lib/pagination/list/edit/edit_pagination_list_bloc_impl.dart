@@ -26,7 +26,7 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
   });
 
   @override
-  Future clearChangesAndRefresh() async {
+  Future<void> clearChangesAndRefresh() async {
     addedItemsSubject.add([]);
     removedItemsSubject.add([]);
     await refreshWithController();
@@ -155,7 +155,7 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       );
 
   @override
-  Future addItem(TItem item) async {
+  Future<void> addItem(TItem item) async {
     var foundInRemoved = _findItemInList(
       items: removedItems,
       item: item,
@@ -163,7 +163,7 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
     );
     if (foundInRemoved != null) {
       var items = removedItemsSubject.value;
-      // ignore: cascade_invocations
+      // ignore: cascade_invocations, avoid-ignoring-return-values
       items.remove(foundInRemoved);
 
       removedItemsSubject.add(items);
@@ -195,7 +195,7 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
   }
 
   @override
-  Future removeItem(TItem item) async {
+  Future<void> removeItem(TItem item) async {
     var foundInAdded = _findItemInList(
       items: addedItems,
       item: item,
@@ -204,7 +204,7 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
 
     if (foundInAdded != null) {
       var items = addedItemsSubject.value;
-      // ignore: cascade_invocations
+      // ignore: cascade_invocations, avoid-ignoring-return-values
       items.remove(foundInAdded);
 
       addedItemsSubject.add(items);
@@ -302,7 +302,7 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       paginationListBloc.loadMoreWithoutController();
 
   @override
-  Future performAsyncInit() => paginationListBloc.performAsyncInit();
+  Future<void> performAsyncInit() => paginationListBloc.performAsyncInit();
 
   @override
   RefreshController get refreshController =>
@@ -321,7 +321,8 @@ class EditPaginationListBloc<TPage extends PaginationPage<TItem>, TItem>
       paginationListBloc.refreshStateStream;
 
   @override
-  Future refreshWithController() => paginationListBloc.refreshWithController();
+  Future<void> refreshWithController() =>
+      paginationListBloc.refreshWithController();
 
   @override
   Future<FediListSmartRefresherLoadingState> refreshWithoutController() =>

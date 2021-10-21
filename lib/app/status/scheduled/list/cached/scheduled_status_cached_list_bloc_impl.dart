@@ -94,7 +94,7 @@ class ScheduledStatusCachedListBloc extends IScheduledStatusCachedListBloc {
       );
 
   @override
-  Future refreshItemsFromRemoteForPage({
+  Future<void> refreshItemsFromRemoteForPage({
     required int? limit,
     required IScheduledStatus? newerThan,
     required IScheduledStatus? olderThan,

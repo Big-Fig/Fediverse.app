@@ -99,7 +99,7 @@ class RemoteHashtagPageBloc extends HashtagPageBloc
   Uri get remoteInstanceUriOrNull => instanceUri;
 
   @override
-  Future internalAsyncInit() async {
+  Future<void> internalAsyncInit() async {
     memoryLocalPreferencesService = MemoryLocalPreferencesService();
 
     addDisposable(memoryLocalPreferencesService);

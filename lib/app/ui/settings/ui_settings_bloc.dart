@@ -21,11 +21,11 @@ abstract class IUiSettingsBloc implements IGlobalSettingsBloc<UiSettings> {
 
   Stream<String?> get themeIdStream;
 
-  Future changeThemeId(String? value);
+  Future<void> changeThemeId(String? value);
 
   UiSettingsFontSize get statusFontSize;
 
   Stream<UiSettingsFontSize> get statusFontSizeStream;
 
-  Future changeStatusFontSize(UiSettingsFontSize value);
+  Future<void> changeStatusFontSize(UiSettingsFontSize value);
 }

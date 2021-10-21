@@ -48,15 +48,15 @@ abstract class IUploadMediaAttachmentsCollectionBloc extends IDisposable {
 
   Stream<List<IUploadMediaAttachmentBloc>> get uploadMediaAttachmentBlocsStream;
 
-  Future attachMedia(IMediaDeviceFile mediaDeviceFile);
+  Future<void> attachMedia(IMediaDeviceFile mediaDeviceFile);
 
-  Future attachMedias(List<IMediaDeviceFile> mediaDeviceFiles);
+  Future<void> attachMedias(List<IMediaDeviceFile> mediaDeviceFiles);
 
   void detachMediaAttachmentBloc(
     IUploadMediaAttachmentBloc mediaAttachmentBloc,
   );
 
-  Future clear();
+  Future<void> clear();
 
   void addUploadedAttachment(IUnifediApiMediaAttachment attachment);
 }

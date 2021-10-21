@@ -31,7 +31,7 @@ class DeepLinkInitBloc extends AsyncInitLoadingBloc
   });
 
   @override
-  Future internalAsyncInit() async {
+  Future<void> internalAsyncInit() async {
     var initialUri = await getInitialUri();
 
     if (initialUri != null) {
@@ -39,7 +39,7 @@ class DeepLinkInitBloc extends AsyncInitLoadingBloc
     }
   }
 
-  Future _handleLoginOnAndroidWithoutChrome(Uri initialUri) async {
+  Future<void> _handleLoginOnAndroidWithoutChrome(Uri initialUri) async {
     var lastLaunchedHost =
         pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc.value;
 

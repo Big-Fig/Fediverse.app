@@ -74,7 +74,10 @@ class PhotoManagerMediaDeviceFileMetadata
     final extDir = await getTemporaryDirectory();
     var timestamp = DateTime.now().millisecondsSinceEpoch.toString();
     final dirPath = path.join(extDir.path, 'gallery_picker', timestamp);
+
+    // ignore: avoid-ignoring-return-values
     await Directory(dirPath).create(recursive: true);
+
     var originalFileNameWithoutExtension =
         path.basenameWithoutExtension(file.path);
     final resultPath =
@@ -116,7 +119,7 @@ class PhotoManagerMediaDeviceFile
   }
 
   @override
-  Future delete() async {
+  Future<void> delete() async {
     if (reCompressedFile != null) {
       return reCompressedFile!.deleteSync();
     } else {

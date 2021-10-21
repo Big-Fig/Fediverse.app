@@ -53,7 +53,7 @@ class EditPushFilterSettingsBloc
       );
 
   @override
-  Future fillSettingsToFormFields(
+  Future<void> fillSettingsToFormFields(
     PushFilterSettings? settings,
   ) async {
     blockFromStrangersFieldBloc.changeCurrentValue(

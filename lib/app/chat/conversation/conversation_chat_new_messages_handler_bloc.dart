@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
 abstract class IConversationChatNewMessagesHandlerBloc extends IDisposable {
-  Future handleChatUpdate(IUnifediApiConversation conversation);
+  Future<void> handleChatUpdate(IUnifediApiConversation conversation);
 
   static IConversationChatNewMessagesHandlerBloc of(
     BuildContext context, {

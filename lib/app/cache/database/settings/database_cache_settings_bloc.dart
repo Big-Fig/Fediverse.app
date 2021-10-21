@@ -21,7 +21,7 @@ abstract class IDatabaseCacheSettingsBloc
   Stream<DatabaseCacheEntriesCountByTypeLimitType>
       get entriesCountByTypeLimitTypeStream;
 
-  Future changeEntriesCountByTypeLimit(
+  Future<void> changeEntriesCountByTypeLimit(
     DatabaseCacheEntriesCountByTypeLimitType value,
   );
 
@@ -29,5 +29,5 @@ abstract class IDatabaseCacheSettingsBloc
 
   Stream<DatabaseCacheAgeLimitType> get ageLimitTypeStream;
 
-  Future changeAgeLimitType(DatabaseCacheAgeLimitType value);
+  Future<void> changeAgeLimitType(DatabaseCacheAgeLimitType value);
 }

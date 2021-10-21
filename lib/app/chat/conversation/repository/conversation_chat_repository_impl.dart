@@ -56,7 +56,7 @@ class ConversationChatRepository
   }) : dao = appDatabase.conversationDao;
 
   @override
-  Future markAsRead({
+  Future<void> markAsRead({
     required IConversationChat conversation,
     required Batch? batchTransaction,
   }) =>
@@ -256,7 +256,7 @@ class ConversationChatRepository
     );
   }
 
-  Future _upsertConversationMetadata(
+  Future<void> _upsertConversationMetadata(
     IUnifediApiConversation remoteItem, {
     required Batch? batchTransaction,
   }) async {
@@ -322,7 +322,7 @@ class ConversationChatRepository
   }
 
   @override
-  Future insertAllInRemoteType(
+  Future<void> insertAllInRemoteType(
     List<IUnifediApiConversation> remoteItems, {
     required InsertMode? mode,
     required Batch? batchTransaction,

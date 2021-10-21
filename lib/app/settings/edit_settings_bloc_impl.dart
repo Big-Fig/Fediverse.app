@@ -56,21 +56,21 @@ abstract class EditSettingsBloc<T extends ISettings<dynamic>?> extends FormBloc
   bool get isPossibleToSaveSettingsToBloc => true;
 
   @override
-  Future updateSettings(T settings) async =>
+  Future<void> updateSettings(T settings) async =>
       settingsBloc.updateSettings(settings);
 
   @override
-  Future changeEnabled(bool enabled) async {
+  Future<void> changeEnabled(bool enabled) async {
     isEnabledSubject.add(enabled);
   }
 
   T calculateCurrentFormFieldsSettings();
 
-  Future fillSettingsToFormFields(T settings);
+  Future<void> fillSettingsToFormFields(T settings);
 
   bool updateInProgress = false;
 
-  Future saveSettingsFromFormToSettingsBloc() async {
+  Future<void> saveSettingsFromFormToSettingsBloc() async {
     if (updateInProgress) {
       return;
     }
@@ -88,7 +88,7 @@ abstract class EditSettingsBloc<T extends ISettings<dynamic>?> extends FormBloc
     updateInProgress = false;
   }
 
-  Future saveSettingsFromSettingsBlocToForm(T newSettings) async {
+  Future<void> saveSettingsFromSettingsBlocToForm(T newSettings) async {
     if (updateInProgress) {
       return;
     }

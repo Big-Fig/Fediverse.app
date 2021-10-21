@@ -40,15 +40,13 @@ class ConnectionService extends DisposableOwner implements IConnectionService {
   }
 
   @override
-  Future internalAsyncInit() async {
+  Future<void> internalAsyncInit() async {
     await _checkConnectivity();
   }
 
-  Future<ConnectivityResult> _checkConnectivity() async {
+  Future<void> _checkConnectivity() async {
     var newState = await connectivity.checkConnectivity();
     _updateConnectivity(newState);
-
-    return newState;
   }
 
   void _updateConnectivity(ConnectivityResult newState) {

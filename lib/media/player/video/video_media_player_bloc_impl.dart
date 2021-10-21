@@ -118,42 +118,42 @@ class VideoMediaPlayerBloc extends MediaPlayerBloc
   }
 
   @override
-  Future pause() {
+  Future<void> pause() {
     _onNewIteration();
 
     return super.pause();
   }
 
   @override
-  Future play() {
+  Future<void> play() {
     _onNewIteration();
 
     return super.play();
   }
 
   @override
-  Future mute() {
+  Future<void> mute() {
     _onNewIteration();
 
     return super.mute();
   }
 
   @override
-  Future unMute() {
+  Future<void> unMute() {
     _onNewIteration();
 
     return super.unMute();
   }
 
   @override
-  Future seekToDuration(Duration position) {
+  Future<void> seekToDuration(Duration position) {
     _onNewIteration();
 
     return super.seekToDuration(position);
   }
 
   @override
-  Future seekToPercent(double percent) {
+  Future<void> seekToPercent(double percent) {
     _onNewIteration();
 
     return super.seekToPercent(percent);

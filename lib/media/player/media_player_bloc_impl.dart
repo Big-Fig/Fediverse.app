@@ -67,20 +67,20 @@ class MediaPlayerBloc extends AsyncInitLoadingBloc implements IMediaPlayerBloc {
   }
 
   @override
-  Future dispose() async {
+  Future<void> dispose() async {
     playerStateSubject.add(MediaPlayerState.disposed);
     await super.dispose();
     await videoPlayerDisposable?.dispose();
   }
 
   @override
-  Future internalAsyncInit() async {
+  Future<void> internalAsyncInit() async {
     await _actualInit();
   }
 
   DateTime positionChangedLastDateTime = DateTime.now();
 
-  Future _actualInit() async {
+  Future<void> _actualInit() async {
     playerStateSubject.add(MediaPlayerState.initializing);
 
     var videoPlayerController = createVideoPlayerController();
@@ -253,7 +253,7 @@ class MediaPlayerBloc extends AsyncInitLoadingBloc implements IMediaPlayerBloc {
       );
 
   @override
-  Future play() async {
+  Future<void> play() async {
     if (!isInitialized) {
       await performAsyncInit();
     }
@@ -283,7 +283,7 @@ class MediaPlayerBloc extends AsyncInitLoadingBloc implements IMediaPlayerBloc {
   }
 
   @override
-  Future pause() async {
+  Future<void> pause() async {
     await videoPlayerController!.pause();
 
     assert(isInitialized, 'cant pause when not initialized');
@@ -307,12 +307,12 @@ class MediaPlayerBloc extends AsyncInitLoadingBloc implements IMediaPlayerBloc {
   }
 
   @override
-  Future mute() async {
+  Future<void> mute() async {
     await videoPlayerController!.setVolume(0.0);
   }
 
   @override
-  Future unMute() async {
+  Future<void> unMute() async {
     await videoPlayerController!.setVolume(1.0);
   }
 
@@ -325,18 +325,18 @@ class MediaPlayerBloc extends AsyncInitLoadingBloc implements IMediaPlayerBloc {
       );
 
   @override
-  Future seekToDuration(Duration position) async {
+  Future<void> seekToDuration(Duration position) async {
     await videoPlayerController!.seekTo(position);
   }
 
   @override
-  Future seekToPercent(double percent) async {
+  Future<void> seekToPercent(double percent) async {
     assert(percent >= 0.0 && percent <= 1.0, 'seek bounds is [0, 1]');
     await seekToDuration(lengthDuration! * percent);
   }
 
   @override
-  Future reloadAfterError() async {
+  Future<void> reloadAfterError() async {
     await _actualInit();
   }
 }

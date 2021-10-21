@@ -148,6 +148,8 @@ import 'package:fediverse_api/fediverse_api.dart';
 import 'package:logging/logging.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
+// ignore_for_file: avoid-ignoring-return-values
+
 var _logger = Logger('current_access_context_bloc_imp.dart');
 
 class CurrentUnifediApiAccessContextBloc extends ProviderContextBloc
@@ -165,7 +167,7 @@ class CurrentUnifediApiAccessContextBloc extends ProviderContextBloc
   @override
   // todo: refactor
   // ignore: long-method
-  Future internalAsyncInit() async {
+  Future<void> internalAsyncInit() async {
     _logger.fine(() => 'internalAsyncInit');
 
     var preferencesService = appContextBloc.get<ILocalPreferencesService>();

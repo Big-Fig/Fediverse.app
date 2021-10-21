@@ -24,7 +24,7 @@ abstract class IInstanceAnnouncementCachedListBloc extends DisposableOwner
 
   Stream<InstanceAnnouncementSettings> get instanceAnnouncementSettingsStream;
 
-  Future changeInstanceAnnouncementSettings(
+  Future<void> changeInstanceAnnouncementSettings(
     InstanceAnnouncementSettings settings,
   );
 
@@ -39,7 +39,7 @@ abstract class IInstanceAnnouncementCachedListBloc extends DisposableOwner
   });
 
   @override
-  Future refreshItemsFromRemoteForPage({
+  Future<void> refreshItemsFromRemoteForPage({
     required int? limit,
     required IInstanceAnnouncement? newerThan,
     required IInstanceAnnouncement? olderThan,

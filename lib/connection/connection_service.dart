@@ -10,5 +10,5 @@ abstract class IConnectionService implements DisposableOwner {
 
   bool get isConnected;
 
-  Future internalAsyncInit();
+  Future<void> internalAsyncInit();
 }

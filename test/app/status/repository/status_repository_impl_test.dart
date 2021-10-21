@@ -23,6 +23,7 @@ import '../database/status_database_test_helper.dart';
 import '../status_test_helper.dart';
 import 'status_repository_test_helper.dart';
 
+// ignore_for_file: avoid-ignoring-return-values
 // ignore_for_file: no-magic-number, avoid-late-keyword
 const String baseUrl = 'https://pleroma.com';
 

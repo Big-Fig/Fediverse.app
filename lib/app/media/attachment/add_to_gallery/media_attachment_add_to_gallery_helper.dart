@@ -21,6 +21,7 @@ Future<bool> addMediaAttachmentToGallery({
   if (Platform.isAndroid) {
     var storagePermissionBloc =
         IStoragePermissionBloc.of(context, listen: false);
+    // ignore: avoid-ignoring-return-values
     await storagePermissionBloc.requestPermission();
 
     if (storagePermissionBloc.permissionGranted!) {

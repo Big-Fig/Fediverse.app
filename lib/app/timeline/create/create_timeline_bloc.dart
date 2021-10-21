@@ -22,7 +22,7 @@ abstract class ICreateTimelineBloc implements IFormBloc {
 
   Stream<IEditTimelineSettingsBloc?> get editTimelineSettingsBlocStream;
 
-  Future save();
+  Future<void> save();
 
   void handleBackPressed();
 }

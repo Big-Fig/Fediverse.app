@@ -53,7 +53,7 @@ class StatusActionMuteBloc extends DisposableOwner
       );
 
   @override
-  Future mute() => statusBloc.mute(
+  Future<void> mute() => statusBloc.mute(
         duration: expireDurationFieldBloc.currentValueDuration,
       );
 }

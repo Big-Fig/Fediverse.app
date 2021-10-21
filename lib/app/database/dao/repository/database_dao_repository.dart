@@ -20,7 +20,8 @@ abstract class DatabaseDaoRepository<
   List<OrderingTerm> get defaultOrderingTerms;
 
   @override
-  Future internalAsyncInit() async => null;
+  // ignore: no-empty-block
+  Future<void> internalAsyncInit() async {}
 
   @override
   Future<int> countAll() => dao.countAllSelectable().getSingle();
@@ -40,7 +41,7 @@ abstract class DatabaseDaoRepository<
   }
 
   @override
-  Future insertAllInDbType(
+  Future<void> insertAllInDbType(
     List<Insertable<DbItem>> dbItems, {
     required InsertMode? mode,
     required Batch? batchTransaction,
@@ -62,7 +63,7 @@ abstract class DatabaseDaoRepository<
       );
 
   @override
-  Future upsertAllInDbType(
+  Future<void> upsertAllInDbType(
     List<Insertable<DbItem>> dbItems, {
     required Batch? batchTransaction,
   }) =>
@@ -81,7 +82,7 @@ abstract class DatabaseDaoRepository<
       dao.findByIdSelectable(dbId).watchSingleOrNull();
 
   @override
-  Future deleteById(
+  Future<void> deleteById(
     DbId id, {
     required Batch? batchTransaction,
   }) =>
@@ -91,7 +92,7 @@ abstract class DatabaseDaoRepository<
       );
 
   @override
-  Future clear({
+  Future<void> clear({
     required Batch? batchTransaction,
   }) =>
       dao.clear(
@@ -99,7 +100,7 @@ abstract class DatabaseDaoRepository<
       );
 
   @override
-  Future batch(Function(Batch batch) runInBatch) => dao.batch(runInBatch);
+  Future<void> batch(Function(Batch batch) runInBatch) => dao.batch(runInBatch);
 
   @override
   Future<void> upsertInDbTypeBatch(

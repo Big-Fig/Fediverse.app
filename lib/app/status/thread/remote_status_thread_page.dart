@@ -18,7 +18,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
-Future goToRemoteStatusThreadPageBasedOnRemoteInstanceStatus(
+Future<void> goToRemoteStatusThreadPageBasedOnRemoteInstanceStatus(
   BuildContext context, {
   required IStatus remoteInstanceStatus,
   required IUnifediApiMediaAttachment? remoteInstanceInitialMediaAttachment,
@@ -31,7 +31,7 @@ Future goToRemoteStatusThreadPageBasedOnRemoteInstanceStatus(
       ),
     );
 
-Future goToRemoteStatusThreadPageBasedOnLocalInstanceRemoteStatus(
+Future<void> goToRemoteStatusThreadPageBasedOnLocalInstanceRemoteStatus(
   BuildContext context, {
   required IStatus? localInstanceRemoteStatus,
   required IUnifediApiMediaAttachment?

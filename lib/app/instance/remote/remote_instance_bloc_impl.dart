@@ -41,7 +41,7 @@ class RemoteInstanceBloc extends AsyncInitLoadingBloc
   IUnifediApiInstance? unifediApiInstance;
 
   @override
-  Future internalAsyncInit() async {
+  Future<void> internalAsyncInit() async {
     var typeDetectorBloc = UnifediApiInstanceTypeDetectorBloc();
 
     var instanceType = await typeDetectorBloc.detectInstanceType(

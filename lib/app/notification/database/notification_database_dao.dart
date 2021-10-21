@@ -51,69 +51,61 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
         alias(db.dbAccounts, _statusReblogAccountAliasId);
   }
 
-  SimpleSelectStatement<$DbNotificationsTable, DbNotification>
-      addExcludeTypeWhere(
+  void addExcludeTypeWhere(
     SimpleSelectStatement<$DbNotificationsTable, DbNotification> query,
     List<UnifediApiNotificationType>? excludeTypes,
   ) =>
-          query
-            ..where(
-              (notification) => notification.type.isNotIn(
-                excludeTypes!
-                    .map(
-                      (type) => type.stringValue,
-                    )
-                    .toList(),
-              ),
-            );
+      query.where(
+        (notification) => notification.type.isNotIn(
+          excludeTypes!
+              .map(
+                (type) => type.stringValue,
+              )
+              .toList(),
+        ),
+      );
 
-  SimpleSelectStatement<$DbNotificationsTable, DbNotification>
-      addOnlyWithTypeWhere(
+  void addOnlyWithTypeWhere(
     SimpleSelectStatement<$DbNotificationsTable, DbNotification> query,
     UnifediApiNotificationType onlyWithType,
   ) =>
-          query
-            ..where(
-              (notification) => notification.type.equals(
-                onlyWithType.stringValue,
-              ),
-            );
+      query.where(
+        (notification) => notification.type.equals(
+          onlyWithType.stringValue,
+        ),
+      );
 
-  JoinedSelectStatement addExcludeContentWhere(
+  void addExcludeContentWhere(
     JoinedSelectStatement query, {
     required String phrase,
     required bool wholeWord,
   }) {
     final regex = r'\b' + phrase + r'\b';
     if (wholeWord) {
-      return query
-        ..where(
-          statusAlias.content.regexp(regex).not(),
-        );
+      query.where(
+        statusAlias.content.regexp(regex).not(),
+      );
     } else {
-      return query
-        ..where(
-          statusAlias.content.like('%$phrase%').not(),
-        );
+      query.where(
+        statusAlias.content.like('%$phrase%').not(),
+      );
     }
   }
 
-  JoinedSelectStatement addExcludeSpoilerTextWhere(
+  void addExcludeSpoilerTextWhere(
     JoinedSelectStatement query, {
     required String phrase,
     required bool wholeWord,
   }) {
     final regex = r'\b' + phrase + r'\b';
     if (wholeWord) {
-      return query
-        ..where(
-          statusAlias.spoilerText.regexp(regex).not(),
-        );
+      query.where(
+        statusAlias.spoilerText.regexp(regex).not(),
+      );
     } else {
-      return query
-        ..where(
-          statusAlias.spoilerText.like('%$phrase%').not(),
-        );
+      query.where(
+        statusAlias.spoilerText.like('%$phrase%').not(),
+      );
     }
   }
 
@@ -143,7 +135,7 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
     }
   }
 
-  SimpleSelectStatement<$DbNotificationsTable, DbNotification> orderBy(
+  void orderBy(
     SimpleSelectStatement<$DbNotificationsTable, DbNotification> query,
     List<NotificationRepositoryOrderingTermData> orderTerms,
   ) =>
@@ -171,7 +163,7 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
               .toList(),
         );
 
-  Future markAsRead({required String remoteId}) {
+  Future<void> markAsRead({required String remoteId}) {
     var update = 'UPDATE db_notifications '
         'SET unread = 0 '
         "WHERE remote_id = '$remoteId'";
@@ -180,14 +172,14 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
     return query;
   }
 
-  Future markAllAsRead() {
+  Future<void> markAllAsRead() {
     var update = 'UPDATE db_notifications SET unread = 0';
     var query = db.customUpdate(update, updates: {dbNotifications});
 
     return query;
   }
 
-  Future markAsDismissed({required String? remoteId}) {
+  Future<void> markAsDismissed({required String? remoteId}) {
     var update = 'UPDATE db_notifications '
         'SET dismissed = 1 '
         "WHERE remote_id = '$remoteId'";
@@ -196,7 +188,7 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
     return query;
   }
 
-  Future markAsDismissedWhere({
+  Future<void> markAsDismissedWhere({
     required String? accountRemoteId,
     required UnifediApiNotificationType type,
   }) {
@@ -209,7 +201,7 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
     return query;
   }
 
-  Future markAllAsDismissed() {
+  Future<void> markAllAsDismissed() {
     var update = 'UPDATE db_notifications '
         'SET dismissed = 1 ';
     var query = db.customUpdate(update, updates: {dbNotifications});
@@ -246,28 +238,24 @@ class NotificationDao extends PopulatedAppRemoteDatabaseDao<
         ),
       ];
 
-  SimpleSelectStatement<$DbNotificationsTable, DbNotification>
-      addOnlyNotDismissedWhere(
+  void addOnlyNotDismissedWhere(
     SimpleSelectStatement<$DbNotificationsTable, DbNotification> query,
   ) =>
-          query
-            ..where(
-              (status) =>
-                  status.dismissed.isNull() | status.dismissed.equals(false),
-            );
+      query.where(
+        (status) => status.dismissed.isNull() | status.dismissed.equals(false),
+      );
 
-  SimpleSelectStatement<$DbNotificationsTable, DbNotification> addOnlyUnread(
+  void addOnlyUnread(
     SimpleSelectStatement<$DbNotificationsTable, DbNotification> query,
   ) =>
-      query
-        ..where(
-          (status) => status.unread.equals(true),
-        );
+      query.where(
+        (status) => status.unread.equals(true),
+      );
 
   @override
   $DbNotificationsTable get table => dbNotifications;
 
-  Future deleteOlderThanDate(
+  Future<void> deleteOlderThanDate(
     DateTime dateTimeToDelete, {
     required Batch? batchTransaction,
   }) =>

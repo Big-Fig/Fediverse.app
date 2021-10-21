@@ -48,7 +48,7 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
     uiStateSubject.disposeWith(this);
   }
 
-  Future updateTimelines() async {
+  Future<void> updateTimelines() async {
     var timelines = <Timeline>[];
     for (final timelineId in timelineIds) {
       var bloc = TimelineLocalPreferenceBloc.byId(
@@ -125,7 +125,7 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
   Stream<TimelinesHomeTabStorage?> get storageStream => preferences.stream;
 
   @override
-  Future onItemsUpdated(List<Timeline> timelines) async {
+  Future<void> onItemsUpdated(List<Timeline> timelines) async {
     var newTimelineIds = timelines.map((timeline) => timeline.id).toList();
     _logger.finest(() => 'onItemsChanged $newTimelineIds');
     var updatedStorage = storage!.copyWith(timelineIds: newTimelineIds);
@@ -133,7 +133,7 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
   }
 
   @override
-  Future add(Timeline timeline) async {
+  Future<void> add(Timeline timeline) async {
     var settingsLocalPreferencesBloc = TimelineLocalPreferenceBloc.byId(
       preferencesService,
       userAtHost: authInstance.userAtHost,
@@ -151,7 +151,8 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
   }
 
   @override
-  Future remove(Timeline timeline) async {
+  Future<void> remove(Timeline timeline) async {
+    // ignore: avoid-ignoring-return-values
     timelines.remove(timeline);
     await onItemsUpdated(timelines);
 
@@ -168,7 +169,7 @@ class TimelinesHomeTabStorageBloc extends AsyncInitLoadingBloc
   }
 
   @override
-  Future internalAsyncInit() async {
+  Future<void> internalAsyncInit() async {
     await updateTimelines();
   }
 

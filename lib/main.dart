@@ -74,14 +74,15 @@ CurrentUnifediApiAccessContextBloc? currentInstanceContextBloc;
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 // ignore: long-method
-Future main() async {
+Future<void> main() async {
   await launchApp(appLaunchType: AppLaunchType.normal);
 }
 
-Future launchApp({
+Future<void> launchApp({
   required AppLaunchType appLaunchType,
 }) async {
   // debugRepaintRainbowEnabled = true;
+  // ignore: avoid-ignoring-return-values
   WidgetsFlutterBinding.ensureInitialized();
 
   runNotInitializedSplashApp();
@@ -101,6 +102,9 @@ Future launchApp({
           var currentInstanceBloc =
               initBloc.appContextBloc.get<ICurrentUnifediApiAccessBloc>();
 
+          // we don't need to cancel this subscription
+          // because it should always exist
+          // ignore: avoid-ignoring-return-values
           currentInstanceBloc.currentInstanceStream
               .distinct(
             (previous, next) => previous?.userAtHost == next?.userAtHost,
@@ -175,7 +179,7 @@ void runInitializedSplashApp({
   );
 }
 
-Future runInitializedApp({
+Future<void> runInitializedApp({
   required IAppContextBloc appContextBloc,
   required UnifediApiAccess? currentInstance,
 }) async {
@@ -190,7 +194,7 @@ Future runInitializedApp({
   }
 }
 
-Future runInitializedCurrentInstanceApp({
+Future<void> runInitializedCurrentInstanceApp({
   required IAppContextBloc appContextBloc,
   required UnifediApiAccess currentInstance,
 }) async {
@@ -282,7 +286,7 @@ CurrentUnifediApiAccessContextInitBloc createCurrentInstanceContextBloc({
   return currentUnifediApiAccessContextLoadingBloc;
 }
 
-Future handleLaunchPushLoaderNotification(
+Future<void> handleLaunchPushLoaderNotification(
   NotificationPushLoaderNotification launchOrResumePushLoaderNotification,
 ) async {
   var notification = launchOrResumePushLoaderNotification.notification;

@@ -33,6 +33,7 @@ class InstanceActivityWidget extends StatelessWidget {
         controller: instanceActivityBloc.refreshController,
         onRefresh: () async {
           try {
+            // ignore: avoid-ignoring-return-values
             await instanceActivityBloc.refresh();
 
             return FediListSmartRefresherLoadingState.loaded;

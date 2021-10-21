@@ -101,9 +101,10 @@ class MockIUnifediApiPushSubscriptionService extends _i1.Mock
                   _FakeIUnifediApiPushSubscription_2()))
           as _i7.Future<_i4.IUnifediApiPushSubscription>);
   @override
-  _i7.Future<dynamic> unsubscribe() =>
+  _i7.Future<void> unsubscribe() =>
       (super.noSuchMethod(Invocation.method(#unsubscribe, []),
-          returnValue: Future<dynamic>.value()) as _i7.Future<dynamic>);
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i7.Future<void>);
   @override
   _i5.FediverseApiFeatureRequirementState checkFeatureState(
           _i2.IUnifediApiFeature? feature) =>
@@ -113,9 +114,10 @@ class MockIUnifediApiPushSubscriptionService extends _i1.Mock
   @override
   String toString() => super.toString();
   @override
-  _i7.Future<dynamic> dispose() =>
+  _i7.Future<void> dispose() =>
       (super.noSuchMethod(Invocation.method(#dispose, []),
-          returnValue: Future<dynamic>.value()) as _i7.Future<dynamic>);
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i7.Future<void>);
 }
 
 /// A class which mocks [IPushRelayService].
@@ -145,9 +147,10 @@ class MockIPushRelayService extends _i1.Mock implements _i10.IPushRelayService {
           }),
           returnValue: '') as String);
   @override
-  _i7.Future<dynamic> dispose() =>
+  _i7.Future<void> dispose() =>
       (super.noSuchMethod(Invocation.method(#dispose, []),
-          returnValue: Future<dynamic>.value()) as _i7.Future<dynamic>);
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i7.Future<void>);
   @override
   String toString() => super.toString();
 }
@@ -191,15 +194,17 @@ class MockIFcmPushService extends _i1.Mock implements _i11.IFcmPushService {
       super.noSuchMethod(Invocation.method(#clearInitialMessage, []),
           returnValueForMissingStub: null);
   @override
-  _i7.Future<dynamic> dispose() =>
+  _i7.Future<void> dispose() =>
       (super.noSuchMethod(Invocation.method(#dispose, []),
-          returnValue: Future<dynamic>.value()) as _i7.Future<dynamic>);
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i7.Future<void>);
   @override
   String toString() => super.toString();
   @override
-  _i7.Future<dynamic> performAsyncInit() =>
+  _i7.Future<void> performAsyncInit() =>
       (super.noSuchMethod(Invocation.method(#performAsyncInit, []),
-          returnValue: Future<dynamic>.value()) as _i7.Future<dynamic>);
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i7.Future<void>);
 }
 
 /// A class which mocks [IConnectionService].
@@ -245,9 +250,10 @@ class MockIConnectionService extends _i1.Mock
       super.noSuchMethod(Invocation.setter(#isDisposed, _isDisposed),
           returnValueForMissingStub: null);
   @override
-  _i7.Future<dynamic> internalAsyncInit() =>
+  _i7.Future<void> internalAsyncInit() =>
       (super.noSuchMethod(Invocation.method(#internalAsyncInit, []),
-          returnValue: Future<dynamic>.value()) as _i7.Future<dynamic>);
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i7.Future<void>);
   @override
   String toString() => super.toString();
   @override
@@ -259,11 +265,13 @@ class MockIConnectionService extends _i1.Mock
       super.noSuchMethod(Invocation.method(#addDisposables, [disposables]),
           returnValueForMissingStub: null);
   @override
-  _i7.Future<dynamic> performDispose() =>
+  _i7.Future<void> performDispose() =>
       (super.noSuchMethod(Invocation.method(#performDispose, []),
-          returnValue: Future<dynamic>.value()) as _i7.Future<dynamic>);
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i7.Future<void>);
   @override
-  _i7.Future<dynamic> dispose() =>
+  _i7.Future<void> dispose() =>
       (super.noSuchMethod(Invocation.method(#dispose, []),
-          returnValue: Future<dynamic>.value()) as _i7.Future<dynamic>);
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i7.Future<void>);
 }

@@ -30,7 +30,7 @@ abstract class IUploadMediaAttachmentBloc implements IDisposable {
 
   Future<String?> calculateFilePath();
 
-  Future startUploadIfPossible();
+  Future<void> startUploadIfPossible();
 
   bool get isUploaded;
 }

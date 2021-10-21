@@ -220,10 +220,10 @@ dependencies:
   awesome_notifications: 0.0.6+10
 
   # Disposable logic
-  easy_dispose: 1.0.1
-  easy_dispose_flutter: 1.0.1
-  easy_dispose_rxdart: 1.0.1
-  easy_dispose_provider: 1.0.2
+  easy_dispose: 1.1.0
+  easy_dispose_flutter: 1.1.0
+  easy_dispose_rxdart: 1.1.0
+  easy_dispose_provider: 1.1.0
 
   # work with path/url parts
   path: 1.8.0

@@ -27,7 +27,7 @@ class InAppReviewCheckerWidgetState extends State<InAppReviewCheckerWidget> {
     checkInAppReview();
   }
 
-  Future checkInAppReview() async {
+  Future<void> checkInAppReview() async {
     var configService = IConfigService.of(context, listen: false);
 
     if (configService.askReviewEnabled) {

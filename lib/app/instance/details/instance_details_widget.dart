@@ -61,6 +61,7 @@ class InstanceDetailsWidget extends StatelessWidget {
         controller: instanceDetailsBloc.refreshController,
         onRefresh: () async {
           try {
+            // ignore: avoid-ignoring-return-values
             await instanceDetailsBloc.refresh();
 
             return FediListSmartRefresherLoadingState.loaded;

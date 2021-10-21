@@ -6,7 +6,7 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/ui/theme/ui_theme_model.dart';
 import 'package:flutter/widgets.dart';
 
-Future showChatMessagePendingActionsDialog({
+Future<void> showChatMessagePendingActionsDialog({
   required BuildContext context,
   required IChatMessageBloc chatMessageBloc,
 }) =>

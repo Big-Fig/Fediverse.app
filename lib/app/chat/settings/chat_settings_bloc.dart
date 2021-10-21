@@ -15,7 +15,7 @@ abstract class IChatSettingsBloc
 
   Stream<bool> get replaceConversationsWithPleromaChatsStream;
 
-  Future changeReplaceConversationsWithPleromaChats({
+  Future<void> changeReplaceConversationsWithPleromaChats({
     required bool replaceConversationsWithChats,
   });
 
@@ -23,7 +23,7 @@ abstract class IChatSettingsBloc
 
   Stream<bool> get countConversationsInChatsUnreadBadgesStream;
 
-  Future changeCountConversationsInChatsUnreadBadges({
+  Future<void> changeCountConversationsInChatsUnreadBadges({
     required bool appendConversationUnreadToUnreadBadge,
   });
 }

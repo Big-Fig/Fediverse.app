@@ -39,5 +39,5 @@ abstract class IFediStepperBloc<T extends IFediStepperItem>
 
   void goToStepAtIndex(int index);
 
-  Future submit();
+  Future<void> submit();
 }

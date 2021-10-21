@@ -154,11 +154,13 @@ class MockIUnifediApiConversationService extends _i1.Mock
               _FakeIUnifediApiConversation_2())) as _i13
           .Future<_i4.IUnifediApiConversation>);
   @override
-  _i13.Future<dynamic> deleteConversation({String? conversationId}) =>
+  _i13.Future<void> deleteConversation({String? conversationId}) =>
       (super.noSuchMethod(
-          Invocation.method(
-              #deleteConversation, [], {#conversationId: conversationId}),
-          returnValue: Future<dynamic>.value()) as _i13.Future<dynamic>);
+              Invocation.method(
+                  #deleteConversation, [], {#conversationId: conversationId}),
+              returnValue: Future<void>.value(),
+              returnValueForMissingStub: Future<void>.value())
+          as _i13.Future<void>);
   @override
   _i13.Future<List<_i4.IUnifediApiConversation>> getConversations(
           {_i14.IUnifediApiPagination? pagination,
@@ -178,9 +180,10 @@ class MockIUnifediApiConversationService extends _i1.Mock
   @override
   String toString() => super.toString();
   @override
-  _i13.Future<dynamic> dispose() =>
-      (super.noSuchMethod(Invocation.method(#dispose, []),
-          returnValue: Future<dynamic>.value()) as _i13.Future<dynamic>);
+  _i13.Future<void> dispose() => (super.noSuchMethod(
+      Invocation.method(#dispose, []),
+      returnValue: Future<void>.value(),
+      returnValueForMissingStub: Future<void>.value()) as _i13.Future<void>);
 }
 
 /// A class which mocks [IUnifediApiStatusService].
@@ -468,9 +471,10 @@ class MockIUnifediApiStatusService extends _i1.Mock
                   _FakeIUnifediApiScheduledStatus_6()))
           as _i13.Future<_i8.IUnifediApiScheduledStatus>);
   @override
-  _i13.Future<dynamic> deleteStatus({String? statusId}) => (super.noSuchMethod(
+  _i13.Future<void> deleteStatus({String? statusId}) => (super.noSuchMethod(
       Invocation.method(#deleteStatus, [], {#statusId: statusId}),
-      returnValue: Future<dynamic>.value()) as _i13.Future<dynamic>);
+      returnValue: Future<void>.value(),
+      returnValueForMissingStub: Future<void>.value()) as _i13.Future<void>);
   @override
   _i13.Future<_i7.IUnifediApiStatus> muteStatus(
           {String? statusId, Duration? expiresIn}) =>
@@ -551,9 +555,10 @@ class MockIUnifediApiStatusService extends _i1.Mock
   @override
   String toString() => super.toString();
   @override
-  _i13.Future<dynamic> dispose() =>
-      (super.noSuchMethod(Invocation.method(#dispose, []),
-          returnValue: Future<dynamic>.value()) as _i13.Future<dynamic>);
+  _i13.Future<void> dispose() => (super.noSuchMethod(
+      Invocation.method(#dispose, []),
+      returnValue: Future<void>.value(),
+      returnValueForMissingStub: Future<void>.value()) as _i13.Future<void>);
 }
 
 /// A class which mocks [IUnifediApiMyAccountService].
@@ -845,10 +850,12 @@ class MockIUnifediApiMyAccountService extends _i1.Mock
                   Future<_i11.IUnifediApiTag>.value(_FakeIUnifediApiTag_9()))
       as _i13.Future<_i11.IUnifediApiTag>);
   @override
-  _i13.Future<dynamic> unfeatureMyAccountTag({String? tagId}) =>
+  _i13.Future<void> unfeatureMyAccountTag({String? tagId}) =>
       (super.noSuchMethod(
-          Invocation.method(#unfeatureMyAccountTag, [], {#tagId: tagId}),
-          returnValue: Future<dynamic>.value()) as _i13.Future<dynamic>);
+              Invocation.method(#unfeatureMyAccountTag, [], {#tagId: tagId}),
+              returnValue: Future<void>.value(),
+              returnValueForMissingStub: Future<void>.value())
+          as _i13.Future<void>);
   @override
   _i13.Future<List<_i16.IUnifediApiAccount>> getMySuggestions({int? limit}) =>
       (super.noSuchMethod(
@@ -857,20 +864,24 @@ class MockIUnifediApiMyAccountService extends _i1.Mock
                   <_i16.IUnifediApiAccount>[]))
           as _i13.Future<List<_i16.IUnifediApiAccount>>);
   @override
-  _i13.Future<dynamic> removeMyAccountSuggestion({String? accountId}) =>
+  _i13.Future<void> removeMyAccountSuggestion({String? accountId}) =>
       (super.noSuchMethod(
-          Invocation.method(
-              #removeMyAccountSuggestion, [], {#accountId: accountId}),
-          returnValue: Future<dynamic>.value()) as _i13.Future<dynamic>);
+              Invocation.method(
+                  #removeMyAccountSuggestion, [], {#accountId: accountId}),
+              returnValue: Future<void>.value(),
+              returnValueForMissingStub: Future<void>.value())
+          as _i13.Future<void>);
   @override
-  _i13.Future<dynamic> editNotificationsSettings(
+  _i13.Future<void> editNotificationsSettings(
           {bool? blockFromStrangers, bool? hideNotificationContents}) =>
       (super.noSuchMethod(
-          Invocation.method(#editNotificationsSettings, [], {
-            #blockFromStrangers: blockFromStrangers,
-            #hideNotificationContents: hideNotificationContents
-          }),
-          returnValue: Future<dynamic>.value()) as _i13.Future<dynamic>);
+              Invocation.method(#editNotificationsSettings, [], {
+                #blockFromStrangers: blockFromStrangers,
+                #hideNotificationContents: hideNotificationContents
+              }),
+              returnValue: Future<void>.value(),
+              returnValueForMissingStub: Future<void>.value())
+          as _i13.Future<void>);
   @override
   _i5.FediverseApiFeatureRequirementState checkFeatureState(
           _i2.IUnifediApiFeature? feature) =>
@@ -880,9 +891,10 @@ class MockIUnifediApiMyAccountService extends _i1.Mock
   @override
   String toString() => super.toString();
   @override
-  _i13.Future<dynamic> dispose() =>
-      (super.noSuchMethod(Invocation.method(#dispose, []),
-          returnValue: Future<dynamic>.value()) as _i13.Future<dynamic>);
+  _i13.Future<void> dispose() => (super.noSuchMethod(
+      Invocation.method(#dispose, []),
+      returnValue: Future<void>.value(),
+      returnValueForMissingStub: Future<void>.value()) as _i13.Future<void>);
 }
 
 /// A class which mocks [IConnectionService].
@@ -928,9 +940,10 @@ class MockIConnectionService extends _i1.Mock
       super.noSuchMethod(Invocation.setter(#isDisposed, _isDisposed),
           returnValueForMissingStub: null);
   @override
-  _i13.Future<dynamic> internalAsyncInit() =>
-      (super.noSuchMethod(Invocation.method(#internalAsyncInit, []),
-          returnValue: Future<dynamic>.value()) as _i13.Future<dynamic>);
+  _i13.Future<void> internalAsyncInit() => (super.noSuchMethod(
+      Invocation.method(#internalAsyncInit, []),
+      returnValue: Future<void>.value(),
+      returnValueForMissingStub: Future<void>.value()) as _i13.Future<void>);
   @override
   String toString() => super.toString();
   @override
@@ -942,11 +955,13 @@ class MockIConnectionService extends _i1.Mock
       super.noSuchMethod(Invocation.method(#addDisposables, [disposables]),
           returnValueForMissingStub: null);
   @override
-  _i13.Future<dynamic> performDispose() =>
-      (super.noSuchMethod(Invocation.method(#performDispose, []),
-          returnValue: Future<dynamic>.value()) as _i13.Future<dynamic>);
+  _i13.Future<void> performDispose() => (super.noSuchMethod(
+      Invocation.method(#performDispose, []),
+      returnValue: Future<void>.value(),
+      returnValueForMissingStub: Future<void>.value()) as _i13.Future<void>);
   @override
-  _i13.Future<dynamic> dispose() =>
-      (super.noSuchMethod(Invocation.method(#dispose, []),
-          returnValue: Future<dynamic>.value()) as _i13.Future<dynamic>);
+  _i13.Future<void> dispose() => (super.noSuchMethod(
+      Invocation.method(#dispose, []),
+      returnValue: Future<void>.value(),
+      returnValueForMissingStub: Future<void>.value()) as _i13.Future<void>);
 }

@@ -59,6 +59,7 @@ DialogAction buildDeleteAndSaveToDrafts(
           listen: false,
         );
 
+        // ignore: avoid-ignoring-return-values
         await draftStatusRepository.upsertInDbType(
           DbDraftStatus(
             data: postStatusData,
@@ -130,6 +131,7 @@ DialogAction buildDeleteAction(
     DialogAction(
       label: S.of(context).app_status_delete_dialog_action_delete,
       onAction: (context) async {
+        // ignore: avoid-ignoring-return-values
         await PleromaAsyncOperationHelper.performPleromaAsyncOperation<void>(
           context: context,
           asyncCode: () => statusBloc.delete(),

@@ -83,18 +83,17 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
     return sqlQuery;
   }
 
-  SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage>
-      addOnlyPendingStatePublishedOrNull(
+  void addOnlyPendingStatePublishedOrNull(
     SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> query,
   ) =>
-          query
-            ..where(
-              (chatMessage) =>
-                  chatMessage.pendingState.isNull() |
-                  chatMessage.pendingState.equals(
-                    PendingState.published.toJsonValue(),
-                  ),
-            );
+      query
+        ..where(
+          (chatMessage) =>
+              chatMessage.pendingState.isNull() |
+              chatMessage.pendingState.equals(
+                PendingState.published.toJsonValue(),
+              ),
+        );
 
   JoinedSelectStatement _findByOldPendingRemoteIdQuery(
     String? oldPendingRemoteId,
@@ -109,82 +108,75 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
         populateChatMessageJoin(),
       );
 
-  SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> addChatWhere(
+  void addChatWhere(
     SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> query,
     String chatRemoteId,
   ) =>
-      query
-        ..where(
-          (_) => CustomExpression<bool>(
-            "db_chat_messages.chat_remote_id = '$chatRemoteId'",
-          ),
-        );
+      query.where(
+        (_) => CustomExpression<bool>(
+          "db_chat_messages.chat_remote_id = '$chatRemoteId'",
+        ),
+      );
 
-  SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> addChatsWhere(
+  void addChatsWhere(
     SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> query,
     List<String> chatRemoteIds,
   ) =>
-      query
-        ..where(
-          (_) => CustomExpression<bool>(
-            'db_chat_messages.chat_remote_id IN ('
-            "${chatRemoteIds.join(", ")})",
-          ),
-        );
+      query.where(
+        (_) => CustomExpression<bool>(
+          'db_chat_messages.chat_remote_id IN ('
+          "${chatRemoteIds.join(", ")})",
+        ),
+      );
 
-  SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage>
-      addOnlyNotDeletedWhere(
+  void addOnlyNotDeletedWhere(
     SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> query,
   ) =>
-          query
-            ..where(
-              (chatMessage) =>
-                  chatMessage.deleted.isNull() |
-                  chatMessage.deleted.equals(
-                    false,
-                  ),
-            );
+      query.where(
+        (chatMessage) =>
+            chatMessage.deleted.isNull() |
+            chatMessage.deleted.equals(
+              false,
+            ),
+      );
 
-  SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage>
-      addOnlyNotHiddenLocallyOnDevice(
+  void addOnlyNotHiddenLocallyOnDevice(
     SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> query,
   ) =>
-          query
-            ..where(
-              (chatMessage) =>
-                  chatMessage.hiddenLocallyOnDevice.isNull() |
-                  chatMessage.hiddenLocallyOnDevice.equals(
-                    false,
-                  ),
-            );
+      query.where(
+        (chatMessage) =>
+            chatMessage.hiddenLocallyOnDevice.isNull() |
+            chatMessage.hiddenLocallyOnDevice.equals(
+              false,
+            ),
+      );
 
-  SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> orderBy(
+  void orderBy(
     SimpleSelectStatement<$DbChatMessagesTable, DbChatMessage> query,
     List<PleromaChatMessageRepositoryOrderingTermData> orderTerms,
   ) =>
-      query
-        ..orderBy(
-          orderTerms
-              .map(
-                (orderTerm) => ($DbChatMessagesTable item) {
-                  GeneratedColumn<Object?> expression;
-                  switch (orderTerm.orderType) {
-                    case PleromaChatMessageOrderType.remoteId:
-                      expression = item.remoteId;
-                      break;
-                    case PleromaChatMessageOrderType.createdAt:
-                      expression = item.createdAt;
-                      break;
-                  }
+      query.orderBy(
+        orderTerms
+            .map(
+              (orderTerm) => ($DbChatMessagesTable item) {
+                GeneratedColumn<Object?> expression;
+                switch (orderTerm.orderType) {
+                  case PleromaChatMessageOrderType.remoteId:
+                    expression = item.remoteId;
+                    break;
+                  case PleromaChatMessageOrderType.createdAt:
+                    expression = item.createdAt;
+                    break;
+                }
 
-                  return OrderingTerm(
-                    expression: expression,
-                    mode: orderTerm.orderingMode,
-                  );
-                },
-              )
-              .toList(),
-        );
+                return OrderingTerm(
+                  expression: expression,
+                  mode: orderTerm.orderingMode,
+                );
+              },
+            )
+            .toList(),
+      );
 
   List<Join> populateChatMessageJoin() => [
         leftOuterJoin(
@@ -200,7 +192,7 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
     );
   }
 
-  Future markAsDeleted({
+  Future<int> markAsDeleted({
     required String remoteId,
     // required Batch? batchTransaction,
   }) async {
@@ -219,12 +211,11 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
     var update = 'UPDATE db_chat_messages '
         'SET deleted = 1 '
         "WHERE remote_id = '$remoteId'";
-    var query = db.customUpdate(update, updates: {dbChatMessages});
 
-    return query;
+    return db.customUpdate(update, updates: {dbChatMessages});
   }
 
-  Future markAsHiddenLocallyOnDevice({
+  Future<void> markAsHiddenLocallyOnDevice({
     required int? localId,
     // required Batch? batchTransaction,
   }) {
@@ -240,7 +231,7 @@ class ChatMessageDao extends PopulatedAppRemoteDatabaseDao<
   @override
   $DbChatMessagesTable get table => dbChatMessages;
 
-  Future deleteOlderThanDate(
+  Future<void> deleteOlderThanDate(
     DateTime dateTimeToDelete, {
     required Batch? batchTransaction,
   }) =>

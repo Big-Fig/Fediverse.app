@@ -96,7 +96,7 @@ class RemoteStatusBloc extends StatusBloc {
       );
 
   @override
-  Future actualInit({
+  Future<void> actualInit({
     required IStatus status,
     required bool isNeedRefreshFromNetworkOnInit,
   }) async {
@@ -109,7 +109,7 @@ class RemoteStatusBloc extends StatusBloc {
   InstanceLocation get instanceLocation => InstanceLocation.remote;
 
   @override
-  Future refreshFromNetwork() async {
+  Future<void> refreshFromNetwork() async {
     var remoteStatus = await loadRemoteStatus();
 
     statusSubject.add(
@@ -117,7 +117,7 @@ class RemoteStatusBloc extends StatusBloc {
     );
   }
 
-  Future _checkIsInReplyToAccountLoaded() async {
+  Future<void> _checkIsInReplyToAccountLoaded() async {
     // todo: don't load account if inReplyToStatus already loaded
     var inReplyToAccountRemoteId = status.inReplyToAccountRemoteId;
     if (inReplyToAccountRemoteId != null) {
@@ -134,7 +134,7 @@ class RemoteStatusBloc extends StatusBloc {
     }
   }
 
-  Future _checkIsInReplyToStatusLoaded() async {
+  Future<void> _checkIsInReplyToStatusLoaded() async {
     var inReplyToRemoteId = status.inReplyToRemoteId;
     if (inReplyToRemoteId != null) {
       var remoteStatus = await unifediApiStatusService.getStatus(
@@ -201,7 +201,7 @@ class RemoteStatusBloc extends StatusBloc {
   }
 
   @override
-  Future delete() {
+  Future<void> delete() {
     throw const UnsupportedOnRemoteInstanceLocationException();
   }
 

@@ -41,7 +41,9 @@ class EditCrashReportingSettingsBloc
       );
 
   @override
-  Future fillSettingsToFormFields(CrashReportingSettings? settings) async {
+  Future<void> fillSettingsToFormFields(
+    CrashReportingSettings? settings,
+  ) async {
     reportingEnabledFieldBloc.changeCurrentValue(
       settings!.reportingEnabled,
     );

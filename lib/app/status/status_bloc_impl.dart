@@ -52,6 +52,7 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
                   'old ${this.poll} \n'
                   'new $poll',
             );
+            // ignore: avoid-ignoring-return-values
             onPollUpdated(poll);
           }
         },
@@ -89,7 +90,7 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
     }
   }
 
-  Future _init({
+  Future<void> _init({
     required IStatus status,
     required bool isNeedRefreshFromNetworkOnInit,
   }) async {
@@ -413,7 +414,7 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
           );
 
   @override
-  Future dispose() {
+  Future<void> dispose() {
     _logger.finest(() => 'dispose');
 
     return super.dispose();
@@ -482,7 +483,7 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
     return updatedLocalStatus;
   }
 
-  Future actualInit({
+  Future<void> actualInit({
     required IStatus status,
     required bool isNeedRefreshFromNetworkOnInit,
   });

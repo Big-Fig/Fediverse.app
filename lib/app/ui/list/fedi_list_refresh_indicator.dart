@@ -500,6 +500,7 @@ class FediListRefreshIndicatorState extends State<FediListRefreshIndicator>
     if (_mode != _RefreshIndicatorMode.refresh &&
         _mode != _RefreshIndicatorMode.snap) {
       if (_mode == null) {
+        // ignore: avoid-ignoring-return-values
         _start(atTop ? AxisDirection.down : AxisDirection.up);
       }
       _show();

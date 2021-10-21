@@ -8,7 +8,7 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:fediverse_api/fediverse_api.dart';
 import 'package:flutter/widgets.dart';
 
-Future showHashtagPageChooserDialog({
+Future<void> showHashtagPageChooserDialog({
   required BuildContext context,
   required Uri remoteInstanceUri,
   required IHashtag hashtag,

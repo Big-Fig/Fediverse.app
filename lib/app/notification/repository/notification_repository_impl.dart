@@ -48,7 +48,7 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }) : dao = appDatabase.notificationDao;
 
   @override
-  Future markAsRead({
+  Future<void> markAsRead({
     required INotification notification,
   }) =>
       dao.markAsRead(
@@ -56,7 +56,7 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       );
 
   @override
-  Future dismiss({
+  Future<void> dismiss({
     required INotification notification,
   }) =>
       dao.markAsDismissed(
@@ -64,13 +64,13 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       );
 
   @override
-  Future dismissAll() => dao.markAllAsDismissed();
+  Future<void> dismissAll() => dao.markAllAsDismissed();
 
   @override
-  Future markAllAsRead() => dao.markAllAsRead();
+  Future<void> markAllAsRead() => dao.markAllAsRead();
 
   @override
-  Future dismissFollowRequestNotificationsFromAccount({
+  Future<void> dismissFollowRequestNotificationsFromAccount({
     required IAccount account,
     required Batch? batchTransaction,
   }) =>
@@ -154,7 +154,7 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     );
   }
 
-  Future _upsertNotificationMetadata(
+  Future<void> _upsertNotificationMetadata(
     IUnifediApiNotification remoteItem, {
     required Batch? batchTransaction,
   }) async {
@@ -288,7 +288,7 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       );
 
   @override
-  Future updateNotificationByRemoteType({
+  Future<void> updateNotificationByRemoteType({
     required INotification appItem,
     required IUnifediApiNotification remoteItem,
     required bool? unread,
@@ -327,7 +327,7 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }
 
   @override
-  Future upsertRemoteNotification(
+  Future<void> upsertRemoteNotification(
     IUnifediApiNotification remoteItem, {
     required bool unread,
     required Batch? batchTransaction,
@@ -360,7 +360,7 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }
 
   @override
-  Future upsertRemoteNotifications(
+  Future<void> upsertRemoteNotifications(
     List<IUnifediApiNotification> pleromaNotifications, {
     required bool unread,
     required Batch? batchTransaction,

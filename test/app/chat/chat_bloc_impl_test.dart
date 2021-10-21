@@ -37,6 +37,7 @@ import 'chat_test_helper.dart';
 import 'message/chat_message_test_helper.dart';
 
 // ignore_for_file: no-magic-number, avoid-late-keyword
+// ignore_for_file: avoid-ignoring-return-values
 @GenerateMocks([
   IUnifediApiChatService,
   IUnifediApiMyAccountService,

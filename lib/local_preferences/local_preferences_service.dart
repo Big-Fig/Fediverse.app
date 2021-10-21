@@ -6,30 +6,30 @@ import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-typedef ValueCallback<T> = Function(T? value);
+typedef ValueCallback<T> = FutureOr<void> Function(T? value);
 
 abstract class ILocalPreferencesService extends DisposableOwner
     implements IAsyncInitLoadingBloc {
   bool isKeyExist(String key);
 
-  Future<bool> delete();
+  Future<void> delete();
 
-  Future<bool> clearAllValues();
+  Future<void> clearAllValues();
 
-  Future<bool> isStorageExist();
+  Future<void> isStorageExist();
 
-  Future<bool> clearAllValuesAndDeleteStorage();
+  Future<void> clearAllValuesAndDeleteStorage();
 
-  Future<bool> clearValue(String key);
+  Future<void> clearValue(String key);
 
-  Future<bool> setString(String key, String? value);
+  Future<void> setString(String key, String? value);
 
-  Future<bool> setIntPreference(String key, int? value);
+  Future<void> setIntPreference(String key, int? value);
 
   // ignore: avoid_positional_boolean_parameters
-  Future<bool> setBoolPreference(String key, bool? value);
+  Future<void> setBoolPreference(String key, bool? value);
 
-  Future<bool> setObjectPreference(
+  Future<void> setObjectPreference(
     String key,
     IJsonObj? preferencesObject,
   );

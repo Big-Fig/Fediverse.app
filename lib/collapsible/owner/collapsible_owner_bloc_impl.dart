@@ -52,7 +52,7 @@ class CollapsibleOwnerBloc extends DisposableOwner
 
   @override
   // ignore: always_declare_return_types
-  Future addVisibleItem(ICollapsibleItemBloc item) async {
+  Future<void> addVisibleItem(ICollapsibleItemBloc item) async {
     visibleItems!.add(item);
     itemCollapsibleSubscriptionMap[item] = item.isCollapsedStream.listen((_) {
       checkIsAtLeastOneVisibleItemExpanded();
@@ -68,8 +68,9 @@ class CollapsibleOwnerBloc extends DisposableOwner
   }
 
   @override
-  Future removeVisibleItem(ICollapsibleItemBloc item) async {
+  Future<void> removeVisibleItem(ICollapsibleItemBloc item) async {
     await itemCollapsibleSubscriptionMap.remove(item)?.cancel();
+    // ignore: avoid-ignoring-return-values
     visibleItems!.remove(item);
     onVisibleItemsChanged(visibleItems);
   }

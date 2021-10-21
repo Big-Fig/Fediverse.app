@@ -28,7 +28,7 @@ class PushPermissionCheckerWidgetState
     checkPushPermission();
   }
 
-  Future checkPushPermission() async {
+  Future<void> checkPushPermission() async {
     var configService = IConfigService.of(context, listen: false);
 
     if (configService.pushFcmEnabled) {

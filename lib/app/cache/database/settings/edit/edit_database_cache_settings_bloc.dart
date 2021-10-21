@@ -27,7 +27,7 @@ abstract class IEditDatabaseCacheSettingsBloc
   ICurrentMaxAgeInstanceDatabaseCacheInfoFormFieldBloc
       get currentMaxAgeDatabaseCacheInfoFormFieldBloc;
 
-  Future clearByLimits();
+  Future<void> clearByLimits();
 
-  Future clearAll();
+  Future<void> clearAll();
 }

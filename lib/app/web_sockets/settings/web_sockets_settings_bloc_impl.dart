@@ -26,7 +26,7 @@ class WebSocketsSettingsBloc
       settingsDataStream.map((settings) => settings.type);
 
   @override
-  Future changeMode(WebSocketsMode value) => updateInstanceSettings(
+  Future<void> changeMode(WebSocketsMode value) => updateInstanceSettings(
         settingsData.copyWith(
           handlingTypeString: value.stringValue,
         ),

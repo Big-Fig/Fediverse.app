@@ -55,7 +55,7 @@ class NotificationTabBloc extends AsyncInitLoadingBloc
       );
 
   @override
-  Future internalAsyncInit() async {
+  Future<void> internalAsyncInit() async {
     notificationCachedListBloc = createListService();
     await notificationCachedListBloc.performAsyncInit();
 

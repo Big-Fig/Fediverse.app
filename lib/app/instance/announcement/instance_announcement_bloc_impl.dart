@@ -103,7 +103,7 @@ class InstanceAnnouncementBloc extends DisposableOwner
   DateTime get updatedAt => instanceAnnouncement.updatedAt;
 
   @override
-  Future addEmojiReaction({
+  Future<void> addEmojiReaction({
     required String emojiName,
   }) async {
     var foundReaction = reactions?.firstWhereOrNull(
@@ -146,7 +146,7 @@ class InstanceAnnouncementBloc extends DisposableOwner
   }
 
   @override
-  Future removeEmojiReaction({
+  Future<void> removeEmojiReaction({
     required String emojiName,
   }) async {
     var foundReaction = reactions?.firstWhereOrNull(
@@ -162,7 +162,7 @@ class InstanceAnnouncementBloc extends DisposableOwner
 
     var newReactionsList = reactions!.toList();
 
-    // ignore: cascade_invocations
+    // ignore: cascade_invocations, avoid-ignoring-return-values
     newReactionsList.remove(foundReaction);
 
     // ignore: no-magic-number
@@ -178,7 +178,7 @@ class InstanceAnnouncementBloc extends DisposableOwner
   }
 
   @override
-  Future dismiss() async {
+  Future<void> dismiss() async {
     await unifediApiAnnouncementService.dismissAnnouncement(
       announcementId: instanceAnnouncement.remoteId,
     );
@@ -201,7 +201,7 @@ class InstanceAnnouncementBloc extends DisposableOwner
         (instanceAnnouncement) => instanceAnnouncement.read,
       );
 
-  Future updateReactions(
+  Future<void> updateReactions(
     List<IUnifediApiEmojiReaction> newReactionsList,
   ) async {
     var dbInstanceAnnouncementPopulatedWrapper =
@@ -224,7 +224,7 @@ class InstanceAnnouncementBloc extends DisposableOwner
   }
 
   // ignore: avoid_positional_boolean_parameters
-  Future updateDismissed(bool dismissed) async {
+  Future<void> updateDismissed(bool dismissed) async {
     var dbInstanceAnnouncementPopulatedWrapper =
         instanceAnnouncement.toDbInstanceAnnouncementPopulatedWrapper();
 
@@ -244,7 +244,7 @@ class InstanceAnnouncementBloc extends DisposableOwner
     await _updateAnnouncement(updatedInstanceAnnouncements);
   }
 
-  Future _updateAnnouncement(
+  Future<void> _updateAnnouncement(
     IInstanceAnnouncement updatedInstanceAnnouncements,
   ) async {
     await instanceAnnouncementRepository.updateByDbIdInDbType(
@@ -270,7 +270,7 @@ class InstanceAnnouncementBloc extends DisposableOwner
   List<IUnifediApiTag>? get tags => instanceAnnouncement.tags;
 
   @override
-  Future toggleEmojiReaction({
+  Future<void> toggleEmojiReaction({
     required String emojiName,
   }) async {
     var found =

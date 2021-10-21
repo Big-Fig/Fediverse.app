@@ -51,7 +51,7 @@ class AppDatabaseService extends AsyncInitLoadingBloc
   Future<int> calculateSizeInBytes() => file.length();
 
   @override
-  Future internalAsyncInit() async {
+  Future<void> internalAsyncInit() async {
     filePath = await calculateDatabaseFilePath(dbName);
     file = File(filePath);
 
@@ -69,7 +69,7 @@ class AppDatabaseService extends AsyncInitLoadingBloc
     }
   }
 
-  Future _addMoorInspectorSupport() async {
+  Future<void> _addMoorInspectorSupport() async {
     var packageId = configService.appId;
 
     final moorInspectorBuilder = MoorInspectorBuilder()
@@ -98,8 +98,9 @@ class AppDatabaseService extends AsyncInitLoadingBloc
   }
 
   @override
-  Future delete() async {
+  Future<void> delete() async {
     await appDatabase.close();
+    // ignore: avoid-ignoring-return-values
     await file.delete();
   }
 
@@ -154,10 +155,9 @@ class AppDatabaseService extends AsyncInitLoadingBloc
   }
 
   @override
-  Future clearAll() async {
+  Future<void> clearAll() async {
     for (final table in appDatabase.allTables) {
-      // ignore: invalid_use_of_visible_for_testing_member,
-      // ignore: implicit_dynamic_method
+      // ignore: invalid_use_of_visible_for_testing_member, implicit_dynamic_method, avoid-ignoring-return-values
       await appDatabase.delete(table).go();
     }
   }
@@ -165,7 +165,7 @@ class AppDatabaseService extends AsyncInitLoadingBloc
   @override
   // todo: refactor
   // ignore: long-method
-  Future clearByLimits({
+  Future<void> clearByLimits({
     required Duration? ageLimit,
     required int? entriesCountByTypeLimit,
   }) async {

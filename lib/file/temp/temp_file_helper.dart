@@ -28,6 +28,7 @@ class TempFileHelper {
       ),
     );
 
+    // ignore: avoid-ignoring-return-values
     await uniqueDirectory.create();
 
     return uniqueDirectory;
@@ -70,6 +71,7 @@ class TempFileHelper {
         ),
       );
 
+      // ignore: avoid-ignoring-return-values
       await file.writeAsBytes(bytes);
 
       return file;
@@ -80,6 +82,7 @@ class TempFileHelper {
         e,
         stackTrace,
       );
+      // ignore: avoid-ignoring-return-values
       await httpRequest?.close();
       rethrow;
     }

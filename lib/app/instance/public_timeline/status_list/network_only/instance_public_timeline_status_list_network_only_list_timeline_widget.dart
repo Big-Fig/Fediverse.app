@@ -84,7 +84,7 @@ class InstancePublicTimelineStatusListNetworkOnlyListTimelineWidget
   }
 }
 
-Future _onStatusClick(BuildContext context, IStatus status) async {
+Future<void> _onStatusClick(BuildContext context, IStatus status) async {
   var statusBloc = IStatusBloc.of(context, listen: false);
 
   var isLocal = statusBloc.instanceLocation == InstanceLocation.local;

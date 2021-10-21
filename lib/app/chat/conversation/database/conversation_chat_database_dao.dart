@@ -91,7 +91,7 @@ class ConversationDao extends PopulatedAppRemoteDatabaseDao<
         alias(db.dbAccounts, _statusReplyReblogAccountAliasId);
   }
 
-  SimpleSelectStatement<$DbConversationsTable, DbConversation> orderBy(
+  void orderBy(
     SimpleSelectStatement<$DbConversationsTable, DbConversation> query,
     List<ConversationRepositoryChatOrderingTermData> orderTerms,
   ) =>

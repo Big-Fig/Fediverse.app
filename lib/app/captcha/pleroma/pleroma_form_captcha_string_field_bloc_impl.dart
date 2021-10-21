@@ -197,7 +197,7 @@ class PleromaFormCaptchaStringFieldBloc extends StringValueFormFieldBloc
   }
 
   @override
-  Future reloadCaptcha() async {
+  Future<void> reloadCaptcha() async {
     _logger.finest(
       () => 'reloadCaptcha START isLoading $isLoading',
     );

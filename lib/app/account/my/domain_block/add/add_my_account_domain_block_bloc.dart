@@ -12,5 +12,5 @@ abstract class IAddMyAccountDomainBlockBloc implements IFormBloc {
 
   IStringValueFormFieldBloc get domainField;
 
-  Future submit();
+  Future<void> submit();
 }

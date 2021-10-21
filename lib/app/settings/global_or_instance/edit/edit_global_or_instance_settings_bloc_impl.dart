@@ -52,7 +52,7 @@ abstract class EditGlobalOrInstanceSettingsBloc<T extends ISettings<dynamic>>
       );
 
   @override
-  Future updateSettings(T settings) async {
+  Future<void> updateSettings(T settings) async {
     switch (globalOrInstanceSettingsType) {
       case GlobalOrInstanceSettingsType.instance:
         await globalOrInstanceSettingsBloc.updateInstanceSettings(settings);

@@ -52,7 +52,7 @@ abstract class AccountStatusesCachedListBloc extends AsyncInitLoadingBloc
       );
 
   @override
-  Future internalAsyncInit() async {
+  Future<void> internalAsyncInit() async {
     var isAccountIsMe = myAccountBloc.checkAccountIsMe(account);
     if (isAccountIsMe) {
       filters = [];

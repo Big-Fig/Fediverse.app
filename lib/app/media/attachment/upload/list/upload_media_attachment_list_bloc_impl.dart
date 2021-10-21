@@ -157,7 +157,7 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
           uploadMediaAttachmentBlocsSubject.stream;
 
   @override
-  Future attachMedia(IMediaDeviceFile mediaDeviceFile) async {
+  Future<void> attachMedia(IMediaDeviceFile mediaDeviceFile) async {
     var existedBloc = findMediaAttachmentBlocByFilePickerFile(mediaDeviceFile);
 
     if (existedBloc == null) {
@@ -183,12 +183,13 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
   }
 
   @override
-  Future attachMedias(List<IMediaDeviceFile> mediaDeviceFiles) async {
+  Future<void> attachMedias(List<IMediaDeviceFile> mediaDeviceFiles) async {
     var futures = mediaDeviceFiles.map(
       attachMedia,
     );
 
-    await Future.wait<void>(futures);
+    // ignore: avoid-ignoring-return-values
+    await Future.wait<dynamic>(futures);
   }
 
   @override
@@ -196,6 +197,7 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
     IUploadMediaAttachmentBloc mediaAttachmentBloc,
   ) {
     mediaAttachmentBloc.dispose();
+    // ignore: avoid-ignoring-return-values
     uploadMediaAttachmentBlocs.remove(mediaAttachmentBloc);
     uploadMediaAttachmentBlocsSubject.add(
       [
@@ -246,7 +248,7 @@ class UploadMediaAttachmentsCollectionBloc extends DisposableOwner
   }
 
   @override
-  Future clear() async {
+  Future<void> clear() async {
     uploadMediaAttachmentBlocs.clear();
     if (!uploadMediaAttachmentBlocsSubject.isClosed) {
       uploadMediaAttachmentBlocsSubject.add([]);

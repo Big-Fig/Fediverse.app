@@ -23,66 +23,66 @@ abstract class IStatusRepository
         listen: listen,
       );
 
-  Future addStatusesToConversation({
+  Future<void> addStatusesToConversation({
     required List<String> statusRemoteIds,
     required String conversationRemoteId,
     required Batch? batchTransaction,
   });
 
-  Future upsertRemoteStatusForList(
+  Future<void> upsertRemoteStatusForList(
     IUnifediApiStatus remoteStatus, {
     required String listRemoteId,
     required Batch? batchTransaction,
   });
 
-  Future upsertRemoteStatusForConversation(
+  Future<void> upsertRemoteStatusForConversation(
     IUnifediApiStatus remoteStatus, {
     required String conversationRemoteId,
     required Batch? batchTransaction,
   });
 
-  Future upsertRemoteStatusForHomeTimeline(
+  Future<void> upsertRemoteStatusForHomeTimeline(
     IUnifediApiStatus remoteStatus, {
     required bool isFromHomeTimeline,
     required Batch? batchTransaction,
   });
 
-  Future upsertRemoteStatusesForList(
+  Future<void> upsertRemoteStatusesForList(
     List<IUnifediApiStatus> remoteStatuses, {
     required String listRemoteId,
     required Batch? batchTransaction,
   });
 
-  Future upsertRemoteStatusesForConversation(
+  Future<void> upsertRemoteStatusesForConversation(
     List<IUnifediApiStatus> remoteStatuses, {
     required String conversationRemoteId,
     required Batch? batchTransaction,
   });
 
-  Future upsertRemoteStatusesForHomeTimeline(
+  Future<void> upsertRemoteStatusesForHomeTimeline(
     List<IUnifediApiStatus> remoteStatuses, {
     required bool isFromHomeTimeline,
     required Batch? batchTransaction,
   });
 
-  Future incrementRepliesCount({
+  Future<void> incrementRepliesCount({
     required String remoteId,
   });
 
-  Future removeAccountStatusesFromHome({
+  Future<void> removeAccountStatusesFromHome({
     required String accountRemoteId,
     required Batch? batchTransaction,
   });
 
-  Future markStatusAsDeleted({
+  Future<void> markStatusAsDeleted({
     required String statusRemoteId,
   });
 
-  Future markStatusAsHiddenLocallyOnDevice({
+  Future<void> markStatusAsHiddenLocallyOnDevice({
     required int localId,
   });
 
-  Future clearListStatusesConnection({
+  Future<void> clearListStatusesConnection({
     required String listRemoteId,
     required Batch? batchTransaction,
   });
@@ -110,19 +110,19 @@ abstract class IStatusRepository
     String oldPendingRemoteId,
   );
 
-  Future addStatusToConversation({
+  Future<void> addStatusToConversation({
     required String statusRemoteId,
     required String conversationRemoteId,
     required Batch? batchTransaction,
   });
 
-  Future removeStatusFromConversation({
+  Future<void> removeStatusFromConversation({
     required String statusRemoteId,
     required String conversationRemoteId,
     required Batch? batchTransaction,
   });
 
-  Future upsertRemoteStatusWithAllArguments(
+  Future<void> upsertRemoteStatusWithAllArguments(
     IUnifediApiStatus remoteStatus, {
     required bool? isFromHomeTimeline,
     required String? listRemoteId,
@@ -130,7 +130,7 @@ abstract class IStatusRepository
     required Batch? batchTransaction,
   });
 
-  Future upsertRemoteStatusesWithAllArguments(
+  Future<void> upsertRemoteStatusesWithAllArguments(
     List<IUnifediApiStatus> remoteStatuses, {
     required bool? isFromHomeTimeline,
     required String? listRemoteId,

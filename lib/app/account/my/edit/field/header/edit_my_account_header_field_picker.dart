@@ -40,7 +40,7 @@ Future<IMediaDeviceFile?> showEditMyAccountHeaderFieldPicker(
       ],
     );
 
-Future _cropAndSelect(
+Future<void> _cropAndSelect(
   BuildContext context,
   IMediaDeviceFile mediaDeviceFile,
 ) async {

@@ -76,7 +76,7 @@ class FilePickerOrUrlFormFieldBloc extends FormFieldBloc
   }
 
   @override
-  Future pickNewFile(IMediaDeviceFile mediaDeviceFile) async {
+  Future<void> pickNewFile(IMediaDeviceFile mediaDeviceFile) async {
     var file = await mediaDeviceFile.loadFile();
     var length = await file.length();
     if (maximumFileSizeInBytes != null &&

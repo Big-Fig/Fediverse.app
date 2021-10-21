@@ -227,7 +227,7 @@ class EditMyAccountPleromaBackgroundFieldDeleteButtonWidget
       );
 }
 
-Future startChoosingFileToUploadBackground(
+Future<void> startChoosingFileToUploadBackground(
   BuildContext context,
   IEditMyAccountBloc editMyAccountBloc,
 ) async {

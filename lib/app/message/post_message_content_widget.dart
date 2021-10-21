@@ -48,6 +48,7 @@ class PostMessageContentWidget extends StatelessWidget {
           textInputAction: TextInputAction.send,
           onSubmitted: (String value) async {
             if (postMessageBloc.isReadyToPost) {
+              // ignore: avoid-ignoring-return-values
               await PleromaAsyncOperationHelper.performPleromaAsyncOperation<
                   void>(
                 context: context,

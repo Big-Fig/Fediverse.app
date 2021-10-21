@@ -247,6 +247,7 @@ class _NotificationsHomeTabPageBodyHeaderMenuButtonWidget
             // ignore: no-magic-number
             const Duration(milliseconds: 100),
             () async {
+              // ignore: avoid-ignoring-return-values
               await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
                 context: context,
                 asyncCode: () async {
@@ -273,6 +274,7 @@ class _NotificationsHomeTabPageBodyHeaderMenuButtonWidget
             // ignore: no-magic-number
             const Duration(milliseconds: 100),
             () async {
+              // ignore: avoid-ignoring-return-values
               await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
                 context: context,
                 asyncCode: () async {

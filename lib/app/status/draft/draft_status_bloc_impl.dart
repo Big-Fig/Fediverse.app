@@ -108,7 +108,7 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
   IPostStatusData? calculatePostStatusData() => draftStatus.postStatusData;
 
   @override
-  Future cancelDraft() {
+  Future<void> cancelDraft() {
     _stateSubject.add(DraftStatusState.canceled);
 
     return draftStatusRepository.deleteById(
@@ -118,12 +118,13 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
   }
 
   @override
-  Future postDraft(PostStatusData postStatusData) async {
+  Future<void> postDraft(PostStatusData postStatusData) async {
     if (postStatusData.isScheduled) {
       var pleromaScheduledStatus = await unifediApiStatusService.scheduleStatus(
         idempotencyKey: null,
         postStatus: postStatusData.toUnifediApiSchedulePostStatus(),
       );
+      // ignore: avoid-ignoring-return-values
       await scheduledStatusRepository
           .upsertInRemoteType(pleromaScheduledStatus);
     } else {
@@ -168,7 +169,7 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
   }
 
   @override
-  Future updatePostStatusData(
+  Future<void> updatePostStatusData(
     PostStatusData postStatusData, {
     required Batch? batchTransaction,
   }) async {

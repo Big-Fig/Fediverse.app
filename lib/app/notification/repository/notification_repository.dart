@@ -29,40 +29,40 @@ abstract class INotificationRepository
         listen: listen,
       );
 
-  Future markAsRead({
+  Future<void> markAsRead({
     required INotification notification,
   });
 
-  Future dismiss({
+  Future<void> dismiss({
     required INotification notification,
   });
 
-  Future dismissFollowRequestNotificationsFromAccount({
+  Future<void> dismissFollowRequestNotificationsFromAccount({
     required IAccount account,
     required Batch? batchTransaction,
   });
 
-  Future dismissAll();
+  Future<void> dismissAll();
 
-  Future markAllAsRead();
+  Future<void> markAllAsRead();
 
   Future<INotification?> getNewestOrderByRemoteId();
 
   Future<INotification?> getOldestOrderByRemoteId();
 
-  Future upsertRemoteNotification(
+  Future<void> upsertRemoteNotification(
     IUnifediApiNotification remoteItem, {
     required bool unread,
     required Batch? batchTransaction,
   });
 
-  Future upsertRemoteNotifications(
+  Future<void> upsertRemoteNotifications(
     List<IUnifediApiNotification> pleromaNotifications, {
     required bool unread,
     required Batch? batchTransaction,
   });
 
-  Future updateNotificationByRemoteType({
+  Future<void> updateNotificationByRemoteType({
     required INotification appItem,
     required IUnifediApiNotification remoteItem,
     required bool? unread,

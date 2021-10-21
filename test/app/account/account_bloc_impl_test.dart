@@ -19,8 +19,9 @@ import 'package:unifedi_api/unifedi_api.dart';
 import '../../rxdart/rxdart_test_helper.dart';
 import 'account_bloc_impl_test.mocks.dart';
 import 'account_test_helper.dart';
-// ignore_for_file: avoid-late-keyword
 
+// ignore_for_file: avoid-late-keyword
+// ignore_for_file: avoid-ignoring-return-values
 @GenerateMocks([
   IUnifediApiAccountService,
   IUnifediApiWebSocketsService,

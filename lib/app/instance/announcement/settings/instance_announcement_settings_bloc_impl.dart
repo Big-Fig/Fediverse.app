@@ -26,7 +26,7 @@ class InstanceAnnouncementSettingsBloc extends DisposableOwner
       instanceLocalPreferencesBloc.stream;
 
   @override
-  Future changeWithDismissed(bool value) => updateSettings(
+  Future<void> changeWithDismissed(bool value) => updateSettings(
         settingsData.copyWith(
           withDismissed: value,
         ),
@@ -40,7 +40,7 @@ class InstanceAnnouncementSettingsBloc extends DisposableOwner
       settingsDataStream.map((settings) => settings.withDismissed);
 
   @override
-  Future updateSettings(InstanceAnnouncementSettings newSettings) async {
+  Future<void> updateSettings(InstanceAnnouncementSettings newSettings) async {
     if (settingsData == newSettings) {
       _logger.finest(() => 'Same settings');
 

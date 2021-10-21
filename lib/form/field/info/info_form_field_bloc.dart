@@ -13,5 +13,5 @@ abstract class IInfoFormFieldBloc<T> extends IFormFieldBloc {
 
   Stream<T> get currentValueStream;
 
-  Future recalculate();
+  Future<void> recalculate();
 }

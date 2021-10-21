@@ -114,6 +114,7 @@ class MediaAttachmentDetailsPageState
     _controller
       ..removeListener(listener)
       ..dispose();
+    // ignore: avoid-ignoring-return-values
     selectedMediaAttachmentSubject.close();
     super.dispose();
   }

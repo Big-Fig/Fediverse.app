@@ -17,7 +17,7 @@ class ChatSettingsBloc
         );
 
   @override
-  Future changeCountConversationsInChatsUnreadBadges({
+  Future<void> changeCountConversationsInChatsUnreadBadges({
     required bool appendConversationUnreadToUnreadBadge,
   }) async =>
       updateSettings(
@@ -28,7 +28,7 @@ class ChatSettingsBloc
       );
 
   @override
-  Future changeReplaceConversationsWithPleromaChats({
+  Future<void> changeReplaceConversationsWithPleromaChats({
     required bool replaceConversationsWithChats,
   }) async =>
       updateSettings(

@@ -25,7 +25,7 @@ abstract class DatabaseDao<
         mode: InsertMode.insertOrReplace,
       );
 
-  Future upsertBatch({
+  Future<void> upsertBatch({
     required Insertable<DbItem> entity,
     required Batch? batchTransaction,
   }) =>
@@ -35,7 +35,7 @@ abstract class DatabaseDao<
         mode: InsertMode.insertOrReplace,
       );
 
-  Future upsertAll({
+  Future<void> upsertAll({
     required List<Insertable<DbItem>> entities,
     required Batch? batchTransaction,
   }) =>
@@ -50,7 +50,7 @@ abstract class DatabaseDao<
   }) =>
       update(table).replace(entity);
 
-  Future replaceBatch({
+  Future<void> replaceBatch({
     required Insertable<DbItem> entity,
     required Batch? batchTransaction,
   }) =>
@@ -69,7 +69,7 @@ abstract class DatabaseDao<
         mode: mode,
       );
 
-  Future insertBatch({
+  Future<void> insertBatch({
     required Insertable<DbItem> entity,
     required InsertMode? mode,
     required Batch? batchTransaction,
@@ -81,11 +81,12 @@ abstract class DatabaseDao<
         mode: mode,
       );
     } else {
+      // ignore: avoid-ignoring-return-values
       await insert(entity: entity, mode: mode);
     }
   }
 
-  Future insertAll({
+  Future<void> insertAll({
     required List<Insertable<DbItem>> entities,
     required InsertMode? mode,
     required Batch? batchTransaction,
@@ -206,7 +207,7 @@ abstract class DatabaseDao<
         updateKind: UpdateKind.delete,
       );
 
-  Future deleteByIdBatch(
+  Future<void> deleteByIdBatch(
     DbId id, {
     required Batch? batchTransaction,
   }) async {
@@ -216,11 +217,12 @@ abstract class DatabaseDao<
         (tbl) => createFindByDbIdWhereExpression(id),
       );
     } else {
-      return deleteById(id);
+      // ignore: avoid-ignoring-return-values
+      await deleteById(id);
     }
   }
 
-  Future deleteOlderThanDateTime(
+  Future<void> deleteOlderThanDateTime(
     DateTime dateTime, {
     required String fieldName,
     required Batch? batchTransaction,
@@ -244,7 +246,7 @@ abstract class DatabaseDao<
     }
   }
 
-  Future deleteOlderThanString(
+  Future<void> deleteOlderThanString(
     String string, {
     required String fieldName,
     required Batch? batchTransaction,
@@ -268,7 +270,7 @@ abstract class DatabaseDao<
     }
   }
 
-  Future deleteOlderThanInt(
+  Future<void> deleteOlderThanInt(
     int intValue, {
     required String fieldName,
     required Batch? batchTransaction,
@@ -292,7 +294,7 @@ abstract class DatabaseDao<
     }
   }
 
-  Future clear({
+  Future<void> clear({
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
@@ -301,7 +303,8 @@ abstract class DatabaseDao<
         (tbl) => const Constant(true),
       );
     } else {
-      return customUpdate(
+      // ignore: avoid-ignoring-return-values
+      await customUpdate(
         'DELETE FROM $tableName',
         updates: {table},
         updateKind: UpdateKind.delete,

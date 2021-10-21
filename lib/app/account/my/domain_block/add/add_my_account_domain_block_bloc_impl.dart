@@ -27,7 +27,7 @@ class AddMyAccountDomainBlockBloc extends FormBloc
   List<IFormItemBloc> get currentItems => [domainField];
 
   @override
-  Future submit() => pleromaAuthAccountService.blockDomain(
+  Future<void> submit() => pleromaAuthAccountService.blockDomain(
         domain: domainField.currentValue,
       );
 }

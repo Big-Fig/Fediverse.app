@@ -20,11 +20,11 @@ abstract class ICurrentUnifediApiAccessBloc implements IDisposable {
 
   Stream<UnifediApiAccess?> get currentInstanceStream;
 
-  Future changeCurrentInstance(UnifediApiAccess instance);
+  Future<void> changeCurrentInstance(UnifediApiAccess instance);
 
   bool isCurrentInstance(UnifediApiAccess instance);
 
-  Future logoutCurrentInstance();
+  Future<void> logoutCurrentInstance();
 
   String createHashtagUrl({
     required String hashtag,

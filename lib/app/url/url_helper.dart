@@ -48,7 +48,7 @@ class UrlHelper {
     return hashtag;
   }
 
-  static Future handleUrlClickWithInstanceLocation({
+  static Future<void> handleUrlClickWithInstanceLocation({
     required BuildContext context,
     required String url,
     required IInstanceLocationBloc instanceLocationBloc,
@@ -151,7 +151,7 @@ class UrlHelper {
     return '$urlSchema://$urlHost$url';
   }
 
-  static Future handleUrlClickOnLocalInstanceLocation({
+  static Future<void> handleUrlClickOnLocalInstanceLocation({
     required BuildContext context,
     required String url,
   }) async {
@@ -172,7 +172,7 @@ class UrlHelper {
     );
   }
 
-  static Future handleUrlClick({
+  static Future<void> handleUrlClick({
     required BuildContext context,
     required String url,
   }) async {

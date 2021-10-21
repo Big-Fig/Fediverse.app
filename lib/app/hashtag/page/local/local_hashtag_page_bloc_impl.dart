@@ -174,7 +174,7 @@ class LocalHashtagPageBloc extends HashtagPageBloc
   Uri? get remoteInstanceUriOrNull => null;
 
   @override
-  Future internalAsyncInit() async {
+  Future<void> internalAsyncInit() async {
     timelineLocalPreferenceBloc = TimelineLocalPreferenceBloc.hashtag(
       localPreferencesService,
       userAtHost: userAtHost,

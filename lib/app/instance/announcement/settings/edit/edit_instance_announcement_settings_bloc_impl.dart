@@ -41,7 +41,7 @@ class EditInstanceAnnouncementSettingsBloc
       );
 
   @override
-  Future fillSettingsToFormFields(
+  Future<void> fillSettingsToFormFields(
     InstanceAnnouncementSettings? settings,
   ) async {
     withDismissedFieldBloc.changeCurrentValue(

@@ -35,7 +35,7 @@ MaterialPageRoute<void> createRemoteInstanceActivityPageRoute({
       ),
     );
 
-Future goToRemoteInstanceActivityPage(
+Future<void> goToRemoteInstanceActivityPage(
   BuildContext context, {
   required Uri remoteInstanceUri,
 }) async {

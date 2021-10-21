@@ -15,15 +15,15 @@ class MemoryLocalPreferencesService extends AsyncInitLoadingBloc
   final Map<String, List<ValueCallback>> listeners = {};
 
   @override
-  Future internalAsyncInit() async {
+  Future<void> internalAsyncInit() async {
     _logger.fine(() => 'internalAsyncInit');
   }
 
   @override
-  Future<bool> delete() => clearAllValues();
+  Future<void> delete() => clearAllValues();
 
   @override
-  Future<bool> clearAllValues() async {
+  Future<void> clearAllValues() async {
     preferences.clear();
 
     listeners.forEach((key, value) {
@@ -31,8 +31,6 @@ class MemoryLocalPreferencesService extends AsyncInitLoadingBloc
         listener(null);
       }
     });
-
-    return true;
   }
 
   @override
@@ -44,39 +42,32 @@ class MemoryLocalPreferencesService extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<bool> clearValue(String key) async {
+  Future<void> clearValue(String key) async {
+    // ignore: avoid-ignoring-return-values
     await preferences.remove(key);
     notifyKeyValueChanged(key, null);
-
-    return true;
   }
 
   @override
-  Future<bool> setString(String key, String? value) async {
+  Future<void> setString(String key, String? value) async {
     preferences[key] = value;
     notifyKeyValueChanged(key, value);
-
-    return true;
   }
 
   @override
-  Future<bool> setIntPreference(String key, int? value) async {
+  Future<void> setIntPreference(String key, int? value) async {
     preferences[key] = value;
     notifyKeyValueChanged(key, value);
-
-    return true;
   }
 
   @override
-  Future<bool> setBoolPreference(String key, bool? value) async {
+  Future<void> setBoolPreference(String key, bool? value) async {
     preferences[key] = value;
     notifyKeyValueChanged(key, value);
-
-    return true;
   }
 
   @override
-  Future<bool> setObjectPreference(
+  Future<void> setObjectPreference(
     String key,
     IJsonObj? preferencesObject,
   ) async {
@@ -89,8 +80,6 @@ class MemoryLocalPreferencesService extends AsyncInitLoadingBloc
     preferences[key] = str;
 
     notifyKeyValueChanged(key, preferencesObject);
-
-    return true;
   }
 
   @override
@@ -119,7 +108,7 @@ class MemoryLocalPreferencesService extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<bool> clearAllValuesAndDeleteStorage() => clearAllValues();
+  Future<void> clearAllValuesAndDeleteStorage() => clearAllValues();
 
   @override
   Future<bool> isStorageExist() async => preferences.isNotEmpty;
@@ -137,6 +126,7 @@ class MemoryLocalPreferencesService extends AsyncInitLoadingBloc
     listeners[key]!.add(onChanged as dynamic Function(dynamic));
 
     return CustomDisposable(() async {
+      // ignore: avoid-ignoring-return-values
       listeners[key]!.remove(onChanged);
     });
   }

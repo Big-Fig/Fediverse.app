@@ -41,7 +41,7 @@ class ConversationChatWithLastMessagePaginationBloc
       );
 
   @override
-  Future refreshItemsFromRemoteForPage({
+  Future<void> refreshItemsFromRemoteForPage({
     required int pageIndex,
     required int? itemsCountPerPage,
     required CachedPaginationPage<IConversationChatWithLastMessage>? olderPage,

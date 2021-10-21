@@ -149,7 +149,7 @@ abstract class CachedPaginationListWithNewItemsBloc<
     ).disposeWith(this);
   }
 
-  Future _updateCombinedItemsResult(
+  Future<void> _updateCombinedItemsResult(
     CalculateNewItemsInputData<TItem> calculateNewItemsInputData,
   ) async {
     var oldResult = combinedItemsResultSubject.value;
@@ -281,7 +281,7 @@ abstract class CachedPaginationListWithNewItemsBloc<
 
   bool isNewItemsAsyncCheckInProgress = false;
 
-  Future waitForNewerItemsAsyncCheck({
+  Future<void> waitForNewerItemsAsyncCheck({
     Duration pollInterval = Duration.zero,
   }) async {
     if (isNewItemsAsyncCheckInProgress) {

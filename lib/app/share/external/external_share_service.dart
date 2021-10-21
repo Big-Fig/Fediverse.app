@@ -7,7 +7,7 @@ abstract class IExternalShareService implements IDisposable {
   static IExternalShareService of(BuildContext context, {bool listen = true}) =>
       Provider.of<IExternalShareService>(context, listen: listen);
 
-  Future share({
+  Future<void> share({
     required String popupTitle,
     required String? text,
     required List<ShareUrlFile>? urlFiles,

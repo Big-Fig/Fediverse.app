@@ -111,7 +111,7 @@ class HomeBloc extends DisposableOwner implements IHomeBloc {
             selectedTab == reselectedTab,
       );
 
-  Future checkHomeTimelinesInactiveUnreadBadgeSubscription() async {
+  Future<void> checkHomeTimelinesInactiveUnreadBadgeSubscription() async {
     if (isTimelinesTabSelected) {
       await homeTimelinesInactiveUnreadBadgeSubscription?.cancel();
       // todo: refactor?

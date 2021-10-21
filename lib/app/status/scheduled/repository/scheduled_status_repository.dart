@@ -28,20 +28,20 @@ abstract class IScheduledStatusRepository
         listen: listen,
       );
   //
-  // Future upsertRemoteScheduledStatuses(
+  // Future<void> upsertRemoteScheduledStatuses(
   //   List<IPleromaScheduledStatus> remoteScheduledStatuses,
   // );
   //
-  // Future upsertRemoteScheduledStatus(
+  // Future<void> upsertRemoteScheduledStatus(
   //   IPleromaScheduledStatus remoteScheduledStatus,
   // );
 
-  // Future updateLocalScheduledStatusByRemoteScheduledStatus({
+  // Future<void> updateLocalScheduledStatusByRemoteScheduledStatus({
   //   required IScheduledStatus oldLocalScheduledStatus,
   //   required IPleromaScheduledStatus newRemoteScheduledStatus,
   // });
 
-  Future markAsCanceled({
+  Future<void> markAsCanceled({
     required IScheduledStatus scheduledStatus,
     required Batch? batchTransaction,
   });

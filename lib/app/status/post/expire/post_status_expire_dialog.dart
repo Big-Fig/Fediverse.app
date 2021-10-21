@@ -4,7 +4,7 @@ import 'package:fedi/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-Future showPostStatusExpireDialog({
+Future<void> showPostStatusExpireDialog({
   required BuildContext context,
   required IPostStatusBloc postStatusBloc,
 }) async {

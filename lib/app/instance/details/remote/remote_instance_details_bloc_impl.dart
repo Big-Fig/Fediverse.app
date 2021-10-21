@@ -50,7 +50,7 @@ class RemoteInstanceDetailsBloc extends InstanceDetailsBloc
       );
 
   @override
-  Future internalAsyncInit() => refresh();
+  Future<void> internalAsyncInit() => refresh();
 
   @override
   InstanceLocation get instanceLocation => InstanceLocation.remote;

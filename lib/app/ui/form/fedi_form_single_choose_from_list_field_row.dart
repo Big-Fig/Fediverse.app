@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fedi/app/ui/dialog/chooser/selection/single/fedi_single_selection_chooser_dialog.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
@@ -13,7 +15,10 @@ import 'package:flutter/material.dart';
 typedef ValueToKeyMapper<T> = Key? Function(T value);
 typedef ValueToTextMapper<T> = String Function(T value);
 typedef ValueToIconMapper<T> = IconData Function(T value);
-typedef ValueChangedCallback<T> = Function(T oldValue, T newValue);
+typedef ValueChangedCallback<T> = FutureOr<void> Function(
+  T oldValue,
+  T newValue,
+);
 
 class FediFormSingleChooseFromListFieldRow<T> extends StatelessWidget {
   final bool isEnabled;

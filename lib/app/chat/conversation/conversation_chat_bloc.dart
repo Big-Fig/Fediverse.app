@@ -34,12 +34,12 @@ abstract class IConversationChatBloc
 
   Stream<IConversationChatMessage> get onMessageLocallyHiddenStream;
 
-  Future postMessage({
+  Future<void> postMessage({
     required IPostStatusData postStatusData,
     required IConversationChatMessage? oldPendingFailedConversationChatMessage,
   });
 
-  Future deleteMessage({
+  Future<void> deleteMessage({
     required IConversationChatMessage conversationChatMessage,
   });
 }

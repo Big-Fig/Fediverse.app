@@ -58,7 +58,7 @@ class ChatAccountsDao extends DatabaseDao<DbChatAccount, int,
         updateKind: UpdateKind.delete,
       );
 
-  Future deleteByChatRemoteIdBatch(
+  Future<void> deleteByChatRemoteIdBatch(
     String chatRemoteId, {
     required Batch? batchTransaction,
   }) async {
@@ -68,7 +68,8 @@ class ChatAccountsDao extends DatabaseDao<DbChatAccount, int,
         (tbl) => _createChatRemoteIdEqualExpression(chatRemoteId),
       );
     } else {
-      return deleteByChatRemoteId(chatRemoteId);
+      // ignore: avoid-ignoring-return-values
+      await deleteByChatRemoteId(chatRemoteId);
     }
   }
 

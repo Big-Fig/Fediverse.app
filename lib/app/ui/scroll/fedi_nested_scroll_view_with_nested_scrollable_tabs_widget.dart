@@ -145,6 +145,8 @@ class _NestedBodyWidgetState extends State<_NestedBodyWidget>
 
   @override
   Widget build(BuildContext context) {
+    // AutomaticKeepAliveClientMixin required
+    // ignore: avoid-ignoring-return-values
     super.build(context);
 
     return Column(
@@ -233,6 +235,8 @@ class _NestedBodyTabItemWidgetState extends State<_NestedBodyTabItemWidget>
     with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
+    // AutomaticKeepAliveClientMixin required
+    // ignore: avoid-ignoring-return-values
     super.build(context);
 
     return widget.tabBodyProviderBuilder(

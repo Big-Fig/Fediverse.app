@@ -23,7 +23,7 @@ abstract class PaginationListWidget<T> extends StatelessWidget {
   final bool refreshOnFirstLoad;
 
   // ignore: no-empty-block
-  Future additionalPreRefreshAction(BuildContext context) async {
+  Future<void> additionalPreRefreshAction(BuildContext context) async {
     // nothing by default
   }
 

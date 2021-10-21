@@ -45,7 +45,7 @@ class AccountCachedPaginationBloc extends CachedPleromaPaginationBloc<IAccount>
       );
 
   @override
-  Future refreshItemsFromRemoteForPage({
+  Future<void> refreshItemsFromRemoteForPage({
     required int pageIndex,
     required int? itemsCountPerPage,
     required CachedPaginationPage<IAccount>? olderPage,

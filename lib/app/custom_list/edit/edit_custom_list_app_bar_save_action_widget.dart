@@ -20,12 +20,11 @@ class EditCustomListAppBarSaveActionWidget extends StatelessWidget {
           text: S.of(context).app_acccount_my_customList_edit_action_save,
           onPressed: isReadyToSave
               ? () async {
+                  // ignore: avoid-ignoring-return-values
                   await PleromaAsyncOperationHelper
                       .performPleromaAsyncOperation(
                     context: context,
-                    asyncCode: () async {
-                      await editCustomListBloc.submit();
-                    },
+                    asyncCode: () => editCustomListBloc.submit(),
                   );
 
                   Navigator.of(context).pop();

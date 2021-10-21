@@ -9,11 +9,11 @@ abstract class ILocalPreferenceBloc<T> extends DisposableOwner
 
   bool get isSavedPreferenceExist;
 
-  Future<bool> clearValue();
+  Future<void> clearValue();
 
-  Future<bool> setValue(T newValue);
+  Future<void> setValue(T newValue);
 
-  Future reload();
+  Future<void> reload();
 
-  Future clearValueAndDispose();
+  Future<void> clearValueAndDispose();
 }

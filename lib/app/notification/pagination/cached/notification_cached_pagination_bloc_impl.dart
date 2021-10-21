@@ -46,7 +46,7 @@ class NotificationCachedPaginationBloc
       );
 
   @override
-  Future refreshItemsFromRemoteForPage({
+  Future<void> refreshItemsFromRemoteForPage({
     required int pageIndex,
     required int? itemsCountPerPage,
     required CachedPaginationPage<INotification>? olderPage,

@@ -9,7 +9,7 @@ abstract class IProviderContextBloc extends AsyncInitLoadingBloc {
 
   Future<IDisposable> asyncInitAndRegister<T extends IDisposable>(
     T obj, {
-    Future Function(T obj)? additionalAsyncInit,
+    Future<void> Function(T obj)? additionalAsyncInit,
   });
 
   void unregister<T extends IDisposable>(T object);

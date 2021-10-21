@@ -96,6 +96,7 @@ class _MultiSelectFromListValueFormFieldRowValueWidget<T>
             listen: false,
           );
           if (fieldBloc.isEnabled) {
+            // ignore: avoid-ignoring-return-values
             _showDialog(
               context: context,
               fieldBloc: fieldBloc,
@@ -217,6 +218,7 @@ class _MultiSelectFromListValueFormFieldRowValueIconWidget<T>
                               ? fediUiColorTheme.darkGrey
                               : fediUiColorTheme.lightGrey,
                           onPressed: () {
+                            // ignore: avoid-ignoring-return-values
                             _showDialog(
                               context: context,
                               fieldBloc: fieldBloc,
@@ -288,6 +290,7 @@ Future<T?> _showDialog<T>({
 
   await subscription.cancel();
 
+  // ignore: avoid-ignoring-return-values
   await actionsSubject.close();
 
   return result;

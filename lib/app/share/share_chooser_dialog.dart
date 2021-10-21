@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/ui/dialog/chooser/fedi_chooser_dialog.dart';
 import 'package:fedi/app/ui/fedi_icons.dart';
@@ -7,10 +9,11 @@ import 'package:flutter/cupertino.dart';
 
 Future<void> showShareChooserDialog(
   BuildContext context, {
-  required Function(BuildContext context) externalShareAction,
-  required Function(BuildContext context) conversationsShareAction,
-  required Function(BuildContext context) chatsShareAction,
-  required Function(BuildContext context) newStatusShareAction,
+  required FutureOr<void> Function(BuildContext context) externalShareAction,
+  required FutureOr<void> Function(BuildContext context)
+      conversationsShareAction,
+  required FutureOr<void> Function(BuildContext context) chatsShareAction,
+  required FutureOr<void> Function(BuildContext context) newStatusShareAction,
 }) async {
   var currentUnifediApiAccessBloc =
       ICurrentUnifediApiAccessBloc.of(context, listen: false);

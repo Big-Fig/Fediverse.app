@@ -26,33 +26,32 @@ class DraftStatusDao extends PopulatedAppLocalDatabaseDao<
 // Called by the AppDatabase class
   DraftStatusDao(this.db) : super(db);
 
-  SimpleSelectStatement<$DbDraftStatusesTable, DbDraftStatus> orderBy(
+  void orderBy(
     SimpleSelectStatement<$DbDraftStatusesTable, DbDraftStatus> query,
     List<DraftStatusRepositoryOrderingTermData> orderTerms,
   ) =>
-      query
-        ..orderBy(
-          orderTerms
-              .map(
-                (orderTerm) => ($DbDraftStatusesTable item) {
-                  GeneratedColumn<Object?> expression;
-                  switch (orderTerm.orderType) {
-                    case DraftStatusRepositoryOrderType.updatedAt:
-                      expression = item.updatedAt;
-                      break;
-                    case DraftStatusRepositoryOrderType.localId:
-                      expression = item.id;
-                      break;
-                  }
+      query.orderBy(
+        orderTerms
+            .map(
+              (orderTerm) => ($DbDraftStatusesTable item) {
+                GeneratedColumn<Object?> expression;
+                switch (orderTerm.orderType) {
+                  case DraftStatusRepositoryOrderType.updatedAt:
+                    expression = item.updatedAt;
+                    break;
+                  case DraftStatusRepositoryOrderType.localId:
+                    expression = item.id;
+                    break;
+                }
 
-                  return OrderingTerm(
-                    expression: expression,
-                    mode: orderTerm.orderingMode,
-                  );
-                },
-              )
-              .toList(),
-        );
+                return OrderingTerm(
+                  expression: expression,
+                  mode: orderTerm.orderingMode,
+                );
+              },
+            )
+            .toList(),
+      );
 
   List<DbDraftStatus> typedResultListToPopulated(
     List<TypedResult> typedResult,

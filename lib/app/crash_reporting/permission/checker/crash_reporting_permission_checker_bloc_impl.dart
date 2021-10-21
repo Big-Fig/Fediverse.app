@@ -28,7 +28,7 @@ class CrashReportingPermissionCheckerBloc extends DisposableOwner
   });
 
   @override
-  Future onUserAnswer({
+  Future<void> onUserAnswer({
     required bool reportingEnabled,
   }) async {
     await askCrashReportingPermissionLocalPreferenceBloc.setValue(true);

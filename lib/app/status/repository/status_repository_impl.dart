@@ -58,7 +58,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
         homeTimelineStatusesDao = appDatabase.homeTimelineStatusesDao,
         conversationStatusesDao = appDatabase.conversationStatusesDao;
 
-  Future addStatusesToList({
+  Future<void> addStatusesToList({
     required List<String> statusRemoteIds,
     required String listRemoteId,
     required Batch? batchTransaction,
@@ -81,7 +81,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }
 
   @override
-  Future addStatusesToConversation({
+  Future<void> addStatusesToConversation({
     required List<String> statusRemoteIds,
     required String conversationRemoteId,
     required Batch? batchTransaction,
@@ -105,7 +105,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
     }
   }
 
-  Future updateStatusTags({
+  Future<void> updateStatusTags({
     required String statusRemoteId,
     required List<IUnifediApiTag>? tags,
     required Batch? batchTransaction,
@@ -143,7 +143,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }
 
   @override
-  Future incrementRepliesCount({
+  Future<void> incrementRepliesCount({
     required String remoteId,
   }) =>
       dao.incrementRepliesCount(
@@ -151,7 +151,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       );
 
   @override
-  Future removeAccountStatusesFromHome({
+  Future<void> removeAccountStatusesFromHome({
     required String accountRemoteId,
     required Batch? batchTransaction,
   }) =>
@@ -161,7 +161,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       );
 
   @override
-  Future markStatusAsDeleted({
+  Future<void> markStatusAsDeleted({
     required String statusRemoteId,
   }) =>
       dao.markAsDeleted(
@@ -169,7 +169,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       );
 
   @override
-  Future markStatusAsHiddenLocallyOnDevice({
+  Future<void> markStatusAsHiddenLocallyOnDevice({
     required int localId,
   }) =>
       dao.markAsHiddenLocallyOnDevice(
@@ -177,7 +177,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       );
 
   @override
-  Future clearListStatusesConnection({
+  Future<void> clearListStatusesConnection({
     required String listRemoteId,
     required Batch? batchTransaction,
   }) async {
@@ -283,7 +283,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }
 
   @override
-  Future addStatusToConversation({
+  Future<void> addStatusToConversation({
     required String statusRemoteId,
     required String conversationRemoteId,
     required Batch? batchTransaction,
@@ -299,7 +299,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       );
 
   @override
-  Future removeStatusFromConversation({
+  Future<void> removeStatusFromConversation({
     required String statusRemoteId,
     required String conversationRemoteId,
     required Batch? batchTransaction,
@@ -459,7 +459,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       );
 
   @override
-  Future upsertRemoteStatusWithAllArguments(
+  Future<void> upsertRemoteStatusWithAllArguments(
     IUnifediApiStatus remoteStatus, {
     required bool? isFromHomeTimeline,
     required String? listRemoteId,
@@ -498,7 +498,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }
 
   @override
-  Future upsertRemoteStatusForConversation(
+  Future<void> upsertRemoteStatusForConversation(
     IUnifediApiStatus remoteStatus, {
     required String conversationRemoteId,
     required Batch? batchTransaction,
@@ -512,7 +512,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       );
 
   @override
-  Future upsertRemoteStatusForHomeTimeline(
+  Future<void> upsertRemoteStatusForHomeTimeline(
     IUnifediApiStatus remoteStatus, {
     required bool isFromHomeTimeline,
     required Batch? batchTransaction,
@@ -526,7 +526,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       );
 
   @override
-  Future upsertRemoteStatusForList(
+  Future<void> upsertRemoteStatusForList(
     IUnifediApiStatus remoteStatus, {
     required String listRemoteId,
     required Batch? batchTransaction,
@@ -540,7 +540,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       );
 
   @override
-  Future upsertRemoteStatusesForConversation(
+  Future<void> upsertRemoteStatusesForConversation(
     List<IUnifediApiStatus> remoteStatuses, {
     required String conversationRemoteId,
     required Batch? batchTransaction,
@@ -554,7 +554,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       );
 
   @override
-  Future upsertRemoteStatusesForHomeTimeline(
+  Future<void> upsertRemoteStatusesForHomeTimeline(
     List<IUnifediApiStatus> remoteStatuses, {
     required bool isFromHomeTimeline,
     required Batch? batchTransaction,
@@ -568,7 +568,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       );
 
   @override
-  Future upsertRemoteStatusesForList(
+  Future<void> upsertRemoteStatusesForList(
     List<IUnifediApiStatus> remoteStatuses, {
     required String listRemoteId,
     required Batch? batchTransaction,
@@ -582,7 +582,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       );
 
   @override
-  Future insertAllInRemoteType(
+  Future<void> insertAllInRemoteType(
     List<IUnifediApiStatus> remoteItems, {
     required InsertMode? mode,
     required Batch? batchTransaction,
@@ -608,7 +608,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }
 
   @override
-  Future upsertRemoteStatusesWithAllArguments(
+  Future<void> upsertRemoteStatusesWithAllArguments(
     List<IUnifediApiStatus> remoteStatuses, {
     required bool? isFromHomeTimeline,
     required String? listRemoteId,
@@ -640,7 +640,7 @@ class StatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   }
 
   // ignore: long-method
-  Future _upsertStatusMetadata(
+  Future<void> _upsertStatusMetadata(
     IUnifediApiStatus remoteStatus, {
     required String? listRemoteId,
     required String? conversationRemoteId,

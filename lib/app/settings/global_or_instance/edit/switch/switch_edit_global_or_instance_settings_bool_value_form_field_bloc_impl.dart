@@ -47,7 +47,7 @@ class SwitchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc
   }
 
   @override
-  Future changeCurrentValue(bool? newValue) async {
+  Future<void> changeCurrentValue(bool? newValue) async {
     var oldValue = currentValue;
     _logger.finest(() => 'changeCurrentValue $newValue oldValue $oldValue');
 

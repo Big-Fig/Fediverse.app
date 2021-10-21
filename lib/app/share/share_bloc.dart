@@ -6,7 +6,7 @@ abstract class IShareBloc extends IDisposable {
   static IShareBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IShareBloc>(context, listen: listen);
 
-  Future share();
+  Future<void> share();
 
   bool get isPossibleToShare;
 

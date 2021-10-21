@@ -27,7 +27,7 @@ abstract class ICaptchaStringValueFormFieldBloc
 
   Stream<UnifediApiCaptcha?> get captchaStream;
 
-  Future reloadCaptcha();
+  Future<void> reloadCaptcha();
 
   DateTime? get captchaLoadedDateTime;
 

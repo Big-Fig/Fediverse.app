@@ -63,6 +63,7 @@ abstract class StatusThreadBloc extends AsyncInitLoadingBloc
     firstStatusInThreadSubject.disposeWith(this);
     onNewStatusAddedStreamController.disposeWith(this);
 
+    // ignore: avoid-ignoring-return-values
     refresh();
   }
 
@@ -279,13 +280,14 @@ abstract class StatusThreadBloc extends AsyncInitLoadingBloc
   }
 
   @override
-  Future internalAsyncInit() async {
+  Future<void> internalAsyncInit() async {
     filters = await loadFilters();
 
     watchFilters().listen(
       (newFilters) {
         if (!listEquals(filters, newFilters)) {
           filters = newFilters;
+          // ignore: avoid-ignoring-return-values
           refresh();
         }
       },

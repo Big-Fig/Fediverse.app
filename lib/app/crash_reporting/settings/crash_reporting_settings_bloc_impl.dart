@@ -28,7 +28,7 @@ class CrashReportingSettingsBloc extends DisposableOwner
       settingsDataStream.map((settings) => settings.reportingEnabled);
 
   @override
-  Future changeReportingEnabled(bool value) => updateSettings(
+  Future<void> changeReportingEnabled(bool value) => updateSettings(
         // copyWith dont set null values
         CrashReportingSettings(
           reportingEnabled: value,
@@ -36,7 +36,7 @@ class CrashReportingSettingsBloc extends DisposableOwner
       );
 
   @override
-  Future updateSettings(CrashReportingSettings newSettings) async {
+  Future<void> updateSettings(CrashReportingSettings newSettings) async {
     await crashReportingSettingsLocalPreferencesBloc.setValue(
       newSettings,
     );

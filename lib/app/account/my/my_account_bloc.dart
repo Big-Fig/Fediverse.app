@@ -24,13 +24,13 @@ abstract class IMyAccountBloc extends IAccountBloc {
 
   bool checkIsStatusFromMe(IStatus status);
 
-  Future updateMyAccountByMyUnifediApiAccount(
+  Future<void> updateMyAccountByMyUnifediApiAccount(
     IUnifediApiMyAccount unifediApiMyAccount,
   );
 
-  Future updateMyAccountByMyAccount(IMyAccount myAccount);
+  Future<void> updateMyAccountByMyAccount(IMyAccount myAccount);
 
-  Future decreaseFollowingRequestCount();
+  Future<void> decreaseFollowingRequestCount();
 
   bool checkIsChatMessageFromMe(IChatMessage chatMessage);
 }

@@ -112,7 +112,7 @@ class RegisterUnifediApiAccessBloc extends AsyncInitLoadingBloc
       registerUnifediApiAccessFormBloc.isHaveChangesAndNoErrorsStream;
 
   @override
-  Future internalAsyncInit() async {
+  Future<void> internalAsyncInit() async {
     var detectorBloc = UnifediApiInstanceTypeDetectorBloc();
     var instanceType = await detectorBloc.detectInstanceType(
       url: instanceBaseUri.toString(),

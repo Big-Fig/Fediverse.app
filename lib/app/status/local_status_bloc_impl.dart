@@ -129,6 +129,7 @@ class LocalStatusBloc extends StatusBloc {
             accountId: accountRemoteId,
             withRelationship: false,
           );
+          // ignore: avoid-ignoring-return-values
           await accountRepository.upsertInRemoteType(
             remoteAccount,
           );
@@ -209,7 +210,7 @@ class LocalStatusBloc extends StatusBloc {
   }
 
   @override
-  Future actualInit({
+  Future<void> actualInit({
     required IStatus status,
     required bool isNeedRefreshFromNetworkOnInit,
   }) async {
@@ -274,6 +275,7 @@ class LocalStatusBloc extends StatusBloc {
       );
     }
 
+    // ignore: avoid-ignoring-return-values
     await statusRepository.upsertInRemoteType(
       remoteStatus,
     );
@@ -398,7 +400,7 @@ class LocalStatusBloc extends StatusBloc {
   }
 
   @override
-  Future delete() async {
+  Future<void> delete() async {
     await unifediApiStatusService.deleteStatus(
       statusId: status.remoteId!,
     );
@@ -436,6 +438,7 @@ class LocalStatusBloc extends StatusBloc {
       );
     }
 
+    // ignore: avoid-ignoring-return-values
     await statusRepository.upsertInRemoteType(
       remoteStatus,
     );
@@ -443,7 +446,7 @@ class LocalStatusBloc extends StatusBloc {
     return remoteStatus;
   }
 
-  Future _updateByRemoteStatus(
+  Future<void> _updateByRemoteStatus(
     IUnifediApiStatus remoteStatus, {
     Batch? batchTransaction,
   }) =>
@@ -454,7 +457,7 @@ class LocalStatusBloc extends StatusBloc {
       );
 
   @override
-  Future refreshFromNetwork() async {
+  Future<void> refreshFromNetwork() async {
     var remoteStatus = await loadRemoteStatus();
 
     return _updateByRemoteStatus(remoteStatus);

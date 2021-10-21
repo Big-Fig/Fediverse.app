@@ -29,7 +29,10 @@ class PleromaChatStartPage extends StatelessWidget {
       );
 }
 
-Future _accountSelectedCallback(BuildContext context, IAccount account) async {
+Future<void> _accountSelectedCallback(
+  BuildContext context,
+  IAccount account,
+) async {
   await goToPleromaChatWithAccount(
     context: context,
     account: account,

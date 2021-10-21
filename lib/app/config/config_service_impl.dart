@@ -109,7 +109,8 @@ class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
 
   @override
   // ignore: long-method
-  Future internalAsyncInit() async {
+  Future<void> internalAsyncInit() async {
+    // ignore: avoid-ignoring-return-values
     await FlutterConfig.loadEnvVariables();
 
     // print(

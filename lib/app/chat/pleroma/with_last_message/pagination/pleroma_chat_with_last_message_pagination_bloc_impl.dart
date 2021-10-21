@@ -41,7 +41,7 @@ class PleromaChatWithLastMessagePaginationBloc
       );
 
   @override
-  Future refreshItemsFromRemoteForPage({
+  Future<void> refreshItemsFromRemoteForPage({
     required int pageIndex,
     required int? itemsCountPerPage,
     required CachedPaginationPage<IPleromaChatWithLastMessage>? olderPage,

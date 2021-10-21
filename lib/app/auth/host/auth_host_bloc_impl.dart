@@ -126,7 +126,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
       memoryUnifediApiAccessBloc.access.applicationAccessToken != null;
 
   @override
-  Future registerApplication() async {
+  Future<void> registerApplication() async {
     _logger.finest(() => 'registerApplication');
     var alreadyRegistered = memoryUnifediApiAccessBloc
             .access.applicationAccessToken?.clientApplication !=
@@ -423,7 +423,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
       );
 
   @override
-  Future logout() async {
+  Future<void> logout() async {
     var currentInstance = currentInstanceBloc.currentInstance!;
 
     var instance = currentInstance;
@@ -439,7 +439,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
   }
 
   @override
-  Future internalAsyncInit() async {
+  Future<void> internalAsyncInit() async {
     await hostApplicationLocalPreferenceBloc.performAsyncInit();
     await hostAccessTokenLocalPreferenceBloc.performAsyncInit();
 
@@ -517,7 +517,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     await detectorBloc.dispose();
   }
 
-  Future loadInstanceDetails({
+  Future<void> loadInstanceDetails({
     bool forceRefresh = false,
   }) async {
     if (forceRefresh || memoryUnifediApiAccessBloc.access.instance == null) {
@@ -575,7 +575,8 @@ Future<String?> launchAuthorizeFormAndExtractAuthorizationCode({
     },
   );
   _logger.finest(() => 'launch url=$url');
-  await launch(url);
+  var launchSuccess = await launch(url);
+  _logger.finest(() => 'launchSuccess $launchSuccess');
 
   return completer.future;
 }

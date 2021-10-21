@@ -12,7 +12,8 @@ abstract class MediaDeviceFolderBloc extends AsyncInitLoadingBloc
   });
 
   @override
-  Future internalAsyncInit() async {
+  Future<void> internalAsyncInit() async {
+    // ignore: avoid-ignoring-return-values
     await storagePermissionBloc.checkPermissionStatus();
   }
 

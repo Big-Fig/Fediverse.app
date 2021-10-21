@@ -10,6 +10,7 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../../localization/localization_model_test_helper.dart';
 import '../../../rxdart/rxdart_test_helper.dart';
 
+// ignore_for_file: avoid-ignoring-return-values
 // ignore_for_file: no-magic-number, avoid-late-keyword
 void main() {
   late MemoryLocalPreferencesService memoryLocalPreferencesService;

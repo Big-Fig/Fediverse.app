@@ -1,10 +1,12 @@
+import 'dart:async';
+
 import 'package:fedi/app/emoji/picker/emoji_picker_widget.dart';
 import 'package:fedi/app/ui/fedi_padding.dart';
 import 'package:fedi/app/ui/modal_bottom_sheet/fedi_modal_bottom_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-typedef EmojiReactionSelectedCallback = Function(
+typedef EmojiReactionSelectedCallback = FutureOr<void> Function(
   BuildContext context,
   String emojiName,
   String emoji,

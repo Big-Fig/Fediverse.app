@@ -23,6 +23,7 @@ import 'package:flutter_driver/flutter_driver.dart';
 import 'package:screenshots/screenshots.dart';
 import 'package:test/test.dart';
 
+// ignore_for_file: avoid-ignoring-return-values
 void main() {
   // var instanceHost =
   //     Platform.environment['FLUTTER_DRIVER_INSTANCE_HOST']!;

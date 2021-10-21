@@ -60,7 +60,7 @@ class MyAccountWebSocketsHandler extends WebSocketsChannelHandler {
             );
 
   @override
-  Future handleEvent(IUnifediApiWebSocketsEvent event) async {
+  Future<void> handleEvent(IUnifediApiWebSocketsEvent event) async {
     // todo: remove hack
     // it is for isHomeTimeline flag
     // other websockets handle can handle same Status and override this flag

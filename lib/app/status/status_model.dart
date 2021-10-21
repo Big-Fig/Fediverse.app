@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/pending/pending_model.dart';
@@ -11,11 +13,11 @@ part 'status_model.freezed.dart';
 
 final _logger = Logger('status_model.dart');
 
-typedef StatusAndContextCallback = Function(
+typedef StatusAndContextCallback = FutureOr<void> Function(
   BuildContext context,
   IStatus status,
 );
-typedef StatusCallback = Function(IStatus? status);
+typedef StatusCallback = FutureOr<void> Function(IStatus? status);
 
 abstract class IStatus implements IEqualComparableObj<IStatus> {
   static bool isItemsEqual(IStatus a, IStatus b) => a.remoteId == b.remoteId;

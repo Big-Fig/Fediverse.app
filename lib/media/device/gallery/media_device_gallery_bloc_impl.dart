@@ -51,7 +51,7 @@ abstract class MediaDeviceGalleryBloc extends AsyncInitLoadingBloc
       BehaviorSubject();
 
   @override
-  Future selectFolder(IMediaDeviceFolder folder) async {
+  Future<void> selectFolder(IMediaDeviceFolder folder) async {
     var oldFolderData = selectedFolderData;
     if (oldFolderData?.folder.id == folder.id) {
       return;
@@ -109,7 +109,8 @@ abstract class MediaDeviceGalleryBloc extends AsyncInitLoadingBloc
   MediaDeviceGalleryState? get galleryState => galleryStateSubject.valueOrNull;
 
   @override
-  Future internalAsyncInit() async {
+  Future<void> internalAsyncInit() async {
+    // ignore: avoid-ignoring-return-values
     await storagePermissionBloc.checkPermissionStatus();
 
     if (storagePermissionBloc.permissionGranted!) {
@@ -125,12 +126,12 @@ abstract class MediaDeviceGalleryBloc extends AsyncInitLoadingBloc
     }
   }
 
-  Future _initAfterPermissionGranted() async {
+  Future<void> _initAfterPermissionGranted() async {
     await refreshFoldersInformation();
   }
 
   @override
-  Future refreshFoldersInformation() async {
+  Future<void> refreshFoldersInformation() async {
     assert(
       permissionGranted!,
       'cant load without permission',
@@ -186,7 +187,7 @@ abstract class MediaDeviceGalleryBloc extends AsyncInitLoadingBloc
   Future<PermissionStatus?> requestPermission() =>
       storagePermissionBloc.requestPermission();
 
-  Future disposeSelectedFolderBlocs() async {
+  Future<void> disposeSelectedFolderBlocs() async {
     await selectedFolderData?.dispose();
   }
 }

@@ -146,7 +146,7 @@ class EditToastSettingsBloc
       );
 
   @override
-  Future fillSettingsToFormFields(ToastSettings settings) async {
+  Future<void> fillSettingsToFormFields(ToastSettings settings) async {
     var pushSettings = settings.pushSettings;
     var isNotGlobal =
         globalOrInstanceSettingsType != GlobalOrInstanceSettingsType.global;

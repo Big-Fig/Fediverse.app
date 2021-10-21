@@ -46,7 +46,7 @@ abstract class AccountBloc extends IAccountBloc {
     }
   }
 
-  Future actualInit({
+  Future<void> actualInit({
     required IAccount account,
     required bool isNeedRefreshFromNetworkOnInit,
   });

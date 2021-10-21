@@ -47,7 +47,7 @@ class NotificationUnreadExcludeTypesBoolBadgeBloc extends AsyncInitLoadingBloc
       );
 
   @override
-  Future internalAsyncInit() async {
+  Future<void> internalAsyncInit() async {
     filters = await filterRepository.findAllInAppType(
       filters: filterRepositoryFilters,
       pagination: null,

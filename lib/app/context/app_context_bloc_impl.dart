@@ -159,6 +159,8 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 
+// ignore_for_file: avoid-ignoring-return-values
+
 var _logger = Logger('app_context_bloc_impl.dart');
 
 class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
@@ -171,7 +173,7 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
   @override
   // todo:divide into small methods
   // ignore: long-method
-  Future internalAsyncInit() async {
+  Future<void> internalAsyncInit() async {
     _logger.fine(() => 'internalAsyncInit');
 
     var globalProviderService = this;

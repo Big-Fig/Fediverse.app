@@ -98,7 +98,7 @@ class EditMyAccountHeaderFieldEditButtonWidget extends StatelessWidget {
       );
 }
 
-Future _startChoosingFileToUploadHeader(BuildContext context) async {
+Future<void> _startChoosingFileToUploadHeader(BuildContext context) async {
   var mediaDeviceFile = await goToSingleMediaPickerPage(
     context,
     typesToPick: [

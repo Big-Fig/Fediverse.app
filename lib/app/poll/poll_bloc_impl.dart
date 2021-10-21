@@ -99,6 +99,7 @@ class PollBloc extends DisposableOwner implements IPollBloc {
     }
 
     if (selectedVotes.contains(pollOption)) {
+      // ignore: avoid-ignoring-return-values
       selectedVotes.remove(pollOption);
     } else {
       selectedVotes.add(pollOption);
@@ -107,7 +108,7 @@ class PollBloc extends DisposableOwner implements IPollBloc {
   }
 
   @override
-  Future vote() async {
+  Future<void> vote() async {
     assert(
       selectedVotes.isNotEmpty,
       'you should select at least one option',
@@ -153,7 +154,7 @@ class PollBloc extends DisposableOwner implements IPollBloc {
   }
 
   @override
-  Future refreshFromNetwork() async {
+  Future<void> refreshFromNetwork() async {
     var remotePoll = await unifediApiPollService!.getPoll(
       pollId: poll.id!,
     );

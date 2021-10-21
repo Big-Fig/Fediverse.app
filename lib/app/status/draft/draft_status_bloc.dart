@@ -21,13 +21,13 @@ abstract class IDraftStatusBloc implements IDisposable {
 
   Stream<DateTime?> get updatedAtStream;
 
-  Future cancelDraft();
+  Future<void> cancelDraft();
 
-  Future postDraft(PostStatusData postStatusData);
+  Future<void> postDraft(PostStatusData postStatusData);
 
   IPostStatusData? calculatePostStatusData();
 
-  Future updatePostStatusData(
+  Future<void> updatePostStatusData(
     PostStatusData postStatusData, {
     required Batch? batchTransaction,
   });

@@ -336,10 +336,11 @@ class MockIUnifediApiMyAccountService extends _i1.Mock
               Future<_i5.IUnifediApiTag>.value(_FakeIUnifediApiTag_3())) as _i8
       .Future<_i5.IUnifediApiTag>);
   @override
-  _i8.Future<dynamic> unfeatureMyAccountTag({String? tagId}) =>
+  _i8.Future<void> unfeatureMyAccountTag({String? tagId}) =>
       (super.noSuchMethod(
           Invocation.method(#unfeatureMyAccountTag, [], {#tagId: tagId}),
-          returnValue: Future<dynamic>.value()) as _i8.Future<dynamic>);
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i8.Future<void>);
   @override
   _i8.Future<List<_i11.IUnifediApiAccount>> getMySuggestions({int? limit}) =>
       (super.noSuchMethod(
@@ -348,20 +349,22 @@ class MockIUnifediApiMyAccountService extends _i1.Mock
                   <_i11.IUnifediApiAccount>[]))
           as _i8.Future<List<_i11.IUnifediApiAccount>>);
   @override
-  _i8.Future<dynamic> removeMyAccountSuggestion({String? accountId}) =>
+  _i8.Future<void> removeMyAccountSuggestion({String? accountId}) =>
       (super.noSuchMethod(
           Invocation.method(
               #removeMyAccountSuggestion, [], {#accountId: accountId}),
-          returnValue: Future<dynamic>.value()) as _i8.Future<dynamic>);
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i8.Future<void>);
   @override
-  _i8.Future<dynamic> editNotificationsSettings(
+  _i8.Future<void> editNotificationsSettings(
           {bool? blockFromStrangers, bool? hideNotificationContents}) =>
       (super.noSuchMethod(
           Invocation.method(#editNotificationsSettings, [], {
             #blockFromStrangers: blockFromStrangers,
             #hideNotificationContents: hideNotificationContents
           }),
-          returnValue: Future<dynamic>.value()) as _i8.Future<dynamic>);
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i8.Future<void>);
   @override
   _i6.FediverseApiFeatureRequirementState checkFeatureState(
           _i2.IUnifediApiFeature? feature) =>
@@ -371,7 +374,8 @@ class MockIUnifediApiMyAccountService extends _i1.Mock
   @override
   String toString() => super.toString();
   @override
-  _i8.Future<dynamic> dispose() =>
+  _i8.Future<void> dispose() =>
       (super.noSuchMethod(Invocation.method(#dispose, []),
-          returnValue: Future<dynamic>.value()) as _i8.Future<dynamic>);
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i8.Future<void>);
 }

@@ -142,16 +142,19 @@ class __DurationDateTimeValueFormFieldRowPickerWidgetState
       DateTime? currentDateTime;
 
       if (fieldBloc.minDuration != null) {
+        // ignore: avoid-ignoring-return-values
         minDateTimeJiffy.add(duration: fieldBloc.minDuration!);
         minDateTime = minDateTimeJiffy.dateTime;
       }
 
       if (fieldBloc.maxDuration != null) {
+        // ignore: avoid-ignoring-return-values
         maxDateTimeJiffy.add(duration: fieldBloc.maxDuration!);
         maxDateTime = maxDateTimeJiffy.dateTime;
       }
 
       if (fieldBloc.currentValueDuration != null) {
+        // ignore: avoid-ignoring-return-values
         currentDateTimeJiffy.add(duration: fieldBloc.currentValueDuration!);
         currentDateTime = currentDateTimeJiffy.dateTime;
       }
@@ -384,7 +387,7 @@ class DurationDateTimeValueFormFieldRowIconButtonWidget
   }
 }
 
-Future _showDurationPicker({
+Future<void> _showDurationPicker({
   required BuildContext context,
   required String popupTitle,
 }) async {

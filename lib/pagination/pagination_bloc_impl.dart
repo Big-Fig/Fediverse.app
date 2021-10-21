@@ -96,7 +96,7 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
   }
 
   @override
-  Future dispose() {
+  Future<void> dispose() {
     _logger.finest(() => 'dispose');
 
     return super.dispose();
@@ -146,6 +146,7 @@ abstract class PaginationBloc<TPage extends PaginationPage<TItem>, TItem>
             }
           }
 
+          // ignore: avoid-ignoring-return-values
           indexToCachedPageMap.remove(farIndex);
         }
 

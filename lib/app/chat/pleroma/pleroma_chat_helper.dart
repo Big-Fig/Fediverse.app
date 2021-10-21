@@ -9,7 +9,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
-Future goToPleromaChatWithAccount({
+Future<void> goToPleromaChatWithAccount({
   required BuildContext context,
   required IAccount account,
 }) async {
@@ -32,6 +32,7 @@ Future goToPleromaChatWithAccount({
             accountId: account.remoteId,
           );
 
+          // ignore: avoid-ignoring-return-values
           await chatRepository.upsertInRemoteType(unifediApiChat);
 
           return chatRepository.findByRemoteIdInAppType(unifediApiChat.id);

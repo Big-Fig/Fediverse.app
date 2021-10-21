@@ -9,7 +9,7 @@ abstract class INotificationsHomeTabBloc implements IHomeTabBloc {
   }) =>
       Provider.of<INotificationsHomeTabBloc>(context, listen: listen);
 
-  Future dismissAll();
+  Future<void> dismissAll();
 
-  Future markAllAsRead();
+  Future<void> markAllAsRead();
 }

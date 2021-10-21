@@ -15,6 +15,7 @@ import '../../../rxdart/rxdart_test_helper.dart';
 import 'instance_announcement_test_helper.dart';
 
 // ignore_for_file: no-magic-number, avoid-late-keyword
+// ignore_for_file: avoid-ignoring-return-values
 @GenerateMocks([
   IUnifediApiAnnouncementService,
 ])

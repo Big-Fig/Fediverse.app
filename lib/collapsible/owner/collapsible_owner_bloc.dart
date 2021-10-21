@@ -15,9 +15,9 @@ abstract class ICollapsibleOwnerBloc extends IDisposable {
 
   Stream<List<ICollapsibleItemBloc>?> get visibleItemsStream;
 
-  Future addVisibleItem(ICollapsibleItemBloc item);
+  Future<void> addVisibleItem(ICollapsibleItemBloc item);
 
-  Future removeVisibleItem(ICollapsibleItemBloc item);
+  Future<void> removeVisibleItem(ICollapsibleItemBloc item);
 
   void collapseAllVisibleItems();
 }

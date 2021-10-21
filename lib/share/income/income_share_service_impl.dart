@@ -26,7 +26,7 @@ class IncomeShareService extends AsyncInitLoadingBloc
   }
 
   @override
-  Future internalAsyncInit() async {
+  Future<void> internalAsyncInit() async {
     await loadInitialEvent();
 
     _listenShareEvents();
@@ -99,7 +99,7 @@ class IncomeShareService extends AsyncInitLoadingBloc
   }
 
   @override
-  Future reset() async {
+  Future<void> reset() async {
     lastReceivedShareEvent = null;
     ReceiveSharingIntent.reset();
   }

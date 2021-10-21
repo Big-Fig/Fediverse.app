@@ -34,7 +34,7 @@ class StatusListsDao extends DatabaseDao<DbStatusList, int, $DbStatusListsTable,
         updateKind: UpdateKind.delete,
       );
 
-  Future deleteByListRemoteIdBatch(
+  Future<void> deleteByListRemoteIdBatch(
     String listRemoteId, {
     required Batch? batchTransaction,
   }) async {
@@ -44,7 +44,8 @@ class StatusListsDao extends DatabaseDao<DbStatusList, int, $DbStatusListsTable,
         (tbl) => _createListRemoteIdEqualExpression(listRemoteId),
       );
     } else {
-      return deleteByListRemoteId(listRemoteId);
+      // ignore: avoid-ignoring-return-values
+      await deleteByListRemoteId(listRemoteId);
     }
   }
 

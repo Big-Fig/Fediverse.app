@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart' as provider_lib;
 
+// ignore_for_file: avoid-ignoring-return-values
 var _logger = Logger('provider_context_bloc_impl.dart');
 
 typedef ProviderBuilder<T extends IDisposable> = provider_lib.Provider<T>
@@ -41,7 +42,7 @@ abstract class ProviderContextBloc extends AsyncInitLoadingBloc
   }
 
   @override
-  Future unregister<T extends IDisposable>(T object) async {
+  Future<void> unregister<T extends IDisposable>(T object) async {
     var type = T;
     if (!_storage.containsKey(type)) {
       throw ArgumentError(
@@ -78,7 +79,7 @@ abstract class ProviderContextBloc extends AsyncInitLoadingBloc
   @override
   Future<IDisposable> asyncInitAndRegister<T extends IDisposable>(
     T obj, {
-    Future Function(T obj)? additionalAsyncInit,
+    Future<void> Function(T obj)? additionalAsyncInit,
   }) async {
     if (obj is AsyncInitLoadingBloc) {
       await obj.performAsyncInit();

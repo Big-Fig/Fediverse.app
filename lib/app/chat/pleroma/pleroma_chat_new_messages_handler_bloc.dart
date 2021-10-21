@@ -4,9 +4,9 @@ import 'package:provider/provider.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
 abstract class IPleromaChatNewMessagesHandlerBloc extends IDisposable {
-  Future handleNewMessage(IUnifediApiChatMessage chatMessage);
+  Future<void> handleNewMessage(IUnifediApiChatMessage chatMessage);
 
-  Future handleChatUpdate(IUnifediApiChat chat);
+  Future<void> handleChatUpdate(IUnifediApiChat chat);
 
   static IPleromaChatNewMessagesHandlerBloc of(
     BuildContext context, {

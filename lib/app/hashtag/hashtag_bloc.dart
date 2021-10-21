@@ -30,7 +30,7 @@ abstract class IHashtagBloc implements IDisposable {
 
   bool get isInstanceSupportFeaturedTags;
 
-  Future feature();
+  Future<void> feature();
 
-  Future unFeature();
+  Future<void> unFeature();
 }

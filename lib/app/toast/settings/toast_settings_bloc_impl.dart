@@ -32,7 +32,7 @@ class ToastSettingsBloc
       settingsDataStream.map((settingsData) => settingsData.pushSettings);
 
   @override
-  Future changePushSettings(PushSettings newPushSettings) async {
+  Future<void> changePushSettings(PushSettings newPushSettings) async {
     if (pushSettings == newPushSettings) {
       _logger.finest(() => 'Same settings');
 
@@ -47,7 +47,7 @@ class ToastSettingsBloc
   }
 
   @override
-  Future changeFavourite(bool value) => changePushSettings(
+  Future<void> changeFavourite(bool value) => changePushSettings(
         pushSettings.copyWith(
           favourite: value,
         ),
@@ -61,7 +61,7 @@ class ToastSettingsBloc
       pushSettingsStream.map((settings) => settings.favourite == true);
 
   @override
-  Future changeFollow(bool value) => changePushSettings(
+  Future<void> changeFollow(bool value) => changePushSettings(
         pushSettings.copyWith(
           follow: value,
         ),
@@ -82,7 +82,7 @@ class ToastSettingsBloc
       pushSettingsStream.map((settings) => settings.mention == true);
 
   @override
-  Future changeMention(bool value) => changePushSettings(
+  Future<void> changeMention(bool value) => changePushSettings(
         pushSettings.copyWith(
           mention: value,
         ),
@@ -96,7 +96,7 @@ class ToastSettingsBloc
       pushSettingsStream.map((settings) => settings.reblog == true);
 
   @override
-  Future changeReblog(bool value) => changePushSettings(
+  Future<void> changeReblog(bool value) => changePushSettings(
         pushSettings.copyWith(
           reblog: value,
         ),
@@ -110,7 +110,7 @@ class ToastSettingsBloc
       pushSettingsStream.map((settings) => settings.poll == true);
 
   @override
-  Future changePoll(bool value) => changePushSettings(
+  Future<void> changePoll(bool value) => changePushSettings(
         pushSettings.copyWith(
           poll: value,
         ),
@@ -124,7 +124,7 @@ class ToastSettingsBloc
       pushSettingsStream.map((settings) => settings.chatMention == true);
 
   @override
-  Future changeChatMention(bool value) => changePushSettings(
+  Future<void> changeChatMention(bool value) => changePushSettings(
         pushSettings.copyWith(
           chatMention: value,
         ),
@@ -138,7 +138,7 @@ class ToastSettingsBloc
       pushSettingsStream.map((settings) => settings.emojiReaction == true);
 
   @override
-  Future changeEmojiReaction(bool value) => changePushSettings(
+  Future<void> changeEmojiReaction(bool value) => changePushSettings(
         pushSettings.copyWith(
           emojiReaction: value,
         ),
@@ -152,14 +152,14 @@ class ToastSettingsBloc
       settingsDataStream.map((settings) => settings.handlingType);
 
   @override
-  Future changeHandlingType(ToastHandlingType value) => updateSettings(
+  Future<void> changeHandlingType(ToastHandlingType value) => updateSettings(
         settingsData.copyWith(
           handlingTypeString: value.toJsonValue(),
         ),
       );
 
   @override
-  Future updateSettings(ToastSettings? newSettings) async {
+  Future<void> updateSettings(ToastSettings? newSettings) async {
     if (settingsData == newSettings) {
       _logger.finest(() => 'Same settings');
 
@@ -167,8 +167,6 @@ class ToastSettingsBloc
     }
 
     await updateInstanceSettings(newSettings);
-
-    return true;
   }
 
   @override

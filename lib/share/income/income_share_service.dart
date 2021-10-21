@@ -16,5 +16,5 @@ abstract class IIncomeShareService
 
   Stream<IncomeShareEvent> get incomeShareEventStream;
 
-  Future reset();
+  Future<void> reset();
 }

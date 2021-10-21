@@ -32,7 +32,7 @@ class CurrentUnifediApiAccessBloc extends DisposableOwner
       currentLocalPreferenceBloc.stream;
 
   @override
-  Future changeCurrentInstance(UnifediApiAccess instance) async {
+  Future<void> changeCurrentInstance(UnifediApiAccess instance) async {
     _logger.finest(() => 'changeCurrentInstance $instance');
 
     var unifediApiAccessLocalPreferenceBloc =
@@ -61,7 +61,7 @@ class CurrentUnifediApiAccessBloc extends DisposableOwner
       currentInstance == instance;
 
   @override
-  Future logoutCurrentInstance() async {
+  Future<void> logoutCurrentInstance() async {
     _logger.finest(() => 'logoutCurrentInstance $currentInstance');
     if (currentInstance != null) {
       await instanceListBloc.removeInstance(currentInstance!);

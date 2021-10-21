@@ -19,6 +19,7 @@ class PhotoManagerMediaDeviceGalleryBloc extends MediaDeviceGalleryBloc {
         ) {
     addDisposable(
       CustomDisposable(() async {
+        // ignore: avoid-ignoring-return-values
         await PhotoManager.releaseCache();
       }),
     );

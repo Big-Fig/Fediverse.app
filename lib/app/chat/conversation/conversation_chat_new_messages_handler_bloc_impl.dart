@@ -17,7 +17,7 @@ class ConversationChatNewMessagesHandlerBloc extends DisposableOwner
   });
 
   @override
-  Future handleChatUpdate(IUnifediApiConversation conversation) async {
+  Future<void> handleChatUpdate(IUnifediApiConversation conversation) async {
     var conversationRemoteId = conversation.id;
     var isMessageForOpenedChat =
         currentChatBloc.currentChat?.remoteId == conversationRemoteId;
@@ -44,22 +44,25 @@ class ConversationChatNewMessagesHandlerBloc extends DisposableOwner
             ],
           );
         }
+        // ignore: avoid-ignoring-return-values
         await conversationRepository.upsertInRemoteType(
           actualConversation,
         );
       }
     } else {
+      // ignore: avoid-ignoring-return-values
       await conversationRepository.upsertInRemoteType(
         actualConversation,
       );
     }
   }
 
-  Future _updateConversationById(String conversationRemoteId) async {
+  Future<void> _updateConversationById(String conversationRemoteId) async {
     var conversation = await conversationChatService.getConversation(
       conversationId: conversationRemoteId,
     );
 
+    // ignore: avoid-ignoring-return-values
     await conversationRepository.upsertInRemoteType(
       conversation,
     );

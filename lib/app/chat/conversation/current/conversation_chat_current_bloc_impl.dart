@@ -33,6 +33,7 @@ class ConversationChatCurrentBloc extends DisposableOwner
     );
 
     if (indexToRemove >= 0) {
+      // ignore: avoid-ignoring-return-values
       openedChats.removeAt(indexToRemove);
     }
     if (openedChats.isNotEmpty) {

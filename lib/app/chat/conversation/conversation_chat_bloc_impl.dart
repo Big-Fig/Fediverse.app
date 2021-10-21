@@ -180,7 +180,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
   }
 
   @override
-  Future internalAsyncInit() async {
+  Future<void> internalAsyncInit() async {
     var conversationLastStatus =
         await statusRepository.getConversationLastStatus(
       conversation: chat,
@@ -219,7 +219,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
   }
 
   @override
-  Future refreshFromNetwork() async {
+  Future<void> refreshFromNetwork() async {
     var remoteConversation = await pleromaConversationService.getConversation(
       conversationId: chat.remoteId,
     );
@@ -250,7 +250,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
     });
   }
 
-  Future _updateByRemoteChat(
+  Future<void> _updateByRemoteChat(
     IUnifediApiConversation remoteChat, {
     required Batch batchTransaction,
   }) =>
@@ -286,7 +286,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
       );
 
   @override
-  Future markAsRead() async {
+  Future<void> markAsRead() async {
     if (chat.unread > 0) {
       if (connectionService.isConnected) {
         var lastReadChatMessageId = lastChatMessage?.remoteId;
@@ -301,6 +301,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
           conversationId: chat.remoteId,
         );
 
+        // ignore: avoid-ignoring-return-values
         await conversationRepository.upsertInRemoteType(
           updatedRemoteChat,
         );
@@ -318,7 +319,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
   bool get isCountInUnreadSupported => false;
 
   @override
-  Future deleteMessages(List<IChatMessage> chatMessages) async {
+  Future<void> deleteMessages(List<IChatMessage> chatMessages) async {
     // create queue instead of parallel requests to avoid throttle limit on server
     for (final chatMessage in chatMessages) {
       if (chatMessage.isPendingStatePublishedOrNull) {
@@ -337,7 +338,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
   }
 
   @override
-  Future performActualDelete() async {
+  Future<void> performActualDelete() async {
     var remoteId = conversation.remoteId;
     await pleromaConversationService.deleteConversation(
       conversationId: remoteId,
@@ -352,7 +353,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
   @override
   // todo: refactor
   // ignore: long-method
-  Future postMessage({
+  Future<void> postMessage({
     required IPostStatusData postStatusData,
     required IConversationChatMessage? oldPendingFailedConversationChatMessage,
   }) async {
@@ -514,7 +515,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
   }
 
   @override
-  Future deleteMessage({
+  Future<void> deleteMessage({
     required IConversationChatMessage conversationChatMessage,
   }) async {
     if (conversationChatMessage.isPendingStatePublishedOrNull) {

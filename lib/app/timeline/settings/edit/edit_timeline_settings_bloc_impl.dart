@@ -298,7 +298,7 @@ class EditTimelineSettingsBloc
   }
 
   @override
-  Future fillSettingsToFormFields(TimelineSettings? settings) async {
+  Future<void> fillSettingsToFormFields(TimelineSettings? settings) async {
     if (settings == null) {
       return;
     }

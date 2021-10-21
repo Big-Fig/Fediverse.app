@@ -18,7 +18,7 @@ abstract class IUnifediApiAccessChooserBloc implements IDisposable {
 
   Stream<List<UnifediApiAccess>> get instancesAvailableToChooseStream;
 
-  Future chooseInstance(UnifediApiAccess instance);
+  Future<void> chooseInstance(UnifediApiAccess instance);
 
-  Future removeInstance(UnifediApiAccess instance);
+  Future<void> removeInstance(UnifediApiAccess instance);
 }

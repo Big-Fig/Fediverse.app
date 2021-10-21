@@ -16,11 +16,11 @@ abstract class INotificationsPushHandlerUnhandledLocalPreferenceBloc
         listen: listen,
       );
 
-  Future addUnhandledMessage(
+  Future<void> addUnhandledMessage(
     NotificationsPushHandlerMessage notificationsPushHandlerMessage,
   );
 
-  Future<bool> markAsHandled(List<NotificationsPushHandlerMessage> messages);
+  Future<void> markAsHandled(List<NotificationsPushHandlerMessage> messages);
 
   List<NotificationsPushHandlerMessage> loadUnhandledMessagesForInstance(
     UnifediApiAccess instance,

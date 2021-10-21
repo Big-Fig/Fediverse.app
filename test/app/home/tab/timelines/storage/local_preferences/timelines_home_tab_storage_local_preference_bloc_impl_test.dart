@@ -7,6 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../../../../../local_preferences/local_preferences_test_helper.dart';
 import '../timelines_home_tab_storage_model_test_helper.dart';
 
+// ignore_for_file: avoid-ignoring-return-values
 // ignore_for_file: no-magic-number
 void main() {
   test('save & load', () async {

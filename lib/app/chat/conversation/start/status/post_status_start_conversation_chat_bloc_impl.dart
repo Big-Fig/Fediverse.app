@@ -21,7 +21,7 @@ class PostStatusStartConversationChatBloc extends PostStatusBloc {
   final List<IAccount> conversationAccountsWithoutMe;
 
   @override
-  Future onStatusPosted(IUnifediApiStatus remoteStatus) async {
+  Future<void> onStatusPosted(IUnifediApiStatus remoteStatus) async {
     await super.onStatusPosted(remoteStatus);
     successCallback(
       remoteStatus.toDbStatusPopulatedWrapper(),
