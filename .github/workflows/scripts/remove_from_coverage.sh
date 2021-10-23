@@ -3,4 +3,4 @@
 # Fast fail the script on failures.
 set -e
 
-pub global run remove_from_coverage:remove_from_coverage -f coverage/lcov.info -r '\.g\.dart$' -r '\.freezed\.dart$'
+pub global run remove_from_coverage:remove_from_coverage -f coverage/lcov.info -r '\.g\.dart$' -r '\.freezed\.dart$' -r '\.mock_helper\.dart$'
