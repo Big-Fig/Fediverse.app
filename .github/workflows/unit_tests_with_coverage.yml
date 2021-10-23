@@ -5,17 +5,13 @@ on:
       - master
 
 jobs:
-  unit-test:
-    name: Unit tests on ${{ matrix.os }}
+  unit-unit_tests_with_coverage:
+    name: Unit test with coverage on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ ubuntu-latest ]
     steps:
-      # needed by flutter-action
-      - uses: actions/setup-java@v1
-        with:
-          java-version: '12.x'
 
       # Checkout code and get packages.
       - name: Checkout repository
@@ -32,39 +28,46 @@ jobs:
 
       - run: flutter --version
 
-      - run: flutter pub get
+      - name: Install Tools
+        run: |
+          ./.github/workflows/scripts/install_tools.sh
 
-      - name: Run Flutter unit tests with coverage
-        run: flutter test --coverage --no-pub --no-null-assertions --no-track-widget-creation -j 10 --coverage-path=coverage/lcov_test.info
+      - name: Bootstrap Workspace
+        run: flutter pub global run melos bootstrap
 
-      - name: Upload to unit tests coverage codecov
+      - name: Run tests with coverage
+        run: flutter pub global run melos run test:coverage
+
+      - name: Activate remove_from_coverage
+        run: flutter pub global activate remove_from_coverage
+
+      - name: Remove generated files from coverage from actual tests
+        run: flutter pub global run melos run test:remove_generated_from_coverage --no-select
+
+      - name: Upload to unit tests coveragex codecov
         uses: codecov/codecov-action@v1
         with:
-          files:
-            coverage/lcov_test.info
+          files: packages/*/coverage/lcov.info
           flags: unit_tests
           fail_ci_if_error: true
 
-
-      #       Flutter don't include files in coverage which not touched with tests
-      #       so we need to add all files manually
+      # Flutter don't include files in coverage which not touched with tests
+      # so we need to add all files manually
       - name: Generate coverage_helper_test.dart to get total coverage
-        uses: stelynx/dart-full-coverage@v1.0.5
-        with:
-          test_file: 'test/coverage_helper_test.dart'
-          ignore: '*.g.dart, *_keys.dart'
-          package: fedi
+        run: flutter pub global run melos run test:generate_coverage_helper_test --no-select
 
       # it is not possible to run all tests with coverage_helper_test due to bad performance
       - name: Run Flutter test for coverage_helper_test.dart
         # step will fail because coverage_helper_test.dart dont have tests
         continue-on-error: true
-        run: flutter test --coverage --no-pub --no-null-assertions --no-track-widget-creation -j 10 --coverage-path=coverage/lcov_all.info test/coverage_helper_test.dart
+        run: flutter test --coverage --no-pub --no-null-assertions --no-track-widget-creation -j 10 test/coverage_helper_test.dart
+
+      - name: Remove generated files from coverage from coverage_helper_test.dart
+        run: flutter pub global run melos run test:remove_generated_from_coverage --no-select
 
       - name: Upload coverage_helper_test.dart coverage to codecov
         uses: codecov/codecov-action@v1
         with:
-          files:
-            coverage/lcov_all.info
+          files: packages/*/coverage/lcov.info
           flags: all_tests
           fail_ci_if_error: true

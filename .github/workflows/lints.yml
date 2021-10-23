@@ -11,13 +11,12 @@ on:
 
 jobs:
   unit-test:
-    name: Lints check on ${{ matrix.os }}
+    name: Lints on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ ubuntu-latest ]
     steps:
-
 
       # Checkout code and get packages.
       - name: Checkout repository
@@ -34,8 +33,12 @@ jobs:
 
       - run: flutter --version
 
-      - run: flutter pub get
+      - name: Install Tools
+        run: |
+          ./.github/workflows/scripts/install_tools.sh
 
-      # flutter analyze will fail even if project have `info` messages
-      - name: Analyze
-        run: flutter analyze
+      - name: Bootstrap Workspace
+        run: flutter pub global run melos bootstrap
+
+      - name: Ensure the Dart code has no errors
+        run: flutter pub global run melos run analyze
