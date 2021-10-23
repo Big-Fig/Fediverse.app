@@ -32,7 +32,7 @@ Follow us on Fediverse [fediapp@fedi.app](https://fedi.app/fediapp)
 ### Releases
 
 * [GitHub Releases](https://github.com/Big-Fig/Fediverse.app/releases)
-* [CHANGELOG](https://github.com/xal/Fediverse.app/blob/master/CHANGELOG.md) 
+* [CHANGELOG](https://github.com/Big-Fig/Fediverse.app/blob/master/CHANGELOG.md) 
 
 ### Articles about how Fedi works inside
 
@@ -374,7 +374,7 @@ env_dev.env
 
 Those files are excluded from source control.
 
-You can find all possible config variables(with comments) at [env_example.env](https://github.com/Big-Fig/Fediverse.app/blob/master/env_example.env)
+You can find all possible config variables(with comments) at [env_example.env](https://github.com/Big-Fig/Fediverse.app/blob/master/packages/fedi/env_example.env)
 
 #### If you have strange errors or how to clean project
 

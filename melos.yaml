@@ -1,0 +1,182 @@
+name: Fediverse
+
+packages:
+  - packages/**
+
+scripts:
+  tuneup_check:
+    run: |
+      flutter pub global run melos exec -- \
+        pub global run tuneup check
+    description: |
+      Quickly checks for dart analyzing errors
+
+  tuneup_stats:
+    run: |
+      flutter pub global run melos exec -- \
+        pub global run tuneup stats
+    description: |
+      Display packages code/fiels stats
+
+  analyze:
+    run: |
+      flutter pub global run melos exec -c 5 --ignore="*example*" -- \
+        dart analyze --fatal-infos .
+    description: |
+      Format code all lints from analysis_options.yaml
+
+  format:
+    run: |
+      flutter pub global run melos exec -c 5 --ignore="*example*" -- \
+        flutter format .
+    description: |
+      Format code
+
+  format:check:
+    run: |
+      flutter pub global run melos exec -c 5 --ignore="*example*" -- \
+        flutter format --set-exit-if-changed --dry-run .
+    description: |
+      Check is code properly formatted
+
+  pub:publish:dry-run:
+    run: |
+      flutter pub global run melos exec -c 5 --no-private --ignore="*example*" -- \
+            pub publish --dry-run
+    description: |
+      Dry-run publish packages to pub dev
+
+  pub:publish:
+    run: |
+      flutter pub global run melos exec -c 5 --no-private --ignore="*example*" -- \
+            pub publish
+    description: |
+      Publish packages to pub dev
+
+  generate:
+    run: flutter pub global run melos run generate:dart && flutter pub global run melos run generate:flutter
+    description: Build all generated files for Dart & Flutter packages in this project.
+
+  generate:dart:
+    run: flutter pub global run melos exec -c 1 --fail-fast --depends-on="build_runner" --no-flutter -- \
+      "dart run build_runner build --delete-conflicting-outputs"
+    description: Build all generated files for Dart packages in this project.
+
+  generate:flutter:
+    run: flutter pub global run melos exec -c 1 --fail-fast --depends-on="build_runner" --flutter -- \
+      "flutter pub run build_runner build --delete-conflicting-outputs"
+    description: Build all generated files for Flutter packages in this project.
+
+  test:
+    run: flutter pub global run melos run test:dart && flutter pub global run melos run test:flutter
+    description: Run all Dart & Flutter tests in this project.
+
+  test:dart:
+    run: flutter pub global run melos exec -c 1 --fail-fast --\
+      flutter test
+    description: Run Dart tests for a specific package in this project.
+    select-package:
+      flutter: false
+      dir-exists: test
+
+  test:flutter:
+    run: flutter pub global run melos exec -c 1 --fail-fast -- \
+      flutter test
+    description: Run Flutter tests for a specific package in this project.
+    select-package:
+      flutter: true
+      dir-exists: test
+
+  test:coverage:
+    run: flutter pub global run melos run test:dart:coverage --no-select && flutter pub global run melos run test:flutter:coverage --no-select
+    description: Run all Dart & Flutter tests in this project.
+
+  test:dart:coverage:
+    run: flutter pub global run melos exec -c 1 --fail-fast -- \
+      flutter test --coverage
+    description: Run Dart tests for a specific package in this project.
+    select-package:
+      flutter: false
+      dir-exists: test
+
+  test:flutter:coverage:
+    run: flutter pub global run melos exec -c 4 --fail-fast -- \
+      flutter test --coverage
+    description: Run Flutter tests for a specific package in this project.
+    select-package:
+      flutter: true
+      dir-exists: test
+
+  build:examples:ios:
+    run: flutter pub global run melos exec -c 4 --fail-fast --scope="*example*,sample_app -- \
+      flutter build ios --simulator
+
+  build:examples:release:ios:
+    run: flutter pub global run melos exec -c 4 --fail-fast --scope="*example*,sample_app -- \
+      flutter build ios --no-codesign
+
+  build:examples:android:
+    run: flutter pub global run melos exec -c 4 --fail-fast --scope="*example*,sample_app -- \
+      flutter build apk --debug --verbose
+
+  build:examples:release:android:
+    run: flutter pub global run melos exec -c 4 --fail-fast --scope="*example*,sample_app -- \
+      flutter build apk --verbose
+
+  test:integration:
+    run: melos run test:integration:android --no-select && melos run test:integration:ios --no-select
+    description:
+      Run all integration tests for all package example apps on Android and iOS simulators. Skips if no tests available.
+      - Requires running Android and iOS simulators.
+
+  test:integration:android:
+    run: melos exec -c 1 --fail-fast -- \
+      flutter drive --no-pub --driver=test_driver/integration_test.dart --target=integration_test/main_test.dart -d sdk
+    description:
+      Run integration tests for a single package on an Android emulator.
+      - Run with `--no-select` to run for all applicable packages.
+      - Requires launching an Android emulator prior to execution.
+    select-package:
+      file-exists:
+        - integration_test/main_test.dart
+      scope: "*example*"
+
+  test:integration:ios:
+    run: melos exec -c 1 --fail-fast -- \
+      flutter drive --no-pub --driver=test_driver/integration_test.dart --target=integration_test/main_test.dart -d iPhone
+    description: Run integration tests for a single package on an iOS simulator.
+      - Run with `--no-select` to run for all applicable packages.
+      - Requires launching an iOS simulator prior to execution.
+    select-package:
+      file-exists:
+        - integration_test/main_test.dart
+      scope: "*example*"
+
+  clean:flutter:
+    run: flutter pub global run melos exec flutter clean
+
+  clean:build:
+    run: flutter pub global run melos exec -c 4 --fail-fast -- \
+      rm -rf ./build
+
+  clean:ios:
+    run: flutter pub global run melos exec -c 4 --fail-fast -- \
+      rm -rf /ios/.symlinks ./ios/Pods ./ios/Podfile.lock
+
+  clean:android:
+    run: flutter pub global run melos exec -c 4 --fail-fast -- \
+      rm -rf ./android/.gradle
+
+  test:remove_generated_from_coverage:
+    run: |
+      melos exec -c 5 --fail-fast -- "\$MELOS_ROOT_PATH/.github/workflows/scripts/remove_from_coverage.sh"
+    description: Removes all the ignored files from the coverage report.
+    select-package:
+      dir-exists: coverage
+
+  test:generate_coverage_helper_test:
+    run: |
+      melos exec -c 5 --fail-fast -- "\$MELOS_ROOT_PATH/.github/workflows/scripts/generate_coverage_helper_test.sh"
+    description: Generate file to get full coverage report.
+    select-package:
+      dir-exists: test

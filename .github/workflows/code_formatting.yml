@@ -1,4 +1,4 @@
-name: dartfmt
+name: code_formatting
 on:
   push:
     branches:
@@ -33,5 +33,12 @@ jobs:
 
       - run: flutter --version
 
+      - name: Install Tools
+        run: |
+          ./.github/workflows/scripts/install_tools.sh
+
+      - name: Bootstrap Workspace
+        run: flutter pub global run melos bootstrap
+
       - name: Ensure the Dart code is formatted correctly
-        run: flutter format --set-exit-if-changed --dry-run .
+        run: flutter pub global run melos run format:check

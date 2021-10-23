@@ -5,8 +5,8 @@ on:
       - develop
   pull_request:
     branches:
-      - develop
       - master
+      - develop
 
 jobs:
   unit-test:
@@ -16,10 +16,6 @@ jobs:
       matrix:
         os: [ ubuntu-latest ]
     steps:
-      # needed by flutter-action
-      - uses: actions/setup-java@v1
-        with:
-          java-version: '12.x'
 
       # Checkout code and get packages.
       - name: Checkout repository
@@ -36,7 +32,12 @@ jobs:
 
       - run: flutter --version
 
-      - run: flutter pub get
+      - name: Install Tools
+        run: |
+          ./.github/workflows/scripts/install_tools.sh
 
-      - name: Run Flutter unit tests
-        run: flutter test --no-pub --no-null-assertions --no-track-widget-creation -j 10
+      - name: Bootstrap Workspace
+        run: flutter pub global run melos bootstrap
+
+      - name: Run tests without coverage
+        run: flutter pub global run melos run test
