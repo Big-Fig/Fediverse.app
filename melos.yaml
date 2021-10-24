@@ -4,108 +4,119 @@ packages:
   - packages/**
 
 scripts:
-  tuneup_check:
+
+  tuneup:init:
     run: |
-      flutter pub global run melos exec -- \
-        pub global run tuneup check
+      flutter pub global activate tuneup
+    description: |
+      Activate tuneup tool
+
+  tuneup:check:
+    run: |
+      flutter pub global run melos exec --ignore="*example*" -- \
+      flutter pub global run tuneup check
     description: |
       Quickly checks for dart analyzing errors
 
-  tuneup_stats:
+  tuneup:stats:
     run: |
-      flutter pub global run melos exec -- \
-        pub global run tuneup stats
+      flutter pub global run melos exec --ignore="*example*" -- \
+      flutter pub global run tuneup stats
     description: |
       Display packages code/fiels stats
 
   analyze:
     run: |
       flutter pub global run melos exec -c 5 --ignore="*example*" -- \
-        dart analyze --fatal-infos .
+      flutter analyze --fatal-infos .
     description: |
       Format code all lints from analysis_options.yaml
+
+  analyze:find_unused_files:
+    run: |
+      flutter pub global run melos exec -c 1 --ignore="*example*" -- \
+      flutter pub run dart_code_metrics:metrics check-unused-files lib
+    description: |
+      Find all unused files
 
   format:
     run: |
       flutter pub global run melos exec -c 5 --ignore="*example*" -- \
-        flutter format .
+      flutter format .
     description: |
       Format code
 
   format:check:
     run: |
       flutter pub global run melos exec -c 5 --ignore="*example*" -- \
-        flutter format --set-exit-if-changed --dry-run .
+      flutter format --set-exit-if-changed --dry-run .
     description: |
       Check is code properly formatted
 
-  pub:publish:dry-run:
+  build:release:
     run: |
-      flutter pub global run melos exec -c 5 --no-private --ignore="*example*" -- \
-            pub publish --dry-run
+      flutter pub global run melos run --no-select build:android:appbundle:prod && \
+      flutter pub global run melos run --no-select build:ios:release:prod
     description: |
-      Dry-run publish packages to pub dev
+      Build prod Flavor: Android AppBundle & iOS IPA
+    select-package:
+      dir-exists: test
 
-  pub:publish:
+  build:ios:release:dev:
     run: |
-      flutter pub global run melos exec -c 5 --no-private --ignore="*example*" -- \
-            pub publish
+      flutter pub global run melos exec -c 1 --ignore="*example*" -- \
+      flutter build ios --simulator  --flavor dev
     description: |
-      Publish packages to pub dev
+      Build ios for simulator. Flavor: dev
 
-  generate:
-    run: flutter pub global run melos run generate:dart && flutter pub global run melos run generate:flutter
-    description: Build all generated files for Dart & Flutter packages in this project.
+  build:ios:release:prod:
+    run: |
+      flutter pub global run melos exec -c 1 --ignore="*example*" -- \
+      flutter build ios --simulator  --flavor prod
+    description: |
+      Build ios for simulator. Flavor: prod
 
-  generate:dart:
-    run: flutter pub global run melos exec -c 1 --fail-fast --depends-on="build_runner" --no-flutter -- \
-      "dart run build_runner build --delete-conflicting-outputs"
-    description: Build all generated files for Dart packages in this project.
+  build:ios:simulator:dev:
+    run: |
+      flutter pub global run melos exec -c 1 --ignore="*example*" -- \
+      flutter build ios --simulator  --flavor dev
+    description: |
+      Build ios for simulator. Flavor: dev
 
-  generate:flutter:
-    run: flutter pub global run melos exec -c 1 --fail-fast --depends-on="build_runner" --flutter -- \
-      "flutter pub run build_runner build --delete-conflicting-outputs"
-    description: Build all generated files for Flutter packages in this project.
+  build:ios:simulator:prod:
+    run: |
+      flutter pub global run melos exec -c 1 --ignore="*example*" -- \
+      flutter build ios --simulator  --flavor prod
+    description: |
+      Build ios for simulator. Flavor: prod
 
-  test:
-    run: flutter pub global run melos run test:dart && flutter pub global run melos run test:flutter
-    description: Run all Dart & Flutter tests in this project.
+  build:android:appbundle:dev:
+    run: |
+      flutter pub global run melos exec -c 1 --ignore="*example*" -- \
+      flutter build appbundle --flavor dev
+    description: |
+      Build Android appbundle. Flavor: dev
 
-  test:dart:
-    run: flutter pub global run melos exec -c 1 --fail-fast --\
-      flutter test
-    description: Run Dart tests for a specific package in this project.
-    select-package:
-      flutter: false
-      dir-exists: test
+  build:android:appbundle:prod:
+    run: |
+      flutter pub global run melos exec -c 1 --ignore="*example*" -- \
+      flutter build appbundle --flavor prod
+    description: |
+      Build Android appbundle. Flavor: prod
+      
+  build:android:apk:dev:
+    run: |
+      flutter pub global run melos exec -c 1 --ignore="*example*" -- \
+      flutter build apk --split-per-abi --flavor dev
+    description: |
+      Build Android Apk --split-per-abi. Flavor: dev
 
-  test:flutter:
-    run: flutter pub global run melos exec -c 1 --fail-fast -- \
-      flutter test
-    description: Run Flutter tests for a specific package in this project.
-    select-package:
-      flutter: true
-      dir-exists: test
-
-  test:coverage:
-    run: flutter pub global run melos run test:dart:coverage --no-select && flutter pub global run melos run test:flutter:coverage --no-select
-    description: Run all Dart & Flutter tests in this project.
-
-  test:dart:coverage:
-    run: flutter pub global run melos exec -c 1 --fail-fast -- \
-      flutter test --coverage
-    description: Run Dart tests for a specific package in this project.
-    select-package:
-      flutter: false
-      dir-exists: test
-
-  test:flutter:coverage:
-    run: flutter pub global run melos exec -c 4 --fail-fast -- \
-      flutter test --coverage
-    description: Run Flutter tests for a specific package in this project.
-    select-package:
-      flutter: true
-      dir-exists: test
+  build:android:apk:prod:
+    run: |
+      flutter pub global run melos exec -c 1 --ignore="*example*" -- \
+      flutter build apk --split-per-abi --flavor prod
+    description: |
+      Build Android Apk --split-per-abi. Flavor: prod
 
   build:examples:ios:
     run: flutter pub global run melos exec -c 4 --fail-fast --scope="*example*,sample_app -- \
@@ -123,63 +134,364 @@ scripts:
     run: flutter pub global run melos exec -c 4 --fail-fast --scope="*example*,sample_app -- \
       flutter build apk --verbose
 
+  generate:
+    run: |
+      flutter pub global run melos run generate:intl --no-select && \
+      flutter pub global run melos run generate:build_runner --no-select
+    description: |
+      Build all generated files
+
+  generate:intl:
+    run: |
+      flutter pub global run melos exec -c 1 --fail-fast -- \
+      flutter pub global run intl_utils:generate
+    description: Generate code for localization
+    dir-exists: lib/l10n
+
+  generate:build_runner:
+    run: |
+      flutter pub global run melos exec -c 1 --fail-fast --depends-on="build_runner" -- \
+      "flutter pub run build_runner build --delete-conflicting-outputs"
+    description: Generate all code via build_runner tasks(moor, freezed, json, etc)
+
+  test:unit:
+    run: flutter pub global run melos exec -c 1 --fail-fast -- \
+      flutter test
+    description: Run Flutter tests for a specific package in this project.
+    select-package:
+      dir-exists: test
+
+  test:unit:coverage:
+    run: |
+      flutter pub global run melos exec -c 1 --fail-fast flutter test --coverage && \
+      flutter pub global run melos run --no-select test:coverage:remove_unnecessary
+    description: |
+      Run Flutter tests with coverage for a specific package in this project.
+    select-package:
+      dir-exists: test
+
+  test:unit:coverage:full:
+    run: |
+      flutter pub global run melos run --no-select test:coverage:generate_helper && \
+      flutter pub global run melos run --no-select test:unit:coverage
+    description: |
+      Run Flutter tests with coverage for a specific package in this project with hack for full coverage
+    select-package:
+      dir-exists: test
+
+  test:unit:coverage:helper:
+    run: |
+      flutter pub global run melos run --no-select test:coverage:generate_helper && \
+      flutter pub global run melos exec --no-select -- \
+      flutter test --coverage --no-pub test/coverage_helper_test.dart && \
+      flutter pub global run melos run --no-select test:coverage:remove_unnecessary
+    description: |
+      Run only coverage helper Flutter tests
+    select-package:
+      dir-exists: test
+
+  test:coverage:init:
+    run: |
+      flutter pub global activate remove_from_coverage
+    description: Init coverage tools
+
+  test:coverage:remove_unnecessary:
+    run: |
+      flutter pub global run melos exec -c 5 --fail-fast -- \
+      "pub global run remove_from_coverage:remove_from_coverage -f coverage/lcov.info -r '\.g\.dart$' -r '\.freezed\.dart$' -r '\.mock_helper\.dart$'"
+    description: |
+      Removes all the unnecessary(generated, mock, etc) files from the coverage report.
+    select-package:
+      dir-exists: coverage
+
+  test:coverage:generate_helper:
+    run: |
+      flutter pub global run melos exec -c 5 --fail-fast -- \
+      $MELOS_ROOT_PATH/tools/coverage_generate_helper.sh
+    description: Generate file to get full coverage report.
+    select-package:
+      dir-exists: test
+
   test:integration:
-    run: melos run test:integration:android --no-select && melos run test:integration:ios --no-select
-    description:
+    run: |
+      melos run test:integration:android --no-select && \
+      melos run test:integration:ios --no-select
+    description: |
       Run all integration tests for all package example apps on Android and iOS simulators. Skips if no tests available.
       - Requires running Android and iOS simulators.
 
   test:integration:android:
-    run: melos exec -c 1 --fail-fast -- \
+    run: |
+      melos exec -c 1 --fail-fast -- \
       flutter drive --no-pub --driver=test_driver/integration_test.dart --target=integration_test/main_test.dart -d sdk
-    description:
+    description: |
       Run integration tests for a single package on an Android emulator.
       - Run with `--no-select` to run for all applicable packages.
       - Requires launching an Android emulator prior to execution.
     select-package:
       file-exists:
         - integration_test/main_test.dart
-      scope: "*example*"
 
   test:integration:ios:
-    run: melos exec -c 1 --fail-fast -- \
+    run: |
+      melos exec -c 1 --fail-fast -- \
       flutter drive --no-pub --driver=test_driver/integration_test.dart --target=integration_test/main_test.dart -d iPhone
-    description: Run integration tests for a single package on an iOS simulator.
+    description: |
+      Run integration tests for a single package on an iOS simulator.
       - Run with `--no-select` to run for all applicable packages.
       - Requires launching an iOS simulator prior to execution.
     select-package:
       file-exists:
         - integration_test/main_test.dart
-      scope: "*example*"
+
+  clean:
+    run: |
+      flutter pub global run melos run clean:flutter --no-select && \
+      flutter pub global run melos run clean:build --no-select && \
+      flutter pub global run melos run clean:android --no-select && \
+      flutter pub global run melos run clean:ios --no-select
+    description:  |
+      Clear all possible things
 
   clean:flutter:
-    run: flutter pub global run melos exec flutter clean
+    run: |
+      flutter pub global run melos exec -c 1 flutter clean
+    description: |
+      Base flutter clean
 
   clean:build:
-    run: flutter pub global run melos exec -c 4 --fail-fast -- \
+    run: |
+      flutter pub global run melos exec -c 5 --fail-fast -- \
       rm -rf ./build
+    description: |
+      Delete build folder
 
   clean:ios:
-    run: flutter pub global run melos exec -c 4 --fail-fast -- \
+    run: flutter pub global run melos exec -c 5 --fail-fast -- \
       rm -rf /ios/.symlinks ./ios/Pods ./ios/Podfile.lock
+    description: |
+      Clean ios Pods
 
   clean:android:
-    run: flutter pub global run melos exec -c 4 --fail-fast -- \
+    run: |
+      flutter pub global run melos exec -c 5 --fail-fast -- \
       rm -rf ./android/.gradle
+    description: |
+      Clean android gradle
 
-  test:remove_generated_from_coverage:
+  test:driver:screenshots:
     run: |
-      melos exec -c 5 --fail-fast -- "\$MELOS_ROOT_PATH/.github/workflows/scripts/remove_from_coverage.sh"
-    description: Removes all the ignored files from the coverage report.
+      flutter pub global run melos exec -c 1 --fail-fast -- \
+      flutter driver --target=test_driver/screenshots.dart --flavor dev
+    description: Run test driver to iterate over screens used for screenshots as test(dev purpose)
     select-package:
-      dir-exists: coverage
+      dir-exists: test_driver
 
-  test:generate_coverage_helper_test:
+  screenshots:init:
     run: |
-      melos exec -c 5 --fail-fast -- "\$MELOS_ROOT_PATH/.github/workflows/scripts/generate_coverage_helper_test.sh"
-    description: Generate file to get full coverage report.
+      flutter pub global activate -sgit https://github.com/xal/screenshots.git
+#       flutter pub global activate --source path ../screenshots
+    description: Activate required version of screenshots tool
     select-package:
-      dir-exists: test
+      dir-exists: test_driver
 
-  generate:intl:
-    run: flutter pub global run melos exec flutter pub global run intl_utils:generate
+  screenshots:make:dev:
+    run: |
+      flutter pub global run melos exec -c 1 --fail-fast --depends-on="screenshots" -- \
+      flutter pub global run screenshots:main --flavor dev -b false --config=screenshots_dev.yaml
+    description: Run screenshots tool to generate screenshots via screenshots_dev.yaml config (dev purposes)
+    select-package:
+      dir-exists:
+        - test_driver
+      file-exists:
+        - screenshots_dev.yaml
+
+  screenshots:
+    run: |
+      melos run screenshots:make --no-select && \
+      melos run screenshots:cleanup --no-select
+    description: Run screenshots tool to generate screenshots on all platforms & cleanUp
+
+  screenshots:make:
+    run: |
+      melos run screenshots:make:android --no-select && \
+      melos run screenshots:make:ios --no-select
+    description: Run screenshots tool to generate screenshots on all platforms
+
+  screenshots:make:android:
+    run: |
+      flutter pub global run melos exec -c 1 --fail-fast --depends-on="screenshots" -- \
+      flutter pub global run screenshots:main --flavor dev -b false --config=screenshots_android.yaml
+    description: Run screenshots tool to generate screenshots via screenshots_android.yaml config
+    select-package:
+      dir-exists:
+        - test_driver
+      file-exists:
+        - screenshots_android.yaml
+
+  screenshots:make:ios:
+    run: |
+      flutter pub global run melos exec -c 1 --fail-fast --depends-on="screenshots" -- \
+      flutter pub global run screenshots:main --flavor dev -b false --config=screenshots_ios.yaml
+    description: Run screenshots tool to generate screenshots via screenshots_ios.yaml config
+    select-package:
+      dir-exists:
+        - test_driver
+      file-exists:
+        - screenshots_ios.yaml
+
+  screenshots:cleanup:
+    run: |
+      melos run screenshots:cleanup:android --no-select && \
+      melos run screenshots:cleanup:ios --no-select
+    description: Remove unnecessary screenshots files which block frameit step on all platforms
+
+  screenshots:cleanup:android:
+    run: |
+      flutter pub global run melos exec -c 1 --fail-fast -- \
+      $MELOS_ROOT_PATH/tools/fastlane_dir_exec_ios.sh -- \
+      find android/fastlane/metadata/android -type d -name "unframed_images" -exec rm -rf {} \;
+    description: Remove unnecessary screenshots files which block frameit step for android
+    select-package:
+      dir-exists: android/fastlane/metadata/android
+
+  screenshots:cleanup:ios:
+    run: |
+      flutter pub global run melos exec -c 1 --fail-fast -- \
+      $MELOS_ROOT_PATH/tools/fastlane_dir_exec_ios.sh -- \
+      rm -rf ./ios/fastlane/unframed_screenshots
+    description: Remove unnecessary screenshots files which block frameit step for ios
+    select-package:
+      dir-exists: ios/fastlane/unframed_screenshots
+
+  fastlane:init:
+    run: |
+      melos run fastlane:init:android --no-select && \
+      melos run fastlane:init:ios --no-select
+    description: Exec bundle for fastlane tools on all platforms
+
+  fastlane:init:android:
+    run: |
+      flutter pub global run melos exec -c 1 -- \
+      $MELOS_ROOT_PATH/tools/fastlane_dir_exec_android.sh -- \
+      bundle install
+    description: Exec bundle for fastlane tools in android folder
+    select-package:
+      dir-exists: android/fastlane
+
+  fastlane:init:ios:
+    run: |
+      flutter pub global run melos exec -c 1 -- \
+      $MELOS_ROOT_PATH/tools/fastlane_dir_exec_ios.sh -- \
+      bundle install
+    description: Exec bundle for fastlane tools in ios folder
+    select-package:
+      dir-exists: ios/fastlane
+
+  fastlane:frameit:
+    run: |
+      melos run fastlane:frameit:make --no-select && \
+      melos run fastlane:frameit:cleanup --no-select
+    description: Exec fastlane frameit for screenshots on all platforms & clean up
+
+  fastlane:frameit:make:
+    run: |
+      melos run fastlane:frameit:make:android --no-select && \
+      melos run fastlane:frameit:make:ios --no-select
+    description: Exec fastlane frameit for screenshots on all platforms
+
+  fastlane:frameit:make:android:
+    run: |
+      flutter pub global run melos exec -c 1 --fail-fast -- \
+      $MELOS_ROOT_PATH/tools/fastlane_dir_exec_android.sh -- \
+      bundle exec fastlane screenshots_frameit
+    description: Exec fastlane frameit for screenshots on android
+    select-package:
+      file-exists: android/fastlane/metadata/android/Framefile.json
+
+  fastlane:frameit:make:ios:
+    run: |
+      flutter pub global run melos exec -c 1 --fail-fast -- \
+      $MELOS_ROOT_PATH/tools/fastlane_dir_exec_ios.sh -- \
+      bundle exec fastlane screenshots_frameit
+    description: Exec fastlane frameit for screenshots on ios
+    select-package:
+      file-exists: ios/fastlane/screenshots/Framefile.json
+
+  fastlane:frameit:cleanup:
+    run: |
+      melos run fastlane:frameit:cleanup:android --no-select && \
+      melos run fastlane:frameit:cleanup:ios --no-select
+    description: Remove unnecessary frameit screenshots files which block uploading metadata to stores
+
+  fastlane:frameit:cleanup:android:
+    run: |
+      flutter pub global run melos exec -c 1 --fail-fast -- \
+      $MELOS_ROOT_PATH/tools/fastlane_dir_exec_android.sh -- \
+      find ./ -type f -name "*.png" ! -name '*framed*' -exec rm -rf {} \;
+    description: Remove unnecessary frameit screenshots files which block uploading metadata to PlayStore
+    select-package:
+      dir-exists: android/fastlane
+
+  fastlane:frameit:cleanup:ios:
+    run: |
+      flutter pub global run melos exec -c 1 --fail-fast -- \
+      $MELOS_ROOT_PATH/tools/fastlane_dir_exec_ios.sh -- \
+      find ./ -type f -name "*.png" ! -name '*framed*' -exec rm -rf {} \;
+    description: Remove unnecessary frameit screenshots files which block uploading metadata to AppStore
+    select-package:
+      dir-exists: ios/fastlane
+
+  fastlane:frameit:metadata:
+    run: |
+      melos run fastlane:frameit:metadata:text --no-select && \
+      melos run fastlane:frameit:metadata:screenshtos --no-select
+    description: Upload all metadata to stores
+
+  fastlane:frameit:metadata:text:
+    run: |
+      melos run fastlane:frameit:metadata:text:android --no-select && \
+      melos run fastlane:frameit:metadata:text:ios --no-select
+    description: Upload text metadata to stores
+
+  fastlane:metadata:text:android:
+    run: |
+      flutter pub global run melos exec -c 1 --fail-fast -- \
+      $MELOS_ROOT_PATH/tools/fastlane_dir_exec_ios.sh -- \
+      bundle exec fastlane update_metadata
+    description: Upload text metadata to PlayStore
+    select-package:
+      dir-exists: ios/fastlane
+
+  fastlane:metadata:text:ios:
+    run: |
+      flutter pub global run melos exec -c 1 --fail-fast -- \
+      $MELOS_ROOT_PATH/tools/fastlane_dir_exec_android.sh -- \
+      bundle exec fastlane update_metadata
+    description: Upload text metadata to AppStore
+    select-package:
+      dir-exists: ios/fastlane
+
+  fastlane:frameit:metadata:screenshots:
+    run: |
+      melos run fastlane:frameit:metadata:screenshots:android --no-select && \
+      melos run fastlane:frameit:metadata:screenshots:ios --no-select
+    description: Upload screenshots metadata to stores
+
+  fastlane:metadata:screenshots:android:
+    run: |
+      flutter pub global run melos exec -c 1 --fail-fast -- \
+      $MELOS_ROOT_PATH/tools/fastlane_dir_exec_android.sh -- \
+      bundle exec fastlane update_screenshots
+    description: Upload screenshots metadata to PlayStore
+    select-package:
+      dir-exists: ios/fastlane
+
+  fastlane:metadata:screenshots:ios:
+    run: |
+      flutter pub global run melos exec -c 1 --fail-fast -- \
+      $MELOS_ROOT_PATH/tools/fastlane_dir_exec_ios.sh -- \
+      bundle exec fastlane update_screenshots
+    description: Upload screenshots metadata to AppStore
+    select-package:
+      dir-exists: ios/fastlane

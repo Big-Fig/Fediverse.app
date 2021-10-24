@@ -265,7 +265,6 @@ dev_dependencies:
   mockito: 5.0.16
   # build tools runner
   # usage example
-  # fvm flutter pub run build_runner build --delete-conflicting-outputs
   build_runner: 2.1.2
   # build tool to generate json from & to methods
   json_serializable: 5.0.2
@@ -291,15 +290,12 @@ dev_dependencies:
   # additional linters
   dart_code_metrics: ^4.4.0
 
-
   # generate screenshots for stores during UI tests
   # also useful for golden tests
   screenshots:
     git:
       url: https://github.com/xal/screenshots.git
       ref: b855c90dd78a4e5db447d003dddb84021db9411c
-  # fvm flutter pub global activate -sgit https://github.com/xal/screenshots.git
-  # fvm flutter pub global activate --source path ../screenshots
 
   # code generator: unions, strings, equals & hash, etc
   freezed: ^0.14.5

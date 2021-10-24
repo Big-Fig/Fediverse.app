@@ -32,7 +32,7 @@ jobs:
 
       - name: Install Tools
         run: |
-          ./.github/workflows/scripts/install_tools.sh
+          ./scripts/install_tools.sh
 
       - name: Bootstrap Workspace
         run: flutter pub global run melos bootstrap

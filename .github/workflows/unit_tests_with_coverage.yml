@@ -30,21 +30,18 @@ jobs:
 
       - name: Install Tools
         run: |
-          ./.github/workflows/scripts/install_tools.sh
+          ./scripts/install_tools.sh
 
       - name: Bootstrap Workspace
         run: flutter pub global run melos bootstrap
 
-      - name: Run tests with coverage
-        run: flutter pub global run melos run test:coverage
-
       - name: Activate remove_from_coverage
-        run: flutter pub global activate remove_from_coverage
+        run: flutter pub global run melos run test:coverage:init
 
-      - name: Remove generated files from coverage from actual tests
-        run: flutter pub global run melos run test:remove_generated_from_coverage --no-select
+      - name: Run tests with coverage
+        run: flutter pub global run melos run test::unit:coverage --no-select
 
-      - name: Upload to unit tests coveragex codecov
+      - name: Upload actual unit tests coverage codecov
         uses: codecov/codecov-action@v1
         with:
           files: packages/*/coverage/lcov.info
@@ -53,17 +50,8 @@ jobs:
 
       # Flutter don't include files in coverage which not touched with tests
       # so we need to add all files manually
-      - name: Generate coverage_helper_test.dart to get total coverage
-        run: flutter pub global run melos run test:generate_coverage_helper_test --no-select
-
-      # it is not possible to run all tests with coverage_helper_test due to bad performance
-      - name: Run Flutter test for coverage_helper_test.dart
-        # step will fail because coverage_helper_test.dart dont have tests
-        continue-on-error: true
-        run: flutter test --coverage --no-pub --no-null-assertions --no-track-widget-creation -j 10 test/coverage_helper_test.dart
-
-      - name: Remove generated files from coverage from coverage_helper_test.dart
-        run: flutter pub global run melos run test:remove_generated_from_coverage --no-select
+      - name: Run coverage_helper_test.dart to get total coverage
+        run: flutter pub global run melos run test:unit:coverage:helper --no-select
 
       - name: Upload coverage_helper_test.dart coverage to codecov
         uses: codecov/codecov-action@v1

@@ -17,7 +17,7 @@ default_platform(:ios)
 
 platform :ios do
 
-    lane :screenshots do
+    lane :screenshots_frameit do
         frameit(
         path: "./fastlane/screenshots",
         )
@@ -44,12 +44,12 @@ platform :ios do
         )
     end
 
-#  desc "Push a new beta build to TestFlight"
-#  lane :beta do
-# we increment build numbers in Runner & Share extension manually
-#    increment_build_number(xcodeproj: "Runner.xcodeproj")
-#    sync_code_signing(type: "appstore")
-#    build_app(workspace: "Runner.xcworkspace", scheme: "prod")
-#    upload_to_testflight
-#  end
+    desc "Push a new beta build to TestFlight"
+    lane :beta do
+        # we increment build numbers in Runner & Share extension manually
+        increment_build_number(xcodeproj: "Runner.xcodeproj")
+        sync_code_signing(type: "appstore")
+        build_app(workspace: "Runner.xcworkspace", scheme: "prod")
+        upload_to_testflight
+    end
 end
