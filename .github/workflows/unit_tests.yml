@@ -37,10 +37,7 @@ jobs:
           ./.github/workflows/scripts/install_tools.sh
 
       - name: Bootstrap Workspace
-        # not sure why but bootstrap stuck on GitHub Actions
-        # since this project have only one package we can run flutter pub get instead bootstrap
-        #        run: flutter pub global run melos bootstrap
-        run: flutter pub global run melos exec flutter pub get
+        run: flutter pub global run melos bootstrap
 
       - name: Run tests without coverage
         run: flutter pub global run melos run test
