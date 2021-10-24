@@ -25,7 +25,7 @@
   "@app_customList_form_field_title_hint": {},
   "app_emoji_custom_empty": "Ta instancja nie posiada niestandardowych emoji",
   "@app_emoji_custom_empty": {},
-  "app_emoji_search_hint": "Rozpocznij wyszukiwanie",
+  "app_emoji_search_hint": "Zacznij pisać, aby wyszukać",
   "@app_emoji_search_hint": {},
   "app_emoji_recent_empty": "Brak ostatnio używanych emoji",
   "@app_emoji_recent_empty": {},
@@ -791,7 +791,7 @@
   "@app_toast_settings_title": {},
   "app_web_sockets_settings_title": "Aktualizacje danych (WebSockets)",
   "@app_web_sockets_settings_title": {},
-  "app_settings_global_or_instance_override_global_label": "Nadpisać ustawienia globalne",
+  "app_settings_global_or_instance_override_global_label": "Nadpisz globalne ustawienia",
   "@app_settings_global_or_instance_override_global_label": {},
   "app_localization_settings_field_localizationLocale_label": "Język",
   "@app_localization_settings_field_localizationLocale_label": {},
@@ -1676,5 +1676,7 @@
   "app_media_description_title": "Opis",
   "@app_media_description_title": {},
   "app_status_draft_error_cantSaveNotUploadedMedia": "Nie można zapisać wersji roboczej z nieprzesłanymi multimediami",
-  "@app_status_draft_error_cantSaveNotUploadedMedia": {}
+  "@app_status_draft_error_cantSaveNotUploadedMedia": {},
+  "app_status_post_settings_field_dontUploadMediaDuringEditing_label": "Nie wysyłaj mediów w trakcie tworzenia wpisu",
+  "@app_status_post_settings_field_dontUploadMediaDuringEditing_label": {}
 }
