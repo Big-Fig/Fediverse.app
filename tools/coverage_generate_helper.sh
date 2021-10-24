@@ -8,4 +8,4 @@ printf "// *********************************************************************
 printf "\n" >> $file
 printf "// ignore_for_file: unused_import\n" >> $file
 find lib -type f \( -iname "*.dart" ! -iname "*.g.dart" ! -iname "*.freezed.dart" ! -iname "generated_plugin_registrant.dart" \) | cut -c4- | awk -v package="$MELOS_PACKAGE_NAME" '{printf "import '\''package:%s%s'\'';\n", package, $1}' >> $file
-printf "\nvoid main(){}" >> $file
+printf "\nvoid main(){test('fake', () {});}" >> $file

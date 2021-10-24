@@ -166,7 +166,7 @@ scripts:
   test:unit:coverage:helper:
     run: |
       flutter pub global run melos run --no-select test:coverage:generate_helper && \
-      flutter pub global run melos exec --no-select -- \
+      flutter pub global run melos exec -- \
       flutter test --coverage --no-pub test/coverage_helper_test.dart && \
       flutter pub global run melos run --no-select test:coverage:remove_unnecessary
     description: |
@@ -182,7 +182,7 @@ scripts:
   test:coverage:remove_unnecessary:
     run: |
       flutter pub global run melos exec -c 5 --fail-fast -- \
-      "pub global run remove_from_coverage:remove_from_coverage -f coverage/lcov.info -r '\.g\.dart$' -r '\.freezed\.dart$' -r '\.mock_helper\.dart$'"
+      "flutter pub global run remove_from_coverage:remove_from_coverage -f coverage/lcov.info -r '\.g\.dart$' -r '\.freezed\.dart$' -r '\.mock_helper\.dart$'"
     description: |
       Removes all the unnecessary(generated, mock, etc) files from the coverage report.
     select-package:
@@ -476,6 +476,22 @@ scripts:
       flutter pub global run melos exec -c 1 --fail-fast -- \
       $MELOS_ROOT_PATH/tools/fastlane_dir_exec_ios.sh -- \
       bundle exec fastlane update_screenshots
+    description: Upload screenshots metadata to AppStore
+    select-package:
+      dir-exists: ios/fastlane
+
+  pub:packages:upgrade:
+    run: |
+      flutter pub global run melos exec -c 1 --fail-fast -- \
+      flutter packages upgrade
+    description: |
+      Update packages cache to update git dependencies.
+      Don't forget to increase version number in updated packages
+
+  pub:get:
+    run: |
+      flutter pub global run melos exec -c 1 --fail-fast -- \
+      flutter pub get
     description: Upload screenshots metadata to AppStore
     select-package:
       dir-exists: ios/fastlane
