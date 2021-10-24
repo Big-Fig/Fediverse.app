@@ -15,70 +15,62 @@
 
 default_platform(:android)
 
-    lane :screenshots do
-      frameit(
-        path: "./fastlane/metadata",
-      )
+    lane :screenshots_frameit do
+        frameit(
+            path: "./fastlane/metadata",
+        )
     end
 
     lane :update_metadata do
-    supply(
-      track: 'beta',
-      skip_upload_metadata: false,
-      skip_upload_changelogs: true,
-      skip_upload_images: true,
-      skip_upload_screenshots: true,
-      skip_upload_apk: true,
-      skip_upload_aab: true,
-    )
+        supply(
+            track: 'beta',
+            skip_upload_metadata: false,
+            skip_upload_changelogs: true,
+            skip_upload_images: true,
+            skip_upload_screenshots: true,
+            skip_upload_apk: true,
+            skip_upload_aab: true,
+        )
     end
 
     lane :update_screenshots do
-    supply(
-      track: 'beta',
-      skip_upload_metadata: true,
-      skip_upload_changelogs: true,
-      skip_upload_images: true,
-      skip_upload_screenshots: false,
-      skip_upload_apk: true,
-      skip_upload_aab: true,
-    )
+        supply(
+            track: 'beta',
+            skip_upload_metadata: true,
+            skip_upload_changelogs: true,
+            skip_upload_images: true,
+            skip_upload_screenshots: false,
+            skip_upload_apk: true,
+            skip_upload_aab: true,
+        )
     end
 
-platform :android do
-#  desc "Runs all the tests"
-#  lane :test do
-#    gradle(task: "test")
-#  end
+    desc "Submit a new beta build to Google Play"
+    lane :beta do
+        upload_to_play_store(
+            track: 'beta',
+            aab: '../build/app/outputs/bundle/prodRelease/app-prod-release.aab',
+            json_key_data: ENV['PLAY_STORE_UPLOAD_KEY'],
+        )
+    end
 
-#  desc "Submit a new beta build to Google Play"
-#  lane :beta do
-#    # we already built via Github Actions
-#    # sh "flutter build appbundle -v"
-#    upload_to_play_store(
-#      track: 'beta',
-#      aab: '../build/app/outputs/bundle/prodRelease/app-prod-release.aab',
-#      json_key_data: ENV['PLAY_STORE_UPLOAD_KEY'],
-#      )
-#  end
+    desc "Promote beta track to prod"
+    lane :promote_to_production do
+        upload_to_play_store(
+            track: 'beta',
+            track_promote_to: 'production',
+            skip_upload_changelogs: true,
+            json_key_data: ENV['PLAY_STORE_CONFIG_JSON'],
+        )
+    end
 
-#  desc "Promote beta track to prod"
-#  lane :promote_to_production do
-#    upload_to_play_store(
-#      track: 'beta',
-#      track_promote_to: 'production',
-#      skip_upload_changelogs: true,
-#      json_key_data: ENV['PLAY_STORE_CONFIG_JSON'],
-#      )
-#  end
-
-#  desc "Submit a new production build to Google Play"
-#  lane :production do
-#    sh "flutter build appbundle -v"
-#    upload_to_play_store(
-#      track: 'production',
-#      aab: '../build/app/outputs/bundle/release/app-release.aab',
-#      json_key_data: ENV['PLAY_STORE_CONFIG_JSON'],
-#    )
-#  end
+    desc "Submit a new production build to Google Play"
+    lane :production do
+#        sh "flutter build appbundle -v"
+        upload_to_play_store(
+          track: 'production',
+          aab: '../build/app/outputs/bundle/release/app-release.aab',
+          json_key_data: ENV['PLAY_STORE_CONFIG_JSON'],
+        )
+    end
 end
