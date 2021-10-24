@@ -103,7 +103,7 @@ scripts:
       flutter build appbundle --flavor prod
     description: |
       Build Android appbundle. Flavor: prod
-      
+
   build:android:apk:dev:
     run: |
       flutter pub global run melos exec -c 1 --ignore="*example*" -- \
@@ -117,22 +117,6 @@ scripts:
       flutter build apk --split-per-abi --flavor prod
     description: |
       Build Android Apk --split-per-abi. Flavor: prod
-
-  build:examples:ios:
-    run: flutter pub global run melos exec -c 4 --fail-fast --scope="*example*,sample_app -- \
-      flutter build ios --simulator
-
-  build:examples:release:ios:
-    run: flutter pub global run melos exec -c 4 --fail-fast --scope="*example*,sample_app -- \
-      flutter build ios --no-codesign
-
-  build:examples:android:
-    run: flutter pub global run melos exec -c 4 --fail-fast --scope="*example*,sample_app -- \
-      flutter build apk --debug --verbose
-
-  build:examples:release:android:
-    run: flutter pub global run melos exec -c 4 --fail-fast --scope="*example*,sample_app -- \
-      flutter build apk --verbose
 
   generate:
     run: |
@@ -290,7 +274,7 @@ scripts:
   screenshots:init:
     run: |
       flutter pub global activate -sgit https://github.com/xal/screenshots.git
-#       flutter pub global activate --source path ../screenshots
+    #       flutter pub global activate --source path ../screenshots
     description: Activate required version of screenshots tool
     select-package:
       dir-exists: test_driver
