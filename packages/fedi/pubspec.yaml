@@ -234,26 +234,22 @@ dependencies:
   fediverse_api:
     git:
       url: https://github.com/xal/dart_fediverse_api.git
-      path: fediverse_api
-#    path: ../dart_fediverse_api/fediverse_api
+      path: packages/fediverse_api
 
   pleroma_api:
     git:
       url: https://github.com/xal/dart_fediverse_api.git
-      path: pleroma_api
-#    path: ../dart_fediverse_api/pleroma_api
+      path: packages/pleroma_api
 
   mastodon_api:
     git:
       url: https://github.com/xal/dart_fediverse_api.git
-      path: mastodon_api
-#    path: ../dart_fediverse_api/mastodon_api
+      path: packages/mastodon_api
 
   unifedi_api:
     git:
       url: https://github.com/xal/dart_fediverse_api.git
-      path: unifedi_api
-#    path: ../dart_fediverse_api/unifedi_api
+      path: packages/unifedi_api
 
 dev_dependencies:
   integration_test:
