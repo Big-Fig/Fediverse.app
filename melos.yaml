@@ -180,3 +180,6 @@ scripts:
     description: Generate file to get full coverage report.
     select-package:
       dir-exists: test
+
+  generate:intl:
+    run: flutter pub global run melos exec flutter pub global run intl_utils:generate

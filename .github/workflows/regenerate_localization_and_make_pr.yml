@@ -14,7 +14,6 @@ jobs:
     steps:
 
       # Checkout code and get packages.
-      # Checkout code and get packages.
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
@@ -31,8 +30,12 @@ jobs:
 
       - run: flutter --version
 
-      - name: Pub Get Packages
-        run: flutter pub get
+      - name: Install Tools
+        run: |
+          ./.github/workflows/scripts/install_tools.sh
+
+      - name: Bootstrap Workspace
+        run: flutter pub global run melos bootstrap
 
       - name: Reset weblate branch
         run: |
@@ -43,7 +46,7 @@ jobs:
         run: flutter pub global activate intl_utils
 
       - name: Generate dart localization code
-        run: flutter pub global run intl_utils:generate
+        run: flutter pub global run melos run generate:intl_utils
 
       - name: Create Pull Request
         id: cpr

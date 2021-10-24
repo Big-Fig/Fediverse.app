@@ -1,4 +1,5 @@
 {
+  "@@locale": "ar",
   "app_share_action_shareToExternal": "شاركه مع تطبيق خارجي",
   "@app_share_action_shareToExternal": {},
   "app_share_action_share": "شارك",
