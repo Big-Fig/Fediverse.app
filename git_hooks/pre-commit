@@ -1,2 +1,2 @@
 #!/bin/sh
-./tools/checkDartFmt.sh
+./tools/check_git_changed_format.sh
