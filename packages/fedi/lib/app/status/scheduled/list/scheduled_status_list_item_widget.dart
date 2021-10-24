@@ -1,6 +1,6 @@
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
-import 'package:fedi/app/async/pleroma/pleroma_async_operation_button_builder_widget.dart';
+import 'package:fedi/app/async/unifedi/unifedi_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_bloc.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_bloc_impl.dart';
 import 'package:fedi/app/status/list/status_list_item_timeline_widget.dart';
@@ -199,7 +199,7 @@ class _ScheduledStatusListItemCancelButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var scheduledStatusBloc = IScheduledStatusBloc.of(context);
 
-    return PleromaAsyncOperationButtonBuilderWidget<void>(
+    return UnifediAsyncOperationButtonBuilderWidget<void>(
       builder: (context, onPressed) => FediTextButton(
         text: S.of(context).app_account_my_statuses_draft_status_action_delete,
         color: IFediUiColorTheme.of(context).darkGrey,

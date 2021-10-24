@@ -75,7 +75,7 @@ extension UiSettingsFontSizeStringExtension on String {
 }
 
 extension UiSettingsFontSizeStringListExtension on List<String> {
-  List<UiSettingsFontSize> toPleromaVisibilities() => map(
+  List<UiSettingsFontSize> toUnifediVisibilities() => map(
         (visibilityString) => visibilityString.toUiSettingsFontSize(),
       ).toList();
 }

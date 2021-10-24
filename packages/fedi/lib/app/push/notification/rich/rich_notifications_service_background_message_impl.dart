@@ -310,9 +310,9 @@ class RichNotificationsServiceBackgroundMessage extends AsyncInitLoadingBloc
   NotificationChannel _createEmojiReactionChannel() => NotificationChannel(
         channelKey: _emojiReactionChannelKey,
         channelName:
-            localizationContext.app_push_channel_pleromaEmojiReaction_name,
+            localizationContext.app_push_channel_unifediEmojiReaction_name,
         channelDescription: localizationContext
-            .app_push_channel_pleromaEmojiReaction_description,
+            .app_push_channel_unifediEmojiReaction_description,
         channelShowBadge: false,
         importance: NotificationImportance.Default,
         playSound: false,
@@ -331,9 +331,9 @@ class RichNotificationsServiceBackgroundMessage extends AsyncInitLoadingBloc
   NotificationChannel _createChatMentionChannel() => NotificationChannel(
         channelKey: _chatMentionChannelKey,
         channelName:
-            localizationContext.app_push_channel_pleromaChatMention_name,
+            localizationContext.app_push_channel_unifediChatMention_name,
         channelDescription:
-            localizationContext.app_push_channel_pleromaChatMention_description,
+            localizationContext.app_push_channel_unifediChatMention_description,
         channelShowBadge: true,
         importance: NotificationImportance.Max,
         playSound: true,
@@ -351,9 +351,9 @@ class RichNotificationsServiceBackgroundMessage extends AsyncInitLoadingBloc
 
   NotificationChannel _createReportChannel() => NotificationChannel(
         channelKey: _reportChannelKey,
-        channelName: localizationContext.app_push_channel_pleromaReport_name,
+        channelName: localizationContext.app_push_channel_unifediReport_name,
         channelDescription:
-            localizationContext.app_push_channel_pleromaReport_description,
+            localizationContext.app_push_channel_unifediReport_description,
         channelShowBadge: true,
         importance: NotificationImportance.Default,
         playSound: true,
@@ -792,11 +792,11 @@ String? calculateSummary({
       followRequest: (_) =>
           localizationContext.app_push_richNotification_followRequest_summary,
       emojiReaction: (_) => localizationContext
-          .app_push_richNotification_pleromaEmojiReaction_summary,
+          .app_push_richNotification_unifediEmojiReaction_summary,
       chatMention: (_) => localizationContext
-          .app_push_richNotification_pleromaChatMention_summary,
+          .app_push_richNotification_unifediChatMention_summary,
       report: (_) =>
-          localizationContext.app_push_richNotification_pleromaReport_summary,
+          localizationContext.app_push_richNotification_unifediReport_summary,
       unknown: (_) =>
           localizationContext.app_push_richNotification_unknown_summary,
     );
@@ -877,14 +877,14 @@ String calculateUnifediApiNotificationPushTitle({
     followRequest: (_) =>
         localizationContext.app_push_richNotification_followRequest_title(acct),
     emojiReaction: (_) => localizationContext
-        .app_push_richNotification_pleromaEmojiReaction_title(
+        .app_push_richNotification_unifediEmojiReaction_title(
       acct,
       unifediApiNotification.emoji!,
     ),
     chatMention: (_) => localizationContext
-        .app_push_richNotification_pleromaChatMention_title(acct),
+        .app_push_richNotification_unifediChatMention_title(acct),
     report: (_) =>
-        localizationContext.app_push_richNotification_pleromaReport_title(acct),
+        localizationContext.app_push_richNotification_unifediReport_title(acct),
     unknown: (_) => localizationContext.app_push_richNotification_unknown_title,
   );
 }

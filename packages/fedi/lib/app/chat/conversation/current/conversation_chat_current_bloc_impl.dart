@@ -3,7 +3,7 @@ import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
 import 'package:fedi/app/chat/conversation/current/conversation_chat_current_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
-// todo: refactor with similar pleroma chat class
+// todo: refactor with similar unifedi chat class
 class ConversationChatCurrentBloc extends DisposableOwner
     implements IConversationChatCurrentBloc {
   final List<IConversationChat?> openedChats = [];

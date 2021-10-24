@@ -1,4 +1,4 @@
-import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
+import 'package:fedi/app/async/unifedi/unifedi_async_operation_helper.dart';
 import 'package:fedi/app/chat/chat_bloc.dart';
 import 'package:fedi/app/chat/selection/chat_selection_bloc.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_button.dart';
@@ -42,8 +42,8 @@ class ChatSelectionDeleteActionButtonWidget extends StatelessWidget {
                         .of(context)
                         .app_chat_selection_action_delete_confirm_dialog_action_delete,
                     onAction: (context) async {
-                      var dialogResult = await PleromaAsyncOperationHelper
-                          .performPleromaAsyncOperation(
+                      var dialogResult = await UnifediAsyncOperationHelper
+                          .performUnifediAsyncOperation(
                         context: context,
                         asyncCode: () async {
                           await chatBloc.deleteMessages(

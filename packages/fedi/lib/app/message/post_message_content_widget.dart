@@ -1,4 +1,4 @@
-import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
+import 'package:fedi/app/async/unifedi/unifedi_async_operation_helper.dart';
 import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:fedi/app/ui/dialog/alert/fedi_simple_alert_dialog.dart';
 import 'package:fedi/app/ui/edit_text/fedi_filled_edit_text_field.dart';
@@ -49,7 +49,7 @@ class PostMessageContentWidget extends StatelessWidget {
           onSubmitted: (String value) async {
             if (postMessageBloc.isReadyToPost) {
               // ignore: avoid-ignoring-return-values
-              await PleromaAsyncOperationHelper.performPleromaAsyncOperation<
+              await UnifediAsyncOperationHelper.performUnifediAsyncOperation<
                   void>(
                 context: context,
                 asyncCode: () => postMessageBloc.post(),

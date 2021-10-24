@@ -81,7 +81,7 @@ abstract class IMyAccount extends IAccount implements IJsonObj {
   });
 }
 
-extension IMyAccountPleromaExtension on IMyAccount {
+extension IMyAccountUnifediExtension on IMyAccount {
   UnifediApiMyAccount toUnifediApiMyAccount() {
     if (this is UnifediApiMyAccountWrapper) {
       return (this as UnifediApiMyAccountWrapper).unifediApiAccount;

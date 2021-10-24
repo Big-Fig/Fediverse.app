@@ -17,8 +17,8 @@ class ChatSettings
 
   const factory ChatSettings({
     @HiveField(0)
-    @JsonKey(name: 'replace_conversations_with_pleroma_chats')
-        required bool replaceConversationsWithPleromaChats,
+    @JsonKey(name: 'replace_conversations_with_unifedi_chats')
+        required bool replaceConversationsWithUnifediChats,
     @HiveField(1)
     @JsonKey(name: 'count_conversations_in_chats_unread_badges')
         required bool countConversationsInChatsUnreadBadges,

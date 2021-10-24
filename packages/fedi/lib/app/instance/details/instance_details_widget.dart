@@ -124,10 +124,10 @@ class _InstanceDetailsBodyWidget extends StatelessWidget {
             ),
             _InstanceDetailsBodyMessagesLimitsWidget(),
             _InstanceDetailsUnifediApiPollLimitsWidget(),
-            _InstanceDetailsPleromaUploadLimitsWidget(),
+            _InstanceDetailsUnifediUploadLimitsWidget(),
             _InstanceDetailsBodyMetadataWidget(),
             _InstanceDetailsUnifediApiInstanceFederationWidget(),
-            _InstanceDetailsPleromaMetadataFieldsLimitsWidget(),
+            _InstanceDetailsUnifediMetadataFieldsLimitsWidget(),
           ],
         ),
       );
@@ -154,8 +154,8 @@ class _InstanceDetailsBodyMetadataWidget extends StatelessWidget {
               _InstanceDetailsGroupTitleWidget(
                 title: S.of(context).app_instance_details_field_metadata_title,
               ),
-              const _InstanceDetailsPleromaMetadataFeaturesWidget(),
-              const _InstanceDetailsPleromaMetadataPostFormatsWidget(),
+              const _InstanceDetailsUnifediMetadataFeaturesWidget(),
+              const _InstanceDetailsUnifediMetadataPostFormatsWidget(),
             ],
           );
         } else {
@@ -166,8 +166,8 @@ class _InstanceDetailsBodyMetadataWidget extends StatelessWidget {
   }
 }
 
-class _InstanceDetailsPleromaUploadLimitsWidget extends StatelessWidget {
-  const _InstanceDetailsPleromaUploadLimitsWidget({
+class _InstanceDetailsUnifediUploadLimitsWidget extends StatelessWidget {
+  const _InstanceDetailsUnifediUploadLimitsWidget({
     Key? key,
   }) : super(key: key);
 
@@ -187,10 +187,10 @@ class _InstanceDetailsPleromaUploadLimitsWidget extends StatelessWidget {
                 title:
                     S.of(context).app_instance_details_field_uploadLimits_title,
               ),
-              const _InstanceDetailsPleromaUploadMediaLimitWidget(),
-              const _InstanceDetailsPleromaUploadAccountAvatarLimitWidget(),
-              const _InstanceDetailsPleromaUploadAccountBackgroundLimitWidget(),
-              const _InstanceDetailsPleromaUploadAccountBannerLimitWidget(),
+              const _InstanceDetailsUnifediUploadMediaLimitWidget(),
+              const _InstanceDetailsUnifediUploadAccountAvatarLimitWidget(),
+              const _InstanceDetailsUnifediUploadAccountBackgroundLimitWidget(),
+              const _InstanceDetailsUnifediUploadAccountBannerLimitWidget(),
             ],
           );
         } else {
@@ -224,9 +224,9 @@ class _InstanceDetailsBodyMessagesLimitsWidget extends StatelessWidget {
                     .of(context)
                     .app_instance_details_field_messagesLimits_title,
               ),
-              const _InstanceDetailsPleromaMaxTootCharsLimitWidget(),
+              const _InstanceDetailsUnifediMaxTootCharsLimitWidget(),
               const _InstanceDetailsUnifediApiChatMessageLimitWidget(),
-              const _InstanceDetailsPleromaImageDescriptionLimitWidget(),
+              const _InstanceDetailsUnifediImageDescriptionLimitWidget(),
             ],
           );
         } else {
@@ -430,13 +430,13 @@ class _InstanceDetailsVersionTypeWidget extends StatelessWidget {
           instanceTypeString = instanceType.map(
             pleroma: (_) => S
                 .of(context)
-                .app_instance_details_field_pleroma_metadata_fields_verstionType_value_pleroma,
+                .app_instance_details_field_unifedi_metadata_fields_verstionType_value_unifedi,
             mastodon: (_) => S
                 .of(context)
-                .app_instance_details_field_pleroma_metadata_fields_verstionType_value_mastodon,
+                .app_instance_details_field_unifedi_metadata_fields_verstionType_value_mastodon,
             unknown: (_) => S
                 .of(context)
-                .app_instance_details_field_pleroma_metadata_fields_verstionType_value_unknown,
+                .app_instance_details_field_unifedi_metadata_fields_verstionType_value_unknown,
           );
 
           return Text(
@@ -1148,8 +1148,8 @@ class _InstanceDetailsActivityWidget extends StatelessWidget {
   }
 }
 
-class _InstanceDetailsPleromaMaxTootCharsLimitWidget extends StatelessWidget {
-  const _InstanceDetailsPleromaMaxTootCharsLimitWidget({
+class _InstanceDetailsUnifediMaxTootCharsLimitWidget extends StatelessWidget {
+  const _InstanceDetailsUnifediMaxTootCharsLimitWidget({
     Key? key,
   }) : super(key: key);
 
@@ -1204,9 +1204,9 @@ class _InstanceDetailsUnifediApiChatMessageLimitWidget extends StatelessWidget {
   }
 }
 
-class _InstanceDetailsPleromaImageDescriptionLimitWidget
+class _InstanceDetailsUnifediImageDescriptionLimitWidget
     extends StatelessWidget {
-  const _InstanceDetailsPleromaImageDescriptionLimitWidget({
+  const _InstanceDetailsUnifediImageDescriptionLimitWidget({
     Key? key,
   }) : super(key: key);
 
@@ -1326,8 +1326,8 @@ class _InstanceDetailsUnifediApiPollLimitsBodyWidget extends StatelessWidget {
       );
 }
 
-class _InstanceDetailsPleromaUploadMediaLimitWidget extends StatelessWidget {
-  const _InstanceDetailsPleromaUploadMediaLimitWidget({
+class _InstanceDetailsUnifediUploadMediaLimitWidget extends StatelessWidget {
+  const _InstanceDetailsUnifediUploadMediaLimitWidget({
     Key? key,
   }) : super(key: key);
 
@@ -1358,9 +1358,9 @@ class _InstanceDetailsPleromaUploadMediaLimitWidget extends StatelessWidget {
   }
 }
 
-class _InstanceDetailsPleromaUploadAccountAvatarLimitWidget
+class _InstanceDetailsUnifediUploadAccountAvatarLimitWidget
     extends StatelessWidget {
-  const _InstanceDetailsPleromaUploadAccountAvatarLimitWidget({
+  const _InstanceDetailsUnifediUploadAccountAvatarLimitWidget({
     Key? key,
   }) : super(key: key);
 
@@ -1391,9 +1391,9 @@ class _InstanceDetailsPleromaUploadAccountAvatarLimitWidget
   }
 }
 
-class _InstanceDetailsPleromaUploadAccountBackgroundLimitWidget
+class _InstanceDetailsUnifediUploadAccountBackgroundLimitWidget
     extends StatelessWidget {
-  const _InstanceDetailsPleromaUploadAccountBackgroundLimitWidget({
+  const _InstanceDetailsUnifediUploadAccountBackgroundLimitWidget({
     Key? key,
   }) : super(key: key);
 
@@ -1427,9 +1427,9 @@ class _InstanceDetailsPleromaUploadAccountBackgroundLimitWidget
   }
 }
 
-class _InstanceDetailsPleromaUploadAccountBannerLimitWidget
+class _InstanceDetailsUnifediUploadAccountBannerLimitWidget
     extends StatelessWidget {
-  const _InstanceDetailsPleromaUploadAccountBannerLimitWidget({
+  const _InstanceDetailsUnifediUploadAccountBannerLimitWidget({
     Key? key,
   }) : super(key: key);
 
@@ -1462,8 +1462,8 @@ class _InstanceDetailsPleromaUploadAccountBannerLimitWidget
   }
 }
 
-class _InstanceDetailsPleromaMetadataFeaturesWidget extends StatelessWidget {
-  const _InstanceDetailsPleromaMetadataFeaturesWidget({
+class _InstanceDetailsUnifediMetadataFeaturesWidget extends StatelessWidget {
+  const _InstanceDetailsUnifediMetadataFeaturesWidget({
     Key? key,
   }) : super(key: key);
 
@@ -1472,17 +1472,17 @@ class _InstanceDetailsPleromaMetadataFeaturesWidget extends StatelessWidget {
     var instanceDetailsBloc = IInstanceDetailsBloc.of(context);
 
     return StreamBuilder<List<String>?>(
-      stream: instanceDetailsBloc.pleromaMetadataFeaturesStream,
-      initialData: instanceDetailsBloc.pleromaMetadataFeatures,
+      stream: instanceDetailsBloc.unifediMetadataFeaturesStream,
+      initialData: instanceDetailsBloc.unifediMetadataFeatures,
       builder: (context, snapshot) {
-        var pleromaMetadataFeatures = snapshot.data;
+        var unifediMetadataFeatures = snapshot.data;
 
-        if (pleromaMetadataFeatures?.isNotEmpty == true) {
+        if (unifediMetadataFeatures?.isNotEmpty == true) {
           return _SimpleInstanceDetailsRowWidget(
             label: S
                 .of(context)
-                .app_instance_details_field_pleroma_metadata_features_label,
-            value: pleromaMetadataFeatures?.join('\n') ?? '',
+                .app_instance_details_field_unifedi_metadata_features_label,
+            value: unifediMetadataFeatures?.join('\n') ?? '',
           );
         } else {
           return const SizedBox.shrink();
@@ -1697,9 +1697,9 @@ class __InstanceDetailsUnifediApiInstanceFederationTitleWidget
       );
 }
 
-class _InstanceDetailsPleromaMetadataFieldsLimitsWidget
+class _InstanceDetailsUnifediMetadataFieldsLimitsWidget
     extends StatelessWidget {
-  const _InstanceDetailsPleromaMetadataFieldsLimitsWidget({
+  const _InstanceDetailsUnifediMetadataFieldsLimitsWidget({
     Key? key,
   }) : super(key: key);
 
@@ -1717,51 +1717,51 @@ class _InstanceDetailsPleromaMetadataFieldsLimitsWidget
 
         if (isHaveMessagesLimitsFields) {
           return StreamBuilder<IUnifediApiInstanceFieldLimits?>(
-            stream: instanceDetailsBloc.pleromaMetadataFieldsLimitsStream,
-            initialData: instanceDetailsBloc.pleromaMetadataFieldsLimits,
+            stream: instanceDetailsBloc.unifediMetadataFieldsLimitsStream,
+            initialData: instanceDetailsBloc.unifediMetadataFieldsLimits,
             builder: (context, snapshot) {
-              var pleromaMetadataFieldsLimits = snapshot.data;
+              var unifediMetadataFieldsLimits = snapshot.data;
 
-              if (pleromaMetadataFieldsLimits != null) {
+              if (unifediMetadataFieldsLimits != null) {
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     _InstanceDetailsGroupTitleWidget(
                       title: S
                           .of(context)
-                          .app_instance_details_field_pleroma_metadata_fields_title,
+                          .app_instance_details_field_unifedi_metadata_fields_title,
                     ),
-                    if (pleromaMetadataFieldsLimits.maxFields != null)
+                    if (unifediMetadataFieldsLimits.maxFields != null)
                       _SimpleInstanceDetailsRowWidget(
                         label: S
                             .of(context)
-                            .app_instance_details_field_pleroma_metadata_fields_maxFields_label,
+                            .app_instance_details_field_unifedi_metadata_fields_maxFields_label,
                         value:
-                            pleromaMetadataFieldsLimits.maxFields!.toString(),
+                            unifediMetadataFieldsLimits.maxFields!.toString(),
                       ),
-                    if (pleromaMetadataFieldsLimits.maxRemoteFields != null)
+                    if (unifediMetadataFieldsLimits.maxRemoteFields != null)
                       _SimpleInstanceDetailsRowWidget(
                         label: S
                             .of(context)
-                            .app_instance_details_field_pleroma_metadata_fields_maxRemoteFields_label,
-                        value: pleromaMetadataFieldsLimits.maxRemoteFields!
+                            .app_instance_details_field_unifedi_metadata_fields_maxRemoteFields_label,
+                        value: unifediMetadataFieldsLimits.maxRemoteFields!
                             .toString(),
                       ),
-                    if (pleromaMetadataFieldsLimits.nameLength != null)
+                    if (unifediMetadataFieldsLimits.nameLength != null)
                       _SimpleInstanceDetailsRowWidget(
                         label: S
                             .of(context)
-                            .app_instance_details_field_pleroma_metadata_fields_nameLength_label,
+                            .app_instance_details_field_unifedi_metadata_fields_nameLength_label,
                         value:
-                            pleromaMetadataFieldsLimits.nameLength!.toString(),
+                            unifediMetadataFieldsLimits.nameLength!.toString(),
                       ),
-                    if (pleromaMetadataFieldsLimits.valueLength != null)
+                    if (unifediMetadataFieldsLimits.valueLength != null)
                       _SimpleInstanceDetailsRowWidget(
                         label: S
                             .of(context)
-                            .app_instance_details_field_pleroma_metadata_fields_valueLength_label,
+                            .app_instance_details_field_unifedi_metadata_fields_valueLength_label,
                         value:
-                            pleromaMetadataFieldsLimits.valueLength!.toString(),
+                            unifediMetadataFieldsLimits.valueLength!.toString(),
                       ),
                   ],
                 );
@@ -1778,8 +1778,8 @@ class _InstanceDetailsPleromaMetadataFieldsLimitsWidget
   }
 }
 
-class _InstanceDetailsPleromaMetadataPostFormatsWidget extends StatelessWidget {
-  const _InstanceDetailsPleromaMetadataPostFormatsWidget({
+class _InstanceDetailsUnifediMetadataPostFormatsWidget extends StatelessWidget {
+  const _InstanceDetailsUnifediMetadataPostFormatsWidget({
     Key? key,
   }) : super(key: key);
 
@@ -1788,17 +1788,17 @@ class _InstanceDetailsPleromaMetadataPostFormatsWidget extends StatelessWidget {
     var instanceDetailsBloc = IInstanceDetailsBloc.of(context);
 
     return StreamBuilder<List<String>?>(
-      stream: instanceDetailsBloc.pleromaMetadataPostFormatsStream,
-      initialData: instanceDetailsBloc.pleromaMetadataPostFormats,
+      stream: instanceDetailsBloc.unifediMetadataPostFormatsStream,
+      initialData: instanceDetailsBloc.unifediMetadataPostFormats,
       builder: (context, snapshot) {
-        var pleromaMetadataPostFormats = snapshot.data;
+        var unifediMetadataPostFormats = snapshot.data;
 
-        if (pleromaMetadataPostFormats?.isNotEmpty == true) {
+        if (unifediMetadataPostFormats?.isNotEmpty == true) {
           return _SimpleInstanceDetailsRowWidget(
             label: S
                 .of(context)
-                .app_instance_details_field_pleroma_metadata_fields_postFormats_label,
-            value: pleromaMetadataPostFormats?.join('\n') ?? '',
+                .app_instance_details_field_unifedi_metadata_fields_postFormats_label,
+            value: unifediMetadataPostFormats?.join('\n') ?? '',
           );
         } else {
           return const SizedBox.shrink();

@@ -1,5 +1,5 @@
 import 'package:fedi/app/access/current/current_access_bloc.dart';
-import 'package:fedi/app/async/pleroma/pleroma_async_operation_button_builder_widget.dart';
+import 'package:fedi/app/async/unifedi/unifedi_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/cache/database/form/info/instance/current_max_age/current_max_age_instance_database_cache_info_form_field_bloc.dart';
 import 'package:fedi/app/cache/database/form/info/instance/current_max_age/current_max_age_instance_database_cache_info_form_field_row_widget.dart';
 import 'package:fedi/app/cache/database/form/info/instance/current_max_entries_count_by_type/current_max_entries_count_by_type_instance_database_cache_info_form_field_bloc.dart';
@@ -73,7 +73,7 @@ class _EditDatabaseCacheSettingsClearAllButtonWidget extends StatelessWidget {
     var editDatabaseCacheSettingsBloc =
         IEditDatabaseCacheSettingsBloc.of(context);
 
-    return PleromaAsyncOperationButtonBuilderWidget<void>(
+    return UnifediAsyncOperationButtonBuilderWidget<void>(
       asyncButtonAction: () => editDatabaseCacheSettingsBloc.clearAll(),
       builder: (context, onPressed) => FediPrimaryFilledTextButtonWithBorder(
         S.of(context).app_cache_settings_action_clear_all_now(
@@ -98,7 +98,7 @@ class _EditDatabaseCacheSettingsClearByLimitsButtonWidget
     var editDatabaseCacheSettingsBloc =
         IEditDatabaseCacheSettingsBloc.of(context);
 
-    return PleromaAsyncOperationButtonBuilderWidget<void>(
+    return UnifediAsyncOperationButtonBuilderWidget<void>(
       asyncButtonAction: () => editDatabaseCacheSettingsBloc.clearByLimits(),
       builder: (context, onPressed) => FediPrimaryFilledTextButtonWithBorder(
         S.of(context).app_cache_settings_action_clear_by_limits_now(

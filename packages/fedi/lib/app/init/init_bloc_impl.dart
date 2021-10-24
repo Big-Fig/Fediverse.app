@@ -24,8 +24,7 @@ class InitBloc extends AsyncInitLoadingBloc implements IInitBloc {
     await appContextBloc.performAsyncInit();
 
     deepLinkInitBloc = DeepLinkInitBloc(
-      pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc:
-          appContextBloc.get(),
+      oAuthLastLaunchedHostToLoginLocalPreferenceBloc: appContextBloc.get(),
       localPreferencesService: appContextBloc.get(),
       connectionService: appContextBloc.get(),
       // ignore: no-equal-arguments

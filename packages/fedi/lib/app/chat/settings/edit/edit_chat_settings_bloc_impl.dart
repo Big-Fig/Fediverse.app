@@ -19,12 +19,12 @@ class EditChatSettingsBloc
 
   @override
   // ignore: avoid-late-keyword
-  late IBoolValueFormFieldBloc replaceConversationsWithPleromaChatsFieldBloc;
+  late IBoolValueFormFieldBloc replaceConversationsWithUnifediChatsFieldBloc;
 
   @override
   List<IFormItemBloc> get currentItems => [
         countConversationsInChatsUnreadBadgesFieldBloc,
-        replaceConversationsWithPleromaChatsFieldBloc,
+        replaceConversationsWithUnifediChatsFieldBloc,
       ];
 
   EditChatSettingsBloc({
@@ -43,8 +43,8 @@ class EditChatSettingsBloc
       originValue: currentSettings.countConversationsInChatsUnreadBadges,
       isEnabled: isEnabled,
     )..disposeWith(this);
-    replaceConversationsWithPleromaChatsFieldBloc = BoolValueFormFieldBloc(
-      originValue: currentSettings.replaceConversationsWithPleromaChats,
+    replaceConversationsWithUnifediChatsFieldBloc = BoolValueFormFieldBloc(
+      originValue: currentSettings.replaceConversationsWithUnifediChats,
       isEnabled: isEnabled,
     )..disposeWith(this);
     onFormItemsChanged();
@@ -54,8 +54,8 @@ class EditChatSettingsBloc
   ChatSettings calculateCurrentFormFieldsSettings() => ChatSettings(
         countConversationsInChatsUnreadBadges:
             countConversationsInChatsUnreadBadgesFieldBloc.currentValue!,
-        replaceConversationsWithPleromaChats:
-            replaceConversationsWithPleromaChatsFieldBloc.currentValue!,
+        replaceConversationsWithUnifediChats:
+            replaceConversationsWithUnifediChatsFieldBloc.currentValue!,
       );
 
   @override
@@ -63,8 +63,8 @@ class EditChatSettingsBloc
     countConversationsInChatsUnreadBadgesFieldBloc.changeCurrentValue(
       settings?.countConversationsInChatsUnreadBadges,
     );
-    replaceConversationsWithPleromaChatsFieldBloc.changeCurrentValue(
-      settings?.replaceConversationsWithPleromaChats,
+    replaceConversationsWithUnifediChatsFieldBloc.changeCurrentValue(
+      settings?.replaceConversationsWithUnifediChats,
     );
   }
 }

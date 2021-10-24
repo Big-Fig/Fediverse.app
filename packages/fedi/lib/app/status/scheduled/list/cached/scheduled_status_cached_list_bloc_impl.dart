@@ -18,7 +18,7 @@ const _excludeScheduleAtExpired = true;
 
 class ScheduledStatusCachedListBloc extends IScheduledStatusCachedListBloc {
   final IScheduledStatusRepository scheduledStatusRepository;
-  final IUnifediApiStatusService pleromaScheduledStatusService;
+  final IUnifediApiStatusService unifediScheduledStatusService;
 
   ScheduledStatusRepositoryFilters get _scheduledStatusRepositoryFilters =>
       const ScheduledStatusRepositoryFilters(
@@ -28,17 +28,17 @@ class ScheduledStatusCachedListBloc extends IScheduledStatusCachedListBloc {
 
   ScheduledStatusCachedListBloc({
     required this.scheduledStatusRepository,
-    required this.pleromaScheduledStatusService,
+    required this.unifediScheduledStatusService,
   }) : super();
 
   @override
-  IUnifediApiService get unifediApi => pleromaScheduledStatusService;
+  IUnifediApiService get unifediApi => unifediScheduledStatusService;
 
   static ScheduledStatusCachedListBloc createFromContext(
     BuildContext context,
   ) =>
       ScheduledStatusCachedListBloc(
-        pleromaScheduledStatusService: Provider.of<IUnifediApiStatusService>(
+        unifediScheduledStatusService: Provider.of<IUnifediApiStatusService>(
           context,
           listen: false,
         ),
@@ -107,7 +107,7 @@ class ScheduledStatusCachedListBloc extends IScheduledStatusCachedListBloc {
     );
 
     var remoteStatuses =
-        await pleromaScheduledStatusService.getScheduledStatuses(
+        await unifediScheduledStatusService.getScheduledStatuses(
       pagination: UnifediApiPagination(
         limit: limit,
         minId: newerThan?.remoteId,

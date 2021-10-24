@@ -46,7 +46,7 @@ class ScheduledStatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       dbId: scheduledStatus.localId!,
       dbItem: DbScheduledStatus(
         canceled: true,
-        params: scheduledStatus.params.toPleromaScheduledStatusParams(),
+        params: scheduledStatus.params.toUnifediScheduledStatusParams(),
         mediaAttachments: scheduledStatus.mediaAttachments,
         id: scheduledStatus.localId,
         remoteId: scheduledStatus.remoteId!,
@@ -62,7 +62,7 @@ class ScheduledStatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   IUnifediApiScheduledStatus mapAppItemToRemoteItem(IScheduledStatus appItem) =>
-      appItem.toPleromaScheduledStatus();
+      appItem.toUnifediScheduledStatus();
 
   @override
   DbScheduledStatusPopulated mapAppItemToDbPopulatedItem(
@@ -82,7 +82,7 @@ class ScheduledStatusRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   ) =>
       dbPopulatedItem
           .toDbScheduledStatusPopulatedWrapper()
-          .toPleromaScheduledStatus();
+          .toUnifediScheduledStatus();
 
   @override
   ScheduledStatusRepositoryFilters get emptyFilters =>

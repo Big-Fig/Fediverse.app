@@ -1,5 +1,5 @@
 import 'package:fedi/app/account/account_model.dart';
-import 'package:fedi/app/async/pleroma/pleroma_async_operation_button_builder_widget.dart';
+import 'package:fedi/app/async/unifedi/unifedi_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/custom_list/edit/account_list/edit_custom_list_account_list_pagination_list_bloc.dart';
 import 'package:fedi/app/ui/button/text/with_border/fedi_transparent_text_button_with_border.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
@@ -32,7 +32,7 @@ class CustomListAccountListItemAddRemoveActionWidget extends StatelessWidget {
           return const SizedBox.shrink();
         }
 
-        return PleromaAsyncOperationButtonBuilderWidget(
+        return UnifediAsyncOperationButtonBuilderWidget(
           asyncButtonAction: () async {
             if (isItemAddedStream) {
               await editCustomListAccountListBloc.removeItem(account);

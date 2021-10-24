@@ -126,13 +126,13 @@ void main() {
 
     await subscriptionListenedPostStatusAgeLimitType.cancel();
   });
-  test('defaultVisibilityPleroma', () async {
-    UnifediApiVisibility? listenedDefaultVisibilityPleroma;
+  test('defaultVisibilityUnifedi', () async {
+    UnifediApiVisibility? listenedDefaultVisibilityUnifedi;
 
     StreamSubscription subscriptionListenedPostStatusAgeLimitType =
         postStatusSettingsBloc.defaultVisibilityAsUnifediApiStream.listen(
       (data) {
-        listenedDefaultVisibilityPleroma = data;
+        listenedDefaultVisibilityUnifedi = data;
       },
     );
 
@@ -151,7 +151,7 @@ void main() {
     );
 
     expect(
-      listenedDefaultVisibilityPleroma,
+      listenedDefaultVisibilityUnifedi,
       defaultValue.defaultVisibilityAsUnifediApi,
     );
     expect(
@@ -159,33 +159,33 @@ void main() {
       defaultValue.defaultVisibilityAsUnifediApi,
     );
 
-    var testDefaultVisibilityPleroma =
+    var testDefaultVisibilityUnifedi =
         PostStatusSettingsModelMockHelper.createTestPostStatusSettings(
       seed: 'seed',
     ).defaultVisibilityAsUnifediApi;
 
     await postStatusSettingsBloc
-        .changeDefaultVisibilityAsUnifediApi(testDefaultVisibilityPleroma);
+        .changeDefaultVisibilityAsUnifediApi(testDefaultVisibilityUnifedi);
 
     listened = null;
     await RxDartMockHelper.waitForData(() => listened);
 
     expect(
       listened?.defaultVisibilityAsUnifediApi,
-      testDefaultVisibilityPleroma,
+      testDefaultVisibilityUnifedi,
     );
     expect(
       postStatusSettingsBloc.settingsData.defaultVisibilityAsUnifediApi,
-      testDefaultVisibilityPleroma,
+      testDefaultVisibilityUnifedi,
     );
 
     expect(
-      listenedDefaultVisibilityPleroma,
-      testDefaultVisibilityPleroma,
+      listenedDefaultVisibilityUnifedi,
+      testDefaultVisibilityUnifedi,
     );
     expect(
       postStatusSettingsBloc.defaultVisibilityAsUnifediApi,
-      testDefaultVisibilityPleroma,
+      testDefaultVisibilityUnifedi,
     );
 
     await subscriptionListenedPostStatusAgeLimitType.cancel();

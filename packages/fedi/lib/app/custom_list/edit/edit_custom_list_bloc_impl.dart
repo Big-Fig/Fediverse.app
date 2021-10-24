@@ -49,7 +49,7 @@ class EditCustomListBloc extends DisposableOwner
       ),
       customList: initialValue,
       statusRepository: IStatusRepository.of(context, listen: false),
-      pleromaListService: Provider.of<IUnifediApiListService>(
+      unifediListService: Provider.of<IUnifediApiListService>(
         context,
         listen: false,
       ),
@@ -57,7 +57,7 @@ class EditCustomListBloc extends DisposableOwner
         context,
         listen: false,
       ),
-      pleromaAuthAccountService: Provider.of<IUnifediApiAccountService>(
+      unifediAuthAccountService: Provider.of<IUnifediApiAccountService>(
         context,
         listen: false,
       ),
@@ -111,7 +111,7 @@ class EditCustomListBloc extends DisposableOwner
 
   final ICustomList? customList;
 
-  final IUnifediApiListService pleromaListService;
+  final IUnifediApiListService unifediListService;
 
   @override
   // ignore: avoid-late-keyword
@@ -147,7 +147,7 @@ class EditCustomListBloc extends DisposableOwner
 
   EditCustomListBloc({
     required this.customList,
-    required this.pleromaListService,
+    required this.unifediListService,
     required this.statusRepository,
     required this.isPossibleToDelete,
     required this.timelinesHomeTabStorageBloc,
@@ -155,9 +155,9 @@ class EditCustomListBloc extends DisposableOwner
     required this.connectionService,
     required IMyAccountBloc myAccountBloc,
     required IAccountRepository accountRepository,
-    required IUnifediApiAccountService pleromaAuthAccountService,
+    required IUnifediApiAccountService unifediAuthAccountService,
   })  : selectAccountListBloc = SelectAccountListBloc(
-          pleromaAuthAccountService: pleromaAuthAccountService,
+          unifediAuthAccountService: unifediAuthAccountService,
           accountRepository: accountRepository,
           myAccountBloc: myAccountBloc,
           excludeMyAccount: true,
@@ -170,7 +170,7 @@ class EditCustomListBloc extends DisposableOwner
         ) {
     customListAccountListNetworkOnlyListBloc =
         CustomListAccountListNetworkOnlyListBloc(
-      pleromaListService: pleromaListService,
+      unifediListService: unifediListService,
       customList: customList,
     );
 
@@ -250,7 +250,7 @@ class EditCustomListBloc extends DisposableOwner
   @override
   Future<ICustomList> submit() async {
     var listRemoteId = customList!.remoteId;
-    var pleromaList = await pleromaListService.updateList(
+    var unifediList = await unifediListService.updateList(
       listId: listRemoteId,
       title: customListFormBloc.titleField.currentValue,
       repliesPolicy: null,
@@ -261,10 +261,10 @@ class EditCustomListBloc extends DisposableOwner
           editCustomListAccountListPaginationListBloc.addedItems;
 
       // TODO: remove hack
-      // Pleroma issue: it is only possible to add one account in one request
+      // Unifedi issue: it is only possible to add one account in one request
       if (addedAccounts.isNotEmpty) {
         for (final addedAccount in addedAccounts) {
-          await pleromaListService.addAccountsToList(
+          await unifediListService.addAccountsToList(
             listId: listRemoteId,
             accountIds: [
               addedAccount.remoteId,
@@ -278,9 +278,9 @@ class EditCustomListBloc extends DisposableOwner
 
       if (removedAccounts.isNotEmpty) {
         // TODO: remove hack
-        // Pleroma issue: it is only possible to remove one account in one request
+        // Unifedi issue: it is only possible to remove one account in one request
         for (final removedAccount in removedAccounts) {
-          await pleromaListService.removeAccountsFromList(
+          await unifediListService.removeAccountsFromList(
             listId: listRemoteId,
             accountIds: [
               removedAccount.remoteId,
@@ -293,7 +293,7 @@ class EditCustomListBloc extends DisposableOwner
           .clearChangesAndRefresh();
     }
 
-    var localCustomList = pleromaList.toCustomList();
+    var localCustomList = unifediList.toCustomList();
 
     submittedStreamController.add(localCustomList);
 
@@ -302,7 +302,7 @@ class EditCustomListBloc extends DisposableOwner
 
   @override
   Future<void> deleteList() async {
-    await pleromaListService.deleteList(listId: customList!.remoteId);
+    await unifediListService.deleteList(listId: customList!.remoteId);
 
     deletedStreamController.add(null);
 

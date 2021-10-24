@@ -7,8 +7,8 @@ import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/account/repository/account_repository_model.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
 import 'package:fedi/app/chat/conversation/database/conversation_chat_accounts_database_dao.dart';
-import 'package:fedi/app/chat/pleroma/database/pleroma_chat_accounts_database_dao.dart';
-import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
+import 'package:fedi/app/chat/unifedi/database/unifedi_chat_accounts_database_dao.dart';
+import 'package:fedi/app/chat/unifedi/unifedi_chat_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/database/dao/populated_database_dao_mixin.dart';
 import 'package:fedi/app/database/dao/repository/remote/populated_app_remote_database_dao_repository.dart';
@@ -315,7 +315,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       );
 
   @override
-  Future<List<IAccount>> getChatAccounts({required IPleromaChat chat}) =>
+  Future<List<IAccount>> getChatAccounts({required IUnifediChat chat}) =>
       findAllInAppType(
         filters: AccountRepositoryFilters.createForOnlyInChat(
           chat: chat,
@@ -325,7 +325,7 @@ class AccountRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       );
 
   @override
-  Stream<List<IAccount>> watchChatAccounts({required IPleromaChat chat}) =>
+  Stream<List<IAccount>> watchChatAccounts({required IUnifediChat chat}) =>
       watchFindAllInAppType(
         filters: AccountRepositoryFilters.createForOnlyInChat(
           chat: chat,

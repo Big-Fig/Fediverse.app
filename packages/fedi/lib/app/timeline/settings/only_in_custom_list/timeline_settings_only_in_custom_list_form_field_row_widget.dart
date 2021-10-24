@@ -1,4 +1,4 @@
-import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
+import 'package:fedi/app/async/unifedi/unifedi_async_operation_helper.dart';
 import 'package:fedi/app/timeline/settings/only_in_custom_list/timeline_settings_only_in_custom_list_form_field_bloc.dart';
 import 'package:fedi/app/ui/dialog/chooser/selection/single/fedi_single_selection_chooser_dialog.dart';
 import 'package:fedi/app/ui/form/fedi_form_single_choose_custom_field_row.dart';
@@ -41,13 +41,13 @@ class TimelineSettingsOnlyInCustomListFormFieldRowWidget
             fieldBloc.changeCurrentValue(null);
           },
           startCustomSelectCallback: () async {
-            var pleromaListService =
+            var unifediListService =
                 Provider.of<IUnifediApiListService>(context, listen: false);
 
             var dialogResult =
-                await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+                await UnifediAsyncOperationHelper.performUnifediAsyncOperation(
               context: context,
-              asyncCode: () async => pleromaListService.getLists(),
+              asyncCode: () async => unifediListService.getLists(),
             );
 
             if (dialogResult.success) {
@@ -77,8 +77,8 @@ class TimelineSettingsOnlyInCustomListFormFieldRowWidget
           label:
               S.of(context).app_timeline_settings_onlyInRemoteList_field_label,
           value: currentValue,
-          valueToTextMapper: (pleromaList) =>
-              pleromaList?.title ??
+          valueToTextMapper: (unifediList) =>
+              unifediList?.title ??
               S.of(context).app_timeline_settings_onlyInRemoteList_field_null,
           valueToIconMapper: null,
         );

@@ -47,8 +47,8 @@ void main() {
     );
 
     var obj2Obj1CopyWith = obj1.copyWith(
-      replaceConversationsWithPleromaChats:
-          obj2.replaceConversationsWithPleromaChats,
+      replaceConversationsWithUnifediChats:
+          obj2.replaceConversationsWithUnifediChats,
       countConversationsInChatsUnreadBadges:
           obj2.countConversationsInChatsUnreadBadges,
     );

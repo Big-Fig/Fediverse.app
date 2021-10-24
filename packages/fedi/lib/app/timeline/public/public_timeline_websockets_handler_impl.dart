@@ -2,7 +2,7 @@ import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
-import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
+import 'package:fedi/app/chat/unifedi/unifedi_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/instance/announcement/repository/instance_announcement_repository.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
@@ -17,7 +17,7 @@ class PublicTimelineWebSocketsHandler extends WebSocketsChannelHandler {
     required INotificationRepository notificationRepository,
     required IInstanceAnnouncementRepository instanceAnnouncementRepository,
     required IConversationChatRepository conversationRepository,
-    required IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc,
+    required IUnifediChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc,
     required IConversationChatNewMessagesHandlerBloc
         conversationChatNewMessagesHandlerBloc,
     required this.onlyLocal,

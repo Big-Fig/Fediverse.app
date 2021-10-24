@@ -17,7 +17,7 @@ class ChatSettingsAdapter extends TypeAdapter<ChatSettings> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return ChatSettings(
-      replaceConversationsWithPleromaChats: fields[0] as bool,
+      replaceConversationsWithUnifediChats: fields[0] as bool,
       countConversationsInChatsUnreadBadges: fields[1] as bool,
     );
   }
@@ -27,7 +27,7 @@ class ChatSettingsAdapter extends TypeAdapter<ChatSettings> {
     writer
       ..writeByte(2)
       ..writeByte(0)
-      ..write(obj.replaceConversationsWithPleromaChats)
+      ..write(obj.replaceConversationsWithUnifediChats)
       ..writeByte(1)
       ..write(obj.countConversationsInChatsUnreadBadges);
   }
@@ -49,16 +49,16 @@ class ChatSettingsAdapter extends TypeAdapter<ChatSettings> {
 
 _$_ChatSettings _$$_ChatSettingsFromJson(Map<String, dynamic> json) =>
     _$_ChatSettings(
-      replaceConversationsWithPleromaChats:
-          json['replace_conversations_with_pleroma_chats'] as bool,
+      replaceConversationsWithUnifediChats:
+          json['replace_conversations_with_unifedi_chats'] as bool,
       countConversationsInChatsUnreadBadges:
           json['count_conversations_in_chats_unread_badges'] as bool,
     );
 
 Map<String, dynamic> _$$_ChatSettingsToJson(_$_ChatSettings instance) =>
     <String, dynamic>{
-      'replace_conversations_with_pleroma_chats':
-          instance.replaceConversationsWithPleromaChats,
+      'replace_conversations_with_unifedi_chats':
+          instance.replaceConversationsWithUnifediChats,
       'count_conversations_in_chats_unread_badges':
           instance.countConversationsInChatsUnreadBadges,
     };

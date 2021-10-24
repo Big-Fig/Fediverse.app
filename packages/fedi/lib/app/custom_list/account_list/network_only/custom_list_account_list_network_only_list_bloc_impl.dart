@@ -12,14 +12,14 @@ final _logger =
 class CustomListAccountListNetworkOnlyListBloc extends DisposableOwner
     implements ICustomListAccountListNetworkOnlyListBloc {
   final ICustomList? customList;
-  final IUnifediApiListService pleromaListService;
+  final IUnifediApiListService unifediListService;
 
   @override
-  IUnifediApiService get unifediApi => pleromaListService;
+  IUnifediApiService get unifediApi => unifediListService;
 
   CustomListAccountListNetworkOnlyListBloc({
     required this.customList,
-    required this.pleromaListService,
+    required this.unifediListService,
   });
 
   @override
@@ -33,7 +33,7 @@ class CustomListAccountListNetworkOnlyListBloc extends DisposableOwner
     if (customList == null) {
       result = [];
     } else {
-      var unifediApiAccounts = await pleromaListService.getListAccounts(
+      var unifediApiAccounts = await unifediListService.getListAccounts(
         pagination: UnifediApiPagination(
           limit: itemsCountPerPage,
           minId: minId,

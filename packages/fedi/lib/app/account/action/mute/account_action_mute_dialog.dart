@@ -2,7 +2,7 @@ import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/action/mute/account_action_mute_bloc.dart';
 import 'package:fedi/app/account/action/mute/account_action_mute_bloc_impl.dart';
-import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
+import 'package:fedi/app/async/unifedi/unifedi_async_operation_helper.dart';
 import 'package:fedi/app/form/field/value/bool/bool_value_form_field_row_widget.dart';
 import 'package:fedi/app/form/field/value/duration/date_time/duration_date_time_form_field_row_widget.dart';
 import 'package:fedi/app/ui/dialog/fedi_dialog.dart';
@@ -68,7 +68,7 @@ Future<void> showAccountActionMuteDialog({
 
             // todo: check is actually changed
             // ignore: avoid-ignoring-return-values
-            await PleromaAsyncOperationHelper.performPleromaAsyncOperation<
+            await UnifediAsyncOperationHelper.performUnifediAsyncOperation<
                 void>(
               context: context,
               asyncCode: () => accountActionMuteBloc.mute(),

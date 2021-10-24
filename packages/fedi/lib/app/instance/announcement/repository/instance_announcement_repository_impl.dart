@@ -47,7 +47,7 @@ class InstanceAnnouncementRepository
   IUnifediApiAnnouncement mapAppItemToRemoteItem(
     IInstanceAnnouncement appItem,
   ) =>
-      appItem.toPleromaInstanceAnnouncement();
+      appItem.toUnifediInstanceAnnouncement();
 
   @override
   DbInstanceAnnouncementPopulated mapAppItemToDbPopulatedItem(
@@ -67,7 +67,7 @@ class InstanceAnnouncementRepository
   ) =>
       dbPopulatedItem
           .toDbInstanceAnnouncementPopulatedWrapper()
-          .toPleromaInstanceAnnouncement();
+          .toUnifediInstanceAnnouncement();
 
   @override
   IInstanceAnnouncement mapRemoteItemToAppItem(

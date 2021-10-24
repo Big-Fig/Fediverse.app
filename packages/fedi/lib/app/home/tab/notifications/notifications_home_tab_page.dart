@@ -1,6 +1,6 @@
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
+import 'package:fedi/app/async/unifedi/unifedi_async_operation_helper.dart';
 import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
 import 'package:fedi/app/home/tab/notifications/notifications_home_tab_bloc.dart';
@@ -248,7 +248,7 @@ class _NotificationsHomeTabPageBodyHeaderMenuButtonWidget
             const Duration(milliseconds: 100),
             () async {
               // ignore: avoid-ignoring-return-values
-              await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+              await UnifediAsyncOperationHelper.performUnifediAsyncOperation(
                 context: context,
                 asyncCode: () async {
                   await notificationsHomeTabBloc.markAllAsRead();
@@ -275,7 +275,7 @@ class _NotificationsHomeTabPageBodyHeaderMenuButtonWidget
             const Duration(milliseconds: 100),
             () async {
               // ignore: avoid-ignoring-return-values
-              await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+              await UnifediAsyncOperationHelper.performUnifediAsyncOperation(
                 context: context,
                 asyncCode: () async {
                   await notificationsHomeTabBloc.dismissAll();

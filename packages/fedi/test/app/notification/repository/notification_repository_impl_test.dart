@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
-import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository_impl.dart';
+import 'package:fedi/app/chat/unifedi/message/repository/unifedi_chat_message_repository_impl.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/notification/notification_model.dart';
 import 'package:fedi/app/notification/notification_model_adapter.dart';
@@ -23,12 +23,12 @@ import 'notification_repository_test_helper.dart';
 // ignore_for_file: no-magic-number, avoid-late-keyword
 // ignore_for_file: avoid-ignoring-return-values
 
-const String baseUrl = 'https://pleroma.com';
+const String baseUrl = 'https://unifedi.com';
 void main() {
   late AppDatabase database;
   late AccountRepository accountRepository;
   late StatusRepository statusRepository;
-  late PleromaChatMessageRepository chatMessageRepository;
+  late UnifediChatMessageRepository chatMessageRepository;
   late NotificationRepository notificationRepository;
 
   late DbStatusPopulated dbStatusPopulated;
@@ -46,7 +46,7 @@ void main() {
       appDatabase: database,
       accountRepository: accountRepository,
     );
-    chatMessageRepository = PleromaChatMessageRepository(
+    chatMessageRepository = UnifediChatMessageRepository(
       appDatabase: database,
       accountRepository: accountRepository,
     );
@@ -1029,18 +1029,18 @@ void main() {
   //       notificationRepository,
   //       (await NotificationDatabaseMockHelper.createTestDbNotification(seed: 'seed1', dbAccount: dbAccount))
   //           .copyWith(
-  //           type: PleromaNotificationType.follow.toJsonValue(),
+  //           type: UnifediNotificationType.follow.toJsonValue(),
   //           unread: true));
   //
   //   expect(
   //       (await notificationRepository.countUnreadByType(
-  //         type: PleromaNotificationType.reblog,
+  //         type: UnifediNotificationType.reblog,
   //         excludeStatusTextConditions: null,
   //       )),
   //       0);
   //   expect(
   //       (await notificationRepository.countUnreadByType(
-  //         type: PleromaNotificationType.follow,
+  //         type: UnifediNotificationType.follow,
   //         excludeStatusTextConditions: null,
   //       )),
   //       1);
@@ -1054,18 +1054,18 @@ void main() {
   //       notificationRepository,
   //       (await NotificationDatabaseMockHelper.createTestDbNotification(seed: 'seed2', dbAccount: dbAccount))
   //           .copyWith(
-  //           type: PleromaNotificationType.follow.toJsonValue(),
+  //           type: UnifediNotificationType.follow.toJsonValue(),
   //           unread: false));
   //
   //   expect(
   //       (await notificationRepository.countUnreadByType(
-  //         type: PleromaNotificationType.reblog,
+  //         type: UnifediNotificationType.reblog,
   //         excludeStatusTextConditions: null,
   //       )),
   //       0);
   //   expect(
   //       (await notificationRepository.countUnreadByType(
-  //         type: PleromaNotificationType.follow,
+  //         type: UnifediNotificationType.follow,
   //         excludeStatusTextConditions: null,
   //       )),
   //       1);
@@ -1079,18 +1079,18 @@ void main() {
   //       notificationRepository,
   //       (await NotificationDatabaseMockHelper.createTestDbNotification(seed: 'seed3', dbAccount: dbAccount))
   //           .copyWith(
-  //           type: PleromaNotificationType.reblog.toJsonValue(),
+  //           type: UnifediNotificationType.reblog.toJsonValue(),
   //           unread: true));
   //
   //   expect(
   //       (await notificationRepository.countUnreadByType(
-  //         type: PleromaNotificationType.reblog,
+  //         type: UnifediNotificationType.reblog,
   //         excludeStatusTextConditions: null,
   //       )),
   //       1);
   //   expect(
   //       (await notificationRepository.countUnreadByType(
-  //         type: PleromaNotificationType.follow,
+  //         type: UnifediNotificationType.follow,
   //         excludeStatusTextConditions: null,
   //       )),
   //       1);

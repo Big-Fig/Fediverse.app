@@ -17,7 +17,7 @@ import 'filter_repository_test_helper.dart';
 // ignore_for_file: no-magic-number, avoid-late-keyword
 // ignore_for_file: avoid-ignoring-return-values
 
-const String baseUrl = 'https://pleroma.com';
+const String baseUrl = 'https://unifedi.com';
 
 void main() {
   late AppDatabase database;
@@ -125,7 +125,7 @@ void main() {
       dbFilterPopulated: DbFilterPopulated(
         dbFilter: dbFilter.copyWith(id: id, phrase: 'phrase3'),
       ),
-    ).toPleromaFilter();
+    ).toUnifediFilter();
     await filterRepository.updateAppTypeByRemoteType(
       appItem: oldLocalFilter,
       remoteItem: newRemoteFilter,
@@ -151,7 +151,7 @@ void main() {
 
     await filterRepository.upsertInRemoteType(
       DbFilterPopulatedWrapper(dbFilterPopulated: dbFilterPopulated)
-          .toPleromaFilter(),
+          .toUnifediFilter(),
     );
 
     expect(await filterRepository.countAll(), 1);
@@ -164,7 +164,7 @@ void main() {
     // item with same id updated
     await filterRepository.upsertInRemoteType(
       DbFilterPopulatedWrapper(dbFilterPopulated: dbFilterPopulated)
-          .toPleromaFilter(),
+          .toUnifediFilter(),
     );
     expect(await filterRepository.countAll(), 1);
 
@@ -179,7 +179,7 @@ void main() {
     await filterRepository.upsertAllInRemoteType(
       [
         DbFilterPopulatedWrapper(dbFilterPopulated: dbFilterPopulated)
-            .toPleromaFilter(),
+            .toUnifediFilter(),
       ],
       batchTransaction: null,
     );
@@ -194,7 +194,7 @@ void main() {
     await filterRepository.upsertAllInRemoteType(
       [
         DbFilterPopulatedWrapper(dbFilterPopulated: dbFilterPopulated)
-            .toPleromaFilter(),
+            .toUnifediFilter(),
       ],
       batchTransaction: null,
     );

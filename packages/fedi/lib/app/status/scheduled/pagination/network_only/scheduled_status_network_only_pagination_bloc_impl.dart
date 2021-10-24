@@ -1,6 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:fedi/app/list/network_only/network_only_list_bloc.dart';
-import 'package:fedi/app/pagination/network_only/network_only_pleroma_pagination_bloc_impl.dart';
+import 'package:fedi/app/pagination/network_only/network_only_unifedi_pagination_bloc_impl.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/status/scheduled/pagination/network_only/scheduled_status_network_only_pagination_bloc.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_model.dart';
@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
 class ScheduledStatusNetworkOnlyPaginationBloc
-    extends NetworkOnlyPleromaPaginationBloc<IScheduledStatus>
+    extends NetworkOnlyUnifediPaginationBloc<IScheduledStatus>
     implements IScheduledStatusNetworkOnlyPaginationBloc {
   final INetworkOnlyListBloc<IScheduledStatus> listService;
 

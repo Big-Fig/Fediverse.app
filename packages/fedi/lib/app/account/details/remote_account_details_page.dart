@@ -8,7 +8,7 @@ import 'package:fedi/app/account/details/account_details_bloc.dart';
 import 'package:fedi/app/account/details/account_details_bloc_impl.dart';
 import 'package:fedi/app/account/details/account_details_page.dart';
 import 'package:fedi/app/account/remote_account_bloc_impl.dart';
-import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
+import 'package:fedi/app/async/unifedi/unifedi_async_operation_helper.dart';
 import 'package:fedi/app/instance/remote/remote_instance_bloc.dart';
 import 'package:fedi/app/instance/remote/remote_instance_bloc_impl.dart';
 import 'package:fedi/app/instance/remote/remote_instance_error_data.dart';
@@ -68,7 +68,7 @@ Future<void> goToRemoteAccountDetailsPageBasedOnLocalInstanceRemoteAccount(
   );
 
   var remoteInstanceAccountDialogResult =
-      await PleromaAsyncOperationHelper.performPleromaAsyncOperation<IAccount?>(
+      await UnifediAsyncOperationHelper.performUnifediAsyncOperation<IAccount?>(
     context: context,
     errorDataBuilders: [
       remoteInstanceLoadDataErrorAlertDialogBuilder,
@@ -106,7 +106,7 @@ Future<void> goToRemoteAccountDetailsPageBasedOnLocalInstanceRemoteAccount(
           );
           // ignore: avoid_catches_without_on_clauses
         } catch (e) {
-          // load in Pleroma way. Use username as id
+          // load in Unifedi way. Use username as id
           var unifediApiAccount = await unifediApiAccountService.getAccount(
             accountId: localInstanceRemoteAccount.username,
             withRelationship: false,

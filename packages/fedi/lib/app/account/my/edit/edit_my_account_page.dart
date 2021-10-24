@@ -2,7 +2,7 @@ import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/account/my/edit/edit_my_account_bloc.dart';
 import 'package:fedi/app/account/my/edit/edit_my_account_bloc_impl.dart';
 import 'package:fedi/app/account/my/edit/edit_my_account_widget.dart';
-import 'package:fedi/app/async/pleroma/pleroma_async_operation_button_builder_widget.dart';
+import 'package:fedi/app/async/unifedi/unifedi_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button.dart';
 import 'package:fedi/app/ui/dialog/alert/fedi_confirm_alert_dialog.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_app_bar_text_action_widget.dart';
@@ -83,7 +83,7 @@ class _EditMyAccountPageAppBarSaveAction extends StatelessWidget {
       builder: (context, snapshot) {
         var isReadyToSubmit = snapshot.data;
 
-        return PleromaAsyncOperationButtonBuilderWidget(
+        return UnifediAsyncOperationButtonBuilderWidget(
           showProgressDialog: true,
           progressContentMessage:
               S.of(context).app_status_post_dialog_async_content,

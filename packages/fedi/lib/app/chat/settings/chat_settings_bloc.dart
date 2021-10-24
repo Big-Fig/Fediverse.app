@@ -11,11 +11,11 @@ abstract class IChatSettingsBloc
   }) =>
       Provider.of<IChatSettingsBloc>(context, listen: listen);
 
-  bool get replaceConversationsWithPleromaChats;
+  bool get replaceConversationsWithUnifediChats;
 
-  Stream<bool> get replaceConversationsWithPleromaChatsStream;
+  Stream<bool> get replaceConversationsWithUnifediChatsStream;
 
-  Future<void> changeReplaceConversationsWithPleromaChats({
+  Future<void> changeReplaceConversationsWithUnifediChats({
     required bool replaceConversationsWithChats,
   });
 

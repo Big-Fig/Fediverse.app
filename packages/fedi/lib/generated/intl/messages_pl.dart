@@ -94,11 +94,11 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m33(status) => "${status}.";
 
-  static String m34(status) => "${status}.";
+  static String m34(acct) => "Zgłoszenie od ${acct}";
 
-  static String m35(emoji) => "${emoji} na twój wpis.";
+  static String m35(status) => "${status}.";
 
-  static String m36(acct) => "Zgłoszenie od ${acct}";
+  static String m36(emoji) => "${emoji} na twój wpis.";
 
   static String m37(status) => "Nieznane: ${status}";
 
@@ -120,13 +120,13 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m45(acct) => "${acct} przeniósł(-osła) się";
 
-  static String m46(acct) => "Czat z ${acct}";
+  static String m46(acct) => "${acct} udostępnił(a) twój wpis";
 
-  static String m47(acct, emoji) => "${acct} zareagował(a) ${emoji}";
+  static String m47(acct) => "Czat z ${acct}";
 
-  static String m48(acct) => "${acct} zgłosił(a) twój wpis";
+  static String m48(acct, emoji) => "${acct} zareagował(a) ${emoji}";
 
-  static String m49(acct) => "${acct} udostępnił(a) twój wpis";
+  static String m49(acct) => "${acct} zgłosił(a) twój wpis";
 
   static String m50(userAtHost) => "Ustawienia: ${userAtHost}";
 
@@ -440,59 +440,59 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Twój opis i odnośniki do stron"),
         "app_account_my_edit_field_note_label":
             MessageLookupByLibrary.simpleMessage("Notatka"),
-        "app_account_my_edit_field_pleroma_acceptsChatMessages_description":
+        "app_account_my_edit_field_unifedi_acceptsChatMessages_description":
             MessageLookupByLibrary.simpleMessage(
                 "Wyłącz, aby odrzucać wszystkie wiadomości"),
-        "app_account_my_edit_field_pleroma_acceptsChatMessages_label":
+        "app_account_my_edit_field_unifedi_acceptsChatMessages_label":
             MessageLookupByLibrary.simpleMessage("Akceptuje wiadomości czatu"),
-        "app_account_my_edit_field_pleroma_allowFollowingMove_description":
+        "app_account_my_edit_field_unifedi_allowFollowingMove_description":
             MessageLookupByLibrary.simpleMessage(
                 "Automatycznie obserwuj przenoszone konta"),
-        "app_account_my_edit_field_pleroma_allowFollowingMove_label":
+        "app_account_my_edit_field_unifedi_allowFollowingMove_label":
             MessageLookupByLibrary.simpleMessage(
                 "Pozwól na przenoszenie obserwowanych"),
-        "app_account_my_edit_field_pleroma_background_dialog_action_crop":
+        "app_account_my_edit_field_unifedi_background_dialog_action_crop":
             MessageLookupByLibrary.simpleMessage("Przytnij"),
-        "app_account_my_edit_field_pleroma_background_dialog_action_select":
+        "app_account_my_edit_field_unifedi_background_dialog_action_select":
             MessageLookupByLibrary.simpleMessage("Wybierz"),
-        "app_account_my_edit_field_pleroma_background_dialog_title":
+        "app_account_my_edit_field_unifedi_background_dialog_title":
             MessageLookupByLibrary.simpleMessage("Tło Pleromy"),
-        "app_account_my_edit_field_pleroma_hideFavourites_description":
+        "app_account_my_edit_field_unifedi_hideFavourites_description":
             MessageLookupByLibrary.simpleMessage(
                 "Tylko prywatny dostęp do listy ulubionych"),
-        "app_account_my_edit_field_pleroma_hideFavourites_label":
+        "app_account_my_edit_field_unifedi_hideFavourites_label":
             MessageLookupByLibrary.simpleMessage("Ukryj ulubione"),
-        "app_account_my_edit_field_pleroma_hideFollowersCount_description":
+        "app_account_my_edit_field_unifedi_hideFollowersCount_description":
             MessageLookupByLibrary.simpleMessage(
                 "Wyświetlaj „0” jako liczbę obserwujących"),
-        "app_account_my_edit_field_pleroma_hideFollowersCount_label":
+        "app_account_my_edit_field_unifedi_hideFollowersCount_label":
             MessageLookupByLibrary.simpleMessage("Ukryj liczbę obserwujących"),
-        "app_account_my_edit_field_pleroma_hideFollowers_description":
+        "app_account_my_edit_field_unifedi_hideFollowers_description":
             MessageLookupByLibrary.simpleMessage(
                 "Tylko prywatny dostęp do listy obserwujących"),
-        "app_account_my_edit_field_pleroma_hideFollowers_label":
+        "app_account_my_edit_field_unifedi_hideFollowers_label":
             MessageLookupByLibrary.simpleMessage("Ukryj obserwujących"),
-        "app_account_my_edit_field_pleroma_hideFollowsCount_description":
+        "app_account_my_edit_field_unifedi_hideFollowsCount_description":
             MessageLookupByLibrary.simpleMessage(
                 "Wyświetlaj „0” jako liczbę obserwowanych"),
-        "app_account_my_edit_field_pleroma_hideFollowsCount_label":
+        "app_account_my_edit_field_unifedi_hideFollowsCount_label":
             MessageLookupByLibrary.simpleMessage("Ukryj liczbę obserwowanych"),
-        "app_account_my_edit_field_pleroma_hideFollows_description":
+        "app_account_my_edit_field_unifedi_hideFollows_description":
             MessageLookupByLibrary.simpleMessage(
                 "Pozwalaj tylko na prywatny dostęp do listy obserwowanych"),
-        "app_account_my_edit_field_pleroma_hideFollows_label":
+        "app_account_my_edit_field_unifedi_hideFollows_label":
             MessageLookupByLibrary.simpleMessage("Ukryj obserwowanych"),
-        "app_account_my_edit_field_pleroma_noRichText_description":
+        "app_account_my_edit_field_unifedi_noRichText_description":
             MessageLookupByLibrary.simpleMessage("Wycinaj tagi html"),
-        "app_account_my_edit_field_pleroma_noRichText_label":
+        "app_account_my_edit_field_unifedi_noRichText_label":
             MessageLookupByLibrary.simpleMessage("Ignoruj tekst sformatowany"),
-        "app_account_my_edit_field_pleroma_showRole_description":
+        "app_account_my_edit_field_unifedi_showRole_description":
             MessageLookupByLibrary.simpleMessage("np. Admin, Moderator"),
-        "app_account_my_edit_field_pleroma_showRole_label":
+        "app_account_my_edit_field_unifedi_showRole_label":
             MessageLookupByLibrary.simpleMessage("Pokazuj rolę"),
-        "app_account_my_edit_field_pleroma_skipThreadContainment_description":
+        "app_account_my_edit_field_unifedi_skipThreadContainment_description":
             MessageLookupByLibrary.simpleMessage("Pomiń uszkodzone wątki"),
-        "app_account_my_edit_field_pleroma_skipThreadContainment_label":
+        "app_account_my_edit_field_unifedi_skipThreadContainment_label":
             MessageLookupByLibrary.simpleMessage("Pomiń blokowanie wątku"),
         "app_account_my_edit_title":
             MessageLookupByLibrary.simpleMessage("Edytuj konto"),
@@ -603,19 +603,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Z odpowiedziami"),
         "app_account_statuses_tab_withoutReplies":
             MessageLookupByLibrary.simpleMessage("Wpisy"),
-        "app_async_pleroma_error_common_dialog_content": m9,
-        "app_async_pleroma_error_common_dialog_title":
-            MessageLookupByLibrary.simpleMessage("Błąd API"),
-        "app_async_pleroma_error_forbidden_dialog_content": m10,
-        "app_async_pleroma_error_forbidden_dialog_title":
-            MessageLookupByLibrary.simpleMessage(
-                "Zabroniono. Nieprawidłowe działanie lub wyczerpana sesja"),
-        "app_async_pleroma_error_throttled_dialog_content":
-            MessageLookupByLibrary.simpleMessage(
-                "Zbyt wiele działań na minutę. Poczekaj, zanim zrobisz coś ponownie."),
-        "app_async_pleroma_error_throttled_dialog_title":
-            MessageLookupByLibrary.simpleMessage(
-                "Serwer zablokował działanie."),
         "app_async_socket_error_dialog_content":
             MessageLookupByLibrary.simpleMessage(
                 "Brak sieci, lub zdalny serwer jest niedostępny"),
@@ -627,6 +614,19 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_async_timeout_error_dialog_title":
             MessageLookupByLibrary.simpleMessage(
                 "Przekroczono czas oczekiwania"),
+        "app_async_unifedi_error_common_dialog_content": m9,
+        "app_async_unifedi_error_common_dialog_title":
+            MessageLookupByLibrary.simpleMessage("Błąd API"),
+        "app_async_unifedi_error_forbidden_dialog_content": m10,
+        "app_async_unifedi_error_forbidden_dialog_title":
+            MessageLookupByLibrary.simpleMessage(
+                "Zabroniono. Nieprawidłowe działanie lub wyczerpana sesja"),
+        "app_async_unifedi_error_throttled_dialog_content":
+            MessageLookupByLibrary.simpleMessage(
+                "Zbyt wiele działań na minutę. Poczekaj, zanim zrobisz coś ponownie."),
+        "app_async_unifedi_error_throttled_dialog_title":
+            MessageLookupByLibrary.simpleMessage(
+                "Serwer zablokował działanie."),
         "app_auth_instance_chooser_action_addInstance":
             MessageLookupByLibrary.simpleMessage("Dodaj konto"),
         "app_auth_instance_current_context_loading_cantLoad_action_chooseDifferentAccount":
@@ -859,13 +859,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_chat_message_pending_tapToViewOptions":
             MessageLookupByLibrary.simpleMessage(
                 "Naciśnij, aby zobaczyć opcje."),
-        "app_chat_pleroma_account_notAcceptsChatMessages_toast":
-            MessageLookupByLibrary.simpleMessage(
-                "Użytkownik wyłączył możliwość czatu"),
-        "app_chat_pleroma_accounts_title":
-            MessageLookupByLibrary.simpleMessage("Konta czatów"),
-        "app_chat_pleroma_share_title":
-            MessageLookupByLibrary.simpleMessage("Udostępnij w wiadomościach"),
         "app_chat_post_error_empty_dialog_title":
             MessageLookupByLibrary.simpleMessage(
                 "Nie można wysłać pustej wiadomości"),
@@ -886,10 +879,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_chat_settings_field_countConversationsInChatsUnreadBadges_label":
             MessageLookupByLibrary.simpleMessage(
                 "Licz konwersacje w nieprzeczytanych"),
-        "app_chat_settings_field_replaceConversationsWithPleromaChats_label":
+        "app_chat_settings_field_replaceConversationsWithUnifediChats_label":
             MessageLookupByLibrary.simpleMessage(
                 "Zamień „Konwersacje” „Czatami”"),
         "app_chat_settings_title": MessageLookupByLibrary.simpleMessage("Czat"),
+        "app_chat_unifedi_account_notAcceptsChatMessages_toast":
+            MessageLookupByLibrary.simpleMessage(
+                "Użytkownik wyłączył możliwość czatu"),
+        "app_chat_unifedi_accounts_title":
+            MessageLookupByLibrary.simpleMessage("Konta czatów"),
+        "app_chat_unifedi_share_title":
+            MessageLookupByLibrary.simpleMessage("Udostępnij w wiadomościach"),
         "app_crashReporting_ask_dialog_content":
             MessageLookupByLibrary.simpleMessage(
                 "Czy chcesz włączyć zgłaszanie błędów?\nTo pomoże nam czynić aplikację bardziej stabilną.\nMożesz zmienić tę opcję później w ustawieniach"),
@@ -1004,15 +1004,15 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Do czatów"),
         "app_home_tab_chat_conversation_title":
             MessageLookupByLibrary.simpleMessage("Konwersacje"),
-        "app_home_tab_chat_pleroma_action_switch_to_dms":
+        "app_home_tab_chat_unifedi_action_switch_to_dms":
             MessageLookupByLibrary.simpleMessage("Do konwersacji"),
-        "app_home_tab_chat_pleroma_notSupported_mastodon":
+        "app_home_tab_chat_unifedi_notSupported_mastodon":
             MessageLookupByLibrary.simpleMessage(
                 "Czaty nie są obsługiwane przez instancje Mastodona"),
-        "app_home_tab_chat_pleroma_notSupported_pleroma":
+        "app_home_tab_chat_unifedi_notSupported_unifedi":
             MessageLookupByLibrary.simpleMessage(
                 "Ta instancja nie obsługuje czatów"),
-        "app_home_tab_chat_pleroma_title":
+        "app_home_tab_chat_unifedi_title":
             MessageLookupByLibrary.simpleMessage("Czaty"),
         "app_init_fail": MessageLookupByLibrary.simpleMessage(
             "Nie udało się uruchomić aplikacji.\nUruchom ponownie lub reinstaluj aplikację."),
@@ -1077,27 +1077,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Ograniczenia wiadomości"),
         "app_instance_details_field_metadata_title":
             MessageLookupByLibrary.simpleMessage("Metadane"),
-        "app_instance_details_field_pleroma_metadata_features_label":
-            MessageLookupByLibrary.simpleMessage("Możliwości"),
-        "app_instance_details_field_pleroma_metadata_fields_maxFields_label":
-            MessageLookupByLibrary.simpleMessage("Maksymalna liczba pól"),
-        "app_instance_details_field_pleroma_metadata_fields_maxRemoteFields_label":
-            MessageLookupByLibrary.simpleMessage(
-                "Maksymalna liczba zdalnych pól"),
-        "app_instance_details_field_pleroma_metadata_fields_nameLength_label":
-            MessageLookupByLibrary.simpleMessage("Maksymalna długość nazwy"),
-        "app_instance_details_field_pleroma_metadata_fields_postFormats_label":
-            MessageLookupByLibrary.simpleMessage("Formaty wpisów"),
-        "app_instance_details_field_pleroma_metadata_fields_title":
-            MessageLookupByLibrary.simpleMessage("Ograniczenie pól"),
-        "app_instance_details_field_pleroma_metadata_fields_valueLength_label":
-            MessageLookupByLibrary.simpleMessage("Maksymalna długość wartości"),
-        "app_instance_details_field_pleroma_metadata_fields_verstionType_value_mastodon":
-            MessageLookupByLibrary.simpleMessage("Mastodon"),
-        "app_instance_details_field_pleroma_metadata_fields_verstionType_value_pleroma":
-            MessageLookupByLibrary.simpleMessage("Pleroma"),
-        "app_instance_details_field_pleroma_metadata_fields_verstionType_value_unknown":
-            MessageLookupByLibrary.simpleMessage("Nieznana"),
         "app_instance_details_field_pollLimit_maxExpiration_label":
             MessageLookupByLibrary.simpleMessage("Maksymalny czas trwania"),
         "app_instance_details_field_pollLimit_maxOptionsChars_label":
@@ -1128,6 +1107,27 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Na czasie"),
         "app_instance_details_field_trends_value":
             MessageLookupByLibrary.simpleMessage("Hashtagi"),
+        "app_instance_details_field_unifedi_metadata_features_label":
+            MessageLookupByLibrary.simpleMessage("Możliwości"),
+        "app_instance_details_field_unifedi_metadata_fields_maxFields_label":
+            MessageLookupByLibrary.simpleMessage("Maksymalna liczba pól"),
+        "app_instance_details_field_unifedi_metadata_fields_maxRemoteFields_label":
+            MessageLookupByLibrary.simpleMessage(
+                "Maksymalna liczba zdalnych pól"),
+        "app_instance_details_field_unifedi_metadata_fields_nameLength_label":
+            MessageLookupByLibrary.simpleMessage("Maksymalna długość nazwy"),
+        "app_instance_details_field_unifedi_metadata_fields_postFormats_label":
+            MessageLookupByLibrary.simpleMessage("Formaty wpisów"),
+        "app_instance_details_field_unifedi_metadata_fields_title":
+            MessageLookupByLibrary.simpleMessage("Ograniczenie pól"),
+        "app_instance_details_field_unifedi_metadata_fields_valueLength_label":
+            MessageLookupByLibrary.simpleMessage("Maksymalna długość wartości"),
+        "app_instance_details_field_unifedi_metadata_fields_verstionType_value_mastodon":
+            MessageLookupByLibrary.simpleMessage("Mastodon"),
+        "app_instance_details_field_unifedi_metadata_fields_verstionType_value_unifedi":
+            MessageLookupByLibrary.simpleMessage("Unifedi"),
+        "app_instance_details_field_unifedi_metadata_fields_verstionType_value_unknown":
+            MessageLookupByLibrary.simpleMessage("Nieznana"),
         "app_instance_details_field_uploadAvatar_label":
             MessageLookupByLibrary.simpleMessage(
                 "Ograniczenie wysyłanych awatarów"),
@@ -1261,15 +1261,15 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Wspomniał(a) o tobie: "),
         "app_notification_header_move":
             MessageLookupByLibrary.simpleMessage("Przeniósł(-osła) się."),
-        "app_notification_header_pleromaChatMention_postfix": m34,
-        "app_notification_header_pleromaChatMention_prefix":
-            MessageLookupByLibrary.simpleMessage("Czat: "),
-        "app_notification_header_pleromaEmojiReaction": m35,
         "app_notification_header_poll": MessageLookupByLibrary.simpleMessage(
             "Ankieta w której głosowałeś(-aś) zakończyła się."),
         "app_notification_header_reblog":
             MessageLookupByLibrary.simpleMessage("Udostępnił(a) twój wpis."),
-        "app_notification_header_report": m36,
+        "app_notification_header_report": m34,
+        "app_notification_header_unifediChatMention_postfix": m35,
+        "app_notification_header_unifediChatMention_prefix":
+            MessageLookupByLibrary.simpleMessage("Czat: "),
+        "app_notification_header_unifediEmojiReaction": m36,
         "app_notification_header_unknown": m37,
         "app_notification_list_newItems_action_tapToLoadNew": m38,
         "app_pagination_settings_pageSize_label":
@@ -1308,21 +1308,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Gdy ktoś przeniósł się"),
         "app_push_channel_move_name":
             MessageLookupByLibrary.simpleMessage("Przenoszenie"),
-        "app_push_channel_pleromaChatMention_description":
-            MessageLookupByLibrary.simpleMessage(
-                "Wiadomości czatu wyłącznego dla Pleromy"),
-        "app_push_channel_pleromaChatMention_name":
-            MessageLookupByLibrary.simpleMessage("Czat"),
-        "app_push_channel_pleromaEmojiReaction_description":
-            MessageLookupByLibrary.simpleMessage(
-                "Reakcje emoji do wpisów wyłączne dla Pleromy"),
-        "app_push_channel_pleromaEmojiReaction_name":
-            MessageLookupByLibrary.simpleMessage("Reakcje emoji"),
-        "app_push_channel_pleromaReport_description":
-            MessageLookupByLibrary.simpleMessage(
-                "Kiedy ludzie zgłaszają twoje wpisy"),
-        "app_push_channel_pleromaReport_name":
-            MessageLookupByLibrary.simpleMessage("Zgłoszenia"),
         "app_push_channel_poll_description":
             MessageLookupByLibrary.simpleMessage(
                 "Powiadomienia związane z ankietami"),
@@ -1333,6 +1318,21 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Kiedy ktoś udostępni twój wpis"),
         "app_push_channel_reblog_name":
             MessageLookupByLibrary.simpleMessage("Udostępnienie(podbicie)"),
+        "app_push_channel_unifediChatMention_description":
+            MessageLookupByLibrary.simpleMessage(
+                "Wiadomości czatu wyłącznego dla Pleromy"),
+        "app_push_channel_unifediChatMention_name":
+            MessageLookupByLibrary.simpleMessage("Czat"),
+        "app_push_channel_unifediEmojiReaction_description":
+            MessageLookupByLibrary.simpleMessage(
+                "Reakcje emoji do wpisów wyłączne dla Pleromy"),
+        "app_push_channel_unifediEmojiReaction_name":
+            MessageLookupByLibrary.simpleMessage("Reakcje emoji"),
+        "app_push_channel_unifediReport_description":
+            MessageLookupByLibrary.simpleMessage(
+                "Kiedy ludzie zgłaszają twoje wpisy"),
+        "app_push_channel_unifediReport_name":
+            MessageLookupByLibrary.simpleMessage("Zgłoszenia"),
         "app_push_channel_unknown_description":
             MessageLookupByLibrary.simpleMessage(
                 "Nieznany rodzaj powiadomienia, jeszcze nieobsługiwany przez Fedi"),
@@ -1381,22 +1381,22 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_push_richNotification_move_summary":
             MessageLookupByLibrary.simpleMessage("Ktoś przeniósł się"),
         "app_push_richNotification_move_title": m45,
-        "app_push_richNotification_pleromaChatMention_summary":
-            MessageLookupByLibrary.simpleMessage("Masz nową wiadomość czatu"),
-        "app_push_richNotification_pleromaChatMention_title": m46,
-        "app_push_richNotification_pleromaEmojiReaction_summary":
-            MessageLookupByLibrary.simpleMessage("Ktoś zareagował"),
-        "app_push_richNotification_pleromaEmojiReaction_title": m47,
-        "app_push_richNotification_pleromaReport_summary":
-            MessageLookupByLibrary.simpleMessage("Ktoś zgłosił twój wpis"),
-        "app_push_richNotification_pleromaReport_title": m48,
         "app_push_richNotification_poll_summary":
             MessageLookupByLibrary.simpleMessage("Zmieniono ankietę"),
         "app_push_richNotification_poll_title":
             MessageLookupByLibrary.simpleMessage("Zmieniono ankietę"),
         "app_push_richNotification_reblog_summary":
             MessageLookupByLibrary.simpleMessage("Ktoś udostępnił twój wpis"),
-        "app_push_richNotification_reblog_title": m49,
+        "app_push_richNotification_reblog_title": m46,
+        "app_push_richNotification_unifediChatMention_summary":
+            MessageLookupByLibrary.simpleMessage("Masz nową wiadomość czatu"),
+        "app_push_richNotification_unifediChatMention_title": m47,
+        "app_push_richNotification_unifediEmojiReaction_summary":
+            MessageLookupByLibrary.simpleMessage("Ktoś zareagował"),
+        "app_push_richNotification_unifediEmojiReaction_title": m48,
+        "app_push_richNotification_unifediReport_summary":
+            MessageLookupByLibrary.simpleMessage("Ktoś zgłosił twój wpis"),
+        "app_push_richNotification_unifediReport_title": m49,
         "app_push_richNotification_unknown_summary":
             MessageLookupByLibrary.simpleMessage("Coś wydarzyło się"),
         "app_push_richNotification_unknown_title":
@@ -1411,14 +1411,14 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Obserwacje"),
         "app_push_settings_field_mentions_label":
             MessageLookupByLibrary.simpleMessage("Oznaczenia"),
-        "app_push_settings_field_pleroma_chat_label":
-            MessageLookupByLibrary.simpleMessage("Czaty"),
-        "app_push_settings_field_pleroma_emojiReaction_label":
-            MessageLookupByLibrary.simpleMessage("Reakcje emoji"),
         "app_push_settings_field_polls_label":
             MessageLookupByLibrary.simpleMessage("Ankiety"),
         "app_push_settings_field_reblogs_label":
             MessageLookupByLibrary.simpleMessage("Podbicia"),
+        "app_push_settings_field_unifedi_chat_label":
+            MessageLookupByLibrary.simpleMessage("Czaty"),
+        "app_push_settings_field_unifedi_emojiReaction_label":
+            MessageLookupByLibrary.simpleMessage("Reakcje emoji"),
         "app_push_settings_title":
             MessageLookupByLibrary.simpleMessage("Powiadomienia push"),
         "app_push_settings_update_fail_dialog_title":
@@ -1727,7 +1727,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_timeline_settings_field_withMuted_label":
             MessageLookupByLibrary.simpleMessage("Z wyciszonymi"),
         "app_timeline_settings_onlyFromInstance_field_hint":
-            MessageLookupByLibrary.simpleMessage("pleroma.com"),
+            MessageLookupByLibrary.simpleMessage("unifedi.com"),
         "app_timeline_settings_onlyFromInstance_field_label":
             MessageLookupByLibrary.simpleMessage("Tylko z instancji"),
         "app_timeline_settings_onlyFromRemoteAccount_field_label":
@@ -1752,7 +1752,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_timeline_settings_title":
             MessageLookupByLibrary.simpleMessage("Ustawienia:"),
         "app_timeline_settings_withRemoteHashtag_field_hint":
-            MessageLookupByLibrary.simpleMessage("pleroma"),
+            MessageLookupByLibrary.simpleMessage("unifedi"),
         "app_timeline_settings_withRemoteHashtag_field_label":
             MessageLookupByLibrary.simpleMessage("Z hashtagiem"),
         "app_timeline_storage_action_add":

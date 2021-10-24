@@ -1,4 +1,4 @@
-import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
+import 'package:fedi/app/async/unifedi/unifedi_async_operation_helper.dart';
 import 'package:fedi/app/chat/message/chat_message_bloc.dart';
 import 'package:fedi/app/ui/dialog/actions/fedi_actions_dialog.dart';
 import 'package:fedi/dialog/dialog_model.dart';
@@ -18,8 +18,8 @@ Future<void> showChatMessagePendingActionsDialog({
               .of(context)
               .app_chat_message_pending_actions_dialog_action_resend,
           onAction: (BuildContext context) async {
-            var dialogResult = await PleromaAsyncOperationHelper
-                .performPleromaAsyncOperation<void>(
+            var dialogResult = await UnifediAsyncOperationHelper
+                .performUnifediAsyncOperation<void>(
               context: context,
               asyncCode: () => chatMessageBloc.resendPendingFailed(),
             );
@@ -35,8 +35,8 @@ Future<void> showChatMessagePendingActionsDialog({
               .app_chat_message_pending_actions_dialog_action_delete,
           customColor: IUiColorTheme.of(context, listen: false).error,
           onAction: (BuildContext context) async {
-            var dialogResult = await PleromaAsyncOperationHelper
-                .performPleromaAsyncOperation<void>(
+            var dialogResult = await UnifediAsyncOperationHelper
+                .performUnifediAsyncOperation<void>(
               context: context,
               asyncCode: () => chatMessageBloc.delete(),
             );

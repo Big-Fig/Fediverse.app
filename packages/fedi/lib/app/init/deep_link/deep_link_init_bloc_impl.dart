@@ -16,14 +16,14 @@ var _logger = Logger('deep_link_init_bloc_impl.dart');
 class DeepLinkInitBloc extends AsyncInitLoadingBloc
     implements IDeepLinkInitBloc {
   final IAuthApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc
-      pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc;
+      oAuthLastLaunchedHostToLoginLocalPreferenceBloc;
   final ILocalPreferencesService localPreferencesService;
   final IConnectionService connectionService;
   final ICurrentUnifediApiAccessBloc currentUnifediApiAccessBloc;
   final IConfigService configService;
 
   DeepLinkInitBloc({
-    required this.pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc,
+    required this.oAuthLastLaunchedHostToLoginLocalPreferenceBloc,
     required this.localPreferencesService,
     required this.connectionService,
     required this.currentUnifediApiAccessBloc,
@@ -41,7 +41,7 @@ class DeepLinkInitBloc extends AsyncInitLoadingBloc
 
   Future<void> _handleLoginOnAndroidWithoutChrome(Uri initialUri) async {
     var lastLaunchedHost =
-        pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc.value;
+        oAuthLastLaunchedHostToLoginLocalPreferenceBloc.value;
 
     _logger.finest(
       () => 'initialUri = $initialUri '
@@ -54,8 +54,8 @@ class DeepLinkInitBloc extends AsyncInitLoadingBloc
         preferencesService: localPreferencesService,
         connectionService: connectionService,
         currentInstanceBloc: currentUnifediApiAccessBloc,
-        pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc:
-            pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc,
+        oAuthLastLaunchedHostToLoginLocalPreferenceBloc:
+            oAuthLastLaunchedHostToLoginLocalPreferenceBloc,
       );
       await authHostBloc.performAsyncInit();
 

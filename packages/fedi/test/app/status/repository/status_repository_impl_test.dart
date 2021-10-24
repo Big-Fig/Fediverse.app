@@ -25,7 +25,7 @@ import 'status_repository_test_helper.dart';
 
 // ignore_for_file: avoid-ignoring-return-values
 // ignore_for_file: no-magic-number, avoid-late-keyword
-const String baseUrl = 'https://pleroma.com';
+const String baseUrl = 'https://unifedi.com';
 
 void main() {
   late AppDatabase database;
@@ -380,7 +380,7 @@ void main() {
     var query = statusRepository.createQuery(
       filters: StatusRepositoryFilters.only(
         onlyLocalCondition:
-            StatusOnlyLocalCondition(localUrlHost: 'pleroma.com'),
+            StatusOnlyLocalCondition(localUrlHost: 'unifedi.com'),
       ),
       pagination: null,
       orderingTermData: null,
@@ -392,7 +392,7 @@ void main() {
         seed: 'seed1',
         dbAccount: dbAccount,
       ))
-          .copyWith(local: false, url: 'https://pleroma.com/one'),
+          .copyWith(local: false, url: 'https://unifedi.com/one'),
     );
 
     expect((await query.get()).length, 1);
@@ -415,7 +415,7 @@ void main() {
         seed: 'seed3',
         dbAccount: dbAccount,
       ))
-          .copyWith(local: false, url: 'https://pleroma.com/two'),
+          .copyWith(local: false, url: 'https://unifedi.com/two'),
     );
 
     // check local flag
@@ -2165,7 +2165,7 @@ void main() {
     var query = statusRepository.createQuery(
       filters: StatusRepositoryFilters.only(
         onlyRemoteCondition:
-            StatusOnlyRemoteCondition(localUrlHost: 'pleroma.com'),
+            StatusOnlyRemoteCondition(localUrlHost: 'unifedi.com'),
       ),
       pagination: null,
       orderingTermData: null,
@@ -2179,7 +2179,7 @@ void main() {
       ))
           .copyWith(
         local: false,
-        url: 'https://pleroma.com/one',
+        url: 'https://unifedi.com/one',
       ),
     );
 
@@ -2208,7 +2208,7 @@ void main() {
       ))
           .copyWith(
         local: false,
-        url: 'https://pleroma.com/two',
+        url: 'https://unifedi.com/two',
       ),
     );
 
@@ -2233,7 +2233,7 @@ void main() {
     var query = statusRepository.createQuery(
       filters: StatusRepositoryFilters.only(
         onlyRemoteCondition: StatusOnlyRemoteCondition(
-          localUrlHost: 'pleroma.com',
+          localUrlHost: 'unifedi.com',
         ),
       ),
       pagination: null,
@@ -2248,7 +2248,7 @@ void main() {
       ))
           .copyWith(
         local: false,
-        url: 'https://pleroma.com/one',
+        url: 'https://unifedi.com/one',
       ),
     );
 
@@ -2277,7 +2277,7 @@ void main() {
       ))
           .copyWith(
         local: false,
-        url: 'https://pleroma.com/two',
+        url: 'https://unifedi.com/two',
       ),
     );
 
@@ -2304,10 +2304,10 @@ void main() {
         statusRepository.createQuery(
           filters: StatusRepositoryFilters.only(
             onlyRemoteCondition: StatusOnlyRemoteCondition(
-              localUrlHost: 'pleroma.com',
+              localUrlHost: 'unifedi.com',
             ),
             onlyLocalCondition: StatusOnlyLocalCondition(
-              localUrlHost: 'pleroma.com',
+              localUrlHost: 'unifedi.com',
             ),
           ),
           pagination: null,
@@ -2323,7 +2323,7 @@ void main() {
       () {
         statusRepository.createQuery(
           filters: StatusRepositoryFilters.only(
-            onlyFromInstance: 'pleroma.com',
+            onlyFromInstance: 'unifedi.com',
           ),
           pagination: null,
           orderingTermData: null,
@@ -2337,7 +2337,7 @@ void main() {
     var query = statusRepository.createQuery(
       filters: StatusRepositoryFilters.only(
         onlyRemoteCondition:
-            StatusOnlyRemoteCondition(localUrlHost: 'pleroma.com'),
+            StatusOnlyRemoteCondition(localUrlHost: 'unifedi.com'),
         onlyFromInstance: 'google.com',
       ),
       pagination: null,
@@ -2350,7 +2350,7 @@ void main() {
         seed: 'seed1',
         dbAccount: dbAccount,
       ))
-          .copyWith(url: 'https://pleroma.com/'),
+          .copyWith(url: 'https://unifedi.com/'),
     );
 
     expect((await query.get()).length, 0);

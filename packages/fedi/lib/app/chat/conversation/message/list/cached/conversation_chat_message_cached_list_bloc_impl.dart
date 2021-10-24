@@ -11,7 +11,7 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
-var _logger = Logger('pleroma_chat_message_cached_list_bloc_impl.dart');
+var _logger = Logger('unifedi_chat_message_cached_list_bloc_impl.dart');
 
 class ConversationChatMessageCachedListBloc extends DisposableOwner
     implements IConversationChatMessageCachedListBloc {
@@ -138,7 +138,7 @@ ConversationChatStatusListBloc _createStatusListBloc({
       ICurrentUnifediApiAccessBloc.of(context, listen: false);
 
   if (currentInstanceBloc.currentInstance!.isPleroma) {
-    // pleroma instances support loading by conversation id
+    // unifedi instances support loading by conversation id
     return ConversationChatStatusListConversationApiBloc.createFromContext(
       context,
       conversation: conversation,

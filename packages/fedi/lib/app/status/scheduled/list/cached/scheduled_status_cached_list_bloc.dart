@@ -1,5 +1,5 @@
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:fedi/app/list/cached/pleroma_cached_list_bloc.dart';
+import 'package:fedi/app/list/cached/unifedi_cached_list_bloc.dart';
 import 'package:fedi/app/status/list/status_list_bloc.dart';
 import 'package:fedi/app/status/scheduled/scheduled_status_model.dart';
 import 'package:flutter/widgets.dart';

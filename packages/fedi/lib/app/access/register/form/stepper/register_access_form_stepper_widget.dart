@@ -13,7 +13,7 @@ import 'package:fedi/app/access/register/form/stepper/item/submit/register_acces
 import 'package:fedi/app/access/register/form/stepper/item/submit/register_access_form_submit_stepper_item_widget.dart';
 import 'package:fedi/app/access/register/register_access_bloc.dart';
 import 'package:fedi/app/access/register/response/register_response_model.dart';
-import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
+import 'package:fedi/app/async/unifedi/unifedi_async_operation_helper.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/generated/l10n.dart';
 import 'package:fedi/ui/stepper/fedi_stepper_bloc.dart';
@@ -54,8 +54,8 @@ class RegisterUnifediApiAccessFormStepperWidget extends StatelessWidget {
           return FediStepperBloc<IRegisterUnifediApiAccessFormStepperItemBloc>(
             steps: steps,
             submitCallback: () async {
-              var dialogResult = await PleromaAsyncOperationHelper
-                  .performPleromaAsyncOperation(
+              var dialogResult = await UnifediAsyncOperationHelper
+                  .performUnifediAsyncOperation(
                 context: context,
                 asyncCode: () =>
                     IRegisterUnifediApiAccessBloc.of(context, listen: false)

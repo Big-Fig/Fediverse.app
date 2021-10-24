@@ -15,10 +15,10 @@ class SearchBloc extends DisposableOwner implements ISearchBloc {
   @override
   ISearchInputBloc searchInputBloc;
 
-  IUnifediApiSearchService pleromaSearchService;
+  IUnifediApiSearchService unifediSearchService;
 
   SearchBloc({
-    required this.pleromaSearchService,
+    required this.unifediSearchService,
     required SearchTab startTab,
     required String? initialQuery,
   })  : searchInputBloc = SearchInputBloc(
@@ -52,7 +52,7 @@ class SearchBloc extends DisposableOwner implements ISearchBloc {
       SearchBloc(
         startTab: startTab,
         initialQuery: initialQuery,
-        pleromaSearchService: Provider.of<IUnifediApiSearchService>(
+        unifediSearchService: Provider.of<IUnifediApiSearchService>(
           context,
           listen: false,
         ),

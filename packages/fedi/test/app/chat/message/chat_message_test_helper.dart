@@ -1,5 +1,5 @@
 import 'package:fedi/app/account/account_model.dart';
-import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
+import 'package:fedi/app/chat/unifedi/message/unifedi_chat_message_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -7,7 +7,7 @@ import '../../account/account_test_helper.dart';
 import 'database/chat_message_database_test_helper.dart';
 
 class ChatMessageMockHelper {
-  static Future<DbPleromaChatMessagePopulatedWrapper> createTestChatMessage({
+  static Future<DbUnifediChatMessagePopulatedWrapper> createTestChatMessage({
     required String seed,
     String? remoteId,
     DateTime? createdAt,
@@ -18,7 +18,7 @@ class ChatMessageMockHelper {
         account ?? await AccountMockHelper.createTestAccount(seed: seed);
     var dbAccount = actualAccount.dbAccount;
 
-    return DbPleromaChatMessagePopulatedWrapper(
+    return DbUnifediChatMessagePopulatedWrapper(
       dbChatMessagePopulated: DbChatMessagePopulated(
         dbChatMessage:
             await ChatMessageDatabaseMockHelper.createTestDbChatMessage(
@@ -34,8 +34,8 @@ class ChatMessageMockHelper {
   }
 
   static void expectChatMessage(
-    IPleromaChatMessage? actual,
-    IPleromaChatMessage? expected,
+    IUnifediChatMessage? actual,
+    IUnifediChatMessage? expected,
   ) {
     if (actual == null && expected == null) {
       return;

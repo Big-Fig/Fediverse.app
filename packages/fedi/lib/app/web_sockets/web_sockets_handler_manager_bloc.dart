@@ -20,7 +20,7 @@ abstract class IWebSocketsHandlerManagerBloc implements IDisposable {
     required WebSocketsChannelHandlerType handlerType,
   });
 
-  IDisposable listenPleromaChatChannel({
+  IDisposable listenUnifediChatChannel({
     required WebSocketsChannelHandlerType handlerType,
   });
 

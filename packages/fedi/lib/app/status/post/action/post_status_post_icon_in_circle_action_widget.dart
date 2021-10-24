@@ -1,4 +1,4 @@
-import 'package:fedi/app/async/pleroma/pleroma_async_operation_button_builder_widget.dart';
+import 'package:fedi/app/async/unifedi/unifedi_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/status/post/action/post_status_post_overlay_notification.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_filled_button.dart';
@@ -19,7 +19,7 @@ class PostStatusPostIconInCircleActionWidget extends StatelessWidget {
       builder: (context, snapshot) {
         var isReadyToPost = snapshot.data;
 
-        return PleromaAsyncOperationButtonBuilderWidget(
+        return UnifediAsyncOperationButtonBuilderWidget(
           showProgressDialog: false,
           asyncButtonAction: () async {
             var isScheduled = postStatusBloc.isScheduledAtExist;

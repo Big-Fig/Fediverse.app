@@ -46,15 +46,15 @@ void showEditGlobalPostStatusSettingsDialog({
           globalOrInstanceSettingsType: GlobalOrInstanceSettingsType.global,
           isEnabled: true,
           // ignore: no-equal-then-else
-          pleromaVisibilityPossibleValues: isPleromaInstance
+          unifediVisibilityPossibleValues: isPleromaInstance
               ? [
                   UnifediApiVisibility.publicValue,
                   UnifediApiVisibility.unlistedValue,
                   UnifediApiVisibility.directValue,
                   UnifediApiVisibility.privateValue,
-                  // dont support pleroma-only visibility for global settings
-                  // PleromaVisibility.list,
-                  // PleromaVisibility.local,
+                  // dont support unifedi-only visibility for global settings
+                  // UnifediVisibility.list,
+                  // UnifediVisibility.local,
                 ]
               : [
                   UnifediApiVisibility.publicValue,

@@ -9,17 +9,17 @@ import 'package:unifedi_api/unifedi_api.dart';
 
 class MyAccountDomainBlockNetworkOnlyDomainListBloc extends DisposableOwner
     implements IMyAccountDomainBlockNetworkOnlyListBloc {
-  final IUnifediApiAccountService pleromaAuthAccountService;
+  final IUnifediApiAccountService unifediAuthAccountService;
   final IUnifediApiMyAccountService unifediApiMyAccountService;
 
   MyAccountDomainBlockNetworkOnlyDomainListBloc({
-    required this.pleromaAuthAccountService,
+    required this.unifediAuthAccountService,
     required this.unifediApiMyAccountService,
   });
 
   @override
   Future<void> removeDomainBlock({required String domain}) async {
-    await pleromaAuthAccountService.unBlockDomain(domain: domain);
+    await unifediAuthAccountService.unBlockDomain(domain: domain);
   }
 
   @override
@@ -53,7 +53,7 @@ class MyAccountDomainBlockNetworkOnlyDomainListBloc extends DisposableOwner
           context,
           listen: false,
         ),
-        pleromaAuthAccountService: Provider.of<IUnifediApiAccountService>(
+        unifediAuthAccountService: Provider.of<IUnifediApiAccountService>(
           context,
           listen: false,
         ),

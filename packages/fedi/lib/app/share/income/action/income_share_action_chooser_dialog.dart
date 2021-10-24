@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:fedi/app/access/current/current_access_bloc.dart';
-import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
+import 'package:fedi/app/async/unifedi/unifedi_async_operation_helper.dart';
 import 'package:fedi/app/chat/conversation/share/conversation_chat_share_entity_page.dart';
-import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_entity_page.dart';
+import 'package:fedi/app/chat/unifedi/share/unifedi_chat_share_entity_page.dart';
 import 'package:fedi/app/html/html_text_helper.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/share/entity/share_entity_model.dart';
@@ -109,7 +109,7 @@ Future<void> _performIncomeShareAction({
       );
       break;
     case IncomeShareActionType.chat:
-      goToPleromaChatShareEntityPage(
+      goToUnifediChatShareEntityPage(
         context: context,
         shareEntity: ShareEntity(
           items: [
@@ -152,8 +152,8 @@ Future<List<IUnifediApiMediaAttachment>?> _uploadMediaIfNeed({
 }) async {
   List<IUnifediApiMediaAttachment>? mediaAttachments;
   if (incomeShareEventMedias?.isNotEmpty == true) {
-    var dialogResult = await PleromaAsyncOperationHelper
-        .performPleromaAsyncOperation<List<IUnifediApiMediaAttachment>>(
+    var dialogResult = await UnifediAsyncOperationHelper
+        .performUnifediAsyncOperation<List<IUnifediApiMediaAttachment>>(
       context: context,
       contentMessage: S.of(context).app_media_upload_progress,
       asyncCode: () async {

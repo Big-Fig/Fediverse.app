@@ -1,6 +1,6 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
-import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
+import 'package:fedi/app/chat/unifedi/unifedi_chat_model.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -16,7 +16,7 @@ class AccountRepositoryFilters with _$AccountRepositoryFilters {
 
   const factory AccountRepositoryFilters({
     required IConversationChat? onlyInConversation,
-    required IPleromaChat? onlyInChat,
+    required IUnifediChat? onlyInChat,
     required IStatus? onlyInStatusRebloggedBy,
     required IStatus? onlyInStatusFavouritedBy,
     required IAccount? onlyInAccountFollowers,
@@ -27,7 +27,7 @@ class AccountRepositoryFilters with _$AccountRepositoryFilters {
   // ignore: long-parameter-list
   static AccountRepositoryFilters only({
     IConversationChat? onlyInConversation,
-    IPleromaChat? onlyInChat,
+    IUnifediChat? onlyInChat,
     IStatus? onlyInStatusRebloggedBy,
     IStatus? onlyInStatusFavouritedBy,
     IAccount? onlyInAccountFollowers,
@@ -52,7 +52,7 @@ class AccountRepositoryFilters with _$AccountRepositoryFilters {
       );
 
   static AccountRepositoryFilters createForOnlyInChat({
-    required IPleromaChat chat,
+    required IUnifediChat chat,
   }) =>
       AccountRepositoryFilters.only(
         onlyInChat: chat,

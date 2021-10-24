@@ -69,9 +69,9 @@ class DbScheduledStatusPopulated with _$DbScheduledStatusPopulated {
   }) = _DbScheduledStatusPopulated;
 }
 
-extension IPleromaScheduledStatusParamsExtension
+extension IUnifediScheduledStatusParamsExtension
     on IUnifediApiScheduledStatusParams {
-  UnifediApiScheduledStatusParams toPleromaScheduledStatusParams() {
+  UnifediApiScheduledStatusParams toUnifediScheduledStatusParams() {
     if (this is UnifediApiScheduledStatusParams) {
       return this as UnifediApiScheduledStatusParams;
     } else {
@@ -149,7 +149,7 @@ extension IScheduledStatusExtension on IScheduledStatus {
         remoteId: remoteId!,
         scheduledAt: scheduledAt,
         canceled: canceled,
-        params: params.toPleromaScheduledStatusParams(),
+        params: params.toUnifediScheduledStatusParams(),
       );
     }
   }
@@ -184,7 +184,7 @@ class DbScheduledStatusPopulatedWrapper
             id: localId,
             remoteId: remoteId,
             scheduledAt: scheduledAt,
-            params: params?.toPleromaScheduledStatusParams(),
+            params: params?.toUnifediScheduledStatusParams(),
             canceled: canceled,
             mediaAttachments: mediaAttachments,
           ),

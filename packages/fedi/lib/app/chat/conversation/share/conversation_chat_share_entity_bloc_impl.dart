@@ -35,14 +35,14 @@ class ConversationChatShareEntityBloc extends ConversationChatShareBloc
     this.isNeedReUploadMediaAttachments = true,
     required IConversationChatRepository conversationRepository,
     required IStatusRepository statusRepository,
-    required IUnifediApiConversationService pleromaConversationService,
+    required IUnifediApiConversationService unifediConversationService,
     required IUnifediApiStatusService unifediApiStatusService,
     required IMyAccountBloc myAccountBloc,
     required IAccountRepository accountRepository,
   }) : super(
           conversationRepository: conversationRepository,
           statusRepository: statusRepository,
-          unifediApiConversationService: pleromaConversationService,
+          unifediApiConversationService: unifediConversationService,
           unifediApiStatusService: unifediApiStatusService,
           accountRepository: accountRepository,
           myAccountBloc: myAccountBloc,
@@ -172,7 +172,7 @@ class ConversationChatShareEntityBloc extends ConversationChatShareBloc
           context,
           listen: false,
         ),
-        pleromaConversationService:
+        unifediConversationService:
             Provider.of<IUnifediApiConversationService>(context, listen: false),
         statusRepository: IStatusRepository.of(context, listen: false),
         accountRepository: IAccountRepository.of(context, listen: false),

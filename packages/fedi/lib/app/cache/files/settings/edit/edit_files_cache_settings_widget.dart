@@ -1,5 +1,5 @@
 import 'package:fedi/app/access/current/current_access_bloc.dart';
-import 'package:fedi/app/async/pleroma/pleroma_async_operation_button_builder_widget.dart';
+import 'package:fedi/app/async/unifedi/unifedi_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/cache/files/files_cache_service.dart';
 import 'package:fedi/app/cache/files/form/limit/age/age_limit_files_cache_single_select_from_list_value_form_field_bloc.dart';
 import 'package:fedi/app/cache/files/form/limit/age/age_limit_files_cache_single_select_from_list_value_form_field_row_widget.dart';
@@ -49,7 +49,7 @@ class _EditFilesCacheSettingsClearAllButtonWidget extends StatelessWidget {
     var currentUnifediApiAccessBloc = ICurrentUnifediApiAccessBloc.of(context);
     var filesCacheService = IFilesCacheService.of(context);
 
-    return PleromaAsyncOperationButtonBuilderWidget<void>(
+    return UnifediAsyncOperationButtonBuilderWidget<void>(
       asyncButtonAction: () => filesCacheService.clear(),
       builder: (context, onPressed) => FediPrimaryFilledTextButtonWithBorder(
         S.of(context).app_cache_settings_action_clear_all_now(

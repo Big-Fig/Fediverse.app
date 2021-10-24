@@ -13,10 +13,10 @@ import 'package:fedi/app/home/tab/chat/conversation_chat_home_tab_bloc.dart';
 import 'package:fedi/app/home/tab/chat/conversation_chat_home_tab_bloc_impl.dart';
 import 'package:fedi/app/home/tab/chat/conversation_chat_home_tab_bloc_proxy_provider.dart';
 import 'package:fedi/app/home/tab/chat/conversation_chat_home_tab_page.dart';
-import 'package:fedi/app/home/tab/chat/pleroma_chat_home_tab_bloc.dart';
-import 'package:fedi/app/home/tab/chat/pleroma_chat_home_tab_bloc_impl.dart';
-import 'package:fedi/app/home/tab/chat/pleroma_chat_home_tab_bloc_proxy_provider.dart';
-import 'package:fedi/app/home/tab/chat/pleroma_chat_home_tab_page.dart';
+import 'package:fedi/app/home/tab/chat/unifedi_chat_home_tab_bloc.dart';
+import 'package:fedi/app/home/tab/chat/unifedi_chat_home_tab_bloc_impl.dart';
+import 'package:fedi/app/home/tab/chat/unifedi_chat_home_tab_bloc_proxy_provider.dart';
+import 'package:fedi/app/home/tab/chat/unifedi_chat_home_tab_page.dart';
 import 'package:fedi/app/home/tab/notifications/notifications_home_tab_bloc.dart';
 import 'package:fedi/app/home/tab/notifications/notifications_home_tab_bloc_impl.dart';
 import 'package:fedi/app/home/tab/notifications/notifications_home_tab_bloc_proxy_provider.dart';
@@ -190,11 +190,11 @@ class _HomePageMessagesTabChatWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) =>
-      DisposableProvider<IPleromaChatHomeTabBloc>(
+      DisposableProvider<IUnifediChatHomeTabBloc>(
         create: (context) {
           var homeBloc = IHomeBloc.of(context, listen: false);
 
-          var chatMessagesHomeTabBloc = PleromaChatHomeTabBloc();
+          var chatMessagesHomeTabBloc = UnifediChatHomeTabBloc();
 
           homeBloc.reselectedTabStream.listen((reselectedTab) {
             if (reselectedTab == HomeTab.chat) {
@@ -204,8 +204,8 @@ class _HomePageMessagesTabChatWidget extends StatelessWidget {
 
           return chatMessagesHomeTabBloc;
         },
-        child: const PleromaChatHomeTabBlocProxyProvider(
-          child: PleromaChatHomeTabPage(
+        child: const UnifediChatHomeTabBlocProxyProvider(
+          child: UnifediChatHomeTabPage(
             key: PageStorageKey<String>('ChatMessagesHomeTabPage'),
           ),
         ),
@@ -224,7 +224,7 @@ class _HomePageNotificationTabWidget extends StatelessWidget {
           var homeBloc = IHomeBloc.of(context, listen: false);
 
           var notificationsHomeTabBloc = NotificationsHomeTabBloc(
-            pleromaNotificationService:
+            unifediNotificationService:
                 Provider.of<IUnifediApiNotificationService>(
               context,
               listen: false,
@@ -261,8 +261,8 @@ class _HomePageMessagesTabWidget extends StatelessWidget {
     var chatSettingsBloc = IChatSettingsBloc.of(context);
 
     return StreamBuilder<bool?>(
-      stream: chatSettingsBloc.replaceConversationsWithPleromaChatsStream,
-      initialData: chatSettingsBloc.replaceConversationsWithPleromaChats,
+      stream: chatSettingsBloc.replaceConversationsWithUnifediChatsStream,
+      initialData: chatSettingsBloc.replaceConversationsWithUnifediChats,
       builder: (context, snapshot) {
         var isNewChatsEnabled = snapshot.data;
 

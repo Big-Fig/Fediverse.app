@@ -8,10 +8,10 @@ import 'package:unifedi_api/unifedi_api.dart';
 
 class AddMyAccountDomainBlockBloc extends FormBloc
     implements IAddMyAccountDomainBlockBloc {
-  final IUnifediApiAccountService pleromaAuthAccountService;
+  final IUnifediApiAccountService unifediAuthAccountService;
 
   AddMyAccountDomainBlockBloc({
-    required this.pleromaAuthAccountService,
+    required this.unifediAuthAccountService,
   }) : super(isAllItemsInitialized: true);
 
   @override
@@ -27,7 +27,7 @@ class AddMyAccountDomainBlockBloc extends FormBloc
   List<IFormItemBloc> get currentItems => [domainField];
 
   @override
-  Future<void> submit() => pleromaAuthAccountService.blockDomain(
+  Future<void> submit() => unifediAuthAccountService.blockDomain(
         domain: domainField.currentValue,
       );
 }

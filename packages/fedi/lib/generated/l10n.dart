@@ -1185,60 +1185,60 @@ class S {
   }
 
   /// `API error`
-  String get app_async_pleroma_error_common_dialog_title {
+  String get app_async_unifedi_error_common_dialog_title {
     return Intl.message(
       'API error',
-      name: 'app_async_pleroma_error_common_dialog_title',
+      name: 'app_async_unifedi_error_common_dialog_title',
       desc: '',
       args: [],
     );
   }
 
   /// `Message: {message}`
-  String app_async_pleroma_error_common_dialog_content(Object message) {
+  String app_async_unifedi_error_common_dialog_content(Object message) {
     return Intl.message(
       'Message: $message',
-      name: 'app_async_pleroma_error_common_dialog_content',
+      name: 'app_async_unifedi_error_common_dialog_content',
       desc: '',
       args: [message],
     );
   }
 
   /// `Throttled. Server blocked action.`
-  String get app_async_pleroma_error_throttled_dialog_title {
+  String get app_async_unifedi_error_throttled_dialog_title {
     return Intl.message(
       'Throttled. Server blocked action.',
-      name: 'app_async_pleroma_error_throttled_dialog_title',
+      name: 'app_async_unifedi_error_throttled_dialog_title',
       desc: '',
       args: [],
     );
   }
 
   /// `Too much operations per minute. Please wait before do something again.`
-  String get app_async_pleroma_error_throttled_dialog_content {
+  String get app_async_unifedi_error_throttled_dialog_content {
     return Intl.message(
       'Too much operations per minute. Please wait before do something again.',
-      name: 'app_async_pleroma_error_throttled_dialog_content',
+      name: 'app_async_unifedi_error_throttled_dialog_content',
       desc: '',
       args: [],
     );
   }
 
   /// `Forbidden. Invalid action or session expired`
-  String get app_async_pleroma_error_forbidden_dialog_title {
+  String get app_async_unifedi_error_forbidden_dialog_title {
     return Intl.message(
       'Forbidden. Invalid action or session expired',
-      name: 'app_async_pleroma_error_forbidden_dialog_title',
+      name: 'app_async_unifedi_error_forbidden_dialog_title',
       desc: '',
       args: [],
     );
   }
 
   /// `{content}`
-  String app_async_pleroma_error_forbidden_dialog_content(Object content) {
+  String app_async_unifedi_error_forbidden_dialog_content(Object content) {
     return Intl.message(
       '$content',
-      name: 'app_async_pleroma_error_forbidden_dialog_content',
+      name: 'app_async_unifedi_error_forbidden_dialog_content',
       desc: '',
       args: [content],
     );
@@ -1468,10 +1468,10 @@ class S {
     );
   }
 
-  /// `Pleroma or Mastodon Instance`
+  /// `Unifedi or Mastodon Instance`
   String get app_auth_instance_join_field_host_helper {
     return Intl.message(
-      'Pleroma or Mastodon Instance',
+      'Unifedi or Mastodon Instance',
       name: 'app_auth_instance_join_field_host_helper',
       desc: '',
       args: [],
@@ -1781,10 +1781,10 @@ class S {
   }
 
   /// `Share to chats`
-  String get app_chat_pleroma_share_title {
+  String get app_chat_unifedi_share_title {
     return Intl.message(
       'Share to chats',
-      name: 'app_chat_pleroma_share_title',
+      name: 'app_chat_unifedi_share_title',
       desc: '',
       args: [],
     );
@@ -1803,10 +1803,10 @@ class S {
   }
 
   /// `Chat accounts`
-  String get app_chat_pleroma_accounts_title {
+  String get app_chat_unifedi_accounts_title {
     return Intl.message(
       'Chat accounts',
-      name: 'app_chat_pleroma_accounts_title',
+      name: 'app_chat_unifedi_accounts_title',
       desc: '',
       args: [],
     );
@@ -1915,40 +1915,40 @@ class S {
   }
 
   /// `Chats`
-  String get app_home_tab_chat_pleroma_title {
+  String get app_home_tab_chat_unifedi_title {
     return Intl.message(
       'Chats',
-      name: 'app_home_tab_chat_pleroma_title',
+      name: 'app_home_tab_chat_unifedi_title',
       desc: '',
       args: [],
     );
   }
 
   /// `Chats not supported on Mastodon instances`
-  String get app_home_tab_chat_pleroma_notSupported_mastodon {
+  String get app_home_tab_chat_unifedi_notSupported_mastodon {
     return Intl.message(
       'Chats not supported on Mastodon instances',
-      name: 'app_home_tab_chat_pleroma_notSupported_mastodon',
+      name: 'app_home_tab_chat_unifedi_notSupported_mastodon',
       desc: '',
       args: [],
     );
   }
 
   /// `This instance don't support chats`
-  String get app_home_tab_chat_pleroma_notSupported_pleroma {
+  String get app_home_tab_chat_unifedi_notSupported_unifedi {
     return Intl.message(
       'This instance don\'t support chats',
-      name: 'app_home_tab_chat_pleroma_notSupported_pleroma',
+      name: 'app_home_tab_chat_unifedi_notSupported_unifedi',
       desc: '',
       args: [],
     );
   }
 
   /// `To Conversations`
-  String get app_home_tab_chat_pleroma_action_switch_to_dms {
+  String get app_home_tab_chat_unifedi_action_switch_to_dms {
     return Intl.message(
       'To Conversations',
-      name: 'app_home_tab_chat_pleroma_action_switch_to_dms',
+      name: 'app_home_tab_chat_unifedi_action_switch_to_dms',
       desc: '',
       args: [],
     );
@@ -2127,10 +2127,10 @@ class S {
   }
 
   /// `Chats`
-  String get app_push_settings_field_pleroma_chat_label {
+  String get app_push_settings_field_unifedi_chat_label {
     return Intl.message(
       'Chats',
-      name: 'app_push_settings_field_pleroma_chat_label',
+      name: 'app_push_settings_field_unifedi_chat_label',
       desc: '',
       args: [],
     );
@@ -2237,30 +2237,30 @@ class S {
   }
 
   /// `{emoji} for your post.`
-  String app_notification_header_pleromaEmojiReaction(Object emoji) {
+  String app_notification_header_unifediEmojiReaction(Object emoji) {
     return Intl.message(
       '$emoji for your post.',
-      name: 'app_notification_header_pleromaEmojiReaction',
+      name: 'app_notification_header_unifediEmojiReaction',
       desc: '',
       args: [emoji],
     );
   }
 
   /// `Chat: `
-  String get app_notification_header_pleromaChatMention_prefix {
+  String get app_notification_header_unifediChatMention_prefix {
     return Intl.message(
       'Chat: ',
-      name: 'app_notification_header_pleromaChatMention_prefix',
+      name: 'app_notification_header_unifediChatMention_prefix',
       desc: '',
       args: [],
     );
   }
 
   /// `{status}.`
-  String app_notification_header_pleromaChatMention_postfix(Object status) {
+  String app_notification_header_unifediChatMention_postfix(Object status) {
     return Intl.message(
       '$status.',
-      name: 'app_notification_header_pleromaChatMention_postfix',
+      name: 'app_notification_header_unifediChatMention_postfix',
       desc: '',
       args: [status],
     );
@@ -2606,10 +2606,10 @@ class S {
     );
   }
 
-  /// `pleroma`
+  /// `unifedi`
   String get app_timeline_settings_withRemoteHashtag_field_hint {
     return Intl.message(
-      'pleroma',
+      'unifedi',
       name: 'app_timeline_settings_withRemoteHashtag_field_hint',
       desc: '',
       args: [],
@@ -4205,11 +4205,11 @@ class S {
 
   /// `Replace "Conversations" with "Chats"`
   String
-      get app_chat_settings_field_replaceConversationsWithPleromaChats_label {
+      get app_chat_settings_field_replaceConversationsWithUnifediChats_label {
     return Intl.message(
       'Replace "Conversations" with "Chats"',
       name:
-          'app_chat_settings_field_replaceConversationsWithPleromaChats_label',
+          'app_chat_settings_field_replaceConversationsWithUnifediChats_label',
       desc: '',
       args: [],
     );
@@ -4316,10 +4316,10 @@ class S {
   }
 
   /// `Emoji reactions`
-  String get app_push_settings_field_pleroma_emojiReaction_label {
+  String get app_push_settings_field_unifedi_emojiReaction_label {
     return Intl.message(
       'Emoji reactions',
-      name: 'app_push_settings_field_pleroma_emojiReaction_label',
+      name: 'app_push_settings_field_unifedi_emojiReaction_label',
       desc: '',
       args: [],
     );
@@ -5797,30 +5797,30 @@ class S {
   }
 
   /// `Select`
-  String get app_account_my_edit_field_pleroma_background_dialog_action_select {
+  String get app_account_my_edit_field_unifedi_background_dialog_action_select {
     return Intl.message(
       'Select',
-      name: 'app_account_my_edit_field_pleroma_background_dialog_action_select',
+      name: 'app_account_my_edit_field_unifedi_background_dialog_action_select',
       desc: '',
       args: [],
     );
   }
 
   /// `Crop`
-  String get app_account_my_edit_field_pleroma_background_dialog_action_crop {
+  String get app_account_my_edit_field_unifedi_background_dialog_action_crop {
     return Intl.message(
       'Crop',
-      name: 'app_account_my_edit_field_pleroma_background_dialog_action_crop',
+      name: 'app_account_my_edit_field_unifedi_background_dialog_action_crop',
       desc: '',
       args: [],
     );
   }
 
-  /// `Pleroma background`
-  String get app_account_my_edit_field_pleroma_background_dialog_title {
+  /// `Unifedi background`
+  String get app_account_my_edit_field_unifedi_background_dialog_title {
     return Intl.message(
-      'Pleroma background',
-      name: 'app_account_my_edit_field_pleroma_background_dialog_title',
+      'Unifedi background',
+      name: 'app_account_my_edit_field_unifedi_background_dialog_title',
       desc: '',
       args: [],
     );
@@ -5897,190 +5897,190 @@ class S {
   }
 
   /// `Accepts chat messages`
-  String get app_account_my_edit_field_pleroma_acceptsChatMessages_label {
+  String get app_account_my_edit_field_unifedi_acceptsChatMessages_label {
     return Intl.message(
       'Accepts chat messages',
-      name: 'app_account_my_edit_field_pleroma_acceptsChatMessages_label',
+      name: 'app_account_my_edit_field_unifedi_acceptsChatMessages_label',
       desc: '',
       args: [],
     );
   }
 
   /// `Disable to reject all messages`
-  String get app_account_my_edit_field_pleroma_acceptsChatMessages_description {
+  String get app_account_my_edit_field_unifedi_acceptsChatMessages_description {
     return Intl.message(
       'Disable to reject all messages',
-      name: 'app_account_my_edit_field_pleroma_acceptsChatMessages_description',
+      name: 'app_account_my_edit_field_unifedi_acceptsChatMessages_description',
       desc: '',
       args: [],
     );
   }
 
   /// `Allow following move`
-  String get app_account_my_edit_field_pleroma_allowFollowingMove_label {
+  String get app_account_my_edit_field_unifedi_allowFollowingMove_label {
     return Intl.message(
       'Allow following move',
-      name: 'app_account_my_edit_field_pleroma_allowFollowingMove_label',
+      name: 'app_account_my_edit_field_unifedi_allowFollowingMove_label',
       desc: '',
       args: [],
     );
   }
 
   /// `Automatically follow moved accounts`
-  String get app_account_my_edit_field_pleroma_allowFollowingMove_description {
+  String get app_account_my_edit_field_unifedi_allowFollowingMove_description {
     return Intl.message(
       'Automatically follow moved accounts',
-      name: 'app_account_my_edit_field_pleroma_allowFollowingMove_description',
+      name: 'app_account_my_edit_field_unifedi_allowFollowingMove_description',
       desc: '',
       args: [],
     );
   }
 
   /// `Hide favourites`
-  String get app_account_my_edit_field_pleroma_hideFavourites_label {
+  String get app_account_my_edit_field_unifedi_hideFavourites_label {
     return Intl.message(
       'Hide favourites',
-      name: 'app_account_my_edit_field_pleroma_hideFavourites_label',
+      name: 'app_account_my_edit_field_unifedi_hideFavourites_label',
       desc: '',
       args: [],
     );
   }
 
   /// `Only private access to favourites list`
-  String get app_account_my_edit_field_pleroma_hideFavourites_description {
+  String get app_account_my_edit_field_unifedi_hideFavourites_description {
     return Intl.message(
       'Only private access to favourites list',
-      name: 'app_account_my_edit_field_pleroma_hideFavourites_description',
+      name: 'app_account_my_edit_field_unifedi_hideFavourites_description',
       desc: '',
       args: [],
     );
   }
 
   /// `Hide followers`
-  String get app_account_my_edit_field_pleroma_hideFollowers_label {
+  String get app_account_my_edit_field_unifedi_hideFollowers_label {
     return Intl.message(
       'Hide followers',
-      name: 'app_account_my_edit_field_pleroma_hideFollowers_label',
+      name: 'app_account_my_edit_field_unifedi_hideFollowers_label',
       desc: '',
       args: [],
     );
   }
 
   /// `Only private access to followers list`
-  String get app_account_my_edit_field_pleroma_hideFollowers_description {
+  String get app_account_my_edit_field_unifedi_hideFollowers_description {
     return Intl.message(
       'Only private access to followers list',
-      name: 'app_account_my_edit_field_pleroma_hideFollowers_description',
+      name: 'app_account_my_edit_field_unifedi_hideFollowers_description',
       desc: '',
       args: [],
     );
   }
 
   /// `Hide followers count`
-  String get app_account_my_edit_field_pleroma_hideFollowersCount_label {
+  String get app_account_my_edit_field_unifedi_hideFollowersCount_label {
     return Intl.message(
       'Hide followers count',
-      name: 'app_account_my_edit_field_pleroma_hideFollowersCount_label',
+      name: 'app_account_my_edit_field_unifedi_hideFollowersCount_label',
       desc: '',
       args: [],
     );
   }
 
   /// `Display '0' as followers count`
-  String get app_account_my_edit_field_pleroma_hideFollowersCount_description {
+  String get app_account_my_edit_field_unifedi_hideFollowersCount_description {
     return Intl.message(
       'Display \'0\' as followers count',
-      name: 'app_account_my_edit_field_pleroma_hideFollowersCount_description',
+      name: 'app_account_my_edit_field_unifedi_hideFollowersCount_description',
       desc: '',
       args: [],
     );
   }
 
   /// `Hide follows`
-  String get app_account_my_edit_field_pleroma_hideFollows_label {
+  String get app_account_my_edit_field_unifedi_hideFollows_label {
     return Intl.message(
       'Hide follows',
-      name: 'app_account_my_edit_field_pleroma_hideFollows_label',
+      name: 'app_account_my_edit_field_unifedi_hideFollows_label',
       desc: '',
       args: [],
     );
   }
 
   /// `Only private access to follows list`
-  String get app_account_my_edit_field_pleroma_hideFollows_description {
+  String get app_account_my_edit_field_unifedi_hideFollows_description {
     return Intl.message(
       'Only private access to follows list',
-      name: 'app_account_my_edit_field_pleroma_hideFollows_description',
+      name: 'app_account_my_edit_field_unifedi_hideFollows_description',
       desc: '',
       args: [],
     );
   }
 
   /// `Hide follows count`
-  String get app_account_my_edit_field_pleroma_hideFollowsCount_label {
+  String get app_account_my_edit_field_unifedi_hideFollowsCount_label {
     return Intl.message(
       'Hide follows count',
-      name: 'app_account_my_edit_field_pleroma_hideFollowsCount_label',
+      name: 'app_account_my_edit_field_unifedi_hideFollowsCount_label',
       desc: '',
       args: [],
     );
   }
 
   /// `Display '0' as follows count`
-  String get app_account_my_edit_field_pleroma_hideFollowsCount_description {
+  String get app_account_my_edit_field_unifedi_hideFollowsCount_description {
     return Intl.message(
       'Display \'0\' as follows count',
-      name: 'app_account_my_edit_field_pleroma_hideFollowsCount_description',
+      name: 'app_account_my_edit_field_unifedi_hideFollowsCount_description',
       desc: '',
       args: [],
     );
   }
 
   /// `Ignore rich text`
-  String get app_account_my_edit_field_pleroma_noRichText_label {
+  String get app_account_my_edit_field_unifedi_noRichText_label {
     return Intl.message(
       'Ignore rich text',
-      name: 'app_account_my_edit_field_pleroma_noRichText_label',
+      name: 'app_account_my_edit_field_unifedi_noRichText_label',
       desc: '',
       args: [],
     );
   }
 
   /// `Strip html tags`
-  String get app_account_my_edit_field_pleroma_noRichText_description {
+  String get app_account_my_edit_field_unifedi_noRichText_description {
     return Intl.message(
       'Strip html tags',
-      name: 'app_account_my_edit_field_pleroma_noRichText_description',
+      name: 'app_account_my_edit_field_unifedi_noRichText_description',
       desc: '',
       args: [],
     );
   }
 
   /// `Show role`
-  String get app_account_my_edit_field_pleroma_showRole_label {
+  String get app_account_my_edit_field_unifedi_showRole_label {
     return Intl.message(
       'Show role',
-      name: 'app_account_my_edit_field_pleroma_showRole_label',
+      name: 'app_account_my_edit_field_unifedi_showRole_label',
       desc: '',
       args: [],
     );
   }
 
   /// `e.g. Admin, Moderator`
-  String get app_account_my_edit_field_pleroma_showRole_description {
+  String get app_account_my_edit_field_unifedi_showRole_description {
     return Intl.message(
       'e.g. Admin, Moderator',
-      name: 'app_account_my_edit_field_pleroma_showRole_description',
+      name: 'app_account_my_edit_field_unifedi_showRole_description',
       desc: '',
       args: [],
     );
   }
 
   /// `Skip thread containment`
-  String get app_account_my_edit_field_pleroma_skipThreadContainment_label {
+  String get app_account_my_edit_field_unifedi_skipThreadContainment_label {
     return Intl.message(
       'Skip thread containment',
-      name: 'app_account_my_edit_field_pleroma_skipThreadContainment_label',
+      name: 'app_account_my_edit_field_unifedi_skipThreadContainment_label',
       desc: '',
       args: [],
     );
@@ -6088,11 +6088,11 @@ class S {
 
   /// `Ignore broken threads`
   String
-      get app_account_my_edit_field_pleroma_skipThreadContainment_description {
+      get app_account_my_edit_field_unifedi_skipThreadContainment_description {
     return Intl.message(
       'Ignore broken threads',
       name:
-          'app_account_my_edit_field_pleroma_skipThreadContainment_description',
+          'app_account_my_edit_field_unifedi_skipThreadContainment_description',
       desc: '',
       args: [],
     );
@@ -6586,20 +6586,20 @@ class S {
   }
 
   /// `Features`
-  String get app_instance_details_field_pleroma_metadata_features_label {
+  String get app_instance_details_field_unifedi_metadata_features_label {
     return Intl.message(
       'Features',
-      name: 'app_instance_details_field_pleroma_metadata_features_label',
+      name: 'app_instance_details_field_unifedi_metadata_features_label',
       desc: '',
       args: [],
     );
   }
 
   /// `Fields limit`
-  String get app_instance_details_field_pleroma_metadata_fields_title {
+  String get app_instance_details_field_unifedi_metadata_fields_title {
     return Intl.message(
       'Fields limit',
-      name: 'app_instance_details_field_pleroma_metadata_fields_title',
+      name: 'app_instance_details_field_unifedi_metadata_fields_title',
       desc: '',
       args: [],
     );
@@ -6607,11 +6607,11 @@ class S {
 
   /// `Max fields count`
   String
-      get app_instance_details_field_pleroma_metadata_fields_maxFields_label {
+      get app_instance_details_field_unifedi_metadata_fields_maxFields_label {
     return Intl.message(
       'Max fields count',
       name:
-          'app_instance_details_field_pleroma_metadata_fields_maxFields_label',
+          'app_instance_details_field_unifedi_metadata_fields_maxFields_label',
       desc: '',
       args: [],
     );
@@ -6619,11 +6619,11 @@ class S {
 
   /// `Max remote fields count`
   String
-      get app_instance_details_field_pleroma_metadata_fields_maxRemoteFields_label {
+      get app_instance_details_field_unifedi_metadata_fields_maxRemoteFields_label {
     return Intl.message(
       'Max remote fields count',
       name:
-          'app_instance_details_field_pleroma_metadata_fields_maxRemoteFields_label',
+          'app_instance_details_field_unifedi_metadata_fields_maxRemoteFields_label',
       desc: '',
       args: [],
     );
@@ -6631,11 +6631,11 @@ class S {
 
   /// `Max name length`
   String
-      get app_instance_details_field_pleroma_metadata_fields_nameLength_label {
+      get app_instance_details_field_unifedi_metadata_fields_nameLength_label {
     return Intl.message(
       'Max name length',
       name:
-          'app_instance_details_field_pleroma_metadata_fields_nameLength_label',
+          'app_instance_details_field_unifedi_metadata_fields_nameLength_label',
       desc: '',
       args: [],
     );
@@ -6643,11 +6643,11 @@ class S {
 
   /// `Max value length`
   String
-      get app_instance_details_field_pleroma_metadata_fields_valueLength_label {
+      get app_instance_details_field_unifedi_metadata_fields_valueLength_label {
     return Intl.message(
       'Max value length',
       name:
-          'app_instance_details_field_pleroma_metadata_fields_valueLength_label',
+          'app_instance_details_field_unifedi_metadata_fields_valueLength_label',
       desc: '',
       args: [],
     );
@@ -6675,23 +6675,23 @@ class S {
 
   /// `Mastodon`
   String
-      get app_instance_details_field_pleroma_metadata_fields_verstionType_value_mastodon {
+      get app_instance_details_field_unifedi_metadata_fields_verstionType_value_mastodon {
     return Intl.message(
       'Mastodon',
       name:
-          'app_instance_details_field_pleroma_metadata_fields_verstionType_value_mastodon',
+          'app_instance_details_field_unifedi_metadata_fields_verstionType_value_mastodon',
       desc: '',
       args: [],
     );
   }
 
-  /// `Pleroma`
+  /// `Unifedi`
   String
-      get app_instance_details_field_pleroma_metadata_fields_verstionType_value_pleroma {
+      get app_instance_details_field_unifedi_metadata_fields_verstionType_value_unifedi {
     return Intl.message(
-      'Pleroma',
+      'Unifedi',
       name:
-          'app_instance_details_field_pleroma_metadata_fields_verstionType_value_pleroma',
+          'app_instance_details_field_unifedi_metadata_fields_verstionType_value_unifedi',
       desc: '',
       args: [],
     );
@@ -6699,11 +6699,11 @@ class S {
 
   /// `Unknown`
   String
-      get app_instance_details_field_pleroma_metadata_fields_verstionType_value_unknown {
+      get app_instance_details_field_unifedi_metadata_fields_verstionType_value_unknown {
     return Intl.message(
       'Unknown',
       name:
-          'app_instance_details_field_pleroma_metadata_fields_verstionType_value_unknown',
+          'app_instance_details_field_unifedi_metadata_fields_verstionType_value_unknown',
       desc: '',
       args: [],
     );
@@ -6711,11 +6711,11 @@ class S {
 
   /// `Post formats`
   String
-      get app_instance_details_field_pleroma_metadata_fields_postFormats_label {
+      get app_instance_details_field_unifedi_metadata_fields_postFormats_label {
     return Intl.message(
       'Post formats',
       name:
-          'app_instance_details_field_pleroma_metadata_fields_postFormats_label',
+          'app_instance_details_field_unifedi_metadata_fields_postFormats_label',
       desc: '',
       args: [],
     );
@@ -6983,10 +6983,10 @@ class S {
     );
   }
 
-  /// `pleroma.com`
+  /// `unifedi.com`
   String get app_timeline_settings_onlyFromInstance_field_hint {
     return Intl.message(
-      'pleroma.com',
+      'unifedi.com',
       name: 'app_timeline_settings_onlyFromInstance_field_hint',
       desc: '',
       args: [],
@@ -7144,10 +7144,10 @@ class S {
   }
 
   /// `User disabled chat feature`
-  String get app_chat_pleroma_account_notAcceptsChatMessages_toast {
+  String get app_chat_unifedi_account_notAcceptsChatMessages_toast {
     return Intl.message(
       'User disabled chat feature',
-      name: 'app_chat_pleroma_account_notAcceptsChatMessages_toast',
+      name: 'app_chat_unifedi_account_notAcceptsChatMessages_toast',
       desc: '',
       args: [],
     );
@@ -8126,121 +8126,121 @@ class S {
   }
 
   /// `Emoji reactions`
-  String get app_push_channel_pleromaEmojiReaction_name {
+  String get app_push_channel_unifediEmojiReaction_name {
     return Intl.message(
       'Emoji reactions',
-      name: 'app_push_channel_pleromaEmojiReaction_name',
+      name: 'app_push_channel_unifediEmojiReaction_name',
       desc: '',
       args: [],
     );
   }
 
-  /// `Pleroma-only emoji reactions for statuses`
-  String get app_push_channel_pleromaEmojiReaction_description {
+  /// `Unifedi-only emoji reactions for statuses`
+  String get app_push_channel_unifediEmojiReaction_description {
     return Intl.message(
-      'Pleroma-only emoji reactions for statuses',
-      name: 'app_push_channel_pleromaEmojiReaction_description',
+      'Unifedi-only emoji reactions for statuses',
+      name: 'app_push_channel_unifediEmojiReaction_description',
       desc: '',
       args: [],
     );
   }
 
   /// `{acct} reacted {emoji}`
-  String app_push_richNotification_pleromaEmojiReaction_title(
+  String app_push_richNotification_unifediEmojiReaction_title(
       Object acct, Object emoji) {
     return Intl.message(
       '$acct reacted $emoji',
-      name: 'app_push_richNotification_pleromaEmojiReaction_title',
+      name: 'app_push_richNotification_unifediEmojiReaction_title',
       desc: '',
       args: [acct, emoji],
     );
   }
 
   /// `Someone reacted`
-  String get app_push_richNotification_pleromaEmojiReaction_summary {
+  String get app_push_richNotification_unifediEmojiReaction_summary {
     return Intl.message(
       'Someone reacted',
-      name: 'app_push_richNotification_pleromaEmojiReaction_summary',
+      name: 'app_push_richNotification_unifediEmojiReaction_summary',
       desc: '',
       args: [],
     );
   }
 
   /// `Chat`
-  String get app_push_channel_pleromaChatMention_name {
+  String get app_push_channel_unifediChatMention_name {
     return Intl.message(
       'Chat',
-      name: 'app_push_channel_pleromaChatMention_name',
+      name: 'app_push_channel_unifediChatMention_name',
       desc: '',
       args: [],
     );
   }
 
-  /// `Pleroma-only chat messages`
-  String get app_push_channel_pleromaChatMention_description {
+  /// `Unifedi-only chat messages`
+  String get app_push_channel_unifediChatMention_description {
     return Intl.message(
-      'Pleroma-only chat messages',
-      name: 'app_push_channel_pleromaChatMention_description',
+      'Unifedi-only chat messages',
+      name: 'app_push_channel_unifediChatMention_description',
       desc: '',
       args: [],
     );
   }
 
   /// `Chat with {acct}`
-  String app_push_richNotification_pleromaChatMention_title(Object acct) {
+  String app_push_richNotification_unifediChatMention_title(Object acct) {
     return Intl.message(
       'Chat with $acct',
-      name: 'app_push_richNotification_pleromaChatMention_title',
+      name: 'app_push_richNotification_unifediChatMention_title',
       desc: '',
       args: [acct],
     );
   }
 
   /// `You have new message in chat`
-  String get app_push_richNotification_pleromaChatMention_summary {
+  String get app_push_richNotification_unifediChatMention_summary {
     return Intl.message(
       'You have new message in chat',
-      name: 'app_push_richNotification_pleromaChatMention_summary',
+      name: 'app_push_richNotification_unifediChatMention_summary',
       desc: '',
       args: [],
     );
   }
 
   /// `Reports`
-  String get app_push_channel_pleromaReport_name {
+  String get app_push_channel_unifediReport_name {
     return Intl.message(
       'Reports',
-      name: 'app_push_channel_pleromaReport_name',
+      name: 'app_push_channel_unifediReport_name',
       desc: '',
       args: [],
     );
   }
 
   /// `When people report your statues`
-  String get app_push_channel_pleromaReport_description {
+  String get app_push_channel_unifediReport_description {
     return Intl.message(
       'When people report your statues',
-      name: 'app_push_channel_pleromaReport_description',
+      name: 'app_push_channel_unifediReport_description',
       desc: '',
       args: [],
     );
   }
 
   /// `{acct} reported your status`
-  String app_push_richNotification_pleromaReport_title(Object acct) {
+  String app_push_richNotification_unifediReport_title(Object acct) {
     return Intl.message(
       '$acct reported your status',
-      name: 'app_push_richNotification_pleromaReport_title',
+      name: 'app_push_richNotification_unifediReport_title',
       desc: '',
       args: [acct],
     );
   }
 
   /// `Someone reported your status`
-  String get app_push_richNotification_pleromaReport_summary {
+  String get app_push_richNotification_unifediReport_summary {
     return Intl.message(
       'Someone reported your status',
-      name: 'app_push_richNotification_pleromaReport_summary',
+      name: 'app_push_richNotification_unifediReport_summary',
       desc: '',
       args: [],
     );

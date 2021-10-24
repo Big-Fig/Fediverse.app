@@ -46,7 +46,7 @@ class FilterCachedListBloc extends IFilterCachedListBloc {
     required IFilter? newerThan,
     required IFilter? olderThan,
   }) async {
-    // todo: dont exclude pleroma types on mastodon instances
+    // todo: dont exclude unifedi types on mastodon instances
     var remoteFilters = await unifediApiFilterService.getFilters(
       pagination: UnifediApiPagination(
         maxId: olderThan?.remoteId,

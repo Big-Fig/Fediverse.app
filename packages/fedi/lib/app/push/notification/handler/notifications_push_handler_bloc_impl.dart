@@ -7,7 +7,7 @@ import 'package:fedi/app/access/local_preferences/access_local_preference_bloc_i
 import 'package:fedi/app/access/local_preferences_access_bloc_impl.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
-import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository_impl.dart';
+import 'package:fedi/app/chat/unifedi/message/repository/unifedi_chat_message_repository_impl.dart';
 import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/database/app_database_service_impl.dart';
 import 'package:fedi/app/notification/repository/notification_repository_impl.dart';
@@ -247,7 +247,7 @@ class NotificationsPushHandlerBloc extends DisposableOwner
     );
     disposableOwner.addDisposable(statusRepository);
 
-    var chatMessageRepository = PleromaChatMessageRepository(
+    var chatMessageRepository = UnifediChatMessageRepository(
       appDatabase: appDatabaseService.appDatabase,
       accountRepository: accountRepository,
     );
@@ -375,7 +375,7 @@ class NotificationsPushHandlerBloc extends DisposableOwner
     );
     disposableOwner.addDisposable(statusRepository);
 
-    var chatMessageRepository = PleromaChatMessageRepository(
+    var chatMessageRepository = UnifediChatMessageRepository(
       appDatabase: appDatabaseService.appDatabase,
       accountRepository: accountRepository,
     );

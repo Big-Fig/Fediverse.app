@@ -15,8 +15,8 @@ import 'package:fedi/app/access/join/join_access_bloc_proxy_provider.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/account/details/local_account_details_page.dart';
 import 'package:fedi/app/app_model.dart';
-import 'package:fedi/app/chat/pleroma/pleroma_chat_page.dart';
-import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
+import 'package:fedi/app/chat/unifedi/repository/unifedi_chat_repository.dart';
+import 'package:fedi/app/chat/unifedi/unifedi_chat_page.dart';
 import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/context/app_context_bloc.dart';
 import 'package:fedi/app/crash_reporting/permission/checker/crash_reporting_permission_checker_widget.dart';
@@ -292,9 +292,9 @@ Future<void> handleLaunchPushLoaderNotification(
   var notification = launchOrResumePushLoaderNotification.notification;
   if (notification.isContainsChat) {
     await navigatorKey.currentState!.push(
-      createPleromaChatPageRoute(
+      createUnifediChatPageRoute(
         (await currentInstanceContextBloc!
-            .get<IPleromaChatRepository>()
+            .get<IUnifediChatRepository>()
             .findByRemoteIdInAppType(
               notification.chatRemoteId!,
             ))!,

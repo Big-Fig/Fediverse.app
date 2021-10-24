@@ -64,7 +64,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
   // ignore: avoid-late-keyword
   late ICurrentUnifediApiAccessBloc currentInstanceBloc;
   final IAuthApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc
-      pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc;
+      oAuthLastLaunchedHostToLoginLocalPreferenceBloc;
   final IConnectionService connectionService;
   final IConfigService configService;
 
@@ -73,7 +73,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
 
   AuthHostBloc({
     required this.instanceBaseUri,
-    required this.pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc,
+    required this.oAuthLastLaunchedHostToLoginLocalPreferenceBloc,
     required ILocalPreferencesService preferencesService,
     required this.connectionService,
     required this.currentInstanceBloc,
@@ -181,7 +181,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
 
     var baseUrl = unifediApiAccountService.baseUri;
 
-    await pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc
+    await oAuthLastLaunchedHostToLoginLocalPreferenceBloc
         .setValue(baseUrl.toString());
 
     var authCode = await launchAuthorizeFormAndExtractAuthorizationCode(
@@ -192,7 +192,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     );
     if (authCode != null) {
       // clear lastLaunch on success login
-      await pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc
+      await oAuthLastLaunchedHostToLoginLocalPreferenceBloc
           .setValue(baseUrl.toString());
 
       var instance = await loginWithAuthCode(authCode);
@@ -411,7 +411,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
             Provider.of<IConnectionService>(context, listen: false),
         currentInstanceBloc:
             ICurrentUnifediApiAccessBloc.of(context, listen: false),
-        pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc:
+        oAuthLastLaunchedHostToLoginLocalPreferenceBloc:
             IAuthApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc.of(
           context,
           listen: false,
@@ -474,8 +474,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
       );
     }
 
-    await pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc
-        .performAsyncInit();
+    await oAuthLastLaunchedHostToLoginLocalPreferenceBloc.performAsyncInit();
 
     var detectorBloc = UnifediApiInstanceTypeDetectorBloc();
     var instanceType = await detectorBloc.detectInstanceType(

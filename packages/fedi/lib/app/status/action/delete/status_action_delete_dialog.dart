@@ -1,5 +1,5 @@
 import 'package:fedi/app/access/current/current_access_bloc.dart';
-import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
+import 'package:fedi/app/async/unifedi/unifedi_async_operation_helper.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/status/draft/list/draft_status_list_page.dart';
 import 'package:fedi/app/status/draft/repository/draft_status_repository.dart';
@@ -42,7 +42,7 @@ DialogAction buildDeleteAndSaveToDrafts(
     label: S.of(context).app_status_delete_dialog_action_deleteAndSaveToDrafts,
     onAction: (context) async {
       var dialogResult =
-          await PleromaAsyncOperationHelper.performPleromaAsyncOperation<void>(
+          await UnifediAsyncOperationHelper.performUnifediAsyncOperation<void>(
         context: context,
         asyncCode: () => statusBloc.delete(),
       );
@@ -95,7 +95,7 @@ DialogAction buildDeleteAndStartNewAction(
     label: S.of(context).app_status_delete_dialog_action_deleteAndStartNew,
     onAction: (context) async {
       var dialogResult =
-          await PleromaAsyncOperationHelper.performPleromaAsyncOperation<void>(
+          await UnifediAsyncOperationHelper.performUnifediAsyncOperation<void>(
         context: context,
         asyncCode: () => statusBloc.delete(),
       );
@@ -132,7 +132,7 @@ DialogAction buildDeleteAction(
       label: S.of(context).app_status_delete_dialog_action_delete,
       onAction: (context) async {
         // ignore: avoid-ignoring-return-values
-        await PleromaAsyncOperationHelper.performPleromaAsyncOperation<void>(
+        await UnifediAsyncOperationHelper.performUnifediAsyncOperation<void>(
           context: context,
           asyncCode: () => statusBloc.delete(),
         );

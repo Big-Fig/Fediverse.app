@@ -7,10 +7,10 @@ import 'package:fedi/app/chat/conversation/with_last_message/list/conversation_c
 import 'package:fedi/app/chat/conversation/with_last_message/list/conversation_chat_with_last_message_list_widget.dart';
 import 'package:fedi/app/chat/conversation/with_last_message/pagination/conversation_chat_with_last_message_pagination_bloc.dart';
 import 'package:fedi/app/chat/conversation/with_last_message/pagination/list/conversation_chat_with_last_message_pagination_list_with_new_items_bloc.dart';
-import 'package:fedi/app/chat/pleroma/list/pleroma_chat_list_tap_to_load_overlay_widget.dart';
-import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
-import 'package:fedi/app/chat/pleroma/unread/pleroma_chat_unread_badge_bloc_impl.dart';
 import 'package:fedi/app/chat/settings/chat_settings_bloc.dart';
+import 'package:fedi/app/chat/unifedi/list/unifedi_chat_list_tap_to_load_overlay_widget.dart';
+import 'package:fedi/app/chat/unifedi/repository/unifedi_chat_repository.dart';
+import 'package:fedi/app/chat/unifedi/unread/unifedi_chat_unread_badge_bloc_impl.dart';
 import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
 import 'package:fedi/app/ui/badge/bool/fedi_bool_badge_bloc.dart';
 import 'package:fedi/app/ui/badge/bool/fedi_bool_badge_widget.dart';
@@ -59,7 +59,7 @@ class ConversationChatHomeTabPage extends StatelessWidget {
         contentBuilder: (context) =>
             const _ConversationMessagesHomeTabPageContentWidget(),
         overlayBuilder: (context) =>
-            const PleromaChatListTapToLoadOverlayWidget(),
+            const UnifediChatListTapToLoadOverlayWidget(),
       ),
     );
   }
@@ -184,17 +184,17 @@ class _ConversationMessagesHomeTabPageContentSwitchToChatsButtonWidget
 
   @override
   Widget build(BuildContext context) =>
-      DisposableProxyProvider<IPleromaChatRepository, IFediBoolBadgeBloc>(
-        update: (context, pleromaChatRepository, _) =>
-            PleromaChatUnreadBadgeBloc(
-          pleromaChatRepository: pleromaChatRepository,
+      DisposableProxyProvider<IUnifediChatRepository, IFediBoolBadgeBloc>(
+        update: (context, unifediChatRepository, _) =>
+            UnifediChatUnreadBadgeBloc(
+          unifediChatRepository: unifediChatRepository,
         ),
         child: FediBoolBadgeWidget(
           child: FediBlurredTextButtonWithBorder(
             S.of(context).app_home_tab_chat_conversation_action_switchToChats,
             onPressed: () {
               IChatSettingsBloc.of(context, listen: false)
-                  .changeReplaceConversationsWithPleromaChats(
+                  .changeReplaceConversationsWithUnifediChats(
                 replaceConversationsWithChats: true,
               );
             },

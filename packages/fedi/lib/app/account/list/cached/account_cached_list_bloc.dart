@@ -1,7 +1,7 @@
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/list/account_list_bloc.dart';
-import 'package:fedi/app/list/cached/pleroma_cached_list_bloc.dart';
+import 'package:fedi/app/list/cached/unifedi_cached_list_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:unifedi_api/unifedi_api.dart';

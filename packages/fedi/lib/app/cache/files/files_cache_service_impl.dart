@@ -67,13 +67,13 @@ class FilesCacheService extends DisposableOwner implements IFilesCacheService {
     if (Platform.isAndroid) {
       actualImageUrl = actualImageUrl!.replaceAll('localhost', '10.0.2.2');
       actualImageUrl = actualImageUrl.replaceAll(
-        'https://ops.pleroma.social',
+        'https://ops.unifedi.social',
         'http://10.0.2.2:4000',
       );
     } else if (Platform.isIOS) {
       actualImageUrl = actualImageUrl!.replaceAll('10.0.2.2', 'localhost');
       actualImageUrl = actualImageUrl.replaceAll(
-        'https://ops.pleroma.social',
+        'https://ops.unifedi.social',
         'http://localhost:4000',
       );
     }

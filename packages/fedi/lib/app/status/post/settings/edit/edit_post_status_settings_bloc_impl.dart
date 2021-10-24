@@ -17,7 +17,7 @@ class EditPostStatusSettingsBloc
     implements IEditPostStatusSettingsBloc {
   final IPostStatusSettingsBloc postStatusSettingsBloc;
 
-  final List<UnifediApiVisibility> pleromaVisibilityPossibleValues;
+  final List<UnifediApiVisibility> unifediVisibilityPossibleValues;
   @override
   // ignore: avoid-late-keyword
   late IStatusVisibilitySelectSingleFromListValueFormFieldBloc
@@ -46,7 +46,7 @@ class EditPostStatusSettingsBloc
 
   EditPostStatusSettingsBloc({
     required this.postStatusSettingsBloc,
-    required this.pleromaVisibilityPossibleValues,
+    required this.unifediVisibilityPossibleValues,
     required GlobalOrInstanceSettingsType globalOrInstanceSettingsType,
     required bool isEnabled,
     required bool isGlobalForced,
@@ -61,7 +61,7 @@ class EditPostStatusSettingsBloc
         StatusVisibilitySelectSingleFromListValueFormFieldBloc(
       originValue: currentSettings.defaultVisibilityAsUnifediApi,
       isEnabled: isEnabled,
-      possibleValues: pleromaVisibilityPossibleValues,
+      possibleValues: unifediVisibilityPossibleValues,
     );
     markMediaAsNsfwOnAttachFormFieldBloc = BoolValueFormFieldBloc(
       originValue: currentSettings.markMediaAsNsfwOnAttach,

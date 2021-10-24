@@ -1,5 +1,5 @@
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:fedi/app/pagination/cached/cached_pleroma_pagination_bloc_impl.dart';
+import 'package:fedi/app/pagination/cached/cached_unifedi_pagination_bloc_impl.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/app/status/pagination/cached/status_cached_pagination_bloc.dart';
@@ -11,7 +11,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
-class StatusCachedPaginationBloc extends CachedPleromaPaginationBloc<IStatus>
+class StatusCachedPaginationBloc extends CachedUnifediPaginationBloc<IStatus>
     implements IStatusCachedPaginationBloc {
   final IStatusCachedListBloc statusListService;
 

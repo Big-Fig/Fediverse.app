@@ -1,4 +1,4 @@
-import 'package:fedi/app/async/pleroma/pleroma_async_operation_button_builder_widget.dart';
+import 'package:fedi/app/async/unifedi/unifedi_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/filter/edit/edit_filter_bloc.dart';
 import 'package:fedi/app/filter/form/filter_form_widget.dart';
 import 'package:fedi/app/ui/button/text/with_border/fedi_transparent_text_button_with_border.dart';
@@ -50,7 +50,7 @@ class _EditFilterDeleteButton extends StatelessWidget {
   Widget build(BuildContext context) {
     var editFilterBloc = IEditFilterBloc.of(context);
 
-    return PleromaAsyncOperationButtonBuilderWidget(
+    return UnifediAsyncOperationButtonBuilderWidget(
       asyncButtonAction: () async {
         await editFilterBloc.deleteList();
         Navigator.of(context).pop();

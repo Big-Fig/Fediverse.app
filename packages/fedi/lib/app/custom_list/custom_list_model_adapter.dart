@@ -1,7 +1,7 @@
 import 'package:fedi/app/custom_list/custom_list_model.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
-extension IPleromaListExtension on IUnifediApiList {
+extension IUnifediListExtension on IUnifediApiList {
   CustomList toCustomList() {
     if (this is CustomList) {
       return this as CustomList;
@@ -15,7 +15,7 @@ extension IPleromaListExtension on IUnifediApiList {
 }
 
 extension ICustomListExtension on ICustomList {
-  UnifediApiList toPleromaList() {
+  UnifediApiList toUnifediList() {
     if (this is UnifediApiList) {
       return this as UnifediApiList;
     } else {

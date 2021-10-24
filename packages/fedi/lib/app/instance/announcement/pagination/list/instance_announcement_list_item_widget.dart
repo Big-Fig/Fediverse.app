@@ -1,5 +1,5 @@
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
+import 'package:fedi/app/async/unifedi/unifedi_async_operation_helper.dart';
 import 'package:fedi/app/html/html_text_bloc.dart';
 import 'package:fedi/app/html/html_text_bloc_impl.dart';
 import 'package:fedi/app/html/html_text_model.dart';
@@ -131,7 +131,7 @@ void _showEmojiPicker(BuildContext context) {
       String emoji,
     ) {
       // ignore: avoid-ignoring-return-values
-      PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+      UnifediAsyncOperationHelper.performUnifediAsyncOperation(
         context: context,
         asyncCode: () => instanceAnnouncementBloc.toggleEmojiReaction(
           emojiName: emoji,
@@ -167,7 +167,7 @@ class _InstanceAnnouncementListItemDismissButtonWidget extends StatelessWidget {
             padding: EdgeInsets.zero,
             onPressed: () {
               // ignore: avoid-ignoring-return-values
-              PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+              UnifediAsyncOperationHelper.performUnifediAsyncOperation(
                 context: context,
                 asyncCode: () async {
                   await instanceAnnouncementBloc.dismiss();

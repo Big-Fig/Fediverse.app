@@ -1,9 +1,9 @@
 import 'package:fedi/app/access/current/current_access_bloc.dart';
-import 'package:fedi/app/async/pleroma/pleroma_async_operation_button_builder_widget.dart';
-import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
+import 'package:fedi/app/async/unifedi/unifedi_async_operation_button_builder_widget.dart';
+import 'package:fedi/app/async/unifedi/unifedi_async_operation_helper.dart';
 import 'package:fedi/app/cache/files/files_cache_service.dart';
 import 'package:fedi/app/chat/conversation/share/conversation_chat_share_entity_page.dart';
-import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_entity_page.dart';
+import 'package:fedi/app/chat/unifedi/share/unifedi_chat_share_entity_page.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/media/attachment/add_to_gallery/media_attachment_add_to_gallery_exception.dart';
 import 'package:fedi/app/media/attachment/add_to_gallery/media_attachment_add_to_gallery_helper.dart';
@@ -238,7 +238,7 @@ class _MediaAttachmentDetailsPageShareAction extends StatelessWidget {
           },
           chatsShareAction: (context) {
             Navigator.of(context).pop();
-            goToPleromaChatShareEntityPage(
+            goToUnifediChatShareEntityPage(
               context: context,
               shareEntity: _mapMediaAttachmentToShareEntity(mediaAttachment),
               instanceLocation: instanceLocation,
@@ -247,8 +247,8 @@ class _MediaAttachmentDetailsPageShareAction extends StatelessWidget {
           newStatusShareAction: (context) async {
             Navigator.of(parentContext).pop();
 
-            var dialogResult = await PleromaAsyncOperationHelper
-                .performPleromaAsyncOperation<IUnifediApiMediaAttachment>(
+            var dialogResult = await UnifediAsyncOperationHelper
+                .performUnifediAsyncOperation<IUnifediApiMediaAttachment>(
               context: parentContext,
               asyncCode: () async {
                 var mediaAttachmentReuploadService =
@@ -305,7 +305,7 @@ class _MediaAttachmentDetailsPageAddToGalleryAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) =>
-      PleromaAsyncOperationButtonBuilderWidget(
+      UnifediAsyncOperationButtonBuilderWidget(
         showProgressDialog: false,
         builder: (BuildContext context, VoidCallback? onPressed) =>
             FediIconButton(

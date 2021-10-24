@@ -27,12 +27,12 @@ class CreateCustomListBloc extends EditCustomListBloc
         context,
         listen: false,
       ),
-      pleromaListService: Provider.of<IUnifediApiListService>(
+      unifediListService: Provider.of<IUnifediApiListService>(
         context,
         listen: false,
       ),
       statusRepository: IStatusRepository.of(context, listen: false),
-      pleromaAuthAccountService: Provider.of<IUnifediApiAccountService>(
+      unifediAuthAccountService: Provider.of<IUnifediApiAccountService>(
         context,
         listen: false,
       ),
@@ -83,34 +83,34 @@ class CreateCustomListBloc extends EditCustomListBloc
 
   @override
   Future<ICustomList> submit() async {
-    var pleromaList = await pleromaListService.createList(
+    var unifediList = await unifediListService.createList(
       title: customListFormBloc.titleField.currentValue,
       repliesPolicy: null,
     );
-    var localCustomList = pleromaList.toCustomList();
+    var localCustomList = unifediList.toCustomList();
     submittedStreamController.add(localCustomList);
 
     return localCustomList;
   }
 
   CreateCustomListBloc({
-    required IUnifediApiListService pleromaListService,
+    required IUnifediApiListService unifediListService,
     required IStatusRepository statusRepository,
     required IMyAccountBloc myAccountBloc,
     required IAccountRepository accountRepository,
-    required IUnifediApiAccountService pleromaAuthAccountService,
+    required IUnifediApiAccountService unifediAuthAccountService,
     required ITimelinesHomeTabStorageBloc timelinesHomeTabStorageBloc,
     required IPaginationSettingsBloc paginationSettingsBloc,
     required IConnectionService connectionService,
   }) : super(
           connectionService: connectionService,
           isPossibleToDelete: false,
-          pleromaListService: pleromaListService,
+          unifediListService: unifediListService,
           statusRepository: statusRepository,
           customList: null,
           myAccountBloc: myAccountBloc,
           accountRepository: accountRepository,
-          pleromaAuthAccountService: pleromaAuthAccountService,
+          unifediAuthAccountService: unifediAuthAccountService,
           timelinesHomeTabStorageBloc: timelinesHomeTabStorageBloc,
           paginationSettingsBloc: paginationSettingsBloc,
         );

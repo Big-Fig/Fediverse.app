@@ -1,4 +1,4 @@
-import 'package:fedi/app/async/pleroma/pleroma_async_operation_button_builder_widget.dart';
+import 'package:fedi/app/async/unifedi/unifedi_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/status/action/status_action_counter_widget.dart';
 import 'package:fedi/app/status/favourite/status_favourite_account_list_page.dart';
 import 'package:fedi/app/status/status_bloc.dart';
@@ -42,7 +42,7 @@ class _StatusFavouriteActionButtonWidget extends StatelessWidget {
       builder: (context, snapshot) {
         var favourited = snapshot.data;
 
-        return PleromaAsyncOperationButtonBuilderWidget(
+        return UnifediAsyncOperationButtonBuilderWidget(
           showProgressDialog: false,
           builder: (context, onPressed) => FediIconButton(
             iconSize: FediSizes.bigIconSize,

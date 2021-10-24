@@ -41,7 +41,7 @@ class TimelineLocalPreferenceBloc extends ObjectLocalPreferenceBloc<Timeline?>
             label: customList.title,
             isPossibleToDelete: true,
             settings: TimelineSettings.createDefaultCustomListSettings(
-              onlyInRemoteList: customList.toPleromaList(),
+              onlyInRemoteList: customList.toUnifediList(),
             ),
             typeString: TimelineType.customList.toJsonValue(),
           ),

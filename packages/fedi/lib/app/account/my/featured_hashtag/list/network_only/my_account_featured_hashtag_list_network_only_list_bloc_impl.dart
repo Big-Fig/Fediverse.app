@@ -38,14 +38,14 @@ class AccountFeaturedHashtagListNetworkOnlyListBloc extends DisposableOwner
       return [];
     }
 
-    var pleromaFeaturedHashtags =
+    var unifediFeaturedHashtags =
         await unifediApiMyAccountService.getMyAccountFeaturedTags(
       pagination: null,
     );
-    List<IMyAccountFeaturedHashtag> result = pleromaFeaturedHashtags
+    List<IMyAccountFeaturedHashtag> result = unifediFeaturedHashtags
         .map(
-          (pleromaFeaturedHashtag) =>
-              pleromaFeaturedHashtag.toMyAccountFeaturedHashtag(),
+          (unifediFeaturedHashtag) =>
+              unifediFeaturedHashtag.toMyAccountFeaturedHashtag(),
         )
         .toList();
 

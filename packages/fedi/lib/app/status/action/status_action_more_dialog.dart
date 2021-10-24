@@ -6,9 +6,9 @@ import 'package:fedi/app/account/action/account_action_more_dialog.dart';
 import 'package:fedi/app/account/local_account_bloc_impl.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/remote_account_bloc_impl.dart';
-import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
+import 'package:fedi/app/async/unifedi/unifedi_async_operation_helper.dart';
 import 'package:fedi/app/chat/conversation/share/conversation_chat_share_entity_page.dart';
-import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_entity_page.dart';
+import 'package:fedi/app/chat/unifedi/share/unifedi_chat_share_entity_page.dart';
 import 'package:fedi/app/html/html_text_helper.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/media/attachment/reupload/media_attachment_reupload_service.dart';
@@ -191,7 +191,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
           : S.of(context).app_status_action_pin,
       onAction: (context) async {
         // ignore: avoid-ignoring-return-values
-        await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+        await UnifediAsyncOperationHelper.performUnifediAsyncOperation(
           context: context,
           asyncCode: () => statusBloc.togglePin(),
         );
@@ -213,7 +213,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
       onAction: (context) async {
         if (statusBloc.muted || !isPleromaInstance) {
           // ignore: avoid-ignoring-return-values
-          await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+          await UnifediAsyncOperationHelper.performUnifediAsyncOperation(
             context: context,
             asyncCode: () => statusBloc.toggleMute(
               duration: null,
@@ -244,7 +244,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
           : S.of(context).app_status_action_bookmark,
       onAction: (context) async {
         // ignore: avoid-ignoring-return-values
-        await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+        await UnifediAsyncOperationHelper.performUnifediAsyncOperation(
           context: context,
           asyncCode: () => statusBloc.toggleBookmark(),
         );
@@ -286,7 +286,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
           },
           chatsShareAction: (context) {
             Navigator.of(context).pop();
-            goToPleromaChatShareEntityPage(
+            goToUnifediChatShareEntityPage(
               context: context,
               shareEntity: _mapStatusToShareEntity(status),
               instanceLocation: instanceLocation,
@@ -299,8 +299,8 @@ class StatusActionMoreDialogBody extends StatelessWidget {
             List<IUnifediApiMediaAttachment>? reuploadedMediaAttachments;
 
             if (originalMediaAttachments?.isNotEmpty == true) {
-              var dialogResult = await PleromaAsyncOperationHelper
-                  .performPleromaAsyncOperation<
+              var dialogResult = await UnifediAsyncOperationHelper
+                  .performUnifediAsyncOperation<
                       List<IUnifediApiMediaAttachment>>(
                 context: parentContext,
                 asyncCode: () async {

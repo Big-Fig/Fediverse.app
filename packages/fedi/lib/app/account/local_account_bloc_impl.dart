@@ -21,7 +21,7 @@ var _logger = Logger('local_account_bloc_impl.dart');
 
 class LocalAccountBloc extends AccountBloc {
   final IMyAccount? myAccount;
-  final IUnifediApiAccountService pleromaAuthAccountService;
+  final IUnifediApiAccountService unifediAuthAccountService;
 
   final IAccountRepository accountRepository;
   final IStatusRepository statusRepository;
@@ -55,7 +55,7 @@ class LocalAccountBloc extends AccountBloc {
     required this.myAccount,
     required this.accountRepository,
     required this.statusRepository,
-    required this.pleromaAuthAccountService,
+    required this.unifediAuthAccountService,
     required IAccount account,
     bool isNeedRefreshFromNetworkOnInit = false,
     this.isNeedPreFetchRelationship = true,
@@ -64,7 +64,7 @@ class LocalAccountBloc extends AccountBloc {
   })  : accountRelationshipSubject =
             BehaviorSubject.seeded(account.relationship),
         super(
-          unifediApiAccountService: pleromaAuthAccountService,
+          unifediApiAccountService: unifediAuthAccountService,
           account: account,
           isNeedRefreshFromNetworkOnInit: isNeedRefreshFromNetworkOnInit,
           delayInit: delayInit,
@@ -99,7 +99,7 @@ class LocalAccountBloc extends AccountBloc {
         isNeedWatchLocalRepositoryForUpdates:
             isNeedWatchLocalRepositoryForUpdates,
         accountRepository: IAccountRepository.of(context, listen: false),
-        pleromaAuthAccountService:
+        unifediAuthAccountService:
             Provider.of<IUnifediApiAccountService>(context, listen: false),
         myAccount: IMyAccountBloc.of(context, listen: false).myAccount,
       );
@@ -165,11 +165,11 @@ class LocalAccountBloc extends AccountBloc {
     );
     IUnifediApiAccountRelationship? newRelationship;
     if (relationship!.blocking!) {
-      newRelationship = await pleromaAuthAccountService.unBlockAccount(
+      newRelationship = await unifediAuthAccountService.unBlockAccount(
         accountId: account.remoteId,
       );
     } else {
-      newRelationship = await pleromaAuthAccountService.blockAccount(
+      newRelationship = await unifediAuthAccountService.blockAccount(
         accountId: account.remoteId,
       );
     }
@@ -186,11 +186,11 @@ class LocalAccountBloc extends AccountBloc {
     );
     IUnifediApiAccountRelationship? newRelationship;
     if (relationship!.subscribing!) {
-      newRelationship = await pleromaAuthAccountService.unSubscribeAccount(
+      newRelationship = await unifediAuthAccountService.unSubscribeAccount(
         accountId: account.remoteId,
       );
     } else {
-      newRelationship = await pleromaAuthAccountService.subscribeAccount(
+      newRelationship = await unifediAuthAccountService.subscribeAccount(
         accountId: account.remoteId,
       );
     }
@@ -207,11 +207,11 @@ class LocalAccountBloc extends AccountBloc {
     );
     IUnifediApiAccountRelationship? newRelationship;
     if (relationship!.muting!) {
-      newRelationship = await pleromaAuthAccountService.unMuteAccount(
+      newRelationship = await unifediAuthAccountService.unMuteAccount(
         accountId: account.remoteId,
       );
     } else {
-      newRelationship = await pleromaAuthAccountService.muteAccount(
+      newRelationship = await unifediAuthAccountService.muteAccount(
         accountId: account.remoteId,
         notifications: false,
         expireIn: null,
@@ -230,7 +230,7 @@ class LocalAccountBloc extends AccountBloc {
     );
     IUnifediApiAccountRelationship? newRelationship;
     if (relationship!.requested == true || relationship!.following == true) {
-      newRelationship = await pleromaAuthAccountService.unFollowAccount(
+      newRelationship = await unifediAuthAccountService.unFollowAccount(
         accountId: account.remoteId,
       );
 
@@ -266,7 +266,7 @@ class LocalAccountBloc extends AccountBloc {
         );
       });
     } else {
-      newRelationship = await pleromaAuthAccountService.followAccount(
+      newRelationship = await unifediAuthAccountService.followAccount(
         accountId: account.remoteId,
         notify: null,
         reblogs: null,
@@ -298,7 +298,7 @@ class LocalAccountBloc extends AccountBloc {
     );
     assert(relationship!.muting != true, 'cant mute if already muted');
 
-    var newRelationship = await pleromaAuthAccountService.muteAccount(
+    var newRelationship = await unifediAuthAccountService.muteAccount(
       accountId: account.remoteId,
       notifications: notifications,
       expireIn: duration,
@@ -317,7 +317,7 @@ class LocalAccountBloc extends AccountBloc {
     );
     assert(relationship!.muting == true, 'cant unmute when not muted yet');
 
-    var newRelationship = await pleromaAuthAccountService.unMuteAccount(
+    var newRelationship = await unifediAuthAccountService.unMuteAccount(
       accountId: account.remoteId,
     );
 
@@ -337,7 +337,7 @@ class LocalAccountBloc extends AccountBloc {
       'cant subscribe if already subscribed',
     );
 
-    var newRelationship = await pleromaAuthAccountService.subscribeAccount(
+    var newRelationship = await unifediAuthAccountService.subscribeAccount(
       accountId: account.remoteId,
     );
 
@@ -360,7 +360,7 @@ class LocalAccountBloc extends AccountBloc {
       'cant unsubscribe when not subcribed',
     );
 
-    var newRelationship = await pleromaAuthAccountService.unSubscribeAccount(
+    var newRelationship = await unifediAuthAccountService.unSubscribeAccount(
       accountId: account.remoteId,
     );
 
@@ -381,11 +381,11 @@ class LocalAccountBloc extends AccountBloc {
     IUnifediApiAccountRelationship? newRelationship;
     // todo: fix
     if (relationship!.muting == true) {
-      newRelationship = await pleromaAuthAccountService.unPinAccount(
+      newRelationship = await unifediAuthAccountService.unPinAccount(
         accountId: account.remoteId,
       );
     } else {
-      newRelationship = await pleromaAuthAccountService.pinAccount(
+      newRelationship = await unifediAuthAccountService.pinAccount(
         accountId: account.remoteId,
       );
     }
@@ -407,11 +407,11 @@ class LocalAccountBloc extends AccountBloc {
     var domainBlocking = relationship!.domainBlocking == true;
     var domain = acctRemoteDomainOrNull!;
     if (domainBlocking) {
-      await pleromaAuthAccountService.unBlockDomain(
+      await unifediAuthAccountService.unBlockDomain(
         domain: domain,
       );
     } else {
-      await pleromaAuthAccountService.blockDomain(
+      await unifediAuthAccountService.blockDomain(
         domain: domain,
       );
     }
@@ -466,7 +466,7 @@ class LocalAccountBloc extends AccountBloc {
     if (!_refreshAccountRelationshipInProgress) {
       _refreshAccountRelationshipInProgress = true;
       var relationships =
-          await pleromaAuthAccountService.getRelationshipWithAccounts(
+          await unifediAuthAccountService.getRelationshipWithAccounts(
         accountIds: [
           account.remoteId,
         ],
@@ -527,17 +527,17 @@ class LocalAccountBloc extends AccountBloc {
 
   @override
   bool get isEndorsementSupported =>
-      pleromaAuthAccountService.isFeatureSupported(
-        pleromaAuthAccountService.pinAccountFeature,
+      unifediAuthAccountService.isFeatureSupported(
+        unifediAuthAccountService.pinAccountFeature,
       );
 
   @override
   bool get isSubscribeToAccountFeatureSupported =>
-      pleromaAuthAccountService.isFeatureSupported(
-        pleromaAuthAccountService.subscribeAccountFeature,
+      unifediAuthAccountService.isFeatureSupported(
+        unifediAuthAccountService.subscribeAccountFeature,
       );
 
   @override
   // todo: remove hack
-  bool get isSupportChats => pleromaAuthAccountService.isPleroma;
+  bool get isSupportChats => unifediAuthAccountService.isPleroma;
 }

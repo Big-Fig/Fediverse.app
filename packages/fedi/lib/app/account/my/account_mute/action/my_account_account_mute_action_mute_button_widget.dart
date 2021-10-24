@@ -1,7 +1,7 @@
 import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/action/mute/account_action_mute_dialog.dart';
 import 'package:fedi/app/account/my/account_mute/my_account_account_mute_network_only_account_list_bloc.dart';
-import 'package:fedi/app/async/pleroma/pleroma_async_operation_button_builder_widget.dart';
+import 'package:fedi/app/async/unifedi/unifedi_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/ui/button/text/with_border/fedi_transparent_text_button_with_border.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/generated/l10n.dart';
@@ -33,7 +33,7 @@ class MyAccountAccountMuteActionMuteButtonWidget extends StatelessWidget {
         }
 
         if (relationshipMuting) {
-          return PleromaAsyncOperationButtonBuilderWidget(
+          return UnifediAsyncOperationButtonBuilderWidget(
             asyncButtonAction: () async {
               await listBloc.removeAccountMute(
                 account: accountBloc.account,

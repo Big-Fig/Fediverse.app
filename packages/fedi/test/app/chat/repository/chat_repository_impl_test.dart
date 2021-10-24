@@ -2,12 +2,12 @@
 
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
-import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
-import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository_impl.dart';
-import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
-import 'package:fedi/app/chat/pleroma/pleroma_chat_model_adapter.dart';
-import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository_impl.dart';
-import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository_model.dart';
+import 'package:fedi/app/chat/unifedi/message/repository/unifedi_chat_message_repository_impl.dart';
+import 'package:fedi/app/chat/unifedi/message/unifedi_chat_message_model.dart';
+import 'package:fedi/app/chat/unifedi/repository/unifedi_chat_repository_impl.dart';
+import 'package:fedi/app/chat/unifedi/repository/unifedi_chat_repository_model.dart';
+import 'package:fedi/app/chat/unifedi/unifedi_chat_model.dart';
+import 'package:fedi/app/chat/unifedi/unifedi_chat_model_adapter.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -24,27 +24,27 @@ import 'chat_repository_test_helper.dart';
 // ignore_for_file: avoid-ignoring-return-values
 void main() {
   late AppDatabase database;
-  late PleromaChatRepository chatRepository;
+  late UnifediChatRepository chatRepository;
   late AccountRepository accountRepository;
-  late PleromaChatMessageRepository chatMessageRepository;
+  late UnifediChatMessageRepository chatMessageRepository;
 
   late DbChatMessagePopulated dbChatMessagePopulated;
   late DbChatMessage dbChatMessage;
 
   late DbChat dbChat;
-  late DbPleromaChatPopulated dbChatPopulated;
-  late IPleromaChat chat;
+  late DbUnifediChatPopulated dbChatPopulated;
+  late IUnifediChat chat;
 
   late DbAccount dbAccount;
 
   setUp(() async {
     database = AppDatabase(VmDatabase.memory());
     accountRepository = AccountRepository(appDatabase: database);
-    chatMessageRepository = PleromaChatMessageRepository(
+    chatMessageRepository = UnifediChatMessageRepository(
       appDatabase: database,
       accountRepository: accountRepository,
     );
-    chatRepository = PleromaChatRepository(
+    chatRepository = UnifediChatRepository(
       appDatabase: database,
       chatMessageRepository: chatMessageRepository,
       accountRepository: accountRepository,
@@ -63,12 +63,12 @@ void main() {
       seed: 'seed4',
       dbAccount: dbAccount,
     );
-    dbChatPopulated = DbPleromaChatPopulated(
+    dbChatPopulated = DbUnifediChatPopulated(
       dbChat: dbChat,
       dbAccount: dbAccount,
     );
 
-    chat = DbPleromaChatPopulatedWrapper(dbChatPopulated: dbChatPopulated);
+    chat = DbUnifediChatPopulatedWrapper(dbChatPopulated: dbChatPopulated);
     dbChatMessage = await ChatMessageDatabaseMockHelper.createTestDbChatMessage(
       seed: 'seed3',
       dbAccount: dbAccount,
@@ -171,10 +171,10 @@ void main() {
     );
     assert(id > 0, true);
 
-    var dbPleromaChatPopulatedWrapper = chat.toDbPleromaChatPopulatedWrapper();
-    var oldLocalChat = dbPleromaChatPopulatedWrapper.copyWith(
-      dbChatPopulated: dbPleromaChatPopulatedWrapper.dbChatPopulated.copyWith(
-        dbChat: dbPleromaChatPopulatedWrapper.dbChatPopulated.dbChat.copyWith(
+    var dbUnifediChatPopulatedWrapper = chat.toDbUnifediChatPopulatedWrapper();
+    var oldLocalChat = dbUnifediChatPopulatedWrapper.copyWith(
+      dbChatPopulated: dbUnifediChatPopulatedWrapper.dbChatPopulated.copyWith(
+        dbChat: dbUnifediChatPopulatedWrapper.dbChatPopulated.dbChat.copyWith(
           id: id,
         ),
       ),
@@ -184,18 +184,18 @@ void main() {
     var newAcct = 'newAcct';
     var newContent = 'newContent';
 
-    dbPleromaChatPopulatedWrapper = chat.toDbPleromaChatPopulatedWrapper();
-    var newRemoteChat = dbPleromaChatPopulatedWrapper
+    dbUnifediChatPopulatedWrapper = chat.toDbUnifediChatPopulatedWrapper();
+    var newRemoteChat = dbUnifediChatPopulatedWrapper
         .copyWith(
-      dbChatPopulated: dbPleromaChatPopulatedWrapper.dbChatPopulated.copyWith(
-        dbChat: dbPleromaChatPopulatedWrapper.dbChatPopulated.dbChat.copyWith(
+      dbChatPopulated: dbUnifediChatPopulatedWrapper.dbChatPopulated.copyWith(
+        dbChat: dbUnifediChatPopulatedWrapper.dbChatPopulated.dbChat.copyWith(
           id: id,
           remoteId: newRemoteId,
         ),
       ),
     )
         .toUnifediApiChat(
-      lastChatMessage: DbPleromaChatMessagePopulatedWrapper(
+      lastChatMessage: DbUnifediChatMessagePopulatedWrapper(
         dbChatMessagePopulated: DbChatMessagePopulated(
           dbChatMessage: dbChatMessage.copyWith(content: newContent),
           dbAccount: dbAccount.copyWith(
@@ -252,7 +252,7 @@ void main() {
     expect(await chatRepository.countAll(), 0);
 
     await chatRepository.upsertInRemoteType(
-      DbPleromaChatPopulatedWrapper(
+      DbUnifediChatPopulatedWrapper(
         dbChatPopulated: dbChatPopulated,
       ).toUnifediApiChat(
         accounts: [
@@ -262,7 +262,7 @@ void main() {
             ),
           ),
         ],
-        lastChatMessage: DbPleromaChatMessagePopulatedWrapper(
+        lastChatMessage: DbUnifediChatMessagePopulatedWrapper(
           dbChatMessagePopulated: dbChatMessagePopulated,
         ),
       ),
@@ -295,7 +295,7 @@ void main() {
     // item with same id updated
 
     await chatRepository.upsertInRemoteType(
-      DbPleromaChatPopulatedWrapper(
+      DbUnifediChatPopulatedWrapper(
         dbChatPopulated: dbChatPopulated,
       ).toUnifediApiChat(
         accounts: [
@@ -305,7 +305,7 @@ void main() {
             ),
           ),
         ],
-        lastChatMessage: DbPleromaChatMessagePopulatedWrapper(
+        lastChatMessage: DbUnifediChatMessagePopulatedWrapper(
           dbChatMessagePopulated: dbChatMessagePopulated,
         ),
       ),
@@ -332,7 +332,7 @@ void main() {
     expect(await chatRepository.countAll(), 0);
     await chatRepository.upsertAllInRemoteType(
       [
-        DbPleromaChatPopulatedWrapper(dbChatPopulated: dbChatPopulated)
+        DbUnifediChatPopulatedWrapper(dbChatPopulated: dbChatPopulated)
             .toUnifediApiChat(
           accounts: [
             DbAccountPopulatedWrapper(
@@ -341,7 +341,7 @@ void main() {
               ),
             ),
           ],
-          lastChatMessage: DbPleromaChatMessagePopulatedWrapper(
+          lastChatMessage: DbUnifediChatMessagePopulatedWrapper(
             dbChatMessagePopulated: dbChatMessagePopulated,
           ),
         ),
@@ -369,7 +369,7 @@ void main() {
 
     await chatRepository.upsertAllInRemoteType(
       [
-        DbPleromaChatPopulatedWrapper(dbChatPopulated: dbChatPopulated)
+        DbUnifediChatPopulatedWrapper(dbChatPopulated: dbChatPopulated)
             .toUnifediApiChat(
           accounts: [
             DbAccountPopulatedWrapper(
@@ -378,7 +378,7 @@ void main() {
               ),
             ),
           ],
-          lastChatMessage: DbPleromaChatMessagePopulatedWrapper(
+          lastChatMessage: DbUnifediChatMessagePopulatedWrapper(
             dbChatMessagePopulated: dbChatMessagePopulated,
           ),
         ),
@@ -458,7 +458,7 @@ void main() {
           updatedAt: DateTime(2005),
         ),
       ),
-      orderingTermData: PleromaChatRepositoryOrderingTermData.updatedAtDesc,
+      orderingTermData: UnifediChatRepositoryOrderingTermData.updatedAtDesc,
     );
 
     await ChatRepositoryMockHelper.insertDbChat(
@@ -515,7 +515,7 @@ void main() {
           updatedAt: DateTime(2005),
         ),
       ),
-      orderingTermData: PleromaChatRepositoryOrderingTermData.updatedAtDesc,
+      orderingTermData: UnifediChatRepositoryOrderingTermData.updatedAtDesc,
     );
 
     await ChatRepositoryMockHelper.insertDbChat(
@@ -577,7 +577,7 @@ void main() {
           updatedAt: DateTime(2005),
         ),
       ),
-      orderingTermData: PleromaChatRepositoryOrderingTermData.updatedAtDesc,
+      orderingTermData: UnifediChatRepositoryOrderingTermData.updatedAtDesc,
     );
 
     await ChatRepositoryMockHelper.insertDbChat(
@@ -650,7 +650,7 @@ void main() {
     var query = chatRepository.createQuery(
       filters: null,
       pagination: null,
-      orderingTermData: PleromaChatRepositoryOrderingTermData.remoteIdAsc,
+      orderingTermData: UnifediChatRepositoryOrderingTermData.remoteIdAsc,
     );
 
     var chat2 = await ChatRepositoryMockHelper.insertDbChat(
@@ -690,7 +690,7 @@ void main() {
     var query = chatRepository.createQuery(
       filters: null,
       pagination: null,
-      orderingTermData: PleromaChatRepositoryOrderingTermData.remoteIdDesc,
+      orderingTermData: UnifediChatRepositoryOrderingTermData.remoteIdDesc,
     );
 
     var chat2 = await ChatRepositoryMockHelper.insertDbChat(
@@ -733,7 +733,7 @@ void main() {
         limit: 1,
         offset: 1,
       ),
-      orderingTermData: PleromaChatRepositoryOrderingTermData.remoteIdDesc,
+      orderingTermData: UnifediChatRepositoryOrderingTermData.remoteIdDesc,
     );
 
     var chat2 = await ChatRepositoryMockHelper.insertDbChat(
@@ -819,8 +819,8 @@ void main() {
     );
 
     await chatRepository.markAsRead(
-      chat: DbPleromaChatPopulatedWrapper(
-        dbChatPopulated: DbPleromaChatPopulated(
+      chat: DbUnifediChatPopulatedWrapper(
+        dbChatPopulated: DbUnifediChatPopulated(
           dbChat: chat2,
           dbAccount: dbAccount,
         ),
@@ -873,8 +873,8 @@ void main() {
     expect(listened, 2);
 
     await chatRepository.markAsRead(
-      chat: DbPleromaChatPopulatedWrapper(
-        dbChatPopulated: DbPleromaChatPopulated(
+      chat: DbUnifediChatPopulatedWrapper(
+        dbChatPopulated: DbUnifediChatPopulated(
           dbChat: chat2,
           dbAccount: dbAccount,
         ),

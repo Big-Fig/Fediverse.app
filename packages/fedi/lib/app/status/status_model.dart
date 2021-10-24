@@ -96,7 +96,7 @@ abstract class IStatus implements IEqualComparableObj<IStatus> {
 
   String? get language;
 
-  // expanded pleroma object fields
+  // expanded unifedi object fields
 
   /// a map consisting of alternate representations of the content property with
   /// the key being it's mimetype.

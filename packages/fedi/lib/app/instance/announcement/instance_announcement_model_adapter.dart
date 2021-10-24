@@ -2,7 +2,7 @@ import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/instance/announcement/instance_announcement_model.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
-extension IPleromaInstanceAnnouncementExtension on IUnifediApiAnnouncement {
+extension IUnifediInstanceAnnouncementExtension on IUnifediApiAnnouncement {
   IInstanceAnnouncement toDbInstanceAnnouncementPopulatedWrapper() =>
       DbInstanceAnnouncementPopulatedWrapper(
         dbInstanceAnnouncementPopulated: DbInstanceAnnouncementPopulated(
@@ -26,7 +26,7 @@ extension IPleromaInstanceAnnouncementExtension on IUnifediApiAnnouncement {
 }
 
 extension IInstanceAnnouncementExtension on IInstanceAnnouncement {
-  UnifediApiAnnouncement toPleromaInstanceAnnouncement() =>
+  UnifediApiAnnouncement toUnifediInstanceAnnouncement() =>
       UnifediApiAnnouncement(
         id: remoteId,
         content: content,

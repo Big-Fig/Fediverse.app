@@ -1,7 +1,7 @@
 import 'package:fedi/app/instance/announcement/instance_announcement_model.dart';
 import 'package:fedi/app/instance/announcement/list/cached/instance_announcement_cached_list_bloc.dart';
 import 'package:fedi/app/instance/announcement/list/instance_announcement_list_bloc.dart';
-import 'package:fedi/app/list/cached/pleroma_cached_list_bloc.dart';
+import 'package:fedi/app/list/cached/unifedi_cached_list_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 

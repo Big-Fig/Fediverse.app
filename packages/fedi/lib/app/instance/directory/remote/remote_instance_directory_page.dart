@@ -1,4 +1,4 @@
-import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
+import 'package:fedi/app/async/unifedi/unifedi_async_operation_helper.dart';
 import 'package:fedi/app/instance/app_bar/instance_host_app_bar_widget.dart';
 import 'package:fedi/app/instance/directory/instance_directory_widget.dart';
 import 'package:fedi/app/instance/directory/remote/remote_instance_directory_bloc_impl.dart';
@@ -39,8 +39,8 @@ Future<void> goToRemoteInstanceDirectoryPage(
   BuildContext context, {
   required Uri remoteInstanceUri,
 }) async {
-  var dialogResult = await PleromaAsyncOperationHelper
-      .performPleromaAsyncOperation<IRemoteInstanceBloc>(
+  var dialogResult = await UnifediAsyncOperationHelper
+      .performUnifediAsyncOperation<IRemoteInstanceBloc>(
     context: context,
     asyncCode: () async {
       var remoteInstanceBloc = RemoteInstanceBloc.createFromContext(

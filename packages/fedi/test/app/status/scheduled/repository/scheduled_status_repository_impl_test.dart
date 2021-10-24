@@ -122,7 +122,7 @@ void main() {
           remoteId: newRemoteId,
         ),
       ),
-    ).toPleromaScheduledStatus();
+    ).toUnifediScheduledStatus();
     await scheduledStatusRepository.updateAppTypeByRemoteType(
       appItem: oldLocalScheduledStatus,
       remoteItem: newRemoteScheduledStatus,
@@ -183,7 +183,7 @@ void main() {
         dbScheduledStatusPopulated: DbScheduledStatusPopulated(
           dbScheduledStatus: dbScheduledStatus!,
         ),
-      ).toPleromaScheduledStatus(),
+      ).toUnifediScheduledStatus(),
     );
 
     expect(await scheduledStatusRepository.countAll(), 1);
@@ -199,7 +199,7 @@ void main() {
         dbScheduledStatusPopulated: DbScheduledStatusPopulated(
           dbScheduledStatus: dbScheduledStatus!,
         ),
-      ).toPleromaScheduledStatus(),
+      ).toUnifediScheduledStatus(),
     );
     expect(await scheduledStatusRepository.countAll(), 1);
 
@@ -217,7 +217,7 @@ void main() {
         dbScheduledStatusPopulated: DbScheduledStatusPopulated(
           dbScheduledStatus: dbScheduledStatus!,
         ),
-      ).toPleromaScheduledStatus(),
+      ).toUnifediScheduledStatus(),
     );
 
     expect(await scheduledStatusRepository.countAll(), 1);
@@ -232,7 +232,7 @@ void main() {
         dbScheduledStatusPopulated: DbScheduledStatusPopulated(
           dbScheduledStatus: dbScheduledStatus!,
         ),
-      ).toPleromaScheduledStatus(),
+      ).toUnifediScheduledStatus(),
     );
     // update item with same id
     expect(await scheduledStatusRepository.countAll(), 1);

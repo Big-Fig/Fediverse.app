@@ -121,11 +121,11 @@ void main() {
 
     await subscriptionListenedChatAgeLimitType.cancel();
   });
-  test('replaceConversationsWithPleromaChats', () async {
+  test('replaceConversationsWithUnifediChats', () async {
     bool? listened;
 
     StreamSubscription subscriptionListenedChatAgeLimitType =
-        chatSettingsBloc.replaceConversationsWithPleromaChatsStream.listen(
+        chatSettingsBloc.replaceConversationsWithUnifediChatsStream.listen(
       (data) {
         listened = data;
       },
@@ -137,28 +137,28 @@ void main() {
     var defaultValue = GlobalChatSettingsLocalPreferenceBloc.defaultValue;
 
     expect(
-      listenedSettingsData?.replaceConversationsWithPleromaChats,
-      defaultValue.replaceConversationsWithPleromaChats,
+      listenedSettingsData?.replaceConversationsWithUnifediChats,
+      defaultValue.replaceConversationsWithUnifediChats,
     );
     expect(
-      chatSettingsBloc.settingsData.replaceConversationsWithPleromaChats,
-      defaultValue.replaceConversationsWithPleromaChats,
+      chatSettingsBloc.settingsData.replaceConversationsWithUnifediChats,
+      defaultValue.replaceConversationsWithUnifediChats,
     );
 
     expect(
       listened,
-      defaultValue.replaceConversationsWithPleromaChats,
+      defaultValue.replaceConversationsWithUnifediChats,
     );
     expect(
-      chatSettingsBloc.replaceConversationsWithPleromaChats,
-      defaultValue.replaceConversationsWithPleromaChats,
+      chatSettingsBloc.replaceConversationsWithUnifediChats,
+      defaultValue.replaceConversationsWithUnifediChats,
     );
 
     var testCountConversationsInChatsUnreadBadges =
         ChatSettingsModelMockHelper.createTestChatSettings(seed: 'seed')
-            .replaceConversationsWithPleromaChats;
+            .replaceConversationsWithUnifediChats;
 
-    await chatSettingsBloc.changeReplaceConversationsWithPleromaChats(
+    await chatSettingsBloc.changeReplaceConversationsWithUnifediChats(
       replaceConversationsWithChats: testCountConversationsInChatsUnreadBadges,
     );
 
@@ -166,11 +166,11 @@ void main() {
     await RxDartMockHelper.waitForData(() => listened);
 
     expect(
-      listenedSettingsData?.replaceConversationsWithPleromaChats,
+      listenedSettingsData?.replaceConversationsWithUnifediChats,
       testCountConversationsInChatsUnreadBadges,
     );
     expect(
-      chatSettingsBloc.settingsData.replaceConversationsWithPleromaChats,
+      chatSettingsBloc.settingsData.replaceConversationsWithUnifediChats,
       testCountConversationsInChatsUnreadBadges,
     );
 
@@ -179,7 +179,7 @@ void main() {
       testCountConversationsInChatsUnreadBadges,
     );
     expect(
-      chatSettingsBloc.replaceConversationsWithPleromaChats,
+      chatSettingsBloc.replaceConversationsWithUnifediChats,
       testCountConversationsInChatsUnreadBadges,
     );
 

@@ -11,7 +11,7 @@ import 'package:fedi/app/home/home_page_bottom_navigation_bar_widget_keys.dart';
 import 'package:fedi/app/home/home_page_keys.dart';
 import 'package:fedi/app/home/tab/account/account_home_tab_page_keys.dart';
 import 'package:fedi/app/home/tab/account/menu/account_home_tab_menu_dialog_keys.dart';
-import 'package:fedi/app/home/tab/chat/pleroma_chat_home_tab_page_keys.dart';
+import 'package:fedi/app/home/tab/chat/unifedi_chat_home_tab_page_keys.dart';
 import 'package:fedi/app/instance/details/remote/remote_instance_details_page_keys.dart';
 import 'package:fedi/app/settings/instance/list/instance_settings_list_widget_keys.dart';
 import 'package:fedi/app/ui/button/icon/fedi_back_icon_button_keys.dart';
@@ -184,7 +184,7 @@ void main() {
         await driver.tap(
           find.descendant(
             of: find.byValueKey(
-              PleromaChatHomeTabPageKeys.pleromaChatWithLastMessageListWidget,
+              UnifediChatHomeTabPageKeys.unifediChatWithLastMessageListWidget,
             ),
             matching: find.byType('ChatListItemWidget'),
             firstMatchOnly: true,

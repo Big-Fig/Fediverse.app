@@ -9,7 +9,7 @@ import 'package:logging/logging.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
 var _logger =
-    Logger('pleroma_chat_with_last_message_cached_list_bloc_impl.dart');
+    Logger('unifedi_chat_with_last_message_cached_list_bloc_impl.dart');
 
 class ConversationChatWithLastMessageCachedListBloc
     extends IConversationChatWithLastMessageCachedListBloc {

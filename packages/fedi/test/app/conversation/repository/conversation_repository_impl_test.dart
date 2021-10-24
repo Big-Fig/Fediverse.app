@@ -204,7 +204,7 @@ void main() {
           remoteId: newRemoteId,
         ),
       ),
-    ).toPleromaConversation(
+    ).toUnifediConversation(
       lastStatus: DbStatusPopulatedWrapper(
         dbStatusPopulated: DbStatusPopulated(
           dbStatus: dbStatus.copyWith(content: newContent),
@@ -269,7 +269,7 @@ void main() {
     //     dbConversationPopulated: DbConversationPopulated(
     //       dbConversation: dbConversation,
     //     ),
-    //   ).toPleromaConversation(
+    //   ).toUnifediConversation(
     //     accounts: [
     //       DbAccountPopulatedWrapper(
     //           dbAccountPopulated: DbAccountPopulated(
@@ -302,11 +302,11 @@ void main() {
 
     // item with same id updated
 
-    var pleromaConversation = DbConversationChatPopulatedWrapper(
+    var unifediConversation = DbConversationChatPopulatedWrapper(
       dbConversationPopulated: DbConversationPopulated(
         dbConversation: dbConversation,
       ),
-    ).toPleromaConversation(
+    ).toUnifediConversation(
       accounts: [
         DbAccountPopulatedWrapper(
           dbAccountPopulated: DbAccountPopulated(
@@ -319,7 +319,7 @@ void main() {
       ),
     );
     await conversationRepository.upsertInRemoteTypeBatch(
-      pleromaConversation,
+      unifediConversation,
       batchTransaction: null,
     );
     expect(await conversationRepository.countAll(), 1);
@@ -350,7 +350,7 @@ void main() {
           dbConversationPopulated: DbConversationPopulated(
             dbConversation: dbConversation,
           ),
-        ).toPleromaConversation(
+        ).toUnifediConversation(
           accounts: [
             DbAccountPopulatedWrapper(
               dbAccountPopulated: DbAccountPopulated(
@@ -391,7 +391,7 @@ void main() {
           dbConversationPopulated: DbConversationPopulated(
             dbConversation: dbConversation,
           ),
-        ).toPleromaConversation(
+        ).toUnifediConversation(
           accounts: [
             DbAccountPopulatedWrapper(
               dbAccountPopulated: DbAccountPopulated(
@@ -894,7 +894,7 @@ void main() {
     var conversation1Copy =
         await ConversationMockHelper.createTestConversation(seed: 'seed1');
 
-    var remoteConversation1 = conversation1.toPleromaConversation(
+    var remoteConversation1 = conversation1.toUnifediConversation(
       accounts: [
         await AccountMockHelper.createTestAccount(seed: 'seed1'),
       ],
@@ -902,7 +902,7 @@ void main() {
         seed: 'seed1',
       ),
     );
-    var remoteConversation1Copy = conversation1Copy.toPleromaConversation(
+    var remoteConversation1Copy = conversation1Copy.toUnifediConversation(
       accounts: [
         await AccountMockHelper.createTestAccount(seed: 'seed1'),
       ],
@@ -935,7 +935,7 @@ void main() {
     var conversation1Copy =
         await ConversationMockHelper.createTestConversation(seed: 'seed1');
 
-    var remoteConversation1 = conversation1.toPleromaConversation(
+    var remoteConversation1 = conversation1.toUnifediConversation(
       accounts: [
         await AccountMockHelper.createTestAccount(seed: 'seed1'),
       ],
@@ -943,7 +943,7 @@ void main() {
         seed: 'seed1',
       ),
     );
-    var remoteConversation1Copy = conversation1Copy.toPleromaConversation(
+    var remoteConversation1Copy = conversation1Copy.toUnifediConversation(
       accounts: [
         await AccountMockHelper.createTestAccount(seed: 'seed1'),
       ],
@@ -1004,7 +1004,7 @@ void main() {
     var conversation3 =
         await ConversationMockHelper.createTestConversation(seed: 'seed3');
 
-    var remoteConversation1 = conversation1.toPleromaConversation(
+    var remoteConversation1 = conversation1.toUnifediConversation(
       accounts: [
         await AccountMockHelper.createTestAccount(seed: 'seed1'),
       ],
@@ -1013,7 +1013,7 @@ void main() {
         account: await AccountMockHelper.createTestAccount(seed: 'seed1'),
       ),
     );
-    var remoteConversation2 = conversation2.toPleromaConversation(
+    var remoteConversation2 = conversation2.toUnifediConversation(
       accounts: [
         await AccountMockHelper.createTestAccount(seed: 'seed1'),
       ],
@@ -1022,7 +1022,7 @@ void main() {
         account: await AccountMockHelper.createTestAccount(seed: 'seed1'),
       ),
     );
-    var remoteConversation3 = conversation3.toPleromaConversation(
+    var remoteConversation3 = conversation3.toUnifediConversation(
       accounts: [
         await AccountMockHelper.createTestAccount(seed: 'seed1'),
       ],

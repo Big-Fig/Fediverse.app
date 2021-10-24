@@ -15,7 +15,7 @@ class AccountReportBloc extends FormBloc implements IAccountReportBloc {
   @override
   final IAccount account;
 
-  final IUnifediApiAccountService pleromaAuthAccountService;
+  final IUnifediApiAccountService unifediAuthAccountService;
 
   @override
   final IBoolValueFormFieldBloc forwardBoolValueFormFieldBloc =
@@ -37,7 +37,7 @@ class AccountReportBloc extends FormBloc implements IAccountReportBloc {
 
   AccountReportBloc({
     required this.account,
-    required this.pleromaAuthAccountService,
+    required this.unifediAuthAccountService,
     required this.statuses,
   }) : super(
           isAllItemsInitialized: true,
@@ -56,7 +56,7 @@ class AccountReportBloc extends FormBloc implements IAccountReportBloc {
   bool get isAccountOnRemoteHost => account.isAcctOnRemoteHost;
 
   @override
-  Future<void> send() => pleromaAuthAccountService.reportAccount(
+  Future<void> send() => unifediAuthAccountService.reportAccount(
         accountId: account.remoteId,
         statusIds: statuses.isNotEmpty
             ? statuses.map((status) => status.remoteId!).toList()

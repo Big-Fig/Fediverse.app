@@ -1,4 +1,4 @@
-import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
+import 'package:fedi/app/async/unifedi/unifedi_async_operation_helper.dart';
 import 'package:fedi/app/status/draft/draft_status_bloc.dart';
 import 'package:fedi/app/status/post/app_bar/post_status_app_bar_post_action.dart';
 import 'package:fedi/app/status/post/edit/edit_post_status_bloc_impl.dart';
@@ -68,7 +68,7 @@ void goToDraftEditPostStatusPage(
         context,
         postStatusDataCallback: (IPostStatusData postStatusData) async {
           var dialogResult =
-              await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+              await UnifediAsyncOperationHelper.performUnifediAsyncOperation(
             context: context,
             asyncCode: () async {
               await draftStatusBloc.postDraft(

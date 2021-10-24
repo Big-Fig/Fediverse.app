@@ -216,7 +216,7 @@ class ScheduledStatusBloc extends DisposableOwner
   Future<void> postScheduledPost(PostStatusData postStatusData) async {
     await cancelSchedule();
 
-    var pleromaScheduledStatus = await unifediApiStatusService.scheduleStatus(
+    var unifediScheduledStatus = await unifediApiStatusService.scheduleStatus(
       idempotencyKey: null,
       postStatus: UnifediApiSchedulePostStatus(
         mediaIds: postStatusData.mediaAttachments
@@ -238,7 +238,7 @@ class ScheduledStatusBloc extends DisposableOwner
     );
 
     // ignore: avoid-ignoring-return-values
-    await scheduledStatusRepository.upsertInRemoteType(pleromaScheduledStatus);
+    await scheduledStatusRepository.upsertInRemoteType(unifediScheduledStatus);
   }
 
   @override

@@ -1,4 +1,4 @@
-import 'package:fedi/app/async/pleroma/pleroma_async_operation_button_builder_widget.dart';
+import 'package:fedi/app/async/unifedi/unifedi_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/emoji/reaction/emoji_reaction_widget.dart';
 import 'package:fedi/app/instance/announcement/emoji_reaction/instance_announcement_emoji_reaction_model_adapter_proxy_provider.dart';
 import 'package:fedi/app/instance/announcement/instance_announcement_bloc.dart';
@@ -31,7 +31,7 @@ class InstanceAnnouncementEmojiReactionListItemBodyWidget
     var unifediApiEmojiReaction =
         Provider.of<IUnifediApiEmojiReaction>(context);
 
-    return PleromaAsyncOperationButtonBuilderWidget(
+    return UnifediAsyncOperationButtonBuilderWidget(
       asyncButtonAction: () => instanceAnnouncementBloc.toggleEmojiReaction(
         emojiName: unifediApiEmojiReaction.name,
       ),

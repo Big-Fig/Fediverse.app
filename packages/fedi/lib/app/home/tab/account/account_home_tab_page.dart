@@ -21,7 +21,7 @@ import 'package:fedi/app/home/tab/account/account_home_tab_page_keys.dart';
 import 'package:fedi/app/home/tab/account/menu/account_home_tab_menu_dialog.dart';
 import 'package:fedi/app/home/tab/account/menu/badge/account_home_tab_menu_int_badge_bloc_impl.dart';
 import 'package:fedi/app/home/tab/home_tab_header_bar_widget.dart';
-import 'package:fedi/app/list/cached/pleroma_cached_list_bloc.dart';
+import 'package:fedi/app/list/cached/unifedi_cached_list_bloc.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc_loading_widget.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc_proxy_provider.dart';

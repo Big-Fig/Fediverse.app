@@ -192,7 +192,7 @@ class PostStatusDataStatusStatusAdapter implements IStatus {
   String get url => '';
 
   @override
-  UnifediApiVisibility get visibility => postStatusData.visibilityPleroma;
+  UnifediApiVisibility get visibility => postStatusData.visibilityUnifedi;
 
   @override
   IStatus? get inReplyToStatus =>

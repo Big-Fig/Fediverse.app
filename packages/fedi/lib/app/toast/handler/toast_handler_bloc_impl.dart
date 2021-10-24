@@ -2,7 +2,7 @@ import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/access/list/access_list_bloc.dart';
 import 'package:fedi/app/chat/conversation/current/conversation_chat_current_bloc.dart';
-import 'package:fedi/app/chat/pleroma/current/pleroma_chat_current_bloc.dart';
+import 'package:fedi/app/chat/unifedi/current/unifedi_chat_current_bloc.dart';
 import 'package:fedi/app/notification/go_to_notification_extension.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_bloc.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_model.dart';
@@ -45,8 +45,8 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
             IToastSettingsBloc.of(context, listen: false),
         currentInstanceConversationChatCurrentBloc:
             IConversationChatCurrentBloc.of(context, listen: false),
-        currentInstancePleromaChatCurrentBloc:
-            IPleromaChatCurrentBloc.of(context, listen: false),
+        currentInstanceUnifediChatCurrentBloc:
+            IUnifediChatCurrentBloc.of(context, listen: false),
         currentInstanceNotificationPushLoaderBloc:
             INotificationPushLoaderBloc.of(context, listen: false),
         globalToastSettingsLocalPreferencesBloc:
@@ -66,7 +66,7 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
   final IToastSettingsBloc currentInstanceToastSettingsBloc;
   final INotificationsPushHandlerBloc notificationsPushHandlerBloc;
   final IConversationChatCurrentBloc currentInstanceConversationChatCurrentBloc;
-  final IPleromaChatCurrentBloc currentInstancePleromaChatCurrentBloc;
+  final IUnifediChatCurrentBloc currentInstanceUnifediChatCurrentBloc;
   final INotificationPushLoaderBloc currentInstanceNotificationPushLoaderBloc;
   final IGlobalToastSettingsLocalPreferenceBloc
       globalToastSettingsLocalPreferencesBloc;
@@ -81,7 +81,7 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
     required this.localPreferencesService,
     required this.currentInstanceToastSettingsBloc,
     required this.currentInstanceConversationChatCurrentBloc,
-    required this.currentInstancePleromaChatCurrentBloc,
+    required this.currentInstanceUnifediChatCurrentBloc,
     required this.currentInstanceNotificationPushLoaderBloc,
     required this.globalToastSettingsLocalPreferencesBloc,
     required this.localizationContext,
@@ -105,10 +105,10 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
   Future<bool> handlePush(
     NotificationsPushHandlerMessage notificationsPushHandlerMessage,
   ) async {
-    var pleromaPushMessage = notificationsPushHandlerMessage.body;
+    var unifediPushMessage = notificationsPushHandlerMessage.body;
     var isForCurrentInstance = currentInstance!.isInstanceWithHostAndAcct(
-      host: pleromaPushMessage.server,
-      acct: pleromaPushMessage.account,
+      host: unifediPushMessage.server,
+      acct: unifediPushMessage.account,
     );
 
     if (!isForCurrentInstance) {
@@ -130,9 +130,9 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
   ) {
     var pushHandlerMessage =
         handledNotification.notificationsPushHandlerMessage;
-    var pleromaPushMessage = pushHandlerMessage.body;
+    var unifediPushMessage = pushHandlerMessage.body;
 
-    var notificationType = pleromaPushMessage.notificationType;
+    var notificationType = unifediPushMessage.notificationType;
 
     var unifediApiNotificationType =
         notificationType.toUnifediApiNotificationType();
@@ -155,7 +155,7 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
 
       if (notification.isContainsChat) {
         isNeedShowToast =
-            currentInstancePleromaChatCurrentBloc.currentChat?.remoteId !=
+            currentInstanceUnifediChatCurrentBloc.currentChat?.remoteId !=
                 notification.chatRemoteId;
       } else if (notification.isContainsStatus) {
         var directConversationId = notification.status!.directConversationId;
@@ -194,10 +194,10 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
       return;
     }
 
-    var pleromaPushMessage = pushHandlerMessage.body;
+    var unifediPushMessage = pushHandlerMessage.body;
 
     var acctAtHost =
-        '${pleromaPushMessage.account}@${pleromaPushMessage.server}';
+        '${unifediPushMessage.account}@${unifediPushMessage.server}';
     var notification = pushHandlerMessage.pushMessage.notification;
     if (notification != null) {
       var title = '$acctAtHost ${notification.title}';
@@ -232,15 +232,15 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
   Future<void> _handleNonCurrentInstancePushMessage(
     NotificationsPushHandlerMessage notificationsPushHandlerMessage,
   ) async {
-    var pleromaPushMessage = notificationsPushHandlerMessage.body;
+    var unifediPushMessage = notificationsPushHandlerMessage.body;
 
-    var notificationType = pleromaPushMessage.notificationType;
+    var notificationType = unifediPushMessage.notificationType;
     var unifediApiNotificationType =
         UnifediApiNotificationType.fromStringValue(notificationType);
 
     var instanceLocalPreferencesBloc = InstanceToastSettingsLocalPreferenceBloc(
       localPreferencesService,
-      userAtHost: '${pleromaPushMessage.account}@${pleromaPushMessage.server}',
+      userAtHost: '${unifediPushMessage.account}@${unifediPushMessage.server}',
     );
 
     await instanceLocalPreferencesBloc.performAsyncInit();
@@ -269,8 +269,8 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
         onClick: () async {
           var instanceByCredentials =
               authInstanceListBloc.findInstanceByCredentials(
-            host: pleromaPushMessage.server,
-            acct: pleromaPushMessage.account,
+            host: unifediPushMessage.server,
+            acct: unifediPushMessage.account,
           );
 
           _logger.finest(

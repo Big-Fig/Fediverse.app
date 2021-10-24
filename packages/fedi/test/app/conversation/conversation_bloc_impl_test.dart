@@ -46,7 +46,7 @@ import 'conversation_test_helper.dart';
 void main() {
   late IConversationChat conversation;
   late IConversationChatBloc conversationBloc;
-  late MockIUnifediApiConversationService pleromaConversationServiceMock;
+  late MockIUnifediApiConversationService unifediConversationServiceMock;
   late MockIUnifediApiStatusService unifediApiStatusServiceMock;
   late MockIUnifediApiMyAccountService unifediApiMyAccountServiceMock;
   late AppDatabase database;
@@ -74,7 +74,7 @@ void main() {
         statusRepository: statusRepository,
       );
 
-      pleromaConversationServiceMock = MockIUnifediApiConversationService();
+      unifediConversationServiceMock = MockIUnifediApiConversationService();
       unifediApiMyAccountServiceMock = MockIUnifediApiMyAccountService();
       unifediApiStatusServiceMock = MockIUnifediApiStatusService();
       preferencesService = MemoryLocalPreferencesService();
@@ -123,7 +123,7 @@ void main() {
       conversationBloc = ConversationChatBloc(
         conversation: conversation,
         connectionService: MockIConnectionService(),
-        pleromaConversationService: pleromaConversationServiceMock,
+        unifediConversationService: unifediConversationServiceMock,
         accountRepository: accountRepository,
         statusRepository: statusRepository,
         conversationRepository: conversationRepository,
@@ -151,7 +151,7 @@ void main() {
     required List<IAccount> accounts,
   }) async {
     await conversationRepository.upsertInRemoteType(
-      conversation.toPleromaConversation(
+      conversation.toUnifediConversation(
         lastStatus: lastStatus,
         accounts: accounts,
       ),
@@ -402,11 +402,11 @@ void main() {
     );
 
     when(
-      pleromaConversationServiceMock.getConversation(
+      unifediConversationServiceMock.getConversation(
         conversationId: conversation.remoteId,
       ),
     ).thenAnswer(
-      (_) async => newValue.toPleromaConversation(
+      (_) async => newValue.toUnifediConversation(
         accounts: [],
         lastStatus: null,
       ),

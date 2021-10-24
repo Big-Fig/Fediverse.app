@@ -182,7 +182,7 @@ class ConversationChatRepository
 
   @override
   IUnifediApiConversation mapAppItemToRemoteItem(IConversationChat appItem) =>
-      appItem.toPleromaConversation(
+      appItem.toUnifediConversation(
         lastStatus: null,
         accounts: [],
       );
@@ -215,7 +215,7 @@ class ConversationChatRepository
   ) =>
       dbPopulatedItem
           .toDbConversationChatPopulatedWrapper()
-          .toPleromaConversation(
+          .toUnifediConversation(
         lastStatus: null,
         accounts: [],
       );

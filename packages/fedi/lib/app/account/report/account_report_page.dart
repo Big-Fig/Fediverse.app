@@ -4,7 +4,7 @@ import 'package:fedi/app/account/report/account_report_bloc.dart';
 import 'package:fedi/app/account/report/account_report_bloc_impl.dart';
 import 'package:fedi/app/account/report/account_report_bloc_proxy_provider.dart';
 import 'package:fedi/app/account/report/account_report_widget.dart';
-import 'package:fedi/app/async/pleroma/pleroma_async_operation_button_builder_widget.dart';
+import 'package:fedi/app/async/unifedi/unifedi_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/toast/toast_service.dart';
 import 'package:fedi/app/ui/button/fedi_text_button.dart';
@@ -65,7 +65,7 @@ class _AccountReportSendButton extends StatelessWidget {
       builder: (context, snapshot) {
         var isHaveAtLeastOneError = snapshot.data;
 
-        return PleromaAsyncOperationButtonBuilderWidget(
+        return UnifediAsyncOperationButtonBuilderWidget(
           builder: (context, onPressed) => FediTextButton(
             text: S.of(context).app_account_report_action_send,
             onPressed: isHaveAtLeastOneError! ? null : onPressed,
@@ -111,7 +111,7 @@ MaterialPageRoute createAccountReportPageRoute({
         create: (context) => AccountReportBloc(
           account: account,
           statuses: statuses,
-          pleromaAuthAccountService: Provider.of<IUnifediApiAccountService>(
+          unifediAuthAccountService: Provider.of<IUnifediApiAccountService>(
             context,
             listen: false,
           ),

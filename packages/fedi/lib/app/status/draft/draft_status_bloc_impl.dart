@@ -120,13 +120,13 @@ class DraftStatusBloc extends DisposableOwner implements IDraftStatusBloc {
   @override
   Future<void> postDraft(PostStatusData postStatusData) async {
     if (postStatusData.isScheduled) {
-      var pleromaScheduledStatus = await unifediApiStatusService.scheduleStatus(
+      var unifediScheduledStatus = await unifediApiStatusService.scheduleStatus(
         idempotencyKey: null,
         postStatus: postStatusData.toUnifediApiSchedulePostStatus(),
       );
       // ignore: avoid-ignoring-return-values
       await scheduledStatusRepository
-          .upsertInRemoteType(pleromaScheduledStatus);
+          .upsertInRemoteType(unifediScheduledStatus);
     } else {
       var inReplyToConversationIdSupported =
           unifediApiStatusService.isFeatureSupported(

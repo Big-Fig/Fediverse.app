@@ -95,7 +95,7 @@ class PostStatusData with _$PostStatusData implements IPostStatusData {
   @override
   bool get isScheduled => scheduledAt != null;
 
-  UnifediApiVisibility get visibilityPleroma =>
+  UnifediApiVisibility get visibilityUnifedi =>
       visibilityString.toUnifediApiVisibility();
 
   factory PostStatusData.fromJson(Map<String, dynamic> json) =>

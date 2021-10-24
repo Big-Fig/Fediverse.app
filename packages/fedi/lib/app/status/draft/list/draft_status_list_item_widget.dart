@@ -1,6 +1,6 @@
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
-import 'package:fedi/app/async/pleroma/pleroma_async_operation_button_builder_widget.dart';
+import 'package:fedi/app/async/unifedi/unifedi_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/status/draft/draft_edit_post_status_page.dart';
 import 'package:fedi/app/status/draft/draft_status_bloc.dart';
 import 'package:fedi/app/status/draft/draft_status_model.dart';
@@ -164,7 +164,7 @@ class _DraftStatusListItemCancelButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var draftStatusBloc = IDraftStatusBloc.of(context);
 
-    return PleromaAsyncOperationButtonBuilderWidget<void>(
+    return UnifediAsyncOperationButtonBuilderWidget<void>(
       builder: (context, onPressed) => FediTextButton(
         text: S.of(context).app_account_my_statuses_draft_status_action_delete,
         color: IFediUiColorTheme.of(context).darkGrey,

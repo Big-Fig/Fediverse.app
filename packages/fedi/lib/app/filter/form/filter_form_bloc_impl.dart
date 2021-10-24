@@ -58,7 +58,7 @@ class FilterFormBloc extends FormBloc implements IFilterFormBloc {
           currentInstance: currentInstance,
         ),
         super(isAllItemsInitialized: false) {
-    // strange logic from Pleroma/Mastodon
+    // strange logic from Unifedi/Mastodon
     // it is not possible to delete value from expiresIn field,
     // only change to not-null
     var isExpiresInNullValuePossible = initialValue?.expiresAt == null;

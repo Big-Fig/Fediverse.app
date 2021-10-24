@@ -1,5 +1,5 @@
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
+import 'package:fedi/app/async/unifedi/unifedi_async_operation_helper.dart';
 import 'package:fedi/app/hashtag/hashtag_model.dart';
 import 'package:fedi/app/hashtag/page/hashtag_page_widget.dart';
 import 'package:fedi/app/hashtag/page/local/local_hashtag_page_bloc.dart';
@@ -60,8 +60,8 @@ Future<void> goToRemoteHashtagPage(
   required Uri remoteInstanceUri,
   required IHashtag hashtag,
 }) async {
-  var dialogResult = await PleromaAsyncOperationHelper
-      .performPleromaAsyncOperation<IRemoteInstanceBloc>(
+  var dialogResult = await UnifediAsyncOperationHelper
+      .performUnifediAsyncOperation<IRemoteInstanceBloc>(
     context: context,
     asyncCode: () async {
       var remoteInstanceBloc = RemoteInstanceBloc.createFromContext(

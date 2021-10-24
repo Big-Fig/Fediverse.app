@@ -15,9 +15,9 @@ class PendingStateDatabaseConverter
   String? mapToSql(PendingState? value) => value?.toJsonValue();
 }
 
-class PleromaApplicationDatabaseConverter
+class UnifediApplicationDatabaseConverter
     extends JsonDatabaseConverter<UnifediApiApplication> {
-  const PleromaApplicationDatabaseConverter() : super();
+  const UnifediApplicationDatabaseConverter() : super();
 
   @override
   UnifediApiApplication fromJson(Map<String, dynamic>? json) =>
@@ -63,9 +63,9 @@ class UnifediApiAccountDatabaseConverter
   Map<String, dynamic> toJson(UnifediApiAccount obj) => obj.toJson();
 }
 
-class PleromaScheduledStatusParamsDatabaseConverter
+class UnifediScheduledStatusParamsDatabaseConverter
     extends JsonDatabaseConverter<UnifediApiScheduledStatusParams> {
-  const PleromaScheduledStatusParamsDatabaseConverter() : super();
+  const UnifediScheduledStatusParamsDatabaseConverter() : super();
 
   @override
   UnifediApiScheduledStatusParams fromJson(Map<String, dynamic>? json) =>
@@ -166,9 +166,9 @@ class UnifediApiMediaAttachmentDatabaseConverter
   Map<String, dynamic> toJson(UnifediApiMediaAttachment obj) => obj.toJson();
 }
 
-class PleromaMentionListDatabaseConverter
+class UnifediMentionListDatabaseConverter
     extends JsonListDatabaseConverter<UnifediApiMention> {
-  const PleromaMentionListDatabaseConverter() : super();
+  const UnifediMentionListDatabaseConverter() : super();
 
   @override
   UnifediApiMention fromJson(Map<String, dynamic> json) =>
@@ -250,9 +250,9 @@ class UnifediApiPollDatabaseConverter
   Map<String, dynamic> toJson(UnifediApiPoll obj) => obj.toJson();
 }
 
-class PleromaCardDatabaseConverter
+class UnifediCardDatabaseConverter
     extends JsonDatabaseConverter<UnifediApiCard> {
-  const PleromaCardDatabaseConverter() : super();
+  const UnifediCardDatabaseConverter() : super();
 
   @override
   UnifediApiCard fromJson(Map<String, dynamic>? json) =>
@@ -262,9 +262,9 @@ class PleromaCardDatabaseConverter
   Map<String, dynamic> toJson(UnifediApiCard obj) => obj.toJson();
 }
 
-class PleromaContentDatabaseConverter
+class UnifediContentDatabaseConverter
     extends JsonDatabaseConverter<UnifediApiContentVariants> {
-  const PleromaContentDatabaseConverter() : super();
+  const UnifediContentDatabaseConverter() : super();
 
   @override
   UnifediApiContentVariants fromJson(Map<String, dynamic>? json) =>

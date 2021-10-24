@@ -17,7 +17,7 @@ class EditChatSettingsWidget extends StatelessWidget {
   Widget build(BuildContext context) => Column(
         mainAxisSize: shrinkWrap ? MainAxisSize.min : MainAxisSize.max,
         children: const [
-          _EditChatSettingsReplaceConversationsWithPleromaChatsFieldWidget(),
+          _EditChatSettingsReplaceConversationsWithUnifediChatsFieldWidget(),
           _EditChatSettingsCountConversationsInChatsUnreadBadgesFieldWidget(),
         ],
       );
@@ -42,9 +42,9 @@ class _EditChatSettingsCountConversationsInChatsUnreadBadgesFieldWidget
       );
 }
 
-class _EditChatSettingsReplaceConversationsWithPleromaChatsFieldWidget
+class _EditChatSettingsReplaceConversationsWithUnifediChatsFieldWidget
     extends StatelessWidget {
-  const _EditChatSettingsReplaceConversationsWithPleromaChatsFieldWidget({
+  const _EditChatSettingsReplaceConversationsWithUnifediChatsFieldWidget({
     Key? key,
   }) : super(key: key);
 
@@ -52,11 +52,11 @@ class _EditChatSettingsReplaceConversationsWithPleromaChatsFieldWidget
   Widget build(BuildContext context) =>
       ProxyProvider<IEditChatSettingsBloc, IBoolValueFormFieldBloc>(
         update: (context, value, previous) =>
-            value.replaceConversationsWithPleromaChatsFieldBloc,
+            value.replaceConversationsWithUnifediChatsFieldBloc,
         child: BoolValueFormFieldRowWidget(
           label: S
               .of(context)
-              .app_chat_settings_field_replaceConversationsWithPleromaChats_label,
+              .app_chat_settings_field_replaceConversationsWithUnifediChats_label,
         ),
       );
 }

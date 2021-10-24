@@ -1,5 +1,5 @@
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:fedi/app/list/cached/pleroma_cached_list_bloc.dart';
+import 'package:fedi/app/list/cached/unifedi_cached_list_bloc.dart';
 import 'package:fedi/app/notification/notification_model.dart';
 import 'package:fedi/async/loading/init/async_init_loading_bloc.dart';
 import 'package:flutter/widgets.dart';

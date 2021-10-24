@@ -93,11 +93,11 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m33(status) => "${status}.";
 
-  static String m34(status) => "${status}.";
+  static String m34(acct) => "Жалоба от ${acct}";
 
-  static String m35(emoji) => "Оценил вашу запись: ${emoji}.";
+  static String m35(status) => "${status}.";
 
-  static String m36(acct) => "Жалоба от ${acct}";
+  static String m36(emoji) => "Оценил вашу запись: ${emoji}.";
 
   static String m37(status) => "Неизвестно: ${status}";
 
@@ -119,13 +119,13 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m45(acct) => "${acct} переместился";
 
-  static String m46(acct) => "Чат с ${acct}";
+  static String m46(acct) => "${acct} поделился вашим статусом";
 
-  static String m47(acct, emoji) => "${acct} реакция ${emoji}";
+  static String m47(acct) => "Чат с ${acct}";
 
-  static String m48(acct) => "${acct} пожаловался на вашу запись";
+  static String m48(acct, emoji) => "${acct} реакция ${emoji}";
 
-  static String m49(acct) => "${acct} поделился вашим статусом";
+  static String m49(acct) => "${acct} пожаловался на вашу запись";
 
   static String m50(userAtHost) => "Настройки: ${userAtHost}";
 
@@ -428,59 +428,59 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Ваша биография и ссылки на социальные сети"),
         "app_account_my_edit_field_note_label":
             MessageLookupByLibrary.simpleMessage("Описание"),
-        "app_account_my_edit_field_pleroma_acceptsChatMessages_description":
+        "app_account_my_edit_field_unifedi_acceptsChatMessages_description":
             MessageLookupByLibrary.simpleMessage(
                 "Отключите чтобы отклонять все сообщения"),
-        "app_account_my_edit_field_pleroma_acceptsChatMessages_label":
+        "app_account_my_edit_field_unifedi_acceptsChatMessages_label":
             MessageLookupByLibrary.simpleMessage("Принимать сообщения в чате"),
-        "app_account_my_edit_field_pleroma_allowFollowingMove_description":
+        "app_account_my_edit_field_unifedi_allowFollowingMove_description":
             MessageLookupByLibrary.simpleMessage(
                 "Автоматически подписываться при перемещении"),
-        "app_account_my_edit_field_pleroma_allowFollowingMove_label":
+        "app_account_my_edit_field_unifedi_allowFollowingMove_label":
             MessageLookupByLibrary.simpleMessage(
                 "Подписка на перемещенные аккаунты"),
-        "app_account_my_edit_field_pleroma_background_dialog_action_crop":
+        "app_account_my_edit_field_unifedi_background_dialog_action_crop":
             MessageLookupByLibrary.simpleMessage("Обрезать"),
-        "app_account_my_edit_field_pleroma_background_dialog_action_select":
+        "app_account_my_edit_field_unifedi_background_dialog_action_select":
             MessageLookupByLibrary.simpleMessage("Выбрать"),
-        "app_account_my_edit_field_pleroma_background_dialog_title":
-            MessageLookupByLibrary.simpleMessage("Фон Pleroma"),
-        "app_account_my_edit_field_pleroma_hideFavourites_description":
+        "app_account_my_edit_field_unifedi_background_dialog_title":
+            MessageLookupByLibrary.simpleMessage("Фон Unifedi"),
+        "app_account_my_edit_field_unifedi_hideFavourites_description":
             MessageLookupByLibrary.simpleMessage("Только приватный доступ"),
-        "app_account_my_edit_field_pleroma_hideFavourites_label":
+        "app_account_my_edit_field_unifedi_hideFavourites_label":
             MessageLookupByLibrary.simpleMessage("Скрыть список избранного"),
-        "app_account_my_edit_field_pleroma_hideFollowersCount_description":
+        "app_account_my_edit_field_unifedi_hideFollowersCount_description":
             MessageLookupByLibrary.simpleMessage("Отображать \'0\'"),
-        "app_account_my_edit_field_pleroma_hideFollowersCount_label":
+        "app_account_my_edit_field_unifedi_hideFollowersCount_label":
             MessageLookupByLibrary.simpleMessage(
                 "Скрыть количество подписчиков"),
-        "app_account_my_edit_field_pleroma_hideFollowers_description":
+        "app_account_my_edit_field_unifedi_hideFollowers_description":
             MessageLookupByLibrary.simpleMessage("Только приватный доступ"),
-        "app_account_my_edit_field_pleroma_hideFollowers_label":
+        "app_account_my_edit_field_unifedi_hideFollowers_label":
             MessageLookupByLibrary.simpleMessage("Скрыть список подписчиков"),
-        "app_account_my_edit_field_pleroma_hideFollowsCount_description":
+        "app_account_my_edit_field_unifedi_hideFollowsCount_description":
             MessageLookupByLibrary.simpleMessage("Отображать \'0\'"),
-        "app_account_my_edit_field_pleroma_hideFollowsCount_label":
+        "app_account_my_edit_field_unifedi_hideFollowsCount_label":
             MessageLookupByLibrary.simpleMessage(
                 "Скрыть количество ваших подписок"),
-        "app_account_my_edit_field_pleroma_hideFollows_description":
+        "app_account_my_edit_field_unifedi_hideFollows_description":
             MessageLookupByLibrary.simpleMessage("Только приватный доступ"),
-        "app_account_my_edit_field_pleroma_hideFollows_label":
+        "app_account_my_edit_field_unifedi_hideFollows_label":
             MessageLookupByLibrary.simpleMessage(
                 "Скрыть список ваших подписок"),
-        "app_account_my_edit_field_pleroma_noRichText_description":
+        "app_account_my_edit_field_unifedi_noRichText_description":
             MessageLookupByLibrary.simpleMessage("Удалять HTML тэги"),
-        "app_account_my_edit_field_pleroma_noRichText_label":
+        "app_account_my_edit_field_unifedi_noRichText_label":
             MessageLookupByLibrary.simpleMessage(
                 "Игнорировать форматирование текста"),
-        "app_account_my_edit_field_pleroma_showRole_description":
+        "app_account_my_edit_field_unifedi_showRole_description":
             MessageLookupByLibrary.simpleMessage(
                 "например Админ или Модератор"),
-        "app_account_my_edit_field_pleroma_showRole_label":
+        "app_account_my_edit_field_unifedi_showRole_label":
             MessageLookupByLibrary.simpleMessage("Показывать роль"),
-        "app_account_my_edit_field_pleroma_skipThreadContainment_description":
+        "app_account_my_edit_field_unifedi_skipThreadContainment_description":
             MessageLookupByLibrary.simpleMessage("Скрывать в списках"),
-        "app_account_my_edit_field_pleroma_skipThreadContainment_label":
+        "app_account_my_edit_field_unifedi_skipThreadContainment_label":
             MessageLookupByLibrary.simpleMessage(
                 "Пропускать поврежденные беседы"),
         "app_account_my_edit_title":
@@ -590,19 +590,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Включая ответы"),
         "app_account_statuses_tab_withoutReplies":
             MessageLookupByLibrary.simpleMessage("Без ответов"),
-        "app_async_pleroma_error_common_dialog_content": m9,
-        "app_async_pleroma_error_common_dialog_title":
-            MessageLookupByLibrary.simpleMessage("Ошибка API"),
-        "app_async_pleroma_error_forbidden_dialog_content": m10,
-        "app_async_pleroma_error_forbidden_dialog_title":
-            MessageLookupByLibrary.simpleMessage(
-                "Запрещено. Неправильная операция или ваша сессия устарелаа"),
-        "app_async_pleroma_error_throttled_dialog_content":
-            MessageLookupByLibrary.simpleMessage(
-                "Слишком много операций за минуту. Пожалуйста подождите."),
-        "app_async_pleroma_error_throttled_dialog_title":
-            MessageLookupByLibrary.simpleMessage(
-                "Заблокировано. Слишком много операций."),
         "app_async_socket_error_dialog_content":
             MessageLookupByLibrary.simpleMessage(
                 "Нет соединения или сервер недоступен"),
@@ -613,6 +600,19 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Нет соединения или сервер недоступен"),
         "app_async_timeout_error_dialog_title":
             MessageLookupByLibrary.simpleMessage("Нет ответа"),
+        "app_async_unifedi_error_common_dialog_content": m9,
+        "app_async_unifedi_error_common_dialog_title":
+            MessageLookupByLibrary.simpleMessage("Ошибка API"),
+        "app_async_unifedi_error_forbidden_dialog_content": m10,
+        "app_async_unifedi_error_forbidden_dialog_title":
+            MessageLookupByLibrary.simpleMessage(
+                "Запрещено. Неправильная операция или ваша сессия устарелаа"),
+        "app_async_unifedi_error_throttled_dialog_content":
+            MessageLookupByLibrary.simpleMessage(
+                "Слишком много операций за минуту. Пожалуйста подождите."),
+        "app_async_unifedi_error_throttled_dialog_title":
+            MessageLookupByLibrary.simpleMessage(
+                "Заблокировано. Слишком много операций."),
         "app_auth_instance_chooser_action_addInstance":
             MessageLookupByLibrary.simpleMessage("Добавить аккаунт"),
         "app_auth_instance_current_context_loading_cantLoad_action_chooseDifferentAccount":
@@ -647,7 +647,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Невозможно подключится к серверу"),
         "app_auth_instance_join_field_host_helper":
-            MessageLookupByLibrary.simpleMessage("Pleroma или Mastodon сервер"),
+            MessageLookupByLibrary.simpleMessage("Unifedi или Mastodon сервер"),
         "app_auth_instance_join_invitesOnly_dialog_content":
             MessageLookupByLibrary.simpleMessage(
                 "Используйте другой сервер, или заргестрируйтесь по ссылке-приглашению в браузере"),
@@ -845,13 +845,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Ошибка отправления."),
         "app_chat_message_pending_tapToViewOptions":
             MessageLookupByLibrary.simpleMessage("Нажмите для действий."),
-        "app_chat_pleroma_account_notAcceptsChatMessages_toast":
-            MessageLookupByLibrary.simpleMessage(
-                "Пользователь отключил прием сообщений"),
-        "app_chat_pleroma_accounts_title":
-            MessageLookupByLibrary.simpleMessage("Аккаунты в чате"),
-        "app_chat_pleroma_share_title":
-            MessageLookupByLibrary.simpleMessage("Поделится в чаты"),
         "app_chat_post_error_empty_dialog_title":
             MessageLookupByLibrary.simpleMessage(
                 "Невозможно отправить пустое сообщение"),
@@ -872,10 +865,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_chat_settings_field_countConversationsInChatsUnreadBadges_label":
             MessageLookupByLibrary.simpleMessage(
                 "Учитывать Беседы в непрочитанных"),
-        "app_chat_settings_field_replaceConversationsWithPleromaChats_label":
+        "app_chat_settings_field_replaceConversationsWithUnifediChats_label":
             MessageLookupByLibrary.simpleMessage(
                 "Заменить \"Беседы\" на \"Чаты\""),
         "app_chat_settings_title": MessageLookupByLibrary.simpleMessage("Чат"),
+        "app_chat_unifedi_account_notAcceptsChatMessages_toast":
+            MessageLookupByLibrary.simpleMessage(
+                "Пользователь отключил прием сообщений"),
+        "app_chat_unifedi_accounts_title":
+            MessageLookupByLibrary.simpleMessage("Аккаунты в чате"),
+        "app_chat_unifedi_share_title":
+            MessageLookupByLibrary.simpleMessage("Поделится в чаты"),
         "app_crashReporting_ask_dialog_content":
             MessageLookupByLibrary.simpleMessage(
                 "Вы согласны на отправку отчетов об ошибках?\n Это поможет нам сделать приложение стабильнее\n Вы всегда можете изменить решение в настройках"),
@@ -992,15 +992,15 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("В чаты"),
         "app_home_tab_chat_conversation_title":
             MessageLookupByLibrary.simpleMessage("Беседы"),
-        "app_home_tab_chat_pleroma_action_switch_to_dms":
+        "app_home_tab_chat_unifedi_action_switch_to_dms":
             MessageLookupByLibrary.simpleMessage("В беседы"),
-        "app_home_tab_chat_pleroma_notSupported_mastodon":
+        "app_home_tab_chat_unifedi_notSupported_mastodon":
             MessageLookupByLibrary.simpleMessage(
                 "Чаты не поддерживаются на Mastodon серверах"),
-        "app_home_tab_chat_pleroma_notSupported_pleroma":
+        "app_home_tab_chat_unifedi_notSupported_unifedi":
             MessageLookupByLibrary.simpleMessage(
                 "Этот сервер не поддерживает функционал чатов"),
-        "app_home_tab_chat_pleroma_title":
+        "app_home_tab_chat_unifedi_title":
             MessageLookupByLibrary.simpleMessage("Чаты"),
         "app_init_fail": MessageLookupByLibrary.simpleMessage(
             "Ошибка при инициализации.\nПерезапустите или переустановите приложение."),
@@ -1065,27 +1065,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Сообщения"),
         "app_instance_details_field_metadata_title":
             MessageLookupByLibrary.simpleMessage("Мета-данные"),
-        "app_instance_details_field_pleroma_metadata_features_label":
-            MessageLookupByLibrary.simpleMessage("Функции"),
-        "app_instance_details_field_pleroma_metadata_fields_maxFields_label":
-            MessageLookupByLibrary.simpleMessage("Макс. количество полей"),
-        "app_instance_details_field_pleroma_metadata_fields_maxRemoteFields_label":
-            MessageLookupByLibrary.simpleMessage(
-                "Макс количество полей (remote)"),
-        "app_instance_details_field_pleroma_metadata_fields_nameLength_label":
-            MessageLookupByLibrary.simpleMessage("Макс. длина имени"),
-        "app_instance_details_field_pleroma_metadata_fields_postFormats_label":
-            MessageLookupByLibrary.simpleMessage("Форматы записей"),
-        "app_instance_details_field_pleroma_metadata_fields_title":
-            MessageLookupByLibrary.simpleMessage("Лимит: поле аккаунта"),
-        "app_instance_details_field_pleroma_metadata_fields_valueLength_label":
-            MessageLookupByLibrary.simpleMessage("Макс длина значения"),
-        "app_instance_details_field_pleroma_metadata_fields_verstionType_value_mastodon":
-            MessageLookupByLibrary.simpleMessage("Mastodon"),
-        "app_instance_details_field_pleroma_metadata_fields_verstionType_value_pleroma":
-            MessageLookupByLibrary.simpleMessage("Pleroma"),
-        "app_instance_details_field_pleroma_metadata_fields_verstionType_value_unknown":
-            MessageLookupByLibrary.simpleMessage("Неизвестно"),
         "app_instance_details_field_pollLimit_maxExpiration_label":
             MessageLookupByLibrary.simpleMessage("Макс. длительность"),
         "app_instance_details_field_pollLimit_maxOptionsChars_label":
@@ -1116,6 +1095,27 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Тренды"),
         "app_instance_details_field_trends_value":
             MessageLookupByLibrary.simpleMessage("Хэштеги"),
+        "app_instance_details_field_unifedi_metadata_features_label":
+            MessageLookupByLibrary.simpleMessage("Функции"),
+        "app_instance_details_field_unifedi_metadata_fields_maxFields_label":
+            MessageLookupByLibrary.simpleMessage("Макс. количество полей"),
+        "app_instance_details_field_unifedi_metadata_fields_maxRemoteFields_label":
+            MessageLookupByLibrary.simpleMessage(
+                "Макс количество полей (remote)"),
+        "app_instance_details_field_unifedi_metadata_fields_nameLength_label":
+            MessageLookupByLibrary.simpleMessage("Макс. длина имени"),
+        "app_instance_details_field_unifedi_metadata_fields_postFormats_label":
+            MessageLookupByLibrary.simpleMessage("Форматы записей"),
+        "app_instance_details_field_unifedi_metadata_fields_title":
+            MessageLookupByLibrary.simpleMessage("Лимит: поле аккаунта"),
+        "app_instance_details_field_unifedi_metadata_fields_valueLength_label":
+            MessageLookupByLibrary.simpleMessage("Макс длина значения"),
+        "app_instance_details_field_unifedi_metadata_fields_verstionType_value_mastodon":
+            MessageLookupByLibrary.simpleMessage("Mastodon"),
+        "app_instance_details_field_unifedi_metadata_fields_verstionType_value_unifedi":
+            MessageLookupByLibrary.simpleMessage("Unifedi"),
+        "app_instance_details_field_unifedi_metadata_fields_verstionType_value_unknown":
+            MessageLookupByLibrary.simpleMessage("Неизвестно"),
         "app_instance_details_field_uploadAvatar_label":
             MessageLookupByLibrary.simpleMessage("Лимит: загрузка аватара"),
         "app_instance_details_field_uploadBackground_label":
@@ -1245,15 +1245,15 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Упоминул вас: "),
         "app_notification_header_move":
             MessageLookupByLibrary.simpleMessage("Перемещен."),
-        "app_notification_header_pleromaChatMention_postfix": m34,
-        "app_notification_header_pleromaChatMention_prefix":
-            MessageLookupByLibrary.simpleMessage("Чат: "),
-        "app_notification_header_pleromaEmojiReaction": m35,
         "app_notification_header_poll":
             MessageLookupByLibrary.simpleMessage("Опрос окончен."),
         "app_notification_header_reblog":
             MessageLookupByLibrary.simpleMessage("Поделился вашей записью."),
-        "app_notification_header_report": m36,
+        "app_notification_header_report": m34,
+        "app_notification_header_unifediChatMention_postfix": m35,
+        "app_notification_header_unifediChatMention_prefix":
+            MessageLookupByLibrary.simpleMessage("Чат: "),
+        "app_notification_header_unifediEmojiReaction": m36,
         "app_notification_header_unknown": m37,
         "app_notification_list_newItems_action_tapToLoadNew": m38,
         "app_pagination_settings_pageSize_label":
@@ -1293,21 +1293,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Когда кто-то переместился"),
         "app_push_channel_move_name":
             MessageLookupByLibrary.simpleMessage("Пермещения"),
-        "app_push_channel_pleromaChatMention_description":
-            MessageLookupByLibrary.simpleMessage(
-                "Сообщения в чате(только Pleroma)"),
-        "app_push_channel_pleromaChatMention_name":
-            MessageLookupByLibrary.simpleMessage("Чат"),
-        "app_push_channel_pleromaEmojiReaction_description":
-            MessageLookupByLibrary.simpleMessage(
-                "Эмодди реакции для записей(только Pleroma)"),
-        "app_push_channel_pleromaEmojiReaction_name":
-            MessageLookupByLibrary.simpleMessage("Эмоджи реакции"),
-        "app_push_channel_pleromaReport_description":
-            MessageLookupByLibrary.simpleMessage(
-                "Когда кто-то жалуется на ваши записи"),
-        "app_push_channel_pleromaReport_name":
-            MessageLookupByLibrary.simpleMessage("Жалолбы"),
         "app_push_channel_poll_description":
             MessageLookupByLibrary.simpleMessage("Оповещения об обрасах"),
         "app_push_channel_poll_name":
@@ -1317,6 +1302,21 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Когда люди делятся вашими статусами"),
         "app_push_channel_reblog_name":
             MessageLookupByLibrary.simpleMessage("Репосты"),
+        "app_push_channel_unifediChatMention_description":
+            MessageLookupByLibrary.simpleMessage(
+                "Сообщения в чате(только Unifedi)"),
+        "app_push_channel_unifediChatMention_name":
+            MessageLookupByLibrary.simpleMessage("Чат"),
+        "app_push_channel_unifediEmojiReaction_description":
+            MessageLookupByLibrary.simpleMessage(
+                "Эмодди реакции для записей(только Unifedi)"),
+        "app_push_channel_unifediEmojiReaction_name":
+            MessageLookupByLibrary.simpleMessage("Эмоджи реакции"),
+        "app_push_channel_unifediReport_description":
+            MessageLookupByLibrary.simpleMessage(
+                "Когда кто-то жалуется на ваши записи"),
+        "app_push_channel_unifediReport_name":
+            MessageLookupByLibrary.simpleMessage("Жалолбы"),
         "app_push_channel_unknown_description":
             MessageLookupByLibrary.simpleMessage(
                 "Неизвестный тип оповещений, которые Fedi еще не умеет обрабатывать"),
@@ -1365,17 +1365,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_push_richNotification_move_summary":
             MessageLookupByLibrary.simpleMessage("Кто-то переместился"),
         "app_push_richNotification_move_title": m45,
-        "app_push_richNotification_pleromaChatMention_summary":
-            MessageLookupByLibrary.simpleMessage(
-                "Вам кто-то написал через чат"),
-        "app_push_richNotification_pleromaChatMention_title": m46,
-        "app_push_richNotification_pleromaEmojiReaction_summary":
-            MessageLookupByLibrary.simpleMessage("Кто-то оценил вашу запись"),
-        "app_push_richNotification_pleromaEmojiReaction_title": m47,
-        "app_push_richNotification_pleromaReport_summary":
-            MessageLookupByLibrary.simpleMessage(
-                "Кто-то пожаловася на вашу запись"),
-        "app_push_richNotification_pleromaReport_title": m48,
         "app_push_richNotification_poll_summary":
             MessageLookupByLibrary.simpleMessage("Опрос изменился"),
         "app_push_richNotification_poll_title":
@@ -1383,7 +1372,18 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_push_richNotification_reblog_summary":
             MessageLookupByLibrary.simpleMessage(
                 "Кто-то поделился вашим статусом"),
-        "app_push_richNotification_reblog_title": m49,
+        "app_push_richNotification_reblog_title": m46,
+        "app_push_richNotification_unifediChatMention_summary":
+            MessageLookupByLibrary.simpleMessage(
+                "Вам кто-то написал через чат"),
+        "app_push_richNotification_unifediChatMention_title": m47,
+        "app_push_richNotification_unifediEmojiReaction_summary":
+            MessageLookupByLibrary.simpleMessage("Кто-то оценил вашу запись"),
+        "app_push_richNotification_unifediEmojiReaction_title": m48,
+        "app_push_richNotification_unifediReport_summary":
+            MessageLookupByLibrary.simpleMessage(
+                "Кто-то пожаловася на вашу запись"),
+        "app_push_richNotification_unifediReport_title": m49,
         "app_push_richNotification_unknown_summary":
             MessageLookupByLibrary.simpleMessage("Что-то случилось"),
         "app_push_richNotification_unknown_title":
@@ -1398,14 +1398,14 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Подписки"),
         "app_push_settings_field_mentions_label":
             MessageLookupByLibrary.simpleMessage("Упоминания"),
-        "app_push_settings_field_pleroma_chat_label":
-            MessageLookupByLibrary.simpleMessage("Чаты"),
-        "app_push_settings_field_pleroma_emojiReaction_label":
-            MessageLookupByLibrary.simpleMessage("Эмоджи реакции"),
         "app_push_settings_field_polls_label":
             MessageLookupByLibrary.simpleMessage("Опросы"),
         "app_push_settings_field_reblogs_label":
             MessageLookupByLibrary.simpleMessage("Реблоги"),
+        "app_push_settings_field_unifedi_chat_label":
+            MessageLookupByLibrary.simpleMessage("Чаты"),
+        "app_push_settings_field_unifedi_emojiReaction_label":
+            MessageLookupByLibrary.simpleMessage("Эмоджи реакции"),
         "app_push_settings_title":
             MessageLookupByLibrary.simpleMessage("Push-оповещения"),
         "app_push_settings_update_fail_dialog_title":
@@ -1714,7 +1714,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_timeline_settings_field_withMuted_label":
             MessageLookupByLibrary.simpleMessage("Вместе с скрытыми"),
         "app_timeline_settings_onlyFromInstance_field_hint":
-            MessageLookupByLibrary.simpleMessage("pleroma.com"),
+            MessageLookupByLibrary.simpleMessage("unifedi.com"),
         "app_timeline_settings_onlyFromInstance_field_label":
             MessageLookupByLibrary.simpleMessage("Только от сервера"),
         "app_timeline_settings_onlyFromRemoteAccount_field_label":
@@ -1738,7 +1738,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_timeline_settings_title":
             MessageLookupByLibrary.simpleMessage("Настройки:"),
         "app_timeline_settings_withRemoteHashtag_field_hint":
-            MessageLookupByLibrary.simpleMessage("pleroma"),
+            MessageLookupByLibrary.simpleMessage("unifedi"),
         "app_timeline_settings_withRemoteHashtag_field_label":
             MessageLookupByLibrary.simpleMessage("С хэштэгом"),
         "app_timeline_storage_action_add":

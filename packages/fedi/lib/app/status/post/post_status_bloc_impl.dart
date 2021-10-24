@@ -729,8 +729,11 @@ abstract class PostStatusBloc extends PostMessageBloc
       postStatus: unifediApiPostStatus,
     );
 
-    var isFromHomeTimeline = unifediApiPostStatus.visibilityAsPleromaApi ==
-        UnifediApiVisibility.publicValue;
+    var unifediApiVisibility =
+        UnifediApiVisibility.fromStringValue(unifediApiPostStatus.visibility);
+
+    var isFromHomeTimeline =
+        unifediApiVisibility == UnifediApiVisibility.publicValue;
 
     await statusRepository.upsertRemoteStatusWithAllArguments(
       remoteStatus,

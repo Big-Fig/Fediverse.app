@@ -1,4 +1,4 @@
-import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
+import 'package:fedi/app/async/unifedi/unifedi_async_operation_helper.dart';
 import 'package:fedi/app/status/post/action/post_status_post_overlay_notification.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/ui/button/text/with_border/fedi_primary_filled_text_button_with_border.dart';
@@ -26,8 +26,8 @@ class PostStatusAppBarPostAction extends StatelessWidget {
             onPressed: isReadyToPost
                 ? () async {
                     // todo: refactor
-                    var dialogResult = await PleromaAsyncOperationHelper
-                        .performPleromaAsyncOperation(
+                    var dialogResult = await UnifediAsyncOperationHelper
+                        .performUnifediAsyncOperation(
                       context: context,
                       asyncCode: () async {
                         await postStatusBloc.post();

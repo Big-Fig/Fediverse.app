@@ -30,12 +30,12 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
 
   @override
   Future<bool> actuallyShareToAccount(IAccount account) async {
-    const pleromaVisibility = UnifediApiVisibility.directValue;
+    const unifediVisibility = UnifediApiVisibility.directValue;
 
     var targetAccounts = [account];
     var sendDataList = await createSendData(
       to: targetAccounts.map((account) => '@${account.acct}').join(', '),
-      visibility: pleromaVisibility,
+      visibility: unifediVisibility,
     );
 
     var unifediApiStatusList = <IUnifediApiStatus>[];
@@ -117,7 +117,7 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
     if (newerThan != null || olderThan != null) {
       return [];
     }
-    var pleromaConversations =
+    var unifediConversations =
         await unifediApiConversationService.getConversations(
       pagination: UnifediApiPagination(
         minId: null,
@@ -128,16 +128,16 @@ abstract class ConversationChatShareBloc extends ShareToAccountBloc
     );
 
     await conversationRepository.upsertAllInRemoteType(
-      pleromaConversations,
+      unifediConversations,
       batchTransaction: null,
     );
 
     var unifediApiAccounts = <IUnifediApiAccount>[];
 
-    for (final pleromaConversation in pleromaConversations) {
-      var pleromaConversationAccounts = pleromaConversation.accounts;
+    for (final unifediConversation in unifediConversations) {
+      var unifediConversationAccounts = unifediConversation.accounts;
       unifediApiAccounts.addAll(
-        pleromaConversationAccounts.where(
+        unifediConversationAccounts.where(
           (unifediApiAccount) {
             var notOwn = unifediApiAccount.id != myAccountBloc.account.remoteId;
             var alreadyAdded = unifediApiAccounts.firstWhereOrNull(

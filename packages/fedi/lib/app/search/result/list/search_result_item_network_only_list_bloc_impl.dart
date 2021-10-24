@@ -15,12 +15,12 @@ import 'package:unifedi_api/unifedi_api.dart';
 
 class SearchResultItemNetworkOnlyListBloc
     extends ISearchResultItemNetworkOnlyListBloc {
-  final IUnifediApiSearchService pleromaSearchService;
+  final IUnifediApiSearchService unifediSearchService;
 
   final ISearchInputBloc searchInputBloc;
 
   SearchResultItemNetworkOnlyListBloc({
-    required this.pleromaSearchService,
+    required this.unifediSearchService,
     required this.searchInputBloc,
   });
 
@@ -40,7 +40,7 @@ class SearchResultItemNetworkOnlyListBloc
         //hack because backend include last item in next page too
         offset += 1;
       }
-      var searchResult = await pleromaSearchService.search(
+      var searchResult = await unifediSearchService.search(
         offset: offset,
         resolve: true,
         query: query!,
@@ -84,7 +84,7 @@ class SearchResultItemNetworkOnlyListBloc
   }
 
   @override
-  IUnifediApiService get unifediApi => pleromaSearchService;
+  IUnifediApiService get unifediApi => unifediSearchService;
 
   static SearchResultItemNetworkOnlyListBloc createFromContext(
     BuildContext context,
@@ -94,7 +94,7 @@ class SearchResultItemNetworkOnlyListBloc
           context,
           listen: false,
         ),
-        pleromaSearchService: Provider.of<IUnifediApiSearchService>(
+        unifediSearchService: Provider.of<IUnifediApiSearchService>(
           context,
           listen: false,
         ),

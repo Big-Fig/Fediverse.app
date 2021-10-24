@@ -6,7 +6,7 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
-extension IPleromaNotificationExtension on IUnifediApiNotification {
+extension IUnifediNotificationExtension on IUnifediApiNotification {
   DbNotification toDbNotification({
     required bool? unread,
   }) {

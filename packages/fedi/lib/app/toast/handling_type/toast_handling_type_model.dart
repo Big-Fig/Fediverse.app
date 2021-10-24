@@ -78,7 +78,7 @@ extension ToastHandlingTypeStringExtension on String {
 }
 
 extension ToastHandlingTypeStringListExtension on List<String> {
-  List<ToastHandlingType> toPleromaVisibilities() => map(
+  List<ToastHandlingType> toUnifediVisibilities() => map(
         (visibilityString) => visibilityString.toToastHandlingType(),
       ).toList();
 }
