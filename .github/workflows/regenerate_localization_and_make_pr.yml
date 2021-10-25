@@ -46,7 +46,7 @@ jobs:
         run: flutter pub global activate intl_utils
 
       - name: Generate dart localization code
-        run: flutter pub global run melos run generate:intl_utils
+        run: flutter pub global run melos run generate:intl
 
       - name: Create Pull Request
         id: cpr

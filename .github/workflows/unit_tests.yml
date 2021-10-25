@@ -40,4 +40,4 @@ jobs:
         run: flutter pub global run melos bootstrap
 
       - name: Run tests without coverage
-        run: flutter pub global run melos run test:unit
+        run: flutter pub global run melos run test:unit --no-select

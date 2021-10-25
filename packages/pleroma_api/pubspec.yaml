@@ -30,7 +30,7 @@ dependencies:
   hive:
     git:
       url: https://github.com/xal/hive
-      ref: xal/nested_type_registry2
+      ref: xal/nested_type_registry_dev
       path: hive
   json_annotation: ^4.1.0
   freezed_annotation: ^0.14.3
@@ -45,7 +45,7 @@ dev_dependencies:
   hive_generator:
     git:
       url: https://github.com/xal/hive
-      ref: xal/nested_type_registry2
+      ref: xal/nested_type_registry_dev
       path: hive_generator
   json_serializable: ^5.0.2
   freezed: ^0.14.5
