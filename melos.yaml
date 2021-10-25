@@ -13,7 +13,7 @@ scripts:
 
   tuneup:check:
     run: |
-      flutter pub global run melos exec --ignore="*example*" -- \
+      flutter pub global run melos exec -c 1 --fail-fast --ignore="*example*" -- \
       flutter pub global run tuneup check
     description: |
       Quickly checks for dart analyzing errors
@@ -27,7 +27,7 @@ scripts:
 
   analyze:
     run: |
-      flutter pub global run melos exec -c 5 --ignore="*example*" -- \
+      flutter pub global run melos exec -c 1 --ignore="*example*" -- \
       flutter analyze --fatal-infos .
     description: |
       Format code all lints from analysis_options.yaml
