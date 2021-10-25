@@ -158,25 +158,25 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
       language: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}language']),
       contentVariants: $DbStatusesTable.$converter8.mapToDart(const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}unifedi_content'])),
+          .mapFromDatabaseResponse(data['${effectivePrefix}pleroma_content'])),
       conversationId: const IntType().mapFromDatabaseResponse(
-          data['${effectivePrefix}unifedi_conversation_id']),
+          data['${effectivePrefix}pleroma_conversation_id']),
       directConversationId: const IntType().mapFromDatabaseResponse(
-          data['${effectivePrefix}unifedi_direct_conversation_id']),
+          data['${effectivePrefix}pleroma_direct_conversation_id']),
       inReplyToAccountAcct: const StringType().mapFromDatabaseResponse(
-          data['${effectivePrefix}unifedi_in_reply_to_account_acct']),
+          data['${effectivePrefix}pleroma_in_reply_to_account_acct']),
       local: const BoolType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}unifedi_local']),
+          .mapFromDatabaseResponse(data['${effectivePrefix}pleroma_local']),
       spoilerTextVariants: $DbStatusesTable.$converter9.mapToDart(
           const StringType().mapFromDatabaseResponse(
-              data['${effectivePrefix}unifedi_spoiler_text'])),
+              data['${effectivePrefix}pleroma_spoiler_text'])),
       expiresAt: const DateTimeType().mapFromDatabaseResponse(
-          data['${effectivePrefix}unifedi_expires_at']),
+          data['${effectivePrefix}pleroma_expires_at']),
       threadMuted: const BoolType().mapFromDatabaseResponse(
-          data['${effectivePrefix}unifedi_thread_muted']),
+          data['${effectivePrefix}pleroma_thread_muted']),
       emojiReactions: $DbStatusesTable.$converter10.mapToDart(const StringType()
           .mapFromDatabaseResponse(
-              data['${effectivePrefix}unifedi_emoji_reactions'])),
+              data['${effectivePrefix}pleroma_emoji_reactions'])),
       deleted: const BoolType()
           .mapFromDatabaseResponse(data['${effectivePrefix}deleted']),
       hiddenLocallyOnDevice: const BoolType().mapFromDatabaseResponse(
@@ -269,37 +269,37 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
     }
     if (!nullToAbsent || contentVariants != null) {
       final converter = $DbStatusesTable.$converter8;
-      map['unifedi_content'] =
+      map['pleroma_content'] =
           Variable<String?>(converter.mapToSql(contentVariants));
     }
     if (!nullToAbsent || conversationId != null) {
-      map['unifedi_conversation_id'] = Variable<int?>(conversationId);
+      map['pleroma_conversation_id'] = Variable<int?>(conversationId);
     }
     if (!nullToAbsent || directConversationId != null) {
-      map['unifedi_direct_conversation_id'] =
+      map['pleroma_direct_conversation_id'] =
           Variable<int?>(directConversationId);
     }
     if (!nullToAbsent || inReplyToAccountAcct != null) {
-      map['unifedi_in_reply_to_account_acct'] =
+      map['pleroma_in_reply_to_account_acct'] =
           Variable<String?>(inReplyToAccountAcct);
     }
     if (!nullToAbsent || local != null) {
-      map['unifedi_local'] = Variable<bool?>(local);
+      map['pleroma_local'] = Variable<bool?>(local);
     }
     if (!nullToAbsent || spoilerTextVariants != null) {
       final converter = $DbStatusesTable.$converter9;
-      map['unifedi_spoiler_text'] =
+      map['pleroma_spoiler_text'] =
           Variable<String?>(converter.mapToSql(spoilerTextVariants));
     }
     if (!nullToAbsent || expiresAt != null) {
-      map['unifedi_expires_at'] = Variable<DateTime?>(expiresAt);
+      map['pleroma_expires_at'] = Variable<DateTime?>(expiresAt);
     }
     if (!nullToAbsent || threadMuted != null) {
-      map['unifedi_thread_muted'] = Variable<bool?>(threadMuted);
+      map['pleroma_thread_muted'] = Variable<bool?>(threadMuted);
     }
     if (!nullToAbsent || emojiReactions != null) {
       final converter = $DbStatusesTable.$converter10;
-      map['unifedi_emoji_reactions'] =
+      map['pleroma_emoji_reactions'] =
           Variable<String?>(converter.mapToSql(emojiReactions));
     }
     if (!nullToAbsent || deleted != null) {
@@ -993,18 +993,18 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
       if (poll != null) 'poll': poll,
       if (card != null) 'card': card,
       if (language != null) 'language': language,
-      if (contentVariants != null) 'unifedi_content': contentVariants,
-      if (conversationId != null) 'unifedi_conversation_id': conversationId,
+      if (contentVariants != null) 'pleroma_content': contentVariants,
+      if (conversationId != null) 'pleroma_conversation_id': conversationId,
       if (directConversationId != null)
-        'unifedi_direct_conversation_id': directConversationId,
+        'pleroma_direct_conversation_id': directConversationId,
       if (inReplyToAccountAcct != null)
-        'unifedi_in_reply_to_account_acct': inReplyToAccountAcct,
-      if (local != null) 'unifedi_local': local,
+        'pleroma_in_reply_to_account_acct': inReplyToAccountAcct,
+      if (local != null) 'pleroma_local': local,
       if (spoilerTextVariants != null)
-        'unifedi_spoiler_text': spoilerTextVariants,
-      if (expiresAt != null) 'unifedi_expires_at': expiresAt,
-      if (threadMuted != null) 'unifedi_thread_muted': threadMuted,
-      if (emojiReactions != null) 'unifedi_emoji_reactions': emojiReactions,
+        'pleroma_spoiler_text': spoilerTextVariants,
+      if (expiresAt != null) 'pleroma_expires_at': expiresAt,
+      if (threadMuted != null) 'pleroma_thread_muted': threadMuted,
+      if (emojiReactions != null) 'pleroma_emoji_reactions': emojiReactions,
       if (deleted != null) 'deleted': deleted,
       if (hiddenLocallyOnDevice != null)
         'hidden_locally_on_device': hiddenLocallyOnDevice,
@@ -1215,37 +1215,37 @@ class DbStatusesCompanion extends UpdateCompanion<DbStatus> {
     }
     if (contentVariants.present) {
       final converter = $DbStatusesTable.$converter8;
-      map['unifedi_content'] =
+      map['pleroma_content'] =
           Variable<String?>(converter.mapToSql(contentVariants.value));
     }
     if (conversationId.present) {
-      map['unifedi_conversation_id'] = Variable<int?>(conversationId.value);
+      map['pleroma_conversation_id'] = Variable<int?>(conversationId.value);
     }
     if (directConversationId.present) {
-      map['unifedi_direct_conversation_id'] =
+      map['pleroma_direct_conversation_id'] =
           Variable<int?>(directConversationId.value);
     }
     if (inReplyToAccountAcct.present) {
-      map['unifedi_in_reply_to_account_acct'] =
+      map['pleroma_in_reply_to_account_acct'] =
           Variable<String?>(inReplyToAccountAcct.value);
     }
     if (local.present) {
-      map['unifedi_local'] = Variable<bool?>(local.value);
+      map['pleroma_local'] = Variable<bool?>(local.value);
     }
     if (spoilerTextVariants.present) {
       final converter = $DbStatusesTable.$converter9;
-      map['unifedi_spoiler_text'] =
+      map['pleroma_spoiler_text'] =
           Variable<String?>(converter.mapToSql(spoilerTextVariants.value));
     }
     if (expiresAt.present) {
-      map['unifedi_expires_at'] = Variable<DateTime?>(expiresAt.value);
+      map['pleroma_expires_at'] = Variable<DateTime?>(expiresAt.value);
     }
     if (threadMuted.present) {
-      map['unifedi_thread_muted'] = Variable<bool?>(threadMuted.value);
+      map['pleroma_thread_muted'] = Variable<bool?>(threadMuted.value);
     }
     if (emojiReactions.present) {
       final converter = $DbStatusesTable.$converter10;
-      map['unifedi_emoji_reactions'] =
+      map['pleroma_emoji_reactions'] =
           Variable<String?>(converter.mapToSql(emojiReactions.value));
     }
     if (deleted.present) {
@@ -1487,54 +1487,54 @@ class $DbStatusesTable extends DbStatuses
       const VerificationMeta('contentVariants');
   late final GeneratedColumnWithTypeConverter<UnifediApiContentVariants,
       String?> contentVariants = GeneratedColumn<String?>(
-          'unifedi_content', aliasedName, true,
+          'pleroma_content', aliasedName, true,
           typeName: 'TEXT', requiredDuringInsert: false)
       .withConverter<UnifediApiContentVariants>($DbStatusesTable.$converter8);
   final VerificationMeta _conversationIdMeta =
       const VerificationMeta('conversationId');
   late final GeneratedColumn<int?> conversationId = GeneratedColumn<int?>(
-      'unifedi_conversation_id', aliasedName, true,
+      'pleroma_conversation_id', aliasedName, true,
       typeName: 'INTEGER', requiredDuringInsert: false);
   final VerificationMeta _directConversationIdMeta =
       const VerificationMeta('directConversationId');
   late final GeneratedColumn<int?> directConversationId = GeneratedColumn<int?>(
-      'unifedi_direct_conversation_id', aliasedName, true,
+      'pleroma_direct_conversation_id', aliasedName, true,
       typeName: 'INTEGER', requiredDuringInsert: false);
   final VerificationMeta _inReplyToAccountAcctMeta =
       const VerificationMeta('inReplyToAccountAcct');
   late final GeneratedColumn<String?> inReplyToAccountAcct =
       GeneratedColumn<String?>(
-          'unifedi_in_reply_to_account_acct', aliasedName, true,
+          'pleroma_in_reply_to_account_acct', aliasedName, true,
           typeName: 'TEXT', requiredDuringInsert: false);
   final VerificationMeta _localMeta = const VerificationMeta('local');
   late final GeneratedColumn<bool?> local = GeneratedColumn<bool?>(
-      'unifedi_local', aliasedName, true,
+      'pleroma_local', aliasedName, true,
       typeName: 'INTEGER',
       requiredDuringInsert: false,
-      defaultConstraints: 'CHECK (unifedi_local IN (0, 1))');
+      defaultConstraints: 'CHECK (pleroma_local IN (0, 1))');
   final VerificationMeta _spoilerTextVariantsMeta =
       const VerificationMeta('spoilerTextVariants');
   late final GeneratedColumnWithTypeConverter<UnifediApiContentVariants,
       String?> spoilerTextVariants = GeneratedColumn<String?>(
-          'unifedi_spoiler_text', aliasedName, true,
+          'pleroma_spoiler_text', aliasedName, true,
           typeName: 'TEXT', requiredDuringInsert: false)
       .withConverter<UnifediApiContentVariants>($DbStatusesTable.$converter9);
   final VerificationMeta _expiresAtMeta = const VerificationMeta('expiresAt');
   late final GeneratedColumn<DateTime?> expiresAt = GeneratedColumn<DateTime?>(
-      'unifedi_expires_at', aliasedName, true,
+      'pleroma_expires_at', aliasedName, true,
       typeName: 'INTEGER', requiredDuringInsert: false);
   final VerificationMeta _threadMutedMeta =
       const VerificationMeta('threadMuted');
   late final GeneratedColumn<bool?> threadMuted = GeneratedColumn<bool?>(
-      'unifedi_thread_muted', aliasedName, true,
+      'pleroma_thread_muted', aliasedName, true,
       typeName: 'INTEGER',
       requiredDuringInsert: false,
-      defaultConstraints: 'CHECK (unifedi_thread_muted IN (0, 1))');
+      defaultConstraints: 'CHECK (pleroma_thread_muted IN (0, 1))');
   final VerificationMeta _emojiReactionsMeta =
       const VerificationMeta('emojiReactions');
   late final GeneratedColumnWithTypeConverter<List<UnifediApiEmojiReaction>,
       String?> emojiReactions = GeneratedColumn<String?>(
-          'unifedi_emoji_reactions', aliasedName, true,
+          'pleroma_emoji_reactions', aliasedName, true,
           typeName: 'TEXT', requiredDuringInsert: false)
       .withConverter<List<UnifediApiEmojiReaction>>(
           $DbStatusesTable.$converter10);
@@ -1753,43 +1753,43 @@ class $DbStatusesTable extends DbStatuses
           language.isAcceptableOrUnknown(data['language']!, _languageMeta));
     }
     context.handle(_contentVariantsMeta, const VerificationResult.success());
-    if (data.containsKey('unifedi_conversation_id')) {
+    if (data.containsKey('pleroma_conversation_id')) {
       context.handle(
           _conversationIdMeta,
           conversationId.isAcceptableOrUnknown(
-              data['unifedi_conversation_id']!, _conversationIdMeta));
+              data['pleroma_conversation_id']!, _conversationIdMeta));
     }
-    if (data.containsKey('unifedi_direct_conversation_id')) {
+    if (data.containsKey('pleroma_direct_conversation_id')) {
       context.handle(
           _directConversationIdMeta,
           directConversationId.isAcceptableOrUnknown(
-              data['unifedi_direct_conversation_id']!,
+              data['pleroma_direct_conversation_id']!,
               _directConversationIdMeta));
     }
-    if (data.containsKey('unifedi_in_reply_to_account_acct')) {
+    if (data.containsKey('pleroma_in_reply_to_account_acct')) {
       context.handle(
           _inReplyToAccountAcctMeta,
           inReplyToAccountAcct.isAcceptableOrUnknown(
-              data['unifedi_in_reply_to_account_acct']!,
+              data['pleroma_in_reply_to_account_acct']!,
               _inReplyToAccountAcctMeta));
     }
-    if (data.containsKey('unifedi_local')) {
+    if (data.containsKey('pleroma_local')) {
       context.handle(_localMeta,
-          local.isAcceptableOrUnknown(data['unifedi_local']!, _localMeta));
+          local.isAcceptableOrUnknown(data['pleroma_local']!, _localMeta));
     }
     context.handle(
         _spoilerTextVariantsMeta, const VerificationResult.success());
-    if (data.containsKey('unifedi_expires_at')) {
+    if (data.containsKey('pleroma_expires_at')) {
       context.handle(
           _expiresAtMeta,
           expiresAt.isAcceptableOrUnknown(
-              data['unifedi_expires_at']!, _expiresAtMeta));
+              data['pleroma_expires_at']!, _expiresAtMeta));
     }
-    if (data.containsKey('unifedi_thread_muted')) {
+    if (data.containsKey('pleroma_thread_muted')) {
       context.handle(
           _threadMutedMeta,
           threadMuted.isAcceptableOrUnknown(
-              data['unifedi_thread_muted']!, _threadMutedMeta));
+              data['pleroma_thread_muted']!, _threadMutedMeta));
     }
     context.handle(_emojiReactionsMeta, const VerificationResult.success());
     if (data.containsKey('deleted')) {
@@ -1988,36 +1988,36 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
       emojis: $DbAccountsTable.$converter1.mapToDart(const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}emojis'])),
       backgroundImage: const StringType().mapFromDatabaseResponse(
-          data['${effectivePrefix}unifedi_background_image']),
+          data['${effectivePrefix}pleroma_background_image']),
       tags: $DbAccountsTable.$converter2.mapToDart(const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}unifedi_tags'])),
+          .mapFromDatabaseResponse(data['${effectivePrefix}pleroma_tags'])),
       relationship: $DbAccountsTable.$converter3.mapToDart(const StringType()
           .mapFromDatabaseResponse(
-              data['${effectivePrefix}unifedi_relationship'])),
+              data['${effectivePrefix}pleroma_relationship'])),
       isAdmin: const BoolType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}unifedi_is_admin']),
+          .mapFromDatabaseResponse(data['${effectivePrefix}pleroma_is_admin']),
       isModerator: const BoolType().mapFromDatabaseResponse(
-          data['${effectivePrefix}unifedi_is_moderator']),
+          data['${effectivePrefix}pleroma_is_moderator']),
       confirmationPending: const BoolType().mapFromDatabaseResponse(
-          data['${effectivePrefix}unifedi_confirmation_pending']),
+          data['${effectivePrefix}pleroma_confirmation_pending']),
       hideFavorites: const BoolType().mapFromDatabaseResponse(
-          data['${effectivePrefix}unifedi_hide_favorites']),
+          data['${effectivePrefix}pleroma_hide_favorites']),
       hideFollowers: const BoolType().mapFromDatabaseResponse(
-          data['${effectivePrefix}unifedi_hide_followers']),
+          data['${effectivePrefix}pleroma_hide_followers']),
       hideFollows: const BoolType().mapFromDatabaseResponse(
-          data['${effectivePrefix}unifedi_hide_follows']),
+          data['${effectivePrefix}pleroma_hide_follows']),
       hideFollowersCount: const BoolType().mapFromDatabaseResponse(
-          data['${effectivePrefix}unifedi_hide_followers_count']),
+          data['${effectivePrefix}pleroma_hide_followers_count']),
       hideFollowsCount: const BoolType().mapFromDatabaseResponse(
-          data['${effectivePrefix}unifedi_hide_follows_count']),
+          data['${effectivePrefix}pleroma_hide_follows_count']),
       deactivated: const BoolType().mapFromDatabaseResponse(
-          data['${effectivePrefix}unifedi_deactivated']),
+          data['${effectivePrefix}pleroma_deactivated']),
       allowFollowingMove: const BoolType().mapFromDatabaseResponse(
-          data['${effectivePrefix}unifedi_allow_following_move']),
+          data['${effectivePrefix}pleroma_allow_following_move']),
       skipThreadContainment: const BoolType().mapFromDatabaseResponse(
-          data['${effectivePrefix}unifedi_skip_thread_containment']),
+          data['${effectivePrefix}pleroma_skip_thread_containment']),
       acceptsChatMessages: const BoolType().mapFromDatabaseResponse(
-          data['${effectivePrefix}unifedi_accepts_chat_messages']),
+          data['${effectivePrefix}pleroma_accepts_chat_messages']),
       suspended: const BoolType()
           .mapFromDatabaseResponse(data['${effectivePrefix}suspended']),
       isConfirmed: const BoolType()
@@ -2086,54 +2086,54 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
       map['emojis'] = Variable<String?>(converter.mapToSql(emojis));
     }
     if (!nullToAbsent || backgroundImage != null) {
-      map['unifedi_background_image'] = Variable<String?>(backgroundImage);
+      map['pleroma_background_image'] = Variable<String?>(backgroundImage);
     }
     if (!nullToAbsent || tags != null) {
       final converter = $DbAccountsTable.$converter2;
-      map['unifedi_tags'] = Variable<String?>(converter.mapToSql(tags));
+      map['pleroma_tags'] = Variable<String?>(converter.mapToSql(tags));
     }
     if (!nullToAbsent || relationship != null) {
       final converter = $DbAccountsTable.$converter3;
-      map['unifedi_relationship'] =
+      map['pleroma_relationship'] =
           Variable<String?>(converter.mapToSql(relationship));
     }
     if (!nullToAbsent || isAdmin != null) {
-      map['unifedi_is_admin'] = Variable<bool?>(isAdmin);
+      map['pleroma_is_admin'] = Variable<bool?>(isAdmin);
     }
     if (!nullToAbsent || isModerator != null) {
-      map['unifedi_is_moderator'] = Variable<bool?>(isModerator);
+      map['pleroma_is_moderator'] = Variable<bool?>(isModerator);
     }
     if (!nullToAbsent || confirmationPending != null) {
-      map['unifedi_confirmation_pending'] =
+      map['pleroma_confirmation_pending'] =
           Variable<bool?>(confirmationPending);
     }
     if (!nullToAbsent || hideFavorites != null) {
-      map['unifedi_hide_favorites'] = Variable<bool?>(hideFavorites);
+      map['pleroma_hide_favorites'] = Variable<bool?>(hideFavorites);
     }
     if (!nullToAbsent || hideFollowers != null) {
-      map['unifedi_hide_followers'] = Variable<bool?>(hideFollowers);
+      map['pleroma_hide_followers'] = Variable<bool?>(hideFollowers);
     }
     if (!nullToAbsent || hideFollows != null) {
-      map['unifedi_hide_follows'] = Variable<bool?>(hideFollows);
+      map['pleroma_hide_follows'] = Variable<bool?>(hideFollows);
     }
     if (!nullToAbsent || hideFollowersCount != null) {
-      map['unifedi_hide_followers_count'] = Variable<bool?>(hideFollowersCount);
+      map['pleroma_hide_followers_count'] = Variable<bool?>(hideFollowersCount);
     }
     if (!nullToAbsent || hideFollowsCount != null) {
-      map['unifedi_hide_follows_count'] = Variable<bool?>(hideFollowsCount);
+      map['pleroma_hide_follows_count'] = Variable<bool?>(hideFollowsCount);
     }
     if (!nullToAbsent || deactivated != null) {
-      map['unifedi_deactivated'] = Variable<bool?>(deactivated);
+      map['pleroma_deactivated'] = Variable<bool?>(deactivated);
     }
     if (!nullToAbsent || allowFollowingMove != null) {
-      map['unifedi_allow_following_move'] = Variable<bool?>(allowFollowingMove);
+      map['pleroma_allow_following_move'] = Variable<bool?>(allowFollowingMove);
     }
     if (!nullToAbsent || skipThreadContainment != null) {
-      map['unifedi_skip_thread_containment'] =
+      map['pleroma_skip_thread_containment'] =
           Variable<bool?>(skipThreadContainment);
     }
     if (!nullToAbsent || acceptsChatMessages != null) {
-      map['unifedi_accepts_chat_messages'] =
+      map['pleroma_accepts_chat_messages'] =
           Variable<bool?>(acceptsChatMessages);
     }
     if (!nullToAbsent || suspended != null) {
@@ -2797,27 +2797,27 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
       if (lastStatusAt != null) 'last_status_at': lastStatusAt,
       if (fields != null) 'fields': fields,
       if (emojis != null) 'emojis': emojis,
-      if (backgroundImage != null) 'unifedi_background_image': backgroundImage,
-      if (tags != null) 'unifedi_tags': tags,
-      if (relationship != null) 'unifedi_relationship': relationship,
-      if (isAdmin != null) 'unifedi_is_admin': isAdmin,
-      if (isModerator != null) 'unifedi_is_moderator': isModerator,
+      if (backgroundImage != null) 'pleroma_background_image': backgroundImage,
+      if (tags != null) 'pleroma_tags': tags,
+      if (relationship != null) 'pleroma_relationship': relationship,
+      if (isAdmin != null) 'pleroma_is_admin': isAdmin,
+      if (isModerator != null) 'pleroma_is_moderator': isModerator,
       if (confirmationPending != null)
-        'unifedi_confirmation_pending': confirmationPending,
-      if (hideFavorites != null) 'unifedi_hide_favorites': hideFavorites,
-      if (hideFollowers != null) 'unifedi_hide_followers': hideFollowers,
-      if (hideFollows != null) 'unifedi_hide_follows': hideFollows,
+        'pleroma_confirmation_pending': confirmationPending,
+      if (hideFavorites != null) 'pleroma_hide_favorites': hideFavorites,
+      if (hideFollowers != null) 'pleroma_hide_followers': hideFollowers,
+      if (hideFollows != null) 'pleroma_hide_follows': hideFollows,
       if (hideFollowersCount != null)
-        'unifedi_hide_followers_count': hideFollowersCount,
+        'pleroma_hide_followers_count': hideFollowersCount,
       if (hideFollowsCount != null)
-        'unifedi_hide_follows_count': hideFollowsCount,
-      if (deactivated != null) 'unifedi_deactivated': deactivated,
+        'pleroma_hide_follows_count': hideFollowsCount,
+      if (deactivated != null) 'pleroma_deactivated': deactivated,
       if (allowFollowingMove != null)
-        'unifedi_allow_following_move': allowFollowingMove,
+        'pleroma_allow_following_move': allowFollowingMove,
       if (skipThreadContainment != null)
-        'unifedi_skip_thread_containment': skipThreadContainment,
+        'pleroma_skip_thread_containment': skipThreadContainment,
       if (acceptsChatMessages != null)
-        'unifedi_accepts_chat_messages': acceptsChatMessages,
+        'pleroma_accepts_chat_messages': acceptsChatMessages,
       if (suspended != null) 'suspended': suspended,
       if (isConfirmed != null) 'is_confirmed': isConfirmed,
       if (muteExpiresAt != null) 'mute_expires_at': muteExpiresAt,
@@ -2984,58 +2984,58 @@ class DbAccountsCompanion extends UpdateCompanion<DbAccount> {
       map['emojis'] = Variable<String?>(converter.mapToSql(emojis.value));
     }
     if (backgroundImage.present) {
-      map['unifedi_background_image'] =
+      map['pleroma_background_image'] =
           Variable<String?>(backgroundImage.value);
     }
     if (tags.present) {
       final converter = $DbAccountsTable.$converter2;
-      map['unifedi_tags'] = Variable<String?>(converter.mapToSql(tags.value));
+      map['pleroma_tags'] = Variable<String?>(converter.mapToSql(tags.value));
     }
     if (relationship.present) {
       final converter = $DbAccountsTable.$converter3;
-      map['unifedi_relationship'] =
+      map['pleroma_relationship'] =
           Variable<String?>(converter.mapToSql(relationship.value));
     }
     if (isAdmin.present) {
-      map['unifedi_is_admin'] = Variable<bool?>(isAdmin.value);
+      map['pleroma_is_admin'] = Variable<bool?>(isAdmin.value);
     }
     if (isModerator.present) {
-      map['unifedi_is_moderator'] = Variable<bool?>(isModerator.value);
+      map['pleroma_is_moderator'] = Variable<bool?>(isModerator.value);
     }
     if (confirmationPending.present) {
-      map['unifedi_confirmation_pending'] =
+      map['pleroma_confirmation_pending'] =
           Variable<bool?>(confirmationPending.value);
     }
     if (hideFavorites.present) {
-      map['unifedi_hide_favorites'] = Variable<bool?>(hideFavorites.value);
+      map['pleroma_hide_favorites'] = Variable<bool?>(hideFavorites.value);
     }
     if (hideFollowers.present) {
-      map['unifedi_hide_followers'] = Variable<bool?>(hideFollowers.value);
+      map['pleroma_hide_followers'] = Variable<bool?>(hideFollowers.value);
     }
     if (hideFollows.present) {
-      map['unifedi_hide_follows'] = Variable<bool?>(hideFollows.value);
+      map['pleroma_hide_follows'] = Variable<bool?>(hideFollows.value);
     }
     if (hideFollowersCount.present) {
-      map['unifedi_hide_followers_count'] =
+      map['pleroma_hide_followers_count'] =
           Variable<bool?>(hideFollowersCount.value);
     }
     if (hideFollowsCount.present) {
-      map['unifedi_hide_follows_count'] =
+      map['pleroma_hide_follows_count'] =
           Variable<bool?>(hideFollowsCount.value);
     }
     if (deactivated.present) {
-      map['unifedi_deactivated'] = Variable<bool?>(deactivated.value);
+      map['pleroma_deactivated'] = Variable<bool?>(deactivated.value);
     }
     if (allowFollowingMove.present) {
-      map['unifedi_allow_following_move'] =
+      map['pleroma_allow_following_move'] =
           Variable<bool?>(allowFollowingMove.value);
     }
     if (skipThreadContainment.present) {
-      map['unifedi_skip_thread_containment'] =
+      map['pleroma_skip_thread_containment'] =
           Variable<bool?>(skipThreadContainment.value);
     }
     if (acceptsChatMessages.present) {
-      map['unifedi_accepts_chat_messages'] =
+      map['pleroma_accepts_chat_messages'] =
           Variable<bool?>(acceptsChatMessages.value);
     }
     if (suspended.present) {
@@ -3219,108 +3219,108 @@ class $DbAccountsTable extends DbAccounts
   final VerificationMeta _backgroundImageMeta =
       const VerificationMeta('backgroundImage');
   late final GeneratedColumn<String?> backgroundImage =
-      GeneratedColumn<String?>('unifedi_background_image', aliasedName, true,
+      GeneratedColumn<String?>('pleroma_background_image', aliasedName, true,
           typeName: 'TEXT', requiredDuringInsert: false);
   final VerificationMeta _tagsMeta = const VerificationMeta('tags');
   late final GeneratedColumnWithTypeConverter<List<UnifediApiTag>, String?>
-      tags = GeneratedColumn<String?>('unifedi_tags', aliasedName, true,
+      tags = GeneratedColumn<String?>('pleroma_tags', aliasedName, true,
               typeName: 'TEXT', requiredDuringInsert: false)
           .withConverter<List<UnifediApiTag>>($DbAccountsTable.$converter2);
   final VerificationMeta _relationshipMeta =
       const VerificationMeta('relationship');
   late final GeneratedColumnWithTypeConverter<UnifediApiAccountRelationship,
       String?> relationship = GeneratedColumn<String?>(
-          'unifedi_relationship', aliasedName, true,
+          'pleroma_relationship', aliasedName, true,
           typeName: 'TEXT', requiredDuringInsert: false)
       .withConverter<UnifediApiAccountRelationship>(
           $DbAccountsTable.$converter3);
   final VerificationMeta _isAdminMeta = const VerificationMeta('isAdmin');
   late final GeneratedColumn<bool?> isAdmin = GeneratedColumn<bool?>(
-      'unifedi_is_admin', aliasedName, true,
+      'pleroma_is_admin', aliasedName, true,
       typeName: 'INTEGER',
       requiredDuringInsert: false,
-      defaultConstraints: 'CHECK (unifedi_is_admin IN (0, 1))');
+      defaultConstraints: 'CHECK (pleroma_is_admin IN (0, 1))');
   final VerificationMeta _isModeratorMeta =
       const VerificationMeta('isModerator');
   late final GeneratedColumn<bool?> isModerator = GeneratedColumn<bool?>(
-      'unifedi_is_moderator', aliasedName, true,
+      'pleroma_is_moderator', aliasedName, true,
       typeName: 'INTEGER',
       requiredDuringInsert: false,
-      defaultConstraints: 'CHECK (unifedi_is_moderator IN (0, 1))');
+      defaultConstraints: 'CHECK (pleroma_is_moderator IN (0, 1))');
   final VerificationMeta _confirmationPendingMeta =
       const VerificationMeta('confirmationPending');
   late final GeneratedColumn<bool?> confirmationPending =
-      GeneratedColumn<bool?>('unifedi_confirmation_pending', aliasedName, true,
+      GeneratedColumn<bool?>('pleroma_confirmation_pending', aliasedName, true,
           typeName: 'INTEGER',
           requiredDuringInsert: false,
-          defaultConstraints: 'CHECK (unifedi_confirmation_pending IN (0, 1))');
+          defaultConstraints: 'CHECK (pleroma_confirmation_pending IN (0, 1))');
   final VerificationMeta _hideFavoritesMeta =
       const VerificationMeta('hideFavorites');
   late final GeneratedColumn<bool?> hideFavorites = GeneratedColumn<bool?>(
-      'unifedi_hide_favorites', aliasedName, true,
+      'pleroma_hide_favorites', aliasedName, true,
       typeName: 'INTEGER',
       requiredDuringInsert: false,
-      defaultConstraints: 'CHECK (unifedi_hide_favorites IN (0, 1))');
+      defaultConstraints: 'CHECK (pleroma_hide_favorites IN (0, 1))');
   final VerificationMeta _hideFollowersMeta =
       const VerificationMeta('hideFollowers');
   late final GeneratedColumn<bool?> hideFollowers = GeneratedColumn<bool?>(
-      'unifedi_hide_followers', aliasedName, true,
+      'pleroma_hide_followers', aliasedName, true,
       typeName: 'INTEGER',
       requiredDuringInsert: false,
-      defaultConstraints: 'CHECK (unifedi_hide_followers IN (0, 1))');
+      defaultConstraints: 'CHECK (pleroma_hide_followers IN (0, 1))');
   final VerificationMeta _hideFollowsMeta =
       const VerificationMeta('hideFollows');
   late final GeneratedColumn<bool?> hideFollows = GeneratedColumn<bool?>(
-      'unifedi_hide_follows', aliasedName, true,
+      'pleroma_hide_follows', aliasedName, true,
       typeName: 'INTEGER',
       requiredDuringInsert: false,
-      defaultConstraints: 'CHECK (unifedi_hide_follows IN (0, 1))');
+      defaultConstraints: 'CHECK (pleroma_hide_follows IN (0, 1))');
   final VerificationMeta _hideFollowersCountMeta =
       const VerificationMeta('hideFollowersCount');
   late final GeneratedColumn<bool?> hideFollowersCount = GeneratedColumn<bool?>(
-      'unifedi_hide_followers_count', aliasedName, true,
+      'pleroma_hide_followers_count', aliasedName, true,
       typeName: 'INTEGER',
       requiredDuringInsert: false,
-      defaultConstraints: 'CHECK (unifedi_hide_followers_count IN (0, 1))');
+      defaultConstraints: 'CHECK (pleroma_hide_followers_count IN (0, 1))');
   final VerificationMeta _hideFollowsCountMeta =
       const VerificationMeta('hideFollowsCount');
   late final GeneratedColumn<bool?> hideFollowsCount = GeneratedColumn<bool?>(
-      'unifedi_hide_follows_count', aliasedName, true,
+      'pleroma_hide_follows_count', aliasedName, true,
       typeName: 'INTEGER',
       requiredDuringInsert: false,
-      defaultConstraints: 'CHECK (unifedi_hide_follows_count IN (0, 1))');
+      defaultConstraints: 'CHECK (pleroma_hide_follows_count IN (0, 1))');
   final VerificationMeta _deactivatedMeta =
       const VerificationMeta('deactivated');
   late final GeneratedColumn<bool?> deactivated = GeneratedColumn<bool?>(
-      'unifedi_deactivated', aliasedName, true,
+      'pleroma_deactivated', aliasedName, true,
       typeName: 'INTEGER',
       requiredDuringInsert: false,
-      defaultConstraints: 'CHECK (unifedi_deactivated IN (0, 1))');
+      defaultConstraints: 'CHECK (pleroma_deactivated IN (0, 1))');
   final VerificationMeta _allowFollowingMoveMeta =
       const VerificationMeta('allowFollowingMove');
   late final GeneratedColumn<bool?> allowFollowingMove = GeneratedColumn<bool?>(
-      'unifedi_allow_following_move', aliasedName, true,
+      'pleroma_allow_following_move', aliasedName, true,
       typeName: 'INTEGER',
       requiredDuringInsert: false,
-      defaultConstraints: 'CHECK (unifedi_allow_following_move IN (0, 1))');
+      defaultConstraints: 'CHECK (pleroma_allow_following_move IN (0, 1))');
   final VerificationMeta _skipThreadContainmentMeta =
       const VerificationMeta('skipThreadContainment');
   late final GeneratedColumn<bool?> skipThreadContainment =
       GeneratedColumn<bool?>(
-          'unifedi_skip_thread_containment', aliasedName, true,
+          'pleroma_skip_thread_containment', aliasedName, true,
           typeName: 'INTEGER',
           requiredDuringInsert: false,
           defaultConstraints:
-              'CHECK (unifedi_skip_thread_containment IN (0, 1))');
+              'CHECK (pleroma_skip_thread_containment IN (0, 1))');
   final VerificationMeta _acceptsChatMessagesMeta =
       const VerificationMeta('acceptsChatMessages');
   late final GeneratedColumn<bool?> acceptsChatMessages =
       GeneratedColumn<bool?>(
-          'unifedi_accepts_chat_messages', aliasedName, true,
+          'pleroma_accepts_chat_messages', aliasedName, true,
           typeName: 'INTEGER',
           requiredDuringInsert: false,
           defaultConstraints:
-              'CHECK (unifedi_accepts_chat_messages IN (0, 1))');
+              'CHECK (pleroma_accepts_chat_messages IN (0, 1))');
   final VerificationMeta _suspendedMeta = const VerificationMeta('suspended');
   late final GeneratedColumn<bool?> suspended = GeneratedColumn<bool?>(
       'suspended', aliasedName, true,
@@ -3512,86 +3512,86 @@ class $DbAccountsTable extends DbAccounts
     }
     context.handle(_fieldsMeta, const VerificationResult.success());
     context.handle(_emojisMeta, const VerificationResult.success());
-    if (data.containsKey('unifedi_background_image')) {
+    if (data.containsKey('pleroma_background_image')) {
       context.handle(
           _backgroundImageMeta,
           backgroundImage.isAcceptableOrUnknown(
-              data['unifedi_background_image']!, _backgroundImageMeta));
+              data['pleroma_background_image']!, _backgroundImageMeta));
     }
     context.handle(_tagsMeta, const VerificationResult.success());
     context.handle(_relationshipMeta, const VerificationResult.success());
-    if (data.containsKey('unifedi_is_admin')) {
+    if (data.containsKey('pleroma_is_admin')) {
       context.handle(
           _isAdminMeta,
           isAdmin.isAcceptableOrUnknown(
-              data['unifedi_is_admin']!, _isAdminMeta));
+              data['pleroma_is_admin']!, _isAdminMeta));
     }
-    if (data.containsKey('unifedi_is_moderator')) {
+    if (data.containsKey('pleroma_is_moderator')) {
       context.handle(
           _isModeratorMeta,
           isModerator.isAcceptableOrUnknown(
-              data['unifedi_is_moderator']!, _isModeratorMeta));
+              data['pleroma_is_moderator']!, _isModeratorMeta));
     }
-    if (data.containsKey('unifedi_confirmation_pending')) {
+    if (data.containsKey('pleroma_confirmation_pending')) {
       context.handle(
           _confirmationPendingMeta,
           confirmationPending.isAcceptableOrUnknown(
-              data['unifedi_confirmation_pending']!, _confirmationPendingMeta));
+              data['pleroma_confirmation_pending']!, _confirmationPendingMeta));
     }
-    if (data.containsKey('unifedi_hide_favorites')) {
+    if (data.containsKey('pleroma_hide_favorites')) {
       context.handle(
           _hideFavoritesMeta,
           hideFavorites.isAcceptableOrUnknown(
-              data['unifedi_hide_favorites']!, _hideFavoritesMeta));
+              data['pleroma_hide_favorites']!, _hideFavoritesMeta));
     }
-    if (data.containsKey('unifedi_hide_followers')) {
+    if (data.containsKey('pleroma_hide_followers')) {
       context.handle(
           _hideFollowersMeta,
           hideFollowers.isAcceptableOrUnknown(
-              data['unifedi_hide_followers']!, _hideFollowersMeta));
+              data['pleroma_hide_followers']!, _hideFollowersMeta));
     }
-    if (data.containsKey('unifedi_hide_follows')) {
+    if (data.containsKey('pleroma_hide_follows')) {
       context.handle(
           _hideFollowsMeta,
           hideFollows.isAcceptableOrUnknown(
-              data['unifedi_hide_follows']!, _hideFollowsMeta));
+              data['pleroma_hide_follows']!, _hideFollowsMeta));
     }
-    if (data.containsKey('unifedi_hide_followers_count')) {
+    if (data.containsKey('pleroma_hide_followers_count')) {
       context.handle(
           _hideFollowersCountMeta,
           hideFollowersCount.isAcceptableOrUnknown(
-              data['unifedi_hide_followers_count']!, _hideFollowersCountMeta));
+              data['pleroma_hide_followers_count']!, _hideFollowersCountMeta));
     }
-    if (data.containsKey('unifedi_hide_follows_count')) {
+    if (data.containsKey('pleroma_hide_follows_count')) {
       context.handle(
           _hideFollowsCountMeta,
           hideFollowsCount.isAcceptableOrUnknown(
-              data['unifedi_hide_follows_count']!, _hideFollowsCountMeta));
+              data['pleroma_hide_follows_count']!, _hideFollowsCountMeta));
     }
-    if (data.containsKey('unifedi_deactivated')) {
+    if (data.containsKey('pleroma_deactivated')) {
       context.handle(
           _deactivatedMeta,
           deactivated.isAcceptableOrUnknown(
-              data['unifedi_deactivated']!, _deactivatedMeta));
+              data['pleroma_deactivated']!, _deactivatedMeta));
     }
-    if (data.containsKey('unifedi_allow_following_move')) {
+    if (data.containsKey('pleroma_allow_following_move')) {
       context.handle(
           _allowFollowingMoveMeta,
           allowFollowingMove.isAcceptableOrUnknown(
-              data['unifedi_allow_following_move']!, _allowFollowingMoveMeta));
+              data['pleroma_allow_following_move']!, _allowFollowingMoveMeta));
     }
-    if (data.containsKey('unifedi_skip_thread_containment')) {
+    if (data.containsKey('pleroma_skip_thread_containment')) {
       context.handle(
           _skipThreadContainmentMeta,
           skipThreadContainment.isAcceptableOrUnknown(
-              data['unifedi_skip_thread_containment']!,
+              data['pleroma_skip_thread_containment']!,
               _skipThreadContainmentMeta));
     }
-    if (data.containsKey('unifedi_accepts_chat_messages')) {
+    if (data.containsKey('pleroma_accepts_chat_messages')) {
       context.handle(
           _acceptsChatMessagesMeta,
           acceptsChatMessages.isAcceptableOrUnknown(
-              data['unifedi_accepts_chat_messages']!,
+              data['pleroma_accepts_chat_messages']!,
               _acceptsChatMessagesMeta));
     }
     if (data.containsKey('suspended')) {
