@@ -406,7 +406,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_account_my_edit_field_background_dialog_action_select":
             MessageLookupByLibrary.simpleMessage("Select"),
         "app_account_my_edit_field_background_dialog_title":
-            MessageLookupByLibrary.simpleMessage("Unifedi background"),
+            MessageLookupByLibrary.simpleMessage("Background"),
         "app_account_my_edit_field_bot_description":
             MessageLookupByLibrary.simpleMessage(
                 "Mark if current account is bot"),

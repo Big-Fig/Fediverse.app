@@ -5816,10 +5816,10 @@ class S {
     );
   }
 
-  /// `Unifedi background`
+  /// `Background`
   String get app_account_my_edit_field_background_dialog_title {
     return Intl.message(
-      'Unifedi background',
+      'Background',
       name: 'app_account_my_edit_field_background_dialog_title',
       desc: '',
       args: [],
