@@ -60,63 +60,79 @@ scripts:
     description: |
       Build prod Flavor: Android AppBundle & iOS IPA
     select-package:
-      dir-exists: test
+      scope: "*_app"
 
   build:ios:release:dev:
     run: |
-      flutter pub global run melos exec -c 1 --ignore="*example*" -- \
+      flutter pub global run melos exec -c 1 -- \
       flutter build ios --simulator  --flavor dev
     description: |
       Build ios for simulator. Flavor: dev
+    select-package:
+      scope: "*_app"
 
   build:ios:release:prod:
     run: |
-      flutter pub global run melos exec -c 1 --ignore="*example*" -- \
+      flutter pub global run melos exec -c 1 -- \
       flutter build ios --simulator  --flavor prod
     description: |
       Build ios for simulator. Flavor: prod
+    select-package:
+      scope: "*_app"
 
   build:ios:simulator:dev:
     run: |
-      flutter pub global run melos exec -c 1 --ignore="*example*" -- \
+      flutter pub global run melos exec -c 1 -- \
       flutter build ios --simulator  --flavor dev
     description: |
       Build ios for simulator. Flavor: dev
+    select-package:
+      scope: "*_app"
 
   build:ios:simulator:prod:
     run: |
-      flutter pub global run melos exec -c 1 --ignore="*example*" -- \
+      flutter pub global run melos exec -c 1 -- \
       flutter build ios --simulator  --flavor prod
     description: |
       Build ios for simulator. Flavor: prod
+    select-package:
+      scope: "*_app"
 
   build:android:appbundle:dev:
     run: |
-      flutter pub global run melos exec -c 1 --ignore="*example*" -- \
+      flutter pub global run melos exec -c 1 -- \
       flutter build appbundle --flavor dev
     description: |
       Build Android appbundle. Flavor: dev
+    select-package:
+      scope: "*_app"
 
   build:android:appbundle:prod:
     run: |
-      flutter pub global run melos exec -c 1 --ignore="*example*" -- \
+      flutter pub global run melos exec -c 1 -- \
       flutter build appbundle --flavor prod
     description: |
       Build Android appbundle. Flavor: prod
+    select-package:
+      scope: "*_app"
 
   build:android:apk:dev:
     run: |
-      flutter pub global run melos exec -c 1 --ignore="*example*" -- \
+      flutter pub global run melos exec -c 1 -- \
       flutter build apk --split-per-abi --flavor dev
     description: |
       Build Android Apk --split-per-abi. Flavor: dev
+    select-package:
+      scope: "*_app"
 
   build:android:apk:prod:
     run: |
-      flutter pub global run melos exec -c 1 --ignore="*example*" -- \
+      flutter pub global run melos exec -c 1 -- \
       flutter build apk --split-per-abi --flavor prod
     description: |
       Build Android Apk --split-per-abi. Flavor: prod
+    select-package:
+      scope: "*_app"
 
   generate:
     run: |
@@ -495,3 +511,42 @@ scripts:
     description: Upload screenshots metadata to AppStore
     select-package:
       dir-exists: ios/fastlane
+
+
+  build:examples:ios:
+    run: flutter pub global run melos exec -c 4 --fail-fast -- \
+      flutter build ios --simulator
+  select-package:
+    scope: "*example*,sample_app"
+
+  build:examples:release:ios:
+    run: flutter pub global run melos exec -c 4 --fail-fast -- \
+      flutter build ios --no-codesign
+    select-package:
+      scope: "*example*,sample_app"
+
+  build:examples:android:
+    run: flutter pub global run melos exec -c 4 --fail-fast -- \
+      flutter build apk --debug --verbose
+    select-package:
+      scope: "*example*,sample_app"
+
+  build:examples:release:android:
+    run: flutter pub global run melos exec -c 4 --fail-fast -- \
+      flutter build apk --verbose
+    select-package:
+      scope: "*example*,sample_app"
+
+  pub:publish:dry-run:
+    run: |
+      flutter pub global run melos exec -c 5 --no-private --no-private -- \
+            pub publish --dry-run
+    description: |
+      Dry-run publish packages to pub dev
+
+  pub:publish:
+    run: |
+      flutter pub global run melos exec -c 5 --no-private --no-private -- \
+            pub publish
+    description: |
+      Publish packages to pub dev
