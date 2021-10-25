@@ -15,12 +15,11 @@ class EditMyAccountAllowFollowingMoveFieldWidget extends StatelessWidget {
       ProxyProvider<IEditMyAccountBloc, IBoolValueFormFieldBloc>(
         update: (context, value, previous) => value.allowFollowingMoveField,
         child: BoolValueFormFieldRowWidget(
-          label: S
-              .of(context)
-              .app_account_my_edit_field_unifedi_allowFollowingMove_label,
+          label:
+              S.of(context).app_account_my_edit_field_allowFollowingMove_label,
           description: S
               .of(context)
-              .app_account_my_edit_field_unifedi_allowFollowingMove_description,
+              .app_account_my_edit_field_allowFollowingMove_description,
         ),
       );
 }

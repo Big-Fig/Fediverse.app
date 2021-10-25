@@ -92,11 +92,11 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m33(status) => "${status}.";
 
-  static String m34(acct) => "Report from ${acct}";
+  static String m34(emoji) => "${emoji} for your post.";
 
   static String m35(status) => "${status}.";
 
-  static String m36(emoji) => "${emoji} for your post.";
+  static String m36(acct) => "Report from ${acct}";
 
   static String m37(status) => "Unknown: ${status}";
 
@@ -108,21 +108,21 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m40(count) =>
       "${Intl.plural(count, zero: 'No votes', one: '1 vote', other: '${count} votes')}";
 
-  static String m41(acct) => "${acct} favourited your status";
+  static String m41(acct) => "Chat with ${acct}";
 
-  static String m42(acct) => "${acct} want to follow you";
+  static String m42(acct, emoji) => "${acct} reacted ${emoji}";
 
-  static String m43(acct) => "${acct} followed you";
+  static String m43(acct) => "${acct} favourited your status";
 
-  static String m44(acct) => "${acct} mentioned you";
+  static String m44(acct) => "${acct} want to follow you";
 
-  static String m45(acct) => "${acct} moved";
+  static String m45(acct) => "${acct} followed you";
 
-  static String m46(acct) => "${acct} shared your status";
+  static String m46(acct) => "${acct} mentioned you";
 
-  static String m47(acct) => "Chat with ${acct}";
+  static String m47(acct) => "${acct} moved";
 
-  static String m48(acct, emoji) => "${acct} reacted ${emoji}";
+  static String m48(acct) => "${acct} shared your status";
 
   static String m49(acct) => "${acct} reported your status";
 
@@ -383,6 +383,16 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Domain blocks"),
         "app_account_my_edit_action_save":
             MessageLookupByLibrary.simpleMessage("Save"),
+        "app_account_my_edit_field_acceptsChatMessages_description":
+            MessageLookupByLibrary.simpleMessage(
+                "Disable to reject all messages"),
+        "app_account_my_edit_field_acceptsChatMessages_label":
+            MessageLookupByLibrary.simpleMessage("Accepts chat messages"),
+        "app_account_my_edit_field_allowFollowingMove_description":
+            MessageLookupByLibrary.simpleMessage(
+                "Automatically follow moved accounts"),
+        "app_account_my_edit_field_allowFollowingMove_label":
+            MessageLookupByLibrary.simpleMessage("Allow following move"),
         "app_account_my_edit_field_avatar_dialog_action_selectAndCrop":
             MessageLookupByLibrary.simpleMessage("Select & crop"),
         "app_account_my_edit_field_avatar_dialog_title":
@@ -391,6 +401,12 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Add"),
         "app_account_my_edit_field_backgroundImage_label":
             MessageLookupByLibrary.simpleMessage("Background image"),
+        "app_account_my_edit_field_background_dialog_action_crop":
+            MessageLookupByLibrary.simpleMessage("Crop"),
+        "app_account_my_edit_field_background_dialog_action_select":
+            MessageLookupByLibrary.simpleMessage("Select"),
+        "app_account_my_edit_field_background_dialog_title":
+            MessageLookupByLibrary.simpleMessage("Unifedi background"),
         "app_account_my_edit_field_bot_description":
             MessageLookupByLibrary.simpleMessage(
                 "Mark if current account is bot"),
@@ -418,68 +434,52 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Select"),
         "app_account_my_edit_field_header_dialog_title":
             MessageLookupByLibrary.simpleMessage("Confirm selection?"),
+        "app_account_my_edit_field_hideFavourites_description":
+            MessageLookupByLibrary.simpleMessage(
+                "Only private access to favourites list"),
+        "app_account_my_edit_field_hideFavourites_label":
+            MessageLookupByLibrary.simpleMessage("Hide favourites"),
+        "app_account_my_edit_field_hideFollowersCount_description":
+            MessageLookupByLibrary.simpleMessage(
+                "Display \'0\' as followers count"),
+        "app_account_my_edit_field_hideFollowersCount_label":
+            MessageLookupByLibrary.simpleMessage("Hide followers count"),
+        "app_account_my_edit_field_hideFollowers_description":
+            MessageLookupByLibrary.simpleMessage(
+                "Only private access to followers list"),
+        "app_account_my_edit_field_hideFollowers_label":
+            MessageLookupByLibrary.simpleMessage("Hide followers"),
+        "app_account_my_edit_field_hideFollowsCount_description":
+            MessageLookupByLibrary.simpleMessage(
+                "Display \'0\' as follows count"),
+        "app_account_my_edit_field_hideFollowsCount_label":
+            MessageLookupByLibrary.simpleMessage("Hide follows count"),
+        "app_account_my_edit_field_hideFollows_description":
+            MessageLookupByLibrary.simpleMessage(
+                "Only private access to follows list"),
+        "app_account_my_edit_field_hideFollows_label":
+            MessageLookupByLibrary.simpleMessage("Hide follows"),
         "app_account_my_edit_field_locked_description":
             MessageLookupByLibrary.simpleMessage(
                 "You should manually approve follow requests"),
         "app_account_my_edit_field_locked_label":
             MessageLookupByLibrary.simpleMessage("Locked to followers only"),
+        "app_account_my_edit_field_noRichText_description":
+            MessageLookupByLibrary.simpleMessage("Strip html tags"),
+        "app_account_my_edit_field_noRichText_label":
+            MessageLookupByLibrary.simpleMessage("Ignore rich text"),
         "app_account_my_edit_field_note_hint":
             MessageLookupByLibrary.simpleMessage(
                 "Your bio and links to your pages"),
         "app_account_my_edit_field_note_label":
             MessageLookupByLibrary.simpleMessage("Note"),
-        "app_account_my_edit_field_unifedi_acceptsChatMessages_description":
-            MessageLookupByLibrary.simpleMessage(
-                "Disable to reject all messages"),
-        "app_account_my_edit_field_unifedi_acceptsChatMessages_label":
-            MessageLookupByLibrary.simpleMessage("Accepts chat messages"),
-        "app_account_my_edit_field_unifedi_allowFollowingMove_description":
-            MessageLookupByLibrary.simpleMessage(
-                "Automatically follow moved accounts"),
-        "app_account_my_edit_field_unifedi_allowFollowingMove_label":
-            MessageLookupByLibrary.simpleMessage("Allow following move"),
-        "app_account_my_edit_field_unifedi_background_dialog_action_crop":
-            MessageLookupByLibrary.simpleMessage("Crop"),
-        "app_account_my_edit_field_unifedi_background_dialog_action_select":
-            MessageLookupByLibrary.simpleMessage("Select"),
-        "app_account_my_edit_field_unifedi_background_dialog_title":
-            MessageLookupByLibrary.simpleMessage("Unifedi background"),
-        "app_account_my_edit_field_unifedi_hideFavourites_description":
-            MessageLookupByLibrary.simpleMessage(
-                "Only private access to favourites list"),
-        "app_account_my_edit_field_unifedi_hideFavourites_label":
-            MessageLookupByLibrary.simpleMessage("Hide favourites"),
-        "app_account_my_edit_field_unifedi_hideFollowersCount_description":
-            MessageLookupByLibrary.simpleMessage(
-                "Display \'0\' as followers count"),
-        "app_account_my_edit_field_unifedi_hideFollowersCount_label":
-            MessageLookupByLibrary.simpleMessage("Hide followers count"),
-        "app_account_my_edit_field_unifedi_hideFollowers_description":
-            MessageLookupByLibrary.simpleMessage(
-                "Only private access to followers list"),
-        "app_account_my_edit_field_unifedi_hideFollowers_label":
-            MessageLookupByLibrary.simpleMessage("Hide followers"),
-        "app_account_my_edit_field_unifedi_hideFollowsCount_description":
-            MessageLookupByLibrary.simpleMessage(
-                "Display \'0\' as follows count"),
-        "app_account_my_edit_field_unifedi_hideFollowsCount_label":
-            MessageLookupByLibrary.simpleMessage("Hide follows count"),
-        "app_account_my_edit_field_unifedi_hideFollows_description":
-            MessageLookupByLibrary.simpleMessage(
-                "Only private access to follows list"),
-        "app_account_my_edit_field_unifedi_hideFollows_label":
-            MessageLookupByLibrary.simpleMessage("Hide follows"),
-        "app_account_my_edit_field_unifedi_noRichText_description":
-            MessageLookupByLibrary.simpleMessage("Strip html tags"),
-        "app_account_my_edit_field_unifedi_noRichText_label":
-            MessageLookupByLibrary.simpleMessage("Ignore rich text"),
-        "app_account_my_edit_field_unifedi_showRole_description":
+        "app_account_my_edit_field_showRole_description":
             MessageLookupByLibrary.simpleMessage("e.g. Admin, Moderator"),
-        "app_account_my_edit_field_unifedi_showRole_label":
+        "app_account_my_edit_field_showRole_label":
             MessageLookupByLibrary.simpleMessage("Show role"),
-        "app_account_my_edit_field_unifedi_skipThreadContainment_description":
+        "app_account_my_edit_field_skipThreadContainment_description":
             MessageLookupByLibrary.simpleMessage("Ignore broken threads"),
-        "app_account_my_edit_field_unifedi_skipThreadContainment_label":
+        "app_account_my_edit_field_skipThreadContainment_label":
             MessageLookupByLibrary.simpleMessage("Skip thread containment"),
         "app_account_my_edit_title":
             MessageLookupByLibrary.simpleMessage("Edit account"),
@@ -646,7 +646,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Fail to connect to instance"),
         "app_auth_instance_join_field_host_helper":
             MessageLookupByLibrary.simpleMessage(
-                "Unifedi or Mastodon Instance"),
+                "Pleroma or Mastodon Instance"),
         "app_auth_instance_join_invitesOnly_dialog_content":
             MessageLookupByLibrary.simpleMessage(
                 "Try any other instance, or register by invite link in your browser"),
@@ -988,7 +988,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_home_tab_chat_unifedi_notSupported_mastodon":
             MessageLookupByLibrary.simpleMessage(
                 "Chats not supported on Mastodon instances"),
-        "app_home_tab_chat_unifedi_notSupported_unifedi":
+        "app_home_tab_chat_unifedi_notSupported_pleroma":
             MessageLookupByLibrary.simpleMessage(
                 "This instance don\'t support chats"),
         "app_home_tab_chat_unifedi_title":
@@ -1053,6 +1053,26 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Max status length"),
         "app_instance_details_field_messagesLimits_title":
             MessageLookupByLibrary.simpleMessage("Messages limits"),
+        "app_instance_details_field_metadata_features_label":
+            MessageLookupByLibrary.simpleMessage("Features"),
+        "app_instance_details_field_metadata_fields_maxFields_label":
+            MessageLookupByLibrary.simpleMessage("Max fields count"),
+        "app_instance_details_field_metadata_fields_maxRemoteFields_label":
+            MessageLookupByLibrary.simpleMessage("Max remote fields count"),
+        "app_instance_details_field_metadata_fields_nameLength_label":
+            MessageLookupByLibrary.simpleMessage("Max name length"),
+        "app_instance_details_field_metadata_fields_postFormats_label":
+            MessageLookupByLibrary.simpleMessage("Post formats"),
+        "app_instance_details_field_metadata_fields_title":
+            MessageLookupByLibrary.simpleMessage("Fields limit"),
+        "app_instance_details_field_metadata_fields_valueLength_label":
+            MessageLookupByLibrary.simpleMessage("Max value length"),
+        "app_instance_details_field_metadata_fields_versionType_value_mastodon":
+            MessageLookupByLibrary.simpleMessage("Mastodon"),
+        "app_instance_details_field_metadata_fields_versionType_value_unifedi":
+            MessageLookupByLibrary.simpleMessage("Unifedi"),
+        "app_instance_details_field_metadata_fields_versionType_value_unknown":
+            MessageLookupByLibrary.simpleMessage("Unknown"),
         "app_instance_details_field_metadata_title":
             MessageLookupByLibrary.simpleMessage("Metadata"),
         "app_instance_details_field_pollLimit_maxExpiration_label":
@@ -1085,26 +1105,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Trends"),
         "app_instance_details_field_trends_value":
             MessageLookupByLibrary.simpleMessage("Hashtags"),
-        "app_instance_details_field_unifedi_metadata_features_label":
-            MessageLookupByLibrary.simpleMessage("Features"),
-        "app_instance_details_field_unifedi_metadata_fields_maxFields_label":
-            MessageLookupByLibrary.simpleMessage("Max fields count"),
-        "app_instance_details_field_unifedi_metadata_fields_maxRemoteFields_label":
-            MessageLookupByLibrary.simpleMessage("Max remote fields count"),
-        "app_instance_details_field_unifedi_metadata_fields_nameLength_label":
-            MessageLookupByLibrary.simpleMessage("Max name length"),
-        "app_instance_details_field_unifedi_metadata_fields_postFormats_label":
-            MessageLookupByLibrary.simpleMessage("Post formats"),
-        "app_instance_details_field_unifedi_metadata_fields_title":
-            MessageLookupByLibrary.simpleMessage("Fields limit"),
-        "app_instance_details_field_unifedi_metadata_fields_valueLength_label":
-            MessageLookupByLibrary.simpleMessage("Max value length"),
-        "app_instance_details_field_unifedi_metadata_fields_verstionType_value_mastodon":
-            MessageLookupByLibrary.simpleMessage("Mastodon"),
-        "app_instance_details_field_unifedi_metadata_fields_verstionType_value_unifedi":
-            MessageLookupByLibrary.simpleMessage("Unifedi"),
-        "app_instance_details_field_unifedi_metadata_fields_verstionType_value_unknown":
-            MessageLookupByLibrary.simpleMessage("Unknown"),
         "app_instance_details_field_uploadAvatar_label":
             MessageLookupByLibrary.simpleMessage("Upload avatar limit"),
         "app_instance_details_field_uploadBackground_label":
@@ -1223,13 +1223,17 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Notifications"),
         "app_notification_dismissed":
             MessageLookupByLibrary.simpleMessage("Dismissed"),
+        "app_notification_header_chatMention_postfix": m33,
+        "app_notification_header_chatMention_prefix":
+            MessageLookupByLibrary.simpleMessage("Chat: "),
+        "app_notification_header_emojiReaction": m34,
         "app_notification_header_favourite":
             MessageLookupByLibrary.simpleMessage("Liked your post."),
         "app_notification_header_follow":
             MessageLookupByLibrary.simpleMessage("Followed you."),
         "app_notification_header_followRequest":
             MessageLookupByLibrary.simpleMessage("Follow request."),
-        "app_notification_header_mention_postfix": m33,
+        "app_notification_header_mention_postfix": m35,
         "app_notification_header_mention_prefix":
             MessageLookupByLibrary.simpleMessage("Mentioned you: "),
         "app_notification_header_move":
@@ -1238,11 +1242,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Voted poll ended."),
         "app_notification_header_reblog":
             MessageLookupByLibrary.simpleMessage("Shared your post."),
-        "app_notification_header_report": m34,
-        "app_notification_header_unifediChatMention_postfix": m35,
-        "app_notification_header_unifediChatMention_prefix":
-            MessageLookupByLibrary.simpleMessage("Chat: "),
-        "app_notification_header_unifediEmojiReaction": m36,
+        "app_notification_header_report": m36,
         "app_notification_header_unknown": m37,
         "app_notification_list_newItems_action_tapToLoadNew": m38,
         "app_pagination_settings_pageSize_label":
@@ -1258,6 +1258,15 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("View results"),
         "app_poll_metadata_totalVotes": m40,
         "app_poll_vote": MessageLookupByLibrary.simpleMessage("Vote"),
+        "app_push_channel_chatMention_description":
+            MessageLookupByLibrary.simpleMessage("Unifedi-only chat messages"),
+        "app_push_channel_chatMention_name":
+            MessageLookupByLibrary.simpleMessage("Chat"),
+        "app_push_channel_emojiReaction_description":
+            MessageLookupByLibrary.simpleMessage(
+                "Unifedi-only emoji reactions for statuses"),
+        "app_push_channel_emojiReaction_name":
+            MessageLookupByLibrary.simpleMessage("Emoji reactions"),
         "app_push_channel_favourite_description":
             MessageLookupByLibrary.simpleMessage(
                 "When people favourite your statuses"),
@@ -1290,15 +1299,6 @@ class MessageLookup extends MessageLookupByLibrary {
                 "When people share your statuses"),
         "app_push_channel_reblog_name":
             MessageLookupByLibrary.simpleMessage("Share(reblog)"),
-        "app_push_channel_unifediChatMention_description":
-            MessageLookupByLibrary.simpleMessage("Unifedi-only chat messages"),
-        "app_push_channel_unifediChatMention_name":
-            MessageLookupByLibrary.simpleMessage("Chat"),
-        "app_push_channel_unifediEmojiReaction_description":
-            MessageLookupByLibrary.simpleMessage(
-                "Unifedi-only emoji reactions for statuses"),
-        "app_push_channel_unifediEmojiReaction_name":
-            MessageLookupByLibrary.simpleMessage("Emoji reactions"),
         "app_push_channel_unifediReport_description":
             MessageLookupByLibrary.simpleMessage(
                 "When people report your statues"),
@@ -1337,36 +1337,36 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Reject"),
         "app_push_richNotification_action_reply":
             MessageLookupByLibrary.simpleMessage("Reply"),
+        "app_push_richNotification_chatMention_summary":
+            MessageLookupByLibrary.simpleMessage(
+                "You have new message in chat"),
+        "app_push_richNotification_chatMention_title": m41,
+        "app_push_richNotification_emojiReaction_summary":
+            MessageLookupByLibrary.simpleMessage("Someone reacted"),
+        "app_push_richNotification_emojiReaction_title": m42,
         "app_push_richNotification_favourite_summary":
             MessageLookupByLibrary.simpleMessage(
                 "Someone favourited your status"),
-        "app_push_richNotification_favourite_title": m41,
+        "app_push_richNotification_favourite_title": m43,
         "app_push_richNotification_followRequest_summary":
             MessageLookupByLibrary.simpleMessage("Someone want to follow you"),
-        "app_push_richNotification_followRequest_title": m42,
+        "app_push_richNotification_followRequest_title": m44,
         "app_push_richNotification_follow_summary":
             MessageLookupByLibrary.simpleMessage("Someone followed you"),
-        "app_push_richNotification_follow_title": m43,
+        "app_push_richNotification_follow_title": m45,
         "app_push_richNotification_mention_summary":
             MessageLookupByLibrary.simpleMessage("Someone mentioned you"),
-        "app_push_richNotification_mention_title": m44,
+        "app_push_richNotification_mention_title": m46,
         "app_push_richNotification_move_summary":
             MessageLookupByLibrary.simpleMessage("Someone moved"),
-        "app_push_richNotification_move_title": m45,
+        "app_push_richNotification_move_title": m47,
         "app_push_richNotification_poll_summary":
             MessageLookupByLibrary.simpleMessage("Poll changed"),
         "app_push_richNotification_poll_title":
             MessageLookupByLibrary.simpleMessage("Poll changed"),
         "app_push_richNotification_reblog_summary":
             MessageLookupByLibrary.simpleMessage("Someone shared your status"),
-        "app_push_richNotification_reblog_title": m46,
-        "app_push_richNotification_unifediChatMention_summary":
-            MessageLookupByLibrary.simpleMessage(
-                "You have new message in chat"),
-        "app_push_richNotification_unifediChatMention_title": m47,
-        "app_push_richNotification_unifediEmojiReaction_summary":
-            MessageLookupByLibrary.simpleMessage("Someone reacted"),
-        "app_push_richNotification_unifediEmojiReaction_title": m48,
+        "app_push_richNotification_reblog_title": m48,
         "app_push_richNotification_unifediReport_summary":
             MessageLookupByLibrary.simpleMessage(
                 "Someone reported your status"),
@@ -1379,6 +1379,10 @@ class MessageLookup extends MessageLookupByLibrary {
             "All messages will be forwarded through Fedi Relay Server"),
         "app_push_settings_desc_filters": MessageLookupByLibrary.simpleMessage(
             "You can also specify additional filters"),
+        "app_push_settings_field_chat_label":
+            MessageLookupByLibrary.simpleMessage("Chats"),
+        "app_push_settings_field_emojiReaction_label":
+            MessageLookupByLibrary.simpleMessage("Emoji reactions"),
         "app_push_settings_field_favourites_label":
             MessageLookupByLibrary.simpleMessage("Favourites"),
         "app_push_settings_field_follows_label":
@@ -1389,10 +1393,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Polls"),
         "app_push_settings_field_reblogs_label":
             MessageLookupByLibrary.simpleMessage("Reblogs"),
-        "app_push_settings_field_unifedi_chat_label":
-            MessageLookupByLibrary.simpleMessage("Chats"),
-        "app_push_settings_field_unifedi_emojiReaction_label":
-            MessageLookupByLibrary.simpleMessage("Emoji reactions"),
         "app_push_settings_title":
             MessageLookupByLibrary.simpleMessage("Push notifications"),
         "app_push_settings_update_fail_dialog_title":
@@ -1676,7 +1676,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Exclude reblogs"),
         "app_timeline_settings_field_excludeReplies_label":
             MessageLookupByLibrary.simpleMessage("Exclude replies"),
-        "app_timeline_settings_field_excludeVisibilites_label":
+        "app_timeline_settings_field_excludeVisibilities_label":
             MessageLookupByLibrary.simpleMessage("Exclude visibilities"),
         "app_timeline_settings_field_onlyLocal_label":
             MessageLookupByLibrary.simpleMessage("Only local"),
@@ -1713,7 +1713,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_timeline_settings_title":
             MessageLookupByLibrary.simpleMessage("Settings:"),
         "app_timeline_settings_withRemoteHashtag_field_hint":
-            MessageLookupByLibrary.simpleMessage("unifedi"),
+            MessageLookupByLibrary.simpleMessage("pleroma"),
         "app_timeline_settings_withRemoteHashtag_field_label":
             MessageLookupByLibrary.simpleMessage("With hashtag"),
         "app_timeline_storage_action_add":

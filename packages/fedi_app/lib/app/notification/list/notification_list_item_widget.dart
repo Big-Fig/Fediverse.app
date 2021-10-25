@@ -370,15 +370,15 @@ class _NotificationListItemContentWidget extends StatelessWidget {
         followRequest: (_) =>
             S.of(context).app_notification_header_followRequest,
         emojiReaction: (_) =>
-            S.of(context).app_notification_header_unifediEmojiReaction(
+            S.of(context).app_notification_header_emojiReaction(
                   notificationBloc.notification.emoji!,
                 ),
         chatMention: (_) {
           var rawText =
-              '<b>${S.of(context).app_notification_header_unifediChatMention_prefix}</b>';
+              '<b>${S.of(context).app_notification_header_chatMention_prefix}</b>';
 
           return rawText +
-              S.of(context).app_notification_header_unifediChatMention_postfix(
+              S.of(context).app_notification_header_chatMention_postfix(
                     _extractChatMessageRawContent(notificationBloc)!,
                   );
         },

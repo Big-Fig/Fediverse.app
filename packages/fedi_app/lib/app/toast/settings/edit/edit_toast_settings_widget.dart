@@ -50,8 +50,7 @@ class _EditToastSettingsEmojiReactionFieldWidget extends StatelessWidget {
     return ProxyProvider<IEditToastSettingsBloc, IBoolValueFormFieldBloc>(
       update: (context, value, previous) => value.emojiReactionFieldBloc,
       child: BoolValueFormFieldRowWidget(
-        label:
-            S.of(context).app_push_settings_field_unifedi_emojiReaction_label,
+        label: S.of(context).app_push_settings_field_emojiReaction_label,
         descriptionOnDisabled: editToastSettingsBloc.isEnabled
             ? S.of(context).app_settings_warning_notSupportedOnThisInstance_desc
             : null,
@@ -72,7 +71,7 @@ class _EditToastSettingsUnifediMentionFieldWidget extends StatelessWidget {
     return ProxyProvider<IEditToastSettingsBloc, IBoolValueFormFieldBloc>(
       update: (context, value, previous) => value.chatMentionFieldBloc,
       child: BoolValueFormFieldRowWidget(
-        label: S.of(context).app_push_settings_field_unifedi_chat_label,
+        label: S.of(context).app_push_settings_field_chat_label,
         descriptionOnDisabled: editToastSettingsBloc.isEnabled
             ? S.of(context).app_settings_warning_notSupportedOnThisInstance_desc
             : null,

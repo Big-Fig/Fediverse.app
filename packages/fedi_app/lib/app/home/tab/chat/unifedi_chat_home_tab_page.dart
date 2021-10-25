@@ -165,7 +165,7 @@ class UnifediChatHomeTabPageUnifediNotSupportedBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Center(
         child: FediEmptyWidget(
-          title: S.of(context).app_home_tab_chat_unifedi_notSupported_unifedi,
+          title: S.of(context).app_home_tab_chat_unifedi_notSupported_pleroma,
         ),
       );
 }
