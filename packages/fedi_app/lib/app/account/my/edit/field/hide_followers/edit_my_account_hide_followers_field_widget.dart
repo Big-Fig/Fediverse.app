@@ -15,12 +15,9 @@ class EditMyAccountHideFollowersFieldWidget extends StatelessWidget {
       ProxyProvider<IEditMyAccountBloc, IBoolValueFormFieldBloc>(
         update: (context, value, previous) => value.hideFollowersField,
         child: BoolValueFormFieldRowWidget(
-          label: S
-              .of(context)
-              .app_account_my_edit_field_unifedi_hideFollowers_label,
-          description: S
-              .of(context)
-              .app_account_my_edit_field_unifedi_hideFollowers_description,
+          label: S.of(context).app_account_my_edit_field_hideFollowers_label,
+          description:
+              S.of(context).app_account_my_edit_field_hideFollowers_description,
         ),
       );
 }

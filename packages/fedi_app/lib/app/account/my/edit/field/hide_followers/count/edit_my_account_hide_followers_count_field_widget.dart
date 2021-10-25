@@ -15,12 +15,11 @@ class EditMyAccountHideFollowersCountFieldWidget extends StatelessWidget {
       ProxyProvider<IEditMyAccountBloc, IBoolValueFormFieldBloc>(
         update: (context, value, previous) => value.hideFollowersCountField,
         child: BoolValueFormFieldRowWidget(
-          label: S
-              .of(context)
-              .app_account_my_edit_field_unifedi_hideFollowersCount_label,
+          label:
+              S.of(context).app_account_my_edit_field_hideFollowersCount_label,
           description: S
               .of(context)
-              .app_account_my_edit_field_unifedi_hideFollowersCount_description,
+              .app_account_my_edit_field_hideFollowersCount_description,
         ),
       );
 }

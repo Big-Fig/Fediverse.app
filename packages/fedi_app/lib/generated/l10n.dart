@@ -1468,10 +1468,10 @@ class S {
     );
   }
 
-  /// `Unifedi or Mastodon Instance`
+  /// `Pleroma or Mastodon Instance`
   String get app_auth_instance_join_field_host_helper {
     return Intl.message(
-      'Unifedi or Mastodon Instance',
+      'Pleroma or Mastodon Instance',
       name: 'app_auth_instance_join_field_host_helper',
       desc: '',
       args: [],
@@ -1935,10 +1935,10 @@ class S {
   }
 
   /// `This instance don't support chats`
-  String get app_home_tab_chat_unifedi_notSupported_unifedi {
+  String get app_home_tab_chat_unifedi_notSupported_pleroma {
     return Intl.message(
       'This instance don\'t support chats',
-      name: 'app_home_tab_chat_unifedi_notSupported_unifedi',
+      name: 'app_home_tab_chat_unifedi_notSupported_pleroma',
       desc: '',
       args: [],
     );
@@ -2127,10 +2127,10 @@ class S {
   }
 
   /// `Chats`
-  String get app_push_settings_field_unifedi_chat_label {
+  String get app_push_settings_field_chat_label {
     return Intl.message(
       'Chats',
-      name: 'app_push_settings_field_unifedi_chat_label',
+      name: 'app_push_settings_field_chat_label',
       desc: '',
       args: [],
     );
@@ -2237,30 +2237,30 @@ class S {
   }
 
   /// `{emoji} for your post.`
-  String app_notification_header_unifediEmojiReaction(Object emoji) {
+  String app_notification_header_emojiReaction(Object emoji) {
     return Intl.message(
       '$emoji for your post.',
-      name: 'app_notification_header_unifediEmojiReaction',
+      name: 'app_notification_header_emojiReaction',
       desc: '',
       args: [emoji],
     );
   }
 
   /// `Chat: `
-  String get app_notification_header_unifediChatMention_prefix {
+  String get app_notification_header_chatMention_prefix {
     return Intl.message(
       'Chat: ',
-      name: 'app_notification_header_unifediChatMention_prefix',
+      name: 'app_notification_header_chatMention_prefix',
       desc: '',
       args: [],
     );
   }
 
   /// `{status}.`
-  String app_notification_header_unifediChatMention_postfix(Object status) {
+  String app_notification_header_chatMention_postfix(Object status) {
     return Intl.message(
       '$status.',
-      name: 'app_notification_header_unifediChatMention_postfix',
+      name: 'app_notification_header_chatMention_postfix',
       desc: '',
       args: [status],
     );
@@ -2606,10 +2606,10 @@ class S {
     );
   }
 
-  /// `unifedi`
+  /// `pleroma`
   String get app_timeline_settings_withRemoteHashtag_field_hint {
     return Intl.message(
-      'unifedi',
+      'pleroma',
       name: 'app_timeline_settings_withRemoteHashtag_field_hint',
       desc: '',
       args: [],
@@ -4316,10 +4316,10 @@ class S {
   }
 
   /// `Emoji reactions`
-  String get app_push_settings_field_unifedi_emojiReaction_label {
+  String get app_push_settings_field_emojiReaction_label {
     return Intl.message(
       'Emoji reactions',
-      name: 'app_push_settings_field_unifedi_emojiReaction_label',
+      name: 'app_push_settings_field_emojiReaction_label',
       desc: '',
       args: [],
     );
@@ -5797,30 +5797,30 @@ class S {
   }
 
   /// `Select`
-  String get app_account_my_edit_field_unifedi_background_dialog_action_select {
+  String get app_account_my_edit_field_background_dialog_action_select {
     return Intl.message(
       'Select',
-      name: 'app_account_my_edit_field_unifedi_background_dialog_action_select',
+      name: 'app_account_my_edit_field_background_dialog_action_select',
       desc: '',
       args: [],
     );
   }
 
   /// `Crop`
-  String get app_account_my_edit_field_unifedi_background_dialog_action_crop {
+  String get app_account_my_edit_field_background_dialog_action_crop {
     return Intl.message(
       'Crop',
-      name: 'app_account_my_edit_field_unifedi_background_dialog_action_crop',
+      name: 'app_account_my_edit_field_background_dialog_action_crop',
       desc: '',
       args: [],
     );
   }
 
   /// `Unifedi background`
-  String get app_account_my_edit_field_unifedi_background_dialog_title {
+  String get app_account_my_edit_field_background_dialog_title {
     return Intl.message(
       'Unifedi background',
-      name: 'app_account_my_edit_field_unifedi_background_dialog_title',
+      name: 'app_account_my_edit_field_background_dialog_title',
       desc: '',
       args: [],
     );
@@ -5897,202 +5897,200 @@ class S {
   }
 
   /// `Accepts chat messages`
-  String get app_account_my_edit_field_unifedi_acceptsChatMessages_label {
+  String get app_account_my_edit_field_acceptsChatMessages_label {
     return Intl.message(
       'Accepts chat messages',
-      name: 'app_account_my_edit_field_unifedi_acceptsChatMessages_label',
+      name: 'app_account_my_edit_field_acceptsChatMessages_label',
       desc: '',
       args: [],
     );
   }
 
   /// `Disable to reject all messages`
-  String get app_account_my_edit_field_unifedi_acceptsChatMessages_description {
+  String get app_account_my_edit_field_acceptsChatMessages_description {
     return Intl.message(
       'Disable to reject all messages',
-      name: 'app_account_my_edit_field_unifedi_acceptsChatMessages_description',
+      name: 'app_account_my_edit_field_acceptsChatMessages_description',
       desc: '',
       args: [],
     );
   }
 
   /// `Allow following move`
-  String get app_account_my_edit_field_unifedi_allowFollowingMove_label {
+  String get app_account_my_edit_field_allowFollowingMove_label {
     return Intl.message(
       'Allow following move',
-      name: 'app_account_my_edit_field_unifedi_allowFollowingMove_label',
+      name: 'app_account_my_edit_field_allowFollowingMove_label',
       desc: '',
       args: [],
     );
   }
 
   /// `Automatically follow moved accounts`
-  String get app_account_my_edit_field_unifedi_allowFollowingMove_description {
+  String get app_account_my_edit_field_allowFollowingMove_description {
     return Intl.message(
       'Automatically follow moved accounts',
-      name: 'app_account_my_edit_field_unifedi_allowFollowingMove_description',
+      name: 'app_account_my_edit_field_allowFollowingMove_description',
       desc: '',
       args: [],
     );
   }
 
   /// `Hide favourites`
-  String get app_account_my_edit_field_unifedi_hideFavourites_label {
+  String get app_account_my_edit_field_hideFavourites_label {
     return Intl.message(
       'Hide favourites',
-      name: 'app_account_my_edit_field_unifedi_hideFavourites_label',
+      name: 'app_account_my_edit_field_hideFavourites_label',
       desc: '',
       args: [],
     );
   }
 
   /// `Only private access to favourites list`
-  String get app_account_my_edit_field_unifedi_hideFavourites_description {
+  String get app_account_my_edit_field_hideFavourites_description {
     return Intl.message(
       'Only private access to favourites list',
-      name: 'app_account_my_edit_field_unifedi_hideFavourites_description',
+      name: 'app_account_my_edit_field_hideFavourites_description',
       desc: '',
       args: [],
     );
   }
 
   /// `Hide followers`
-  String get app_account_my_edit_field_unifedi_hideFollowers_label {
+  String get app_account_my_edit_field_hideFollowers_label {
     return Intl.message(
       'Hide followers',
-      name: 'app_account_my_edit_field_unifedi_hideFollowers_label',
+      name: 'app_account_my_edit_field_hideFollowers_label',
       desc: '',
       args: [],
     );
   }
 
   /// `Only private access to followers list`
-  String get app_account_my_edit_field_unifedi_hideFollowers_description {
+  String get app_account_my_edit_field_hideFollowers_description {
     return Intl.message(
       'Only private access to followers list',
-      name: 'app_account_my_edit_field_unifedi_hideFollowers_description',
+      name: 'app_account_my_edit_field_hideFollowers_description',
       desc: '',
       args: [],
     );
   }
 
   /// `Hide followers count`
-  String get app_account_my_edit_field_unifedi_hideFollowersCount_label {
+  String get app_account_my_edit_field_hideFollowersCount_label {
     return Intl.message(
       'Hide followers count',
-      name: 'app_account_my_edit_field_unifedi_hideFollowersCount_label',
+      name: 'app_account_my_edit_field_hideFollowersCount_label',
       desc: '',
       args: [],
     );
   }
 
   /// `Display '0' as followers count`
-  String get app_account_my_edit_field_unifedi_hideFollowersCount_description {
+  String get app_account_my_edit_field_hideFollowersCount_description {
     return Intl.message(
       'Display \'0\' as followers count',
-      name: 'app_account_my_edit_field_unifedi_hideFollowersCount_description',
+      name: 'app_account_my_edit_field_hideFollowersCount_description',
       desc: '',
       args: [],
     );
   }
 
   /// `Hide follows`
-  String get app_account_my_edit_field_unifedi_hideFollows_label {
+  String get app_account_my_edit_field_hideFollows_label {
     return Intl.message(
       'Hide follows',
-      name: 'app_account_my_edit_field_unifedi_hideFollows_label',
+      name: 'app_account_my_edit_field_hideFollows_label',
       desc: '',
       args: [],
     );
   }
 
   /// `Only private access to follows list`
-  String get app_account_my_edit_field_unifedi_hideFollows_description {
+  String get app_account_my_edit_field_hideFollows_description {
     return Intl.message(
       'Only private access to follows list',
-      name: 'app_account_my_edit_field_unifedi_hideFollows_description',
+      name: 'app_account_my_edit_field_hideFollows_description',
       desc: '',
       args: [],
     );
   }
 
   /// `Hide follows count`
-  String get app_account_my_edit_field_unifedi_hideFollowsCount_label {
+  String get app_account_my_edit_field_hideFollowsCount_label {
     return Intl.message(
       'Hide follows count',
-      name: 'app_account_my_edit_field_unifedi_hideFollowsCount_label',
+      name: 'app_account_my_edit_field_hideFollowsCount_label',
       desc: '',
       args: [],
     );
   }
 
   /// `Display '0' as follows count`
-  String get app_account_my_edit_field_unifedi_hideFollowsCount_description {
+  String get app_account_my_edit_field_hideFollowsCount_description {
     return Intl.message(
       'Display \'0\' as follows count',
-      name: 'app_account_my_edit_field_unifedi_hideFollowsCount_description',
+      name: 'app_account_my_edit_field_hideFollowsCount_description',
       desc: '',
       args: [],
     );
   }
 
   /// `Ignore rich text`
-  String get app_account_my_edit_field_unifedi_noRichText_label {
+  String get app_account_my_edit_field_noRichText_label {
     return Intl.message(
       'Ignore rich text',
-      name: 'app_account_my_edit_field_unifedi_noRichText_label',
+      name: 'app_account_my_edit_field_noRichText_label',
       desc: '',
       args: [],
     );
   }
 
   /// `Strip html tags`
-  String get app_account_my_edit_field_unifedi_noRichText_description {
+  String get app_account_my_edit_field_noRichText_description {
     return Intl.message(
       'Strip html tags',
-      name: 'app_account_my_edit_field_unifedi_noRichText_description',
+      name: 'app_account_my_edit_field_noRichText_description',
       desc: '',
       args: [],
     );
   }
 
   /// `Show role`
-  String get app_account_my_edit_field_unifedi_showRole_label {
+  String get app_account_my_edit_field_showRole_label {
     return Intl.message(
       'Show role',
-      name: 'app_account_my_edit_field_unifedi_showRole_label',
+      name: 'app_account_my_edit_field_showRole_label',
       desc: '',
       args: [],
     );
   }
 
   /// `e.g. Admin, Moderator`
-  String get app_account_my_edit_field_unifedi_showRole_description {
+  String get app_account_my_edit_field_showRole_description {
     return Intl.message(
       'e.g. Admin, Moderator',
-      name: 'app_account_my_edit_field_unifedi_showRole_description',
+      name: 'app_account_my_edit_field_showRole_description',
       desc: '',
       args: [],
     );
   }
 
   /// `Skip thread containment`
-  String get app_account_my_edit_field_unifedi_skipThreadContainment_label {
+  String get app_account_my_edit_field_skipThreadContainment_label {
     return Intl.message(
       'Skip thread containment',
-      name: 'app_account_my_edit_field_unifedi_skipThreadContainment_label',
+      name: 'app_account_my_edit_field_skipThreadContainment_label',
       desc: '',
       args: [],
     );
   }
 
   /// `Ignore broken threads`
-  String
-      get app_account_my_edit_field_unifedi_skipThreadContainment_description {
+  String get app_account_my_edit_field_skipThreadContainment_description {
     return Intl.message(
       'Ignore broken threads',
-      name:
-          'app_account_my_edit_field_unifedi_skipThreadContainment_description',
+      name: 'app_account_my_edit_field_skipThreadContainment_description',
       desc: '',
       args: [],
     );
@@ -6586,68 +6584,60 @@ class S {
   }
 
   /// `Features`
-  String get app_instance_details_field_unifedi_metadata_features_label {
+  String get app_instance_details_field_metadata_features_label {
     return Intl.message(
       'Features',
-      name: 'app_instance_details_field_unifedi_metadata_features_label',
+      name: 'app_instance_details_field_metadata_features_label',
       desc: '',
       args: [],
     );
   }
 
   /// `Fields limit`
-  String get app_instance_details_field_unifedi_metadata_fields_title {
+  String get app_instance_details_field_metadata_fields_title {
     return Intl.message(
       'Fields limit',
-      name: 'app_instance_details_field_unifedi_metadata_fields_title',
+      name: 'app_instance_details_field_metadata_fields_title',
       desc: '',
       args: [],
     );
   }
 
   /// `Max fields count`
-  String
-      get app_instance_details_field_unifedi_metadata_fields_maxFields_label {
+  String get app_instance_details_field_metadata_fields_maxFields_label {
     return Intl.message(
       'Max fields count',
-      name:
-          'app_instance_details_field_unifedi_metadata_fields_maxFields_label',
+      name: 'app_instance_details_field_metadata_fields_maxFields_label',
       desc: '',
       args: [],
     );
   }
 
   /// `Max remote fields count`
-  String
-      get app_instance_details_field_unifedi_metadata_fields_maxRemoteFields_label {
+  String get app_instance_details_field_metadata_fields_maxRemoteFields_label {
     return Intl.message(
       'Max remote fields count',
-      name:
-          'app_instance_details_field_unifedi_metadata_fields_maxRemoteFields_label',
+      name: 'app_instance_details_field_metadata_fields_maxRemoteFields_label',
       desc: '',
       args: [],
     );
   }
 
   /// `Max name length`
-  String
-      get app_instance_details_field_unifedi_metadata_fields_nameLength_label {
+  String get app_instance_details_field_metadata_fields_nameLength_label {
     return Intl.message(
       'Max name length',
-      name:
-          'app_instance_details_field_unifedi_metadata_fields_nameLength_label',
+      name: 'app_instance_details_field_metadata_fields_nameLength_label',
       desc: '',
       args: [],
     );
   }
 
   /// `Max value length`
-  String
-      get app_instance_details_field_unifedi_metadata_fields_valueLength_label {
+  String get app_instance_details_field_metadata_fields_valueLength_label {
     return Intl.message(
       'Max value length',
-      name:
-          'app_instance_details_field_unifedi_metadata_fields_valueLength_label',
+      name: 'app_instance_details_field_metadata_fields_valueLength_label',
       desc: '',
       args: [],
     );
@@ -6675,11 +6665,11 @@ class S {
 
   /// `Mastodon`
   String
-      get app_instance_details_field_unifedi_metadata_fields_verstionType_value_mastodon {
+      get app_instance_details_field_metadata_fields_versionType_value_mastodon {
     return Intl.message(
       'Mastodon',
       name:
-          'app_instance_details_field_unifedi_metadata_fields_verstionType_value_mastodon',
+          'app_instance_details_field_metadata_fields_versionType_value_mastodon',
       desc: '',
       args: [],
     );
@@ -6687,11 +6677,11 @@ class S {
 
   /// `Unifedi`
   String
-      get app_instance_details_field_unifedi_metadata_fields_verstionType_value_unifedi {
+      get app_instance_details_field_metadata_fields_versionType_value_unifedi {
     return Intl.message(
       'Unifedi',
       name:
-          'app_instance_details_field_unifedi_metadata_fields_verstionType_value_unifedi',
+          'app_instance_details_field_metadata_fields_versionType_value_unifedi',
       desc: '',
       args: [],
     );
@@ -6699,23 +6689,21 @@ class S {
 
   /// `Unknown`
   String
-      get app_instance_details_field_unifedi_metadata_fields_verstionType_value_unknown {
+      get app_instance_details_field_metadata_fields_versionType_value_unknown {
     return Intl.message(
       'Unknown',
       name:
-          'app_instance_details_field_unifedi_metadata_fields_verstionType_value_unknown',
+          'app_instance_details_field_metadata_fields_versionType_value_unknown',
       desc: '',
       args: [],
     );
   }
 
   /// `Post formats`
-  String
-      get app_instance_details_field_unifedi_metadata_fields_postFormats_label {
+  String get app_instance_details_field_metadata_fields_postFormats_label {
     return Intl.message(
       'Post formats',
-      name:
-          'app_instance_details_field_unifedi_metadata_fields_postFormats_label',
+      name: 'app_instance_details_field_metadata_fields_postFormats_label',
       desc: '',
       args: [],
     );
@@ -7004,10 +6992,10 @@ class S {
   }
 
   /// `Exclude visibilities`
-  String get app_timeline_settings_field_excludeVisibilites_label {
+  String get app_timeline_settings_field_excludeVisibilities_label {
     return Intl.message(
       'Exclude visibilities',
-      name: 'app_timeline_settings_field_excludeVisibilites_label',
+      name: 'app_timeline_settings_field_excludeVisibilities_label',
       desc: '',
       args: [],
     );
@@ -8126,81 +8114,81 @@ class S {
   }
 
   /// `Emoji reactions`
-  String get app_push_channel_unifediEmojiReaction_name {
+  String get app_push_channel_emojiReaction_name {
     return Intl.message(
       'Emoji reactions',
-      name: 'app_push_channel_unifediEmojiReaction_name',
+      name: 'app_push_channel_emojiReaction_name',
       desc: '',
       args: [],
     );
   }
 
   /// `Unifedi-only emoji reactions for statuses`
-  String get app_push_channel_unifediEmojiReaction_description {
+  String get app_push_channel_emojiReaction_description {
     return Intl.message(
       'Unifedi-only emoji reactions for statuses',
-      name: 'app_push_channel_unifediEmojiReaction_description',
+      name: 'app_push_channel_emojiReaction_description',
       desc: '',
       args: [],
     );
   }
 
   /// `{acct} reacted {emoji}`
-  String app_push_richNotification_unifediEmojiReaction_title(
+  String app_push_richNotification_emojiReaction_title(
       Object acct, Object emoji) {
     return Intl.message(
       '$acct reacted $emoji',
-      name: 'app_push_richNotification_unifediEmojiReaction_title',
+      name: 'app_push_richNotification_emojiReaction_title',
       desc: '',
       args: [acct, emoji],
     );
   }
 
   /// `Someone reacted`
-  String get app_push_richNotification_unifediEmojiReaction_summary {
+  String get app_push_richNotification_emojiReaction_summary {
     return Intl.message(
       'Someone reacted',
-      name: 'app_push_richNotification_unifediEmojiReaction_summary',
+      name: 'app_push_richNotification_emojiReaction_summary',
       desc: '',
       args: [],
     );
   }
 
   /// `Chat`
-  String get app_push_channel_unifediChatMention_name {
+  String get app_push_channel_chatMention_name {
     return Intl.message(
       'Chat',
-      name: 'app_push_channel_unifediChatMention_name',
+      name: 'app_push_channel_chatMention_name',
       desc: '',
       args: [],
     );
   }
 
   /// `Unifedi-only chat messages`
-  String get app_push_channel_unifediChatMention_description {
+  String get app_push_channel_chatMention_description {
     return Intl.message(
       'Unifedi-only chat messages',
-      name: 'app_push_channel_unifediChatMention_description',
+      name: 'app_push_channel_chatMention_description',
       desc: '',
       args: [],
     );
   }
 
   /// `Chat with {acct}`
-  String app_push_richNotification_unifediChatMention_title(Object acct) {
+  String app_push_richNotification_chatMention_title(Object acct) {
     return Intl.message(
       'Chat with $acct',
-      name: 'app_push_richNotification_unifediChatMention_title',
+      name: 'app_push_richNotification_chatMention_title',
       desc: '',
       args: [acct],
     );
   }
 
   /// `You have new message in chat`
-  String get app_push_richNotification_unifediChatMention_summary {
+  String get app_push_richNotification_chatMention_summary {
     return Intl.message(
       'You have new message in chat',
-      name: 'app_push_richNotification_unifediChatMention_summary',
+      name: 'app_push_richNotification_chatMention_summary',
       desc: '',
       args: [],
     );

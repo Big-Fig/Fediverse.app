@@ -146,7 +146,8 @@ scripts:
       flutter pub global run melos exec -c 1 --fail-fast -- \
       flutter pub global run intl_utils:generate
     description: Generate code for localization
-    dir-exists: lib/l10n
+    select-package:
+      dir-exists: lib/l10n
 
   generate:build_runner:
     run: |

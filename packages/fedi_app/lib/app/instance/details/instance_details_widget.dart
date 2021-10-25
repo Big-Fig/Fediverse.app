@@ -430,13 +430,13 @@ class _InstanceDetailsVersionTypeWidget extends StatelessWidget {
           instanceTypeString = instanceType.map(
             pleroma: (_) => S
                 .of(context)
-                .app_instance_details_field_unifedi_metadata_fields_verstionType_value_unifedi,
+                .app_instance_details_field_metadata_fields_versionType_value_unifedi,
             mastodon: (_) => S
                 .of(context)
-                .app_instance_details_field_unifedi_metadata_fields_verstionType_value_mastodon,
+                .app_instance_details_field_metadata_fields_versionType_value_mastodon,
             unknown: (_) => S
                 .of(context)
-                .app_instance_details_field_unifedi_metadata_fields_verstionType_value_unknown,
+                .app_instance_details_field_metadata_fields_versionType_value_unknown,
           );
 
           return Text(
@@ -1481,7 +1481,7 @@ class _InstanceDetailsUnifediMetadataFeaturesWidget extends StatelessWidget {
           return _SimpleInstanceDetailsRowWidget(
             label: S
                 .of(context)
-                .app_instance_details_field_unifedi_metadata_features_label,
+                .app_instance_details_field_metadata_features_label,
             value: unifediMetadataFeatures?.join('\n') ?? '',
           );
         } else {
@@ -1729,13 +1729,13 @@ class _InstanceDetailsUnifediMetadataFieldsLimitsWidget
                     _InstanceDetailsGroupTitleWidget(
                       title: S
                           .of(context)
-                          .app_instance_details_field_unifedi_metadata_fields_title,
+                          .app_instance_details_field_metadata_fields_title,
                     ),
                     if (unifediMetadataFieldsLimits.maxFields != null)
                       _SimpleInstanceDetailsRowWidget(
                         label: S
                             .of(context)
-                            .app_instance_details_field_unifedi_metadata_fields_maxFields_label,
+                            .app_instance_details_field_metadata_fields_maxFields_label,
                         value:
                             unifediMetadataFieldsLimits.maxFields!.toString(),
                       ),
@@ -1743,7 +1743,7 @@ class _InstanceDetailsUnifediMetadataFieldsLimitsWidget
                       _SimpleInstanceDetailsRowWidget(
                         label: S
                             .of(context)
-                            .app_instance_details_field_unifedi_metadata_fields_maxRemoteFields_label,
+                            .app_instance_details_field_metadata_fields_maxRemoteFields_label,
                         value: unifediMetadataFieldsLimits.maxRemoteFields!
                             .toString(),
                       ),
@@ -1751,7 +1751,7 @@ class _InstanceDetailsUnifediMetadataFieldsLimitsWidget
                       _SimpleInstanceDetailsRowWidget(
                         label: S
                             .of(context)
-                            .app_instance_details_field_unifedi_metadata_fields_nameLength_label,
+                            .app_instance_details_field_metadata_fields_nameLength_label,
                         value:
                             unifediMetadataFieldsLimits.nameLength!.toString(),
                       ),
@@ -1759,7 +1759,7 @@ class _InstanceDetailsUnifediMetadataFieldsLimitsWidget
                       _SimpleInstanceDetailsRowWidget(
                         label: S
                             .of(context)
-                            .app_instance_details_field_unifedi_metadata_fields_valueLength_label,
+                            .app_instance_details_field_metadata_fields_valueLength_label,
                         value:
                             unifediMetadataFieldsLimits.valueLength!.toString(),
                       ),
@@ -1797,7 +1797,7 @@ class _InstanceDetailsUnifediMetadataPostFormatsWidget extends StatelessWidget {
           return _SimpleInstanceDetailsRowWidget(
             label: S
                 .of(context)
-                .app_instance_details_field_unifedi_metadata_fields_postFormats_label,
+                .app_instance_details_field_metadata_fields_postFormats_label,
             value: unifediMetadataPostFormats?.join('\n') ?? '',
           );
         } else {

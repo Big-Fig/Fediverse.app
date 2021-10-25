@@ -17,10 +17,10 @@ class EditMyAccountSkipThreadContainmentFieldWidget extends StatelessWidget {
         child: BoolValueFormFieldRowWidget(
           label: S
               .of(context)
-              .app_account_my_edit_field_unifedi_skipThreadContainment_label,
+              .app_account_my_edit_field_skipThreadContainment_label,
           description: S
               .of(context)
-              .app_account_my_edit_field_unifedi_skipThreadContainment_description,
+              .app_account_my_edit_field_skipThreadContainment_description,
         ),
       );
 }

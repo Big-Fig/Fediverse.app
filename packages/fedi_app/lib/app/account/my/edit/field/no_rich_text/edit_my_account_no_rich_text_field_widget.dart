@@ -15,11 +15,9 @@ class EditMyAccountNoRichTextFieldWidget extends StatelessWidget {
       ProxyProvider<IEditMyAccountBloc, IBoolValueFormFieldBloc>(
         update: (context, value, previous) => value.noRichTextField,
         child: BoolValueFormFieldRowWidget(
-          label:
-              S.of(context).app_account_my_edit_field_unifedi_noRichText_label,
-          description: S
-              .of(context)
-              .app_account_my_edit_field_unifedi_noRichText_description,
+          label: S.of(context).app_account_my_edit_field_noRichText_label,
+          description:
+              S.of(context).app_account_my_edit_field_noRichText_description,
         ),
       );
 }

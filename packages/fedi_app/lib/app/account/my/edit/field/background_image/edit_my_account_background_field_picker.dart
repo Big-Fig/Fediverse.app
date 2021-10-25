@@ -12,16 +12,14 @@ Future<IMediaDeviceFile?> showEditMyAccountBackgroundFieldPicker(
   IMediaDeviceFile mediaDeviceFile,
 ) =>
     showEditMyAccountImageConfirmDialog(
-      title: S
-          .of(context)
-          .app_account_my_edit_field_unifedi_background_dialog_title,
+      title: S.of(context).app_account_my_edit_field_background_dialog_title,
       context: context,
       mediaDeviceFile: mediaDeviceFile,
       actions: [
         DialogAction(
           label: S
               .of(context)
-              .app_account_my_edit_field_unifedi_background_dialog_action_select,
+              .app_account_my_edit_field_background_dialog_action_select,
           onAction: (context) {
             _select(
               context,
@@ -32,7 +30,7 @@ Future<IMediaDeviceFile?> showEditMyAccountBackgroundFieldPicker(
         DialogAction(
           label: S
               .of(context)
-              .app_account_my_edit_field_unifedi_background_dialog_action_crop,
+              .app_account_my_edit_field_background_dialog_action_crop,
           onAction: (context) async {
             await _cropAndSelect(
               context,

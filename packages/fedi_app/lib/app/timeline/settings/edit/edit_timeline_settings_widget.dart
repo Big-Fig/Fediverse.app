@@ -417,7 +417,7 @@ class _EditTimelineSettingsFieldExcludeVisibilitiesWidget
         child: StatusVisibilityMultiSelectFromListFormFieldWidget(
           label: S
               .of(context)
-              .app_timeline_settings_field_excludeVisibilites_label,
+              .app_timeline_settings_field_excludeVisibilities_label,
           description: null,
           descriptionOnDisabled: descriptionOnDisabled ??
               S

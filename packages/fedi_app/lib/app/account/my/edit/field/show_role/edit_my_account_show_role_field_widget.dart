@@ -15,10 +15,9 @@ class EditMyAccountShowRoleFieldWidget extends StatelessWidget {
       ProxyProvider<IEditMyAccountBloc, IBoolValueFormFieldBloc>(
         update: (context, value, previous) => value.showRoleField,
         child: BoolValueFormFieldRowWidget(
-          label: S.of(context).app_account_my_edit_field_unifedi_showRole_label,
-          description: S
-              .of(context)
-              .app_account_my_edit_field_unifedi_showRole_description,
+          label: S.of(context).app_account_my_edit_field_showRole_label,
+          description:
+              S.of(context).app_account_my_edit_field_showRole_description,
         ),
       );
 }

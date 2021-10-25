@@ -15,12 +15,11 @@ class EditMyAccountAcceptsChatMessagesFieldWidget extends StatelessWidget {
       ProxyProvider<IEditMyAccountBloc, IBoolValueFormFieldBloc>(
         update: (context, value, previous) => value.acceptsChatMessagesField,
         child: BoolValueFormFieldRowWidget(
-          label: S
-              .of(context)
-              .app_account_my_edit_field_unifedi_acceptsChatMessages_label,
+          label:
+              S.of(context).app_account_my_edit_field_acceptsChatMessages_label,
           description: S
               .of(context)
-              .app_account_my_edit_field_unifedi_acceptsChatMessages_description,
+              .app_account_my_edit_field_acceptsChatMessages_description,
         ),
       );
 }
