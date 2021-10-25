@@ -1,0 +1,41 @@
+name: fediverse_api_test_utils
+version: 1.0.8
+
+description: Common code for tests in fediverse_api extension packages
+homepage: https://github.com/Big-Fig/Fediverse.app
+repository: https://github.com/Big-Fig/Fediverse.app
+
+publish_to: none
+
+environment:
+  sdk: '>=2.12.0 <3.0.0'
+
+dependencies:
+  easy_dispose: ^1.1.0
+  logging: ^1.0.2
+  test: ^1.17.9
+  mockito: ^5.0.16
+  hive:
+    git:
+      url: https://github.com/xal/hive
+      ref: xal/nested_type_registry2
+      path: hive
+  path: ^1.8.0
+  fediverse_api:
+    git:
+      url: https://github.com/Big-Fig/Fediverse.app.git
+      path: packages/fediverse_api
+
+
+dev_dependencies:
+  # additional linters
+  dart_code_metrics: ^4.3.3
+  lints: 1.0.1
+  hive_generator:
+    git:
+      url: https://github.com/xal/hive
+      ref: xal/nested_type_registry2
+      path: hive_generator
+  build_runner: ^2.1.2
+  # helper to specify all rules in one line
+  all_lint_rules_community: ^0.0.4
