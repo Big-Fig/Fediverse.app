@@ -25,7 +25,7 @@ import 'package:fedi_app/app/home/tab/timelines/timelines_home_tab_bloc.dart';
 import 'package:fedi_app/app/home/tab/timelines/timelines_home_tab_bloc_impl.dart';
 import 'package:fedi_app/app/home/tab/timelines/timelines_home_tab_bloc_proxy_provider.dart';
 import 'package:fedi_app/app/home/tab/timelines/timelines_home_tab_page.dart';
-import 'package:fedi_app/app/instance/fedi_instance_image_background_widget.dart';
+import 'package:fedi_app/app/instance/background/instance_image_background_widget.dart';
 import 'package:fedi_app/app/notification/repository/notification_repository.dart';
 import 'package:fedi_app/app/status/post/new/new_post_status_bloc_impl.dart';
 import 'package:fedi_app/app/ui/divider/fedi_ultra_light_grey_divider.dart';
@@ -117,7 +117,7 @@ class _HomePageBackgroundWidget extends StatelessWidget {
   Widget build(BuildContext context) => FediLightStatusBarStyleArea(
         child: Container(
           color: IFediUiColorTheme.of(context).primary,
-          child: const FediInstanceImageBackgroundWidget(),
+          child: const InstanceImageBackgroundWidget(),
         ),
       );
 }

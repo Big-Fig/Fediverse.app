@@ -13,10 +13,10 @@ import 'package:unifedi_api/unifedi_api.dart';
 
 final Image defaultImage =
     Image.asset('assets/images/default_timeline_header.png');
-var _logger = Logger('fedi_instance_image_background_widget.dart');
+var _logger = Logger('instance_image_background_widget.dart');
 
-class FediInstanceImageBackgroundWidget extends StatelessWidget {
-  const FediInstanceImageBackgroundWidget({
+class InstanceImageBackgroundWidget extends StatelessWidget {
+  const InstanceImageBackgroundWidget({
     Key? key,
   }) : super(key: key);
 
