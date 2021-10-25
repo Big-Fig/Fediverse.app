@@ -10,7 +10,7 @@ import 'package:fedi/app/account/select/single/single_select_account_widget.dart
 import 'package:fedi/app/account/select/suggestion/suggestion_select_account_bloc.dart';
 import 'package:fedi/app/account/select/suggestion/suggestion_select_account_bloc_impl.dart';
 import 'package:fedi/app/account/select/suggestion/suggestion_select_account_widget.dart';
-import 'package:fedi/app/async/pleroma/pleroma_async_operation_button_builder_widget.dart';
+import 'package:fedi/app/async/unifedi/unifedi_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/custom_list/account_list/custom_list_account_list_widget.dart';
 import 'package:fedi/app/custom_list/account_list/network_only/custom_list_account_list_network_only_list_bloc.dart';
 import 'package:fedi/app/custom_list/account_list/network_only/custom_list_account_list_network_only_list_bloc_proxy_provider.dart';
@@ -77,7 +77,7 @@ class _EditCustomListDeleteButton extends StatelessWidget {
   Widget build(BuildContext context) {
     var editCustomListBloc = IEditCustomListBloc.of(context);
 
-    return PleromaAsyncOperationButtonBuilderWidget(
+    return UnifediAsyncOperationButtonBuilderWidget(
       asyncButtonAction: () async {
         await editCustomListBloc.deleteList();
         Navigator.of(context).pop();

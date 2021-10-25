@@ -4,8 +4,8 @@ import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
-import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository.dart';
-import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
+import 'package:fedi/app/chat/unifedi/message/repository/unifedi_chat_message_repository.dart';
+import 'package:fedi/app/chat/unifedi/unifedi_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_bloc.dart';
 import 'package:fedi/app/notification/push/notification_push_loader_model.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
@@ -25,13 +25,13 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
     implements INotificationPushLoaderBloc {
   final UnifediApiAccess currentInstance;
   final INotificationsPushHandlerBloc notificationsPushHandlerBloc;
-  final IUnifediApiNotificationService pleromaNotificationService;
+  final IUnifediApiNotificationService unifediNotificationService;
 
   final INotificationRepository notificationRepository;
   final IAccountRepository accountRepository;
   final IStatusRepository statusRepository;
-  final IPleromaChatMessageRepository chatMessageRepository;
-  final IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
+  final IUnifediChatMessageRepository chatMessageRepository;
+  final IUnifediChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
   final IMyAccountBloc myAccountBloc;
   final IUnifediApiMyAccountService unifediApiMyAccountService;
   final IUnifediApiChatService unifediApiChatService;
@@ -59,7 +59,7 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
   NotificationPushLoaderBloc({
     required this.currentInstance,
     required this.notificationsPushHandlerBloc,
-    required this.pleromaNotificationService,
+    required this.unifediNotificationService,
     required this.notificationRepository,
     required this.chatNewMessagesHandlerBloc,
     required this.myAccountBloc,
@@ -87,28 +87,28 @@ class NotificationPushLoaderBloc extends AsyncInitLoadingBloc
   Future<bool> handlePush(
     NotificationsPushHandlerMessage notificationsPushHandlerMessage,
   ) async {
-    var pleromaPushMessage = notificationsPushHandlerMessage.body;
+    var unifediPushMessage = notificationsPushHandlerMessage.body;
 
     var isForCurrentInstance = currentInstance.isInstanceWithHostAndAcct(
-      host: pleromaPushMessage.server,
-      acct: pleromaPushMessage.account,
+      host: unifediPushMessage.server,
+      acct: unifediPushMessage.account,
     );
 
     _logger.finest(
       () => 'handlePush \n'
           '\t isForCurrentInstance = $isForCurrentInstance'
-          '\t pleromaPushMessage = $pleromaPushMessage',
+          '\t unifediPushMessage = $unifediPushMessage',
     );
     bool handled;
     if (isForCurrentInstance) {
-      var remoteNotificationId = pleromaPushMessage.notificationId;
+      var remoteNotificationId = unifediPushMessage.notificationId;
 
-      var remoteNotification = pleromaPushMessage.unifediApiNotification;
+      var remoteNotification = unifediPushMessage.unifediApiNotification;
 
       // if we have only remoteNotificationId
       // in case we have decrypted push notifications
       // via old PushRelay server or on Flutter side(not implemented yet)
-      remoteNotification ??= (await pleromaNotificationService.getNotification(
+      remoteNotification ??= (await unifediNotificationService.getNotification(
         notificationId: remoteNotificationId,
       ))
           .toUnifediApiNotification();

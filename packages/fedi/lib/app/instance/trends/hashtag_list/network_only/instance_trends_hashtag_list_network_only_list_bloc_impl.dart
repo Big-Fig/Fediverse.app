@@ -40,13 +40,13 @@ class InstanceTrendsHashtagListNetworkOnlyListBloc extends DisposableOwner
       return [];
     }
 
-    var pleromaHashtags = await unifediApiInstanceService.getTrendingTags(
+    var unifediHashtags = await unifediApiInstanceService.getTrendingTags(
       limit: null,
     );
 
-    List<IHashtag> result = pleromaHashtags
+    List<IHashtag> result = unifediHashtags
         .map(
-          (pleromaHashtag) => pleromaHashtag.toHashtag(),
+          (unifediHashtag) => unifediHashtag.toHashtag(),
         )
         .toList();
 

@@ -1,6 +1,6 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/my/suggestion/account_list/network_only/my_account_suggestion_account_list_network_only_list_bloc.dart';
-import 'package:fedi/app/async/pleroma/pleroma_async_operation_button_builder_widget.dart';
+import 'package:fedi/app/async/unifedi/unifedi_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/ui/button/text/with_border/fedi_transparent_text_button_with_border.dart';
 import 'package:fedi/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi/generated/l10n.dart';
@@ -32,7 +32,7 @@ class MyAccountSuggestionAccountRemoveSuggestionActionButtonWidget
           return const SizedBox.shrink();
         }
 
-        return PleromaAsyncOperationButtonBuilderWidget(
+        return UnifediAsyncOperationButtonBuilderWidget(
           asyncButtonAction: () async {
             await myAccountSuggestionAccountListNetworkOnlyListBloc
                 .removeSuggestion(

@@ -71,7 +71,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
       onMessageLocallyHiddenStreamController.stream;
 
   final IMyAccountBloc myAccountBloc;
-  final IUnifediApiConversationService pleromaConversationService;
+  final IUnifediApiConversationService unifediConversationService;
   final IUnifediApiStatusService unifediApiStatusService;
   final IConversationChatRepository conversationRepository;
   final IStatusRepository statusRepository;
@@ -109,7 +109,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
   }
 
   ConversationChatBloc({
-    required this.pleromaConversationService,
+    required this.unifediConversationService,
     required this.myAccountBloc,
     required this.conversationRepository,
     required this.unifediApiStatusService,
@@ -220,7 +220,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
 
   @override
   Future<void> refreshFromNetwork() async {
-    var remoteConversation = await pleromaConversationService.getConversation(
+    var remoteConversation = await unifediConversationService.getConversation(
       conversationId: chat.remoteId,
     );
 
@@ -269,7 +269,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
       ConversationChatBloc(
         connectionService:
             Provider.of<IConnectionService>(context, listen: false),
-        pleromaConversationService:
+        unifediConversationService:
             Provider.of<IUnifediApiConversationService>(context, listen: false),
         myAccountBloc: IMyAccountBloc.of(context, listen: false),
         conversation: chat,
@@ -297,7 +297,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
           lastReadChatMessageId = lastStatus?.remoteId;
         }
         var updatedRemoteChat =
-            await pleromaConversationService.markConversationAsRead(
+            await unifediConversationService.markConversationAsRead(
           conversationId: chat.remoteId,
         );
 
@@ -340,7 +340,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
   @override
   Future<void> performActualDelete() async {
     var remoteId = conversation.remoteId;
-    await pleromaConversationService.deleteConversation(
+    await unifediConversationService.deleteConversation(
       conversationId: remoteId,
     );
 
@@ -411,7 +411,7 @@ class ConversationChatBloc extends ChatBloc implements IConversationChatBloc {
         wasSentWithIdempotencyKey: fakeUniqueRemoteRemoteId,
       );
 
-      // for pleroma
+      // for unifedi
       int? conversationIdInt;
       try {
         conversationIdInt = int.parse(chat.remoteId);

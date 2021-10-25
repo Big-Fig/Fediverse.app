@@ -3,7 +3,7 @@ import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/notification/list/cached/notification_cached_list_bloc.dart';
 import 'package:fedi/app/notification/notification_model.dart';
 import 'package:fedi/app/notification/pagination/cached/notification_cached_pagination_bloc.dart';
-import 'package:fedi/app/pagination/cached/cached_pleroma_pagination_bloc_impl.dart';
+import 'package:fedi/app/pagination/cached/cached_unifedi_pagination_bloc_impl.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/pagination/cached/cached_pagination_bloc.dart';
@@ -14,7 +14,7 @@ import 'package:provider/provider.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
 class NotificationCachedPaginationBloc
-    extends CachedPleromaPaginationBloc<INotification>
+    extends CachedUnifediPaginationBloc<INotification>
     implements INotificationCachedPaginationBloc {
   final INotificationCachedListBloc notificationListService;
 

@@ -3,13 +3,13 @@ import 'package:fedi/app/status/scheduled/scheduled_status_model.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
 extension IScheduledStatusListExtension on List<IScheduledStatus> {
-  List<UnifediApiScheduledStatus> toPleromaScheduledStatuses() => map(
-        (pleromaScheduledStatus) =>
-            pleromaScheduledStatus.toPleromaScheduledStatus(),
+  List<UnifediApiScheduledStatus> toUnifediScheduledStatuses() => map(
+        (unifediScheduledStatus) =>
+            unifediScheduledStatus.toUnifediScheduledStatus(),
       ).toList();
 }
 
-extension IPleromaScheduledStatusDbListExtension
+extension IUnifediScheduledStatusDbListExtension
     on List<IUnifediApiScheduledStatus> {
   List<DbScheduledStatus> toDbScheduledStatusList({
     required bool canceled,
@@ -20,12 +20,12 @@ extension IPleromaScheduledStatusDbListExtension
 }
 
 extension IScheduledStatusbListExtension on List<IScheduledStatus> {
-  List<UnifediApiScheduledStatus> toPleromaScheduledStatusList() => map(
-        (item) => item.toPleromaScheduledStatus(),
+  List<UnifediApiScheduledStatus> toUnifediScheduledStatusList() => map(
+        (item) => item.toUnifediScheduledStatus(),
       ).toList();
 }
 
-extension IPleromaScheduledStatusDbExtension on IUnifediApiScheduledStatus {
+extension IUnifediScheduledStatusDbExtension on IUnifediApiScheduledStatus {
   DbScheduledStatus toDbScheduledStatus({
     required bool canceled,
   }) =>
@@ -33,18 +33,18 @@ extension IPleromaScheduledStatusDbExtension on IUnifediApiScheduledStatus {
         id: null,
         remoteId: id,
         scheduledAt: scheduledAt,
-        params: params.toPleromaScheduledStatusParams(),
+        params: params.toUnifediScheduledStatusParams(),
         mediaAttachments: mediaAttachments?.toUnifediApiMediaAttachmentList(),
         canceled: canceled,
       );
 }
 
 extension IScheduledStatusExtension on IScheduledStatus {
-  UnifediApiScheduledStatus toPleromaScheduledStatus() =>
+  UnifediApiScheduledStatus toUnifediScheduledStatus() =>
       UnifediApiScheduledStatus(
         id: remoteId!,
         mediaAttachments: mediaAttachments,
-        params: params.toPleromaScheduledStatusParams(),
+        params: params.toUnifediScheduledStatusParams(),
         scheduledAt: scheduledAt,
       );
 }

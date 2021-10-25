@@ -7,7 +7,7 @@ import 'package:fedi/app/access/join/join_access_bloc.dart';
 import 'package:fedi/app/access/join/join_access_widget_keys.dart';
 import 'package:fedi/app/access/register/register_access_page.dart';
 import 'package:fedi/app/app_model.dart';
-import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
+import 'package:fedi/app/async/unifedi/unifedi_async_operation_helper.dart';
 import 'package:fedi/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/instance/details/remote/remote_instance_details_page.dart';
@@ -387,7 +387,7 @@ Future<void> signUpToInstance(BuildContext context) async {
   var joinInstanceBloc = IJoinUnifediApiAccessBloc.of(context, listen: false);
   var hostUri = joinInstanceBloc.extractCurrentUri();
   var asyncDialogResult =
-      await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+      await UnifediAsyncOperationHelper.performUnifediAsyncOperation(
     context: context,
     contentMessage:
         S.of(context).app_auth_instance_join_progress_dialog_content,
@@ -511,8 +511,8 @@ Future<void> logInToInstance(BuildContext context) async {
   var appLaunchType = configService.appLaunchType;
   _logger.finest(() => 'logInToInstance $appLaunchType');
 
-  var dialogResult = await PleromaAsyncOperationHelper
-      .performPleromaAsyncOperation<UnifediApiAccess?>(
+  var dialogResult = await UnifediAsyncOperationHelper
+      .performUnifediAsyncOperation<UnifediApiAccess?>(
     context: context,
     contentMessage:
         S.of(context).app_auth_instance_join_progress_dialog_content,

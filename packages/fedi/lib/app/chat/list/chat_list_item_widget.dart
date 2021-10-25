@@ -1,6 +1,6 @@
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
-import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
+import 'package:fedi/app/async/unifedi/unifedi_async_operation_helper.dart';
 import 'package:fedi/app/chat/avatar/chat_avatar_widget.dart';
 import 'package:fedi/app/chat/chat_bloc.dart';
 import 'package:fedi/app/chat/message/chat_message_model.dart';
@@ -331,8 +331,8 @@ class _ChatListItemDeleteActionWidget extends StatelessWidget {
                 listen: false,
               ).error,
               onAction: (BuildContext context) async {
-                var dialogResult = await PleromaAsyncOperationHelper
-                    .performPleromaAsyncOperation<void>(
+                var dialogResult = await UnifediAsyncOperationHelper
+                    .performUnifediAsyncOperation<void>(
                   context: context,
                   asyncCode: () => chatBloc.delete(),
                 );

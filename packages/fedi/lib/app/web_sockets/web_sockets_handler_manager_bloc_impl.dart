@@ -4,8 +4,8 @@ import 'package:fedi/app/account/my/websockets/my_account_websockets_handler_imp
 import 'package:fedi/app/chat/conversation/conversation_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
 import 'package:fedi/app/chat/conversation/websockets/conversation_chat_websockets_handler_impl.dart';
-import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
-import 'package:fedi/app/chat/pleroma/websockets/pleroma_chat_websockets_handler_impl.dart';
+import 'package:fedi/app/chat/unifedi/unifedi_chat_new_messages_handler_bloc.dart';
+import 'package:fedi/app/chat/unifedi/websockets/unifedi_chat_websockets_handler_impl.dart';
 import 'package:fedi/app/custom_list/status/list/custom_list_status_list_websockets_handler_impl.dart';
 import 'package:fedi/app/hashtag/status_list/hashtag_status_list_websockets_handler_impl.dart';
 import 'package:fedi/app/instance/announcement/repository/instance_announcement_repository.dart';
@@ -23,7 +23,7 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
   final INotificationRepository notificationRepository;
   final IInstanceAnnouncementRepository instanceAnnouncementRepository;
   final IStatusRepository statusRepository;
-  final IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
+  final IUnifediChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
   final IConversationChatNewMessagesHandlerBloc
       conversationChatNewMessagesHandlerBloc;
   final IMyAccountBloc myAccountBloc;
@@ -61,10 +61,10 @@ class WebSocketsHandlerManagerBloc extends DisposableOwner
       );
 
   @override
-  IDisposable listenPleromaChatChannel({
+  IDisposable listenUnifediChatChannel({
     required WebSocketsChannelHandlerType handlerType,
   }) =>
-      PleromaChatWebSocketsHandler(
+      UnifediChatWebSocketsHandler(
         handlerType: handlerType,
         notificationRepository: notificationRepository,
         instanceAnnouncementRepository: instanceAnnouncementRepository,

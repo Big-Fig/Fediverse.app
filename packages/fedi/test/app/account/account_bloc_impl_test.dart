@@ -29,7 +29,7 @@ import 'account_test_helper.dart';
 void main() {
   late IAccount account;
   late IAccountBloc accountBloc;
-  late MockIUnifediApiAccountService pleromaAuthAccountServiceMock;
+  late MockIUnifediApiAccountService unifediAuthAccountServiceMock;
   late AppDatabase database;
   late IAccountRepository accountRepository;
   late IStatusRepository statusRepository;
@@ -43,7 +43,7 @@ void main() {
       accountRepository: accountRepository,
     );
 
-    pleromaAuthAccountServiceMock = MockIUnifediApiAccountService();
+    unifediAuthAccountServiceMock = MockIUnifediApiAccountService();
 
     account = await AccountMockHelper.createTestAccount(seed: 'seed1');
 
@@ -58,7 +58,7 @@ void main() {
 
     accountBloc = LocalAccountBloc(
       account: account,
-      pleromaAuthAccountService: pleromaAuthAccountServiceMock,
+      unifediAuthAccountService: unifediAuthAccountServiceMock,
       accountRepository: accountRepository,
       delayInit: false,
       unifediApiWebSocketsService: unifediApiWebSocketsService,
@@ -483,14 +483,14 @@ void main() {
     var newRelationship =
         AccountMockHelper.createTestAccountRelationship(seed: 'seed11');
     when(
-      pleromaAuthAccountServiceMock.getAccount(
+      unifediAuthAccountServiceMock.getAccount(
         accountId: account.remoteId,
         withRelationship: false,
       ),
     ).thenAnswer((_) async => newValue.toUnifediApiAccount());
 
     when(
-      pleromaAuthAccountServiceMock.getRelationshipWithAccounts(
+      unifediAuthAccountServiceMock.getRelationshipWithAccounts(
         accountIds: [
           account.remoteId,
         ],
@@ -528,7 +528,7 @@ void main() {
     expect(accountBloc.relationship, account.relationship);
 
     when(
-      pleromaAuthAccountServiceMock.blockAccount(
+      unifediAuthAccountServiceMock.blockAccount(
         accountId: account.remoteId,
       ),
     ).thenAnswer(
@@ -539,7 +539,7 @@ void main() {
     );
 
     when(
-      pleromaAuthAccountServiceMock.unBlockAccount(
+      unifediAuthAccountServiceMock.unBlockAccount(
         accountId: account.remoteId,
       ),
     ).thenAnswer(
@@ -584,7 +584,7 @@ void main() {
     expect(accountBloc.relationship, account.relationship);
 
     when(
-      pleromaAuthAccountServiceMock.followAccount(
+      unifediAuthAccountServiceMock.followAccount(
         accountId: account.remoteId,
       ),
     ).thenAnswer(
@@ -594,7 +594,7 @@ void main() {
     );
 
     when(
-      pleromaAuthAccountServiceMock.unFollowAccount(
+      unifediAuthAccountServiceMock.unFollowAccount(
         accountId: account.remoteId,
       ),
     ).thenAnswer(
@@ -640,7 +640,7 @@ void main() {
     expect(accountBloc.relationship, account.relationship);
 
     when(
-      pleromaAuthAccountServiceMock.muteAccount(
+      unifediAuthAccountServiceMock.muteAccount(
         accountId: account.remoteId,
         notifications: true,
         expireIn: null,
@@ -654,7 +654,7 @@ void main() {
     );
 
     when(
-      pleromaAuthAccountServiceMock.muteAccount(
+      unifediAuthAccountServiceMock.muteAccount(
         accountId: account.remoteId,
         notifications: false,
         expireIn: null,
@@ -668,7 +668,7 @@ void main() {
     );
 
     when(
-      pleromaAuthAccountServiceMock.unMuteAccount(
+      unifediAuthAccountServiceMock.unMuteAccount(
         accountId: account.remoteId,
       ),
     ).thenAnswer(
@@ -719,7 +719,7 @@ void main() {
     expect(accountBloc.relationship, account.relationship);
 
     when(
-      pleromaAuthAccountServiceMock.pinAccount(
+      unifediAuthAccountServiceMock.pinAccount(
         accountId: account.remoteId,
       ),
     ).thenAnswer(
@@ -729,7 +729,7 @@ void main() {
     );
 
     when(
-      pleromaAuthAccountServiceMock.unPinAccount(
+      unifediAuthAccountServiceMock.unPinAccount(
         accountId: account.remoteId,
       ),
     ).thenAnswer(

@@ -160,11 +160,11 @@ class Timeline with _$Timeline implements IJsonObj {
   bool? get excludeReblogs => settings.excludeReblogs;
 }
 
-extension TimelineIdPleromaListExtension on IUnifediApiList {
+extension TimelineIdUnifediListExtension on IUnifediApiList {
   String calculateTimelineId() => 'list.$id';
 }
 
-extension TimelineIdPleromaTagExtension on IUnifediApiTag {
+extension TimelineIdUnifediTagExtension on IUnifediApiTag {
   String calculateTimelineId() => 'hashtag.$name';
 }
 

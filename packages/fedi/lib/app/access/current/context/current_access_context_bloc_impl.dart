@@ -34,21 +34,21 @@ import 'package:fedi/app/chat/conversation/repository/conversation_chat_reposito
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository_impl.dart';
 import 'package:fedi/app/chat/conversation/with_last_message/conversation_chat_with_last_message_repository.dart';
 import 'package:fedi/app/chat/conversation/with_last_message/conversation_chat_with_last_message_repository_impl.dart';
-import 'package:fedi/app/chat/pleroma/current/pleroma_chat_current_bloc.dart';
-import 'package:fedi/app/chat/pleroma/current/pleroma_chat_current_bloc_impl.dart';
-import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository.dart';
-import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository_impl.dart';
-import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
-import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc_impl.dart';
-import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
-import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository_impl.dart';
-import 'package:fedi/app/chat/pleroma/with_last_message/repository/pleroma_chat_with_last_message_repository.dart';
-import 'package:fedi/app/chat/pleroma/with_last_message/repository/pleroma_chat_with_last_message_repository_impl.dart';
 import 'package:fedi/app/chat/settings/chat_settings_bloc.dart';
 import 'package:fedi/app/chat/settings/chat_settings_bloc_impl.dart';
 import 'package:fedi/app/chat/settings/local_preferences/global/global_chat_settings_local_preference_bloc.dart';
 import 'package:fedi/app/chat/settings/local_preferences/instance/instance_chat_settings_local_preference_bloc.dart';
 import 'package:fedi/app/chat/settings/local_preferences/instance/instance_chat_settings_local_preference_bloc_impl.dart';
+import 'package:fedi/app/chat/unifedi/current/unifedi_chat_current_bloc.dart';
+import 'package:fedi/app/chat/unifedi/current/unifedi_chat_current_bloc_impl.dart';
+import 'package:fedi/app/chat/unifedi/message/repository/unifedi_chat_message_repository.dart';
+import 'package:fedi/app/chat/unifedi/message/repository/unifedi_chat_message_repository_impl.dart';
+import 'package:fedi/app/chat/unifedi/repository/unifedi_chat_repository.dart';
+import 'package:fedi/app/chat/unifedi/repository/unifedi_chat_repository_impl.dart';
+import 'package:fedi/app/chat/unifedi/unifedi_chat_new_messages_handler_bloc.dart';
+import 'package:fedi/app/chat/unifedi/unifedi_chat_new_messages_handler_bloc_impl.dart';
+import 'package:fedi/app/chat/unifedi/with_last_message/repository/unifedi_chat_with_last_message_repository.dart';
+import 'package:fedi/app/chat/unifedi/with_last_message/repository/unifedi_chat_with_last_message_repository_impl.dart';
 import 'package:fedi/app/config/config_service.dart';
 import 'package:fedi/app/context/app_context_bloc.dart';
 import 'package:fedi/app/database/app_database_service_impl.dart';
@@ -251,22 +251,22 @@ class CurrentUnifediApiAccessContextBloc extends ProviderContextBloc
     await globalProviderService.asyncInitAndRegister<
         IConversationChatRepository>(conversationRepository);
 
-    var chatMessageRepository = PleromaChatMessageRepository(
+    var chatMessageRepository = UnifediChatMessageRepository(
       appDatabase: moorDatabaseService.appDatabase,
       accountRepository: accountRepository,
     )..disposeWith(this);
 
     await globalProviderService.asyncInitAndRegister<
-        IPleromaChatMessageRepository>(chatMessageRepository);
+        IUnifediChatMessageRepository>(chatMessageRepository);
 
-    var chatRepository = PleromaChatRepository(
+    var chatRepository = UnifediChatRepository(
       appDatabase: moorDatabaseService.appDatabase,
       accountRepository: accountRepository,
       chatMessageRepository: chatMessageRepository,
     )..disposeWith(this);
 
     await globalProviderService
-        .asyncInitAndRegister<IPleromaChatRepository>(chatRepository);
+        .asyncInitAndRegister<IUnifediChatRepository>(chatRepository);
 
     var notificationRepository = NotificationRepository(
       appDatabase: moorDatabaseService.appDatabase,
@@ -278,15 +278,15 @@ class CurrentUnifediApiAccessContextBloc extends ProviderContextBloc
     await globalProviderService
         .asyncInitAndRegister<INotificationRepository>(notificationRepository);
 
-    var pleromaChatWithLastMessageRepository =
-        PleromaChatWithLastMessageRepository(
+    var unifediChatWithLastMessageRepository =
+        UnifediChatWithLastMessageRepository(
       chatRepository: chatRepository,
       chatMessageRepository: chatMessageRepository,
     )..disposeWith(this);
 
     await globalProviderService
-        .asyncInitAndRegister<IPleromaChatWithLastMessageRepository>(
-      pleromaChatWithLastMessageRepository,
+        .asyncInitAndRegister<IUnifediChatWithLastMessageRepository>(
+      unifediChatWithLastMessageRepository,
     );
 
     var conversationChatWithLastMessageRepository =
@@ -352,7 +352,7 @@ class CurrentUnifediApiAccessContextBloc extends ProviderContextBloc
         .asyncInitAndRegister<IUnifediApiManager>(unifediApiManager);
 
     //
-    // var pleromaAuthRestService = UnifediApiAuthRestService(
+    // var unifediAuthRestService = UnifediApiAuthRestService(
     //   restService: restService,
     //   connectionService: connectionService,
     //   accessToken: currentInstance.token!.accessToken,
@@ -519,10 +519,10 @@ class CurrentUnifediApiAccessContextBloc extends ProviderContextBloc
     await globalProviderService
         .asyncInitAndRegister<IMyAccountBloc>(myAccountBloc);
 
-    var currentPleromaChatBloc = PleromaChatCurrentBloc()..disposeWith(this);
+    var currentUnifediChatBloc = UnifediChatCurrentBloc()..disposeWith(this);
 
     await globalProviderService
-        .asyncInitAndRegister<IPleromaChatCurrentBloc>(currentPleromaChatBloc);
+        .asyncInitAndRegister<IUnifediChatCurrentBloc>(currentUnifediChatBloc);
 
     var currentConversationChatBloc = ConversationChatCurrentBloc()
       ..disposeWith(this);
@@ -530,15 +530,15 @@ class CurrentUnifediApiAccessContextBloc extends ProviderContextBloc
     await globalProviderService.asyncInitAndRegister<
         IConversationChatCurrentBloc>(currentConversationChatBloc);
 
-    var chatNewMessagesHandlerBloc = PleromaChatNewMessagesHandlerBloc(
+    var chatNewMessagesHandlerBloc = UnifediChatNewMessagesHandlerBloc(
       chatRepository: chatRepository,
-      currentChatBloc: currentPleromaChatBloc,
-      pleromaApiChatService:
+      currentChatBloc: currentUnifediChatBloc,
+      unifediApiChatService:
           globalProviderService.get<IUnifediApiChatService>(),
     )..disposeWith(this);
 
     await globalProviderService.asyncInitAndRegister<
-        IPleromaChatNewMessagesHandlerBloc>(chatNewMessagesHandlerBloc);
+        IUnifediChatNewMessagesHandlerBloc>(chatNewMessagesHandlerBloc);
 
     var conversationChatNewMessagesHandlerBloc =
         ConversationChatNewMessagesHandlerBloc(
@@ -559,10 +559,10 @@ class CurrentUnifediApiAccessContextBloc extends ProviderContextBloc
       var notificationsPushHandlerBloc =
           appContextBloc.get<INotificationsPushHandlerBloc>();
 
-      var pleromaPushService = unifediApiManager.createPushSubscriptionService()
+      var unifediPushService = unifediApiManager.createPushSubscriptionService()
         ..disposeWith(this);
       await globalProviderService.asyncInitAndRegister<
-          IUnifediApiPushSubscriptionService>(pleromaPushService);
+          IUnifediApiPushSubscriptionService>(unifediPushService);
 
       var pushSettingsBloc = PushSettingsBloc(
         connectionService: connectionService,
@@ -573,7 +573,7 @@ class CurrentUnifediApiAccessContextBloc extends ProviderContextBloc
             instancePushSettingsLocalPreferenceBloc,
         instancePushRelaySettingsLocalPreferenceBloc:
             instancePushRelaySettingsLocalPreferenceBloc,
-        unifediApiPushSubscriptionService: pleromaPushService,
+        unifediApiPushSubscriptionService: unifediPushService,
         currentInstance: currentInstance,
         fcmPushService: fcmPushService,
       )..disposeWith(this);
@@ -611,7 +611,7 @@ class CurrentUnifediApiAccessContextBloc extends ProviderContextBloc
         currentInstance: currentInstance,
         notificationsPushHandlerBloc: notificationsPushHandlerBloc,
         notificationRepository: notificationRepository,
-        pleromaNotificationService:
+        unifediNotificationService:
             globalProviderService.get<IUnifediApiNotificationService>(),
         chatNewMessagesHandlerBloc: chatNewMessagesHandlerBloc,
         myAccountBloc: myAccountBloc,
@@ -632,9 +632,9 @@ class CurrentUnifediApiAccessContextBloc extends ProviderContextBloc
 
     if (!timelinesHomeTabStorageLocalPreferencesBloc
         .value.timelineIds.isNotEmpty) {
-      var pleromaListService =
+      var unifediListService =
           globalProviderService.get<IUnifediApiListService>();
-      var remoteLists = await pleromaListService.getLists();
+      var remoteLists = await unifediListService.getLists();
 
       var timelines = <Timeline>[
         Timeline.home(

@@ -7,8 +7,8 @@ import 'package:fedi/app/account/my/domain_block/list/network_only/my_account_do
 import 'package:fedi/app/account/my/domain_block/list/pagination/my_account_domain_block_pagination_list_bloc_impl.dart';
 import 'package:fedi/app/account/my/domain_block/list/pagination/my_account_domain_block_pagination_list_widget.dart';
 import 'package:fedi/app/account/my/domain_block/my_account_domain_block_model.dart';
-import 'package:fedi/app/async/pleroma/pleroma_async_operation_button_builder_widget.dart';
-import 'package:fedi/app/pagination/network_only/network_only_pleroma_pagination_bloc.dart';
+import 'package:fedi/app/async/unifedi/unifedi_async_operation_button_builder_widget.dart';
+import 'package:fedi/app/pagination/network_only/network_only_unifedi_pagination_bloc.dart';
 import 'package:fedi/app/ui/button/text/with_border/fedi_primary_filled_text_button_with_border.dart';
 import 'package:fedi/app/ui/button/text/with_border/fedi_transparent_text_button_with_border.dart';
 import 'package:fedi/app/ui/description/fedi_note_description_widget.dart';
@@ -126,7 +126,7 @@ class _MyAccountDomainBlockListPageRemoveItemAction extends StatelessWidget {
 
     var blocking = true;
 
-    return PleromaAsyncOperationButtonBuilderWidget(
+    return UnifediAsyncOperationButtonBuilderWidget(
       asyncButtonAction: () async {
         var domain = Provider.of<DomainBlock>(context, listen: false);
         await myAccountDomainBlockNetworkOnlyListBloc.removeDomainBlock(
@@ -164,10 +164,10 @@ MaterialPageRoute<void> createMyAccountDomainBlockListPage() =>
           create:
               MyAccountDomainBlockNetworkOnlyPaginationBloc.createFromContext,
           child: ProxyProvider<IMyAccountDomainBlockNetworkOnlyPaginationBloc,
-              INetworkOnlyPleromaPaginationBloc<DomainBlock>>(
+              INetworkOnlyUnifediPaginationBloc<DomainBlock>>(
             update: (context, value, previous) => value,
             child: ProxyProvider<
-                INetworkOnlyPleromaPaginationBloc<DomainBlock>,
+                INetworkOnlyUnifediPaginationBloc<DomainBlock>,
                 INetworkOnlyPaginationBloc<PaginationPage<DomainBlock>,
                     DomainBlock>>(
               update: (context, value, previous) => value,

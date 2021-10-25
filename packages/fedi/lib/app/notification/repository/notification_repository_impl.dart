@@ -1,6 +1,6 @@
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
-import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository.dart';
+import 'package:fedi/app/chat/unifedi/message/repository/unifedi_chat_message_repository.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/database/dao/populated_database_dao_mixin.dart';
 import 'package:fedi/app/database/dao/repository/remote/populated_app_remote_database_dao_repository.dart';
@@ -28,7 +28,7 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   final NotificationDao dao;
   final IAccountRepository accountRepository;
   final IStatusRepository statusRepository;
-  final IPleromaChatMessageRepository chatMessageRepository;
+  final IUnifediChatMessageRepository chatMessageRepository;
 
   @override
   PopulatedDatabaseDaoMixin<
@@ -361,12 +361,12 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   Future<void> upsertRemoteNotifications(
-    List<IUnifediApiNotification> pleromaNotifications, {
+    List<IUnifediApiNotification> unifediNotifications, {
     required bool unread,
     required Batch? batchTransaction,
   }) async {
     if (batchTransaction != null) {
-      for (final remoteNotification in pleromaNotifications) {
+      for (final remoteNotification in unifediNotifications) {
         // ignore: unawaited_futures
         upsertRemoteNotification(
           remoteNotification,
@@ -378,7 +378,7 @@ class NotificationRepository extends PopulatedAppRemoteDatabaseDaoRepository<
       await batch(
         (batch) {
           upsertRemoteNotifications(
-            pleromaNotifications,
+            unifediNotifications,
             unread: unread,
             batchTransaction: batch,
           );

@@ -9,16 +9,16 @@ import 'package:fedi/app/account/my/my_account_bloc_impl.dart';
 import 'package:fedi/app/account/my/my_account_model.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
-import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
-import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model_adapter.dart';
-import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository.dart';
-import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository_impl.dart';
-import 'package:fedi/app/chat/pleroma/pleroma_chat_bloc.dart';
-import 'package:fedi/app/chat/pleroma/pleroma_chat_bloc_impl.dart';
-import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
-import 'package:fedi/app/chat/pleroma/pleroma_chat_model_adapter.dart';
-import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
-import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository_impl.dart';
+import 'package:fedi/app/chat/unifedi/message/repository/unifedi_chat_message_repository.dart';
+import 'package:fedi/app/chat/unifedi/message/repository/unifedi_chat_message_repository_impl.dart';
+import 'package:fedi/app/chat/unifedi/message/unifedi_chat_message_model.dart';
+import 'package:fedi/app/chat/unifedi/message/unifedi_chat_message_model_adapter.dart';
+import 'package:fedi/app/chat/unifedi/repository/unifedi_chat_repository.dart';
+import 'package:fedi/app/chat/unifedi/repository/unifedi_chat_repository_impl.dart';
+import 'package:fedi/app/chat/unifedi/unifedi_chat_bloc.dart';
+import 'package:fedi/app/chat/unifedi/unifedi_chat_bloc_impl.dart';
+import 'package:fedi/app/chat/unifedi/unifedi_chat_model.dart';
+import 'package:fedi/app/chat/unifedi/unifedi_chat_model_adapter.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/local_preferences/local_preferences_service.dart';
@@ -44,14 +44,14 @@ import 'message/chat_message_test_helper.dart';
   IConnectionService,
 ])
 void main() {
-  late IPleromaChat chat;
-  late IPleromaChatBloc chatBloc;
-  late MockIUnifediApiChatService pleromaApiChatServiceMock;
+  late IUnifediChat chat;
+  late IUnifediChatBloc chatBloc;
+  late MockIUnifediApiChatService unifediApiChatServiceMock;
   late MockIUnifediApiMyAccountService unifediApiMyAccountServiceMock;
   late AppDatabase database;
   late IAccountRepository accountRepository;
-  late IPleromaChatMessageRepository chatMessageRepository;
-  late IPleromaChatRepository chatRepository;
+  late IUnifediChatMessageRepository chatMessageRepository;
+  late IUnifediChatRepository chatRepository;
   late IMyAccountBloc myAccountBloc;
   late IMyAccount myAccount;
 
@@ -62,17 +62,17 @@ void main() {
   setUp(() async {
     database = AppDatabase(VmDatabase.memory());
     accountRepository = AccountRepository(appDatabase: database);
-    chatMessageRepository = PleromaChatMessageRepository(
+    chatMessageRepository = UnifediChatMessageRepository(
       appDatabase: database,
       accountRepository: accountRepository,
     );
-    chatRepository = PleromaChatRepository(
+    chatRepository = UnifediChatRepository(
       appDatabase: database,
       accountRepository: accountRepository,
       chatMessageRepository: chatMessageRepository,
     );
 
-    pleromaApiChatServiceMock = MockIUnifediApiChatService();
+    unifediApiChatServiceMock = MockIUnifediApiChatService();
     unifediApiMyAccountServiceMock = MockIUnifediApiMyAccountService();
 
     preferencesService = MemoryLocalPreferencesService();
@@ -117,10 +117,10 @@ void main() {
 
     chat = await ChatMockHelper.createTestChat(seed: 'seed1');
 
-    chatBloc = PleromaChatBloc(
+    chatBloc = UnifediChatBloc(
       connectionService: MockIConnectionService(),
       chat: chat,
-      unifediApiChatService: pleromaApiChatServiceMock,
+      unifediApiChatService: unifediApiChatServiceMock,
       accountRepository: accountRepository,
       chatMessageRepository: chatMessageRepository,
       chatRepository: chatRepository,
@@ -141,8 +141,8 @@ void main() {
   });
 
   Future _update(
-    IPleromaChat chat, {
-    IPleromaChatMessage? lastChatMessage,
+    IUnifediChat chat, {
+    IUnifediChatMessage? lastChatMessage,
     required List<IAccount> accounts,
   }) async {
     await accountRepository.upsertChatRemoteAccounts(
@@ -172,7 +172,7 @@ void main() {
       remoteId: chat.remoteId,
     );
 
-    IPleromaChat? listened;
+    IUnifediChat? listened;
 
     var subscription = chatBloc.chatStream.listen((newValue) {
       listened = newValue;
@@ -208,11 +208,11 @@ void main() {
 
     expect(listened, chat.updatedAt);
 
-    var dbPleromaChatPopulatedWrapper = chat.toDbPleromaChatPopulatedWrapper();
+    var dbUnifediChatPopulatedWrapper = chat.toDbUnifediChatPopulatedWrapper();
     await _update(
-      dbPleromaChatPopulatedWrapper.copyWith(
-        dbChatPopulated: dbPleromaChatPopulatedWrapper.dbChatPopulated.copyWith(
-          dbChat: dbPleromaChatPopulatedWrapper.dbChatPopulated.dbChat.copyWith(
+      dbUnifediChatPopulatedWrapper.copyWith(
+        dbChatPopulated: dbUnifediChatPopulatedWrapper.dbChatPopulated.copyWith(
+          dbChat: dbUnifediChatPopulatedWrapper.dbChatPopulated.dbChat.copyWith(
             updatedAt: newValue,
           ),
         ),
@@ -252,7 +252,7 @@ void main() {
       account: account2,
     );
 
-    IPleromaChatMessage? listened;
+    IUnifediChatMessage? listened;
 
     var subscription = chatBloc.lastChatMessageStream.listen((newValue) {
       listened = newValue;
@@ -395,7 +395,7 @@ void main() {
 
 //    ChatMockHelper.expectChat(listened, chat);
 //
-//    when(pleromaApiChatServiceMock.getChat(
+//    when(unifediApiChatServiceMock.getChat(
 //            chatRemoteId: chat.remoteId))
 //        .thenAnswer((_) async => mapLocalChatToRemoteChat(
 //            newValue,

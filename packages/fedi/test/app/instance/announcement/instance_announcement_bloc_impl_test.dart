@@ -55,7 +55,7 @@ void main() {
 
   Future _update(IInstanceAnnouncement instanceAnnouncement) async {
     await instanceAnnouncementRepository.upsertInRemoteType(
-      instanceAnnouncement.toPleromaInstanceAnnouncement(),
+      instanceAnnouncement.toUnifediInstanceAnnouncement(),
     );
 
     await RxDartMockHelper.waitToExecuteRxCallbacks();

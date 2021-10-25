@@ -6,7 +6,7 @@ import 'package:fedi/app/status/status_model.dart';
 import 'package:fedi/app/status/status_model_adapter.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
-extension IPleromaConversationDbExtension on IUnifediApiConversation {
+extension IUnifediConversationDbExtension on IUnifediApiConversation {
   DbConversation toDbConversation() => DbConversation(
         id: null,
         remoteId: id,
@@ -16,7 +16,7 @@ extension IPleromaConversationDbExtension on IUnifediApiConversation {
 }
 
 extension IConversationChatExtension on IConversationChat {
-  UnifediApiConversation toPleromaConversation({
+  UnifediApiConversation toUnifediConversation({
     required IStatus? lastStatus,
     required List<IAccount> accounts,
   }) {

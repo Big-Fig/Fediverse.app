@@ -14,19 +14,19 @@ import 'package:unifedi_api/unifedi_api.dart';
 
 class MyAccountAccountMuteNetworkOnlyAccountListBloc extends DisposableOwner
     implements IMyAccountAccountMuteNetworkOnlyAccountListBloc {
-  final IUnifediApiAccountService pleromaAuthAccountService;
+  final IUnifediApiAccountService unifediAuthAccountService;
   final IUnifediApiMyAccountService unifediApiMyAccountService;
   final IAccountRepository accountRepository;
 
   MyAccountAccountMuteNetworkOnlyAccountListBloc({
-    required this.pleromaAuthAccountService,
+    required this.unifediAuthAccountService,
     required this.unifediApiMyAccountService,
     required this.accountRepository,
   });
 
   @override
   Future<void> removeAccountMute({required IAccount? account}) async {
-    var accountRelationship = await pleromaAuthAccountService.unMuteAccount(
+    var accountRelationship = await unifediAuthAccountService.unMuteAccount(
       accountId: account!.remoteId,
     );
 
@@ -44,7 +44,7 @@ class MyAccountAccountMuteNetworkOnlyAccountListBloc extends DisposableOwner
 
   @override
   Future<void> addAccountMute({required IAccount account}) async {
-    var accountRelationship = await pleromaAuthAccountService.muteAccount(
+    var accountRelationship = await unifediAuthAccountService.muteAccount(
       accountId: account.remoteId,
       notifications: false,
       expireIn: null,
@@ -102,7 +102,7 @@ class MyAccountAccountMuteNetworkOnlyAccountListBloc extends DisposableOwner
           context,
           listen: false,
         ),
-        pleromaAuthAccountService: Provider.of<IUnifediApiAccountService>(
+        unifediAuthAccountService: Provider.of<IUnifediApiAccountService>(
           context,
           listen: false,
         ),
@@ -136,11 +136,11 @@ class MyAccountAccountMuteNetworkOnlyAccountListBloc extends DisposableOwner
     required Duration? duration,
   }) async {
     // ignore: avoid-ignoring-return-values
-    await pleromaAuthAccountService.unMuteAccount(
+    await unifediAuthAccountService.unMuteAccount(
       accountId: account!.remoteId,
     );
 
-    var accountRelationship = await pleromaAuthAccountService.muteAccount(
+    var accountRelationship = await unifediAuthAccountService.muteAccount(
       accountId: account.remoteId,
       notifications: notifications,
       expireIn: duration,

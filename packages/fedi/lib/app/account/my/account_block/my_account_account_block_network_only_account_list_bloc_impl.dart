@@ -14,12 +14,12 @@ import 'package:unifedi_api/unifedi_api.dart';
 
 class MyAccountAccountBlockNetworkOnlyAccountListBloc extends DisposableOwner
     implements IMyAccountAccountBlockNetworkOnlyAccountListBloc {
-  final IUnifediApiAccountService pleromaAuthAccountService;
+  final IUnifediApiAccountService unifediAuthAccountService;
   final IUnifediApiMyAccountService unifediApiMyAccountService;
   final IAccountRepository accountRepository;
 
   MyAccountAccountBlockNetworkOnlyAccountListBloc({
-    required this.pleromaAuthAccountService,
+    required this.unifediAuthAccountService,
     required this.unifediApiMyAccountService,
     required this.accountRepository,
   });
@@ -28,7 +28,7 @@ class MyAccountAccountBlockNetworkOnlyAccountListBloc extends DisposableOwner
   Future<void> removeAccountBlock({
     required IAccount account,
   }) async {
-    var accountRelationship = await pleromaAuthAccountService.unBlockAccount(
+    var accountRelationship = await unifediAuthAccountService.unBlockAccount(
       accountId: account.remoteId,
     );
 
@@ -48,7 +48,7 @@ class MyAccountAccountBlockNetworkOnlyAccountListBloc extends DisposableOwner
   Future<void> addAccountBlock({
     required IAccount account,
   }) async {
-    var accountRelationship = await pleromaAuthAccountService.blockAccount(
+    var accountRelationship = await unifediAuthAccountService.blockAccount(
       accountId: account.remoteId,
     );
 
@@ -107,7 +107,7 @@ class MyAccountAccountBlockNetworkOnlyAccountListBloc extends DisposableOwner
           context,
           listen: false,
         ),
-        pleromaAuthAccountService: Provider.of<IUnifediApiAccountService>(
+        unifediAuthAccountService: Provider.of<IUnifediApiAccountService>(
           context,
           listen: false,
         ),

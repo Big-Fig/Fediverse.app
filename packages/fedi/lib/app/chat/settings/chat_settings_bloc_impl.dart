@@ -28,12 +28,12 @@ class ChatSettingsBloc
       );
 
   @override
-  Future<void> changeReplaceConversationsWithPleromaChats({
+  Future<void> changeReplaceConversationsWithUnifediChats({
     required bool replaceConversationsWithChats,
   }) async =>
       updateSettings(
         settingsData.copyWith(
-          replaceConversationsWithPleromaChats: replaceConversationsWithChats,
+          replaceConversationsWithUnifediChats: replaceConversationsWithChats,
         ),
       );
 
@@ -47,11 +47,11 @@ class ChatSettingsBloc
           .map((settings) => settings.countConversationsInChatsUnreadBadges);
 
   @override
-  bool get replaceConversationsWithPleromaChats =>
-      settingsData.replaceConversationsWithPleromaChats;
+  bool get replaceConversationsWithUnifediChats =>
+      settingsData.replaceConversationsWithUnifediChats;
 
   @override
-  Stream<bool> get replaceConversationsWithPleromaChatsStream =>
+  Stream<bool> get replaceConversationsWithUnifediChatsStream =>
       settingsDataStream
-          .map((settings) => settings.replaceConversationsWithPleromaChats);
+          .map((settings) => settings.replaceConversationsWithUnifediChats);
 }

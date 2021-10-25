@@ -1,4 +1,4 @@
-import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
+import 'package:fedi/app/async/unifedi/unifedi_async_operation_helper.dart';
 import 'package:fedi/app/status/post/action/post_status_post_overlay_notification.dart';
 import 'package:fedi/app/status/post/post_status_bloc.dart';
 import 'package:fedi/app/ui/dialog/alert/fedi_simple_alert_dialog.dart';
@@ -49,8 +49,8 @@ class PostStatusComposeInputWidget extends StatelessWidget {
           onSubmitted: (String value) async {
             if (postStatusBloc.isReadyToPost) {
               var isScheduled = postStatusBloc.isScheduledAtExist;
-              var dialogResult = await PleromaAsyncOperationHelper
-                  .performPleromaAsyncOperation<void>(
+              var dialogResult = await UnifediAsyncOperationHelper
+                  .performUnifediAsyncOperation<void>(
                 context: context,
                 asyncCode: () => postStatusBloc.post(),
               );

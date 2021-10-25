@@ -10,8 +10,8 @@ void main() {
       'test2',
     ]);
     expect(
-      PostStatusBloc.findAcctMentionsInText('@ @test@pleroma.com'),
-      ['test@pleroma.com'],
+      PostStatusBloc.findAcctMentionsInText('@ @test@unifedi.com'),
+      ['test@unifedi.com'],
     );
   });
 

@@ -1,11 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
-import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
-import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model_adapter.dart';
-import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository_impl.dart';
-import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository_model.dart';
-import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
+import 'package:fedi/app/chat/unifedi/message/repository/unifedi_chat_message_repository_impl.dart';
+import 'package:fedi/app/chat/unifedi/message/repository/unifedi_chat_message_repository_model.dart';
+import 'package:fedi/app/chat/unifedi/message/unifedi_chat_message_model.dart';
+import 'package:fedi/app/chat/unifedi/message/unifedi_chat_message_model_adapter.dart';
+import 'package:fedi/app/chat/unifedi/unifedi_chat_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/repository/repository_model.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -19,12 +19,12 @@ import 'chat_message_repository_test_helper.dart';
 
 // ignore_for_file: no-magic-number, avoid-late-keyword, no-equal-arguments
 // ignore_for_file: avoid-ignoring-return-values
-const String baseUrl = 'https://pleroma.com';
+const String baseUrl = 'https://unifedi.com';
 
 void main() {
   late AppDatabase database;
   late AccountRepository accountRepository;
-  late PleromaChatMessageRepository chatMessageRepository;
+  late UnifediChatMessageRepository chatMessageRepository;
 
   late DbChatMessagePopulated dbChatMessagePopulated;
   late DbChatMessage dbChatMessage;
@@ -34,7 +34,7 @@ void main() {
   setUp(() async {
     database = AppDatabase(VmDatabase.memory());
     accountRepository = AccountRepository(appDatabase: database);
-    chatMessageRepository = PleromaChatMessageRepository(
+    chatMessageRepository = UnifediChatMessageRepository(
       appDatabase: database,
       accountRepository: accountRepository,
     );
@@ -83,7 +83,7 @@ void main() {
     expect(await chatMessageRepository.countAll(), 0);
 
     await chatMessageRepository.upsertInRemoteType(
-      DbPleromaChatMessagePopulatedWrapper(
+      DbUnifediChatMessagePopulatedWrapper(
         dbChatMessagePopulated: dbChatMessagePopulated,
       ).toUnifediApiChatMessage(),
     );
@@ -102,7 +102,7 @@ void main() {
 
     // item with same id updated
     await chatMessageRepository.upsertInRemoteType(
-      DbPleromaChatMessagePopulatedWrapper(
+      DbUnifediChatMessagePopulatedWrapper(
         dbChatMessagePopulated: dbChatMessagePopulated,
       ).toUnifediApiChatMessage(),
     );
@@ -123,7 +123,7 @@ void main() {
     expect(await chatMessageRepository.countAll(), 0);
     await chatMessageRepository.upsertAllInRemoteType(
       [
-        DbPleromaChatMessagePopulatedWrapper(
+        DbUnifediChatMessagePopulatedWrapper(
           dbChatMessagePopulated: dbChatMessagePopulated,
         ).toUnifediApiChatMessage(),
       ],
@@ -144,7 +144,7 @@ void main() {
 
     await chatMessageRepository.upsertAllInRemoteType(
       [
-        DbPleromaChatMessagePopulatedWrapper(
+        DbUnifediChatMessagePopulatedWrapper(
           dbChatMessagePopulated: dbChatMessagePopulated,
         ).toUnifediApiChatMessage(),
       ],
@@ -230,14 +230,14 @@ void main() {
     );
     assert(id > 0, true);
 
-    var oldLocalChatMessage = DbPleromaChatMessagePopulatedWrapper(
+    var oldLocalChatMessage = DbUnifediChatMessagePopulatedWrapper(
       dbChatMessagePopulated: DbChatMessagePopulated(
         dbChatMessage: dbChatMessage.copyWith(id: id),
         dbAccount: dbAccount,
       ),
     );
     var newContent = 'newContent';
-    var newRemoteChatMessage = DbPleromaChatMessagePopulatedWrapper(
+    var newRemoteChatMessage = DbUnifediChatMessagePopulatedWrapper(
       dbChatMessagePopulated: DbChatMessagePopulated(
         dbChatMessage: dbChatMessage.copyWith(id: id, content: newContent),
         dbAccount: dbAccount,
@@ -307,7 +307,7 @@ void main() {
         ),
       ),
       orderingTermData:
-          PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
+          UnifediChatMessageRepositoryOrderingTermData.createdAtDesc,
     );
 
     await ChatMessageRepositoryMockHelper.insertDbChatMessage(
@@ -365,7 +365,7 @@ void main() {
         ),
       ),
       orderingTermData:
-          PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
+          UnifediChatMessageRepositoryOrderingTermData.createdAtDesc,
     );
 
     await ChatMessageRepositoryMockHelper.insertDbChatMessage(
@@ -428,7 +428,7 @@ void main() {
         ),
       ),
       orderingTermData:
-          PleromaChatMessageRepositoryOrderingTermData.createdAtDesc,
+          UnifediChatMessageRepositoryOrderingTermData.createdAtDesc,
     );
 
     await ChatMessageRepositoryMockHelper.insertDbChatMessage(
@@ -505,7 +505,7 @@ void main() {
       filters: null,
       pagination: null,
       orderingTermData:
-          PleromaChatMessageRepositoryOrderingTermData.remoteIdAsc,
+          UnifediChatMessageRepositoryOrderingTermData.remoteIdAsc,
     );
 
     var chatMessage2 =
@@ -565,7 +565,7 @@ void main() {
       filters: null,
       pagination: null,
       orderingTermData:
-          PleromaChatMessageRepositoryOrderingTermData.remoteIdDesc,
+          UnifediChatMessageRepositoryOrderingTermData.remoteIdDesc,
     );
 
     var chatMessage2 =
@@ -619,7 +619,7 @@ void main() {
         offset: 1,
       ),
       orderingTermData:
-          PleromaChatMessageRepositoryOrderingTermData.remoteIdAsc,
+          UnifediChatMessageRepositoryOrderingTermData.remoteIdAsc,
     );
 
     var chatMessage2 =
@@ -667,10 +667,10 @@ void main() {
   test('createQuery onlyInChat', () async {
     var chatRemoteId = 'chatRemoteId';
     var query = chatMessageRepository.createQuery(
-      filters: PleromaChatMessageRepositoryFilters(
+      filters: UnifediChatMessageRepositoryFilters(
         onlyInChats: [
-          DbPleromaChatPopulatedWrapper(
-            dbChatPopulated: DbPleromaChatPopulated(
+          DbUnifediChatPopulatedWrapper(
+            dbChatPopulated: DbUnifediChatPopulated(
               dbChat: DbChat(
                 remoteId: chatRemoteId,
                 unread: 0,
@@ -734,7 +734,7 @@ void main() {
 
     // duplicate adding. Should be skipped
     await chatMessageRepository.upsertInRemoteType(
-      DbPleromaChatMessagePopulatedWrapper(
+      DbUnifediChatMessagePopulatedWrapper(
         dbChatMessagePopulated: DbChatMessagePopulated(
           dbChatMessage:
               await ChatMessageDatabaseMockHelper.createTestDbChatMessage(
@@ -774,7 +774,7 @@ void main() {
 
     // 1 is not related to chat
     await chatMessageRepository.upsertInRemoteType(
-      DbPleromaChatMessagePopulatedWrapper(
+      DbUnifediChatMessagePopulatedWrapper(
         dbChatMessagePopulated: await ChatMessageDatabaseMockHelper
             .createTestDbChatMessagePopulated(
           dbChatMessage.copyWith(
@@ -795,7 +795,7 @@ void main() {
 
     // 2 is related to chat
     await chatMessageRepository.upsertInRemoteType(
-      DbPleromaChatMessagePopulatedWrapper(
+      DbUnifediChatMessagePopulatedWrapper(
         dbChatMessagePopulated: await ChatMessageDatabaseMockHelper
             .createTestDbChatMessagePopulated(
           dbChatMessage.copyWith(
@@ -820,7 +820,7 @@ void main() {
 
     // 4 is newer than 2
     await chatMessageRepository.upsertInRemoteType(
-      DbPleromaChatMessagePopulatedWrapper(
+      DbUnifediChatMessagePopulatedWrapper(
         dbChatMessagePopulated: await ChatMessageDatabaseMockHelper
             .createTestDbChatMessagePopulated(
           dbChatMessage.copyWith(
@@ -840,7 +840,7 @@ void main() {
 
     // remain 4
     await chatMessageRepository.upsertInRemoteType(
-      DbPleromaChatMessagePopulatedWrapper(
+      DbUnifediChatMessagePopulatedWrapper(
         dbChatMessagePopulated: await ChatMessageDatabaseMockHelper
             .createTestDbChatMessagePopulated(
           dbChatMessage.copyWith(
@@ -873,7 +873,7 @@ void main() {
 
     await chatMessageRepository.upsertAllInRemoteType(
       [
-        DbPleromaChatMessagePopulatedWrapper(
+        DbUnifediChatMessagePopulatedWrapper(
           dbChatMessagePopulated: dbChatMessagePopulated,
         ).toUnifediApiChatMessage(),
       ],
@@ -881,7 +881,7 @@ void main() {
     );
     await chatMessageRepository.upsertAllInRemoteType(
       [
-        DbPleromaChatMessagePopulatedWrapper(
+        DbUnifediChatMessagePopulatedWrapper(
           dbChatMessagePopulated: dbChatMessagePopulated,
         ).toUnifediApiChatMessage(),
       ],
@@ -889,19 +889,19 @@ void main() {
     );
 
     var future1 = chatMessageRepository.upsertInRemoteType(
-      DbPleromaChatMessagePopulatedWrapper(
+      DbUnifediChatMessagePopulatedWrapper(
         dbChatMessagePopulated: dbChatMessagePopulated,
       ).toUnifediApiChatMessage(),
     );
     var future2 = chatMessageRepository.upsertInRemoteType(
-      DbPleromaChatMessagePopulatedWrapper(
+      DbUnifediChatMessagePopulatedWrapper(
         dbChatMessagePopulated: dbChatMessagePopulated,
       ).toUnifediApiChatMessage(),
     );
 
     var future3 = chatMessageRepository.upsertAllInRemoteType(
       [
-        DbPleromaChatMessagePopulatedWrapper(
+        DbUnifediChatMessagePopulatedWrapper(
           dbChatMessagePopulated: dbChatMessagePopulated,
         ).toUnifediApiChatMessage(),
       ],
@@ -909,7 +909,7 @@ void main() {
     );
     var future4 = chatMessageRepository.upsertAllInRemoteType(
       [
-        DbPleromaChatMessagePopulatedWrapper(
+        DbUnifediChatMessagePopulatedWrapper(
           dbChatMessagePopulated: dbChatMessagePopulated,
         ).toUnifediApiChatMessage(),
       ],
@@ -926,7 +926,7 @@ void main() {
     expect((await chatMessageRepository.dao.getAll()).length, 1);
     expect(
       (await chatMessageRepository.findAllInAppType(
-        filters: PleromaChatMessageRepositoryFilters(
+        filters: UnifediChatMessageRepositoryFilters(
           onlyInChats: [
             await ChatMockHelper.createTestChat(
               seed: 'seed5',

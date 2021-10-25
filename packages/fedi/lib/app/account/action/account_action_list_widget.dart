@@ -2,7 +2,7 @@ import 'package:fedi/app/account/account_bloc.dart';
 import 'package:fedi/app/account/action/account_action_more_dialog.dart';
 import 'package:fedi/app/account/action/message/account_action_message.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
-import 'package:fedi/app/async/pleroma/pleroma_async_operation_button_builder_widget.dart';
+import 'package:fedi/app/async/unifedi/unifedi_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_blurred_button.dart';
 import 'package:fedi/app/ui/button/text/with_border/fedi_blurred_text_button_with_border.dart';
@@ -144,7 +144,7 @@ class _AccountActionListFollowWidget extends StatelessWidget {
         }
         if (relationship?.requested == true &&
             !(relationship?.following == true)) {
-          return PleromaAsyncOperationButtonBuilderWidget(
+          return UnifediAsyncOperationButtonBuilderWidget(
             showProgressDialog: false,
             asyncButtonAction: accountBloc.toggleFollow,
             builder: (BuildContext context, VoidCallback? onPressed) =>
@@ -155,7 +155,7 @@ class _AccountActionListFollowWidget extends StatelessWidget {
             ),
           );
         } else {
-          return PleromaAsyncOperationButtonBuilderWidget(
+          return UnifediAsyncOperationButtonBuilderWidget(
             showProgressDialog: false,
             asyncButtonAction: accountBloc.toggleFollow,
             builder: (BuildContext context, VoidCallback? onPressed) =>

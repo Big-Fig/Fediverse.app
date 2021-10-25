@@ -82,7 +82,7 @@ class _EditPushSettingsEmojiReactionFieldWidget extends StatelessWidget {
         update: (context, value, previous) => value.emojiReactionFieldBloc,
         child: BoolValueFormFieldRowWidget(
           label:
-              S.of(context).app_push_settings_field_pleroma_emojiReaction_label,
+              S.of(context).app_push_settings_field_unifedi_emojiReaction_label,
           descriptionOnDisabled: S
               .of(context)
               .app_settings_warning_notSupportedOnThisInstance_desc,
@@ -100,7 +100,7 @@ class _EditPushSettingsChatMentionFieldWidget extends StatelessWidget {
       ProxyProvider<IEditPushSettingsBloc, IBoolValueFormFieldBloc>(
         update: (context, value, previous) => value.chatMentionFieldBloc,
         child: BoolValueFormFieldRowWidget(
-          label: S.of(context).app_push_settings_field_pleroma_chat_label,
+          label: S.of(context).app_push_settings_field_unifedi_chat_label,
           descriptionOnDisabled: S
               .of(context)
               .app_settings_warning_notSupportedOnThisInstance_desc,

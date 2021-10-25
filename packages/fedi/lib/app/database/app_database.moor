@@ -8,9 +8,9 @@ import 'package:fedi/app/status/database/status_favourited_accounts_database_mod
 import 'package:fedi/app/status/database/status_hashtags_database_model.dart';
 import 'package:fedi/app/status/database/status_lists_database_model.dart';
 import 'package:fedi/app/status/database/status_reblogged_accounts_database_model.dart';
-import 'package:fedi/app/chat/pleroma/database/pleroma_chat_accounts_database_model.dart';
-import 'package:fedi/app/chat/pleroma/database/pleroma_chat_database_model.dart';
-import 'package:fedi/app/chat/pleroma/message/database/pleroma_chat_message_database_model.dart';
+import 'package:fedi/app/chat/unifedi/database/unifedi_chat_accounts_database_model.dart';
+import 'package:fedi/app/chat/unifedi/database/unifedi_chat_database_model.dart';
+import 'package:fedi/app/chat/unifedi/message/database/unifedi_chat_message_database_model.dart';
 import 'package:fedi/app/chat/conversation/database/conversation_chat_accounts_database_model.dart';
 import 'package:fedi/app/chat/conversation/database/conversation_chat_database_model.dart';
 import 'package:fedi/app/chat/conversation/database/conversation_chat_statuses_database_model.dart';

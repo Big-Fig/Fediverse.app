@@ -2,8 +2,8 @@ import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/account/my/action/my_account_action_list_bottom_sheet_dialog.dart';
 import 'package:fedi/app/account/my/avatar/my_account_avatar_widget.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
-import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
 import 'package:fedi/app/chat/settings/chat_settings_bloc.dart';
+import 'package:fedi/app/chat/unifedi/repository/unifedi_chat_repository.dart';
 import 'package:fedi/app/chat/unread/chat_unread_badge_bloc_impl.dart';
 import 'package:fedi/app/filter/repository/filter_repository.dart';
 import 'package:fedi/app/home/home_bloc.dart';
@@ -186,7 +186,7 @@ class _HomePageBottomNavigationBarIconWidget extends StatelessWidget {
                   context,
                   listen: false,
                 ),
-                pleromaChatRepository: IPleromaChatRepository.of(
+                unifediChatRepository: IUnifediChatRepository.of(
                   context,
                   listen: false,
                 ),

@@ -1,4 +1,4 @@
-import 'package:fedi/app/async/pleroma/pleroma_async_operation_button_builder_widget.dart';
+import 'package:fedi/app/async/unifedi/unifedi_async_operation_button_builder_widget.dart';
 import 'package:fedi/app/message/post_message_bloc.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_filled_button.dart';
 import 'package:fedi/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
@@ -22,7 +22,7 @@ class PostMessagePostActionWidget extends StatelessWidget {
       builder: (context, snapshot) {
         var isReadyToPost = snapshot.data!;
 
-        return PleromaAsyncOperationButtonBuilderWidget(
+        return UnifediAsyncOperationButtonBuilderWidget(
           showProgressDialog: false,
           asyncButtonAction: () async {
             await postChatMessageBloc.post();

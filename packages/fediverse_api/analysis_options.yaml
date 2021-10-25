@@ -1,0 +1,167 @@
+include: package:all_lint_rules_community/all.yaml
+
+analyzer:
+  exclude:
+    - test/resources/**
+    - test/**/examples/**
+    - lib/generated/**
+    - lib/**.g.dart
+    - test/**.mocks.dart
+    - test/coverage_helper_test.dart
+    - "**/*.freezed.dart"
+    - "**/*.mocks.dart"
+  plugins:
+    - dart_code_metrics
+
+  strong-mode:
+    implicit-casts: false
+    implicit-dynamic: false
+
+  errors:
+    # freezed related
+    invalid_annotation_target: ignore
+    # Without ignore here, we cause import of all_lint_rules to warn, because some rules conflict.
+    # We explicitly enabled even conflicting rules and are fixing the conflicts in this file.
+    included_file_warning: ignore
+    # Treat missing required parameters as an error.
+    missing_required_param: error
+    # Treat missing returns as an error, not as a hint or a warning.
+    missing_return: error
+    # Don't assign new values to parameters of methods or functions.
+    # Treat assigning new values to a parameter as a warning. We would almost like to set this
+    parameter_assignments: warning
+    # Allow having TODOs in the code.
+    todo: ignore
+
+# LINTER Preferences
+#
+# Explicitly disable only the rules we do not want.
+linter:
+  rules:
+    # ALWAYS separate the control structure expression from its statement.
+    # This sometimes makes things more unclear when one line is enough.
+    # Also single line `if`s are fine as recommended in Effective Dart "DO format your code using dartfmt".
+    always_put_control_body_on_new_line: false
+
+    # ALWAYS specify @required on named parameter before other named parameters.
+    # Conflicts with the convention used by flutter, which puts `Key key`
+    # and `@required Widget child` last.
+    always_put_required_named_parameters_first: false
+
+    # Followed by more turned OFF lint rules as preferred/needed/desired and always
+    # turning off at least conflicting rules.
+
+    # this package is a library
+    always_use_package_imports: false
+    avoid_relative_imports: false
+
+    # prefer single quotes
+    prefer_double_quotes: false
+
+    # always declare type, even dynamic
+    avoid_annotating_with_dynamic: false
+
+    # code metrics have better long line rules
+    lines_longer_than_80_chars: false
+
+    # diagnostic properties are not necessary
+    diagnostic_describe_all_properties: false
+
+    # helper classes is OK
+    avoid_classes_with_only_static_members: false
+
+    # grouping dependencies is better
+    sort_pub_dependencies: false
+
+    # sometimes is hard to move all todos to issue tracker
+    flutter_style_todos: false
+
+    # sometimes interpolation better but sometimes not
+    prefer_interpolation_to_compose_strings: false
+
+    # double should be double
+    prefer_int_literals: false
+
+    # modulo is OK
+    use_is_even_rather_than_modulo: false
+
+    # == is easier to use than ?? for nullable bool
+    use_if_null_to_convert_nulls_to_bools: false
+
+    # default value may changes
+    avoid_redundant_argument_values: false
+
+    # types is better for readability & static analyzing
+    avoid_types_on_closure_parameters: false
+
+    # prefer final over var if possible
+    unnecessary_final: false
+
+    # static methods is OK, some named constructors harder ot maintain
+    prefer_constructors_over_static_methods: false
+
+    # final is unnecessary because of parameter_assignments lint
+    prefer_final_parameters: false
+
+    # var/final with good naming is enough and easy to write
+    always_specify_types: false
+
+    # useful for new projects but it will take a lot of time to refactor old one
+    prefer_final_locals: false
+
+    # code metrics have better rules for member ordering
+    sort_constructors_first: false
+    sort_unnamed_constructors_first: false
+
+    # temporary disabled
+    public_member_api_docs: false
+
+dart_code_metrics:
+  anti-patterns:
+    - long-method
+    - long-parameter-list
+  metrics:
+    cyclomatic-complexity: 20
+    maximum-nesting-level: 5
+    lines-of-code: 100
+    halstead-volume: 150
+    maintainability-index: 50
+    source-lines-of-code: 50
+    weight-of-class: 0.33
+    number-of-arguments: 6
+    number-of-parameters: 6
+    number-of-methods: 4
+  metrics-exclude:
+    - test/**
+    - test_driver/**
+  rules:
+    - avoid-ignoring-return-values
+    - avoid-late-keyword
+    - avoid-non-null-assertion
+    - avoid-unused-parameters
+    - binary-expression-operand-order
+    - double-literal-format
+    # useful but require a lot of refactoring
+    # - member-ordering
+    # - member-ordering-extended
+    - newline-before-return
+    - no-boolean-literal-compare
+    - no-empty-block
+    - no-equal-arguments
+    - no-equal-then-else
+    - no-magic-number
+    - no-object-declaration
+    - prefer-conditional-expressions
+    # - prefer-correct-identifier-length
+#    - prefer-match-file-name
+    - prefer-trailing-comma
+    - always-remove-listener
+    - avoid-returning-widgets
+    - avoid-unnecessary-setstate
+    # looks not necessary
+    # - avoid-wrapping-in-padding
+    - prefer-const-border-radius
+    - prefer-extracting-callbacks
+    - prefer-single-widget-per-file
+    - prefer-intl-name
+    - provide-correct-intl-args

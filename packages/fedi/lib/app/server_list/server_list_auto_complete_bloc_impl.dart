@@ -71,7 +71,7 @@ Future<List<String>> _loadServersList() async {
     // debug instances
     servers = [
       'mastodon.jff.name',
-      'pleroma.jff.name',
+      'unifedi.jff.name',
       // todo: apply only for mock launch type
       'https://10.0.2.2:4000',
       'https://localhost:4000',

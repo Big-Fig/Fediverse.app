@@ -1,5 +1,5 @@
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
+import 'package:fedi/app/async/unifedi/unifedi_async_operation_helper.dart';
 import 'package:fedi/app/instance/public_timeline/instance_public_timeline_page_bloc.dart';
 import 'package:fedi/app/instance/public_timeline/instance_public_timeline_widget.dart';
 import 'package:fedi/app/instance/public_timeline/remote/remote_instance_public_timeline_page_bloc.dart';
@@ -61,8 +61,8 @@ Future<void> goToRemoteInstancePublicTimelinePage({
   required Uri remoteInstanceUri,
   required IUnifediApiInstance unifediApiInstance,
 }) async {
-  var dialogResult = await PleromaAsyncOperationHelper
-      .performPleromaAsyncOperation<IRemoteInstanceBloc>(
+  var dialogResult = await UnifediAsyncOperationHelper
+      .performUnifediAsyncOperation<IRemoteInstanceBloc>(
     context: context,
     asyncCode: () async {
       var remoteInstanceBloc = RemoteInstanceBloc.createFromContext(

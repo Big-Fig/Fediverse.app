@@ -56,7 +56,7 @@ class NotificationsTabsBloc extends AsyncInitLoadingBloc
   @override
   Stream<NotificationTab> get selectedTabStream => selectedTabSubject!.stream;
 
-  final IUnifediApiNotificationService pleromaNotificationService;
+  final IUnifediApiNotificationService unifediNotificationService;
   final INotificationRepository notificationRepository;
   final IFilterRepository filterRepository;
   final IPaginationSettingsBloc paginationSettingsBloc;
@@ -64,7 +64,7 @@ class NotificationsTabsBloc extends AsyncInitLoadingBloc
 
   NotificationsTabsBloc({
     required NotificationTab startTab,
-    required this.pleromaNotificationService,
+    required this.unifediNotificationService,
     required this.notificationRepository,
     required this.filterRepository,
     required this.paginationSettingsBloc,
@@ -89,7 +89,7 @@ class NotificationsTabsBloc extends AsyncInitLoadingBloc
           listen: false,
         ),
         startTab: NotificationTab.all,
-        pleromaNotificationService:
+        unifediNotificationService:
             Provider.of<IUnifediApiNotificationService>(context, listen: false),
         notificationRepository:
             INotificationRepository.of(context, listen: false),
@@ -115,7 +115,7 @@ class NotificationsTabsBloc extends AsyncInitLoadingBloc
       var notificationTabBloc = NotificationTabBloc(
         tab: tab,
         notificationRepository: notificationRepository,
-        pleromaNotificationService: pleromaNotificationService,
+        unifediNotificationService: unifediNotificationService,
         filterRepository: filterRepository,
         paginationSettingsBloc: paginationSettingsBloc,
         connectionService: connectionService,

@@ -94,7 +94,7 @@ Future<RegisterResponse?> goToRegisterUnifediApiAccessPage(
                 context,
                 listen: false,
               ),
-              pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc:
+              unifediOAuthLastLaunchedHostToLoginLocalPreferenceBloc:
                   IAuthApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc.of(
                 context,
                 listen: false,

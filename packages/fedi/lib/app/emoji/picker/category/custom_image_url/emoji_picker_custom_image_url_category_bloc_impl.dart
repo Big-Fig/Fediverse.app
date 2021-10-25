@@ -33,7 +33,7 @@ class EmojiPickerCustomImageUrlCategoryBloc extends AsyncInitLoadingBloc
     if (currentInstance.isPleroma) {
       // old instances may not have this API
       // ignore: unawaited_futures
-      _loadPleroma(currentInstance);
+      _loadUnifedi(currentInstance);
     } else if (currentInstance.isMastodon) {
       // ignore: unawaited_futures
       _loadMastodon();
@@ -69,7 +69,7 @@ class EmojiPickerCustomImageUrlCategoryBloc extends AsyncInitLoadingBloc
     );
   }
 
-  Future<void> _loadPleroma(UnifediApiAccess currentInstance) async {
+  Future<void> _loadUnifedi(UnifediApiAccess currentInstance) async {
     // old instances may not have this API
     var urlHost = currentInstance.urlHost;
     var urlSchema = currentInstance.urlSchema;

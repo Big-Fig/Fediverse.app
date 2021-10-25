@@ -79,7 +79,7 @@ extension TimelineTypeStringExtension on String {
 }
 
 extension TimelineTypeStringListExtension on List<String> {
-  List<TimelineType> toPleromaVisibilities() => map(
+  List<TimelineType> toUnifediVisibilities() => map(
         (visibilityString) => visibilityString.toTimelineType(),
       ).toList();
 }

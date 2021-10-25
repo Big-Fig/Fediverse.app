@@ -53,7 +53,7 @@ void showEditGlobalOrInstancePostStatusSettingsDialog({
             context,
             listen: false,
           ),
-          pleromaVisibilityPossibleValues: isPleromaInstance
+          unifediVisibilityPossibleValues: isPleromaInstance
               ? [
                   UnifediApiVisibility.publicValue,
                   UnifediApiVisibility.unlistedValue,

@@ -19,13 +19,13 @@ class UrlHelper {
     '/tag/',
   ];
 
-  static const _pleromaTagUrlParts = [
+  static const _unifediTagUrlParts = [
     '/tag/',
   ];
 
   static const _tagUrlParts = [
     ..._mastodonTagUrlParts,
-    ..._pleromaTagUrlParts,
+    ..._unifediTagUrlParts,
   ];
 
   static String? extractHashtagFromTagUrlIfExist(String url) {

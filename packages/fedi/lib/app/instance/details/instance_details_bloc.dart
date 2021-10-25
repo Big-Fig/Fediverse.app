@@ -155,9 +155,9 @@ extension IInstanceDetailsBlocExtension on IInstanceDetailsBloc {
   Stream<int?> get chatLimitStream =>
       instanceStream.map((instance) => instance?.limits?.chat?.messageLimit);
 
-  List<String>? get pleromaMetadataFeatures => instance?.features;
+  List<String>? get unifediMetadataFeatures => instance?.features;
 
-  Stream<List<String>?> get pleromaMetadataFeaturesStream =>
+  Stream<List<String>?> get unifediMetadataFeaturesStream =>
       instanceStream.map((instance) => instance?.features);
 
   IUnifediApiInstanceFederation? get unifediApiInstanceFederation =>
@@ -167,24 +167,24 @@ extension IInstanceDetailsBlocExtension on IInstanceDetailsBloc {
       get unifediApiInstanceFederationStream =>
           instanceStream.map((instance) => instance?.federation);
 
-  List<String>? get pleromaMetadataPostFormats => instance?.postFormats;
+  List<String>? get unifediMetadataPostFormats => instance?.postFormats;
 
-  Stream<List<String>?> get pleromaMetadataPostFormatsStream =>
+  Stream<List<String>?> get unifediMetadataPostFormatsStream =>
       instanceStream.map((instance) => instance?.postFormats);
 
-  bool? get pleromaMetadataAccountActivationRequired =>
+  bool? get unifediMetadataAccountActivationRequired =>
       instance?.accountActivationRequired;
 
-  Stream<bool?> get pleromaMetadataAccountActivationRequiredStream =>
+  Stream<bool?> get unifediMetadataAccountActivationRequiredStream =>
       instanceStream.map(
         (instance) => instance?.accountActivationRequired,
       );
 
-  IUnifediApiInstanceFieldLimits? get pleromaMetadataFieldsLimits =>
+  IUnifediApiInstanceFieldLimits? get unifediMetadataFieldsLimits =>
       instance?.limits?.field;
 
   Stream<IUnifediApiInstanceFieldLimits?>
-      get pleromaMetadataFieldsLimitsStream =>
+      get unifediMetadataFieldsLimitsStream =>
           instanceStream.map((instance) => instance?.limits?.field);
 
   String? get vapidPublicKey => instance?.vapidPublicKey;

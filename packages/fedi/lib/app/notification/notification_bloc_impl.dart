@@ -27,7 +27,7 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
     bool isNeedWatchLocalRepositoryForUpdates = true,
   }) =>
       NotificationBloc(
-        pleromaNotificationService: Provider.of<IUnifediApiNotificationService>(
+        unifediNotificationService: Provider.of<IUnifediApiNotificationService>(
           context,
           listen: false,
         ),
@@ -43,12 +43,12 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
 
   final BehaviorSubject<INotification> _notificationSubject;
 
-  final IUnifediApiNotificationService pleromaNotificationService;
+  final IUnifediApiNotificationService unifediNotificationService;
   final INotificationRepository notificationRepository;
   final bool isNeedWatchLocalRepositoryForUpdates;
 
   NotificationBloc({
-    required this.pleromaNotificationService,
+    required this.unifediNotificationService,
     required this.notificationRepository,
     required INotification notification,
     bool needRefreshFromNetworkOnInit = false,
@@ -159,7 +159,7 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
       .distinct();
 
   Future<void> refreshFromNetwork() async {
-    var remoteNotification = await pleromaNotificationService.getNotification(
+    var remoteNotification = await unifediNotificationService.getNotification(
       notificationId: remoteId,
     );
 
@@ -199,7 +199,7 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
 
   @override
   Future<void> dismiss() async {
-    await pleromaNotificationService.dismissNotification(
+    await unifediNotificationService.dismissNotification(
       notificationId: notification.remoteId,
     );
 
@@ -213,9 +213,9 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
     await notificationRepository.markAsRead(
       notification: notification,
     );
-    if (pleromaNotificationService.isPleroma) {
+    if (unifediNotificationService.isPleroma) {
       // ignore: unawaited_futures, avoid-ignoring-return-values
-      pleromaNotificationService.markAsReadSingle(
+      unifediNotificationService.markAsReadSingle(
         notificationId: notification.remoteId,
       );
     }

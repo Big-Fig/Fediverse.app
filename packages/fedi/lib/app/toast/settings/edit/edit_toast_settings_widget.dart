@@ -32,7 +32,7 @@ class EditToastSettingsWidget extends StatelessWidget {
           const _EditToastSettingsMentionFieldWidget(),
           const _EditToastSettingsReblogFieldWidget(),
           const _EditToastSettingsPollFieldWidget(),
-          const _EditToastSettingsPleromaMentionFieldWidget(),
+          const _EditToastSettingsUnifediMentionFieldWidget(),
           const _EditToastSettingsEmojiReactionFieldWidget(),
         ],
       );
@@ -51,7 +51,7 @@ class _EditToastSettingsEmojiReactionFieldWidget extends StatelessWidget {
       update: (context, value, previous) => value.emojiReactionFieldBloc,
       child: BoolValueFormFieldRowWidget(
         label:
-            S.of(context).app_push_settings_field_pleroma_emojiReaction_label,
+            S.of(context).app_push_settings_field_unifedi_emojiReaction_label,
         descriptionOnDisabled: editToastSettingsBloc.isEnabled
             ? S.of(context).app_settings_warning_notSupportedOnThisInstance_desc
             : null,
@@ -60,8 +60,8 @@ class _EditToastSettingsEmojiReactionFieldWidget extends StatelessWidget {
   }
 }
 
-class _EditToastSettingsPleromaMentionFieldWidget extends StatelessWidget {
-  const _EditToastSettingsPleromaMentionFieldWidget({
+class _EditToastSettingsUnifediMentionFieldWidget extends StatelessWidget {
+  const _EditToastSettingsUnifediMentionFieldWidget({
     Key? key,
   }) : super(key: key);
 
@@ -72,7 +72,7 @@ class _EditToastSettingsPleromaMentionFieldWidget extends StatelessWidget {
     return ProxyProvider<IEditToastSettingsBloc, IBoolValueFormFieldBloc>(
       update: (context, value, previous) => value.chatMentionFieldBloc,
       child: BoolValueFormFieldRowWidget(
-        label: S.of(context).app_push_settings_field_pleroma_chat_label,
+        label: S.of(context).app_push_settings_field_unifedi_chat_label,
         descriptionOnDisabled: editToastSettingsBloc.isEnabled
             ? S.of(context).app_settings_warning_notSupportedOnThisInstance_desc
             : null,

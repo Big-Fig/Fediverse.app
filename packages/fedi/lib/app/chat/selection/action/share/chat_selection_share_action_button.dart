@@ -1,8 +1,8 @@
-import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
+import 'package:fedi/app/async/unifedi/unifedi_async_operation_helper.dart';
 import 'package:fedi/app/chat/conversation/share/conversation_chat_share_entity_page.dart';
 import 'package:fedi/app/chat/message/chat_message_model.dart';
-import 'package:fedi/app/chat/pleroma/share/pleroma_chat_share_entity_page.dart';
 import 'package:fedi/app/chat/selection/chat_selection_bloc.dart';
+import 'package:fedi/app/chat/unifedi/share/unifedi_chat_share_entity_page.dart';
 import 'package:fedi/app/html/html_text_helper.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
 import 'package:fedi/app/media/attachment/reupload/media_attachment_reupload_service.dart';
@@ -58,7 +58,7 @@ class ChatSelectionShareActionButtonWidget extends StatelessWidget {
           },
           chatsShareAction: (context) {
             Navigator.of(context).pop();
-            goToPleromaChatShareEntityPage(
+            goToUnifediChatShareEntityPage(
               context: context,
               shareEntity: _mapCurrentSelectionToShareEntity(currentSelection),
               instanceLocation: instanceLocation,
@@ -73,8 +73,8 @@ class ChatSelectionShareActionButtonWidget extends StatelessWidget {
             List<IUnifediApiMediaAttachment>? reuploadedMediaAttachments;
 
             if (originalMediaAttachments?.isNotEmpty == true) {
-              var dialogResult = await PleromaAsyncOperationHelper
-                  .performPleromaAsyncOperation<
+              var dialogResult = await UnifediAsyncOperationHelper
+                  .performUnifediAsyncOperation<
                       List<IUnifediApiMediaAttachment>>(
                 context: context,
                 asyncCode: () async {

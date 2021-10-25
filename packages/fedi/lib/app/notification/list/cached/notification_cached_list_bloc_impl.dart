@@ -17,7 +17,7 @@ import 'package:unifedi_api/unifedi_api.dart';
 
 class NotificationCachedListBloc extends AsyncInitLoadingBloc
     implements INotificationCachedListBloc {
-  final IUnifediApiNotificationService pleromaNotificationService;
+  final IUnifediApiNotificationService unifediNotificationService;
   final INotificationRepository notificationRepository;
   final IFilterRepository filterRepository;
   final List<UnifediApiNotificationType> excludeTypes;
@@ -33,10 +33,10 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
       );
 
   @override
-  IUnifediApiService get unifediApi => pleromaNotificationService;
+  IUnifediApiService get unifediApi => unifediNotificationService;
 
   NotificationCachedListBloc({
-    required this.pleromaNotificationService,
+    required this.unifediNotificationService,
     required this.notificationRepository,
     required this.filterRepository,
     required this.excludeTypes,
@@ -101,8 +101,8 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
     required INotification? newerThan,
     required INotification? olderThan,
   }) async {
-    // todo: dont exclude pleroma types on mastodon instances
-    var remoteNotifications = await pleromaNotificationService.getNotifications(
+    // todo: dont exclude unifedi types on mastodon instances
+    var remoteNotifications = await unifediNotificationService.getNotifications(
       includeTypes: null,
       excludeVisibilities: null,
       onlyFromAccountId: null,
@@ -125,7 +125,7 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
     required List<UnifediApiNotificationType> excludeTypes,
   }) =>
       NotificationCachedListBloc(
-        pleromaNotificationService: Provider.of<IUnifediApiNotificationService>(
+        unifediNotificationService: Provider.of<IUnifediApiNotificationService>(
           context,
           listen: false,
         ),
@@ -169,7 +169,7 @@ class NotificationCachedListBloc extends AsyncInitLoadingBloc
 
   @override
   Future<void> dismissAll() async {
-    await pleromaNotificationService.dismissAll();
+    await unifediNotificationService.dismissAll();
     await notificationRepository.dismissAll();
   }
 }

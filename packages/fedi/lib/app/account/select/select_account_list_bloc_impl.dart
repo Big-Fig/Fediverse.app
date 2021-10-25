@@ -34,7 +34,7 @@ var _logger = Logger('select_account_list_bloc_impl.dart');
 
 class SelectAccountListBloc extends DisposableOwner
     implements ISelectAccountListBloc {
-  final IUnifediApiAccountService pleromaAuthAccountService;
+  final IUnifediApiAccountService unifediAuthAccountService;
   final IAccountRepository accountRepository;
   final IMyAccountBloc myAccountBloc;
   final bool excludeMyAccount;
@@ -55,7 +55,7 @@ class SelectAccountListBloc extends DisposableOwner
   String? get searchText => searchInputBloc.confirmedSearchTerm;
 
   SelectAccountListBloc({
-    required this.pleromaAuthAccountService,
+    required this.unifediAuthAccountService,
     required this.accountRepository,
     required this.myAccountBloc,
     required this.excludeMyAccount,
@@ -70,7 +70,7 @@ class SelectAccountListBloc extends DisposableOwner
   }
 
   @override
-  IUnifediApiService get unifediApi => pleromaAuthAccountService;
+  IUnifediApiService get unifediApi => unifediAuthAccountService;
 
   @override
   Future<void> refreshItemsFromRemoteForPage({
@@ -89,7 +89,7 @@ class SelectAccountListBloc extends DisposableOwner
     var searchTermExist = searchText?.isNotEmpty == true;
     if (searchTermExist) {
       var following = followingsOnly;
-      remoteAccounts = await pleromaAuthAccountService.search(
+      remoteAccounts = await unifediAuthAccountService.search(
         query: searchText!,
         resolve: true,
         following: following,
@@ -149,7 +149,7 @@ class SelectAccountListBloc extends DisposableOwner
     required IAccount? newerThan,
     required int? limit,
   }) async =>
-      pleromaAuthAccountService.getAccountFollowings(
+      unifediAuthAccountService.getAccountFollowings(
         pagination: UnifediApiPagination(
           minId: newerThan?.remoteId,
           maxId: olderThan?.remoteId,
@@ -258,7 +258,7 @@ class SelectAccountListBloc extends DisposableOwner
         excludeMyAccount: excludeMyAccount,
         myAccountBloc: IMyAccountBloc.of(context, listen: false),
         accountRepository: IAccountRepository.of(context, listen: false),
-        pleromaAuthAccountService:
+        unifediAuthAccountService:
             Provider.of<IUnifediApiAccountService>(context, listen: false),
         customEmptySearchRemoteAccountListLoader: customRemoteAccountListLoader,
         customEmptySearchLocalAccountListLoader: customLocalAccountListLoader,

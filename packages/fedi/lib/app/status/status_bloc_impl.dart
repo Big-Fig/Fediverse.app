@@ -286,12 +286,12 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
     required String url,
   }) async {
     var tagsToSearch = reblogOrOriginalTags;
-    var foundPleromaHashtag = tagsToSearch?.firstWhereOrNull(
-      (pleromaHashtag) {
+    var foundUnifediHashtag = tagsToSearch?.firstWhereOrNull(
+      (unifediHashtag) {
         // todo: ask user open on local instance or remote
-        var pleromaHashtagUrl = pleromaHashtag.url?.toLowerCase();
-        if (pleromaHashtagUrl != null) {
-          var success = url.toLowerCase().contains(pleromaHashtagUrl);
+        var unifediHashtagUrl = unifediHashtag.url?.toLowerCase();
+        if (unifediHashtagUrl != null) {
+          var success = url.toLowerCase().contains(unifediHashtagUrl);
 
           return success;
         } else {
@@ -300,7 +300,7 @@ abstract class StatusBloc extends DisposableOwner implements IStatusBloc {
       },
     );
 
-    var hashtag = foundPleromaHashtag?.toHashtag();
+    var hashtag = foundUnifediHashtag?.toHashtag();
 
     return hashtag;
   }

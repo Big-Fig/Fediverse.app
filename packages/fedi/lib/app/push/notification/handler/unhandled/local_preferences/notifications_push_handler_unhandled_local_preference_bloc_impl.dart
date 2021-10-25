@@ -34,25 +34,25 @@ class NotificationsPushHandlerUnhandledLocalPreferenceBloc
   Future<void> addUnhandledMessage(
     NotificationsPushHandlerMessage notificationsPushHandlerMessage,
   ) async {
-    var pleromaUnhandledList = value;
+    var unifediUnhandledList = value;
 
-    pleromaUnhandledList.messages.add(notificationsPushHandlerMessage);
+    unifediUnhandledList.messages.add(notificationsPushHandlerMessage);
     _logger.finest(
       () => 'loadUnhandledMessagesForInstance \n'
           '\t notificationsPushHandlerMessage = $notificationsPushHandlerMessage'
-          '\t pleromaUnhandledList.messages = ${pleromaUnhandledList.messages.length}',
+          '\t unifediUnhandledList.messages = ${unifediUnhandledList.messages.length}',
     );
 
-    await setValue(pleromaUnhandledList);
+    await setValue(unifediUnhandledList);
   }
 
   @override
   List<NotificationsPushHandlerMessage> loadUnhandledMessagesForInstance(
     UnifediApiAccess instance,
   ) {
-    var pleromaUnhandledList = value;
+    var unifediUnhandledList = value;
 
-    var messagesForInstances = pleromaUnhandledList.messages
+    var messagesForInstances = unifediUnhandledList.messages
         .where(
           (message) => instance.isInstanceWithHostAndAcct(
             host: message.body.server,
@@ -74,9 +74,9 @@ class NotificationsPushHandlerUnhandledLocalPreferenceBloc
   Future<void> markAsHandled(
     List<NotificationsPushHandlerMessage> messages,
   ) async {
-    var pleromaUnhandledList = value;
+    var unifediUnhandledList = value;
 
-    var cleanedMessages = pleromaUnhandledList.messages
+    var cleanedMessages = unifediUnhandledList.messages
         .where(
           (message) => !messages.contains(
             message,

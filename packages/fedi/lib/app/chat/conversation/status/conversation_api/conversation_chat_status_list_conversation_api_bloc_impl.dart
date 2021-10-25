@@ -13,16 +13,16 @@ var _logger =
 
 class ConversationChatStatusListConversationApiBloc
     extends ConversationChatStatusListBloc {
-  final IUnifediApiConversationService pleromaConversationService;
+  final IUnifediApiConversationService unifediConversationService;
 
   ConversationChatStatusListConversationApiBloc({
     required IConversationChat? conversation,
-    required this.pleromaConversationService,
+    required this.unifediConversationService,
     required IStatusRepository statusRepository,
   }) : super(conversation: conversation, statusRepository: statusRepository);
 
   @override
-  IUnifediApiService get unifediApi => pleromaConversationService;
+  IUnifediApiService get unifediApi => unifediConversationService;
 
   @override
   Future<void> refreshItemsFromRemoteForPage({
@@ -38,7 +38,7 @@ class ConversationChatStatusListConversationApiBloc
     );
 
     var remoteStatuses =
-        await pleromaConversationService.getConversationStatuses(
+        await unifediConversationService.getConversationStatuses(
       conversationId: conversation!.remoteId,
       pagination: UnifediApiPagination(
         limit: limit,
@@ -60,7 +60,7 @@ class ConversationChatStatusListConversationApiBloc
   }) =>
       ConversationChatStatusListConversationApiBloc(
         conversation: conversation,
-        pleromaConversationService:
+        unifediConversationService:
             Provider.of<IUnifediApiConversationService>(context, listen: false),
         statusRepository: IStatusRepository.of(
           context,

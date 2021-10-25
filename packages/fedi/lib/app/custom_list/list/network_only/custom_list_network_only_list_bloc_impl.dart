@@ -7,20 +7,20 @@ import 'package:provider/provider.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
 class CustomListNetworkOnlyListBloc extends INetworkOnlyListBloc<ICustomList> {
-  final IUnifediApiListService pleromaListService;
+  final IUnifediApiListService unifediListService;
 
   CustomListNetworkOnlyListBloc({
-    required this.pleromaListService,
+    required this.unifediListService,
   });
 
   @override
-  IUnifediApiService get unifediApi => pleromaListService;
+  IUnifediApiService get unifediApi => unifediListService;
 
   static CustomListNetworkOnlyListBloc createFromContext(
     BuildContext context,
   ) =>
       CustomListNetworkOnlyListBloc(
-        pleromaListService:
+        unifediListService:
             Provider.of<IUnifediApiListService>(context, listen: false),
       );
 
@@ -45,10 +45,10 @@ class CustomListNetworkOnlyListBloc extends INetworkOnlyListBloc<ICustomList> {
     String? maxId,
   }) async {
     if (pageIndex == 0) {
-      var pleromaLists = await pleromaListService.getLists();
+      var unifediLists = await unifediListService.getLists();
 
-      return pleromaLists
-          .map((pleromaList) => pleromaList.toCustomList())
+      return unifediLists
+          .map((unifediList) => unifediList.toCustomList())
           .toList();
     } else {
       return [];

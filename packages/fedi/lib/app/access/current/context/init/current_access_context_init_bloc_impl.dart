@@ -5,7 +5,7 @@ import 'package:fedi/app/access/current/context/init/current_access_context_init
 import 'package:fedi/app/access/current/current_access_bloc.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
-import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
+import 'package:fedi/app/chat/unifedi/repository/unifedi_chat_repository.dart';
 import 'package:fedi/app/filter/repository/filter_repository.dart';
 import 'package:fedi/app/instance/announcement/repository/instance_announcement_repository.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
@@ -25,15 +25,15 @@ class CurrentUnifediApiAccessContextInitBloc extends AsyncInitLoadingBloc
     implements ICurrentUnifediApiAccessContextInitBloc {
   final IMyAccountBloc myAccountBloc;
   final IUnifediApiInstanceService unifediApiInstanceService;
-  final IUnifediApiNotificationService pleromaNotificationService;
-  final IUnifediApiChatService pleromaApiChatService;
-  final IUnifediApiConversationService pleromaConversationService;
+  final IUnifediApiNotificationService unifediNotificationService;
+  final IUnifediApiChatService unifediApiChatService;
+  final IUnifediApiConversationService unifediConversationService;
   final IUnifediApiFilterService unifediApiFilterService;
   final IUnifediApiAnnouncementService unifediApiAnnouncementService;
   final IFilterRepository filterRepository;
   final INotificationRepository notificationRepository;
   final IConversationChatRepository conversationChatRepository;
-  final IPleromaChatRepository pleromaChatRepository;
+  final IUnifediChatRepository unifediChatRepository;
   final IInstanceAnnouncementRepository announcementRepository;
   final ICurrentUnifediApiAccessBloc currentUnifediApiAccessBloc;
   final IConnectionService connectionService;
@@ -43,13 +43,13 @@ class CurrentUnifediApiAccessContextInitBloc extends AsyncInitLoadingBloc
     required this.unifediApiInstanceService,
     required this.currentUnifediApiAccessBloc,
     required this.unifediApiFilterService,
-    required this.pleromaConversationService,
-    required this.pleromaApiChatService,
-    required this.pleromaNotificationService,
+    required this.unifediConversationService,
+    required this.unifediApiChatService,
+    required this.unifediNotificationService,
     required this.filterRepository,
     required this.notificationRepository,
     required this.conversationChatRepository,
-    required this.pleromaChatRepository,
+    required this.unifediChatRepository,
     required this.connectionService,
     required this.announcementRepository,
     required this.unifediApiAnnouncementService,
@@ -181,8 +181,8 @@ class CurrentUnifediApiAccessContextInitBloc extends AsyncInitLoadingBloc
     );
     var actualConversationChatUnreadCount =
         await conversationChatRepository.getTotalUnreadCount();
-    var actualPleromaChatUnreadCount =
-        await pleromaChatRepository.getTotalUnreadCount();
+    var actualUnifediChatUnreadCount =
+        await unifediChatRepository.getTotalUnreadCount();
     var actualAnnouncementCount = await announcementRepository.countAll();
 
     var myAccountUnreadNotificationsCount = 0;
@@ -196,7 +196,7 @@ class CurrentUnifediApiAccessContextInitBloc extends AsyncInitLoadingBloc
     }
 
     var isNeedUpdateAnnouncement = isMastodon && actualAnnouncementCount == 0;
-    var isNeedUpdateChats = isPleroma && (actualPleromaChatUnreadCount == 0);
+    var isNeedUpdateChats = isPleroma && (actualUnifediChatUnreadCount == 0);
     var isNeedUpdateConversations =
         (isMastodon && actualConversationChatUnreadCount == 0) ||
             (isPleroma &&
@@ -268,7 +268,7 @@ class CurrentUnifediApiAccessContextInitBloc extends AsyncInitLoadingBloc
   }
 
   Future<void> updateNotifications() async {
-    var remoteNotifications = await pleromaNotificationService.getNotifications(
+    var remoteNotifications = await unifediNotificationService.getNotifications(
       pagination: null,
       excludeTypes: null,
       onlyFromAccountId: null,
@@ -299,17 +299,17 @@ class CurrentUnifediApiAccessContextInitBloc extends AsyncInitLoadingBloc
   }
 
   Future<void> updateChats() async {
-    var remoteChats = await pleromaApiChatService.getChats(
+    var remoteChats = await unifediApiChatService.getChats(
       pagination: null,
     );
-    await pleromaChatRepository.upsertAllInRemoteType(
+    await unifediChatRepository.upsertAllInRemoteType(
       remoteChats,
       batchTransaction: null,
     );
   }
 
   Future<void> updateConversations() async {
-    var remoteConversations = await pleromaConversationService.getConversations(
+    var remoteConversations = await unifediConversationService.getConversations(
       pagination: null,
       recipientsIds: null,
     );
@@ -327,7 +327,7 @@ class CurrentUnifediApiAccessContextInitBloc extends AsyncInitLoadingBloc
           context,
           listen: false,
         ),
-        pleromaChatRepository: IPleromaChatRepository.of(
+        unifediChatRepository: IUnifediChatRepository.of(
           context,
           listen: false,
         ),
@@ -339,15 +339,15 @@ class CurrentUnifediApiAccessContextInitBloc extends AsyncInitLoadingBloc
           context,
           listen: false,
         ),
-        pleromaApiChatService: Provider.of<IUnifediApiChatService>(
+        unifediApiChatService: Provider.of<IUnifediApiChatService>(
           context,
           listen: false,
         ),
-        pleromaNotificationService: Provider.of<IUnifediApiNotificationService>(
+        unifediNotificationService: Provider.of<IUnifediApiNotificationService>(
           context,
           listen: false,
         ),
-        pleromaConversationService: Provider.of<IUnifediApiConversationService>(
+        unifediConversationService: Provider.of<IUnifediApiConversationService>(
           context,
           listen: false,
         ),

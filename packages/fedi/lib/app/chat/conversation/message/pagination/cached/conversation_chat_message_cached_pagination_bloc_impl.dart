@@ -3,7 +3,7 @@ import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/chat/conversation/message/conversation_chat_message_model.dart';
 import 'package:fedi/app/chat/conversation/message/list/cached/conversation_chat_message_cached_list_bloc.dart';
 import 'package:fedi/app/chat/conversation/message/pagination/cached/conversation_chat_message_cached_pagination_bloc.dart';
-import 'package:fedi/app/pagination/cached/cached_pleroma_pagination_bloc_impl.dart';
+import 'package:fedi/app/pagination/cached/cached_unifedi_pagination_bloc_impl.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/pagination/cached/cached_pagination_bloc.dart';
@@ -14,7 +14,7 @@ import 'package:provider/provider.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
 class ConversationChatMessageCachedPaginationBloc
-    extends CachedPleromaPaginationBloc<IConversationChatMessage>
+    extends CachedUnifediPaginationBloc<IConversationChatMessage>
     implements IConversationChatMessageCachedPaginationBloc {
   final IConversationChatMessageCachedListBloc chatMessageListService;
 

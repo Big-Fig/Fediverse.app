@@ -2,7 +2,7 @@ import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/account/my/my_account_bloc.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/chat/conversation/repository/conversation_chat_repository.dart';
-import 'package:fedi/app/chat/pleroma/pleroma_chat_new_messages_handler_bloc.dart';
+import 'package:fedi/app/chat/unifedi/unifedi_chat_new_messages_handler_bloc.dart';
 import 'package:fedi/app/instance/announcement/repository/instance_announcement_repository.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/repository/status_repository.dart';
@@ -24,7 +24,7 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
   final INotificationRepository notificationRepository;
   final IInstanceAnnouncementRepository instanceAnnouncementRepository;
   final IConversationChatRepository conversationRepository;
-  final IPleromaChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
+  final IUnifediChatNewMessagesHandlerBloc chatNewMessagesHandlerBloc;
   final IConversationChatNewMessagesHandlerBloc
       conversationChatNewMessagesHandlerBloc;
 
@@ -72,9 +72,9 @@ abstract class WebSocketsChannelHandler extends DisposableOwner
       notification: (_) async {
         var notification = event.notification!;
 
-        var pleromaNotificationType = notification.typeAsUnifediApi;
+        var unifediNotificationType = notification.typeAsUnifediApi;
         // refresh to update followRequestCount
-        if (pleromaNotificationType ==
+        if (unifediNotificationType ==
             UnifediApiNotificationType.followRequestValue) {
           // ignore: unawaited_futures
           myAccountBloc.refreshFromNetwork(

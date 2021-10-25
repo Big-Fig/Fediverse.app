@@ -9,7 +9,7 @@ class ChatSettingsModelMockHelper {
   }) =>
       // hack to be sure that seed1 and seed2 wil produce different objects
       ChatSettings(
-        replaceConversationsWithPleromaChats: seed == 'seed1'
+        replaceConversationsWithUnifediChats: seed == 'seed1'
             ? true
             : seed == 'seed2'
                 ? false

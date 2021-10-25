@@ -1,7 +1,7 @@
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/account/my/domain_block/add/add_my_account_domain_block_bloc.dart';
 import 'package:fedi/app/account/my/domain_block/add/add_my_account_domain_block_bloc_impl.dart';
-import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
+import 'package:fedi/app/async/unifedi/unifedi_async_operation_helper.dart';
 import 'package:fedi/app/form/field/value/string/string_value_form_field_row_widget.dart';
 import 'package:fedi/app/ui/dialog/fedi_dialog.dart';
 import 'package:fedi/dialog/base_dialog.dart';
@@ -30,8 +30,8 @@ class AddMyAccountDomainBlockDialog extends FediDialog {
                 var addMyAccountDomainBlockBloc =
                     IAddMyAccountDomainBlockBloc.of(context, listen: false);
 
-                var dialogResult = await PleromaAsyncOperationHelper
-                    .performPleromaAsyncOperation(
+                var dialogResult = await UnifediAsyncOperationHelper
+                    .performUnifediAsyncOperation(
                   context: context,
                   asyncCode: () async {
                     await addMyAccountDomainBlockBloc.submit();
@@ -54,7 +54,7 @@ class AddMyAccountDomainBlockDialog extends FediDialog {
           cancelable: true,
         ) {
     addMyAccountDomainBlockBloc = AddMyAccountDomainBlockBloc(
-      pleromaAuthAccountService: Provider.of<IUnifediApiAccountService>(
+      unifediAuthAccountService: Provider.of<IUnifediApiAccountService>(
         context,
         listen: false,
       ),

@@ -29,16 +29,16 @@ abstract class IScheduledStatusRepository
       );
   //
   // Future<void> upsertRemoteScheduledStatuses(
-  //   List<IPleromaScheduledStatus> remoteScheduledStatuses,
+  //   List<IUnifediScheduledStatus> remoteScheduledStatuses,
   // );
   //
   // Future<void> upsertRemoteScheduledStatus(
-  //   IPleromaScheduledStatus remoteScheduledStatus,
+  //   IUnifediScheduledStatus remoteScheduledStatus,
   // );
 
   // Future<void> updateLocalScheduledStatusByRemoteScheduledStatus({
   //   required IScheduledStatus oldLocalScheduledStatus,
-  //   required IPleromaScheduledStatus newRemoteScheduledStatus,
+  //   required IUnifediScheduledStatus newRemoteScheduledStatus,
   // });
 
   Future<void> markAsCanceled({

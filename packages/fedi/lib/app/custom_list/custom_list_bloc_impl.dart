@@ -9,13 +9,13 @@ import 'package:rxdart/rxdart.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
 class CustomListBloc extends DisposableOwner implements ICustomListBloc {
-  final IUnifediApiListService pleromaListService;
+  final IUnifediApiListService unifediListService;
 
   BehaviorSubject<ICustomList?> customListSubject;
 
   CustomListBloc({
     required ICustomList? customList,
-    required this.pleromaListService,
+    required this.unifediListService,
   }) : customListSubject = BehaviorSubject.seeded(customList) {
     customListSubject.disposeWith(this);
   }
@@ -49,7 +49,7 @@ class CustomListBloc extends DisposableOwner implements ICustomListBloc {
   }) =>
       CustomListBloc(
         customList: customList,
-        pleromaListService: Provider.of<IUnifediApiListService>(
+        unifediListService: Provider.of<IUnifediApiListService>(
           context,
           listen: false,
         ),

@@ -3,8 +3,8 @@ import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi/app/custom_list/custom_list_model.dart';
 import 'package:fedi/app/custom_list/list/pagination/custom_list_pagination_bloc.dart';
 import 'package:fedi/app/list/network_only/network_only_list_bloc.dart';
-import 'package:fedi/app/pagination/network_only/network_only_pleroma_pagination_bloc.dart';
-import 'package:fedi/app/pagination/network_only/network_only_pleroma_pagination_bloc_impl.dart';
+import 'package:fedi/app/pagination/network_only/network_only_unifedi_pagination_bloc.dart';
+import 'package:fedi/app/pagination/network_only/network_only_unifedi_pagination_bloc_impl.dart';
 import 'package:fedi/app/pagination/settings/pagination_settings_bloc.dart';
 import 'package:fedi/connection/connection_service.dart';
 import 'package:fedi/pagination/pagination_bloc.dart';
@@ -14,7 +14,7 @@ import 'package:provider/provider.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
 class CustomListNetworkOnlyPaginationBloc
-    extends NetworkOnlyPleromaPaginationBloc<ICustomList>
+    extends NetworkOnlyUnifediPaginationBloc<ICustomList>
     implements ICustomListNetworkOnlyPaginationBloc {
   final INetworkOnlyListBloc<ICustomList> listService;
 
@@ -73,7 +73,7 @@ class CustomListNetworkOnlyPaginationBloc
       DisposableProvider<ICustomListNetworkOnlyPaginationBloc>(
         create: CustomListNetworkOnlyPaginationBloc.createFromContext,
         child: ProxyProvider<ICustomListNetworkOnlyPaginationBloc,
-            INetworkOnlyPleromaPaginationBloc<ICustomList>>(
+            INetworkOnlyUnifediPaginationBloc<ICustomList>>(
           update: (context, value, previous) => value,
           child: ProxyProvider<ICustomListNetworkOnlyPaginationBloc,
               IPaginationBloc<PaginationPage<ICustomList>, ICustomList>>(

@@ -54,7 +54,7 @@ void main() {
 
   Future _update(IFilter filter) async {
     await filterRepository.upsertInRemoteType(
-      filter.toPleromaFilter(),
+      filter.toUnifediFilter(),
     );
 
     await RxDartMockHelper.waitToExecuteRxCallbacks();

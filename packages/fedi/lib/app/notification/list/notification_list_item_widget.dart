@@ -4,7 +4,7 @@ import 'package:fedi/app/account/avatar/account_avatar_widget.dart';
 import 'package:fedi/app/account/details/local_account_details_page.dart';
 import 'package:fedi/app/account/display_name/account_display_name_widget.dart';
 import 'package:fedi/app/account/local_account_bloc_impl.dart';
-import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
+import 'package:fedi/app/async/unifedi/unifedi_async_operation_helper.dart';
 import 'package:fedi/app/emoji/text/emoji_text_model.dart';
 import 'package:fedi/app/html/html_text_bloc.dart';
 import 'package:fedi/app/html/html_text_bloc_impl.dart';
@@ -131,7 +131,7 @@ class _NotificationListItemBodyDismissActionWidget extends StatelessWidget {
       color: IFediUiColorTheme.of(context).white,
       onTap: () {
         // ignore: avoid-ignoring-return-values
-        PleromaAsyncOperationHelper.performPleromaAsyncOperation<void>(
+        UnifediAsyncOperationHelper.performUnifediAsyncOperation<void>(
           context: context,
           showProgressDialog: false,
           asyncCode: () => notificationBloc.dismiss(),
@@ -156,7 +156,7 @@ class _NotificationListItemBodyMarkAsReadActionWidget extends StatelessWidget {
       color: IFediUiColorTheme.of(context).white,
       onTap: () {
         // ignore: avoid-ignoring-return-values
-        PleromaAsyncOperationHelper.performPleromaAsyncOperation<void>(
+        UnifediAsyncOperationHelper.performUnifediAsyncOperation<void>(
           context: context,
           showProgressDialog: false,
           asyncCode: () => notificationBloc.markAsRead(),
@@ -370,15 +370,15 @@ class _NotificationListItemContentWidget extends StatelessWidget {
         followRequest: (_) =>
             S.of(context).app_notification_header_followRequest,
         emojiReaction: (_) =>
-            S.of(context).app_notification_header_pleromaEmojiReaction(
+            S.of(context).app_notification_header_unifediEmojiReaction(
                   notificationBloc.notification.emoji!,
                 ),
         chatMention: (_) {
           var rawText =
-              '<b>${S.of(context).app_notification_header_pleromaChatMention_prefix}</b>';
+              '<b>${S.of(context).app_notification_header_unifediChatMention_prefix}</b>';
 
           return rawText +
-              S.of(context).app_notification_header_pleromaChatMention_postfix(
+              S.of(context).app_notification_header_unifediChatMention_postfix(
                     _extractChatMessageRawContent(notificationBloc)!,
                   );
         },

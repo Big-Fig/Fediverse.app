@@ -1,7 +1,7 @@
 import 'package:fedi/app/account/details/local_account_details_page.dart';
 import 'package:fedi/app/account/my/follow_request/my_account_follow_request_list_page.dart';
-import 'package:fedi/app/chat/pleroma/pleroma_chat_page.dart';
-import 'package:fedi/app/chat/pleroma/repository/pleroma_chat_repository.dart';
+import 'package:fedi/app/chat/unifedi/repository/unifedi_chat_repository.dart';
+import 'package:fedi/app/chat/unifedi/unifedi_chat_page.dart';
 import 'package:fedi/app/notification/notification_model.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/status/thread/local_status_thread_page.dart';
@@ -14,16 +14,16 @@ extension GoToNotificationExtension on INotification {
     var notificationRepository =
         INotificationRepository.of(context, listen: false);
 
-    var pleromaNotificationService =
+    var unifediNotificationService =
         Provider.of<IUnifediApiNotificationService>(context, listen: false);
 
     // ignore: unawaited_futures
     notificationRepository.markAsRead(
       notification: this,
     );
-    if (pleromaNotificationService.isPleroma) {
+    if (unifediNotificationService.isPleroma) {
       // ignore: unawaited_futures, avoid-ignoring-return-values
-      pleromaNotificationService.markAsReadSingle(
+      unifediNotificationService.markAsReadSingle(
         notificationId: remoteId,
       );
     }
@@ -40,12 +40,12 @@ extension GoToNotificationExtension on INotification {
         initialMediaAttachment: null,
       );
     } else if (chatRemoteId != null) {
-      var chatRepository = IPleromaChatRepository.of(context, listen: false);
+      var chatRepository = IUnifediChatRepository.of(context, listen: false);
 
       var chat = await chatRepository.findByRemoteIdInAppType(chatRemoteId);
 
       if (chat != null) {
-        goToPleromaChatPage(context, chat: chat);
+        goToUnifediChatPage(context, chat: chat);
       }
     } else if (account != null) {
       goToLocalAccountDetailsPage(

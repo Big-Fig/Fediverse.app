@@ -5,7 +5,7 @@ import 'package:fedi/app/hashtag/hashtag_model.dart';
 import 'package:fedi/app/hashtag/page/hashtag_page_widget.dart';
 import 'package:fedi/app/hashtag/page/local/local_hashtag_page_bloc.dart';
 import 'package:fedi/app/hashtag/page/local/local_hashtag_page_bloc_impl.dart';
-import 'package:fedi/app/list/cached/pleroma_cached_list_bloc.dart';
+import 'package:fedi/app/list/cached/unifedi_cached_list_bloc.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc.dart';
 import 'package:fedi/app/status/list/cached/status_cached_list_bloc_proxy_provider.dart';
 import 'package:fedi/app/status/list/status_list_tap_to_load_overlay_widget.dart';

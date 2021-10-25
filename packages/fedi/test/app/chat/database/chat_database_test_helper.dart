@@ -1,5 +1,5 @@
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
-import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
+import 'package:fedi/app/chat/unifedi/unifedi_chat_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -20,11 +20,11 @@ class ChatDatabaseMockHelper {
         accountRemoteId: dbAccount.remoteId,
       );
 
-  static Future<DbPleromaChatPopulated> createTestDbChatPopulated(
+  static Future<DbUnifediChatPopulated> createTestDbChatPopulated(
     DbChat dbChat,
     AccountRepository accountRepository,
   ) async {
-    var dbChatPopulated = DbPleromaChatPopulated(
+    var dbChatPopulated = DbUnifediChatPopulated(
       dbChat: dbChat,
       dbAccount: (await accountRepository.findByRemoteIdInDbType(
         dbChat.accountRemoteId,
@@ -34,7 +34,7 @@ class ChatDatabaseMockHelper {
     return dbChatPopulated;
   }
 
-  static void expectDbChat(IPleromaChat? actual, DbChat? expected) {
+  static void expectDbChat(IUnifediChat? actual, DbChat? expected) {
     if (actual == null && expected == null) {
       return;
     }

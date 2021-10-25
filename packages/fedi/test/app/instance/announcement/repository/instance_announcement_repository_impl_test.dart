@@ -15,7 +15,7 @@ import 'instance_announcement_repository_test_helper.dart';
 
 // ignore_for_file: no-magic-number, avoid-late-keyword
 // ignore_for_file: avoid-ignoring-return-values
-const String baseUrl = 'https://pleroma.com';
+const String baseUrl = 'https://unifedi.com';
 
 void main() {
   late AppDatabase database;
@@ -130,7 +130,7 @@ void main() {
           content: 'phrase3',
         ),
       ),
-    ).toPleromaInstanceAnnouncement();
+    ).toUnifediInstanceAnnouncement();
     await instanceAnnouncementRepository.updateAppTypeByRemoteType(
       appItem: oldLocalInstanceAnnouncement,
       remoteItem: newRemoteInstanceAnnouncement,
@@ -162,7 +162,7 @@ void main() {
     await instanceAnnouncementRepository.upsertInRemoteType(
       DbInstanceAnnouncementPopulatedWrapper(
         dbInstanceAnnouncementPopulated: dbInstanceAnnouncementPopulated,
-      ).toPleromaInstanceAnnouncement(),
+      ).toUnifediInstanceAnnouncement(),
     );
 
     expect(await instanceAnnouncementRepository.countAll(), 1);
@@ -177,7 +177,7 @@ void main() {
     await instanceAnnouncementRepository.upsertInRemoteType(
       DbInstanceAnnouncementPopulatedWrapper(
         dbInstanceAnnouncementPopulated: dbInstanceAnnouncementPopulated,
-      ).toPleromaInstanceAnnouncement(),
+      ).toUnifediInstanceAnnouncement(),
     );
     expect(await instanceAnnouncementRepository.countAll(), 1);
 
@@ -194,7 +194,7 @@ void main() {
       [
         DbInstanceAnnouncementPopulatedWrapper(
           dbInstanceAnnouncementPopulated: dbInstanceAnnouncementPopulated,
-        ).toPleromaInstanceAnnouncement(),
+        ).toUnifediInstanceAnnouncement(),
       ],
       batchTransaction: null,
     );
@@ -211,7 +211,7 @@ void main() {
       [
         DbInstanceAnnouncementPopulatedWrapper(
           dbInstanceAnnouncementPopulated: dbInstanceAnnouncementPopulated,
-        ).toPleromaInstanceAnnouncement(),
+        ).toUnifediInstanceAnnouncement(),
       ],
       batchTransaction: null,
     );

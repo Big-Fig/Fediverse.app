@@ -12,7 +12,7 @@ class AccountHomeTabBloc extends HomeTabBloc implements IAccountHomeTabBloc {
           AccountStatusesTab.pinned,
           AccountStatusesTab.media,
           AccountStatusesTab.withReplies,
-          // favourites for own account supported on Pleroma and Mastodon
+          // favourites for own account supported on Unifedi and Mastodon
           AccountStatusesTab.favourites,
         ];
 }

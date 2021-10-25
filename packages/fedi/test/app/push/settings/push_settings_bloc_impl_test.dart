@@ -54,7 +54,7 @@ void main() {
     await instancePushRelaySettingsLocalPreferenceBloc.performAsyncInit();
 
     var fcmPushService = MockIFcmPushService();
-    var pleromaPushService = MockIUnifediApiPushSubscriptionService();
+    var unifediPushService = MockIUnifediApiPushSubscriptionService();
     var pushRelayService = MockIPushRelayService();
 
     when(fcmPushService.deviceToken).thenReturn('testDeviceToken');
@@ -67,7 +67,7 @@ void main() {
     ).thenReturn('testUrl');
     when(fcmPushService.askPermissions()).thenAnswer((_) async => true);
     when(
-      pleromaPushService.subscribe(
+      unifediPushService.subscribe(
         metadata: anyNamed('metadata'),
         alerts: anyNamed('alerts'),
       ),
@@ -89,7 +89,7 @@ void main() {
           instancePushRelaySettingsLocalPreferenceBloc,
       instancePushSettingsLocalPreferenceBloc:
           instancePushSettingsLocalPreferenceBloc,
-      unifediApiPushSubscriptionService: pleromaPushService,
+      unifediApiPushSubscriptionService: unifediPushService,
       pushRelayService: pushRelayService,
       fcmPushService: fcmPushService,
       currentInstance: UnifediApiAccessMockHelper.generate(

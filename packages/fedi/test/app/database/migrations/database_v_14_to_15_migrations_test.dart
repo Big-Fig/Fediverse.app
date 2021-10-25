@@ -4,9 +4,9 @@ import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/account_model_adapter.dart';
 import 'package:fedi/app/account/repository/account_repository.dart';
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
-import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model_adapter.dart';
-import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository.dart';
-import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository_impl.dart';
+import 'package:fedi/app/chat/unifedi/message/repository/unifedi_chat_message_repository.dart';
+import 'package:fedi/app/chat/unifedi/message/repository/unifedi_chat_message_repository_impl.dart';
+import 'package:fedi/app/chat/unifedi/message/unifedi_chat_message_model_adapter.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/app/notification/repository/notification_repository.dart';
 import 'package:fedi/app/notification/repository/notification_repository_impl.dart';
@@ -31,7 +31,7 @@ void main() {
   late INotificationRepository notificationRepository;
   late IAccountRepository accountRepository;
   late IStatusRepository statusRepository;
-  late IPleromaChatMessageRepository chatMessageRepository;
+  late IUnifediChatMessageRepository chatMessageRepository;
 
   late DbAccountPopulatedWrapper account1;
   setUp(() async {
@@ -46,7 +46,7 @@ void main() {
       accountRepository: accountRepository,
     );
 
-    chatMessageRepository = PleromaChatMessageRepository(
+    chatMessageRepository = UnifediChatMessageRepository(
       appDatabase: database,
       accountRepository: accountRepository,
     );

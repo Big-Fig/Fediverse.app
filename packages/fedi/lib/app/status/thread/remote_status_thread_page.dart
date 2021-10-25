@@ -1,6 +1,6 @@
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
+import 'package:fedi/app/async/unifedi/unifedi_async_operation_helper.dart';
 import 'package:fedi/app/instance/remote/remote_instance_bloc.dart';
 import 'package:fedi/app/instance/remote/remote_instance_bloc_impl.dart';
 import 'package:fedi/app/instance/remote/remote_instance_error_data.dart';
@@ -38,7 +38,7 @@ Future<void> goToRemoteStatusThreadPageBasedOnLocalInstanceRemoteStatus(
       localInstanceRemoteInitialMediaAttachment,
 }) async {
   var remoteInstanceStatusDialogResult =
-      await PleromaAsyncOperationHelper.performPleromaAsyncOperation<IStatus?>(
+      await UnifediAsyncOperationHelper.performUnifediAsyncOperation<IStatus?>(
     context: context,
     errorDataBuilders: [
       remoteInstanceLoadDataErrorAlertDialogBuilder,

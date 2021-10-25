@@ -5,31 +5,31 @@ import 'package:unifedi_api/unifedi_api.dart';
 
 class NotificationsHomeTabBloc extends HomeTabBloc
     implements INotificationsHomeTabBloc {
-  final IUnifediApiNotificationService pleromaNotificationService;
+  final IUnifediApiNotificationService unifediNotificationService;
   final INotificationRepository notificationRepository;
 
   NotificationsHomeTabBloc({
-    required this.pleromaNotificationService,
+    required this.unifediNotificationService,
     required this.notificationRepository,
   });
 
   @override
   Future<void> dismissAll() async {
     await notificationRepository.dismissAll();
-    await pleromaNotificationService.dismissAll();
+    await unifediNotificationService.dismissAll();
   }
 
   @override
   Future<void> markAllAsRead() async {
     await notificationRepository.markAllAsRead();
 
-    if (pleromaNotificationService.isPleroma) {
+    if (unifediNotificationService.isPleroma) {
       var newestNotification =
           await notificationRepository.getNewestOrderByRemoteId();
       if (newestNotification != null) {
         // todo: check which notifications actually read
         // ignore: avoid-ignoring-return-values
-        await pleromaNotificationService.markAsReadList(
+        await unifediNotificationService.markAsReadList(
           maxNotificationId: newestNotification.remoteId,
         );
       }

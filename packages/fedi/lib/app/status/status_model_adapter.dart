@@ -89,7 +89,7 @@ extension UnifediApiStatusDbExtension on IUnifediApiStatus {
   }
 }
 
-extension IStatusPleromaExtension on IStatus {
+extension IStatusUnifediExtension on IStatus {
   UnifediApiStatus toUnifediApiStatus() => UnifediApiStatus(
         id: remoteId!,
         createdAt: createdAt,

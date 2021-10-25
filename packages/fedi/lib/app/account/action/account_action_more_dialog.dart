@@ -6,7 +6,7 @@ import 'package:fedi/app/account/action/mute/account_action_mute_dialog.dart';
 import 'package:fedi/app/account/details/remote_account_details_page.dart';
 import 'package:fedi/app/account/remote_account_bloc_impl.dart';
 import 'package:fedi/app/account/report/account_report_page.dart';
-import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
+import 'package:fedi/app/async/unifedi/unifedi_async_operation_helper.dart';
 import 'package:fedi/app/instance/details/local/local_instance_details_page.dart';
 import 'package:fedi/app/instance/details/remote/remote_instance_details_page.dart';
 import 'package:fedi/app/instance/location/instance_location_model.dart';
@@ -128,7 +128,7 @@ class AccountActionMoreDialog extends StatelessWidget {
           : S.of(context).app_account_action_block,
       onAction: (context) async {
         // ignore: avoid-ignoring-return-values
-        await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+        await UnifediAsyncOperationHelper.performUnifediAsyncOperation(
           context: context,
           asyncCode: () async => accountBloc.toggleBlock(),
         );
@@ -150,7 +150,7 @@ class AccountActionMoreDialog extends StatelessWidget {
           : S.of(context).app_account_action_pin,
       onAction: (context) async {
         // ignore: avoid-ignoring-return-values
-        await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+        await UnifediAsyncOperationHelper.performUnifediAsyncOperation(
           context: context,
           asyncCode: () async => accountBloc.togglePin(),
         );
@@ -243,7 +243,7 @@ class AccountActionMoreDialog extends StatelessWidget {
       onAction: (context) async {
         if (muting) {
           // ignore: avoid-ignoring-return-values
-          await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+          await UnifediAsyncOperationHelper.performUnifediAsyncOperation(
             context: context,
             asyncCode: () => accountBloc.unMute(),
           );
@@ -270,7 +270,7 @@ class AccountActionMoreDialog extends StatelessWidget {
           : S.of(context).app_account_action_subscribe,
       onAction: (context) async {
         // ignore: avoid-ignoring-return-values
-        await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+        await UnifediAsyncOperationHelper.performUnifediAsyncOperation(
           context: context,
           asyncCode: () => accountBloc.toggleSubscribe(),
         );
@@ -292,7 +292,7 @@ class AccountActionMoreDialog extends StatelessWidget {
           : S.of(context).app_account_action_follow,
       onAction: (context) async {
         // ignore: avoid-ignoring-return-values
-        await PleromaAsyncOperationHelper.performPleromaAsyncOperation(
+        await UnifediAsyncOperationHelper.performUnifediAsyncOperation(
           context: context,
           asyncCode: () => accountBloc.toggleFollow(),
         );

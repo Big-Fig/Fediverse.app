@@ -42,7 +42,7 @@ class FilterRepository extends PopulatedAppRemoteDatabaseDaoRepository<
 
   @override
   IUnifediApiFilter mapAppItemToRemoteItem(IFilter appItem) =>
-      appItem.toPleromaFilter();
+      appItem.toUnifediFilter();
 
   @override
   DbFilterPopulated mapAppItemToDbPopulatedItem(IFilter appItem) =>
@@ -56,7 +56,7 @@ class FilterRepository extends PopulatedAppRemoteDatabaseDaoRepository<
   IUnifediApiFilter mapDbPopulatedItemToRemoteItem(
     DbFilterPopulated dbPopulatedItem,
   ) =>
-      dbPopulatedItem.toDbFilterPopulatedWrapper().toPleromaFilter();
+      dbPopulatedItem.toDbFilterPopulatedWrapper().toUnifediFilter();
 
   @override
   IFilter mapRemoteItemToAppItem(IUnifediApiFilter remoteItem) =>

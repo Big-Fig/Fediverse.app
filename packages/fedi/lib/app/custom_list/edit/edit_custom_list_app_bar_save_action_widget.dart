@@ -1,4 +1,4 @@
-import 'package:fedi/app/async/pleroma/pleroma_async_operation_helper.dart';
+import 'package:fedi/app/async/unifedi/unifedi_async_operation_helper.dart';
 import 'package:fedi/app/custom_list/edit/edit_custom_list_bloc.dart';
 import 'package:fedi/app/ui/page/app_bar/fedi_page_app_bar_text_action_widget.dart';
 import 'package:fedi/generated/l10n.dart';
@@ -21,8 +21,8 @@ class EditCustomListAppBarSaveActionWidget extends StatelessWidget {
           onPressed: isReadyToSave
               ? () async {
                   // ignore: avoid-ignoring-return-values
-                  await PleromaAsyncOperationHelper
-                      .performPleromaAsyncOperation(
+                  await UnifediAsyncOperationHelper
+                      .performUnifediAsyncOperation(
                     context: context,
                     asyncCode: () => editCustomListBloc.submit(),
                   );

@@ -57,7 +57,7 @@ abstract class INotificationRepository
   });
 
   Future<void> upsertRemoteNotifications(
-    List<IUnifediApiNotification> pleromaNotifications, {
+    List<IUnifediApiNotification> unifediNotifications, {
     required bool unread,
     required Batch? batchTransaction,
   });

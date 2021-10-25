@@ -1,5 +1,5 @@
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
-import 'package:fedi/app/chat/pleroma/message/pleroma_chat_message_model.dart';
+import 'package:fedi/app/chat/unifedi/message/unifedi_chat_message_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -44,7 +44,7 @@ class ChatMessageDatabaseMockHelper {
   }
 
   static void expectDbChatMessagePopulated(
-    IPleromaChatMessage? actual,
+    IUnifediChatMessage? actual,
     DbChatMessagePopulated? expected,
   ) {
     if (actual == null && expected == null) {
@@ -57,7 +57,7 @@ class ChatMessageDatabaseMockHelper {
   }
 
   static void expectDbChatMessage(
-    IPleromaChatMessage? actual,
+    IUnifediChatMessage? actual,
     DbChatMessage? expected,
   ) {
     if (actual == null && expected == null) {

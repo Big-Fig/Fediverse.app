@@ -25,7 +25,7 @@ class NotificationTabBloc extends AsyncInitLoadingBloc
   late INotificationCachedPaginationBloc notificationCachedPaginationBloc;
 
   final INotificationRepository notificationRepository;
-  final IUnifediApiNotificationService pleromaNotificationService;
+  final IUnifediApiNotificationService unifediNotificationService;
   final IFilterRepository filterRepository;
   final IPaginationSettingsBloc paginationSettingsBloc;
   final IConnectionService connectionService;
@@ -40,14 +40,14 @@ class NotificationTabBloc extends AsyncInitLoadingBloc
     required this.connectionService,
     required this.tab,
     required this.notificationRepository,
-    required this.pleromaNotificationService,
+    required this.unifediNotificationService,
     required this.filterRepository,
     required this.paginationSettingsBloc,
   });
 
   INotificationCachedListBloc createListService() => NotificationCachedListBloc(
         notificationRepository: notificationRepository,
-        pleromaNotificationService: pleromaNotificationService,
+        unifediNotificationService: unifediNotificationService,
         excludeTypes: NotificationTabExcludeHelper.mapTabToExcludeTypes(
           tab: tab,
         ),

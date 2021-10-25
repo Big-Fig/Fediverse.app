@@ -2,7 +2,7 @@ import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi/app/account/account_model.dart';
 import 'package:fedi/app/account/repository/account_repository_model.dart';
 import 'package:fedi/app/chat/conversation/conversation_chat_model.dart';
-import 'package:fedi/app/chat/pleroma/pleroma_chat_model.dart';
+import 'package:fedi/app/chat/unifedi/unifedi_chat_model.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:fedi/repository/repository.dart';
 import 'package:flutter/widgets.dart';
@@ -87,11 +87,11 @@ abstract class IAccountRepository
   });
 
   Future<List<IAccount>> getChatAccounts({
-    required IPleromaChat chat,
+    required IUnifediChat chat,
   });
 
   Stream<List<IAccount>> watchChatAccounts({
-    required IPleromaChat chat,
+    required IUnifediChat chat,
   });
 
   Future<void> removeAccountFollowing({

@@ -29,7 +29,7 @@ class RegisterUnifediApiAccessBloc extends AsyncInitLoadingBloc
   final IConnectionService connectionService;
   final ICurrentUnifediApiAccessBloc currentInstanceBloc;
   final IAuthApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc
-      pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc;
+      unifediOAuthLastLaunchedHostToLoginLocalPreferenceBloc;
   final ILocalizationSettingsBloc localizationSettingsBloc;
   final IConfigService configService;
 
@@ -57,7 +57,7 @@ class RegisterUnifediApiAccessBloc extends AsyncInitLoadingBloc
     required this.localPreferencesService,
     required this.connectionService,
     required this.currentInstanceBloc,
-    required this.pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc,
+    required this.unifediOAuthLastLaunchedHostToLoginLocalPreferenceBloc,
     required this.localizationSettingsBloc,
     required this.configService,
   }) {
@@ -84,8 +84,8 @@ class RegisterUnifediApiAccessBloc extends AsyncInitLoadingBloc
         connectionService: connectionService,
         currentInstanceBloc: currentInstanceBloc,
         configService: configService,
-        pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc:
-            pleromaOAuthLastLaunchedHostToLoginLocalPreferenceBloc,
+        oAuthLastLaunchedHostToLoginLocalPreferenceBloc:
+            unifediOAuthLastLaunchedHostToLoginLocalPreferenceBloc,
       );
       await authApplicationBloc.performAsyncInit();
 

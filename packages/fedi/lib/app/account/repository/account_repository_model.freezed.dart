@@ -19,7 +19,7 @@ class _$AccountRepositoryFiltersTearOff {
 
   _AccountRepositoryFilters call(
       {required IConversationChat? onlyInConversation,
-      required IPleromaChat? onlyInChat,
+      required IUnifediChat? onlyInChat,
       required IStatus? onlyInStatusRebloggedBy,
       required IStatus? onlyInStatusFavouritedBy,
       required IAccount? onlyInAccountFollowers,
@@ -44,7 +44,7 @@ const $AccountRepositoryFilters = _$AccountRepositoryFiltersTearOff();
 mixin _$AccountRepositoryFilters {
   IConversationChat? get onlyInConversation =>
       throw _privateConstructorUsedError;
-  IPleromaChat? get onlyInChat => throw _privateConstructorUsedError;
+  IUnifediChat? get onlyInChat => throw _privateConstructorUsedError;
   IStatus? get onlyInStatusRebloggedBy => throw _privateConstructorUsedError;
   IStatus? get onlyInStatusFavouritedBy => throw _privateConstructorUsedError;
   IAccount? get onlyInAccountFollowers => throw _privateConstructorUsedError;
@@ -63,7 +63,7 @@ abstract class $AccountRepositoryFiltersCopyWith<$Res> {
       _$AccountRepositoryFiltersCopyWithImpl<$Res>;
   $Res call(
       {IConversationChat? onlyInConversation,
-      IPleromaChat? onlyInChat,
+      IUnifediChat? onlyInChat,
       IStatus? onlyInStatusRebloggedBy,
       IStatus? onlyInStatusFavouritedBy,
       IAccount? onlyInAccountFollowers,
@@ -98,7 +98,7 @@ class _$AccountRepositoryFiltersCopyWithImpl<$Res>
       onlyInChat: onlyInChat == freezed
           ? _value.onlyInChat
           : onlyInChat // ignore: cast_nullable_to_non_nullable
-              as IPleromaChat?,
+              as IUnifediChat?,
       onlyInStatusRebloggedBy: onlyInStatusRebloggedBy == freezed
           ? _value.onlyInStatusRebloggedBy
           : onlyInStatusRebloggedBy // ignore: cast_nullable_to_non_nullable
@@ -132,7 +132,7 @@ abstract class _$AccountRepositoryFiltersCopyWith<$Res>
   @override
   $Res call(
       {IConversationChat? onlyInConversation,
-      IPleromaChat? onlyInChat,
+      IUnifediChat? onlyInChat,
       IStatus? onlyInStatusRebloggedBy,
       IStatus? onlyInStatusFavouritedBy,
       IAccount? onlyInAccountFollowers,
@@ -170,7 +170,7 @@ class __$AccountRepositoryFiltersCopyWithImpl<$Res>
       onlyInChat: onlyInChat == freezed
           ? _value.onlyInChat
           : onlyInChat // ignore: cast_nullable_to_non_nullable
-              as IPleromaChat?,
+              as IUnifediChat?,
       onlyInStatusRebloggedBy: onlyInStatusRebloggedBy == freezed
           ? _value.onlyInStatusRebloggedBy
           : onlyInStatusRebloggedBy // ignore: cast_nullable_to_non_nullable
@@ -211,7 +211,7 @@ class _$_AccountRepositoryFilters extends _AccountRepositoryFilters {
   @override
   final IConversationChat? onlyInConversation;
   @override
-  final IPleromaChat? onlyInChat;
+  final IUnifediChat? onlyInChat;
   @override
   final IStatus? onlyInStatusRebloggedBy;
   @override
@@ -279,7 +279,7 @@ class _$_AccountRepositoryFilters extends _AccountRepositoryFilters {
 abstract class _AccountRepositoryFilters extends AccountRepositoryFilters {
   const factory _AccountRepositoryFilters(
       {required IConversationChat? onlyInConversation,
-      required IPleromaChat? onlyInChat,
+      required IUnifediChat? onlyInChat,
       required IStatus? onlyInStatusRebloggedBy,
       required IStatus? onlyInStatusFavouritedBy,
       required IAccount? onlyInAccountFollowers,
@@ -291,7 +291,7 @@ abstract class _AccountRepositoryFilters extends AccountRepositoryFilters {
   IConversationChat? get onlyInConversation =>
       throw _privateConstructorUsedError;
   @override
-  IPleromaChat? get onlyInChat => throw _privateConstructorUsedError;
+  IUnifediChat? get onlyInChat => throw _privateConstructorUsedError;
   @override
   IStatus? get onlyInStatusRebloggedBy => throw _privateConstructorUsedError;
   @override

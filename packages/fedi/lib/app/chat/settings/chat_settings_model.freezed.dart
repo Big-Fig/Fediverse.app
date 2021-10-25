@@ -23,14 +23,14 @@ class _$ChatSettingsTearOff {
 
   _ChatSettings call(
       {@HiveField(0)
-      @JsonKey(name: 'replace_conversations_with_pleroma_chats')
-          required bool replaceConversationsWithPleromaChats,
+      @JsonKey(name: 'replace_conversations_with_unifedi_chats')
+          required bool replaceConversationsWithUnifediChats,
       @HiveField(1)
       @JsonKey(name: 'count_conversations_in_chats_unread_badges')
           required bool countConversationsInChatsUnreadBadges}) {
     return _ChatSettings(
-      replaceConversationsWithPleromaChats:
-          replaceConversationsWithPleromaChats,
+      replaceConversationsWithUnifediChats:
+          replaceConversationsWithUnifediChats,
       countConversationsInChatsUnreadBadges:
           countConversationsInChatsUnreadBadges,
     );
@@ -47,8 +47,8 @@ const $ChatSettings = _$ChatSettingsTearOff();
 /// @nodoc
 mixin _$ChatSettings {
   @HiveField(0)
-  @JsonKey(name: 'replace_conversations_with_pleroma_chats')
-  bool get replaceConversationsWithPleromaChats =>
+  @JsonKey(name: 'replace_conversations_with_unifedi_chats')
+  bool get replaceConversationsWithUnifediChats =>
       throw _privateConstructorUsedError;
   @HiveField(1)
   @JsonKey(name: 'count_conversations_in_chats_unread_badges')
@@ -68,8 +68,8 @@ abstract class $ChatSettingsCopyWith<$Res> {
       _$ChatSettingsCopyWithImpl<$Res>;
   $Res call(
       {@HiveField(0)
-      @JsonKey(name: 'replace_conversations_with_pleroma_chats')
-          bool replaceConversationsWithPleromaChats,
+      @JsonKey(name: 'replace_conversations_with_unifedi_chats')
+          bool replaceConversationsWithUnifediChats,
       @HiveField(1)
       @JsonKey(name: 'count_conversations_in_chats_unread_badges')
           bool countConversationsInChatsUnreadBadges});
@@ -85,14 +85,14 @@ class _$ChatSettingsCopyWithImpl<$Res> implements $ChatSettingsCopyWith<$Res> {
 
   @override
   $Res call({
-    Object? replaceConversationsWithPleromaChats = freezed,
+    Object? replaceConversationsWithUnifediChats = freezed,
     Object? countConversationsInChatsUnreadBadges = freezed,
   }) {
     return _then(_value.copyWith(
-      replaceConversationsWithPleromaChats: replaceConversationsWithPleromaChats ==
+      replaceConversationsWithUnifediChats: replaceConversationsWithUnifediChats ==
               freezed
-          ? _value.replaceConversationsWithPleromaChats
-          : replaceConversationsWithPleromaChats // ignore: cast_nullable_to_non_nullable
+          ? _value.replaceConversationsWithUnifediChats
+          : replaceConversationsWithUnifediChats // ignore: cast_nullable_to_non_nullable
               as bool,
       countConversationsInChatsUnreadBadges:
           countConversationsInChatsUnreadBadges == freezed
@@ -112,8 +112,8 @@ abstract class _$ChatSettingsCopyWith<$Res>
   @override
   $Res call(
       {@HiveField(0)
-      @JsonKey(name: 'replace_conversations_with_pleroma_chats')
-          bool replaceConversationsWithPleromaChats,
+      @JsonKey(name: 'replace_conversations_with_unifedi_chats')
+          bool replaceConversationsWithUnifediChats,
       @HiveField(1)
       @JsonKey(name: 'count_conversations_in_chats_unread_badges')
           bool countConversationsInChatsUnreadBadges});
@@ -131,14 +131,14 @@ class __$ChatSettingsCopyWithImpl<$Res> extends _$ChatSettingsCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? replaceConversationsWithPleromaChats = freezed,
+    Object? replaceConversationsWithUnifediChats = freezed,
     Object? countConversationsInChatsUnreadBadges = freezed,
   }) {
     return _then(_ChatSettings(
-      replaceConversationsWithPleromaChats: replaceConversationsWithPleromaChats ==
+      replaceConversationsWithUnifediChats: replaceConversationsWithUnifediChats ==
               freezed
-          ? _value.replaceConversationsWithPleromaChats
-          : replaceConversationsWithPleromaChats // ignore: cast_nullable_to_non_nullable
+          ? _value.replaceConversationsWithUnifediChats
+          : replaceConversationsWithUnifediChats // ignore: cast_nullable_to_non_nullable
               as bool,
       countConversationsInChatsUnreadBadges:
           countConversationsInChatsUnreadBadges == freezed
@@ -154,8 +154,8 @@ class __$ChatSettingsCopyWithImpl<$Res> extends _$ChatSettingsCopyWithImpl<$Res>
 class _$_ChatSettings extends _ChatSettings {
   const _$_ChatSettings(
       {@HiveField(0)
-      @JsonKey(name: 'replace_conversations_with_pleroma_chats')
-          required this.replaceConversationsWithPleromaChats,
+      @JsonKey(name: 'replace_conversations_with_unifedi_chats')
+          required this.replaceConversationsWithUnifediChats,
       @HiveField(1)
       @JsonKey(name: 'count_conversations_in_chats_unread_badges')
           required this.countConversationsInChatsUnreadBadges})
@@ -166,8 +166,8 @@ class _$_ChatSettings extends _ChatSettings {
 
   @override
   @HiveField(0)
-  @JsonKey(name: 'replace_conversations_with_pleroma_chats')
-  final bool replaceConversationsWithPleromaChats;
+  @JsonKey(name: 'replace_conversations_with_unifedi_chats')
+  final bool replaceConversationsWithUnifediChats;
   @override
   @HiveField(1)
   @JsonKey(name: 'count_conversations_in_chats_unread_badges')
@@ -175,18 +175,18 @@ class _$_ChatSettings extends _ChatSettings {
 
   @override
   String toString() {
-    return 'ChatSettings(replaceConversationsWithPleromaChats: $replaceConversationsWithPleromaChats, countConversationsInChatsUnreadBadges: $countConversationsInChatsUnreadBadges)';
+    return 'ChatSettings(replaceConversationsWithUnifediChats: $replaceConversationsWithUnifediChats, countConversationsInChatsUnreadBadges: $countConversationsInChatsUnreadBadges)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _ChatSettings &&
-            (identical(other.replaceConversationsWithPleromaChats,
-                    replaceConversationsWithPleromaChats) ||
+            (identical(other.replaceConversationsWithUnifediChats,
+                    replaceConversationsWithUnifediChats) ||
                 const DeepCollectionEquality().equals(
-                    other.replaceConversationsWithPleromaChats,
-                    replaceConversationsWithPleromaChats)) &&
+                    other.replaceConversationsWithUnifediChats,
+                    replaceConversationsWithUnifediChats)) &&
             (identical(other.countConversationsInChatsUnreadBadges,
                     countConversationsInChatsUnreadBadges) ||
                 const DeepCollectionEquality().equals(
@@ -198,7 +198,7 @@ class _$_ChatSettings extends _ChatSettings {
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality()
-          .hash(replaceConversationsWithPleromaChats) ^
+          .hash(replaceConversationsWithUnifediChats) ^
       const DeepCollectionEquality()
           .hash(countConversationsInChatsUnreadBadges);
 
@@ -216,8 +216,8 @@ class _$_ChatSettings extends _ChatSettings {
 abstract class _ChatSettings extends ChatSettings {
   const factory _ChatSettings(
           {@HiveField(0)
-          @JsonKey(name: 'replace_conversations_with_pleroma_chats')
-              required bool replaceConversationsWithPleromaChats,
+          @JsonKey(name: 'replace_conversations_with_unifedi_chats')
+              required bool replaceConversationsWithUnifediChats,
           @HiveField(1)
           @JsonKey(name: 'count_conversations_in_chats_unread_badges')
               required bool countConversationsInChatsUnreadBadges}) =
@@ -229,8 +229,8 @@ abstract class _ChatSettings extends ChatSettings {
 
   @override
   @HiveField(0)
-  @JsonKey(name: 'replace_conversations_with_pleroma_chats')
-  bool get replaceConversationsWithPleromaChats =>
+  @JsonKey(name: 'replace_conversations_with_unifedi_chats')
+  bool get replaceConversationsWithUnifediChats =>
       throw _privateConstructorUsedError;
   @override
   @HiveField(1)

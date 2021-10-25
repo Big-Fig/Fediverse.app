@@ -1,7 +1,7 @@
 import 'package:fedi/app/hashtag/hashtag_model.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
-extension IPleromaTagExtension on IUnifediApiTag {
+extension IUnifediTagExtension on IUnifediApiTag {
   Hashtag toHashtag() {
     if (this is Hashtag) {
       return this as Hashtag;
@@ -16,7 +16,7 @@ extension IPleromaTagExtension on IUnifediApiTag {
 }
 
 extension IHashtagExtension on IHashtag {
-  UnifediApiTag toPleromaTag() {
+  UnifediApiTag toUnifediTag() {
     if (this is UnifediApiTag) {
       return this as UnifediApiTag;
     } else {

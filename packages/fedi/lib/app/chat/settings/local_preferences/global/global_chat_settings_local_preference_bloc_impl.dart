@@ -11,7 +11,7 @@ class GlobalChatSettingsLocalPreferenceBloc
   ) : super(preferencesService, 'chat.settings.global');
 
   static const ChatSettings defaultValue = ChatSettings(
-    replaceConversationsWithPleromaChats: true,
+    replaceConversationsWithUnifediChats: true,
     countConversationsInChatsUnreadBadges: true,
   );
 

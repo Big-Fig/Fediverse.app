@@ -294,7 +294,7 @@ class LocalStatusBloc extends StatusBloc {
     if (duration != null) {
       assert(
         unifediApiStatusService.isPleroma,
-        'Muting with duration supported only on pleroma',
+        'Muting with duration supported only on unifedi',
       );
     }
 

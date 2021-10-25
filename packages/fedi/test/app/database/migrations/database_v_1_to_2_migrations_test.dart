@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:fedi/app/account/repository/account_repository_impl.dart';
-import 'package:fedi/app/chat/pleroma/message/repository/pleroma_chat_message_repository_impl.dart';
+import 'package:fedi/app/chat/unifedi/message/repository/unifedi_chat_message_repository_impl.dart';
 import 'package:fedi/app/database/app_database.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:moor/ffi.dart';
@@ -32,10 +32,10 @@ void main() {
   });
 
   test('test dbMigration v1->v2 updated chat message schema', () async {
-    var pleromaCardTitle = 'pleromaCardTitle';
+    var unifediCardTitle = 'unifediCardTitle';
     var chatMessageDao = database.chatMessageDao;
     var accountRepository = AccountRepository(appDatabase: database);
-    var chatMessageRepository = PleromaChatMessageRepository(
+    var chatMessageRepository = UnifediChatMessageRepository(
       accountRepository: accountRepository,
       appDatabase: database,
     );
@@ -58,7 +58,7 @@ void main() {
         createdAt: DateTime.now(),
         content: 'content',
         card: UnifediApiCard.only(
-          title: pleromaCardTitle,
+          title: unifediCardTitle,
           type: UnifediApiCardType.linkValue.stringValue,
         ),
       ),
@@ -67,7 +67,7 @@ void main() {
     var found =
         await chatMessageRepository.findByRemoteIdInAppType(updatedRemoteId);
 
-    expect(pleromaCardTitle, found!.card!.title);
+    expect(unifediCardTitle, found!.card!.title);
 
     await accountRepository.dispose();
     await chatMessageRepository.dispose();

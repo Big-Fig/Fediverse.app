@@ -48,7 +48,7 @@ class DbStatuses extends Table {
   TextColumn? get reblogStatusRemoteId => text().nullable()();
 
   TextColumn? get application =>
-      text().map(const PleromaApplicationDatabaseConverter()).nullable()();
+      text().map(const UnifediApplicationDatabaseConverter()).nullable()();
 
   TextColumn? get accountRemoteId => text()();
 
@@ -57,7 +57,7 @@ class DbStatuses extends Table {
       .nullable()();
 
   TextColumn? get mentions =>
-      text().map(const PleromaMentionListDatabaseConverter()).nullable()();
+      text().map(const UnifediMentionListDatabaseConverter()).nullable()();
 
   // TODO: rework with join
   TextColumn? get tags =>
@@ -70,40 +70,40 @@ class DbStatuses extends Table {
       text().map(const UnifediApiPollDatabaseConverter()).nullable()();
 
   TextColumn? get card =>
-      text().map(const PleromaCardDatabaseConverter()).nullable()();
+      text().map(const UnifediCardDatabaseConverter()).nullable()();
 
   TextColumn? get language => text().nullable()();
 
-  //  expanded pleroma object fields
+  //  expanded unifedi object fields
   TextColumn? get contentVariants => text()
-      .named('pleroma_content')
-      .map(const PleromaContentDatabaseConverter())
+      .named('unifedi_content')
+      .map(const UnifediContentDatabaseConverter())
       .nullable()();
 
   IntColumn? get conversationId =>
-      integer().named('pleroma_conversation_id').nullable()();
+      integer().named('unifedi_conversation_id').nullable()();
 
   IntColumn? get directConversationId =>
-      integer().named('pleroma_direct_conversation_id').nullable()();
+      integer().named('unifedi_direct_conversation_id').nullable()();
 
   TextColumn? get inReplyToAccountAcct =>
-      text().named('pleroma_in_reply_to_account_acct').nullable()();
+      text().named('unifedi_in_reply_to_account_acct').nullable()();
 
-  BoolColumn? get local => boolean().named('pleroma_local').nullable()();
+  BoolColumn? get local => boolean().named('unifedi_local').nullable()();
 
   TextColumn? get spoilerTextVariants => text()
-      .named('pleroma_spoiler_text')
-      .map(const PleromaContentDatabaseConverter())
+      .named('unifedi_spoiler_text')
+      .map(const UnifediContentDatabaseConverter())
       .nullable()();
 
   DateTimeColumn? get expiresAt =>
-      dateTime().named('pleroma_expires_at').nullable()();
+      dateTime().named('unifedi_expires_at').nullable()();
 
   BoolColumn? get threadMuted =>
-      boolean().named('pleroma_thread_muted').nullable()();
+      boolean().named('unifedi_thread_muted').nullable()();
 
   TextColumn? get emojiReactions => text()
-      .named('pleroma_emoji_reactions')
+      .named('unifedi_emoji_reactions')
       .map(const EmojiReactionsListDatabaseConverter())
       .nullable()();
 
