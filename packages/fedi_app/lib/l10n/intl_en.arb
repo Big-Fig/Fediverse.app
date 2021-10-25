@@ -1144,7 +1144,7 @@
   "@app_account_my_edit_field_background_dialog_action_select": {},
   "app_account_my_edit_field_background_dialog_action_crop": "Crop",
   "@app_account_my_edit_field_background_dialog_action_crop": {},
-  "app_account_my_edit_field_background_dialog_title": "Unifedi background",
+  "app_account_my_edit_field_background_dialog_title": "Background",
   "@app_account_my_edit_field_background_dialog_title": {},
   "app_account_my_edit_field_locked_description": "You should manually approve follow requests",
   "@app_account_my_edit_field_locked_description": {},
