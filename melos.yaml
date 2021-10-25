@@ -512,41 +512,32 @@ scripts:
     select-package:
       dir-exists: ios/fastlane
 
-
   build:examples:ios:
-    run: flutter pub global run melos exec -c 4 --fail-fast -- \
+    run: flutter pub global run melos exec -c 4 --fail-fast --scope="*example*,sample_app" -- \
       flutter build ios --simulator
-  select-package:
-    scope: "*example*,sample_app"
 
   build:examples:release:ios:
-    run: flutter pub global run melos exec -c 4 --fail-fast -- \
+    run: flutter pub global run melos exec -c 4 --fail-fast --scope="*example*,sample_app" -- \
       flutter build ios --no-codesign
-    select-package:
-      scope: "*example*,sample_app"
 
   build:examples:android:
-    run: flutter pub global run melos exec -c 4 --fail-fast -- \
+    run: flutter pub global run melos exec -c 4 --fail-fast --scope="*example*,sample_app" -- \
       flutter build apk --debug --verbose
-    select-package:
-      scope: "*example*,sample_app"
 
   build:examples:release:android:
-    run: flutter pub global run melos exec -c 4 --fail-fast -- \
+    run: flutter pub global run melos exec -c 4 --fail-fast --scope="*example*,sample_app" -- \
       flutter build apk --verbose
-    select-package:
-      scope: "*example*,sample_app"
 
   pub:publish:dry-run:
     run: |
-      flutter pub global run melos exec -c 5 --no-private --no-private -- \
+      flutter pub global run melos exec -c 5 --no-private -- \
             pub publish --dry-run
     description: |
       Dry-run publish packages to pub dev
 
   pub:publish:
     run: |
-      flutter pub global run melos exec -c 5 --no-private --no-private -- \
+      flutter pub global run melos exec -c 5 --no-private -- \
             pub publish
     description: |
       Publish packages to pub dev
