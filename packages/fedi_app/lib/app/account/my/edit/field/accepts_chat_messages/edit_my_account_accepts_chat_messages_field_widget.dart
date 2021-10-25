@@ -5,23 +5,22 @@ import 'package:fedi_app/generated/l10n.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-class EditMyAccountUnifediAllowFollowingMoveFieldWidget
-    extends StatelessWidget {
-  const EditMyAccountUnifediAllowFollowingMoveFieldWidget({
+class EditMyAccountAcceptsChatMessagesFieldWidget extends StatelessWidget {
+  const EditMyAccountAcceptsChatMessagesFieldWidget({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) =>
       ProxyProvider<IEditMyAccountBloc, IBoolValueFormFieldBloc>(
-        update: (context, value, previous) => value.allowFollowingMoveField,
+        update: (context, value, previous) => value.acceptsChatMessagesField,
         child: BoolValueFormFieldRowWidget(
           label: S
               .of(context)
-              .app_account_my_edit_field_unifedi_allowFollowingMove_label,
+              .app_account_my_edit_field_unifedi_acceptsChatMessages_label,
           description: S
               .of(context)
-              .app_account_my_edit_field_unifedi_allowFollowingMove_description,
+              .app_account_my_edit_field_unifedi_acceptsChatMessages_description,
         ),
       );
 }

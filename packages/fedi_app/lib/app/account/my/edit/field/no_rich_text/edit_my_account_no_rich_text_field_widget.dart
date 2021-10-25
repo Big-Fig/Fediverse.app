@@ -5,22 +5,21 @@ import 'package:fedi_app/generated/l10n.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-class EditMyAccountUnifediHideFavouritesFieldWidget extends StatelessWidget {
-  const EditMyAccountUnifediHideFavouritesFieldWidget({
+class EditMyAccountNoRichTextFieldWidget extends StatelessWidget {
+  const EditMyAccountNoRichTextFieldWidget({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) =>
       ProxyProvider<IEditMyAccountBloc, IBoolValueFormFieldBloc>(
-        update: (context, value, previous) => value.hideFavouritesField,
+        update: (context, value, previous) => value.noRichTextField,
         child: BoolValueFormFieldRowWidget(
-          label: S
-              .of(context)
-              .app_account_my_edit_field_unifedi_hideFavourites_label,
+          label:
+              S.of(context).app_account_my_edit_field_unifedi_noRichText_label,
           description: S
               .of(context)
-              .app_account_my_edit_field_unifedi_hideFavourites_description,
+              .app_account_my_edit_field_unifedi_noRichText_description,
         ),
       );
 }

@@ -1,23 +1,23 @@
 import 'package:fedi_app/app/access/current/current_access_bloc.dart';
+import 'package:fedi_app/app/account/my/edit/field/accepts_chat_messages/edit_my_account_accepts_chat_messages_field_widget.dart';
+import 'package:fedi_app/app/account/my/edit/field/allow_following_move/edit_my_account_allow_following_move_field_widget.dart';
 import 'package:fedi_app/app/account/my/edit/field/avatar/edit_my_account_avatar_field_widget.dart';
+import 'package:fedi_app/app/account/my/edit/field/background_image/edit_my_account_background_field_widget.dart';
 import 'package:fedi_app/app/account/my/edit/field/bot/edit_my_account_bot_field_widget.dart';
 import 'package:fedi_app/app/account/my/edit/field/custom_fields/edit_my_account_custom_fields_list_field_widget.dart';
 import 'package:fedi_app/app/account/my/edit/field/discoverable/edit_my_account_discoverable_field_widget.dart';
 import 'package:fedi_app/app/account/my/edit/field/display_name/edit_my_account_display_name_field_widget.dart';
 import 'package:fedi_app/app/account/my/edit/field/header/edit_my_account_header_field_widget.dart';
+import 'package:fedi_app/app/account/my/edit/field/hide_favourites/edit_my_account_hide_favourites_field_widget.dart';
+import 'package:fedi_app/app/account/my/edit/field/hide_followers/count/edit_my_account_hide_followers_count_field_widget.dart';
+import 'package:fedi_app/app/account/my/edit/field/hide_followers/edit_my_account_hide_followers_field_widget.dart';
+import 'package:fedi_app/app/account/my/edit/field/hide_follows/count/edit_my_account_hide_follows_count_field_widget.dart';
+import 'package:fedi_app/app/account/my/edit/field/hide_follows/edit_my_account_hide_follows_field_widget.dart';
 import 'package:fedi_app/app/account/my/edit/field/locked/edit_my_account_locked_field_widget.dart';
+import 'package:fedi_app/app/account/my/edit/field/no_rich_text/edit_my_account_no_rich_text_field_widget.dart';
 import 'package:fedi_app/app/account/my/edit/field/note/edit_my_account_note_field_widget.dart';
-import 'package:fedi_app/app/account/my/edit/field/unifedi/accepts_chat_messages/edit_my_account_unifedi_accepts_chat_messages_field_widget.dart';
-import 'package:fedi_app/app/account/my/edit/field/unifedi/allow_following_move/edit_my_account_unifedi_allow_following_move_field_widget.dart';
-import 'package:fedi_app/app/account/my/edit/field/unifedi/background_image/edit_my_account_unifedi_background_field_widget.dart';
-import 'package:fedi_app/app/account/my/edit/field/unifedi/hide_favourites/edit_my_account_unifedi_hide_favourites_field_widget.dart';
-import 'package:fedi_app/app/account/my/edit/field/unifedi/hide_followers/count/edit_my_account_unifedi_hide_followers_count_field_widget.dart';
-import 'package:fedi_app/app/account/my/edit/field/unifedi/hide_followers/edit_my_account_unifedi_hide_followers_field_widget.dart';
-import 'package:fedi_app/app/account/my/edit/field/unifedi/hide_follows/count/edit_my_account_unifedi_hide_follows_count_field_widget.dart';
-import 'package:fedi_app/app/account/my/edit/field/unifedi/hide_follows/edit_my_account_unifedi_hide_follows_field_widget.dart';
-import 'package:fedi_app/app/account/my/edit/field/unifedi/no_rich_text/edit_my_account_unifedi_no_rich_text_field_widget.dart';
-import 'package:fedi_app/app/account/my/edit/field/unifedi/show_role/edit_my_account_unifedi_show_role_field_widget.dart';
-import 'package:fedi_app/app/account/my/edit/field/unifedi/skip_thread_containment/edit_my_account_unifedi_skip_thread_containment_field_widget.dart';
+import 'package:fedi_app/app/account/my/edit/field/show_role/edit_my_account_show_role_field_widget.dart';
+import 'package:fedi_app/app/account/my/edit/field/skip_thread_containment/edit_my_account_skip_thread_containment_field_widget.dart';
 import 'package:fedi_app/app/ui/fedi_padding.dart';
 import 'package:fedi_app/app/ui/spacer/fedi_small_vertical_spacer.dart';
 import 'package:flutter/cupertino.dart';
@@ -95,7 +95,7 @@ class _EditMyAccountBodyWidget extends StatelessWidget {
     return Column(
       children: [
         if (currentUnifediApiAccessBloc.currentInstance!.isPleroma)
-          const EditMyAccountUnifediBackgroundFieldWidget(
+          const EditMyAccountBackgroundFieldWidget(
             backgroundHeight: _editAccountBackgroundHeight,
           ),
         const EditMyAccountDisplayNameFieldWidget(),
@@ -104,16 +104,16 @@ class _EditMyAccountBodyWidget extends StatelessWidget {
         const EditMyAccountDiscoverableFieldWidget(),
         const EditMyAccountBotFieldWidget(),
         if (currentUnifediApiAccessBloc.currentInstance!.isPleroma) ...[
-          const EditMyAccountacceptsChatMessagesFieldWidget(),
-          const EditMyAccountUnifediAllowFollowingMoveFieldWidget(),
-          const EditMyAccountUnifediHideFavouritesFieldWidget(),
-          const EditMyAccounthideFollowersFieldWidget(),
-          const EditMyAccounthideFollowersCountFieldWidget(),
-          const EditMyAccountUnifediHideFollowsFieldWidget(),
-          const EditMyAccountUnifediHideFollowsCountFieldWidget(),
-          const EditMyAccountUnifediNoRichTextFieldWidget(),
-          const EditMyAccountUnifediShowRoleFieldWidget(),
-          const EditMyAccountUnifediSkipThreadContainmentFieldWidget(),
+          const EditMyAccountAcceptsChatMessagesFieldWidget(),
+          const EditMyAccountAllowFollowingMoveFieldWidget(),
+          const EditMyAccountHideFavouritesFieldWidget(),
+          const EditMyAccountHideFollowersFieldWidget(),
+          const EditMyAccountHideFollowersCountFieldWidget(),
+          const EditMyAccountHideFollowsFieldWidget(),
+          const EditMyAccountHideFollowsCountFieldWidget(),
+          const EditMyAccountNoRichTextFieldWidget(),
+          const EditMyAccountShowRoleFieldWidget(),
+          const EditMyAccountSkipThreadContainmentFieldWidget(),
         ],
         const EditMyAccountCustomFieldsListFieldWidget(),
       ],

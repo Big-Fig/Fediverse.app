@@ -5,23 +5,22 @@ import 'package:fedi_app/generated/l10n.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-class EditMyAccountUnifediSkipThreadContainmentFieldWidget
-    extends StatelessWidget {
-  const EditMyAccountUnifediSkipThreadContainmentFieldWidget({
+class EditMyAccountHideFollowersFieldWidget extends StatelessWidget {
+  const EditMyAccountHideFollowersFieldWidget({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) =>
       ProxyProvider<IEditMyAccountBloc, IBoolValueFormFieldBloc>(
-        update: (context, value, previous) => value.skipThreadContainmentField,
+        update: (context, value, previous) => value.hideFollowersField,
         child: BoolValueFormFieldRowWidget(
           label: S
               .of(context)
-              .app_account_my_edit_field_unifedi_skipThreadContainment_label,
+              .app_account_my_edit_field_unifedi_hideFollowers_label,
           description: S
               .of(context)
-              .app_account_my_edit_field_unifedi_skipThreadContainment_description,
+              .app_account_my_edit_field_unifedi_hideFollowers_description,
         ),
       );
 }

@@ -5,20 +5,21 @@ import 'package:fedi_app/generated/l10n.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-class EditMyAccountUnifediShowRoleFieldWidget extends StatelessWidget {
-  const EditMyAccountUnifediShowRoleFieldWidget({
+class EditMyAccountHideFollowsFieldWidget extends StatelessWidget {
+  const EditMyAccountHideFollowsFieldWidget({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) =>
       ProxyProvider<IEditMyAccountBloc, IBoolValueFormFieldBloc>(
-        update: (context, value, previous) => value.showRoleField,
+        update: (context, value, previous) => value.hideFollowsField,
         child: BoolValueFormFieldRowWidget(
-          label: S.of(context).app_account_my_edit_field_unifedi_showRole_label,
+          label:
+              S.of(context).app_account_my_edit_field_unifedi_hideFollows_label,
           description: S
               .of(context)
-              .app_account_my_edit_field_unifedi_showRole_description,
+              .app_account_my_edit_field_unifedi_hideFollows_description,
         ),
       );
 }

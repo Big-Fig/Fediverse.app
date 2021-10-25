@@ -1,5 +1,5 @@
 import 'package:fedi_app/app/account/my/edit/edit_my_account_bloc.dart';
-import 'package:fedi_app/app/account/my/edit/field/unifedi/background_image/edit_my_account_unifedi_background_field_picker.dart';
+import 'package:fedi_app/app/account/my/edit/field/background_image/edit_my_account_background_field_picker.dart';
 import 'package:fedi_app/app/cache/files/files_cache_service.dart';
 import 'package:fedi_app/app/media/attachment/upload/upload_media_attachment_failed_notification_overlay.dart';
 import 'package:fedi_app/app/media/picker/single/single_media_picker_page.dart';
@@ -19,12 +19,12 @@ import 'package:fedi_app/media/media_image_source_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
-final _logger = Logger('edit_my_account_unifedi_background_image_widget.dart');
+final _logger = Logger('edit_my_account_background_field_widget.dart');
 
-class EditMyAccountUnifediBackgroundFieldWidget extends StatelessWidget {
+class EditMyAccountBackgroundFieldWidget extends StatelessWidget {
   final double backgroundHeight;
 
-  const EditMyAccountUnifediBackgroundFieldWidget({
+  const EditMyAccountBackgroundFieldWidget({
     Key? key,
     required this.backgroundHeight,
   }) : super(key: key);
@@ -184,8 +184,7 @@ class EditMyAccountUnifediBackgroundFieldEditButtonWidget
           );
 
           if (mediaDeviceFile != null) {
-            var filePickerFile =
-                await showEditMyAccountUnifediBackgroundFieldPicker(
+            var filePickerFile = await showEditMyAccountBackgroundFieldPicker(
               context,
               mediaDeviceFile,
             );
@@ -239,7 +238,7 @@ Future<void> startChoosingFileToUploadBackground(
   );
 
   if (mediaDeviceFile != null) {
-    var filePickerFile = await showEditMyAccountUnifediBackgroundFieldPicker(
+    var filePickerFile = await showEditMyAccountBackgroundFieldPicker(
       context,
       mediaDeviceFile,
     );

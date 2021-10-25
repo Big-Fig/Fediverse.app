@@ -5,22 +5,22 @@ import 'package:fedi_app/generated/l10n.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-class EditMyAccountacceptsChatMessagesFieldWidget extends StatelessWidget {
-  const EditMyAccountacceptsChatMessagesFieldWidget({
+class EditMyAccountHideFollowsCountFieldWidget extends StatelessWidget {
+  const EditMyAccountHideFollowsCountFieldWidget({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) =>
       ProxyProvider<IEditMyAccountBloc, IBoolValueFormFieldBloc>(
-        update: (context, value, previous) => value.acceptsChatMessagesField,
+        update: (context, value, previous) => value.hideFollowsCountField,
         child: BoolValueFormFieldRowWidget(
           label: S
               .of(context)
-              .app_account_my_edit_field_unifedi_acceptsChatMessages_label,
+              .app_account_my_edit_field_unifedi_hideFollowsCount_label,
           description: S
               .of(context)
-              .app_account_my_edit_field_unifedi_acceptsChatMessages_description,
+              .app_account_my_edit_field_unifedi_hideFollowsCount_description,
         ),
       );
 }
