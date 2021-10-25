@@ -418,7 +418,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_account_my_edit_field_background_dialog_action_select":
             MessageLookupByLibrary.simpleMessage("Wybierz"),
         "app_account_my_edit_field_background_dialog_title":
-            MessageLookupByLibrary.simpleMessage("Tło Pleromy"),
+            MessageLookupByLibrary.simpleMessage("Tło"),
         "app_account_my_edit_field_bot_description":
             MessageLookupByLibrary.simpleMessage(
                 "Zaznacz, jeśli obecnego konto jest botem"),

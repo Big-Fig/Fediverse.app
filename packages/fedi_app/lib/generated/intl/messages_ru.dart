@@ -407,7 +407,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_account_my_edit_field_background_dialog_action_select":
             MessageLookupByLibrary.simpleMessage("Выбрать"),
         "app_account_my_edit_field_background_dialog_title":
-            MessageLookupByLibrary.simpleMessage("Фон Unifedi"),
+            MessageLookupByLibrary.simpleMessage("Фон"),
         "app_account_my_edit_field_bot_description":
             MessageLookupByLibrary.simpleMessage(
                 "Отметьте если этот аккаунт является ботом"),
