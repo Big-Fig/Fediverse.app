@@ -24,7 +24,7 @@ class ConversationChatMessageBloc extends ChatMessageBloc
     bool delayInit = true,
   }) =>
       ConversationChatMessageBloc(
-        pollLimits: ICurrentUnifediApiAccessBloc.of(
+        pollLimits: ICurrentAccessBloc.of(
           context,
           listen: false,
         ).currentInstance?.info?.limits?.poll,

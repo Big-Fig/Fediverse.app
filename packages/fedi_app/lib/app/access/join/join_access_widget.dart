@@ -31,8 +31,8 @@ import 'package:unifedi_api/unifedi_api.dart';
 
 final _logger = Logger('join_access_widget.dart');
 
-class JoinUnifediApiAccessWidget extends StatelessWidget {
-  const JoinUnifediApiAccessWidget({
+class JoinAccessWidget extends StatelessWidget {
+  const JoinAccessWidget({
     Key? key,
   }) : super(key: key);
 
@@ -136,13 +136,13 @@ class _JoinUnifediApiAccessActionsWidget extends StatelessWidget {
                 Expanded(
                   flex: 1,
                   child: _JoinUnifediApiAccessSignUpButtonWidget(
-                    key: Key(JoinUnifediApiAccessWidgetKeys.signUpButtonKey),
+                    key: Key(JoinAccessWidgetKeys.signUpButtonKey),
                   ),
                 ),
                 Expanded(
                   flex: 1,
                   child: _JoinUnifediApiAccessLoginButtonWidget(
-                    key: Key(JoinUnifediApiAccessWidgetKeys.loginButtonKey),
+                    key: Key(JoinAccessWidgetKeys.loginButtonKey),
                   ),
                 ),
               ],
@@ -184,7 +184,7 @@ class _JoinUnifediApiAccessExploreAsGuestButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var joinInstanceBloc = IJoinUnifediApiAccessBloc.of(context);
+    var joinInstanceBloc = IJoinAccessBloc.of(context);
 
     return Padding(
       padding: const EdgeInsets.only(
@@ -194,7 +194,7 @@ class _JoinUnifediApiAccessExploreAsGuestButtonWidget extends StatelessWidget {
       ),
       child: FediTransparentTextButtonWithBorder(
         S.of(context).app_auth_instance_join_action_exploreAsGuest,
-        key: const Key(JoinUnifediApiAccessWidgetKeys.exploreAsGuestButtonKey),
+        key: const Key(JoinAccessWidgetKeys.exploreAsGuestButtonKey),
         onPressed: () {
           var hostUri = joinInstanceBloc.extractCurrentUri();
           goToRemoteInstanceDetailsPage(
@@ -239,7 +239,7 @@ class _JoinUnifediApiAccessHostTextFieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var joinInstanceBloc = IJoinUnifediApiAccessBloc.of(context);
+    var joinInstanceBloc = IJoinAccessBloc.of(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -254,7 +254,7 @@ class _JoinUnifediApiAccessHostTextFieldWidget extends StatelessWidget {
             VoidCallback onFieldSubmitted,
           ) =>
               FediTransparentEditTextField(
-            key: const Key(JoinUnifediApiAccessWidgetKeys.hostTextFieldKey),
+            key: const Key(JoinAccessWidgetKeys.hostTextFieldKey),
             autocorrect: false,
             expanded: false,
             hintText: IConfigService.of(context).appDefaultInstanceUrl,
@@ -384,7 +384,7 @@ class _JoinUnifediApiAccessAboutButtonWidget extends StatelessWidget {
 
 // ignore: long-method
 Future<void> signUpToInstance(BuildContext context) async {
-  var joinInstanceBloc = IJoinUnifediApiAccessBloc.of(context, listen: false);
+  var joinInstanceBloc = IJoinAccessBloc.of(context, listen: false);
   var hostUri = joinInstanceBloc.extractCurrentUri();
   var asyncDialogResult =
       await UnifediAsyncOperationHelper.performUnifediAsyncOperation(
@@ -438,7 +438,7 @@ Future<void> signUpToInstance(BuildContext context) async {
           _showEmailConfirmationRequiredToast(context);
         } else {
           if (access != null) {
-            await ICurrentUnifediApiAccessBloc.of(
+            await ICurrentAccessBloc.of(
               context,
               listen: false,
             ).changeCurrentInstance(
@@ -504,7 +504,7 @@ void _showCantLoginToast(
 
 // ignore: long-method
 Future<void> logInToInstance(BuildContext context) async {
-  var joinInstanceBloc = IJoinUnifediApiAccessBloc.of(context, listen: false);
+  var joinInstanceBloc = IJoinAccessBloc.of(context, listen: false);
 
   var configService = IConfigService.of(context, listen: false);
 
@@ -564,8 +564,7 @@ Future<void> logInToInstance(BuildContext context) async {
 
     _logger.finest(() => 'after pop before change auth');
 
-    await ICurrentUnifediApiAccessBloc.of(context, listen: false)
-        .changeCurrentInstance(
+    await ICurrentAccessBloc.of(context, listen: false).changeCurrentInstance(
       authInstance,
     );
     _logger.finest(() => 'after auth');

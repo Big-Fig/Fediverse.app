@@ -3,13 +3,13 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
-abstract class ICurrentUnifediApiAccessLocalPreferenceBloc
+abstract class ICurrentAccessLocalPreferenceBloc
     implements LocalPreferenceBloc<UnifediApiAccess?> {
-  static ICurrentUnifediApiAccessLocalPreferenceBloc of(
+  static ICurrentAccessLocalPreferenceBloc of(
     BuildContext context, {
     bool listen = true,
   }) =>
-      Provider.of<ICurrentUnifediApiAccessLocalPreferenceBloc>(
+      Provider.of<ICurrentAccessLocalPreferenceBloc>(
         context,
         listen: listen,
       );

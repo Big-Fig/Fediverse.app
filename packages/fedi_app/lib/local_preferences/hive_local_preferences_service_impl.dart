@@ -194,8 +194,7 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
 
           instances.add(unifediApiAccess);
 
-          var unifediApiAccessLocalPreferenceBloc =
-              UnifediApiAccessLocalPreferenceBloc(
+          var unifediApiAccessLocalPreferenceBloc = AccessLocalPreferenceBloc(
             preferencesService: hiveLocalPreferencesService,
             userAtHost: unifediApiAccess.userAtHost,
           );
@@ -213,14 +212,13 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
           await authHostApplicationLocalPreferenceBlocOld.dispose();
         }
         // await authListBloc.setValue(null);
-        var accessListLocalPreferenceBloc =
-            UnifediApiAccessListLocalPreferenceBloc(
+        var accessListLocalPreferenceBloc = AccessListLocalPreferenceBloc(
           hiveLocalPreferencesService,
         );
 
         await accessListLocalPreferenceBloc.performAsyncInit();
         await accessListLocalPreferenceBloc.setValue(
-          UnifediApiAccessList(
+          AccessList(
             instances: instances,
           ),
         );
@@ -239,7 +237,7 @@ class HiveLocalPreferencesService extends AsyncInitLoadingBloc
         var application = applicationMap[currentInstanceOld.urlHost];
 
         var currentUnifediApiAccessLocalPreferenceBloc =
-            CurrentUnifediApiAccessLocalPreferenceBloc(
+            CurrentAccessLocalPreferenceBloc(
           hiveLocalPreferencesService,
         );
         await currentUnifediApiAccessLocalPreferenceBloc.performAsyncInit();

@@ -14,11 +14,11 @@ part 'access_list_model.g.dart';
 //@HiveType()
 @HiveType(typeId: -32 + 115)
 @freezed
-class UnifediApiAccessList with _$UnifediApiAccessList implements IJsonObj {
-  const factory UnifediApiAccessList({
+class AccessList with _$AccessList implements IJsonObj {
+  const factory AccessList({
     @HiveField(0) required List<UnifediApiAccess> instances,
-  }) = _UnifediApiAccessList;
+  }) = _AccessList;
 
-  factory UnifediApiAccessList.fromJson(Map<String, dynamic> json) =>
-      _$UnifediApiAccessListFromJson(json);
+  factory AccessList.fromJson(Map<String, dynamic> json) =>
+      _$AccessListFromJson(json);
 }

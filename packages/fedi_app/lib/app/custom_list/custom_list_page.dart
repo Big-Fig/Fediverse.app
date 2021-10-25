@@ -202,7 +202,7 @@ class _CustomListPageAppBarSettingsActionWidget extends StatelessWidget {
               settings: timeline.settings,
             ),
             lockedSource: true,
-            unifediApiInstance: ICurrentUnifediApiAccessBloc.of(
+            unifediApiInstance: ICurrentAccessBloc.of(
               context,
               listen: false,
             ).currentInstance!.info!,
@@ -236,7 +236,7 @@ MaterialPageRoute<void> createCustomListPageRoute({
   required VoidCallback? onDeleted,
 }) {
   var currentUnifediApiAccessBloc =
-      ICurrentUnifediApiAccessBloc.of(context, listen: false);
+      ICurrentAccessBloc.of(context, listen: false);
 
   return MaterialPageRoute<void>(
     builder: (context) => Provider<ICustomList>.value(

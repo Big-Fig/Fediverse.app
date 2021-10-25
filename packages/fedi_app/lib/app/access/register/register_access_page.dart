@@ -4,7 +4,7 @@ import 'package:fedi_app/app/access/register/register_access_bloc.dart';
 import 'package:fedi_app/app/access/register/register_access_bloc_impl.dart';
 import 'package:fedi_app/app/access/register/register_access_page_keys.dart';
 import 'package:fedi_app/app/access/register/register_access_widget.dart';
-import 'package:fedi_app/app/access/register/response/register_response_model.dart';
+import 'package:fedi_app/app/access/register/response/register_access_response_model.dart';
 import 'package:fedi_app/app/auth/oauth_last_launched/local_preferences/auth_oauth_last_launched_host_to_login_local_preference_bloc.dart';
 import 'package:fedi_app/app/config/config_service.dart';
 import 'package:fedi_app/app/localization/settings/local_preferences/localization_settings_local_preference_bloc.dart';
@@ -19,13 +19,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class RegisterUnifediApiAccessPage extends StatelessWidget {
-  const RegisterUnifediApiAccessPage({Key? key}) : super(key: key);
+class RegisterAccessPage extends StatelessWidget {
+  const RegisterAccessPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var registerUnifediApiAccessBloc =
-        IRegisterUnifediApiAccessBloc.of(context);
+    var registerUnifediApiAccessBloc = IRegisterAccessBloc.of(context);
 
     return Scaffold(
       appBar: FediPageTitleAppBar(
@@ -35,10 +34,10 @@ class RegisterUnifediApiAccessPage extends StatelessWidget {
         leading: const FediDismissIconButton(),
       ),
       body: const SafeArea(
-        child: RegisterUnifediApiAccessWidget(
+        child: RegisterAccessWidget(
           onRegister: _onRegister,
           key: Key(
-            RegisterUnifediApiAccessPageKeys.registerUnifediApiAccessWidgetKey,
+            RegisterAccessPageKeys.registerAccessWidgetKey,
           ),
         ),
       ),
@@ -48,20 +47,20 @@ class RegisterUnifediApiAccessPage extends StatelessWidget {
 
 void _onRegister(
   BuildContext context,
-  RegisterResponse registerResponse,
+  RegisterAccessResponse registerResponse,
 ) {
   Navigator.pop(context, registerResponse);
 }
 
 // ignore: long-method
-Future<RegisterResponse?> goToRegisterUnifediApiAccessPage(
+Future<RegisterAccessResponse?> goToRegisterUnifediApiAccessPage(
   BuildContext context, {
   required Uri instanceBaseUri,
 }) =>
-    Navigator.push<RegisterResponse>(
+    Navigator.push<RegisterAccessResponse>(
       context,
       MaterialPageRoute(
-        builder: (context) => DisposableProvider<IRegisterUnifediApiAccessBloc>(
+        builder: (context) => DisposableProvider<IRegisterAccessBloc>(
           create: (context) {
             var localizationSettingsLocalPreferenceBloc =
                 ILocalizationSettingsLocalPreferenceBloc.of(
@@ -79,7 +78,7 @@ Future<RegisterResponse?> goToRegisterUnifediApiAccessPage(
                   .value?.localizationLocale,
             ).languageCode;
 
-            var registerUnifediApiAccessBloc = RegisterUnifediApiAccessBloc(
+            var registerUnifediApiAccessBloc = RegisterAccessBloc(
               localeName: localeName,
               instanceBaseUri: instanceBaseUri,
               localPreferencesService: ILocalPreferencesService.of(
@@ -90,7 +89,7 @@ Future<RegisterResponse?> goToRegisterUnifediApiAccessPage(
                 context,
                 listen: false,
               ),
-              currentInstanceBloc: ICurrentUnifediApiAccessBloc.of(
+              currentInstanceBloc: ICurrentAccessBloc.of(
                 context,
                 listen: false,
               ),
@@ -111,7 +110,7 @@ Future<RegisterResponse?> goToRegisterUnifediApiAccessPage(
 
             return registerUnifediApiAccessBloc;
           },
-          child: const RegisterUnifediApiAccessPage(),
+          child: const RegisterAccessPage(),
         ),
       ),
     );

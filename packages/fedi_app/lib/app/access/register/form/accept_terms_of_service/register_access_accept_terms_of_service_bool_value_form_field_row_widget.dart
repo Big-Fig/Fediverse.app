@@ -9,12 +9,12 @@ import 'package:fedi_app/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class RegisterUnifediApiAccessAcceptTermsOfServiceBoolValueFormFieldRowWidget
+class RegisterAccessAcceptTermsOfServiceBoolValueFormFieldRowWidget
     extends StatelessWidget {
   final Uri instanceBaseUri;
   final bool displayErrors;
 
-  const RegisterUnifediApiAccessAcceptTermsOfServiceBoolValueFormFieldRowWidget({
+  const RegisterAccessAcceptTermsOfServiceBoolValueFormFieldRowWidget({
     Key? key,
     required this.instanceBaseUri,
     this.displayErrors = true,

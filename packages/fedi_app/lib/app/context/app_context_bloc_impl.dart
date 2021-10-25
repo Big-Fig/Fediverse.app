@@ -289,18 +289,18 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     );
 
     var instanceListLocalPreferenceBloc =
-        UnifediApiAccessListLocalPreferenceBloc(hiveLocalPreferencesService)
+        AccessListLocalPreferenceBloc(hiveLocalPreferencesService)
           ..disposeWith(this);
     await globalProviderService
-        .asyncInitAndRegister<IUnifediApiAccessListLocalPreferenceBloc>(
+        .asyncInitAndRegister<IAccessListLocalPreferenceBloc>(
       instanceListLocalPreferenceBloc,
     );
 
-    var instanceListBloc = UnifediApiAccessListBloc(
+    var instanceListBloc = AccessListBloc(
       instanceListLocalPreferenceBloc: instanceListLocalPreferenceBloc,
     )..disposeWith(this);
     await globalProviderService
-        .asyncInitAndRegister<IUnifediApiAccessListBloc>(instanceListBloc);
+        .asyncInitAndRegister<IAccessListBloc>(instanceListBloc);
 
     instanceListBloc.instanceRemovedStream.listen(
       (removedInstance) {
@@ -339,20 +339,20 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
     ).disposeWith(this);
 
     var currentInstanceLocalPreferenceBloc =
-        CurrentUnifediApiAccessLocalPreferenceBloc(hiveLocalPreferencesService)
+        CurrentAccessLocalPreferenceBloc(hiveLocalPreferencesService)
           ..disposeWith(this);
     await globalProviderService
-        .asyncInitAndRegister<ICurrentUnifediApiAccessLocalPreferenceBloc>(
+        .asyncInitAndRegister<ICurrentAccessLocalPreferenceBloc>(
       currentInstanceLocalPreferenceBloc,
     );
 
-    var currentInstanceBloc = CurrentUnifediApiAccessBloc(
+    var currentInstanceBloc = CurrentAccessBloc(
       localPreferencesService: hiveLocalPreferencesService,
       instanceListBloc: instanceListBloc,
       currentLocalPreferenceBloc: currentInstanceLocalPreferenceBloc,
     )..disposeWith(this);
-    await globalProviderService.asyncInitAndRegister<
-        ICurrentUnifediApiAccessBloc>(currentInstanceBloc);
+    await globalProviderService
+        .asyncInitAndRegister<ICurrentAccessBloc>(currentInstanceBloc);
 
     var globalLocalizationSettingsLocalPreferencesBloc =
         GlobalLocalizationSettingsLocalPreferenceBloc(

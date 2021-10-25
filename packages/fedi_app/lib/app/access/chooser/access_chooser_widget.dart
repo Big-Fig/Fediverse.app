@@ -22,12 +22,12 @@ import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
-var _logger = Logger('auth_instance_chooser_widget.dart');
+var _logger = Logger('access_chooser_widget.dart');
 
-class UnifediApiAccessChooserWidget extends StatelessWidget {
+class AccessChooserWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var instanceChooserBloc = IUnifediApiAccessChooserBloc.of(context);
+    var instanceChooserBloc = IAccessChooserBloc.of(context);
 
     _logger.finest(() => 'build');
 
@@ -77,11 +77,11 @@ class UnifediApiAccessChooserWidget extends StatelessWidget {
   Widget buildItemsToChoose(
     int itemCount,
     List<UnifediApiAccess> instancesAvailableToChoose,
-    IUnifediApiAccessChooserBloc instanceChooserBloc,
+    IAccessChooserBloc instanceChooserBloc,
   ) =>
       const _UnifediApiAccessChooserItemsToChooseWidget();
 
-  const UnifediApiAccessChooserWidget({
+  const AccessChooserWidget({
     Key? key,
   }) : super(key: key);
 }
@@ -150,14 +150,13 @@ class _UnifediApiAccessChooserItemsToChooseWidget extends StatelessWidget {
                       ),
                     ),
                     child: DisposableProxyProvider<UnifediApiAccess,
-                        IUnifediApiAccessChooserInstanceListItemBloc>(
+                        IAccessChooserInstanceListItemBloc>(
                       update: (context, instance, _) =>
-                          UnifediApiAccessChooserInstanceListItemBloc(
+                          AccessChooserInstanceListItemBloc(
                         instance: instance,
                         isSelected: false,
                       ),
-                      child:
-                          const UnifediApiAccessChooserInstanceListItemWidget(),
+                      child: const AccessChooserInstanceListItemWidget(),
                     ),
                   );
                 },
@@ -178,7 +177,7 @@ class _UnifediApiAccessChooserSelectedInstanceRowWidget
 
   @override
   Widget build(BuildContext context) {
-    var instanceChooserBloc = IUnifediApiAccessChooserBloc.of(context);
+    var instanceChooserBloc = IAccessChooserBloc.of(context);
 
     // todo: remove hack
     // sometimes IMyAccountBloc is not accessible during account switching
@@ -209,13 +208,13 @@ class _UnifediApiAccessChooserSelectedInstanceRowWidget
           return Provider<UnifediApiAccess>.value(
             value: authInstance,
             child: DisposableProxyProvider<UnifediApiAccess,
-                IUnifediApiAccessChooserInstanceListItemBloc>(
+                IAccessChooserInstanceListItemBloc>(
               update: (context, authInstance, _) =>
-                  UnifediApiAccessChooserInstanceListItemBloc(
+                  AccessChooserInstanceListItemBloc(
                 instance: authInstance,
                 isSelected: true,
               ),
-              child: const UnifediApiAccessChooserInstanceListItemWidget(),
+              child: const AccessChooserInstanceListItemWidget(),
             ),
           );
         },

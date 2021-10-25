@@ -8,15 +8,13 @@ import 'package:fedi_app/ui/stepper/fedi_stepper_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
-class RegisterUnifediApiAccessFormStepperCaptchaItemWidget
-    extends StatelessWidget {
-  const RegisterUnifediApiAccessFormStepperCaptchaItemWidget({Key? key})
+class RegisterAccessFormStepperCaptchaItemWidget extends StatelessWidget {
+  const RegisterAccessFormStepperCaptchaItemWidget({Key? key})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var itemBloc =
-        IRegisterUnifediApiAccessFormStepperCaptchaItemBloc.of(context);
+    var itemBloc = IRegisterAccessFormStepperCaptchaItemBloc.of(context);
 
     return StreamBuilder<bool?>(
       stream: itemBloc.captchaFieldBloc.isDisabledOnServerSideStream,
@@ -28,7 +26,7 @@ class RegisterUnifediApiAccessFormStepperCaptchaItemWidget
           return Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              RegisterUnifediApiAccessFormStepperItemDescriptionWidget(
+              RegisterAccessFormStepperItemDescriptionWidget(
                 text: S
                     .of(context)
                     .app_auth_instance_register_step_captcha_description_disabledOnServer,
@@ -40,7 +38,7 @@ class RegisterUnifediApiAccessFormStepperCaptchaItemWidget
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              RegisterUnifediApiAccessFormStepperItemDescriptionWidget(
+              RegisterAccessFormStepperItemDescriptionWidget(
                 text: S
                     .of(context)
                     .app_auth_instance_register_step_captcha_description,
@@ -61,8 +59,7 @@ class _RegisterUnifediApiAccessFormCaptchaFieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var itemBloc =
-        IRegisterUnifediApiAccessFormStepperCaptchaItemBloc.of(context);
+    var itemBloc = IRegisterAccessFormStepperCaptchaItemBloc.of(context);
 
     return StreamBuilder<bool>(
       stream: itemBloc.isEditingStartedStream,
@@ -70,8 +67,7 @@ class _RegisterUnifediApiAccessFormCaptchaFieldWidget extends StatelessWidget {
       builder: (context, snapshot) {
         final isEditingStarted = snapshot.data!;
 
-        return ProxyProvider<
-            IRegisterUnifediApiAccessFormStepperCaptchaItemBloc,
+        return ProxyProvider<IRegisterAccessFormStepperCaptchaItemBloc,
             ICaptchaStringValueFormFieldBloc>(
           update: (context, value, previous) => value.captchaFieldBloc,
           child: FormCaptchaStringFormFieldRowWidget(

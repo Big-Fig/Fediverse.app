@@ -4,8 +4,8 @@ import 'package:fedi_app/form/form_bloc_impl.dart';
 import 'package:fedi_app/ui/stepper/fedi_stepper_model.dart';
 import 'package:rxdart/rxdart.dart';
 
-abstract class RegisterUnifediApiAccessFormStepperItemBloc extends FormBloc
-    implements IRegisterUnifediApiAccessFormStepperItemBloc {
+abstract class RegisterAccessFormStepperItemBloc extends FormBloc
+    implements IRegisterAccessFormStepperItemBloc {
   BehaviorSubject<bool> onStepCompleteCalledSubject = BehaviorSubject.seeded(
     false,
   );
@@ -15,7 +15,7 @@ abstract class RegisterUnifediApiAccessFormStepperItemBloc extends FormBloc
   Stream<bool> get onStepCompleteCalledStream =>
       onStepCompleteCalledSubject.stream;
 
-  RegisterUnifediApiAccessFormStepperItemBloc({
+  RegisterAccessFormStepperItemBloc({
     required bool isAllItemsInitialized,
   }) : super(isAllItemsInitialized: isAllItemsInitialized) {
     onStepCompleteCalledSubject.disposeWith(this);

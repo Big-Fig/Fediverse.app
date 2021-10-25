@@ -11,12 +11,10 @@ import 'package:unifedi_api/unifedi_api.dart';
 
 var _logger = Logger('auth_instance_list_bloc_impl.dart');
 
-class UnifediApiAccessListBloc extends DisposableOwner
-    implements IUnifediApiAccessListBloc {
-  final IUnifediApiAccessListLocalPreferenceBloc
-      instanceListLocalPreferenceBloc;
+class AccessListBloc extends DisposableOwner implements IAccessListBloc {
+  final IAccessListLocalPreferenceBloc instanceListLocalPreferenceBloc;
 
-  UnifediApiAccessListBloc({
+  AccessListBloc({
     required this.instanceListLocalPreferenceBloc,
   });
 
@@ -50,7 +48,7 @@ class UnifediApiAccessListBloc extends DisposableOwner
     if (!instances.contains(instance)) {
       _logger.finest(() => 'addInstance before setValue');
       await instanceListLocalPreferenceBloc.setValue(
-        UnifediApiAccessList(
+        AccessList(
           instances: [
             ...instances,
             instance,
@@ -74,7 +72,7 @@ class UnifediApiAccessListBloc extends DisposableOwner
       // ignore: avoid-ignoring-return-values
       instances.remove(foundInstanceToRemove);
       await instanceListLocalPreferenceBloc.setValue(
-        UnifediApiAccessList(
+        AccessList(
           instances: instances,
         ),
       );

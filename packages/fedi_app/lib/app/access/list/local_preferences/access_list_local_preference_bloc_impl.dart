@@ -3,20 +3,20 @@ import 'package:fedi_app/app/access/list/local_preferences/access_list_local_pre
 import 'package:fedi_app/local_preferences/local_preference_bloc_impl.dart';
 import 'package:fedi_app/local_preferences/local_preferences_service.dart';
 
-class UnifediApiAccessListLocalPreferenceBloc
-    extends ObjectLocalPreferenceBloc<UnifediApiAccessList?>
-    implements IUnifediApiAccessListLocalPreferenceBloc {
-  static const UnifediApiAccessList? defaultValue = null;
+class AccessListLocalPreferenceBloc
+    extends ObjectLocalPreferenceBloc<AccessList?>
+    implements IAccessListLocalPreferenceBloc {
+  static const AccessList? defaultValue = null;
 
-  UnifediApiAccessListLocalPreferenceBloc(
+  AccessListLocalPreferenceBloc(
     ILocalPreferencesService preferencesService,
   ) : super(
           preferencesService: preferencesService,
           key: 'access.list',
           schemaVersion: 1,
-          jsonConverter: (json) => UnifediApiAccessList.fromJson(json),
+          jsonConverter: (json) => AccessList.fromJson(json),
         );
 
   @override
-  UnifediApiAccessList? get defaultPreferenceValue => defaultValue;
+  AccessList? get defaultPreferenceValue => defaultValue;
 }

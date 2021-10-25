@@ -12,7 +12,7 @@ import 'package:fedi_app/app/access/register/form/stepper/item/register_access_f
 import 'package:fedi_app/app/access/register/form/stepper/item/submit/register_access_form_submit_stepper_item_bloc.dart';
 import 'package:fedi_app/app/access/register/form/stepper/item/submit/register_access_form_submit_stepper_item_widget.dart';
 import 'package:fedi_app/app/access/register/register_access_bloc.dart';
-import 'package:fedi_app/app/access/register/response/register_response_model.dart';
+import 'package:fedi_app/app/access/register/response/register_access_response_model.dart';
 import 'package:fedi_app/app/async/unifedi/unifedi_async_operation_helper.dart';
 import 'package:fedi_app/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:fedi_app/generated/l10n.dart';
@@ -23,25 +23,24 @@ import 'package:fedi_app/ui/stepper/fedi_stepper_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
-typedef RegisterCallback = FutureOr<void> Function(
+typedef RegisterAccessCallback = FutureOr<void> Function(
   BuildContext context,
-  RegisterResponse registerResponse,
+  RegisterAccessResponse registerResponse,
 );
 
-class RegisterUnifediApiAccessFormStepperWidget extends StatelessWidget {
-  final RegisterCallback onRegister;
+class RegisterAccessFormStepperWidget extends StatelessWidget {
+  final RegisterAccessCallback onRegister;
 
-  const RegisterUnifediApiAccessFormStepperWidget({
+  const RegisterAccessFormStepperWidget({
     Key? key,
     required this.onRegister,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => ProxyProvider<
-          IRegisterUnifediApiAccessFormBloc,
-          IFediStepperBloc<IRegisterUnifediApiAccessFormStepperItemBloc>>(
+  Widget build(BuildContext context) => ProxyProvider<IRegisterAccessFormBloc,
+          IFediStepperBloc<IRegisterAccessFormStepperItemBloc>>(
         update: (context, registerUnifediApiAccessFormBloc, _) {
-          var steps = <IRegisterUnifediApiAccessFormStepperItemBloc>[
+          var steps = <IRegisterAccessFormStepperItemBloc>[
             if (registerUnifediApiAccessFormBloc.manualApproveStepperItemBloc !=
                 null)
               registerUnifediApiAccessFormBloc.manualApproveStepperItemBloc!,
@@ -51,15 +50,14 @@ class RegisterUnifediApiAccessFormStepperWidget extends StatelessWidget {
             registerUnifediApiAccessFormBloc.submitStepperItemBloc,
           ];
 
-          return FediStepperBloc<IRegisterUnifediApiAccessFormStepperItemBloc>(
+          return FediStepperBloc<IRegisterAccessFormStepperItemBloc>(
             steps: steps,
             submitCallback: () async {
               var dialogResult = await UnifediAsyncOperationHelper
                   .performUnifediAsyncOperation(
                 context: context,
                 asyncCode: () =>
-                    IRegisterUnifediApiAccessBloc.of(context, listen: false)
-                        .register(),
+                    IRegisterAccessBloc.of(context, listen: false).register(),
               );
               var registrationResponse = dialogResult.result;
               if (registrationResponse != null) {
@@ -69,21 +67,20 @@ class RegisterUnifediApiAccessFormStepperWidget extends StatelessWidget {
           );
         },
         child: FediStepperBlocProxyProvider(
-          child:
-              FediStepperWidget<IRegisterUnifediApiAccessFormStepperItemBloc>(
+          child: FediStepperWidget<IRegisterAccessFormStepperItemBloc>(
             titleBuilder: (
               BuildContext context,
-              IRegisterUnifediApiAccessFormStepperItemBloc stepperItem,
+              IRegisterAccessFormStepperItemBloc stepperItem,
             ) =>
-                Provider<IRegisterUnifediApiAccessFormStepperItemBloc>.value(
+                Provider<IRegisterAccessFormStepperItemBloc>.value(
               value: stepperItem,
               child: const _RegisterUnifediApiAccessFormStepperTitleWidget(),
             ),
             contentBuilder: (
               BuildContext context,
-              IRegisterUnifediApiAccessFormStepperItemBloc stepperItem,
+              IRegisterAccessFormStepperItemBloc stepperItem,
             ) =>
-                Provider<IRegisterUnifediApiAccessFormStepperItemBloc>.value(
+                Provider<IRegisterAccessFormStepperItemBloc>.value(
               value: stepperItem,
               child: const _RegisterUnifediApiAccessFormStepperContentWidget(),
             ),
@@ -102,22 +99,22 @@ class _RegisterUnifediApiAccessFormStepperTitleWidget extends StatelessWidget {
     String text;
 
     var registerUnifediApiAccessFormStepperItemBloc =
-        Provider.of<IRegisterUnifediApiAccessFormStepperItemBloc>(context);
+        Provider.of<IRegisterAccessFormStepperItemBloc>(context);
 
     var type = registerUnifediApiAccessFormStepperItemBloc.type;
 
     switch (type) {
-      case RegisterUnifediApiAccessFormStepperItemType.manualApprove:
+      case RegisterAccessFormStepperItemType.manualApprove:
         text =
             S.of(context).app_auth_instance_register_step_manualApprove_title;
         break;
-      case RegisterUnifediApiAccessFormStepperItemType.account:
+      case RegisterAccessFormStepperItemType.account:
         text = S.of(context).app_auth_instance_register_step_account_title;
         break;
-      case RegisterUnifediApiAccessFormStepperItemType.captcha:
+      case RegisterAccessFormStepperItemType.captcha:
         text = S.of(context).app_auth_instance_register_step_captcha_title;
         break;
-      case RegisterUnifediApiAccessFormStepperItemType.submit:
+      case RegisterAccessFormStepperItemType.submit:
         text = S.of(context).app_auth_instance_register_step_submit_title;
         break;
     }
@@ -138,44 +135,39 @@ class _RegisterUnifediApiAccessFormStepperContentWidget
   @override
   Widget build(BuildContext context) {
     var registerUnifediApiAccessFormStepperItemBloc =
-        Provider.of<IRegisterUnifediApiAccessFormStepperItemBloc>(context);
+        Provider.of<IRegisterAccessFormStepperItemBloc>(context);
 
     var type = registerUnifediApiAccessFormStepperItemBloc.type;
 
     Widget child;
 
     switch (type) {
-      case RegisterUnifediApiAccessFormStepperItemType.manualApprove:
-        child = Provider<
-            IRegisterUnifediApiAccessFormStepperManualApproveItemBloc>.value(
+      case RegisterAccessFormStepperItemType.manualApprove:
+        child = Provider<IRegisterAccessFormStepperManualApproveItemBloc>.value(
           value: registerUnifediApiAccessFormStepperItemBloc
-              as IRegisterUnifediApiAccessFormStepperManualApproveItemBloc,
-          child:
-              const RegisterUnifediApiAccessFormStepperManualApproveItemWidget(),
+              as IRegisterAccessFormStepperManualApproveItemBloc,
+          child: const RegisterAccessFormStepperManualApproveItemWidget(),
         );
         break;
-      case RegisterUnifediApiAccessFormStepperItemType.account:
-        child =
-            Provider<IRegisterUnifediApiAccessFormStepperAccountItemBloc>.value(
+      case RegisterAccessFormStepperItemType.account:
+        child = Provider<IRegisterAccessFormStepperAccountItemBloc>.value(
           value: registerUnifediApiAccessFormStepperItemBloc
-              as IRegisterUnifediApiAccessFormStepperAccountItemBloc,
-          child: const RegisterUnifediApiAccessFormStepperAccountItemWidget(),
+              as IRegisterAccessFormStepperAccountItemBloc,
+          child: const RegisterAccessFormStepperAccountItemWidget(),
         );
         break;
-      case RegisterUnifediApiAccessFormStepperItemType.captcha:
-        child =
-            Provider<IRegisterUnifediApiAccessFormStepperCaptchaItemBloc>.value(
+      case RegisterAccessFormStepperItemType.captcha:
+        child = Provider<IRegisterAccessFormStepperCaptchaItemBloc>.value(
           value: registerUnifediApiAccessFormStepperItemBloc
-              as IRegisterUnifediApiAccessFormStepperCaptchaItemBloc,
-          child: const RegisterUnifediApiAccessFormStepperCaptchaItemWidget(),
+              as IRegisterAccessFormStepperCaptchaItemBloc,
+          child: const RegisterAccessFormStepperCaptchaItemWidget(),
         );
         break;
-      case RegisterUnifediApiAccessFormStepperItemType.submit:
-        child =
-            Provider<IRegisterUnifediApiAccessFormStepperSubmitItemBloc>.value(
+      case RegisterAccessFormStepperItemType.submit:
+        child = Provider<IRegisterAccessFormStepperSubmitItemBloc>.value(
           value: registerUnifediApiAccessFormStepperItemBloc
-              as IRegisterUnifediApiAccessFormStepperSubmitItemBloc,
-          child: const RegisterUnifediApiAccessFormStepperSubmitItemWidget(),
+              as IRegisterAccessFormStepperSubmitItemBloc,
+          child: const RegisterAccessFormStepperSubmitItemWidget(),
         );
         break;
     }

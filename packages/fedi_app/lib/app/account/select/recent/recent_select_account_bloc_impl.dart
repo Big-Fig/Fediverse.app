@@ -37,11 +37,13 @@ class RecentSelectAccountBloc extends DisposableOwner
         }
 
         if (selectedAccount != null) {
+          // ignore: avoid-ignoring-return-values
           recentItems.removeWhere(
+            // ignore: avoid-ignoring-return-values
             (account) => account.id == selectedAccount.remoteId,
           );
 
-          // ignore: cascade_invocations
+          // ignore: cascade_invocations, avoid-ignoring-return-values
           recentItems.add(selectedAccount.toUnifediApiAccount());
         }
 

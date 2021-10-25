@@ -17,7 +17,7 @@ class AccountDetailsBloc extends DisposableOwner
   @override
   final List<AccountStatusesTab> tabs;
 
-  final ICurrentUnifediApiAccessBloc currentUnifediApiAccessBloc;
+  final ICurrentAccessBloc currentUnifediApiAccessBloc;
 
   @override
   final NestedScrollController nestedScrollController;

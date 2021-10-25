@@ -24,7 +24,7 @@ void main() {
           UnifediApiAccessListModelMockHelper.createTestUnifediApiAccessList(
         seed: seed,
       ),
-      (json) => UnifediApiAccessList.fromJson(json),
+      (json) => AccessList.fromJson(json),
     );
   });
 
@@ -39,7 +39,7 @@ void main() {
 
   test('hive adapter', () async {
     HiveMockHelper.testAdapter(
-      () => UnifediApiAccessListAdapter(),
+      () => AccessListAdapter(),
     );
   });
 }

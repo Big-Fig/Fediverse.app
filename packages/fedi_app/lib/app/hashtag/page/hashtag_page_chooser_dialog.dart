@@ -13,7 +13,7 @@ Future<void> showHashtagPageChooserDialog({
   required Uri remoteInstanceUri,
   required IHashtag hashtag,
 }) async {
-  var currentUnifediApiAccessBloc = ICurrentUnifediApiAccessBloc.of(
+  var currentUnifediApiAccessBloc = ICurrentAccessBloc.of(
     context,
     listen: false,
   );

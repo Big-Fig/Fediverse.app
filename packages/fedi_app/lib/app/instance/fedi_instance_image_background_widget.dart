@@ -22,7 +22,7 @@ class FediInstanceImageBackgroundWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var currentUnifediApiAccessBloc = ICurrentUnifediApiAccessBloc.of(context);
+    var currentUnifediApiAccessBloc = ICurrentAccessBloc.of(context);
 
     var currentInstance = currentUnifediApiAccessBloc.currentInstance;
 

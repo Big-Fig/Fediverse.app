@@ -106,7 +106,7 @@ TimelineLocalPreferenceBloc _createTimelinePreferencesBloc(
     listen: false,
   );
   var currentUnifediApiAccessBloc =
-      ICurrentUnifediApiAccessBloc.of(context, listen: false);
+      ICurrentAccessBloc.of(context, listen: false);
   var currentInstance = currentUnifediApiAccessBloc.currentInstance!;
 
   return TimelineLocalPreferenceBloc.byId(

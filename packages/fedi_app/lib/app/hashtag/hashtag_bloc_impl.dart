@@ -108,8 +108,8 @@ class HashtagBloc extends DisposableOwner implements IHashtagBloc {
     return HashtagBloc(
       unifediApiMyAccountService: unifediApiMyAccountService,
       hashtag: hashtag,
-      authInstance: ICurrentUnifediApiAccessBloc.of(context, listen: false)
-          .currentInstance!,
+      authInstance:
+          ICurrentAccessBloc.of(context, listen: false).currentInstance!,
       featuredHashtag: myAccountFeaturedHashtag,
       needLoadFeaturedState: needLoadFeaturedState,
     );

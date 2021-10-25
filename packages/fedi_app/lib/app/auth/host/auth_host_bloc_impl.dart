@@ -7,7 +7,7 @@ import 'package:fedi_app/app/access/host/access_token/access_host_access_token_l
 import 'package:fedi_app/app/access/host/application/access_host_application_local_preference_bloc.dart';
 import 'package:fedi_app/app/access/host/application/access_host_application_local_preference_bloc_impl.dart';
 import 'package:fedi_app/app/access/memory_access_bloc_impl.dart';
-import 'package:fedi_app/app/access/register/response/register_response_model.dart';
+import 'package:fedi_app/app/access/register/response/register_access_response_model.dart';
 import 'package:fedi_app/app/auth/host/auth_host_bloc.dart';
 import 'package:fedi_app/app/auth/oauth_last_launched/local_preferences/auth_oauth_last_launched_host_to_login_local_preference_bloc.dart';
 import 'package:fedi_app/app/config/config_service.dart';
@@ -62,14 +62,14 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
       hostAccessTokenLocalPreferenceBloc;
 
   // ignore: avoid-late-keyword
-  late ICurrentUnifediApiAccessBloc currentInstanceBloc;
+  late ICurrentAccessBloc currentInstanceBloc;
   final IAuthApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc
       oAuthLastLaunchedHostToLoginLocalPreferenceBloc;
   final IConnectionService connectionService;
   final IConfigService configService;
 
   // ignore: avoid-late-keyword
-  late MemoryUnifediApiAccessBloc memoryUnifediApiAccessBloc;
+  late MemoryAccessBloc memoryUnifediApiAccessBloc;
 
   AuthHostBloc({
     required this.instanceBaseUri,
@@ -91,7 +91,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
       host: instanceBaseUriHost,
     )..disposeWith(this);
 
-    memoryUnifediApiAccessBloc = MemoryUnifediApiAccessBloc(
+    memoryUnifediApiAccessBloc = MemoryAccessBloc(
       access: UnifediApiAccess(
         url: instanceBaseUri.toString(),
         instance: null,
@@ -289,7 +289,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
   @override
   // todo: fix long-method
   // ignore: long-method
-  Future<RegisterResponse> registerAccount({
+  Future<RegisterAccessResponse> registerAccount({
     required IUnifediApiRegisterAccount registerAccount,
   }) async {
     await registerApplication();
@@ -303,7 +303,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
 
     var token = registerAccountResponse.authToken;
 
-    RegisterResponse registerResponse;
+    RegisterAccessResponse registerResponse;
 
     if (token != null) {
       var unifediApiMyAccountService =
@@ -322,7 +322,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
             ),
       );
 
-      registerResponse = RegisterResponse(
+      registerResponse = RegisterAccessResponse(
         access: memoryUnifediApiAccessBloc.access,
         response: registerAccountResponse,
         myAccount: myAccount?.toUnifediApiMyAccount(),
@@ -338,7 +338,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
           oauthToken: token.toUnifediApiOAuthToken(),
         );
 
-        registerResponse = RegisterResponse(
+        registerResponse = RegisterAccessResponse(
           access: memoryUnifediApiAccessBloc.access,
           response: registerAccountResponse,
           myAccount: myAccount.toUnifediApiMyAccount(),
@@ -354,7 +354,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
 
         identifierAsUnifediApi?.maybeWhen(
           missingConfirmedEmail: (_) {
-            registerResponse = RegisterResponse(
+            registerResponse = RegisterAccessResponse(
               access: registerResponse.access,
               response: registerResponse.response
                   .toUnifediApiRegisterAccountResponse()
@@ -365,7 +365,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
             );
           },
           awaitingApproval: (_) {
-            registerResponse = RegisterResponse(
+            registerResponse = RegisterAccessResponse(
               access: registerResponse.access,
               response: registerResponse.response
                   .toUnifediApiRegisterAccountResponse()
@@ -390,7 +390,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
             ),
       );
     } else {
-      registerResponse = RegisterResponse(
+      registerResponse = RegisterAccessResponse(
         access: null,
         myAccount: null,
         response: registerAccountResponse,
@@ -409,8 +409,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
         preferencesService: ILocalPreferencesService.of(context, listen: false),
         connectionService:
             Provider.of<IConnectionService>(context, listen: false),
-        currentInstanceBloc:
-            ICurrentUnifediApiAccessBloc.of(context, listen: false),
+        currentInstanceBloc: ICurrentAccessBloc.of(context, listen: false),
         oAuthLastLaunchedHostToLoginLocalPreferenceBloc:
             IAuthApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc.of(
           context,

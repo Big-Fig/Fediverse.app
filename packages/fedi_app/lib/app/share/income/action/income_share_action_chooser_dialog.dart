@@ -32,7 +32,7 @@ Future<void> showIncomeShareActionChooserDialog(
   _logger.finest(() => 'showIncomeShareInstanceChooserDialog');
 
   var currentUnifediApiAccessBloc =
-      ICurrentUnifediApiAccessBloc.of(context, listen: false);
+      ICurrentAccessBloc.of(context, listen: false);
   var types = IncomeShareActionType.values;
 
   var isPleroma = currentUnifediApiAccessBloc.currentInstance!.isPleroma;

@@ -39,8 +39,8 @@ class NotificationsPushHandlerBloc extends DisposableOwner
       unhandledLocalPreferencesBloc;
   final IFcmPushService fcmPushService;
   final IRichNotificationsService richNotificationsService;
-  final IUnifediApiAccessListBloc instanceListBloc;
-  final ICurrentUnifediApiAccessBloc currentInstanceBloc;
+  final IAccessListBloc instanceListBloc;
+  final ICurrentAccessBloc currentInstanceBloc;
   final IConfigService configService;
   final IConnectionService connectionService;
   final ILocalPreferencesService localPreferencesService;
@@ -258,16 +258,14 @@ class NotificationsPushHandlerBloc extends DisposableOwner
       acct: body.account,
     )!;
 
-    var unifediApiAccessLocalPreferenceBloc =
-        UnifediApiAccessLocalPreferenceBloc(
+    var unifediApiAccessLocalPreferenceBloc = AccessLocalPreferenceBloc(
       preferencesService: localPreferencesService,
       userAtHost: authInstance.userAtHost,
     );
     await unifediApiAccessLocalPreferenceBloc.performAsyncInit();
     addDisposable(unifediApiAccessLocalPreferenceBloc);
 
-    var localPreferencesUnifediApiAccessBloc =
-        LocalPreferencesUnifediApiAccessBloc(
+    var localPreferencesUnifediApiAccessBloc = LocalPreferencesAccessBloc(
       accessLocalPreferenceBloc: unifediApiAccessLocalPreferenceBloc,
     );
 
@@ -394,16 +392,14 @@ class NotificationsPushHandlerBloc extends DisposableOwner
       acct: body.account,
     )!;
 
-    var unifediApiAccessLocalPreferenceBloc =
-        UnifediApiAccessLocalPreferenceBloc(
+    var unifediApiAccessLocalPreferenceBloc = AccessLocalPreferenceBloc(
       preferencesService: localPreferencesService,
       userAtHost: authInstance.userAtHost,
     );
     await unifediApiAccessLocalPreferenceBloc.performAsyncInit();
     addDisposable(unifediApiAccessLocalPreferenceBloc);
 
-    var localPreferencesUnifediApiAccessBloc =
-        LocalPreferencesUnifediApiAccessBloc(
+    var localPreferencesUnifediApiAccessBloc = LocalPreferencesAccessBloc(
       accessLocalPreferenceBloc: unifediApiAccessLocalPreferenceBloc,
     );
 

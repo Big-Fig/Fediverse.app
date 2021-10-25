@@ -16,7 +16,7 @@ Future<void> showShareChooserDialog(
   required FutureOr<void> Function(BuildContext context) newStatusShareAction,
 }) async {
   var currentUnifediApiAccessBloc =
-      ICurrentUnifediApiAccessBloc.of(context, listen: false);
+      ICurrentAccessBloc.of(context, listen: false);
 
   var currentInstance = currentUnifediApiAccessBloc.currentInstance;
   await showFediChooserDialog<void>(

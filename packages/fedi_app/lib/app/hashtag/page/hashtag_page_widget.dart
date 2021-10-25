@@ -29,7 +29,7 @@ class HashtagPageAppBarWidget extends StatelessWidget
 
     String title;
 
-    var currentUnifediApiAccessBloc = ICurrentUnifediApiAccessBloc.of(context);
+    var currentUnifediApiAccessBloc = ICurrentAccessBloc.of(context);
     var currentInstance = currentUnifediApiAccessBloc.currentInstance;
 
     var hashtagPageBloc = IHashtagPageBloc.of(context);

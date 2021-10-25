@@ -4,13 +4,13 @@ import 'package:fedi_app/app/captcha/unifedi/unifedi_form_captcha_string_field_b
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IRegisterUnifediApiAccessFormStepperCaptchaItemBloc
-    implements IRegisterUnifediApiAccessFormStepperItemBloc, IDisposable {
-  static IRegisterUnifediApiAccessFormStepperCaptchaItemBloc of(
+abstract class IRegisterAccessFormStepperCaptchaItemBloc
+    implements IRegisterAccessFormStepperItemBloc, IDisposable {
+  static IRegisterAccessFormStepperCaptchaItemBloc of(
     BuildContext context, {
     bool listen = true,
   }) =>
-      Provider.of<IRegisterUnifediApiAccessFormStepperCaptchaItemBloc>(
+      Provider.of<IRegisterAccessFormStepperCaptchaItemBloc>(
         context,
         listen: listen,
       );

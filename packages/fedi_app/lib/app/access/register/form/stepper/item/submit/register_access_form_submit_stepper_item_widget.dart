@@ -5,10 +5,8 @@ import 'package:fedi_app/ui/stepper/fedi_stepper_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
-class RegisterUnifediApiAccessFormStepperSubmitItemWidget
-    extends StatelessWidget {
-  const RegisterUnifediApiAccessFormStepperSubmitItemWidget({Key? key})
-      : super(key: key);
+class RegisterAccessFormStepperSubmitItemWidget extends StatelessWidget {
+  const RegisterAccessFormStepperSubmitItemWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Column(
@@ -51,8 +49,7 @@ class _RegisterUnifediApiAccessFormAcceptTermsOfServiceFieldWidget
 
   @override
   Widget build(BuildContext context) {
-    var itemBloc =
-        IRegisterUnifediApiAccessFormStepperSubmitItemBloc.of(context);
+    var itemBloc = IRegisterAccessFormStepperSubmitItemBloc.of(context);
 
     return StreamBuilder<bool>(
       stream: itemBloc.isEditingStartedStream,
@@ -60,12 +57,11 @@ class _RegisterUnifediApiAccessFormAcceptTermsOfServiceFieldWidget
       builder: (context, snapshot) {
         final isEditingStarted = snapshot.data!;
 
-        return ProxyProvider<IRegisterUnifediApiAccessFormStepperSubmitItemBloc,
+        return ProxyProvider<IRegisterAccessFormStepperSubmitItemBloc,
             IBoolValueFormFieldBloc>(
           update: (context, itemBloc, _) =>
               itemBloc.agreeTermsOfServiceFieldBloc,
-          child:
-              RegisterUnifediApiAccessAcceptTermsOfServiceBoolValueFormFieldRowWidget(
+          child: RegisterAccessAcceptTermsOfServiceBoolValueFormFieldRowWidget(
             displayErrors: isEditingStarted,
             instanceBaseUri: itemBloc.instanceBaseUri,
           ),

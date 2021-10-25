@@ -17,8 +17,7 @@ class ConnectionService extends DisposableOwner implements IConnectionService {
       _connectionStateSubject.stream.distinct();
 
   @override
-  ConnectivityResult? get connectionState =>
-      _connectionStateSubject.valueOrNull;
+  ConnectivityResult get connectionState => _connectionStateSubject.value;
 
   @override
   Stream<bool> get isConnectedStream =>

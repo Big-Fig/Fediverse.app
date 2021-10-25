@@ -48,7 +48,7 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
   final IUnifediApiAccountService unifediApiAccountService;
   final IUnifediApiTimelineService unifediApiTimelineService;
   final IStatusRepository statusRepository;
-  final ICurrentUnifediApiAccessBloc currentUnifediApiAccessBloc;
+  final ICurrentAccessBloc currentUnifediApiAccessBloc;
   final IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc;
   final ILocalPreferencesService preferencesService;
   final IMyAccountBloc myAccountBloc;
@@ -157,7 +157,7 @@ class TimelineTabBloc extends AsyncInitLoadingBloc implements ITimelineTabBloc {
         statusRepository: IStatusRepository.of(context, listen: false),
         myAccountBloc: IMyAccountBloc.of(context, listen: false),
         currentUnifediApiAccessBloc:
-            ICurrentUnifediApiAccessBloc.of(context, listen: false),
+            ICurrentAccessBloc.of(context, listen: false),
         preferencesService: ILocalPreferencesService.of(context, listen: false),
         webSocketsHandlerManagerBloc:
             IWebSocketsHandlerManagerBloc.of(context, listen: false),

@@ -12,10 +12,10 @@ import '../../../../local_preferences/local_preferences_test_helper.dart';
 void main() {
   test('save & load', () async {
     await LocalPreferencesMockHelper.testSaveAndLoad<UnifediApiAccess,
-        CurrentUnifediApiAccessLocalPreferenceBloc>(
-      defaultValue: CurrentUnifediApiAccessLocalPreferenceBloc.defaultValue,
+        CurrentAccessLocalPreferenceBloc>(
+      defaultValue: CurrentAccessLocalPreferenceBloc.defaultValue,
       blocCreator: (localPreferencesService) =>
-          CurrentUnifediApiAccessLocalPreferenceBloc(
+          CurrentAccessLocalPreferenceBloc(
         localPreferencesService,
       ),
       testObjectCreator: ({required String seed}) =>

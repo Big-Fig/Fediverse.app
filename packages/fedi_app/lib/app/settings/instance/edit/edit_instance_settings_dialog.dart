@@ -11,7 +11,7 @@ void showEditInstanceSettingsDialog({
   required Widget child,
 }) {
   var currentUnifediApiAccessBloc =
-      ICurrentUnifediApiAccessBloc.of(context, listen: false);
+      ICurrentAccessBloc.of(context, listen: false);
   var currentInstance = currentUnifediApiAccessBloc.currentInstance!;
   showSettingsDialog(
     context: context,

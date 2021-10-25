@@ -69,7 +69,7 @@ class _EditDatabaseCacheSettingsClearAllButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var currentUnifediApiAccessBloc = ICurrentUnifediApiAccessBloc.of(context);
+    var currentUnifediApiAccessBloc = ICurrentAccessBloc.of(context);
     var editDatabaseCacheSettingsBloc =
         IEditDatabaseCacheSettingsBloc.of(context);
 
@@ -94,7 +94,7 @@ class _EditDatabaseCacheSettingsClearByLimitsButtonWidget
 
   @override
   Widget build(BuildContext context) {
-    var currentUnifediApiAccessBloc = ICurrentUnifediApiAccessBloc.of(context);
+    var currentUnifediApiAccessBloc = ICurrentAccessBloc.of(context);
     var editDatabaseCacheSettingsBloc =
         IEditDatabaseCacheSettingsBloc.of(context);
 

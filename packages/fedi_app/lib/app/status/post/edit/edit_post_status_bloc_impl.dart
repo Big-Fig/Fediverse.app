@@ -54,9 +54,8 @@ class EditPostStatusBloc extends PostStatusBloc implements IEditPostStatusBloc {
     required IPostStatusData initialData,
     required PostStatusDataCallback postStatusDataCallback,
   }) {
-    var info = ICurrentUnifediApiAccessBloc.of(context, listen: false)
-        .currentInstance!
-        .info!;
+    var info =
+        ICurrentAccessBloc.of(context, listen: false).currentInstance!.info!;
     var postStatusSettingsBloc =
         IPostStatusSettingsBloc.of(context, listen: false);
 

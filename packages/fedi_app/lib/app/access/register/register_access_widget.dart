@@ -9,32 +9,30 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class RegisterUnifediApiAccessWidget extends StatelessWidget {
-  final RegisterCallback onRegister;
+class RegisterAccessWidget extends StatelessWidget {
+  final RegisterAccessCallback onRegister;
 
-  const RegisterUnifediApiAccessWidget({
+  const RegisterAccessWidget({
     required this.onRegister,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var registerUnifediApiAccessBloc =
-        IRegisterUnifediApiAccessBloc.of(context);
+    var registerUnifediApiAccessBloc = IRegisterAccessBloc.of(context);
 
     return Padding(
       padding: FediPadding.verticalBigPadding,
       child: FediAsyncInitLoadingWidget(
         asyncInitLoadingBloc: registerUnifediApiAccessBloc,
-        loadingFinishedBuilder: (context) => ProxyProvider<
-            IRegisterUnifediApiAccessBloc, IRegisterUnifediApiAccessFormBloc>(
+        loadingFinishedBuilder: (context) =>
+            ProxyProvider<IRegisterAccessBloc, IRegisterAccessFormBloc>(
           update: (context, value, previous) =>
               value.registerUnifediApiAccessFormBloc,
-          child: RegisterUnifediApiAccessFormWidget(
+          child: RegisterAccessFormWidget(
             onRegister: onRegister,
             key: const Key(
-              RegisterUnifediApiAccessWidgetKeys
-                  .registerUnifediApiAccessFormWidgetKey,
+              RegisterAccessWidgetKeys.registerAccessFormWidgetKey,
             ),
           ),
         ),

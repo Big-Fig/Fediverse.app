@@ -3,10 +3,10 @@ import 'package:unifedi_api/unifedi_api_mock_helper.dart';
 
 // ignore_for_file: no-magic-number
 class UnifediApiAccessListModelMockHelper {
-  static UnifediApiAccessList createTestUnifediApiAccessList({
+  static AccessList createTestUnifediApiAccessList({
     required String seed,
   }) =>
-      UnifediApiAccessList(
+      AccessList(
         instances: [
           UnifediApiAccessMockHelper.generate(seed: seed + '1'),
           UnifediApiAccessMockHelper.generate(seed: seed + '2'),

@@ -83,7 +83,7 @@ class AccountDetailsPageBody extends StatelessWidget {
 
     var isRemote = accountBloc.instanceLocation == InstanceLocation.remote;
 
-    var currentUnifediApiAccessBloc = ICurrentUnifediApiAccessBloc.of(context);
+    var currentUnifediApiAccessBloc = ICurrentAccessBloc.of(context);
     var currentInstance = currentUnifediApiAccessBloc.currentInstance;
 
     return Scaffold(

@@ -37,8 +37,7 @@ void showEditGlobalToastSettingsDialog({
           globalOrInstanceSettingsType: GlobalOrInstanceSettingsType.global,
           isEnabled: true,
           currentInstance:
-              ICurrentUnifediApiAccessBloc.of(context, listen: false)
-                  .currentInstance,
+              ICurrentAccessBloc.of(context, listen: false).currentInstance,
         ),
         child: const EditToastSettingsWidget(
           shrinkWrap: true,

@@ -8,15 +8,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class RegisterUnifediApiAccessFormStepperManualApproveItemWidget
-    extends StatelessWidget {
-  const RegisterUnifediApiAccessFormStepperManualApproveItemWidget({Key? key})
+class RegisterAccessFormStepperManualApproveItemWidget extends StatelessWidget {
+  const RegisterAccessFormStepperManualApproveItemWidget({Key? key})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) => Column(
         children: [
-          RegisterUnifediApiAccessFormStepperItemDescriptionWidget(
+          RegisterAccessFormStepperItemDescriptionWidget(
             text: S
                 .of(context)
                 .app_auth_instance_register_step_manualApprove_description,
@@ -33,8 +32,7 @@ class _RegisterUnifediApiAccessFormReasonFieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var itemBloc =
-        IRegisterUnifediApiAccessFormStepperManualApproveItemBloc.of(context);
+    var itemBloc = IRegisterAccessFormStepperManualApproveItemBloc.of(context);
 
     return StreamBuilder<bool>(
       stream: itemBloc.isEditingStartedStream,
@@ -42,8 +40,7 @@ class _RegisterUnifediApiAccessFormReasonFieldWidget extends StatelessWidget {
       builder: (context, snapshot) {
         final isEditingStarted = snapshot.data!;
 
-        return ProxyProvider<
-            IRegisterUnifediApiAccessFormStepperManualApproveItemBloc,
+        return ProxyProvider<IRegisterAccessFormStepperManualApproveItemBloc,
             IStringValueFormFieldBloc>(
           update: (context, itemBloc, _) => itemBloc.reasonFieldBloc,
           child: StringValueFormFieldRowWidget(

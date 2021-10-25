@@ -97,7 +97,7 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
     // ignore: cascade_invocations
     Hive
       ..registerAdapter(UnifediApiMyAccountWrapperAdapter())
-      ..registerAdapter(UnifediApiAccessListAdapter())
+      ..registerAdapter(AccessListAdapter())
       ..registerAdapter(TimelineAdapter())
       ..registerAdapter(TimelineSettingsAdapter());
     // registered inside unifedi api package

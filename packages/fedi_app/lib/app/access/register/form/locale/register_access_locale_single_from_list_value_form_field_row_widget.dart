@@ -5,9 +5,9 @@ import 'package:fedi_app/generated/l10n.dart';
 import 'package:fedi_app/localization/localization_model.dart';
 import 'package:flutter/cupertino.dart';
 
-class RegisterUnifediApiAccessLocaleSingleFromListValueFormFieldRowWidget
+class RegisterAccessLocaleSingleFromListValueFormFieldRowWidget
     extends StatelessWidget {
-  const RegisterUnifediApiAccessLocaleSingleFromListValueFormFieldRowWidget({
+  const RegisterAccessLocaleSingleFromListValueFormFieldRowWidget({
     Key? key,
   }) : super(key: key);
 

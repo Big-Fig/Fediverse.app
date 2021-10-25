@@ -2,17 +2,16 @@ import 'package:fedi_app/app/access/register/form/stepper/register_access_form_s
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class RegisterUnifediApiAccessFormWidget extends StatelessWidget {
-  final RegisterCallback onRegister;
+class RegisterAccessFormWidget extends StatelessWidget {
+  final RegisterAccessCallback onRegister;
 
-  const RegisterUnifediApiAccessFormWidget({
+  const RegisterAccessFormWidget({
     required this.onRegister,
     Key? key,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) =>
-      RegisterUnifediApiAccessFormStepperWidget(
+  Widget build(BuildContext context) => RegisterAccessFormStepperWidget(
         onRegister: onRegister,
       );
 }

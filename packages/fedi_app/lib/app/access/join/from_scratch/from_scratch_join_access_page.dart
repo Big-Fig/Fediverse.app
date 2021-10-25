@@ -6,23 +6,22 @@ import 'package:fedi_app/app/ui/theme/fedi_ui_theme_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class FromScratchJoinUnifediApiAccessPage extends StatelessWidget {
+class FromScratchJoinAccessPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => FediLightStatusBarStyleArea(
         child: Scaffold(
           backgroundColor: IFediUiColorTheme.of(context).primaryDark,
           body: const SafeArea(
-            child: JoinUnifediApiAccessWidget(
+            child: JoinAccessWidget(
               key: Key(
-                FromScratchJoinUnifediApiAccessPageKeys
-                    .joinUnifediApiAccessWidgetKey,
+                FromScratchJoinAccessPageKeys.joinAccessWidgetKey,
               ),
             ),
           ),
         ),
       );
 
-  const FromScratchJoinUnifediApiAccessPage({
+  const FromScratchJoinAccessPage({
     Key? key,
   }) : super(key: key);
 }
@@ -31,10 +30,10 @@ void goToJoinNewInstancePage(BuildContext context) {
   Navigator.push(
     context,
     MaterialPageRoute<void>(
-      builder: (context) => JoinUnifediApiAccessBloc.provideToContext(
+      builder: (context) => JoinAccessBloc.provideToContext(
         context,
         isFromScratch: true,
-        child: const FromScratchJoinUnifediApiAccessPage(),
+        child: const FromScratchJoinAccessPage(),
       ),
     ),
   );

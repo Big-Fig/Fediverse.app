@@ -46,7 +46,7 @@ MaterialPageRoute<void> createLocalHashtagPageRoute({
         context,
         hashtag: hashtag,
         myAccountFeaturedHashtag: myAccountFeaturedHashtag,
-        child: ProxyProvider<ICurrentUnifediApiAccessBloc, IUnifediApiInstance>(
+        child: ProxyProvider<ICurrentAccessBloc, IUnifediApiInstance>(
           update: (context, value, previous) => value.currentInstance!.info!,
           child: const LocalHashtagPage(),
         ),

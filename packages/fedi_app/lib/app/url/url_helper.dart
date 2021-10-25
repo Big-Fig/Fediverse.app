@@ -89,7 +89,7 @@ class UrlHelper {
 
         var urlHost = uri.host;
 
-        var currentUnifediApiAccessBloc = ICurrentUnifediApiAccessBloc.of(
+        var currentUnifediApiAccessBloc = ICurrentAccessBloc.of(
           context,
           listen: false,
         );
@@ -143,7 +143,7 @@ class UrlHelper {
     String url,
   ) {
     var currentUnifediApiAccessBloc =
-        ICurrentUnifediApiAccessBloc.of(context, listen: false);
+        ICurrentAccessBloc.of(context, listen: false);
 
     var urlHost = currentUnifediApiAccessBloc.currentInstance!.urlHost;
     var urlSchema = currentUnifediApiAccessBloc.currentInstance!.urlSchema;

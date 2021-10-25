@@ -15,8 +15,8 @@ import 'package:fediverse_api/fediverse_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class UnifediApiAccessChooserInstanceListItemWidget extends StatelessWidget {
-  const UnifediApiAccessChooserInstanceListItemWidget({
+class AccessChooserInstanceListItemWidget extends StatelessWidget {
+  const AccessChooserInstanceListItemWidget({
     Key? key,
   }) : super(key: key);
 
@@ -57,9 +57,8 @@ class _UnifediApiAccessChooserInstanceListItemAccountInfoWidget
 
   @override
   Widget build(BuildContext context) {
-    var instanceChooserBloc = IUnifediApiAccessChooserBloc.of(context);
-    var instanceListItemBloc =
-        IUnifediApiAccessChooserInstanceListItemBloc.of(context);
+    var instanceChooserBloc = IAccessChooserBloc.of(context);
+    var instanceListItemBloc = IAccessChooserInstanceListItemBloc.of(context);
 
     return InkWell(
       onTap: () {
@@ -105,8 +104,7 @@ class _UnifediApiAccessChooserInstanceListItemUserAtHostWidget
 
   @override
   Widget build(BuildContext context) {
-    var instanceListItemBloc =
-        IUnifediApiAccessChooserInstanceListItemBloc.of(context);
+    var instanceListItemBloc = IAccessChooserInstanceListItemBloc.of(context);
 
     return Text(
       instanceListItemBloc.instance.userAtHost,
@@ -124,8 +122,7 @@ class _UnifediApiAccessChooserInstanceListItemSelectedIconWidget
 
   @override
   Widget build(BuildContext context) {
-    var instanceListItemBloc =
-        IUnifediApiAccessChooserInstanceListItemBloc.of(context);
+    var instanceListItemBloc = IAccessChooserInstanceListItemBloc.of(context);
     if (instanceListItemBloc.isSelected) {
       return FediIconInCircleTransparentButton(
         FediIcons.check,
@@ -147,9 +144,8 @@ class _UnifediApiAccessChooserInstanceListItemLogoutButtonWidget
 
   @override
   Widget build(BuildContext context) {
-    var instanceChooserBloc = IUnifediApiAccessChooserBloc.of(context);
-    var instanceListItemBloc =
-        IUnifediApiAccessChooserInstanceListItemBloc.of(context);
+    var instanceChooserBloc = IAccessChooserBloc.of(context);
+    var instanceListItemBloc = IAccessChooserInstanceListItemBloc.of(context);
 
     return FediIconButton(
       icon: const Icon(FediIcons.remove_circle),

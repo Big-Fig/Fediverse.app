@@ -25,7 +25,7 @@ class LocalInstanceActivityBloc extends InstanceActivityBloc
     var unifediApiInstanceService =
         Provider.of<IUnifediApiInstanceService>(context, listen: false);
     var currentUnifediApiAccessBloc =
-        ICurrentUnifediApiAccessBloc.of(context, listen: false);
+        ICurrentAccessBloc.of(context, listen: false);
 
     return LocalInstanceActivityBloc(
       unifediApiInstanceService: unifediApiInstanceService,

@@ -36,7 +36,7 @@ class LocalInstancePublicTimelinePageBloc extends InstancePublicTimelinePageBloc
   final IUnifediApiAccountService unifediApiAccountService;
   final IStatusRepository statusRepository;
   final IFilterRepository filterRepository;
-  final ICurrentUnifediApiAccessBloc currentUnifediApiAccessBloc;
+  final ICurrentAccessBloc currentUnifediApiAccessBloc;
   final IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc;
   final IMyAccountBloc myAccountBloc;
   final IPaginationSettingsBloc paginationSettingsBloc;
@@ -99,7 +99,7 @@ class LocalInstancePublicTimelinePageBloc extends InstancePublicTimelinePageBloc
         context,
         listen: false,
       ),
-      currentUnifediApiAccessBloc: ICurrentUnifediApiAccessBloc.of(
+      currentUnifediApiAccessBloc: ICurrentAccessBloc.of(
         context,
         listen: false,
       ),

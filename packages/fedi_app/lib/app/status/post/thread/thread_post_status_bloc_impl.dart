@@ -80,9 +80,8 @@ class ThreadPostStatusBloc extends PostStatusBloc
     BuildContext context, {
     required IStatus inReplyToStatus,
   }) {
-    var info = ICurrentUnifediApiAccessBloc.of(context, listen: false)
-        .currentInstance!
-        .info!;
+    var info =
+        ICurrentAccessBloc.of(context, listen: false).currentInstance!.info!;
 
     return ThreadPostStatusBloc(
       inReplyToStatus: inReplyToStatus,

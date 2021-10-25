@@ -5,7 +5,7 @@ import 'package:fedi_app/app/access/current/current_access_bloc.dart';
 import 'package:fedi_app/app/access/memory_access_bloc_impl.dart';
 import 'package:fedi_app/app/access/register/form/register_access_form_bloc_impl.dart';
 import 'package:fedi_app/app/access/register/register_access_bloc.dart';
-import 'package:fedi_app/app/access/register/response/register_response_model.dart';
+import 'package:fedi_app/app/access/register/response/register_access_response_model.dart';
 import 'package:fedi_app/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi_app/app/auth/oauth_last_launched/local_preferences/auth_oauth_last_launched_host_to_login_local_preference_bloc.dart';
 import 'package:fedi_app/app/config/config_service.dart';
@@ -20,21 +20,21 @@ import 'package:unifedi_api/unifedi_api.dart';
 
 final _logger = Logger('register_access_bloc_impl.dart');
 
-class RegisterUnifediApiAccessBloc extends AsyncInitLoadingBloc
-    implements IRegisterUnifediApiAccessBloc {
+class RegisterAccessBloc extends AsyncInitLoadingBloc
+    implements IRegisterAccessBloc {
   @override
   final Uri instanceBaseUri;
 
   final ILocalPreferencesService localPreferencesService;
   final IConnectionService connectionService;
-  final ICurrentUnifediApiAccessBloc currentInstanceBloc;
+  final ICurrentAccessBloc currentInstanceBloc;
   final IAuthApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc
       unifediOAuthLastLaunchedHostToLoginLocalPreferenceBloc;
   final ILocalizationSettingsBloc localizationSettingsBloc;
   final IConfigService configService;
 
   // ignore: avoid-late-keyword
-  late MemoryUnifediApiAccessBloc memoryUnifediApiAccessBloc;
+  late MemoryAccessBloc memoryUnifediApiAccessBloc;
 
   // ignore: avoid-late-keyword
   late IUnifediApiInstance unifediApiInstance;
@@ -49,9 +49,9 @@ class RegisterUnifediApiAccessBloc extends AsyncInitLoadingBloc
 
   @override
   // ignore: avoid-late-keyword
-  late RegisterUnifediApiAccessFormBloc registerUnifediApiAccessFormBloc;
+  late RegisterAccessFormBloc registerUnifediApiAccessFormBloc;
 
-  RegisterUnifediApiAccessBloc({
+  RegisterAccessBloc({
     required this.localeName,
     required this.instanceBaseUri,
     required this.localPreferencesService,
@@ -61,7 +61,7 @@ class RegisterUnifediApiAccessBloc extends AsyncInitLoadingBloc
     required this.localizationSettingsBloc,
     required this.configService,
   }) {
-    memoryUnifediApiAccessBloc = MemoryUnifediApiAccessBloc(
+    memoryUnifediApiAccessBloc = MemoryAccessBloc(
       access: UnifediApiAccess(
         url: instanceBaseUri.toString(),
         instance: null,
@@ -72,7 +72,7 @@ class RegisterUnifediApiAccessBloc extends AsyncInitLoadingBloc
   }
 
   @override
-  Future<RegisterResponse> register() async {
+  Future<RegisterAccessResponse> register() async {
     var unifediApiAccountRegisterRequest =
         registerUnifediApiAccessFormBloc.calculateRegisterFormData();
 
@@ -151,7 +151,7 @@ class RegisterUnifediApiAccessBloc extends AsyncInitLoadingBloc
       orElse: () => manualApprovalRequired,
     );
 
-    registerUnifediApiAccessFormBloc = RegisterUnifediApiAccessFormBloc(
+    registerUnifediApiAccessFormBloc = RegisterAccessFormBloc(
       localeName: localeName,
       unifediApiInstance: unifediApiInstance,
       unifediApiInstanceService: unifediApiInstanceService,

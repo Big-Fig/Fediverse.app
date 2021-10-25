@@ -131,7 +131,7 @@ class _ChatMessagesHomeTabPageContentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var currentUnifediApiAccessBloc = ICurrentUnifediApiAccessBloc.of(context);
+    var currentUnifediApiAccessBloc = ICurrentAccessBloc.of(context);
 
     var currentInstance = currentUnifediApiAccessBloc.currentInstance!;
     var isPleromaInstance = currentInstance.isPleroma;
@@ -204,7 +204,7 @@ class _ChatMessagesHomeTabPageHeaderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var currentUnifediApiAccessBloc = ICurrentUnifediApiAccessBloc.of(context);
+    var currentUnifediApiAccessBloc = ICurrentAccessBloc.of(context);
 
     var currentInstance = currentUnifediApiAccessBloc.currentInstance!;
     var isPleromaInstance = currentInstance.isPleroma;

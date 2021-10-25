@@ -27,7 +27,7 @@ void showEditInstancePushSettingsDialog({
             listen: false,
           ),
           isEnabled: true,
-          currentInstance: ICurrentUnifediApiAccessBloc.of(
+          currentInstance: ICurrentAccessBloc.of(
             context,
             listen: false,
           ).currentInstance,

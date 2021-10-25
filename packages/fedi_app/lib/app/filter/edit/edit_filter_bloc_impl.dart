@@ -36,7 +36,7 @@ class EditFilterBloc extends DisposableOwner implements IEditFilterBloc {
         context,
         listen: false,
       ),
-      currentInstance: ICurrentUnifediApiAccessBloc.of(
+      currentInstance: ICurrentAccessBloc.of(
         context,
         listen: false,
       ).currentInstance!,

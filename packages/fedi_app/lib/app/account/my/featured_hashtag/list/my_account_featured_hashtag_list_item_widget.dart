@@ -22,7 +22,7 @@ class AccountFeaturedHashtagListItemWidget extends StatelessWidget {
     var accountFeaturedHashtag =
         Provider.of<IMyAccountFeaturedHashtag>(context);
 
-    var currentUnifediApiAccessBloc = ICurrentUnifediApiAccessBloc.of(context);
+    var currentUnifediApiAccessBloc = ICurrentAccessBloc.of(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

@@ -13,56 +13,54 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-UnifediApiAccessList _$UnifediApiAccessListFromJson(Map<String, dynamic> json) {
-  return _UnifediApiAccessList.fromJson(json);
+AccessList _$AccessListFromJson(Map<String, dynamic> json) {
+  return _AccessList.fromJson(json);
 }
 
 /// @nodoc
-class _$UnifediApiAccessListTearOff {
-  const _$UnifediApiAccessListTearOff();
+class _$AccessListTearOff {
+  const _$AccessListTearOff();
 
-  _UnifediApiAccessList call(
-      {@HiveField(0) required List<UnifediApiAccess> instances}) {
-    return _UnifediApiAccessList(
+  _AccessList call({@HiveField(0) required List<UnifediApiAccess> instances}) {
+    return _AccessList(
       instances: instances,
     );
   }
 
-  UnifediApiAccessList fromJson(Map<String, Object> json) {
-    return UnifediApiAccessList.fromJson(json);
+  AccessList fromJson(Map<String, Object> json) {
+    return AccessList.fromJson(json);
   }
 }
 
 /// @nodoc
-const $UnifediApiAccessList = _$UnifediApiAccessListTearOff();
+const $AccessList = _$AccessListTearOff();
 
 /// @nodoc
-mixin _$UnifediApiAccessList {
+mixin _$AccessList {
   @HiveField(0)
   List<UnifediApiAccess> get instances => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $UnifediApiAccessListCopyWith<UnifediApiAccessList> get copyWith =>
+  $AccessListCopyWith<AccessList> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $UnifediApiAccessListCopyWith<$Res> {
-  factory $UnifediApiAccessListCopyWith(UnifediApiAccessList value,
-          $Res Function(UnifediApiAccessList) then) =
-      _$UnifediApiAccessListCopyWithImpl<$Res>;
+abstract class $AccessListCopyWith<$Res> {
+  factory $AccessListCopyWith(
+          AccessList value, $Res Function(AccessList) then) =
+      _$AccessListCopyWithImpl<$Res>;
   $Res call({@HiveField(0) List<UnifediApiAccess> instances});
 }
 
 /// @nodoc
-class _$UnifediApiAccessListCopyWithImpl<$Res>
-    implements $UnifediApiAccessListCopyWith<$Res> {
-  _$UnifediApiAccessListCopyWithImpl(this._value, this._then);
+class _$AccessListCopyWithImpl<$Res> implements $AccessListCopyWith<$Res> {
+  _$AccessListCopyWithImpl(this._value, this._then);
 
-  final UnifediApiAccessList _value;
+  final AccessList _value;
   // ignore: unused_field
-  final $Res Function(UnifediApiAccessList) _then;
+  final $Res Function(AccessList) _then;
 
   @override
   $Res call({
@@ -78,31 +76,29 @@ class _$UnifediApiAccessListCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$UnifediApiAccessListCopyWith<$Res>
-    implements $UnifediApiAccessListCopyWith<$Res> {
-  factory _$UnifediApiAccessListCopyWith(_UnifediApiAccessList value,
-          $Res Function(_UnifediApiAccessList) then) =
-      __$UnifediApiAccessListCopyWithImpl<$Res>;
+abstract class _$AccessListCopyWith<$Res> implements $AccessListCopyWith<$Res> {
+  factory _$AccessListCopyWith(
+          _AccessList value, $Res Function(_AccessList) then) =
+      __$AccessListCopyWithImpl<$Res>;
   @override
   $Res call({@HiveField(0) List<UnifediApiAccess> instances});
 }
 
 /// @nodoc
-class __$UnifediApiAccessListCopyWithImpl<$Res>
-    extends _$UnifediApiAccessListCopyWithImpl<$Res>
-    implements _$UnifediApiAccessListCopyWith<$Res> {
-  __$UnifediApiAccessListCopyWithImpl(
-      _UnifediApiAccessList _value, $Res Function(_UnifediApiAccessList) _then)
-      : super(_value, (v) => _then(v as _UnifediApiAccessList));
+class __$AccessListCopyWithImpl<$Res> extends _$AccessListCopyWithImpl<$Res>
+    implements _$AccessListCopyWith<$Res> {
+  __$AccessListCopyWithImpl(
+      _AccessList _value, $Res Function(_AccessList) _then)
+      : super(_value, (v) => _then(v as _AccessList));
 
   @override
-  _UnifediApiAccessList get _value => super._value as _UnifediApiAccessList;
+  _AccessList get _value => super._value as _AccessList;
 
   @override
   $Res call({
     Object? instances = freezed,
   }) {
-    return _then(_UnifediApiAccessList(
+    return _then(_AccessList(
       instances: instances == freezed
           ? _value.instances
           : instances // ignore: cast_nullable_to_non_nullable
@@ -113,11 +109,11 @@ class __$UnifediApiAccessListCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_UnifediApiAccessList implements _UnifediApiAccessList {
-  const _$_UnifediApiAccessList({@HiveField(0) required this.instances});
+class _$_AccessList implements _AccessList {
+  const _$_AccessList({@HiveField(0) required this.instances});
 
-  factory _$_UnifediApiAccessList.fromJson(Map<String, dynamic> json) =>
-      _$$_UnifediApiAccessListFromJson(json);
+  factory _$_AccessList.fromJson(Map<String, dynamic> json) =>
+      _$$_AccessListFromJson(json);
 
   @override
   @HiveField(0)
@@ -125,13 +121,13 @@ class _$_UnifediApiAccessList implements _UnifediApiAccessList {
 
   @override
   String toString() {
-    return 'UnifediApiAccessList(instances: $instances)';
+    return 'AccessList(instances: $instances)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiAccessList &&
+        (other is _AccessList &&
             (identical(other.instances, instances) ||
                 const DeepCollectionEquality()
                     .equals(other.instances, instances)));
@@ -143,29 +139,28 @@ class _$_UnifediApiAccessList implements _UnifediApiAccessList {
 
   @JsonKey(ignore: true)
   @override
-  _$UnifediApiAccessListCopyWith<_UnifediApiAccessList> get copyWith =>
-      __$UnifediApiAccessListCopyWithImpl<_UnifediApiAccessList>(
-          this, _$identity);
+  _$AccessListCopyWith<_AccessList> get copyWith =>
+      __$AccessListCopyWithImpl<_AccessList>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_UnifediApiAccessListToJson(this);
+    return _$$_AccessListToJson(this);
   }
 }
 
-abstract class _UnifediApiAccessList implements UnifediApiAccessList {
-  const factory _UnifediApiAccessList(
+abstract class _AccessList implements AccessList {
+  const factory _AccessList(
           {@HiveField(0) required List<UnifediApiAccess> instances}) =
-      _$_UnifediApiAccessList;
+      _$_AccessList;
 
-  factory _UnifediApiAccessList.fromJson(Map<String, dynamic> json) =
-      _$_UnifediApiAccessList.fromJson;
+  factory _AccessList.fromJson(Map<String, dynamic> json) =
+      _$_AccessList.fromJson;
 
   @override
   @HiveField(0)
   List<UnifediApiAccess> get instances => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$UnifediApiAccessListCopyWith<_UnifediApiAccessList> get copyWith =>
+  _$AccessListCopyWith<_AccessList> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -1,9 +1,7 @@
-class JoinUnifediApiAccessWidgetKeys {
-  static const loginButtonKey = 'JoinUnifediApiAccessWidgetKeys_LoginButtonKey';
-  static const signUpButtonKey =
-      'JoinUnifediApiAccessWidgetKeys_SignUpButtonKey';
+class JoinAccessWidgetKeys {
+  static const loginButtonKey = 'JoinAccessWidgetKeys_LoginButtonKey';
+  static const signUpButtonKey = 'JoinAccessWidgetKeys_SignUpButtonKey';
   static const exploreAsGuestButtonKey =
-      'JoinUnifediApiAccessWidgetKeys_ExploreAsGuestButtonKey';
-  static const hostTextFieldKey =
-      'JoinUnifediApiAccessWidgetKeys_HostTextFieldKey';
+      'JoinAccessWidgetKeys_ExploreAsGuestButtonKey';
+  static const hostTextFieldKey = 'JoinAccessWidgetKeys_HostTextFieldKey';
 }

@@ -51,7 +51,7 @@ class FediLocalPreferencesServiceMigrationBloc
     ILocalPreferencesService inputService,
   ) async {
     var instanceListLocalPreferenceBloc =
-        UnifediApiAccessListLocalPreferenceBloc(inputService);
+        AccessListLocalPreferenceBloc(inputService);
     await instanceListLocalPreferenceBloc.performAsyncInit();
     var authInstanceList = instanceListLocalPreferenceBloc.value!;
 
@@ -91,8 +91,8 @@ class FediLocalPreferencesServiceMigrationBloc
     }
 
     return [
-      (lps) => UnifediApiAccessListLocalPreferenceBloc(lps),
-      (lps) => CurrentUnifediApiAccessLocalPreferenceBloc(lps),
+      (lps) => AccessListLocalPreferenceBloc(lps),
+      (lps) => CurrentAccessLocalPreferenceBloc(lps),
       (lps) => NotificationsPushHandlerUnhandledLocalPreferenceBloc(lps),
       (lps) => AuthOAuthLastLaunchedHostToLoginLocalPreferenceBloc(lps),
       (lps) => GlobalChatSettingsLocalPreferenceBloc(lps),

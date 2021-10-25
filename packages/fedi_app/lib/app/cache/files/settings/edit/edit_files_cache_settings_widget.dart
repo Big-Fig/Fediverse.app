@@ -46,7 +46,7 @@ class _EditFilesCacheSettingsClearAllButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var currentUnifediApiAccessBloc = ICurrentUnifediApiAccessBloc.of(context);
+    var currentUnifediApiAccessBloc = ICurrentAccessBloc.of(context);
     var filesCacheService = IFilesCacheService.of(context);
 
     return UnifediAsyncOperationButtonBuilderWidget<void>(

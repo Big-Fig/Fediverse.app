@@ -19,7 +19,7 @@ class DeepLinkInitBloc extends AsyncInitLoadingBloc
       oAuthLastLaunchedHostToLoginLocalPreferenceBloc;
   final ILocalPreferencesService localPreferencesService;
   final IConnectionService connectionService;
-  final ICurrentUnifediApiAccessBloc currentUnifediApiAccessBloc;
+  final ICurrentAccessBloc currentUnifediApiAccessBloc;
   final IConfigService configService;
 
   DeepLinkInitBloc({
@@ -68,7 +68,7 @@ class DeepLinkInitBloc extends AsyncInitLoadingBloc
       try {
         var authInstance = await authHostBloc.loginWithAuthCode(authCode);
 
-        var apiAccessLocalPreferenceBloc = UnifediApiAccessLocalPreferenceBloc(
+        var apiAccessLocalPreferenceBloc = AccessLocalPreferenceBloc(
           preferencesService: localPreferencesService,
           userAtHost: authInstance.userAtHost,
         );

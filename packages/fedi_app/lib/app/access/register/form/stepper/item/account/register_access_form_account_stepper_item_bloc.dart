@@ -4,13 +4,13 @@ import 'package:fedi_app/form/field/value/string/string_value_form_field_bloc.da
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IRegisterUnifediApiAccessFormStepperAccountItemBloc
-    implements IRegisterUnifediApiAccessFormStepperItemBloc, IDisposable {
-  static IRegisterUnifediApiAccessFormStepperAccountItemBloc of(
+abstract class IRegisterAccessFormStepperAccountItemBloc
+    implements IRegisterAccessFormStepperItemBloc, IDisposable {
+  static IRegisterAccessFormStepperAccountItemBloc of(
     BuildContext context, {
     bool listen = true,
   }) =>
-      Provider.of<IRegisterUnifediApiAccessFormStepperAccountItemBloc>(
+      Provider.of<IRegisterAccessFormStepperAccountItemBloc>(
         context,
         listen: listen,
       );

@@ -3,13 +3,13 @@ import 'package:fedi_app/local_preferences/local_preference_bloc_impl.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IUnifediApiAccessListLocalPreferenceBloc
-    implements LocalPreferenceBloc<UnifediApiAccessList?> {
-  static IUnifediApiAccessListLocalPreferenceBloc of(
+abstract class IAccessListLocalPreferenceBloc
+    implements LocalPreferenceBloc<AccessList?> {
+  static IAccessListLocalPreferenceBloc of(
     BuildContext context, {
     bool listen = true,
   }) =>
-      Provider.of<IUnifediApiAccessListLocalPreferenceBloc>(
+      Provider.of<IAccessListLocalPreferenceBloc>(
         context,
         listen: listen,
       );

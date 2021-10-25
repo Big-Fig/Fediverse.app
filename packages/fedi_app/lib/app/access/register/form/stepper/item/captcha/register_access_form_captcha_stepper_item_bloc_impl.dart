@@ -8,16 +8,16 @@ import 'package:fedi_app/form/field/value/string/validation/string_value_form_fi
 import 'package:fedi_app/form/form_item_bloc.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
-class RegisterUnifediApiAccessFormStepperCaptchaItemBloc
-    extends RegisterUnifediApiAccessFormStepperItemBloc
-    implements IRegisterUnifediApiAccessFormStepperCaptchaItemBloc {
+class RegisterAccessFormStepperCaptchaItemBloc
+    extends RegisterAccessFormStepperItemBloc
+    implements IRegisterAccessFormStepperCaptchaItemBloc {
   @override
   // ignore: avoid-late-keyword
   late IUnifediFormCaptchaStringFieldBloc captchaFieldBloc;
 
   final IUnifediApiInstanceService unifediApiInstanceService;
 
-  RegisterUnifediApiAccessFormStepperCaptchaItemBloc({
+  RegisterAccessFormStepperCaptchaItemBloc({
     required this.unifediApiInstanceService,
   }) : super(
           isAllItemsInitialized: false,
@@ -36,8 +36,8 @@ class RegisterUnifediApiAccessFormStepperCaptchaItemBloc
   }
 
   @override
-  RegisterUnifediApiAccessFormStepperItemType get type =>
-      RegisterUnifediApiAccessFormStepperItemType.captcha;
+  RegisterAccessFormStepperItemType get type =>
+      RegisterAccessFormStepperItemType.captcha;
 
   @override
   List<IFormItemBloc> get currentItems => [

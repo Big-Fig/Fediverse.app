@@ -25,7 +25,7 @@ class LocalInstanceDetailsBloc extends InstanceDetailsBloc
     var unifediApiInstanceService =
         Provider.of<IUnifediApiInstanceService>(context, listen: false);
     var currentUnifediApiAccessBloc =
-        ICurrentUnifediApiAccessBloc.of(context, listen: false);
+        ICurrentAccessBloc.of(context, listen: false);
 
     return LocalInstanceDetailsBloc(
       unifediApiInstanceService: unifediApiInstanceService,

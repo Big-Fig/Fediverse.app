@@ -32,7 +32,7 @@ void showEditGlobalOrInstanceSettingsDialog({
   required ShowGlobalSettingsDialogCallback showGlobalSettingsDialogCallback,
 }) {
   var currentUnifediApiAccessBloc =
-      ICurrentUnifediApiAccessBloc.of(context, listen: false);
+      ICurrentAccessBloc.of(context, listen: false);
   var currentInstance = currentUnifediApiAccessBloc.currentInstance!;
 
   showSettingsDialog(

@@ -6,9 +6,9 @@ import 'package:fedi_app/form/field/value/bool/bool_value_form_field_bloc_impl.d
 import 'package:fedi_app/form/field/value/bool/validation/bool_value_form_field_only_true_validation.dart';
 import 'package:fedi_app/form/form_item_bloc.dart';
 
-class RegisterUnifediApiAccessFormStepperSubmitItemBloc
-    extends RegisterUnifediApiAccessFormStepperItemBloc
-    implements IRegisterUnifediApiAccessFormStepperSubmitItemBloc {
+class RegisterAccessFormStepperSubmitItemBloc
+    extends RegisterAccessFormStepperItemBloc
+    implements IRegisterAccessFormStepperSubmitItemBloc {
   @override
   final Uri instanceBaseUri;
 
@@ -27,7 +27,7 @@ class RegisterUnifediApiAccessFormStepperSubmitItemBloc
   // // ignore: avoid-late-keyword
   // late LocalizationLocaleSingleFromListValueFormFieldBloc localeFieldBloc;
 
-  RegisterUnifediApiAccessFormStepperSubmitItemBloc({
+  RegisterAccessFormStepperSubmitItemBloc({
     required this.instanceBaseUri,
   }) : super(
           isAllItemsInitialized: false,
@@ -45,8 +45,8 @@ class RegisterUnifediApiAccessFormStepperSubmitItemBloc
   }
 
   @override
-  RegisterUnifediApiAccessFormStepperItemType get type =>
-      RegisterUnifediApiAccessFormStepperItemType.submit;
+  RegisterAccessFormStepperItemType get type =>
+      RegisterAccessFormStepperItemType.submit;
 
   @override
   List<IFormItemBloc> get currentItems => [

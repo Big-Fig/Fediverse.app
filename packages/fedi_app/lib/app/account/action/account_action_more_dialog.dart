@@ -198,10 +198,9 @@ class AccountActionMoreDialog extends StatelessWidget {
 
     String label;
     if (isLocal) {
-      var currentInstanceUrlHost =
-          ICurrentUnifediApiAccessBloc.of(context, listen: false)
-              .currentInstance!
-              .urlHost;
+      var currentInstanceUrlHost = ICurrentAccessBloc.of(context, listen: false)
+          .currentInstance!
+          .urlHost;
       label = S
           .of(context)
           .app_account_action_instanceDetails(currentInstanceUrlHost);

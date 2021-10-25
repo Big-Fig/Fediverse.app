@@ -540,15 +540,14 @@ Future<IUnifediApiNotification?> _loadLastNotificationForInstance({
   await connectionService.internalAsyncInit();
   disposableOwner.addDisposable(connectionService);
 
-  var unifediApiAccessLocalPreferenceBloc = UnifediApiAccessLocalPreferenceBloc(
+  var unifediApiAccessLocalPreferenceBloc = AccessLocalPreferenceBloc(
     preferencesService: localPreferencesService,
     userAtHost: authInstance.userAtHost,
   );
   await unifediApiAccessLocalPreferenceBloc.performAsyncInit();
   disposableOwner.addDisposable(unifediApiAccessLocalPreferenceBloc);
 
-  var localPreferencesUnifediApiAccessBloc =
-      LocalPreferencesUnifediApiAccessBloc(
+  var localPreferencesUnifediApiAccessBloc = LocalPreferencesAccessBloc(
     accessLocalPreferenceBloc: unifediApiAccessLocalPreferenceBloc,
   );
 
@@ -926,7 +925,7 @@ Future<UnifediApiAccess?> _findInstanceByUserAtHost({
   var disposableOwner = DisposableOwner();
 
   var authInstanceListLocalPreferenceBloc =
-      UnifediApiAccessListLocalPreferenceBloc(localPreferencesService);
+      AccessListLocalPreferenceBloc(localPreferencesService);
   await authInstanceListLocalPreferenceBloc.performAsyncInit();
   disposableOwner.addDisposable(
     authInstanceListLocalPreferenceBloc,

@@ -48,7 +48,7 @@ class RemoteInstanceBloc extends AsyncInitLoadingBloc
       url: instanceUri.toString(),
     );
 
-    var unifediApiAccessBloc = MemoryUnifediApiAccessBloc(
+    var unifediApiAccessBloc = MemoryAccessBloc(
       access: UnifediApiAccess(
         url: instanceUri.toString(),
         instance: null,

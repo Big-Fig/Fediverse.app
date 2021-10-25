@@ -85,9 +85,8 @@ class NewPostStatusBloc extends PostStatusBloc {
     required String? initialSubject,
     required List<UnifediApiMediaAttachment>? initialMediaAttachments,
   }) {
-    var info = ICurrentUnifediApiAccessBloc.of(context, listen: false)
-        .currentInstance!
-        .info!;
+    var info =
+        ICurrentAccessBloc.of(context, listen: false).currentInstance!.info!;
 
     var postStatusSettingsBloc =
         IPostStatusSettingsBloc.of(context, listen: false);
@@ -148,9 +147,8 @@ class NewPostStatusBloc extends PostStatusBloc {
     BuildContext context, {
     required IPostStatusData initialData,
   }) {
-    var info = ICurrentUnifediApiAccessBloc.of(context, listen: false)
-        .currentInstance!
-        .info!;
+    var info =
+        ICurrentAccessBloc.of(context, listen: false).currentInstance!.info!;
 
     var postStatusSettingsBloc =
         IPostStatusSettingsBloc.of(context, listen: false);

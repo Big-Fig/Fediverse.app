@@ -134,8 +134,7 @@ ConversationChatStatusListBloc _createStatusListBloc({
   required IConversationChat? conversation,
   required IConversationChatMessage? lastMessage,
 }) {
-  var currentInstanceBloc =
-      ICurrentUnifediApiAccessBloc.of(context, listen: false);
+  var currentInstanceBloc = ICurrentAccessBloc.of(context, listen: false);
 
   if (currentInstanceBloc.currentInstance!.isPleroma) {
     // unifedi instances support loading by conversation id

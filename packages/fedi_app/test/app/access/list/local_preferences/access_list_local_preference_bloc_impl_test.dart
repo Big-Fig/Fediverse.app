@@ -11,11 +11,10 @@ import '../access_model_test_helper.dart';
 // ignore_for_file: avoid-ignoring-return-values
 void main() {
   test('save & load', () async {
-    await LocalPreferencesMockHelper.testSaveAndLoad<UnifediApiAccessList,
-        UnifediApiAccessListLocalPreferenceBloc>(
-      defaultValue: UnifediApiAccessListLocalPreferenceBloc.defaultValue,
-      blocCreator: (localPreferencesService) =>
-          UnifediApiAccessListLocalPreferenceBloc(
+    await LocalPreferencesMockHelper.testSaveAndLoad<AccessList,
+        AccessListLocalPreferenceBloc>(
+      defaultValue: AccessListLocalPreferenceBloc.defaultValue,
+      blocCreator: (localPreferencesService) => AccessListLocalPreferenceBloc(
         localPreferencesService,
       ),
       testObjectCreator: ({required String seed}) =>

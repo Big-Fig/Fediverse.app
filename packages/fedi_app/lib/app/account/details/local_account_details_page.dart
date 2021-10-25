@@ -29,7 +29,7 @@ MaterialPageRoute<void> createLocalAccountDetailsPageRoute(IAccount account) =>
             context,
             listen: false,
           ),
-          currentUnifediApiAccessBloc: ICurrentUnifediApiAccessBloc.of(
+          currentUnifediApiAccessBloc: ICurrentAccessBloc.of(
             context,
             listen: false,
           ),

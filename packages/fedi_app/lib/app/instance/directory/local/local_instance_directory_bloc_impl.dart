@@ -31,7 +31,7 @@ class LocalInstanceDirectoryBloc extends InstanceDirectoryBloc
     var unifediApiInstanceService =
         Provider.of<IUnifediApiInstanceService>(context, listen: false);
     var currentUnifediApiAccessBloc =
-        ICurrentUnifediApiAccessBloc.of(context, listen: false);
+        ICurrentAccessBloc.of(context, listen: false);
 
     return LocalInstanceDirectoryBloc(
       connectionService: Provider.of<IConnectionService>(

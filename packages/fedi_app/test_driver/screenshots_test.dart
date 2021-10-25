@@ -61,7 +61,7 @@ void main() {
         await screenshot(driver, config, '1_Login');
 
         var hostTextField = find.byValueKey(
-          JoinUnifediApiAccessWidgetKeys.hostTextFieldKey,
+          JoinAccessWidgetKeys.hostTextFieldKey,
         );
         await driver.tap(hostTextField);
 
@@ -74,7 +74,7 @@ void main() {
         // }
 
         var exploreAsGuestButton = find.byValueKey(
-          JoinUnifediApiAccessWidgetKeys.exploreAsGuestButtonKey,
+          JoinAccessWidgetKeys.exploreAsGuestButtonKey,
         );
 
         await driver.waitFor(exploreAsGuestButton);
@@ -96,20 +96,19 @@ void main() {
 
         await driver.waitFor(
           find.byValueKey(
-            FromScratchJoinUnifediApiAccessPageKeys
-                .joinUnifediApiAccessWidgetKey,
+            FromScratchJoinAccessPageKeys.joinAccessWidgetKey,
           ),
         );
 
         await driver.tap(
           find.byValueKey(
-            JoinUnifediApiAccessWidgetKeys.signUpButtonKey,
+            JoinAccessWidgetKeys.signUpButtonKey,
           ),
         );
 
         await driver.waitFor(
           find.byValueKey(
-            RegisterUnifediApiAccessPageKeys.registerUnifediApiAccessWidgetKey,
+            RegisterAccessPageKeys.registerAccessWidgetKey,
           ),
         );
 
@@ -122,7 +121,7 @@ void main() {
         );
 
         hostTextField = find.byValueKey(
-          JoinUnifediApiAccessWidgetKeys.hostTextFieldKey,
+          JoinAccessWidgetKeys.hostTextFieldKey,
         );
         await driver.tap(hostTextField);
 
@@ -132,8 +131,7 @@ void main() {
 
         await driver.waitFor(
           find.byValueKey(
-            FromScratchJoinUnifediApiAccessPageKeys
-                .joinUnifediApiAccessWidgetKey,
+            FromScratchJoinAccessPageKeys.joinAccessWidgetKey,
           ),
         );
         // ignore: avoid_print
@@ -141,7 +139,7 @@ void main() {
 
         await driver.tap(
           find.byValueKey(
-            JoinUnifediApiAccessWidgetKeys.loginButtonKey,
+            JoinAccessWidgetKeys.loginButtonKey,
           ),
         );
         // ignore: avoid_print

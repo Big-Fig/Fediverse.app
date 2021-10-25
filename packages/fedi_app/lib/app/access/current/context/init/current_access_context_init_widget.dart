@@ -45,10 +45,10 @@ class CurrentUnifediApiAccessContextInitWidgetState
     super.didChangeDependencies();
 
     var currentInstanceContextLoadingBloc =
-        ICurrentUnifediApiAccessContextInitBloc.of(context, listen: false);
+        ICurrentAccessContextInitBloc.of(context, listen: false);
 
     var isLoading = currentInstanceContextLoadingBloc.state ==
-        CurrentUnifediApiAccessContextInitState.loading;
+        CurrentAccessContextInitState.loading;
     _logger.finest(
       () => 'didChangeDependencies '
           'isLoading $isLoading disposed $disposed',
@@ -67,7 +67,7 @@ class CurrentUnifediApiAccessContextInitWidgetState
 
   void showProgressDialog(
     BuildContext context,
-    ICurrentUnifediApiAccessContextInitBloc currentInstanceContextLoadingBloc,
+    ICurrentAccessContextInitBloc currentInstanceContextLoadingBloc,
   ) {
     var myAccountBloc = IMyAccountBloc.of(context, listen: false);
     var isAlreadyShown = loadingInstanceProgressDialog?.isShowing == true;
@@ -95,9 +95,9 @@ class CurrentUnifediApiAccessContextInitWidgetState
   }
 
   void onStateChanged(
-    ICurrentUnifediApiAccessContextInitBloc currentInstanceContextLoadingBloc,
+    ICurrentAccessContextInitBloc currentInstanceContextLoadingBloc,
   ) {
-    var state = CurrentUnifediApiAccessContextInitState.loading;
+    var state = CurrentAccessContextInitState.loading;
     var isNotLoading = currentInstanceContextLoadingBloc.state != state;
     _logger.finest(() => 'onStateChanged $state isNotLoading $isNotLoading');
     if (isNotLoading) {
@@ -124,11 +124,11 @@ class CurrentUnifediApiAccessContextInitWidgetState
   @override
   Widget build(BuildContext context) {
     var currentInstanceContextLoadingBloc =
-        ICurrentUnifediApiAccessContextInitBloc.of(context, listen: false);
+        ICurrentAccessContextInitBloc.of(context, listen: false);
 
     _logger.finest(() => 'build');
 
-    return StreamBuilder<CurrentUnifediApiAccessContextInitState>(
+    return StreamBuilder<CurrentAccessContextInitState>(
       stream: currentInstanceContextLoadingBloc.stateStream.distinct(),
       initialData: currentInstanceContextLoadingBloc.state,
       builder: (context, snapshot) {
@@ -136,13 +136,12 @@ class CurrentUnifediApiAccessContextInitWidgetState
         _logger.finest(() => 'state $state');
 
         switch (state) {
-          case CurrentUnifediApiAccessContextInitState.localCacheExist:
+          case CurrentAccessContextInitState.localCacheExist:
             return widget.child;
-          case CurrentUnifediApiAccessContextInitState
-              .cantFetchAndLocalCacheNotExist:
-          case CurrentUnifediApiAccessContextInitState.invalidCredentials:
+          case CurrentAccessContextInitState.cantFetchAndLocalCacheNotExist:
+          case CurrentAccessContextInitState.invalidCredentials:
             return const _CurrentUnifediApiAccessContextInitSessionExpiredWidget();
-          case CurrentUnifediApiAccessContextInitState.loading:
+          case CurrentAccessContextInitState.loading:
           case null:
             return const SplashPage(
               displayVersionInfo: true,
@@ -200,8 +199,7 @@ class _CurrentUnifediApiAccessContextInitSessionExpiredLogoutButtonWidgetWidget
             .of(context)
             .app_auth_instance_current_context_loading_cantLoad_action_logout,
         onPressed: () {
-          ICurrentUnifediApiAccessBloc.of(context, listen: false)
-              .logoutCurrentInstance();
+          ICurrentAccessBloc.of(context, listen: false).logoutCurrentInstance();
         },
         color: IFediUiColorTheme.of(context).white,
         expanded: false,
@@ -236,7 +234,7 @@ class _CurrentUnifediApiAccessContextInitSessionExpiredRefreshButtonWidget
   @override
   Widget build(BuildContext context) {
     var currentInstanceContextLoadingBloc =
-        ICurrentUnifediApiAccessContextInitBloc.of(context);
+        ICurrentAccessContextInitBloc.of(context);
 
     return FediTransparentTextButtonWithBorder(
       S
@@ -261,7 +259,7 @@ class _CurrentUnifediApiAccessContextInitSessionExpiredDescriptionWidget
 
   @override
   Widget build(BuildContext context) {
-    var currentUnifediApiAccessBloc = ICurrentUnifediApiAccessBloc.of(context);
+    var currentUnifediApiAccessBloc = ICurrentAccessBloc.of(context);
 
     return Text(
       S.of(context).app_auth_instance_current_context_loading_cantLoad_content(

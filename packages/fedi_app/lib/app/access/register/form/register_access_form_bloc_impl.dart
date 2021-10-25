@@ -12,32 +12,30 @@ import 'package:fedi_app/form/form_bloc_impl.dart';
 import 'package:fedi_app/form/form_item_bloc.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
-class RegisterUnifediApiAccessFormBloc extends FormBloc
-    implements IRegisterUnifediApiAccessFormBloc {
+class RegisterAccessFormBloc extends FormBloc
+    implements IRegisterAccessFormBloc {
   @override
   // ignore: avoid-late-keyword
-  late IRegisterUnifediApiAccessFormStepperAccountItemBloc
-      accountStepperItemBloc;
+  late IRegisterAccessFormStepperAccountItemBloc accountStepperItemBloc;
 
   @override
   // ignore: avoid-late-keyword
-  IRegisterUnifediApiAccessFormStepperCaptchaItemBloc? captchaStepperItemBloc;
+  IRegisterAccessFormStepperCaptchaItemBloc? captchaStepperItemBloc;
 
   @override
   // ignore: avoid-late-keyword
-  IRegisterUnifediApiAccessFormStepperManualApproveItemBloc?
-      manualApproveStepperItemBloc;
+  IRegisterAccessFormStepperManualApproveItemBloc? manualApproveStepperItemBloc;
 
   @override
   // ignore: avoid-late-keyword
-  late IRegisterUnifediApiAccessFormStepperSubmitItemBloc submitStepperItemBloc;
+  late IRegisterAccessFormStepperSubmitItemBloc submitStepperItemBloc;
 
   final bool manualApprovalRequired;
   final Uri instanceBaseUri;
 
   final String localeName;
 
-  RegisterUnifediApiAccessFormBloc({
+  RegisterAccessFormBloc({
     required IUnifediApiInstance unifediApiInstance,
     required IUnifediApiInstanceService? unifediApiInstanceService,
     required this.instanceBaseUri,
@@ -46,21 +44,19 @@ class RegisterUnifediApiAccessFormBloc extends FormBloc
   }) : super(isAllItemsInitialized: false) {
     if (manualApprovalRequired) {
       manualApproveStepperItemBloc =
-          RegisterUnifediApiAccessFormStepperManualApproveItemBloc()
-            ..disposeWith(this);
+          RegisterAccessFormStepperManualApproveItemBloc()..disposeWith(this);
     }
 
     if (unifediApiInstanceService != null &&
         unifediApiInstance.typeAsUnifediApi.isPleroma) {
-      captchaStepperItemBloc =
-          RegisterUnifediApiAccessFormStepperCaptchaItemBloc(
+      captchaStepperItemBloc = RegisterAccessFormStepperCaptchaItemBloc(
         unifediApiInstanceService: unifediApiInstanceService,
       )..disposeWith(this);
     }
 
-    accountStepperItemBloc =
-        RegisterUnifediApiAccessFormStepperAccountItemBloc()..disposeWith(this);
-    submitStepperItemBloc = RegisterUnifediApiAccessFormStepperSubmitItemBloc(
+    accountStepperItemBloc = RegisterAccessFormStepperAccountItemBloc()
+      ..disposeWith(this);
+    submitStepperItemBloc = RegisterAccessFormStepperSubmitItemBloc(
       instanceBaseUri: instanceBaseUri,
     )..disposeWith(this);
 

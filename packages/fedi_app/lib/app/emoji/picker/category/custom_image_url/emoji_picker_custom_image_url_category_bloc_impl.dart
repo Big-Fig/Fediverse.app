@@ -15,7 +15,7 @@ var _logger = Logger('emoji_picker_custom_image_url_category_bloc_impl.dart');
 
 class EmojiPickerCustomImageUrlCategoryBloc extends AsyncInitLoadingBloc
     implements ICustomEmojiPickerImageUrlCategoryBloc {
-  final ICurrentUnifediApiAccessBloc currentUnifediApiAccessBloc;
+  final ICurrentAccessBloc currentUnifediApiAccessBloc;
   final IUnifediApiInstanceService unifediApiInstanceService;
   final IEmojiPickerCustomImageUrlCategoryBlocLocalPreferenceBloc
       preferenceBloc;

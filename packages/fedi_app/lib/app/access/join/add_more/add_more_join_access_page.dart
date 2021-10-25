@@ -7,7 +7,7 @@ import 'package:fedi_app/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class AddMoreJoinUnifediApiAccessPage extends StatelessWidget {
+class AddMoreJoinAccessPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
         backgroundColor: IFediUiColorTheme.of(context).primaryDark,
@@ -16,11 +16,11 @@ class AddMoreJoinUnifediApiAccessPage extends StatelessWidget {
           leading: const FediDismissIconButton(),
         ),
         body: const SafeArea(
-          child: JoinUnifediApiAccessWidget(),
+          child: JoinAccessWidget(),
         ),
       );
 
-  const AddMoreJoinUnifediApiAccessPage({
+  const AddMoreJoinAccessPage({
     Key? key,
   }) : super(key: key);
 }
@@ -29,10 +29,10 @@ void goToAddMoreJoinUnifediApiAccessPage(BuildContext context) {
   Navigator.push(
     context,
     MaterialPageRoute<void>(
-      builder: (context) => JoinUnifediApiAccessBloc.provideToContext(
+      builder: (context) => JoinAccessBloc.provideToContext(
         context,
         isFromScratch: false,
-        child: const AddMoreJoinUnifediApiAccessPage(),
+        child: const AddMoreJoinAccessPage(),
       ),
     ),
   );

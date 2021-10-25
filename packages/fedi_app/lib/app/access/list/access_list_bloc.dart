@@ -3,12 +3,12 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
-abstract class IUnifediApiAccessListBloc implements IDisposable {
-  static IUnifediApiAccessListBloc of(
+abstract class IAccessListBloc implements IDisposable {
+  static IAccessListBloc of(
     BuildContext context, {
     bool listen = true,
   }) =>
-      Provider.of<IUnifediApiAccessListBloc>(context, listen: listen);
+      Provider.of<IAccessListBloc>(context, listen: listen);
 
   List<UnifediApiAccess> get availableInstances;
 

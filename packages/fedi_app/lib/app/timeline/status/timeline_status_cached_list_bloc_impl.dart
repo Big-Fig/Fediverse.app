@@ -34,7 +34,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
   final IUnifediApiTimelineService unifediApiTimelineService;
   final IStatusRepository statusRepository;
   final IFilterRepository filterRepository;
-  final ICurrentUnifediApiAccessBloc currentInstanceBloc;
+  final ICurrentAccessBloc currentInstanceBloc;
   final ITimelineLocalPreferenceBlocOld timelineLocalPreferenceBloc;
   final IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc;
   final IMyAccountBloc myAccountBloc;
@@ -443,7 +443,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
           context,
           listen: false,
         ),
-        currentInstanceBloc: ICurrentUnifediApiAccessBloc.of(
+        currentInstanceBloc: ICurrentAccessBloc.of(
           context,
           listen: false,
         ),

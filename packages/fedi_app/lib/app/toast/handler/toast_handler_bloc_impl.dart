@@ -33,10 +33,9 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
       ToastHandlerBloc(
         context: context,
         toastService: toastService,
-        authInstanceListBloc:
-            IUnifediApiAccessListBloc.of(context, listen: false),
+        authInstanceListBloc: IAccessListBloc.of(context, listen: false),
         currentUnifediApiAccessBloc:
-            ICurrentUnifediApiAccessBloc.of(context, listen: false),
+            ICurrentAccessBloc.of(context, listen: false),
         notificationsPushHandlerBloc:
             INotificationsPushHandlerBloc.of(context, listen: false),
         localPreferencesService:
@@ -60,8 +59,8 @@ class ToastHandlerBloc extends DisposableOwner implements IToastHandlerBloc {
   // TODO: remove context field?
   final BuildContext context;
   final IToastService toastService;
-  final IUnifediApiAccessListBloc authInstanceListBloc;
-  final ICurrentUnifediApiAccessBloc currentUnifediApiAccessBloc;
+  final IAccessListBloc authInstanceListBloc;
+  final ICurrentAccessBloc currentUnifediApiAccessBloc;
   final ILocalPreferencesService localPreferencesService;
   final IToastSettingsBloc currentInstanceToastSettingsBloc;
   final INotificationsPushHandlerBloc notificationsPushHandlerBloc;

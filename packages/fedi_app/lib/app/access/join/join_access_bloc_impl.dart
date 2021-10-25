@@ -8,8 +8,7 @@ import 'package:fedi_app/app/server_list/server_list_auto_complete_bloc.dart';
 import 'package:fedi_app/app/server_list/server_list_auto_complete_bloc_impl.dart';
 import 'package:flutter/cupertino.dart';
 
-class JoinUnifediApiAccessBloc extends DisposableOwner
-    implements IJoinUnifediApiAccessBloc {
+class JoinAccessBloc extends DisposableOwner implements IJoinAccessBloc {
   @override
   final bool isFromScratch;
   @override
@@ -23,7 +22,7 @@ class JoinUnifediApiAccessBloc extends DisposableOwner
 
   final IConfigService configService;
 
-  JoinUnifediApiAccessBloc({
+  JoinAccessBloc({
     required this.isFromScratch,
     required this.configService,
   }) {
@@ -57,11 +56,11 @@ class JoinUnifediApiAccessBloc extends DisposableOwner
     return uri;
   }
 
-  static JoinUnifediApiAccessBloc createFromContext(
+  static JoinAccessBloc createFromContext(
     BuildContext context, {
     required bool isFromScratch,
   }) =>
-      JoinUnifediApiAccessBloc(
+      JoinAccessBloc(
         configService: IConfigService.of(
           context,
           listen: false,
@@ -74,12 +73,12 @@ class JoinUnifediApiAccessBloc extends DisposableOwner
     required Widget child,
     required bool isFromScratch,
   }) =>
-      DisposableProvider<IJoinUnifediApiAccessBloc>(
-        create: (context) => JoinUnifediApiAccessBloc.createFromContext(
+      DisposableProvider<IJoinAccessBloc>(
+        create: (context) => JoinAccessBloc.createFromContext(
           context,
           isFromScratch: isFromScratch,
         ),
-        child: JoinUnifediApiAccessBlocProxyProvider(
+        child: JoinAccessBlocProxyProvider(
           child: child,
         ),
       );

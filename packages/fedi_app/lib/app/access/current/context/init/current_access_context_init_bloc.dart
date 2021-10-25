@@ -4,20 +4,20 @@ import 'package:fedi_app/async/loading/init/async_init_loading_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class ICurrentUnifediApiAccessContextInitBloc
+abstract class ICurrentAccessContextInitBloc
     implements IAsyncInitLoadingBloc, IDisposable {
-  static ICurrentUnifediApiAccessContextInitBloc of(
+  static ICurrentAccessContextInitBloc of(
     BuildContext context, {
     bool listen = true,
   }) =>
-      Provider.of<ICurrentUnifediApiAccessContextInitBloc>(
+      Provider.of<ICurrentAccessContextInitBloc>(
         context,
         listen: listen,
       );
 
-  CurrentUnifediApiAccessContextInitState? get state;
+  CurrentAccessContextInitState? get state;
 
-  Stream<CurrentUnifediApiAccessContextInitState> get stateStream;
+  Stream<CurrentAccessContextInitState> get stateStream;
 
   Future<void> refreshFromNetwork({required bool isNeedWaitForOptionalData});
 }

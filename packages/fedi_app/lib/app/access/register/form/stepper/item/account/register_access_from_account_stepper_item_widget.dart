@@ -7,9 +7,8 @@ import 'package:fedi_app/ui/stepper/fedi_stepper_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
-class RegisterUnifediApiAccessFormStepperAccountItemWidget
-    extends StatelessWidget {
-  const RegisterUnifediApiAccessFormStepperAccountItemWidget({Key? key})
+class RegisterAccessFormStepperAccountItemWidget extends StatelessWidget {
+  const RegisterAccessFormStepperAccountItemWidget({Key? key})
       : super(key: key);
 
   @override
@@ -29,8 +28,7 @@ class _RegisterUnifediApiAccessFormUsernameFieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var itemBloc =
-        IRegisterUnifediApiAccessFormStepperAccountItemBloc.of(context);
+    var itemBloc = IRegisterAccessFormStepperAccountItemBloc.of(context);
 
     return StreamBuilder<bool>(
       stream: itemBloc.isEditingStartedStream,
@@ -38,8 +36,7 @@ class _RegisterUnifediApiAccessFormUsernameFieldWidget extends StatelessWidget {
       builder: (context, snapshot) {
         final isEditingStarted = snapshot.data!;
 
-        return ProxyProvider<
-            IRegisterUnifediApiAccessFormStepperAccountItemBloc,
+        return ProxyProvider<IRegisterAccessFormStepperAccountItemBloc,
             IStringValueFormFieldBloc>(
           update: (context, itemBloc, _) => itemBloc.usernameFieldBloc,
           child: StringValueFormFieldRowWidget(
@@ -67,8 +64,7 @@ class _RegisterUnifediApiAccessFormEmailFieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var itemBloc =
-        IRegisterUnifediApiAccessFormStepperAccountItemBloc.of(context);
+    var itemBloc = IRegisterAccessFormStepperAccountItemBloc.of(context);
 
     return StreamBuilder<bool>(
       stream: itemBloc.isEditingStartedStream,
@@ -80,7 +76,7 @@ class _RegisterUnifediApiAccessFormEmailFieldWidget extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ProxyProvider<IRegisterUnifediApiAccessFormStepperAccountItemBloc,
+            ProxyProvider<IRegisterAccessFormStepperAccountItemBloc,
                 IStringValueFormFieldBloc>(
               update: (context, itemBloc, _) => itemBloc.emailFieldBloc,
               child: StringValueFormFieldRowWidget(
@@ -113,8 +109,7 @@ class _RegisterUnifediApiAccessFormPasswordFieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var itemBloc =
-        IRegisterUnifediApiAccessFormStepperAccountItemBloc.of(context);
+    var itemBloc = IRegisterAccessFormStepperAccountItemBloc.of(context);
 
     return StreamBuilder<bool>(
       stream: itemBloc.isEditingStartedStream,
@@ -122,8 +117,7 @@ class _RegisterUnifediApiAccessFormPasswordFieldWidget extends StatelessWidget {
       builder: (context, snapshot) {
         final isEditingStarted = snapshot.data!;
 
-        return ProxyProvider<
-            IRegisterUnifediApiAccessFormStepperAccountItemBloc,
+        return ProxyProvider<IRegisterAccessFormStepperAccountItemBloc,
             IStringValueFormFieldBloc>(
           update: (context, itemBloc, _) => itemBloc.passwordFieldBloc,
           child: StringValueFormFieldRowWidget(

@@ -42,7 +42,7 @@ class LocalHashtagPageBloc extends HashtagPageBloc
   final IUnifediApiAccountService unifediApiAccountService;
   final IStatusRepository statusRepository;
   final IFilterRepository filterRepository;
-  final ICurrentUnifediApiAccessBloc currentUnifediApiAccessBloc;
+  final ICurrentAccessBloc currentUnifediApiAccessBloc;
   final IWebSocketsHandlerManagerBloc webSocketsHandlerManagerBloc;
   final IMyAccountBloc myAccountBloc;
   final IPaginationSettingsBloc paginationSettingsBloc;
@@ -108,7 +108,7 @@ class LocalHashtagPageBloc extends HashtagPageBloc
         context,
         listen: false,
       ),
-      currentUnifediApiAccessBloc: ICurrentUnifediApiAccessBloc.of(
+      currentUnifediApiAccessBloc: ICurrentAccessBloc.of(
         context,
         listen: false,
       ),

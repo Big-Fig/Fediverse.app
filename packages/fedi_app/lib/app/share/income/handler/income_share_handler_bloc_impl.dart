@@ -21,8 +21,8 @@ class IncomeShareHandlerBloc extends DisposableOwner
     implements IIncomeShareHandlerBloc {
   final IConfigService configService;
   final IIncomeShareService incomeShareService;
-  final ICurrentUnifediApiAccessBloc currentUnifediApiAccessBloc;
-  final IUnifediApiAccessListBloc authInstanceListBloc;
+  final ICurrentAccessBloc currentUnifediApiAccessBloc;
+  final IAccessListBloc authInstanceListBloc;
   final ILastChosenInstanceIncomeIncomeShareHandlerLocalPreferenceBloc
       lastChosenInstanceIncomeIncomeShareHandlerLocalPreferenceBloc;
 
@@ -71,11 +71,11 @@ class IncomeShareHandlerBloc extends DisposableOwner
         context,
         listen: false,
       ),
-      currentUnifediApiAccessBloc: ICurrentUnifediApiAccessBloc.of(
+      currentUnifediApiAccessBloc: ICurrentAccessBloc.of(
         context,
         listen: false,
       ),
-      authInstanceListBloc: IUnifediApiAccessListBloc.of(
+      authInstanceListBloc: IAccessListBloc.of(
         context,
         listen: false,
       ),

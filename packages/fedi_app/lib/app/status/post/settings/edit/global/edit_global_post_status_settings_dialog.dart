@@ -17,7 +17,7 @@ import 'package:unifedi_api/unifedi_api.dart';
 void showEditGlobalPostStatusSettingsDialog({
   required BuildContext context,
 }) {
-  var isPleromaInstance = ICurrentUnifediApiAccessBloc.of(
+  var isPleromaInstance = ICurrentAccessBloc.of(
     context,
     listen: false,
   ).currentInstance!.isPleroma;

@@ -12,13 +12,12 @@ import 'package:unifedi_api/unifedi_api.dart';
 
 var _logger = Logger('current_access_bloc_impl.dart');
 
-class CurrentUnifediApiAccessBloc extends DisposableOwner
-    implements ICurrentUnifediApiAccessBloc {
+class CurrentAccessBloc extends DisposableOwner implements ICurrentAccessBloc {
   final ILocalPreferencesService localPreferencesService;
-  final IUnifediApiAccessListBloc instanceListBloc;
-  final ICurrentUnifediApiAccessLocalPreferenceBloc currentLocalPreferenceBloc;
+  final IAccessListBloc instanceListBloc;
+  final ICurrentAccessLocalPreferenceBloc currentLocalPreferenceBloc;
 
-  CurrentUnifediApiAccessBloc({
+  CurrentAccessBloc({
     required this.localPreferencesService,
     required this.instanceListBloc,
     required this.currentLocalPreferenceBloc,
@@ -35,8 +34,7 @@ class CurrentUnifediApiAccessBloc extends DisposableOwner
   Future<void> changeCurrentInstance(UnifediApiAccess instance) async {
     _logger.finest(() => 'changeCurrentInstance $instance');
 
-    var unifediApiAccessLocalPreferenceBloc =
-        UnifediApiAccessLocalPreferenceBloc(
+    var unifediApiAccessLocalPreferenceBloc = AccessLocalPreferenceBloc(
       preferencesService: localPreferencesService,
       userAtHost: instance.userAtHost,
     );

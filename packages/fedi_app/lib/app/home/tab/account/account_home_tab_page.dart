@@ -438,8 +438,7 @@ class _AccountHomeTabCurrentInstanceNameWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var currentInstanceBloc =
-        ICurrentUnifediApiAccessBloc.of(context, listen: false);
+    var currentInstanceBloc = ICurrentAccessBloc.of(context, listen: false);
 
     return AutoSizeText(
       currentInstanceBloc.currentInstance!.userAtHost,

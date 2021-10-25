@@ -16,7 +16,7 @@ class StatusActionsListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var currentUnifediApiAccessBloc = ICurrentUnifediApiAccessBloc.of(context);
+    var currentUnifediApiAccessBloc = ICurrentAccessBloc.of(context);
 
     var statusBloc = IStatusBloc.of(context);
     var isLocal = statusBloc.instanceLocation == InstanceLocation.local;

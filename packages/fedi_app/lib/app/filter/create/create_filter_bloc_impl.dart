@@ -27,7 +27,7 @@ class CreateFilterBloc extends EditFilterBloc implements ICreateFilterBloc {
         context,
         listen: false,
       ),
-      currentInstance: ICurrentUnifediApiAccessBloc.of(
+      currentInstance: ICurrentAccessBloc.of(
         context,
         listen: false,
       ).currentInstance!,

@@ -99,9 +99,7 @@ class _AccountHomeTabMenuDialogBodyInstanceItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var currentInstanceUrlHost =
-        ICurrentUnifediApiAccessBloc.of(context, listen: false)
-            .currentInstance!
-            .urlHost;
+        ICurrentAccessBloc.of(context, listen: false).currentInstance!.urlHost;
 
     return InkWell(
       onTap: () {

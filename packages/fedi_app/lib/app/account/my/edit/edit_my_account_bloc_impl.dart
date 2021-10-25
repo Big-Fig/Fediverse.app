@@ -20,7 +20,7 @@ import 'package:provider/provider.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
 class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
-  final ICurrentUnifediApiAccessBloc currentUnifediApiAccessBloc;
+  final ICurrentAccessBloc currentUnifediApiAccessBloc;
   final IMyAccountBloc myAccountBloc;
   final IUnifediApiMyAccountService unifediApiMyAccountService;
 
@@ -348,12 +348,11 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
       );
 
   static EditMyAccountBloc createFromContext(BuildContext context) {
-    var info = ICurrentUnifediApiAccessBloc.of(context, listen: false)
-        .currentInstance!
-        .info;
+    var info =
+        ICurrentAccessBloc.of(context, listen: false).currentInstance!.info;
 
     return EditMyAccountBloc(
-      currentUnifediApiAccessBloc: ICurrentUnifediApiAccessBloc.of(
+      currentUnifediApiAccessBloc: ICurrentAccessBloc.of(
         context,
         listen: false,
       ),

@@ -69,7 +69,7 @@ import 'package:unifedi_api/unifedi_api.dart';
 
 var _logger = Logger('main.dart');
 
-CurrentUnifediApiAccessContextBloc? currentInstanceContextBloc;
+CurrentAccessContextBloc? currentInstanceContextBloc;
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -100,7 +100,7 @@ Future<void> launchApp({
 
         if (newState == AsyncInitLoadingState.finished) {
           var currentInstanceBloc =
-              initBloc.appContextBloc.get<ICurrentUnifediApiAccessBloc>();
+              initBloc.appContextBloc.get<ICurrentAccessBloc>();
 
           // we don't need to cancel this subscription
           // because it should always exist
@@ -205,7 +205,7 @@ Future<void> runInitializedCurrentInstanceApp({
     await currentInstanceContextBloc!.dispose();
   }
 
-  currentInstanceContextBloc = CurrentUnifediApiAccessContextBloc(
+  currentInstanceContextBloc = CurrentAccessContextBloc(
     currentInstance: currentInstance,
     appContextBloc: appContextBloc,
   );
@@ -225,7 +225,7 @@ Future<void> runInitializedCurrentInstanceApp({
   runApp(
     appContextBloc.provideContextToChild(
       child: currentInstanceContextBloc!.provideContextToChild(
-        child: DisposableProvider<ICurrentUnifediApiAccessContextInitBloc>(
+        child: DisposableProvider<ICurrentAccessContextInitBloc>(
           lazy: false,
           create: (context) => createCurrentInstanceContextBloc(
             context: context,
@@ -243,22 +243,21 @@ Future<void> runInitializedCurrentInstanceApp({
   );
 }
 
-CurrentUnifediApiAccessContextInitBloc createCurrentInstanceContextBloc({
+CurrentAccessContextInitBloc createCurrentInstanceContextBloc({
   required BuildContext context,
   required INotificationPushLoaderBloc? pushLoaderBloc,
 }) {
   _logger.finest(() => 'createCurrentInstanceContextBloc');
   var currentUnifediApiAccessContextLoadingBloc =
-      CurrentUnifediApiAccessContextInitBloc.createFromContext(context);
+      CurrentAccessContextInitBloc.createFromContext(context);
   // ignore: cascade_invocations
   currentUnifediApiAccessContextLoadingBloc.performAsyncInit();
 
   currentUnifediApiAccessContextLoadingBloc.stateStream.distinct().listen(
     (state) {
       var isLocalCacheExist = state ==
-              CurrentUnifediApiAccessContextInitState
-                  .cantFetchAndLocalCacheNotExist ||
-          state == CurrentUnifediApiAccessContextInitState.localCacheExist;
+              CurrentAccessContextInitState.cantFetchAndLocalCacheNotExist ||
+          state == CurrentAccessContextInitState.localCacheExist;
       if (isLocalCacheExist) {
         if (pushLoaderBloc != null) {
           pushLoaderBloc.launchPushLoaderNotificationStream.listen(
@@ -381,15 +380,15 @@ Widget buildUnifediApiAccessContextInitWidget({
 void runInitializedLoginApp(IAppContextBloc appContextBloc) {
   runApp(
     appContextBloc.provideContextToChild(
-      child: DisposableProvider<IJoinUnifediApiAccessBloc>(
-        create: (context) => JoinUnifediApiAccessBloc(
+      child: DisposableProvider<IJoinAccessBloc>(
+        create: (context) => JoinAccessBloc(
           isFromScratch: true,
           configService: appContextBloc.get<IConfigService>(),
         ),
         child: const FediApp(
           instanceInitialized: false,
-          child: JoinUnifediApiAccessBlocProxyProvider(
-            child: FromScratchJoinUnifediApiAccessPage(),
+          child: JoinAccessBlocProxyProvider(
+            child: FromScratchJoinAccessPage(),
           ),
         ),
       ),

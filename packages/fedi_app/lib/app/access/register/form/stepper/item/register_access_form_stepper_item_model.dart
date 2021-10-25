@@ -1,4 +1,4 @@
-enum RegisterUnifediApiAccessFormStepperItemType {
+enum RegisterAccessFormStepperItemType {
   manualApprove,
   account,
   captcha,

@@ -1,4 +1,4 @@
-class FromScratchJoinUnifediApiAccessPageKeys {
-  static const joinUnifediApiAccessWidgetKey =
-      'FromScratchJoinUnifediApiAccessPage_JoinUnifediApiAccessWidget';
+class FromScratchJoinAccessPageKeys {
+  static const joinAccessWidgetKey =
+      'FromScratchJoinAccessPage_JoinAccessWidgetKey';
 }

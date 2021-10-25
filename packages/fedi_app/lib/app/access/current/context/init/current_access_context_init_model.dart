@@ -1,4 +1,4 @@
-enum CurrentUnifediApiAccessContextInitState {
+enum CurrentAccessContextInitState {
   loading,
   localCacheExist,
   cantFetchAndLocalCacheNotExist,

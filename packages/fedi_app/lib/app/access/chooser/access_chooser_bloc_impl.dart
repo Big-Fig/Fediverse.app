@@ -7,15 +7,14 @@ import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
-var _logger = Logger('auth_instance_chooser_bloc_impl.dart');
+var _logger = Logger('access_chooser_bloc_impl.dart');
 
-class UnifediApiAccessChooserBloc extends DisposableOwner
-    implements IUnifediApiAccessChooserBloc {
-  final IUnifediApiAccessListBloc instanceListBloc;
+class AccessChooserBloc extends DisposableOwner implements IAccessChooserBloc {
+  final IAccessListBloc instanceListBloc;
 
-  final ICurrentUnifediApiAccessBloc currentInstanceBloc;
+  final ICurrentAccessBloc currentInstanceBloc;
 
-  UnifediApiAccessChooserBloc({
+  AccessChooserBloc({
     required this.instanceListBloc,
     required this.currentInstanceBloc,
   });
@@ -61,10 +60,9 @@ class UnifediApiAccessChooserBloc extends DisposableOwner
   Future<void> removeInstance(UnifediApiAccess instance) =>
       instanceListBloc.removeInstance(instance);
 
-  static UnifediApiAccessChooserBloc createFromContext(BuildContext context) =>
-      UnifediApiAccessChooserBloc(
-        instanceListBloc: IUnifediApiAccessListBloc.of(context, listen: false),
-        currentInstanceBloc:
-            ICurrentUnifediApiAccessBloc.of(context, listen: false),
+  static AccessChooserBloc createFromContext(BuildContext context) =>
+      AccessChooserBloc(
+        instanceListBloc: IAccessListBloc.of(context, listen: false),
+        currentInstanceBloc: ICurrentAccessBloc.of(context, listen: false),
       );
 }

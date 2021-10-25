@@ -1,17 +1,17 @@
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi_app/app/access/register/form/register_access_form_bloc.dart';
-import 'package:fedi_app/app/access/register/response/register_response_model.dart';
+import 'package:fedi_app/app/access/register/response/register_access_response_model.dart';
 import 'package:fedi_app/async/loading/init/async_init_loading_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-abstract class IRegisterUnifediApiAccessBloc
+abstract class IRegisterAccessBloc
     implements IDisposable, IAsyncInitLoadingBloc {
-  static IRegisterUnifediApiAccessBloc of(
+  static IRegisterAccessBloc of(
     BuildContext context, {
     bool listen = true,
   }) =>
-      Provider.of<IRegisterUnifediApiAccessBloc>(
+      Provider.of<IRegisterAccessBloc>(
         context,
         listen: listen,
       );
@@ -22,7 +22,7 @@ abstract class IRegisterUnifediApiAccessBloc
 
   Stream<bool> get isReadyToSubmitStream;
 
-  IRegisterUnifediApiAccessFormBloc get registerUnifediApiAccessFormBloc;
+  IRegisterAccessFormBloc get registerUnifediApiAccessFormBloc;
 
-  Future<RegisterResponse> register();
+  Future<RegisterAccessResponse> register();
 }

@@ -150,16 +150,16 @@ import 'package:unifedi_api/unifedi_api.dart';
 
 // ignore_for_file: avoid-ignoring-return-values
 
-var _logger = Logger('current_access_context_bloc_imp.dart');
+var _logger = Logger('current_access_context_bloc_impl.dart');
 
-class CurrentUnifediApiAccessContextBloc extends ProviderContextBloc
-    implements ICurrentUnifediApiAccessContextBloc {
+class CurrentAccessContextBloc extends ProviderContextBloc
+    implements ICurrentAccessContextBloc {
   final UnifediApiAccess currentInstance;
   final IAppContextBloc appContextBloc;
 
   bool get isPleromaInstance => currentInstance.isPleroma;
 
-  CurrentUnifediApiAccessContextBloc({
+  CurrentAccessContextBloc({
     required this.currentInstance,
     required this.appContextBloc,
   });
@@ -300,20 +300,18 @@ class CurrentUnifediApiAccessContextBloc extends ProviderContextBloc
       conversationChatWithLastMessageRepository,
     );
 
-    var unifediApiAccessLocalPreferenceBloc =
-        UnifediApiAccessLocalPreferenceBloc(
+    var unifediApiAccessLocalPreferenceBloc = AccessLocalPreferenceBloc(
       preferencesService: preferencesService,
       userAtHost: currentInstance.userAtHost,
     );
 
     await unifediApiAccessLocalPreferenceBloc.performAsyncInit();
     await globalProviderService
-        .asyncInitAndRegister<IUnifediApiAccessLocalPreferenceBloc>(
+        .asyncInitAndRegister<IAccessLocalPreferenceBloc>(
       unifediApiAccessLocalPreferenceBloc,
     );
 
-    var localPreferencesUnifediApiAccessBloc =
-        LocalPreferencesUnifediApiAccessBloc(
+    var localPreferencesUnifediApiAccessBloc = LocalPreferencesAccessBloc(
       accessLocalPreferenceBloc: unifediApiAccessLocalPreferenceBloc,
     );
 
