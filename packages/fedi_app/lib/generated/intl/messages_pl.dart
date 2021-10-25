@@ -932,7 +932,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_emoji_recent_empty": MessageLookupByLibrary.simpleMessage(
             "Brak ostatnio używanych emoji"),
         "app_emoji_search_hint":
-            MessageLookupByLibrary.simpleMessage("Rozpocznij wyszukiwanie"),
+            MessageLookupByLibrary.simpleMessage("Zacznij pisać, aby wyszukać"),
         "app_file_image_crop_title":
             MessageLookupByLibrary.simpleMessage("Przytnij jako"),
         "app_filter_context_empty":
@@ -1439,8 +1439,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Wpisy"),
         "app_search_title": MessageLookupByLibrary.simpleMessage("Szukaj"),
         "app_settings_global_or_instance_override_global_label":
-            MessageLookupByLibrary.simpleMessage(
-                "Nadpisać ustawienia globalne"),
+            MessageLookupByLibrary.simpleMessage("Nadpisz globalne ustawienia"),
         "app_settings_global_title":
             MessageLookupByLibrary.simpleMessage("Ustawienia: globalne"),
         "app_settings_instance_title": m50,
@@ -1623,6 +1622,9 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Nieprawidłowa data lub godzina"),
         "app_status_post_settings_field_defaultVisibility_label":
             MessageLookupByLibrary.simpleMessage("Domyślna widoczność"),
+        "app_status_post_settings_field_dontUploadMediaDuringEditing_label":
+            MessageLookupByLibrary.simpleMessage(
+                "Nie wysyłaj mediów w trakcie tworzenia wpisu"),
         "app_status_post_settings_field_markMediaAsNsfwOnAttach_label":
             MessageLookupByLibrary.simpleMessage("Oznaczaj media jako NSFW"),
         "app_status_post_settings_title":

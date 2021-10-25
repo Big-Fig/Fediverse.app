@@ -1873,7 +1873,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "localization_locale_en":
             MessageLookupByLibrary.simpleMessage("English"),
         "localization_locale_notSpecified":
-            MessageLookupByLibrary.simpleMessage("Не определен"),
+            MessageLookupByLibrary.simpleMessage("Не указано"),
         "localization_locale_pl":
             MessageLookupByLibrary.simpleMessage("Polskie"),
         "localization_locale_ru":
