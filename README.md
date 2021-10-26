@@ -374,7 +374,7 @@ env_dev.env
 
 Those files are excluded from source control.
 
-You can find all possible config variables(with comments) at [env_example.env](https://github.com/Big-Fig/Fediverse.app/blob/master/packages/fedi/env_example.env)
+You can find all possible config variables(with comments) at [env_example.env](https://github.com/Big-Fig/Fediverse.app/blob/master/packages/fedi_app/env_example.env)
 
 #### If you have strange errors or how to clean project
 
