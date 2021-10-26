@@ -22,8 +22,12 @@ class _$PushFilterSettingsTearOff {
   const _$PushFilterSettingsTearOff();
 
   _PushFilterSettings call(
-      {@HiveField(1) required bool? blockFromStrangers,
-      @HiveField(2) required bool? hideNotificationContents}) {
+      {@JsonKey(name: 'blockFromStrangers')
+      @HiveField(1)
+          required bool? blockFromStrangers,
+      @JsonKey(name: 'hideNotificationContents')
+      @HiveField(2)
+          required bool? hideNotificationContents}) {
     return _PushFilterSettings(
       blockFromStrangers: blockFromStrangers,
       hideNotificationContents: hideNotificationContents,
@@ -40,8 +44,10 @@ const $PushFilterSettings = _$PushFilterSettingsTearOff();
 
 /// @nodoc
 mixin _$PushFilterSettings {
+  @JsonKey(name: 'blockFromStrangers')
   @HiveField(1)
   bool? get blockFromStrangers => throw _privateConstructorUsedError;
+  @JsonKey(name: 'hideNotificationContents')
   @HiveField(2)
   bool? get hideNotificationContents => throw _privateConstructorUsedError;
 
@@ -57,8 +63,12 @@ abstract class $PushFilterSettingsCopyWith<$Res> {
           PushFilterSettings value, $Res Function(PushFilterSettings) then) =
       _$PushFilterSettingsCopyWithImpl<$Res>;
   $Res call(
-      {@HiveField(1) bool? blockFromStrangers,
-      @HiveField(2) bool? hideNotificationContents});
+      {@JsonKey(name: 'blockFromStrangers')
+      @HiveField(1)
+          bool? blockFromStrangers,
+      @JsonKey(name: 'hideNotificationContents')
+      @HiveField(2)
+          bool? hideNotificationContents});
 }
 
 /// @nodoc
@@ -96,8 +106,12 @@ abstract class _$PushFilterSettingsCopyWith<$Res>
       __$PushFilterSettingsCopyWithImpl<$Res>;
   @override
   $Res call(
-      {@HiveField(1) bool? blockFromStrangers,
-      @HiveField(2) bool? hideNotificationContents});
+      {@JsonKey(name: 'blockFromStrangers')
+      @HiveField(1)
+          bool? blockFromStrangers,
+      @JsonKey(name: 'hideNotificationContents')
+      @HiveField(2)
+          bool? hideNotificationContents});
 }
 
 /// @nodoc
@@ -133,17 +147,23 @@ class __$PushFilterSettingsCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_PushFilterSettings extends _PushFilterSettings {
   const _$_PushFilterSettings(
-      {@HiveField(1) required this.blockFromStrangers,
-      @HiveField(2) required this.hideNotificationContents})
+      {@JsonKey(name: 'blockFromStrangers')
+      @HiveField(1)
+          required this.blockFromStrangers,
+      @JsonKey(name: 'hideNotificationContents')
+      @HiveField(2)
+          required this.hideNotificationContents})
       : super._();
 
   factory _$_PushFilterSettings.fromJson(Map<String, dynamic> json) =>
       _$$_PushFilterSettingsFromJson(json);
 
   @override
+  @JsonKey(name: 'blockFromStrangers')
   @HiveField(1)
   final bool? blockFromStrangers;
   @override
+  @JsonKey(name: 'hideNotificationContents')
   @HiveField(2)
   final bool? hideNotificationContents;
 
@@ -184,18 +204,23 @@ class _$_PushFilterSettings extends _PushFilterSettings {
 
 abstract class _PushFilterSettings extends PushFilterSettings {
   const factory _PushFilterSettings(
-          {@HiveField(1) required bool? blockFromStrangers,
-          @HiveField(2) required bool? hideNotificationContents}) =
-      _$_PushFilterSettings;
+      {@JsonKey(name: 'blockFromStrangers')
+      @HiveField(1)
+          required bool? blockFromStrangers,
+      @JsonKey(name: 'hideNotificationContents')
+      @HiveField(2)
+          required bool? hideNotificationContents}) = _$_PushFilterSettings;
   const _PushFilterSettings._() : super._();
 
   factory _PushFilterSettings.fromJson(Map<String, dynamic> json) =
       _$_PushFilterSettings.fromJson;
 
   @override
+  @JsonKey(name: 'blockFromStrangers')
   @HiveField(1)
   bool? get blockFromStrangers => throw _privateConstructorUsedError;
   @override
+  @JsonKey(name: 'hideNotificationContents')
   @HiveField(2)
   bool? get hideNotificationContents => throw _privateConstructorUsedError;
   @override

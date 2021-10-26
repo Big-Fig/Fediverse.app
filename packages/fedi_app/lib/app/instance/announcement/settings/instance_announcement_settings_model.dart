@@ -19,7 +19,7 @@ class InstanceAnnouncementSettings
     implements ISettings<InstanceAnnouncementSettings> {
   const InstanceAnnouncementSettings._();
   const factory InstanceAnnouncementSettings({
-    @HiveField(1) required bool withDismissed,
+    @JsonKey(name: 'withDismissed') @HiveField(1) required bool withDismissed,
   }) = _InstanceAnnouncementSettings;
 
   factory InstanceAnnouncementSettings.fromJson(Map<String, dynamic> json) =>

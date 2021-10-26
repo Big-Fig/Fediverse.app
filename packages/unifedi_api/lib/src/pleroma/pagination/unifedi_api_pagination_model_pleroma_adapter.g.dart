@@ -49,11 +49,11 @@ _$_UnifediApiPaginationPleromaAdapter
     _$$_UnifediApiPaginationPleromaAdapterFromJson(Map<String, dynamic> json) =>
         _$_UnifediApiPaginationPleromaAdapter(
           PleromaApiPagination.fromJson(
-              json['valuePagination'] as Map<String, dynamic>),
+              json['value_pagination'] as Map<String, dynamic>),
         );
 
 Map<String, dynamic> _$$_UnifediApiPaginationPleromaAdapterToJson(
         _$_UnifediApiPaginationPleromaAdapter instance) =>
     <String, dynamic>{
-      'valuePagination': instance.valuePagination.toJson(),
+      'value_pagination': instance.valuePagination.toJson(),
     };

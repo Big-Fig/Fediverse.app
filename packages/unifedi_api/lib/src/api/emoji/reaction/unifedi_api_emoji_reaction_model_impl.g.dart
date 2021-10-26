@@ -70,7 +70,7 @@ _$_UnifediApiEmojiReaction _$$_UnifediApiEmojiReactionFromJson(
           ?.map((e) => UnifediApiAccount.fromJson(e as Map<String, dynamic>))
           .toList(),
       url: json['url'] as String?,
-      staticUrl: json['staticUrl'] as String?,
+      staticUrl: json['static_url'] as String?,
     );
 
 Map<String, dynamic> _$$_UnifediApiEmojiReactionToJson(
@@ -89,6 +89,6 @@ Map<String, dynamic> _$$_UnifediApiEmojiReactionToJson(
 
   writeNotNull('accounts', instance.accounts?.map((e) => e.toJson()).toList());
   writeNotNull('url', instance.url);
-  writeNotNull('staticUrl', instance.staticUrl);
+  writeNotNull('static_url', instance.staticUrl);
   return val;
 }

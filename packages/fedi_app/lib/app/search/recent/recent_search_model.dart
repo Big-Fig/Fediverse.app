@@ -17,7 +17,9 @@ part 'recent_search_model.freezed.dart';
 @freezed
 class RecentSearchList with _$RecentSearchList implements IJsonObj {
   const factory RecentSearchList({
-    @HiveField(0) required List<String> recentItems,
+    @JsonKey(name: 'recentItems')
+    @HiveField(0)
+        required List<String> recentItems,
   }) = _RecentSearchList;
 
   factory RecentSearchList.fromJson(Map<String, dynamic> json) =>

@@ -21,7 +21,10 @@ RecentSearchList _$RecentSearchListFromJson(Map<String, dynamic> json) {
 class _$RecentSearchListTearOff {
   const _$RecentSearchListTearOff();
 
-  _RecentSearchList call({@HiveField(0) required List<String> recentItems}) {
+  _RecentSearchList call(
+      {@JsonKey(name: 'recentItems')
+      @HiveField(0)
+          required List<String> recentItems}) {
     return _RecentSearchList(
       recentItems: recentItems,
     );
@@ -37,6 +40,7 @@ const $RecentSearchList = _$RecentSearchListTearOff();
 
 /// @nodoc
 mixin _$RecentSearchList {
+  @JsonKey(name: 'recentItems')
   @HiveField(0)
   List<String> get recentItems => throw _privateConstructorUsedError;
 
@@ -51,7 +55,8 @@ abstract class $RecentSearchListCopyWith<$Res> {
   factory $RecentSearchListCopyWith(
           RecentSearchList value, $Res Function(RecentSearchList) then) =
       _$RecentSearchListCopyWithImpl<$Res>;
-  $Res call({@HiveField(0) List<String> recentItems});
+  $Res call(
+      {@JsonKey(name: 'recentItems') @HiveField(0) List<String> recentItems});
 }
 
 /// @nodoc
@@ -83,7 +88,8 @@ abstract class _$RecentSearchListCopyWith<$Res>
           _RecentSearchList value, $Res Function(_RecentSearchList) then) =
       __$RecentSearchListCopyWithImpl<$Res>;
   @override
-  $Res call({@HiveField(0) List<String> recentItems});
+  $Res call(
+      {@JsonKey(name: 'recentItems') @HiveField(0) List<String> recentItems});
 }
 
 /// @nodoc
@@ -115,12 +121,14 @@ class __$RecentSearchListCopyWithImpl<$Res>
 class _$_RecentSearchList
     with DiagnosticableTreeMixin
     implements _RecentSearchList {
-  const _$_RecentSearchList({@HiveField(0) required this.recentItems});
+  const _$_RecentSearchList(
+      {@JsonKey(name: 'recentItems') @HiveField(0) required this.recentItems});
 
   factory _$_RecentSearchList.fromJson(Map<String, dynamic> json) =>
       _$$_RecentSearchListFromJson(json);
 
   @override
+  @JsonKey(name: 'recentItems')
   @HiveField(0)
   final List<String> recentItems;
 
@@ -163,12 +171,15 @@ class _$_RecentSearchList
 
 abstract class _RecentSearchList implements RecentSearchList {
   const factory _RecentSearchList(
-      {@HiveField(0) required List<String> recentItems}) = _$_RecentSearchList;
+      {@JsonKey(name: 'recentItems')
+      @HiveField(0)
+          required List<String> recentItems}) = _$_RecentSearchList;
 
   factory _RecentSearchList.fromJson(Map<String, dynamic> json) =
       _$_RecentSearchList.fromJson;
 
   @override
+  @JsonKey(name: 'recentItems')
   @HiveField(0)
   List<String> get recentItems => throw _privateConstructorUsedError;
   @override

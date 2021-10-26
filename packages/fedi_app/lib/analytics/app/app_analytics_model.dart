@@ -11,7 +11,7 @@ part 'app_analytics_model.g.dart';
 @freezed
 class AppAnalyticsData with _$AppAnalyticsData implements IJsonObj {
   const factory AppAnalyticsData({
-    @HiveField(0) required int appOpenedCount,
+    @JsonKey(name: 'appOpenedCount') @HiveField(0) required int appOpenedCount,
   }) = _AppAnalyticsData;
 
   factory AppAnalyticsData.fromJson(Map<String, dynamic> json) =>

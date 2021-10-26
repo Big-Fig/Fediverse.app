@@ -105,8 +105,8 @@ _$_MastodonApiInstance _$$_MastodonApiInstanceFromJson(
           ?.map((e) => e as String)
           .toList(),
       registrations: json['registrations'] as bool?,
-      approvalRequired: json['approvalRequired'] as bool?,
-      invitesEnabled: json['invitesEnabled'] as bool?,
+      approvalRequired: json['approval_required'] as bool?,
+      invitesEnabled: json['invites_enabled'] as bool?,
       contactAccount: json['contact_account'] == null
           ? null
           : MastodonApiAccount.fromJson(
@@ -135,8 +135,8 @@ Map<String, dynamic> _$$_MastodonApiInstanceToJson(
   writeNotNull('thumbnail', instance.thumbnail);
   writeNotNull('languages', instance.languages);
   writeNotNull('registrations', instance.registrations);
-  writeNotNull('approvalRequired', instance.approvalRequired);
-  writeNotNull('invitesEnabled', instance.invitesEnabled);
+  writeNotNull('approval_required', instance.approvalRequired);
+  writeNotNull('invites_enabled', instance.invitesEnabled);
   writeNotNull('contact_account', instance.contactAccount?.toJson());
   return val;
 }

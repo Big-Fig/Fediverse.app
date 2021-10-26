@@ -135,10 +135,10 @@ _$_PleromaApiWebSocketsEvent _$$_PleromaApiWebSocketsEventFromJson(
           : PleromaApiConversation.fromJson(
               json['conversation'] as Map<String, dynamic>),
       id: json['id'] as String?,
-      followUpdate: json['followUpdate'] == null
+      followUpdate: json['follow_update'] == null
           ? null
           : PleromaApiAccountRelationshipFollowUpdate.fromJson(
-              json['followUpdate'] as Map<String, dynamic>),
+              json['follow_update'] as Map<String, dynamic>),
       payload: json['payload'] as String?,
     );
 
@@ -161,7 +161,7 @@ Map<String, dynamic> _$$_PleromaApiWebSocketsEventToJson(
   writeNotNull('chat', instance.chat?.toJson());
   writeNotNull('conversation', instance.conversation?.toJson());
   writeNotNull('id', instance.id);
-  writeNotNull('followUpdate', instance.followUpdate?.toJson());
+  writeNotNull('follow_update', instance.followUpdate?.toJson());
   writeNotNull('payload', instance.payload);
   return val;
 }

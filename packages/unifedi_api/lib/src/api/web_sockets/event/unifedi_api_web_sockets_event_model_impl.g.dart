@@ -94,10 +94,10 @@ _$_UnifediApiWebSocketsEvent _$$_UnifediApiWebSocketsEventFromJson(
           : UnifediApiConversation.fromJson(
               json['conversation'] as Map<String, dynamic>),
       id: json['id'] as String?,
-      followUpdate: json['followUpdate'] == null
+      followUpdate: json['follow_update'] == null
           ? null
           : UnifediApiAccountRelationshipFollowUpdate.fromJson(
-              json['followUpdate'] as Map<String, dynamic>),
+              json['follow_update'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$_UnifediApiWebSocketsEventToJson(
@@ -119,6 +119,6 @@ Map<String, dynamic> _$$_UnifediApiWebSocketsEventToJson(
   writeNotNull('chat', instance.chat?.toJson());
   writeNotNull('conversation', instance.conversation?.toJson());
   writeNotNull('id', instance.id);
-  writeNotNull('followUpdate', instance.followUpdate?.toJson());
+  writeNotNull('follow_update', instance.followUpdate?.toJson());
   return val;
 }

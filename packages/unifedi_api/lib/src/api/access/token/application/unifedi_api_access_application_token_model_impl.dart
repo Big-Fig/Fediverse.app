@@ -21,7 +21,9 @@ class UnifediApiAccessApplicationToken
 
   const factory UnifediApiAccessApplicationToken({
     @HiveField(1) required UnifediApiAccessScopes scopes,
-    @HiveField(2) required UnifediApiClientApplication clientApplication,
+    @JsonKey(name: 'client_application')
+    @HiveField(2)
+        required UnifediApiClientApplication clientApplication,
     @HiveField(3)
     @JsonKey(name: 'oauth_token')
         required UnifediApiOAuthToken oauthToken,

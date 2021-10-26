@@ -90,7 +90,7 @@ _$_UnifediApiRegisterAccount _$$_UnifediApiRegisterAccountFromJson(
       captchaToken: json['captcha_token'] as String?,
       captchaAnswerData: json['captcha_answer_data'] as String?,
       captchaSolution: json['captcha_solution'] as String?,
-      fullName: json['fullName'] as String?,
+      fullName: json['full_name'] as String?,
       bio: json['bio'] as String?,
       inviteToken: json['token'] as String?,
     );
@@ -115,7 +115,7 @@ Map<String, dynamic> _$$_UnifediApiRegisterAccountToJson(
   writeNotNull('captcha_token', instance.captchaToken);
   writeNotNull('captcha_answer_data', instance.captchaAnswerData);
   writeNotNull('captcha_solution', instance.captchaSolution);
-  writeNotNull('fullName', instance.fullName);
+  writeNotNull('full_name', instance.fullName);
   writeNotNull('bio', instance.bio);
   writeNotNull('token', instance.inviteToken);
   return val;

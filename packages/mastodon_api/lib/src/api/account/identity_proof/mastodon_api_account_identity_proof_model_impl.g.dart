@@ -64,9 +64,9 @@ _$_MastodonApiAccountIdentityProof _$$_MastodonApiAccountIdentityProofFromJson(
       proofUrl: json['proof_url'] as String?,
       provider: json['provider'] as String?,
       providerUsername: json['provider_username'] as String?,
-      updatedAt: json['updatedAt'] == null
+      updatedAt: json['updated_at'] == null
           ? null
-          : DateTime.parse(json['updatedAt'] as String),
+          : DateTime.parse(json['updated_at'] as String),
     );
 
 Map<String, dynamic> _$$_MastodonApiAccountIdentityProofToJson(
@@ -83,6 +83,6 @@ Map<String, dynamic> _$$_MastodonApiAccountIdentityProofToJson(
   writeNotNull('proof_url', instance.proofUrl);
   writeNotNull('provider', instance.provider);
   writeNotNull('provider_username', instance.providerUsername);
-  writeNotNull('updatedAt', instance.updatedAt?.toIso8601String());
+  writeNotNull('updated_at', instance.updatedAt?.toIso8601String());
   return val;
 }

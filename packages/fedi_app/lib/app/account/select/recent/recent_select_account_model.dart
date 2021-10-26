@@ -17,7 +17,9 @@ class RecentSelectAccountList
     with _$RecentSelectAccountList
     implements IJsonObj {
   const factory RecentSelectAccountList({
-    @HiveField(0) required List<UnifediApiAccount>? recentItems,
+    @JsonKey(name: 'recentItems')
+    @HiveField(0)
+        required List<UnifediApiAccount>? recentItems,
   }) = _RecentSelectAccountList;
 
   factory RecentSelectAccountList.fromJson(Map<String, dynamic> json) =>

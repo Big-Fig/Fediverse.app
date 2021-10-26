@@ -22,13 +22,22 @@ class _$PushSettingsTearOff {
   const _$PushSettingsTearOff();
 
   _PushSettings call(
-      {@HiveField(1) required bool? favourite,
-      @HiveField(2) required bool? follow,
-      @HiveField(3) required bool? mention,
-      @HiveField(4) required bool? reblog,
-      @HiveField(5) required bool? poll,
-      @HiveField(6) required bool? chatMention,
-      @HiveField(7) required bool? emojiReaction}) {
+      {@HiveField(1)
+          required bool? favourite,
+      @HiveField(2)
+          required bool? follow,
+      @HiveField(3)
+          required bool? mention,
+      @HiveField(4)
+          required bool? reblog,
+      @HiveField(5)
+          required bool? poll,
+      @JsonKey(name: 'chatMention')
+      @HiveField(6)
+          required bool? chatMention,
+      @JsonKey(name: 'emojiReaction')
+      @HiveField(7)
+          required bool? emojiReaction}) {
     return _PushSettings(
       favourite: favourite,
       follow: follow,
@@ -60,8 +69,10 @@ mixin _$PushSettings {
   bool? get reblog => throw _privateConstructorUsedError;
   @HiveField(5)
   bool? get poll => throw _privateConstructorUsedError;
+  @JsonKey(name: 'chatMention')
   @HiveField(6)
   bool? get chatMention => throw _privateConstructorUsedError;
+  @JsonKey(name: 'emojiReaction')
   @HiveField(7)
   bool? get emojiReaction => throw _privateConstructorUsedError;
 
@@ -82,8 +93,8 @@ abstract class $PushSettingsCopyWith<$Res> {
       @HiveField(3) bool? mention,
       @HiveField(4) bool? reblog,
       @HiveField(5) bool? poll,
-      @HiveField(6) bool? chatMention,
-      @HiveField(7) bool? emojiReaction});
+      @JsonKey(name: 'chatMention') @HiveField(6) bool? chatMention,
+      @JsonKey(name: 'emojiReaction') @HiveField(7) bool? emojiReaction});
 }
 
 /// @nodoc
@@ -150,8 +161,8 @@ abstract class _$PushSettingsCopyWith<$Res>
       @HiveField(3) bool? mention,
       @HiveField(4) bool? reblog,
       @HiveField(5) bool? poll,
-      @HiveField(6) bool? chatMention,
-      @HiveField(7) bool? emojiReaction});
+      @JsonKey(name: 'chatMention') @HiveField(6) bool? chatMention,
+      @JsonKey(name: 'emojiReaction') @HiveField(7) bool? emojiReaction});
 }
 
 /// @nodoc
@@ -211,13 +222,22 @@ class __$PushSettingsCopyWithImpl<$Res> extends _$PushSettingsCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_PushSettings extends _PushSettings {
   const _$_PushSettings(
-      {@HiveField(1) required this.favourite,
-      @HiveField(2) required this.follow,
-      @HiveField(3) required this.mention,
-      @HiveField(4) required this.reblog,
-      @HiveField(5) required this.poll,
-      @HiveField(6) required this.chatMention,
-      @HiveField(7) required this.emojiReaction})
+      {@HiveField(1)
+          required this.favourite,
+      @HiveField(2)
+          required this.follow,
+      @HiveField(3)
+          required this.mention,
+      @HiveField(4)
+          required this.reblog,
+      @HiveField(5)
+          required this.poll,
+      @JsonKey(name: 'chatMention')
+      @HiveField(6)
+          required this.chatMention,
+      @JsonKey(name: 'emojiReaction')
+      @HiveField(7)
+          required this.emojiReaction})
       : super._();
 
   factory _$_PushSettings.fromJson(Map<String, dynamic> json) =>
@@ -239,9 +259,11 @@ class _$_PushSettings extends _PushSettings {
   @HiveField(5)
   final bool? poll;
   @override
+  @JsonKey(name: 'chatMention')
   @HiveField(6)
   final bool? chatMention;
   @override
+  @JsonKey(name: 'emojiReaction')
   @HiveField(7)
   final bool? emojiReaction;
 
@@ -298,13 +320,22 @@ class _$_PushSettings extends _PushSettings {
 
 abstract class _PushSettings extends PushSettings {
   const factory _PushSettings(
-      {@HiveField(1) required bool? favourite,
-      @HiveField(2) required bool? follow,
-      @HiveField(3) required bool? mention,
-      @HiveField(4) required bool? reblog,
-      @HiveField(5) required bool? poll,
-      @HiveField(6) required bool? chatMention,
-      @HiveField(7) required bool? emojiReaction}) = _$_PushSettings;
+      {@HiveField(1)
+          required bool? favourite,
+      @HiveField(2)
+          required bool? follow,
+      @HiveField(3)
+          required bool? mention,
+      @HiveField(4)
+          required bool? reblog,
+      @HiveField(5)
+          required bool? poll,
+      @JsonKey(name: 'chatMention')
+      @HiveField(6)
+          required bool? chatMention,
+      @JsonKey(name: 'emojiReaction')
+      @HiveField(7)
+          required bool? emojiReaction}) = _$_PushSettings;
   const _PushSettings._() : super._();
 
   factory _PushSettings.fromJson(Map<String, dynamic> json) =
@@ -326,9 +357,11 @@ abstract class _PushSettings extends PushSettings {
   @HiveField(5)
   bool? get poll => throw _privateConstructorUsedError;
   @override
+  @JsonKey(name: 'chatMention')
   @HiveField(6)
   bool? get chatMention => throw _privateConstructorUsedError;
   @override
+  @JsonKey(name: 'emojiReaction')
   @HiveField(7)
   bool? get emojiReaction => throw _privateConstructorUsedError;
   @override

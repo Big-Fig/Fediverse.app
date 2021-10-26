@@ -57,7 +57,7 @@ _$_PleromaApiAccessApplicationToken
           scopes: PleromaApiAccessScopes.fromJson(
               json['scopes'] as Map<String, dynamic>),
           clientApplication: PleromaApiClientApplication.fromJson(
-              json['clientApplication'] as Map<String, dynamic>),
+              json['client_application'] as Map<String, dynamic>),
           oauthToken: PleromaApiOAuthToken.fromJson(
               json['oauth_token'] as Map<String, dynamic>),
         );
@@ -66,6 +66,6 @@ Map<String, dynamic> _$$_PleromaApiAccessApplicationTokenToJson(
         _$_PleromaApiAccessApplicationToken instance) =>
     <String, dynamic>{
       'scopes': instance.scopes.toJson(),
-      'clientApplication': instance.clientApplication.toJson(),
+      'client_application': instance.clientApplication.toJson(),
       'oauth_token': instance.oauthToken.toJson(),
     };

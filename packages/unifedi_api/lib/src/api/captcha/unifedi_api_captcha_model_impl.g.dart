@@ -62,7 +62,7 @@ _$_UnifediApiCaptcha _$$_UnifediApiCaptchaFromJson(Map<String, dynamic> json) =>
       token: json['token'] as String?,
       type: json['type'] as String,
       url: json['url'] as String?,
-      answerData: json['answerData'] as String?,
+      answerData: json['answer_data'] as String?,
     );
 
 Map<String, dynamic> _$$_UnifediApiCaptchaToJson(
@@ -79,6 +79,6 @@ Map<String, dynamic> _$$_UnifediApiCaptchaToJson(
   writeNotNull('token', instance.token);
   val['type'] = instance.type;
   writeNotNull('url', instance.url);
-  writeNotNull('answerData', instance.answerData);
+  writeNotNull('answer_data', instance.answerData);
   return val;
 }

@@ -17,9 +17,9 @@ class LocalizationLocale with _$LocalizationLocale implements IJsonObj {
   const LocalizationLocale._();
 
   const factory LocalizationLocale({
-    @HiveField(0) required String languageCode,
-    @HiveField(1) required String? scriptCode,
-    @HiveField(2) required String? countryCode,
+    @JsonKey(name: 'languageCode') @HiveField(0) required String languageCode,
+    @JsonKey(name: 'scriptCode') @HiveField(1) required String? scriptCode,
+    @JsonKey(name: 'countryCode') @HiveField(2) required String? countryCode,
   }) = _LocalizationLocale;
 
   String get localeString {

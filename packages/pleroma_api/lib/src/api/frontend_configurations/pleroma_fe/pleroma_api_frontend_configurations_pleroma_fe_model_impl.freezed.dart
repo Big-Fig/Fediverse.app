@@ -24,32 +24,80 @@ class _$PleromaApiFrontendConfigurationsPleromaFeTearOff {
   const _$PleromaApiFrontendConfigurationsPleromaFeTearOff();
 
   _PleromaApiFrontendConfigurationsPleromaFe call(
-      {@HiveField(0) required bool? alwaysShowSubjectInput,
-      @HiveField(1) required String? background,
-      @HiveField(2) required bool? collapseMessageWithSubject,
-      @HiveField(3) required bool? disableChat,
-      @HiveField(4) required bool? greentext,
-      @HiveField(5) required bool? hideFilteredStatuses,
-      @HiveField(6) required bool? hideMutedPosts,
-      @HiveField(7) required bool? hidePostStats,
-      @HiveField(8) required bool? hideUserStats,
-      @HiveField(9) required String? loginMethod,
-      @HiveField(10) required String? logo,
-      @HiveField(11) required String? logoMargin,
-      @HiveField(12) required bool? logoMask,
-      @HiveField(13) required bool? minimalScopesMode,
-      @HiveField(14) required bool? noAttachmentLinks,
-      @HiveField(15) required String? nsfwCensorImage,
-      @HiveField(16) required String? postContentType,
-      @HiveField(17) required String? redirectRootLogin,
-      @HiveField(18) required String? redirectRootNoLogin,
-      @HiveField(19) required bool? scopeCopy,
-      @HiveField(20) required bool? showFeaturesPanel,
-      @HiveField(21) required bool? showInstanceSpecificPanel,
-      @HiveField(22) required bool? sidebarRight,
-      @HiveField(23) required String? subjectLineBehavior,
-      @HiveField(24) required String? theme,
-      @HiveField(25) required bool? webPushNotifications}) {
+      {@JsonKey(name: 'alwaysShowSubjectInput')
+      @HiveField(0)
+          required bool? alwaysShowSubjectInput,
+      @HiveField(1)
+          required String? background,
+      @JsonKey(name: 'collapseMessageWithSubject')
+      @HiveField(2)
+          required bool? collapseMessageWithSubject,
+      @JsonKey(name: 'disableChat')
+      @HiveField(3)
+          required bool? disableChat,
+      @HiveField(4)
+          required bool? greentext,
+      @JsonKey(name: 'hideFilteredStatuses')
+      @HiveField(5)
+          required bool? hideFilteredStatuses,
+      @JsonKey(name: 'hideMutedPosts')
+      @HiveField(6)
+          required bool? hideMutedPosts,
+      @JsonKey(name: 'hidePostStats')
+      @HiveField(7)
+          required bool? hidePostStats,
+      @JsonKey(name: 'hideUserStats')
+      @HiveField(8)
+          required bool? hideUserStats,
+      @JsonKey(name: 'loginMethod')
+      @HiveField(9)
+          required String? loginMethod,
+      @HiveField(10)
+          required String? logo,
+      @JsonKey(name: 'logoMargin')
+      @HiveField(11)
+          required String? logoMargin,
+      @JsonKey(name: 'logoMask')
+      @HiveField(12)
+          required bool? logoMask,
+      @JsonKey(name: 'minimalScopesMode')
+      @HiveField(13)
+          required bool? minimalScopesMode,
+      @JsonKey(name: 'noAttachmentLinks')
+      @HiveField(14)
+          required bool? noAttachmentLinks,
+      @JsonKey(name: 'nsfwCensorImage')
+      @HiveField(15)
+          required String? nsfwCensorImage,
+      @JsonKey(name: 'postContentType')
+      @HiveField(16)
+          required String? postContentType,
+      @JsonKey(name: 'redirectRootLogin')
+      @HiveField(17)
+          required String? redirectRootLogin,
+      @JsonKey(name: 'redirectRootNoLogin')
+      @HiveField(18)
+          required String? redirectRootNoLogin,
+      @JsonKey(name: 'scopeCopy')
+      @HiveField(19)
+          required bool? scopeCopy,
+      @JsonKey(name: 'showFeaturesPanel')
+      @HiveField(20)
+          required bool? showFeaturesPanel,
+      @JsonKey(name: 'showInstanceSpecificPanel')
+      @HiveField(21)
+          required bool? showInstanceSpecificPanel,
+      @JsonKey(name: 'sidebarRight')
+      @HiveField(22)
+          required bool? sidebarRight,
+      @JsonKey(name: 'subjectLineBehavior')
+      @HiveField(23)
+          required String? subjectLineBehavior,
+      @HiveField(24)
+          required String? theme,
+      @JsonKey(name: 'webPushNotifications')
+      @HiveField(25)
+          required bool? webPushNotifications}) {
     return _PleromaApiFrontendConfigurationsPleromaFe(
       alwaysShowSubjectInput: alwaysShowSubjectInput,
       background: background,
@@ -91,78 +139,78 @@ const $PleromaApiFrontendConfigurationsPleromaFe =
 
 /// @nodoc
 mixin _$PleromaApiFrontendConfigurationsPleromaFe {
-// @JsonKey(name: 'always_show_subject_input')
+  @JsonKey(name: 'alwaysShowSubjectInput')
   @HiveField(0)
   bool? get alwaysShowSubjectInput => throw _privateConstructorUsedError;
   @HiveField(1)
-  String? get background =>
-      throw _privateConstructorUsedError; // @JsonKey(name: 'collapse_message_with_subject')
+  String? get background => throw _privateConstructorUsedError;
+  @JsonKey(name: 'collapseMessageWithSubject')
   @HiveField(2)
-  bool? get collapseMessageWithSubject =>
-      throw _privateConstructorUsedError; // @JsonKey(name: 'disable_chat')
+  bool? get collapseMessageWithSubject => throw _privateConstructorUsedError;
+  @JsonKey(name: 'disableChat')
   @HiveField(3)
   bool? get disableChat => throw _privateConstructorUsedError;
   @HiveField(4)
-  bool? get greentext =>
-      throw _privateConstructorUsedError; // @JsonKey(name: 'hide_filtered_statuses')
+  bool? get greentext => throw _privateConstructorUsedError;
+  @JsonKey(name: 'hideFilteredStatuses')
   @HiveField(5)
-  bool? get hideFilteredStatuses =>
-      throw _privateConstructorUsedError; // @JsonKey(name: 'hide_muted_posts')
+  bool? get hideFilteredStatuses => throw _privateConstructorUsedError;
+  @JsonKey(name: 'hideMutedPosts')
   @HiveField(6)
-  bool? get hideMutedPosts =>
-      throw _privateConstructorUsedError; // @JsonKey(name: 'hide_post_stats')
+  bool? get hideMutedPosts => throw _privateConstructorUsedError;
+  @JsonKey(name: 'hidePostStats')
   @HiveField(7)
-  bool? get hidePostStats =>
-      throw _privateConstructorUsedError; // @JsonKey(name: 'hide_user_stats')
+  bool? get hidePostStats => throw _privateConstructorUsedError;
+  @JsonKey(name: 'hideUserStats')
   @HiveField(8)
-  bool? get hideUserStats =>
-      throw _privateConstructorUsedError; // @JsonKey(name: 'login_method')
+  bool? get hideUserStats => throw _privateConstructorUsedError;
+  @JsonKey(name: 'loginMethod')
   @HiveField(9)
   String? get loginMethod => throw _privateConstructorUsedError;
   @HiveField(10)
-  String? get logo =>
-      throw _privateConstructorUsedError; // @JsonKey(name: 'logo_margin')
+  String? get logo => throw _privateConstructorUsedError;
+  @JsonKey(name: 'logoMargin')
   @HiveField(11)
-  String? get logoMargin =>
-      throw _privateConstructorUsedError; // @JsonKey(name: 'logo_mask')
+  String? get logoMargin => throw _privateConstructorUsedError;
+  @JsonKey(name: 'logoMask')
   @HiveField(12)
-  bool? get logoMask =>
-      throw _privateConstructorUsedError; // @JsonKey(name: 'minimal_scopes_mode')
+  bool? get logoMask => throw _privateConstructorUsedError;
+  @JsonKey(name: 'minimalScopesMode')
   @HiveField(13)
-  bool? get minimalScopesMode =>
-      throw _privateConstructorUsedError; // @JsonKey(name: 'no_attachment_links')
+  bool? get minimalScopesMode => throw _privateConstructorUsedError;
+  @JsonKey(name: 'noAttachmentLinks')
   @HiveField(14)
-  bool? get noAttachmentLinks =>
-      throw _privateConstructorUsedError; // @JsonKey(name: 'nsfw_censor_image')
+  bool? get noAttachmentLinks => throw _privateConstructorUsedError;
+  @JsonKey(name: 'nsfwCensorImage')
   @HiveField(15)
-  String? get nsfwCensorImage =>
-      throw _privateConstructorUsedError; // @JsonKey(name: 'post_content_type')
+  String? get nsfwCensorImage => throw _privateConstructorUsedError;
+  @JsonKey(name: 'postContentType')
   @HiveField(16)
-  String? get postContentType =>
-      throw _privateConstructorUsedError; // @JsonKey(name: 'redirect_root_login')
+  String? get postContentType => throw _privateConstructorUsedError;
+  @JsonKey(name: 'redirectRootLogin')
   @HiveField(17)
-  String? get redirectRootLogin =>
-      throw _privateConstructorUsedError; // @JsonKey(name: 'redirect_root_no_login')
+  String? get redirectRootLogin => throw _privateConstructorUsedError;
+  @JsonKey(name: 'redirectRootNoLogin')
   @HiveField(18)
-  String? get redirectRootNoLogin =>
-      throw _privateConstructorUsedError; // @JsonKey(name: 'scope_copy')
+  String? get redirectRootNoLogin => throw _privateConstructorUsedError;
+  @JsonKey(name: 'scopeCopy')
   @HiveField(19)
-  bool? get scopeCopy =>
-      throw _privateConstructorUsedError; // @JsonKey(name: 'show_features_panel')
+  bool? get scopeCopy => throw _privateConstructorUsedError;
+  @JsonKey(name: 'showFeaturesPanel')
   @HiveField(20)
-  bool? get showFeaturesPanel =>
-      throw _privateConstructorUsedError; // @JsonKey(name: 'show_instance_specific_panel')
+  bool? get showFeaturesPanel => throw _privateConstructorUsedError;
+  @JsonKey(name: 'showInstanceSpecificPanel')
   @HiveField(21)
-  bool? get showInstanceSpecificPanel =>
-      throw _privateConstructorUsedError; // @JsonKey(name: 'sidebar_right')
+  bool? get showInstanceSpecificPanel => throw _privateConstructorUsedError;
+  @JsonKey(name: 'sidebarRight')
   @HiveField(22)
-  bool? get sidebarRight =>
-      throw _privateConstructorUsedError; // @JsonKey(name: 'subject_line_behavior')
+  bool? get sidebarRight => throw _privateConstructorUsedError;
+  @JsonKey(name: 'subjectLineBehavior')
   @HiveField(23)
   String? get subjectLineBehavior => throw _privateConstructorUsedError;
   @HiveField(24)
-  String? get theme =>
-      throw _privateConstructorUsedError; // @JsonKey(name: 'web_push_notifications')
+  String? get theme => throw _privateConstructorUsedError;
+  @JsonKey(name: 'webPushNotifications')
   @HiveField(25)
   bool? get webPushNotifications => throw _privateConstructorUsedError;
 
@@ -180,32 +228,80 @@ abstract class $PleromaApiFrontendConfigurationsPleromaFeCopyWith<$Res> {
           $Res Function(PleromaApiFrontendConfigurationsPleromaFe) then) =
       _$PleromaApiFrontendConfigurationsPleromaFeCopyWithImpl<$Res>;
   $Res call(
-      {@HiveField(0) bool? alwaysShowSubjectInput,
-      @HiveField(1) String? background,
-      @HiveField(2) bool? collapseMessageWithSubject,
-      @HiveField(3) bool? disableChat,
-      @HiveField(4) bool? greentext,
-      @HiveField(5) bool? hideFilteredStatuses,
-      @HiveField(6) bool? hideMutedPosts,
-      @HiveField(7) bool? hidePostStats,
-      @HiveField(8) bool? hideUserStats,
-      @HiveField(9) String? loginMethod,
-      @HiveField(10) String? logo,
-      @HiveField(11) String? logoMargin,
-      @HiveField(12) bool? logoMask,
-      @HiveField(13) bool? minimalScopesMode,
-      @HiveField(14) bool? noAttachmentLinks,
-      @HiveField(15) String? nsfwCensorImage,
-      @HiveField(16) String? postContentType,
-      @HiveField(17) String? redirectRootLogin,
-      @HiveField(18) String? redirectRootNoLogin,
-      @HiveField(19) bool? scopeCopy,
-      @HiveField(20) bool? showFeaturesPanel,
-      @HiveField(21) bool? showInstanceSpecificPanel,
-      @HiveField(22) bool? sidebarRight,
-      @HiveField(23) String? subjectLineBehavior,
-      @HiveField(24) String? theme,
-      @HiveField(25) bool? webPushNotifications});
+      {@JsonKey(name: 'alwaysShowSubjectInput')
+      @HiveField(0)
+          bool? alwaysShowSubjectInput,
+      @HiveField(1)
+          String? background,
+      @JsonKey(name: 'collapseMessageWithSubject')
+      @HiveField(2)
+          bool? collapseMessageWithSubject,
+      @JsonKey(name: 'disableChat')
+      @HiveField(3)
+          bool? disableChat,
+      @HiveField(4)
+          bool? greentext,
+      @JsonKey(name: 'hideFilteredStatuses')
+      @HiveField(5)
+          bool? hideFilteredStatuses,
+      @JsonKey(name: 'hideMutedPosts')
+      @HiveField(6)
+          bool? hideMutedPosts,
+      @JsonKey(name: 'hidePostStats')
+      @HiveField(7)
+          bool? hidePostStats,
+      @JsonKey(name: 'hideUserStats')
+      @HiveField(8)
+          bool? hideUserStats,
+      @JsonKey(name: 'loginMethod')
+      @HiveField(9)
+          String? loginMethod,
+      @HiveField(10)
+          String? logo,
+      @JsonKey(name: 'logoMargin')
+      @HiveField(11)
+          String? logoMargin,
+      @JsonKey(name: 'logoMask')
+      @HiveField(12)
+          bool? logoMask,
+      @JsonKey(name: 'minimalScopesMode')
+      @HiveField(13)
+          bool? minimalScopesMode,
+      @JsonKey(name: 'noAttachmentLinks')
+      @HiveField(14)
+          bool? noAttachmentLinks,
+      @JsonKey(name: 'nsfwCensorImage')
+      @HiveField(15)
+          String? nsfwCensorImage,
+      @JsonKey(name: 'postContentType')
+      @HiveField(16)
+          String? postContentType,
+      @JsonKey(name: 'redirectRootLogin')
+      @HiveField(17)
+          String? redirectRootLogin,
+      @JsonKey(name: 'redirectRootNoLogin')
+      @HiveField(18)
+          String? redirectRootNoLogin,
+      @JsonKey(name: 'scopeCopy')
+      @HiveField(19)
+          bool? scopeCopy,
+      @JsonKey(name: 'showFeaturesPanel')
+      @HiveField(20)
+          bool? showFeaturesPanel,
+      @JsonKey(name: 'showInstanceSpecificPanel')
+      @HiveField(21)
+          bool? showInstanceSpecificPanel,
+      @JsonKey(name: 'sidebarRight')
+      @HiveField(22)
+          bool? sidebarRight,
+      @JsonKey(name: 'subjectLineBehavior')
+      @HiveField(23)
+          String? subjectLineBehavior,
+      @HiveField(24)
+          String? theme,
+      @JsonKey(name: 'webPushNotifications')
+      @HiveField(25)
+          bool? webPushNotifications});
 }
 
 /// @nodoc
@@ -365,32 +461,80 @@ abstract class _$PleromaApiFrontendConfigurationsPleromaFeCopyWith<$Res>
       __$PleromaApiFrontendConfigurationsPleromaFeCopyWithImpl<$Res>;
   @override
   $Res call(
-      {@HiveField(0) bool? alwaysShowSubjectInput,
-      @HiveField(1) String? background,
-      @HiveField(2) bool? collapseMessageWithSubject,
-      @HiveField(3) bool? disableChat,
-      @HiveField(4) bool? greentext,
-      @HiveField(5) bool? hideFilteredStatuses,
-      @HiveField(6) bool? hideMutedPosts,
-      @HiveField(7) bool? hidePostStats,
-      @HiveField(8) bool? hideUserStats,
-      @HiveField(9) String? loginMethod,
-      @HiveField(10) String? logo,
-      @HiveField(11) String? logoMargin,
-      @HiveField(12) bool? logoMask,
-      @HiveField(13) bool? minimalScopesMode,
-      @HiveField(14) bool? noAttachmentLinks,
-      @HiveField(15) String? nsfwCensorImage,
-      @HiveField(16) String? postContentType,
-      @HiveField(17) String? redirectRootLogin,
-      @HiveField(18) String? redirectRootNoLogin,
-      @HiveField(19) bool? scopeCopy,
-      @HiveField(20) bool? showFeaturesPanel,
-      @HiveField(21) bool? showInstanceSpecificPanel,
-      @HiveField(22) bool? sidebarRight,
-      @HiveField(23) String? subjectLineBehavior,
-      @HiveField(24) String? theme,
-      @HiveField(25) bool? webPushNotifications});
+      {@JsonKey(name: 'alwaysShowSubjectInput')
+      @HiveField(0)
+          bool? alwaysShowSubjectInput,
+      @HiveField(1)
+          String? background,
+      @JsonKey(name: 'collapseMessageWithSubject')
+      @HiveField(2)
+          bool? collapseMessageWithSubject,
+      @JsonKey(name: 'disableChat')
+      @HiveField(3)
+          bool? disableChat,
+      @HiveField(4)
+          bool? greentext,
+      @JsonKey(name: 'hideFilteredStatuses')
+      @HiveField(5)
+          bool? hideFilteredStatuses,
+      @JsonKey(name: 'hideMutedPosts')
+      @HiveField(6)
+          bool? hideMutedPosts,
+      @JsonKey(name: 'hidePostStats')
+      @HiveField(7)
+          bool? hidePostStats,
+      @JsonKey(name: 'hideUserStats')
+      @HiveField(8)
+          bool? hideUserStats,
+      @JsonKey(name: 'loginMethod')
+      @HiveField(9)
+          String? loginMethod,
+      @HiveField(10)
+          String? logo,
+      @JsonKey(name: 'logoMargin')
+      @HiveField(11)
+          String? logoMargin,
+      @JsonKey(name: 'logoMask')
+      @HiveField(12)
+          bool? logoMask,
+      @JsonKey(name: 'minimalScopesMode')
+      @HiveField(13)
+          bool? minimalScopesMode,
+      @JsonKey(name: 'noAttachmentLinks')
+      @HiveField(14)
+          bool? noAttachmentLinks,
+      @JsonKey(name: 'nsfwCensorImage')
+      @HiveField(15)
+          String? nsfwCensorImage,
+      @JsonKey(name: 'postContentType')
+      @HiveField(16)
+          String? postContentType,
+      @JsonKey(name: 'redirectRootLogin')
+      @HiveField(17)
+          String? redirectRootLogin,
+      @JsonKey(name: 'redirectRootNoLogin')
+      @HiveField(18)
+          String? redirectRootNoLogin,
+      @JsonKey(name: 'scopeCopy')
+      @HiveField(19)
+          bool? scopeCopy,
+      @JsonKey(name: 'showFeaturesPanel')
+      @HiveField(20)
+          bool? showFeaturesPanel,
+      @JsonKey(name: 'showInstanceSpecificPanel')
+      @HiveField(21)
+          bool? showInstanceSpecificPanel,
+      @JsonKey(name: 'sidebarRight')
+      @HiveField(22)
+          bool? sidebarRight,
+      @JsonKey(name: 'subjectLineBehavior')
+      @HiveField(23)
+          String? subjectLineBehavior,
+      @HiveField(24)
+          String? theme,
+      @JsonKey(name: 'webPushNotifications')
+      @HiveField(25)
+          bool? webPushNotifications});
 }
 
 /// @nodoc
@@ -550,113 +694,183 @@ class __$PleromaApiFrontendConfigurationsPleromaFeCopyWithImpl<$Res>
 class _$_PleromaApiFrontendConfigurationsPleromaFe
     implements _PleromaApiFrontendConfigurationsPleromaFe {
   const _$_PleromaApiFrontendConfigurationsPleromaFe(
-      {@HiveField(0) required this.alwaysShowSubjectInput,
-      @HiveField(1) required this.background,
-      @HiveField(2) required this.collapseMessageWithSubject,
-      @HiveField(3) required this.disableChat,
-      @HiveField(4) required this.greentext,
-      @HiveField(5) required this.hideFilteredStatuses,
-      @HiveField(6) required this.hideMutedPosts,
-      @HiveField(7) required this.hidePostStats,
-      @HiveField(8) required this.hideUserStats,
-      @HiveField(9) required this.loginMethod,
-      @HiveField(10) required this.logo,
-      @HiveField(11) required this.logoMargin,
-      @HiveField(12) required this.logoMask,
-      @HiveField(13) required this.minimalScopesMode,
-      @HiveField(14) required this.noAttachmentLinks,
-      @HiveField(15) required this.nsfwCensorImage,
-      @HiveField(16) required this.postContentType,
-      @HiveField(17) required this.redirectRootLogin,
-      @HiveField(18) required this.redirectRootNoLogin,
-      @HiveField(19) required this.scopeCopy,
-      @HiveField(20) required this.showFeaturesPanel,
-      @HiveField(21) required this.showInstanceSpecificPanel,
-      @HiveField(22) required this.sidebarRight,
-      @HiveField(23) required this.subjectLineBehavior,
-      @HiveField(24) required this.theme,
-      @HiveField(25) required this.webPushNotifications});
+      {@JsonKey(name: 'alwaysShowSubjectInput')
+      @HiveField(0)
+          required this.alwaysShowSubjectInput,
+      @HiveField(1)
+          required this.background,
+      @JsonKey(name: 'collapseMessageWithSubject')
+      @HiveField(2)
+          required this.collapseMessageWithSubject,
+      @JsonKey(name: 'disableChat')
+      @HiveField(3)
+          required this.disableChat,
+      @HiveField(4)
+          required this.greentext,
+      @JsonKey(name: 'hideFilteredStatuses')
+      @HiveField(5)
+          required this.hideFilteredStatuses,
+      @JsonKey(name: 'hideMutedPosts')
+      @HiveField(6)
+          required this.hideMutedPosts,
+      @JsonKey(name: 'hidePostStats')
+      @HiveField(7)
+          required this.hidePostStats,
+      @JsonKey(name: 'hideUserStats')
+      @HiveField(8)
+          required this.hideUserStats,
+      @JsonKey(name: 'loginMethod')
+      @HiveField(9)
+          required this.loginMethod,
+      @HiveField(10)
+          required this.logo,
+      @JsonKey(name: 'logoMargin')
+      @HiveField(11)
+          required this.logoMargin,
+      @JsonKey(name: 'logoMask')
+      @HiveField(12)
+          required this.logoMask,
+      @JsonKey(name: 'minimalScopesMode')
+      @HiveField(13)
+          required this.minimalScopesMode,
+      @JsonKey(name: 'noAttachmentLinks')
+      @HiveField(14)
+          required this.noAttachmentLinks,
+      @JsonKey(name: 'nsfwCensorImage')
+      @HiveField(15)
+          required this.nsfwCensorImage,
+      @JsonKey(name: 'postContentType')
+      @HiveField(16)
+          required this.postContentType,
+      @JsonKey(name: 'redirectRootLogin')
+      @HiveField(17)
+          required this.redirectRootLogin,
+      @JsonKey(name: 'redirectRootNoLogin')
+      @HiveField(18)
+          required this.redirectRootNoLogin,
+      @JsonKey(name: 'scopeCopy')
+      @HiveField(19)
+          required this.scopeCopy,
+      @JsonKey(name: 'showFeaturesPanel')
+      @HiveField(20)
+          required this.showFeaturesPanel,
+      @JsonKey(name: 'showInstanceSpecificPanel')
+      @HiveField(21)
+          required this.showInstanceSpecificPanel,
+      @JsonKey(name: 'sidebarRight')
+      @HiveField(22)
+          required this.sidebarRight,
+      @JsonKey(name: 'subjectLineBehavior')
+      @HiveField(23)
+          required this.subjectLineBehavior,
+      @HiveField(24)
+          required this.theme,
+      @JsonKey(name: 'webPushNotifications')
+      @HiveField(25)
+          required this.webPushNotifications});
 
   factory _$_PleromaApiFrontendConfigurationsPleromaFe.fromJson(
           Map<String, dynamic> json) =>
       _$$_PleromaApiFrontendConfigurationsPleromaFeFromJson(json);
 
-  @override // @JsonKey(name: 'always_show_subject_input')
+  @override
+  @JsonKey(name: 'alwaysShowSubjectInput')
   @HiveField(0)
   final bool? alwaysShowSubjectInput;
   @override
   @HiveField(1)
   final String? background;
-  @override // @JsonKey(name: 'collapse_message_with_subject')
+  @override
+  @JsonKey(name: 'collapseMessageWithSubject')
   @HiveField(2)
   final bool? collapseMessageWithSubject;
-  @override // @JsonKey(name: 'disable_chat')
+  @override
+  @JsonKey(name: 'disableChat')
   @HiveField(3)
   final bool? disableChat;
   @override
   @HiveField(4)
   final bool? greentext;
-  @override // @JsonKey(name: 'hide_filtered_statuses')
+  @override
+  @JsonKey(name: 'hideFilteredStatuses')
   @HiveField(5)
   final bool? hideFilteredStatuses;
-  @override // @JsonKey(name: 'hide_muted_posts')
+  @override
+  @JsonKey(name: 'hideMutedPosts')
   @HiveField(6)
   final bool? hideMutedPosts;
-  @override // @JsonKey(name: 'hide_post_stats')
+  @override
+  @JsonKey(name: 'hidePostStats')
   @HiveField(7)
   final bool? hidePostStats;
-  @override // @JsonKey(name: 'hide_user_stats')
+  @override
+  @JsonKey(name: 'hideUserStats')
   @HiveField(8)
   final bool? hideUserStats;
-  @override // @JsonKey(name: 'login_method')
+  @override
+  @JsonKey(name: 'loginMethod')
   @HiveField(9)
   final String? loginMethod;
   @override
   @HiveField(10)
   final String? logo;
-  @override // @JsonKey(name: 'logo_margin')
+  @override
+  @JsonKey(name: 'logoMargin')
   @HiveField(11)
   final String? logoMargin;
-  @override // @JsonKey(name: 'logo_mask')
+  @override
+  @JsonKey(name: 'logoMask')
   @HiveField(12)
   final bool? logoMask;
-  @override // @JsonKey(name: 'minimal_scopes_mode')
+  @override
+  @JsonKey(name: 'minimalScopesMode')
   @HiveField(13)
   final bool? minimalScopesMode;
-  @override // @JsonKey(name: 'no_attachment_links')
+  @override
+  @JsonKey(name: 'noAttachmentLinks')
   @HiveField(14)
   final bool? noAttachmentLinks;
-  @override // @JsonKey(name: 'nsfw_censor_image')
+  @override
+  @JsonKey(name: 'nsfwCensorImage')
   @HiveField(15)
   final String? nsfwCensorImage;
-  @override // @JsonKey(name: 'post_content_type')
+  @override
+  @JsonKey(name: 'postContentType')
   @HiveField(16)
   final String? postContentType;
-  @override // @JsonKey(name: 'redirect_root_login')
+  @override
+  @JsonKey(name: 'redirectRootLogin')
   @HiveField(17)
   final String? redirectRootLogin;
-  @override // @JsonKey(name: 'redirect_root_no_login')
+  @override
+  @JsonKey(name: 'redirectRootNoLogin')
   @HiveField(18)
   final String? redirectRootNoLogin;
-  @override // @JsonKey(name: 'scope_copy')
+  @override
+  @JsonKey(name: 'scopeCopy')
   @HiveField(19)
   final bool? scopeCopy;
-  @override // @JsonKey(name: 'show_features_panel')
+  @override
+  @JsonKey(name: 'showFeaturesPanel')
   @HiveField(20)
   final bool? showFeaturesPanel;
-  @override // @JsonKey(name: 'show_instance_specific_panel')
+  @override
+  @JsonKey(name: 'showInstanceSpecificPanel')
   @HiveField(21)
   final bool? showInstanceSpecificPanel;
-  @override // @JsonKey(name: 'sidebar_right')
+  @override
+  @JsonKey(name: 'sidebarRight')
   @HiveField(22)
   final bool? sidebarRight;
-  @override // @JsonKey(name: 'subject_line_behavior')
+  @override
+  @JsonKey(name: 'subjectLineBehavior')
   @HiveField(23)
   final String? subjectLineBehavior;
   @override
   @HiveField(24)
   final String? theme;
-  @override // @JsonKey(name: 'web_push_notifications')
+  @override
+  @JsonKey(name: 'webPushNotifications')
   @HiveField(25)
   final bool? webPushNotifications;
 
@@ -777,114 +991,184 @@ class _$_PleromaApiFrontendConfigurationsPleromaFe
 abstract class _PleromaApiFrontendConfigurationsPleromaFe
     implements PleromaApiFrontendConfigurationsPleromaFe {
   const factory _PleromaApiFrontendConfigurationsPleromaFe(
-          {@HiveField(0) required bool? alwaysShowSubjectInput,
-          @HiveField(1) required String? background,
-          @HiveField(2) required bool? collapseMessageWithSubject,
-          @HiveField(3) required bool? disableChat,
-          @HiveField(4) required bool? greentext,
-          @HiveField(5) required bool? hideFilteredStatuses,
-          @HiveField(6) required bool? hideMutedPosts,
-          @HiveField(7) required bool? hidePostStats,
-          @HiveField(8) required bool? hideUserStats,
-          @HiveField(9) required String? loginMethod,
-          @HiveField(10) required String? logo,
-          @HiveField(11) required String? logoMargin,
-          @HiveField(12) required bool? logoMask,
-          @HiveField(13) required bool? minimalScopesMode,
-          @HiveField(14) required bool? noAttachmentLinks,
-          @HiveField(15) required String? nsfwCensorImage,
-          @HiveField(16) required String? postContentType,
-          @HiveField(17) required String? redirectRootLogin,
-          @HiveField(18) required String? redirectRootNoLogin,
-          @HiveField(19) required bool? scopeCopy,
-          @HiveField(20) required bool? showFeaturesPanel,
-          @HiveField(21) required bool? showInstanceSpecificPanel,
-          @HiveField(22) required bool? sidebarRight,
-          @HiveField(23) required String? subjectLineBehavior,
-          @HiveField(24) required String? theme,
-          @HiveField(25) required bool? webPushNotifications}) =
+          {@JsonKey(name: 'alwaysShowSubjectInput')
+          @HiveField(0)
+              required bool? alwaysShowSubjectInput,
+          @HiveField(1)
+              required String? background,
+          @JsonKey(name: 'collapseMessageWithSubject')
+          @HiveField(2)
+              required bool? collapseMessageWithSubject,
+          @JsonKey(name: 'disableChat')
+          @HiveField(3)
+              required bool? disableChat,
+          @HiveField(4)
+              required bool? greentext,
+          @JsonKey(name: 'hideFilteredStatuses')
+          @HiveField(5)
+              required bool? hideFilteredStatuses,
+          @JsonKey(name: 'hideMutedPosts')
+          @HiveField(6)
+              required bool? hideMutedPosts,
+          @JsonKey(name: 'hidePostStats')
+          @HiveField(7)
+              required bool? hidePostStats,
+          @JsonKey(name: 'hideUserStats')
+          @HiveField(8)
+              required bool? hideUserStats,
+          @JsonKey(name: 'loginMethod')
+          @HiveField(9)
+              required String? loginMethod,
+          @HiveField(10)
+              required String? logo,
+          @JsonKey(name: 'logoMargin')
+          @HiveField(11)
+              required String? logoMargin,
+          @JsonKey(name: 'logoMask')
+          @HiveField(12)
+              required bool? logoMask,
+          @JsonKey(name: 'minimalScopesMode')
+          @HiveField(13)
+              required bool? minimalScopesMode,
+          @JsonKey(name: 'noAttachmentLinks')
+          @HiveField(14)
+              required bool? noAttachmentLinks,
+          @JsonKey(name: 'nsfwCensorImage')
+          @HiveField(15)
+              required String? nsfwCensorImage,
+          @JsonKey(name: 'postContentType')
+          @HiveField(16)
+              required String? postContentType,
+          @JsonKey(name: 'redirectRootLogin')
+          @HiveField(17)
+              required String? redirectRootLogin,
+          @JsonKey(name: 'redirectRootNoLogin')
+          @HiveField(18)
+              required String? redirectRootNoLogin,
+          @JsonKey(name: 'scopeCopy')
+          @HiveField(19)
+              required bool? scopeCopy,
+          @JsonKey(name: 'showFeaturesPanel')
+          @HiveField(20)
+              required bool? showFeaturesPanel,
+          @JsonKey(name: 'showInstanceSpecificPanel')
+          @HiveField(21)
+              required bool? showInstanceSpecificPanel,
+          @JsonKey(name: 'sidebarRight')
+          @HiveField(22)
+              required bool? sidebarRight,
+          @JsonKey(name: 'subjectLineBehavior')
+          @HiveField(23)
+              required String? subjectLineBehavior,
+          @HiveField(24)
+              required String? theme,
+          @JsonKey(name: 'webPushNotifications')
+          @HiveField(25)
+              required bool? webPushNotifications}) =
       _$_PleromaApiFrontendConfigurationsPleromaFe;
 
   factory _PleromaApiFrontendConfigurationsPleromaFe.fromJson(
           Map<String, dynamic> json) =
       _$_PleromaApiFrontendConfigurationsPleromaFe.fromJson;
 
-  @override // @JsonKey(name: 'always_show_subject_input')
+  @override
+  @JsonKey(name: 'alwaysShowSubjectInput')
   @HiveField(0)
   bool? get alwaysShowSubjectInput => throw _privateConstructorUsedError;
   @override
   @HiveField(1)
   String? get background => throw _privateConstructorUsedError;
-  @override // @JsonKey(name: 'collapse_message_with_subject')
+  @override
+  @JsonKey(name: 'collapseMessageWithSubject')
   @HiveField(2)
   bool? get collapseMessageWithSubject => throw _privateConstructorUsedError;
-  @override // @JsonKey(name: 'disable_chat')
+  @override
+  @JsonKey(name: 'disableChat')
   @HiveField(3)
   bool? get disableChat => throw _privateConstructorUsedError;
   @override
   @HiveField(4)
   bool? get greentext => throw _privateConstructorUsedError;
-  @override // @JsonKey(name: 'hide_filtered_statuses')
+  @override
+  @JsonKey(name: 'hideFilteredStatuses')
   @HiveField(5)
   bool? get hideFilteredStatuses => throw _privateConstructorUsedError;
-  @override // @JsonKey(name: 'hide_muted_posts')
+  @override
+  @JsonKey(name: 'hideMutedPosts')
   @HiveField(6)
   bool? get hideMutedPosts => throw _privateConstructorUsedError;
-  @override // @JsonKey(name: 'hide_post_stats')
+  @override
+  @JsonKey(name: 'hidePostStats')
   @HiveField(7)
   bool? get hidePostStats => throw _privateConstructorUsedError;
-  @override // @JsonKey(name: 'hide_user_stats')
+  @override
+  @JsonKey(name: 'hideUserStats')
   @HiveField(8)
   bool? get hideUserStats => throw _privateConstructorUsedError;
-  @override // @JsonKey(name: 'login_method')
+  @override
+  @JsonKey(name: 'loginMethod')
   @HiveField(9)
   String? get loginMethod => throw _privateConstructorUsedError;
   @override
   @HiveField(10)
   String? get logo => throw _privateConstructorUsedError;
-  @override // @JsonKey(name: 'logo_margin')
+  @override
+  @JsonKey(name: 'logoMargin')
   @HiveField(11)
   String? get logoMargin => throw _privateConstructorUsedError;
-  @override // @JsonKey(name: 'logo_mask')
+  @override
+  @JsonKey(name: 'logoMask')
   @HiveField(12)
   bool? get logoMask => throw _privateConstructorUsedError;
-  @override // @JsonKey(name: 'minimal_scopes_mode')
+  @override
+  @JsonKey(name: 'minimalScopesMode')
   @HiveField(13)
   bool? get minimalScopesMode => throw _privateConstructorUsedError;
-  @override // @JsonKey(name: 'no_attachment_links')
+  @override
+  @JsonKey(name: 'noAttachmentLinks')
   @HiveField(14)
   bool? get noAttachmentLinks => throw _privateConstructorUsedError;
-  @override // @JsonKey(name: 'nsfw_censor_image')
+  @override
+  @JsonKey(name: 'nsfwCensorImage')
   @HiveField(15)
   String? get nsfwCensorImage => throw _privateConstructorUsedError;
-  @override // @JsonKey(name: 'post_content_type')
+  @override
+  @JsonKey(name: 'postContentType')
   @HiveField(16)
   String? get postContentType => throw _privateConstructorUsedError;
-  @override // @JsonKey(name: 'redirect_root_login')
+  @override
+  @JsonKey(name: 'redirectRootLogin')
   @HiveField(17)
   String? get redirectRootLogin => throw _privateConstructorUsedError;
-  @override // @JsonKey(name: 'redirect_root_no_login')
+  @override
+  @JsonKey(name: 'redirectRootNoLogin')
   @HiveField(18)
   String? get redirectRootNoLogin => throw _privateConstructorUsedError;
-  @override // @JsonKey(name: 'scope_copy')
+  @override
+  @JsonKey(name: 'scopeCopy')
   @HiveField(19)
   bool? get scopeCopy => throw _privateConstructorUsedError;
-  @override // @JsonKey(name: 'show_features_panel')
+  @override
+  @JsonKey(name: 'showFeaturesPanel')
   @HiveField(20)
   bool? get showFeaturesPanel => throw _privateConstructorUsedError;
-  @override // @JsonKey(name: 'show_instance_specific_panel')
+  @override
+  @JsonKey(name: 'showInstanceSpecificPanel')
   @HiveField(21)
   bool? get showInstanceSpecificPanel => throw _privateConstructorUsedError;
-  @override // @JsonKey(name: 'sidebar_right')
+  @override
+  @JsonKey(name: 'sidebarRight')
   @HiveField(22)
   bool? get sidebarRight => throw _privateConstructorUsedError;
-  @override // @JsonKey(name: 'subject_line_behavior')
+  @override
+  @JsonKey(name: 'subjectLineBehavior')
   @HiveField(23)
   String? get subjectLineBehavior => throw _privateConstructorUsedError;
   @override
   @HiveField(24)
   String? get theme => throw _privateConstructorUsedError;
-  @override // @JsonKey(name: 'web_push_notifications')
+  @override
+  @JsonKey(name: 'webPushNotifications')
   @HiveField(25)
   bool? get webPushNotifications => throw _privateConstructorUsedError;
   @override
