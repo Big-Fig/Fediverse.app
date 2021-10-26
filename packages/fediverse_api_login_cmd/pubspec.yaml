@@ -1,5 +1,5 @@
 name: fediverse_api_login_cmd
-version: 1.0.8
+version: 1.0.9
 
 description: Common code for all fediverse_api_login_cmd extension packages
 homepage: https://github.com/Big-Fig/Fediverse.app
