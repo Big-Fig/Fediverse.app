@@ -283,7 +283,7 @@ scripts:
   test:driver:screenshots:
     run: |
       flutter pub global run melos exec -c 1 --fail-fast -- \
-      flutter driver --target=test_driver/screenshots.dart --flavor dev
+      flutter driver --no-pub --target=test_driver/screenshots.dart --flavor dev
     description: Run test driver to iterate over screens used for screenshots as test(dev purpose)
     select-package:
       dir-exists: test_driver
