@@ -29,7 +29,7 @@ dependencies:
   # Disposable logic
   easy_dispose: ^1.1.0
   easy_dispose_rxdart: ^1.1.0
-  http: ^0.13.3
+  http: ^0.13.4
   logging: ^1.0.2
   path: ^1.8.0
   hive:
@@ -37,24 +37,24 @@ dependencies:
       url: https://github.com/xal/hive
       ref: xal/nested_type_registry_dev
       path: hive
-  json_annotation: ^4.1.0
-  freezed_annotation: ^0.14.3
+  json_annotation: ^4.3.0
+  freezed_annotation: ^0.15.0
   collection: ^1.15.0
 
 dev_dependencies:
-  test: ^1.17.9
+  test: ^1.19.2
   mockito: ^5.0.16
   # additional linters
-  dart_code_metrics: ^4.3.3
+  dart_code_metrics: ^4.5.0
   lints: 1.0.1
   hive_generator:
     git:
       url: https://github.com/xal/hive
       ref: xal/nested_type_registry_dev
       path: hive_generator
-  json_serializable: ^5.0.2
-  freezed: ^0.14.5
-  build_runner: ^2.1.2
+  json_serializable: ^6.0.1
+  freezed: ^0.15.0+1
+  build_runner: ^2.1.4
 
   # helper to specify all rules in one line
   all_lint_rules_community: ^0.0.4

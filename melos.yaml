@@ -501,7 +501,7 @@ scripts:
     select-package:
       dir-exists: ios/fastlane
 
-  pub:packages:upgrade:
+  pub:packages:cache:upgrade:
     run: |
       flutter pub global run melos exec -c 1 --fail-fast -- \
       flutter packages upgrade
@@ -513,7 +513,23 @@ scripts:
     run: |
       flutter pub global run melos exec -c 1 --fail-fast -- \
       flutter pub get
-    description: Upload screenshots metadata to AppStore
+    description: |
+      Usually you want to use melos bootstrap.
+      Workaround to run build_runner(requires pub get)
+
+  pub:upgrade:
+    run: |
+      flutter pub global run melos exec -c 1 --fail-fast -- \
+      flutter pub upgrade
+    description: |
+      Automatically upgrade package versions
+
+  pub:outdated:
+    run: |
+      flutter pub global run melos exec -c 1 --fail-fast -- \
+      flutter pub outdated
+    description: |
+      Checks new versions to update
 
   build:examples:ios:
     run: flutter pub global run melos exec -c 4 --fail-fast --scope="*example*,sample_app" -- \
